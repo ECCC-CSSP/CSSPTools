@@ -31,6 +31,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LoggedInServices", "src\dll
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LoggedInServices.Tests", "src\tests\LoggedInServices.Tests\LoggedInServices.Tests.csproj", "{EE97C53F-2F79-41D5-A23C-0DC37812B811}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CultureServices.Tests", "src\tests\CultureServices.Tests\CultureServices.Tests.csproj", "{05810E5C-1B72-42E6-BADE-132751A73DF4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -93,6 +95,10 @@ Global
 		{EE97C53F-2F79-41D5-A23C-0DC37812B811}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EE97C53F-2F79-41D5-A23C-0DC37812B811}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EE97C53F-2F79-41D5-A23C-0DC37812B811}.Release|Any CPU.Build.0 = Release|Any CPU
+		{05810E5C-1B72-42E6-BADE-132751A73DF4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{05810E5C-1B72-42E6-BADE-132751A73DF4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{05810E5C-1B72-42E6-BADE-132751A73DF4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{05810E5C-1B72-42E6-BADE-132751A73DF4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

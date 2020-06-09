@@ -19,7 +19,7 @@ namespace ServicesClassNameServiceTestGeneratedServices.Services
             sb.AppendLine(@"            // -------------------------------");
             sb.AppendLine(@"            // -------------------------------");
             sb.AppendLine(@"");
-            sb.AppendLine(@"            await Setup(new CultureInfo(culture));");
+            sb.AppendLine(@"            Assert.True(await Setup(culture));");
             sb.AppendLine(@"");
             sb.AppendLine(@"            using (TransactionScope ts = new TransactionScope())");
             sb.AppendLine(@"            {");

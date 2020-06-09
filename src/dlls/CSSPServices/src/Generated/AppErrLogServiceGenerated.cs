@@ -7,13 +7,13 @@
 
 using CSSPEnums;
 using CSSPModels;
-using CSSPServices.Resources;
+using CultureServices.Resources;
+using CultureServices.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Globalization;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -27,7 +27,6 @@ namespace CSSPServices
        Task<ActionResult<AppErrLog>> Add(AppErrLog apperrlog);
        Task<ActionResult<bool>> Delete(int AppErrLogID);
        Task<ActionResult<AppErrLog>> Update(AppErrLog apperrlog);
-       Task SetCulture(CultureInfo culture);
     }
     public partial class AppErrLogService : ControllerBase, IAppErrLogService
     {
@@ -36,15 +35,17 @@ namespace CSSPServices
 
         #region Properties
         private CSSPDBContext db { get; }
+        private ICultureService CultureService { get; }
         private IEnums enums { get; }
         private IEnumerable<ValidationResult> ValidationResults { get; set; }
         #endregion Properties
 
         #region Constructors
-        public AppErrLogService(IEnums enums, CSSPDBContext db)
+        public AppErrLogService(ICultureService CultureService, IEnums enums, CSSPDBContext db)
         {
-            this.db = db;
+            this.CultureService = CultureService;
             this.enums = enums;
+            this.db = db;
         }
         #endregion Constructors
 
@@ -96,7 +97,7 @@ namespace CSSPServices
             
             if (appErrLog == null)
             {
-                return await Task.FromResult(BadRequest(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "AppErrLog", "AppErrLogID", AppErrLogID.ToString())));
+                return await Task.FromResult(BadRequest(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "AppErrLog", "AppErrLogID", AppErrLogID.ToString())));
             }
 
             try
@@ -131,10 +132,6 @@ namespace CSSPServices
 
             return await Task.FromResult(Ok(appErrLog));
         }
-        public async Task SetCulture(CultureInfo culture)
-        {
-            CSSPServicesRes.Culture = culture;
-        }
         #endregion Functions public
 
         #region Functions private
@@ -147,65 +144,65 @@ namespace CSSPServices
             {
                 if (appErrLog.AppErrLogID == 0)
                 {
-                    yield return new ValidationResult(string.Format(CSSPServicesRes._IsRequired, "AppErrLogID"), new[] { "AppErrLogID" });
+                    yield return new ValidationResult(string.Format(CultureServicesRes._IsRequired, "AppErrLogID"), new[] { "AppErrLogID" });
                 }
 
                 if (!(from c in db.AppErrLogs select c).Where(c => c.AppErrLogID == appErrLog.AppErrLogID).Any())
                 {
-                    yield return new ValidationResult(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "AppErrLog", "AppErrLogID", appErrLog.AppErrLogID.ToString()), new[] { "AppErrLogID" });
+                    yield return new ValidationResult(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "AppErrLog", "AppErrLogID", appErrLog.AppErrLogID.ToString()), new[] { "AppErrLogID" });
                 }
             }
 
             if (string.IsNullOrWhiteSpace(appErrLog.Tag))
             {
-                yield return new ValidationResult(string.Format(CSSPServicesRes._IsRequired, "Tag"), new[] { "Tag" });
+                yield return new ValidationResult(string.Format(CultureServicesRes._IsRequired, "Tag"), new[] { "Tag" });
             }
 
             if (!string.IsNullOrWhiteSpace(appErrLog.Tag) && appErrLog.Tag.Length > 100)
             {
-                yield return new ValidationResult(string.Format(CSSPServicesRes._MaxLengthIs_, "Tag", "100"), new[] { "Tag" });
+                yield return new ValidationResult(string.Format(CultureServicesRes._MaxLengthIs_, "Tag", "100"), new[] { "Tag" });
             }
 
             if (appErrLog.LineNumber < 1)
             {
-                yield return new ValidationResult(string.Format(CSSPServicesRes._MinValueIs_, "LineNumber", "1"), new[] { "LineNumber" });
+                yield return new ValidationResult(string.Format(CultureServicesRes._MinValueIs_, "LineNumber", "1"), new[] { "LineNumber" });
             }
 
             if (string.IsNullOrWhiteSpace(appErrLog.Source))
             {
-                yield return new ValidationResult(string.Format(CSSPServicesRes._IsRequired, "Source"), new[] { "Source" });
+                yield return new ValidationResult(string.Format(CultureServicesRes._IsRequired, "Source"), new[] { "Source" });
             }
 
             //Source has no StringLength Attribute
 
             if (string.IsNullOrWhiteSpace(appErrLog.Message))
             {
-                yield return new ValidationResult(string.Format(CSSPServicesRes._IsRequired, "Message"), new[] { "Message" });
+                yield return new ValidationResult(string.Format(CultureServicesRes._IsRequired, "Message"), new[] { "Message" });
             }
 
             //Message has no StringLength Attribute
 
             if (appErrLog.DateTime_UTC.Year == 1)
             {
-                yield return new ValidationResult(string.Format(CSSPServicesRes._IsRequired, "DateTime_UTC"), new[] { "DateTime_UTC" });
+                yield return new ValidationResult(string.Format(CultureServicesRes._IsRequired, "DateTime_UTC"), new[] { "DateTime_UTC" });
             }
             else
             {
                 if (appErrLog.DateTime_UTC.Year < 1980)
                 {
-                    yield return new ValidationResult(string.Format(CSSPServicesRes._YearShouldBeBiggerThan_, "DateTime_UTC", "1980"), new[] { "DateTime_UTC" });
+                    yield return new ValidationResult(string.Format(CultureServicesRes._YearShouldBeBiggerThan_, "DateTime_UTC", "1980"), new[] { "DateTime_UTC" });
                 }
             }
 
             if (appErrLog.LastUpdateDate_UTC.Year == 1)
             {
-                yield return new ValidationResult(string.Format(CSSPServicesRes._IsRequired, "LastUpdateDate_UTC"), new[] { "LastUpdateDate_UTC" });
+                yield return new ValidationResult(string.Format(CultureServicesRes._IsRequired, "LastUpdateDate_UTC"), new[] { "LastUpdateDate_UTC" });
             }
             else
             {
                 if (appErrLog.LastUpdateDate_UTC.Year < 1980)
                 {
-                    yield return new ValidationResult(string.Format(CSSPServicesRes._YearShouldBeBiggerThan_, "LastUpdateDate_UTC", "1980"), new[] { "LastUpdateDate_UTC" });
+                    yield return new ValidationResult(string.Format(CultureServicesRes._YearShouldBeBiggerThan_, "LastUpdateDate_UTC", "1980"), new[] { "LastUpdateDate_UTC" });
                 }
             }
 
@@ -213,7 +210,7 @@ namespace CSSPServices
 
             if (TVItemLastUpdateContactTVItemID == null)
             {
-                yield return new ValidationResult(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "TVItem", "LastUpdateContactTVItemID", appErrLog.LastUpdateContactTVItemID.ToString()), new[] { "LastUpdateContactTVItemID" });
+                yield return new ValidationResult(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "TVItem", "LastUpdateContactTVItemID", appErrLog.LastUpdateContactTVItemID.ToString()), new[] { "LastUpdateContactTVItemID" });
             }
             else
             {
@@ -223,7 +220,7 @@ namespace CSSPServices
                 };
                 if (!AllowableTVTypes.Contains(TVItemLastUpdateContactTVItemID.TVType))
                 {
-                    yield return new ValidationResult(string.Format(CSSPServicesRes._IsNotOfType_, "LastUpdateContactTVItemID", "Contact"), new[] { "LastUpdateContactTVItemID" });
+                    yield return new ValidationResult(string.Format(CultureServicesRes._IsNotOfType_, "LastUpdateContactTVItemID", "Contact"), new[] { "LastUpdateContactTVItemID" });
                 }
             }
 

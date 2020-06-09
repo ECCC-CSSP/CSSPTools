@@ -7,13 +7,13 @@
 
 using CSSPEnums;
 using CSSPModels;
-using CSSPServices.Resources;
+using CultureServices.Resources;
+using CultureServices.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Globalization;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -27,7 +27,6 @@ namespace CSSPServices
        Task<ActionResult<MWQMSubsectorLanguage>> Add(MWQMSubsectorLanguage mwqmsubsectorlanguage);
        Task<ActionResult<bool>> Delete(int MWQMSubsectorLanguageID);
        Task<ActionResult<MWQMSubsectorLanguage>> Update(MWQMSubsectorLanguage mwqmsubsectorlanguage);
-       Task SetCulture(CultureInfo culture);
     }
     public partial class MWQMSubsectorLanguageService : ControllerBase, IMWQMSubsectorLanguageService
     {
@@ -36,15 +35,17 @@ namespace CSSPServices
 
         #region Properties
         private CSSPDBContext db { get; }
+        private ICultureService CultureService { get; }
         private IEnums enums { get; }
         private IEnumerable<ValidationResult> ValidationResults { get; set; }
         #endregion Properties
 
         #region Constructors
-        public MWQMSubsectorLanguageService(IEnums enums, CSSPDBContext db)
+        public MWQMSubsectorLanguageService(ICultureService CultureService, IEnums enums, CSSPDBContext db)
         {
-            this.db = db;
+            this.CultureService = CultureService;
             this.enums = enums;
+            this.db = db;
         }
         #endregion Constructors
 
@@ -96,7 +97,7 @@ namespace CSSPServices
             
             if (mwqmSubsectorLanguage == null)
             {
-                return await Task.FromResult(BadRequest(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "MWQMSubsectorLanguage", "MWQMSubsectorLanguageID", MWQMSubsectorLanguageID.ToString())));
+                return await Task.FromResult(BadRequest(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "MWQMSubsectorLanguage", "MWQMSubsectorLanguageID", MWQMSubsectorLanguageID.ToString())));
             }
 
             try
@@ -131,10 +132,6 @@ namespace CSSPServices
 
             return await Task.FromResult(Ok(mwqmSubsectorLanguage));
         }
-        public async Task SetCulture(CultureInfo culture)
-        {
-            CSSPServicesRes.Culture = culture;
-        }
         #endregion Functions public
 
         #region Functions private
@@ -147,12 +144,12 @@ namespace CSSPServices
             {
                 if (mwqmSubsectorLanguage.MWQMSubsectorLanguageID == 0)
                 {
-                    yield return new ValidationResult(string.Format(CSSPServicesRes._IsRequired, "MWQMSubsectorLanguageID"), new[] { "MWQMSubsectorLanguageID" });
+                    yield return new ValidationResult(string.Format(CultureServicesRes._IsRequired, "MWQMSubsectorLanguageID"), new[] { "MWQMSubsectorLanguageID" });
                 }
 
                 if (!(from c in db.MWQMSubsectorLanguages select c).Where(c => c.MWQMSubsectorLanguageID == mwqmSubsectorLanguage.MWQMSubsectorLanguageID).Any())
                 {
-                    yield return new ValidationResult(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "MWQMSubsectorLanguage", "MWQMSubsectorLanguageID", mwqmSubsectorLanguage.MWQMSubsectorLanguageID.ToString()), new[] { "MWQMSubsectorLanguageID" });
+                    yield return new ValidationResult(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "MWQMSubsectorLanguage", "MWQMSubsectorLanguageID", mwqmSubsectorLanguage.MWQMSubsectorLanguageID.ToString()), new[] { "MWQMSubsectorLanguageID" });
                 }
             }
 
@@ -160,29 +157,29 @@ namespace CSSPServices
 
             if (MWQMSubsectorMWQMSubsectorID == null)
             {
-                yield return new ValidationResult(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "MWQMSubsector", "MWQMSubsectorID", mwqmSubsectorLanguage.MWQMSubsectorID.ToString()), new[] { "MWQMSubsectorID" });
+                yield return new ValidationResult(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "MWQMSubsector", "MWQMSubsectorID", mwqmSubsectorLanguage.MWQMSubsectorID.ToString()), new[] { "MWQMSubsectorID" });
             }
 
             retStr = enums.EnumTypeOK(typeof(LanguageEnum), (int?)mwqmSubsectorLanguage.Language);
             if (!string.IsNullOrWhiteSpace(retStr))
             {
-                yield return new ValidationResult(string.Format(CSSPServicesRes._IsRequired, "Language"), new[] { "Language" });
+                yield return new ValidationResult(string.Format(CultureServicesRes._IsRequired, "Language"), new[] { "Language" });
             }
 
             if (string.IsNullOrWhiteSpace(mwqmSubsectorLanguage.SubsectorDesc))
             {
-                yield return new ValidationResult(string.Format(CSSPServicesRes._IsRequired, "SubsectorDesc"), new[] { "SubsectorDesc" });
+                yield return new ValidationResult(string.Format(CultureServicesRes._IsRequired, "SubsectorDesc"), new[] { "SubsectorDesc" });
             }
 
             if (!string.IsNullOrWhiteSpace(mwqmSubsectorLanguage.SubsectorDesc) && mwqmSubsectorLanguage.SubsectorDesc.Length > 250)
             {
-                yield return new ValidationResult(string.Format(CSSPServicesRes._MaxLengthIs_, "SubsectorDesc", "250"), new[] { "SubsectorDesc" });
+                yield return new ValidationResult(string.Format(CultureServicesRes._MaxLengthIs_, "SubsectorDesc", "250"), new[] { "SubsectorDesc" });
             }
 
             retStr = enums.EnumTypeOK(typeof(TranslationStatusEnum), (int?)mwqmSubsectorLanguage.TranslationStatusSubsectorDesc);
             if (!string.IsNullOrWhiteSpace(retStr))
             {
-                yield return new ValidationResult(string.Format(CSSPServicesRes._IsRequired, "TranslationStatusSubsectorDesc"), new[] { "TranslationStatusSubsectorDesc" });
+                yield return new ValidationResult(string.Format(CultureServicesRes._IsRequired, "TranslationStatusSubsectorDesc"), new[] { "TranslationStatusSubsectorDesc" });
             }
 
             //LogBook has no StringLength Attribute
@@ -192,19 +189,19 @@ namespace CSSPServices
                 retStr = enums.EnumTypeOK(typeof(TranslationStatusEnum), (int?)mwqmSubsectorLanguage.TranslationStatusLogBook);
                 if (mwqmSubsectorLanguage.TranslationStatusLogBook == null || !string.IsNullOrWhiteSpace(retStr))
                 {
-                    yield return new ValidationResult(string.Format(CSSPServicesRes._IsRequired, "TranslationStatusLogBook"), new[] { "TranslationStatusLogBook" });
+                    yield return new ValidationResult(string.Format(CultureServicesRes._IsRequired, "TranslationStatusLogBook"), new[] { "TranslationStatusLogBook" });
                 }
             }
 
             if (mwqmSubsectorLanguage.LastUpdateDate_UTC.Year == 1)
             {
-                yield return new ValidationResult(string.Format(CSSPServicesRes._IsRequired, "LastUpdateDate_UTC"), new[] { "LastUpdateDate_UTC" });
+                yield return new ValidationResult(string.Format(CultureServicesRes._IsRequired, "LastUpdateDate_UTC"), new[] { "LastUpdateDate_UTC" });
             }
             else
             {
                 if (mwqmSubsectorLanguage.LastUpdateDate_UTC.Year < 1980)
                 {
-                    yield return new ValidationResult(string.Format(CSSPServicesRes._YearShouldBeBiggerThan_, "LastUpdateDate_UTC", "1980"), new[] { "LastUpdateDate_UTC" });
+                    yield return new ValidationResult(string.Format(CultureServicesRes._YearShouldBeBiggerThan_, "LastUpdateDate_UTC", "1980"), new[] { "LastUpdateDate_UTC" });
                 }
             }
 
@@ -212,7 +209,7 @@ namespace CSSPServices
 
             if (TVItemLastUpdateContactTVItemID == null)
             {
-                yield return new ValidationResult(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "TVItem", "LastUpdateContactTVItemID", mwqmSubsectorLanguage.LastUpdateContactTVItemID.ToString()), new[] { "LastUpdateContactTVItemID" });
+                yield return new ValidationResult(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "TVItem", "LastUpdateContactTVItemID", mwqmSubsectorLanguage.LastUpdateContactTVItemID.ToString()), new[] { "LastUpdateContactTVItemID" });
             }
             else
             {
@@ -222,7 +219,7 @@ namespace CSSPServices
                 };
                 if (!AllowableTVTypes.Contains(TVItemLastUpdateContactTVItemID.TVType))
                 {
-                    yield return new ValidationResult(string.Format(CSSPServicesRes._IsNotOfType_, "LastUpdateContactTVItemID", "Contact"), new[] { "LastUpdateContactTVItemID" });
+                    yield return new ValidationResult(string.Format(CultureServicesRes._IsNotOfType_, "LastUpdateContactTVItemID", "Contact"), new[] { "LastUpdateContactTVItemID" });
                 }
             }
 

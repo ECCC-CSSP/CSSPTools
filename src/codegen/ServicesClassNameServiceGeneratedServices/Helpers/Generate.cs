@@ -108,13 +108,13 @@ namespace ServicesClassNameServiceGeneratedServices.Services
 
                 sb.AppendLine(@"using CSSPEnums;");
                 sb.AppendLine(@"using CSSPModels;");
-                sb.AppendLine(@"using CSSPServices.Resources;");
+                sb.AppendLine(@"using CultureServices.Resources;");
+                sb.AppendLine(@"using CultureServices.Services;");
                 sb.AppendLine(@"using Microsoft.AspNetCore.Mvc;");
                 sb.AppendLine(@"using Microsoft.EntityFrameworkCore;");
                 sb.AppendLine(@"using System;");
                 sb.AppendLine(@"using System.Collections.Generic;");
                 sb.AppendLine(@"using System.ComponentModel.DataAnnotations;");
-                sb.AppendLine(@"using System.Globalization;");
                 sb.AppendLine(@"using System.Linq;");
                 sb.AppendLine(@"using System.Text.RegularExpressions;");
                 sb.AppendLine(@"using System.Threading.Tasks;");
@@ -141,7 +141,6 @@ namespace ServicesClassNameServiceGeneratedServices.Services
                     }
                     sb.AppendLine($@"       Task<ActionResult<bool>> Delete(int { dllTypeInfoModels.Type.Name }ID);");
                     sb.AppendLine($@"       Task<ActionResult<{ dllTypeInfoModels.Type.Name }>> Update({ dllTypeInfoModels.Type.Name } { dllTypeInfoModels.Type.Name.ToLower() });");
-                    sb.AppendLine($@"       Task SetCulture(CultureInfo culture);");
                     sb.AppendLine(@"    }");
                     #endregion Interface
 
@@ -152,15 +151,17 @@ namespace ServicesClassNameServiceGeneratedServices.Services
                     sb.AppendLine(@"");
                     sb.AppendLine(@"        #region Properties");
                     sb.AppendLine(@"        private CSSPDBContext db { get; }");
+                    sb.AppendLine(@"        private ICultureService CultureService { get; }");
                     sb.AppendLine(@"        private IEnums enums { get; }");
                     sb.AppendLine(@"        private IEnumerable<ValidationResult> ValidationResults { get; set; }");
                     sb.AppendLine(@"        #endregion Properties");
                     sb.AppendLine(@"");
                     sb.AppendLine(@"        #region Constructors");
-                    sb.AppendLine($@"        public { dllTypeInfoModels.Type.Name }Service(IEnums enums, CSSPDBContext db)");
+                    sb.AppendLine($@"        public { dllTypeInfoModels.Type.Name }Service(ICultureService CultureService, IEnums enums, CSSPDBContext db)");
                     sb.AppendLine(@"        {");
-                    sb.AppendLine(@"            this.db = db;");
+                    sb.AppendLine(@"            this.CultureService = CultureService;");
                     sb.AppendLine(@"            this.enums = enums;");
+                    sb.AppendLine(@"            this.db = db;");
                     sb.AppendLine(@"        }");
                     sb.AppendLine(@"        #endregion Constructors");
                     sb.AppendLine(@"");

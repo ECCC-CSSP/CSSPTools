@@ -72,8 +72,8 @@ namespace EnumsPolSourceInfoRelatedFilesServices.Services
                 new AppSettingParameter() { Parameter = "EnumsPolSourceInfoGenerated_cs", ExpectedValue = "C:\\CSSPTools\\src\\dlls\\CSSPEnums\\Generated\\EnumsPolSourceInfoGenerated.cs" },
                 new AppSettingParameter() { Parameter = "PolSourceObsInfoEnumGenerated_cs", ExpectedValue = "C:\\CSSPTools\\src\\dlls\\CSSPEnums\\Generated\\PolSourceObsInfoEnumGenerated.cs" },
                 new AppSettingParameter() { Parameter = "EnumsPolSourceObsInfoEnumTestGenerated_cs", ExpectedValue = "C:\\CSSPTools\\src\\tests\\CSSPEnums.Tests\\tests\\Generated\\EnumsPolSourceObsInfoEnumTestGenerated.cs" },
-                new AppSettingParameter() { Parameter = "PolSourceInfoEnumGeneratedRes_resx", ExpectedValue = "C:\\CSSPTools\\src\\dlls\\CSSPEnums\\Resources\\Generated\\PolSourceInfoEnumGeneratedRes.resx" },
-                new AppSettingParameter() { Parameter = "PolSourceInfoEnumGeneratedResFR_resx", ExpectedValue = "C:\\CSSPTools\\src\\dlls\\CSSPEnums\\Resources\\Generated\\PolSourceInfoEnumGeneratedRes.fr.resx" },
+                new AppSettingParameter() { Parameter = "CulturePolSourcesRes_resx", ExpectedValue = "C:\\CSSPTools\\src\\dlls\\CultureServices\\Resources\\CulturePolSourcesRes.resx" },
+                new AppSettingParameter() { Parameter = "CulturePolSourcesResFR_resx", ExpectedValue = "C:\\CSSPTools\\src\\dlls\\CultureServices\\Resources\\CulturePolSourcesRes.fr.resx" },
             };
 
             return await Task.FromResult(true);

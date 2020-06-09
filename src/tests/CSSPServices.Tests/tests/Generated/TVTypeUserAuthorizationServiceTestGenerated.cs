@@ -6,6 +6,7 @@
 
 using CSSPEnums;
 using CSSPModels;
+using CultureServices.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -30,6 +31,7 @@ namespace CSSPServices.Tests
         private IConfiguration Config { get; set; }
         private IServiceProvider Provider { get; set; }
         private IServiceCollection Services { get; set; }
+        private ICultureService CultureService { get; set; }
         private ITVTypeUserAuthorizationService tvTypeUserAuthorizationService { get; set; }
         private CSSPDBContext db { get; set; }
         #endregion Properties
@@ -53,7 +55,7 @@ namespace CSSPServices.Tests
             // -------------------------------
             // -------------------------------
 
-            await Setup(new CultureInfo(culture));
+            Assert.True(await Setup(culture));
 
             using (TransactionScope ts = new TransactionScope())
             {
@@ -93,36 +95,40 @@ namespace CSSPServices.Tests
         #endregion Tests Generated CRUD
 
         #region Functions private
-        private async Task<bool> Setup(CultureInfo culture)
+        private async Task<bool> Setup(string culture)
         {
             Config = new ConfigurationBuilder()
                .SetBasePath(Directory.GetParent(AppContext.BaseDirectory).FullName)
                .AddJsonFile("appsettings.json")
                .Build();
-        
+
             Services = new ServiceCollection();
-        
+
             Services.AddSingleton<IConfiguration>(Config);
-        
+
             string TestDBConnString = Config.GetValue<string>("TestDBConnectionString");
             Assert.NotNull(TestDBConnString);
-        
+
             Services.AddDbContext<CSSPDBContext>(options =>
             {
                 options.UseSqlServer(TestDBConnString);
             });
-        
+
+            Services.AddSingleton<ICultureService, CultureService>();
             Services.AddSingleton<IEnums, Enums>();
             Services.AddSingleton<ITVTypeUserAuthorizationService, TVTypeUserAuthorizationService>();
-        
+
             Provider = Services.BuildServiceProvider();
             Assert.NotNull(Provider);
-        
+
+            CultureService = Provider.GetService<ICultureService>();
+            Assert.NotNull(CultureService);
+
+            CultureService.SetCulture(culture);
+
             tvTypeUserAuthorizationService = Provider.GetService<ITVTypeUserAuthorizationService>();
             Assert.NotNull(tvTypeUserAuthorizationService);
-        
-            await tvTypeUserAuthorizationService.SetCulture(culture);
-        
+
             return await Task.FromResult(true);
         }
         private TVTypeUserAuthorization GetFilledRandomTVTypeUserAuthorization(string OmitPropName)

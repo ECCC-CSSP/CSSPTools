@@ -7,13 +7,13 @@
 
 using CSSPEnums;
 using CSSPModels;
-using CSSPServices.Resources;
+using CultureServices.Resources;
+using CultureServices.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Globalization;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -27,7 +27,6 @@ namespace CSSPServices
        Task<ActionResult<PolSourceGrouping>> Add(PolSourceGrouping polsourcegrouping);
        Task<ActionResult<bool>> Delete(int PolSourceGroupingID);
        Task<ActionResult<PolSourceGrouping>> Update(PolSourceGrouping polsourcegrouping);
-       Task SetCulture(CultureInfo culture);
     }
     public partial class PolSourceGroupingService : ControllerBase, IPolSourceGroupingService
     {
@@ -36,15 +35,17 @@ namespace CSSPServices
 
         #region Properties
         private CSSPDBContext db { get; }
+        private ICultureService CultureService { get; }
         private IEnums enums { get; }
         private IEnumerable<ValidationResult> ValidationResults { get; set; }
         #endregion Properties
 
         #region Constructors
-        public PolSourceGroupingService(IEnums enums, CSSPDBContext db)
+        public PolSourceGroupingService(ICultureService CultureService, IEnums enums, CSSPDBContext db)
         {
-            this.db = db;
+            this.CultureService = CultureService;
             this.enums = enums;
+            this.db = db;
         }
         #endregion Constructors
 
@@ -96,7 +97,7 @@ namespace CSSPServices
             
             if (polSourceGrouping == null)
             {
-                return await Task.FromResult(BadRequest(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "PolSourceGrouping", "PolSourceGroupingID", PolSourceGroupingID.ToString())));
+                return await Task.FromResult(BadRequest(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "PolSourceGrouping", "PolSourceGroupingID", PolSourceGroupingID.ToString())));
             }
 
             try
@@ -131,10 +132,6 @@ namespace CSSPServices
 
             return await Task.FromResult(Ok(polSourceGrouping));
         }
-        public async Task SetCulture(CultureInfo culture)
-        {
-            CSSPServicesRes.Culture = culture;
-        }
         #endregion Functions public
 
         #region Functions private
@@ -147,59 +144,59 @@ namespace CSSPServices
             {
                 if (polSourceGrouping.PolSourceGroupingID == 0)
                 {
-                    yield return new ValidationResult(string.Format(CSSPServicesRes._IsRequired, "PolSourceGroupingID"), new[] { "PolSourceGroupingID" });
+                    yield return new ValidationResult(string.Format(CultureServicesRes._IsRequired, "PolSourceGroupingID"), new[] { "PolSourceGroupingID" });
                 }
 
                 if (!(from c in db.PolSourceGroupings select c).Where(c => c.PolSourceGroupingID == polSourceGrouping.PolSourceGroupingID).Any())
                 {
-                    yield return new ValidationResult(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "PolSourceGrouping", "PolSourceGroupingID", polSourceGrouping.PolSourceGroupingID.ToString()), new[] { "PolSourceGroupingID" });
+                    yield return new ValidationResult(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "PolSourceGrouping", "PolSourceGroupingID", polSourceGrouping.PolSourceGroupingID.ToString()), new[] { "PolSourceGroupingID" });
                 }
             }
 
             if (polSourceGrouping.CSSPID < 10000 || polSourceGrouping.CSSPID > 100000)
             {
-                yield return new ValidationResult(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "CSSPID", "10000", "100000"), new[] { "CSSPID" });
+                yield return new ValidationResult(string.Format(CultureServicesRes._ValueShouldBeBetween_And_, "CSSPID", "10000", "100000"), new[] { "CSSPID" });
             }
 
             if (string.IsNullOrWhiteSpace(polSourceGrouping.GroupName))
             {
-                yield return new ValidationResult(string.Format(CSSPServicesRes._IsRequired, "GroupName"), new[] { "GroupName" });
+                yield return new ValidationResult(string.Format(CultureServicesRes._IsRequired, "GroupName"), new[] { "GroupName" });
             }
 
             if (!string.IsNullOrWhiteSpace(polSourceGrouping.GroupName) && polSourceGrouping.GroupName.Length > 150)
             {
-                yield return new ValidationResult(string.Format(CSSPServicesRes._MaxLengthIs_, "GroupName", "150"), new[] { "GroupName" });
+                yield return new ValidationResult(string.Format(CultureServicesRes._MaxLengthIs_, "GroupName", "150"), new[] { "GroupName" });
             }
 
             if (string.IsNullOrWhiteSpace(polSourceGrouping.Child))
             {
-                yield return new ValidationResult(string.Format(CSSPServicesRes._IsRequired, "Child"), new[] { "Child" });
+                yield return new ValidationResult(string.Format(CultureServicesRes._IsRequired, "Child"), new[] { "Child" });
             }
 
             if (!string.IsNullOrWhiteSpace(polSourceGrouping.Child) && polSourceGrouping.Child.Length > 150)
             {
-                yield return new ValidationResult(string.Format(CSSPServicesRes._MaxLengthIs_, "Child", "150"), new[] { "Child" });
+                yield return new ValidationResult(string.Format(CultureServicesRes._MaxLengthIs_, "Child", "150"), new[] { "Child" });
             }
 
             if (string.IsNullOrWhiteSpace(polSourceGrouping.Hide))
             {
-                yield return new ValidationResult(string.Format(CSSPServicesRes._IsRequired, "Hide"), new[] { "Hide" });
+                yield return new ValidationResult(string.Format(CultureServicesRes._IsRequired, "Hide"), new[] { "Hide" });
             }
 
             if (!string.IsNullOrWhiteSpace(polSourceGrouping.Hide) && polSourceGrouping.Hide.Length > 150)
             {
-                yield return new ValidationResult(string.Format(CSSPServicesRes._MaxLengthIs_, "Hide", "150"), new[] { "Hide" });
+                yield return new ValidationResult(string.Format(CultureServicesRes._MaxLengthIs_, "Hide", "150"), new[] { "Hide" });
             }
 
             if (polSourceGrouping.LastUpdateDate_UTC.Year == 1)
             {
-                yield return new ValidationResult(string.Format(CSSPServicesRes._IsRequired, "LastUpdateDate_UTC"), new[] { "LastUpdateDate_UTC" });
+                yield return new ValidationResult(string.Format(CultureServicesRes._IsRequired, "LastUpdateDate_UTC"), new[] { "LastUpdateDate_UTC" });
             }
             else
             {
                 if (polSourceGrouping.LastUpdateDate_UTC.Year < 1980)
                 {
-                    yield return new ValidationResult(string.Format(CSSPServicesRes._YearShouldBeBiggerThan_, "LastUpdateDate_UTC", "1980"), new[] { "LastUpdateDate_UTC" });
+                    yield return new ValidationResult(string.Format(CultureServicesRes._YearShouldBeBiggerThan_, "LastUpdateDate_UTC", "1980"), new[] { "LastUpdateDate_UTC" });
                 }
             }
 
@@ -207,7 +204,7 @@ namespace CSSPServices
 
             if (TVItemLastUpdateContactTVItemID == null)
             {
-                yield return new ValidationResult(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "TVItem", "LastUpdateContactTVItemID", polSourceGrouping.LastUpdateContactTVItemID.ToString()), new[] { "LastUpdateContactTVItemID" });
+                yield return new ValidationResult(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "TVItem", "LastUpdateContactTVItemID", polSourceGrouping.LastUpdateContactTVItemID.ToString()), new[] { "LastUpdateContactTVItemID" });
             }
             else
             {
@@ -217,7 +214,7 @@ namespace CSSPServices
                 };
                 if (!AllowableTVTypes.Contains(TVItemLastUpdateContactTVItemID.TVType))
                 {
-                    yield return new ValidationResult(string.Format(CSSPServicesRes._IsNotOfType_, "LastUpdateContactTVItemID", "Contact"), new[] { "LastUpdateContactTVItemID" });
+                    yield return new ValidationResult(string.Format(CultureServicesRes._IsNotOfType_, "LastUpdateContactTVItemID", "Contact"), new[] { "LastUpdateContactTVItemID" });
                 }
             }
 

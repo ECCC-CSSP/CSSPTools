@@ -99,8 +99,6 @@ namespace AngularEnumsGeneratedServices.Services
                         sb.AppendLine($@"    { enumNameAndNumber.EnumName } = { enumNameAndNumber.EnumNumber },");
                     }
 
-                    Enums enums = new Enums();
-
                     sb.AppendLine(@"}");
                     sb.AppendLine(@"");
 
@@ -111,8 +109,8 @@ namespace AngularEnumsGeneratedServices.Services
                     sb.AppendLine(@"    let enumTextOrderedList: EnumIDAndText[] = [];");
                     sb.AppendLine(@"    if ($localize.locale === 'fr-CA') {");
 
-                    enums.SetResourcesCulture(new CultureInfo("fr-CA"));
-                    List<EnumIDAndText> enumIDAndTextList = enums.GetEnumTextOrderedList(dllTypeInfoEnums.Type);
+                    CultureService.SetCulture("fr-CA");
+                    List<EnumIDAndText> enumIDAndTextList = Enums.GetEnumTextOrderedList(dllTypeInfoEnums.Type);
                     foreach (EnumIDAndText enumIDAndText in enumIDAndTextList.OrderBy(c => c.EnumID))
                     {
                         string EnumText = enumIDAndText.EnumText.Replace("'", "\\'");
@@ -122,8 +120,8 @@ namespace AngularEnumsGeneratedServices.Services
                     sb.AppendLine(@"    }");
                     sb.AppendLine(@"    else {");
 
-                    enums.SetResourcesCulture(new CultureInfo("en-CA"));
-                    enumIDAndTextList = enums.GetEnumTextOrderedList(dllTypeInfoEnums.Type);
+                    CultureService.SetCulture("en-CA");
+                    enumIDAndTextList = Enums.GetEnumTextOrderedList(dllTypeInfoEnums.Type);
                     foreach (EnumIDAndText enumIDAndText in enumIDAndTextList.OrderBy(c => c.EnumID))
                     {
                         string EnumText = enumIDAndText.EnumText.Replace("'", "\\'");

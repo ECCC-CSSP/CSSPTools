@@ -8,16 +8,23 @@
 using Xunit;
 using System.Globalization;
 using System.Threading;
+using CultureServices.Services;
+using System;
+using Microsoft.Extensions.DependencyInjection;
+using System.Threading.Tasks;
 
 namespace CSSPEnums.Tests
 {
     public partial class EnumsTest
     {
         #region Variables
-        private Enums enums { get; set; }
         #endregion Variables
 
         #region Properties
+        private IEnums enums { get; set; }
+        private ICultureService CultureService { get; set; }
+        public IServiceProvider Provider { get; set; }
+        public IServiceCollection Services { get; set; }
         #endregion Properties
 
         #region Constructors
@@ -32,13 +39,22 @@ namespace CSSPEnums.Tests
         #endregion Testing Methods private
 
         #region Functions private
-        private void SetupTest(CultureInfo culture)
+        private async Task<bool> SetupTest(string culture)
         {
-            Thread.CurrentThread.CurrentCulture = culture;
-            Thread.CurrentThread.CurrentUICulture = culture;
+            Services = new ServiceCollection();
+            Services.AddSingleton<IEnums, Enums>();
+            Services.AddSingleton<ICultureService, CultureService>();
 
-            enums = new Enums();
-            enums.SetResourcesCulture(culture);
+            Provider = Services.BuildServiceProvider();
+            Assert.NotNull(Provider);
+
+            CultureService = Provider.GetService<ICultureService>();
+            Assert.NotNull(CultureService);
+
+            enums = Provider.GetService<IEnums>();
+            Assert.NotNull(enums);
+
+            return await Task.FromResult(true);
         }
         #endregion Functions private
 

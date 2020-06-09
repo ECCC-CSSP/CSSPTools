@@ -4,8 +4,6 @@
  */
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
-using CSSPEnums;
-using CSSPModels.Resources.Generated;
 
 namespace CSSPModels
 {
@@ -13,7 +11,6 @@ namespace CSSPModels
     {
 
         #region Variables
-        //private string fullPath = @"C:\CSSPTools\src\appsettings.json";
         #endregion Variables
 
         #region Properties

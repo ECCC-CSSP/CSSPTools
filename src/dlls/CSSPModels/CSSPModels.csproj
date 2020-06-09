@@ -22,24 +22,9 @@
     <Reference Include="CSSPEnums">
       <HintPath>..\CSSPEnums\bin\Debug\netcoreapp3.1\CSSPEnums.dll</HintPath>
     </Reference>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Compile Update="Resources\Generated\CSSPModelsRes.Designer.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>CSSPModelsRes.resx</DependentUpon>
-    </Compile>
-  </ItemGroup>
-
-  <ItemGroup>
-    <EmbeddedResource Update="Resources\Generated\CSSPModelsRes.fr.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Resources\Generated\CSSPModelsRes.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>CSSPModelsRes.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
+    <Reference Include="CultureServices">
+      <HintPath>..\CultureServices\bin\Debug\netcoreapp3.1\CultureServices.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
 </Project>

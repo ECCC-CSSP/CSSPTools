@@ -12,8 +12,7 @@ namespace WebAPIClassNameControllerTestGeneratedServices.Services
             sb.AppendLine(@"        [InlineData(""fr-CA"")]");
             sb.AppendLine($@"        public async Task { TypeName }Controller_CRUD_Good_Test(string culture)");
             sb.AppendLine(@"        {");
-            sb.AppendLine(@"            bool retBool = await Setup(new CultureInfo(culture));");
-            sb.AppendLine(@"            Assert.True(retBool);");
+            sb.AppendLine(@"            Assert.True(await Setup(culture));");
             sb.AppendLine(@"");
             sb.AppendLine(@"            using (TransactionScope ts = new TransactionScope())");
             sb.AppendLine(@"            {");

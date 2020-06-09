@@ -60,7 +60,7 @@ namespace ServicesClassNameServiceGeneratedServices.Services
             sb.AppendLine(@"            ");
             sb.AppendLine($@"            if ({ TypeNameLower } == null)");
             sb.AppendLine(@"            {");
-            sb.AppendLine($@"                return await Task.FromResult(BadRequest(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, ""{ TypeName }"", ""{ TypeName }ID"", { TypeName }ID.ToString())));");
+            sb.AppendLine($@"                return await Task.FromResult(BadRequest(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, ""{ TypeName }"", ""{ TypeName }ID"", { TypeName }ID.ToString())));");
             sb.AppendLine(@"            }");
             sb.AppendLine(@"");
             sb.AppendLine($@"            try");
@@ -103,12 +103,6 @@ namespace ServicesClassNameServiceGeneratedServices.Services
             sb.AppendLine(@"");
             sb.AppendLine($@"            return await Task.FromResult(Ok({ TypeNameLower }));");
             sb.AppendLine(@"        }");
-
-            sb.AppendLine($@"        public async Task SetCulture(CultureInfo culture)");
-            sb.AppendLine(@"        {");
-            sb.AppendLine($@"            CSSPServicesRes.Culture = culture;");
-            sb.AppendLine(@"        }");
-
 
             return await Task.FromResult(true);
         }

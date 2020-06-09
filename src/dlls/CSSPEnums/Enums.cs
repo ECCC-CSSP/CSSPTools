@@ -18,11 +18,7 @@
  * PolSourceObsInfoEnumGenerated.cs (to exclude from project).
  * 
  */
-using CSSPEnums.Resources;
-using CSSPEnums.Resources.Generated;
-using System.Globalization;
-using System.Threading;
-using System.Threading.Tasks;
+using CultureServices.Services;
 
 namespace CSSPEnums
 {
@@ -39,11 +35,13 @@ namespace CSSPEnums
         #endregion Variables
 
         #region Properties
+        private ICultureService CultureService { get; set; }
         #endregion Properties
 
         #region Constructors
-        public Enums()
+        public Enums(ICultureService CultureService)
         {
+            this.CultureService = CultureService;
         }
         #endregion Construtors
 

@@ -6,14 +6,11 @@
  */ 
 using System;
 using System.Collections.Generic;
-using System.Globalization;
-using System.Text;
 
 namespace CSSPEnums
 {
     partial interface IEnums
     {
-        void SetResourcesCulture(CultureInfo culture);
         string EnumTypeListOK(Type type, List<int?> intList);
         string EnumTypeOK(Type type, int? ID);
         List<EnumIDAndText> GetEnumTextOrderedList(Type type);

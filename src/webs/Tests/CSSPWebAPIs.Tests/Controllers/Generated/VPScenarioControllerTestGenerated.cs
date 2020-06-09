@@ -8,6 +8,7 @@ using CSSPEnums;
 using CSSPModels;
 using CSSPServices;
 using CSSPWebAPI.Controllers;
+using CultureServices.Services;
 using LoggedInServices.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -36,6 +37,7 @@ namespace CSSPWebAPIs.Tests.Controllers
         private IServiceCollection Services { get; set; }
         private CSSPDBContext db { get; set; }
         private ILoggedInService loggedInService { get; set; }
+        private ICultureService CultureService { get; set; }
         private IVPScenarioService vpScenarioService { get; set; }
         private IVPScenarioController vpScenarioController { get; set; }
         #endregion Properties
@@ -52,8 +54,7 @@ namespace CSSPWebAPIs.Tests.Controllers
         [InlineData("fr-CA")]
         public async Task VPScenarioController_Constructor_Good_Test(string culture)
         {
-            bool retBool = await Setup(new CultureInfo(culture));
-            Assert.True(retBool);
+            Assert.True(await Setup(culture));
             Assert.NotNull(loggedInService);
             Assert.NotNull(vpScenarioService);
             Assert.NotNull(vpScenarioController);
@@ -63,8 +64,7 @@ namespace CSSPWebAPIs.Tests.Controllers
         [InlineData("fr-CA")]
         public async Task VPScenarioController_CRUD_Good_Test(string culture)
         {
-            bool retBool = await Setup(new CultureInfo(culture));
-            Assert.True(retBool);
+            Assert.True(await Setup(culture));
 
             using (TransactionScope ts = new TransactionScope())
             {
@@ -111,7 +111,7 @@ namespace CSSPWebAPIs.Tests.Controllers
         #endregion Functions public
 
         #region Functions private
-        private async Task<bool> Setup(CultureInfo culture)
+        private async Task<bool> Setup(string culture)
         {
             Config = new ConfigurationBuilder()
                .SetBasePath(Directory.GetParent(AppContext.BaseDirectory).FullName)
@@ -138,6 +138,7 @@ namespace CSSPWebAPIs.Tests.Controllers
             Services.AddIdentityCore<ApplicationUser>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
 
+            Services.AddSingleton<ICultureService, CultureService>();
             Services.AddSingleton<IEnums, Enums>();
             Services.AddSingleton<ILoggedInService, LoggedInService>();
             Services.AddSingleton<IVPScenarioService, VPScenarioService>();
@@ -146,13 +147,16 @@ namespace CSSPWebAPIs.Tests.Controllers
             Provider = Services.BuildServiceProvider();
             Assert.NotNull(Provider);
 
+            CultureService = Provider.GetService<ICultureService>();
+            Assert.NotNull(CultureService);
+
+            CultureService.SetCulture(culture);
+
             loggedInService = Provider.GetService<ILoggedInService>();
             Assert.NotNull(loggedInService);
 
             vpScenarioService = Provider.GetService<IVPScenarioService>();
             Assert.NotNull(vpScenarioService);
-
-            await vpScenarioService.SetCulture(culture);
 
             vpScenarioController = Provider.GetService<IVPScenarioController>();
             Assert.NotNull(vpScenarioController);

@@ -18,7 +18,7 @@ namespace ServicesClassNameServiceGeneratedServices.Services
                 sb.AppendLine($@"                if (!regex.IsMatch({ TypeNameLower }.{ prop.Name }))");
                 sb.AppendLine(@"                {");
                 //sb.AppendLine($@"                    { TypeNameLower }.HasErrors = true;");
-                sb.AppendLine($@"                    yield return new ValidationResult(string.Format(CSSPServicesRes._IsNotAValidEmail, ""{ prop.Name }""), new[] {{ ""{ csspProp.PropName }"" }});");
+                sb.AppendLine($@"                    yield return new ValidationResult(string.Format(CultureServicesRes._IsNotAValidEmail, ""{ prop.Name }""), new[] {{ ""{ csspProp.PropName }"" }});");
                 sb.AppendLine(@"                }");
                 sb.AppendLine(@"            }");
                 sb.AppendLine(@"");

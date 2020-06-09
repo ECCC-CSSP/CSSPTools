@@ -45,7 +45,7 @@
       <HintPath>..\..\dlls\CSSPServices\bin\Debug\netcoreapp3.1\CSSPServices.dll</HintPath>
     </Reference>
     <Reference Include="CultureServices">
-      <HintPath>..\..\codegen\CultureServices\bin\Debug\netcoreapp3.1\CultureServices.dll</HintPath>
+      <HintPath>..\..\dlls\CultureServices\bin\Debug\netcoreapp3.1\CultureServices.dll</HintPath>
     </Reference>
     <Reference Include="LoggedInServices">
       <HintPath>..\..\dlls\LoggedInServices\bin\Debug\netcoreapp3.1\LoggedInServices.dll</HintPath>

@@ -63,8 +63,8 @@ namespace ModelsCSSPModelsResServices.Services
                 new AppSettingParameter() { Parameter = "Command", ExpectedValue = "ModelsCSSPModelsRes" },
                 new AppSettingParameter() { Parameter = "Culture", ExpectedValue = "", IsCulture = true },
                 new AppSettingParameter() { Parameter = "DBFileName", ExpectedValue = "{AppDataPath}\\CSSP\\ActionCommandDB.db", IsFile = true, CheckExist = true },
-                new AppSettingParameter() { Parameter = "CSSPModelsRes", ExpectedValue = "C:\\CSSPTools\\src\\dlls\\CSSPModels\\Resources\\CSSPModelsRes.resx" },
-                new AppSettingParameter() { Parameter = "CSSPModelsResFR", ExpectedValue = "C:\\CSSPTools\\src\\dlls\\CSSPModels\\Resources\\CSSPModelsRes.fr.resx" },
+                new AppSettingParameter() { Parameter = "CultureModelsRes", ExpectedValue = "C:\\CSSPTools\\src\\dlls\\CultureServices\\Resources\\CultureModelsRes.resx" },
+                new AppSettingParameter() { Parameter = "CultureModelsResFR", ExpectedValue = "C:\\CSSPTools\\src\\dlls\\CultureServices\\Resources\\CultureModelsRes.fr.resx" },
             };
 
             return await Task.FromResult(true);

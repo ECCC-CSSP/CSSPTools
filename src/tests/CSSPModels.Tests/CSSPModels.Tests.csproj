@@ -39,6 +39,9 @@
     <Reference Include="CSSPModels">
       <HintPath>..\..\dlls\CSSPModels\bin\Debug\netcoreapp3.1\CSSPModels.dll</HintPath>
     </Reference>
+    <Reference Include="CultureServices">
+      <HintPath>..\..\dlls\CultureServices\bin\Debug\netcoreapp3.1\CultureServices.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
 </Project>

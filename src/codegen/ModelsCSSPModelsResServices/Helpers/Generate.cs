@@ -37,14 +37,14 @@ namespace ModelsCSSPModelsResServices.Services
 
                 if (lang == "fr")
                 {
-                    FileInfo fiOutput = new FileInfo(Config.GetValue<string>("CSSPModelsResFR"));
+                    FileInfo fiOutput = new FileInfo(Config.GetValue<string>("CultureModelsResFR"));
 
                     using (StreamWriter sw = fiOutput.CreateText())
                     {
                         sw.Write(sb.ToString());
                     }
 
-                    fiOutput = new FileInfo(Config.GetValue<string>("CSSPModelsResFR"));
+                    fiOutput = new FileInfo(Config.GetValue<string>("CultureModelsResFR"));
                     if (fiOutput.Exists)
                     {
                         string fileLine = "Last Write Time [" + fiOutput.LastWriteTime.ToString("yyyy MMMM dd HH:mm:ss") + "] " + fiOutput.FullName;
@@ -60,14 +60,14 @@ namespace ModelsCSSPModelsResServices.Services
                 }
                 else
                 {
-                    FileInfo fiOutput = new FileInfo(Config.GetValue<string>("CSSPModelsRes"));
+                    FileInfo fiOutput = new FileInfo(Config.GetValue<string>("CultureModelsRes"));
 
                     using (StreamWriter sw = fiOutput.CreateText())
                     {
                         sw.Write(sb.ToString());
                     }
 
-                    fiOutput = new FileInfo(Config.GetValue<string>("CSSPModelsRes"));
+                    fiOutput = new FileInfo(Config.GetValue<string>("CultureModelsRes"));
                     if (fiOutput.Exists)
                     {
                         string fileLine = "Last Write Time [" + fiOutput.LastWriteTime.ToString("yyyy MMMM dd HH:mm:ss") + "] " + fiOutput.FullName;

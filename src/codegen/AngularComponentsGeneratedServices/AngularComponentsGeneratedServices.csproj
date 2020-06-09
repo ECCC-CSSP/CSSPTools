@@ -26,7 +26,7 @@
       <HintPath>..\AngularEnumsGeneratedServices\bin\Debug\netcoreapp3.1\AngularEnumsGeneratedServices.dll</HintPath>
     </Reference>
     <Reference Include="CultureServices">
-      <HintPath>..\CultureServices\bin\Debug\netcoreapp3.1\CultureServices.dll</HintPath>
+      <HintPath>..\..\dlls\CultureServices\bin\Debug\netcoreapp3.1\CultureServices.dll</HintPath>
     </Reference>
     <Reference Include="CSSPEnums">
       <HintPath>..\..\dlls\CSSPEnums\bin\Debug\netcoreapp3.1\CSSPEnums.dll</HintPath>

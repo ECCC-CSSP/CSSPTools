@@ -7,13 +7,13 @@
 
 using CSSPEnums;
 using CSSPModels;
-using CSSPServices.Resources;
+using CultureServices.Resources;
+using CultureServices.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Globalization;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -27,7 +27,6 @@ namespace CSSPServices
        Task<ActionResult<LabSheetDetail>> Add(LabSheetDetail labsheetdetail);
        Task<ActionResult<bool>> Delete(int LabSheetDetailID);
        Task<ActionResult<LabSheetDetail>> Update(LabSheetDetail labsheetdetail);
-       Task SetCulture(CultureInfo culture);
     }
     public partial class LabSheetDetailService : ControllerBase, ILabSheetDetailService
     {
@@ -36,15 +35,17 @@ namespace CSSPServices
 
         #region Properties
         private CSSPDBContext db { get; }
+        private ICultureService CultureService { get; }
         private IEnums enums { get; }
         private IEnumerable<ValidationResult> ValidationResults { get; set; }
         #endregion Properties
 
         #region Constructors
-        public LabSheetDetailService(IEnums enums, CSSPDBContext db)
+        public LabSheetDetailService(ICultureService CultureService, IEnums enums, CSSPDBContext db)
         {
-            this.db = db;
+            this.CultureService = CultureService;
             this.enums = enums;
+            this.db = db;
         }
         #endregion Constructors
 
@@ -96,7 +97,7 @@ namespace CSSPServices
             
             if (labSheetDetail == null)
             {
-                return await Task.FromResult(BadRequest(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "LabSheetDetail", "LabSheetDetailID", LabSheetDetailID.ToString())));
+                return await Task.FromResult(BadRequest(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "LabSheetDetail", "LabSheetDetailID", LabSheetDetailID.ToString())));
             }
 
             try
@@ -131,10 +132,6 @@ namespace CSSPServices
 
             return await Task.FromResult(Ok(labSheetDetail));
         }
-        public async Task SetCulture(CultureInfo culture)
-        {
-            CSSPServicesRes.Culture = culture;
-        }
         #endregion Functions public
 
         #region Functions private
@@ -147,12 +144,12 @@ namespace CSSPServices
             {
                 if (labSheetDetail.LabSheetDetailID == 0)
                 {
-                    yield return new ValidationResult(string.Format(CSSPServicesRes._IsRequired, "LabSheetDetailID"), new[] { "LabSheetDetailID" });
+                    yield return new ValidationResult(string.Format(CultureServicesRes._IsRequired, "LabSheetDetailID"), new[] { "LabSheetDetailID" });
                 }
 
                 if (!(from c in db.LabSheetDetails select c).Where(c => c.LabSheetDetailID == labSheetDetail.LabSheetDetailID).Any())
                 {
-                    yield return new ValidationResult(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "LabSheetDetail", "LabSheetDetailID", labSheetDetail.LabSheetDetailID.ToString()), new[] { "LabSheetDetailID" });
+                    yield return new ValidationResult(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "LabSheetDetail", "LabSheetDetailID", labSheetDetail.LabSheetDetailID.ToString()), new[] { "LabSheetDetailID" });
                 }
             }
 
@@ -160,21 +157,21 @@ namespace CSSPServices
 
             if (LabSheetLabSheetID == null)
             {
-                yield return new ValidationResult(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "LabSheet", "LabSheetID", labSheetDetail.LabSheetID.ToString()), new[] { "LabSheetID" });
+                yield return new ValidationResult(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "LabSheet", "LabSheetID", labSheetDetail.LabSheetID.ToString()), new[] { "LabSheetID" });
             }
 
             SamplingPlan SamplingPlanSamplingPlanID = (from c in db.SamplingPlans where c.SamplingPlanID == labSheetDetail.SamplingPlanID select c).FirstOrDefault();
 
             if (SamplingPlanSamplingPlanID == null)
             {
-                yield return new ValidationResult(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "SamplingPlan", "SamplingPlanID", labSheetDetail.SamplingPlanID.ToString()), new[] { "SamplingPlanID" });
+                yield return new ValidationResult(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "SamplingPlan", "SamplingPlanID", labSheetDetail.SamplingPlanID.ToString()), new[] { "SamplingPlanID" });
             }
 
             TVItem TVItemSubsectorTVItemID = (from c in db.TVItems where c.TVItemID == labSheetDetail.SubsectorTVItemID select c).FirstOrDefault();
 
             if (TVItemSubsectorTVItemID == null)
             {
-                yield return new ValidationResult(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "TVItem", "SubsectorTVItemID", labSheetDetail.SubsectorTVItemID.ToString()), new[] { "SubsectorTVItemID" });
+                yield return new ValidationResult(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "TVItem", "SubsectorTVItemID", labSheetDetail.SubsectorTVItemID.ToString()), new[] { "SubsectorTVItemID" });
             }
             else
             {
@@ -184,85 +181,85 @@ namespace CSSPServices
                 };
                 if (!AllowableTVTypes.Contains(TVItemSubsectorTVItemID.TVType))
                 {
-                    yield return new ValidationResult(string.Format(CSSPServicesRes._IsNotOfType_, "SubsectorTVItemID", "Subsector"), new[] { "SubsectorTVItemID" });
+                    yield return new ValidationResult(string.Format(CultureServicesRes._IsNotOfType_, "SubsectorTVItemID", "Subsector"), new[] { "SubsectorTVItemID" });
                 }
             }
 
             if (labSheetDetail.Version < 1 || labSheetDetail.Version > 5)
             {
-                yield return new ValidationResult(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "Version", "1", "5"), new[] { "Version" });
+                yield return new ValidationResult(string.Format(CultureServicesRes._ValueShouldBeBetween_And_, "Version", "1", "5"), new[] { "Version" });
             }
 
             if (labSheetDetail.RunDate.Year == 1)
             {
-                yield return new ValidationResult(string.Format(CSSPServicesRes._IsRequired, "RunDate"), new[] { "RunDate" });
+                yield return new ValidationResult(string.Format(CultureServicesRes._IsRequired, "RunDate"), new[] { "RunDate" });
             }
             else
             {
                 if (labSheetDetail.RunDate.Year < 1980)
                 {
-                    yield return new ValidationResult(string.Format(CSSPServicesRes._YearShouldBeBiggerThan_, "RunDate", "1980"), new[] { "RunDate" });
+                    yield return new ValidationResult(string.Format(CultureServicesRes._YearShouldBeBiggerThan_, "RunDate", "1980"), new[] { "RunDate" });
                 }
             }
 
             if (string.IsNullOrWhiteSpace(labSheetDetail.Tides))
             {
-                yield return new ValidationResult(string.Format(CSSPServicesRes._IsRequired, "Tides"), new[] { "Tides" });
+                yield return new ValidationResult(string.Format(CultureServicesRes._IsRequired, "Tides"), new[] { "Tides" });
             }
 
             if (!string.IsNullOrWhiteSpace(labSheetDetail.Tides) && (labSheetDetail.Tides.Length < 1 || labSheetDetail.Tides.Length > 7))
             {
-                yield return new ValidationResult(string.Format(CSSPServicesRes._LengthShouldBeBetween_And_, "Tides", "1", "7"), new[] { "Tides" });
+                yield return new ValidationResult(string.Format(CultureServicesRes._LengthShouldBeBetween_And_, "Tides", "1", "7"), new[] { "Tides" });
             }
 
             if (!string.IsNullOrWhiteSpace(labSheetDetail.SampleCrewInitials) && labSheetDetail.SampleCrewInitials.Length > 20)
             {
-                yield return new ValidationResult(string.Format(CSSPServicesRes._MaxLengthIs_, "SampleCrewInitials", "20"), new[] { "SampleCrewInitials" });
+                yield return new ValidationResult(string.Format(CultureServicesRes._MaxLengthIs_, "SampleCrewInitials", "20"), new[] { "SampleCrewInitials" });
             }
 
             if (labSheetDetail.WaterBathCount != null)
             {
                 if (labSheetDetail.WaterBathCount < 1 || labSheetDetail.WaterBathCount > 3)
                 {
-                    yield return new ValidationResult(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "WaterBathCount", "1", "3"), new[] { "WaterBathCount" });
+                    yield return new ValidationResult(string.Format(CultureServicesRes._ValueShouldBeBetween_And_, "WaterBathCount", "1", "3"), new[] { "WaterBathCount" });
                 }
             }
 
             if (labSheetDetail.IncubationBath1StartTime != null && ((DateTime)labSheetDetail.IncubationBath1StartTime).Year < 1980)
             {
-                yield return new ValidationResult(string.Format(CSSPServicesRes._YearShouldBeBiggerThan_, "IncubationBath1StartTime", "1980"), new[] { "IncubationBath1StartTime" });
+                yield return new ValidationResult(string.Format(CultureServicesRes._YearShouldBeBiggerThan_, "IncubationBath1StartTime", "1980"), new[] { "IncubationBath1StartTime" });
             }
 
             if (labSheetDetail.IncubationBath2StartTime != null && ((DateTime)labSheetDetail.IncubationBath2StartTime).Year < 1980)
             {
-                yield return new ValidationResult(string.Format(CSSPServicesRes._YearShouldBeBiggerThan_, "IncubationBath2StartTime", "1980"), new[] { "IncubationBath2StartTime" });
+                yield return new ValidationResult(string.Format(CultureServicesRes._YearShouldBeBiggerThan_, "IncubationBath2StartTime", "1980"), new[] { "IncubationBath2StartTime" });
             }
 
             if (labSheetDetail.IncubationBath3StartTime != null && ((DateTime)labSheetDetail.IncubationBath3StartTime).Year < 1980)
             {
-                yield return new ValidationResult(string.Format(CSSPServicesRes._YearShouldBeBiggerThan_, "IncubationBath3StartTime", "1980"), new[] { "IncubationBath3StartTime" });
+                yield return new ValidationResult(string.Format(CultureServicesRes._YearShouldBeBiggerThan_, "IncubationBath3StartTime", "1980"), new[] { "IncubationBath3StartTime" });
             }
 
             if (labSheetDetail.IncubationBath1EndTime != null && ((DateTime)labSheetDetail.IncubationBath1EndTime).Year < 1980)
             {
-                yield return new ValidationResult(string.Format(CSSPServicesRes._YearShouldBeBiggerThan_, "IncubationBath1EndTime", "1980"), new[] { "IncubationBath1EndTime" });
+                yield return new ValidationResult(string.Format(CultureServicesRes._YearShouldBeBiggerThan_, "IncubationBath1EndTime", "1980"), new[] { "IncubationBath1EndTime" });
             }
 
             if (labSheetDetail.IncubationBath2EndTime != null && ((DateTime)labSheetDetail.IncubationBath2EndTime).Year < 1980)
             {
-                yield return new ValidationResult(string.Format(CSSPServicesRes._YearShouldBeBiggerThan_, "IncubationBath2EndTime", "1980"), new[] { "IncubationBath2EndTime" });
+                yield return new ValidationResult(string.Format(CultureServicesRes._YearShouldBeBiggerThan_, "IncubationBath2EndTime", "1980"), new[] { "IncubationBath2EndTime" });
             }
 
             if (labSheetDetail.IncubationBath3EndTime != null && ((DateTime)labSheetDetail.IncubationBath3EndTime).Year < 1980)
             {
-                yield return new ValidationResult(string.Format(CSSPServicesRes._YearShouldBeBiggerThan_, "IncubationBath3EndTime", "1980"), new[] { "IncubationBath3EndTime" });
+                yield return new ValidationResult(string.Format(CultureServicesRes._YearShouldBeBiggerThan_, "IncubationBath3EndTime", "1980"), new[] { "IncubationBath3EndTime" });
             }
 
             if (labSheetDetail.IncubationBath1TimeCalculated_minutes != null)
             {
                 if (labSheetDetail.IncubationBath1TimeCalculated_minutes < 0 || labSheetDetail.IncubationBath1TimeCalculated_minutes > 10000)
                 {
-                    yield return new ValidationResult(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "IncubationBath1TimeCalculated_minutes", "0", "10000"), new[] { "IncubationBath1TimeCalculated_minutes" });
+                    yield return new ValidationResult(string.Format(CultureServicesRes._ValueShouldBeBetween_And_, "IncubationBath1TimeCalculated_minutes", "0", "10000"), new[] { "IncubationBath1TimeCalculated_minutes" });
                 }
             }
 
@@ -270,7 +267,7 @@ namespace CSSPServices
             {
                 if (labSheetDetail.IncubationBath2TimeCalculated_minutes < 0 || labSheetDetail.IncubationBath2TimeCalculated_minutes > 10000)
                 {
-                    yield return new ValidationResult(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "IncubationBath2TimeCalculated_minutes", "0", "10000"), new[] { "IncubationBath2TimeCalculated_minutes" });
+                    yield return new ValidationResult(string.Format(CultureServicesRes._ValueShouldBeBetween_And_, "IncubationBath2TimeCalculated_minutes", "0", "10000"), new[] { "IncubationBath2TimeCalculated_minutes" });
                 }
             }
 
@@ -278,30 +275,30 @@ namespace CSSPServices
             {
                 if (labSheetDetail.IncubationBath3TimeCalculated_minutes < 0 || labSheetDetail.IncubationBath3TimeCalculated_minutes > 10000)
                 {
-                    yield return new ValidationResult(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "IncubationBath3TimeCalculated_minutes", "0", "10000"), new[] { "IncubationBath3TimeCalculated_minutes" });
+                    yield return new ValidationResult(string.Format(CultureServicesRes._ValueShouldBeBetween_And_, "IncubationBath3TimeCalculated_minutes", "0", "10000"), new[] { "IncubationBath3TimeCalculated_minutes" });
                 }
             }
 
             if (!string.IsNullOrWhiteSpace(labSheetDetail.WaterBath1) && labSheetDetail.WaterBath1.Length > 10)
             {
-                yield return new ValidationResult(string.Format(CSSPServicesRes._MaxLengthIs_, "WaterBath1", "10"), new[] { "WaterBath1" });
+                yield return new ValidationResult(string.Format(CultureServicesRes._MaxLengthIs_, "WaterBath1", "10"), new[] { "WaterBath1" });
             }
 
             if (!string.IsNullOrWhiteSpace(labSheetDetail.WaterBath2) && labSheetDetail.WaterBath2.Length > 10)
             {
-                yield return new ValidationResult(string.Format(CSSPServicesRes._MaxLengthIs_, "WaterBath2", "10"), new[] { "WaterBath2" });
+                yield return new ValidationResult(string.Format(CultureServicesRes._MaxLengthIs_, "WaterBath2", "10"), new[] { "WaterBath2" });
             }
 
             if (!string.IsNullOrWhiteSpace(labSheetDetail.WaterBath3) && labSheetDetail.WaterBath3.Length > 10)
             {
-                yield return new ValidationResult(string.Format(CSSPServicesRes._MaxLengthIs_, "WaterBath3", "10"), new[] { "WaterBath3" });
+                yield return new ValidationResult(string.Format(CultureServicesRes._MaxLengthIs_, "WaterBath3", "10"), new[] { "WaterBath3" });
             }
 
             if (labSheetDetail.TCField1 != null)
             {
                 if (labSheetDetail.TCField1 < -10 || labSheetDetail.TCField1 > 40)
                 {
-                    yield return new ValidationResult(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "TCField1", "-10", "40"), new[] { "TCField1" });
+                    yield return new ValidationResult(string.Format(CultureServicesRes._ValueShouldBeBetween_And_, "TCField1", "-10", "40"), new[] { "TCField1" });
                 }
             }
 
@@ -309,7 +306,7 @@ namespace CSSPServices
             {
                 if (labSheetDetail.TCLab1 < -10 || labSheetDetail.TCLab1 > 40)
                 {
-                    yield return new ValidationResult(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "TCLab1", "-10", "40"), new[] { "TCLab1" });
+                    yield return new ValidationResult(string.Format(CultureServicesRes._ValueShouldBeBetween_And_, "TCLab1", "-10", "40"), new[] { "TCLab1" });
                 }
             }
 
@@ -317,7 +314,7 @@ namespace CSSPServices
             {
                 if (labSheetDetail.TCField2 < -10 || labSheetDetail.TCField2 > 40)
                 {
-                    yield return new ValidationResult(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "TCField2", "-10", "40"), new[] { "TCField2" });
+                    yield return new ValidationResult(string.Format(CultureServicesRes._ValueShouldBeBetween_And_, "TCField2", "-10", "40"), new[] { "TCField2" });
                 }
             }
 
@@ -325,7 +322,7 @@ namespace CSSPServices
             {
                 if (labSheetDetail.TCLab2 < -10 || labSheetDetail.TCLab2 > 40)
                 {
-                    yield return new ValidationResult(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "TCLab2", "-10", "40"), new[] { "TCLab2" });
+                    yield return new ValidationResult(string.Format(CultureServicesRes._ValueShouldBeBetween_And_, "TCLab2", "-10", "40"), new[] { "TCLab2" });
                 }
             }
 
@@ -333,7 +330,7 @@ namespace CSSPServices
             {
                 if (labSheetDetail.TCFirst < -10 || labSheetDetail.TCFirst > 40)
                 {
-                    yield return new ValidationResult(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "TCFirst", "-10", "40"), new[] { "TCFirst" });
+                    yield return new ValidationResult(string.Format(CultureServicesRes._ValueShouldBeBetween_And_, "TCFirst", "-10", "40"), new[] { "TCFirst" });
                 }
             }
 
@@ -341,160 +338,160 @@ namespace CSSPServices
             {
                 if (labSheetDetail.TCAverage < -10 || labSheetDetail.TCAverage > 40)
                 {
-                    yield return new ValidationResult(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "TCAverage", "-10", "40"), new[] { "TCAverage" });
+                    yield return new ValidationResult(string.Format(CultureServicesRes._ValueShouldBeBetween_And_, "TCAverage", "-10", "40"), new[] { "TCAverage" });
                 }
             }
 
             if (!string.IsNullOrWhiteSpace(labSheetDetail.ControlLot) && labSheetDetail.ControlLot.Length > 100)
             {
-                yield return new ValidationResult(string.Format(CSSPServicesRes._MaxLengthIs_, "ControlLot", "100"), new[] { "ControlLot" });
+                yield return new ValidationResult(string.Format(CultureServicesRes._MaxLengthIs_, "ControlLot", "100"), new[] { "ControlLot" });
             }
 
             if (!string.IsNullOrWhiteSpace(labSheetDetail.Positive35) && (labSheetDetail.Positive35.Length < 1 || labSheetDetail.Positive35.Length > 1))
             {
-                yield return new ValidationResult(string.Format(CSSPServicesRes._LengthShouldBeBetween_And_, "Positive35", "1", "1"), new[] { "Positive35" });
+                yield return new ValidationResult(string.Format(CultureServicesRes._LengthShouldBeBetween_And_, "Positive35", "1", "1"), new[] { "Positive35" });
             }
 
             if (!string.IsNullOrWhiteSpace(labSheetDetail.NonTarget35) && (labSheetDetail.NonTarget35.Length < 1 || labSheetDetail.NonTarget35.Length > 1))
             {
-                yield return new ValidationResult(string.Format(CSSPServicesRes._LengthShouldBeBetween_And_, "NonTarget35", "1", "1"), new[] { "NonTarget35" });
+                yield return new ValidationResult(string.Format(CultureServicesRes._LengthShouldBeBetween_And_, "NonTarget35", "1", "1"), new[] { "NonTarget35" });
             }
 
             if (!string.IsNullOrWhiteSpace(labSheetDetail.Negative35) && (labSheetDetail.Negative35.Length < 1 || labSheetDetail.Negative35.Length > 1))
             {
-                yield return new ValidationResult(string.Format(CSSPServicesRes._LengthShouldBeBetween_And_, "Negative35", "1", "1"), new[] { "Negative35" });
+                yield return new ValidationResult(string.Format(CultureServicesRes._LengthShouldBeBetween_And_, "Negative35", "1", "1"), new[] { "Negative35" });
             }
 
             if (!string.IsNullOrWhiteSpace(labSheetDetail.Bath1Positive44_5) && (labSheetDetail.Bath1Positive44_5.Length < 1 || labSheetDetail.Bath1Positive44_5.Length > 1))
             {
-                yield return new ValidationResult(string.Format(CSSPServicesRes._LengthShouldBeBetween_And_, "Bath1Positive44_5", "1", "1"), new[] { "Bath1Positive44_5" });
+                yield return new ValidationResult(string.Format(CultureServicesRes._LengthShouldBeBetween_And_, "Bath1Positive44_5", "1", "1"), new[] { "Bath1Positive44_5" });
             }
 
             if (!string.IsNullOrWhiteSpace(labSheetDetail.Bath2Positive44_5) && (labSheetDetail.Bath2Positive44_5.Length < 1 || labSheetDetail.Bath2Positive44_5.Length > 1))
             {
-                yield return new ValidationResult(string.Format(CSSPServicesRes._LengthShouldBeBetween_And_, "Bath2Positive44_5", "1", "1"), new[] { "Bath2Positive44_5" });
+                yield return new ValidationResult(string.Format(CultureServicesRes._LengthShouldBeBetween_And_, "Bath2Positive44_5", "1", "1"), new[] { "Bath2Positive44_5" });
             }
 
             if (!string.IsNullOrWhiteSpace(labSheetDetail.Bath3Positive44_5) && (labSheetDetail.Bath3Positive44_5.Length < 1 || labSheetDetail.Bath3Positive44_5.Length > 1))
             {
-                yield return new ValidationResult(string.Format(CSSPServicesRes._LengthShouldBeBetween_And_, "Bath3Positive44_5", "1", "1"), new[] { "Bath3Positive44_5" });
+                yield return new ValidationResult(string.Format(CultureServicesRes._LengthShouldBeBetween_And_, "Bath3Positive44_5", "1", "1"), new[] { "Bath3Positive44_5" });
             }
 
             if (!string.IsNullOrWhiteSpace(labSheetDetail.Bath1NonTarget44_5) && (labSheetDetail.Bath1NonTarget44_5.Length < 1 || labSheetDetail.Bath1NonTarget44_5.Length > 1))
             {
-                yield return new ValidationResult(string.Format(CSSPServicesRes._LengthShouldBeBetween_And_, "Bath1NonTarget44_5", "1", "1"), new[] { "Bath1NonTarget44_5" });
+                yield return new ValidationResult(string.Format(CultureServicesRes._LengthShouldBeBetween_And_, "Bath1NonTarget44_5", "1", "1"), new[] { "Bath1NonTarget44_5" });
             }
 
             if (!string.IsNullOrWhiteSpace(labSheetDetail.Bath2NonTarget44_5) && (labSheetDetail.Bath2NonTarget44_5.Length < 1 || labSheetDetail.Bath2NonTarget44_5.Length > 1))
             {
-                yield return new ValidationResult(string.Format(CSSPServicesRes._LengthShouldBeBetween_And_, "Bath2NonTarget44_5", "1", "1"), new[] { "Bath2NonTarget44_5" });
+                yield return new ValidationResult(string.Format(CultureServicesRes._LengthShouldBeBetween_And_, "Bath2NonTarget44_5", "1", "1"), new[] { "Bath2NonTarget44_5" });
             }
 
             if (!string.IsNullOrWhiteSpace(labSheetDetail.Bath3NonTarget44_5) && (labSheetDetail.Bath3NonTarget44_5.Length < 1 || labSheetDetail.Bath3NonTarget44_5.Length > 1))
             {
-                yield return new ValidationResult(string.Format(CSSPServicesRes._LengthShouldBeBetween_And_, "Bath3NonTarget44_5", "1", "1"), new[] { "Bath3NonTarget44_5" });
+                yield return new ValidationResult(string.Format(CultureServicesRes._LengthShouldBeBetween_And_, "Bath3NonTarget44_5", "1", "1"), new[] { "Bath3NonTarget44_5" });
             }
 
             if (!string.IsNullOrWhiteSpace(labSheetDetail.Bath1Negative44_5) && (labSheetDetail.Bath1Negative44_5.Length < 1 || labSheetDetail.Bath1Negative44_5.Length > 1))
             {
-                yield return new ValidationResult(string.Format(CSSPServicesRes._LengthShouldBeBetween_And_, "Bath1Negative44_5", "1", "1"), new[] { "Bath1Negative44_5" });
+                yield return new ValidationResult(string.Format(CultureServicesRes._LengthShouldBeBetween_And_, "Bath1Negative44_5", "1", "1"), new[] { "Bath1Negative44_5" });
             }
 
             if (!string.IsNullOrWhiteSpace(labSheetDetail.Bath2Negative44_5) && (labSheetDetail.Bath2Negative44_5.Length < 1 || labSheetDetail.Bath2Negative44_5.Length > 1))
             {
-                yield return new ValidationResult(string.Format(CSSPServicesRes._LengthShouldBeBetween_And_, "Bath2Negative44_5", "1", "1"), new[] { "Bath2Negative44_5" });
+                yield return new ValidationResult(string.Format(CultureServicesRes._LengthShouldBeBetween_And_, "Bath2Negative44_5", "1", "1"), new[] { "Bath2Negative44_5" });
             }
 
             if (!string.IsNullOrWhiteSpace(labSheetDetail.Bath3Negative44_5) && (labSheetDetail.Bath3Negative44_5.Length < 1 || labSheetDetail.Bath3Negative44_5.Length > 1))
             {
-                yield return new ValidationResult(string.Format(CSSPServicesRes._LengthShouldBeBetween_And_, "Bath3Negative44_5", "1", "1"), new[] { "Bath3Negative44_5" });
+                yield return new ValidationResult(string.Format(CultureServicesRes._LengthShouldBeBetween_And_, "Bath3Negative44_5", "1", "1"), new[] { "Bath3Negative44_5" });
             }
 
             if (!string.IsNullOrWhiteSpace(labSheetDetail.Blank35) && (labSheetDetail.Blank35.Length < 1 || labSheetDetail.Blank35.Length > 1))
             {
-                yield return new ValidationResult(string.Format(CSSPServicesRes._LengthShouldBeBetween_And_, "Blank35", "1", "1"), new[] { "Blank35" });
+                yield return new ValidationResult(string.Format(CultureServicesRes._LengthShouldBeBetween_And_, "Blank35", "1", "1"), new[] { "Blank35" });
             }
 
             if (!string.IsNullOrWhiteSpace(labSheetDetail.Bath1Blank44_5) && (labSheetDetail.Bath1Blank44_5.Length < 1 || labSheetDetail.Bath1Blank44_5.Length > 1))
             {
-                yield return new ValidationResult(string.Format(CSSPServicesRes._LengthShouldBeBetween_And_, "Bath1Blank44_5", "1", "1"), new[] { "Bath1Blank44_5" });
+                yield return new ValidationResult(string.Format(CultureServicesRes._LengthShouldBeBetween_And_, "Bath1Blank44_5", "1", "1"), new[] { "Bath1Blank44_5" });
             }
 
             if (!string.IsNullOrWhiteSpace(labSheetDetail.Bath2Blank44_5) && (labSheetDetail.Bath2Blank44_5.Length < 1 || labSheetDetail.Bath2Blank44_5.Length > 1))
             {
-                yield return new ValidationResult(string.Format(CSSPServicesRes._LengthShouldBeBetween_And_, "Bath2Blank44_5", "1", "1"), new[] { "Bath2Blank44_5" });
+                yield return new ValidationResult(string.Format(CultureServicesRes._LengthShouldBeBetween_And_, "Bath2Blank44_5", "1", "1"), new[] { "Bath2Blank44_5" });
             }
 
             if (!string.IsNullOrWhiteSpace(labSheetDetail.Bath3Blank44_5) && (labSheetDetail.Bath3Blank44_5.Length < 1 || labSheetDetail.Bath3Blank44_5.Length > 1))
             {
-                yield return new ValidationResult(string.Format(CSSPServicesRes._LengthShouldBeBetween_And_, "Bath3Blank44_5", "1", "1"), new[] { "Bath3Blank44_5" });
+                yield return new ValidationResult(string.Format(CultureServicesRes._LengthShouldBeBetween_And_, "Bath3Blank44_5", "1", "1"), new[] { "Bath3Blank44_5" });
             }
 
             if (!string.IsNullOrWhiteSpace(labSheetDetail.Lot35) && labSheetDetail.Lot35.Length > 20)
             {
-                yield return new ValidationResult(string.Format(CSSPServicesRes._MaxLengthIs_, "Lot35", "20"), new[] { "Lot35" });
+                yield return new ValidationResult(string.Format(CultureServicesRes._MaxLengthIs_, "Lot35", "20"), new[] { "Lot35" });
             }
 
             if (!string.IsNullOrWhiteSpace(labSheetDetail.Lot44_5) && labSheetDetail.Lot44_5.Length > 20)
             {
-                yield return new ValidationResult(string.Format(CSSPServicesRes._MaxLengthIs_, "Lot44_5", "20"), new[] { "Lot44_5" });
+                yield return new ValidationResult(string.Format(CultureServicesRes._MaxLengthIs_, "Lot44_5", "20"), new[] { "Lot44_5" });
             }
 
             if (!string.IsNullOrWhiteSpace(labSheetDetail.Weather) && labSheetDetail.Weather.Length > 250)
             {
-                yield return new ValidationResult(string.Format(CSSPServicesRes._MaxLengthIs_, "Weather", "250"), new[] { "Weather" });
+                yield return new ValidationResult(string.Format(CultureServicesRes._MaxLengthIs_, "Weather", "250"), new[] { "Weather" });
             }
 
             if (!string.IsNullOrWhiteSpace(labSheetDetail.RunComment) && labSheetDetail.RunComment.Length > 250)
             {
-                yield return new ValidationResult(string.Format(CSSPServicesRes._MaxLengthIs_, "RunComment", "250"), new[] { "RunComment" });
+                yield return new ValidationResult(string.Format(CultureServicesRes._MaxLengthIs_, "RunComment", "250"), new[] { "RunComment" });
             }
 
             if (!string.IsNullOrWhiteSpace(labSheetDetail.RunWeatherComment) && labSheetDetail.RunWeatherComment.Length > 250)
             {
-                yield return new ValidationResult(string.Format(CSSPServicesRes._MaxLengthIs_, "RunWeatherComment", "250"), new[] { "RunWeatherComment" });
+                yield return new ValidationResult(string.Format(CultureServicesRes._MaxLengthIs_, "RunWeatherComment", "250"), new[] { "RunWeatherComment" });
             }
 
             if (!string.IsNullOrWhiteSpace(labSheetDetail.SampleBottleLotNumber) && labSheetDetail.SampleBottleLotNumber.Length > 20)
             {
-                yield return new ValidationResult(string.Format(CSSPServicesRes._MaxLengthIs_, "SampleBottleLotNumber", "20"), new[] { "SampleBottleLotNumber" });
+                yield return new ValidationResult(string.Format(CultureServicesRes._MaxLengthIs_, "SampleBottleLotNumber", "20"), new[] { "SampleBottleLotNumber" });
             }
 
             if (!string.IsNullOrWhiteSpace(labSheetDetail.SalinitiesReadBy) && labSheetDetail.SalinitiesReadBy.Length > 20)
             {
-                yield return new ValidationResult(string.Format(CSSPServicesRes._MaxLengthIs_, "SalinitiesReadBy", "20"), new[] { "SalinitiesReadBy" });
+                yield return new ValidationResult(string.Format(CultureServicesRes._MaxLengthIs_, "SalinitiesReadBy", "20"), new[] { "SalinitiesReadBy" });
             }
 
             if (labSheetDetail.SalinitiesReadDate != null && ((DateTime)labSheetDetail.SalinitiesReadDate).Year < 1980)
             {
-                yield return new ValidationResult(string.Format(CSSPServicesRes._YearShouldBeBiggerThan_, "SalinitiesReadDate", "1980"), new[] { "SalinitiesReadDate" });
+                yield return new ValidationResult(string.Format(CultureServicesRes._YearShouldBeBiggerThan_, "SalinitiesReadDate", "1980"), new[] { "SalinitiesReadDate" });
             }
 
             if (!string.IsNullOrWhiteSpace(labSheetDetail.ResultsReadBy) && labSheetDetail.ResultsReadBy.Length > 20)
             {
-                yield return new ValidationResult(string.Format(CSSPServicesRes._MaxLengthIs_, "ResultsReadBy", "20"), new[] { "ResultsReadBy" });
+                yield return new ValidationResult(string.Format(CultureServicesRes._MaxLengthIs_, "ResultsReadBy", "20"), new[] { "ResultsReadBy" });
             }
 
             if (labSheetDetail.ResultsReadDate != null && ((DateTime)labSheetDetail.ResultsReadDate).Year < 1980)
             {
-                yield return new ValidationResult(string.Format(CSSPServicesRes._YearShouldBeBiggerThan_, "ResultsReadDate", "1980"), new[] { "ResultsReadDate" });
+                yield return new ValidationResult(string.Format(CultureServicesRes._YearShouldBeBiggerThan_, "ResultsReadDate", "1980"), new[] { "ResultsReadDate" });
             }
 
             if (!string.IsNullOrWhiteSpace(labSheetDetail.ResultsRecordedBy) && labSheetDetail.ResultsRecordedBy.Length > 20)
             {
-                yield return new ValidationResult(string.Format(CSSPServicesRes._MaxLengthIs_, "ResultsRecordedBy", "20"), new[] { "ResultsRecordedBy" });
+                yield return new ValidationResult(string.Format(CultureServicesRes._MaxLengthIs_, "ResultsRecordedBy", "20"), new[] { "ResultsRecordedBy" });
             }
 
             if (labSheetDetail.ResultsRecordedDate != null && ((DateTime)labSheetDetail.ResultsRecordedDate).Year < 1980)
             {
-                yield return new ValidationResult(string.Format(CSSPServicesRes._YearShouldBeBiggerThan_, "ResultsRecordedDate", "1980"), new[] { "ResultsRecordedDate" });
+                yield return new ValidationResult(string.Format(CultureServicesRes._YearShouldBeBiggerThan_, "ResultsRecordedDate", "1980"), new[] { "ResultsRecordedDate" });
             }
 
             if (labSheetDetail.DailyDuplicateRLog != null)
             {
                 if (labSheetDetail.DailyDuplicateRLog < 0 || labSheetDetail.DailyDuplicateRLog > 100)
                 {
-                    yield return new ValidationResult(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "DailyDuplicateRLog", "0", "100"), new[] { "DailyDuplicateRLog" });
+                    yield return new ValidationResult(string.Format(CultureServicesRes._ValueShouldBeBetween_And_, "DailyDuplicateRLog", "0", "100"), new[] { "DailyDuplicateRLog" });
                 }
             }
 
@@ -502,7 +499,7 @@ namespace CSSPServices
             {
                 if (labSheetDetail.DailyDuplicatePrecisionCriteria < 0 || labSheetDetail.DailyDuplicatePrecisionCriteria > 100)
                 {
-                    yield return new ValidationResult(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "DailyDuplicatePrecisionCriteria", "0", "100"), new[] { "DailyDuplicatePrecisionCriteria" });
+                    yield return new ValidationResult(string.Format(CultureServicesRes._ValueShouldBeBetween_And_, "DailyDuplicatePrecisionCriteria", "0", "100"), new[] { "DailyDuplicatePrecisionCriteria" });
                 }
             }
 
@@ -510,7 +507,7 @@ namespace CSSPServices
             {
                 if (labSheetDetail.IntertechDuplicateRLog < 0 || labSheetDetail.IntertechDuplicateRLog > 100)
                 {
-                    yield return new ValidationResult(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "IntertechDuplicateRLog", "0", "100"), new[] { "IntertechDuplicateRLog" });
+                    yield return new ValidationResult(string.Format(CultureServicesRes._ValueShouldBeBetween_And_, "IntertechDuplicateRLog", "0", "100"), new[] { "IntertechDuplicateRLog" });
                 }
             }
 
@@ -518,19 +515,19 @@ namespace CSSPServices
             {
                 if (labSheetDetail.IntertechDuplicatePrecisionCriteria < 0 || labSheetDetail.IntertechDuplicatePrecisionCriteria > 100)
                 {
-                    yield return new ValidationResult(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, "IntertechDuplicatePrecisionCriteria", "0", "100"), new[] { "IntertechDuplicatePrecisionCriteria" });
+                    yield return new ValidationResult(string.Format(CultureServicesRes._ValueShouldBeBetween_And_, "IntertechDuplicatePrecisionCriteria", "0", "100"), new[] { "IntertechDuplicatePrecisionCriteria" });
                 }
             }
 
             if (labSheetDetail.LastUpdateDate_UTC.Year == 1)
             {
-                yield return new ValidationResult(string.Format(CSSPServicesRes._IsRequired, "LastUpdateDate_UTC"), new[] { "LastUpdateDate_UTC" });
+                yield return new ValidationResult(string.Format(CultureServicesRes._IsRequired, "LastUpdateDate_UTC"), new[] { "LastUpdateDate_UTC" });
             }
             else
             {
                 if (labSheetDetail.LastUpdateDate_UTC.Year < 1980)
                 {
-                    yield return new ValidationResult(string.Format(CSSPServicesRes._YearShouldBeBiggerThan_, "LastUpdateDate_UTC", "1980"), new[] { "LastUpdateDate_UTC" });
+                    yield return new ValidationResult(string.Format(CultureServicesRes._YearShouldBeBiggerThan_, "LastUpdateDate_UTC", "1980"), new[] { "LastUpdateDate_UTC" });
                 }
             }
 
@@ -538,7 +535,7 @@ namespace CSSPServices
 
             if (TVItemLastUpdateContactTVItemID == null)
             {
-                yield return new ValidationResult(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, "TVItem", "LastUpdateContactTVItemID", labSheetDetail.LastUpdateContactTVItemID.ToString()), new[] { "LastUpdateContactTVItemID" });
+                yield return new ValidationResult(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "TVItem", "LastUpdateContactTVItemID", labSheetDetail.LastUpdateContactTVItemID.ToString()), new[] { "LastUpdateContactTVItemID" });
             }
             else
             {
@@ -548,7 +545,7 @@ namespace CSSPServices
                 };
                 if (!AllowableTVTypes.Contains(TVItemLastUpdateContactTVItemID.TVType))
                 {
-                    yield return new ValidationResult(string.Format(CSSPServicesRes._IsNotOfType_, "LastUpdateContactTVItemID", "Contact"), new[] { "LastUpdateContactTVItemID" });
+                    yield return new ValidationResult(string.Format(CultureServicesRes._IsNotOfType_, "LastUpdateContactTVItemID", "Contact"), new[] { "LastUpdateContactTVItemID" });
                 }
             }
 

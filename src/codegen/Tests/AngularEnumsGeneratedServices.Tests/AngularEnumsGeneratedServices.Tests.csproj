@@ -34,7 +34,7 @@
       <HintPath>..\..\ConfigServices\bin\Debug\netcoreapp3.1\ConfigServices.dll</HintPath>
     </Reference>
     <Reference Include="CultureServices">
-      <HintPath>..\..\CultureServices\bin\Debug\netcoreapp3.1\CultureServices.dll</HintPath>
+      <HintPath>..\..\..\dlls\CultureServices\bin\Debug\netcoreapp3.1\CultureServices.dll</HintPath>
     </Reference>
     <Reference Include="AngularEnumsGeneratedServices">
       <HintPath>..\..\AngularEnumsGeneratedServices\bin\Debug\netcoreapp3.1\AngularEnumsGeneratedServices.dll</HintPath>

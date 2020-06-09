@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace CSSPModels.Resources.Generated {
+namespace CultureServices.Resources {
     using System;
     
     
@@ -22,14 +22,14 @@ namespace CSSPModels.Resources.Generated {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public class CSSPModelsRes {
+    public class CultureModelsRes {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal CSSPModelsRes() {
+        internal CultureModelsRes() {
         }
         
         /// <summary>
@@ -39,7 +39,7 @@ namespace CSSPModels.Resources.Generated {
         public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("CSSPModels.Resources.Generated.CSSPModelsRes", typeof(CSSPModelsRes).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("CultureServices.Resources.CultureModelsRes", typeof(CultureModelsRes).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;

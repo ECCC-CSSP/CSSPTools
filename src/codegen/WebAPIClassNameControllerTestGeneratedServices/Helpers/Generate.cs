@@ -82,6 +82,7 @@ namespace WebAPIClassNameControllerTestGeneratedServices.Services
                     sb.AppendLine(@"using CSSPModels;");
                     sb.AppendLine(@"using CSSPServices;");
                     sb.AppendLine(@"using CSSPWebAPI.Controllers;");
+                    sb.AppendLine(@"using CultureServices.Services;");
                     sb.AppendLine(@"using LoggedInServices.Services;");
                     sb.AppendLine(@"using Microsoft.AspNetCore.Mvc;");
                     sb.AppendLine(@"using Microsoft.EntityFrameworkCore;");
@@ -110,6 +111,7 @@ namespace WebAPIClassNameControllerTestGeneratedServices.Services
                     sb.AppendLine(@"        private IServiceCollection Services { get; set; }");
                     sb.AppendLine(@"        private CSSPDBContext db { get; set; }");
                     sb.AppendLine(@"        private ILoggedInService loggedInService { get; set; }");
+                    sb.AppendLine(@"        private ICultureService CultureService { get; set; }");
                     sb.AppendLine($@"        private I{ TypeName }Service { TypeNameLower }Service {{ get; set; }}");
                     sb.AppendLine($@"        private I{ TypeName }Controller { TypeNameLower }Controller {{ get; set; }}");
                     sb.AppendLine(@"        #endregion Properties");

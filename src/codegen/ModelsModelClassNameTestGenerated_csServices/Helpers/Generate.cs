@@ -71,7 +71,6 @@ namespace ModelsModelClassNameTestGenerated_csServices.Services
                 sb.AppendLine(@"using System.Globalization;");
                 sb.AppendLine(@"using System.Transactions;");
                 sb.AppendLine(@"using System.Collections.Generic;");
-                sb.AppendLine(@"using CSSPModels.Resources;");
                 sb.AppendLine(@"using Microsoft.EntityFrameworkCore.Metadata;");
                 sb.AppendLine(@"using System.Reflection;");
                 sb.AppendLine(@"using CSSPEnums;");

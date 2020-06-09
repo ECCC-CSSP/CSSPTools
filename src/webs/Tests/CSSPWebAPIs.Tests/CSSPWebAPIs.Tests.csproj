@@ -53,6 +53,9 @@
     <Reference Include="CSSPWebAPIs">
       <HintPath>..\..\CSSPWebAPIs\bin\Debug\netcoreapp3.1\CSSPWebAPIs.dll</HintPath>
     </Reference>
+    <Reference Include="CultureServices">
+      <HintPath>..\..\..\dlls\CultureServices\bin\Debug\netcoreapp3.1\CultureServices.dll</HintPath>
+    </Reference>
     <Reference Include="LoggedInServices">
       <HintPath>..\..\..\dlls\LoggedInServices\bin\Debug\netcoreapp3.1\LoggedInServices.dll</HintPath>
     </Reference>

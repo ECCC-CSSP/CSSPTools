@@ -117,7 +117,7 @@ namespace EnumsPolSourceInfoRelatedFilesServices.Services
             ActionCommandDBService.PercentCompleted = 10;
             await ActionCommandDBService.Update();
 
-            return await Task.FromResult(false);
+            return await Task.FromResult(true);
 
         }
         #endregion Functions private

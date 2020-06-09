@@ -14,33 +14,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Update="Resources\CSSPEnumsRes.Designer.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>CSSPEnumsRes.resx</DependentUpon>
-    </Compile>
-    <Compile Update="Resources\Generated\PolSourceInfoEnumGeneratedRes.Designer.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>PolSourceInfoEnumGeneratedRes.resx</DependentUpon>
-    </Compile>
-  </ItemGroup>
-
-  <ItemGroup>
-    <EmbeddedResource Update="Resources\CSSPEnumsRes.fr.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Resources\CSSPEnumsRes.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>CSSPEnumsRes.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Resources\Generated\PolSourceInfoEnumGeneratedRes.fr.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Resources\Generated\PolSourceInfoEnumGeneratedRes.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>PolSourceInfoEnumGeneratedRes.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
+    <Reference Include="CultureServices">
+      <HintPath>..\CultureServices\bin\Debug\netcoreapp3.1\CultureServices.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
 </Project>

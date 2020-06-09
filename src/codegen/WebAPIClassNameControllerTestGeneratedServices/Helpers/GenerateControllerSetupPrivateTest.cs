@@ -7,7 +7,7 @@ namespace WebAPIClassNameControllerTestGeneratedServices.Services
     {
         private async Task<bool> GenerateControllerSetupPrivateTest(string TypeName, string TypeNameLower, StringBuilder sb)
         {
-            sb.AppendLine(@"        private async Task<bool> Setup(CultureInfo culture)");
+            sb.AppendLine(@"        private async Task<bool> Setup(string culture)");
             sb.AppendLine(@"        {");
             sb.AppendLine(@"            Config = new ConfigurationBuilder()");
             sb.AppendLine(@"               .SetBasePath(Directory.GetParent(AppContext.BaseDirectory).FullName)");
@@ -34,6 +34,7 @@ namespace WebAPIClassNameControllerTestGeneratedServices.Services
             sb.AppendLine(@"            Services.AddIdentityCore<ApplicationUser>()");
             sb.AppendLine(@"                .AddEntityFrameworkStores<ApplicationDbContext>();");
             sb.AppendLine(@"");
+            sb.AppendLine(@"            Services.AddSingleton<ICultureService, CultureService>();");
             sb.AppendLine(@"            Services.AddSingleton<IEnums, Enums>();");
             sb.AppendLine(@"            Services.AddSingleton<ILoggedInService, LoggedInService>();");
             sb.AppendLine($@"            Services.AddSingleton<I{ TypeName }Service, { TypeName }Service>();");
@@ -42,13 +43,16 @@ namespace WebAPIClassNameControllerTestGeneratedServices.Services
             sb.AppendLine(@"            Provider = Services.BuildServiceProvider();");
             sb.AppendLine(@"            Assert.NotNull(Provider);");
             sb.AppendLine(@"");
+            sb.AppendLine(@"            CultureService = Provider.GetService<ICultureService>();");
+            sb.AppendLine(@"            Assert.NotNull(CultureService);");
+            sb.AppendLine(@"");
+            sb.AppendLine(@"            CultureService.SetCulture(culture);");
+            sb.AppendLine(@"");
             sb.AppendLine(@"            loggedInService = Provider.GetService<ILoggedInService>();");
             sb.AppendLine(@"            Assert.NotNull(loggedInService);");
             sb.AppendLine(@"");
             sb.AppendLine($@"            { TypeNameLower }Service = Provider.GetService<I{ TypeName }Service>();");
             sb.AppendLine($@"            Assert.NotNull({ TypeNameLower }Service);");
-            sb.AppendLine(@"");
-            sb.AppendLine($@"            await { TypeNameLower }Service.SetCulture(culture);");
             sb.AppendLine(@"");
             sb.AppendLine($@"            { TypeNameLower }Controller = Provider.GetService<I{ TypeName }Controller>();");
             sb.AppendLine($@"            Assert.NotNull({ TypeNameLower }Controller);");

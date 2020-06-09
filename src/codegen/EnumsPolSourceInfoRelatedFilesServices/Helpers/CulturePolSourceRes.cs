@@ -26,7 +26,7 @@ namespace EnumsPolSourceInfoRelatedFilesServices.Services
         {
             StringBuilder sb = new StringBuilder();
 
-            FileInfo fi = new FileInfo(Config.GetValue<string>("PolSourceInfoEnumGeneratedRes_resx"));
+            FileInfo fi = new FileInfo(Config.GetValue<string>("CulturePolSourcesRes_resx"));
 
             if (!await ResxTopPart(sb)) return await Task.FromResult(false);
 
@@ -114,7 +114,7 @@ namespace EnumsPolSourceInfoRelatedFilesServices.Services
                 return await Task.FromResult(false);
             }
 
-            fi = new FileInfo(Config.GetValue<string>("PolSourceInfoEnumGeneratedRes_resx"));
+            fi = new FileInfo(Config.GetValue<string>("CulturePolSourcesRes_resx"));
             if (fi.Exists)
             {
                 string fileLine = "Last Write Time [" + fi.LastWriteTime.ToString("yyyy MMMM dd HH:mm:ss") + "] " + fi.FullName;
