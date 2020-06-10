@@ -65,7 +65,7 @@ namespace CSSPCodeGenWebAPI.Controllers
 
             await PolSourceGroupingExcelFileReadService.ReadExcelSheet(@"C:\CSSPTools\src\assets\PolSourceGrouping.xlsm", false);
 
-            foreach (GroupChoiceChildLevel groupChoiceChildLevel in PolSourceGroupingExcelFileReadService.groupChoiceChildLevelList)
+            foreach (GroupChoiceChildLevel groupChoiceChildLevel in PolSourceGroupingExcelFileReadService.GroupChoiceChildLevelList)
             {
                 PolSourceGrouping polSourceGrouping = new PolSourceGrouping()
                 {

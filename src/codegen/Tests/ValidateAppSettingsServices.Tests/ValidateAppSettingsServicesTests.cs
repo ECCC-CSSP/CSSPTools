@@ -1,21 +1,19 @@
-﻿using ValidateAppSettingsServices.Models;
-using Microsoft.Extensions.Primitives;
+﻿using ActionCommandDBServices.Models;
+using ActionCommandDBServices.Services;
+using CultureServices.Resources;
+using CultureServices.Services;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
-using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Xunit;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
+using ValidateAppSettingsServices.Models;
 using ValidateAppSettingsServices.Services;
-using Microsoft.EntityFrameworkCore;
-using ActionCommandDBServices.Services;
-using ActionCommandDBServices.Models;
-using Microsoft.AspNetCore.Mvc;
-using CultureServices.Resources;
+using Xunit;
 
 namespace ValidateAppSettingsServices.Tests
 {
@@ -28,6 +26,7 @@ namespace ValidateAppSettingsServices.Tests
         private IConfiguration configuration { get; set; }
         private IServiceCollection serviceCollection { get; set; }
         private IValidateAppSettingsService validateAppSettingsService { get; set; }
+        private ICultureService CultureService { get; set; }
         private IActionCommandDBService actionCommandDBService { get; set; }
         private string DBFileName { get; set; } = "DBFileName";
         #endregion Properties
@@ -44,7 +43,7 @@ namespace ValidateAppSettingsServices.Tests
         [InlineData("fr-CA")]
         public async Task ValidateAppSettingsService_VerifyAppSettings_Good_Test(string culture)
         {
-            await Setup(new CultureInfo(culture));
+            Assert.True(await Setup(culture));
 
             bool retBool = await validateAppSettingsService.VerifyAppSettings();
             Assert.True(retBool);
@@ -54,7 +53,7 @@ namespace ValidateAppSettingsServices.Tests
         [InlineData("fr-CA")]
         public async Task ValidateAppSettingsService_VerifyAppSettings_CheckFileParameterValue_Error_Test(string culture)
         {
-            await Setup(new CultureInfo(culture));
+            Assert.True(await Setup(culture));
 
             string param = "DBFileName";
             string shouldHaveValue = "{AppDataPath}\\CSSP\\ActionCommandDB_NotExist.db";
@@ -71,27 +70,16 @@ namespace ValidateAppSettingsServices.Tests
         [InlineData("en-GB")]
         public async Task ValidateAppSettingsService_VerifyAppSettings_CheckCultureParameterValue_Error_Test(string culture)
         {
-            await Setup(new CultureInfo(culture));
+            Assert.True(await Setup(culture));
 
             bool retBool = await validateAppSettingsService.VerifyAppSettings();
             Assert.True(retBool);
         }
-        [Theory]
-        [InlineData("en-CA")]
-        [InlineData("fr-CA")]
-        public async Task ValidateAppSettingsService_SetCulture_Good_Test(string culture)
-        {
-            await Setup(new CultureInfo(culture));
-
-            await validateAppSettingsService.SetCulture(new CultureInfo(culture));
-            Assert.Equal(new CultureInfo(culture), CultureServicesRes.Culture);
-        }
         #endregion Functions public
 
         #region Functions private
-        private async Task Setup(CultureInfo culture)
+        private async Task<bool> Setup(string culture)
         {
-            CultureServicesRes.Culture = culture;
             serviceCollection = new ServiceCollection();
 
             configuration = new ConfigurationBuilder()
@@ -100,6 +88,7 @@ namespace ValidateAppSettingsServices.Tests
                 .Build();
 
             serviceCollection.AddSingleton<IConfiguration>(configuration);
+            serviceCollection.AddSingleton<ICultureService, CultureService>();
             serviceCollection.AddSingleton<IActionCommandDBService, ActionCommandDBService>();
             serviceCollection.AddSingleton<IValidateAppSettingsService, ValidateAppSettingsService>();
 
@@ -112,23 +101,39 @@ namespace ValidateAppSettingsServices.Tests
                 Assert.NotNull(provider);
             }
 
+            CultureService = provider.GetService<ICultureService>();
+            Assert.NotNull(CultureService);
+
+            CultureService.SetCulture(culture);
+
+            if (CultureService.AllowableCultures.Contains(culture))
+            {
+                Assert.Equal(new CultureInfo(culture), CultureEnumsRes.Culture);
+                Assert.Equal(new CultureInfo(culture), CultureModelsRes.Culture);
+                Assert.Equal(new CultureInfo(culture), CulturePolSourcesRes.Culture);
+                Assert.Equal(new CultureInfo(culture), CultureServicesRes.Culture);
+            }
+            else
+            {
+                Assert.Equal(new CultureInfo(CultureService.AllowableCultures[0]), CultureEnumsRes.Culture);
+                Assert.Equal(new CultureInfo(CultureService.AllowableCultures[0]), CultureModelsRes.Culture);
+                Assert.Equal(new CultureInfo(CultureService.AllowableCultures[0]), CulturePolSourcesRes.Culture);
+                Assert.Equal(new CultureInfo(CultureService.AllowableCultures[0]), CultureServicesRes.Culture);
+            }
+
             actionCommandDBService = provider.GetService<IActionCommandDBService>();
             Assert.NotNull(actionCommandDBService);
 
-            await actionCommandDBService.SetCulture(culture);
-            Assert.Equal(culture, CultureServicesRes.Culture);
-
             validateAppSettingsService = provider.GetService<IValidateAppSettingsService>();
             Assert.NotNull(validateAppSettingsService);
-
-            await validateAppSettingsService.SetCulture(culture);
-            Assert.Equal(culture, CultureServicesRes.Culture);
 
             validateAppSettingsService.AppSettingParameterList = new List<AppSettingParameter>()
             {
                 new AppSettingParameter() { Parameter = "Culture", ExpectedValue = "", IsCulture = true },
                 new AppSettingParameter() { Parameter = "DBFileName", ExpectedValue = "{AppDataPath}\\CSSP\\ActionCommandDB.db", IsFile = true, CheckExist = true },
             };
+
+            return await Task.FromResult(true);
         }
         private string ConfigureGenerateCodeStatusContext()
         {

@@ -4,6 +4,10 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <OutputPath>..\_package\</OutputPath>
+  </PropertyGroup>
+
   <ItemGroup>
     <Compile Remove="srcWithDoc\**" />
     <EmbeddedResource Remove="srcWithDoc\**" />
@@ -20,10 +24,10 @@
 
   <ItemGroup>
     <Reference Include="CSSPEnums">
-      <HintPath>..\CSSPEnums\bin\Debug\netcoreapp3.1\CSSPEnums.dll</HintPath>
+      <HintPath>..\_package\netcoreapp3.1\CSSPEnums.dll</HintPath>
     </Reference>
     <Reference Include="CultureServices">
-      <HintPath>..\CultureServices\bin\Debug\netcoreapp3.1\CultureServices.dll</HintPath>
+      <HintPath>..\_package\netcoreapp3.1\CultureServices.dll</HintPath>
     </Reference>
   </ItemGroup>
 

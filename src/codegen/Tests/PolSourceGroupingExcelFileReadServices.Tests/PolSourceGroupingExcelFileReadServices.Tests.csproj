@@ -6,6 +6,10 @@
     <IsPackable>false</IsPackable>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <OutputPath>..\_package\</OutputPath>
+  </PropertyGroup>
+
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.1.4" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="3.1.4" />
@@ -32,17 +36,17 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Reference Include="CultureServices">
-      <HintPath>..\..\..\dlls\CultureServices\bin\Debug\netcoreapp3.1\CultureServices.dll</HintPath>
-    </Reference>
     <Reference Include="ActionCommandDBServices">
-      <HintPath>..\..\ActionCommandDBServices\bin\Debug\netcoreapp3.1\ActionCommandDBServices.dll</HintPath>
+      <HintPath>..\..\_package\netcoreapp3.1\ActionCommandDBServices.dll</HintPath>
     </Reference>
+    <Reference Include="CultureServices">
+      <HintPath>..\..\..\dlls\_package\netcoreapp3.1\CultureServices.dll</HintPath>
+    </Reference> 
     <Reference Include="PolSourceGroupingExcelFileReadServices">
-      <HintPath>..\..\PolSourceGroupingExcelFileReadServices\bin\Debug\netcoreapp3.1\PolSourceGroupingExcelFileReadServices.dll</HintPath>
+      <HintPath>..\..\_package\netcoreapp3.1\PolSourceGroupingExcelFileReadServices.dll</HintPath>
     </Reference>
     <Reference Include="ValidateAppSettingsServices">
-      <HintPath>..\..\ValidateAppSettingsServices\bin\Debug\netcoreapp3.1\ValidateAppSettingsServices.dll</HintPath>
+      <HintPath>..\..\_package\netcoreapp3.1\ValidateAppSettingsServices.dll</HintPath>
     </Reference>
   </ItemGroup>
 

@@ -15,16 +15,18 @@ using Microsoft.Extensions.Configuration;
 using Xunit;
 using Microsoft.AspNetCore.Mvc;
 using CultureServices.Resources;
+using CultureServices.Services;
 
 namespace GenerateCodeBaseServices.Tests
 {
     public partial class GenerateCodeBaseServicesTests
     {
         #region Variables
-        private IConfiguration configuration { get; set; }
-        private IServiceCollection serviceCollection { get; set; }
-        private IGenerateCodeBaseService generateCodeBaseService { get; set; }
-        private IActionCommandDBService actionCommandDBService { get; set; }
+        private IConfiguration Configuration { get; set; }
+        private IServiceCollection ServiceCollection { get; set; }
+        private ICultureService CultureService { get; set; }
+        private IGenerateCodeBaseService GenerateCodeBaseService { get; set; }
+        private IActionCommandDBService ActionCommandDBService { get; set; }
         #endregion Variables
 
         #region Properties
@@ -42,60 +44,62 @@ namespace GenerateCodeBaseServices.Tests
         [InlineData("fr-CA")]
         public async Task GenerateCodeBaseService_Constructors_Good_Test(string culture)
         {
-            await Setup(new CultureInfo(culture));
+            Assert.True(await Setup(culture));
 
-            Assert.NotNull(configuration);
-            Assert.NotNull(serviceCollection);
-            Assert.NotNull(actionCommandDBService);
-            Assert.NotNull(generateCodeBaseService);
+            Assert.NotNull(Configuration);
+            Assert.NotNull(ServiceCollection);
+            Assert.NotNull(CultureService);
+            Assert.NotNull(ActionCommandDBService);
+            Assert.NotNull(GenerateCodeBaseService);
 
             Assert.Equal(new CultureInfo(culture), CultureServicesRes.Culture);
         }
         #endregion Functions public
 
         #region Functions private
-        private async Task Setup(CultureInfo culture)
+        private async Task<bool> Setup(string culture)
         {
-            CultureServicesRes.Culture = culture;
-            serviceCollection = new ServiceCollection();
+            ServiceCollection = new ServiceCollection();
 
-            configuration = new ConfigurationBuilder()
+            Configuration = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetParent(AppContext.BaseDirectory).FullName)
                 .AddJsonFile("appsettings.json")
                 .Build();
 
             string appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
 
-            FileInfo fiDB = new FileInfo(configuration.GetValue<string>("DBFileName").Replace("{AppDataPath}", appDataPath));
+            FileInfo fiDB = new FileInfo(Configuration.GetValue<string>("DBFileName").Replace("{AppDataPath}", appDataPath));
 
             if (!fiDB.Exists)
             {
                 Assert.True(fiDB.Exists);
             }
 
-            serviceCollection.AddSingleton<IConfiguration>(configuration);
-            serviceCollection.AddDbContext<ActionCommandContext>(options =>
+            ServiceCollection.AddSingleton<IConfiguration>(Configuration);
+            ServiceCollection.AddDbContext<ActionCommandContext>(options =>
             {
                 options.UseSqlite($"DataSource={fiDB.FullName}");
             });
 
-            serviceCollection.AddSingleton<IGenerateCodeBaseService, GenerateCodeBaseService>();
-            serviceCollection.AddSingleton<IActionCommandDBService, ActionCommandDBService>();
+            ServiceCollection.AddSingleton<ICultureService, CultureService>();
+            ServiceCollection.AddSingleton<IGenerateCodeBaseService, GenerateCodeBaseService>();
+            ServiceCollection.AddSingleton<IActionCommandDBService, ActionCommandDBService>();
 
-            ServiceProvider provider = serviceCollection.BuildServiceProvider();
+            ServiceProvider provider = ServiceCollection.BuildServiceProvider();
             Assert.NotNull(provider);
 
-            actionCommandDBService = provider.GetService<IActionCommandDBService>();
-            Assert.NotNull(actionCommandDBService);
+            CultureService = provider.GetService<ICultureService>();
+            Assert.NotNull(CultureService);
 
-            await actionCommandDBService.SetCulture(culture);
-            Assert.Equal(culture, CultureServicesRes.Culture);
+            CultureService.SetCulture(culture);
 
-            generateCodeBaseService = provider.GetService<IGenerateCodeBaseService>();
-            Assert.NotNull(generateCodeBaseService);
+            ActionCommandDBService = provider.GetService<IActionCommandDBService>();
+            Assert.NotNull(ActionCommandDBService);
 
-            await generateCodeBaseService.SetCulture(culture);
-            Assert.Equal(culture, CultureServicesRes.Culture);
+            GenerateCodeBaseService = provider.GetService<IGenerateCodeBaseService>();
+            Assert.NotNull(GenerateCodeBaseService);
+
+            return await Task.FromResult(true);
         }
         #endregion Functions private
     }

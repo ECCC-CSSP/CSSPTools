@@ -15,8 +15,6 @@ namespace ExecuteDotNetCommandServices.Services
         {
             ActionCommandDBService.Action = Config.GetValue<string>("Action");
             ActionCommandDBService.Command = Config.GetValue<string>("Command");
-            await ActionCommandDBService.SetCulture(new CultureInfo(Config.GetValue<string>("Culture")));
-            await ValidateAppSettingsService.SetCulture(new CultureInfo(Config.GetValue<string>("Culture")));
 
             ActionResult<ActionCommand> actionActionCommand = await ActionCommandDBService.Get();
             if (((ObjectResult)actionActionCommand.Result).StatusCode == 400)

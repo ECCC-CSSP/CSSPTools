@@ -1,6 +1,7 @@
 ﻿using ActionCommandDBServices.Models;
 using ActionCommandDBServices.Services;
 using CultureServices.Resources;
+using CultureServices.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -26,6 +27,7 @@ namespace ActionCommandDBServices.Tests
         private IActionCommandDBService actionCommandDBService { get; set; }
         private IServiceProvider serviceProvider { get; set; }
         private string DBFileName { get; set; } = "DBFileName";
+        private ICultureService CultureService { get; set; }
         #endregion Properties
 
         #region Constructors
@@ -40,15 +42,12 @@ namespace ActionCommandDBServices.Tests
         [InlineData("fr-CA")]
         public async Task ActionCommandDBService_Constructors_Good_Test(string culture)
         {
-            await Setup(new CultureInfo(culture));
+            Assert.True(await Setup(culture));
 
             Assert.NotNull(configuration);
             Assert.NotNull(serviceCollection);
             Assert.NotNull(actionCommandDBService);
 
-            Assert.Equal(new CultureInfo(culture), CultureServicesRes.Culture);
-
-            await actionCommandDBService.SetCulture(new CultureInfo(culture));
             Assert.Equal(new CultureInfo(culture), CultureServicesRes.Culture);
 
             Assert.Equal(0, actionCommandDBService.ActionCommandID);
@@ -66,7 +65,7 @@ namespace ActionCommandDBServices.Tests
         [InlineData("fr-CA")]
         public async Task ActionCommandDBService_Get_Good_Test(string culture)
         {
-            await Setup(new CultureInfo(culture));
+            Assert.True(await Setup(culture));
 
             await actionCommandDBService.RefillAll();
 
@@ -87,7 +86,7 @@ namespace ActionCommandDBServices.Tests
         [InlineData("fr-CA")]
         public async Task ActionCommandDBService_Update_Good_Test(string culture)
         {
-            await Setup(new CultureInfo(culture));
+            Assert.True(await Setup(culture));
 
             await actionCommandDBService.RefillAll();
 
@@ -121,7 +120,7 @@ namespace ActionCommandDBServices.Tests
         [InlineData("fr-CA")]
         public async Task ActionCommandDBService_RefillAll_Good_Test(string culture)
         {
-            await Setup(new CultureInfo(culture));
+            Assert.True(await Setup(culture));
 
             // Should Repopulate the ActionCommandDB.db database
             var actionBool = await actionCommandDBService.RefillAll();
@@ -136,7 +135,7 @@ namespace ActionCommandDBServices.Tests
         [InlineData("fr-CA")]
         public async Task ActionCommandDBService_Get_BadRequests_Test(string culture)
         {
-            await Setup(new CultureInfo(culture));
+            Assert.True(await Setup(culture));
 
             await actionCommandDBService.RefillAll();
 
@@ -153,7 +152,7 @@ namespace ActionCommandDBServices.Tests
         [InlineData("fr-CA")]
         public async Task ActionCommandDBService_Update_BadRequests_Test(string culture)
         {
-            await Setup(new CultureInfo(culture));
+            Assert.True(await Setup(culture));
 
             await actionCommandDBService.RefillAll();
 
@@ -180,20 +179,20 @@ namespace ActionCommandDBServices.Tests
         [Theory]
         [InlineData("en-CA")]
         [InlineData("fr-CA")]
-        public async Task ActionCommandDBService_SetCulture_Good_Test(string culture)
+        public async Task ActionCommandDBService_Culture_Good_Test(string culture)
         {
-            await Setup(new CultureInfo(culture));
+            Assert.True(await Setup(culture));
 
-            await actionCommandDBService.SetCulture(new CultureInfo(culture));
+            Assert.Equal(new CultureInfo(culture), CultureEnumsRes.Culture);
+            Assert.Equal(new CultureInfo(culture), CultureModelsRes.Culture);
+            Assert.Equal(new CultureInfo(culture), CulturePolSourcesRes.Culture);
             Assert.Equal(new CultureInfo(culture), CultureServicesRes.Culture);
         }
         #endregion Functions public
 
         #region Functions private
-        private async Task Setup(CultureInfo culture)
+        private async Task<bool> Setup(string culture)
         {
-            CultureServicesRes.Culture = culture;
-
             configuration = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetParent(AppContext.BaseDirectory).FullName)
                 .AddJsonFile("appsettings.json")
@@ -202,6 +201,7 @@ namespace ActionCommandDBServices.Tests
             serviceCollection = new ServiceCollection();
 
             serviceCollection.AddSingleton<IConfiguration>(configuration);
+            serviceCollection.AddSingleton<ICultureService, CultureService>();
             serviceCollection.AddSingleton<IActionCommandDBService, ActionCommandDBService>();
 
             string appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
@@ -219,21 +219,22 @@ namespace ActionCommandDBServices.Tests
             }
             catch (Exception ex)
             {
-                Assert.True(true);
+                Assert.True(false);
             }
 
+
             serviceProvider = serviceCollection.BuildServiceProvider();
-            if (serviceProvider == null)
-            {
-                Assert.NotNull(serviceProvider);
-            }
+            Assert.NotNull(serviceProvider);
+
+            CultureService = serviceProvider.GetService<ICultureService>();
+            Assert.NotNull(CultureService);
+
+            CultureService.SetCulture(culture);
 
             actionCommandDBService = serviceProvider.GetService<IActionCommandDBService>();
             Assert.NotNull(actionCommandDBService);
 
-            await actionCommandDBService.SetCulture(culture);
-            Assert.Equal(culture, CultureServicesRes.Culture);
-
+            return await Task.FromResult(true);
         }
         #endregion Functions private
     }

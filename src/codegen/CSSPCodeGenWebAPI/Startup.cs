@@ -1,6 +1,7 @@
 using ActionCommandDBServices.Models;
 using ActionCommandDBServices.Services;
 using CSSPModels;
+using CultureServices.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -98,6 +99,7 @@ namespace CSSPCodeGenWebAPI
                 options.UseSqlite($"DataSource={fiDB.FullName}");
             });
 
+            services.AddScoped<ICultureService, CultureService>();
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IActionCommandDBService, ActionCommandDBService>();
         }

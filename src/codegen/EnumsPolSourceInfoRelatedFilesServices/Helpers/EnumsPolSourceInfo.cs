@@ -28,7 +28,7 @@ namespace EnumsPolSourceInfoRelatedFilesServices.Services
 
             FileInfo fi = new FileInfo(Config.GetValue<string>("EnumsPolSourceInfoGenerated_cs"));
 
-            List<string> groupList = (from c in PolSourceGroupingExcelFileReadService.groupChoiceChildLevelList
+            List<string> groupList = (from c in PolSourceGroupingExcelFileReadService.GroupChoiceChildLevelList
                                       select c.Group).Distinct().ToList();
 
             sb.AppendLine(@"/*");
@@ -54,12 +54,12 @@ namespace EnumsPolSourceInfoRelatedFilesServices.Services
             sb.AppendLine(@"            switch (polSourceInfo)");
             sb.AppendLine(@"            {");
 
-            foreach (GroupChoiceChildLevel groupChoiceChildLevel in PolSourceGroupingExcelFileReadService.groupChoiceChildLevelList.Where(c => c.Group.Substring(c.Group.Length - 5) == "Start" && c.Choice == "").Distinct().ToList())
+            foreach (GroupChoiceChildLevel groupChoiceChildLevel in PolSourceGroupingExcelFileReadService.GroupChoiceChildLevelList.Where(c => c.Group.Substring(c.Group.Length - 5) == "Start" && c.Choice == "").Distinct().ToList())
             {
                 sb.AppendLine($@"                case PolSourceObsInfoEnum.{ groupChoiceChildLevel.Group }:");
                 sb.AppendLine($@"                    return CulturePolSourcesRes.PolSourceInfoEnum{ groupChoiceChildLevel.Group };");
             }
-            foreach (GroupChoiceChildLevel groupChoiceChildLevel in PolSourceGroupingExcelFileReadService.groupChoiceChildLevelList)
+            foreach (GroupChoiceChildLevel groupChoiceChildLevel in PolSourceGroupingExcelFileReadService.GroupChoiceChildLevelList)
             {
                 if (groupChoiceChildLevel.Choice.Length > 0)
                 {
@@ -82,7 +82,7 @@ namespace EnumsPolSourceInfoRelatedFilesServices.Services
             sb.AppendLine(@"            switch (polSourceInfo)");
             sb.AppendLine(@"            {");
 
-            foreach (GroupChoiceChildLevel groupChoiceChildLevel in PolSourceGroupingExcelFileReadService.groupChoiceChildLevelList.Where(c => c.Group.Substring(c.Group.Length - 5) == "Start" && c.Choice == "").Distinct().ToList())
+            foreach (GroupChoiceChildLevel groupChoiceChildLevel in PolSourceGroupingExcelFileReadService.GroupChoiceChildLevelList.Where(c => c.Group.Substring(c.Group.Length - 5) == "Start" && c.Choice == "").Distinct().ToList())
             {
                 sb.AppendLine($@"                case PolSourceObsInfoEnum.{ groupChoiceChildLevel.Group }:");
                 sb.AppendLine($@"                    return CulturePolSourcesRes.PolSourceInfoEnum{ groupChoiceChildLevel.Group }Desc;");
@@ -102,7 +102,7 @@ namespace EnumsPolSourceInfoRelatedFilesServices.Services
             sb.AppendLine(@"            switch (polSourceInfo)");
             sb.AppendLine(@"            {");
 
-            foreach (GroupChoiceChildLevel groupChoiceChildLevel in PolSourceGroupingExcelFileReadService.groupChoiceChildLevelList.Where(c => c.Choice != "" && c.ReportEN != "").Distinct().ToList())
+            foreach (GroupChoiceChildLevel groupChoiceChildLevel in PolSourceGroupingExcelFileReadService.GroupChoiceChildLevelList.Where(c => c.Choice != "" && c.ReportEN != "").Distinct().ToList())
             {
                 sb.AppendLine($@"                case PolSourceObsInfoEnum.{ groupChoiceChildLevel.Choice }:");
                 sb.AppendLine($@"                    return CulturePolSourcesRes.PolSourceInfoEnum{ groupChoiceChildLevel.Choice }Report;");
@@ -122,7 +122,7 @@ namespace EnumsPolSourceInfoRelatedFilesServices.Services
             sb.AppendLine(@"            switch (polSourceInfo)");
             sb.AppendLine(@"            {");
 
-            foreach (GroupChoiceChildLevel groupChoiceChildLevel in PolSourceGroupingExcelFileReadService.groupChoiceChildLevelList.Where(c => c.Choice != "" && c.TextEN != "").Distinct().ToList())
+            foreach (GroupChoiceChildLevel groupChoiceChildLevel in PolSourceGroupingExcelFileReadService.GroupChoiceChildLevelList.Where(c => c.Choice != "" && c.TextEN != "").Distinct().ToList())
             {
                 sb.AppendLine($@"                case PolSourceObsInfoEnum.{ groupChoiceChildLevel.Choice }:");
                 sb.AppendLine($@"                    return CulturePolSourcesRes.PolSourceInfoEnum{ groupChoiceChildLevel.Choice }Text;");
@@ -142,7 +142,7 @@ namespace EnumsPolSourceInfoRelatedFilesServices.Services
             sb.AppendLine(@"            switch (polSourceInfo)");
             sb.AppendLine(@"            {");
 
-            foreach (GroupChoiceChildLevel groupChoiceChildLevel in PolSourceGroupingExcelFileReadService.groupChoiceChildLevelList.Where(c => c.Choice != "" && c.InitEN != "").Distinct().ToList())
+            foreach (GroupChoiceChildLevel groupChoiceChildLevel in PolSourceGroupingExcelFileReadService.GroupChoiceChildLevelList.Where(c => c.Choice != "" && c.InitEN != "").Distinct().ToList())
             {
                 sb.AppendLine($@"                case PolSourceObsInfoEnum.{ groupChoiceChildLevel.Choice }:");
                 sb.AppendLine($@"                    return CulturePolSourcesRes.PolSourceInfoEnum{ groupChoiceChildLevel.Choice }Init;");

@@ -13,7 +13,5 @@ namespace ValidateAppSettingsServices.Services
     {
         List<AppSettingParameter> AppSettingParameterList { get; set; }
         Task<bool> VerifyAppSettings();
-        Task SetCulture(CultureInfo culture);
-
     }
 }

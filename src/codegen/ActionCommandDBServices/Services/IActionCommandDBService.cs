@@ -24,7 +24,6 @@ namespace ActionCommandDBServices.Services
         Task<ActionResult<List<ActionCommand>>> RefillAll();
         Task<ActionResult<ActionCommand>> Run(ActionCommand actionCommand);
         Task<ActionResult<ActionCommand>> Update();
-        Task SetCulture(CultureInfo culture);
 
         Task ConsoleWriteEnd();
         Task ConsoleWriteError(string errMessage);

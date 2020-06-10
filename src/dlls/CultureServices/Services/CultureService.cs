@@ -1,4 +1,5 @@
 ﻿using CultureServices.Resources;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Threading.Tasks;
 
@@ -6,16 +7,18 @@ namespace CultureServices.Services
 {
     public partial class CultureService : ICultureService
     {
+        public List<string> AllowableCultures { get; }
         public CultureService()
         {
+            AllowableCultures = new List<string>() { "en-CA", "fr-CA" };
             SetCulture("en-CA");
         }
 
         public void SetCulture(string culture)
         {
-            if (culture != "fr-CA")
+            if (!AllowableCultures.Contains(culture))
             {
-                culture = "en-CA";
+                culture = AllowableCultures[0];
             }
 
             CultureEnumsRes.Culture = new CultureInfo(culture);

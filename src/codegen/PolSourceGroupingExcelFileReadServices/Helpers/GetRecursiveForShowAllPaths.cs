@@ -22,27 +22,27 @@ namespace PolSourceGroupingExcelFileReadServices.Services
 
             if (textList.Contains(s))
             {
-                actionCommandDBService.ErrorText.AppendLine($"{ CultureServicesRes.RecursiveFound } ...");
-                actionCommandDBService.ErrorText.AppendLine("");
-                actionCommandDBService.PercentCompleted = 0;
-                await actionCommandDBService.Update();
+                ActionCommandDBService.ErrorText.AppendLine($"{ CultureServicesRes.RecursiveFound } ...");
+                ActionCommandDBService.ErrorText.AppendLine("");
+                ActionCommandDBService.PercentCompleted = 0;
+                await ActionCommandDBService.Update();
 
                 foreach (string sp in textList)
                 {
-                    actionCommandDBService.ErrorText.AppendLine($"{ sp }");
-                    actionCommandDBService.PercentCompleted = 0;
-                    await actionCommandDBService.Update();
+                    ActionCommandDBService.ErrorText.AppendLine($"{ sp }");
+                    ActionCommandDBService.PercentCompleted = 0;
+                    await ActionCommandDBService.Update();
 
                 }
-                actionCommandDBService.ErrorText.AppendLine($"{ s }");
-                actionCommandDBService.PercentCompleted = 0;
-                await actionCommandDBService.Update();
+                ActionCommandDBService.ErrorText.AppendLine($"{ s }");
+                ActionCommandDBService.PercentCompleted = 0;
+                await ActionCommandDBService.Update();
 
 
                 return false;
             }
 
-            actionCommandDBService.ExecutionStatusText.AppendLine($"{ CultureServicesRes.Doing } ... { s }");
+            ActionCommandDBService.ExecutionStatusText.AppendLine($"{ CultureServicesRes.Doing } ... { s }");
             //await actionCommandDBService.Update( 0);
 
             if (RaiseEvents)
@@ -59,7 +59,7 @@ namespace PolSourceGroupingExcelFileReadServices.Services
             Level = Level + 1;
             textList.Add(s);
 
-            List<GroupChoiceChildLevel> groupChoiceChildLevelChildList = groupChoiceChildLevelList.Where(c => c.Group == s && c.Choice != "").ToList();
+            List<GroupChoiceChildLevel> groupChoiceChildLevelChildList = GroupChoiceChildLevelList.Where(c => c.Group == s && c.Choice != "").ToList();
             if (groupChoiceChildLevelChildList.Count > 0)
             {
                 foreach (string child in groupChoiceChildLevelChildList.Select(c => c.Child).Distinct())
@@ -69,7 +69,7 @@ namespace PolSourceGroupingExcelFileReadServices.Services
                 }
             }
 
-            actionCommandDBService.ExecutionStatusText.AppendLine($"");
+            ActionCommandDBService.ExecutionStatusText.AppendLine($"");
             //await actionCommandDBService.Update( 0);
 
             return true;

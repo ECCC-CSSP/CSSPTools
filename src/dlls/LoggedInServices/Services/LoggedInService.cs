@@ -1,4 +1,5 @@
 ﻿using CSSPModels;
+using CultureServices.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,20 +17,16 @@ namespace LoggedInServices.Services
         private List<TVTypeUserAuthorization> _TVTypeUserAuthorizationList;
 
         #endregion Variables
-        #region Properties
-        #endregion Variables
 
         #region Properties
-        #endregion Variables
-
-        #region Properties
-
-        private CSSPDBContext db { get; set; }
+        private ICultureService CultureService { get; }
+        private CSSPDBContext db { get; }
         #endregion Properties
 
         #region Constructors
-        public LoggedInService(CSSPDBContext db)
+        public LoggedInService(ICultureService cultureService, CSSPDBContext db)
         {
+            CultureService = cultureService;
             this.db = db;
         }
         #endregion Constructors

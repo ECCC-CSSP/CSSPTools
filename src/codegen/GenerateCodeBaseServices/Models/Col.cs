@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace GenerateCodeBaseServices.Models
+﻿namespace GenerateCodeBaseServices.Models
 {
     public class Col
     {

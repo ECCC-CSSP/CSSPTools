@@ -1,11 +1,11 @@
 ﻿using ActionCommandDBServices.Models;
 using CultureServices.Resources;
+using CultureServices.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -31,14 +31,16 @@ namespace ActionCommandDBServices.Services
         public DateTime LastUpdateDate { get; set; }
 
         private IConfiguration Configuration { get; }
+        private ICultureService CultureService { get; }
         private ActionCommandContext db { get; }
         private string ActionText = "Action";
         private string CommandText = "Command";
         #endregion Properties
 
         #region Constructors
-        public ActionCommandDBService(IConfiguration configuration, ActionCommandContext db)
+        public ActionCommandDBService(ICultureService cultureService, IConfiguration configuration, ActionCommandContext db)
         {
+            CultureService = cultureService;
             Configuration = configuration;
             this.db = db;
             Init();
@@ -242,10 +244,6 @@ namespace ActionCommandDBServices.Services
             }
 
             return await Task.FromResult(Ok(actionCommand));
-        }
-        public async Task SetCulture(CultureInfo culture)
-        {
-            CultureServicesRes.Culture = culture;
         }
         #endregion Functions public
 

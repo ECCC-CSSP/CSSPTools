@@ -37,22 +37,26 @@ namespace CultureServices.Tests
         {
             Assert.True(await Setup(culture));
 
-            Assert.Equal(new CultureInfo("en-CA"), CultureEnumsRes.Culture);
-            Assert.Equal(new CultureInfo("en-CA"), CultureModelsRes.Culture);
-            Assert.Equal(new CultureInfo("en-CA"), CulturePolSourcesRes.Culture);
-            Assert.Equal(new CultureInfo("en-CA"), CultureServicesRes.Culture);
-
             CultureService.SetCulture(culture);
-
-            CultureEnumsRes.Culture = new CultureInfo(culture);
-            CultureModelsRes.Culture = new CultureInfo(culture);
-            CulturePolSourcesRes.Culture = new CultureInfo(culture);
-            CultureServicesRes.Culture = new CultureInfo(culture);
 
             Assert.Equal(new CultureInfo(culture), CultureEnumsRes.Culture);
             Assert.Equal(new CultureInfo(culture), CultureModelsRes.Culture);
             Assert.Equal(new CultureInfo(culture), CulturePolSourcesRes.Culture);
             Assert.Equal(new CultureInfo(culture), CultureServicesRes.Culture);
+        }
+        [Theory]
+        [InlineData("en-US")]
+        [InlineData("fr-FR")]
+        public async Task SetCulture_Unsuported_Culture_Should_Default_To_en_CA_Good_Test(string culture)
+        {
+            Assert.True(await Setup(culture));
+
+            CultureService.SetCulture(culture);
+
+            Assert.Equal(new CultureInfo(CultureService.AllowableCultures[0]), CultureEnumsRes.Culture);
+            Assert.Equal(new CultureInfo(CultureService.AllowableCultures[0]), CultureModelsRes.Culture);
+            Assert.Equal(new CultureInfo(CultureService.AllowableCultures[0]), CulturePolSourcesRes.Culture);
+            Assert.Equal(new CultureInfo(CultureService.AllowableCultures[0]), CultureServicesRes.Culture);
         }
         #endregion Tests Functions public
 

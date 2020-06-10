@@ -15,7 +15,5 @@ namespace GenerateCodeBaseServices.Services
         bool FillCSSPProp(PropertyInfo propInfo, CSSPProp csspProp, Type type);
         bool FillDLLTypeInfoList(FileInfo fiDLL, List<DLLTypeInfo> DLLTypeInfoList);
         bool SkipType(Type type);
-        Task SetCulture(CultureInfo culture);
-
     }
 }

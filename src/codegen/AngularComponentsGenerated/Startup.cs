@@ -1,5 +1,6 @@
 ﻿using AngularComponentsGeneratedServices.Services;
 using ConfigServices.Services;
+using CultureServices.Services;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;

@@ -1,5 +1,6 @@
 ﻿using ActionCommandDBServices.Services;
 using ConfigServices.Services;
+using CultureServices.Services;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -17,12 +18,12 @@ namespace ConfigServices.Tests
         #endregion Variables
 
         #region Properties
-        IConfigService ConfigService { get; set; }
-        public IConfiguration Config { get; set; }
-        public IServiceProvider Provider { get; set; }
-        public IServiceCollection Services { get; set; }
-        public IActionCommandDBService ActionCommandDBService { get; set; }
-        public string DBFileName { get; set; } = "DBFileName";
+        private IConfiguration Configuration { get; set; }
+        private IServiceProvider ServiceProvider { get; set; }
+        private IServiceCollection ServiceCollection { get; set; }
+        private ICultureService CultureService { get; set; }
+        private IConfigService ConfigService { get; set; }
+        private string DBFileName { get; set; } = "DBFileName";
         #endregion Properties
 
         #region Constructors
@@ -38,26 +39,37 @@ namespace ConfigServices.Tests
         [InlineData("en-GB")] // good will default to en-CA
         public async Task ConfigService_Run_Good_Test(string culture)
         {
-            Assert.True(await Setup(new CultureInfo(culture), "appsettings.json"));
+            Assert.True(await Setup(culture));
 
-            Assert.NotNull(Config);
-            //Assert.NotNull(Services);
-            //Assert.NotNull(Provider);
+            Assert.NotNull(CultureService);
             Assert.NotNull(ConfigService);
         }
         #endregion Functions public
 
         #region Functions private
-        private async Task<bool> Setup(CultureInfo culture, string appsettingjsonFileName)
+        private async Task<bool> Setup(string culture)
         {
-            Config = new ConfigurationBuilder()
-               .SetBasePath(Directory.GetParent(AppContext.BaseDirectory).FullName)
-               .AddJsonFile(appsettingjsonFileName)
-               .Build();
+            Configuration = new ConfigurationBuilder()
+                .SetBasePath(Directory.GetParent(AppContext.BaseDirectory).FullName)
+                .AddJsonFile("appsettings.json")
+                .Build();
 
-            ConfigService = new ConfigService(Config);
+            ServiceCollection = new ServiceCollection();
 
-            //Services = new ServiceCollection();
+            ServiceCollection.AddSingleton<IConfiguration>(Configuration);
+            ServiceCollection.AddSingleton<ICultureService, CultureService>();
+            ServiceCollection.AddSingleton<IConfigService, ConfigService>();
+
+            ServiceProvider = ServiceCollection.BuildServiceProvider();
+            Assert.NotNull(ServiceProvider);
+
+            CultureService = ServiceProvider.GetService<ICultureService>();
+            Assert.NotNull(CultureService);
+
+            CultureService.SetCulture(culture);
+
+            ConfigService = ServiceProvider.GetService<IConfigService>();
+            Assert.NotNull(ConfigService);
 
             return await Task.FromResult(true);
         }

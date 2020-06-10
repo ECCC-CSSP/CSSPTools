@@ -28,7 +28,7 @@ namespace EnumsPolSourceInfoRelatedFilesServices.Services
 
             FileInfo fi = new FileInfo(Config.GetValue<string>("PolSourceObsInfoEnumGenerated_cs"));
 
-            List<string> groupList = (from c in PolSourceGroupingExcelFileReadService.groupChoiceChildLevelList
+            List<string> groupList = (from c in PolSourceGroupingExcelFileReadService.GroupChoiceChildLevelList
                                       select c.Group).Distinct().ToList();
 
             sb.AppendLine(@"/*");
@@ -43,7 +43,7 @@ namespace EnumsPolSourceInfoRelatedFilesServices.Services
             sb.AppendLine(@"    public enum PolSourceObsInfoEnum");
             sb.AppendLine(@"    {");
 
-            foreach (GroupChoiceChildLevel groupChoiceChildLevel in PolSourceGroupingExcelFileReadService.groupChoiceChildLevelList)
+            foreach (GroupChoiceChildLevel groupChoiceChildLevel in PolSourceGroupingExcelFileReadService.GroupChoiceChildLevelList)
             {
                 if (!string.IsNullOrWhiteSpace(groupChoiceChildLevel.Group))
                 {

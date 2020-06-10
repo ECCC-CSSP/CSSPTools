@@ -2,6 +2,7 @@
 using ActionCommandDBServices.Services;
 using CSSPModels;
 using CultureServices.Resources;
+using CultureServices.Services;
 using GenerateCodeBaseServices.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -31,6 +32,7 @@ namespace ConfigServices.Services
         public IConfiguration Config { get; set; }
         public IServiceProvider Provider { get; set; }
         public IServiceCollection Services { get; set; }
+        public ICultureService CultureService { get; set; }
         public IActionCommandDBService ActionCommandDBService { get; set; }
         public IGenerateCodeBaseService GenerateCodeBaseService { get; set; }
         public IValidateAppSettingsService ValidateAppSettingsService { get; set; }
@@ -85,6 +87,7 @@ namespace ConfigServices.Services
                 Services = new ServiceCollection();
 
                 Services.AddSingleton<IConfiguration>(Config);
+                Services.AddSingleton<ICultureService, CultureService>();
                 Services.AddSingleton<IActionCommandDBService, ActionCommandDBService>();
                 Services.AddSingleton<IGenerateCodeBaseService, GenerateCodeBaseService>();
                 Services.AddSingleton<IValidateAppSettingsService, ValidateAppSettingsService>();
@@ -113,10 +116,16 @@ namespace ConfigServices.Services
                     throw new Exception($"{ AppDomain.CurrentDomain.FriendlyName } provider == null");
                 }
 
+                CultureService = Provider.GetService<ICultureService>();
+                if (CultureService == null)
+                {
+                    throw new Exception($"{ AppDomain.CurrentDomain.FriendlyName } CultureService   == null");
+                }
+
                 ActionCommandDBService = Provider.GetService<IActionCommandDBService>();
                 if (ActionCommandDBService == null)
                 {
-                    throw new Exception($"{ AppDomain.CurrentDomain.FriendlyName } actionCommandDBService   == null");
+                    throw new Exception($"{ AppDomain.CurrentDomain.FriendlyName } ActionCommandDBService   == null");
                 }
 
                 ActionCommandDBService.Action = Config.GetValue<string>(ActionText);
@@ -209,8 +218,7 @@ namespace ConfigServices.Services
                     throw new Exception($"{ string.Format(CultureServicesRes.CouldNotFindParameter_InAppSettingsJSON, CommandText) }");
                 }
 
-                await ActionCommandDBService.SetCulture(new CultureInfo(Config.GetValue<string>("Culture")));
-                await ValidateAppSettingsService.SetCulture(new CultureInfo(Config.GetValue<string>("Culture")));
+                CultureService.SetCulture(Config.GetValue<string>("Culture"));
 
                 var actionResult = await ActionCommandDBService.Get();
                 if (((ObjectResult)actionResult.Result).StatusCode == 400)
@@ -226,15 +234,6 @@ namespace ConfigServices.Services
 
             return await Task.FromResult(true);
         }
-        public async Task<bool> SetCulture(CultureInfo culture)
-        {
-            await ActionCommandDBService.SetCulture(culture);
-            await ValidateAppSettingsService.SetCulture(culture);
-            await GenerateCodeBaseService.SetCulture(culture);
-            CultureServicesRes.Culture = culture;
-
-            return await Task.FromResult(true);
-        }
         public async Task<bool> SetCultureWithArgs(string[] args)
         {
             string culture = AllowableCultures[0];
@@ -247,7 +246,7 @@ namespace ConfigServices.Services
                 }
             }
 
-            if (!await SetCulture(new CultureInfo(culture))) return await Task.FromResult(false);
+            CultureService.SetCulture(culture);
 
             return await Task.FromResult(true);
         }

@@ -34,7 +34,7 @@ namespace EnumsPolSourceInfoRelatedFilesServices.Services
             sb.AppendLine(@"  <value>SVP ne pas éditer ce document manuellement</value>");
             sb.AppendLine(@"</data>");
 
-            foreach (GroupChoiceChildLevel groupChoiceChildLevel in PolSourceGroupingExcelFileReadService.groupChoiceChildLevelList.Where(c => c.Group.Substring(c.Group.Length - 5) == "Start" && c.Choice == "").Distinct().ToList())
+            foreach (GroupChoiceChildLevel groupChoiceChildLevel in PolSourceGroupingExcelFileReadService.GroupChoiceChildLevelList.Where(c => c.Group.Substring(c.Group.Length - 5) == "Start" && c.Choice == "").Distinct().ToList())
             {
                 sb.AppendLine($@"<data name=""PolSourceInfoEnum{ groupChoiceChildLevel.Group }"" xml:space=""preserve"">");
                 sb.AppendLine($@"  <value>{ groupChoiceChildLevel.FR.Replace("<", "&lt;").Replace(">", "&gt;") }</value>");
@@ -43,7 +43,7 @@ namespace EnumsPolSourceInfoRelatedFilesServices.Services
                 sb.AppendLine($@"  <value>{ groupChoiceChildLevel.DescFR.Replace("<", "&lt;").Replace(">", "&gt;") }</value>");
                 sb.AppendLine(@"</data>");
             }
-            foreach (GroupChoiceChildLevel groupChoiceChildLevel in PolSourceGroupingExcelFileReadService.groupChoiceChildLevelList)
+            foreach (GroupChoiceChildLevel groupChoiceChildLevel in PolSourceGroupingExcelFileReadService.GroupChoiceChildLevelList)
             {
                 if (groupChoiceChildLevel.Choice.Length > 0)
                 {

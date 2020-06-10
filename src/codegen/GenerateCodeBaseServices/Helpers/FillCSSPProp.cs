@@ -1,17 +1,11 @@
 ﻿using CSSPEnums;
+using CultureServices.Resources;
 using GenerateCodeBaseServices.Models;
-using ActionCommandDBServices.Services;
-using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Globalization;
-using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
-using CultureServices.Resources;
 
 namespace GenerateCodeBaseServices.Services
 {
@@ -79,7 +73,7 @@ namespace GenerateCodeBaseServices.Services
                 csspProp.HasDataTypeAttribute = true;
 
                 CustomAttributeData customAttributeData = propInfo.CustomAttributes.Where(c => c.AttributeType.Name == "DataTypeAttribute").First();
-                DataType dataType = ((DataType)customAttributeData.ConstructorArguments[0].Value);
+                DataType dataType = (DataType)customAttributeData.ConstructorArguments[0].Value;
                 switch (dataType)
                 {
                     case DataType.Custom:
@@ -93,12 +87,12 @@ namespace GenerateCodeBaseServices.Services
                     case DataType.Html:
                     case DataType.MultilineText:
                         {
-                            actionCommandDBService.ErrorText.AppendLine($"{ CultureServicesRes.DataType } [{ dataType.ToString() }] { CultureServicesRes.IsNotImplementedYet }");
+                            ActionCommandDBService.ErrorText.AppendLine($"{ CultureServicesRes.DataType } [{ dataType.ToString() }] { CultureServicesRes.IsNotImplementedYet }");
                             return false;
                         }
                     case DataType.EmailAddress:
                         {
-                            csspProp.dataType = ((DataType)customAttributeData.ConstructorArguments[0].Value);
+                            csspProp.dataType = (DataType)customAttributeData.ConstructorArguments[0].Value;
                             csspProp.HasDataTypeAttribute = true;
                         }
                         break;
@@ -109,7 +103,7 @@ namespace GenerateCodeBaseServices.Services
                     case DataType.PostalCode:
                     case DataType.Upload:
                         {
-                            actionCommandDBService.ErrorText.AppendLine($"{ CultureServicesRes.DataType } [{ dataType.ToString() }] { CultureServicesRes.IsNotImplementedYet }");
+                            ActionCommandDBService.ErrorText.AppendLine($"{ CultureServicesRes.DataType } [{ dataType.ToString() }] { CultureServicesRes.IsNotImplementedYet }");
                             return false;
                         }
                     default:
@@ -121,20 +115,20 @@ namespace GenerateCodeBaseServices.Services
             {
                 csspProp.HasStringLengthAttribute = true;
 
-                if (propInfo.PropertyType != typeof(System.String))
+                if (propInfo.PropertyType != typeof(String))
                 {
-                    actionCommandDBService.ErrorText.AppendLine($"{ CultureServicesRes.Class } [{ type.FullName }] { propInfo.Name } { CultureServicesRes.ShouldNotContainTheStringLengthAttribute }. { CultureServicesRes.StringLengthAttributeCanOnlyBeSetForSystemDotString }");
+                    ActionCommandDBService.ErrorText.AppendLine($"{ CultureServicesRes.Class } [{ type.FullName }] { propInfo.Name } { CultureServicesRes.ShouldNotContainTheStringLengthAttribute }. { CultureServicesRes.StringLengthAttributeCanOnlyBeSetForSystemDotString }");
                     return false;
                 }
                 CustomAttributeData customAttributeData = propInfo.CustomAttributes.Where(c => c.AttributeType.Name == "StringLengthAttribute").First();
-                csspProp.Max = ((int)customAttributeData.ConstructorArguments.ToArray()[0].Value);
+                csspProp.Max = (int)customAttributeData.ConstructorArguments.ToArray()[0].Value;
                 if (customAttributeData.NamedArguments.ToArray().Count() > 0)
                 {
                     for (int i = 0, count = customAttributeData.NamedArguments.ToArray().Count(); i < count; i++)
                     {
                         if (customAttributeData.NamedArguments.ToArray()[i].MemberName == "MinimumLength")
                         {
-                            csspProp.Min = ((int)customAttributeData.NamedArguments.ToArray()[i].TypedValue.Value);
+                            csspProp.Min = (int)customAttributeData.NamedArguments.ToArray()[i].TypedValue.Value;
                         }
                     }
                 }
@@ -147,8 +141,8 @@ namespace GenerateCodeBaseServices.Services
                 CustomAttributeData customAttributeData = propInfo.CustomAttributes.Where(c => c.AttributeType.Name == "RangeAttribute").First();
                 if (csspProp.PropType == "Int16" || csspProp.PropType == "Int32" || csspProp.PropType == "Int64")
                 {
-                    csspProp.Min = ((int)customAttributeData.ConstructorArguments.ToArray()[0].Value);
-                    csspProp.Max = ((int)customAttributeData.ConstructorArguments.ToArray()[1].Value);
+                    csspProp.Min = (int)customAttributeData.ConstructorArguments.ToArray()[0].Value;
+                    csspProp.Max = (int)customAttributeData.ConstructorArguments.ToArray()[1].Value;
 
                     if (csspProp.Min > csspProp.Max && csspProp.Max == -1)
                     {
@@ -157,8 +151,8 @@ namespace GenerateCodeBaseServices.Services
                 }
                 else if (csspProp.PropType == "Single" || csspProp.PropType == "Double")
                 {
-                    csspProp.Min = ((double)customAttributeData.ConstructorArguments.ToArray()[0].Value);
-                    csspProp.Max = ((double)customAttributeData.ConstructorArguments.ToArray()[1].Value);
+                    csspProp.Min = (double)customAttributeData.ConstructorArguments.ToArray()[0].Value;
+                    csspProp.Max = (double)customAttributeData.ConstructorArguments.ToArray()[1].Value;
 
                     if (csspProp.Min > csspProp.Max && csspProp.Max == -1)
                     {
@@ -167,7 +161,7 @@ namespace GenerateCodeBaseServices.Services
                 }
                 else
                 {
-                    actionCommandDBService.ErrorText.AppendLine($"{ CultureServicesRes.Type } [{ type.FullName }] { CultureServicesRes.Property } [{ csspProp.PropName }] { CultureServicesRes.OfType } [{ csspProp.PropType }] { CultureServicesRes.ShouldNotUseRangeAttribute }. { CultureServicesRes.OnlyTypesIntSingleDoubleCanUseRangeAttribute  }");
+                    ActionCommandDBService.ErrorText.AppendLine($"{ CultureServicesRes.Type } [{ type.FullName }] { CultureServicesRes.Property } [{ csspProp.PropName }] { CultureServicesRes.OfType } [{ csspProp.PropType }] { CultureServicesRes.ShouldNotUseRangeAttribute }. { CultureServicesRes.OnlyTypesIntSingleDoubleCanUseRangeAttribute  }");
                     return false;
                 }
             }
@@ -177,7 +171,7 @@ namespace GenerateCodeBaseServices.Services
                 csspProp.HasCompareAttribute = true;
 
                 CustomAttributeData customAttributeData = propInfo.CustomAttributes.Where(c => c.AttributeType.Name == "CompareAttribute").First();
-                csspProp.Compare = ((string)customAttributeData.ConstructorArguments.ToArray()[0].Value);
+                csspProp.Compare = (string)customAttributeData.ConstructorArguments.ToArray()[0].Value;
             }
 
             if (propInfo.CustomAttributes.Where(c => c.AttributeType.Name == "CSSPBiggerAttribute").Any())
@@ -189,7 +183,7 @@ namespace GenerateCodeBaseServices.Services
                 {
                     if (customAttributeData.NamedArguments.ToArray()[i].MemberName == "OtherField")
                     {
-                        csspProp.OtherField = ((string)customAttributeData.NamedArguments.ToArray()[i].TypedValue.Value);
+                        csspProp.OtherField = (string)customAttributeData.NamedArguments.ToArray()[i].TypedValue.Value;
                     }
                 }
             }
@@ -200,7 +194,7 @@ namespace GenerateCodeBaseServices.Services
 
                 if (csspProp.PropType != "DateTime")
                 {
-                    actionCommandDBService.ErrorText.AppendLine($"{ CultureServicesRes.Property} [{ csspProp.PropName }] { CultureServicesRes.OfType } [{ csspProp.PropType }] { CultureServicesRes.CSSPAfterAttributeShouldOnlyBeUsedForDateTimeType } ");
+                    ActionCommandDBService.ErrorText.AppendLine($"{ CultureServicesRes.Property} [{ csspProp.PropName }] { CultureServicesRes.OfType } [{ csspProp.PropType }] { CultureServicesRes.CSSPAfterAttributeShouldOnlyBeUsedForDateTimeType } ");
                     return false;
                 }
                 CustomAttributeData customAttributeData = propInfo.CustomAttributes.Where(c => c.AttributeType.Name == "CSSPAfterAttribute").First();
@@ -208,7 +202,7 @@ namespace GenerateCodeBaseServices.Services
                 {
                     if (customAttributeData.NamedArguments.ToArray()[i].MemberName == "Year")
                     {
-                        csspProp.Year = ((int)customAttributeData.NamedArguments.ToArray()[i].TypedValue.Value);
+                        csspProp.Year = (int)customAttributeData.NamedArguments.ToArray()[i].TypedValue.Value;
                     }
                 }
             }
@@ -223,17 +217,17 @@ namespace GenerateCodeBaseServices.Services
                     {
                         case "ExistTypeName":
                             {
-                                csspProp.ExistTypeName = ((string)customAttributeData.NamedArguments.ToArray()[i].TypedValue.Value);
+                                csspProp.ExistTypeName = (string)customAttributeData.NamedArguments.ToArray()[i].TypedValue.Value;
                             }
                             break;
                         case "ExistPlurial":
                             {
-                                csspProp.ExistPlurial = ((string)customAttributeData.NamedArguments.ToArray()[i].TypedValue.Value);
+                                csspProp.ExistPlurial = (string)customAttributeData.NamedArguments.ToArray()[i].TypedValue.Value;
                             }
                             break;
                         case "ExistFieldID":
                             {
-                                csspProp.ExistFieldID = ((string)customAttributeData.NamedArguments.ToArray()[i].TypedValue.Value);
+                                csspProp.ExistFieldID = (string)customAttributeData.NamedArguments.ToArray()[i].TypedValue.Value;
                             }
                             break;
                         case "AllowableTVTypeList":
@@ -243,12 +237,12 @@ namespace GenerateCodeBaseServices.Services
                                 string tvTypes = (string)customAttributeData.NamedArguments.ToArray()[i].TypedValue.Value;
                                 foreach (string TVType in tvTypes.Split(",".ToCharArray(), StringSplitOptions.RemoveEmptyEntries).ToList())
                                 {
-                                    csspProp.AllowableTVTypeList.Add(((TVTypeEnum)int.Parse(TVType)));
+                                    csspProp.AllowableTVTypeList.Add((TVTypeEnum)int.Parse(TVType));
                                 }
                             }
                             break;
                         default:
-                            actionCommandDBService.ErrorText.AppendLine($"{ CultureServicesRes.Property } [{ csspProp.PropName }] { CultureServicesRes.OfType } [{ csspProp.PropType }] --- { CultureServicesRes.MemberName }  { customAttributeData.NamedArguments.ToArray()[i].MemberName } { CultureServicesRes.DoesNotExistFor } CSSPExistAttribute");
+                            ActionCommandDBService.ErrorText.AppendLine($"{ CultureServicesRes.Property } [{ csspProp.PropName }] { CultureServicesRes.OfType } [{ csspProp.PropType }] --- { CultureServicesRes.MemberName }  { customAttributeData.NamedArguments.ToArray()[i].MemberName } { CultureServicesRes.DoesNotExistFor } CSSPExistAttribute");
                             return false;
                     }
                 }
@@ -264,41 +258,41 @@ namespace GenerateCodeBaseServices.Services
                     {
                         case "FillTypeName":
                             {
-                                csspProp.FillTypeName = ((string)customAttributeData.NamedArguments.ToArray()[i].TypedValue.Value);
+                                csspProp.FillTypeName = (string)customAttributeData.NamedArguments.ToArray()[i].TypedValue.Value;
                             }
                             break;
                         case "FillPlurial":
                             {
-                                csspProp.FillPlurial = ((string)customAttributeData.NamedArguments.ToArray()[i].TypedValue.Value);
+                                csspProp.FillPlurial = (string)customAttributeData.NamedArguments.ToArray()[i].TypedValue.Value;
                             }
                             break;
                         case "FillFieldID":
                             {
-                                csspProp.FillFieldID = ((string)customAttributeData.NamedArguments.ToArray()[i].TypedValue.Value);
+                                csspProp.FillFieldID = (string)customAttributeData.NamedArguments.ToArray()[i].TypedValue.Value;
                             }
                             break;
                         case "FillEqualField":
                             {
-                                csspProp.FillEqualField = ((string)customAttributeData.NamedArguments.ToArray()[i].TypedValue.Value);
+                                csspProp.FillEqualField = (string)customAttributeData.NamedArguments.ToArray()[i].TypedValue.Value;
                             }
                             break;
                         case "FillReturnField":
                             {
-                                csspProp.FillReturnField = ((string)customAttributeData.NamedArguments.ToArray()[i].TypedValue.Value);
+                                csspProp.FillReturnField = (string)customAttributeData.NamedArguments.ToArray()[i].TypedValue.Value;
                             }
                             break;
                         case "FillNeedLanguage":
                             {
-                                csspProp.FillNeedLanguage = ((bool)customAttributeData.NamedArguments.ToArray()[i].TypedValue.Value);
+                                csspProp.FillNeedLanguage = (bool)customAttributeData.NamedArguments.ToArray()[i].TypedValue.Value;
                             }
                             break;
                         case "FillIsList":
                             {
-                                csspProp.FillIsList = ((bool)customAttributeData.NamedArguments.ToArray()[i].TypedValue.Value);
+                                csspProp.FillIsList = (bool)customAttributeData.NamedArguments.ToArray()[i].TypedValue.Value;
                             }
                             break;
                         default:
-                            actionCommandDBService.ErrorText.AppendLine($"{ CultureServicesRes.Property } [{ csspProp.PropName }] { CultureServicesRes.OfType } [{ csspProp.PropType }] --- { CultureServicesRes.MemberName }  { customAttributeData.NamedArguments.ToArray()[i].MemberName } { CultureServicesRes.DoesNotExistFor } CSSPFillAttribute");
+                            ActionCommandDBService.ErrorText.AppendLine($"{ CultureServicesRes.Property } [{ csspProp.PropName }] { CultureServicesRes.OfType } [{ csspProp.PropType }] --- { CultureServicesRes.MemberName }  { customAttributeData.NamedArguments.ToArray()[i].MemberName } { CultureServicesRes.DoesNotExistFor } CSSPFillAttribute");
                             return false;
                     }
                 }
@@ -314,16 +308,16 @@ namespace GenerateCodeBaseServices.Services
                     {
                         case "EnumTypeName":
                             {
-                                csspProp.EnumTypeName = ((string)customAttributeData.NamedArguments.ToArray()[i].TypedValue.Value);
+                                csspProp.EnumTypeName = (string)customAttributeData.NamedArguments.ToArray()[i].TypedValue.Value;
                             }
                             break;
                         case "EnumType":
                             {
-                                csspProp.EnumType = ((string)customAttributeData.NamedArguments.ToArray()[i].TypedValue.Value);
+                                csspProp.EnumType = (string)customAttributeData.NamedArguments.ToArray()[i].TypedValue.Value;
                             }
                             break;
                         default:
-                            actionCommandDBService.ErrorText.AppendLine($"{ CultureServicesRes.Property } [{ csspProp.PropName }] { CultureServicesRes.OfType } [{ csspProp.PropType }] --- { CultureServicesRes.MemberName }  { customAttributeData.NamedArguments.ToArray()[i].MemberName } { CultureServicesRes.DoesNotExistFor } CSSPEnumTypeTextAttribute");
+                            ActionCommandDBService.ErrorText.AppendLine($"{ CultureServicesRes.Property } [{ csspProp.PropName }] { CultureServicesRes.OfType } [{ csspProp.PropType }] --- { CultureServicesRes.MemberName }  { customAttributeData.NamedArguments.ToArray()[i].MemberName } { CultureServicesRes.DoesNotExistFor } CSSPEnumTypeTextAttribute");
                             return false;
                     }
                 }
@@ -345,11 +339,11 @@ namespace GenerateCodeBaseServices.Services
                     {
                         case "DescriptionEN":
                             {
-                                csspProp.DescriptionEN = ((string)customAttributeData.NamedArguments.ToArray()[i].TypedValue.Value);
+                                csspProp.DescriptionEN = (string)customAttributeData.NamedArguments.ToArray()[i].TypedValue.Value;
                             }
                             break;
                         default:
-                            actionCommandDBService.ErrorText.AppendLine($"{ CultureServicesRes.Property } [{ csspProp.PropName }] { CultureServicesRes.OfType } [{ csspProp.PropType }] --- { CultureServicesRes.MemberName }  { customAttributeData.NamedArguments.ToArray()[i].MemberName } { CultureServicesRes.DoesNotExistFor } CSSPDescriptionENAttribute");
+                            ActionCommandDBService.ErrorText.AppendLine($"{ CultureServicesRes.Property } [{ csspProp.PropName }] { CultureServicesRes.OfType } [{ csspProp.PropType }] --- { CultureServicesRes.MemberName }  { customAttributeData.NamedArguments.ToArray()[i].MemberName } { CultureServicesRes.DoesNotExistFor } CSSPDescriptionENAttribute");
                             return false;
                     }
                 }
@@ -365,11 +359,11 @@ namespace GenerateCodeBaseServices.Services
                     {
                         case "DescriptionFR":
                             {
-                                csspProp.DescriptionFR = ((string)customAttributeData.NamedArguments.ToArray()[i].TypedValue.Value);
+                                csspProp.DescriptionFR = (string)customAttributeData.NamedArguments.ToArray()[i].TypedValue.Value;
                             }
                             break;
                         default:
-                            actionCommandDBService.ErrorText.AppendLine($"{ CultureServicesRes.Property } [{ csspProp.PropName }] { CultureServicesRes.OfType } [{ csspProp.PropType }] --- { CultureServicesRes.MemberName }  { customAttributeData.NamedArguments.ToArray()[i].MemberName } { CultureServicesRes.DoesNotExistFor } CSSPDescriptionFRAttribute");
+                            ActionCommandDBService.ErrorText.AppendLine($"{ CultureServicesRes.Property } [{ csspProp.PropName }] { CultureServicesRes.OfType } [{ csspProp.PropType }] --- { CultureServicesRes.MemberName }  { customAttributeData.NamedArguments.ToArray()[i].MemberName } { CultureServicesRes.DoesNotExistFor } CSSPDescriptionFRAttribute");
                             return false;
                     }
                 }
@@ -385,11 +379,11 @@ namespace GenerateCodeBaseServices.Services
                     {
                         case "DisplayEN":
                             {
-                                csspProp.DisplayEN = ((string)customAttributeData.NamedArguments.ToArray()[i].TypedValue.Value);
+                                csspProp.DisplayEN = (string)customAttributeData.NamedArguments.ToArray()[i].TypedValue.Value;
                             }
                             break;
                         default:
-                            actionCommandDBService.ErrorText.AppendLine($"{ CultureServicesRes.Property } [{ csspProp.PropName }] { CultureServicesRes.OfType } [{ csspProp.PropType }] --- { CultureServicesRes.MemberName }  { customAttributeData.NamedArguments.ToArray()[i].MemberName } { CultureServicesRes.DoesNotExistFor } CSSPDisplayENAttribute");
+                            ActionCommandDBService.ErrorText.AppendLine($"{ CultureServicesRes.Property } [{ csspProp.PropName }] { CultureServicesRes.OfType } [{ csspProp.PropType }] --- { CultureServicesRes.MemberName }  { customAttributeData.NamedArguments.ToArray()[i].MemberName } { CultureServicesRes.DoesNotExistFor } CSSPDisplayENAttribute");
                             return false;
                     }
                 }
@@ -405,11 +399,11 @@ namespace GenerateCodeBaseServices.Services
                     {
                         case "DisplayFR":
                             {
-                                csspProp.DisplayFR = ((string)customAttributeData.NamedArguments.ToArray()[i].TypedValue.Value);
+                                csspProp.DisplayFR = (string)customAttributeData.NamedArguments.ToArray()[i].TypedValue.Value;
                             }
                             break;
                         default:
-                            actionCommandDBService.ErrorText.AppendLine($"{ CultureServicesRes.Property } [{ csspProp.PropName }] { CultureServicesRes.OfType } [{ csspProp.PropType }] --- { CultureServicesRes.MemberName }  { customAttributeData.NamedArguments.ToArray()[i].MemberName } { CultureServicesRes.DoesNotExistFor } CSSPDisplayFRAttribute");
+                            ActionCommandDBService.ErrorText.AppendLine($"{ CultureServicesRes.Property } [{ csspProp.PropName }] { CultureServicesRes.OfType } [{ csspProp.PropType }] --- { CultureServicesRes.MemberName }  { customAttributeData.NamedArguments.ToArray()[i].MemberName } { CultureServicesRes.DoesNotExistFor } CSSPDisplayFRAttribute");
                             return false;
                     }
                 }

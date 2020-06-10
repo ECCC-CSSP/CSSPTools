@@ -1,4 +1,5 @@
 using CSSPModels;
+using CultureServices.Services;
 using LoggedInServices.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -18,10 +19,11 @@ namespace LoggedInServices.Tests
         #endregion Variables
 
         #region Properties
-        private ILoggedInService loggedInService { get; set; }
-        private IConfiguration configuration { get; set; }
-        private IServiceCollection serviceCollection { get; set; }
-        private IServiceProvider serviceProvider { get; set; }
+        private IConfiguration Configuration { get; set; }
+        private IServiceCollection ServiceCollection { get; set; }
+        private IServiceProvider ServiceProvider { get; set; }
+        private ICultureService CultureService { get; set; }
+        private ILoggedInService LoggedInService { get; set; }
         private string DBFileName { get; set; } = "DBFileName";
         #endregion Properties
 
@@ -37,22 +39,22 @@ namespace LoggedInServices.Tests
         [InlineData("fr-CA")]
         public async Task GetID_SetID_Good_Test(string culture)
         {
-            await Setup(new CultureInfo(culture));
+            Assert.True(await Setup(culture));
 
-            await loggedInService.SetID("f837a0d7-783e-498e-b821-de9c9bd981de");
-            Assert.Equal("f837a0d7-783e-498e-b821-de9c9bd981de", await loggedInService.GetID());
+            await LoggedInService.SetID("f837a0d7-783e-498e-b821-de9c9bd981de");
+            Assert.Equal("f837a0d7-783e-498e-b821-de9c9bd981de", await LoggedInService.GetID());
         }
         [Theory]
         [InlineData("en-CA")]
         [InlineData("fr-CA")]
         public async Task GetContact_Good_Test(string culture)
         {
-            await Setup(new CultureInfo(culture));
+            Assert.True(await Setup(culture));
 
-            await loggedInService.SetID("f837a0d7-783e-498e-b821-de9c9bd981de");
-            Assert.Equal("f837a0d7-783e-498e-b821-de9c9bd981de", await loggedInService.GetID());
+            await LoggedInService.SetID("f837a0d7-783e-498e-b821-de9c9bd981de");
+            Assert.Equal("f837a0d7-783e-498e-b821-de9c9bd981de", await LoggedInService.GetID());
 
-            Contact contact = await loggedInService.GetContact();
+            Contact contact = await LoggedInService.GetContact();
             Assert.Equal("Charles", contact.FirstName);
             Assert.Equal("G", contact.Initial);
             Assert.Equal("LeBlanc", contact.LastName);
@@ -62,18 +64,18 @@ namespace LoggedInServices.Tests
         [InlineData("fr-CA")]
         public async Task GetTVItemUserAuthorizationList_Good_Test(string culture)
         {
-            await Setup(new CultureInfo(culture));
+            Assert.True(await Setup(culture));
 
-            await loggedInService.SetID("f837a0d7-783e-498e-b821-de9c9bd981de");
-            Assert.Equal("f837a0d7-783e-498e-b821-de9c9bd981de", await loggedInService.GetID());
+            await LoggedInService.SetID("f837a0d7-783e-498e-b821-de9c9bd981de");
+            Assert.Equal("f837a0d7-783e-498e-b821-de9c9bd981de", await LoggedInService.GetID());
 
-            List<TVItemUserAuthorization> TVTypeUserAuthorizationList = await loggedInService.GetTVItemUserAuthorizationList();
+            List<TVItemUserAuthorization> TVTypeUserAuthorizationList = await LoggedInService.GetTVItemUserAuthorizationList();
             Assert.True(TVTypeUserAuthorizationList.Count == 0);
 
-            await loggedInService.SetID("023566a4-4a25-4484-88f5-584aa8e1da38");
-            Assert.Equal("023566a4-4a25-4484-88f5-584aa8e1da38", await loggedInService.GetID());
+            await LoggedInService.SetID("023566a4-4a25-4484-88f5-584aa8e1da38");
+            Assert.Equal("023566a4-4a25-4484-88f5-584aa8e1da38", await LoggedInService.GetID());
 
-            TVTypeUserAuthorizationList = await loggedInService.GetTVItemUserAuthorizationList();
+            TVTypeUserAuthorizationList = await LoggedInService.GetTVItemUserAuthorizationList();
             Assert.True(TVTypeUserAuthorizationList.Count == 1);
         }
         [Theory]
@@ -81,49 +83,54 @@ namespace LoggedInServices.Tests
         [InlineData("fr-CA")]
         public async Task GetTVTypeUserAuthorizationList_Good_Test(string culture)
         {
-            await Setup(new CultureInfo(culture));
+            Assert.True(await Setup(culture));
 
-            await loggedInService.SetID("f837a0d7-783e-498e-b821-de9c9bd981de");
-            Assert.Equal("f837a0d7-783e-498e-b821-de9c9bd981de", await loggedInService.GetID());
+            await LoggedInService.SetID("f837a0d7-783e-498e-b821-de9c9bd981de");
+            Assert.Equal("f837a0d7-783e-498e-b821-de9c9bd981de", await LoggedInService.GetID());
 
-            List<TVTypeUserAuthorization> TVItemUserAuthorizationList = await loggedInService.GetTVTypeUserAuthorizationList();
+            List<TVTypeUserAuthorization> TVItemUserAuthorizationList = await LoggedInService.GetTVTypeUserAuthorizationList();
             Assert.True(TVItemUserAuthorizationList.Count == 1);
 
-            await loggedInService.SetID("023566a4-4a25-4484-88f5-584aa8e1da38");
-            Assert.Equal("023566a4-4a25-4484-88f5-584aa8e1da38", await loggedInService.GetID());
+            await LoggedInService.SetID("023566a4-4a25-4484-88f5-584aa8e1da38");
+            Assert.Equal("023566a4-4a25-4484-88f5-584aa8e1da38", await LoggedInService.GetID());
 
-            TVItemUserAuthorizationList = await loggedInService.GetTVTypeUserAuthorizationList();
+            TVItemUserAuthorizationList = await LoggedInService.GetTVTypeUserAuthorizationList();
             Assert.True(TVItemUserAuthorizationList.Count == 1);
         }
         #endregion Functions public
 
         #region Functions private
-        private async Task Setup(CultureInfo culture)
+        private async Task<bool> Setup(string culture)
         {
-            configuration = new ConfigurationBuilder()
+            Configuration = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetParent(AppContext.BaseDirectory).FullName)
                 .AddJsonFile("appsettings.json")
                 .Build();
 
-            serviceCollection = new ServiceCollection();
+            ServiceCollection = new ServiceCollection();
 
-            serviceCollection.AddSingleton<IConfiguration>(configuration);
+            ServiceCollection.AddSingleton<IConfiguration>(Configuration);
+            ServiceCollection.AddSingleton<ICultureService, CultureService>();
+            ServiceCollection.AddSingleton<ILoggedInService, LoggedInService>();
 
-            string CSSPDBConnString = configuration.GetValue<string>("CSSPDBConnectionString");
+            string CSSPDBConnString = Configuration.GetValue<string>("CSSPDBConnectionString");
             Assert.NotNull(CSSPDBConnString);
                 
-            serviceCollection.AddDbContext<CSSPDBContext>(options =>
+            ServiceCollection.AddDbContext<CSSPDBContext>(options =>
                 {
                     options.UseSqlServer(CSSPDBConnString);
                 });
 
-            serviceCollection.AddSingleton<ILoggedInService, LoggedInService>();
+            ServiceProvider = ServiceCollection.BuildServiceProvider();
+            Assert.NotNull(ServiceProvider);
 
-            serviceProvider = serviceCollection.BuildServiceProvider();
-            Assert.NotNull(serviceProvider);
+            CultureService = ServiceProvider.GetService<ICultureService>();
+            Assert.NotNull(CultureService);
 
-            loggedInService = serviceProvider.GetService<ILoggedInService>();
-            Assert.NotNull(loggedInService);
+            LoggedInService = ServiceProvider.GetService<ILoggedInService>();
+            Assert.NotNull(LoggedInService);
+
+            return await Task.FromResult(true);
         }
         #endregion Functions private
     }

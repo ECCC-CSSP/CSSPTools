@@ -1,5 +1,4 @@
-﻿using CSSPEnums;
-using ValidateAppSettingsServices.Models;
+﻿using ValidateAppSettingsServices.Models;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
@@ -12,6 +11,7 @@ using System.Threading.Tasks;
 using System.Globalization;
 using ActionCommandDBServices.Services;
 using CultureServices.Resources;
+using CultureServices.Services;
 
 namespace ValidateAppSettingsServices.Services
 {
@@ -23,6 +23,7 @@ namespace ValidateAppSettingsServices.Services
         #region Properties
         private IConfiguration configuration { get; }
         public List<AppSettingParameter> AppSettingParameterList { get; set; }
+        private ICultureService CultureService { get; }
         private IActionCommandDBService actionCommandDBService { get; }
         #endregion Properties
 
@@ -73,11 +74,6 @@ namespace ValidateAppSettingsServices.Services
                 }
             }
             return retBool;
-        }
-        public async Task SetCulture(CultureInfo culture)
-        {
-            CultureServicesRes.Culture = culture;
-            await actionCommandDBService.SetCulture(culture);
         }
         #endregion Functions public
 

@@ -1,17 +1,6 @@
-﻿using CSSPEnums;
-using GenerateCodeBaseServices.Models;
-using ActionCommandDBServices.Services;
+﻿using ActionCommandDBServices.Services;
+using CultureServices.Services;
 using Microsoft.Extensions.Configuration;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Globalization;
-using System.IO;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
-using CultureServices.Resources;
 
 namespace GenerateCodeBaseServices.Services
 {
@@ -21,24 +10,22 @@ namespace GenerateCodeBaseServices.Services
         #endregion Variables
 
         #region Properties
-        private IConfiguration configuration { get; set; }
-        private IActionCommandDBService actionCommandDBService { get; set; }
+        private IConfiguration Configuration { get; }
+        private ICultureService CultureService { get; }
+        private IActionCommandDBService ActionCommandDBService { get; }
         #endregion Properties
 
         #region Constructors
-        public GenerateCodeBaseService(IConfiguration configuration, IActionCommandDBService actionCommandDBService)
+        public GenerateCodeBaseService(IConfiguration configuration, ICultureService cultureService, IActionCommandDBService actionCommandDBService)
         {
-            this.configuration = configuration;
-            this.actionCommandDBService = actionCommandDBService;
+            Configuration = configuration;
+            CultureService = cultureService;
+            ActionCommandDBService = actionCommandDBService;
         }
         #endregion Constructors
 
         #region Functions public
-        public async Task SetCulture(CultureInfo culture)
-        {
-            await actionCommandDBService.SetCulture(culture);
-            CultureServicesRes.Culture = culture;
-        }
+        // see Helpers folder for more public functions
         #endregion Functions public
 
         #region Functions private

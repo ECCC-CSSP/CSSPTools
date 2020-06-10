@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using ActionCommandDBServices.Services;
 using ValidateAppSettingsServices.Services;
 using CultureServices.Resources;
+using CultureServices.Services;
 
 namespace PolSourceGroupingExcelFileReadServices.Services
 {
@@ -22,17 +23,20 @@ namespace PolSourceGroupingExcelFileReadServices.Services
         #endregion Variables
 
         #region Properties
-        private IActionCommandDBService actionCommandDBService { get; set; }
-        private IValidateAppSettingsService validateAppSettingsService { get; set; }
-        public List<GroupChoiceChildLevel> groupChoiceChildLevelList { get; set; }
+        private ICultureService CultureService { get; set; }
+        private IActionCommandDBService ActionCommandDBService { get; set; }
+        private IValidateAppSettingsService ValidateAppSettingsService { get; set; }
+        public List<GroupChoiceChildLevel> GroupChoiceChildLevelList { get; set; }
         #endregion Properties
 
         #region Constructors
-        public PolSourceGroupingExcelFileReadService(IActionCommandDBService actionCommandDBService,
+        public PolSourceGroupingExcelFileReadService(ICultureService cultureService,
+            IActionCommandDBService actionCommandDBService,
             IValidateAppSettingsService validateAppSettingsService)
         {
-            this.actionCommandDBService = actionCommandDBService;
-            this.validateAppSettingsService = validateAppSettingsService;
+            CultureService = cultureService;
+            ActionCommandDBService = actionCommandDBService;
+            ValidateAppSettingsService = validateAppSettingsService;
         }
         #endregion Constructors
 
@@ -40,7 +44,7 @@ namespace PolSourceGroupingExcelFileReadServices.Services
         public async Task<bool> ReadExcelSheet(string FullFileName, bool DoCheck)
         {
             this.FullFileName = FullFileName;
-            groupChoiceChildLevelList = new List<GroupChoiceChildLevel>();
+            GroupChoiceChildLevelList = new List<GroupChoiceChildLevel>();
 
             if (!await ReadExcelFile())
             {
@@ -55,7 +59,7 @@ namespace PolSourceGroupingExcelFileReadServices.Services
                 }
             }
 
-            foreach (GroupChoiceChildLevel groupChoiceChildLevel in groupChoiceChildLevelList)
+            foreach (GroupChoiceChildLevel groupChoiceChildLevel in GroupChoiceChildLevelList)
             {
                 List<string> CSSPIDList2 = new List<string>();
                 List<string> CSSPIDList = groupChoiceChildLevel.Hide.Split(",".ToCharArray(), StringSplitOptions.RemoveEmptyEntries).Select(c => c.Trim()).ToList();
@@ -70,9 +74,9 @@ namespace PolSourceGroupingExcelFileReadServices.Services
                         int endPos = childCSSPID.IndexOf("-") + 1;
                         if (childCSSPID.Length <= endPos)
                         {
-                            actionCommandDBService.ErrorText.AppendLine($"CSSPID [{ groupChoiceChildLevel.CSSPID }] { CultureServicesRes.HideCellContains } [{ childCSSPID }] { CultureServicesRes.MissingEndValue }");
-                            actionCommandDBService.PercentCompleted = 0;
-                            await actionCommandDBService.Update();
+                            ActionCommandDBService.ErrorText.AppendLine($"CSSPID [{ groupChoiceChildLevel.CSSPID }] { CultureServicesRes.HideCellContains } [{ childCSSPID }] { CultureServicesRes.MissingEndValue }");
+                            ActionCommandDBService.PercentCompleted = 0;
+                            await ActionCommandDBService.Update();
 
                             return false;
                         }
@@ -81,9 +85,9 @@ namespace PolSourceGroupingExcelFileReadServices.Services
 
                         if (fromCSSPID >= toCSSPID)
                         {
-                            actionCommandDBService.ErrorText.AppendLine($"CSSPID [{ groupChoiceChildLevel.CSSPID }] { CultureServicesRes.HideCellContains } [{ childCSSPID }] { CultureServicesRes.WhichTheFirstValueIs }  >= { CultureServicesRes.ThanTheLastValue }");
-                            actionCommandDBService.PercentCompleted = 0;
-                            await actionCommandDBService.Update();
+                            ActionCommandDBService.ErrorText.AppendLine($"CSSPID [{ groupChoiceChildLevel.CSSPID }] { CultureServicesRes.HideCellContains } [{ childCSSPID }] { CultureServicesRes.WhichTheFirstValueIs }  >= { CultureServicesRes.ThanTheLastValue }");
+                            ActionCommandDBService.PercentCompleted = 0;
+                            await ActionCommandDBService.Update();
 
                             return false;
                         }
@@ -95,9 +99,9 @@ namespace PolSourceGroupingExcelFileReadServices.Services
                         {
                             if (CSSPIDList2.Contains(id.ToString()) || CSSPIDList.Contains(id.ToString()))
                             {
-                                actionCommandDBService.ErrorText.AppendLine($"CSSPID [{ groupChoiceChildLevel.CSSPID }] { CultureServicesRes.HideCellContains } [{ childCSSPID }] { CultureServicesRes.WhichWillDuplicate } [{ id.ToString() }]");
-                                actionCommandDBService.PercentCompleted = 0;
-                                await actionCommandDBService.Update();
+                                ActionCommandDBService.ErrorText.AppendLine($"CSSPID [{ groupChoiceChildLevel.CSSPID }] { CultureServicesRes.HideCellContains } [{ childCSSPID }] { CultureServicesRes.WhichWillDuplicate } [{ id.ToString() }]");
+                                ActionCommandDBService.PercentCompleted = 0;
+                                await ActionCommandDBService.Update();
 
                                 return false;
                             }
@@ -118,14 +122,10 @@ namespace PolSourceGroupingExcelFileReadServices.Services
                 groupChoiceChildLevel.ID = int.Parse(groupChoiceChildLevel.CSSPID);
             }
 
-            actionCommandDBService.ExecutionStatusText.AppendLine($"{ CultureServicesRes.ExcelDocReadCompleted } ... ");
+            ActionCommandDBService.ExecutionStatusText.AppendLine($"{ CultureServicesRes.ExcelDocReadCompleted } ... ");
             //await actionCommandDBService.Update( 0);
 
             return true;
-        }
-        public async Task SetCulture(CultureInfo Culture)
-        {
-            CultureServicesRes.Culture = Culture;
         }
         #endregion Functions public
 

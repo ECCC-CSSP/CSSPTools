@@ -18,6 +18,7 @@ using Microsoft.Data.SqlClient.Server;
 using Microsoft.Extensions.Configuration;
 using ActionCommandDBServices.Services;
 using ActionCommandDBServices.Models;
+using CultureServices.Services;
 
 namespace CSSPCodeGenWebAPI.Controllers
 {
@@ -31,6 +32,7 @@ namespace CSSPCodeGenWebAPI.Controllers
 
         #region Properties
         private IConfiguration configuration { get; set; }
+        private ICultureService CultureService { get; set; }
         private IActionCommandDBService actionCommandDBService { get; set; }
         #endregion Properties
 
@@ -49,21 +51,21 @@ namespace CSSPCodeGenWebAPI.Controllers
         [HttpGet]
         public async Task<ActionResult<List<ActionCommand>>> GetAll()
         {
-            await actionCommandDBService.SetCulture(new CultureInfo(Request.RouteValues["culture"].ToString()));
+            CultureService.SetCulture(Request.RouteValues["culture"].ToString());
             return await actionCommandDBService.GetAll();
         }
         [Route("RefillAll")]
         [HttpGet]
         public async Task<ActionResult<List<ActionCommand>>> RefillAll()
         {
-            await actionCommandDBService.SetCulture(new CultureInfo(Request.RouteValues["culture"].ToString()));
+            CultureService.SetCulture(Request.RouteValues["culture"].ToString());
             return await actionCommandDBService.RefillAll();
         }
         [Route("Run")]
         [HttpPost]
         public async Task<ActionResult<ActionCommand>> Run(ActionCommand actionCommand)
         {
-            await actionCommandDBService.SetCulture(new CultureInfo(Request.RouteValues["culture"].ToString()));
+            CultureService.SetCulture(Request.RouteValues["culture"].ToString());
             return await actionCommandDBService.Run(actionCommand);
         }
         #endregion Functions public

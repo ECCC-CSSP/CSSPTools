@@ -1,5 +1,5 @@
 ﻿Requirements: 
-C:\CSSPTools\src\dlls\CSSPEnums\bin\Debug\netcoreapp3.1\CSSPEnums.dll
+C:\CSSPTools\src\dlls\_package\netcoreapp3.1\CSSPEnums.dll
 
 Files created:
 C:\CSSPCode\CSSPServices\CSSPServices\_ExtensionEnumCastingGenerated.cs

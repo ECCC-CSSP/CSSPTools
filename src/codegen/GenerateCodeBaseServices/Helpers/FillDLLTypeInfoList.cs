@@ -1,16 +1,9 @@
-﻿using CSSPEnums;
-using GenerateCodeBaseServices.Models;
-using ActionCommandDBServices.Services;
-using Microsoft.Extensions.Configuration;
+﻿using GenerateCodeBaseServices.Models;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace GenerateCodeBaseServices.Services
 {
@@ -29,11 +22,13 @@ namespace GenerateCodeBaseServices.Services
                     continue;
                 }
 
-                DLLTypeInfo dllTypeInfo = new DLLTypeInfo();
-                dllTypeInfo.Type = type;
-                dllTypeInfo.Name = type.Name;
-                dllTypeInfo.IsEnum = false;
-                if (type.GetTypeInfo().BaseType == typeof(System.Enum))
+                DLLTypeInfo dllTypeInfo = new DLLTypeInfo
+                {
+                    Type = type,
+                    Name = type.Name,
+                    IsEnum = false
+                };
+                if (type.GetTypeInfo().BaseType == typeof(Enum))
                 {
                     dllTypeInfo.IsEnum = true;
                 }

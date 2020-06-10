@@ -1,4 +1,5 @@
 ﻿using ActionCommandDBServices.Services;
+using CultureServices.Services;
 using GenerateCodeBaseServices.Services;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -15,6 +16,7 @@ namespace ConfigServices.Services
         IConfiguration Config { get; set; }
         IServiceProvider Provider { get; set; }
         IServiceCollection Services { get; set; }
+        ICultureService CultureService { get; set; }
         IActionCommandDBService ActionCommandDBService { get; set; }
         IGenerateCodeBaseService GenerateCodeBaseService { get; set; }
         IValidateAppSettingsService ValidateAppSettingsService { get; set; }
@@ -28,7 +30,6 @@ namespace ConfigServices.Services
         Task<bool> ConfigureCSSPDBContext();
         Task<bool> ConfigureTestDBContext();
         Task<bool> FillActionAndCommand();
-        Task<bool> SetCulture(CultureInfo culture);
         Task<bool> SetCultureWithArgs(string[] args);
     }
 }

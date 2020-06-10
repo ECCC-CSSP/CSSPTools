@@ -28,7 +28,7 @@ namespace EnumsPolSourceInfoRelatedFilesServices.Services
 
             FileInfo fi = new FileInfo(Config.GetValue<string>("FillPolSourceObsInfoChildServiceGenerated_cs"));
 
-            List<string> groupList = (from c in PolSourceGroupingExcelFileReadService.groupChoiceChildLevelList
+            List<string> groupList = (from c in PolSourceGroupingExcelFileReadService.GroupChoiceChildLevelList
                                       select c.Group).Distinct().ToList();
 
             sb.AppendLine(@"/*");
@@ -64,7 +64,7 @@ namespace EnumsPolSourceInfoRelatedFilesServices.Services
             sb.AppendLine(@"        public void FillPolSourceObsInfoChild(List<PolSourceObsInfoChild> polSourceObsInfoChildList)");
             sb.AppendLine(@"        {");
             sb.AppendLine(@"            polSourceObsInfoChildList.Clear();");
-            foreach (GroupChoiceChildLevel groupChoiceChildLevel in PolSourceGroupingExcelFileReadService.groupChoiceChildLevelList.Where(c => c.Group.Substring(c.Group.Length - 5) == "Start" && c.Choice == "").Distinct().ToList())
+            foreach (GroupChoiceChildLevel groupChoiceChildLevel in PolSourceGroupingExcelFileReadService.GroupChoiceChildLevelList.Where(c => c.Group.Substring(c.Group.Length - 5) == "Start" && c.Choice == "").Distinct().ToList())
             {
                 sb.AppendLine(@"            polSourceObsInfoChildList.Add(new PolSourceObsInfoChild()");
                 sb.AppendLine(@"            {");
@@ -72,7 +72,7 @@ namespace EnumsPolSourceInfoRelatedFilesServices.Services
                 sb.AppendLine($@"                PolSourceObsInfoChildStart = PolSourceObsInfoEnum.{ groupChoiceChildLevel.Group.ToString() },");
                 sb.AppendLine(@"            });");
             }
-            foreach (GroupChoiceChildLevel groupChoiceChildLevel in PolSourceGroupingExcelFileReadService.groupChoiceChildLevelList.Where(c => c.Child != ""))
+            foreach (GroupChoiceChildLevel groupChoiceChildLevel in PolSourceGroupingExcelFileReadService.GroupChoiceChildLevelList.Where(c => c.Child != ""))
             {
                 sb.AppendLine(@"            polSourceObsInfoChildList.Add(new PolSourceObsInfoChild()");
                 sb.AppendLine(@"            {");

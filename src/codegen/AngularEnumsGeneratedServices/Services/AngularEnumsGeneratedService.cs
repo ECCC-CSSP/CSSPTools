@@ -1,5 +1,4 @@
 ﻿using ActionCommandDBServices.Services;
-using ConfigServices.Services;
 using GenerateCodeBaseServices.Services;
 using Microsoft.Extensions.Configuration;
 using System.Collections.Generic;
@@ -9,6 +8,7 @@ using ValidateAppSettingsServices.Services;
 using CultureServices;
 using CultureServices.Services;
 using CSSPEnums;
+using ConfigServices.Services;
 
 namespace AngularEnumsGeneratedServices.Services
 {
@@ -18,7 +18,6 @@ namespace AngularEnumsGeneratedServices.Services
         #endregion Variables
 
         #region Properties
-        private ICultureService CultureService { get; set; }
         private IEnums Enums { get; set; }
         #endregion Properties
 
@@ -26,14 +25,12 @@ namespace AngularEnumsGeneratedServices.Services
         public AngularEnumsGeneratedService(IConfiguration configuration,
             IActionCommandDBService actionCommandDBService,
             IValidateAppSettingsService validateAppSettingsService,
-            IGenerateCodeBaseService generateCodeBaseService, 
-            ICultureService cultureService,
+            IGenerateCodeBaseService generateCodeBaseService,
             IEnums enums) : base(configuration)
         {
             ActionCommandDBService = actionCommandDBService;
             ValidateAppSettingsService = validateAppSettingsService;
             GenerateCodeBaseService = generateCodeBaseService;
-            CultureService = cultureService;
             Enums = enums;
         }
         #endregion Constructors

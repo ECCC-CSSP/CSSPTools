@@ -34,9 +34,9 @@ namespace EnumsPolSourceInfoRelatedFilesServices.Services
                 return await Task.FromResult(false);
             }
 
-            if (PolSourceGroupingExcelFileReadService.groupChoiceChildLevelList.Count() == 0)
+            if (PolSourceGroupingExcelFileReadService.GroupChoiceChildLevelList.Count() == 0)
             {
-                string ErrorText = String.Format(CultureServicesRes.ERROR_IsEqualTo0, "_groupChoiceChildLevelList");
+                string ErrorText = String.Format(CultureServicesRes.ERROR_IsEqualTo0, "_GroupChoiceChildLevelList");
                 ActionCommandDBService.ErrorText.AppendLine($"{ ErrorText }");
                 ActionCommandDBService.PercentCompleted = 0;
                 await ActionCommandDBService.Update();
