@@ -15,7 +15,7 @@ import { WebTideDataSetEnum_GetIDText, WebTideDataSetEnum_GetOrderedText } from 
 import { TVTypeEnum_GetIDText, TVTypeEnum_GetOrderedText } from '../../../enums/generated/TVTypeEnum';
 import { MikeBoundaryCondition } from '../../../models/generated/MikeBoundaryCondition.model';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
-import { EnumIDAndText } from 'src/app/models/enumidandtext.model';
+import { EnumIDAndText } from '../../../models/enumidandtext.model';
 
 @Component({
   selector: 'app-mikeboundarycondition',

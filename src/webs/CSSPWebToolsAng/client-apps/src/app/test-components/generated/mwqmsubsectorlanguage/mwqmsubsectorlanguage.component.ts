@@ -14,7 +14,7 @@ import { LanguageEnum_GetIDText, LanguageEnum_GetOrderedText } from '../../../en
 import { TranslationStatusEnum_GetIDText, TranslationStatusEnum_GetOrderedText } from '../../../enums/generated/TranslationStatusEnum';
 import { MWQMSubsectorLanguage } from '../../../models/generated/MWQMSubsectorLanguage.model';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
-import { EnumIDAndText } from 'src/app/models/enumidandtext.model';
+import { EnumIDAndText } from '../../../models/enumidandtext.model';
 
 @Component({
   selector: 'app-mwqmsubsectorlanguage',
@@ -58,7 +58,7 @@ export class MWQMSubsectorLanguageComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     LoadLocalesMWQMSubsectorLanguageText(this.mwqmsubsectorlanguageService);
     this.languageList = LanguageEnum_GetOrderedText();
-    this.translationStatusSubsectorDescList = TranslationStatusSubsectorDescEnum_GetOrderedText();
+    this.translationStatusSubsectorDescList = TranslationStatusEnum_GetOrderedText();
     this.FillFormBuilderGroup('Add');
     this.FillFormBuilderGroup('Update');
   }

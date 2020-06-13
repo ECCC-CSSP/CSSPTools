@@ -13,7 +13,7 @@ import { Subscription } from 'rxjs';
 import { SampleTypeEnum_GetIDText, SampleTypeEnum_GetOrderedText } from '../../../enums/generated/SampleTypeEnum';
 import { MWQMSample } from '../../../models/generated/MWQMSample.model';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
-import { EnumIDAndText } from 'src/app/models/enumidandtext.model';
+import { EnumIDAndText } from '../../../models/enumidandtext.model';
 
 @Component({
   selector: 'app-mwqmsample',
@@ -51,7 +51,7 @@ export class MWQMSampleComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     LoadLocalesMWQMSampleText(this.mwqmsampleService);
-    this.sampleType_oldList = SampleType_oldEnum_GetOrderedText();
+    this.sampleType_oldList = SampleTypeEnum_GetOrderedText();
     this.FillFormBuilderGroup('Add');
     this.FillFormBuilderGroup('Update');
   }

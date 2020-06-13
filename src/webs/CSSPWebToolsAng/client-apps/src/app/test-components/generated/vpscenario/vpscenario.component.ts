@@ -13,7 +13,7 @@ import { Subscription } from 'rxjs';
 import { ScenarioStatusEnum_GetIDText, ScenarioStatusEnum_GetOrderedText } from '../../../enums/generated/ScenarioStatusEnum';
 import { VPScenario } from '../../../models/generated/VPScenario.model';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
-import { EnumIDAndText } from 'src/app/models/enumidandtext.model';
+import { EnumIDAndText } from '../../../models/enumidandtext.model';
 
 @Component({
   selector: 'app-vpscenario',
@@ -51,7 +51,7 @@ export class VPScenarioComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     LoadLocalesVPScenarioText(this.vpscenarioService);
-    this.vPScenarioStatusList = VPScenarioStatusEnum_GetOrderedText();
+    this.vPScenarioStatusList = ScenarioStatusEnum_GetOrderedText();
     this.FillFormBuilderGroup('Add');
     this.FillFormBuilderGroup('Update');
   }

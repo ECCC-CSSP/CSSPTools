@@ -13,7 +13,7 @@ import { Subscription } from 'rxjs';
 import { DrogueTypeEnum_GetIDText, DrogueTypeEnum_GetOrderedText } from '../../../enums/generated/DrogueTypeEnum';
 import { DrogueRun } from '../../../models/generated/DrogueRun.model';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
-import { EnumIDAndText } from 'src/app/models/enumidandtext.model';
+import { EnumIDAndText } from '../../../models/enumidandtext.model';
 
 @Component({
   selector: 'app-droguerun',

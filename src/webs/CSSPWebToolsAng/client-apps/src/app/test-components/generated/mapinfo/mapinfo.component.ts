@@ -14,7 +14,7 @@ import { TVTypeEnum_GetIDText, TVTypeEnum_GetOrderedText } from '../../../enums/
 import { MapInfoDrawTypeEnum_GetIDText, MapInfoDrawTypeEnum_GetOrderedText } from '../../../enums/generated/MapInfoDrawTypeEnum';
 import { MapInfo } from '../../../models/generated/MapInfo.model';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
-import { EnumIDAndText } from 'src/app/models/enumidandtext.model';
+import { EnumIDAndText } from '../../../models/enumidandtext.model';
 
 @Component({
   selector: 'app-mapinfo',

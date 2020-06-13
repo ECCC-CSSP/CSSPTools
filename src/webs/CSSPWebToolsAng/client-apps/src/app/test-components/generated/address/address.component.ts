@@ -14,7 +14,7 @@ import { AddressTypeEnum_GetIDText, AddressTypeEnum_GetOrderedText } from '../..
 import { StreetTypeEnum_GetIDText, StreetTypeEnum_GetOrderedText } from '../../../enums/generated/StreetTypeEnum';
 import { Address } from '../../../models/generated/Address.model';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
-import { EnumIDAndText } from 'src/app/models/enumidandtext.model';
+import { EnumIDAndText } from '../../../models/enumidandtext.model';
 
 @Component({
   selector: 'app-address',

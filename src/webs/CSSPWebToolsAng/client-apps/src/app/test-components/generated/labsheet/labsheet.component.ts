@@ -16,7 +16,7 @@ import { LabSheetTypeEnum_GetIDText, LabSheetTypeEnum_GetOrderedText } from '../
 import { LabSheetStatusEnum_GetIDText, LabSheetStatusEnum_GetOrderedText } from '../../../enums/generated/LabSheetStatusEnum';
 import { LabSheet } from '../../../models/generated/LabSheet.model';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
-import { EnumIDAndText } from 'src/app/models/enumidandtext.model';
+import { EnumIDAndText } from '../../../models/enumidandtext.model';
 
 @Component({
   selector: 'app-labsheet',

@@ -13,7 +13,7 @@ import { Subscription } from 'rxjs';
 import { TelTypeEnum_GetIDText, TelTypeEnum_GetOrderedText } from '../../../enums/generated/TelTypeEnum';
 import { Tel } from '../../../models/generated/Tel.model';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
-import { EnumIDAndText } from 'src/app/models/enumidandtext.model';
+import { EnumIDAndText } from '../../../models/enumidandtext.model';
 
 @Component({
   selector: 'app-tel',

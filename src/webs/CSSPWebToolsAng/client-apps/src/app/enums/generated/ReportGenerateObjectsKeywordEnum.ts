@@ -5,7 +5,7 @@
  *
  */
 
-import { EnumIDAndText } from 'src/app/models/enumidandtext.models';
+import { EnumIDAndText } from '../../models/enumidandtext.model';
 
 export enum ReportGenerateObjectsKeywordEnum {
     SUBSECTOR_RE_EVALUATION_COVER_PAGE = 1,

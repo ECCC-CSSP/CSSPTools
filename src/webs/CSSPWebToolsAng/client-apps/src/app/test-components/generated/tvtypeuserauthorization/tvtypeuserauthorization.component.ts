@@ -14,7 +14,7 @@ import { TVTypeEnum_GetIDText, TVTypeEnum_GetOrderedText } from '../../../enums/
 import { TVAuthEnum_GetIDText, TVAuthEnum_GetOrderedText } from '../../../enums/generated/TVAuthEnum';
 import { TVTypeUserAuthorization } from '../../../models/generated/TVTypeUserAuthorization.model';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
-import { EnumIDAndText } from 'src/app/models/enumidandtext.model';
+import { EnumIDAndText } from '../../../models/enumidandtext.model';
 
 @Component({
   selector: 'app-tvtypeuserauthorization',

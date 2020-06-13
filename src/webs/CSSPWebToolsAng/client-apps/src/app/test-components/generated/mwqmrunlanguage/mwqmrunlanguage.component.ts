@@ -14,7 +14,7 @@ import { LanguageEnum_GetIDText, LanguageEnum_GetOrderedText } from '../../../en
 import { TranslationStatusEnum_GetIDText, TranslationStatusEnum_GetOrderedText } from '../../../enums/generated/TranslationStatusEnum';
 import { MWQMRunLanguage } from '../../../models/generated/MWQMRunLanguage.model';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
-import { EnumIDAndText } from 'src/app/models/enumidandtext.model';
+import { EnumIDAndText } from '../../../models/enumidandtext.model';
 
 @Component({
   selector: 'app-mwqmrunlanguage',
@@ -58,7 +58,7 @@ export class MWQMRunLanguageComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     LoadLocalesMWQMRunLanguageText(this.mwqmrunlanguageService);
     this.languageList = LanguageEnum_GetOrderedText();
-    this.translationStatusRunCommentList = TranslationStatusRunCommentEnum_GetOrderedText();
+    this.translationStatusRunCommentList = TranslationStatusEnum_GetOrderedText();
     this.FillFormBuilderGroup('Add');
     this.FillFormBuilderGroup('Update');
   }

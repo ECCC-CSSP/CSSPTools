@@ -16,7 +16,7 @@ import { FilePurposeEnum_GetIDText, FilePurposeEnum_GetOrderedText } from '../..
 import { FileTypeEnum_GetIDText, FileTypeEnum_GetOrderedText } from '../../../enums/generated/FileTypeEnum';
 import { TVFile } from '../../../models/generated/TVFile.model';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
-import { EnumIDAndText } from 'src/app/models/enumidandtext.model';
+import { EnumIDAndText } from '../../../models/enumidandtext.model';
 
 @Component({
   selector: 'app-tvfile',
@@ -69,7 +69,7 @@ export class TVFileComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     LoadLocalesTVFileText(this.tvfileService);
-    this.templateTVTypeList = TemplateTVTypeEnum_GetOrderedText();
+    this.templateTVTypeList = TVTypeEnum_GetOrderedText();
     this.languageList = LanguageEnum_GetOrderedText();
     this.filePurposeList = FilePurposeEnum_GetOrderedText();
     this.fileTypeList = FileTypeEnum_GetOrderedText();

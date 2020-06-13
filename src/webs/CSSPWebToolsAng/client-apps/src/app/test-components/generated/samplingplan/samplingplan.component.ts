@@ -18,7 +18,7 @@ import { SampleMatrixEnum_GetIDText, SampleMatrixEnum_GetOrderedText } from '../
 import { LaboratoryEnum_GetIDText, LaboratoryEnum_GetOrderedText } from '../../../enums/generated/LaboratoryEnum';
 import { SamplingPlan } from '../../../models/generated/SamplingPlan.model';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
-import { EnumIDAndText } from 'src/app/models/enumidandtext.model';
+import { EnumIDAndText } from '../../../models/enumidandtext.model';
 
 @Component({
   selector: 'app-samplingplan',
@@ -84,9 +84,9 @@ export class SamplingPlanComponent implements OnInit, OnDestroy {
     this.sampleTypeList = SampleTypeEnum_GetOrderedText();
     this.samplingPlanTypeList = SamplingPlanTypeEnum_GetOrderedText();
     this.labSheetTypeList = LabSheetTypeEnum_GetOrderedText();
-    this.analyzeMethodDefaultList = AnalyzeMethodDefaultEnum_GetOrderedText();
-    this.sampleMatrixDefaultList = SampleMatrixDefaultEnum_GetOrderedText();
-    this.laboratoryDefaultList = LaboratoryDefaultEnum_GetOrderedText();
+    this.analyzeMethodDefaultList = AnalyzeMethodEnum_GetOrderedText();
+    this.sampleMatrixDefaultList = SampleMatrixEnum_GetOrderedText();
+    this.laboratoryDefaultList = LaboratoryEnum_GetOrderedText();
     this.FillFormBuilderGroup('Add');
     this.FillFormBuilderGroup('Update');
   }

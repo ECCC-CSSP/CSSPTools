@@ -13,7 +13,7 @@ import { Subscription } from 'rxjs';
 import { TVTypeEnum_GetIDText, TVTypeEnum_GetOrderedText } from '../../../enums/generated/TVTypeEnum';
 import { TVItemLink } from '../../../models/generated/TVItemLink.model';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
-import { EnumIDAndText } from 'src/app/models/enumidandtext.model';
+import { EnumIDAndText } from '../../../models/enumidandtext.model';
 
 @Component({
   selector: 'app-tvitemlink',
@@ -51,7 +51,7 @@ export class TVItemLinkComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     LoadLocalesTVItemLinkText(this.tvitemlinkService);
-    this.fromTVTypeList = FromTVTypeEnum_GetOrderedText();
+    this.fromTVTypeList = TVTypeEnum_GetOrderedText();
     this.FillFormBuilderGroup('Add');
     this.FillFormBuilderGroup('Update');
   }

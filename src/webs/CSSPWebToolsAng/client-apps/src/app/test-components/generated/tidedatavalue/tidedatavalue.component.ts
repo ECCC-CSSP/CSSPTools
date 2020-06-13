@@ -15,7 +15,7 @@ import { StorageDataTypeEnum_GetIDText, StorageDataTypeEnum_GetOrderedText } fro
 import { TideTextEnum_GetIDText, TideTextEnum_GetOrderedText } from '../../../enums/generated/TideTextEnum';
 import { TideDataValue } from '../../../models/generated/TideDataValue.model';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
-import { EnumIDAndText } from 'src/app/models/enumidandtext.model';
+import { EnumIDAndText } from '../../../models/enumidandtext.model';
 
 @Component({
   selector: 'app-tidedatavalue',
@@ -65,7 +65,7 @@ export class TideDataValueComponent implements OnInit, OnDestroy {
     LoadLocalesTideDataValueText(this.tidedatavalueService);
     this.tideDataTypeList = TideDataTypeEnum_GetOrderedText();
     this.storageDataTypeList = StorageDataTypeEnum_GetOrderedText();
-    this.tideStartList = TideStartEnum_GetOrderedText();
+    this.tideStartList = TideTextEnum_GetOrderedText();
     this.FillFormBuilderGroup('Add');
     this.FillFormBuilderGroup('Update');
   }

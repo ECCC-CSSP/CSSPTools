@@ -13,7 +13,7 @@ import { Subscription } from 'rxjs';
 import { MWQMSiteLatestClassificationEnum_GetIDText, MWQMSiteLatestClassificationEnum_GetOrderedText } from '../../../enums/generated/MWQMSiteLatestClassificationEnum';
 import { MWQMSite } from '../../../models/generated/MWQMSite.model';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
-import { EnumIDAndText } from 'src/app/models/enumidandtext.model';
+import { EnumIDAndText } from '../../../models/enumidandtext.model';
 
 @Component({
   selector: 'app-mwqmsite',

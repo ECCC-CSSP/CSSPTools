@@ -13,7 +13,7 @@ import { Subscription } from 'rxjs';
 import { PolSourceInactiveReasonEnum_GetIDText, PolSourceInactiveReasonEnum_GetOrderedText } from '../../../enums/generated/PolSourceInactiveReasonEnum';
 import { PolSourceSite } from '../../../models/generated/PolSourceSite.model';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
-import { EnumIDAndText } from 'src/app/models/enumidandtext.model';
+import { EnumIDAndText } from '../../../models/enumidandtext.model';
 
 @Component({
   selector: 'app-polsourcesite',
@@ -51,7 +51,7 @@ export class PolSourceSiteComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     LoadLocalesPolSourceSiteText(this.polsourcesiteService);
-    this.inactiveReasonList = InactiveReasonEnum_GetOrderedText();
+    this.inactiveReasonList = PolSourceInactiveReasonEnum_GetOrderedText();
     this.FillFormBuilderGroup('Add');
     this.FillFormBuilderGroup('Update');
   }

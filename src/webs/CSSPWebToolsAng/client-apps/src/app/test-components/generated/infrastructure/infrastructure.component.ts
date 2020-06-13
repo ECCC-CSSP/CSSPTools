@@ -24,7 +24,7 @@ import { AlarmSystemTypeEnum_GetIDText, AlarmSystemTypeEnum_GetOrderedText } fro
 import { ValveTypeEnum_GetIDText, ValveTypeEnum_GetOrderedText } from '../../../enums/generated/ValveTypeEnum';
 import { Infrastructure } from '../../../models/generated/Infrastructure.model';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
-import { EnumIDAndText } from 'src/app/models/enumidandtext.model';
+import { EnumIDAndText } from '../../../models/enumidandtext.model';
 
 @Component({
   selector: 'app-infrastructure',

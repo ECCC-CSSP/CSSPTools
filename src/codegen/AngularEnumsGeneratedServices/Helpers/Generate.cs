@@ -75,7 +75,7 @@ namespace AngularEnumsGeneratedServices.Services
                     sb.AppendLine(@" *");
                     sb.AppendLine(@" */");
                     sb.AppendLine(@"");
-                    sb.AppendLine(@"import { EnumIDAndText } from 'src/app/models/enumidandtext.models';");
+                    sb.AppendLine(@"import { EnumIDAndText } from '../../models/enumidandtext.model';");
                     sb.AppendLine(@"");
 
                     sb.AppendLine($@"export enum { dllTypeInfoEnums.Name } {{");

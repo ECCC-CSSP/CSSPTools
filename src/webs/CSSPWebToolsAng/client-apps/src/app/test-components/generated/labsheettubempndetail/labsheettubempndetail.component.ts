@@ -13,7 +13,7 @@ import { Subscription } from 'rxjs';
 import { SampleTypeEnum_GetIDText, SampleTypeEnum_GetOrderedText } from '../../../enums/generated/SampleTypeEnum';
 import { LabSheetTubeMPNDetail } from '../../../models/generated/LabSheetTubeMPNDetail.model';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
-import { EnumIDAndText } from 'src/app/models/enumidandtext.model';
+import { EnumIDAndText } from '../../../models/enumidandtext.model';
 
 @Component({
   selector: 'app-labsheettubempndetail',

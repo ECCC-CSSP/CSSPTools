@@ -19,7 +19,7 @@ import { SampleStatusEnum_GetIDText, SampleStatusEnum_GetOrderedText } from '../
 import { TideTextEnum_GetIDText, TideTextEnum_GetOrderedText } from '../../../enums/generated/TideTextEnum';
 import { MWQMRun } from '../../../models/generated/MWQMRun.model';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
-import { EnumIDAndText } from 'src/app/models/enumidandtext.model';
+import { EnumIDAndText } from '../../../models/enumidandtext.model';
 
 @Component({
   selector: 'app-mwqmrun',
@@ -87,13 +87,13 @@ export class MWQMRunComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     LoadLocalesMWQMRunText(this.mwqmrunService);
-    this.runSampleTypeList = RunSampleTypeEnum_GetOrderedText();
-    this.seaStateAtStart_BeaufortScaleList = SeaStateAtStart_BeaufortScaleEnum_GetOrderedText();
+    this.runSampleTypeList = SampleTypeEnum_GetOrderedText();
+    this.seaStateAtStart_BeaufortScaleList = BeaufortScaleEnum_GetOrderedText();
     this.analyzeMethodList = AnalyzeMethodEnum_GetOrderedText();
     this.sampleMatrixList = SampleMatrixEnum_GetOrderedText();
     this.laboratoryList = LaboratoryEnum_GetOrderedText();
     this.sampleStatusList = SampleStatusEnum_GetOrderedText();
-    this.tide_StartList = Tide_StartEnum_GetOrderedText();
+    this.tide_StartList = TideTextEnum_GetOrderedText();
     this.FillFormBuilderGroup('Add');
     this.FillFormBuilderGroup('Update');
   }

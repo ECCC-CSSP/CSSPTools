@@ -60,6 +60,10 @@ namespace AngularComponentsGeneratedServices.Services
             int count = 0;
             foreach (DLLTypeInfo dllTypeInfoModels in DLLTypeInfoCSSPModelsList)
             {
+                if (dllTypeInfoModels.Name == "SamplingPlan")
+                {
+                    int asdflj = 34;
+                }
                 if (!removeClass.Contains(dllTypeInfoModels.Name))
                 {
                     if (!dllTypeInfoModels.HasNotMappedAttribute)

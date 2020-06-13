@@ -13,7 +13,7 @@ import { Subscription } from 'rxjs';
 import { EmailTypeEnum_GetIDText, EmailTypeEnum_GetOrderedText } from '../../../enums/generated/EmailTypeEnum';
 import { Email } from '../../../models/generated/Email.model';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
-import { EnumIDAndText } from 'src/app/models/enumidandtext.model';
+import { EnumIDAndText } from '../../../models/enumidandtext.model';
 
 @Component({
   selector: 'app-email',

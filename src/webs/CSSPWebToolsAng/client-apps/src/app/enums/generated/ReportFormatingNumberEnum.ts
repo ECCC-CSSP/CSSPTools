@@ -5,7 +5,7 @@
  *
  */
 
-import { EnumIDAndText } from 'src/app/models/enumidandtext.models';
+import { EnumIDAndText } from '../../models/enumidandtext.model';
 
 export enum ReportFormatingNumberEnum {
     ReportFormatingNumber0Decimal = 1,

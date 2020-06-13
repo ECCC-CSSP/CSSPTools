@@ -14,7 +14,7 @@ import { LanguageEnum_GetIDText, LanguageEnum_GetOrderedText } from '../../../en
 import { TranslationStatusEnum_GetIDText, TranslationStatusEnum_GetOrderedText } from '../../../enums/generated/TranslationStatusEnum';
 import { BoxModelLanguage } from '../../../models/generated/BoxModelLanguage.model';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
-import { EnumIDAndText } from 'src/app/models/enumidandtext.model';
+import { EnumIDAndText } from '../../../models/enumidandtext.model';
 
 @Component({
   selector: 'app-boxmodellanguage',

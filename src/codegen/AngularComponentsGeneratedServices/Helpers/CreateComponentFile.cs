@@ -48,7 +48,7 @@ namespace AngularComponentsGeneratedServices.Services
             sb.AppendLine(@"import { FormBuilder, Validators, FormGroup } from '@angular/forms';");
             if (HasEnums)
             {
-                sb.AppendLine(@"import { EnumIDAndText } from 'src/app/models/enumidandtext.model';");
+                sb.AppendLine(@"import { EnumIDAndText } from '../../../models/enumidandtext.model';");
             }
             sb.AppendLine(@"");
             sb.AppendLine(@"@Component({");
@@ -125,7 +125,7 @@ namespace AngularComponentsGeneratedServices.Services
                     {
                         string PropNameFirstLetterLowerCase = dllPropertyInfo.CSSPProp.PropName;
                         PropNameFirstLetterLowerCase = PropNameFirstLetterLowerCase[0].ToString().ToLower() + PropNameFirstLetterLowerCase.Substring(1);
-                        sb.AppendLine($@"    this.{ PropNameFirstLetterLowerCase }List = { dllPropertyInfo.CSSPProp.PropName }Enum_GetOrderedText();");
+                        sb.AppendLine($@"    this.{ PropNameFirstLetterLowerCase }List = { dllPropertyInfo.CSSPProp.PropType }_GetOrderedText();");
 
                         usedPropTypeList.Add(dllPropertyInfo.CSSPProp.PropType);
                     }

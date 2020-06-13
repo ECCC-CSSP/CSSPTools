@@ -14,7 +14,7 @@ import { LanguageEnum_GetIDText, LanguageEnum_GetOrderedText } from '../../../en
 import { TranslationStatusEnum_GetIDText, TranslationStatusEnum_GetOrderedText } from '../../../enums/generated/TranslationStatusEnum';
 import { PolSourceGroupingLanguage } from '../../../models/generated/PolSourceGroupingLanguage.model';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
-import { EnumIDAndText } from 'src/app/models/enumidandtext.model';
+import { EnumIDAndText } from '../../../models/enumidandtext.model';
 
 @Component({
   selector: 'app-polsourcegroupinglanguage',
@@ -58,7 +58,7 @@ export class PolSourceGroupingLanguageComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     LoadLocalesPolSourceGroupingLanguageText(this.polsourcegroupinglanguageService);
     this.languageList = LanguageEnum_GetOrderedText();
-    this.translationStatusSourceNameList = TranslationStatusSourceNameEnum_GetOrderedText();
+    this.translationStatusSourceNameList = TranslationStatusEnum_GetOrderedText();
     this.FillFormBuilderGroup('Add');
     this.FillFormBuilderGroup('Update');
   }

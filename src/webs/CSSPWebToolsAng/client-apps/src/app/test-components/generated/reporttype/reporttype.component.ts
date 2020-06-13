@@ -15,7 +15,7 @@ import { FileTypeEnum_GetIDText, FileTypeEnum_GetOrderedText } from '../../../en
 import { LanguageEnum_GetIDText, LanguageEnum_GetOrderedText } from '../../../enums/generated/LanguageEnum';
 import { ReportType } from '../../../models/generated/ReportType.model';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
-import { EnumIDAndText } from 'src/app/models/enumidandtext.model';
+import { EnumIDAndText } from '../../../models/enumidandtext.model';
 
 @Component({
   selector: 'app-reporttype',

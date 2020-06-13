@@ -14,7 +14,7 @@ import { AnalysisCalculationTypeEnum_GetIDText, AnalysisCalculationTypeEnum_GetO
 import { AnalysisReportExportCommandEnum_GetIDText, AnalysisReportExportCommandEnum_GetOrderedText } from '../../../enums/generated/AnalysisReportExportCommandEnum';
 import { MWQMAnalysisReportParameter } from '../../../models/generated/MWQMAnalysisReportParameter.model';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
-import { EnumIDAndText } from 'src/app/models/enumidandtext.model';
+import { EnumIDAndText } from '../../../models/enumidandtext.model';
 
 @Component({
   selector: 'app-mwqmanalysisreportparameter',
@@ -58,7 +58,7 @@ export class MWQMAnalysisReportParameterComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     LoadLocalesMWQMAnalysisReportParameterText(this.mwqmanalysisreportparameterService);
     this.analysisCalculationTypeList = AnalysisCalculationTypeEnum_GetOrderedText();
-    this.commandList = CommandEnum_GetOrderedText();
+    this.commandList = AnalysisReportExportCommandEnum_GetOrderedText();
     this.FillFormBuilderGroup('Add');
     this.FillFormBuilderGroup('Update');
   }
