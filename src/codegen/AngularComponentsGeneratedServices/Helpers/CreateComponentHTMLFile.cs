@@ -24,20 +24,31 @@ namespace AngularComponentsGeneratedServices.Services
             sb.AppendLine(@"-->");
             sb.AppendLine(@"");
 
+            sb.AppendLine($@"<mat-progress-bar mode=""indeterminate"" *ngIf=""{ dllTypeInfoModels.Name.ToLower() }Service.{ dllTypeInfoModels.Name.ToLower() }GetModel$.getValue().Working""></mat-progress-bar>");
             sb.AppendLine(@"<mat-card>");
             sb.AppendLine(@"  <mat-card-header>");
             sb.AppendLine(@"    <mat-card-title>");
             sb.AppendLine($@"      { dllTypeInfoModels.Name } works!");
-            sb.AppendLine($@"      <button mat-button color=""primary"" (click)=""Get{ dllTypeInfoModels.Name }()"">Get { dllTypeInfoModels.Name }</button>");
+            sb.AppendLine($@"      <button mat-button color=""primary"" (click)=""Get{ dllTypeInfoModels.Name }List()"">");
+            sb.AppendLine($@"        <span>Get { dllTypeInfoModels.Name }</span>");
+            sb.AppendLine(@"      </button>");
             sb.AppendLine(@"    </mat-card-title>");
             sb.AppendLine($@"    <mat-card-subtitle>{{{{ { dllTypeInfoModels.Name.ToLower() }Service.{ dllTypeInfoModels.Name.ToLower() }TextModel$.getValue().Title }}}}</mat-card-subtitle>");
             sb.AppendLine(@"  </mat-card-header>");
             sb.AppendLine(@"  <mat-card-content>");
             sb.AppendLine(@"    <mat-list>");
-            sb.AppendLine($@"      <mat-list-item *ngFor=""let { dllTypeInfoModels.Name.ToLower() } of { dllTypeInfoModels.Name.ToLower() }Service.{ dllTypeInfoModels.Name.ToLower() }Model$.getValue().{ dllTypeInfoModels.Name }List"">");
-            //sb.AppendLine($@"            <span mat-line>");
+            sb.AppendLine($@"      <mat-list-item *ngFor=""let { dllTypeInfoModels.Name.ToLower() } of { dllTypeInfoModels.Name.ToLower() }Service.{ dllTypeInfoModels.Name.ToLower() }List"">");
+            sb.AppendLine(@"        <span mat-line>");
+            sb.AppendLine($@"          <button mat-raised-button (click)=""Delete{ dllTypeInfoModels.Name }({ dllTypeInfoModels.Name.ToLower() })"">");
+            sb.AppendLine($@"            <span>Delete { dllTypeInfoModels.Name }ID [{{{{ { dllTypeInfoModels.Name.ToLower() }.{ dllTypeInfoModels.Name }ID }}}}]&nbsp;&nbsp;&nbsp;</span>");
+            sb.AppendLine(@"            <mat-icon>delete</mat-icon>");
+            sb.AppendLine(@"          </button>");
+            sb.AppendLine($@"          <mat-progress-bar mode=""indeterminate"" *ngIf=""{ dllTypeInfoModels.Name.ToLower() }Service.{ dllTypeInfoModels.Name.ToLower() }DeleteModel$.getValue().Working"">");
+            sb.AppendLine(@"          </mat-progress-bar>");
+            sb.AppendLine(@"          </span>");
+
             int objCount = 0;
-            string space = " --- ";
+            string space;
             foreach (DLLPropertyInfo dllPropertyInfo in dllTypeInfoModels.PropertyInfoList)
             {
                 if (objCount % 4 == 0)
@@ -55,7 +66,7 @@ namespace AngularComponentsGeneratedServices.Services
                 }
 
                 objCount += 1;
-                
+
                 if (dllPropertyInfo.CSSPProp.HasCSSPEnumTypeAttribute)
                 {
                     sb.AppendLine($@"          <span>{ space }{ dllPropertyInfo.CSSPProp.PropName }: [{{{{ Get{ dllPropertyInfo.CSSPProp.PropType }Text({ dllTypeInfoModels.Name.ToLower() }.{ dllPropertyInfo.CSSPProp.PropName }) }}}}]</span>");
@@ -72,6 +83,169 @@ namespace AngularComponentsGeneratedServices.Services
             sb.AppendLine(@" <mat-card-actions>");
             sb.AppendLine(@"   <button mat-button>Allo</button>");
             sb.AppendLine(@" </mat-card-actions>");
+            sb.AppendLine(@"</mat-card>");
+            sb.AppendLine(@"<p>&nbsp;</p>");
+            sb.AppendLine(@"<p>&nbsp;</p>");
+
+            sb.AppendLine(@"<mat-card>");
+            sb.AppendLine(@"  <mat-card-header>");
+            sb.AppendLine($@"    <mat-card-title>Edit { dllTypeInfoModels.Name } testing</mat-card-title>");
+            sb.AppendLine(@"  </mat-card-header>");
+            sb.AppendLine(@"  <mat-card-content>");
+            sb.AppendLine($@"    <div *ngIf=""{ dllTypeInfoModels.Name.ToLower() }Service.{ dllTypeInfoModels.Name.ToLower() }List.length"">");
+            sb.AppendLine(@"      <blockquote>");
+            sb.AppendLine($@"        <form [formGroup]=""{ dllTypeInfoModels.Name.ToLower() }FormPut"" (ngSubmit)=""Put{ dllTypeInfoModels.Name }({ dllTypeInfoModels.Name.ToLower() }FormPut.value)"">");
+            sb.AppendLine(@"          <h3>");
+            sb.AppendLine($@"            { dllTypeInfoModels.Name }");
+            sb.AppendLine(@"            <button mat-raised-button type=""submit"">");
+            sb.AppendLine($@"              <span>Update { dllTypeInfoModels.Name }</span>");
+            sb.AppendLine(@"            </button>");
+            sb.AppendLine($@"            <mat-progress-bar mode=""indeterminate"" *ngIf=""{ dllTypeInfoModels.Name.ToLower() }Service.{ dllTypeInfoModels.Name.ToLower() }PutModel$.getValue().Working"">");
+            sb.AppendLine(@"            </mat-progress-bar>");
+            sb.AppendLine(@"          </h3>");
+
+            objCount = 0;
+            foreach (DLLPropertyInfo dllPropertyInfo in dllTypeInfoModels.PropertyInfoList)
+            {
+                if (objCount % 4 == 0)
+                {
+                    if (objCount != 0)
+                    {
+                        sb.AppendLine($@"          </p>");
+                    }
+                    sb.AppendLine($@"          <p>");
+                    space = "";
+                }
+                else
+                {
+                    space = " --- ";
+                }
+
+                objCount += 1;
+
+                if (dllPropertyInfo.CSSPProp.HasCSSPEnumTypeAttribute)
+                {
+                    sb.AppendLine(@"            <mat-form-field>");
+                    sb.AppendLine($@"              <mat-label>{ dllPropertyInfo.CSSPProp.PropName }</mat-label>");
+                    sb.AppendLine($@"              <mat-select formControlName=""{ dllPropertyInfo.CSSPProp.PropName }"">");
+                    string PropNameFirstLetterLowerCase = dllPropertyInfo.CSSPProp.PropName;
+                    PropNameFirstLetterLowerCase = PropNameFirstLetterLowerCase[0].ToString().ToLower() + PropNameFirstLetterLowerCase.Substring(1);
+                    sb.AppendLine($@"                <mat-option *ngFor=""let a of { PropNameFirstLetterLowerCase }List"" [value]=""a.EnumID"">");
+                    sb.AppendLine(@"                  {{ a.EnumText }}");
+                    sb.AppendLine(@"                </mat-option>");
+                    sb.AppendLine(@"              </mat-select>");
+                    sb.AppendLine(@"            </mat-form-field>");
+
+                }
+                else
+                {
+                    sb.AppendLine(@"            <mat-form-field>");
+                    sb.AppendLine($@"              <mat-label>{ dllPropertyInfo.CSSPProp.PropName }</mat-label>");
+
+                    if (dllPropertyInfo.CSSPProp.PropType == "Int16" || dllPropertyInfo.CSSPProp.PropType == "Int32"
+                        || dllPropertyInfo.CSSPProp.PropType == "Int64" || dllPropertyInfo.CSSPProp.PropType == "Single" || dllPropertyInfo.CSSPProp.PropType == "Double")
+                    {
+                        sb.AppendLine($@"              <input matInput type=""number"" formControlName=""{ dllPropertyInfo.CSSPProp.PropName }"">");
+                    }
+                    else if (dllPropertyInfo.CSSPProp.PropType == "String")
+                    {
+                        sb.AppendLine($@"              <input matInput type=""text"" formControlName=""{ dllPropertyInfo.CSSPProp.PropName }"">");
+                    }
+                    else // will need to do email ...
+                    {
+                        sb.AppendLine($@"              <input matInput type=""text"" formControlName=""{ dllPropertyInfo.CSSPProp.PropName }"">");
+                    }
+                    sb.AppendLine(@"            </mat-form-field>");
+
+                }
+            }
+
+            sb.AppendLine($@"          </p>");
+            sb.AppendLine(@"        </form>");
+            sb.AppendLine(@"      </blockquote>");
+            sb.AppendLine(@"    </div>");
+            sb.AppendLine(@"  </mat-card-content>");
+            sb.AppendLine(@"</mat-card>");
+            sb.AppendLine(@"<p>&nbsp;</p>");
+            sb.AppendLine(@"<p>&nbsp;</p>");
+            sb.AppendLine(@"<mat-card>");
+            sb.AppendLine(@"  <mat-card-header>");
+            sb.AppendLine($@"    <mat-card-title>Add { dllTypeInfoModels.Name } testing</mat-card-title>");
+            sb.AppendLine(@"  </mat-card-header>");
+            sb.AppendLine(@"  <mat-card-content>");
+            sb.AppendLine($@"    <div *ngIf=""{ dllTypeInfoModels.Name.ToLower() }Service.{ dllTypeInfoModels.Name.ToLower() }List.length"">");
+            sb.AppendLine(@"      <blockquote>");
+            sb.AppendLine($@"        <form [formGroup]=""{ dllTypeInfoModels.Name.ToLower() }FormPost"" (ngSubmit)=""Post{ dllTypeInfoModels.Name }({ dllTypeInfoModels.Name.ToLower() }FormPost.value)"">");
+            sb.AppendLine(@"          <h3>");
+            sb.AppendLine($@"            { dllTypeInfoModels.Name }");
+            sb.AppendLine(@"            <button mat-raised-button type=""submit"">");
+            sb.AppendLine($@"              <span>Add { dllTypeInfoModels.Name }</span>");
+            sb.AppendLine(@"            </button>");
+            sb.AppendLine($@"            <mat-progress-bar mode=""indeterminate"" *ngIf=""{ dllTypeInfoModels.Name.ToLower() }Service.{ dllTypeInfoModels.Name.ToLower() }PostModel$.getValue().Working"">");
+            sb.AppendLine(@"            </mat-progress-bar>");
+            sb.AppendLine(@"          </h3>");
+
+            objCount = 0;
+            foreach (DLLPropertyInfo dllPropertyInfo in dllTypeInfoModels.PropertyInfoList)
+            {
+                if (objCount % 4 == 0)
+                {
+                    if (objCount != 0)
+                    {
+                        sb.AppendLine($@"          </p>");
+                    }
+                    sb.AppendLine($@"          <p>");
+                    space = "";
+                }
+                else
+                {
+                    space = " --- ";
+                }
+
+                objCount += 1;
+
+                if (dllPropertyInfo.CSSPProp.HasCSSPEnumTypeAttribute)
+                {
+                    sb.AppendLine(@"            <mat-form-field>");
+                    sb.AppendLine($@"              <mat-label>{ dllPropertyInfo.CSSPProp.PropName }</mat-label>");
+                    sb.AppendLine($@"              <mat-select formControlName=""{ dllPropertyInfo.CSSPProp.PropName }"">");
+                    string PropNameFirstLetterLowerCase = dllPropertyInfo.CSSPProp.PropName;
+                    PropNameFirstLetterLowerCase = PropNameFirstLetterLowerCase[0].ToString().ToLower() + PropNameFirstLetterLowerCase.Substring(1);
+                    sb.AppendLine($@"                <mat-option *ngFor=""let a of { PropNameFirstLetterLowerCase }List"" [value]=""a.EnumID"">");
+                    sb.AppendLine(@"                  {{ a.EnumText }}");
+                    sb.AppendLine(@"                </mat-option>");
+                    sb.AppendLine(@"              </mat-select>");
+                    sb.AppendLine(@"            </mat-form-field>");
+
+                }
+                else
+                {
+                    sb.AppendLine(@"            <mat-form-field>");
+                    sb.AppendLine($@"              <mat-label>{ dllPropertyInfo.CSSPProp.PropName }</mat-label>");
+
+                    if (dllPropertyInfo.CSSPProp.PropType == "Int16" || dllPropertyInfo.CSSPProp.PropType == "Int32"
+                        || dllPropertyInfo.CSSPProp.PropType == "Int64" || dllPropertyInfo.CSSPProp.PropType == "Single" || dllPropertyInfo.CSSPProp.PropType == "Double")
+                    {
+                        sb.AppendLine($@"              <input matInput type=""number"" formControlName=""{ dllPropertyInfo.CSSPProp.PropName }"">");
+                    }
+                    else if (dllPropertyInfo.CSSPProp.PropType == "String")
+                    {
+                        sb.AppendLine($@"              <input matInput type=""text"" formControlName=""{ dllPropertyInfo.CSSPProp.PropName }"">");
+                    }
+                    else // will need to do email ...
+                    {
+                        sb.AppendLine($@"              <input matInput type=""text"" formControlName=""{ dllPropertyInfo.CSSPProp.PropName }"">");
+                    }
+                    sb.AppendLine(@"            </mat-form-field>");
+
+                }
+            }
+
+            sb.AppendLine($@"          </p>");
+            sb.AppendLine(@"        </form>");
+            sb.AppendLine(@"      </blockquote>");
+            sb.AppendLine(@"    </div>");
+            sb.AppendLine(@"  </mat-card-content>");
             sb.AppendLine(@"</mat-card>");
 
             DirectoryInfo di = new DirectoryInfo(Config.GetValue<string>("OutputDir").Replace("{TypeNameLower}", dllTypeInfoModels.Name.ToLower()));

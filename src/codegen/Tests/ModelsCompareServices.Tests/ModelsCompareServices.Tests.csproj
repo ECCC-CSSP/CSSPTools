@@ -46,7 +46,7 @@
       <HintPath>..\..\_package\netcoreapp3.1\ActionCommandDBServices.dll</HintPath>
     </Reference>
     <Reference Include="ModelsCompareServices">
-      <HintPath>..\..\ModelsCompareServices\bin\Debug\netcoreapp3.1\ModelsCompareServices.dll</HintPath>
+      <HintPath>..\..\_package\netcoreapp3.1\ModelsCompareServices.dll</HintPath>
     </Reference>
     <Reference Include="ValidateAppSettingsServices">
       <HintPath>..\..\_package\netcoreapp3.1\ValidateAppSettingsServices.dll</HintPath>

@@ -1,5 +1,6 @@
 ﻿using ActionCommandDBServices.Services;
 using ConfigServices.Services;
+using CultureServices.Services;
 using GenerateCodeBaseServices.Services;
 using Microsoft.Extensions.Configuration;
 using System.Collections.Generic;
@@ -16,10 +17,12 @@ namespace EnumsGenerated_csServices.Services
 
         #region Constructors
         public EnumsGenerated_csService(IConfiguration configuration,
+            ICultureService cultureService,
             IActionCommandDBService actionCommandDBService,
             IValidateAppSettingsService validateAppSettingsService,
             IGenerateCodeBaseService generateCodeBaseService) : base(configuration)
         {
+            CultureService = cultureService;
             ActionCommandDBService = actionCommandDBService;
             ValidateAppSettingsService = validateAppSettingsService;
             GenerateCodeBaseService = generateCodeBaseService;
@@ -60,7 +63,7 @@ namespace EnumsGenerated_csServices.Services
                 new AppSettingParameter() { Parameter = "Command", ExpectedValue = "EnumsGenerated_cs" },
                 new AppSettingParameter() { Parameter = "Culture", ExpectedValue = "", IsCulture = true },
                 new AppSettingParameter() { Parameter = "DBFileName", ExpectedValue = "{AppDataPath}\\CSSP\\ActionCommandDB.db", IsFile = true, CheckExist = true },
-                new AppSettingParameter() { Parameter = "CSSPEnums", ExpectedValue = "C:\\CSSPTools\\src\\dlls\\CSSPEnums\\bin\\Debug\\netcoreapp3.1\\CSSPEnums.dll", IsFile = true, CheckExist = true },
+                new AppSettingParameter() { Parameter = "CSSPEnums", ExpectedValue = "C:\\CSSPTools\\src\\dlls\\_package\\netcoreapp3.1\\CSSPEnums.dll", IsFile = true, CheckExist = true },
                 new AppSettingParameter() { Parameter = "IEnumsGenerated", ExpectedValue = "C:\\CSSPTools\\src\\dlls\\CSSPEnums\\Generated\\IEnumsGenerated.cs" },
                 new AppSettingParameter() { Parameter = "EnumsGenerated", ExpectedValue = "C:\\CSSPTools\\src\\dlls\\CSSPEnums\\Generated\\EnumsGenerated.cs" },
             };

@@ -41,7 +41,7 @@
       <HintPath>..\..\..\dlls\_package\netcoreapp3.1\CultureServices.dll</HintPath>
     </Reference>
     <Reference Include="AngularModelsGeneratedServices">
-      <HintPath>..\..\AngularModelsGeneratedServices\bin\Debug\netcoreapp3.1\AngularModelsGeneratedServices.dll</HintPath>
+      <HintPath>..\..\_package\netcoreapp3.1\AngularModelsGeneratedServices.dll</HintPath>
     </Reference>
     <Reference Include="CSSPEnums">
       <HintPath>..\..\..\dlls\_package\netcoreapp3.1\CSSPEnums.dll</HintPath>

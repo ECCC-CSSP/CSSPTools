@@ -1,6 +1,8 @@
 ﻿using AngularEnumsGeneratedServices.Services;
 using ConfigServices.Services;
+using CSSPEnums;
 using CultureServices.Resources;
+using CultureServices.Services;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -30,11 +32,11 @@ namespace AngularEnumsGeneratedServices.Tests
         #region Functions public
         [Theory]
         [InlineData("en-CA")] // good
-        [InlineData("fr-CA")] // good
-        [InlineData("en-GB")] // good will default to en-CA
+        //[InlineData("fr-CA")] // good
+        //[InlineData("en-GB")] // good will default to en-CA
         public async Task AngularEnumsGeneratedService_Run_Good_Test(string culture)
         {
-            Assert.True(await Setup(new CultureInfo(culture), "appsettings.json"));
+            Assert.True(await Setup(culture, "appsettings.json"));
 
             Assert.NotNull(Config);
             Assert.NotNull(Services);
@@ -44,21 +46,13 @@ namespace AngularEnumsGeneratedServices.Tests
             string[] args = new List<string>() { culture }.ToArray();
 
             Assert.True(await AngularEnumsGeneratedService.Run(args));
-
-            // all culture other than "fr-CA" should default to "en-CA"
-            if (culture != "fr-CA")
-            {
-                culture = "en-CA";
-            }
-            CultureInfo Culture = new CultureInfo(culture);
-            Assert.Equal(Culture, CultureServicesRes.Culture);
         }
         [Theory]
         [InlineData("en-CA")] // good
-        [InlineData("fr-CA")] // good
+        //[InlineData("fr-CA")] // good
         public async Task AngularEnumsGeneratedService_Run_SomeFileMissing_Test(string culture)
         {
-            Assert.True(await Setup(new CultureInfo(culture), "appsettings_bad1.json"));
+            Assert.True(await Setup(culture, "appsettings_bad1.json"));
 
             Assert.NotNull(Config);
             Assert.NotNull(Services);
@@ -72,7 +66,7 @@ namespace AngularEnumsGeneratedServices.Tests
         #endregion Functions public
 
         #region Functions private
-        private async Task<bool> Setup(CultureInfo culture, string appsettingjsonFileName)
+        private async Task<bool> Setup(string culture, string appsettingjsonFileName)
         {
             Config = new ConfigurationBuilder()
                .SetBasePath(Directory.GetParent(AppContext.BaseDirectory).FullName)
@@ -82,9 +76,12 @@ namespace AngularEnumsGeneratedServices.Tests
             Services = new ServiceCollection();
             Assert.True(await ConfigureBaseServices());
 
+            Services.AddSingleton<IEnums, Enums>();
             Services.AddSingleton<IAngularEnumsGeneratedService, AngularEnumsGeneratedService>();
 
             Assert.True(await BuildServiceProvider());
+
+            CultureService.SetCulture(culture);
 
             AngularEnumsGeneratedService = Provider.GetService<IAngularEnumsGeneratedService>();
             Assert.NotNull(AngularEnumsGeneratedService);

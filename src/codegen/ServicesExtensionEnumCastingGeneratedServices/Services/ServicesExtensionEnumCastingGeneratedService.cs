@@ -1,5 +1,6 @@
 ﻿using ActionCommandDBServices.Services;
 using ConfigServices.Services;
+using CultureServices.Services;
 using GenerateCodeBaseServices.Services;
 using Microsoft.Extensions.Configuration;
 using System.Collections.Generic;
@@ -19,10 +20,12 @@ namespace ServicesClassNameServiceGeneratedServices.Services
 
         #region Constructors
         public ServicesExtensionEnumCastingGeneratedService(IConfiguration configuration,
+            ICultureService cultureService,
             IActionCommandDBService actionCommandDBService,
             IValidateAppSettingsService validateAppSettingsService,
             IGenerateCodeBaseService generateCodeBaseService) : base(configuration)
         {
+            CultureService = cultureService;
             ActionCommandDBService = actionCommandDBService;
             ValidateAppSettingsService = validateAppSettingsService;
             GenerateCodeBaseService = generateCodeBaseService;
@@ -63,7 +66,7 @@ namespace ServicesClassNameServiceGeneratedServices.Services
                 new AppSettingParameter() { Parameter = "Command", ExpectedValue = "ServicesExtensionEnumCastingGenerated" },
                 new AppSettingParameter() { Parameter = "Culture", ExpectedValue = "", IsCulture = true },
                 new AppSettingParameter() { Parameter = "DBFileName", ExpectedValue = "{AppDataPath}\\CSSP\\ActionCommandDB.db", IsFile = true, CheckExist = true },
-                new AppSettingParameter() { Parameter = "CSSPEnums", ExpectedValue = "C:\\CSSPTools\\src\\dlls\\CSSPEnums\\bin\\Debug\\netcoreapp3.1\\CSSPEnums.dll", IsFile = true, CheckExist = true },
+                new AppSettingParameter() { Parameter = "CSSPEnums", ExpectedValue = "C:\\CSSPTools\\src\\dlls\\_package\\netcoreapp3.1\\CSSPEnums.dll", IsFile = true, CheckExist = true },
                 new AppSettingParameter() { Parameter = "ExtensionEnumCastingGenerated", ExpectedValue = "C:\\CSSPTools\\src\\dlls\\CSSPServices\\src\\_ExtensionEnumCastingGenerated.cs" },
             };
 

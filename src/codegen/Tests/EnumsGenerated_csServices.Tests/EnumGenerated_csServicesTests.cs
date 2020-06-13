@@ -1,4 +1,5 @@
 ﻿using ConfigServices.Services;
+using CSSPEnums;
 using CultureServices.Resources;
 using EnumsGenerated_csServices.Services;
 using Microsoft.Extensions.Configuration;
@@ -30,8 +31,8 @@ namespace EnumsGenerated_csServices.Tests
         #region Functions public
         [Theory]
         [InlineData("en-CA")] // good
-        [InlineData("fr-CA")] // good
-        [InlineData("en-GB")] // good will default to en-CA
+        //[InlineData("fr-CA")] // good
+        //[InlineData("en-GB")] // good will default to en-CA
         public async Task EnumsGenerated_csService_Run_Good_Test(string culture)
         {
             Assert.True(await Setup(new CultureInfo(culture), "appsettings.json"));
@@ -44,18 +45,10 @@ namespace EnumsGenerated_csServices.Tests
             string[] args = new List<string>() { culture }.ToArray();
 
             Assert.True(await EnumsGenerated_csService.Run(args));
-
-            // all culture other than "fr-CA" should default to "en-CA"
-            if (culture != "fr-CA")
-            {
-                culture = "en-CA";
-            }
-            CultureInfo Culture = new CultureInfo(culture);
-            Assert.Equal(Culture, CultureServicesRes.Culture);
         }
         [Theory]
         [InlineData("en-CA")] // good
-        [InlineData("fr-CA")] // good
+        //[InlineData("fr-CA")] // good
         public async Task EnumsGenerated_csService_Run_SomeFileMissing_Test(string culture)
         {
             Assert.True(await Setup(new CultureInfo(culture), "appsettings_bad1.json"));

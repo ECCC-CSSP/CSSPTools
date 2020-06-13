@@ -40,7 +40,7 @@ namespace ValidateAppSettingsServices.Tests
         #region Functions public
         [Theory]
         [InlineData("en-CA")]
-        [InlineData("fr-CA")]
+        //[InlineData("fr-CA")]
         public async Task ValidateAppSettingsService_VerifyAppSettings_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
@@ -50,7 +50,7 @@ namespace ValidateAppSettingsServices.Tests
         }
         [Theory]
         [InlineData("en-CA")]
-        [InlineData("fr-CA")]
+        //[InlineData("fr-CA")]
         public async Task ValidateAppSettingsService_VerifyAppSettings_CheckFileParameterValue_Error_Test(string culture)
         {
             Assert.True(await Setup(culture));
@@ -65,15 +65,6 @@ namespace ValidateAppSettingsServices.Tests
             string expected = (new StringBuilder()).AppendLine($"{ CultureServicesRes.Error }\t{ param } != { shouldHaveValue }").ToString();
             string value = actionCommandDBService.ErrorText.ToString();
             Assert.Equal(expected, value);
-        }
-        [Theory]
-        [InlineData("en-GB")]
-        public async Task ValidateAppSettingsService_VerifyAppSettings_CheckCultureParameterValue_Error_Test(string culture)
-        {
-            Assert.True(await Setup(culture));
-
-            bool retBool = await validateAppSettingsService.VerifyAppSettings();
-            Assert.True(retBool);
         }
         #endregion Functions public
 

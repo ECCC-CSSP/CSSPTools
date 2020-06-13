@@ -25,7 +25,6 @@ namespace AngularComponentsGeneratedServices.Services
             sb.AppendLine(@"");
 
             sb.AppendLine(@"import { TestBed } from '@angular/core/testing';");
-            sb.AppendLine(@"");
             sb.AppendLine($@"import {{ { dllTypeInfoModels.Name }Service }} from './{ dllTypeInfoModels.Name.ToLower() }.service';");
             sb.AppendLine(@"");
             sb.AppendLine($@"describe('{ dllTypeInfoModels.Name }Service', () => {{");

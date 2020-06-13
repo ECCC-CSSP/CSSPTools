@@ -40,7 +40,7 @@
       <HintPath>..\..\..\dlls\_package\netcoreapp3.1\CultureServices.dll</HintPath>
     </Reference>
     <Reference Include="EnumsTestGenerated_csServices">
-      <HintPath>..\..\EnumsTestGenerated_csServices\bin\Debug\netcoreapp3.1\EnumsTestGenerated_csServices.dll</HintPath>
+      <HintPath>..\..\_package\netcoreapp3.1\EnumsTestGenerated_csServices.dll</HintPath>
     </Reference>
     <Reference Include="GenerateCodeBaseServices">
       <HintPath>..\..\_package\netcoreapp3.1\GenerateCodeBaseServices.dll</HintPath>

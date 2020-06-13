@@ -1,5 +1,6 @@
 using CSSPEnums;
 using CSSPModels;
+using CultureServices.Services;
 using LoggedInServices.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
@@ -101,8 +102,8 @@ namespace CSSPCodeGenWebAPI
             //    options.UseSqlite($"DataSource={fiDB.FullName}");
             //});
 
+            services.AddScoped<ICultureService, CultureService>();
             services.AddScoped<IEnums, Enums>();
-
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<ILoggedInService, LoggedInService>();
             //services.AddScoped<IActionCommandDBService, ActionCommandDBService>();

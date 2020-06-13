@@ -35,8 +35,8 @@ namespace ConfigServices.Tests
         #region Functions public
         [Theory]
         [InlineData("en-CA")] // good
-        [InlineData("fr-CA")] // good
-        [InlineData("en-GB")] // good will default to en-CA
+        //[InlineData("fr-CA")] // good
+        //[InlineData("en-GB")] // good will default to en-CA
         public async Task ConfigService_Run_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));

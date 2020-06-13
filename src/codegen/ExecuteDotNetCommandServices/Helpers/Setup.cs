@@ -26,29 +26,29 @@ namespace ExecuteDotNetCommandServices.Services
             ValidateAppSettingsService.AppSettingParameterList = new List<AppSettingParameter>()
             {
                 new AppSettingParameter() { Parameter = "Action", ExpectedValue = "run" },
-                new AppSettingParameter() { Parameter = "Command", ExpectedValue = "ExecuteDotNetCommand" },
+                new AppSettingParameter() { Parameter = "Command", ExpectedValue = "AngularEnumsGenerated" },
                 new AppSettingParameter() { Parameter = "Culture", ExpectedValue = "", IsCulture = true },
                 new AppSettingParameter() { Parameter = "DBFileName", ExpectedValue = "{AppDataPath}\\CSSP\\ActionCommandDB.db", IsFile = true, CheckExist = true },
 
                 // run
 
-                new AppSettingParameter() { Parameter = "run:AngularEnumsGenerated", ExpectedValue = "C:\\CSSPTools\\src\\codegen\\AngularEnumsGenerated\\bin\\Debug\\netcoreapp3.1\\AngularEnumsGenerated.exe", IsFile = true, CheckExist = true },
-                new AppSettingParameter() { Parameter = "run:AngularModelsGenerated", ExpectedValue = "C:\\CSSPTools\\src\\codegen\\AngularModelsGenerated\\bin\\Debug\\netcoreapp3.1\\AngularModelsGenerated.exe", IsFile = true, CheckExist = true },
-                new AppSettingParameter() { Parameter = "run:EnumsCompareWithOldEnums", ExpectedValue = "C:\\CSSPTools\\src\\codegen\\EnumsCompareWithOldEnums\\bin\\Debug\\netcoreapp3.1\\EnumsCompareWithOldEnums.exe", IsFile = true, CheckExist = true },
-                new AppSettingParameter() { Parameter = "run:EnumsGenerated_cs", ExpectedValue = "C:\\CSSPTools\\src\\codegen\\EnumsGenerated_cs\\bin\\Debug\\netcoreapp3.1\\EnumsGenerated_cs.exe", IsFile = true, CheckExist = true },
-                new AppSettingParameter() { Parameter = "run:EnumsPolSourceInfoRelatedFiles", ExpectedValue = "C:\\CSSPTools\\src\\codegen\\EnumsPolSourceInfoRelatedFiles\\bin\\Debug\\netcoreapp3.1\\EnumsPolSourceInfoRelatedFiles.exe", IsFile = true, CheckExist = true },
-                new AppSettingParameter() { Parameter = "run:EnumsTestGenerated_cs", ExpectedValue = "C:\\CSSPTools\\src\\codegen\\EnumsTestGenerated_cs\\bin\\Debug\\netcoreapp3.1\\EnumsTestGenerated_cs.exe", IsFile = true, CheckExist = true },
-                new AppSettingParameter() { Parameter = "run:ModelsCompare", ExpectedValue = "C:\\CSSPTools\\src\\codegen\\ModelsCompare\\bin\\Debug\\netcoreapp3.1\\ModelsCompare.exe", IsFile = true, CheckExist = true },
-                new AppSettingParameter() { Parameter = "run:ModelsCompareDBFieldsAndCSSPModelsDLLProp", ExpectedValue = "C:\\CSSPTools\\src\\codegen\\ModelsCompareDBFieldsAndCSSPModelsDLLProp\\bin\\Debug\\netcoreapp3.1\\ModelsCompareDBFieldsAndCSSPModelsDLLProp.exe", IsFile = true, CheckExist = true },
-                new AppSettingParameter() { Parameter = "run:ModelsCSSPModelsRes", ExpectedValue = "C:\\CSSPTools\\src\\codegen\\ModelsCSSPModelsRes\\bin\\Debug\\netcoreapp3.1\\ModelsCSSPModelsRes.exe", IsFile = true, CheckExist = true },
-                new AppSettingParameter() { Parameter = "run:ModelsModelClassNameTest", ExpectedValue = "C:\\CSSPTools\\src\\codegen\\ModelsModelClassNameTest\\bin\\Debug\\netcoreapp3.1\\ModelsModelClassNameTest.exe", IsFile = true, CheckExist = true },
-                new AppSettingParameter() { Parameter = "run:ModelsModelClassNameTestGenerated_cs", ExpectedValue = "C:\\CSSPTools\\src\\codegen\\ModelsModelClassNameTestGenerated_cs\\bin\\Debug\\netcoreapp3.1\\ModelsModelClassNameTestGenerated_cs.exe", IsFile = true, CheckExist = true },
-                new AppSettingParameter() { Parameter = "run:ServicesClassNameServiceGenerated", ExpectedValue = "C:\\CSSPTools\\src\\codegen\\ServicesClassNameServiceGenerated\\bin\\Debug\\netcoreapp3.1\\ServicesClassNameServiceGenerated.exe", IsFile = true, CheckExist = true },
-                new AppSettingParameter() { Parameter = "run:ServicesClassNameServiceTestGenerated", ExpectedValue = "C:\\CSSPTools\\src\\codegen\\ServicesClassNameServiceTestGenerated\\bin\\Debug\\netcoreapp3.1\\ServicesClassNameServiceTestGenerated.exe", IsFile = true, CheckExist = true },
-                new AppSettingParameter() { Parameter = "run:ServicesExtensionEnumCastingGenerated", ExpectedValue = "C:\\CSSPTools\\src\\codegen\\ServicesExtensionEnumCastingGenerated\\bin\\Debug\\netcoreapp3.1\\ServicesExtensionEnumCastingGenerated.exe", IsFile = true, CheckExist = true },
-                new AppSettingParameter() { Parameter = "run:ServicesRepopulateTestDB", ExpectedValue = "C:\\CSSPTools\\src\\codegen\\ServicesRepopulateTestDB\\bin\\Debug\\netcoreapp3.1\\ServicesRepopulateTestDB.exe", IsFile = true, CheckExist = true },
-                new AppSettingParameter() { Parameter = "run:WebAPIClassNameControllerGenerated", ExpectedValue = "C:\\CSSPTools\\src\\codegen\\WebAPIClassNameControllerGenerated\\bin\\Debug\\netcoreapp3.1\\WebAPIClassNameControllerGenerated.exe", IsFile = true, CheckExist = true },
-                new AppSettingParameter() { Parameter = "run:WebAPIClassNameControllerTestGenerated", ExpectedValue = "C:\\CSSPTools\\src\\codegen\\WebAPIClassNameControllerTestGenerated\\bin\\Debug\\netcoreapp3.1\\WebAPIClassNameControllerTestGenerated.exe", IsFile = true, CheckExist = true },
+                new AppSettingParameter() { Parameter = "run:AngularEnumsGenerated", ExpectedValue = "C:\\CSSPTools\\src\\codegen\\_package\\netcoreapp3.1\\AngularEnumsGenerated.exe", IsFile = true, CheckExist = true },
+                new AppSettingParameter() { Parameter = "run:AngularModelsGenerated", ExpectedValue = "C:\\CSSPTools\\src\\codegen\\_package\\netcoreapp3.1\\AngularModelsGenerated.exe", IsFile = true, CheckExist = true },
+                new AppSettingParameter() { Parameter = "run:EnumsCompareWithOldEnums", ExpectedValue = "C:\\CSSPTools\\src\\codegen\\_package\\netcoreapp3.1\\EnumsCompareWithOldEnums.exe", IsFile = true, CheckExist = true },
+                new AppSettingParameter() { Parameter = "run:EnumsGenerated_cs", ExpectedValue = "C:\\CSSPTools\\src\\codegen\\_package\\netcoreapp3.1\\EnumsGenerated_cs.exe", IsFile = true, CheckExist = true },
+                new AppSettingParameter() { Parameter = "run:EnumsPolSourceInfoRelatedFiles", ExpectedValue = "C:\\CSSPTools\\src\\codegen\\_package\\netcoreapp3.1\\EnumsPolSourceInfoRelatedFiles.exe", IsFile = true, CheckExist = true },
+                new AppSettingParameter() { Parameter = "run:EnumsTestGenerated_cs", ExpectedValue = "C:\\CSSPTools\\src\\codegen\\_package\\netcoreapp3.1\\EnumsTestGenerated_cs.exe", IsFile = true, CheckExist = true },
+                new AppSettingParameter() { Parameter = "run:ModelsCompare", ExpectedValue = "C:\\CSSPTools\\src\\codegen\\_package\\netcoreapp3.1\\ModelsCompare.exe", IsFile = true, CheckExist = true },
+                new AppSettingParameter() { Parameter = "run:ModelsCompareDBFieldsAndCSSPModelsDLLProp", ExpectedValue = "C:\\CSSPTools\\src\\codegen\\_package\\netcoreapp3.1\\ModelsCompareDBFieldsAndCSSPModelsDLLProp.exe", IsFile = true, CheckExist = true },
+                new AppSettingParameter() { Parameter = "run:ModelsCSSPModelsRes", ExpectedValue = "C:\\CSSPTools\\src\\codegen\\_package\\netcoreapp3.1\\ModelsCSSPModelsRes.exe", IsFile = true, CheckExist = true },
+                new AppSettingParameter() { Parameter = "run:ModelsModelClassNameTest", ExpectedValue = "C:\\CSSPTools\\src\\codegen\\_package\\netcoreapp3.1\\ModelsModelClassNameTest.exe", IsFile = true, CheckExist = true },
+                new AppSettingParameter() { Parameter = "run:ModelsModelClassNameTestGenerated_cs", ExpectedValue = "C:\\CSSPTools\\src\\codegen\\_package\\netcoreapp3.1\\ModelsModelClassNameTestGenerated_cs.exe", IsFile = true, CheckExist = true },
+                new AppSettingParameter() { Parameter = "run:ServicesClassNameServiceGenerated", ExpectedValue = "C:\\CSSPTools\\src\\codegen\\_package\\netcoreapp3.1\\ServicesClassNameServiceGenerated.exe", IsFile = true, CheckExist = true },
+                new AppSettingParameter() { Parameter = "run:ServicesClassNameServiceTestGenerated", ExpectedValue = "C:\\CSSPTools\\src\\codegen\\_package\\netcoreapp3.1\\ServicesClassNameServiceTestGenerated.exe", IsFile = true, CheckExist = true },
+                new AppSettingParameter() { Parameter = "run:ServicesExtensionEnumCastingGenerated", ExpectedValue = "C:\\CSSPTools\\src\\codegen\\_package\\netcoreapp3.1\\ServicesExtensionEnumCastingGenerated.exe", IsFile = true, CheckExist = true },
+                new AppSettingParameter() { Parameter = "run:ServicesRepopulateTestDB", ExpectedValue = "C:\\CSSPTools\\src\\codegen\\_package\\netcoreapp3.1\\ServicesRepopulateTestDB.exe", IsFile = true, CheckExist = true },
+                new AppSettingParameter() { Parameter = "run:WebAPIClassNameControllerGenerated", ExpectedValue = "C:\\CSSPTools\\src\\codegen\\_package\\netcoreapp3.1\\WebAPIClassNameControllerGenerated.exe", IsFile = true, CheckExist = true },
+                new AppSettingParameter() { Parameter = "run:WebAPIClassNameControllerTestGenerated", ExpectedValue = "C:\\CSSPTools\\src\\codegen\\_package\\netcoreapp3.1\\WebAPIClassNameControllerTestGenerated.exe", IsFile = true, CheckExist = true },
 
                 // test
 
@@ -157,9 +157,6 @@ namespace ExecuteDotNetCommandServices.Services
                 new AppSettingParameter() { Parameter = "build:ServicesRepopulateTestDB", ExpectedValue = "C:\\CSSPTools\\src\\codegen\\ServicesRepopulateTestDB\\ServicesRepopulateTestDB.csproj", IsFile = true, CheckExist = true },
                 new AppSettingParameter() { Parameter = "build:ServicesRepopulateTestDBServices", ExpectedValue = "C:\\CSSPTools\\src\\codegen\\ServicesRepopulateTestDBServices\\ServicesRepopulateTestDBServices.csproj", IsFile = true, CheckExist = true },
                 new AppSettingParameter() { Parameter = "build:ServicesRepopulateTestDBServices.Tests", ExpectedValue = "C:\\CSSPTools\\src\\codegen\\Tests\\ServicesRepopulateTestDBServices.Tests\\ServicesRepopulateTestDBServices.Tests.csproj", IsFile = true, CheckExist = true },
-
-                new AppSettingParameter() { Parameter = "build:UserServices", ExpectedValue = "C:\\CSSPTools\\src\\codegen\\UserServices\\UserServices.csproj", IsFile = true, CheckExist = true },
-                new AppSettingParameter() { Parameter = "build:UserServices.Tests", ExpectedValue = "C:\\CSSPTools\\src\\codegen\\Tests\\UserServices.Tests\\UserServices.Tests.csproj", IsFile = true, CheckExist = true },
 
                 new AppSettingParameter() { Parameter = "build:ValidateAppSettingsServices", ExpectedValue = "C:\\CSSPTools\\src\\codegen\\ValidateAppSettingsServices\\ValidateAppSettingsServices.csproj", IsFile = true, CheckExist = true },
                 new AppSettingParameter() { Parameter = "build:ValidateAppSettingsServices.Tests", ExpectedValue = "C:\\CSSPTools\\src\\codegen\\Tests\\ValidateAppSettingsServices.Tests\\ValidateAppSettingsServices.Tests.csproj", IsFile = true, CheckExist = true },

@@ -56,7 +56,7 @@ namespace AngularComponentsGeneratedServices.Services
                 "CSSPEnumTypeTextAttribute", "CSSPExistAttribute", "CSSPFillAttribute", "CSSPModelsRes", "TestDBContext",
             };
 
-            int max = 2;
+            int max = 3333;
             int count = 0;
             foreach (DLLTypeInfo dllTypeInfoModels in DLLTypeInfoCSSPModelsList)
             {

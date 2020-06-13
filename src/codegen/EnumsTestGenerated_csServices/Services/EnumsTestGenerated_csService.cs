@@ -1,5 +1,6 @@
 ﻿using ActionCommandDBServices.Services;
 using ConfigServices.Services;
+using CultureServices.Services;
 using GenerateCodeBaseServices.Services;
 using Microsoft.Extensions.Configuration;
 using System.Collections.Generic;
@@ -19,10 +20,12 @@ namespace EnumsTestGenerated_cs.Services
 
         #region Constructors
         public EnumsTestGenerated_csService(IConfiguration configuration,
+            ICultureService cultureService,
             IActionCommandDBService actionCommandDBService,
             IValidateAppSettingsService validateAppSettingsService,
             IGenerateCodeBaseService generateCodeBaseService) : base(configuration)
         {
+            CultureService = cultureService;
             ActionCommandDBService = actionCommandDBService;
             ValidateAppSettingsService = validateAppSettingsService;
             GenerateCodeBaseService = generateCodeBaseService;
@@ -63,7 +66,7 @@ namespace EnumsTestGenerated_cs.Services
                 new AppSettingParameter() { Parameter = "Command", ExpectedValue = "EnumsTestGenerated_cs" },
                 new AppSettingParameter() { Parameter = "Culture", ExpectedValue = "", IsCulture = true },
                 new AppSettingParameter() { Parameter = "DBFileName", ExpectedValue = "{AppDataPath}\\CSSP\\ActionCommandDB.db", IsFile = true, CheckExist = true },
-                new AppSettingParameter() { Parameter = "CSSPEnums", ExpectedValue = "C:\\CSSPTools\\src\\dlls\\CSSPEnums\\bin\\Debug\\netcoreapp3.1\\CSSPEnums.dll", IsFile = true, CheckExist = true },
+                new AppSettingParameter() { Parameter = "CSSPEnums", ExpectedValue = "C:\\CSSPTools\\src\\dlls\\_package\\netcoreapp3.1\\CSSPEnums.dll", IsFile = true, CheckExist = true },
                 new AppSettingParameter() { Parameter = "EnumsTestGenerated", ExpectedValue = "C:\\CSSPTools\\src\\tests\\CSSPEnums.Tests\\tests\\Generated\\EnumsTestGenerated.cs", IsFile = true, CheckExist = true },
             };
 

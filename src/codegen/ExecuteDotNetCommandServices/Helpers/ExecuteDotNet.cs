@@ -1,4 +1,5 @@
-﻿using CultureServices.Resources;
+﻿using ConfigServices.Services;
+using CultureServices.Resources;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Diagnostics;
@@ -41,7 +42,8 @@ namespace ExecuteDotNetCommandServices.Services
             Directory.SetCurrentDirectory(di.FullName);
 
             string command = $"dotnet";
-            string arg = $" { dotNetCommand.Action } /flp:v=n; /flp:logfile={ LogFileName }";
+            string FullPathLogFileName = Directory.GetCurrentDirectory() + "\\" + LogFileName;
+            string arg = $" { dotNetCommand.Action } /flp:v=m; /flp:logfile={ LogFileName }";
             if (dotNetCommand.Action == "run")
             {
                 command = fi.Name;
@@ -54,7 +56,7 @@ namespace ExecuteDotNetCommandServices.Services
 
             if (dotNetCommand.Action == "build" || dotNetCommand.Action == "test")
             {
-                string dllOrExeFileName = di.FullName + @"\bin\Debug\netcoreapp3.1\" + dotNetCommand.Command + ".dll";
+                string dllOrExeFileName = di.FullName.Substring(0, di.FullName.LastIndexOf("\\")) + @"\_package\netcoreapp3.1\" + dotNetCommand.Command + ".dll";
                 if (dotNetCommand.Command.EndsWith("Services"))
                 {
                     dllOrExeFileName.Replace(".dll", ".exe");
@@ -74,7 +76,7 @@ namespace ExecuteDotNetCommandServices.Services
 
             Directory.SetCurrentDirectory(currentDirectory);
 
-            if (process.ExitCode != 0)
+            if (process.ExitCode == (int)ExitCode.Error)
             {
                 ActionCommandDBService.ErrorText.AppendLine("");
                 ActionCommandDBService.ErrorText.AppendLine($"{ string.Format(CultureServicesRes.ErrorWhileRunningCommand_UnderDirectory_, command + " " + arg, di.FullName) }");
@@ -83,7 +85,7 @@ namespace ExecuteDotNetCommandServices.Services
 
             if (dotNetCommand.Action != "run")
             {
-                FileInfo fiLog = new FileInfo(fi.FullName.Replace(fi.Name, LogFileName));
+                FileInfo fiLog = new FileInfo(FullPathLogFileName);
 
                 if (!fiLog.Exists)
                 {

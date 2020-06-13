@@ -43,7 +43,7 @@
       <HintPath>..\_package\netcoreapp3.1\ActionCommandDBServices.dll</HintPath>
     </Reference>
     <Reference Include="ModelsCSSPModelsResServices">
-      <HintPath>..\ModelsCSSPModelsResServices\bin\Debug\netcoreapp3.1\ModelsCSSPModelsResServices.dll</HintPath>
+      <HintPath>..\_package\netcoreapp3.1\ModelsCSSPModelsResServices.dll</HintPath>
     </Reference>
     <Reference Include="ValidateAppSettingsServices">
       <HintPath>..\_package\netcoreapp3.1\ValidateAppSettingsServices.dll</HintPath>

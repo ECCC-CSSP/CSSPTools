@@ -46,7 +46,7 @@
       <HintPath>..\_package\netcoreapp3.1\ActionCommandDBServices.dll</HintPath>
     </Reference>
     <Reference Include="WebAPIClassNameControllerTestGeneratedServices">
-      <HintPath>..\WebAPIClassNameControllerTestGeneratedServices\bin\Debug\netcoreapp3.1\WebAPIClassNameControllerTestGeneratedServices.dll</HintPath>
+      <HintPath>..\_package\netcoreapp3.1\WebAPIClassNameControllerTestGeneratedServices.dll</HintPath>
     </Reference>
     <Reference Include="ValidateAppSettingsServices">
       <HintPath>..\_package\netcoreapp3.1\ValidateAppSettingsServices.dll</HintPath>

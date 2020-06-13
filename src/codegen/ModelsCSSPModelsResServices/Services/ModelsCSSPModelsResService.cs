@@ -1,5 +1,6 @@
 ﻿using ActionCommandDBServices.Services;
 using ConfigServices.Services;
+using CultureServices.Services;
 using GenerateCodeBaseServices.Services;
 using Microsoft.Extensions.Configuration;
 using System.Collections.Generic;
@@ -19,10 +20,12 @@ namespace ModelsCSSPModelsResServices.Services
 
         #region Constructors
         public ModelsCSSPModelsResService(IConfiguration configuration,
+            ICultureService cultureService,
             IActionCommandDBService actionCommandDBService,
             IValidateAppSettingsService validateAppSettingsService,
             IGenerateCodeBaseService generateCodeBaseService) : base(configuration)
         {
+            CultureService = cultureService;
             ActionCommandDBService = actionCommandDBService;
             ValidateAppSettingsService = validateAppSettingsService;
             GenerateCodeBaseService = generateCodeBaseService;

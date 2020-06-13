@@ -24,15 +24,8 @@ namespace AngularComponentsGeneratedServices.Services
             sb.AppendLine(@" */");
             sb.AppendLine(@"");
 
-            sb.AppendLine(@"import { HttpRequestModel } from '../../../models/http.model';");
-            sb.AppendLine($@"import {{ { dllTypeInfoModels.Name } }} from 'src/app/models/generated/{ dllTypeInfoModels.Name }.model';");
-            sb.AppendLine(@"");
             sb.AppendLine($@"export interface { dllTypeInfoModels.Name }TextModel {{");
             sb.AppendLine(@"    Title?: string");
-            sb.AppendLine(@"}");
-            sb.AppendLine(@"");
-            sb.AppendLine($@"export interface { dllTypeInfoModels.Name }Model extends HttpRequestModel {{");
-            sb.AppendLine($@"    { dllTypeInfoModels.Name }List: { dllTypeInfoModels.Name }[];");
             sb.AppendLine(@"}");
 
             DirectoryInfo di = new DirectoryInfo(Config.GetValue<string>("OutputDir").Replace("{TypeNameLower}", dllTypeInfoModels.Name.ToLower()));

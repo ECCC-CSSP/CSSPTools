@@ -1,5 +1,6 @@
 ﻿using ActionCommandDBServices.Models;
 using ActionCommandDBServices.Services;
+using CSSPEnums;
 using CSSPModels;
 using CultureServices.Resources;
 using CultureServices.Services;
@@ -119,13 +120,15 @@ namespace ConfigServices.Services
                 CultureService = Provider.GetService<ICultureService>();
                 if (CultureService == null)
                 {
-                    throw new Exception($"{ AppDomain.CurrentDomain.FriendlyName } CultureService   == null");
+                    throw new Exception($"{ AppDomain.CurrentDomain.FriendlyName } CultureService == null");
                 }
+
+                CultureService.SetCulture(Config.GetValue<string>("Culture"));
 
                 ActionCommandDBService = Provider.GetService<IActionCommandDBService>();
                 if (ActionCommandDBService == null)
                 {
-                    throw new Exception($"{ AppDomain.CurrentDomain.FriendlyName } ActionCommandDBService   == null");
+                    throw new Exception($"{ AppDomain.CurrentDomain.FriendlyName } ActionCommandDBService == null");
                 }
 
                 ActionCommandDBService.Action = Config.GetValue<string>(ActionText);

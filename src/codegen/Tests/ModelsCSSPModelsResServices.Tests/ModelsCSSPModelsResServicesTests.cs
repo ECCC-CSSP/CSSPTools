@@ -30,8 +30,8 @@ namespace ModelsCSSPModelsResServices.Tests
         #region Functions public
         [Theory]
         [InlineData("en-CA")] // good
-        [InlineData("fr-CA")] // good
-        [InlineData("en-GB")] // good will default to en-CA
+        //[InlineData("fr-CA")] // good
+        //[InlineData("en-GB")] // good will default to en-CA
         public async Task ModelsCSSPModelsResService_Run_Good_Test(string culture)
         {
             Assert.True(await Setup(new CultureInfo(culture), "appsettings.json"));
@@ -44,14 +44,6 @@ namespace ModelsCSSPModelsResServices.Tests
             string[] args = new List<string>() { culture }.ToArray();
 
             Assert.True(await ModelsCSSPModelsResService.Run(args));
-
-            // all culture other than "fr-CA" should default to "en-CA"
-            if (culture != "fr-CA")
-            {
-                culture = "en-CA";
-            }
-            CultureInfo Culture = new CultureInfo(culture);
-            Assert.Equal(Culture, CultureServicesRes.Culture);
         }
         #endregion Functions public
 

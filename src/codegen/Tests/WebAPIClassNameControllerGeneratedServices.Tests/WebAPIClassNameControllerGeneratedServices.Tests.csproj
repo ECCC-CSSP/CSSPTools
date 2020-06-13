@@ -59,7 +59,7 @@
       <HintPath>..\..\_package\netcoreapp3.1\ValidateAppSettingsServices.dll</HintPath>
     </Reference>
     <Reference Include="WebAPIClassNameControllerGeneratedServices">
-      <HintPath>..\..\WebAPIClassNameControllerGeneratedServices\bin\Debug\netcoreapp3.1\WebAPIClassNameControllerGeneratedServices.dll</HintPath>
+      <HintPath>..\..\_package\netcoreapp3.1\WebAPIClassNameControllerGeneratedServices.dll</HintPath>
     </Reference>
   </ItemGroup>
 

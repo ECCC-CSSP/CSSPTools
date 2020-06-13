@@ -1,5 +1,6 @@
 ﻿using ActionCommandDBServices.Services;
 using ConfigServices.Services;
+using CultureServices.Services;
 using GenerateCodeBaseServices.Services;
 using Microsoft.Extensions.Configuration;
 using PolSourceGroupingExcelFileReadServices.Services;
@@ -21,11 +22,13 @@ namespace EnumsPolSourceInfoRelatedFilesServices.Services
 
         #region Constructors
         public EnumsPolSourceInfoRelatedFilesService(IConfiguration configuration,
+            ICultureService cultureService,
             IActionCommandDBService actionCommandDBService,
             IValidateAppSettingsService validateAppSettingsService,
             IGenerateCodeBaseService generateCodeBaseService,
             IPolSourceGroupingExcelFileReadService polSourceGroupingExcelFileReadService) : base(configuration)
         {
+            CultureService = cultureService;
             ActionCommandDBService = actionCommandDBService;
             ValidateAppSettingsService = validateAppSettingsService;
             GenerateCodeBaseService = generateCodeBaseService;

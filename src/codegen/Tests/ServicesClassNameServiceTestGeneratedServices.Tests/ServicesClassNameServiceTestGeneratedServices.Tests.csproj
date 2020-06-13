@@ -56,7 +56,7 @@
       <HintPath>..\..\_package\netcoreapp3.1\ActionCommandDBServices.dll</HintPath>
     </Reference>
     <Reference Include="ServicesClassNameServiceTestGeneratedServices">
-      <HintPath>..\..\ServicesClassNameServiceTestGeneratedServices\bin\Debug\netcoreapp3.1\ServicesClassNameServiceTestGeneratedServices.dll</HintPath>
+      <HintPath>..\..\_package\netcoreapp3.1\ServicesClassNameServiceTestGeneratedServices.dll</HintPath>
     </Reference>
     <Reference Include="ValidateAppSettingsServices">
       <HintPath>..\..\_package\netcoreapp3.1\ValidateAppSettingsServices.dll</HintPath>

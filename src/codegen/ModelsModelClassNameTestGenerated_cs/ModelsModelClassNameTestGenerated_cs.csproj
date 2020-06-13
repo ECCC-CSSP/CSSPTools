@@ -43,7 +43,7 @@
       <HintPath>..\_package\netcoreapp3.1\ActionCommandDBServices.dll</HintPath>
     </Reference>
     <Reference Include="ModelsModelClassNameTestGenerated_csServices">
-      <HintPath>..\ModelsModelClassNameTestGenerated_csServices\bin\Debug\netcoreapp3.1\ModelsModelClassNameTestGenerated_csServices.dll</HintPath>
+      <HintPath>..\_package\netcoreapp3.1\ModelsModelClassNameTestGenerated_csServices.dll</HintPath>
     </Reference>
     <Reference Include="ValidateAppSettingsServices">
       <HintPath>..\_package\netcoreapp3.1\ValidateAppSettingsServices.dll</HintPath>

@@ -41,7 +41,7 @@ namespace GenerateCodeBaseServices.Tests
         #region Functions public
         [Theory]
         [InlineData("en-CA")]
-        [InlineData("fr-CA")]
+        //[InlineData("fr-CA")]
         public async Task GenerateCodeBaseService_Constructors_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));

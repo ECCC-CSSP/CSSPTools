@@ -1,5 +1,7 @@
 ﻿using AngularEnumsGeneratedServices.Services;
 using ConfigServices.Services;
+using CSSPEnums;
+using CultureServices.Services;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -27,6 +29,7 @@ namespace AngularEnumsGenerated
         {
             if (!await ConfigureBaseServices()) return await Task.FromResult(false);
 
+            Services.AddSingleton<IEnums, Enums>();
             Services.AddSingleton<IAngularEnumsGeneratedService, AngularEnumsGeneratedService>();
 
             if (!await BuildServiceProvider())
@@ -35,10 +38,12 @@ namespace AngularEnumsGenerated
                 return await Task.FromResult(false);
             }
 
+            CultureService.SetCulture(Config.GetValue<string>("Culture"));
+
             AngularEnumsGeneratedService = Provider.GetService<IAngularEnumsGeneratedService>();
             if (AngularEnumsGeneratedService == null)
             {
-                await ActionCommandDBService.ConsoleWriteError($"{ AppDomain.CurrentDomain.FriendlyName } angularEnumsGeneratedService  == null");
+                await ActionCommandDBService.ConsoleWriteError($"{ AppDomain.CurrentDomain.FriendlyName } angularEnumsGeneratedService == null");
                 return await Task.FromResult(false);
             }
 

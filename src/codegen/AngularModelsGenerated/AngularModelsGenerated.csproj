@@ -28,7 +28,7 @@
       <HintPath>..\_package\netcoreapp3.1\ConfigServices.dll</HintPath>
     </Reference>
     <Reference Include="AngularModelsGeneratedServices">
-      <HintPath>..\AngularModelsGeneratedServices\bin\Debug\netcoreapp3.1\AngularModelsGeneratedServices.dll</HintPath>
+      <HintPath>..\_package\netcoreapp3.1\AngularModelsGeneratedServices.dll</HintPath>
     </Reference>
     <Reference Include="ConfigServices">
       <HintPath>..\_package\netcoreapp3.1\ConfigServices.dll</HintPath>

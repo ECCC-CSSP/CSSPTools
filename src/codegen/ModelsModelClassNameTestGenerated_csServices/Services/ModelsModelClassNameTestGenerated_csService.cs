@@ -1,5 +1,6 @@
 ﻿using ActionCommandDBServices.Services;
 using ConfigServices.Services;
+using CultureServices.Services;
 using GenerateCodeBaseServices.Services;
 using Microsoft.Extensions.Configuration;
 using System.Collections.Generic;
@@ -19,10 +20,12 @@ namespace ModelsModelClassNameTestGenerated_csServices.Services
 
         #region Constructors
         public ModelsModelClassNameTestGenerated_csService(IConfiguration configuration,
+            ICultureService cultureService,
             IActionCommandDBService actionCommandDBService,
             IValidateAppSettingsService validateAppSettingsService,
             IGenerateCodeBaseService generateCodeBaseService) : base(configuration)
         {
+            CultureService = cultureService;
             ActionCommandDBService = actionCommandDBService;
             ValidateAppSettingsService = validateAppSettingsService;
             GenerateCodeBaseService = generateCodeBaseService;
@@ -63,7 +66,7 @@ namespace ModelsModelClassNameTestGenerated_csServices.Services
                 new AppSettingParameter() { Parameter = "Command", ExpectedValue = "ModelsModelClassNameTestGenerated_cs" },
                 new AppSettingParameter() { Parameter = "Culture", ExpectedValue = "", IsCulture = true },
                 new AppSettingParameter() { Parameter = "DBFileName", ExpectedValue = "{AppDataPath}\\CSSP\\ActionCommandDB.db", IsFile = true, CheckExist = true },
-                new AppSettingParameter() { Parameter = "CSSPModels", ExpectedValue = "C:\\CSSPTools\\src\\dlls\\CSSPModels\\bin\\Debug\\netcoreapp3.1\\CSSPModels.dll", IsFile = true, CheckExist = true },
+                new AppSettingParameter() { Parameter = "CSSPModels", ExpectedValue = "C:\\CSSPTools\\src\\dlls\\_package\\netcoreapp3.1\\CSSPModels.dll", IsFile = true, CheckExist = true },
                 new AppSettingParameter() { Parameter = "TypeNameTestGenerated", ExpectedValue = "C:\\CSSPTools\\src\\tests\\CSSPModels.Tests\\tests\\Generated\\{TypeName}TestGenerated.cs" },
             };
 

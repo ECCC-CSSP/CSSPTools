@@ -1,4 +1,4 @@
 ﻿Requirements: 
-C:\CSSPTools\src\dlls\_package\netcoreapp3.1\CSSPModels.dll
+C:\\CSSPTools\\src\\dlls\\_package\\netcoreapp3.1\CSSPModels.dll
 
 Will compare the CSSPModels written manually and the one that will be generated via code generator

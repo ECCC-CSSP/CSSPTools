@@ -39,7 +39,7 @@ namespace ActionCommandDBServices.Tests
         #region Functions public
         [Theory]
         [InlineData("en-CA")]
-        [InlineData("fr-CA")]
+        //[InlineData("fr-CA")]
         public async Task ActionCommandDBService_Constructors_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
@@ -62,7 +62,7 @@ namespace ActionCommandDBServices.Tests
         }
         [Theory]
         [InlineData("en-CA")]
-        [InlineData("fr-CA")]
+        //[InlineData("fr-CA")]
         public async Task ActionCommandDBService_Get_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
@@ -83,7 +83,7 @@ namespace ActionCommandDBServices.Tests
         }
         [Theory]
         [InlineData("en-CA")]
-        [InlineData("fr-CA")]
+        //[InlineData("fr-CA")]
         public async Task ActionCommandDBService_Update_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
@@ -117,7 +117,7 @@ namespace ActionCommandDBServices.Tests
         }
         [Theory]
         [InlineData("en-CA")]
-        [InlineData("fr-CA")]
+        //[InlineData("fr-CA")]
         public async Task ActionCommandDBService_RefillAll_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
@@ -132,7 +132,7 @@ namespace ActionCommandDBServices.Tests
         }
         [Theory]
         [InlineData("en-CA")]
-        [InlineData("fr-CA")]
+        //[InlineData("fr-CA")]
         public async Task ActionCommandDBService_Get_BadRequests_Test(string culture)
         {
             Assert.True(await Setup(culture));
@@ -149,7 +149,7 @@ namespace ActionCommandDBServices.Tests
         }
         [Theory]
         [InlineData("en-CA")]
-        [InlineData("fr-CA")]
+        //[InlineData("fr-CA")]
         public async Task ActionCommandDBService_Update_BadRequests_Test(string culture)
         {
             Assert.True(await Setup(culture));
@@ -178,7 +178,7 @@ namespace ActionCommandDBServices.Tests
         }
         [Theory]
         [InlineData("en-CA")]
-        [InlineData("fr-CA")]
+        //[InlineData("fr-CA")]
         public async Task ActionCommandDBService_Culture_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));

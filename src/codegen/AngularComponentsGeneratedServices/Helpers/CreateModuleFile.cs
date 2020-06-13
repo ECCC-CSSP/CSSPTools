@@ -30,6 +30,7 @@ namespace AngularComponentsGeneratedServices.Services
             sb.AppendLine($@"import {{ { dllTypeInfoModels.Name }RoutingModule }} from './{ dllTypeInfoModels.Name.ToLower() }-routing.module';");
             sb.AppendLine(@"import { MaterialModule } from '../../../app-material.module';");
             sb.AppendLine($@"import {{ { dllTypeInfoModels.Name }Component }} from './{ dllTypeInfoModels.Name.ToLower() }.component';");
+            sb.AppendLine(@"import { FormsModule, ReactiveFormsModule } from '@angular/forms';");
             sb.AppendLine(@"");
             sb.AppendLine(@"@NgModule({");
             sb.AppendLine($@"  declarations: [ { dllTypeInfoModels.Name }Component ],");
@@ -37,7 +38,9 @@ namespace AngularComponentsGeneratedServices.Services
             sb.AppendLine(@"    CommonModule,");
             sb.AppendLine(@"    RouterModule,");
             sb.AppendLine($@"    { dllTypeInfoModels.Name }RoutingModule,");
-            sb.AppendLine(@"    MaterialModule");
+            sb.AppendLine(@"    MaterialModule,");
+            sb.AppendLine(@"    FormsModule,");
+            sb.AppendLine(@"    ReactiveFormsModule");
             sb.AppendLine(@"  ]");
             sb.AppendLine(@"})");
             sb.AppendLine($@"export class { dllTypeInfoModels.Name }Module {{ }}");

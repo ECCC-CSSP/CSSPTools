@@ -1,6 +1,7 @@
 ﻿using ActionCommandDBServices.Models;
 using ActionCommandDBServices.Services;
 using ConfigServices.Services;
+using CultureServices.Services;
 using ExecuteDotNetCommandServices.Models;
 using GenerateCodeBaseServices.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -149,9 +150,6 @@ namespace ExecuteDotNetCommandServices.Services
             "ServicesRepopulateTestDBServices",
             "ServicesRepopulateTestDBServices.Tests",
 
-            "UserServices",
-            "UserServices.Tests",
-
             "ValidateAppSettingsServices",
             "ValidateAppSettingsServices.Tests",
 
@@ -170,11 +168,13 @@ namespace ExecuteDotNetCommandServices.Services
         #endregion Properties
 
         #region Constructors
-        public ExecuteDotNetCommandService(IConfiguration configuration, 
+        public ExecuteDotNetCommandService(IConfiguration configuration,
+            ICultureService cultureService,
             IActionCommandDBService actionCommandDBService,
             IValidateAppSettingsService validateAppSettingsService,
             IGenerateCodeBaseService generateCodeBaseService) : base(configuration)
         {
+            CultureService = cultureService;
             ActionCommandDBService = actionCommandDBService;
             ValidateAppSettingsService = validateAppSettingsService;
             GenerateCodeBaseService = generateCodeBaseService;

@@ -1,5 +1,6 @@
 ﻿using ActionCommandDBServices.Services;
 using ConfigServices.Services;
+using CultureServices.Services;
 using GenerateCodeBaseServices.Services;
 using Microsoft.Extensions.Configuration;
 using System.Collections.Generic;
@@ -19,10 +20,12 @@ namespace ModelsCompareServices.Services
 
         #region Constructors
         public ModelsCompareService(IConfiguration configuration,
+            ICultureService cultureService,
             IActionCommandDBService actionCommandDBService,
             IValidateAppSettingsService validateAppSettingsService,
             IGenerateCodeBaseService generateCodeBaseService) : base(configuration)
         {
+            CultureService = cultureService;
             ActionCommandDBService = actionCommandDBService;
             ValidateAppSettingsService = validateAppSettingsService;
             GenerateCodeBaseService = generateCodeBaseService;
@@ -63,7 +66,7 @@ namespace ModelsCompareServices.Services
                 new AppSettingParameter() { Parameter = "Command", ExpectedValue = "ModelsCompare" },
                 new AppSettingParameter() { Parameter = "Culture", ExpectedValue = "", IsCulture = true },
                 new AppSettingParameter() { Parameter = "DBFileName", ExpectedValue = "{AppDataPath}\\CSSP\\ActionCommandDB.db", IsFile = true, CheckExist = true },
-                new AppSettingParameter() { Parameter = "CSSPModels", ExpectedValue = "C:\\CSSPTools\\src\\dlls\\CSSPModels\\bin\\Debug\\netcoreapp3.1\\CSSPModels.dll", IsFile = true, CheckExist = true },
+                new AppSettingParameter() { Parameter = "CSSPModels", ExpectedValue = "C:\\CSSPTools\\src\\dlls\\_package\\netcoreapp3.1\\CSSPModels.dll", IsFile = true, CheckExist = true },
                 new AppSettingParameter() { Parameter = "CodeFile", ExpectedValue = "C:\\CSSPTools\\src\\dlls\\CSSPModels\\src\\{TypeName}.cs" },
                 new AppSettingParameter() { Parameter = "CodeFileNotMapped", ExpectedValue = "C:\\CSSPTools\\src\\dlls\\CSSPModels\\src\\_{TypeName}.cs" },
             };

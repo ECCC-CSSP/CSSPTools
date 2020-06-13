@@ -43,7 +43,7 @@ namespace PolSourceGroupingExcelFileReadServices.Tests
         #region Functions public
         [Theory]
         [InlineData("en-CA")] // good
-        [InlineData("fr-CA")] // good
+        //[InlineData("fr-CA")] // good
         public async Task PolSourceGroupingExcelFileReadService_ReadExcelSheet_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
