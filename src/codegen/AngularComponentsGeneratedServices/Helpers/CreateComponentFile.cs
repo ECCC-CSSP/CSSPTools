@@ -71,7 +71,7 @@ namespace AngularComponentsGeneratedServices.Services
                         PropNameFirstLetterLowerCase = PropNameFirstLetterLowerCase[0].ToString().ToLower() + PropNameFirstLetterLowerCase.Substring(1);
                         sb.AppendLine($@"  { PropNameFirstLetterLowerCase }List: EnumIDAndText[];");
 
-                        usedPropTypeList.Add(dllPropertyInfo.CSSPProp.PropType);
+                        usedPropTypeList.Add(PropNameFirstLetterLowerCase);
                     }
                 }
             }
@@ -127,7 +127,7 @@ namespace AngularComponentsGeneratedServices.Services
                         PropNameFirstLetterLowerCase = PropNameFirstLetterLowerCase[0].ToString().ToLower() + PropNameFirstLetterLowerCase.Substring(1);
                         sb.AppendLine($@"    this.{ PropNameFirstLetterLowerCase }List = { dllPropertyInfo.CSSPProp.PropType }_GetOrderedText();");
 
-                        usedPropTypeList.Add(dllPropertyInfo.CSSPProp.PropType);
+                        usedPropTypeList.Add(PropNameFirstLetterLowerCase);
                     }
                 }
             }
@@ -153,14 +153,15 @@ namespace AngularComponentsGeneratedServices.Services
                 sb.AppendLine($@"            {{");
                 if (dllPropertyInfo.CSSPProp.IsKey)
                 {
-                    sb.AppendLine($@"              value: (AddOrUpdate === 'Add' ? 0 : (this.{ dllTypeInfoModels.Name.ToLower() }Service.{ dllTypeInfoModels.Name.ToLower() }List[0]?.{ dllPropertyInfo.CSSPProp.PropName } ?? '')),");
+                    sb.AppendLine($@"              value: (AddOrUpdate === 'Add' ? 0 : (this.{ dllTypeInfoModels.Name.ToLower() }Service.{ dllTypeInfoModels.Name.ToLower() }List[0]?.{ dllPropertyInfo.CSSPProp.PropName })),");
                 }
                 else
                 {
-                    sb.AppendLine($@"              value: this.{ dllTypeInfoModels.Name.ToLower() }Service.{ dllTypeInfoModels.Name.ToLower() }List[0]?.{ dllPropertyInfo.CSSPProp.PropName } ?? '',");
+                    sb.AppendLine($@"              value: this.{ dllTypeInfoModels.Name.ToLower() }Service.{ dllTypeInfoModels.Name.ToLower() }List[0]?.{ dllPropertyInfo.CSSPProp.PropName },");
                 }
                 sb.AppendLine($@"              disabled: false");
-                sb.AppendLine($@"            }}, Validators.required],");
+                sb.AppendLine($@"            }}],");
+                //sb.AppendLine($@"            }}, Validators.required],");
             }
             sb.AppendLine(@"        }");
             sb.AppendLine(@"      );");

@@ -68,44 +68,44 @@ export class MWQMSiteComponent implements OnInit, OnDestroy {
         {
           MWQMSiteID: [
             {
-              value: (AddOrUpdate === 'Add' ? 0 : (this.mwqmsiteService.mwqmsiteList[0]?.MWQMSiteID ?? '')),
+              value: (AddOrUpdate === 'Add' ? 0 : (this.mwqmsiteService.mwqmsiteList[0]?.MWQMSiteID)),
               disabled: false
-            }, Validators.required],
+            }],
           MWQMSiteTVItemID: [
             {
-              value: this.mwqmsiteService.mwqmsiteList[0]?.MWQMSiteTVItemID ?? '',
+              value: this.mwqmsiteService.mwqmsiteList[0]?.MWQMSiteTVItemID,
               disabled: false
-            }, Validators.required],
+            }],
           MWQMSiteNumber: [
             {
-              value: this.mwqmsiteService.mwqmsiteList[0]?.MWQMSiteNumber ?? '',
+              value: this.mwqmsiteService.mwqmsiteList[0]?.MWQMSiteNumber,
               disabled: false
-            }, Validators.required],
+            }],
           MWQMSiteDescription: [
             {
-              value: this.mwqmsiteService.mwqmsiteList[0]?.MWQMSiteDescription ?? '',
+              value: this.mwqmsiteService.mwqmsiteList[0]?.MWQMSiteDescription,
               disabled: false
-            }, Validators.required],
+            }],
           MWQMSiteLatestClassification: [
             {
-              value: this.mwqmsiteService.mwqmsiteList[0]?.MWQMSiteLatestClassification ?? '',
+              value: this.mwqmsiteService.mwqmsiteList[0]?.MWQMSiteLatestClassification,
               disabled: false
-            }, Validators.required],
+            }],
           Ordinal: [
             {
-              value: this.mwqmsiteService.mwqmsiteList[0]?.Ordinal ?? '',
+              value: this.mwqmsiteService.mwqmsiteList[0]?.Ordinal,
               disabled: false
-            }, Validators.required],
+            }],
           LastUpdateDate_UTC: [
             {
-              value: this.mwqmsiteService.mwqmsiteList[0]?.LastUpdateDate_UTC ?? '',
+              value: this.mwqmsiteService.mwqmsiteList[0]?.LastUpdateDate_UTC,
               disabled: false
-            }, Validators.required],
+            }],
           LastUpdateContactTVItemID: [
             {
-              value: this.mwqmsiteService.mwqmsiteList[0]?.LastUpdateContactTVItemID ?? '',
+              value: this.mwqmsiteService.mwqmsiteList[0]?.LastUpdateContactTVItemID,
               disabled: false
-            }, Validators.required],
+            }],
         }
       );
 

@@ -89,94 +89,94 @@ export class TVFileComponent implements OnInit, OnDestroy {
         {
           TVFileID: [
             {
-              value: (AddOrUpdate === 'Add' ? 0 : (this.tvfileService.tvfileList[0]?.TVFileID ?? '')),
+              value: (AddOrUpdate === 'Add' ? 0 : (this.tvfileService.tvfileList[0]?.TVFileID)),
               disabled: false
-            }, Validators.required],
+            }],
           TVFileTVItemID: [
             {
-              value: this.tvfileService.tvfileList[0]?.TVFileTVItemID ?? '',
+              value: this.tvfileService.tvfileList[0]?.TVFileTVItemID,
               disabled: false
-            }, Validators.required],
+            }],
           TemplateTVType: [
             {
-              value: this.tvfileService.tvfileList[0]?.TemplateTVType ?? '',
+              value: this.tvfileService.tvfileList[0]?.TemplateTVType,
               disabled: false
-            }, Validators.required],
+            }],
           ReportTypeID: [
             {
-              value: this.tvfileService.tvfileList[0]?.ReportTypeID ?? '',
+              value: this.tvfileService.tvfileList[0]?.ReportTypeID,
               disabled: false
-            }, Validators.required],
+            }],
           Parameters: [
             {
-              value: this.tvfileService.tvfileList[0]?.Parameters ?? '',
+              value: this.tvfileService.tvfileList[0]?.Parameters,
               disabled: false
-            }, Validators.required],
+            }],
           Year: [
             {
-              value: this.tvfileService.tvfileList[0]?.Year ?? '',
+              value: this.tvfileService.tvfileList[0]?.Year,
               disabled: false
-            }, Validators.required],
+            }],
           Language: [
             {
-              value: this.tvfileService.tvfileList[0]?.Language ?? '',
+              value: this.tvfileService.tvfileList[0]?.Language,
               disabled: false
-            }, Validators.required],
+            }],
           FilePurpose: [
             {
-              value: this.tvfileService.tvfileList[0]?.FilePurpose ?? '',
+              value: this.tvfileService.tvfileList[0]?.FilePurpose,
               disabled: false
-            }, Validators.required],
+            }],
           FileType: [
             {
-              value: this.tvfileService.tvfileList[0]?.FileType ?? '',
+              value: this.tvfileService.tvfileList[0]?.FileType,
               disabled: false
-            }, Validators.required],
+            }],
           FileSize_kb: [
             {
-              value: this.tvfileService.tvfileList[0]?.FileSize_kb ?? '',
+              value: this.tvfileService.tvfileList[0]?.FileSize_kb,
               disabled: false
-            }, Validators.required],
+            }],
           FileInfo: [
             {
-              value: this.tvfileService.tvfileList[0]?.FileInfo ?? '',
+              value: this.tvfileService.tvfileList[0]?.FileInfo,
               disabled: false
-            }, Validators.required],
+            }],
           FileCreatedDate_UTC: [
             {
-              value: this.tvfileService.tvfileList[0]?.FileCreatedDate_UTC ?? '',
+              value: this.tvfileService.tvfileList[0]?.FileCreatedDate_UTC,
               disabled: false
-            }, Validators.required],
+            }],
           FromWater: [
             {
-              value: this.tvfileService.tvfileList[0]?.FromWater ?? '',
+              value: this.tvfileService.tvfileList[0]?.FromWater,
               disabled: false
-            }, Validators.required],
+            }],
           ClientFilePath: [
             {
-              value: this.tvfileService.tvfileList[0]?.ClientFilePath ?? '',
+              value: this.tvfileService.tvfileList[0]?.ClientFilePath,
               disabled: false
-            }, Validators.required],
+            }],
           ServerFileName: [
             {
-              value: this.tvfileService.tvfileList[0]?.ServerFileName ?? '',
+              value: this.tvfileService.tvfileList[0]?.ServerFileName,
               disabled: false
-            }, Validators.required],
+            }],
           ServerFilePath: [
             {
-              value: this.tvfileService.tvfileList[0]?.ServerFilePath ?? '',
+              value: this.tvfileService.tvfileList[0]?.ServerFilePath,
               disabled: false
-            }, Validators.required],
+            }],
           LastUpdateDate_UTC: [
             {
-              value: this.tvfileService.tvfileList[0]?.LastUpdateDate_UTC ?? '',
+              value: this.tvfileService.tvfileList[0]?.LastUpdateDate_UTC,
               disabled: false
-            }, Validators.required],
+            }],
           LastUpdateContactTVItemID: [
             {
-              value: this.tvfileService.tvfileList[0]?.LastUpdateContactTVItemID ?? '',
+              value: this.tvfileService.tvfileList[0]?.LastUpdateContactTVItemID,
               disabled: false
-            }, Validators.required],
+            }],
         }
       );
 

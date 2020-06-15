@@ -89,114 +89,114 @@ export class LabSheetComponent implements OnInit, OnDestroy {
         {
           LabSheetID: [
             {
-              value: (AddOrUpdate === 'Add' ? 0 : (this.labsheetService.labsheetList[0]?.LabSheetID ?? '')),
+              value: (AddOrUpdate === 'Add' ? 0 : (this.labsheetService.labsheetList[0]?.LabSheetID)),
               disabled: false
-            }, Validators.required],
+            }],
           OtherServerLabSheetID: [
             {
-              value: this.labsheetService.labsheetList[0]?.OtherServerLabSheetID ?? '',
+              value: this.labsheetService.labsheetList[0]?.OtherServerLabSheetID,
               disabled: false
-            }, Validators.required],
+            }],
           SamplingPlanID: [
             {
-              value: this.labsheetService.labsheetList[0]?.SamplingPlanID ?? '',
+              value: this.labsheetService.labsheetList[0]?.SamplingPlanID,
               disabled: false
-            }, Validators.required],
+            }],
           SamplingPlanName: [
             {
-              value: this.labsheetService.labsheetList[0]?.SamplingPlanName ?? '',
+              value: this.labsheetService.labsheetList[0]?.SamplingPlanName,
               disabled: false
-            }, Validators.required],
+            }],
           Year: [
             {
-              value: this.labsheetService.labsheetList[0]?.Year ?? '',
+              value: this.labsheetService.labsheetList[0]?.Year,
               disabled: false
-            }, Validators.required],
+            }],
           Month: [
             {
-              value: this.labsheetService.labsheetList[0]?.Month ?? '',
+              value: this.labsheetService.labsheetList[0]?.Month,
               disabled: false
-            }, Validators.required],
+            }],
           Day: [
             {
-              value: this.labsheetService.labsheetList[0]?.Day ?? '',
+              value: this.labsheetService.labsheetList[0]?.Day,
               disabled: false
-            }, Validators.required],
+            }],
           RunNumber: [
             {
-              value: this.labsheetService.labsheetList[0]?.RunNumber ?? '',
+              value: this.labsheetService.labsheetList[0]?.RunNumber,
               disabled: false
-            }, Validators.required],
+            }],
           SubsectorTVItemID: [
             {
-              value: this.labsheetService.labsheetList[0]?.SubsectorTVItemID ?? '',
+              value: this.labsheetService.labsheetList[0]?.SubsectorTVItemID,
               disabled: false
-            }, Validators.required],
+            }],
           MWQMRunTVItemID: [
             {
-              value: this.labsheetService.labsheetList[0]?.MWQMRunTVItemID ?? '',
+              value: this.labsheetService.labsheetList[0]?.MWQMRunTVItemID,
               disabled: false
-            }, Validators.required],
+            }],
           SamplingPlanType: [
             {
-              value: this.labsheetService.labsheetList[0]?.SamplingPlanType ?? '',
+              value: this.labsheetService.labsheetList[0]?.SamplingPlanType,
               disabled: false
-            }, Validators.required],
+            }],
           SampleType: [
             {
-              value: this.labsheetService.labsheetList[0]?.SampleType ?? '',
+              value: this.labsheetService.labsheetList[0]?.SampleType,
               disabled: false
-            }, Validators.required],
+            }],
           LabSheetType: [
             {
-              value: this.labsheetService.labsheetList[0]?.LabSheetType ?? '',
+              value: this.labsheetService.labsheetList[0]?.LabSheetType,
               disabled: false
-            }, Validators.required],
+            }],
           LabSheetStatus: [
             {
-              value: this.labsheetService.labsheetList[0]?.LabSheetStatus ?? '',
+              value: this.labsheetService.labsheetList[0]?.LabSheetStatus,
               disabled: false
-            }, Validators.required],
+            }],
           FileName: [
             {
-              value: this.labsheetService.labsheetList[0]?.FileName ?? '',
+              value: this.labsheetService.labsheetList[0]?.FileName,
               disabled: false
-            }, Validators.required],
+            }],
           FileLastModifiedDate_Local: [
             {
-              value: this.labsheetService.labsheetList[0]?.FileLastModifiedDate_Local ?? '',
+              value: this.labsheetService.labsheetList[0]?.FileLastModifiedDate_Local,
               disabled: false
-            }, Validators.required],
+            }],
           FileContent: [
             {
-              value: this.labsheetService.labsheetList[0]?.FileContent ?? '',
+              value: this.labsheetService.labsheetList[0]?.FileContent,
               disabled: false
-            }, Validators.required],
+            }],
           AcceptedOrRejectedByContactTVItemID: [
             {
-              value: this.labsheetService.labsheetList[0]?.AcceptedOrRejectedByContactTVItemID ?? '',
+              value: this.labsheetService.labsheetList[0]?.AcceptedOrRejectedByContactTVItemID,
               disabled: false
-            }, Validators.required],
+            }],
           AcceptedOrRejectedDateTime: [
             {
-              value: this.labsheetService.labsheetList[0]?.AcceptedOrRejectedDateTime ?? '',
+              value: this.labsheetService.labsheetList[0]?.AcceptedOrRejectedDateTime,
               disabled: false
-            }, Validators.required],
+            }],
           RejectReason: [
             {
-              value: this.labsheetService.labsheetList[0]?.RejectReason ?? '',
+              value: this.labsheetService.labsheetList[0]?.RejectReason,
               disabled: false
-            }, Validators.required],
+            }],
           LastUpdateDate_UTC: [
             {
-              value: this.labsheetService.labsheetList[0]?.LastUpdateDate_UTC ?? '',
+              value: this.labsheetService.labsheetList[0]?.LastUpdateDate_UTC,
               disabled: false
-            }, Validators.required],
+            }],
           LastUpdateContactTVItemID: [
             {
-              value: this.labsheetService.labsheetList[0]?.LastUpdateContactTVItemID ?? '',
+              value: this.labsheetService.labsheetList[0]?.LastUpdateContactTVItemID,
               disabled: false
-            }, Validators.required],
+            }],
         }
       );
 

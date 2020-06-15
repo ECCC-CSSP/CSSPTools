@@ -68,44 +68,44 @@ export class TVItemComponent implements OnInit, OnDestroy {
         {
           TVItemID: [
             {
-              value: (AddOrUpdate === 'Add' ? 0 : (this.tvitemService.tvitemList[0]?.TVItemID ?? '')),
+              value: (AddOrUpdate === 'Add' ? 0 : (this.tvitemService.tvitemList[0]?.TVItemID)),
               disabled: false
-            }, Validators.required],
+            }],
           TVLevel: [
             {
-              value: this.tvitemService.tvitemList[0]?.TVLevel ?? '',
+              value: this.tvitemService.tvitemList[0]?.TVLevel,
               disabled: false
-            }, Validators.required],
+            }],
           TVPath: [
             {
-              value: this.tvitemService.tvitemList[0]?.TVPath ?? '',
+              value: this.tvitemService.tvitemList[0]?.TVPath,
               disabled: false
-            }, Validators.required],
+            }],
           TVType: [
             {
-              value: this.tvitemService.tvitemList[0]?.TVType ?? '',
+              value: this.tvitemService.tvitemList[0]?.TVType,
               disabled: false
-            }, Validators.required],
+            }],
           ParentID: [
             {
-              value: this.tvitemService.tvitemList[0]?.ParentID ?? '',
+              value: this.tvitemService.tvitemList[0]?.ParentID,
               disabled: false
-            }, Validators.required],
+            }],
           IsActive: [
             {
-              value: this.tvitemService.tvitemList[0]?.IsActive ?? '',
+              value: this.tvitemService.tvitemList[0]?.IsActive,
               disabled: false
-            }, Validators.required],
+            }],
           LastUpdateDate_UTC: [
             {
-              value: this.tvitemService.tvitemList[0]?.LastUpdateDate_UTC ?? '',
+              value: this.tvitemService.tvitemList[0]?.LastUpdateDate_UTC,
               disabled: false
-            }, Validators.required],
+            }],
           LastUpdateContactTVItemID: [
             {
-              value: this.tvitemService.tvitemList[0]?.LastUpdateContactTVItemID ?? '',
+              value: this.tvitemService.tvitemList[0]?.LastUpdateContactTVItemID,
               disabled: false
-            }, Validators.required],
+            }],
         }
       );
 

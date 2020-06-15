@@ -60,44 +60,44 @@ export class SpillComponent implements OnInit, OnDestroy {
         {
           SpillID: [
             {
-              value: (AddOrUpdate === 'Add' ? 0 : (this.spillService.spillList[0]?.SpillID ?? '')),
+              value: (AddOrUpdate === 'Add' ? 0 : (this.spillService.spillList[0]?.SpillID)),
               disabled: false
-            }, Validators.required],
+            }],
           MunicipalityTVItemID: [
             {
-              value: this.spillService.spillList[0]?.MunicipalityTVItemID ?? '',
+              value: this.spillService.spillList[0]?.MunicipalityTVItemID,
               disabled: false
-            }, Validators.required],
+            }],
           InfrastructureTVItemID: [
             {
-              value: this.spillService.spillList[0]?.InfrastructureTVItemID ?? '',
+              value: this.spillService.spillList[0]?.InfrastructureTVItemID,
               disabled: false
-            }, Validators.required],
+            }],
           StartDateTime_Local: [
             {
-              value: this.spillService.spillList[0]?.StartDateTime_Local ?? '',
+              value: this.spillService.spillList[0]?.StartDateTime_Local,
               disabled: false
-            }, Validators.required],
+            }],
           EndDateTime_Local: [
             {
-              value: this.spillService.spillList[0]?.EndDateTime_Local ?? '',
+              value: this.spillService.spillList[0]?.EndDateTime_Local,
               disabled: false
-            }, Validators.required],
+            }],
           AverageFlow_m3_day: [
             {
-              value: this.spillService.spillList[0]?.AverageFlow_m3_day ?? '',
+              value: this.spillService.spillList[0]?.AverageFlow_m3_day,
               disabled: false
-            }, Validators.required],
+            }],
           LastUpdateDate_UTC: [
             {
-              value: this.spillService.spillList[0]?.LastUpdateDate_UTC ?? '',
+              value: this.spillService.spillList[0]?.LastUpdateDate_UTC,
               disabled: false
-            }, Validators.required],
+            }],
           LastUpdateContactTVItemID: [
             {
-              value: this.spillService.spillList[0]?.LastUpdateContactTVItemID ?? '',
+              value: this.spillService.spillList[0]?.LastUpdateContactTVItemID,
               disabled: false
-            }, Validators.required],
+            }],
         }
       );
 

@@ -68,44 +68,44 @@ export class DrogueRunComponent implements OnInit, OnDestroy {
         {
           DrogueRunID: [
             {
-              value: (AddOrUpdate === 'Add' ? 0 : (this.droguerunService.droguerunList[0]?.DrogueRunID ?? '')),
+              value: (AddOrUpdate === 'Add' ? 0 : (this.droguerunService.droguerunList[0]?.DrogueRunID)),
               disabled: false
-            }, Validators.required],
+            }],
           SubsectorTVItemID: [
             {
-              value: this.droguerunService.droguerunList[0]?.SubsectorTVItemID ?? '',
+              value: this.droguerunService.droguerunList[0]?.SubsectorTVItemID,
               disabled: false
-            }, Validators.required],
+            }],
           DrogueNumber: [
             {
-              value: this.droguerunService.droguerunList[0]?.DrogueNumber ?? '',
+              value: this.droguerunService.droguerunList[0]?.DrogueNumber,
               disabled: false
-            }, Validators.required],
+            }],
           DrogueType: [
             {
-              value: this.droguerunService.droguerunList[0]?.DrogueType ?? '',
+              value: this.droguerunService.droguerunList[0]?.DrogueType,
               disabled: false
-            }, Validators.required],
+            }],
           RunStartDateTime: [
             {
-              value: this.droguerunService.droguerunList[0]?.RunStartDateTime ?? '',
+              value: this.droguerunService.droguerunList[0]?.RunStartDateTime,
               disabled: false
-            }, Validators.required],
+            }],
           IsRisingTide: [
             {
-              value: this.droguerunService.droguerunList[0]?.IsRisingTide ?? '',
+              value: this.droguerunService.droguerunList[0]?.IsRisingTide,
               disabled: false
-            }, Validators.required],
+            }],
           LastUpdateDate_UTC: [
             {
-              value: this.droguerunService.droguerunList[0]?.LastUpdateDate_UTC ?? '',
+              value: this.droguerunService.droguerunList[0]?.LastUpdateDate_UTC,
               disabled: false
-            }, Validators.required],
+            }],
           LastUpdateContactTVItemID: [
             {
-              value: this.droguerunService.droguerunList[0]?.LastUpdateContactTVItemID ?? '',
+              value: this.droguerunService.droguerunList[0]?.LastUpdateContactTVItemID,
               disabled: false
-            }, Validators.required],
+            }],
         }
       );
 

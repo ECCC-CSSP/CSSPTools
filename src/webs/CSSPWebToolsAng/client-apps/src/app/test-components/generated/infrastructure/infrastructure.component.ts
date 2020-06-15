@@ -145,254 +145,254 @@ export class InfrastructureComponent implements OnInit, OnDestroy {
         {
           InfrastructureID: [
             {
-              value: (AddOrUpdate === 'Add' ? 0 : (this.infrastructureService.infrastructureList[0]?.InfrastructureID ?? '')),
+              value: (AddOrUpdate === 'Add' ? 0 : (this.infrastructureService.infrastructureList[0]?.InfrastructureID)),
               disabled: false
-            }, Validators.required],
+            }],
           InfrastructureTVItemID: [
             {
-              value: this.infrastructureService.infrastructureList[0]?.InfrastructureTVItemID ?? '',
+              value: this.infrastructureService.infrastructureList[0]?.InfrastructureTVItemID,
               disabled: false
-            }, Validators.required],
+            }],
           PrismID: [
             {
-              value: this.infrastructureService.infrastructureList[0]?.PrismID ?? '',
+              value: this.infrastructureService.infrastructureList[0]?.PrismID,
               disabled: false
-            }, Validators.required],
+            }],
           TPID: [
             {
-              value: this.infrastructureService.infrastructureList[0]?.TPID ?? '',
+              value: this.infrastructureService.infrastructureList[0]?.TPID,
               disabled: false
-            }, Validators.required],
+            }],
           LSID: [
             {
-              value: this.infrastructureService.infrastructureList[0]?.LSID ?? '',
+              value: this.infrastructureService.infrastructureList[0]?.LSID,
               disabled: false
-            }, Validators.required],
+            }],
           SiteID: [
             {
-              value: this.infrastructureService.infrastructureList[0]?.SiteID ?? '',
+              value: this.infrastructureService.infrastructureList[0]?.SiteID,
               disabled: false
-            }, Validators.required],
+            }],
           Site: [
             {
-              value: this.infrastructureService.infrastructureList[0]?.Site ?? '',
+              value: this.infrastructureService.infrastructureList[0]?.Site,
               disabled: false
-            }, Validators.required],
+            }],
           InfrastructureCategory: [
             {
-              value: this.infrastructureService.infrastructureList[0]?.InfrastructureCategory ?? '',
+              value: this.infrastructureService.infrastructureList[0]?.InfrastructureCategory,
               disabled: false
-            }, Validators.required],
+            }],
           InfrastructureType: [
             {
-              value: this.infrastructureService.infrastructureList[0]?.InfrastructureType ?? '',
+              value: this.infrastructureService.infrastructureList[0]?.InfrastructureType,
               disabled: false
-            }, Validators.required],
+            }],
           FacilityType: [
             {
-              value: this.infrastructureService.infrastructureList[0]?.FacilityType ?? '',
+              value: this.infrastructureService.infrastructureList[0]?.FacilityType,
               disabled: false
-            }, Validators.required],
+            }],
           HasBackupPower: [
             {
-              value: this.infrastructureService.infrastructureList[0]?.HasBackupPower ?? '',
+              value: this.infrastructureService.infrastructureList[0]?.HasBackupPower,
               disabled: false
-            }, Validators.required],
+            }],
           IsMechanicallyAerated: [
             {
-              value: this.infrastructureService.infrastructureList[0]?.IsMechanicallyAerated ?? '',
+              value: this.infrastructureService.infrastructureList[0]?.IsMechanicallyAerated,
               disabled: false
-            }, Validators.required],
+            }],
           NumberOfCells: [
             {
-              value: this.infrastructureService.infrastructureList[0]?.NumberOfCells ?? '',
+              value: this.infrastructureService.infrastructureList[0]?.NumberOfCells,
               disabled: false
-            }, Validators.required],
+            }],
           NumberOfAeratedCells: [
             {
-              value: this.infrastructureService.infrastructureList[0]?.NumberOfAeratedCells ?? '',
+              value: this.infrastructureService.infrastructureList[0]?.NumberOfAeratedCells,
               disabled: false
-            }, Validators.required],
+            }],
           AerationType: [
             {
-              value: this.infrastructureService.infrastructureList[0]?.AerationType ?? '',
+              value: this.infrastructureService.infrastructureList[0]?.AerationType,
               disabled: false
-            }, Validators.required],
+            }],
           PreliminaryTreatmentType: [
             {
-              value: this.infrastructureService.infrastructureList[0]?.PreliminaryTreatmentType ?? '',
+              value: this.infrastructureService.infrastructureList[0]?.PreliminaryTreatmentType,
               disabled: false
-            }, Validators.required],
+            }],
           PrimaryTreatmentType: [
             {
-              value: this.infrastructureService.infrastructureList[0]?.PrimaryTreatmentType ?? '',
+              value: this.infrastructureService.infrastructureList[0]?.PrimaryTreatmentType,
               disabled: false
-            }, Validators.required],
+            }],
           SecondaryTreatmentType: [
             {
-              value: this.infrastructureService.infrastructureList[0]?.SecondaryTreatmentType ?? '',
+              value: this.infrastructureService.infrastructureList[0]?.SecondaryTreatmentType,
               disabled: false
-            }, Validators.required],
+            }],
           TertiaryTreatmentType: [
             {
-              value: this.infrastructureService.infrastructureList[0]?.TertiaryTreatmentType ?? '',
+              value: this.infrastructureService.infrastructureList[0]?.TertiaryTreatmentType,
               disabled: false
-            }, Validators.required],
+            }],
           TreatmentType: [
             {
-              value: this.infrastructureService.infrastructureList[0]?.TreatmentType ?? '',
+              value: this.infrastructureService.infrastructureList[0]?.TreatmentType,
               disabled: false
-            }, Validators.required],
+            }],
           DisinfectionType: [
             {
-              value: this.infrastructureService.infrastructureList[0]?.DisinfectionType ?? '',
+              value: this.infrastructureService.infrastructureList[0]?.DisinfectionType,
               disabled: false
-            }, Validators.required],
+            }],
           CollectionSystemType: [
             {
-              value: this.infrastructureService.infrastructureList[0]?.CollectionSystemType ?? '',
+              value: this.infrastructureService.infrastructureList[0]?.CollectionSystemType,
               disabled: false
-            }, Validators.required],
+            }],
           AlarmSystemType: [
             {
-              value: this.infrastructureService.infrastructureList[0]?.AlarmSystemType ?? '',
+              value: this.infrastructureService.infrastructureList[0]?.AlarmSystemType,
               disabled: false
-            }, Validators.required],
+            }],
           DesignFlow_m3_day: [
             {
-              value: this.infrastructureService.infrastructureList[0]?.DesignFlow_m3_day ?? '',
+              value: this.infrastructureService.infrastructureList[0]?.DesignFlow_m3_day,
               disabled: false
-            }, Validators.required],
+            }],
           AverageFlow_m3_day: [
             {
-              value: this.infrastructureService.infrastructureList[0]?.AverageFlow_m3_day ?? '',
+              value: this.infrastructureService.infrastructureList[0]?.AverageFlow_m3_day,
               disabled: false
-            }, Validators.required],
+            }],
           PeakFlow_m3_day: [
             {
-              value: this.infrastructureService.infrastructureList[0]?.PeakFlow_m3_day ?? '',
+              value: this.infrastructureService.infrastructureList[0]?.PeakFlow_m3_day,
               disabled: false
-            }, Validators.required],
+            }],
           PopServed: [
             {
-              value: this.infrastructureService.infrastructureList[0]?.PopServed ?? '',
+              value: this.infrastructureService.infrastructureList[0]?.PopServed,
               disabled: false
-            }, Validators.required],
+            }],
           CanOverflow: [
             {
-              value: this.infrastructureService.infrastructureList[0]?.CanOverflow ?? '',
+              value: this.infrastructureService.infrastructureList[0]?.CanOverflow,
               disabled: false
-            }, Validators.required],
+            }],
           ValveType: [
             {
-              value: this.infrastructureService.infrastructureList[0]?.ValveType ?? '',
+              value: this.infrastructureService.infrastructureList[0]?.ValveType,
               disabled: false
-            }, Validators.required],
+            }],
           PercFlowOfTotal: [
             {
-              value: this.infrastructureService.infrastructureList[0]?.PercFlowOfTotal ?? '',
+              value: this.infrastructureService.infrastructureList[0]?.PercFlowOfTotal,
               disabled: false
-            }, Validators.required],
+            }],
           TimeOffset_hour: [
             {
-              value: this.infrastructureService.infrastructureList[0]?.TimeOffset_hour ?? '',
+              value: this.infrastructureService.infrastructureList[0]?.TimeOffset_hour,
               disabled: false
-            }, Validators.required],
+            }],
           TempCatchAllRemoveLater: [
             {
-              value: this.infrastructureService.infrastructureList[0]?.TempCatchAllRemoveLater ?? '',
+              value: this.infrastructureService.infrastructureList[0]?.TempCatchAllRemoveLater,
               disabled: false
-            }, Validators.required],
+            }],
           AverageDepth_m: [
             {
-              value: this.infrastructureService.infrastructureList[0]?.AverageDepth_m ?? '',
+              value: this.infrastructureService.infrastructureList[0]?.AverageDepth_m,
               disabled: false
-            }, Validators.required],
+            }],
           NumberOfPorts: [
             {
-              value: this.infrastructureService.infrastructureList[0]?.NumberOfPorts ?? '',
+              value: this.infrastructureService.infrastructureList[0]?.NumberOfPorts,
               disabled: false
-            }, Validators.required],
+            }],
           PortDiameter_m: [
             {
-              value: this.infrastructureService.infrastructureList[0]?.PortDiameter_m ?? '',
+              value: this.infrastructureService.infrastructureList[0]?.PortDiameter_m,
               disabled: false
-            }, Validators.required],
+            }],
           PortSpacing_m: [
             {
-              value: this.infrastructureService.infrastructureList[0]?.PortSpacing_m ?? '',
+              value: this.infrastructureService.infrastructureList[0]?.PortSpacing_m,
               disabled: false
-            }, Validators.required],
+            }],
           PortElevation_m: [
             {
-              value: this.infrastructureService.infrastructureList[0]?.PortElevation_m ?? '',
+              value: this.infrastructureService.infrastructureList[0]?.PortElevation_m,
               disabled: false
-            }, Validators.required],
+            }],
           VerticalAngle_deg: [
             {
-              value: this.infrastructureService.infrastructureList[0]?.VerticalAngle_deg ?? '',
+              value: this.infrastructureService.infrastructureList[0]?.VerticalAngle_deg,
               disabled: false
-            }, Validators.required],
+            }],
           HorizontalAngle_deg: [
             {
-              value: this.infrastructureService.infrastructureList[0]?.HorizontalAngle_deg ?? '',
+              value: this.infrastructureService.infrastructureList[0]?.HorizontalAngle_deg,
               disabled: false
-            }, Validators.required],
+            }],
           DecayRate_per_day: [
             {
-              value: this.infrastructureService.infrastructureList[0]?.DecayRate_per_day ?? '',
+              value: this.infrastructureService.infrastructureList[0]?.DecayRate_per_day,
               disabled: false
-            }, Validators.required],
+            }],
           NearFieldVelocity_m_s: [
             {
-              value: this.infrastructureService.infrastructureList[0]?.NearFieldVelocity_m_s ?? '',
+              value: this.infrastructureService.infrastructureList[0]?.NearFieldVelocity_m_s,
               disabled: false
-            }, Validators.required],
+            }],
           FarFieldVelocity_m_s: [
             {
-              value: this.infrastructureService.infrastructureList[0]?.FarFieldVelocity_m_s ?? '',
+              value: this.infrastructureService.infrastructureList[0]?.FarFieldVelocity_m_s,
               disabled: false
-            }, Validators.required],
+            }],
           ReceivingWaterSalinity_PSU: [
             {
-              value: this.infrastructureService.infrastructureList[0]?.ReceivingWaterSalinity_PSU ?? '',
+              value: this.infrastructureService.infrastructureList[0]?.ReceivingWaterSalinity_PSU,
               disabled: false
-            }, Validators.required],
+            }],
           ReceivingWaterTemperature_C: [
             {
-              value: this.infrastructureService.infrastructureList[0]?.ReceivingWaterTemperature_C ?? '',
+              value: this.infrastructureService.infrastructureList[0]?.ReceivingWaterTemperature_C,
               disabled: false
-            }, Validators.required],
+            }],
           ReceivingWater_MPN_per_100ml: [
             {
-              value: this.infrastructureService.infrastructureList[0]?.ReceivingWater_MPN_per_100ml ?? '',
+              value: this.infrastructureService.infrastructureList[0]?.ReceivingWater_MPN_per_100ml,
               disabled: false
-            }, Validators.required],
+            }],
           DistanceFromShore_m: [
             {
-              value: this.infrastructureService.infrastructureList[0]?.DistanceFromShore_m ?? '',
+              value: this.infrastructureService.infrastructureList[0]?.DistanceFromShore_m,
               disabled: false
-            }, Validators.required],
+            }],
           SeeOtherMunicipalityTVItemID: [
             {
-              value: this.infrastructureService.infrastructureList[0]?.SeeOtherMunicipalityTVItemID ?? '',
+              value: this.infrastructureService.infrastructureList[0]?.SeeOtherMunicipalityTVItemID,
               disabled: false
-            }, Validators.required],
+            }],
           CivicAddressTVItemID: [
             {
-              value: this.infrastructureService.infrastructureList[0]?.CivicAddressTVItemID ?? '',
+              value: this.infrastructureService.infrastructureList[0]?.CivicAddressTVItemID,
               disabled: false
-            }, Validators.required],
+            }],
           LastUpdateDate_UTC: [
             {
-              value: this.infrastructureService.infrastructureList[0]?.LastUpdateDate_UTC ?? '',
+              value: this.infrastructureService.infrastructureList[0]?.LastUpdateDate_UTC,
               disabled: false
-            }, Validators.required],
+            }],
           LastUpdateContactTVItemID: [
             {
-              value: this.infrastructureService.infrastructureList[0]?.LastUpdateContactTVItemID ?? '',
+              value: this.infrastructureService.infrastructureList[0]?.LastUpdateContactTVItemID,
               disabled: false
-            }, Validators.required],
+            }],
         }
       );
 

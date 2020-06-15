@@ -60,64 +60,64 @@ export class EmailDistributionListContactComponent implements OnInit, OnDestroy 
         {
           EmailDistributionListContactID: [
             {
-              value: (AddOrUpdate === 'Add' ? 0 : (this.emaildistributionlistcontactService.emaildistributionlistcontactList[0]?.EmailDistributionListContactID ?? '')),
+              value: (AddOrUpdate === 'Add' ? 0 : (this.emaildistributionlistcontactService.emaildistributionlistcontactList[0]?.EmailDistributionListContactID)),
               disabled: false
-            }, Validators.required],
+            }],
           EmailDistributionListID: [
             {
-              value: this.emaildistributionlistcontactService.emaildistributionlistcontactList[0]?.EmailDistributionListID ?? '',
+              value: this.emaildistributionlistcontactService.emaildistributionlistcontactList[0]?.EmailDistributionListID,
               disabled: false
-            }, Validators.required],
+            }],
           IsCC: [
             {
-              value: this.emaildistributionlistcontactService.emaildistributionlistcontactList[0]?.IsCC ?? '',
+              value: this.emaildistributionlistcontactService.emaildistributionlistcontactList[0]?.IsCC,
               disabled: false
-            }, Validators.required],
+            }],
           Name: [
             {
-              value: this.emaildistributionlistcontactService.emaildistributionlistcontactList[0]?.Name ?? '',
+              value: this.emaildistributionlistcontactService.emaildistributionlistcontactList[0]?.Name,
               disabled: false
-            }, Validators.required],
+            }],
           Email: [
             {
-              value: this.emaildistributionlistcontactService.emaildistributionlistcontactList[0]?.Email ?? '',
+              value: this.emaildistributionlistcontactService.emaildistributionlistcontactList[0]?.Email,
               disabled: false
-            }, Validators.required],
+            }],
           CMPRainfallSeasonal: [
             {
-              value: this.emaildistributionlistcontactService.emaildistributionlistcontactList[0]?.CMPRainfallSeasonal ?? '',
+              value: this.emaildistributionlistcontactService.emaildistributionlistcontactList[0]?.CMPRainfallSeasonal,
               disabled: false
-            }, Validators.required],
+            }],
           CMPWastewater: [
             {
-              value: this.emaildistributionlistcontactService.emaildistributionlistcontactList[0]?.CMPWastewater ?? '',
+              value: this.emaildistributionlistcontactService.emaildistributionlistcontactList[0]?.CMPWastewater,
               disabled: false
-            }, Validators.required],
+            }],
           EmergencyWeather: [
             {
-              value: this.emaildistributionlistcontactService.emaildistributionlistcontactList[0]?.EmergencyWeather ?? '',
+              value: this.emaildistributionlistcontactService.emaildistributionlistcontactList[0]?.EmergencyWeather,
               disabled: false
-            }, Validators.required],
+            }],
           EmergencyWastewater: [
             {
-              value: this.emaildistributionlistcontactService.emaildistributionlistcontactList[0]?.EmergencyWastewater ?? '',
+              value: this.emaildistributionlistcontactService.emaildistributionlistcontactList[0]?.EmergencyWastewater,
               disabled: false
-            }, Validators.required],
+            }],
           ReopeningAllTypes: [
             {
-              value: this.emaildistributionlistcontactService.emaildistributionlistcontactList[0]?.ReopeningAllTypes ?? '',
+              value: this.emaildistributionlistcontactService.emaildistributionlistcontactList[0]?.ReopeningAllTypes,
               disabled: false
-            }, Validators.required],
+            }],
           LastUpdateDate_UTC: [
             {
-              value: this.emaildistributionlistcontactService.emaildistributionlistcontactList[0]?.LastUpdateDate_UTC ?? '',
+              value: this.emaildistributionlistcontactService.emaildistributionlistcontactList[0]?.LastUpdateDate_UTC,
               disabled: false
-            }, Validators.required],
+            }],
           LastUpdateContactTVItemID: [
             {
-              value: this.emaildistributionlistcontactService.emaildistributionlistcontactList[0]?.LastUpdateContactTVItemID ?? '',
+              value: this.emaildistributionlistcontactService.emaildistributionlistcontactList[0]?.LastUpdateContactTVItemID,
               disabled: false
-            }, Validators.required],
+            }],
         }
       );
 

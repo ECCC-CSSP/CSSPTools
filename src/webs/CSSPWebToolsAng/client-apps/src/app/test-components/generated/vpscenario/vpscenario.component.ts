@@ -68,114 +68,114 @@ export class VPScenarioComponent implements OnInit, OnDestroy {
         {
           VPScenarioID: [
             {
-              value: (AddOrUpdate === 'Add' ? 0 : (this.vpscenarioService.vpscenarioList[0]?.VPScenarioID ?? '')),
+              value: (AddOrUpdate === 'Add' ? 0 : (this.vpscenarioService.vpscenarioList[0]?.VPScenarioID)),
               disabled: false
-            }, Validators.required],
+            }],
           InfrastructureTVItemID: [
             {
-              value: this.vpscenarioService.vpscenarioList[0]?.InfrastructureTVItemID ?? '',
+              value: this.vpscenarioService.vpscenarioList[0]?.InfrastructureTVItemID,
               disabled: false
-            }, Validators.required],
+            }],
           VPScenarioStatus: [
             {
-              value: this.vpscenarioService.vpscenarioList[0]?.VPScenarioStatus ?? '',
+              value: this.vpscenarioService.vpscenarioList[0]?.VPScenarioStatus,
               disabled: false
-            }, Validators.required],
+            }],
           UseAsBestEstimate: [
             {
-              value: this.vpscenarioService.vpscenarioList[0]?.UseAsBestEstimate ?? '',
+              value: this.vpscenarioService.vpscenarioList[0]?.UseAsBestEstimate,
               disabled: false
-            }, Validators.required],
+            }],
           EffluentFlow_m3_s: [
             {
-              value: this.vpscenarioService.vpscenarioList[0]?.EffluentFlow_m3_s ?? '',
+              value: this.vpscenarioService.vpscenarioList[0]?.EffluentFlow_m3_s,
               disabled: false
-            }, Validators.required],
+            }],
           EffluentConcentration_MPN_100ml: [
             {
-              value: this.vpscenarioService.vpscenarioList[0]?.EffluentConcentration_MPN_100ml ?? '',
+              value: this.vpscenarioService.vpscenarioList[0]?.EffluentConcentration_MPN_100ml,
               disabled: false
-            }, Validators.required],
+            }],
           FroudeNumber: [
             {
-              value: this.vpscenarioService.vpscenarioList[0]?.FroudeNumber ?? '',
+              value: this.vpscenarioService.vpscenarioList[0]?.FroudeNumber,
               disabled: false
-            }, Validators.required],
+            }],
           PortDiameter_m: [
             {
-              value: this.vpscenarioService.vpscenarioList[0]?.PortDiameter_m ?? '',
+              value: this.vpscenarioService.vpscenarioList[0]?.PortDiameter_m,
               disabled: false
-            }, Validators.required],
+            }],
           PortDepth_m: [
             {
-              value: this.vpscenarioService.vpscenarioList[0]?.PortDepth_m ?? '',
+              value: this.vpscenarioService.vpscenarioList[0]?.PortDepth_m,
               disabled: false
-            }, Validators.required],
+            }],
           PortElevation_m: [
             {
-              value: this.vpscenarioService.vpscenarioList[0]?.PortElevation_m ?? '',
+              value: this.vpscenarioService.vpscenarioList[0]?.PortElevation_m,
               disabled: false
-            }, Validators.required],
+            }],
           VerticalAngle_deg: [
             {
-              value: this.vpscenarioService.vpscenarioList[0]?.VerticalAngle_deg ?? '',
+              value: this.vpscenarioService.vpscenarioList[0]?.VerticalAngle_deg,
               disabled: false
-            }, Validators.required],
+            }],
           HorizontalAngle_deg: [
             {
-              value: this.vpscenarioService.vpscenarioList[0]?.HorizontalAngle_deg ?? '',
+              value: this.vpscenarioService.vpscenarioList[0]?.HorizontalAngle_deg,
               disabled: false
-            }, Validators.required],
+            }],
           NumberOfPorts: [
             {
-              value: this.vpscenarioService.vpscenarioList[0]?.NumberOfPorts ?? '',
+              value: this.vpscenarioService.vpscenarioList[0]?.NumberOfPorts,
               disabled: false
-            }, Validators.required],
+            }],
           PortSpacing_m: [
             {
-              value: this.vpscenarioService.vpscenarioList[0]?.PortSpacing_m ?? '',
+              value: this.vpscenarioService.vpscenarioList[0]?.PortSpacing_m,
               disabled: false
-            }, Validators.required],
+            }],
           AcuteMixZone_m: [
             {
-              value: this.vpscenarioService.vpscenarioList[0]?.AcuteMixZone_m ?? '',
+              value: this.vpscenarioService.vpscenarioList[0]?.AcuteMixZone_m,
               disabled: false
-            }, Validators.required],
+            }],
           ChronicMixZone_m: [
             {
-              value: this.vpscenarioService.vpscenarioList[0]?.ChronicMixZone_m ?? '',
+              value: this.vpscenarioService.vpscenarioList[0]?.ChronicMixZone_m,
               disabled: false
-            }, Validators.required],
+            }],
           EffluentSalinity_PSU: [
             {
-              value: this.vpscenarioService.vpscenarioList[0]?.EffluentSalinity_PSU ?? '',
+              value: this.vpscenarioService.vpscenarioList[0]?.EffluentSalinity_PSU,
               disabled: false
-            }, Validators.required],
+            }],
           EffluentTemperature_C: [
             {
-              value: this.vpscenarioService.vpscenarioList[0]?.EffluentTemperature_C ?? '',
+              value: this.vpscenarioService.vpscenarioList[0]?.EffluentTemperature_C,
               disabled: false
-            }, Validators.required],
+            }],
           EffluentVelocity_m_s: [
             {
-              value: this.vpscenarioService.vpscenarioList[0]?.EffluentVelocity_m_s ?? '',
+              value: this.vpscenarioService.vpscenarioList[0]?.EffluentVelocity_m_s,
               disabled: false
-            }, Validators.required],
+            }],
           RawResults: [
             {
-              value: this.vpscenarioService.vpscenarioList[0]?.RawResults ?? '',
+              value: this.vpscenarioService.vpscenarioList[0]?.RawResults,
               disabled: false
-            }, Validators.required],
+            }],
           LastUpdateDate_UTC: [
             {
-              value: this.vpscenarioService.vpscenarioList[0]?.LastUpdateDate_UTC ?? '',
+              value: this.vpscenarioService.vpscenarioList[0]?.LastUpdateDate_UTC,
               disabled: false
-            }, Validators.required],
+            }],
           LastUpdateContactTVItemID: [
             {
-              value: this.vpscenarioService.vpscenarioList[0]?.LastUpdateContactTVItemID ?? '',
+              value: this.vpscenarioService.vpscenarioList[0]?.LastUpdateContactTVItemID,
               disabled: false
-            }, Validators.required],
+            }],
         }
       );
 

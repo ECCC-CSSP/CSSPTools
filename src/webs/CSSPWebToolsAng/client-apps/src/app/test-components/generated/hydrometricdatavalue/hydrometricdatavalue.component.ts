@@ -68,64 +68,64 @@ export class HydrometricDataValueComponent implements OnInit, OnDestroy {
         {
           HydrometricDataValueID: [
             {
-              value: (AddOrUpdate === 'Add' ? 0 : (this.hydrometricdatavalueService.hydrometricdatavalueList[0]?.HydrometricDataValueID ?? '')),
+              value: (AddOrUpdate === 'Add' ? 0 : (this.hydrometricdatavalueService.hydrometricdatavalueList[0]?.HydrometricDataValueID)),
               disabled: false
-            }, Validators.required],
+            }],
           HydrometricSiteID: [
             {
-              value: this.hydrometricdatavalueService.hydrometricdatavalueList[0]?.HydrometricSiteID ?? '',
+              value: this.hydrometricdatavalueService.hydrometricdatavalueList[0]?.HydrometricSiteID,
               disabled: false
-            }, Validators.required],
+            }],
           DateTime_Local: [
             {
-              value: this.hydrometricdatavalueService.hydrometricdatavalueList[0]?.DateTime_Local ?? '',
+              value: this.hydrometricdatavalueService.hydrometricdatavalueList[0]?.DateTime_Local,
               disabled: false
-            }, Validators.required],
+            }],
           Keep: [
             {
-              value: this.hydrometricdatavalueService.hydrometricdatavalueList[0]?.Keep ?? '',
+              value: this.hydrometricdatavalueService.hydrometricdatavalueList[0]?.Keep,
               disabled: false
-            }, Validators.required],
+            }],
           StorageDataType: [
             {
-              value: this.hydrometricdatavalueService.hydrometricdatavalueList[0]?.StorageDataType ?? '',
+              value: this.hydrometricdatavalueService.hydrometricdatavalueList[0]?.StorageDataType,
               disabled: false
-            }, Validators.required],
+            }],
           HasBeenRead: [
             {
-              value: this.hydrometricdatavalueService.hydrometricdatavalueList[0]?.HasBeenRead ?? '',
+              value: this.hydrometricdatavalueService.hydrometricdatavalueList[0]?.HasBeenRead,
               disabled: false
-            }, Validators.required],
+            }],
           Discharge_m3_s: [
             {
-              value: this.hydrometricdatavalueService.hydrometricdatavalueList[0]?.Discharge_m3_s ?? '',
+              value: this.hydrometricdatavalueService.hydrometricdatavalueList[0]?.Discharge_m3_s,
               disabled: false
-            }, Validators.required],
+            }],
           DischargeEntered_m3_s: [
             {
-              value: this.hydrometricdatavalueService.hydrometricdatavalueList[0]?.DischargeEntered_m3_s ?? '',
+              value: this.hydrometricdatavalueService.hydrometricdatavalueList[0]?.DischargeEntered_m3_s,
               disabled: false
-            }, Validators.required],
+            }],
           Level_m: [
             {
-              value: this.hydrometricdatavalueService.hydrometricdatavalueList[0]?.Level_m ?? '',
+              value: this.hydrometricdatavalueService.hydrometricdatavalueList[0]?.Level_m,
               disabled: false
-            }, Validators.required],
+            }],
           HourlyValues: [
             {
-              value: this.hydrometricdatavalueService.hydrometricdatavalueList[0]?.HourlyValues ?? '',
+              value: this.hydrometricdatavalueService.hydrometricdatavalueList[0]?.HourlyValues,
               disabled: false
-            }, Validators.required],
+            }],
           LastUpdateDate_UTC: [
             {
-              value: this.hydrometricdatavalueService.hydrometricdatavalueList[0]?.LastUpdateDate_UTC ?? '',
+              value: this.hydrometricdatavalueService.hydrometricdatavalueList[0]?.LastUpdateDate_UTC,
               disabled: false
-            }, Validators.required],
+            }],
           LastUpdateContactTVItemID: [
             {
-              value: this.hydrometricdatavalueService.hydrometricdatavalueList[0]?.LastUpdateContactTVItemID ?? '',
+              value: this.hydrometricdatavalueService.hydrometricdatavalueList[0]?.LastUpdateContactTVItemID,
               disabled: false
-            }, Validators.required],
+            }],
         }
       );
 

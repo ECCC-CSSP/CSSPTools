@@ -17,7 +17,6 @@ const routes: Routes = [
       { path: 'apperrlog', loadChildren: () => import('../../test-components/generated/apperrlog/apperrlog.module').then(mod => mod.AppErrLogModule) },
       { path: 'apptask', loadChildren: () => import('../../test-components/generated/apptask/apptask.module').then(mod => mod.AppTaskModule) },
       { path: 'apptasklanguage', loadChildren: () => import('../../test-components/generated/apptasklanguage/apptasklanguage.module').then(mod => mod.AppTaskLanguageModule) },
-      { path: 'aspnetuser', loadChildren: () => import('../../test-components/generated/aspnetuser/aspnetuser.module').then(mod => mod.AspNetUserModule) },
       { path: 'boxmodel', loadChildren: () => import('../../test-components/generated/boxmodel/boxmodel.module').then(mod => mod.BoxModelModule) },
       { path: 'boxmodellanguage', loadChildren: () => import('../../test-components/generated/boxmodellanguage/boxmodellanguage.module').then(mod => mod.BoxModelLanguageModule) },
       { path: 'boxmodelresult', loadChildren: () => import('../../test-components/generated/boxmodelresult/boxmodelresult.module').then(mod => mod.BoxModelResultModule) },
@@ -98,7 +97,6 @@ const routes: Routes = [
       { path: 'vpresult', loadChildren: () => import('../../test-components/generated/vpresult/vpresult.module').then(mod => mod.VPResultModule) },
       { path: 'vpscenario', loadChildren: () => import('../../test-components/generated/vpscenario/vpscenario.module').then(mod => mod.VPScenarioModule) },
       { path: 'vpscenariolanguage', loadChildren: () => import('../../test-components/generated/vpscenariolanguage/vpscenariolanguage.module').then(mod => mod.VPScenarioLanguageModule) },
-      { path: 'lastupdate', loadChildren: () => import('../../test-components/generated/lastupdate/lastupdate.module').then(mod => mod.LastUpdateModule) },
     ]
   }
 ];

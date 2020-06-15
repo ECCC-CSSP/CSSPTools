@@ -68,49 +68,49 @@ export class TVItemUserAuthorizationComponent implements OnInit, OnDestroy {
         {
           TVItemUserAuthorizationID: [
             {
-              value: (AddOrUpdate === 'Add' ? 0 : (this.tvitemuserauthorizationService.tvitemuserauthorizationList[0]?.TVItemUserAuthorizationID ?? '')),
+              value: (AddOrUpdate === 'Add' ? 0 : (this.tvitemuserauthorizationService.tvitemuserauthorizationList[0]?.TVItemUserAuthorizationID)),
               disabled: false
-            }, Validators.required],
+            }],
           ContactTVItemID: [
             {
-              value: this.tvitemuserauthorizationService.tvitemuserauthorizationList[0]?.ContactTVItemID ?? '',
+              value: this.tvitemuserauthorizationService.tvitemuserauthorizationList[0]?.ContactTVItemID,
               disabled: false
-            }, Validators.required],
+            }],
           TVItemID1: [
             {
-              value: this.tvitemuserauthorizationService.tvitemuserauthorizationList[0]?.TVItemID1 ?? '',
+              value: this.tvitemuserauthorizationService.tvitemuserauthorizationList[0]?.TVItemID1,
               disabled: false
-            }, Validators.required],
+            }],
           TVItemID2: [
             {
-              value: this.tvitemuserauthorizationService.tvitemuserauthorizationList[0]?.TVItemID2 ?? '',
+              value: this.tvitemuserauthorizationService.tvitemuserauthorizationList[0]?.TVItemID2,
               disabled: false
-            }, Validators.required],
+            }],
           TVItemID3: [
             {
-              value: this.tvitemuserauthorizationService.tvitemuserauthorizationList[0]?.TVItemID3 ?? '',
+              value: this.tvitemuserauthorizationService.tvitemuserauthorizationList[0]?.TVItemID3,
               disabled: false
-            }, Validators.required],
+            }],
           TVItemID4: [
             {
-              value: this.tvitemuserauthorizationService.tvitemuserauthorizationList[0]?.TVItemID4 ?? '',
+              value: this.tvitemuserauthorizationService.tvitemuserauthorizationList[0]?.TVItemID4,
               disabled: false
-            }, Validators.required],
+            }],
           TVAuth: [
             {
-              value: this.tvitemuserauthorizationService.tvitemuserauthorizationList[0]?.TVAuth ?? '',
+              value: this.tvitemuserauthorizationService.tvitemuserauthorizationList[0]?.TVAuth,
               disabled: false
-            }, Validators.required],
+            }],
           LastUpdateDate_UTC: [
             {
-              value: this.tvitemuserauthorizationService.tvitemuserauthorizationList[0]?.LastUpdateDate_UTC ?? '',
+              value: this.tvitemuserauthorizationService.tvitemuserauthorizationList[0]?.LastUpdateDate_UTC,
               disabled: false
-            }, Validators.required],
+            }],
           LastUpdateContactTVItemID: [
             {
-              value: this.tvitemuserauthorizationService.tvitemuserauthorizationList[0]?.LastUpdateContactTVItemID ?? '',
+              value: this.tvitemuserauthorizationService.tvitemuserauthorizationList[0]?.LastUpdateContactTVItemID,
               disabled: false
-            }, Validators.required],
+            }],
         }
       );
 

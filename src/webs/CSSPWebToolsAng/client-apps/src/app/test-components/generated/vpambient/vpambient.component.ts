@@ -60,79 +60,79 @@ export class VPAmbientComponent implements OnInit, OnDestroy {
         {
           VPAmbientID: [
             {
-              value: (AddOrUpdate === 'Add' ? 0 : (this.vpambientService.vpambientList[0]?.VPAmbientID ?? '')),
+              value: (AddOrUpdate === 'Add' ? 0 : (this.vpambientService.vpambientList[0]?.VPAmbientID)),
               disabled: false
-            }, Validators.required],
+            }],
           VPScenarioID: [
             {
-              value: this.vpambientService.vpambientList[0]?.VPScenarioID ?? '',
+              value: this.vpambientService.vpambientList[0]?.VPScenarioID,
               disabled: false
-            }, Validators.required],
+            }],
           Row: [
             {
-              value: this.vpambientService.vpambientList[0]?.Row ?? '',
+              value: this.vpambientService.vpambientList[0]?.Row,
               disabled: false
-            }, Validators.required],
+            }],
           MeasurementDepth_m: [
             {
-              value: this.vpambientService.vpambientList[0]?.MeasurementDepth_m ?? '',
+              value: this.vpambientService.vpambientList[0]?.MeasurementDepth_m,
               disabled: false
-            }, Validators.required],
+            }],
           CurrentSpeed_m_s: [
             {
-              value: this.vpambientService.vpambientList[0]?.CurrentSpeed_m_s ?? '',
+              value: this.vpambientService.vpambientList[0]?.CurrentSpeed_m_s,
               disabled: false
-            }, Validators.required],
+            }],
           CurrentDirection_deg: [
             {
-              value: this.vpambientService.vpambientList[0]?.CurrentDirection_deg ?? '',
+              value: this.vpambientService.vpambientList[0]?.CurrentDirection_deg,
               disabled: false
-            }, Validators.required],
+            }],
           AmbientSalinity_PSU: [
             {
-              value: this.vpambientService.vpambientList[0]?.AmbientSalinity_PSU ?? '',
+              value: this.vpambientService.vpambientList[0]?.AmbientSalinity_PSU,
               disabled: false
-            }, Validators.required],
+            }],
           AmbientTemperature_C: [
             {
-              value: this.vpambientService.vpambientList[0]?.AmbientTemperature_C ?? '',
+              value: this.vpambientService.vpambientList[0]?.AmbientTemperature_C,
               disabled: false
-            }, Validators.required],
+            }],
           BackgroundConcentration_MPN_100ml: [
             {
-              value: this.vpambientService.vpambientList[0]?.BackgroundConcentration_MPN_100ml ?? '',
+              value: this.vpambientService.vpambientList[0]?.BackgroundConcentration_MPN_100ml,
               disabled: false
-            }, Validators.required],
+            }],
           PollutantDecayRate_per_day: [
             {
-              value: this.vpambientService.vpambientList[0]?.PollutantDecayRate_per_day ?? '',
+              value: this.vpambientService.vpambientList[0]?.PollutantDecayRate_per_day,
               disabled: false
-            }, Validators.required],
+            }],
           FarFieldCurrentSpeed_m_s: [
             {
-              value: this.vpambientService.vpambientList[0]?.FarFieldCurrentSpeed_m_s ?? '',
+              value: this.vpambientService.vpambientList[0]?.FarFieldCurrentSpeed_m_s,
               disabled: false
-            }, Validators.required],
+            }],
           FarFieldCurrentDirection_deg: [
             {
-              value: this.vpambientService.vpambientList[0]?.FarFieldCurrentDirection_deg ?? '',
+              value: this.vpambientService.vpambientList[0]?.FarFieldCurrentDirection_deg,
               disabled: false
-            }, Validators.required],
+            }],
           FarFieldDiffusionCoefficient: [
             {
-              value: this.vpambientService.vpambientList[0]?.FarFieldDiffusionCoefficient ?? '',
+              value: this.vpambientService.vpambientList[0]?.FarFieldDiffusionCoefficient,
               disabled: false
-            }, Validators.required],
+            }],
           LastUpdateDate_UTC: [
             {
-              value: this.vpambientService.vpambientList[0]?.LastUpdateDate_UTC ?? '',
+              value: this.vpambientService.vpambientList[0]?.LastUpdateDate_UTC,
               disabled: false
-            }, Validators.required],
+            }],
           LastUpdateContactTVItemID: [
             {
-              value: this.vpambientService.vpambientList[0]?.LastUpdateContactTVItemID ?? '',
+              value: this.vpambientService.vpambientList[0]?.LastUpdateContactTVItemID,
               disabled: false
-            }, Validators.required],
+            }],
         }
       );
 

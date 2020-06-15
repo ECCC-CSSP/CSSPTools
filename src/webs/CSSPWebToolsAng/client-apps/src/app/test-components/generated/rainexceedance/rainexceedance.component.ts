@@ -60,64 +60,64 @@ export class RainExceedanceComponent implements OnInit, OnDestroy {
         {
           RainExceedanceID: [
             {
-              value: (AddOrUpdate === 'Add' ? 0 : (this.rainexceedanceService.rainexceedanceList[0]?.RainExceedanceID ?? '')),
+              value: (AddOrUpdate === 'Add' ? 0 : (this.rainexceedanceService.rainexceedanceList[0]?.RainExceedanceID)),
               disabled: false
-            }, Validators.required],
+            }],
           RainExceedanceTVItemID: [
             {
-              value: this.rainexceedanceService.rainexceedanceList[0]?.RainExceedanceTVItemID ?? '',
+              value: this.rainexceedanceService.rainexceedanceList[0]?.RainExceedanceTVItemID,
               disabled: false
-            }, Validators.required],
+            }],
           StartMonth: [
             {
-              value: this.rainexceedanceService.rainexceedanceList[0]?.StartMonth ?? '',
+              value: this.rainexceedanceService.rainexceedanceList[0]?.StartMonth,
               disabled: false
-            }, Validators.required],
+            }],
           StartDay: [
             {
-              value: this.rainexceedanceService.rainexceedanceList[0]?.StartDay ?? '',
+              value: this.rainexceedanceService.rainexceedanceList[0]?.StartDay,
               disabled: false
-            }, Validators.required],
+            }],
           EndMonth: [
             {
-              value: this.rainexceedanceService.rainexceedanceList[0]?.EndMonth ?? '',
+              value: this.rainexceedanceService.rainexceedanceList[0]?.EndMonth,
               disabled: false
-            }, Validators.required],
+            }],
           EndDay: [
             {
-              value: this.rainexceedanceService.rainexceedanceList[0]?.EndDay ?? '',
+              value: this.rainexceedanceService.rainexceedanceList[0]?.EndDay,
               disabled: false
-            }, Validators.required],
+            }],
           RainMaximum_mm: [
             {
-              value: this.rainexceedanceService.rainexceedanceList[0]?.RainMaximum_mm ?? '',
+              value: this.rainexceedanceService.rainexceedanceList[0]?.RainMaximum_mm,
               disabled: false
-            }, Validators.required],
+            }],
           StakeholdersEmailDistributionListID: [
             {
-              value: this.rainexceedanceService.rainexceedanceList[0]?.StakeholdersEmailDistributionListID ?? '',
+              value: this.rainexceedanceService.rainexceedanceList[0]?.StakeholdersEmailDistributionListID,
               disabled: false
-            }, Validators.required],
+            }],
           OnlyStaffEmailDistributionListID: [
             {
-              value: this.rainexceedanceService.rainexceedanceList[0]?.OnlyStaffEmailDistributionListID ?? '',
+              value: this.rainexceedanceService.rainexceedanceList[0]?.OnlyStaffEmailDistributionListID,
               disabled: false
-            }, Validators.required],
+            }],
           IsActive: [
             {
-              value: this.rainexceedanceService.rainexceedanceList[0]?.IsActive ?? '',
+              value: this.rainexceedanceService.rainexceedanceList[0]?.IsActive,
               disabled: false
-            }, Validators.required],
+            }],
           LastUpdateDate_UTC: [
             {
-              value: this.rainexceedanceService.rainexceedanceList[0]?.LastUpdateDate_UTC ?? '',
+              value: this.rainexceedanceService.rainexceedanceList[0]?.LastUpdateDate_UTC,
               disabled: false
-            }, Validators.required],
+            }],
           LastUpdateContactTVItemID: [
             {
-              value: this.rainexceedanceService.rainexceedanceList[0]?.LastUpdateContactTVItemID ?? '',
+              value: this.rainexceedanceService.rainexceedanceList[0]?.LastUpdateContactTVItemID,
               disabled: false
-            }, Validators.required],
+            }],
         }
       );
 

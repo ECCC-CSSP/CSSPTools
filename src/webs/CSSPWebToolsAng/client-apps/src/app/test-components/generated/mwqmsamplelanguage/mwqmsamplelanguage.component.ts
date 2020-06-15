@@ -75,39 +75,39 @@ export class MWQMSampleLanguageComponent implements OnInit, OnDestroy {
         {
           MWQMSampleLanguageID: [
             {
-              value: (AddOrUpdate === 'Add' ? 0 : (this.mwqmsamplelanguageService.mwqmsamplelanguageList[0]?.MWQMSampleLanguageID ?? '')),
+              value: (AddOrUpdate === 'Add' ? 0 : (this.mwqmsamplelanguageService.mwqmsamplelanguageList[0]?.MWQMSampleLanguageID)),
               disabled: false
-            }, Validators.required],
+            }],
           MWQMSampleID: [
             {
-              value: this.mwqmsamplelanguageService.mwqmsamplelanguageList[0]?.MWQMSampleID ?? '',
+              value: this.mwqmsamplelanguageService.mwqmsamplelanguageList[0]?.MWQMSampleID,
               disabled: false
-            }, Validators.required],
+            }],
           Language: [
             {
-              value: this.mwqmsamplelanguageService.mwqmsamplelanguageList[0]?.Language ?? '',
+              value: this.mwqmsamplelanguageService.mwqmsamplelanguageList[0]?.Language,
               disabled: false
-            }, Validators.required],
+            }],
           MWQMSampleNote: [
             {
-              value: this.mwqmsamplelanguageService.mwqmsamplelanguageList[0]?.MWQMSampleNote ?? '',
+              value: this.mwqmsamplelanguageService.mwqmsamplelanguageList[0]?.MWQMSampleNote,
               disabled: false
-            }, Validators.required],
+            }],
           TranslationStatus: [
             {
-              value: this.mwqmsamplelanguageService.mwqmsamplelanguageList[0]?.TranslationStatus ?? '',
+              value: this.mwqmsamplelanguageService.mwqmsamplelanguageList[0]?.TranslationStatus,
               disabled: false
-            }, Validators.required],
+            }],
           LastUpdateDate_UTC: [
             {
-              value: this.mwqmsamplelanguageService.mwqmsamplelanguageList[0]?.LastUpdateDate_UTC ?? '',
+              value: this.mwqmsamplelanguageService.mwqmsamplelanguageList[0]?.LastUpdateDate_UTC,
               disabled: false
-            }, Validators.required],
+            }],
           LastUpdateContactTVItemID: [
             {
-              value: this.mwqmsamplelanguageService.mwqmsamplelanguageList[0]?.LastUpdateContactTVItemID ?? '',
+              value: this.mwqmsamplelanguageService.mwqmsamplelanguageList[0]?.LastUpdateContactTVItemID,
               disabled: false
-            }, Validators.required],
+            }],
         }
       );
 

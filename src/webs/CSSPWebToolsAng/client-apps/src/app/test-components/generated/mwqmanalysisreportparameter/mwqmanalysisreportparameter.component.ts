@@ -75,134 +75,134 @@ export class MWQMAnalysisReportParameterComponent implements OnInit, OnDestroy {
         {
           MWQMAnalysisReportParameterID: [
             {
-              value: (AddOrUpdate === 'Add' ? 0 : (this.mwqmanalysisreportparameterService.mwqmanalysisreportparameterList[0]?.MWQMAnalysisReportParameterID ?? '')),
+              value: (AddOrUpdate === 'Add' ? 0 : (this.mwqmanalysisreportparameterService.mwqmanalysisreportparameterList[0]?.MWQMAnalysisReportParameterID)),
               disabled: false
-            }, Validators.required],
+            }],
           SubsectorTVItemID: [
             {
-              value: this.mwqmanalysisreportparameterService.mwqmanalysisreportparameterList[0]?.SubsectorTVItemID ?? '',
+              value: this.mwqmanalysisreportparameterService.mwqmanalysisreportparameterList[0]?.SubsectorTVItemID,
               disabled: false
-            }, Validators.required],
+            }],
           AnalysisName: [
             {
-              value: this.mwqmanalysisreportparameterService.mwqmanalysisreportparameterList[0]?.AnalysisName ?? '',
+              value: this.mwqmanalysisreportparameterService.mwqmanalysisreportparameterList[0]?.AnalysisName,
               disabled: false
-            }, Validators.required],
+            }],
           AnalysisReportYear: [
             {
-              value: this.mwqmanalysisreportparameterService.mwqmanalysisreportparameterList[0]?.AnalysisReportYear ?? '',
+              value: this.mwqmanalysisreportparameterService.mwqmanalysisreportparameterList[0]?.AnalysisReportYear,
               disabled: false
-            }, Validators.required],
+            }],
           StartDate: [
             {
-              value: this.mwqmanalysisreportparameterService.mwqmanalysisreportparameterList[0]?.StartDate ?? '',
+              value: this.mwqmanalysisreportparameterService.mwqmanalysisreportparameterList[0]?.StartDate,
               disabled: false
-            }, Validators.required],
+            }],
           EndDate: [
             {
-              value: this.mwqmanalysisreportparameterService.mwqmanalysisreportparameterList[0]?.EndDate ?? '',
+              value: this.mwqmanalysisreportparameterService.mwqmanalysisreportparameterList[0]?.EndDate,
               disabled: false
-            }, Validators.required],
+            }],
           AnalysisCalculationType: [
             {
-              value: this.mwqmanalysisreportparameterService.mwqmanalysisreportparameterList[0]?.AnalysisCalculationType ?? '',
+              value: this.mwqmanalysisreportparameterService.mwqmanalysisreportparameterList[0]?.AnalysisCalculationType,
               disabled: false
-            }, Validators.required],
+            }],
           NumberOfRuns: [
             {
-              value: this.mwqmanalysisreportparameterService.mwqmanalysisreportparameterList[0]?.NumberOfRuns ?? '',
+              value: this.mwqmanalysisreportparameterService.mwqmanalysisreportparameterList[0]?.NumberOfRuns,
               disabled: false
-            }, Validators.required],
+            }],
           FullYear: [
             {
-              value: this.mwqmanalysisreportparameterService.mwqmanalysisreportparameterList[0]?.FullYear ?? '',
+              value: this.mwqmanalysisreportparameterService.mwqmanalysisreportparameterList[0]?.FullYear,
               disabled: false
-            }, Validators.required],
+            }],
           SalinityHighlightDeviationFromAverage: [
             {
-              value: this.mwqmanalysisreportparameterService.mwqmanalysisreportparameterList[0]?.SalinityHighlightDeviationFromAverage ?? '',
+              value: this.mwqmanalysisreportparameterService.mwqmanalysisreportparameterList[0]?.SalinityHighlightDeviationFromAverage,
               disabled: false
-            }, Validators.required],
+            }],
           ShortRangeNumberOfDays: [
             {
-              value: this.mwqmanalysisreportparameterService.mwqmanalysisreportparameterList[0]?.ShortRangeNumberOfDays ?? '',
+              value: this.mwqmanalysisreportparameterService.mwqmanalysisreportparameterList[0]?.ShortRangeNumberOfDays,
               disabled: false
-            }, Validators.required],
+            }],
           MidRangeNumberOfDays: [
             {
-              value: this.mwqmanalysisreportparameterService.mwqmanalysisreportparameterList[0]?.MidRangeNumberOfDays ?? '',
+              value: this.mwqmanalysisreportparameterService.mwqmanalysisreportparameterList[0]?.MidRangeNumberOfDays,
               disabled: false
-            }, Validators.required],
+            }],
           DryLimit24h: [
             {
-              value: this.mwqmanalysisreportparameterService.mwqmanalysisreportparameterList[0]?.DryLimit24h ?? '',
+              value: this.mwqmanalysisreportparameterService.mwqmanalysisreportparameterList[0]?.DryLimit24h,
               disabled: false
-            }, Validators.required],
+            }],
           DryLimit48h: [
             {
-              value: this.mwqmanalysisreportparameterService.mwqmanalysisreportparameterList[0]?.DryLimit48h ?? '',
+              value: this.mwqmanalysisreportparameterService.mwqmanalysisreportparameterList[0]?.DryLimit48h,
               disabled: false
-            }, Validators.required],
+            }],
           DryLimit72h: [
             {
-              value: this.mwqmanalysisreportparameterService.mwqmanalysisreportparameterList[0]?.DryLimit72h ?? '',
+              value: this.mwqmanalysisreportparameterService.mwqmanalysisreportparameterList[0]?.DryLimit72h,
               disabled: false
-            }, Validators.required],
+            }],
           DryLimit96h: [
             {
-              value: this.mwqmanalysisreportparameterService.mwqmanalysisreportparameterList[0]?.DryLimit96h ?? '',
+              value: this.mwqmanalysisreportparameterService.mwqmanalysisreportparameterList[0]?.DryLimit96h,
               disabled: false
-            }, Validators.required],
+            }],
           WetLimit24h: [
             {
-              value: this.mwqmanalysisreportparameterService.mwqmanalysisreportparameterList[0]?.WetLimit24h ?? '',
+              value: this.mwqmanalysisreportparameterService.mwqmanalysisreportparameterList[0]?.WetLimit24h,
               disabled: false
-            }, Validators.required],
+            }],
           WetLimit48h: [
             {
-              value: this.mwqmanalysisreportparameterService.mwqmanalysisreportparameterList[0]?.WetLimit48h ?? '',
+              value: this.mwqmanalysisreportparameterService.mwqmanalysisreportparameterList[0]?.WetLimit48h,
               disabled: false
-            }, Validators.required],
+            }],
           WetLimit72h: [
             {
-              value: this.mwqmanalysisreportparameterService.mwqmanalysisreportparameterList[0]?.WetLimit72h ?? '',
+              value: this.mwqmanalysisreportparameterService.mwqmanalysisreportparameterList[0]?.WetLimit72h,
               disabled: false
-            }, Validators.required],
+            }],
           WetLimit96h: [
             {
-              value: this.mwqmanalysisreportparameterService.mwqmanalysisreportparameterList[0]?.WetLimit96h ?? '',
+              value: this.mwqmanalysisreportparameterService.mwqmanalysisreportparameterList[0]?.WetLimit96h,
               disabled: false
-            }, Validators.required],
+            }],
           RunsToOmit: [
             {
-              value: this.mwqmanalysisreportparameterService.mwqmanalysisreportparameterList[0]?.RunsToOmit ?? '',
+              value: this.mwqmanalysisreportparameterService.mwqmanalysisreportparameterList[0]?.RunsToOmit,
               disabled: false
-            }, Validators.required],
+            }],
           ShowDataTypes: [
             {
-              value: this.mwqmanalysisreportparameterService.mwqmanalysisreportparameterList[0]?.ShowDataTypes ?? '',
+              value: this.mwqmanalysisreportparameterService.mwqmanalysisreportparameterList[0]?.ShowDataTypes,
               disabled: false
-            }, Validators.required],
+            }],
           ExcelTVFileTVItemID: [
             {
-              value: this.mwqmanalysisreportparameterService.mwqmanalysisreportparameterList[0]?.ExcelTVFileTVItemID ?? '',
+              value: this.mwqmanalysisreportparameterService.mwqmanalysisreportparameterList[0]?.ExcelTVFileTVItemID,
               disabled: false
-            }, Validators.required],
+            }],
           Command: [
             {
-              value: this.mwqmanalysisreportparameterService.mwqmanalysisreportparameterList[0]?.Command ?? '',
+              value: this.mwqmanalysisreportparameterService.mwqmanalysisreportparameterList[0]?.Command,
               disabled: false
-            }, Validators.required],
+            }],
           LastUpdateDate_UTC: [
             {
-              value: this.mwqmanalysisreportparameterService.mwqmanalysisreportparameterList[0]?.LastUpdateDate_UTC ?? '',
+              value: this.mwqmanalysisreportparameterService.mwqmanalysisreportparameterList[0]?.LastUpdateDate_UTC,
               disabled: false
-            }, Validators.required],
+            }],
           LastUpdateContactTVItemID: [
             {
-              value: this.mwqmanalysisreportparameterService.mwqmanalysisreportparameterList[0]?.LastUpdateContactTVItemID ?? '',
+              value: this.mwqmanalysisreportparameterService.mwqmanalysisreportparameterList[0]?.LastUpdateContactTVItemID,
               disabled: false
-            }, Validators.required],
+            }],
         }
       );
 

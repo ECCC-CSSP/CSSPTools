@@ -68,34 +68,34 @@ export class ContactPreferenceComponent implements OnInit, OnDestroy {
         {
           ContactPreferenceID: [
             {
-              value: (AddOrUpdate === 'Add' ? 0 : (this.contactpreferenceService.contactpreferenceList[0]?.ContactPreferenceID ?? '')),
+              value: (AddOrUpdate === 'Add' ? 0 : (this.contactpreferenceService.contactpreferenceList[0]?.ContactPreferenceID)),
               disabled: false
-            }, Validators.required],
+            }],
           ContactID: [
             {
-              value: this.contactpreferenceService.contactpreferenceList[0]?.ContactID ?? '',
+              value: this.contactpreferenceService.contactpreferenceList[0]?.ContactID,
               disabled: false
-            }, Validators.required],
+            }],
           TVType: [
             {
-              value: this.contactpreferenceService.contactpreferenceList[0]?.TVType ?? '',
+              value: this.contactpreferenceService.contactpreferenceList[0]?.TVType,
               disabled: false
-            }, Validators.required],
+            }],
           MarkerSize: [
             {
-              value: this.contactpreferenceService.contactpreferenceList[0]?.MarkerSize ?? '',
+              value: this.contactpreferenceService.contactpreferenceList[0]?.MarkerSize,
               disabled: false
-            }, Validators.required],
+            }],
           LastUpdateDate_UTC: [
             {
-              value: this.contactpreferenceService.contactpreferenceList[0]?.LastUpdateDate_UTC ?? '',
+              value: this.contactpreferenceService.contactpreferenceList[0]?.LastUpdateDate_UTC,
               disabled: false
-            }, Validators.required],
+            }],
           LastUpdateContactTVItemID: [
             {
-              value: this.contactpreferenceService.contactpreferenceList[0]?.LastUpdateContactTVItemID ?? '',
+              value: this.contactpreferenceService.contactpreferenceList[0]?.LastUpdateContactTVItemID,
               disabled: false
-            }, Validators.required],
+            }],
         }
       );
 

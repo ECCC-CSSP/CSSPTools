@@ -60,329 +60,329 @@ export class LabSheetDetailComponent implements OnInit, OnDestroy {
         {
           LabSheetDetailID: [
             {
-              value: (AddOrUpdate === 'Add' ? 0 : (this.labsheetdetailService.labsheetdetailList[0]?.LabSheetDetailID ?? '')),
+              value: (AddOrUpdate === 'Add' ? 0 : (this.labsheetdetailService.labsheetdetailList[0]?.LabSheetDetailID)),
               disabled: false
-            }, Validators.required],
+            }],
           LabSheetID: [
             {
-              value: this.labsheetdetailService.labsheetdetailList[0]?.LabSheetID ?? '',
+              value: this.labsheetdetailService.labsheetdetailList[0]?.LabSheetID,
               disabled: false
-            }, Validators.required],
+            }],
           SamplingPlanID: [
             {
-              value: this.labsheetdetailService.labsheetdetailList[0]?.SamplingPlanID ?? '',
+              value: this.labsheetdetailService.labsheetdetailList[0]?.SamplingPlanID,
               disabled: false
-            }, Validators.required],
+            }],
           SubsectorTVItemID: [
             {
-              value: this.labsheetdetailService.labsheetdetailList[0]?.SubsectorTVItemID ?? '',
+              value: this.labsheetdetailService.labsheetdetailList[0]?.SubsectorTVItemID,
               disabled: false
-            }, Validators.required],
+            }],
           Version: [
             {
-              value: this.labsheetdetailService.labsheetdetailList[0]?.Version ?? '',
+              value: this.labsheetdetailService.labsheetdetailList[0]?.Version,
               disabled: false
-            }, Validators.required],
+            }],
           RunDate: [
             {
-              value: this.labsheetdetailService.labsheetdetailList[0]?.RunDate ?? '',
+              value: this.labsheetdetailService.labsheetdetailList[0]?.RunDate,
               disabled: false
-            }, Validators.required],
+            }],
           Tides: [
             {
-              value: this.labsheetdetailService.labsheetdetailList[0]?.Tides ?? '',
+              value: this.labsheetdetailService.labsheetdetailList[0]?.Tides,
               disabled: false
-            }, Validators.required],
+            }],
           SampleCrewInitials: [
             {
-              value: this.labsheetdetailService.labsheetdetailList[0]?.SampleCrewInitials ?? '',
+              value: this.labsheetdetailService.labsheetdetailList[0]?.SampleCrewInitials,
               disabled: false
-            }, Validators.required],
+            }],
           WaterBathCount: [
             {
-              value: this.labsheetdetailService.labsheetdetailList[0]?.WaterBathCount ?? '',
+              value: this.labsheetdetailService.labsheetdetailList[0]?.WaterBathCount,
               disabled: false
-            }, Validators.required],
+            }],
           IncubationBath1StartTime: [
             {
-              value: this.labsheetdetailService.labsheetdetailList[0]?.IncubationBath1StartTime ?? '',
+              value: this.labsheetdetailService.labsheetdetailList[0]?.IncubationBath1StartTime,
               disabled: false
-            }, Validators.required],
+            }],
           IncubationBath2StartTime: [
             {
-              value: this.labsheetdetailService.labsheetdetailList[0]?.IncubationBath2StartTime ?? '',
+              value: this.labsheetdetailService.labsheetdetailList[0]?.IncubationBath2StartTime,
               disabled: false
-            }, Validators.required],
+            }],
           IncubationBath3StartTime: [
             {
-              value: this.labsheetdetailService.labsheetdetailList[0]?.IncubationBath3StartTime ?? '',
+              value: this.labsheetdetailService.labsheetdetailList[0]?.IncubationBath3StartTime,
               disabled: false
-            }, Validators.required],
+            }],
           IncubationBath1EndTime: [
             {
-              value: this.labsheetdetailService.labsheetdetailList[0]?.IncubationBath1EndTime ?? '',
+              value: this.labsheetdetailService.labsheetdetailList[0]?.IncubationBath1EndTime,
               disabled: false
-            }, Validators.required],
+            }],
           IncubationBath2EndTime: [
             {
-              value: this.labsheetdetailService.labsheetdetailList[0]?.IncubationBath2EndTime ?? '',
+              value: this.labsheetdetailService.labsheetdetailList[0]?.IncubationBath2EndTime,
               disabled: false
-            }, Validators.required],
+            }],
           IncubationBath3EndTime: [
             {
-              value: this.labsheetdetailService.labsheetdetailList[0]?.IncubationBath3EndTime ?? '',
+              value: this.labsheetdetailService.labsheetdetailList[0]?.IncubationBath3EndTime,
               disabled: false
-            }, Validators.required],
+            }],
           IncubationBath1TimeCalculated_minutes: [
             {
-              value: this.labsheetdetailService.labsheetdetailList[0]?.IncubationBath1TimeCalculated_minutes ?? '',
+              value: this.labsheetdetailService.labsheetdetailList[0]?.IncubationBath1TimeCalculated_minutes,
               disabled: false
-            }, Validators.required],
+            }],
           IncubationBath2TimeCalculated_minutes: [
             {
-              value: this.labsheetdetailService.labsheetdetailList[0]?.IncubationBath2TimeCalculated_minutes ?? '',
+              value: this.labsheetdetailService.labsheetdetailList[0]?.IncubationBath2TimeCalculated_minutes,
               disabled: false
-            }, Validators.required],
+            }],
           IncubationBath3TimeCalculated_minutes: [
             {
-              value: this.labsheetdetailService.labsheetdetailList[0]?.IncubationBath3TimeCalculated_minutes ?? '',
+              value: this.labsheetdetailService.labsheetdetailList[0]?.IncubationBath3TimeCalculated_minutes,
               disabled: false
-            }, Validators.required],
+            }],
           WaterBath1: [
             {
-              value: this.labsheetdetailService.labsheetdetailList[0]?.WaterBath1 ?? '',
+              value: this.labsheetdetailService.labsheetdetailList[0]?.WaterBath1,
               disabled: false
-            }, Validators.required],
+            }],
           WaterBath2: [
             {
-              value: this.labsheetdetailService.labsheetdetailList[0]?.WaterBath2 ?? '',
+              value: this.labsheetdetailService.labsheetdetailList[0]?.WaterBath2,
               disabled: false
-            }, Validators.required],
+            }],
           WaterBath3: [
             {
-              value: this.labsheetdetailService.labsheetdetailList[0]?.WaterBath3 ?? '',
+              value: this.labsheetdetailService.labsheetdetailList[0]?.WaterBath3,
               disabled: false
-            }, Validators.required],
+            }],
           TCField1: [
             {
-              value: this.labsheetdetailService.labsheetdetailList[0]?.TCField1 ?? '',
+              value: this.labsheetdetailService.labsheetdetailList[0]?.TCField1,
               disabled: false
-            }, Validators.required],
+            }],
           TCLab1: [
             {
-              value: this.labsheetdetailService.labsheetdetailList[0]?.TCLab1 ?? '',
+              value: this.labsheetdetailService.labsheetdetailList[0]?.TCLab1,
               disabled: false
-            }, Validators.required],
+            }],
           TCField2: [
             {
-              value: this.labsheetdetailService.labsheetdetailList[0]?.TCField2 ?? '',
+              value: this.labsheetdetailService.labsheetdetailList[0]?.TCField2,
               disabled: false
-            }, Validators.required],
+            }],
           TCLab2: [
             {
-              value: this.labsheetdetailService.labsheetdetailList[0]?.TCLab2 ?? '',
+              value: this.labsheetdetailService.labsheetdetailList[0]?.TCLab2,
               disabled: false
-            }, Validators.required],
+            }],
           TCFirst: [
             {
-              value: this.labsheetdetailService.labsheetdetailList[0]?.TCFirst ?? '',
+              value: this.labsheetdetailService.labsheetdetailList[0]?.TCFirst,
               disabled: false
-            }, Validators.required],
+            }],
           TCAverage: [
             {
-              value: this.labsheetdetailService.labsheetdetailList[0]?.TCAverage ?? '',
+              value: this.labsheetdetailService.labsheetdetailList[0]?.TCAverage,
               disabled: false
-            }, Validators.required],
+            }],
           ControlLot: [
             {
-              value: this.labsheetdetailService.labsheetdetailList[0]?.ControlLot ?? '',
+              value: this.labsheetdetailService.labsheetdetailList[0]?.ControlLot,
               disabled: false
-            }, Validators.required],
+            }],
           Positive35: [
             {
-              value: this.labsheetdetailService.labsheetdetailList[0]?.Positive35 ?? '',
+              value: this.labsheetdetailService.labsheetdetailList[0]?.Positive35,
               disabled: false
-            }, Validators.required],
+            }],
           NonTarget35: [
             {
-              value: this.labsheetdetailService.labsheetdetailList[0]?.NonTarget35 ?? '',
+              value: this.labsheetdetailService.labsheetdetailList[0]?.NonTarget35,
               disabled: false
-            }, Validators.required],
+            }],
           Negative35: [
             {
-              value: this.labsheetdetailService.labsheetdetailList[0]?.Negative35 ?? '',
+              value: this.labsheetdetailService.labsheetdetailList[0]?.Negative35,
               disabled: false
-            }, Validators.required],
+            }],
           Bath1Positive44_5: [
             {
-              value: this.labsheetdetailService.labsheetdetailList[0]?.Bath1Positive44_5 ?? '',
+              value: this.labsheetdetailService.labsheetdetailList[0]?.Bath1Positive44_5,
               disabled: false
-            }, Validators.required],
+            }],
           Bath2Positive44_5: [
             {
-              value: this.labsheetdetailService.labsheetdetailList[0]?.Bath2Positive44_5 ?? '',
+              value: this.labsheetdetailService.labsheetdetailList[0]?.Bath2Positive44_5,
               disabled: false
-            }, Validators.required],
+            }],
           Bath3Positive44_5: [
             {
-              value: this.labsheetdetailService.labsheetdetailList[0]?.Bath3Positive44_5 ?? '',
+              value: this.labsheetdetailService.labsheetdetailList[0]?.Bath3Positive44_5,
               disabled: false
-            }, Validators.required],
+            }],
           Bath1NonTarget44_5: [
             {
-              value: this.labsheetdetailService.labsheetdetailList[0]?.Bath1NonTarget44_5 ?? '',
+              value: this.labsheetdetailService.labsheetdetailList[0]?.Bath1NonTarget44_5,
               disabled: false
-            }, Validators.required],
+            }],
           Bath2NonTarget44_5: [
             {
-              value: this.labsheetdetailService.labsheetdetailList[0]?.Bath2NonTarget44_5 ?? '',
+              value: this.labsheetdetailService.labsheetdetailList[0]?.Bath2NonTarget44_5,
               disabled: false
-            }, Validators.required],
+            }],
           Bath3NonTarget44_5: [
             {
-              value: this.labsheetdetailService.labsheetdetailList[0]?.Bath3NonTarget44_5 ?? '',
+              value: this.labsheetdetailService.labsheetdetailList[0]?.Bath3NonTarget44_5,
               disabled: false
-            }, Validators.required],
+            }],
           Bath1Negative44_5: [
             {
-              value: this.labsheetdetailService.labsheetdetailList[0]?.Bath1Negative44_5 ?? '',
+              value: this.labsheetdetailService.labsheetdetailList[0]?.Bath1Negative44_5,
               disabled: false
-            }, Validators.required],
+            }],
           Bath2Negative44_5: [
             {
-              value: this.labsheetdetailService.labsheetdetailList[0]?.Bath2Negative44_5 ?? '',
+              value: this.labsheetdetailService.labsheetdetailList[0]?.Bath2Negative44_5,
               disabled: false
-            }, Validators.required],
+            }],
           Bath3Negative44_5: [
             {
-              value: this.labsheetdetailService.labsheetdetailList[0]?.Bath3Negative44_5 ?? '',
+              value: this.labsheetdetailService.labsheetdetailList[0]?.Bath3Negative44_5,
               disabled: false
-            }, Validators.required],
+            }],
           Blank35: [
             {
-              value: this.labsheetdetailService.labsheetdetailList[0]?.Blank35 ?? '',
+              value: this.labsheetdetailService.labsheetdetailList[0]?.Blank35,
               disabled: false
-            }, Validators.required],
+            }],
           Bath1Blank44_5: [
             {
-              value: this.labsheetdetailService.labsheetdetailList[0]?.Bath1Blank44_5 ?? '',
+              value: this.labsheetdetailService.labsheetdetailList[0]?.Bath1Blank44_5,
               disabled: false
-            }, Validators.required],
+            }],
           Bath2Blank44_5: [
             {
-              value: this.labsheetdetailService.labsheetdetailList[0]?.Bath2Blank44_5 ?? '',
+              value: this.labsheetdetailService.labsheetdetailList[0]?.Bath2Blank44_5,
               disabled: false
-            }, Validators.required],
+            }],
           Bath3Blank44_5: [
             {
-              value: this.labsheetdetailService.labsheetdetailList[0]?.Bath3Blank44_5 ?? '',
+              value: this.labsheetdetailService.labsheetdetailList[0]?.Bath3Blank44_5,
               disabled: false
-            }, Validators.required],
+            }],
           Lot35: [
             {
-              value: this.labsheetdetailService.labsheetdetailList[0]?.Lot35 ?? '',
+              value: this.labsheetdetailService.labsheetdetailList[0]?.Lot35,
               disabled: false
-            }, Validators.required],
+            }],
           Lot44_5: [
             {
-              value: this.labsheetdetailService.labsheetdetailList[0]?.Lot44_5 ?? '',
+              value: this.labsheetdetailService.labsheetdetailList[0]?.Lot44_5,
               disabled: false
-            }, Validators.required],
+            }],
           Weather: [
             {
-              value: this.labsheetdetailService.labsheetdetailList[0]?.Weather ?? '',
+              value: this.labsheetdetailService.labsheetdetailList[0]?.Weather,
               disabled: false
-            }, Validators.required],
+            }],
           RunComment: [
             {
-              value: this.labsheetdetailService.labsheetdetailList[0]?.RunComment ?? '',
+              value: this.labsheetdetailService.labsheetdetailList[0]?.RunComment,
               disabled: false
-            }, Validators.required],
+            }],
           RunWeatherComment: [
             {
-              value: this.labsheetdetailService.labsheetdetailList[0]?.RunWeatherComment ?? '',
+              value: this.labsheetdetailService.labsheetdetailList[0]?.RunWeatherComment,
               disabled: false
-            }, Validators.required],
+            }],
           SampleBottleLotNumber: [
             {
-              value: this.labsheetdetailService.labsheetdetailList[0]?.SampleBottleLotNumber ?? '',
+              value: this.labsheetdetailService.labsheetdetailList[0]?.SampleBottleLotNumber,
               disabled: false
-            }, Validators.required],
+            }],
           SalinitiesReadBy: [
             {
-              value: this.labsheetdetailService.labsheetdetailList[0]?.SalinitiesReadBy ?? '',
+              value: this.labsheetdetailService.labsheetdetailList[0]?.SalinitiesReadBy,
               disabled: false
-            }, Validators.required],
+            }],
           SalinitiesReadDate: [
             {
-              value: this.labsheetdetailService.labsheetdetailList[0]?.SalinitiesReadDate ?? '',
+              value: this.labsheetdetailService.labsheetdetailList[0]?.SalinitiesReadDate,
               disabled: false
-            }, Validators.required],
+            }],
           ResultsReadBy: [
             {
-              value: this.labsheetdetailService.labsheetdetailList[0]?.ResultsReadBy ?? '',
+              value: this.labsheetdetailService.labsheetdetailList[0]?.ResultsReadBy,
               disabled: false
-            }, Validators.required],
+            }],
           ResultsReadDate: [
             {
-              value: this.labsheetdetailService.labsheetdetailList[0]?.ResultsReadDate ?? '',
+              value: this.labsheetdetailService.labsheetdetailList[0]?.ResultsReadDate,
               disabled: false
-            }, Validators.required],
+            }],
           ResultsRecordedBy: [
             {
-              value: this.labsheetdetailService.labsheetdetailList[0]?.ResultsRecordedBy ?? '',
+              value: this.labsheetdetailService.labsheetdetailList[0]?.ResultsRecordedBy,
               disabled: false
-            }, Validators.required],
+            }],
           ResultsRecordedDate: [
             {
-              value: this.labsheetdetailService.labsheetdetailList[0]?.ResultsRecordedDate ?? '',
+              value: this.labsheetdetailService.labsheetdetailList[0]?.ResultsRecordedDate,
               disabled: false
-            }, Validators.required],
+            }],
           DailyDuplicateRLog: [
             {
-              value: this.labsheetdetailService.labsheetdetailList[0]?.DailyDuplicateRLog ?? '',
+              value: this.labsheetdetailService.labsheetdetailList[0]?.DailyDuplicateRLog,
               disabled: false
-            }, Validators.required],
+            }],
           DailyDuplicatePrecisionCriteria: [
             {
-              value: this.labsheetdetailService.labsheetdetailList[0]?.DailyDuplicatePrecisionCriteria ?? '',
+              value: this.labsheetdetailService.labsheetdetailList[0]?.DailyDuplicatePrecisionCriteria,
               disabled: false
-            }, Validators.required],
+            }],
           DailyDuplicateAcceptable: [
             {
-              value: this.labsheetdetailService.labsheetdetailList[0]?.DailyDuplicateAcceptable ?? '',
+              value: this.labsheetdetailService.labsheetdetailList[0]?.DailyDuplicateAcceptable,
               disabled: false
-            }, Validators.required],
+            }],
           IntertechDuplicateRLog: [
             {
-              value: this.labsheetdetailService.labsheetdetailList[0]?.IntertechDuplicateRLog ?? '',
+              value: this.labsheetdetailService.labsheetdetailList[0]?.IntertechDuplicateRLog,
               disabled: false
-            }, Validators.required],
+            }],
           IntertechDuplicatePrecisionCriteria: [
             {
-              value: this.labsheetdetailService.labsheetdetailList[0]?.IntertechDuplicatePrecisionCriteria ?? '',
+              value: this.labsheetdetailService.labsheetdetailList[0]?.IntertechDuplicatePrecisionCriteria,
               disabled: false
-            }, Validators.required],
+            }],
           IntertechDuplicateAcceptable: [
             {
-              value: this.labsheetdetailService.labsheetdetailList[0]?.IntertechDuplicateAcceptable ?? '',
+              value: this.labsheetdetailService.labsheetdetailList[0]?.IntertechDuplicateAcceptable,
               disabled: false
-            }, Validators.required],
+            }],
           IntertechReadAcceptable: [
             {
-              value: this.labsheetdetailService.labsheetdetailList[0]?.IntertechReadAcceptable ?? '',
+              value: this.labsheetdetailService.labsheetdetailList[0]?.IntertechReadAcceptable,
               disabled: false
-            }, Validators.required],
+            }],
           LastUpdateDate_UTC: [
             {
-              value: this.labsheetdetailService.labsheetdetailList[0]?.LastUpdateDate_UTC ?? '',
+              value: this.labsheetdetailService.labsheetdetailList[0]?.LastUpdateDate_UTC,
               disabled: false
-            }, Validators.required],
+            }],
           LastUpdateContactTVItemID: [
             {
-              value: this.labsheetdetailService.labsheetdetailList[0]?.LastUpdateContactTVItemID ?? '',
+              value: this.labsheetdetailService.labsheetdetailList[0]?.LastUpdateContactTVItemID,
               disabled: false
-            }, Validators.required],
+            }],
         }
       );
 

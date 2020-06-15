@@ -68,99 +68,99 @@ export class MWQMSampleComponent implements OnInit, OnDestroy {
         {
           MWQMSampleID: [
             {
-              value: (AddOrUpdate === 'Add' ? 0 : (this.mwqmsampleService.mwqmsampleList[0]?.MWQMSampleID ?? '')),
+              value: (AddOrUpdate === 'Add' ? 0 : (this.mwqmsampleService.mwqmsampleList[0]?.MWQMSampleID)),
               disabled: false
-            }, Validators.required],
+            }],
           MWQMSiteTVItemID: [
             {
-              value: this.mwqmsampleService.mwqmsampleList[0]?.MWQMSiteTVItemID ?? '',
+              value: this.mwqmsampleService.mwqmsampleList[0]?.MWQMSiteTVItemID,
               disabled: false
-            }, Validators.required],
+            }],
           MWQMRunTVItemID: [
             {
-              value: this.mwqmsampleService.mwqmsampleList[0]?.MWQMRunTVItemID ?? '',
+              value: this.mwqmsampleService.mwqmsampleList[0]?.MWQMRunTVItemID,
               disabled: false
-            }, Validators.required],
+            }],
           SampleDateTime_Local: [
             {
-              value: this.mwqmsampleService.mwqmsampleList[0]?.SampleDateTime_Local ?? '',
+              value: this.mwqmsampleService.mwqmsampleList[0]?.SampleDateTime_Local,
               disabled: false
-            }, Validators.required],
+            }],
           TimeText: [
             {
-              value: this.mwqmsampleService.mwqmsampleList[0]?.TimeText ?? '',
+              value: this.mwqmsampleService.mwqmsampleList[0]?.TimeText,
               disabled: false
-            }, Validators.required],
+            }],
           Depth_m: [
             {
-              value: this.mwqmsampleService.mwqmsampleList[0]?.Depth_m ?? '',
+              value: this.mwqmsampleService.mwqmsampleList[0]?.Depth_m,
               disabled: false
-            }, Validators.required],
+            }],
           FecCol_MPN_100ml: [
             {
-              value: this.mwqmsampleService.mwqmsampleList[0]?.FecCol_MPN_100ml ?? '',
+              value: this.mwqmsampleService.mwqmsampleList[0]?.FecCol_MPN_100ml,
               disabled: false
-            }, Validators.required],
+            }],
           Salinity_PPT: [
             {
-              value: this.mwqmsampleService.mwqmsampleList[0]?.Salinity_PPT ?? '',
+              value: this.mwqmsampleService.mwqmsampleList[0]?.Salinity_PPT,
               disabled: false
-            }, Validators.required],
+            }],
           WaterTemp_C: [
             {
-              value: this.mwqmsampleService.mwqmsampleList[0]?.WaterTemp_C ?? '',
+              value: this.mwqmsampleService.mwqmsampleList[0]?.WaterTemp_C,
               disabled: false
-            }, Validators.required],
+            }],
           PH: [
             {
-              value: this.mwqmsampleService.mwqmsampleList[0]?.PH ?? '',
+              value: this.mwqmsampleService.mwqmsampleList[0]?.PH,
               disabled: false
-            }, Validators.required],
+            }],
           SampleTypesText: [
             {
-              value: this.mwqmsampleService.mwqmsampleList[0]?.SampleTypesText ?? '',
+              value: this.mwqmsampleService.mwqmsampleList[0]?.SampleTypesText,
               disabled: false
-            }, Validators.required],
+            }],
           SampleType_old: [
             {
-              value: this.mwqmsampleService.mwqmsampleList[0]?.SampleType_old ?? '',
+              value: this.mwqmsampleService.mwqmsampleList[0]?.SampleType_old,
               disabled: false
-            }, Validators.required],
+            }],
           Tube_10: [
             {
-              value: this.mwqmsampleService.mwqmsampleList[0]?.Tube_10 ?? '',
+              value: this.mwqmsampleService.mwqmsampleList[0]?.Tube_10,
               disabled: false
-            }, Validators.required],
+            }],
           Tube_1_0: [
             {
-              value: this.mwqmsampleService.mwqmsampleList[0]?.Tube_1_0 ?? '',
+              value: this.mwqmsampleService.mwqmsampleList[0]?.Tube_1_0,
               disabled: false
-            }, Validators.required],
+            }],
           Tube_0_1: [
             {
-              value: this.mwqmsampleService.mwqmsampleList[0]?.Tube_0_1 ?? '',
+              value: this.mwqmsampleService.mwqmsampleList[0]?.Tube_0_1,
               disabled: false
-            }, Validators.required],
+            }],
           ProcessedBy: [
             {
-              value: this.mwqmsampleService.mwqmsampleList[0]?.ProcessedBy ?? '',
+              value: this.mwqmsampleService.mwqmsampleList[0]?.ProcessedBy,
               disabled: false
-            }, Validators.required],
+            }],
           UseForOpenData: [
             {
-              value: this.mwqmsampleService.mwqmsampleList[0]?.UseForOpenData ?? '',
+              value: this.mwqmsampleService.mwqmsampleList[0]?.UseForOpenData,
               disabled: false
-            }, Validators.required],
+            }],
           LastUpdateDate_UTC: [
             {
-              value: this.mwqmsampleService.mwqmsampleList[0]?.LastUpdateDate_UTC ?? '',
+              value: this.mwqmsampleService.mwqmsampleList[0]?.LastUpdateDate_UTC,
               disabled: false
-            }, Validators.required],
+            }],
           LastUpdateContactTVItemID: [
             {
-              value: this.mwqmsampleService.mwqmsampleList[0]?.LastUpdateContactTVItemID ?? '',
+              value: this.mwqmsampleService.mwqmsampleList[0]?.LastUpdateContactTVItemID,
               disabled: false
-            }, Validators.required],
+            }],
         }
       );
 

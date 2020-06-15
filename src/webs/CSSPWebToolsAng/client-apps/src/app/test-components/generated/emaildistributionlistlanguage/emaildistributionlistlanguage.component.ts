@@ -75,39 +75,39 @@ export class EmailDistributionListLanguageComponent implements OnInit, OnDestroy
         {
           EmailDistributionListLanguageID: [
             {
-              value: (AddOrUpdate === 'Add' ? 0 : (this.emaildistributionlistlanguageService.emaildistributionlistlanguageList[0]?.EmailDistributionListLanguageID ?? '')),
+              value: (AddOrUpdate === 'Add' ? 0 : (this.emaildistributionlistlanguageService.emaildistributionlistlanguageList[0]?.EmailDistributionListLanguageID)),
               disabled: false
-            }, Validators.required],
+            }],
           EmailDistributionListID: [
             {
-              value: this.emaildistributionlistlanguageService.emaildistributionlistlanguageList[0]?.EmailDistributionListID ?? '',
+              value: this.emaildistributionlistlanguageService.emaildistributionlistlanguageList[0]?.EmailDistributionListID,
               disabled: false
-            }, Validators.required],
+            }],
           Language: [
             {
-              value: this.emaildistributionlistlanguageService.emaildistributionlistlanguageList[0]?.Language ?? '',
+              value: this.emaildistributionlistlanguageService.emaildistributionlistlanguageList[0]?.Language,
               disabled: false
-            }, Validators.required],
+            }],
           EmailListName: [
             {
-              value: this.emaildistributionlistlanguageService.emaildistributionlistlanguageList[0]?.EmailListName ?? '',
+              value: this.emaildistributionlistlanguageService.emaildistributionlistlanguageList[0]?.EmailListName,
               disabled: false
-            }, Validators.required],
+            }],
           TranslationStatus: [
             {
-              value: this.emaildistributionlistlanguageService.emaildistributionlistlanguageList[0]?.TranslationStatus ?? '',
+              value: this.emaildistributionlistlanguageService.emaildistributionlistlanguageList[0]?.TranslationStatus,
               disabled: false
-            }, Validators.required],
+            }],
           LastUpdateDate_UTC: [
             {
-              value: this.emaildistributionlistlanguageService.emaildistributionlistlanguageList[0]?.LastUpdateDate_UTC ?? '',
+              value: this.emaildistributionlistlanguageService.emaildistributionlistlanguageList[0]?.LastUpdateDate_UTC,
               disabled: false
-            }, Validators.required],
+            }],
           LastUpdateContactTVItemID: [
             {
-              value: this.emaildistributionlistlanguageService.emaildistributionlistlanguageList[0]?.LastUpdateContactTVItemID ?? '',
+              value: this.emaildistributionlistlanguageService.emaildistributionlistlanguageList[0]?.LastUpdateContactTVItemID,
               disabled: false
-            }, Validators.required],
+            }],
         }
       );
 

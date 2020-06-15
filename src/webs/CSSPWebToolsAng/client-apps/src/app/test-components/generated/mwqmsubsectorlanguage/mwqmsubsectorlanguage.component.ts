@@ -26,6 +26,7 @@ export class MWQMSubsectorLanguageComponent implements OnInit, OnDestroy {
   sub: Subscription;
   languageList: EnumIDAndText[];
   translationStatusSubsectorDescList: EnumIDAndText[];
+  translationStatusLogBookList: EnumIDAndText[];
   mwqmsubsectorlanguageFormPut: FormGroup;
   mwqmsubsectorlanguageFormPost: FormGroup;
 
@@ -59,6 +60,7 @@ export class MWQMSubsectorLanguageComponent implements OnInit, OnDestroy {
     LoadLocalesMWQMSubsectorLanguageText(this.mwqmsubsectorlanguageService);
     this.languageList = LanguageEnum_GetOrderedText();
     this.translationStatusSubsectorDescList = TranslationStatusEnum_GetOrderedText();
+    this.translationStatusLogBookList = TranslationStatusEnum_GetOrderedText();
     this.FillFormBuilderGroup('Add');
     this.FillFormBuilderGroup('Update');
   }
@@ -75,49 +77,49 @@ export class MWQMSubsectorLanguageComponent implements OnInit, OnDestroy {
         {
           MWQMSubsectorLanguageID: [
             {
-              value: (AddOrUpdate === 'Add' ? 0 : (this.mwqmsubsectorlanguageService.mwqmsubsectorlanguageList[0]?.MWQMSubsectorLanguageID ?? '')),
+              value: (AddOrUpdate === 'Add' ? 0 : (this.mwqmsubsectorlanguageService.mwqmsubsectorlanguageList[0]?.MWQMSubsectorLanguageID)),
               disabled: false
-            }, Validators.required],
+            }],
           MWQMSubsectorID: [
             {
-              value: this.mwqmsubsectorlanguageService.mwqmsubsectorlanguageList[0]?.MWQMSubsectorID ?? '',
+              value: this.mwqmsubsectorlanguageService.mwqmsubsectorlanguageList[0]?.MWQMSubsectorID,
               disabled: false
-            }, Validators.required],
+            }],
           Language: [
             {
-              value: this.mwqmsubsectorlanguageService.mwqmsubsectorlanguageList[0]?.Language ?? '',
+              value: this.mwqmsubsectorlanguageService.mwqmsubsectorlanguageList[0]?.Language,
               disabled: false
-            }, Validators.required],
+            }],
           SubsectorDesc: [
             {
-              value: this.mwqmsubsectorlanguageService.mwqmsubsectorlanguageList[0]?.SubsectorDesc ?? '',
+              value: this.mwqmsubsectorlanguageService.mwqmsubsectorlanguageList[0]?.SubsectorDesc,
               disabled: false
-            }, Validators.required],
+            }],
           TranslationStatusSubsectorDesc: [
             {
-              value: this.mwqmsubsectorlanguageService.mwqmsubsectorlanguageList[0]?.TranslationStatusSubsectorDesc ?? '',
+              value: this.mwqmsubsectorlanguageService.mwqmsubsectorlanguageList[0]?.TranslationStatusSubsectorDesc,
               disabled: false
-            }, Validators.required],
+            }],
           LogBook: [
             {
-              value: this.mwqmsubsectorlanguageService.mwqmsubsectorlanguageList[0]?.LogBook ?? '',
+              value: this.mwqmsubsectorlanguageService.mwqmsubsectorlanguageList[0]?.LogBook,
               disabled: false
-            }, Validators.required],
+            }],
           TranslationStatusLogBook: [
             {
-              value: this.mwqmsubsectorlanguageService.mwqmsubsectorlanguageList[0]?.TranslationStatusLogBook ?? '',
+              value: this.mwqmsubsectorlanguageService.mwqmsubsectorlanguageList[0]?.TranslationStatusLogBook,
               disabled: false
-            }, Validators.required],
+            }],
           LastUpdateDate_UTC: [
             {
-              value: this.mwqmsubsectorlanguageService.mwqmsubsectorlanguageList[0]?.LastUpdateDate_UTC ?? '',
+              value: this.mwqmsubsectorlanguageService.mwqmsubsectorlanguageList[0]?.LastUpdateDate_UTC,
               disabled: false
-            }, Validators.required],
+            }],
           LastUpdateContactTVItemID: [
             {
-              value: this.mwqmsubsectorlanguageService.mwqmsubsectorlanguageList[0]?.LastUpdateContactTVItemID ?? '',
+              value: this.mwqmsubsectorlanguageService.mwqmsubsectorlanguageList[0]?.LastUpdateContactTVItemID,
               disabled: false
-            }, Validators.required],
+            }],
         }
       );
 

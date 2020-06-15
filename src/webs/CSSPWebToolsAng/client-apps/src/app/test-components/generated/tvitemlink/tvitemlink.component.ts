@@ -24,6 +24,7 @@ import { EnumIDAndText } from '../../../models/enumidandtext.model';
 export class TVItemLinkComponent implements OnInit, OnDestroy {
   sub: Subscription;
   fromTVTypeList: EnumIDAndText[];
+  toTVTypeList: EnumIDAndText[];
   tvitemlinkFormPut: FormGroup;
   tvitemlinkFormPost: FormGroup;
 
@@ -52,6 +53,7 @@ export class TVItemLinkComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     LoadLocalesTVItemLinkText(this.tvitemlinkService);
     this.fromTVTypeList = TVTypeEnum_GetOrderedText();
+    this.toTVTypeList = TVTypeEnum_GetOrderedText();
     this.FillFormBuilderGroup('Add');
     this.FillFormBuilderGroup('Update');
   }
@@ -68,69 +70,69 @@ export class TVItemLinkComponent implements OnInit, OnDestroy {
         {
           TVItemLinkID: [
             {
-              value: (AddOrUpdate === 'Add' ? 0 : (this.tvitemlinkService.tvitemlinkList[0]?.TVItemLinkID ?? '')),
+              value: (AddOrUpdate === 'Add' ? 0 : (this.tvitemlinkService.tvitemlinkList[0]?.TVItemLinkID)),
               disabled: false
-            }, Validators.required],
+            }],
           FromTVItemID: [
             {
-              value: this.tvitemlinkService.tvitemlinkList[0]?.FromTVItemID ?? '',
+              value: this.tvitemlinkService.tvitemlinkList[0]?.FromTVItemID,
               disabled: false
-            }, Validators.required],
+            }],
           ToTVItemID: [
             {
-              value: this.tvitemlinkService.tvitemlinkList[0]?.ToTVItemID ?? '',
+              value: this.tvitemlinkService.tvitemlinkList[0]?.ToTVItemID,
               disabled: false
-            }, Validators.required],
+            }],
           FromTVType: [
             {
-              value: this.tvitemlinkService.tvitemlinkList[0]?.FromTVType ?? '',
+              value: this.tvitemlinkService.tvitemlinkList[0]?.FromTVType,
               disabled: false
-            }, Validators.required],
+            }],
           ToTVType: [
             {
-              value: this.tvitemlinkService.tvitemlinkList[0]?.ToTVType ?? '',
+              value: this.tvitemlinkService.tvitemlinkList[0]?.ToTVType,
               disabled: false
-            }, Validators.required],
+            }],
           StartDateTime_Local: [
             {
-              value: this.tvitemlinkService.tvitemlinkList[0]?.StartDateTime_Local ?? '',
+              value: this.tvitemlinkService.tvitemlinkList[0]?.StartDateTime_Local,
               disabled: false
-            }, Validators.required],
+            }],
           EndDateTime_Local: [
             {
-              value: this.tvitemlinkService.tvitemlinkList[0]?.EndDateTime_Local ?? '',
+              value: this.tvitemlinkService.tvitemlinkList[0]?.EndDateTime_Local,
               disabled: false
-            }, Validators.required],
+            }],
           Ordinal: [
             {
-              value: this.tvitemlinkService.tvitemlinkList[0]?.Ordinal ?? '',
+              value: this.tvitemlinkService.tvitemlinkList[0]?.Ordinal,
               disabled: false
-            }, Validators.required],
+            }],
           TVLevel: [
             {
-              value: this.tvitemlinkService.tvitemlinkList[0]?.TVLevel ?? '',
+              value: this.tvitemlinkService.tvitemlinkList[0]?.TVLevel,
               disabled: false
-            }, Validators.required],
+            }],
           TVPath: [
             {
-              value: this.tvitemlinkService.tvitemlinkList[0]?.TVPath ?? '',
+              value: this.tvitemlinkService.tvitemlinkList[0]?.TVPath,
               disabled: false
-            }, Validators.required],
+            }],
           ParentTVItemLinkID: [
             {
-              value: this.tvitemlinkService.tvitemlinkList[0]?.ParentTVItemLinkID ?? '',
+              value: this.tvitemlinkService.tvitemlinkList[0]?.ParentTVItemLinkID,
               disabled: false
-            }, Validators.required],
+            }],
           LastUpdateDate_UTC: [
             {
-              value: this.tvitemlinkService.tvitemlinkList[0]?.LastUpdateDate_UTC ?? '',
+              value: this.tvitemlinkService.tvitemlinkList[0]?.LastUpdateDate_UTC,
               disabled: false
-            }, Validators.required],
+            }],
           LastUpdateContactTVItemID: [
             {
-              value: this.tvitemlinkService.tvitemlinkList[0]?.LastUpdateContactTVItemID ?? '',
+              value: this.tvitemlinkService.tvitemlinkList[0]?.LastUpdateContactTVItemID,
               disabled: false
-            }, Validators.required],
+            }],
         }
       );
 

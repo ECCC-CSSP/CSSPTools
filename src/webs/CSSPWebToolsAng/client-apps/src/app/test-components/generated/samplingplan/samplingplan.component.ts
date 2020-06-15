@@ -103,114 +103,114 @@ export class SamplingPlanComponent implements OnInit, OnDestroy {
         {
           SamplingPlanID: [
             {
-              value: (AddOrUpdate === 'Add' ? 0 : (this.samplingplanService.samplingplanList[0]?.SamplingPlanID ?? '')),
+              value: (AddOrUpdate === 'Add' ? 0 : (this.samplingplanService.samplingplanList[0]?.SamplingPlanID)),
               disabled: false
-            }, Validators.required],
+            }],
           IsActive: [
             {
-              value: this.samplingplanService.samplingplanList[0]?.IsActive ?? '',
+              value: this.samplingplanService.samplingplanList[0]?.IsActive,
               disabled: false
-            }, Validators.required],
+            }],
           SamplingPlanName: [
             {
-              value: this.samplingplanService.samplingplanList[0]?.SamplingPlanName ?? '',
+              value: this.samplingplanService.samplingplanList[0]?.SamplingPlanName,
               disabled: false
-            }, Validators.required],
+            }],
           ForGroupName: [
             {
-              value: this.samplingplanService.samplingplanList[0]?.ForGroupName ?? '',
+              value: this.samplingplanService.samplingplanList[0]?.ForGroupName,
               disabled: false
-            }, Validators.required],
+            }],
           SampleType: [
             {
-              value: this.samplingplanService.samplingplanList[0]?.SampleType ?? '',
+              value: this.samplingplanService.samplingplanList[0]?.SampleType,
               disabled: false
-            }, Validators.required],
+            }],
           SamplingPlanType: [
             {
-              value: this.samplingplanService.samplingplanList[0]?.SamplingPlanType ?? '',
+              value: this.samplingplanService.samplingplanList[0]?.SamplingPlanType,
               disabled: false
-            }, Validators.required],
+            }],
           LabSheetType: [
             {
-              value: this.samplingplanService.samplingplanList[0]?.LabSheetType ?? '',
+              value: this.samplingplanService.samplingplanList[0]?.LabSheetType,
               disabled: false
-            }, Validators.required],
+            }],
           ProvinceTVItemID: [
             {
-              value: this.samplingplanService.samplingplanList[0]?.ProvinceTVItemID ?? '',
+              value: this.samplingplanService.samplingplanList[0]?.ProvinceTVItemID,
               disabled: false
-            }, Validators.required],
+            }],
           CreatorTVItemID: [
             {
-              value: this.samplingplanService.samplingplanList[0]?.CreatorTVItemID ?? '',
+              value: this.samplingplanService.samplingplanList[0]?.CreatorTVItemID,
               disabled: false
-            }, Validators.required],
+            }],
           Year: [
             {
-              value: this.samplingplanService.samplingplanList[0]?.Year ?? '',
+              value: this.samplingplanService.samplingplanList[0]?.Year,
               disabled: false
-            }, Validators.required],
+            }],
           AccessCode: [
             {
-              value: this.samplingplanService.samplingplanList[0]?.AccessCode ?? '',
+              value: this.samplingplanService.samplingplanList[0]?.AccessCode,
               disabled: false
-            }, Validators.required],
+            }],
           DailyDuplicatePrecisionCriteria: [
             {
-              value: this.samplingplanService.samplingplanList[0]?.DailyDuplicatePrecisionCriteria ?? '',
+              value: this.samplingplanService.samplingplanList[0]?.DailyDuplicatePrecisionCriteria,
               disabled: false
-            }, Validators.required],
+            }],
           IntertechDuplicatePrecisionCriteria: [
             {
-              value: this.samplingplanService.samplingplanList[0]?.IntertechDuplicatePrecisionCriteria ?? '',
+              value: this.samplingplanService.samplingplanList[0]?.IntertechDuplicatePrecisionCriteria,
               disabled: false
-            }, Validators.required],
+            }],
           IncludeLaboratoryQAQC: [
             {
-              value: this.samplingplanService.samplingplanList[0]?.IncludeLaboratoryQAQC ?? '',
+              value: this.samplingplanService.samplingplanList[0]?.IncludeLaboratoryQAQC,
               disabled: false
-            }, Validators.required],
+            }],
           ApprovalCode: [
             {
-              value: this.samplingplanService.samplingplanList[0]?.ApprovalCode ?? '',
+              value: this.samplingplanService.samplingplanList[0]?.ApprovalCode,
               disabled: false
-            }, Validators.required],
+            }],
           SamplingPlanFileTVItemID: [
             {
-              value: this.samplingplanService.samplingplanList[0]?.SamplingPlanFileTVItemID ?? '',
+              value: this.samplingplanService.samplingplanList[0]?.SamplingPlanFileTVItemID,
               disabled: false
-            }, Validators.required],
+            }],
           AnalyzeMethodDefault: [
             {
-              value: this.samplingplanService.samplingplanList[0]?.AnalyzeMethodDefault ?? '',
+              value: this.samplingplanService.samplingplanList[0]?.AnalyzeMethodDefault,
               disabled: false
-            }, Validators.required],
+            }],
           SampleMatrixDefault: [
             {
-              value: this.samplingplanService.samplingplanList[0]?.SampleMatrixDefault ?? '',
+              value: this.samplingplanService.samplingplanList[0]?.SampleMatrixDefault,
               disabled: false
-            }, Validators.required],
+            }],
           LaboratoryDefault: [
             {
-              value: this.samplingplanService.samplingplanList[0]?.LaboratoryDefault ?? '',
+              value: this.samplingplanService.samplingplanList[0]?.LaboratoryDefault,
               disabled: false
-            }, Validators.required],
+            }],
           BackupDirectory: [
             {
-              value: this.samplingplanService.samplingplanList[0]?.BackupDirectory ?? '',
+              value: this.samplingplanService.samplingplanList[0]?.BackupDirectory,
               disabled: false
-            }, Validators.required],
+            }],
           LastUpdateDate_UTC: [
             {
-              value: this.samplingplanService.samplingplanList[0]?.LastUpdateDate_UTC ?? '',
+              value: this.samplingplanService.samplingplanList[0]?.LastUpdateDate_UTC,
               disabled: false
-            }, Validators.required],
+            }],
           LastUpdateContactTVItemID: [
             {
-              value: this.samplingplanService.samplingplanList[0]?.LastUpdateContactTVItemID ?? '',
+              value: this.samplingplanService.samplingplanList[0]?.LastUpdateContactTVItemID,
               disabled: false
-            }, Validators.required],
+            }],
         }
       );
 

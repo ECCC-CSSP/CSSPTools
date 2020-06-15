@@ -68,34 +68,34 @@ export class TVItemStatComponent implements OnInit, OnDestroy {
         {
           TVItemStatID: [
             {
-              value: (AddOrUpdate === 'Add' ? 0 : (this.tvitemstatService.tvitemstatList[0]?.TVItemStatID ?? '')),
+              value: (AddOrUpdate === 'Add' ? 0 : (this.tvitemstatService.tvitemstatList[0]?.TVItemStatID)),
               disabled: false
-            }, Validators.required],
+            }],
           TVItemID: [
             {
-              value: this.tvitemstatService.tvitemstatList[0]?.TVItemID ?? '',
+              value: this.tvitemstatService.tvitemstatList[0]?.TVItemID,
               disabled: false
-            }, Validators.required],
+            }],
           TVType: [
             {
-              value: this.tvitemstatService.tvitemstatList[0]?.TVType ?? '',
+              value: this.tvitemstatService.tvitemstatList[0]?.TVType,
               disabled: false
-            }, Validators.required],
+            }],
           ChildCount: [
             {
-              value: this.tvitemstatService.tvitemstatList[0]?.ChildCount ?? '',
+              value: this.tvitemstatService.tvitemstatList[0]?.ChildCount,
               disabled: false
-            }, Validators.required],
+            }],
           LastUpdateDate_UTC: [
             {
-              value: this.tvitemstatService.tvitemstatList[0]?.LastUpdateDate_UTC ?? '',
+              value: this.tvitemstatService.tvitemstatList[0]?.LastUpdateDate_UTC,
               disabled: false
-            }, Validators.required],
+            }],
           LastUpdateContactTVItemID: [
             {
-              value: this.tvitemstatService.tvitemstatList[0]?.LastUpdateContactTVItemID ?? '',
+              value: this.tvitemstatService.tvitemstatList[0]?.LastUpdateContactTVItemID,
               disabled: false
-            }, Validators.required],
+            }],
         }
       );
 

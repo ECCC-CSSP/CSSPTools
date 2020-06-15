@@ -60,44 +60,44 @@ export class PolSourceObservationComponent implements OnInit, OnDestroy {
         {
           PolSourceObservationID: [
             {
-              value: (AddOrUpdate === 'Add' ? 0 : (this.polsourceobservationService.polsourceobservationList[0]?.PolSourceObservationID ?? '')),
+              value: (AddOrUpdate === 'Add' ? 0 : (this.polsourceobservationService.polsourceobservationList[0]?.PolSourceObservationID)),
               disabled: false
-            }, Validators.required],
+            }],
           PolSourceSiteID: [
             {
-              value: this.polsourceobservationService.polsourceobservationList[0]?.PolSourceSiteID ?? '',
+              value: this.polsourceobservationService.polsourceobservationList[0]?.PolSourceSiteID,
               disabled: false
-            }, Validators.required],
+            }],
           ObservationDate_Local: [
             {
-              value: this.polsourceobservationService.polsourceobservationList[0]?.ObservationDate_Local ?? '',
+              value: this.polsourceobservationService.polsourceobservationList[0]?.ObservationDate_Local,
               disabled: false
-            }, Validators.required],
+            }],
           ContactTVItemID: [
             {
-              value: this.polsourceobservationService.polsourceobservationList[0]?.ContactTVItemID ?? '',
+              value: this.polsourceobservationService.polsourceobservationList[0]?.ContactTVItemID,
               disabled: false
-            }, Validators.required],
+            }],
           DesktopReviewed: [
             {
-              value: this.polsourceobservationService.polsourceobservationList[0]?.DesktopReviewed ?? '',
+              value: this.polsourceobservationService.polsourceobservationList[0]?.DesktopReviewed,
               disabled: false
-            }, Validators.required],
+            }],
           Observation_ToBeDeleted: [
             {
-              value: this.polsourceobservationService.polsourceobservationList[0]?.Observation_ToBeDeleted ?? '',
+              value: this.polsourceobservationService.polsourceobservationList[0]?.Observation_ToBeDeleted,
               disabled: false
-            }, Validators.required],
+            }],
           LastUpdateDate_UTC: [
             {
-              value: this.polsourceobservationService.polsourceobservationList[0]?.LastUpdateDate_UTC ?? '',
+              value: this.polsourceobservationService.polsourceobservationList[0]?.LastUpdateDate_UTC,
               disabled: false
-            }, Validators.required],
+            }],
           LastUpdateContactTVItemID: [
             {
-              value: this.polsourceobservationService.polsourceobservationList[0]?.LastUpdateContactTVItemID ?? '',
+              value: this.polsourceobservationService.polsourceobservationList[0]?.LastUpdateContactTVItemID,
               disabled: false
-            }, Validators.required],
+            }],
         }
       );
 

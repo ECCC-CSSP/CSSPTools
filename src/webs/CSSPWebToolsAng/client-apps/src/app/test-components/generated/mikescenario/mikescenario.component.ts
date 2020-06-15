@@ -68,164 +68,164 @@ export class MikeScenarioComponent implements OnInit, OnDestroy {
         {
           MikeScenarioID: [
             {
-              value: (AddOrUpdate === 'Add' ? 0 : (this.mikescenarioService.mikescenarioList[0]?.MikeScenarioID ?? '')),
+              value: (AddOrUpdate === 'Add' ? 0 : (this.mikescenarioService.mikescenarioList[0]?.MikeScenarioID)),
               disabled: false
-            }, Validators.required],
+            }],
           MikeScenarioTVItemID: [
             {
-              value: this.mikescenarioService.mikescenarioList[0]?.MikeScenarioTVItemID ?? '',
+              value: this.mikescenarioService.mikescenarioList[0]?.MikeScenarioTVItemID,
               disabled: false
-            }, Validators.required],
+            }],
           ParentMikeScenarioID: [
             {
-              value: this.mikescenarioService.mikescenarioList[0]?.ParentMikeScenarioID ?? '',
+              value: this.mikescenarioService.mikescenarioList[0]?.ParentMikeScenarioID,
               disabled: false
-            }, Validators.required],
+            }],
           ScenarioStatus: [
             {
-              value: this.mikescenarioService.mikescenarioList[0]?.ScenarioStatus ?? '',
+              value: this.mikescenarioService.mikescenarioList[0]?.ScenarioStatus,
               disabled: false
-            }, Validators.required],
+            }],
           ErrorInfo: [
             {
-              value: this.mikescenarioService.mikescenarioList[0]?.ErrorInfo ?? '',
+              value: this.mikescenarioService.mikescenarioList[0]?.ErrorInfo,
               disabled: false
-            }, Validators.required],
+            }],
           MikeScenarioStartDateTime_Local: [
             {
-              value: this.mikescenarioService.mikescenarioList[0]?.MikeScenarioStartDateTime_Local ?? '',
+              value: this.mikescenarioService.mikescenarioList[0]?.MikeScenarioStartDateTime_Local,
               disabled: false
-            }, Validators.required],
+            }],
           MikeScenarioEndDateTime_Local: [
             {
-              value: this.mikescenarioService.mikescenarioList[0]?.MikeScenarioEndDateTime_Local ?? '',
+              value: this.mikescenarioService.mikescenarioList[0]?.MikeScenarioEndDateTime_Local,
               disabled: false
-            }, Validators.required],
+            }],
           MikeScenarioStartExecutionDateTime_Local: [
             {
-              value: this.mikescenarioService.mikescenarioList[0]?.MikeScenarioStartExecutionDateTime_Local ?? '',
+              value: this.mikescenarioService.mikescenarioList[0]?.MikeScenarioStartExecutionDateTime_Local,
               disabled: false
-            }, Validators.required],
+            }],
           MikeScenarioExecutionTime_min: [
             {
-              value: this.mikescenarioService.mikescenarioList[0]?.MikeScenarioExecutionTime_min ?? '',
+              value: this.mikescenarioService.mikescenarioList[0]?.MikeScenarioExecutionTime_min,
               disabled: false
-            }, Validators.required],
+            }],
           WindSpeed_km_h: [
             {
-              value: this.mikescenarioService.mikescenarioList[0]?.WindSpeed_km_h ?? '',
+              value: this.mikescenarioService.mikescenarioList[0]?.WindSpeed_km_h,
               disabled: false
-            }, Validators.required],
+            }],
           WindDirection_deg: [
             {
-              value: this.mikescenarioService.mikescenarioList[0]?.WindDirection_deg ?? '',
+              value: this.mikescenarioService.mikescenarioList[0]?.WindDirection_deg,
               disabled: false
-            }, Validators.required],
+            }],
           DecayFactor_per_day: [
             {
-              value: this.mikescenarioService.mikescenarioList[0]?.DecayFactor_per_day ?? '',
+              value: this.mikescenarioService.mikescenarioList[0]?.DecayFactor_per_day,
               disabled: false
-            }, Validators.required],
+            }],
           DecayIsConstant: [
             {
-              value: this.mikescenarioService.mikescenarioList[0]?.DecayIsConstant ?? '',
+              value: this.mikescenarioService.mikescenarioList[0]?.DecayIsConstant,
               disabled: false
-            }, Validators.required],
+            }],
           DecayFactorAmplitude: [
             {
-              value: this.mikescenarioService.mikescenarioList[0]?.DecayFactorAmplitude ?? '',
+              value: this.mikescenarioService.mikescenarioList[0]?.DecayFactorAmplitude,
               disabled: false
-            }, Validators.required],
+            }],
           ResultFrequency_min: [
             {
-              value: this.mikescenarioService.mikescenarioList[0]?.ResultFrequency_min ?? '',
+              value: this.mikescenarioService.mikescenarioList[0]?.ResultFrequency_min,
               disabled: false
-            }, Validators.required],
+            }],
           AmbientTemperature_C: [
             {
-              value: this.mikescenarioService.mikescenarioList[0]?.AmbientTemperature_C ?? '',
+              value: this.mikescenarioService.mikescenarioList[0]?.AmbientTemperature_C,
               disabled: false
-            }, Validators.required],
+            }],
           AmbientSalinity_PSU: [
             {
-              value: this.mikescenarioService.mikescenarioList[0]?.AmbientSalinity_PSU ?? '',
+              value: this.mikescenarioService.mikescenarioList[0]?.AmbientSalinity_PSU,
               disabled: false
-            }, Validators.required],
+            }],
           GenerateDecouplingFiles: [
             {
-              value: this.mikescenarioService.mikescenarioList[0]?.GenerateDecouplingFiles ?? '',
+              value: this.mikescenarioService.mikescenarioList[0]?.GenerateDecouplingFiles,
               disabled: false
-            }, Validators.required],
+            }],
           UseDecouplingFiles: [
             {
-              value: this.mikescenarioService.mikescenarioList[0]?.UseDecouplingFiles ?? '',
+              value: this.mikescenarioService.mikescenarioList[0]?.UseDecouplingFiles,
               disabled: false
-            }, Validators.required],
+            }],
           UseSalinityAndTemperatureInitialConditionFromTVFileTVItemID: [
             {
-              value: this.mikescenarioService.mikescenarioList[0]?.UseSalinityAndTemperatureInitialConditionFromTVFileTVItemID ?? '',
+              value: this.mikescenarioService.mikescenarioList[0]?.UseSalinityAndTemperatureInitialConditionFromTVFileTVItemID,
               disabled: false
-            }, Validators.required],
+            }],
           ForSimulatingMWQMRunTVItemID: [
             {
-              value: this.mikescenarioService.mikescenarioList[0]?.ForSimulatingMWQMRunTVItemID ?? '',
+              value: this.mikescenarioService.mikescenarioList[0]?.ForSimulatingMWQMRunTVItemID,
               disabled: false
-            }, Validators.required],
+            }],
           ManningNumber: [
             {
-              value: this.mikescenarioService.mikescenarioList[0]?.ManningNumber ?? '',
+              value: this.mikescenarioService.mikescenarioList[0]?.ManningNumber,
               disabled: false
-            }, Validators.required],
+            }],
           NumberOfElements: [
             {
-              value: this.mikescenarioService.mikescenarioList[0]?.NumberOfElements ?? '',
+              value: this.mikescenarioService.mikescenarioList[0]?.NumberOfElements,
               disabled: false
-            }, Validators.required],
+            }],
           NumberOfTimeSteps: [
             {
-              value: this.mikescenarioService.mikescenarioList[0]?.NumberOfTimeSteps ?? '',
+              value: this.mikescenarioService.mikescenarioList[0]?.NumberOfTimeSteps,
               disabled: false
-            }, Validators.required],
+            }],
           NumberOfSigmaLayers: [
             {
-              value: this.mikescenarioService.mikescenarioList[0]?.NumberOfSigmaLayers ?? '',
+              value: this.mikescenarioService.mikescenarioList[0]?.NumberOfSigmaLayers,
               disabled: false
-            }, Validators.required],
+            }],
           NumberOfZLayers: [
             {
-              value: this.mikescenarioService.mikescenarioList[0]?.NumberOfZLayers ?? '',
+              value: this.mikescenarioService.mikescenarioList[0]?.NumberOfZLayers,
               disabled: false
-            }, Validators.required],
+            }],
           NumberOfHydroOutputParameters: [
             {
-              value: this.mikescenarioService.mikescenarioList[0]?.NumberOfHydroOutputParameters ?? '',
+              value: this.mikescenarioService.mikescenarioList[0]?.NumberOfHydroOutputParameters,
               disabled: false
-            }, Validators.required],
+            }],
           NumberOfTransOutputParameters: [
             {
-              value: this.mikescenarioService.mikescenarioList[0]?.NumberOfTransOutputParameters ?? '',
+              value: this.mikescenarioService.mikescenarioList[0]?.NumberOfTransOutputParameters,
               disabled: false
-            }, Validators.required],
+            }],
           EstimatedHydroFileSize: [
             {
-              value: this.mikescenarioService.mikescenarioList[0]?.EstimatedHydroFileSize ?? '',
+              value: this.mikescenarioService.mikescenarioList[0]?.EstimatedHydroFileSize,
               disabled: false
-            }, Validators.required],
+            }],
           EstimatedTransFileSize: [
             {
-              value: this.mikescenarioService.mikescenarioList[0]?.EstimatedTransFileSize ?? '',
+              value: this.mikescenarioService.mikescenarioList[0]?.EstimatedTransFileSize,
               disabled: false
-            }, Validators.required],
+            }],
           LastUpdateDate_UTC: [
             {
-              value: this.mikescenarioService.mikescenarioList[0]?.LastUpdateDate_UTC ?? '',
+              value: this.mikescenarioService.mikescenarioList[0]?.LastUpdateDate_UTC,
               disabled: false
-            }, Validators.required],
+            }],
           LastUpdateContactTVItemID: [
             {
-              value: this.mikescenarioService.mikescenarioList[0]?.LastUpdateContactTVItemID ?? '',
+              value: this.mikescenarioService.mikescenarioList[0]?.LastUpdateContactTVItemID,
               disabled: false
-            }, Validators.required],
+            }],
         }
       );
 

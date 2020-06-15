@@ -60,54 +60,54 @@ export class VPResultComponent implements OnInit, OnDestroy {
         {
           VPResultID: [
             {
-              value: (AddOrUpdate === 'Add' ? 0 : (this.vpresultService.vpresultList[0]?.VPResultID ?? '')),
+              value: (AddOrUpdate === 'Add' ? 0 : (this.vpresultService.vpresultList[0]?.VPResultID)),
               disabled: false
-            }, Validators.required],
+            }],
           VPScenarioID: [
             {
-              value: this.vpresultService.vpresultList[0]?.VPScenarioID ?? '',
+              value: this.vpresultService.vpresultList[0]?.VPScenarioID,
               disabled: false
-            }, Validators.required],
+            }],
           Ordinal: [
             {
-              value: this.vpresultService.vpresultList[0]?.Ordinal ?? '',
+              value: this.vpresultService.vpresultList[0]?.Ordinal,
               disabled: false
-            }, Validators.required],
+            }],
           Concentration_MPN_100ml: [
             {
-              value: this.vpresultService.vpresultList[0]?.Concentration_MPN_100ml ?? '',
+              value: this.vpresultService.vpresultList[0]?.Concentration_MPN_100ml,
               disabled: false
-            }, Validators.required],
+            }],
           Dilution: [
             {
-              value: this.vpresultService.vpresultList[0]?.Dilution ?? '',
+              value: this.vpresultService.vpresultList[0]?.Dilution,
               disabled: false
-            }, Validators.required],
+            }],
           FarFieldWidth_m: [
             {
-              value: this.vpresultService.vpresultList[0]?.FarFieldWidth_m ?? '',
+              value: this.vpresultService.vpresultList[0]?.FarFieldWidth_m,
               disabled: false
-            }, Validators.required],
+            }],
           DispersionDistance_m: [
             {
-              value: this.vpresultService.vpresultList[0]?.DispersionDistance_m ?? '',
+              value: this.vpresultService.vpresultList[0]?.DispersionDistance_m,
               disabled: false
-            }, Validators.required],
+            }],
           TravelTime_hour: [
             {
-              value: this.vpresultService.vpresultList[0]?.TravelTime_hour ?? '',
+              value: this.vpresultService.vpresultList[0]?.TravelTime_hour,
               disabled: false
-            }, Validators.required],
+            }],
           LastUpdateDate_UTC: [
             {
-              value: this.vpresultService.vpresultList[0]?.LastUpdateDate_UTC ?? '',
+              value: this.vpresultService.vpresultList[0]?.LastUpdateDate_UTC,
               disabled: false
-            }, Validators.required],
+            }],
           LastUpdateContactTVItemID: [
             {
-              value: this.vpresultService.vpresultList[0]?.LastUpdateContactTVItemID ?? '',
+              value: this.vpresultService.vpresultList[0]?.LastUpdateContactTVItemID,
               disabled: false
-            }, Validators.required],
+            }],
         }
       );
 

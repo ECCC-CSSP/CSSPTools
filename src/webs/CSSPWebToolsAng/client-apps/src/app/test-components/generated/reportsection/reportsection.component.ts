@@ -68,74 +68,74 @@ export class ReportSectionComponent implements OnInit, OnDestroy {
         {
           ReportSectionID: [
             {
-              value: (AddOrUpdate === 'Add' ? 0 : (this.reportsectionService.reportsectionList[0]?.ReportSectionID ?? '')),
+              value: (AddOrUpdate === 'Add' ? 0 : (this.reportsectionService.reportsectionList[0]?.ReportSectionID)),
               disabled: false
-            }, Validators.required],
+            }],
           ReportTypeID: [
             {
-              value: this.reportsectionService.reportsectionList[0]?.ReportTypeID ?? '',
+              value: this.reportsectionService.reportsectionList[0]?.ReportTypeID,
               disabled: false
-            }, Validators.required],
+            }],
           TVItemID: [
             {
-              value: this.reportsectionService.reportsectionList[0]?.TVItemID ?? '',
+              value: this.reportsectionService.reportsectionList[0]?.TVItemID,
               disabled: false
-            }, Validators.required],
+            }],
           Language: [
             {
-              value: this.reportsectionService.reportsectionList[0]?.Language ?? '',
+              value: this.reportsectionService.reportsectionList[0]?.Language,
               disabled: false
-            }, Validators.required],
+            }],
           Ordinal: [
             {
-              value: this.reportsectionService.reportsectionList[0]?.Ordinal ?? '',
+              value: this.reportsectionService.reportsectionList[0]?.Ordinal,
               disabled: false
-            }, Validators.required],
+            }],
           IsStatic: [
             {
-              value: this.reportsectionService.reportsectionList[0]?.IsStatic ?? '',
+              value: this.reportsectionService.reportsectionList[0]?.IsStatic,
               disabled: false
-            }, Validators.required],
+            }],
           ParentReportSectionID: [
             {
-              value: this.reportsectionService.reportsectionList[0]?.ParentReportSectionID ?? '',
+              value: this.reportsectionService.reportsectionList[0]?.ParentReportSectionID,
               disabled: false
-            }, Validators.required],
+            }],
           Year: [
             {
-              value: this.reportsectionService.reportsectionList[0]?.Year ?? '',
+              value: this.reportsectionService.reportsectionList[0]?.Year,
               disabled: false
-            }, Validators.required],
+            }],
           Locked: [
             {
-              value: this.reportsectionService.reportsectionList[0]?.Locked ?? '',
+              value: this.reportsectionService.reportsectionList[0]?.Locked,
               disabled: false
-            }, Validators.required],
+            }],
           TemplateReportSectionID: [
             {
-              value: this.reportsectionService.reportsectionList[0]?.TemplateReportSectionID ?? '',
+              value: this.reportsectionService.reportsectionList[0]?.TemplateReportSectionID,
               disabled: false
-            }, Validators.required],
+            }],
           ReportSectionName: [
             {
-              value: this.reportsectionService.reportsectionList[0]?.ReportSectionName ?? '',
+              value: this.reportsectionService.reportsectionList[0]?.ReportSectionName,
               disabled: false
-            }, Validators.required],
+            }],
           ReportSectionText: [
             {
-              value: this.reportsectionService.reportsectionList[0]?.ReportSectionText ?? '',
+              value: this.reportsectionService.reportsectionList[0]?.ReportSectionText,
               disabled: false
-            }, Validators.required],
+            }],
           LastUpdateDate_UTC: [
             {
-              value: this.reportsectionService.reportsectionList[0]?.LastUpdateDate_UTC ?? '',
+              value: this.reportsectionService.reportsectionList[0]?.LastUpdateDate_UTC,
               disabled: false
-            }, Validators.required],
+            }],
           LastUpdateContactTVItemID: [
             {
-              value: this.reportsectionService.reportsectionList[0]?.LastUpdateContactTVItemID ?? '',
+              value: this.reportsectionService.reportsectionList[0]?.LastUpdateContactTVItemID,
               disabled: false
-            }, Validators.required],
+            }],
         }
       );
 

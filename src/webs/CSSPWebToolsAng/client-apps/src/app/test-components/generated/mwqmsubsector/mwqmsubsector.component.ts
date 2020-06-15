@@ -60,34 +60,34 @@ export class MWQMSubsectorComponent implements OnInit, OnDestroy {
         {
           MWQMSubsectorID: [
             {
-              value: (AddOrUpdate === 'Add' ? 0 : (this.mwqmsubsectorService.mwqmsubsectorList[0]?.MWQMSubsectorID ?? '')),
+              value: (AddOrUpdate === 'Add' ? 0 : (this.mwqmsubsectorService.mwqmsubsectorList[0]?.MWQMSubsectorID)),
               disabled: false
-            }, Validators.required],
+            }],
           MWQMSubsectorTVItemID: [
             {
-              value: this.mwqmsubsectorService.mwqmsubsectorList[0]?.MWQMSubsectorTVItemID ?? '',
+              value: this.mwqmsubsectorService.mwqmsubsectorList[0]?.MWQMSubsectorTVItemID,
               disabled: false
-            }, Validators.required],
+            }],
           SubsectorHistoricKey: [
             {
-              value: this.mwqmsubsectorService.mwqmsubsectorList[0]?.SubsectorHistoricKey ?? '',
+              value: this.mwqmsubsectorService.mwqmsubsectorList[0]?.SubsectorHistoricKey,
               disabled: false
-            }, Validators.required],
+            }],
           TideLocationSIDText: [
             {
-              value: this.mwqmsubsectorService.mwqmsubsectorList[0]?.TideLocationSIDText ?? '',
+              value: this.mwqmsubsectorService.mwqmsubsectorList[0]?.TideLocationSIDText,
               disabled: false
-            }, Validators.required],
+            }],
           LastUpdateDate_UTC: [
             {
-              value: this.mwqmsubsectorService.mwqmsubsectorList[0]?.LastUpdateDate_UTC ?? '',
+              value: this.mwqmsubsectorService.mwqmsubsectorList[0]?.LastUpdateDate_UTC,
               disabled: false
-            }, Validators.required],
+            }],
           LastUpdateContactTVItemID: [
             {
-              value: this.mwqmsubsectorService.mwqmsubsectorList[0]?.LastUpdateContactTVItemID ?? '',
+              value: this.mwqmsubsectorService.mwqmsubsectorList[0]?.LastUpdateContactTVItemID,
               disabled: false
-            }, Validators.required],
+            }],
         }
       );
 

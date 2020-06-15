@@ -60,124 +60,124 @@ export class ClimateSiteComponent implements OnInit, OnDestroy {
         {
           ClimateSiteID: [
             {
-              value: (AddOrUpdate === 'Add' ? 0 : (this.climatesiteService.climatesiteList[0]?.ClimateSiteID ?? '')),
+              value: (AddOrUpdate === 'Add' ? 0 : (this.climatesiteService.climatesiteList[0]?.ClimateSiteID)),
               disabled: false
-            }, Validators.required],
+            }],
           ClimateSiteTVItemID: [
             {
-              value: this.climatesiteService.climatesiteList[0]?.ClimateSiteTVItemID ?? '',
+              value: this.climatesiteService.climatesiteList[0]?.ClimateSiteTVItemID,
               disabled: false
-            }, Validators.required],
+            }],
           ECDBID: [
             {
-              value: this.climatesiteService.climatesiteList[0]?.ECDBID ?? '',
+              value: this.climatesiteService.climatesiteList[0]?.ECDBID,
               disabled: false
-            }, Validators.required],
+            }],
           ClimateSiteName: [
             {
-              value: this.climatesiteService.climatesiteList[0]?.ClimateSiteName ?? '',
+              value: this.climatesiteService.climatesiteList[0]?.ClimateSiteName,
               disabled: false
-            }, Validators.required],
+            }],
           Province: [
             {
-              value: this.climatesiteService.climatesiteList[0]?.Province ?? '',
+              value: this.climatesiteService.climatesiteList[0]?.Province,
               disabled: false
-            }, Validators.required],
+            }],
           Elevation_m: [
             {
-              value: this.climatesiteService.climatesiteList[0]?.Elevation_m ?? '',
+              value: this.climatesiteService.climatesiteList[0]?.Elevation_m,
               disabled: false
-            }, Validators.required],
+            }],
           ClimateID: [
             {
-              value: this.climatesiteService.climatesiteList[0]?.ClimateID ?? '',
+              value: this.climatesiteService.climatesiteList[0]?.ClimateID,
               disabled: false
-            }, Validators.required],
+            }],
           WMOID: [
             {
-              value: this.climatesiteService.climatesiteList[0]?.WMOID ?? '',
+              value: this.climatesiteService.climatesiteList[0]?.WMOID,
               disabled: false
-            }, Validators.required],
+            }],
           TCID: [
             {
-              value: this.climatesiteService.climatesiteList[0]?.TCID ?? '',
+              value: this.climatesiteService.climatesiteList[0]?.TCID,
               disabled: false
-            }, Validators.required],
+            }],
           IsQuebecSite: [
             {
-              value: this.climatesiteService.climatesiteList[0]?.IsQuebecSite ?? '',
+              value: this.climatesiteService.climatesiteList[0]?.IsQuebecSite,
               disabled: false
-            }, Validators.required],
+            }],
           IsCoCoRaHS: [
             {
-              value: this.climatesiteService.climatesiteList[0]?.IsCoCoRaHS ?? '',
+              value: this.climatesiteService.climatesiteList[0]?.IsCoCoRaHS,
               disabled: false
-            }, Validators.required],
+            }],
           TimeOffset_hour: [
             {
-              value: this.climatesiteService.climatesiteList[0]?.TimeOffset_hour ?? '',
+              value: this.climatesiteService.climatesiteList[0]?.TimeOffset_hour,
               disabled: false
-            }, Validators.required],
+            }],
           File_desc: [
             {
-              value: this.climatesiteService.climatesiteList[0]?.File_desc ?? '',
+              value: this.climatesiteService.climatesiteList[0]?.File_desc,
               disabled: false
-            }, Validators.required],
+            }],
           HourlyStartDate_Local: [
             {
-              value: this.climatesiteService.climatesiteList[0]?.HourlyStartDate_Local ?? '',
+              value: this.climatesiteService.climatesiteList[0]?.HourlyStartDate_Local,
               disabled: false
-            }, Validators.required],
+            }],
           HourlyEndDate_Local: [
             {
-              value: this.climatesiteService.climatesiteList[0]?.HourlyEndDate_Local ?? '',
+              value: this.climatesiteService.climatesiteList[0]?.HourlyEndDate_Local,
               disabled: false
-            }, Validators.required],
+            }],
           HourlyNow: [
             {
-              value: this.climatesiteService.climatesiteList[0]?.HourlyNow ?? '',
+              value: this.climatesiteService.climatesiteList[0]?.HourlyNow,
               disabled: false
-            }, Validators.required],
+            }],
           DailyStartDate_Local: [
             {
-              value: this.climatesiteService.climatesiteList[0]?.DailyStartDate_Local ?? '',
+              value: this.climatesiteService.climatesiteList[0]?.DailyStartDate_Local,
               disabled: false
-            }, Validators.required],
+            }],
           DailyEndDate_Local: [
             {
-              value: this.climatesiteService.climatesiteList[0]?.DailyEndDate_Local ?? '',
+              value: this.climatesiteService.climatesiteList[0]?.DailyEndDate_Local,
               disabled: false
-            }, Validators.required],
+            }],
           DailyNow: [
             {
-              value: this.climatesiteService.climatesiteList[0]?.DailyNow ?? '',
+              value: this.climatesiteService.climatesiteList[0]?.DailyNow,
               disabled: false
-            }, Validators.required],
+            }],
           MonthlyStartDate_Local: [
             {
-              value: this.climatesiteService.climatesiteList[0]?.MonthlyStartDate_Local ?? '',
+              value: this.climatesiteService.climatesiteList[0]?.MonthlyStartDate_Local,
               disabled: false
-            }, Validators.required],
+            }],
           MonthlyEndDate_Local: [
             {
-              value: this.climatesiteService.climatesiteList[0]?.MonthlyEndDate_Local ?? '',
+              value: this.climatesiteService.climatesiteList[0]?.MonthlyEndDate_Local,
               disabled: false
-            }, Validators.required],
+            }],
           MonthlyNow: [
             {
-              value: this.climatesiteService.climatesiteList[0]?.MonthlyNow ?? '',
+              value: this.climatesiteService.climatesiteList[0]?.MonthlyNow,
               disabled: false
-            }, Validators.required],
+            }],
           LastUpdateDate_UTC: [
             {
-              value: this.climatesiteService.climatesiteList[0]?.LastUpdateDate_UTC ?? '',
+              value: this.climatesiteService.climatesiteList[0]?.LastUpdateDate_UTC,
               disabled: false
-            }, Validators.required],
+            }],
           LastUpdateContactTVItemID: [
             {
-              value: this.climatesiteService.climatesiteList[0]?.LastUpdateContactTVItemID ?? '',
+              value: this.climatesiteService.climatesiteList[0]?.LastUpdateContactTVItemID,
               disabled: false
-            }, Validators.required],
+            }],
         }
       );
 

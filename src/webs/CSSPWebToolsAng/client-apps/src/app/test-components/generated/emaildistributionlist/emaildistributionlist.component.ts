@@ -60,29 +60,29 @@ export class EmailDistributionListComponent implements OnInit, OnDestroy {
         {
           EmailDistributionListID: [
             {
-              value: (AddOrUpdate === 'Add' ? 0 : (this.emaildistributionlistService.emaildistributionlistList[0]?.EmailDistributionListID ?? '')),
+              value: (AddOrUpdate === 'Add' ? 0 : (this.emaildistributionlistService.emaildistributionlistList[0]?.EmailDistributionListID)),
               disabled: false
-            }, Validators.required],
+            }],
           ParentTVItemID: [
             {
-              value: this.emaildistributionlistService.emaildistributionlistList[0]?.ParentTVItemID ?? '',
+              value: this.emaildistributionlistService.emaildistributionlistList[0]?.ParentTVItemID,
               disabled: false
-            }, Validators.required],
+            }],
           Ordinal: [
             {
-              value: this.emaildistributionlistService.emaildistributionlistList[0]?.Ordinal ?? '',
+              value: this.emaildistributionlistService.emaildistributionlistList[0]?.Ordinal,
               disabled: false
-            }, Validators.required],
+            }],
           LastUpdateDate_UTC: [
             {
-              value: this.emaildistributionlistService.emaildistributionlistList[0]?.LastUpdateDate_UTC ?? '',
+              value: this.emaildistributionlistService.emaildistributionlistList[0]?.LastUpdateDate_UTC,
               disabled: false
-            }, Validators.required],
+            }],
           LastUpdateContactTVItemID: [
             {
-              value: this.emaildistributionlistService.emaildistributionlistList[0]?.LastUpdateContactTVItemID ?? '',
+              value: this.emaildistributionlistService.emaildistributionlistList[0]?.LastUpdateContactTVItemID,
               disabled: false
-            }, Validators.required],
+            }],
         }
       );
 

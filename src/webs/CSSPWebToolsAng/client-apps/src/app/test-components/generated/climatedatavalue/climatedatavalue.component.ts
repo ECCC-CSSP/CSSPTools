@@ -68,104 +68,104 @@ export class ClimateDataValueComponent implements OnInit, OnDestroy {
         {
           ClimateDataValueID: [
             {
-              value: (AddOrUpdate === 'Add' ? 0 : (this.climatedatavalueService.climatedatavalueList[0]?.ClimateDataValueID ?? '')),
+              value: (AddOrUpdate === 'Add' ? 0 : (this.climatedatavalueService.climatedatavalueList[0]?.ClimateDataValueID)),
               disabled: false
-            }, Validators.required],
+            }],
           ClimateSiteID: [
             {
-              value: this.climatedatavalueService.climatedatavalueList[0]?.ClimateSiteID ?? '',
+              value: this.climatedatavalueService.climatedatavalueList[0]?.ClimateSiteID,
               disabled: false
-            }, Validators.required],
+            }],
           DateTime_Local: [
             {
-              value: this.climatedatavalueService.climatedatavalueList[0]?.DateTime_Local ?? '',
+              value: this.climatedatavalueService.climatedatavalueList[0]?.DateTime_Local,
               disabled: false
-            }, Validators.required],
+            }],
           Keep: [
             {
-              value: this.climatedatavalueService.climatedatavalueList[0]?.Keep ?? '',
+              value: this.climatedatavalueService.climatedatavalueList[0]?.Keep,
               disabled: false
-            }, Validators.required],
+            }],
           StorageDataType: [
             {
-              value: this.climatedatavalueService.climatedatavalueList[0]?.StorageDataType ?? '',
+              value: this.climatedatavalueService.climatedatavalueList[0]?.StorageDataType,
               disabled: false
-            }, Validators.required],
+            }],
           HasBeenRead: [
             {
-              value: this.climatedatavalueService.climatedatavalueList[0]?.HasBeenRead ?? '',
+              value: this.climatedatavalueService.climatedatavalueList[0]?.HasBeenRead,
               disabled: false
-            }, Validators.required],
+            }],
           Snow_cm: [
             {
-              value: this.climatedatavalueService.climatedatavalueList[0]?.Snow_cm ?? '',
+              value: this.climatedatavalueService.climatedatavalueList[0]?.Snow_cm,
               disabled: false
-            }, Validators.required],
+            }],
           Rainfall_mm: [
             {
-              value: this.climatedatavalueService.climatedatavalueList[0]?.Rainfall_mm ?? '',
+              value: this.climatedatavalueService.climatedatavalueList[0]?.Rainfall_mm,
               disabled: false
-            }, Validators.required],
+            }],
           RainfallEntered_mm: [
             {
-              value: this.climatedatavalueService.climatedatavalueList[0]?.RainfallEntered_mm ?? '',
+              value: this.climatedatavalueService.climatedatavalueList[0]?.RainfallEntered_mm,
               disabled: false
-            }, Validators.required],
+            }],
           TotalPrecip_mm_cm: [
             {
-              value: this.climatedatavalueService.climatedatavalueList[0]?.TotalPrecip_mm_cm ?? '',
+              value: this.climatedatavalueService.climatedatavalueList[0]?.TotalPrecip_mm_cm,
               disabled: false
-            }, Validators.required],
+            }],
           MaxTemp_C: [
             {
-              value: this.climatedatavalueService.climatedatavalueList[0]?.MaxTemp_C ?? '',
+              value: this.climatedatavalueService.climatedatavalueList[0]?.MaxTemp_C,
               disabled: false
-            }, Validators.required],
+            }],
           MinTemp_C: [
             {
-              value: this.climatedatavalueService.climatedatavalueList[0]?.MinTemp_C ?? '',
+              value: this.climatedatavalueService.climatedatavalueList[0]?.MinTemp_C,
               disabled: false
-            }, Validators.required],
+            }],
           HeatDegDays_C: [
             {
-              value: this.climatedatavalueService.climatedatavalueList[0]?.HeatDegDays_C ?? '',
+              value: this.climatedatavalueService.climatedatavalueList[0]?.HeatDegDays_C,
               disabled: false
-            }, Validators.required],
+            }],
           CoolDegDays_C: [
             {
-              value: this.climatedatavalueService.climatedatavalueList[0]?.CoolDegDays_C ?? '',
+              value: this.climatedatavalueService.climatedatavalueList[0]?.CoolDegDays_C,
               disabled: false
-            }, Validators.required],
+            }],
           SnowOnGround_cm: [
             {
-              value: this.climatedatavalueService.climatedatavalueList[0]?.SnowOnGround_cm ?? '',
+              value: this.climatedatavalueService.climatedatavalueList[0]?.SnowOnGround_cm,
               disabled: false
-            }, Validators.required],
+            }],
           DirMaxGust_0North: [
             {
-              value: this.climatedatavalueService.climatedatavalueList[0]?.DirMaxGust_0North ?? '',
+              value: this.climatedatavalueService.climatedatavalueList[0]?.DirMaxGust_0North,
               disabled: false
-            }, Validators.required],
+            }],
           SpdMaxGust_kmh: [
             {
-              value: this.climatedatavalueService.climatedatavalueList[0]?.SpdMaxGust_kmh ?? '',
+              value: this.climatedatavalueService.climatedatavalueList[0]?.SpdMaxGust_kmh,
               disabled: false
-            }, Validators.required],
+            }],
           HourlyValues: [
             {
-              value: this.climatedatavalueService.climatedatavalueList[0]?.HourlyValues ?? '',
+              value: this.climatedatavalueService.climatedatavalueList[0]?.HourlyValues,
               disabled: false
-            }, Validators.required],
+            }],
           LastUpdateDate_UTC: [
             {
-              value: this.climatedatavalueService.climatedatavalueList[0]?.LastUpdateDate_UTC ?? '',
+              value: this.climatedatavalueService.climatedatavalueList[0]?.LastUpdateDate_UTC,
               disabled: false
-            }, Validators.required],
+            }],
           LastUpdateContactTVItemID: [
             {
-              value: this.climatedatavalueService.climatedatavalueList[0]?.LastUpdateContactTVItemID ?? '',
+              value: this.climatedatavalueService.climatedatavalueList[0]?.LastUpdateContactTVItemID,
               disabled: false
-            }, Validators.required],
+            }],
         }
       );
 

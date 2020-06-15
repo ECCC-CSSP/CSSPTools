@@ -1,5 +1,6 @@
 ﻿using ActionCommandDBServices.Models;
 using ConfigServices.Services;
+using CSSPModels;
 using CultureServices.Resources;
 using GenerateCodeBaseServices.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -53,17 +54,13 @@ namespace AngularComponentsGeneratedServices.Services
             {
                 "CSSPAfterAttribute", "CSSPAllowNullAttribute", "CSSPBiggerAttribute", "CSSPDBContext", "CSSPDescriptionENAttribute",
                 "CSSPDescriptionFRAttribute", "CSSPDisplayENAttribute", "CSSPDisplayFRAttribute", "CSSPEnumTypeAttribute",
-                "CSSPEnumTypeTextAttribute", "CSSPExistAttribute", "CSSPFillAttribute", "CSSPModelsRes", "TestDBContext",
+                "CSSPEnumTypeTextAttribute", "CSSPExistAttribute", "CSSPFillAttribute", "CSSPModelsRes", "TestDBContext", "LastUpdate", "AspNetUser",
             };
 
             int max = 3333;
             int count = 0;
             foreach (DLLTypeInfo dllTypeInfoModels in DLLTypeInfoCSSPModelsList)
             {
-                if (dllTypeInfoModels.Name == "SamplingPlan")
-                {
-                    int asdflj = 34;
-                }
                 if (!removeClass.Contains(dllTypeInfoModels.Name))
                 {
                     if (!dllTypeInfoModels.HasNotMappedAttribute)

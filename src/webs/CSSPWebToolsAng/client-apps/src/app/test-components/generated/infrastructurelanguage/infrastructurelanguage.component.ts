@@ -75,39 +75,39 @@ export class InfrastructureLanguageComponent implements OnInit, OnDestroy {
         {
           InfrastructureLanguageID: [
             {
-              value: (AddOrUpdate === 'Add' ? 0 : (this.infrastructurelanguageService.infrastructurelanguageList[0]?.InfrastructureLanguageID ?? '')),
+              value: (AddOrUpdate === 'Add' ? 0 : (this.infrastructurelanguageService.infrastructurelanguageList[0]?.InfrastructureLanguageID)),
               disabled: false
-            }, Validators.required],
+            }],
           InfrastructureID: [
             {
-              value: this.infrastructurelanguageService.infrastructurelanguageList[0]?.InfrastructureID ?? '',
+              value: this.infrastructurelanguageService.infrastructurelanguageList[0]?.InfrastructureID,
               disabled: false
-            }, Validators.required],
+            }],
           Language: [
             {
-              value: this.infrastructurelanguageService.infrastructurelanguageList[0]?.Language ?? '',
+              value: this.infrastructurelanguageService.infrastructurelanguageList[0]?.Language,
               disabled: false
-            }, Validators.required],
+            }],
           Comment: [
             {
-              value: this.infrastructurelanguageService.infrastructurelanguageList[0]?.Comment ?? '',
+              value: this.infrastructurelanguageService.infrastructurelanguageList[0]?.Comment,
               disabled: false
-            }, Validators.required],
+            }],
           TranslationStatus: [
             {
-              value: this.infrastructurelanguageService.infrastructurelanguageList[0]?.TranslationStatus ?? '',
+              value: this.infrastructurelanguageService.infrastructurelanguageList[0]?.TranslationStatus,
               disabled: false
-            }, Validators.required],
+            }],
           LastUpdateDate_UTC: [
             {
-              value: this.infrastructurelanguageService.infrastructurelanguageList[0]?.LastUpdateDate_UTC ?? '',
+              value: this.infrastructurelanguageService.infrastructurelanguageList[0]?.LastUpdateDate_UTC,
               disabled: false
-            }, Validators.required],
+            }],
           LastUpdateContactTVItemID: [
             {
-              value: this.infrastructurelanguageService.infrastructurelanguageList[0]?.LastUpdateContactTVItemID ?? '',
+              value: this.infrastructurelanguageService.infrastructurelanguageList[0]?.LastUpdateContactTVItemID,
               disabled: false
-            }, Validators.required],
+            }],
         }
       );
 

@@ -75,54 +75,54 @@ export class MapInfoComponent implements OnInit, OnDestroy {
         {
           MapInfoID: [
             {
-              value: (AddOrUpdate === 'Add' ? 0 : (this.mapinfoService.mapinfoList[0]?.MapInfoID ?? '')),
+              value: (AddOrUpdate === 'Add' ? 0 : (this.mapinfoService.mapinfoList[0]?.MapInfoID)),
               disabled: false
-            }, Validators.required],
+            }],
           TVItemID: [
             {
-              value: this.mapinfoService.mapinfoList[0]?.TVItemID ?? '',
+              value: this.mapinfoService.mapinfoList[0]?.TVItemID,
               disabled: false
-            }, Validators.required],
+            }],
           TVType: [
             {
-              value: this.mapinfoService.mapinfoList[0]?.TVType ?? '',
+              value: this.mapinfoService.mapinfoList[0]?.TVType,
               disabled: false
-            }, Validators.required],
+            }],
           LatMin: [
             {
-              value: this.mapinfoService.mapinfoList[0]?.LatMin ?? '',
+              value: this.mapinfoService.mapinfoList[0]?.LatMin,
               disabled: false
-            }, Validators.required],
+            }],
           LatMax: [
             {
-              value: this.mapinfoService.mapinfoList[0]?.LatMax ?? '',
+              value: this.mapinfoService.mapinfoList[0]?.LatMax,
               disabled: false
-            }, Validators.required],
+            }],
           LngMin: [
             {
-              value: this.mapinfoService.mapinfoList[0]?.LngMin ?? '',
+              value: this.mapinfoService.mapinfoList[0]?.LngMin,
               disabled: false
-            }, Validators.required],
+            }],
           LngMax: [
             {
-              value: this.mapinfoService.mapinfoList[0]?.LngMax ?? '',
+              value: this.mapinfoService.mapinfoList[0]?.LngMax,
               disabled: false
-            }, Validators.required],
+            }],
           MapInfoDrawType: [
             {
-              value: this.mapinfoService.mapinfoList[0]?.MapInfoDrawType ?? '',
+              value: this.mapinfoService.mapinfoList[0]?.MapInfoDrawType,
               disabled: false
-            }, Validators.required],
+            }],
           LastUpdateDate_UTC: [
             {
-              value: this.mapinfoService.mapinfoList[0]?.LastUpdateDate_UTC ?? '',
+              value: this.mapinfoService.mapinfoList[0]?.LastUpdateDate_UTC,
               disabled: false
-            }, Validators.required],
+            }],
           LastUpdateContactTVItemID: [
             {
-              value: this.mapinfoService.mapinfoList[0]?.LastUpdateContactTVItemID ?? '',
+              value: this.mapinfoService.mapinfoList[0]?.LastUpdateContactTVItemID,
               disabled: false
-            }, Validators.required],
+            }],
         }
       );
 

@@ -75,34 +75,34 @@ export class TVTypeUserAuthorizationComponent implements OnInit, OnDestroy {
         {
           TVTypeUserAuthorizationID: [
             {
-              value: (AddOrUpdate === 'Add' ? 0 : (this.tvtypeuserauthorizationService.tvtypeuserauthorizationList[0]?.TVTypeUserAuthorizationID ?? '')),
+              value: (AddOrUpdate === 'Add' ? 0 : (this.tvtypeuserauthorizationService.tvtypeuserauthorizationList[0]?.TVTypeUserAuthorizationID)),
               disabled: false
-            }, Validators.required],
+            }],
           ContactTVItemID: [
             {
-              value: this.tvtypeuserauthorizationService.tvtypeuserauthorizationList[0]?.ContactTVItemID ?? '',
+              value: this.tvtypeuserauthorizationService.tvtypeuserauthorizationList[0]?.ContactTVItemID,
               disabled: false
-            }, Validators.required],
+            }],
           TVType: [
             {
-              value: this.tvtypeuserauthorizationService.tvtypeuserauthorizationList[0]?.TVType ?? '',
+              value: this.tvtypeuserauthorizationService.tvtypeuserauthorizationList[0]?.TVType,
               disabled: false
-            }, Validators.required],
+            }],
           TVAuth: [
             {
-              value: this.tvtypeuserauthorizationService.tvtypeuserauthorizationList[0]?.TVAuth ?? '',
+              value: this.tvtypeuserauthorizationService.tvtypeuserauthorizationList[0]?.TVAuth,
               disabled: false
-            }, Validators.required],
+            }],
           LastUpdateDate_UTC: [
             {
-              value: this.tvtypeuserauthorizationService.tvtypeuserauthorizationList[0]?.LastUpdateDate_UTC ?? '',
+              value: this.tvtypeuserauthorizationService.tvtypeuserauthorizationList[0]?.LastUpdateDate_UTC,
               disabled: false
-            }, Validators.required],
+            }],
           LastUpdateContactTVItemID: [
             {
-              value: this.tvtypeuserauthorizationService.tvtypeuserauthorizationList[0]?.LastUpdateContactTVItemID ?? '',
+              value: this.tvtypeuserauthorizationService.tvtypeuserauthorizationList[0]?.LastUpdateContactTVItemID,
               disabled: false
-            }, Validators.required],
+            }],
         }
       );
 

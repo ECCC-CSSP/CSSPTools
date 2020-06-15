@@ -28,6 +28,7 @@ export class TideDataValueComponent implements OnInit, OnDestroy {
   tideDataTypeList: EnumIDAndText[];
   storageDataTypeList: EnumIDAndText[];
   tideStartList: EnumIDAndText[];
+  tideEndList: EnumIDAndText[];
   tidedatavalueFormPut: FormGroup;
   tidedatavalueFormPost: FormGroup;
 
@@ -66,6 +67,7 @@ export class TideDataValueComponent implements OnInit, OnDestroy {
     this.tideDataTypeList = TideDataTypeEnum_GetOrderedText();
     this.storageDataTypeList = StorageDataTypeEnum_GetOrderedText();
     this.tideStartList = TideTextEnum_GetOrderedText();
+    this.tideEndList = TideTextEnum_GetOrderedText();
     this.FillFormBuilderGroup('Add');
     this.FillFormBuilderGroup('Update');
   }
@@ -82,69 +84,69 @@ export class TideDataValueComponent implements OnInit, OnDestroy {
         {
           TideDataValueID: [
             {
-              value: (AddOrUpdate === 'Add' ? 0 : (this.tidedatavalueService.tidedatavalueList[0]?.TideDataValueID ?? '')),
+              value: (AddOrUpdate === 'Add' ? 0 : (this.tidedatavalueService.tidedatavalueList[0]?.TideDataValueID)),
               disabled: false
-            }, Validators.required],
+            }],
           TideSiteTVItemID: [
             {
-              value: this.tidedatavalueService.tidedatavalueList[0]?.TideSiteTVItemID ?? '',
+              value: this.tidedatavalueService.tidedatavalueList[0]?.TideSiteTVItemID,
               disabled: false
-            }, Validators.required],
+            }],
           DateTime_Local: [
             {
-              value: this.tidedatavalueService.tidedatavalueList[0]?.DateTime_Local ?? '',
+              value: this.tidedatavalueService.tidedatavalueList[0]?.DateTime_Local,
               disabled: false
-            }, Validators.required],
+            }],
           Keep: [
             {
-              value: this.tidedatavalueService.tidedatavalueList[0]?.Keep ?? '',
+              value: this.tidedatavalueService.tidedatavalueList[0]?.Keep,
               disabled: false
-            }, Validators.required],
+            }],
           TideDataType: [
             {
-              value: this.tidedatavalueService.tidedatavalueList[0]?.TideDataType ?? '',
+              value: this.tidedatavalueService.tidedatavalueList[0]?.TideDataType,
               disabled: false
-            }, Validators.required],
+            }],
           StorageDataType: [
             {
-              value: this.tidedatavalueService.tidedatavalueList[0]?.StorageDataType ?? '',
+              value: this.tidedatavalueService.tidedatavalueList[0]?.StorageDataType,
               disabled: false
-            }, Validators.required],
+            }],
           Depth_m: [
             {
-              value: this.tidedatavalueService.tidedatavalueList[0]?.Depth_m ?? '',
+              value: this.tidedatavalueService.tidedatavalueList[0]?.Depth_m,
               disabled: false
-            }, Validators.required],
+            }],
           UVelocity_m_s: [
             {
-              value: this.tidedatavalueService.tidedatavalueList[0]?.UVelocity_m_s ?? '',
+              value: this.tidedatavalueService.tidedatavalueList[0]?.UVelocity_m_s,
               disabled: false
-            }, Validators.required],
+            }],
           VVelocity_m_s: [
             {
-              value: this.tidedatavalueService.tidedatavalueList[0]?.VVelocity_m_s ?? '',
+              value: this.tidedatavalueService.tidedatavalueList[0]?.VVelocity_m_s,
               disabled: false
-            }, Validators.required],
+            }],
           TideStart: [
             {
-              value: this.tidedatavalueService.tidedatavalueList[0]?.TideStart ?? '',
+              value: this.tidedatavalueService.tidedatavalueList[0]?.TideStart,
               disabled: false
-            }, Validators.required],
+            }],
           TideEnd: [
             {
-              value: this.tidedatavalueService.tidedatavalueList[0]?.TideEnd ?? '',
+              value: this.tidedatavalueService.tidedatavalueList[0]?.TideEnd,
               disabled: false
-            }, Validators.required],
+            }],
           LastUpdateDate_UTC: [
             {
-              value: this.tidedatavalueService.tidedatavalueList[0]?.LastUpdateDate_UTC ?? '',
+              value: this.tidedatavalueService.tidedatavalueList[0]?.LastUpdateDate_UTC,
               disabled: false
-            }, Validators.required],
+            }],
           LastUpdateContactTVItemID: [
             {
-              value: this.tidedatavalueService.tidedatavalueList[0]?.LastUpdateContactTVItemID ?? '',
+              value: this.tidedatavalueService.tidedatavalueList[0]?.LastUpdateContactTVItemID,
               disabled: false
-            }, Validators.required],
+            }],
         }
       );
 

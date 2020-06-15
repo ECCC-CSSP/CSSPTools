@@ -26,6 +26,7 @@ export class MWQMRunLanguageComponent implements OnInit, OnDestroy {
   sub: Subscription;
   languageList: EnumIDAndText[];
   translationStatusRunCommentList: EnumIDAndText[];
+  translationStatusRunWeatherCommentList: EnumIDAndText[];
   mwqmrunlanguageFormPut: FormGroup;
   mwqmrunlanguageFormPost: FormGroup;
 
@@ -59,6 +60,7 @@ export class MWQMRunLanguageComponent implements OnInit, OnDestroy {
     LoadLocalesMWQMRunLanguageText(this.mwqmrunlanguageService);
     this.languageList = LanguageEnum_GetOrderedText();
     this.translationStatusRunCommentList = TranslationStatusEnum_GetOrderedText();
+    this.translationStatusRunWeatherCommentList = TranslationStatusEnum_GetOrderedText();
     this.FillFormBuilderGroup('Add');
     this.FillFormBuilderGroup('Update');
   }
@@ -75,49 +77,49 @@ export class MWQMRunLanguageComponent implements OnInit, OnDestroy {
         {
           MWQMRunLanguageID: [
             {
-              value: (AddOrUpdate === 'Add' ? 0 : (this.mwqmrunlanguageService.mwqmrunlanguageList[0]?.MWQMRunLanguageID ?? '')),
+              value: (AddOrUpdate === 'Add' ? 0 : (this.mwqmrunlanguageService.mwqmrunlanguageList[0]?.MWQMRunLanguageID)),
               disabled: false
-            }, Validators.required],
+            }],
           MWQMRunID: [
             {
-              value: this.mwqmrunlanguageService.mwqmrunlanguageList[0]?.MWQMRunID ?? '',
+              value: this.mwqmrunlanguageService.mwqmrunlanguageList[0]?.MWQMRunID,
               disabled: false
-            }, Validators.required],
+            }],
           Language: [
             {
-              value: this.mwqmrunlanguageService.mwqmrunlanguageList[0]?.Language ?? '',
+              value: this.mwqmrunlanguageService.mwqmrunlanguageList[0]?.Language,
               disabled: false
-            }, Validators.required],
+            }],
           RunComment: [
             {
-              value: this.mwqmrunlanguageService.mwqmrunlanguageList[0]?.RunComment ?? '',
+              value: this.mwqmrunlanguageService.mwqmrunlanguageList[0]?.RunComment,
               disabled: false
-            }, Validators.required],
+            }],
           TranslationStatusRunComment: [
             {
-              value: this.mwqmrunlanguageService.mwqmrunlanguageList[0]?.TranslationStatusRunComment ?? '',
+              value: this.mwqmrunlanguageService.mwqmrunlanguageList[0]?.TranslationStatusRunComment,
               disabled: false
-            }, Validators.required],
+            }],
           RunWeatherComment: [
             {
-              value: this.mwqmrunlanguageService.mwqmrunlanguageList[0]?.RunWeatherComment ?? '',
+              value: this.mwqmrunlanguageService.mwqmrunlanguageList[0]?.RunWeatherComment,
               disabled: false
-            }, Validators.required],
+            }],
           TranslationStatusRunWeatherComment: [
             {
-              value: this.mwqmrunlanguageService.mwqmrunlanguageList[0]?.TranslationStatusRunWeatherComment ?? '',
+              value: this.mwqmrunlanguageService.mwqmrunlanguageList[0]?.TranslationStatusRunWeatherComment,
               disabled: false
-            }, Validators.required],
+            }],
           LastUpdateDate_UTC: [
             {
-              value: this.mwqmrunlanguageService.mwqmrunlanguageList[0]?.LastUpdateDate_UTC ?? '',
+              value: this.mwqmrunlanguageService.mwqmrunlanguageList[0]?.LastUpdateDate_UTC,
               disabled: false
-            }, Validators.required],
+            }],
           LastUpdateContactTVItemID: [
             {
-              value: this.mwqmrunlanguageService.mwqmrunlanguageList[0]?.LastUpdateContactTVItemID ?? '',
+              value: this.mwqmrunlanguageService.mwqmrunlanguageList[0]?.LastUpdateContactTVItemID,
               disabled: false
-            }, Validators.required],
+            }],
         }
       );
 

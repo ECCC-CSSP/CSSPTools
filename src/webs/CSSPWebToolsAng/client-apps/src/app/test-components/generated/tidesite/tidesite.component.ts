@@ -60,44 +60,44 @@ export class TideSiteComponent implements OnInit, OnDestroy {
         {
           TideSiteID: [
             {
-              value: (AddOrUpdate === 'Add' ? 0 : (this.tidesiteService.tidesiteList[0]?.TideSiteID ?? '')),
+              value: (AddOrUpdate === 'Add' ? 0 : (this.tidesiteService.tidesiteList[0]?.TideSiteID)),
               disabled: false
-            }, Validators.required],
+            }],
           TideSiteTVItemID: [
             {
-              value: this.tidesiteService.tidesiteList[0]?.TideSiteTVItemID ?? '',
+              value: this.tidesiteService.tidesiteList[0]?.TideSiteTVItemID,
               disabled: false
-            }, Validators.required],
+            }],
           TideSiteName: [
             {
-              value: this.tidesiteService.tidesiteList[0]?.TideSiteName ?? '',
+              value: this.tidesiteService.tidesiteList[0]?.TideSiteName,
               disabled: false
-            }, Validators.required],
+            }],
           Province: [
             {
-              value: this.tidesiteService.tidesiteList[0]?.Province ?? '',
+              value: this.tidesiteService.tidesiteList[0]?.Province,
               disabled: false
-            }, Validators.required],
+            }],
           sid: [
             {
-              value: this.tidesiteService.tidesiteList[0]?.sid ?? '',
+              value: this.tidesiteService.tidesiteList[0]?.sid,
               disabled: false
-            }, Validators.required],
+            }],
           Zone: [
             {
-              value: this.tidesiteService.tidesiteList[0]?.Zone ?? '',
+              value: this.tidesiteService.tidesiteList[0]?.Zone,
               disabled: false
-            }, Validators.required],
+            }],
           LastUpdateDate_UTC: [
             {
-              value: this.tidesiteService.tidesiteList[0]?.LastUpdateDate_UTC ?? '',
+              value: this.tidesiteService.tidesiteList[0]?.LastUpdateDate_UTC,
               disabled: false
-            }, Validators.required],
+            }],
           LastUpdateContactTVItemID: [
             {
-              value: this.tidesiteService.tidesiteList[0]?.LastUpdateContactTVItemID ?? '',
+              value: this.tidesiteService.tidesiteList[0]?.LastUpdateContactTVItemID,
               disabled: false
-            }, Validators.required],
+            }],
         }
       );
 

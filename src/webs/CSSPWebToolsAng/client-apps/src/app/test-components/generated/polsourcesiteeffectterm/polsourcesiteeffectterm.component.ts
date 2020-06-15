@@ -60,39 +60,39 @@ export class PolSourceSiteEffectTermComponent implements OnInit, OnDestroy {
         {
           PolSourceSiteEffectTermID: [
             {
-              value: (AddOrUpdate === 'Add' ? 0 : (this.polsourcesiteeffecttermService.polsourcesiteeffecttermList[0]?.PolSourceSiteEffectTermID ?? '')),
+              value: (AddOrUpdate === 'Add' ? 0 : (this.polsourcesiteeffecttermService.polsourcesiteeffecttermList[0]?.PolSourceSiteEffectTermID)),
               disabled: false
-            }, Validators.required],
+            }],
           IsGroup: [
             {
-              value: this.polsourcesiteeffecttermService.polsourcesiteeffecttermList[0]?.IsGroup ?? '',
+              value: this.polsourcesiteeffecttermService.polsourcesiteeffecttermList[0]?.IsGroup,
               disabled: false
-            }, Validators.required],
+            }],
           UnderGroupID: [
             {
-              value: this.polsourcesiteeffecttermService.polsourcesiteeffecttermList[0]?.UnderGroupID ?? '',
+              value: this.polsourcesiteeffecttermService.polsourcesiteeffecttermList[0]?.UnderGroupID,
               disabled: false
-            }, Validators.required],
+            }],
           EffectTermEN: [
             {
-              value: this.polsourcesiteeffecttermService.polsourcesiteeffecttermList[0]?.EffectTermEN ?? '',
+              value: this.polsourcesiteeffecttermService.polsourcesiteeffecttermList[0]?.EffectTermEN,
               disabled: false
-            }, Validators.required],
+            }],
           EffectTermFR: [
             {
-              value: this.polsourcesiteeffecttermService.polsourcesiteeffecttermList[0]?.EffectTermFR ?? '',
+              value: this.polsourcesiteeffecttermService.polsourcesiteeffecttermList[0]?.EffectTermFR,
               disabled: false
-            }, Validators.required],
+            }],
           LastUpdateDate_UTC: [
             {
-              value: this.polsourcesiteeffecttermService.polsourcesiteeffecttermList[0]?.LastUpdateDate_UTC ?? '',
+              value: this.polsourcesiteeffecttermService.polsourcesiteeffecttermList[0]?.LastUpdateDate_UTC,
               disabled: false
-            }, Validators.required],
+            }],
           LastUpdateContactTVItemID: [
             {
-              value: this.polsourcesiteeffecttermService.polsourcesiteeffecttermList[0]?.LastUpdateContactTVItemID ?? '',
+              value: this.polsourcesiteeffecttermService.polsourcesiteeffecttermList[0]?.LastUpdateContactTVItemID,
               disabled: false
-            }, Validators.required],
+            }],
         }
       );
 

@@ -75,39 +75,39 @@ export class SpillLanguageComponent implements OnInit, OnDestroy {
         {
           SpillLanguageID: [
             {
-              value: (AddOrUpdate === 'Add' ? 0 : (this.spilllanguageService.spilllanguageList[0]?.SpillLanguageID ?? '')),
+              value: (AddOrUpdate === 'Add' ? 0 : (this.spilllanguageService.spilllanguageList[0]?.SpillLanguageID)),
               disabled: false
-            }, Validators.required],
+            }],
           SpillID: [
             {
-              value: this.spilllanguageService.spilllanguageList[0]?.SpillID ?? '',
+              value: this.spilllanguageService.spilllanguageList[0]?.SpillID,
               disabled: false
-            }, Validators.required],
+            }],
           Language: [
             {
-              value: this.spilllanguageService.spilllanguageList[0]?.Language ?? '',
+              value: this.spilllanguageService.spilllanguageList[0]?.Language,
               disabled: false
-            }, Validators.required],
+            }],
           SpillComment: [
             {
-              value: this.spilllanguageService.spilllanguageList[0]?.SpillComment ?? '',
+              value: this.spilllanguageService.spilllanguageList[0]?.SpillComment,
               disabled: false
-            }, Validators.required],
+            }],
           TranslationStatus: [
             {
-              value: this.spilllanguageService.spilllanguageList[0]?.TranslationStatus ?? '',
+              value: this.spilllanguageService.spilllanguageList[0]?.TranslationStatus,
               disabled: false
-            }, Validators.required],
+            }],
           LastUpdateDate_UTC: [
             {
-              value: this.spilllanguageService.spilllanguageList[0]?.LastUpdateDate_UTC ?? '',
+              value: this.spilllanguageService.spilllanguageList[0]?.LastUpdateDate_UTC,
               disabled: false
-            }, Validators.required],
+            }],
           LastUpdateContactTVItemID: [
             {
-              value: this.spilllanguageService.spilllanguageList[0]?.LastUpdateContactTVItemID ?? '',
+              value: this.spilllanguageService.spilllanguageList[0]?.LastUpdateContactTVItemID,
               disabled: false
-            }, Validators.required],
+            }],
         }
       );
 

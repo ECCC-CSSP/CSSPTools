@@ -75,44 +75,44 @@ export class AppTaskLanguageComponent implements OnInit, OnDestroy {
         {
           AppTaskLanguageID: [
             {
-              value: (AddOrUpdate === 'Add' ? 0 : (this.apptasklanguageService.apptasklanguageList[0]?.AppTaskLanguageID ?? '')),
+              value: (AddOrUpdate === 'Add' ? 0 : (this.apptasklanguageService.apptasklanguageList[0]?.AppTaskLanguageID)),
               disabled: false
-            }, Validators.required],
+            }],
           AppTaskID: [
             {
-              value: this.apptasklanguageService.apptasklanguageList[0]?.AppTaskID ?? '',
+              value: this.apptasklanguageService.apptasklanguageList[0]?.AppTaskID,
               disabled: false
-            }, Validators.required],
+            }],
           Language: [
             {
-              value: this.apptasklanguageService.apptasklanguageList[0]?.Language ?? '',
+              value: this.apptasklanguageService.apptasklanguageList[0]?.Language,
               disabled: false
-            }, Validators.required],
+            }],
           StatusText: [
             {
-              value: this.apptasklanguageService.apptasklanguageList[0]?.StatusText ?? '',
+              value: this.apptasklanguageService.apptasklanguageList[0]?.StatusText,
               disabled: false
-            }, Validators.required],
+            }],
           ErrorText: [
             {
-              value: this.apptasklanguageService.apptasklanguageList[0]?.ErrorText ?? '',
+              value: this.apptasklanguageService.apptasklanguageList[0]?.ErrorText,
               disabled: false
-            }, Validators.required],
+            }],
           TranslationStatus: [
             {
-              value: this.apptasklanguageService.apptasklanguageList[0]?.TranslationStatus ?? '',
+              value: this.apptasklanguageService.apptasklanguageList[0]?.TranslationStatus,
               disabled: false
-            }, Validators.required],
+            }],
           LastUpdateDate_UTC: [
             {
-              value: this.apptasklanguageService.apptasklanguageList[0]?.LastUpdateDate_UTC ?? '',
+              value: this.apptasklanguageService.apptasklanguageList[0]?.LastUpdateDate_UTC,
               disabled: false
-            }, Validators.required],
+            }],
           LastUpdateContactTVItemID: [
             {
-              value: this.apptasklanguageService.apptasklanguageList[0]?.LastUpdateContactTVItemID ?? '',
+              value: this.apptasklanguageService.apptasklanguageList[0]?.LastUpdateContactTVItemID,
               disabled: false
-            }, Validators.required],
+            }],
         }
       );
 

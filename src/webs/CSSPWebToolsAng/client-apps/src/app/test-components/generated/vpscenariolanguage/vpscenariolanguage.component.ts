@@ -75,39 +75,39 @@ export class VPScenarioLanguageComponent implements OnInit, OnDestroy {
         {
           VPScenarioLanguageID: [
             {
-              value: (AddOrUpdate === 'Add' ? 0 : (this.vpscenariolanguageService.vpscenariolanguageList[0]?.VPScenarioLanguageID ?? '')),
+              value: (AddOrUpdate === 'Add' ? 0 : (this.vpscenariolanguageService.vpscenariolanguageList[0]?.VPScenarioLanguageID)),
               disabled: false
-            }, Validators.required],
+            }],
           VPScenarioID: [
             {
-              value: this.vpscenariolanguageService.vpscenariolanguageList[0]?.VPScenarioID ?? '',
+              value: this.vpscenariolanguageService.vpscenariolanguageList[0]?.VPScenarioID,
               disabled: false
-            }, Validators.required],
+            }],
           Language: [
             {
-              value: this.vpscenariolanguageService.vpscenariolanguageList[0]?.Language ?? '',
+              value: this.vpscenariolanguageService.vpscenariolanguageList[0]?.Language,
               disabled: false
-            }, Validators.required],
+            }],
           VPScenarioName: [
             {
-              value: this.vpscenariolanguageService.vpscenariolanguageList[0]?.VPScenarioName ?? '',
+              value: this.vpscenariolanguageService.vpscenariolanguageList[0]?.VPScenarioName,
               disabled: false
-            }, Validators.required],
+            }],
           TranslationStatus: [
             {
-              value: this.vpscenariolanguageService.vpscenariolanguageList[0]?.TranslationStatus ?? '',
+              value: this.vpscenariolanguageService.vpscenariolanguageList[0]?.TranslationStatus,
               disabled: false
-            }, Validators.required],
+            }],
           LastUpdateDate_UTC: [
             {
-              value: this.vpscenariolanguageService.vpscenariolanguageList[0]?.LastUpdateDate_UTC ?? '',
+              value: this.vpscenariolanguageService.vpscenariolanguageList[0]?.LastUpdateDate_UTC,
               disabled: false
-            }, Validators.required],
+            }],
           LastUpdateContactTVItemID: [
             {
-              value: this.vpscenariolanguageService.vpscenariolanguageList[0]?.LastUpdateContactTVItemID ?? '',
+              value: this.vpscenariolanguageService.vpscenariolanguageList[0]?.LastUpdateContactTVItemID,
               disabled: false
-            }, Validators.required],
+            }],
         }
       );
 

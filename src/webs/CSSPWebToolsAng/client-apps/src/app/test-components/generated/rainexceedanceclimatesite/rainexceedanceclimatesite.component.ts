@@ -60,29 +60,29 @@ export class RainExceedanceClimateSiteComponent implements OnInit, OnDestroy {
         {
           RainExceedanceClimateSiteID: [
             {
-              value: (AddOrUpdate === 'Add' ? 0 : (this.rainexceedanceclimatesiteService.rainexceedanceclimatesiteList[0]?.RainExceedanceClimateSiteID ?? '')),
+              value: (AddOrUpdate === 'Add' ? 0 : (this.rainexceedanceclimatesiteService.rainexceedanceclimatesiteList[0]?.RainExceedanceClimateSiteID)),
               disabled: false
-            }, Validators.required],
+            }],
           RainExceedanceTVItemID: [
             {
-              value: this.rainexceedanceclimatesiteService.rainexceedanceclimatesiteList[0]?.RainExceedanceTVItemID ?? '',
+              value: this.rainexceedanceclimatesiteService.rainexceedanceclimatesiteList[0]?.RainExceedanceTVItemID,
               disabled: false
-            }, Validators.required],
+            }],
           ClimateSiteTVItemID: [
             {
-              value: this.rainexceedanceclimatesiteService.rainexceedanceclimatesiteList[0]?.ClimateSiteTVItemID ?? '',
+              value: this.rainexceedanceclimatesiteService.rainexceedanceclimatesiteList[0]?.ClimateSiteTVItemID,
               disabled: false
-            }, Validators.required],
+            }],
           LastUpdateDate_UTC: [
             {
-              value: this.rainexceedanceclimatesiteService.rainexceedanceclimatesiteList[0]?.LastUpdateDate_UTC ?? '',
+              value: this.rainexceedanceclimatesiteService.rainexceedanceclimatesiteList[0]?.LastUpdateDate_UTC,
               disabled: false
-            }, Validators.required],
+            }],
           LastUpdateContactTVItemID: [
             {
-              value: this.rainexceedanceclimatesiteService.rainexceedanceclimatesiteList[0]?.LastUpdateContactTVItemID ?? '',
+              value: this.rainexceedanceclimatesiteService.rainexceedanceclimatesiteList[0]?.LastUpdateContactTVItemID,
               disabled: false
-            }, Validators.required],
+            }],
         }
       );
 

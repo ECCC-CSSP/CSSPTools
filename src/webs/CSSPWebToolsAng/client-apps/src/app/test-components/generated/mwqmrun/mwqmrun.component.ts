@@ -31,11 +31,13 @@ export class MWQMRunComponent implements OnInit, OnDestroy {
   sub: Subscription;
   runSampleTypeList: EnumIDAndText[];
   seaStateAtStart_BeaufortScaleList: EnumIDAndText[];
+  seaStateAtEnd_BeaufortScaleList: EnumIDAndText[];
   analyzeMethodList: EnumIDAndText[];
   sampleMatrixList: EnumIDAndText[];
   laboratoryList: EnumIDAndText[];
   sampleStatusList: EnumIDAndText[];
   tide_StartList: EnumIDAndText[];
+  tide_EndList: EnumIDAndText[];
   mwqmrunFormPut: FormGroup;
   mwqmrunFormPost: FormGroup;
 
@@ -89,11 +91,13 @@ export class MWQMRunComponent implements OnInit, OnDestroy {
     LoadLocalesMWQMRunText(this.mwqmrunService);
     this.runSampleTypeList = SampleTypeEnum_GetOrderedText();
     this.seaStateAtStart_BeaufortScaleList = BeaufortScaleEnum_GetOrderedText();
+    this.seaStateAtEnd_BeaufortScaleList = BeaufortScaleEnum_GetOrderedText();
     this.analyzeMethodList = AnalyzeMethodEnum_GetOrderedText();
     this.sampleMatrixList = SampleMatrixEnum_GetOrderedText();
     this.laboratoryList = LaboratoryEnum_GetOrderedText();
     this.sampleStatusList = SampleStatusEnum_GetOrderedText();
     this.tide_StartList = TideTextEnum_GetOrderedText();
+    this.tide_EndList = TideTextEnum_GetOrderedText();
     this.FillFormBuilderGroup('Add');
     this.FillFormBuilderGroup('Update');
   }
@@ -110,214 +114,214 @@ export class MWQMRunComponent implements OnInit, OnDestroy {
         {
           MWQMRunID: [
             {
-              value: (AddOrUpdate === 'Add' ? 0 : (this.mwqmrunService.mwqmrunList[0]?.MWQMRunID ?? '')),
+              value: (AddOrUpdate === 'Add' ? 0 : (this.mwqmrunService.mwqmrunList[0]?.MWQMRunID)),
               disabled: false
-            }, Validators.required],
+            }],
           SubsectorTVItemID: [
             {
-              value: this.mwqmrunService.mwqmrunList[0]?.SubsectorTVItemID ?? '',
+              value: this.mwqmrunService.mwqmrunList[0]?.SubsectorTVItemID,
               disabled: false
-            }, Validators.required],
+            }],
           MWQMRunTVItemID: [
             {
-              value: this.mwqmrunService.mwqmrunList[0]?.MWQMRunTVItemID ?? '',
+              value: this.mwqmrunService.mwqmrunList[0]?.MWQMRunTVItemID,
               disabled: false
-            }, Validators.required],
+            }],
           RunSampleType: [
             {
-              value: this.mwqmrunService.mwqmrunList[0]?.RunSampleType ?? '',
+              value: this.mwqmrunService.mwqmrunList[0]?.RunSampleType,
               disabled: false
-            }, Validators.required],
+            }],
           DateTime_Local: [
             {
-              value: this.mwqmrunService.mwqmrunList[0]?.DateTime_Local ?? '',
+              value: this.mwqmrunService.mwqmrunList[0]?.DateTime_Local,
               disabled: false
-            }, Validators.required],
+            }],
           RunNumber: [
             {
-              value: this.mwqmrunService.mwqmrunList[0]?.RunNumber ?? '',
+              value: this.mwqmrunService.mwqmrunList[0]?.RunNumber,
               disabled: false
-            }, Validators.required],
+            }],
           StartDateTime_Local: [
             {
-              value: this.mwqmrunService.mwqmrunList[0]?.StartDateTime_Local ?? '',
+              value: this.mwqmrunService.mwqmrunList[0]?.StartDateTime_Local,
               disabled: false
-            }, Validators.required],
+            }],
           EndDateTime_Local: [
             {
-              value: this.mwqmrunService.mwqmrunList[0]?.EndDateTime_Local ?? '',
+              value: this.mwqmrunService.mwqmrunList[0]?.EndDateTime_Local,
               disabled: false
-            }, Validators.required],
+            }],
           LabReceivedDateTime_Local: [
             {
-              value: this.mwqmrunService.mwqmrunList[0]?.LabReceivedDateTime_Local ?? '',
+              value: this.mwqmrunService.mwqmrunList[0]?.LabReceivedDateTime_Local,
               disabled: false
-            }, Validators.required],
+            }],
           TemperatureControl1_C: [
             {
-              value: this.mwqmrunService.mwqmrunList[0]?.TemperatureControl1_C ?? '',
+              value: this.mwqmrunService.mwqmrunList[0]?.TemperatureControl1_C,
               disabled: false
-            }, Validators.required],
+            }],
           TemperatureControl2_C: [
             {
-              value: this.mwqmrunService.mwqmrunList[0]?.TemperatureControl2_C ?? '',
+              value: this.mwqmrunService.mwqmrunList[0]?.TemperatureControl2_C,
               disabled: false
-            }, Validators.required],
+            }],
           SeaStateAtStart_BeaufortScale: [
             {
-              value: this.mwqmrunService.mwqmrunList[0]?.SeaStateAtStart_BeaufortScale ?? '',
+              value: this.mwqmrunService.mwqmrunList[0]?.SeaStateAtStart_BeaufortScale,
               disabled: false
-            }, Validators.required],
+            }],
           SeaStateAtEnd_BeaufortScale: [
             {
-              value: this.mwqmrunService.mwqmrunList[0]?.SeaStateAtEnd_BeaufortScale ?? '',
+              value: this.mwqmrunService.mwqmrunList[0]?.SeaStateAtEnd_BeaufortScale,
               disabled: false
-            }, Validators.required],
+            }],
           WaterLevelAtBrook_m: [
             {
-              value: this.mwqmrunService.mwqmrunList[0]?.WaterLevelAtBrook_m ?? '',
+              value: this.mwqmrunService.mwqmrunList[0]?.WaterLevelAtBrook_m,
               disabled: false
-            }, Validators.required],
+            }],
           WaveHightAtStart_m: [
             {
-              value: this.mwqmrunService.mwqmrunList[0]?.WaveHightAtStart_m ?? '',
+              value: this.mwqmrunService.mwqmrunList[0]?.WaveHightAtStart_m,
               disabled: false
-            }, Validators.required],
+            }],
           WaveHightAtEnd_m: [
             {
-              value: this.mwqmrunService.mwqmrunList[0]?.WaveHightAtEnd_m ?? '',
+              value: this.mwqmrunService.mwqmrunList[0]?.WaveHightAtEnd_m,
               disabled: false
-            }, Validators.required],
+            }],
           SampleCrewInitials: [
             {
-              value: this.mwqmrunService.mwqmrunList[0]?.SampleCrewInitials ?? '',
+              value: this.mwqmrunService.mwqmrunList[0]?.SampleCrewInitials,
               disabled: false
-            }, Validators.required],
+            }],
           AnalyzeMethod: [
             {
-              value: this.mwqmrunService.mwqmrunList[0]?.AnalyzeMethod ?? '',
+              value: this.mwqmrunService.mwqmrunList[0]?.AnalyzeMethod,
               disabled: false
-            }, Validators.required],
+            }],
           SampleMatrix: [
             {
-              value: this.mwqmrunService.mwqmrunList[0]?.SampleMatrix ?? '',
+              value: this.mwqmrunService.mwqmrunList[0]?.SampleMatrix,
               disabled: false
-            }, Validators.required],
+            }],
           Laboratory: [
             {
-              value: this.mwqmrunService.mwqmrunList[0]?.Laboratory ?? '',
+              value: this.mwqmrunService.mwqmrunList[0]?.Laboratory,
               disabled: false
-            }, Validators.required],
+            }],
           SampleStatus: [
             {
-              value: this.mwqmrunService.mwqmrunList[0]?.SampleStatus ?? '',
+              value: this.mwqmrunService.mwqmrunList[0]?.SampleStatus,
               disabled: false
-            }, Validators.required],
+            }],
           LabSampleApprovalContactTVItemID: [
             {
-              value: this.mwqmrunService.mwqmrunList[0]?.LabSampleApprovalContactTVItemID ?? '',
+              value: this.mwqmrunService.mwqmrunList[0]?.LabSampleApprovalContactTVItemID,
               disabled: false
-            }, Validators.required],
+            }],
           LabAnalyzeBath1IncubationStartDateTime_Local: [
             {
-              value: this.mwqmrunService.mwqmrunList[0]?.LabAnalyzeBath1IncubationStartDateTime_Local ?? '',
+              value: this.mwqmrunService.mwqmrunList[0]?.LabAnalyzeBath1IncubationStartDateTime_Local,
               disabled: false
-            }, Validators.required],
+            }],
           LabAnalyzeBath2IncubationStartDateTime_Local: [
             {
-              value: this.mwqmrunService.mwqmrunList[0]?.LabAnalyzeBath2IncubationStartDateTime_Local ?? '',
+              value: this.mwqmrunService.mwqmrunList[0]?.LabAnalyzeBath2IncubationStartDateTime_Local,
               disabled: false
-            }, Validators.required],
+            }],
           LabAnalyzeBath3IncubationStartDateTime_Local: [
             {
-              value: this.mwqmrunService.mwqmrunList[0]?.LabAnalyzeBath3IncubationStartDateTime_Local ?? '',
+              value: this.mwqmrunService.mwqmrunList[0]?.LabAnalyzeBath3IncubationStartDateTime_Local,
               disabled: false
-            }, Validators.required],
+            }],
           LabRunSampleApprovalDateTime_Local: [
             {
-              value: this.mwqmrunService.mwqmrunList[0]?.LabRunSampleApprovalDateTime_Local ?? '',
+              value: this.mwqmrunService.mwqmrunList[0]?.LabRunSampleApprovalDateTime_Local,
               disabled: false
-            }, Validators.required],
+            }],
           Tide_Start: [
             {
-              value: this.mwqmrunService.mwqmrunList[0]?.Tide_Start ?? '',
+              value: this.mwqmrunService.mwqmrunList[0]?.Tide_Start,
               disabled: false
-            }, Validators.required],
+            }],
           Tide_End: [
             {
-              value: this.mwqmrunService.mwqmrunList[0]?.Tide_End ?? '',
+              value: this.mwqmrunService.mwqmrunList[0]?.Tide_End,
               disabled: false
-            }, Validators.required],
+            }],
           RainDay0_mm: [
             {
-              value: this.mwqmrunService.mwqmrunList[0]?.RainDay0_mm ?? '',
+              value: this.mwqmrunService.mwqmrunList[0]?.RainDay0_mm,
               disabled: false
-            }, Validators.required],
+            }],
           RainDay1_mm: [
             {
-              value: this.mwqmrunService.mwqmrunList[0]?.RainDay1_mm ?? '',
+              value: this.mwqmrunService.mwqmrunList[0]?.RainDay1_mm,
               disabled: false
-            }, Validators.required],
+            }],
           RainDay2_mm: [
             {
-              value: this.mwqmrunService.mwqmrunList[0]?.RainDay2_mm ?? '',
+              value: this.mwqmrunService.mwqmrunList[0]?.RainDay2_mm,
               disabled: false
-            }, Validators.required],
+            }],
           RainDay3_mm: [
             {
-              value: this.mwqmrunService.mwqmrunList[0]?.RainDay3_mm ?? '',
+              value: this.mwqmrunService.mwqmrunList[0]?.RainDay3_mm,
               disabled: false
-            }, Validators.required],
+            }],
           RainDay4_mm: [
             {
-              value: this.mwqmrunService.mwqmrunList[0]?.RainDay4_mm ?? '',
+              value: this.mwqmrunService.mwqmrunList[0]?.RainDay4_mm,
               disabled: false
-            }, Validators.required],
+            }],
           RainDay5_mm: [
             {
-              value: this.mwqmrunService.mwqmrunList[0]?.RainDay5_mm ?? '',
+              value: this.mwqmrunService.mwqmrunList[0]?.RainDay5_mm,
               disabled: false
-            }, Validators.required],
+            }],
           RainDay6_mm: [
             {
-              value: this.mwqmrunService.mwqmrunList[0]?.RainDay6_mm ?? '',
+              value: this.mwqmrunService.mwqmrunList[0]?.RainDay6_mm,
               disabled: false
-            }, Validators.required],
+            }],
           RainDay7_mm: [
             {
-              value: this.mwqmrunService.mwqmrunList[0]?.RainDay7_mm ?? '',
+              value: this.mwqmrunService.mwqmrunList[0]?.RainDay7_mm,
               disabled: false
-            }, Validators.required],
+            }],
           RainDay8_mm: [
             {
-              value: this.mwqmrunService.mwqmrunList[0]?.RainDay8_mm ?? '',
+              value: this.mwqmrunService.mwqmrunList[0]?.RainDay8_mm,
               disabled: false
-            }, Validators.required],
+            }],
           RainDay9_mm: [
             {
-              value: this.mwqmrunService.mwqmrunList[0]?.RainDay9_mm ?? '',
+              value: this.mwqmrunService.mwqmrunList[0]?.RainDay9_mm,
               disabled: false
-            }, Validators.required],
+            }],
           RainDay10_mm: [
             {
-              value: this.mwqmrunService.mwqmrunList[0]?.RainDay10_mm ?? '',
+              value: this.mwqmrunService.mwqmrunList[0]?.RainDay10_mm,
               disabled: false
-            }, Validators.required],
+            }],
           RemoveFromStat: [
             {
-              value: this.mwqmrunService.mwqmrunList[0]?.RemoveFromStat ?? '',
+              value: this.mwqmrunService.mwqmrunList[0]?.RemoveFromStat,
               disabled: false
-            }, Validators.required],
+            }],
           LastUpdateDate_UTC: [
             {
-              value: this.mwqmrunService.mwqmrunList[0]?.LastUpdateDate_UTC ?? '',
+              value: this.mwqmrunService.mwqmrunList[0]?.LastUpdateDate_UTC,
               disabled: false
-            }, Validators.required],
+            }],
           LastUpdateContactTVItemID: [
             {
-              value: this.mwqmrunService.mwqmrunList[0]?.LastUpdateContactTVItemID ?? '',
+              value: this.mwqmrunService.mwqmrunList[0]?.LastUpdateContactTVItemID,
               disabled: false
-            }, Validators.required],
+            }],
         }
       );
 

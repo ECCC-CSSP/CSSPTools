@@ -60,29 +60,29 @@ export class SamplingPlanSubsectorComponent implements OnInit, OnDestroy {
         {
           SamplingPlanSubsectorID: [
             {
-              value: (AddOrUpdate === 'Add' ? 0 : (this.samplingplansubsectorService.samplingplansubsectorList[0]?.SamplingPlanSubsectorID ?? '')),
+              value: (AddOrUpdate === 'Add' ? 0 : (this.samplingplansubsectorService.samplingplansubsectorList[0]?.SamplingPlanSubsectorID)),
               disabled: false
-            }, Validators.required],
+            }],
           SamplingPlanID: [
             {
-              value: this.samplingplansubsectorService.samplingplansubsectorList[0]?.SamplingPlanID ?? '',
+              value: this.samplingplansubsectorService.samplingplansubsectorList[0]?.SamplingPlanID,
               disabled: false
-            }, Validators.required],
+            }],
           SubsectorTVItemID: [
             {
-              value: this.samplingplansubsectorService.samplingplansubsectorList[0]?.SubsectorTVItemID ?? '',
+              value: this.samplingplansubsectorService.samplingplansubsectorList[0]?.SubsectorTVItemID,
               disabled: false
-            }, Validators.required],
+            }],
           LastUpdateDate_UTC: [
             {
-              value: this.samplingplansubsectorService.samplingplansubsectorList[0]?.LastUpdateDate_UTC ?? '',
+              value: this.samplingplansubsectorService.samplingplansubsectorList[0]?.LastUpdateDate_UTC,
               disabled: false
-            }, Validators.required],
+            }],
           LastUpdateContactTVItemID: [
             {
-              value: this.samplingplansubsectorService.samplingplansubsectorList[0]?.LastUpdateContactTVItemID ?? '',
+              value: this.samplingplansubsectorService.samplingplansubsectorList[0]?.LastUpdateContactTVItemID,
               disabled: false
-            }, Validators.required],
+            }],
         }
       );
 
