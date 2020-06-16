@@ -15,46 +15,18 @@ namespace CSSPModels
     {
         #region Properties in DB
         [Key]
-        [CSSPDisplayEN(DisplayEN = "TideLocation ID")]
-        [CSSPDisplayFR(DisplayFR = "TideLocation ID")]
-        [CSSPDescriptionEN(DescriptionEN = @"Contains the unique ""identifier on each row of the TideLocations table")]
-        [CSSPDescriptionFR(DescriptionFR = @"Contient l'identifiant unique sur chaque ligne de la table TideLocations")]
         public int TideLocationID { get; set; }
-        [Range(0, 10000)]
-        [CSSPDisplayEN(DisplayEN = "Zone")]
-        [CSSPDisplayFR(DisplayFR = "Zone")]
-        [CSSPDescriptionEN(DescriptionEN = @"Zone")]
-        [CSSPDescriptionFR(DescriptionFR = @"Zone")]
+        [CSSPRange(0, 10000)]
         public int Zone { get; set; }
-        [StringLength(100)]
-        [CSSPDisplayEN(DisplayEN = "Name")]
-        [CSSPDisplayFR(DisplayFR = "Nom")]
-        [CSSPDescriptionEN(DescriptionEN = @"Name")]
-        [CSSPDescriptionFR(DescriptionFR = @"Nom")]
+        [CSSPMaxLength(100)]
         public string Name { get; set; }
-        [StringLength(100)]
-        [CSSPDisplayEN(DisplayEN = "Province")]
-        [CSSPDisplayFR(DisplayFR = "Province")]
-        [CSSPDescriptionEN(DescriptionEN = @"Province")]
-        [CSSPDescriptionFR(DescriptionFR = @"Province")]
+        [CSSPMaxLength(100)]
         public string Prov { get; set; }
-        [Range(0, 100000)]
-        [CSSPDisplayEN(DisplayEN = "SID")]
-        [CSSPDisplayFR(DisplayFR = "SID")]
-        [CSSPDescriptionEN(DescriptionEN = @"SID")]
-        [CSSPDescriptionFR(DescriptionFR = @"SID")]
+        [CSSPRange(0, 100000)]
         public int sid { get; set; }
-        [Range(-90.0D, 90.0D)]
-        [CSSPDisplayEN(DisplayEN = "Lat")]
-        [CSSPDisplayFR(DisplayFR = "Lat")]
-        [CSSPDescriptionEN(DescriptionEN = @"Latitude")]
-        [CSSPDescriptionFR(DescriptionFR = @"Latitude")]
+        [CSSPRange(-90.0D, 90.0D)]
         public double Lat { get; set; }
-        [Range(-180.0D, 180.0D)]
-        [CSSPDisplayEN(DisplayEN = "Lng")]
-        [CSSPDisplayFR(DisplayFR = "Lng")]
-        [CSSPDescriptionEN(DescriptionEN = @"Longitude")]
-        [CSSPDescriptionFR(DescriptionFR = @"Longitude")]
+        [CSSPRange(-180.0D, 180.0D)]
         public double Lng { get; set; }
         #endregion Properties in DB
 

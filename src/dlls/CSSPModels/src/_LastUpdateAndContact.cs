@@ -19,16 +19,8 @@ namespace CSSPModels
 
         #region Properties not in DB
         [CSSPAfter(Year = 1980)]
-        [CSSPDisplayEN(DisplayEN = "Last update date (UTC)")]
-        [CSSPDisplayFR(DisplayFR = "Date de la dernière mise à jour (UTC)")]
-        [CSSPDescriptionEN(DescriptionEN = @"Last update date (UTC)")]
-        [CSSPDescriptionFR(DescriptionFR = @"Date de la dernière mise à jour (UTC)")]
         public DateTime LastUpdateAndContactDate_UTC { get; set; }
-        [Range(1, -1)]
-        [CSSPDisplayEN(DisplayEN = "Contact TVItemID")]
-        [CSSPDisplayFR(DisplayFR = "Contact TVItemID")]
-        [CSSPDescriptionEN(DescriptionEN = @"Link to the TVItems representing the contact")]
-        [CSSPDescriptionFR(DescriptionFR = @"Lien à la table TVItems représentant le contact")]
+        [CSSPRange(1, -1)]
         public int LastUpdateAndContactTVItemID { get; set; }
         #endregion Properties not in DB
 

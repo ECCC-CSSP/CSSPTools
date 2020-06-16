@@ -18,11 +18,7 @@ namespace CSSPModels
         #endregion Properties in DB
 
         #region Properties not in DB
-        [Range(0.0D, -1.0D)]
-        [CSSPDisplayEN(DisplayEN = "Decay rate")]
-        [CSSPDisplayFR(DisplayFR = "Taux de décroissance")]
-        [CSSPDescriptionEN(DescriptionEN = @"Decay rate")]
-        [CSSPDescriptionFR(DescriptionFR = @"Taux de décroissance")]
+        [CSSPRange(0.0D, -1.0D)]
         public double Decay { get; set; }
         #endregion Properties not in DB
 

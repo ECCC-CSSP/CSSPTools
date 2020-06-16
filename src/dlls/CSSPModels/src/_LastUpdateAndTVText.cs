@@ -19,22 +19,11 @@ namespace CSSPModels
 
         #region Properties not in DB
         [CSSPAfter(Year = 1980)]
-        [CSSPDisplayEN(DisplayEN = "Last update date")]
-        [CSSPDisplayFR(DisplayFR = "Date de dernième mise à jour")]
-        [CSSPDescriptionEN(DescriptionEN = @"Last update date")]
-        [CSSPDescriptionFR(DescriptionFR = @"Date de dernième mise à jour")]
         public DateTime LastUpdateAndTVTextDate_UTC { get; set; }
         [CSSPAfter(Year = 1980)]
-        [CSSPDisplayEN(DisplayEN = "Last update date")]
-        [CSSPDisplayFR(DisplayFR = "Date de dernième mise à jour")]
-        [CSSPDescriptionEN(DescriptionEN = @"Last update date")]
-        [CSSPDescriptionFR(DescriptionFR = @"Date de dernième mise à jour")]
         public DateTime LastUpdateDate_Local { get; set; }
-        [StringLength(200, MinimumLength = 1)]
-        [CSSPDisplayEN(DisplayEN = "TV text")]
-        [CSSPDisplayFR(DisplayFR = "Texte TV")]
-        [CSSPDescriptionEN(DescriptionEN = @"Tree view text")]
-        [CSSPDescriptionFR(DescriptionFR = @"Texte de l'arbre visuel")]
+        [CSSPMaxLength(200)]
+        [CSSPMinLength(1)]
         public string TVText { get; set; }
         #endregion Properties not in DB
 

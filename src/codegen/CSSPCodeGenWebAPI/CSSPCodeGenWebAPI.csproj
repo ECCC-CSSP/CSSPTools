@@ -112,9 +112,6 @@
     <None Update="runModelsCompareDBFieldsAndCSSPModelsDLLProp.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="runModelsCSSPModelsRes.txt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
     <None Update="runServicesClassNameServiceGenerated.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

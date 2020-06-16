@@ -18,17 +18,11 @@ namespace CSSPModels
         #endregion Properties in DB
 
         #region Properties not in DB
-        [StringLength(200, MinimumLength = 1)]
-        [CSSPDisplayEN(DisplayEN = "Parent site")]
-        [CSSPDisplayFR(DisplayFR = "Site du parent")]
-        [CSSPDescriptionEN(DescriptionEN = @"Parent site")]
-        [CSSPDescriptionFR(DescriptionFR = @"Site du parent")]
+        [CSSPMaxLength(200)]
+        [CSSPMinLength(1)]
         public string ParentSite { get; set; }
-        [StringLength(200, MinimumLength = 1)]
-        [CSSPDisplayEN(DisplayEN = "Duplicate site")]
-        [CSSPDisplayFR(DisplayFR = "Site duplicata")]
-        [CSSPDescriptionEN(DescriptionEN = @"Duplicate site")]
-        [CSSPDescriptionFR(DescriptionFR = @"Site duplicata")]
+        [CSSPMaxLength(200)]
+        [CSSPMinLength(1)]
         public string DuplicateSite { get; set; }
         #endregion Properties not in DB
 

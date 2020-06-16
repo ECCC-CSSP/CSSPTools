@@ -18,17 +18,11 @@ namespace CSSPModels
         #endregion Properties in DB
 
         #region Properties not in DB
-        [StringLength(200, MinimumLength = 1)]
-        [CSSPDisplayEN(DisplayEN = "Table name")]
-        [CSSPDisplayFR(DisplayFR = "Nom de la table")]
-        [CSSPDescriptionEN(DescriptionEN = @"Database table name")]
-        [CSSPDescriptionFR(DescriptionFR = @"Nom de la table de la base de donnée")]
+        [CSSPMaxLength(200)]
+        [CSSPMinLength(1)]
         public string TableName { get; set; }
-        [StringLength(3, MinimumLength = 1)]
-        [CSSPDisplayEN(DisplayEN = "Plurial")]
-        [CSSPDisplayFR(DisplayFR = "Pluriel")]
-        [CSSPDescriptionEN(DescriptionEN = @"One or two letters to create the plurial (Ex: 's', 'es')")]
-        [CSSPDescriptionFR(DescriptionFR = @"Une ou deux lettres de fin créant le pruriel (Ex: 's', 'es')")]
+        [CSSPMaxLength(3)]
+        [CSSPMinLength(1)]
         public string Plurial { get; set; }
         #endregion Properties not in DB
 

@@ -36,181 +36,15 @@ namespace CSSPModels
         #endregion Properties in DB all tables
 
         #region Constructors
-        public LastUpdate() //: base()
+        public LastUpdate()
         {
 
         }
         #endregion Constructors
     }
-    //public partial class LastUpdate2
-    //{
-    //    #region Properties in DB all tables
-    //    /// <summary>
-    //    /// > [!NOTE]
-    //    /// > <para>**Other custom attributes**</para>
-    //    /// > <para>[[CSSPAfter](CSSPModels.CSSPAfterAttribute.html)(Year = 1980)]</para>
-    //    /// </summary>
-    //    /// <param name="LastUpdateDate_UTC">Every table within the database contains a field called LastUpdateDate_UTC which holds the last time the row of information was changed</param>
-    //    [CSSPAfter(Year = 1980)]
-    //    public DateTime LastUpdateDate_UTC { get; set; }
-    //    /// <summary>
-    //    /// > [!NOTE]
-    //    /// > <para>**Other custom attributes**</para>
-    //    /// > <para>**AllowableTVTypeList is of type [CSSPEnums.TVTypeEnum](CSSPEnums.TVTypeEnum.html)**</para>
-    //    /// > <para>5 == Contact</para>
-    //    /// > <para>[[CSSPExist](CSSPModels.CSSPExistAttribute.html)(ExistTypeName = "TVItem", ExistPlurial = "s", ExistFieldID = "TVItemID", AllowableTVTypeList = "5")]</para>
-    //    /// </summary>
-    //    /// <param name="LastUpdateContactTVItemID">Every table within the database contains a field called LastUpdateContactTVItemID which holds the TVItemID of the last person who changed the row of information</param>
-    //    [CSSPExist(ExistTypeName = "TVItem", ExistPlurial = "s", ExistFieldID = "TVItemID", AllowableTVTypeList = "5")]
-    //    public int LastUpdateContactTVItemID { get; set; }
-    //    #endregion Properties in DB all tables
-
-    //    #region Constructors
-    //    public LastUpdate2()
-    //    {
-
-    //    }
-    //    #endregion Constructors
-    //}
     #endregion Classes
 
     #region Attributes
-    /// <summary>
-    /// > [!NOTE]
-    /// > Custom validation attribute used when generating code
-    /// > <para>Used when generating some codes</para>
-    /// > <para>Used on every field</para>
-    /// > <para>**DescriptionEN** : Defines the text to be used when creating html (Angular) and documentation base text</para>
-    /// > <para>**Return to [CSSPModels](CSSPModels.html)**</para>
-    /// </summary>
-    /// <example>
-    ///     <code>
-    ///         [CSSPDescriptionEN(DescriptionEN = @"First Name")]
-    ///         public string FirstName { get; set; }
-    ///     </code>
-    /// </example>
-    [AttributeUsage(AttributeTargets.Field | AttributeTargets.Property, AllowMultiple = false, Inherited = true)]
-    public class CSSPDescriptionENAttribute : ValidationAttribute
-    {
-        /// <summary>
-        /// > [!NOTE]
-        /// > Description text explaining the field withing html (Angular) and documentation
-        /// </summary>
-        public string DescriptionEN { get; set; }
-        /// <summary>
-        /// > [!NOTE]
-        /// > Not used. Using own validation system.
-        /// </summary>
-        /// <param name="value">Not used</param>
-        /// <returns>Not used</returns>
-        public override bool IsValid(object value)
-        {
-            return true;
-        }
-    }
-
-    /// <summary>
-    /// > [!NOTE]
-    /// > Custom validation attribute used when generating code
-    /// > <para>Used when generating some codes</para>
-    /// > <para>Used on every field</para>
-    /// > <para>**DescriptionFR** : Defines the text to be used when creating html (Angular) and documentation base text</para>
-    /// > <para>**Return to [CSSPModels](CSSPModels.html)**</para>
-    /// </summary>
-    /// <example>
-    ///     <code>
-    ///         [CSSPDescriptionFR(DescriptionEN = "Prénom")]
-    ///         public string FirstName { get; set; }
-    ///     </code>
-    /// </example>
-    [AttributeUsage(AttributeTargets.Field | AttributeTargets.Property, AllowMultiple = false, Inherited = true)]
-    public class CSSPDescriptionFRAttribute : ValidationAttribute
-    {
-        /// <summary>
-        /// > [!NOTE]
-        /// > Description text explaining the field withing html (Angular) and documentation
-        /// </summary>
-        public string DescriptionFR { get; set; }
-        /// <summary>
-        /// > [!NOTE]
-        /// > Not used. Using own validation system.
-        /// </summary>
-        /// <param name="value">Not used</param>
-        /// <returns>Not used</returns>
-        public override bool IsValid(object value)
-        {
-            return true;
-        }
-    }
-
-    /// <summary>
-    /// > [!NOTE]
-    /// > Custom validation attribute used when generating code
-    /// > <para>Used when generating some codes</para>
-    /// > <para>Used on every field</para>
-    /// > <para>**DisplayEN** : Defines the text to be used when creating html (Angular) base text</para>
-    /// > <para>**Return to [CSSPModels](CSSPModels.html)**</para>
-    /// </summary>
-    /// <example>
-    ///     <code>
-    ///         [CSSPDisplayEN(DisplayEN = "First Name")]
-    ///         public string FirstName { get; set; }
-    ///     </code>
-    /// </example>
-    [AttributeUsage(AttributeTargets.Field | AttributeTargets.Property, AllowMultiple = false, Inherited = true)]
-    public class CSSPDisplayENAttribute : ValidationAttribute
-    {
-        /// <summary>
-        /// > [!NOTE]
-        /// > Display text used in html (Angular) and documentation
-        /// </summary>
-        public string DisplayEN { get; set; }
-        /// <summary>
-        /// > [!NOTE]
-        /// > Not used. Using own validation system.
-        /// </summary>
-        /// <param name="value">Not used</param>
-        /// <returns>Not used</returns>
-        public override bool IsValid(object value)
-        {
-            return true;
-        }
-    }
-
-    /// <summary>
-    /// > [!NOTE]
-    /// > Custom validation attribute used when generating code
-    /// > <para>Used when generating some codes</para>
-    /// > <para>Used on every field</para>
-    /// > <para>**DisplayFR** : Defines the text to be used when creating html (Angular) base text</para>
-    /// > <para>**Return to [CSSPModels](CSSPModels.html)**</para>
-    /// </summary>
-    /// <example>
-    ///     <code>
-    ///         [CSSPDisplayFR(DisplayEN = "First Name")]
-    ///         public string FirstName { get; set; }
-    ///     </code>
-    /// </example>
-    [AttributeUsage(AttributeTargets.Field | AttributeTargets.Property, AllowMultiple = false, Inherited = true)]
-    public class CSSPDisplayFRAttribute : ValidationAttribute
-    {
-        /// <summary>
-        /// > [!NOTE]
-        /// > Display text used in html (Angular) and documentation
-        /// </summary>
-        public string DisplayFR { get; set; }
-        /// <summary>
-        /// > [!NOTE]
-        /// > Not used. Using own validation system.
-        /// </summary>
-        /// <param name="value">Not used</param>
-        /// <returns>Not used</returns>
-        public override bool IsValid(object value)
-        {
-            return true;
-        }
-    }
-
     /// <summary>
     /// > [!NOTE]
     /// > Custom validation attribute used when generating code
@@ -275,7 +109,7 @@ namespace CSSPModels
     /// </remarks>
     /// <example>
     ///     <code>
-    ///         [StringLength(200)]
+    ///         [CSSPMaxLength(200)]
     ///         [CSSPAllowNull]
     ///         public string StreetName { get; set; }
     ///     </code>
@@ -331,6 +165,41 @@ namespace CSSPModels
         /// </summary>
         public string OtherField { get; set; }
 
+        /// <summary>
+        /// > [!NOTE]
+        /// > Not used. Using own validation system.
+        /// </summary>
+        /// <param name="value">Not used</param>
+        /// <returns>Not used</returns>
+        public override bool IsValid(object value)
+        {
+            return true;
+        }
+    }
+
+    /// <summary>
+    /// > [!NOTE]
+    /// > Custom validation attribute used to replace CompareAttribute
+    /// > <para>Used when generating some codes</para>
+    /// > <para>**Return to [CSSPModels](CSSPModels.html)**</para>
+    /// </summary>
+    /// <example>
+    ///     <code>
+    ///         [CSSPMinLength(6)]
+    ///         public string FirstName { get; set; }
+    ///     </code>
+    /// </example>
+    [AttributeUsage(AttributeTargets.Field | AttributeTargets.Property, AllowMultiple = false, Inherited = true)]
+    public class CSSPCompareAttribute : CompareAttribute
+    {
+        /// <summary>
+        /// > [!NOTE]
+        /// > Constructor
+        /// </summary>
+        public CSSPCompareAttribute(string otherProperty) : base(otherProperty)
+        {
+
+        }
         /// <summary>
         /// > [!NOTE]
         /// > Not used. Using own validation system.
@@ -619,7 +488,7 @@ namespace CSSPModels
     /// <example>
     ///     <code>
     ///         [NotMapped]
-    ///         [StringLength(200)]
+    ///         [CSSPMaxLength(200)]
     ///         [CSSPAllowNull]
     ///         [CSSPFill(FillTypeName = "TVItemLanguage", FillPlurial = "s", FillFieldID = "TVItemID", FillEqualField = "AddressTVItemID", FillReturnField = "TVText", FillNeedLanguage = true)]
     ///         public string AddressTVText { get; set; }
@@ -667,6 +536,197 @@ namespace CSSPModels
         /// <summary>
         /// > [!NOTE]
         /// > No used. Using own validation system.
+        /// </summary>
+        /// <param name="value">Not used</param>
+        /// <returns>Not used</returns>
+        public override bool IsValid(object value)
+        {
+            return true;
+        }
+    }
+
+    /// <summary>
+    /// > [!NOTE]
+    /// > Custom validation attribute used to replace MaxLengthAttribute
+    /// > <para>Used when generating some codes</para>
+    /// > <para>**Return to [CSSPModels](CSSPModels.html)**</para>
+    /// </summary>
+    /// <example>
+    ///     <code>
+    ///         [CSSPMinLength(6)]
+    ///         public string FirstName { get; set; }
+    ///     </code>
+    /// </example>
+    [AttributeUsage(AttributeTargets.Field | AttributeTargets.Property, AllowMultiple = false, Inherited = true)]
+    public class CSSPMaxLengthAttribute : MaxLengthAttribute
+    {
+        /// <summary>
+        /// > [!NOTE]
+        /// > Constructor
+        /// </summary>
+        public CSSPMaxLengthAttribute(int length) : base(length)
+        {
+
+        }
+        /// <summary>
+        /// > [!NOTE]
+        /// > Not used. Using own validation system.
+        /// </summary>
+        /// <param name="value">Not used</param>
+        /// <returns>Not used</returns>
+        public override bool IsValid(object value)
+        {
+            return true;
+        }
+    }
+ 
+    /// <summary>
+    /// > [!NOTE]
+    /// > Custom validation attribute used to replace MinLengthAttribute
+    /// > <para>Used when generating some codes</para>
+    /// > <para>**Return to [CSSPModels](CSSPModels.html)**</para>
+    /// </summary>
+    /// <example>
+    ///     <code>
+    ///         [CSSPMinLength(6)]
+    ///         public string FirstName { get; set; }
+    ///     </code>
+    /// </example>
+    [AttributeUsage(AttributeTargets.Field | AttributeTargets.Property, AllowMultiple = false, Inherited = true)]
+    public class CSSPMinLengthAttribute : MinLengthAttribute
+    {
+        /// <summary>
+        /// > [!NOTE]
+        /// > Constructor
+        /// </summary>
+        public CSSPMinLengthAttribute(int length) : base(length)
+        {
+
+        }
+        /// <summary>
+        /// > [!NOTE]
+        /// > Not used. Using own validation system.
+        /// </summary>
+        /// <param name="value">Not used</param>
+        /// <returns>Not used</returns>
+        public override bool IsValid(object value)
+        {
+            return true;
+        }
+    }
+  
+    /// <summary>
+    /// > [!NOTE]
+    /// > Custom validation attribute used to replace RangeAttribute
+    /// > <para>Used when generating some codes</para>
+    /// > <para>**Return to [CSSPModels](CSSPModels.html)**</para>
+    /// </summary>
+    /// <example>
+    ///     <code>
+    ///         [CSSPRange(pattern)]
+    ///         public string FirstName { get; set; }
+    ///     </code>
+    /// </example>
+    [AttributeUsage(AttributeTargets.Field | AttributeTargets.Property, AllowMultiple = false, Inherited = true)]
+    public class CSSPRangeAttribute : RangeAttribute
+    {
+        /// <summary>
+        /// > [!NOTE]
+        /// > Constructor
+        /// </summary>
+        public CSSPRangeAttribute(double minimum, double maximum) : base(minimum, maximum)
+        {
+
+        }
+        /// <summary>
+        /// > [!NOTE]
+        /// > Constructor
+        /// </summary>
+        public CSSPRangeAttribute(int minimum, int maximum) : base(minimum, maximum)
+        {
+
+        }
+        /// <summary>
+        /// > [!NOTE]
+        /// > Constructor
+        /// </summary>
+        public CSSPRangeAttribute(Type type, string minimum, string maximum) : base(type, minimum, maximum)
+        {
+
+        }
+        /// <summary>
+        /// > [!NOTE]
+        /// > Not used. Using own validation system.
+        /// </summary>
+        /// <param name="value">Not used</param>
+        /// <returns>Not used</returns>
+        public override bool IsValid(object value)
+        {
+            return true;
+        }
+    }
+  
+    /// <summary>
+    /// > [!NOTE]
+    /// > Custom validation attribute used to replace RegularExpressionAttribute
+    /// > <para>Used when generating some codes</para>
+    /// > <para>**Return to [CSSPModels](CSSPModels.html)**</para>
+    /// </summary>
+    /// <example>
+    ///     <code>
+    ///         [CSSPRegularExpression(pattern)]
+    ///         public string FirstName { get; set; }
+    ///     </code>
+    /// </example>
+    [AttributeUsage(AttributeTargets.Field | AttributeTargets.Property, AllowMultiple = false, Inherited = true)]
+    public class CSSPRegularExpressionAttribute : RegularExpressionAttribute
+    {
+        /// <summary>
+        /// > [!NOTE]
+        /// > Constructor
+        /// </summary>
+        public CSSPRegularExpressionAttribute(string pattern) : base(pattern)
+        {
+
+        }
+        /// <summary>
+        /// > [!NOTE]
+        /// > Not used. Using own validation system.
+        /// </summary>
+        /// <param name="value">Not used</param>
+        /// <returns>Not used</returns>
+        public override bool IsValid(object value)
+        {
+            return true;
+        }
+    }
+  
+    /// <summary>
+    /// > [!NOTE]
+    /// > Custom validation attribute used to replace RequiredAttribute
+    /// > <para>Used when generating some codes</para>
+    /// > <para>**Return to [CSSPModels](CSSPModels.html)**</para>
+    /// </summary>
+    /// <example>
+    ///     <code>
+    ///         [CSSPRequired()]
+    ///         public string FirstName { get; set; }
+    ///     </code>
+    /// </example>
+    [AttributeUsage(AttributeTargets.Field | AttributeTargets.Property, AllowMultiple = false, Inherited = true)]
+    public class CSSPRequiredAttribute : RequiredAttribute
+    {
+        /// <summary>
+        /// > [!NOTE]
+        /// > Constructor
+        /// </summary>
+        public CSSPRequiredAttribute() : base()
+        {
+
+        }
+        /// <summary>
+        /// > [!NOTE]
+        /// > Not used. Using own validation system.
         /// </summary>
         /// <param name="value">Not used</param>
         /// <returns>Not used</returns>

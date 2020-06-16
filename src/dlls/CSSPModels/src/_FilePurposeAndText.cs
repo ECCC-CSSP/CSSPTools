@@ -19,18 +19,10 @@ namespace CSSPModels
 
         #region Properties not in DB
         [CSSPEnumType]
-        [CSSPDisplayEN(DisplayEN = "File purpose")]
-        [CSSPDisplayFR(DisplayFR = "But du fichier")]
-        [CSSPDescriptionEN(DescriptionEN = @"File purpose")]
-        [CSSPDescriptionFR(DescriptionFR = @"But du fichier")]
         public FilePurposeEnum FilePurpose { get; set; }
-        [StringLength(100)]
+        [CSSPMaxLength(100)]
         [CSSPEnumTypeText(EnumTypeName = "FilePurposeEnum", EnumType = "FilePurpose")]
         [CSSPAllowNull]
-        [CSSPDisplayEN(DisplayEN = "File purpose text")]
-        [CSSPDisplayFR(DisplayFR = "Texte du but du fichier")]
-        [CSSPDescriptionEN(DescriptionEN = @"File purpose text")]
-        [CSSPDescriptionFR(DescriptionFR = @"Texte du but du fichier")]
         public string FilePurposeText { get; set; }
         #endregion Properties not in DB
 

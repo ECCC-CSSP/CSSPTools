@@ -18,17 +18,10 @@ namespace CSSPModels
         #endregion Properties in DB
 
         #region Properties not in DB
-        [StringLength(255, MinimumLength = 0)]
-        [CSSPDisplayEN(DisplayEN = "Name")]
-        [CSSPDisplayFR(DisplayFR = "Nom")]
-        [CSSPDescriptionEN(DescriptionEN = @"Name")]
-        [CSSPDescriptionFR(DescriptionFR = @"Nom")]
+        [CSSPMaxLength(255)]
+        [CSSPMinLength(1)]
         public string Name { get; set; }
-        [Range(1, -1)]
-        [CSSPDisplayEN(DisplayEN = "TVItemID")]
-        [CSSPDisplayFR(DisplayFR = "TVItemID")]
-        [CSSPDescriptionEN(DescriptionEN = @"Link to the TVItems table with the unique identifier")]
-        [CSSPDescriptionFR(DescriptionFR = @"Lien à la table TVItems avec l'identifiant unique")]
+        [CSSPRange(1, -1)]
         public int TVItemID { get; set; }
         #endregion Properties not in DB
 

@@ -31,8 +31,8 @@ namespace ModelsCompareDBFieldsAndCSSPModelsDLLPropServices.Services
             ActionCommandDBService.ExecutionStatusText.AppendLine("Generate Starting ...");
             ActionCommandDBService.PercentCompleted = 10;
             await ActionCommandDBService.Update();
-
-            FillPublicList();
+           
+            if (!await FillPublicList()) return await Task.FromResult(false);
 
             List<Table> tableCSSPWebList = new List<Table>();
             List<TypeProp> typePropList = new List<TypeProp>();

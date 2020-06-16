@@ -15,29 +15,13 @@ namespace CSSPModels
     {
         #region Properties in DB
         [Key]
-        [CSSPDisplayEN(DisplayEN = "Email ID")]
-        [CSSPDisplayFR(DisplayFR = "Email ID")]
-        [CSSPDescriptionEN(DescriptionEN = @"Contains the unique ""identifier on each row of the Emails table")]
-        [CSSPDescriptionFR(DescriptionFR = @"Contient l'identifiant unique sur chaque ligne de la table Emails")]
         public int EmailID { get; set; }
         [CSSPExist(ExistTypeName = "TVItem", ExistPlurial = "s", ExistFieldID = "TVItemID", AllowableTVTypeList = "7")]
-        [CSSPDisplayEN(DisplayEN = "Email")]
-        [CSSPDisplayFR(DisplayFR = "Courriel")]
-        [CSSPDescriptionEN(DescriptionEN = @"Link to the TVItems table representing the email")]
-        [CSSPDescriptionFR(DescriptionFR = @"Lien à la table TVItems représentant la courriel")]
         public int EmailTVItemID { get; set; }
-        [StringLength(255)]
+        [CSSPMaxLength(255)]
         [DataType(DataType.EmailAddress)]
-        [CSSPDisplayEN(DisplayEN = "Email address")]
-        [CSSPDisplayFR(DisplayFR = "Adresse courriel")]
-        [CSSPDescriptionEN(DescriptionEN = @"Email address")]
-        [CSSPDescriptionFR(DescriptionFR = @"Adresse courriel")]
         public string EmailAddress { get; set; }
         [CSSPEnumType]
-        [CSSPDisplayEN(DisplayEN = "Email type")]
-        [CSSPDisplayFR(DisplayFR = "Type de courriel")]
-        [CSSPDescriptionEN(DescriptionEN = @"Email type")]
-        [CSSPDescriptionFR(DescriptionFR = @"Type de courriel")]
         public EmailTypeEnum EmailType { get; set; }
         #endregion Properties in DB
 

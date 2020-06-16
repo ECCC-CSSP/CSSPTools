@@ -18,16 +18,8 @@ namespace CSSPModels
         #endregion Properties in DB
 
         #region Properties not in DB
-        [CSSPDisplayEN(DisplayEN = "Text")]
-        [CSSPDisplayFR(DisplayFR = "Texte")]
-        [CSSPDescriptionEN(DescriptionEN = @"Text")]
-        [CSSPDescriptionFR(DescriptionFR = @"Texte")]
         public string Text { get; set; }
-        [Range(1, -1)]
-        [CSSPDisplayEN(DisplayEN = "ID")]
-        [CSSPDisplayFR(DisplayFR = "ID")]
-        [CSSPDescriptionEN(DescriptionEN = @"ID")]
-        [CSSPDescriptionFR(DescriptionFR = @"Indentifiant")]
+        [CSSPRange(1, -1)]
         public int ID { get; set; }
         #endregion Properties not in DB
 

@@ -4,6 +4,7 @@ using GenerateCodeBaseServices.Models;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Globalization;
 using System.Linq;
 using System.Reflection;
 
@@ -111,34 +112,37 @@ namespace GenerateCodeBaseServices.Services
                 }
             }
 
-            if (propInfo.CustomAttributes.Where(c => c.AttributeType.Name == "StringLengthAttribute").Any())
+            if (propInfo.CustomAttributes.Where(c => c.AttributeType.Name == "CSSPMaxLengthAttribute").Any())
             {
-                csspProp.HasStringLengthAttribute = true;
+                csspProp.HasCSSPMaxLengthAttribute = true;
 
                 if (propInfo.PropertyType != typeof(String))
                 {
                     ActionCommandDBService.ErrorText.AppendLine($"{ CultureServicesRes.Class } [{ type.FullName }] { propInfo.Name } { CultureServicesRes.ShouldNotContainTheStringLengthAttribute }. { CultureServicesRes.StringLengthAttributeCanOnlyBeSetForSystemDotString }");
                     return false;
                 }
-                CustomAttributeData customAttributeData = propInfo.CustomAttributes.Where(c => c.AttributeType.Name == "StringLengthAttribute").First();
+                CustomAttributeData customAttributeData = propInfo.CustomAttributes.Where(c => c.AttributeType.Name == "CSSPMaxLengthAttribute").First();
                 csspProp.Max = (int)customAttributeData.ConstructorArguments.ToArray()[0].Value;
-                if (customAttributeData.NamedArguments.ToArray().Count() > 0)
-                {
-                    for (int i = 0, count = customAttributeData.NamedArguments.ToArray().Count(); i < count; i++)
-                    {
-                        if (customAttributeData.NamedArguments.ToArray()[i].MemberName == "MinimumLength")
-                        {
-                            csspProp.Min = (int)customAttributeData.NamedArguments.ToArray()[i].TypedValue.Value;
-                        }
-                    }
-                }
             }
 
-            if (propInfo.CustomAttributes.Where(c => c.AttributeType.Name == "RangeAttribute").Any())
+            if (propInfo.CustomAttributes.Where(c => c.AttributeType.Name == "CSSPMinLengthAttribute").Any())
             {
-                csspProp.HasRangeAttribute = true;
+                csspProp.HasCSSPMinLengthAttribute = true;
 
-                CustomAttributeData customAttributeData = propInfo.CustomAttributes.Where(c => c.AttributeType.Name == "RangeAttribute").First();
+                if (propInfo.PropertyType != typeof(String))
+                {
+                    ActionCommandDBService.ErrorText.AppendLine($"{ CultureServicesRes.Class } [{ type.FullName }] { propInfo.Name } { CultureServicesRes.ShouldNotContainTheStringLengthAttribute }. { CultureServicesRes.StringLengthAttributeCanOnlyBeSetForSystemDotString }");
+                    return false;
+                }
+                CustomAttributeData customAttributeData = propInfo.CustomAttributes.Where(c => c.AttributeType.Name == "CSSPMinLengthAttribute").First();
+                csspProp.Min = (int)customAttributeData.ConstructorArguments.ToArray()[0].Value;
+            }
+
+            if (propInfo.CustomAttributes.Where(c => c.AttributeType.Name == "CSSPRangeAttribute").Any())
+            {
+                csspProp.HasCSSPRangeAttribute = true;
+
+                CustomAttributeData customAttributeData = propInfo.CustomAttributes.Where(c => c.AttributeType.Name == "CSSPRangeAttribute").First();
                 if (csspProp.PropType == "Int16" || csspProp.PropType == "Int32" || csspProp.PropType == "Int64")
                 {
                     csspProp.Min = (int)customAttributeData.ConstructorArguments.ToArray()[0].Value;
@@ -166,11 +170,11 @@ namespace GenerateCodeBaseServices.Services
                 }
             }
 
-            if (propInfo.CustomAttributes.Where(c => c.AttributeType.Name == "CompareAttribute").Any())
+            if (propInfo.CustomAttributes.Where(c => c.AttributeType.Name == "CSSPCompareAttribute").Any())
             {
-                csspProp.HasCompareAttribute = true;
+                csspProp.HasCSSPCompareAttribute = true;
 
-                CustomAttributeData customAttributeData = propInfo.CustomAttributes.Where(c => c.AttributeType.Name == "CompareAttribute").First();
+                CustomAttributeData customAttributeData = propInfo.CustomAttributes.Where(c => c.AttributeType.Name == "CSSPCompareAttribute").First();
                 csspProp.Compare = (string)customAttributeData.ConstructorArguments.ToArray()[0].Value;
             }
 
@@ -328,86 +332,10 @@ namespace GenerateCodeBaseServices.Services
             csspProp.HasCSSPEnumTypeAttribute = propInfo.CustomAttributes.Where(c => c.AttributeType.Name.StartsWith("CSSPEnumTypeAttribute")).Any();
             csspProp.HasNotMappedAttribute = propInfo.CustomAttributes.Where(c => c.AttributeType.Name == "NotMappedAttribute").Any();
 
-
-            if (propInfo.CustomAttributes.Where(c => c.AttributeType.Name == "CSSPDescriptionENAttribute").Any())
-            {
-                csspProp.HasCSSPDescriptionENAttribute = true;
-                CustomAttributeData customAttributeData = propInfo.CustomAttributes.Where(c => c.AttributeType.Name == "CSSPDescriptionENAttribute").First();
-                for (int i = 0, count = customAttributeData.NamedArguments.ToArray().Count(); i < count; i++)
-                {
-                    switch (customAttributeData.NamedArguments.ToArray()[i].MemberName)
-                    {
-                        case "DescriptionEN":
-                            {
-                                csspProp.DescriptionEN = (string)customAttributeData.NamedArguments.ToArray()[i].TypedValue.Value;
-                            }
-                            break;
-                        default:
-                            ActionCommandDBService.ErrorText.AppendLine($"{ CultureServicesRes.Property } [{ csspProp.PropName }] { CultureServicesRes.OfType } [{ csspProp.PropType }] --- { CultureServicesRes.MemberName }  { customAttributeData.NamedArguments.ToArray()[i].MemberName } { CultureServicesRes.DoesNotExistFor } CSSPDescriptionENAttribute");
-                            return false;
-                    }
-                }
-            }
-
-            if (propInfo.CustomAttributes.Where(c => c.AttributeType.Name == "CSSPDescriptionFRAttribute").Any())
-            {
-                csspProp.HasCSSPDescriptionFRAttribute = true;
-                CustomAttributeData customAttributeData = propInfo.CustomAttributes.Where(c => c.AttributeType.Name == "CSSPDescriptionFRAttribute").First();
-                for (int i = 0, count = customAttributeData.NamedArguments.ToArray().Count(); i < count; i++)
-                {
-                    switch (customAttributeData.NamedArguments.ToArray()[i].MemberName)
-                    {
-                        case "DescriptionFR":
-                            {
-                                csspProp.DescriptionFR = (string)customAttributeData.NamedArguments.ToArray()[i].TypedValue.Value;
-                            }
-                            break;
-                        default:
-                            ActionCommandDBService.ErrorText.AppendLine($"{ CultureServicesRes.Property } [{ csspProp.PropName }] { CultureServicesRes.OfType } [{ csspProp.PropType }] --- { CultureServicesRes.MemberName }  { customAttributeData.NamedArguments.ToArray()[i].MemberName } { CultureServicesRes.DoesNotExistFor } CSSPDescriptionFRAttribute");
-                            return false;
-                    }
-                }
-            }
-
-            if (propInfo.CustomAttributes.Where(c => c.AttributeType.Name == "CSSPDisplayENAttribute").Any())
-            {
-                csspProp.HasCSSPDisplayENAttribute = true;
-                CustomAttributeData customAttributeData = propInfo.CustomAttributes.Where(c => c.AttributeType.Name == "CSSPDisplayENAttribute").First();
-                for (int i = 0, count = customAttributeData.NamedArguments.ToArray().Count(); i < count; i++)
-                {
-                    switch (customAttributeData.NamedArguments.ToArray()[i].MemberName)
-                    {
-                        case "DisplayEN":
-                            {
-                                csspProp.DisplayEN = (string)customAttributeData.NamedArguments.ToArray()[i].TypedValue.Value;
-                            }
-                            break;
-                        default:
-                            ActionCommandDBService.ErrorText.AppendLine($"{ CultureServicesRes.Property } [{ csspProp.PropName }] { CultureServicesRes.OfType } [{ csspProp.PropType }] --- { CultureServicesRes.MemberName }  { customAttributeData.NamedArguments.ToArray()[i].MemberName } { CultureServicesRes.DoesNotExistFor } CSSPDisplayENAttribute");
-                            return false;
-                    }
-                }
-            }
-
-            if (propInfo.CustomAttributes.Where(c => c.AttributeType.Name == "CSSPDisplayFRAttribute").Any())
-            {
-                csspProp.HasCSSPDisplayFRAttribute = true;
-                CustomAttributeData customAttributeData = propInfo.CustomAttributes.Where(c => c.AttributeType.Name == "CSSPDisplayFRAttribute").First();
-                for (int i = 0, count = customAttributeData.NamedArguments.ToArray().Count(); i < count; i++)
-                {
-                    switch (customAttributeData.NamedArguments.ToArray()[i].MemberName)
-                    {
-                        case "DisplayFR":
-                            {
-                                csspProp.DisplayFR = (string)customAttributeData.NamedArguments.ToArray()[i].TypedValue.Value;
-                            }
-                            break;
-                        default:
-                            ActionCommandDBService.ErrorText.AppendLine($"{ CultureServicesRes.Property } [{ csspProp.PropName }] { CultureServicesRes.OfType } [{ csspProp.PropType }] --- { CultureServicesRes.MemberName }  { customAttributeData.NamedArguments.ToArray()[i].MemberName } { CultureServicesRes.DoesNotExistFor } CSSPDisplayFRAttribute");
-                            return false;
-                    }
-                }
-            }
+            csspProp.DescriptionEN = CultureModelsRes.ResourceManager.GetString($"{type.Name}_{propInfo.Name}_Description", new CultureInfo("en-CA"));
+            csspProp.DescriptionFR = CultureModelsRes.ResourceManager.GetString($"{type.Name}_{propInfo.Name}_Description", new CultureInfo("fr-CA"));
+            csspProp.DisplayEN = CultureModelsRes.ResourceManager.GetString($"{type.Name}_{propInfo.Name}_Display", new CultureInfo("en-CA"));
+            csspProp.DisplayFR = CultureModelsRes.ResourceManager.GetString($"{type.Name}_{propInfo.Name}_Display", new CultureInfo("fr-CA"));
 
             return true;
         }

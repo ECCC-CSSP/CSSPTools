@@ -18,10 +18,6 @@ namespace CSSPModels
         #endregion Properties in DB
 
         #region Properties not in DB
-        [CSSPDisplayEN(DisplayEN = "Summary")]
-        [CSSPDisplayFR(DisplayFR = "Sommaire")]
-        [CSSPDescriptionEN(DescriptionEN = @"Summary of the pollution sources for MIKE")]
-        [CSSPDescriptionFR(DescriptionFR = @"Sommaire des sources de pollution pour MIKE")]
         public string Summary { get; set; }
         #endregion Properties not in DB
 

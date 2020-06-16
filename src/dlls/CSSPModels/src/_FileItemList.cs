@@ -18,17 +18,11 @@ namespace CSSPModels
         #endregion Properties in DB
 
         #region Properties not in DB
-        [StringLength(255, MinimumLength = 1)]
-        [CSSPDisplayEN(DisplayEN = "Text")]
-        [CSSPDisplayFR(DisplayFR = "Texte")]
-        [CSSPDescriptionEN(DescriptionEN = @"Text")]
-        [CSSPDescriptionFR(DescriptionFR = @"Texte")]
+        [CSSPMaxLength(255)]
+        [CSSPMinLength(1)]
         public string Text { get; set; }
-        [StringLength(255, MinimumLength = 1)]
-        [CSSPDisplayEN(DisplayEN = "File name")]
-        [CSSPDisplayFR(DisplayFR = "Nom du fichier")]
-        [CSSPDescriptionEN(DescriptionEN = @"File name")]
-        [CSSPDescriptionFR(DescriptionFR = @"Nom du fichier")]
+        [CSSPMaxLength(255)]
+        [CSSPMinLength(1)]
         public string FileName { get; set; }
         #endregion Properties not in DB
 

@@ -83,14 +83,14 @@ namespace ModelsCompareDBFieldsAndCSSPModelsDLLPropServices.Services
 
                                     if (csspProp.HasCSSPExistAttribute)
                                     {
-                                        if (csspProp.HasRangeAttribute)
+                                        if (csspProp.HasCSSPRangeAttribute)
                                         {
                                             sb.AppendLine($"{ table.TableName }\t{ col.FieldName }\t---------------- should NOT have a Range Attribute");
                                         }
                                     }
                                     else
                                     {
-                                        if (!csspProp.HasRangeAttribute)
+                                        if (!csspProp.HasCSSPRangeAttribute)
                                         {
                                             sb.AppendLine($"{ table.TableName }\t{ col.FieldName }\t---------------- should have a Range Attribute");
                                         }
@@ -139,14 +139,14 @@ namespace ModelsCompareDBFieldsAndCSSPModelsDLLPropServices.Services
                                         {
                                             if (csspProp.HasCSSPExistAttribute)
                                             {
-                                                if (csspProp.HasRangeAttribute)
+                                                if (csspProp.HasCSSPRangeAttribute)
                                                 {
                                                     sb.AppendLine($"{ table.TableName }\t{ col.FieldName }\t---------------- should NOT have a Range Attribute");
                                                 }
                                             }
                                             else
                                             {
-                                                if (!csspProp.HasRangeAttribute)
+                                                if (!csspProp.HasCSSPRangeAttribute)
                                                 {
                                                     sb.AppendLine($"{ table.TableName }\t{ col.FieldName }\t---------------- should have a Range Attribute");
                                                 }
@@ -204,9 +204,9 @@ namespace ModelsCompareDBFieldsAndCSSPModelsDLLPropServices.Services
                                         sb.AppendLine($"{ table.TableName }\t{ col.FieldName }\t---------------- wrong type It is [{ csspProp.PropType }] should be [String]");
                                     }
 
-                                    if (!csspProp.HasStringLengthAttribute)
+                                    if (!csspProp.HasCSSPMaxLengthAttribute)
                                     {
-                                        sb.AppendLine($"{ table.TableName }\t{ col.FieldName }\t---------------- should have a StringLength Attribute");
+                                        sb.AppendLine($"{ table.TableName }\t{ col.FieldName }\t---------------- should have a CSSPMaxLength Attribute");
                                     }
 
                                     TableFieldEmail tableFieldEmail = TableFieldEmailList.Where(c => c.TableName == table.TableName && c.FieldName == col.FieldName).FirstOrDefault();
@@ -226,7 +226,7 @@ namespace ModelsCompareDBFieldsAndCSSPModelsDLLPropServices.Services
                                         sb.AppendLine($"{ table.TableName }\t{ col.FieldName }\t---------------- wrong type It is [{ csspProp.PropType }] should be [Double]");
                                     }
 
-                                    if (!csspProp.HasRangeAttribute)
+                                    if (!csspProp.HasCSSPRangeAttribute)
                                     {
                                         sb.AppendLine($"{ table.TableName }\t{ col.FieldName }\t---------------- should have a Range Attribute");
                                     }

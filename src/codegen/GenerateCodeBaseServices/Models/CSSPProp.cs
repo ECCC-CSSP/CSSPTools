@@ -29,9 +29,10 @@ namespace GenerateCodeBaseServices.Models
             HasCSSPEnumTypeAttribute = false;
             HasCSSPExistAttribute = false;
             HasCSSPFillAttribute = false;
-            HasStringLengthAttribute = false;
-            HasRangeAttribute = false;
-            HasCompareAttribute = false;
+            HasCSSPMaxLengthAttribute = false;
+            HasCSSPMinLengthAttribute = false;
+            HasCSSPRangeAttribute = false;
+            HasCSSPCompareAttribute = false;
             HasDataTypeAttribute = false;
             AllowableTVTypeList = new List<TVTypeEnum>();
             IsCollection = false;
@@ -47,10 +48,6 @@ namespace GenerateCodeBaseServices.Models
             EnumType = "";
             FillNeedLanguage = false;
             FillIsList = false;
-            HasCSSPDescriptionENAttribute = false;
-            HasCSSPDescriptionFRAttribute = false;
-            HasCSSPDisplayENAttribute = false;
-            HasCSSPDisplayFRAttribute = false;
             DescriptionEN = "";
             DescriptionFR = "";
             DisplayEN = "";
@@ -77,9 +74,10 @@ namespace GenerateCodeBaseServices.Models
         public bool HasCSSPEnumTypeAttribute { get; set; }
         public bool HasCSSPExistAttribute { get; set; }
         public bool HasCSSPFillAttribute { get; set; }
-        public bool HasStringLengthAttribute { get; set; }
-        public bool HasRangeAttribute { get; set; }
-        public bool HasCompareAttribute { get; set; }
+        public bool HasCSSPMaxLengthAttribute { get; set; }
+        public bool HasCSSPMinLengthAttribute { get; set; }
+        public bool HasCSSPRangeAttribute { get; set; }
+        public bool HasCSSPCompareAttribute { get; set; }
         public bool HasDataTypeAttribute { get; set; }
         public List<TVTypeEnum> AllowableTVTypeList { get; set; }
         public bool IsCollection { get; set; }
@@ -95,10 +93,6 @@ namespace GenerateCodeBaseServices.Models
         public string EnumType { get; set; }
         public bool FillNeedLanguage { get; set; }
         public bool FillIsList { get; set; }
-        public bool HasCSSPDescriptionENAttribute { get; set; }
-        public bool HasCSSPDescriptionFRAttribute { get; set; }
-        public bool HasCSSPDisplayENAttribute { get; set; }
-        public bool HasCSSPDisplayFRAttribute { get; set; }
         public string DescriptionEN { get; set; }
         public string DescriptionFR { get; set; }
         public string DisplayEN { get; set; }

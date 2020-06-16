@@ -66,9 +66,9 @@ namespace ServicesClassNameServiceTestGeneratedServices.Services
                 {
                     sb.AppendLine(@"                    // [IsVirtual]");
                 }
-                if (csspProp.HasCompareAttribute)
+                if (csspProp.HasCSSPCompareAttribute)
                 {
-                    sb.AppendLine($@"                    // [Compare(OtherField = { csspProp.OtherField })]");
+                    sb.AppendLine($@"                    // [CSSPCompare(OtherField = { csspProp.OtherField })]");
                 }
                 if (csspProp.HasCSSPAfterAttribute)
                 {
@@ -104,14 +104,17 @@ namespace ServicesClassNameServiceTestGeneratedServices.Services
                 {
                     sb.AppendLine(@"                    // [NotMapped]");
                 }
-                if (csspProp.HasRangeAttribute)
+                if (csspProp.HasCSSPRangeAttribute)
                 {
-                    sb.AppendLine($@"                    // [Range({ csspProp.Min }, { (csspProp.Max == null ? "-1" : csspProp.Max.ToString()) })]");
+                    sb.AppendLine($@"                    // [CSSPRange({ csspProp.Min }, { (csspProp.Max == null ? "-1" : csspProp.Max.ToString()) })]");
                 }
-                if (csspProp.HasStringLengthAttribute)
+                if (csspProp.HasCSSPMaxLengthAttribute)
                 {
-                    string MinText = (csspProp.Min == null ? ")" : $", MinimumLength = { csspProp.Min.ToString() }");
-                    sb.AppendLine($@"                    // [StringLength({ csspProp.Max }{ MinText })]");
+                    sb.AppendLine($@"                    // [CSSPMaxLength({ csspProp.Max })]");
+                }
+                if (csspProp.HasCSSPMinLengthAttribute)
+                {
+                    sb.AppendLine($@"                    // [CSSPMinLength({ csspProp.Min })]");
                 }
                 sb.AppendLine($@"                    // { TypeNameLower }.{ csspProp.PropName }   ({ csspProp.PropType })");
                 sb.AppendLine(@"                    // -----------------------------------");

@@ -66,9 +66,12 @@ namespace AngularModelsGeneratedServices.Services
 
             List<string> removeClass = new List<string>()
             {
-                "CSSPAfterAttribute", "CSSPAllowNullAttribute", "CSSPBiggerAttribute", "CSSPDBContext", "CSSPDescriptionENAttribute",
-                "CSSPDescriptionFRAttribute", "CSSPDisplayENAttribute", "CSSPDisplayFRAttribute", "CSSPEnumTypeAttribute",
-                "CSSPEnumTypeTextAttribute", "CSSPExistAttribute", "CSSPFillAttribute", "CSSPModelsRes", "TestDBContext",
+                "CSSPAfterAttribute", "CSSPAllowNullAttribute", "CSSPBiggerAttribute", "CSSPCompareAttribute",
+                "CSSPEnumTypeAttribute", "CSSPEnumTypeTextAttribute", "CSSPExistAttribute", "CSSPFillAttribute",
+                "CSSPMaxLengthAttribute", "CSSPMinLengthAttribute", "CSSPRangeAttribute",
+                "CSSPRequiredAttribute", "CSSPRegularExpressionAttribute",
+                "CSSPModelsRes", "CSSPDBContext", "TestDBContext", "InMemoryDBContext",
+                "LastUpdate", "AspNetUser",
             };
             foreach (DLLTypeInfo dllTypeInfoModels in DLLTypeInfoCSSPModelsList)
             {

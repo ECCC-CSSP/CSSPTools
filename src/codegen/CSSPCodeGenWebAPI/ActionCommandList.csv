@@ -7,7 +7,6 @@ run,EnumsPolSourceInfoRelatedFiles,C:\CSSPTools\src\codegen\EnumsPolSourceInfoRe
 run,EnumsTestGenerated_cs,C:\CSSPTools\src\codegen\EnumsTestGenerated_cs\bin\Debug\netcoreapp3.1\EnumsTestGenerated_cs.exe
 run,ModelsCompare,C:\CSSPTools\src\codegen\ModelsCompare\bin\Debug\netcoreapp3.1\ModelsCompare.exe
 run,ModelsCompareDBFieldsAndCSSPModelsDLLProp,C:\CSSPTools\src\codegen\ModelsCompareDBFieldsAndCSSPModelsDLLProp\bin\Debug\netcoreapp3.1\ModelsCompareDBFieldsAndCSSPModelsDLLProp.exe
-run,ModelsCSSPModelsRes,C:\CSSPTools\src\codegen\ModelsCSSPModelsRes\bin\Debug\netcoreapp3.1\ModelsCSSPModelsRes.exe
 run,ModelsModelClassNameTest,C:\CSSPTools\src\codegen\ModelsModelClassNameTest\bin\Debug\netcoreapp3.1\ModelsModelClassNameTest.exe
 run,ModelsModelClassNameTestGenerated_cs,C:\CSSPTools\src\codegen\ModelsModelClassNameTestGenerated_cs\bin\Debug\netcoreapp3.1\ModelsModelClassNameTestGenerated_cs.exe
 run,ServicesClassNameServiceGenerated,C:\CSSPTools\src\codegen\ServicesClassNameServiceGenerated\bin\Debug\netcoreapp3.1\ServicesClassNameServiceGenerated.exe
@@ -52,9 +51,6 @@ build,ModelsCompareDBFieldsAndCSSPModelsDLLPropServices,C:\CSSPTools\src\codegen
 build,ModelsCompareDBFieldsAndCSSPModelsDLLPropServices.Tests,C:\CSSPTools\src\codegen\Tests\ModelsCompareDBFieldsAndCSSPModelsDLLPropServices.Tests\ModelsCompareDBFieldsAndCSSPModelsDLLPropServices.Tests.csproj
 build,ModelsCompareServices,C:\CSSPTools\src\codegen\ModelsCompareServices\ModelsCompareServices.csproj
 build,ModelsCompareServices.Tests,C:\CSSPTools\src\codegen\Tests\ModelsCompareServices.Tests\ModelsCompareServices.Tests.csproj
-build,ModelsCSSPModelsRes,C:\CSSPTools\src\codegen\ModelsCSSPModelsRes\ModelsCSSPModelsRes.csproj
-build,ModelsCSSPModelsResServices,C:\CSSPTools\src\codegen\ModelsCSSPModelsResServices\ModelsCSSPModelsResServices.csproj
-build,ModelsCSSPModelsResServices.Tests,C:\CSSPTools\src\codegen\Tests\ModelsCSSPModelsResServices.Tests\ModelsCSSPModelsResServices.Tests.csproj
 build,ModelsModelClassNameTest,C:\CSSPTools\src\codegen\ModelsModelClassNameTest\ModelsModelClassNameTest.csproj
 build,ModelsModelClassNameTestGenerated_cs,C:\CSSPTools\src\codegen\ModelsModelClassNameTestGenerated_cs\ModelsModelClassNameTestGenerated_cs.csproj
 build,ModelsModelClassNameTestGenerated_csServices,C:\CSSPTools\src\codegen\ModelsModelClassNameTestGenerated_csServices\ModelsModelClassNameTestGenerated_csServices.csproj
@@ -100,7 +96,6 @@ test,ExecuteDotNetCommandServices.Tests,C:\CSSPTools\src\codegen\Tests\ExecuteDo
 test,GenerateCodeBaseServices.Tests,C:\CSSPTools\src\codegen\Tests\GenerateCodeBaseServices.Tests\GenerateCodeBaseServices.Tests.csproj
 test,ModelsCompareDBFieldsAndCSSPModelsDLLPropServices.Tests,C:\CSSPTools\src\codegen\Tests\ModelsCompareDBFieldsAndCSSPModelsDLLPropServices.Tests\ModelsCompareDBFieldsAndCSSPModelsDLLPropServices.Tests.csproj
 test,ModelsCompareServices.Tests,C:\CSSPTools\src\codegen\Tests\ModelsCompareServices.Tests\ModelsCompareServices.Tests.csproj
-test,ModelsCSSPModelsResServices.Tests,C:\CSSPTools\src\codegen\Tests\ModelsCSSPModelsResServices.Tests\ModelsCSSPModelsResServices.Tests.csproj
 test,ModelsModelClassNameTestGenerated_csServices.Tests,C:\CSSPTools\src\codegen\Tests\ModelsModelClassNameTestGenerated_csServices.Tests\ModelsModelClassNameTestGenerated_csServices.Tests.csproj
 test,ModelsModelClassNameTestServices.Tests,C:\CSSPTools\src\codegen\Tests\ModelsModelClassNameTestServices.Tests\ModelsModelClassNameTestServices.Tests.csproj
 test,PolSourceGroupingExcelFileReadServices.Tests,C:\CSSPTools\src\codegen\Tests\PolSourceGroupingExcelFileReadServices.Tests\PolSourceGroupingExcelFileReadServices.Tests.csproj

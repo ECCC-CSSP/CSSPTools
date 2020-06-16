@@ -18,23 +18,13 @@ namespace CSSPModels
         #endregion Properties in DB
 
         #region Properties not in DB
-        [StringLength(255, MinimumLength = 1)]
-        [CSSPDisplayEN(DisplayEN = "TV type name")]
-        [CSSPDisplayFR(DisplayFR = "Nom du type de l'arbre visuel")]
-        [CSSPDescriptionEN(DescriptionEN = @"Tree view type name")]
-        [CSSPDescriptionFR(DescriptionFR = @"Nom du type de l'arbre visuel")]
+        [CSSPMaxLength(255)]
+        [CSSPMinLength(1)]
         public string TVTypeName { get; set; }
-        [Range(1, -1)]
-        [CSSPDisplayEN(DisplayEN = "Index")]
-        [CSSPDisplayFR(DisplayFR = "Indice")]
-        [CSSPDescriptionEN(DescriptionEN = @"Index")]
-        [CSSPDescriptionFR(DescriptionFR = @"Indice")]
+        [CSSPRange(1, -1)]
         public int Index { get; set; }
-        [StringLength(255, MinimumLength = 1)]
-        [CSSPDisplayEN(DisplayEN = "TV path")]
-        [CSSPDisplayFR(DisplayFR = "Chemin de l'arbre visuel")]
-        [CSSPDescriptionEN(DescriptionEN = @"Tree view path")]
-        [CSSPDescriptionFR(DescriptionFR = @"Chemin de l'arbre visuel")]
+        [CSSPMaxLength(255)]
+        [CSSPMinLength(1)]
         public string TVPath { get; set; }
         #endregion Properties not in DB
 

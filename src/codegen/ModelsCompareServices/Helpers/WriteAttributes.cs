@@ -21,20 +21,23 @@ namespace ModelsCompareServices.Services
                 string AllowableTVTypeListText = "";
                 foreach (CSSPEnums.TVTypeEnum tvType in dllPropertyInfo.CSSPProp.AllowableTVTypeList)
                 {
-                    AllowableTVTypeListText += $"{ ((int)tvType).ToString() },";
+                    AllowableTVTypeListText += $"{ (int)tvType },";
                 }
 
                 if (!string.IsNullOrWhiteSpace(AllowableTVTypeListText))
                 {
                     AllowableTVTypeListText = AllowableTVTypeListText.Substring(0, AllowableTVTypeListText.Length - 1);
                 }
-                string AllowableTVTypeListEmptyOrNot = (!string.IsNullOrWhiteSpace(AllowableTVTypeListText) ? $@", AllowableTVTypeList = ""{ AllowableTVTypeListText }""" : "");
+                string AllowableTVTypeListEmptyOrNot = !string.IsNullOrWhiteSpace(AllowableTVTypeListText) ? $@", AllowableTVTypeList = ""{ AllowableTVTypeListText }""" : "";
                 sb.AppendLine($@"        [CSSPExist(ExistTypeName = ""{ dllPropertyInfo.CSSPProp.ExistTypeName }"", ExistPlurial = ""{ dllPropertyInfo.CSSPProp.ExistPlurial }"", ExistFieldID = ""{ dllPropertyInfo.CSSPProp.ExistFieldID }""{ AllowableTVTypeListEmptyOrNot })]");
             }
-            if (dllPropertyInfo.CSSPProp.HasStringLengthAttribute)
+            if (dllPropertyInfo.CSSPProp.HasCSSPMaxLengthAttribute)
             {
-                string MinText = (dllPropertyInfo.CSSPProp.Min != null ? $", MinimumLength = { dllPropertyInfo.CSSPProp.Min.ToString() }" : "");
-                sb.AppendLine($@"        [StringLength({ dllPropertyInfo.CSSPProp.Max }{ MinText })]");
+                sb.AppendLine($@"        [CSSPMaxLength({ dllPropertyInfo.CSSPProp.Max })]");
+            }
+            if (dllPropertyInfo.CSSPProp.HasCSSPMinLengthAttribute)
+            {
+                sb.AppendLine($@"        [CSSPMinLength({ dllPropertyInfo.CSSPProp.Min })]");
             }
             if (dllPropertyInfo.CSSPProp.HasCSSPEnumTypeAttribute)
             {
@@ -50,8 +53,8 @@ namespace ModelsCompareServices.Services
             }
             if (dllPropertyInfo.CSSPProp.HasCSSPFillAttribute)
             {
-                string FillNeedLanguage = (dllPropertyInfo.CSSPProp.FillNeedLanguage ? "true" : "false");
-                string FillIsList = (dllPropertyInfo.CSSPProp.FillIsList ? "true" : "false");
+                string FillNeedLanguage = dllPropertyInfo.CSSPProp.FillNeedLanguage ? "true" : "false";
+                string FillIsList = dllPropertyInfo.CSSPProp.FillIsList ? "true" : "false";
                 sb.AppendLine($@"        [CSSPFill(FillTypeName = ""{ dllPropertyInfo.CSSPProp.FillTypeName }"", FillPlurial = ""{ dllPropertyInfo.CSSPProp.FillPlurial }"", FillFieldID = ""{ dllPropertyInfo.CSSPProp.FillFieldID }"", FillEqualField = ""{ dllPropertyInfo.CSSPProp.FillEqualField }"", FillReturnField = ""{ dllPropertyInfo.CSSPProp.FillReturnField }"", FillNeedLanguage = { FillNeedLanguage }, FillIsList = { FillIsList })]");
             }
             if (dllPropertyInfo.CSSPProp.HasCSSPEnumTypeTextAttribute)
@@ -62,11 +65,11 @@ namespace ModelsCompareServices.Services
             {
                 sb.AppendLine(@"        [DataType(DataType.EmailAddress)]");
             }
-            if (dllPropertyInfo.CSSPProp.HasCompareAttribute)
+            if (dllPropertyInfo.CSSPProp.HasCSSPCompareAttribute)
             {
-                sb.AppendLine($@"        [Compare(""{ dllPropertyInfo.CSSPProp.Compare }"")]");
+                sb.AppendLine($@"        [CSSPCompare(""{ dllPropertyInfo.CSSPProp.Compare }"")]");
             }
-            if (dllPropertyInfo.CSSPProp.HasRangeAttribute)
+            if (dllPropertyInfo.CSSPProp.HasCSSPRangeAttribute)
             {
                 string MinText = "";
                 string MaxText = "";
@@ -130,7 +133,7 @@ namespace ModelsCompareServices.Services
                         MaxText = "-1.0D";
                     }
                 }
-                sb.AppendLine($@"        [Range({ MinText }, { MaxText })]");
+                sb.AppendLine($@"        [CSSPRange({ MinText }, { MaxText })]");
             }
             if (dllPropertyInfo.CSSPProp.HasCSSPEnumTypeAttribute && dllPropertyInfo.CSSPProp.IsNullable)
             {
@@ -159,22 +162,6 @@ namespace ModelsCompareServices.Services
             else if (dllTypeInfoModels.Type.Name == "Contact" && (dllPropertyInfo.PropertyInfo.Name == "PasswordHash" || dllPropertyInfo.PropertyInfo.Name == "PasswordSalt"))
             {
                 sb.AppendLine(@"        [CSSPAllowNull]");
-            }
-            if (dllPropertyInfo.CSSPProp.HasCSSPDisplayENAttribute)
-            {
-                sb.AppendLine($@"        [CSSPDisplayEN(DisplayEN = ""{ dllPropertyInfo.CSSPProp.DisplayEN }"")]");
-            }
-            if (dllPropertyInfo.CSSPProp.HasCSSPDisplayFRAttribute)
-            {
-                sb.AppendLine($@"        [CSSPDisplayFR(DisplayFR = ""{ dllPropertyInfo.CSSPProp.DisplayFR }"")]");
-            }
-            if (dllPropertyInfo.CSSPProp.HasCSSPDescriptionENAttribute)
-            {
-                sb.AppendLine($@"        [CSSPDescriptionEN(DescriptionEN = @""{ dllPropertyInfo.CSSPProp.DescriptionEN.Replace("\"", "\"\"") }"")]");
-            }
-            if (dllPropertyInfo.CSSPProp.HasCSSPDescriptionFRAttribute)
-            {
-                sb.AppendLine($@"        [CSSPDescriptionFR(DescriptionFR = @""{ dllPropertyInfo.CSSPProp.DescriptionFR.Replace("\"", "\"\"") }"")]");
             }
 
             return await Task.FromResult(true);

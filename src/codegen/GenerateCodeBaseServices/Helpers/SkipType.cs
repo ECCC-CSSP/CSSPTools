@@ -15,17 +15,17 @@ namespace GenerateCodeBaseServices.Services
                 || type.Name.StartsWith("CSSPAfter")
                 || type.Name.StartsWith("CSSPAllowNull")
                 || type.Name.StartsWith("CSSPBigger")
+                || type.Name.StartsWith("CSSPCompare")
                 || type.Name.StartsWith("CSSPEnumType")
+                || type.Name.StartsWith("CSSPEnumTypeText")
                 || type.Name.StartsWith("CSSPExist")
                 || type.Name.StartsWith("CSSPFill")
-                || type.Name.StartsWith("CSSPEnumTypeText")
-                || type.Name.StartsWith("CSSPDescriptionENAttribute")
-                || type.Name.StartsWith("CSSPDescriptionFRAttribute")
-                || type.Name.StartsWith("CSSPDisplayENAttribute")
-                || type.Name.StartsWith("CSSPDisplayFRAttribute")
-                || type.Name == "CSSPError"
+                || type.Name.StartsWith("CSSPMaxLengthAttribute")
+                || type.Name.StartsWith("CSSPMinLengthAttribute")
+                || type.Name.StartsWith("CSSPRangeAttribute")
+                || type.Name.StartsWith("CSSPRequiredAttribute")
+                || type.Name.StartsWith("CSSPRegularExpressionAttribute")
                 || type.Name == "LastUpdate"
-                || type.Name == "CSSPModelsRes"
                 || type.Name == "AspNetUser")
             {
                 return true;

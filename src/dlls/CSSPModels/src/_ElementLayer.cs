@@ -18,26 +18,10 @@ namespace CSSPModels
         #endregion Properties in DB
 
         #region Properties not in DB
-        [Range(1, 1000)]
-        [CSSPDisplayEN(DisplayEN = "Layer")]
-        [CSSPDisplayFR(DisplayFR = "Couche")]
-        [CSSPDescriptionEN(DescriptionEN = @"Layer")]
-        [CSSPDescriptionFR(DescriptionFR = @"Couche")]
+        [CSSPRange(1, 1000)]
         public int Layer { get; set; }
-        [CSSPDisplayEN(DisplayEN = "Z min")]
-        [CSSPDisplayFR(DisplayFR = "Z min")]
-        [CSSPDescriptionEN(DescriptionEN = @"Z minimum")]
-        [CSSPDescriptionFR(DescriptionFR = @"Z minimum")]
         public double ZMin { get; set; }
-        [CSSPDisplayEN(DisplayEN = "Z max")]
-        [CSSPDisplayFR(DisplayFR = "Z max")]
-        [CSSPDescriptionEN(DescriptionEN = @"Z maximum")]
-        [CSSPDescriptionFR(DescriptionFR = @"Z maximum")]
         public double ZMax { get; set; }
-        [CSSPDisplayEN(DisplayEN = "Element")]
-        [CSSPDisplayFR(DisplayFR = "Élément")]
-        [CSSPDescriptionEN(DescriptionEN = @"Element")]
-        [CSSPDescriptionFR(DescriptionFR = @"Élément")]
         public Element Element { get; set; }
         #endregion Properties not in DB
 
