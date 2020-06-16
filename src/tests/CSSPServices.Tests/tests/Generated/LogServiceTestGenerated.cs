@@ -32,7 +32,7 @@ namespace CSSPServices.Tests
         private IServiceProvider Provider { get; set; }
         private IServiceCollection Services { get; set; }
         private ICultureService CultureService { get; set; }
-        private ILogService logService { get; set; }
+        private ILogService LogService { get; set; }
         private CSSPDBContext db { get; set; }
         #endregion Properties
 
@@ -62,7 +62,7 @@ namespace CSSPServices.Tests
                Log log = GetFilledRandomLog(""); 
 
                // List<Log>
-               var actionLogList = await logService.GetLogList();
+               var actionLogList = await LogService.GetLogList();
                Assert.Equal(200, ((ObjectResult)actionLogList.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionLogList.Result).Value);
                List<Log> logList = (List<Log>)((OkObjectResult)actionLogList.Result).Value;
@@ -70,22 +70,22 @@ namespace CSSPServices.Tests
                int count = ((List<Log>)((OkObjectResult)actionLogList.Result).Value).Count();
                 Assert.True(count > 0);
 
-               // Add Log
-               var actionLogAdded = await logService.Add(log);
+               // Post Log
+               var actionLogAdded = await LogService.Post(log);
                Assert.Equal(200, ((ObjectResult)actionLogAdded.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionLogAdded.Result).Value);
                Log logAdded = (Log)((OkObjectResult)actionLogAdded.Result).Value;
                Assert.NotNull(logAdded);
 
-               // Update Log
-               var actionLogUpdated = await logService.Update(log);
+               // Put Log
+               var actionLogUpdated = await LogService.Put(log);
                Assert.Equal(200, ((ObjectResult)actionLogUpdated.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionLogUpdated.Result).Value);
                Log logUpdated = (Log)((OkObjectResult)actionLogUpdated.Result).Value;
                Assert.NotNull(logUpdated);
 
                // Delete Log
-               var actionLogDeleted = await logService.Delete(log.LogID);
+               var actionLogDeleted = await LogService.Delete(log.LogID);
                Assert.Equal(200, ((ObjectResult)actionLogDeleted.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionLogDeleted.Result).Value);
                bool retBool = (bool)((OkObjectResult)actionLogDeleted.Result).Value;
@@ -126,8 +126,8 @@ namespace CSSPServices.Tests
 
             CultureService.SetCulture(culture);
 
-            logService = Provider.GetService<ILogService>();
-            Assert.NotNull(logService);
+            LogService = Provider.GetService<ILogService>();
+            Assert.NotNull(LogService);
 
             return await Task.FromResult(true);
         }

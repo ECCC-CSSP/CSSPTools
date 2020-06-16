@@ -9,6 +9,7 @@ using CSSPEnums;
 using CSSPModels;
 using CultureServices.Resources;
 using CultureServices.Services;
+using LoggedInServices.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -22,11 +23,11 @@ namespace CSSPServices
 {
    public interface IRatingCurveValueService
     {
-       Task<ActionResult<RatingCurveValue>> GetRatingCurveValueWithRatingCurveValueID(int RatingCurveValueID);
-       Task<ActionResult<List<RatingCurveValue>>> GetRatingCurveValueList();
-       Task<ActionResult<RatingCurveValue>> Add(RatingCurveValue ratingcurvevalue);
        Task<ActionResult<bool>> Delete(int RatingCurveValueID);
-       Task<ActionResult<RatingCurveValue>> Update(RatingCurveValue ratingcurvevalue);
+       Task<ActionResult<List<RatingCurveValue>>> GetRatingCurveValueList();
+       Task<ActionResult<RatingCurveValue>> GetRatingCurveValueWithRatingCurveValueID(int RatingCurveValueID);
+       Task<ActionResult<RatingCurveValue>> Post(RatingCurveValue ratingcurvevalue);
+       Task<ActionResult<RatingCurveValue>> Put(RatingCurveValue ratingcurvevalue);
     }
     public partial class RatingCurveValueService : ControllerBase, IRatingCurveValueService
     {
@@ -36,14 +37,16 @@ namespace CSSPServices
         #region Properties
         private CSSPDBContext db { get; }
         private ICultureService CultureService { get; }
+        private ILoggedInService LoggedInService { get; }
         private IEnums enums { get; }
         private IEnumerable<ValidationResult> ValidationResults { get; set; }
         #endregion Properties
 
         #region Constructors
-        public RatingCurveValueService(ICultureService CultureService, IEnums enums, CSSPDBContext db)
+        public RatingCurveValueService(ICultureService CultureService, ILoggedInService LoggedInService, IEnums enums, CSSPDBContext db)
         {
             this.CultureService = CultureService;
+            this.LoggedInService = LoggedInService;
             this.enums = enums;
             this.db = db;
         }
@@ -52,6 +55,11 @@ namespace CSSPServices
         #region Functions public 
         public async Task<ActionResult<RatingCurveValue>> GetRatingCurveValueWithRatingCurveValueID(int RatingCurveValueID)
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             RatingCurveValue ratingcurvevalue = (from c in db.RatingCurveValues.AsNoTracking()
                     where c.RatingCurveValueID == RatingCurveValueID
                     select c).FirstOrDefault();
@@ -65,32 +73,22 @@ namespace CSSPServices
         }
         public async Task<ActionResult<List<RatingCurveValue>>> GetRatingCurveValueList()
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             List<RatingCurveValue> ratingcurvevalueList = (from c in db.RatingCurveValues.AsNoTracking() select c).Take(100).ToList();
 
             return await Task.FromResult(Ok(ratingcurvevalueList));
         }
-        public async Task<ActionResult<RatingCurveValue>> Add(RatingCurveValue ratingCurveValue)
-        {
-            ValidationResults = Validate(new ValidationContext(ratingCurveValue), ActionDBTypeEnum.Create);
-            if (ValidationResults.Count() > 0)
-            {
-               return await Task.FromResult(BadRequest(ValidationResults));
-            }
-
-            try
-            {
-               db.RatingCurveValues.Add(ratingCurveValue);
-               db.SaveChanges();
-            }
-            catch (DbUpdateException ex)
-            {
-               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
-            }
-
-            return await Task.FromResult(Ok(ratingCurveValue));
-        }
         public async Task<ActionResult<bool>> Delete(int RatingCurveValueID)
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             RatingCurveValue ratingCurveValue = (from c in db.RatingCurveValues
                                where c.RatingCurveValueID == RatingCurveValueID
                                select c).FirstOrDefault();
@@ -112,8 +110,38 @@ namespace CSSPServices
 
             return await Task.FromResult(Ok(true));
         }
-        public async Task<ActionResult<RatingCurveValue>> Update(RatingCurveValue ratingCurveValue)
+        public async Task<ActionResult<RatingCurveValue>> Post(RatingCurveValue ratingCurveValue)
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
+            ValidationResults = Validate(new ValidationContext(ratingCurveValue), ActionDBTypeEnum.Create);
+            if (ValidationResults.Count() > 0)
+            {
+               return await Task.FromResult(BadRequest(ValidationResults));
+            }
+
+            try
+            {
+               db.RatingCurveValues.Add(ratingCurveValue);
+               db.SaveChanges();
+            }
+            catch (DbUpdateException ex)
+            {
+               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+            }
+
+            return await Task.FromResult(Ok(ratingCurveValue));
+        }
+        public async Task<ActionResult<RatingCurveValue>> Put(RatingCurveValue ratingCurveValue)
+        {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             ValidationResults = Validate(new ValidationContext(ratingCurveValue), ActionDBTypeEnum.Update);
             if (ValidationResults.Count() > 0)
             {

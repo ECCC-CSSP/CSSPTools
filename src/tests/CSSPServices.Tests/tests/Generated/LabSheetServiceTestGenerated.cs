@@ -32,7 +32,7 @@ namespace CSSPServices.Tests
         private IServiceProvider Provider { get; set; }
         private IServiceCollection Services { get; set; }
         private ICultureService CultureService { get; set; }
-        private ILabSheetService labSheetService { get; set; }
+        private ILabSheetService LabSheetService { get; set; }
         private CSSPDBContext db { get; set; }
         #endregion Properties
 
@@ -62,7 +62,7 @@ namespace CSSPServices.Tests
                LabSheet labSheet = GetFilledRandomLabSheet(""); 
 
                // List<LabSheet>
-               var actionLabSheetList = await labSheetService.GetLabSheetList();
+               var actionLabSheetList = await LabSheetService.GetLabSheetList();
                Assert.Equal(200, ((ObjectResult)actionLabSheetList.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionLabSheetList.Result).Value);
                List<LabSheet> labSheetList = (List<LabSheet>)((OkObjectResult)actionLabSheetList.Result).Value;
@@ -70,22 +70,22 @@ namespace CSSPServices.Tests
                int count = ((List<LabSheet>)((OkObjectResult)actionLabSheetList.Result).Value).Count();
                 Assert.True(count > 0);
 
-               // Add LabSheet
-               var actionLabSheetAdded = await labSheetService.Add(labSheet);
+               // Post LabSheet
+               var actionLabSheetAdded = await LabSheetService.Post(labSheet);
                Assert.Equal(200, ((ObjectResult)actionLabSheetAdded.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionLabSheetAdded.Result).Value);
                LabSheet labSheetAdded = (LabSheet)((OkObjectResult)actionLabSheetAdded.Result).Value;
                Assert.NotNull(labSheetAdded);
 
-               // Update LabSheet
-               var actionLabSheetUpdated = await labSheetService.Update(labSheet);
+               // Put LabSheet
+               var actionLabSheetUpdated = await LabSheetService.Put(labSheet);
                Assert.Equal(200, ((ObjectResult)actionLabSheetUpdated.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionLabSheetUpdated.Result).Value);
                LabSheet labSheetUpdated = (LabSheet)((OkObjectResult)actionLabSheetUpdated.Result).Value;
                Assert.NotNull(labSheetUpdated);
 
                // Delete LabSheet
-               var actionLabSheetDeleted = await labSheetService.Delete(labSheet.LabSheetID);
+               var actionLabSheetDeleted = await LabSheetService.Delete(labSheet.LabSheetID);
                Assert.Equal(200, ((ObjectResult)actionLabSheetDeleted.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionLabSheetDeleted.Result).Value);
                bool retBool = (bool)((OkObjectResult)actionLabSheetDeleted.Result).Value;
@@ -126,8 +126,8 @@ namespace CSSPServices.Tests
 
             CultureService.SetCulture(culture);
 
-            labSheetService = Provider.GetService<ILabSheetService>();
-            Assert.NotNull(labSheetService);
+            LabSheetService = Provider.GetService<ILabSheetService>();
+            Assert.NotNull(LabSheetService);
 
             return await Task.FromResult(true);
         }

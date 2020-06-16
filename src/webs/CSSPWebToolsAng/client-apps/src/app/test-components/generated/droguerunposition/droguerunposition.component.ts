@@ -62,52 +62,52 @@ export class DrogueRunPositionComponent implements OnInit, OnDestroy {
             {
               value: (AddOrUpdate === 'Add' ? 0 : (this.droguerunpositionService.droguerunpositionList[0]?.DrogueRunPositionID)),
               disabled: false
-            }],
+            }, [ Validators.required ]],
           DrogueRunID: [
             {
               value: this.droguerunpositionService.droguerunpositionList[0]?.DrogueRunID,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           Ordinal: [
             {
               value: this.droguerunpositionService.droguerunpositionList[0]?.Ordinal,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           StepLat: [
             {
               value: this.droguerunpositionService.droguerunpositionList[0]?.StepLat,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           StepLng: [
             {
               value: this.droguerunpositionService.droguerunpositionList[0]?.StepLng,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           StepDateTime_Local: [
             {
               value: this.droguerunpositionService.droguerunpositionList[0]?.StepDateTime_Local,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           CalculatedSpeed_m_s: [
             {
               value: this.droguerunpositionService.droguerunpositionList[0]?.CalculatedSpeed_m_s,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           CalculatedDirection_deg: [
             {
               value: this.droguerunpositionService.droguerunpositionList[0]?.CalculatedDirection_deg,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           LastUpdateDate_UTC: [
             {
               value: this.droguerunpositionService.droguerunpositionList[0]?.LastUpdateDate_UTC,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           LastUpdateContactTVItemID: [
             {
               value: this.droguerunpositionService.droguerunpositionList[0]?.LastUpdateContactTVItemID,
               disabled: false
-            }],
+            }, [ Validators.required ]],
         }
       );
 

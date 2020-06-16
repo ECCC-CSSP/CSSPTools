@@ -9,6 +9,7 @@ using CSSPEnums;
 using CSSPModels;
 using CultureServices.Resources;
 using CultureServices.Services;
+using LoggedInServices.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -22,11 +23,11 @@ namespace CSSPServices
 {
    public interface IClimateSiteService
     {
-       Task<ActionResult<ClimateSite>> GetClimateSiteWithClimateSiteID(int ClimateSiteID);
-       Task<ActionResult<List<ClimateSite>>> GetClimateSiteList();
-       Task<ActionResult<ClimateSite>> Add(ClimateSite climatesite);
        Task<ActionResult<bool>> Delete(int ClimateSiteID);
-       Task<ActionResult<ClimateSite>> Update(ClimateSite climatesite);
+       Task<ActionResult<List<ClimateSite>>> GetClimateSiteList();
+       Task<ActionResult<ClimateSite>> GetClimateSiteWithClimateSiteID(int ClimateSiteID);
+       Task<ActionResult<ClimateSite>> Post(ClimateSite climatesite);
+       Task<ActionResult<ClimateSite>> Put(ClimateSite climatesite);
     }
     public partial class ClimateSiteService : ControllerBase, IClimateSiteService
     {
@@ -36,14 +37,16 @@ namespace CSSPServices
         #region Properties
         private CSSPDBContext db { get; }
         private ICultureService CultureService { get; }
+        private ILoggedInService LoggedInService { get; }
         private IEnums enums { get; }
         private IEnumerable<ValidationResult> ValidationResults { get; set; }
         #endregion Properties
 
         #region Constructors
-        public ClimateSiteService(ICultureService CultureService, IEnums enums, CSSPDBContext db)
+        public ClimateSiteService(ICultureService CultureService, ILoggedInService LoggedInService, IEnums enums, CSSPDBContext db)
         {
             this.CultureService = CultureService;
+            this.LoggedInService = LoggedInService;
             this.enums = enums;
             this.db = db;
         }
@@ -52,6 +55,11 @@ namespace CSSPServices
         #region Functions public 
         public async Task<ActionResult<ClimateSite>> GetClimateSiteWithClimateSiteID(int ClimateSiteID)
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             ClimateSite climatesite = (from c in db.ClimateSites.AsNoTracking()
                     where c.ClimateSiteID == ClimateSiteID
                     select c).FirstOrDefault();
@@ -65,32 +73,22 @@ namespace CSSPServices
         }
         public async Task<ActionResult<List<ClimateSite>>> GetClimateSiteList()
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             List<ClimateSite> climatesiteList = (from c in db.ClimateSites.AsNoTracking() select c).Take(100).ToList();
 
             return await Task.FromResult(Ok(climatesiteList));
         }
-        public async Task<ActionResult<ClimateSite>> Add(ClimateSite climateSite)
-        {
-            ValidationResults = Validate(new ValidationContext(climateSite), ActionDBTypeEnum.Create);
-            if (ValidationResults.Count() > 0)
-            {
-               return await Task.FromResult(BadRequest(ValidationResults));
-            }
-
-            try
-            {
-               db.ClimateSites.Add(climateSite);
-               db.SaveChanges();
-            }
-            catch (DbUpdateException ex)
-            {
-               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
-            }
-
-            return await Task.FromResult(Ok(climateSite));
-        }
         public async Task<ActionResult<bool>> Delete(int ClimateSiteID)
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             ClimateSite climateSite = (from c in db.ClimateSites
                                where c.ClimateSiteID == ClimateSiteID
                                select c).FirstOrDefault();
@@ -112,8 +110,38 @@ namespace CSSPServices
 
             return await Task.FromResult(Ok(true));
         }
-        public async Task<ActionResult<ClimateSite>> Update(ClimateSite climateSite)
+        public async Task<ActionResult<ClimateSite>> Post(ClimateSite climateSite)
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
+            ValidationResults = Validate(new ValidationContext(climateSite), ActionDBTypeEnum.Create);
+            if (ValidationResults.Count() > 0)
+            {
+               return await Task.FromResult(BadRequest(ValidationResults));
+            }
+
+            try
+            {
+               db.ClimateSites.Add(climateSite);
+               db.SaveChanges();
+            }
+            catch (DbUpdateException ex)
+            {
+               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+            }
+
+            return await Task.FromResult(Ok(climateSite));
+        }
+        public async Task<ActionResult<ClimateSite>> Put(ClimateSite climateSite)
+        {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             ValidationResults = Validate(new ValidationContext(climateSite), ActionDBTypeEnum.Update);
             if (ValidationResults.Count() > 0)
             {

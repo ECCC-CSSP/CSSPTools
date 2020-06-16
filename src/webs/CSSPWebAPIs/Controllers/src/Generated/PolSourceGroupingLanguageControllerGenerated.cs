@@ -6,6 +6,7 @@
 
 using CSSPModels;
 using CSSPServices;
+using CultureServices.Services;
 using LoggedInServices.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -18,8 +19,8 @@ namespace CSSPWebAPI.Controllers
     {
         Task<ActionResult<List<PolSourceGroupingLanguage>>> Get();
         Task<ActionResult<PolSourceGroupingLanguage>> Get(int PolSourceGroupingLanguageID);
-        Task<ActionResult<PolSourceGroupingLanguage>> Post(PolSourceGroupingLanguage polSourceGroupingLanguage);
-        Task<ActionResult<PolSourceGroupingLanguage>> Put(PolSourceGroupingLanguage polSourceGroupingLanguage);
+        Task<ActionResult<PolSourceGroupingLanguage>> Post(PolSourceGroupingLanguage PolSourceGroupingLanguage);
+        Task<ActionResult<PolSourceGroupingLanguage>> Put(PolSourceGroupingLanguage PolSourceGroupingLanguage);
         Task<ActionResult<bool>> Delete(int PolSourceGroupingLanguageID);
     }
 
@@ -32,17 +33,17 @@ namespace CSSPWebAPI.Controllers
         #endregion Variables
 
         #region Properties
-        private IPolSourceGroupingLanguageService polSourceGroupingLanguageService { get; }
-        private CSSPDBContext db { get; }
-        private ILoggedInService loggedInService { get; }
+        private ICultureService CultureService { get; }
+        private ILoggedInService LoggedInService { get; }
+        private IPolSourceGroupingLanguageService PolSourceGroupingLanguageService { get; }
         #endregion Properties
 
         #region Constructors
-        public PolSourceGroupingLanguageController(IPolSourceGroupingLanguageService polSourceGroupingLanguageService, CSSPDBContext db, ILoggedInService loggedInService)
+        public PolSourceGroupingLanguageController(ICultureService CultureService, ILoggedInService LoggedInService, IPolSourceGroupingLanguageService PolSourceGroupingLanguageService)
         {
-            this.polSourceGroupingLanguageService = polSourceGroupingLanguageService;
-            this.db = db;
-            this.loggedInService = loggedInService;
+            this.CultureService = CultureService;
+            this.LoggedInService = LoggedInService;
+            this.PolSourceGroupingLanguageService = PolSourceGroupingLanguageService;
         }
         #endregion Constructors
 
@@ -50,27 +51,42 @@ namespace CSSPWebAPI.Controllers
         [HttpGet]
         public async Task<ActionResult<List<PolSourceGroupingLanguage>>> Get()
         {
-            return await polSourceGroupingLanguageService.GetPolSourceGroupingLanguageList();
+            CultureService.SetCulture((string)RouteData.Values["culture"]);
+            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+
+            return await PolSourceGroupingLanguageService.GetPolSourceGroupingLanguageList();
         }
         [HttpGet("{PolSourceGroupingLanguageID}")]
         public async Task<ActionResult<PolSourceGroupingLanguage>> Get(int PolSourceGroupingLanguageID)
         {
-            return await polSourceGroupingLanguageService.GetPolSourceGroupingLanguageWithPolSourceGroupingLanguageID(PolSourceGroupingLanguageID);
+            CultureService.SetCulture((string)RouteData.Values["culture"]);
+            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+
+            return await PolSourceGroupingLanguageService.GetPolSourceGroupingLanguageWithPolSourceGroupingLanguageID(PolSourceGroupingLanguageID);
         }
         [HttpPost]
-        public async Task<ActionResult<PolSourceGroupingLanguage>> Post(PolSourceGroupingLanguage polSourceGroupingLanguage)
+        public async Task<ActionResult<PolSourceGroupingLanguage>> Post(PolSourceGroupingLanguage PolSourceGroupingLanguage)
         {
-            return await polSourceGroupingLanguageService.Add(polSourceGroupingLanguage);
+            CultureService.SetCulture((string)RouteData.Values["culture"]);
+            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+
+            return await PolSourceGroupingLanguageService.Post(PolSourceGroupingLanguage);
         }
         [HttpPut]
-        public async Task<ActionResult<PolSourceGroupingLanguage>> Put(PolSourceGroupingLanguage polSourceGroupingLanguage)
+        public async Task<ActionResult<PolSourceGroupingLanguage>> Put(PolSourceGroupingLanguage PolSourceGroupingLanguage)
         {
-            return await polSourceGroupingLanguageService.Update(polSourceGroupingLanguage);
+            CultureService.SetCulture((string)RouteData.Values["culture"]);
+            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+
+            return await PolSourceGroupingLanguageService.Put(PolSourceGroupingLanguage);
         }
         [HttpDelete("{PolSourceGroupingLanguageID}")]
         public async Task<ActionResult<bool>> Delete(int PolSourceGroupingLanguageID)
         {
-            return await polSourceGroupingLanguageService.Delete(PolSourceGroupingLanguageID);
+            CultureService.SetCulture((string)RouteData.Values["culture"]);
+            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+
+            return await PolSourceGroupingLanguageService.Delete(PolSourceGroupingLanguageID);
         }
         #endregion Functions public
 

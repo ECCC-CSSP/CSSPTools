@@ -77,37 +77,37 @@ export class BoxModelLanguageComponent implements OnInit, OnDestroy {
             {
               value: (AddOrUpdate === 'Add' ? 0 : (this.boxmodellanguageService.boxmodellanguageList[0]?.BoxModelLanguageID)),
               disabled: false
-            }],
+            }, [ Validators.required ]],
           BoxModelID: [
             {
               value: this.boxmodellanguageService.boxmodellanguageList[0]?.BoxModelID,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           Language: [
             {
               value: this.boxmodellanguageService.boxmodellanguageList[0]?.Language,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           ScenarioName: [
             {
               value: this.boxmodellanguageService.boxmodellanguageList[0]?.ScenarioName,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           TranslationStatus: [
             {
               value: this.boxmodellanguageService.boxmodellanguageList[0]?.TranslationStatus,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           LastUpdateDate_UTC: [
             {
               value: this.boxmodellanguageService.boxmodellanguageList[0]?.LastUpdateDate_UTC,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           LastUpdateContactTVItemID: [
             {
               value: this.boxmodellanguageService.boxmodellanguageList[0]?.LastUpdateContactTVItemID,
               disabled: false
-            }],
+            }, [ Validators.required ]],
         }
       );
 

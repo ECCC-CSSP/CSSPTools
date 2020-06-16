@@ -9,6 +9,7 @@ using CSSPEnums;
 using CSSPModels;
 using CultureServices.Resources;
 using CultureServices.Services;
+using LoggedInServices.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -22,11 +23,11 @@ namespace CSSPServices
 {
    public interface IMWQMRunService
     {
-       Task<ActionResult<MWQMRun>> GetMWQMRunWithMWQMRunID(int MWQMRunID);
-       Task<ActionResult<List<MWQMRun>>> GetMWQMRunList();
-       Task<ActionResult<MWQMRun>> Add(MWQMRun mwqmrun);
        Task<ActionResult<bool>> Delete(int MWQMRunID);
-       Task<ActionResult<MWQMRun>> Update(MWQMRun mwqmrun);
+       Task<ActionResult<List<MWQMRun>>> GetMWQMRunList();
+       Task<ActionResult<MWQMRun>> GetMWQMRunWithMWQMRunID(int MWQMRunID);
+       Task<ActionResult<MWQMRun>> Post(MWQMRun mwqmrun);
+       Task<ActionResult<MWQMRun>> Put(MWQMRun mwqmrun);
     }
     public partial class MWQMRunService : ControllerBase, IMWQMRunService
     {
@@ -36,14 +37,16 @@ namespace CSSPServices
         #region Properties
         private CSSPDBContext db { get; }
         private ICultureService CultureService { get; }
+        private ILoggedInService LoggedInService { get; }
         private IEnums enums { get; }
         private IEnumerable<ValidationResult> ValidationResults { get; set; }
         #endregion Properties
 
         #region Constructors
-        public MWQMRunService(ICultureService CultureService, IEnums enums, CSSPDBContext db)
+        public MWQMRunService(ICultureService CultureService, ILoggedInService LoggedInService, IEnums enums, CSSPDBContext db)
         {
             this.CultureService = CultureService;
+            this.LoggedInService = LoggedInService;
             this.enums = enums;
             this.db = db;
         }
@@ -52,6 +55,11 @@ namespace CSSPServices
         #region Functions public 
         public async Task<ActionResult<MWQMRun>> GetMWQMRunWithMWQMRunID(int MWQMRunID)
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             MWQMRun mwqmrun = (from c in db.MWQMRuns.AsNoTracking()
                     where c.MWQMRunID == MWQMRunID
                     select c).FirstOrDefault();
@@ -65,32 +73,22 @@ namespace CSSPServices
         }
         public async Task<ActionResult<List<MWQMRun>>> GetMWQMRunList()
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             List<MWQMRun> mwqmrunList = (from c in db.MWQMRuns.AsNoTracking() select c).Take(100).ToList();
 
             return await Task.FromResult(Ok(mwqmrunList));
         }
-        public async Task<ActionResult<MWQMRun>> Add(MWQMRun mwqmRun)
-        {
-            ValidationResults = Validate(new ValidationContext(mwqmRun), ActionDBTypeEnum.Create);
-            if (ValidationResults.Count() > 0)
-            {
-               return await Task.FromResult(BadRequest(ValidationResults));
-            }
-
-            try
-            {
-               db.MWQMRuns.Add(mwqmRun);
-               db.SaveChanges();
-            }
-            catch (DbUpdateException ex)
-            {
-               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
-            }
-
-            return await Task.FromResult(Ok(mwqmRun));
-        }
         public async Task<ActionResult<bool>> Delete(int MWQMRunID)
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             MWQMRun mwqmRun = (from c in db.MWQMRuns
                                where c.MWQMRunID == MWQMRunID
                                select c).FirstOrDefault();
@@ -112,8 +110,38 @@ namespace CSSPServices
 
             return await Task.FromResult(Ok(true));
         }
-        public async Task<ActionResult<MWQMRun>> Update(MWQMRun mwqmRun)
+        public async Task<ActionResult<MWQMRun>> Post(MWQMRun mwqmRun)
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
+            ValidationResults = Validate(new ValidationContext(mwqmRun), ActionDBTypeEnum.Create);
+            if (ValidationResults.Count() > 0)
+            {
+               return await Task.FromResult(BadRequest(ValidationResults));
+            }
+
+            try
+            {
+               db.MWQMRuns.Add(mwqmRun);
+               db.SaveChanges();
+            }
+            catch (DbUpdateException ex)
+            {
+               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+            }
+
+            return await Task.FromResult(Ok(mwqmRun));
+        }
+        public async Task<ActionResult<MWQMRun>> Put(MWQMRun mwqmRun)
+        {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             ValidationResults = Validate(new ValidationContext(mwqmRun), ActionDBTypeEnum.Update);
             if (ValidationResults.Count() > 0)
             {

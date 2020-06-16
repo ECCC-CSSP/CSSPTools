@@ -6,6 +6,7 @@
 
 using CSSPModels;
 using CSSPServices;
+using CultureServices.Services;
 using LoggedInServices.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -18,8 +19,8 @@ namespace CSSPWebAPI.Controllers
     {
         Task<ActionResult<List<SamplingPlanSubsector>>> Get();
         Task<ActionResult<SamplingPlanSubsector>> Get(int SamplingPlanSubsectorID);
-        Task<ActionResult<SamplingPlanSubsector>> Post(SamplingPlanSubsector samplingPlanSubsector);
-        Task<ActionResult<SamplingPlanSubsector>> Put(SamplingPlanSubsector samplingPlanSubsector);
+        Task<ActionResult<SamplingPlanSubsector>> Post(SamplingPlanSubsector SamplingPlanSubsector);
+        Task<ActionResult<SamplingPlanSubsector>> Put(SamplingPlanSubsector SamplingPlanSubsector);
         Task<ActionResult<bool>> Delete(int SamplingPlanSubsectorID);
     }
 
@@ -32,17 +33,17 @@ namespace CSSPWebAPI.Controllers
         #endregion Variables
 
         #region Properties
-        private ISamplingPlanSubsectorService samplingPlanSubsectorService { get; }
-        private CSSPDBContext db { get; }
-        private ILoggedInService loggedInService { get; }
+        private ICultureService CultureService { get; }
+        private ILoggedInService LoggedInService { get; }
+        private ISamplingPlanSubsectorService SamplingPlanSubsectorService { get; }
         #endregion Properties
 
         #region Constructors
-        public SamplingPlanSubsectorController(ISamplingPlanSubsectorService samplingPlanSubsectorService, CSSPDBContext db, ILoggedInService loggedInService)
+        public SamplingPlanSubsectorController(ICultureService CultureService, ILoggedInService LoggedInService, ISamplingPlanSubsectorService SamplingPlanSubsectorService)
         {
-            this.samplingPlanSubsectorService = samplingPlanSubsectorService;
-            this.db = db;
-            this.loggedInService = loggedInService;
+            this.CultureService = CultureService;
+            this.LoggedInService = LoggedInService;
+            this.SamplingPlanSubsectorService = SamplingPlanSubsectorService;
         }
         #endregion Constructors
 
@@ -50,27 +51,42 @@ namespace CSSPWebAPI.Controllers
         [HttpGet]
         public async Task<ActionResult<List<SamplingPlanSubsector>>> Get()
         {
-            return await samplingPlanSubsectorService.GetSamplingPlanSubsectorList();
+            CultureService.SetCulture((string)RouteData.Values["culture"]);
+            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+
+            return await SamplingPlanSubsectorService.GetSamplingPlanSubsectorList();
         }
         [HttpGet("{SamplingPlanSubsectorID}")]
         public async Task<ActionResult<SamplingPlanSubsector>> Get(int SamplingPlanSubsectorID)
         {
-            return await samplingPlanSubsectorService.GetSamplingPlanSubsectorWithSamplingPlanSubsectorID(SamplingPlanSubsectorID);
+            CultureService.SetCulture((string)RouteData.Values["culture"]);
+            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+
+            return await SamplingPlanSubsectorService.GetSamplingPlanSubsectorWithSamplingPlanSubsectorID(SamplingPlanSubsectorID);
         }
         [HttpPost]
-        public async Task<ActionResult<SamplingPlanSubsector>> Post(SamplingPlanSubsector samplingPlanSubsector)
+        public async Task<ActionResult<SamplingPlanSubsector>> Post(SamplingPlanSubsector SamplingPlanSubsector)
         {
-            return await samplingPlanSubsectorService.Add(samplingPlanSubsector);
+            CultureService.SetCulture((string)RouteData.Values["culture"]);
+            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+
+            return await SamplingPlanSubsectorService.Post(SamplingPlanSubsector);
         }
         [HttpPut]
-        public async Task<ActionResult<SamplingPlanSubsector>> Put(SamplingPlanSubsector samplingPlanSubsector)
+        public async Task<ActionResult<SamplingPlanSubsector>> Put(SamplingPlanSubsector SamplingPlanSubsector)
         {
-            return await samplingPlanSubsectorService.Update(samplingPlanSubsector);
+            CultureService.SetCulture((string)RouteData.Values["culture"]);
+            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+
+            return await SamplingPlanSubsectorService.Put(SamplingPlanSubsector);
         }
         [HttpDelete("{SamplingPlanSubsectorID}")]
         public async Task<ActionResult<bool>> Delete(int SamplingPlanSubsectorID)
         {
-            return await samplingPlanSubsectorService.Delete(SamplingPlanSubsectorID);
+            CultureService.SetCulture((string)RouteData.Values["culture"]);
+            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+
+            return await SamplingPlanSubsectorService.Delete(SamplingPlanSubsectorID);
         }
         #endregion Functions public
 

@@ -32,7 +32,7 @@ namespace CSSPServices.Tests
         private IServiceProvider Provider { get; set; }
         private IServiceCollection Services { get; set; }
         private ICultureService CultureService { get; set; }
-        private IDocTemplateService docTemplateService { get; set; }
+        private IDocTemplateService DocTemplateService { get; set; }
         private CSSPDBContext db { get; set; }
         #endregion Properties
 
@@ -62,7 +62,7 @@ namespace CSSPServices.Tests
                DocTemplate docTemplate = GetFilledRandomDocTemplate(""); 
 
                // List<DocTemplate>
-               var actionDocTemplateList = await docTemplateService.GetDocTemplateList();
+               var actionDocTemplateList = await DocTemplateService.GetDocTemplateList();
                Assert.Equal(200, ((ObjectResult)actionDocTemplateList.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionDocTemplateList.Result).Value);
                List<DocTemplate> docTemplateList = (List<DocTemplate>)((OkObjectResult)actionDocTemplateList.Result).Value;
@@ -70,22 +70,22 @@ namespace CSSPServices.Tests
                int count = ((List<DocTemplate>)((OkObjectResult)actionDocTemplateList.Result).Value).Count();
                 Assert.True(count > 0);
 
-               // Add DocTemplate
-               var actionDocTemplateAdded = await docTemplateService.Add(docTemplate);
+               // Post DocTemplate
+               var actionDocTemplateAdded = await DocTemplateService.Post(docTemplate);
                Assert.Equal(200, ((ObjectResult)actionDocTemplateAdded.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionDocTemplateAdded.Result).Value);
                DocTemplate docTemplateAdded = (DocTemplate)((OkObjectResult)actionDocTemplateAdded.Result).Value;
                Assert.NotNull(docTemplateAdded);
 
-               // Update DocTemplate
-               var actionDocTemplateUpdated = await docTemplateService.Update(docTemplate);
+               // Put DocTemplate
+               var actionDocTemplateUpdated = await DocTemplateService.Put(docTemplate);
                Assert.Equal(200, ((ObjectResult)actionDocTemplateUpdated.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionDocTemplateUpdated.Result).Value);
                DocTemplate docTemplateUpdated = (DocTemplate)((OkObjectResult)actionDocTemplateUpdated.Result).Value;
                Assert.NotNull(docTemplateUpdated);
 
                // Delete DocTemplate
-               var actionDocTemplateDeleted = await docTemplateService.Delete(docTemplate.DocTemplateID);
+               var actionDocTemplateDeleted = await DocTemplateService.Delete(docTemplate.DocTemplateID);
                Assert.Equal(200, ((ObjectResult)actionDocTemplateDeleted.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionDocTemplateDeleted.Result).Value);
                bool retBool = (bool)((OkObjectResult)actionDocTemplateDeleted.Result).Value;
@@ -126,8 +126,8 @@ namespace CSSPServices.Tests
 
             CultureService.SetCulture(culture);
 
-            docTemplateService = Provider.GetService<IDocTemplateService>();
-            Assert.NotNull(docTemplateService);
+            DocTemplateService = Provider.GetService<IDocTemplateService>();
+            Assert.NotNull(DocTemplateService);
 
             return await Task.FromResult(true);
         }

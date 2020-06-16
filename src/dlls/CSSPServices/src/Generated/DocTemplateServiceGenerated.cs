@@ -9,6 +9,7 @@ using CSSPEnums;
 using CSSPModels;
 using CultureServices.Resources;
 using CultureServices.Services;
+using LoggedInServices.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -22,11 +23,11 @@ namespace CSSPServices
 {
    public interface IDocTemplateService
     {
-       Task<ActionResult<DocTemplate>> GetDocTemplateWithDocTemplateID(int DocTemplateID);
-       Task<ActionResult<List<DocTemplate>>> GetDocTemplateList();
-       Task<ActionResult<DocTemplate>> Add(DocTemplate doctemplate);
        Task<ActionResult<bool>> Delete(int DocTemplateID);
-       Task<ActionResult<DocTemplate>> Update(DocTemplate doctemplate);
+       Task<ActionResult<List<DocTemplate>>> GetDocTemplateList();
+       Task<ActionResult<DocTemplate>> GetDocTemplateWithDocTemplateID(int DocTemplateID);
+       Task<ActionResult<DocTemplate>> Post(DocTemplate doctemplate);
+       Task<ActionResult<DocTemplate>> Put(DocTemplate doctemplate);
     }
     public partial class DocTemplateService : ControllerBase, IDocTemplateService
     {
@@ -36,14 +37,16 @@ namespace CSSPServices
         #region Properties
         private CSSPDBContext db { get; }
         private ICultureService CultureService { get; }
+        private ILoggedInService LoggedInService { get; }
         private IEnums enums { get; }
         private IEnumerable<ValidationResult> ValidationResults { get; set; }
         #endregion Properties
 
         #region Constructors
-        public DocTemplateService(ICultureService CultureService, IEnums enums, CSSPDBContext db)
+        public DocTemplateService(ICultureService CultureService, ILoggedInService LoggedInService, IEnums enums, CSSPDBContext db)
         {
             this.CultureService = CultureService;
+            this.LoggedInService = LoggedInService;
             this.enums = enums;
             this.db = db;
         }
@@ -52,6 +55,11 @@ namespace CSSPServices
         #region Functions public 
         public async Task<ActionResult<DocTemplate>> GetDocTemplateWithDocTemplateID(int DocTemplateID)
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             DocTemplate doctemplate = (from c in db.DocTemplates.AsNoTracking()
                     where c.DocTemplateID == DocTemplateID
                     select c).FirstOrDefault();
@@ -65,32 +73,22 @@ namespace CSSPServices
         }
         public async Task<ActionResult<List<DocTemplate>>> GetDocTemplateList()
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             List<DocTemplate> doctemplateList = (from c in db.DocTemplates.AsNoTracking() select c).Take(100).ToList();
 
             return await Task.FromResult(Ok(doctemplateList));
         }
-        public async Task<ActionResult<DocTemplate>> Add(DocTemplate docTemplate)
-        {
-            ValidationResults = Validate(new ValidationContext(docTemplate), ActionDBTypeEnum.Create);
-            if (ValidationResults.Count() > 0)
-            {
-               return await Task.FromResult(BadRequest(ValidationResults));
-            }
-
-            try
-            {
-               db.DocTemplates.Add(docTemplate);
-               db.SaveChanges();
-            }
-            catch (DbUpdateException ex)
-            {
-               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
-            }
-
-            return await Task.FromResult(Ok(docTemplate));
-        }
         public async Task<ActionResult<bool>> Delete(int DocTemplateID)
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             DocTemplate docTemplate = (from c in db.DocTemplates
                                where c.DocTemplateID == DocTemplateID
                                select c).FirstOrDefault();
@@ -112,8 +110,38 @@ namespace CSSPServices
 
             return await Task.FromResult(Ok(true));
         }
-        public async Task<ActionResult<DocTemplate>> Update(DocTemplate docTemplate)
+        public async Task<ActionResult<DocTemplate>> Post(DocTemplate docTemplate)
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
+            ValidationResults = Validate(new ValidationContext(docTemplate), ActionDBTypeEnum.Create);
+            if (ValidationResults.Count() > 0)
+            {
+               return await Task.FromResult(BadRequest(ValidationResults));
+            }
+
+            try
+            {
+               db.DocTemplates.Add(docTemplate);
+               db.SaveChanges();
+            }
+            catch (DbUpdateException ex)
+            {
+               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+            }
+
+            return await Task.FromResult(Ok(docTemplate));
+        }
+        public async Task<ActionResult<DocTemplate>> Put(DocTemplate docTemplate)
+        {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             ValidationResults = Validate(new ValidationContext(docTemplate), ActionDBTypeEnum.Update);
             if (ValidationResults.Count() > 0)
             {

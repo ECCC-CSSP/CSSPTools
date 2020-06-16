@@ -9,6 +9,7 @@ using CSSPEnums;
 using CSSPModels;
 using CultureServices.Resources;
 using CultureServices.Services;
+using LoggedInServices.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -22,11 +23,11 @@ namespace CSSPServices
 {
    public interface IContactShortcutService
     {
-       Task<ActionResult<ContactShortcut>> GetContactShortcutWithContactShortcutID(int ContactShortcutID);
-       Task<ActionResult<List<ContactShortcut>>> GetContactShortcutList();
-       Task<ActionResult<ContactShortcut>> Add(ContactShortcut contactshortcut);
        Task<ActionResult<bool>> Delete(int ContactShortcutID);
-       Task<ActionResult<ContactShortcut>> Update(ContactShortcut contactshortcut);
+       Task<ActionResult<List<ContactShortcut>>> GetContactShortcutList();
+       Task<ActionResult<ContactShortcut>> GetContactShortcutWithContactShortcutID(int ContactShortcutID);
+       Task<ActionResult<ContactShortcut>> Post(ContactShortcut contactshortcut);
+       Task<ActionResult<ContactShortcut>> Put(ContactShortcut contactshortcut);
     }
     public partial class ContactShortcutService : ControllerBase, IContactShortcutService
     {
@@ -36,14 +37,16 @@ namespace CSSPServices
         #region Properties
         private CSSPDBContext db { get; }
         private ICultureService CultureService { get; }
+        private ILoggedInService LoggedInService { get; }
         private IEnums enums { get; }
         private IEnumerable<ValidationResult> ValidationResults { get; set; }
         #endregion Properties
 
         #region Constructors
-        public ContactShortcutService(ICultureService CultureService, IEnums enums, CSSPDBContext db)
+        public ContactShortcutService(ICultureService CultureService, ILoggedInService LoggedInService, IEnums enums, CSSPDBContext db)
         {
             this.CultureService = CultureService;
+            this.LoggedInService = LoggedInService;
             this.enums = enums;
             this.db = db;
         }
@@ -52,6 +55,11 @@ namespace CSSPServices
         #region Functions public 
         public async Task<ActionResult<ContactShortcut>> GetContactShortcutWithContactShortcutID(int ContactShortcutID)
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             ContactShortcut contactshortcut = (from c in db.ContactShortcuts.AsNoTracking()
                     where c.ContactShortcutID == ContactShortcutID
                     select c).FirstOrDefault();
@@ -65,32 +73,22 @@ namespace CSSPServices
         }
         public async Task<ActionResult<List<ContactShortcut>>> GetContactShortcutList()
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             List<ContactShortcut> contactshortcutList = (from c in db.ContactShortcuts.AsNoTracking() select c).Take(100).ToList();
 
             return await Task.FromResult(Ok(contactshortcutList));
         }
-        public async Task<ActionResult<ContactShortcut>> Add(ContactShortcut contactShortcut)
-        {
-            ValidationResults = Validate(new ValidationContext(contactShortcut), ActionDBTypeEnum.Create);
-            if (ValidationResults.Count() > 0)
-            {
-               return await Task.FromResult(BadRequest(ValidationResults));
-            }
-
-            try
-            {
-               db.ContactShortcuts.Add(contactShortcut);
-               db.SaveChanges();
-            }
-            catch (DbUpdateException ex)
-            {
-               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
-            }
-
-            return await Task.FromResult(Ok(contactShortcut));
-        }
         public async Task<ActionResult<bool>> Delete(int ContactShortcutID)
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             ContactShortcut contactShortcut = (from c in db.ContactShortcuts
                                where c.ContactShortcutID == ContactShortcutID
                                select c).FirstOrDefault();
@@ -112,8 +110,38 @@ namespace CSSPServices
 
             return await Task.FromResult(Ok(true));
         }
-        public async Task<ActionResult<ContactShortcut>> Update(ContactShortcut contactShortcut)
+        public async Task<ActionResult<ContactShortcut>> Post(ContactShortcut contactShortcut)
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
+            ValidationResults = Validate(new ValidationContext(contactShortcut), ActionDBTypeEnum.Create);
+            if (ValidationResults.Count() > 0)
+            {
+               return await Task.FromResult(BadRequest(ValidationResults));
+            }
+
+            try
+            {
+               db.ContactShortcuts.Add(contactShortcut);
+               db.SaveChanges();
+            }
+            catch (DbUpdateException ex)
+            {
+               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+            }
+
+            return await Task.FromResult(Ok(contactShortcut));
+        }
+        public async Task<ActionResult<ContactShortcut>> Put(ContactShortcut contactShortcut)
+        {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             ValidationResults = Validate(new ValidationContext(contactShortcut), ActionDBTypeEnum.Update);
             if (ValidationResults.Count() > 0)
             {

@@ -63,35 +63,61 @@ namespace CSSPCodeGenWebAPI
 
             ConnectionStringsModel connectionStrings = connectionStringsSection.Get<ConnectionStringsModel>();
 
-            //// using CSSPDB
+            /* ---------------------------------------------------------------------------------
+             * using CSSPDB 
+             * ---------------------------------------------------------------------------------      
+             */
+
             //services.AddDbContext<CSSPDBContext>(options =>
             //        options.UseSqlServer(connectionStrings.CSSPDB));
 
-            //// using CSSPDB2
+            //services.AddDbContext<InMemoryDBContext>(options =>
+            //        options.UseInMemoryDatabase(connectionStrings.CSSPDB));
+
+            //services.AddDbContext<ApplicationDbContext>(options =>
+            //    options.UseSqlServer(connectionStrings.CSSPDB));
+
+
+
+            /* ---------------------------------------------------------------------------------
+             * using CSSPDB2 
+             * ---------------------------------------------------------------------------------      
+             */
+
             //services.AddDbContext<CSSPDBContext>(options =>
             //        options.UseSqlServer(connectionStrings.CSSPDB2));
 
-            //// using In Memory CSSPDB2
-            //services.AddDbContext<CSSPDBContext>(options =>
+            //services.AddDbContext<InMemoryDBContext>(options =>
             //        options.UseInMemoryDatabase(connectionStrings.CSSPDB2));
 
-            // using TestDB
+            //services.AddDbContext<ApplicationDbContext>(options =>
+            //    options.UseSqlServer(connectionStrings.CSSPDB2));
+
+
+
+            /* ---------------------------------------------------------------------------------
+             * using TestDB 
+             * ---------------------------------------------------------------------------------      
+             */
+
             services.AddDbContext<CSSPDBContext>(options =>
                     options.UseSqlServer(connectionStrings.TestDB));
 
-            //// using CSSPDB2
-            //services.AddDbContext<ApplicationDbContext>(options =>
-            //        options.UseSqlServer(connectionStrings.CSSPDB2));
+            services.AddDbContext<InMemoryDBContext>(options =>
+                    options.UseInMemoryDatabase(connectionStrings.TestDB));
 
-            // using TestDB
             services.AddDbContext<ApplicationDbContext>(options =>
                     options.UseSqlServer(connectionStrings.TestDB));
 
-            //services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
-            //    .AddEntityFrameworkStores<ApplicationDbContext>();
+
+            /* ---------------------------------------------------------------------------------
+             * ApplicationUser 
+             * ---------------------------------------------------------------------------------      
+             */
 
             services.AddIdentityCore<ApplicationUser>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
+
 
             //string appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
 

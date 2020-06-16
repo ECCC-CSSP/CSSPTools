@@ -70,32 +70,32 @@ export class HelpDocComponent implements OnInit, OnDestroy {
             {
               value: (AddOrUpdate === 'Add' ? 0 : (this.helpdocService.helpdocList[0]?.HelpDocID)),
               disabled: false
-            }],
+            }, [ Validators.required ]],
           DocKey: [
             {
               value: this.helpdocService.helpdocList[0]?.DocKey,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           Language: [
             {
               value: this.helpdocService.helpdocList[0]?.Language,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           DocHTMLText: [
             {
               value: this.helpdocService.helpdocList[0]?.DocHTMLText,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           LastUpdateDate_UTC: [
             {
               value: this.helpdocService.helpdocList[0]?.LastUpdateDate_UTC,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           LastUpdateContactTVItemID: [
             {
               value: this.helpdocService.helpdocList[0]?.LastUpdateContactTVItemID,
               disabled: false
-            }],
+            }, [ Validators.required ]],
         }
       );
 

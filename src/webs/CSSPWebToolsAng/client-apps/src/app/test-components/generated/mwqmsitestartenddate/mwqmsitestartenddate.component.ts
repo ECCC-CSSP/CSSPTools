@@ -62,32 +62,32 @@ export class MWQMSiteStartEndDateComponent implements OnInit, OnDestroy {
             {
               value: (AddOrUpdate === 'Add' ? 0 : (this.mwqmsitestartenddateService.mwqmsitestartenddateList[0]?.MWQMSiteStartEndDateID)),
               disabled: false
-            }],
+            }, [ Validators.required ]],
           MWQMSiteTVItemID: [
             {
               value: this.mwqmsitestartenddateService.mwqmsitestartenddateList[0]?.MWQMSiteTVItemID,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           StartDate: [
             {
               value: this.mwqmsitestartenddateService.mwqmsitestartenddateList[0]?.StartDate,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           EndDate: [
             {
               value: this.mwqmsitestartenddateService.mwqmsitestartenddateList[0]?.EndDate,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           LastUpdateDate_UTC: [
             {
               value: this.mwqmsitestartenddateService.mwqmsitestartenddateList[0]?.LastUpdateDate_UTC,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           LastUpdateContactTVItemID: [
             {
               value: this.mwqmsitestartenddateService.mwqmsitestartenddateList[0]?.LastUpdateContactTVItemID,
               disabled: false
-            }],
+            }, [ Validators.required ]],
         }
       );
 

@@ -32,7 +32,7 @@ namespace CSSPServices.Tests
         private IServiceProvider Provider { get; set; }
         private IServiceCollection Services { get; set; }
         private ICultureService CultureService { get; set; }
-        private IVPAmbientService vpAmbientService { get; set; }
+        private IVPAmbientService VPAmbientService { get; set; }
         private CSSPDBContext db { get; set; }
         #endregion Properties
 
@@ -62,7 +62,7 @@ namespace CSSPServices.Tests
                VPAmbient vpAmbient = GetFilledRandomVPAmbient(""); 
 
                // List<VPAmbient>
-               var actionVPAmbientList = await vpAmbientService.GetVPAmbientList();
+               var actionVPAmbientList = await VPAmbientService.GetVPAmbientList();
                Assert.Equal(200, ((ObjectResult)actionVPAmbientList.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionVPAmbientList.Result).Value);
                List<VPAmbient> vpAmbientList = (List<VPAmbient>)((OkObjectResult)actionVPAmbientList.Result).Value;
@@ -70,22 +70,22 @@ namespace CSSPServices.Tests
                int count = ((List<VPAmbient>)((OkObjectResult)actionVPAmbientList.Result).Value).Count();
                 Assert.True(count > 0);
 
-               // Add VPAmbient
-               var actionVPAmbientAdded = await vpAmbientService.Add(vpAmbient);
+               // Post VPAmbient
+               var actionVPAmbientAdded = await VPAmbientService.Post(vpAmbient);
                Assert.Equal(200, ((ObjectResult)actionVPAmbientAdded.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionVPAmbientAdded.Result).Value);
                VPAmbient vpAmbientAdded = (VPAmbient)((OkObjectResult)actionVPAmbientAdded.Result).Value;
                Assert.NotNull(vpAmbientAdded);
 
-               // Update VPAmbient
-               var actionVPAmbientUpdated = await vpAmbientService.Update(vpAmbient);
+               // Put VPAmbient
+               var actionVPAmbientUpdated = await VPAmbientService.Put(vpAmbient);
                Assert.Equal(200, ((ObjectResult)actionVPAmbientUpdated.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionVPAmbientUpdated.Result).Value);
                VPAmbient vpAmbientUpdated = (VPAmbient)((OkObjectResult)actionVPAmbientUpdated.Result).Value;
                Assert.NotNull(vpAmbientUpdated);
 
                // Delete VPAmbient
-               var actionVPAmbientDeleted = await vpAmbientService.Delete(vpAmbient.VPAmbientID);
+               var actionVPAmbientDeleted = await VPAmbientService.Delete(vpAmbient.VPAmbientID);
                Assert.Equal(200, ((ObjectResult)actionVPAmbientDeleted.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionVPAmbientDeleted.Result).Value);
                bool retBool = (bool)((OkObjectResult)actionVPAmbientDeleted.Result).Value;
@@ -126,8 +126,8 @@ namespace CSSPServices.Tests
 
             CultureService.SetCulture(culture);
 
-            vpAmbientService = Provider.GetService<IVPAmbientService>();
-            Assert.NotNull(vpAmbientService);
+            VPAmbientService = Provider.GetService<IVPAmbientService>();
+            Assert.NotNull(VPAmbientService);
 
             return await Task.FromResult(true);
         }

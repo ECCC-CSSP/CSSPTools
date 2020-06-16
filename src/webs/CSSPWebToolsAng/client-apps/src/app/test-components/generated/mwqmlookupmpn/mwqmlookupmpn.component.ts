@@ -62,37 +62,37 @@ export class MWQMLookupMPNComponent implements OnInit, OnDestroy {
             {
               value: (AddOrUpdate === 'Add' ? 0 : (this.mwqmlookupmpnService.mwqmlookupmpnList[0]?.MWQMLookupMPNID)),
               disabled: false
-            }],
+            }, [ Validators.required ]],
           Tubes10: [
             {
               value: this.mwqmlookupmpnService.mwqmlookupmpnList[0]?.Tubes10,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           Tubes1: [
             {
               value: this.mwqmlookupmpnService.mwqmlookupmpnList[0]?.Tubes1,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           Tubes01: [
             {
               value: this.mwqmlookupmpnService.mwqmlookupmpnList[0]?.Tubes01,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           MPN_100ml: [
             {
               value: this.mwqmlookupmpnService.mwqmlookupmpnList[0]?.MPN_100ml,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           LastUpdateDate_UTC: [
             {
               value: this.mwqmlookupmpnService.mwqmlookupmpnList[0]?.LastUpdateDate_UTC,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           LastUpdateContactTVItemID: [
             {
               value: this.mwqmlookupmpnService.mwqmlookupmpnList[0]?.LastUpdateContactTVItemID,
               disabled: false
-            }],
+            }, [ Validators.required ]],
         }
       );
 

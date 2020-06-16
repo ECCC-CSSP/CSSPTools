@@ -32,7 +32,7 @@ namespace CSSPServices.Tests
         private IServiceProvider Provider { get; set; }
         private IServiceCollection Services { get; set; }
         private ICultureService CultureService { get; set; }
-        private ITVItemUserAuthorizationService tvItemUserAuthorizationService { get; set; }
+        private ITVItemUserAuthorizationService TVItemUserAuthorizationService { get; set; }
         private CSSPDBContext db { get; set; }
         #endregion Properties
 
@@ -62,7 +62,7 @@ namespace CSSPServices.Tests
                TVItemUserAuthorization tvItemUserAuthorization = GetFilledRandomTVItemUserAuthorization(""); 
 
                // List<TVItemUserAuthorization>
-               var actionTVItemUserAuthorizationList = await tvItemUserAuthorizationService.GetTVItemUserAuthorizationList();
+               var actionTVItemUserAuthorizationList = await TVItemUserAuthorizationService.GetTVItemUserAuthorizationList();
                Assert.Equal(200, ((ObjectResult)actionTVItemUserAuthorizationList.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionTVItemUserAuthorizationList.Result).Value);
                List<TVItemUserAuthorization> tvItemUserAuthorizationList = (List<TVItemUserAuthorization>)((OkObjectResult)actionTVItemUserAuthorizationList.Result).Value;
@@ -70,22 +70,22 @@ namespace CSSPServices.Tests
                int count = ((List<TVItemUserAuthorization>)((OkObjectResult)actionTVItemUserAuthorizationList.Result).Value).Count();
                 Assert.True(count > 0);
 
-               // Add TVItemUserAuthorization
-               var actionTVItemUserAuthorizationAdded = await tvItemUserAuthorizationService.Add(tvItemUserAuthorization);
+               // Post TVItemUserAuthorization
+               var actionTVItemUserAuthorizationAdded = await TVItemUserAuthorizationService.Post(tvItemUserAuthorization);
                Assert.Equal(200, ((ObjectResult)actionTVItemUserAuthorizationAdded.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionTVItemUserAuthorizationAdded.Result).Value);
                TVItemUserAuthorization tvItemUserAuthorizationAdded = (TVItemUserAuthorization)((OkObjectResult)actionTVItemUserAuthorizationAdded.Result).Value;
                Assert.NotNull(tvItemUserAuthorizationAdded);
 
-               // Update TVItemUserAuthorization
-               var actionTVItemUserAuthorizationUpdated = await tvItemUserAuthorizationService.Update(tvItemUserAuthorization);
+               // Put TVItemUserAuthorization
+               var actionTVItemUserAuthorizationUpdated = await TVItemUserAuthorizationService.Put(tvItemUserAuthorization);
                Assert.Equal(200, ((ObjectResult)actionTVItemUserAuthorizationUpdated.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionTVItemUserAuthorizationUpdated.Result).Value);
                TVItemUserAuthorization tvItemUserAuthorizationUpdated = (TVItemUserAuthorization)((OkObjectResult)actionTVItemUserAuthorizationUpdated.Result).Value;
                Assert.NotNull(tvItemUserAuthorizationUpdated);
 
                // Delete TVItemUserAuthorization
-               var actionTVItemUserAuthorizationDeleted = await tvItemUserAuthorizationService.Delete(tvItemUserAuthorization.TVItemUserAuthorizationID);
+               var actionTVItemUserAuthorizationDeleted = await TVItemUserAuthorizationService.Delete(tvItemUserAuthorization.TVItemUserAuthorizationID);
                Assert.Equal(200, ((ObjectResult)actionTVItemUserAuthorizationDeleted.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionTVItemUserAuthorizationDeleted.Result).Value);
                bool retBool = (bool)((OkObjectResult)actionTVItemUserAuthorizationDeleted.Result).Value;
@@ -126,8 +126,8 @@ namespace CSSPServices.Tests
 
             CultureService.SetCulture(culture);
 
-            tvItemUserAuthorizationService = Provider.GetService<ITVItemUserAuthorizationService>();
-            Assert.NotNull(tvItemUserAuthorizationService);
+            TVItemUserAuthorizationService = Provider.GetService<ITVItemUserAuthorizationService>();
+            Assert.NotNull(TVItemUserAuthorizationService);
 
             return await Task.FromResult(true);
         }

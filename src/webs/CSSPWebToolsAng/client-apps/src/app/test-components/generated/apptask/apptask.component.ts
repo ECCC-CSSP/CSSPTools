@@ -84,72 +84,72 @@ export class AppTaskComponent implements OnInit, OnDestroy {
             {
               value: (AddOrUpdate === 'Add' ? 0 : (this.apptaskService.apptaskList[0]?.AppTaskID)),
               disabled: false
-            }],
+            }, [ Validators.required ]],
           TVItemID: [
             {
               value: this.apptaskService.apptaskList[0]?.TVItemID,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           TVItemID2: [
             {
               value: this.apptaskService.apptaskList[0]?.TVItemID2,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           AppTaskCommand: [
             {
               value: this.apptaskService.apptaskList[0]?.AppTaskCommand,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           AppTaskStatus: [
             {
               value: this.apptaskService.apptaskList[0]?.AppTaskStatus,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           PercentCompleted: [
             {
               value: this.apptaskService.apptaskList[0]?.PercentCompleted,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           Parameters: [
             {
               value: this.apptaskService.apptaskList[0]?.Parameters,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           Language: [
             {
               value: this.apptaskService.apptaskList[0]?.Language,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           StartDateTime_UTC: [
             {
               value: this.apptaskService.apptaskList[0]?.StartDateTime_UTC,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           EndDateTime_UTC: [
             {
               value: this.apptaskService.apptaskList[0]?.EndDateTime_UTC,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           EstimatedLength_second: [
             {
               value: this.apptaskService.apptaskList[0]?.EstimatedLength_second,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           RemainingTime_second: [
             {
               value: this.apptaskService.apptaskList[0]?.RemainingTime_second,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           LastUpdateDate_UTC: [
             {
               value: this.apptaskService.apptaskList[0]?.LastUpdateDate_UTC,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           LastUpdateContactTVItemID: [
             {
               value: this.apptaskService.apptaskList[0]?.LastUpdateContactTVItemID,
               disabled: false
-            }],
+            }, [ Validators.required ]],
         }
       );
 

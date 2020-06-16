@@ -6,6 +6,7 @@
 
 using CSSPModels;
 using CSSPServices;
+using CultureServices.Services;
 using LoggedInServices.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -18,8 +19,8 @@ namespace CSSPWebAPI.Controllers
     {
         Task<ActionResult<List<TVFile>>> Get();
         Task<ActionResult<TVFile>> Get(int TVFileID);
-        Task<ActionResult<TVFile>> Post(TVFile tvFile);
-        Task<ActionResult<TVFile>> Put(TVFile tvFile);
+        Task<ActionResult<TVFile>> Post(TVFile TVFile);
+        Task<ActionResult<TVFile>> Put(TVFile TVFile);
         Task<ActionResult<bool>> Delete(int TVFileID);
     }
 
@@ -32,17 +33,17 @@ namespace CSSPWebAPI.Controllers
         #endregion Variables
 
         #region Properties
-        private ITVFileService tvFileService { get; }
-        private CSSPDBContext db { get; }
-        private ILoggedInService loggedInService { get; }
+        private ICultureService CultureService { get; }
+        private ILoggedInService LoggedInService { get; }
+        private ITVFileService TVFileService { get; }
         #endregion Properties
 
         #region Constructors
-        public TVFileController(ITVFileService tvFileService, CSSPDBContext db, ILoggedInService loggedInService)
+        public TVFileController(ICultureService CultureService, ILoggedInService LoggedInService, ITVFileService TVFileService)
         {
-            this.tvFileService = tvFileService;
-            this.db = db;
-            this.loggedInService = loggedInService;
+            this.CultureService = CultureService;
+            this.LoggedInService = LoggedInService;
+            this.TVFileService = TVFileService;
         }
         #endregion Constructors
 
@@ -50,27 +51,42 @@ namespace CSSPWebAPI.Controllers
         [HttpGet]
         public async Task<ActionResult<List<TVFile>>> Get()
         {
-            return await tvFileService.GetTVFileList();
+            CultureService.SetCulture((string)RouteData.Values["culture"]);
+            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+
+            return await TVFileService.GetTVFileList();
         }
         [HttpGet("{TVFileID}")]
         public async Task<ActionResult<TVFile>> Get(int TVFileID)
         {
-            return await tvFileService.GetTVFileWithTVFileID(TVFileID);
+            CultureService.SetCulture((string)RouteData.Values["culture"]);
+            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+
+            return await TVFileService.GetTVFileWithTVFileID(TVFileID);
         }
         [HttpPost]
-        public async Task<ActionResult<TVFile>> Post(TVFile tvFile)
+        public async Task<ActionResult<TVFile>> Post(TVFile TVFile)
         {
-            return await tvFileService.Add(tvFile);
+            CultureService.SetCulture((string)RouteData.Values["culture"]);
+            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+
+            return await TVFileService.Post(TVFile);
         }
         [HttpPut]
-        public async Task<ActionResult<TVFile>> Put(TVFile tvFile)
+        public async Task<ActionResult<TVFile>> Put(TVFile TVFile)
         {
-            return await tvFileService.Update(tvFile);
+            CultureService.SetCulture((string)RouteData.Values["culture"]);
+            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+
+            return await TVFileService.Put(TVFile);
         }
         [HttpDelete("{TVFileID}")]
         public async Task<ActionResult<bool>> Delete(int TVFileID)
         {
-            return await tvFileService.Delete(TVFileID);
+            CultureService.SetCulture((string)RouteData.Values["culture"]);
+            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+
+            return await TVFileService.Delete(TVFileID);
         }
         #endregion Functions public
 

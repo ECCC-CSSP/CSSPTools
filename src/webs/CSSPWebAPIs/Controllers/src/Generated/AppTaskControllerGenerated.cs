@@ -6,6 +6,7 @@
 
 using CSSPModels;
 using CSSPServices;
+using CultureServices.Services;
 using LoggedInServices.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -18,8 +19,8 @@ namespace CSSPWebAPI.Controllers
     {
         Task<ActionResult<List<AppTask>>> Get();
         Task<ActionResult<AppTask>> Get(int AppTaskID);
-        Task<ActionResult<AppTask>> Post(AppTask appTask);
-        Task<ActionResult<AppTask>> Put(AppTask appTask);
+        Task<ActionResult<AppTask>> Post(AppTask AppTask);
+        Task<ActionResult<AppTask>> Put(AppTask AppTask);
         Task<ActionResult<bool>> Delete(int AppTaskID);
     }
 
@@ -32,17 +33,17 @@ namespace CSSPWebAPI.Controllers
         #endregion Variables
 
         #region Properties
-        private IAppTaskService appTaskService { get; }
-        private CSSPDBContext db { get; }
-        private ILoggedInService loggedInService { get; }
+        private ICultureService CultureService { get; }
+        private ILoggedInService LoggedInService { get; }
+        private IAppTaskService AppTaskService { get; }
         #endregion Properties
 
         #region Constructors
-        public AppTaskController(IAppTaskService appTaskService, CSSPDBContext db, ILoggedInService loggedInService)
+        public AppTaskController(ICultureService CultureService, ILoggedInService LoggedInService, IAppTaskService AppTaskService)
         {
-            this.appTaskService = appTaskService;
-            this.db = db;
-            this.loggedInService = loggedInService;
+            this.CultureService = CultureService;
+            this.LoggedInService = LoggedInService;
+            this.AppTaskService = AppTaskService;
         }
         #endregion Constructors
 
@@ -50,27 +51,42 @@ namespace CSSPWebAPI.Controllers
         [HttpGet]
         public async Task<ActionResult<List<AppTask>>> Get()
         {
-            return await appTaskService.GetAppTaskList();
+            CultureService.SetCulture((string)RouteData.Values["culture"]);
+            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+
+            return await AppTaskService.GetAppTaskList();
         }
         [HttpGet("{AppTaskID}")]
         public async Task<ActionResult<AppTask>> Get(int AppTaskID)
         {
-            return await appTaskService.GetAppTaskWithAppTaskID(AppTaskID);
+            CultureService.SetCulture((string)RouteData.Values["culture"]);
+            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+
+            return await AppTaskService.GetAppTaskWithAppTaskID(AppTaskID);
         }
         [HttpPost]
-        public async Task<ActionResult<AppTask>> Post(AppTask appTask)
+        public async Task<ActionResult<AppTask>> Post(AppTask AppTask)
         {
-            return await appTaskService.Add(appTask);
+            CultureService.SetCulture((string)RouteData.Values["culture"]);
+            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+
+            return await AppTaskService.Post(AppTask);
         }
         [HttpPut]
-        public async Task<ActionResult<AppTask>> Put(AppTask appTask)
+        public async Task<ActionResult<AppTask>> Put(AppTask AppTask)
         {
-            return await appTaskService.Update(appTask);
+            CultureService.SetCulture((string)RouteData.Values["culture"]);
+            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+
+            return await AppTaskService.Put(AppTask);
         }
         [HttpDelete("{AppTaskID}")]
         public async Task<ActionResult<bool>> Delete(int AppTaskID)
         {
-            return await appTaskService.Delete(AppTaskID);
+            CultureService.SetCulture((string)RouteData.Values["culture"]);
+            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+
+            return await AppTaskService.Delete(AppTaskID);
         }
         #endregion Functions public
 

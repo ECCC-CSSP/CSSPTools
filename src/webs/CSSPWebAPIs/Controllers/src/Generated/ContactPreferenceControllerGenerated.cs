@@ -6,6 +6,7 @@
 
 using CSSPModels;
 using CSSPServices;
+using CultureServices.Services;
 using LoggedInServices.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -18,8 +19,8 @@ namespace CSSPWebAPI.Controllers
     {
         Task<ActionResult<List<ContactPreference>>> Get();
         Task<ActionResult<ContactPreference>> Get(int ContactPreferenceID);
-        Task<ActionResult<ContactPreference>> Post(ContactPreference contactPreference);
-        Task<ActionResult<ContactPreference>> Put(ContactPreference contactPreference);
+        Task<ActionResult<ContactPreference>> Post(ContactPreference ContactPreference);
+        Task<ActionResult<ContactPreference>> Put(ContactPreference ContactPreference);
         Task<ActionResult<bool>> Delete(int ContactPreferenceID);
     }
 
@@ -32,17 +33,17 @@ namespace CSSPWebAPI.Controllers
         #endregion Variables
 
         #region Properties
-        private IContactPreferenceService contactPreferenceService { get; }
-        private CSSPDBContext db { get; }
-        private ILoggedInService loggedInService { get; }
+        private ICultureService CultureService { get; }
+        private ILoggedInService LoggedInService { get; }
+        private IContactPreferenceService ContactPreferenceService { get; }
         #endregion Properties
 
         #region Constructors
-        public ContactPreferenceController(IContactPreferenceService contactPreferenceService, CSSPDBContext db, ILoggedInService loggedInService)
+        public ContactPreferenceController(ICultureService CultureService, ILoggedInService LoggedInService, IContactPreferenceService ContactPreferenceService)
         {
-            this.contactPreferenceService = contactPreferenceService;
-            this.db = db;
-            this.loggedInService = loggedInService;
+            this.CultureService = CultureService;
+            this.LoggedInService = LoggedInService;
+            this.ContactPreferenceService = ContactPreferenceService;
         }
         #endregion Constructors
 
@@ -50,27 +51,42 @@ namespace CSSPWebAPI.Controllers
         [HttpGet]
         public async Task<ActionResult<List<ContactPreference>>> Get()
         {
-            return await contactPreferenceService.GetContactPreferenceList();
+            CultureService.SetCulture((string)RouteData.Values["culture"]);
+            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+
+            return await ContactPreferenceService.GetContactPreferenceList();
         }
         [HttpGet("{ContactPreferenceID}")]
         public async Task<ActionResult<ContactPreference>> Get(int ContactPreferenceID)
         {
-            return await contactPreferenceService.GetContactPreferenceWithContactPreferenceID(ContactPreferenceID);
+            CultureService.SetCulture((string)RouteData.Values["culture"]);
+            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+
+            return await ContactPreferenceService.GetContactPreferenceWithContactPreferenceID(ContactPreferenceID);
         }
         [HttpPost]
-        public async Task<ActionResult<ContactPreference>> Post(ContactPreference contactPreference)
+        public async Task<ActionResult<ContactPreference>> Post(ContactPreference ContactPreference)
         {
-            return await contactPreferenceService.Add(contactPreference);
+            CultureService.SetCulture((string)RouteData.Values["culture"]);
+            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+
+            return await ContactPreferenceService.Post(ContactPreference);
         }
         [HttpPut]
-        public async Task<ActionResult<ContactPreference>> Put(ContactPreference contactPreference)
+        public async Task<ActionResult<ContactPreference>> Put(ContactPreference ContactPreference)
         {
-            return await contactPreferenceService.Update(contactPreference);
+            CultureService.SetCulture((string)RouteData.Values["culture"]);
+            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+
+            return await ContactPreferenceService.Put(ContactPreference);
         }
         [HttpDelete("{ContactPreferenceID}")]
         public async Task<ActionResult<bool>> Delete(int ContactPreferenceID)
         {
-            return await contactPreferenceService.Delete(ContactPreferenceID);
+            CultureService.SetCulture((string)RouteData.Values["culture"]);
+            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+
+            return await ContactPreferenceService.Delete(ContactPreferenceID);
         }
         #endregion Functions public
 

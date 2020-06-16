@@ -32,7 +32,7 @@ namespace CSSPServices.Tests
         private IServiceProvider Provider { get; set; }
         private IServiceCollection Services { get; set; }
         private ICultureService CultureService { get; set; }
-        private IAppTaskService appTaskService { get; set; }
+        private IAppTaskService AppTaskService { get; set; }
         private CSSPDBContext db { get; set; }
         #endregion Properties
 
@@ -62,7 +62,7 @@ namespace CSSPServices.Tests
                AppTask appTask = GetFilledRandomAppTask(""); 
 
                // List<AppTask>
-               var actionAppTaskList = await appTaskService.GetAppTaskList();
+               var actionAppTaskList = await AppTaskService.GetAppTaskList();
                Assert.Equal(200, ((ObjectResult)actionAppTaskList.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionAppTaskList.Result).Value);
                List<AppTask> appTaskList = (List<AppTask>)((OkObjectResult)actionAppTaskList.Result).Value;
@@ -70,22 +70,22 @@ namespace CSSPServices.Tests
                int count = ((List<AppTask>)((OkObjectResult)actionAppTaskList.Result).Value).Count();
                 Assert.True(count > 0);
 
-               // Add AppTask
-               var actionAppTaskAdded = await appTaskService.Add(appTask);
+               // Post AppTask
+               var actionAppTaskAdded = await AppTaskService.Post(appTask);
                Assert.Equal(200, ((ObjectResult)actionAppTaskAdded.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionAppTaskAdded.Result).Value);
                AppTask appTaskAdded = (AppTask)((OkObjectResult)actionAppTaskAdded.Result).Value;
                Assert.NotNull(appTaskAdded);
 
-               // Update AppTask
-               var actionAppTaskUpdated = await appTaskService.Update(appTask);
+               // Put AppTask
+               var actionAppTaskUpdated = await AppTaskService.Put(appTask);
                Assert.Equal(200, ((ObjectResult)actionAppTaskUpdated.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionAppTaskUpdated.Result).Value);
                AppTask appTaskUpdated = (AppTask)((OkObjectResult)actionAppTaskUpdated.Result).Value;
                Assert.NotNull(appTaskUpdated);
 
                // Delete AppTask
-               var actionAppTaskDeleted = await appTaskService.Delete(appTask.AppTaskID);
+               var actionAppTaskDeleted = await AppTaskService.Delete(appTask.AppTaskID);
                Assert.Equal(200, ((ObjectResult)actionAppTaskDeleted.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionAppTaskDeleted.Result).Value);
                bool retBool = (bool)((OkObjectResult)actionAppTaskDeleted.Result).Value;
@@ -126,8 +126,8 @@ namespace CSSPServices.Tests
 
             CultureService.SetCulture(culture);
 
-            appTaskService = Provider.GetService<IAppTaskService>();
-            Assert.NotNull(appTaskService);
+            AppTaskService = Provider.GetService<IAppTaskService>();
+            Assert.NotNull(AppTaskService);
 
             return await Task.FromResult(true);
         }

@@ -32,7 +32,7 @@ namespace CSSPServices.Tests
         private IServiceProvider Provider { get; set; }
         private IServiceCollection Services { get; set; }
         private ICultureService CultureService { get; set; }
-        private IMWQMRunService mwqmRunService { get; set; }
+        private IMWQMRunService MWQMRunService { get; set; }
         private CSSPDBContext db { get; set; }
         #endregion Properties
 
@@ -62,7 +62,7 @@ namespace CSSPServices.Tests
                MWQMRun mwqmRun = GetFilledRandomMWQMRun(""); 
 
                // List<MWQMRun>
-               var actionMWQMRunList = await mwqmRunService.GetMWQMRunList();
+               var actionMWQMRunList = await MWQMRunService.GetMWQMRunList();
                Assert.Equal(200, ((ObjectResult)actionMWQMRunList.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionMWQMRunList.Result).Value);
                List<MWQMRun> mwqmRunList = (List<MWQMRun>)((OkObjectResult)actionMWQMRunList.Result).Value;
@@ -70,22 +70,22 @@ namespace CSSPServices.Tests
                int count = ((List<MWQMRun>)((OkObjectResult)actionMWQMRunList.Result).Value).Count();
                 Assert.True(count > 0);
 
-               // Add MWQMRun
-               var actionMWQMRunAdded = await mwqmRunService.Add(mwqmRun);
+               // Post MWQMRun
+               var actionMWQMRunAdded = await MWQMRunService.Post(mwqmRun);
                Assert.Equal(200, ((ObjectResult)actionMWQMRunAdded.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionMWQMRunAdded.Result).Value);
                MWQMRun mwqmRunAdded = (MWQMRun)((OkObjectResult)actionMWQMRunAdded.Result).Value;
                Assert.NotNull(mwqmRunAdded);
 
-               // Update MWQMRun
-               var actionMWQMRunUpdated = await mwqmRunService.Update(mwqmRun);
+               // Put MWQMRun
+               var actionMWQMRunUpdated = await MWQMRunService.Put(mwqmRun);
                Assert.Equal(200, ((ObjectResult)actionMWQMRunUpdated.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionMWQMRunUpdated.Result).Value);
                MWQMRun mwqmRunUpdated = (MWQMRun)((OkObjectResult)actionMWQMRunUpdated.Result).Value;
                Assert.NotNull(mwqmRunUpdated);
 
                // Delete MWQMRun
-               var actionMWQMRunDeleted = await mwqmRunService.Delete(mwqmRun.MWQMRunID);
+               var actionMWQMRunDeleted = await MWQMRunService.Delete(mwqmRun.MWQMRunID);
                Assert.Equal(200, ((ObjectResult)actionMWQMRunDeleted.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionMWQMRunDeleted.Result).Value);
                bool retBool = (bool)((OkObjectResult)actionMWQMRunDeleted.Result).Value;
@@ -126,8 +126,8 @@ namespace CSSPServices.Tests
 
             CultureService.SetCulture(culture);
 
-            mwqmRunService = Provider.GetService<IMWQMRunService>();
-            Assert.NotNull(mwqmRunService);
+            MWQMRunService = Provider.GetService<IMWQMRunService>();
+            Assert.NotNull(MWQMRunService);
 
             return await Task.FromResult(true);
         }

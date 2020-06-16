@@ -6,6 +6,7 @@
 
 using CSSPModels;
 using CSSPServices;
+using CultureServices.Services;
 using LoggedInServices.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -18,8 +19,8 @@ namespace CSSPWebAPI.Controllers
     {
         Task<ActionResult<List<LabSheetDetail>>> Get();
         Task<ActionResult<LabSheetDetail>> Get(int LabSheetDetailID);
-        Task<ActionResult<LabSheetDetail>> Post(LabSheetDetail labSheetDetail);
-        Task<ActionResult<LabSheetDetail>> Put(LabSheetDetail labSheetDetail);
+        Task<ActionResult<LabSheetDetail>> Post(LabSheetDetail LabSheetDetail);
+        Task<ActionResult<LabSheetDetail>> Put(LabSheetDetail LabSheetDetail);
         Task<ActionResult<bool>> Delete(int LabSheetDetailID);
     }
 
@@ -32,17 +33,17 @@ namespace CSSPWebAPI.Controllers
         #endregion Variables
 
         #region Properties
-        private ILabSheetDetailService labSheetDetailService { get; }
-        private CSSPDBContext db { get; }
-        private ILoggedInService loggedInService { get; }
+        private ICultureService CultureService { get; }
+        private ILoggedInService LoggedInService { get; }
+        private ILabSheetDetailService LabSheetDetailService { get; }
         #endregion Properties
 
         #region Constructors
-        public LabSheetDetailController(ILabSheetDetailService labSheetDetailService, CSSPDBContext db, ILoggedInService loggedInService)
+        public LabSheetDetailController(ICultureService CultureService, ILoggedInService LoggedInService, ILabSheetDetailService LabSheetDetailService)
         {
-            this.labSheetDetailService = labSheetDetailService;
-            this.db = db;
-            this.loggedInService = loggedInService;
+            this.CultureService = CultureService;
+            this.LoggedInService = LoggedInService;
+            this.LabSheetDetailService = LabSheetDetailService;
         }
         #endregion Constructors
 
@@ -50,27 +51,42 @@ namespace CSSPWebAPI.Controllers
         [HttpGet]
         public async Task<ActionResult<List<LabSheetDetail>>> Get()
         {
-            return await labSheetDetailService.GetLabSheetDetailList();
+            CultureService.SetCulture((string)RouteData.Values["culture"]);
+            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+
+            return await LabSheetDetailService.GetLabSheetDetailList();
         }
         [HttpGet("{LabSheetDetailID}")]
         public async Task<ActionResult<LabSheetDetail>> Get(int LabSheetDetailID)
         {
-            return await labSheetDetailService.GetLabSheetDetailWithLabSheetDetailID(LabSheetDetailID);
+            CultureService.SetCulture((string)RouteData.Values["culture"]);
+            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+
+            return await LabSheetDetailService.GetLabSheetDetailWithLabSheetDetailID(LabSheetDetailID);
         }
         [HttpPost]
-        public async Task<ActionResult<LabSheetDetail>> Post(LabSheetDetail labSheetDetail)
+        public async Task<ActionResult<LabSheetDetail>> Post(LabSheetDetail LabSheetDetail)
         {
-            return await labSheetDetailService.Add(labSheetDetail);
+            CultureService.SetCulture((string)RouteData.Values["culture"]);
+            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+
+            return await LabSheetDetailService.Post(LabSheetDetail);
         }
         [HttpPut]
-        public async Task<ActionResult<LabSheetDetail>> Put(LabSheetDetail labSheetDetail)
+        public async Task<ActionResult<LabSheetDetail>> Put(LabSheetDetail LabSheetDetail)
         {
-            return await labSheetDetailService.Update(labSheetDetail);
+            CultureService.SetCulture((string)RouteData.Values["culture"]);
+            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+
+            return await LabSheetDetailService.Put(LabSheetDetail);
         }
         [HttpDelete("{LabSheetDetailID}")]
         public async Task<ActionResult<bool>> Delete(int LabSheetDetailID)
         {
-            return await labSheetDetailService.Delete(LabSheetDetailID);
+            CultureService.SetCulture((string)RouteData.Values["culture"]);
+            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+
+            return await LabSheetDetailService.Delete(LabSheetDetailID);
         }
         #endregion Functions public
 

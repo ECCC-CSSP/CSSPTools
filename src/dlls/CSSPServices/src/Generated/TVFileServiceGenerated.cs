@@ -9,6 +9,7 @@ using CSSPEnums;
 using CSSPModels;
 using CultureServices.Resources;
 using CultureServices.Services;
+using LoggedInServices.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -22,11 +23,11 @@ namespace CSSPServices
 {
    public interface ITVFileService
     {
-       Task<ActionResult<TVFile>> GetTVFileWithTVFileID(int TVFileID);
-       Task<ActionResult<List<TVFile>>> GetTVFileList();
-       Task<ActionResult<TVFile>> Add(TVFile tvfile);
        Task<ActionResult<bool>> Delete(int TVFileID);
-       Task<ActionResult<TVFile>> Update(TVFile tvfile);
+       Task<ActionResult<List<TVFile>>> GetTVFileList();
+       Task<ActionResult<TVFile>> GetTVFileWithTVFileID(int TVFileID);
+       Task<ActionResult<TVFile>> Post(TVFile tvfile);
+       Task<ActionResult<TVFile>> Put(TVFile tvfile);
     }
     public partial class TVFileService : ControllerBase, ITVFileService
     {
@@ -36,14 +37,16 @@ namespace CSSPServices
         #region Properties
         private CSSPDBContext db { get; }
         private ICultureService CultureService { get; }
+        private ILoggedInService LoggedInService { get; }
         private IEnums enums { get; }
         private IEnumerable<ValidationResult> ValidationResults { get; set; }
         #endregion Properties
 
         #region Constructors
-        public TVFileService(ICultureService CultureService, IEnums enums, CSSPDBContext db)
+        public TVFileService(ICultureService CultureService, ILoggedInService LoggedInService, IEnums enums, CSSPDBContext db)
         {
             this.CultureService = CultureService;
+            this.LoggedInService = LoggedInService;
             this.enums = enums;
             this.db = db;
         }
@@ -52,6 +55,11 @@ namespace CSSPServices
         #region Functions public 
         public async Task<ActionResult<TVFile>> GetTVFileWithTVFileID(int TVFileID)
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             TVFile tvfile = (from c in db.TVFiles.AsNoTracking()
                     where c.TVFileID == TVFileID
                     select c).FirstOrDefault();
@@ -65,32 +73,22 @@ namespace CSSPServices
         }
         public async Task<ActionResult<List<TVFile>>> GetTVFileList()
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             List<TVFile> tvfileList = (from c in db.TVFiles.AsNoTracking() select c).Take(100).ToList();
 
             return await Task.FromResult(Ok(tvfileList));
         }
-        public async Task<ActionResult<TVFile>> Add(TVFile tvFile)
-        {
-            ValidationResults = Validate(new ValidationContext(tvFile), ActionDBTypeEnum.Create);
-            if (ValidationResults.Count() > 0)
-            {
-               return await Task.FromResult(BadRequest(ValidationResults));
-            }
-
-            try
-            {
-               db.TVFiles.Add(tvFile);
-               db.SaveChanges();
-            }
-            catch (DbUpdateException ex)
-            {
-               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
-            }
-
-            return await Task.FromResult(Ok(tvFile));
-        }
         public async Task<ActionResult<bool>> Delete(int TVFileID)
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             TVFile tvFile = (from c in db.TVFiles
                                where c.TVFileID == TVFileID
                                select c).FirstOrDefault();
@@ -112,8 +110,38 @@ namespace CSSPServices
 
             return await Task.FromResult(Ok(true));
         }
-        public async Task<ActionResult<TVFile>> Update(TVFile tvFile)
+        public async Task<ActionResult<TVFile>> Post(TVFile tvFile)
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
+            ValidationResults = Validate(new ValidationContext(tvFile), ActionDBTypeEnum.Create);
+            if (ValidationResults.Count() > 0)
+            {
+               return await Task.FromResult(BadRequest(ValidationResults));
+            }
+
+            try
+            {
+               db.TVFiles.Add(tvFile);
+               db.SaveChanges();
+            }
+            catch (DbUpdateException ex)
+            {
+               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+            }
+
+            return await Task.FromResult(Ok(tvFile));
+        }
+        public async Task<ActionResult<TVFile>> Put(TVFile tvFile)
+        {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             ValidationResults = Validate(new ValidationContext(tvFile), ActionDBTypeEnum.Update);
             if (ValidationResults.Count() > 0)
             {

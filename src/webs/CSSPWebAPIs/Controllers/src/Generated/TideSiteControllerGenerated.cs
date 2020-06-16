@@ -6,6 +6,7 @@
 
 using CSSPModels;
 using CSSPServices;
+using CultureServices.Services;
 using LoggedInServices.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -18,8 +19,8 @@ namespace CSSPWebAPI.Controllers
     {
         Task<ActionResult<List<TideSite>>> Get();
         Task<ActionResult<TideSite>> Get(int TideSiteID);
-        Task<ActionResult<TideSite>> Post(TideSite tideSite);
-        Task<ActionResult<TideSite>> Put(TideSite tideSite);
+        Task<ActionResult<TideSite>> Post(TideSite TideSite);
+        Task<ActionResult<TideSite>> Put(TideSite TideSite);
         Task<ActionResult<bool>> Delete(int TideSiteID);
     }
 
@@ -32,17 +33,17 @@ namespace CSSPWebAPI.Controllers
         #endregion Variables
 
         #region Properties
-        private ITideSiteService tideSiteService { get; }
-        private CSSPDBContext db { get; }
-        private ILoggedInService loggedInService { get; }
+        private ICultureService CultureService { get; }
+        private ILoggedInService LoggedInService { get; }
+        private ITideSiteService TideSiteService { get; }
         #endregion Properties
 
         #region Constructors
-        public TideSiteController(ITideSiteService tideSiteService, CSSPDBContext db, ILoggedInService loggedInService)
+        public TideSiteController(ICultureService CultureService, ILoggedInService LoggedInService, ITideSiteService TideSiteService)
         {
-            this.tideSiteService = tideSiteService;
-            this.db = db;
-            this.loggedInService = loggedInService;
+            this.CultureService = CultureService;
+            this.LoggedInService = LoggedInService;
+            this.TideSiteService = TideSiteService;
         }
         #endregion Constructors
 
@@ -50,27 +51,42 @@ namespace CSSPWebAPI.Controllers
         [HttpGet]
         public async Task<ActionResult<List<TideSite>>> Get()
         {
-            return await tideSiteService.GetTideSiteList();
+            CultureService.SetCulture((string)RouteData.Values["culture"]);
+            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+
+            return await TideSiteService.GetTideSiteList();
         }
         [HttpGet("{TideSiteID}")]
         public async Task<ActionResult<TideSite>> Get(int TideSiteID)
         {
-            return await tideSiteService.GetTideSiteWithTideSiteID(TideSiteID);
+            CultureService.SetCulture((string)RouteData.Values["culture"]);
+            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+
+            return await TideSiteService.GetTideSiteWithTideSiteID(TideSiteID);
         }
         [HttpPost]
-        public async Task<ActionResult<TideSite>> Post(TideSite tideSite)
+        public async Task<ActionResult<TideSite>> Post(TideSite TideSite)
         {
-            return await tideSiteService.Add(tideSite);
+            CultureService.SetCulture((string)RouteData.Values["culture"]);
+            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+
+            return await TideSiteService.Post(TideSite);
         }
         [HttpPut]
-        public async Task<ActionResult<TideSite>> Put(TideSite tideSite)
+        public async Task<ActionResult<TideSite>> Put(TideSite TideSite)
         {
-            return await tideSiteService.Update(tideSite);
+            CultureService.SetCulture((string)RouteData.Values["culture"]);
+            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+
+            return await TideSiteService.Put(TideSite);
         }
         [HttpDelete("{TideSiteID}")]
         public async Task<ActionResult<bool>> Delete(int TideSiteID)
         {
-            return await tideSiteService.Delete(TideSiteID);
+            CultureService.SetCulture((string)RouteData.Values["culture"]);
+            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+
+            return await TideSiteService.Delete(TideSiteID);
         }
         #endregion Functions public
 

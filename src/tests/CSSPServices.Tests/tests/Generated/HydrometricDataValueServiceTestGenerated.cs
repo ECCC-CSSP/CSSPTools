@@ -32,7 +32,7 @@ namespace CSSPServices.Tests
         private IServiceProvider Provider { get; set; }
         private IServiceCollection Services { get; set; }
         private ICultureService CultureService { get; set; }
-        private IHydrometricDataValueService hydrometricDataValueService { get; set; }
+        private IHydrometricDataValueService HydrometricDataValueService { get; set; }
         private CSSPDBContext db { get; set; }
         #endregion Properties
 
@@ -62,7 +62,7 @@ namespace CSSPServices.Tests
                HydrometricDataValue hydrometricDataValue = GetFilledRandomHydrometricDataValue(""); 
 
                // List<HydrometricDataValue>
-               var actionHydrometricDataValueList = await hydrometricDataValueService.GetHydrometricDataValueList();
+               var actionHydrometricDataValueList = await HydrometricDataValueService.GetHydrometricDataValueList();
                Assert.Equal(200, ((ObjectResult)actionHydrometricDataValueList.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionHydrometricDataValueList.Result).Value);
                List<HydrometricDataValue> hydrometricDataValueList = (List<HydrometricDataValue>)((OkObjectResult)actionHydrometricDataValueList.Result).Value;
@@ -70,22 +70,22 @@ namespace CSSPServices.Tests
                int count = ((List<HydrometricDataValue>)((OkObjectResult)actionHydrometricDataValueList.Result).Value).Count();
                 Assert.True(count > 0);
 
-               // Add HydrometricDataValue
-               var actionHydrometricDataValueAdded = await hydrometricDataValueService.Add(hydrometricDataValue);
+               // Post HydrometricDataValue
+               var actionHydrometricDataValueAdded = await HydrometricDataValueService.Post(hydrometricDataValue);
                Assert.Equal(200, ((ObjectResult)actionHydrometricDataValueAdded.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionHydrometricDataValueAdded.Result).Value);
                HydrometricDataValue hydrometricDataValueAdded = (HydrometricDataValue)((OkObjectResult)actionHydrometricDataValueAdded.Result).Value;
                Assert.NotNull(hydrometricDataValueAdded);
 
-               // Update HydrometricDataValue
-               var actionHydrometricDataValueUpdated = await hydrometricDataValueService.Update(hydrometricDataValue);
+               // Put HydrometricDataValue
+               var actionHydrometricDataValueUpdated = await HydrometricDataValueService.Put(hydrometricDataValue);
                Assert.Equal(200, ((ObjectResult)actionHydrometricDataValueUpdated.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionHydrometricDataValueUpdated.Result).Value);
                HydrometricDataValue hydrometricDataValueUpdated = (HydrometricDataValue)((OkObjectResult)actionHydrometricDataValueUpdated.Result).Value;
                Assert.NotNull(hydrometricDataValueUpdated);
 
                // Delete HydrometricDataValue
-               var actionHydrometricDataValueDeleted = await hydrometricDataValueService.Delete(hydrometricDataValue.HydrometricDataValueID);
+               var actionHydrometricDataValueDeleted = await HydrometricDataValueService.Delete(hydrometricDataValue.HydrometricDataValueID);
                Assert.Equal(200, ((ObjectResult)actionHydrometricDataValueDeleted.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionHydrometricDataValueDeleted.Result).Value);
                bool retBool = (bool)((OkObjectResult)actionHydrometricDataValueDeleted.Result).Value;
@@ -126,8 +126,8 @@ namespace CSSPServices.Tests
 
             CultureService.SetCulture(culture);
 
-            hydrometricDataValueService = Provider.GetService<IHydrometricDataValueService>();
-            Assert.NotNull(hydrometricDataValueService);
+            HydrometricDataValueService = Provider.GetService<IHydrometricDataValueService>();
+            Assert.NotNull(HydrometricDataValueService);
 
             return await Task.FromResult(true);
         }

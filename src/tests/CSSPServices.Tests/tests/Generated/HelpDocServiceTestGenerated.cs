@@ -32,7 +32,7 @@ namespace CSSPServices.Tests
         private IServiceProvider Provider { get; set; }
         private IServiceCollection Services { get; set; }
         private ICultureService CultureService { get; set; }
-        private IHelpDocService helpDocService { get; set; }
+        private IHelpDocService HelpDocService { get; set; }
         private CSSPDBContext db { get; set; }
         #endregion Properties
 
@@ -62,7 +62,7 @@ namespace CSSPServices.Tests
                HelpDoc helpDoc = GetFilledRandomHelpDoc(""); 
 
                // List<HelpDoc>
-               var actionHelpDocList = await helpDocService.GetHelpDocList();
+               var actionHelpDocList = await HelpDocService.GetHelpDocList();
                Assert.Equal(200, ((ObjectResult)actionHelpDocList.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionHelpDocList.Result).Value);
                List<HelpDoc> helpDocList = (List<HelpDoc>)((OkObjectResult)actionHelpDocList.Result).Value;
@@ -70,22 +70,22 @@ namespace CSSPServices.Tests
                int count = ((List<HelpDoc>)((OkObjectResult)actionHelpDocList.Result).Value).Count();
                 Assert.True(count > 0);
 
-               // Add HelpDoc
-               var actionHelpDocAdded = await helpDocService.Add(helpDoc);
+               // Post HelpDoc
+               var actionHelpDocAdded = await HelpDocService.Post(helpDoc);
                Assert.Equal(200, ((ObjectResult)actionHelpDocAdded.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionHelpDocAdded.Result).Value);
                HelpDoc helpDocAdded = (HelpDoc)((OkObjectResult)actionHelpDocAdded.Result).Value;
                Assert.NotNull(helpDocAdded);
 
-               // Update HelpDoc
-               var actionHelpDocUpdated = await helpDocService.Update(helpDoc);
+               // Put HelpDoc
+               var actionHelpDocUpdated = await HelpDocService.Put(helpDoc);
                Assert.Equal(200, ((ObjectResult)actionHelpDocUpdated.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionHelpDocUpdated.Result).Value);
                HelpDoc helpDocUpdated = (HelpDoc)((OkObjectResult)actionHelpDocUpdated.Result).Value;
                Assert.NotNull(helpDocUpdated);
 
                // Delete HelpDoc
-               var actionHelpDocDeleted = await helpDocService.Delete(helpDoc.HelpDocID);
+               var actionHelpDocDeleted = await HelpDocService.Delete(helpDoc.HelpDocID);
                Assert.Equal(200, ((ObjectResult)actionHelpDocDeleted.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionHelpDocDeleted.Result).Value);
                bool retBool = (bool)((OkObjectResult)actionHelpDocDeleted.Result).Value;
@@ -126,8 +126,8 @@ namespace CSSPServices.Tests
 
             CultureService.SetCulture(culture);
 
-            helpDocService = Provider.GetService<IHelpDocService>();
-            Assert.NotNull(helpDocService);
+            HelpDocService = Provider.GetService<IHelpDocService>();
+            Assert.NotNull(HelpDocService);
 
             return await Task.FromResult(true);
         }

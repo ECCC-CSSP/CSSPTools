@@ -32,7 +32,7 @@ namespace CSSPServices.Tests
         private IServiceProvider Provider { get; set; }
         private IServiceCollection Services { get; set; }
         private ICultureService CultureService { get; set; }
-        private IMWQMSiteService mwqmSiteService { get; set; }
+        private IMWQMSiteService MWQMSiteService { get; set; }
         private CSSPDBContext db { get; set; }
         #endregion Properties
 
@@ -62,7 +62,7 @@ namespace CSSPServices.Tests
                MWQMSite mwqmSite = GetFilledRandomMWQMSite(""); 
 
                // List<MWQMSite>
-               var actionMWQMSiteList = await mwqmSiteService.GetMWQMSiteList();
+               var actionMWQMSiteList = await MWQMSiteService.GetMWQMSiteList();
                Assert.Equal(200, ((ObjectResult)actionMWQMSiteList.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionMWQMSiteList.Result).Value);
                List<MWQMSite> mwqmSiteList = (List<MWQMSite>)((OkObjectResult)actionMWQMSiteList.Result).Value;
@@ -70,22 +70,22 @@ namespace CSSPServices.Tests
                int count = ((List<MWQMSite>)((OkObjectResult)actionMWQMSiteList.Result).Value).Count();
                 Assert.True(count > 0);
 
-               // Add MWQMSite
-               var actionMWQMSiteAdded = await mwqmSiteService.Add(mwqmSite);
+               // Post MWQMSite
+               var actionMWQMSiteAdded = await MWQMSiteService.Post(mwqmSite);
                Assert.Equal(200, ((ObjectResult)actionMWQMSiteAdded.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionMWQMSiteAdded.Result).Value);
                MWQMSite mwqmSiteAdded = (MWQMSite)((OkObjectResult)actionMWQMSiteAdded.Result).Value;
                Assert.NotNull(mwqmSiteAdded);
 
-               // Update MWQMSite
-               var actionMWQMSiteUpdated = await mwqmSiteService.Update(mwqmSite);
+               // Put MWQMSite
+               var actionMWQMSiteUpdated = await MWQMSiteService.Put(mwqmSite);
                Assert.Equal(200, ((ObjectResult)actionMWQMSiteUpdated.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionMWQMSiteUpdated.Result).Value);
                MWQMSite mwqmSiteUpdated = (MWQMSite)((OkObjectResult)actionMWQMSiteUpdated.Result).Value;
                Assert.NotNull(mwqmSiteUpdated);
 
                // Delete MWQMSite
-               var actionMWQMSiteDeleted = await mwqmSiteService.Delete(mwqmSite.MWQMSiteID);
+               var actionMWQMSiteDeleted = await MWQMSiteService.Delete(mwqmSite.MWQMSiteID);
                Assert.Equal(200, ((ObjectResult)actionMWQMSiteDeleted.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionMWQMSiteDeleted.Result).Value);
                bool retBool = (bool)((OkObjectResult)actionMWQMSiteDeleted.Result).Value;
@@ -126,8 +126,8 @@ namespace CSSPServices.Tests
 
             CultureService.SetCulture(culture);
 
-            mwqmSiteService = Provider.GetService<IMWQMSiteService>();
-            Assert.NotNull(mwqmSiteService);
+            MWQMSiteService = Provider.GetService<IMWQMSiteService>();
+            Assert.NotNull(MWQMSiteService);
 
             return await Task.FromResult(true);
         }

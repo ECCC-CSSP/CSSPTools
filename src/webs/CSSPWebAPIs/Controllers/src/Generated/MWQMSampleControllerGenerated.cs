@@ -6,6 +6,7 @@
 
 using CSSPModels;
 using CSSPServices;
+using CultureServices.Services;
 using LoggedInServices.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -18,8 +19,8 @@ namespace CSSPWebAPI.Controllers
     {
         Task<ActionResult<List<MWQMSample>>> Get();
         Task<ActionResult<MWQMSample>> Get(int MWQMSampleID);
-        Task<ActionResult<MWQMSample>> Post(MWQMSample mwqmSample);
-        Task<ActionResult<MWQMSample>> Put(MWQMSample mwqmSample);
+        Task<ActionResult<MWQMSample>> Post(MWQMSample MWQMSample);
+        Task<ActionResult<MWQMSample>> Put(MWQMSample MWQMSample);
         Task<ActionResult<bool>> Delete(int MWQMSampleID);
     }
 
@@ -32,17 +33,17 @@ namespace CSSPWebAPI.Controllers
         #endregion Variables
 
         #region Properties
-        private IMWQMSampleService mwqmSampleService { get; }
-        private CSSPDBContext db { get; }
-        private ILoggedInService loggedInService { get; }
+        private ICultureService CultureService { get; }
+        private ILoggedInService LoggedInService { get; }
+        private IMWQMSampleService MWQMSampleService { get; }
         #endregion Properties
 
         #region Constructors
-        public MWQMSampleController(IMWQMSampleService mwqmSampleService, CSSPDBContext db, ILoggedInService loggedInService)
+        public MWQMSampleController(ICultureService CultureService, ILoggedInService LoggedInService, IMWQMSampleService MWQMSampleService)
         {
-            this.mwqmSampleService = mwqmSampleService;
-            this.db = db;
-            this.loggedInService = loggedInService;
+            this.CultureService = CultureService;
+            this.LoggedInService = LoggedInService;
+            this.MWQMSampleService = MWQMSampleService;
         }
         #endregion Constructors
 
@@ -50,27 +51,42 @@ namespace CSSPWebAPI.Controllers
         [HttpGet]
         public async Task<ActionResult<List<MWQMSample>>> Get()
         {
-            return await mwqmSampleService.GetMWQMSampleList();
+            CultureService.SetCulture((string)RouteData.Values["culture"]);
+            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+
+            return await MWQMSampleService.GetMWQMSampleList();
         }
         [HttpGet("{MWQMSampleID}")]
         public async Task<ActionResult<MWQMSample>> Get(int MWQMSampleID)
         {
-            return await mwqmSampleService.GetMWQMSampleWithMWQMSampleID(MWQMSampleID);
+            CultureService.SetCulture((string)RouteData.Values["culture"]);
+            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+
+            return await MWQMSampleService.GetMWQMSampleWithMWQMSampleID(MWQMSampleID);
         }
         [HttpPost]
-        public async Task<ActionResult<MWQMSample>> Post(MWQMSample mwqmSample)
+        public async Task<ActionResult<MWQMSample>> Post(MWQMSample MWQMSample)
         {
-            return await mwqmSampleService.Add(mwqmSample);
+            CultureService.SetCulture((string)RouteData.Values["culture"]);
+            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+
+            return await MWQMSampleService.Post(MWQMSample);
         }
         [HttpPut]
-        public async Task<ActionResult<MWQMSample>> Put(MWQMSample mwqmSample)
+        public async Task<ActionResult<MWQMSample>> Put(MWQMSample MWQMSample)
         {
-            return await mwqmSampleService.Update(mwqmSample);
+            CultureService.SetCulture((string)RouteData.Values["culture"]);
+            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+
+            return await MWQMSampleService.Put(MWQMSample);
         }
         [HttpDelete("{MWQMSampleID}")]
         public async Task<ActionResult<bool>> Delete(int MWQMSampleID)
         {
-            return await mwqmSampleService.Delete(MWQMSampleID);
+            CultureService.SetCulture((string)RouteData.Values["culture"]);
+            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+
+            return await MWQMSampleService.Delete(MWQMSampleID);
         }
         #endregion Functions public
 

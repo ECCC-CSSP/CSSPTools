@@ -32,7 +32,7 @@ namespace CSSPServices.Tests
         private IServiceProvider Provider { get; set; }
         private IServiceCollection Services { get; set; }
         private ICultureService CultureService { get; set; }
-        private IContactPreferenceService contactPreferenceService { get; set; }
+        private IContactPreferenceService ContactPreferenceService { get; set; }
         private CSSPDBContext db { get; set; }
         #endregion Properties
 
@@ -62,7 +62,7 @@ namespace CSSPServices.Tests
                ContactPreference contactPreference = GetFilledRandomContactPreference(""); 
 
                // List<ContactPreference>
-               var actionContactPreferenceList = await contactPreferenceService.GetContactPreferenceList();
+               var actionContactPreferenceList = await ContactPreferenceService.GetContactPreferenceList();
                Assert.Equal(200, ((ObjectResult)actionContactPreferenceList.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionContactPreferenceList.Result).Value);
                List<ContactPreference> contactPreferenceList = (List<ContactPreference>)((OkObjectResult)actionContactPreferenceList.Result).Value;
@@ -70,22 +70,22 @@ namespace CSSPServices.Tests
                int count = ((List<ContactPreference>)((OkObjectResult)actionContactPreferenceList.Result).Value).Count();
                 Assert.True(count > 0);
 
-               // Add ContactPreference
-               var actionContactPreferenceAdded = await contactPreferenceService.Add(contactPreference);
+               // Post ContactPreference
+               var actionContactPreferenceAdded = await ContactPreferenceService.Post(contactPreference);
                Assert.Equal(200, ((ObjectResult)actionContactPreferenceAdded.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionContactPreferenceAdded.Result).Value);
                ContactPreference contactPreferenceAdded = (ContactPreference)((OkObjectResult)actionContactPreferenceAdded.Result).Value;
                Assert.NotNull(contactPreferenceAdded);
 
-               // Update ContactPreference
-               var actionContactPreferenceUpdated = await contactPreferenceService.Update(contactPreference);
+               // Put ContactPreference
+               var actionContactPreferenceUpdated = await ContactPreferenceService.Put(contactPreference);
                Assert.Equal(200, ((ObjectResult)actionContactPreferenceUpdated.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionContactPreferenceUpdated.Result).Value);
                ContactPreference contactPreferenceUpdated = (ContactPreference)((OkObjectResult)actionContactPreferenceUpdated.Result).Value;
                Assert.NotNull(contactPreferenceUpdated);
 
                // Delete ContactPreference
-               var actionContactPreferenceDeleted = await contactPreferenceService.Delete(contactPreference.ContactPreferenceID);
+               var actionContactPreferenceDeleted = await ContactPreferenceService.Delete(contactPreference.ContactPreferenceID);
                Assert.Equal(200, ((ObjectResult)actionContactPreferenceDeleted.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionContactPreferenceDeleted.Result).Value);
                bool retBool = (bool)((OkObjectResult)actionContactPreferenceDeleted.Result).Value;
@@ -126,8 +126,8 @@ namespace CSSPServices.Tests
 
             CultureService.SetCulture(culture);
 
-            contactPreferenceService = Provider.GetService<IContactPreferenceService>();
-            Assert.NotNull(contactPreferenceService);
+            ContactPreferenceService = Provider.GetService<IContactPreferenceService>();
+            Assert.NotNull(ContactPreferenceService);
 
             return await Task.FromResult(true);
         }

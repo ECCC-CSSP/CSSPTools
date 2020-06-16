@@ -32,7 +32,7 @@ namespace CSSPServices.Tests
         private IServiceProvider Provider { get; set; }
         private IServiceCollection Services { get; set; }
         private ICultureService CultureService { get; set; }
-        private IContactService contactService { get; set; }
+        private IContactService ContactService { get; set; }
         private CSSPDBContext db { get; set; }
         #endregion Properties
 
@@ -62,7 +62,7 @@ namespace CSSPServices.Tests
                Contact contact = GetFilledRandomContact(""); 
 
                // List<Contact>
-               var actionContactList = await contactService.GetContactList();
+               var actionContactList = await ContactService.GetContactList();
                Assert.Equal(200, ((ObjectResult)actionContactList.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionContactList.Result).Value);
                List<Contact> contactList = (List<Contact>)((OkObjectResult)actionContactList.Result).Value;
@@ -70,22 +70,22 @@ namespace CSSPServices.Tests
                int count = ((List<Contact>)((OkObjectResult)actionContactList.Result).Value).Count();
                 Assert.True(count > 0);
 
-               // Add Contact
-               var actionContactAdded = await contactService.Add(contact, AddContactTypeEnum.Register);
+               // Post Contact
+               var actionContactAdded = await ContactService.Post(contact, AddContactTypeEnum.Register);
                Assert.Equal(200, ((ObjectResult)actionContactAdded.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionContactAdded.Result).Value);
                Contact contactAdded = (Contact)((OkObjectResult)actionContactAdded.Result).Value;
                Assert.NotNull(contactAdded);
 
-               // Update Contact
-               var actionContactUpdated = await contactService.Update(contact);
+               // Put Contact
+               var actionContactUpdated = await ContactService.Put(contact);
                Assert.Equal(200, ((ObjectResult)actionContactUpdated.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionContactUpdated.Result).Value);
                Contact contactUpdated = (Contact)((OkObjectResult)actionContactUpdated.Result).Value;
                Assert.NotNull(contactUpdated);
 
                // Delete Contact
-               var actionContactDeleted = await contactService.Delete(contact.ContactID);
+               var actionContactDeleted = await ContactService.Delete(contact.ContactID);
                Assert.Equal(200, ((ObjectResult)actionContactDeleted.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionContactDeleted.Result).Value);
                bool retBool = (bool)((OkObjectResult)actionContactDeleted.Result).Value;
@@ -126,8 +126,8 @@ namespace CSSPServices.Tests
 
             CultureService.SetCulture(culture);
 
-            contactService = Provider.GetService<IContactService>();
-            Assert.NotNull(contactService);
+            ContactService = Provider.GetService<IContactService>();
+            Assert.NotNull(ContactService);
 
             return await Task.FromResult(true);
         }

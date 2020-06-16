@@ -9,6 +9,7 @@ using CSSPEnums;
 using CSSPModels;
 using CultureServices.Resources;
 using CultureServices.Services;
+using LoggedInServices.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -22,11 +23,11 @@ namespace CSSPServices
 {
    public interface ISpillService
     {
-       Task<ActionResult<Spill>> GetSpillWithSpillID(int SpillID);
-       Task<ActionResult<List<Spill>>> GetSpillList();
-       Task<ActionResult<Spill>> Add(Spill spill);
        Task<ActionResult<bool>> Delete(int SpillID);
-       Task<ActionResult<Spill>> Update(Spill spill);
+       Task<ActionResult<List<Spill>>> GetSpillList();
+       Task<ActionResult<Spill>> GetSpillWithSpillID(int SpillID);
+       Task<ActionResult<Spill>> Post(Spill spill);
+       Task<ActionResult<Spill>> Put(Spill spill);
     }
     public partial class SpillService : ControllerBase, ISpillService
     {
@@ -36,14 +37,16 @@ namespace CSSPServices
         #region Properties
         private CSSPDBContext db { get; }
         private ICultureService CultureService { get; }
+        private ILoggedInService LoggedInService { get; }
         private IEnums enums { get; }
         private IEnumerable<ValidationResult> ValidationResults { get; set; }
         #endregion Properties
 
         #region Constructors
-        public SpillService(ICultureService CultureService, IEnums enums, CSSPDBContext db)
+        public SpillService(ICultureService CultureService, ILoggedInService LoggedInService, IEnums enums, CSSPDBContext db)
         {
             this.CultureService = CultureService;
+            this.LoggedInService = LoggedInService;
             this.enums = enums;
             this.db = db;
         }
@@ -52,6 +55,11 @@ namespace CSSPServices
         #region Functions public 
         public async Task<ActionResult<Spill>> GetSpillWithSpillID(int SpillID)
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             Spill spill = (from c in db.Spills.AsNoTracking()
                     where c.SpillID == SpillID
                     select c).FirstOrDefault();
@@ -65,32 +73,22 @@ namespace CSSPServices
         }
         public async Task<ActionResult<List<Spill>>> GetSpillList()
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             List<Spill> spillList = (from c in db.Spills.AsNoTracking() select c).Take(100).ToList();
 
             return await Task.FromResult(Ok(spillList));
         }
-        public async Task<ActionResult<Spill>> Add(Spill spill)
-        {
-            ValidationResults = Validate(new ValidationContext(spill), ActionDBTypeEnum.Create);
-            if (ValidationResults.Count() > 0)
-            {
-               return await Task.FromResult(BadRequest(ValidationResults));
-            }
-
-            try
-            {
-               db.Spills.Add(spill);
-               db.SaveChanges();
-            }
-            catch (DbUpdateException ex)
-            {
-               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
-            }
-
-            return await Task.FromResult(Ok(spill));
-        }
         public async Task<ActionResult<bool>> Delete(int SpillID)
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             Spill spill = (from c in db.Spills
                                where c.SpillID == SpillID
                                select c).FirstOrDefault();
@@ -112,8 +110,38 @@ namespace CSSPServices
 
             return await Task.FromResult(Ok(true));
         }
-        public async Task<ActionResult<Spill>> Update(Spill spill)
+        public async Task<ActionResult<Spill>> Post(Spill spill)
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
+            ValidationResults = Validate(new ValidationContext(spill), ActionDBTypeEnum.Create);
+            if (ValidationResults.Count() > 0)
+            {
+               return await Task.FromResult(BadRequest(ValidationResults));
+            }
+
+            try
+            {
+               db.Spills.Add(spill);
+               db.SaveChanges();
+            }
+            catch (DbUpdateException ex)
+            {
+               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+            }
+
+            return await Task.FromResult(Ok(spill));
+        }
+        public async Task<ActionResult<Spill>> Put(Spill spill)
+        {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             ValidationResults = Validate(new ValidationContext(spill), ActionDBTypeEnum.Update);
             if (ValidationResults.Count() > 0)
             {

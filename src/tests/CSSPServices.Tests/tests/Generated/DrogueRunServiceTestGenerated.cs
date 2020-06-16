@@ -32,7 +32,7 @@ namespace CSSPServices.Tests
         private IServiceProvider Provider { get; set; }
         private IServiceCollection Services { get; set; }
         private ICultureService CultureService { get; set; }
-        private IDrogueRunService drogueRunService { get; set; }
+        private IDrogueRunService DrogueRunService { get; set; }
         private CSSPDBContext db { get; set; }
         #endregion Properties
 
@@ -62,7 +62,7 @@ namespace CSSPServices.Tests
                DrogueRun drogueRun = GetFilledRandomDrogueRun(""); 
 
                // List<DrogueRun>
-               var actionDrogueRunList = await drogueRunService.GetDrogueRunList();
+               var actionDrogueRunList = await DrogueRunService.GetDrogueRunList();
                Assert.Equal(200, ((ObjectResult)actionDrogueRunList.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionDrogueRunList.Result).Value);
                List<DrogueRun> drogueRunList = (List<DrogueRun>)((OkObjectResult)actionDrogueRunList.Result).Value;
@@ -70,22 +70,22 @@ namespace CSSPServices.Tests
                int count = ((List<DrogueRun>)((OkObjectResult)actionDrogueRunList.Result).Value).Count();
                 Assert.True(count > 0);
 
-               // Add DrogueRun
-               var actionDrogueRunAdded = await drogueRunService.Add(drogueRun);
+               // Post DrogueRun
+               var actionDrogueRunAdded = await DrogueRunService.Post(drogueRun);
                Assert.Equal(200, ((ObjectResult)actionDrogueRunAdded.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionDrogueRunAdded.Result).Value);
                DrogueRun drogueRunAdded = (DrogueRun)((OkObjectResult)actionDrogueRunAdded.Result).Value;
                Assert.NotNull(drogueRunAdded);
 
-               // Update DrogueRun
-               var actionDrogueRunUpdated = await drogueRunService.Update(drogueRun);
+               // Put DrogueRun
+               var actionDrogueRunUpdated = await DrogueRunService.Put(drogueRun);
                Assert.Equal(200, ((ObjectResult)actionDrogueRunUpdated.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionDrogueRunUpdated.Result).Value);
                DrogueRun drogueRunUpdated = (DrogueRun)((OkObjectResult)actionDrogueRunUpdated.Result).Value;
                Assert.NotNull(drogueRunUpdated);
 
                // Delete DrogueRun
-               var actionDrogueRunDeleted = await drogueRunService.Delete(drogueRun.DrogueRunID);
+               var actionDrogueRunDeleted = await DrogueRunService.Delete(drogueRun.DrogueRunID);
                Assert.Equal(200, ((ObjectResult)actionDrogueRunDeleted.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionDrogueRunDeleted.Result).Value);
                bool retBool = (bool)((OkObjectResult)actionDrogueRunDeleted.Result).Value;
@@ -126,8 +126,8 @@ namespace CSSPServices.Tests
 
             CultureService.SetCulture(culture);
 
-            drogueRunService = Provider.GetService<IDrogueRunService>();
-            Assert.NotNull(drogueRunService);
+            DrogueRunService = Provider.GetService<IDrogueRunService>();
+            Assert.NotNull(DrogueRunService);
 
             return await Task.FromResult(true);
         }

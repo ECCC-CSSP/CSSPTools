@@ -9,6 +9,7 @@ using CSSPEnums;
 using CSSPModels;
 using CultureServices.Resources;
 using CultureServices.Services;
+using LoggedInServices.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -22,11 +23,11 @@ namespace CSSPServices
 {
    public interface IAppTaskLanguageService
     {
-       Task<ActionResult<AppTaskLanguage>> GetAppTaskLanguageWithAppTaskLanguageID(int AppTaskLanguageID);
-       Task<ActionResult<List<AppTaskLanguage>>> GetAppTaskLanguageList();
-       Task<ActionResult<AppTaskLanguage>> Add(AppTaskLanguage apptasklanguage);
        Task<ActionResult<bool>> Delete(int AppTaskLanguageID);
-       Task<ActionResult<AppTaskLanguage>> Update(AppTaskLanguage apptasklanguage);
+       Task<ActionResult<List<AppTaskLanguage>>> GetAppTaskLanguageList();
+       Task<ActionResult<AppTaskLanguage>> GetAppTaskLanguageWithAppTaskLanguageID(int AppTaskLanguageID);
+       Task<ActionResult<AppTaskLanguage>> Post(AppTaskLanguage apptasklanguage);
+       Task<ActionResult<AppTaskLanguage>> Put(AppTaskLanguage apptasklanguage);
     }
     public partial class AppTaskLanguageService : ControllerBase, IAppTaskLanguageService
     {
@@ -36,14 +37,16 @@ namespace CSSPServices
         #region Properties
         private CSSPDBContext db { get; }
         private ICultureService CultureService { get; }
+        private ILoggedInService LoggedInService { get; }
         private IEnums enums { get; }
         private IEnumerable<ValidationResult> ValidationResults { get; set; }
         #endregion Properties
 
         #region Constructors
-        public AppTaskLanguageService(ICultureService CultureService, IEnums enums, CSSPDBContext db)
+        public AppTaskLanguageService(ICultureService CultureService, ILoggedInService LoggedInService, IEnums enums, CSSPDBContext db)
         {
             this.CultureService = CultureService;
+            this.LoggedInService = LoggedInService;
             this.enums = enums;
             this.db = db;
         }
@@ -52,6 +55,11 @@ namespace CSSPServices
         #region Functions public 
         public async Task<ActionResult<AppTaskLanguage>> GetAppTaskLanguageWithAppTaskLanguageID(int AppTaskLanguageID)
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             AppTaskLanguage apptasklanguage = (from c in db.AppTaskLanguages.AsNoTracking()
                     where c.AppTaskLanguageID == AppTaskLanguageID
                     select c).FirstOrDefault();
@@ -65,32 +73,22 @@ namespace CSSPServices
         }
         public async Task<ActionResult<List<AppTaskLanguage>>> GetAppTaskLanguageList()
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             List<AppTaskLanguage> apptasklanguageList = (from c in db.AppTaskLanguages.AsNoTracking() select c).Take(100).ToList();
 
             return await Task.FromResult(Ok(apptasklanguageList));
         }
-        public async Task<ActionResult<AppTaskLanguage>> Add(AppTaskLanguage appTaskLanguage)
-        {
-            ValidationResults = Validate(new ValidationContext(appTaskLanguage), ActionDBTypeEnum.Create);
-            if (ValidationResults.Count() > 0)
-            {
-               return await Task.FromResult(BadRequest(ValidationResults));
-            }
-
-            try
-            {
-               db.AppTaskLanguages.Add(appTaskLanguage);
-               db.SaveChanges();
-            }
-            catch (DbUpdateException ex)
-            {
-               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
-            }
-
-            return await Task.FromResult(Ok(appTaskLanguage));
-        }
         public async Task<ActionResult<bool>> Delete(int AppTaskLanguageID)
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             AppTaskLanguage appTaskLanguage = (from c in db.AppTaskLanguages
                                where c.AppTaskLanguageID == AppTaskLanguageID
                                select c).FirstOrDefault();
@@ -112,8 +110,38 @@ namespace CSSPServices
 
             return await Task.FromResult(Ok(true));
         }
-        public async Task<ActionResult<AppTaskLanguage>> Update(AppTaskLanguage appTaskLanguage)
+        public async Task<ActionResult<AppTaskLanguage>> Post(AppTaskLanguage appTaskLanguage)
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
+            ValidationResults = Validate(new ValidationContext(appTaskLanguage), ActionDBTypeEnum.Create);
+            if (ValidationResults.Count() > 0)
+            {
+               return await Task.FromResult(BadRequest(ValidationResults));
+            }
+
+            try
+            {
+               db.AppTaskLanguages.Add(appTaskLanguage);
+               db.SaveChanges();
+            }
+            catch (DbUpdateException ex)
+            {
+               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+            }
+
+            return await Task.FromResult(Ok(appTaskLanguage));
+        }
+        public async Task<ActionResult<AppTaskLanguage>> Put(AppTaskLanguage appTaskLanguage)
+        {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             ValidationResults = Validate(new ValidationContext(appTaskLanguage), ActionDBTypeEnum.Update);
             if (ValidationResults.Count() > 0)
             {

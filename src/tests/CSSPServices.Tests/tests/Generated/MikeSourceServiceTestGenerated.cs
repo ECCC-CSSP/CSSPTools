@@ -32,7 +32,7 @@ namespace CSSPServices.Tests
         private IServiceProvider Provider { get; set; }
         private IServiceCollection Services { get; set; }
         private ICultureService CultureService { get; set; }
-        private IMikeSourceService mikeSourceService { get; set; }
+        private IMikeSourceService MikeSourceService { get; set; }
         private CSSPDBContext db { get; set; }
         #endregion Properties
 
@@ -62,7 +62,7 @@ namespace CSSPServices.Tests
                MikeSource mikeSource = GetFilledRandomMikeSource(""); 
 
                // List<MikeSource>
-               var actionMikeSourceList = await mikeSourceService.GetMikeSourceList();
+               var actionMikeSourceList = await MikeSourceService.GetMikeSourceList();
                Assert.Equal(200, ((ObjectResult)actionMikeSourceList.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionMikeSourceList.Result).Value);
                List<MikeSource> mikeSourceList = (List<MikeSource>)((OkObjectResult)actionMikeSourceList.Result).Value;
@@ -70,22 +70,22 @@ namespace CSSPServices.Tests
                int count = ((List<MikeSource>)((OkObjectResult)actionMikeSourceList.Result).Value).Count();
                 Assert.True(count > 0);
 
-               // Add MikeSource
-               var actionMikeSourceAdded = await mikeSourceService.Add(mikeSource);
+               // Post MikeSource
+               var actionMikeSourceAdded = await MikeSourceService.Post(mikeSource);
                Assert.Equal(200, ((ObjectResult)actionMikeSourceAdded.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionMikeSourceAdded.Result).Value);
                MikeSource mikeSourceAdded = (MikeSource)((OkObjectResult)actionMikeSourceAdded.Result).Value;
                Assert.NotNull(mikeSourceAdded);
 
-               // Update MikeSource
-               var actionMikeSourceUpdated = await mikeSourceService.Update(mikeSource);
+               // Put MikeSource
+               var actionMikeSourceUpdated = await MikeSourceService.Put(mikeSource);
                Assert.Equal(200, ((ObjectResult)actionMikeSourceUpdated.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionMikeSourceUpdated.Result).Value);
                MikeSource mikeSourceUpdated = (MikeSource)((OkObjectResult)actionMikeSourceUpdated.Result).Value;
                Assert.NotNull(mikeSourceUpdated);
 
                // Delete MikeSource
-               var actionMikeSourceDeleted = await mikeSourceService.Delete(mikeSource.MikeSourceID);
+               var actionMikeSourceDeleted = await MikeSourceService.Delete(mikeSource.MikeSourceID);
                Assert.Equal(200, ((ObjectResult)actionMikeSourceDeleted.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionMikeSourceDeleted.Result).Value);
                bool retBool = (bool)((OkObjectResult)actionMikeSourceDeleted.Result).Value;
@@ -126,8 +126,8 @@ namespace CSSPServices.Tests
 
             CultureService.SetCulture(culture);
 
-            mikeSourceService = Provider.GetService<IMikeSourceService>();
-            Assert.NotNull(mikeSourceService);
+            MikeSourceService = Provider.GetService<IMikeSourceService>();
+            Assert.NotNull(MikeSourceService);
 
             return await Task.FromResult(true);
         }

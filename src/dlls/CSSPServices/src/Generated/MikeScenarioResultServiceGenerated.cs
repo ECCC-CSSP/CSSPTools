@@ -9,6 +9,7 @@ using CSSPEnums;
 using CSSPModels;
 using CultureServices.Resources;
 using CultureServices.Services;
+using LoggedInServices.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -22,11 +23,11 @@ namespace CSSPServices
 {
    public interface IMikeScenarioResultService
     {
-       Task<ActionResult<MikeScenarioResult>> GetMikeScenarioResultWithMikeScenarioResultID(int MikeScenarioResultID);
-       Task<ActionResult<List<MikeScenarioResult>>> GetMikeScenarioResultList();
-       Task<ActionResult<MikeScenarioResult>> Add(MikeScenarioResult mikescenarioresult);
        Task<ActionResult<bool>> Delete(int MikeScenarioResultID);
-       Task<ActionResult<MikeScenarioResult>> Update(MikeScenarioResult mikescenarioresult);
+       Task<ActionResult<List<MikeScenarioResult>>> GetMikeScenarioResultList();
+       Task<ActionResult<MikeScenarioResult>> GetMikeScenarioResultWithMikeScenarioResultID(int MikeScenarioResultID);
+       Task<ActionResult<MikeScenarioResult>> Post(MikeScenarioResult mikescenarioresult);
+       Task<ActionResult<MikeScenarioResult>> Put(MikeScenarioResult mikescenarioresult);
     }
     public partial class MikeScenarioResultService : ControllerBase, IMikeScenarioResultService
     {
@@ -36,14 +37,16 @@ namespace CSSPServices
         #region Properties
         private CSSPDBContext db { get; }
         private ICultureService CultureService { get; }
+        private ILoggedInService LoggedInService { get; }
         private IEnums enums { get; }
         private IEnumerable<ValidationResult> ValidationResults { get; set; }
         #endregion Properties
 
         #region Constructors
-        public MikeScenarioResultService(ICultureService CultureService, IEnums enums, CSSPDBContext db)
+        public MikeScenarioResultService(ICultureService CultureService, ILoggedInService LoggedInService, IEnums enums, CSSPDBContext db)
         {
             this.CultureService = CultureService;
+            this.LoggedInService = LoggedInService;
             this.enums = enums;
             this.db = db;
         }
@@ -52,6 +55,11 @@ namespace CSSPServices
         #region Functions public 
         public async Task<ActionResult<MikeScenarioResult>> GetMikeScenarioResultWithMikeScenarioResultID(int MikeScenarioResultID)
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             MikeScenarioResult mikescenarioresult = (from c in db.MikeScenarioResults.AsNoTracking()
                     where c.MikeScenarioResultID == MikeScenarioResultID
                     select c).FirstOrDefault();
@@ -65,32 +73,22 @@ namespace CSSPServices
         }
         public async Task<ActionResult<List<MikeScenarioResult>>> GetMikeScenarioResultList()
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             List<MikeScenarioResult> mikescenarioresultList = (from c in db.MikeScenarioResults.AsNoTracking() select c).Take(100).ToList();
 
             return await Task.FromResult(Ok(mikescenarioresultList));
         }
-        public async Task<ActionResult<MikeScenarioResult>> Add(MikeScenarioResult mikeScenarioResult)
-        {
-            ValidationResults = Validate(new ValidationContext(mikeScenarioResult), ActionDBTypeEnum.Create);
-            if (ValidationResults.Count() > 0)
-            {
-               return await Task.FromResult(BadRequest(ValidationResults));
-            }
-
-            try
-            {
-               db.MikeScenarioResults.Add(mikeScenarioResult);
-               db.SaveChanges();
-            }
-            catch (DbUpdateException ex)
-            {
-               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
-            }
-
-            return await Task.FromResult(Ok(mikeScenarioResult));
-        }
         public async Task<ActionResult<bool>> Delete(int MikeScenarioResultID)
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             MikeScenarioResult mikeScenarioResult = (from c in db.MikeScenarioResults
                                where c.MikeScenarioResultID == MikeScenarioResultID
                                select c).FirstOrDefault();
@@ -112,8 +110,38 @@ namespace CSSPServices
 
             return await Task.FromResult(Ok(true));
         }
-        public async Task<ActionResult<MikeScenarioResult>> Update(MikeScenarioResult mikeScenarioResult)
+        public async Task<ActionResult<MikeScenarioResult>> Post(MikeScenarioResult mikeScenarioResult)
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
+            ValidationResults = Validate(new ValidationContext(mikeScenarioResult), ActionDBTypeEnum.Create);
+            if (ValidationResults.Count() > 0)
+            {
+               return await Task.FromResult(BadRequest(ValidationResults));
+            }
+
+            try
+            {
+               db.MikeScenarioResults.Add(mikeScenarioResult);
+               db.SaveChanges();
+            }
+            catch (DbUpdateException ex)
+            {
+               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+            }
+
+            return await Task.FromResult(Ok(mikeScenarioResult));
+        }
+        public async Task<ActionResult<MikeScenarioResult>> Put(MikeScenarioResult mikeScenarioResult)
+        {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             ValidationResults = Validate(new ValidationContext(mikeScenarioResult), ActionDBTypeEnum.Update);
             if (ValidationResults.Count() > 0)
             {

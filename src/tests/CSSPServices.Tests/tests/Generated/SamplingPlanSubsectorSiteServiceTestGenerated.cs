@@ -32,7 +32,7 @@ namespace CSSPServices.Tests
         private IServiceProvider Provider { get; set; }
         private IServiceCollection Services { get; set; }
         private ICultureService CultureService { get; set; }
-        private ISamplingPlanSubsectorSiteService samplingPlanSubsectorSiteService { get; set; }
+        private ISamplingPlanSubsectorSiteService SamplingPlanSubsectorSiteService { get; set; }
         private CSSPDBContext db { get; set; }
         #endregion Properties
 
@@ -62,7 +62,7 @@ namespace CSSPServices.Tests
                SamplingPlanSubsectorSite samplingPlanSubsectorSite = GetFilledRandomSamplingPlanSubsectorSite(""); 
 
                // List<SamplingPlanSubsectorSite>
-               var actionSamplingPlanSubsectorSiteList = await samplingPlanSubsectorSiteService.GetSamplingPlanSubsectorSiteList();
+               var actionSamplingPlanSubsectorSiteList = await SamplingPlanSubsectorSiteService.GetSamplingPlanSubsectorSiteList();
                Assert.Equal(200, ((ObjectResult)actionSamplingPlanSubsectorSiteList.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionSamplingPlanSubsectorSiteList.Result).Value);
                List<SamplingPlanSubsectorSite> samplingPlanSubsectorSiteList = (List<SamplingPlanSubsectorSite>)((OkObjectResult)actionSamplingPlanSubsectorSiteList.Result).Value;
@@ -70,22 +70,22 @@ namespace CSSPServices.Tests
                int count = ((List<SamplingPlanSubsectorSite>)((OkObjectResult)actionSamplingPlanSubsectorSiteList.Result).Value).Count();
                 Assert.True(count > 0);
 
-               // Add SamplingPlanSubsectorSite
-               var actionSamplingPlanSubsectorSiteAdded = await samplingPlanSubsectorSiteService.Add(samplingPlanSubsectorSite);
+               // Post SamplingPlanSubsectorSite
+               var actionSamplingPlanSubsectorSiteAdded = await SamplingPlanSubsectorSiteService.Post(samplingPlanSubsectorSite);
                Assert.Equal(200, ((ObjectResult)actionSamplingPlanSubsectorSiteAdded.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionSamplingPlanSubsectorSiteAdded.Result).Value);
                SamplingPlanSubsectorSite samplingPlanSubsectorSiteAdded = (SamplingPlanSubsectorSite)((OkObjectResult)actionSamplingPlanSubsectorSiteAdded.Result).Value;
                Assert.NotNull(samplingPlanSubsectorSiteAdded);
 
-               // Update SamplingPlanSubsectorSite
-               var actionSamplingPlanSubsectorSiteUpdated = await samplingPlanSubsectorSiteService.Update(samplingPlanSubsectorSite);
+               // Put SamplingPlanSubsectorSite
+               var actionSamplingPlanSubsectorSiteUpdated = await SamplingPlanSubsectorSiteService.Put(samplingPlanSubsectorSite);
                Assert.Equal(200, ((ObjectResult)actionSamplingPlanSubsectorSiteUpdated.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionSamplingPlanSubsectorSiteUpdated.Result).Value);
                SamplingPlanSubsectorSite samplingPlanSubsectorSiteUpdated = (SamplingPlanSubsectorSite)((OkObjectResult)actionSamplingPlanSubsectorSiteUpdated.Result).Value;
                Assert.NotNull(samplingPlanSubsectorSiteUpdated);
 
                // Delete SamplingPlanSubsectorSite
-               var actionSamplingPlanSubsectorSiteDeleted = await samplingPlanSubsectorSiteService.Delete(samplingPlanSubsectorSite.SamplingPlanSubsectorSiteID);
+               var actionSamplingPlanSubsectorSiteDeleted = await SamplingPlanSubsectorSiteService.Delete(samplingPlanSubsectorSite.SamplingPlanSubsectorSiteID);
                Assert.Equal(200, ((ObjectResult)actionSamplingPlanSubsectorSiteDeleted.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionSamplingPlanSubsectorSiteDeleted.Result).Value);
                bool retBool = (bool)((OkObjectResult)actionSamplingPlanSubsectorSiteDeleted.Result).Value;
@@ -126,8 +126,8 @@ namespace CSSPServices.Tests
 
             CultureService.SetCulture(culture);
 
-            samplingPlanSubsectorSiteService = Provider.GetService<ISamplingPlanSubsectorSiteService>();
-            Assert.NotNull(samplingPlanSubsectorSiteService);
+            SamplingPlanSubsectorSiteService = Provider.GetService<ISamplingPlanSubsectorSiteService>();
+            Assert.NotNull(SamplingPlanSubsectorSiteService);
 
             return await Task.FromResult(true);
         }

@@ -9,6 +9,7 @@ using CSSPEnums;
 using CSSPModels;
 using CultureServices.Resources;
 using CultureServices.Services;
+using LoggedInServices.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -22,11 +23,11 @@ namespace CSSPServices
 {
    public interface IHelpDocService
     {
-       Task<ActionResult<HelpDoc>> GetHelpDocWithHelpDocID(int HelpDocID);
-       Task<ActionResult<List<HelpDoc>>> GetHelpDocList();
-       Task<ActionResult<HelpDoc>> Add(HelpDoc helpdoc);
        Task<ActionResult<bool>> Delete(int HelpDocID);
-       Task<ActionResult<HelpDoc>> Update(HelpDoc helpdoc);
+       Task<ActionResult<List<HelpDoc>>> GetHelpDocList();
+       Task<ActionResult<HelpDoc>> GetHelpDocWithHelpDocID(int HelpDocID);
+       Task<ActionResult<HelpDoc>> Post(HelpDoc helpdoc);
+       Task<ActionResult<HelpDoc>> Put(HelpDoc helpdoc);
     }
     public partial class HelpDocService : ControllerBase, IHelpDocService
     {
@@ -36,14 +37,16 @@ namespace CSSPServices
         #region Properties
         private CSSPDBContext db { get; }
         private ICultureService CultureService { get; }
+        private ILoggedInService LoggedInService { get; }
         private IEnums enums { get; }
         private IEnumerable<ValidationResult> ValidationResults { get; set; }
         #endregion Properties
 
         #region Constructors
-        public HelpDocService(ICultureService CultureService, IEnums enums, CSSPDBContext db)
+        public HelpDocService(ICultureService CultureService, ILoggedInService LoggedInService, IEnums enums, CSSPDBContext db)
         {
             this.CultureService = CultureService;
+            this.LoggedInService = LoggedInService;
             this.enums = enums;
             this.db = db;
         }
@@ -52,6 +55,11 @@ namespace CSSPServices
         #region Functions public 
         public async Task<ActionResult<HelpDoc>> GetHelpDocWithHelpDocID(int HelpDocID)
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             HelpDoc helpdoc = (from c in db.HelpDocs.AsNoTracking()
                     where c.HelpDocID == HelpDocID
                     select c).FirstOrDefault();
@@ -65,32 +73,22 @@ namespace CSSPServices
         }
         public async Task<ActionResult<List<HelpDoc>>> GetHelpDocList()
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             List<HelpDoc> helpdocList = (from c in db.HelpDocs.AsNoTracking() select c).Take(100).ToList();
 
             return await Task.FromResult(Ok(helpdocList));
         }
-        public async Task<ActionResult<HelpDoc>> Add(HelpDoc helpDoc)
-        {
-            ValidationResults = Validate(new ValidationContext(helpDoc), ActionDBTypeEnum.Create);
-            if (ValidationResults.Count() > 0)
-            {
-               return await Task.FromResult(BadRequest(ValidationResults));
-            }
-
-            try
-            {
-               db.HelpDocs.Add(helpDoc);
-               db.SaveChanges();
-            }
-            catch (DbUpdateException ex)
-            {
-               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
-            }
-
-            return await Task.FromResult(Ok(helpDoc));
-        }
         public async Task<ActionResult<bool>> Delete(int HelpDocID)
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             HelpDoc helpDoc = (from c in db.HelpDocs
                                where c.HelpDocID == HelpDocID
                                select c).FirstOrDefault();
@@ -112,8 +110,38 @@ namespace CSSPServices
 
             return await Task.FromResult(Ok(true));
         }
-        public async Task<ActionResult<HelpDoc>> Update(HelpDoc helpDoc)
+        public async Task<ActionResult<HelpDoc>> Post(HelpDoc helpDoc)
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
+            ValidationResults = Validate(new ValidationContext(helpDoc), ActionDBTypeEnum.Create);
+            if (ValidationResults.Count() > 0)
+            {
+               return await Task.FromResult(BadRequest(ValidationResults));
+            }
+
+            try
+            {
+               db.HelpDocs.Add(helpDoc);
+               db.SaveChanges();
+            }
+            catch (DbUpdateException ex)
+            {
+               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+            }
+
+            return await Task.FromResult(Ok(helpDoc));
+        }
+        public async Task<ActionResult<HelpDoc>> Put(HelpDoc helpDoc)
+        {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             ValidationResults = Validate(new ValidationContext(helpDoc), ActionDBTypeEnum.Update);
             if (ValidationResults.Count() > 0)
             {

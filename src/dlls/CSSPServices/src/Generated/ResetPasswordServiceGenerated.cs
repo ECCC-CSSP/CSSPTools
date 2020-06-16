@@ -9,6 +9,7 @@ using CSSPEnums;
 using CSSPModels;
 using CultureServices.Resources;
 using CultureServices.Services;
+using LoggedInServices.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -22,11 +23,11 @@ namespace CSSPServices
 {
    public interface IResetPasswordService
     {
-       Task<ActionResult<ResetPassword>> GetResetPasswordWithResetPasswordID(int ResetPasswordID);
-       Task<ActionResult<List<ResetPassword>>> GetResetPasswordList();
-       Task<ActionResult<ResetPassword>> Add(ResetPassword resetpassword);
        Task<ActionResult<bool>> Delete(int ResetPasswordID);
-       Task<ActionResult<ResetPassword>> Update(ResetPassword resetpassword);
+       Task<ActionResult<List<ResetPassword>>> GetResetPasswordList();
+       Task<ActionResult<ResetPassword>> GetResetPasswordWithResetPasswordID(int ResetPasswordID);
+       Task<ActionResult<ResetPassword>> Post(ResetPassword resetpassword);
+       Task<ActionResult<ResetPassword>> Put(ResetPassword resetpassword);
     }
     public partial class ResetPasswordService : ControllerBase, IResetPasswordService
     {
@@ -36,14 +37,16 @@ namespace CSSPServices
         #region Properties
         private CSSPDBContext db { get; }
         private ICultureService CultureService { get; }
+        private ILoggedInService LoggedInService { get; }
         private IEnums enums { get; }
         private IEnumerable<ValidationResult> ValidationResults { get; set; }
         #endregion Properties
 
         #region Constructors
-        public ResetPasswordService(ICultureService CultureService, IEnums enums, CSSPDBContext db)
+        public ResetPasswordService(ICultureService CultureService, ILoggedInService LoggedInService, IEnums enums, CSSPDBContext db)
         {
             this.CultureService = CultureService;
+            this.LoggedInService = LoggedInService;
             this.enums = enums;
             this.db = db;
         }
@@ -52,6 +55,11 @@ namespace CSSPServices
         #region Functions public 
         public async Task<ActionResult<ResetPassword>> GetResetPasswordWithResetPasswordID(int ResetPasswordID)
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             ResetPassword resetpassword = (from c in db.ResetPasswords.AsNoTracking()
                     where c.ResetPasswordID == ResetPasswordID
                     select c).FirstOrDefault();
@@ -65,32 +73,22 @@ namespace CSSPServices
         }
         public async Task<ActionResult<List<ResetPassword>>> GetResetPasswordList()
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             List<ResetPassword> resetpasswordList = (from c in db.ResetPasswords.AsNoTracking() select c).Take(100).ToList();
 
             return await Task.FromResult(Ok(resetpasswordList));
         }
-        public async Task<ActionResult<ResetPassword>> Add(ResetPassword resetPassword)
-        {
-            ValidationResults = Validate(new ValidationContext(resetPassword), ActionDBTypeEnum.Create);
-            if (ValidationResults.Count() > 0)
-            {
-               return await Task.FromResult(BadRequest(ValidationResults));
-            }
-
-            try
-            {
-               db.ResetPasswords.Add(resetPassword);
-               db.SaveChanges();
-            }
-            catch (DbUpdateException ex)
-            {
-               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
-            }
-
-            return await Task.FromResult(Ok(resetPassword));
-        }
         public async Task<ActionResult<bool>> Delete(int ResetPasswordID)
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             ResetPassword resetPassword = (from c in db.ResetPasswords
                                where c.ResetPasswordID == ResetPasswordID
                                select c).FirstOrDefault();
@@ -112,8 +110,38 @@ namespace CSSPServices
 
             return await Task.FromResult(Ok(true));
         }
-        public async Task<ActionResult<ResetPassword>> Update(ResetPassword resetPassword)
+        public async Task<ActionResult<ResetPassword>> Post(ResetPassword resetPassword)
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
+            ValidationResults = Validate(new ValidationContext(resetPassword), ActionDBTypeEnum.Create);
+            if (ValidationResults.Count() > 0)
+            {
+               return await Task.FromResult(BadRequest(ValidationResults));
+            }
+
+            try
+            {
+               db.ResetPasswords.Add(resetPassword);
+               db.SaveChanges();
+            }
+            catch (DbUpdateException ex)
+            {
+               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+            }
+
+            return await Task.FromResult(Ok(resetPassword));
+        }
+        public async Task<ActionResult<ResetPassword>> Put(ResetPassword resetPassword)
+        {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             ValidationResults = Validate(new ValidationContext(resetPassword), ActionDBTypeEnum.Update);
             if (ValidationResults.Count() > 0)
             {

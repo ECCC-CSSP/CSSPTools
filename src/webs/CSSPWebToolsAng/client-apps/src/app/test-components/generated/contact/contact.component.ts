@@ -70,87 +70,87 @@ export class ContactComponent implements OnInit, OnDestroy {
             {
               value: (AddOrUpdate === 'Add' ? 0 : (this.contactService.contactList[0]?.ContactID)),
               disabled: false
-            }],
+            }, [ Validators.required ]],
           Id: [
             {
               value: this.contactService.contactList[0]?.Id,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           ContactTVItemID: [
             {
               value: this.contactService.contactList[0]?.ContactTVItemID,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           LoginEmail: [
             {
               value: this.contactService.contactList[0]?.LoginEmail,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           FirstName: [
             {
               value: this.contactService.contactList[0]?.FirstName,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           LastName: [
             {
               value: this.contactService.contactList[0]?.LastName,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           Initial: [
             {
               value: this.contactService.contactList[0]?.Initial,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           WebName: [
             {
               value: this.contactService.contactList[0]?.WebName,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           ContactTitle: [
             {
               value: this.contactService.contactList[0]?.ContactTitle,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           IsAdmin: [
             {
               value: this.contactService.contactList[0]?.IsAdmin,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           EmailValidated: [
             {
               value: this.contactService.contactList[0]?.EmailValidated,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           Disabled: [
             {
               value: this.contactService.contactList[0]?.Disabled,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           IsNew: [
             {
               value: this.contactService.contactList[0]?.IsNew,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           SamplingPlanner_ProvincesTVItemID: [
             {
               value: this.contactService.contactList[0]?.SamplingPlanner_ProvincesTVItemID,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           Token: [
             {
               value: this.contactService.contactList[0]?.Token,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           LastUpdateDate_UTC: [
             {
               value: this.contactService.contactList[0]?.LastUpdateDate_UTC,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           LastUpdateContactTVItemID: [
             {
               value: this.contactService.contactList[0]?.LastUpdateContactTVItemID,
               disabled: false
-            }],
+            }, [ Validators.required ]],
         }
       );
 

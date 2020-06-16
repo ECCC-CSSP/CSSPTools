@@ -9,6 +9,7 @@ using CSSPEnums;
 using CSSPModels;
 using CultureServices.Resources;
 using CultureServices.Services;
+using LoggedInServices.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -22,11 +23,11 @@ namespace CSSPServices
 {
    public interface IMWQMLookupMPNService
     {
-       Task<ActionResult<MWQMLookupMPN>> GetMWQMLookupMPNWithMWQMLookupMPNID(int MWQMLookupMPNID);
-       Task<ActionResult<List<MWQMLookupMPN>>> GetMWQMLookupMPNList();
-       Task<ActionResult<MWQMLookupMPN>> Add(MWQMLookupMPN mwqmlookupmpn);
        Task<ActionResult<bool>> Delete(int MWQMLookupMPNID);
-       Task<ActionResult<MWQMLookupMPN>> Update(MWQMLookupMPN mwqmlookupmpn);
+       Task<ActionResult<List<MWQMLookupMPN>>> GetMWQMLookupMPNList();
+       Task<ActionResult<MWQMLookupMPN>> GetMWQMLookupMPNWithMWQMLookupMPNID(int MWQMLookupMPNID);
+       Task<ActionResult<MWQMLookupMPN>> Post(MWQMLookupMPN mwqmlookupmpn);
+       Task<ActionResult<MWQMLookupMPN>> Put(MWQMLookupMPN mwqmlookupmpn);
     }
     public partial class MWQMLookupMPNService : ControllerBase, IMWQMLookupMPNService
     {
@@ -36,14 +37,16 @@ namespace CSSPServices
         #region Properties
         private CSSPDBContext db { get; }
         private ICultureService CultureService { get; }
+        private ILoggedInService LoggedInService { get; }
         private IEnums enums { get; }
         private IEnumerable<ValidationResult> ValidationResults { get; set; }
         #endregion Properties
 
         #region Constructors
-        public MWQMLookupMPNService(ICultureService CultureService, IEnums enums, CSSPDBContext db)
+        public MWQMLookupMPNService(ICultureService CultureService, ILoggedInService LoggedInService, IEnums enums, CSSPDBContext db)
         {
             this.CultureService = CultureService;
+            this.LoggedInService = LoggedInService;
             this.enums = enums;
             this.db = db;
         }
@@ -52,6 +55,11 @@ namespace CSSPServices
         #region Functions public 
         public async Task<ActionResult<MWQMLookupMPN>> GetMWQMLookupMPNWithMWQMLookupMPNID(int MWQMLookupMPNID)
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             MWQMLookupMPN mwqmlookupmpn = (from c in db.MWQMLookupMPNs.AsNoTracking()
                     where c.MWQMLookupMPNID == MWQMLookupMPNID
                     select c).FirstOrDefault();
@@ -65,32 +73,22 @@ namespace CSSPServices
         }
         public async Task<ActionResult<List<MWQMLookupMPN>>> GetMWQMLookupMPNList()
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             List<MWQMLookupMPN> mwqmlookupmpnList = (from c in db.MWQMLookupMPNs.AsNoTracking() select c).Take(100).ToList();
 
             return await Task.FromResult(Ok(mwqmlookupmpnList));
         }
-        public async Task<ActionResult<MWQMLookupMPN>> Add(MWQMLookupMPN mwqmLookupMPN)
-        {
-            ValidationResults = Validate(new ValidationContext(mwqmLookupMPN), ActionDBTypeEnum.Create);
-            if (ValidationResults.Count() > 0)
-            {
-               return await Task.FromResult(BadRequest(ValidationResults));
-            }
-
-            try
-            {
-               db.MWQMLookupMPNs.Add(mwqmLookupMPN);
-               db.SaveChanges();
-            }
-            catch (DbUpdateException ex)
-            {
-               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
-            }
-
-            return await Task.FromResult(Ok(mwqmLookupMPN));
-        }
         public async Task<ActionResult<bool>> Delete(int MWQMLookupMPNID)
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             MWQMLookupMPN mwqmLookupMPN = (from c in db.MWQMLookupMPNs
                                where c.MWQMLookupMPNID == MWQMLookupMPNID
                                select c).FirstOrDefault();
@@ -112,8 +110,38 @@ namespace CSSPServices
 
             return await Task.FromResult(Ok(true));
         }
-        public async Task<ActionResult<MWQMLookupMPN>> Update(MWQMLookupMPN mwqmLookupMPN)
+        public async Task<ActionResult<MWQMLookupMPN>> Post(MWQMLookupMPN mwqmLookupMPN)
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
+            ValidationResults = Validate(new ValidationContext(mwqmLookupMPN), ActionDBTypeEnum.Create);
+            if (ValidationResults.Count() > 0)
+            {
+               return await Task.FromResult(BadRequest(ValidationResults));
+            }
+
+            try
+            {
+               db.MWQMLookupMPNs.Add(mwqmLookupMPN);
+               db.SaveChanges();
+            }
+            catch (DbUpdateException ex)
+            {
+               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+            }
+
+            return await Task.FromResult(Ok(mwqmLookupMPN));
+        }
+        public async Task<ActionResult<MWQMLookupMPN>> Put(MWQMLookupMPN mwqmLookupMPN)
+        {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             ValidationResults = Validate(new ValidationContext(mwqmLookupMPN), ActionDBTypeEnum.Update);
             if (ValidationResults.Count() > 0)
             {

@@ -6,6 +6,7 @@
 
 using CSSPModels;
 using CSSPServices;
+using CultureServices.Services;
 using LoggedInServices.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -18,8 +19,8 @@ namespace CSSPWebAPI.Controllers
     {
         Task<ActionResult<List<MWQMRun>>> Get();
         Task<ActionResult<MWQMRun>> Get(int MWQMRunID);
-        Task<ActionResult<MWQMRun>> Post(MWQMRun mwqmRun);
-        Task<ActionResult<MWQMRun>> Put(MWQMRun mwqmRun);
+        Task<ActionResult<MWQMRun>> Post(MWQMRun MWQMRun);
+        Task<ActionResult<MWQMRun>> Put(MWQMRun MWQMRun);
         Task<ActionResult<bool>> Delete(int MWQMRunID);
     }
 
@@ -32,17 +33,17 @@ namespace CSSPWebAPI.Controllers
         #endregion Variables
 
         #region Properties
-        private IMWQMRunService mwqmRunService { get; }
-        private CSSPDBContext db { get; }
-        private ILoggedInService loggedInService { get; }
+        private ICultureService CultureService { get; }
+        private ILoggedInService LoggedInService { get; }
+        private IMWQMRunService MWQMRunService { get; }
         #endregion Properties
 
         #region Constructors
-        public MWQMRunController(IMWQMRunService mwqmRunService, CSSPDBContext db, ILoggedInService loggedInService)
+        public MWQMRunController(ICultureService CultureService, ILoggedInService LoggedInService, IMWQMRunService MWQMRunService)
         {
-            this.mwqmRunService = mwqmRunService;
-            this.db = db;
-            this.loggedInService = loggedInService;
+            this.CultureService = CultureService;
+            this.LoggedInService = LoggedInService;
+            this.MWQMRunService = MWQMRunService;
         }
         #endregion Constructors
 
@@ -50,27 +51,42 @@ namespace CSSPWebAPI.Controllers
         [HttpGet]
         public async Task<ActionResult<List<MWQMRun>>> Get()
         {
-            return await mwqmRunService.GetMWQMRunList();
+            CultureService.SetCulture((string)RouteData.Values["culture"]);
+            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+
+            return await MWQMRunService.GetMWQMRunList();
         }
         [HttpGet("{MWQMRunID}")]
         public async Task<ActionResult<MWQMRun>> Get(int MWQMRunID)
         {
-            return await mwqmRunService.GetMWQMRunWithMWQMRunID(MWQMRunID);
+            CultureService.SetCulture((string)RouteData.Values["culture"]);
+            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+
+            return await MWQMRunService.GetMWQMRunWithMWQMRunID(MWQMRunID);
         }
         [HttpPost]
-        public async Task<ActionResult<MWQMRun>> Post(MWQMRun mwqmRun)
+        public async Task<ActionResult<MWQMRun>> Post(MWQMRun MWQMRun)
         {
-            return await mwqmRunService.Add(mwqmRun);
+            CultureService.SetCulture((string)RouteData.Values["culture"]);
+            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+
+            return await MWQMRunService.Post(MWQMRun);
         }
         [HttpPut]
-        public async Task<ActionResult<MWQMRun>> Put(MWQMRun mwqmRun)
+        public async Task<ActionResult<MWQMRun>> Put(MWQMRun MWQMRun)
         {
-            return await mwqmRunService.Update(mwqmRun);
+            CultureService.SetCulture((string)RouteData.Values["culture"]);
+            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+
+            return await MWQMRunService.Put(MWQMRun);
         }
         [HttpDelete("{MWQMRunID}")]
         public async Task<ActionResult<bool>> Delete(int MWQMRunID)
         {
-            return await mwqmRunService.Delete(MWQMRunID);
+            CultureService.SetCulture((string)RouteData.Values["culture"]);
+            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+
+            return await MWQMRunService.Delete(MWQMRunID);
         }
         #endregion Functions public
 

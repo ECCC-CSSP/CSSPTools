@@ -32,7 +32,7 @@ namespace CSSPServices.Tests
         private IServiceProvider Provider { get; set; }
         private IServiceCollection Services { get; set; }
         private ICultureService CultureService { get; set; }
-        private IEmailDistributionListContactService emailDistributionListContactService { get; set; }
+        private IEmailDistributionListContactService EmailDistributionListContactService { get; set; }
         private CSSPDBContext db { get; set; }
         #endregion Properties
 
@@ -62,7 +62,7 @@ namespace CSSPServices.Tests
                EmailDistributionListContact emailDistributionListContact = GetFilledRandomEmailDistributionListContact(""); 
 
                // List<EmailDistributionListContact>
-               var actionEmailDistributionListContactList = await emailDistributionListContactService.GetEmailDistributionListContactList();
+               var actionEmailDistributionListContactList = await EmailDistributionListContactService.GetEmailDistributionListContactList();
                Assert.Equal(200, ((ObjectResult)actionEmailDistributionListContactList.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionEmailDistributionListContactList.Result).Value);
                List<EmailDistributionListContact> emailDistributionListContactList = (List<EmailDistributionListContact>)((OkObjectResult)actionEmailDistributionListContactList.Result).Value;
@@ -70,22 +70,22 @@ namespace CSSPServices.Tests
                int count = ((List<EmailDistributionListContact>)((OkObjectResult)actionEmailDistributionListContactList.Result).Value).Count();
                 Assert.True(count > 0);
 
-               // Add EmailDistributionListContact
-               var actionEmailDistributionListContactAdded = await emailDistributionListContactService.Add(emailDistributionListContact);
+               // Post EmailDistributionListContact
+               var actionEmailDistributionListContactAdded = await EmailDistributionListContactService.Post(emailDistributionListContact);
                Assert.Equal(200, ((ObjectResult)actionEmailDistributionListContactAdded.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionEmailDistributionListContactAdded.Result).Value);
                EmailDistributionListContact emailDistributionListContactAdded = (EmailDistributionListContact)((OkObjectResult)actionEmailDistributionListContactAdded.Result).Value;
                Assert.NotNull(emailDistributionListContactAdded);
 
-               // Update EmailDistributionListContact
-               var actionEmailDistributionListContactUpdated = await emailDistributionListContactService.Update(emailDistributionListContact);
+               // Put EmailDistributionListContact
+               var actionEmailDistributionListContactUpdated = await EmailDistributionListContactService.Put(emailDistributionListContact);
                Assert.Equal(200, ((ObjectResult)actionEmailDistributionListContactUpdated.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionEmailDistributionListContactUpdated.Result).Value);
                EmailDistributionListContact emailDistributionListContactUpdated = (EmailDistributionListContact)((OkObjectResult)actionEmailDistributionListContactUpdated.Result).Value;
                Assert.NotNull(emailDistributionListContactUpdated);
 
                // Delete EmailDistributionListContact
-               var actionEmailDistributionListContactDeleted = await emailDistributionListContactService.Delete(emailDistributionListContact.EmailDistributionListContactID);
+               var actionEmailDistributionListContactDeleted = await EmailDistributionListContactService.Delete(emailDistributionListContact.EmailDistributionListContactID);
                Assert.Equal(200, ((ObjectResult)actionEmailDistributionListContactDeleted.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionEmailDistributionListContactDeleted.Result).Value);
                bool retBool = (bool)((OkObjectResult)actionEmailDistributionListContactDeleted.Result).Value;
@@ -126,8 +126,8 @@ namespace CSSPServices.Tests
 
             CultureService.SetCulture(culture);
 
-            emailDistributionListContactService = Provider.GetService<IEmailDistributionListContactService>();
-            Assert.NotNull(emailDistributionListContactService);
+            EmailDistributionListContactService = Provider.GetService<IEmailDistributionListContactService>();
+            Assert.NotNull(EmailDistributionListContactService);
 
             return await Task.FromResult(true);
         }

@@ -62,42 +62,42 @@ export class PolSourceSiteEffectComponent implements OnInit, OnDestroy {
             {
               value: (AddOrUpdate === 'Add' ? 0 : (this.polsourcesiteeffectService.polsourcesiteeffectList[0]?.PolSourceSiteEffectID)),
               disabled: false
-            }],
+            }, [ Validators.required ]],
           PolSourceSiteOrInfrastructureTVItemID: [
             {
               value: this.polsourcesiteeffectService.polsourcesiteeffectList[0]?.PolSourceSiteOrInfrastructureTVItemID,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           MWQMSiteTVItemID: [
             {
               value: this.polsourcesiteeffectService.polsourcesiteeffectList[0]?.MWQMSiteTVItemID,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           PolSourceSiteEffectTermIDs: [
             {
               value: this.polsourcesiteeffectService.polsourcesiteeffectList[0]?.PolSourceSiteEffectTermIDs,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           Comments: [
             {
               value: this.polsourcesiteeffectService.polsourcesiteeffectList[0]?.Comments,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           AnalysisDocumentTVItemID: [
             {
               value: this.polsourcesiteeffectService.polsourcesiteeffectList[0]?.AnalysisDocumentTVItemID,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           LastUpdateDate_UTC: [
             {
               value: this.polsourcesiteeffectService.polsourcesiteeffectList[0]?.LastUpdateDate_UTC,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           LastUpdateContactTVItemID: [
             {
               value: this.polsourcesiteeffectService.polsourcesiteeffectList[0]?.LastUpdateContactTVItemID,
               disabled: false
-            }],
+            }, [ Validators.required ]],
         }
       );
 

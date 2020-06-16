@@ -6,6 +6,7 @@
 
 using CSSPModels;
 using CSSPServices;
+using CultureServices.Services;
 using LoggedInServices.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -18,8 +19,8 @@ namespace CSSPWebAPI.Controllers
     {
         Task<ActionResult<List<UseOfSite>>> Get();
         Task<ActionResult<UseOfSite>> Get(int UseOfSiteID);
-        Task<ActionResult<UseOfSite>> Post(UseOfSite useOfSite);
-        Task<ActionResult<UseOfSite>> Put(UseOfSite useOfSite);
+        Task<ActionResult<UseOfSite>> Post(UseOfSite UseOfSite);
+        Task<ActionResult<UseOfSite>> Put(UseOfSite UseOfSite);
         Task<ActionResult<bool>> Delete(int UseOfSiteID);
     }
 
@@ -32,17 +33,17 @@ namespace CSSPWebAPI.Controllers
         #endregion Variables
 
         #region Properties
-        private IUseOfSiteService useOfSiteService { get; }
-        private CSSPDBContext db { get; }
-        private ILoggedInService loggedInService { get; }
+        private ICultureService CultureService { get; }
+        private ILoggedInService LoggedInService { get; }
+        private IUseOfSiteService UseOfSiteService { get; }
         #endregion Properties
 
         #region Constructors
-        public UseOfSiteController(IUseOfSiteService useOfSiteService, CSSPDBContext db, ILoggedInService loggedInService)
+        public UseOfSiteController(ICultureService CultureService, ILoggedInService LoggedInService, IUseOfSiteService UseOfSiteService)
         {
-            this.useOfSiteService = useOfSiteService;
-            this.db = db;
-            this.loggedInService = loggedInService;
+            this.CultureService = CultureService;
+            this.LoggedInService = LoggedInService;
+            this.UseOfSiteService = UseOfSiteService;
         }
         #endregion Constructors
 
@@ -50,27 +51,42 @@ namespace CSSPWebAPI.Controllers
         [HttpGet]
         public async Task<ActionResult<List<UseOfSite>>> Get()
         {
-            return await useOfSiteService.GetUseOfSiteList();
+            CultureService.SetCulture((string)RouteData.Values["culture"]);
+            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+
+            return await UseOfSiteService.GetUseOfSiteList();
         }
         [HttpGet("{UseOfSiteID}")]
         public async Task<ActionResult<UseOfSite>> Get(int UseOfSiteID)
         {
-            return await useOfSiteService.GetUseOfSiteWithUseOfSiteID(UseOfSiteID);
+            CultureService.SetCulture((string)RouteData.Values["culture"]);
+            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+
+            return await UseOfSiteService.GetUseOfSiteWithUseOfSiteID(UseOfSiteID);
         }
         [HttpPost]
-        public async Task<ActionResult<UseOfSite>> Post(UseOfSite useOfSite)
+        public async Task<ActionResult<UseOfSite>> Post(UseOfSite UseOfSite)
         {
-            return await useOfSiteService.Add(useOfSite);
+            CultureService.SetCulture((string)RouteData.Values["culture"]);
+            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+
+            return await UseOfSiteService.Post(UseOfSite);
         }
         [HttpPut]
-        public async Task<ActionResult<UseOfSite>> Put(UseOfSite useOfSite)
+        public async Task<ActionResult<UseOfSite>> Put(UseOfSite UseOfSite)
         {
-            return await useOfSiteService.Update(useOfSite);
+            CultureService.SetCulture((string)RouteData.Values["culture"]);
+            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+
+            return await UseOfSiteService.Put(UseOfSite);
         }
         [HttpDelete("{UseOfSiteID}")]
         public async Task<ActionResult<bool>> Delete(int UseOfSiteID)
         {
-            return await useOfSiteService.Delete(UseOfSiteID);
+            CultureService.SetCulture((string)RouteData.Values["culture"]);
+            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+
+            return await UseOfSiteService.Delete(UseOfSiteID);
         }
         #endregion Functions public
 

@@ -9,6 +9,7 @@ using CSSPEnums;
 using CSSPModels;
 using CultureServices.Resources;
 using CultureServices.Services;
+using LoggedInServices.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -22,11 +23,11 @@ namespace CSSPServices
 {
    public interface IMWQMSiteStartEndDateService
     {
-       Task<ActionResult<MWQMSiteStartEndDate>> GetMWQMSiteStartEndDateWithMWQMSiteStartEndDateID(int MWQMSiteStartEndDateID);
-       Task<ActionResult<List<MWQMSiteStartEndDate>>> GetMWQMSiteStartEndDateList();
-       Task<ActionResult<MWQMSiteStartEndDate>> Add(MWQMSiteStartEndDate mwqmsitestartenddate);
        Task<ActionResult<bool>> Delete(int MWQMSiteStartEndDateID);
-       Task<ActionResult<MWQMSiteStartEndDate>> Update(MWQMSiteStartEndDate mwqmsitestartenddate);
+       Task<ActionResult<List<MWQMSiteStartEndDate>>> GetMWQMSiteStartEndDateList();
+       Task<ActionResult<MWQMSiteStartEndDate>> GetMWQMSiteStartEndDateWithMWQMSiteStartEndDateID(int MWQMSiteStartEndDateID);
+       Task<ActionResult<MWQMSiteStartEndDate>> Post(MWQMSiteStartEndDate mwqmsitestartenddate);
+       Task<ActionResult<MWQMSiteStartEndDate>> Put(MWQMSiteStartEndDate mwqmsitestartenddate);
     }
     public partial class MWQMSiteStartEndDateService : ControllerBase, IMWQMSiteStartEndDateService
     {
@@ -36,14 +37,16 @@ namespace CSSPServices
         #region Properties
         private CSSPDBContext db { get; }
         private ICultureService CultureService { get; }
+        private ILoggedInService LoggedInService { get; }
         private IEnums enums { get; }
         private IEnumerable<ValidationResult> ValidationResults { get; set; }
         #endregion Properties
 
         #region Constructors
-        public MWQMSiteStartEndDateService(ICultureService CultureService, IEnums enums, CSSPDBContext db)
+        public MWQMSiteStartEndDateService(ICultureService CultureService, ILoggedInService LoggedInService, IEnums enums, CSSPDBContext db)
         {
             this.CultureService = CultureService;
+            this.LoggedInService = LoggedInService;
             this.enums = enums;
             this.db = db;
         }
@@ -52,6 +55,11 @@ namespace CSSPServices
         #region Functions public 
         public async Task<ActionResult<MWQMSiteStartEndDate>> GetMWQMSiteStartEndDateWithMWQMSiteStartEndDateID(int MWQMSiteStartEndDateID)
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             MWQMSiteStartEndDate mwqmsitestartenddate = (from c in db.MWQMSiteStartEndDates.AsNoTracking()
                     where c.MWQMSiteStartEndDateID == MWQMSiteStartEndDateID
                     select c).FirstOrDefault();
@@ -65,32 +73,22 @@ namespace CSSPServices
         }
         public async Task<ActionResult<List<MWQMSiteStartEndDate>>> GetMWQMSiteStartEndDateList()
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             List<MWQMSiteStartEndDate> mwqmsitestartenddateList = (from c in db.MWQMSiteStartEndDates.AsNoTracking() select c).Take(100).ToList();
 
             return await Task.FromResult(Ok(mwqmsitestartenddateList));
         }
-        public async Task<ActionResult<MWQMSiteStartEndDate>> Add(MWQMSiteStartEndDate mwqmSiteStartEndDate)
-        {
-            ValidationResults = Validate(new ValidationContext(mwqmSiteStartEndDate), ActionDBTypeEnum.Create);
-            if (ValidationResults.Count() > 0)
-            {
-               return await Task.FromResult(BadRequest(ValidationResults));
-            }
-
-            try
-            {
-               db.MWQMSiteStartEndDates.Add(mwqmSiteStartEndDate);
-               db.SaveChanges();
-            }
-            catch (DbUpdateException ex)
-            {
-               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
-            }
-
-            return await Task.FromResult(Ok(mwqmSiteStartEndDate));
-        }
         public async Task<ActionResult<bool>> Delete(int MWQMSiteStartEndDateID)
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             MWQMSiteStartEndDate mwqmSiteStartEndDate = (from c in db.MWQMSiteStartEndDates
                                where c.MWQMSiteStartEndDateID == MWQMSiteStartEndDateID
                                select c).FirstOrDefault();
@@ -112,8 +110,38 @@ namespace CSSPServices
 
             return await Task.FromResult(Ok(true));
         }
-        public async Task<ActionResult<MWQMSiteStartEndDate>> Update(MWQMSiteStartEndDate mwqmSiteStartEndDate)
+        public async Task<ActionResult<MWQMSiteStartEndDate>> Post(MWQMSiteStartEndDate mwqmSiteStartEndDate)
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
+            ValidationResults = Validate(new ValidationContext(mwqmSiteStartEndDate), ActionDBTypeEnum.Create);
+            if (ValidationResults.Count() > 0)
+            {
+               return await Task.FromResult(BadRequest(ValidationResults));
+            }
+
+            try
+            {
+               db.MWQMSiteStartEndDates.Add(mwqmSiteStartEndDate);
+               db.SaveChanges();
+            }
+            catch (DbUpdateException ex)
+            {
+               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+            }
+
+            return await Task.FromResult(Ok(mwqmSiteStartEndDate));
+        }
+        public async Task<ActionResult<MWQMSiteStartEndDate>> Put(MWQMSiteStartEndDate mwqmSiteStartEndDate)
+        {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             ValidationResults = Validate(new ValidationContext(mwqmSiteStartEndDate), ActionDBTypeEnum.Update);
             if (ValidationResults.Count() > 0)
             {

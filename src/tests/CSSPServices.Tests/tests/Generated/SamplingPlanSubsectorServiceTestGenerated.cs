@@ -32,7 +32,7 @@ namespace CSSPServices.Tests
         private IServiceProvider Provider { get; set; }
         private IServiceCollection Services { get; set; }
         private ICultureService CultureService { get; set; }
-        private ISamplingPlanSubsectorService samplingPlanSubsectorService { get; set; }
+        private ISamplingPlanSubsectorService SamplingPlanSubsectorService { get; set; }
         private CSSPDBContext db { get; set; }
         #endregion Properties
 
@@ -62,7 +62,7 @@ namespace CSSPServices.Tests
                SamplingPlanSubsector samplingPlanSubsector = GetFilledRandomSamplingPlanSubsector(""); 
 
                // List<SamplingPlanSubsector>
-               var actionSamplingPlanSubsectorList = await samplingPlanSubsectorService.GetSamplingPlanSubsectorList();
+               var actionSamplingPlanSubsectorList = await SamplingPlanSubsectorService.GetSamplingPlanSubsectorList();
                Assert.Equal(200, ((ObjectResult)actionSamplingPlanSubsectorList.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionSamplingPlanSubsectorList.Result).Value);
                List<SamplingPlanSubsector> samplingPlanSubsectorList = (List<SamplingPlanSubsector>)((OkObjectResult)actionSamplingPlanSubsectorList.Result).Value;
@@ -70,22 +70,22 @@ namespace CSSPServices.Tests
                int count = ((List<SamplingPlanSubsector>)((OkObjectResult)actionSamplingPlanSubsectorList.Result).Value).Count();
                 Assert.True(count > 0);
 
-               // Add SamplingPlanSubsector
-               var actionSamplingPlanSubsectorAdded = await samplingPlanSubsectorService.Add(samplingPlanSubsector);
+               // Post SamplingPlanSubsector
+               var actionSamplingPlanSubsectorAdded = await SamplingPlanSubsectorService.Post(samplingPlanSubsector);
                Assert.Equal(200, ((ObjectResult)actionSamplingPlanSubsectorAdded.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionSamplingPlanSubsectorAdded.Result).Value);
                SamplingPlanSubsector samplingPlanSubsectorAdded = (SamplingPlanSubsector)((OkObjectResult)actionSamplingPlanSubsectorAdded.Result).Value;
                Assert.NotNull(samplingPlanSubsectorAdded);
 
-               // Update SamplingPlanSubsector
-               var actionSamplingPlanSubsectorUpdated = await samplingPlanSubsectorService.Update(samplingPlanSubsector);
+               // Put SamplingPlanSubsector
+               var actionSamplingPlanSubsectorUpdated = await SamplingPlanSubsectorService.Put(samplingPlanSubsector);
                Assert.Equal(200, ((ObjectResult)actionSamplingPlanSubsectorUpdated.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionSamplingPlanSubsectorUpdated.Result).Value);
                SamplingPlanSubsector samplingPlanSubsectorUpdated = (SamplingPlanSubsector)((OkObjectResult)actionSamplingPlanSubsectorUpdated.Result).Value;
                Assert.NotNull(samplingPlanSubsectorUpdated);
 
                // Delete SamplingPlanSubsector
-               var actionSamplingPlanSubsectorDeleted = await samplingPlanSubsectorService.Delete(samplingPlanSubsector.SamplingPlanSubsectorID);
+               var actionSamplingPlanSubsectorDeleted = await SamplingPlanSubsectorService.Delete(samplingPlanSubsector.SamplingPlanSubsectorID);
                Assert.Equal(200, ((ObjectResult)actionSamplingPlanSubsectorDeleted.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionSamplingPlanSubsectorDeleted.Result).Value);
                bool retBool = (bool)((OkObjectResult)actionSamplingPlanSubsectorDeleted.Result).Value;
@@ -126,8 +126,8 @@ namespace CSSPServices.Tests
 
             CultureService.SetCulture(culture);
 
-            samplingPlanSubsectorService = Provider.GetService<ISamplingPlanSubsectorService>();
-            Assert.NotNull(samplingPlanSubsectorService);
+            SamplingPlanSubsectorService = Provider.GetService<ISamplingPlanSubsectorService>();
+            Assert.NotNull(SamplingPlanSubsectorService);
 
             return await Task.FromResult(true);
         }

@@ -32,7 +32,7 @@ namespace CSSPServices.Tests
         private IServiceProvider Provider { get; set; }
         private IServiceCollection Services { get; set; }
         private ICultureService CultureService { get; set; }
-        private IPolSourceSiteService polSourceSiteService { get; set; }
+        private IPolSourceSiteService PolSourceSiteService { get; set; }
         private CSSPDBContext db { get; set; }
         #endregion Properties
 
@@ -62,7 +62,7 @@ namespace CSSPServices.Tests
                PolSourceSite polSourceSite = GetFilledRandomPolSourceSite(""); 
 
                // List<PolSourceSite>
-               var actionPolSourceSiteList = await polSourceSiteService.GetPolSourceSiteList();
+               var actionPolSourceSiteList = await PolSourceSiteService.GetPolSourceSiteList();
                Assert.Equal(200, ((ObjectResult)actionPolSourceSiteList.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionPolSourceSiteList.Result).Value);
                List<PolSourceSite> polSourceSiteList = (List<PolSourceSite>)((OkObjectResult)actionPolSourceSiteList.Result).Value;
@@ -70,22 +70,22 @@ namespace CSSPServices.Tests
                int count = ((List<PolSourceSite>)((OkObjectResult)actionPolSourceSiteList.Result).Value).Count();
                 Assert.True(count > 0);
 
-               // Add PolSourceSite
-               var actionPolSourceSiteAdded = await polSourceSiteService.Add(polSourceSite);
+               // Post PolSourceSite
+               var actionPolSourceSiteAdded = await PolSourceSiteService.Post(polSourceSite);
                Assert.Equal(200, ((ObjectResult)actionPolSourceSiteAdded.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionPolSourceSiteAdded.Result).Value);
                PolSourceSite polSourceSiteAdded = (PolSourceSite)((OkObjectResult)actionPolSourceSiteAdded.Result).Value;
                Assert.NotNull(polSourceSiteAdded);
 
-               // Update PolSourceSite
-               var actionPolSourceSiteUpdated = await polSourceSiteService.Update(polSourceSite);
+               // Put PolSourceSite
+               var actionPolSourceSiteUpdated = await PolSourceSiteService.Put(polSourceSite);
                Assert.Equal(200, ((ObjectResult)actionPolSourceSiteUpdated.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionPolSourceSiteUpdated.Result).Value);
                PolSourceSite polSourceSiteUpdated = (PolSourceSite)((OkObjectResult)actionPolSourceSiteUpdated.Result).Value;
                Assert.NotNull(polSourceSiteUpdated);
 
                // Delete PolSourceSite
-               var actionPolSourceSiteDeleted = await polSourceSiteService.Delete(polSourceSite.PolSourceSiteID);
+               var actionPolSourceSiteDeleted = await PolSourceSiteService.Delete(polSourceSite.PolSourceSiteID);
                Assert.Equal(200, ((ObjectResult)actionPolSourceSiteDeleted.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionPolSourceSiteDeleted.Result).Value);
                bool retBool = (bool)((OkObjectResult)actionPolSourceSiteDeleted.Result).Value;
@@ -126,8 +126,8 @@ namespace CSSPServices.Tests
 
             CultureService.SetCulture(culture);
 
-            polSourceSiteService = Provider.GetService<IPolSourceSiteService>();
-            Assert.NotNull(polSourceSiteService);
+            PolSourceSiteService = Provider.GetService<IPolSourceSiteService>();
+            Assert.NotNull(PolSourceSiteService);
 
             return await Task.FromResult(true);
         }

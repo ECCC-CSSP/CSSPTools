@@ -9,6 +9,7 @@ using CSSPEnums;
 using CSSPModels;
 using CultureServices.Resources;
 using CultureServices.Services;
+using LoggedInServices.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -22,11 +23,11 @@ namespace CSSPServices
 {
    public interface IMikeScenarioService
     {
-       Task<ActionResult<MikeScenario>> GetMikeScenarioWithMikeScenarioID(int MikeScenarioID);
-       Task<ActionResult<List<MikeScenario>>> GetMikeScenarioList();
-       Task<ActionResult<MikeScenario>> Add(MikeScenario mikescenario);
        Task<ActionResult<bool>> Delete(int MikeScenarioID);
-       Task<ActionResult<MikeScenario>> Update(MikeScenario mikescenario);
+       Task<ActionResult<List<MikeScenario>>> GetMikeScenarioList();
+       Task<ActionResult<MikeScenario>> GetMikeScenarioWithMikeScenarioID(int MikeScenarioID);
+       Task<ActionResult<MikeScenario>> Post(MikeScenario mikescenario);
+       Task<ActionResult<MikeScenario>> Put(MikeScenario mikescenario);
     }
     public partial class MikeScenarioService : ControllerBase, IMikeScenarioService
     {
@@ -36,14 +37,16 @@ namespace CSSPServices
         #region Properties
         private CSSPDBContext db { get; }
         private ICultureService CultureService { get; }
+        private ILoggedInService LoggedInService { get; }
         private IEnums enums { get; }
         private IEnumerable<ValidationResult> ValidationResults { get; set; }
         #endregion Properties
 
         #region Constructors
-        public MikeScenarioService(ICultureService CultureService, IEnums enums, CSSPDBContext db)
+        public MikeScenarioService(ICultureService CultureService, ILoggedInService LoggedInService, IEnums enums, CSSPDBContext db)
         {
             this.CultureService = CultureService;
+            this.LoggedInService = LoggedInService;
             this.enums = enums;
             this.db = db;
         }
@@ -52,6 +55,11 @@ namespace CSSPServices
         #region Functions public 
         public async Task<ActionResult<MikeScenario>> GetMikeScenarioWithMikeScenarioID(int MikeScenarioID)
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             MikeScenario mikescenario = (from c in db.MikeScenarios.AsNoTracking()
                     where c.MikeScenarioID == MikeScenarioID
                     select c).FirstOrDefault();
@@ -65,32 +73,22 @@ namespace CSSPServices
         }
         public async Task<ActionResult<List<MikeScenario>>> GetMikeScenarioList()
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             List<MikeScenario> mikescenarioList = (from c in db.MikeScenarios.AsNoTracking() select c).Take(100).ToList();
 
             return await Task.FromResult(Ok(mikescenarioList));
         }
-        public async Task<ActionResult<MikeScenario>> Add(MikeScenario mikeScenario)
-        {
-            ValidationResults = Validate(new ValidationContext(mikeScenario), ActionDBTypeEnum.Create);
-            if (ValidationResults.Count() > 0)
-            {
-               return await Task.FromResult(BadRequest(ValidationResults));
-            }
-
-            try
-            {
-               db.MikeScenarios.Add(mikeScenario);
-               db.SaveChanges();
-            }
-            catch (DbUpdateException ex)
-            {
-               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
-            }
-
-            return await Task.FromResult(Ok(mikeScenario));
-        }
         public async Task<ActionResult<bool>> Delete(int MikeScenarioID)
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             MikeScenario mikeScenario = (from c in db.MikeScenarios
                                where c.MikeScenarioID == MikeScenarioID
                                select c).FirstOrDefault();
@@ -112,8 +110,38 @@ namespace CSSPServices
 
             return await Task.FromResult(Ok(true));
         }
-        public async Task<ActionResult<MikeScenario>> Update(MikeScenario mikeScenario)
+        public async Task<ActionResult<MikeScenario>> Post(MikeScenario mikeScenario)
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
+            ValidationResults = Validate(new ValidationContext(mikeScenario), ActionDBTypeEnum.Create);
+            if (ValidationResults.Count() > 0)
+            {
+               return await Task.FromResult(BadRequest(ValidationResults));
+            }
+
+            try
+            {
+               db.MikeScenarios.Add(mikeScenario);
+               db.SaveChanges();
+            }
+            catch (DbUpdateException ex)
+            {
+               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+            }
+
+            return await Task.FromResult(Ok(mikeScenario));
+        }
+        public async Task<ActionResult<MikeScenario>> Put(MikeScenario mikeScenario)
+        {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             ValidationResults = Validate(new ValidationContext(mikeScenario), ActionDBTypeEnum.Update);
             if (ValidationResults.Count() > 0)
             {

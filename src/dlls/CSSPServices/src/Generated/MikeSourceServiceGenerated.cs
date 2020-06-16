@@ -9,6 +9,7 @@ using CSSPEnums;
 using CSSPModels;
 using CultureServices.Resources;
 using CultureServices.Services;
+using LoggedInServices.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -22,11 +23,11 @@ namespace CSSPServices
 {
    public interface IMikeSourceService
     {
-       Task<ActionResult<MikeSource>> GetMikeSourceWithMikeSourceID(int MikeSourceID);
-       Task<ActionResult<List<MikeSource>>> GetMikeSourceList();
-       Task<ActionResult<MikeSource>> Add(MikeSource mikesource);
        Task<ActionResult<bool>> Delete(int MikeSourceID);
-       Task<ActionResult<MikeSource>> Update(MikeSource mikesource);
+       Task<ActionResult<List<MikeSource>>> GetMikeSourceList();
+       Task<ActionResult<MikeSource>> GetMikeSourceWithMikeSourceID(int MikeSourceID);
+       Task<ActionResult<MikeSource>> Post(MikeSource mikesource);
+       Task<ActionResult<MikeSource>> Put(MikeSource mikesource);
     }
     public partial class MikeSourceService : ControllerBase, IMikeSourceService
     {
@@ -36,14 +37,16 @@ namespace CSSPServices
         #region Properties
         private CSSPDBContext db { get; }
         private ICultureService CultureService { get; }
+        private ILoggedInService LoggedInService { get; }
         private IEnums enums { get; }
         private IEnumerable<ValidationResult> ValidationResults { get; set; }
         #endregion Properties
 
         #region Constructors
-        public MikeSourceService(ICultureService CultureService, IEnums enums, CSSPDBContext db)
+        public MikeSourceService(ICultureService CultureService, ILoggedInService LoggedInService, IEnums enums, CSSPDBContext db)
         {
             this.CultureService = CultureService;
+            this.LoggedInService = LoggedInService;
             this.enums = enums;
             this.db = db;
         }
@@ -52,6 +55,11 @@ namespace CSSPServices
         #region Functions public 
         public async Task<ActionResult<MikeSource>> GetMikeSourceWithMikeSourceID(int MikeSourceID)
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             MikeSource mikesource = (from c in db.MikeSources.AsNoTracking()
                     where c.MikeSourceID == MikeSourceID
                     select c).FirstOrDefault();
@@ -65,32 +73,22 @@ namespace CSSPServices
         }
         public async Task<ActionResult<List<MikeSource>>> GetMikeSourceList()
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             List<MikeSource> mikesourceList = (from c in db.MikeSources.AsNoTracking() select c).Take(100).ToList();
 
             return await Task.FromResult(Ok(mikesourceList));
         }
-        public async Task<ActionResult<MikeSource>> Add(MikeSource mikeSource)
-        {
-            ValidationResults = Validate(new ValidationContext(mikeSource), ActionDBTypeEnum.Create);
-            if (ValidationResults.Count() > 0)
-            {
-               return await Task.FromResult(BadRequest(ValidationResults));
-            }
-
-            try
-            {
-               db.MikeSources.Add(mikeSource);
-               db.SaveChanges();
-            }
-            catch (DbUpdateException ex)
-            {
-               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
-            }
-
-            return await Task.FromResult(Ok(mikeSource));
-        }
         public async Task<ActionResult<bool>> Delete(int MikeSourceID)
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             MikeSource mikeSource = (from c in db.MikeSources
                                where c.MikeSourceID == MikeSourceID
                                select c).FirstOrDefault();
@@ -112,8 +110,38 @@ namespace CSSPServices
 
             return await Task.FromResult(Ok(true));
         }
-        public async Task<ActionResult<MikeSource>> Update(MikeSource mikeSource)
+        public async Task<ActionResult<MikeSource>> Post(MikeSource mikeSource)
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
+            ValidationResults = Validate(new ValidationContext(mikeSource), ActionDBTypeEnum.Create);
+            if (ValidationResults.Count() > 0)
+            {
+               return await Task.FromResult(BadRequest(ValidationResults));
+            }
+
+            try
+            {
+               db.MikeSources.Add(mikeSource);
+               db.SaveChanges();
+            }
+            catch (DbUpdateException ex)
+            {
+               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+            }
+
+            return await Task.FromResult(Ok(mikeSource));
+        }
+        public async Task<ActionResult<MikeSource>> Put(MikeSource mikeSource)
+        {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             ValidationResults = Validate(new ValidationContext(mikeSource), ActionDBTypeEnum.Update);
             if (ValidationResults.Count() > 0)
             {

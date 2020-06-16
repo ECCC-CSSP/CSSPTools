@@ -41,7 +41,7 @@ namespace CSSPCodeGenWebAPI.Controllers
         [HttpGet]
         public async Task<ActionResult<GroupSourceGroupingModel>> GetGrouping()
         {
-            await loggedInService.SetID(User.Identity.Name);
+            await loggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
             GroupSourceGroupingModel groupSourceGroupingModel = new GroupSourceGroupingModel();
 

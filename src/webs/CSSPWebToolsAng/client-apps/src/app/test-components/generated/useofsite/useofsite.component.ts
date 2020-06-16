@@ -70,82 +70,82 @@ export class UseOfSiteComponent implements OnInit, OnDestroy {
             {
               value: (AddOrUpdate === 'Add' ? 0 : (this.useofsiteService.useofsiteList[0]?.UseOfSiteID)),
               disabled: false
-            }],
+            }, [ Validators.required ]],
           SiteTVItemID: [
             {
               value: this.useofsiteService.useofsiteList[0]?.SiteTVItemID,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           SubsectorTVItemID: [
             {
               value: this.useofsiteService.useofsiteList[0]?.SubsectorTVItemID,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           TVType: [
             {
               value: this.useofsiteService.useofsiteList[0]?.TVType,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           Ordinal: [
             {
               value: this.useofsiteService.useofsiteList[0]?.Ordinal,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           StartYear: [
             {
               value: this.useofsiteService.useofsiteList[0]?.StartYear,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           EndYear: [
             {
               value: this.useofsiteService.useofsiteList[0]?.EndYear,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           UseWeight: [
             {
               value: this.useofsiteService.useofsiteList[0]?.UseWeight,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           Weight_perc: [
             {
               value: this.useofsiteService.useofsiteList[0]?.Weight_perc,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           UseEquation: [
             {
               value: this.useofsiteService.useofsiteList[0]?.UseEquation,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           Param1: [
             {
               value: this.useofsiteService.useofsiteList[0]?.Param1,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           Param2: [
             {
               value: this.useofsiteService.useofsiteList[0]?.Param2,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           Param3: [
             {
               value: this.useofsiteService.useofsiteList[0]?.Param3,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           Param4: [
             {
               value: this.useofsiteService.useofsiteList[0]?.Param4,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           LastUpdateDate_UTC: [
             {
               value: this.useofsiteService.useofsiteList[0]?.LastUpdateDate_UTC,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           LastUpdateContactTVItemID: [
             {
               value: this.useofsiteService.useofsiteList[0]?.LastUpdateContactTVItemID,
               disabled: false
-            }],
+            }, [ Validators.required ]],
         }
       );
 

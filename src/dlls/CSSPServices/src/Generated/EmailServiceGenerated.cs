@@ -9,6 +9,7 @@ using CSSPEnums;
 using CSSPModels;
 using CultureServices.Resources;
 using CultureServices.Services;
+using LoggedInServices.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -22,11 +23,11 @@ namespace CSSPServices
 {
    public interface IEmailService
     {
-       Task<ActionResult<Email>> GetEmailWithEmailID(int EmailID);
-       Task<ActionResult<List<Email>>> GetEmailList();
-       Task<ActionResult<Email>> Add(Email email);
        Task<ActionResult<bool>> Delete(int EmailID);
-       Task<ActionResult<Email>> Update(Email email);
+       Task<ActionResult<List<Email>>> GetEmailList();
+       Task<ActionResult<Email>> GetEmailWithEmailID(int EmailID);
+       Task<ActionResult<Email>> Post(Email email);
+       Task<ActionResult<Email>> Put(Email email);
     }
     public partial class EmailService : ControllerBase, IEmailService
     {
@@ -36,14 +37,16 @@ namespace CSSPServices
         #region Properties
         private CSSPDBContext db { get; }
         private ICultureService CultureService { get; }
+        private ILoggedInService LoggedInService { get; }
         private IEnums enums { get; }
         private IEnumerable<ValidationResult> ValidationResults { get; set; }
         #endregion Properties
 
         #region Constructors
-        public EmailService(ICultureService CultureService, IEnums enums, CSSPDBContext db)
+        public EmailService(ICultureService CultureService, ILoggedInService LoggedInService, IEnums enums, CSSPDBContext db)
         {
             this.CultureService = CultureService;
+            this.LoggedInService = LoggedInService;
             this.enums = enums;
             this.db = db;
         }
@@ -52,6 +55,11 @@ namespace CSSPServices
         #region Functions public 
         public async Task<ActionResult<Email>> GetEmailWithEmailID(int EmailID)
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             Email email = (from c in db.Emails.AsNoTracking()
                     where c.EmailID == EmailID
                     select c).FirstOrDefault();
@@ -65,32 +73,22 @@ namespace CSSPServices
         }
         public async Task<ActionResult<List<Email>>> GetEmailList()
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             List<Email> emailList = (from c in db.Emails.AsNoTracking() select c).Take(100).ToList();
 
             return await Task.FromResult(Ok(emailList));
         }
-        public async Task<ActionResult<Email>> Add(Email email)
-        {
-            ValidationResults = Validate(new ValidationContext(email), ActionDBTypeEnum.Create);
-            if (ValidationResults.Count() > 0)
-            {
-               return await Task.FromResult(BadRequest(ValidationResults));
-            }
-
-            try
-            {
-               db.Emails.Add(email);
-               db.SaveChanges();
-            }
-            catch (DbUpdateException ex)
-            {
-               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
-            }
-
-            return await Task.FromResult(Ok(email));
-        }
         public async Task<ActionResult<bool>> Delete(int EmailID)
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             Email email = (from c in db.Emails
                                where c.EmailID == EmailID
                                select c).FirstOrDefault();
@@ -112,8 +110,38 @@ namespace CSSPServices
 
             return await Task.FromResult(Ok(true));
         }
-        public async Task<ActionResult<Email>> Update(Email email)
+        public async Task<ActionResult<Email>> Post(Email email)
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
+            ValidationResults = Validate(new ValidationContext(email), ActionDBTypeEnum.Create);
+            if (ValidationResults.Count() > 0)
+            {
+               return await Task.FromResult(BadRequest(ValidationResults));
+            }
+
+            try
+            {
+               db.Emails.Add(email);
+               db.SaveChanges();
+            }
+            catch (DbUpdateException ex)
+            {
+               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+            }
+
+            return await Task.FromResult(Ok(email));
+        }
+        public async Task<ActionResult<Email>> Put(Email email)
+        {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             ValidationResults = Validate(new ValidationContext(email), ActionDBTypeEnum.Update);
             if (ValidationResults.Count() > 0)
             {

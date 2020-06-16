@@ -6,6 +6,7 @@
 
 using CSSPModels;
 using CSSPServices;
+using CultureServices.Services;
 using LoggedInServices.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -18,8 +19,8 @@ namespace CSSPWebAPI.Controllers
     {
         Task<ActionResult<List<TVTypeUserAuthorization>>> Get();
         Task<ActionResult<TVTypeUserAuthorization>> Get(int TVTypeUserAuthorizationID);
-        Task<ActionResult<TVTypeUserAuthorization>> Post(TVTypeUserAuthorization tvTypeUserAuthorization);
-        Task<ActionResult<TVTypeUserAuthorization>> Put(TVTypeUserAuthorization tvTypeUserAuthorization);
+        Task<ActionResult<TVTypeUserAuthorization>> Post(TVTypeUserAuthorization TVTypeUserAuthorization);
+        Task<ActionResult<TVTypeUserAuthorization>> Put(TVTypeUserAuthorization TVTypeUserAuthorization);
         Task<ActionResult<bool>> Delete(int TVTypeUserAuthorizationID);
     }
 
@@ -32,17 +33,17 @@ namespace CSSPWebAPI.Controllers
         #endregion Variables
 
         #region Properties
-        private ITVTypeUserAuthorizationService tvTypeUserAuthorizationService { get; }
-        private CSSPDBContext db { get; }
-        private ILoggedInService loggedInService { get; }
+        private ICultureService CultureService { get; }
+        private ILoggedInService LoggedInService { get; }
+        private ITVTypeUserAuthorizationService TVTypeUserAuthorizationService { get; }
         #endregion Properties
 
         #region Constructors
-        public TVTypeUserAuthorizationController(ITVTypeUserAuthorizationService tvTypeUserAuthorizationService, CSSPDBContext db, ILoggedInService loggedInService)
+        public TVTypeUserAuthorizationController(ICultureService CultureService, ILoggedInService LoggedInService, ITVTypeUserAuthorizationService TVTypeUserAuthorizationService)
         {
-            this.tvTypeUserAuthorizationService = tvTypeUserAuthorizationService;
-            this.db = db;
-            this.loggedInService = loggedInService;
+            this.CultureService = CultureService;
+            this.LoggedInService = LoggedInService;
+            this.TVTypeUserAuthorizationService = TVTypeUserAuthorizationService;
         }
         #endregion Constructors
 
@@ -50,27 +51,42 @@ namespace CSSPWebAPI.Controllers
         [HttpGet]
         public async Task<ActionResult<List<TVTypeUserAuthorization>>> Get()
         {
-            return await tvTypeUserAuthorizationService.GetTVTypeUserAuthorizationList();
+            CultureService.SetCulture((string)RouteData.Values["culture"]);
+            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+
+            return await TVTypeUserAuthorizationService.GetTVTypeUserAuthorizationList();
         }
         [HttpGet("{TVTypeUserAuthorizationID}")]
         public async Task<ActionResult<TVTypeUserAuthorization>> Get(int TVTypeUserAuthorizationID)
         {
-            return await tvTypeUserAuthorizationService.GetTVTypeUserAuthorizationWithTVTypeUserAuthorizationID(TVTypeUserAuthorizationID);
+            CultureService.SetCulture((string)RouteData.Values["culture"]);
+            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+
+            return await TVTypeUserAuthorizationService.GetTVTypeUserAuthorizationWithTVTypeUserAuthorizationID(TVTypeUserAuthorizationID);
         }
         [HttpPost]
-        public async Task<ActionResult<TVTypeUserAuthorization>> Post(TVTypeUserAuthorization tvTypeUserAuthorization)
+        public async Task<ActionResult<TVTypeUserAuthorization>> Post(TVTypeUserAuthorization TVTypeUserAuthorization)
         {
-            return await tvTypeUserAuthorizationService.Add(tvTypeUserAuthorization);
+            CultureService.SetCulture((string)RouteData.Values["culture"]);
+            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+
+            return await TVTypeUserAuthorizationService.Post(TVTypeUserAuthorization);
         }
         [HttpPut]
-        public async Task<ActionResult<TVTypeUserAuthorization>> Put(TVTypeUserAuthorization tvTypeUserAuthorization)
+        public async Task<ActionResult<TVTypeUserAuthorization>> Put(TVTypeUserAuthorization TVTypeUserAuthorization)
         {
-            return await tvTypeUserAuthorizationService.Update(tvTypeUserAuthorization);
+            CultureService.SetCulture((string)RouteData.Values["culture"]);
+            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+
+            return await TVTypeUserAuthorizationService.Put(TVTypeUserAuthorization);
         }
         [HttpDelete("{TVTypeUserAuthorizationID}")]
         public async Task<ActionResult<bool>> Delete(int TVTypeUserAuthorizationID)
         {
-            return await tvTypeUserAuthorizationService.Delete(TVTypeUserAuthorizationID);
+            CultureService.SetCulture((string)RouteData.Values["culture"]);
+            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+
+            return await TVTypeUserAuthorizationService.Delete(TVTypeUserAuthorizationID);
         }
         #endregion Functions public
 

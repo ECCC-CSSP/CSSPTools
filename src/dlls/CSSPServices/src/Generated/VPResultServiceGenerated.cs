@@ -9,6 +9,7 @@ using CSSPEnums;
 using CSSPModels;
 using CultureServices.Resources;
 using CultureServices.Services;
+using LoggedInServices.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -22,11 +23,11 @@ namespace CSSPServices
 {
    public interface IVPResultService
     {
-       Task<ActionResult<VPResult>> GetVPResultWithVPResultID(int VPResultID);
-       Task<ActionResult<List<VPResult>>> GetVPResultList();
-       Task<ActionResult<VPResult>> Add(VPResult vpresult);
        Task<ActionResult<bool>> Delete(int VPResultID);
-       Task<ActionResult<VPResult>> Update(VPResult vpresult);
+       Task<ActionResult<List<VPResult>>> GetVPResultList();
+       Task<ActionResult<VPResult>> GetVPResultWithVPResultID(int VPResultID);
+       Task<ActionResult<VPResult>> Post(VPResult vpresult);
+       Task<ActionResult<VPResult>> Put(VPResult vpresult);
     }
     public partial class VPResultService : ControllerBase, IVPResultService
     {
@@ -36,14 +37,16 @@ namespace CSSPServices
         #region Properties
         private CSSPDBContext db { get; }
         private ICultureService CultureService { get; }
+        private ILoggedInService LoggedInService { get; }
         private IEnums enums { get; }
         private IEnumerable<ValidationResult> ValidationResults { get; set; }
         #endregion Properties
 
         #region Constructors
-        public VPResultService(ICultureService CultureService, IEnums enums, CSSPDBContext db)
+        public VPResultService(ICultureService CultureService, ILoggedInService LoggedInService, IEnums enums, CSSPDBContext db)
         {
             this.CultureService = CultureService;
+            this.LoggedInService = LoggedInService;
             this.enums = enums;
             this.db = db;
         }
@@ -52,6 +55,11 @@ namespace CSSPServices
         #region Functions public 
         public async Task<ActionResult<VPResult>> GetVPResultWithVPResultID(int VPResultID)
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             VPResult vpresult = (from c in db.VPResults.AsNoTracking()
                     where c.VPResultID == VPResultID
                     select c).FirstOrDefault();
@@ -65,32 +73,22 @@ namespace CSSPServices
         }
         public async Task<ActionResult<List<VPResult>>> GetVPResultList()
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             List<VPResult> vpresultList = (from c in db.VPResults.AsNoTracking() select c).Take(100).ToList();
 
             return await Task.FromResult(Ok(vpresultList));
         }
-        public async Task<ActionResult<VPResult>> Add(VPResult vpResult)
-        {
-            ValidationResults = Validate(new ValidationContext(vpResult), ActionDBTypeEnum.Create);
-            if (ValidationResults.Count() > 0)
-            {
-               return await Task.FromResult(BadRequest(ValidationResults));
-            }
-
-            try
-            {
-               db.VPResults.Add(vpResult);
-               db.SaveChanges();
-            }
-            catch (DbUpdateException ex)
-            {
-               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
-            }
-
-            return await Task.FromResult(Ok(vpResult));
-        }
         public async Task<ActionResult<bool>> Delete(int VPResultID)
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             VPResult vpResult = (from c in db.VPResults
                                where c.VPResultID == VPResultID
                                select c).FirstOrDefault();
@@ -112,8 +110,38 @@ namespace CSSPServices
 
             return await Task.FromResult(Ok(true));
         }
-        public async Task<ActionResult<VPResult>> Update(VPResult vpResult)
+        public async Task<ActionResult<VPResult>> Post(VPResult vpResult)
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
+            ValidationResults = Validate(new ValidationContext(vpResult), ActionDBTypeEnum.Create);
+            if (ValidationResults.Count() > 0)
+            {
+               return await Task.FromResult(BadRequest(ValidationResults));
+            }
+
+            try
+            {
+               db.VPResults.Add(vpResult);
+               db.SaveChanges();
+            }
+            catch (DbUpdateException ex)
+            {
+               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+            }
+
+            return await Task.FromResult(Ok(vpResult));
+        }
+        public async Task<ActionResult<VPResult>> Put(VPResult vpResult)
+        {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             ValidationResults = Validate(new ValidationContext(vpResult), ActionDBTypeEnum.Update);
             if (ValidationResults.Count() > 0)
             {

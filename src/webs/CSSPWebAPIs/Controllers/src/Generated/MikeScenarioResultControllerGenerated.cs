@@ -6,6 +6,7 @@
 
 using CSSPModels;
 using CSSPServices;
+using CultureServices.Services;
 using LoggedInServices.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -18,8 +19,8 @@ namespace CSSPWebAPI.Controllers
     {
         Task<ActionResult<List<MikeScenarioResult>>> Get();
         Task<ActionResult<MikeScenarioResult>> Get(int MikeScenarioResultID);
-        Task<ActionResult<MikeScenarioResult>> Post(MikeScenarioResult mikeScenarioResult);
-        Task<ActionResult<MikeScenarioResult>> Put(MikeScenarioResult mikeScenarioResult);
+        Task<ActionResult<MikeScenarioResult>> Post(MikeScenarioResult MikeScenarioResult);
+        Task<ActionResult<MikeScenarioResult>> Put(MikeScenarioResult MikeScenarioResult);
         Task<ActionResult<bool>> Delete(int MikeScenarioResultID);
     }
 
@@ -32,17 +33,17 @@ namespace CSSPWebAPI.Controllers
         #endregion Variables
 
         #region Properties
-        private IMikeScenarioResultService mikeScenarioResultService { get; }
-        private CSSPDBContext db { get; }
-        private ILoggedInService loggedInService { get; }
+        private ICultureService CultureService { get; }
+        private ILoggedInService LoggedInService { get; }
+        private IMikeScenarioResultService MikeScenarioResultService { get; }
         #endregion Properties
 
         #region Constructors
-        public MikeScenarioResultController(IMikeScenarioResultService mikeScenarioResultService, CSSPDBContext db, ILoggedInService loggedInService)
+        public MikeScenarioResultController(ICultureService CultureService, ILoggedInService LoggedInService, IMikeScenarioResultService MikeScenarioResultService)
         {
-            this.mikeScenarioResultService = mikeScenarioResultService;
-            this.db = db;
-            this.loggedInService = loggedInService;
+            this.CultureService = CultureService;
+            this.LoggedInService = LoggedInService;
+            this.MikeScenarioResultService = MikeScenarioResultService;
         }
         #endregion Constructors
 
@@ -50,27 +51,42 @@ namespace CSSPWebAPI.Controllers
         [HttpGet]
         public async Task<ActionResult<List<MikeScenarioResult>>> Get()
         {
-            return await mikeScenarioResultService.GetMikeScenarioResultList();
+            CultureService.SetCulture((string)RouteData.Values["culture"]);
+            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+
+            return await MikeScenarioResultService.GetMikeScenarioResultList();
         }
         [HttpGet("{MikeScenarioResultID}")]
         public async Task<ActionResult<MikeScenarioResult>> Get(int MikeScenarioResultID)
         {
-            return await mikeScenarioResultService.GetMikeScenarioResultWithMikeScenarioResultID(MikeScenarioResultID);
+            CultureService.SetCulture((string)RouteData.Values["culture"]);
+            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+
+            return await MikeScenarioResultService.GetMikeScenarioResultWithMikeScenarioResultID(MikeScenarioResultID);
         }
         [HttpPost]
-        public async Task<ActionResult<MikeScenarioResult>> Post(MikeScenarioResult mikeScenarioResult)
+        public async Task<ActionResult<MikeScenarioResult>> Post(MikeScenarioResult MikeScenarioResult)
         {
-            return await mikeScenarioResultService.Add(mikeScenarioResult);
+            CultureService.SetCulture((string)RouteData.Values["culture"]);
+            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+
+            return await MikeScenarioResultService.Post(MikeScenarioResult);
         }
         [HttpPut]
-        public async Task<ActionResult<MikeScenarioResult>> Put(MikeScenarioResult mikeScenarioResult)
+        public async Task<ActionResult<MikeScenarioResult>> Put(MikeScenarioResult MikeScenarioResult)
         {
-            return await mikeScenarioResultService.Update(mikeScenarioResult);
+            CultureService.SetCulture((string)RouteData.Values["culture"]);
+            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+
+            return await MikeScenarioResultService.Put(MikeScenarioResult);
         }
         [HttpDelete("{MikeScenarioResultID}")]
         public async Task<ActionResult<bool>> Delete(int MikeScenarioResultID)
         {
-            return await mikeScenarioResultService.Delete(MikeScenarioResultID);
+            CultureService.SetCulture((string)RouteData.Values["culture"]);
+            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+
+            return await MikeScenarioResultService.Delete(MikeScenarioResultID);
         }
         #endregion Functions public
 

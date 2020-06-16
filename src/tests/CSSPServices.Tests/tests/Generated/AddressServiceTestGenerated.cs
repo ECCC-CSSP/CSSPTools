@@ -32,7 +32,7 @@ namespace CSSPServices.Tests
         private IServiceProvider Provider { get; set; }
         private IServiceCollection Services { get; set; }
         private ICultureService CultureService { get; set; }
-        private IAddressService addressService { get; set; }
+        private IAddressService AddressService { get; set; }
         private CSSPDBContext db { get; set; }
         #endregion Properties
 
@@ -62,7 +62,7 @@ namespace CSSPServices.Tests
                Address address = GetFilledRandomAddress(""); 
 
                // List<Address>
-               var actionAddressList = await addressService.GetAddressList();
+               var actionAddressList = await AddressService.GetAddressList();
                Assert.Equal(200, ((ObjectResult)actionAddressList.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionAddressList.Result).Value);
                List<Address> addressList = (List<Address>)((OkObjectResult)actionAddressList.Result).Value;
@@ -70,22 +70,22 @@ namespace CSSPServices.Tests
                int count = ((List<Address>)((OkObjectResult)actionAddressList.Result).Value).Count();
                 Assert.True(count > 0);
 
-               // Add Address
-               var actionAddressAdded = await addressService.Add(address);
+               // Post Address
+               var actionAddressAdded = await AddressService.Post(address);
                Assert.Equal(200, ((ObjectResult)actionAddressAdded.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionAddressAdded.Result).Value);
                Address addressAdded = (Address)((OkObjectResult)actionAddressAdded.Result).Value;
                Assert.NotNull(addressAdded);
 
-               // Update Address
-               var actionAddressUpdated = await addressService.Update(address);
+               // Put Address
+               var actionAddressUpdated = await AddressService.Put(address);
                Assert.Equal(200, ((ObjectResult)actionAddressUpdated.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionAddressUpdated.Result).Value);
                Address addressUpdated = (Address)((OkObjectResult)actionAddressUpdated.Result).Value;
                Assert.NotNull(addressUpdated);
 
                // Delete Address
-               var actionAddressDeleted = await addressService.Delete(address.AddressID);
+               var actionAddressDeleted = await AddressService.Delete(address.AddressID);
                Assert.Equal(200, ((ObjectResult)actionAddressDeleted.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionAddressDeleted.Result).Value);
                bool retBool = (bool)((OkObjectResult)actionAddressDeleted.Result).Value;
@@ -126,8 +126,8 @@ namespace CSSPServices.Tests
 
             CultureService.SetCulture(culture);
 
-            addressService = Provider.GetService<IAddressService>();
-            Assert.NotNull(addressService);
+            AddressService = Provider.GetService<IAddressService>();
+            Assert.NotNull(AddressService);
 
             return await Task.FromResult(true);
         }

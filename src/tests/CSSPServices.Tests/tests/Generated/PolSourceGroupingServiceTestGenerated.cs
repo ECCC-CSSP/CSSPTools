@@ -32,7 +32,7 @@ namespace CSSPServices.Tests
         private IServiceProvider Provider { get; set; }
         private IServiceCollection Services { get; set; }
         private ICultureService CultureService { get; set; }
-        private IPolSourceGroupingService polSourceGroupingService { get; set; }
+        private IPolSourceGroupingService PolSourceGroupingService { get; set; }
         private CSSPDBContext db { get; set; }
         #endregion Properties
 
@@ -62,7 +62,7 @@ namespace CSSPServices.Tests
                PolSourceGrouping polSourceGrouping = GetFilledRandomPolSourceGrouping(""); 
 
                // List<PolSourceGrouping>
-               var actionPolSourceGroupingList = await polSourceGroupingService.GetPolSourceGroupingList();
+               var actionPolSourceGroupingList = await PolSourceGroupingService.GetPolSourceGroupingList();
                Assert.Equal(200, ((ObjectResult)actionPolSourceGroupingList.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionPolSourceGroupingList.Result).Value);
                List<PolSourceGrouping> polSourceGroupingList = (List<PolSourceGrouping>)((OkObjectResult)actionPolSourceGroupingList.Result).Value;
@@ -70,22 +70,22 @@ namespace CSSPServices.Tests
                int count = ((List<PolSourceGrouping>)((OkObjectResult)actionPolSourceGroupingList.Result).Value).Count();
                 Assert.True(count > 0);
 
-               // Add PolSourceGrouping
-               var actionPolSourceGroupingAdded = await polSourceGroupingService.Add(polSourceGrouping);
+               // Post PolSourceGrouping
+               var actionPolSourceGroupingAdded = await PolSourceGroupingService.Post(polSourceGrouping);
                Assert.Equal(200, ((ObjectResult)actionPolSourceGroupingAdded.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionPolSourceGroupingAdded.Result).Value);
                PolSourceGrouping polSourceGroupingAdded = (PolSourceGrouping)((OkObjectResult)actionPolSourceGroupingAdded.Result).Value;
                Assert.NotNull(polSourceGroupingAdded);
 
-               // Update PolSourceGrouping
-               var actionPolSourceGroupingUpdated = await polSourceGroupingService.Update(polSourceGrouping);
+               // Put PolSourceGrouping
+               var actionPolSourceGroupingUpdated = await PolSourceGroupingService.Put(polSourceGrouping);
                Assert.Equal(200, ((ObjectResult)actionPolSourceGroupingUpdated.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionPolSourceGroupingUpdated.Result).Value);
                PolSourceGrouping polSourceGroupingUpdated = (PolSourceGrouping)((OkObjectResult)actionPolSourceGroupingUpdated.Result).Value;
                Assert.NotNull(polSourceGroupingUpdated);
 
                // Delete PolSourceGrouping
-               var actionPolSourceGroupingDeleted = await polSourceGroupingService.Delete(polSourceGrouping.PolSourceGroupingID);
+               var actionPolSourceGroupingDeleted = await PolSourceGroupingService.Delete(polSourceGrouping.PolSourceGroupingID);
                Assert.Equal(200, ((ObjectResult)actionPolSourceGroupingDeleted.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionPolSourceGroupingDeleted.Result).Value);
                bool retBool = (bool)((OkObjectResult)actionPolSourceGroupingDeleted.Result).Value;
@@ -126,8 +126,8 @@ namespace CSSPServices.Tests
 
             CultureService.SetCulture(culture);
 
-            polSourceGroupingService = Provider.GetService<IPolSourceGroupingService>();
-            Assert.NotNull(polSourceGroupingService);
+            PolSourceGroupingService = Provider.GetService<IPolSourceGroupingService>();
+            Assert.NotNull(PolSourceGroupingService);
 
             return await Task.FromResult(true);
         }

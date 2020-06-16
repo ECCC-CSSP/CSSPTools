@@ -9,6 +9,7 @@ using CSSPEnums;
 using CSSPModels;
 using CultureServices.Resources;
 using CultureServices.Services;
+using LoggedInServices.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -22,11 +23,11 @@ namespace CSSPServices
 {
    public interface IBoxModelService
     {
-       Task<ActionResult<BoxModel>> GetBoxModelWithBoxModelID(int BoxModelID);
-       Task<ActionResult<List<BoxModel>>> GetBoxModelList();
-       Task<ActionResult<BoxModel>> Add(BoxModel boxmodel);
        Task<ActionResult<bool>> Delete(int BoxModelID);
-       Task<ActionResult<BoxModel>> Update(BoxModel boxmodel);
+       Task<ActionResult<List<BoxModel>>> GetBoxModelList();
+       Task<ActionResult<BoxModel>> GetBoxModelWithBoxModelID(int BoxModelID);
+       Task<ActionResult<BoxModel>> Post(BoxModel boxmodel);
+       Task<ActionResult<BoxModel>> Put(BoxModel boxmodel);
     }
     public partial class BoxModelService : ControllerBase, IBoxModelService
     {
@@ -36,14 +37,16 @@ namespace CSSPServices
         #region Properties
         private CSSPDBContext db { get; }
         private ICultureService CultureService { get; }
+        private ILoggedInService LoggedInService { get; }
         private IEnums enums { get; }
         private IEnumerable<ValidationResult> ValidationResults { get; set; }
         #endregion Properties
 
         #region Constructors
-        public BoxModelService(ICultureService CultureService, IEnums enums, CSSPDBContext db)
+        public BoxModelService(ICultureService CultureService, ILoggedInService LoggedInService, IEnums enums, CSSPDBContext db)
         {
             this.CultureService = CultureService;
+            this.LoggedInService = LoggedInService;
             this.enums = enums;
             this.db = db;
         }
@@ -52,6 +55,11 @@ namespace CSSPServices
         #region Functions public 
         public async Task<ActionResult<BoxModel>> GetBoxModelWithBoxModelID(int BoxModelID)
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             BoxModel boxmodel = (from c in db.BoxModels.AsNoTracking()
                     where c.BoxModelID == BoxModelID
                     select c).FirstOrDefault();
@@ -65,32 +73,22 @@ namespace CSSPServices
         }
         public async Task<ActionResult<List<BoxModel>>> GetBoxModelList()
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             List<BoxModel> boxmodelList = (from c in db.BoxModels.AsNoTracking() select c).Take(100).ToList();
 
             return await Task.FromResult(Ok(boxmodelList));
         }
-        public async Task<ActionResult<BoxModel>> Add(BoxModel boxModel)
-        {
-            ValidationResults = Validate(new ValidationContext(boxModel), ActionDBTypeEnum.Create);
-            if (ValidationResults.Count() > 0)
-            {
-               return await Task.FromResult(BadRequest(ValidationResults));
-            }
-
-            try
-            {
-               db.BoxModels.Add(boxModel);
-               db.SaveChanges();
-            }
-            catch (DbUpdateException ex)
-            {
-               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
-            }
-
-            return await Task.FromResult(Ok(boxModel));
-        }
         public async Task<ActionResult<bool>> Delete(int BoxModelID)
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             BoxModel boxModel = (from c in db.BoxModels
                                where c.BoxModelID == BoxModelID
                                select c).FirstOrDefault();
@@ -112,8 +110,38 @@ namespace CSSPServices
 
             return await Task.FromResult(Ok(true));
         }
-        public async Task<ActionResult<BoxModel>> Update(BoxModel boxModel)
+        public async Task<ActionResult<BoxModel>> Post(BoxModel boxModel)
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
+            ValidationResults = Validate(new ValidationContext(boxModel), ActionDBTypeEnum.Create);
+            if (ValidationResults.Count() > 0)
+            {
+               return await Task.FromResult(BadRequest(ValidationResults));
+            }
+
+            try
+            {
+               db.BoxModels.Add(boxModel);
+               db.SaveChanges();
+            }
+            catch (DbUpdateException ex)
+            {
+               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+            }
+
+            return await Task.FromResult(Ok(boxModel));
+        }
+        public async Task<ActionResult<BoxModel>> Put(BoxModel boxModel)
+        {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             ValidationResults = Validate(new ValidationContext(boxModel), ActionDBTypeEnum.Update);
             if (ValidationResults.Count() > 0)
             {

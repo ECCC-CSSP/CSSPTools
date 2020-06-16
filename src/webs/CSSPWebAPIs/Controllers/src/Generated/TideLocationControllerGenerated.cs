@@ -6,6 +6,7 @@
 
 using CSSPModels;
 using CSSPServices;
+using CultureServices.Services;
 using LoggedInServices.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -18,8 +19,8 @@ namespace CSSPWebAPI.Controllers
     {
         Task<ActionResult<List<TideLocation>>> Get();
         Task<ActionResult<TideLocation>> Get(int TideLocationID);
-        Task<ActionResult<TideLocation>> Post(TideLocation tideLocation);
-        Task<ActionResult<TideLocation>> Put(TideLocation tideLocation);
+        Task<ActionResult<TideLocation>> Post(TideLocation TideLocation);
+        Task<ActionResult<TideLocation>> Put(TideLocation TideLocation);
         Task<ActionResult<bool>> Delete(int TideLocationID);
     }
 
@@ -32,17 +33,17 @@ namespace CSSPWebAPI.Controllers
         #endregion Variables
 
         #region Properties
-        private ITideLocationService tideLocationService { get; }
-        private CSSPDBContext db { get; }
-        private ILoggedInService loggedInService { get; }
+        private ICultureService CultureService { get; }
+        private ILoggedInService LoggedInService { get; }
+        private ITideLocationService TideLocationService { get; }
         #endregion Properties
 
         #region Constructors
-        public TideLocationController(ITideLocationService tideLocationService, CSSPDBContext db, ILoggedInService loggedInService)
+        public TideLocationController(ICultureService CultureService, ILoggedInService LoggedInService, ITideLocationService TideLocationService)
         {
-            this.tideLocationService = tideLocationService;
-            this.db = db;
-            this.loggedInService = loggedInService;
+            this.CultureService = CultureService;
+            this.LoggedInService = LoggedInService;
+            this.TideLocationService = TideLocationService;
         }
         #endregion Constructors
 
@@ -50,27 +51,42 @@ namespace CSSPWebAPI.Controllers
         [HttpGet]
         public async Task<ActionResult<List<TideLocation>>> Get()
         {
-            return await tideLocationService.GetTideLocationList();
+            CultureService.SetCulture((string)RouteData.Values["culture"]);
+            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+
+            return await TideLocationService.GetTideLocationList();
         }
         [HttpGet("{TideLocationID}")]
         public async Task<ActionResult<TideLocation>> Get(int TideLocationID)
         {
-            return await tideLocationService.GetTideLocationWithTideLocationID(TideLocationID);
+            CultureService.SetCulture((string)RouteData.Values["culture"]);
+            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+
+            return await TideLocationService.GetTideLocationWithTideLocationID(TideLocationID);
         }
         [HttpPost]
-        public async Task<ActionResult<TideLocation>> Post(TideLocation tideLocation)
+        public async Task<ActionResult<TideLocation>> Post(TideLocation TideLocation)
         {
-            return await tideLocationService.Add(tideLocation);
+            CultureService.SetCulture((string)RouteData.Values["culture"]);
+            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+
+            return await TideLocationService.Post(TideLocation);
         }
         [HttpPut]
-        public async Task<ActionResult<TideLocation>> Put(TideLocation tideLocation)
+        public async Task<ActionResult<TideLocation>> Put(TideLocation TideLocation)
         {
-            return await tideLocationService.Update(tideLocation);
+            CultureService.SetCulture((string)RouteData.Values["culture"]);
+            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+
+            return await TideLocationService.Put(TideLocation);
         }
         [HttpDelete("{TideLocationID}")]
         public async Task<ActionResult<bool>> Delete(int TideLocationID)
         {
-            return await tideLocationService.Delete(TideLocationID);
+            CultureService.SetCulture((string)RouteData.Values["culture"]);
+            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+
+            return await TideLocationService.Delete(TideLocationID);
         }
         #endregion Functions public
 

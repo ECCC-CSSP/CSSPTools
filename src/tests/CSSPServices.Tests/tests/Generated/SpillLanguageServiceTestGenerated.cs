@@ -32,7 +32,7 @@ namespace CSSPServices.Tests
         private IServiceProvider Provider { get; set; }
         private IServiceCollection Services { get; set; }
         private ICultureService CultureService { get; set; }
-        private ISpillLanguageService spillLanguageService { get; set; }
+        private ISpillLanguageService SpillLanguageService { get; set; }
         private CSSPDBContext db { get; set; }
         #endregion Properties
 
@@ -62,7 +62,7 @@ namespace CSSPServices.Tests
                SpillLanguage spillLanguage = GetFilledRandomSpillLanguage(""); 
 
                // List<SpillLanguage>
-               var actionSpillLanguageList = await spillLanguageService.GetSpillLanguageList();
+               var actionSpillLanguageList = await SpillLanguageService.GetSpillLanguageList();
                Assert.Equal(200, ((ObjectResult)actionSpillLanguageList.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionSpillLanguageList.Result).Value);
                List<SpillLanguage> spillLanguageList = (List<SpillLanguage>)((OkObjectResult)actionSpillLanguageList.Result).Value;
@@ -70,22 +70,22 @@ namespace CSSPServices.Tests
                int count = ((List<SpillLanguage>)((OkObjectResult)actionSpillLanguageList.Result).Value).Count();
                 Assert.True(count > 0);
 
-               // Add SpillLanguage
-               var actionSpillLanguageAdded = await spillLanguageService.Add(spillLanguage);
+               // Post SpillLanguage
+               var actionSpillLanguageAdded = await SpillLanguageService.Post(spillLanguage);
                Assert.Equal(200, ((ObjectResult)actionSpillLanguageAdded.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionSpillLanguageAdded.Result).Value);
                SpillLanguage spillLanguageAdded = (SpillLanguage)((OkObjectResult)actionSpillLanguageAdded.Result).Value;
                Assert.NotNull(spillLanguageAdded);
 
-               // Update SpillLanguage
-               var actionSpillLanguageUpdated = await spillLanguageService.Update(spillLanguage);
+               // Put SpillLanguage
+               var actionSpillLanguageUpdated = await SpillLanguageService.Put(spillLanguage);
                Assert.Equal(200, ((ObjectResult)actionSpillLanguageUpdated.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionSpillLanguageUpdated.Result).Value);
                SpillLanguage spillLanguageUpdated = (SpillLanguage)((OkObjectResult)actionSpillLanguageUpdated.Result).Value;
                Assert.NotNull(spillLanguageUpdated);
 
                // Delete SpillLanguage
-               var actionSpillLanguageDeleted = await spillLanguageService.Delete(spillLanguage.SpillLanguageID);
+               var actionSpillLanguageDeleted = await SpillLanguageService.Delete(spillLanguage.SpillLanguageID);
                Assert.Equal(200, ((ObjectResult)actionSpillLanguageDeleted.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionSpillLanguageDeleted.Result).Value);
                bool retBool = (bool)((OkObjectResult)actionSpillLanguageDeleted.Result).Value;
@@ -126,8 +126,8 @@ namespace CSSPServices.Tests
 
             CultureService.SetCulture(culture);
 
-            spillLanguageService = Provider.GetService<ISpillLanguageService>();
-            Assert.NotNull(spillLanguageService);
+            SpillLanguageService = Provider.GetService<ISpillLanguageService>();
+            Assert.NotNull(SpillLanguageService);
 
             return await Task.FromResult(true);
         }

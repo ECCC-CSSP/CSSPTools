@@ -32,7 +32,7 @@ namespace CSSPServices.Tests
         private IServiceProvider Provider { get; set; }
         private IServiceCollection Services { get; set; }
         private ICultureService CultureService { get; set; }
-        private ISamplingPlanService samplingPlanService { get; set; }
+        private ISamplingPlanService SamplingPlanService { get; set; }
         private CSSPDBContext db { get; set; }
         #endregion Properties
 
@@ -62,7 +62,7 @@ namespace CSSPServices.Tests
                SamplingPlan samplingPlan = GetFilledRandomSamplingPlan(""); 
 
                // List<SamplingPlan>
-               var actionSamplingPlanList = await samplingPlanService.GetSamplingPlanList();
+               var actionSamplingPlanList = await SamplingPlanService.GetSamplingPlanList();
                Assert.Equal(200, ((ObjectResult)actionSamplingPlanList.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionSamplingPlanList.Result).Value);
                List<SamplingPlan> samplingPlanList = (List<SamplingPlan>)((OkObjectResult)actionSamplingPlanList.Result).Value;
@@ -70,22 +70,22 @@ namespace CSSPServices.Tests
                int count = ((List<SamplingPlan>)((OkObjectResult)actionSamplingPlanList.Result).Value).Count();
                 Assert.True(count > 0);
 
-               // Add SamplingPlan
-               var actionSamplingPlanAdded = await samplingPlanService.Add(samplingPlan);
+               // Post SamplingPlan
+               var actionSamplingPlanAdded = await SamplingPlanService.Post(samplingPlan);
                Assert.Equal(200, ((ObjectResult)actionSamplingPlanAdded.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionSamplingPlanAdded.Result).Value);
                SamplingPlan samplingPlanAdded = (SamplingPlan)((OkObjectResult)actionSamplingPlanAdded.Result).Value;
                Assert.NotNull(samplingPlanAdded);
 
-               // Update SamplingPlan
-               var actionSamplingPlanUpdated = await samplingPlanService.Update(samplingPlan);
+               // Put SamplingPlan
+               var actionSamplingPlanUpdated = await SamplingPlanService.Put(samplingPlan);
                Assert.Equal(200, ((ObjectResult)actionSamplingPlanUpdated.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionSamplingPlanUpdated.Result).Value);
                SamplingPlan samplingPlanUpdated = (SamplingPlan)((OkObjectResult)actionSamplingPlanUpdated.Result).Value;
                Assert.NotNull(samplingPlanUpdated);
 
                // Delete SamplingPlan
-               var actionSamplingPlanDeleted = await samplingPlanService.Delete(samplingPlan.SamplingPlanID);
+               var actionSamplingPlanDeleted = await SamplingPlanService.Delete(samplingPlan.SamplingPlanID);
                Assert.Equal(200, ((ObjectResult)actionSamplingPlanDeleted.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionSamplingPlanDeleted.Result).Value);
                bool retBool = (bool)((OkObjectResult)actionSamplingPlanDeleted.Result).Value;
@@ -126,8 +126,8 @@ namespace CSSPServices.Tests
 
             CultureService.SetCulture(culture);
 
-            samplingPlanService = Provider.GetService<ISamplingPlanService>();
-            Assert.NotNull(samplingPlanService);
+            SamplingPlanService = Provider.GetService<ISamplingPlanService>();
+            Assert.NotNull(SamplingPlanService);
 
             return await Task.FromResult(true);
         }

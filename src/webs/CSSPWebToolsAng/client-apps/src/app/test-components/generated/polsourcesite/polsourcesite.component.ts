@@ -70,57 +70,57 @@ export class PolSourceSiteComponent implements OnInit, OnDestroy {
             {
               value: (AddOrUpdate === 'Add' ? 0 : (this.polsourcesiteService.polsourcesiteList[0]?.PolSourceSiteID)),
               disabled: false
-            }],
+            }, [ Validators.required ]],
           PolSourceSiteTVItemID: [
             {
               value: this.polsourcesiteService.polsourcesiteList[0]?.PolSourceSiteTVItemID,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           Temp_Locator_CanDelete: [
             {
               value: this.polsourcesiteService.polsourcesiteList[0]?.Temp_Locator_CanDelete,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           Oldsiteid: [
             {
               value: this.polsourcesiteService.polsourcesiteList[0]?.Oldsiteid,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           Site: [
             {
               value: this.polsourcesiteService.polsourcesiteList[0]?.Site,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           SiteID: [
             {
               value: this.polsourcesiteService.polsourcesiteList[0]?.SiteID,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           IsPointSource: [
             {
               value: this.polsourcesiteService.polsourcesiteList[0]?.IsPointSource,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           InactiveReason: [
             {
               value: this.polsourcesiteService.polsourcesiteList[0]?.InactiveReason,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           CivicAddressTVItemID: [
             {
               value: this.polsourcesiteService.polsourcesiteList[0]?.CivicAddressTVItemID,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           LastUpdateDate_UTC: [
             {
               value: this.polsourcesiteService.polsourcesiteList[0]?.LastUpdateDate_UTC,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           LastUpdateContactTVItemID: [
             {
               value: this.polsourcesiteService.polsourcesiteList[0]?.LastUpdateContactTVItemID,
               disabled: false
-            }],
+            }, [ Validators.required ]],
         }
       );
 

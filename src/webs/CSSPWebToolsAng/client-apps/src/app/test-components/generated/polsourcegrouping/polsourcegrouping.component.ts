@@ -62,37 +62,37 @@ export class PolSourceGroupingComponent implements OnInit, OnDestroy {
             {
               value: (AddOrUpdate === 'Add' ? 0 : (this.polsourcegroupingService.polsourcegroupingList[0]?.PolSourceGroupingID)),
               disabled: false
-            }],
+            }, [ Validators.required ]],
           CSSPID: [
             {
               value: this.polsourcegroupingService.polsourcegroupingList[0]?.CSSPID,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           GroupName: [
             {
               value: this.polsourcegroupingService.polsourcegroupingList[0]?.GroupName,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           Child: [
             {
               value: this.polsourcegroupingService.polsourcegroupingList[0]?.Child,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           Hide: [
             {
               value: this.polsourcegroupingService.polsourcegroupingList[0]?.Hide,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           LastUpdateDate_UTC: [
             {
               value: this.polsourcegroupingService.polsourcegroupingList[0]?.LastUpdateDate_UTC,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           LastUpdateContactTVItemID: [
             {
               value: this.polsourcegroupingService.polsourcegroupingList[0]?.LastUpdateContactTVItemID,
               disabled: false
-            }],
+            }, [ Validators.required ]],
         }
       );
 

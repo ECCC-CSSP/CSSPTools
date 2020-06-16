@@ -6,6 +6,7 @@
 
 using CSSPModels;
 using CSSPServices;
+using CultureServices.Services;
 using LoggedInServices.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -18,8 +19,8 @@ namespace CSSPWebAPI.Controllers
     {
         Task<ActionResult<List<PolSourceObservation>>> Get();
         Task<ActionResult<PolSourceObservation>> Get(int PolSourceObservationID);
-        Task<ActionResult<PolSourceObservation>> Post(PolSourceObservation polSourceObservation);
-        Task<ActionResult<PolSourceObservation>> Put(PolSourceObservation polSourceObservation);
+        Task<ActionResult<PolSourceObservation>> Post(PolSourceObservation PolSourceObservation);
+        Task<ActionResult<PolSourceObservation>> Put(PolSourceObservation PolSourceObservation);
         Task<ActionResult<bool>> Delete(int PolSourceObservationID);
     }
 
@@ -32,17 +33,17 @@ namespace CSSPWebAPI.Controllers
         #endregion Variables
 
         #region Properties
-        private IPolSourceObservationService polSourceObservationService { get; }
-        private CSSPDBContext db { get; }
-        private ILoggedInService loggedInService { get; }
+        private ICultureService CultureService { get; }
+        private ILoggedInService LoggedInService { get; }
+        private IPolSourceObservationService PolSourceObservationService { get; }
         #endregion Properties
 
         #region Constructors
-        public PolSourceObservationController(IPolSourceObservationService polSourceObservationService, CSSPDBContext db, ILoggedInService loggedInService)
+        public PolSourceObservationController(ICultureService CultureService, ILoggedInService LoggedInService, IPolSourceObservationService PolSourceObservationService)
         {
-            this.polSourceObservationService = polSourceObservationService;
-            this.db = db;
-            this.loggedInService = loggedInService;
+            this.CultureService = CultureService;
+            this.LoggedInService = LoggedInService;
+            this.PolSourceObservationService = PolSourceObservationService;
         }
         #endregion Constructors
 
@@ -50,27 +51,42 @@ namespace CSSPWebAPI.Controllers
         [HttpGet]
         public async Task<ActionResult<List<PolSourceObservation>>> Get()
         {
-            return await polSourceObservationService.GetPolSourceObservationList();
+            CultureService.SetCulture((string)RouteData.Values["culture"]);
+            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+
+            return await PolSourceObservationService.GetPolSourceObservationList();
         }
         [HttpGet("{PolSourceObservationID}")]
         public async Task<ActionResult<PolSourceObservation>> Get(int PolSourceObservationID)
         {
-            return await polSourceObservationService.GetPolSourceObservationWithPolSourceObservationID(PolSourceObservationID);
+            CultureService.SetCulture((string)RouteData.Values["culture"]);
+            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+
+            return await PolSourceObservationService.GetPolSourceObservationWithPolSourceObservationID(PolSourceObservationID);
         }
         [HttpPost]
-        public async Task<ActionResult<PolSourceObservation>> Post(PolSourceObservation polSourceObservation)
+        public async Task<ActionResult<PolSourceObservation>> Post(PolSourceObservation PolSourceObservation)
         {
-            return await polSourceObservationService.Add(polSourceObservation);
+            CultureService.SetCulture((string)RouteData.Values["culture"]);
+            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+
+            return await PolSourceObservationService.Post(PolSourceObservation);
         }
         [HttpPut]
-        public async Task<ActionResult<PolSourceObservation>> Put(PolSourceObservation polSourceObservation)
+        public async Task<ActionResult<PolSourceObservation>> Put(PolSourceObservation PolSourceObservation)
         {
-            return await polSourceObservationService.Update(polSourceObservation);
+            CultureService.SetCulture((string)RouteData.Values["culture"]);
+            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+
+            return await PolSourceObservationService.Put(PolSourceObservation);
         }
         [HttpDelete("{PolSourceObservationID}")]
         public async Task<ActionResult<bool>> Delete(int PolSourceObservationID)
         {
-            return await polSourceObservationService.Delete(PolSourceObservationID);
+            CultureService.SetCulture((string)RouteData.Values["culture"]);
+            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+
+            return await PolSourceObservationService.Delete(PolSourceObservationID);
         }
         #endregion Functions public
 

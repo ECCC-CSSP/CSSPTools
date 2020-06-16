@@ -9,6 +9,7 @@ using CSSPEnums;
 using CSSPModels;
 using CultureServices.Resources;
 using CultureServices.Services;
+using LoggedInServices.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -22,11 +23,11 @@ namespace CSSPServices
 {
    public interface ILabSheetDetailService
     {
-       Task<ActionResult<LabSheetDetail>> GetLabSheetDetailWithLabSheetDetailID(int LabSheetDetailID);
-       Task<ActionResult<List<LabSheetDetail>>> GetLabSheetDetailList();
-       Task<ActionResult<LabSheetDetail>> Add(LabSheetDetail labsheetdetail);
        Task<ActionResult<bool>> Delete(int LabSheetDetailID);
-       Task<ActionResult<LabSheetDetail>> Update(LabSheetDetail labsheetdetail);
+       Task<ActionResult<List<LabSheetDetail>>> GetLabSheetDetailList();
+       Task<ActionResult<LabSheetDetail>> GetLabSheetDetailWithLabSheetDetailID(int LabSheetDetailID);
+       Task<ActionResult<LabSheetDetail>> Post(LabSheetDetail labsheetdetail);
+       Task<ActionResult<LabSheetDetail>> Put(LabSheetDetail labsheetdetail);
     }
     public partial class LabSheetDetailService : ControllerBase, ILabSheetDetailService
     {
@@ -36,14 +37,16 @@ namespace CSSPServices
         #region Properties
         private CSSPDBContext db { get; }
         private ICultureService CultureService { get; }
+        private ILoggedInService LoggedInService { get; }
         private IEnums enums { get; }
         private IEnumerable<ValidationResult> ValidationResults { get; set; }
         #endregion Properties
 
         #region Constructors
-        public LabSheetDetailService(ICultureService CultureService, IEnums enums, CSSPDBContext db)
+        public LabSheetDetailService(ICultureService CultureService, ILoggedInService LoggedInService, IEnums enums, CSSPDBContext db)
         {
             this.CultureService = CultureService;
+            this.LoggedInService = LoggedInService;
             this.enums = enums;
             this.db = db;
         }
@@ -52,6 +55,11 @@ namespace CSSPServices
         #region Functions public 
         public async Task<ActionResult<LabSheetDetail>> GetLabSheetDetailWithLabSheetDetailID(int LabSheetDetailID)
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             LabSheetDetail labsheetdetail = (from c in db.LabSheetDetails.AsNoTracking()
                     where c.LabSheetDetailID == LabSheetDetailID
                     select c).FirstOrDefault();
@@ -65,32 +73,22 @@ namespace CSSPServices
         }
         public async Task<ActionResult<List<LabSheetDetail>>> GetLabSheetDetailList()
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             List<LabSheetDetail> labsheetdetailList = (from c in db.LabSheetDetails.AsNoTracking() select c).Take(100).ToList();
 
             return await Task.FromResult(Ok(labsheetdetailList));
         }
-        public async Task<ActionResult<LabSheetDetail>> Add(LabSheetDetail labSheetDetail)
-        {
-            ValidationResults = Validate(new ValidationContext(labSheetDetail), ActionDBTypeEnum.Create);
-            if (ValidationResults.Count() > 0)
-            {
-               return await Task.FromResult(BadRequest(ValidationResults));
-            }
-
-            try
-            {
-               db.LabSheetDetails.Add(labSheetDetail);
-               db.SaveChanges();
-            }
-            catch (DbUpdateException ex)
-            {
-               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
-            }
-
-            return await Task.FromResult(Ok(labSheetDetail));
-        }
         public async Task<ActionResult<bool>> Delete(int LabSheetDetailID)
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             LabSheetDetail labSheetDetail = (from c in db.LabSheetDetails
                                where c.LabSheetDetailID == LabSheetDetailID
                                select c).FirstOrDefault();
@@ -112,8 +110,38 @@ namespace CSSPServices
 
             return await Task.FromResult(Ok(true));
         }
-        public async Task<ActionResult<LabSheetDetail>> Update(LabSheetDetail labSheetDetail)
+        public async Task<ActionResult<LabSheetDetail>> Post(LabSheetDetail labSheetDetail)
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
+            ValidationResults = Validate(new ValidationContext(labSheetDetail), ActionDBTypeEnum.Create);
+            if (ValidationResults.Count() > 0)
+            {
+               return await Task.FromResult(BadRequest(ValidationResults));
+            }
+
+            try
+            {
+               db.LabSheetDetails.Add(labSheetDetail);
+               db.SaveChanges();
+            }
+            catch (DbUpdateException ex)
+            {
+               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+            }
+
+            return await Task.FromResult(Ok(labSheetDetail));
+        }
+        public async Task<ActionResult<LabSheetDetail>> Put(LabSheetDetail labSheetDetail)
+        {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             ValidationResults = Validate(new ValidationContext(labSheetDetail), ActionDBTypeEnum.Update);
             if (ValidationResults.Count() > 0)
             {

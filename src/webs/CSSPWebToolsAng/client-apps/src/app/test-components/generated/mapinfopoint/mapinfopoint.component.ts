@@ -62,37 +62,37 @@ export class MapInfoPointComponent implements OnInit, OnDestroy {
             {
               value: (AddOrUpdate === 'Add' ? 0 : (this.mapinfopointService.mapinfopointList[0]?.MapInfoPointID)),
               disabled: false
-            }],
+            }, [ Validators.required ]],
           MapInfoID: [
             {
               value: this.mapinfopointService.mapinfopointList[0]?.MapInfoID,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           Ordinal: [
             {
               value: this.mapinfopointService.mapinfopointList[0]?.Ordinal,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           Lat: [
             {
               value: this.mapinfopointService.mapinfopointList[0]?.Lat,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           Lng: [
             {
               value: this.mapinfopointService.mapinfopointList[0]?.Lng,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           LastUpdateDate_UTC: [
             {
               value: this.mapinfopointService.mapinfopointList[0]?.LastUpdateDate_UTC,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           LastUpdateContactTVItemID: [
             {
               value: this.mapinfopointService.mapinfopointList[0]?.LastUpdateContactTVItemID,
               disabled: false
-            }],
+            }, [ Validators.required ]],
         }
       );
 

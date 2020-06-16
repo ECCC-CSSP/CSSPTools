@@ -32,7 +32,7 @@ namespace CSSPServices.Tests
         private IServiceProvider Provider { get; set; }
         private IServiceCollection Services { get; set; }
         private ICultureService CultureService { get; set; }
-        private ITVItemLinkService tvItemLinkService { get; set; }
+        private ITVItemLinkService TVItemLinkService { get; set; }
         private CSSPDBContext db { get; set; }
         #endregion Properties
 
@@ -62,7 +62,7 @@ namespace CSSPServices.Tests
                TVItemLink tvItemLink = GetFilledRandomTVItemLink(""); 
 
                // List<TVItemLink>
-               var actionTVItemLinkList = await tvItemLinkService.GetTVItemLinkList();
+               var actionTVItemLinkList = await TVItemLinkService.GetTVItemLinkList();
                Assert.Equal(200, ((ObjectResult)actionTVItemLinkList.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionTVItemLinkList.Result).Value);
                List<TVItemLink> tvItemLinkList = (List<TVItemLink>)((OkObjectResult)actionTVItemLinkList.Result).Value;
@@ -70,22 +70,22 @@ namespace CSSPServices.Tests
                int count = ((List<TVItemLink>)((OkObjectResult)actionTVItemLinkList.Result).Value).Count();
                 Assert.True(count > 0);
 
-               // Add TVItemLink
-               var actionTVItemLinkAdded = await tvItemLinkService.Add(tvItemLink);
+               // Post TVItemLink
+               var actionTVItemLinkAdded = await TVItemLinkService.Post(tvItemLink);
                Assert.Equal(200, ((ObjectResult)actionTVItemLinkAdded.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionTVItemLinkAdded.Result).Value);
                TVItemLink tvItemLinkAdded = (TVItemLink)((OkObjectResult)actionTVItemLinkAdded.Result).Value;
                Assert.NotNull(tvItemLinkAdded);
 
-               // Update TVItemLink
-               var actionTVItemLinkUpdated = await tvItemLinkService.Update(tvItemLink);
+               // Put TVItemLink
+               var actionTVItemLinkUpdated = await TVItemLinkService.Put(tvItemLink);
                Assert.Equal(200, ((ObjectResult)actionTVItemLinkUpdated.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionTVItemLinkUpdated.Result).Value);
                TVItemLink tvItemLinkUpdated = (TVItemLink)((OkObjectResult)actionTVItemLinkUpdated.Result).Value;
                Assert.NotNull(tvItemLinkUpdated);
 
                // Delete TVItemLink
-               var actionTVItemLinkDeleted = await tvItemLinkService.Delete(tvItemLink.TVItemLinkID);
+               var actionTVItemLinkDeleted = await TVItemLinkService.Delete(tvItemLink.TVItemLinkID);
                Assert.Equal(200, ((ObjectResult)actionTVItemLinkDeleted.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionTVItemLinkDeleted.Result).Value);
                bool retBool = (bool)((OkObjectResult)actionTVItemLinkDeleted.Result).Value;
@@ -126,8 +126,8 @@ namespace CSSPServices.Tests
 
             CultureService.SetCulture(culture);
 
-            tvItemLinkService = Provider.GetService<ITVItemLinkService>();
-            Assert.NotNull(tvItemLinkService);
+            TVItemLinkService = Provider.GetService<ITVItemLinkService>();
+            Assert.NotNull(TVItemLinkService);
 
             return await Task.FromResult(true);
         }

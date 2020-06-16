@@ -9,6 +9,7 @@ using CSSPEnums;
 using CSSPModels;
 using CultureServices.Resources;
 using CultureServices.Services;
+using LoggedInServices.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -22,11 +23,11 @@ namespace CSSPServices
 {
    public interface ITelService
     {
-       Task<ActionResult<Tel>> GetTelWithTelID(int TelID);
-       Task<ActionResult<List<Tel>>> GetTelList();
-       Task<ActionResult<Tel>> Add(Tel tel);
        Task<ActionResult<bool>> Delete(int TelID);
-       Task<ActionResult<Tel>> Update(Tel tel);
+       Task<ActionResult<List<Tel>>> GetTelList();
+       Task<ActionResult<Tel>> GetTelWithTelID(int TelID);
+       Task<ActionResult<Tel>> Post(Tel tel);
+       Task<ActionResult<Tel>> Put(Tel tel);
     }
     public partial class TelService : ControllerBase, ITelService
     {
@@ -36,14 +37,16 @@ namespace CSSPServices
         #region Properties
         private CSSPDBContext db { get; }
         private ICultureService CultureService { get; }
+        private ILoggedInService LoggedInService { get; }
         private IEnums enums { get; }
         private IEnumerable<ValidationResult> ValidationResults { get; set; }
         #endregion Properties
 
         #region Constructors
-        public TelService(ICultureService CultureService, IEnums enums, CSSPDBContext db)
+        public TelService(ICultureService CultureService, ILoggedInService LoggedInService, IEnums enums, CSSPDBContext db)
         {
             this.CultureService = CultureService;
+            this.LoggedInService = LoggedInService;
             this.enums = enums;
             this.db = db;
         }
@@ -52,6 +55,11 @@ namespace CSSPServices
         #region Functions public 
         public async Task<ActionResult<Tel>> GetTelWithTelID(int TelID)
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             Tel tel = (from c in db.Tels.AsNoTracking()
                     where c.TelID == TelID
                     select c).FirstOrDefault();
@@ -65,32 +73,22 @@ namespace CSSPServices
         }
         public async Task<ActionResult<List<Tel>>> GetTelList()
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             List<Tel> telList = (from c in db.Tels.AsNoTracking() select c).Take(100).ToList();
 
             return await Task.FromResult(Ok(telList));
         }
-        public async Task<ActionResult<Tel>> Add(Tel tel)
-        {
-            ValidationResults = Validate(new ValidationContext(tel), ActionDBTypeEnum.Create);
-            if (ValidationResults.Count() > 0)
-            {
-               return await Task.FromResult(BadRequest(ValidationResults));
-            }
-
-            try
-            {
-               db.Tels.Add(tel);
-               db.SaveChanges();
-            }
-            catch (DbUpdateException ex)
-            {
-               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
-            }
-
-            return await Task.FromResult(Ok(tel));
-        }
         public async Task<ActionResult<bool>> Delete(int TelID)
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             Tel tel = (from c in db.Tels
                                where c.TelID == TelID
                                select c).FirstOrDefault();
@@ -112,8 +110,38 @@ namespace CSSPServices
 
             return await Task.FromResult(Ok(true));
         }
-        public async Task<ActionResult<Tel>> Update(Tel tel)
+        public async Task<ActionResult<Tel>> Post(Tel tel)
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
+            ValidationResults = Validate(new ValidationContext(tel), ActionDBTypeEnum.Create);
+            if (ValidationResults.Count() > 0)
+            {
+               return await Task.FromResult(BadRequest(ValidationResults));
+            }
+
+            try
+            {
+               db.Tels.Add(tel);
+               db.SaveChanges();
+            }
+            catch (DbUpdateException ex)
+            {
+               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+            }
+
+            return await Task.FromResult(Ok(tel));
+        }
+        public async Task<ActionResult<Tel>> Put(Tel tel)
+        {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             ValidationResults = Validate(new ValidationContext(tel), ActionDBTypeEnum.Update);
             if (ValidationResults.Count() > 0)
             {

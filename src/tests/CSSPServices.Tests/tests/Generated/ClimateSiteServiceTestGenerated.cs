@@ -32,7 +32,7 @@ namespace CSSPServices.Tests
         private IServiceProvider Provider { get; set; }
         private IServiceCollection Services { get; set; }
         private ICultureService CultureService { get; set; }
-        private IClimateSiteService climateSiteService { get; set; }
+        private IClimateSiteService ClimateSiteService { get; set; }
         private CSSPDBContext db { get; set; }
         #endregion Properties
 
@@ -62,7 +62,7 @@ namespace CSSPServices.Tests
                ClimateSite climateSite = GetFilledRandomClimateSite(""); 
 
                // List<ClimateSite>
-               var actionClimateSiteList = await climateSiteService.GetClimateSiteList();
+               var actionClimateSiteList = await ClimateSiteService.GetClimateSiteList();
                Assert.Equal(200, ((ObjectResult)actionClimateSiteList.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionClimateSiteList.Result).Value);
                List<ClimateSite> climateSiteList = (List<ClimateSite>)((OkObjectResult)actionClimateSiteList.Result).Value;
@@ -70,22 +70,22 @@ namespace CSSPServices.Tests
                int count = ((List<ClimateSite>)((OkObjectResult)actionClimateSiteList.Result).Value).Count();
                 Assert.True(count > 0);
 
-               // Add ClimateSite
-               var actionClimateSiteAdded = await climateSiteService.Add(climateSite);
+               // Post ClimateSite
+               var actionClimateSiteAdded = await ClimateSiteService.Post(climateSite);
                Assert.Equal(200, ((ObjectResult)actionClimateSiteAdded.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionClimateSiteAdded.Result).Value);
                ClimateSite climateSiteAdded = (ClimateSite)((OkObjectResult)actionClimateSiteAdded.Result).Value;
                Assert.NotNull(climateSiteAdded);
 
-               // Update ClimateSite
-               var actionClimateSiteUpdated = await climateSiteService.Update(climateSite);
+               // Put ClimateSite
+               var actionClimateSiteUpdated = await ClimateSiteService.Put(climateSite);
                Assert.Equal(200, ((ObjectResult)actionClimateSiteUpdated.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionClimateSiteUpdated.Result).Value);
                ClimateSite climateSiteUpdated = (ClimateSite)((OkObjectResult)actionClimateSiteUpdated.Result).Value;
                Assert.NotNull(climateSiteUpdated);
 
                // Delete ClimateSite
-               var actionClimateSiteDeleted = await climateSiteService.Delete(climateSite.ClimateSiteID);
+               var actionClimateSiteDeleted = await ClimateSiteService.Delete(climateSite.ClimateSiteID);
                Assert.Equal(200, ((ObjectResult)actionClimateSiteDeleted.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionClimateSiteDeleted.Result).Value);
                bool retBool = (bool)((OkObjectResult)actionClimateSiteDeleted.Result).Value;
@@ -126,8 +126,8 @@ namespace CSSPServices.Tests
 
             CultureService.SetCulture(culture);
 
-            climateSiteService = Provider.GetService<IClimateSiteService>();
-            Assert.NotNull(climateSiteService);
+            ClimateSiteService = Provider.GetService<IClimateSiteService>();
+            Assert.NotNull(ClimateSiteService);
 
             return await Task.FromResult(true);
         }

@@ -9,6 +9,7 @@ using CSSPEnums;
 using CSSPModels;
 using CultureServices.Resources;
 using CultureServices.Services;
+using LoggedInServices.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -22,11 +23,11 @@ namespace CSSPServices
 {
    public interface ITideDataValueService
     {
-       Task<ActionResult<TideDataValue>> GetTideDataValueWithTideDataValueID(int TideDataValueID);
-       Task<ActionResult<List<TideDataValue>>> GetTideDataValueList();
-       Task<ActionResult<TideDataValue>> Add(TideDataValue tidedatavalue);
        Task<ActionResult<bool>> Delete(int TideDataValueID);
-       Task<ActionResult<TideDataValue>> Update(TideDataValue tidedatavalue);
+       Task<ActionResult<List<TideDataValue>>> GetTideDataValueList();
+       Task<ActionResult<TideDataValue>> GetTideDataValueWithTideDataValueID(int TideDataValueID);
+       Task<ActionResult<TideDataValue>> Post(TideDataValue tidedatavalue);
+       Task<ActionResult<TideDataValue>> Put(TideDataValue tidedatavalue);
     }
     public partial class TideDataValueService : ControllerBase, ITideDataValueService
     {
@@ -36,14 +37,16 @@ namespace CSSPServices
         #region Properties
         private CSSPDBContext db { get; }
         private ICultureService CultureService { get; }
+        private ILoggedInService LoggedInService { get; }
         private IEnums enums { get; }
         private IEnumerable<ValidationResult> ValidationResults { get; set; }
         #endregion Properties
 
         #region Constructors
-        public TideDataValueService(ICultureService CultureService, IEnums enums, CSSPDBContext db)
+        public TideDataValueService(ICultureService CultureService, ILoggedInService LoggedInService, IEnums enums, CSSPDBContext db)
         {
             this.CultureService = CultureService;
+            this.LoggedInService = LoggedInService;
             this.enums = enums;
             this.db = db;
         }
@@ -52,6 +55,11 @@ namespace CSSPServices
         #region Functions public 
         public async Task<ActionResult<TideDataValue>> GetTideDataValueWithTideDataValueID(int TideDataValueID)
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             TideDataValue tidedatavalue = (from c in db.TideDataValues.AsNoTracking()
                     where c.TideDataValueID == TideDataValueID
                     select c).FirstOrDefault();
@@ -65,32 +73,22 @@ namespace CSSPServices
         }
         public async Task<ActionResult<List<TideDataValue>>> GetTideDataValueList()
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             List<TideDataValue> tidedatavalueList = (from c in db.TideDataValues.AsNoTracking() select c).Take(100).ToList();
 
             return await Task.FromResult(Ok(tidedatavalueList));
         }
-        public async Task<ActionResult<TideDataValue>> Add(TideDataValue tideDataValue)
-        {
-            ValidationResults = Validate(new ValidationContext(tideDataValue), ActionDBTypeEnum.Create);
-            if (ValidationResults.Count() > 0)
-            {
-               return await Task.FromResult(BadRequest(ValidationResults));
-            }
-
-            try
-            {
-               db.TideDataValues.Add(tideDataValue);
-               db.SaveChanges();
-            }
-            catch (DbUpdateException ex)
-            {
-               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
-            }
-
-            return await Task.FromResult(Ok(tideDataValue));
-        }
         public async Task<ActionResult<bool>> Delete(int TideDataValueID)
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             TideDataValue tideDataValue = (from c in db.TideDataValues
                                where c.TideDataValueID == TideDataValueID
                                select c).FirstOrDefault();
@@ -112,8 +110,38 @@ namespace CSSPServices
 
             return await Task.FromResult(Ok(true));
         }
-        public async Task<ActionResult<TideDataValue>> Update(TideDataValue tideDataValue)
+        public async Task<ActionResult<TideDataValue>> Post(TideDataValue tideDataValue)
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
+            ValidationResults = Validate(new ValidationContext(tideDataValue), ActionDBTypeEnum.Create);
+            if (ValidationResults.Count() > 0)
+            {
+               return await Task.FromResult(BadRequest(ValidationResults));
+            }
+
+            try
+            {
+               db.TideDataValues.Add(tideDataValue);
+               db.SaveChanges();
+            }
+            catch (DbUpdateException ex)
+            {
+               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+            }
+
+            return await Task.FromResult(Ok(tideDataValue));
+        }
+        public async Task<ActionResult<TideDataValue>> Put(TideDataValue tideDataValue)
+        {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             ValidationResults = Validate(new ValidationContext(tideDataValue), ActionDBTypeEnum.Update);
             if (ValidationResults.Count() > 0)
             {

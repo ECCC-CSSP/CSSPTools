@@ -84,67 +84,67 @@ export class MikeBoundaryConditionComponent implements OnInit, OnDestroy {
             {
               value: (AddOrUpdate === 'Add' ? 0 : (this.mikeboundaryconditionService.mikeboundaryconditionList[0]?.MikeBoundaryConditionID)),
               disabled: false
-            }],
+            }, [ Validators.required ]],
           MikeBoundaryConditionTVItemID: [
             {
               value: this.mikeboundaryconditionService.mikeboundaryconditionList[0]?.MikeBoundaryConditionTVItemID,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           MikeBoundaryConditionCode: [
             {
               value: this.mikeboundaryconditionService.mikeboundaryconditionList[0]?.MikeBoundaryConditionCode,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           MikeBoundaryConditionName: [
             {
               value: this.mikeboundaryconditionService.mikeboundaryconditionList[0]?.MikeBoundaryConditionName,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           MikeBoundaryConditionLength_m: [
             {
               value: this.mikeboundaryconditionService.mikeboundaryconditionList[0]?.MikeBoundaryConditionLength_m,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           MikeBoundaryConditionFormat: [
             {
               value: this.mikeboundaryconditionService.mikeboundaryconditionList[0]?.MikeBoundaryConditionFormat,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           MikeBoundaryConditionLevelOrVelocity: [
             {
               value: this.mikeboundaryconditionService.mikeboundaryconditionList[0]?.MikeBoundaryConditionLevelOrVelocity,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           WebTideDataSet: [
             {
               value: this.mikeboundaryconditionService.mikeboundaryconditionList[0]?.WebTideDataSet,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           NumberOfWebTideNodes: [
             {
               value: this.mikeboundaryconditionService.mikeboundaryconditionList[0]?.NumberOfWebTideNodes,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           WebTideDataFromStartToEndDate: [
             {
               value: this.mikeboundaryconditionService.mikeboundaryconditionList[0]?.WebTideDataFromStartToEndDate,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           TVType: [
             {
               value: this.mikeboundaryconditionService.mikeboundaryconditionList[0]?.TVType,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           LastUpdateDate_UTC: [
             {
               value: this.mikeboundaryconditionService.mikeboundaryconditionList[0]?.LastUpdateDate_UTC,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           LastUpdateContactTVItemID: [
             {
               value: this.mikeboundaryconditionService.mikeboundaryconditionList[0]?.LastUpdateContactTVItemID,
               disabled: false
-            }],
+            }, [ Validators.required ]],
         }
       );
 

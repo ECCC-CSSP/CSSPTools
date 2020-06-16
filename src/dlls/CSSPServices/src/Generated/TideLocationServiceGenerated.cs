@@ -9,6 +9,7 @@ using CSSPEnums;
 using CSSPModels;
 using CultureServices.Resources;
 using CultureServices.Services;
+using LoggedInServices.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -22,11 +23,11 @@ namespace CSSPServices
 {
    public interface ITideLocationService
     {
-       Task<ActionResult<TideLocation>> GetTideLocationWithTideLocationID(int TideLocationID);
-       Task<ActionResult<List<TideLocation>>> GetTideLocationList();
-       Task<ActionResult<TideLocation>> Add(TideLocation tidelocation);
        Task<ActionResult<bool>> Delete(int TideLocationID);
-       Task<ActionResult<TideLocation>> Update(TideLocation tidelocation);
+       Task<ActionResult<List<TideLocation>>> GetTideLocationList();
+       Task<ActionResult<TideLocation>> GetTideLocationWithTideLocationID(int TideLocationID);
+       Task<ActionResult<TideLocation>> Post(TideLocation tidelocation);
+       Task<ActionResult<TideLocation>> Put(TideLocation tidelocation);
     }
     public partial class TideLocationService : ControllerBase, ITideLocationService
     {
@@ -36,14 +37,16 @@ namespace CSSPServices
         #region Properties
         private CSSPDBContext db { get; }
         private ICultureService CultureService { get; }
+        private ILoggedInService LoggedInService { get; }
         private IEnums enums { get; }
         private IEnumerable<ValidationResult> ValidationResults { get; set; }
         #endregion Properties
 
         #region Constructors
-        public TideLocationService(ICultureService CultureService, IEnums enums, CSSPDBContext db)
+        public TideLocationService(ICultureService CultureService, ILoggedInService LoggedInService, IEnums enums, CSSPDBContext db)
         {
             this.CultureService = CultureService;
+            this.LoggedInService = LoggedInService;
             this.enums = enums;
             this.db = db;
         }
@@ -52,6 +55,11 @@ namespace CSSPServices
         #region Functions public 
         public async Task<ActionResult<TideLocation>> GetTideLocationWithTideLocationID(int TideLocationID)
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             TideLocation tidelocation = (from c in db.TideLocations.AsNoTracking()
                     where c.TideLocationID == TideLocationID
                     select c).FirstOrDefault();
@@ -65,32 +73,22 @@ namespace CSSPServices
         }
         public async Task<ActionResult<List<TideLocation>>> GetTideLocationList()
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             List<TideLocation> tidelocationList = (from c in db.TideLocations.AsNoTracking() select c).Take(100).ToList();
 
             return await Task.FromResult(Ok(tidelocationList));
         }
-        public async Task<ActionResult<TideLocation>> Add(TideLocation tideLocation)
-        {
-            ValidationResults = Validate(new ValidationContext(tideLocation), ActionDBTypeEnum.Create);
-            if (ValidationResults.Count() > 0)
-            {
-               return await Task.FromResult(BadRequest(ValidationResults));
-            }
-
-            try
-            {
-               db.TideLocations.Add(tideLocation);
-               db.SaveChanges();
-            }
-            catch (DbUpdateException ex)
-            {
-               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
-            }
-
-            return await Task.FromResult(Ok(tideLocation));
-        }
         public async Task<ActionResult<bool>> Delete(int TideLocationID)
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             TideLocation tideLocation = (from c in db.TideLocations
                                where c.TideLocationID == TideLocationID
                                select c).FirstOrDefault();
@@ -112,8 +110,38 @@ namespace CSSPServices
 
             return await Task.FromResult(Ok(true));
         }
-        public async Task<ActionResult<TideLocation>> Update(TideLocation tideLocation)
+        public async Task<ActionResult<TideLocation>> Post(TideLocation tideLocation)
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
+            ValidationResults = Validate(new ValidationContext(tideLocation), ActionDBTypeEnum.Create);
+            if (ValidationResults.Count() > 0)
+            {
+               return await Task.FromResult(BadRequest(ValidationResults));
+            }
+
+            try
+            {
+               db.TideLocations.Add(tideLocation);
+               db.SaveChanges();
+            }
+            catch (DbUpdateException ex)
+            {
+               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+            }
+
+            return await Task.FromResult(Ok(tideLocation));
+        }
+        public async Task<ActionResult<TideLocation>> Put(TideLocation tideLocation)
+        {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             ValidationResults = Validate(new ValidationContext(tideLocation), ActionDBTypeEnum.Update);
             if (ValidationResults.Count() > 0)
             {

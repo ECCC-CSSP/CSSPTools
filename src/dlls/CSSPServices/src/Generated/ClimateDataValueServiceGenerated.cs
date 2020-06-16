@@ -9,6 +9,7 @@ using CSSPEnums;
 using CSSPModels;
 using CultureServices.Resources;
 using CultureServices.Services;
+using LoggedInServices.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -22,11 +23,11 @@ namespace CSSPServices
 {
    public interface IClimateDataValueService
     {
-       Task<ActionResult<ClimateDataValue>> GetClimateDataValueWithClimateDataValueID(int ClimateDataValueID);
-       Task<ActionResult<List<ClimateDataValue>>> GetClimateDataValueList();
-       Task<ActionResult<ClimateDataValue>> Add(ClimateDataValue climatedatavalue);
        Task<ActionResult<bool>> Delete(int ClimateDataValueID);
-       Task<ActionResult<ClimateDataValue>> Update(ClimateDataValue climatedatavalue);
+       Task<ActionResult<List<ClimateDataValue>>> GetClimateDataValueList();
+       Task<ActionResult<ClimateDataValue>> GetClimateDataValueWithClimateDataValueID(int ClimateDataValueID);
+       Task<ActionResult<ClimateDataValue>> Post(ClimateDataValue climatedatavalue);
+       Task<ActionResult<ClimateDataValue>> Put(ClimateDataValue climatedatavalue);
     }
     public partial class ClimateDataValueService : ControllerBase, IClimateDataValueService
     {
@@ -36,14 +37,16 @@ namespace CSSPServices
         #region Properties
         private CSSPDBContext db { get; }
         private ICultureService CultureService { get; }
+        private ILoggedInService LoggedInService { get; }
         private IEnums enums { get; }
         private IEnumerable<ValidationResult> ValidationResults { get; set; }
         #endregion Properties
 
         #region Constructors
-        public ClimateDataValueService(ICultureService CultureService, IEnums enums, CSSPDBContext db)
+        public ClimateDataValueService(ICultureService CultureService, ILoggedInService LoggedInService, IEnums enums, CSSPDBContext db)
         {
             this.CultureService = CultureService;
+            this.LoggedInService = LoggedInService;
             this.enums = enums;
             this.db = db;
         }
@@ -52,6 +55,11 @@ namespace CSSPServices
         #region Functions public 
         public async Task<ActionResult<ClimateDataValue>> GetClimateDataValueWithClimateDataValueID(int ClimateDataValueID)
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             ClimateDataValue climatedatavalue = (from c in db.ClimateDataValues.AsNoTracking()
                     where c.ClimateDataValueID == ClimateDataValueID
                     select c).FirstOrDefault();
@@ -65,32 +73,22 @@ namespace CSSPServices
         }
         public async Task<ActionResult<List<ClimateDataValue>>> GetClimateDataValueList()
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             List<ClimateDataValue> climatedatavalueList = (from c in db.ClimateDataValues.AsNoTracking() select c).Take(100).ToList();
 
             return await Task.FromResult(Ok(climatedatavalueList));
         }
-        public async Task<ActionResult<ClimateDataValue>> Add(ClimateDataValue climateDataValue)
-        {
-            ValidationResults = Validate(new ValidationContext(climateDataValue), ActionDBTypeEnum.Create);
-            if (ValidationResults.Count() > 0)
-            {
-               return await Task.FromResult(BadRequest(ValidationResults));
-            }
-
-            try
-            {
-               db.ClimateDataValues.Add(climateDataValue);
-               db.SaveChanges();
-            }
-            catch (DbUpdateException ex)
-            {
-               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
-            }
-
-            return await Task.FromResult(Ok(climateDataValue));
-        }
         public async Task<ActionResult<bool>> Delete(int ClimateDataValueID)
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             ClimateDataValue climateDataValue = (from c in db.ClimateDataValues
                                where c.ClimateDataValueID == ClimateDataValueID
                                select c).FirstOrDefault();
@@ -112,8 +110,38 @@ namespace CSSPServices
 
             return await Task.FromResult(Ok(true));
         }
-        public async Task<ActionResult<ClimateDataValue>> Update(ClimateDataValue climateDataValue)
+        public async Task<ActionResult<ClimateDataValue>> Post(ClimateDataValue climateDataValue)
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
+            ValidationResults = Validate(new ValidationContext(climateDataValue), ActionDBTypeEnum.Create);
+            if (ValidationResults.Count() > 0)
+            {
+               return await Task.FromResult(BadRequest(ValidationResults));
+            }
+
+            try
+            {
+               db.ClimateDataValues.Add(climateDataValue);
+               db.SaveChanges();
+            }
+            catch (DbUpdateException ex)
+            {
+               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+            }
+
+            return await Task.FromResult(Ok(climateDataValue));
+        }
+        public async Task<ActionResult<ClimateDataValue>> Put(ClimateDataValue climateDataValue)
+        {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             ValidationResults = Validate(new ValidationContext(climateDataValue), ActionDBTypeEnum.Update);
             if (ValidationResults.Count() > 0)
             {

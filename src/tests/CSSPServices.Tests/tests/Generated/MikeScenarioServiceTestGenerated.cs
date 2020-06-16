@@ -32,7 +32,7 @@ namespace CSSPServices.Tests
         private IServiceProvider Provider { get; set; }
         private IServiceCollection Services { get; set; }
         private ICultureService CultureService { get; set; }
-        private IMikeScenarioService mikeScenarioService { get; set; }
+        private IMikeScenarioService MikeScenarioService { get; set; }
         private CSSPDBContext db { get; set; }
         #endregion Properties
 
@@ -62,7 +62,7 @@ namespace CSSPServices.Tests
                MikeScenario mikeScenario = GetFilledRandomMikeScenario(""); 
 
                // List<MikeScenario>
-               var actionMikeScenarioList = await mikeScenarioService.GetMikeScenarioList();
+               var actionMikeScenarioList = await MikeScenarioService.GetMikeScenarioList();
                Assert.Equal(200, ((ObjectResult)actionMikeScenarioList.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionMikeScenarioList.Result).Value);
                List<MikeScenario> mikeScenarioList = (List<MikeScenario>)((OkObjectResult)actionMikeScenarioList.Result).Value;
@@ -70,22 +70,22 @@ namespace CSSPServices.Tests
                int count = ((List<MikeScenario>)((OkObjectResult)actionMikeScenarioList.Result).Value).Count();
                 Assert.True(count > 0);
 
-               // Add MikeScenario
-               var actionMikeScenarioAdded = await mikeScenarioService.Add(mikeScenario);
+               // Post MikeScenario
+               var actionMikeScenarioAdded = await MikeScenarioService.Post(mikeScenario);
                Assert.Equal(200, ((ObjectResult)actionMikeScenarioAdded.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionMikeScenarioAdded.Result).Value);
                MikeScenario mikeScenarioAdded = (MikeScenario)((OkObjectResult)actionMikeScenarioAdded.Result).Value;
                Assert.NotNull(mikeScenarioAdded);
 
-               // Update MikeScenario
-               var actionMikeScenarioUpdated = await mikeScenarioService.Update(mikeScenario);
+               // Put MikeScenario
+               var actionMikeScenarioUpdated = await MikeScenarioService.Put(mikeScenario);
                Assert.Equal(200, ((ObjectResult)actionMikeScenarioUpdated.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionMikeScenarioUpdated.Result).Value);
                MikeScenario mikeScenarioUpdated = (MikeScenario)((OkObjectResult)actionMikeScenarioUpdated.Result).Value;
                Assert.NotNull(mikeScenarioUpdated);
 
                // Delete MikeScenario
-               var actionMikeScenarioDeleted = await mikeScenarioService.Delete(mikeScenario.MikeScenarioID);
+               var actionMikeScenarioDeleted = await MikeScenarioService.Delete(mikeScenario.MikeScenarioID);
                Assert.Equal(200, ((ObjectResult)actionMikeScenarioDeleted.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionMikeScenarioDeleted.Result).Value);
                bool retBool = (bool)((OkObjectResult)actionMikeScenarioDeleted.Result).Value;
@@ -126,8 +126,8 @@ namespace CSSPServices.Tests
 
             CultureService.SetCulture(culture);
 
-            mikeScenarioService = Provider.GetService<IMikeScenarioService>();
-            Assert.NotNull(mikeScenarioService);
+            MikeScenarioService = Provider.GetService<IMikeScenarioService>();
+            Assert.NotNull(MikeScenarioService);
 
             return await Task.FromResult(true);
         }

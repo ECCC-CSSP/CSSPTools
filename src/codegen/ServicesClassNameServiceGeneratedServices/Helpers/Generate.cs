@@ -110,6 +110,7 @@ namespace ServicesClassNameServiceGeneratedServices.Services
                 sb.AppendLine(@"using CSSPModels;");
                 sb.AppendLine(@"using CultureServices.Resources;");
                 sb.AppendLine(@"using CultureServices.Services;");
+                sb.AppendLine(@"using LoggedInServices.Services;");
                 sb.AppendLine(@"using Microsoft.AspNetCore.Mvc;");
                 sb.AppendLine(@"using Microsoft.EntityFrameworkCore;");
                 sb.AppendLine(@"using System;");
@@ -129,18 +130,18 @@ namespace ServicesClassNameServiceGeneratedServices.Services
                     #region Interface
                     sb.AppendLine($@"   public interface I{ dllTypeInfoModels.Type.Name }Service");
                     sb.AppendLine(@"    {");
-                    sb.AppendLine($@"       Task<ActionResult<{ dllTypeInfoModels.Type.Name }>> Get{ dllTypeInfoModels.Type.Name }With{ dllTypeInfoModels.Type.Name }ID(int { dllTypeInfoModels.Type.Name }ID);");
+                    sb.AppendLine($@"       Task<ActionResult<bool>> Delete(int { dllTypeInfoModels.Type.Name }ID);");
                     sb.AppendLine($@"       Task<ActionResult<List<{ dllTypeInfoModels.Type.Name }>>> Get{ dllTypeInfoModels.Type.Name }List();");
+                    sb.AppendLine($@"       Task<ActionResult<{ dllTypeInfoModels.Type.Name }>> Get{ dllTypeInfoModels.Type.Name }With{ dllTypeInfoModels.Type.Name }ID(int { dllTypeInfoModels.Type.Name }ID);");
                     if (dllTypeInfoModels.Type.Name == "Contact")
                     {
-                        sb.AppendLine($@"       Task<ActionResult<{ dllTypeInfoModels.Type.Name }>> Add({ dllTypeInfoModels.Type.Name } { dllTypeInfoModels.Type.Name.ToLower() }, AddContactTypeEnum addContactType);");
+                        sb.AppendLine($@"       Task<ActionResult<{ dllTypeInfoModels.Type.Name }>> Post({ dllTypeInfoModels.Type.Name } { dllTypeInfoModels.Type.Name.ToLower() }, AddContactTypeEnum addContactType);");
                     }
                     else
                     {
-                        sb.AppendLine($@"       Task<ActionResult<{ dllTypeInfoModels.Type.Name }>> Add({ dllTypeInfoModels.Type.Name } { dllTypeInfoModels.Type.Name.ToLower() });");
+                        sb.AppendLine($@"       Task<ActionResult<{ dllTypeInfoModels.Type.Name }>> Post({ dllTypeInfoModels.Type.Name } { dllTypeInfoModels.Type.Name.ToLower() });");
                     }
-                    sb.AppendLine($@"       Task<ActionResult<bool>> Delete(int { dllTypeInfoModels.Type.Name }ID);");
-                    sb.AppendLine($@"       Task<ActionResult<{ dllTypeInfoModels.Type.Name }>> Update({ dllTypeInfoModels.Type.Name } { dllTypeInfoModels.Type.Name.ToLower() });");
+                    sb.AppendLine($@"       Task<ActionResult<{ dllTypeInfoModels.Type.Name }>> Put({ dllTypeInfoModels.Type.Name } { dllTypeInfoModels.Type.Name.ToLower() });");
                     sb.AppendLine(@"    }");
                     #endregion Interface
 
@@ -152,14 +153,16 @@ namespace ServicesClassNameServiceGeneratedServices.Services
                     sb.AppendLine(@"        #region Properties");
                     sb.AppendLine(@"        private CSSPDBContext db { get; }");
                     sb.AppendLine(@"        private ICultureService CultureService { get; }");
+                    sb.AppendLine(@"        private ILoggedInService LoggedInService { get; }");
                     sb.AppendLine(@"        private IEnums enums { get; }");
                     sb.AppendLine(@"        private IEnumerable<ValidationResult> ValidationResults { get; set; }");
                     sb.AppendLine(@"        #endregion Properties");
                     sb.AppendLine(@"");
                     sb.AppendLine(@"        #region Constructors");
-                    sb.AppendLine($@"        public { dllTypeInfoModels.Type.Name }Service(ICultureService CultureService, IEnums enums, CSSPDBContext db)");
+                    sb.AppendLine($@"        public { dllTypeInfoModels.Type.Name }Service(ICultureService CultureService, ILoggedInService LoggedInService, IEnums enums, CSSPDBContext db)");
                     sb.AppendLine(@"        {");
                     sb.AppendLine(@"            this.CultureService = CultureService;");
+                    sb.AppendLine(@"            this.LoggedInService = LoggedInService;");
                     sb.AppendLine(@"            this.enums = enums;");
                     sb.AppendLine(@"            this.db = db;");
                     sb.AppendLine(@"        }");
@@ -191,9 +194,6 @@ namespace ServicesClassNameServiceGeneratedServices.Services
                     if (!await CreateClassServiceFunctionsPublicGenerateCRUD(dllTypeInfoModels, dllTypeInfoModels.Type.Name, TypeNameLower, sb)) return await Task.FromResult(false);
                     sb.AppendLine(@"        #endregion Functions public");
                     sb.AppendLine(@"");
-
-                    //if (!await CreateClassServiceFunctionsPrivateRegionFillClass_x(dllTypeInfoModels, DLLTypeInfoCSSPModelsList, dllTypeInfoModels.Type.Name, TypeNameLower)) return await Task.FromResult(false);
-                    //if (!await CreateClassServiceFunctionsPrivateRegionTrySave(dllTypeInfoModels, dllTypeInfoModels.Type.Name, TypeNameLower, sb)) return await Task.FromResult(false);
 
                     sb.AppendLine(@"        #region Functions private");
                     if (!await CreateClassServiceFunctionsPrivateGenerateValidate(dllTypeInfoModels, dllTypeInfoModels.Type.Name, TypeNameLower, sb)) return await Task.FromResult(false);

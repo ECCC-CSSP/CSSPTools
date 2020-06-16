@@ -9,6 +9,7 @@ using CSSPEnums;
 using CSSPModels;
 using CultureServices.Resources;
 using CultureServices.Services;
+using LoggedInServices.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -22,11 +23,11 @@ namespace CSSPServices
 {
    public interface IRainExceedanceService
     {
-       Task<ActionResult<RainExceedance>> GetRainExceedanceWithRainExceedanceID(int RainExceedanceID);
-       Task<ActionResult<List<RainExceedance>>> GetRainExceedanceList();
-       Task<ActionResult<RainExceedance>> Add(RainExceedance rainexceedance);
        Task<ActionResult<bool>> Delete(int RainExceedanceID);
-       Task<ActionResult<RainExceedance>> Update(RainExceedance rainexceedance);
+       Task<ActionResult<List<RainExceedance>>> GetRainExceedanceList();
+       Task<ActionResult<RainExceedance>> GetRainExceedanceWithRainExceedanceID(int RainExceedanceID);
+       Task<ActionResult<RainExceedance>> Post(RainExceedance rainexceedance);
+       Task<ActionResult<RainExceedance>> Put(RainExceedance rainexceedance);
     }
     public partial class RainExceedanceService : ControllerBase, IRainExceedanceService
     {
@@ -36,14 +37,16 @@ namespace CSSPServices
         #region Properties
         private CSSPDBContext db { get; }
         private ICultureService CultureService { get; }
+        private ILoggedInService LoggedInService { get; }
         private IEnums enums { get; }
         private IEnumerable<ValidationResult> ValidationResults { get; set; }
         #endregion Properties
 
         #region Constructors
-        public RainExceedanceService(ICultureService CultureService, IEnums enums, CSSPDBContext db)
+        public RainExceedanceService(ICultureService CultureService, ILoggedInService LoggedInService, IEnums enums, CSSPDBContext db)
         {
             this.CultureService = CultureService;
+            this.LoggedInService = LoggedInService;
             this.enums = enums;
             this.db = db;
         }
@@ -52,6 +55,11 @@ namespace CSSPServices
         #region Functions public 
         public async Task<ActionResult<RainExceedance>> GetRainExceedanceWithRainExceedanceID(int RainExceedanceID)
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             RainExceedance rainexceedance = (from c in db.RainExceedances.AsNoTracking()
                     where c.RainExceedanceID == RainExceedanceID
                     select c).FirstOrDefault();
@@ -65,32 +73,22 @@ namespace CSSPServices
         }
         public async Task<ActionResult<List<RainExceedance>>> GetRainExceedanceList()
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             List<RainExceedance> rainexceedanceList = (from c in db.RainExceedances.AsNoTracking() select c).Take(100).ToList();
 
             return await Task.FromResult(Ok(rainexceedanceList));
         }
-        public async Task<ActionResult<RainExceedance>> Add(RainExceedance rainExceedance)
-        {
-            ValidationResults = Validate(new ValidationContext(rainExceedance), ActionDBTypeEnum.Create);
-            if (ValidationResults.Count() > 0)
-            {
-               return await Task.FromResult(BadRequest(ValidationResults));
-            }
-
-            try
-            {
-               db.RainExceedances.Add(rainExceedance);
-               db.SaveChanges();
-            }
-            catch (DbUpdateException ex)
-            {
-               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
-            }
-
-            return await Task.FromResult(Ok(rainExceedance));
-        }
         public async Task<ActionResult<bool>> Delete(int RainExceedanceID)
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             RainExceedance rainExceedance = (from c in db.RainExceedances
                                where c.RainExceedanceID == RainExceedanceID
                                select c).FirstOrDefault();
@@ -112,8 +110,38 @@ namespace CSSPServices
 
             return await Task.FromResult(Ok(true));
         }
-        public async Task<ActionResult<RainExceedance>> Update(RainExceedance rainExceedance)
+        public async Task<ActionResult<RainExceedance>> Post(RainExceedance rainExceedance)
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
+            ValidationResults = Validate(new ValidationContext(rainExceedance), ActionDBTypeEnum.Create);
+            if (ValidationResults.Count() > 0)
+            {
+               return await Task.FromResult(BadRequest(ValidationResults));
+            }
+
+            try
+            {
+               db.RainExceedances.Add(rainExceedance);
+               db.SaveChanges();
+            }
+            catch (DbUpdateException ex)
+            {
+               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+            }
+
+            return await Task.FromResult(Ok(rainExceedance));
+        }
+        public async Task<ActionResult<RainExceedance>> Put(RainExceedance rainExceedance)
+        {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             ValidationResults = Validate(new ValidationContext(rainExceedance), ActionDBTypeEnum.Update);
             if (ValidationResults.Count() > 0)
             {

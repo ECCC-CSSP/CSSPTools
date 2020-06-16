@@ -85,82 +85,82 @@ export class PolSourceGroupingLanguageComponent implements OnInit, OnDestroy {
             {
               value: (AddOrUpdate === 'Add' ? 0 : (this.polsourcegroupinglanguageService.polsourcegroupinglanguageList[0]?.PolSourceGroupingLanguageID)),
               disabled: false
-            }],
+            }, [ Validators.required ]],
           PolSourceGroupingID: [
             {
               value: this.polsourcegroupinglanguageService.polsourcegroupinglanguageList[0]?.PolSourceGroupingID,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           Language: [
             {
               value: this.polsourcegroupinglanguageService.polsourcegroupinglanguageList[0]?.Language,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           SourceName: [
             {
               value: this.polsourcegroupinglanguageService.polsourcegroupinglanguageList[0]?.SourceName,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           SourceNameOrder: [
             {
               value: this.polsourcegroupinglanguageService.polsourcegroupinglanguageList[0]?.SourceNameOrder,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           TranslationStatusSourceName: [
             {
               value: this.polsourcegroupinglanguageService.polsourcegroupinglanguageList[0]?.TranslationStatusSourceName,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           Init: [
             {
               value: this.polsourcegroupinglanguageService.polsourcegroupinglanguageList[0]?.Init,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           TranslationStatusInit: [
             {
               value: this.polsourcegroupinglanguageService.polsourcegroupinglanguageList[0]?.TranslationStatusInit,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           Description: [
             {
               value: this.polsourcegroupinglanguageService.polsourcegroupinglanguageList[0]?.Description,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           TranslationStatusDescription: [
             {
               value: this.polsourcegroupinglanguageService.polsourcegroupinglanguageList[0]?.TranslationStatusDescription,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           Report: [
             {
               value: this.polsourcegroupinglanguageService.polsourcegroupinglanguageList[0]?.Report,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           TranslationStatusReport: [
             {
               value: this.polsourcegroupinglanguageService.polsourcegroupinglanguageList[0]?.TranslationStatusReport,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           Text: [
             {
               value: this.polsourcegroupinglanguageService.polsourcegroupinglanguageList[0]?.Text,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           TranslationStatusText: [
             {
               value: this.polsourcegroupinglanguageService.polsourcegroupinglanguageList[0]?.TranslationStatusText,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           LastUpdateDate_UTC: [
             {
               value: this.polsourcegroupinglanguageService.polsourcegroupinglanguageList[0]?.LastUpdateDate_UTC,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           LastUpdateContactTVItemID: [
             {
               value: this.polsourcegroupinglanguageService.polsourcegroupinglanguageList[0]?.LastUpdateContactTVItemID,
               disabled: false
-            }],
+            }, [ Validators.required ]],
         }
       );
 

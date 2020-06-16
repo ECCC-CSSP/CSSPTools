@@ -32,7 +32,7 @@ namespace CSSPServices.Tests
         private IServiceProvider Provider { get; set; }
         private IServiceCollection Services { get; set; }
         private ICultureService CultureService { get; set; }
-        private IBoxModelService boxModelService { get; set; }
+        private IBoxModelService BoxModelService { get; set; }
         private CSSPDBContext db { get; set; }
         #endregion Properties
 
@@ -62,7 +62,7 @@ namespace CSSPServices.Tests
                BoxModel boxModel = GetFilledRandomBoxModel(""); 
 
                // List<BoxModel>
-               var actionBoxModelList = await boxModelService.GetBoxModelList();
+               var actionBoxModelList = await BoxModelService.GetBoxModelList();
                Assert.Equal(200, ((ObjectResult)actionBoxModelList.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionBoxModelList.Result).Value);
                List<BoxModel> boxModelList = (List<BoxModel>)((OkObjectResult)actionBoxModelList.Result).Value;
@@ -70,22 +70,22 @@ namespace CSSPServices.Tests
                int count = ((List<BoxModel>)((OkObjectResult)actionBoxModelList.Result).Value).Count();
                 Assert.True(count > 0);
 
-               // Add BoxModel
-               var actionBoxModelAdded = await boxModelService.Add(boxModel);
+               // Post BoxModel
+               var actionBoxModelAdded = await BoxModelService.Post(boxModel);
                Assert.Equal(200, ((ObjectResult)actionBoxModelAdded.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionBoxModelAdded.Result).Value);
                BoxModel boxModelAdded = (BoxModel)((OkObjectResult)actionBoxModelAdded.Result).Value;
                Assert.NotNull(boxModelAdded);
 
-               // Update BoxModel
-               var actionBoxModelUpdated = await boxModelService.Update(boxModel);
+               // Put BoxModel
+               var actionBoxModelUpdated = await BoxModelService.Put(boxModel);
                Assert.Equal(200, ((ObjectResult)actionBoxModelUpdated.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionBoxModelUpdated.Result).Value);
                BoxModel boxModelUpdated = (BoxModel)((OkObjectResult)actionBoxModelUpdated.Result).Value;
                Assert.NotNull(boxModelUpdated);
 
                // Delete BoxModel
-               var actionBoxModelDeleted = await boxModelService.Delete(boxModel.BoxModelID);
+               var actionBoxModelDeleted = await BoxModelService.Delete(boxModel.BoxModelID);
                Assert.Equal(200, ((ObjectResult)actionBoxModelDeleted.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionBoxModelDeleted.Result).Value);
                bool retBool = (bool)((OkObjectResult)actionBoxModelDeleted.Result).Value;
@@ -126,8 +126,8 @@ namespace CSSPServices.Tests
 
             CultureService.SetCulture(culture);
 
-            boxModelService = Provider.GetService<IBoxModelService>();
-            Assert.NotNull(boxModelService);
+            BoxModelService = Provider.GetService<IBoxModelService>();
+            Assert.NotNull(BoxModelService);
 
             return await Task.FromResult(true);
         }

@@ -32,7 +32,7 @@ namespace CSSPServices.Tests
         private IServiceProvider Provider { get; set; }
         private IServiceCollection Services { get; set; }
         private ICultureService CultureService { get; set; }
-        private IVPScenarioLanguageService vpScenarioLanguageService { get; set; }
+        private IVPScenarioLanguageService VPScenarioLanguageService { get; set; }
         private CSSPDBContext db { get; set; }
         #endregion Properties
 
@@ -62,7 +62,7 @@ namespace CSSPServices.Tests
                VPScenarioLanguage vpScenarioLanguage = GetFilledRandomVPScenarioLanguage(""); 
 
                // List<VPScenarioLanguage>
-               var actionVPScenarioLanguageList = await vpScenarioLanguageService.GetVPScenarioLanguageList();
+               var actionVPScenarioLanguageList = await VPScenarioLanguageService.GetVPScenarioLanguageList();
                Assert.Equal(200, ((ObjectResult)actionVPScenarioLanguageList.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionVPScenarioLanguageList.Result).Value);
                List<VPScenarioLanguage> vpScenarioLanguageList = (List<VPScenarioLanguage>)((OkObjectResult)actionVPScenarioLanguageList.Result).Value;
@@ -70,22 +70,22 @@ namespace CSSPServices.Tests
                int count = ((List<VPScenarioLanguage>)((OkObjectResult)actionVPScenarioLanguageList.Result).Value).Count();
                 Assert.True(count > 0);
 
-               // Add VPScenarioLanguage
-               var actionVPScenarioLanguageAdded = await vpScenarioLanguageService.Add(vpScenarioLanguage);
+               // Post VPScenarioLanguage
+               var actionVPScenarioLanguageAdded = await VPScenarioLanguageService.Post(vpScenarioLanguage);
                Assert.Equal(200, ((ObjectResult)actionVPScenarioLanguageAdded.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionVPScenarioLanguageAdded.Result).Value);
                VPScenarioLanguage vpScenarioLanguageAdded = (VPScenarioLanguage)((OkObjectResult)actionVPScenarioLanguageAdded.Result).Value;
                Assert.NotNull(vpScenarioLanguageAdded);
 
-               // Update VPScenarioLanguage
-               var actionVPScenarioLanguageUpdated = await vpScenarioLanguageService.Update(vpScenarioLanguage);
+               // Put VPScenarioLanguage
+               var actionVPScenarioLanguageUpdated = await VPScenarioLanguageService.Put(vpScenarioLanguage);
                Assert.Equal(200, ((ObjectResult)actionVPScenarioLanguageUpdated.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionVPScenarioLanguageUpdated.Result).Value);
                VPScenarioLanguage vpScenarioLanguageUpdated = (VPScenarioLanguage)((OkObjectResult)actionVPScenarioLanguageUpdated.Result).Value;
                Assert.NotNull(vpScenarioLanguageUpdated);
 
                // Delete VPScenarioLanguage
-               var actionVPScenarioLanguageDeleted = await vpScenarioLanguageService.Delete(vpScenarioLanguage.VPScenarioLanguageID);
+               var actionVPScenarioLanguageDeleted = await VPScenarioLanguageService.Delete(vpScenarioLanguage.VPScenarioLanguageID);
                Assert.Equal(200, ((ObjectResult)actionVPScenarioLanguageDeleted.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionVPScenarioLanguageDeleted.Result).Value);
                bool retBool = (bool)((OkObjectResult)actionVPScenarioLanguageDeleted.Result).Value;
@@ -126,8 +126,8 @@ namespace CSSPServices.Tests
 
             CultureService.SetCulture(culture);
 
-            vpScenarioLanguageService = Provider.GetService<IVPScenarioLanguageService>();
-            Assert.NotNull(vpScenarioLanguageService);
+            VPScenarioLanguageService = Provider.GetService<IVPScenarioLanguageService>();
+            Assert.NotNull(VPScenarioLanguageService);
 
             return await Task.FromResult(true);
         }

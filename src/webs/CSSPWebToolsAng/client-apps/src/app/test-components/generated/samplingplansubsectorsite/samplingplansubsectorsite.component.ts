@@ -62,32 +62,32 @@ export class SamplingPlanSubsectorSiteComponent implements OnInit, OnDestroy {
             {
               value: (AddOrUpdate === 'Add' ? 0 : (this.samplingplansubsectorsiteService.samplingplansubsectorsiteList[0]?.SamplingPlanSubsectorSiteID)),
               disabled: false
-            }],
+            }, [ Validators.required ]],
           SamplingPlanSubsectorID: [
             {
               value: this.samplingplansubsectorsiteService.samplingplansubsectorsiteList[0]?.SamplingPlanSubsectorID,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           MWQMSiteTVItemID: [
             {
               value: this.samplingplansubsectorsiteService.samplingplansubsectorsiteList[0]?.MWQMSiteTVItemID,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           IsDuplicate: [
             {
               value: this.samplingplansubsectorsiteService.samplingplansubsectorsiteList[0]?.IsDuplicate,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           LastUpdateDate_UTC: [
             {
               value: this.samplingplansubsectorsiteService.samplingplansubsectorsiteList[0]?.LastUpdateDate_UTC,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           LastUpdateContactTVItemID: [
             {
               value: this.samplingplansubsectorsiteService.samplingplansubsectorsiteList[0]?.LastUpdateContactTVItemID,
               disabled: false
-            }],
+            }, [ Validators.required ]],
         }
       );
 

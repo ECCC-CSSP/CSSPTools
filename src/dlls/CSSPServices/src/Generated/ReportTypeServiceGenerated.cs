@@ -9,6 +9,7 @@ using CSSPEnums;
 using CSSPModels;
 using CultureServices.Resources;
 using CultureServices.Services;
+using LoggedInServices.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -22,11 +23,11 @@ namespace CSSPServices
 {
    public interface IReportTypeService
     {
-       Task<ActionResult<ReportType>> GetReportTypeWithReportTypeID(int ReportTypeID);
-       Task<ActionResult<List<ReportType>>> GetReportTypeList();
-       Task<ActionResult<ReportType>> Add(ReportType reporttype);
        Task<ActionResult<bool>> Delete(int ReportTypeID);
-       Task<ActionResult<ReportType>> Update(ReportType reporttype);
+       Task<ActionResult<List<ReportType>>> GetReportTypeList();
+       Task<ActionResult<ReportType>> GetReportTypeWithReportTypeID(int ReportTypeID);
+       Task<ActionResult<ReportType>> Post(ReportType reporttype);
+       Task<ActionResult<ReportType>> Put(ReportType reporttype);
     }
     public partial class ReportTypeService : ControllerBase, IReportTypeService
     {
@@ -36,14 +37,16 @@ namespace CSSPServices
         #region Properties
         private CSSPDBContext db { get; }
         private ICultureService CultureService { get; }
+        private ILoggedInService LoggedInService { get; }
         private IEnums enums { get; }
         private IEnumerable<ValidationResult> ValidationResults { get; set; }
         #endregion Properties
 
         #region Constructors
-        public ReportTypeService(ICultureService CultureService, IEnums enums, CSSPDBContext db)
+        public ReportTypeService(ICultureService CultureService, ILoggedInService LoggedInService, IEnums enums, CSSPDBContext db)
         {
             this.CultureService = CultureService;
+            this.LoggedInService = LoggedInService;
             this.enums = enums;
             this.db = db;
         }
@@ -52,6 +55,11 @@ namespace CSSPServices
         #region Functions public 
         public async Task<ActionResult<ReportType>> GetReportTypeWithReportTypeID(int ReportTypeID)
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             ReportType reporttype = (from c in db.ReportTypes.AsNoTracking()
                     where c.ReportTypeID == ReportTypeID
                     select c).FirstOrDefault();
@@ -65,32 +73,22 @@ namespace CSSPServices
         }
         public async Task<ActionResult<List<ReportType>>> GetReportTypeList()
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             List<ReportType> reporttypeList = (from c in db.ReportTypes.AsNoTracking() select c).Take(100).ToList();
 
             return await Task.FromResult(Ok(reporttypeList));
         }
-        public async Task<ActionResult<ReportType>> Add(ReportType reportType)
-        {
-            ValidationResults = Validate(new ValidationContext(reportType), ActionDBTypeEnum.Create);
-            if (ValidationResults.Count() > 0)
-            {
-               return await Task.FromResult(BadRequest(ValidationResults));
-            }
-
-            try
-            {
-               db.ReportTypes.Add(reportType);
-               db.SaveChanges();
-            }
-            catch (DbUpdateException ex)
-            {
-               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
-            }
-
-            return await Task.FromResult(Ok(reportType));
-        }
         public async Task<ActionResult<bool>> Delete(int ReportTypeID)
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             ReportType reportType = (from c in db.ReportTypes
                                where c.ReportTypeID == ReportTypeID
                                select c).FirstOrDefault();
@@ -112,8 +110,38 @@ namespace CSSPServices
 
             return await Task.FromResult(Ok(true));
         }
-        public async Task<ActionResult<ReportType>> Update(ReportType reportType)
+        public async Task<ActionResult<ReportType>> Post(ReportType reportType)
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
+            ValidationResults = Validate(new ValidationContext(reportType), ActionDBTypeEnum.Create);
+            if (ValidationResults.Count() > 0)
+            {
+               return await Task.FromResult(BadRequest(ValidationResults));
+            }
+
+            try
+            {
+               db.ReportTypes.Add(reportType);
+               db.SaveChanges();
+            }
+            catch (DbUpdateException ex)
+            {
+               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+            }
+
+            return await Task.FromResult(Ok(reportType));
+        }
+        public async Task<ActionResult<ReportType>> Put(ReportType reportType)
+        {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             ValidationResults = Validate(new ValidationContext(reportType), ActionDBTypeEnum.Update);
             if (ValidationResults.Count() > 0)
             {

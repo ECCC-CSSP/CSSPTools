@@ -9,6 +9,7 @@ using CSSPEnums;
 using CSSPModels;
 using CultureServices.Resources;
 using CultureServices.Services;
+using LoggedInServices.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -22,11 +23,11 @@ namespace CSSPServices
 {
    public interface ILabSheetTubeMPNDetailService
     {
-       Task<ActionResult<LabSheetTubeMPNDetail>> GetLabSheetTubeMPNDetailWithLabSheetTubeMPNDetailID(int LabSheetTubeMPNDetailID);
-       Task<ActionResult<List<LabSheetTubeMPNDetail>>> GetLabSheetTubeMPNDetailList();
-       Task<ActionResult<LabSheetTubeMPNDetail>> Add(LabSheetTubeMPNDetail labsheettubempndetail);
        Task<ActionResult<bool>> Delete(int LabSheetTubeMPNDetailID);
-       Task<ActionResult<LabSheetTubeMPNDetail>> Update(LabSheetTubeMPNDetail labsheettubempndetail);
+       Task<ActionResult<List<LabSheetTubeMPNDetail>>> GetLabSheetTubeMPNDetailList();
+       Task<ActionResult<LabSheetTubeMPNDetail>> GetLabSheetTubeMPNDetailWithLabSheetTubeMPNDetailID(int LabSheetTubeMPNDetailID);
+       Task<ActionResult<LabSheetTubeMPNDetail>> Post(LabSheetTubeMPNDetail labsheettubempndetail);
+       Task<ActionResult<LabSheetTubeMPNDetail>> Put(LabSheetTubeMPNDetail labsheettubempndetail);
     }
     public partial class LabSheetTubeMPNDetailService : ControllerBase, ILabSheetTubeMPNDetailService
     {
@@ -36,14 +37,16 @@ namespace CSSPServices
         #region Properties
         private CSSPDBContext db { get; }
         private ICultureService CultureService { get; }
+        private ILoggedInService LoggedInService { get; }
         private IEnums enums { get; }
         private IEnumerable<ValidationResult> ValidationResults { get; set; }
         #endregion Properties
 
         #region Constructors
-        public LabSheetTubeMPNDetailService(ICultureService CultureService, IEnums enums, CSSPDBContext db)
+        public LabSheetTubeMPNDetailService(ICultureService CultureService, ILoggedInService LoggedInService, IEnums enums, CSSPDBContext db)
         {
             this.CultureService = CultureService;
+            this.LoggedInService = LoggedInService;
             this.enums = enums;
             this.db = db;
         }
@@ -52,6 +55,11 @@ namespace CSSPServices
         #region Functions public 
         public async Task<ActionResult<LabSheetTubeMPNDetail>> GetLabSheetTubeMPNDetailWithLabSheetTubeMPNDetailID(int LabSheetTubeMPNDetailID)
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             LabSheetTubeMPNDetail labsheettubempndetail = (from c in db.LabSheetTubeMPNDetails.AsNoTracking()
                     where c.LabSheetTubeMPNDetailID == LabSheetTubeMPNDetailID
                     select c).FirstOrDefault();
@@ -65,32 +73,22 @@ namespace CSSPServices
         }
         public async Task<ActionResult<List<LabSheetTubeMPNDetail>>> GetLabSheetTubeMPNDetailList()
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             List<LabSheetTubeMPNDetail> labsheettubempndetailList = (from c in db.LabSheetTubeMPNDetails.AsNoTracking() select c).Take(100).ToList();
 
             return await Task.FromResult(Ok(labsheettubempndetailList));
         }
-        public async Task<ActionResult<LabSheetTubeMPNDetail>> Add(LabSheetTubeMPNDetail labSheetTubeMPNDetail)
-        {
-            ValidationResults = Validate(new ValidationContext(labSheetTubeMPNDetail), ActionDBTypeEnum.Create);
-            if (ValidationResults.Count() > 0)
-            {
-               return await Task.FromResult(BadRequest(ValidationResults));
-            }
-
-            try
-            {
-               db.LabSheetTubeMPNDetails.Add(labSheetTubeMPNDetail);
-               db.SaveChanges();
-            }
-            catch (DbUpdateException ex)
-            {
-               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
-            }
-
-            return await Task.FromResult(Ok(labSheetTubeMPNDetail));
-        }
         public async Task<ActionResult<bool>> Delete(int LabSheetTubeMPNDetailID)
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             LabSheetTubeMPNDetail labSheetTubeMPNDetail = (from c in db.LabSheetTubeMPNDetails
                                where c.LabSheetTubeMPNDetailID == LabSheetTubeMPNDetailID
                                select c).FirstOrDefault();
@@ -112,8 +110,38 @@ namespace CSSPServices
 
             return await Task.FromResult(Ok(true));
         }
-        public async Task<ActionResult<LabSheetTubeMPNDetail>> Update(LabSheetTubeMPNDetail labSheetTubeMPNDetail)
+        public async Task<ActionResult<LabSheetTubeMPNDetail>> Post(LabSheetTubeMPNDetail labSheetTubeMPNDetail)
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
+            ValidationResults = Validate(new ValidationContext(labSheetTubeMPNDetail), ActionDBTypeEnum.Create);
+            if (ValidationResults.Count() > 0)
+            {
+               return await Task.FromResult(BadRequest(ValidationResults));
+            }
+
+            try
+            {
+               db.LabSheetTubeMPNDetails.Add(labSheetTubeMPNDetail);
+               db.SaveChanges();
+            }
+            catch (DbUpdateException ex)
+            {
+               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+            }
+
+            return await Task.FromResult(Ok(labSheetTubeMPNDetail));
+        }
+        public async Task<ActionResult<LabSheetTubeMPNDetail>> Put(LabSheetTubeMPNDetail labSheetTubeMPNDetail)
+        {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             ValidationResults = Validate(new ValidationContext(labSheetTubeMPNDetail), ActionDBTypeEnum.Update);
             if (ValidationResults.Count() > 0)
             {

@@ -9,6 +9,7 @@ using CSSPEnums;
 using CSSPModels;
 using CultureServices.Resources;
 using CultureServices.Services;
+using LoggedInServices.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -22,11 +23,11 @@ namespace CSSPServices
 {
    public interface IEmailDistributionListLanguageService
     {
-       Task<ActionResult<EmailDistributionListLanguage>> GetEmailDistributionListLanguageWithEmailDistributionListLanguageID(int EmailDistributionListLanguageID);
-       Task<ActionResult<List<EmailDistributionListLanguage>>> GetEmailDistributionListLanguageList();
-       Task<ActionResult<EmailDistributionListLanguage>> Add(EmailDistributionListLanguage emaildistributionlistlanguage);
        Task<ActionResult<bool>> Delete(int EmailDistributionListLanguageID);
-       Task<ActionResult<EmailDistributionListLanguage>> Update(EmailDistributionListLanguage emaildistributionlistlanguage);
+       Task<ActionResult<List<EmailDistributionListLanguage>>> GetEmailDistributionListLanguageList();
+       Task<ActionResult<EmailDistributionListLanguage>> GetEmailDistributionListLanguageWithEmailDistributionListLanguageID(int EmailDistributionListLanguageID);
+       Task<ActionResult<EmailDistributionListLanguage>> Post(EmailDistributionListLanguage emaildistributionlistlanguage);
+       Task<ActionResult<EmailDistributionListLanguage>> Put(EmailDistributionListLanguage emaildistributionlistlanguage);
     }
     public partial class EmailDistributionListLanguageService : ControllerBase, IEmailDistributionListLanguageService
     {
@@ -36,14 +37,16 @@ namespace CSSPServices
         #region Properties
         private CSSPDBContext db { get; }
         private ICultureService CultureService { get; }
+        private ILoggedInService LoggedInService { get; }
         private IEnums enums { get; }
         private IEnumerable<ValidationResult> ValidationResults { get; set; }
         #endregion Properties
 
         #region Constructors
-        public EmailDistributionListLanguageService(ICultureService CultureService, IEnums enums, CSSPDBContext db)
+        public EmailDistributionListLanguageService(ICultureService CultureService, ILoggedInService LoggedInService, IEnums enums, CSSPDBContext db)
         {
             this.CultureService = CultureService;
+            this.LoggedInService = LoggedInService;
             this.enums = enums;
             this.db = db;
         }
@@ -52,6 +55,11 @@ namespace CSSPServices
         #region Functions public 
         public async Task<ActionResult<EmailDistributionListLanguage>> GetEmailDistributionListLanguageWithEmailDistributionListLanguageID(int EmailDistributionListLanguageID)
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             EmailDistributionListLanguage emaildistributionlistlanguage = (from c in db.EmailDistributionListLanguages.AsNoTracking()
                     where c.EmailDistributionListLanguageID == EmailDistributionListLanguageID
                     select c).FirstOrDefault();
@@ -65,32 +73,22 @@ namespace CSSPServices
         }
         public async Task<ActionResult<List<EmailDistributionListLanguage>>> GetEmailDistributionListLanguageList()
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             List<EmailDistributionListLanguage> emaildistributionlistlanguageList = (from c in db.EmailDistributionListLanguages.AsNoTracking() select c).Take(100).ToList();
 
             return await Task.FromResult(Ok(emaildistributionlistlanguageList));
         }
-        public async Task<ActionResult<EmailDistributionListLanguage>> Add(EmailDistributionListLanguage emailDistributionListLanguage)
-        {
-            ValidationResults = Validate(new ValidationContext(emailDistributionListLanguage), ActionDBTypeEnum.Create);
-            if (ValidationResults.Count() > 0)
-            {
-               return await Task.FromResult(BadRequest(ValidationResults));
-            }
-
-            try
-            {
-               db.EmailDistributionListLanguages.Add(emailDistributionListLanguage);
-               db.SaveChanges();
-            }
-            catch (DbUpdateException ex)
-            {
-               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
-            }
-
-            return await Task.FromResult(Ok(emailDistributionListLanguage));
-        }
         public async Task<ActionResult<bool>> Delete(int EmailDistributionListLanguageID)
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             EmailDistributionListLanguage emailDistributionListLanguage = (from c in db.EmailDistributionListLanguages
                                where c.EmailDistributionListLanguageID == EmailDistributionListLanguageID
                                select c).FirstOrDefault();
@@ -112,8 +110,38 @@ namespace CSSPServices
 
             return await Task.FromResult(Ok(true));
         }
-        public async Task<ActionResult<EmailDistributionListLanguage>> Update(EmailDistributionListLanguage emailDistributionListLanguage)
+        public async Task<ActionResult<EmailDistributionListLanguage>> Post(EmailDistributionListLanguage emailDistributionListLanguage)
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
+            ValidationResults = Validate(new ValidationContext(emailDistributionListLanguage), ActionDBTypeEnum.Create);
+            if (ValidationResults.Count() > 0)
+            {
+               return await Task.FromResult(BadRequest(ValidationResults));
+            }
+
+            try
+            {
+               db.EmailDistributionListLanguages.Add(emailDistributionListLanguage);
+               db.SaveChanges();
+            }
+            catch (DbUpdateException ex)
+            {
+               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+            }
+
+            return await Task.FromResult(Ok(emailDistributionListLanguage));
+        }
+        public async Task<ActionResult<EmailDistributionListLanguage>> Put(EmailDistributionListLanguage emailDistributionListLanguage)
+        {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             ValidationResults = Validate(new ValidationContext(emailDistributionListLanguage), ActionDBTypeEnum.Update);
             if (ValidationResults.Count() > 0)
             {

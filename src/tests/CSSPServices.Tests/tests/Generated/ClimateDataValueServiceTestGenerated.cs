@@ -32,7 +32,7 @@ namespace CSSPServices.Tests
         private IServiceProvider Provider { get; set; }
         private IServiceCollection Services { get; set; }
         private ICultureService CultureService { get; set; }
-        private IClimateDataValueService climateDataValueService { get; set; }
+        private IClimateDataValueService ClimateDataValueService { get; set; }
         private CSSPDBContext db { get; set; }
         #endregion Properties
 
@@ -62,7 +62,7 @@ namespace CSSPServices.Tests
                ClimateDataValue climateDataValue = GetFilledRandomClimateDataValue(""); 
 
                // List<ClimateDataValue>
-               var actionClimateDataValueList = await climateDataValueService.GetClimateDataValueList();
+               var actionClimateDataValueList = await ClimateDataValueService.GetClimateDataValueList();
                Assert.Equal(200, ((ObjectResult)actionClimateDataValueList.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionClimateDataValueList.Result).Value);
                List<ClimateDataValue> climateDataValueList = (List<ClimateDataValue>)((OkObjectResult)actionClimateDataValueList.Result).Value;
@@ -70,22 +70,22 @@ namespace CSSPServices.Tests
                int count = ((List<ClimateDataValue>)((OkObjectResult)actionClimateDataValueList.Result).Value).Count();
                 Assert.True(count > 0);
 
-               // Add ClimateDataValue
-               var actionClimateDataValueAdded = await climateDataValueService.Add(climateDataValue);
+               // Post ClimateDataValue
+               var actionClimateDataValueAdded = await ClimateDataValueService.Post(climateDataValue);
                Assert.Equal(200, ((ObjectResult)actionClimateDataValueAdded.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionClimateDataValueAdded.Result).Value);
                ClimateDataValue climateDataValueAdded = (ClimateDataValue)((OkObjectResult)actionClimateDataValueAdded.Result).Value;
                Assert.NotNull(climateDataValueAdded);
 
-               // Update ClimateDataValue
-               var actionClimateDataValueUpdated = await climateDataValueService.Update(climateDataValue);
+               // Put ClimateDataValue
+               var actionClimateDataValueUpdated = await ClimateDataValueService.Put(climateDataValue);
                Assert.Equal(200, ((ObjectResult)actionClimateDataValueUpdated.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionClimateDataValueUpdated.Result).Value);
                ClimateDataValue climateDataValueUpdated = (ClimateDataValue)((OkObjectResult)actionClimateDataValueUpdated.Result).Value;
                Assert.NotNull(climateDataValueUpdated);
 
                // Delete ClimateDataValue
-               var actionClimateDataValueDeleted = await climateDataValueService.Delete(climateDataValue.ClimateDataValueID);
+               var actionClimateDataValueDeleted = await ClimateDataValueService.Delete(climateDataValue.ClimateDataValueID);
                Assert.Equal(200, ((ObjectResult)actionClimateDataValueDeleted.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionClimateDataValueDeleted.Result).Value);
                bool retBool = (bool)((OkObjectResult)actionClimateDataValueDeleted.Result).Value;
@@ -126,8 +126,8 @@ namespace CSSPServices.Tests
 
             CultureService.SetCulture(culture);
 
-            climateDataValueService = Provider.GetService<IClimateDataValueService>();
-            Assert.NotNull(climateDataValueService);
+            ClimateDataValueService = Provider.GetService<IClimateDataValueService>();
+            Assert.NotNull(ClimateDataValueService);
 
             return await Task.FromResult(true);
         }

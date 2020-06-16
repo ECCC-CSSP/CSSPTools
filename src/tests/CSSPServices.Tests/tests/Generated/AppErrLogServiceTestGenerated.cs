@@ -32,7 +32,7 @@ namespace CSSPServices.Tests
         private IServiceProvider Provider { get; set; }
         private IServiceCollection Services { get; set; }
         private ICultureService CultureService { get; set; }
-        private IAppErrLogService appErrLogService { get; set; }
+        private IAppErrLogService AppErrLogService { get; set; }
         private CSSPDBContext db { get; set; }
         #endregion Properties
 
@@ -62,7 +62,7 @@ namespace CSSPServices.Tests
                AppErrLog appErrLog = GetFilledRandomAppErrLog(""); 
 
                // List<AppErrLog>
-               var actionAppErrLogList = await appErrLogService.GetAppErrLogList();
+               var actionAppErrLogList = await AppErrLogService.GetAppErrLogList();
                Assert.Equal(200, ((ObjectResult)actionAppErrLogList.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionAppErrLogList.Result).Value);
                List<AppErrLog> appErrLogList = (List<AppErrLog>)((OkObjectResult)actionAppErrLogList.Result).Value;
@@ -70,22 +70,22 @@ namespace CSSPServices.Tests
                int count = ((List<AppErrLog>)((OkObjectResult)actionAppErrLogList.Result).Value).Count();
                 Assert.True(count > 0);
 
-               // Add AppErrLog
-               var actionAppErrLogAdded = await appErrLogService.Add(appErrLog);
+               // Post AppErrLog
+               var actionAppErrLogAdded = await AppErrLogService.Post(appErrLog);
                Assert.Equal(200, ((ObjectResult)actionAppErrLogAdded.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionAppErrLogAdded.Result).Value);
                AppErrLog appErrLogAdded = (AppErrLog)((OkObjectResult)actionAppErrLogAdded.Result).Value;
                Assert.NotNull(appErrLogAdded);
 
-               // Update AppErrLog
-               var actionAppErrLogUpdated = await appErrLogService.Update(appErrLog);
+               // Put AppErrLog
+               var actionAppErrLogUpdated = await AppErrLogService.Put(appErrLog);
                Assert.Equal(200, ((ObjectResult)actionAppErrLogUpdated.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionAppErrLogUpdated.Result).Value);
                AppErrLog appErrLogUpdated = (AppErrLog)((OkObjectResult)actionAppErrLogUpdated.Result).Value;
                Assert.NotNull(appErrLogUpdated);
 
                // Delete AppErrLog
-               var actionAppErrLogDeleted = await appErrLogService.Delete(appErrLog.AppErrLogID);
+               var actionAppErrLogDeleted = await AppErrLogService.Delete(appErrLog.AppErrLogID);
                Assert.Equal(200, ((ObjectResult)actionAppErrLogDeleted.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionAppErrLogDeleted.Result).Value);
                bool retBool = (bool)((OkObjectResult)actionAppErrLogDeleted.Result).Value;
@@ -126,8 +126,8 @@ namespace CSSPServices.Tests
 
             CultureService.SetCulture(culture);
 
-            appErrLogService = Provider.GetService<IAppErrLogService>();
-            Assert.NotNull(appErrLogService);
+            AppErrLogService = Provider.GetService<IAppErrLogService>();
+            Assert.NotNull(AppErrLogService);
 
             return await Task.FromResult(true);
         }

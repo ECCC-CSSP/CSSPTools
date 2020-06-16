@@ -62,52 +62,52 @@ export class SamplingPlanEmailComponent implements OnInit, OnDestroy {
             {
               value: (AddOrUpdate === 'Add' ? 0 : (this.samplingplanemailService.samplingplanemailList[0]?.SamplingPlanEmailID)),
               disabled: false
-            }],
+            }, [ Validators.required ]],
           SamplingPlanID: [
             {
               value: this.samplingplanemailService.samplingplanemailList[0]?.SamplingPlanID,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           Email: [
             {
               value: this.samplingplanemailService.samplingplanemailList[0]?.Email,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           IsContractor: [
             {
               value: this.samplingplanemailService.samplingplanemailList[0]?.IsContractor,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           LabSheetHasValueOver500: [
             {
               value: this.samplingplanemailService.samplingplanemailList[0]?.LabSheetHasValueOver500,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           LabSheetReceived: [
             {
               value: this.samplingplanemailService.samplingplanemailList[0]?.LabSheetReceived,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           LabSheetAccepted: [
             {
               value: this.samplingplanemailService.samplingplanemailList[0]?.LabSheetAccepted,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           LabSheetRejected: [
             {
               value: this.samplingplanemailService.samplingplanemailList[0]?.LabSheetRejected,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           LastUpdateDate_UTC: [
             {
               value: this.samplingplanemailService.samplingplanemailList[0]?.LastUpdateDate_UTC,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           LastUpdateContactTVItemID: [
             {
               value: this.samplingplanemailService.samplingplanemailList[0]?.LastUpdateContactTVItemID,
               disabled: false
-            }],
+            }, [ Validators.required ]],
         }
       );
 

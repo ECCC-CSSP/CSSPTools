@@ -32,7 +32,7 @@ namespace CSSPServices.Tests
         private IServiceProvider Provider { get; set; }
         private IServiceCollection Services { get; set; }
         private ICultureService CultureService { get; set; }
-        private IMWQMSiteStartEndDateService mwqmSiteStartEndDateService { get; set; }
+        private IMWQMSiteStartEndDateService MWQMSiteStartEndDateService { get; set; }
         private CSSPDBContext db { get; set; }
         #endregion Properties
 
@@ -62,7 +62,7 @@ namespace CSSPServices.Tests
                MWQMSiteStartEndDate mwqmSiteStartEndDate = GetFilledRandomMWQMSiteStartEndDate(""); 
 
                // List<MWQMSiteStartEndDate>
-               var actionMWQMSiteStartEndDateList = await mwqmSiteStartEndDateService.GetMWQMSiteStartEndDateList();
+               var actionMWQMSiteStartEndDateList = await MWQMSiteStartEndDateService.GetMWQMSiteStartEndDateList();
                Assert.Equal(200, ((ObjectResult)actionMWQMSiteStartEndDateList.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionMWQMSiteStartEndDateList.Result).Value);
                List<MWQMSiteStartEndDate> mwqmSiteStartEndDateList = (List<MWQMSiteStartEndDate>)((OkObjectResult)actionMWQMSiteStartEndDateList.Result).Value;
@@ -70,22 +70,22 @@ namespace CSSPServices.Tests
                int count = ((List<MWQMSiteStartEndDate>)((OkObjectResult)actionMWQMSiteStartEndDateList.Result).Value).Count();
                 Assert.True(count > 0);
 
-               // Add MWQMSiteStartEndDate
-               var actionMWQMSiteStartEndDateAdded = await mwqmSiteStartEndDateService.Add(mwqmSiteStartEndDate);
+               // Post MWQMSiteStartEndDate
+               var actionMWQMSiteStartEndDateAdded = await MWQMSiteStartEndDateService.Post(mwqmSiteStartEndDate);
                Assert.Equal(200, ((ObjectResult)actionMWQMSiteStartEndDateAdded.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionMWQMSiteStartEndDateAdded.Result).Value);
                MWQMSiteStartEndDate mwqmSiteStartEndDateAdded = (MWQMSiteStartEndDate)((OkObjectResult)actionMWQMSiteStartEndDateAdded.Result).Value;
                Assert.NotNull(mwqmSiteStartEndDateAdded);
 
-               // Update MWQMSiteStartEndDate
-               var actionMWQMSiteStartEndDateUpdated = await mwqmSiteStartEndDateService.Update(mwqmSiteStartEndDate);
+               // Put MWQMSiteStartEndDate
+               var actionMWQMSiteStartEndDateUpdated = await MWQMSiteStartEndDateService.Put(mwqmSiteStartEndDate);
                Assert.Equal(200, ((ObjectResult)actionMWQMSiteStartEndDateUpdated.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionMWQMSiteStartEndDateUpdated.Result).Value);
                MWQMSiteStartEndDate mwqmSiteStartEndDateUpdated = (MWQMSiteStartEndDate)((OkObjectResult)actionMWQMSiteStartEndDateUpdated.Result).Value;
                Assert.NotNull(mwqmSiteStartEndDateUpdated);
 
                // Delete MWQMSiteStartEndDate
-               var actionMWQMSiteStartEndDateDeleted = await mwqmSiteStartEndDateService.Delete(mwqmSiteStartEndDate.MWQMSiteStartEndDateID);
+               var actionMWQMSiteStartEndDateDeleted = await MWQMSiteStartEndDateService.Delete(mwqmSiteStartEndDate.MWQMSiteStartEndDateID);
                Assert.Equal(200, ((ObjectResult)actionMWQMSiteStartEndDateDeleted.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionMWQMSiteStartEndDateDeleted.Result).Value);
                bool retBool = (bool)((OkObjectResult)actionMWQMSiteStartEndDateDeleted.Result).Value;
@@ -126,8 +126,8 @@ namespace CSSPServices.Tests
 
             CultureService.SetCulture(culture);
 
-            mwqmSiteStartEndDateService = Provider.GetService<IMWQMSiteStartEndDateService>();
-            Assert.NotNull(mwqmSiteStartEndDateService);
+            MWQMSiteStartEndDateService = Provider.GetService<IMWQMSiteStartEndDateService>();
+            Assert.NotNull(MWQMSiteStartEndDateService);
 
             return await Task.FromResult(true);
         }

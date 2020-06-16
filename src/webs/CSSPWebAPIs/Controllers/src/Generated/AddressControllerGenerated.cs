@@ -6,6 +6,7 @@
 
 using CSSPModels;
 using CSSPServices;
+using CultureServices.Services;
 using LoggedInServices.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -18,8 +19,8 @@ namespace CSSPWebAPI.Controllers
     {
         Task<ActionResult<List<Address>>> Get();
         Task<ActionResult<Address>> Get(int AddressID);
-        Task<ActionResult<Address>> Post(Address address);
-        Task<ActionResult<Address>> Put(Address address);
+        Task<ActionResult<Address>> Post(Address Address);
+        Task<ActionResult<Address>> Put(Address Address);
         Task<ActionResult<bool>> Delete(int AddressID);
     }
 
@@ -32,17 +33,17 @@ namespace CSSPWebAPI.Controllers
         #endregion Variables
 
         #region Properties
-        private IAddressService addressService { get; }
-        private CSSPDBContext db { get; }
-        private ILoggedInService loggedInService { get; }
+        private ICultureService CultureService { get; }
+        private ILoggedInService LoggedInService { get; }
+        private IAddressService AddressService { get; }
         #endregion Properties
 
         #region Constructors
-        public AddressController(IAddressService addressService, CSSPDBContext db, ILoggedInService loggedInService)
+        public AddressController(ICultureService CultureService, ILoggedInService LoggedInService, IAddressService AddressService)
         {
-            this.addressService = addressService;
-            this.db = db;
-            this.loggedInService = loggedInService;
+            this.CultureService = CultureService;
+            this.LoggedInService = LoggedInService;
+            this.AddressService = AddressService;
         }
         #endregion Constructors
 
@@ -50,27 +51,42 @@ namespace CSSPWebAPI.Controllers
         [HttpGet]
         public async Task<ActionResult<List<Address>>> Get()
         {
-            return await addressService.GetAddressList();
+            CultureService.SetCulture((string)RouteData.Values["culture"]);
+            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+
+            return await AddressService.GetAddressList();
         }
         [HttpGet("{AddressID}")]
         public async Task<ActionResult<Address>> Get(int AddressID)
         {
-            return await addressService.GetAddressWithAddressID(AddressID);
+            CultureService.SetCulture((string)RouteData.Values["culture"]);
+            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+
+            return await AddressService.GetAddressWithAddressID(AddressID);
         }
         [HttpPost]
-        public async Task<ActionResult<Address>> Post(Address address)
+        public async Task<ActionResult<Address>> Post(Address Address)
         {
-            return await addressService.Add(address);
+            CultureService.SetCulture((string)RouteData.Values["culture"]);
+            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+
+            return await AddressService.Post(Address);
         }
         [HttpPut]
-        public async Task<ActionResult<Address>> Put(Address address)
+        public async Task<ActionResult<Address>> Put(Address Address)
         {
-            return await addressService.Update(address);
+            CultureService.SetCulture((string)RouteData.Values["culture"]);
+            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+
+            return await AddressService.Put(Address);
         }
         [HttpDelete("{AddressID}")]
         public async Task<ActionResult<bool>> Delete(int AddressID)
         {
-            return await addressService.Delete(AddressID);
+            CultureService.SetCulture((string)RouteData.Values["culture"]);
+            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+
+            return await AddressService.Delete(AddressID);
         }
         #endregion Functions public
 

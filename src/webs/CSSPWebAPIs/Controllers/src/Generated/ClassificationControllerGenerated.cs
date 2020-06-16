@@ -6,6 +6,7 @@
 
 using CSSPModels;
 using CSSPServices;
+using CultureServices.Services;
 using LoggedInServices.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -18,8 +19,8 @@ namespace CSSPWebAPI.Controllers
     {
         Task<ActionResult<List<Classification>>> Get();
         Task<ActionResult<Classification>> Get(int ClassificationID);
-        Task<ActionResult<Classification>> Post(Classification classification);
-        Task<ActionResult<Classification>> Put(Classification classification);
+        Task<ActionResult<Classification>> Post(Classification Classification);
+        Task<ActionResult<Classification>> Put(Classification Classification);
         Task<ActionResult<bool>> Delete(int ClassificationID);
     }
 
@@ -32,17 +33,17 @@ namespace CSSPWebAPI.Controllers
         #endregion Variables
 
         #region Properties
-        private IClassificationService classificationService { get; }
-        private CSSPDBContext db { get; }
-        private ILoggedInService loggedInService { get; }
+        private ICultureService CultureService { get; }
+        private ILoggedInService LoggedInService { get; }
+        private IClassificationService ClassificationService { get; }
         #endregion Properties
 
         #region Constructors
-        public ClassificationController(IClassificationService classificationService, CSSPDBContext db, ILoggedInService loggedInService)
+        public ClassificationController(ICultureService CultureService, ILoggedInService LoggedInService, IClassificationService ClassificationService)
         {
-            this.classificationService = classificationService;
-            this.db = db;
-            this.loggedInService = loggedInService;
+            this.CultureService = CultureService;
+            this.LoggedInService = LoggedInService;
+            this.ClassificationService = ClassificationService;
         }
         #endregion Constructors
 
@@ -50,27 +51,42 @@ namespace CSSPWebAPI.Controllers
         [HttpGet]
         public async Task<ActionResult<List<Classification>>> Get()
         {
-            return await classificationService.GetClassificationList();
+            CultureService.SetCulture((string)RouteData.Values["culture"]);
+            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+
+            return await ClassificationService.GetClassificationList();
         }
         [HttpGet("{ClassificationID}")]
         public async Task<ActionResult<Classification>> Get(int ClassificationID)
         {
-            return await classificationService.GetClassificationWithClassificationID(ClassificationID);
+            CultureService.SetCulture((string)RouteData.Values["culture"]);
+            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+
+            return await ClassificationService.GetClassificationWithClassificationID(ClassificationID);
         }
         [HttpPost]
-        public async Task<ActionResult<Classification>> Post(Classification classification)
+        public async Task<ActionResult<Classification>> Post(Classification Classification)
         {
-            return await classificationService.Add(classification);
+            CultureService.SetCulture((string)RouteData.Values["culture"]);
+            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+
+            return await ClassificationService.Post(Classification);
         }
         [HttpPut]
-        public async Task<ActionResult<Classification>> Put(Classification classification)
+        public async Task<ActionResult<Classification>> Put(Classification Classification)
         {
-            return await classificationService.Update(classification);
+            CultureService.SetCulture((string)RouteData.Values["culture"]);
+            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+
+            return await ClassificationService.Put(Classification);
         }
         [HttpDelete("{ClassificationID}")]
         public async Task<ActionResult<bool>> Delete(int ClassificationID)
         {
-            return await classificationService.Delete(ClassificationID);
+            CultureService.SetCulture((string)RouteData.Values["culture"]);
+            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+
+            return await ClassificationService.Delete(ClassificationID);
         }
         #endregion Functions public
 

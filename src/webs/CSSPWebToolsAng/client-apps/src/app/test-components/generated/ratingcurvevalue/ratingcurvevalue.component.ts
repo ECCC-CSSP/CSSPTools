@@ -62,32 +62,32 @@ export class RatingCurveValueComponent implements OnInit, OnDestroy {
             {
               value: (AddOrUpdate === 'Add' ? 0 : (this.ratingcurvevalueService.ratingcurvevalueList[0]?.RatingCurveValueID)),
               disabled: false
-            }],
+            }, [ Validators.required ]],
           RatingCurveID: [
             {
               value: this.ratingcurvevalueService.ratingcurvevalueList[0]?.RatingCurveID,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           StageValue_m: [
             {
               value: this.ratingcurvevalueService.ratingcurvevalueList[0]?.StageValue_m,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           DischargeValue_m3_s: [
             {
               value: this.ratingcurvevalueService.ratingcurvevalueList[0]?.DischargeValue_m3_s,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           LastUpdateDate_UTC: [
             {
               value: this.ratingcurvevalueService.ratingcurvevalueList[0]?.LastUpdateDate_UTC,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           LastUpdateContactTVItemID: [
             {
               value: this.ratingcurvevalueService.ratingcurvevalueList[0]?.LastUpdateContactTVItemID,
               disabled: false
-            }],
+            }, [ Validators.required ]],
         }
       );
 

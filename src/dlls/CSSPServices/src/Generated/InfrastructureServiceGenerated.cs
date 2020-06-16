@@ -9,6 +9,7 @@ using CSSPEnums;
 using CSSPModels;
 using CultureServices.Resources;
 using CultureServices.Services;
+using LoggedInServices.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -22,11 +23,11 @@ namespace CSSPServices
 {
    public interface IInfrastructureService
     {
-       Task<ActionResult<Infrastructure>> GetInfrastructureWithInfrastructureID(int InfrastructureID);
-       Task<ActionResult<List<Infrastructure>>> GetInfrastructureList();
-       Task<ActionResult<Infrastructure>> Add(Infrastructure infrastructure);
        Task<ActionResult<bool>> Delete(int InfrastructureID);
-       Task<ActionResult<Infrastructure>> Update(Infrastructure infrastructure);
+       Task<ActionResult<List<Infrastructure>>> GetInfrastructureList();
+       Task<ActionResult<Infrastructure>> GetInfrastructureWithInfrastructureID(int InfrastructureID);
+       Task<ActionResult<Infrastructure>> Post(Infrastructure infrastructure);
+       Task<ActionResult<Infrastructure>> Put(Infrastructure infrastructure);
     }
     public partial class InfrastructureService : ControllerBase, IInfrastructureService
     {
@@ -36,14 +37,16 @@ namespace CSSPServices
         #region Properties
         private CSSPDBContext db { get; }
         private ICultureService CultureService { get; }
+        private ILoggedInService LoggedInService { get; }
         private IEnums enums { get; }
         private IEnumerable<ValidationResult> ValidationResults { get; set; }
         #endregion Properties
 
         #region Constructors
-        public InfrastructureService(ICultureService CultureService, IEnums enums, CSSPDBContext db)
+        public InfrastructureService(ICultureService CultureService, ILoggedInService LoggedInService, IEnums enums, CSSPDBContext db)
         {
             this.CultureService = CultureService;
+            this.LoggedInService = LoggedInService;
             this.enums = enums;
             this.db = db;
         }
@@ -52,6 +55,11 @@ namespace CSSPServices
         #region Functions public 
         public async Task<ActionResult<Infrastructure>> GetInfrastructureWithInfrastructureID(int InfrastructureID)
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             Infrastructure infrastructure = (from c in db.Infrastructures.AsNoTracking()
                     where c.InfrastructureID == InfrastructureID
                     select c).FirstOrDefault();
@@ -65,32 +73,22 @@ namespace CSSPServices
         }
         public async Task<ActionResult<List<Infrastructure>>> GetInfrastructureList()
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             List<Infrastructure> infrastructureList = (from c in db.Infrastructures.AsNoTracking() select c).Take(100).ToList();
 
             return await Task.FromResult(Ok(infrastructureList));
         }
-        public async Task<ActionResult<Infrastructure>> Add(Infrastructure infrastructure)
-        {
-            ValidationResults = Validate(new ValidationContext(infrastructure), ActionDBTypeEnum.Create);
-            if (ValidationResults.Count() > 0)
-            {
-               return await Task.FromResult(BadRequest(ValidationResults));
-            }
-
-            try
-            {
-               db.Infrastructures.Add(infrastructure);
-               db.SaveChanges();
-            }
-            catch (DbUpdateException ex)
-            {
-               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
-            }
-
-            return await Task.FromResult(Ok(infrastructure));
-        }
         public async Task<ActionResult<bool>> Delete(int InfrastructureID)
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             Infrastructure infrastructure = (from c in db.Infrastructures
                                where c.InfrastructureID == InfrastructureID
                                select c).FirstOrDefault();
@@ -112,8 +110,38 @@ namespace CSSPServices
 
             return await Task.FromResult(Ok(true));
         }
-        public async Task<ActionResult<Infrastructure>> Update(Infrastructure infrastructure)
+        public async Task<ActionResult<Infrastructure>> Post(Infrastructure infrastructure)
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
+            ValidationResults = Validate(new ValidationContext(infrastructure), ActionDBTypeEnum.Create);
+            if (ValidationResults.Count() > 0)
+            {
+               return await Task.FromResult(BadRequest(ValidationResults));
+            }
+
+            try
+            {
+               db.Infrastructures.Add(infrastructure);
+               db.SaveChanges();
+            }
+            catch (DbUpdateException ex)
+            {
+               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+            }
+
+            return await Task.FromResult(Ok(infrastructure));
+        }
+        public async Task<ActionResult<Infrastructure>> Put(Infrastructure infrastructure)
+        {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             ValidationResults = Validate(new ValidationContext(infrastructure), ActionDBTypeEnum.Update);
             if (ValidationResults.Count() > 0)
             {

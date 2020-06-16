@@ -32,7 +32,7 @@ namespace CSSPServices.Tests
         private IServiceProvider Provider { get; set; }
         private IServiceCollection Services { get; set; }
         private ICultureService CultureService { get; set; }
-        private ISamplingPlanEmailService samplingPlanEmailService { get; set; }
+        private ISamplingPlanEmailService SamplingPlanEmailService { get; set; }
         private CSSPDBContext db { get; set; }
         #endregion Properties
 
@@ -62,7 +62,7 @@ namespace CSSPServices.Tests
                SamplingPlanEmail samplingPlanEmail = GetFilledRandomSamplingPlanEmail(""); 
 
                // List<SamplingPlanEmail>
-               var actionSamplingPlanEmailList = await samplingPlanEmailService.GetSamplingPlanEmailList();
+               var actionSamplingPlanEmailList = await SamplingPlanEmailService.GetSamplingPlanEmailList();
                Assert.Equal(200, ((ObjectResult)actionSamplingPlanEmailList.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionSamplingPlanEmailList.Result).Value);
                List<SamplingPlanEmail> samplingPlanEmailList = (List<SamplingPlanEmail>)((OkObjectResult)actionSamplingPlanEmailList.Result).Value;
@@ -70,22 +70,22 @@ namespace CSSPServices.Tests
                int count = ((List<SamplingPlanEmail>)((OkObjectResult)actionSamplingPlanEmailList.Result).Value).Count();
                 Assert.True(count > 0);
 
-               // Add SamplingPlanEmail
-               var actionSamplingPlanEmailAdded = await samplingPlanEmailService.Add(samplingPlanEmail);
+               // Post SamplingPlanEmail
+               var actionSamplingPlanEmailAdded = await SamplingPlanEmailService.Post(samplingPlanEmail);
                Assert.Equal(200, ((ObjectResult)actionSamplingPlanEmailAdded.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionSamplingPlanEmailAdded.Result).Value);
                SamplingPlanEmail samplingPlanEmailAdded = (SamplingPlanEmail)((OkObjectResult)actionSamplingPlanEmailAdded.Result).Value;
                Assert.NotNull(samplingPlanEmailAdded);
 
-               // Update SamplingPlanEmail
-               var actionSamplingPlanEmailUpdated = await samplingPlanEmailService.Update(samplingPlanEmail);
+               // Put SamplingPlanEmail
+               var actionSamplingPlanEmailUpdated = await SamplingPlanEmailService.Put(samplingPlanEmail);
                Assert.Equal(200, ((ObjectResult)actionSamplingPlanEmailUpdated.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionSamplingPlanEmailUpdated.Result).Value);
                SamplingPlanEmail samplingPlanEmailUpdated = (SamplingPlanEmail)((OkObjectResult)actionSamplingPlanEmailUpdated.Result).Value;
                Assert.NotNull(samplingPlanEmailUpdated);
 
                // Delete SamplingPlanEmail
-               var actionSamplingPlanEmailDeleted = await samplingPlanEmailService.Delete(samplingPlanEmail.SamplingPlanEmailID);
+               var actionSamplingPlanEmailDeleted = await SamplingPlanEmailService.Delete(samplingPlanEmail.SamplingPlanEmailID);
                Assert.Equal(200, ((ObjectResult)actionSamplingPlanEmailDeleted.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionSamplingPlanEmailDeleted.Result).Value);
                bool retBool = (bool)((OkObjectResult)actionSamplingPlanEmailDeleted.Result).Value;
@@ -126,8 +126,8 @@ namespace CSSPServices.Tests
 
             CultureService.SetCulture(culture);
 
-            samplingPlanEmailService = Provider.GetService<ISamplingPlanEmailService>();
-            Assert.NotNull(samplingPlanEmailService);
+            SamplingPlanEmailService = Provider.GetService<ISamplingPlanEmailService>();
+            Assert.NotNull(SamplingPlanEmailService);
 
             return await Task.FromResult(true);
         }

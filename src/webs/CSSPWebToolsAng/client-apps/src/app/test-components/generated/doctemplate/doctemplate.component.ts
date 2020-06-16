@@ -77,37 +77,37 @@ export class DocTemplateComponent implements OnInit, OnDestroy {
             {
               value: (AddOrUpdate === 'Add' ? 0 : (this.doctemplateService.doctemplateList[0]?.DocTemplateID)),
               disabled: false
-            }],
+            }, [ Validators.required ]],
           Language: [
             {
               value: this.doctemplateService.doctemplateList[0]?.Language,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           TVType: [
             {
               value: this.doctemplateService.doctemplateList[0]?.TVType,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           TVFileTVItemID: [
             {
               value: this.doctemplateService.doctemplateList[0]?.TVFileTVItemID,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           FileName: [
             {
               value: this.doctemplateService.doctemplateList[0]?.FileName,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           LastUpdateDate_UTC: [
             {
               value: this.doctemplateService.doctemplateList[0]?.LastUpdateDate_UTC,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           LastUpdateContactTVItemID: [
             {
               value: this.doctemplateService.doctemplateList[0]?.LastUpdateContactTVItemID,
               disabled: false
-            }],
+            }, [ Validators.required ]],
         }
       );
 

@@ -6,6 +6,7 @@
 
 using CSSPModels;
 using CSSPServices;
+using CultureServices.Services;
 using LoggedInServices.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -18,8 +19,8 @@ namespace CSSPWebAPI.Controllers
     {
         Task<ActionResult<List<ClimateSite>>> Get();
         Task<ActionResult<ClimateSite>> Get(int ClimateSiteID);
-        Task<ActionResult<ClimateSite>> Post(ClimateSite climateSite);
-        Task<ActionResult<ClimateSite>> Put(ClimateSite climateSite);
+        Task<ActionResult<ClimateSite>> Post(ClimateSite ClimateSite);
+        Task<ActionResult<ClimateSite>> Put(ClimateSite ClimateSite);
         Task<ActionResult<bool>> Delete(int ClimateSiteID);
     }
 
@@ -32,17 +33,17 @@ namespace CSSPWebAPI.Controllers
         #endregion Variables
 
         #region Properties
-        private IClimateSiteService climateSiteService { get; }
-        private CSSPDBContext db { get; }
-        private ILoggedInService loggedInService { get; }
+        private ICultureService CultureService { get; }
+        private ILoggedInService LoggedInService { get; }
+        private IClimateSiteService ClimateSiteService { get; }
         #endregion Properties
 
         #region Constructors
-        public ClimateSiteController(IClimateSiteService climateSiteService, CSSPDBContext db, ILoggedInService loggedInService)
+        public ClimateSiteController(ICultureService CultureService, ILoggedInService LoggedInService, IClimateSiteService ClimateSiteService)
         {
-            this.climateSiteService = climateSiteService;
-            this.db = db;
-            this.loggedInService = loggedInService;
+            this.CultureService = CultureService;
+            this.LoggedInService = LoggedInService;
+            this.ClimateSiteService = ClimateSiteService;
         }
         #endregion Constructors
 
@@ -50,27 +51,42 @@ namespace CSSPWebAPI.Controllers
         [HttpGet]
         public async Task<ActionResult<List<ClimateSite>>> Get()
         {
-            return await climateSiteService.GetClimateSiteList();
+            CultureService.SetCulture((string)RouteData.Values["culture"]);
+            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+
+            return await ClimateSiteService.GetClimateSiteList();
         }
         [HttpGet("{ClimateSiteID}")]
         public async Task<ActionResult<ClimateSite>> Get(int ClimateSiteID)
         {
-            return await climateSiteService.GetClimateSiteWithClimateSiteID(ClimateSiteID);
+            CultureService.SetCulture((string)RouteData.Values["culture"]);
+            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+
+            return await ClimateSiteService.GetClimateSiteWithClimateSiteID(ClimateSiteID);
         }
         [HttpPost]
-        public async Task<ActionResult<ClimateSite>> Post(ClimateSite climateSite)
+        public async Task<ActionResult<ClimateSite>> Post(ClimateSite ClimateSite)
         {
-            return await climateSiteService.Add(climateSite);
+            CultureService.SetCulture((string)RouteData.Values["culture"]);
+            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+
+            return await ClimateSiteService.Post(ClimateSite);
         }
         [HttpPut]
-        public async Task<ActionResult<ClimateSite>> Put(ClimateSite climateSite)
+        public async Task<ActionResult<ClimateSite>> Put(ClimateSite ClimateSite)
         {
-            return await climateSiteService.Update(climateSite);
+            CultureService.SetCulture((string)RouteData.Values["culture"]);
+            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+
+            return await ClimateSiteService.Put(ClimateSite);
         }
         [HttpDelete("{ClimateSiteID}")]
         public async Task<ActionResult<bool>> Delete(int ClimateSiteID)
         {
-            return await climateSiteService.Delete(ClimateSiteID);
+            CultureService.SetCulture((string)RouteData.Values["culture"]);
+            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+
+            return await ClimateSiteService.Delete(ClimateSiteID);
         }
         #endregion Functions public
 

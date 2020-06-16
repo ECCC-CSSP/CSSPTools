@@ -77,37 +77,37 @@ export class EmailDistributionListContactLanguageComponent implements OnInit, On
             {
               value: (AddOrUpdate === 'Add' ? 0 : (this.emaildistributionlistcontactlanguageService.emaildistributionlistcontactlanguageList[0]?.EmailDistributionListContactLanguageID)),
               disabled: false
-            }],
+            }, [ Validators.required ]],
           EmailDistributionListContactID: [
             {
               value: this.emaildistributionlistcontactlanguageService.emaildistributionlistcontactlanguageList[0]?.EmailDistributionListContactID,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           Language: [
             {
               value: this.emaildistributionlistcontactlanguageService.emaildistributionlistcontactlanguageList[0]?.Language,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           Agency: [
             {
               value: this.emaildistributionlistcontactlanguageService.emaildistributionlistcontactlanguageList[0]?.Agency,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           TranslationStatus: [
             {
               value: this.emaildistributionlistcontactlanguageService.emaildistributionlistcontactlanguageList[0]?.TranslationStatus,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           LastUpdateDate_UTC: [
             {
               value: this.emaildistributionlistcontactlanguageService.emaildistributionlistcontactlanguageList[0]?.LastUpdateDate_UTC,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           LastUpdateContactTVItemID: [
             {
               value: this.emaildistributionlistcontactlanguageService.emaildistributionlistcontactlanguageList[0]?.LastUpdateContactTVItemID,
               disabled: false
-            }],
+            }, [ Validators.required ]],
         }
       );
 

@@ -32,7 +32,7 @@ namespace CSSPServices.Tests
         private IServiceProvider Provider { get; set; }
         private IServiceCollection Services { get; set; }
         private ICultureService CultureService { get; set; }
-        private IMWQMSampleService mwqmSampleService { get; set; }
+        private IMWQMSampleService MWQMSampleService { get; set; }
         private CSSPDBContext db { get; set; }
         #endregion Properties
 
@@ -62,7 +62,7 @@ namespace CSSPServices.Tests
                MWQMSample mwqmSample = GetFilledRandomMWQMSample(""); 
 
                // List<MWQMSample>
-               var actionMWQMSampleList = await mwqmSampleService.GetMWQMSampleList();
+               var actionMWQMSampleList = await MWQMSampleService.GetMWQMSampleList();
                Assert.Equal(200, ((ObjectResult)actionMWQMSampleList.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionMWQMSampleList.Result).Value);
                List<MWQMSample> mwqmSampleList = (List<MWQMSample>)((OkObjectResult)actionMWQMSampleList.Result).Value;
@@ -70,22 +70,22 @@ namespace CSSPServices.Tests
                int count = ((List<MWQMSample>)((OkObjectResult)actionMWQMSampleList.Result).Value).Count();
                 Assert.True(count > 0);
 
-               // Add MWQMSample
-               var actionMWQMSampleAdded = await mwqmSampleService.Add(mwqmSample);
+               // Post MWQMSample
+               var actionMWQMSampleAdded = await MWQMSampleService.Post(mwqmSample);
                Assert.Equal(200, ((ObjectResult)actionMWQMSampleAdded.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionMWQMSampleAdded.Result).Value);
                MWQMSample mwqmSampleAdded = (MWQMSample)((OkObjectResult)actionMWQMSampleAdded.Result).Value;
                Assert.NotNull(mwqmSampleAdded);
 
-               // Update MWQMSample
-               var actionMWQMSampleUpdated = await mwqmSampleService.Update(mwqmSample);
+               // Put MWQMSample
+               var actionMWQMSampleUpdated = await MWQMSampleService.Put(mwqmSample);
                Assert.Equal(200, ((ObjectResult)actionMWQMSampleUpdated.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionMWQMSampleUpdated.Result).Value);
                MWQMSample mwqmSampleUpdated = (MWQMSample)((OkObjectResult)actionMWQMSampleUpdated.Result).Value;
                Assert.NotNull(mwqmSampleUpdated);
 
                // Delete MWQMSample
-               var actionMWQMSampleDeleted = await mwqmSampleService.Delete(mwqmSample.MWQMSampleID);
+               var actionMWQMSampleDeleted = await MWQMSampleService.Delete(mwqmSample.MWQMSampleID);
                Assert.Equal(200, ((ObjectResult)actionMWQMSampleDeleted.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionMWQMSampleDeleted.Result).Value);
                bool retBool = (bool)((OkObjectResult)actionMWQMSampleDeleted.Result).Value;
@@ -126,8 +126,8 @@ namespace CSSPServices.Tests
 
             CultureService.SetCulture(culture);
 
-            mwqmSampleService = Provider.GetService<IMWQMSampleService>();
-            Assert.NotNull(mwqmSampleService);
+            MWQMSampleService = Provider.GetService<IMWQMSampleService>();
+            Assert.NotNull(MWQMSampleService);
 
             return await Task.FromResult(true);
         }

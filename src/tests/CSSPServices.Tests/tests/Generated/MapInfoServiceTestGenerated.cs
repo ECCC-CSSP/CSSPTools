@@ -32,7 +32,7 @@ namespace CSSPServices.Tests
         private IServiceProvider Provider { get; set; }
         private IServiceCollection Services { get; set; }
         private ICultureService CultureService { get; set; }
-        private IMapInfoService mapInfoService { get; set; }
+        private IMapInfoService MapInfoService { get; set; }
         private CSSPDBContext db { get; set; }
         #endregion Properties
 
@@ -62,7 +62,7 @@ namespace CSSPServices.Tests
                MapInfo mapInfo = GetFilledRandomMapInfo(""); 
 
                // List<MapInfo>
-               var actionMapInfoList = await mapInfoService.GetMapInfoList();
+               var actionMapInfoList = await MapInfoService.GetMapInfoList();
                Assert.Equal(200, ((ObjectResult)actionMapInfoList.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionMapInfoList.Result).Value);
                List<MapInfo> mapInfoList = (List<MapInfo>)((OkObjectResult)actionMapInfoList.Result).Value;
@@ -70,22 +70,22 @@ namespace CSSPServices.Tests
                int count = ((List<MapInfo>)((OkObjectResult)actionMapInfoList.Result).Value).Count();
                 Assert.True(count > 0);
 
-               // Add MapInfo
-               var actionMapInfoAdded = await mapInfoService.Add(mapInfo);
+               // Post MapInfo
+               var actionMapInfoAdded = await MapInfoService.Post(mapInfo);
                Assert.Equal(200, ((ObjectResult)actionMapInfoAdded.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionMapInfoAdded.Result).Value);
                MapInfo mapInfoAdded = (MapInfo)((OkObjectResult)actionMapInfoAdded.Result).Value;
                Assert.NotNull(mapInfoAdded);
 
-               // Update MapInfo
-               var actionMapInfoUpdated = await mapInfoService.Update(mapInfo);
+               // Put MapInfo
+               var actionMapInfoUpdated = await MapInfoService.Put(mapInfo);
                Assert.Equal(200, ((ObjectResult)actionMapInfoUpdated.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionMapInfoUpdated.Result).Value);
                MapInfo mapInfoUpdated = (MapInfo)((OkObjectResult)actionMapInfoUpdated.Result).Value;
                Assert.NotNull(mapInfoUpdated);
 
                // Delete MapInfo
-               var actionMapInfoDeleted = await mapInfoService.Delete(mapInfo.MapInfoID);
+               var actionMapInfoDeleted = await MapInfoService.Delete(mapInfo.MapInfoID);
                Assert.Equal(200, ((ObjectResult)actionMapInfoDeleted.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionMapInfoDeleted.Result).Value);
                bool retBool = (bool)((OkObjectResult)actionMapInfoDeleted.Result).Value;
@@ -126,8 +126,8 @@ namespace CSSPServices.Tests
 
             CultureService.SetCulture(culture);
 
-            mapInfoService = Provider.GetService<IMapInfoService>();
-            Assert.NotNull(mapInfoService);
+            MapInfoService = Provider.GetService<IMapInfoService>();
+            Assert.NotNull(MapInfoService);
 
             return await Task.FromResult(true);
         }

@@ -38,8 +38,8 @@ namespace ServicesClassNameServiceTestGeneratedServices.Services
             sb.AppendLine(@"");
             sb.AppendLine(@"            CultureService.SetCulture(culture);");
             sb.AppendLine(@"");
-            sb.AppendLine($@"            { TypeNameLower }Service = Provider.GetService<I{ TypeName }Service>();");
-            sb.AppendLine($@"            Assert.NotNull({ TypeNameLower }Service);");
+            sb.AppendLine($@"            { TypeName }Service = Provider.GetService<I{ TypeName }Service>();");
+            sb.AppendLine($@"            Assert.NotNull({ TypeName }Service);");
             sb.AppendLine(@"");
             sb.AppendLine(@"            return await Task.FromResult(true);");
             sb.AppendLine(@"        }");

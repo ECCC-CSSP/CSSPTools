@@ -14,9 +14,6 @@ namespace CSSPModels
         #endregion Variables
 
         #region Properties
-        public IConfigurationRoot Configuration { get; set; }
-        public string Error { get; set; }
-
         public virtual DbSet<Address> Addresses { get; set; }
         public virtual DbSet<AppErrLog> AppErrLogs { get; set; }
         public virtual DbSet<AppTask> AppTasks { get; set; }
@@ -113,24 +110,11 @@ namespace CSSPModels
             : base(options)
         {
         }
-
         #endregion Constructors
 
         #region Overrides
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            //if (!optionsBuilder.IsConfigured)
-            //{
-
-            //    Configuration = new ConfigurationBuilder()
-            //     .AddJsonFile(fullPath, optional: true, reloadOnChange: true)
-            //     .Build();
-
-            //    string CSSPDBConnectionString = Configuration.GetConnectionString("CSSPDB2");
-            //    string TestDBConnectionString = Configuration.GetConnectionString("TestDB");
-
-            //    optionsBuilder.UseSqlServer(TestDBConnectionString);
-            //}
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

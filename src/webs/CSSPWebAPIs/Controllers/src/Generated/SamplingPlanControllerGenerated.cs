@@ -6,6 +6,7 @@
 
 using CSSPModels;
 using CSSPServices;
+using CultureServices.Services;
 using LoggedInServices.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -18,8 +19,8 @@ namespace CSSPWebAPI.Controllers
     {
         Task<ActionResult<List<SamplingPlan>>> Get();
         Task<ActionResult<SamplingPlan>> Get(int SamplingPlanID);
-        Task<ActionResult<SamplingPlan>> Post(SamplingPlan samplingPlan);
-        Task<ActionResult<SamplingPlan>> Put(SamplingPlan samplingPlan);
+        Task<ActionResult<SamplingPlan>> Post(SamplingPlan SamplingPlan);
+        Task<ActionResult<SamplingPlan>> Put(SamplingPlan SamplingPlan);
         Task<ActionResult<bool>> Delete(int SamplingPlanID);
     }
 
@@ -32,17 +33,17 @@ namespace CSSPWebAPI.Controllers
         #endregion Variables
 
         #region Properties
-        private ISamplingPlanService samplingPlanService { get; }
-        private CSSPDBContext db { get; }
-        private ILoggedInService loggedInService { get; }
+        private ICultureService CultureService { get; }
+        private ILoggedInService LoggedInService { get; }
+        private ISamplingPlanService SamplingPlanService { get; }
         #endregion Properties
 
         #region Constructors
-        public SamplingPlanController(ISamplingPlanService samplingPlanService, CSSPDBContext db, ILoggedInService loggedInService)
+        public SamplingPlanController(ICultureService CultureService, ILoggedInService LoggedInService, ISamplingPlanService SamplingPlanService)
         {
-            this.samplingPlanService = samplingPlanService;
-            this.db = db;
-            this.loggedInService = loggedInService;
+            this.CultureService = CultureService;
+            this.LoggedInService = LoggedInService;
+            this.SamplingPlanService = SamplingPlanService;
         }
         #endregion Constructors
 
@@ -50,27 +51,42 @@ namespace CSSPWebAPI.Controllers
         [HttpGet]
         public async Task<ActionResult<List<SamplingPlan>>> Get()
         {
-            return await samplingPlanService.GetSamplingPlanList();
+            CultureService.SetCulture((string)RouteData.Values["culture"]);
+            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+
+            return await SamplingPlanService.GetSamplingPlanList();
         }
         [HttpGet("{SamplingPlanID}")]
         public async Task<ActionResult<SamplingPlan>> Get(int SamplingPlanID)
         {
-            return await samplingPlanService.GetSamplingPlanWithSamplingPlanID(SamplingPlanID);
+            CultureService.SetCulture((string)RouteData.Values["culture"]);
+            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+
+            return await SamplingPlanService.GetSamplingPlanWithSamplingPlanID(SamplingPlanID);
         }
         [HttpPost]
-        public async Task<ActionResult<SamplingPlan>> Post(SamplingPlan samplingPlan)
+        public async Task<ActionResult<SamplingPlan>> Post(SamplingPlan SamplingPlan)
         {
-            return await samplingPlanService.Add(samplingPlan);
+            CultureService.SetCulture((string)RouteData.Values["culture"]);
+            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+
+            return await SamplingPlanService.Post(SamplingPlan);
         }
         [HttpPut]
-        public async Task<ActionResult<SamplingPlan>> Put(SamplingPlan samplingPlan)
+        public async Task<ActionResult<SamplingPlan>> Put(SamplingPlan SamplingPlan)
         {
-            return await samplingPlanService.Update(samplingPlan);
+            CultureService.SetCulture((string)RouteData.Values["culture"]);
+            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+
+            return await SamplingPlanService.Put(SamplingPlan);
         }
         [HttpDelete("{SamplingPlanID}")]
         public async Task<ActionResult<bool>> Delete(int SamplingPlanID)
         {
-            return await samplingPlanService.Delete(SamplingPlanID);
+            CultureService.SetCulture((string)RouteData.Values["culture"]);
+            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+
+            return await SamplingPlanService.Delete(SamplingPlanID);
         }
         #endregion Functions public
 

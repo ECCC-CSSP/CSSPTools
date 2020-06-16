@@ -32,7 +32,7 @@ namespace CSSPServices.Tests
         private IServiceProvider Provider { get; set; }
         private IServiceCollection Services { get; set; }
         private ICultureService CultureService { get; set; }
-        private ITelService telService { get; set; }
+        private ITelService TelService { get; set; }
         private CSSPDBContext db { get; set; }
         #endregion Properties
 
@@ -62,7 +62,7 @@ namespace CSSPServices.Tests
                Tel tel = GetFilledRandomTel(""); 
 
                // List<Tel>
-               var actionTelList = await telService.GetTelList();
+               var actionTelList = await TelService.GetTelList();
                Assert.Equal(200, ((ObjectResult)actionTelList.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionTelList.Result).Value);
                List<Tel> telList = (List<Tel>)((OkObjectResult)actionTelList.Result).Value;
@@ -70,22 +70,22 @@ namespace CSSPServices.Tests
                int count = ((List<Tel>)((OkObjectResult)actionTelList.Result).Value).Count();
                 Assert.True(count > 0);
 
-               // Add Tel
-               var actionTelAdded = await telService.Add(tel);
+               // Post Tel
+               var actionTelAdded = await TelService.Post(tel);
                Assert.Equal(200, ((ObjectResult)actionTelAdded.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionTelAdded.Result).Value);
                Tel telAdded = (Tel)((OkObjectResult)actionTelAdded.Result).Value;
                Assert.NotNull(telAdded);
 
-               // Update Tel
-               var actionTelUpdated = await telService.Update(tel);
+               // Put Tel
+               var actionTelUpdated = await TelService.Put(tel);
                Assert.Equal(200, ((ObjectResult)actionTelUpdated.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionTelUpdated.Result).Value);
                Tel telUpdated = (Tel)((OkObjectResult)actionTelUpdated.Result).Value;
                Assert.NotNull(telUpdated);
 
                // Delete Tel
-               var actionTelDeleted = await telService.Delete(tel.TelID);
+               var actionTelDeleted = await TelService.Delete(tel.TelID);
                Assert.Equal(200, ((ObjectResult)actionTelDeleted.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionTelDeleted.Result).Value);
                bool retBool = (bool)((OkObjectResult)actionTelDeleted.Result).Value;
@@ -126,8 +126,8 @@ namespace CSSPServices.Tests
 
             CultureService.SetCulture(culture);
 
-            telService = Provider.GetService<ITelService>();
-            Assert.NotNull(telService);
+            TelService = Provider.GetService<ITelService>();
+            Assert.NotNull(TelService);
 
             return await Task.FromResult(true);
         }

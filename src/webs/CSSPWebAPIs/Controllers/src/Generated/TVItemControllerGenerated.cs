@@ -6,6 +6,7 @@
 
 using CSSPModels;
 using CSSPServices;
+using CultureServices.Services;
 using LoggedInServices.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -18,8 +19,8 @@ namespace CSSPWebAPI.Controllers
     {
         Task<ActionResult<List<TVItem>>> Get();
         Task<ActionResult<TVItem>> Get(int TVItemID);
-        Task<ActionResult<TVItem>> Post(TVItem tvItem);
-        Task<ActionResult<TVItem>> Put(TVItem tvItem);
+        Task<ActionResult<TVItem>> Post(TVItem TVItem);
+        Task<ActionResult<TVItem>> Put(TVItem TVItem);
         Task<ActionResult<bool>> Delete(int TVItemID);
     }
 
@@ -32,17 +33,17 @@ namespace CSSPWebAPI.Controllers
         #endregion Variables
 
         #region Properties
-        private ITVItemService tvItemService { get; }
-        private CSSPDBContext db { get; }
-        private ILoggedInService loggedInService { get; }
+        private ICultureService CultureService { get; }
+        private ILoggedInService LoggedInService { get; }
+        private ITVItemService TVItemService { get; }
         #endregion Properties
 
         #region Constructors
-        public TVItemController(ITVItemService tvItemService, CSSPDBContext db, ILoggedInService loggedInService)
+        public TVItemController(ICultureService CultureService, ILoggedInService LoggedInService, ITVItemService TVItemService)
         {
-            this.tvItemService = tvItemService;
-            this.db = db;
-            this.loggedInService = loggedInService;
+            this.CultureService = CultureService;
+            this.LoggedInService = LoggedInService;
+            this.TVItemService = TVItemService;
         }
         #endregion Constructors
 
@@ -50,27 +51,42 @@ namespace CSSPWebAPI.Controllers
         [HttpGet]
         public async Task<ActionResult<List<TVItem>>> Get()
         {
-            return await tvItemService.GetTVItemList();
+            CultureService.SetCulture((string)RouteData.Values["culture"]);
+            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+
+            return await TVItemService.GetTVItemList();
         }
         [HttpGet("{TVItemID}")]
         public async Task<ActionResult<TVItem>> Get(int TVItemID)
         {
-            return await tvItemService.GetTVItemWithTVItemID(TVItemID);
+            CultureService.SetCulture((string)RouteData.Values["culture"]);
+            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+
+            return await TVItemService.GetTVItemWithTVItemID(TVItemID);
         }
         [HttpPost]
-        public async Task<ActionResult<TVItem>> Post(TVItem tvItem)
+        public async Task<ActionResult<TVItem>> Post(TVItem TVItem)
         {
-            return await tvItemService.Add(tvItem);
+            CultureService.SetCulture((string)RouteData.Values["culture"]);
+            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+
+            return await TVItemService.Post(TVItem);
         }
         [HttpPut]
-        public async Task<ActionResult<TVItem>> Put(TVItem tvItem)
+        public async Task<ActionResult<TVItem>> Put(TVItem TVItem)
         {
-            return await tvItemService.Update(tvItem);
+            CultureService.SetCulture((string)RouteData.Values["culture"]);
+            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+
+            return await TVItemService.Put(TVItem);
         }
         [HttpDelete("{TVItemID}")]
         public async Task<ActionResult<bool>> Delete(int TVItemID)
         {
-            return await tvItemService.Delete(TVItemID);
+            CultureService.SetCulture((string)RouteData.Values["culture"]);
+            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+
+            return await TVItemService.Delete(TVItemID);
         }
         #endregion Functions public
 

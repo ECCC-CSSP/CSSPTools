@@ -70,32 +70,32 @@ export class TelComponent implements OnInit, OnDestroy {
             {
               value: (AddOrUpdate === 'Add' ? 0 : (this.telService.telList[0]?.TelID)),
               disabled: false
-            }],
+            }, [ Validators.required ]],
           TelTVItemID: [
             {
               value: this.telService.telList[0]?.TelTVItemID,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           TelNumber: [
             {
               value: this.telService.telList[0]?.TelNumber,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           TelType: [
             {
               value: this.telService.telList[0]?.TelType,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           LastUpdateDate_UTC: [
             {
               value: this.telService.telList[0]?.LastUpdateDate_UTC,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           LastUpdateContactTVItemID: [
             {
               value: this.telService.telList[0]?.LastUpdateContactTVItemID,
               disabled: false
-            }],
+            }, [ Validators.required ]],
         }
       );
 

@@ -62,42 +62,42 @@ export class AppErrLogComponent implements OnInit, OnDestroy {
             {
               value: (AddOrUpdate === 'Add' ? 0 : (this.apperrlogService.apperrlogList[0]?.AppErrLogID)),
               disabled: false
-            }],
+            }, [ Validators.required ]],
           Tag: [
             {
               value: this.apperrlogService.apperrlogList[0]?.Tag,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           LineNumber: [
             {
               value: this.apperrlogService.apperrlogList[0]?.LineNumber,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           Source: [
             {
               value: this.apperrlogService.apperrlogList[0]?.Source,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           Message: [
             {
               value: this.apperrlogService.apperrlogList[0]?.Message,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           DateTime_UTC: [
             {
               value: this.apperrlogService.apperrlogList[0]?.DateTime_UTC,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           LastUpdateDate_UTC: [
             {
               value: this.apperrlogService.apperrlogList[0]?.LastUpdateDate_UTC,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           LastUpdateContactTVItemID: [
             {
               value: this.apperrlogService.apperrlogList[0]?.LastUpdateContactTVItemID,
               disabled: false
-            }],
+            }, [ Validators.required ]],
         }
       );
 

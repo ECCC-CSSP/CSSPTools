@@ -9,6 +9,7 @@ using CSSPEnums;
 using CSSPModels;
 using CultureServices.Resources;
 using CultureServices.Services;
+using LoggedInServices.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -22,11 +23,11 @@ namespace CSSPServices
 {
    public interface IAddressService
     {
-       Task<ActionResult<Address>> GetAddressWithAddressID(int AddressID);
-       Task<ActionResult<List<Address>>> GetAddressList();
-       Task<ActionResult<Address>> Add(Address address);
        Task<ActionResult<bool>> Delete(int AddressID);
-       Task<ActionResult<Address>> Update(Address address);
+       Task<ActionResult<List<Address>>> GetAddressList();
+       Task<ActionResult<Address>> GetAddressWithAddressID(int AddressID);
+       Task<ActionResult<Address>> Post(Address address);
+       Task<ActionResult<Address>> Put(Address address);
     }
     public partial class AddressService : ControllerBase, IAddressService
     {
@@ -36,14 +37,16 @@ namespace CSSPServices
         #region Properties
         private CSSPDBContext db { get; }
         private ICultureService CultureService { get; }
+        private ILoggedInService LoggedInService { get; }
         private IEnums enums { get; }
         private IEnumerable<ValidationResult> ValidationResults { get; set; }
         #endregion Properties
 
         #region Constructors
-        public AddressService(ICultureService CultureService, IEnums enums, CSSPDBContext db)
+        public AddressService(ICultureService CultureService, ILoggedInService LoggedInService, IEnums enums, CSSPDBContext db)
         {
             this.CultureService = CultureService;
+            this.LoggedInService = LoggedInService;
             this.enums = enums;
             this.db = db;
         }
@@ -52,6 +55,11 @@ namespace CSSPServices
         #region Functions public 
         public async Task<ActionResult<Address>> GetAddressWithAddressID(int AddressID)
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             Address address = (from c in db.Addresses.AsNoTracking()
                     where c.AddressID == AddressID
                     select c).FirstOrDefault();
@@ -65,32 +73,22 @@ namespace CSSPServices
         }
         public async Task<ActionResult<List<Address>>> GetAddressList()
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             List<Address> addressList = (from c in db.Addresses.AsNoTracking() select c).Take(100).ToList();
 
             return await Task.FromResult(Ok(addressList));
         }
-        public async Task<ActionResult<Address>> Add(Address address)
-        {
-            ValidationResults = Validate(new ValidationContext(address), ActionDBTypeEnum.Create);
-            if (ValidationResults.Count() > 0)
-            {
-               return await Task.FromResult(BadRequest(ValidationResults));
-            }
-
-            try
-            {
-               db.Addresses.Add(address);
-               db.SaveChanges();
-            }
-            catch (DbUpdateException ex)
-            {
-               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
-            }
-
-            return await Task.FromResult(Ok(address));
-        }
         public async Task<ActionResult<bool>> Delete(int AddressID)
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             Address address = (from c in db.Addresses
                                where c.AddressID == AddressID
                                select c).FirstOrDefault();
@@ -112,8 +110,38 @@ namespace CSSPServices
 
             return await Task.FromResult(Ok(true));
         }
-        public async Task<ActionResult<Address>> Update(Address address)
+        public async Task<ActionResult<Address>> Post(Address address)
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
+            ValidationResults = Validate(new ValidationContext(address), ActionDBTypeEnum.Create);
+            if (ValidationResults.Count() > 0)
+            {
+               return await Task.FromResult(BadRequest(ValidationResults));
+            }
+
+            try
+            {
+               db.Addresses.Add(address);
+               db.SaveChanges();
+            }
+            catch (DbUpdateException ex)
+            {
+               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+            }
+
+            return await Task.FromResult(Ok(address));
+        }
+        public async Task<ActionResult<Address>> Put(Address address)
+        {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             ValidationResults = Validate(new ValidationContext(address), ActionDBTypeEnum.Update);
             if (ValidationResults.Count() > 0)
             {

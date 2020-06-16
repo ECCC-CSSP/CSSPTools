@@ -6,6 +6,7 @@
 
 using CSSPModels;
 using CSSPServices;
+using CultureServices.Services;
 using LoggedInServices.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -18,8 +19,8 @@ namespace CSSPWebAPI.Controllers
     {
         Task<ActionResult<List<ReportSection>>> Get();
         Task<ActionResult<ReportSection>> Get(int ReportSectionID);
-        Task<ActionResult<ReportSection>> Post(ReportSection reportSection);
-        Task<ActionResult<ReportSection>> Put(ReportSection reportSection);
+        Task<ActionResult<ReportSection>> Post(ReportSection ReportSection);
+        Task<ActionResult<ReportSection>> Put(ReportSection ReportSection);
         Task<ActionResult<bool>> Delete(int ReportSectionID);
     }
 
@@ -32,17 +33,17 @@ namespace CSSPWebAPI.Controllers
         #endregion Variables
 
         #region Properties
-        private IReportSectionService reportSectionService { get; }
-        private CSSPDBContext db { get; }
-        private ILoggedInService loggedInService { get; }
+        private ICultureService CultureService { get; }
+        private ILoggedInService LoggedInService { get; }
+        private IReportSectionService ReportSectionService { get; }
         #endregion Properties
 
         #region Constructors
-        public ReportSectionController(IReportSectionService reportSectionService, CSSPDBContext db, ILoggedInService loggedInService)
+        public ReportSectionController(ICultureService CultureService, ILoggedInService LoggedInService, IReportSectionService ReportSectionService)
         {
-            this.reportSectionService = reportSectionService;
-            this.db = db;
-            this.loggedInService = loggedInService;
+            this.CultureService = CultureService;
+            this.LoggedInService = LoggedInService;
+            this.ReportSectionService = ReportSectionService;
         }
         #endregion Constructors
 
@@ -50,27 +51,42 @@ namespace CSSPWebAPI.Controllers
         [HttpGet]
         public async Task<ActionResult<List<ReportSection>>> Get()
         {
-            return await reportSectionService.GetReportSectionList();
+            CultureService.SetCulture((string)RouteData.Values["culture"]);
+            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+
+            return await ReportSectionService.GetReportSectionList();
         }
         [HttpGet("{ReportSectionID}")]
         public async Task<ActionResult<ReportSection>> Get(int ReportSectionID)
         {
-            return await reportSectionService.GetReportSectionWithReportSectionID(ReportSectionID);
+            CultureService.SetCulture((string)RouteData.Values["culture"]);
+            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+
+            return await ReportSectionService.GetReportSectionWithReportSectionID(ReportSectionID);
         }
         [HttpPost]
-        public async Task<ActionResult<ReportSection>> Post(ReportSection reportSection)
+        public async Task<ActionResult<ReportSection>> Post(ReportSection ReportSection)
         {
-            return await reportSectionService.Add(reportSection);
+            CultureService.SetCulture((string)RouteData.Values["culture"]);
+            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+
+            return await ReportSectionService.Post(ReportSection);
         }
         [HttpPut]
-        public async Task<ActionResult<ReportSection>> Put(ReportSection reportSection)
+        public async Task<ActionResult<ReportSection>> Put(ReportSection ReportSection)
         {
-            return await reportSectionService.Update(reportSection);
+            CultureService.SetCulture((string)RouteData.Values["culture"]);
+            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+
+            return await ReportSectionService.Put(ReportSection);
         }
         [HttpDelete("{ReportSectionID}")]
         public async Task<ActionResult<bool>> Delete(int ReportSectionID)
         {
-            return await reportSectionService.Delete(ReportSectionID);
+            CultureService.SetCulture((string)RouteData.Values["culture"]);
+            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+
+            return await ReportSectionService.Delete(ReportSectionID);
         }
         #endregion Functions public
 

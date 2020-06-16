@@ -32,7 +32,7 @@ namespace CSSPServices.Tests
         private IServiceProvider Provider { get; set; }
         private IServiceCollection Services { get; set; }
         private ICultureService CultureService { get; set; }
-        private IBoxModelLanguageService boxModelLanguageService { get; set; }
+        private IBoxModelLanguageService BoxModelLanguageService { get; set; }
         private CSSPDBContext db { get; set; }
         #endregion Properties
 
@@ -62,7 +62,7 @@ namespace CSSPServices.Tests
                BoxModelLanguage boxModelLanguage = GetFilledRandomBoxModelLanguage(""); 
 
                // List<BoxModelLanguage>
-               var actionBoxModelLanguageList = await boxModelLanguageService.GetBoxModelLanguageList();
+               var actionBoxModelLanguageList = await BoxModelLanguageService.GetBoxModelLanguageList();
                Assert.Equal(200, ((ObjectResult)actionBoxModelLanguageList.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionBoxModelLanguageList.Result).Value);
                List<BoxModelLanguage> boxModelLanguageList = (List<BoxModelLanguage>)((OkObjectResult)actionBoxModelLanguageList.Result).Value;
@@ -70,22 +70,22 @@ namespace CSSPServices.Tests
                int count = ((List<BoxModelLanguage>)((OkObjectResult)actionBoxModelLanguageList.Result).Value).Count();
                 Assert.True(count > 0);
 
-               // Add BoxModelLanguage
-               var actionBoxModelLanguageAdded = await boxModelLanguageService.Add(boxModelLanguage);
+               // Post BoxModelLanguage
+               var actionBoxModelLanguageAdded = await BoxModelLanguageService.Post(boxModelLanguage);
                Assert.Equal(200, ((ObjectResult)actionBoxModelLanguageAdded.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionBoxModelLanguageAdded.Result).Value);
                BoxModelLanguage boxModelLanguageAdded = (BoxModelLanguage)((OkObjectResult)actionBoxModelLanguageAdded.Result).Value;
                Assert.NotNull(boxModelLanguageAdded);
 
-               // Update BoxModelLanguage
-               var actionBoxModelLanguageUpdated = await boxModelLanguageService.Update(boxModelLanguage);
+               // Put BoxModelLanguage
+               var actionBoxModelLanguageUpdated = await BoxModelLanguageService.Put(boxModelLanguage);
                Assert.Equal(200, ((ObjectResult)actionBoxModelLanguageUpdated.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionBoxModelLanguageUpdated.Result).Value);
                BoxModelLanguage boxModelLanguageUpdated = (BoxModelLanguage)((OkObjectResult)actionBoxModelLanguageUpdated.Result).Value;
                Assert.NotNull(boxModelLanguageUpdated);
 
                // Delete BoxModelLanguage
-               var actionBoxModelLanguageDeleted = await boxModelLanguageService.Delete(boxModelLanguage.BoxModelLanguageID);
+               var actionBoxModelLanguageDeleted = await BoxModelLanguageService.Delete(boxModelLanguage.BoxModelLanguageID);
                Assert.Equal(200, ((ObjectResult)actionBoxModelLanguageDeleted.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionBoxModelLanguageDeleted.Result).Value);
                bool retBool = (bool)((OkObjectResult)actionBoxModelLanguageDeleted.Result).Value;
@@ -126,8 +126,8 @@ namespace CSSPServices.Tests
 
             CultureService.SetCulture(culture);
 
-            boxModelLanguageService = Provider.GetService<IBoxModelLanguageService>();
-            Assert.NotNull(boxModelLanguageService);
+            BoxModelLanguageService = Provider.GetService<IBoxModelLanguageService>();
+            Assert.NotNull(BoxModelLanguageService);
 
             return await Task.FromResult(true);
         }

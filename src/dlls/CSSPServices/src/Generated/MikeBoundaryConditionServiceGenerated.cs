@@ -9,6 +9,7 @@ using CSSPEnums;
 using CSSPModels;
 using CultureServices.Resources;
 using CultureServices.Services;
+using LoggedInServices.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -22,11 +23,11 @@ namespace CSSPServices
 {
    public interface IMikeBoundaryConditionService
     {
-       Task<ActionResult<MikeBoundaryCondition>> GetMikeBoundaryConditionWithMikeBoundaryConditionID(int MikeBoundaryConditionID);
-       Task<ActionResult<List<MikeBoundaryCondition>>> GetMikeBoundaryConditionList();
-       Task<ActionResult<MikeBoundaryCondition>> Add(MikeBoundaryCondition mikeboundarycondition);
        Task<ActionResult<bool>> Delete(int MikeBoundaryConditionID);
-       Task<ActionResult<MikeBoundaryCondition>> Update(MikeBoundaryCondition mikeboundarycondition);
+       Task<ActionResult<List<MikeBoundaryCondition>>> GetMikeBoundaryConditionList();
+       Task<ActionResult<MikeBoundaryCondition>> GetMikeBoundaryConditionWithMikeBoundaryConditionID(int MikeBoundaryConditionID);
+       Task<ActionResult<MikeBoundaryCondition>> Post(MikeBoundaryCondition mikeboundarycondition);
+       Task<ActionResult<MikeBoundaryCondition>> Put(MikeBoundaryCondition mikeboundarycondition);
     }
     public partial class MikeBoundaryConditionService : ControllerBase, IMikeBoundaryConditionService
     {
@@ -36,14 +37,16 @@ namespace CSSPServices
         #region Properties
         private CSSPDBContext db { get; }
         private ICultureService CultureService { get; }
+        private ILoggedInService LoggedInService { get; }
         private IEnums enums { get; }
         private IEnumerable<ValidationResult> ValidationResults { get; set; }
         #endregion Properties
 
         #region Constructors
-        public MikeBoundaryConditionService(ICultureService CultureService, IEnums enums, CSSPDBContext db)
+        public MikeBoundaryConditionService(ICultureService CultureService, ILoggedInService LoggedInService, IEnums enums, CSSPDBContext db)
         {
             this.CultureService = CultureService;
+            this.LoggedInService = LoggedInService;
             this.enums = enums;
             this.db = db;
         }
@@ -52,6 +55,11 @@ namespace CSSPServices
         #region Functions public 
         public async Task<ActionResult<MikeBoundaryCondition>> GetMikeBoundaryConditionWithMikeBoundaryConditionID(int MikeBoundaryConditionID)
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             MikeBoundaryCondition mikeboundarycondition = (from c in db.MikeBoundaryConditions.AsNoTracking()
                     where c.MikeBoundaryConditionID == MikeBoundaryConditionID
                     select c).FirstOrDefault();
@@ -65,32 +73,22 @@ namespace CSSPServices
         }
         public async Task<ActionResult<List<MikeBoundaryCondition>>> GetMikeBoundaryConditionList()
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             List<MikeBoundaryCondition> mikeboundaryconditionList = (from c in db.MikeBoundaryConditions.AsNoTracking() select c).Take(100).ToList();
 
             return await Task.FromResult(Ok(mikeboundaryconditionList));
         }
-        public async Task<ActionResult<MikeBoundaryCondition>> Add(MikeBoundaryCondition mikeBoundaryCondition)
-        {
-            ValidationResults = Validate(new ValidationContext(mikeBoundaryCondition), ActionDBTypeEnum.Create);
-            if (ValidationResults.Count() > 0)
-            {
-               return await Task.FromResult(BadRequest(ValidationResults));
-            }
-
-            try
-            {
-               db.MikeBoundaryConditions.Add(mikeBoundaryCondition);
-               db.SaveChanges();
-            }
-            catch (DbUpdateException ex)
-            {
-               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
-            }
-
-            return await Task.FromResult(Ok(mikeBoundaryCondition));
-        }
         public async Task<ActionResult<bool>> Delete(int MikeBoundaryConditionID)
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             MikeBoundaryCondition mikeBoundaryCondition = (from c in db.MikeBoundaryConditions
                                where c.MikeBoundaryConditionID == MikeBoundaryConditionID
                                select c).FirstOrDefault();
@@ -112,8 +110,38 @@ namespace CSSPServices
 
             return await Task.FromResult(Ok(true));
         }
-        public async Task<ActionResult<MikeBoundaryCondition>> Update(MikeBoundaryCondition mikeBoundaryCondition)
+        public async Task<ActionResult<MikeBoundaryCondition>> Post(MikeBoundaryCondition mikeBoundaryCondition)
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
+            ValidationResults = Validate(new ValidationContext(mikeBoundaryCondition), ActionDBTypeEnum.Create);
+            if (ValidationResults.Count() > 0)
+            {
+               return await Task.FromResult(BadRequest(ValidationResults));
+            }
+
+            try
+            {
+               db.MikeBoundaryConditions.Add(mikeBoundaryCondition);
+               db.SaveChanges();
+            }
+            catch (DbUpdateException ex)
+            {
+               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+            }
+
+            return await Task.FromResult(Ok(mikeBoundaryCondition));
+        }
+        public async Task<ActionResult<MikeBoundaryCondition>> Put(MikeBoundaryCondition mikeBoundaryCondition)
+        {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             ValidationResults = Validate(new ValidationContext(mikeBoundaryCondition), ActionDBTypeEnum.Update);
             if (ValidationResults.Count() > 0)
             {

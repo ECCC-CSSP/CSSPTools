@@ -6,6 +6,7 @@
 
 using CSSPModels;
 using CSSPServices;
+using CultureServices.Services;
 using LoggedInServices.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -18,8 +19,8 @@ namespace CSSPWebAPI.Controllers
     {
         Task<ActionResult<List<VPScenario>>> Get();
         Task<ActionResult<VPScenario>> Get(int VPScenarioID);
-        Task<ActionResult<VPScenario>> Post(VPScenario vpScenario);
-        Task<ActionResult<VPScenario>> Put(VPScenario vpScenario);
+        Task<ActionResult<VPScenario>> Post(VPScenario VPScenario);
+        Task<ActionResult<VPScenario>> Put(VPScenario VPScenario);
         Task<ActionResult<bool>> Delete(int VPScenarioID);
     }
 
@@ -32,17 +33,17 @@ namespace CSSPWebAPI.Controllers
         #endregion Variables
 
         #region Properties
-        private IVPScenarioService vpScenarioService { get; }
-        private CSSPDBContext db { get; }
-        private ILoggedInService loggedInService { get; }
+        private ICultureService CultureService { get; }
+        private ILoggedInService LoggedInService { get; }
+        private IVPScenarioService VPScenarioService { get; }
         #endregion Properties
 
         #region Constructors
-        public VPScenarioController(IVPScenarioService vpScenarioService, CSSPDBContext db, ILoggedInService loggedInService)
+        public VPScenarioController(ICultureService CultureService, ILoggedInService LoggedInService, IVPScenarioService VPScenarioService)
         {
-            this.vpScenarioService = vpScenarioService;
-            this.db = db;
-            this.loggedInService = loggedInService;
+            this.CultureService = CultureService;
+            this.LoggedInService = LoggedInService;
+            this.VPScenarioService = VPScenarioService;
         }
         #endregion Constructors
 
@@ -50,27 +51,42 @@ namespace CSSPWebAPI.Controllers
         [HttpGet]
         public async Task<ActionResult<List<VPScenario>>> Get()
         {
-            return await vpScenarioService.GetVPScenarioList();
+            CultureService.SetCulture((string)RouteData.Values["culture"]);
+            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+
+            return await VPScenarioService.GetVPScenarioList();
         }
         [HttpGet("{VPScenarioID}")]
         public async Task<ActionResult<VPScenario>> Get(int VPScenarioID)
         {
-            return await vpScenarioService.GetVPScenarioWithVPScenarioID(VPScenarioID);
+            CultureService.SetCulture((string)RouteData.Values["culture"]);
+            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+
+            return await VPScenarioService.GetVPScenarioWithVPScenarioID(VPScenarioID);
         }
         [HttpPost]
-        public async Task<ActionResult<VPScenario>> Post(VPScenario vpScenario)
+        public async Task<ActionResult<VPScenario>> Post(VPScenario VPScenario)
         {
-            return await vpScenarioService.Add(vpScenario);
+            CultureService.SetCulture((string)RouteData.Values["culture"]);
+            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+
+            return await VPScenarioService.Post(VPScenario);
         }
         [HttpPut]
-        public async Task<ActionResult<VPScenario>> Put(VPScenario vpScenario)
+        public async Task<ActionResult<VPScenario>> Put(VPScenario VPScenario)
         {
-            return await vpScenarioService.Update(vpScenario);
+            CultureService.SetCulture((string)RouteData.Values["culture"]);
+            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+
+            return await VPScenarioService.Put(VPScenario);
         }
         [HttpDelete("{VPScenarioID}")]
         public async Task<ActionResult<bool>> Delete(int VPScenarioID)
         {
-            return await vpScenarioService.Delete(VPScenarioID);
+            CultureService.SetCulture((string)RouteData.Values["culture"]);
+            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+
+            return await VPScenarioService.Delete(VPScenarioID);
         }
         #endregion Functions public
 

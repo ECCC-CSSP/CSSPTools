@@ -9,6 +9,7 @@ using CSSPEnums;
 using CSSPModels;
 using CultureServices.Resources;
 using CultureServices.Services;
+using LoggedInServices.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -22,11 +23,11 @@ namespace CSSPServices
 {
    public interface IPolSourceGroupingService
     {
-       Task<ActionResult<PolSourceGrouping>> GetPolSourceGroupingWithPolSourceGroupingID(int PolSourceGroupingID);
-       Task<ActionResult<List<PolSourceGrouping>>> GetPolSourceGroupingList();
-       Task<ActionResult<PolSourceGrouping>> Add(PolSourceGrouping polsourcegrouping);
        Task<ActionResult<bool>> Delete(int PolSourceGroupingID);
-       Task<ActionResult<PolSourceGrouping>> Update(PolSourceGrouping polsourcegrouping);
+       Task<ActionResult<List<PolSourceGrouping>>> GetPolSourceGroupingList();
+       Task<ActionResult<PolSourceGrouping>> GetPolSourceGroupingWithPolSourceGroupingID(int PolSourceGroupingID);
+       Task<ActionResult<PolSourceGrouping>> Post(PolSourceGrouping polsourcegrouping);
+       Task<ActionResult<PolSourceGrouping>> Put(PolSourceGrouping polsourcegrouping);
     }
     public partial class PolSourceGroupingService : ControllerBase, IPolSourceGroupingService
     {
@@ -36,14 +37,16 @@ namespace CSSPServices
         #region Properties
         private CSSPDBContext db { get; }
         private ICultureService CultureService { get; }
+        private ILoggedInService LoggedInService { get; }
         private IEnums enums { get; }
         private IEnumerable<ValidationResult> ValidationResults { get; set; }
         #endregion Properties
 
         #region Constructors
-        public PolSourceGroupingService(ICultureService CultureService, IEnums enums, CSSPDBContext db)
+        public PolSourceGroupingService(ICultureService CultureService, ILoggedInService LoggedInService, IEnums enums, CSSPDBContext db)
         {
             this.CultureService = CultureService;
+            this.LoggedInService = LoggedInService;
             this.enums = enums;
             this.db = db;
         }
@@ -52,6 +55,11 @@ namespace CSSPServices
         #region Functions public 
         public async Task<ActionResult<PolSourceGrouping>> GetPolSourceGroupingWithPolSourceGroupingID(int PolSourceGroupingID)
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             PolSourceGrouping polsourcegrouping = (from c in db.PolSourceGroupings.AsNoTracking()
                     where c.PolSourceGroupingID == PolSourceGroupingID
                     select c).FirstOrDefault();
@@ -65,32 +73,22 @@ namespace CSSPServices
         }
         public async Task<ActionResult<List<PolSourceGrouping>>> GetPolSourceGroupingList()
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             List<PolSourceGrouping> polsourcegroupingList = (from c in db.PolSourceGroupings.AsNoTracking() select c).Take(100).ToList();
 
             return await Task.FromResult(Ok(polsourcegroupingList));
         }
-        public async Task<ActionResult<PolSourceGrouping>> Add(PolSourceGrouping polSourceGrouping)
-        {
-            ValidationResults = Validate(new ValidationContext(polSourceGrouping), ActionDBTypeEnum.Create);
-            if (ValidationResults.Count() > 0)
-            {
-               return await Task.FromResult(BadRequest(ValidationResults));
-            }
-
-            try
-            {
-               db.PolSourceGroupings.Add(polSourceGrouping);
-               db.SaveChanges();
-            }
-            catch (DbUpdateException ex)
-            {
-               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
-            }
-
-            return await Task.FromResult(Ok(polSourceGrouping));
-        }
         public async Task<ActionResult<bool>> Delete(int PolSourceGroupingID)
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             PolSourceGrouping polSourceGrouping = (from c in db.PolSourceGroupings
                                where c.PolSourceGroupingID == PolSourceGroupingID
                                select c).FirstOrDefault();
@@ -112,8 +110,38 @@ namespace CSSPServices
 
             return await Task.FromResult(Ok(true));
         }
-        public async Task<ActionResult<PolSourceGrouping>> Update(PolSourceGrouping polSourceGrouping)
+        public async Task<ActionResult<PolSourceGrouping>> Post(PolSourceGrouping polSourceGrouping)
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
+            ValidationResults = Validate(new ValidationContext(polSourceGrouping), ActionDBTypeEnum.Create);
+            if (ValidationResults.Count() > 0)
+            {
+               return await Task.FromResult(BadRequest(ValidationResults));
+            }
+
+            try
+            {
+               db.PolSourceGroupings.Add(polSourceGrouping);
+               db.SaveChanges();
+            }
+            catch (DbUpdateException ex)
+            {
+               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+            }
+
+            return await Task.FromResult(Ok(polSourceGrouping));
+        }
+        public async Task<ActionResult<PolSourceGrouping>> Put(PolSourceGrouping polSourceGrouping)
+        {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             ValidationResults = Validate(new ValidationContext(polSourceGrouping), ActionDBTypeEnum.Update);
             if (ValidationResults.Count() > 0)
             {

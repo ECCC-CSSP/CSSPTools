@@ -32,7 +32,7 @@ namespace CSSPServices.Tests
         private IServiceProvider Provider { get; set; }
         private IServiceCollection Services { get; set; }
         private ICultureService CultureService { get; set; }
-        private IInfrastructureService infrastructureService { get; set; }
+        private IInfrastructureService InfrastructureService { get; set; }
         private CSSPDBContext db { get; set; }
         #endregion Properties
 
@@ -62,7 +62,7 @@ namespace CSSPServices.Tests
                Infrastructure infrastructure = GetFilledRandomInfrastructure(""); 
 
                // List<Infrastructure>
-               var actionInfrastructureList = await infrastructureService.GetInfrastructureList();
+               var actionInfrastructureList = await InfrastructureService.GetInfrastructureList();
                Assert.Equal(200, ((ObjectResult)actionInfrastructureList.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionInfrastructureList.Result).Value);
                List<Infrastructure> infrastructureList = (List<Infrastructure>)((OkObjectResult)actionInfrastructureList.Result).Value;
@@ -70,22 +70,22 @@ namespace CSSPServices.Tests
                int count = ((List<Infrastructure>)((OkObjectResult)actionInfrastructureList.Result).Value).Count();
                 Assert.True(count > 0);
 
-               // Add Infrastructure
-               var actionInfrastructureAdded = await infrastructureService.Add(infrastructure);
+               // Post Infrastructure
+               var actionInfrastructureAdded = await InfrastructureService.Post(infrastructure);
                Assert.Equal(200, ((ObjectResult)actionInfrastructureAdded.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionInfrastructureAdded.Result).Value);
                Infrastructure infrastructureAdded = (Infrastructure)((OkObjectResult)actionInfrastructureAdded.Result).Value;
                Assert.NotNull(infrastructureAdded);
 
-               // Update Infrastructure
-               var actionInfrastructureUpdated = await infrastructureService.Update(infrastructure);
+               // Put Infrastructure
+               var actionInfrastructureUpdated = await InfrastructureService.Put(infrastructure);
                Assert.Equal(200, ((ObjectResult)actionInfrastructureUpdated.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionInfrastructureUpdated.Result).Value);
                Infrastructure infrastructureUpdated = (Infrastructure)((OkObjectResult)actionInfrastructureUpdated.Result).Value;
                Assert.NotNull(infrastructureUpdated);
 
                // Delete Infrastructure
-               var actionInfrastructureDeleted = await infrastructureService.Delete(infrastructure.InfrastructureID);
+               var actionInfrastructureDeleted = await InfrastructureService.Delete(infrastructure.InfrastructureID);
                Assert.Equal(200, ((ObjectResult)actionInfrastructureDeleted.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionInfrastructureDeleted.Result).Value);
                bool retBool = (bool)((OkObjectResult)actionInfrastructureDeleted.Result).Value;
@@ -126,8 +126,8 @@ namespace CSSPServices.Tests
 
             CultureService.SetCulture(culture);
 
-            infrastructureService = Provider.GetService<IInfrastructureService>();
-            Assert.NotNull(infrastructureService);
+            InfrastructureService = Provider.GetService<IInfrastructureService>();
+            Assert.NotNull(InfrastructureService);
 
             return await Task.FromResult(true);
         }

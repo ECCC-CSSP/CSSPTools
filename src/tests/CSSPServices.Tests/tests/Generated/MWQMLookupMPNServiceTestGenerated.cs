@@ -32,7 +32,7 @@ namespace CSSPServices.Tests
         private IServiceProvider Provider { get; set; }
         private IServiceCollection Services { get; set; }
         private ICultureService CultureService { get; set; }
-        private IMWQMLookupMPNService mwqmLookupMPNService { get; set; }
+        private IMWQMLookupMPNService MWQMLookupMPNService { get; set; }
         private CSSPDBContext db { get; set; }
         #endregion Properties
 
@@ -62,7 +62,7 @@ namespace CSSPServices.Tests
                MWQMLookupMPN mwqmLookupMPN = GetFilledRandomMWQMLookupMPN(""); 
 
                // List<MWQMLookupMPN>
-               var actionMWQMLookupMPNList = await mwqmLookupMPNService.GetMWQMLookupMPNList();
+               var actionMWQMLookupMPNList = await MWQMLookupMPNService.GetMWQMLookupMPNList();
                Assert.Equal(200, ((ObjectResult)actionMWQMLookupMPNList.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionMWQMLookupMPNList.Result).Value);
                List<MWQMLookupMPN> mwqmLookupMPNList = (List<MWQMLookupMPN>)((OkObjectResult)actionMWQMLookupMPNList.Result).Value;
@@ -70,22 +70,22 @@ namespace CSSPServices.Tests
                int count = ((List<MWQMLookupMPN>)((OkObjectResult)actionMWQMLookupMPNList.Result).Value).Count();
                 Assert.True(count > 0);
 
-               // Add MWQMLookupMPN
-               var actionMWQMLookupMPNAdded = await mwqmLookupMPNService.Add(mwqmLookupMPN);
+               // Post MWQMLookupMPN
+               var actionMWQMLookupMPNAdded = await MWQMLookupMPNService.Post(mwqmLookupMPN);
                Assert.Equal(200, ((ObjectResult)actionMWQMLookupMPNAdded.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionMWQMLookupMPNAdded.Result).Value);
                MWQMLookupMPN mwqmLookupMPNAdded = (MWQMLookupMPN)((OkObjectResult)actionMWQMLookupMPNAdded.Result).Value;
                Assert.NotNull(mwqmLookupMPNAdded);
 
-               // Update MWQMLookupMPN
-               var actionMWQMLookupMPNUpdated = await mwqmLookupMPNService.Update(mwqmLookupMPN);
+               // Put MWQMLookupMPN
+               var actionMWQMLookupMPNUpdated = await MWQMLookupMPNService.Put(mwqmLookupMPN);
                Assert.Equal(200, ((ObjectResult)actionMWQMLookupMPNUpdated.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionMWQMLookupMPNUpdated.Result).Value);
                MWQMLookupMPN mwqmLookupMPNUpdated = (MWQMLookupMPN)((OkObjectResult)actionMWQMLookupMPNUpdated.Result).Value;
                Assert.NotNull(mwqmLookupMPNUpdated);
 
                // Delete MWQMLookupMPN
-               var actionMWQMLookupMPNDeleted = await mwqmLookupMPNService.Delete(mwqmLookupMPN.MWQMLookupMPNID);
+               var actionMWQMLookupMPNDeleted = await MWQMLookupMPNService.Delete(mwqmLookupMPN.MWQMLookupMPNID);
                Assert.Equal(200, ((ObjectResult)actionMWQMLookupMPNDeleted.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionMWQMLookupMPNDeleted.Result).Value);
                bool retBool = (bool)((OkObjectResult)actionMWQMLookupMPNDeleted.Result).Value;
@@ -126,8 +126,8 @@ namespace CSSPServices.Tests
 
             CultureService.SetCulture(culture);
 
-            mwqmLookupMPNService = Provider.GetService<IMWQMLookupMPNService>();
-            Assert.NotNull(mwqmLookupMPNService);
+            MWQMLookupMPNService = Provider.GetService<IMWQMLookupMPNService>();
+            Assert.NotNull(MWQMLookupMPNService);
 
             return await Task.FromResult(true);
         }

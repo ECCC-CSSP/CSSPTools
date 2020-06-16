@@ -160,8 +160,7 @@ namespace AngularComponentsGeneratedServices.Services
                     sb.AppendLine($@"              value: this.{ dllTypeInfoModels.Name.ToLower() }Service.{ dllTypeInfoModels.Name.ToLower() }List[0]?.{ dllPropertyInfo.CSSPProp.PropName },");
                 }
                 sb.AppendLine($@"              disabled: false");
-                sb.AppendLine($@"            }}],");
-                //sb.AppendLine($@"            }}, Validators.required],");
+                sb.AppendLine($@"            }}, [ Validators.required ]],");
             }
             sb.AppendLine(@"        }");
             sb.AppendLine(@"      );");

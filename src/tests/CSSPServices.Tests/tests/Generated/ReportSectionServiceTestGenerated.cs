@@ -32,7 +32,7 @@ namespace CSSPServices.Tests
         private IServiceProvider Provider { get; set; }
         private IServiceCollection Services { get; set; }
         private ICultureService CultureService { get; set; }
-        private IReportSectionService reportSectionService { get; set; }
+        private IReportSectionService ReportSectionService { get; set; }
         private CSSPDBContext db { get; set; }
         #endregion Properties
 
@@ -62,7 +62,7 @@ namespace CSSPServices.Tests
                ReportSection reportSection = GetFilledRandomReportSection(""); 
 
                // List<ReportSection>
-               var actionReportSectionList = await reportSectionService.GetReportSectionList();
+               var actionReportSectionList = await ReportSectionService.GetReportSectionList();
                Assert.Equal(200, ((ObjectResult)actionReportSectionList.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionReportSectionList.Result).Value);
                List<ReportSection> reportSectionList = (List<ReportSection>)((OkObjectResult)actionReportSectionList.Result).Value;
@@ -70,22 +70,22 @@ namespace CSSPServices.Tests
                int count = ((List<ReportSection>)((OkObjectResult)actionReportSectionList.Result).Value).Count();
                 Assert.True(count > 0);
 
-               // Add ReportSection
-               var actionReportSectionAdded = await reportSectionService.Add(reportSection);
+               // Post ReportSection
+               var actionReportSectionAdded = await ReportSectionService.Post(reportSection);
                Assert.Equal(200, ((ObjectResult)actionReportSectionAdded.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionReportSectionAdded.Result).Value);
                ReportSection reportSectionAdded = (ReportSection)((OkObjectResult)actionReportSectionAdded.Result).Value;
                Assert.NotNull(reportSectionAdded);
 
-               // Update ReportSection
-               var actionReportSectionUpdated = await reportSectionService.Update(reportSection);
+               // Put ReportSection
+               var actionReportSectionUpdated = await ReportSectionService.Put(reportSection);
                Assert.Equal(200, ((ObjectResult)actionReportSectionUpdated.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionReportSectionUpdated.Result).Value);
                ReportSection reportSectionUpdated = (ReportSection)((OkObjectResult)actionReportSectionUpdated.Result).Value;
                Assert.NotNull(reportSectionUpdated);
 
                // Delete ReportSection
-               var actionReportSectionDeleted = await reportSectionService.Delete(reportSection.ReportSectionID);
+               var actionReportSectionDeleted = await ReportSectionService.Delete(reportSection.ReportSectionID);
                Assert.Equal(200, ((ObjectResult)actionReportSectionDeleted.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionReportSectionDeleted.Result).Value);
                bool retBool = (bool)((OkObjectResult)actionReportSectionDeleted.Result).Value;
@@ -126,8 +126,8 @@ namespace CSSPServices.Tests
 
             CultureService.SetCulture(culture);
 
-            reportSectionService = Provider.GetService<IReportSectionService>();
-            Assert.NotNull(reportSectionService);
+            ReportSectionService = Provider.GetService<IReportSectionService>();
+            Assert.NotNull(ReportSectionService);
 
             return await Task.FromResult(true);
         }

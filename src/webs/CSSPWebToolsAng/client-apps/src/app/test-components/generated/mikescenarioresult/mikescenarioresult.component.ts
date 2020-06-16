@@ -62,27 +62,27 @@ export class MikeScenarioResultComponent implements OnInit, OnDestroy {
             {
               value: (AddOrUpdate === 'Add' ? 0 : (this.mikescenarioresultService.mikescenarioresultList[0]?.MikeScenarioResultID)),
               disabled: false
-            }],
+            }, [ Validators.required ]],
           MikeScenarioTVItemID: [
             {
               value: this.mikescenarioresultService.mikescenarioresultList[0]?.MikeScenarioTVItemID,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           MikeResultsJSON: [
             {
               value: this.mikescenarioresultService.mikescenarioresultList[0]?.MikeResultsJSON,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           LastUpdateDate_UTC: [
             {
               value: this.mikescenarioresultService.mikescenarioresultList[0]?.LastUpdateDate_UTC,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           LastUpdateContactTVItemID: [
             {
               value: this.mikescenarioresultService.mikescenarioresultList[0]?.LastUpdateContactTVItemID,
               disabled: false
-            }],
+            }, [ Validators.required ]],
         }
       );
 

@@ -9,6 +9,7 @@ using CSSPEnums;
 using CSSPModels;
 using CultureServices.Resources;
 using CultureServices.Services;
+using LoggedInServices.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -22,11 +23,11 @@ namespace CSSPServices
 {
    public interface IEmailDistributionListService
     {
-       Task<ActionResult<EmailDistributionList>> GetEmailDistributionListWithEmailDistributionListID(int EmailDistributionListID);
-       Task<ActionResult<List<EmailDistributionList>>> GetEmailDistributionListList();
-       Task<ActionResult<EmailDistributionList>> Add(EmailDistributionList emaildistributionlist);
        Task<ActionResult<bool>> Delete(int EmailDistributionListID);
-       Task<ActionResult<EmailDistributionList>> Update(EmailDistributionList emaildistributionlist);
+       Task<ActionResult<List<EmailDistributionList>>> GetEmailDistributionListList();
+       Task<ActionResult<EmailDistributionList>> GetEmailDistributionListWithEmailDistributionListID(int EmailDistributionListID);
+       Task<ActionResult<EmailDistributionList>> Post(EmailDistributionList emaildistributionlist);
+       Task<ActionResult<EmailDistributionList>> Put(EmailDistributionList emaildistributionlist);
     }
     public partial class EmailDistributionListService : ControllerBase, IEmailDistributionListService
     {
@@ -36,14 +37,16 @@ namespace CSSPServices
         #region Properties
         private CSSPDBContext db { get; }
         private ICultureService CultureService { get; }
+        private ILoggedInService LoggedInService { get; }
         private IEnums enums { get; }
         private IEnumerable<ValidationResult> ValidationResults { get; set; }
         #endregion Properties
 
         #region Constructors
-        public EmailDistributionListService(ICultureService CultureService, IEnums enums, CSSPDBContext db)
+        public EmailDistributionListService(ICultureService CultureService, ILoggedInService LoggedInService, IEnums enums, CSSPDBContext db)
         {
             this.CultureService = CultureService;
+            this.LoggedInService = LoggedInService;
             this.enums = enums;
             this.db = db;
         }
@@ -52,6 +55,11 @@ namespace CSSPServices
         #region Functions public 
         public async Task<ActionResult<EmailDistributionList>> GetEmailDistributionListWithEmailDistributionListID(int EmailDistributionListID)
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             EmailDistributionList emaildistributionlist = (from c in db.EmailDistributionLists.AsNoTracking()
                     where c.EmailDistributionListID == EmailDistributionListID
                     select c).FirstOrDefault();
@@ -65,32 +73,22 @@ namespace CSSPServices
         }
         public async Task<ActionResult<List<EmailDistributionList>>> GetEmailDistributionListList()
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             List<EmailDistributionList> emaildistributionlistList = (from c in db.EmailDistributionLists.AsNoTracking() select c).Take(100).ToList();
 
             return await Task.FromResult(Ok(emaildistributionlistList));
         }
-        public async Task<ActionResult<EmailDistributionList>> Add(EmailDistributionList emailDistributionList)
-        {
-            ValidationResults = Validate(new ValidationContext(emailDistributionList), ActionDBTypeEnum.Create);
-            if (ValidationResults.Count() > 0)
-            {
-               return await Task.FromResult(BadRequest(ValidationResults));
-            }
-
-            try
-            {
-               db.EmailDistributionLists.Add(emailDistributionList);
-               db.SaveChanges();
-            }
-            catch (DbUpdateException ex)
-            {
-               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
-            }
-
-            return await Task.FromResult(Ok(emailDistributionList));
-        }
         public async Task<ActionResult<bool>> Delete(int EmailDistributionListID)
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             EmailDistributionList emailDistributionList = (from c in db.EmailDistributionLists
                                where c.EmailDistributionListID == EmailDistributionListID
                                select c).FirstOrDefault();
@@ -112,8 +110,38 @@ namespace CSSPServices
 
             return await Task.FromResult(Ok(true));
         }
-        public async Task<ActionResult<EmailDistributionList>> Update(EmailDistributionList emailDistributionList)
+        public async Task<ActionResult<EmailDistributionList>> Post(EmailDistributionList emailDistributionList)
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
+            ValidationResults = Validate(new ValidationContext(emailDistributionList), ActionDBTypeEnum.Create);
+            if (ValidationResults.Count() > 0)
+            {
+               return await Task.FromResult(BadRequest(ValidationResults));
+            }
+
+            try
+            {
+               db.EmailDistributionLists.Add(emailDistributionList);
+               db.SaveChanges();
+            }
+            catch (DbUpdateException ex)
+            {
+               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+            }
+
+            return await Task.FromResult(Ok(emailDistributionList));
+        }
+        public async Task<ActionResult<EmailDistributionList>> Put(EmailDistributionList emailDistributionList)
+        {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             ValidationResults = Validate(new ValidationContext(emailDistributionList), ActionDBTypeEnum.Update);
             if (ValidationResults.Count() > 0)
             {

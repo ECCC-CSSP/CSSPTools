@@ -62,72 +62,72 @@ export class MikeSourceStartEndComponent implements OnInit, OnDestroy {
             {
               value: (AddOrUpdate === 'Add' ? 0 : (this.mikesourcestartendService.mikesourcestartendList[0]?.MikeSourceStartEndID)),
               disabled: false
-            }],
+            }, [ Validators.required ]],
           MikeSourceID: [
             {
               value: this.mikesourcestartendService.mikesourcestartendList[0]?.MikeSourceID,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           StartDateAndTime_Local: [
             {
               value: this.mikesourcestartendService.mikesourcestartendList[0]?.StartDateAndTime_Local,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           EndDateAndTime_Local: [
             {
               value: this.mikesourcestartendService.mikesourcestartendList[0]?.EndDateAndTime_Local,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           SourceFlowStart_m3_day: [
             {
               value: this.mikesourcestartendService.mikesourcestartendList[0]?.SourceFlowStart_m3_day,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           SourceFlowEnd_m3_day: [
             {
               value: this.mikesourcestartendService.mikesourcestartendList[0]?.SourceFlowEnd_m3_day,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           SourcePollutionStart_MPN_100ml: [
             {
               value: this.mikesourcestartendService.mikesourcestartendList[0]?.SourcePollutionStart_MPN_100ml,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           SourcePollutionEnd_MPN_100ml: [
             {
               value: this.mikesourcestartendService.mikesourcestartendList[0]?.SourcePollutionEnd_MPN_100ml,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           SourceTemperatureStart_C: [
             {
               value: this.mikesourcestartendService.mikesourcestartendList[0]?.SourceTemperatureStart_C,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           SourceTemperatureEnd_C: [
             {
               value: this.mikesourcestartendService.mikesourcestartendList[0]?.SourceTemperatureEnd_C,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           SourceSalinityStart_PSU: [
             {
               value: this.mikesourcestartendService.mikesourcestartendList[0]?.SourceSalinityStart_PSU,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           SourceSalinityEnd_PSU: [
             {
               value: this.mikesourcestartendService.mikesourcestartendList[0]?.SourceSalinityEnd_PSU,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           LastUpdateDate_UTC: [
             {
               value: this.mikesourcestartendService.mikesourcestartendList[0]?.LastUpdateDate_UTC,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           LastUpdateContactTVItemID: [
             {
               value: this.mikesourcestartendService.mikesourcestartendList[0]?.LastUpdateContactTVItemID,
               disabled: false
-            }],
+            }, [ Validators.required ]],
         }
       );
 

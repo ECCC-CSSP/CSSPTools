@@ -6,6 +6,7 @@
 
 using CSSPModels;
 using CSSPServices;
+using CultureServices.Services;
 using LoggedInServices.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -18,8 +19,8 @@ namespace CSSPWebAPI.Controllers
     {
         Task<ActionResult<List<MWQMSampleLanguage>>> Get();
         Task<ActionResult<MWQMSampleLanguage>> Get(int MWQMSampleLanguageID);
-        Task<ActionResult<MWQMSampleLanguage>> Post(MWQMSampleLanguage mwqmSampleLanguage);
-        Task<ActionResult<MWQMSampleLanguage>> Put(MWQMSampleLanguage mwqmSampleLanguage);
+        Task<ActionResult<MWQMSampleLanguage>> Post(MWQMSampleLanguage MWQMSampleLanguage);
+        Task<ActionResult<MWQMSampleLanguage>> Put(MWQMSampleLanguage MWQMSampleLanguage);
         Task<ActionResult<bool>> Delete(int MWQMSampleLanguageID);
     }
 
@@ -32,17 +33,17 @@ namespace CSSPWebAPI.Controllers
         #endregion Variables
 
         #region Properties
-        private IMWQMSampleLanguageService mwqmSampleLanguageService { get; }
-        private CSSPDBContext db { get; }
-        private ILoggedInService loggedInService { get; }
+        private ICultureService CultureService { get; }
+        private ILoggedInService LoggedInService { get; }
+        private IMWQMSampleLanguageService MWQMSampleLanguageService { get; }
         #endregion Properties
 
         #region Constructors
-        public MWQMSampleLanguageController(IMWQMSampleLanguageService mwqmSampleLanguageService, CSSPDBContext db, ILoggedInService loggedInService)
+        public MWQMSampleLanguageController(ICultureService CultureService, ILoggedInService LoggedInService, IMWQMSampleLanguageService MWQMSampleLanguageService)
         {
-            this.mwqmSampleLanguageService = mwqmSampleLanguageService;
-            this.db = db;
-            this.loggedInService = loggedInService;
+            this.CultureService = CultureService;
+            this.LoggedInService = LoggedInService;
+            this.MWQMSampleLanguageService = MWQMSampleLanguageService;
         }
         #endregion Constructors
 
@@ -50,27 +51,42 @@ namespace CSSPWebAPI.Controllers
         [HttpGet]
         public async Task<ActionResult<List<MWQMSampleLanguage>>> Get()
         {
-            return await mwqmSampleLanguageService.GetMWQMSampleLanguageList();
+            CultureService.SetCulture((string)RouteData.Values["culture"]);
+            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+
+            return await MWQMSampleLanguageService.GetMWQMSampleLanguageList();
         }
         [HttpGet("{MWQMSampleLanguageID}")]
         public async Task<ActionResult<MWQMSampleLanguage>> Get(int MWQMSampleLanguageID)
         {
-            return await mwqmSampleLanguageService.GetMWQMSampleLanguageWithMWQMSampleLanguageID(MWQMSampleLanguageID);
+            CultureService.SetCulture((string)RouteData.Values["culture"]);
+            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+
+            return await MWQMSampleLanguageService.GetMWQMSampleLanguageWithMWQMSampleLanguageID(MWQMSampleLanguageID);
         }
         [HttpPost]
-        public async Task<ActionResult<MWQMSampleLanguage>> Post(MWQMSampleLanguage mwqmSampleLanguage)
+        public async Task<ActionResult<MWQMSampleLanguage>> Post(MWQMSampleLanguage MWQMSampleLanguage)
         {
-            return await mwqmSampleLanguageService.Add(mwqmSampleLanguage);
+            CultureService.SetCulture((string)RouteData.Values["culture"]);
+            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+
+            return await MWQMSampleLanguageService.Post(MWQMSampleLanguage);
         }
         [HttpPut]
-        public async Task<ActionResult<MWQMSampleLanguage>> Put(MWQMSampleLanguage mwqmSampleLanguage)
+        public async Task<ActionResult<MWQMSampleLanguage>> Put(MWQMSampleLanguage MWQMSampleLanguage)
         {
-            return await mwqmSampleLanguageService.Update(mwqmSampleLanguage);
+            CultureService.SetCulture((string)RouteData.Values["culture"]);
+            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+
+            return await MWQMSampleLanguageService.Put(MWQMSampleLanguage);
         }
         [HttpDelete("{MWQMSampleLanguageID}")]
         public async Task<ActionResult<bool>> Delete(int MWQMSampleLanguageID)
         {
-            return await mwqmSampleLanguageService.Delete(MWQMSampleLanguageID);
+            CultureService.SetCulture((string)RouteData.Values["culture"]);
+            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+
+            return await MWQMSampleLanguageService.Delete(MWQMSampleLanguageID);
         }
         #endregion Functions public
 

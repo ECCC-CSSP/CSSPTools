@@ -112,7 +112,7 @@ namespace ServicesClassNameServiceTestGeneratedServices.Services
                     sb.AppendLine(@"        private IServiceProvider Provider { get; set; }");
                     sb.AppendLine(@"        private IServiceCollection Services { get; set; }");
                     sb.AppendLine(@"        private ICultureService CultureService { get; set; }");
-                    sb.AppendLine($@"        private I{ TypeName }Service { TypeNameLower }Service {{ get; set; }}");
+                    sb.AppendLine($@"        private I{ TypeName }Service { TypeName }Service {{ get; set; }}");
                     sb.AppendLine(@"        private CSSPDBContext db { get; set; }");
                 }
                 sb.AppendLine(@"        #endregion Properties");

@@ -9,6 +9,7 @@ using CSSPEnums;
 using CSSPModels;
 using CultureServices.Resources;
 using CultureServices.Services;
+using LoggedInServices.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -22,11 +23,11 @@ namespace CSSPServices
 {
    public interface IMikeSourceStartEndService
     {
-       Task<ActionResult<MikeSourceStartEnd>> GetMikeSourceStartEndWithMikeSourceStartEndID(int MikeSourceStartEndID);
-       Task<ActionResult<List<MikeSourceStartEnd>>> GetMikeSourceStartEndList();
-       Task<ActionResult<MikeSourceStartEnd>> Add(MikeSourceStartEnd mikesourcestartend);
        Task<ActionResult<bool>> Delete(int MikeSourceStartEndID);
-       Task<ActionResult<MikeSourceStartEnd>> Update(MikeSourceStartEnd mikesourcestartend);
+       Task<ActionResult<List<MikeSourceStartEnd>>> GetMikeSourceStartEndList();
+       Task<ActionResult<MikeSourceStartEnd>> GetMikeSourceStartEndWithMikeSourceStartEndID(int MikeSourceStartEndID);
+       Task<ActionResult<MikeSourceStartEnd>> Post(MikeSourceStartEnd mikesourcestartend);
+       Task<ActionResult<MikeSourceStartEnd>> Put(MikeSourceStartEnd mikesourcestartend);
     }
     public partial class MikeSourceStartEndService : ControllerBase, IMikeSourceStartEndService
     {
@@ -36,14 +37,16 @@ namespace CSSPServices
         #region Properties
         private CSSPDBContext db { get; }
         private ICultureService CultureService { get; }
+        private ILoggedInService LoggedInService { get; }
         private IEnums enums { get; }
         private IEnumerable<ValidationResult> ValidationResults { get; set; }
         #endregion Properties
 
         #region Constructors
-        public MikeSourceStartEndService(ICultureService CultureService, IEnums enums, CSSPDBContext db)
+        public MikeSourceStartEndService(ICultureService CultureService, ILoggedInService LoggedInService, IEnums enums, CSSPDBContext db)
         {
             this.CultureService = CultureService;
+            this.LoggedInService = LoggedInService;
             this.enums = enums;
             this.db = db;
         }
@@ -52,6 +55,11 @@ namespace CSSPServices
         #region Functions public 
         public async Task<ActionResult<MikeSourceStartEnd>> GetMikeSourceStartEndWithMikeSourceStartEndID(int MikeSourceStartEndID)
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             MikeSourceStartEnd mikesourcestartend = (from c in db.MikeSourceStartEnds.AsNoTracking()
                     where c.MikeSourceStartEndID == MikeSourceStartEndID
                     select c).FirstOrDefault();
@@ -65,32 +73,22 @@ namespace CSSPServices
         }
         public async Task<ActionResult<List<MikeSourceStartEnd>>> GetMikeSourceStartEndList()
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             List<MikeSourceStartEnd> mikesourcestartendList = (from c in db.MikeSourceStartEnds.AsNoTracking() select c).Take(100).ToList();
 
             return await Task.FromResult(Ok(mikesourcestartendList));
         }
-        public async Task<ActionResult<MikeSourceStartEnd>> Add(MikeSourceStartEnd mikeSourceStartEnd)
-        {
-            ValidationResults = Validate(new ValidationContext(mikeSourceStartEnd), ActionDBTypeEnum.Create);
-            if (ValidationResults.Count() > 0)
-            {
-               return await Task.FromResult(BadRequest(ValidationResults));
-            }
-
-            try
-            {
-               db.MikeSourceStartEnds.Add(mikeSourceStartEnd);
-               db.SaveChanges();
-            }
-            catch (DbUpdateException ex)
-            {
-               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
-            }
-
-            return await Task.FromResult(Ok(mikeSourceStartEnd));
-        }
         public async Task<ActionResult<bool>> Delete(int MikeSourceStartEndID)
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             MikeSourceStartEnd mikeSourceStartEnd = (from c in db.MikeSourceStartEnds
                                where c.MikeSourceStartEndID == MikeSourceStartEndID
                                select c).FirstOrDefault();
@@ -112,8 +110,38 @@ namespace CSSPServices
 
             return await Task.FromResult(Ok(true));
         }
-        public async Task<ActionResult<MikeSourceStartEnd>> Update(MikeSourceStartEnd mikeSourceStartEnd)
+        public async Task<ActionResult<MikeSourceStartEnd>> Post(MikeSourceStartEnd mikeSourceStartEnd)
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
+            ValidationResults = Validate(new ValidationContext(mikeSourceStartEnd), ActionDBTypeEnum.Create);
+            if (ValidationResults.Count() > 0)
+            {
+               return await Task.FromResult(BadRequest(ValidationResults));
+            }
+
+            try
+            {
+               db.MikeSourceStartEnds.Add(mikeSourceStartEnd);
+               db.SaveChanges();
+            }
+            catch (DbUpdateException ex)
+            {
+               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+            }
+
+            return await Task.FromResult(Ok(mikeSourceStartEnd));
+        }
+        public async Task<ActionResult<MikeSourceStartEnd>> Put(MikeSourceStartEnd mikeSourceStartEnd)
+        {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             ValidationResults = Validate(new ValidationContext(mikeSourceStartEnd), ActionDBTypeEnum.Update);
             if (ValidationResults.Count() > 0)
             {

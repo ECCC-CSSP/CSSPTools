@@ -62,37 +62,37 @@ export class PolSourceObservationIssueComponent implements OnInit, OnDestroy {
             {
               value: (AddOrUpdate === 'Add' ? 0 : (this.polsourceobservationissueService.polsourceobservationissueList[0]?.PolSourceObservationIssueID)),
               disabled: false
-            }],
+            }, [ Validators.required ]],
           PolSourceObservationID: [
             {
               value: this.polsourceobservationissueService.polsourceobservationissueList[0]?.PolSourceObservationID,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           ObservationInfo: [
             {
               value: this.polsourceobservationissueService.polsourceobservationissueList[0]?.ObservationInfo,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           Ordinal: [
             {
               value: this.polsourceobservationissueService.polsourceobservationissueList[0]?.Ordinal,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           ExtraComment: [
             {
               value: this.polsourceobservationissueService.polsourceobservationissueList[0]?.ExtraComment,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           LastUpdateDate_UTC: [
             {
               value: this.polsourceobservationissueService.polsourceobservationissueList[0]?.LastUpdateDate_UTC,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           LastUpdateContactTVItemID: [
             {
               value: this.polsourceobservationissueService.polsourceobservationissueList[0]?.LastUpdateContactTVItemID,
               disabled: false
-            }],
+            }, [ Validators.required ]],
         }
       );
 

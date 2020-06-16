@@ -9,6 +9,7 @@ using CSSPEnums;
 using CSSPModels;
 using CultureServices.Resources;
 using CultureServices.Services;
+using LoggedInServices.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -22,11 +23,11 @@ namespace CSSPServices
 {
    public interface IRainExceedanceClimateSiteService
     {
-       Task<ActionResult<RainExceedanceClimateSite>> GetRainExceedanceClimateSiteWithRainExceedanceClimateSiteID(int RainExceedanceClimateSiteID);
-       Task<ActionResult<List<RainExceedanceClimateSite>>> GetRainExceedanceClimateSiteList();
-       Task<ActionResult<RainExceedanceClimateSite>> Add(RainExceedanceClimateSite rainexceedanceclimatesite);
        Task<ActionResult<bool>> Delete(int RainExceedanceClimateSiteID);
-       Task<ActionResult<RainExceedanceClimateSite>> Update(RainExceedanceClimateSite rainexceedanceclimatesite);
+       Task<ActionResult<List<RainExceedanceClimateSite>>> GetRainExceedanceClimateSiteList();
+       Task<ActionResult<RainExceedanceClimateSite>> GetRainExceedanceClimateSiteWithRainExceedanceClimateSiteID(int RainExceedanceClimateSiteID);
+       Task<ActionResult<RainExceedanceClimateSite>> Post(RainExceedanceClimateSite rainexceedanceclimatesite);
+       Task<ActionResult<RainExceedanceClimateSite>> Put(RainExceedanceClimateSite rainexceedanceclimatesite);
     }
     public partial class RainExceedanceClimateSiteService : ControllerBase, IRainExceedanceClimateSiteService
     {
@@ -36,14 +37,16 @@ namespace CSSPServices
         #region Properties
         private CSSPDBContext db { get; }
         private ICultureService CultureService { get; }
+        private ILoggedInService LoggedInService { get; }
         private IEnums enums { get; }
         private IEnumerable<ValidationResult> ValidationResults { get; set; }
         #endregion Properties
 
         #region Constructors
-        public RainExceedanceClimateSiteService(ICultureService CultureService, IEnums enums, CSSPDBContext db)
+        public RainExceedanceClimateSiteService(ICultureService CultureService, ILoggedInService LoggedInService, IEnums enums, CSSPDBContext db)
         {
             this.CultureService = CultureService;
+            this.LoggedInService = LoggedInService;
             this.enums = enums;
             this.db = db;
         }
@@ -52,6 +55,11 @@ namespace CSSPServices
         #region Functions public 
         public async Task<ActionResult<RainExceedanceClimateSite>> GetRainExceedanceClimateSiteWithRainExceedanceClimateSiteID(int RainExceedanceClimateSiteID)
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             RainExceedanceClimateSite rainexceedanceclimatesite = (from c in db.RainExceedanceClimateSites.AsNoTracking()
                     where c.RainExceedanceClimateSiteID == RainExceedanceClimateSiteID
                     select c).FirstOrDefault();
@@ -65,32 +73,22 @@ namespace CSSPServices
         }
         public async Task<ActionResult<List<RainExceedanceClimateSite>>> GetRainExceedanceClimateSiteList()
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             List<RainExceedanceClimateSite> rainexceedanceclimatesiteList = (from c in db.RainExceedanceClimateSites.AsNoTracking() select c).Take(100).ToList();
 
             return await Task.FromResult(Ok(rainexceedanceclimatesiteList));
         }
-        public async Task<ActionResult<RainExceedanceClimateSite>> Add(RainExceedanceClimateSite rainExceedanceClimateSite)
-        {
-            ValidationResults = Validate(new ValidationContext(rainExceedanceClimateSite), ActionDBTypeEnum.Create);
-            if (ValidationResults.Count() > 0)
-            {
-               return await Task.FromResult(BadRequest(ValidationResults));
-            }
-
-            try
-            {
-               db.RainExceedanceClimateSites.Add(rainExceedanceClimateSite);
-               db.SaveChanges();
-            }
-            catch (DbUpdateException ex)
-            {
-               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
-            }
-
-            return await Task.FromResult(Ok(rainExceedanceClimateSite));
-        }
         public async Task<ActionResult<bool>> Delete(int RainExceedanceClimateSiteID)
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             RainExceedanceClimateSite rainExceedanceClimateSite = (from c in db.RainExceedanceClimateSites
                                where c.RainExceedanceClimateSiteID == RainExceedanceClimateSiteID
                                select c).FirstOrDefault();
@@ -112,8 +110,38 @@ namespace CSSPServices
 
             return await Task.FromResult(Ok(true));
         }
-        public async Task<ActionResult<RainExceedanceClimateSite>> Update(RainExceedanceClimateSite rainExceedanceClimateSite)
+        public async Task<ActionResult<RainExceedanceClimateSite>> Post(RainExceedanceClimateSite rainExceedanceClimateSite)
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
+            ValidationResults = Validate(new ValidationContext(rainExceedanceClimateSite), ActionDBTypeEnum.Create);
+            if (ValidationResults.Count() > 0)
+            {
+               return await Task.FromResult(BadRequest(ValidationResults));
+            }
+
+            try
+            {
+               db.RainExceedanceClimateSites.Add(rainExceedanceClimateSite);
+               db.SaveChanges();
+            }
+            catch (DbUpdateException ex)
+            {
+               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+            }
+
+            return await Task.FromResult(Ok(rainExceedanceClimateSite));
+        }
+        public async Task<ActionResult<RainExceedanceClimateSite>> Put(RainExceedanceClimateSite rainExceedanceClimateSite)
+        {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             ValidationResults = Validate(new ValidationContext(rainExceedanceClimateSite), ActionDBTypeEnum.Update);
             if (ValidationResults.Count() > 0)
             {

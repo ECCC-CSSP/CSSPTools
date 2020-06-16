@@ -72,67 +72,67 @@ export class TVItemLinkComponent implements OnInit, OnDestroy {
             {
               value: (AddOrUpdate === 'Add' ? 0 : (this.tvitemlinkService.tvitemlinkList[0]?.TVItemLinkID)),
               disabled: false
-            }],
+            }, [ Validators.required ]],
           FromTVItemID: [
             {
               value: this.tvitemlinkService.tvitemlinkList[0]?.FromTVItemID,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           ToTVItemID: [
             {
               value: this.tvitemlinkService.tvitemlinkList[0]?.ToTVItemID,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           FromTVType: [
             {
               value: this.tvitemlinkService.tvitemlinkList[0]?.FromTVType,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           ToTVType: [
             {
               value: this.tvitemlinkService.tvitemlinkList[0]?.ToTVType,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           StartDateTime_Local: [
             {
               value: this.tvitemlinkService.tvitemlinkList[0]?.StartDateTime_Local,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           EndDateTime_Local: [
             {
               value: this.tvitemlinkService.tvitemlinkList[0]?.EndDateTime_Local,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           Ordinal: [
             {
               value: this.tvitemlinkService.tvitemlinkList[0]?.Ordinal,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           TVLevel: [
             {
               value: this.tvitemlinkService.tvitemlinkList[0]?.TVLevel,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           TVPath: [
             {
               value: this.tvitemlinkService.tvitemlinkList[0]?.TVPath,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           ParentTVItemLinkID: [
             {
               value: this.tvitemlinkService.tvitemlinkList[0]?.ParentTVItemLinkID,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           LastUpdateDate_UTC: [
             {
               value: this.tvitemlinkService.tvitemlinkList[0]?.LastUpdateDate_UTC,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           LastUpdateContactTVItemID: [
             {
               value: this.tvitemlinkService.tvitemlinkList[0]?.LastUpdateContactTVItemID,
               disabled: false
-            }],
+            }, [ Validators.required ]],
         }
       );
 

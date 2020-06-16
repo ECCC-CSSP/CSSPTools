@@ -9,6 +9,7 @@ using CSSPEnums;
 using CSSPModels;
 using CultureServices.Resources;
 using CultureServices.Services;
+using LoggedInServices.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -22,11 +23,11 @@ namespace CSSPServices
 {
    public interface ITVItemService
     {
-       Task<ActionResult<TVItem>> GetTVItemWithTVItemID(int TVItemID);
-       Task<ActionResult<List<TVItem>>> GetTVItemList();
-       Task<ActionResult<TVItem>> Add(TVItem tvitem);
        Task<ActionResult<bool>> Delete(int TVItemID);
-       Task<ActionResult<TVItem>> Update(TVItem tvitem);
+       Task<ActionResult<List<TVItem>>> GetTVItemList();
+       Task<ActionResult<TVItem>> GetTVItemWithTVItemID(int TVItemID);
+       Task<ActionResult<TVItem>> Post(TVItem tvitem);
+       Task<ActionResult<TVItem>> Put(TVItem tvitem);
     }
     public partial class TVItemService : ControllerBase, ITVItemService
     {
@@ -36,14 +37,16 @@ namespace CSSPServices
         #region Properties
         private CSSPDBContext db { get; }
         private ICultureService CultureService { get; }
+        private ILoggedInService LoggedInService { get; }
         private IEnums enums { get; }
         private IEnumerable<ValidationResult> ValidationResults { get; set; }
         #endregion Properties
 
         #region Constructors
-        public TVItemService(ICultureService CultureService, IEnums enums, CSSPDBContext db)
+        public TVItemService(ICultureService CultureService, ILoggedInService LoggedInService, IEnums enums, CSSPDBContext db)
         {
             this.CultureService = CultureService;
+            this.LoggedInService = LoggedInService;
             this.enums = enums;
             this.db = db;
         }
@@ -52,6 +55,11 @@ namespace CSSPServices
         #region Functions public 
         public async Task<ActionResult<TVItem>> GetTVItemWithTVItemID(int TVItemID)
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             TVItem tvitem = (from c in db.TVItems.AsNoTracking()
                     where c.TVItemID == TVItemID
                     select c).FirstOrDefault();
@@ -65,32 +73,22 @@ namespace CSSPServices
         }
         public async Task<ActionResult<List<TVItem>>> GetTVItemList()
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             List<TVItem> tvitemList = (from c in db.TVItems.AsNoTracking() select c).Take(100).ToList();
 
             return await Task.FromResult(Ok(tvitemList));
         }
-        public async Task<ActionResult<TVItem>> Add(TVItem tvItem)
-        {
-            ValidationResults = Validate(new ValidationContext(tvItem), ActionDBTypeEnum.Create);
-            if (ValidationResults.Count() > 0)
-            {
-               return await Task.FromResult(BadRequest(ValidationResults));
-            }
-
-            try
-            {
-               db.TVItems.Add(tvItem);
-               db.SaveChanges();
-            }
-            catch (DbUpdateException ex)
-            {
-               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
-            }
-
-            return await Task.FromResult(Ok(tvItem));
-        }
         public async Task<ActionResult<bool>> Delete(int TVItemID)
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             TVItem tvItem = (from c in db.TVItems
                                where c.TVItemID == TVItemID
                                select c).FirstOrDefault();
@@ -112,8 +110,38 @@ namespace CSSPServices
 
             return await Task.FromResult(Ok(true));
         }
-        public async Task<ActionResult<TVItem>> Update(TVItem tvItem)
+        public async Task<ActionResult<TVItem>> Post(TVItem tvItem)
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
+            ValidationResults = Validate(new ValidationContext(tvItem), ActionDBTypeEnum.Create);
+            if (ValidationResults.Count() > 0)
+            {
+               return await Task.FromResult(BadRequest(ValidationResults));
+            }
+
+            try
+            {
+               db.TVItems.Add(tvItem);
+               db.SaveChanges();
+            }
+            catch (DbUpdateException ex)
+            {
+               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+            }
+
+            return await Task.FromResult(Ok(tvItem));
+        }
+        public async Task<ActionResult<TVItem>> Put(TVItem tvItem)
+        {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             ValidationResults = Validate(new ValidationContext(tvItem), ActionDBTypeEnum.Update);
             if (ValidationResults.Count() > 0)
             {

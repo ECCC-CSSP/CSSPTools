@@ -9,6 +9,7 @@ using CSSPEnums;
 using CSSPModels;
 using CultureServices.Resources;
 using CultureServices.Services;
+using LoggedInServices.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -22,11 +23,11 @@ namespace CSSPServices
 {
    public interface IMWQMSampleLanguageService
     {
-       Task<ActionResult<MWQMSampleLanguage>> GetMWQMSampleLanguageWithMWQMSampleLanguageID(int MWQMSampleLanguageID);
-       Task<ActionResult<List<MWQMSampleLanguage>>> GetMWQMSampleLanguageList();
-       Task<ActionResult<MWQMSampleLanguage>> Add(MWQMSampleLanguage mwqmsamplelanguage);
        Task<ActionResult<bool>> Delete(int MWQMSampleLanguageID);
-       Task<ActionResult<MWQMSampleLanguage>> Update(MWQMSampleLanguage mwqmsamplelanguage);
+       Task<ActionResult<List<MWQMSampleLanguage>>> GetMWQMSampleLanguageList();
+       Task<ActionResult<MWQMSampleLanguage>> GetMWQMSampleLanguageWithMWQMSampleLanguageID(int MWQMSampleLanguageID);
+       Task<ActionResult<MWQMSampleLanguage>> Post(MWQMSampleLanguage mwqmsamplelanguage);
+       Task<ActionResult<MWQMSampleLanguage>> Put(MWQMSampleLanguage mwqmsamplelanguage);
     }
     public partial class MWQMSampleLanguageService : ControllerBase, IMWQMSampleLanguageService
     {
@@ -36,14 +37,16 @@ namespace CSSPServices
         #region Properties
         private CSSPDBContext db { get; }
         private ICultureService CultureService { get; }
+        private ILoggedInService LoggedInService { get; }
         private IEnums enums { get; }
         private IEnumerable<ValidationResult> ValidationResults { get; set; }
         #endregion Properties
 
         #region Constructors
-        public MWQMSampleLanguageService(ICultureService CultureService, IEnums enums, CSSPDBContext db)
+        public MWQMSampleLanguageService(ICultureService CultureService, ILoggedInService LoggedInService, IEnums enums, CSSPDBContext db)
         {
             this.CultureService = CultureService;
+            this.LoggedInService = LoggedInService;
             this.enums = enums;
             this.db = db;
         }
@@ -52,6 +55,11 @@ namespace CSSPServices
         #region Functions public 
         public async Task<ActionResult<MWQMSampleLanguage>> GetMWQMSampleLanguageWithMWQMSampleLanguageID(int MWQMSampleLanguageID)
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             MWQMSampleLanguage mwqmsamplelanguage = (from c in db.MWQMSampleLanguages.AsNoTracking()
                     where c.MWQMSampleLanguageID == MWQMSampleLanguageID
                     select c).FirstOrDefault();
@@ -65,32 +73,22 @@ namespace CSSPServices
         }
         public async Task<ActionResult<List<MWQMSampleLanguage>>> GetMWQMSampleLanguageList()
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             List<MWQMSampleLanguage> mwqmsamplelanguageList = (from c in db.MWQMSampleLanguages.AsNoTracking() select c).Take(100).ToList();
 
             return await Task.FromResult(Ok(mwqmsamplelanguageList));
         }
-        public async Task<ActionResult<MWQMSampleLanguage>> Add(MWQMSampleLanguage mwqmSampleLanguage)
-        {
-            ValidationResults = Validate(new ValidationContext(mwqmSampleLanguage), ActionDBTypeEnum.Create);
-            if (ValidationResults.Count() > 0)
-            {
-               return await Task.FromResult(BadRequest(ValidationResults));
-            }
-
-            try
-            {
-               db.MWQMSampleLanguages.Add(mwqmSampleLanguage);
-               db.SaveChanges();
-            }
-            catch (DbUpdateException ex)
-            {
-               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
-            }
-
-            return await Task.FromResult(Ok(mwqmSampleLanguage));
-        }
         public async Task<ActionResult<bool>> Delete(int MWQMSampleLanguageID)
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             MWQMSampleLanguage mwqmSampleLanguage = (from c in db.MWQMSampleLanguages
                                where c.MWQMSampleLanguageID == MWQMSampleLanguageID
                                select c).FirstOrDefault();
@@ -112,8 +110,38 @@ namespace CSSPServices
 
             return await Task.FromResult(Ok(true));
         }
-        public async Task<ActionResult<MWQMSampleLanguage>> Update(MWQMSampleLanguage mwqmSampleLanguage)
+        public async Task<ActionResult<MWQMSampleLanguage>> Post(MWQMSampleLanguage mwqmSampleLanguage)
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
+            ValidationResults = Validate(new ValidationContext(mwqmSampleLanguage), ActionDBTypeEnum.Create);
+            if (ValidationResults.Count() > 0)
+            {
+               return await Task.FromResult(BadRequest(ValidationResults));
+            }
+
+            try
+            {
+               db.MWQMSampleLanguages.Add(mwqmSampleLanguage);
+               db.SaveChanges();
+            }
+            catch (DbUpdateException ex)
+            {
+               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+            }
+
+            return await Task.FromResult(Ok(mwqmSampleLanguage));
+        }
+        public async Task<ActionResult<MWQMSampleLanguage>> Put(MWQMSampleLanguage mwqmSampleLanguage)
+        {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             ValidationResults = Validate(new ValidationContext(mwqmSampleLanguage), ActionDBTypeEnum.Update);
             if (ValidationResults.Count() > 0)
             {

@@ -32,7 +32,7 @@ namespace CSSPServices.Tests
         private IServiceProvider Provider { get; set; }
         private IServiceCollection Services { get; set; }
         private ICultureService CultureService { get; set; }
-        private IReportTypeService reportTypeService { get; set; }
+        private IReportTypeService ReportTypeService { get; set; }
         private CSSPDBContext db { get; set; }
         #endregion Properties
 
@@ -62,7 +62,7 @@ namespace CSSPServices.Tests
                ReportType reportType = GetFilledRandomReportType(""); 
 
                // List<ReportType>
-               var actionReportTypeList = await reportTypeService.GetReportTypeList();
+               var actionReportTypeList = await ReportTypeService.GetReportTypeList();
                Assert.Equal(200, ((ObjectResult)actionReportTypeList.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionReportTypeList.Result).Value);
                List<ReportType> reportTypeList = (List<ReportType>)((OkObjectResult)actionReportTypeList.Result).Value;
@@ -70,22 +70,22 @@ namespace CSSPServices.Tests
                int count = ((List<ReportType>)((OkObjectResult)actionReportTypeList.Result).Value).Count();
                 Assert.True(count > 0);
 
-               // Add ReportType
-               var actionReportTypeAdded = await reportTypeService.Add(reportType);
+               // Post ReportType
+               var actionReportTypeAdded = await ReportTypeService.Post(reportType);
                Assert.Equal(200, ((ObjectResult)actionReportTypeAdded.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionReportTypeAdded.Result).Value);
                ReportType reportTypeAdded = (ReportType)((OkObjectResult)actionReportTypeAdded.Result).Value;
                Assert.NotNull(reportTypeAdded);
 
-               // Update ReportType
-               var actionReportTypeUpdated = await reportTypeService.Update(reportType);
+               // Put ReportType
+               var actionReportTypeUpdated = await ReportTypeService.Put(reportType);
                Assert.Equal(200, ((ObjectResult)actionReportTypeUpdated.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionReportTypeUpdated.Result).Value);
                ReportType reportTypeUpdated = (ReportType)((OkObjectResult)actionReportTypeUpdated.Result).Value;
                Assert.NotNull(reportTypeUpdated);
 
                // Delete ReportType
-               var actionReportTypeDeleted = await reportTypeService.Delete(reportType.ReportTypeID);
+               var actionReportTypeDeleted = await ReportTypeService.Delete(reportType.ReportTypeID);
                Assert.Equal(200, ((ObjectResult)actionReportTypeDeleted.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionReportTypeDeleted.Result).Value);
                bool retBool = (bool)((OkObjectResult)actionReportTypeDeleted.Result).Value;
@@ -126,8 +126,8 @@ namespace CSSPServices.Tests
 
             CultureService.SetCulture(culture);
 
-            reportTypeService = Provider.GetService<IReportTypeService>();
-            Assert.NotNull(reportTypeService);
+            ReportTypeService = Provider.GetService<IReportTypeService>();
+            Assert.NotNull(ReportTypeService);
 
             return await Task.FromResult(true);
         }

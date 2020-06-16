@@ -9,6 +9,7 @@ using CSSPEnums;
 using CSSPModels;
 using CultureServices.Resources;
 using CultureServices.Services;
+using LoggedInServices.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -22,11 +23,11 @@ namespace CSSPServices
 {
    public interface IHydrometricSiteService
     {
-       Task<ActionResult<HydrometricSite>> GetHydrometricSiteWithHydrometricSiteID(int HydrometricSiteID);
-       Task<ActionResult<List<HydrometricSite>>> GetHydrometricSiteList();
-       Task<ActionResult<HydrometricSite>> Add(HydrometricSite hydrometricsite);
        Task<ActionResult<bool>> Delete(int HydrometricSiteID);
-       Task<ActionResult<HydrometricSite>> Update(HydrometricSite hydrometricsite);
+       Task<ActionResult<List<HydrometricSite>>> GetHydrometricSiteList();
+       Task<ActionResult<HydrometricSite>> GetHydrometricSiteWithHydrometricSiteID(int HydrometricSiteID);
+       Task<ActionResult<HydrometricSite>> Post(HydrometricSite hydrometricsite);
+       Task<ActionResult<HydrometricSite>> Put(HydrometricSite hydrometricsite);
     }
     public partial class HydrometricSiteService : ControllerBase, IHydrometricSiteService
     {
@@ -36,14 +37,16 @@ namespace CSSPServices
         #region Properties
         private CSSPDBContext db { get; }
         private ICultureService CultureService { get; }
+        private ILoggedInService LoggedInService { get; }
         private IEnums enums { get; }
         private IEnumerable<ValidationResult> ValidationResults { get; set; }
         #endregion Properties
 
         #region Constructors
-        public HydrometricSiteService(ICultureService CultureService, IEnums enums, CSSPDBContext db)
+        public HydrometricSiteService(ICultureService CultureService, ILoggedInService LoggedInService, IEnums enums, CSSPDBContext db)
         {
             this.CultureService = CultureService;
+            this.LoggedInService = LoggedInService;
             this.enums = enums;
             this.db = db;
         }
@@ -52,6 +55,11 @@ namespace CSSPServices
         #region Functions public 
         public async Task<ActionResult<HydrometricSite>> GetHydrometricSiteWithHydrometricSiteID(int HydrometricSiteID)
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             HydrometricSite hydrometricsite = (from c in db.HydrometricSites.AsNoTracking()
                     where c.HydrometricSiteID == HydrometricSiteID
                     select c).FirstOrDefault();
@@ -65,32 +73,22 @@ namespace CSSPServices
         }
         public async Task<ActionResult<List<HydrometricSite>>> GetHydrometricSiteList()
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             List<HydrometricSite> hydrometricsiteList = (from c in db.HydrometricSites.AsNoTracking() select c).Take(100).ToList();
 
             return await Task.FromResult(Ok(hydrometricsiteList));
         }
-        public async Task<ActionResult<HydrometricSite>> Add(HydrometricSite hydrometricSite)
-        {
-            ValidationResults = Validate(new ValidationContext(hydrometricSite), ActionDBTypeEnum.Create);
-            if (ValidationResults.Count() > 0)
-            {
-               return await Task.FromResult(BadRequest(ValidationResults));
-            }
-
-            try
-            {
-               db.HydrometricSites.Add(hydrometricSite);
-               db.SaveChanges();
-            }
-            catch (DbUpdateException ex)
-            {
-               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
-            }
-
-            return await Task.FromResult(Ok(hydrometricSite));
-        }
         public async Task<ActionResult<bool>> Delete(int HydrometricSiteID)
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             HydrometricSite hydrometricSite = (from c in db.HydrometricSites
                                where c.HydrometricSiteID == HydrometricSiteID
                                select c).FirstOrDefault();
@@ -112,8 +110,38 @@ namespace CSSPServices
 
             return await Task.FromResult(Ok(true));
         }
-        public async Task<ActionResult<HydrometricSite>> Update(HydrometricSite hydrometricSite)
+        public async Task<ActionResult<HydrometricSite>> Post(HydrometricSite hydrometricSite)
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
+            ValidationResults = Validate(new ValidationContext(hydrometricSite), ActionDBTypeEnum.Create);
+            if (ValidationResults.Count() > 0)
+            {
+               return await Task.FromResult(BadRequest(ValidationResults));
+            }
+
+            try
+            {
+               db.HydrometricSites.Add(hydrometricSite);
+               db.SaveChanges();
+            }
+            catch (DbUpdateException ex)
+            {
+               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+            }
+
+            return await Task.FromResult(Ok(hydrometricSite));
+        }
+        public async Task<ActionResult<HydrometricSite>> Put(HydrometricSite hydrometricSite)
+        {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             ValidationResults = Validate(new ValidationContext(hydrometricSite), ActionDBTypeEnum.Update);
             if (ValidationResults.Count() > 0)
             {

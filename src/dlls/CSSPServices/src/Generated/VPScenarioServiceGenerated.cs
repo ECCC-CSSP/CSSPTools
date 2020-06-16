@@ -9,6 +9,7 @@ using CSSPEnums;
 using CSSPModels;
 using CultureServices.Resources;
 using CultureServices.Services;
+using LoggedInServices.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -22,11 +23,11 @@ namespace CSSPServices
 {
    public interface IVPScenarioService
     {
-       Task<ActionResult<VPScenario>> GetVPScenarioWithVPScenarioID(int VPScenarioID);
-       Task<ActionResult<List<VPScenario>>> GetVPScenarioList();
-       Task<ActionResult<VPScenario>> Add(VPScenario vpscenario);
        Task<ActionResult<bool>> Delete(int VPScenarioID);
-       Task<ActionResult<VPScenario>> Update(VPScenario vpscenario);
+       Task<ActionResult<List<VPScenario>>> GetVPScenarioList();
+       Task<ActionResult<VPScenario>> GetVPScenarioWithVPScenarioID(int VPScenarioID);
+       Task<ActionResult<VPScenario>> Post(VPScenario vpscenario);
+       Task<ActionResult<VPScenario>> Put(VPScenario vpscenario);
     }
     public partial class VPScenarioService : ControllerBase, IVPScenarioService
     {
@@ -36,14 +37,16 @@ namespace CSSPServices
         #region Properties
         private CSSPDBContext db { get; }
         private ICultureService CultureService { get; }
+        private ILoggedInService LoggedInService { get; }
         private IEnums enums { get; }
         private IEnumerable<ValidationResult> ValidationResults { get; set; }
         #endregion Properties
 
         #region Constructors
-        public VPScenarioService(ICultureService CultureService, IEnums enums, CSSPDBContext db)
+        public VPScenarioService(ICultureService CultureService, ILoggedInService LoggedInService, IEnums enums, CSSPDBContext db)
         {
             this.CultureService = CultureService;
+            this.LoggedInService = LoggedInService;
             this.enums = enums;
             this.db = db;
         }
@@ -52,6 +55,11 @@ namespace CSSPServices
         #region Functions public 
         public async Task<ActionResult<VPScenario>> GetVPScenarioWithVPScenarioID(int VPScenarioID)
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             VPScenario vpscenario = (from c in db.VPScenarios.AsNoTracking()
                     where c.VPScenarioID == VPScenarioID
                     select c).FirstOrDefault();
@@ -65,32 +73,22 @@ namespace CSSPServices
         }
         public async Task<ActionResult<List<VPScenario>>> GetVPScenarioList()
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             List<VPScenario> vpscenarioList = (from c in db.VPScenarios.AsNoTracking() select c).Take(100).ToList();
 
             return await Task.FromResult(Ok(vpscenarioList));
         }
-        public async Task<ActionResult<VPScenario>> Add(VPScenario vpScenario)
-        {
-            ValidationResults = Validate(new ValidationContext(vpScenario), ActionDBTypeEnum.Create);
-            if (ValidationResults.Count() > 0)
-            {
-               return await Task.FromResult(BadRequest(ValidationResults));
-            }
-
-            try
-            {
-               db.VPScenarios.Add(vpScenario);
-               db.SaveChanges();
-            }
-            catch (DbUpdateException ex)
-            {
-               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
-            }
-
-            return await Task.FromResult(Ok(vpScenario));
-        }
         public async Task<ActionResult<bool>> Delete(int VPScenarioID)
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             VPScenario vpScenario = (from c in db.VPScenarios
                                where c.VPScenarioID == VPScenarioID
                                select c).FirstOrDefault();
@@ -112,8 +110,38 @@ namespace CSSPServices
 
             return await Task.FromResult(Ok(true));
         }
-        public async Task<ActionResult<VPScenario>> Update(VPScenario vpScenario)
+        public async Task<ActionResult<VPScenario>> Post(VPScenario vpScenario)
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
+            ValidationResults = Validate(new ValidationContext(vpScenario), ActionDBTypeEnum.Create);
+            if (ValidationResults.Count() > 0)
+            {
+               return await Task.FromResult(BadRequest(ValidationResults));
+            }
+
+            try
+            {
+               db.VPScenarios.Add(vpScenario);
+               db.SaveChanges();
+            }
+            catch (DbUpdateException ex)
+            {
+               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+            }
+
+            return await Task.FromResult(Ok(vpScenario));
+        }
+        public async Task<ActionResult<VPScenario>> Put(VPScenario vpScenario)
+        {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             ValidationResults = Validate(new ValidationContext(vpScenario), ActionDBTypeEnum.Update);
             if (ValidationResults.Count() > 0)
             {

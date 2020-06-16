@@ -32,7 +32,7 @@ namespace CSSPServices.Tests
         private IServiceProvider Provider { get; set; }
         private IServiceCollection Services { get; set; }
         private ICultureService CultureService { get; set; }
-        private IMikeBoundaryConditionService mikeBoundaryConditionService { get; set; }
+        private IMikeBoundaryConditionService MikeBoundaryConditionService { get; set; }
         private CSSPDBContext db { get; set; }
         #endregion Properties
 
@@ -62,7 +62,7 @@ namespace CSSPServices.Tests
                MikeBoundaryCondition mikeBoundaryCondition = GetFilledRandomMikeBoundaryCondition(""); 
 
                // List<MikeBoundaryCondition>
-               var actionMikeBoundaryConditionList = await mikeBoundaryConditionService.GetMikeBoundaryConditionList();
+               var actionMikeBoundaryConditionList = await MikeBoundaryConditionService.GetMikeBoundaryConditionList();
                Assert.Equal(200, ((ObjectResult)actionMikeBoundaryConditionList.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionMikeBoundaryConditionList.Result).Value);
                List<MikeBoundaryCondition> mikeBoundaryConditionList = (List<MikeBoundaryCondition>)((OkObjectResult)actionMikeBoundaryConditionList.Result).Value;
@@ -70,22 +70,22 @@ namespace CSSPServices.Tests
                int count = ((List<MikeBoundaryCondition>)((OkObjectResult)actionMikeBoundaryConditionList.Result).Value).Count();
                 Assert.True(count > 0);
 
-               // Add MikeBoundaryCondition
-               var actionMikeBoundaryConditionAdded = await mikeBoundaryConditionService.Add(mikeBoundaryCondition);
+               // Post MikeBoundaryCondition
+               var actionMikeBoundaryConditionAdded = await MikeBoundaryConditionService.Post(mikeBoundaryCondition);
                Assert.Equal(200, ((ObjectResult)actionMikeBoundaryConditionAdded.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionMikeBoundaryConditionAdded.Result).Value);
                MikeBoundaryCondition mikeBoundaryConditionAdded = (MikeBoundaryCondition)((OkObjectResult)actionMikeBoundaryConditionAdded.Result).Value;
                Assert.NotNull(mikeBoundaryConditionAdded);
 
-               // Update MikeBoundaryCondition
-               var actionMikeBoundaryConditionUpdated = await mikeBoundaryConditionService.Update(mikeBoundaryCondition);
+               // Put MikeBoundaryCondition
+               var actionMikeBoundaryConditionUpdated = await MikeBoundaryConditionService.Put(mikeBoundaryCondition);
                Assert.Equal(200, ((ObjectResult)actionMikeBoundaryConditionUpdated.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionMikeBoundaryConditionUpdated.Result).Value);
                MikeBoundaryCondition mikeBoundaryConditionUpdated = (MikeBoundaryCondition)((OkObjectResult)actionMikeBoundaryConditionUpdated.Result).Value;
                Assert.NotNull(mikeBoundaryConditionUpdated);
 
                // Delete MikeBoundaryCondition
-               var actionMikeBoundaryConditionDeleted = await mikeBoundaryConditionService.Delete(mikeBoundaryCondition.MikeBoundaryConditionID);
+               var actionMikeBoundaryConditionDeleted = await MikeBoundaryConditionService.Delete(mikeBoundaryCondition.MikeBoundaryConditionID);
                Assert.Equal(200, ((ObjectResult)actionMikeBoundaryConditionDeleted.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionMikeBoundaryConditionDeleted.Result).Value);
                bool retBool = (bool)((OkObjectResult)actionMikeBoundaryConditionDeleted.Result).Value;
@@ -126,8 +126,8 @@ namespace CSSPServices.Tests
 
             CultureService.SetCulture(culture);
 
-            mikeBoundaryConditionService = Provider.GetService<IMikeBoundaryConditionService>();
-            Assert.NotNull(mikeBoundaryConditionService);
+            MikeBoundaryConditionService = Provider.GetService<IMikeBoundaryConditionService>();
+            Assert.NotNull(MikeBoundaryConditionService);
 
             return await Task.FromResult(true);
         }

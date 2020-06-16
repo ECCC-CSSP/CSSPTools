@@ -32,7 +32,7 @@ namespace CSSPServices.Tests
         private IServiceProvider Provider { get; set; }
         private IServiceCollection Services { get; set; }
         private ICultureService CultureService { get; set; }
-        private IPolSourceSiteEffectService polSourceSiteEffectService { get; set; }
+        private IPolSourceSiteEffectService PolSourceSiteEffectService { get; set; }
         private CSSPDBContext db { get; set; }
         #endregion Properties
 
@@ -62,7 +62,7 @@ namespace CSSPServices.Tests
                PolSourceSiteEffect polSourceSiteEffect = GetFilledRandomPolSourceSiteEffect(""); 
 
                // List<PolSourceSiteEffect>
-               var actionPolSourceSiteEffectList = await polSourceSiteEffectService.GetPolSourceSiteEffectList();
+               var actionPolSourceSiteEffectList = await PolSourceSiteEffectService.GetPolSourceSiteEffectList();
                Assert.Equal(200, ((ObjectResult)actionPolSourceSiteEffectList.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionPolSourceSiteEffectList.Result).Value);
                List<PolSourceSiteEffect> polSourceSiteEffectList = (List<PolSourceSiteEffect>)((OkObjectResult)actionPolSourceSiteEffectList.Result).Value;
@@ -70,22 +70,22 @@ namespace CSSPServices.Tests
                int count = ((List<PolSourceSiteEffect>)((OkObjectResult)actionPolSourceSiteEffectList.Result).Value).Count();
                 Assert.True(count > 0);
 
-               // Add PolSourceSiteEffect
-               var actionPolSourceSiteEffectAdded = await polSourceSiteEffectService.Add(polSourceSiteEffect);
+               // Post PolSourceSiteEffect
+               var actionPolSourceSiteEffectAdded = await PolSourceSiteEffectService.Post(polSourceSiteEffect);
                Assert.Equal(200, ((ObjectResult)actionPolSourceSiteEffectAdded.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionPolSourceSiteEffectAdded.Result).Value);
                PolSourceSiteEffect polSourceSiteEffectAdded = (PolSourceSiteEffect)((OkObjectResult)actionPolSourceSiteEffectAdded.Result).Value;
                Assert.NotNull(polSourceSiteEffectAdded);
 
-               // Update PolSourceSiteEffect
-               var actionPolSourceSiteEffectUpdated = await polSourceSiteEffectService.Update(polSourceSiteEffect);
+               // Put PolSourceSiteEffect
+               var actionPolSourceSiteEffectUpdated = await PolSourceSiteEffectService.Put(polSourceSiteEffect);
                Assert.Equal(200, ((ObjectResult)actionPolSourceSiteEffectUpdated.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionPolSourceSiteEffectUpdated.Result).Value);
                PolSourceSiteEffect polSourceSiteEffectUpdated = (PolSourceSiteEffect)((OkObjectResult)actionPolSourceSiteEffectUpdated.Result).Value;
                Assert.NotNull(polSourceSiteEffectUpdated);
 
                // Delete PolSourceSiteEffect
-               var actionPolSourceSiteEffectDeleted = await polSourceSiteEffectService.Delete(polSourceSiteEffect.PolSourceSiteEffectID);
+               var actionPolSourceSiteEffectDeleted = await PolSourceSiteEffectService.Delete(polSourceSiteEffect.PolSourceSiteEffectID);
                Assert.Equal(200, ((ObjectResult)actionPolSourceSiteEffectDeleted.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionPolSourceSiteEffectDeleted.Result).Value);
                bool retBool = (bool)((OkObjectResult)actionPolSourceSiteEffectDeleted.Result).Value;
@@ -126,8 +126,8 @@ namespace CSSPServices.Tests
 
             CultureService.SetCulture(culture);
 
-            polSourceSiteEffectService = Provider.GetService<IPolSourceSiteEffectService>();
-            Assert.NotNull(polSourceSiteEffectService);
+            PolSourceSiteEffectService = Provider.GetService<IPolSourceSiteEffectService>();
+            Assert.NotNull(PolSourceSiteEffectService);
 
             return await Task.FromResult(true);
         }

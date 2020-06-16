@@ -32,7 +32,7 @@ namespace CSSPServices.Tests
         private IServiceProvider Provider { get; set; }
         private IServiceCollection Services { get; set; }
         private ICultureService CultureService { get; set; }
-        private ITVFileService tvFileService { get; set; }
+        private ITVFileService TVFileService { get; set; }
         private CSSPDBContext db { get; set; }
         #endregion Properties
 
@@ -62,7 +62,7 @@ namespace CSSPServices.Tests
                TVFile tvFile = GetFilledRandomTVFile(""); 
 
                // List<TVFile>
-               var actionTVFileList = await tvFileService.GetTVFileList();
+               var actionTVFileList = await TVFileService.GetTVFileList();
                Assert.Equal(200, ((ObjectResult)actionTVFileList.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionTVFileList.Result).Value);
                List<TVFile> tvFileList = (List<TVFile>)((OkObjectResult)actionTVFileList.Result).Value;
@@ -70,22 +70,22 @@ namespace CSSPServices.Tests
                int count = ((List<TVFile>)((OkObjectResult)actionTVFileList.Result).Value).Count();
                 Assert.True(count > 0);
 
-               // Add TVFile
-               var actionTVFileAdded = await tvFileService.Add(tvFile);
+               // Post TVFile
+               var actionTVFileAdded = await TVFileService.Post(tvFile);
                Assert.Equal(200, ((ObjectResult)actionTVFileAdded.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionTVFileAdded.Result).Value);
                TVFile tvFileAdded = (TVFile)((OkObjectResult)actionTVFileAdded.Result).Value;
                Assert.NotNull(tvFileAdded);
 
-               // Update TVFile
-               var actionTVFileUpdated = await tvFileService.Update(tvFile);
+               // Put TVFile
+               var actionTVFileUpdated = await TVFileService.Put(tvFile);
                Assert.Equal(200, ((ObjectResult)actionTVFileUpdated.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionTVFileUpdated.Result).Value);
                TVFile tvFileUpdated = (TVFile)((OkObjectResult)actionTVFileUpdated.Result).Value;
                Assert.NotNull(tvFileUpdated);
 
                // Delete TVFile
-               var actionTVFileDeleted = await tvFileService.Delete(tvFile.TVFileID);
+               var actionTVFileDeleted = await TVFileService.Delete(tvFile.TVFileID);
                Assert.Equal(200, ((ObjectResult)actionTVFileDeleted.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionTVFileDeleted.Result).Value);
                bool retBool = (bool)((OkObjectResult)actionTVFileDeleted.Result).Value;
@@ -126,8 +126,8 @@ namespace CSSPServices.Tests
 
             CultureService.SetCulture(culture);
 
-            tvFileService = Provider.GetService<ITVFileService>();
-            Assert.NotNull(tvFileService);
+            TVFileService = Provider.GetService<ITVFileService>();
+            Assert.NotNull(TVFileService);
 
             return await Task.FromResult(true);
         }

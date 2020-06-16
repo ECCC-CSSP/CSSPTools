@@ -9,6 +9,7 @@ using CSSPEnums;
 using CSSPModels;
 using CultureServices.Resources;
 using CultureServices.Services;
+using LoggedInServices.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -22,11 +23,11 @@ namespace CSSPServices
 {
    public interface IAppErrLogService
     {
-       Task<ActionResult<AppErrLog>> GetAppErrLogWithAppErrLogID(int AppErrLogID);
-       Task<ActionResult<List<AppErrLog>>> GetAppErrLogList();
-       Task<ActionResult<AppErrLog>> Add(AppErrLog apperrlog);
        Task<ActionResult<bool>> Delete(int AppErrLogID);
-       Task<ActionResult<AppErrLog>> Update(AppErrLog apperrlog);
+       Task<ActionResult<List<AppErrLog>>> GetAppErrLogList();
+       Task<ActionResult<AppErrLog>> GetAppErrLogWithAppErrLogID(int AppErrLogID);
+       Task<ActionResult<AppErrLog>> Post(AppErrLog apperrlog);
+       Task<ActionResult<AppErrLog>> Put(AppErrLog apperrlog);
     }
     public partial class AppErrLogService : ControllerBase, IAppErrLogService
     {
@@ -36,14 +37,16 @@ namespace CSSPServices
         #region Properties
         private CSSPDBContext db { get; }
         private ICultureService CultureService { get; }
+        private ILoggedInService LoggedInService { get; }
         private IEnums enums { get; }
         private IEnumerable<ValidationResult> ValidationResults { get; set; }
         #endregion Properties
 
         #region Constructors
-        public AppErrLogService(ICultureService CultureService, IEnums enums, CSSPDBContext db)
+        public AppErrLogService(ICultureService CultureService, ILoggedInService LoggedInService, IEnums enums, CSSPDBContext db)
         {
             this.CultureService = CultureService;
+            this.LoggedInService = LoggedInService;
             this.enums = enums;
             this.db = db;
         }
@@ -52,6 +55,11 @@ namespace CSSPServices
         #region Functions public 
         public async Task<ActionResult<AppErrLog>> GetAppErrLogWithAppErrLogID(int AppErrLogID)
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             AppErrLog apperrlog = (from c in db.AppErrLogs.AsNoTracking()
                     where c.AppErrLogID == AppErrLogID
                     select c).FirstOrDefault();
@@ -65,32 +73,22 @@ namespace CSSPServices
         }
         public async Task<ActionResult<List<AppErrLog>>> GetAppErrLogList()
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             List<AppErrLog> apperrlogList = (from c in db.AppErrLogs.AsNoTracking() select c).Take(100).ToList();
 
             return await Task.FromResult(Ok(apperrlogList));
         }
-        public async Task<ActionResult<AppErrLog>> Add(AppErrLog appErrLog)
-        {
-            ValidationResults = Validate(new ValidationContext(appErrLog), ActionDBTypeEnum.Create);
-            if (ValidationResults.Count() > 0)
-            {
-               return await Task.FromResult(BadRequest(ValidationResults));
-            }
-
-            try
-            {
-               db.AppErrLogs.Add(appErrLog);
-               db.SaveChanges();
-            }
-            catch (DbUpdateException ex)
-            {
-               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
-            }
-
-            return await Task.FromResult(Ok(appErrLog));
-        }
         public async Task<ActionResult<bool>> Delete(int AppErrLogID)
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             AppErrLog appErrLog = (from c in db.AppErrLogs
                                where c.AppErrLogID == AppErrLogID
                                select c).FirstOrDefault();
@@ -112,8 +110,38 @@ namespace CSSPServices
 
             return await Task.FromResult(Ok(true));
         }
-        public async Task<ActionResult<AppErrLog>> Update(AppErrLog appErrLog)
+        public async Task<ActionResult<AppErrLog>> Post(AppErrLog appErrLog)
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
+            ValidationResults = Validate(new ValidationContext(appErrLog), ActionDBTypeEnum.Create);
+            if (ValidationResults.Count() > 0)
+            {
+               return await Task.FromResult(BadRequest(ValidationResults));
+            }
+
+            try
+            {
+               db.AppErrLogs.Add(appErrLog);
+               db.SaveChanges();
+            }
+            catch (DbUpdateException ex)
+            {
+               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+            }
+
+            return await Task.FromResult(Ok(appErrLog));
+        }
+        public async Task<ActionResult<AppErrLog>> Put(AppErrLog appErrLog)
+        {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             ValidationResults = Validate(new ValidationContext(appErrLog), ActionDBTypeEnum.Update);
             if (ValidationResults.Count() > 0)
             {

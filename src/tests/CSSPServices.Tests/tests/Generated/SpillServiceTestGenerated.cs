@@ -32,7 +32,7 @@ namespace CSSPServices.Tests
         private IServiceProvider Provider { get; set; }
         private IServiceCollection Services { get; set; }
         private ICultureService CultureService { get; set; }
-        private ISpillService spillService { get; set; }
+        private ISpillService SpillService { get; set; }
         private CSSPDBContext db { get; set; }
         #endregion Properties
 
@@ -62,7 +62,7 @@ namespace CSSPServices.Tests
                Spill spill = GetFilledRandomSpill(""); 
 
                // List<Spill>
-               var actionSpillList = await spillService.GetSpillList();
+               var actionSpillList = await SpillService.GetSpillList();
                Assert.Equal(200, ((ObjectResult)actionSpillList.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionSpillList.Result).Value);
                List<Spill> spillList = (List<Spill>)((OkObjectResult)actionSpillList.Result).Value;
@@ -70,22 +70,22 @@ namespace CSSPServices.Tests
                int count = ((List<Spill>)((OkObjectResult)actionSpillList.Result).Value).Count();
                 Assert.True(count > 0);
 
-               // Add Spill
-               var actionSpillAdded = await spillService.Add(spill);
+               // Post Spill
+               var actionSpillAdded = await SpillService.Post(spill);
                Assert.Equal(200, ((ObjectResult)actionSpillAdded.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionSpillAdded.Result).Value);
                Spill spillAdded = (Spill)((OkObjectResult)actionSpillAdded.Result).Value;
                Assert.NotNull(spillAdded);
 
-               // Update Spill
-               var actionSpillUpdated = await spillService.Update(spill);
+               // Put Spill
+               var actionSpillUpdated = await SpillService.Put(spill);
                Assert.Equal(200, ((ObjectResult)actionSpillUpdated.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionSpillUpdated.Result).Value);
                Spill spillUpdated = (Spill)((OkObjectResult)actionSpillUpdated.Result).Value;
                Assert.NotNull(spillUpdated);
 
                // Delete Spill
-               var actionSpillDeleted = await spillService.Delete(spill.SpillID);
+               var actionSpillDeleted = await SpillService.Delete(spill.SpillID);
                Assert.Equal(200, ((ObjectResult)actionSpillDeleted.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionSpillDeleted.Result).Value);
                bool retBool = (bool)((OkObjectResult)actionSpillDeleted.Result).Value;
@@ -126,8 +126,8 @@ namespace CSSPServices.Tests
 
             CultureService.SetCulture(culture);
 
-            spillService = Provider.GetService<ISpillService>();
-            Assert.NotNull(spillService);
+            SpillService = Provider.GetService<ISpillService>();
+            Assert.NotNull(SpillService);
 
             return await Task.FromResult(true);
         }

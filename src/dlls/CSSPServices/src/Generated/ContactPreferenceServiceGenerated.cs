@@ -9,6 +9,7 @@ using CSSPEnums;
 using CSSPModels;
 using CultureServices.Resources;
 using CultureServices.Services;
+using LoggedInServices.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -22,11 +23,11 @@ namespace CSSPServices
 {
    public interface IContactPreferenceService
     {
-       Task<ActionResult<ContactPreference>> GetContactPreferenceWithContactPreferenceID(int ContactPreferenceID);
-       Task<ActionResult<List<ContactPreference>>> GetContactPreferenceList();
-       Task<ActionResult<ContactPreference>> Add(ContactPreference contactpreference);
        Task<ActionResult<bool>> Delete(int ContactPreferenceID);
-       Task<ActionResult<ContactPreference>> Update(ContactPreference contactpreference);
+       Task<ActionResult<List<ContactPreference>>> GetContactPreferenceList();
+       Task<ActionResult<ContactPreference>> GetContactPreferenceWithContactPreferenceID(int ContactPreferenceID);
+       Task<ActionResult<ContactPreference>> Post(ContactPreference contactpreference);
+       Task<ActionResult<ContactPreference>> Put(ContactPreference contactpreference);
     }
     public partial class ContactPreferenceService : ControllerBase, IContactPreferenceService
     {
@@ -36,14 +37,16 @@ namespace CSSPServices
         #region Properties
         private CSSPDBContext db { get; }
         private ICultureService CultureService { get; }
+        private ILoggedInService LoggedInService { get; }
         private IEnums enums { get; }
         private IEnumerable<ValidationResult> ValidationResults { get; set; }
         #endregion Properties
 
         #region Constructors
-        public ContactPreferenceService(ICultureService CultureService, IEnums enums, CSSPDBContext db)
+        public ContactPreferenceService(ICultureService CultureService, ILoggedInService LoggedInService, IEnums enums, CSSPDBContext db)
         {
             this.CultureService = CultureService;
+            this.LoggedInService = LoggedInService;
             this.enums = enums;
             this.db = db;
         }
@@ -52,6 +55,11 @@ namespace CSSPServices
         #region Functions public 
         public async Task<ActionResult<ContactPreference>> GetContactPreferenceWithContactPreferenceID(int ContactPreferenceID)
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             ContactPreference contactpreference = (from c in db.ContactPreferences.AsNoTracking()
                     where c.ContactPreferenceID == ContactPreferenceID
                     select c).FirstOrDefault();
@@ -65,32 +73,22 @@ namespace CSSPServices
         }
         public async Task<ActionResult<List<ContactPreference>>> GetContactPreferenceList()
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             List<ContactPreference> contactpreferenceList = (from c in db.ContactPreferences.AsNoTracking() select c).Take(100).ToList();
 
             return await Task.FromResult(Ok(contactpreferenceList));
         }
-        public async Task<ActionResult<ContactPreference>> Add(ContactPreference contactPreference)
-        {
-            ValidationResults = Validate(new ValidationContext(contactPreference), ActionDBTypeEnum.Create);
-            if (ValidationResults.Count() > 0)
-            {
-               return await Task.FromResult(BadRequest(ValidationResults));
-            }
-
-            try
-            {
-               db.ContactPreferences.Add(contactPreference);
-               db.SaveChanges();
-            }
-            catch (DbUpdateException ex)
-            {
-               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
-            }
-
-            return await Task.FromResult(Ok(contactPreference));
-        }
         public async Task<ActionResult<bool>> Delete(int ContactPreferenceID)
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             ContactPreference contactPreference = (from c in db.ContactPreferences
                                where c.ContactPreferenceID == ContactPreferenceID
                                select c).FirstOrDefault();
@@ -112,8 +110,38 @@ namespace CSSPServices
 
             return await Task.FromResult(Ok(true));
         }
-        public async Task<ActionResult<ContactPreference>> Update(ContactPreference contactPreference)
+        public async Task<ActionResult<ContactPreference>> Post(ContactPreference contactPreference)
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
+            ValidationResults = Validate(new ValidationContext(contactPreference), ActionDBTypeEnum.Create);
+            if (ValidationResults.Count() > 0)
+            {
+               return await Task.FromResult(BadRequest(ValidationResults));
+            }
+
+            try
+            {
+               db.ContactPreferences.Add(contactPreference);
+               db.SaveChanges();
+            }
+            catch (DbUpdateException ex)
+            {
+               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+            }
+
+            return await Task.FromResult(Ok(contactPreference));
+        }
+        public async Task<ActionResult<ContactPreference>> Put(ContactPreference contactPreference)
+        {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             ValidationResults = Validate(new ValidationContext(contactPreference), ActionDBTypeEnum.Update);
             if (ValidationResults.Count() > 0)
             {

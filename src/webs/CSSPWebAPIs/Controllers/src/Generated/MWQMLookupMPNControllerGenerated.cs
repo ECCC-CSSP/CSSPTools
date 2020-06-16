@@ -6,6 +6,7 @@
 
 using CSSPModels;
 using CSSPServices;
+using CultureServices.Services;
 using LoggedInServices.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -18,8 +19,8 @@ namespace CSSPWebAPI.Controllers
     {
         Task<ActionResult<List<MWQMLookupMPN>>> Get();
         Task<ActionResult<MWQMLookupMPN>> Get(int MWQMLookupMPNID);
-        Task<ActionResult<MWQMLookupMPN>> Post(MWQMLookupMPN mwqmLookupMPN);
-        Task<ActionResult<MWQMLookupMPN>> Put(MWQMLookupMPN mwqmLookupMPN);
+        Task<ActionResult<MWQMLookupMPN>> Post(MWQMLookupMPN MWQMLookupMPN);
+        Task<ActionResult<MWQMLookupMPN>> Put(MWQMLookupMPN MWQMLookupMPN);
         Task<ActionResult<bool>> Delete(int MWQMLookupMPNID);
     }
 
@@ -32,17 +33,17 @@ namespace CSSPWebAPI.Controllers
         #endregion Variables
 
         #region Properties
-        private IMWQMLookupMPNService mwqmLookupMPNService { get; }
-        private CSSPDBContext db { get; }
-        private ILoggedInService loggedInService { get; }
+        private ICultureService CultureService { get; }
+        private ILoggedInService LoggedInService { get; }
+        private IMWQMLookupMPNService MWQMLookupMPNService { get; }
         #endregion Properties
 
         #region Constructors
-        public MWQMLookupMPNController(IMWQMLookupMPNService mwqmLookupMPNService, CSSPDBContext db, ILoggedInService loggedInService)
+        public MWQMLookupMPNController(ICultureService CultureService, ILoggedInService LoggedInService, IMWQMLookupMPNService MWQMLookupMPNService)
         {
-            this.mwqmLookupMPNService = mwqmLookupMPNService;
-            this.db = db;
-            this.loggedInService = loggedInService;
+            this.CultureService = CultureService;
+            this.LoggedInService = LoggedInService;
+            this.MWQMLookupMPNService = MWQMLookupMPNService;
         }
         #endregion Constructors
 
@@ -50,27 +51,42 @@ namespace CSSPWebAPI.Controllers
         [HttpGet]
         public async Task<ActionResult<List<MWQMLookupMPN>>> Get()
         {
-            return await mwqmLookupMPNService.GetMWQMLookupMPNList();
+            CultureService.SetCulture((string)RouteData.Values["culture"]);
+            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+
+            return await MWQMLookupMPNService.GetMWQMLookupMPNList();
         }
         [HttpGet("{MWQMLookupMPNID}")]
         public async Task<ActionResult<MWQMLookupMPN>> Get(int MWQMLookupMPNID)
         {
-            return await mwqmLookupMPNService.GetMWQMLookupMPNWithMWQMLookupMPNID(MWQMLookupMPNID);
+            CultureService.SetCulture((string)RouteData.Values["culture"]);
+            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+
+            return await MWQMLookupMPNService.GetMWQMLookupMPNWithMWQMLookupMPNID(MWQMLookupMPNID);
         }
         [HttpPost]
-        public async Task<ActionResult<MWQMLookupMPN>> Post(MWQMLookupMPN mwqmLookupMPN)
+        public async Task<ActionResult<MWQMLookupMPN>> Post(MWQMLookupMPN MWQMLookupMPN)
         {
-            return await mwqmLookupMPNService.Add(mwqmLookupMPN);
+            CultureService.SetCulture((string)RouteData.Values["culture"]);
+            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+
+            return await MWQMLookupMPNService.Post(MWQMLookupMPN);
         }
         [HttpPut]
-        public async Task<ActionResult<MWQMLookupMPN>> Put(MWQMLookupMPN mwqmLookupMPN)
+        public async Task<ActionResult<MWQMLookupMPN>> Put(MWQMLookupMPN MWQMLookupMPN)
         {
-            return await mwqmLookupMPNService.Update(mwqmLookupMPN);
+            CultureService.SetCulture((string)RouteData.Values["culture"]);
+            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+
+            return await MWQMLookupMPNService.Put(MWQMLookupMPN);
         }
         [HttpDelete("{MWQMLookupMPNID}")]
         public async Task<ActionResult<bool>> Delete(int MWQMLookupMPNID)
         {
-            return await mwqmLookupMPNService.Delete(MWQMLookupMPNID);
+            CultureService.SetCulture((string)RouteData.Values["culture"]);
+            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+
+            return await MWQMLookupMPNService.Delete(MWQMLookupMPNID);
         }
         #endregion Functions public
 

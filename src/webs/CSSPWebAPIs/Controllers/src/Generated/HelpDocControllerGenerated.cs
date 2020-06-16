@@ -6,6 +6,7 @@
 
 using CSSPModels;
 using CSSPServices;
+using CultureServices.Services;
 using LoggedInServices.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -18,8 +19,8 @@ namespace CSSPWebAPI.Controllers
     {
         Task<ActionResult<List<HelpDoc>>> Get();
         Task<ActionResult<HelpDoc>> Get(int HelpDocID);
-        Task<ActionResult<HelpDoc>> Post(HelpDoc helpDoc);
-        Task<ActionResult<HelpDoc>> Put(HelpDoc helpDoc);
+        Task<ActionResult<HelpDoc>> Post(HelpDoc HelpDoc);
+        Task<ActionResult<HelpDoc>> Put(HelpDoc HelpDoc);
         Task<ActionResult<bool>> Delete(int HelpDocID);
     }
 
@@ -32,17 +33,17 @@ namespace CSSPWebAPI.Controllers
         #endregion Variables
 
         #region Properties
-        private IHelpDocService helpDocService { get; }
-        private CSSPDBContext db { get; }
-        private ILoggedInService loggedInService { get; }
+        private ICultureService CultureService { get; }
+        private ILoggedInService LoggedInService { get; }
+        private IHelpDocService HelpDocService { get; }
         #endregion Properties
 
         #region Constructors
-        public HelpDocController(IHelpDocService helpDocService, CSSPDBContext db, ILoggedInService loggedInService)
+        public HelpDocController(ICultureService CultureService, ILoggedInService LoggedInService, IHelpDocService HelpDocService)
         {
-            this.helpDocService = helpDocService;
-            this.db = db;
-            this.loggedInService = loggedInService;
+            this.CultureService = CultureService;
+            this.LoggedInService = LoggedInService;
+            this.HelpDocService = HelpDocService;
         }
         #endregion Constructors
 
@@ -50,27 +51,42 @@ namespace CSSPWebAPI.Controllers
         [HttpGet]
         public async Task<ActionResult<List<HelpDoc>>> Get()
         {
-            return await helpDocService.GetHelpDocList();
+            CultureService.SetCulture((string)RouteData.Values["culture"]);
+            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+
+            return await HelpDocService.GetHelpDocList();
         }
         [HttpGet("{HelpDocID}")]
         public async Task<ActionResult<HelpDoc>> Get(int HelpDocID)
         {
-            return await helpDocService.GetHelpDocWithHelpDocID(HelpDocID);
+            CultureService.SetCulture((string)RouteData.Values["culture"]);
+            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+
+            return await HelpDocService.GetHelpDocWithHelpDocID(HelpDocID);
         }
         [HttpPost]
-        public async Task<ActionResult<HelpDoc>> Post(HelpDoc helpDoc)
+        public async Task<ActionResult<HelpDoc>> Post(HelpDoc HelpDoc)
         {
-            return await helpDocService.Add(helpDoc);
+            CultureService.SetCulture((string)RouteData.Values["culture"]);
+            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+
+            return await HelpDocService.Post(HelpDoc);
         }
         [HttpPut]
-        public async Task<ActionResult<HelpDoc>> Put(HelpDoc helpDoc)
+        public async Task<ActionResult<HelpDoc>> Put(HelpDoc HelpDoc)
         {
-            return await helpDocService.Update(helpDoc);
+            CultureService.SetCulture((string)RouteData.Values["culture"]);
+            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+
+            return await HelpDocService.Put(HelpDoc);
         }
         [HttpDelete("{HelpDocID}")]
         public async Task<ActionResult<bool>> Delete(int HelpDocID)
         {
-            return await helpDocService.Delete(HelpDocID);
+            CultureService.SetCulture((string)RouteData.Values["culture"]);
+            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+
+            return await HelpDocService.Delete(HelpDocID);
         }
         #endregion Functions public
 

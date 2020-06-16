@@ -32,7 +32,7 @@ namespace CSSPServices.Tests
         private IServiceProvider Provider { get; set; }
         private IServiceCollection Services { get; set; }
         private ICultureService CultureService { get; set; }
-        private ILabSheetTubeMPNDetailService labSheetTubeMPNDetailService { get; set; }
+        private ILabSheetTubeMPNDetailService LabSheetTubeMPNDetailService { get; set; }
         private CSSPDBContext db { get; set; }
         #endregion Properties
 
@@ -62,7 +62,7 @@ namespace CSSPServices.Tests
                LabSheetTubeMPNDetail labSheetTubeMPNDetail = GetFilledRandomLabSheetTubeMPNDetail(""); 
 
                // List<LabSheetTubeMPNDetail>
-               var actionLabSheetTubeMPNDetailList = await labSheetTubeMPNDetailService.GetLabSheetTubeMPNDetailList();
+               var actionLabSheetTubeMPNDetailList = await LabSheetTubeMPNDetailService.GetLabSheetTubeMPNDetailList();
                Assert.Equal(200, ((ObjectResult)actionLabSheetTubeMPNDetailList.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionLabSheetTubeMPNDetailList.Result).Value);
                List<LabSheetTubeMPNDetail> labSheetTubeMPNDetailList = (List<LabSheetTubeMPNDetail>)((OkObjectResult)actionLabSheetTubeMPNDetailList.Result).Value;
@@ -70,22 +70,22 @@ namespace CSSPServices.Tests
                int count = ((List<LabSheetTubeMPNDetail>)((OkObjectResult)actionLabSheetTubeMPNDetailList.Result).Value).Count();
                 Assert.True(count > 0);
 
-               // Add LabSheetTubeMPNDetail
-               var actionLabSheetTubeMPNDetailAdded = await labSheetTubeMPNDetailService.Add(labSheetTubeMPNDetail);
+               // Post LabSheetTubeMPNDetail
+               var actionLabSheetTubeMPNDetailAdded = await LabSheetTubeMPNDetailService.Post(labSheetTubeMPNDetail);
                Assert.Equal(200, ((ObjectResult)actionLabSheetTubeMPNDetailAdded.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionLabSheetTubeMPNDetailAdded.Result).Value);
                LabSheetTubeMPNDetail labSheetTubeMPNDetailAdded = (LabSheetTubeMPNDetail)((OkObjectResult)actionLabSheetTubeMPNDetailAdded.Result).Value;
                Assert.NotNull(labSheetTubeMPNDetailAdded);
 
-               // Update LabSheetTubeMPNDetail
-               var actionLabSheetTubeMPNDetailUpdated = await labSheetTubeMPNDetailService.Update(labSheetTubeMPNDetail);
+               // Put LabSheetTubeMPNDetail
+               var actionLabSheetTubeMPNDetailUpdated = await LabSheetTubeMPNDetailService.Put(labSheetTubeMPNDetail);
                Assert.Equal(200, ((ObjectResult)actionLabSheetTubeMPNDetailUpdated.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionLabSheetTubeMPNDetailUpdated.Result).Value);
                LabSheetTubeMPNDetail labSheetTubeMPNDetailUpdated = (LabSheetTubeMPNDetail)((OkObjectResult)actionLabSheetTubeMPNDetailUpdated.Result).Value;
                Assert.NotNull(labSheetTubeMPNDetailUpdated);
 
                // Delete LabSheetTubeMPNDetail
-               var actionLabSheetTubeMPNDetailDeleted = await labSheetTubeMPNDetailService.Delete(labSheetTubeMPNDetail.LabSheetTubeMPNDetailID);
+               var actionLabSheetTubeMPNDetailDeleted = await LabSheetTubeMPNDetailService.Delete(labSheetTubeMPNDetail.LabSheetTubeMPNDetailID);
                Assert.Equal(200, ((ObjectResult)actionLabSheetTubeMPNDetailDeleted.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionLabSheetTubeMPNDetailDeleted.Result).Value);
                bool retBool = (bool)((OkObjectResult)actionLabSheetTubeMPNDetailDeleted.Result).Value;
@@ -126,8 +126,8 @@ namespace CSSPServices.Tests
 
             CultureService.SetCulture(culture);
 
-            labSheetTubeMPNDetailService = Provider.GetService<ILabSheetTubeMPNDetailService>();
-            Assert.NotNull(labSheetTubeMPNDetailService);
+            LabSheetTubeMPNDetailService = Provider.GetService<ILabSheetTubeMPNDetailService>();
+            Assert.NotNull(LabSheetTubeMPNDetailService);
 
             return await Task.FromResult(true);
         }

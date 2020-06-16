@@ -9,6 +9,7 @@ using CSSPEnums;
 using CSSPModels;
 using CultureServices.Resources;
 using CultureServices.Services;
+using LoggedInServices.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -22,11 +23,11 @@ namespace CSSPServices
 {
    public interface IAppTaskService
     {
-       Task<ActionResult<AppTask>> GetAppTaskWithAppTaskID(int AppTaskID);
-       Task<ActionResult<List<AppTask>>> GetAppTaskList();
-       Task<ActionResult<AppTask>> Add(AppTask apptask);
        Task<ActionResult<bool>> Delete(int AppTaskID);
-       Task<ActionResult<AppTask>> Update(AppTask apptask);
+       Task<ActionResult<List<AppTask>>> GetAppTaskList();
+       Task<ActionResult<AppTask>> GetAppTaskWithAppTaskID(int AppTaskID);
+       Task<ActionResult<AppTask>> Post(AppTask apptask);
+       Task<ActionResult<AppTask>> Put(AppTask apptask);
     }
     public partial class AppTaskService : ControllerBase, IAppTaskService
     {
@@ -36,14 +37,16 @@ namespace CSSPServices
         #region Properties
         private CSSPDBContext db { get; }
         private ICultureService CultureService { get; }
+        private ILoggedInService LoggedInService { get; }
         private IEnums enums { get; }
         private IEnumerable<ValidationResult> ValidationResults { get; set; }
         #endregion Properties
 
         #region Constructors
-        public AppTaskService(ICultureService CultureService, IEnums enums, CSSPDBContext db)
+        public AppTaskService(ICultureService CultureService, ILoggedInService LoggedInService, IEnums enums, CSSPDBContext db)
         {
             this.CultureService = CultureService;
+            this.LoggedInService = LoggedInService;
             this.enums = enums;
             this.db = db;
         }
@@ -52,6 +55,11 @@ namespace CSSPServices
         #region Functions public 
         public async Task<ActionResult<AppTask>> GetAppTaskWithAppTaskID(int AppTaskID)
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             AppTask apptask = (from c in db.AppTasks.AsNoTracking()
                     where c.AppTaskID == AppTaskID
                     select c).FirstOrDefault();
@@ -65,32 +73,22 @@ namespace CSSPServices
         }
         public async Task<ActionResult<List<AppTask>>> GetAppTaskList()
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             List<AppTask> apptaskList = (from c in db.AppTasks.AsNoTracking() select c).Take(100).ToList();
 
             return await Task.FromResult(Ok(apptaskList));
         }
-        public async Task<ActionResult<AppTask>> Add(AppTask appTask)
-        {
-            ValidationResults = Validate(new ValidationContext(appTask), ActionDBTypeEnum.Create);
-            if (ValidationResults.Count() > 0)
-            {
-               return await Task.FromResult(BadRequest(ValidationResults));
-            }
-
-            try
-            {
-               db.AppTasks.Add(appTask);
-               db.SaveChanges();
-            }
-            catch (DbUpdateException ex)
-            {
-               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
-            }
-
-            return await Task.FromResult(Ok(appTask));
-        }
         public async Task<ActionResult<bool>> Delete(int AppTaskID)
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             AppTask appTask = (from c in db.AppTasks
                                where c.AppTaskID == AppTaskID
                                select c).FirstOrDefault();
@@ -112,8 +110,38 @@ namespace CSSPServices
 
             return await Task.FromResult(Ok(true));
         }
-        public async Task<ActionResult<AppTask>> Update(AppTask appTask)
+        public async Task<ActionResult<AppTask>> Post(AppTask appTask)
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
+            ValidationResults = Validate(new ValidationContext(appTask), ActionDBTypeEnum.Create);
+            if (ValidationResults.Count() > 0)
+            {
+               return await Task.FromResult(BadRequest(ValidationResults));
+            }
+
+            try
+            {
+               db.AppTasks.Add(appTask);
+               db.SaveChanges();
+            }
+            catch (DbUpdateException ex)
+            {
+               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+            }
+
+            return await Task.FromResult(Ok(appTask));
+        }
+        public async Task<ActionResult<AppTask>> Put(AppTask appTask)
+        {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             ValidationResults = Validate(new ValidationContext(appTask), ActionDBTypeEnum.Update);
             if (ValidationResults.Count() > 0)
             {

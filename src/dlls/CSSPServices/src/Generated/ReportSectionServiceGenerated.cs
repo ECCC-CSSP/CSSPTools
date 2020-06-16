@@ -9,6 +9,7 @@ using CSSPEnums;
 using CSSPModels;
 using CultureServices.Resources;
 using CultureServices.Services;
+using LoggedInServices.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -22,11 +23,11 @@ namespace CSSPServices
 {
    public interface IReportSectionService
     {
-       Task<ActionResult<ReportSection>> GetReportSectionWithReportSectionID(int ReportSectionID);
-       Task<ActionResult<List<ReportSection>>> GetReportSectionList();
-       Task<ActionResult<ReportSection>> Add(ReportSection reportsection);
        Task<ActionResult<bool>> Delete(int ReportSectionID);
-       Task<ActionResult<ReportSection>> Update(ReportSection reportsection);
+       Task<ActionResult<List<ReportSection>>> GetReportSectionList();
+       Task<ActionResult<ReportSection>> GetReportSectionWithReportSectionID(int ReportSectionID);
+       Task<ActionResult<ReportSection>> Post(ReportSection reportsection);
+       Task<ActionResult<ReportSection>> Put(ReportSection reportsection);
     }
     public partial class ReportSectionService : ControllerBase, IReportSectionService
     {
@@ -36,14 +37,16 @@ namespace CSSPServices
         #region Properties
         private CSSPDBContext db { get; }
         private ICultureService CultureService { get; }
+        private ILoggedInService LoggedInService { get; }
         private IEnums enums { get; }
         private IEnumerable<ValidationResult> ValidationResults { get; set; }
         #endregion Properties
 
         #region Constructors
-        public ReportSectionService(ICultureService CultureService, IEnums enums, CSSPDBContext db)
+        public ReportSectionService(ICultureService CultureService, ILoggedInService LoggedInService, IEnums enums, CSSPDBContext db)
         {
             this.CultureService = CultureService;
+            this.LoggedInService = LoggedInService;
             this.enums = enums;
             this.db = db;
         }
@@ -52,6 +55,11 @@ namespace CSSPServices
         #region Functions public 
         public async Task<ActionResult<ReportSection>> GetReportSectionWithReportSectionID(int ReportSectionID)
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             ReportSection reportsection = (from c in db.ReportSections.AsNoTracking()
                     where c.ReportSectionID == ReportSectionID
                     select c).FirstOrDefault();
@@ -65,32 +73,22 @@ namespace CSSPServices
         }
         public async Task<ActionResult<List<ReportSection>>> GetReportSectionList()
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             List<ReportSection> reportsectionList = (from c in db.ReportSections.AsNoTracking() select c).Take(100).ToList();
 
             return await Task.FromResult(Ok(reportsectionList));
         }
-        public async Task<ActionResult<ReportSection>> Add(ReportSection reportSection)
-        {
-            ValidationResults = Validate(new ValidationContext(reportSection), ActionDBTypeEnum.Create);
-            if (ValidationResults.Count() > 0)
-            {
-               return await Task.FromResult(BadRequest(ValidationResults));
-            }
-
-            try
-            {
-               db.ReportSections.Add(reportSection);
-               db.SaveChanges();
-            }
-            catch (DbUpdateException ex)
-            {
-               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
-            }
-
-            return await Task.FromResult(Ok(reportSection));
-        }
         public async Task<ActionResult<bool>> Delete(int ReportSectionID)
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             ReportSection reportSection = (from c in db.ReportSections
                                where c.ReportSectionID == ReportSectionID
                                select c).FirstOrDefault();
@@ -112,8 +110,38 @@ namespace CSSPServices
 
             return await Task.FromResult(Ok(true));
         }
-        public async Task<ActionResult<ReportSection>> Update(ReportSection reportSection)
+        public async Task<ActionResult<ReportSection>> Post(ReportSection reportSection)
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
+            ValidationResults = Validate(new ValidationContext(reportSection), ActionDBTypeEnum.Create);
+            if (ValidationResults.Count() > 0)
+            {
+               return await Task.FromResult(BadRequest(ValidationResults));
+            }
+
+            try
+            {
+               db.ReportSections.Add(reportSection);
+               db.SaveChanges();
+            }
+            catch (DbUpdateException ex)
+            {
+               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+            }
+
+            return await Task.FromResult(Ok(reportSection));
+        }
+        public async Task<ActionResult<ReportSection>> Put(ReportSection reportSection)
+        {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             ValidationResults = Validate(new ValidationContext(reportSection), ActionDBTypeEnum.Update);
             if (ValidationResults.Count() > 0)
             {

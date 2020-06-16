@@ -9,6 +9,7 @@ using CSSPEnums;
 using CSSPModels;
 using CultureServices.Resources;
 using CultureServices.Services;
+using LoggedInServices.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -22,11 +23,11 @@ namespace CSSPServices
 {
    public interface ISamplingPlanEmailService
     {
-       Task<ActionResult<SamplingPlanEmail>> GetSamplingPlanEmailWithSamplingPlanEmailID(int SamplingPlanEmailID);
-       Task<ActionResult<List<SamplingPlanEmail>>> GetSamplingPlanEmailList();
-       Task<ActionResult<SamplingPlanEmail>> Add(SamplingPlanEmail samplingplanemail);
        Task<ActionResult<bool>> Delete(int SamplingPlanEmailID);
-       Task<ActionResult<SamplingPlanEmail>> Update(SamplingPlanEmail samplingplanemail);
+       Task<ActionResult<List<SamplingPlanEmail>>> GetSamplingPlanEmailList();
+       Task<ActionResult<SamplingPlanEmail>> GetSamplingPlanEmailWithSamplingPlanEmailID(int SamplingPlanEmailID);
+       Task<ActionResult<SamplingPlanEmail>> Post(SamplingPlanEmail samplingplanemail);
+       Task<ActionResult<SamplingPlanEmail>> Put(SamplingPlanEmail samplingplanemail);
     }
     public partial class SamplingPlanEmailService : ControllerBase, ISamplingPlanEmailService
     {
@@ -36,14 +37,16 @@ namespace CSSPServices
         #region Properties
         private CSSPDBContext db { get; }
         private ICultureService CultureService { get; }
+        private ILoggedInService LoggedInService { get; }
         private IEnums enums { get; }
         private IEnumerable<ValidationResult> ValidationResults { get; set; }
         #endregion Properties
 
         #region Constructors
-        public SamplingPlanEmailService(ICultureService CultureService, IEnums enums, CSSPDBContext db)
+        public SamplingPlanEmailService(ICultureService CultureService, ILoggedInService LoggedInService, IEnums enums, CSSPDBContext db)
         {
             this.CultureService = CultureService;
+            this.LoggedInService = LoggedInService;
             this.enums = enums;
             this.db = db;
         }
@@ -52,6 +55,11 @@ namespace CSSPServices
         #region Functions public 
         public async Task<ActionResult<SamplingPlanEmail>> GetSamplingPlanEmailWithSamplingPlanEmailID(int SamplingPlanEmailID)
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             SamplingPlanEmail samplingplanemail = (from c in db.SamplingPlanEmails.AsNoTracking()
                     where c.SamplingPlanEmailID == SamplingPlanEmailID
                     select c).FirstOrDefault();
@@ -65,32 +73,22 @@ namespace CSSPServices
         }
         public async Task<ActionResult<List<SamplingPlanEmail>>> GetSamplingPlanEmailList()
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             List<SamplingPlanEmail> samplingplanemailList = (from c in db.SamplingPlanEmails.AsNoTracking() select c).Take(100).ToList();
 
             return await Task.FromResult(Ok(samplingplanemailList));
         }
-        public async Task<ActionResult<SamplingPlanEmail>> Add(SamplingPlanEmail samplingPlanEmail)
-        {
-            ValidationResults = Validate(new ValidationContext(samplingPlanEmail), ActionDBTypeEnum.Create);
-            if (ValidationResults.Count() > 0)
-            {
-               return await Task.FromResult(BadRequest(ValidationResults));
-            }
-
-            try
-            {
-               db.SamplingPlanEmails.Add(samplingPlanEmail);
-               db.SaveChanges();
-            }
-            catch (DbUpdateException ex)
-            {
-               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
-            }
-
-            return await Task.FromResult(Ok(samplingPlanEmail));
-        }
         public async Task<ActionResult<bool>> Delete(int SamplingPlanEmailID)
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             SamplingPlanEmail samplingPlanEmail = (from c in db.SamplingPlanEmails
                                where c.SamplingPlanEmailID == SamplingPlanEmailID
                                select c).FirstOrDefault();
@@ -112,8 +110,38 @@ namespace CSSPServices
 
             return await Task.FromResult(Ok(true));
         }
-        public async Task<ActionResult<SamplingPlanEmail>> Update(SamplingPlanEmail samplingPlanEmail)
+        public async Task<ActionResult<SamplingPlanEmail>> Post(SamplingPlanEmail samplingPlanEmail)
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
+            ValidationResults = Validate(new ValidationContext(samplingPlanEmail), ActionDBTypeEnum.Create);
+            if (ValidationResults.Count() > 0)
+            {
+               return await Task.FromResult(BadRequest(ValidationResults));
+            }
+
+            try
+            {
+               db.SamplingPlanEmails.Add(samplingPlanEmail);
+               db.SaveChanges();
+            }
+            catch (DbUpdateException ex)
+            {
+               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+            }
+
+            return await Task.FromResult(Ok(samplingPlanEmail));
+        }
+        public async Task<ActionResult<SamplingPlanEmail>> Put(SamplingPlanEmail samplingPlanEmail)
+        {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             ValidationResults = Validate(new ValidationContext(samplingPlanEmail), ActionDBTypeEnum.Update);
             if (ValidationResults.Count() > 0)
             {

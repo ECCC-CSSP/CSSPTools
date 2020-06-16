@@ -53,6 +53,9 @@
     <Reference Include="CultureServices">
       <HintPath>..\..\dlls\_package\netcoreapp3.1\CultureServices.dll</HintPath>
     </Reference>
+    <Reference Include="LoggedInServices">
+      <HintPath>..\..\dlls\_package\netcoreapp3.1\LoggedInServices.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
 </Project>

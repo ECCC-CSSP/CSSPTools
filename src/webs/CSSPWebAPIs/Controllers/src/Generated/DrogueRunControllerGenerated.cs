@@ -6,6 +6,7 @@
 
 using CSSPModels;
 using CSSPServices;
+using CultureServices.Services;
 using LoggedInServices.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -18,8 +19,8 @@ namespace CSSPWebAPI.Controllers
     {
         Task<ActionResult<List<DrogueRun>>> Get();
         Task<ActionResult<DrogueRun>> Get(int DrogueRunID);
-        Task<ActionResult<DrogueRun>> Post(DrogueRun drogueRun);
-        Task<ActionResult<DrogueRun>> Put(DrogueRun drogueRun);
+        Task<ActionResult<DrogueRun>> Post(DrogueRun DrogueRun);
+        Task<ActionResult<DrogueRun>> Put(DrogueRun DrogueRun);
         Task<ActionResult<bool>> Delete(int DrogueRunID);
     }
 
@@ -32,17 +33,17 @@ namespace CSSPWebAPI.Controllers
         #endregion Variables
 
         #region Properties
-        private IDrogueRunService drogueRunService { get; }
-        private CSSPDBContext db { get; }
-        private ILoggedInService loggedInService { get; }
+        private ICultureService CultureService { get; }
+        private ILoggedInService LoggedInService { get; }
+        private IDrogueRunService DrogueRunService { get; }
         #endregion Properties
 
         #region Constructors
-        public DrogueRunController(IDrogueRunService drogueRunService, CSSPDBContext db, ILoggedInService loggedInService)
+        public DrogueRunController(ICultureService CultureService, ILoggedInService LoggedInService, IDrogueRunService DrogueRunService)
         {
-            this.drogueRunService = drogueRunService;
-            this.db = db;
-            this.loggedInService = loggedInService;
+            this.CultureService = CultureService;
+            this.LoggedInService = LoggedInService;
+            this.DrogueRunService = DrogueRunService;
         }
         #endregion Constructors
 
@@ -50,27 +51,42 @@ namespace CSSPWebAPI.Controllers
         [HttpGet]
         public async Task<ActionResult<List<DrogueRun>>> Get()
         {
-            return await drogueRunService.GetDrogueRunList();
+            CultureService.SetCulture((string)RouteData.Values["culture"]);
+            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+
+            return await DrogueRunService.GetDrogueRunList();
         }
         [HttpGet("{DrogueRunID}")]
         public async Task<ActionResult<DrogueRun>> Get(int DrogueRunID)
         {
-            return await drogueRunService.GetDrogueRunWithDrogueRunID(DrogueRunID);
+            CultureService.SetCulture((string)RouteData.Values["culture"]);
+            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+
+            return await DrogueRunService.GetDrogueRunWithDrogueRunID(DrogueRunID);
         }
         [HttpPost]
-        public async Task<ActionResult<DrogueRun>> Post(DrogueRun drogueRun)
+        public async Task<ActionResult<DrogueRun>> Post(DrogueRun DrogueRun)
         {
-            return await drogueRunService.Add(drogueRun);
+            CultureService.SetCulture((string)RouteData.Values["culture"]);
+            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+
+            return await DrogueRunService.Post(DrogueRun);
         }
         [HttpPut]
-        public async Task<ActionResult<DrogueRun>> Put(DrogueRun drogueRun)
+        public async Task<ActionResult<DrogueRun>> Put(DrogueRun DrogueRun)
         {
-            return await drogueRunService.Update(drogueRun);
+            CultureService.SetCulture((string)RouteData.Values["culture"]);
+            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+
+            return await DrogueRunService.Put(DrogueRun);
         }
         [HttpDelete("{DrogueRunID}")]
         public async Task<ActionResult<bool>> Delete(int DrogueRunID)
         {
-            return await drogueRunService.Delete(DrogueRunID);
+            CultureService.SetCulture((string)RouteData.Values["culture"]);
+            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+
+            return await DrogueRunService.Delete(DrogueRunID);
         }
         #endregion Functions public
 

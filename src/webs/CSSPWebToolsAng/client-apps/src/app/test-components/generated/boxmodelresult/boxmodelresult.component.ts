@@ -70,92 +70,92 @@ export class BoxModelResultComponent implements OnInit, OnDestroy {
             {
               value: (AddOrUpdate === 'Add' ? 0 : (this.boxmodelresultService.boxmodelresultList[0]?.BoxModelResultID)),
               disabled: false
-            }],
+            }, [ Validators.required ]],
           BoxModelID: [
             {
               value: this.boxmodelresultService.boxmodelresultList[0]?.BoxModelID,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           BoxModelResultType: [
             {
               value: this.boxmodelresultService.boxmodelresultList[0]?.BoxModelResultType,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           Volume_m3: [
             {
               value: this.boxmodelresultService.boxmodelresultList[0]?.Volume_m3,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           Surface_m2: [
             {
               value: this.boxmodelresultService.boxmodelresultList[0]?.Surface_m2,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           Radius_m: [
             {
               value: this.boxmodelresultService.boxmodelresultList[0]?.Radius_m,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           LeftSideDiameterLineAngle_deg: [
             {
               value: this.boxmodelresultService.boxmodelresultList[0]?.LeftSideDiameterLineAngle_deg,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           CircleCenterLatitude: [
             {
               value: this.boxmodelresultService.boxmodelresultList[0]?.CircleCenterLatitude,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           CircleCenterLongitude: [
             {
               value: this.boxmodelresultService.boxmodelresultList[0]?.CircleCenterLongitude,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           FixLength: [
             {
               value: this.boxmodelresultService.boxmodelresultList[0]?.FixLength,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           FixWidth: [
             {
               value: this.boxmodelresultService.boxmodelresultList[0]?.FixWidth,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           RectLength_m: [
             {
               value: this.boxmodelresultService.boxmodelresultList[0]?.RectLength_m,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           RectWidth_m: [
             {
               value: this.boxmodelresultService.boxmodelresultList[0]?.RectWidth_m,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           LeftSideLineAngle_deg: [
             {
               value: this.boxmodelresultService.boxmodelresultList[0]?.LeftSideLineAngle_deg,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           LeftSideLineStartLatitude: [
             {
               value: this.boxmodelresultService.boxmodelresultList[0]?.LeftSideLineStartLatitude,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           LeftSideLineStartLongitude: [
             {
               value: this.boxmodelresultService.boxmodelresultList[0]?.LeftSideLineStartLongitude,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           LastUpdateDate_UTC: [
             {
               value: this.boxmodelresultService.boxmodelresultList[0]?.LastUpdateDate_UTC,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           LastUpdateContactTVItemID: [
             {
               value: this.boxmodelresultService.boxmodelresultList[0]?.LastUpdateContactTVItemID,
               disabled: false
-            }],
+            }, [ Validators.required ]],
         }
       );
 

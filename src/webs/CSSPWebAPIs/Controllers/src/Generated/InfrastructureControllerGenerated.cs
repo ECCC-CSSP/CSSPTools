@@ -6,6 +6,7 @@
 
 using CSSPModels;
 using CSSPServices;
+using CultureServices.Services;
 using LoggedInServices.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -18,8 +19,8 @@ namespace CSSPWebAPI.Controllers
     {
         Task<ActionResult<List<Infrastructure>>> Get();
         Task<ActionResult<Infrastructure>> Get(int InfrastructureID);
-        Task<ActionResult<Infrastructure>> Post(Infrastructure infrastructure);
-        Task<ActionResult<Infrastructure>> Put(Infrastructure infrastructure);
+        Task<ActionResult<Infrastructure>> Post(Infrastructure Infrastructure);
+        Task<ActionResult<Infrastructure>> Put(Infrastructure Infrastructure);
         Task<ActionResult<bool>> Delete(int InfrastructureID);
     }
 
@@ -32,17 +33,17 @@ namespace CSSPWebAPI.Controllers
         #endregion Variables
 
         #region Properties
-        private IInfrastructureService infrastructureService { get; }
-        private CSSPDBContext db { get; }
-        private ILoggedInService loggedInService { get; }
+        private ICultureService CultureService { get; }
+        private ILoggedInService LoggedInService { get; }
+        private IInfrastructureService InfrastructureService { get; }
         #endregion Properties
 
         #region Constructors
-        public InfrastructureController(IInfrastructureService infrastructureService, CSSPDBContext db, ILoggedInService loggedInService)
+        public InfrastructureController(ICultureService CultureService, ILoggedInService LoggedInService, IInfrastructureService InfrastructureService)
         {
-            this.infrastructureService = infrastructureService;
-            this.db = db;
-            this.loggedInService = loggedInService;
+            this.CultureService = CultureService;
+            this.LoggedInService = LoggedInService;
+            this.InfrastructureService = InfrastructureService;
         }
         #endregion Constructors
 
@@ -50,27 +51,42 @@ namespace CSSPWebAPI.Controllers
         [HttpGet]
         public async Task<ActionResult<List<Infrastructure>>> Get()
         {
-            return await infrastructureService.GetInfrastructureList();
+            CultureService.SetCulture((string)RouteData.Values["culture"]);
+            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+
+            return await InfrastructureService.GetInfrastructureList();
         }
         [HttpGet("{InfrastructureID}")]
         public async Task<ActionResult<Infrastructure>> Get(int InfrastructureID)
         {
-            return await infrastructureService.GetInfrastructureWithInfrastructureID(InfrastructureID);
+            CultureService.SetCulture((string)RouteData.Values["culture"]);
+            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+
+            return await InfrastructureService.GetInfrastructureWithInfrastructureID(InfrastructureID);
         }
         [HttpPost]
-        public async Task<ActionResult<Infrastructure>> Post(Infrastructure infrastructure)
+        public async Task<ActionResult<Infrastructure>> Post(Infrastructure Infrastructure)
         {
-            return await infrastructureService.Add(infrastructure);
+            CultureService.SetCulture((string)RouteData.Values["culture"]);
+            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+
+            return await InfrastructureService.Post(Infrastructure);
         }
         [HttpPut]
-        public async Task<ActionResult<Infrastructure>> Put(Infrastructure infrastructure)
+        public async Task<ActionResult<Infrastructure>> Put(Infrastructure Infrastructure)
         {
-            return await infrastructureService.Update(infrastructure);
+            CultureService.SetCulture((string)RouteData.Values["culture"]);
+            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+
+            return await InfrastructureService.Put(Infrastructure);
         }
         [HttpDelete("{InfrastructureID}")]
         public async Task<ActionResult<bool>> Delete(int InfrastructureID)
         {
-            return await infrastructureService.Delete(InfrastructureID);
+            CultureService.SetCulture((string)RouteData.Values["culture"]);
+            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+
+            return await InfrastructureService.Delete(InfrastructureID);
         }
         #endregion Functions public
 

@@ -9,6 +9,7 @@ using CSSPEnums;
 using CSSPModels;
 using CultureServices.Resources;
 using CultureServices.Services;
+using LoggedInServices.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -22,11 +23,11 @@ namespace CSSPServices
 {
    public interface ILogService
     {
-       Task<ActionResult<Log>> GetLogWithLogID(int LogID);
-       Task<ActionResult<List<Log>>> GetLogList();
-       Task<ActionResult<Log>> Add(Log log);
        Task<ActionResult<bool>> Delete(int LogID);
-       Task<ActionResult<Log>> Update(Log log);
+       Task<ActionResult<List<Log>>> GetLogList();
+       Task<ActionResult<Log>> GetLogWithLogID(int LogID);
+       Task<ActionResult<Log>> Post(Log log);
+       Task<ActionResult<Log>> Put(Log log);
     }
     public partial class LogService : ControllerBase, ILogService
     {
@@ -36,14 +37,16 @@ namespace CSSPServices
         #region Properties
         private CSSPDBContext db { get; }
         private ICultureService CultureService { get; }
+        private ILoggedInService LoggedInService { get; }
         private IEnums enums { get; }
         private IEnumerable<ValidationResult> ValidationResults { get; set; }
         #endregion Properties
 
         #region Constructors
-        public LogService(ICultureService CultureService, IEnums enums, CSSPDBContext db)
+        public LogService(ICultureService CultureService, ILoggedInService LoggedInService, IEnums enums, CSSPDBContext db)
         {
             this.CultureService = CultureService;
+            this.LoggedInService = LoggedInService;
             this.enums = enums;
             this.db = db;
         }
@@ -52,6 +55,11 @@ namespace CSSPServices
         #region Functions public 
         public async Task<ActionResult<Log>> GetLogWithLogID(int LogID)
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             Log log = (from c in db.Logs.AsNoTracking()
                     where c.LogID == LogID
                     select c).FirstOrDefault();
@@ -65,32 +73,22 @@ namespace CSSPServices
         }
         public async Task<ActionResult<List<Log>>> GetLogList()
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             List<Log> logList = (from c in db.Logs.AsNoTracking() select c).Take(100).ToList();
 
             return await Task.FromResult(Ok(logList));
         }
-        public async Task<ActionResult<Log>> Add(Log log)
-        {
-            ValidationResults = Validate(new ValidationContext(log), ActionDBTypeEnum.Create);
-            if (ValidationResults.Count() > 0)
-            {
-               return await Task.FromResult(BadRequest(ValidationResults));
-            }
-
-            try
-            {
-               db.Logs.Add(log);
-               db.SaveChanges();
-            }
-            catch (DbUpdateException ex)
-            {
-               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
-            }
-
-            return await Task.FromResult(Ok(log));
-        }
         public async Task<ActionResult<bool>> Delete(int LogID)
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             Log log = (from c in db.Logs
                                where c.LogID == LogID
                                select c).FirstOrDefault();
@@ -112,8 +110,38 @@ namespace CSSPServices
 
             return await Task.FromResult(Ok(true));
         }
-        public async Task<ActionResult<Log>> Update(Log log)
+        public async Task<ActionResult<Log>> Post(Log log)
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
+            ValidationResults = Validate(new ValidationContext(log), ActionDBTypeEnum.Create);
+            if (ValidationResults.Count() > 0)
+            {
+               return await Task.FromResult(BadRequest(ValidationResults));
+            }
+
+            try
+            {
+               db.Logs.Add(log);
+               db.SaveChanges();
+            }
+            catch (DbUpdateException ex)
+            {
+               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+            }
+
+            return await Task.FromResult(Ok(log));
+        }
+        public async Task<ActionResult<Log>> Put(Log log)
+        {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             ValidationResults = Validate(new ValidationContext(log), ActionDBTypeEnum.Update);
             if (ValidationResults.Count() > 0)
             {

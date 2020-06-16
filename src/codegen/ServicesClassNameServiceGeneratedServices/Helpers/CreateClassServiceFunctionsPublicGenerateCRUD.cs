@@ -17,15 +17,51 @@ namespace ServicesClassNameServiceGeneratedServices.Services
                 Plurial = "es";
             }
 
+            // Doing Delete
+            sb.AppendLine($@"        public async Task<ActionResult<bool>> Delete(int { TypeName }ID)");
+            sb.AppendLine(@"        {");
+            sb.AppendLine(@"            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)");
+            sb.AppendLine(@"            {");
+            sb.AppendLine(@"                return await Task.FromResult(Unauthorized());");
+            sb.AppendLine(@"            }");
+            sb.AppendLine(@"");
+            sb.AppendLine($@"            { TypeName } { TypeNameLower } = (from c in db.{ TypeName }{ Plurial }");
+            sb.AppendLine($@"                               where c.{ TypeName }ID == { TypeName }ID");
+            sb.AppendLine(@"                               select c).FirstOrDefault();");
+            sb.AppendLine(@"            ");
+            sb.AppendLine($@"            if ({ TypeNameLower } == null)");
+            sb.AppendLine(@"            {");
+            sb.AppendLine($@"                return await Task.FromResult(BadRequest(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, ""{ TypeName }"", ""{ TypeName }ID"", { TypeName }ID.ToString())));");
+            sb.AppendLine(@"            }");
+            sb.AppendLine(@"");
+            sb.AppendLine($@"            try");
+            sb.AppendLine(@"            {");
+            sb.AppendLine($@"               db.{ TypeName }{ Plurial }.Remove({ TypeNameLower });");
+            sb.AppendLine($@"               db.SaveChanges();");
+            sb.AppendLine(@"            }");
+            sb.AppendLine($@"            catch (DbUpdateException ex)");
+            sb.AppendLine(@"            {");
+            sb.AppendLine($@"               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? "" Inner: "" + ex.InnerException.Message : """")));");
+            sb.AppendLine(@"            }");
+            sb.AppendLine(@"");
+            sb.AppendLine($@"            return await Task.FromResult(Ok(true));");
+            sb.AppendLine(@"        }");
+
+            // Doing Post
             if (TypeName == "Contact")
             {
-                sb.AppendLine($@"        public async Task<ActionResult<{ TypeName }>> Add({ TypeName } { TypeNameLower }, AddContactTypeEnum addContactType)");
+                sb.AppendLine($@"        public async Task<ActionResult<{ TypeName }>> Post({ TypeName } { TypeNameLower }, AddContactTypeEnum addContactType)");
             }
             else
             {
-                sb.AppendLine($@"        public async Task<ActionResult<{ TypeName }>> Add({ TypeName } { TypeNameLower })");
+                sb.AppendLine($@"        public async Task<ActionResult<{ TypeName }>> Post({ TypeName } { TypeNameLower })");
             }
             sb.AppendLine(@"        {");
+            sb.AppendLine(@"            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)");
+            sb.AppendLine(@"            {");
+            sb.AppendLine(@"                return await Task.FromResult(Unauthorized());");
+            sb.AppendLine(@"            }");
+            sb.AppendLine(@"");
             if (TypeName == "Contact")
             {
                 sb.AppendLine($@"            ValidationResults = Validate(new ValidationContext({ TypeNameLower }), ActionDBTypeEnum.Create, addContactType);");
@@ -52,32 +88,14 @@ namespace ServicesClassNameServiceGeneratedServices.Services
             sb.AppendLine($@"            return await Task.FromResult(Ok({ TypeNameLower }));");
             sb.AppendLine(@"        }");
 
-            sb.AppendLine($@"        public async Task<ActionResult<bool>> Delete(int { TypeName }ID)");
+            // doing Put
+            sb.AppendLine($@"        public async Task<ActionResult<{ TypeName }>> Put({ TypeName } { TypeNameLower })");
             sb.AppendLine(@"        {");
-            sb.AppendLine($@"            { TypeName } { TypeNameLower } = (from c in db.{ TypeName }{ Plurial }");
-            sb.AppendLine($@"                               where c.{ TypeName }ID == { TypeName }ID");
-            sb.AppendLine(@"                               select c).FirstOrDefault();");
-            sb.AppendLine(@"            ");
-            sb.AppendLine($@"            if ({ TypeNameLower } == null)");
+            sb.AppendLine(@"            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)");
             sb.AppendLine(@"            {");
-            sb.AppendLine($@"                return await Task.FromResult(BadRequest(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, ""{ TypeName }"", ""{ TypeName }ID"", { TypeName }ID.ToString())));");
+            sb.AppendLine(@"                return await Task.FromResult(Unauthorized());");
             sb.AppendLine(@"            }");
             sb.AppendLine(@"");
-            sb.AppendLine($@"            try");
-            sb.AppendLine(@"            {");
-            sb.AppendLine($@"               db.{ TypeName }{ Plurial }.Remove({ TypeNameLower });");
-            sb.AppendLine($@"               db.SaveChanges();");
-            sb.AppendLine(@"            }");
-            sb.AppendLine($@"            catch (DbUpdateException ex)");
-            sb.AppendLine(@"            {");
-            sb.AppendLine($@"               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? "" Inner: "" + ex.InnerException.Message : """")));");
-            sb.AppendLine(@"            }");
-            sb.AppendLine(@"");
-            sb.AppendLine($@"            return await Task.FromResult(Ok(true));");
-            sb.AppendLine(@"        }");
-
-            sb.AppendLine($@"        public async Task<ActionResult<{ TypeName }>> Update({ TypeName } { TypeNameLower })");
-            sb.AppendLine(@"        {");
             if (TypeName == "Contact")
             {
                 sb.AppendLine($@"            ValidationResults = Validate(new ValidationContext({ TypeNameLower }), ActionDBTypeEnum.Update, AddContactTypeEnum.LoggedIn);");

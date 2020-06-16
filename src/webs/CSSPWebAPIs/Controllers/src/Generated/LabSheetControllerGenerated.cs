@@ -6,6 +6,7 @@
 
 using CSSPModels;
 using CSSPServices;
+using CultureServices.Services;
 using LoggedInServices.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -18,8 +19,8 @@ namespace CSSPWebAPI.Controllers
     {
         Task<ActionResult<List<LabSheet>>> Get();
         Task<ActionResult<LabSheet>> Get(int LabSheetID);
-        Task<ActionResult<LabSheet>> Post(LabSheet labSheet);
-        Task<ActionResult<LabSheet>> Put(LabSheet labSheet);
+        Task<ActionResult<LabSheet>> Post(LabSheet LabSheet);
+        Task<ActionResult<LabSheet>> Put(LabSheet LabSheet);
         Task<ActionResult<bool>> Delete(int LabSheetID);
     }
 
@@ -32,17 +33,17 @@ namespace CSSPWebAPI.Controllers
         #endregion Variables
 
         #region Properties
-        private ILabSheetService labSheetService { get; }
-        private CSSPDBContext db { get; }
-        private ILoggedInService loggedInService { get; }
+        private ICultureService CultureService { get; }
+        private ILoggedInService LoggedInService { get; }
+        private ILabSheetService LabSheetService { get; }
         #endregion Properties
 
         #region Constructors
-        public LabSheetController(ILabSheetService labSheetService, CSSPDBContext db, ILoggedInService loggedInService)
+        public LabSheetController(ICultureService CultureService, ILoggedInService LoggedInService, ILabSheetService LabSheetService)
         {
-            this.labSheetService = labSheetService;
-            this.db = db;
-            this.loggedInService = loggedInService;
+            this.CultureService = CultureService;
+            this.LoggedInService = LoggedInService;
+            this.LabSheetService = LabSheetService;
         }
         #endregion Constructors
 
@@ -50,27 +51,42 @@ namespace CSSPWebAPI.Controllers
         [HttpGet]
         public async Task<ActionResult<List<LabSheet>>> Get()
         {
-            return await labSheetService.GetLabSheetList();
+            CultureService.SetCulture((string)RouteData.Values["culture"]);
+            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+
+            return await LabSheetService.GetLabSheetList();
         }
         [HttpGet("{LabSheetID}")]
         public async Task<ActionResult<LabSheet>> Get(int LabSheetID)
         {
-            return await labSheetService.GetLabSheetWithLabSheetID(LabSheetID);
+            CultureService.SetCulture((string)RouteData.Values["culture"]);
+            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+
+            return await LabSheetService.GetLabSheetWithLabSheetID(LabSheetID);
         }
         [HttpPost]
-        public async Task<ActionResult<LabSheet>> Post(LabSheet labSheet)
+        public async Task<ActionResult<LabSheet>> Post(LabSheet LabSheet)
         {
-            return await labSheetService.Add(labSheet);
+            CultureService.SetCulture((string)RouteData.Values["culture"]);
+            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+
+            return await LabSheetService.Post(LabSheet);
         }
         [HttpPut]
-        public async Task<ActionResult<LabSheet>> Put(LabSheet labSheet)
+        public async Task<ActionResult<LabSheet>> Put(LabSheet LabSheet)
         {
-            return await labSheetService.Update(labSheet);
+            CultureService.SetCulture((string)RouteData.Values["culture"]);
+            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+
+            return await LabSheetService.Put(LabSheet);
         }
         [HttpDelete("{LabSheetID}")]
         public async Task<ActionResult<bool>> Delete(int LabSheetID)
         {
-            return await labSheetService.Delete(LabSheetID);
+            CultureService.SetCulture((string)RouteData.Values["culture"]);
+            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+
+            return await LabSheetService.Delete(LabSheetID);
         }
         #endregion Functions public
 

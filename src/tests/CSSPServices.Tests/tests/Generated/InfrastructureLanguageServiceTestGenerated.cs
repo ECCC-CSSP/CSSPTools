@@ -32,7 +32,7 @@ namespace CSSPServices.Tests
         private IServiceProvider Provider { get; set; }
         private IServiceCollection Services { get; set; }
         private ICultureService CultureService { get; set; }
-        private IInfrastructureLanguageService infrastructureLanguageService { get; set; }
+        private IInfrastructureLanguageService InfrastructureLanguageService { get; set; }
         private CSSPDBContext db { get; set; }
         #endregion Properties
 
@@ -62,7 +62,7 @@ namespace CSSPServices.Tests
                InfrastructureLanguage infrastructureLanguage = GetFilledRandomInfrastructureLanguage(""); 
 
                // List<InfrastructureLanguage>
-               var actionInfrastructureLanguageList = await infrastructureLanguageService.GetInfrastructureLanguageList();
+               var actionInfrastructureLanguageList = await InfrastructureLanguageService.GetInfrastructureLanguageList();
                Assert.Equal(200, ((ObjectResult)actionInfrastructureLanguageList.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionInfrastructureLanguageList.Result).Value);
                List<InfrastructureLanguage> infrastructureLanguageList = (List<InfrastructureLanguage>)((OkObjectResult)actionInfrastructureLanguageList.Result).Value;
@@ -70,22 +70,22 @@ namespace CSSPServices.Tests
                int count = ((List<InfrastructureLanguage>)((OkObjectResult)actionInfrastructureLanguageList.Result).Value).Count();
                 Assert.True(count > 0);
 
-               // Add InfrastructureLanguage
-               var actionInfrastructureLanguageAdded = await infrastructureLanguageService.Add(infrastructureLanguage);
+               // Post InfrastructureLanguage
+               var actionInfrastructureLanguageAdded = await InfrastructureLanguageService.Post(infrastructureLanguage);
                Assert.Equal(200, ((ObjectResult)actionInfrastructureLanguageAdded.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionInfrastructureLanguageAdded.Result).Value);
                InfrastructureLanguage infrastructureLanguageAdded = (InfrastructureLanguage)((OkObjectResult)actionInfrastructureLanguageAdded.Result).Value;
                Assert.NotNull(infrastructureLanguageAdded);
 
-               // Update InfrastructureLanguage
-               var actionInfrastructureLanguageUpdated = await infrastructureLanguageService.Update(infrastructureLanguage);
+               // Put InfrastructureLanguage
+               var actionInfrastructureLanguageUpdated = await InfrastructureLanguageService.Put(infrastructureLanguage);
                Assert.Equal(200, ((ObjectResult)actionInfrastructureLanguageUpdated.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionInfrastructureLanguageUpdated.Result).Value);
                InfrastructureLanguage infrastructureLanguageUpdated = (InfrastructureLanguage)((OkObjectResult)actionInfrastructureLanguageUpdated.Result).Value;
                Assert.NotNull(infrastructureLanguageUpdated);
 
                // Delete InfrastructureLanguage
-               var actionInfrastructureLanguageDeleted = await infrastructureLanguageService.Delete(infrastructureLanguage.InfrastructureLanguageID);
+               var actionInfrastructureLanguageDeleted = await InfrastructureLanguageService.Delete(infrastructureLanguage.InfrastructureLanguageID);
                Assert.Equal(200, ((ObjectResult)actionInfrastructureLanguageDeleted.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionInfrastructureLanguageDeleted.Result).Value);
                bool retBool = (bool)((OkObjectResult)actionInfrastructureLanguageDeleted.Result).Value;
@@ -126,8 +126,8 @@ namespace CSSPServices.Tests
 
             CultureService.SetCulture(culture);
 
-            infrastructureLanguageService = Provider.GetService<IInfrastructureLanguageService>();
-            Assert.NotNull(infrastructureLanguageService);
+            InfrastructureLanguageService = Provider.GetService<IInfrastructureLanguageService>();
+            Assert.NotNull(InfrastructureLanguageService);
 
             return await Task.FromResult(true);
         }

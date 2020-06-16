@@ -6,6 +6,7 @@
 
 using CSSPModels;
 using CSSPServices;
+using CultureServices.Services;
 using LoggedInServices.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -18,8 +19,8 @@ namespace CSSPWebAPI.Controllers
     {
         Task<ActionResult<List<AppErrLog>>> Get();
         Task<ActionResult<AppErrLog>> Get(int AppErrLogID);
-        Task<ActionResult<AppErrLog>> Post(AppErrLog appErrLog);
-        Task<ActionResult<AppErrLog>> Put(AppErrLog appErrLog);
+        Task<ActionResult<AppErrLog>> Post(AppErrLog AppErrLog);
+        Task<ActionResult<AppErrLog>> Put(AppErrLog AppErrLog);
         Task<ActionResult<bool>> Delete(int AppErrLogID);
     }
 
@@ -32,17 +33,17 @@ namespace CSSPWebAPI.Controllers
         #endregion Variables
 
         #region Properties
-        private IAppErrLogService appErrLogService { get; }
-        private CSSPDBContext db { get; }
-        private ILoggedInService loggedInService { get; }
+        private ICultureService CultureService { get; }
+        private ILoggedInService LoggedInService { get; }
+        private IAppErrLogService AppErrLogService { get; }
         #endregion Properties
 
         #region Constructors
-        public AppErrLogController(IAppErrLogService appErrLogService, CSSPDBContext db, ILoggedInService loggedInService)
+        public AppErrLogController(ICultureService CultureService, ILoggedInService LoggedInService, IAppErrLogService AppErrLogService)
         {
-            this.appErrLogService = appErrLogService;
-            this.db = db;
-            this.loggedInService = loggedInService;
+            this.CultureService = CultureService;
+            this.LoggedInService = LoggedInService;
+            this.AppErrLogService = AppErrLogService;
         }
         #endregion Constructors
 
@@ -50,27 +51,42 @@ namespace CSSPWebAPI.Controllers
         [HttpGet]
         public async Task<ActionResult<List<AppErrLog>>> Get()
         {
-            return await appErrLogService.GetAppErrLogList();
+            CultureService.SetCulture((string)RouteData.Values["culture"]);
+            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+
+            return await AppErrLogService.GetAppErrLogList();
         }
         [HttpGet("{AppErrLogID}")]
         public async Task<ActionResult<AppErrLog>> Get(int AppErrLogID)
         {
-            return await appErrLogService.GetAppErrLogWithAppErrLogID(AppErrLogID);
+            CultureService.SetCulture((string)RouteData.Values["culture"]);
+            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+
+            return await AppErrLogService.GetAppErrLogWithAppErrLogID(AppErrLogID);
         }
         [HttpPost]
-        public async Task<ActionResult<AppErrLog>> Post(AppErrLog appErrLog)
+        public async Task<ActionResult<AppErrLog>> Post(AppErrLog AppErrLog)
         {
-            return await appErrLogService.Add(appErrLog);
+            CultureService.SetCulture((string)RouteData.Values["culture"]);
+            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+
+            return await AppErrLogService.Post(AppErrLog);
         }
         [HttpPut]
-        public async Task<ActionResult<AppErrLog>> Put(AppErrLog appErrLog)
+        public async Task<ActionResult<AppErrLog>> Put(AppErrLog AppErrLog)
         {
-            return await appErrLogService.Update(appErrLog);
+            CultureService.SetCulture((string)RouteData.Values["culture"]);
+            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+
+            return await AppErrLogService.Put(AppErrLog);
         }
         [HttpDelete("{AppErrLogID}")]
         public async Task<ActionResult<bool>> Delete(int AppErrLogID)
         {
-            return await appErrLogService.Delete(AppErrLogID);
+            CultureService.SetCulture((string)RouteData.Values["culture"]);
+            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+
+            return await AppErrLogService.Delete(AppErrLogID);
         }
         #endregion Functions public
 

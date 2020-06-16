@@ -62,47 +62,47 @@ export class TideLocationComponent implements OnInit, OnDestroy {
             {
               value: (AddOrUpdate === 'Add' ? 0 : (this.tidelocationService.tidelocationList[0]?.TideLocationID)),
               disabled: false
-            }],
+            }, [ Validators.required ]],
           Zone: [
             {
               value: this.tidelocationService.tidelocationList[0]?.Zone,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           Name: [
             {
               value: this.tidelocationService.tidelocationList[0]?.Name,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           Prov: [
             {
               value: this.tidelocationService.tidelocationList[0]?.Prov,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           sid: [
             {
               value: this.tidelocationService.tidelocationList[0]?.sid,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           Lat: [
             {
               value: this.tidelocationService.tidelocationList[0]?.Lat,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           Lng: [
             {
               value: this.tidelocationService.tidelocationList[0]?.Lng,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           LastUpdateDate_UTC: [
             {
               value: this.tidelocationService.tidelocationList[0]?.LastUpdateDate_UTC,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           LastUpdateContactTVItemID: [
             {
               value: this.tidelocationService.tidelocationList[0]?.LastUpdateContactTVItemID,
               disabled: false
-            }],
+            }, [ Validators.required ]],
         }
       );
 

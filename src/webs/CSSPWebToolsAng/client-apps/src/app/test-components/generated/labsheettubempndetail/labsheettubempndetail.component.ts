@@ -70,82 +70,82 @@ export class LabSheetTubeMPNDetailComponent implements OnInit, OnDestroy {
             {
               value: (AddOrUpdate === 'Add' ? 0 : (this.labsheettubempndetailService.labsheettubempndetailList[0]?.LabSheetTubeMPNDetailID)),
               disabled: false
-            }],
+            }, [ Validators.required ]],
           LabSheetDetailID: [
             {
               value: this.labsheettubempndetailService.labsheettubempndetailList[0]?.LabSheetDetailID,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           Ordinal: [
             {
               value: this.labsheettubempndetailService.labsheettubempndetailList[0]?.Ordinal,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           MWQMSiteTVItemID: [
             {
               value: this.labsheettubempndetailService.labsheettubempndetailList[0]?.MWQMSiteTVItemID,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           SampleDateTime: [
             {
               value: this.labsheettubempndetailService.labsheettubempndetailList[0]?.SampleDateTime,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           MPN: [
             {
               value: this.labsheettubempndetailService.labsheettubempndetailList[0]?.MPN,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           Tube10: [
             {
               value: this.labsheettubempndetailService.labsheettubempndetailList[0]?.Tube10,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           Tube1_0: [
             {
               value: this.labsheettubempndetailService.labsheettubempndetailList[0]?.Tube1_0,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           Tube0_1: [
             {
               value: this.labsheettubempndetailService.labsheettubempndetailList[0]?.Tube0_1,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           Salinity: [
             {
               value: this.labsheettubempndetailService.labsheettubempndetailList[0]?.Salinity,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           Temperature: [
             {
               value: this.labsheettubempndetailService.labsheettubempndetailList[0]?.Temperature,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           ProcessedBy: [
             {
               value: this.labsheettubempndetailService.labsheettubempndetailList[0]?.ProcessedBy,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           SampleType: [
             {
               value: this.labsheettubempndetailService.labsheettubempndetailList[0]?.SampleType,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           SiteComment: [
             {
               value: this.labsheettubempndetailService.labsheettubempndetailList[0]?.SiteComment,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           LastUpdateDate_UTC: [
             {
               value: this.labsheettubempndetailService.labsheettubempndetailList[0]?.LastUpdateDate_UTC,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           LastUpdateContactTVItemID: [
             {
               value: this.labsheettubempndetailService.labsheettubempndetailList[0]?.LastUpdateContactTVItemID,
               disabled: false
-            }],
+            }, [ Validators.required ]],
         }
       );
 

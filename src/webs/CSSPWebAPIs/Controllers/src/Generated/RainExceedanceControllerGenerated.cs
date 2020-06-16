@@ -6,6 +6,7 @@
 
 using CSSPModels;
 using CSSPServices;
+using CultureServices.Services;
 using LoggedInServices.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -18,8 +19,8 @@ namespace CSSPWebAPI.Controllers
     {
         Task<ActionResult<List<RainExceedance>>> Get();
         Task<ActionResult<RainExceedance>> Get(int RainExceedanceID);
-        Task<ActionResult<RainExceedance>> Post(RainExceedance rainExceedance);
-        Task<ActionResult<RainExceedance>> Put(RainExceedance rainExceedance);
+        Task<ActionResult<RainExceedance>> Post(RainExceedance RainExceedance);
+        Task<ActionResult<RainExceedance>> Put(RainExceedance RainExceedance);
         Task<ActionResult<bool>> Delete(int RainExceedanceID);
     }
 
@@ -32,17 +33,17 @@ namespace CSSPWebAPI.Controllers
         #endregion Variables
 
         #region Properties
-        private IRainExceedanceService rainExceedanceService { get; }
-        private CSSPDBContext db { get; }
-        private ILoggedInService loggedInService { get; }
+        private ICultureService CultureService { get; }
+        private ILoggedInService LoggedInService { get; }
+        private IRainExceedanceService RainExceedanceService { get; }
         #endregion Properties
 
         #region Constructors
-        public RainExceedanceController(IRainExceedanceService rainExceedanceService, CSSPDBContext db, ILoggedInService loggedInService)
+        public RainExceedanceController(ICultureService CultureService, ILoggedInService LoggedInService, IRainExceedanceService RainExceedanceService)
         {
-            this.rainExceedanceService = rainExceedanceService;
-            this.db = db;
-            this.loggedInService = loggedInService;
+            this.CultureService = CultureService;
+            this.LoggedInService = LoggedInService;
+            this.RainExceedanceService = RainExceedanceService;
         }
         #endregion Constructors
 
@@ -50,27 +51,42 @@ namespace CSSPWebAPI.Controllers
         [HttpGet]
         public async Task<ActionResult<List<RainExceedance>>> Get()
         {
-            return await rainExceedanceService.GetRainExceedanceList();
+            CultureService.SetCulture((string)RouteData.Values["culture"]);
+            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+
+            return await RainExceedanceService.GetRainExceedanceList();
         }
         [HttpGet("{RainExceedanceID}")]
         public async Task<ActionResult<RainExceedance>> Get(int RainExceedanceID)
         {
-            return await rainExceedanceService.GetRainExceedanceWithRainExceedanceID(RainExceedanceID);
+            CultureService.SetCulture((string)RouteData.Values["culture"]);
+            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+
+            return await RainExceedanceService.GetRainExceedanceWithRainExceedanceID(RainExceedanceID);
         }
         [HttpPost]
-        public async Task<ActionResult<RainExceedance>> Post(RainExceedance rainExceedance)
+        public async Task<ActionResult<RainExceedance>> Post(RainExceedance RainExceedance)
         {
-            return await rainExceedanceService.Add(rainExceedance);
+            CultureService.SetCulture((string)RouteData.Values["culture"]);
+            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+
+            return await RainExceedanceService.Post(RainExceedance);
         }
         [HttpPut]
-        public async Task<ActionResult<RainExceedance>> Put(RainExceedance rainExceedance)
+        public async Task<ActionResult<RainExceedance>> Put(RainExceedance RainExceedance)
         {
-            return await rainExceedanceService.Update(rainExceedance);
+            CultureService.SetCulture((string)RouteData.Values["culture"]);
+            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+
+            return await RainExceedanceService.Put(RainExceedance);
         }
         [HttpDelete("{RainExceedanceID}")]
         public async Task<ActionResult<bool>> Delete(int RainExceedanceID)
         {
-            return await rainExceedanceService.Delete(RainExceedanceID);
+            CultureService.SetCulture((string)RouteData.Values["culture"]);
+            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+
+            return await RainExceedanceService.Delete(RainExceedanceID);
         }
         #endregion Functions public
 

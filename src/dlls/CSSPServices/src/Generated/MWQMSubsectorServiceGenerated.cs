@@ -9,6 +9,7 @@ using CSSPEnums;
 using CSSPModels;
 using CultureServices.Resources;
 using CultureServices.Services;
+using LoggedInServices.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -22,11 +23,11 @@ namespace CSSPServices
 {
    public interface IMWQMSubsectorService
     {
-       Task<ActionResult<MWQMSubsector>> GetMWQMSubsectorWithMWQMSubsectorID(int MWQMSubsectorID);
-       Task<ActionResult<List<MWQMSubsector>>> GetMWQMSubsectorList();
-       Task<ActionResult<MWQMSubsector>> Add(MWQMSubsector mwqmsubsector);
        Task<ActionResult<bool>> Delete(int MWQMSubsectorID);
-       Task<ActionResult<MWQMSubsector>> Update(MWQMSubsector mwqmsubsector);
+       Task<ActionResult<List<MWQMSubsector>>> GetMWQMSubsectorList();
+       Task<ActionResult<MWQMSubsector>> GetMWQMSubsectorWithMWQMSubsectorID(int MWQMSubsectorID);
+       Task<ActionResult<MWQMSubsector>> Post(MWQMSubsector mwqmsubsector);
+       Task<ActionResult<MWQMSubsector>> Put(MWQMSubsector mwqmsubsector);
     }
     public partial class MWQMSubsectorService : ControllerBase, IMWQMSubsectorService
     {
@@ -36,14 +37,16 @@ namespace CSSPServices
         #region Properties
         private CSSPDBContext db { get; }
         private ICultureService CultureService { get; }
+        private ILoggedInService LoggedInService { get; }
         private IEnums enums { get; }
         private IEnumerable<ValidationResult> ValidationResults { get; set; }
         #endregion Properties
 
         #region Constructors
-        public MWQMSubsectorService(ICultureService CultureService, IEnums enums, CSSPDBContext db)
+        public MWQMSubsectorService(ICultureService CultureService, ILoggedInService LoggedInService, IEnums enums, CSSPDBContext db)
         {
             this.CultureService = CultureService;
+            this.LoggedInService = LoggedInService;
             this.enums = enums;
             this.db = db;
         }
@@ -52,6 +55,11 @@ namespace CSSPServices
         #region Functions public 
         public async Task<ActionResult<MWQMSubsector>> GetMWQMSubsectorWithMWQMSubsectorID(int MWQMSubsectorID)
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             MWQMSubsector mwqmsubsector = (from c in db.MWQMSubsectors.AsNoTracking()
                     where c.MWQMSubsectorID == MWQMSubsectorID
                     select c).FirstOrDefault();
@@ -65,32 +73,22 @@ namespace CSSPServices
         }
         public async Task<ActionResult<List<MWQMSubsector>>> GetMWQMSubsectorList()
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             List<MWQMSubsector> mwqmsubsectorList = (from c in db.MWQMSubsectors.AsNoTracking() select c).Take(100).ToList();
 
             return await Task.FromResult(Ok(mwqmsubsectorList));
         }
-        public async Task<ActionResult<MWQMSubsector>> Add(MWQMSubsector mwqmSubsector)
-        {
-            ValidationResults = Validate(new ValidationContext(mwqmSubsector), ActionDBTypeEnum.Create);
-            if (ValidationResults.Count() > 0)
-            {
-               return await Task.FromResult(BadRequest(ValidationResults));
-            }
-
-            try
-            {
-               db.MWQMSubsectors.Add(mwqmSubsector);
-               db.SaveChanges();
-            }
-            catch (DbUpdateException ex)
-            {
-               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
-            }
-
-            return await Task.FromResult(Ok(mwqmSubsector));
-        }
         public async Task<ActionResult<bool>> Delete(int MWQMSubsectorID)
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             MWQMSubsector mwqmSubsector = (from c in db.MWQMSubsectors
                                where c.MWQMSubsectorID == MWQMSubsectorID
                                select c).FirstOrDefault();
@@ -112,8 +110,38 @@ namespace CSSPServices
 
             return await Task.FromResult(Ok(true));
         }
-        public async Task<ActionResult<MWQMSubsector>> Update(MWQMSubsector mwqmSubsector)
+        public async Task<ActionResult<MWQMSubsector>> Post(MWQMSubsector mwqmSubsector)
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
+            ValidationResults = Validate(new ValidationContext(mwqmSubsector), ActionDBTypeEnum.Create);
+            if (ValidationResults.Count() > 0)
+            {
+               return await Task.FromResult(BadRequest(ValidationResults));
+            }
+
+            try
+            {
+               db.MWQMSubsectors.Add(mwqmSubsector);
+               db.SaveChanges();
+            }
+            catch (DbUpdateException ex)
+            {
+               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+            }
+
+            return await Task.FromResult(Ok(mwqmSubsector));
+        }
+        public async Task<ActionResult<MWQMSubsector>> Put(MWQMSubsector mwqmSubsector)
+        {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             ValidationResults = Validate(new ValidationContext(mwqmSubsector), ActionDBTypeEnum.Update);
             if (ValidationResults.Count() > 0)
             {

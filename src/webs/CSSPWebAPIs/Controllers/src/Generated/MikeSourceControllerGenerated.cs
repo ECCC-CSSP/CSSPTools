@@ -6,6 +6,7 @@
 
 using CSSPModels;
 using CSSPServices;
+using CultureServices.Services;
 using LoggedInServices.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -18,8 +19,8 @@ namespace CSSPWebAPI.Controllers
     {
         Task<ActionResult<List<MikeSource>>> Get();
         Task<ActionResult<MikeSource>> Get(int MikeSourceID);
-        Task<ActionResult<MikeSource>> Post(MikeSource mikeSource);
-        Task<ActionResult<MikeSource>> Put(MikeSource mikeSource);
+        Task<ActionResult<MikeSource>> Post(MikeSource MikeSource);
+        Task<ActionResult<MikeSource>> Put(MikeSource MikeSource);
         Task<ActionResult<bool>> Delete(int MikeSourceID);
     }
 
@@ -32,17 +33,17 @@ namespace CSSPWebAPI.Controllers
         #endregion Variables
 
         #region Properties
-        private IMikeSourceService mikeSourceService { get; }
-        private CSSPDBContext db { get; }
-        private ILoggedInService loggedInService { get; }
+        private ICultureService CultureService { get; }
+        private ILoggedInService LoggedInService { get; }
+        private IMikeSourceService MikeSourceService { get; }
         #endregion Properties
 
         #region Constructors
-        public MikeSourceController(IMikeSourceService mikeSourceService, CSSPDBContext db, ILoggedInService loggedInService)
+        public MikeSourceController(ICultureService CultureService, ILoggedInService LoggedInService, IMikeSourceService MikeSourceService)
         {
-            this.mikeSourceService = mikeSourceService;
-            this.db = db;
-            this.loggedInService = loggedInService;
+            this.CultureService = CultureService;
+            this.LoggedInService = LoggedInService;
+            this.MikeSourceService = MikeSourceService;
         }
         #endregion Constructors
 
@@ -50,27 +51,42 @@ namespace CSSPWebAPI.Controllers
         [HttpGet]
         public async Task<ActionResult<List<MikeSource>>> Get()
         {
-            return await mikeSourceService.GetMikeSourceList();
+            CultureService.SetCulture((string)RouteData.Values["culture"]);
+            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+
+            return await MikeSourceService.GetMikeSourceList();
         }
         [HttpGet("{MikeSourceID}")]
         public async Task<ActionResult<MikeSource>> Get(int MikeSourceID)
         {
-            return await mikeSourceService.GetMikeSourceWithMikeSourceID(MikeSourceID);
+            CultureService.SetCulture((string)RouteData.Values["culture"]);
+            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+
+            return await MikeSourceService.GetMikeSourceWithMikeSourceID(MikeSourceID);
         }
         [HttpPost]
-        public async Task<ActionResult<MikeSource>> Post(MikeSource mikeSource)
+        public async Task<ActionResult<MikeSource>> Post(MikeSource MikeSource)
         {
-            return await mikeSourceService.Add(mikeSource);
+            CultureService.SetCulture((string)RouteData.Values["culture"]);
+            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+
+            return await MikeSourceService.Post(MikeSource);
         }
         [HttpPut]
-        public async Task<ActionResult<MikeSource>> Put(MikeSource mikeSource)
+        public async Task<ActionResult<MikeSource>> Put(MikeSource MikeSource)
         {
-            return await mikeSourceService.Update(mikeSource);
+            CultureService.SetCulture((string)RouteData.Values["culture"]);
+            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+
+            return await MikeSourceService.Put(MikeSource);
         }
         [HttpDelete("{MikeSourceID}")]
         public async Task<ActionResult<bool>> Delete(int MikeSourceID)
         {
-            return await mikeSourceService.Delete(MikeSourceID);
+            CultureService.SetCulture((string)RouteData.Values["culture"]);
+            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+
+            return await MikeSourceService.Delete(MikeSourceID);
         }
         #endregion Functions public
 

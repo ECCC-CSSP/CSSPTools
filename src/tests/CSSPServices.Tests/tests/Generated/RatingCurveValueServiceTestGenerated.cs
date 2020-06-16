@@ -32,7 +32,7 @@ namespace CSSPServices.Tests
         private IServiceProvider Provider { get; set; }
         private IServiceCollection Services { get; set; }
         private ICultureService CultureService { get; set; }
-        private IRatingCurveValueService ratingCurveValueService { get; set; }
+        private IRatingCurveValueService RatingCurveValueService { get; set; }
         private CSSPDBContext db { get; set; }
         #endregion Properties
 
@@ -62,7 +62,7 @@ namespace CSSPServices.Tests
                RatingCurveValue ratingCurveValue = GetFilledRandomRatingCurveValue(""); 
 
                // List<RatingCurveValue>
-               var actionRatingCurveValueList = await ratingCurveValueService.GetRatingCurveValueList();
+               var actionRatingCurveValueList = await RatingCurveValueService.GetRatingCurveValueList();
                Assert.Equal(200, ((ObjectResult)actionRatingCurveValueList.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionRatingCurveValueList.Result).Value);
                List<RatingCurveValue> ratingCurveValueList = (List<RatingCurveValue>)((OkObjectResult)actionRatingCurveValueList.Result).Value;
@@ -70,22 +70,22 @@ namespace CSSPServices.Tests
                int count = ((List<RatingCurveValue>)((OkObjectResult)actionRatingCurveValueList.Result).Value).Count();
                 Assert.True(count > 0);
 
-               // Add RatingCurveValue
-               var actionRatingCurveValueAdded = await ratingCurveValueService.Add(ratingCurveValue);
+               // Post RatingCurveValue
+               var actionRatingCurveValueAdded = await RatingCurveValueService.Post(ratingCurveValue);
                Assert.Equal(200, ((ObjectResult)actionRatingCurveValueAdded.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionRatingCurveValueAdded.Result).Value);
                RatingCurveValue ratingCurveValueAdded = (RatingCurveValue)((OkObjectResult)actionRatingCurveValueAdded.Result).Value;
                Assert.NotNull(ratingCurveValueAdded);
 
-               // Update RatingCurveValue
-               var actionRatingCurveValueUpdated = await ratingCurveValueService.Update(ratingCurveValue);
+               // Put RatingCurveValue
+               var actionRatingCurveValueUpdated = await RatingCurveValueService.Put(ratingCurveValue);
                Assert.Equal(200, ((ObjectResult)actionRatingCurveValueUpdated.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionRatingCurveValueUpdated.Result).Value);
                RatingCurveValue ratingCurveValueUpdated = (RatingCurveValue)((OkObjectResult)actionRatingCurveValueUpdated.Result).Value;
                Assert.NotNull(ratingCurveValueUpdated);
 
                // Delete RatingCurveValue
-               var actionRatingCurveValueDeleted = await ratingCurveValueService.Delete(ratingCurveValue.RatingCurveValueID);
+               var actionRatingCurveValueDeleted = await RatingCurveValueService.Delete(ratingCurveValue.RatingCurveValueID);
                Assert.Equal(200, ((ObjectResult)actionRatingCurveValueDeleted.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionRatingCurveValueDeleted.Result).Value);
                bool retBool = (bool)((OkObjectResult)actionRatingCurveValueDeleted.Result).Value;
@@ -126,8 +126,8 @@ namespace CSSPServices.Tests
 
             CultureService.SetCulture(culture);
 
-            ratingCurveValueService = Provider.GetService<IRatingCurveValueService>();
-            Assert.NotNull(ratingCurveValueService);
+            RatingCurveValueService = Provider.GetService<IRatingCurveValueService>();
+            Assert.NotNull(RatingCurveValueService);
 
             return await Task.FromResult(true);
         }

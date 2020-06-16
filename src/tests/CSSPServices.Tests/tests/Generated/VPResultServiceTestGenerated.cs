@@ -32,7 +32,7 @@ namespace CSSPServices.Tests
         private IServiceProvider Provider { get; set; }
         private IServiceCollection Services { get; set; }
         private ICultureService CultureService { get; set; }
-        private IVPResultService vpResultService { get; set; }
+        private IVPResultService VPResultService { get; set; }
         private CSSPDBContext db { get; set; }
         #endregion Properties
 
@@ -62,7 +62,7 @@ namespace CSSPServices.Tests
                VPResult vpResult = GetFilledRandomVPResult(""); 
 
                // List<VPResult>
-               var actionVPResultList = await vpResultService.GetVPResultList();
+               var actionVPResultList = await VPResultService.GetVPResultList();
                Assert.Equal(200, ((ObjectResult)actionVPResultList.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionVPResultList.Result).Value);
                List<VPResult> vpResultList = (List<VPResult>)((OkObjectResult)actionVPResultList.Result).Value;
@@ -70,22 +70,22 @@ namespace CSSPServices.Tests
                int count = ((List<VPResult>)((OkObjectResult)actionVPResultList.Result).Value).Count();
                 Assert.True(count > 0);
 
-               // Add VPResult
-               var actionVPResultAdded = await vpResultService.Add(vpResult);
+               // Post VPResult
+               var actionVPResultAdded = await VPResultService.Post(vpResult);
                Assert.Equal(200, ((ObjectResult)actionVPResultAdded.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionVPResultAdded.Result).Value);
                VPResult vpResultAdded = (VPResult)((OkObjectResult)actionVPResultAdded.Result).Value;
                Assert.NotNull(vpResultAdded);
 
-               // Update VPResult
-               var actionVPResultUpdated = await vpResultService.Update(vpResult);
+               // Put VPResult
+               var actionVPResultUpdated = await VPResultService.Put(vpResult);
                Assert.Equal(200, ((ObjectResult)actionVPResultUpdated.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionVPResultUpdated.Result).Value);
                VPResult vpResultUpdated = (VPResult)((OkObjectResult)actionVPResultUpdated.Result).Value;
                Assert.NotNull(vpResultUpdated);
 
                // Delete VPResult
-               var actionVPResultDeleted = await vpResultService.Delete(vpResult.VPResultID);
+               var actionVPResultDeleted = await VPResultService.Delete(vpResult.VPResultID);
                Assert.Equal(200, ((ObjectResult)actionVPResultDeleted.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionVPResultDeleted.Result).Value);
                bool retBool = (bool)((OkObjectResult)actionVPResultDeleted.Result).Value;
@@ -126,8 +126,8 @@ namespace CSSPServices.Tests
 
             CultureService.SetCulture(culture);
 
-            vpResultService = Provider.GetService<IVPResultService>();
-            Assert.NotNull(vpResultService);
+            VPResultService = Provider.GetService<IVPResultService>();
+            Assert.NotNull(VPResultService);
 
             return await Task.FromResult(true);
         }

@@ -32,7 +32,7 @@ namespace CSSPServices.Tests
         private IServiceProvider Provider { get; set; }
         private IServiceCollection Services { get; set; }
         private ICultureService CultureService { get; set; }
-        private IClassificationService classificationService { get; set; }
+        private IClassificationService ClassificationService { get; set; }
         private CSSPDBContext db { get; set; }
         #endregion Properties
 
@@ -62,7 +62,7 @@ namespace CSSPServices.Tests
                Classification classification = GetFilledRandomClassification(""); 
 
                // List<Classification>
-               var actionClassificationList = await classificationService.GetClassificationList();
+               var actionClassificationList = await ClassificationService.GetClassificationList();
                Assert.Equal(200, ((ObjectResult)actionClassificationList.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionClassificationList.Result).Value);
                List<Classification> classificationList = (List<Classification>)((OkObjectResult)actionClassificationList.Result).Value;
@@ -70,22 +70,22 @@ namespace CSSPServices.Tests
                int count = ((List<Classification>)((OkObjectResult)actionClassificationList.Result).Value).Count();
                 Assert.True(count > 0);
 
-               // Add Classification
-               var actionClassificationAdded = await classificationService.Add(classification);
+               // Post Classification
+               var actionClassificationAdded = await ClassificationService.Post(classification);
                Assert.Equal(200, ((ObjectResult)actionClassificationAdded.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionClassificationAdded.Result).Value);
                Classification classificationAdded = (Classification)((OkObjectResult)actionClassificationAdded.Result).Value;
                Assert.NotNull(classificationAdded);
 
-               // Update Classification
-               var actionClassificationUpdated = await classificationService.Update(classification);
+               // Put Classification
+               var actionClassificationUpdated = await ClassificationService.Put(classification);
                Assert.Equal(200, ((ObjectResult)actionClassificationUpdated.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionClassificationUpdated.Result).Value);
                Classification classificationUpdated = (Classification)((OkObjectResult)actionClassificationUpdated.Result).Value;
                Assert.NotNull(classificationUpdated);
 
                // Delete Classification
-               var actionClassificationDeleted = await classificationService.Delete(classification.ClassificationID);
+               var actionClassificationDeleted = await ClassificationService.Delete(classification.ClassificationID);
                Assert.Equal(200, ((ObjectResult)actionClassificationDeleted.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionClassificationDeleted.Result).Value);
                bool retBool = (bool)((OkObjectResult)actionClassificationDeleted.Result).Value;
@@ -126,8 +126,8 @@ namespace CSSPServices.Tests
 
             CultureService.SetCulture(culture);
 
-            classificationService = Provider.GetService<IClassificationService>();
-            Assert.NotNull(classificationService);
+            ClassificationService = Provider.GetService<IClassificationService>();
+            Assert.NotNull(ClassificationService);
 
             return await Task.FromResult(true);
         }

@@ -32,7 +32,7 @@ namespace CSSPServices.Tests
         private IServiceProvider Provider { get; set; }
         private IServiceCollection Services { get; set; }
         private ICultureService CultureService { get; set; }
-        private ITideDataValueService tideDataValueService { get; set; }
+        private ITideDataValueService TideDataValueService { get; set; }
         private CSSPDBContext db { get; set; }
         #endregion Properties
 
@@ -62,7 +62,7 @@ namespace CSSPServices.Tests
                TideDataValue tideDataValue = GetFilledRandomTideDataValue(""); 
 
                // List<TideDataValue>
-               var actionTideDataValueList = await tideDataValueService.GetTideDataValueList();
+               var actionTideDataValueList = await TideDataValueService.GetTideDataValueList();
                Assert.Equal(200, ((ObjectResult)actionTideDataValueList.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionTideDataValueList.Result).Value);
                List<TideDataValue> tideDataValueList = (List<TideDataValue>)((OkObjectResult)actionTideDataValueList.Result).Value;
@@ -70,22 +70,22 @@ namespace CSSPServices.Tests
                int count = ((List<TideDataValue>)((OkObjectResult)actionTideDataValueList.Result).Value).Count();
                 Assert.True(count > 0);
 
-               // Add TideDataValue
-               var actionTideDataValueAdded = await tideDataValueService.Add(tideDataValue);
+               // Post TideDataValue
+               var actionTideDataValueAdded = await TideDataValueService.Post(tideDataValue);
                Assert.Equal(200, ((ObjectResult)actionTideDataValueAdded.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionTideDataValueAdded.Result).Value);
                TideDataValue tideDataValueAdded = (TideDataValue)((OkObjectResult)actionTideDataValueAdded.Result).Value;
                Assert.NotNull(tideDataValueAdded);
 
-               // Update TideDataValue
-               var actionTideDataValueUpdated = await tideDataValueService.Update(tideDataValue);
+               // Put TideDataValue
+               var actionTideDataValueUpdated = await TideDataValueService.Put(tideDataValue);
                Assert.Equal(200, ((ObjectResult)actionTideDataValueUpdated.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionTideDataValueUpdated.Result).Value);
                TideDataValue tideDataValueUpdated = (TideDataValue)((OkObjectResult)actionTideDataValueUpdated.Result).Value;
                Assert.NotNull(tideDataValueUpdated);
 
                // Delete TideDataValue
-               var actionTideDataValueDeleted = await tideDataValueService.Delete(tideDataValue.TideDataValueID);
+               var actionTideDataValueDeleted = await TideDataValueService.Delete(tideDataValue.TideDataValueID);
                Assert.Equal(200, ((ObjectResult)actionTideDataValueDeleted.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionTideDataValueDeleted.Result).Value);
                bool retBool = (bool)((OkObjectResult)actionTideDataValueDeleted.Result).Value;
@@ -126,8 +126,8 @@ namespace CSSPServices.Tests
 
             CultureService.SetCulture(culture);
 
-            tideDataValueService = Provider.GetService<ITideDataValueService>();
-            Assert.NotNull(tideDataValueService);
+            TideDataValueService = Provider.GetService<ITideDataValueService>();
+            Assert.NotNull(TideDataValueService);
 
             return await Task.FromResult(true);
         }

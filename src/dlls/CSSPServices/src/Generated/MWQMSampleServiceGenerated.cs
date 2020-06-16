@@ -9,6 +9,7 @@ using CSSPEnums;
 using CSSPModels;
 using CultureServices.Resources;
 using CultureServices.Services;
+using LoggedInServices.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -22,11 +23,11 @@ namespace CSSPServices
 {
    public interface IMWQMSampleService
     {
-       Task<ActionResult<MWQMSample>> GetMWQMSampleWithMWQMSampleID(int MWQMSampleID);
-       Task<ActionResult<List<MWQMSample>>> GetMWQMSampleList();
-       Task<ActionResult<MWQMSample>> Add(MWQMSample mwqmsample);
        Task<ActionResult<bool>> Delete(int MWQMSampleID);
-       Task<ActionResult<MWQMSample>> Update(MWQMSample mwqmsample);
+       Task<ActionResult<List<MWQMSample>>> GetMWQMSampleList();
+       Task<ActionResult<MWQMSample>> GetMWQMSampleWithMWQMSampleID(int MWQMSampleID);
+       Task<ActionResult<MWQMSample>> Post(MWQMSample mwqmsample);
+       Task<ActionResult<MWQMSample>> Put(MWQMSample mwqmsample);
     }
     public partial class MWQMSampleService : ControllerBase, IMWQMSampleService
     {
@@ -36,14 +37,16 @@ namespace CSSPServices
         #region Properties
         private CSSPDBContext db { get; }
         private ICultureService CultureService { get; }
+        private ILoggedInService LoggedInService { get; }
         private IEnums enums { get; }
         private IEnumerable<ValidationResult> ValidationResults { get; set; }
         #endregion Properties
 
         #region Constructors
-        public MWQMSampleService(ICultureService CultureService, IEnums enums, CSSPDBContext db)
+        public MWQMSampleService(ICultureService CultureService, ILoggedInService LoggedInService, IEnums enums, CSSPDBContext db)
         {
             this.CultureService = CultureService;
+            this.LoggedInService = LoggedInService;
             this.enums = enums;
             this.db = db;
         }
@@ -52,6 +55,11 @@ namespace CSSPServices
         #region Functions public 
         public async Task<ActionResult<MWQMSample>> GetMWQMSampleWithMWQMSampleID(int MWQMSampleID)
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             MWQMSample mwqmsample = (from c in db.MWQMSamples.AsNoTracking()
                     where c.MWQMSampleID == MWQMSampleID
                     select c).FirstOrDefault();
@@ -65,32 +73,22 @@ namespace CSSPServices
         }
         public async Task<ActionResult<List<MWQMSample>>> GetMWQMSampleList()
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             List<MWQMSample> mwqmsampleList = (from c in db.MWQMSamples.AsNoTracking() select c).Take(100).ToList();
 
             return await Task.FromResult(Ok(mwqmsampleList));
         }
-        public async Task<ActionResult<MWQMSample>> Add(MWQMSample mwqmSample)
-        {
-            ValidationResults = Validate(new ValidationContext(mwqmSample), ActionDBTypeEnum.Create);
-            if (ValidationResults.Count() > 0)
-            {
-               return await Task.FromResult(BadRequest(ValidationResults));
-            }
-
-            try
-            {
-               db.MWQMSamples.Add(mwqmSample);
-               db.SaveChanges();
-            }
-            catch (DbUpdateException ex)
-            {
-               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
-            }
-
-            return await Task.FromResult(Ok(mwqmSample));
-        }
         public async Task<ActionResult<bool>> Delete(int MWQMSampleID)
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             MWQMSample mwqmSample = (from c in db.MWQMSamples
                                where c.MWQMSampleID == MWQMSampleID
                                select c).FirstOrDefault();
@@ -112,8 +110,38 @@ namespace CSSPServices
 
             return await Task.FromResult(Ok(true));
         }
-        public async Task<ActionResult<MWQMSample>> Update(MWQMSample mwqmSample)
+        public async Task<ActionResult<MWQMSample>> Post(MWQMSample mwqmSample)
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
+            ValidationResults = Validate(new ValidationContext(mwqmSample), ActionDBTypeEnum.Create);
+            if (ValidationResults.Count() > 0)
+            {
+               return await Task.FromResult(BadRequest(ValidationResults));
+            }
+
+            try
+            {
+               db.MWQMSamples.Add(mwqmSample);
+               db.SaveChanges();
+            }
+            catch (DbUpdateException ex)
+            {
+               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+            }
+
+            return await Task.FromResult(Ok(mwqmSample));
+        }
+        public async Task<ActionResult<MWQMSample>> Put(MWQMSample mwqmSample)
+        {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             ValidationResults = Validate(new ValidationContext(mwqmSample), ActionDBTypeEnum.Update);
             if (ValidationResults.Count() > 0)
             {

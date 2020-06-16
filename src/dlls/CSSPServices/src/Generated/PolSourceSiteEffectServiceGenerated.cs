@@ -9,6 +9,7 @@ using CSSPEnums;
 using CSSPModels;
 using CultureServices.Resources;
 using CultureServices.Services;
+using LoggedInServices.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -22,11 +23,11 @@ namespace CSSPServices
 {
    public interface IPolSourceSiteEffectService
     {
-       Task<ActionResult<PolSourceSiteEffect>> GetPolSourceSiteEffectWithPolSourceSiteEffectID(int PolSourceSiteEffectID);
-       Task<ActionResult<List<PolSourceSiteEffect>>> GetPolSourceSiteEffectList();
-       Task<ActionResult<PolSourceSiteEffect>> Add(PolSourceSiteEffect polsourcesiteeffect);
        Task<ActionResult<bool>> Delete(int PolSourceSiteEffectID);
-       Task<ActionResult<PolSourceSiteEffect>> Update(PolSourceSiteEffect polsourcesiteeffect);
+       Task<ActionResult<List<PolSourceSiteEffect>>> GetPolSourceSiteEffectList();
+       Task<ActionResult<PolSourceSiteEffect>> GetPolSourceSiteEffectWithPolSourceSiteEffectID(int PolSourceSiteEffectID);
+       Task<ActionResult<PolSourceSiteEffect>> Post(PolSourceSiteEffect polsourcesiteeffect);
+       Task<ActionResult<PolSourceSiteEffect>> Put(PolSourceSiteEffect polsourcesiteeffect);
     }
     public partial class PolSourceSiteEffectService : ControllerBase, IPolSourceSiteEffectService
     {
@@ -36,14 +37,16 @@ namespace CSSPServices
         #region Properties
         private CSSPDBContext db { get; }
         private ICultureService CultureService { get; }
+        private ILoggedInService LoggedInService { get; }
         private IEnums enums { get; }
         private IEnumerable<ValidationResult> ValidationResults { get; set; }
         #endregion Properties
 
         #region Constructors
-        public PolSourceSiteEffectService(ICultureService CultureService, IEnums enums, CSSPDBContext db)
+        public PolSourceSiteEffectService(ICultureService CultureService, ILoggedInService LoggedInService, IEnums enums, CSSPDBContext db)
         {
             this.CultureService = CultureService;
+            this.LoggedInService = LoggedInService;
             this.enums = enums;
             this.db = db;
         }
@@ -52,6 +55,11 @@ namespace CSSPServices
         #region Functions public 
         public async Task<ActionResult<PolSourceSiteEffect>> GetPolSourceSiteEffectWithPolSourceSiteEffectID(int PolSourceSiteEffectID)
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             PolSourceSiteEffect polsourcesiteeffect = (from c in db.PolSourceSiteEffects.AsNoTracking()
                     where c.PolSourceSiteEffectID == PolSourceSiteEffectID
                     select c).FirstOrDefault();
@@ -65,32 +73,22 @@ namespace CSSPServices
         }
         public async Task<ActionResult<List<PolSourceSiteEffect>>> GetPolSourceSiteEffectList()
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             List<PolSourceSiteEffect> polsourcesiteeffectList = (from c in db.PolSourceSiteEffects.AsNoTracking() select c).Take(100).ToList();
 
             return await Task.FromResult(Ok(polsourcesiteeffectList));
         }
-        public async Task<ActionResult<PolSourceSiteEffect>> Add(PolSourceSiteEffect polSourceSiteEffect)
-        {
-            ValidationResults = Validate(new ValidationContext(polSourceSiteEffect), ActionDBTypeEnum.Create);
-            if (ValidationResults.Count() > 0)
-            {
-               return await Task.FromResult(BadRequest(ValidationResults));
-            }
-
-            try
-            {
-               db.PolSourceSiteEffects.Add(polSourceSiteEffect);
-               db.SaveChanges();
-            }
-            catch (DbUpdateException ex)
-            {
-               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
-            }
-
-            return await Task.FromResult(Ok(polSourceSiteEffect));
-        }
         public async Task<ActionResult<bool>> Delete(int PolSourceSiteEffectID)
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             PolSourceSiteEffect polSourceSiteEffect = (from c in db.PolSourceSiteEffects
                                where c.PolSourceSiteEffectID == PolSourceSiteEffectID
                                select c).FirstOrDefault();
@@ -112,8 +110,38 @@ namespace CSSPServices
 
             return await Task.FromResult(Ok(true));
         }
-        public async Task<ActionResult<PolSourceSiteEffect>> Update(PolSourceSiteEffect polSourceSiteEffect)
+        public async Task<ActionResult<PolSourceSiteEffect>> Post(PolSourceSiteEffect polSourceSiteEffect)
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
+            ValidationResults = Validate(new ValidationContext(polSourceSiteEffect), ActionDBTypeEnum.Create);
+            if (ValidationResults.Count() > 0)
+            {
+               return await Task.FromResult(BadRequest(ValidationResults));
+            }
+
+            try
+            {
+               db.PolSourceSiteEffects.Add(polSourceSiteEffect);
+               db.SaveChanges();
+            }
+            catch (DbUpdateException ex)
+            {
+               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+            }
+
+            return await Task.FromResult(Ok(polSourceSiteEffect));
+        }
+        public async Task<ActionResult<PolSourceSiteEffect>> Put(PolSourceSiteEffect polSourceSiteEffect)
+        {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             ValidationResults = Validate(new ValidationContext(polSourceSiteEffect), ActionDBTypeEnum.Update);
             if (ValidationResults.Count() > 0)
             {

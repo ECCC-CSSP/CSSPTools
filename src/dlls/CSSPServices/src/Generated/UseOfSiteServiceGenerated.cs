@@ -9,6 +9,7 @@ using CSSPEnums;
 using CSSPModels;
 using CultureServices.Resources;
 using CultureServices.Services;
+using LoggedInServices.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -22,11 +23,11 @@ namespace CSSPServices
 {
    public interface IUseOfSiteService
     {
-       Task<ActionResult<UseOfSite>> GetUseOfSiteWithUseOfSiteID(int UseOfSiteID);
-       Task<ActionResult<List<UseOfSite>>> GetUseOfSiteList();
-       Task<ActionResult<UseOfSite>> Add(UseOfSite useofsite);
        Task<ActionResult<bool>> Delete(int UseOfSiteID);
-       Task<ActionResult<UseOfSite>> Update(UseOfSite useofsite);
+       Task<ActionResult<List<UseOfSite>>> GetUseOfSiteList();
+       Task<ActionResult<UseOfSite>> GetUseOfSiteWithUseOfSiteID(int UseOfSiteID);
+       Task<ActionResult<UseOfSite>> Post(UseOfSite useofsite);
+       Task<ActionResult<UseOfSite>> Put(UseOfSite useofsite);
     }
     public partial class UseOfSiteService : ControllerBase, IUseOfSiteService
     {
@@ -36,14 +37,16 @@ namespace CSSPServices
         #region Properties
         private CSSPDBContext db { get; }
         private ICultureService CultureService { get; }
+        private ILoggedInService LoggedInService { get; }
         private IEnums enums { get; }
         private IEnumerable<ValidationResult> ValidationResults { get; set; }
         #endregion Properties
 
         #region Constructors
-        public UseOfSiteService(ICultureService CultureService, IEnums enums, CSSPDBContext db)
+        public UseOfSiteService(ICultureService CultureService, ILoggedInService LoggedInService, IEnums enums, CSSPDBContext db)
         {
             this.CultureService = CultureService;
+            this.LoggedInService = LoggedInService;
             this.enums = enums;
             this.db = db;
         }
@@ -52,6 +55,11 @@ namespace CSSPServices
         #region Functions public 
         public async Task<ActionResult<UseOfSite>> GetUseOfSiteWithUseOfSiteID(int UseOfSiteID)
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             UseOfSite useofsite = (from c in db.UseOfSites.AsNoTracking()
                     where c.UseOfSiteID == UseOfSiteID
                     select c).FirstOrDefault();
@@ -65,32 +73,22 @@ namespace CSSPServices
         }
         public async Task<ActionResult<List<UseOfSite>>> GetUseOfSiteList()
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             List<UseOfSite> useofsiteList = (from c in db.UseOfSites.AsNoTracking() select c).Take(100).ToList();
 
             return await Task.FromResult(Ok(useofsiteList));
         }
-        public async Task<ActionResult<UseOfSite>> Add(UseOfSite useOfSite)
-        {
-            ValidationResults = Validate(new ValidationContext(useOfSite), ActionDBTypeEnum.Create);
-            if (ValidationResults.Count() > 0)
-            {
-               return await Task.FromResult(BadRequest(ValidationResults));
-            }
-
-            try
-            {
-               db.UseOfSites.Add(useOfSite);
-               db.SaveChanges();
-            }
-            catch (DbUpdateException ex)
-            {
-               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
-            }
-
-            return await Task.FromResult(Ok(useOfSite));
-        }
         public async Task<ActionResult<bool>> Delete(int UseOfSiteID)
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             UseOfSite useOfSite = (from c in db.UseOfSites
                                where c.UseOfSiteID == UseOfSiteID
                                select c).FirstOrDefault();
@@ -112,8 +110,38 @@ namespace CSSPServices
 
             return await Task.FromResult(Ok(true));
         }
-        public async Task<ActionResult<UseOfSite>> Update(UseOfSite useOfSite)
+        public async Task<ActionResult<UseOfSite>> Post(UseOfSite useOfSite)
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
+            ValidationResults = Validate(new ValidationContext(useOfSite), ActionDBTypeEnum.Create);
+            if (ValidationResults.Count() > 0)
+            {
+               return await Task.FromResult(BadRequest(ValidationResults));
+            }
+
+            try
+            {
+               db.UseOfSites.Add(useOfSite);
+               db.SaveChanges();
+            }
+            catch (DbUpdateException ex)
+            {
+               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+            }
+
+            return await Task.FromResult(Ok(useOfSite));
+        }
+        public async Task<ActionResult<UseOfSite>> Put(UseOfSite useOfSite)
+        {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             ValidationResults = Validate(new ValidationContext(useOfSite), ActionDBTypeEnum.Update);
             if (ValidationResults.Count() > 0)
             {

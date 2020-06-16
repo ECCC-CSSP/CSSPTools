@@ -77,37 +77,37 @@ export class TVItemLanguageComponent implements OnInit, OnDestroy {
             {
               value: (AddOrUpdate === 'Add' ? 0 : (this.tvitemlanguageService.tvitemlanguageList[0]?.TVItemLanguageID)),
               disabled: false
-            }],
+            }, [ Validators.required ]],
           TVItemID: [
             {
               value: this.tvitemlanguageService.tvitemlanguageList[0]?.TVItemID,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           Language: [
             {
               value: this.tvitemlanguageService.tvitemlanguageList[0]?.Language,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           TVText: [
             {
               value: this.tvitemlanguageService.tvitemlanguageList[0]?.TVText,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           TranslationStatus: [
             {
               value: this.tvitemlanguageService.tvitemlanguageList[0]?.TranslationStatus,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           LastUpdateDate_UTC: [
             {
               value: this.tvitemlanguageService.tvitemlanguageList[0]?.LastUpdateDate_UTC,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           LastUpdateContactTVItemID: [
             {
               value: this.tvitemlanguageService.tvitemlanguageList[0]?.LastUpdateContactTVItemID,
               disabled: false
-            }],
+            }, [ Validators.required ]],
         }
       );
 

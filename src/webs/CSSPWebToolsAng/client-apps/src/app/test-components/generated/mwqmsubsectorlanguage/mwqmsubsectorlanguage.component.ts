@@ -79,47 +79,47 @@ export class MWQMSubsectorLanguageComponent implements OnInit, OnDestroy {
             {
               value: (AddOrUpdate === 'Add' ? 0 : (this.mwqmsubsectorlanguageService.mwqmsubsectorlanguageList[0]?.MWQMSubsectorLanguageID)),
               disabled: false
-            }],
+            }, [ Validators.required ]],
           MWQMSubsectorID: [
             {
               value: this.mwqmsubsectorlanguageService.mwqmsubsectorlanguageList[0]?.MWQMSubsectorID,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           Language: [
             {
               value: this.mwqmsubsectorlanguageService.mwqmsubsectorlanguageList[0]?.Language,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           SubsectorDesc: [
             {
               value: this.mwqmsubsectorlanguageService.mwqmsubsectorlanguageList[0]?.SubsectorDesc,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           TranslationStatusSubsectorDesc: [
             {
               value: this.mwqmsubsectorlanguageService.mwqmsubsectorlanguageList[0]?.TranslationStatusSubsectorDesc,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           LogBook: [
             {
               value: this.mwqmsubsectorlanguageService.mwqmsubsectorlanguageList[0]?.LogBook,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           TranslationStatusLogBook: [
             {
               value: this.mwqmsubsectorlanguageService.mwqmsubsectorlanguageList[0]?.TranslationStatusLogBook,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           LastUpdateDate_UTC: [
             {
               value: this.mwqmsubsectorlanguageService.mwqmsubsectorlanguageList[0]?.LastUpdateDate_UTC,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           LastUpdateContactTVItemID: [
             {
               value: this.mwqmsubsectorlanguageService.mwqmsubsectorlanguageList[0]?.LastUpdateContactTVItemID,
               disabled: false
-            }],
+            }, [ Validators.required ]],
         }
       );
 

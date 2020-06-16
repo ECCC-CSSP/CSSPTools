@@ -9,6 +9,7 @@ using CSSPEnums;
 using CSSPModels;
 using CultureServices.Resources;
 using CultureServices.Services;
+using LoggedInServices.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -22,11 +23,11 @@ namespace CSSPServices
 {
    public interface ISpillLanguageService
     {
-       Task<ActionResult<SpillLanguage>> GetSpillLanguageWithSpillLanguageID(int SpillLanguageID);
-       Task<ActionResult<List<SpillLanguage>>> GetSpillLanguageList();
-       Task<ActionResult<SpillLanguage>> Add(SpillLanguage spilllanguage);
        Task<ActionResult<bool>> Delete(int SpillLanguageID);
-       Task<ActionResult<SpillLanguage>> Update(SpillLanguage spilllanguage);
+       Task<ActionResult<List<SpillLanguage>>> GetSpillLanguageList();
+       Task<ActionResult<SpillLanguage>> GetSpillLanguageWithSpillLanguageID(int SpillLanguageID);
+       Task<ActionResult<SpillLanguage>> Post(SpillLanguage spilllanguage);
+       Task<ActionResult<SpillLanguage>> Put(SpillLanguage spilllanguage);
     }
     public partial class SpillLanguageService : ControllerBase, ISpillLanguageService
     {
@@ -36,14 +37,16 @@ namespace CSSPServices
         #region Properties
         private CSSPDBContext db { get; }
         private ICultureService CultureService { get; }
+        private ILoggedInService LoggedInService { get; }
         private IEnums enums { get; }
         private IEnumerable<ValidationResult> ValidationResults { get; set; }
         #endregion Properties
 
         #region Constructors
-        public SpillLanguageService(ICultureService CultureService, IEnums enums, CSSPDBContext db)
+        public SpillLanguageService(ICultureService CultureService, ILoggedInService LoggedInService, IEnums enums, CSSPDBContext db)
         {
             this.CultureService = CultureService;
+            this.LoggedInService = LoggedInService;
             this.enums = enums;
             this.db = db;
         }
@@ -52,6 +55,11 @@ namespace CSSPServices
         #region Functions public 
         public async Task<ActionResult<SpillLanguage>> GetSpillLanguageWithSpillLanguageID(int SpillLanguageID)
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             SpillLanguage spilllanguage = (from c in db.SpillLanguages.AsNoTracking()
                     where c.SpillLanguageID == SpillLanguageID
                     select c).FirstOrDefault();
@@ -65,32 +73,22 @@ namespace CSSPServices
         }
         public async Task<ActionResult<List<SpillLanguage>>> GetSpillLanguageList()
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             List<SpillLanguage> spilllanguageList = (from c in db.SpillLanguages.AsNoTracking() select c).Take(100).ToList();
 
             return await Task.FromResult(Ok(spilllanguageList));
         }
-        public async Task<ActionResult<SpillLanguage>> Add(SpillLanguage spillLanguage)
-        {
-            ValidationResults = Validate(new ValidationContext(spillLanguage), ActionDBTypeEnum.Create);
-            if (ValidationResults.Count() > 0)
-            {
-               return await Task.FromResult(BadRequest(ValidationResults));
-            }
-
-            try
-            {
-               db.SpillLanguages.Add(spillLanguage);
-               db.SaveChanges();
-            }
-            catch (DbUpdateException ex)
-            {
-               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
-            }
-
-            return await Task.FromResult(Ok(spillLanguage));
-        }
         public async Task<ActionResult<bool>> Delete(int SpillLanguageID)
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             SpillLanguage spillLanguage = (from c in db.SpillLanguages
                                where c.SpillLanguageID == SpillLanguageID
                                select c).FirstOrDefault();
@@ -112,8 +110,38 @@ namespace CSSPServices
 
             return await Task.FromResult(Ok(true));
         }
-        public async Task<ActionResult<SpillLanguage>> Update(SpillLanguage spillLanguage)
+        public async Task<ActionResult<SpillLanguage>> Post(SpillLanguage spillLanguage)
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
+            ValidationResults = Validate(new ValidationContext(spillLanguage), ActionDBTypeEnum.Create);
+            if (ValidationResults.Count() > 0)
+            {
+               return await Task.FromResult(BadRequest(ValidationResults));
+            }
+
+            try
+            {
+               db.SpillLanguages.Add(spillLanguage);
+               db.SaveChanges();
+            }
+            catch (DbUpdateException ex)
+            {
+               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+            }
+
+            return await Task.FromResult(Ok(spillLanguage));
+        }
+        public async Task<ActionResult<SpillLanguage>> Put(SpillLanguage spillLanguage)
+        {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             ValidationResults = Validate(new ValidationContext(spillLanguage), ActionDBTypeEnum.Update);
             if (ValidationResults.Count() > 0)
             {

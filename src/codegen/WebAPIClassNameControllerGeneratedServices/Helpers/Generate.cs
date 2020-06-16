@@ -90,6 +90,7 @@ namespace WebAPIClassNameControllerGeneratedServices.Services
                     }
                     sb.AppendLine(@"using CSSPModels;");
                     sb.AppendLine(@"using CSSPServices;");
+                    sb.AppendLine(@"using CultureServices.Services;");
                     sb.AppendLine(@"using LoggedInServices.Services;");
                     sb.AppendLine(@"using Microsoft.AspNetCore.Authorization;");
                     sb.AppendLine(@"using Microsoft.AspNetCore.Mvc;");
@@ -102,8 +103,8 @@ namespace WebAPIClassNameControllerGeneratedServices.Services
                     sb.AppendLine(@"    {");
                     sb.AppendLine($@"        Task<ActionResult<List<{ TypeName }>>> Get();");
                     sb.AppendLine($@"        Task<ActionResult<{ TypeName }>> Get(int { TypeName }ID);");
-                    sb.AppendLine($@"        Task<ActionResult<{ TypeName }>> Post({ TypeName } { TypeNameLower });");
-                    sb.AppendLine($@"        Task<ActionResult<{ TypeName }>> Put({ TypeName } { TypeNameLower });");
+                    sb.AppendLine($@"        Task<ActionResult<{ TypeName }>> Post({ TypeName } { TypeName });");
+                    sb.AppendLine($@"        Task<ActionResult<{ TypeName }>> Put({ TypeName } { TypeName });");
                     sb.AppendLine($@"        Task<ActionResult<bool>> Delete(int { TypeName }ID);");
                     sb.AppendLine(@"    }");
                     sb.AppendLine(@"");
@@ -116,17 +117,17 @@ namespace WebAPIClassNameControllerGeneratedServices.Services
                     sb.AppendLine(@"        #endregion Variables");
                     sb.AppendLine(@"");
                     sb.AppendLine(@"        #region Properties");
-                    sb.AppendLine($@"        private I{ TypeName }Service { TypeNameLower }Service {{ get; }}");
-                    sb.AppendLine(@"        private CSSPDBContext db { get; }");
-                    sb.AppendLine(@"        private ILoggedInService loggedInService { get; }");
+                    sb.AppendLine(@"        private ICultureService CultureService { get; }");
+                    sb.AppendLine(@"        private ILoggedInService LoggedInService { get; }");
+                    sb.AppendLine($@"        private I{ TypeName }Service { TypeName }Service {{ get; }}");
                     sb.AppendLine(@"        #endregion Properties");
                     sb.AppendLine(@"");
                     sb.AppendLine(@"        #region Constructors");
-                    sb.AppendLine($@"        public { TypeName }Controller(I{ TypeName }Service { TypeNameLower }Service, CSSPDBContext db, ILoggedInService loggedInService)");
+                    sb.AppendLine($@"        public { TypeName }Controller(ICultureService CultureService, ILoggedInService LoggedInService, I{ TypeName }Service { TypeName }Service)");
                     sb.AppendLine(@"        {");
-                    sb.AppendLine($@"            this.{ TypeNameLower }Service = { TypeNameLower }Service;");
-                    sb.AppendLine(@"            this.db = db;");
-                    sb.AppendLine(@"            this.loggedInService = loggedInService;");
+                    sb.AppendLine(@"            this.CultureService = CultureService;");
+                    sb.AppendLine(@"            this.LoggedInService = LoggedInService;");
+                    sb.AppendLine($@"            this.{ TypeName }Service = { TypeName }Service;");
                     sb.AppendLine(@"        }");
                     sb.AppendLine(@"        #endregion Constructors");
                     sb.AppendLine(@"");
@@ -135,38 +136,53 @@ namespace WebAPIClassNameControllerGeneratedServices.Services
                     sb.AppendLine(@"        [HttpGet]");
                     sb.AppendLine($@"        public async Task<ActionResult<List<{ TypeName }>>> Get()");
                     sb.AppendLine(@"        {");
-                    sb.AppendLine($@"            return await { TypeNameLower }Service.Get{ TypeName }List();");
+                    sb.AppendLine($@"            CultureService.SetCulture((string)RouteData.Values[""culture""]);");
+                    sb.AppendLine($@"            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);");
+                    sb.AppendLine(@"");
+                    sb.AppendLine($@"            return await { TypeName }Service.Get{ TypeName }List();");
                     sb.AppendLine(@"        }");
 
                     sb.AppendLine($@"        [HttpGet(""{{{ TypeName }ID}}"")]");
                     sb.AppendLine($@"        public async Task<ActionResult<{ TypeName }>> Get(int { TypeName }ID)");
                     sb.AppendLine(@"        {");
-                    sb.AppendLine($@"            return await { TypeNameLower }Service.Get{ TypeName }With{ TypeName }ID({ TypeName }ID);");
+                    sb.AppendLine($@"            CultureService.SetCulture((string)RouteData.Values[""culture""]);");
+                    sb.AppendLine($@"            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);");
+                    sb.AppendLine(@"");
+                    sb.AppendLine($@"            return await { TypeName }Service.Get{ TypeName }With{ TypeName }ID({ TypeName }ID);");
                     sb.AppendLine(@"        }");
 
                     sb.AppendLine(@"        [HttpPost]");
-                    sb.AppendLine($@"        public async Task<ActionResult<{ TypeName }>> Post({ TypeName } { TypeNameLower })");
+                    sb.AppendLine($@"        public async Task<ActionResult<{ TypeName }>> Post({ TypeName } { TypeName })");
                     sb.AppendLine(@"        {");
+                    sb.AppendLine($@"            CultureService.SetCulture((string)RouteData.Values[""culture""]);");
+                    sb.AppendLine($@"            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);");
+                    sb.AppendLine(@"");
                     if (TypeName == "Contact")
                     {
-                        sb.AppendLine($@"            return await { TypeNameLower }Service.Add({ TypeNameLower }, AddContactTypeEnum.Register);");
+                        sb.AppendLine($@"            return await { TypeName }Service.Post({ TypeName }, AddContactTypeEnum.Register);");
                     }
                     else
                     {
-                        sb.AppendLine($@"            return await { TypeNameLower }Service.Add({ TypeNameLower });");
+                        sb.AppendLine($@"            return await { TypeName }Service.Post({ TypeName });");
                     }
                     sb.AppendLine(@"        }");
 
                     sb.AppendLine(@"        [HttpPut]");
-                    sb.AppendLine($@"        public async Task<ActionResult<{ TypeName }>> Put({ TypeName } { TypeNameLower })");
+                    sb.AppendLine($@"        public async Task<ActionResult<{ TypeName }>> Put({ TypeName } { TypeName })");
                     sb.AppendLine(@"        {");
-                    sb.AppendLine($@"            return await { TypeNameLower }Service.Update({ TypeNameLower });");
+                    sb.AppendLine($@"            CultureService.SetCulture((string)RouteData.Values[""culture""]);");
+                    sb.AppendLine($@"            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);");
+                    sb.AppendLine(@"");
+                    sb.AppendLine($@"            return await { TypeName }Service.Put({ TypeName });");
                     sb.AppendLine(@"        }");
 
                     sb.AppendLine($@"        [HttpDelete(""{{{ TypeName }ID}}"")]");
                     sb.AppendLine($@"        public async Task<ActionResult<bool>> Delete(int { TypeName }ID)");
                     sb.AppendLine(@"        {");
-                    sb.AppendLine($@"            return await { TypeNameLower }Service.Delete({ TypeName }ID);");
+                    sb.AppendLine($@"            CultureService.SetCulture((string)RouteData.Values[""culture""]);");
+                    sb.AppendLine($@"            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);");
+                    sb.AppendLine(@"");
+                    sb.AppendLine($@"            return await { TypeName }Service.Delete({ TypeName }ID);");
                     sb.AppendLine(@"        }");
 
                     sb.AppendLine(@"        #endregion Functions public");

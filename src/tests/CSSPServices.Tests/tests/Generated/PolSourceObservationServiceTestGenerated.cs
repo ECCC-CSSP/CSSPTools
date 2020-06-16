@@ -32,7 +32,7 @@ namespace CSSPServices.Tests
         private IServiceProvider Provider { get; set; }
         private IServiceCollection Services { get; set; }
         private ICultureService CultureService { get; set; }
-        private IPolSourceObservationService polSourceObservationService { get; set; }
+        private IPolSourceObservationService PolSourceObservationService { get; set; }
         private CSSPDBContext db { get; set; }
         #endregion Properties
 
@@ -62,7 +62,7 @@ namespace CSSPServices.Tests
                PolSourceObservation polSourceObservation = GetFilledRandomPolSourceObservation(""); 
 
                // List<PolSourceObservation>
-               var actionPolSourceObservationList = await polSourceObservationService.GetPolSourceObservationList();
+               var actionPolSourceObservationList = await PolSourceObservationService.GetPolSourceObservationList();
                Assert.Equal(200, ((ObjectResult)actionPolSourceObservationList.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionPolSourceObservationList.Result).Value);
                List<PolSourceObservation> polSourceObservationList = (List<PolSourceObservation>)((OkObjectResult)actionPolSourceObservationList.Result).Value;
@@ -70,22 +70,22 @@ namespace CSSPServices.Tests
                int count = ((List<PolSourceObservation>)((OkObjectResult)actionPolSourceObservationList.Result).Value).Count();
                 Assert.True(count > 0);
 
-               // Add PolSourceObservation
-               var actionPolSourceObservationAdded = await polSourceObservationService.Add(polSourceObservation);
+               // Post PolSourceObservation
+               var actionPolSourceObservationAdded = await PolSourceObservationService.Post(polSourceObservation);
                Assert.Equal(200, ((ObjectResult)actionPolSourceObservationAdded.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionPolSourceObservationAdded.Result).Value);
                PolSourceObservation polSourceObservationAdded = (PolSourceObservation)((OkObjectResult)actionPolSourceObservationAdded.Result).Value;
                Assert.NotNull(polSourceObservationAdded);
 
-               // Update PolSourceObservation
-               var actionPolSourceObservationUpdated = await polSourceObservationService.Update(polSourceObservation);
+               // Put PolSourceObservation
+               var actionPolSourceObservationUpdated = await PolSourceObservationService.Put(polSourceObservation);
                Assert.Equal(200, ((ObjectResult)actionPolSourceObservationUpdated.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionPolSourceObservationUpdated.Result).Value);
                PolSourceObservation polSourceObservationUpdated = (PolSourceObservation)((OkObjectResult)actionPolSourceObservationUpdated.Result).Value;
                Assert.NotNull(polSourceObservationUpdated);
 
                // Delete PolSourceObservation
-               var actionPolSourceObservationDeleted = await polSourceObservationService.Delete(polSourceObservation.PolSourceObservationID);
+               var actionPolSourceObservationDeleted = await PolSourceObservationService.Delete(polSourceObservation.PolSourceObservationID);
                Assert.Equal(200, ((ObjectResult)actionPolSourceObservationDeleted.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionPolSourceObservationDeleted.Result).Value);
                bool retBool = (bool)((OkObjectResult)actionPolSourceObservationDeleted.Result).Value;
@@ -126,8 +126,8 @@ namespace CSSPServices.Tests
 
             CultureService.SetCulture(culture);
 
-            polSourceObservationService = Provider.GetService<IPolSourceObservationService>();
-            Assert.NotNull(polSourceObservationService);
+            PolSourceObservationService = Provider.GetService<IPolSourceObservationService>();
+            Assert.NotNull(PolSourceObservationService);
 
             return await Task.FromResult(true);
         }

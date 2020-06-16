@@ -77,67 +77,67 @@ export class AddressComponent implements OnInit, OnDestroy {
             {
               value: (AddOrUpdate === 'Add' ? 0 : (this.addressService.addressList[0]?.AddressID)),
               disabled: false
-            },[ Validators.required ]],
+            }, [ Validators.required ]],
           AddressTVItemID: [
             {
               value: this.addressService.addressList[0]?.AddressTVItemID,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           AddressType: [
             {
               value: this.addressService.addressList[0]?.AddressType,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           CountryTVItemID: [
             {
               value: this.addressService.addressList[0]?.CountryTVItemID,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           ProvinceTVItemID: [
             {
               value: this.addressService.addressList[0]?.ProvinceTVItemID,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           MunicipalityTVItemID: [
             {
               value: this.addressService.addressList[0]?.MunicipalityTVItemID,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           StreetName: [
             {
               value: this.addressService.addressList[0]?.StreetName,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           StreetNumber: [
             {
               value: this.addressService.addressList[0]?.StreetNumber,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           StreetType: [
             {
               value: this.addressService.addressList[0]?.StreetType,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           PostalCode: [
             {
               value: this.addressService.addressList[0]?.PostalCode,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           GoogleAddressText: [
             {
               value: this.addressService.addressList[0]?.GoogleAddressText,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           LastUpdateDate_UTC: [
             {
               value: this.addressService.addressList[0]?.LastUpdateDate_UTC,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           LastUpdateContactTVItemID: [
             {
               value: this.addressService.addressList[0]?.LastUpdateContactTVItemID,
               disabled: false
-            }],
+            }, [ Validators.required ]],
         }
       );
 

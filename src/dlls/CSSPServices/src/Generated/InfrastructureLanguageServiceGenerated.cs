@@ -9,6 +9,7 @@ using CSSPEnums;
 using CSSPModels;
 using CultureServices.Resources;
 using CultureServices.Services;
+using LoggedInServices.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -22,11 +23,11 @@ namespace CSSPServices
 {
    public interface IInfrastructureLanguageService
     {
-       Task<ActionResult<InfrastructureLanguage>> GetInfrastructureLanguageWithInfrastructureLanguageID(int InfrastructureLanguageID);
-       Task<ActionResult<List<InfrastructureLanguage>>> GetInfrastructureLanguageList();
-       Task<ActionResult<InfrastructureLanguage>> Add(InfrastructureLanguage infrastructurelanguage);
        Task<ActionResult<bool>> Delete(int InfrastructureLanguageID);
-       Task<ActionResult<InfrastructureLanguage>> Update(InfrastructureLanguage infrastructurelanguage);
+       Task<ActionResult<List<InfrastructureLanguage>>> GetInfrastructureLanguageList();
+       Task<ActionResult<InfrastructureLanguage>> GetInfrastructureLanguageWithInfrastructureLanguageID(int InfrastructureLanguageID);
+       Task<ActionResult<InfrastructureLanguage>> Post(InfrastructureLanguage infrastructurelanguage);
+       Task<ActionResult<InfrastructureLanguage>> Put(InfrastructureLanguage infrastructurelanguage);
     }
     public partial class InfrastructureLanguageService : ControllerBase, IInfrastructureLanguageService
     {
@@ -36,14 +37,16 @@ namespace CSSPServices
         #region Properties
         private CSSPDBContext db { get; }
         private ICultureService CultureService { get; }
+        private ILoggedInService LoggedInService { get; }
         private IEnums enums { get; }
         private IEnumerable<ValidationResult> ValidationResults { get; set; }
         #endregion Properties
 
         #region Constructors
-        public InfrastructureLanguageService(ICultureService CultureService, IEnums enums, CSSPDBContext db)
+        public InfrastructureLanguageService(ICultureService CultureService, ILoggedInService LoggedInService, IEnums enums, CSSPDBContext db)
         {
             this.CultureService = CultureService;
+            this.LoggedInService = LoggedInService;
             this.enums = enums;
             this.db = db;
         }
@@ -52,6 +55,11 @@ namespace CSSPServices
         #region Functions public 
         public async Task<ActionResult<InfrastructureLanguage>> GetInfrastructureLanguageWithInfrastructureLanguageID(int InfrastructureLanguageID)
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             InfrastructureLanguage infrastructurelanguage = (from c in db.InfrastructureLanguages.AsNoTracking()
                     where c.InfrastructureLanguageID == InfrastructureLanguageID
                     select c).FirstOrDefault();
@@ -65,32 +73,22 @@ namespace CSSPServices
         }
         public async Task<ActionResult<List<InfrastructureLanguage>>> GetInfrastructureLanguageList()
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             List<InfrastructureLanguage> infrastructurelanguageList = (from c in db.InfrastructureLanguages.AsNoTracking() select c).Take(100).ToList();
 
             return await Task.FromResult(Ok(infrastructurelanguageList));
         }
-        public async Task<ActionResult<InfrastructureLanguage>> Add(InfrastructureLanguage infrastructureLanguage)
-        {
-            ValidationResults = Validate(new ValidationContext(infrastructureLanguage), ActionDBTypeEnum.Create);
-            if (ValidationResults.Count() > 0)
-            {
-               return await Task.FromResult(BadRequest(ValidationResults));
-            }
-
-            try
-            {
-               db.InfrastructureLanguages.Add(infrastructureLanguage);
-               db.SaveChanges();
-            }
-            catch (DbUpdateException ex)
-            {
-               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
-            }
-
-            return await Task.FromResult(Ok(infrastructureLanguage));
-        }
         public async Task<ActionResult<bool>> Delete(int InfrastructureLanguageID)
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             InfrastructureLanguage infrastructureLanguage = (from c in db.InfrastructureLanguages
                                where c.InfrastructureLanguageID == InfrastructureLanguageID
                                select c).FirstOrDefault();
@@ -112,8 +110,38 @@ namespace CSSPServices
 
             return await Task.FromResult(Ok(true));
         }
-        public async Task<ActionResult<InfrastructureLanguage>> Update(InfrastructureLanguage infrastructureLanguage)
+        public async Task<ActionResult<InfrastructureLanguage>> Post(InfrastructureLanguage infrastructureLanguage)
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
+            ValidationResults = Validate(new ValidationContext(infrastructureLanguage), ActionDBTypeEnum.Create);
+            if (ValidationResults.Count() > 0)
+            {
+               return await Task.FromResult(BadRequest(ValidationResults));
+            }
+
+            try
+            {
+               db.InfrastructureLanguages.Add(infrastructureLanguage);
+               db.SaveChanges();
+            }
+            catch (DbUpdateException ex)
+            {
+               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+            }
+
+            return await Task.FromResult(Ok(infrastructureLanguage));
+        }
+        public async Task<ActionResult<InfrastructureLanguage>> Put(InfrastructureLanguage infrastructureLanguage)
+        {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             ValidationResults = Validate(new ValidationContext(infrastructureLanguage), ActionDBTypeEnum.Update);
             if (ValidationResults.Count() > 0)
             {

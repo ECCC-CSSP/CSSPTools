@@ -6,6 +6,7 @@
 
 using CSSPModels;
 using CSSPServices;
+using CultureServices.Services;
 using LoggedInServices.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -18,8 +19,8 @@ namespace CSSPWebAPI.Controllers
     {
         Task<ActionResult<List<RatingCurve>>> Get();
         Task<ActionResult<RatingCurve>> Get(int RatingCurveID);
-        Task<ActionResult<RatingCurve>> Post(RatingCurve ratingCurve);
-        Task<ActionResult<RatingCurve>> Put(RatingCurve ratingCurve);
+        Task<ActionResult<RatingCurve>> Post(RatingCurve RatingCurve);
+        Task<ActionResult<RatingCurve>> Put(RatingCurve RatingCurve);
         Task<ActionResult<bool>> Delete(int RatingCurveID);
     }
 
@@ -32,17 +33,17 @@ namespace CSSPWebAPI.Controllers
         #endregion Variables
 
         #region Properties
-        private IRatingCurveService ratingCurveService { get; }
-        private CSSPDBContext db { get; }
-        private ILoggedInService loggedInService { get; }
+        private ICultureService CultureService { get; }
+        private ILoggedInService LoggedInService { get; }
+        private IRatingCurveService RatingCurveService { get; }
         #endregion Properties
 
         #region Constructors
-        public RatingCurveController(IRatingCurveService ratingCurveService, CSSPDBContext db, ILoggedInService loggedInService)
+        public RatingCurveController(ICultureService CultureService, ILoggedInService LoggedInService, IRatingCurveService RatingCurveService)
         {
-            this.ratingCurveService = ratingCurveService;
-            this.db = db;
-            this.loggedInService = loggedInService;
+            this.CultureService = CultureService;
+            this.LoggedInService = LoggedInService;
+            this.RatingCurveService = RatingCurveService;
         }
         #endregion Constructors
 
@@ -50,27 +51,42 @@ namespace CSSPWebAPI.Controllers
         [HttpGet]
         public async Task<ActionResult<List<RatingCurve>>> Get()
         {
-            return await ratingCurveService.GetRatingCurveList();
+            CultureService.SetCulture((string)RouteData.Values["culture"]);
+            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+
+            return await RatingCurveService.GetRatingCurveList();
         }
         [HttpGet("{RatingCurveID}")]
         public async Task<ActionResult<RatingCurve>> Get(int RatingCurveID)
         {
-            return await ratingCurveService.GetRatingCurveWithRatingCurveID(RatingCurveID);
+            CultureService.SetCulture((string)RouteData.Values["culture"]);
+            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+
+            return await RatingCurveService.GetRatingCurveWithRatingCurveID(RatingCurveID);
         }
         [HttpPost]
-        public async Task<ActionResult<RatingCurve>> Post(RatingCurve ratingCurve)
+        public async Task<ActionResult<RatingCurve>> Post(RatingCurve RatingCurve)
         {
-            return await ratingCurveService.Add(ratingCurve);
+            CultureService.SetCulture((string)RouteData.Values["culture"]);
+            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+
+            return await RatingCurveService.Post(RatingCurve);
         }
         [HttpPut]
-        public async Task<ActionResult<RatingCurve>> Put(RatingCurve ratingCurve)
+        public async Task<ActionResult<RatingCurve>> Put(RatingCurve RatingCurve)
         {
-            return await ratingCurveService.Update(ratingCurve);
+            CultureService.SetCulture((string)RouteData.Values["culture"]);
+            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+
+            return await RatingCurveService.Put(RatingCurve);
         }
         [HttpDelete("{RatingCurveID}")]
         public async Task<ActionResult<bool>> Delete(int RatingCurveID)
         {
-            return await ratingCurveService.Delete(RatingCurveID);
+            CultureService.SetCulture((string)RouteData.Values["culture"]);
+            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+
+            return await RatingCurveService.Delete(RatingCurveID);
         }
         #endregion Functions public
 

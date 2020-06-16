@@ -9,6 +9,7 @@ using CSSPEnums;
 using CSSPModels;
 using CultureServices.Resources;
 using CultureServices.Services;
+using LoggedInServices.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -22,11 +23,11 @@ namespace CSSPServices
 {
    public interface IContactService
     {
-       Task<ActionResult<Contact>> GetContactWithContactID(int ContactID);
-       Task<ActionResult<List<Contact>>> GetContactList();
-       Task<ActionResult<Contact>> Add(Contact contact, AddContactTypeEnum addContactType);
        Task<ActionResult<bool>> Delete(int ContactID);
-       Task<ActionResult<Contact>> Update(Contact contact);
+       Task<ActionResult<List<Contact>>> GetContactList();
+       Task<ActionResult<Contact>> GetContactWithContactID(int ContactID);
+       Task<ActionResult<Contact>> Post(Contact contact, AddContactTypeEnum addContactType);
+       Task<ActionResult<Contact>> Put(Contact contact);
     }
     public partial class ContactService : ControllerBase, IContactService
     {
@@ -36,14 +37,16 @@ namespace CSSPServices
         #region Properties
         private CSSPDBContext db { get; }
         private ICultureService CultureService { get; }
+        private ILoggedInService LoggedInService { get; }
         private IEnums enums { get; }
         private IEnumerable<ValidationResult> ValidationResults { get; set; }
         #endregion Properties
 
         #region Constructors
-        public ContactService(ICultureService CultureService, IEnums enums, CSSPDBContext db)
+        public ContactService(ICultureService CultureService, ILoggedInService LoggedInService, IEnums enums, CSSPDBContext db)
         {
             this.CultureService = CultureService;
+            this.LoggedInService = LoggedInService;
             this.enums = enums;
             this.db = db;
         }
@@ -52,6 +55,11 @@ namespace CSSPServices
         #region Functions public 
         public async Task<ActionResult<Contact>> GetContactWithContactID(int ContactID)
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             Contact contact = (from c in db.Contacts.AsNoTracking()
                     where c.ContactID == ContactID
                     select c).FirstOrDefault();
@@ -65,32 +73,22 @@ namespace CSSPServices
         }
         public async Task<ActionResult<List<Contact>>> GetContactList()
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             List<Contact> contactList = (from c in db.Contacts.AsNoTracking() select c).Take(100).ToList();
 
             return await Task.FromResult(Ok(contactList));
         }
-        public async Task<ActionResult<Contact>> Add(Contact contact, AddContactTypeEnum addContactType)
-        {
-            ValidationResults = Validate(new ValidationContext(contact), ActionDBTypeEnum.Create, addContactType);
-            if (ValidationResults.Count() > 0)
-            {
-               return await Task.FromResult(BadRequest(ValidationResults));
-            }
-
-            try
-            {
-               db.Contacts.Add(contact);
-               db.SaveChanges();
-            }
-            catch (DbUpdateException ex)
-            {
-               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
-            }
-
-            return await Task.FromResult(Ok(contact));
-        }
         public async Task<ActionResult<bool>> Delete(int ContactID)
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             Contact contact = (from c in db.Contacts
                                where c.ContactID == ContactID
                                select c).FirstOrDefault();
@@ -112,8 +110,38 @@ namespace CSSPServices
 
             return await Task.FromResult(Ok(true));
         }
-        public async Task<ActionResult<Contact>> Update(Contact contact)
+        public async Task<ActionResult<Contact>> Post(Contact contact, AddContactTypeEnum addContactType)
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
+            ValidationResults = Validate(new ValidationContext(contact), ActionDBTypeEnum.Create, addContactType);
+            if (ValidationResults.Count() > 0)
+            {
+               return await Task.FromResult(BadRequest(ValidationResults));
+            }
+
+            try
+            {
+               db.Contacts.Add(contact);
+               db.SaveChanges();
+            }
+            catch (DbUpdateException ex)
+            {
+               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+            }
+
+            return await Task.FromResult(Ok(contact));
+        }
+        public async Task<ActionResult<Contact>> Put(Contact contact)
+        {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             ValidationResults = Validate(new ValidationContext(contact), ActionDBTypeEnum.Update, AddContactTypeEnum.LoggedIn);
             if (ValidationResults.Count() > 0)
             {

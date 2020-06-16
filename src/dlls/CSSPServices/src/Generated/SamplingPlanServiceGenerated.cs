@@ -9,6 +9,7 @@ using CSSPEnums;
 using CSSPModels;
 using CultureServices.Resources;
 using CultureServices.Services;
+using LoggedInServices.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -22,11 +23,11 @@ namespace CSSPServices
 {
    public interface ISamplingPlanService
     {
-       Task<ActionResult<SamplingPlan>> GetSamplingPlanWithSamplingPlanID(int SamplingPlanID);
-       Task<ActionResult<List<SamplingPlan>>> GetSamplingPlanList();
-       Task<ActionResult<SamplingPlan>> Add(SamplingPlan samplingplan);
        Task<ActionResult<bool>> Delete(int SamplingPlanID);
-       Task<ActionResult<SamplingPlan>> Update(SamplingPlan samplingplan);
+       Task<ActionResult<List<SamplingPlan>>> GetSamplingPlanList();
+       Task<ActionResult<SamplingPlan>> GetSamplingPlanWithSamplingPlanID(int SamplingPlanID);
+       Task<ActionResult<SamplingPlan>> Post(SamplingPlan samplingplan);
+       Task<ActionResult<SamplingPlan>> Put(SamplingPlan samplingplan);
     }
     public partial class SamplingPlanService : ControllerBase, ISamplingPlanService
     {
@@ -36,14 +37,16 @@ namespace CSSPServices
         #region Properties
         private CSSPDBContext db { get; }
         private ICultureService CultureService { get; }
+        private ILoggedInService LoggedInService { get; }
         private IEnums enums { get; }
         private IEnumerable<ValidationResult> ValidationResults { get; set; }
         #endregion Properties
 
         #region Constructors
-        public SamplingPlanService(ICultureService CultureService, IEnums enums, CSSPDBContext db)
+        public SamplingPlanService(ICultureService CultureService, ILoggedInService LoggedInService, IEnums enums, CSSPDBContext db)
         {
             this.CultureService = CultureService;
+            this.LoggedInService = LoggedInService;
             this.enums = enums;
             this.db = db;
         }
@@ -52,6 +55,11 @@ namespace CSSPServices
         #region Functions public 
         public async Task<ActionResult<SamplingPlan>> GetSamplingPlanWithSamplingPlanID(int SamplingPlanID)
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             SamplingPlan samplingplan = (from c in db.SamplingPlans.AsNoTracking()
                     where c.SamplingPlanID == SamplingPlanID
                     select c).FirstOrDefault();
@@ -65,32 +73,22 @@ namespace CSSPServices
         }
         public async Task<ActionResult<List<SamplingPlan>>> GetSamplingPlanList()
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             List<SamplingPlan> samplingplanList = (from c in db.SamplingPlans.AsNoTracking() select c).Take(100).ToList();
 
             return await Task.FromResult(Ok(samplingplanList));
         }
-        public async Task<ActionResult<SamplingPlan>> Add(SamplingPlan samplingPlan)
-        {
-            ValidationResults = Validate(new ValidationContext(samplingPlan), ActionDBTypeEnum.Create);
-            if (ValidationResults.Count() > 0)
-            {
-               return await Task.FromResult(BadRequest(ValidationResults));
-            }
-
-            try
-            {
-               db.SamplingPlans.Add(samplingPlan);
-               db.SaveChanges();
-            }
-            catch (DbUpdateException ex)
-            {
-               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
-            }
-
-            return await Task.FromResult(Ok(samplingPlan));
-        }
         public async Task<ActionResult<bool>> Delete(int SamplingPlanID)
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             SamplingPlan samplingPlan = (from c in db.SamplingPlans
                                where c.SamplingPlanID == SamplingPlanID
                                select c).FirstOrDefault();
@@ -112,8 +110,38 @@ namespace CSSPServices
 
             return await Task.FromResult(Ok(true));
         }
-        public async Task<ActionResult<SamplingPlan>> Update(SamplingPlan samplingPlan)
+        public async Task<ActionResult<SamplingPlan>> Post(SamplingPlan samplingPlan)
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
+            ValidationResults = Validate(new ValidationContext(samplingPlan), ActionDBTypeEnum.Create);
+            if (ValidationResults.Count() > 0)
+            {
+               return await Task.FromResult(BadRequest(ValidationResults));
+            }
+
+            try
+            {
+               db.SamplingPlans.Add(samplingPlan);
+               db.SaveChanges();
+            }
+            catch (DbUpdateException ex)
+            {
+               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+            }
+
+            return await Task.FromResult(Ok(samplingPlan));
+        }
+        public async Task<ActionResult<SamplingPlan>> Put(SamplingPlan samplingPlan)
+        {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             ValidationResults = Validate(new ValidationContext(samplingPlan), ActionDBTypeEnum.Update);
             if (ValidationResults.Count() > 0)
             {

@@ -6,6 +6,7 @@
 
 using CSSPModels;
 using CSSPServices;
+using CultureServices.Services;
 using LoggedInServices.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -18,8 +19,8 @@ namespace CSSPWebAPI.Controllers
     {
         Task<ActionResult<List<VPAmbient>>> Get();
         Task<ActionResult<VPAmbient>> Get(int VPAmbientID);
-        Task<ActionResult<VPAmbient>> Post(VPAmbient vpAmbient);
-        Task<ActionResult<VPAmbient>> Put(VPAmbient vpAmbient);
+        Task<ActionResult<VPAmbient>> Post(VPAmbient VPAmbient);
+        Task<ActionResult<VPAmbient>> Put(VPAmbient VPAmbient);
         Task<ActionResult<bool>> Delete(int VPAmbientID);
     }
 
@@ -32,17 +33,17 @@ namespace CSSPWebAPI.Controllers
         #endregion Variables
 
         #region Properties
-        private IVPAmbientService vpAmbientService { get; }
-        private CSSPDBContext db { get; }
-        private ILoggedInService loggedInService { get; }
+        private ICultureService CultureService { get; }
+        private ILoggedInService LoggedInService { get; }
+        private IVPAmbientService VPAmbientService { get; }
         #endregion Properties
 
         #region Constructors
-        public VPAmbientController(IVPAmbientService vpAmbientService, CSSPDBContext db, ILoggedInService loggedInService)
+        public VPAmbientController(ICultureService CultureService, ILoggedInService LoggedInService, IVPAmbientService VPAmbientService)
         {
-            this.vpAmbientService = vpAmbientService;
-            this.db = db;
-            this.loggedInService = loggedInService;
+            this.CultureService = CultureService;
+            this.LoggedInService = LoggedInService;
+            this.VPAmbientService = VPAmbientService;
         }
         #endregion Constructors
 
@@ -50,27 +51,42 @@ namespace CSSPWebAPI.Controllers
         [HttpGet]
         public async Task<ActionResult<List<VPAmbient>>> Get()
         {
-            return await vpAmbientService.GetVPAmbientList();
+            CultureService.SetCulture((string)RouteData.Values["culture"]);
+            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+
+            return await VPAmbientService.GetVPAmbientList();
         }
         [HttpGet("{VPAmbientID}")]
         public async Task<ActionResult<VPAmbient>> Get(int VPAmbientID)
         {
-            return await vpAmbientService.GetVPAmbientWithVPAmbientID(VPAmbientID);
+            CultureService.SetCulture((string)RouteData.Values["culture"]);
+            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+
+            return await VPAmbientService.GetVPAmbientWithVPAmbientID(VPAmbientID);
         }
         [HttpPost]
-        public async Task<ActionResult<VPAmbient>> Post(VPAmbient vpAmbient)
+        public async Task<ActionResult<VPAmbient>> Post(VPAmbient VPAmbient)
         {
-            return await vpAmbientService.Add(vpAmbient);
+            CultureService.SetCulture((string)RouteData.Values["culture"]);
+            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+
+            return await VPAmbientService.Post(VPAmbient);
         }
         [HttpPut]
-        public async Task<ActionResult<VPAmbient>> Put(VPAmbient vpAmbient)
+        public async Task<ActionResult<VPAmbient>> Put(VPAmbient VPAmbient)
         {
-            return await vpAmbientService.Update(vpAmbient);
+            CultureService.SetCulture((string)RouteData.Values["culture"]);
+            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+
+            return await VPAmbientService.Put(VPAmbient);
         }
         [HttpDelete("{VPAmbientID}")]
         public async Task<ActionResult<bool>> Delete(int VPAmbientID)
         {
-            return await vpAmbientService.Delete(VPAmbientID);
+            CultureService.SetCulture((string)RouteData.Values["culture"]);
+            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+
+            return await VPAmbientService.Delete(VPAmbientID);
         }
         #endregion Functions public
 

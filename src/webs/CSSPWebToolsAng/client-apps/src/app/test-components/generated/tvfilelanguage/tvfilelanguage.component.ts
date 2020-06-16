@@ -77,37 +77,37 @@ export class TVFileLanguageComponent implements OnInit, OnDestroy {
             {
               value: (AddOrUpdate === 'Add' ? 0 : (this.tvfilelanguageService.tvfilelanguageList[0]?.TVFileLanguageID)),
               disabled: false
-            }],
+            }, [ Validators.required ]],
           TVFileID: [
             {
               value: this.tvfilelanguageService.tvfilelanguageList[0]?.TVFileID,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           Language: [
             {
               value: this.tvfilelanguageService.tvfilelanguageList[0]?.Language,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           FileDescription: [
             {
               value: this.tvfilelanguageService.tvfilelanguageList[0]?.FileDescription,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           TranslationStatus: [
             {
               value: this.tvfilelanguageService.tvfilelanguageList[0]?.TranslationStatus,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           LastUpdateDate_UTC: [
             {
               value: this.tvfilelanguageService.tvfilelanguageList[0]?.LastUpdateDate_UTC,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           LastUpdateContactTVItemID: [
             {
               value: this.tvfilelanguageService.tvfilelanguageList[0]?.LastUpdateContactTVItemID,
               disabled: false
-            }],
+            }, [ Validators.required ]],
         }
       );
 

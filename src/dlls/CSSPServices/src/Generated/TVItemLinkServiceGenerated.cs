@@ -9,6 +9,7 @@ using CSSPEnums;
 using CSSPModels;
 using CultureServices.Resources;
 using CultureServices.Services;
+using LoggedInServices.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -22,11 +23,11 @@ namespace CSSPServices
 {
    public interface ITVItemLinkService
     {
-       Task<ActionResult<TVItemLink>> GetTVItemLinkWithTVItemLinkID(int TVItemLinkID);
-       Task<ActionResult<List<TVItemLink>>> GetTVItemLinkList();
-       Task<ActionResult<TVItemLink>> Add(TVItemLink tvitemlink);
        Task<ActionResult<bool>> Delete(int TVItemLinkID);
-       Task<ActionResult<TVItemLink>> Update(TVItemLink tvitemlink);
+       Task<ActionResult<List<TVItemLink>>> GetTVItemLinkList();
+       Task<ActionResult<TVItemLink>> GetTVItemLinkWithTVItemLinkID(int TVItemLinkID);
+       Task<ActionResult<TVItemLink>> Post(TVItemLink tvitemlink);
+       Task<ActionResult<TVItemLink>> Put(TVItemLink tvitemlink);
     }
     public partial class TVItemLinkService : ControllerBase, ITVItemLinkService
     {
@@ -36,14 +37,16 @@ namespace CSSPServices
         #region Properties
         private CSSPDBContext db { get; }
         private ICultureService CultureService { get; }
+        private ILoggedInService LoggedInService { get; }
         private IEnums enums { get; }
         private IEnumerable<ValidationResult> ValidationResults { get; set; }
         #endregion Properties
 
         #region Constructors
-        public TVItemLinkService(ICultureService CultureService, IEnums enums, CSSPDBContext db)
+        public TVItemLinkService(ICultureService CultureService, ILoggedInService LoggedInService, IEnums enums, CSSPDBContext db)
         {
             this.CultureService = CultureService;
+            this.LoggedInService = LoggedInService;
             this.enums = enums;
             this.db = db;
         }
@@ -52,6 +55,11 @@ namespace CSSPServices
         #region Functions public 
         public async Task<ActionResult<TVItemLink>> GetTVItemLinkWithTVItemLinkID(int TVItemLinkID)
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             TVItemLink tvitemlink = (from c in db.TVItemLinks.AsNoTracking()
                     where c.TVItemLinkID == TVItemLinkID
                     select c).FirstOrDefault();
@@ -65,32 +73,22 @@ namespace CSSPServices
         }
         public async Task<ActionResult<List<TVItemLink>>> GetTVItemLinkList()
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             List<TVItemLink> tvitemlinkList = (from c in db.TVItemLinks.AsNoTracking() select c).Take(100).ToList();
 
             return await Task.FromResult(Ok(tvitemlinkList));
         }
-        public async Task<ActionResult<TVItemLink>> Add(TVItemLink tvItemLink)
-        {
-            ValidationResults = Validate(new ValidationContext(tvItemLink), ActionDBTypeEnum.Create);
-            if (ValidationResults.Count() > 0)
-            {
-               return await Task.FromResult(BadRequest(ValidationResults));
-            }
-
-            try
-            {
-               db.TVItemLinks.Add(tvItemLink);
-               db.SaveChanges();
-            }
-            catch (DbUpdateException ex)
-            {
-               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
-            }
-
-            return await Task.FromResult(Ok(tvItemLink));
-        }
         public async Task<ActionResult<bool>> Delete(int TVItemLinkID)
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             TVItemLink tvItemLink = (from c in db.TVItemLinks
                                where c.TVItemLinkID == TVItemLinkID
                                select c).FirstOrDefault();
@@ -112,8 +110,38 @@ namespace CSSPServices
 
             return await Task.FromResult(Ok(true));
         }
-        public async Task<ActionResult<TVItemLink>> Update(TVItemLink tvItemLink)
+        public async Task<ActionResult<TVItemLink>> Post(TVItemLink tvItemLink)
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
+            ValidationResults = Validate(new ValidationContext(tvItemLink), ActionDBTypeEnum.Create);
+            if (ValidationResults.Count() > 0)
+            {
+               return await Task.FromResult(BadRequest(ValidationResults));
+            }
+
+            try
+            {
+               db.TVItemLinks.Add(tvItemLink);
+               db.SaveChanges();
+            }
+            catch (DbUpdateException ex)
+            {
+               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+            }
+
+            return await Task.FromResult(Ok(tvItemLink));
+        }
+        public async Task<ActionResult<TVItemLink>> Put(TVItemLink tvItemLink)
+        {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             ValidationResults = Validate(new ValidationContext(tvItemLink), ActionDBTypeEnum.Update);
             if (ValidationResults.Count() > 0)
             {

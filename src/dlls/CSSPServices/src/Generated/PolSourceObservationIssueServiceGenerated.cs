@@ -9,6 +9,7 @@ using CSSPEnums;
 using CSSPModels;
 using CultureServices.Resources;
 using CultureServices.Services;
+using LoggedInServices.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -22,11 +23,11 @@ namespace CSSPServices
 {
    public interface IPolSourceObservationIssueService
     {
-       Task<ActionResult<PolSourceObservationIssue>> GetPolSourceObservationIssueWithPolSourceObservationIssueID(int PolSourceObservationIssueID);
-       Task<ActionResult<List<PolSourceObservationIssue>>> GetPolSourceObservationIssueList();
-       Task<ActionResult<PolSourceObservationIssue>> Add(PolSourceObservationIssue polsourceobservationissue);
        Task<ActionResult<bool>> Delete(int PolSourceObservationIssueID);
-       Task<ActionResult<PolSourceObservationIssue>> Update(PolSourceObservationIssue polsourceobservationissue);
+       Task<ActionResult<List<PolSourceObservationIssue>>> GetPolSourceObservationIssueList();
+       Task<ActionResult<PolSourceObservationIssue>> GetPolSourceObservationIssueWithPolSourceObservationIssueID(int PolSourceObservationIssueID);
+       Task<ActionResult<PolSourceObservationIssue>> Post(PolSourceObservationIssue polsourceobservationissue);
+       Task<ActionResult<PolSourceObservationIssue>> Put(PolSourceObservationIssue polsourceobservationissue);
     }
     public partial class PolSourceObservationIssueService : ControllerBase, IPolSourceObservationIssueService
     {
@@ -36,14 +37,16 @@ namespace CSSPServices
         #region Properties
         private CSSPDBContext db { get; }
         private ICultureService CultureService { get; }
+        private ILoggedInService LoggedInService { get; }
         private IEnums enums { get; }
         private IEnumerable<ValidationResult> ValidationResults { get; set; }
         #endregion Properties
 
         #region Constructors
-        public PolSourceObservationIssueService(ICultureService CultureService, IEnums enums, CSSPDBContext db)
+        public PolSourceObservationIssueService(ICultureService CultureService, ILoggedInService LoggedInService, IEnums enums, CSSPDBContext db)
         {
             this.CultureService = CultureService;
+            this.LoggedInService = LoggedInService;
             this.enums = enums;
             this.db = db;
         }
@@ -52,6 +55,11 @@ namespace CSSPServices
         #region Functions public 
         public async Task<ActionResult<PolSourceObservationIssue>> GetPolSourceObservationIssueWithPolSourceObservationIssueID(int PolSourceObservationIssueID)
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             PolSourceObservationIssue polsourceobservationissue = (from c in db.PolSourceObservationIssues.AsNoTracking()
                     where c.PolSourceObservationIssueID == PolSourceObservationIssueID
                     select c).FirstOrDefault();
@@ -65,32 +73,22 @@ namespace CSSPServices
         }
         public async Task<ActionResult<List<PolSourceObservationIssue>>> GetPolSourceObservationIssueList()
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             List<PolSourceObservationIssue> polsourceobservationissueList = (from c in db.PolSourceObservationIssues.AsNoTracking() select c).Take(100).ToList();
 
             return await Task.FromResult(Ok(polsourceobservationissueList));
         }
-        public async Task<ActionResult<PolSourceObservationIssue>> Add(PolSourceObservationIssue polSourceObservationIssue)
-        {
-            ValidationResults = Validate(new ValidationContext(polSourceObservationIssue), ActionDBTypeEnum.Create);
-            if (ValidationResults.Count() > 0)
-            {
-               return await Task.FromResult(BadRequest(ValidationResults));
-            }
-
-            try
-            {
-               db.PolSourceObservationIssues.Add(polSourceObservationIssue);
-               db.SaveChanges();
-            }
-            catch (DbUpdateException ex)
-            {
-               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
-            }
-
-            return await Task.FromResult(Ok(polSourceObservationIssue));
-        }
         public async Task<ActionResult<bool>> Delete(int PolSourceObservationIssueID)
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             PolSourceObservationIssue polSourceObservationIssue = (from c in db.PolSourceObservationIssues
                                where c.PolSourceObservationIssueID == PolSourceObservationIssueID
                                select c).FirstOrDefault();
@@ -112,8 +110,38 @@ namespace CSSPServices
 
             return await Task.FromResult(Ok(true));
         }
-        public async Task<ActionResult<PolSourceObservationIssue>> Update(PolSourceObservationIssue polSourceObservationIssue)
+        public async Task<ActionResult<PolSourceObservationIssue>> Post(PolSourceObservationIssue polSourceObservationIssue)
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
+            ValidationResults = Validate(new ValidationContext(polSourceObservationIssue), ActionDBTypeEnum.Create);
+            if (ValidationResults.Count() > 0)
+            {
+               return await Task.FromResult(BadRequest(ValidationResults));
+            }
+
+            try
+            {
+               db.PolSourceObservationIssues.Add(polSourceObservationIssue);
+               db.SaveChanges();
+            }
+            catch (DbUpdateException ex)
+            {
+               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+            }
+
+            return await Task.FromResult(Ok(polSourceObservationIssue));
+        }
+        public async Task<ActionResult<PolSourceObservationIssue>> Put(PolSourceObservationIssue polSourceObservationIssue)
+        {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             ValidationResults = Validate(new ValidationContext(polSourceObservationIssue), ActionDBTypeEnum.Update);
             if (ValidationResults.Count() > 0)
             {

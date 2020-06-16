@@ -11,6 +11,7 @@ namespace GenerateCodeBaseServices.Services
                 || type.Name.StartsWith("Application")
                 || type.Name.StartsWith("CSSPDBContext")
                 || type.Name.StartsWith("TestDBContext")
+                || type.Name.StartsWith("InMemoryDBContext")
                 || type.Name.StartsWith("CSSPAfter")
                 || type.Name.StartsWith("CSSPAllowNull")
                 || type.Name.StartsWith("CSSPBigger")

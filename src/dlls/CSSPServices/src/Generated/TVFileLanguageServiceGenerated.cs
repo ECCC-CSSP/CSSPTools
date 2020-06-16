@@ -9,6 +9,7 @@ using CSSPEnums;
 using CSSPModels;
 using CultureServices.Resources;
 using CultureServices.Services;
+using LoggedInServices.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -22,11 +23,11 @@ namespace CSSPServices
 {
    public interface ITVFileLanguageService
     {
-       Task<ActionResult<TVFileLanguage>> GetTVFileLanguageWithTVFileLanguageID(int TVFileLanguageID);
-       Task<ActionResult<List<TVFileLanguage>>> GetTVFileLanguageList();
-       Task<ActionResult<TVFileLanguage>> Add(TVFileLanguage tvfilelanguage);
        Task<ActionResult<bool>> Delete(int TVFileLanguageID);
-       Task<ActionResult<TVFileLanguage>> Update(TVFileLanguage tvfilelanguage);
+       Task<ActionResult<List<TVFileLanguage>>> GetTVFileLanguageList();
+       Task<ActionResult<TVFileLanguage>> GetTVFileLanguageWithTVFileLanguageID(int TVFileLanguageID);
+       Task<ActionResult<TVFileLanguage>> Post(TVFileLanguage tvfilelanguage);
+       Task<ActionResult<TVFileLanguage>> Put(TVFileLanguage tvfilelanguage);
     }
     public partial class TVFileLanguageService : ControllerBase, ITVFileLanguageService
     {
@@ -36,14 +37,16 @@ namespace CSSPServices
         #region Properties
         private CSSPDBContext db { get; }
         private ICultureService CultureService { get; }
+        private ILoggedInService LoggedInService { get; }
         private IEnums enums { get; }
         private IEnumerable<ValidationResult> ValidationResults { get; set; }
         #endregion Properties
 
         #region Constructors
-        public TVFileLanguageService(ICultureService CultureService, IEnums enums, CSSPDBContext db)
+        public TVFileLanguageService(ICultureService CultureService, ILoggedInService LoggedInService, IEnums enums, CSSPDBContext db)
         {
             this.CultureService = CultureService;
+            this.LoggedInService = LoggedInService;
             this.enums = enums;
             this.db = db;
         }
@@ -52,6 +55,11 @@ namespace CSSPServices
         #region Functions public 
         public async Task<ActionResult<TVFileLanguage>> GetTVFileLanguageWithTVFileLanguageID(int TVFileLanguageID)
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             TVFileLanguage tvfilelanguage = (from c in db.TVFileLanguages.AsNoTracking()
                     where c.TVFileLanguageID == TVFileLanguageID
                     select c).FirstOrDefault();
@@ -65,32 +73,22 @@ namespace CSSPServices
         }
         public async Task<ActionResult<List<TVFileLanguage>>> GetTVFileLanguageList()
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             List<TVFileLanguage> tvfilelanguageList = (from c in db.TVFileLanguages.AsNoTracking() select c).Take(100).ToList();
 
             return await Task.FromResult(Ok(tvfilelanguageList));
         }
-        public async Task<ActionResult<TVFileLanguage>> Add(TVFileLanguage tvFileLanguage)
-        {
-            ValidationResults = Validate(new ValidationContext(tvFileLanguage), ActionDBTypeEnum.Create);
-            if (ValidationResults.Count() > 0)
-            {
-               return await Task.FromResult(BadRequest(ValidationResults));
-            }
-
-            try
-            {
-               db.TVFileLanguages.Add(tvFileLanguage);
-               db.SaveChanges();
-            }
-            catch (DbUpdateException ex)
-            {
-               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
-            }
-
-            return await Task.FromResult(Ok(tvFileLanguage));
-        }
         public async Task<ActionResult<bool>> Delete(int TVFileLanguageID)
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             TVFileLanguage tvFileLanguage = (from c in db.TVFileLanguages
                                where c.TVFileLanguageID == TVFileLanguageID
                                select c).FirstOrDefault();
@@ -112,8 +110,38 @@ namespace CSSPServices
 
             return await Task.FromResult(Ok(true));
         }
-        public async Task<ActionResult<TVFileLanguage>> Update(TVFileLanguage tvFileLanguage)
+        public async Task<ActionResult<TVFileLanguage>> Post(TVFileLanguage tvFileLanguage)
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
+            ValidationResults = Validate(new ValidationContext(tvFileLanguage), ActionDBTypeEnum.Create);
+            if (ValidationResults.Count() > 0)
+            {
+               return await Task.FromResult(BadRequest(ValidationResults));
+            }
+
+            try
+            {
+               db.TVFileLanguages.Add(tvFileLanguage);
+               db.SaveChanges();
+            }
+            catch (DbUpdateException ex)
+            {
+               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+            }
+
+            return await Task.FromResult(Ok(tvFileLanguage));
+        }
+        public async Task<ActionResult<TVFileLanguage>> Put(TVFileLanguage tvFileLanguage)
+        {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             ValidationResults = Validate(new ValidationContext(tvFileLanguage), ActionDBTypeEnum.Update);
             if (ValidationResults.Count() > 0)
             {

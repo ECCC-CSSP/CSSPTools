@@ -9,6 +9,7 @@ using CSSPEnums;
 using CSSPModels;
 using CultureServices.Resources;
 using CultureServices.Services;
+using LoggedInServices.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -22,11 +23,11 @@ namespace CSSPServices
 {
    public interface IBoxModelLanguageService
     {
-       Task<ActionResult<BoxModelLanguage>> GetBoxModelLanguageWithBoxModelLanguageID(int BoxModelLanguageID);
-       Task<ActionResult<List<BoxModelLanguage>>> GetBoxModelLanguageList();
-       Task<ActionResult<BoxModelLanguage>> Add(BoxModelLanguage boxmodellanguage);
        Task<ActionResult<bool>> Delete(int BoxModelLanguageID);
-       Task<ActionResult<BoxModelLanguage>> Update(BoxModelLanguage boxmodellanguage);
+       Task<ActionResult<List<BoxModelLanguage>>> GetBoxModelLanguageList();
+       Task<ActionResult<BoxModelLanguage>> GetBoxModelLanguageWithBoxModelLanguageID(int BoxModelLanguageID);
+       Task<ActionResult<BoxModelLanguage>> Post(BoxModelLanguage boxmodellanguage);
+       Task<ActionResult<BoxModelLanguage>> Put(BoxModelLanguage boxmodellanguage);
     }
     public partial class BoxModelLanguageService : ControllerBase, IBoxModelLanguageService
     {
@@ -36,14 +37,16 @@ namespace CSSPServices
         #region Properties
         private CSSPDBContext db { get; }
         private ICultureService CultureService { get; }
+        private ILoggedInService LoggedInService { get; }
         private IEnums enums { get; }
         private IEnumerable<ValidationResult> ValidationResults { get; set; }
         #endregion Properties
 
         #region Constructors
-        public BoxModelLanguageService(ICultureService CultureService, IEnums enums, CSSPDBContext db)
+        public BoxModelLanguageService(ICultureService CultureService, ILoggedInService LoggedInService, IEnums enums, CSSPDBContext db)
         {
             this.CultureService = CultureService;
+            this.LoggedInService = LoggedInService;
             this.enums = enums;
             this.db = db;
         }
@@ -52,6 +55,11 @@ namespace CSSPServices
         #region Functions public 
         public async Task<ActionResult<BoxModelLanguage>> GetBoxModelLanguageWithBoxModelLanguageID(int BoxModelLanguageID)
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             BoxModelLanguage boxmodellanguage = (from c in db.BoxModelLanguages.AsNoTracking()
                     where c.BoxModelLanguageID == BoxModelLanguageID
                     select c).FirstOrDefault();
@@ -65,32 +73,22 @@ namespace CSSPServices
         }
         public async Task<ActionResult<List<BoxModelLanguage>>> GetBoxModelLanguageList()
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             List<BoxModelLanguage> boxmodellanguageList = (from c in db.BoxModelLanguages.AsNoTracking() select c).Take(100).ToList();
 
             return await Task.FromResult(Ok(boxmodellanguageList));
         }
-        public async Task<ActionResult<BoxModelLanguage>> Add(BoxModelLanguage boxModelLanguage)
-        {
-            ValidationResults = Validate(new ValidationContext(boxModelLanguage), ActionDBTypeEnum.Create);
-            if (ValidationResults.Count() > 0)
-            {
-               return await Task.FromResult(BadRequest(ValidationResults));
-            }
-
-            try
-            {
-               db.BoxModelLanguages.Add(boxModelLanguage);
-               db.SaveChanges();
-            }
-            catch (DbUpdateException ex)
-            {
-               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
-            }
-
-            return await Task.FromResult(Ok(boxModelLanguage));
-        }
         public async Task<ActionResult<bool>> Delete(int BoxModelLanguageID)
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             BoxModelLanguage boxModelLanguage = (from c in db.BoxModelLanguages
                                where c.BoxModelLanguageID == BoxModelLanguageID
                                select c).FirstOrDefault();
@@ -112,8 +110,38 @@ namespace CSSPServices
 
             return await Task.FromResult(Ok(true));
         }
-        public async Task<ActionResult<BoxModelLanguage>> Update(BoxModelLanguage boxModelLanguage)
+        public async Task<ActionResult<BoxModelLanguage>> Post(BoxModelLanguage boxModelLanguage)
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
+            ValidationResults = Validate(new ValidationContext(boxModelLanguage), ActionDBTypeEnum.Create);
+            if (ValidationResults.Count() > 0)
+            {
+               return await Task.FromResult(BadRequest(ValidationResults));
+            }
+
+            try
+            {
+               db.BoxModelLanguages.Add(boxModelLanguage);
+               db.SaveChanges();
+            }
+            catch (DbUpdateException ex)
+            {
+               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+            }
+
+            return await Task.FromResult(Ok(boxModelLanguage));
+        }
+        public async Task<ActionResult<BoxModelLanguage>> Put(BoxModelLanguage boxModelLanguage)
+        {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             ValidationResults = Validate(new ValidationContext(boxModelLanguage), ActionDBTypeEnum.Update);
             if (ValidationResults.Count() > 0)
             {

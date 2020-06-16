@@ -6,6 +6,7 @@
 
 using CSSPModels;
 using CSSPServices;
+using CultureServices.Services;
 using LoggedInServices.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -18,8 +19,8 @@ namespace CSSPWebAPI.Controllers
     {
         Task<ActionResult<List<AppTaskLanguage>>> Get();
         Task<ActionResult<AppTaskLanguage>> Get(int AppTaskLanguageID);
-        Task<ActionResult<AppTaskLanguage>> Post(AppTaskLanguage appTaskLanguage);
-        Task<ActionResult<AppTaskLanguage>> Put(AppTaskLanguage appTaskLanguage);
+        Task<ActionResult<AppTaskLanguage>> Post(AppTaskLanguage AppTaskLanguage);
+        Task<ActionResult<AppTaskLanguage>> Put(AppTaskLanguage AppTaskLanguage);
         Task<ActionResult<bool>> Delete(int AppTaskLanguageID);
     }
 
@@ -32,17 +33,17 @@ namespace CSSPWebAPI.Controllers
         #endregion Variables
 
         #region Properties
-        private IAppTaskLanguageService appTaskLanguageService { get; }
-        private CSSPDBContext db { get; }
-        private ILoggedInService loggedInService { get; }
+        private ICultureService CultureService { get; }
+        private ILoggedInService LoggedInService { get; }
+        private IAppTaskLanguageService AppTaskLanguageService { get; }
         #endregion Properties
 
         #region Constructors
-        public AppTaskLanguageController(IAppTaskLanguageService appTaskLanguageService, CSSPDBContext db, ILoggedInService loggedInService)
+        public AppTaskLanguageController(ICultureService CultureService, ILoggedInService LoggedInService, IAppTaskLanguageService AppTaskLanguageService)
         {
-            this.appTaskLanguageService = appTaskLanguageService;
-            this.db = db;
-            this.loggedInService = loggedInService;
+            this.CultureService = CultureService;
+            this.LoggedInService = LoggedInService;
+            this.AppTaskLanguageService = AppTaskLanguageService;
         }
         #endregion Constructors
 
@@ -50,27 +51,42 @@ namespace CSSPWebAPI.Controllers
         [HttpGet]
         public async Task<ActionResult<List<AppTaskLanguage>>> Get()
         {
-            return await appTaskLanguageService.GetAppTaskLanguageList();
+            CultureService.SetCulture((string)RouteData.Values["culture"]);
+            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+
+            return await AppTaskLanguageService.GetAppTaskLanguageList();
         }
         [HttpGet("{AppTaskLanguageID}")]
         public async Task<ActionResult<AppTaskLanguage>> Get(int AppTaskLanguageID)
         {
-            return await appTaskLanguageService.GetAppTaskLanguageWithAppTaskLanguageID(AppTaskLanguageID);
+            CultureService.SetCulture((string)RouteData.Values["culture"]);
+            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+
+            return await AppTaskLanguageService.GetAppTaskLanguageWithAppTaskLanguageID(AppTaskLanguageID);
         }
         [HttpPost]
-        public async Task<ActionResult<AppTaskLanguage>> Post(AppTaskLanguage appTaskLanguage)
+        public async Task<ActionResult<AppTaskLanguage>> Post(AppTaskLanguage AppTaskLanguage)
         {
-            return await appTaskLanguageService.Add(appTaskLanguage);
+            CultureService.SetCulture((string)RouteData.Values["culture"]);
+            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+
+            return await AppTaskLanguageService.Post(AppTaskLanguage);
         }
         [HttpPut]
-        public async Task<ActionResult<AppTaskLanguage>> Put(AppTaskLanguage appTaskLanguage)
+        public async Task<ActionResult<AppTaskLanguage>> Put(AppTaskLanguage AppTaskLanguage)
         {
-            return await appTaskLanguageService.Update(appTaskLanguage);
+            CultureService.SetCulture((string)RouteData.Values["culture"]);
+            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+
+            return await AppTaskLanguageService.Put(AppTaskLanguage);
         }
         [HttpDelete("{AppTaskLanguageID}")]
         public async Task<ActionResult<bool>> Delete(int AppTaskLanguageID)
         {
-            return await appTaskLanguageService.Delete(AppTaskLanguageID);
+            CultureService.SetCulture((string)RouteData.Values["culture"]);
+            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+
+            return await AppTaskLanguageService.Delete(AppTaskLanguageID);
         }
         #endregion Functions public
 

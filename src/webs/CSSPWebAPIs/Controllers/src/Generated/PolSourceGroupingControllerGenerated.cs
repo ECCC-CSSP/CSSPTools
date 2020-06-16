@@ -6,6 +6,7 @@
 
 using CSSPModels;
 using CSSPServices;
+using CultureServices.Services;
 using LoggedInServices.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -18,8 +19,8 @@ namespace CSSPWebAPI.Controllers
     {
         Task<ActionResult<List<PolSourceGrouping>>> Get();
         Task<ActionResult<PolSourceGrouping>> Get(int PolSourceGroupingID);
-        Task<ActionResult<PolSourceGrouping>> Post(PolSourceGrouping polSourceGrouping);
-        Task<ActionResult<PolSourceGrouping>> Put(PolSourceGrouping polSourceGrouping);
+        Task<ActionResult<PolSourceGrouping>> Post(PolSourceGrouping PolSourceGrouping);
+        Task<ActionResult<PolSourceGrouping>> Put(PolSourceGrouping PolSourceGrouping);
         Task<ActionResult<bool>> Delete(int PolSourceGroupingID);
     }
 
@@ -32,17 +33,17 @@ namespace CSSPWebAPI.Controllers
         #endregion Variables
 
         #region Properties
-        private IPolSourceGroupingService polSourceGroupingService { get; }
-        private CSSPDBContext db { get; }
-        private ILoggedInService loggedInService { get; }
+        private ICultureService CultureService { get; }
+        private ILoggedInService LoggedInService { get; }
+        private IPolSourceGroupingService PolSourceGroupingService { get; }
         #endregion Properties
 
         #region Constructors
-        public PolSourceGroupingController(IPolSourceGroupingService polSourceGroupingService, CSSPDBContext db, ILoggedInService loggedInService)
+        public PolSourceGroupingController(ICultureService CultureService, ILoggedInService LoggedInService, IPolSourceGroupingService PolSourceGroupingService)
         {
-            this.polSourceGroupingService = polSourceGroupingService;
-            this.db = db;
-            this.loggedInService = loggedInService;
+            this.CultureService = CultureService;
+            this.LoggedInService = LoggedInService;
+            this.PolSourceGroupingService = PolSourceGroupingService;
         }
         #endregion Constructors
 
@@ -50,27 +51,42 @@ namespace CSSPWebAPI.Controllers
         [HttpGet]
         public async Task<ActionResult<List<PolSourceGrouping>>> Get()
         {
-            return await polSourceGroupingService.GetPolSourceGroupingList();
+            CultureService.SetCulture((string)RouteData.Values["culture"]);
+            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+
+            return await PolSourceGroupingService.GetPolSourceGroupingList();
         }
         [HttpGet("{PolSourceGroupingID}")]
         public async Task<ActionResult<PolSourceGrouping>> Get(int PolSourceGroupingID)
         {
-            return await polSourceGroupingService.GetPolSourceGroupingWithPolSourceGroupingID(PolSourceGroupingID);
+            CultureService.SetCulture((string)RouteData.Values["culture"]);
+            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+
+            return await PolSourceGroupingService.GetPolSourceGroupingWithPolSourceGroupingID(PolSourceGroupingID);
         }
         [HttpPost]
-        public async Task<ActionResult<PolSourceGrouping>> Post(PolSourceGrouping polSourceGrouping)
+        public async Task<ActionResult<PolSourceGrouping>> Post(PolSourceGrouping PolSourceGrouping)
         {
-            return await polSourceGroupingService.Add(polSourceGrouping);
+            CultureService.SetCulture((string)RouteData.Values["culture"]);
+            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+
+            return await PolSourceGroupingService.Post(PolSourceGrouping);
         }
         [HttpPut]
-        public async Task<ActionResult<PolSourceGrouping>> Put(PolSourceGrouping polSourceGrouping)
+        public async Task<ActionResult<PolSourceGrouping>> Put(PolSourceGrouping PolSourceGrouping)
         {
-            return await polSourceGroupingService.Update(polSourceGrouping);
+            CultureService.SetCulture((string)RouteData.Values["culture"]);
+            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+
+            return await PolSourceGroupingService.Put(PolSourceGrouping);
         }
         [HttpDelete("{PolSourceGroupingID}")]
         public async Task<ActionResult<bool>> Delete(int PolSourceGroupingID)
         {
-            return await polSourceGroupingService.Delete(PolSourceGroupingID);
+            CultureService.SetCulture((string)RouteData.Values["culture"]);
+            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+
+            return await PolSourceGroupingService.Delete(PolSourceGroupingID);
         }
         #endregion Functions public
 

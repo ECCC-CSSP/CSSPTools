@@ -9,6 +9,7 @@ using CSSPEnums;
 using CSSPModels;
 using CultureServices.Resources;
 using CultureServices.Services;
+using LoggedInServices.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -22,11 +23,11 @@ namespace CSSPServices
 {
    public interface IMWQMSubsectorLanguageService
     {
-       Task<ActionResult<MWQMSubsectorLanguage>> GetMWQMSubsectorLanguageWithMWQMSubsectorLanguageID(int MWQMSubsectorLanguageID);
-       Task<ActionResult<List<MWQMSubsectorLanguage>>> GetMWQMSubsectorLanguageList();
-       Task<ActionResult<MWQMSubsectorLanguage>> Add(MWQMSubsectorLanguage mwqmsubsectorlanguage);
        Task<ActionResult<bool>> Delete(int MWQMSubsectorLanguageID);
-       Task<ActionResult<MWQMSubsectorLanguage>> Update(MWQMSubsectorLanguage mwqmsubsectorlanguage);
+       Task<ActionResult<List<MWQMSubsectorLanguage>>> GetMWQMSubsectorLanguageList();
+       Task<ActionResult<MWQMSubsectorLanguage>> GetMWQMSubsectorLanguageWithMWQMSubsectorLanguageID(int MWQMSubsectorLanguageID);
+       Task<ActionResult<MWQMSubsectorLanguage>> Post(MWQMSubsectorLanguage mwqmsubsectorlanguage);
+       Task<ActionResult<MWQMSubsectorLanguage>> Put(MWQMSubsectorLanguage mwqmsubsectorlanguage);
     }
     public partial class MWQMSubsectorLanguageService : ControllerBase, IMWQMSubsectorLanguageService
     {
@@ -36,14 +37,16 @@ namespace CSSPServices
         #region Properties
         private CSSPDBContext db { get; }
         private ICultureService CultureService { get; }
+        private ILoggedInService LoggedInService { get; }
         private IEnums enums { get; }
         private IEnumerable<ValidationResult> ValidationResults { get; set; }
         #endregion Properties
 
         #region Constructors
-        public MWQMSubsectorLanguageService(ICultureService CultureService, IEnums enums, CSSPDBContext db)
+        public MWQMSubsectorLanguageService(ICultureService CultureService, ILoggedInService LoggedInService, IEnums enums, CSSPDBContext db)
         {
             this.CultureService = CultureService;
+            this.LoggedInService = LoggedInService;
             this.enums = enums;
             this.db = db;
         }
@@ -52,6 +55,11 @@ namespace CSSPServices
         #region Functions public 
         public async Task<ActionResult<MWQMSubsectorLanguage>> GetMWQMSubsectorLanguageWithMWQMSubsectorLanguageID(int MWQMSubsectorLanguageID)
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             MWQMSubsectorLanguage mwqmsubsectorlanguage = (from c in db.MWQMSubsectorLanguages.AsNoTracking()
                     where c.MWQMSubsectorLanguageID == MWQMSubsectorLanguageID
                     select c).FirstOrDefault();
@@ -65,32 +73,22 @@ namespace CSSPServices
         }
         public async Task<ActionResult<List<MWQMSubsectorLanguage>>> GetMWQMSubsectorLanguageList()
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             List<MWQMSubsectorLanguage> mwqmsubsectorlanguageList = (from c in db.MWQMSubsectorLanguages.AsNoTracking() select c).Take(100).ToList();
 
             return await Task.FromResult(Ok(mwqmsubsectorlanguageList));
         }
-        public async Task<ActionResult<MWQMSubsectorLanguage>> Add(MWQMSubsectorLanguage mwqmSubsectorLanguage)
-        {
-            ValidationResults = Validate(new ValidationContext(mwqmSubsectorLanguage), ActionDBTypeEnum.Create);
-            if (ValidationResults.Count() > 0)
-            {
-               return await Task.FromResult(BadRequest(ValidationResults));
-            }
-
-            try
-            {
-               db.MWQMSubsectorLanguages.Add(mwqmSubsectorLanguage);
-               db.SaveChanges();
-            }
-            catch (DbUpdateException ex)
-            {
-               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
-            }
-
-            return await Task.FromResult(Ok(mwqmSubsectorLanguage));
-        }
         public async Task<ActionResult<bool>> Delete(int MWQMSubsectorLanguageID)
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             MWQMSubsectorLanguage mwqmSubsectorLanguage = (from c in db.MWQMSubsectorLanguages
                                where c.MWQMSubsectorLanguageID == MWQMSubsectorLanguageID
                                select c).FirstOrDefault();
@@ -112,8 +110,38 @@ namespace CSSPServices
 
             return await Task.FromResult(Ok(true));
         }
-        public async Task<ActionResult<MWQMSubsectorLanguage>> Update(MWQMSubsectorLanguage mwqmSubsectorLanguage)
+        public async Task<ActionResult<MWQMSubsectorLanguage>> Post(MWQMSubsectorLanguage mwqmSubsectorLanguage)
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
+            ValidationResults = Validate(new ValidationContext(mwqmSubsectorLanguage), ActionDBTypeEnum.Create);
+            if (ValidationResults.Count() > 0)
+            {
+               return await Task.FromResult(BadRequest(ValidationResults));
+            }
+
+            try
+            {
+               db.MWQMSubsectorLanguages.Add(mwqmSubsectorLanguage);
+               db.SaveChanges();
+            }
+            catch (DbUpdateException ex)
+            {
+               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+            }
+
+            return await Task.FromResult(Ok(mwqmSubsectorLanguage));
+        }
+        public async Task<ActionResult<MWQMSubsectorLanguage>> Put(MWQMSubsectorLanguage mwqmSubsectorLanguage)
+        {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             ValidationResults = Validate(new ValidationContext(mwqmSubsectorLanguage), ActionDBTypeEnum.Update);
             if (ValidationResults.Count() > 0)
             {

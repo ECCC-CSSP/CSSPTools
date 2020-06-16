@@ -32,7 +32,7 @@ namespace CSSPServices.Tests
         private IServiceProvider Provider { get; set; }
         private IServiceCollection Services { get; set; }
         private ICultureService CultureService { get; set; }
-        private ITideLocationService tideLocationService { get; set; }
+        private ITideLocationService TideLocationService { get; set; }
         private CSSPDBContext db { get; set; }
         #endregion Properties
 
@@ -62,7 +62,7 @@ namespace CSSPServices.Tests
                TideLocation tideLocation = GetFilledRandomTideLocation(""); 
 
                // List<TideLocation>
-               var actionTideLocationList = await tideLocationService.GetTideLocationList();
+               var actionTideLocationList = await TideLocationService.GetTideLocationList();
                Assert.Equal(200, ((ObjectResult)actionTideLocationList.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionTideLocationList.Result).Value);
                List<TideLocation> tideLocationList = (List<TideLocation>)((OkObjectResult)actionTideLocationList.Result).Value;
@@ -70,22 +70,22 @@ namespace CSSPServices.Tests
                int count = ((List<TideLocation>)((OkObjectResult)actionTideLocationList.Result).Value).Count();
                 Assert.True(count > 0);
 
-               // Add TideLocation
-               var actionTideLocationAdded = await tideLocationService.Add(tideLocation);
+               // Post TideLocation
+               var actionTideLocationAdded = await TideLocationService.Post(tideLocation);
                Assert.Equal(200, ((ObjectResult)actionTideLocationAdded.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionTideLocationAdded.Result).Value);
                TideLocation tideLocationAdded = (TideLocation)((OkObjectResult)actionTideLocationAdded.Result).Value;
                Assert.NotNull(tideLocationAdded);
 
-               // Update TideLocation
-               var actionTideLocationUpdated = await tideLocationService.Update(tideLocation);
+               // Put TideLocation
+               var actionTideLocationUpdated = await TideLocationService.Put(tideLocation);
                Assert.Equal(200, ((ObjectResult)actionTideLocationUpdated.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionTideLocationUpdated.Result).Value);
                TideLocation tideLocationUpdated = (TideLocation)((OkObjectResult)actionTideLocationUpdated.Result).Value;
                Assert.NotNull(tideLocationUpdated);
 
                // Delete TideLocation
-               var actionTideLocationDeleted = await tideLocationService.Delete(tideLocation.TideLocationID);
+               var actionTideLocationDeleted = await TideLocationService.Delete(tideLocation.TideLocationID);
                Assert.Equal(200, ((ObjectResult)actionTideLocationDeleted.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionTideLocationDeleted.Result).Value);
                bool retBool = (bool)((OkObjectResult)actionTideLocationDeleted.Result).Value;
@@ -126,8 +126,8 @@ namespace CSSPServices.Tests
 
             CultureService.SetCulture(culture);
 
-            tideLocationService = Provider.GetService<ITideLocationService>();
-            Assert.NotNull(tideLocationService);
+            TideLocationService = Provider.GetService<ITideLocationService>();
+            Assert.NotNull(TideLocationService);
 
             return await Task.FromResult(true);
         }

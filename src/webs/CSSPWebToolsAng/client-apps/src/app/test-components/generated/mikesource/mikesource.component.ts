@@ -62,62 +62,62 @@ export class MikeSourceComponent implements OnInit, OnDestroy {
             {
               value: (AddOrUpdate === 'Add' ? 0 : (this.mikesourceService.mikesourceList[0]?.MikeSourceID)),
               disabled: false
-            }],
+            }, [ Validators.required ]],
           MikeSourceTVItemID: [
             {
               value: this.mikesourceService.mikesourceList[0]?.MikeSourceTVItemID,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           IsContinuous: [
             {
               value: this.mikesourceService.mikesourceList[0]?.IsContinuous,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           Include: [
             {
               value: this.mikesourceService.mikesourceList[0]?.Include,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           IsRiver: [
             {
               value: this.mikesourceService.mikesourceList[0]?.IsRiver,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           UseHydrometric: [
             {
               value: this.mikesourceService.mikesourceList[0]?.UseHydrometric,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           HydrometricTVItemID: [
             {
               value: this.mikesourceService.mikesourceList[0]?.HydrometricTVItemID,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           DrainageArea_km2: [
             {
               value: this.mikesourceService.mikesourceList[0]?.DrainageArea_km2,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           Factor: [
             {
               value: this.mikesourceService.mikesourceList[0]?.Factor,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           SourceNumberString: [
             {
               value: this.mikesourceService.mikesourceList[0]?.SourceNumberString,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           LastUpdateDate_UTC: [
             {
               value: this.mikesourceService.mikesourceList[0]?.LastUpdateDate_UTC,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           LastUpdateContactTVItemID: [
             {
               value: this.mikesourceService.mikesourceList[0]?.LastUpdateContactTVItemID,
               disabled: false
-            }],
+            }, [ Validators.required ]],
         }
       );
 

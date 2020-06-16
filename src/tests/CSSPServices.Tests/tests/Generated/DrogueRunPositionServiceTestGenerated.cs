@@ -32,7 +32,7 @@ namespace CSSPServices.Tests
         private IServiceProvider Provider { get; set; }
         private IServiceCollection Services { get; set; }
         private ICultureService CultureService { get; set; }
-        private IDrogueRunPositionService drogueRunPositionService { get; set; }
+        private IDrogueRunPositionService DrogueRunPositionService { get; set; }
         private CSSPDBContext db { get; set; }
         #endregion Properties
 
@@ -62,7 +62,7 @@ namespace CSSPServices.Tests
                DrogueRunPosition drogueRunPosition = GetFilledRandomDrogueRunPosition(""); 
 
                // List<DrogueRunPosition>
-               var actionDrogueRunPositionList = await drogueRunPositionService.GetDrogueRunPositionList();
+               var actionDrogueRunPositionList = await DrogueRunPositionService.GetDrogueRunPositionList();
                Assert.Equal(200, ((ObjectResult)actionDrogueRunPositionList.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionDrogueRunPositionList.Result).Value);
                List<DrogueRunPosition> drogueRunPositionList = (List<DrogueRunPosition>)((OkObjectResult)actionDrogueRunPositionList.Result).Value;
@@ -70,22 +70,22 @@ namespace CSSPServices.Tests
                int count = ((List<DrogueRunPosition>)((OkObjectResult)actionDrogueRunPositionList.Result).Value).Count();
                 Assert.True(count > 0);
 
-               // Add DrogueRunPosition
-               var actionDrogueRunPositionAdded = await drogueRunPositionService.Add(drogueRunPosition);
+               // Post DrogueRunPosition
+               var actionDrogueRunPositionAdded = await DrogueRunPositionService.Post(drogueRunPosition);
                Assert.Equal(200, ((ObjectResult)actionDrogueRunPositionAdded.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionDrogueRunPositionAdded.Result).Value);
                DrogueRunPosition drogueRunPositionAdded = (DrogueRunPosition)((OkObjectResult)actionDrogueRunPositionAdded.Result).Value;
                Assert.NotNull(drogueRunPositionAdded);
 
-               // Update DrogueRunPosition
-               var actionDrogueRunPositionUpdated = await drogueRunPositionService.Update(drogueRunPosition);
+               // Put DrogueRunPosition
+               var actionDrogueRunPositionUpdated = await DrogueRunPositionService.Put(drogueRunPosition);
                Assert.Equal(200, ((ObjectResult)actionDrogueRunPositionUpdated.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionDrogueRunPositionUpdated.Result).Value);
                DrogueRunPosition drogueRunPositionUpdated = (DrogueRunPosition)((OkObjectResult)actionDrogueRunPositionUpdated.Result).Value;
                Assert.NotNull(drogueRunPositionUpdated);
 
                // Delete DrogueRunPosition
-               var actionDrogueRunPositionDeleted = await drogueRunPositionService.Delete(drogueRunPosition.DrogueRunPositionID);
+               var actionDrogueRunPositionDeleted = await DrogueRunPositionService.Delete(drogueRunPosition.DrogueRunPositionID);
                Assert.Equal(200, ((ObjectResult)actionDrogueRunPositionDeleted.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionDrogueRunPositionDeleted.Result).Value);
                bool retBool = (bool)((OkObjectResult)actionDrogueRunPositionDeleted.Result).Value;
@@ -126,8 +126,8 @@ namespace CSSPServices.Tests
 
             CultureService.SetCulture(culture);
 
-            drogueRunPositionService = Provider.GetService<IDrogueRunPositionService>();
-            Assert.NotNull(drogueRunPositionService);
+            DrogueRunPositionService = Provider.GetService<IDrogueRunPositionService>();
+            Assert.NotNull(DrogueRunPositionService);
 
             return await Task.FromResult(true);
         }

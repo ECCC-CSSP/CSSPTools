@@ -32,7 +32,7 @@ namespace CSSPServices.Tests
         private IServiceProvider Provider { get; set; }
         private IServiceCollection Services { get; set; }
         private ICultureService CultureService { get; set; }
-        private IMWQMRunLanguageService mwqmRunLanguageService { get; set; }
+        private IMWQMRunLanguageService MWQMRunLanguageService { get; set; }
         private CSSPDBContext db { get; set; }
         #endregion Properties
 
@@ -62,7 +62,7 @@ namespace CSSPServices.Tests
                MWQMRunLanguage mwqmRunLanguage = GetFilledRandomMWQMRunLanguage(""); 
 
                // List<MWQMRunLanguage>
-               var actionMWQMRunLanguageList = await mwqmRunLanguageService.GetMWQMRunLanguageList();
+               var actionMWQMRunLanguageList = await MWQMRunLanguageService.GetMWQMRunLanguageList();
                Assert.Equal(200, ((ObjectResult)actionMWQMRunLanguageList.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionMWQMRunLanguageList.Result).Value);
                List<MWQMRunLanguage> mwqmRunLanguageList = (List<MWQMRunLanguage>)((OkObjectResult)actionMWQMRunLanguageList.Result).Value;
@@ -70,22 +70,22 @@ namespace CSSPServices.Tests
                int count = ((List<MWQMRunLanguage>)((OkObjectResult)actionMWQMRunLanguageList.Result).Value).Count();
                 Assert.True(count > 0);
 
-               // Add MWQMRunLanguage
-               var actionMWQMRunLanguageAdded = await mwqmRunLanguageService.Add(mwqmRunLanguage);
+               // Post MWQMRunLanguage
+               var actionMWQMRunLanguageAdded = await MWQMRunLanguageService.Post(mwqmRunLanguage);
                Assert.Equal(200, ((ObjectResult)actionMWQMRunLanguageAdded.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionMWQMRunLanguageAdded.Result).Value);
                MWQMRunLanguage mwqmRunLanguageAdded = (MWQMRunLanguage)((OkObjectResult)actionMWQMRunLanguageAdded.Result).Value;
                Assert.NotNull(mwqmRunLanguageAdded);
 
-               // Update MWQMRunLanguage
-               var actionMWQMRunLanguageUpdated = await mwqmRunLanguageService.Update(mwqmRunLanguage);
+               // Put MWQMRunLanguage
+               var actionMWQMRunLanguageUpdated = await MWQMRunLanguageService.Put(mwqmRunLanguage);
                Assert.Equal(200, ((ObjectResult)actionMWQMRunLanguageUpdated.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionMWQMRunLanguageUpdated.Result).Value);
                MWQMRunLanguage mwqmRunLanguageUpdated = (MWQMRunLanguage)((OkObjectResult)actionMWQMRunLanguageUpdated.Result).Value;
                Assert.NotNull(mwqmRunLanguageUpdated);
 
                // Delete MWQMRunLanguage
-               var actionMWQMRunLanguageDeleted = await mwqmRunLanguageService.Delete(mwqmRunLanguage.MWQMRunLanguageID);
+               var actionMWQMRunLanguageDeleted = await MWQMRunLanguageService.Delete(mwqmRunLanguage.MWQMRunLanguageID);
                Assert.Equal(200, ((ObjectResult)actionMWQMRunLanguageDeleted.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionMWQMRunLanguageDeleted.Result).Value);
                bool retBool = (bool)((OkObjectResult)actionMWQMRunLanguageDeleted.Result).Value;
@@ -126,8 +126,8 @@ namespace CSSPServices.Tests
 
             CultureService.SetCulture(culture);
 
-            mwqmRunLanguageService = Provider.GetService<IMWQMRunLanguageService>();
-            Assert.NotNull(mwqmRunLanguageService);
+            MWQMRunLanguageService = Provider.GetService<IMWQMRunLanguageService>();
+            Assert.NotNull(MWQMRunLanguageService);
 
             return await Task.FromResult(true);
         }

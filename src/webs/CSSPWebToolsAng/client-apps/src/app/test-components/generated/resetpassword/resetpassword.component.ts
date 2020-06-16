@@ -62,32 +62,32 @@ export class ResetPasswordComponent implements OnInit, OnDestroy {
             {
               value: (AddOrUpdate === 'Add' ? 0 : (this.resetpasswordService.resetpasswordList[0]?.ResetPasswordID)),
               disabled: false
-            }],
+            }, [ Validators.required ]],
           Email: [
             {
               value: this.resetpasswordService.resetpasswordList[0]?.Email,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           ExpireDate_Local: [
             {
               value: this.resetpasswordService.resetpasswordList[0]?.ExpireDate_Local,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           Code: [
             {
               value: this.resetpasswordService.resetpasswordList[0]?.Code,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           LastUpdateDate_UTC: [
             {
               value: this.resetpasswordService.resetpasswordList[0]?.LastUpdateDate_UTC,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           LastUpdateContactTVItemID: [
             {
               value: this.resetpasswordService.resetpasswordList[0]?.LastUpdateContactTVItemID,
               disabled: false
-            }],
+            }, [ Validators.required ]],
         }
       );
 

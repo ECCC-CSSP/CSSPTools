@@ -70,32 +70,32 @@ export class ClassificationComponent implements OnInit, OnDestroy {
             {
               value: (AddOrUpdate === 'Add' ? 0 : (this.classificationService.classificationList[0]?.ClassificationID)),
               disabled: false
-            }],
+            }, [ Validators.required ]],
           ClassificationTVItemID: [
             {
               value: this.classificationService.classificationList[0]?.ClassificationTVItemID,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           ClassificationType: [
             {
               value: this.classificationService.classificationList[0]?.ClassificationType,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           Ordinal: [
             {
               value: this.classificationService.classificationList[0]?.Ordinal,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           LastUpdateDate_UTC: [
             {
               value: this.classificationService.classificationList[0]?.LastUpdateDate_UTC,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           LastUpdateContactTVItemID: [
             {
               value: this.classificationService.classificationList[0]?.LastUpdateContactTVItemID,
               disabled: false
-            }],
+            }, [ Validators.required ]],
         }
       );
 

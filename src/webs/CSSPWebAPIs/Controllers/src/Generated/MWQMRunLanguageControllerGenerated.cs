@@ -6,6 +6,7 @@
 
 using CSSPModels;
 using CSSPServices;
+using CultureServices.Services;
 using LoggedInServices.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -18,8 +19,8 @@ namespace CSSPWebAPI.Controllers
     {
         Task<ActionResult<List<MWQMRunLanguage>>> Get();
         Task<ActionResult<MWQMRunLanguage>> Get(int MWQMRunLanguageID);
-        Task<ActionResult<MWQMRunLanguage>> Post(MWQMRunLanguage mwqmRunLanguage);
-        Task<ActionResult<MWQMRunLanguage>> Put(MWQMRunLanguage mwqmRunLanguage);
+        Task<ActionResult<MWQMRunLanguage>> Post(MWQMRunLanguage MWQMRunLanguage);
+        Task<ActionResult<MWQMRunLanguage>> Put(MWQMRunLanguage MWQMRunLanguage);
         Task<ActionResult<bool>> Delete(int MWQMRunLanguageID);
     }
 
@@ -32,17 +33,17 @@ namespace CSSPWebAPI.Controllers
         #endregion Variables
 
         #region Properties
-        private IMWQMRunLanguageService mwqmRunLanguageService { get; }
-        private CSSPDBContext db { get; }
-        private ILoggedInService loggedInService { get; }
+        private ICultureService CultureService { get; }
+        private ILoggedInService LoggedInService { get; }
+        private IMWQMRunLanguageService MWQMRunLanguageService { get; }
         #endregion Properties
 
         #region Constructors
-        public MWQMRunLanguageController(IMWQMRunLanguageService mwqmRunLanguageService, CSSPDBContext db, ILoggedInService loggedInService)
+        public MWQMRunLanguageController(ICultureService CultureService, ILoggedInService LoggedInService, IMWQMRunLanguageService MWQMRunLanguageService)
         {
-            this.mwqmRunLanguageService = mwqmRunLanguageService;
-            this.db = db;
-            this.loggedInService = loggedInService;
+            this.CultureService = CultureService;
+            this.LoggedInService = LoggedInService;
+            this.MWQMRunLanguageService = MWQMRunLanguageService;
         }
         #endregion Constructors
 
@@ -50,27 +51,42 @@ namespace CSSPWebAPI.Controllers
         [HttpGet]
         public async Task<ActionResult<List<MWQMRunLanguage>>> Get()
         {
-            return await mwqmRunLanguageService.GetMWQMRunLanguageList();
+            CultureService.SetCulture((string)RouteData.Values["culture"]);
+            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+
+            return await MWQMRunLanguageService.GetMWQMRunLanguageList();
         }
         [HttpGet("{MWQMRunLanguageID}")]
         public async Task<ActionResult<MWQMRunLanguage>> Get(int MWQMRunLanguageID)
         {
-            return await mwqmRunLanguageService.GetMWQMRunLanguageWithMWQMRunLanguageID(MWQMRunLanguageID);
+            CultureService.SetCulture((string)RouteData.Values["culture"]);
+            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+
+            return await MWQMRunLanguageService.GetMWQMRunLanguageWithMWQMRunLanguageID(MWQMRunLanguageID);
         }
         [HttpPost]
-        public async Task<ActionResult<MWQMRunLanguage>> Post(MWQMRunLanguage mwqmRunLanguage)
+        public async Task<ActionResult<MWQMRunLanguage>> Post(MWQMRunLanguage MWQMRunLanguage)
         {
-            return await mwqmRunLanguageService.Add(mwqmRunLanguage);
+            CultureService.SetCulture((string)RouteData.Values["culture"]);
+            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+
+            return await MWQMRunLanguageService.Post(MWQMRunLanguage);
         }
         [HttpPut]
-        public async Task<ActionResult<MWQMRunLanguage>> Put(MWQMRunLanguage mwqmRunLanguage)
+        public async Task<ActionResult<MWQMRunLanguage>> Put(MWQMRunLanguage MWQMRunLanguage)
         {
-            return await mwqmRunLanguageService.Update(mwqmRunLanguage);
+            CultureService.SetCulture((string)RouteData.Values["culture"]);
+            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+
+            return await MWQMRunLanguageService.Put(MWQMRunLanguage);
         }
         [HttpDelete("{MWQMRunLanguageID}")]
         public async Task<ActionResult<bool>> Delete(int MWQMRunLanguageID)
         {
-            return await mwqmRunLanguageService.Delete(MWQMRunLanguageID);
+            CultureService.SetCulture((string)RouteData.Values["culture"]);
+            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+
+            return await MWQMRunLanguageService.Delete(MWQMRunLanguageID);
         }
         #endregion Functions public
 

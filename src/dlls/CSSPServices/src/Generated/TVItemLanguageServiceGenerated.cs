@@ -9,6 +9,7 @@ using CSSPEnums;
 using CSSPModels;
 using CultureServices.Resources;
 using CultureServices.Services;
+using LoggedInServices.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -22,11 +23,11 @@ namespace CSSPServices
 {
    public interface ITVItemLanguageService
     {
-       Task<ActionResult<TVItemLanguage>> GetTVItemLanguageWithTVItemLanguageID(int TVItemLanguageID);
-       Task<ActionResult<List<TVItemLanguage>>> GetTVItemLanguageList();
-       Task<ActionResult<TVItemLanguage>> Add(TVItemLanguage tvitemlanguage);
        Task<ActionResult<bool>> Delete(int TVItemLanguageID);
-       Task<ActionResult<TVItemLanguage>> Update(TVItemLanguage tvitemlanguage);
+       Task<ActionResult<List<TVItemLanguage>>> GetTVItemLanguageList();
+       Task<ActionResult<TVItemLanguage>> GetTVItemLanguageWithTVItemLanguageID(int TVItemLanguageID);
+       Task<ActionResult<TVItemLanguage>> Post(TVItemLanguage tvitemlanguage);
+       Task<ActionResult<TVItemLanguage>> Put(TVItemLanguage tvitemlanguage);
     }
     public partial class TVItemLanguageService : ControllerBase, ITVItemLanguageService
     {
@@ -36,14 +37,16 @@ namespace CSSPServices
         #region Properties
         private CSSPDBContext db { get; }
         private ICultureService CultureService { get; }
+        private ILoggedInService LoggedInService { get; }
         private IEnums enums { get; }
         private IEnumerable<ValidationResult> ValidationResults { get; set; }
         #endregion Properties
 
         #region Constructors
-        public TVItemLanguageService(ICultureService CultureService, IEnums enums, CSSPDBContext db)
+        public TVItemLanguageService(ICultureService CultureService, ILoggedInService LoggedInService, IEnums enums, CSSPDBContext db)
         {
             this.CultureService = CultureService;
+            this.LoggedInService = LoggedInService;
             this.enums = enums;
             this.db = db;
         }
@@ -52,6 +55,11 @@ namespace CSSPServices
         #region Functions public 
         public async Task<ActionResult<TVItemLanguage>> GetTVItemLanguageWithTVItemLanguageID(int TVItemLanguageID)
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             TVItemLanguage tvitemlanguage = (from c in db.TVItemLanguages.AsNoTracking()
                     where c.TVItemLanguageID == TVItemLanguageID
                     select c).FirstOrDefault();
@@ -65,32 +73,22 @@ namespace CSSPServices
         }
         public async Task<ActionResult<List<TVItemLanguage>>> GetTVItemLanguageList()
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             List<TVItemLanguage> tvitemlanguageList = (from c in db.TVItemLanguages.AsNoTracking() select c).Take(100).ToList();
 
             return await Task.FromResult(Ok(tvitemlanguageList));
         }
-        public async Task<ActionResult<TVItemLanguage>> Add(TVItemLanguage tvItemLanguage)
-        {
-            ValidationResults = Validate(new ValidationContext(tvItemLanguage), ActionDBTypeEnum.Create);
-            if (ValidationResults.Count() > 0)
-            {
-               return await Task.FromResult(BadRequest(ValidationResults));
-            }
-
-            try
-            {
-               db.TVItemLanguages.Add(tvItemLanguage);
-               db.SaveChanges();
-            }
-            catch (DbUpdateException ex)
-            {
-               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
-            }
-
-            return await Task.FromResult(Ok(tvItemLanguage));
-        }
         public async Task<ActionResult<bool>> Delete(int TVItemLanguageID)
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             TVItemLanguage tvItemLanguage = (from c in db.TVItemLanguages
                                where c.TVItemLanguageID == TVItemLanguageID
                                select c).FirstOrDefault();
@@ -112,8 +110,38 @@ namespace CSSPServices
 
             return await Task.FromResult(Ok(true));
         }
-        public async Task<ActionResult<TVItemLanguage>> Update(TVItemLanguage tvItemLanguage)
+        public async Task<ActionResult<TVItemLanguage>> Post(TVItemLanguage tvItemLanguage)
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
+            ValidationResults = Validate(new ValidationContext(tvItemLanguage), ActionDBTypeEnum.Create);
+            if (ValidationResults.Count() > 0)
+            {
+               return await Task.FromResult(BadRequest(ValidationResults));
+            }
+
+            try
+            {
+               db.TVItemLanguages.Add(tvItemLanguage);
+               db.SaveChanges();
+            }
+            catch (DbUpdateException ex)
+            {
+               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+            }
+
+            return await Task.FromResult(Ok(tvItemLanguage));
+        }
+        public async Task<ActionResult<TVItemLanguage>> Put(TVItemLanguage tvItemLanguage)
+        {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             ValidationResults = Validate(new ValidationContext(tvItemLanguage), ActionDBTypeEnum.Update);
             if (ValidationResults.Count() > 0)
             {

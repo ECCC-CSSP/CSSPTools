@@ -9,6 +9,7 @@ using CSSPEnums;
 using CSSPModels;
 using CultureServices.Resources;
 using CultureServices.Services;
+using LoggedInServices.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -22,11 +23,11 @@ namespace CSSPServices
 {
    public interface IHydrometricDataValueService
     {
-       Task<ActionResult<HydrometricDataValue>> GetHydrometricDataValueWithHydrometricDataValueID(int HydrometricDataValueID);
-       Task<ActionResult<List<HydrometricDataValue>>> GetHydrometricDataValueList();
-       Task<ActionResult<HydrometricDataValue>> Add(HydrometricDataValue hydrometricdatavalue);
        Task<ActionResult<bool>> Delete(int HydrometricDataValueID);
-       Task<ActionResult<HydrometricDataValue>> Update(HydrometricDataValue hydrometricdatavalue);
+       Task<ActionResult<List<HydrometricDataValue>>> GetHydrometricDataValueList();
+       Task<ActionResult<HydrometricDataValue>> GetHydrometricDataValueWithHydrometricDataValueID(int HydrometricDataValueID);
+       Task<ActionResult<HydrometricDataValue>> Post(HydrometricDataValue hydrometricdatavalue);
+       Task<ActionResult<HydrometricDataValue>> Put(HydrometricDataValue hydrometricdatavalue);
     }
     public partial class HydrometricDataValueService : ControllerBase, IHydrometricDataValueService
     {
@@ -36,14 +37,16 @@ namespace CSSPServices
         #region Properties
         private CSSPDBContext db { get; }
         private ICultureService CultureService { get; }
+        private ILoggedInService LoggedInService { get; }
         private IEnums enums { get; }
         private IEnumerable<ValidationResult> ValidationResults { get; set; }
         #endregion Properties
 
         #region Constructors
-        public HydrometricDataValueService(ICultureService CultureService, IEnums enums, CSSPDBContext db)
+        public HydrometricDataValueService(ICultureService CultureService, ILoggedInService LoggedInService, IEnums enums, CSSPDBContext db)
         {
             this.CultureService = CultureService;
+            this.LoggedInService = LoggedInService;
             this.enums = enums;
             this.db = db;
         }
@@ -52,6 +55,11 @@ namespace CSSPServices
         #region Functions public 
         public async Task<ActionResult<HydrometricDataValue>> GetHydrometricDataValueWithHydrometricDataValueID(int HydrometricDataValueID)
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             HydrometricDataValue hydrometricdatavalue = (from c in db.HydrometricDataValues.AsNoTracking()
                     where c.HydrometricDataValueID == HydrometricDataValueID
                     select c).FirstOrDefault();
@@ -65,32 +73,22 @@ namespace CSSPServices
         }
         public async Task<ActionResult<List<HydrometricDataValue>>> GetHydrometricDataValueList()
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             List<HydrometricDataValue> hydrometricdatavalueList = (from c in db.HydrometricDataValues.AsNoTracking() select c).Take(100).ToList();
 
             return await Task.FromResult(Ok(hydrometricdatavalueList));
         }
-        public async Task<ActionResult<HydrometricDataValue>> Add(HydrometricDataValue hydrometricDataValue)
-        {
-            ValidationResults = Validate(new ValidationContext(hydrometricDataValue), ActionDBTypeEnum.Create);
-            if (ValidationResults.Count() > 0)
-            {
-               return await Task.FromResult(BadRequest(ValidationResults));
-            }
-
-            try
-            {
-               db.HydrometricDataValues.Add(hydrometricDataValue);
-               db.SaveChanges();
-            }
-            catch (DbUpdateException ex)
-            {
-               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
-            }
-
-            return await Task.FromResult(Ok(hydrometricDataValue));
-        }
         public async Task<ActionResult<bool>> Delete(int HydrometricDataValueID)
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             HydrometricDataValue hydrometricDataValue = (from c in db.HydrometricDataValues
                                where c.HydrometricDataValueID == HydrometricDataValueID
                                select c).FirstOrDefault();
@@ -112,8 +110,38 @@ namespace CSSPServices
 
             return await Task.FromResult(Ok(true));
         }
-        public async Task<ActionResult<HydrometricDataValue>> Update(HydrometricDataValue hydrometricDataValue)
+        public async Task<ActionResult<HydrometricDataValue>> Post(HydrometricDataValue hydrometricDataValue)
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
+            ValidationResults = Validate(new ValidationContext(hydrometricDataValue), ActionDBTypeEnum.Create);
+            if (ValidationResults.Count() > 0)
+            {
+               return await Task.FromResult(BadRequest(ValidationResults));
+            }
+
+            try
+            {
+               db.HydrometricDataValues.Add(hydrometricDataValue);
+               db.SaveChanges();
+            }
+            catch (DbUpdateException ex)
+            {
+               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+            }
+
+            return await Task.FromResult(Ok(hydrometricDataValue));
+        }
+        public async Task<ActionResult<HydrometricDataValue>> Put(HydrometricDataValue hydrometricDataValue)
+        {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             ValidationResults = Validate(new ValidationContext(hydrometricDataValue), ActionDBTypeEnum.Update);
             if (ValidationResults.Count() > 0)
             {

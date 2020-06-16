@@ -32,7 +32,7 @@ namespace CSSPServices.Tests
         private IServiceProvider Provider { get; set; }
         private IServiceCollection Services { get; set; }
         private ICultureService CultureService { get; set; }
-        private IMWQMSubsectorService mwqmSubsectorService { get; set; }
+        private IMWQMSubsectorService MWQMSubsectorService { get; set; }
         private CSSPDBContext db { get; set; }
         #endregion Properties
 
@@ -62,7 +62,7 @@ namespace CSSPServices.Tests
                MWQMSubsector mwqmSubsector = GetFilledRandomMWQMSubsector(""); 
 
                // List<MWQMSubsector>
-               var actionMWQMSubsectorList = await mwqmSubsectorService.GetMWQMSubsectorList();
+               var actionMWQMSubsectorList = await MWQMSubsectorService.GetMWQMSubsectorList();
                Assert.Equal(200, ((ObjectResult)actionMWQMSubsectorList.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionMWQMSubsectorList.Result).Value);
                List<MWQMSubsector> mwqmSubsectorList = (List<MWQMSubsector>)((OkObjectResult)actionMWQMSubsectorList.Result).Value;
@@ -70,22 +70,22 @@ namespace CSSPServices.Tests
                int count = ((List<MWQMSubsector>)((OkObjectResult)actionMWQMSubsectorList.Result).Value).Count();
                 Assert.True(count > 0);
 
-               // Add MWQMSubsector
-               var actionMWQMSubsectorAdded = await mwqmSubsectorService.Add(mwqmSubsector);
+               // Post MWQMSubsector
+               var actionMWQMSubsectorAdded = await MWQMSubsectorService.Post(mwqmSubsector);
                Assert.Equal(200, ((ObjectResult)actionMWQMSubsectorAdded.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionMWQMSubsectorAdded.Result).Value);
                MWQMSubsector mwqmSubsectorAdded = (MWQMSubsector)((OkObjectResult)actionMWQMSubsectorAdded.Result).Value;
                Assert.NotNull(mwqmSubsectorAdded);
 
-               // Update MWQMSubsector
-               var actionMWQMSubsectorUpdated = await mwqmSubsectorService.Update(mwqmSubsector);
+               // Put MWQMSubsector
+               var actionMWQMSubsectorUpdated = await MWQMSubsectorService.Put(mwqmSubsector);
                Assert.Equal(200, ((ObjectResult)actionMWQMSubsectorUpdated.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionMWQMSubsectorUpdated.Result).Value);
                MWQMSubsector mwqmSubsectorUpdated = (MWQMSubsector)((OkObjectResult)actionMWQMSubsectorUpdated.Result).Value;
                Assert.NotNull(mwqmSubsectorUpdated);
 
                // Delete MWQMSubsector
-               var actionMWQMSubsectorDeleted = await mwqmSubsectorService.Delete(mwqmSubsector.MWQMSubsectorID);
+               var actionMWQMSubsectorDeleted = await MWQMSubsectorService.Delete(mwqmSubsector.MWQMSubsectorID);
                Assert.Equal(200, ((ObjectResult)actionMWQMSubsectorDeleted.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionMWQMSubsectorDeleted.Result).Value);
                bool retBool = (bool)((OkObjectResult)actionMWQMSubsectorDeleted.Result).Value;
@@ -126,8 +126,8 @@ namespace CSSPServices.Tests
 
             CultureService.SetCulture(culture);
 
-            mwqmSubsectorService = Provider.GetService<IMWQMSubsectorService>();
-            Assert.NotNull(mwqmSubsectorService);
+            MWQMSubsectorService = Provider.GetService<IMWQMSubsectorService>();
+            Assert.NotNull(MWQMSubsectorService);
 
             return await Task.FromResult(true);
         }

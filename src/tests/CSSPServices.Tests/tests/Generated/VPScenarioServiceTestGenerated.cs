@@ -32,7 +32,7 @@ namespace CSSPServices.Tests
         private IServiceProvider Provider { get; set; }
         private IServiceCollection Services { get; set; }
         private ICultureService CultureService { get; set; }
-        private IVPScenarioService vpScenarioService { get; set; }
+        private IVPScenarioService VPScenarioService { get; set; }
         private CSSPDBContext db { get; set; }
         #endregion Properties
 
@@ -62,7 +62,7 @@ namespace CSSPServices.Tests
                VPScenario vpScenario = GetFilledRandomVPScenario(""); 
 
                // List<VPScenario>
-               var actionVPScenarioList = await vpScenarioService.GetVPScenarioList();
+               var actionVPScenarioList = await VPScenarioService.GetVPScenarioList();
                Assert.Equal(200, ((ObjectResult)actionVPScenarioList.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionVPScenarioList.Result).Value);
                List<VPScenario> vpScenarioList = (List<VPScenario>)((OkObjectResult)actionVPScenarioList.Result).Value;
@@ -70,22 +70,22 @@ namespace CSSPServices.Tests
                int count = ((List<VPScenario>)((OkObjectResult)actionVPScenarioList.Result).Value).Count();
                 Assert.True(count > 0);
 
-               // Add VPScenario
-               var actionVPScenarioAdded = await vpScenarioService.Add(vpScenario);
+               // Post VPScenario
+               var actionVPScenarioAdded = await VPScenarioService.Post(vpScenario);
                Assert.Equal(200, ((ObjectResult)actionVPScenarioAdded.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionVPScenarioAdded.Result).Value);
                VPScenario vpScenarioAdded = (VPScenario)((OkObjectResult)actionVPScenarioAdded.Result).Value;
                Assert.NotNull(vpScenarioAdded);
 
-               // Update VPScenario
-               var actionVPScenarioUpdated = await vpScenarioService.Update(vpScenario);
+               // Put VPScenario
+               var actionVPScenarioUpdated = await VPScenarioService.Put(vpScenario);
                Assert.Equal(200, ((ObjectResult)actionVPScenarioUpdated.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionVPScenarioUpdated.Result).Value);
                VPScenario vpScenarioUpdated = (VPScenario)((OkObjectResult)actionVPScenarioUpdated.Result).Value;
                Assert.NotNull(vpScenarioUpdated);
 
                // Delete VPScenario
-               var actionVPScenarioDeleted = await vpScenarioService.Delete(vpScenario.VPScenarioID);
+               var actionVPScenarioDeleted = await VPScenarioService.Delete(vpScenario.VPScenarioID);
                Assert.Equal(200, ((ObjectResult)actionVPScenarioDeleted.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionVPScenarioDeleted.Result).Value);
                bool retBool = (bool)((OkObjectResult)actionVPScenarioDeleted.Result).Value;
@@ -126,8 +126,8 @@ namespace CSSPServices.Tests
 
             CultureService.SetCulture(culture);
 
-            vpScenarioService = Provider.GetService<IVPScenarioService>();
-            Assert.NotNull(vpScenarioService);
+            VPScenarioService = Provider.GetService<IVPScenarioService>();
+            Assert.NotNull(VPScenarioService);
 
             return await Task.FromResult(true);
         }

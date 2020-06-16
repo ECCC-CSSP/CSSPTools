@@ -84,52 +84,52 @@ export class ReportTypeComponent implements OnInit, OnDestroy {
             {
               value: (AddOrUpdate === 'Add' ? 0 : (this.reporttypeService.reporttypeList[0]?.ReportTypeID)),
               disabled: false
-            }],
+            }, [ Validators.required ]],
           TVType: [
             {
               value: this.reporttypeService.reporttypeList[0]?.TVType,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           FileType: [
             {
               value: this.reporttypeService.reporttypeList[0]?.FileType,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           UniqueCode: [
             {
               value: this.reporttypeService.reporttypeList[0]?.UniqueCode,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           Language: [
             {
               value: this.reporttypeService.reporttypeList[0]?.Language,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           Name: [
             {
               value: this.reporttypeService.reporttypeList[0]?.Name,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           Description: [
             {
               value: this.reporttypeService.reporttypeList[0]?.Description,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           StartOfFileName: [
             {
               value: this.reporttypeService.reporttypeList[0]?.StartOfFileName,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           LastUpdateDate_UTC: [
             {
               value: this.reporttypeService.reporttypeList[0]?.LastUpdateDate_UTC,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           LastUpdateContactTVItemID: [
             {
               value: this.reporttypeService.reporttypeList[0]?.LastUpdateContactTVItemID,
               disabled: false
-            }],
+            }, [ Validators.required ]],
         }
       );
 

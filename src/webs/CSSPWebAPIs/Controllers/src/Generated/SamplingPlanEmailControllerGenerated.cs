@@ -6,6 +6,7 @@
 
 using CSSPModels;
 using CSSPServices;
+using CultureServices.Services;
 using LoggedInServices.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -18,8 +19,8 @@ namespace CSSPWebAPI.Controllers
     {
         Task<ActionResult<List<SamplingPlanEmail>>> Get();
         Task<ActionResult<SamplingPlanEmail>> Get(int SamplingPlanEmailID);
-        Task<ActionResult<SamplingPlanEmail>> Post(SamplingPlanEmail samplingPlanEmail);
-        Task<ActionResult<SamplingPlanEmail>> Put(SamplingPlanEmail samplingPlanEmail);
+        Task<ActionResult<SamplingPlanEmail>> Post(SamplingPlanEmail SamplingPlanEmail);
+        Task<ActionResult<SamplingPlanEmail>> Put(SamplingPlanEmail SamplingPlanEmail);
         Task<ActionResult<bool>> Delete(int SamplingPlanEmailID);
     }
 
@@ -32,17 +33,17 @@ namespace CSSPWebAPI.Controllers
         #endregion Variables
 
         #region Properties
-        private ISamplingPlanEmailService samplingPlanEmailService { get; }
-        private CSSPDBContext db { get; }
-        private ILoggedInService loggedInService { get; }
+        private ICultureService CultureService { get; }
+        private ILoggedInService LoggedInService { get; }
+        private ISamplingPlanEmailService SamplingPlanEmailService { get; }
         #endregion Properties
 
         #region Constructors
-        public SamplingPlanEmailController(ISamplingPlanEmailService samplingPlanEmailService, CSSPDBContext db, ILoggedInService loggedInService)
+        public SamplingPlanEmailController(ICultureService CultureService, ILoggedInService LoggedInService, ISamplingPlanEmailService SamplingPlanEmailService)
         {
-            this.samplingPlanEmailService = samplingPlanEmailService;
-            this.db = db;
-            this.loggedInService = loggedInService;
+            this.CultureService = CultureService;
+            this.LoggedInService = LoggedInService;
+            this.SamplingPlanEmailService = SamplingPlanEmailService;
         }
         #endregion Constructors
 
@@ -50,27 +51,42 @@ namespace CSSPWebAPI.Controllers
         [HttpGet]
         public async Task<ActionResult<List<SamplingPlanEmail>>> Get()
         {
-            return await samplingPlanEmailService.GetSamplingPlanEmailList();
+            CultureService.SetCulture((string)RouteData.Values["culture"]);
+            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+
+            return await SamplingPlanEmailService.GetSamplingPlanEmailList();
         }
         [HttpGet("{SamplingPlanEmailID}")]
         public async Task<ActionResult<SamplingPlanEmail>> Get(int SamplingPlanEmailID)
         {
-            return await samplingPlanEmailService.GetSamplingPlanEmailWithSamplingPlanEmailID(SamplingPlanEmailID);
+            CultureService.SetCulture((string)RouteData.Values["culture"]);
+            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+
+            return await SamplingPlanEmailService.GetSamplingPlanEmailWithSamplingPlanEmailID(SamplingPlanEmailID);
         }
         [HttpPost]
-        public async Task<ActionResult<SamplingPlanEmail>> Post(SamplingPlanEmail samplingPlanEmail)
+        public async Task<ActionResult<SamplingPlanEmail>> Post(SamplingPlanEmail SamplingPlanEmail)
         {
-            return await samplingPlanEmailService.Add(samplingPlanEmail);
+            CultureService.SetCulture((string)RouteData.Values["culture"]);
+            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+
+            return await SamplingPlanEmailService.Post(SamplingPlanEmail);
         }
         [HttpPut]
-        public async Task<ActionResult<SamplingPlanEmail>> Put(SamplingPlanEmail samplingPlanEmail)
+        public async Task<ActionResult<SamplingPlanEmail>> Put(SamplingPlanEmail SamplingPlanEmail)
         {
-            return await samplingPlanEmailService.Update(samplingPlanEmail);
+            CultureService.SetCulture((string)RouteData.Values["culture"]);
+            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+
+            return await SamplingPlanEmailService.Put(SamplingPlanEmail);
         }
         [HttpDelete("{SamplingPlanEmailID}")]
         public async Task<ActionResult<bool>> Delete(int SamplingPlanEmailID)
         {
-            return await samplingPlanEmailService.Delete(SamplingPlanEmailID);
+            CultureService.SetCulture((string)RouteData.Values["culture"]);
+            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+
+            return await SamplingPlanEmailService.Delete(SamplingPlanEmailID);
         }
         #endregion Functions public
 

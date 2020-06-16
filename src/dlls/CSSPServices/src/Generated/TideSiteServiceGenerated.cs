@@ -9,6 +9,7 @@ using CSSPEnums;
 using CSSPModels;
 using CultureServices.Resources;
 using CultureServices.Services;
+using LoggedInServices.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -22,11 +23,11 @@ namespace CSSPServices
 {
    public interface ITideSiteService
     {
-       Task<ActionResult<TideSite>> GetTideSiteWithTideSiteID(int TideSiteID);
-       Task<ActionResult<List<TideSite>>> GetTideSiteList();
-       Task<ActionResult<TideSite>> Add(TideSite tidesite);
        Task<ActionResult<bool>> Delete(int TideSiteID);
-       Task<ActionResult<TideSite>> Update(TideSite tidesite);
+       Task<ActionResult<List<TideSite>>> GetTideSiteList();
+       Task<ActionResult<TideSite>> GetTideSiteWithTideSiteID(int TideSiteID);
+       Task<ActionResult<TideSite>> Post(TideSite tidesite);
+       Task<ActionResult<TideSite>> Put(TideSite tidesite);
     }
     public partial class TideSiteService : ControllerBase, ITideSiteService
     {
@@ -36,14 +37,16 @@ namespace CSSPServices
         #region Properties
         private CSSPDBContext db { get; }
         private ICultureService CultureService { get; }
+        private ILoggedInService LoggedInService { get; }
         private IEnums enums { get; }
         private IEnumerable<ValidationResult> ValidationResults { get; set; }
         #endregion Properties
 
         #region Constructors
-        public TideSiteService(ICultureService CultureService, IEnums enums, CSSPDBContext db)
+        public TideSiteService(ICultureService CultureService, ILoggedInService LoggedInService, IEnums enums, CSSPDBContext db)
         {
             this.CultureService = CultureService;
+            this.LoggedInService = LoggedInService;
             this.enums = enums;
             this.db = db;
         }
@@ -52,6 +55,11 @@ namespace CSSPServices
         #region Functions public 
         public async Task<ActionResult<TideSite>> GetTideSiteWithTideSiteID(int TideSiteID)
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             TideSite tidesite = (from c in db.TideSites.AsNoTracking()
                     where c.TideSiteID == TideSiteID
                     select c).FirstOrDefault();
@@ -65,32 +73,22 @@ namespace CSSPServices
         }
         public async Task<ActionResult<List<TideSite>>> GetTideSiteList()
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             List<TideSite> tidesiteList = (from c in db.TideSites.AsNoTracking() select c).Take(100).ToList();
 
             return await Task.FromResult(Ok(tidesiteList));
         }
-        public async Task<ActionResult<TideSite>> Add(TideSite tideSite)
-        {
-            ValidationResults = Validate(new ValidationContext(tideSite), ActionDBTypeEnum.Create);
-            if (ValidationResults.Count() > 0)
-            {
-               return await Task.FromResult(BadRequest(ValidationResults));
-            }
-
-            try
-            {
-               db.TideSites.Add(tideSite);
-               db.SaveChanges();
-            }
-            catch (DbUpdateException ex)
-            {
-               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
-            }
-
-            return await Task.FromResult(Ok(tideSite));
-        }
         public async Task<ActionResult<bool>> Delete(int TideSiteID)
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             TideSite tideSite = (from c in db.TideSites
                                where c.TideSiteID == TideSiteID
                                select c).FirstOrDefault();
@@ -112,8 +110,38 @@ namespace CSSPServices
 
             return await Task.FromResult(Ok(true));
         }
-        public async Task<ActionResult<TideSite>> Update(TideSite tideSite)
+        public async Task<ActionResult<TideSite>> Post(TideSite tideSite)
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
+            ValidationResults = Validate(new ValidationContext(tideSite), ActionDBTypeEnum.Create);
+            if (ValidationResults.Count() > 0)
+            {
+               return await Task.FromResult(BadRequest(ValidationResults));
+            }
+
+            try
+            {
+               db.TideSites.Add(tideSite);
+               db.SaveChanges();
+            }
+            catch (DbUpdateException ex)
+            {
+               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+            }
+
+            return await Task.FromResult(Ok(tideSite));
+        }
+        public async Task<ActionResult<TideSite>> Put(TideSite tideSite)
+        {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             ValidationResults = Validate(new ValidationContext(tideSite), ActionDBTypeEnum.Update);
             if (ValidationResults.Count() > 0)
             {

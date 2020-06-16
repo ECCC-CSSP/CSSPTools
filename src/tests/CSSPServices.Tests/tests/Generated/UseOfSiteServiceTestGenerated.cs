@@ -32,7 +32,7 @@ namespace CSSPServices.Tests
         private IServiceProvider Provider { get; set; }
         private IServiceCollection Services { get; set; }
         private ICultureService CultureService { get; set; }
-        private IUseOfSiteService useOfSiteService { get; set; }
+        private IUseOfSiteService UseOfSiteService { get; set; }
         private CSSPDBContext db { get; set; }
         #endregion Properties
 
@@ -62,7 +62,7 @@ namespace CSSPServices.Tests
                UseOfSite useOfSite = GetFilledRandomUseOfSite(""); 
 
                // List<UseOfSite>
-               var actionUseOfSiteList = await useOfSiteService.GetUseOfSiteList();
+               var actionUseOfSiteList = await UseOfSiteService.GetUseOfSiteList();
                Assert.Equal(200, ((ObjectResult)actionUseOfSiteList.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionUseOfSiteList.Result).Value);
                List<UseOfSite> useOfSiteList = (List<UseOfSite>)((OkObjectResult)actionUseOfSiteList.Result).Value;
@@ -70,22 +70,22 @@ namespace CSSPServices.Tests
                int count = ((List<UseOfSite>)((OkObjectResult)actionUseOfSiteList.Result).Value).Count();
                 Assert.True(count > 0);
 
-               // Add UseOfSite
-               var actionUseOfSiteAdded = await useOfSiteService.Add(useOfSite);
+               // Post UseOfSite
+               var actionUseOfSiteAdded = await UseOfSiteService.Post(useOfSite);
                Assert.Equal(200, ((ObjectResult)actionUseOfSiteAdded.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionUseOfSiteAdded.Result).Value);
                UseOfSite useOfSiteAdded = (UseOfSite)((OkObjectResult)actionUseOfSiteAdded.Result).Value;
                Assert.NotNull(useOfSiteAdded);
 
-               // Update UseOfSite
-               var actionUseOfSiteUpdated = await useOfSiteService.Update(useOfSite);
+               // Put UseOfSite
+               var actionUseOfSiteUpdated = await UseOfSiteService.Put(useOfSite);
                Assert.Equal(200, ((ObjectResult)actionUseOfSiteUpdated.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionUseOfSiteUpdated.Result).Value);
                UseOfSite useOfSiteUpdated = (UseOfSite)((OkObjectResult)actionUseOfSiteUpdated.Result).Value;
                Assert.NotNull(useOfSiteUpdated);
 
                // Delete UseOfSite
-               var actionUseOfSiteDeleted = await useOfSiteService.Delete(useOfSite.UseOfSiteID);
+               var actionUseOfSiteDeleted = await UseOfSiteService.Delete(useOfSite.UseOfSiteID);
                Assert.Equal(200, ((ObjectResult)actionUseOfSiteDeleted.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionUseOfSiteDeleted.Result).Value);
                bool retBool = (bool)((OkObjectResult)actionUseOfSiteDeleted.Result).Value;
@@ -126,8 +126,8 @@ namespace CSSPServices.Tests
 
             CultureService.SetCulture(culture);
 
-            useOfSiteService = Provider.GetService<IUseOfSiteService>();
-            Assert.NotNull(useOfSiteService);
+            UseOfSiteService = Provider.GetService<IUseOfSiteService>();
+            Assert.NotNull(UseOfSiteService);
 
             return await Task.FromResult(true);
         }

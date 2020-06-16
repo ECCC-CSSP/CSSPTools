@@ -52,6 +52,12 @@ namespace ServicesClassNameServiceGeneratedServices.Services
                         sb.AppendLine($@"        public async Task<ActionResult<{ currentDLLTypeInfo.Name }>> Get{ currentDLLTypeInfo.Name }With{ currentDLLTypeInfo.Name }ID(int { currentDLLTypeInfo.Name }ID)");
                     }
                     sb.AppendLine(@"        {");
+                    sb.AppendLine(@"            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)");
+                    sb.AppendLine(@"            {");
+                    sb.AppendLine(@"                return await Task.FromResult(Unauthorized());");
+                    sb.AppendLine(@"            }");
+                    sb.AppendLine(@"");
+
                     if (currentDLLTypeInfo.Name == "AspNetUser")
                     {
                         sb.AppendLine($@"            { currentDLLTypeInfo.Name } { currentDLLTypeInfo.Name.ToLower() } = (from c in db.{ TypeName }s.AsNoTracking()");
@@ -83,6 +89,11 @@ namespace ServicesClassNameServiceGeneratedServices.Services
 
                     sb.AppendLine($@"        public async Task<ActionResult<List<{ currentDLLTypeInfo.Name }>>> Get{ currentDLLTypeInfo.Name }List()");
                     sb.AppendLine(@"        {");
+                    sb.AppendLine(@"            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)");
+                    sb.AppendLine(@"            {");
+                    sb.AppendLine(@"                return await Task.FromResult(Unauthorized());");
+                    sb.AppendLine(@"            }");
+                    sb.AppendLine(@"");
                     if (currentDLLTypeInfo.Name.StartsWith("Address"))
                     {
                         sb.AppendLine($@"            List<{ currentDLLTypeInfo.Name }> { currentDLLTypeInfo.Name.ToLower() }List = (from c in db.{ currentDLLTypeInfo.Name }es.AsNoTracking() select c).Take(100).ToList();");

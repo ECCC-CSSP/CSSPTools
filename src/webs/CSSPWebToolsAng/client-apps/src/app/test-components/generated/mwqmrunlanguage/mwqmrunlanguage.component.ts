@@ -79,47 +79,47 @@ export class MWQMRunLanguageComponent implements OnInit, OnDestroy {
             {
               value: (AddOrUpdate === 'Add' ? 0 : (this.mwqmrunlanguageService.mwqmrunlanguageList[0]?.MWQMRunLanguageID)),
               disabled: false
-            }],
+            }, [ Validators.required ]],
           MWQMRunID: [
             {
               value: this.mwqmrunlanguageService.mwqmrunlanguageList[0]?.MWQMRunID,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           Language: [
             {
               value: this.mwqmrunlanguageService.mwqmrunlanguageList[0]?.Language,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           RunComment: [
             {
               value: this.mwqmrunlanguageService.mwqmrunlanguageList[0]?.RunComment,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           TranslationStatusRunComment: [
             {
               value: this.mwqmrunlanguageService.mwqmrunlanguageList[0]?.TranslationStatusRunComment,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           RunWeatherComment: [
             {
               value: this.mwqmrunlanguageService.mwqmrunlanguageList[0]?.RunWeatherComment,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           TranslationStatusRunWeatherComment: [
             {
               value: this.mwqmrunlanguageService.mwqmrunlanguageList[0]?.TranslationStatusRunWeatherComment,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           LastUpdateDate_UTC: [
             {
               value: this.mwqmrunlanguageService.mwqmrunlanguageList[0]?.LastUpdateDate_UTC,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           LastUpdateContactTVItemID: [
             {
               value: this.mwqmrunlanguageService.mwqmrunlanguageList[0]?.LastUpdateContactTVItemID,
               disabled: false
-            }],
+            }, [ Validators.required ]],
         }
       );
 

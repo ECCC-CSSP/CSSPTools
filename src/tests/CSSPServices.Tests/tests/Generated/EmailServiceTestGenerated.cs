@@ -32,7 +32,7 @@ namespace CSSPServices.Tests
         private IServiceProvider Provider { get; set; }
         private IServiceCollection Services { get; set; }
         private ICultureService CultureService { get; set; }
-        private IEmailService emailService { get; set; }
+        private IEmailService EmailService { get; set; }
         private CSSPDBContext db { get; set; }
         #endregion Properties
 
@@ -62,7 +62,7 @@ namespace CSSPServices.Tests
                Email email = GetFilledRandomEmail(""); 
 
                // List<Email>
-               var actionEmailList = await emailService.GetEmailList();
+               var actionEmailList = await EmailService.GetEmailList();
                Assert.Equal(200, ((ObjectResult)actionEmailList.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionEmailList.Result).Value);
                List<Email> emailList = (List<Email>)((OkObjectResult)actionEmailList.Result).Value;
@@ -70,22 +70,22 @@ namespace CSSPServices.Tests
                int count = ((List<Email>)((OkObjectResult)actionEmailList.Result).Value).Count();
                 Assert.True(count > 0);
 
-               // Add Email
-               var actionEmailAdded = await emailService.Add(email);
+               // Post Email
+               var actionEmailAdded = await EmailService.Post(email);
                Assert.Equal(200, ((ObjectResult)actionEmailAdded.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionEmailAdded.Result).Value);
                Email emailAdded = (Email)((OkObjectResult)actionEmailAdded.Result).Value;
                Assert.NotNull(emailAdded);
 
-               // Update Email
-               var actionEmailUpdated = await emailService.Update(email);
+               // Put Email
+               var actionEmailUpdated = await EmailService.Put(email);
                Assert.Equal(200, ((ObjectResult)actionEmailUpdated.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionEmailUpdated.Result).Value);
                Email emailUpdated = (Email)((OkObjectResult)actionEmailUpdated.Result).Value;
                Assert.NotNull(emailUpdated);
 
                // Delete Email
-               var actionEmailDeleted = await emailService.Delete(email.EmailID);
+               var actionEmailDeleted = await EmailService.Delete(email.EmailID);
                Assert.Equal(200, ((ObjectResult)actionEmailDeleted.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionEmailDeleted.Result).Value);
                bool retBool = (bool)((OkObjectResult)actionEmailDeleted.Result).Value;
@@ -126,8 +126,8 @@ namespace CSSPServices.Tests
 
             CultureService.SetCulture(culture);
 
-            emailService = Provider.GetService<IEmailService>();
-            Assert.NotNull(emailService);
+            EmailService = Provider.GetService<IEmailService>();
+            Assert.NotNull(EmailService);
 
             return await Task.FromResult(true);
         }

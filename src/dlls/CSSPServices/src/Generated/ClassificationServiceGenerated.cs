@@ -9,6 +9,7 @@ using CSSPEnums;
 using CSSPModels;
 using CultureServices.Resources;
 using CultureServices.Services;
+using LoggedInServices.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -22,11 +23,11 @@ namespace CSSPServices
 {
    public interface IClassificationService
     {
-       Task<ActionResult<Classification>> GetClassificationWithClassificationID(int ClassificationID);
-       Task<ActionResult<List<Classification>>> GetClassificationList();
-       Task<ActionResult<Classification>> Add(Classification classification);
        Task<ActionResult<bool>> Delete(int ClassificationID);
-       Task<ActionResult<Classification>> Update(Classification classification);
+       Task<ActionResult<List<Classification>>> GetClassificationList();
+       Task<ActionResult<Classification>> GetClassificationWithClassificationID(int ClassificationID);
+       Task<ActionResult<Classification>> Post(Classification classification);
+       Task<ActionResult<Classification>> Put(Classification classification);
     }
     public partial class ClassificationService : ControllerBase, IClassificationService
     {
@@ -36,14 +37,16 @@ namespace CSSPServices
         #region Properties
         private CSSPDBContext db { get; }
         private ICultureService CultureService { get; }
+        private ILoggedInService LoggedInService { get; }
         private IEnums enums { get; }
         private IEnumerable<ValidationResult> ValidationResults { get; set; }
         #endregion Properties
 
         #region Constructors
-        public ClassificationService(ICultureService CultureService, IEnums enums, CSSPDBContext db)
+        public ClassificationService(ICultureService CultureService, ILoggedInService LoggedInService, IEnums enums, CSSPDBContext db)
         {
             this.CultureService = CultureService;
+            this.LoggedInService = LoggedInService;
             this.enums = enums;
             this.db = db;
         }
@@ -52,6 +55,11 @@ namespace CSSPServices
         #region Functions public 
         public async Task<ActionResult<Classification>> GetClassificationWithClassificationID(int ClassificationID)
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             Classification classification = (from c in db.Classifications.AsNoTracking()
                     where c.ClassificationID == ClassificationID
                     select c).FirstOrDefault();
@@ -65,32 +73,22 @@ namespace CSSPServices
         }
         public async Task<ActionResult<List<Classification>>> GetClassificationList()
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             List<Classification> classificationList = (from c in db.Classifications.AsNoTracking() select c).Take(100).ToList();
 
             return await Task.FromResult(Ok(classificationList));
         }
-        public async Task<ActionResult<Classification>> Add(Classification classification)
-        {
-            ValidationResults = Validate(new ValidationContext(classification), ActionDBTypeEnum.Create);
-            if (ValidationResults.Count() > 0)
-            {
-               return await Task.FromResult(BadRequest(ValidationResults));
-            }
-
-            try
-            {
-               db.Classifications.Add(classification);
-               db.SaveChanges();
-            }
-            catch (DbUpdateException ex)
-            {
-               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
-            }
-
-            return await Task.FromResult(Ok(classification));
-        }
         public async Task<ActionResult<bool>> Delete(int ClassificationID)
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             Classification classification = (from c in db.Classifications
                                where c.ClassificationID == ClassificationID
                                select c).FirstOrDefault();
@@ -112,8 +110,38 @@ namespace CSSPServices
 
             return await Task.FromResult(Ok(true));
         }
-        public async Task<ActionResult<Classification>> Update(Classification classification)
+        public async Task<ActionResult<Classification>> Post(Classification classification)
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
+            ValidationResults = Validate(new ValidationContext(classification), ActionDBTypeEnum.Create);
+            if (ValidationResults.Count() > 0)
+            {
+               return await Task.FromResult(BadRequest(ValidationResults));
+            }
+
+            try
+            {
+               db.Classifications.Add(classification);
+               db.SaveChanges();
+            }
+            catch (DbUpdateException ex)
+            {
+               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+            }
+
+            return await Task.FromResult(Ok(classification));
+        }
+        public async Task<ActionResult<Classification>> Put(Classification classification)
+        {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             ValidationResults = Validate(new ValidationContext(classification), ActionDBTypeEnum.Update);
             if (ValidationResults.Count() > 0)
             {

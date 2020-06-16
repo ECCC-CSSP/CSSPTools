@@ -32,7 +32,7 @@ namespace CSSPServices.Tests
         private IServiceProvider Provider { get; set; }
         private IServiceCollection Services { get; set; }
         private ICultureService CultureService { get; set; }
-        private ITVFileLanguageService tvFileLanguageService { get; set; }
+        private ITVFileLanguageService TVFileLanguageService { get; set; }
         private CSSPDBContext db { get; set; }
         #endregion Properties
 
@@ -62,7 +62,7 @@ namespace CSSPServices.Tests
                TVFileLanguage tvFileLanguage = GetFilledRandomTVFileLanguage(""); 
 
                // List<TVFileLanguage>
-               var actionTVFileLanguageList = await tvFileLanguageService.GetTVFileLanguageList();
+               var actionTVFileLanguageList = await TVFileLanguageService.GetTVFileLanguageList();
                Assert.Equal(200, ((ObjectResult)actionTVFileLanguageList.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionTVFileLanguageList.Result).Value);
                List<TVFileLanguage> tvFileLanguageList = (List<TVFileLanguage>)((OkObjectResult)actionTVFileLanguageList.Result).Value;
@@ -70,22 +70,22 @@ namespace CSSPServices.Tests
                int count = ((List<TVFileLanguage>)((OkObjectResult)actionTVFileLanguageList.Result).Value).Count();
                 Assert.True(count > 0);
 
-               // Add TVFileLanguage
-               var actionTVFileLanguageAdded = await tvFileLanguageService.Add(tvFileLanguage);
+               // Post TVFileLanguage
+               var actionTVFileLanguageAdded = await TVFileLanguageService.Post(tvFileLanguage);
                Assert.Equal(200, ((ObjectResult)actionTVFileLanguageAdded.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionTVFileLanguageAdded.Result).Value);
                TVFileLanguage tvFileLanguageAdded = (TVFileLanguage)((OkObjectResult)actionTVFileLanguageAdded.Result).Value;
                Assert.NotNull(tvFileLanguageAdded);
 
-               // Update TVFileLanguage
-               var actionTVFileLanguageUpdated = await tvFileLanguageService.Update(tvFileLanguage);
+               // Put TVFileLanguage
+               var actionTVFileLanguageUpdated = await TVFileLanguageService.Put(tvFileLanguage);
                Assert.Equal(200, ((ObjectResult)actionTVFileLanguageUpdated.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionTVFileLanguageUpdated.Result).Value);
                TVFileLanguage tvFileLanguageUpdated = (TVFileLanguage)((OkObjectResult)actionTVFileLanguageUpdated.Result).Value;
                Assert.NotNull(tvFileLanguageUpdated);
 
                // Delete TVFileLanguage
-               var actionTVFileLanguageDeleted = await tvFileLanguageService.Delete(tvFileLanguage.TVFileLanguageID);
+               var actionTVFileLanguageDeleted = await TVFileLanguageService.Delete(tvFileLanguage.TVFileLanguageID);
                Assert.Equal(200, ((ObjectResult)actionTVFileLanguageDeleted.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionTVFileLanguageDeleted.Result).Value);
                bool retBool = (bool)((OkObjectResult)actionTVFileLanguageDeleted.Result).Value;
@@ -126,8 +126,8 @@ namespace CSSPServices.Tests
 
             CultureService.SetCulture(culture);
 
-            tvFileLanguageService = Provider.GetService<ITVFileLanguageService>();
-            Assert.NotNull(tvFileLanguageService);
+            TVFileLanguageService = Provider.GetService<ITVFileLanguageService>();
+            Assert.NotNull(TVFileLanguageService);
 
             return await Task.FromResult(true);
         }

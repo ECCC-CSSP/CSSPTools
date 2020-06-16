@@ -32,7 +32,7 @@ namespace CSSPServices.Tests
         private IServiceProvider Provider { get; set; }
         private IServiceCollection Services { get; set; }
         private ICultureService CultureService { get; set; }
-        private IMWQMSubsectorLanguageService mwqmSubsectorLanguageService { get; set; }
+        private IMWQMSubsectorLanguageService MWQMSubsectorLanguageService { get; set; }
         private CSSPDBContext db { get; set; }
         #endregion Properties
 
@@ -62,7 +62,7 @@ namespace CSSPServices.Tests
                MWQMSubsectorLanguage mwqmSubsectorLanguage = GetFilledRandomMWQMSubsectorLanguage(""); 
 
                // List<MWQMSubsectorLanguage>
-               var actionMWQMSubsectorLanguageList = await mwqmSubsectorLanguageService.GetMWQMSubsectorLanguageList();
+               var actionMWQMSubsectorLanguageList = await MWQMSubsectorLanguageService.GetMWQMSubsectorLanguageList();
                Assert.Equal(200, ((ObjectResult)actionMWQMSubsectorLanguageList.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionMWQMSubsectorLanguageList.Result).Value);
                List<MWQMSubsectorLanguage> mwqmSubsectorLanguageList = (List<MWQMSubsectorLanguage>)((OkObjectResult)actionMWQMSubsectorLanguageList.Result).Value;
@@ -70,22 +70,22 @@ namespace CSSPServices.Tests
                int count = ((List<MWQMSubsectorLanguage>)((OkObjectResult)actionMWQMSubsectorLanguageList.Result).Value).Count();
                 Assert.True(count > 0);
 
-               // Add MWQMSubsectorLanguage
-               var actionMWQMSubsectorLanguageAdded = await mwqmSubsectorLanguageService.Add(mwqmSubsectorLanguage);
+               // Post MWQMSubsectorLanguage
+               var actionMWQMSubsectorLanguageAdded = await MWQMSubsectorLanguageService.Post(mwqmSubsectorLanguage);
                Assert.Equal(200, ((ObjectResult)actionMWQMSubsectorLanguageAdded.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionMWQMSubsectorLanguageAdded.Result).Value);
                MWQMSubsectorLanguage mwqmSubsectorLanguageAdded = (MWQMSubsectorLanguage)((OkObjectResult)actionMWQMSubsectorLanguageAdded.Result).Value;
                Assert.NotNull(mwqmSubsectorLanguageAdded);
 
-               // Update MWQMSubsectorLanguage
-               var actionMWQMSubsectorLanguageUpdated = await mwqmSubsectorLanguageService.Update(mwqmSubsectorLanguage);
+               // Put MWQMSubsectorLanguage
+               var actionMWQMSubsectorLanguageUpdated = await MWQMSubsectorLanguageService.Put(mwqmSubsectorLanguage);
                Assert.Equal(200, ((ObjectResult)actionMWQMSubsectorLanguageUpdated.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionMWQMSubsectorLanguageUpdated.Result).Value);
                MWQMSubsectorLanguage mwqmSubsectorLanguageUpdated = (MWQMSubsectorLanguage)((OkObjectResult)actionMWQMSubsectorLanguageUpdated.Result).Value;
                Assert.NotNull(mwqmSubsectorLanguageUpdated);
 
                // Delete MWQMSubsectorLanguage
-               var actionMWQMSubsectorLanguageDeleted = await mwqmSubsectorLanguageService.Delete(mwqmSubsectorLanguage.MWQMSubsectorLanguageID);
+               var actionMWQMSubsectorLanguageDeleted = await MWQMSubsectorLanguageService.Delete(mwqmSubsectorLanguage.MWQMSubsectorLanguageID);
                Assert.Equal(200, ((ObjectResult)actionMWQMSubsectorLanguageDeleted.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionMWQMSubsectorLanguageDeleted.Result).Value);
                bool retBool = (bool)((OkObjectResult)actionMWQMSubsectorLanguageDeleted.Result).Value;
@@ -126,8 +126,8 @@ namespace CSSPServices.Tests
 
             CultureService.SetCulture(culture);
 
-            mwqmSubsectorLanguageService = Provider.GetService<IMWQMSubsectorLanguageService>();
-            Assert.NotNull(mwqmSubsectorLanguageService);
+            MWQMSubsectorLanguageService = Provider.GetService<IMWQMSubsectorLanguageService>();
+            Assert.NotNull(MWQMSubsectorLanguageService);
 
             return await Task.FromResult(true);
         }

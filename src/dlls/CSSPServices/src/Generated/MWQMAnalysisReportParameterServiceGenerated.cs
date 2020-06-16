@@ -9,6 +9,7 @@ using CSSPEnums;
 using CSSPModels;
 using CultureServices.Resources;
 using CultureServices.Services;
+using LoggedInServices.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -22,11 +23,11 @@ namespace CSSPServices
 {
    public interface IMWQMAnalysisReportParameterService
     {
-       Task<ActionResult<MWQMAnalysisReportParameter>> GetMWQMAnalysisReportParameterWithMWQMAnalysisReportParameterID(int MWQMAnalysisReportParameterID);
-       Task<ActionResult<List<MWQMAnalysisReportParameter>>> GetMWQMAnalysisReportParameterList();
-       Task<ActionResult<MWQMAnalysisReportParameter>> Add(MWQMAnalysisReportParameter mwqmanalysisreportparameter);
        Task<ActionResult<bool>> Delete(int MWQMAnalysisReportParameterID);
-       Task<ActionResult<MWQMAnalysisReportParameter>> Update(MWQMAnalysisReportParameter mwqmanalysisreportparameter);
+       Task<ActionResult<List<MWQMAnalysisReportParameter>>> GetMWQMAnalysisReportParameterList();
+       Task<ActionResult<MWQMAnalysisReportParameter>> GetMWQMAnalysisReportParameterWithMWQMAnalysisReportParameterID(int MWQMAnalysisReportParameterID);
+       Task<ActionResult<MWQMAnalysisReportParameter>> Post(MWQMAnalysisReportParameter mwqmanalysisreportparameter);
+       Task<ActionResult<MWQMAnalysisReportParameter>> Put(MWQMAnalysisReportParameter mwqmanalysisreportparameter);
     }
     public partial class MWQMAnalysisReportParameterService : ControllerBase, IMWQMAnalysisReportParameterService
     {
@@ -36,14 +37,16 @@ namespace CSSPServices
         #region Properties
         private CSSPDBContext db { get; }
         private ICultureService CultureService { get; }
+        private ILoggedInService LoggedInService { get; }
         private IEnums enums { get; }
         private IEnumerable<ValidationResult> ValidationResults { get; set; }
         #endregion Properties
 
         #region Constructors
-        public MWQMAnalysisReportParameterService(ICultureService CultureService, IEnums enums, CSSPDBContext db)
+        public MWQMAnalysisReportParameterService(ICultureService CultureService, ILoggedInService LoggedInService, IEnums enums, CSSPDBContext db)
         {
             this.CultureService = CultureService;
+            this.LoggedInService = LoggedInService;
             this.enums = enums;
             this.db = db;
         }
@@ -52,6 +55,11 @@ namespace CSSPServices
         #region Functions public 
         public async Task<ActionResult<MWQMAnalysisReportParameter>> GetMWQMAnalysisReportParameterWithMWQMAnalysisReportParameterID(int MWQMAnalysisReportParameterID)
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             MWQMAnalysisReportParameter mwqmanalysisreportparameter = (from c in db.MWQMAnalysisReportParameters.AsNoTracking()
                     where c.MWQMAnalysisReportParameterID == MWQMAnalysisReportParameterID
                     select c).FirstOrDefault();
@@ -65,32 +73,22 @@ namespace CSSPServices
         }
         public async Task<ActionResult<List<MWQMAnalysisReportParameter>>> GetMWQMAnalysisReportParameterList()
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             List<MWQMAnalysisReportParameter> mwqmanalysisreportparameterList = (from c in db.MWQMAnalysisReportParameters.AsNoTracking() select c).Take(100).ToList();
 
             return await Task.FromResult(Ok(mwqmanalysisreportparameterList));
         }
-        public async Task<ActionResult<MWQMAnalysisReportParameter>> Add(MWQMAnalysisReportParameter mwqmAnalysisReportParameter)
-        {
-            ValidationResults = Validate(new ValidationContext(mwqmAnalysisReportParameter), ActionDBTypeEnum.Create);
-            if (ValidationResults.Count() > 0)
-            {
-               return await Task.FromResult(BadRequest(ValidationResults));
-            }
-
-            try
-            {
-               db.MWQMAnalysisReportParameters.Add(mwqmAnalysisReportParameter);
-               db.SaveChanges();
-            }
-            catch (DbUpdateException ex)
-            {
-               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
-            }
-
-            return await Task.FromResult(Ok(mwqmAnalysisReportParameter));
-        }
         public async Task<ActionResult<bool>> Delete(int MWQMAnalysisReportParameterID)
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             MWQMAnalysisReportParameter mwqmAnalysisReportParameter = (from c in db.MWQMAnalysisReportParameters
                                where c.MWQMAnalysisReportParameterID == MWQMAnalysisReportParameterID
                                select c).FirstOrDefault();
@@ -112,8 +110,38 @@ namespace CSSPServices
 
             return await Task.FromResult(Ok(true));
         }
-        public async Task<ActionResult<MWQMAnalysisReportParameter>> Update(MWQMAnalysisReportParameter mwqmAnalysisReportParameter)
+        public async Task<ActionResult<MWQMAnalysisReportParameter>> Post(MWQMAnalysisReportParameter mwqmAnalysisReportParameter)
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
+            ValidationResults = Validate(new ValidationContext(mwqmAnalysisReportParameter), ActionDBTypeEnum.Create);
+            if (ValidationResults.Count() > 0)
+            {
+               return await Task.FromResult(BadRequest(ValidationResults));
+            }
+
+            try
+            {
+               db.MWQMAnalysisReportParameters.Add(mwqmAnalysisReportParameter);
+               db.SaveChanges();
+            }
+            catch (DbUpdateException ex)
+            {
+               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+            }
+
+            return await Task.FromResult(Ok(mwqmAnalysisReportParameter));
+        }
+        public async Task<ActionResult<MWQMAnalysisReportParameter>> Put(MWQMAnalysisReportParameter mwqmAnalysisReportParameter)
+        {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             ValidationResults = Validate(new ValidationContext(mwqmAnalysisReportParameter), ActionDBTypeEnum.Update);
             if (ValidationResults.Count() > 0)
             {

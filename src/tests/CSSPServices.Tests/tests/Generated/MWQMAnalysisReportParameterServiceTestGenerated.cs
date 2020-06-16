@@ -32,7 +32,7 @@ namespace CSSPServices.Tests
         private IServiceProvider Provider { get; set; }
         private IServiceCollection Services { get; set; }
         private ICultureService CultureService { get; set; }
-        private IMWQMAnalysisReportParameterService mwqmAnalysisReportParameterService { get; set; }
+        private IMWQMAnalysisReportParameterService MWQMAnalysisReportParameterService { get; set; }
         private CSSPDBContext db { get; set; }
         #endregion Properties
 
@@ -62,7 +62,7 @@ namespace CSSPServices.Tests
                MWQMAnalysisReportParameter mwqmAnalysisReportParameter = GetFilledRandomMWQMAnalysisReportParameter(""); 
 
                // List<MWQMAnalysisReportParameter>
-               var actionMWQMAnalysisReportParameterList = await mwqmAnalysisReportParameterService.GetMWQMAnalysisReportParameterList();
+               var actionMWQMAnalysisReportParameterList = await MWQMAnalysisReportParameterService.GetMWQMAnalysisReportParameterList();
                Assert.Equal(200, ((ObjectResult)actionMWQMAnalysisReportParameterList.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionMWQMAnalysisReportParameterList.Result).Value);
                List<MWQMAnalysisReportParameter> mwqmAnalysisReportParameterList = (List<MWQMAnalysisReportParameter>)((OkObjectResult)actionMWQMAnalysisReportParameterList.Result).Value;
@@ -70,22 +70,22 @@ namespace CSSPServices.Tests
                int count = ((List<MWQMAnalysisReportParameter>)((OkObjectResult)actionMWQMAnalysisReportParameterList.Result).Value).Count();
                 Assert.True(count > 0);
 
-               // Add MWQMAnalysisReportParameter
-               var actionMWQMAnalysisReportParameterAdded = await mwqmAnalysisReportParameterService.Add(mwqmAnalysisReportParameter);
+               // Post MWQMAnalysisReportParameter
+               var actionMWQMAnalysisReportParameterAdded = await MWQMAnalysisReportParameterService.Post(mwqmAnalysisReportParameter);
                Assert.Equal(200, ((ObjectResult)actionMWQMAnalysisReportParameterAdded.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionMWQMAnalysisReportParameterAdded.Result).Value);
                MWQMAnalysisReportParameter mwqmAnalysisReportParameterAdded = (MWQMAnalysisReportParameter)((OkObjectResult)actionMWQMAnalysisReportParameterAdded.Result).Value;
                Assert.NotNull(mwqmAnalysisReportParameterAdded);
 
-               // Update MWQMAnalysisReportParameter
-               var actionMWQMAnalysisReportParameterUpdated = await mwqmAnalysisReportParameterService.Update(mwqmAnalysisReportParameter);
+               // Put MWQMAnalysisReportParameter
+               var actionMWQMAnalysisReportParameterUpdated = await MWQMAnalysisReportParameterService.Put(mwqmAnalysisReportParameter);
                Assert.Equal(200, ((ObjectResult)actionMWQMAnalysisReportParameterUpdated.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionMWQMAnalysisReportParameterUpdated.Result).Value);
                MWQMAnalysisReportParameter mwqmAnalysisReportParameterUpdated = (MWQMAnalysisReportParameter)((OkObjectResult)actionMWQMAnalysisReportParameterUpdated.Result).Value;
                Assert.NotNull(mwqmAnalysisReportParameterUpdated);
 
                // Delete MWQMAnalysisReportParameter
-               var actionMWQMAnalysisReportParameterDeleted = await mwqmAnalysisReportParameterService.Delete(mwqmAnalysisReportParameter.MWQMAnalysisReportParameterID);
+               var actionMWQMAnalysisReportParameterDeleted = await MWQMAnalysisReportParameterService.Delete(mwqmAnalysisReportParameter.MWQMAnalysisReportParameterID);
                Assert.Equal(200, ((ObjectResult)actionMWQMAnalysisReportParameterDeleted.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionMWQMAnalysisReportParameterDeleted.Result).Value);
                bool retBool = (bool)((OkObjectResult)actionMWQMAnalysisReportParameterDeleted.Result).Value;
@@ -126,8 +126,8 @@ namespace CSSPServices.Tests
 
             CultureService.SetCulture(culture);
 
-            mwqmAnalysisReportParameterService = Provider.GetService<IMWQMAnalysisReportParameterService>();
-            Assert.NotNull(mwqmAnalysisReportParameterService);
+            MWQMAnalysisReportParameterService = Provider.GetService<IMWQMAnalysisReportParameterService>();
+            Assert.NotNull(MWQMAnalysisReportParameterService);
 
             return await Task.FromResult(true);
         }

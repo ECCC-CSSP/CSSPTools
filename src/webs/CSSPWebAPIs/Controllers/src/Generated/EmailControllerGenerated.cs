@@ -6,6 +6,7 @@
 
 using CSSPModels;
 using CSSPServices;
+using CultureServices.Services;
 using LoggedInServices.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -18,8 +19,8 @@ namespace CSSPWebAPI.Controllers
     {
         Task<ActionResult<List<Email>>> Get();
         Task<ActionResult<Email>> Get(int EmailID);
-        Task<ActionResult<Email>> Post(Email email);
-        Task<ActionResult<Email>> Put(Email email);
+        Task<ActionResult<Email>> Post(Email Email);
+        Task<ActionResult<Email>> Put(Email Email);
         Task<ActionResult<bool>> Delete(int EmailID);
     }
 
@@ -32,17 +33,17 @@ namespace CSSPWebAPI.Controllers
         #endregion Variables
 
         #region Properties
-        private IEmailService emailService { get; }
-        private CSSPDBContext db { get; }
-        private ILoggedInService loggedInService { get; }
+        private ICultureService CultureService { get; }
+        private ILoggedInService LoggedInService { get; }
+        private IEmailService EmailService { get; }
         #endregion Properties
 
         #region Constructors
-        public EmailController(IEmailService emailService, CSSPDBContext db, ILoggedInService loggedInService)
+        public EmailController(ICultureService CultureService, ILoggedInService LoggedInService, IEmailService EmailService)
         {
-            this.emailService = emailService;
-            this.db = db;
-            this.loggedInService = loggedInService;
+            this.CultureService = CultureService;
+            this.LoggedInService = LoggedInService;
+            this.EmailService = EmailService;
         }
         #endregion Constructors
 
@@ -50,27 +51,42 @@ namespace CSSPWebAPI.Controllers
         [HttpGet]
         public async Task<ActionResult<List<Email>>> Get()
         {
-            return await emailService.GetEmailList();
+            CultureService.SetCulture((string)RouteData.Values["culture"]);
+            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+
+            return await EmailService.GetEmailList();
         }
         [HttpGet("{EmailID}")]
         public async Task<ActionResult<Email>> Get(int EmailID)
         {
-            return await emailService.GetEmailWithEmailID(EmailID);
+            CultureService.SetCulture((string)RouteData.Values["culture"]);
+            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+
+            return await EmailService.GetEmailWithEmailID(EmailID);
         }
         [HttpPost]
-        public async Task<ActionResult<Email>> Post(Email email)
+        public async Task<ActionResult<Email>> Post(Email Email)
         {
-            return await emailService.Add(email);
+            CultureService.SetCulture((string)RouteData.Values["culture"]);
+            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+
+            return await EmailService.Post(Email);
         }
         [HttpPut]
-        public async Task<ActionResult<Email>> Put(Email email)
+        public async Task<ActionResult<Email>> Put(Email Email)
         {
-            return await emailService.Update(email);
+            CultureService.SetCulture((string)RouteData.Values["culture"]);
+            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+
+            return await EmailService.Put(Email);
         }
         [HttpDelete("{EmailID}")]
         public async Task<ActionResult<bool>> Delete(int EmailID)
         {
-            return await emailService.Delete(EmailID);
+            CultureService.SetCulture((string)RouteData.Values["culture"]);
+            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+
+            return await EmailService.Delete(EmailID);
         }
         #endregion Functions public
 

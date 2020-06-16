@@ -86,67 +86,67 @@ export class TideDataValueComponent implements OnInit, OnDestroy {
             {
               value: (AddOrUpdate === 'Add' ? 0 : (this.tidedatavalueService.tidedatavalueList[0]?.TideDataValueID)),
               disabled: false
-            }],
+            }, [ Validators.required ]],
           TideSiteTVItemID: [
             {
               value: this.tidedatavalueService.tidedatavalueList[0]?.TideSiteTVItemID,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           DateTime_Local: [
             {
               value: this.tidedatavalueService.tidedatavalueList[0]?.DateTime_Local,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           Keep: [
             {
               value: this.tidedatavalueService.tidedatavalueList[0]?.Keep,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           TideDataType: [
             {
               value: this.tidedatavalueService.tidedatavalueList[0]?.TideDataType,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           StorageDataType: [
             {
               value: this.tidedatavalueService.tidedatavalueList[0]?.StorageDataType,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           Depth_m: [
             {
               value: this.tidedatavalueService.tidedatavalueList[0]?.Depth_m,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           UVelocity_m_s: [
             {
               value: this.tidedatavalueService.tidedatavalueList[0]?.UVelocity_m_s,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           VVelocity_m_s: [
             {
               value: this.tidedatavalueService.tidedatavalueList[0]?.VVelocity_m_s,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           TideStart: [
             {
               value: this.tidedatavalueService.tidedatavalueList[0]?.TideStart,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           TideEnd: [
             {
               value: this.tidedatavalueService.tidedatavalueList[0]?.TideEnd,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           LastUpdateDate_UTC: [
             {
               value: this.tidedatavalueService.tidedatavalueList[0]?.LastUpdateDate_UTC,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           LastUpdateContactTVItemID: [
             {
               value: this.tidedatavalueService.tidedatavalueList[0]?.LastUpdateContactTVItemID,
               disabled: false
-            }],
+            }, [ Validators.required ]],
         }
       );
 

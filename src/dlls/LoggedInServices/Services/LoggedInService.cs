@@ -11,58 +11,110 @@ namespace LoggedInServices.Services
     public class LoggedInService : ILoggedInService
     {
         #region Variables
-        private string _ID;
-        private Contact _Contact;
-        private List<TVItemUserAuthorization> _TVItemUserAuthorizationList;
-        private List<TVTypeUserAuthorization> _TVTypeUserAuthorizationList;
-
         #endregion Variables
 
         #region Properties
         private ICultureService CultureService { get; }
         private CSSPDBContext db { get; }
+        private InMemoryDBContext dbIM { get; }
+        private LoggedInContactInfo LoggedInContactInfo { get; set; }
         #endregion Properties
 
         #region Constructors
-        public LoggedInService(ICultureService cultureService, CSSPDBContext db)
+        public LoggedInService(ICultureService cultureService, CSSPDBContext db, InMemoryDBContext dbIM)
         {
             CultureService = cultureService;
             this.db = db;
+            this.dbIM = dbIM;
         }
         #endregion Constructors
 
         #region Functions public
-        public async Task<string> GetID()
+        public async Task<bool> SetLoggedInContactInfo(string Id)
         {
-            return await Task.FromResult(_ID);
-        }
-        public async Task SetID(string value)
-        {
-            _ID = value;
-            _Contact = (from c in db.Contacts
-                        where c.Id == _ID
-                        select c).FirstOrDefault();
+            LoggedInContactInfo = new LoggedInContactInfo();
 
-            _TVItemUserAuthorizationList = (from c in db.TVItemUserAuthorizations
-                                            where c.ContactTVItemID == _Contact.ContactTVItemID
-                                            select c).ToList();
+            LoggedInContactInfo.LoggedInContact = (from c in dbIM.Contacts
+                                                   where c.Id == Id
+                                                   select c).FirstOrDefault();
 
-            _TVTypeUserAuthorizationList = (from c in db.TVTypeUserAuthorizations
-                                            where c.ContactTVItemID == _Contact.ContactTVItemID
-                                            select c).ToList();
+            if (LoggedInContactInfo.LoggedInContact == null)
+            {
+                LoggedInContactInfo.LoggedInContact = (from c in db.Contacts
+                                                       where c.Id == Id
+                                                       select c).FirstOrDefault();
 
+                if (LoggedInContactInfo.LoggedInContact == null)
+                {
+                    LoggedInContactInfo.TVTypeUserAuthorizationList = new List<TVTypeUserAuthorization>();
+                    LoggedInContactInfo.TVItemUserAuthorizationList = new List<TVItemUserAuthorization>();
+                }
+                else
+                {
+                    try
+                    {
+                        dbIM.Contacts.Add(LoggedInContactInfo.LoggedInContact);
+                        await dbIM.SaveChangesAsync();
+                    }
+                    catch (Exception ex)
+                    {
+                        // nothing yet
+                        return await Task.FromResult(false);
+                    }
+
+                    LoggedInContactInfo.TVTypeUserAuthorizationList = (from c in db.TVTypeUserAuthorizations
+                                                                       where c.ContactTVItemID == LoggedInContactInfo.LoggedInContact.ContactTVItemID
+                                                                       select c).ToList();
+
+                    if (LoggedInContactInfo.TVTypeUserAuthorizationList.Count > 0)
+                    {
+                        try
+                        {
+                            dbIM.TVTypeUserAuthorizations.AddRange(LoggedInContactInfo.TVTypeUserAuthorizationList);
+                            await dbIM.SaveChangesAsync();
+                        }
+                        catch (Exception ex)
+                        {
+                            // nothing yet
+                            return await Task.FromResult(false);
+                        }
+                    }
+
+                    LoggedInContactInfo.TVItemUserAuthorizationList = (from c in db.TVItemUserAuthorizations
+                                                                       where c.ContactTVItemID == LoggedInContactInfo.LoggedInContact.ContactTVItemID
+                                                                       select c).ToList();
+
+                    if (LoggedInContactInfo.TVItemUserAuthorizationList.Count > 0)
+                    {
+                        try
+                        {
+                            dbIM.TVItemUserAuthorizations.AddRange(LoggedInContactInfo.TVItemUserAuthorizationList);
+                            await dbIM.SaveChangesAsync();
+                        }
+                        catch (Exception ex)
+                        {
+                            // nothing yet
+                            return await Task.FromResult(false);
+                        }
+                    }
+                }
+            }
+            else
+            {
+                LoggedInContactInfo.TVTypeUserAuthorizationList = (from c in dbIM.TVTypeUserAuthorizations
+                                                                   where c.ContactTVItemID == LoggedInContactInfo.LoggedInContact.ContactTVItemID
+                                                                   select c).ToList();
+
+                LoggedInContactInfo.TVItemUserAuthorizationList = (from c in dbIM.TVItemUserAuthorizations
+                                                                   where c.ContactTVItemID == LoggedInContactInfo.LoggedInContact.ContactTVItemID
+                                                                   select c).ToList();
+            }
+
+            return await Task.FromResult(true);
         }
-        public async Task<Contact> GetContact()
+        public async Task<LoggedInContactInfo> GetLoggedInContactInfo()
         {
-            return await Task.FromResult(_Contact);
-        }
-        public async Task<List<TVItemUserAuthorization>> GetTVItemUserAuthorizationList()
-        {
-            return await Task.FromResult(_TVItemUserAuthorizationList);
-        }
-        public async Task<List<TVTypeUserAuthorization>> GetTVTypeUserAuthorizationList()
-        {
-            return await Task.FromResult(_TVTypeUserAuthorizationList);
+            return await Task.FromResult(LoggedInContactInfo);
         }
         #endregion Functions public
 

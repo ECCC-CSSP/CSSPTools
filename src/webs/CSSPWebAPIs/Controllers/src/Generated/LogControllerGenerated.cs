@@ -6,6 +6,7 @@
 
 using CSSPModels;
 using CSSPServices;
+using CultureServices.Services;
 using LoggedInServices.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -18,8 +19,8 @@ namespace CSSPWebAPI.Controllers
     {
         Task<ActionResult<List<Log>>> Get();
         Task<ActionResult<Log>> Get(int LogID);
-        Task<ActionResult<Log>> Post(Log log);
-        Task<ActionResult<Log>> Put(Log log);
+        Task<ActionResult<Log>> Post(Log Log);
+        Task<ActionResult<Log>> Put(Log Log);
         Task<ActionResult<bool>> Delete(int LogID);
     }
 
@@ -32,17 +33,17 @@ namespace CSSPWebAPI.Controllers
         #endregion Variables
 
         #region Properties
-        private ILogService logService { get; }
-        private CSSPDBContext db { get; }
-        private ILoggedInService loggedInService { get; }
+        private ICultureService CultureService { get; }
+        private ILoggedInService LoggedInService { get; }
+        private ILogService LogService { get; }
         #endregion Properties
 
         #region Constructors
-        public LogController(ILogService logService, CSSPDBContext db, ILoggedInService loggedInService)
+        public LogController(ICultureService CultureService, ILoggedInService LoggedInService, ILogService LogService)
         {
-            this.logService = logService;
-            this.db = db;
-            this.loggedInService = loggedInService;
+            this.CultureService = CultureService;
+            this.LoggedInService = LoggedInService;
+            this.LogService = LogService;
         }
         #endregion Constructors
 
@@ -50,27 +51,42 @@ namespace CSSPWebAPI.Controllers
         [HttpGet]
         public async Task<ActionResult<List<Log>>> Get()
         {
-            return await logService.GetLogList();
+            CultureService.SetCulture((string)RouteData.Values["culture"]);
+            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+
+            return await LogService.GetLogList();
         }
         [HttpGet("{LogID}")]
         public async Task<ActionResult<Log>> Get(int LogID)
         {
-            return await logService.GetLogWithLogID(LogID);
+            CultureService.SetCulture((string)RouteData.Values["culture"]);
+            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+
+            return await LogService.GetLogWithLogID(LogID);
         }
         [HttpPost]
-        public async Task<ActionResult<Log>> Post(Log log)
+        public async Task<ActionResult<Log>> Post(Log Log)
         {
-            return await logService.Add(log);
+            CultureService.SetCulture((string)RouteData.Values["culture"]);
+            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+
+            return await LogService.Post(Log);
         }
         [HttpPut]
-        public async Task<ActionResult<Log>> Put(Log log)
+        public async Task<ActionResult<Log>> Put(Log Log)
         {
-            return await logService.Update(log);
+            CultureService.SetCulture((string)RouteData.Values["culture"]);
+            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+
+            return await LogService.Put(Log);
         }
         [HttpDelete("{LogID}")]
         public async Task<ActionResult<bool>> Delete(int LogID)
         {
-            return await logService.Delete(LogID);
+            CultureService.SetCulture((string)RouteData.Values["culture"]);
+            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+
+            return await LogService.Delete(LogID);
         }
         #endregion Functions public
 

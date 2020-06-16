@@ -70,32 +70,32 @@ export class EmailComponent implements OnInit, OnDestroy {
             {
               value: (AddOrUpdate === 'Add' ? 0 : (this.emailService.emailList[0]?.EmailID)),
               disabled: false
-            }],
+            }, [ Validators.required ]],
           EmailTVItemID: [
             {
               value: this.emailService.emailList[0]?.EmailTVItemID,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           EmailAddress: [
             {
               value: this.emailService.emailList[0]?.EmailAddress,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           EmailType: [
             {
               value: this.emailService.emailList[0]?.EmailType,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           LastUpdateDate_UTC: [
             {
               value: this.emailService.emailList[0]?.LastUpdateDate_UTC,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           LastUpdateContactTVItemID: [
             {
               value: this.emailService.emailList[0]?.LastUpdateContactTVItemID,
               disabled: false
-            }],
+            }, [ Validators.required ]],
         }
       );
 

@@ -9,6 +9,7 @@ using CSSPEnums;
 using CSSPModels;
 using CultureServices.Resources;
 using CultureServices.Services;
+using LoggedInServices.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -22,11 +23,11 @@ namespace CSSPServices
 {
    public interface IMapInfoService
     {
-       Task<ActionResult<MapInfo>> GetMapInfoWithMapInfoID(int MapInfoID);
-       Task<ActionResult<List<MapInfo>>> GetMapInfoList();
-       Task<ActionResult<MapInfo>> Add(MapInfo mapinfo);
        Task<ActionResult<bool>> Delete(int MapInfoID);
-       Task<ActionResult<MapInfo>> Update(MapInfo mapinfo);
+       Task<ActionResult<List<MapInfo>>> GetMapInfoList();
+       Task<ActionResult<MapInfo>> GetMapInfoWithMapInfoID(int MapInfoID);
+       Task<ActionResult<MapInfo>> Post(MapInfo mapinfo);
+       Task<ActionResult<MapInfo>> Put(MapInfo mapinfo);
     }
     public partial class MapInfoService : ControllerBase, IMapInfoService
     {
@@ -36,14 +37,16 @@ namespace CSSPServices
         #region Properties
         private CSSPDBContext db { get; }
         private ICultureService CultureService { get; }
+        private ILoggedInService LoggedInService { get; }
         private IEnums enums { get; }
         private IEnumerable<ValidationResult> ValidationResults { get; set; }
         #endregion Properties
 
         #region Constructors
-        public MapInfoService(ICultureService CultureService, IEnums enums, CSSPDBContext db)
+        public MapInfoService(ICultureService CultureService, ILoggedInService LoggedInService, IEnums enums, CSSPDBContext db)
         {
             this.CultureService = CultureService;
+            this.LoggedInService = LoggedInService;
             this.enums = enums;
             this.db = db;
         }
@@ -52,6 +55,11 @@ namespace CSSPServices
         #region Functions public 
         public async Task<ActionResult<MapInfo>> GetMapInfoWithMapInfoID(int MapInfoID)
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             MapInfo mapinfo = (from c in db.MapInfos.AsNoTracking()
                     where c.MapInfoID == MapInfoID
                     select c).FirstOrDefault();
@@ -65,32 +73,22 @@ namespace CSSPServices
         }
         public async Task<ActionResult<List<MapInfo>>> GetMapInfoList()
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             List<MapInfo> mapinfoList = (from c in db.MapInfos.AsNoTracking() select c).Take(100).ToList();
 
             return await Task.FromResult(Ok(mapinfoList));
         }
-        public async Task<ActionResult<MapInfo>> Add(MapInfo mapInfo)
-        {
-            ValidationResults = Validate(new ValidationContext(mapInfo), ActionDBTypeEnum.Create);
-            if (ValidationResults.Count() > 0)
-            {
-               return await Task.FromResult(BadRequest(ValidationResults));
-            }
-
-            try
-            {
-               db.MapInfos.Add(mapInfo);
-               db.SaveChanges();
-            }
-            catch (DbUpdateException ex)
-            {
-               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
-            }
-
-            return await Task.FromResult(Ok(mapInfo));
-        }
         public async Task<ActionResult<bool>> Delete(int MapInfoID)
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             MapInfo mapInfo = (from c in db.MapInfos
                                where c.MapInfoID == MapInfoID
                                select c).FirstOrDefault();
@@ -112,8 +110,38 @@ namespace CSSPServices
 
             return await Task.FromResult(Ok(true));
         }
-        public async Task<ActionResult<MapInfo>> Update(MapInfo mapInfo)
+        public async Task<ActionResult<MapInfo>> Post(MapInfo mapInfo)
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
+            ValidationResults = Validate(new ValidationContext(mapInfo), ActionDBTypeEnum.Create);
+            if (ValidationResults.Count() > 0)
+            {
+               return await Task.FromResult(BadRequest(ValidationResults));
+            }
+
+            try
+            {
+               db.MapInfos.Add(mapInfo);
+               db.SaveChanges();
+            }
+            catch (DbUpdateException ex)
+            {
+               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+            }
+
+            return await Task.FromResult(Ok(mapInfo));
+        }
+        public async Task<ActionResult<MapInfo>> Put(MapInfo mapInfo)
+        {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             ValidationResults = Validate(new ValidationContext(mapInfo), ActionDBTypeEnum.Update);
             if (ValidationResults.Count() > 0)
             {

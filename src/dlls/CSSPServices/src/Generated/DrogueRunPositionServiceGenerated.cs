@@ -9,6 +9,7 @@ using CSSPEnums;
 using CSSPModels;
 using CultureServices.Resources;
 using CultureServices.Services;
+using LoggedInServices.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -22,11 +23,11 @@ namespace CSSPServices
 {
    public interface IDrogueRunPositionService
     {
-       Task<ActionResult<DrogueRunPosition>> GetDrogueRunPositionWithDrogueRunPositionID(int DrogueRunPositionID);
-       Task<ActionResult<List<DrogueRunPosition>>> GetDrogueRunPositionList();
-       Task<ActionResult<DrogueRunPosition>> Add(DrogueRunPosition droguerunposition);
        Task<ActionResult<bool>> Delete(int DrogueRunPositionID);
-       Task<ActionResult<DrogueRunPosition>> Update(DrogueRunPosition droguerunposition);
+       Task<ActionResult<List<DrogueRunPosition>>> GetDrogueRunPositionList();
+       Task<ActionResult<DrogueRunPosition>> GetDrogueRunPositionWithDrogueRunPositionID(int DrogueRunPositionID);
+       Task<ActionResult<DrogueRunPosition>> Post(DrogueRunPosition droguerunposition);
+       Task<ActionResult<DrogueRunPosition>> Put(DrogueRunPosition droguerunposition);
     }
     public partial class DrogueRunPositionService : ControllerBase, IDrogueRunPositionService
     {
@@ -36,14 +37,16 @@ namespace CSSPServices
         #region Properties
         private CSSPDBContext db { get; }
         private ICultureService CultureService { get; }
+        private ILoggedInService LoggedInService { get; }
         private IEnums enums { get; }
         private IEnumerable<ValidationResult> ValidationResults { get; set; }
         #endregion Properties
 
         #region Constructors
-        public DrogueRunPositionService(ICultureService CultureService, IEnums enums, CSSPDBContext db)
+        public DrogueRunPositionService(ICultureService CultureService, ILoggedInService LoggedInService, IEnums enums, CSSPDBContext db)
         {
             this.CultureService = CultureService;
+            this.LoggedInService = LoggedInService;
             this.enums = enums;
             this.db = db;
         }
@@ -52,6 +55,11 @@ namespace CSSPServices
         #region Functions public 
         public async Task<ActionResult<DrogueRunPosition>> GetDrogueRunPositionWithDrogueRunPositionID(int DrogueRunPositionID)
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             DrogueRunPosition droguerunposition = (from c in db.DrogueRunPositions.AsNoTracking()
                     where c.DrogueRunPositionID == DrogueRunPositionID
                     select c).FirstOrDefault();
@@ -65,32 +73,22 @@ namespace CSSPServices
         }
         public async Task<ActionResult<List<DrogueRunPosition>>> GetDrogueRunPositionList()
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             List<DrogueRunPosition> droguerunpositionList = (from c in db.DrogueRunPositions.AsNoTracking() select c).Take(100).ToList();
 
             return await Task.FromResult(Ok(droguerunpositionList));
         }
-        public async Task<ActionResult<DrogueRunPosition>> Add(DrogueRunPosition drogueRunPosition)
-        {
-            ValidationResults = Validate(new ValidationContext(drogueRunPosition), ActionDBTypeEnum.Create);
-            if (ValidationResults.Count() > 0)
-            {
-               return await Task.FromResult(BadRequest(ValidationResults));
-            }
-
-            try
-            {
-               db.DrogueRunPositions.Add(drogueRunPosition);
-               db.SaveChanges();
-            }
-            catch (DbUpdateException ex)
-            {
-               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
-            }
-
-            return await Task.FromResult(Ok(drogueRunPosition));
-        }
         public async Task<ActionResult<bool>> Delete(int DrogueRunPositionID)
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             DrogueRunPosition drogueRunPosition = (from c in db.DrogueRunPositions
                                where c.DrogueRunPositionID == DrogueRunPositionID
                                select c).FirstOrDefault();
@@ -112,8 +110,38 @@ namespace CSSPServices
 
             return await Task.FromResult(Ok(true));
         }
-        public async Task<ActionResult<DrogueRunPosition>> Update(DrogueRunPosition drogueRunPosition)
+        public async Task<ActionResult<DrogueRunPosition>> Post(DrogueRunPosition drogueRunPosition)
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
+            ValidationResults = Validate(new ValidationContext(drogueRunPosition), ActionDBTypeEnum.Create);
+            if (ValidationResults.Count() > 0)
+            {
+               return await Task.FromResult(BadRequest(ValidationResults));
+            }
+
+            try
+            {
+               db.DrogueRunPositions.Add(drogueRunPosition);
+               db.SaveChanges();
+            }
+            catch (DbUpdateException ex)
+            {
+               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+            }
+
+            return await Task.FromResult(Ok(drogueRunPosition));
+        }
+        public async Task<ActionResult<DrogueRunPosition>> Put(DrogueRunPosition drogueRunPosition)
+        {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             ValidationResults = Validate(new ValidationContext(drogueRunPosition), ActionDBTypeEnum.Update);
             if (ValidationResults.Count() > 0)
             {

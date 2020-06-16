@@ -62,32 +62,32 @@ export class ContactShortcutComponent implements OnInit, OnDestroy {
             {
               value: (AddOrUpdate === 'Add' ? 0 : (this.contactshortcutService.contactshortcutList[0]?.ContactShortcutID)),
               disabled: false
-            }],
+            }, [ Validators.required ]],
           ContactID: [
             {
               value: this.contactshortcutService.contactshortcutList[0]?.ContactID,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           ShortCutText: [
             {
               value: this.contactshortcutService.contactshortcutList[0]?.ShortCutText,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           ShortCutAddress: [
             {
               value: this.contactshortcutService.contactshortcutList[0]?.ShortCutAddress,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           LastUpdateDate_UTC: [
             {
               value: this.contactshortcutService.contactshortcutList[0]?.LastUpdateDate_UTC,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           LastUpdateContactTVItemID: [
             {
               value: this.contactshortcutService.contactshortcutList[0]?.LastUpdateContactTVItemID,
               disabled: false
-            }],
+            }, [ Validators.required ]],
         }
       );
 

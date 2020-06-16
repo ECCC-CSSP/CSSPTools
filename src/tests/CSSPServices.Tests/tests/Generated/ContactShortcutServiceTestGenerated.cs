@@ -32,7 +32,7 @@ namespace CSSPServices.Tests
         private IServiceProvider Provider { get; set; }
         private IServiceCollection Services { get; set; }
         private ICultureService CultureService { get; set; }
-        private IContactShortcutService contactShortcutService { get; set; }
+        private IContactShortcutService ContactShortcutService { get; set; }
         private CSSPDBContext db { get; set; }
         #endregion Properties
 
@@ -62,7 +62,7 @@ namespace CSSPServices.Tests
                ContactShortcut contactShortcut = GetFilledRandomContactShortcut(""); 
 
                // List<ContactShortcut>
-               var actionContactShortcutList = await contactShortcutService.GetContactShortcutList();
+               var actionContactShortcutList = await ContactShortcutService.GetContactShortcutList();
                Assert.Equal(200, ((ObjectResult)actionContactShortcutList.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionContactShortcutList.Result).Value);
                List<ContactShortcut> contactShortcutList = (List<ContactShortcut>)((OkObjectResult)actionContactShortcutList.Result).Value;
@@ -70,22 +70,22 @@ namespace CSSPServices.Tests
                int count = ((List<ContactShortcut>)((OkObjectResult)actionContactShortcutList.Result).Value).Count();
                 Assert.True(count > 0);
 
-               // Add ContactShortcut
-               var actionContactShortcutAdded = await contactShortcutService.Add(contactShortcut);
+               // Post ContactShortcut
+               var actionContactShortcutAdded = await ContactShortcutService.Post(contactShortcut);
                Assert.Equal(200, ((ObjectResult)actionContactShortcutAdded.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionContactShortcutAdded.Result).Value);
                ContactShortcut contactShortcutAdded = (ContactShortcut)((OkObjectResult)actionContactShortcutAdded.Result).Value;
                Assert.NotNull(contactShortcutAdded);
 
-               // Update ContactShortcut
-               var actionContactShortcutUpdated = await contactShortcutService.Update(contactShortcut);
+               // Put ContactShortcut
+               var actionContactShortcutUpdated = await ContactShortcutService.Put(contactShortcut);
                Assert.Equal(200, ((ObjectResult)actionContactShortcutUpdated.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionContactShortcutUpdated.Result).Value);
                ContactShortcut contactShortcutUpdated = (ContactShortcut)((OkObjectResult)actionContactShortcutUpdated.Result).Value;
                Assert.NotNull(contactShortcutUpdated);
 
                // Delete ContactShortcut
-               var actionContactShortcutDeleted = await contactShortcutService.Delete(contactShortcut.ContactShortcutID);
+               var actionContactShortcutDeleted = await ContactShortcutService.Delete(contactShortcut.ContactShortcutID);
                Assert.Equal(200, ((ObjectResult)actionContactShortcutDeleted.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionContactShortcutDeleted.Result).Value);
                bool retBool = (bool)((OkObjectResult)actionContactShortcutDeleted.Result).Value;
@@ -126,8 +126,8 @@ namespace CSSPServices.Tests
 
             CultureService.SetCulture(culture);
 
-            contactShortcutService = Provider.GetService<IContactShortcutService>();
-            Assert.NotNull(contactShortcutService);
+            ContactShortcutService = Provider.GetService<IContactShortcutService>();
+            Assert.NotNull(ContactShortcutService);
 
             return await Task.FromResult(true);
         }

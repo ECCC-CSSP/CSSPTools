@@ -62,27 +62,27 @@ export class RatingCurveComponent implements OnInit, OnDestroy {
             {
               value: (AddOrUpdate === 'Add' ? 0 : (this.ratingcurveService.ratingcurveList[0]?.RatingCurveID)),
               disabled: false
-            }],
+            }, [ Validators.required ]],
           HydrometricSiteID: [
             {
               value: this.ratingcurveService.ratingcurveList[0]?.HydrometricSiteID,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           RatingCurveNumber: [
             {
               value: this.ratingcurveService.ratingcurveList[0]?.RatingCurveNumber,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           LastUpdateDate_UTC: [
             {
               value: this.ratingcurveService.ratingcurveList[0]?.LastUpdateDate_UTC,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           LastUpdateContactTVItemID: [
             {
               value: this.ratingcurveService.ratingcurveList[0]?.LastUpdateContactTVItemID,
               disabled: false
-            }],
+            }, [ Validators.required ]],
         }
       );
 

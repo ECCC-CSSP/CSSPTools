@@ -32,7 +32,7 @@ namespace CSSPServices.Tests
         private IServiceProvider Provider { get; set; }
         private IServiceCollection Services { get; set; }
         private ICultureService CultureService { get; set; }
-        private IResetPasswordService resetPasswordService { get; set; }
+        private IResetPasswordService ResetPasswordService { get; set; }
         private CSSPDBContext db { get; set; }
         #endregion Properties
 
@@ -62,7 +62,7 @@ namespace CSSPServices.Tests
                ResetPassword resetPassword = GetFilledRandomResetPassword(""); 
 
                // List<ResetPassword>
-               var actionResetPasswordList = await resetPasswordService.GetResetPasswordList();
+               var actionResetPasswordList = await ResetPasswordService.GetResetPasswordList();
                Assert.Equal(200, ((ObjectResult)actionResetPasswordList.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionResetPasswordList.Result).Value);
                List<ResetPassword> resetPasswordList = (List<ResetPassword>)((OkObjectResult)actionResetPasswordList.Result).Value;
@@ -70,22 +70,22 @@ namespace CSSPServices.Tests
                int count = ((List<ResetPassword>)((OkObjectResult)actionResetPasswordList.Result).Value).Count();
                 Assert.True(count > 0);
 
-               // Add ResetPassword
-               var actionResetPasswordAdded = await resetPasswordService.Add(resetPassword);
+               // Post ResetPassword
+               var actionResetPasswordAdded = await ResetPasswordService.Post(resetPassword);
                Assert.Equal(200, ((ObjectResult)actionResetPasswordAdded.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionResetPasswordAdded.Result).Value);
                ResetPassword resetPasswordAdded = (ResetPassword)((OkObjectResult)actionResetPasswordAdded.Result).Value;
                Assert.NotNull(resetPasswordAdded);
 
-               // Update ResetPassword
-               var actionResetPasswordUpdated = await resetPasswordService.Update(resetPassword);
+               // Put ResetPassword
+               var actionResetPasswordUpdated = await ResetPasswordService.Put(resetPassword);
                Assert.Equal(200, ((ObjectResult)actionResetPasswordUpdated.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionResetPasswordUpdated.Result).Value);
                ResetPassword resetPasswordUpdated = (ResetPassword)((OkObjectResult)actionResetPasswordUpdated.Result).Value;
                Assert.NotNull(resetPasswordUpdated);
 
                // Delete ResetPassword
-               var actionResetPasswordDeleted = await resetPasswordService.Delete(resetPassword.ResetPasswordID);
+               var actionResetPasswordDeleted = await ResetPasswordService.Delete(resetPassword.ResetPasswordID);
                Assert.Equal(200, ((ObjectResult)actionResetPasswordDeleted.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionResetPasswordDeleted.Result).Value);
                bool retBool = (bool)((OkObjectResult)actionResetPasswordDeleted.Result).Value;
@@ -126,8 +126,8 @@ namespace CSSPServices.Tests
 
             CultureService.SetCulture(culture);
 
-            resetPasswordService = Provider.GetService<IResetPasswordService>();
-            Assert.NotNull(resetPasswordService);
+            ResetPasswordService = Provider.GetService<IResetPasswordService>();
+            Assert.NotNull(ResetPasswordService);
 
             return await Task.FromResult(true);
         }

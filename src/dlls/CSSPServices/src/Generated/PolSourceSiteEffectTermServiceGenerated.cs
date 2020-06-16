@@ -9,6 +9,7 @@ using CSSPEnums;
 using CSSPModels;
 using CultureServices.Resources;
 using CultureServices.Services;
+using LoggedInServices.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -22,11 +23,11 @@ namespace CSSPServices
 {
    public interface IPolSourceSiteEffectTermService
     {
-       Task<ActionResult<PolSourceSiteEffectTerm>> GetPolSourceSiteEffectTermWithPolSourceSiteEffectTermID(int PolSourceSiteEffectTermID);
-       Task<ActionResult<List<PolSourceSiteEffectTerm>>> GetPolSourceSiteEffectTermList();
-       Task<ActionResult<PolSourceSiteEffectTerm>> Add(PolSourceSiteEffectTerm polsourcesiteeffectterm);
        Task<ActionResult<bool>> Delete(int PolSourceSiteEffectTermID);
-       Task<ActionResult<PolSourceSiteEffectTerm>> Update(PolSourceSiteEffectTerm polsourcesiteeffectterm);
+       Task<ActionResult<List<PolSourceSiteEffectTerm>>> GetPolSourceSiteEffectTermList();
+       Task<ActionResult<PolSourceSiteEffectTerm>> GetPolSourceSiteEffectTermWithPolSourceSiteEffectTermID(int PolSourceSiteEffectTermID);
+       Task<ActionResult<PolSourceSiteEffectTerm>> Post(PolSourceSiteEffectTerm polsourcesiteeffectterm);
+       Task<ActionResult<PolSourceSiteEffectTerm>> Put(PolSourceSiteEffectTerm polsourcesiteeffectterm);
     }
     public partial class PolSourceSiteEffectTermService : ControllerBase, IPolSourceSiteEffectTermService
     {
@@ -36,14 +37,16 @@ namespace CSSPServices
         #region Properties
         private CSSPDBContext db { get; }
         private ICultureService CultureService { get; }
+        private ILoggedInService LoggedInService { get; }
         private IEnums enums { get; }
         private IEnumerable<ValidationResult> ValidationResults { get; set; }
         #endregion Properties
 
         #region Constructors
-        public PolSourceSiteEffectTermService(ICultureService CultureService, IEnums enums, CSSPDBContext db)
+        public PolSourceSiteEffectTermService(ICultureService CultureService, ILoggedInService LoggedInService, IEnums enums, CSSPDBContext db)
         {
             this.CultureService = CultureService;
+            this.LoggedInService = LoggedInService;
             this.enums = enums;
             this.db = db;
         }
@@ -52,6 +55,11 @@ namespace CSSPServices
         #region Functions public 
         public async Task<ActionResult<PolSourceSiteEffectTerm>> GetPolSourceSiteEffectTermWithPolSourceSiteEffectTermID(int PolSourceSiteEffectTermID)
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             PolSourceSiteEffectTerm polsourcesiteeffectterm = (from c in db.PolSourceSiteEffectTerms.AsNoTracking()
                     where c.PolSourceSiteEffectTermID == PolSourceSiteEffectTermID
                     select c).FirstOrDefault();
@@ -65,32 +73,22 @@ namespace CSSPServices
         }
         public async Task<ActionResult<List<PolSourceSiteEffectTerm>>> GetPolSourceSiteEffectTermList()
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             List<PolSourceSiteEffectTerm> polsourcesiteeffecttermList = (from c in db.PolSourceSiteEffectTerms.AsNoTracking() select c).Take(100).ToList();
 
             return await Task.FromResult(Ok(polsourcesiteeffecttermList));
         }
-        public async Task<ActionResult<PolSourceSiteEffectTerm>> Add(PolSourceSiteEffectTerm polSourceSiteEffectTerm)
-        {
-            ValidationResults = Validate(new ValidationContext(polSourceSiteEffectTerm), ActionDBTypeEnum.Create);
-            if (ValidationResults.Count() > 0)
-            {
-               return await Task.FromResult(BadRequest(ValidationResults));
-            }
-
-            try
-            {
-               db.PolSourceSiteEffectTerms.Add(polSourceSiteEffectTerm);
-               db.SaveChanges();
-            }
-            catch (DbUpdateException ex)
-            {
-               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
-            }
-
-            return await Task.FromResult(Ok(polSourceSiteEffectTerm));
-        }
         public async Task<ActionResult<bool>> Delete(int PolSourceSiteEffectTermID)
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             PolSourceSiteEffectTerm polSourceSiteEffectTerm = (from c in db.PolSourceSiteEffectTerms
                                where c.PolSourceSiteEffectTermID == PolSourceSiteEffectTermID
                                select c).FirstOrDefault();
@@ -112,8 +110,38 @@ namespace CSSPServices
 
             return await Task.FromResult(Ok(true));
         }
-        public async Task<ActionResult<PolSourceSiteEffectTerm>> Update(PolSourceSiteEffectTerm polSourceSiteEffectTerm)
+        public async Task<ActionResult<PolSourceSiteEffectTerm>> Post(PolSourceSiteEffectTerm polSourceSiteEffectTerm)
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
+            ValidationResults = Validate(new ValidationContext(polSourceSiteEffectTerm), ActionDBTypeEnum.Create);
+            if (ValidationResults.Count() > 0)
+            {
+               return await Task.FromResult(BadRequest(ValidationResults));
+            }
+
+            try
+            {
+               db.PolSourceSiteEffectTerms.Add(polSourceSiteEffectTerm);
+               db.SaveChanges();
+            }
+            catch (DbUpdateException ex)
+            {
+               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+            }
+
+            return await Task.FromResult(Ok(polSourceSiteEffectTerm));
+        }
+        public async Task<ActionResult<PolSourceSiteEffectTerm>> Put(PolSourceSiteEffectTerm polSourceSiteEffectTerm)
+        {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             ValidationResults = Validate(new ValidationContext(polSourceSiteEffectTerm), ActionDBTypeEnum.Update);
             if (ValidationResults.Count() > 0)
             {

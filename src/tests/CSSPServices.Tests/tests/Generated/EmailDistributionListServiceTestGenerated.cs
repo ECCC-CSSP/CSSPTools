@@ -32,7 +32,7 @@ namespace CSSPServices.Tests
         private IServiceProvider Provider { get; set; }
         private IServiceCollection Services { get; set; }
         private ICultureService CultureService { get; set; }
-        private IEmailDistributionListService emailDistributionListService { get; set; }
+        private IEmailDistributionListService EmailDistributionListService { get; set; }
         private CSSPDBContext db { get; set; }
         #endregion Properties
 
@@ -62,7 +62,7 @@ namespace CSSPServices.Tests
                EmailDistributionList emailDistributionList = GetFilledRandomEmailDistributionList(""); 
 
                // List<EmailDistributionList>
-               var actionEmailDistributionListList = await emailDistributionListService.GetEmailDistributionListList();
+               var actionEmailDistributionListList = await EmailDistributionListService.GetEmailDistributionListList();
                Assert.Equal(200, ((ObjectResult)actionEmailDistributionListList.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionEmailDistributionListList.Result).Value);
                List<EmailDistributionList> emailDistributionListList = (List<EmailDistributionList>)((OkObjectResult)actionEmailDistributionListList.Result).Value;
@@ -70,22 +70,22 @@ namespace CSSPServices.Tests
                int count = ((List<EmailDistributionList>)((OkObjectResult)actionEmailDistributionListList.Result).Value).Count();
                 Assert.True(count > 0);
 
-               // Add EmailDistributionList
-               var actionEmailDistributionListAdded = await emailDistributionListService.Add(emailDistributionList);
+               // Post EmailDistributionList
+               var actionEmailDistributionListAdded = await EmailDistributionListService.Post(emailDistributionList);
                Assert.Equal(200, ((ObjectResult)actionEmailDistributionListAdded.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionEmailDistributionListAdded.Result).Value);
                EmailDistributionList emailDistributionListAdded = (EmailDistributionList)((OkObjectResult)actionEmailDistributionListAdded.Result).Value;
                Assert.NotNull(emailDistributionListAdded);
 
-               // Update EmailDistributionList
-               var actionEmailDistributionListUpdated = await emailDistributionListService.Update(emailDistributionList);
+               // Put EmailDistributionList
+               var actionEmailDistributionListUpdated = await EmailDistributionListService.Put(emailDistributionList);
                Assert.Equal(200, ((ObjectResult)actionEmailDistributionListUpdated.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionEmailDistributionListUpdated.Result).Value);
                EmailDistributionList emailDistributionListUpdated = (EmailDistributionList)((OkObjectResult)actionEmailDistributionListUpdated.Result).Value;
                Assert.NotNull(emailDistributionListUpdated);
 
                // Delete EmailDistributionList
-               var actionEmailDistributionListDeleted = await emailDistributionListService.Delete(emailDistributionList.EmailDistributionListID);
+               var actionEmailDistributionListDeleted = await EmailDistributionListService.Delete(emailDistributionList.EmailDistributionListID);
                Assert.Equal(200, ((ObjectResult)actionEmailDistributionListDeleted.Result).StatusCode);
                Assert.NotNull(((OkObjectResult)actionEmailDistributionListDeleted.Result).Value);
                bool retBool = (bool)((OkObjectResult)actionEmailDistributionListDeleted.Result).Value;
@@ -126,8 +126,8 @@ namespace CSSPServices.Tests
 
             CultureService.SetCulture(culture);
 
-            emailDistributionListService = Provider.GetService<IEmailDistributionListService>();
-            Assert.NotNull(emailDistributionListService);
+            EmailDistributionListService = Provider.GetService<IEmailDistributionListService>();
+            Assert.NotNull(EmailDistributionListService);
 
             return await Task.FromResult(true);
         }

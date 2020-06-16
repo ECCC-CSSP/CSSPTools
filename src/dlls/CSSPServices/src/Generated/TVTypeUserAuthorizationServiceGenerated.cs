@@ -9,6 +9,7 @@ using CSSPEnums;
 using CSSPModels;
 using CultureServices.Resources;
 using CultureServices.Services;
+using LoggedInServices.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -22,11 +23,11 @@ namespace CSSPServices
 {
    public interface ITVTypeUserAuthorizationService
     {
-       Task<ActionResult<TVTypeUserAuthorization>> GetTVTypeUserAuthorizationWithTVTypeUserAuthorizationID(int TVTypeUserAuthorizationID);
-       Task<ActionResult<List<TVTypeUserAuthorization>>> GetTVTypeUserAuthorizationList();
-       Task<ActionResult<TVTypeUserAuthorization>> Add(TVTypeUserAuthorization tvtypeuserauthorization);
        Task<ActionResult<bool>> Delete(int TVTypeUserAuthorizationID);
-       Task<ActionResult<TVTypeUserAuthorization>> Update(TVTypeUserAuthorization tvtypeuserauthorization);
+       Task<ActionResult<List<TVTypeUserAuthorization>>> GetTVTypeUserAuthorizationList();
+       Task<ActionResult<TVTypeUserAuthorization>> GetTVTypeUserAuthorizationWithTVTypeUserAuthorizationID(int TVTypeUserAuthorizationID);
+       Task<ActionResult<TVTypeUserAuthorization>> Post(TVTypeUserAuthorization tvtypeuserauthorization);
+       Task<ActionResult<TVTypeUserAuthorization>> Put(TVTypeUserAuthorization tvtypeuserauthorization);
     }
     public partial class TVTypeUserAuthorizationService : ControllerBase, ITVTypeUserAuthorizationService
     {
@@ -36,14 +37,16 @@ namespace CSSPServices
         #region Properties
         private CSSPDBContext db { get; }
         private ICultureService CultureService { get; }
+        private ILoggedInService LoggedInService { get; }
         private IEnums enums { get; }
         private IEnumerable<ValidationResult> ValidationResults { get; set; }
         #endregion Properties
 
         #region Constructors
-        public TVTypeUserAuthorizationService(ICultureService CultureService, IEnums enums, CSSPDBContext db)
+        public TVTypeUserAuthorizationService(ICultureService CultureService, ILoggedInService LoggedInService, IEnums enums, CSSPDBContext db)
         {
             this.CultureService = CultureService;
+            this.LoggedInService = LoggedInService;
             this.enums = enums;
             this.db = db;
         }
@@ -52,6 +55,11 @@ namespace CSSPServices
         #region Functions public 
         public async Task<ActionResult<TVTypeUserAuthorization>> GetTVTypeUserAuthorizationWithTVTypeUserAuthorizationID(int TVTypeUserAuthorizationID)
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             TVTypeUserAuthorization tvtypeuserauthorization = (from c in db.TVTypeUserAuthorizations.AsNoTracking()
                     where c.TVTypeUserAuthorizationID == TVTypeUserAuthorizationID
                     select c).FirstOrDefault();
@@ -65,32 +73,22 @@ namespace CSSPServices
         }
         public async Task<ActionResult<List<TVTypeUserAuthorization>>> GetTVTypeUserAuthorizationList()
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             List<TVTypeUserAuthorization> tvtypeuserauthorizationList = (from c in db.TVTypeUserAuthorizations.AsNoTracking() select c).Take(100).ToList();
 
             return await Task.FromResult(Ok(tvtypeuserauthorizationList));
         }
-        public async Task<ActionResult<TVTypeUserAuthorization>> Add(TVTypeUserAuthorization tvTypeUserAuthorization)
-        {
-            ValidationResults = Validate(new ValidationContext(tvTypeUserAuthorization), ActionDBTypeEnum.Create);
-            if (ValidationResults.Count() > 0)
-            {
-               return await Task.FromResult(BadRequest(ValidationResults));
-            }
-
-            try
-            {
-               db.TVTypeUserAuthorizations.Add(tvTypeUserAuthorization);
-               db.SaveChanges();
-            }
-            catch (DbUpdateException ex)
-            {
-               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
-            }
-
-            return await Task.FromResult(Ok(tvTypeUserAuthorization));
-        }
         public async Task<ActionResult<bool>> Delete(int TVTypeUserAuthorizationID)
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             TVTypeUserAuthorization tvTypeUserAuthorization = (from c in db.TVTypeUserAuthorizations
                                where c.TVTypeUserAuthorizationID == TVTypeUserAuthorizationID
                                select c).FirstOrDefault();
@@ -112,8 +110,38 @@ namespace CSSPServices
 
             return await Task.FromResult(Ok(true));
         }
-        public async Task<ActionResult<TVTypeUserAuthorization>> Update(TVTypeUserAuthorization tvTypeUserAuthorization)
+        public async Task<ActionResult<TVTypeUserAuthorization>> Post(TVTypeUserAuthorization tvTypeUserAuthorization)
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
+            ValidationResults = Validate(new ValidationContext(tvTypeUserAuthorization), ActionDBTypeEnum.Create);
+            if (ValidationResults.Count() > 0)
+            {
+               return await Task.FromResult(BadRequest(ValidationResults));
+            }
+
+            try
+            {
+               db.TVTypeUserAuthorizations.Add(tvTypeUserAuthorization);
+               db.SaveChanges();
+            }
+            catch (DbUpdateException ex)
+            {
+               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+            }
+
+            return await Task.FromResult(Ok(tvTypeUserAuthorization));
+        }
+        public async Task<ActionResult<TVTypeUserAuthorization>> Put(TVTypeUserAuthorization tvTypeUserAuthorization)
+        {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             ValidationResults = Validate(new ValidationContext(tvTypeUserAuthorization), ActionDBTypeEnum.Update);
             if (ValidationResults.Count() > 0)
             {

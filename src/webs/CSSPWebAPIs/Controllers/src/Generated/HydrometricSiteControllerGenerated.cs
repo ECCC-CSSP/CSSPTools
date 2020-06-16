@@ -6,6 +6,7 @@
 
 using CSSPModels;
 using CSSPServices;
+using CultureServices.Services;
 using LoggedInServices.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -18,8 +19,8 @@ namespace CSSPWebAPI.Controllers
     {
         Task<ActionResult<List<HydrometricSite>>> Get();
         Task<ActionResult<HydrometricSite>> Get(int HydrometricSiteID);
-        Task<ActionResult<HydrometricSite>> Post(HydrometricSite hydrometricSite);
-        Task<ActionResult<HydrometricSite>> Put(HydrometricSite hydrometricSite);
+        Task<ActionResult<HydrometricSite>> Post(HydrometricSite HydrometricSite);
+        Task<ActionResult<HydrometricSite>> Put(HydrometricSite HydrometricSite);
         Task<ActionResult<bool>> Delete(int HydrometricSiteID);
     }
 
@@ -32,17 +33,17 @@ namespace CSSPWebAPI.Controllers
         #endregion Variables
 
         #region Properties
-        private IHydrometricSiteService hydrometricSiteService { get; }
-        private CSSPDBContext db { get; }
-        private ILoggedInService loggedInService { get; }
+        private ICultureService CultureService { get; }
+        private ILoggedInService LoggedInService { get; }
+        private IHydrometricSiteService HydrometricSiteService { get; }
         #endregion Properties
 
         #region Constructors
-        public HydrometricSiteController(IHydrometricSiteService hydrometricSiteService, CSSPDBContext db, ILoggedInService loggedInService)
+        public HydrometricSiteController(ICultureService CultureService, ILoggedInService LoggedInService, IHydrometricSiteService HydrometricSiteService)
         {
-            this.hydrometricSiteService = hydrometricSiteService;
-            this.db = db;
-            this.loggedInService = loggedInService;
+            this.CultureService = CultureService;
+            this.LoggedInService = LoggedInService;
+            this.HydrometricSiteService = HydrometricSiteService;
         }
         #endregion Constructors
 
@@ -50,27 +51,42 @@ namespace CSSPWebAPI.Controllers
         [HttpGet]
         public async Task<ActionResult<List<HydrometricSite>>> Get()
         {
-            return await hydrometricSiteService.GetHydrometricSiteList();
+            CultureService.SetCulture((string)RouteData.Values["culture"]);
+            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+
+            return await HydrometricSiteService.GetHydrometricSiteList();
         }
         [HttpGet("{HydrometricSiteID}")]
         public async Task<ActionResult<HydrometricSite>> Get(int HydrometricSiteID)
         {
-            return await hydrometricSiteService.GetHydrometricSiteWithHydrometricSiteID(HydrometricSiteID);
+            CultureService.SetCulture((string)RouteData.Values["culture"]);
+            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+
+            return await HydrometricSiteService.GetHydrometricSiteWithHydrometricSiteID(HydrometricSiteID);
         }
         [HttpPost]
-        public async Task<ActionResult<HydrometricSite>> Post(HydrometricSite hydrometricSite)
+        public async Task<ActionResult<HydrometricSite>> Post(HydrometricSite HydrometricSite)
         {
-            return await hydrometricSiteService.Add(hydrometricSite);
+            CultureService.SetCulture((string)RouteData.Values["culture"]);
+            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+
+            return await HydrometricSiteService.Post(HydrometricSite);
         }
         [HttpPut]
-        public async Task<ActionResult<HydrometricSite>> Put(HydrometricSite hydrometricSite)
+        public async Task<ActionResult<HydrometricSite>> Put(HydrometricSite HydrometricSite)
         {
-            return await hydrometricSiteService.Update(hydrometricSite);
+            CultureService.SetCulture((string)RouteData.Values["culture"]);
+            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+
+            return await HydrometricSiteService.Put(HydrometricSite);
         }
         [HttpDelete("{HydrometricSiteID}")]
         public async Task<ActionResult<bool>> Delete(int HydrometricSiteID)
         {
-            return await hydrometricSiteService.Delete(HydrometricSiteID);
+            CultureService.SetCulture((string)RouteData.Values["culture"]);
+            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+
+            return await HydrometricSiteService.Delete(HydrometricSiteID);
         }
         #endregion Functions public
 

@@ -62,112 +62,112 @@ export class HydrometricSiteComponent implements OnInit, OnDestroy {
             {
               value: (AddOrUpdate === 'Add' ? 0 : (this.hydrometricsiteService.hydrometricsiteList[0]?.HydrometricSiteID)),
               disabled: false
-            }],
+            }, [ Validators.required ]],
           HydrometricSiteTVItemID: [
             {
               value: this.hydrometricsiteService.hydrometricsiteList[0]?.HydrometricSiteTVItemID,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           FedSiteNumber: [
             {
               value: this.hydrometricsiteService.hydrometricsiteList[0]?.FedSiteNumber,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           QuebecSiteNumber: [
             {
               value: this.hydrometricsiteService.hydrometricsiteList[0]?.QuebecSiteNumber,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           HydrometricSiteName: [
             {
               value: this.hydrometricsiteService.hydrometricsiteList[0]?.HydrometricSiteName,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           Description: [
             {
               value: this.hydrometricsiteService.hydrometricsiteList[0]?.Description,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           Province: [
             {
               value: this.hydrometricsiteService.hydrometricsiteList[0]?.Province,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           Elevation_m: [
             {
               value: this.hydrometricsiteService.hydrometricsiteList[0]?.Elevation_m,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           StartDate_Local: [
             {
               value: this.hydrometricsiteService.hydrometricsiteList[0]?.StartDate_Local,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           EndDate_Local: [
             {
               value: this.hydrometricsiteService.hydrometricsiteList[0]?.EndDate_Local,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           TimeOffset_hour: [
             {
               value: this.hydrometricsiteService.hydrometricsiteList[0]?.TimeOffset_hour,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           DrainageArea_km2: [
             {
               value: this.hydrometricsiteService.hydrometricsiteList[0]?.DrainageArea_km2,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           IsNatural: [
             {
               value: this.hydrometricsiteService.hydrometricsiteList[0]?.IsNatural,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           IsActive: [
             {
               value: this.hydrometricsiteService.hydrometricsiteList[0]?.IsActive,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           Sediment: [
             {
               value: this.hydrometricsiteService.hydrometricsiteList[0]?.Sediment,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           RHBN: [
             {
               value: this.hydrometricsiteService.hydrometricsiteList[0]?.RHBN,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           RealTime: [
             {
               value: this.hydrometricsiteService.hydrometricsiteList[0]?.RealTime,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           HasDischarge: [
             {
               value: this.hydrometricsiteService.hydrometricsiteList[0]?.HasDischarge,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           HasLevel: [
             {
               value: this.hydrometricsiteService.hydrometricsiteList[0]?.HasLevel,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           HasRatingCurve: [
             {
               value: this.hydrometricsiteService.hydrometricsiteList[0]?.HasRatingCurve,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           LastUpdateDate_UTC: [
             {
               value: this.hydrometricsiteService.hydrometricsiteList[0]?.LastUpdateDate_UTC,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           LastUpdateContactTVItemID: [
             {
               value: this.hydrometricsiteService.hydrometricsiteList[0]?.LastUpdateContactTVItemID,
               disabled: false
-            }],
+            }, [ Validators.required ]],
         }
       );
 

@@ -9,6 +9,7 @@ using CSSPEnums;
 using CSSPModels;
 using CultureServices.Resources;
 using CultureServices.Services;
+using LoggedInServices.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -22,11 +23,11 @@ namespace CSSPServices
 {
    public interface IPolSourceGroupingLanguageService
     {
-       Task<ActionResult<PolSourceGroupingLanguage>> GetPolSourceGroupingLanguageWithPolSourceGroupingLanguageID(int PolSourceGroupingLanguageID);
-       Task<ActionResult<List<PolSourceGroupingLanguage>>> GetPolSourceGroupingLanguageList();
-       Task<ActionResult<PolSourceGroupingLanguage>> Add(PolSourceGroupingLanguage polsourcegroupinglanguage);
        Task<ActionResult<bool>> Delete(int PolSourceGroupingLanguageID);
-       Task<ActionResult<PolSourceGroupingLanguage>> Update(PolSourceGroupingLanguage polsourcegroupinglanguage);
+       Task<ActionResult<List<PolSourceGroupingLanguage>>> GetPolSourceGroupingLanguageList();
+       Task<ActionResult<PolSourceGroupingLanguage>> GetPolSourceGroupingLanguageWithPolSourceGroupingLanguageID(int PolSourceGroupingLanguageID);
+       Task<ActionResult<PolSourceGroupingLanguage>> Post(PolSourceGroupingLanguage polsourcegroupinglanguage);
+       Task<ActionResult<PolSourceGroupingLanguage>> Put(PolSourceGroupingLanguage polsourcegroupinglanguage);
     }
     public partial class PolSourceGroupingLanguageService : ControllerBase, IPolSourceGroupingLanguageService
     {
@@ -36,14 +37,16 @@ namespace CSSPServices
         #region Properties
         private CSSPDBContext db { get; }
         private ICultureService CultureService { get; }
+        private ILoggedInService LoggedInService { get; }
         private IEnums enums { get; }
         private IEnumerable<ValidationResult> ValidationResults { get; set; }
         #endregion Properties
 
         #region Constructors
-        public PolSourceGroupingLanguageService(ICultureService CultureService, IEnums enums, CSSPDBContext db)
+        public PolSourceGroupingLanguageService(ICultureService CultureService, ILoggedInService LoggedInService, IEnums enums, CSSPDBContext db)
         {
             this.CultureService = CultureService;
+            this.LoggedInService = LoggedInService;
             this.enums = enums;
             this.db = db;
         }
@@ -52,6 +55,11 @@ namespace CSSPServices
         #region Functions public 
         public async Task<ActionResult<PolSourceGroupingLanguage>> GetPolSourceGroupingLanguageWithPolSourceGroupingLanguageID(int PolSourceGroupingLanguageID)
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             PolSourceGroupingLanguage polsourcegroupinglanguage = (from c in db.PolSourceGroupingLanguages.AsNoTracking()
                     where c.PolSourceGroupingLanguageID == PolSourceGroupingLanguageID
                     select c).FirstOrDefault();
@@ -65,32 +73,22 @@ namespace CSSPServices
         }
         public async Task<ActionResult<List<PolSourceGroupingLanguage>>> GetPolSourceGroupingLanguageList()
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             List<PolSourceGroupingLanguage> polsourcegroupinglanguageList = (from c in db.PolSourceGroupingLanguages.AsNoTracking() select c).Take(100).ToList();
 
             return await Task.FromResult(Ok(polsourcegroupinglanguageList));
         }
-        public async Task<ActionResult<PolSourceGroupingLanguage>> Add(PolSourceGroupingLanguage polSourceGroupingLanguage)
-        {
-            ValidationResults = Validate(new ValidationContext(polSourceGroupingLanguage), ActionDBTypeEnum.Create);
-            if (ValidationResults.Count() > 0)
-            {
-               return await Task.FromResult(BadRequest(ValidationResults));
-            }
-
-            try
-            {
-               db.PolSourceGroupingLanguages.Add(polSourceGroupingLanguage);
-               db.SaveChanges();
-            }
-            catch (DbUpdateException ex)
-            {
-               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
-            }
-
-            return await Task.FromResult(Ok(polSourceGroupingLanguage));
-        }
         public async Task<ActionResult<bool>> Delete(int PolSourceGroupingLanguageID)
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             PolSourceGroupingLanguage polSourceGroupingLanguage = (from c in db.PolSourceGroupingLanguages
                                where c.PolSourceGroupingLanguageID == PolSourceGroupingLanguageID
                                select c).FirstOrDefault();
@@ -112,8 +110,38 @@ namespace CSSPServices
 
             return await Task.FromResult(Ok(true));
         }
-        public async Task<ActionResult<PolSourceGroupingLanguage>> Update(PolSourceGroupingLanguage polSourceGroupingLanguage)
+        public async Task<ActionResult<PolSourceGroupingLanguage>> Post(PolSourceGroupingLanguage polSourceGroupingLanguage)
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
+            ValidationResults = Validate(new ValidationContext(polSourceGroupingLanguage), ActionDBTypeEnum.Create);
+            if (ValidationResults.Count() > 0)
+            {
+               return await Task.FromResult(BadRequest(ValidationResults));
+            }
+
+            try
+            {
+               db.PolSourceGroupingLanguages.Add(polSourceGroupingLanguage);
+               db.SaveChanges();
+            }
+            catch (DbUpdateException ex)
+            {
+               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+            }
+
+            return await Task.FromResult(Ok(polSourceGroupingLanguage));
+        }
+        public async Task<ActionResult<PolSourceGroupingLanguage>> Put(PolSourceGroupingLanguage polSourceGroupingLanguage)
+        {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             ValidationResults = Validate(new ValidationContext(polSourceGroupingLanguage), ActionDBTypeEnum.Update);
             if (ValidationResults.Count() > 0)
             {

@@ -62,72 +62,72 @@ export class BoxModelComponent implements OnInit, OnDestroy {
             {
               value: (AddOrUpdate === 'Add' ? 0 : (this.boxmodelService.boxmodelList[0]?.BoxModelID)),
               disabled: false
-            }],
+            }, [ Validators.required ]],
           InfrastructureTVItemID: [
             {
               value: this.boxmodelService.boxmodelList[0]?.InfrastructureTVItemID,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           Discharge_m3_day: [
             {
               value: this.boxmodelService.boxmodelList[0]?.Discharge_m3_day,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           Depth_m: [
             {
               value: this.boxmodelService.boxmodelList[0]?.Depth_m,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           Temperature_C: [
             {
               value: this.boxmodelService.boxmodelList[0]?.Temperature_C,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           Dilution: [
             {
               value: this.boxmodelService.boxmodelList[0]?.Dilution,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           DecayRate_per_day: [
             {
               value: this.boxmodelService.boxmodelList[0]?.DecayRate_per_day,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           FCUntreated_MPN_100ml: [
             {
               value: this.boxmodelService.boxmodelList[0]?.FCUntreated_MPN_100ml,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           FCPreDisinfection_MPN_100ml: [
             {
               value: this.boxmodelService.boxmodelList[0]?.FCPreDisinfection_MPN_100ml,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           Concentration_MPN_100ml: [
             {
               value: this.boxmodelService.boxmodelList[0]?.Concentration_MPN_100ml,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           T90_hour: [
             {
               value: this.boxmodelService.boxmodelList[0]?.T90_hour,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           DischargeDuration_hour: [
             {
               value: this.boxmodelService.boxmodelList[0]?.DischargeDuration_hour,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           LastUpdateDate_UTC: [
             {
               value: this.boxmodelService.boxmodelList[0]?.LastUpdateDate_UTC,
               disabled: false
-            }],
+            }, [ Validators.required ]],
           LastUpdateContactTVItemID: [
             {
               value: this.boxmodelService.boxmodelList[0]?.LastUpdateContactTVItemID,
               disabled: false
-            }],
+            }, [ Validators.required ]],
         }
       );
 

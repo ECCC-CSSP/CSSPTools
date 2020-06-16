@@ -9,6 +9,7 @@ using CSSPEnums;
 using CSSPModels;
 using CultureServices.Resources;
 using CultureServices.Services;
+using LoggedInServices.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -22,11 +23,11 @@ namespace CSSPServices
 {
    public interface IVPAmbientService
     {
-       Task<ActionResult<VPAmbient>> GetVPAmbientWithVPAmbientID(int VPAmbientID);
-       Task<ActionResult<List<VPAmbient>>> GetVPAmbientList();
-       Task<ActionResult<VPAmbient>> Add(VPAmbient vpambient);
        Task<ActionResult<bool>> Delete(int VPAmbientID);
-       Task<ActionResult<VPAmbient>> Update(VPAmbient vpambient);
+       Task<ActionResult<List<VPAmbient>>> GetVPAmbientList();
+       Task<ActionResult<VPAmbient>> GetVPAmbientWithVPAmbientID(int VPAmbientID);
+       Task<ActionResult<VPAmbient>> Post(VPAmbient vpambient);
+       Task<ActionResult<VPAmbient>> Put(VPAmbient vpambient);
     }
     public partial class VPAmbientService : ControllerBase, IVPAmbientService
     {
@@ -36,14 +37,16 @@ namespace CSSPServices
         #region Properties
         private CSSPDBContext db { get; }
         private ICultureService CultureService { get; }
+        private ILoggedInService LoggedInService { get; }
         private IEnums enums { get; }
         private IEnumerable<ValidationResult> ValidationResults { get; set; }
         #endregion Properties
 
         #region Constructors
-        public VPAmbientService(ICultureService CultureService, IEnums enums, CSSPDBContext db)
+        public VPAmbientService(ICultureService CultureService, ILoggedInService LoggedInService, IEnums enums, CSSPDBContext db)
         {
             this.CultureService = CultureService;
+            this.LoggedInService = LoggedInService;
             this.enums = enums;
             this.db = db;
         }
@@ -52,6 +55,11 @@ namespace CSSPServices
         #region Functions public 
         public async Task<ActionResult<VPAmbient>> GetVPAmbientWithVPAmbientID(int VPAmbientID)
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             VPAmbient vpambient = (from c in db.VPAmbients.AsNoTracking()
                     where c.VPAmbientID == VPAmbientID
                     select c).FirstOrDefault();
@@ -65,32 +73,22 @@ namespace CSSPServices
         }
         public async Task<ActionResult<List<VPAmbient>>> GetVPAmbientList()
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             List<VPAmbient> vpambientList = (from c in db.VPAmbients.AsNoTracking() select c).Take(100).ToList();
 
             return await Task.FromResult(Ok(vpambientList));
         }
-        public async Task<ActionResult<VPAmbient>> Add(VPAmbient vpAmbient)
-        {
-            ValidationResults = Validate(new ValidationContext(vpAmbient), ActionDBTypeEnum.Create);
-            if (ValidationResults.Count() > 0)
-            {
-               return await Task.FromResult(BadRequest(ValidationResults));
-            }
-
-            try
-            {
-               db.VPAmbients.Add(vpAmbient);
-               db.SaveChanges();
-            }
-            catch (DbUpdateException ex)
-            {
-               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
-            }
-
-            return await Task.FromResult(Ok(vpAmbient));
-        }
         public async Task<ActionResult<bool>> Delete(int VPAmbientID)
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             VPAmbient vpAmbient = (from c in db.VPAmbients
                                where c.VPAmbientID == VPAmbientID
                                select c).FirstOrDefault();
@@ -112,8 +110,38 @@ namespace CSSPServices
 
             return await Task.FromResult(Ok(true));
         }
-        public async Task<ActionResult<VPAmbient>> Update(VPAmbient vpAmbient)
+        public async Task<ActionResult<VPAmbient>> Post(VPAmbient vpAmbient)
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
+            ValidationResults = Validate(new ValidationContext(vpAmbient), ActionDBTypeEnum.Create);
+            if (ValidationResults.Count() > 0)
+            {
+               return await Task.FromResult(BadRequest(ValidationResults));
+            }
+
+            try
+            {
+               db.VPAmbients.Add(vpAmbient);
+               db.SaveChanges();
+            }
+            catch (DbUpdateException ex)
+            {
+               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+            }
+
+            return await Task.FromResult(Ok(vpAmbient));
+        }
+        public async Task<ActionResult<VPAmbient>> Put(VPAmbient vpAmbient)
+        {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             ValidationResults = Validate(new ValidationContext(vpAmbient), ActionDBTypeEnum.Update);
             if (ValidationResults.Count() > 0)
             {

@@ -6,6 +6,7 @@
 
 using CSSPModels;
 using CSSPServices;
+using CultureServices.Services;
 using LoggedInServices.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -18,8 +19,8 @@ namespace CSSPWebAPI.Controllers
     {
         Task<ActionResult<List<ReportType>>> Get();
         Task<ActionResult<ReportType>> Get(int ReportTypeID);
-        Task<ActionResult<ReportType>> Post(ReportType reportType);
-        Task<ActionResult<ReportType>> Put(ReportType reportType);
+        Task<ActionResult<ReportType>> Post(ReportType ReportType);
+        Task<ActionResult<ReportType>> Put(ReportType ReportType);
         Task<ActionResult<bool>> Delete(int ReportTypeID);
     }
 
@@ -32,17 +33,17 @@ namespace CSSPWebAPI.Controllers
         #endregion Variables
 
         #region Properties
-        private IReportTypeService reportTypeService { get; }
-        private CSSPDBContext db { get; }
-        private ILoggedInService loggedInService { get; }
+        private ICultureService CultureService { get; }
+        private ILoggedInService LoggedInService { get; }
+        private IReportTypeService ReportTypeService { get; }
         #endregion Properties
 
         #region Constructors
-        public ReportTypeController(IReportTypeService reportTypeService, CSSPDBContext db, ILoggedInService loggedInService)
+        public ReportTypeController(ICultureService CultureService, ILoggedInService LoggedInService, IReportTypeService ReportTypeService)
         {
-            this.reportTypeService = reportTypeService;
-            this.db = db;
-            this.loggedInService = loggedInService;
+            this.CultureService = CultureService;
+            this.LoggedInService = LoggedInService;
+            this.ReportTypeService = ReportTypeService;
         }
         #endregion Constructors
 
@@ -50,27 +51,42 @@ namespace CSSPWebAPI.Controllers
         [HttpGet]
         public async Task<ActionResult<List<ReportType>>> Get()
         {
-            return await reportTypeService.GetReportTypeList();
+            CultureService.SetCulture((string)RouteData.Values["culture"]);
+            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+
+            return await ReportTypeService.GetReportTypeList();
         }
         [HttpGet("{ReportTypeID}")]
         public async Task<ActionResult<ReportType>> Get(int ReportTypeID)
         {
-            return await reportTypeService.GetReportTypeWithReportTypeID(ReportTypeID);
+            CultureService.SetCulture((string)RouteData.Values["culture"]);
+            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+
+            return await ReportTypeService.GetReportTypeWithReportTypeID(ReportTypeID);
         }
         [HttpPost]
-        public async Task<ActionResult<ReportType>> Post(ReportType reportType)
+        public async Task<ActionResult<ReportType>> Post(ReportType ReportType)
         {
-            return await reportTypeService.Add(reportType);
+            CultureService.SetCulture((string)RouteData.Values["culture"]);
+            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+
+            return await ReportTypeService.Post(ReportType);
         }
         [HttpPut]
-        public async Task<ActionResult<ReportType>> Put(ReportType reportType)
+        public async Task<ActionResult<ReportType>> Put(ReportType ReportType)
         {
-            return await reportTypeService.Update(reportType);
+            CultureService.SetCulture((string)RouteData.Values["culture"]);
+            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+
+            return await ReportTypeService.Put(ReportType);
         }
         [HttpDelete("{ReportTypeID}")]
         public async Task<ActionResult<bool>> Delete(int ReportTypeID)
         {
-            return await reportTypeService.Delete(ReportTypeID);
+            CultureService.SetCulture((string)RouteData.Values["culture"]);
+            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+
+            return await ReportTypeService.Delete(ReportTypeID);
         }
         #endregion Functions public
 
