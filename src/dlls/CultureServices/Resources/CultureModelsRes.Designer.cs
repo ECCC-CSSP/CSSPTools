@@ -11016,7 +11016,7 @@ namespace CultureServices.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to .
+        ///   Looks up a localized string similar to Logged in contact info.
         /// </summary>
         public static string LoggedInContactInfo_LoggedInContact_Description {
             get {
@@ -11025,7 +11025,7 @@ namespace CultureServices.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to .
+        ///   Looks up a localized string similar to Logged in contact info.
         /// </summary>
         public static string LoggedInContactInfo_LoggedInContact_Display {
             get {
@@ -11034,7 +11034,7 @@ namespace CultureServices.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to .
+        ///   Looks up a localized string similar to Logged in contact TVItem authorization.
         /// </summary>
         public static string LoggedInContactInfo_TVItemUserAuthorizationList_Description {
             get {
@@ -11043,7 +11043,7 @@ namespace CultureServices.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to .
+        ///   Looks up a localized string similar to Logged in contact TVItem authorization.
         /// </summary>
         public static string LoggedInContactInfo_TVItemUserAuthorizationList_Display {
             get {
@@ -11052,7 +11052,7 @@ namespace CultureServices.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to .
+        ///   Looks up a localized string similar to Logged in contact TVType authorization.
         /// </summary>
         public static string LoggedInContactInfo_TVTypeUserAuthorizationList_Description {
             get {
@@ -11061,7 +11061,7 @@ namespace CultureServices.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to .
+        ///   Looks up a localized string similar to Logged in contact TVType authorization.
         /// </summary>
         public static string LoggedInContactInfo_TVTypeUserAuthorizationList_Display {
             get {
@@ -14437,7 +14437,7 @@ namespace CultureServices.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to .
+        ///   Looks up a localized string similar to Link to the TVItems table reporesenting MWQM site.
         /// </summary>
         public static string MWQMSample_MWQMSiteTVItemID_Description {
             get {
@@ -14446,7 +14446,7 @@ namespace CultureServices.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to .
+        ///   Looks up a localized string similar to MWQMSIte TVItemID.
         /// </summary>
         public static string MWQMSample_MWQMSiteTVItemID_Display {
             get {

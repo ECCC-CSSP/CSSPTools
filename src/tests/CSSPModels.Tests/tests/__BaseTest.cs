@@ -35,7 +35,7 @@ namespace CSSPModels.Tests
             CSSPAfterAttribute csspAfterAttribute = new CSSPAfterAttribute();
             csspAfterAttribute.Year = 34;
             Assert.Equal(34, csspAfterAttribute.Year);
-            bool retBool = true;// csspAfterAttribute.IsValid(new object());
+            bool retBool = csspAfterAttribute.IsValid(new object());
             Assert.True(retBool);
 
             CSSPAllowNullAttribute csspAllowNullAttribute = new CSSPAllowNullAttribute();
@@ -48,8 +48,16 @@ namespace CSSPModels.Tests
             retBool = csspBiggerAttribute.IsValid(new object());
             Assert.True(retBool);
 
+            CSSPCompareAttribute csspCompareAttribute = new CSSPCompareAttribute("something");
+            retBool = csspCompareAttribute.IsValid(new object());
+            Assert.True(retBool);
+
             CSSPEnumTypeAttribute csspEnumTypeAttribute = new CSSPEnumTypeAttribute();
             retBool = csspEnumTypeAttribute.IsValid(new object());
+            Assert.True(retBool);
+
+            CSSPEnumTypeTextAttribute csspEnumTypeTextAttribute = new CSSPEnumTypeTextAttribute();
+            retBool = csspEnumTypeTextAttribute.IsValid(new object());
             Assert.True(retBool);
 
             CSSPExistAttribute csspExistAttribute = new CSSPExistAttribute();
@@ -61,6 +69,8 @@ namespace CSSPModels.Tests
             Assert.Equal("Something", csspExistAttribute.ExistFieldID);
             csspExistAttribute.AllowableTVTypeList = "2,9";
             Assert.Equal("2,9", csspExistAttribute.AllowableTVTypeList);
+            retBool = csspExistAttribute.IsValid(new object());
+            Assert.True(retBool);
 
             CSSPFillAttribute csspFillAttribute = new CSSPFillAttribute();
             csspFillAttribute.FillTypeName = "Something";
@@ -73,8 +83,27 @@ namespace CSSPModels.Tests
             Assert.Equal("Something", csspFillAttribute.FillEqualField);
             csspFillAttribute.FillReturnField = "Something";
             Assert.Equal("Something", csspFillAttribute.FillReturnField);
-
             retBool = csspExistAttribute.IsValid(new object());
+            Assert.True(retBool);
+
+            CSSPMaxLengthAttribute csspMaxLengthAttribute = new CSSPMaxLengthAttribute(34);
+            retBool = csspMaxLengthAttribute.IsValid(new object());
+            Assert.True(retBool);
+
+            CSSPMinLengthAttribute csspMinLengthAttribute = new CSSPMinLengthAttribute(34);
+            retBool = csspMinLengthAttribute.IsValid(new object());
+            Assert.True(retBool);
+
+            CSSPRangeAttribute csspRangeAttribute = new CSSPRangeAttribute(34, 54);
+            retBool = csspRangeAttribute.IsValid(new object());
+            Assert.True(retBool);
+
+            CSSPRegularExpressionAttribute csspRegularExpressionAttribute = new CSSPRegularExpressionAttribute("/testing/");
+            retBool = csspRegularExpressionAttribute.IsValid(new object());
+            Assert.True(retBool);
+
+            CSSPRequiredAttribute csspRequiredAttribute = new CSSPRequiredAttribute();
+            retBool = csspRequiredAttribute.IsValid(new object());
             Assert.True(retBool);
 
         }

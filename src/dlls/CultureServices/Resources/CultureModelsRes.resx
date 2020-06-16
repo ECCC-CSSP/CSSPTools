@@ -3727,22 +3727,22 @@
     <value>Lng</value>
   </data>
   <data name="LoggedInContactInfo_LoggedInContact_Description" xml:space="preserve">
-    <value />
+    <value>Logged in contact info</value>
   </data>
   <data name="LoggedInContactInfo_LoggedInContact_Display" xml:space="preserve">
-    <value />
+    <value>Logged in contact info</value>
   </data>
   <data name="LoggedInContactInfo_TVItemUserAuthorizationList_Description" xml:space="preserve">
-    <value />
+    <value>Logged in contact TVItem authorization</value>
   </data>
   <data name="LoggedInContactInfo_TVItemUserAuthorizationList_Display" xml:space="preserve">
-    <value />
+    <value>Logged in contact TVItem authorization</value>
   </data>
   <data name="LoggedInContactInfo_TVTypeUserAuthorizationList_Description" xml:space="preserve">
-    <value />
+    <value>Logged in contact TVType authorization</value>
   </data>
   <data name="LoggedInContactInfo_TVTypeUserAuthorizationList_Display" xml:space="preserve">
-    <value />
+    <value>Logged in contact TVType authorization</value>
   </data>
   <data name="Log_ID_Description" xml:space="preserve">
     <value>Key of table</value>
@@ -4963,10 +4963,10 @@
     <value>MWQMSample ID</value>
   </data>
   <data name="MWQMSample_MWQMSiteTVItemID_Description" xml:space="preserve">
-    <value />
+    <value>Link to the TVItems table reporesenting MWQM site</value>
   </data>
   <data name="MWQMSample_MWQMSiteTVItemID_Display" xml:space="preserve">
-    <value />
+    <value>MWQMSIte TVItemID</value>
   </data>
   <data name="MWQMSample_PH_Description" xml:space="preserve">
     <value>pH</value>

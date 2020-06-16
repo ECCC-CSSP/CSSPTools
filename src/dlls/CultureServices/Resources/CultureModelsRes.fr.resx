@@ -3727,22 +3727,22 @@
     <value>Lng</value>
   </data>
   <data name="LoggedInContactInfo_LoggedInContact_Description" xml:space="preserve">
-    <value />
+    <value>Info du contact connecté</value>
   </data>
   <data name="LoggedInContactInfo_LoggedInContact_Display" xml:space="preserve">
-    <value />
+    <value>Info du contact connecté</value>
   </data>
   <data name="LoggedInContactInfo_TVItemUserAuthorizationList_Description" xml:space="preserve">
-    <value />
+    <value>Authorisation TVItem relié au contact connecté</value>
   </data>
   <data name="LoggedInContactInfo_TVItemUserAuthorizationList_Display" xml:space="preserve">
-    <value />
+    <value>Authorisation TVItem relié au contact connecté</value>
   </data>
   <data name="LoggedInContactInfo_TVTypeUserAuthorizationList_Description" xml:space="preserve">
-    <value />
+    <value>Authorisation TVType relié au contact connecté</value>
   </data>
   <data name="LoggedInContactInfo_TVTypeUserAuthorizationList_Display" xml:space="preserve">
-    <value />
+    <value>Authorisation TVType relié au contact connecté</value>
   </data>
   <data name="Log_ID_Description" xml:space="preserve">
     <value>Clef de la table</value>
@@ -4951,7 +4951,7 @@
     <value>Date de la dernière mise à jour (UTC)</value>
   </data>
   <data name="MWQMSample_MWQMRunTVItemID_Description" xml:space="preserve">
-    <value>Lien à la table TVItems représentant le la tournée MWQM</value>
+    <value>Lien à la table TVItems représentant la tournée MWQM</value>
   </data>
   <data name="MWQMSample_MWQMRunTVItemID_Display" xml:space="preserve">
     <value>Tournée MWQM TVItemID (fr)</value>
@@ -4963,10 +4963,10 @@
     <value>MWQMSample ID</value>
   </data>
   <data name="MWQMSample_MWQMSiteTVItemID_Description" xml:space="preserve">
-    <value />
+    <value>Lien à la table TVItems représentant le site MWQM</value>
   </data>
   <data name="MWQMSample_MWQMSiteTVItemID_Display" xml:space="preserve">
-    <value />
+    <value>Site MWQM TVItemID (fr)</value>
   </data>
   <data name="MWQMSample_PH_Description" xml:space="preserve">
     <value>pH</value>
