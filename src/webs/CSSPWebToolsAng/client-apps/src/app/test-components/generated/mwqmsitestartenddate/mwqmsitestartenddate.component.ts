@@ -8,10 +8,12 @@
 import { Component, OnInit, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
 import { MWQMSiteStartEndDateService } from './mwqmsitestartenddate.service';
 import { LoadLocalesMWQMSiteStartEndDateText } from './mwqmsitestartenddate.locales';
-import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { MWQMSiteStartEndDate } from '../../../models/generated/MWQMSiteStartEndDate.model';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
+import { HttpClientService } from '../../../services/http-client.service';
+import { Router } from '@angular/router';
+import { HttpClientCommand } from '../../../enums/app.enums';
 
 @Component({
   selector: 'app-mwqmsitestartenddate',
@@ -24,28 +26,30 @@ export class MWQMSiteStartEndDateComponent implements OnInit, OnDestroy {
   mwqmsitestartenddateFormPut: FormGroup;
   mwqmsitestartenddateFormPost: FormGroup;
 
-  constructor(public mwqmsitestartenddateService: MWQMSiteStartEndDateService, public router: Router, public fb: FormBuilder) { }
+  constructor(public mwqmsitestartenddateService: MWQMSiteStartEndDateService, private router: Router, private httpClientService: HttpClientService, private fb: FormBuilder) {
+    httpClientService.oldURL = router.url;
+  }
 
   GetMWQMSiteStartEndDateList() {
-    this.sub = this.mwqmsitestartenddateService.GetMWQMSiteStartEndDateList(this.router).subscribe();
+    this.sub = this.mwqmsitestartenddateService.GetMWQMSiteStartEndDateList().subscribe();
   }
 
   PutMWQMSiteStartEndDate(mwqmsitestartenddate: MWQMSiteStartEndDate) {
-    this.sub = this.mwqmsitestartenddateService.PutMWQMSiteStartEndDate(mwqmsitestartenddate, this.router).subscribe();
+    this.sub = this.mwqmsitestartenddateService.PutMWQMSiteStartEndDate(mwqmsitestartenddate).subscribe();
   }
 
   PostMWQMSiteStartEndDate(mwqmsitestartenddate: MWQMSiteStartEndDate) {
-    this.sub = this.mwqmsitestartenddateService.PostMWQMSiteStartEndDate(mwqmsitestartenddate, this.router).subscribe();
+    this.sub = this.mwqmsitestartenddateService.PostMWQMSiteStartEndDate(mwqmsitestartenddate).subscribe();
   }
 
   DeleteMWQMSiteStartEndDate(mwqmsitestartenddate: MWQMSiteStartEndDate) {
-    this.sub = this.mwqmsitestartenddateService.DeleteMWQMSiteStartEndDate(mwqmsitestartenddate, this.router).subscribe();
+    this.sub = this.mwqmsitestartenddateService.DeleteMWQMSiteStartEndDate(mwqmsitestartenddate).subscribe();
   }
 
   ngOnInit(): void {
     LoadLocalesMWQMSiteStartEndDateText(this.mwqmsitestartenddateService);
-    this.FillFormBuilderGroup('Add');
-    this.FillFormBuilderGroup('Update');
+    this.FillFormBuilderGroup(HttpClientCommand.Post);
+    this.FillFormBuilderGroup(HttpClientCommand.Put);
   }
 
   ngOnDestroy() {
@@ -54,44 +58,44 @@ export class MWQMSiteStartEndDateComponent implements OnInit, OnDestroy {
     }
   }
 
-  FillFormBuilderGroup(AddOrUpdate: string) {
-    if (this.mwqmsitestartenddateService.mwqmsitestartenddateList.length) {
+  FillFormBuilderGroup(httpClientCommand: HttpClientCommand) {
+    if (this.mwqmsitestartenddateService.mwqmsitestartenddateListModel$.getValue().length) {
       let formGroup: FormGroup = this.fb.group(
         {
           MWQMSiteStartEndDateID: [
             {
-              value: (AddOrUpdate === 'Add' ? 0 : (this.mwqmsitestartenddateService.mwqmsitestartenddateList[0]?.MWQMSiteStartEndDateID)),
+              value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.mwqmsitestartenddateService.mwqmsitestartenddateListModel$.getValue()[0]?.MWQMSiteStartEndDateID)),
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
           MWQMSiteTVItemID: [
             {
-              value: this.mwqmsitestartenddateService.mwqmsitestartenddateList[0]?.MWQMSiteTVItemID,
+              value: this.mwqmsitestartenddateService.mwqmsitestartenddateListModel$.getValue()[0]?.MWQMSiteTVItemID,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
           StartDate: [
             {
-              value: this.mwqmsitestartenddateService.mwqmsitestartenddateList[0]?.StartDate,
+              value: this.mwqmsitestartenddateService.mwqmsitestartenddateListModel$.getValue()[0]?.StartDate,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
           EndDate: [
             {
-              value: this.mwqmsitestartenddateService.mwqmsitestartenddateList[0]?.EndDate,
+              value: this.mwqmsitestartenddateService.mwqmsitestartenddateListModel$.getValue()[0]?.EndDate,
               disabled: false
-            }, [ Validators.required ]],
+            }],
           LastUpdateDate_UTC: [
             {
-              value: this.mwqmsitestartenddateService.mwqmsitestartenddateList[0]?.LastUpdateDate_UTC,
+              value: this.mwqmsitestartenddateService.mwqmsitestartenddateListModel$.getValue()[0]?.LastUpdateDate_UTC,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
           LastUpdateContactTVItemID: [
             {
-              value: this.mwqmsitestartenddateService.mwqmsitestartenddateList[0]?.LastUpdateContactTVItemID,
+              value: this.mwqmsitestartenddateService.mwqmsitestartenddateListModel$.getValue()[0]?.LastUpdateContactTVItemID,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
         }
       );
 
-      if (AddOrUpdate === 'Add') {
+      if (httpClientCommand === HttpClientCommand.Post) {
         this.mwqmsitestartenddateFormPost = formGroup
       }
       else {

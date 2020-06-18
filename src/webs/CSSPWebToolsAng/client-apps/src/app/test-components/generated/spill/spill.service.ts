@@ -9,11 +9,12 @@ import { Injectable } from '@angular/core';
 import { SpillTextModel } from './spill.models';
 import { BehaviorSubject, of } from 'rxjs';
 import { LoadLocalesSpillText } from './spill.locales';
-import { Router } from '@angular/router';
-import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { map, catchError } from 'rxjs/operators';
 import { Spill } from '../../../models/generated/Spill.model';
 import { HttpRequestModel } from '../../../models/http.model';
+import { HttpClientService } from '../../../services/http-client.service';
+import { HttpClientCommand } from '../../../enums/app.enums';
 
 @Injectable({
   providedIn: 'root'
@@ -26,110 +27,63 @@ export class SpillService {
   spillPutModel$: BehaviorSubject<HttpRequestModel> = new BehaviorSubject<HttpRequestModel>(<HttpRequestModel>{});
   spillPostModel$: BehaviorSubject<HttpRequestModel> = new BehaviorSubject<HttpRequestModel>(<HttpRequestModel>{});
   spillDeleteModel$: BehaviorSubject<HttpRequestModel> = new BehaviorSubject<HttpRequestModel>(<HttpRequestModel>{});
-  spillList: Spill[] = [];
-  private oldURL: string;
-  private router: Router;
 
   /* Constructors */
-  constructor(private httpClient: HttpClient) {
+  constructor(private httpClient: HttpClient, private httpClientService: HttpClientService) {
     LoadLocalesSpillText(this);
     this.spillTextModel$.next(<SpillTextModel>{ Title: "Something2 for text" });
   }
 
   /* Functions public */
-  GetSpillList(router: Router) {
-    this.BeforeHttpClient(this.spillGetModel$, router);
+  GetSpillList() {
+    this.httpClientService.BeforeHttpClient(this.spillGetModel$);
 
     return this.httpClient.get<Spill[]>('/api/Spill').pipe(
       map((x: any) => {
-        this.DoSuccess(this.spillGetModel$, x, 'Get', null);
+        this.httpClientService.DoSuccess<Spill>(this.spillListModel$, this.spillGetModel$, x, HttpClientCommand.Get, null);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.DoCatchError(this.spillGetModel$, e, 'Get');
+        this.httpClientService.DoCatchError<Spill>(this.spillListModel$, this.spillGetModel$, e);
       })))
     );
   }
 
-  PutSpill(spill: Spill, router: Router) {
-    this.BeforeHttpClient(this.spillPutModel$, router);
+  PutSpill(spill: Spill) {
+    this.httpClientService.BeforeHttpClient(this.spillPutModel$);
 
     return this.httpClient.put<Spill>('/api/Spill', spill, { headers: new HttpHeaders() }).pipe(
       map((x: any) => {
-        this.DoSuccess(this.spillPutModel$, x, 'Put', spill);
+        this.httpClientService.DoSuccess<Spill>(this.spillListModel$, this.spillPutModel$, x, HttpClientCommand.Put, spill);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.DoCatchError(this.spillPutModel$, e, 'Put');
+       this.httpClientService.DoCatchError<Spill>(this.spillListModel$, this.spillPutModel$, e);
       })))
     );
   }
 
-  PostSpill(spill: Spill, router: Router) {
-    this.BeforeHttpClient(this.spillPostModel$, router);
+  PostSpill(spill: Spill) {
+    this.httpClientService.BeforeHttpClient(this.spillPostModel$);
 
     return this.httpClient.post<Spill>('/api/Spill', spill, { headers: new HttpHeaders() }).pipe(
       map((x: any) => {
-        this.DoSuccess(this.spillPostModel$, x, 'Post', spill);
+        this.httpClientService.DoSuccess<Spill>(this.spillListModel$, this.spillPostModel$, x, HttpClientCommand.Post, spill);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.DoCatchError(this.spillPostModel$, e, 'Post');
+        this.httpClientService.DoCatchError<Spill>(this.spillListModel$, this.spillPostModel$, e);
       })))
     );
   }
 
-  DeleteSpill(spill: Spill, router: Router) {
-    this.BeforeHttpClient(this.spillDeleteModel$, router);
+  DeleteSpill(spill: Spill) {
+    this.httpClientService.BeforeHttpClient(this.spillDeleteModel$);
 
     return this.httpClient.delete<boolean>(`/api/Spill/${ spill.SpillID }`).pipe(
       map((x: any) => {
-        this.DoSuccess(this.spillDeleteModel$, x, 'Delete', spill);
+        this.httpClientService.DoSuccess<Spill>(this.spillListModel$, this.spillDeleteModel$, x, HttpClientCommand.Delete, spill);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.DoCatchError(this.spillDeleteModel$, e, 'Delete');
+        this.httpClientService.DoCatchError<Spill>(this.spillListModel$, this.spillDeleteModel$, e);
       })))
     );
-  }
-
-  /* Functions private */
-  private BeforeHttpClient(httpRequestModel$: BehaviorSubject<HttpRequestModel>, router: Router) {
-    this.router = router;
-    this.oldURL = router.url;
-    httpRequestModel$.next(<HttpRequestModel>{ Working: true, Error: null, Status: null });
-  }
-
-  private DoCatchError(httpRequestModel$: BehaviorSubject<HttpRequestModel>, e: any, command: string) {
-    this.spillListModel$.next(null);
-    httpRequestModel$.next(<HttpRequestModel>{ Working: false, Error: <HttpErrorResponse>e, Status: 'Error' });
-
-    this.spillList = [];
-    console.debug(`Spill ${ command } ERROR. Return: ${ <HttpErrorResponse>e }`);
-    this.DoReload();
-  }
-
-  private DoReload() {
-    this.router.navigateByUrl('', { skipLocationChange: true }).then(() => {
-      this.router.navigate([`/${this.oldURL}`]);
-    });
-  }
-
-  private DoSuccess(httpRequestModel$: BehaviorSubject<HttpRequestModel>, x: any, command: string, spill?: Spill) {
-    console.debug(`Spill ${ command } OK. Return: ${ x }`);
-    if (command === 'Get') {
-      this.spillListModel$.next(<Spill[]>x);
-    }
-    if (command === 'Put') {
-      this.spillListModel$.getValue()[0] = <Spill>x;
-    }
-    if (command === 'Post') {
-      this.spillListModel$.getValue().push(<Spill>x);
-    }
-    if (command === 'Delete') {
-      const index = this.spillListModel$.getValue().indexOf(spill);
-      this.spillListModel$.getValue().splice(index, 1);
-    }
-
-    this.spillListModel$.next(this.spillListModel$.getValue());
-    httpRequestModel$.next(<HttpRequestModel>{ Working: false, Error: null, Status: 'ok' });
-    this.spillList = this.spillListModel$.getValue();
-    this.DoReload();
   }
 }

@@ -8,12 +8,14 @@
 import { Component, OnInit, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
 import { UseOfSiteService } from './useofsite.service';
 import { LoadLocalesUseOfSiteText } from './useofsite.locales';
-import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { TVTypeEnum_GetIDText, TVTypeEnum_GetOrderedText } from '../../../enums/generated/TVTypeEnum';
 import { UseOfSite } from '../../../models/generated/UseOfSite.model';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
 import { EnumIDAndText } from '../../../models/enumidandtext.model';
+import { HttpClientService } from '../../../services/http-client.service';
+import { Router } from '@angular/router';
+import { HttpClientCommand } from '../../../enums/app.enums';
 
 @Component({
   selector: 'app-useofsite',
@@ -27,22 +29,24 @@ export class UseOfSiteComponent implements OnInit, OnDestroy {
   useofsiteFormPut: FormGroup;
   useofsiteFormPost: FormGroup;
 
-  constructor(public useofsiteService: UseOfSiteService, public router: Router, public fb: FormBuilder) { }
+  constructor(public useofsiteService: UseOfSiteService, private router: Router, private httpClientService: HttpClientService, private fb: FormBuilder) {
+    httpClientService.oldURL = router.url;
+  }
 
   GetUseOfSiteList() {
-    this.sub = this.useofsiteService.GetUseOfSiteList(this.router).subscribe();
+    this.sub = this.useofsiteService.GetUseOfSiteList().subscribe();
   }
 
   PutUseOfSite(useofsite: UseOfSite) {
-    this.sub = this.useofsiteService.PutUseOfSite(useofsite, this.router).subscribe();
+    this.sub = this.useofsiteService.PutUseOfSite(useofsite).subscribe();
   }
 
   PostUseOfSite(useofsite: UseOfSite) {
-    this.sub = this.useofsiteService.PostUseOfSite(useofsite, this.router).subscribe();
+    this.sub = this.useofsiteService.PostUseOfSite(useofsite).subscribe();
   }
 
   DeleteUseOfSite(useofsite: UseOfSite) {
-    this.sub = this.useofsiteService.DeleteUseOfSite(useofsite, this.router).subscribe();
+    this.sub = this.useofsiteService.DeleteUseOfSite(useofsite).subscribe();
   }
 
   GetTVTypeEnumText(enumID: number) {
@@ -52,8 +56,8 @@ export class UseOfSiteComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     LoadLocalesUseOfSiteText(this.useofsiteService);
     this.tVTypeList = TVTypeEnum_GetOrderedText();
-    this.FillFormBuilderGroup('Add');
-    this.FillFormBuilderGroup('Update');
+    this.FillFormBuilderGroup(HttpClientCommand.Post);
+    this.FillFormBuilderGroup(HttpClientCommand.Put);
   }
 
   ngOnDestroy() {
@@ -62,94 +66,94 @@ export class UseOfSiteComponent implements OnInit, OnDestroy {
     }
   }
 
-  FillFormBuilderGroup(AddOrUpdate: string) {
-    if (this.useofsiteService.useofsiteList.length) {
+  FillFormBuilderGroup(httpClientCommand: HttpClientCommand) {
+    if (this.useofsiteService.useofsiteListModel$.getValue().length) {
       let formGroup: FormGroup = this.fb.group(
         {
           UseOfSiteID: [
             {
-              value: (AddOrUpdate === 'Add' ? 0 : (this.useofsiteService.useofsiteList[0]?.UseOfSiteID)),
+              value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.useofsiteService.useofsiteListModel$.getValue()[0]?.UseOfSiteID)),
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
           SiteTVItemID: [
             {
-              value: this.useofsiteService.useofsiteList[0]?.SiteTVItemID,
+              value: this.useofsiteService.useofsiteListModel$.getValue()[0]?.SiteTVItemID,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
           SubsectorTVItemID: [
             {
-              value: this.useofsiteService.useofsiteList[0]?.SubsectorTVItemID,
+              value: this.useofsiteService.useofsiteListModel$.getValue()[0]?.SubsectorTVItemID,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
           TVType: [
             {
-              value: this.useofsiteService.useofsiteList[0]?.TVType,
+              value: this.useofsiteService.useofsiteListModel$.getValue()[0]?.TVType,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
           Ordinal: [
             {
-              value: this.useofsiteService.useofsiteList[0]?.Ordinal,
+              value: this.useofsiteService.useofsiteListModel$.getValue()[0]?.Ordinal,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required, Validators.min(0), Validators.max(1000) ]],
           StartYear: [
             {
-              value: this.useofsiteService.useofsiteList[0]?.StartYear,
+              value: this.useofsiteService.useofsiteListModel$.getValue()[0]?.StartYear,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required, Validators.min(1980), Validators.max(2050) ]],
           EndYear: [
             {
-              value: this.useofsiteService.useofsiteList[0]?.EndYear,
+              value: this.useofsiteService.useofsiteListModel$.getValue()[0]?.EndYear,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.min(1980), Validators.max(2050) ]],
           UseWeight: [
             {
-              value: this.useofsiteService.useofsiteList[0]?.UseWeight,
+              value: this.useofsiteService.useofsiteListModel$.getValue()[0]?.UseWeight,
               disabled: false
-            }, [ Validators.required ]],
+            }],
           Weight_perc: [
             {
-              value: this.useofsiteService.useofsiteList[0]?.Weight_perc,
+              value: this.useofsiteService.useofsiteListModel$.getValue()[0]?.Weight_perc,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.min(0), Validators.max(100) ]],
           UseEquation: [
             {
-              value: this.useofsiteService.useofsiteList[0]?.UseEquation,
+              value: this.useofsiteService.useofsiteListModel$.getValue()[0]?.UseEquation,
               disabled: false
-            }, [ Validators.required ]],
+            }],
           Param1: [
             {
-              value: this.useofsiteService.useofsiteList[0]?.Param1,
+              value: this.useofsiteService.useofsiteListModel$.getValue()[0]?.Param1,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.min(0), Validators.max(100) ]],
           Param2: [
             {
-              value: this.useofsiteService.useofsiteList[0]?.Param2,
+              value: this.useofsiteService.useofsiteListModel$.getValue()[0]?.Param2,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.min(0), Validators.max(100) ]],
           Param3: [
             {
-              value: this.useofsiteService.useofsiteList[0]?.Param3,
+              value: this.useofsiteService.useofsiteListModel$.getValue()[0]?.Param3,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.min(0), Validators.max(100) ]],
           Param4: [
             {
-              value: this.useofsiteService.useofsiteList[0]?.Param4,
+              value: this.useofsiteService.useofsiteListModel$.getValue()[0]?.Param4,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.min(0), Validators.max(100) ]],
           LastUpdateDate_UTC: [
             {
-              value: this.useofsiteService.useofsiteList[0]?.LastUpdateDate_UTC,
+              value: this.useofsiteService.useofsiteListModel$.getValue()[0]?.LastUpdateDate_UTC,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
           LastUpdateContactTVItemID: [
             {
-              value: this.useofsiteService.useofsiteList[0]?.LastUpdateContactTVItemID,
+              value: this.useofsiteService.useofsiteListModel$.getValue()[0]?.LastUpdateContactTVItemID,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
         }
       );
 
-      if (AddOrUpdate === 'Add') {
+      if (httpClientCommand === HttpClientCommand.Post) {
         this.useofsiteFormPost = formGroup
       }
       else {

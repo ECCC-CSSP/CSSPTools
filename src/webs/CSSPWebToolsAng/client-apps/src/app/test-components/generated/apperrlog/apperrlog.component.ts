@@ -8,10 +8,12 @@
 import { Component, OnInit, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
 import { AppErrLogService } from './apperrlog.service';
 import { LoadLocalesAppErrLogText } from './apperrlog.locales';
-import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { AppErrLog } from '../../../models/generated/AppErrLog.model';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
+import { HttpClientService } from '../../../services/http-client.service';
+import { Router } from '@angular/router';
+import { HttpClientCommand } from '../../../enums/app.enums';
 
 @Component({
   selector: 'app-apperrlog',
@@ -24,28 +26,30 @@ export class AppErrLogComponent implements OnInit, OnDestroy {
   apperrlogFormPut: FormGroup;
   apperrlogFormPost: FormGroup;
 
-  constructor(public apperrlogService: AppErrLogService, public router: Router, public fb: FormBuilder) { }
+  constructor(public apperrlogService: AppErrLogService, private router: Router, private httpClientService: HttpClientService, private fb: FormBuilder) {
+    httpClientService.oldURL = router.url;
+  }
 
   GetAppErrLogList() {
-    this.sub = this.apperrlogService.GetAppErrLogList(this.router).subscribe();
+    this.sub = this.apperrlogService.GetAppErrLogList().subscribe();
   }
 
   PutAppErrLog(apperrlog: AppErrLog) {
-    this.sub = this.apperrlogService.PutAppErrLog(apperrlog, this.router).subscribe();
+    this.sub = this.apperrlogService.PutAppErrLog(apperrlog).subscribe();
   }
 
   PostAppErrLog(apperrlog: AppErrLog) {
-    this.sub = this.apperrlogService.PostAppErrLog(apperrlog, this.router).subscribe();
+    this.sub = this.apperrlogService.PostAppErrLog(apperrlog).subscribe();
   }
 
   DeleteAppErrLog(apperrlog: AppErrLog) {
-    this.sub = this.apperrlogService.DeleteAppErrLog(apperrlog, this.router).subscribe();
+    this.sub = this.apperrlogService.DeleteAppErrLog(apperrlog).subscribe();
   }
 
   ngOnInit(): void {
     LoadLocalesAppErrLogText(this.apperrlogService);
-    this.FillFormBuilderGroup('Add');
-    this.FillFormBuilderGroup('Update');
+    this.FillFormBuilderGroup(HttpClientCommand.Post);
+    this.FillFormBuilderGroup(HttpClientCommand.Put);
   }
 
   ngOnDestroy() {
@@ -54,54 +58,54 @@ export class AppErrLogComponent implements OnInit, OnDestroy {
     }
   }
 
-  FillFormBuilderGroup(AddOrUpdate: string) {
-    if (this.apperrlogService.apperrlogList.length) {
+  FillFormBuilderGroup(httpClientCommand: HttpClientCommand) {
+    if (this.apperrlogService.apperrlogListModel$.getValue().length) {
       let formGroup: FormGroup = this.fb.group(
         {
           AppErrLogID: [
             {
-              value: (AddOrUpdate === 'Add' ? 0 : (this.apperrlogService.apperrlogList[0]?.AppErrLogID)),
+              value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.apperrlogService.apperrlogListModel$.getValue()[0]?.AppErrLogID)),
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
           Tag: [
             {
-              value: this.apperrlogService.apperrlogList[0]?.Tag,
+              value: this.apperrlogService.apperrlogListModel$.getValue()[0]?.Tag,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required, Validators.maxLength(100) ]],
           LineNumber: [
             {
-              value: this.apperrlogService.apperrlogList[0]?.LineNumber,
+              value: this.apperrlogService.apperrlogListModel$.getValue()[0]?.LineNumber,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required, Validators.min(1) ]],
           Source: [
             {
-              value: this.apperrlogService.apperrlogList[0]?.Source,
+              value: this.apperrlogService.apperrlogListModel$.getValue()[0]?.Source,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
           Message: [
             {
-              value: this.apperrlogService.apperrlogList[0]?.Message,
+              value: this.apperrlogService.apperrlogListModel$.getValue()[0]?.Message,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
           DateTime_UTC: [
             {
-              value: this.apperrlogService.apperrlogList[0]?.DateTime_UTC,
+              value: this.apperrlogService.apperrlogListModel$.getValue()[0]?.DateTime_UTC,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
           LastUpdateDate_UTC: [
             {
-              value: this.apperrlogService.apperrlogList[0]?.LastUpdateDate_UTC,
+              value: this.apperrlogService.apperrlogListModel$.getValue()[0]?.LastUpdateDate_UTC,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
           LastUpdateContactTVItemID: [
             {
-              value: this.apperrlogService.apperrlogList[0]?.LastUpdateContactTVItemID,
+              value: this.apperrlogService.apperrlogListModel$.getValue()[0]?.LastUpdateContactTVItemID,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
         }
       );
 
-      if (AddOrUpdate === 'Add') {
+      if (httpClientCommand === HttpClientCommand.Post) {
         this.apperrlogFormPost = formGroup
       }
       else {

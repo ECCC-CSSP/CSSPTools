@@ -5,7 +5,7 @@
  *
 -->
 
-<mat-progress-bar mode="indeterminate" *ngIf="contactpreferenceService.contactpreferenceGetModel$.getValue().Working"></mat-progress-bar>
+<mat-progress-bar mode="indeterminate" *ngIf="contactpreferenceService.contactpreferenceGetModel$.getValue()?.Working"></mat-progress-bar>
 <mat-card>
   <mat-card-header>
     <mat-card-title>
@@ -17,8 +17,8 @@
     <mat-card-subtitle>{{ contactpreferenceService.contactpreferenceTextModel$.getValue().Title }}</mat-card-subtitle>
   </mat-card-header>
   <mat-card-content>
-    <mat-list>
-      <mat-list-item *ngFor="let contactpreference of contactpreferenceService.contactpreferenceList">
+    <mat-list *ngIf="contactpreferenceService.contactpreferenceListModel$.getValue()?.length">
+      <mat-list-item *ngFor="let contactpreference of contactpreferenceService.contactpreferenceListModel$.getValue()">
         <span mat-line>
           <button mat-raised-button (click)="DeleteContactPreference(contactpreference)">
             <span>Delete ContactPreferenceID [{{ contactpreference.ContactPreferenceID }}]&nbsp;&nbsp;&nbsp;</span>
@@ -51,7 +51,7 @@
     <mat-card-title>Edit ContactPreference testing</mat-card-title>
   </mat-card-header>
   <mat-card-content>
-    <div *ngIf="contactpreferenceService.contactpreferenceList.length">
+    <div *ngIf="contactpreferenceService.contactpreferenceListModel$.getValue()?.length">
       <blockquote>
         <form [formGroup]="contactpreferenceFormPut" (ngSubmit)="PutContactPreference(contactpreferenceFormPut.value)">
           <h3>
@@ -66,10 +66,18 @@
             <mat-form-field>
               <mat-label>ContactPreferenceID</mat-label>
               <input matInput type="number" formControlName="ContactPreferenceID">
+              <mat-error *ngIf="contactpreferenceFormPut.controls.ContactPreferenceID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>ContactID</mat-label>
               <input matInput type="number" formControlName="ContactID">
+              <mat-error *ngIf="contactpreferenceFormPut.controls.ContactID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>TVType</mat-label>
@@ -78,20 +86,38 @@
                   {{ a.EnumText }}
                 </mat-option>
               </mat-select>
+              <mat-error *ngIf="contactpreferenceFormPut.controls.TVType.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>MarkerSize</mat-label>
               <input matInput type="number" formControlName="MarkerSize">
+              <mat-error *ngIf="contactpreferenceFormPut.controls.MarkerSize.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+                <span *ngIf="e.min">Min - 1<br /></span>
+                <span *ngIf="e.min">Max - 1000<br /></span>
+              </mat-error>
             </mat-form-field>
           </p>
           <p>
             <mat-form-field>
               <mat-label>LastUpdateDate_UTC</mat-label>
               <input matInput type="text" formControlName="LastUpdateDate_UTC">
+              <mat-error *ngIf="contactpreferenceFormPut.controls.LastUpdateDate_UTC.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>LastUpdateContactTVItemID</mat-label>
               <input matInput type="number" formControlName="LastUpdateContactTVItemID">
+              <mat-error *ngIf="contactpreferenceFormPut.controls.LastUpdateContactTVItemID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
           </p>
         </form>
@@ -106,7 +132,7 @@
     <mat-card-title>Add ContactPreference testing</mat-card-title>
   </mat-card-header>
   <mat-card-content>
-    <div *ngIf="contactpreferenceService.contactpreferenceList.length">
+    <div *ngIf="contactpreferenceService.contactpreferenceListModel$.getValue()?.length">
       <blockquote>
         <form [formGroup]="contactpreferenceFormPost" (ngSubmit)="PostContactPreference(contactpreferenceFormPost.value)">
           <h3>
@@ -121,10 +147,18 @@
             <mat-form-field>
               <mat-label>ContactPreferenceID</mat-label>
               <input matInput type="number" formControlName="ContactPreferenceID">
+              <mat-error *ngIf="contactpreferenceFormPut.controls.ContactPreferenceID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>ContactID</mat-label>
               <input matInput type="number" formControlName="ContactID">
+              <mat-error *ngIf="contactpreferenceFormPut.controls.ContactID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>TVType</mat-label>
@@ -133,20 +167,38 @@
                   {{ a.EnumText }}
                 </mat-option>
               </mat-select>
+              <mat-error *ngIf="contactpreferenceFormPut.controls.TVType.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>MarkerSize</mat-label>
               <input matInput type="number" formControlName="MarkerSize">
+              <mat-error *ngIf="contactpreferenceFormPut.controls.MarkerSize.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+                <span *ngIf="e.min">Min - 1<br /></span>
+                <span *ngIf="e.min">Max - 1000<br /></span>
+              </mat-error>
             </mat-form-field>
           </p>
           <p>
             <mat-form-field>
               <mat-label>LastUpdateDate_UTC</mat-label>
               <input matInput type="text" formControlName="LastUpdateDate_UTC">
+              <mat-error *ngIf="contactpreferenceFormPut.controls.LastUpdateDate_UTC.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>LastUpdateContactTVItemID</mat-label>
               <input matInput type="number" formControlName="LastUpdateContactTVItemID">
+              <mat-error *ngIf="contactpreferenceFormPut.controls.LastUpdateContactTVItemID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
           </p>
         </form>

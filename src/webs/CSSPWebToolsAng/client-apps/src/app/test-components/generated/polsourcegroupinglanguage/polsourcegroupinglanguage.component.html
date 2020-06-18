@@ -5,7 +5,7 @@
  *
 -->
 
-<mat-progress-bar mode="indeterminate" *ngIf="polsourcegroupinglanguageService.polsourcegroupinglanguageGetModel$.getValue().Working"></mat-progress-bar>
+<mat-progress-bar mode="indeterminate" *ngIf="polsourcegroupinglanguageService.polsourcegroupinglanguageGetModel$.getValue()?.Working"></mat-progress-bar>
 <mat-card>
   <mat-card-header>
     <mat-card-title>
@@ -17,8 +17,8 @@
     <mat-card-subtitle>{{ polsourcegroupinglanguageService.polsourcegroupinglanguageTextModel$.getValue().Title }}</mat-card-subtitle>
   </mat-card-header>
   <mat-card-content>
-    <mat-list>
-      <mat-list-item *ngFor="let polsourcegroupinglanguage of polsourcegroupinglanguageService.polsourcegroupinglanguageList">
+    <mat-list *ngIf="polsourcegroupinglanguageService.polsourcegroupinglanguageListModel$.getValue()?.length">
+      <mat-list-item *ngFor="let polsourcegroupinglanguage of polsourcegroupinglanguageService.polsourcegroupinglanguageListModel$.getValue()">
         <span mat-line>
           <button mat-raised-button (click)="DeletePolSourceGroupingLanguage(polsourcegroupinglanguage)">
             <span>Delete PolSourceGroupingLanguageID [{{ polsourcegroupinglanguage.PolSourceGroupingLanguageID }}]&nbsp;&nbsp;&nbsp;</span>
@@ -65,7 +65,7 @@
     <mat-card-title>Edit PolSourceGroupingLanguage testing</mat-card-title>
   </mat-card-header>
   <mat-card-content>
-    <div *ngIf="polsourcegroupinglanguageService.polsourcegroupinglanguageList.length">
+    <div *ngIf="polsourcegroupinglanguageService.polsourcegroupinglanguageListModel$.getValue()?.length">
       <blockquote>
         <form [formGroup]="polsourcegroupinglanguageFormPut" (ngSubmit)="PutPolSourceGroupingLanguage(polsourcegroupinglanguageFormPut.value)">
           <h3>
@@ -80,10 +80,18 @@
             <mat-form-field>
               <mat-label>PolSourceGroupingLanguageID</mat-label>
               <input matInput type="number" formControlName="PolSourceGroupingLanguageID">
+              <mat-error *ngIf="polsourcegroupinglanguageFormPut.controls.PolSourceGroupingLanguageID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>PolSourceGroupingID</mat-label>
               <input matInput type="number" formControlName="PolSourceGroupingID">
+              <mat-error *ngIf="polsourcegroupinglanguageFormPut.controls.PolSourceGroupingID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>Language</mat-label>
@@ -92,16 +100,31 @@
                   {{ a.EnumText }}
                 </mat-option>
               </mat-select>
+              <mat-error *ngIf="polsourcegroupinglanguageFormPut.controls.Language.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>SourceName</mat-label>
               <input matInput type="text" formControlName="SourceName">
+              <mat-error *ngIf="polsourcegroupinglanguageFormPut.controls.SourceName.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+                <span *ngIf="e.maxlength">MaxLength - 250<br /></span>
+              </mat-error>
             </mat-form-field>
           </p>
           <p>
             <mat-form-field>
               <mat-label>SourceNameOrder</mat-label>
               <input matInput type="number" formControlName="SourceNameOrder">
+              <mat-error *ngIf="polsourcegroupinglanguageFormPut.controls.SourceNameOrder.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+                <span *ngIf="e.min">Min - 0<br /></span>
+                <span *ngIf="e.min">Max - 1000<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>TranslationStatusSourceName</mat-label>
@@ -110,10 +133,19 @@
                   {{ a.EnumText }}
                 </mat-option>
               </mat-select>
+              <mat-error *ngIf="polsourcegroupinglanguageFormPut.controls.TranslationStatusSourceName.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>Init</mat-label>
               <input matInput type="text" formControlName="Init">
+              <mat-error *ngIf="polsourcegroupinglanguageFormPut.controls.Init.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+                <span *ngIf="e.maxlength">MaxLength - 50<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>TranslationStatusInit</mat-label>
@@ -122,12 +154,21 @@
                   {{ a.EnumText }}
                 </mat-option>
               </mat-select>
+              <mat-error *ngIf="polsourcegroupinglanguageFormPut.controls.TranslationStatusInit.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
           </p>
           <p>
             <mat-form-field>
               <mat-label>Description</mat-label>
               <input matInput type="text" formControlName="Description">
+              <mat-error *ngIf="polsourcegroupinglanguageFormPut.controls.Description.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+                <span *ngIf="e.maxlength">MaxLength - 250<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>TranslationStatusDescription</mat-label>
@@ -136,10 +177,19 @@
                   {{ a.EnumText }}
                 </mat-option>
               </mat-select>
+              <mat-error *ngIf="polsourcegroupinglanguageFormPut.controls.TranslationStatusDescription.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>Report</mat-label>
               <input matInput type="text" formControlName="Report">
+              <mat-error *ngIf="polsourcegroupinglanguageFormPut.controls.Report.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+                <span *ngIf="e.maxlength">MaxLength - 250<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>TranslationStatusReport</mat-label>
@@ -148,12 +198,21 @@
                   {{ a.EnumText }}
                 </mat-option>
               </mat-select>
+              <mat-error *ngIf="polsourcegroupinglanguageFormPut.controls.TranslationStatusReport.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
           </p>
           <p>
             <mat-form-field>
               <mat-label>Text</mat-label>
               <input matInput type="text" formControlName="Text">
+              <mat-error *ngIf="polsourcegroupinglanguageFormPut.controls.Text.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+                <span *ngIf="e.maxlength">MaxLength - 250<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>TranslationStatusText</mat-label>
@@ -162,14 +221,26 @@
                   {{ a.EnumText }}
                 </mat-option>
               </mat-select>
+              <mat-error *ngIf="polsourcegroupinglanguageFormPut.controls.TranslationStatusText.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>LastUpdateDate_UTC</mat-label>
               <input matInput type="text" formControlName="LastUpdateDate_UTC">
+              <mat-error *ngIf="polsourcegroupinglanguageFormPut.controls.LastUpdateDate_UTC.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>LastUpdateContactTVItemID</mat-label>
               <input matInput type="number" formControlName="LastUpdateContactTVItemID">
+              <mat-error *ngIf="polsourcegroupinglanguageFormPut.controls.LastUpdateContactTVItemID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
           </p>
         </form>
@@ -184,7 +255,7 @@
     <mat-card-title>Add PolSourceGroupingLanguage testing</mat-card-title>
   </mat-card-header>
   <mat-card-content>
-    <div *ngIf="polsourcegroupinglanguageService.polsourcegroupinglanguageList.length">
+    <div *ngIf="polsourcegroupinglanguageService.polsourcegroupinglanguageListModel$.getValue()?.length">
       <blockquote>
         <form [formGroup]="polsourcegroupinglanguageFormPost" (ngSubmit)="PostPolSourceGroupingLanguage(polsourcegroupinglanguageFormPost.value)">
           <h3>
@@ -199,10 +270,18 @@
             <mat-form-field>
               <mat-label>PolSourceGroupingLanguageID</mat-label>
               <input matInput type="number" formControlName="PolSourceGroupingLanguageID">
+              <mat-error *ngIf="polsourcegroupinglanguageFormPut.controls.PolSourceGroupingLanguageID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>PolSourceGroupingID</mat-label>
               <input matInput type="number" formControlName="PolSourceGroupingID">
+              <mat-error *ngIf="polsourcegroupinglanguageFormPut.controls.PolSourceGroupingID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>Language</mat-label>
@@ -211,16 +290,31 @@
                   {{ a.EnumText }}
                 </mat-option>
               </mat-select>
+              <mat-error *ngIf="polsourcegroupinglanguageFormPut.controls.Language.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>SourceName</mat-label>
               <input matInput type="text" formControlName="SourceName">
+              <mat-error *ngIf="polsourcegroupinglanguageFormPut.controls.SourceName.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+                <span *ngIf="e.maxlength">MaxLength - 250<br /></span>
+              </mat-error>
             </mat-form-field>
           </p>
           <p>
             <mat-form-field>
               <mat-label>SourceNameOrder</mat-label>
               <input matInput type="number" formControlName="SourceNameOrder">
+              <mat-error *ngIf="polsourcegroupinglanguageFormPut.controls.SourceNameOrder.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+                <span *ngIf="e.min">Min - 0<br /></span>
+                <span *ngIf="e.min">Max - 1000<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>TranslationStatusSourceName</mat-label>
@@ -229,10 +323,19 @@
                   {{ a.EnumText }}
                 </mat-option>
               </mat-select>
+              <mat-error *ngIf="polsourcegroupinglanguageFormPut.controls.TranslationStatusSourceName.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>Init</mat-label>
               <input matInput type="text" formControlName="Init">
+              <mat-error *ngIf="polsourcegroupinglanguageFormPut.controls.Init.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+                <span *ngIf="e.maxlength">MaxLength - 50<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>TranslationStatusInit</mat-label>
@@ -241,12 +344,21 @@
                   {{ a.EnumText }}
                 </mat-option>
               </mat-select>
+              <mat-error *ngIf="polsourcegroupinglanguageFormPut.controls.TranslationStatusInit.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
           </p>
           <p>
             <mat-form-field>
               <mat-label>Description</mat-label>
               <input matInput type="text" formControlName="Description">
+              <mat-error *ngIf="polsourcegroupinglanguageFormPut.controls.Description.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+                <span *ngIf="e.maxlength">MaxLength - 250<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>TranslationStatusDescription</mat-label>
@@ -255,10 +367,19 @@
                   {{ a.EnumText }}
                 </mat-option>
               </mat-select>
+              <mat-error *ngIf="polsourcegroupinglanguageFormPut.controls.TranslationStatusDescription.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>Report</mat-label>
               <input matInput type="text" formControlName="Report">
+              <mat-error *ngIf="polsourcegroupinglanguageFormPut.controls.Report.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+                <span *ngIf="e.maxlength">MaxLength - 250<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>TranslationStatusReport</mat-label>
@@ -267,12 +388,21 @@
                   {{ a.EnumText }}
                 </mat-option>
               </mat-select>
+              <mat-error *ngIf="polsourcegroupinglanguageFormPut.controls.TranslationStatusReport.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
           </p>
           <p>
             <mat-form-field>
               <mat-label>Text</mat-label>
               <input matInput type="text" formControlName="Text">
+              <mat-error *ngIf="polsourcegroupinglanguageFormPut.controls.Text.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+                <span *ngIf="e.maxlength">MaxLength - 250<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>TranslationStatusText</mat-label>
@@ -281,14 +411,26 @@
                   {{ a.EnumText }}
                 </mat-option>
               </mat-select>
+              <mat-error *ngIf="polsourcegroupinglanguageFormPut.controls.TranslationStatusText.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>LastUpdateDate_UTC</mat-label>
               <input matInput type="text" formControlName="LastUpdateDate_UTC">
+              <mat-error *ngIf="polsourcegroupinglanguageFormPut.controls.LastUpdateDate_UTC.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>LastUpdateContactTVItemID</mat-label>
               <input matInput type="number" formControlName="LastUpdateContactTVItemID">
+              <mat-error *ngIf="polsourcegroupinglanguageFormPut.controls.LastUpdateContactTVItemID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
           </p>
         </form>

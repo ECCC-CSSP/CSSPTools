@@ -9,11 +9,12 @@ import { Injectable } from '@angular/core';
 import { AppTaskLanguageTextModel } from './apptasklanguage.models';
 import { BehaviorSubject, of } from 'rxjs';
 import { LoadLocalesAppTaskLanguageText } from './apptasklanguage.locales';
-import { Router } from '@angular/router';
-import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { map, catchError } from 'rxjs/operators';
 import { AppTaskLanguage } from '../../../models/generated/AppTaskLanguage.model';
 import { HttpRequestModel } from '../../../models/http.model';
+import { HttpClientService } from '../../../services/http-client.service';
+import { HttpClientCommand } from '../../../enums/app.enums';
 
 @Injectable({
   providedIn: 'root'
@@ -26,110 +27,63 @@ export class AppTaskLanguageService {
   apptasklanguagePutModel$: BehaviorSubject<HttpRequestModel> = new BehaviorSubject<HttpRequestModel>(<HttpRequestModel>{});
   apptasklanguagePostModel$: BehaviorSubject<HttpRequestModel> = new BehaviorSubject<HttpRequestModel>(<HttpRequestModel>{});
   apptasklanguageDeleteModel$: BehaviorSubject<HttpRequestModel> = new BehaviorSubject<HttpRequestModel>(<HttpRequestModel>{});
-  apptasklanguageList: AppTaskLanguage[] = [];
-  private oldURL: string;
-  private router: Router;
 
   /* Constructors */
-  constructor(private httpClient: HttpClient) {
+  constructor(private httpClient: HttpClient, private httpClientService: HttpClientService) {
     LoadLocalesAppTaskLanguageText(this);
     this.apptasklanguageTextModel$.next(<AppTaskLanguageTextModel>{ Title: "Something2 for text" });
   }
 
   /* Functions public */
-  GetAppTaskLanguageList(router: Router) {
-    this.BeforeHttpClient(this.apptasklanguageGetModel$, router);
+  GetAppTaskLanguageList() {
+    this.httpClientService.BeforeHttpClient(this.apptasklanguageGetModel$);
 
     return this.httpClient.get<AppTaskLanguage[]>('/api/AppTaskLanguage').pipe(
       map((x: any) => {
-        this.DoSuccess(this.apptasklanguageGetModel$, x, 'Get', null);
+        this.httpClientService.DoSuccess<AppTaskLanguage>(this.apptasklanguageListModel$, this.apptasklanguageGetModel$, x, HttpClientCommand.Get, null);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.DoCatchError(this.apptasklanguageGetModel$, e, 'Get');
+        this.httpClientService.DoCatchError<AppTaskLanguage>(this.apptasklanguageListModel$, this.apptasklanguageGetModel$, e);
       })))
     );
   }
 
-  PutAppTaskLanguage(apptasklanguage: AppTaskLanguage, router: Router) {
-    this.BeforeHttpClient(this.apptasklanguagePutModel$, router);
+  PutAppTaskLanguage(apptasklanguage: AppTaskLanguage) {
+    this.httpClientService.BeforeHttpClient(this.apptasklanguagePutModel$);
 
     return this.httpClient.put<AppTaskLanguage>('/api/AppTaskLanguage', apptasklanguage, { headers: new HttpHeaders() }).pipe(
       map((x: any) => {
-        this.DoSuccess(this.apptasklanguagePutModel$, x, 'Put', apptasklanguage);
+        this.httpClientService.DoSuccess<AppTaskLanguage>(this.apptasklanguageListModel$, this.apptasklanguagePutModel$, x, HttpClientCommand.Put, apptasklanguage);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.DoCatchError(this.apptasklanguagePutModel$, e, 'Put');
+       this.httpClientService.DoCatchError<AppTaskLanguage>(this.apptasklanguageListModel$, this.apptasklanguagePutModel$, e);
       })))
     );
   }
 
-  PostAppTaskLanguage(apptasklanguage: AppTaskLanguage, router: Router) {
-    this.BeforeHttpClient(this.apptasklanguagePostModel$, router);
+  PostAppTaskLanguage(apptasklanguage: AppTaskLanguage) {
+    this.httpClientService.BeforeHttpClient(this.apptasklanguagePostModel$);
 
     return this.httpClient.post<AppTaskLanguage>('/api/AppTaskLanguage', apptasklanguage, { headers: new HttpHeaders() }).pipe(
       map((x: any) => {
-        this.DoSuccess(this.apptasklanguagePostModel$, x, 'Post', apptasklanguage);
+        this.httpClientService.DoSuccess<AppTaskLanguage>(this.apptasklanguageListModel$, this.apptasklanguagePostModel$, x, HttpClientCommand.Post, apptasklanguage);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.DoCatchError(this.apptasklanguagePostModel$, e, 'Post');
+        this.httpClientService.DoCatchError<AppTaskLanguage>(this.apptasklanguageListModel$, this.apptasklanguagePostModel$, e);
       })))
     );
   }
 
-  DeleteAppTaskLanguage(apptasklanguage: AppTaskLanguage, router: Router) {
-    this.BeforeHttpClient(this.apptasklanguageDeleteModel$, router);
+  DeleteAppTaskLanguage(apptasklanguage: AppTaskLanguage) {
+    this.httpClientService.BeforeHttpClient(this.apptasklanguageDeleteModel$);
 
     return this.httpClient.delete<boolean>(`/api/AppTaskLanguage/${ apptasklanguage.AppTaskLanguageID }`).pipe(
       map((x: any) => {
-        this.DoSuccess(this.apptasklanguageDeleteModel$, x, 'Delete', apptasklanguage);
+        this.httpClientService.DoSuccess<AppTaskLanguage>(this.apptasklanguageListModel$, this.apptasklanguageDeleteModel$, x, HttpClientCommand.Delete, apptasklanguage);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.DoCatchError(this.apptasklanguageDeleteModel$, e, 'Delete');
+        this.httpClientService.DoCatchError<AppTaskLanguage>(this.apptasklanguageListModel$, this.apptasklanguageDeleteModel$, e);
       })))
     );
-  }
-
-  /* Functions private */
-  private BeforeHttpClient(httpRequestModel$: BehaviorSubject<HttpRequestModel>, router: Router) {
-    this.router = router;
-    this.oldURL = router.url;
-    httpRequestModel$.next(<HttpRequestModel>{ Working: true, Error: null, Status: null });
-  }
-
-  private DoCatchError(httpRequestModel$: BehaviorSubject<HttpRequestModel>, e: any, command: string) {
-    this.apptasklanguageListModel$.next(null);
-    httpRequestModel$.next(<HttpRequestModel>{ Working: false, Error: <HttpErrorResponse>e, Status: 'Error' });
-
-    this.apptasklanguageList = [];
-    console.debug(`AppTaskLanguage ${ command } ERROR. Return: ${ <HttpErrorResponse>e }`);
-    this.DoReload();
-  }
-
-  private DoReload() {
-    this.router.navigateByUrl('', { skipLocationChange: true }).then(() => {
-      this.router.navigate([`/${this.oldURL}`]);
-    });
-  }
-
-  private DoSuccess(httpRequestModel$: BehaviorSubject<HttpRequestModel>, x: any, command: string, apptasklanguage?: AppTaskLanguage) {
-    console.debug(`AppTaskLanguage ${ command } OK. Return: ${ x }`);
-    if (command === 'Get') {
-      this.apptasklanguageListModel$.next(<AppTaskLanguage[]>x);
-    }
-    if (command === 'Put') {
-      this.apptasklanguageListModel$.getValue()[0] = <AppTaskLanguage>x;
-    }
-    if (command === 'Post') {
-      this.apptasklanguageListModel$.getValue().push(<AppTaskLanguage>x);
-    }
-    if (command === 'Delete') {
-      const index = this.apptasklanguageListModel$.getValue().indexOf(apptasklanguage);
-      this.apptasklanguageListModel$.getValue().splice(index, 1);
-    }
-
-    this.apptasklanguageListModel$.next(this.apptasklanguageListModel$.getValue());
-    httpRequestModel$.next(<HttpRequestModel>{ Working: false, Error: null, Status: 'ok' });
-    this.apptasklanguageList = this.apptasklanguageListModel$.getValue();
-    this.DoReload();
   }
 }

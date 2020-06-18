@@ -8,10 +8,12 @@
 import { Component, OnInit, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
 import { MikeSourceService } from './mikesource.service';
 import { LoadLocalesMikeSourceText } from './mikesource.locales';
-import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { MikeSource } from '../../../models/generated/MikeSource.model';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
+import { HttpClientService } from '../../../services/http-client.service';
+import { Router } from '@angular/router';
+import { HttpClientCommand } from '../../../enums/app.enums';
 
 @Component({
   selector: 'app-mikesource',
@@ -24,28 +26,30 @@ export class MikeSourceComponent implements OnInit, OnDestroy {
   mikesourceFormPut: FormGroup;
   mikesourceFormPost: FormGroup;
 
-  constructor(public mikesourceService: MikeSourceService, public router: Router, public fb: FormBuilder) { }
+  constructor(public mikesourceService: MikeSourceService, private router: Router, private httpClientService: HttpClientService, private fb: FormBuilder) {
+    httpClientService.oldURL = router.url;
+  }
 
   GetMikeSourceList() {
-    this.sub = this.mikesourceService.GetMikeSourceList(this.router).subscribe();
+    this.sub = this.mikesourceService.GetMikeSourceList().subscribe();
   }
 
   PutMikeSource(mikesource: MikeSource) {
-    this.sub = this.mikesourceService.PutMikeSource(mikesource, this.router).subscribe();
+    this.sub = this.mikesourceService.PutMikeSource(mikesource).subscribe();
   }
 
   PostMikeSource(mikesource: MikeSource) {
-    this.sub = this.mikesourceService.PostMikeSource(mikesource, this.router).subscribe();
+    this.sub = this.mikesourceService.PostMikeSource(mikesource).subscribe();
   }
 
   DeleteMikeSource(mikesource: MikeSource) {
-    this.sub = this.mikesourceService.DeleteMikeSource(mikesource, this.router).subscribe();
+    this.sub = this.mikesourceService.DeleteMikeSource(mikesource).subscribe();
   }
 
   ngOnInit(): void {
     LoadLocalesMikeSourceText(this.mikesourceService);
-    this.FillFormBuilderGroup('Add');
-    this.FillFormBuilderGroup('Update');
+    this.FillFormBuilderGroup(HttpClientCommand.Post);
+    this.FillFormBuilderGroup(HttpClientCommand.Put);
   }
 
   ngOnDestroy() {
@@ -54,74 +58,74 @@ export class MikeSourceComponent implements OnInit, OnDestroy {
     }
   }
 
-  FillFormBuilderGroup(AddOrUpdate: string) {
-    if (this.mikesourceService.mikesourceList.length) {
+  FillFormBuilderGroup(httpClientCommand: HttpClientCommand) {
+    if (this.mikesourceService.mikesourceListModel$.getValue().length) {
       let formGroup: FormGroup = this.fb.group(
         {
           MikeSourceID: [
             {
-              value: (AddOrUpdate === 'Add' ? 0 : (this.mikesourceService.mikesourceList[0]?.MikeSourceID)),
+              value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.mikesourceService.mikesourceListModel$.getValue()[0]?.MikeSourceID)),
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
           MikeSourceTVItemID: [
             {
-              value: this.mikesourceService.mikesourceList[0]?.MikeSourceTVItemID,
+              value: this.mikesourceService.mikesourceListModel$.getValue()[0]?.MikeSourceTVItemID,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
           IsContinuous: [
             {
-              value: this.mikesourceService.mikesourceList[0]?.IsContinuous,
+              value: this.mikesourceService.mikesourceListModel$.getValue()[0]?.IsContinuous,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
           Include: [
             {
-              value: this.mikesourceService.mikesourceList[0]?.Include,
+              value: this.mikesourceService.mikesourceListModel$.getValue()[0]?.Include,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
           IsRiver: [
             {
-              value: this.mikesourceService.mikesourceList[0]?.IsRiver,
+              value: this.mikesourceService.mikesourceListModel$.getValue()[0]?.IsRiver,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
           UseHydrometric: [
             {
-              value: this.mikesourceService.mikesourceList[0]?.UseHydrometric,
+              value: this.mikesourceService.mikesourceListModel$.getValue()[0]?.UseHydrometric,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
           HydrometricTVItemID: [
             {
-              value: this.mikesourceService.mikesourceList[0]?.HydrometricTVItemID,
+              value: this.mikesourceService.mikesourceListModel$.getValue()[0]?.HydrometricTVItemID,
               disabled: false
-            }, [ Validators.required ]],
+            }],
           DrainageArea_km2: [
             {
-              value: this.mikesourceService.mikesourceList[0]?.DrainageArea_km2,
+              value: this.mikesourceService.mikesourceListModel$.getValue()[0]?.DrainageArea_km2,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.min(0), Validators.max(1000000) ]],
           Factor: [
             {
-              value: this.mikesourceService.mikesourceList[0]?.Factor,
+              value: this.mikesourceService.mikesourceListModel$.getValue()[0]?.Factor,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.min(0), Validators.max(1000000) ]],
           SourceNumberString: [
             {
-              value: this.mikesourceService.mikesourceList[0]?.SourceNumberString,
+              value: this.mikesourceService.mikesourceListModel$.getValue()[0]?.SourceNumberString,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required, Validators.maxLength(50) ]],
           LastUpdateDate_UTC: [
             {
-              value: this.mikesourceService.mikesourceList[0]?.LastUpdateDate_UTC,
+              value: this.mikesourceService.mikesourceListModel$.getValue()[0]?.LastUpdateDate_UTC,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
           LastUpdateContactTVItemID: [
             {
-              value: this.mikesourceService.mikesourceList[0]?.LastUpdateContactTVItemID,
+              value: this.mikesourceService.mikesourceListModel$.getValue()[0]?.LastUpdateContactTVItemID,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
         }
       );
 
-      if (AddOrUpdate === 'Add') {
+      if (httpClientCommand === HttpClientCommand.Post) {
         this.mikesourceFormPost = formGroup
       }
       else {

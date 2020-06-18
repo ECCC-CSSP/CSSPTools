@@ -9,11 +9,12 @@ import { Injectable } from '@angular/core';
 import { PolSourceObservationIssueTextModel } from './polsourceobservationissue.models';
 import { BehaviorSubject, of } from 'rxjs';
 import { LoadLocalesPolSourceObservationIssueText } from './polsourceobservationissue.locales';
-import { Router } from '@angular/router';
-import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { map, catchError } from 'rxjs/operators';
 import { PolSourceObservationIssue } from '../../../models/generated/PolSourceObservationIssue.model';
 import { HttpRequestModel } from '../../../models/http.model';
+import { HttpClientService } from '../../../services/http-client.service';
+import { HttpClientCommand } from '../../../enums/app.enums';
 
 @Injectable({
   providedIn: 'root'
@@ -26,110 +27,63 @@ export class PolSourceObservationIssueService {
   polsourceobservationissuePutModel$: BehaviorSubject<HttpRequestModel> = new BehaviorSubject<HttpRequestModel>(<HttpRequestModel>{});
   polsourceobservationissuePostModel$: BehaviorSubject<HttpRequestModel> = new BehaviorSubject<HttpRequestModel>(<HttpRequestModel>{});
   polsourceobservationissueDeleteModel$: BehaviorSubject<HttpRequestModel> = new BehaviorSubject<HttpRequestModel>(<HttpRequestModel>{});
-  polsourceobservationissueList: PolSourceObservationIssue[] = [];
-  private oldURL: string;
-  private router: Router;
 
   /* Constructors */
-  constructor(private httpClient: HttpClient) {
+  constructor(private httpClient: HttpClient, private httpClientService: HttpClientService) {
     LoadLocalesPolSourceObservationIssueText(this);
     this.polsourceobservationissueTextModel$.next(<PolSourceObservationIssueTextModel>{ Title: "Something2 for text" });
   }
 
   /* Functions public */
-  GetPolSourceObservationIssueList(router: Router) {
-    this.BeforeHttpClient(this.polsourceobservationissueGetModel$, router);
+  GetPolSourceObservationIssueList() {
+    this.httpClientService.BeforeHttpClient(this.polsourceobservationissueGetModel$);
 
     return this.httpClient.get<PolSourceObservationIssue[]>('/api/PolSourceObservationIssue').pipe(
       map((x: any) => {
-        this.DoSuccess(this.polsourceobservationissueGetModel$, x, 'Get', null);
+        this.httpClientService.DoSuccess<PolSourceObservationIssue>(this.polsourceobservationissueListModel$, this.polsourceobservationissueGetModel$, x, HttpClientCommand.Get, null);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.DoCatchError(this.polsourceobservationissueGetModel$, e, 'Get');
+        this.httpClientService.DoCatchError<PolSourceObservationIssue>(this.polsourceobservationissueListModel$, this.polsourceobservationissueGetModel$, e);
       })))
     );
   }
 
-  PutPolSourceObservationIssue(polsourceobservationissue: PolSourceObservationIssue, router: Router) {
-    this.BeforeHttpClient(this.polsourceobservationissuePutModel$, router);
+  PutPolSourceObservationIssue(polsourceobservationissue: PolSourceObservationIssue) {
+    this.httpClientService.BeforeHttpClient(this.polsourceobservationissuePutModel$);
 
     return this.httpClient.put<PolSourceObservationIssue>('/api/PolSourceObservationIssue', polsourceobservationissue, { headers: new HttpHeaders() }).pipe(
       map((x: any) => {
-        this.DoSuccess(this.polsourceobservationissuePutModel$, x, 'Put', polsourceobservationissue);
+        this.httpClientService.DoSuccess<PolSourceObservationIssue>(this.polsourceobservationissueListModel$, this.polsourceobservationissuePutModel$, x, HttpClientCommand.Put, polsourceobservationissue);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.DoCatchError(this.polsourceobservationissuePutModel$, e, 'Put');
+       this.httpClientService.DoCatchError<PolSourceObservationIssue>(this.polsourceobservationissueListModel$, this.polsourceobservationissuePutModel$, e);
       })))
     );
   }
 
-  PostPolSourceObservationIssue(polsourceobservationissue: PolSourceObservationIssue, router: Router) {
-    this.BeforeHttpClient(this.polsourceobservationissuePostModel$, router);
+  PostPolSourceObservationIssue(polsourceobservationissue: PolSourceObservationIssue) {
+    this.httpClientService.BeforeHttpClient(this.polsourceobservationissuePostModel$);
 
     return this.httpClient.post<PolSourceObservationIssue>('/api/PolSourceObservationIssue', polsourceobservationissue, { headers: new HttpHeaders() }).pipe(
       map((x: any) => {
-        this.DoSuccess(this.polsourceobservationissuePostModel$, x, 'Post', polsourceobservationissue);
+        this.httpClientService.DoSuccess<PolSourceObservationIssue>(this.polsourceobservationissueListModel$, this.polsourceobservationissuePostModel$, x, HttpClientCommand.Post, polsourceobservationissue);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.DoCatchError(this.polsourceobservationissuePostModel$, e, 'Post');
+        this.httpClientService.DoCatchError<PolSourceObservationIssue>(this.polsourceobservationissueListModel$, this.polsourceobservationissuePostModel$, e);
       })))
     );
   }
 
-  DeletePolSourceObservationIssue(polsourceobservationissue: PolSourceObservationIssue, router: Router) {
-    this.BeforeHttpClient(this.polsourceobservationissueDeleteModel$, router);
+  DeletePolSourceObservationIssue(polsourceobservationissue: PolSourceObservationIssue) {
+    this.httpClientService.BeforeHttpClient(this.polsourceobservationissueDeleteModel$);
 
     return this.httpClient.delete<boolean>(`/api/PolSourceObservationIssue/${ polsourceobservationissue.PolSourceObservationIssueID }`).pipe(
       map((x: any) => {
-        this.DoSuccess(this.polsourceobservationissueDeleteModel$, x, 'Delete', polsourceobservationissue);
+        this.httpClientService.DoSuccess<PolSourceObservationIssue>(this.polsourceobservationissueListModel$, this.polsourceobservationissueDeleteModel$, x, HttpClientCommand.Delete, polsourceobservationissue);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.DoCatchError(this.polsourceobservationissueDeleteModel$, e, 'Delete');
+        this.httpClientService.DoCatchError<PolSourceObservationIssue>(this.polsourceobservationissueListModel$, this.polsourceobservationissueDeleteModel$, e);
       })))
     );
-  }
-
-  /* Functions private */
-  private BeforeHttpClient(httpRequestModel$: BehaviorSubject<HttpRequestModel>, router: Router) {
-    this.router = router;
-    this.oldURL = router.url;
-    httpRequestModel$.next(<HttpRequestModel>{ Working: true, Error: null, Status: null });
-  }
-
-  private DoCatchError(httpRequestModel$: BehaviorSubject<HttpRequestModel>, e: any, command: string) {
-    this.polsourceobservationissueListModel$.next(null);
-    httpRequestModel$.next(<HttpRequestModel>{ Working: false, Error: <HttpErrorResponse>e, Status: 'Error' });
-
-    this.polsourceobservationissueList = [];
-    console.debug(`PolSourceObservationIssue ${ command } ERROR. Return: ${ <HttpErrorResponse>e }`);
-    this.DoReload();
-  }
-
-  private DoReload() {
-    this.router.navigateByUrl('', { skipLocationChange: true }).then(() => {
-      this.router.navigate([`/${this.oldURL}`]);
-    });
-  }
-
-  private DoSuccess(httpRequestModel$: BehaviorSubject<HttpRequestModel>, x: any, command: string, polsourceobservationissue?: PolSourceObservationIssue) {
-    console.debug(`PolSourceObservationIssue ${ command } OK. Return: ${ x }`);
-    if (command === 'Get') {
-      this.polsourceobservationissueListModel$.next(<PolSourceObservationIssue[]>x);
-    }
-    if (command === 'Put') {
-      this.polsourceobservationissueListModel$.getValue()[0] = <PolSourceObservationIssue>x;
-    }
-    if (command === 'Post') {
-      this.polsourceobservationissueListModel$.getValue().push(<PolSourceObservationIssue>x);
-    }
-    if (command === 'Delete') {
-      const index = this.polsourceobservationissueListModel$.getValue().indexOf(polsourceobservationissue);
-      this.polsourceobservationissueListModel$.getValue().splice(index, 1);
-    }
-
-    this.polsourceobservationissueListModel$.next(this.polsourceobservationissueListModel$.getValue());
-    httpRequestModel$.next(<HttpRequestModel>{ Working: false, Error: null, Status: 'ok' });
-    this.polsourceobservationissueList = this.polsourceobservationissueListModel$.getValue();
-    this.DoReload();
   }
 }

@@ -5,7 +5,7 @@
  *
 -->
 
-<mat-progress-bar mode="indeterminate" *ngIf="mikescenarioresultService.mikescenarioresultGetModel$.getValue().Working"></mat-progress-bar>
+<mat-progress-bar mode="indeterminate" *ngIf="mikescenarioresultService.mikescenarioresultGetModel$.getValue()?.Working"></mat-progress-bar>
 <mat-card>
   <mat-card-header>
     <mat-card-title>
@@ -17,8 +17,8 @@
     <mat-card-subtitle>{{ mikescenarioresultService.mikescenarioresultTextModel$.getValue().Title }}</mat-card-subtitle>
   </mat-card-header>
   <mat-card-content>
-    <mat-list>
-      <mat-list-item *ngFor="let mikescenarioresult of mikescenarioresultService.mikescenarioresultList">
+    <mat-list *ngIf="mikescenarioresultService.mikescenarioresultListModel$.getValue()?.length">
+      <mat-list-item *ngFor="let mikescenarioresult of mikescenarioresultService.mikescenarioresultListModel$.getValue()">
         <span mat-line>
           <button mat-raised-button (click)="DeleteMikeScenarioResult(mikescenarioresult)">
             <span>Delete MikeScenarioResultID [{{ mikescenarioresult.MikeScenarioResultID }}]&nbsp;&nbsp;&nbsp;</span>
@@ -50,7 +50,7 @@
     <mat-card-title>Edit MikeScenarioResult testing</mat-card-title>
   </mat-card-header>
   <mat-card-content>
-    <div *ngIf="mikescenarioresultService.mikescenarioresultList.length">
+    <div *ngIf="mikescenarioresultService.mikescenarioresultListModel$.getValue()?.length">
       <blockquote>
         <form [formGroup]="mikescenarioresultFormPut" (ngSubmit)="PutMikeScenarioResult(mikescenarioresultFormPut.value)">
           <h3>
@@ -65,24 +65,43 @@
             <mat-form-field>
               <mat-label>MikeScenarioResultID</mat-label>
               <input matInput type="number" formControlName="MikeScenarioResultID">
+              <mat-error *ngIf="mikescenarioresultFormPut.controls.MikeScenarioResultID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>MikeScenarioTVItemID</mat-label>
               <input matInput type="number" formControlName="MikeScenarioTVItemID">
+              <mat-error *ngIf="mikescenarioresultFormPut.controls.MikeScenarioTVItemID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>MikeResultsJSON</mat-label>
               <input matInput type="text" formControlName="MikeResultsJSON">
+              <mat-error *ngIf="mikescenarioresultFormPut.controls.MikeResultsJSON.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>LastUpdateDate_UTC</mat-label>
               <input matInput type="text" formControlName="LastUpdateDate_UTC">
+              <mat-error *ngIf="mikescenarioresultFormPut.controls.LastUpdateDate_UTC.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
           </p>
           <p>
             <mat-form-field>
               <mat-label>LastUpdateContactTVItemID</mat-label>
               <input matInput type="number" formControlName="LastUpdateContactTVItemID">
+              <mat-error *ngIf="mikescenarioresultFormPut.controls.LastUpdateContactTVItemID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
           </p>
         </form>
@@ -97,7 +116,7 @@
     <mat-card-title>Add MikeScenarioResult testing</mat-card-title>
   </mat-card-header>
   <mat-card-content>
-    <div *ngIf="mikescenarioresultService.mikescenarioresultList.length">
+    <div *ngIf="mikescenarioresultService.mikescenarioresultListModel$.getValue()?.length">
       <blockquote>
         <form [formGroup]="mikescenarioresultFormPost" (ngSubmit)="PostMikeScenarioResult(mikescenarioresultFormPost.value)">
           <h3>
@@ -112,24 +131,43 @@
             <mat-form-field>
               <mat-label>MikeScenarioResultID</mat-label>
               <input matInput type="number" formControlName="MikeScenarioResultID">
+              <mat-error *ngIf="mikescenarioresultFormPut.controls.MikeScenarioResultID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>MikeScenarioTVItemID</mat-label>
               <input matInput type="number" formControlName="MikeScenarioTVItemID">
+              <mat-error *ngIf="mikescenarioresultFormPut.controls.MikeScenarioTVItemID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>MikeResultsJSON</mat-label>
               <input matInput type="text" formControlName="MikeResultsJSON">
+              <mat-error *ngIf="mikescenarioresultFormPut.controls.MikeResultsJSON.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>LastUpdateDate_UTC</mat-label>
               <input matInput type="text" formControlName="LastUpdateDate_UTC">
+              <mat-error *ngIf="mikescenarioresultFormPut.controls.LastUpdateDate_UTC.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
           </p>
           <p>
             <mat-form-field>
               <mat-label>LastUpdateContactTVItemID</mat-label>
               <input matInput type="number" formControlName="LastUpdateContactTVItemID">
+              <mat-error *ngIf="mikescenarioresultFormPut.controls.LastUpdateContactTVItemID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
           </p>
         </form>

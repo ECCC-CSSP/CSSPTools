@@ -8,10 +8,12 @@
 import { Component, OnInit, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
 import { PolSourceSiteEffectService } from './polsourcesiteeffect.service';
 import { LoadLocalesPolSourceSiteEffectText } from './polsourcesiteeffect.locales';
-import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { PolSourceSiteEffect } from '../../../models/generated/PolSourceSiteEffect.model';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
+import { HttpClientService } from '../../../services/http-client.service';
+import { Router } from '@angular/router';
+import { HttpClientCommand } from '../../../enums/app.enums';
 
 @Component({
   selector: 'app-polsourcesiteeffect',
@@ -24,28 +26,30 @@ export class PolSourceSiteEffectComponent implements OnInit, OnDestroy {
   polsourcesiteeffectFormPut: FormGroup;
   polsourcesiteeffectFormPost: FormGroup;
 
-  constructor(public polsourcesiteeffectService: PolSourceSiteEffectService, public router: Router, public fb: FormBuilder) { }
+  constructor(public polsourcesiteeffectService: PolSourceSiteEffectService, private router: Router, private httpClientService: HttpClientService, private fb: FormBuilder) {
+    httpClientService.oldURL = router.url;
+  }
 
   GetPolSourceSiteEffectList() {
-    this.sub = this.polsourcesiteeffectService.GetPolSourceSiteEffectList(this.router).subscribe();
+    this.sub = this.polsourcesiteeffectService.GetPolSourceSiteEffectList().subscribe();
   }
 
   PutPolSourceSiteEffect(polsourcesiteeffect: PolSourceSiteEffect) {
-    this.sub = this.polsourcesiteeffectService.PutPolSourceSiteEffect(polsourcesiteeffect, this.router).subscribe();
+    this.sub = this.polsourcesiteeffectService.PutPolSourceSiteEffect(polsourcesiteeffect).subscribe();
   }
 
   PostPolSourceSiteEffect(polsourcesiteeffect: PolSourceSiteEffect) {
-    this.sub = this.polsourcesiteeffectService.PostPolSourceSiteEffect(polsourcesiteeffect, this.router).subscribe();
+    this.sub = this.polsourcesiteeffectService.PostPolSourceSiteEffect(polsourcesiteeffect).subscribe();
   }
 
   DeletePolSourceSiteEffect(polsourcesiteeffect: PolSourceSiteEffect) {
-    this.sub = this.polsourcesiteeffectService.DeletePolSourceSiteEffect(polsourcesiteeffect, this.router).subscribe();
+    this.sub = this.polsourcesiteeffectService.DeletePolSourceSiteEffect(polsourcesiteeffect).subscribe();
   }
 
   ngOnInit(): void {
     LoadLocalesPolSourceSiteEffectText(this.polsourcesiteeffectService);
-    this.FillFormBuilderGroup('Add');
-    this.FillFormBuilderGroup('Update');
+    this.FillFormBuilderGroup(HttpClientCommand.Post);
+    this.FillFormBuilderGroup(HttpClientCommand.Put);
   }
 
   ngOnDestroy() {
@@ -54,54 +58,54 @@ export class PolSourceSiteEffectComponent implements OnInit, OnDestroy {
     }
   }
 
-  FillFormBuilderGroup(AddOrUpdate: string) {
-    if (this.polsourcesiteeffectService.polsourcesiteeffectList.length) {
+  FillFormBuilderGroup(httpClientCommand: HttpClientCommand) {
+    if (this.polsourcesiteeffectService.polsourcesiteeffectListModel$.getValue().length) {
       let formGroup: FormGroup = this.fb.group(
         {
           PolSourceSiteEffectID: [
             {
-              value: (AddOrUpdate === 'Add' ? 0 : (this.polsourcesiteeffectService.polsourcesiteeffectList[0]?.PolSourceSiteEffectID)),
+              value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.polsourcesiteeffectService.polsourcesiteeffectListModel$.getValue()[0]?.PolSourceSiteEffectID)),
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
           PolSourceSiteOrInfrastructureTVItemID: [
             {
-              value: this.polsourcesiteeffectService.polsourcesiteeffectList[0]?.PolSourceSiteOrInfrastructureTVItemID,
+              value: this.polsourcesiteeffectService.polsourcesiteeffectListModel$.getValue()[0]?.PolSourceSiteOrInfrastructureTVItemID,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
           MWQMSiteTVItemID: [
             {
-              value: this.polsourcesiteeffectService.polsourcesiteeffectList[0]?.MWQMSiteTVItemID,
+              value: this.polsourcesiteeffectService.polsourcesiteeffectListModel$.getValue()[0]?.MWQMSiteTVItemID,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
           PolSourceSiteEffectTermIDs: [
             {
-              value: this.polsourcesiteeffectService.polsourcesiteeffectList[0]?.PolSourceSiteEffectTermIDs,
+              value: this.polsourcesiteeffectService.polsourcesiteeffectListModel$.getValue()[0]?.PolSourceSiteEffectTermIDs,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.maxLength(250) ]],
           Comments: [
             {
-              value: this.polsourcesiteeffectService.polsourcesiteeffectList[0]?.Comments,
+              value: this.polsourcesiteeffectService.polsourcesiteeffectListModel$.getValue()[0]?.Comments,
               disabled: false
-            }, [ Validators.required ]],
+            }],
           AnalysisDocumentTVItemID: [
             {
-              value: this.polsourcesiteeffectService.polsourcesiteeffectList[0]?.AnalysisDocumentTVItemID,
+              value: this.polsourcesiteeffectService.polsourcesiteeffectListModel$.getValue()[0]?.AnalysisDocumentTVItemID,
               disabled: false
-            }, [ Validators.required ]],
+            }],
           LastUpdateDate_UTC: [
             {
-              value: this.polsourcesiteeffectService.polsourcesiteeffectList[0]?.LastUpdateDate_UTC,
+              value: this.polsourcesiteeffectService.polsourcesiteeffectListModel$.getValue()[0]?.LastUpdateDate_UTC,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
           LastUpdateContactTVItemID: [
             {
-              value: this.polsourcesiteeffectService.polsourcesiteeffectList[0]?.LastUpdateContactTVItemID,
+              value: this.polsourcesiteeffectService.polsourcesiteeffectListModel$.getValue()[0]?.LastUpdateContactTVItemID,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
         }
       );
 
-      if (AddOrUpdate === 'Add') {
+      if (httpClientCommand === HttpClientCommand.Post) {
         this.polsourcesiteeffectFormPost = formGroup
       }
       else {

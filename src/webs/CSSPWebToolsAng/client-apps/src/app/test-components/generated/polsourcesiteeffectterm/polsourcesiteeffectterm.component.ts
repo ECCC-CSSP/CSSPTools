@@ -8,10 +8,12 @@
 import { Component, OnInit, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
 import { PolSourceSiteEffectTermService } from './polsourcesiteeffectterm.service';
 import { LoadLocalesPolSourceSiteEffectTermText } from './polsourcesiteeffectterm.locales';
-import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { PolSourceSiteEffectTerm } from '../../../models/generated/PolSourceSiteEffectTerm.model';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
+import { HttpClientService } from '../../../services/http-client.service';
+import { Router } from '@angular/router';
+import { HttpClientCommand } from '../../../enums/app.enums';
 
 @Component({
   selector: 'app-polsourcesiteeffectterm',
@@ -24,28 +26,30 @@ export class PolSourceSiteEffectTermComponent implements OnInit, OnDestroy {
   polsourcesiteeffecttermFormPut: FormGroup;
   polsourcesiteeffecttermFormPost: FormGroup;
 
-  constructor(public polsourcesiteeffecttermService: PolSourceSiteEffectTermService, public router: Router, public fb: FormBuilder) { }
+  constructor(public polsourcesiteeffecttermService: PolSourceSiteEffectTermService, private router: Router, private httpClientService: HttpClientService, private fb: FormBuilder) {
+    httpClientService.oldURL = router.url;
+  }
 
   GetPolSourceSiteEffectTermList() {
-    this.sub = this.polsourcesiteeffecttermService.GetPolSourceSiteEffectTermList(this.router).subscribe();
+    this.sub = this.polsourcesiteeffecttermService.GetPolSourceSiteEffectTermList().subscribe();
   }
 
   PutPolSourceSiteEffectTerm(polsourcesiteeffectterm: PolSourceSiteEffectTerm) {
-    this.sub = this.polsourcesiteeffecttermService.PutPolSourceSiteEffectTerm(polsourcesiteeffectterm, this.router).subscribe();
+    this.sub = this.polsourcesiteeffecttermService.PutPolSourceSiteEffectTerm(polsourcesiteeffectterm).subscribe();
   }
 
   PostPolSourceSiteEffectTerm(polsourcesiteeffectterm: PolSourceSiteEffectTerm) {
-    this.sub = this.polsourcesiteeffecttermService.PostPolSourceSiteEffectTerm(polsourcesiteeffectterm, this.router).subscribe();
+    this.sub = this.polsourcesiteeffecttermService.PostPolSourceSiteEffectTerm(polsourcesiteeffectterm).subscribe();
   }
 
   DeletePolSourceSiteEffectTerm(polsourcesiteeffectterm: PolSourceSiteEffectTerm) {
-    this.sub = this.polsourcesiteeffecttermService.DeletePolSourceSiteEffectTerm(polsourcesiteeffectterm, this.router).subscribe();
+    this.sub = this.polsourcesiteeffecttermService.DeletePolSourceSiteEffectTerm(polsourcesiteeffectterm).subscribe();
   }
 
   ngOnInit(): void {
     LoadLocalesPolSourceSiteEffectTermText(this.polsourcesiteeffecttermService);
-    this.FillFormBuilderGroup('Add');
-    this.FillFormBuilderGroup('Update');
+    this.FillFormBuilderGroup(HttpClientCommand.Post);
+    this.FillFormBuilderGroup(HttpClientCommand.Put);
   }
 
   ngOnDestroy() {
@@ -54,49 +58,49 @@ export class PolSourceSiteEffectTermComponent implements OnInit, OnDestroy {
     }
   }
 
-  FillFormBuilderGroup(AddOrUpdate: string) {
-    if (this.polsourcesiteeffecttermService.polsourcesiteeffecttermList.length) {
+  FillFormBuilderGroup(httpClientCommand: HttpClientCommand) {
+    if (this.polsourcesiteeffecttermService.polsourcesiteeffecttermListModel$.getValue().length) {
       let formGroup: FormGroup = this.fb.group(
         {
           PolSourceSiteEffectTermID: [
             {
-              value: (AddOrUpdate === 'Add' ? 0 : (this.polsourcesiteeffecttermService.polsourcesiteeffecttermList[0]?.PolSourceSiteEffectTermID)),
+              value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.polsourcesiteeffecttermService.polsourcesiteeffecttermListModel$.getValue()[0]?.PolSourceSiteEffectTermID)),
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
           IsGroup: [
             {
-              value: this.polsourcesiteeffecttermService.polsourcesiteeffecttermList[0]?.IsGroup,
+              value: this.polsourcesiteeffecttermService.polsourcesiteeffecttermListModel$.getValue()[0]?.IsGroup,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
           UnderGroupID: [
             {
-              value: this.polsourcesiteeffecttermService.polsourcesiteeffecttermList[0]?.UnderGroupID,
+              value: this.polsourcesiteeffecttermService.polsourcesiteeffecttermListModel$.getValue()[0]?.UnderGroupID,
               disabled: false
-            }, [ Validators.required ]],
+            }],
           EffectTermEN: [
             {
-              value: this.polsourcesiteeffecttermService.polsourcesiteeffecttermList[0]?.EffectTermEN,
+              value: this.polsourcesiteeffecttermService.polsourcesiteeffecttermListModel$.getValue()[0]?.EffectTermEN,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required, Validators.maxLength(100) ]],
           EffectTermFR: [
             {
-              value: this.polsourcesiteeffecttermService.polsourcesiteeffecttermList[0]?.EffectTermFR,
+              value: this.polsourcesiteeffecttermService.polsourcesiteeffecttermListModel$.getValue()[0]?.EffectTermFR,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required, Validators.maxLength(100) ]],
           LastUpdateDate_UTC: [
             {
-              value: this.polsourcesiteeffecttermService.polsourcesiteeffecttermList[0]?.LastUpdateDate_UTC,
+              value: this.polsourcesiteeffecttermService.polsourcesiteeffecttermListModel$.getValue()[0]?.LastUpdateDate_UTC,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
           LastUpdateContactTVItemID: [
             {
-              value: this.polsourcesiteeffecttermService.polsourcesiteeffecttermList[0]?.LastUpdateContactTVItemID,
+              value: this.polsourcesiteeffecttermService.polsourcesiteeffecttermListModel$.getValue()[0]?.LastUpdateContactTVItemID,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
         }
       );
 
-      if (AddOrUpdate === 'Add') {
+      if (httpClientCommand === HttpClientCommand.Post) {
         this.polsourcesiteeffecttermFormPost = formGroup
       }
       else {

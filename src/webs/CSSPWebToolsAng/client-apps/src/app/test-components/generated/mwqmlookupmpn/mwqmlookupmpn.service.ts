@@ -9,11 +9,12 @@ import { Injectable } from '@angular/core';
 import { MWQMLookupMPNTextModel } from './mwqmlookupmpn.models';
 import { BehaviorSubject, of } from 'rxjs';
 import { LoadLocalesMWQMLookupMPNText } from './mwqmlookupmpn.locales';
-import { Router } from '@angular/router';
-import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { map, catchError } from 'rxjs/operators';
 import { MWQMLookupMPN } from '../../../models/generated/MWQMLookupMPN.model';
 import { HttpRequestModel } from '../../../models/http.model';
+import { HttpClientService } from '../../../services/http-client.service';
+import { HttpClientCommand } from '../../../enums/app.enums';
 
 @Injectable({
   providedIn: 'root'
@@ -26,110 +27,63 @@ export class MWQMLookupMPNService {
   mwqmlookupmpnPutModel$: BehaviorSubject<HttpRequestModel> = new BehaviorSubject<HttpRequestModel>(<HttpRequestModel>{});
   mwqmlookupmpnPostModel$: BehaviorSubject<HttpRequestModel> = new BehaviorSubject<HttpRequestModel>(<HttpRequestModel>{});
   mwqmlookupmpnDeleteModel$: BehaviorSubject<HttpRequestModel> = new BehaviorSubject<HttpRequestModel>(<HttpRequestModel>{});
-  mwqmlookupmpnList: MWQMLookupMPN[] = [];
-  private oldURL: string;
-  private router: Router;
 
   /* Constructors */
-  constructor(private httpClient: HttpClient) {
+  constructor(private httpClient: HttpClient, private httpClientService: HttpClientService) {
     LoadLocalesMWQMLookupMPNText(this);
     this.mwqmlookupmpnTextModel$.next(<MWQMLookupMPNTextModel>{ Title: "Something2 for text" });
   }
 
   /* Functions public */
-  GetMWQMLookupMPNList(router: Router) {
-    this.BeforeHttpClient(this.mwqmlookupmpnGetModel$, router);
+  GetMWQMLookupMPNList() {
+    this.httpClientService.BeforeHttpClient(this.mwqmlookupmpnGetModel$);
 
     return this.httpClient.get<MWQMLookupMPN[]>('/api/MWQMLookupMPN').pipe(
       map((x: any) => {
-        this.DoSuccess(this.mwqmlookupmpnGetModel$, x, 'Get', null);
+        this.httpClientService.DoSuccess<MWQMLookupMPN>(this.mwqmlookupmpnListModel$, this.mwqmlookupmpnGetModel$, x, HttpClientCommand.Get, null);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.DoCatchError(this.mwqmlookupmpnGetModel$, e, 'Get');
+        this.httpClientService.DoCatchError<MWQMLookupMPN>(this.mwqmlookupmpnListModel$, this.mwqmlookupmpnGetModel$, e);
       })))
     );
   }
 
-  PutMWQMLookupMPN(mwqmlookupmpn: MWQMLookupMPN, router: Router) {
-    this.BeforeHttpClient(this.mwqmlookupmpnPutModel$, router);
+  PutMWQMLookupMPN(mwqmlookupmpn: MWQMLookupMPN) {
+    this.httpClientService.BeforeHttpClient(this.mwqmlookupmpnPutModel$);
 
     return this.httpClient.put<MWQMLookupMPN>('/api/MWQMLookupMPN', mwqmlookupmpn, { headers: new HttpHeaders() }).pipe(
       map((x: any) => {
-        this.DoSuccess(this.mwqmlookupmpnPutModel$, x, 'Put', mwqmlookupmpn);
+        this.httpClientService.DoSuccess<MWQMLookupMPN>(this.mwqmlookupmpnListModel$, this.mwqmlookupmpnPutModel$, x, HttpClientCommand.Put, mwqmlookupmpn);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.DoCatchError(this.mwqmlookupmpnPutModel$, e, 'Put');
+       this.httpClientService.DoCatchError<MWQMLookupMPN>(this.mwqmlookupmpnListModel$, this.mwqmlookupmpnPutModel$, e);
       })))
     );
   }
 
-  PostMWQMLookupMPN(mwqmlookupmpn: MWQMLookupMPN, router: Router) {
-    this.BeforeHttpClient(this.mwqmlookupmpnPostModel$, router);
+  PostMWQMLookupMPN(mwqmlookupmpn: MWQMLookupMPN) {
+    this.httpClientService.BeforeHttpClient(this.mwqmlookupmpnPostModel$);
 
     return this.httpClient.post<MWQMLookupMPN>('/api/MWQMLookupMPN', mwqmlookupmpn, { headers: new HttpHeaders() }).pipe(
       map((x: any) => {
-        this.DoSuccess(this.mwqmlookupmpnPostModel$, x, 'Post', mwqmlookupmpn);
+        this.httpClientService.DoSuccess<MWQMLookupMPN>(this.mwqmlookupmpnListModel$, this.mwqmlookupmpnPostModel$, x, HttpClientCommand.Post, mwqmlookupmpn);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.DoCatchError(this.mwqmlookupmpnPostModel$, e, 'Post');
+        this.httpClientService.DoCatchError<MWQMLookupMPN>(this.mwqmlookupmpnListModel$, this.mwqmlookupmpnPostModel$, e);
       })))
     );
   }
 
-  DeleteMWQMLookupMPN(mwqmlookupmpn: MWQMLookupMPN, router: Router) {
-    this.BeforeHttpClient(this.mwqmlookupmpnDeleteModel$, router);
+  DeleteMWQMLookupMPN(mwqmlookupmpn: MWQMLookupMPN) {
+    this.httpClientService.BeforeHttpClient(this.mwqmlookupmpnDeleteModel$);
 
     return this.httpClient.delete<boolean>(`/api/MWQMLookupMPN/${ mwqmlookupmpn.MWQMLookupMPNID }`).pipe(
       map((x: any) => {
-        this.DoSuccess(this.mwqmlookupmpnDeleteModel$, x, 'Delete', mwqmlookupmpn);
+        this.httpClientService.DoSuccess<MWQMLookupMPN>(this.mwqmlookupmpnListModel$, this.mwqmlookupmpnDeleteModel$, x, HttpClientCommand.Delete, mwqmlookupmpn);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.DoCatchError(this.mwqmlookupmpnDeleteModel$, e, 'Delete');
+        this.httpClientService.DoCatchError<MWQMLookupMPN>(this.mwqmlookupmpnListModel$, this.mwqmlookupmpnDeleteModel$, e);
       })))
     );
-  }
-
-  /* Functions private */
-  private BeforeHttpClient(httpRequestModel$: BehaviorSubject<HttpRequestModel>, router: Router) {
-    this.router = router;
-    this.oldURL = router.url;
-    httpRequestModel$.next(<HttpRequestModel>{ Working: true, Error: null, Status: null });
-  }
-
-  private DoCatchError(httpRequestModel$: BehaviorSubject<HttpRequestModel>, e: any, command: string) {
-    this.mwqmlookupmpnListModel$.next(null);
-    httpRequestModel$.next(<HttpRequestModel>{ Working: false, Error: <HttpErrorResponse>e, Status: 'Error' });
-
-    this.mwqmlookupmpnList = [];
-    console.debug(`MWQMLookupMPN ${ command } ERROR. Return: ${ <HttpErrorResponse>e }`);
-    this.DoReload();
-  }
-
-  private DoReload() {
-    this.router.navigateByUrl('', { skipLocationChange: true }).then(() => {
-      this.router.navigate([`/${this.oldURL}`]);
-    });
-  }
-
-  private DoSuccess(httpRequestModel$: BehaviorSubject<HttpRequestModel>, x: any, command: string, mwqmlookupmpn?: MWQMLookupMPN) {
-    console.debug(`MWQMLookupMPN ${ command } OK. Return: ${ x }`);
-    if (command === 'Get') {
-      this.mwqmlookupmpnListModel$.next(<MWQMLookupMPN[]>x);
-    }
-    if (command === 'Put') {
-      this.mwqmlookupmpnListModel$.getValue()[0] = <MWQMLookupMPN>x;
-    }
-    if (command === 'Post') {
-      this.mwqmlookupmpnListModel$.getValue().push(<MWQMLookupMPN>x);
-    }
-    if (command === 'Delete') {
-      const index = this.mwqmlookupmpnListModel$.getValue().indexOf(mwqmlookupmpn);
-      this.mwqmlookupmpnListModel$.getValue().splice(index, 1);
-    }
-
-    this.mwqmlookupmpnListModel$.next(this.mwqmlookupmpnListModel$.getValue());
-    httpRequestModel$.next(<HttpRequestModel>{ Working: false, Error: null, Status: 'ok' });
-    this.mwqmlookupmpnList = this.mwqmlookupmpnListModel$.getValue();
-    this.DoReload();
   }
 }

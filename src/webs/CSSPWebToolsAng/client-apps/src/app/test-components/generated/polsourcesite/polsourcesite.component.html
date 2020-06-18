@@ -5,7 +5,7 @@
  *
 -->
 
-<mat-progress-bar mode="indeterminate" *ngIf="polsourcesiteService.polsourcesiteGetModel$.getValue().Working"></mat-progress-bar>
+<mat-progress-bar mode="indeterminate" *ngIf="polsourcesiteService.polsourcesiteGetModel$.getValue()?.Working"></mat-progress-bar>
 <mat-card>
   <mat-card-header>
     <mat-card-title>
@@ -17,8 +17,8 @@
     <mat-card-subtitle>{{ polsourcesiteService.polsourcesiteTextModel$.getValue().Title }}</mat-card-subtitle>
   </mat-card-header>
   <mat-card-content>
-    <mat-list>
-      <mat-list-item *ngFor="let polsourcesite of polsourcesiteService.polsourcesiteList">
+    <mat-list *ngIf="polsourcesiteService.polsourcesiteListModel$.getValue()?.length">
+      <mat-list-item *ngFor="let polsourcesite of polsourcesiteService.polsourcesiteListModel$.getValue()">
         <span mat-line>
           <button mat-raised-button (click)="DeletePolSourceSite(polsourcesite)">
             <span>Delete PolSourceSiteID [{{ polsourcesite.PolSourceSiteID }}]&nbsp;&nbsp;&nbsp;</span>
@@ -58,7 +58,7 @@
     <mat-card-title>Edit PolSourceSite testing</mat-card-title>
   </mat-card-header>
   <mat-card-content>
-    <div *ngIf="polsourcesiteService.polsourcesiteList.length">
+    <div *ngIf="polsourcesiteService.polsourcesiteListModel$.getValue()?.length">
       <blockquote>
         <form [formGroup]="polsourcesiteFormPut" (ngSubmit)="PutPolSourceSite(polsourcesiteFormPut.value)">
           <h3>
@@ -73,32 +73,63 @@
             <mat-form-field>
               <mat-label>PolSourceSiteID</mat-label>
               <input matInput type="number" formControlName="PolSourceSiteID">
+              <mat-error *ngIf="polsourcesiteFormPut.controls.PolSourceSiteID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>PolSourceSiteTVItemID</mat-label>
               <input matInput type="number" formControlName="PolSourceSiteTVItemID">
+              <mat-error *ngIf="polsourcesiteFormPut.controls.PolSourceSiteTVItemID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>Temp_Locator_CanDelete</mat-label>
               <input matInput type="text" formControlName="Temp_Locator_CanDelete">
+              <mat-error *ngIf="polsourcesiteFormPut.controls.Temp_Locator_CanDelete.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.maxlength">MaxLength - 50<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>Oldsiteid</mat-label>
               <input matInput type="number" formControlName="Oldsiteid">
+              <mat-error *ngIf="polsourcesiteFormPut.controls.Oldsiteid.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.min">Min - 0<br /></span>
+                <span *ngIf="e.min">Max - 1000<br /></span>
+              </mat-error>
             </mat-form-field>
           </p>
           <p>
             <mat-form-field>
               <mat-label>Site</mat-label>
               <input matInput type="number" formControlName="Site">
+              <mat-error *ngIf="polsourcesiteFormPut.controls.Site.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.min">Min - 0<br /></span>
+                <span *ngIf="e.min">Max - 1000<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>SiteID</mat-label>
               <input matInput type="number" formControlName="SiteID">
+              <mat-error *ngIf="polsourcesiteFormPut.controls.SiteID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.min">Min - 0<br /></span>
+                <span *ngIf="e.min">Max - 1000<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>IsPointSource</mat-label>
               <input matInput type="text" formControlName="IsPointSource">
+              <mat-error *ngIf="polsourcesiteFormPut.controls.IsPointSource.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>InactiveReason</mat-label>
@@ -107,20 +138,34 @@
                   {{ a.EnumText }}
                 </mat-option>
               </mat-select>
+              <mat-error *ngIf="polsourcesiteFormPut.controls.InactiveReason.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+              </mat-error>
             </mat-form-field>
           </p>
           <p>
             <mat-form-field>
               <mat-label>CivicAddressTVItemID</mat-label>
               <input matInput type="number" formControlName="CivicAddressTVItemID">
+              <mat-error *ngIf="polsourcesiteFormPut.controls.CivicAddressTVItemID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>LastUpdateDate_UTC</mat-label>
               <input matInput type="text" formControlName="LastUpdateDate_UTC">
+              <mat-error *ngIf="polsourcesiteFormPut.controls.LastUpdateDate_UTC.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>LastUpdateContactTVItemID</mat-label>
               <input matInput type="number" formControlName="LastUpdateContactTVItemID">
+              <mat-error *ngIf="polsourcesiteFormPut.controls.LastUpdateContactTVItemID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
           </p>
         </form>
@@ -135,7 +180,7 @@
     <mat-card-title>Add PolSourceSite testing</mat-card-title>
   </mat-card-header>
   <mat-card-content>
-    <div *ngIf="polsourcesiteService.polsourcesiteList.length">
+    <div *ngIf="polsourcesiteService.polsourcesiteListModel$.getValue()?.length">
       <blockquote>
         <form [formGroup]="polsourcesiteFormPost" (ngSubmit)="PostPolSourceSite(polsourcesiteFormPost.value)">
           <h3>
@@ -150,32 +195,63 @@
             <mat-form-field>
               <mat-label>PolSourceSiteID</mat-label>
               <input matInput type="number" formControlName="PolSourceSiteID">
+              <mat-error *ngIf="polsourcesiteFormPut.controls.PolSourceSiteID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>PolSourceSiteTVItemID</mat-label>
               <input matInput type="number" formControlName="PolSourceSiteTVItemID">
+              <mat-error *ngIf="polsourcesiteFormPut.controls.PolSourceSiteTVItemID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>Temp_Locator_CanDelete</mat-label>
               <input matInput type="text" formControlName="Temp_Locator_CanDelete">
+              <mat-error *ngIf="polsourcesiteFormPut.controls.Temp_Locator_CanDelete.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.maxlength">MaxLength - 50<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>Oldsiteid</mat-label>
               <input matInput type="number" formControlName="Oldsiteid">
+              <mat-error *ngIf="polsourcesiteFormPut.controls.Oldsiteid.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.min">Min - 0<br /></span>
+                <span *ngIf="e.min">Max - 1000<br /></span>
+              </mat-error>
             </mat-form-field>
           </p>
           <p>
             <mat-form-field>
               <mat-label>Site</mat-label>
               <input matInput type="number" formControlName="Site">
+              <mat-error *ngIf="polsourcesiteFormPut.controls.Site.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.min">Min - 0<br /></span>
+                <span *ngIf="e.min">Max - 1000<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>SiteID</mat-label>
               <input matInput type="number" formControlName="SiteID">
+              <mat-error *ngIf="polsourcesiteFormPut.controls.SiteID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.min">Min - 0<br /></span>
+                <span *ngIf="e.min">Max - 1000<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>IsPointSource</mat-label>
               <input matInput type="text" formControlName="IsPointSource">
+              <mat-error *ngIf="polsourcesiteFormPut.controls.IsPointSource.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>InactiveReason</mat-label>
@@ -184,20 +260,34 @@
                   {{ a.EnumText }}
                 </mat-option>
               </mat-select>
+              <mat-error *ngIf="polsourcesiteFormPut.controls.InactiveReason.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+              </mat-error>
             </mat-form-field>
           </p>
           <p>
             <mat-form-field>
               <mat-label>CivicAddressTVItemID</mat-label>
               <input matInput type="number" formControlName="CivicAddressTVItemID">
+              <mat-error *ngIf="polsourcesiteFormPut.controls.CivicAddressTVItemID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>LastUpdateDate_UTC</mat-label>
               <input matInput type="text" formControlName="LastUpdateDate_UTC">
+              <mat-error *ngIf="polsourcesiteFormPut.controls.LastUpdateDate_UTC.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>LastUpdateContactTVItemID</mat-label>
               <input matInput type="number" formControlName="LastUpdateContactTVItemID">
+              <mat-error *ngIf="polsourcesiteFormPut.controls.LastUpdateContactTVItemID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
           </p>
         </form>

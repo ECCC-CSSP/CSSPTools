@@ -9,11 +9,12 @@ import { Injectable } from '@angular/core';
 import { TideSiteTextModel } from './tidesite.models';
 import { BehaviorSubject, of } from 'rxjs';
 import { LoadLocalesTideSiteText } from './tidesite.locales';
-import { Router } from '@angular/router';
-import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { map, catchError } from 'rxjs/operators';
 import { TideSite } from '../../../models/generated/TideSite.model';
 import { HttpRequestModel } from '../../../models/http.model';
+import { HttpClientService } from '../../../services/http-client.service';
+import { HttpClientCommand } from '../../../enums/app.enums';
 
 @Injectable({
   providedIn: 'root'
@@ -26,110 +27,63 @@ export class TideSiteService {
   tidesitePutModel$: BehaviorSubject<HttpRequestModel> = new BehaviorSubject<HttpRequestModel>(<HttpRequestModel>{});
   tidesitePostModel$: BehaviorSubject<HttpRequestModel> = new BehaviorSubject<HttpRequestModel>(<HttpRequestModel>{});
   tidesiteDeleteModel$: BehaviorSubject<HttpRequestModel> = new BehaviorSubject<HttpRequestModel>(<HttpRequestModel>{});
-  tidesiteList: TideSite[] = [];
-  private oldURL: string;
-  private router: Router;
 
   /* Constructors */
-  constructor(private httpClient: HttpClient) {
+  constructor(private httpClient: HttpClient, private httpClientService: HttpClientService) {
     LoadLocalesTideSiteText(this);
     this.tidesiteTextModel$.next(<TideSiteTextModel>{ Title: "Something2 for text" });
   }
 
   /* Functions public */
-  GetTideSiteList(router: Router) {
-    this.BeforeHttpClient(this.tidesiteGetModel$, router);
+  GetTideSiteList() {
+    this.httpClientService.BeforeHttpClient(this.tidesiteGetModel$);
 
     return this.httpClient.get<TideSite[]>('/api/TideSite').pipe(
       map((x: any) => {
-        this.DoSuccess(this.tidesiteGetModel$, x, 'Get', null);
+        this.httpClientService.DoSuccess<TideSite>(this.tidesiteListModel$, this.tidesiteGetModel$, x, HttpClientCommand.Get, null);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.DoCatchError(this.tidesiteGetModel$, e, 'Get');
+        this.httpClientService.DoCatchError<TideSite>(this.tidesiteListModel$, this.tidesiteGetModel$, e);
       })))
     );
   }
 
-  PutTideSite(tidesite: TideSite, router: Router) {
-    this.BeforeHttpClient(this.tidesitePutModel$, router);
+  PutTideSite(tidesite: TideSite) {
+    this.httpClientService.BeforeHttpClient(this.tidesitePutModel$);
 
     return this.httpClient.put<TideSite>('/api/TideSite', tidesite, { headers: new HttpHeaders() }).pipe(
       map((x: any) => {
-        this.DoSuccess(this.tidesitePutModel$, x, 'Put', tidesite);
+        this.httpClientService.DoSuccess<TideSite>(this.tidesiteListModel$, this.tidesitePutModel$, x, HttpClientCommand.Put, tidesite);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.DoCatchError(this.tidesitePutModel$, e, 'Put');
+       this.httpClientService.DoCatchError<TideSite>(this.tidesiteListModel$, this.tidesitePutModel$, e);
       })))
     );
   }
 
-  PostTideSite(tidesite: TideSite, router: Router) {
-    this.BeforeHttpClient(this.tidesitePostModel$, router);
+  PostTideSite(tidesite: TideSite) {
+    this.httpClientService.BeforeHttpClient(this.tidesitePostModel$);
 
     return this.httpClient.post<TideSite>('/api/TideSite', tidesite, { headers: new HttpHeaders() }).pipe(
       map((x: any) => {
-        this.DoSuccess(this.tidesitePostModel$, x, 'Post', tidesite);
+        this.httpClientService.DoSuccess<TideSite>(this.tidesiteListModel$, this.tidesitePostModel$, x, HttpClientCommand.Post, tidesite);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.DoCatchError(this.tidesitePostModel$, e, 'Post');
+        this.httpClientService.DoCatchError<TideSite>(this.tidesiteListModel$, this.tidesitePostModel$, e);
       })))
     );
   }
 
-  DeleteTideSite(tidesite: TideSite, router: Router) {
-    this.BeforeHttpClient(this.tidesiteDeleteModel$, router);
+  DeleteTideSite(tidesite: TideSite) {
+    this.httpClientService.BeforeHttpClient(this.tidesiteDeleteModel$);
 
     return this.httpClient.delete<boolean>(`/api/TideSite/${ tidesite.TideSiteID }`).pipe(
       map((x: any) => {
-        this.DoSuccess(this.tidesiteDeleteModel$, x, 'Delete', tidesite);
+        this.httpClientService.DoSuccess<TideSite>(this.tidesiteListModel$, this.tidesiteDeleteModel$, x, HttpClientCommand.Delete, tidesite);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.DoCatchError(this.tidesiteDeleteModel$, e, 'Delete');
+        this.httpClientService.DoCatchError<TideSite>(this.tidesiteListModel$, this.tidesiteDeleteModel$, e);
       })))
     );
-  }
-
-  /* Functions private */
-  private BeforeHttpClient(httpRequestModel$: BehaviorSubject<HttpRequestModel>, router: Router) {
-    this.router = router;
-    this.oldURL = router.url;
-    httpRequestModel$.next(<HttpRequestModel>{ Working: true, Error: null, Status: null });
-  }
-
-  private DoCatchError(httpRequestModel$: BehaviorSubject<HttpRequestModel>, e: any, command: string) {
-    this.tidesiteListModel$.next(null);
-    httpRequestModel$.next(<HttpRequestModel>{ Working: false, Error: <HttpErrorResponse>e, Status: 'Error' });
-
-    this.tidesiteList = [];
-    console.debug(`TideSite ${ command } ERROR. Return: ${ <HttpErrorResponse>e }`);
-    this.DoReload();
-  }
-
-  private DoReload() {
-    this.router.navigateByUrl('', { skipLocationChange: true }).then(() => {
-      this.router.navigate([`/${this.oldURL}`]);
-    });
-  }
-
-  private DoSuccess(httpRequestModel$: BehaviorSubject<HttpRequestModel>, x: any, command: string, tidesite?: TideSite) {
-    console.debug(`TideSite ${ command } OK. Return: ${ x }`);
-    if (command === 'Get') {
-      this.tidesiteListModel$.next(<TideSite[]>x);
-    }
-    if (command === 'Put') {
-      this.tidesiteListModel$.getValue()[0] = <TideSite>x;
-    }
-    if (command === 'Post') {
-      this.tidesiteListModel$.getValue().push(<TideSite>x);
-    }
-    if (command === 'Delete') {
-      const index = this.tidesiteListModel$.getValue().indexOf(tidesite);
-      this.tidesiteListModel$.getValue().splice(index, 1);
-    }
-
-    this.tidesiteListModel$.next(this.tidesiteListModel$.getValue());
-    httpRequestModel$.next(<HttpRequestModel>{ Working: false, Error: null, Status: 'ok' });
-    this.tidesiteList = this.tidesiteListModel$.getValue();
-    this.DoReload();
   }
 }

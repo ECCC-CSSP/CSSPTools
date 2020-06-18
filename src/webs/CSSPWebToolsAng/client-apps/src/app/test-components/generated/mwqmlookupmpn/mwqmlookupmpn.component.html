@@ -5,7 +5,7 @@
  *
 -->
 
-<mat-progress-bar mode="indeterminate" *ngIf="mwqmlookupmpnService.mwqmlookupmpnGetModel$.getValue().Working"></mat-progress-bar>
+<mat-progress-bar mode="indeterminate" *ngIf="mwqmlookupmpnService.mwqmlookupmpnGetModel$.getValue()?.Working"></mat-progress-bar>
 <mat-card>
   <mat-card-header>
     <mat-card-title>
@@ -17,8 +17,8 @@
     <mat-card-subtitle>{{ mwqmlookupmpnService.mwqmlookupmpnTextModel$.getValue().Title }}</mat-card-subtitle>
   </mat-card-header>
   <mat-card-content>
-    <mat-list>
-      <mat-list-item *ngFor="let mwqmlookupmpn of mwqmlookupmpnService.mwqmlookupmpnList">
+    <mat-list *ngIf="mwqmlookupmpnService.mwqmlookupmpnListModel$.getValue()?.length">
+      <mat-list-item *ngFor="let mwqmlookupmpn of mwqmlookupmpnService.mwqmlookupmpnListModel$.getValue()">
         <span mat-line>
           <button mat-raised-button (click)="DeleteMWQMLookupMPN(mwqmlookupmpn)">
             <span>Delete MWQMLookupMPNID [{{ mwqmlookupmpn.MWQMLookupMPNID }}]&nbsp;&nbsp;&nbsp;</span>
@@ -52,7 +52,7 @@
     <mat-card-title>Edit MWQMLookupMPN testing</mat-card-title>
   </mat-card-header>
   <mat-card-content>
-    <div *ngIf="mwqmlookupmpnService.mwqmlookupmpnList.length">
+    <div *ngIf="mwqmlookupmpnService.mwqmlookupmpnListModel$.getValue()?.length">
       <blockquote>
         <form [formGroup]="mwqmlookupmpnFormPut" (ngSubmit)="PutMWQMLookupMPN(mwqmlookupmpnFormPut.value)">
           <h3>
@@ -67,32 +67,68 @@
             <mat-form-field>
               <mat-label>MWQMLookupMPNID</mat-label>
               <input matInput type="number" formControlName="MWQMLookupMPNID">
+              <mat-error *ngIf="mwqmlookupmpnFormPut.controls.MWQMLookupMPNID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>Tubes10</mat-label>
               <input matInput type="number" formControlName="Tubes10">
+              <mat-error *ngIf="mwqmlookupmpnFormPut.controls.Tubes10.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+                <span *ngIf="e.min">Min - 0<br /></span>
+                <span *ngIf="e.min">Max - 5<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>Tubes1</mat-label>
               <input matInput type="number" formControlName="Tubes1">
+              <mat-error *ngIf="mwqmlookupmpnFormPut.controls.Tubes1.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+                <span *ngIf="e.min">Min - 0<br /></span>
+                <span *ngIf="e.min">Max - 5<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>Tubes01</mat-label>
               <input matInput type="number" formControlName="Tubes01">
+              <mat-error *ngIf="mwqmlookupmpnFormPut.controls.Tubes01.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+                <span *ngIf="e.min">Min - 0<br /></span>
+                <span *ngIf="e.min">Max - 5<br /></span>
+              </mat-error>
             </mat-form-field>
           </p>
           <p>
             <mat-form-field>
               <mat-label>MPN_100ml</mat-label>
               <input matInput type="number" formControlName="MPN_100ml">
+              <mat-error *ngIf="mwqmlookupmpnFormPut.controls.MPN_100ml.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+                <span *ngIf="e.min">Min - 1<br /></span>
+                <span *ngIf="e.min">Max - 10000<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>LastUpdateDate_UTC</mat-label>
               <input matInput type="text" formControlName="LastUpdateDate_UTC">
+              <mat-error *ngIf="mwqmlookupmpnFormPut.controls.LastUpdateDate_UTC.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>LastUpdateContactTVItemID</mat-label>
               <input matInput type="number" formControlName="LastUpdateContactTVItemID">
+              <mat-error *ngIf="mwqmlookupmpnFormPut.controls.LastUpdateContactTVItemID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
           </p>
         </form>
@@ -107,7 +143,7 @@
     <mat-card-title>Add MWQMLookupMPN testing</mat-card-title>
   </mat-card-header>
   <mat-card-content>
-    <div *ngIf="mwqmlookupmpnService.mwqmlookupmpnList.length">
+    <div *ngIf="mwqmlookupmpnService.mwqmlookupmpnListModel$.getValue()?.length">
       <blockquote>
         <form [formGroup]="mwqmlookupmpnFormPost" (ngSubmit)="PostMWQMLookupMPN(mwqmlookupmpnFormPost.value)">
           <h3>
@@ -122,32 +158,68 @@
             <mat-form-field>
               <mat-label>MWQMLookupMPNID</mat-label>
               <input matInput type="number" formControlName="MWQMLookupMPNID">
+              <mat-error *ngIf="mwqmlookupmpnFormPut.controls.MWQMLookupMPNID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>Tubes10</mat-label>
               <input matInput type="number" formControlName="Tubes10">
+              <mat-error *ngIf="mwqmlookupmpnFormPut.controls.Tubes10.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+                <span *ngIf="e.min">Min - 0<br /></span>
+                <span *ngIf="e.min">Max - 5<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>Tubes1</mat-label>
               <input matInput type="number" formControlName="Tubes1">
+              <mat-error *ngIf="mwqmlookupmpnFormPut.controls.Tubes1.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+                <span *ngIf="e.min">Min - 0<br /></span>
+                <span *ngIf="e.min">Max - 5<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>Tubes01</mat-label>
               <input matInput type="number" formControlName="Tubes01">
+              <mat-error *ngIf="mwqmlookupmpnFormPut.controls.Tubes01.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+                <span *ngIf="e.min">Min - 0<br /></span>
+                <span *ngIf="e.min">Max - 5<br /></span>
+              </mat-error>
             </mat-form-field>
           </p>
           <p>
             <mat-form-field>
               <mat-label>MPN_100ml</mat-label>
               <input matInput type="number" formControlName="MPN_100ml">
+              <mat-error *ngIf="mwqmlookupmpnFormPut.controls.MPN_100ml.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+                <span *ngIf="e.min">Min - 1<br /></span>
+                <span *ngIf="e.min">Max - 10000<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>LastUpdateDate_UTC</mat-label>
               <input matInput type="text" formControlName="LastUpdateDate_UTC">
+              <mat-error *ngIf="mwqmlookupmpnFormPut.controls.LastUpdateDate_UTC.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>LastUpdateContactTVItemID</mat-label>
               <input matInput type="number" formControlName="LastUpdateContactTVItemID">
+              <mat-error *ngIf="mwqmlookupmpnFormPut.controls.LastUpdateContactTVItemID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
           </p>
         </form>

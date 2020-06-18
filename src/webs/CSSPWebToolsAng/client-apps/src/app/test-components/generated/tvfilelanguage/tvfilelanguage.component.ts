@@ -8,13 +8,15 @@
 import { Component, OnInit, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
 import { TVFileLanguageService } from './tvfilelanguage.service';
 import { LoadLocalesTVFileLanguageText } from './tvfilelanguage.locales';
-import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { LanguageEnum_GetIDText, LanguageEnum_GetOrderedText } from '../../../enums/generated/LanguageEnum';
 import { TranslationStatusEnum_GetIDText, TranslationStatusEnum_GetOrderedText } from '../../../enums/generated/TranslationStatusEnum';
 import { TVFileLanguage } from '../../../models/generated/TVFileLanguage.model';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
 import { EnumIDAndText } from '../../../models/enumidandtext.model';
+import { HttpClientService } from '../../../services/http-client.service';
+import { Router } from '@angular/router';
+import { HttpClientCommand } from '../../../enums/app.enums';
 
 @Component({
   selector: 'app-tvfilelanguage',
@@ -29,22 +31,24 @@ export class TVFileLanguageComponent implements OnInit, OnDestroy {
   tvfilelanguageFormPut: FormGroup;
   tvfilelanguageFormPost: FormGroup;
 
-  constructor(public tvfilelanguageService: TVFileLanguageService, public router: Router, public fb: FormBuilder) { }
+  constructor(public tvfilelanguageService: TVFileLanguageService, private router: Router, private httpClientService: HttpClientService, private fb: FormBuilder) {
+    httpClientService.oldURL = router.url;
+  }
 
   GetTVFileLanguageList() {
-    this.sub = this.tvfilelanguageService.GetTVFileLanguageList(this.router).subscribe();
+    this.sub = this.tvfilelanguageService.GetTVFileLanguageList().subscribe();
   }
 
   PutTVFileLanguage(tvfilelanguage: TVFileLanguage) {
-    this.sub = this.tvfilelanguageService.PutTVFileLanguage(tvfilelanguage, this.router).subscribe();
+    this.sub = this.tvfilelanguageService.PutTVFileLanguage(tvfilelanguage).subscribe();
   }
 
   PostTVFileLanguage(tvfilelanguage: TVFileLanguage) {
-    this.sub = this.tvfilelanguageService.PostTVFileLanguage(tvfilelanguage, this.router).subscribe();
+    this.sub = this.tvfilelanguageService.PostTVFileLanguage(tvfilelanguage).subscribe();
   }
 
   DeleteTVFileLanguage(tvfilelanguage: TVFileLanguage) {
-    this.sub = this.tvfilelanguageService.DeleteTVFileLanguage(tvfilelanguage, this.router).subscribe();
+    this.sub = this.tvfilelanguageService.DeleteTVFileLanguage(tvfilelanguage).subscribe();
   }
 
   GetLanguageEnumText(enumID: number) {
@@ -59,8 +63,8 @@ export class TVFileLanguageComponent implements OnInit, OnDestroy {
     LoadLocalesTVFileLanguageText(this.tvfilelanguageService);
     this.languageList = LanguageEnum_GetOrderedText();
     this.translationStatusList = TranslationStatusEnum_GetOrderedText();
-    this.FillFormBuilderGroup('Add');
-    this.FillFormBuilderGroup('Update');
+    this.FillFormBuilderGroup(HttpClientCommand.Post);
+    this.FillFormBuilderGroup(HttpClientCommand.Put);
   }
 
   ngOnDestroy() {
@@ -69,49 +73,49 @@ export class TVFileLanguageComponent implements OnInit, OnDestroy {
     }
   }
 
-  FillFormBuilderGroup(AddOrUpdate: string) {
-    if (this.tvfilelanguageService.tvfilelanguageList.length) {
+  FillFormBuilderGroup(httpClientCommand: HttpClientCommand) {
+    if (this.tvfilelanguageService.tvfilelanguageListModel$.getValue().length) {
       let formGroup: FormGroup = this.fb.group(
         {
           TVFileLanguageID: [
             {
-              value: (AddOrUpdate === 'Add' ? 0 : (this.tvfilelanguageService.tvfilelanguageList[0]?.TVFileLanguageID)),
+              value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.tvfilelanguageService.tvfilelanguageListModel$.getValue()[0]?.TVFileLanguageID)),
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
           TVFileID: [
             {
-              value: this.tvfilelanguageService.tvfilelanguageList[0]?.TVFileID,
+              value: this.tvfilelanguageService.tvfilelanguageListModel$.getValue()[0]?.TVFileID,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
           Language: [
             {
-              value: this.tvfilelanguageService.tvfilelanguageList[0]?.Language,
+              value: this.tvfilelanguageService.tvfilelanguageListModel$.getValue()[0]?.Language,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
           FileDescription: [
             {
-              value: this.tvfilelanguageService.tvfilelanguageList[0]?.FileDescription,
+              value: this.tvfilelanguageService.tvfilelanguageListModel$.getValue()[0]?.FileDescription,
               disabled: false
-            }, [ Validators.required ]],
+            }],
           TranslationStatus: [
             {
-              value: this.tvfilelanguageService.tvfilelanguageList[0]?.TranslationStatus,
+              value: this.tvfilelanguageService.tvfilelanguageListModel$.getValue()[0]?.TranslationStatus,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
           LastUpdateDate_UTC: [
             {
-              value: this.tvfilelanguageService.tvfilelanguageList[0]?.LastUpdateDate_UTC,
+              value: this.tvfilelanguageService.tvfilelanguageListModel$.getValue()[0]?.LastUpdateDate_UTC,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
           LastUpdateContactTVItemID: [
             {
-              value: this.tvfilelanguageService.tvfilelanguageList[0]?.LastUpdateContactTVItemID,
+              value: this.tvfilelanguageService.tvfilelanguageListModel$.getValue()[0]?.LastUpdateContactTVItemID,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
         }
       );
 
-      if (AddOrUpdate === 'Add') {
+      if (httpClientCommand === HttpClientCommand.Post) {
         this.tvfilelanguageFormPost = formGroup
       }
       else {

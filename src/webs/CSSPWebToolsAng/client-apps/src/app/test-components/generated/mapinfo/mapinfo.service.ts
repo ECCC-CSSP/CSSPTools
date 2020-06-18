@@ -9,11 +9,12 @@ import { Injectable } from '@angular/core';
 import { MapInfoTextModel } from './mapinfo.models';
 import { BehaviorSubject, of } from 'rxjs';
 import { LoadLocalesMapInfoText } from './mapinfo.locales';
-import { Router } from '@angular/router';
-import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { map, catchError } from 'rxjs/operators';
 import { MapInfo } from '../../../models/generated/MapInfo.model';
 import { HttpRequestModel } from '../../../models/http.model';
+import { HttpClientService } from '../../../services/http-client.service';
+import { HttpClientCommand } from '../../../enums/app.enums';
 
 @Injectable({
   providedIn: 'root'
@@ -26,110 +27,63 @@ export class MapInfoService {
   mapinfoPutModel$: BehaviorSubject<HttpRequestModel> = new BehaviorSubject<HttpRequestModel>(<HttpRequestModel>{});
   mapinfoPostModel$: BehaviorSubject<HttpRequestModel> = new BehaviorSubject<HttpRequestModel>(<HttpRequestModel>{});
   mapinfoDeleteModel$: BehaviorSubject<HttpRequestModel> = new BehaviorSubject<HttpRequestModel>(<HttpRequestModel>{});
-  mapinfoList: MapInfo[] = [];
-  private oldURL: string;
-  private router: Router;
 
   /* Constructors */
-  constructor(private httpClient: HttpClient) {
+  constructor(private httpClient: HttpClient, private httpClientService: HttpClientService) {
     LoadLocalesMapInfoText(this);
     this.mapinfoTextModel$.next(<MapInfoTextModel>{ Title: "Something2 for text" });
   }
 
   /* Functions public */
-  GetMapInfoList(router: Router) {
-    this.BeforeHttpClient(this.mapinfoGetModel$, router);
+  GetMapInfoList() {
+    this.httpClientService.BeforeHttpClient(this.mapinfoGetModel$);
 
     return this.httpClient.get<MapInfo[]>('/api/MapInfo').pipe(
       map((x: any) => {
-        this.DoSuccess(this.mapinfoGetModel$, x, 'Get', null);
+        this.httpClientService.DoSuccess<MapInfo>(this.mapinfoListModel$, this.mapinfoGetModel$, x, HttpClientCommand.Get, null);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.DoCatchError(this.mapinfoGetModel$, e, 'Get');
+        this.httpClientService.DoCatchError<MapInfo>(this.mapinfoListModel$, this.mapinfoGetModel$, e);
       })))
     );
   }
 
-  PutMapInfo(mapinfo: MapInfo, router: Router) {
-    this.BeforeHttpClient(this.mapinfoPutModel$, router);
+  PutMapInfo(mapinfo: MapInfo) {
+    this.httpClientService.BeforeHttpClient(this.mapinfoPutModel$);
 
     return this.httpClient.put<MapInfo>('/api/MapInfo', mapinfo, { headers: new HttpHeaders() }).pipe(
       map((x: any) => {
-        this.DoSuccess(this.mapinfoPutModel$, x, 'Put', mapinfo);
+        this.httpClientService.DoSuccess<MapInfo>(this.mapinfoListModel$, this.mapinfoPutModel$, x, HttpClientCommand.Put, mapinfo);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.DoCatchError(this.mapinfoPutModel$, e, 'Put');
+       this.httpClientService.DoCatchError<MapInfo>(this.mapinfoListModel$, this.mapinfoPutModel$, e);
       })))
     );
   }
 
-  PostMapInfo(mapinfo: MapInfo, router: Router) {
-    this.BeforeHttpClient(this.mapinfoPostModel$, router);
+  PostMapInfo(mapinfo: MapInfo) {
+    this.httpClientService.BeforeHttpClient(this.mapinfoPostModel$);
 
     return this.httpClient.post<MapInfo>('/api/MapInfo', mapinfo, { headers: new HttpHeaders() }).pipe(
       map((x: any) => {
-        this.DoSuccess(this.mapinfoPostModel$, x, 'Post', mapinfo);
+        this.httpClientService.DoSuccess<MapInfo>(this.mapinfoListModel$, this.mapinfoPostModel$, x, HttpClientCommand.Post, mapinfo);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.DoCatchError(this.mapinfoPostModel$, e, 'Post');
+        this.httpClientService.DoCatchError<MapInfo>(this.mapinfoListModel$, this.mapinfoPostModel$, e);
       })))
     );
   }
 
-  DeleteMapInfo(mapinfo: MapInfo, router: Router) {
-    this.BeforeHttpClient(this.mapinfoDeleteModel$, router);
+  DeleteMapInfo(mapinfo: MapInfo) {
+    this.httpClientService.BeforeHttpClient(this.mapinfoDeleteModel$);
 
     return this.httpClient.delete<boolean>(`/api/MapInfo/${ mapinfo.MapInfoID }`).pipe(
       map((x: any) => {
-        this.DoSuccess(this.mapinfoDeleteModel$, x, 'Delete', mapinfo);
+        this.httpClientService.DoSuccess<MapInfo>(this.mapinfoListModel$, this.mapinfoDeleteModel$, x, HttpClientCommand.Delete, mapinfo);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.DoCatchError(this.mapinfoDeleteModel$, e, 'Delete');
+        this.httpClientService.DoCatchError<MapInfo>(this.mapinfoListModel$, this.mapinfoDeleteModel$, e);
       })))
     );
-  }
-
-  /* Functions private */
-  private BeforeHttpClient(httpRequestModel$: BehaviorSubject<HttpRequestModel>, router: Router) {
-    this.router = router;
-    this.oldURL = router.url;
-    httpRequestModel$.next(<HttpRequestModel>{ Working: true, Error: null, Status: null });
-  }
-
-  private DoCatchError(httpRequestModel$: BehaviorSubject<HttpRequestModel>, e: any, command: string) {
-    this.mapinfoListModel$.next(null);
-    httpRequestModel$.next(<HttpRequestModel>{ Working: false, Error: <HttpErrorResponse>e, Status: 'Error' });
-
-    this.mapinfoList = [];
-    console.debug(`MapInfo ${ command } ERROR. Return: ${ <HttpErrorResponse>e }`);
-    this.DoReload();
-  }
-
-  private DoReload() {
-    this.router.navigateByUrl('', { skipLocationChange: true }).then(() => {
-      this.router.navigate([`/${this.oldURL}`]);
-    });
-  }
-
-  private DoSuccess(httpRequestModel$: BehaviorSubject<HttpRequestModel>, x: any, command: string, mapinfo?: MapInfo) {
-    console.debug(`MapInfo ${ command } OK. Return: ${ x }`);
-    if (command === 'Get') {
-      this.mapinfoListModel$.next(<MapInfo[]>x);
-    }
-    if (command === 'Put') {
-      this.mapinfoListModel$.getValue()[0] = <MapInfo>x;
-    }
-    if (command === 'Post') {
-      this.mapinfoListModel$.getValue().push(<MapInfo>x);
-    }
-    if (command === 'Delete') {
-      const index = this.mapinfoListModel$.getValue().indexOf(mapinfo);
-      this.mapinfoListModel$.getValue().splice(index, 1);
-    }
-
-    this.mapinfoListModel$.next(this.mapinfoListModel$.getValue());
-    httpRequestModel$.next(<HttpRequestModel>{ Working: false, Error: null, Status: 'ok' });
-    this.mapinfoList = this.mapinfoListModel$.getValue();
-    this.DoReload();
   }
 }

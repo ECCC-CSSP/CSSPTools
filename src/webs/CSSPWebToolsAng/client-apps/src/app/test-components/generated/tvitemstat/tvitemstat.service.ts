@@ -9,11 +9,12 @@ import { Injectable } from '@angular/core';
 import { TVItemStatTextModel } from './tvitemstat.models';
 import { BehaviorSubject, of } from 'rxjs';
 import { LoadLocalesTVItemStatText } from './tvitemstat.locales';
-import { Router } from '@angular/router';
-import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { map, catchError } from 'rxjs/operators';
 import { TVItemStat } from '../../../models/generated/TVItemStat.model';
 import { HttpRequestModel } from '../../../models/http.model';
+import { HttpClientService } from '../../../services/http-client.service';
+import { HttpClientCommand } from '../../../enums/app.enums';
 
 @Injectable({
   providedIn: 'root'
@@ -26,110 +27,63 @@ export class TVItemStatService {
   tvitemstatPutModel$: BehaviorSubject<HttpRequestModel> = new BehaviorSubject<HttpRequestModel>(<HttpRequestModel>{});
   tvitemstatPostModel$: BehaviorSubject<HttpRequestModel> = new BehaviorSubject<HttpRequestModel>(<HttpRequestModel>{});
   tvitemstatDeleteModel$: BehaviorSubject<HttpRequestModel> = new BehaviorSubject<HttpRequestModel>(<HttpRequestModel>{});
-  tvitemstatList: TVItemStat[] = [];
-  private oldURL: string;
-  private router: Router;
 
   /* Constructors */
-  constructor(private httpClient: HttpClient) {
+  constructor(private httpClient: HttpClient, private httpClientService: HttpClientService) {
     LoadLocalesTVItemStatText(this);
     this.tvitemstatTextModel$.next(<TVItemStatTextModel>{ Title: "Something2 for text" });
   }
 
   /* Functions public */
-  GetTVItemStatList(router: Router) {
-    this.BeforeHttpClient(this.tvitemstatGetModel$, router);
+  GetTVItemStatList() {
+    this.httpClientService.BeforeHttpClient(this.tvitemstatGetModel$);
 
     return this.httpClient.get<TVItemStat[]>('/api/TVItemStat').pipe(
       map((x: any) => {
-        this.DoSuccess(this.tvitemstatGetModel$, x, 'Get', null);
+        this.httpClientService.DoSuccess<TVItemStat>(this.tvitemstatListModel$, this.tvitemstatGetModel$, x, HttpClientCommand.Get, null);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.DoCatchError(this.tvitemstatGetModel$, e, 'Get');
+        this.httpClientService.DoCatchError<TVItemStat>(this.tvitemstatListModel$, this.tvitemstatGetModel$, e);
       })))
     );
   }
 
-  PutTVItemStat(tvitemstat: TVItemStat, router: Router) {
-    this.BeforeHttpClient(this.tvitemstatPutModel$, router);
+  PutTVItemStat(tvitemstat: TVItemStat) {
+    this.httpClientService.BeforeHttpClient(this.tvitemstatPutModel$);
 
     return this.httpClient.put<TVItemStat>('/api/TVItemStat', tvitemstat, { headers: new HttpHeaders() }).pipe(
       map((x: any) => {
-        this.DoSuccess(this.tvitemstatPutModel$, x, 'Put', tvitemstat);
+        this.httpClientService.DoSuccess<TVItemStat>(this.tvitemstatListModel$, this.tvitemstatPutModel$, x, HttpClientCommand.Put, tvitemstat);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.DoCatchError(this.tvitemstatPutModel$, e, 'Put');
+       this.httpClientService.DoCatchError<TVItemStat>(this.tvitemstatListModel$, this.tvitemstatPutModel$, e);
       })))
     );
   }
 
-  PostTVItemStat(tvitemstat: TVItemStat, router: Router) {
-    this.BeforeHttpClient(this.tvitemstatPostModel$, router);
+  PostTVItemStat(tvitemstat: TVItemStat) {
+    this.httpClientService.BeforeHttpClient(this.tvitemstatPostModel$);
 
     return this.httpClient.post<TVItemStat>('/api/TVItemStat', tvitemstat, { headers: new HttpHeaders() }).pipe(
       map((x: any) => {
-        this.DoSuccess(this.tvitemstatPostModel$, x, 'Post', tvitemstat);
+        this.httpClientService.DoSuccess<TVItemStat>(this.tvitemstatListModel$, this.tvitemstatPostModel$, x, HttpClientCommand.Post, tvitemstat);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.DoCatchError(this.tvitemstatPostModel$, e, 'Post');
+        this.httpClientService.DoCatchError<TVItemStat>(this.tvitemstatListModel$, this.tvitemstatPostModel$, e);
       })))
     );
   }
 
-  DeleteTVItemStat(tvitemstat: TVItemStat, router: Router) {
-    this.BeforeHttpClient(this.tvitemstatDeleteModel$, router);
+  DeleteTVItemStat(tvitemstat: TVItemStat) {
+    this.httpClientService.BeforeHttpClient(this.tvitemstatDeleteModel$);
 
     return this.httpClient.delete<boolean>(`/api/TVItemStat/${ tvitemstat.TVItemStatID }`).pipe(
       map((x: any) => {
-        this.DoSuccess(this.tvitemstatDeleteModel$, x, 'Delete', tvitemstat);
+        this.httpClientService.DoSuccess<TVItemStat>(this.tvitemstatListModel$, this.tvitemstatDeleteModel$, x, HttpClientCommand.Delete, tvitemstat);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.DoCatchError(this.tvitemstatDeleteModel$, e, 'Delete');
+        this.httpClientService.DoCatchError<TVItemStat>(this.tvitemstatListModel$, this.tvitemstatDeleteModel$, e);
       })))
     );
-  }
-
-  /* Functions private */
-  private BeforeHttpClient(httpRequestModel$: BehaviorSubject<HttpRequestModel>, router: Router) {
-    this.router = router;
-    this.oldURL = router.url;
-    httpRequestModel$.next(<HttpRequestModel>{ Working: true, Error: null, Status: null });
-  }
-
-  private DoCatchError(httpRequestModel$: BehaviorSubject<HttpRequestModel>, e: any, command: string) {
-    this.tvitemstatListModel$.next(null);
-    httpRequestModel$.next(<HttpRequestModel>{ Working: false, Error: <HttpErrorResponse>e, Status: 'Error' });
-
-    this.tvitemstatList = [];
-    console.debug(`TVItemStat ${ command } ERROR. Return: ${ <HttpErrorResponse>e }`);
-    this.DoReload();
-  }
-
-  private DoReload() {
-    this.router.navigateByUrl('', { skipLocationChange: true }).then(() => {
-      this.router.navigate([`/${this.oldURL}`]);
-    });
-  }
-
-  private DoSuccess(httpRequestModel$: BehaviorSubject<HttpRequestModel>, x: any, command: string, tvitemstat?: TVItemStat) {
-    console.debug(`TVItemStat ${ command } OK. Return: ${ x }`);
-    if (command === 'Get') {
-      this.tvitemstatListModel$.next(<TVItemStat[]>x);
-    }
-    if (command === 'Put') {
-      this.tvitemstatListModel$.getValue()[0] = <TVItemStat>x;
-    }
-    if (command === 'Post') {
-      this.tvitemstatListModel$.getValue().push(<TVItemStat>x);
-    }
-    if (command === 'Delete') {
-      const index = this.tvitemstatListModel$.getValue().indexOf(tvitemstat);
-      this.tvitemstatListModel$.getValue().splice(index, 1);
-    }
-
-    this.tvitemstatListModel$.next(this.tvitemstatListModel$.getValue());
-    httpRequestModel$.next(<HttpRequestModel>{ Working: false, Error: null, Status: 'ok' });
-    this.tvitemstatList = this.tvitemstatListModel$.getValue();
-    this.DoReload();
   }
 }

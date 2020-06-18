@@ -9,11 +9,12 @@ import { Injectable } from '@angular/core';
 import { ContactShortcutTextModel } from './contactshortcut.models';
 import { BehaviorSubject, of } from 'rxjs';
 import { LoadLocalesContactShortcutText } from './contactshortcut.locales';
-import { Router } from '@angular/router';
-import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { map, catchError } from 'rxjs/operators';
 import { ContactShortcut } from '../../../models/generated/ContactShortcut.model';
 import { HttpRequestModel } from '../../../models/http.model';
+import { HttpClientService } from '../../../services/http-client.service';
+import { HttpClientCommand } from '../../../enums/app.enums';
 
 @Injectable({
   providedIn: 'root'
@@ -26,110 +27,63 @@ export class ContactShortcutService {
   contactshortcutPutModel$: BehaviorSubject<HttpRequestModel> = new BehaviorSubject<HttpRequestModel>(<HttpRequestModel>{});
   contactshortcutPostModel$: BehaviorSubject<HttpRequestModel> = new BehaviorSubject<HttpRequestModel>(<HttpRequestModel>{});
   contactshortcutDeleteModel$: BehaviorSubject<HttpRequestModel> = new BehaviorSubject<HttpRequestModel>(<HttpRequestModel>{});
-  contactshortcutList: ContactShortcut[] = [];
-  private oldURL: string;
-  private router: Router;
 
   /* Constructors */
-  constructor(private httpClient: HttpClient) {
+  constructor(private httpClient: HttpClient, private httpClientService: HttpClientService) {
     LoadLocalesContactShortcutText(this);
     this.contactshortcutTextModel$.next(<ContactShortcutTextModel>{ Title: "Something2 for text" });
   }
 
   /* Functions public */
-  GetContactShortcutList(router: Router) {
-    this.BeforeHttpClient(this.contactshortcutGetModel$, router);
+  GetContactShortcutList() {
+    this.httpClientService.BeforeHttpClient(this.contactshortcutGetModel$);
 
     return this.httpClient.get<ContactShortcut[]>('/api/ContactShortcut').pipe(
       map((x: any) => {
-        this.DoSuccess(this.contactshortcutGetModel$, x, 'Get', null);
+        this.httpClientService.DoSuccess<ContactShortcut>(this.contactshortcutListModel$, this.contactshortcutGetModel$, x, HttpClientCommand.Get, null);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.DoCatchError(this.contactshortcutGetModel$, e, 'Get');
+        this.httpClientService.DoCatchError<ContactShortcut>(this.contactshortcutListModel$, this.contactshortcutGetModel$, e);
       })))
     );
   }
 
-  PutContactShortcut(contactshortcut: ContactShortcut, router: Router) {
-    this.BeforeHttpClient(this.contactshortcutPutModel$, router);
+  PutContactShortcut(contactshortcut: ContactShortcut) {
+    this.httpClientService.BeforeHttpClient(this.contactshortcutPutModel$);
 
     return this.httpClient.put<ContactShortcut>('/api/ContactShortcut', contactshortcut, { headers: new HttpHeaders() }).pipe(
       map((x: any) => {
-        this.DoSuccess(this.contactshortcutPutModel$, x, 'Put', contactshortcut);
+        this.httpClientService.DoSuccess<ContactShortcut>(this.contactshortcutListModel$, this.contactshortcutPutModel$, x, HttpClientCommand.Put, contactshortcut);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.DoCatchError(this.contactshortcutPutModel$, e, 'Put');
+       this.httpClientService.DoCatchError<ContactShortcut>(this.contactshortcutListModel$, this.contactshortcutPutModel$, e);
       })))
     );
   }
 
-  PostContactShortcut(contactshortcut: ContactShortcut, router: Router) {
-    this.BeforeHttpClient(this.contactshortcutPostModel$, router);
+  PostContactShortcut(contactshortcut: ContactShortcut) {
+    this.httpClientService.BeforeHttpClient(this.contactshortcutPostModel$);
 
     return this.httpClient.post<ContactShortcut>('/api/ContactShortcut', contactshortcut, { headers: new HttpHeaders() }).pipe(
       map((x: any) => {
-        this.DoSuccess(this.contactshortcutPostModel$, x, 'Post', contactshortcut);
+        this.httpClientService.DoSuccess<ContactShortcut>(this.contactshortcutListModel$, this.contactshortcutPostModel$, x, HttpClientCommand.Post, contactshortcut);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.DoCatchError(this.contactshortcutPostModel$, e, 'Post');
+        this.httpClientService.DoCatchError<ContactShortcut>(this.contactshortcutListModel$, this.contactshortcutPostModel$, e);
       })))
     );
   }
 
-  DeleteContactShortcut(contactshortcut: ContactShortcut, router: Router) {
-    this.BeforeHttpClient(this.contactshortcutDeleteModel$, router);
+  DeleteContactShortcut(contactshortcut: ContactShortcut) {
+    this.httpClientService.BeforeHttpClient(this.contactshortcutDeleteModel$);
 
     return this.httpClient.delete<boolean>(`/api/ContactShortcut/${ contactshortcut.ContactShortcutID }`).pipe(
       map((x: any) => {
-        this.DoSuccess(this.contactshortcutDeleteModel$, x, 'Delete', contactshortcut);
+        this.httpClientService.DoSuccess<ContactShortcut>(this.contactshortcutListModel$, this.contactshortcutDeleteModel$, x, HttpClientCommand.Delete, contactshortcut);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.DoCatchError(this.contactshortcutDeleteModel$, e, 'Delete');
+        this.httpClientService.DoCatchError<ContactShortcut>(this.contactshortcutListModel$, this.contactshortcutDeleteModel$, e);
       })))
     );
-  }
-
-  /* Functions private */
-  private BeforeHttpClient(httpRequestModel$: BehaviorSubject<HttpRequestModel>, router: Router) {
-    this.router = router;
-    this.oldURL = router.url;
-    httpRequestModel$.next(<HttpRequestModel>{ Working: true, Error: null, Status: null });
-  }
-
-  private DoCatchError(httpRequestModel$: BehaviorSubject<HttpRequestModel>, e: any, command: string) {
-    this.contactshortcutListModel$.next(null);
-    httpRequestModel$.next(<HttpRequestModel>{ Working: false, Error: <HttpErrorResponse>e, Status: 'Error' });
-
-    this.contactshortcutList = [];
-    console.debug(`ContactShortcut ${ command } ERROR. Return: ${ <HttpErrorResponse>e }`);
-    this.DoReload();
-  }
-
-  private DoReload() {
-    this.router.navigateByUrl('', { skipLocationChange: true }).then(() => {
-      this.router.navigate([`/${this.oldURL}`]);
-    });
-  }
-
-  private DoSuccess(httpRequestModel$: BehaviorSubject<HttpRequestModel>, x: any, command: string, contactshortcut?: ContactShortcut) {
-    console.debug(`ContactShortcut ${ command } OK. Return: ${ x }`);
-    if (command === 'Get') {
-      this.contactshortcutListModel$.next(<ContactShortcut[]>x);
-    }
-    if (command === 'Put') {
-      this.contactshortcutListModel$.getValue()[0] = <ContactShortcut>x;
-    }
-    if (command === 'Post') {
-      this.contactshortcutListModel$.getValue().push(<ContactShortcut>x);
-    }
-    if (command === 'Delete') {
-      const index = this.contactshortcutListModel$.getValue().indexOf(contactshortcut);
-      this.contactshortcutListModel$.getValue().splice(index, 1);
-    }
-
-    this.contactshortcutListModel$.next(this.contactshortcutListModel$.getValue());
-    httpRequestModel$.next(<HttpRequestModel>{ Working: false, Error: null, Status: 'ok' });
-    this.contactshortcutList = this.contactshortcutListModel$.getValue();
-    this.DoReload();
   }
 }

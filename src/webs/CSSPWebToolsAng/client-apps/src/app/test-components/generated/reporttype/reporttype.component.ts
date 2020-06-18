@@ -8,7 +8,6 @@
 import { Component, OnInit, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
 import { ReportTypeService } from './reporttype.service';
 import { LoadLocalesReportTypeText } from './reporttype.locales';
-import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { TVTypeEnum_GetIDText, TVTypeEnum_GetOrderedText } from '../../../enums/generated/TVTypeEnum';
 import { FileTypeEnum_GetIDText, FileTypeEnum_GetOrderedText } from '../../../enums/generated/FileTypeEnum';
@@ -16,6 +15,9 @@ import { LanguageEnum_GetIDText, LanguageEnum_GetOrderedText } from '../../../en
 import { ReportType } from '../../../models/generated/ReportType.model';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
 import { EnumIDAndText } from '../../../models/enumidandtext.model';
+import { HttpClientService } from '../../../services/http-client.service';
+import { Router } from '@angular/router';
+import { HttpClientCommand } from '../../../enums/app.enums';
 
 @Component({
   selector: 'app-reporttype',
@@ -31,22 +33,24 @@ export class ReportTypeComponent implements OnInit, OnDestroy {
   reporttypeFormPut: FormGroup;
   reporttypeFormPost: FormGroup;
 
-  constructor(public reporttypeService: ReportTypeService, public router: Router, public fb: FormBuilder) { }
+  constructor(public reporttypeService: ReportTypeService, private router: Router, private httpClientService: HttpClientService, private fb: FormBuilder) {
+    httpClientService.oldURL = router.url;
+  }
 
   GetReportTypeList() {
-    this.sub = this.reporttypeService.GetReportTypeList(this.router).subscribe();
+    this.sub = this.reporttypeService.GetReportTypeList().subscribe();
   }
 
   PutReportType(reporttype: ReportType) {
-    this.sub = this.reporttypeService.PutReportType(reporttype, this.router).subscribe();
+    this.sub = this.reporttypeService.PutReportType(reporttype).subscribe();
   }
 
   PostReportType(reporttype: ReportType) {
-    this.sub = this.reporttypeService.PostReportType(reporttype, this.router).subscribe();
+    this.sub = this.reporttypeService.PostReportType(reporttype).subscribe();
   }
 
   DeleteReportType(reporttype: ReportType) {
-    this.sub = this.reporttypeService.DeleteReportType(reporttype, this.router).subscribe();
+    this.sub = this.reporttypeService.DeleteReportType(reporttype).subscribe();
   }
 
   GetTVTypeEnumText(enumID: number) {
@@ -66,8 +70,8 @@ export class ReportTypeComponent implements OnInit, OnDestroy {
     this.tVTypeList = TVTypeEnum_GetOrderedText();
     this.fileTypeList = FileTypeEnum_GetOrderedText();
     this.languageList = LanguageEnum_GetOrderedText();
-    this.FillFormBuilderGroup('Add');
-    this.FillFormBuilderGroup('Update');
+    this.FillFormBuilderGroup(HttpClientCommand.Post);
+    this.FillFormBuilderGroup(HttpClientCommand.Put);
   }
 
   ngOnDestroy() {
@@ -76,64 +80,64 @@ export class ReportTypeComponent implements OnInit, OnDestroy {
     }
   }
 
-  FillFormBuilderGroup(AddOrUpdate: string) {
-    if (this.reporttypeService.reporttypeList.length) {
+  FillFormBuilderGroup(httpClientCommand: HttpClientCommand) {
+    if (this.reporttypeService.reporttypeListModel$.getValue().length) {
       let formGroup: FormGroup = this.fb.group(
         {
           ReportTypeID: [
             {
-              value: (AddOrUpdate === 'Add' ? 0 : (this.reporttypeService.reporttypeList[0]?.ReportTypeID)),
+              value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.reporttypeService.reporttypeListModel$.getValue()[0]?.ReportTypeID)),
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
           TVType: [
             {
-              value: this.reporttypeService.reporttypeList[0]?.TVType,
+              value: this.reporttypeService.reporttypeListModel$.getValue()[0]?.TVType,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
           FileType: [
             {
-              value: this.reporttypeService.reporttypeList[0]?.FileType,
+              value: this.reporttypeService.reporttypeListModel$.getValue()[0]?.FileType,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
           UniqueCode: [
             {
-              value: this.reporttypeService.reporttypeList[0]?.UniqueCode,
+              value: this.reporttypeService.reporttypeListModel$.getValue()[0]?.UniqueCode,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required, Validators.maxLength(100) ]],
           Language: [
             {
-              value: this.reporttypeService.reporttypeList[0]?.Language,
+              value: this.reporttypeService.reporttypeListModel$.getValue()[0]?.Language,
               disabled: false
-            }, [ Validators.required ]],
+            }],
           Name: [
             {
-              value: this.reporttypeService.reporttypeList[0]?.Name,
+              value: this.reporttypeService.reporttypeListModel$.getValue()[0]?.Name,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.maxLength(100) ]],
           Description: [
             {
-              value: this.reporttypeService.reporttypeList[0]?.Description,
+              value: this.reporttypeService.reporttypeListModel$.getValue()[0]?.Description,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.maxLength(1000) ]],
           StartOfFileName: [
             {
-              value: this.reporttypeService.reporttypeList[0]?.StartOfFileName,
+              value: this.reporttypeService.reporttypeListModel$.getValue()[0]?.StartOfFileName,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.maxLength(100) ]],
           LastUpdateDate_UTC: [
             {
-              value: this.reporttypeService.reporttypeList[0]?.LastUpdateDate_UTC,
+              value: this.reporttypeService.reporttypeListModel$.getValue()[0]?.LastUpdateDate_UTC,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
           LastUpdateContactTVItemID: [
             {
-              value: this.reporttypeService.reporttypeList[0]?.LastUpdateContactTVItemID,
+              value: this.reporttypeService.reporttypeListModel$.getValue()[0]?.LastUpdateContactTVItemID,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
         }
       );
 
-      if (AddOrUpdate === 'Add') {
+      if (httpClientCommand === HttpClientCommand.Post) {
         this.reporttypeFormPost = formGroup
       }
       else {

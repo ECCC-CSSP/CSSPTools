@@ -9,11 +9,12 @@ import { Injectable } from '@angular/core';
 import { LabSheetTextModel } from './labsheet.models';
 import { BehaviorSubject, of } from 'rxjs';
 import { LoadLocalesLabSheetText } from './labsheet.locales';
-import { Router } from '@angular/router';
-import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { map, catchError } from 'rxjs/operators';
 import { LabSheet } from '../../../models/generated/LabSheet.model';
 import { HttpRequestModel } from '../../../models/http.model';
+import { HttpClientService } from '../../../services/http-client.service';
+import { HttpClientCommand } from '../../../enums/app.enums';
 
 @Injectable({
   providedIn: 'root'
@@ -26,110 +27,63 @@ export class LabSheetService {
   labsheetPutModel$: BehaviorSubject<HttpRequestModel> = new BehaviorSubject<HttpRequestModel>(<HttpRequestModel>{});
   labsheetPostModel$: BehaviorSubject<HttpRequestModel> = new BehaviorSubject<HttpRequestModel>(<HttpRequestModel>{});
   labsheetDeleteModel$: BehaviorSubject<HttpRequestModel> = new BehaviorSubject<HttpRequestModel>(<HttpRequestModel>{});
-  labsheetList: LabSheet[] = [];
-  private oldURL: string;
-  private router: Router;
 
   /* Constructors */
-  constructor(private httpClient: HttpClient) {
+  constructor(private httpClient: HttpClient, private httpClientService: HttpClientService) {
     LoadLocalesLabSheetText(this);
     this.labsheetTextModel$.next(<LabSheetTextModel>{ Title: "Something2 for text" });
   }
 
   /* Functions public */
-  GetLabSheetList(router: Router) {
-    this.BeforeHttpClient(this.labsheetGetModel$, router);
+  GetLabSheetList() {
+    this.httpClientService.BeforeHttpClient(this.labsheetGetModel$);
 
     return this.httpClient.get<LabSheet[]>('/api/LabSheet').pipe(
       map((x: any) => {
-        this.DoSuccess(this.labsheetGetModel$, x, 'Get', null);
+        this.httpClientService.DoSuccess<LabSheet>(this.labsheetListModel$, this.labsheetGetModel$, x, HttpClientCommand.Get, null);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.DoCatchError(this.labsheetGetModel$, e, 'Get');
+        this.httpClientService.DoCatchError<LabSheet>(this.labsheetListModel$, this.labsheetGetModel$, e);
       })))
     );
   }
 
-  PutLabSheet(labsheet: LabSheet, router: Router) {
-    this.BeforeHttpClient(this.labsheetPutModel$, router);
+  PutLabSheet(labsheet: LabSheet) {
+    this.httpClientService.BeforeHttpClient(this.labsheetPutModel$);
 
     return this.httpClient.put<LabSheet>('/api/LabSheet', labsheet, { headers: new HttpHeaders() }).pipe(
       map((x: any) => {
-        this.DoSuccess(this.labsheetPutModel$, x, 'Put', labsheet);
+        this.httpClientService.DoSuccess<LabSheet>(this.labsheetListModel$, this.labsheetPutModel$, x, HttpClientCommand.Put, labsheet);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.DoCatchError(this.labsheetPutModel$, e, 'Put');
+       this.httpClientService.DoCatchError<LabSheet>(this.labsheetListModel$, this.labsheetPutModel$, e);
       })))
     );
   }
 
-  PostLabSheet(labsheet: LabSheet, router: Router) {
-    this.BeforeHttpClient(this.labsheetPostModel$, router);
+  PostLabSheet(labsheet: LabSheet) {
+    this.httpClientService.BeforeHttpClient(this.labsheetPostModel$);
 
     return this.httpClient.post<LabSheet>('/api/LabSheet', labsheet, { headers: new HttpHeaders() }).pipe(
       map((x: any) => {
-        this.DoSuccess(this.labsheetPostModel$, x, 'Post', labsheet);
+        this.httpClientService.DoSuccess<LabSheet>(this.labsheetListModel$, this.labsheetPostModel$, x, HttpClientCommand.Post, labsheet);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.DoCatchError(this.labsheetPostModel$, e, 'Post');
+        this.httpClientService.DoCatchError<LabSheet>(this.labsheetListModel$, this.labsheetPostModel$, e);
       })))
     );
   }
 
-  DeleteLabSheet(labsheet: LabSheet, router: Router) {
-    this.BeforeHttpClient(this.labsheetDeleteModel$, router);
+  DeleteLabSheet(labsheet: LabSheet) {
+    this.httpClientService.BeforeHttpClient(this.labsheetDeleteModel$);
 
     return this.httpClient.delete<boolean>(`/api/LabSheet/${ labsheet.LabSheetID }`).pipe(
       map((x: any) => {
-        this.DoSuccess(this.labsheetDeleteModel$, x, 'Delete', labsheet);
+        this.httpClientService.DoSuccess<LabSheet>(this.labsheetListModel$, this.labsheetDeleteModel$, x, HttpClientCommand.Delete, labsheet);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.DoCatchError(this.labsheetDeleteModel$, e, 'Delete');
+        this.httpClientService.DoCatchError<LabSheet>(this.labsheetListModel$, this.labsheetDeleteModel$, e);
       })))
     );
-  }
-
-  /* Functions private */
-  private BeforeHttpClient(httpRequestModel$: BehaviorSubject<HttpRequestModel>, router: Router) {
-    this.router = router;
-    this.oldURL = router.url;
-    httpRequestModel$.next(<HttpRequestModel>{ Working: true, Error: null, Status: null });
-  }
-
-  private DoCatchError(httpRequestModel$: BehaviorSubject<HttpRequestModel>, e: any, command: string) {
-    this.labsheetListModel$.next(null);
-    httpRequestModel$.next(<HttpRequestModel>{ Working: false, Error: <HttpErrorResponse>e, Status: 'Error' });
-
-    this.labsheetList = [];
-    console.debug(`LabSheet ${ command } ERROR. Return: ${ <HttpErrorResponse>e }`);
-    this.DoReload();
-  }
-
-  private DoReload() {
-    this.router.navigateByUrl('', { skipLocationChange: true }).then(() => {
-      this.router.navigate([`/${this.oldURL}`]);
-    });
-  }
-
-  private DoSuccess(httpRequestModel$: BehaviorSubject<HttpRequestModel>, x: any, command: string, labsheet?: LabSheet) {
-    console.debug(`LabSheet ${ command } OK. Return: ${ x }`);
-    if (command === 'Get') {
-      this.labsheetListModel$.next(<LabSheet[]>x);
-    }
-    if (command === 'Put') {
-      this.labsheetListModel$.getValue()[0] = <LabSheet>x;
-    }
-    if (command === 'Post') {
-      this.labsheetListModel$.getValue().push(<LabSheet>x);
-    }
-    if (command === 'Delete') {
-      const index = this.labsheetListModel$.getValue().indexOf(labsheet);
-      this.labsheetListModel$.getValue().splice(index, 1);
-    }
-
-    this.labsheetListModel$.next(this.labsheetListModel$.getValue());
-    httpRequestModel$.next(<HttpRequestModel>{ Working: false, Error: null, Status: 'ok' });
-    this.labsheetList = this.labsheetListModel$.getValue();
-    this.DoReload();
   }
 }

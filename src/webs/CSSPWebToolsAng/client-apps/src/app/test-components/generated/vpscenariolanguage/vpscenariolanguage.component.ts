@@ -8,13 +8,15 @@
 import { Component, OnInit, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
 import { VPScenarioLanguageService } from './vpscenariolanguage.service';
 import { LoadLocalesVPScenarioLanguageText } from './vpscenariolanguage.locales';
-import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { LanguageEnum_GetIDText, LanguageEnum_GetOrderedText } from '../../../enums/generated/LanguageEnum';
 import { TranslationStatusEnum_GetIDText, TranslationStatusEnum_GetOrderedText } from '../../../enums/generated/TranslationStatusEnum';
 import { VPScenarioLanguage } from '../../../models/generated/VPScenarioLanguage.model';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
 import { EnumIDAndText } from '../../../models/enumidandtext.model';
+import { HttpClientService } from '../../../services/http-client.service';
+import { Router } from '@angular/router';
+import { HttpClientCommand } from '../../../enums/app.enums';
 
 @Component({
   selector: 'app-vpscenariolanguage',
@@ -29,22 +31,24 @@ export class VPScenarioLanguageComponent implements OnInit, OnDestroy {
   vpscenariolanguageFormPut: FormGroup;
   vpscenariolanguageFormPost: FormGroup;
 
-  constructor(public vpscenariolanguageService: VPScenarioLanguageService, public router: Router, public fb: FormBuilder) { }
+  constructor(public vpscenariolanguageService: VPScenarioLanguageService, private router: Router, private httpClientService: HttpClientService, private fb: FormBuilder) {
+    httpClientService.oldURL = router.url;
+  }
 
   GetVPScenarioLanguageList() {
-    this.sub = this.vpscenariolanguageService.GetVPScenarioLanguageList(this.router).subscribe();
+    this.sub = this.vpscenariolanguageService.GetVPScenarioLanguageList().subscribe();
   }
 
   PutVPScenarioLanguage(vpscenariolanguage: VPScenarioLanguage) {
-    this.sub = this.vpscenariolanguageService.PutVPScenarioLanguage(vpscenariolanguage, this.router).subscribe();
+    this.sub = this.vpscenariolanguageService.PutVPScenarioLanguage(vpscenariolanguage).subscribe();
   }
 
   PostVPScenarioLanguage(vpscenariolanguage: VPScenarioLanguage) {
-    this.sub = this.vpscenariolanguageService.PostVPScenarioLanguage(vpscenariolanguage, this.router).subscribe();
+    this.sub = this.vpscenariolanguageService.PostVPScenarioLanguage(vpscenariolanguage).subscribe();
   }
 
   DeleteVPScenarioLanguage(vpscenariolanguage: VPScenarioLanguage) {
-    this.sub = this.vpscenariolanguageService.DeleteVPScenarioLanguage(vpscenariolanguage, this.router).subscribe();
+    this.sub = this.vpscenariolanguageService.DeleteVPScenarioLanguage(vpscenariolanguage).subscribe();
   }
 
   GetLanguageEnumText(enumID: number) {
@@ -59,8 +63,8 @@ export class VPScenarioLanguageComponent implements OnInit, OnDestroy {
     LoadLocalesVPScenarioLanguageText(this.vpscenariolanguageService);
     this.languageList = LanguageEnum_GetOrderedText();
     this.translationStatusList = TranslationStatusEnum_GetOrderedText();
-    this.FillFormBuilderGroup('Add');
-    this.FillFormBuilderGroup('Update');
+    this.FillFormBuilderGroup(HttpClientCommand.Post);
+    this.FillFormBuilderGroup(HttpClientCommand.Put);
   }
 
   ngOnDestroy() {
@@ -69,49 +73,49 @@ export class VPScenarioLanguageComponent implements OnInit, OnDestroy {
     }
   }
 
-  FillFormBuilderGroup(AddOrUpdate: string) {
-    if (this.vpscenariolanguageService.vpscenariolanguageList.length) {
+  FillFormBuilderGroup(httpClientCommand: HttpClientCommand) {
+    if (this.vpscenariolanguageService.vpscenariolanguageListModel$.getValue().length) {
       let formGroup: FormGroup = this.fb.group(
         {
           VPScenarioLanguageID: [
             {
-              value: (AddOrUpdate === 'Add' ? 0 : (this.vpscenariolanguageService.vpscenariolanguageList[0]?.VPScenarioLanguageID)),
+              value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.vpscenariolanguageService.vpscenariolanguageListModel$.getValue()[0]?.VPScenarioLanguageID)),
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
           VPScenarioID: [
             {
-              value: this.vpscenariolanguageService.vpscenariolanguageList[0]?.VPScenarioID,
+              value: this.vpscenariolanguageService.vpscenariolanguageListModel$.getValue()[0]?.VPScenarioID,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
           Language: [
             {
-              value: this.vpscenariolanguageService.vpscenariolanguageList[0]?.Language,
+              value: this.vpscenariolanguageService.vpscenariolanguageListModel$.getValue()[0]?.Language,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
           VPScenarioName: [
             {
-              value: this.vpscenariolanguageService.vpscenariolanguageList[0]?.VPScenarioName,
+              value: this.vpscenariolanguageService.vpscenariolanguageListModel$.getValue()[0]?.VPScenarioName,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required, Validators.maxLength(100) ]],
           TranslationStatus: [
             {
-              value: this.vpscenariolanguageService.vpscenariolanguageList[0]?.TranslationStatus,
+              value: this.vpscenariolanguageService.vpscenariolanguageListModel$.getValue()[0]?.TranslationStatus,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
           LastUpdateDate_UTC: [
             {
-              value: this.vpscenariolanguageService.vpscenariolanguageList[0]?.LastUpdateDate_UTC,
+              value: this.vpscenariolanguageService.vpscenariolanguageListModel$.getValue()[0]?.LastUpdateDate_UTC,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
           LastUpdateContactTVItemID: [
             {
-              value: this.vpscenariolanguageService.vpscenariolanguageList[0]?.LastUpdateContactTVItemID,
+              value: this.vpscenariolanguageService.vpscenariolanguageListModel$.getValue()[0]?.LastUpdateContactTVItemID,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
         }
       );
 
-      if (AddOrUpdate === 'Add') {
+      if (httpClientCommand === HttpClientCommand.Post) {
         this.vpscenariolanguageFormPost = formGroup
       }
       else {

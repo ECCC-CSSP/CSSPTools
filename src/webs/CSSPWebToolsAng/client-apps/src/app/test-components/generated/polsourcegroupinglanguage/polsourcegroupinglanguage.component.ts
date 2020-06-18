@@ -8,13 +8,15 @@
 import { Component, OnInit, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
 import { PolSourceGroupingLanguageService } from './polsourcegroupinglanguage.service';
 import { LoadLocalesPolSourceGroupingLanguageText } from './polsourcegroupinglanguage.locales';
-import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { LanguageEnum_GetIDText, LanguageEnum_GetOrderedText } from '../../../enums/generated/LanguageEnum';
 import { TranslationStatusEnum_GetIDText, TranslationStatusEnum_GetOrderedText } from '../../../enums/generated/TranslationStatusEnum';
 import { PolSourceGroupingLanguage } from '../../../models/generated/PolSourceGroupingLanguage.model';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
 import { EnumIDAndText } from '../../../models/enumidandtext.model';
+import { HttpClientService } from '../../../services/http-client.service';
+import { Router } from '@angular/router';
+import { HttpClientCommand } from '../../../enums/app.enums';
 
 @Component({
   selector: 'app-polsourcegroupinglanguage',
@@ -33,22 +35,24 @@ export class PolSourceGroupingLanguageComponent implements OnInit, OnDestroy {
   polsourcegroupinglanguageFormPut: FormGroup;
   polsourcegroupinglanguageFormPost: FormGroup;
 
-  constructor(public polsourcegroupinglanguageService: PolSourceGroupingLanguageService, public router: Router, public fb: FormBuilder) { }
+  constructor(public polsourcegroupinglanguageService: PolSourceGroupingLanguageService, private router: Router, private httpClientService: HttpClientService, private fb: FormBuilder) {
+    httpClientService.oldURL = router.url;
+  }
 
   GetPolSourceGroupingLanguageList() {
-    this.sub = this.polsourcegroupinglanguageService.GetPolSourceGroupingLanguageList(this.router).subscribe();
+    this.sub = this.polsourcegroupinglanguageService.GetPolSourceGroupingLanguageList().subscribe();
   }
 
   PutPolSourceGroupingLanguage(polsourcegroupinglanguage: PolSourceGroupingLanguage) {
-    this.sub = this.polsourcegroupinglanguageService.PutPolSourceGroupingLanguage(polsourcegroupinglanguage, this.router).subscribe();
+    this.sub = this.polsourcegroupinglanguageService.PutPolSourceGroupingLanguage(polsourcegroupinglanguage).subscribe();
   }
 
   PostPolSourceGroupingLanguage(polsourcegroupinglanguage: PolSourceGroupingLanguage) {
-    this.sub = this.polsourcegroupinglanguageService.PostPolSourceGroupingLanguage(polsourcegroupinglanguage, this.router).subscribe();
+    this.sub = this.polsourcegroupinglanguageService.PostPolSourceGroupingLanguage(polsourcegroupinglanguage).subscribe();
   }
 
   DeletePolSourceGroupingLanguage(polsourcegroupinglanguage: PolSourceGroupingLanguage) {
-    this.sub = this.polsourcegroupinglanguageService.DeletePolSourceGroupingLanguage(polsourcegroupinglanguage, this.router).subscribe();
+    this.sub = this.polsourcegroupinglanguageService.DeletePolSourceGroupingLanguage(polsourcegroupinglanguage).subscribe();
   }
 
   GetLanguageEnumText(enumID: number) {
@@ -67,8 +71,8 @@ export class PolSourceGroupingLanguageComponent implements OnInit, OnDestroy {
     this.translationStatusDescriptionList = TranslationStatusEnum_GetOrderedText();
     this.translationStatusReportList = TranslationStatusEnum_GetOrderedText();
     this.translationStatusTextList = TranslationStatusEnum_GetOrderedText();
-    this.FillFormBuilderGroup('Add');
-    this.FillFormBuilderGroup('Update');
+    this.FillFormBuilderGroup(HttpClientCommand.Post);
+    this.FillFormBuilderGroup(HttpClientCommand.Put);
   }
 
   ngOnDestroy() {
@@ -77,94 +81,94 @@ export class PolSourceGroupingLanguageComponent implements OnInit, OnDestroy {
     }
   }
 
-  FillFormBuilderGroup(AddOrUpdate: string) {
-    if (this.polsourcegroupinglanguageService.polsourcegroupinglanguageList.length) {
+  FillFormBuilderGroup(httpClientCommand: HttpClientCommand) {
+    if (this.polsourcegroupinglanguageService.polsourcegroupinglanguageListModel$.getValue().length) {
       let formGroup: FormGroup = this.fb.group(
         {
           PolSourceGroupingLanguageID: [
             {
-              value: (AddOrUpdate === 'Add' ? 0 : (this.polsourcegroupinglanguageService.polsourcegroupinglanguageList[0]?.PolSourceGroupingLanguageID)),
+              value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.polsourcegroupinglanguageService.polsourcegroupinglanguageListModel$.getValue()[0]?.PolSourceGroupingLanguageID)),
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
           PolSourceGroupingID: [
             {
-              value: this.polsourcegroupinglanguageService.polsourcegroupinglanguageList[0]?.PolSourceGroupingID,
+              value: this.polsourcegroupinglanguageService.polsourcegroupinglanguageListModel$.getValue()[0]?.PolSourceGroupingID,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
           Language: [
             {
-              value: this.polsourcegroupinglanguageService.polsourcegroupinglanguageList[0]?.Language,
+              value: this.polsourcegroupinglanguageService.polsourcegroupinglanguageListModel$.getValue()[0]?.Language,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
           SourceName: [
             {
-              value: this.polsourcegroupinglanguageService.polsourcegroupinglanguageList[0]?.SourceName,
+              value: this.polsourcegroupinglanguageService.polsourcegroupinglanguageListModel$.getValue()[0]?.SourceName,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required, Validators.maxLength(250) ]],
           SourceNameOrder: [
             {
-              value: this.polsourcegroupinglanguageService.polsourcegroupinglanguageList[0]?.SourceNameOrder,
+              value: this.polsourcegroupinglanguageService.polsourcegroupinglanguageListModel$.getValue()[0]?.SourceNameOrder,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required, Validators.min(0), Validators.max(1000) ]],
           TranslationStatusSourceName: [
             {
-              value: this.polsourcegroupinglanguageService.polsourcegroupinglanguageList[0]?.TranslationStatusSourceName,
+              value: this.polsourcegroupinglanguageService.polsourcegroupinglanguageListModel$.getValue()[0]?.TranslationStatusSourceName,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
           Init: [
             {
-              value: this.polsourcegroupinglanguageService.polsourcegroupinglanguageList[0]?.Init,
+              value: this.polsourcegroupinglanguageService.polsourcegroupinglanguageListModel$.getValue()[0]?.Init,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required, Validators.maxLength(50) ]],
           TranslationStatusInit: [
             {
-              value: this.polsourcegroupinglanguageService.polsourcegroupinglanguageList[0]?.TranslationStatusInit,
+              value: this.polsourcegroupinglanguageService.polsourcegroupinglanguageListModel$.getValue()[0]?.TranslationStatusInit,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
           Description: [
             {
-              value: this.polsourcegroupinglanguageService.polsourcegroupinglanguageList[0]?.Description,
+              value: this.polsourcegroupinglanguageService.polsourcegroupinglanguageListModel$.getValue()[0]?.Description,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required, Validators.maxLength(250) ]],
           TranslationStatusDescription: [
             {
-              value: this.polsourcegroupinglanguageService.polsourcegroupinglanguageList[0]?.TranslationStatusDescription,
+              value: this.polsourcegroupinglanguageService.polsourcegroupinglanguageListModel$.getValue()[0]?.TranslationStatusDescription,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
           Report: [
             {
-              value: this.polsourcegroupinglanguageService.polsourcegroupinglanguageList[0]?.Report,
+              value: this.polsourcegroupinglanguageService.polsourcegroupinglanguageListModel$.getValue()[0]?.Report,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required, Validators.maxLength(250) ]],
           TranslationStatusReport: [
             {
-              value: this.polsourcegroupinglanguageService.polsourcegroupinglanguageList[0]?.TranslationStatusReport,
+              value: this.polsourcegroupinglanguageService.polsourcegroupinglanguageListModel$.getValue()[0]?.TranslationStatusReport,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
           Text: [
             {
-              value: this.polsourcegroupinglanguageService.polsourcegroupinglanguageList[0]?.Text,
+              value: this.polsourcegroupinglanguageService.polsourcegroupinglanguageListModel$.getValue()[0]?.Text,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required, Validators.maxLength(250) ]],
           TranslationStatusText: [
             {
-              value: this.polsourcegroupinglanguageService.polsourcegroupinglanguageList[0]?.TranslationStatusText,
+              value: this.polsourcegroupinglanguageService.polsourcegroupinglanguageListModel$.getValue()[0]?.TranslationStatusText,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
           LastUpdateDate_UTC: [
             {
-              value: this.polsourcegroupinglanguageService.polsourcegroupinglanguageList[0]?.LastUpdateDate_UTC,
+              value: this.polsourcegroupinglanguageService.polsourcegroupinglanguageListModel$.getValue()[0]?.LastUpdateDate_UTC,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
           LastUpdateContactTVItemID: [
             {
-              value: this.polsourcegroupinglanguageService.polsourcegroupinglanguageList[0]?.LastUpdateContactTVItemID,
+              value: this.polsourcegroupinglanguageService.polsourcegroupinglanguageListModel$.getValue()[0]?.LastUpdateContactTVItemID,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
         }
       );
 
-      if (AddOrUpdate === 'Add') {
+      if (httpClientCommand === HttpClientCommand.Post) {
         this.polsourcegroupinglanguageFormPost = formGroup
       }
       else {

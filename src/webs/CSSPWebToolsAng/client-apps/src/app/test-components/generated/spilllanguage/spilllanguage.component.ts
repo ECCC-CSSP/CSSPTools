@@ -8,13 +8,15 @@
 import { Component, OnInit, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
 import { SpillLanguageService } from './spilllanguage.service';
 import { LoadLocalesSpillLanguageText } from './spilllanguage.locales';
-import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { LanguageEnum_GetIDText, LanguageEnum_GetOrderedText } from '../../../enums/generated/LanguageEnum';
 import { TranslationStatusEnum_GetIDText, TranslationStatusEnum_GetOrderedText } from '../../../enums/generated/TranslationStatusEnum';
 import { SpillLanguage } from '../../../models/generated/SpillLanguage.model';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
 import { EnumIDAndText } from '../../../models/enumidandtext.model';
+import { HttpClientService } from '../../../services/http-client.service';
+import { Router } from '@angular/router';
+import { HttpClientCommand } from '../../../enums/app.enums';
 
 @Component({
   selector: 'app-spilllanguage',
@@ -29,22 +31,24 @@ export class SpillLanguageComponent implements OnInit, OnDestroy {
   spilllanguageFormPut: FormGroup;
   spilllanguageFormPost: FormGroup;
 
-  constructor(public spilllanguageService: SpillLanguageService, public router: Router, public fb: FormBuilder) { }
+  constructor(public spilllanguageService: SpillLanguageService, private router: Router, private httpClientService: HttpClientService, private fb: FormBuilder) {
+    httpClientService.oldURL = router.url;
+  }
 
   GetSpillLanguageList() {
-    this.sub = this.spilllanguageService.GetSpillLanguageList(this.router).subscribe();
+    this.sub = this.spilllanguageService.GetSpillLanguageList().subscribe();
   }
 
   PutSpillLanguage(spilllanguage: SpillLanguage) {
-    this.sub = this.spilllanguageService.PutSpillLanguage(spilllanguage, this.router).subscribe();
+    this.sub = this.spilllanguageService.PutSpillLanguage(spilllanguage).subscribe();
   }
 
   PostSpillLanguage(spilllanguage: SpillLanguage) {
-    this.sub = this.spilllanguageService.PostSpillLanguage(spilllanguage, this.router).subscribe();
+    this.sub = this.spilllanguageService.PostSpillLanguage(spilllanguage).subscribe();
   }
 
   DeleteSpillLanguage(spilllanguage: SpillLanguage) {
-    this.sub = this.spilllanguageService.DeleteSpillLanguage(spilllanguage, this.router).subscribe();
+    this.sub = this.spilllanguageService.DeleteSpillLanguage(spilllanguage).subscribe();
   }
 
   GetLanguageEnumText(enumID: number) {
@@ -59,8 +63,8 @@ export class SpillLanguageComponent implements OnInit, OnDestroy {
     LoadLocalesSpillLanguageText(this.spilllanguageService);
     this.languageList = LanguageEnum_GetOrderedText();
     this.translationStatusList = TranslationStatusEnum_GetOrderedText();
-    this.FillFormBuilderGroup('Add');
-    this.FillFormBuilderGroup('Update');
+    this.FillFormBuilderGroup(HttpClientCommand.Post);
+    this.FillFormBuilderGroup(HttpClientCommand.Put);
   }
 
   ngOnDestroy() {
@@ -69,49 +73,49 @@ export class SpillLanguageComponent implements OnInit, OnDestroy {
     }
   }
 
-  FillFormBuilderGroup(AddOrUpdate: string) {
-    if (this.spilllanguageService.spilllanguageList.length) {
+  FillFormBuilderGroup(httpClientCommand: HttpClientCommand) {
+    if (this.spilllanguageService.spilllanguageListModel$.getValue().length) {
       let formGroup: FormGroup = this.fb.group(
         {
           SpillLanguageID: [
             {
-              value: (AddOrUpdate === 'Add' ? 0 : (this.spilllanguageService.spilllanguageList[0]?.SpillLanguageID)),
+              value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.spilllanguageService.spilllanguageListModel$.getValue()[0]?.SpillLanguageID)),
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
           SpillID: [
             {
-              value: this.spilllanguageService.spilllanguageList[0]?.SpillID,
+              value: this.spilllanguageService.spilllanguageListModel$.getValue()[0]?.SpillID,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
           Language: [
             {
-              value: this.spilllanguageService.spilllanguageList[0]?.Language,
+              value: this.spilllanguageService.spilllanguageListModel$.getValue()[0]?.Language,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
           SpillComment: [
             {
-              value: this.spilllanguageService.spilllanguageList[0]?.SpillComment,
+              value: this.spilllanguageService.spilllanguageListModel$.getValue()[0]?.SpillComment,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
           TranslationStatus: [
             {
-              value: this.spilllanguageService.spilllanguageList[0]?.TranslationStatus,
+              value: this.spilllanguageService.spilllanguageListModel$.getValue()[0]?.TranslationStatus,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
           LastUpdateDate_UTC: [
             {
-              value: this.spilllanguageService.spilllanguageList[0]?.LastUpdateDate_UTC,
+              value: this.spilllanguageService.spilllanguageListModel$.getValue()[0]?.LastUpdateDate_UTC,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
           LastUpdateContactTVItemID: [
             {
-              value: this.spilllanguageService.spilllanguageList[0]?.LastUpdateContactTVItemID,
+              value: this.spilllanguageService.spilllanguageListModel$.getValue()[0]?.LastUpdateContactTVItemID,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
         }
       );
 
-      if (AddOrUpdate === 'Add') {
+      if (httpClientCommand === HttpClientCommand.Post) {
         this.spilllanguageFormPost = formGroup
       }
       else {

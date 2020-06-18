@@ -8,10 +8,12 @@
 import { Component, OnInit, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
 import { PolSourceObservationService } from './polsourceobservation.service';
 import { LoadLocalesPolSourceObservationText } from './polsourceobservation.locales';
-import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { PolSourceObservation } from '../../../models/generated/PolSourceObservation.model';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
+import { HttpClientService } from '../../../services/http-client.service';
+import { Router } from '@angular/router';
+import { HttpClientCommand } from '../../../enums/app.enums';
 
 @Component({
   selector: 'app-polsourceobservation',
@@ -24,28 +26,30 @@ export class PolSourceObservationComponent implements OnInit, OnDestroy {
   polsourceobservationFormPut: FormGroup;
   polsourceobservationFormPost: FormGroup;
 
-  constructor(public polsourceobservationService: PolSourceObservationService, public router: Router, public fb: FormBuilder) { }
+  constructor(public polsourceobservationService: PolSourceObservationService, private router: Router, private httpClientService: HttpClientService, private fb: FormBuilder) {
+    httpClientService.oldURL = router.url;
+  }
 
   GetPolSourceObservationList() {
-    this.sub = this.polsourceobservationService.GetPolSourceObservationList(this.router).subscribe();
+    this.sub = this.polsourceobservationService.GetPolSourceObservationList().subscribe();
   }
 
   PutPolSourceObservation(polsourceobservation: PolSourceObservation) {
-    this.sub = this.polsourceobservationService.PutPolSourceObservation(polsourceobservation, this.router).subscribe();
+    this.sub = this.polsourceobservationService.PutPolSourceObservation(polsourceobservation).subscribe();
   }
 
   PostPolSourceObservation(polsourceobservation: PolSourceObservation) {
-    this.sub = this.polsourceobservationService.PostPolSourceObservation(polsourceobservation, this.router).subscribe();
+    this.sub = this.polsourceobservationService.PostPolSourceObservation(polsourceobservation).subscribe();
   }
 
   DeletePolSourceObservation(polsourceobservation: PolSourceObservation) {
-    this.sub = this.polsourceobservationService.DeletePolSourceObservation(polsourceobservation, this.router).subscribe();
+    this.sub = this.polsourceobservationService.DeletePolSourceObservation(polsourceobservation).subscribe();
   }
 
   ngOnInit(): void {
     LoadLocalesPolSourceObservationText(this.polsourceobservationService);
-    this.FillFormBuilderGroup('Add');
-    this.FillFormBuilderGroup('Update');
+    this.FillFormBuilderGroup(HttpClientCommand.Post);
+    this.FillFormBuilderGroup(HttpClientCommand.Put);
   }
 
   ngOnDestroy() {
@@ -54,54 +58,54 @@ export class PolSourceObservationComponent implements OnInit, OnDestroy {
     }
   }
 
-  FillFormBuilderGroup(AddOrUpdate: string) {
-    if (this.polsourceobservationService.polsourceobservationList.length) {
+  FillFormBuilderGroup(httpClientCommand: HttpClientCommand) {
+    if (this.polsourceobservationService.polsourceobservationListModel$.getValue().length) {
       let formGroup: FormGroup = this.fb.group(
         {
           PolSourceObservationID: [
             {
-              value: (AddOrUpdate === 'Add' ? 0 : (this.polsourceobservationService.polsourceobservationList[0]?.PolSourceObservationID)),
+              value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.polsourceobservationService.polsourceobservationListModel$.getValue()[0]?.PolSourceObservationID)),
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
           PolSourceSiteID: [
             {
-              value: this.polsourceobservationService.polsourceobservationList[0]?.PolSourceSiteID,
+              value: this.polsourceobservationService.polsourceobservationListModel$.getValue()[0]?.PolSourceSiteID,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
           ObservationDate_Local: [
             {
-              value: this.polsourceobservationService.polsourceobservationList[0]?.ObservationDate_Local,
+              value: this.polsourceobservationService.polsourceobservationListModel$.getValue()[0]?.ObservationDate_Local,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
           ContactTVItemID: [
             {
-              value: this.polsourceobservationService.polsourceobservationList[0]?.ContactTVItemID,
+              value: this.polsourceobservationService.polsourceobservationListModel$.getValue()[0]?.ContactTVItemID,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
           DesktopReviewed: [
             {
-              value: this.polsourceobservationService.polsourceobservationList[0]?.DesktopReviewed,
+              value: this.polsourceobservationService.polsourceobservationListModel$.getValue()[0]?.DesktopReviewed,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
           Observation_ToBeDeleted: [
             {
-              value: this.polsourceobservationService.polsourceobservationList[0]?.Observation_ToBeDeleted,
+              value: this.polsourceobservationService.polsourceobservationListModel$.getValue()[0]?.Observation_ToBeDeleted,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
           LastUpdateDate_UTC: [
             {
-              value: this.polsourceobservationService.polsourceobservationList[0]?.LastUpdateDate_UTC,
+              value: this.polsourceobservationService.polsourceobservationListModel$.getValue()[0]?.LastUpdateDate_UTC,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
           LastUpdateContactTVItemID: [
             {
-              value: this.polsourceobservationService.polsourceobservationList[0]?.LastUpdateContactTVItemID,
+              value: this.polsourceobservationService.polsourceobservationListModel$.getValue()[0]?.LastUpdateContactTVItemID,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
         }
       );
 
-      if (AddOrUpdate === 'Add') {
+      if (httpClientCommand === HttpClientCommand.Post) {
         this.polsourceobservationFormPost = formGroup
       }
       else {

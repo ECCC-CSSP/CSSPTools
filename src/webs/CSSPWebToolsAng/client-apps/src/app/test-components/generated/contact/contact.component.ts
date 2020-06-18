@@ -8,12 +8,14 @@
 import { Component, OnInit, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
 import { ContactService } from './contact.service';
 import { LoadLocalesContactText } from './contact.locales';
-import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { ContactTitleEnum_GetIDText, ContactTitleEnum_GetOrderedText } from '../../../enums/generated/ContactTitleEnum';
 import { Contact } from '../../../models/generated/Contact.model';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
 import { EnumIDAndText } from '../../../models/enumidandtext.model';
+import { HttpClientService } from '../../../services/http-client.service';
+import { Router } from '@angular/router';
+import { HttpClientCommand } from '../../../enums/app.enums';
 
 @Component({
   selector: 'app-contact',
@@ -27,22 +29,24 @@ export class ContactComponent implements OnInit, OnDestroy {
   contactFormPut: FormGroup;
   contactFormPost: FormGroup;
 
-  constructor(public contactService: ContactService, public router: Router, public fb: FormBuilder) { }
+  constructor(public contactService: ContactService, private router: Router, private httpClientService: HttpClientService, private fb: FormBuilder) {
+    httpClientService.oldURL = router.url;
+  }
 
   GetContactList() {
-    this.sub = this.contactService.GetContactList(this.router).subscribe();
+    this.sub = this.contactService.GetContactList().subscribe();
   }
 
   PutContact(contact: Contact) {
-    this.sub = this.contactService.PutContact(contact, this.router).subscribe();
+    this.sub = this.contactService.PutContact(contact).subscribe();
   }
 
   PostContact(contact: Contact) {
-    this.sub = this.contactService.PostContact(contact, this.router).subscribe();
+    this.sub = this.contactService.PostContact(contact).subscribe();
   }
 
   DeleteContact(contact: Contact) {
-    this.sub = this.contactService.DeleteContact(contact, this.router).subscribe();
+    this.sub = this.contactService.DeleteContact(contact).subscribe();
   }
 
   GetContactTitleEnumText(enumID: number) {
@@ -52,8 +56,8 @@ export class ContactComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     LoadLocalesContactText(this.contactService);
     this.contactTitleList = ContactTitleEnum_GetOrderedText();
-    this.FillFormBuilderGroup('Add');
-    this.FillFormBuilderGroup('Update');
+    this.FillFormBuilderGroup(HttpClientCommand.Post);
+    this.FillFormBuilderGroup(HttpClientCommand.Put);
   }
 
   ngOnDestroy() {
@@ -62,99 +66,99 @@ export class ContactComponent implements OnInit, OnDestroy {
     }
   }
 
-  FillFormBuilderGroup(AddOrUpdate: string) {
-    if (this.contactService.contactList.length) {
+  FillFormBuilderGroup(httpClientCommand: HttpClientCommand) {
+    if (this.contactService.contactListModel$.getValue().length) {
       let formGroup: FormGroup = this.fb.group(
         {
           ContactID: [
             {
-              value: (AddOrUpdate === 'Add' ? 0 : (this.contactService.contactList[0]?.ContactID)),
+              value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.contactService.contactListModel$.getValue()[0]?.ContactID)),
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
           Id: [
             {
-              value: this.contactService.contactList[0]?.Id,
+              value: this.contactService.contactListModel$.getValue()[0]?.Id,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required, Validators.maxLength(128) ]],
           ContactTVItemID: [
             {
-              value: this.contactService.contactList[0]?.ContactTVItemID,
+              value: this.contactService.contactListModel$.getValue()[0]?.ContactTVItemID,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
           LoginEmail: [
             {
-              value: this.contactService.contactList[0]?.LoginEmail,
+              value: this.contactService.contactListModel$.getValue()[0]?.LoginEmail,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required, Validators.email, Validators.minLength(6), Validators.maxLength(255) ]],
           FirstName: [
             {
-              value: this.contactService.contactList[0]?.FirstName,
+              value: this.contactService.contactListModel$.getValue()[0]?.FirstName,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required, Validators.maxLength(100) ]],
           LastName: [
             {
-              value: this.contactService.contactList[0]?.LastName,
+              value: this.contactService.contactListModel$.getValue()[0]?.LastName,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required, Validators.maxLength(100) ]],
           Initial: [
             {
-              value: this.contactService.contactList[0]?.Initial,
+              value: this.contactService.contactListModel$.getValue()[0]?.Initial,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.maxLength(50) ]],
           WebName: [
             {
-              value: this.contactService.contactList[0]?.WebName,
+              value: this.contactService.contactListModel$.getValue()[0]?.WebName,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required, Validators.maxLength(100) ]],
           ContactTitle: [
             {
-              value: this.contactService.contactList[0]?.ContactTitle,
+              value: this.contactService.contactListModel$.getValue()[0]?.ContactTitle,
               disabled: false
-            }, [ Validators.required ]],
+            }],
           IsAdmin: [
             {
-              value: this.contactService.contactList[0]?.IsAdmin,
+              value: this.contactService.contactListModel$.getValue()[0]?.IsAdmin,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
           EmailValidated: [
             {
-              value: this.contactService.contactList[0]?.EmailValidated,
+              value: this.contactService.contactListModel$.getValue()[0]?.EmailValidated,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
           Disabled: [
             {
-              value: this.contactService.contactList[0]?.Disabled,
+              value: this.contactService.contactListModel$.getValue()[0]?.Disabled,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
           IsNew: [
             {
-              value: this.contactService.contactList[0]?.IsNew,
+              value: this.contactService.contactListModel$.getValue()[0]?.IsNew,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
           SamplingPlanner_ProvincesTVItemID: [
             {
-              value: this.contactService.contactList[0]?.SamplingPlanner_ProvincesTVItemID,
+              value: this.contactService.contactListModel$.getValue()[0]?.SamplingPlanner_ProvincesTVItemID,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.maxLength(200) ]],
           Token: [
             {
-              value: this.contactService.contactList[0]?.Token,
+              value: this.contactService.contactListModel$.getValue()[0]?.Token,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.maxLength(255) ]],
           LastUpdateDate_UTC: [
             {
-              value: this.contactService.contactList[0]?.LastUpdateDate_UTC,
+              value: this.contactService.contactListModel$.getValue()[0]?.LastUpdateDate_UTC,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
           LastUpdateContactTVItemID: [
             {
-              value: this.contactService.contactList[0]?.LastUpdateContactTVItemID,
+              value: this.contactService.contactListModel$.getValue()[0]?.LastUpdateContactTVItemID,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
         }
       );
 
-      if (AddOrUpdate === 'Add') {
+      if (httpClientCommand === HttpClientCommand.Post) {
         this.contactFormPost = formGroup
       }
       else {

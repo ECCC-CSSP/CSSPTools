@@ -8,10 +8,12 @@
 import { Component, OnInit, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
 import { VPResultService } from './vpresult.service';
 import { LoadLocalesVPResultText } from './vpresult.locales';
-import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { VPResult } from '../../../models/generated/VPResult.model';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
+import { HttpClientService } from '../../../services/http-client.service';
+import { Router } from '@angular/router';
+import { HttpClientCommand } from '../../../enums/app.enums';
 
 @Component({
   selector: 'app-vpresult',
@@ -24,28 +26,30 @@ export class VPResultComponent implements OnInit, OnDestroy {
   vpresultFormPut: FormGroup;
   vpresultFormPost: FormGroup;
 
-  constructor(public vpresultService: VPResultService, public router: Router, public fb: FormBuilder) { }
+  constructor(public vpresultService: VPResultService, private router: Router, private httpClientService: HttpClientService, private fb: FormBuilder) {
+    httpClientService.oldURL = router.url;
+  }
 
   GetVPResultList() {
-    this.sub = this.vpresultService.GetVPResultList(this.router).subscribe();
+    this.sub = this.vpresultService.GetVPResultList().subscribe();
   }
 
   PutVPResult(vpresult: VPResult) {
-    this.sub = this.vpresultService.PutVPResult(vpresult, this.router).subscribe();
+    this.sub = this.vpresultService.PutVPResult(vpresult).subscribe();
   }
 
   PostVPResult(vpresult: VPResult) {
-    this.sub = this.vpresultService.PostVPResult(vpresult, this.router).subscribe();
+    this.sub = this.vpresultService.PostVPResult(vpresult).subscribe();
   }
 
   DeleteVPResult(vpresult: VPResult) {
-    this.sub = this.vpresultService.DeleteVPResult(vpresult, this.router).subscribe();
+    this.sub = this.vpresultService.DeleteVPResult(vpresult).subscribe();
   }
 
   ngOnInit(): void {
     LoadLocalesVPResultText(this.vpresultService);
-    this.FillFormBuilderGroup('Add');
-    this.FillFormBuilderGroup('Update');
+    this.FillFormBuilderGroup(HttpClientCommand.Post);
+    this.FillFormBuilderGroup(HttpClientCommand.Put);
   }
 
   ngOnDestroy() {
@@ -54,64 +58,64 @@ export class VPResultComponent implements OnInit, OnDestroy {
     }
   }
 
-  FillFormBuilderGroup(AddOrUpdate: string) {
-    if (this.vpresultService.vpresultList.length) {
+  FillFormBuilderGroup(httpClientCommand: HttpClientCommand) {
+    if (this.vpresultService.vpresultListModel$.getValue().length) {
       let formGroup: FormGroup = this.fb.group(
         {
           VPResultID: [
             {
-              value: (AddOrUpdate === 'Add' ? 0 : (this.vpresultService.vpresultList[0]?.VPResultID)),
+              value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.vpresultService.vpresultListModel$.getValue()[0]?.VPResultID)),
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
           VPScenarioID: [
             {
-              value: this.vpresultService.vpresultList[0]?.VPScenarioID,
+              value: this.vpresultService.vpresultListModel$.getValue()[0]?.VPScenarioID,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
           Ordinal: [
             {
-              value: this.vpresultService.vpresultList[0]?.Ordinal,
+              value: this.vpresultService.vpresultListModel$.getValue()[0]?.Ordinal,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required, Validators.min(0), Validators.max(1000) ]],
           Concentration_MPN_100ml: [
             {
-              value: this.vpresultService.vpresultList[0]?.Concentration_MPN_100ml,
+              value: this.vpresultService.vpresultListModel$.getValue()[0]?.Concentration_MPN_100ml,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required, Validators.min(0), Validators.max(10000000) ]],
           Dilution: [
             {
-              value: this.vpresultService.vpresultList[0]?.Dilution,
+              value: this.vpresultService.vpresultListModel$.getValue()[0]?.Dilution,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required, Validators.min(0), Validators.max(1000000) ]],
           FarFieldWidth_m: [
             {
-              value: this.vpresultService.vpresultList[0]?.FarFieldWidth_m,
+              value: this.vpresultService.vpresultListModel$.getValue()[0]?.FarFieldWidth_m,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required, Validators.min(0), Validators.max(10000) ]],
           DispersionDistance_m: [
             {
-              value: this.vpresultService.vpresultList[0]?.DispersionDistance_m,
+              value: this.vpresultService.vpresultListModel$.getValue()[0]?.DispersionDistance_m,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required, Validators.min(0), Validators.max(100000) ]],
           TravelTime_hour: [
             {
-              value: this.vpresultService.vpresultList[0]?.TravelTime_hour,
+              value: this.vpresultService.vpresultListModel$.getValue()[0]?.TravelTime_hour,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required, Validators.min(0), Validators.max(100) ]],
           LastUpdateDate_UTC: [
             {
-              value: this.vpresultService.vpresultList[0]?.LastUpdateDate_UTC,
+              value: this.vpresultService.vpresultListModel$.getValue()[0]?.LastUpdateDate_UTC,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
           LastUpdateContactTVItemID: [
             {
-              value: this.vpresultService.vpresultList[0]?.LastUpdateContactTVItemID,
+              value: this.vpresultService.vpresultListModel$.getValue()[0]?.LastUpdateContactTVItemID,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
         }
       );
 
-      if (AddOrUpdate === 'Add') {
+      if (httpClientCommand === HttpClientCommand.Post) {
         this.vpresultFormPost = formGroup
       }
       else {

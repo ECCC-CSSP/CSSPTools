@@ -5,7 +5,7 @@
  *
 -->
 
-<mat-progress-bar mode="indeterminate" *ngIf="useofsiteService.useofsiteGetModel$.getValue().Working"></mat-progress-bar>
+<mat-progress-bar mode="indeterminate" *ngIf="useofsiteService.useofsiteGetModel$.getValue()?.Working"></mat-progress-bar>
 <mat-card>
   <mat-card-header>
     <mat-card-title>
@@ -17,8 +17,8 @@
     <mat-card-subtitle>{{ useofsiteService.useofsiteTextModel$.getValue().Title }}</mat-card-subtitle>
   </mat-card-header>
   <mat-card-content>
-    <mat-list>
-      <mat-list-item *ngFor="let useofsite of useofsiteService.useofsiteList">
+    <mat-list *ngIf="useofsiteService.useofsiteListModel$.getValue()?.length">
+      <mat-list-item *ngFor="let useofsite of useofsiteService.useofsiteListModel$.getValue()">
         <span mat-line>
           <button mat-raised-button (click)="DeleteUseOfSite(useofsite)">
             <span>Delete UseOfSiteID [{{ useofsite.UseOfSiteID }}]&nbsp;&nbsp;&nbsp;</span>
@@ -65,7 +65,7 @@
     <mat-card-title>Edit UseOfSite testing</mat-card-title>
   </mat-card-header>
   <mat-card-content>
-    <div *ngIf="useofsiteService.useofsiteList.length">
+    <div *ngIf="useofsiteService.useofsiteListModel$.getValue()?.length">
       <blockquote>
         <form [formGroup]="useofsiteFormPut" (ngSubmit)="PutUseOfSite(useofsiteFormPut.value)">
           <h3>
@@ -80,14 +80,26 @@
             <mat-form-field>
               <mat-label>UseOfSiteID</mat-label>
               <input matInput type="number" formControlName="UseOfSiteID">
+              <mat-error *ngIf="useofsiteFormPut.controls.UseOfSiteID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>SiteTVItemID</mat-label>
               <input matInput type="number" formControlName="SiteTVItemID">
+              <mat-error *ngIf="useofsiteFormPut.controls.SiteTVItemID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>SubsectorTVItemID</mat-label>
               <input matInput type="number" formControlName="SubsectorTVItemID">
+              <mat-error *ngIf="useofsiteFormPut.controls.SubsectorTVItemID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>TVType</mat-label>
@@ -96,60 +108,120 @@
                   {{ a.EnumText }}
                 </mat-option>
               </mat-select>
+              <mat-error *ngIf="useofsiteFormPut.controls.TVType.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
           </p>
           <p>
             <mat-form-field>
               <mat-label>Ordinal</mat-label>
               <input matInput type="number" formControlName="Ordinal">
+              <mat-error *ngIf="useofsiteFormPut.controls.Ordinal.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+                <span *ngIf="e.min">Min - 0<br /></span>
+                <span *ngIf="e.min">Max - 1000<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>StartYear</mat-label>
               <input matInput type="number" formControlName="StartYear">
+              <mat-error *ngIf="useofsiteFormPut.controls.StartYear.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+                <span *ngIf="e.min">Min - 1980<br /></span>
+                <span *ngIf="e.min">Max - 2050<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>EndYear</mat-label>
               <input matInput type="number" formControlName="EndYear">
+              <mat-error *ngIf="useofsiteFormPut.controls.EndYear.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.min">Min - 1980<br /></span>
+                <span *ngIf="e.min">Max - 2050<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>UseWeight</mat-label>
               <input matInput type="text" formControlName="UseWeight">
+              <mat-error *ngIf="useofsiteFormPut.controls.UseWeight.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+              </mat-error>
             </mat-form-field>
           </p>
           <p>
             <mat-form-field>
               <mat-label>Weight_perc</mat-label>
               <input matInput type="number" formControlName="Weight_perc">
+              <mat-error *ngIf="useofsiteFormPut.controls.Weight_perc.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.min">Min - 0<br /></span>
+                <span *ngIf="e.min">Max - 100<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>UseEquation</mat-label>
               <input matInput type="text" formControlName="UseEquation">
+              <mat-error *ngIf="useofsiteFormPut.controls.UseEquation.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>Param1</mat-label>
               <input matInput type="number" formControlName="Param1">
+              <mat-error *ngIf="useofsiteFormPut.controls.Param1.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.min">Min - 0<br /></span>
+                <span *ngIf="e.min">Max - 100<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>Param2</mat-label>
               <input matInput type="number" formControlName="Param2">
+              <mat-error *ngIf="useofsiteFormPut.controls.Param2.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.min">Min - 0<br /></span>
+                <span *ngIf="e.min">Max - 100<br /></span>
+              </mat-error>
             </mat-form-field>
           </p>
           <p>
             <mat-form-field>
               <mat-label>Param3</mat-label>
               <input matInput type="number" formControlName="Param3">
+              <mat-error *ngIf="useofsiteFormPut.controls.Param3.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.min">Min - 0<br /></span>
+                <span *ngIf="e.min">Max - 100<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>Param4</mat-label>
               <input matInput type="number" formControlName="Param4">
+              <mat-error *ngIf="useofsiteFormPut.controls.Param4.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.min">Min - 0<br /></span>
+                <span *ngIf="e.min">Max - 100<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>LastUpdateDate_UTC</mat-label>
               <input matInput type="text" formControlName="LastUpdateDate_UTC">
+              <mat-error *ngIf="useofsiteFormPut.controls.LastUpdateDate_UTC.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>LastUpdateContactTVItemID</mat-label>
               <input matInput type="number" formControlName="LastUpdateContactTVItemID">
+              <mat-error *ngIf="useofsiteFormPut.controls.LastUpdateContactTVItemID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
           </p>
         </form>
@@ -164,7 +236,7 @@
     <mat-card-title>Add UseOfSite testing</mat-card-title>
   </mat-card-header>
   <mat-card-content>
-    <div *ngIf="useofsiteService.useofsiteList.length">
+    <div *ngIf="useofsiteService.useofsiteListModel$.getValue()?.length">
       <blockquote>
         <form [formGroup]="useofsiteFormPost" (ngSubmit)="PostUseOfSite(useofsiteFormPost.value)">
           <h3>
@@ -179,14 +251,26 @@
             <mat-form-field>
               <mat-label>UseOfSiteID</mat-label>
               <input matInput type="number" formControlName="UseOfSiteID">
+              <mat-error *ngIf="useofsiteFormPut.controls.UseOfSiteID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>SiteTVItemID</mat-label>
               <input matInput type="number" formControlName="SiteTVItemID">
+              <mat-error *ngIf="useofsiteFormPut.controls.SiteTVItemID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>SubsectorTVItemID</mat-label>
               <input matInput type="number" formControlName="SubsectorTVItemID">
+              <mat-error *ngIf="useofsiteFormPut.controls.SubsectorTVItemID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>TVType</mat-label>
@@ -195,60 +279,120 @@
                   {{ a.EnumText }}
                 </mat-option>
               </mat-select>
+              <mat-error *ngIf="useofsiteFormPut.controls.TVType.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
           </p>
           <p>
             <mat-form-field>
               <mat-label>Ordinal</mat-label>
               <input matInput type="number" formControlName="Ordinal">
+              <mat-error *ngIf="useofsiteFormPut.controls.Ordinal.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+                <span *ngIf="e.min">Min - 0<br /></span>
+                <span *ngIf="e.min">Max - 1000<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>StartYear</mat-label>
               <input matInput type="number" formControlName="StartYear">
+              <mat-error *ngIf="useofsiteFormPut.controls.StartYear.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+                <span *ngIf="e.min">Min - 1980<br /></span>
+                <span *ngIf="e.min">Max - 2050<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>EndYear</mat-label>
               <input matInput type="number" formControlName="EndYear">
+              <mat-error *ngIf="useofsiteFormPut.controls.EndYear.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.min">Min - 1980<br /></span>
+                <span *ngIf="e.min">Max - 2050<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>UseWeight</mat-label>
               <input matInput type="text" formControlName="UseWeight">
+              <mat-error *ngIf="useofsiteFormPut.controls.UseWeight.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+              </mat-error>
             </mat-form-field>
           </p>
           <p>
             <mat-form-field>
               <mat-label>Weight_perc</mat-label>
               <input matInput type="number" formControlName="Weight_perc">
+              <mat-error *ngIf="useofsiteFormPut.controls.Weight_perc.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.min">Min - 0<br /></span>
+                <span *ngIf="e.min">Max - 100<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>UseEquation</mat-label>
               <input matInput type="text" formControlName="UseEquation">
+              <mat-error *ngIf="useofsiteFormPut.controls.UseEquation.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>Param1</mat-label>
               <input matInput type="number" formControlName="Param1">
+              <mat-error *ngIf="useofsiteFormPut.controls.Param1.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.min">Min - 0<br /></span>
+                <span *ngIf="e.min">Max - 100<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>Param2</mat-label>
               <input matInput type="number" formControlName="Param2">
+              <mat-error *ngIf="useofsiteFormPut.controls.Param2.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.min">Min - 0<br /></span>
+                <span *ngIf="e.min">Max - 100<br /></span>
+              </mat-error>
             </mat-form-field>
           </p>
           <p>
             <mat-form-field>
               <mat-label>Param3</mat-label>
               <input matInput type="number" formControlName="Param3">
+              <mat-error *ngIf="useofsiteFormPut.controls.Param3.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.min">Min - 0<br /></span>
+                <span *ngIf="e.min">Max - 100<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>Param4</mat-label>
               <input matInput type="number" formControlName="Param4">
+              <mat-error *ngIf="useofsiteFormPut.controls.Param4.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.min">Min - 0<br /></span>
+                <span *ngIf="e.min">Max - 100<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>LastUpdateDate_UTC</mat-label>
               <input matInput type="text" formControlName="LastUpdateDate_UTC">
+              <mat-error *ngIf="useofsiteFormPut.controls.LastUpdateDate_UTC.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>LastUpdateContactTVItemID</mat-label>
               <input matInput type="number" formControlName="LastUpdateContactTVItemID">
+              <mat-error *ngIf="useofsiteFormPut.controls.LastUpdateContactTVItemID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
           </p>
         </form>

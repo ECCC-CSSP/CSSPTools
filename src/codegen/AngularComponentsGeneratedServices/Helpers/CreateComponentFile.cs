@@ -4,6 +4,7 @@ using GenerateCodeBaseServices.Models;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -28,7 +29,6 @@ namespace AngularComponentsGeneratedServices.Services
             sb.AppendLine(@"import { Component, OnInit, OnDestroy, ChangeDetectionStrategy } from '@angular/core';");
             sb.AppendLine($@"import {{ { dllTypeInfoModels.Name }Service }} from './{ dllTypeInfoModels.Name.ToLower() }.service';");
             sb.AppendLine($@"import {{ LoadLocales{ dllTypeInfoModels.Name }Text }} from './{ dllTypeInfoModels.Name.ToLower() }.locales';");
-            sb.AppendLine(@"import { Router } from '@angular/router';");
             sb.AppendLine(@"import { Subscription } from 'rxjs';");
             bool HasEnums = false;
             foreach (DLLPropertyInfo dllPropertyInfo in dllTypeInfoModels.PropertyInfoList)
@@ -50,6 +50,9 @@ namespace AngularComponentsGeneratedServices.Services
             {
                 sb.AppendLine(@"import { EnumIDAndText } from '../../../models/enumidandtext.model';");
             }
+            sb.AppendLine(@"import { HttpClientService } from '../../../services/http-client.service';");
+            sb.AppendLine(@"import { Router } from '@angular/router';");
+            sb.AppendLine(@"import { HttpClientCommand } from '../../../enums/app.enums';");
             sb.AppendLine(@"");
             sb.AppendLine(@"@Component({");
             sb.AppendLine($@"  selector: 'app-{ dllTypeInfoModels.Name.ToLower() }',");
@@ -78,22 +81,24 @@ namespace AngularComponentsGeneratedServices.Services
             sb.AppendLine($@"  { dllTypeInfoModels.Name.ToLower() }FormPut: FormGroup;");
             sb.AppendLine($@"  { dllTypeInfoModels.Name.ToLower() }FormPost: FormGroup;");
             sb.AppendLine(@"");
-            sb.AppendLine($@"  constructor(public { dllTypeInfoModels.Name.ToLower() }Service: { dllTypeInfoModels.Name }Service, public router: Router, public fb: FormBuilder) {{ }}");
+            sb.AppendLine($@"  constructor(public { dllTypeInfoModels.Name.ToLower() }Service: { dllTypeInfoModels.Name }Service, private router: Router, private httpClientService: HttpClientService, private fb: FormBuilder) {{");
+            sb.AppendLine($@"    httpClientService.oldURL = router.url;");
+            sb.AppendLine($@"  }}");
             sb.AppendLine(@"");
             sb.AppendLine($@"  Get{ dllTypeInfoModels.Name }List() {{");
-            sb.AppendLine($@"    this.sub = this.{ dllTypeInfoModels.Name.ToLower() }Service.Get{ dllTypeInfoModels.Name }List(this.router).subscribe();");
+            sb.AppendLine($@"    this.sub = this.{ dllTypeInfoModels.Name.ToLower() }Service.Get{ dllTypeInfoModels.Name }List().subscribe();");
             sb.AppendLine(@"  }");
             sb.AppendLine(@"");
             sb.AppendLine($@"  Put{ dllTypeInfoModels.Name }({ dllTypeInfoModels.Name.ToLower() }: { dllTypeInfoModels.Name }) {{");
-            sb.AppendLine($@"    this.sub = this.{ dllTypeInfoModels.Name.ToLower() }Service.Put{ dllTypeInfoModels.Name }({ dllTypeInfoModels.Name.ToLower() }, this.router).subscribe();");
+            sb.AppendLine($@"    this.sub = this.{ dllTypeInfoModels.Name.ToLower() }Service.Put{ dllTypeInfoModels.Name }({ dllTypeInfoModels.Name.ToLower() }).subscribe();");
             sb.AppendLine(@"  }");
             sb.AppendLine(@"");
             sb.AppendLine($@"  Post{ dllTypeInfoModels.Name }({ dllTypeInfoModels.Name.ToLower() }: { dllTypeInfoModels.Name }) {{");
-            sb.AppendLine($@"    this.sub = this.{ dllTypeInfoModels.Name.ToLower() }Service.Post{ dllTypeInfoModels.Name }({ dllTypeInfoModels.Name.ToLower() }, this.router).subscribe();");
+            sb.AppendLine($@"    this.sub = this.{ dllTypeInfoModels.Name.ToLower() }Service.Post{ dllTypeInfoModels.Name }({ dllTypeInfoModels.Name.ToLower() }).subscribe();");
             sb.AppendLine(@"  }");
             sb.AppendLine(@"");
             sb.AppendLine($@"  Delete{ dllTypeInfoModels.Name }({ dllTypeInfoModels.Name.ToLower() }: { dllTypeInfoModels.Name }) {{");
-            sb.AppendLine($@"    this.sub = this.{ dllTypeInfoModels.Name.ToLower() }Service.Delete{ dllTypeInfoModels.Name }({ dllTypeInfoModels.Name.ToLower() }, this.router).subscribe();");
+            sb.AppendLine($@"    this.sub = this.{ dllTypeInfoModels.Name.ToLower() }Service.Delete{ dllTypeInfoModels.Name }({ dllTypeInfoModels.Name.ToLower() }).subscribe();");
             sb.AppendLine(@"  }");
             sb.AppendLine(@"");
 
@@ -132,8 +137,8 @@ namespace AngularComponentsGeneratedServices.Services
                 }
             }
 
-            sb.AppendLine(@"    this.FillFormBuilderGroup('Add');");
-            sb.AppendLine(@"    this.FillFormBuilderGroup('Update');");
+            sb.AppendLine(@"    this.FillFormBuilderGroup(HttpClientCommand.Post);");
+            sb.AppendLine(@"    this.FillFormBuilderGroup(HttpClientCommand.Put);");
             sb.AppendLine(@"  }");
             sb.AppendLine(@"");
             sb.AppendLine(@"  ngOnDestroy() {");
@@ -142,8 +147,8 @@ namespace AngularComponentsGeneratedServices.Services
             sb.AppendLine(@"    }");
             sb.AppendLine(@"  }");
             sb.AppendLine(@"");
-            sb.AppendLine(@"  FillFormBuilderGroup(AddOrUpdate: string) {");
-            sb.AppendLine($@"    if (this.{ dllTypeInfoModels.Name.ToLower() }Service.{ dllTypeInfoModels.Name.ToLower() }List.length) {{");
+            sb.AppendLine(@"  FillFormBuilderGroup(httpClientCommand: HttpClientCommand) {");
+            sb.AppendLine($@"    if (this.{ dllTypeInfoModels.Name.ToLower() }Service.{ dllTypeInfoModels.Name.ToLower() }ListModel$.getValue().length) {{");
             sb.AppendLine(@"      let formGroup: FormGroup = this.fb.group(");
             sb.AppendLine(@"        {");
 
@@ -153,19 +158,75 @@ namespace AngularComponentsGeneratedServices.Services
                 sb.AppendLine($@"            {{");
                 if (dllPropertyInfo.CSSPProp.IsKey)
                 {
-                    sb.AppendLine($@"              value: (AddOrUpdate === 'Add' ? 0 : (this.{ dllTypeInfoModels.Name.ToLower() }Service.{ dllTypeInfoModels.Name.ToLower() }List[0]?.{ dllPropertyInfo.CSSPProp.PropName })),");
+                    sb.AppendLine($@"              value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.{ dllTypeInfoModels.Name.ToLower() }Service.{ dllTypeInfoModels.Name.ToLower() }ListModel$.getValue()[0]?.{ dllPropertyInfo.CSSPProp.PropName })),");
                 }
                 else
                 {
-                    sb.AppendLine($@"              value: this.{ dllTypeInfoModels.Name.ToLower() }Service.{ dllTypeInfoModels.Name.ToLower() }List[0]?.{ dllPropertyInfo.CSSPProp.PropName },");
+                    sb.AppendLine($@"              value: this.{ dllTypeInfoModels.Name.ToLower() }Service.{ dllTypeInfoModels.Name.ToLower() }ListModel$.getValue()[0]?.{ dllPropertyInfo.CSSPProp.PropName },");
                 }
                 sb.AppendLine($@"              disabled: false");
-                sb.AppendLine($@"            }}, [ Validators.required ]],");
+                StringBuilder sbValidators = new StringBuilder();
+                
+                // doing required
+                if (!dllPropertyInfo.CSSPProp.IsNullable)
+                {
+                    sbValidators.Append($@" Validators.required,");
+                }
+                // doing min
+                if (dllPropertyInfo.CSSPProp.HasCSSPRangeAttribute && dllPropertyInfo.CSSPProp.Min != null)
+                {
+                    sbValidators.Append($@" Validators.min({ dllPropertyInfo.CSSPProp.Min }),");
+                }
+                // doing max
+                if (dllPropertyInfo.CSSPProp.HasCSSPRangeAttribute && dllPropertyInfo.CSSPProp.Max != null)
+                {
+                    sbValidators.Append($@" Validators.max({ dllPropertyInfo.CSSPProp.Max }),");
+                }
+                // doing email
+                if (dllPropertyInfo.CSSPProp.HasDataTypeAttribute)
+                {
+                    if (dllPropertyInfo.CSSPProp.dataType == DataType.EmailAddress)
+                    {
+                        sbValidators.Append($@" Validators.email,");
+                    }
+                }
+                // doing minLength
+                if (dllPropertyInfo.CSSPProp.HasCSSPMinLengthAttribute)
+                {
+                    sbValidators.Append($@" Validators.minLength({ dllPropertyInfo.CSSPProp.Min }),");
+                }
+                // doing maxLength
+                if (dllPropertyInfo.CSSPProp.HasCSSPMaxLengthAttribute)
+                {
+                    sbValidators.Append($@" Validators.maxLength({ dllPropertyInfo.CSSPProp.Max }),");
+                }
+                //// doing pattern
+                //if (dllPropertyInfo.CSSPProp.)
+                //{
+                //    sbValidators.Append($@" Validators.maxLength({ dllPropertyInfo.CSSPProp.Max }),");
+                //}
+
+                string ValidatorsStr = sbValidators.ToString();
+                if (ValidatorsStr.Length > 0)
+                {
+                    if (ValidatorsStr.Last() == ",".ToCharArray()[0])
+                    {
+                        ValidatorsStr = ValidatorsStr.Substring(0, ValidatorsStr.Length - 1);
+                    }
+                }
+                if (string.IsNullOrWhiteSpace(ValidatorsStr))
+                {
+                    sb.AppendLine($@"            }}],");
+                }
+                else
+                {
+                    sb.AppendLine($@"            }}, [ { ValidatorsStr } ]],");
+                }
             }
             sb.AppendLine(@"        }");
             sb.AppendLine(@"      );");
             sb.AppendLine(@"");
-            sb.AppendLine(@"      if (AddOrUpdate === 'Add') {");
+            sb.AppendLine(@"      if (httpClientCommand === HttpClientCommand.Post) {");
             sb.AppendLine($@"        this.{ dllTypeInfoModels.Name.ToLower() }FormPost = formGroup");
             sb.AppendLine(@"      }");
             sb.AppendLine(@"      else {");

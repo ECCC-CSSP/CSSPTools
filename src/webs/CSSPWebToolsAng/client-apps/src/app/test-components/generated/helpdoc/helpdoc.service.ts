@@ -9,11 +9,12 @@ import { Injectable } from '@angular/core';
 import { HelpDocTextModel } from './helpdoc.models';
 import { BehaviorSubject, of } from 'rxjs';
 import { LoadLocalesHelpDocText } from './helpdoc.locales';
-import { Router } from '@angular/router';
-import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { map, catchError } from 'rxjs/operators';
 import { HelpDoc } from '../../../models/generated/HelpDoc.model';
 import { HttpRequestModel } from '../../../models/http.model';
+import { HttpClientService } from '../../../services/http-client.service';
+import { HttpClientCommand } from '../../../enums/app.enums';
 
 @Injectable({
   providedIn: 'root'
@@ -26,110 +27,63 @@ export class HelpDocService {
   helpdocPutModel$: BehaviorSubject<HttpRequestModel> = new BehaviorSubject<HttpRequestModel>(<HttpRequestModel>{});
   helpdocPostModel$: BehaviorSubject<HttpRequestModel> = new BehaviorSubject<HttpRequestModel>(<HttpRequestModel>{});
   helpdocDeleteModel$: BehaviorSubject<HttpRequestModel> = new BehaviorSubject<HttpRequestModel>(<HttpRequestModel>{});
-  helpdocList: HelpDoc[] = [];
-  private oldURL: string;
-  private router: Router;
 
   /* Constructors */
-  constructor(private httpClient: HttpClient) {
+  constructor(private httpClient: HttpClient, private httpClientService: HttpClientService) {
     LoadLocalesHelpDocText(this);
     this.helpdocTextModel$.next(<HelpDocTextModel>{ Title: "Something2 for text" });
   }
 
   /* Functions public */
-  GetHelpDocList(router: Router) {
-    this.BeforeHttpClient(this.helpdocGetModel$, router);
+  GetHelpDocList() {
+    this.httpClientService.BeforeHttpClient(this.helpdocGetModel$);
 
     return this.httpClient.get<HelpDoc[]>('/api/HelpDoc').pipe(
       map((x: any) => {
-        this.DoSuccess(this.helpdocGetModel$, x, 'Get', null);
+        this.httpClientService.DoSuccess<HelpDoc>(this.helpdocListModel$, this.helpdocGetModel$, x, HttpClientCommand.Get, null);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.DoCatchError(this.helpdocGetModel$, e, 'Get');
+        this.httpClientService.DoCatchError<HelpDoc>(this.helpdocListModel$, this.helpdocGetModel$, e);
       })))
     );
   }
 
-  PutHelpDoc(helpdoc: HelpDoc, router: Router) {
-    this.BeforeHttpClient(this.helpdocPutModel$, router);
+  PutHelpDoc(helpdoc: HelpDoc) {
+    this.httpClientService.BeforeHttpClient(this.helpdocPutModel$);
 
     return this.httpClient.put<HelpDoc>('/api/HelpDoc', helpdoc, { headers: new HttpHeaders() }).pipe(
       map((x: any) => {
-        this.DoSuccess(this.helpdocPutModel$, x, 'Put', helpdoc);
+        this.httpClientService.DoSuccess<HelpDoc>(this.helpdocListModel$, this.helpdocPutModel$, x, HttpClientCommand.Put, helpdoc);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.DoCatchError(this.helpdocPutModel$, e, 'Put');
+       this.httpClientService.DoCatchError<HelpDoc>(this.helpdocListModel$, this.helpdocPutModel$, e);
       })))
     );
   }
 
-  PostHelpDoc(helpdoc: HelpDoc, router: Router) {
-    this.BeforeHttpClient(this.helpdocPostModel$, router);
+  PostHelpDoc(helpdoc: HelpDoc) {
+    this.httpClientService.BeforeHttpClient(this.helpdocPostModel$);
 
     return this.httpClient.post<HelpDoc>('/api/HelpDoc', helpdoc, { headers: new HttpHeaders() }).pipe(
       map((x: any) => {
-        this.DoSuccess(this.helpdocPostModel$, x, 'Post', helpdoc);
+        this.httpClientService.DoSuccess<HelpDoc>(this.helpdocListModel$, this.helpdocPostModel$, x, HttpClientCommand.Post, helpdoc);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.DoCatchError(this.helpdocPostModel$, e, 'Post');
+        this.httpClientService.DoCatchError<HelpDoc>(this.helpdocListModel$, this.helpdocPostModel$, e);
       })))
     );
   }
 
-  DeleteHelpDoc(helpdoc: HelpDoc, router: Router) {
-    this.BeforeHttpClient(this.helpdocDeleteModel$, router);
+  DeleteHelpDoc(helpdoc: HelpDoc) {
+    this.httpClientService.BeforeHttpClient(this.helpdocDeleteModel$);
 
     return this.httpClient.delete<boolean>(`/api/HelpDoc/${ helpdoc.HelpDocID }`).pipe(
       map((x: any) => {
-        this.DoSuccess(this.helpdocDeleteModel$, x, 'Delete', helpdoc);
+        this.httpClientService.DoSuccess<HelpDoc>(this.helpdocListModel$, this.helpdocDeleteModel$, x, HttpClientCommand.Delete, helpdoc);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.DoCatchError(this.helpdocDeleteModel$, e, 'Delete');
+        this.httpClientService.DoCatchError<HelpDoc>(this.helpdocListModel$, this.helpdocDeleteModel$, e);
       })))
     );
-  }
-
-  /* Functions private */
-  private BeforeHttpClient(httpRequestModel$: BehaviorSubject<HttpRequestModel>, router: Router) {
-    this.router = router;
-    this.oldURL = router.url;
-    httpRequestModel$.next(<HttpRequestModel>{ Working: true, Error: null, Status: null });
-  }
-
-  private DoCatchError(httpRequestModel$: BehaviorSubject<HttpRequestModel>, e: any, command: string) {
-    this.helpdocListModel$.next(null);
-    httpRequestModel$.next(<HttpRequestModel>{ Working: false, Error: <HttpErrorResponse>e, Status: 'Error' });
-
-    this.helpdocList = [];
-    console.debug(`HelpDoc ${ command } ERROR. Return: ${ <HttpErrorResponse>e }`);
-    this.DoReload();
-  }
-
-  private DoReload() {
-    this.router.navigateByUrl('', { skipLocationChange: true }).then(() => {
-      this.router.navigate([`/${this.oldURL}`]);
-    });
-  }
-
-  private DoSuccess(httpRequestModel$: BehaviorSubject<HttpRequestModel>, x: any, command: string, helpdoc?: HelpDoc) {
-    console.debug(`HelpDoc ${ command } OK. Return: ${ x }`);
-    if (command === 'Get') {
-      this.helpdocListModel$.next(<HelpDoc[]>x);
-    }
-    if (command === 'Put') {
-      this.helpdocListModel$.getValue()[0] = <HelpDoc>x;
-    }
-    if (command === 'Post') {
-      this.helpdocListModel$.getValue().push(<HelpDoc>x);
-    }
-    if (command === 'Delete') {
-      const index = this.helpdocListModel$.getValue().indexOf(helpdoc);
-      this.helpdocListModel$.getValue().splice(index, 1);
-    }
-
-    this.helpdocListModel$.next(this.helpdocListModel$.getValue());
-    httpRequestModel$.next(<HttpRequestModel>{ Working: false, Error: null, Status: 'ok' });
-    this.helpdocList = this.helpdocListModel$.getValue();
-    this.DoReload();
   }
 }

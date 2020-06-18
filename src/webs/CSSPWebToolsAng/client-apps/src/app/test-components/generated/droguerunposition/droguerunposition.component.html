@@ -5,7 +5,7 @@
  *
 -->
 
-<mat-progress-bar mode="indeterminate" *ngIf="droguerunpositionService.droguerunpositionGetModel$.getValue().Working"></mat-progress-bar>
+<mat-progress-bar mode="indeterminate" *ngIf="droguerunpositionService.droguerunpositionGetModel$.getValue()?.Working"></mat-progress-bar>
 <mat-card>
   <mat-card-header>
     <mat-card-title>
@@ -17,8 +17,8 @@
     <mat-card-subtitle>{{ droguerunpositionService.droguerunpositionTextModel$.getValue().Title }}</mat-card-subtitle>
   </mat-card-header>
   <mat-card-content>
-    <mat-list>
-      <mat-list-item *ngFor="let droguerunposition of droguerunpositionService.droguerunpositionList">
+    <mat-list *ngIf="droguerunpositionService.droguerunpositionListModel$.getValue()?.length">
+      <mat-list-item *ngFor="let droguerunposition of droguerunpositionService.droguerunpositionListModel$.getValue()">
         <span mat-line>
           <button mat-raised-button (click)="DeleteDrogueRunPosition(droguerunposition)">
             <span>Delete DrogueRunPositionID [{{ droguerunposition.DrogueRunPositionID }}]&nbsp;&nbsp;&nbsp;</span>
@@ -57,7 +57,7 @@
     <mat-card-title>Edit DrogueRunPosition testing</mat-card-title>
   </mat-card-header>
   <mat-card-content>
-    <div *ngIf="droguerunpositionService.droguerunpositionList.length">
+    <div *ngIf="droguerunpositionService.droguerunpositionListModel$.getValue()?.length">
       <blockquote>
         <form [formGroup]="droguerunpositionFormPut" (ngSubmit)="PutDrogueRunPosition(droguerunpositionFormPut.value)">
           <h3>
@@ -72,46 +72,96 @@
             <mat-form-field>
               <mat-label>DrogueRunPositionID</mat-label>
               <input matInput type="number" formControlName="DrogueRunPositionID">
+              <mat-error *ngIf="droguerunpositionFormPut.controls.DrogueRunPositionID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>DrogueRunID</mat-label>
               <input matInput type="number" formControlName="DrogueRunID">
+              <mat-error *ngIf="droguerunpositionFormPut.controls.DrogueRunID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>Ordinal</mat-label>
               <input matInput type="number" formControlName="Ordinal">
+              <mat-error *ngIf="droguerunpositionFormPut.controls.Ordinal.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+                <span *ngIf="e.min">Min - 0<br /></span>
+                <span *ngIf="e.min">Max - 100000<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>StepLat</mat-label>
               <input matInput type="number" formControlName="StepLat">
+              <mat-error *ngIf="droguerunpositionFormPut.controls.StepLat.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+                <span *ngIf="e.min">Min - -180<br /></span>
+                <span *ngIf="e.min">Max - 180<br /></span>
+              </mat-error>
             </mat-form-field>
           </p>
           <p>
             <mat-form-field>
               <mat-label>StepLng</mat-label>
               <input matInput type="number" formControlName="StepLng">
+              <mat-error *ngIf="droguerunpositionFormPut.controls.StepLng.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+                <span *ngIf="e.min">Min - -90<br /></span>
+                <span *ngIf="e.min">Max - 90<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>StepDateTime_Local</mat-label>
               <input matInput type="text" formControlName="StepDateTime_Local">
+              <mat-error *ngIf="droguerunpositionFormPut.controls.StepDateTime_Local.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>CalculatedSpeed_m_s</mat-label>
               <input matInput type="number" formControlName="CalculatedSpeed_m_s">
+              <mat-error *ngIf="droguerunpositionFormPut.controls.CalculatedSpeed_m_s.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+                <span *ngIf="e.min">Min - 0<br /></span>
+                <span *ngIf="e.min">Max - 10<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>CalculatedDirection_deg</mat-label>
               <input matInput type="number" formControlName="CalculatedDirection_deg">
+              <mat-error *ngIf="droguerunpositionFormPut.controls.CalculatedDirection_deg.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+                <span *ngIf="e.min">Min - 0<br /></span>
+                <span *ngIf="e.min">Max - 360<br /></span>
+              </mat-error>
             </mat-form-field>
           </p>
           <p>
             <mat-form-field>
               <mat-label>LastUpdateDate_UTC</mat-label>
               <input matInput type="text" formControlName="LastUpdateDate_UTC">
+              <mat-error *ngIf="droguerunpositionFormPut.controls.LastUpdateDate_UTC.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>LastUpdateContactTVItemID</mat-label>
               <input matInput type="number" formControlName="LastUpdateContactTVItemID">
+              <mat-error *ngIf="droguerunpositionFormPut.controls.LastUpdateContactTVItemID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
           </p>
         </form>
@@ -126,7 +176,7 @@
     <mat-card-title>Add DrogueRunPosition testing</mat-card-title>
   </mat-card-header>
   <mat-card-content>
-    <div *ngIf="droguerunpositionService.droguerunpositionList.length">
+    <div *ngIf="droguerunpositionService.droguerunpositionListModel$.getValue()?.length">
       <blockquote>
         <form [formGroup]="droguerunpositionFormPost" (ngSubmit)="PostDrogueRunPosition(droguerunpositionFormPost.value)">
           <h3>
@@ -141,46 +191,96 @@
             <mat-form-field>
               <mat-label>DrogueRunPositionID</mat-label>
               <input matInput type="number" formControlName="DrogueRunPositionID">
+              <mat-error *ngIf="droguerunpositionFormPut.controls.DrogueRunPositionID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>DrogueRunID</mat-label>
               <input matInput type="number" formControlName="DrogueRunID">
+              <mat-error *ngIf="droguerunpositionFormPut.controls.DrogueRunID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>Ordinal</mat-label>
               <input matInput type="number" formControlName="Ordinal">
+              <mat-error *ngIf="droguerunpositionFormPut.controls.Ordinal.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+                <span *ngIf="e.min">Min - 0<br /></span>
+                <span *ngIf="e.min">Max - 100000<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>StepLat</mat-label>
               <input matInput type="number" formControlName="StepLat">
+              <mat-error *ngIf="droguerunpositionFormPut.controls.StepLat.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+                <span *ngIf="e.min">Min - -180<br /></span>
+                <span *ngIf="e.min">Max - 180<br /></span>
+              </mat-error>
             </mat-form-field>
           </p>
           <p>
             <mat-form-field>
               <mat-label>StepLng</mat-label>
               <input matInput type="number" formControlName="StepLng">
+              <mat-error *ngIf="droguerunpositionFormPut.controls.StepLng.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+                <span *ngIf="e.min">Min - -90<br /></span>
+                <span *ngIf="e.min">Max - 90<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>StepDateTime_Local</mat-label>
               <input matInput type="text" formControlName="StepDateTime_Local">
+              <mat-error *ngIf="droguerunpositionFormPut.controls.StepDateTime_Local.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>CalculatedSpeed_m_s</mat-label>
               <input matInput type="number" formControlName="CalculatedSpeed_m_s">
+              <mat-error *ngIf="droguerunpositionFormPut.controls.CalculatedSpeed_m_s.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+                <span *ngIf="e.min">Min - 0<br /></span>
+                <span *ngIf="e.min">Max - 10<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>CalculatedDirection_deg</mat-label>
               <input matInput type="number" formControlName="CalculatedDirection_deg">
+              <mat-error *ngIf="droguerunpositionFormPut.controls.CalculatedDirection_deg.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+                <span *ngIf="e.min">Min - 0<br /></span>
+                <span *ngIf="e.min">Max - 360<br /></span>
+              </mat-error>
             </mat-form-field>
           </p>
           <p>
             <mat-form-field>
               <mat-label>LastUpdateDate_UTC</mat-label>
               <input matInput type="text" formControlName="LastUpdateDate_UTC">
+              <mat-error *ngIf="droguerunpositionFormPut.controls.LastUpdateDate_UTC.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>LastUpdateContactTVItemID</mat-label>
               <input matInput type="number" formControlName="LastUpdateContactTVItemID">
+              <mat-error *ngIf="droguerunpositionFormPut.controls.LastUpdateContactTVItemID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
           </p>
         </form>

@@ -9,11 +9,12 @@ import { Injectable } from '@angular/core';
 import { TideLocationTextModel } from './tidelocation.models';
 import { BehaviorSubject, of } from 'rxjs';
 import { LoadLocalesTideLocationText } from './tidelocation.locales';
-import { Router } from '@angular/router';
-import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { map, catchError } from 'rxjs/operators';
 import { TideLocation } from '../../../models/generated/TideLocation.model';
 import { HttpRequestModel } from '../../../models/http.model';
+import { HttpClientService } from '../../../services/http-client.service';
+import { HttpClientCommand } from '../../../enums/app.enums';
 
 @Injectable({
   providedIn: 'root'
@@ -26,110 +27,63 @@ export class TideLocationService {
   tidelocationPutModel$: BehaviorSubject<HttpRequestModel> = new BehaviorSubject<HttpRequestModel>(<HttpRequestModel>{});
   tidelocationPostModel$: BehaviorSubject<HttpRequestModel> = new BehaviorSubject<HttpRequestModel>(<HttpRequestModel>{});
   tidelocationDeleteModel$: BehaviorSubject<HttpRequestModel> = new BehaviorSubject<HttpRequestModel>(<HttpRequestModel>{});
-  tidelocationList: TideLocation[] = [];
-  private oldURL: string;
-  private router: Router;
 
   /* Constructors */
-  constructor(private httpClient: HttpClient) {
+  constructor(private httpClient: HttpClient, private httpClientService: HttpClientService) {
     LoadLocalesTideLocationText(this);
     this.tidelocationTextModel$.next(<TideLocationTextModel>{ Title: "Something2 for text" });
   }
 
   /* Functions public */
-  GetTideLocationList(router: Router) {
-    this.BeforeHttpClient(this.tidelocationGetModel$, router);
+  GetTideLocationList() {
+    this.httpClientService.BeforeHttpClient(this.tidelocationGetModel$);
 
     return this.httpClient.get<TideLocation[]>('/api/TideLocation').pipe(
       map((x: any) => {
-        this.DoSuccess(this.tidelocationGetModel$, x, 'Get', null);
+        this.httpClientService.DoSuccess<TideLocation>(this.tidelocationListModel$, this.tidelocationGetModel$, x, HttpClientCommand.Get, null);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.DoCatchError(this.tidelocationGetModel$, e, 'Get');
+        this.httpClientService.DoCatchError<TideLocation>(this.tidelocationListModel$, this.tidelocationGetModel$, e);
       })))
     );
   }
 
-  PutTideLocation(tidelocation: TideLocation, router: Router) {
-    this.BeforeHttpClient(this.tidelocationPutModel$, router);
+  PutTideLocation(tidelocation: TideLocation) {
+    this.httpClientService.BeforeHttpClient(this.tidelocationPutModel$);
 
     return this.httpClient.put<TideLocation>('/api/TideLocation', tidelocation, { headers: new HttpHeaders() }).pipe(
       map((x: any) => {
-        this.DoSuccess(this.tidelocationPutModel$, x, 'Put', tidelocation);
+        this.httpClientService.DoSuccess<TideLocation>(this.tidelocationListModel$, this.tidelocationPutModel$, x, HttpClientCommand.Put, tidelocation);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.DoCatchError(this.tidelocationPutModel$, e, 'Put');
+       this.httpClientService.DoCatchError<TideLocation>(this.tidelocationListModel$, this.tidelocationPutModel$, e);
       })))
     );
   }
 
-  PostTideLocation(tidelocation: TideLocation, router: Router) {
-    this.BeforeHttpClient(this.tidelocationPostModel$, router);
+  PostTideLocation(tidelocation: TideLocation) {
+    this.httpClientService.BeforeHttpClient(this.tidelocationPostModel$);
 
     return this.httpClient.post<TideLocation>('/api/TideLocation', tidelocation, { headers: new HttpHeaders() }).pipe(
       map((x: any) => {
-        this.DoSuccess(this.tidelocationPostModel$, x, 'Post', tidelocation);
+        this.httpClientService.DoSuccess<TideLocation>(this.tidelocationListModel$, this.tidelocationPostModel$, x, HttpClientCommand.Post, tidelocation);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.DoCatchError(this.tidelocationPostModel$, e, 'Post');
+        this.httpClientService.DoCatchError<TideLocation>(this.tidelocationListModel$, this.tidelocationPostModel$, e);
       })))
     );
   }
 
-  DeleteTideLocation(tidelocation: TideLocation, router: Router) {
-    this.BeforeHttpClient(this.tidelocationDeleteModel$, router);
+  DeleteTideLocation(tidelocation: TideLocation) {
+    this.httpClientService.BeforeHttpClient(this.tidelocationDeleteModel$);
 
     return this.httpClient.delete<boolean>(`/api/TideLocation/${ tidelocation.TideLocationID }`).pipe(
       map((x: any) => {
-        this.DoSuccess(this.tidelocationDeleteModel$, x, 'Delete', tidelocation);
+        this.httpClientService.DoSuccess<TideLocation>(this.tidelocationListModel$, this.tidelocationDeleteModel$, x, HttpClientCommand.Delete, tidelocation);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.DoCatchError(this.tidelocationDeleteModel$, e, 'Delete');
+        this.httpClientService.DoCatchError<TideLocation>(this.tidelocationListModel$, this.tidelocationDeleteModel$, e);
       })))
     );
-  }
-
-  /* Functions private */
-  private BeforeHttpClient(httpRequestModel$: BehaviorSubject<HttpRequestModel>, router: Router) {
-    this.router = router;
-    this.oldURL = router.url;
-    httpRequestModel$.next(<HttpRequestModel>{ Working: true, Error: null, Status: null });
-  }
-
-  private DoCatchError(httpRequestModel$: BehaviorSubject<HttpRequestModel>, e: any, command: string) {
-    this.tidelocationListModel$.next(null);
-    httpRequestModel$.next(<HttpRequestModel>{ Working: false, Error: <HttpErrorResponse>e, Status: 'Error' });
-
-    this.tidelocationList = [];
-    console.debug(`TideLocation ${ command } ERROR. Return: ${ <HttpErrorResponse>e }`);
-    this.DoReload();
-  }
-
-  private DoReload() {
-    this.router.navigateByUrl('', { skipLocationChange: true }).then(() => {
-      this.router.navigate([`/${this.oldURL}`]);
-    });
-  }
-
-  private DoSuccess(httpRequestModel$: BehaviorSubject<HttpRequestModel>, x: any, command: string, tidelocation?: TideLocation) {
-    console.debug(`TideLocation ${ command } OK. Return: ${ x }`);
-    if (command === 'Get') {
-      this.tidelocationListModel$.next(<TideLocation[]>x);
-    }
-    if (command === 'Put') {
-      this.tidelocationListModel$.getValue()[0] = <TideLocation>x;
-    }
-    if (command === 'Post') {
-      this.tidelocationListModel$.getValue().push(<TideLocation>x);
-    }
-    if (command === 'Delete') {
-      const index = this.tidelocationListModel$.getValue().indexOf(tidelocation);
-      this.tidelocationListModel$.getValue().splice(index, 1);
-    }
-
-    this.tidelocationListModel$.next(this.tidelocationListModel$.getValue());
-    httpRequestModel$.next(<HttpRequestModel>{ Working: false, Error: null, Status: 'ok' });
-    this.tidelocationList = this.tidelocationListModel$.getValue();
-    this.DoReload();
   }
 }

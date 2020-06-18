@@ -9,11 +9,12 @@ import { Injectable } from '@angular/core';
 import { TVItemUserAuthorizationTextModel } from './tvitemuserauthorization.models';
 import { BehaviorSubject, of } from 'rxjs';
 import { LoadLocalesTVItemUserAuthorizationText } from './tvitemuserauthorization.locales';
-import { Router } from '@angular/router';
-import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { map, catchError } from 'rxjs/operators';
 import { TVItemUserAuthorization } from '../../../models/generated/TVItemUserAuthorization.model';
 import { HttpRequestModel } from '../../../models/http.model';
+import { HttpClientService } from '../../../services/http-client.service';
+import { HttpClientCommand } from '../../../enums/app.enums';
 
 @Injectable({
   providedIn: 'root'
@@ -26,110 +27,63 @@ export class TVItemUserAuthorizationService {
   tvitemuserauthorizationPutModel$: BehaviorSubject<HttpRequestModel> = new BehaviorSubject<HttpRequestModel>(<HttpRequestModel>{});
   tvitemuserauthorizationPostModel$: BehaviorSubject<HttpRequestModel> = new BehaviorSubject<HttpRequestModel>(<HttpRequestModel>{});
   tvitemuserauthorizationDeleteModel$: BehaviorSubject<HttpRequestModel> = new BehaviorSubject<HttpRequestModel>(<HttpRequestModel>{});
-  tvitemuserauthorizationList: TVItemUserAuthorization[] = [];
-  private oldURL: string;
-  private router: Router;
 
   /* Constructors */
-  constructor(private httpClient: HttpClient) {
+  constructor(private httpClient: HttpClient, private httpClientService: HttpClientService) {
     LoadLocalesTVItemUserAuthorizationText(this);
     this.tvitemuserauthorizationTextModel$.next(<TVItemUserAuthorizationTextModel>{ Title: "Something2 for text" });
   }
 
   /* Functions public */
-  GetTVItemUserAuthorizationList(router: Router) {
-    this.BeforeHttpClient(this.tvitemuserauthorizationGetModel$, router);
+  GetTVItemUserAuthorizationList() {
+    this.httpClientService.BeforeHttpClient(this.tvitemuserauthorizationGetModel$);
 
     return this.httpClient.get<TVItemUserAuthorization[]>('/api/TVItemUserAuthorization').pipe(
       map((x: any) => {
-        this.DoSuccess(this.tvitemuserauthorizationGetModel$, x, 'Get', null);
+        this.httpClientService.DoSuccess<TVItemUserAuthorization>(this.tvitemuserauthorizationListModel$, this.tvitemuserauthorizationGetModel$, x, HttpClientCommand.Get, null);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.DoCatchError(this.tvitemuserauthorizationGetModel$, e, 'Get');
+        this.httpClientService.DoCatchError<TVItemUserAuthorization>(this.tvitemuserauthorizationListModel$, this.tvitemuserauthorizationGetModel$, e);
       })))
     );
   }
 
-  PutTVItemUserAuthorization(tvitemuserauthorization: TVItemUserAuthorization, router: Router) {
-    this.BeforeHttpClient(this.tvitemuserauthorizationPutModel$, router);
+  PutTVItemUserAuthorization(tvitemuserauthorization: TVItemUserAuthorization) {
+    this.httpClientService.BeforeHttpClient(this.tvitemuserauthorizationPutModel$);
 
     return this.httpClient.put<TVItemUserAuthorization>('/api/TVItemUserAuthorization', tvitemuserauthorization, { headers: new HttpHeaders() }).pipe(
       map((x: any) => {
-        this.DoSuccess(this.tvitemuserauthorizationPutModel$, x, 'Put', tvitemuserauthorization);
+        this.httpClientService.DoSuccess<TVItemUserAuthorization>(this.tvitemuserauthorizationListModel$, this.tvitemuserauthorizationPutModel$, x, HttpClientCommand.Put, tvitemuserauthorization);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.DoCatchError(this.tvitemuserauthorizationPutModel$, e, 'Put');
+       this.httpClientService.DoCatchError<TVItemUserAuthorization>(this.tvitemuserauthorizationListModel$, this.tvitemuserauthorizationPutModel$, e);
       })))
     );
   }
 
-  PostTVItemUserAuthorization(tvitemuserauthorization: TVItemUserAuthorization, router: Router) {
-    this.BeforeHttpClient(this.tvitemuserauthorizationPostModel$, router);
+  PostTVItemUserAuthorization(tvitemuserauthorization: TVItemUserAuthorization) {
+    this.httpClientService.BeforeHttpClient(this.tvitemuserauthorizationPostModel$);
 
     return this.httpClient.post<TVItemUserAuthorization>('/api/TVItemUserAuthorization', tvitemuserauthorization, { headers: new HttpHeaders() }).pipe(
       map((x: any) => {
-        this.DoSuccess(this.tvitemuserauthorizationPostModel$, x, 'Post', tvitemuserauthorization);
+        this.httpClientService.DoSuccess<TVItemUserAuthorization>(this.tvitemuserauthorizationListModel$, this.tvitemuserauthorizationPostModel$, x, HttpClientCommand.Post, tvitemuserauthorization);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.DoCatchError(this.tvitemuserauthorizationPostModel$, e, 'Post');
+        this.httpClientService.DoCatchError<TVItemUserAuthorization>(this.tvitemuserauthorizationListModel$, this.tvitemuserauthorizationPostModel$, e);
       })))
     );
   }
 
-  DeleteTVItemUserAuthorization(tvitemuserauthorization: TVItemUserAuthorization, router: Router) {
-    this.BeforeHttpClient(this.tvitemuserauthorizationDeleteModel$, router);
+  DeleteTVItemUserAuthorization(tvitemuserauthorization: TVItemUserAuthorization) {
+    this.httpClientService.BeforeHttpClient(this.tvitemuserauthorizationDeleteModel$);
 
     return this.httpClient.delete<boolean>(`/api/TVItemUserAuthorization/${ tvitemuserauthorization.TVItemUserAuthorizationID }`).pipe(
       map((x: any) => {
-        this.DoSuccess(this.tvitemuserauthorizationDeleteModel$, x, 'Delete', tvitemuserauthorization);
+        this.httpClientService.DoSuccess<TVItemUserAuthorization>(this.tvitemuserauthorizationListModel$, this.tvitemuserauthorizationDeleteModel$, x, HttpClientCommand.Delete, tvitemuserauthorization);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.DoCatchError(this.tvitemuserauthorizationDeleteModel$, e, 'Delete');
+        this.httpClientService.DoCatchError<TVItemUserAuthorization>(this.tvitemuserauthorizationListModel$, this.tvitemuserauthorizationDeleteModel$, e);
       })))
     );
-  }
-
-  /* Functions private */
-  private BeforeHttpClient(httpRequestModel$: BehaviorSubject<HttpRequestModel>, router: Router) {
-    this.router = router;
-    this.oldURL = router.url;
-    httpRequestModel$.next(<HttpRequestModel>{ Working: true, Error: null, Status: null });
-  }
-
-  private DoCatchError(httpRequestModel$: BehaviorSubject<HttpRequestModel>, e: any, command: string) {
-    this.tvitemuserauthorizationListModel$.next(null);
-    httpRequestModel$.next(<HttpRequestModel>{ Working: false, Error: <HttpErrorResponse>e, Status: 'Error' });
-
-    this.tvitemuserauthorizationList = [];
-    console.debug(`TVItemUserAuthorization ${ command } ERROR. Return: ${ <HttpErrorResponse>e }`);
-    this.DoReload();
-  }
-
-  private DoReload() {
-    this.router.navigateByUrl('', { skipLocationChange: true }).then(() => {
-      this.router.navigate([`/${this.oldURL}`]);
-    });
-  }
-
-  private DoSuccess(httpRequestModel$: BehaviorSubject<HttpRequestModel>, x: any, command: string, tvitemuserauthorization?: TVItemUserAuthorization) {
-    console.debug(`TVItemUserAuthorization ${ command } OK. Return: ${ x }`);
-    if (command === 'Get') {
-      this.tvitemuserauthorizationListModel$.next(<TVItemUserAuthorization[]>x);
-    }
-    if (command === 'Put') {
-      this.tvitemuserauthorizationListModel$.getValue()[0] = <TVItemUserAuthorization>x;
-    }
-    if (command === 'Post') {
-      this.tvitemuserauthorizationListModel$.getValue().push(<TVItemUserAuthorization>x);
-    }
-    if (command === 'Delete') {
-      const index = this.tvitemuserauthorizationListModel$.getValue().indexOf(tvitemuserauthorization);
-      this.tvitemuserauthorizationListModel$.getValue().splice(index, 1);
-    }
-
-    this.tvitemuserauthorizationListModel$.next(this.tvitemuserauthorizationListModel$.getValue());
-    httpRequestModel$.next(<HttpRequestModel>{ Working: false, Error: null, Status: 'ok' });
-    this.tvitemuserauthorizationList = this.tvitemuserauthorizationListModel$.getValue();
-    this.DoReload();
   }
 }

@@ -9,11 +9,12 @@ import { Injectable } from '@angular/core';
 import { BoxModelResultTextModel } from './boxmodelresult.models';
 import { BehaviorSubject, of } from 'rxjs';
 import { LoadLocalesBoxModelResultText } from './boxmodelresult.locales';
-import { Router } from '@angular/router';
-import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { map, catchError } from 'rxjs/operators';
 import { BoxModelResult } from '../../../models/generated/BoxModelResult.model';
 import { HttpRequestModel } from '../../../models/http.model';
+import { HttpClientService } from '../../../services/http-client.service';
+import { HttpClientCommand } from '../../../enums/app.enums';
 
 @Injectable({
   providedIn: 'root'
@@ -26,110 +27,63 @@ export class BoxModelResultService {
   boxmodelresultPutModel$: BehaviorSubject<HttpRequestModel> = new BehaviorSubject<HttpRequestModel>(<HttpRequestModel>{});
   boxmodelresultPostModel$: BehaviorSubject<HttpRequestModel> = new BehaviorSubject<HttpRequestModel>(<HttpRequestModel>{});
   boxmodelresultDeleteModel$: BehaviorSubject<HttpRequestModel> = new BehaviorSubject<HttpRequestModel>(<HttpRequestModel>{});
-  boxmodelresultList: BoxModelResult[] = [];
-  private oldURL: string;
-  private router: Router;
 
   /* Constructors */
-  constructor(private httpClient: HttpClient) {
+  constructor(private httpClient: HttpClient, private httpClientService: HttpClientService) {
     LoadLocalesBoxModelResultText(this);
     this.boxmodelresultTextModel$.next(<BoxModelResultTextModel>{ Title: "Something2 for text" });
   }
 
   /* Functions public */
-  GetBoxModelResultList(router: Router) {
-    this.BeforeHttpClient(this.boxmodelresultGetModel$, router);
+  GetBoxModelResultList() {
+    this.httpClientService.BeforeHttpClient(this.boxmodelresultGetModel$);
 
     return this.httpClient.get<BoxModelResult[]>('/api/BoxModelResult').pipe(
       map((x: any) => {
-        this.DoSuccess(this.boxmodelresultGetModel$, x, 'Get', null);
+        this.httpClientService.DoSuccess<BoxModelResult>(this.boxmodelresultListModel$, this.boxmodelresultGetModel$, x, HttpClientCommand.Get, null);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.DoCatchError(this.boxmodelresultGetModel$, e, 'Get');
+        this.httpClientService.DoCatchError<BoxModelResult>(this.boxmodelresultListModel$, this.boxmodelresultGetModel$, e);
       })))
     );
   }
 
-  PutBoxModelResult(boxmodelresult: BoxModelResult, router: Router) {
-    this.BeforeHttpClient(this.boxmodelresultPutModel$, router);
+  PutBoxModelResult(boxmodelresult: BoxModelResult) {
+    this.httpClientService.BeforeHttpClient(this.boxmodelresultPutModel$);
 
     return this.httpClient.put<BoxModelResult>('/api/BoxModelResult', boxmodelresult, { headers: new HttpHeaders() }).pipe(
       map((x: any) => {
-        this.DoSuccess(this.boxmodelresultPutModel$, x, 'Put', boxmodelresult);
+        this.httpClientService.DoSuccess<BoxModelResult>(this.boxmodelresultListModel$, this.boxmodelresultPutModel$, x, HttpClientCommand.Put, boxmodelresult);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.DoCatchError(this.boxmodelresultPutModel$, e, 'Put');
+       this.httpClientService.DoCatchError<BoxModelResult>(this.boxmodelresultListModel$, this.boxmodelresultPutModel$, e);
       })))
     );
   }
 
-  PostBoxModelResult(boxmodelresult: BoxModelResult, router: Router) {
-    this.BeforeHttpClient(this.boxmodelresultPostModel$, router);
+  PostBoxModelResult(boxmodelresult: BoxModelResult) {
+    this.httpClientService.BeforeHttpClient(this.boxmodelresultPostModel$);
 
     return this.httpClient.post<BoxModelResult>('/api/BoxModelResult', boxmodelresult, { headers: new HttpHeaders() }).pipe(
       map((x: any) => {
-        this.DoSuccess(this.boxmodelresultPostModel$, x, 'Post', boxmodelresult);
+        this.httpClientService.DoSuccess<BoxModelResult>(this.boxmodelresultListModel$, this.boxmodelresultPostModel$, x, HttpClientCommand.Post, boxmodelresult);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.DoCatchError(this.boxmodelresultPostModel$, e, 'Post');
+        this.httpClientService.DoCatchError<BoxModelResult>(this.boxmodelresultListModel$, this.boxmodelresultPostModel$, e);
       })))
     );
   }
 
-  DeleteBoxModelResult(boxmodelresult: BoxModelResult, router: Router) {
-    this.BeforeHttpClient(this.boxmodelresultDeleteModel$, router);
+  DeleteBoxModelResult(boxmodelresult: BoxModelResult) {
+    this.httpClientService.BeforeHttpClient(this.boxmodelresultDeleteModel$);
 
     return this.httpClient.delete<boolean>(`/api/BoxModelResult/${ boxmodelresult.BoxModelResultID }`).pipe(
       map((x: any) => {
-        this.DoSuccess(this.boxmodelresultDeleteModel$, x, 'Delete', boxmodelresult);
+        this.httpClientService.DoSuccess<BoxModelResult>(this.boxmodelresultListModel$, this.boxmodelresultDeleteModel$, x, HttpClientCommand.Delete, boxmodelresult);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.DoCatchError(this.boxmodelresultDeleteModel$, e, 'Delete');
+        this.httpClientService.DoCatchError<BoxModelResult>(this.boxmodelresultListModel$, this.boxmodelresultDeleteModel$, e);
       })))
     );
-  }
-
-  /* Functions private */
-  private BeforeHttpClient(httpRequestModel$: BehaviorSubject<HttpRequestModel>, router: Router) {
-    this.router = router;
-    this.oldURL = router.url;
-    httpRequestModel$.next(<HttpRequestModel>{ Working: true, Error: null, Status: null });
-  }
-
-  private DoCatchError(httpRequestModel$: BehaviorSubject<HttpRequestModel>, e: any, command: string) {
-    this.boxmodelresultListModel$.next(null);
-    httpRequestModel$.next(<HttpRequestModel>{ Working: false, Error: <HttpErrorResponse>e, Status: 'Error' });
-
-    this.boxmodelresultList = [];
-    console.debug(`BoxModelResult ${ command } ERROR. Return: ${ <HttpErrorResponse>e }`);
-    this.DoReload();
-  }
-
-  private DoReload() {
-    this.router.navigateByUrl('', { skipLocationChange: true }).then(() => {
-      this.router.navigate([`/${this.oldURL}`]);
-    });
-  }
-
-  private DoSuccess(httpRequestModel$: BehaviorSubject<HttpRequestModel>, x: any, command: string, boxmodelresult?: BoxModelResult) {
-    console.debug(`BoxModelResult ${ command } OK. Return: ${ x }`);
-    if (command === 'Get') {
-      this.boxmodelresultListModel$.next(<BoxModelResult[]>x);
-    }
-    if (command === 'Put') {
-      this.boxmodelresultListModel$.getValue()[0] = <BoxModelResult>x;
-    }
-    if (command === 'Post') {
-      this.boxmodelresultListModel$.getValue().push(<BoxModelResult>x);
-    }
-    if (command === 'Delete') {
-      const index = this.boxmodelresultListModel$.getValue().indexOf(boxmodelresult);
-      this.boxmodelresultListModel$.getValue().splice(index, 1);
-    }
-
-    this.boxmodelresultListModel$.next(this.boxmodelresultListModel$.getValue());
-    httpRequestModel$.next(<HttpRequestModel>{ Working: false, Error: null, Status: 'ok' });
-    this.boxmodelresultList = this.boxmodelresultListModel$.getValue();
-    this.DoReload();
   }
 }

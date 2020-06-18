@@ -5,7 +5,7 @@
  *
 -->
 
-<mat-progress-bar mode="indeterminate" *ngIf="labsheetService.labsheetGetModel$.getValue().Working"></mat-progress-bar>
+<mat-progress-bar mode="indeterminate" *ngIf="labsheetService.labsheetGetModel$.getValue()?.Working"></mat-progress-bar>
 <mat-card>
   <mat-card-header>
     <mat-card-title>
@@ -17,8 +17,8 @@
     <mat-card-subtitle>{{ labsheetService.labsheetTextModel$.getValue().Title }}</mat-card-subtitle>
   </mat-card-header>
   <mat-card-content>
-    <mat-list>
-      <mat-list-item *ngFor="let labsheet of labsheetService.labsheetList">
+    <mat-list *ngIf="labsheetService.labsheetListModel$.getValue()?.length">
+      <mat-list-item *ngFor="let labsheet of labsheetService.labsheetListModel$.getValue()">
         <span mat-line>
           <button mat-raised-button (click)="DeleteLabSheet(labsheet)">
             <span>Delete LabSheetID [{{ labsheet.LabSheetID }}]&nbsp;&nbsp;&nbsp;</span>
@@ -75,7 +75,7 @@
     <mat-card-title>Edit LabSheet testing</mat-card-title>
   </mat-card-header>
   <mat-card-content>
-    <div *ngIf="labsheetService.labsheetList.length">
+    <div *ngIf="labsheetService.labsheetListModel$.getValue()?.length">
       <blockquote>
         <form [formGroup]="labsheetFormPut" (ngSubmit)="PutLabSheet(labsheetFormPut.value)">
           <h3>
@@ -90,46 +90,95 @@
             <mat-form-field>
               <mat-label>LabSheetID</mat-label>
               <input matInput type="number" formControlName="LabSheetID">
+              <mat-error *ngIf="labsheetFormPut.controls.LabSheetID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>OtherServerLabSheetID</mat-label>
               <input matInput type="number" formControlName="OtherServerLabSheetID">
+              <mat-error *ngIf="labsheetFormPut.controls.OtherServerLabSheetID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+                <span *ngIf="e.min">Min - 1<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>SamplingPlanID</mat-label>
               <input matInput type="number" formControlName="SamplingPlanID">
+              <mat-error *ngIf="labsheetFormPut.controls.SamplingPlanID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>SamplingPlanName</mat-label>
               <input matInput type="text" formControlName="SamplingPlanName">
+              <mat-error *ngIf="labsheetFormPut.controls.SamplingPlanName.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+                <span *ngIf="e.minlength">MinLength - 1<br /></span>
+                <span *ngIf="e.maxlength">MaxLength - 250<br /></span>
+              </mat-error>
             </mat-form-field>
           </p>
           <p>
             <mat-form-field>
               <mat-label>Year</mat-label>
               <input matInput type="number" formControlName="Year">
+              <mat-error *ngIf="labsheetFormPut.controls.Year.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+                <span *ngIf="e.min">Min - 1980<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>Month</mat-label>
               <input matInput type="number" formControlName="Month">
+              <mat-error *ngIf="labsheetFormPut.controls.Month.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+                <span *ngIf="e.min">Min - 1<br /></span>
+                <span *ngIf="e.min">Max - 12<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>Day</mat-label>
               <input matInput type="number" formControlName="Day">
+              <mat-error *ngIf="labsheetFormPut.controls.Day.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+                <span *ngIf="e.min">Min - 1<br /></span>
+                <span *ngIf="e.min">Max - 31<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>RunNumber</mat-label>
               <input matInput type="number" formControlName="RunNumber">
+              <mat-error *ngIf="labsheetFormPut.controls.RunNumber.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+                <span *ngIf="e.min">Min - 1<br /></span>
+                <span *ngIf="e.min">Max - 100<br /></span>
+              </mat-error>
             </mat-form-field>
           </p>
           <p>
             <mat-form-field>
               <mat-label>SubsectorTVItemID</mat-label>
               <input matInput type="number" formControlName="SubsectorTVItemID">
+              <mat-error *ngIf="labsheetFormPut.controls.SubsectorTVItemID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>MWQMRunTVItemID</mat-label>
               <input matInput type="number" formControlName="MWQMRunTVItemID">
+              <mat-error *ngIf="labsheetFormPut.controls.MWQMRunTVItemID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>SamplingPlanType</mat-label>
@@ -138,6 +187,10 @@
                   {{ a.EnumText }}
                 </mat-option>
               </mat-select>
+              <mat-error *ngIf="labsheetFormPut.controls.SamplingPlanType.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>SampleType</mat-label>
@@ -146,6 +199,10 @@
                   {{ a.EnumText }}
                 </mat-option>
               </mat-select>
+              <mat-error *ngIf="labsheetFormPut.controls.SampleType.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
           </p>
           <p>
@@ -156,6 +213,10 @@
                   {{ a.EnumText }}
                 </mat-option>
               </mat-select>
+              <mat-error *ngIf="labsheetFormPut.controls.LabSheetType.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>LabSheetStatus</mat-label>
@@ -164,42 +225,78 @@
                   {{ a.EnumText }}
                 </mat-option>
               </mat-select>
+              <mat-error *ngIf="labsheetFormPut.controls.LabSheetStatus.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>FileName</mat-label>
               <input matInput type="text" formControlName="FileName">
+              <mat-error *ngIf="labsheetFormPut.controls.FileName.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+                <span *ngIf="e.minlength">MinLength - 1<br /></span>
+                <span *ngIf="e.maxlength">MaxLength - 250<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>FileLastModifiedDate_Local</mat-label>
               <input matInput type="text" formControlName="FileLastModifiedDate_Local">
+              <mat-error *ngIf="labsheetFormPut.controls.FileLastModifiedDate_Local.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
           </p>
           <p>
             <mat-form-field>
               <mat-label>FileContent</mat-label>
               <input matInput type="text" formControlName="FileContent">
+              <mat-error *ngIf="labsheetFormPut.controls.FileContent.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>AcceptedOrRejectedByContactTVItemID</mat-label>
               <input matInput type="number" formControlName="AcceptedOrRejectedByContactTVItemID">
+              <mat-error *ngIf="labsheetFormPut.controls.AcceptedOrRejectedByContactTVItemID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>AcceptedOrRejectedDateTime</mat-label>
               <input matInput type="text" formControlName="AcceptedOrRejectedDateTime">
+              <mat-error *ngIf="labsheetFormPut.controls.AcceptedOrRejectedDateTime.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>RejectReason</mat-label>
               <input matInput type="text" formControlName="RejectReason">
+              <mat-error *ngIf="labsheetFormPut.controls.RejectReason.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.maxlength">MaxLength - 250<br /></span>
+              </mat-error>
             </mat-form-field>
           </p>
           <p>
             <mat-form-field>
               <mat-label>LastUpdateDate_UTC</mat-label>
               <input matInput type="text" formControlName="LastUpdateDate_UTC">
+              <mat-error *ngIf="labsheetFormPut.controls.LastUpdateDate_UTC.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>LastUpdateContactTVItemID</mat-label>
               <input matInput type="number" formControlName="LastUpdateContactTVItemID">
+              <mat-error *ngIf="labsheetFormPut.controls.LastUpdateContactTVItemID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
           </p>
         </form>
@@ -214,7 +311,7 @@
     <mat-card-title>Add LabSheet testing</mat-card-title>
   </mat-card-header>
   <mat-card-content>
-    <div *ngIf="labsheetService.labsheetList.length">
+    <div *ngIf="labsheetService.labsheetListModel$.getValue()?.length">
       <blockquote>
         <form [formGroup]="labsheetFormPost" (ngSubmit)="PostLabSheet(labsheetFormPost.value)">
           <h3>
@@ -229,46 +326,95 @@
             <mat-form-field>
               <mat-label>LabSheetID</mat-label>
               <input matInput type="number" formControlName="LabSheetID">
+              <mat-error *ngIf="labsheetFormPut.controls.LabSheetID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>OtherServerLabSheetID</mat-label>
               <input matInput type="number" formControlName="OtherServerLabSheetID">
+              <mat-error *ngIf="labsheetFormPut.controls.OtherServerLabSheetID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+                <span *ngIf="e.min">Min - 1<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>SamplingPlanID</mat-label>
               <input matInput type="number" formControlName="SamplingPlanID">
+              <mat-error *ngIf="labsheetFormPut.controls.SamplingPlanID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>SamplingPlanName</mat-label>
               <input matInput type="text" formControlName="SamplingPlanName">
+              <mat-error *ngIf="labsheetFormPut.controls.SamplingPlanName.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+                <span *ngIf="e.minlength">MinLength - 1<br /></span>
+                <span *ngIf="e.maxlength">MaxLength - 250<br /></span>
+              </mat-error>
             </mat-form-field>
           </p>
           <p>
             <mat-form-field>
               <mat-label>Year</mat-label>
               <input matInput type="number" formControlName="Year">
+              <mat-error *ngIf="labsheetFormPut.controls.Year.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+                <span *ngIf="e.min">Min - 1980<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>Month</mat-label>
               <input matInput type="number" formControlName="Month">
+              <mat-error *ngIf="labsheetFormPut.controls.Month.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+                <span *ngIf="e.min">Min - 1<br /></span>
+                <span *ngIf="e.min">Max - 12<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>Day</mat-label>
               <input matInput type="number" formControlName="Day">
+              <mat-error *ngIf="labsheetFormPut.controls.Day.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+                <span *ngIf="e.min">Min - 1<br /></span>
+                <span *ngIf="e.min">Max - 31<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>RunNumber</mat-label>
               <input matInput type="number" formControlName="RunNumber">
+              <mat-error *ngIf="labsheetFormPut.controls.RunNumber.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+                <span *ngIf="e.min">Min - 1<br /></span>
+                <span *ngIf="e.min">Max - 100<br /></span>
+              </mat-error>
             </mat-form-field>
           </p>
           <p>
             <mat-form-field>
               <mat-label>SubsectorTVItemID</mat-label>
               <input matInput type="number" formControlName="SubsectorTVItemID">
+              <mat-error *ngIf="labsheetFormPut.controls.SubsectorTVItemID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>MWQMRunTVItemID</mat-label>
               <input matInput type="number" formControlName="MWQMRunTVItemID">
+              <mat-error *ngIf="labsheetFormPut.controls.MWQMRunTVItemID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>SamplingPlanType</mat-label>
@@ -277,6 +423,10 @@
                   {{ a.EnumText }}
                 </mat-option>
               </mat-select>
+              <mat-error *ngIf="labsheetFormPut.controls.SamplingPlanType.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>SampleType</mat-label>
@@ -285,6 +435,10 @@
                   {{ a.EnumText }}
                 </mat-option>
               </mat-select>
+              <mat-error *ngIf="labsheetFormPut.controls.SampleType.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
           </p>
           <p>
@@ -295,6 +449,10 @@
                   {{ a.EnumText }}
                 </mat-option>
               </mat-select>
+              <mat-error *ngIf="labsheetFormPut.controls.LabSheetType.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>LabSheetStatus</mat-label>
@@ -303,42 +461,78 @@
                   {{ a.EnumText }}
                 </mat-option>
               </mat-select>
+              <mat-error *ngIf="labsheetFormPut.controls.LabSheetStatus.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>FileName</mat-label>
               <input matInput type="text" formControlName="FileName">
+              <mat-error *ngIf="labsheetFormPut.controls.FileName.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+                <span *ngIf="e.minlength">MinLength - 1<br /></span>
+                <span *ngIf="e.maxlength">MaxLength - 250<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>FileLastModifiedDate_Local</mat-label>
               <input matInput type="text" formControlName="FileLastModifiedDate_Local">
+              <mat-error *ngIf="labsheetFormPut.controls.FileLastModifiedDate_Local.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
           </p>
           <p>
             <mat-form-field>
               <mat-label>FileContent</mat-label>
               <input matInput type="text" formControlName="FileContent">
+              <mat-error *ngIf="labsheetFormPut.controls.FileContent.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>AcceptedOrRejectedByContactTVItemID</mat-label>
               <input matInput type="number" formControlName="AcceptedOrRejectedByContactTVItemID">
+              <mat-error *ngIf="labsheetFormPut.controls.AcceptedOrRejectedByContactTVItemID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>AcceptedOrRejectedDateTime</mat-label>
               <input matInput type="text" formControlName="AcceptedOrRejectedDateTime">
+              <mat-error *ngIf="labsheetFormPut.controls.AcceptedOrRejectedDateTime.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>RejectReason</mat-label>
               <input matInput type="text" formControlName="RejectReason">
+              <mat-error *ngIf="labsheetFormPut.controls.RejectReason.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.maxlength">MaxLength - 250<br /></span>
+              </mat-error>
             </mat-form-field>
           </p>
           <p>
             <mat-form-field>
               <mat-label>LastUpdateDate_UTC</mat-label>
               <input matInput type="text" formControlName="LastUpdateDate_UTC">
+              <mat-error *ngIf="labsheetFormPut.controls.LastUpdateDate_UTC.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>LastUpdateContactTVItemID</mat-label>
               <input matInput type="number" formControlName="LastUpdateContactTVItemID">
+              <mat-error *ngIf="labsheetFormPut.controls.LastUpdateContactTVItemID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
           </p>
         </form>

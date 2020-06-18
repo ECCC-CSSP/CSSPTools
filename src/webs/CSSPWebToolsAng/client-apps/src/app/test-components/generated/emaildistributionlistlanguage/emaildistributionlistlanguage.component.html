@@ -5,7 +5,7 @@
  *
 -->
 
-<mat-progress-bar mode="indeterminate" *ngIf="emaildistributionlistlanguageService.emaildistributionlistlanguageGetModel$.getValue().Working"></mat-progress-bar>
+<mat-progress-bar mode="indeterminate" *ngIf="emaildistributionlistlanguageService.emaildistributionlistlanguageGetModel$.getValue()?.Working"></mat-progress-bar>
 <mat-card>
   <mat-card-header>
     <mat-card-title>
@@ -17,8 +17,8 @@
     <mat-card-subtitle>{{ emaildistributionlistlanguageService.emaildistributionlistlanguageTextModel$.getValue().Title }}</mat-card-subtitle>
   </mat-card-header>
   <mat-card-content>
-    <mat-list>
-      <mat-list-item *ngFor="let emaildistributionlistlanguage of emaildistributionlistlanguageService.emaildistributionlistlanguageList">
+    <mat-list *ngIf="emaildistributionlistlanguageService.emaildistributionlistlanguageListModel$.getValue()?.length">
+      <mat-list-item *ngFor="let emaildistributionlistlanguage of emaildistributionlistlanguageService.emaildistributionlistlanguageListModel$.getValue()">
         <span mat-line>
           <button mat-raised-button (click)="DeleteEmailDistributionListLanguage(emaildistributionlistlanguage)">
             <span>Delete EmailDistributionListLanguageID [{{ emaildistributionlistlanguage.EmailDistributionListLanguageID }}]&nbsp;&nbsp;&nbsp;</span>
@@ -52,7 +52,7 @@
     <mat-card-title>Edit EmailDistributionListLanguage testing</mat-card-title>
   </mat-card-header>
   <mat-card-content>
-    <div *ngIf="emaildistributionlistlanguageService.emaildistributionlistlanguageList.length">
+    <div *ngIf="emaildistributionlistlanguageService.emaildistributionlistlanguageListModel$.getValue()?.length">
       <blockquote>
         <form [formGroup]="emaildistributionlistlanguageFormPut" (ngSubmit)="PutEmailDistributionListLanguage(emaildistributionlistlanguageFormPut.value)">
           <h3>
@@ -67,10 +67,18 @@
             <mat-form-field>
               <mat-label>EmailDistributionListLanguageID</mat-label>
               <input matInput type="number" formControlName="EmailDistributionListLanguageID">
+              <mat-error *ngIf="emaildistributionlistlanguageFormPut.controls.EmailDistributionListLanguageID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>EmailDistributionListID</mat-label>
               <input matInput type="number" formControlName="EmailDistributionListID">
+              <mat-error *ngIf="emaildistributionlistlanguageFormPut.controls.EmailDistributionListID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>Language</mat-label>
@@ -79,10 +87,20 @@
                   {{ a.EnumText }}
                 </mat-option>
               </mat-select>
+              <mat-error *ngIf="emaildistributionlistlanguageFormPut.controls.Language.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>EmailListName</mat-label>
               <input matInput type="text" formControlName="EmailListName">
+              <mat-error *ngIf="emaildistributionlistlanguageFormPut.controls.EmailListName.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+                <span *ngIf="e.minlength">MinLength - 1<br /></span>
+                <span *ngIf="e.maxlength">MaxLength - 100<br /></span>
+              </mat-error>
             </mat-form-field>
           </p>
           <p>
@@ -93,14 +111,26 @@
                   {{ a.EnumText }}
                 </mat-option>
               </mat-select>
+              <mat-error *ngIf="emaildistributionlistlanguageFormPut.controls.TranslationStatus.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>LastUpdateDate_UTC</mat-label>
               <input matInput type="text" formControlName="LastUpdateDate_UTC">
+              <mat-error *ngIf="emaildistributionlistlanguageFormPut.controls.LastUpdateDate_UTC.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>LastUpdateContactTVItemID</mat-label>
               <input matInput type="number" formControlName="LastUpdateContactTVItemID">
+              <mat-error *ngIf="emaildistributionlistlanguageFormPut.controls.LastUpdateContactTVItemID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
           </p>
         </form>
@@ -115,7 +145,7 @@
     <mat-card-title>Add EmailDistributionListLanguage testing</mat-card-title>
   </mat-card-header>
   <mat-card-content>
-    <div *ngIf="emaildistributionlistlanguageService.emaildistributionlistlanguageList.length">
+    <div *ngIf="emaildistributionlistlanguageService.emaildistributionlistlanguageListModel$.getValue()?.length">
       <blockquote>
         <form [formGroup]="emaildistributionlistlanguageFormPost" (ngSubmit)="PostEmailDistributionListLanguage(emaildistributionlistlanguageFormPost.value)">
           <h3>
@@ -130,10 +160,18 @@
             <mat-form-field>
               <mat-label>EmailDistributionListLanguageID</mat-label>
               <input matInput type="number" formControlName="EmailDistributionListLanguageID">
+              <mat-error *ngIf="emaildistributionlistlanguageFormPut.controls.EmailDistributionListLanguageID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>EmailDistributionListID</mat-label>
               <input matInput type="number" formControlName="EmailDistributionListID">
+              <mat-error *ngIf="emaildistributionlistlanguageFormPut.controls.EmailDistributionListID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>Language</mat-label>
@@ -142,10 +180,20 @@
                   {{ a.EnumText }}
                 </mat-option>
               </mat-select>
+              <mat-error *ngIf="emaildistributionlistlanguageFormPut.controls.Language.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>EmailListName</mat-label>
               <input matInput type="text" formControlName="EmailListName">
+              <mat-error *ngIf="emaildistributionlistlanguageFormPut.controls.EmailListName.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+                <span *ngIf="e.minlength">MinLength - 1<br /></span>
+                <span *ngIf="e.maxlength">MaxLength - 100<br /></span>
+              </mat-error>
             </mat-form-field>
           </p>
           <p>
@@ -156,14 +204,26 @@
                   {{ a.EnumText }}
                 </mat-option>
               </mat-select>
+              <mat-error *ngIf="emaildistributionlistlanguageFormPut.controls.TranslationStatus.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>LastUpdateDate_UTC</mat-label>
               <input matInput type="text" formControlName="LastUpdateDate_UTC">
+              <mat-error *ngIf="emaildistributionlistlanguageFormPut.controls.LastUpdateDate_UTC.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>LastUpdateContactTVItemID</mat-label>
               <input matInput type="number" formControlName="LastUpdateContactTVItemID">
+              <mat-error *ngIf="emaildistributionlistlanguageFormPut.controls.LastUpdateContactTVItemID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
           </p>
         </form>

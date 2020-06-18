@@ -9,11 +9,12 @@ import { Injectable } from '@angular/core';
 import { VPScenarioTextModel } from './vpscenario.models';
 import { BehaviorSubject, of } from 'rxjs';
 import { LoadLocalesVPScenarioText } from './vpscenario.locales';
-import { Router } from '@angular/router';
-import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { map, catchError } from 'rxjs/operators';
 import { VPScenario } from '../../../models/generated/VPScenario.model';
 import { HttpRequestModel } from '../../../models/http.model';
+import { HttpClientService } from '../../../services/http-client.service';
+import { HttpClientCommand } from '../../../enums/app.enums';
 
 @Injectable({
   providedIn: 'root'
@@ -26,110 +27,63 @@ export class VPScenarioService {
   vpscenarioPutModel$: BehaviorSubject<HttpRequestModel> = new BehaviorSubject<HttpRequestModel>(<HttpRequestModel>{});
   vpscenarioPostModel$: BehaviorSubject<HttpRequestModel> = new BehaviorSubject<HttpRequestModel>(<HttpRequestModel>{});
   vpscenarioDeleteModel$: BehaviorSubject<HttpRequestModel> = new BehaviorSubject<HttpRequestModel>(<HttpRequestModel>{});
-  vpscenarioList: VPScenario[] = [];
-  private oldURL: string;
-  private router: Router;
 
   /* Constructors */
-  constructor(private httpClient: HttpClient) {
+  constructor(private httpClient: HttpClient, private httpClientService: HttpClientService) {
     LoadLocalesVPScenarioText(this);
     this.vpscenarioTextModel$.next(<VPScenarioTextModel>{ Title: "Something2 for text" });
   }
 
   /* Functions public */
-  GetVPScenarioList(router: Router) {
-    this.BeforeHttpClient(this.vpscenarioGetModel$, router);
+  GetVPScenarioList() {
+    this.httpClientService.BeforeHttpClient(this.vpscenarioGetModel$);
 
     return this.httpClient.get<VPScenario[]>('/api/VPScenario').pipe(
       map((x: any) => {
-        this.DoSuccess(this.vpscenarioGetModel$, x, 'Get', null);
+        this.httpClientService.DoSuccess<VPScenario>(this.vpscenarioListModel$, this.vpscenarioGetModel$, x, HttpClientCommand.Get, null);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.DoCatchError(this.vpscenarioGetModel$, e, 'Get');
+        this.httpClientService.DoCatchError<VPScenario>(this.vpscenarioListModel$, this.vpscenarioGetModel$, e);
       })))
     );
   }
 
-  PutVPScenario(vpscenario: VPScenario, router: Router) {
-    this.BeforeHttpClient(this.vpscenarioPutModel$, router);
+  PutVPScenario(vpscenario: VPScenario) {
+    this.httpClientService.BeforeHttpClient(this.vpscenarioPutModel$);
 
     return this.httpClient.put<VPScenario>('/api/VPScenario', vpscenario, { headers: new HttpHeaders() }).pipe(
       map((x: any) => {
-        this.DoSuccess(this.vpscenarioPutModel$, x, 'Put', vpscenario);
+        this.httpClientService.DoSuccess<VPScenario>(this.vpscenarioListModel$, this.vpscenarioPutModel$, x, HttpClientCommand.Put, vpscenario);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.DoCatchError(this.vpscenarioPutModel$, e, 'Put');
+       this.httpClientService.DoCatchError<VPScenario>(this.vpscenarioListModel$, this.vpscenarioPutModel$, e);
       })))
     );
   }
 
-  PostVPScenario(vpscenario: VPScenario, router: Router) {
-    this.BeforeHttpClient(this.vpscenarioPostModel$, router);
+  PostVPScenario(vpscenario: VPScenario) {
+    this.httpClientService.BeforeHttpClient(this.vpscenarioPostModel$);
 
     return this.httpClient.post<VPScenario>('/api/VPScenario', vpscenario, { headers: new HttpHeaders() }).pipe(
       map((x: any) => {
-        this.DoSuccess(this.vpscenarioPostModel$, x, 'Post', vpscenario);
+        this.httpClientService.DoSuccess<VPScenario>(this.vpscenarioListModel$, this.vpscenarioPostModel$, x, HttpClientCommand.Post, vpscenario);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.DoCatchError(this.vpscenarioPostModel$, e, 'Post');
+        this.httpClientService.DoCatchError<VPScenario>(this.vpscenarioListModel$, this.vpscenarioPostModel$, e);
       })))
     );
   }
 
-  DeleteVPScenario(vpscenario: VPScenario, router: Router) {
-    this.BeforeHttpClient(this.vpscenarioDeleteModel$, router);
+  DeleteVPScenario(vpscenario: VPScenario) {
+    this.httpClientService.BeforeHttpClient(this.vpscenarioDeleteModel$);
 
     return this.httpClient.delete<boolean>(`/api/VPScenario/${ vpscenario.VPScenarioID }`).pipe(
       map((x: any) => {
-        this.DoSuccess(this.vpscenarioDeleteModel$, x, 'Delete', vpscenario);
+        this.httpClientService.DoSuccess<VPScenario>(this.vpscenarioListModel$, this.vpscenarioDeleteModel$, x, HttpClientCommand.Delete, vpscenario);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.DoCatchError(this.vpscenarioDeleteModel$, e, 'Delete');
+        this.httpClientService.DoCatchError<VPScenario>(this.vpscenarioListModel$, this.vpscenarioDeleteModel$, e);
       })))
     );
-  }
-
-  /* Functions private */
-  private BeforeHttpClient(httpRequestModel$: BehaviorSubject<HttpRequestModel>, router: Router) {
-    this.router = router;
-    this.oldURL = router.url;
-    httpRequestModel$.next(<HttpRequestModel>{ Working: true, Error: null, Status: null });
-  }
-
-  private DoCatchError(httpRequestModel$: BehaviorSubject<HttpRequestModel>, e: any, command: string) {
-    this.vpscenarioListModel$.next(null);
-    httpRequestModel$.next(<HttpRequestModel>{ Working: false, Error: <HttpErrorResponse>e, Status: 'Error' });
-
-    this.vpscenarioList = [];
-    console.debug(`VPScenario ${ command } ERROR. Return: ${ <HttpErrorResponse>e }`);
-    this.DoReload();
-  }
-
-  private DoReload() {
-    this.router.navigateByUrl('', { skipLocationChange: true }).then(() => {
-      this.router.navigate([`/${this.oldURL}`]);
-    });
-  }
-
-  private DoSuccess(httpRequestModel$: BehaviorSubject<HttpRequestModel>, x: any, command: string, vpscenario?: VPScenario) {
-    console.debug(`VPScenario ${ command } OK. Return: ${ x }`);
-    if (command === 'Get') {
-      this.vpscenarioListModel$.next(<VPScenario[]>x);
-    }
-    if (command === 'Put') {
-      this.vpscenarioListModel$.getValue()[0] = <VPScenario>x;
-    }
-    if (command === 'Post') {
-      this.vpscenarioListModel$.getValue().push(<VPScenario>x);
-    }
-    if (command === 'Delete') {
-      const index = this.vpscenarioListModel$.getValue().indexOf(vpscenario);
-      this.vpscenarioListModel$.getValue().splice(index, 1);
-    }
-
-    this.vpscenarioListModel$.next(this.vpscenarioListModel$.getValue());
-    httpRequestModel$.next(<HttpRequestModel>{ Working: false, Error: null, Status: 'ok' });
-    this.vpscenarioList = this.vpscenarioListModel$.getValue();
-    this.DoReload();
   }
 }

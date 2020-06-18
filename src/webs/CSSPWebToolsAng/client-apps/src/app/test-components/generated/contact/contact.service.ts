@@ -9,11 +9,12 @@ import { Injectable } from '@angular/core';
 import { ContactTextModel } from './contact.models';
 import { BehaviorSubject, of } from 'rxjs';
 import { LoadLocalesContactText } from './contact.locales';
-import { Router } from '@angular/router';
-import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { map, catchError } from 'rxjs/operators';
 import { Contact } from '../../../models/generated/Contact.model';
 import { HttpRequestModel } from '../../../models/http.model';
+import { HttpClientService } from '../../../services/http-client.service';
+import { HttpClientCommand } from '../../../enums/app.enums';
 
 @Injectable({
   providedIn: 'root'
@@ -26,110 +27,63 @@ export class ContactService {
   contactPutModel$: BehaviorSubject<HttpRequestModel> = new BehaviorSubject<HttpRequestModel>(<HttpRequestModel>{});
   contactPostModel$: BehaviorSubject<HttpRequestModel> = new BehaviorSubject<HttpRequestModel>(<HttpRequestModel>{});
   contactDeleteModel$: BehaviorSubject<HttpRequestModel> = new BehaviorSubject<HttpRequestModel>(<HttpRequestModel>{});
-  contactList: Contact[] = [];
-  private oldURL: string;
-  private router: Router;
 
   /* Constructors */
-  constructor(private httpClient: HttpClient) {
+  constructor(private httpClient: HttpClient, private httpClientService: HttpClientService) {
     LoadLocalesContactText(this);
     this.contactTextModel$.next(<ContactTextModel>{ Title: "Something2 for text" });
   }
 
   /* Functions public */
-  GetContactList(router: Router) {
-    this.BeforeHttpClient(this.contactGetModel$, router);
+  GetContactList() {
+    this.httpClientService.BeforeHttpClient(this.contactGetModel$);
 
     return this.httpClient.get<Contact[]>('/api/Contact').pipe(
       map((x: any) => {
-        this.DoSuccess(this.contactGetModel$, x, 'Get', null);
+        this.httpClientService.DoSuccess<Contact>(this.contactListModel$, this.contactGetModel$, x, HttpClientCommand.Get, null);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.DoCatchError(this.contactGetModel$, e, 'Get');
+        this.httpClientService.DoCatchError<Contact>(this.contactListModel$, this.contactGetModel$, e);
       })))
     );
   }
 
-  PutContact(contact: Contact, router: Router) {
-    this.BeforeHttpClient(this.contactPutModel$, router);
+  PutContact(contact: Contact) {
+    this.httpClientService.BeforeHttpClient(this.contactPutModel$);
 
     return this.httpClient.put<Contact>('/api/Contact', contact, { headers: new HttpHeaders() }).pipe(
       map((x: any) => {
-        this.DoSuccess(this.contactPutModel$, x, 'Put', contact);
+        this.httpClientService.DoSuccess<Contact>(this.contactListModel$, this.contactPutModel$, x, HttpClientCommand.Put, contact);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.DoCatchError(this.contactPutModel$, e, 'Put');
+       this.httpClientService.DoCatchError<Contact>(this.contactListModel$, this.contactPutModel$, e);
       })))
     );
   }
 
-  PostContact(contact: Contact, router: Router) {
-    this.BeforeHttpClient(this.contactPostModel$, router);
+  PostContact(contact: Contact) {
+    this.httpClientService.BeforeHttpClient(this.contactPostModel$);
 
     return this.httpClient.post<Contact>('/api/Contact', contact, { headers: new HttpHeaders() }).pipe(
       map((x: any) => {
-        this.DoSuccess(this.contactPostModel$, x, 'Post', contact);
+        this.httpClientService.DoSuccess<Contact>(this.contactListModel$, this.contactPostModel$, x, HttpClientCommand.Post, contact);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.DoCatchError(this.contactPostModel$, e, 'Post');
+        this.httpClientService.DoCatchError<Contact>(this.contactListModel$, this.contactPostModel$, e);
       })))
     );
   }
 
-  DeleteContact(contact: Contact, router: Router) {
-    this.BeforeHttpClient(this.contactDeleteModel$, router);
+  DeleteContact(contact: Contact) {
+    this.httpClientService.BeforeHttpClient(this.contactDeleteModel$);
 
     return this.httpClient.delete<boolean>(`/api/Contact/${ contact.ContactID }`).pipe(
       map((x: any) => {
-        this.DoSuccess(this.contactDeleteModel$, x, 'Delete', contact);
+        this.httpClientService.DoSuccess<Contact>(this.contactListModel$, this.contactDeleteModel$, x, HttpClientCommand.Delete, contact);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.DoCatchError(this.contactDeleteModel$, e, 'Delete');
+        this.httpClientService.DoCatchError<Contact>(this.contactListModel$, this.contactDeleteModel$, e);
       })))
     );
-  }
-
-  /* Functions private */
-  private BeforeHttpClient(httpRequestModel$: BehaviorSubject<HttpRequestModel>, router: Router) {
-    this.router = router;
-    this.oldURL = router.url;
-    httpRequestModel$.next(<HttpRequestModel>{ Working: true, Error: null, Status: null });
-  }
-
-  private DoCatchError(httpRequestModel$: BehaviorSubject<HttpRequestModel>, e: any, command: string) {
-    this.contactListModel$.next(null);
-    httpRequestModel$.next(<HttpRequestModel>{ Working: false, Error: <HttpErrorResponse>e, Status: 'Error' });
-
-    this.contactList = [];
-    console.debug(`Contact ${ command } ERROR. Return: ${ <HttpErrorResponse>e }`);
-    this.DoReload();
-  }
-
-  private DoReload() {
-    this.router.navigateByUrl('', { skipLocationChange: true }).then(() => {
-      this.router.navigate([`/${this.oldURL}`]);
-    });
-  }
-
-  private DoSuccess(httpRequestModel$: BehaviorSubject<HttpRequestModel>, x: any, command: string, contact?: Contact) {
-    console.debug(`Contact ${ command } OK. Return: ${ x }`);
-    if (command === 'Get') {
-      this.contactListModel$.next(<Contact[]>x);
-    }
-    if (command === 'Put') {
-      this.contactListModel$.getValue()[0] = <Contact>x;
-    }
-    if (command === 'Post') {
-      this.contactListModel$.getValue().push(<Contact>x);
-    }
-    if (command === 'Delete') {
-      const index = this.contactListModel$.getValue().indexOf(contact);
-      this.contactListModel$.getValue().splice(index, 1);
-    }
-
-    this.contactListModel$.next(this.contactListModel$.getValue());
-    httpRequestModel$.next(<HttpRequestModel>{ Working: false, Error: null, Status: 'ok' });
-    this.contactList = this.contactListModel$.getValue();
-    this.DoReload();
   }
 }

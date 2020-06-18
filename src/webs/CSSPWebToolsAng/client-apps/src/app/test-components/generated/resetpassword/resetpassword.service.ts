@@ -9,11 +9,12 @@ import { Injectable } from '@angular/core';
 import { ResetPasswordTextModel } from './resetpassword.models';
 import { BehaviorSubject, of } from 'rxjs';
 import { LoadLocalesResetPasswordText } from './resetpassword.locales';
-import { Router } from '@angular/router';
-import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { map, catchError } from 'rxjs/operators';
 import { ResetPassword } from '../../../models/generated/ResetPassword.model';
 import { HttpRequestModel } from '../../../models/http.model';
+import { HttpClientService } from '../../../services/http-client.service';
+import { HttpClientCommand } from '../../../enums/app.enums';
 
 @Injectable({
   providedIn: 'root'
@@ -26,110 +27,63 @@ export class ResetPasswordService {
   resetpasswordPutModel$: BehaviorSubject<HttpRequestModel> = new BehaviorSubject<HttpRequestModel>(<HttpRequestModel>{});
   resetpasswordPostModel$: BehaviorSubject<HttpRequestModel> = new BehaviorSubject<HttpRequestModel>(<HttpRequestModel>{});
   resetpasswordDeleteModel$: BehaviorSubject<HttpRequestModel> = new BehaviorSubject<HttpRequestModel>(<HttpRequestModel>{});
-  resetpasswordList: ResetPassword[] = [];
-  private oldURL: string;
-  private router: Router;
 
   /* Constructors */
-  constructor(private httpClient: HttpClient) {
+  constructor(private httpClient: HttpClient, private httpClientService: HttpClientService) {
     LoadLocalesResetPasswordText(this);
     this.resetpasswordTextModel$.next(<ResetPasswordTextModel>{ Title: "Something2 for text" });
   }
 
   /* Functions public */
-  GetResetPasswordList(router: Router) {
-    this.BeforeHttpClient(this.resetpasswordGetModel$, router);
+  GetResetPasswordList() {
+    this.httpClientService.BeforeHttpClient(this.resetpasswordGetModel$);
 
     return this.httpClient.get<ResetPassword[]>('/api/ResetPassword').pipe(
       map((x: any) => {
-        this.DoSuccess(this.resetpasswordGetModel$, x, 'Get', null);
+        this.httpClientService.DoSuccess<ResetPassword>(this.resetpasswordListModel$, this.resetpasswordGetModel$, x, HttpClientCommand.Get, null);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.DoCatchError(this.resetpasswordGetModel$, e, 'Get');
+        this.httpClientService.DoCatchError<ResetPassword>(this.resetpasswordListModel$, this.resetpasswordGetModel$, e);
       })))
     );
   }
 
-  PutResetPassword(resetpassword: ResetPassword, router: Router) {
-    this.BeforeHttpClient(this.resetpasswordPutModel$, router);
+  PutResetPassword(resetpassword: ResetPassword) {
+    this.httpClientService.BeforeHttpClient(this.resetpasswordPutModel$);
 
     return this.httpClient.put<ResetPassword>('/api/ResetPassword', resetpassword, { headers: new HttpHeaders() }).pipe(
       map((x: any) => {
-        this.DoSuccess(this.resetpasswordPutModel$, x, 'Put', resetpassword);
+        this.httpClientService.DoSuccess<ResetPassword>(this.resetpasswordListModel$, this.resetpasswordPutModel$, x, HttpClientCommand.Put, resetpassword);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.DoCatchError(this.resetpasswordPutModel$, e, 'Put');
+       this.httpClientService.DoCatchError<ResetPassword>(this.resetpasswordListModel$, this.resetpasswordPutModel$, e);
       })))
     );
   }
 
-  PostResetPassword(resetpassword: ResetPassword, router: Router) {
-    this.BeforeHttpClient(this.resetpasswordPostModel$, router);
+  PostResetPassword(resetpassword: ResetPassword) {
+    this.httpClientService.BeforeHttpClient(this.resetpasswordPostModel$);
 
     return this.httpClient.post<ResetPassword>('/api/ResetPassword', resetpassword, { headers: new HttpHeaders() }).pipe(
       map((x: any) => {
-        this.DoSuccess(this.resetpasswordPostModel$, x, 'Post', resetpassword);
+        this.httpClientService.DoSuccess<ResetPassword>(this.resetpasswordListModel$, this.resetpasswordPostModel$, x, HttpClientCommand.Post, resetpassword);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.DoCatchError(this.resetpasswordPostModel$, e, 'Post');
+        this.httpClientService.DoCatchError<ResetPassword>(this.resetpasswordListModel$, this.resetpasswordPostModel$, e);
       })))
     );
   }
 
-  DeleteResetPassword(resetpassword: ResetPassword, router: Router) {
-    this.BeforeHttpClient(this.resetpasswordDeleteModel$, router);
+  DeleteResetPassword(resetpassword: ResetPassword) {
+    this.httpClientService.BeforeHttpClient(this.resetpasswordDeleteModel$);
 
     return this.httpClient.delete<boolean>(`/api/ResetPassword/${ resetpassword.ResetPasswordID }`).pipe(
       map((x: any) => {
-        this.DoSuccess(this.resetpasswordDeleteModel$, x, 'Delete', resetpassword);
+        this.httpClientService.DoSuccess<ResetPassword>(this.resetpasswordListModel$, this.resetpasswordDeleteModel$, x, HttpClientCommand.Delete, resetpassword);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.DoCatchError(this.resetpasswordDeleteModel$, e, 'Delete');
+        this.httpClientService.DoCatchError<ResetPassword>(this.resetpasswordListModel$, this.resetpasswordDeleteModel$, e);
       })))
     );
-  }
-
-  /* Functions private */
-  private BeforeHttpClient(httpRequestModel$: BehaviorSubject<HttpRequestModel>, router: Router) {
-    this.router = router;
-    this.oldURL = router.url;
-    httpRequestModel$.next(<HttpRequestModel>{ Working: true, Error: null, Status: null });
-  }
-
-  private DoCatchError(httpRequestModel$: BehaviorSubject<HttpRequestModel>, e: any, command: string) {
-    this.resetpasswordListModel$.next(null);
-    httpRequestModel$.next(<HttpRequestModel>{ Working: false, Error: <HttpErrorResponse>e, Status: 'Error' });
-
-    this.resetpasswordList = [];
-    console.debug(`ResetPassword ${ command } ERROR. Return: ${ <HttpErrorResponse>e }`);
-    this.DoReload();
-  }
-
-  private DoReload() {
-    this.router.navigateByUrl('', { skipLocationChange: true }).then(() => {
-      this.router.navigate([`/${this.oldURL}`]);
-    });
-  }
-
-  private DoSuccess(httpRequestModel$: BehaviorSubject<HttpRequestModel>, x: any, command: string, resetpassword?: ResetPassword) {
-    console.debug(`ResetPassword ${ command } OK. Return: ${ x }`);
-    if (command === 'Get') {
-      this.resetpasswordListModel$.next(<ResetPassword[]>x);
-    }
-    if (command === 'Put') {
-      this.resetpasswordListModel$.getValue()[0] = <ResetPassword>x;
-    }
-    if (command === 'Post') {
-      this.resetpasswordListModel$.getValue().push(<ResetPassword>x);
-    }
-    if (command === 'Delete') {
-      const index = this.resetpasswordListModel$.getValue().indexOf(resetpassword);
-      this.resetpasswordListModel$.getValue().splice(index, 1);
-    }
-
-    this.resetpasswordListModel$.next(this.resetpasswordListModel$.getValue());
-    httpRequestModel$.next(<HttpRequestModel>{ Working: false, Error: null, Status: 'ok' });
-    this.resetpasswordList = this.resetpasswordListModel$.getValue();
-    this.DoReload();
   }
 }

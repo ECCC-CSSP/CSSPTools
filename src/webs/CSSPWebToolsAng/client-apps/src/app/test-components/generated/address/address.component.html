@@ -5,7 +5,7 @@
  *
 -->
 
-<mat-progress-bar mode="indeterminate" *ngIf="addressService.addressGetModel$.getValue().Working"></mat-progress-bar>
+<mat-progress-bar mode="indeterminate" *ngIf="addressService.addressGetModel$.getValue()?.Working"></mat-progress-bar>
 <mat-card>
   <mat-card-header>
     <mat-card-title>
@@ -17,8 +17,8 @@
     <mat-card-subtitle>{{ addressService.addressTextModel$.getValue().Title }}</mat-card-subtitle>
   </mat-card-header>
   <mat-card-content>
-    <mat-list>
-      <mat-list-item *ngFor="let address of addressService.addressList">
+    <mat-list *ngIf="addressService.addressListModel$.getValue()?.length">
+      <mat-list-item *ngFor="let address of addressService.addressListModel$.getValue()">
         <span mat-line>
           <button mat-raised-button (click)="DeleteAddress(address)">
             <span>Delete AddressID [{{ address.AddressID }}]&nbsp;&nbsp;&nbsp;</span>
@@ -62,7 +62,7 @@
     <mat-card-title>Edit Address testing</mat-card-title>
   </mat-card-header>
   <mat-card-content>
-    <div *ngIf="addressService.addressList.length">
+    <div *ngIf="addressService.addressListModel$.getValue()?.length">
       <blockquote>
         <form [formGroup]="addressFormPut" (ngSubmit)="PutAddress(addressFormPut.value)">
           <h3>
@@ -77,10 +77,18 @@
             <mat-form-field>
               <mat-label>AddressID</mat-label>
               <input matInput type="number" formControlName="AddressID">
+              <mat-error *ngIf="addressFormPut.controls.AddressID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>AddressTVItemID</mat-label>
               <input matInput type="number" formControlName="AddressTVItemID">
+              <mat-error *ngIf="addressFormPut.controls.AddressTVItemID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>AddressType</mat-label>
@@ -89,28 +97,52 @@
                   {{ a.EnumText }}
                 </mat-option>
               </mat-select>
+              <mat-error *ngIf="addressFormPut.controls.AddressType.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>CountryTVItemID</mat-label>
               <input matInput type="number" formControlName="CountryTVItemID">
+              <mat-error *ngIf="addressFormPut.controls.CountryTVItemID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
           </p>
           <p>
             <mat-form-field>
               <mat-label>ProvinceTVItemID</mat-label>
               <input matInput type="number" formControlName="ProvinceTVItemID">
+              <mat-error *ngIf="addressFormPut.controls.ProvinceTVItemID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>MunicipalityTVItemID</mat-label>
               <input matInput type="number" formControlName="MunicipalityTVItemID">
+              <mat-error *ngIf="addressFormPut.controls.MunicipalityTVItemID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>StreetName</mat-label>
               <input matInput type="text" formControlName="StreetName">
+              <mat-error *ngIf="addressFormPut.controls.StreetName.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.maxlength">MaxLength - 200<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>StreetNumber</mat-label>
               <input matInput type="text" formControlName="StreetNumber">
+              <mat-error *ngIf="addressFormPut.controls.StreetNumber.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.maxlength">MaxLength - 50<br /></span>
+              </mat-error>
             </mat-form-field>
           </p>
           <p>
@@ -121,24 +153,45 @@
                   {{ a.EnumText }}
                 </mat-option>
               </mat-select>
+              <mat-error *ngIf="addressFormPut.controls.StreetType.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>PostalCode</mat-label>
               <input matInput type="text" formControlName="PostalCode">
+              <mat-error *ngIf="addressFormPut.controls.PostalCode.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.minlength">MinLength - 6<br /></span>
+                <span *ngIf="e.maxlength">MaxLength - 11<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>GoogleAddressText</mat-label>
               <input matInput type="text" formControlName="GoogleAddressText">
+              <mat-error *ngIf="addressFormPut.controls.GoogleAddressText.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.minlength">MinLength - 10<br /></span>
+                <span *ngIf="e.maxlength">MaxLength - 200<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>LastUpdateDate_UTC</mat-label>
               <input matInput type="text" formControlName="LastUpdateDate_UTC">
+              <mat-error *ngIf="addressFormPut.controls.LastUpdateDate_UTC.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
           </p>
           <p>
             <mat-form-field>
               <mat-label>LastUpdateContactTVItemID</mat-label>
               <input matInput type="number" formControlName="LastUpdateContactTVItemID">
+              <mat-error *ngIf="addressFormPut.controls.LastUpdateContactTVItemID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
           </p>
         </form>
@@ -153,7 +206,7 @@
     <mat-card-title>Add Address testing</mat-card-title>
   </mat-card-header>
   <mat-card-content>
-    <div *ngIf="addressService.addressList.length">
+    <div *ngIf="addressService.addressListModel$.getValue()?.length">
       <blockquote>
         <form [formGroup]="addressFormPost" (ngSubmit)="PostAddress(addressFormPost.value)">
           <h3>
@@ -168,10 +221,18 @@
             <mat-form-field>
               <mat-label>AddressID</mat-label>
               <input matInput type="number" formControlName="AddressID">
+              <mat-error *ngIf="addressFormPut.controls.AddressID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>AddressTVItemID</mat-label>
               <input matInput type="number" formControlName="AddressTVItemID">
+              <mat-error *ngIf="addressFormPut.controls.AddressTVItemID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>AddressType</mat-label>
@@ -180,28 +241,52 @@
                   {{ a.EnumText }}
                 </mat-option>
               </mat-select>
+              <mat-error *ngIf="addressFormPut.controls.AddressType.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>CountryTVItemID</mat-label>
               <input matInput type="number" formControlName="CountryTVItemID">
+              <mat-error *ngIf="addressFormPut.controls.CountryTVItemID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
           </p>
           <p>
             <mat-form-field>
               <mat-label>ProvinceTVItemID</mat-label>
               <input matInput type="number" formControlName="ProvinceTVItemID">
+              <mat-error *ngIf="addressFormPut.controls.ProvinceTVItemID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>MunicipalityTVItemID</mat-label>
               <input matInput type="number" formControlName="MunicipalityTVItemID">
+              <mat-error *ngIf="addressFormPut.controls.MunicipalityTVItemID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>StreetName</mat-label>
               <input matInput type="text" formControlName="StreetName">
+              <mat-error *ngIf="addressFormPut.controls.StreetName.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.maxlength">MaxLength - 200<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>StreetNumber</mat-label>
               <input matInput type="text" formControlName="StreetNumber">
+              <mat-error *ngIf="addressFormPut.controls.StreetNumber.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.maxlength">MaxLength - 50<br /></span>
+              </mat-error>
             </mat-form-field>
           </p>
           <p>
@@ -212,24 +297,45 @@
                   {{ a.EnumText }}
                 </mat-option>
               </mat-select>
+              <mat-error *ngIf="addressFormPut.controls.StreetType.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>PostalCode</mat-label>
               <input matInput type="text" formControlName="PostalCode">
+              <mat-error *ngIf="addressFormPut.controls.PostalCode.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.minlength">MinLength - 6<br /></span>
+                <span *ngIf="e.maxlength">MaxLength - 11<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>GoogleAddressText</mat-label>
               <input matInput type="text" formControlName="GoogleAddressText">
+              <mat-error *ngIf="addressFormPut.controls.GoogleAddressText.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.minlength">MinLength - 10<br /></span>
+                <span *ngIf="e.maxlength">MaxLength - 200<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>LastUpdateDate_UTC</mat-label>
               <input matInput type="text" formControlName="LastUpdateDate_UTC">
+              <mat-error *ngIf="addressFormPut.controls.LastUpdateDate_UTC.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
           </p>
           <p>
             <mat-form-field>
               <mat-label>LastUpdateContactTVItemID</mat-label>
               <input matInput type="number" formControlName="LastUpdateContactTVItemID">
+              <mat-error *ngIf="addressFormPut.controls.LastUpdateContactTVItemID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
           </p>
         </form>

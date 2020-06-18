@@ -5,7 +5,7 @@
  *
 -->
 
-<mat-progress-bar mode="indeterminate" *ngIf="doctemplateService.doctemplateGetModel$.getValue().Working"></mat-progress-bar>
+<mat-progress-bar mode="indeterminate" *ngIf="doctemplateService.doctemplateGetModel$.getValue()?.Working"></mat-progress-bar>
 <mat-card>
   <mat-card-header>
     <mat-card-title>
@@ -17,8 +17,8 @@
     <mat-card-subtitle>{{ doctemplateService.doctemplateTextModel$.getValue().Title }}</mat-card-subtitle>
   </mat-card-header>
   <mat-card-content>
-    <mat-list>
-      <mat-list-item *ngFor="let doctemplate of doctemplateService.doctemplateList">
+    <mat-list *ngIf="doctemplateService.doctemplateListModel$.getValue()?.length">
+      <mat-list-item *ngFor="let doctemplate of doctemplateService.doctemplateListModel$.getValue()">
         <span mat-line>
           <button mat-raised-button (click)="DeleteDocTemplate(doctemplate)">
             <span>Delete DocTemplateID [{{ doctemplate.DocTemplateID }}]&nbsp;&nbsp;&nbsp;</span>
@@ -52,7 +52,7 @@
     <mat-card-title>Edit DocTemplate testing</mat-card-title>
   </mat-card-header>
   <mat-card-content>
-    <div *ngIf="doctemplateService.doctemplateList.length">
+    <div *ngIf="doctemplateService.doctemplateListModel$.getValue()?.length">
       <blockquote>
         <form [formGroup]="doctemplateFormPut" (ngSubmit)="PutDocTemplate(doctemplateFormPut.value)">
           <h3>
@@ -67,6 +67,10 @@
             <mat-form-field>
               <mat-label>DocTemplateID</mat-label>
               <input matInput type="number" formControlName="DocTemplateID">
+              <mat-error *ngIf="doctemplateFormPut.controls.DocTemplateID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>Language</mat-label>
@@ -75,6 +79,10 @@
                   {{ a.EnumText }}
                 </mat-option>
               </mat-select>
+              <mat-error *ngIf="doctemplateFormPut.controls.Language.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>TVType</mat-label>
@@ -83,24 +91,45 @@
                   {{ a.EnumText }}
                 </mat-option>
               </mat-select>
+              <mat-error *ngIf="doctemplateFormPut.controls.TVType.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>TVFileTVItemID</mat-label>
               <input matInput type="number" formControlName="TVFileTVItemID">
+              <mat-error *ngIf="doctemplateFormPut.controls.TVFileTVItemID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
           </p>
           <p>
             <mat-form-field>
               <mat-label>FileName</mat-label>
               <input matInput type="text" formControlName="FileName">
+              <mat-error *ngIf="doctemplateFormPut.controls.FileName.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+                <span *ngIf="e.maxlength">MaxLength - 150<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>LastUpdateDate_UTC</mat-label>
               <input matInput type="text" formControlName="LastUpdateDate_UTC">
+              <mat-error *ngIf="doctemplateFormPut.controls.LastUpdateDate_UTC.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>LastUpdateContactTVItemID</mat-label>
               <input matInput type="number" formControlName="LastUpdateContactTVItemID">
+              <mat-error *ngIf="doctemplateFormPut.controls.LastUpdateContactTVItemID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
           </p>
         </form>
@@ -115,7 +144,7 @@
     <mat-card-title>Add DocTemplate testing</mat-card-title>
   </mat-card-header>
   <mat-card-content>
-    <div *ngIf="doctemplateService.doctemplateList.length">
+    <div *ngIf="doctemplateService.doctemplateListModel$.getValue()?.length">
       <blockquote>
         <form [formGroup]="doctemplateFormPost" (ngSubmit)="PostDocTemplate(doctemplateFormPost.value)">
           <h3>
@@ -130,6 +159,10 @@
             <mat-form-field>
               <mat-label>DocTemplateID</mat-label>
               <input matInput type="number" formControlName="DocTemplateID">
+              <mat-error *ngIf="doctemplateFormPut.controls.DocTemplateID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>Language</mat-label>
@@ -138,6 +171,10 @@
                   {{ a.EnumText }}
                 </mat-option>
               </mat-select>
+              <mat-error *ngIf="doctemplateFormPut.controls.Language.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>TVType</mat-label>
@@ -146,24 +183,45 @@
                   {{ a.EnumText }}
                 </mat-option>
               </mat-select>
+              <mat-error *ngIf="doctemplateFormPut.controls.TVType.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>TVFileTVItemID</mat-label>
               <input matInput type="number" formControlName="TVFileTVItemID">
+              <mat-error *ngIf="doctemplateFormPut.controls.TVFileTVItemID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
           </p>
           <p>
             <mat-form-field>
               <mat-label>FileName</mat-label>
               <input matInput type="text" formControlName="FileName">
+              <mat-error *ngIf="doctemplateFormPut.controls.FileName.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+                <span *ngIf="e.maxlength">MaxLength - 150<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>LastUpdateDate_UTC</mat-label>
               <input matInput type="text" formControlName="LastUpdateDate_UTC">
+              <mat-error *ngIf="doctemplateFormPut.controls.LastUpdateDate_UTC.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>LastUpdateContactTVItemID</mat-label>
               <input matInput type="number" formControlName="LastUpdateContactTVItemID">
+              <mat-error *ngIf="doctemplateFormPut.controls.LastUpdateContactTVItemID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
           </p>
         </form>

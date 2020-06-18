@@ -5,7 +5,7 @@
  *
 -->
 
-<mat-progress-bar mode="indeterminate" *ngIf="tvitemstatService.tvitemstatGetModel$.getValue().Working"></mat-progress-bar>
+<mat-progress-bar mode="indeterminate" *ngIf="tvitemstatService.tvitemstatGetModel$.getValue()?.Working"></mat-progress-bar>
 <mat-card>
   <mat-card-header>
     <mat-card-title>
@@ -17,8 +17,8 @@
     <mat-card-subtitle>{{ tvitemstatService.tvitemstatTextModel$.getValue().Title }}</mat-card-subtitle>
   </mat-card-header>
   <mat-card-content>
-    <mat-list>
-      <mat-list-item *ngFor="let tvitemstat of tvitemstatService.tvitemstatList">
+    <mat-list *ngIf="tvitemstatService.tvitemstatListModel$.getValue()?.length">
+      <mat-list-item *ngFor="let tvitemstat of tvitemstatService.tvitemstatListModel$.getValue()">
         <span mat-line>
           <button mat-raised-button (click)="DeleteTVItemStat(tvitemstat)">
             <span>Delete TVItemStatID [{{ tvitemstat.TVItemStatID }}]&nbsp;&nbsp;&nbsp;</span>
@@ -51,7 +51,7 @@
     <mat-card-title>Edit TVItemStat testing</mat-card-title>
   </mat-card-header>
   <mat-card-content>
-    <div *ngIf="tvitemstatService.tvitemstatList.length">
+    <div *ngIf="tvitemstatService.tvitemstatListModel$.getValue()?.length">
       <blockquote>
         <form [formGroup]="tvitemstatFormPut" (ngSubmit)="PutTVItemStat(tvitemstatFormPut.value)">
           <h3>
@@ -66,10 +66,18 @@
             <mat-form-field>
               <mat-label>TVItemStatID</mat-label>
               <input matInput type="number" formControlName="TVItemStatID">
+              <mat-error *ngIf="tvitemstatFormPut.controls.TVItemStatID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>TVItemID</mat-label>
               <input matInput type="number" formControlName="TVItemID">
+              <mat-error *ngIf="tvitemstatFormPut.controls.TVItemID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>TVType</mat-label>
@@ -78,20 +86,38 @@
                   {{ a.EnumText }}
                 </mat-option>
               </mat-select>
+              <mat-error *ngIf="tvitemstatFormPut.controls.TVType.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>ChildCount</mat-label>
               <input matInput type="number" formControlName="ChildCount">
+              <mat-error *ngIf="tvitemstatFormPut.controls.ChildCount.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+                <span *ngIf="e.min">Min - 0<br /></span>
+                <span *ngIf="e.min">Max - 10000000<br /></span>
+              </mat-error>
             </mat-form-field>
           </p>
           <p>
             <mat-form-field>
               <mat-label>LastUpdateDate_UTC</mat-label>
               <input matInput type="text" formControlName="LastUpdateDate_UTC">
+              <mat-error *ngIf="tvitemstatFormPut.controls.LastUpdateDate_UTC.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>LastUpdateContactTVItemID</mat-label>
               <input matInput type="number" formControlName="LastUpdateContactTVItemID">
+              <mat-error *ngIf="tvitemstatFormPut.controls.LastUpdateContactTVItemID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
           </p>
         </form>
@@ -106,7 +132,7 @@
     <mat-card-title>Add TVItemStat testing</mat-card-title>
   </mat-card-header>
   <mat-card-content>
-    <div *ngIf="tvitemstatService.tvitemstatList.length">
+    <div *ngIf="tvitemstatService.tvitemstatListModel$.getValue()?.length">
       <blockquote>
         <form [formGroup]="tvitemstatFormPost" (ngSubmit)="PostTVItemStat(tvitemstatFormPost.value)">
           <h3>
@@ -121,10 +147,18 @@
             <mat-form-field>
               <mat-label>TVItemStatID</mat-label>
               <input matInput type="number" formControlName="TVItemStatID">
+              <mat-error *ngIf="tvitemstatFormPut.controls.TVItemStatID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>TVItemID</mat-label>
               <input matInput type="number" formControlName="TVItemID">
+              <mat-error *ngIf="tvitemstatFormPut.controls.TVItemID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>TVType</mat-label>
@@ -133,20 +167,38 @@
                   {{ a.EnumText }}
                 </mat-option>
               </mat-select>
+              <mat-error *ngIf="tvitemstatFormPut.controls.TVType.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>ChildCount</mat-label>
               <input matInput type="number" formControlName="ChildCount">
+              <mat-error *ngIf="tvitemstatFormPut.controls.ChildCount.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+                <span *ngIf="e.min">Min - 0<br /></span>
+                <span *ngIf="e.min">Max - 10000000<br /></span>
+              </mat-error>
             </mat-form-field>
           </p>
           <p>
             <mat-form-field>
               <mat-label>LastUpdateDate_UTC</mat-label>
               <input matInput type="text" formControlName="LastUpdateDate_UTC">
+              <mat-error *ngIf="tvitemstatFormPut.controls.LastUpdateDate_UTC.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>LastUpdateContactTVItemID</mat-label>
               <input matInput type="number" formControlName="LastUpdateContactTVItemID">
+              <mat-error *ngIf="tvitemstatFormPut.controls.LastUpdateContactTVItemID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
           </p>
         </form>

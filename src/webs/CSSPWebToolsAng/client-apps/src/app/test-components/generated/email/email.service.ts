@@ -9,11 +9,12 @@ import { Injectable } from '@angular/core';
 import { EmailTextModel } from './email.models';
 import { BehaviorSubject, of } from 'rxjs';
 import { LoadLocalesEmailText } from './email.locales';
-import { Router } from '@angular/router';
-import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { map, catchError } from 'rxjs/operators';
 import { Email } from '../../../models/generated/Email.model';
 import { HttpRequestModel } from '../../../models/http.model';
+import { HttpClientService } from '../../../services/http-client.service';
+import { HttpClientCommand } from '../../../enums/app.enums';
 
 @Injectable({
   providedIn: 'root'
@@ -26,110 +27,63 @@ export class EmailService {
   emailPutModel$: BehaviorSubject<HttpRequestModel> = new BehaviorSubject<HttpRequestModel>(<HttpRequestModel>{});
   emailPostModel$: BehaviorSubject<HttpRequestModel> = new BehaviorSubject<HttpRequestModel>(<HttpRequestModel>{});
   emailDeleteModel$: BehaviorSubject<HttpRequestModel> = new BehaviorSubject<HttpRequestModel>(<HttpRequestModel>{});
-  emailList: Email[] = [];
-  private oldURL: string;
-  private router: Router;
 
   /* Constructors */
-  constructor(private httpClient: HttpClient) {
+  constructor(private httpClient: HttpClient, private httpClientService: HttpClientService) {
     LoadLocalesEmailText(this);
     this.emailTextModel$.next(<EmailTextModel>{ Title: "Something2 for text" });
   }
 
   /* Functions public */
-  GetEmailList(router: Router) {
-    this.BeforeHttpClient(this.emailGetModel$, router);
+  GetEmailList() {
+    this.httpClientService.BeforeHttpClient(this.emailGetModel$);
 
     return this.httpClient.get<Email[]>('/api/Email').pipe(
       map((x: any) => {
-        this.DoSuccess(this.emailGetModel$, x, 'Get', null);
+        this.httpClientService.DoSuccess<Email>(this.emailListModel$, this.emailGetModel$, x, HttpClientCommand.Get, null);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.DoCatchError(this.emailGetModel$, e, 'Get');
+        this.httpClientService.DoCatchError<Email>(this.emailListModel$, this.emailGetModel$, e);
       })))
     );
   }
 
-  PutEmail(email: Email, router: Router) {
-    this.BeforeHttpClient(this.emailPutModel$, router);
+  PutEmail(email: Email) {
+    this.httpClientService.BeforeHttpClient(this.emailPutModel$);
 
     return this.httpClient.put<Email>('/api/Email', email, { headers: new HttpHeaders() }).pipe(
       map((x: any) => {
-        this.DoSuccess(this.emailPutModel$, x, 'Put', email);
+        this.httpClientService.DoSuccess<Email>(this.emailListModel$, this.emailPutModel$, x, HttpClientCommand.Put, email);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.DoCatchError(this.emailPutModel$, e, 'Put');
+       this.httpClientService.DoCatchError<Email>(this.emailListModel$, this.emailPutModel$, e);
       })))
     );
   }
 
-  PostEmail(email: Email, router: Router) {
-    this.BeforeHttpClient(this.emailPostModel$, router);
+  PostEmail(email: Email) {
+    this.httpClientService.BeforeHttpClient(this.emailPostModel$);
 
     return this.httpClient.post<Email>('/api/Email', email, { headers: new HttpHeaders() }).pipe(
       map((x: any) => {
-        this.DoSuccess(this.emailPostModel$, x, 'Post', email);
+        this.httpClientService.DoSuccess<Email>(this.emailListModel$, this.emailPostModel$, x, HttpClientCommand.Post, email);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.DoCatchError(this.emailPostModel$, e, 'Post');
+        this.httpClientService.DoCatchError<Email>(this.emailListModel$, this.emailPostModel$, e);
       })))
     );
   }
 
-  DeleteEmail(email: Email, router: Router) {
-    this.BeforeHttpClient(this.emailDeleteModel$, router);
+  DeleteEmail(email: Email) {
+    this.httpClientService.BeforeHttpClient(this.emailDeleteModel$);
 
     return this.httpClient.delete<boolean>(`/api/Email/${ email.EmailID }`).pipe(
       map((x: any) => {
-        this.DoSuccess(this.emailDeleteModel$, x, 'Delete', email);
+        this.httpClientService.DoSuccess<Email>(this.emailListModel$, this.emailDeleteModel$, x, HttpClientCommand.Delete, email);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.DoCatchError(this.emailDeleteModel$, e, 'Delete');
+        this.httpClientService.DoCatchError<Email>(this.emailListModel$, this.emailDeleteModel$, e);
       })))
     );
-  }
-
-  /* Functions private */
-  private BeforeHttpClient(httpRequestModel$: BehaviorSubject<HttpRequestModel>, router: Router) {
-    this.router = router;
-    this.oldURL = router.url;
-    httpRequestModel$.next(<HttpRequestModel>{ Working: true, Error: null, Status: null });
-  }
-
-  private DoCatchError(httpRequestModel$: BehaviorSubject<HttpRequestModel>, e: any, command: string) {
-    this.emailListModel$.next(null);
-    httpRequestModel$.next(<HttpRequestModel>{ Working: false, Error: <HttpErrorResponse>e, Status: 'Error' });
-
-    this.emailList = [];
-    console.debug(`Email ${ command } ERROR. Return: ${ <HttpErrorResponse>e }`);
-    this.DoReload();
-  }
-
-  private DoReload() {
-    this.router.navigateByUrl('', { skipLocationChange: true }).then(() => {
-      this.router.navigate([`/${this.oldURL}`]);
-    });
-  }
-
-  private DoSuccess(httpRequestModel$: BehaviorSubject<HttpRequestModel>, x: any, command: string, email?: Email) {
-    console.debug(`Email ${ command } OK. Return: ${ x }`);
-    if (command === 'Get') {
-      this.emailListModel$.next(<Email[]>x);
-    }
-    if (command === 'Put') {
-      this.emailListModel$.getValue()[0] = <Email>x;
-    }
-    if (command === 'Post') {
-      this.emailListModel$.getValue().push(<Email>x);
-    }
-    if (command === 'Delete') {
-      const index = this.emailListModel$.getValue().indexOf(email);
-      this.emailListModel$.getValue().splice(index, 1);
-    }
-
-    this.emailListModel$.next(this.emailListModel$.getValue());
-    httpRequestModel$.next(<HttpRequestModel>{ Working: false, Error: null, Status: 'ok' });
-    this.emailList = this.emailListModel$.getValue();
-    this.DoReload();
   }
 }

@@ -9,11 +9,12 @@ import { Injectable } from '@angular/core';
 import { AppTaskTextModel } from './apptask.models';
 import { BehaviorSubject, of } from 'rxjs';
 import { LoadLocalesAppTaskText } from './apptask.locales';
-import { Router } from '@angular/router';
-import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { map, catchError } from 'rxjs/operators';
 import { AppTask } from '../../../models/generated/AppTask.model';
 import { HttpRequestModel } from '../../../models/http.model';
+import { HttpClientService } from '../../../services/http-client.service';
+import { HttpClientCommand } from '../../../enums/app.enums';
 
 @Injectable({
   providedIn: 'root'
@@ -26,110 +27,63 @@ export class AppTaskService {
   apptaskPutModel$: BehaviorSubject<HttpRequestModel> = new BehaviorSubject<HttpRequestModel>(<HttpRequestModel>{});
   apptaskPostModel$: BehaviorSubject<HttpRequestModel> = new BehaviorSubject<HttpRequestModel>(<HttpRequestModel>{});
   apptaskDeleteModel$: BehaviorSubject<HttpRequestModel> = new BehaviorSubject<HttpRequestModel>(<HttpRequestModel>{});
-  apptaskList: AppTask[] = [];
-  private oldURL: string;
-  private router: Router;
 
   /* Constructors */
-  constructor(private httpClient: HttpClient) {
+  constructor(private httpClient: HttpClient, private httpClientService: HttpClientService) {
     LoadLocalesAppTaskText(this);
     this.apptaskTextModel$.next(<AppTaskTextModel>{ Title: "Something2 for text" });
   }
 
   /* Functions public */
-  GetAppTaskList(router: Router) {
-    this.BeforeHttpClient(this.apptaskGetModel$, router);
+  GetAppTaskList() {
+    this.httpClientService.BeforeHttpClient(this.apptaskGetModel$);
 
     return this.httpClient.get<AppTask[]>('/api/AppTask').pipe(
       map((x: any) => {
-        this.DoSuccess(this.apptaskGetModel$, x, 'Get', null);
+        this.httpClientService.DoSuccess<AppTask>(this.apptaskListModel$, this.apptaskGetModel$, x, HttpClientCommand.Get, null);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.DoCatchError(this.apptaskGetModel$, e, 'Get');
+        this.httpClientService.DoCatchError<AppTask>(this.apptaskListModel$, this.apptaskGetModel$, e);
       })))
     );
   }
 
-  PutAppTask(apptask: AppTask, router: Router) {
-    this.BeforeHttpClient(this.apptaskPutModel$, router);
+  PutAppTask(apptask: AppTask) {
+    this.httpClientService.BeforeHttpClient(this.apptaskPutModel$);
 
     return this.httpClient.put<AppTask>('/api/AppTask', apptask, { headers: new HttpHeaders() }).pipe(
       map((x: any) => {
-        this.DoSuccess(this.apptaskPutModel$, x, 'Put', apptask);
+        this.httpClientService.DoSuccess<AppTask>(this.apptaskListModel$, this.apptaskPutModel$, x, HttpClientCommand.Put, apptask);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.DoCatchError(this.apptaskPutModel$, e, 'Put');
+       this.httpClientService.DoCatchError<AppTask>(this.apptaskListModel$, this.apptaskPutModel$, e);
       })))
     );
   }
 
-  PostAppTask(apptask: AppTask, router: Router) {
-    this.BeforeHttpClient(this.apptaskPostModel$, router);
+  PostAppTask(apptask: AppTask) {
+    this.httpClientService.BeforeHttpClient(this.apptaskPostModel$);
 
     return this.httpClient.post<AppTask>('/api/AppTask', apptask, { headers: new HttpHeaders() }).pipe(
       map((x: any) => {
-        this.DoSuccess(this.apptaskPostModel$, x, 'Post', apptask);
+        this.httpClientService.DoSuccess<AppTask>(this.apptaskListModel$, this.apptaskPostModel$, x, HttpClientCommand.Post, apptask);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.DoCatchError(this.apptaskPostModel$, e, 'Post');
+        this.httpClientService.DoCatchError<AppTask>(this.apptaskListModel$, this.apptaskPostModel$, e);
       })))
     );
   }
 
-  DeleteAppTask(apptask: AppTask, router: Router) {
-    this.BeforeHttpClient(this.apptaskDeleteModel$, router);
+  DeleteAppTask(apptask: AppTask) {
+    this.httpClientService.BeforeHttpClient(this.apptaskDeleteModel$);
 
     return this.httpClient.delete<boolean>(`/api/AppTask/${ apptask.AppTaskID }`).pipe(
       map((x: any) => {
-        this.DoSuccess(this.apptaskDeleteModel$, x, 'Delete', apptask);
+        this.httpClientService.DoSuccess<AppTask>(this.apptaskListModel$, this.apptaskDeleteModel$, x, HttpClientCommand.Delete, apptask);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.DoCatchError(this.apptaskDeleteModel$, e, 'Delete');
+        this.httpClientService.DoCatchError<AppTask>(this.apptaskListModel$, this.apptaskDeleteModel$, e);
       })))
     );
-  }
-
-  /* Functions private */
-  private BeforeHttpClient(httpRequestModel$: BehaviorSubject<HttpRequestModel>, router: Router) {
-    this.router = router;
-    this.oldURL = router.url;
-    httpRequestModel$.next(<HttpRequestModel>{ Working: true, Error: null, Status: null });
-  }
-
-  private DoCatchError(httpRequestModel$: BehaviorSubject<HttpRequestModel>, e: any, command: string) {
-    this.apptaskListModel$.next(null);
-    httpRequestModel$.next(<HttpRequestModel>{ Working: false, Error: <HttpErrorResponse>e, Status: 'Error' });
-
-    this.apptaskList = [];
-    console.debug(`AppTask ${ command } ERROR. Return: ${ <HttpErrorResponse>e }`);
-    this.DoReload();
-  }
-
-  private DoReload() {
-    this.router.navigateByUrl('', { skipLocationChange: true }).then(() => {
-      this.router.navigate([`/${this.oldURL}`]);
-    });
-  }
-
-  private DoSuccess(httpRequestModel$: BehaviorSubject<HttpRequestModel>, x: any, command: string, apptask?: AppTask) {
-    console.debug(`AppTask ${ command } OK. Return: ${ x }`);
-    if (command === 'Get') {
-      this.apptaskListModel$.next(<AppTask[]>x);
-    }
-    if (command === 'Put') {
-      this.apptaskListModel$.getValue()[0] = <AppTask>x;
-    }
-    if (command === 'Post') {
-      this.apptaskListModel$.getValue().push(<AppTask>x);
-    }
-    if (command === 'Delete') {
-      const index = this.apptaskListModel$.getValue().indexOf(apptask);
-      this.apptaskListModel$.getValue().splice(index, 1);
-    }
-
-    this.apptaskListModel$.next(this.apptaskListModel$.getValue());
-    httpRequestModel$.next(<HttpRequestModel>{ Working: false, Error: null, Status: 'ok' });
-    this.apptaskList = this.apptaskListModel$.getValue();
-    this.DoReload();
   }
 }

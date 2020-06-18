@@ -9,11 +9,12 @@ import { Injectable } from '@angular/core';
 import { TVFileTextModel } from './tvfile.models';
 import { BehaviorSubject, of } from 'rxjs';
 import { LoadLocalesTVFileText } from './tvfile.locales';
-import { Router } from '@angular/router';
-import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { map, catchError } from 'rxjs/operators';
 import { TVFile } from '../../../models/generated/TVFile.model';
 import { HttpRequestModel } from '../../../models/http.model';
+import { HttpClientService } from '../../../services/http-client.service';
+import { HttpClientCommand } from '../../../enums/app.enums';
 
 @Injectable({
   providedIn: 'root'
@@ -26,110 +27,63 @@ export class TVFileService {
   tvfilePutModel$: BehaviorSubject<HttpRequestModel> = new BehaviorSubject<HttpRequestModel>(<HttpRequestModel>{});
   tvfilePostModel$: BehaviorSubject<HttpRequestModel> = new BehaviorSubject<HttpRequestModel>(<HttpRequestModel>{});
   tvfileDeleteModel$: BehaviorSubject<HttpRequestModel> = new BehaviorSubject<HttpRequestModel>(<HttpRequestModel>{});
-  tvfileList: TVFile[] = [];
-  private oldURL: string;
-  private router: Router;
 
   /* Constructors */
-  constructor(private httpClient: HttpClient) {
+  constructor(private httpClient: HttpClient, private httpClientService: HttpClientService) {
     LoadLocalesTVFileText(this);
     this.tvfileTextModel$.next(<TVFileTextModel>{ Title: "Something2 for text" });
   }
 
   /* Functions public */
-  GetTVFileList(router: Router) {
-    this.BeforeHttpClient(this.tvfileGetModel$, router);
+  GetTVFileList() {
+    this.httpClientService.BeforeHttpClient(this.tvfileGetModel$);
 
     return this.httpClient.get<TVFile[]>('/api/TVFile').pipe(
       map((x: any) => {
-        this.DoSuccess(this.tvfileGetModel$, x, 'Get', null);
+        this.httpClientService.DoSuccess<TVFile>(this.tvfileListModel$, this.tvfileGetModel$, x, HttpClientCommand.Get, null);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.DoCatchError(this.tvfileGetModel$, e, 'Get');
+        this.httpClientService.DoCatchError<TVFile>(this.tvfileListModel$, this.tvfileGetModel$, e);
       })))
     );
   }
 
-  PutTVFile(tvfile: TVFile, router: Router) {
-    this.BeforeHttpClient(this.tvfilePutModel$, router);
+  PutTVFile(tvfile: TVFile) {
+    this.httpClientService.BeforeHttpClient(this.tvfilePutModel$);
 
     return this.httpClient.put<TVFile>('/api/TVFile', tvfile, { headers: new HttpHeaders() }).pipe(
       map((x: any) => {
-        this.DoSuccess(this.tvfilePutModel$, x, 'Put', tvfile);
+        this.httpClientService.DoSuccess<TVFile>(this.tvfileListModel$, this.tvfilePutModel$, x, HttpClientCommand.Put, tvfile);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.DoCatchError(this.tvfilePutModel$, e, 'Put');
+       this.httpClientService.DoCatchError<TVFile>(this.tvfileListModel$, this.tvfilePutModel$, e);
       })))
     );
   }
 
-  PostTVFile(tvfile: TVFile, router: Router) {
-    this.BeforeHttpClient(this.tvfilePostModel$, router);
+  PostTVFile(tvfile: TVFile) {
+    this.httpClientService.BeforeHttpClient(this.tvfilePostModel$);
 
     return this.httpClient.post<TVFile>('/api/TVFile', tvfile, { headers: new HttpHeaders() }).pipe(
       map((x: any) => {
-        this.DoSuccess(this.tvfilePostModel$, x, 'Post', tvfile);
+        this.httpClientService.DoSuccess<TVFile>(this.tvfileListModel$, this.tvfilePostModel$, x, HttpClientCommand.Post, tvfile);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.DoCatchError(this.tvfilePostModel$, e, 'Post');
+        this.httpClientService.DoCatchError<TVFile>(this.tvfileListModel$, this.tvfilePostModel$, e);
       })))
     );
   }
 
-  DeleteTVFile(tvfile: TVFile, router: Router) {
-    this.BeforeHttpClient(this.tvfileDeleteModel$, router);
+  DeleteTVFile(tvfile: TVFile) {
+    this.httpClientService.BeforeHttpClient(this.tvfileDeleteModel$);
 
     return this.httpClient.delete<boolean>(`/api/TVFile/${ tvfile.TVFileID }`).pipe(
       map((x: any) => {
-        this.DoSuccess(this.tvfileDeleteModel$, x, 'Delete', tvfile);
+        this.httpClientService.DoSuccess<TVFile>(this.tvfileListModel$, this.tvfileDeleteModel$, x, HttpClientCommand.Delete, tvfile);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.DoCatchError(this.tvfileDeleteModel$, e, 'Delete');
+        this.httpClientService.DoCatchError<TVFile>(this.tvfileListModel$, this.tvfileDeleteModel$, e);
       })))
     );
-  }
-
-  /* Functions private */
-  private BeforeHttpClient(httpRequestModel$: BehaviorSubject<HttpRequestModel>, router: Router) {
-    this.router = router;
-    this.oldURL = router.url;
-    httpRequestModel$.next(<HttpRequestModel>{ Working: true, Error: null, Status: null });
-  }
-
-  private DoCatchError(httpRequestModel$: BehaviorSubject<HttpRequestModel>, e: any, command: string) {
-    this.tvfileListModel$.next(null);
-    httpRequestModel$.next(<HttpRequestModel>{ Working: false, Error: <HttpErrorResponse>e, Status: 'Error' });
-
-    this.tvfileList = [];
-    console.debug(`TVFile ${ command } ERROR. Return: ${ <HttpErrorResponse>e }`);
-    this.DoReload();
-  }
-
-  private DoReload() {
-    this.router.navigateByUrl('', { skipLocationChange: true }).then(() => {
-      this.router.navigate([`/${this.oldURL}`]);
-    });
-  }
-
-  private DoSuccess(httpRequestModel$: BehaviorSubject<HttpRequestModel>, x: any, command: string, tvfile?: TVFile) {
-    console.debug(`TVFile ${ command } OK. Return: ${ x }`);
-    if (command === 'Get') {
-      this.tvfileListModel$.next(<TVFile[]>x);
-    }
-    if (command === 'Put') {
-      this.tvfileListModel$.getValue()[0] = <TVFile>x;
-    }
-    if (command === 'Post') {
-      this.tvfileListModel$.getValue().push(<TVFile>x);
-    }
-    if (command === 'Delete') {
-      const index = this.tvfileListModel$.getValue().indexOf(tvfile);
-      this.tvfileListModel$.getValue().splice(index, 1);
-    }
-
-    this.tvfileListModel$.next(this.tvfileListModel$.getValue());
-    httpRequestModel$.next(<HttpRequestModel>{ Working: false, Error: null, Status: 'ok' });
-    this.tvfileList = this.tvfileListModel$.getValue();
-    this.DoReload();
   }
 }

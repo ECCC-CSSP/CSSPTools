@@ -8,12 +8,14 @@
 import { Component, OnInit, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
 import { VPScenarioService } from './vpscenario.service';
 import { LoadLocalesVPScenarioText } from './vpscenario.locales';
-import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { ScenarioStatusEnum_GetIDText, ScenarioStatusEnum_GetOrderedText } from '../../../enums/generated/ScenarioStatusEnum';
 import { VPScenario } from '../../../models/generated/VPScenario.model';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
 import { EnumIDAndText } from '../../../models/enumidandtext.model';
+import { HttpClientService } from '../../../services/http-client.service';
+import { Router } from '@angular/router';
+import { HttpClientCommand } from '../../../enums/app.enums';
 
 @Component({
   selector: 'app-vpscenario',
@@ -27,22 +29,24 @@ export class VPScenarioComponent implements OnInit, OnDestroy {
   vpscenarioFormPut: FormGroup;
   vpscenarioFormPost: FormGroup;
 
-  constructor(public vpscenarioService: VPScenarioService, public router: Router, public fb: FormBuilder) { }
+  constructor(public vpscenarioService: VPScenarioService, private router: Router, private httpClientService: HttpClientService, private fb: FormBuilder) {
+    httpClientService.oldURL = router.url;
+  }
 
   GetVPScenarioList() {
-    this.sub = this.vpscenarioService.GetVPScenarioList(this.router).subscribe();
+    this.sub = this.vpscenarioService.GetVPScenarioList().subscribe();
   }
 
   PutVPScenario(vpscenario: VPScenario) {
-    this.sub = this.vpscenarioService.PutVPScenario(vpscenario, this.router).subscribe();
+    this.sub = this.vpscenarioService.PutVPScenario(vpscenario).subscribe();
   }
 
   PostVPScenario(vpscenario: VPScenario) {
-    this.sub = this.vpscenarioService.PostVPScenario(vpscenario, this.router).subscribe();
+    this.sub = this.vpscenarioService.PostVPScenario(vpscenario).subscribe();
   }
 
   DeleteVPScenario(vpscenario: VPScenario) {
-    this.sub = this.vpscenarioService.DeleteVPScenario(vpscenario, this.router).subscribe();
+    this.sub = this.vpscenarioService.DeleteVPScenario(vpscenario).subscribe();
   }
 
   GetScenarioStatusEnumText(enumID: number) {
@@ -52,8 +56,8 @@ export class VPScenarioComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     LoadLocalesVPScenarioText(this.vpscenarioService);
     this.vPScenarioStatusList = ScenarioStatusEnum_GetOrderedText();
-    this.FillFormBuilderGroup('Add');
-    this.FillFormBuilderGroup('Update');
+    this.FillFormBuilderGroup(HttpClientCommand.Post);
+    this.FillFormBuilderGroup(HttpClientCommand.Put);
   }
 
   ngOnDestroy() {
@@ -62,124 +66,124 @@ export class VPScenarioComponent implements OnInit, OnDestroy {
     }
   }
 
-  FillFormBuilderGroup(AddOrUpdate: string) {
-    if (this.vpscenarioService.vpscenarioList.length) {
+  FillFormBuilderGroup(httpClientCommand: HttpClientCommand) {
+    if (this.vpscenarioService.vpscenarioListModel$.getValue().length) {
       let formGroup: FormGroup = this.fb.group(
         {
           VPScenarioID: [
             {
-              value: (AddOrUpdate === 'Add' ? 0 : (this.vpscenarioService.vpscenarioList[0]?.VPScenarioID)),
+              value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.vpscenarioService.vpscenarioListModel$.getValue()[0]?.VPScenarioID)),
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
           InfrastructureTVItemID: [
             {
-              value: this.vpscenarioService.vpscenarioList[0]?.InfrastructureTVItemID,
+              value: this.vpscenarioService.vpscenarioListModel$.getValue()[0]?.InfrastructureTVItemID,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
           VPScenarioStatus: [
             {
-              value: this.vpscenarioService.vpscenarioList[0]?.VPScenarioStatus,
+              value: this.vpscenarioService.vpscenarioListModel$.getValue()[0]?.VPScenarioStatus,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
           UseAsBestEstimate: [
             {
-              value: this.vpscenarioService.vpscenarioList[0]?.UseAsBestEstimate,
+              value: this.vpscenarioService.vpscenarioListModel$.getValue()[0]?.UseAsBestEstimate,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
           EffluentFlow_m3_s: [
             {
-              value: this.vpscenarioService.vpscenarioList[0]?.EffluentFlow_m3_s,
+              value: this.vpscenarioService.vpscenarioListModel$.getValue()[0]?.EffluentFlow_m3_s,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.min(0), Validators.max(1000) ]],
           EffluentConcentration_MPN_100ml: [
             {
-              value: this.vpscenarioService.vpscenarioList[0]?.EffluentConcentration_MPN_100ml,
+              value: this.vpscenarioService.vpscenarioListModel$.getValue()[0]?.EffluentConcentration_MPN_100ml,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.min(0), Validators.max(10000000) ]],
           FroudeNumber: [
             {
-              value: this.vpscenarioService.vpscenarioList[0]?.FroudeNumber,
+              value: this.vpscenarioService.vpscenarioListModel$.getValue()[0]?.FroudeNumber,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.min(0), Validators.max(10000) ]],
           PortDiameter_m: [
             {
-              value: this.vpscenarioService.vpscenarioList[0]?.PortDiameter_m,
+              value: this.vpscenarioService.vpscenarioListModel$.getValue()[0]?.PortDiameter_m,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.min(0), Validators.max(10) ]],
           PortDepth_m: [
             {
-              value: this.vpscenarioService.vpscenarioList[0]?.PortDepth_m,
+              value: this.vpscenarioService.vpscenarioListModel$.getValue()[0]?.PortDepth_m,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.min(0), Validators.max(1000) ]],
           PortElevation_m: [
             {
-              value: this.vpscenarioService.vpscenarioList[0]?.PortElevation_m,
+              value: this.vpscenarioService.vpscenarioListModel$.getValue()[0]?.PortElevation_m,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.min(0), Validators.max(1000) ]],
           VerticalAngle_deg: [
             {
-              value: this.vpscenarioService.vpscenarioList[0]?.VerticalAngle_deg,
+              value: this.vpscenarioService.vpscenarioListModel$.getValue()[0]?.VerticalAngle_deg,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.min(-90), Validators.max(90) ]],
           HorizontalAngle_deg: [
             {
-              value: this.vpscenarioService.vpscenarioList[0]?.HorizontalAngle_deg,
+              value: this.vpscenarioService.vpscenarioListModel$.getValue()[0]?.HorizontalAngle_deg,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.min(-180), Validators.max(180) ]],
           NumberOfPorts: [
             {
-              value: this.vpscenarioService.vpscenarioList[0]?.NumberOfPorts,
+              value: this.vpscenarioService.vpscenarioListModel$.getValue()[0]?.NumberOfPorts,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.min(1), Validators.max(100) ]],
           PortSpacing_m: [
             {
-              value: this.vpscenarioService.vpscenarioList[0]?.PortSpacing_m,
+              value: this.vpscenarioService.vpscenarioListModel$.getValue()[0]?.PortSpacing_m,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.min(0), Validators.max(1000) ]],
           AcuteMixZone_m: [
             {
-              value: this.vpscenarioService.vpscenarioList[0]?.AcuteMixZone_m,
+              value: this.vpscenarioService.vpscenarioListModel$.getValue()[0]?.AcuteMixZone_m,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.min(0), Validators.max(100) ]],
           ChronicMixZone_m: [
             {
-              value: this.vpscenarioService.vpscenarioList[0]?.ChronicMixZone_m,
+              value: this.vpscenarioService.vpscenarioListModel$.getValue()[0]?.ChronicMixZone_m,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.min(0), Validators.max(40000) ]],
           EffluentSalinity_PSU: [
             {
-              value: this.vpscenarioService.vpscenarioList[0]?.EffluentSalinity_PSU,
+              value: this.vpscenarioService.vpscenarioListModel$.getValue()[0]?.EffluentSalinity_PSU,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.min(0), Validators.max(40) ]],
           EffluentTemperature_C: [
             {
-              value: this.vpscenarioService.vpscenarioList[0]?.EffluentTemperature_C,
+              value: this.vpscenarioService.vpscenarioListModel$.getValue()[0]?.EffluentTemperature_C,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.min(-10), Validators.max(40) ]],
           EffluentVelocity_m_s: [
             {
-              value: this.vpscenarioService.vpscenarioList[0]?.EffluentVelocity_m_s,
+              value: this.vpscenarioService.vpscenarioListModel$.getValue()[0]?.EffluentVelocity_m_s,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.min(0), Validators.max(100) ]],
           RawResults: [
             {
-              value: this.vpscenarioService.vpscenarioList[0]?.RawResults,
+              value: this.vpscenarioService.vpscenarioListModel$.getValue()[0]?.RawResults,
               disabled: false
-            }, [ Validators.required ]],
+            }],
           LastUpdateDate_UTC: [
             {
-              value: this.vpscenarioService.vpscenarioList[0]?.LastUpdateDate_UTC,
+              value: this.vpscenarioService.vpscenarioListModel$.getValue()[0]?.LastUpdateDate_UTC,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
           LastUpdateContactTVItemID: [
             {
-              value: this.vpscenarioService.vpscenarioList[0]?.LastUpdateContactTVItemID,
+              value: this.vpscenarioService.vpscenarioListModel$.getValue()[0]?.LastUpdateContactTVItemID,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
         }
       );
 
-      if (AddOrUpdate === 'Add') {
+      if (httpClientCommand === HttpClientCommand.Post) {
         this.vpscenarioFormPost = formGroup
       }
       else {

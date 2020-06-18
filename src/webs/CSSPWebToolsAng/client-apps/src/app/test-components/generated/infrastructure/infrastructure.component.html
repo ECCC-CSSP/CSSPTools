@@ -5,7 +5,7 @@
  *
 -->
 
-<mat-progress-bar mode="indeterminate" *ngIf="infrastructureService.infrastructureGetModel$.getValue().Working"></mat-progress-bar>
+<mat-progress-bar mode="indeterminate" *ngIf="infrastructureService.infrastructureGetModel$.getValue()?.Working"></mat-progress-bar>
 <mat-card>
   <mat-card-header>
     <mat-card-title>
@@ -17,8 +17,8 @@
     <mat-card-subtitle>{{ infrastructureService.infrastructureTextModel$.getValue().Title }}</mat-card-subtitle>
   </mat-card-header>
   <mat-card-content>
-    <mat-list>
-      <mat-list-item *ngFor="let infrastructure of infrastructureService.infrastructureList">
+    <mat-list *ngIf="infrastructureService.infrastructureListModel$.getValue()?.length">
+      <mat-list-item *ngFor="let infrastructure of infrastructureService.infrastructureListModel$.getValue()">
         <span mat-line>
           <button mat-raised-button (click)="DeleteInfrastructure(infrastructure)">
             <span>Delete InfrastructureID [{{ infrastructure.InfrastructureID }}]&nbsp;&nbsp;&nbsp;</span>
@@ -117,7 +117,7 @@
     <mat-card-title>Edit Infrastructure testing</mat-card-title>
   </mat-card-header>
   <mat-card-content>
-    <div *ngIf="infrastructureService.infrastructureList.length">
+    <div *ngIf="infrastructureService.infrastructureListModel$.getValue()?.length">
       <blockquote>
         <form [formGroup]="infrastructureFormPut" (ngSubmit)="PutInfrastructure(infrastructureFormPut.value)">
           <h3>
@@ -132,36 +132,74 @@
             <mat-form-field>
               <mat-label>InfrastructureID</mat-label>
               <input matInput type="number" formControlName="InfrastructureID">
+              <mat-error *ngIf="infrastructureFormPut.controls.InfrastructureID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>InfrastructureTVItemID</mat-label>
               <input matInput type="number" formControlName="InfrastructureTVItemID">
+              <mat-error *ngIf="infrastructureFormPut.controls.InfrastructureTVItemID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>PrismID</mat-label>
               <input matInput type="number" formControlName="PrismID">
+              <mat-error *ngIf="infrastructureFormPut.controls.PrismID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.min">Min - 0<br /></span>
+                <span *ngIf="e.min">Max - 100000<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>TPID</mat-label>
               <input matInput type="number" formControlName="TPID">
+              <mat-error *ngIf="infrastructureFormPut.controls.TPID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.min">Min - 0<br /></span>
+                <span *ngIf="e.min">Max - 100000<br /></span>
+              </mat-error>
             </mat-form-field>
           </p>
           <p>
             <mat-form-field>
               <mat-label>LSID</mat-label>
               <input matInput type="number" formControlName="LSID">
+              <mat-error *ngIf="infrastructureFormPut.controls.LSID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.min">Min - 0<br /></span>
+                <span *ngIf="e.min">Max - 100000<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>SiteID</mat-label>
               <input matInput type="number" formControlName="SiteID">
+              <mat-error *ngIf="infrastructureFormPut.controls.SiteID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.min">Min - 0<br /></span>
+                <span *ngIf="e.min">Max - 100000<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>Site</mat-label>
               <input matInput type="number" formControlName="Site">
+              <mat-error *ngIf="infrastructureFormPut.controls.Site.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.min">Min - 0<br /></span>
+                <span *ngIf="e.min">Max - 100000<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>InfrastructureCategory</mat-label>
               <input matInput type="text" formControlName="InfrastructureCategory">
+              <mat-error *ngIf="infrastructureFormPut.controls.InfrastructureCategory.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.minlength">MinLength - 1<br /></span>
+                <span *ngIf="e.maxlength">MaxLength - 1<br /></span>
+              </mat-error>
             </mat-form-field>
           </p>
           <p>
@@ -172,6 +210,9 @@
                   {{ a.EnumText }}
                 </mat-option>
               </mat-select>
+              <mat-error *ngIf="infrastructureFormPut.controls.InfrastructureType.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>FacilityType</mat-label>
@@ -180,24 +221,43 @@
                   {{ a.EnumText }}
                 </mat-option>
               </mat-select>
+              <mat-error *ngIf="infrastructureFormPut.controls.FacilityType.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>HasBackupPower</mat-label>
               <input matInput type="text" formControlName="HasBackupPower">
+              <mat-error *ngIf="infrastructureFormPut.controls.HasBackupPower.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>IsMechanicallyAerated</mat-label>
               <input matInput type="text" formControlName="IsMechanicallyAerated">
+              <mat-error *ngIf="infrastructureFormPut.controls.IsMechanicallyAerated.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+              </mat-error>
             </mat-form-field>
           </p>
           <p>
             <mat-form-field>
               <mat-label>NumberOfCells</mat-label>
               <input matInput type="number" formControlName="NumberOfCells">
+              <mat-error *ngIf="infrastructureFormPut.controls.NumberOfCells.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.min">Min - 0<br /></span>
+                <span *ngIf="e.min">Max - 10<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>NumberOfAeratedCells</mat-label>
               <input matInput type="number" formControlName="NumberOfAeratedCells">
+              <mat-error *ngIf="infrastructureFormPut.controls.NumberOfAeratedCells.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.min">Min - 0<br /></span>
+                <span *ngIf="e.min">Max - 10<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>AerationType</mat-label>
@@ -206,6 +266,9 @@
                   {{ a.EnumText }}
                 </mat-option>
               </mat-select>
+              <mat-error *ngIf="infrastructureFormPut.controls.AerationType.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>PreliminaryTreatmentType</mat-label>
@@ -214,6 +277,9 @@
                   {{ a.EnumText }}
                 </mat-option>
               </mat-select>
+              <mat-error *ngIf="infrastructureFormPut.controls.PreliminaryTreatmentType.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+              </mat-error>
             </mat-form-field>
           </p>
           <p>
@@ -224,6 +290,9 @@
                   {{ a.EnumText }}
                 </mat-option>
               </mat-select>
+              <mat-error *ngIf="infrastructureFormPut.controls.PrimaryTreatmentType.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>SecondaryTreatmentType</mat-label>
@@ -232,6 +301,9 @@
                   {{ a.EnumText }}
                 </mat-option>
               </mat-select>
+              <mat-error *ngIf="infrastructureFormPut.controls.SecondaryTreatmentType.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>TertiaryTreatmentType</mat-label>
@@ -240,6 +312,9 @@
                   {{ a.EnumText }}
                 </mat-option>
               </mat-select>
+              <mat-error *ngIf="infrastructureFormPut.controls.TertiaryTreatmentType.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>TreatmentType</mat-label>
@@ -248,6 +323,9 @@
                   {{ a.EnumText }}
                 </mat-option>
               </mat-select>
+              <mat-error *ngIf="infrastructureFormPut.controls.TreatmentType.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+              </mat-error>
             </mat-form-field>
           </p>
           <p>
@@ -258,6 +336,9 @@
                   {{ a.EnumText }}
                 </mat-option>
               </mat-select>
+              <mat-error *ngIf="infrastructureFormPut.controls.DisinfectionType.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>CollectionSystemType</mat-label>
@@ -266,6 +347,9 @@
                   {{ a.EnumText }}
                 </mat-option>
               </mat-select>
+              <mat-error *ngIf="infrastructureFormPut.controls.CollectionSystemType.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>AlarmSystemType</mat-label>
@@ -274,28 +358,54 @@
                   {{ a.EnumText }}
                 </mat-option>
               </mat-select>
+              <mat-error *ngIf="infrastructureFormPut.controls.AlarmSystemType.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>DesignFlow_m3_day</mat-label>
               <input matInput type="number" formControlName="DesignFlow_m3_day">
+              <mat-error *ngIf="infrastructureFormPut.controls.DesignFlow_m3_day.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.min">Min - 0<br /></span>
+                <span *ngIf="e.min">Max - 1000000<br /></span>
+              </mat-error>
             </mat-form-field>
           </p>
           <p>
             <mat-form-field>
               <mat-label>AverageFlow_m3_day</mat-label>
               <input matInput type="number" formControlName="AverageFlow_m3_day">
+              <mat-error *ngIf="infrastructureFormPut.controls.AverageFlow_m3_day.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.min">Min - 0<br /></span>
+                <span *ngIf="e.min">Max - 1000000<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>PeakFlow_m3_day</mat-label>
               <input matInput type="number" formControlName="PeakFlow_m3_day">
+              <mat-error *ngIf="infrastructureFormPut.controls.PeakFlow_m3_day.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.min">Min - 0<br /></span>
+                <span *ngIf="e.min">Max - 1000000<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>PopServed</mat-label>
               <input matInput type="number" formControlName="PopServed">
+              <mat-error *ngIf="infrastructureFormPut.controls.PopServed.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.min">Min - 0<br /></span>
+                <span *ngIf="e.min">Max - 1000000<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>CanOverflow</mat-label>
               <input matInput type="text" formControlName="CanOverflow">
+              <mat-error *ngIf="infrastructureFormPut.controls.CanOverflow.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+              </mat-error>
             </mat-form-field>
           </p>
           <p>
@@ -306,100 +416,200 @@
                   {{ a.EnumText }}
                 </mat-option>
               </mat-select>
+              <mat-error *ngIf="infrastructureFormPut.controls.ValveType.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>PercFlowOfTotal</mat-label>
               <input matInput type="number" formControlName="PercFlowOfTotal">
+              <mat-error *ngIf="infrastructureFormPut.controls.PercFlowOfTotal.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.min">Min - 0<br /></span>
+                <span *ngIf="e.min">Max - 100<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>TimeOffset_hour</mat-label>
               <input matInput type="number" formControlName="TimeOffset_hour">
+              <mat-error *ngIf="infrastructureFormPut.controls.TimeOffset_hour.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.min">Min - -10<br /></span>
+                <span *ngIf="e.min">Max - 0<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>TempCatchAllRemoveLater</mat-label>
               <input matInput type="text" formControlName="TempCatchAllRemoveLater">
+              <mat-error *ngIf="infrastructureFormPut.controls.TempCatchAllRemoveLater.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+              </mat-error>
             </mat-form-field>
           </p>
           <p>
             <mat-form-field>
               <mat-label>AverageDepth_m</mat-label>
               <input matInput type="number" formControlName="AverageDepth_m">
+              <mat-error *ngIf="infrastructureFormPut.controls.AverageDepth_m.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.min">Min - 0<br /></span>
+                <span *ngIf="e.min">Max - 1000<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>NumberOfPorts</mat-label>
               <input matInput type="number" formControlName="NumberOfPorts">
+              <mat-error *ngIf="infrastructureFormPut.controls.NumberOfPorts.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.min">Min - 1<br /></span>
+                <span *ngIf="e.min">Max - 1000<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>PortDiameter_m</mat-label>
               <input matInput type="number" formControlName="PortDiameter_m">
+              <mat-error *ngIf="infrastructureFormPut.controls.PortDiameter_m.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.min">Min - 0<br /></span>
+                <span *ngIf="e.min">Max - 10<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>PortSpacing_m</mat-label>
               <input matInput type="number" formControlName="PortSpacing_m">
+              <mat-error *ngIf="infrastructureFormPut.controls.PortSpacing_m.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.min">Min - 0<br /></span>
+                <span *ngIf="e.min">Max - 10000<br /></span>
+              </mat-error>
             </mat-form-field>
           </p>
           <p>
             <mat-form-field>
               <mat-label>PortElevation_m</mat-label>
               <input matInput type="number" formControlName="PortElevation_m">
+              <mat-error *ngIf="infrastructureFormPut.controls.PortElevation_m.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.min">Min - 0<br /></span>
+                <span *ngIf="e.min">Max - 1000<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>VerticalAngle_deg</mat-label>
               <input matInput type="number" formControlName="VerticalAngle_deg">
+              <mat-error *ngIf="infrastructureFormPut.controls.VerticalAngle_deg.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.min">Min - -90<br /></span>
+                <span *ngIf="e.min">Max - 90<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>HorizontalAngle_deg</mat-label>
               <input matInput type="number" formControlName="HorizontalAngle_deg">
+              <mat-error *ngIf="infrastructureFormPut.controls.HorizontalAngle_deg.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.min">Min - -180<br /></span>
+                <span *ngIf="e.min">Max - 180<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>DecayRate_per_day</mat-label>
               <input matInput type="number" formControlName="DecayRate_per_day">
+              <mat-error *ngIf="infrastructureFormPut.controls.DecayRate_per_day.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.min">Min - 0<br /></span>
+                <span *ngIf="e.min">Max - 100<br /></span>
+              </mat-error>
             </mat-form-field>
           </p>
           <p>
             <mat-form-field>
               <mat-label>NearFieldVelocity_m_s</mat-label>
               <input matInput type="number" formControlName="NearFieldVelocity_m_s">
+              <mat-error *ngIf="infrastructureFormPut.controls.NearFieldVelocity_m_s.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.min">Min - 0<br /></span>
+                <span *ngIf="e.min">Max - 10<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>FarFieldVelocity_m_s</mat-label>
               <input matInput type="number" formControlName="FarFieldVelocity_m_s">
+              <mat-error *ngIf="infrastructureFormPut.controls.FarFieldVelocity_m_s.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.min">Min - 0<br /></span>
+                <span *ngIf="e.min">Max - 10<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>ReceivingWaterSalinity_PSU</mat-label>
               <input matInput type="number" formControlName="ReceivingWaterSalinity_PSU">
+              <mat-error *ngIf="infrastructureFormPut.controls.ReceivingWaterSalinity_PSU.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.min">Min - 0<br /></span>
+                <span *ngIf="e.min">Max - 40<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>ReceivingWaterTemperature_C</mat-label>
               <input matInput type="number" formControlName="ReceivingWaterTemperature_C">
+              <mat-error *ngIf="infrastructureFormPut.controls.ReceivingWaterTemperature_C.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.min">Min - -10<br /></span>
+                <span *ngIf="e.min">Max - 40<br /></span>
+              </mat-error>
             </mat-form-field>
           </p>
           <p>
             <mat-form-field>
               <mat-label>ReceivingWater_MPN_per_100ml</mat-label>
               <input matInput type="number" formControlName="ReceivingWater_MPN_per_100ml">
+              <mat-error *ngIf="infrastructureFormPut.controls.ReceivingWater_MPN_per_100ml.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.min">Min - 0<br /></span>
+                <span *ngIf="e.min">Max - 10000000<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>DistanceFromShore_m</mat-label>
               <input matInput type="number" formControlName="DistanceFromShore_m">
+              <mat-error *ngIf="infrastructureFormPut.controls.DistanceFromShore_m.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.min">Min - 0<br /></span>
+                <span *ngIf="e.min">Max - 1000<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>SeeOtherMunicipalityTVItemID</mat-label>
               <input matInput type="number" formControlName="SeeOtherMunicipalityTVItemID">
+              <mat-error *ngIf="infrastructureFormPut.controls.SeeOtherMunicipalityTVItemID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>CivicAddressTVItemID</mat-label>
               <input matInput type="number" formControlName="CivicAddressTVItemID">
+              <mat-error *ngIf="infrastructureFormPut.controls.CivicAddressTVItemID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+              </mat-error>
             </mat-form-field>
           </p>
           <p>
             <mat-form-field>
               <mat-label>LastUpdateDate_UTC</mat-label>
               <input matInput type="text" formControlName="LastUpdateDate_UTC">
+              <mat-error *ngIf="infrastructureFormPut.controls.LastUpdateDate_UTC.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>LastUpdateContactTVItemID</mat-label>
               <input matInput type="number" formControlName="LastUpdateContactTVItemID">
+              <mat-error *ngIf="infrastructureFormPut.controls.LastUpdateContactTVItemID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
           </p>
         </form>
@@ -414,7 +624,7 @@
     <mat-card-title>Add Infrastructure testing</mat-card-title>
   </mat-card-header>
   <mat-card-content>
-    <div *ngIf="infrastructureService.infrastructureList.length">
+    <div *ngIf="infrastructureService.infrastructureListModel$.getValue()?.length">
       <blockquote>
         <form [formGroup]="infrastructureFormPost" (ngSubmit)="PostInfrastructure(infrastructureFormPost.value)">
           <h3>
@@ -429,36 +639,74 @@
             <mat-form-field>
               <mat-label>InfrastructureID</mat-label>
               <input matInput type="number" formControlName="InfrastructureID">
+              <mat-error *ngIf="infrastructureFormPut.controls.InfrastructureID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>InfrastructureTVItemID</mat-label>
               <input matInput type="number" formControlName="InfrastructureTVItemID">
+              <mat-error *ngIf="infrastructureFormPut.controls.InfrastructureTVItemID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>PrismID</mat-label>
               <input matInput type="number" formControlName="PrismID">
+              <mat-error *ngIf="infrastructureFormPut.controls.PrismID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.min">Min - 0<br /></span>
+                <span *ngIf="e.min">Max - 100000<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>TPID</mat-label>
               <input matInput type="number" formControlName="TPID">
+              <mat-error *ngIf="infrastructureFormPut.controls.TPID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.min">Min - 0<br /></span>
+                <span *ngIf="e.min">Max - 100000<br /></span>
+              </mat-error>
             </mat-form-field>
           </p>
           <p>
             <mat-form-field>
               <mat-label>LSID</mat-label>
               <input matInput type="number" formControlName="LSID">
+              <mat-error *ngIf="infrastructureFormPut.controls.LSID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.min">Min - 0<br /></span>
+                <span *ngIf="e.min">Max - 100000<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>SiteID</mat-label>
               <input matInput type="number" formControlName="SiteID">
+              <mat-error *ngIf="infrastructureFormPut.controls.SiteID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.min">Min - 0<br /></span>
+                <span *ngIf="e.min">Max - 100000<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>Site</mat-label>
               <input matInput type="number" formControlName="Site">
+              <mat-error *ngIf="infrastructureFormPut.controls.Site.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.min">Min - 0<br /></span>
+                <span *ngIf="e.min">Max - 100000<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>InfrastructureCategory</mat-label>
               <input matInput type="text" formControlName="InfrastructureCategory">
+              <mat-error *ngIf="infrastructureFormPut.controls.InfrastructureCategory.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.minlength">MinLength - 1<br /></span>
+                <span *ngIf="e.maxlength">MaxLength - 1<br /></span>
+              </mat-error>
             </mat-form-field>
           </p>
           <p>
@@ -469,6 +717,9 @@
                   {{ a.EnumText }}
                 </mat-option>
               </mat-select>
+              <mat-error *ngIf="infrastructureFormPut.controls.InfrastructureType.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>FacilityType</mat-label>
@@ -477,24 +728,43 @@
                   {{ a.EnumText }}
                 </mat-option>
               </mat-select>
+              <mat-error *ngIf="infrastructureFormPut.controls.FacilityType.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>HasBackupPower</mat-label>
               <input matInput type="text" formControlName="HasBackupPower">
+              <mat-error *ngIf="infrastructureFormPut.controls.HasBackupPower.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>IsMechanicallyAerated</mat-label>
               <input matInput type="text" formControlName="IsMechanicallyAerated">
+              <mat-error *ngIf="infrastructureFormPut.controls.IsMechanicallyAerated.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+              </mat-error>
             </mat-form-field>
           </p>
           <p>
             <mat-form-field>
               <mat-label>NumberOfCells</mat-label>
               <input matInput type="number" formControlName="NumberOfCells">
+              <mat-error *ngIf="infrastructureFormPut.controls.NumberOfCells.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.min">Min - 0<br /></span>
+                <span *ngIf="e.min">Max - 10<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>NumberOfAeratedCells</mat-label>
               <input matInput type="number" formControlName="NumberOfAeratedCells">
+              <mat-error *ngIf="infrastructureFormPut.controls.NumberOfAeratedCells.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.min">Min - 0<br /></span>
+                <span *ngIf="e.min">Max - 10<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>AerationType</mat-label>
@@ -503,6 +773,9 @@
                   {{ a.EnumText }}
                 </mat-option>
               </mat-select>
+              <mat-error *ngIf="infrastructureFormPut.controls.AerationType.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>PreliminaryTreatmentType</mat-label>
@@ -511,6 +784,9 @@
                   {{ a.EnumText }}
                 </mat-option>
               </mat-select>
+              <mat-error *ngIf="infrastructureFormPut.controls.PreliminaryTreatmentType.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+              </mat-error>
             </mat-form-field>
           </p>
           <p>
@@ -521,6 +797,9 @@
                   {{ a.EnumText }}
                 </mat-option>
               </mat-select>
+              <mat-error *ngIf="infrastructureFormPut.controls.PrimaryTreatmentType.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>SecondaryTreatmentType</mat-label>
@@ -529,6 +808,9 @@
                   {{ a.EnumText }}
                 </mat-option>
               </mat-select>
+              <mat-error *ngIf="infrastructureFormPut.controls.SecondaryTreatmentType.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>TertiaryTreatmentType</mat-label>
@@ -537,6 +819,9 @@
                   {{ a.EnumText }}
                 </mat-option>
               </mat-select>
+              <mat-error *ngIf="infrastructureFormPut.controls.TertiaryTreatmentType.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>TreatmentType</mat-label>
@@ -545,6 +830,9 @@
                   {{ a.EnumText }}
                 </mat-option>
               </mat-select>
+              <mat-error *ngIf="infrastructureFormPut.controls.TreatmentType.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+              </mat-error>
             </mat-form-field>
           </p>
           <p>
@@ -555,6 +843,9 @@
                   {{ a.EnumText }}
                 </mat-option>
               </mat-select>
+              <mat-error *ngIf="infrastructureFormPut.controls.DisinfectionType.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>CollectionSystemType</mat-label>
@@ -563,6 +854,9 @@
                   {{ a.EnumText }}
                 </mat-option>
               </mat-select>
+              <mat-error *ngIf="infrastructureFormPut.controls.CollectionSystemType.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>AlarmSystemType</mat-label>
@@ -571,28 +865,54 @@
                   {{ a.EnumText }}
                 </mat-option>
               </mat-select>
+              <mat-error *ngIf="infrastructureFormPut.controls.AlarmSystemType.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>DesignFlow_m3_day</mat-label>
               <input matInput type="number" formControlName="DesignFlow_m3_day">
+              <mat-error *ngIf="infrastructureFormPut.controls.DesignFlow_m3_day.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.min">Min - 0<br /></span>
+                <span *ngIf="e.min">Max - 1000000<br /></span>
+              </mat-error>
             </mat-form-field>
           </p>
           <p>
             <mat-form-field>
               <mat-label>AverageFlow_m3_day</mat-label>
               <input matInput type="number" formControlName="AverageFlow_m3_day">
+              <mat-error *ngIf="infrastructureFormPut.controls.AverageFlow_m3_day.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.min">Min - 0<br /></span>
+                <span *ngIf="e.min">Max - 1000000<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>PeakFlow_m3_day</mat-label>
               <input matInput type="number" formControlName="PeakFlow_m3_day">
+              <mat-error *ngIf="infrastructureFormPut.controls.PeakFlow_m3_day.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.min">Min - 0<br /></span>
+                <span *ngIf="e.min">Max - 1000000<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>PopServed</mat-label>
               <input matInput type="number" formControlName="PopServed">
+              <mat-error *ngIf="infrastructureFormPut.controls.PopServed.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.min">Min - 0<br /></span>
+                <span *ngIf="e.min">Max - 1000000<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>CanOverflow</mat-label>
               <input matInput type="text" formControlName="CanOverflow">
+              <mat-error *ngIf="infrastructureFormPut.controls.CanOverflow.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+              </mat-error>
             </mat-form-field>
           </p>
           <p>
@@ -603,100 +923,200 @@
                   {{ a.EnumText }}
                 </mat-option>
               </mat-select>
+              <mat-error *ngIf="infrastructureFormPut.controls.ValveType.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>PercFlowOfTotal</mat-label>
               <input matInput type="number" formControlName="PercFlowOfTotal">
+              <mat-error *ngIf="infrastructureFormPut.controls.PercFlowOfTotal.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.min">Min - 0<br /></span>
+                <span *ngIf="e.min">Max - 100<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>TimeOffset_hour</mat-label>
               <input matInput type="number" formControlName="TimeOffset_hour">
+              <mat-error *ngIf="infrastructureFormPut.controls.TimeOffset_hour.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.min">Min - -10<br /></span>
+                <span *ngIf="e.min">Max - 0<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>TempCatchAllRemoveLater</mat-label>
               <input matInput type="text" formControlName="TempCatchAllRemoveLater">
+              <mat-error *ngIf="infrastructureFormPut.controls.TempCatchAllRemoveLater.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+              </mat-error>
             </mat-form-field>
           </p>
           <p>
             <mat-form-field>
               <mat-label>AverageDepth_m</mat-label>
               <input matInput type="number" formControlName="AverageDepth_m">
+              <mat-error *ngIf="infrastructureFormPut.controls.AverageDepth_m.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.min">Min - 0<br /></span>
+                <span *ngIf="e.min">Max - 1000<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>NumberOfPorts</mat-label>
               <input matInput type="number" formControlName="NumberOfPorts">
+              <mat-error *ngIf="infrastructureFormPut.controls.NumberOfPorts.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.min">Min - 1<br /></span>
+                <span *ngIf="e.min">Max - 1000<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>PortDiameter_m</mat-label>
               <input matInput type="number" formControlName="PortDiameter_m">
+              <mat-error *ngIf="infrastructureFormPut.controls.PortDiameter_m.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.min">Min - 0<br /></span>
+                <span *ngIf="e.min">Max - 10<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>PortSpacing_m</mat-label>
               <input matInput type="number" formControlName="PortSpacing_m">
+              <mat-error *ngIf="infrastructureFormPut.controls.PortSpacing_m.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.min">Min - 0<br /></span>
+                <span *ngIf="e.min">Max - 10000<br /></span>
+              </mat-error>
             </mat-form-field>
           </p>
           <p>
             <mat-form-field>
               <mat-label>PortElevation_m</mat-label>
               <input matInput type="number" formControlName="PortElevation_m">
+              <mat-error *ngIf="infrastructureFormPut.controls.PortElevation_m.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.min">Min - 0<br /></span>
+                <span *ngIf="e.min">Max - 1000<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>VerticalAngle_deg</mat-label>
               <input matInput type="number" formControlName="VerticalAngle_deg">
+              <mat-error *ngIf="infrastructureFormPut.controls.VerticalAngle_deg.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.min">Min - -90<br /></span>
+                <span *ngIf="e.min">Max - 90<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>HorizontalAngle_deg</mat-label>
               <input matInput type="number" formControlName="HorizontalAngle_deg">
+              <mat-error *ngIf="infrastructureFormPut.controls.HorizontalAngle_deg.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.min">Min - -180<br /></span>
+                <span *ngIf="e.min">Max - 180<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>DecayRate_per_day</mat-label>
               <input matInput type="number" formControlName="DecayRate_per_day">
+              <mat-error *ngIf="infrastructureFormPut.controls.DecayRate_per_day.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.min">Min - 0<br /></span>
+                <span *ngIf="e.min">Max - 100<br /></span>
+              </mat-error>
             </mat-form-field>
           </p>
           <p>
             <mat-form-field>
               <mat-label>NearFieldVelocity_m_s</mat-label>
               <input matInput type="number" formControlName="NearFieldVelocity_m_s">
+              <mat-error *ngIf="infrastructureFormPut.controls.NearFieldVelocity_m_s.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.min">Min - 0<br /></span>
+                <span *ngIf="e.min">Max - 10<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>FarFieldVelocity_m_s</mat-label>
               <input matInput type="number" formControlName="FarFieldVelocity_m_s">
+              <mat-error *ngIf="infrastructureFormPut.controls.FarFieldVelocity_m_s.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.min">Min - 0<br /></span>
+                <span *ngIf="e.min">Max - 10<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>ReceivingWaterSalinity_PSU</mat-label>
               <input matInput type="number" formControlName="ReceivingWaterSalinity_PSU">
+              <mat-error *ngIf="infrastructureFormPut.controls.ReceivingWaterSalinity_PSU.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.min">Min - 0<br /></span>
+                <span *ngIf="e.min">Max - 40<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>ReceivingWaterTemperature_C</mat-label>
               <input matInput type="number" formControlName="ReceivingWaterTemperature_C">
+              <mat-error *ngIf="infrastructureFormPut.controls.ReceivingWaterTemperature_C.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.min">Min - -10<br /></span>
+                <span *ngIf="e.min">Max - 40<br /></span>
+              </mat-error>
             </mat-form-field>
           </p>
           <p>
             <mat-form-field>
               <mat-label>ReceivingWater_MPN_per_100ml</mat-label>
               <input matInput type="number" formControlName="ReceivingWater_MPN_per_100ml">
+              <mat-error *ngIf="infrastructureFormPut.controls.ReceivingWater_MPN_per_100ml.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.min">Min - 0<br /></span>
+                <span *ngIf="e.min">Max - 10000000<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>DistanceFromShore_m</mat-label>
               <input matInput type="number" formControlName="DistanceFromShore_m">
+              <mat-error *ngIf="infrastructureFormPut.controls.DistanceFromShore_m.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.min">Min - 0<br /></span>
+                <span *ngIf="e.min">Max - 1000<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>SeeOtherMunicipalityTVItemID</mat-label>
               <input matInput type="number" formControlName="SeeOtherMunicipalityTVItemID">
+              <mat-error *ngIf="infrastructureFormPut.controls.SeeOtherMunicipalityTVItemID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>CivicAddressTVItemID</mat-label>
               <input matInput type="number" formControlName="CivicAddressTVItemID">
+              <mat-error *ngIf="infrastructureFormPut.controls.CivicAddressTVItemID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+              </mat-error>
             </mat-form-field>
           </p>
           <p>
             <mat-form-field>
               <mat-label>LastUpdateDate_UTC</mat-label>
               <input matInput type="text" formControlName="LastUpdateDate_UTC">
+              <mat-error *ngIf="infrastructureFormPut.controls.LastUpdateDate_UTC.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>LastUpdateContactTVItemID</mat-label>
               <input matInput type="number" formControlName="LastUpdateContactTVItemID">
+              <mat-error *ngIf="infrastructureFormPut.controls.LastUpdateContactTVItemID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
           </p>
         </form>

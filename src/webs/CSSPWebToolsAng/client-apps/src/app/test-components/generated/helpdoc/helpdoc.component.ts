@@ -8,12 +8,14 @@
 import { Component, OnInit, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
 import { HelpDocService } from './helpdoc.service';
 import { LoadLocalesHelpDocText } from './helpdoc.locales';
-import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { LanguageEnum_GetIDText, LanguageEnum_GetOrderedText } from '../../../enums/generated/LanguageEnum';
 import { HelpDoc } from '../../../models/generated/HelpDoc.model';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
 import { EnumIDAndText } from '../../../models/enumidandtext.model';
+import { HttpClientService } from '../../../services/http-client.service';
+import { Router } from '@angular/router';
+import { HttpClientCommand } from '../../../enums/app.enums';
 
 @Component({
   selector: 'app-helpdoc',
@@ -27,22 +29,24 @@ export class HelpDocComponent implements OnInit, OnDestroy {
   helpdocFormPut: FormGroup;
   helpdocFormPost: FormGroup;
 
-  constructor(public helpdocService: HelpDocService, public router: Router, public fb: FormBuilder) { }
+  constructor(public helpdocService: HelpDocService, private router: Router, private httpClientService: HttpClientService, private fb: FormBuilder) {
+    httpClientService.oldURL = router.url;
+  }
 
   GetHelpDocList() {
-    this.sub = this.helpdocService.GetHelpDocList(this.router).subscribe();
+    this.sub = this.helpdocService.GetHelpDocList().subscribe();
   }
 
   PutHelpDoc(helpdoc: HelpDoc) {
-    this.sub = this.helpdocService.PutHelpDoc(helpdoc, this.router).subscribe();
+    this.sub = this.helpdocService.PutHelpDoc(helpdoc).subscribe();
   }
 
   PostHelpDoc(helpdoc: HelpDoc) {
-    this.sub = this.helpdocService.PostHelpDoc(helpdoc, this.router).subscribe();
+    this.sub = this.helpdocService.PostHelpDoc(helpdoc).subscribe();
   }
 
   DeleteHelpDoc(helpdoc: HelpDoc) {
-    this.sub = this.helpdocService.DeleteHelpDoc(helpdoc, this.router).subscribe();
+    this.sub = this.helpdocService.DeleteHelpDoc(helpdoc).subscribe();
   }
 
   GetLanguageEnumText(enumID: number) {
@@ -52,8 +56,8 @@ export class HelpDocComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     LoadLocalesHelpDocText(this.helpdocService);
     this.languageList = LanguageEnum_GetOrderedText();
-    this.FillFormBuilderGroup('Add');
-    this.FillFormBuilderGroup('Update');
+    this.FillFormBuilderGroup(HttpClientCommand.Post);
+    this.FillFormBuilderGroup(HttpClientCommand.Put);
   }
 
   ngOnDestroy() {
@@ -62,44 +66,44 @@ export class HelpDocComponent implements OnInit, OnDestroy {
     }
   }
 
-  FillFormBuilderGroup(AddOrUpdate: string) {
-    if (this.helpdocService.helpdocList.length) {
+  FillFormBuilderGroup(httpClientCommand: HttpClientCommand) {
+    if (this.helpdocService.helpdocListModel$.getValue().length) {
       let formGroup: FormGroup = this.fb.group(
         {
           HelpDocID: [
             {
-              value: (AddOrUpdate === 'Add' ? 0 : (this.helpdocService.helpdocList[0]?.HelpDocID)),
+              value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.helpdocService.helpdocListModel$.getValue()[0]?.HelpDocID)),
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
           DocKey: [
             {
-              value: this.helpdocService.helpdocList[0]?.DocKey,
+              value: this.helpdocService.helpdocListModel$.getValue()[0]?.DocKey,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required, Validators.maxLength(100) ]],
           Language: [
             {
-              value: this.helpdocService.helpdocList[0]?.Language,
+              value: this.helpdocService.helpdocListModel$.getValue()[0]?.Language,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
           DocHTMLText: [
             {
-              value: this.helpdocService.helpdocList[0]?.DocHTMLText,
+              value: this.helpdocService.helpdocListModel$.getValue()[0]?.DocHTMLText,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required, Validators.maxLength(100000) ]],
           LastUpdateDate_UTC: [
             {
-              value: this.helpdocService.helpdocList[0]?.LastUpdateDate_UTC,
+              value: this.helpdocService.helpdocListModel$.getValue()[0]?.LastUpdateDate_UTC,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
           LastUpdateContactTVItemID: [
             {
-              value: this.helpdocService.helpdocList[0]?.LastUpdateContactTVItemID,
+              value: this.helpdocService.helpdocListModel$.getValue()[0]?.LastUpdateContactTVItemID,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
         }
       );
 
-      if (AddOrUpdate === 'Add') {
+      if (httpClientCommand === HttpClientCommand.Post) {
         this.helpdocFormPost = formGroup
       }
       else {

@@ -9,11 +9,12 @@ import { Injectable } from '@angular/core';
 import { TVItemTextModel } from './tvitem.models';
 import { BehaviorSubject, of } from 'rxjs';
 import { LoadLocalesTVItemText } from './tvitem.locales';
-import { Router } from '@angular/router';
-import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { map, catchError } from 'rxjs/operators';
 import { TVItem } from '../../../models/generated/TVItem.model';
 import { HttpRequestModel } from '../../../models/http.model';
+import { HttpClientService } from '../../../services/http-client.service';
+import { HttpClientCommand } from '../../../enums/app.enums';
 
 @Injectable({
   providedIn: 'root'
@@ -26,110 +27,63 @@ export class TVItemService {
   tvitemPutModel$: BehaviorSubject<HttpRequestModel> = new BehaviorSubject<HttpRequestModel>(<HttpRequestModel>{});
   tvitemPostModel$: BehaviorSubject<HttpRequestModel> = new BehaviorSubject<HttpRequestModel>(<HttpRequestModel>{});
   tvitemDeleteModel$: BehaviorSubject<HttpRequestModel> = new BehaviorSubject<HttpRequestModel>(<HttpRequestModel>{});
-  tvitemList: TVItem[] = [];
-  private oldURL: string;
-  private router: Router;
 
   /* Constructors */
-  constructor(private httpClient: HttpClient) {
+  constructor(private httpClient: HttpClient, private httpClientService: HttpClientService) {
     LoadLocalesTVItemText(this);
     this.tvitemTextModel$.next(<TVItemTextModel>{ Title: "Something2 for text" });
   }
 
   /* Functions public */
-  GetTVItemList(router: Router) {
-    this.BeforeHttpClient(this.tvitemGetModel$, router);
+  GetTVItemList() {
+    this.httpClientService.BeforeHttpClient(this.tvitemGetModel$);
 
     return this.httpClient.get<TVItem[]>('/api/TVItem').pipe(
       map((x: any) => {
-        this.DoSuccess(this.tvitemGetModel$, x, 'Get', null);
+        this.httpClientService.DoSuccess<TVItem>(this.tvitemListModel$, this.tvitemGetModel$, x, HttpClientCommand.Get, null);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.DoCatchError(this.tvitemGetModel$, e, 'Get');
+        this.httpClientService.DoCatchError<TVItem>(this.tvitemListModel$, this.tvitemGetModel$, e);
       })))
     );
   }
 
-  PutTVItem(tvitem: TVItem, router: Router) {
-    this.BeforeHttpClient(this.tvitemPutModel$, router);
+  PutTVItem(tvitem: TVItem) {
+    this.httpClientService.BeforeHttpClient(this.tvitemPutModel$);
 
     return this.httpClient.put<TVItem>('/api/TVItem', tvitem, { headers: new HttpHeaders() }).pipe(
       map((x: any) => {
-        this.DoSuccess(this.tvitemPutModel$, x, 'Put', tvitem);
+        this.httpClientService.DoSuccess<TVItem>(this.tvitemListModel$, this.tvitemPutModel$, x, HttpClientCommand.Put, tvitem);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.DoCatchError(this.tvitemPutModel$, e, 'Put');
+       this.httpClientService.DoCatchError<TVItem>(this.tvitemListModel$, this.tvitemPutModel$, e);
       })))
     );
   }
 
-  PostTVItem(tvitem: TVItem, router: Router) {
-    this.BeforeHttpClient(this.tvitemPostModel$, router);
+  PostTVItem(tvitem: TVItem) {
+    this.httpClientService.BeforeHttpClient(this.tvitemPostModel$);
 
     return this.httpClient.post<TVItem>('/api/TVItem', tvitem, { headers: new HttpHeaders() }).pipe(
       map((x: any) => {
-        this.DoSuccess(this.tvitemPostModel$, x, 'Post', tvitem);
+        this.httpClientService.DoSuccess<TVItem>(this.tvitemListModel$, this.tvitemPostModel$, x, HttpClientCommand.Post, tvitem);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.DoCatchError(this.tvitemPostModel$, e, 'Post');
+        this.httpClientService.DoCatchError<TVItem>(this.tvitemListModel$, this.tvitemPostModel$, e);
       })))
     );
   }
 
-  DeleteTVItem(tvitem: TVItem, router: Router) {
-    this.BeforeHttpClient(this.tvitemDeleteModel$, router);
+  DeleteTVItem(tvitem: TVItem) {
+    this.httpClientService.BeforeHttpClient(this.tvitemDeleteModel$);
 
     return this.httpClient.delete<boolean>(`/api/TVItem/${ tvitem.TVItemID }`).pipe(
       map((x: any) => {
-        this.DoSuccess(this.tvitemDeleteModel$, x, 'Delete', tvitem);
+        this.httpClientService.DoSuccess<TVItem>(this.tvitemListModel$, this.tvitemDeleteModel$, x, HttpClientCommand.Delete, tvitem);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.DoCatchError(this.tvitemDeleteModel$, e, 'Delete');
+        this.httpClientService.DoCatchError<TVItem>(this.tvitemListModel$, this.tvitemDeleteModel$, e);
       })))
     );
-  }
-
-  /* Functions private */
-  private BeforeHttpClient(httpRequestModel$: BehaviorSubject<HttpRequestModel>, router: Router) {
-    this.router = router;
-    this.oldURL = router.url;
-    httpRequestModel$.next(<HttpRequestModel>{ Working: true, Error: null, Status: null });
-  }
-
-  private DoCatchError(httpRequestModel$: BehaviorSubject<HttpRequestModel>, e: any, command: string) {
-    this.tvitemListModel$.next(null);
-    httpRequestModel$.next(<HttpRequestModel>{ Working: false, Error: <HttpErrorResponse>e, Status: 'Error' });
-
-    this.tvitemList = [];
-    console.debug(`TVItem ${ command } ERROR. Return: ${ <HttpErrorResponse>e }`);
-    this.DoReload();
-  }
-
-  private DoReload() {
-    this.router.navigateByUrl('', { skipLocationChange: true }).then(() => {
-      this.router.navigate([`/${this.oldURL}`]);
-    });
-  }
-
-  private DoSuccess(httpRequestModel$: BehaviorSubject<HttpRequestModel>, x: any, command: string, tvitem?: TVItem) {
-    console.debug(`TVItem ${ command } OK. Return: ${ x }`);
-    if (command === 'Get') {
-      this.tvitemListModel$.next(<TVItem[]>x);
-    }
-    if (command === 'Put') {
-      this.tvitemListModel$.getValue()[0] = <TVItem>x;
-    }
-    if (command === 'Post') {
-      this.tvitemListModel$.getValue().push(<TVItem>x);
-    }
-    if (command === 'Delete') {
-      const index = this.tvitemListModel$.getValue().indexOf(tvitem);
-      this.tvitemListModel$.getValue().splice(index, 1);
-    }
-
-    this.tvitemListModel$.next(this.tvitemListModel$.getValue());
-    httpRequestModel$.next(<HttpRequestModel>{ Working: false, Error: null, Status: 'ok' });
-    this.tvitemList = this.tvitemListModel$.getValue();
-    this.DoReload();
   }
 }

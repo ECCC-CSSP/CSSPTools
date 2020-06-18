@@ -9,11 +9,12 @@ import { Injectable } from '@angular/core';
 import { EmailDistributionListTextModel } from './emaildistributionlist.models';
 import { BehaviorSubject, of } from 'rxjs';
 import { LoadLocalesEmailDistributionListText } from './emaildistributionlist.locales';
-import { Router } from '@angular/router';
-import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { map, catchError } from 'rxjs/operators';
 import { EmailDistributionList } from '../../../models/generated/EmailDistributionList.model';
 import { HttpRequestModel } from '../../../models/http.model';
+import { HttpClientService } from '../../../services/http-client.service';
+import { HttpClientCommand } from '../../../enums/app.enums';
 
 @Injectable({
   providedIn: 'root'
@@ -26,110 +27,63 @@ export class EmailDistributionListService {
   emaildistributionlistPutModel$: BehaviorSubject<HttpRequestModel> = new BehaviorSubject<HttpRequestModel>(<HttpRequestModel>{});
   emaildistributionlistPostModel$: BehaviorSubject<HttpRequestModel> = new BehaviorSubject<HttpRequestModel>(<HttpRequestModel>{});
   emaildistributionlistDeleteModel$: BehaviorSubject<HttpRequestModel> = new BehaviorSubject<HttpRequestModel>(<HttpRequestModel>{});
-  emaildistributionlistList: EmailDistributionList[] = [];
-  private oldURL: string;
-  private router: Router;
 
   /* Constructors */
-  constructor(private httpClient: HttpClient) {
+  constructor(private httpClient: HttpClient, private httpClientService: HttpClientService) {
     LoadLocalesEmailDistributionListText(this);
     this.emaildistributionlistTextModel$.next(<EmailDistributionListTextModel>{ Title: "Something2 for text" });
   }
 
   /* Functions public */
-  GetEmailDistributionListList(router: Router) {
-    this.BeforeHttpClient(this.emaildistributionlistGetModel$, router);
+  GetEmailDistributionListList() {
+    this.httpClientService.BeforeHttpClient(this.emaildistributionlistGetModel$);
 
     return this.httpClient.get<EmailDistributionList[]>('/api/EmailDistributionList').pipe(
       map((x: any) => {
-        this.DoSuccess(this.emaildistributionlistGetModel$, x, 'Get', null);
+        this.httpClientService.DoSuccess<EmailDistributionList>(this.emaildistributionlistListModel$, this.emaildistributionlistGetModel$, x, HttpClientCommand.Get, null);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.DoCatchError(this.emaildistributionlistGetModel$, e, 'Get');
+        this.httpClientService.DoCatchError<EmailDistributionList>(this.emaildistributionlistListModel$, this.emaildistributionlistGetModel$, e);
       })))
     );
   }
 
-  PutEmailDistributionList(emaildistributionlist: EmailDistributionList, router: Router) {
-    this.BeforeHttpClient(this.emaildistributionlistPutModel$, router);
+  PutEmailDistributionList(emaildistributionlist: EmailDistributionList) {
+    this.httpClientService.BeforeHttpClient(this.emaildistributionlistPutModel$);
 
     return this.httpClient.put<EmailDistributionList>('/api/EmailDistributionList', emaildistributionlist, { headers: new HttpHeaders() }).pipe(
       map((x: any) => {
-        this.DoSuccess(this.emaildistributionlistPutModel$, x, 'Put', emaildistributionlist);
+        this.httpClientService.DoSuccess<EmailDistributionList>(this.emaildistributionlistListModel$, this.emaildistributionlistPutModel$, x, HttpClientCommand.Put, emaildistributionlist);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.DoCatchError(this.emaildistributionlistPutModel$, e, 'Put');
+       this.httpClientService.DoCatchError<EmailDistributionList>(this.emaildistributionlistListModel$, this.emaildistributionlistPutModel$, e);
       })))
     );
   }
 
-  PostEmailDistributionList(emaildistributionlist: EmailDistributionList, router: Router) {
-    this.BeforeHttpClient(this.emaildistributionlistPostModel$, router);
+  PostEmailDistributionList(emaildistributionlist: EmailDistributionList) {
+    this.httpClientService.BeforeHttpClient(this.emaildistributionlistPostModel$);
 
     return this.httpClient.post<EmailDistributionList>('/api/EmailDistributionList', emaildistributionlist, { headers: new HttpHeaders() }).pipe(
       map((x: any) => {
-        this.DoSuccess(this.emaildistributionlistPostModel$, x, 'Post', emaildistributionlist);
+        this.httpClientService.DoSuccess<EmailDistributionList>(this.emaildistributionlistListModel$, this.emaildistributionlistPostModel$, x, HttpClientCommand.Post, emaildistributionlist);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.DoCatchError(this.emaildistributionlistPostModel$, e, 'Post');
+        this.httpClientService.DoCatchError<EmailDistributionList>(this.emaildistributionlistListModel$, this.emaildistributionlistPostModel$, e);
       })))
     );
   }
 
-  DeleteEmailDistributionList(emaildistributionlist: EmailDistributionList, router: Router) {
-    this.BeforeHttpClient(this.emaildistributionlistDeleteModel$, router);
+  DeleteEmailDistributionList(emaildistributionlist: EmailDistributionList) {
+    this.httpClientService.BeforeHttpClient(this.emaildistributionlistDeleteModel$);
 
     return this.httpClient.delete<boolean>(`/api/EmailDistributionList/${ emaildistributionlist.EmailDistributionListID }`).pipe(
       map((x: any) => {
-        this.DoSuccess(this.emaildistributionlistDeleteModel$, x, 'Delete', emaildistributionlist);
+        this.httpClientService.DoSuccess<EmailDistributionList>(this.emaildistributionlistListModel$, this.emaildistributionlistDeleteModel$, x, HttpClientCommand.Delete, emaildistributionlist);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.DoCatchError(this.emaildistributionlistDeleteModel$, e, 'Delete');
+        this.httpClientService.DoCatchError<EmailDistributionList>(this.emaildistributionlistListModel$, this.emaildistributionlistDeleteModel$, e);
       })))
     );
-  }
-
-  /* Functions private */
-  private BeforeHttpClient(httpRequestModel$: BehaviorSubject<HttpRequestModel>, router: Router) {
-    this.router = router;
-    this.oldURL = router.url;
-    httpRequestModel$.next(<HttpRequestModel>{ Working: true, Error: null, Status: null });
-  }
-
-  private DoCatchError(httpRequestModel$: BehaviorSubject<HttpRequestModel>, e: any, command: string) {
-    this.emaildistributionlistListModel$.next(null);
-    httpRequestModel$.next(<HttpRequestModel>{ Working: false, Error: <HttpErrorResponse>e, Status: 'Error' });
-
-    this.emaildistributionlistList = [];
-    console.debug(`EmailDistributionList ${ command } ERROR. Return: ${ <HttpErrorResponse>e }`);
-    this.DoReload();
-  }
-
-  private DoReload() {
-    this.router.navigateByUrl('', { skipLocationChange: true }).then(() => {
-      this.router.navigate([`/${this.oldURL}`]);
-    });
-  }
-
-  private DoSuccess(httpRequestModel$: BehaviorSubject<HttpRequestModel>, x: any, command: string, emaildistributionlist?: EmailDistributionList) {
-    console.debug(`EmailDistributionList ${ command } OK. Return: ${ x }`);
-    if (command === 'Get') {
-      this.emaildistributionlistListModel$.next(<EmailDistributionList[]>x);
-    }
-    if (command === 'Put') {
-      this.emaildistributionlistListModel$.getValue()[0] = <EmailDistributionList>x;
-    }
-    if (command === 'Post') {
-      this.emaildistributionlistListModel$.getValue().push(<EmailDistributionList>x);
-    }
-    if (command === 'Delete') {
-      const index = this.emaildistributionlistListModel$.getValue().indexOf(emaildistributionlist);
-      this.emaildistributionlistListModel$.getValue().splice(index, 1);
-    }
-
-    this.emaildistributionlistListModel$.next(this.emaildistributionlistListModel$.getValue());
-    httpRequestModel$.next(<HttpRequestModel>{ Working: false, Error: null, Status: 'ok' });
-    this.emaildistributionlistList = this.emaildistributionlistListModel$.getValue();
-    this.DoReload();
   }
 }

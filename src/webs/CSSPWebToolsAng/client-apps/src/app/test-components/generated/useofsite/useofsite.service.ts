@@ -9,11 +9,12 @@ import { Injectable } from '@angular/core';
 import { UseOfSiteTextModel } from './useofsite.models';
 import { BehaviorSubject, of } from 'rxjs';
 import { LoadLocalesUseOfSiteText } from './useofsite.locales';
-import { Router } from '@angular/router';
-import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { map, catchError } from 'rxjs/operators';
 import { UseOfSite } from '../../../models/generated/UseOfSite.model';
 import { HttpRequestModel } from '../../../models/http.model';
+import { HttpClientService } from '../../../services/http-client.service';
+import { HttpClientCommand } from '../../../enums/app.enums';
 
 @Injectable({
   providedIn: 'root'
@@ -26,110 +27,63 @@ export class UseOfSiteService {
   useofsitePutModel$: BehaviorSubject<HttpRequestModel> = new BehaviorSubject<HttpRequestModel>(<HttpRequestModel>{});
   useofsitePostModel$: BehaviorSubject<HttpRequestModel> = new BehaviorSubject<HttpRequestModel>(<HttpRequestModel>{});
   useofsiteDeleteModel$: BehaviorSubject<HttpRequestModel> = new BehaviorSubject<HttpRequestModel>(<HttpRequestModel>{});
-  useofsiteList: UseOfSite[] = [];
-  private oldURL: string;
-  private router: Router;
 
   /* Constructors */
-  constructor(private httpClient: HttpClient) {
+  constructor(private httpClient: HttpClient, private httpClientService: HttpClientService) {
     LoadLocalesUseOfSiteText(this);
     this.useofsiteTextModel$.next(<UseOfSiteTextModel>{ Title: "Something2 for text" });
   }
 
   /* Functions public */
-  GetUseOfSiteList(router: Router) {
-    this.BeforeHttpClient(this.useofsiteGetModel$, router);
+  GetUseOfSiteList() {
+    this.httpClientService.BeforeHttpClient(this.useofsiteGetModel$);
 
     return this.httpClient.get<UseOfSite[]>('/api/UseOfSite').pipe(
       map((x: any) => {
-        this.DoSuccess(this.useofsiteGetModel$, x, 'Get', null);
+        this.httpClientService.DoSuccess<UseOfSite>(this.useofsiteListModel$, this.useofsiteGetModel$, x, HttpClientCommand.Get, null);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.DoCatchError(this.useofsiteGetModel$, e, 'Get');
+        this.httpClientService.DoCatchError<UseOfSite>(this.useofsiteListModel$, this.useofsiteGetModel$, e);
       })))
     );
   }
 
-  PutUseOfSite(useofsite: UseOfSite, router: Router) {
-    this.BeforeHttpClient(this.useofsitePutModel$, router);
+  PutUseOfSite(useofsite: UseOfSite) {
+    this.httpClientService.BeforeHttpClient(this.useofsitePutModel$);
 
     return this.httpClient.put<UseOfSite>('/api/UseOfSite', useofsite, { headers: new HttpHeaders() }).pipe(
       map((x: any) => {
-        this.DoSuccess(this.useofsitePutModel$, x, 'Put', useofsite);
+        this.httpClientService.DoSuccess<UseOfSite>(this.useofsiteListModel$, this.useofsitePutModel$, x, HttpClientCommand.Put, useofsite);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.DoCatchError(this.useofsitePutModel$, e, 'Put');
+       this.httpClientService.DoCatchError<UseOfSite>(this.useofsiteListModel$, this.useofsitePutModel$, e);
       })))
     );
   }
 
-  PostUseOfSite(useofsite: UseOfSite, router: Router) {
-    this.BeforeHttpClient(this.useofsitePostModel$, router);
+  PostUseOfSite(useofsite: UseOfSite) {
+    this.httpClientService.BeforeHttpClient(this.useofsitePostModel$);
 
     return this.httpClient.post<UseOfSite>('/api/UseOfSite', useofsite, { headers: new HttpHeaders() }).pipe(
       map((x: any) => {
-        this.DoSuccess(this.useofsitePostModel$, x, 'Post', useofsite);
+        this.httpClientService.DoSuccess<UseOfSite>(this.useofsiteListModel$, this.useofsitePostModel$, x, HttpClientCommand.Post, useofsite);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.DoCatchError(this.useofsitePostModel$, e, 'Post');
+        this.httpClientService.DoCatchError<UseOfSite>(this.useofsiteListModel$, this.useofsitePostModel$, e);
       })))
     );
   }
 
-  DeleteUseOfSite(useofsite: UseOfSite, router: Router) {
-    this.BeforeHttpClient(this.useofsiteDeleteModel$, router);
+  DeleteUseOfSite(useofsite: UseOfSite) {
+    this.httpClientService.BeforeHttpClient(this.useofsiteDeleteModel$);
 
     return this.httpClient.delete<boolean>(`/api/UseOfSite/${ useofsite.UseOfSiteID }`).pipe(
       map((x: any) => {
-        this.DoSuccess(this.useofsiteDeleteModel$, x, 'Delete', useofsite);
+        this.httpClientService.DoSuccess<UseOfSite>(this.useofsiteListModel$, this.useofsiteDeleteModel$, x, HttpClientCommand.Delete, useofsite);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.DoCatchError(this.useofsiteDeleteModel$, e, 'Delete');
+        this.httpClientService.DoCatchError<UseOfSite>(this.useofsiteListModel$, this.useofsiteDeleteModel$, e);
       })))
     );
-  }
-
-  /* Functions private */
-  private BeforeHttpClient(httpRequestModel$: BehaviorSubject<HttpRequestModel>, router: Router) {
-    this.router = router;
-    this.oldURL = router.url;
-    httpRequestModel$.next(<HttpRequestModel>{ Working: true, Error: null, Status: null });
-  }
-
-  private DoCatchError(httpRequestModel$: BehaviorSubject<HttpRequestModel>, e: any, command: string) {
-    this.useofsiteListModel$.next(null);
-    httpRequestModel$.next(<HttpRequestModel>{ Working: false, Error: <HttpErrorResponse>e, Status: 'Error' });
-
-    this.useofsiteList = [];
-    console.debug(`UseOfSite ${ command } ERROR. Return: ${ <HttpErrorResponse>e }`);
-    this.DoReload();
-  }
-
-  private DoReload() {
-    this.router.navigateByUrl('', { skipLocationChange: true }).then(() => {
-      this.router.navigate([`/${this.oldURL}`]);
-    });
-  }
-
-  private DoSuccess(httpRequestModel$: BehaviorSubject<HttpRequestModel>, x: any, command: string, useofsite?: UseOfSite) {
-    console.debug(`UseOfSite ${ command } OK. Return: ${ x }`);
-    if (command === 'Get') {
-      this.useofsiteListModel$.next(<UseOfSite[]>x);
-    }
-    if (command === 'Put') {
-      this.useofsiteListModel$.getValue()[0] = <UseOfSite>x;
-    }
-    if (command === 'Post') {
-      this.useofsiteListModel$.getValue().push(<UseOfSite>x);
-    }
-    if (command === 'Delete') {
-      const index = this.useofsiteListModel$.getValue().indexOf(useofsite);
-      this.useofsiteListModel$.getValue().splice(index, 1);
-    }
-
-    this.useofsiteListModel$.next(this.useofsiteListModel$.getValue());
-    httpRequestModel$.next(<HttpRequestModel>{ Working: false, Error: null, Status: 'ok' });
-    this.useofsiteList = this.useofsiteListModel$.getValue();
-    this.DoReload();
   }
 }

@@ -5,7 +5,7 @@
  *
 -->
 
-<mat-progress-bar mode="indeterminate" *ngIf="vpscenariolanguageService.vpscenariolanguageGetModel$.getValue().Working"></mat-progress-bar>
+<mat-progress-bar mode="indeterminate" *ngIf="vpscenariolanguageService.vpscenariolanguageGetModel$.getValue()?.Working"></mat-progress-bar>
 <mat-card>
   <mat-card-header>
     <mat-card-title>
@@ -17,8 +17,8 @@
     <mat-card-subtitle>{{ vpscenariolanguageService.vpscenariolanguageTextModel$.getValue().Title }}</mat-card-subtitle>
   </mat-card-header>
   <mat-card-content>
-    <mat-list>
-      <mat-list-item *ngFor="let vpscenariolanguage of vpscenariolanguageService.vpscenariolanguageList">
+    <mat-list *ngIf="vpscenariolanguageService.vpscenariolanguageListModel$.getValue()?.length">
+      <mat-list-item *ngFor="let vpscenariolanguage of vpscenariolanguageService.vpscenariolanguageListModel$.getValue()">
         <span mat-line>
           <button mat-raised-button (click)="DeleteVPScenarioLanguage(vpscenariolanguage)">
             <span>Delete VPScenarioLanguageID [{{ vpscenariolanguage.VPScenarioLanguageID }}]&nbsp;&nbsp;&nbsp;</span>
@@ -52,7 +52,7 @@
     <mat-card-title>Edit VPScenarioLanguage testing</mat-card-title>
   </mat-card-header>
   <mat-card-content>
-    <div *ngIf="vpscenariolanguageService.vpscenariolanguageList.length">
+    <div *ngIf="vpscenariolanguageService.vpscenariolanguageListModel$.getValue()?.length">
       <blockquote>
         <form [formGroup]="vpscenariolanguageFormPut" (ngSubmit)="PutVPScenarioLanguage(vpscenariolanguageFormPut.value)">
           <h3>
@@ -67,10 +67,18 @@
             <mat-form-field>
               <mat-label>VPScenarioLanguageID</mat-label>
               <input matInput type="number" formControlName="VPScenarioLanguageID">
+              <mat-error *ngIf="vpscenariolanguageFormPut.controls.VPScenarioLanguageID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>VPScenarioID</mat-label>
               <input matInput type="number" formControlName="VPScenarioID">
+              <mat-error *ngIf="vpscenariolanguageFormPut.controls.VPScenarioID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>Language</mat-label>
@@ -79,10 +87,19 @@
                   {{ a.EnumText }}
                 </mat-option>
               </mat-select>
+              <mat-error *ngIf="vpscenariolanguageFormPut.controls.Language.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>VPScenarioName</mat-label>
               <input matInput type="text" formControlName="VPScenarioName">
+              <mat-error *ngIf="vpscenariolanguageFormPut.controls.VPScenarioName.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+                <span *ngIf="e.maxlength">MaxLength - 100<br /></span>
+              </mat-error>
             </mat-form-field>
           </p>
           <p>
@@ -93,14 +110,26 @@
                   {{ a.EnumText }}
                 </mat-option>
               </mat-select>
+              <mat-error *ngIf="vpscenariolanguageFormPut.controls.TranslationStatus.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>LastUpdateDate_UTC</mat-label>
               <input matInput type="text" formControlName="LastUpdateDate_UTC">
+              <mat-error *ngIf="vpscenariolanguageFormPut.controls.LastUpdateDate_UTC.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>LastUpdateContactTVItemID</mat-label>
               <input matInput type="number" formControlName="LastUpdateContactTVItemID">
+              <mat-error *ngIf="vpscenariolanguageFormPut.controls.LastUpdateContactTVItemID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
           </p>
         </form>
@@ -115,7 +144,7 @@
     <mat-card-title>Add VPScenarioLanguage testing</mat-card-title>
   </mat-card-header>
   <mat-card-content>
-    <div *ngIf="vpscenariolanguageService.vpscenariolanguageList.length">
+    <div *ngIf="vpscenariolanguageService.vpscenariolanguageListModel$.getValue()?.length">
       <blockquote>
         <form [formGroup]="vpscenariolanguageFormPost" (ngSubmit)="PostVPScenarioLanguage(vpscenariolanguageFormPost.value)">
           <h3>
@@ -130,10 +159,18 @@
             <mat-form-field>
               <mat-label>VPScenarioLanguageID</mat-label>
               <input matInput type="number" formControlName="VPScenarioLanguageID">
+              <mat-error *ngIf="vpscenariolanguageFormPut.controls.VPScenarioLanguageID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>VPScenarioID</mat-label>
               <input matInput type="number" formControlName="VPScenarioID">
+              <mat-error *ngIf="vpscenariolanguageFormPut.controls.VPScenarioID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>Language</mat-label>
@@ -142,10 +179,19 @@
                   {{ a.EnumText }}
                 </mat-option>
               </mat-select>
+              <mat-error *ngIf="vpscenariolanguageFormPut.controls.Language.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>VPScenarioName</mat-label>
               <input matInput type="text" formControlName="VPScenarioName">
+              <mat-error *ngIf="vpscenariolanguageFormPut.controls.VPScenarioName.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+                <span *ngIf="e.maxlength">MaxLength - 100<br /></span>
+              </mat-error>
             </mat-form-field>
           </p>
           <p>
@@ -156,14 +202,26 @@
                   {{ a.EnumText }}
                 </mat-option>
               </mat-select>
+              <mat-error *ngIf="vpscenariolanguageFormPut.controls.TranslationStatus.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>LastUpdateDate_UTC</mat-label>
               <input matInput type="text" formControlName="LastUpdateDate_UTC">
+              <mat-error *ngIf="vpscenariolanguageFormPut.controls.LastUpdateDate_UTC.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>LastUpdateContactTVItemID</mat-label>
               <input matInput type="number" formControlName="LastUpdateContactTVItemID">
+              <mat-error *ngIf="vpscenariolanguageFormPut.controls.LastUpdateContactTVItemID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
           </p>
         </form>

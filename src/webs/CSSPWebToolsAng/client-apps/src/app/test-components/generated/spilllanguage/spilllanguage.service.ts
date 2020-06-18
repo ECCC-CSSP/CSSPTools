@@ -9,11 +9,12 @@ import { Injectable } from '@angular/core';
 import { SpillLanguageTextModel } from './spilllanguage.models';
 import { BehaviorSubject, of } from 'rxjs';
 import { LoadLocalesSpillLanguageText } from './spilllanguage.locales';
-import { Router } from '@angular/router';
-import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { map, catchError } from 'rxjs/operators';
 import { SpillLanguage } from '../../../models/generated/SpillLanguage.model';
 import { HttpRequestModel } from '../../../models/http.model';
+import { HttpClientService } from '../../../services/http-client.service';
+import { HttpClientCommand } from '../../../enums/app.enums';
 
 @Injectable({
   providedIn: 'root'
@@ -26,110 +27,63 @@ export class SpillLanguageService {
   spilllanguagePutModel$: BehaviorSubject<HttpRequestModel> = new BehaviorSubject<HttpRequestModel>(<HttpRequestModel>{});
   spilllanguagePostModel$: BehaviorSubject<HttpRequestModel> = new BehaviorSubject<HttpRequestModel>(<HttpRequestModel>{});
   spilllanguageDeleteModel$: BehaviorSubject<HttpRequestModel> = new BehaviorSubject<HttpRequestModel>(<HttpRequestModel>{});
-  spilllanguageList: SpillLanguage[] = [];
-  private oldURL: string;
-  private router: Router;
 
   /* Constructors */
-  constructor(private httpClient: HttpClient) {
+  constructor(private httpClient: HttpClient, private httpClientService: HttpClientService) {
     LoadLocalesSpillLanguageText(this);
     this.spilllanguageTextModel$.next(<SpillLanguageTextModel>{ Title: "Something2 for text" });
   }
 
   /* Functions public */
-  GetSpillLanguageList(router: Router) {
-    this.BeforeHttpClient(this.spilllanguageGetModel$, router);
+  GetSpillLanguageList() {
+    this.httpClientService.BeforeHttpClient(this.spilllanguageGetModel$);
 
     return this.httpClient.get<SpillLanguage[]>('/api/SpillLanguage').pipe(
       map((x: any) => {
-        this.DoSuccess(this.spilllanguageGetModel$, x, 'Get', null);
+        this.httpClientService.DoSuccess<SpillLanguage>(this.spilllanguageListModel$, this.spilllanguageGetModel$, x, HttpClientCommand.Get, null);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.DoCatchError(this.spilllanguageGetModel$, e, 'Get');
+        this.httpClientService.DoCatchError<SpillLanguage>(this.spilllanguageListModel$, this.spilllanguageGetModel$, e);
       })))
     );
   }
 
-  PutSpillLanguage(spilllanguage: SpillLanguage, router: Router) {
-    this.BeforeHttpClient(this.spilllanguagePutModel$, router);
+  PutSpillLanguage(spilllanguage: SpillLanguage) {
+    this.httpClientService.BeforeHttpClient(this.spilllanguagePutModel$);
 
     return this.httpClient.put<SpillLanguage>('/api/SpillLanguage', spilllanguage, { headers: new HttpHeaders() }).pipe(
       map((x: any) => {
-        this.DoSuccess(this.spilllanguagePutModel$, x, 'Put', spilllanguage);
+        this.httpClientService.DoSuccess<SpillLanguage>(this.spilllanguageListModel$, this.spilllanguagePutModel$, x, HttpClientCommand.Put, spilllanguage);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.DoCatchError(this.spilllanguagePutModel$, e, 'Put');
+       this.httpClientService.DoCatchError<SpillLanguage>(this.spilllanguageListModel$, this.spilllanguagePutModel$, e);
       })))
     );
   }
 
-  PostSpillLanguage(spilllanguage: SpillLanguage, router: Router) {
-    this.BeforeHttpClient(this.spilllanguagePostModel$, router);
+  PostSpillLanguage(spilllanguage: SpillLanguage) {
+    this.httpClientService.BeforeHttpClient(this.spilllanguagePostModel$);
 
     return this.httpClient.post<SpillLanguage>('/api/SpillLanguage', spilllanguage, { headers: new HttpHeaders() }).pipe(
       map((x: any) => {
-        this.DoSuccess(this.spilllanguagePostModel$, x, 'Post', spilllanguage);
+        this.httpClientService.DoSuccess<SpillLanguage>(this.spilllanguageListModel$, this.spilllanguagePostModel$, x, HttpClientCommand.Post, spilllanguage);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.DoCatchError(this.spilllanguagePostModel$, e, 'Post');
+        this.httpClientService.DoCatchError<SpillLanguage>(this.spilllanguageListModel$, this.spilllanguagePostModel$, e);
       })))
     );
   }
 
-  DeleteSpillLanguage(spilllanguage: SpillLanguage, router: Router) {
-    this.BeforeHttpClient(this.spilllanguageDeleteModel$, router);
+  DeleteSpillLanguage(spilllanguage: SpillLanguage) {
+    this.httpClientService.BeforeHttpClient(this.spilllanguageDeleteModel$);
 
     return this.httpClient.delete<boolean>(`/api/SpillLanguage/${ spilllanguage.SpillLanguageID }`).pipe(
       map((x: any) => {
-        this.DoSuccess(this.spilllanguageDeleteModel$, x, 'Delete', spilllanguage);
+        this.httpClientService.DoSuccess<SpillLanguage>(this.spilllanguageListModel$, this.spilllanguageDeleteModel$, x, HttpClientCommand.Delete, spilllanguage);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.DoCatchError(this.spilllanguageDeleteModel$, e, 'Delete');
+        this.httpClientService.DoCatchError<SpillLanguage>(this.spilllanguageListModel$, this.spilllanguageDeleteModel$, e);
       })))
     );
-  }
-
-  /* Functions private */
-  private BeforeHttpClient(httpRequestModel$: BehaviorSubject<HttpRequestModel>, router: Router) {
-    this.router = router;
-    this.oldURL = router.url;
-    httpRequestModel$.next(<HttpRequestModel>{ Working: true, Error: null, Status: null });
-  }
-
-  private DoCatchError(httpRequestModel$: BehaviorSubject<HttpRequestModel>, e: any, command: string) {
-    this.spilllanguageListModel$.next(null);
-    httpRequestModel$.next(<HttpRequestModel>{ Working: false, Error: <HttpErrorResponse>e, Status: 'Error' });
-
-    this.spilllanguageList = [];
-    console.debug(`SpillLanguage ${ command } ERROR. Return: ${ <HttpErrorResponse>e }`);
-    this.DoReload();
-  }
-
-  private DoReload() {
-    this.router.navigateByUrl('', { skipLocationChange: true }).then(() => {
-      this.router.navigate([`/${this.oldURL}`]);
-    });
-  }
-
-  private DoSuccess(httpRequestModel$: BehaviorSubject<HttpRequestModel>, x: any, command: string, spilllanguage?: SpillLanguage) {
-    console.debug(`SpillLanguage ${ command } OK. Return: ${ x }`);
-    if (command === 'Get') {
-      this.spilllanguageListModel$.next(<SpillLanguage[]>x);
-    }
-    if (command === 'Put') {
-      this.spilllanguageListModel$.getValue()[0] = <SpillLanguage>x;
-    }
-    if (command === 'Post') {
-      this.spilllanguageListModel$.getValue().push(<SpillLanguage>x);
-    }
-    if (command === 'Delete') {
-      const index = this.spilllanguageListModel$.getValue().indexOf(spilllanguage);
-      this.spilllanguageListModel$.getValue().splice(index, 1);
-    }
-
-    this.spilllanguageListModel$.next(this.spilllanguageListModel$.getValue());
-    httpRequestModel$.next(<HttpRequestModel>{ Working: false, Error: null, Status: 'ok' });
-    this.spilllanguageList = this.spilllanguageListModel$.getValue();
-    this.DoReload();
   }
 }

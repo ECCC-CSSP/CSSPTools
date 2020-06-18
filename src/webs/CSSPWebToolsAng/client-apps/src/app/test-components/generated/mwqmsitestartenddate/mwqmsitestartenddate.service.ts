@@ -9,11 +9,12 @@ import { Injectable } from '@angular/core';
 import { MWQMSiteStartEndDateTextModel } from './mwqmsitestartenddate.models';
 import { BehaviorSubject, of } from 'rxjs';
 import { LoadLocalesMWQMSiteStartEndDateText } from './mwqmsitestartenddate.locales';
-import { Router } from '@angular/router';
-import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { map, catchError } from 'rxjs/operators';
 import { MWQMSiteStartEndDate } from '../../../models/generated/MWQMSiteStartEndDate.model';
 import { HttpRequestModel } from '../../../models/http.model';
+import { HttpClientService } from '../../../services/http-client.service';
+import { HttpClientCommand } from '../../../enums/app.enums';
 
 @Injectable({
   providedIn: 'root'
@@ -26,110 +27,63 @@ export class MWQMSiteStartEndDateService {
   mwqmsitestartenddatePutModel$: BehaviorSubject<HttpRequestModel> = new BehaviorSubject<HttpRequestModel>(<HttpRequestModel>{});
   mwqmsitestartenddatePostModel$: BehaviorSubject<HttpRequestModel> = new BehaviorSubject<HttpRequestModel>(<HttpRequestModel>{});
   mwqmsitestartenddateDeleteModel$: BehaviorSubject<HttpRequestModel> = new BehaviorSubject<HttpRequestModel>(<HttpRequestModel>{});
-  mwqmsitestartenddateList: MWQMSiteStartEndDate[] = [];
-  private oldURL: string;
-  private router: Router;
 
   /* Constructors */
-  constructor(private httpClient: HttpClient) {
+  constructor(private httpClient: HttpClient, private httpClientService: HttpClientService) {
     LoadLocalesMWQMSiteStartEndDateText(this);
     this.mwqmsitestartenddateTextModel$.next(<MWQMSiteStartEndDateTextModel>{ Title: "Something2 for text" });
   }
 
   /* Functions public */
-  GetMWQMSiteStartEndDateList(router: Router) {
-    this.BeforeHttpClient(this.mwqmsitestartenddateGetModel$, router);
+  GetMWQMSiteStartEndDateList() {
+    this.httpClientService.BeforeHttpClient(this.mwqmsitestartenddateGetModel$);
 
     return this.httpClient.get<MWQMSiteStartEndDate[]>('/api/MWQMSiteStartEndDate').pipe(
       map((x: any) => {
-        this.DoSuccess(this.mwqmsitestartenddateGetModel$, x, 'Get', null);
+        this.httpClientService.DoSuccess<MWQMSiteStartEndDate>(this.mwqmsitestartenddateListModel$, this.mwqmsitestartenddateGetModel$, x, HttpClientCommand.Get, null);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.DoCatchError(this.mwqmsitestartenddateGetModel$, e, 'Get');
+        this.httpClientService.DoCatchError<MWQMSiteStartEndDate>(this.mwqmsitestartenddateListModel$, this.mwqmsitestartenddateGetModel$, e);
       })))
     );
   }
 
-  PutMWQMSiteStartEndDate(mwqmsitestartenddate: MWQMSiteStartEndDate, router: Router) {
-    this.BeforeHttpClient(this.mwqmsitestartenddatePutModel$, router);
+  PutMWQMSiteStartEndDate(mwqmsitestartenddate: MWQMSiteStartEndDate) {
+    this.httpClientService.BeforeHttpClient(this.mwqmsitestartenddatePutModel$);
 
     return this.httpClient.put<MWQMSiteStartEndDate>('/api/MWQMSiteStartEndDate', mwqmsitestartenddate, { headers: new HttpHeaders() }).pipe(
       map((x: any) => {
-        this.DoSuccess(this.mwqmsitestartenddatePutModel$, x, 'Put', mwqmsitestartenddate);
+        this.httpClientService.DoSuccess<MWQMSiteStartEndDate>(this.mwqmsitestartenddateListModel$, this.mwqmsitestartenddatePutModel$, x, HttpClientCommand.Put, mwqmsitestartenddate);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.DoCatchError(this.mwqmsitestartenddatePutModel$, e, 'Put');
+       this.httpClientService.DoCatchError<MWQMSiteStartEndDate>(this.mwqmsitestartenddateListModel$, this.mwqmsitestartenddatePutModel$, e);
       })))
     );
   }
 
-  PostMWQMSiteStartEndDate(mwqmsitestartenddate: MWQMSiteStartEndDate, router: Router) {
-    this.BeforeHttpClient(this.mwqmsitestartenddatePostModel$, router);
+  PostMWQMSiteStartEndDate(mwqmsitestartenddate: MWQMSiteStartEndDate) {
+    this.httpClientService.BeforeHttpClient(this.mwqmsitestartenddatePostModel$);
 
     return this.httpClient.post<MWQMSiteStartEndDate>('/api/MWQMSiteStartEndDate', mwqmsitestartenddate, { headers: new HttpHeaders() }).pipe(
       map((x: any) => {
-        this.DoSuccess(this.mwqmsitestartenddatePostModel$, x, 'Post', mwqmsitestartenddate);
+        this.httpClientService.DoSuccess<MWQMSiteStartEndDate>(this.mwqmsitestartenddateListModel$, this.mwqmsitestartenddatePostModel$, x, HttpClientCommand.Post, mwqmsitestartenddate);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.DoCatchError(this.mwqmsitestartenddatePostModel$, e, 'Post');
+        this.httpClientService.DoCatchError<MWQMSiteStartEndDate>(this.mwqmsitestartenddateListModel$, this.mwqmsitestartenddatePostModel$, e);
       })))
     );
   }
 
-  DeleteMWQMSiteStartEndDate(mwqmsitestartenddate: MWQMSiteStartEndDate, router: Router) {
-    this.BeforeHttpClient(this.mwqmsitestartenddateDeleteModel$, router);
+  DeleteMWQMSiteStartEndDate(mwqmsitestartenddate: MWQMSiteStartEndDate) {
+    this.httpClientService.BeforeHttpClient(this.mwqmsitestartenddateDeleteModel$);
 
     return this.httpClient.delete<boolean>(`/api/MWQMSiteStartEndDate/${ mwqmsitestartenddate.MWQMSiteStartEndDateID }`).pipe(
       map((x: any) => {
-        this.DoSuccess(this.mwqmsitestartenddateDeleteModel$, x, 'Delete', mwqmsitestartenddate);
+        this.httpClientService.DoSuccess<MWQMSiteStartEndDate>(this.mwqmsitestartenddateListModel$, this.mwqmsitestartenddateDeleteModel$, x, HttpClientCommand.Delete, mwqmsitestartenddate);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.DoCatchError(this.mwqmsitestartenddateDeleteModel$, e, 'Delete');
+        this.httpClientService.DoCatchError<MWQMSiteStartEndDate>(this.mwqmsitestartenddateListModel$, this.mwqmsitestartenddateDeleteModel$, e);
       })))
     );
-  }
-
-  /* Functions private */
-  private BeforeHttpClient(httpRequestModel$: BehaviorSubject<HttpRequestModel>, router: Router) {
-    this.router = router;
-    this.oldURL = router.url;
-    httpRequestModel$.next(<HttpRequestModel>{ Working: true, Error: null, Status: null });
-  }
-
-  private DoCatchError(httpRequestModel$: BehaviorSubject<HttpRequestModel>, e: any, command: string) {
-    this.mwqmsitestartenddateListModel$.next(null);
-    httpRequestModel$.next(<HttpRequestModel>{ Working: false, Error: <HttpErrorResponse>e, Status: 'Error' });
-
-    this.mwqmsitestartenddateList = [];
-    console.debug(`MWQMSiteStartEndDate ${ command } ERROR. Return: ${ <HttpErrorResponse>e }`);
-    this.DoReload();
-  }
-
-  private DoReload() {
-    this.router.navigateByUrl('', { skipLocationChange: true }).then(() => {
-      this.router.navigate([`/${this.oldURL}`]);
-    });
-  }
-
-  private DoSuccess(httpRequestModel$: BehaviorSubject<HttpRequestModel>, x: any, command: string, mwqmsitestartenddate?: MWQMSiteStartEndDate) {
-    console.debug(`MWQMSiteStartEndDate ${ command } OK. Return: ${ x }`);
-    if (command === 'Get') {
-      this.mwqmsitestartenddateListModel$.next(<MWQMSiteStartEndDate[]>x);
-    }
-    if (command === 'Put') {
-      this.mwqmsitestartenddateListModel$.getValue()[0] = <MWQMSiteStartEndDate>x;
-    }
-    if (command === 'Post') {
-      this.mwqmsitestartenddateListModel$.getValue().push(<MWQMSiteStartEndDate>x);
-    }
-    if (command === 'Delete') {
-      const index = this.mwqmsitestartenddateListModel$.getValue().indexOf(mwqmsitestartenddate);
-      this.mwqmsitestartenddateListModel$.getValue().splice(index, 1);
-    }
-
-    this.mwqmsitestartenddateListModel$.next(this.mwqmsitestartenddateListModel$.getValue());
-    httpRequestModel$.next(<HttpRequestModel>{ Working: false, Error: null, Status: 'ok' });
-    this.mwqmsitestartenddateList = this.mwqmsitestartenddateListModel$.getValue();
-    this.DoReload();
   }
 }

@@ -8,13 +8,15 @@
 import { Component, OnInit, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
 import { BoxModelLanguageService } from './boxmodellanguage.service';
 import { LoadLocalesBoxModelLanguageText } from './boxmodellanguage.locales';
-import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { LanguageEnum_GetIDText, LanguageEnum_GetOrderedText } from '../../../enums/generated/LanguageEnum';
 import { TranslationStatusEnum_GetIDText, TranslationStatusEnum_GetOrderedText } from '../../../enums/generated/TranslationStatusEnum';
 import { BoxModelLanguage } from '../../../models/generated/BoxModelLanguage.model';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
 import { EnumIDAndText } from '../../../models/enumidandtext.model';
+import { HttpClientService } from '../../../services/http-client.service';
+import { Router } from '@angular/router';
+import { HttpClientCommand } from '../../../enums/app.enums';
 
 @Component({
   selector: 'app-boxmodellanguage',
@@ -29,22 +31,24 @@ export class BoxModelLanguageComponent implements OnInit, OnDestroy {
   boxmodellanguageFormPut: FormGroup;
   boxmodellanguageFormPost: FormGroup;
 
-  constructor(public boxmodellanguageService: BoxModelLanguageService, public router: Router, public fb: FormBuilder) { }
+  constructor(public boxmodellanguageService: BoxModelLanguageService, private router: Router, private httpClientService: HttpClientService, private fb: FormBuilder) {
+    httpClientService.oldURL = router.url;
+  }
 
   GetBoxModelLanguageList() {
-    this.sub = this.boxmodellanguageService.GetBoxModelLanguageList(this.router).subscribe();
+    this.sub = this.boxmodellanguageService.GetBoxModelLanguageList().subscribe();
   }
 
   PutBoxModelLanguage(boxmodellanguage: BoxModelLanguage) {
-    this.sub = this.boxmodellanguageService.PutBoxModelLanguage(boxmodellanguage, this.router).subscribe();
+    this.sub = this.boxmodellanguageService.PutBoxModelLanguage(boxmodellanguage).subscribe();
   }
 
   PostBoxModelLanguage(boxmodellanguage: BoxModelLanguage) {
-    this.sub = this.boxmodellanguageService.PostBoxModelLanguage(boxmodellanguage, this.router).subscribe();
+    this.sub = this.boxmodellanguageService.PostBoxModelLanguage(boxmodellanguage).subscribe();
   }
 
   DeleteBoxModelLanguage(boxmodellanguage: BoxModelLanguage) {
-    this.sub = this.boxmodellanguageService.DeleteBoxModelLanguage(boxmodellanguage, this.router).subscribe();
+    this.sub = this.boxmodellanguageService.DeleteBoxModelLanguage(boxmodellanguage).subscribe();
   }
 
   GetLanguageEnumText(enumID: number) {
@@ -59,8 +63,8 @@ export class BoxModelLanguageComponent implements OnInit, OnDestroy {
     LoadLocalesBoxModelLanguageText(this.boxmodellanguageService);
     this.languageList = LanguageEnum_GetOrderedText();
     this.translationStatusList = TranslationStatusEnum_GetOrderedText();
-    this.FillFormBuilderGroup('Add');
-    this.FillFormBuilderGroup('Update');
+    this.FillFormBuilderGroup(HttpClientCommand.Post);
+    this.FillFormBuilderGroup(HttpClientCommand.Put);
   }
 
   ngOnDestroy() {
@@ -69,49 +73,49 @@ export class BoxModelLanguageComponent implements OnInit, OnDestroy {
     }
   }
 
-  FillFormBuilderGroup(AddOrUpdate: string) {
-    if (this.boxmodellanguageService.boxmodellanguageList.length) {
+  FillFormBuilderGroup(httpClientCommand: HttpClientCommand) {
+    if (this.boxmodellanguageService.boxmodellanguageListModel$.getValue().length) {
       let formGroup: FormGroup = this.fb.group(
         {
           BoxModelLanguageID: [
             {
-              value: (AddOrUpdate === 'Add' ? 0 : (this.boxmodellanguageService.boxmodellanguageList[0]?.BoxModelLanguageID)),
+              value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.boxmodellanguageService.boxmodellanguageListModel$.getValue()[0]?.BoxModelLanguageID)),
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
           BoxModelID: [
             {
-              value: this.boxmodellanguageService.boxmodellanguageList[0]?.BoxModelID,
+              value: this.boxmodellanguageService.boxmodellanguageListModel$.getValue()[0]?.BoxModelID,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
           Language: [
             {
-              value: this.boxmodellanguageService.boxmodellanguageList[0]?.Language,
+              value: this.boxmodellanguageService.boxmodellanguageListModel$.getValue()[0]?.Language,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
           ScenarioName: [
             {
-              value: this.boxmodellanguageService.boxmodellanguageList[0]?.ScenarioName,
+              value: this.boxmodellanguageService.boxmodellanguageListModel$.getValue()[0]?.ScenarioName,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required, Validators.maxLength(250) ]],
           TranslationStatus: [
             {
-              value: this.boxmodellanguageService.boxmodellanguageList[0]?.TranslationStatus,
+              value: this.boxmodellanguageService.boxmodellanguageListModel$.getValue()[0]?.TranslationStatus,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
           LastUpdateDate_UTC: [
             {
-              value: this.boxmodellanguageService.boxmodellanguageList[0]?.LastUpdateDate_UTC,
+              value: this.boxmodellanguageService.boxmodellanguageListModel$.getValue()[0]?.LastUpdateDate_UTC,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
           LastUpdateContactTVItemID: [
             {
-              value: this.boxmodellanguageService.boxmodellanguageList[0]?.LastUpdateContactTVItemID,
+              value: this.boxmodellanguageService.boxmodellanguageListModel$.getValue()[0]?.LastUpdateContactTVItemID,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
         }
       );
 
-      if (AddOrUpdate === 'Add') {
+      if (httpClientCommand === HttpClientCommand.Post) {
         this.boxmodellanguageFormPost = formGroup
       }
       else {

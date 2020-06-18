@@ -9,11 +9,12 @@ import { Injectable } from '@angular/core';
 import { VPScenarioLanguageTextModel } from './vpscenariolanguage.models';
 import { BehaviorSubject, of } from 'rxjs';
 import { LoadLocalesVPScenarioLanguageText } from './vpscenariolanguage.locales';
-import { Router } from '@angular/router';
-import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { map, catchError } from 'rxjs/operators';
 import { VPScenarioLanguage } from '../../../models/generated/VPScenarioLanguage.model';
 import { HttpRequestModel } from '../../../models/http.model';
+import { HttpClientService } from '../../../services/http-client.service';
+import { HttpClientCommand } from '../../../enums/app.enums';
 
 @Injectable({
   providedIn: 'root'
@@ -26,110 +27,63 @@ export class VPScenarioLanguageService {
   vpscenariolanguagePutModel$: BehaviorSubject<HttpRequestModel> = new BehaviorSubject<HttpRequestModel>(<HttpRequestModel>{});
   vpscenariolanguagePostModel$: BehaviorSubject<HttpRequestModel> = new BehaviorSubject<HttpRequestModel>(<HttpRequestModel>{});
   vpscenariolanguageDeleteModel$: BehaviorSubject<HttpRequestModel> = new BehaviorSubject<HttpRequestModel>(<HttpRequestModel>{});
-  vpscenariolanguageList: VPScenarioLanguage[] = [];
-  private oldURL: string;
-  private router: Router;
 
   /* Constructors */
-  constructor(private httpClient: HttpClient) {
+  constructor(private httpClient: HttpClient, private httpClientService: HttpClientService) {
     LoadLocalesVPScenarioLanguageText(this);
     this.vpscenariolanguageTextModel$.next(<VPScenarioLanguageTextModel>{ Title: "Something2 for text" });
   }
 
   /* Functions public */
-  GetVPScenarioLanguageList(router: Router) {
-    this.BeforeHttpClient(this.vpscenariolanguageGetModel$, router);
+  GetVPScenarioLanguageList() {
+    this.httpClientService.BeforeHttpClient(this.vpscenariolanguageGetModel$);
 
     return this.httpClient.get<VPScenarioLanguage[]>('/api/VPScenarioLanguage').pipe(
       map((x: any) => {
-        this.DoSuccess(this.vpscenariolanguageGetModel$, x, 'Get', null);
+        this.httpClientService.DoSuccess<VPScenarioLanguage>(this.vpscenariolanguageListModel$, this.vpscenariolanguageGetModel$, x, HttpClientCommand.Get, null);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.DoCatchError(this.vpscenariolanguageGetModel$, e, 'Get');
+        this.httpClientService.DoCatchError<VPScenarioLanguage>(this.vpscenariolanguageListModel$, this.vpscenariolanguageGetModel$, e);
       })))
     );
   }
 
-  PutVPScenarioLanguage(vpscenariolanguage: VPScenarioLanguage, router: Router) {
-    this.BeforeHttpClient(this.vpscenariolanguagePutModel$, router);
+  PutVPScenarioLanguage(vpscenariolanguage: VPScenarioLanguage) {
+    this.httpClientService.BeforeHttpClient(this.vpscenariolanguagePutModel$);
 
     return this.httpClient.put<VPScenarioLanguage>('/api/VPScenarioLanguage', vpscenariolanguage, { headers: new HttpHeaders() }).pipe(
       map((x: any) => {
-        this.DoSuccess(this.vpscenariolanguagePutModel$, x, 'Put', vpscenariolanguage);
+        this.httpClientService.DoSuccess<VPScenarioLanguage>(this.vpscenariolanguageListModel$, this.vpscenariolanguagePutModel$, x, HttpClientCommand.Put, vpscenariolanguage);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.DoCatchError(this.vpscenariolanguagePutModel$, e, 'Put');
+       this.httpClientService.DoCatchError<VPScenarioLanguage>(this.vpscenariolanguageListModel$, this.vpscenariolanguagePutModel$, e);
       })))
     );
   }
 
-  PostVPScenarioLanguage(vpscenariolanguage: VPScenarioLanguage, router: Router) {
-    this.BeforeHttpClient(this.vpscenariolanguagePostModel$, router);
+  PostVPScenarioLanguage(vpscenariolanguage: VPScenarioLanguage) {
+    this.httpClientService.BeforeHttpClient(this.vpscenariolanguagePostModel$);
 
     return this.httpClient.post<VPScenarioLanguage>('/api/VPScenarioLanguage', vpscenariolanguage, { headers: new HttpHeaders() }).pipe(
       map((x: any) => {
-        this.DoSuccess(this.vpscenariolanguagePostModel$, x, 'Post', vpscenariolanguage);
+        this.httpClientService.DoSuccess<VPScenarioLanguage>(this.vpscenariolanguageListModel$, this.vpscenariolanguagePostModel$, x, HttpClientCommand.Post, vpscenariolanguage);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.DoCatchError(this.vpscenariolanguagePostModel$, e, 'Post');
+        this.httpClientService.DoCatchError<VPScenarioLanguage>(this.vpscenariolanguageListModel$, this.vpscenariolanguagePostModel$, e);
       })))
     );
   }
 
-  DeleteVPScenarioLanguage(vpscenariolanguage: VPScenarioLanguage, router: Router) {
-    this.BeforeHttpClient(this.vpscenariolanguageDeleteModel$, router);
+  DeleteVPScenarioLanguage(vpscenariolanguage: VPScenarioLanguage) {
+    this.httpClientService.BeforeHttpClient(this.vpscenariolanguageDeleteModel$);
 
     return this.httpClient.delete<boolean>(`/api/VPScenarioLanguage/${ vpscenariolanguage.VPScenarioLanguageID }`).pipe(
       map((x: any) => {
-        this.DoSuccess(this.vpscenariolanguageDeleteModel$, x, 'Delete', vpscenariolanguage);
+        this.httpClientService.DoSuccess<VPScenarioLanguage>(this.vpscenariolanguageListModel$, this.vpscenariolanguageDeleteModel$, x, HttpClientCommand.Delete, vpscenariolanguage);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.DoCatchError(this.vpscenariolanguageDeleteModel$, e, 'Delete');
+        this.httpClientService.DoCatchError<VPScenarioLanguage>(this.vpscenariolanguageListModel$, this.vpscenariolanguageDeleteModel$, e);
       })))
     );
-  }
-
-  /* Functions private */
-  private BeforeHttpClient(httpRequestModel$: BehaviorSubject<HttpRequestModel>, router: Router) {
-    this.router = router;
-    this.oldURL = router.url;
-    httpRequestModel$.next(<HttpRequestModel>{ Working: true, Error: null, Status: null });
-  }
-
-  private DoCatchError(httpRequestModel$: BehaviorSubject<HttpRequestModel>, e: any, command: string) {
-    this.vpscenariolanguageListModel$.next(null);
-    httpRequestModel$.next(<HttpRequestModel>{ Working: false, Error: <HttpErrorResponse>e, Status: 'Error' });
-
-    this.vpscenariolanguageList = [];
-    console.debug(`VPScenarioLanguage ${ command } ERROR. Return: ${ <HttpErrorResponse>e }`);
-    this.DoReload();
-  }
-
-  private DoReload() {
-    this.router.navigateByUrl('', { skipLocationChange: true }).then(() => {
-      this.router.navigate([`/${this.oldURL}`]);
-    });
-  }
-
-  private DoSuccess(httpRequestModel$: BehaviorSubject<HttpRequestModel>, x: any, command: string, vpscenariolanguage?: VPScenarioLanguage) {
-    console.debug(`VPScenarioLanguage ${ command } OK. Return: ${ x }`);
-    if (command === 'Get') {
-      this.vpscenariolanguageListModel$.next(<VPScenarioLanguage[]>x);
-    }
-    if (command === 'Put') {
-      this.vpscenariolanguageListModel$.getValue()[0] = <VPScenarioLanguage>x;
-    }
-    if (command === 'Post') {
-      this.vpscenariolanguageListModel$.getValue().push(<VPScenarioLanguage>x);
-    }
-    if (command === 'Delete') {
-      const index = this.vpscenariolanguageListModel$.getValue().indexOf(vpscenariolanguage);
-      this.vpscenariolanguageListModel$.getValue().splice(index, 1);
-    }
-
-    this.vpscenariolanguageListModel$.next(this.vpscenariolanguageListModel$.getValue());
-    httpRequestModel$.next(<HttpRequestModel>{ Working: false, Error: null, Status: 'ok' });
-    this.vpscenariolanguageList = this.vpscenariolanguageListModel$.getValue();
-    this.DoReload();
   }
 }

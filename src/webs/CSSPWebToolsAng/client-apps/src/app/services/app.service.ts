@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import { AppModel } from 'src/app/models';
+import { AppModel, HttpRequestModel } from 'src/app/models';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -17,3 +18,5 @@ export class AppService {
     this.appModel$.next(<AppModel>{...this.appModel$.getValue(), ...appModel});
   }
 }
+
+ 

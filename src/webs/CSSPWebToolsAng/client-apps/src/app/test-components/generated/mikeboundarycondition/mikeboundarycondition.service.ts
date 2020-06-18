@@ -9,11 +9,12 @@ import { Injectable } from '@angular/core';
 import { MikeBoundaryConditionTextModel } from './mikeboundarycondition.models';
 import { BehaviorSubject, of } from 'rxjs';
 import { LoadLocalesMikeBoundaryConditionText } from './mikeboundarycondition.locales';
-import { Router } from '@angular/router';
-import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { map, catchError } from 'rxjs/operators';
 import { MikeBoundaryCondition } from '../../../models/generated/MikeBoundaryCondition.model';
 import { HttpRequestModel } from '../../../models/http.model';
+import { HttpClientService } from '../../../services/http-client.service';
+import { HttpClientCommand } from '../../../enums/app.enums';
 
 @Injectable({
   providedIn: 'root'
@@ -26,110 +27,63 @@ export class MikeBoundaryConditionService {
   mikeboundaryconditionPutModel$: BehaviorSubject<HttpRequestModel> = new BehaviorSubject<HttpRequestModel>(<HttpRequestModel>{});
   mikeboundaryconditionPostModel$: BehaviorSubject<HttpRequestModel> = new BehaviorSubject<HttpRequestModel>(<HttpRequestModel>{});
   mikeboundaryconditionDeleteModel$: BehaviorSubject<HttpRequestModel> = new BehaviorSubject<HttpRequestModel>(<HttpRequestModel>{});
-  mikeboundaryconditionList: MikeBoundaryCondition[] = [];
-  private oldURL: string;
-  private router: Router;
 
   /* Constructors */
-  constructor(private httpClient: HttpClient) {
+  constructor(private httpClient: HttpClient, private httpClientService: HttpClientService) {
     LoadLocalesMikeBoundaryConditionText(this);
     this.mikeboundaryconditionTextModel$.next(<MikeBoundaryConditionTextModel>{ Title: "Something2 for text" });
   }
 
   /* Functions public */
-  GetMikeBoundaryConditionList(router: Router) {
-    this.BeforeHttpClient(this.mikeboundaryconditionGetModel$, router);
+  GetMikeBoundaryConditionList() {
+    this.httpClientService.BeforeHttpClient(this.mikeboundaryconditionGetModel$);
 
     return this.httpClient.get<MikeBoundaryCondition[]>('/api/MikeBoundaryCondition').pipe(
       map((x: any) => {
-        this.DoSuccess(this.mikeboundaryconditionGetModel$, x, 'Get', null);
+        this.httpClientService.DoSuccess<MikeBoundaryCondition>(this.mikeboundaryconditionListModel$, this.mikeboundaryconditionGetModel$, x, HttpClientCommand.Get, null);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.DoCatchError(this.mikeboundaryconditionGetModel$, e, 'Get');
+        this.httpClientService.DoCatchError<MikeBoundaryCondition>(this.mikeboundaryconditionListModel$, this.mikeboundaryconditionGetModel$, e);
       })))
     );
   }
 
-  PutMikeBoundaryCondition(mikeboundarycondition: MikeBoundaryCondition, router: Router) {
-    this.BeforeHttpClient(this.mikeboundaryconditionPutModel$, router);
+  PutMikeBoundaryCondition(mikeboundarycondition: MikeBoundaryCondition) {
+    this.httpClientService.BeforeHttpClient(this.mikeboundaryconditionPutModel$);
 
     return this.httpClient.put<MikeBoundaryCondition>('/api/MikeBoundaryCondition', mikeboundarycondition, { headers: new HttpHeaders() }).pipe(
       map((x: any) => {
-        this.DoSuccess(this.mikeboundaryconditionPutModel$, x, 'Put', mikeboundarycondition);
+        this.httpClientService.DoSuccess<MikeBoundaryCondition>(this.mikeboundaryconditionListModel$, this.mikeboundaryconditionPutModel$, x, HttpClientCommand.Put, mikeboundarycondition);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.DoCatchError(this.mikeboundaryconditionPutModel$, e, 'Put');
+       this.httpClientService.DoCatchError<MikeBoundaryCondition>(this.mikeboundaryconditionListModel$, this.mikeboundaryconditionPutModel$, e);
       })))
     );
   }
 
-  PostMikeBoundaryCondition(mikeboundarycondition: MikeBoundaryCondition, router: Router) {
-    this.BeforeHttpClient(this.mikeboundaryconditionPostModel$, router);
+  PostMikeBoundaryCondition(mikeboundarycondition: MikeBoundaryCondition) {
+    this.httpClientService.BeforeHttpClient(this.mikeboundaryconditionPostModel$);
 
     return this.httpClient.post<MikeBoundaryCondition>('/api/MikeBoundaryCondition', mikeboundarycondition, { headers: new HttpHeaders() }).pipe(
       map((x: any) => {
-        this.DoSuccess(this.mikeboundaryconditionPostModel$, x, 'Post', mikeboundarycondition);
+        this.httpClientService.DoSuccess<MikeBoundaryCondition>(this.mikeboundaryconditionListModel$, this.mikeboundaryconditionPostModel$, x, HttpClientCommand.Post, mikeboundarycondition);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.DoCatchError(this.mikeboundaryconditionPostModel$, e, 'Post');
+        this.httpClientService.DoCatchError<MikeBoundaryCondition>(this.mikeboundaryconditionListModel$, this.mikeboundaryconditionPostModel$, e);
       })))
     );
   }
 
-  DeleteMikeBoundaryCondition(mikeboundarycondition: MikeBoundaryCondition, router: Router) {
-    this.BeforeHttpClient(this.mikeboundaryconditionDeleteModel$, router);
+  DeleteMikeBoundaryCondition(mikeboundarycondition: MikeBoundaryCondition) {
+    this.httpClientService.BeforeHttpClient(this.mikeboundaryconditionDeleteModel$);
 
     return this.httpClient.delete<boolean>(`/api/MikeBoundaryCondition/${ mikeboundarycondition.MikeBoundaryConditionID }`).pipe(
       map((x: any) => {
-        this.DoSuccess(this.mikeboundaryconditionDeleteModel$, x, 'Delete', mikeboundarycondition);
+        this.httpClientService.DoSuccess<MikeBoundaryCondition>(this.mikeboundaryconditionListModel$, this.mikeboundaryconditionDeleteModel$, x, HttpClientCommand.Delete, mikeboundarycondition);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.DoCatchError(this.mikeboundaryconditionDeleteModel$, e, 'Delete');
+        this.httpClientService.DoCatchError<MikeBoundaryCondition>(this.mikeboundaryconditionListModel$, this.mikeboundaryconditionDeleteModel$, e);
       })))
     );
-  }
-
-  /* Functions private */
-  private BeforeHttpClient(httpRequestModel$: BehaviorSubject<HttpRequestModel>, router: Router) {
-    this.router = router;
-    this.oldURL = router.url;
-    httpRequestModel$.next(<HttpRequestModel>{ Working: true, Error: null, Status: null });
-  }
-
-  private DoCatchError(httpRequestModel$: BehaviorSubject<HttpRequestModel>, e: any, command: string) {
-    this.mikeboundaryconditionListModel$.next(null);
-    httpRequestModel$.next(<HttpRequestModel>{ Working: false, Error: <HttpErrorResponse>e, Status: 'Error' });
-
-    this.mikeboundaryconditionList = [];
-    console.debug(`MikeBoundaryCondition ${ command } ERROR. Return: ${ <HttpErrorResponse>e }`);
-    this.DoReload();
-  }
-
-  private DoReload() {
-    this.router.navigateByUrl('', { skipLocationChange: true }).then(() => {
-      this.router.navigate([`/${this.oldURL}`]);
-    });
-  }
-
-  private DoSuccess(httpRequestModel$: BehaviorSubject<HttpRequestModel>, x: any, command: string, mikeboundarycondition?: MikeBoundaryCondition) {
-    console.debug(`MikeBoundaryCondition ${ command } OK. Return: ${ x }`);
-    if (command === 'Get') {
-      this.mikeboundaryconditionListModel$.next(<MikeBoundaryCondition[]>x);
-    }
-    if (command === 'Put') {
-      this.mikeboundaryconditionListModel$.getValue()[0] = <MikeBoundaryCondition>x;
-    }
-    if (command === 'Post') {
-      this.mikeboundaryconditionListModel$.getValue().push(<MikeBoundaryCondition>x);
-    }
-    if (command === 'Delete') {
-      const index = this.mikeboundaryconditionListModel$.getValue().indexOf(mikeboundarycondition);
-      this.mikeboundaryconditionListModel$.getValue().splice(index, 1);
-    }
-
-    this.mikeboundaryconditionListModel$.next(this.mikeboundaryconditionListModel$.getValue());
-    httpRequestModel$.next(<HttpRequestModel>{ Working: false, Error: null, Status: 'ok' });
-    this.mikeboundaryconditionList = this.mikeboundaryconditionListModel$.getValue();
-    this.DoReload();
   }
 }

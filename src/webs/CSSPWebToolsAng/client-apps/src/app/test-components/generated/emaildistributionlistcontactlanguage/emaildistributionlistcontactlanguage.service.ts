@@ -9,11 +9,12 @@ import { Injectable } from '@angular/core';
 import { EmailDistributionListContactLanguageTextModel } from './emaildistributionlistcontactlanguage.models';
 import { BehaviorSubject, of } from 'rxjs';
 import { LoadLocalesEmailDistributionListContactLanguageText } from './emaildistributionlistcontactlanguage.locales';
-import { Router } from '@angular/router';
-import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { map, catchError } from 'rxjs/operators';
 import { EmailDistributionListContactLanguage } from '../../../models/generated/EmailDistributionListContactLanguage.model';
 import { HttpRequestModel } from '../../../models/http.model';
+import { HttpClientService } from '../../../services/http-client.service';
+import { HttpClientCommand } from '../../../enums/app.enums';
 
 @Injectable({
   providedIn: 'root'
@@ -26,110 +27,63 @@ export class EmailDistributionListContactLanguageService {
   emaildistributionlistcontactlanguagePutModel$: BehaviorSubject<HttpRequestModel> = new BehaviorSubject<HttpRequestModel>(<HttpRequestModel>{});
   emaildistributionlistcontactlanguagePostModel$: BehaviorSubject<HttpRequestModel> = new BehaviorSubject<HttpRequestModel>(<HttpRequestModel>{});
   emaildistributionlistcontactlanguageDeleteModel$: BehaviorSubject<HttpRequestModel> = new BehaviorSubject<HttpRequestModel>(<HttpRequestModel>{});
-  emaildistributionlistcontactlanguageList: EmailDistributionListContactLanguage[] = [];
-  private oldURL: string;
-  private router: Router;
 
   /* Constructors */
-  constructor(private httpClient: HttpClient) {
+  constructor(private httpClient: HttpClient, private httpClientService: HttpClientService) {
     LoadLocalesEmailDistributionListContactLanguageText(this);
     this.emaildistributionlistcontactlanguageTextModel$.next(<EmailDistributionListContactLanguageTextModel>{ Title: "Something2 for text" });
   }
 
   /* Functions public */
-  GetEmailDistributionListContactLanguageList(router: Router) {
-    this.BeforeHttpClient(this.emaildistributionlistcontactlanguageGetModel$, router);
+  GetEmailDistributionListContactLanguageList() {
+    this.httpClientService.BeforeHttpClient(this.emaildistributionlistcontactlanguageGetModel$);
 
     return this.httpClient.get<EmailDistributionListContactLanguage[]>('/api/EmailDistributionListContactLanguage').pipe(
       map((x: any) => {
-        this.DoSuccess(this.emaildistributionlistcontactlanguageGetModel$, x, 'Get', null);
+        this.httpClientService.DoSuccess<EmailDistributionListContactLanguage>(this.emaildistributionlistcontactlanguageListModel$, this.emaildistributionlistcontactlanguageGetModel$, x, HttpClientCommand.Get, null);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.DoCatchError(this.emaildistributionlistcontactlanguageGetModel$, e, 'Get');
+        this.httpClientService.DoCatchError<EmailDistributionListContactLanguage>(this.emaildistributionlistcontactlanguageListModel$, this.emaildistributionlistcontactlanguageGetModel$, e);
       })))
     );
   }
 
-  PutEmailDistributionListContactLanguage(emaildistributionlistcontactlanguage: EmailDistributionListContactLanguage, router: Router) {
-    this.BeforeHttpClient(this.emaildistributionlistcontactlanguagePutModel$, router);
+  PutEmailDistributionListContactLanguage(emaildistributionlistcontactlanguage: EmailDistributionListContactLanguage) {
+    this.httpClientService.BeforeHttpClient(this.emaildistributionlistcontactlanguagePutModel$);
 
     return this.httpClient.put<EmailDistributionListContactLanguage>('/api/EmailDistributionListContactLanguage', emaildistributionlistcontactlanguage, { headers: new HttpHeaders() }).pipe(
       map((x: any) => {
-        this.DoSuccess(this.emaildistributionlistcontactlanguagePutModel$, x, 'Put', emaildistributionlistcontactlanguage);
+        this.httpClientService.DoSuccess<EmailDistributionListContactLanguage>(this.emaildistributionlistcontactlanguageListModel$, this.emaildistributionlistcontactlanguagePutModel$, x, HttpClientCommand.Put, emaildistributionlistcontactlanguage);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.DoCatchError(this.emaildistributionlistcontactlanguagePutModel$, e, 'Put');
+       this.httpClientService.DoCatchError<EmailDistributionListContactLanguage>(this.emaildistributionlistcontactlanguageListModel$, this.emaildistributionlistcontactlanguagePutModel$, e);
       })))
     );
   }
 
-  PostEmailDistributionListContactLanguage(emaildistributionlistcontactlanguage: EmailDistributionListContactLanguage, router: Router) {
-    this.BeforeHttpClient(this.emaildistributionlistcontactlanguagePostModel$, router);
+  PostEmailDistributionListContactLanguage(emaildistributionlistcontactlanguage: EmailDistributionListContactLanguage) {
+    this.httpClientService.BeforeHttpClient(this.emaildistributionlistcontactlanguagePostModel$);
 
     return this.httpClient.post<EmailDistributionListContactLanguage>('/api/EmailDistributionListContactLanguage', emaildistributionlistcontactlanguage, { headers: new HttpHeaders() }).pipe(
       map((x: any) => {
-        this.DoSuccess(this.emaildistributionlistcontactlanguagePostModel$, x, 'Post', emaildistributionlistcontactlanguage);
+        this.httpClientService.DoSuccess<EmailDistributionListContactLanguage>(this.emaildistributionlistcontactlanguageListModel$, this.emaildistributionlistcontactlanguagePostModel$, x, HttpClientCommand.Post, emaildistributionlistcontactlanguage);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.DoCatchError(this.emaildistributionlistcontactlanguagePostModel$, e, 'Post');
+        this.httpClientService.DoCatchError<EmailDistributionListContactLanguage>(this.emaildistributionlistcontactlanguageListModel$, this.emaildistributionlistcontactlanguagePostModel$, e);
       })))
     );
   }
 
-  DeleteEmailDistributionListContactLanguage(emaildistributionlistcontactlanguage: EmailDistributionListContactLanguage, router: Router) {
-    this.BeforeHttpClient(this.emaildistributionlistcontactlanguageDeleteModel$, router);
+  DeleteEmailDistributionListContactLanguage(emaildistributionlistcontactlanguage: EmailDistributionListContactLanguage) {
+    this.httpClientService.BeforeHttpClient(this.emaildistributionlistcontactlanguageDeleteModel$);
 
     return this.httpClient.delete<boolean>(`/api/EmailDistributionListContactLanguage/${ emaildistributionlistcontactlanguage.EmailDistributionListContactLanguageID }`).pipe(
       map((x: any) => {
-        this.DoSuccess(this.emaildistributionlistcontactlanguageDeleteModel$, x, 'Delete', emaildistributionlistcontactlanguage);
+        this.httpClientService.DoSuccess<EmailDistributionListContactLanguage>(this.emaildistributionlistcontactlanguageListModel$, this.emaildistributionlistcontactlanguageDeleteModel$, x, HttpClientCommand.Delete, emaildistributionlistcontactlanguage);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.DoCatchError(this.emaildistributionlistcontactlanguageDeleteModel$, e, 'Delete');
+        this.httpClientService.DoCatchError<EmailDistributionListContactLanguage>(this.emaildistributionlistcontactlanguageListModel$, this.emaildistributionlistcontactlanguageDeleteModel$, e);
       })))
     );
-  }
-
-  /* Functions private */
-  private BeforeHttpClient(httpRequestModel$: BehaviorSubject<HttpRequestModel>, router: Router) {
-    this.router = router;
-    this.oldURL = router.url;
-    httpRequestModel$.next(<HttpRequestModel>{ Working: true, Error: null, Status: null });
-  }
-
-  private DoCatchError(httpRequestModel$: BehaviorSubject<HttpRequestModel>, e: any, command: string) {
-    this.emaildistributionlistcontactlanguageListModel$.next(null);
-    httpRequestModel$.next(<HttpRequestModel>{ Working: false, Error: <HttpErrorResponse>e, Status: 'Error' });
-
-    this.emaildistributionlistcontactlanguageList = [];
-    console.debug(`EmailDistributionListContactLanguage ${ command } ERROR. Return: ${ <HttpErrorResponse>e }`);
-    this.DoReload();
-  }
-
-  private DoReload() {
-    this.router.navigateByUrl('', { skipLocationChange: true }).then(() => {
-      this.router.navigate([`/${this.oldURL}`]);
-    });
-  }
-
-  private DoSuccess(httpRequestModel$: BehaviorSubject<HttpRequestModel>, x: any, command: string, emaildistributionlistcontactlanguage?: EmailDistributionListContactLanguage) {
-    console.debug(`EmailDistributionListContactLanguage ${ command } OK. Return: ${ x }`);
-    if (command === 'Get') {
-      this.emaildistributionlistcontactlanguageListModel$.next(<EmailDistributionListContactLanguage[]>x);
-    }
-    if (command === 'Put') {
-      this.emaildistributionlistcontactlanguageListModel$.getValue()[0] = <EmailDistributionListContactLanguage>x;
-    }
-    if (command === 'Post') {
-      this.emaildistributionlistcontactlanguageListModel$.getValue().push(<EmailDistributionListContactLanguage>x);
-    }
-    if (command === 'Delete') {
-      const index = this.emaildistributionlistcontactlanguageListModel$.getValue().indexOf(emaildistributionlistcontactlanguage);
-      this.emaildistributionlistcontactlanguageListModel$.getValue().splice(index, 1);
-    }
-
-    this.emaildistributionlistcontactlanguageListModel$.next(this.emaildistributionlistcontactlanguageListModel$.getValue());
-    httpRequestModel$.next(<HttpRequestModel>{ Working: false, Error: null, Status: 'ok' });
-    this.emaildistributionlistcontactlanguageList = this.emaildistributionlistcontactlanguageListModel$.getValue();
-    this.DoReload();
   }
 }

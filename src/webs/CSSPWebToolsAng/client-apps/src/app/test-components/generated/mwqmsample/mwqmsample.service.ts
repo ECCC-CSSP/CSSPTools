@@ -9,11 +9,12 @@ import { Injectable } from '@angular/core';
 import { MWQMSampleTextModel } from './mwqmsample.models';
 import { BehaviorSubject, of } from 'rxjs';
 import { LoadLocalesMWQMSampleText } from './mwqmsample.locales';
-import { Router } from '@angular/router';
-import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { map, catchError } from 'rxjs/operators';
 import { MWQMSample } from '../../../models/generated/MWQMSample.model';
 import { HttpRequestModel } from '../../../models/http.model';
+import { HttpClientService } from '../../../services/http-client.service';
+import { HttpClientCommand } from '../../../enums/app.enums';
 
 @Injectable({
   providedIn: 'root'
@@ -26,110 +27,63 @@ export class MWQMSampleService {
   mwqmsamplePutModel$: BehaviorSubject<HttpRequestModel> = new BehaviorSubject<HttpRequestModel>(<HttpRequestModel>{});
   mwqmsamplePostModel$: BehaviorSubject<HttpRequestModel> = new BehaviorSubject<HttpRequestModel>(<HttpRequestModel>{});
   mwqmsampleDeleteModel$: BehaviorSubject<HttpRequestModel> = new BehaviorSubject<HttpRequestModel>(<HttpRequestModel>{});
-  mwqmsampleList: MWQMSample[] = [];
-  private oldURL: string;
-  private router: Router;
 
   /* Constructors */
-  constructor(private httpClient: HttpClient) {
+  constructor(private httpClient: HttpClient, private httpClientService: HttpClientService) {
     LoadLocalesMWQMSampleText(this);
     this.mwqmsampleTextModel$.next(<MWQMSampleTextModel>{ Title: "Something2 for text" });
   }
 
   /* Functions public */
-  GetMWQMSampleList(router: Router) {
-    this.BeforeHttpClient(this.mwqmsampleGetModel$, router);
+  GetMWQMSampleList() {
+    this.httpClientService.BeforeHttpClient(this.mwqmsampleGetModel$);
 
     return this.httpClient.get<MWQMSample[]>('/api/MWQMSample').pipe(
       map((x: any) => {
-        this.DoSuccess(this.mwqmsampleGetModel$, x, 'Get', null);
+        this.httpClientService.DoSuccess<MWQMSample>(this.mwqmsampleListModel$, this.mwqmsampleGetModel$, x, HttpClientCommand.Get, null);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.DoCatchError(this.mwqmsampleGetModel$, e, 'Get');
+        this.httpClientService.DoCatchError<MWQMSample>(this.mwqmsampleListModel$, this.mwqmsampleGetModel$, e);
       })))
     );
   }
 
-  PutMWQMSample(mwqmsample: MWQMSample, router: Router) {
-    this.BeforeHttpClient(this.mwqmsamplePutModel$, router);
+  PutMWQMSample(mwqmsample: MWQMSample) {
+    this.httpClientService.BeforeHttpClient(this.mwqmsamplePutModel$);
 
     return this.httpClient.put<MWQMSample>('/api/MWQMSample', mwqmsample, { headers: new HttpHeaders() }).pipe(
       map((x: any) => {
-        this.DoSuccess(this.mwqmsamplePutModel$, x, 'Put', mwqmsample);
+        this.httpClientService.DoSuccess<MWQMSample>(this.mwqmsampleListModel$, this.mwqmsamplePutModel$, x, HttpClientCommand.Put, mwqmsample);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.DoCatchError(this.mwqmsamplePutModel$, e, 'Put');
+       this.httpClientService.DoCatchError<MWQMSample>(this.mwqmsampleListModel$, this.mwqmsamplePutModel$, e);
       })))
     );
   }
 
-  PostMWQMSample(mwqmsample: MWQMSample, router: Router) {
-    this.BeforeHttpClient(this.mwqmsamplePostModel$, router);
+  PostMWQMSample(mwqmsample: MWQMSample) {
+    this.httpClientService.BeforeHttpClient(this.mwqmsamplePostModel$);
 
     return this.httpClient.post<MWQMSample>('/api/MWQMSample', mwqmsample, { headers: new HttpHeaders() }).pipe(
       map((x: any) => {
-        this.DoSuccess(this.mwqmsamplePostModel$, x, 'Post', mwqmsample);
+        this.httpClientService.DoSuccess<MWQMSample>(this.mwqmsampleListModel$, this.mwqmsamplePostModel$, x, HttpClientCommand.Post, mwqmsample);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.DoCatchError(this.mwqmsamplePostModel$, e, 'Post');
+        this.httpClientService.DoCatchError<MWQMSample>(this.mwqmsampleListModel$, this.mwqmsamplePostModel$, e);
       })))
     );
   }
 
-  DeleteMWQMSample(mwqmsample: MWQMSample, router: Router) {
-    this.BeforeHttpClient(this.mwqmsampleDeleteModel$, router);
+  DeleteMWQMSample(mwqmsample: MWQMSample) {
+    this.httpClientService.BeforeHttpClient(this.mwqmsampleDeleteModel$);
 
     return this.httpClient.delete<boolean>(`/api/MWQMSample/${ mwqmsample.MWQMSampleID }`).pipe(
       map((x: any) => {
-        this.DoSuccess(this.mwqmsampleDeleteModel$, x, 'Delete', mwqmsample);
+        this.httpClientService.DoSuccess<MWQMSample>(this.mwqmsampleListModel$, this.mwqmsampleDeleteModel$, x, HttpClientCommand.Delete, mwqmsample);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.DoCatchError(this.mwqmsampleDeleteModel$, e, 'Delete');
+        this.httpClientService.DoCatchError<MWQMSample>(this.mwqmsampleListModel$, this.mwqmsampleDeleteModel$, e);
       })))
     );
-  }
-
-  /* Functions private */
-  private BeforeHttpClient(httpRequestModel$: BehaviorSubject<HttpRequestModel>, router: Router) {
-    this.router = router;
-    this.oldURL = router.url;
-    httpRequestModel$.next(<HttpRequestModel>{ Working: true, Error: null, Status: null });
-  }
-
-  private DoCatchError(httpRequestModel$: BehaviorSubject<HttpRequestModel>, e: any, command: string) {
-    this.mwqmsampleListModel$.next(null);
-    httpRequestModel$.next(<HttpRequestModel>{ Working: false, Error: <HttpErrorResponse>e, Status: 'Error' });
-
-    this.mwqmsampleList = [];
-    console.debug(`MWQMSample ${ command } ERROR. Return: ${ <HttpErrorResponse>e }`);
-    this.DoReload();
-  }
-
-  private DoReload() {
-    this.router.navigateByUrl('', { skipLocationChange: true }).then(() => {
-      this.router.navigate([`/${this.oldURL}`]);
-    });
-  }
-
-  private DoSuccess(httpRequestModel$: BehaviorSubject<HttpRequestModel>, x: any, command: string, mwqmsample?: MWQMSample) {
-    console.debug(`MWQMSample ${ command } OK. Return: ${ x }`);
-    if (command === 'Get') {
-      this.mwqmsampleListModel$.next(<MWQMSample[]>x);
-    }
-    if (command === 'Put') {
-      this.mwqmsampleListModel$.getValue()[0] = <MWQMSample>x;
-    }
-    if (command === 'Post') {
-      this.mwqmsampleListModel$.getValue().push(<MWQMSample>x);
-    }
-    if (command === 'Delete') {
-      const index = this.mwqmsampleListModel$.getValue().indexOf(mwqmsample);
-      this.mwqmsampleListModel$.getValue().splice(index, 1);
-    }
-
-    this.mwqmsampleListModel$.next(this.mwqmsampleListModel$.getValue());
-    httpRequestModel$.next(<HttpRequestModel>{ Working: false, Error: null, Status: 'ok' });
-    this.mwqmsampleList = this.mwqmsampleListModel$.getValue();
-    this.DoReload();
   }
 }

@@ -8,13 +8,15 @@
 import { Component, OnInit, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
 import { DocTemplateService } from './doctemplate.service';
 import { LoadLocalesDocTemplateText } from './doctemplate.locales';
-import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { LanguageEnum_GetIDText, LanguageEnum_GetOrderedText } from '../../../enums/generated/LanguageEnum';
 import { TVTypeEnum_GetIDText, TVTypeEnum_GetOrderedText } from '../../../enums/generated/TVTypeEnum';
 import { DocTemplate } from '../../../models/generated/DocTemplate.model';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
 import { EnumIDAndText } from '../../../models/enumidandtext.model';
+import { HttpClientService } from '../../../services/http-client.service';
+import { Router } from '@angular/router';
+import { HttpClientCommand } from '../../../enums/app.enums';
 
 @Component({
   selector: 'app-doctemplate',
@@ -29,22 +31,24 @@ export class DocTemplateComponent implements OnInit, OnDestroy {
   doctemplateFormPut: FormGroup;
   doctemplateFormPost: FormGroup;
 
-  constructor(public doctemplateService: DocTemplateService, public router: Router, public fb: FormBuilder) { }
+  constructor(public doctemplateService: DocTemplateService, private router: Router, private httpClientService: HttpClientService, private fb: FormBuilder) {
+    httpClientService.oldURL = router.url;
+  }
 
   GetDocTemplateList() {
-    this.sub = this.doctemplateService.GetDocTemplateList(this.router).subscribe();
+    this.sub = this.doctemplateService.GetDocTemplateList().subscribe();
   }
 
   PutDocTemplate(doctemplate: DocTemplate) {
-    this.sub = this.doctemplateService.PutDocTemplate(doctemplate, this.router).subscribe();
+    this.sub = this.doctemplateService.PutDocTemplate(doctemplate).subscribe();
   }
 
   PostDocTemplate(doctemplate: DocTemplate) {
-    this.sub = this.doctemplateService.PostDocTemplate(doctemplate, this.router).subscribe();
+    this.sub = this.doctemplateService.PostDocTemplate(doctemplate).subscribe();
   }
 
   DeleteDocTemplate(doctemplate: DocTemplate) {
-    this.sub = this.doctemplateService.DeleteDocTemplate(doctemplate, this.router).subscribe();
+    this.sub = this.doctemplateService.DeleteDocTemplate(doctemplate).subscribe();
   }
 
   GetLanguageEnumText(enumID: number) {
@@ -59,8 +63,8 @@ export class DocTemplateComponent implements OnInit, OnDestroy {
     LoadLocalesDocTemplateText(this.doctemplateService);
     this.languageList = LanguageEnum_GetOrderedText();
     this.tVTypeList = TVTypeEnum_GetOrderedText();
-    this.FillFormBuilderGroup('Add');
-    this.FillFormBuilderGroup('Update');
+    this.FillFormBuilderGroup(HttpClientCommand.Post);
+    this.FillFormBuilderGroup(HttpClientCommand.Put);
   }
 
   ngOnDestroy() {
@@ -69,49 +73,49 @@ export class DocTemplateComponent implements OnInit, OnDestroy {
     }
   }
 
-  FillFormBuilderGroup(AddOrUpdate: string) {
-    if (this.doctemplateService.doctemplateList.length) {
+  FillFormBuilderGroup(httpClientCommand: HttpClientCommand) {
+    if (this.doctemplateService.doctemplateListModel$.getValue().length) {
       let formGroup: FormGroup = this.fb.group(
         {
           DocTemplateID: [
             {
-              value: (AddOrUpdate === 'Add' ? 0 : (this.doctemplateService.doctemplateList[0]?.DocTemplateID)),
+              value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.doctemplateService.doctemplateListModel$.getValue()[0]?.DocTemplateID)),
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
           Language: [
             {
-              value: this.doctemplateService.doctemplateList[0]?.Language,
+              value: this.doctemplateService.doctemplateListModel$.getValue()[0]?.Language,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
           TVType: [
             {
-              value: this.doctemplateService.doctemplateList[0]?.TVType,
+              value: this.doctemplateService.doctemplateListModel$.getValue()[0]?.TVType,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
           TVFileTVItemID: [
             {
-              value: this.doctemplateService.doctemplateList[0]?.TVFileTVItemID,
+              value: this.doctemplateService.doctemplateListModel$.getValue()[0]?.TVFileTVItemID,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
           FileName: [
             {
-              value: this.doctemplateService.doctemplateList[0]?.FileName,
+              value: this.doctemplateService.doctemplateListModel$.getValue()[0]?.FileName,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required, Validators.maxLength(150) ]],
           LastUpdateDate_UTC: [
             {
-              value: this.doctemplateService.doctemplateList[0]?.LastUpdateDate_UTC,
+              value: this.doctemplateService.doctemplateListModel$.getValue()[0]?.LastUpdateDate_UTC,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
           LastUpdateContactTVItemID: [
             {
-              value: this.doctemplateService.doctemplateList[0]?.LastUpdateContactTVItemID,
+              value: this.doctemplateService.doctemplateListModel$.getValue()[0]?.LastUpdateContactTVItemID,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
         }
       );
 
-      if (AddOrUpdate === 'Add') {
+      if (httpClientCommand === HttpClientCommand.Post) {
         this.doctemplateFormPost = formGroup
       }
       else {

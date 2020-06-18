@@ -8,13 +8,15 @@
 import { Component, OnInit, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
 import { AppTaskLanguageService } from './apptasklanguage.service';
 import { LoadLocalesAppTaskLanguageText } from './apptasklanguage.locales';
-import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { LanguageEnum_GetIDText, LanguageEnum_GetOrderedText } from '../../../enums/generated/LanguageEnum';
 import { TranslationStatusEnum_GetIDText, TranslationStatusEnum_GetOrderedText } from '../../../enums/generated/TranslationStatusEnum';
 import { AppTaskLanguage } from '../../../models/generated/AppTaskLanguage.model';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
 import { EnumIDAndText } from '../../../models/enumidandtext.model';
+import { HttpClientService } from '../../../services/http-client.service';
+import { Router } from '@angular/router';
+import { HttpClientCommand } from '../../../enums/app.enums';
 
 @Component({
   selector: 'app-apptasklanguage',
@@ -29,22 +31,24 @@ export class AppTaskLanguageComponent implements OnInit, OnDestroy {
   apptasklanguageFormPut: FormGroup;
   apptasklanguageFormPost: FormGroup;
 
-  constructor(public apptasklanguageService: AppTaskLanguageService, public router: Router, public fb: FormBuilder) { }
+  constructor(public apptasklanguageService: AppTaskLanguageService, private router: Router, private httpClientService: HttpClientService, private fb: FormBuilder) {
+    httpClientService.oldURL = router.url;
+  }
 
   GetAppTaskLanguageList() {
-    this.sub = this.apptasklanguageService.GetAppTaskLanguageList(this.router).subscribe();
+    this.sub = this.apptasklanguageService.GetAppTaskLanguageList().subscribe();
   }
 
   PutAppTaskLanguage(apptasklanguage: AppTaskLanguage) {
-    this.sub = this.apptasklanguageService.PutAppTaskLanguage(apptasklanguage, this.router).subscribe();
+    this.sub = this.apptasklanguageService.PutAppTaskLanguage(apptasklanguage).subscribe();
   }
 
   PostAppTaskLanguage(apptasklanguage: AppTaskLanguage) {
-    this.sub = this.apptasklanguageService.PostAppTaskLanguage(apptasklanguage, this.router).subscribe();
+    this.sub = this.apptasklanguageService.PostAppTaskLanguage(apptasklanguage).subscribe();
   }
 
   DeleteAppTaskLanguage(apptasklanguage: AppTaskLanguage) {
-    this.sub = this.apptasklanguageService.DeleteAppTaskLanguage(apptasklanguage, this.router).subscribe();
+    this.sub = this.apptasklanguageService.DeleteAppTaskLanguage(apptasklanguage).subscribe();
   }
 
   GetLanguageEnumText(enumID: number) {
@@ -59,8 +63,8 @@ export class AppTaskLanguageComponent implements OnInit, OnDestroy {
     LoadLocalesAppTaskLanguageText(this.apptasklanguageService);
     this.languageList = LanguageEnum_GetOrderedText();
     this.translationStatusList = TranslationStatusEnum_GetOrderedText();
-    this.FillFormBuilderGroup('Add');
-    this.FillFormBuilderGroup('Update');
+    this.FillFormBuilderGroup(HttpClientCommand.Post);
+    this.FillFormBuilderGroup(HttpClientCommand.Put);
   }
 
   ngOnDestroy() {
@@ -69,54 +73,54 @@ export class AppTaskLanguageComponent implements OnInit, OnDestroy {
     }
   }
 
-  FillFormBuilderGroup(AddOrUpdate: string) {
-    if (this.apptasklanguageService.apptasklanguageList.length) {
+  FillFormBuilderGroup(httpClientCommand: HttpClientCommand) {
+    if (this.apptasklanguageService.apptasklanguageListModel$.getValue().length) {
       let formGroup: FormGroup = this.fb.group(
         {
           AppTaskLanguageID: [
             {
-              value: (AddOrUpdate === 'Add' ? 0 : (this.apptasklanguageService.apptasklanguageList[0]?.AppTaskLanguageID)),
+              value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.apptasklanguageService.apptasklanguageListModel$.getValue()[0]?.AppTaskLanguageID)),
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
           AppTaskID: [
             {
-              value: this.apptasklanguageService.apptasklanguageList[0]?.AppTaskID,
+              value: this.apptasklanguageService.apptasklanguageListModel$.getValue()[0]?.AppTaskID,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
           Language: [
             {
-              value: this.apptasklanguageService.apptasklanguageList[0]?.Language,
+              value: this.apptasklanguageService.apptasklanguageListModel$.getValue()[0]?.Language,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
           StatusText: [
             {
-              value: this.apptasklanguageService.apptasklanguageList[0]?.StatusText,
+              value: this.apptasklanguageService.apptasklanguageListModel$.getValue()[0]?.StatusText,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.maxLength(250) ]],
           ErrorText: [
             {
-              value: this.apptasklanguageService.apptasklanguageList[0]?.ErrorText,
+              value: this.apptasklanguageService.apptasklanguageListModel$.getValue()[0]?.ErrorText,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.maxLength(250) ]],
           TranslationStatus: [
             {
-              value: this.apptasklanguageService.apptasklanguageList[0]?.TranslationStatus,
+              value: this.apptasklanguageService.apptasklanguageListModel$.getValue()[0]?.TranslationStatus,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
           LastUpdateDate_UTC: [
             {
-              value: this.apptasklanguageService.apptasklanguageList[0]?.LastUpdateDate_UTC,
+              value: this.apptasklanguageService.apptasklanguageListModel$.getValue()[0]?.LastUpdateDate_UTC,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
           LastUpdateContactTVItemID: [
             {
-              value: this.apptasklanguageService.apptasklanguageList[0]?.LastUpdateContactTVItemID,
+              value: this.apptasklanguageService.apptasklanguageListModel$.getValue()[0]?.LastUpdateContactTVItemID,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
         }
       );
 
-      if (AddOrUpdate === 'Add') {
+      if (httpClientCommand === HttpClientCommand.Post) {
         this.apptasklanguageFormPost = formGroup
       }
       else {

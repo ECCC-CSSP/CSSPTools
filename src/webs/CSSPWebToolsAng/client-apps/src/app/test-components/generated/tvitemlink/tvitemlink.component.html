@@ -5,7 +5,7 @@
  *
 -->
 
-<mat-progress-bar mode="indeterminate" *ngIf="tvitemlinkService.tvitemlinkGetModel$.getValue().Working"></mat-progress-bar>
+<mat-progress-bar mode="indeterminate" *ngIf="tvitemlinkService.tvitemlinkGetModel$.getValue()?.Working"></mat-progress-bar>
 <mat-card>
   <mat-card-header>
     <mat-card-title>
@@ -17,8 +17,8 @@
     <mat-card-subtitle>{{ tvitemlinkService.tvitemlinkTextModel$.getValue().Title }}</mat-card-subtitle>
   </mat-card-header>
   <mat-card-content>
-    <mat-list>
-      <mat-list-item *ngFor="let tvitemlink of tvitemlinkService.tvitemlinkList">
+    <mat-list *ngIf="tvitemlinkService.tvitemlinkListModel$.getValue()?.length">
+      <mat-list-item *ngFor="let tvitemlink of tvitemlinkService.tvitemlinkListModel$.getValue()">
         <span mat-line>
           <button mat-raised-button (click)="DeleteTVItemLink(tvitemlink)">
             <span>Delete TVItemLinkID [{{ tvitemlink.TVItemLinkID }}]&nbsp;&nbsp;&nbsp;</span>
@@ -62,7 +62,7 @@
     <mat-card-title>Edit TVItemLink testing</mat-card-title>
   </mat-card-header>
   <mat-card-content>
-    <div *ngIf="tvitemlinkService.tvitemlinkList.length">
+    <div *ngIf="tvitemlinkService.tvitemlinkListModel$.getValue()?.length">
       <blockquote>
         <form [formGroup]="tvitemlinkFormPut" (ngSubmit)="PutTVItemLink(tvitemlinkFormPut.value)">
           <h3>
@@ -77,14 +77,26 @@
             <mat-form-field>
               <mat-label>TVItemLinkID</mat-label>
               <input matInput type="number" formControlName="TVItemLinkID">
+              <mat-error *ngIf="tvitemlinkFormPut.controls.TVItemLinkID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>FromTVItemID</mat-label>
               <input matInput type="number" formControlName="FromTVItemID">
+              <mat-error *ngIf="tvitemlinkFormPut.controls.FromTVItemID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>ToTVItemID</mat-label>
               <input matInput type="number" formControlName="ToTVItemID">
+              <mat-error *ngIf="tvitemlinkFormPut.controls.ToTVItemID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>FromTVType</mat-label>
@@ -93,6 +105,10 @@
                   {{ a.EnumText }}
                 </mat-option>
               </mat-select>
+              <mat-error *ngIf="tvitemlinkFormPut.controls.FromTVType.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
           </p>
           <p>
@@ -103,42 +119,80 @@
                   {{ a.EnumText }}
                 </mat-option>
               </mat-select>
+              <mat-error *ngIf="tvitemlinkFormPut.controls.ToTVType.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>StartDateTime_Local</mat-label>
               <input matInput type="text" formControlName="StartDateTime_Local">
+              <mat-error *ngIf="tvitemlinkFormPut.controls.StartDateTime_Local.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>EndDateTime_Local</mat-label>
               <input matInput type="text" formControlName="EndDateTime_Local">
+              <mat-error *ngIf="tvitemlinkFormPut.controls.EndDateTime_Local.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>Ordinal</mat-label>
               <input matInput type="number" formControlName="Ordinal">
+              <mat-error *ngIf="tvitemlinkFormPut.controls.Ordinal.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+                <span *ngIf="e.min">Min - 0<br /></span>
+                <span *ngIf="e.min">Max - 100<br /></span>
+              </mat-error>
             </mat-form-field>
           </p>
           <p>
             <mat-form-field>
               <mat-label>TVLevel</mat-label>
               <input matInput type="number" formControlName="TVLevel">
+              <mat-error *ngIf="tvitemlinkFormPut.controls.TVLevel.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+                <span *ngIf="e.min">Min - 0<br /></span>
+                <span *ngIf="e.min">Max - 100<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>TVPath</mat-label>
               <input matInput type="text" formControlName="TVPath">
+              <mat-error *ngIf="tvitemlinkFormPut.controls.TVPath.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+                <span *ngIf="e.maxlength">MaxLength - 250<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>ParentTVItemLinkID</mat-label>
               <input matInput type="number" formControlName="ParentTVItemLinkID">
+              <mat-error *ngIf="tvitemlinkFormPut.controls.ParentTVItemLinkID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>LastUpdateDate_UTC</mat-label>
               <input matInput type="text" formControlName="LastUpdateDate_UTC">
+              <mat-error *ngIf="tvitemlinkFormPut.controls.LastUpdateDate_UTC.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
           </p>
           <p>
             <mat-form-field>
               <mat-label>LastUpdateContactTVItemID</mat-label>
               <input matInput type="number" formControlName="LastUpdateContactTVItemID">
+              <mat-error *ngIf="tvitemlinkFormPut.controls.LastUpdateContactTVItemID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
           </p>
         </form>
@@ -153,7 +207,7 @@
     <mat-card-title>Add TVItemLink testing</mat-card-title>
   </mat-card-header>
   <mat-card-content>
-    <div *ngIf="tvitemlinkService.tvitemlinkList.length">
+    <div *ngIf="tvitemlinkService.tvitemlinkListModel$.getValue()?.length">
       <blockquote>
         <form [formGroup]="tvitemlinkFormPost" (ngSubmit)="PostTVItemLink(tvitemlinkFormPost.value)">
           <h3>
@@ -168,14 +222,26 @@
             <mat-form-field>
               <mat-label>TVItemLinkID</mat-label>
               <input matInput type="number" formControlName="TVItemLinkID">
+              <mat-error *ngIf="tvitemlinkFormPut.controls.TVItemLinkID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>FromTVItemID</mat-label>
               <input matInput type="number" formControlName="FromTVItemID">
+              <mat-error *ngIf="tvitemlinkFormPut.controls.FromTVItemID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>ToTVItemID</mat-label>
               <input matInput type="number" formControlName="ToTVItemID">
+              <mat-error *ngIf="tvitemlinkFormPut.controls.ToTVItemID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>FromTVType</mat-label>
@@ -184,6 +250,10 @@
                   {{ a.EnumText }}
                 </mat-option>
               </mat-select>
+              <mat-error *ngIf="tvitemlinkFormPut.controls.FromTVType.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
           </p>
           <p>
@@ -194,42 +264,80 @@
                   {{ a.EnumText }}
                 </mat-option>
               </mat-select>
+              <mat-error *ngIf="tvitemlinkFormPut.controls.ToTVType.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>StartDateTime_Local</mat-label>
               <input matInput type="text" formControlName="StartDateTime_Local">
+              <mat-error *ngIf="tvitemlinkFormPut.controls.StartDateTime_Local.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>EndDateTime_Local</mat-label>
               <input matInput type="text" formControlName="EndDateTime_Local">
+              <mat-error *ngIf="tvitemlinkFormPut.controls.EndDateTime_Local.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>Ordinal</mat-label>
               <input matInput type="number" formControlName="Ordinal">
+              <mat-error *ngIf="tvitemlinkFormPut.controls.Ordinal.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+                <span *ngIf="e.min">Min - 0<br /></span>
+                <span *ngIf="e.min">Max - 100<br /></span>
+              </mat-error>
             </mat-form-field>
           </p>
           <p>
             <mat-form-field>
               <mat-label>TVLevel</mat-label>
               <input matInput type="number" formControlName="TVLevel">
+              <mat-error *ngIf="tvitemlinkFormPut.controls.TVLevel.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+                <span *ngIf="e.min">Min - 0<br /></span>
+                <span *ngIf="e.min">Max - 100<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>TVPath</mat-label>
               <input matInput type="text" formControlName="TVPath">
+              <mat-error *ngIf="tvitemlinkFormPut.controls.TVPath.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+                <span *ngIf="e.maxlength">MaxLength - 250<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>ParentTVItemLinkID</mat-label>
               <input matInput type="number" formControlName="ParentTVItemLinkID">
+              <mat-error *ngIf="tvitemlinkFormPut.controls.ParentTVItemLinkID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>LastUpdateDate_UTC</mat-label>
               <input matInput type="text" formControlName="LastUpdateDate_UTC">
+              <mat-error *ngIf="tvitemlinkFormPut.controls.LastUpdateDate_UTC.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
           </p>
           <p>
             <mat-form-field>
               <mat-label>LastUpdateContactTVItemID</mat-label>
               <input matInput type="number" formControlName="LastUpdateContactTVItemID">
+              <mat-error *ngIf="tvitemlinkFormPut.controls.LastUpdateContactTVItemID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
           </p>
         </form>

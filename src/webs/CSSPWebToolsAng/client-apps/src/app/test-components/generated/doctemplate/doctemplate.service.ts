@@ -9,11 +9,12 @@ import { Injectable } from '@angular/core';
 import { DocTemplateTextModel } from './doctemplate.models';
 import { BehaviorSubject, of } from 'rxjs';
 import { LoadLocalesDocTemplateText } from './doctemplate.locales';
-import { Router } from '@angular/router';
-import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { map, catchError } from 'rxjs/operators';
 import { DocTemplate } from '../../../models/generated/DocTemplate.model';
 import { HttpRequestModel } from '../../../models/http.model';
+import { HttpClientService } from '../../../services/http-client.service';
+import { HttpClientCommand } from '../../../enums/app.enums';
 
 @Injectable({
   providedIn: 'root'
@@ -26,110 +27,63 @@ export class DocTemplateService {
   doctemplatePutModel$: BehaviorSubject<HttpRequestModel> = new BehaviorSubject<HttpRequestModel>(<HttpRequestModel>{});
   doctemplatePostModel$: BehaviorSubject<HttpRequestModel> = new BehaviorSubject<HttpRequestModel>(<HttpRequestModel>{});
   doctemplateDeleteModel$: BehaviorSubject<HttpRequestModel> = new BehaviorSubject<HttpRequestModel>(<HttpRequestModel>{});
-  doctemplateList: DocTemplate[] = [];
-  private oldURL: string;
-  private router: Router;
 
   /* Constructors */
-  constructor(private httpClient: HttpClient) {
+  constructor(private httpClient: HttpClient, private httpClientService: HttpClientService) {
     LoadLocalesDocTemplateText(this);
     this.doctemplateTextModel$.next(<DocTemplateTextModel>{ Title: "Something2 for text" });
   }
 
   /* Functions public */
-  GetDocTemplateList(router: Router) {
-    this.BeforeHttpClient(this.doctemplateGetModel$, router);
+  GetDocTemplateList() {
+    this.httpClientService.BeforeHttpClient(this.doctemplateGetModel$);
 
     return this.httpClient.get<DocTemplate[]>('/api/DocTemplate').pipe(
       map((x: any) => {
-        this.DoSuccess(this.doctemplateGetModel$, x, 'Get', null);
+        this.httpClientService.DoSuccess<DocTemplate>(this.doctemplateListModel$, this.doctemplateGetModel$, x, HttpClientCommand.Get, null);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.DoCatchError(this.doctemplateGetModel$, e, 'Get');
+        this.httpClientService.DoCatchError<DocTemplate>(this.doctemplateListModel$, this.doctemplateGetModel$, e);
       })))
     );
   }
 
-  PutDocTemplate(doctemplate: DocTemplate, router: Router) {
-    this.BeforeHttpClient(this.doctemplatePutModel$, router);
+  PutDocTemplate(doctemplate: DocTemplate) {
+    this.httpClientService.BeforeHttpClient(this.doctemplatePutModel$);
 
     return this.httpClient.put<DocTemplate>('/api/DocTemplate', doctemplate, { headers: new HttpHeaders() }).pipe(
       map((x: any) => {
-        this.DoSuccess(this.doctemplatePutModel$, x, 'Put', doctemplate);
+        this.httpClientService.DoSuccess<DocTemplate>(this.doctemplateListModel$, this.doctemplatePutModel$, x, HttpClientCommand.Put, doctemplate);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.DoCatchError(this.doctemplatePutModel$, e, 'Put');
+       this.httpClientService.DoCatchError<DocTemplate>(this.doctemplateListModel$, this.doctemplatePutModel$, e);
       })))
     );
   }
 
-  PostDocTemplate(doctemplate: DocTemplate, router: Router) {
-    this.BeforeHttpClient(this.doctemplatePostModel$, router);
+  PostDocTemplate(doctemplate: DocTemplate) {
+    this.httpClientService.BeforeHttpClient(this.doctemplatePostModel$);
 
     return this.httpClient.post<DocTemplate>('/api/DocTemplate', doctemplate, { headers: new HttpHeaders() }).pipe(
       map((x: any) => {
-        this.DoSuccess(this.doctemplatePostModel$, x, 'Post', doctemplate);
+        this.httpClientService.DoSuccess<DocTemplate>(this.doctemplateListModel$, this.doctemplatePostModel$, x, HttpClientCommand.Post, doctemplate);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.DoCatchError(this.doctemplatePostModel$, e, 'Post');
+        this.httpClientService.DoCatchError<DocTemplate>(this.doctemplateListModel$, this.doctemplatePostModel$, e);
       })))
     );
   }
 
-  DeleteDocTemplate(doctemplate: DocTemplate, router: Router) {
-    this.BeforeHttpClient(this.doctemplateDeleteModel$, router);
+  DeleteDocTemplate(doctemplate: DocTemplate) {
+    this.httpClientService.BeforeHttpClient(this.doctemplateDeleteModel$);
 
     return this.httpClient.delete<boolean>(`/api/DocTemplate/${ doctemplate.DocTemplateID }`).pipe(
       map((x: any) => {
-        this.DoSuccess(this.doctemplateDeleteModel$, x, 'Delete', doctemplate);
+        this.httpClientService.DoSuccess<DocTemplate>(this.doctemplateListModel$, this.doctemplateDeleteModel$, x, HttpClientCommand.Delete, doctemplate);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.DoCatchError(this.doctemplateDeleteModel$, e, 'Delete');
+        this.httpClientService.DoCatchError<DocTemplate>(this.doctemplateListModel$, this.doctemplateDeleteModel$, e);
       })))
     );
-  }
-
-  /* Functions private */
-  private BeforeHttpClient(httpRequestModel$: BehaviorSubject<HttpRequestModel>, router: Router) {
-    this.router = router;
-    this.oldURL = router.url;
-    httpRequestModel$.next(<HttpRequestModel>{ Working: true, Error: null, Status: null });
-  }
-
-  private DoCatchError(httpRequestModel$: BehaviorSubject<HttpRequestModel>, e: any, command: string) {
-    this.doctemplateListModel$.next(null);
-    httpRequestModel$.next(<HttpRequestModel>{ Working: false, Error: <HttpErrorResponse>e, Status: 'Error' });
-
-    this.doctemplateList = [];
-    console.debug(`DocTemplate ${ command } ERROR. Return: ${ <HttpErrorResponse>e }`);
-    this.DoReload();
-  }
-
-  private DoReload() {
-    this.router.navigateByUrl('', { skipLocationChange: true }).then(() => {
-      this.router.navigate([`/${this.oldURL}`]);
-    });
-  }
-
-  private DoSuccess(httpRequestModel$: BehaviorSubject<HttpRequestModel>, x: any, command: string, doctemplate?: DocTemplate) {
-    console.debug(`DocTemplate ${ command } OK. Return: ${ x }`);
-    if (command === 'Get') {
-      this.doctemplateListModel$.next(<DocTemplate[]>x);
-    }
-    if (command === 'Put') {
-      this.doctemplateListModel$.getValue()[0] = <DocTemplate>x;
-    }
-    if (command === 'Post') {
-      this.doctemplateListModel$.getValue().push(<DocTemplate>x);
-    }
-    if (command === 'Delete') {
-      const index = this.doctemplateListModel$.getValue().indexOf(doctemplate);
-      this.doctemplateListModel$.getValue().splice(index, 1);
-    }
-
-    this.doctemplateListModel$.next(this.doctemplateListModel$.getValue());
-    httpRequestModel$.next(<HttpRequestModel>{ Working: false, Error: null, Status: 'ok' });
-    this.doctemplateList = this.doctemplateListModel$.getValue();
-    this.DoReload();
   }
 }

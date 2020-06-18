@@ -5,7 +5,7 @@
  *
 -->
 
-<mat-progress-bar mode="indeterminate" *ngIf="vpresultService.vpresultGetModel$.getValue().Working"></mat-progress-bar>
+<mat-progress-bar mode="indeterminate" *ngIf="vpresultService.vpresultGetModel$.getValue()?.Working"></mat-progress-bar>
 <mat-card>
   <mat-card-header>
     <mat-card-title>
@@ -17,8 +17,8 @@
     <mat-card-subtitle>{{ vpresultService.vpresultTextModel$.getValue().Title }}</mat-card-subtitle>
   </mat-card-header>
   <mat-card-content>
-    <mat-list>
-      <mat-list-item *ngFor="let vpresult of vpresultService.vpresultList">
+    <mat-list *ngIf="vpresultService.vpresultListModel$.getValue()?.length">
+      <mat-list-item *ngFor="let vpresult of vpresultService.vpresultListModel$.getValue()">
         <span mat-line>
           <button mat-raised-button (click)="DeleteVPResult(vpresult)">
             <span>Delete VPResultID [{{ vpresult.VPResultID }}]&nbsp;&nbsp;&nbsp;</span>
@@ -57,7 +57,7 @@
     <mat-card-title>Edit VPResult testing</mat-card-title>
   </mat-card-header>
   <mat-card-content>
-    <div *ngIf="vpresultService.vpresultList.length">
+    <div *ngIf="vpresultService.vpresultListModel$.getValue()?.length">
       <blockquote>
         <form [formGroup]="vpresultFormPut" (ngSubmit)="PutVPResult(vpresultFormPut.value)">
           <h3>
@@ -72,46 +72,98 @@
             <mat-form-field>
               <mat-label>VPResultID</mat-label>
               <input matInput type="number" formControlName="VPResultID">
+              <mat-error *ngIf="vpresultFormPut.controls.VPResultID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>VPScenarioID</mat-label>
               <input matInput type="number" formControlName="VPScenarioID">
+              <mat-error *ngIf="vpresultFormPut.controls.VPScenarioID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>Ordinal</mat-label>
               <input matInput type="number" formControlName="Ordinal">
+              <mat-error *ngIf="vpresultFormPut.controls.Ordinal.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+                <span *ngIf="e.min">Min - 0<br /></span>
+                <span *ngIf="e.min">Max - 1000<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>Concentration_MPN_100ml</mat-label>
               <input matInput type="number" formControlName="Concentration_MPN_100ml">
+              <mat-error *ngIf="vpresultFormPut.controls.Concentration_MPN_100ml.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+                <span *ngIf="e.min">Min - 0<br /></span>
+                <span *ngIf="e.min">Max - 10000000<br /></span>
+              </mat-error>
             </mat-form-field>
           </p>
           <p>
             <mat-form-field>
               <mat-label>Dilution</mat-label>
               <input matInput type="number" formControlName="Dilution">
+              <mat-error *ngIf="vpresultFormPut.controls.Dilution.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+                <span *ngIf="e.min">Min - 0<br /></span>
+                <span *ngIf="e.min">Max - 1000000<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>FarFieldWidth_m</mat-label>
               <input matInput type="number" formControlName="FarFieldWidth_m">
+              <mat-error *ngIf="vpresultFormPut.controls.FarFieldWidth_m.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+                <span *ngIf="e.min">Min - 0<br /></span>
+                <span *ngIf="e.min">Max - 10000<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>DispersionDistance_m</mat-label>
               <input matInput type="number" formControlName="DispersionDistance_m">
+              <mat-error *ngIf="vpresultFormPut.controls.DispersionDistance_m.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+                <span *ngIf="e.min">Min - 0<br /></span>
+                <span *ngIf="e.min">Max - 100000<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>TravelTime_hour</mat-label>
               <input matInput type="number" formControlName="TravelTime_hour">
+              <mat-error *ngIf="vpresultFormPut.controls.TravelTime_hour.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+                <span *ngIf="e.min">Min - 0<br /></span>
+                <span *ngIf="e.min">Max - 100<br /></span>
+              </mat-error>
             </mat-form-field>
           </p>
           <p>
             <mat-form-field>
               <mat-label>LastUpdateDate_UTC</mat-label>
               <input matInput type="text" formControlName="LastUpdateDate_UTC">
+              <mat-error *ngIf="vpresultFormPut.controls.LastUpdateDate_UTC.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>LastUpdateContactTVItemID</mat-label>
               <input matInput type="number" formControlName="LastUpdateContactTVItemID">
+              <mat-error *ngIf="vpresultFormPut.controls.LastUpdateContactTVItemID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
           </p>
         </form>
@@ -126,7 +178,7 @@
     <mat-card-title>Add VPResult testing</mat-card-title>
   </mat-card-header>
   <mat-card-content>
-    <div *ngIf="vpresultService.vpresultList.length">
+    <div *ngIf="vpresultService.vpresultListModel$.getValue()?.length">
       <blockquote>
         <form [formGroup]="vpresultFormPost" (ngSubmit)="PostVPResult(vpresultFormPost.value)">
           <h3>
@@ -141,46 +193,98 @@
             <mat-form-field>
               <mat-label>VPResultID</mat-label>
               <input matInput type="number" formControlName="VPResultID">
+              <mat-error *ngIf="vpresultFormPut.controls.VPResultID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>VPScenarioID</mat-label>
               <input matInput type="number" formControlName="VPScenarioID">
+              <mat-error *ngIf="vpresultFormPut.controls.VPScenarioID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>Ordinal</mat-label>
               <input matInput type="number" formControlName="Ordinal">
+              <mat-error *ngIf="vpresultFormPut.controls.Ordinal.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+                <span *ngIf="e.min">Min - 0<br /></span>
+                <span *ngIf="e.min">Max - 1000<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>Concentration_MPN_100ml</mat-label>
               <input matInput type="number" formControlName="Concentration_MPN_100ml">
+              <mat-error *ngIf="vpresultFormPut.controls.Concentration_MPN_100ml.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+                <span *ngIf="e.min">Min - 0<br /></span>
+                <span *ngIf="e.min">Max - 10000000<br /></span>
+              </mat-error>
             </mat-form-field>
           </p>
           <p>
             <mat-form-field>
               <mat-label>Dilution</mat-label>
               <input matInput type="number" formControlName="Dilution">
+              <mat-error *ngIf="vpresultFormPut.controls.Dilution.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+                <span *ngIf="e.min">Min - 0<br /></span>
+                <span *ngIf="e.min">Max - 1000000<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>FarFieldWidth_m</mat-label>
               <input matInput type="number" formControlName="FarFieldWidth_m">
+              <mat-error *ngIf="vpresultFormPut.controls.FarFieldWidth_m.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+                <span *ngIf="e.min">Min - 0<br /></span>
+                <span *ngIf="e.min">Max - 10000<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>DispersionDistance_m</mat-label>
               <input matInput type="number" formControlName="DispersionDistance_m">
+              <mat-error *ngIf="vpresultFormPut.controls.DispersionDistance_m.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+                <span *ngIf="e.min">Min - 0<br /></span>
+                <span *ngIf="e.min">Max - 100000<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>TravelTime_hour</mat-label>
               <input matInput type="number" formControlName="TravelTime_hour">
+              <mat-error *ngIf="vpresultFormPut.controls.TravelTime_hour.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+                <span *ngIf="e.min">Min - 0<br /></span>
+                <span *ngIf="e.min">Max - 100<br /></span>
+              </mat-error>
             </mat-form-field>
           </p>
           <p>
             <mat-form-field>
               <mat-label>LastUpdateDate_UTC</mat-label>
               <input matInput type="text" formControlName="LastUpdateDate_UTC">
+              <mat-error *ngIf="vpresultFormPut.controls.LastUpdateDate_UTC.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>LastUpdateContactTVItemID</mat-label>
               <input matInput type="number" formControlName="LastUpdateContactTVItemID">
+              <mat-error *ngIf="vpresultFormPut.controls.LastUpdateContactTVItemID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
           </p>
         </form>

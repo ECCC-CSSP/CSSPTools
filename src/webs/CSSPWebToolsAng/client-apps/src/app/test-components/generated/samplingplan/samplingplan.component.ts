@@ -8,7 +8,6 @@
 import { Component, OnInit, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
 import { SamplingPlanService } from './samplingplan.service';
 import { LoadLocalesSamplingPlanText } from './samplingplan.locales';
-import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { SampleTypeEnum_GetIDText, SampleTypeEnum_GetOrderedText } from '../../../enums/generated/SampleTypeEnum';
 import { SamplingPlanTypeEnum_GetIDText, SamplingPlanTypeEnum_GetOrderedText } from '../../../enums/generated/SamplingPlanTypeEnum';
@@ -19,6 +18,9 @@ import { LaboratoryEnum_GetIDText, LaboratoryEnum_GetOrderedText } from '../../.
 import { SamplingPlan } from '../../../models/generated/SamplingPlan.model';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
 import { EnumIDAndText } from '../../../models/enumidandtext.model';
+import { HttpClientService } from '../../../services/http-client.service';
+import { Router } from '@angular/router';
+import { HttpClientCommand } from '../../../enums/app.enums';
 
 @Component({
   selector: 'app-samplingplan',
@@ -37,22 +39,24 @@ export class SamplingPlanComponent implements OnInit, OnDestroy {
   samplingplanFormPut: FormGroup;
   samplingplanFormPost: FormGroup;
 
-  constructor(public samplingplanService: SamplingPlanService, public router: Router, public fb: FormBuilder) { }
+  constructor(public samplingplanService: SamplingPlanService, private router: Router, private httpClientService: HttpClientService, private fb: FormBuilder) {
+    httpClientService.oldURL = router.url;
+  }
 
   GetSamplingPlanList() {
-    this.sub = this.samplingplanService.GetSamplingPlanList(this.router).subscribe();
+    this.sub = this.samplingplanService.GetSamplingPlanList().subscribe();
   }
 
   PutSamplingPlan(samplingplan: SamplingPlan) {
-    this.sub = this.samplingplanService.PutSamplingPlan(samplingplan, this.router).subscribe();
+    this.sub = this.samplingplanService.PutSamplingPlan(samplingplan).subscribe();
   }
 
   PostSamplingPlan(samplingplan: SamplingPlan) {
-    this.sub = this.samplingplanService.PostSamplingPlan(samplingplan, this.router).subscribe();
+    this.sub = this.samplingplanService.PostSamplingPlan(samplingplan).subscribe();
   }
 
   DeleteSamplingPlan(samplingplan: SamplingPlan) {
-    this.sub = this.samplingplanService.DeleteSamplingPlan(samplingplan, this.router).subscribe();
+    this.sub = this.samplingplanService.DeleteSamplingPlan(samplingplan).subscribe();
   }
 
   GetSampleTypeEnumText(enumID: number) {
@@ -87,8 +91,8 @@ export class SamplingPlanComponent implements OnInit, OnDestroy {
     this.analyzeMethodDefaultList = AnalyzeMethodEnum_GetOrderedText();
     this.sampleMatrixDefaultList = SampleMatrixEnum_GetOrderedText();
     this.laboratoryDefaultList = LaboratoryEnum_GetOrderedText();
-    this.FillFormBuilderGroup('Add');
-    this.FillFormBuilderGroup('Update');
+    this.FillFormBuilderGroup(HttpClientCommand.Post);
+    this.FillFormBuilderGroup(HttpClientCommand.Put);
   }
 
   ngOnDestroy() {
@@ -97,124 +101,124 @@ export class SamplingPlanComponent implements OnInit, OnDestroy {
     }
   }
 
-  FillFormBuilderGroup(AddOrUpdate: string) {
-    if (this.samplingplanService.samplingplanList.length) {
+  FillFormBuilderGroup(httpClientCommand: HttpClientCommand) {
+    if (this.samplingplanService.samplingplanListModel$.getValue().length) {
       let formGroup: FormGroup = this.fb.group(
         {
           SamplingPlanID: [
             {
-              value: (AddOrUpdate === 'Add' ? 0 : (this.samplingplanService.samplingplanList[0]?.SamplingPlanID)),
+              value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.samplingplanService.samplingplanListModel$.getValue()[0]?.SamplingPlanID)),
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
           IsActive: [
             {
-              value: this.samplingplanService.samplingplanList[0]?.IsActive,
+              value: this.samplingplanService.samplingplanListModel$.getValue()[0]?.IsActive,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
           SamplingPlanName: [
             {
-              value: this.samplingplanService.samplingplanList[0]?.SamplingPlanName,
+              value: this.samplingplanService.samplingplanListModel$.getValue()[0]?.SamplingPlanName,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required, Validators.maxLength(200) ]],
           ForGroupName: [
             {
-              value: this.samplingplanService.samplingplanList[0]?.ForGroupName,
+              value: this.samplingplanService.samplingplanListModel$.getValue()[0]?.ForGroupName,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required, Validators.maxLength(100) ]],
           SampleType: [
             {
-              value: this.samplingplanService.samplingplanList[0]?.SampleType,
+              value: this.samplingplanService.samplingplanListModel$.getValue()[0]?.SampleType,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
           SamplingPlanType: [
             {
-              value: this.samplingplanService.samplingplanList[0]?.SamplingPlanType,
+              value: this.samplingplanService.samplingplanListModel$.getValue()[0]?.SamplingPlanType,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
           LabSheetType: [
             {
-              value: this.samplingplanService.samplingplanList[0]?.LabSheetType,
+              value: this.samplingplanService.samplingplanListModel$.getValue()[0]?.LabSheetType,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
           ProvinceTVItemID: [
             {
-              value: this.samplingplanService.samplingplanList[0]?.ProvinceTVItemID,
+              value: this.samplingplanService.samplingplanListModel$.getValue()[0]?.ProvinceTVItemID,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
           CreatorTVItemID: [
             {
-              value: this.samplingplanService.samplingplanList[0]?.CreatorTVItemID,
+              value: this.samplingplanService.samplingplanListModel$.getValue()[0]?.CreatorTVItemID,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
           Year: [
             {
-              value: this.samplingplanService.samplingplanList[0]?.Year,
+              value: this.samplingplanService.samplingplanListModel$.getValue()[0]?.Year,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required, Validators.min(2000), Validators.max(2050) ]],
           AccessCode: [
             {
-              value: this.samplingplanService.samplingplanList[0]?.AccessCode,
+              value: this.samplingplanService.samplingplanListModel$.getValue()[0]?.AccessCode,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required, Validators.maxLength(15) ]],
           DailyDuplicatePrecisionCriteria: [
             {
-              value: this.samplingplanService.samplingplanList[0]?.DailyDuplicatePrecisionCriteria,
+              value: this.samplingplanService.samplingplanListModel$.getValue()[0]?.DailyDuplicatePrecisionCriteria,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required, Validators.min(0), Validators.max(100) ]],
           IntertechDuplicatePrecisionCriteria: [
             {
-              value: this.samplingplanService.samplingplanList[0]?.IntertechDuplicatePrecisionCriteria,
+              value: this.samplingplanService.samplingplanListModel$.getValue()[0]?.IntertechDuplicatePrecisionCriteria,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required, Validators.min(0), Validators.max(100) ]],
           IncludeLaboratoryQAQC: [
             {
-              value: this.samplingplanService.samplingplanList[0]?.IncludeLaboratoryQAQC,
+              value: this.samplingplanService.samplingplanListModel$.getValue()[0]?.IncludeLaboratoryQAQC,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
           ApprovalCode: [
             {
-              value: this.samplingplanService.samplingplanList[0]?.ApprovalCode,
+              value: this.samplingplanService.samplingplanListModel$.getValue()[0]?.ApprovalCode,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required, Validators.maxLength(15) ]],
           SamplingPlanFileTVItemID: [
             {
-              value: this.samplingplanService.samplingplanList[0]?.SamplingPlanFileTVItemID,
+              value: this.samplingplanService.samplingplanListModel$.getValue()[0]?.SamplingPlanFileTVItemID,
               disabled: false
-            }, [ Validators.required ]],
+            }],
           AnalyzeMethodDefault: [
             {
-              value: this.samplingplanService.samplingplanList[0]?.AnalyzeMethodDefault,
+              value: this.samplingplanService.samplingplanListModel$.getValue()[0]?.AnalyzeMethodDefault,
               disabled: false
-            }, [ Validators.required ]],
+            }],
           SampleMatrixDefault: [
             {
-              value: this.samplingplanService.samplingplanList[0]?.SampleMatrixDefault,
+              value: this.samplingplanService.samplingplanListModel$.getValue()[0]?.SampleMatrixDefault,
               disabled: false
-            }, [ Validators.required ]],
+            }],
           LaboratoryDefault: [
             {
-              value: this.samplingplanService.samplingplanList[0]?.LaboratoryDefault,
+              value: this.samplingplanService.samplingplanListModel$.getValue()[0]?.LaboratoryDefault,
               disabled: false
-            }, [ Validators.required ]],
+            }],
           BackupDirectory: [
             {
-              value: this.samplingplanService.samplingplanList[0]?.BackupDirectory,
+              value: this.samplingplanService.samplingplanListModel$.getValue()[0]?.BackupDirectory,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required, Validators.maxLength(250) ]],
           LastUpdateDate_UTC: [
             {
-              value: this.samplingplanService.samplingplanList[0]?.LastUpdateDate_UTC,
+              value: this.samplingplanService.samplingplanListModel$.getValue()[0]?.LastUpdateDate_UTC,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
           LastUpdateContactTVItemID: [
             {
-              value: this.samplingplanService.samplingplanList[0]?.LastUpdateContactTVItemID,
+              value: this.samplingplanService.samplingplanListModel$.getValue()[0]?.LastUpdateContactTVItemID,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
         }
       );
 
-      if (AddOrUpdate === 'Add') {
+      if (httpClientCommand === HttpClientCommand.Post) {
         this.samplingplanFormPost = formGroup
       }
       else {

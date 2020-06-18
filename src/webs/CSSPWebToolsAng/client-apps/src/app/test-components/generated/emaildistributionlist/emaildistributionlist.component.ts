@@ -8,10 +8,12 @@
 import { Component, OnInit, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
 import { EmailDistributionListService } from './emaildistributionlist.service';
 import { LoadLocalesEmailDistributionListText } from './emaildistributionlist.locales';
-import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { EmailDistributionList } from '../../../models/generated/EmailDistributionList.model';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
+import { HttpClientService } from '../../../services/http-client.service';
+import { Router } from '@angular/router';
+import { HttpClientCommand } from '../../../enums/app.enums';
 
 @Component({
   selector: 'app-emaildistributionlist',
@@ -24,28 +26,30 @@ export class EmailDistributionListComponent implements OnInit, OnDestroy {
   emaildistributionlistFormPut: FormGroup;
   emaildistributionlistFormPost: FormGroup;
 
-  constructor(public emaildistributionlistService: EmailDistributionListService, public router: Router, public fb: FormBuilder) { }
+  constructor(public emaildistributionlistService: EmailDistributionListService, private router: Router, private httpClientService: HttpClientService, private fb: FormBuilder) {
+    httpClientService.oldURL = router.url;
+  }
 
   GetEmailDistributionListList() {
-    this.sub = this.emaildistributionlistService.GetEmailDistributionListList(this.router).subscribe();
+    this.sub = this.emaildistributionlistService.GetEmailDistributionListList().subscribe();
   }
 
   PutEmailDistributionList(emaildistributionlist: EmailDistributionList) {
-    this.sub = this.emaildistributionlistService.PutEmailDistributionList(emaildistributionlist, this.router).subscribe();
+    this.sub = this.emaildistributionlistService.PutEmailDistributionList(emaildistributionlist).subscribe();
   }
 
   PostEmailDistributionList(emaildistributionlist: EmailDistributionList) {
-    this.sub = this.emaildistributionlistService.PostEmailDistributionList(emaildistributionlist, this.router).subscribe();
+    this.sub = this.emaildistributionlistService.PostEmailDistributionList(emaildistributionlist).subscribe();
   }
 
   DeleteEmailDistributionList(emaildistributionlist: EmailDistributionList) {
-    this.sub = this.emaildistributionlistService.DeleteEmailDistributionList(emaildistributionlist, this.router).subscribe();
+    this.sub = this.emaildistributionlistService.DeleteEmailDistributionList(emaildistributionlist).subscribe();
   }
 
   ngOnInit(): void {
     LoadLocalesEmailDistributionListText(this.emaildistributionlistService);
-    this.FillFormBuilderGroup('Add');
-    this.FillFormBuilderGroup('Update');
+    this.FillFormBuilderGroup(HttpClientCommand.Post);
+    this.FillFormBuilderGroup(HttpClientCommand.Put);
   }
 
   ngOnDestroy() {
@@ -54,39 +58,39 @@ export class EmailDistributionListComponent implements OnInit, OnDestroy {
     }
   }
 
-  FillFormBuilderGroup(AddOrUpdate: string) {
-    if (this.emaildistributionlistService.emaildistributionlistList.length) {
+  FillFormBuilderGroup(httpClientCommand: HttpClientCommand) {
+    if (this.emaildistributionlistService.emaildistributionlistListModel$.getValue().length) {
       let formGroup: FormGroup = this.fb.group(
         {
           EmailDistributionListID: [
             {
-              value: (AddOrUpdate === 'Add' ? 0 : (this.emaildistributionlistService.emaildistributionlistList[0]?.EmailDistributionListID)),
+              value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.emaildistributionlistService.emaildistributionlistListModel$.getValue()[0]?.EmailDistributionListID)),
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
           ParentTVItemID: [
             {
-              value: this.emaildistributionlistService.emaildistributionlistList[0]?.ParentTVItemID,
+              value: this.emaildistributionlistService.emaildistributionlistListModel$.getValue()[0]?.ParentTVItemID,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
           Ordinal: [
             {
-              value: this.emaildistributionlistService.emaildistributionlistList[0]?.Ordinal,
+              value: this.emaildistributionlistService.emaildistributionlistListModel$.getValue()[0]?.Ordinal,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required, Validators.min(0), Validators.max(1000) ]],
           LastUpdateDate_UTC: [
             {
-              value: this.emaildistributionlistService.emaildistributionlistList[0]?.LastUpdateDate_UTC,
+              value: this.emaildistributionlistService.emaildistributionlistListModel$.getValue()[0]?.LastUpdateDate_UTC,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
           LastUpdateContactTVItemID: [
             {
-              value: this.emaildistributionlistService.emaildistributionlistList[0]?.LastUpdateContactTVItemID,
+              value: this.emaildistributionlistService.emaildistributionlistListModel$.getValue()[0]?.LastUpdateContactTVItemID,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
         }
       );
 
-      if (AddOrUpdate === 'Add') {
+      if (httpClientCommand === HttpClientCommand.Post) {
         this.emaildistributionlistFormPost = formGroup
       }
       else {

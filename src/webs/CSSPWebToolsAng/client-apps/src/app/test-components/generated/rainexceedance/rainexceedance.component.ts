@@ -8,10 +8,12 @@
 import { Component, OnInit, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
 import { RainExceedanceService } from './rainexceedance.service';
 import { LoadLocalesRainExceedanceText } from './rainexceedance.locales';
-import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { RainExceedance } from '../../../models/generated/RainExceedance.model';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
+import { HttpClientService } from '../../../services/http-client.service';
+import { Router } from '@angular/router';
+import { HttpClientCommand } from '../../../enums/app.enums';
 
 @Component({
   selector: 'app-rainexceedance',
@@ -24,28 +26,30 @@ export class RainExceedanceComponent implements OnInit, OnDestroy {
   rainexceedanceFormPut: FormGroup;
   rainexceedanceFormPost: FormGroup;
 
-  constructor(public rainexceedanceService: RainExceedanceService, public router: Router, public fb: FormBuilder) { }
+  constructor(public rainexceedanceService: RainExceedanceService, private router: Router, private httpClientService: HttpClientService, private fb: FormBuilder) {
+    httpClientService.oldURL = router.url;
+  }
 
   GetRainExceedanceList() {
-    this.sub = this.rainexceedanceService.GetRainExceedanceList(this.router).subscribe();
+    this.sub = this.rainexceedanceService.GetRainExceedanceList().subscribe();
   }
 
   PutRainExceedance(rainexceedance: RainExceedance) {
-    this.sub = this.rainexceedanceService.PutRainExceedance(rainexceedance, this.router).subscribe();
+    this.sub = this.rainexceedanceService.PutRainExceedance(rainexceedance).subscribe();
   }
 
   PostRainExceedance(rainexceedance: RainExceedance) {
-    this.sub = this.rainexceedanceService.PostRainExceedance(rainexceedance, this.router).subscribe();
+    this.sub = this.rainexceedanceService.PostRainExceedance(rainexceedance).subscribe();
   }
 
   DeleteRainExceedance(rainexceedance: RainExceedance) {
-    this.sub = this.rainexceedanceService.DeleteRainExceedance(rainexceedance, this.router).subscribe();
+    this.sub = this.rainexceedanceService.DeleteRainExceedance(rainexceedance).subscribe();
   }
 
   ngOnInit(): void {
     LoadLocalesRainExceedanceText(this.rainexceedanceService);
-    this.FillFormBuilderGroup('Add');
-    this.FillFormBuilderGroup('Update');
+    this.FillFormBuilderGroup(HttpClientCommand.Post);
+    this.FillFormBuilderGroup(HttpClientCommand.Put);
   }
 
   ngOnDestroy() {
@@ -54,74 +58,74 @@ export class RainExceedanceComponent implements OnInit, OnDestroy {
     }
   }
 
-  FillFormBuilderGroup(AddOrUpdate: string) {
-    if (this.rainexceedanceService.rainexceedanceList.length) {
+  FillFormBuilderGroup(httpClientCommand: HttpClientCommand) {
+    if (this.rainexceedanceService.rainexceedanceListModel$.getValue().length) {
       let formGroup: FormGroup = this.fb.group(
         {
           RainExceedanceID: [
             {
-              value: (AddOrUpdate === 'Add' ? 0 : (this.rainexceedanceService.rainexceedanceList[0]?.RainExceedanceID)),
+              value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.rainexceedanceService.rainexceedanceListModel$.getValue()[0]?.RainExceedanceID)),
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
           RainExceedanceTVItemID: [
             {
-              value: this.rainexceedanceService.rainexceedanceList[0]?.RainExceedanceTVItemID,
+              value: this.rainexceedanceService.rainexceedanceListModel$.getValue()[0]?.RainExceedanceTVItemID,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
           StartMonth: [
             {
-              value: this.rainexceedanceService.rainexceedanceList[0]?.StartMonth,
+              value: this.rainexceedanceService.rainexceedanceListModel$.getValue()[0]?.StartMonth,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required, Validators.min(1), Validators.max(12) ]],
           StartDay: [
             {
-              value: this.rainexceedanceService.rainexceedanceList[0]?.StartDay,
+              value: this.rainexceedanceService.rainexceedanceListModel$.getValue()[0]?.StartDay,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required, Validators.min(1), Validators.max(31) ]],
           EndMonth: [
             {
-              value: this.rainexceedanceService.rainexceedanceList[0]?.EndMonth,
+              value: this.rainexceedanceService.rainexceedanceListModel$.getValue()[0]?.EndMonth,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required, Validators.min(1), Validators.max(12) ]],
           EndDay: [
             {
-              value: this.rainexceedanceService.rainexceedanceList[0]?.EndDay,
+              value: this.rainexceedanceService.rainexceedanceListModel$.getValue()[0]?.EndDay,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required, Validators.min(1), Validators.max(31) ]],
           RainMaximum_mm: [
             {
-              value: this.rainexceedanceService.rainexceedanceList[0]?.RainMaximum_mm,
+              value: this.rainexceedanceService.rainexceedanceListModel$.getValue()[0]?.RainMaximum_mm,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required, Validators.min(0), Validators.max(300) ]],
           StakeholdersEmailDistributionListID: [
             {
-              value: this.rainexceedanceService.rainexceedanceList[0]?.StakeholdersEmailDistributionListID,
+              value: this.rainexceedanceService.rainexceedanceListModel$.getValue()[0]?.StakeholdersEmailDistributionListID,
               disabled: false
-            }, [ Validators.required ]],
+            }],
           OnlyStaffEmailDistributionListID: [
             {
-              value: this.rainexceedanceService.rainexceedanceList[0]?.OnlyStaffEmailDistributionListID,
+              value: this.rainexceedanceService.rainexceedanceListModel$.getValue()[0]?.OnlyStaffEmailDistributionListID,
               disabled: false
-            }, [ Validators.required ]],
+            }],
           IsActive: [
             {
-              value: this.rainexceedanceService.rainexceedanceList[0]?.IsActive,
+              value: this.rainexceedanceService.rainexceedanceListModel$.getValue()[0]?.IsActive,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
           LastUpdateDate_UTC: [
             {
-              value: this.rainexceedanceService.rainexceedanceList[0]?.LastUpdateDate_UTC,
+              value: this.rainexceedanceService.rainexceedanceListModel$.getValue()[0]?.LastUpdateDate_UTC,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
           LastUpdateContactTVItemID: [
             {
-              value: this.rainexceedanceService.rainexceedanceList[0]?.LastUpdateContactTVItemID,
+              value: this.rainexceedanceService.rainexceedanceListModel$.getValue()[0]?.LastUpdateContactTVItemID,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
         }
       );
 
-      if (AddOrUpdate === 'Add') {
+      if (httpClientCommand === HttpClientCommand.Post) {
         this.rainexceedanceFormPost = formGroup
       }
       else {

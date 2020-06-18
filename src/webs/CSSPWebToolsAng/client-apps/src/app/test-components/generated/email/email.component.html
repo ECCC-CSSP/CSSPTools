@@ -5,7 +5,7 @@
  *
 -->
 
-<mat-progress-bar mode="indeterminate" *ngIf="emailService.emailGetModel$.getValue().Working"></mat-progress-bar>
+<mat-progress-bar mode="indeterminate" *ngIf="emailService.emailGetModel$.getValue()?.Working"></mat-progress-bar>
 <mat-card>
   <mat-card-header>
     <mat-card-title>
@@ -17,8 +17,8 @@
     <mat-card-subtitle>{{ emailService.emailTextModel$.getValue().Title }}</mat-card-subtitle>
   </mat-card-header>
   <mat-card-content>
-    <mat-list>
-      <mat-list-item *ngFor="let email of emailService.emailList">
+    <mat-list *ngIf="emailService.emailListModel$.getValue()?.length">
+      <mat-list-item *ngFor="let email of emailService.emailListModel$.getValue()">
         <span mat-line>
           <button mat-raised-button (click)="DeleteEmail(email)">
             <span>Delete EmailID [{{ email.EmailID }}]&nbsp;&nbsp;&nbsp;</span>
@@ -51,7 +51,7 @@
     <mat-card-title>Edit Email testing</mat-card-title>
   </mat-card-header>
   <mat-card-content>
-    <div *ngIf="emailService.emailList.length">
+    <div *ngIf="emailService.emailListModel$.getValue()?.length">
       <blockquote>
         <form [formGroup]="emailFormPut" (ngSubmit)="PutEmail(emailFormPut.value)">
           <h3>
@@ -66,14 +66,28 @@
             <mat-form-field>
               <mat-label>EmailID</mat-label>
               <input matInput type="number" formControlName="EmailID">
+              <mat-error *ngIf="emailFormPut.controls.EmailID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>EmailTVItemID</mat-label>
               <input matInput type="number" formControlName="EmailTVItemID">
+              <mat-error *ngIf="emailFormPut.controls.EmailTVItemID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>EmailAddress</mat-label>
               <input matInput type="text" formControlName="EmailAddress">
+              <mat-error *ngIf="emailFormPut.controls.EmailAddress.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+                <span *ngIf="e.email">Need valid Email<br /></span>
+                <span *ngIf="e.maxlength">MaxLength - 255<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>EmailType</mat-label>
@@ -82,16 +96,28 @@
                   {{ a.EnumText }}
                 </mat-option>
               </mat-select>
+              <mat-error *ngIf="emailFormPut.controls.EmailType.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
           </p>
           <p>
             <mat-form-field>
               <mat-label>LastUpdateDate_UTC</mat-label>
               <input matInput type="text" formControlName="LastUpdateDate_UTC">
+              <mat-error *ngIf="emailFormPut.controls.LastUpdateDate_UTC.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>LastUpdateContactTVItemID</mat-label>
               <input matInput type="number" formControlName="LastUpdateContactTVItemID">
+              <mat-error *ngIf="emailFormPut.controls.LastUpdateContactTVItemID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
           </p>
         </form>
@@ -106,7 +132,7 @@
     <mat-card-title>Add Email testing</mat-card-title>
   </mat-card-header>
   <mat-card-content>
-    <div *ngIf="emailService.emailList.length">
+    <div *ngIf="emailService.emailListModel$.getValue()?.length">
       <blockquote>
         <form [formGroup]="emailFormPost" (ngSubmit)="PostEmail(emailFormPost.value)">
           <h3>
@@ -121,14 +147,28 @@
             <mat-form-field>
               <mat-label>EmailID</mat-label>
               <input matInput type="number" formControlName="EmailID">
+              <mat-error *ngIf="emailFormPut.controls.EmailID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>EmailTVItemID</mat-label>
               <input matInput type="number" formControlName="EmailTVItemID">
+              <mat-error *ngIf="emailFormPut.controls.EmailTVItemID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>EmailAddress</mat-label>
               <input matInput type="text" formControlName="EmailAddress">
+              <mat-error *ngIf="emailFormPut.controls.EmailAddress.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+                <span *ngIf="e.email">Need valid Email<br /></span>
+                <span *ngIf="e.maxlength">MaxLength - 255<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>EmailType</mat-label>
@@ -137,16 +177,28 @@
                   {{ a.EnumText }}
                 </mat-option>
               </mat-select>
+              <mat-error *ngIf="emailFormPut.controls.EmailType.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
           </p>
           <p>
             <mat-form-field>
               <mat-label>LastUpdateDate_UTC</mat-label>
               <input matInput type="text" formControlName="LastUpdateDate_UTC">
+              <mat-error *ngIf="emailFormPut.controls.LastUpdateDate_UTC.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>LastUpdateContactTVItemID</mat-label>
               <input matInput type="number" formControlName="LastUpdateContactTVItemID">
+              <mat-error *ngIf="emailFormPut.controls.LastUpdateContactTVItemID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
           </p>
         </form>

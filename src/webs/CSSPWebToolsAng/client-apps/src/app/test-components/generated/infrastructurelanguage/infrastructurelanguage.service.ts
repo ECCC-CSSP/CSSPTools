@@ -9,11 +9,12 @@ import { Injectable } from '@angular/core';
 import { InfrastructureLanguageTextModel } from './infrastructurelanguage.models';
 import { BehaviorSubject, of } from 'rxjs';
 import { LoadLocalesInfrastructureLanguageText } from './infrastructurelanguage.locales';
-import { Router } from '@angular/router';
-import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { map, catchError } from 'rxjs/operators';
 import { InfrastructureLanguage } from '../../../models/generated/InfrastructureLanguage.model';
 import { HttpRequestModel } from '../../../models/http.model';
+import { HttpClientService } from '../../../services/http-client.service';
+import { HttpClientCommand } from '../../../enums/app.enums';
 
 @Injectable({
   providedIn: 'root'
@@ -26,110 +27,63 @@ export class InfrastructureLanguageService {
   infrastructurelanguagePutModel$: BehaviorSubject<HttpRequestModel> = new BehaviorSubject<HttpRequestModel>(<HttpRequestModel>{});
   infrastructurelanguagePostModel$: BehaviorSubject<HttpRequestModel> = new BehaviorSubject<HttpRequestModel>(<HttpRequestModel>{});
   infrastructurelanguageDeleteModel$: BehaviorSubject<HttpRequestModel> = new BehaviorSubject<HttpRequestModel>(<HttpRequestModel>{});
-  infrastructurelanguageList: InfrastructureLanguage[] = [];
-  private oldURL: string;
-  private router: Router;
 
   /* Constructors */
-  constructor(private httpClient: HttpClient) {
+  constructor(private httpClient: HttpClient, private httpClientService: HttpClientService) {
     LoadLocalesInfrastructureLanguageText(this);
     this.infrastructurelanguageTextModel$.next(<InfrastructureLanguageTextModel>{ Title: "Something2 for text" });
   }
 
   /* Functions public */
-  GetInfrastructureLanguageList(router: Router) {
-    this.BeforeHttpClient(this.infrastructurelanguageGetModel$, router);
+  GetInfrastructureLanguageList() {
+    this.httpClientService.BeforeHttpClient(this.infrastructurelanguageGetModel$);
 
     return this.httpClient.get<InfrastructureLanguage[]>('/api/InfrastructureLanguage').pipe(
       map((x: any) => {
-        this.DoSuccess(this.infrastructurelanguageGetModel$, x, 'Get', null);
+        this.httpClientService.DoSuccess<InfrastructureLanguage>(this.infrastructurelanguageListModel$, this.infrastructurelanguageGetModel$, x, HttpClientCommand.Get, null);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.DoCatchError(this.infrastructurelanguageGetModel$, e, 'Get');
+        this.httpClientService.DoCatchError<InfrastructureLanguage>(this.infrastructurelanguageListModel$, this.infrastructurelanguageGetModel$, e);
       })))
     );
   }
 
-  PutInfrastructureLanguage(infrastructurelanguage: InfrastructureLanguage, router: Router) {
-    this.BeforeHttpClient(this.infrastructurelanguagePutModel$, router);
+  PutInfrastructureLanguage(infrastructurelanguage: InfrastructureLanguage) {
+    this.httpClientService.BeforeHttpClient(this.infrastructurelanguagePutModel$);
 
     return this.httpClient.put<InfrastructureLanguage>('/api/InfrastructureLanguage', infrastructurelanguage, { headers: new HttpHeaders() }).pipe(
       map((x: any) => {
-        this.DoSuccess(this.infrastructurelanguagePutModel$, x, 'Put', infrastructurelanguage);
+        this.httpClientService.DoSuccess<InfrastructureLanguage>(this.infrastructurelanguageListModel$, this.infrastructurelanguagePutModel$, x, HttpClientCommand.Put, infrastructurelanguage);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.DoCatchError(this.infrastructurelanguagePutModel$, e, 'Put');
+       this.httpClientService.DoCatchError<InfrastructureLanguage>(this.infrastructurelanguageListModel$, this.infrastructurelanguagePutModel$, e);
       })))
     );
   }
 
-  PostInfrastructureLanguage(infrastructurelanguage: InfrastructureLanguage, router: Router) {
-    this.BeforeHttpClient(this.infrastructurelanguagePostModel$, router);
+  PostInfrastructureLanguage(infrastructurelanguage: InfrastructureLanguage) {
+    this.httpClientService.BeforeHttpClient(this.infrastructurelanguagePostModel$);
 
     return this.httpClient.post<InfrastructureLanguage>('/api/InfrastructureLanguage', infrastructurelanguage, { headers: new HttpHeaders() }).pipe(
       map((x: any) => {
-        this.DoSuccess(this.infrastructurelanguagePostModel$, x, 'Post', infrastructurelanguage);
+        this.httpClientService.DoSuccess<InfrastructureLanguage>(this.infrastructurelanguageListModel$, this.infrastructurelanguagePostModel$, x, HttpClientCommand.Post, infrastructurelanguage);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.DoCatchError(this.infrastructurelanguagePostModel$, e, 'Post');
+        this.httpClientService.DoCatchError<InfrastructureLanguage>(this.infrastructurelanguageListModel$, this.infrastructurelanguagePostModel$, e);
       })))
     );
   }
 
-  DeleteInfrastructureLanguage(infrastructurelanguage: InfrastructureLanguage, router: Router) {
-    this.BeforeHttpClient(this.infrastructurelanguageDeleteModel$, router);
+  DeleteInfrastructureLanguage(infrastructurelanguage: InfrastructureLanguage) {
+    this.httpClientService.BeforeHttpClient(this.infrastructurelanguageDeleteModel$);
 
     return this.httpClient.delete<boolean>(`/api/InfrastructureLanguage/${ infrastructurelanguage.InfrastructureLanguageID }`).pipe(
       map((x: any) => {
-        this.DoSuccess(this.infrastructurelanguageDeleteModel$, x, 'Delete', infrastructurelanguage);
+        this.httpClientService.DoSuccess<InfrastructureLanguage>(this.infrastructurelanguageListModel$, this.infrastructurelanguageDeleteModel$, x, HttpClientCommand.Delete, infrastructurelanguage);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.DoCatchError(this.infrastructurelanguageDeleteModel$, e, 'Delete');
+        this.httpClientService.DoCatchError<InfrastructureLanguage>(this.infrastructurelanguageListModel$, this.infrastructurelanguageDeleteModel$, e);
       })))
     );
-  }
-
-  /* Functions private */
-  private BeforeHttpClient(httpRequestModel$: BehaviorSubject<HttpRequestModel>, router: Router) {
-    this.router = router;
-    this.oldURL = router.url;
-    httpRequestModel$.next(<HttpRequestModel>{ Working: true, Error: null, Status: null });
-  }
-
-  private DoCatchError(httpRequestModel$: BehaviorSubject<HttpRequestModel>, e: any, command: string) {
-    this.infrastructurelanguageListModel$.next(null);
-    httpRequestModel$.next(<HttpRequestModel>{ Working: false, Error: <HttpErrorResponse>e, Status: 'Error' });
-
-    this.infrastructurelanguageList = [];
-    console.debug(`InfrastructureLanguage ${ command } ERROR. Return: ${ <HttpErrorResponse>e }`);
-    this.DoReload();
-  }
-
-  private DoReload() {
-    this.router.navigateByUrl('', { skipLocationChange: true }).then(() => {
-      this.router.navigate([`/${this.oldURL}`]);
-    });
-  }
-
-  private DoSuccess(httpRequestModel$: BehaviorSubject<HttpRequestModel>, x: any, command: string, infrastructurelanguage?: InfrastructureLanguage) {
-    console.debug(`InfrastructureLanguage ${ command } OK. Return: ${ x }`);
-    if (command === 'Get') {
-      this.infrastructurelanguageListModel$.next(<InfrastructureLanguage[]>x);
-    }
-    if (command === 'Put') {
-      this.infrastructurelanguageListModel$.getValue()[0] = <InfrastructureLanguage>x;
-    }
-    if (command === 'Post') {
-      this.infrastructurelanguageListModel$.getValue().push(<InfrastructureLanguage>x);
-    }
-    if (command === 'Delete') {
-      const index = this.infrastructurelanguageListModel$.getValue().indexOf(infrastructurelanguage);
-      this.infrastructurelanguageListModel$.getValue().splice(index, 1);
-    }
-
-    this.infrastructurelanguageListModel$.next(this.infrastructurelanguageListModel$.getValue());
-    httpRequestModel$.next(<HttpRequestModel>{ Working: false, Error: null, Status: 'ok' });
-    this.infrastructurelanguageList = this.infrastructurelanguageListModel$.getValue();
-    this.DoReload();
   }
 }

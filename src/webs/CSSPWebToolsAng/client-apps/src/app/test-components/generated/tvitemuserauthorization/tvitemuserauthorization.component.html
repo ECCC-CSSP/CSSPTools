@@ -5,7 +5,7 @@
  *
 -->
 
-<mat-progress-bar mode="indeterminate" *ngIf="tvitemuserauthorizationService.tvitemuserauthorizationGetModel$.getValue().Working"></mat-progress-bar>
+<mat-progress-bar mode="indeterminate" *ngIf="tvitemuserauthorizationService.tvitemuserauthorizationGetModel$.getValue()?.Working"></mat-progress-bar>
 <mat-card>
   <mat-card-header>
     <mat-card-title>
@@ -17,8 +17,8 @@
     <mat-card-subtitle>{{ tvitemuserauthorizationService.tvitemuserauthorizationTextModel$.getValue().Title }}</mat-card-subtitle>
   </mat-card-header>
   <mat-card-content>
-    <mat-list>
-      <mat-list-item *ngFor="let tvitemuserauthorization of tvitemuserauthorizationService.tvitemuserauthorizationList">
+    <mat-list *ngIf="tvitemuserauthorizationService.tvitemuserauthorizationListModel$.getValue()?.length">
+      <mat-list-item *ngFor="let tvitemuserauthorization of tvitemuserauthorizationService.tvitemuserauthorizationListModel$.getValue()">
         <span mat-line>
           <button mat-raised-button (click)="DeleteTVItemUserAuthorization(tvitemuserauthorization)">
             <span>Delete TVItemUserAuthorizationID [{{ tvitemuserauthorization.TVItemUserAuthorizationID }}]&nbsp;&nbsp;&nbsp;</span>
@@ -56,7 +56,7 @@
     <mat-card-title>Edit TVItemUserAuthorization testing</mat-card-title>
   </mat-card-header>
   <mat-card-content>
-    <div *ngIf="tvitemuserauthorizationService.tvitemuserauthorizationList.length">
+    <div *ngIf="tvitemuserauthorizationService.tvitemuserauthorizationListModel$.getValue()?.length">
       <blockquote>
         <form [formGroup]="tvitemuserauthorizationFormPut" (ngSubmit)="PutTVItemUserAuthorization(tvitemuserauthorizationFormPut.value)">
           <h3>
@@ -71,28 +71,49 @@
             <mat-form-field>
               <mat-label>TVItemUserAuthorizationID</mat-label>
               <input matInput type="number" formControlName="TVItemUserAuthorizationID">
+              <mat-error *ngIf="tvitemuserauthorizationFormPut.controls.TVItemUserAuthorizationID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>ContactTVItemID</mat-label>
               <input matInput type="number" formControlName="ContactTVItemID">
+              <mat-error *ngIf="tvitemuserauthorizationFormPut.controls.ContactTVItemID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>TVItemID1</mat-label>
               <input matInput type="number" formControlName="TVItemID1">
+              <mat-error *ngIf="tvitemuserauthorizationFormPut.controls.TVItemID1.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>TVItemID2</mat-label>
               <input matInput type="number" formControlName="TVItemID2">
+              <mat-error *ngIf="tvitemuserauthorizationFormPut.controls.TVItemID2.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+              </mat-error>
             </mat-form-field>
           </p>
           <p>
             <mat-form-field>
               <mat-label>TVItemID3</mat-label>
               <input matInput type="number" formControlName="TVItemID3">
+              <mat-error *ngIf="tvitemuserauthorizationFormPut.controls.TVItemID3.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>TVItemID4</mat-label>
               <input matInput type="number" formControlName="TVItemID4">
+              <mat-error *ngIf="tvitemuserauthorizationFormPut.controls.TVItemID4.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>TVAuth</mat-label>
@@ -101,16 +122,28 @@
                   {{ a.EnumText }}
                 </mat-option>
               </mat-select>
+              <mat-error *ngIf="tvitemuserauthorizationFormPut.controls.TVAuth.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>LastUpdateDate_UTC</mat-label>
               <input matInput type="text" formControlName="LastUpdateDate_UTC">
+              <mat-error *ngIf="tvitemuserauthorizationFormPut.controls.LastUpdateDate_UTC.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
           </p>
           <p>
             <mat-form-field>
               <mat-label>LastUpdateContactTVItemID</mat-label>
               <input matInput type="number" formControlName="LastUpdateContactTVItemID">
+              <mat-error *ngIf="tvitemuserauthorizationFormPut.controls.LastUpdateContactTVItemID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
           </p>
         </form>
@@ -125,7 +158,7 @@
     <mat-card-title>Add TVItemUserAuthorization testing</mat-card-title>
   </mat-card-header>
   <mat-card-content>
-    <div *ngIf="tvitemuserauthorizationService.tvitemuserauthorizationList.length">
+    <div *ngIf="tvitemuserauthorizationService.tvitemuserauthorizationListModel$.getValue()?.length">
       <blockquote>
         <form [formGroup]="tvitemuserauthorizationFormPost" (ngSubmit)="PostTVItemUserAuthorization(tvitemuserauthorizationFormPost.value)">
           <h3>
@@ -140,28 +173,49 @@
             <mat-form-field>
               <mat-label>TVItemUserAuthorizationID</mat-label>
               <input matInput type="number" formControlName="TVItemUserAuthorizationID">
+              <mat-error *ngIf="tvitemuserauthorizationFormPut.controls.TVItemUserAuthorizationID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>ContactTVItemID</mat-label>
               <input matInput type="number" formControlName="ContactTVItemID">
+              <mat-error *ngIf="tvitemuserauthorizationFormPut.controls.ContactTVItemID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>TVItemID1</mat-label>
               <input matInput type="number" formControlName="TVItemID1">
+              <mat-error *ngIf="tvitemuserauthorizationFormPut.controls.TVItemID1.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>TVItemID2</mat-label>
               <input matInput type="number" formControlName="TVItemID2">
+              <mat-error *ngIf="tvitemuserauthorizationFormPut.controls.TVItemID2.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+              </mat-error>
             </mat-form-field>
           </p>
           <p>
             <mat-form-field>
               <mat-label>TVItemID3</mat-label>
               <input matInput type="number" formControlName="TVItemID3">
+              <mat-error *ngIf="tvitemuserauthorizationFormPut.controls.TVItemID3.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>TVItemID4</mat-label>
               <input matInput type="number" formControlName="TVItemID4">
+              <mat-error *ngIf="tvitemuserauthorizationFormPut.controls.TVItemID4.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>TVAuth</mat-label>
@@ -170,16 +224,28 @@
                   {{ a.EnumText }}
                 </mat-option>
               </mat-select>
+              <mat-error *ngIf="tvitemuserauthorizationFormPut.controls.TVAuth.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>LastUpdateDate_UTC</mat-label>
               <input matInput type="text" formControlName="LastUpdateDate_UTC">
+              <mat-error *ngIf="tvitemuserauthorizationFormPut.controls.LastUpdateDate_UTC.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
           </p>
           <p>
             <mat-form-field>
               <mat-label>LastUpdateContactTVItemID</mat-label>
               <input matInput type="number" formControlName="LastUpdateContactTVItemID">
+              <mat-error *ngIf="tvitemuserauthorizationFormPut.controls.LastUpdateContactTVItemID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
           </p>
         </form>

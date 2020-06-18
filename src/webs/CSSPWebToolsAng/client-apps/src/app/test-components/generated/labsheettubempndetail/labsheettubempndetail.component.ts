@@ -8,12 +8,14 @@
 import { Component, OnInit, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
 import { LabSheetTubeMPNDetailService } from './labsheettubempndetail.service';
 import { LoadLocalesLabSheetTubeMPNDetailText } from './labsheettubempndetail.locales';
-import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { SampleTypeEnum_GetIDText, SampleTypeEnum_GetOrderedText } from '../../../enums/generated/SampleTypeEnum';
 import { LabSheetTubeMPNDetail } from '../../../models/generated/LabSheetTubeMPNDetail.model';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
 import { EnumIDAndText } from '../../../models/enumidandtext.model';
+import { HttpClientService } from '../../../services/http-client.service';
+import { Router } from '@angular/router';
+import { HttpClientCommand } from '../../../enums/app.enums';
 
 @Component({
   selector: 'app-labsheettubempndetail',
@@ -27,22 +29,24 @@ export class LabSheetTubeMPNDetailComponent implements OnInit, OnDestroy {
   labsheettubempndetailFormPut: FormGroup;
   labsheettubempndetailFormPost: FormGroup;
 
-  constructor(public labsheettubempndetailService: LabSheetTubeMPNDetailService, public router: Router, public fb: FormBuilder) { }
+  constructor(public labsheettubempndetailService: LabSheetTubeMPNDetailService, private router: Router, private httpClientService: HttpClientService, private fb: FormBuilder) {
+    httpClientService.oldURL = router.url;
+  }
 
   GetLabSheetTubeMPNDetailList() {
-    this.sub = this.labsheettubempndetailService.GetLabSheetTubeMPNDetailList(this.router).subscribe();
+    this.sub = this.labsheettubempndetailService.GetLabSheetTubeMPNDetailList().subscribe();
   }
 
   PutLabSheetTubeMPNDetail(labsheettubempndetail: LabSheetTubeMPNDetail) {
-    this.sub = this.labsheettubempndetailService.PutLabSheetTubeMPNDetail(labsheettubempndetail, this.router).subscribe();
+    this.sub = this.labsheettubempndetailService.PutLabSheetTubeMPNDetail(labsheettubempndetail).subscribe();
   }
 
   PostLabSheetTubeMPNDetail(labsheettubempndetail: LabSheetTubeMPNDetail) {
-    this.sub = this.labsheettubempndetailService.PostLabSheetTubeMPNDetail(labsheettubempndetail, this.router).subscribe();
+    this.sub = this.labsheettubempndetailService.PostLabSheetTubeMPNDetail(labsheettubempndetail).subscribe();
   }
 
   DeleteLabSheetTubeMPNDetail(labsheettubempndetail: LabSheetTubeMPNDetail) {
-    this.sub = this.labsheettubempndetailService.DeleteLabSheetTubeMPNDetail(labsheettubempndetail, this.router).subscribe();
+    this.sub = this.labsheettubempndetailService.DeleteLabSheetTubeMPNDetail(labsheettubempndetail).subscribe();
   }
 
   GetSampleTypeEnumText(enumID: number) {
@@ -52,8 +56,8 @@ export class LabSheetTubeMPNDetailComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     LoadLocalesLabSheetTubeMPNDetailText(this.labsheettubempndetailService);
     this.sampleTypeList = SampleTypeEnum_GetOrderedText();
-    this.FillFormBuilderGroup('Add');
-    this.FillFormBuilderGroup('Update');
+    this.FillFormBuilderGroup(HttpClientCommand.Post);
+    this.FillFormBuilderGroup(HttpClientCommand.Put);
   }
 
   ngOnDestroy() {
@@ -62,94 +66,94 @@ export class LabSheetTubeMPNDetailComponent implements OnInit, OnDestroy {
     }
   }
 
-  FillFormBuilderGroup(AddOrUpdate: string) {
-    if (this.labsheettubempndetailService.labsheettubempndetailList.length) {
+  FillFormBuilderGroup(httpClientCommand: HttpClientCommand) {
+    if (this.labsheettubempndetailService.labsheettubempndetailListModel$.getValue().length) {
       let formGroup: FormGroup = this.fb.group(
         {
           LabSheetTubeMPNDetailID: [
             {
-              value: (AddOrUpdate === 'Add' ? 0 : (this.labsheettubempndetailService.labsheettubempndetailList[0]?.LabSheetTubeMPNDetailID)),
+              value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.labsheettubempndetailService.labsheettubempndetailListModel$.getValue()[0]?.LabSheetTubeMPNDetailID)),
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
           LabSheetDetailID: [
             {
-              value: this.labsheettubempndetailService.labsheettubempndetailList[0]?.LabSheetDetailID,
+              value: this.labsheettubempndetailService.labsheettubempndetailListModel$.getValue()[0]?.LabSheetDetailID,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
           Ordinal: [
             {
-              value: this.labsheettubempndetailService.labsheettubempndetailList[0]?.Ordinal,
+              value: this.labsheettubempndetailService.labsheettubempndetailListModel$.getValue()[0]?.Ordinal,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required, Validators.min(0), Validators.max(1000) ]],
           MWQMSiteTVItemID: [
             {
-              value: this.labsheettubempndetailService.labsheettubempndetailList[0]?.MWQMSiteTVItemID,
+              value: this.labsheettubempndetailService.labsheettubempndetailListModel$.getValue()[0]?.MWQMSiteTVItemID,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
           SampleDateTime: [
             {
-              value: this.labsheettubempndetailService.labsheettubempndetailList[0]?.SampleDateTime,
+              value: this.labsheettubempndetailService.labsheettubempndetailListModel$.getValue()[0]?.SampleDateTime,
               disabled: false
-            }, [ Validators.required ]],
+            }],
           MPN: [
             {
-              value: this.labsheettubempndetailService.labsheettubempndetailList[0]?.MPN,
+              value: this.labsheettubempndetailService.labsheettubempndetailListModel$.getValue()[0]?.MPN,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.min(1), Validators.max(10000000) ]],
           Tube10: [
             {
-              value: this.labsheettubempndetailService.labsheettubempndetailList[0]?.Tube10,
+              value: this.labsheettubempndetailService.labsheettubempndetailListModel$.getValue()[0]?.Tube10,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.min(0), Validators.max(5) ]],
           Tube1_0: [
             {
-              value: this.labsheettubempndetailService.labsheettubempndetailList[0]?.Tube1_0,
+              value: this.labsheettubempndetailService.labsheettubempndetailListModel$.getValue()[0]?.Tube1_0,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.min(0), Validators.max(5) ]],
           Tube0_1: [
             {
-              value: this.labsheettubempndetailService.labsheettubempndetailList[0]?.Tube0_1,
+              value: this.labsheettubempndetailService.labsheettubempndetailListModel$.getValue()[0]?.Tube0_1,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.min(0), Validators.max(5) ]],
           Salinity: [
             {
-              value: this.labsheettubempndetailService.labsheettubempndetailList[0]?.Salinity,
+              value: this.labsheettubempndetailService.labsheettubempndetailListModel$.getValue()[0]?.Salinity,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.min(0), Validators.max(40) ]],
           Temperature: [
             {
-              value: this.labsheettubempndetailService.labsheettubempndetailList[0]?.Temperature,
+              value: this.labsheettubempndetailService.labsheettubempndetailListModel$.getValue()[0]?.Temperature,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.min(-10), Validators.max(40) ]],
           ProcessedBy: [
             {
-              value: this.labsheettubempndetailService.labsheettubempndetailList[0]?.ProcessedBy,
+              value: this.labsheettubempndetailService.labsheettubempndetailListModel$.getValue()[0]?.ProcessedBy,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.maxLength(10) ]],
           SampleType: [
             {
-              value: this.labsheettubempndetailService.labsheettubempndetailList[0]?.SampleType,
+              value: this.labsheettubempndetailService.labsheettubempndetailListModel$.getValue()[0]?.SampleType,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
           SiteComment: [
             {
-              value: this.labsheettubempndetailService.labsheettubempndetailList[0]?.SiteComment,
+              value: this.labsheettubempndetailService.labsheettubempndetailListModel$.getValue()[0]?.SiteComment,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.maxLength(250) ]],
           LastUpdateDate_UTC: [
             {
-              value: this.labsheettubempndetailService.labsheettubempndetailList[0]?.LastUpdateDate_UTC,
+              value: this.labsheettubempndetailService.labsheettubempndetailListModel$.getValue()[0]?.LastUpdateDate_UTC,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
           LastUpdateContactTVItemID: [
             {
-              value: this.labsheettubempndetailService.labsheettubempndetailList[0]?.LastUpdateContactTVItemID,
+              value: this.labsheettubempndetailService.labsheettubempndetailListModel$.getValue()[0]?.LastUpdateContactTVItemID,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
         }
       );
 
-      if (AddOrUpdate === 'Add') {
+      if (httpClientCommand === HttpClientCommand.Post) {
         this.labsheettubempndetailFormPost = formGroup
       }
       else {

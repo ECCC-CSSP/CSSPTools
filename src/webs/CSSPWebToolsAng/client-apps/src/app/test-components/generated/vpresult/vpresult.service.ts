@@ -9,11 +9,12 @@ import { Injectable } from '@angular/core';
 import { VPResultTextModel } from './vpresult.models';
 import { BehaviorSubject, of } from 'rxjs';
 import { LoadLocalesVPResultText } from './vpresult.locales';
-import { Router } from '@angular/router';
-import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { map, catchError } from 'rxjs/operators';
 import { VPResult } from '../../../models/generated/VPResult.model';
 import { HttpRequestModel } from '../../../models/http.model';
+import { HttpClientService } from '../../../services/http-client.service';
+import { HttpClientCommand } from '../../../enums/app.enums';
 
 @Injectable({
   providedIn: 'root'
@@ -26,110 +27,63 @@ export class VPResultService {
   vpresultPutModel$: BehaviorSubject<HttpRequestModel> = new BehaviorSubject<HttpRequestModel>(<HttpRequestModel>{});
   vpresultPostModel$: BehaviorSubject<HttpRequestModel> = new BehaviorSubject<HttpRequestModel>(<HttpRequestModel>{});
   vpresultDeleteModel$: BehaviorSubject<HttpRequestModel> = new BehaviorSubject<HttpRequestModel>(<HttpRequestModel>{});
-  vpresultList: VPResult[] = [];
-  private oldURL: string;
-  private router: Router;
 
   /* Constructors */
-  constructor(private httpClient: HttpClient) {
+  constructor(private httpClient: HttpClient, private httpClientService: HttpClientService) {
     LoadLocalesVPResultText(this);
     this.vpresultTextModel$.next(<VPResultTextModel>{ Title: "Something2 for text" });
   }
 
   /* Functions public */
-  GetVPResultList(router: Router) {
-    this.BeforeHttpClient(this.vpresultGetModel$, router);
+  GetVPResultList() {
+    this.httpClientService.BeforeHttpClient(this.vpresultGetModel$);
 
     return this.httpClient.get<VPResult[]>('/api/VPResult').pipe(
       map((x: any) => {
-        this.DoSuccess(this.vpresultGetModel$, x, 'Get', null);
+        this.httpClientService.DoSuccess<VPResult>(this.vpresultListModel$, this.vpresultGetModel$, x, HttpClientCommand.Get, null);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.DoCatchError(this.vpresultGetModel$, e, 'Get');
+        this.httpClientService.DoCatchError<VPResult>(this.vpresultListModel$, this.vpresultGetModel$, e);
       })))
     );
   }
 
-  PutVPResult(vpresult: VPResult, router: Router) {
-    this.BeforeHttpClient(this.vpresultPutModel$, router);
+  PutVPResult(vpresult: VPResult) {
+    this.httpClientService.BeforeHttpClient(this.vpresultPutModel$);
 
     return this.httpClient.put<VPResult>('/api/VPResult', vpresult, { headers: new HttpHeaders() }).pipe(
       map((x: any) => {
-        this.DoSuccess(this.vpresultPutModel$, x, 'Put', vpresult);
+        this.httpClientService.DoSuccess<VPResult>(this.vpresultListModel$, this.vpresultPutModel$, x, HttpClientCommand.Put, vpresult);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.DoCatchError(this.vpresultPutModel$, e, 'Put');
+       this.httpClientService.DoCatchError<VPResult>(this.vpresultListModel$, this.vpresultPutModel$, e);
       })))
     );
   }
 
-  PostVPResult(vpresult: VPResult, router: Router) {
-    this.BeforeHttpClient(this.vpresultPostModel$, router);
+  PostVPResult(vpresult: VPResult) {
+    this.httpClientService.BeforeHttpClient(this.vpresultPostModel$);
 
     return this.httpClient.post<VPResult>('/api/VPResult', vpresult, { headers: new HttpHeaders() }).pipe(
       map((x: any) => {
-        this.DoSuccess(this.vpresultPostModel$, x, 'Post', vpresult);
+        this.httpClientService.DoSuccess<VPResult>(this.vpresultListModel$, this.vpresultPostModel$, x, HttpClientCommand.Post, vpresult);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.DoCatchError(this.vpresultPostModel$, e, 'Post');
+        this.httpClientService.DoCatchError<VPResult>(this.vpresultListModel$, this.vpresultPostModel$, e);
       })))
     );
   }
 
-  DeleteVPResult(vpresult: VPResult, router: Router) {
-    this.BeforeHttpClient(this.vpresultDeleteModel$, router);
+  DeleteVPResult(vpresult: VPResult) {
+    this.httpClientService.BeforeHttpClient(this.vpresultDeleteModel$);
 
     return this.httpClient.delete<boolean>(`/api/VPResult/${ vpresult.VPResultID }`).pipe(
       map((x: any) => {
-        this.DoSuccess(this.vpresultDeleteModel$, x, 'Delete', vpresult);
+        this.httpClientService.DoSuccess<VPResult>(this.vpresultListModel$, this.vpresultDeleteModel$, x, HttpClientCommand.Delete, vpresult);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.DoCatchError(this.vpresultDeleteModel$, e, 'Delete');
+        this.httpClientService.DoCatchError<VPResult>(this.vpresultListModel$, this.vpresultDeleteModel$, e);
       })))
     );
-  }
-
-  /* Functions private */
-  private BeforeHttpClient(httpRequestModel$: BehaviorSubject<HttpRequestModel>, router: Router) {
-    this.router = router;
-    this.oldURL = router.url;
-    httpRequestModel$.next(<HttpRequestModel>{ Working: true, Error: null, Status: null });
-  }
-
-  private DoCatchError(httpRequestModel$: BehaviorSubject<HttpRequestModel>, e: any, command: string) {
-    this.vpresultListModel$.next(null);
-    httpRequestModel$.next(<HttpRequestModel>{ Working: false, Error: <HttpErrorResponse>e, Status: 'Error' });
-
-    this.vpresultList = [];
-    console.debug(`VPResult ${ command } ERROR. Return: ${ <HttpErrorResponse>e }`);
-    this.DoReload();
-  }
-
-  private DoReload() {
-    this.router.navigateByUrl('', { skipLocationChange: true }).then(() => {
-      this.router.navigate([`/${this.oldURL}`]);
-    });
-  }
-
-  private DoSuccess(httpRequestModel$: BehaviorSubject<HttpRequestModel>, x: any, command: string, vpresult?: VPResult) {
-    console.debug(`VPResult ${ command } OK. Return: ${ x }`);
-    if (command === 'Get') {
-      this.vpresultListModel$.next(<VPResult[]>x);
-    }
-    if (command === 'Put') {
-      this.vpresultListModel$.getValue()[0] = <VPResult>x;
-    }
-    if (command === 'Post') {
-      this.vpresultListModel$.getValue().push(<VPResult>x);
-    }
-    if (command === 'Delete') {
-      const index = this.vpresultListModel$.getValue().indexOf(vpresult);
-      this.vpresultListModel$.getValue().splice(index, 1);
-    }
-
-    this.vpresultListModel$.next(this.vpresultListModel$.getValue());
-    httpRequestModel$.next(<HttpRequestModel>{ Working: false, Error: null, Status: 'ok' });
-    this.vpresultList = this.vpresultListModel$.getValue();
-    this.DoReload();
   }
 }

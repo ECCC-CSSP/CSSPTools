@@ -5,7 +5,7 @@
  *
 -->
 
-<mat-progress-bar mode="indeterminate" *ngIf="mwqmanalysisreportparameterService.mwqmanalysisreportparameterGetModel$.getValue().Working"></mat-progress-bar>
+<mat-progress-bar mode="indeterminate" *ngIf="mwqmanalysisreportparameterService.mwqmanalysisreportparameterGetModel$.getValue()?.Working"></mat-progress-bar>
 <mat-card>
   <mat-card-header>
     <mat-card-title>
@@ -17,8 +17,8 @@
     <mat-card-subtitle>{{ mwqmanalysisreportparameterService.mwqmanalysisreportparameterTextModel$.getValue().Title }}</mat-card-subtitle>
   </mat-card-header>
   <mat-card-content>
-    <mat-list>
-      <mat-list-item *ngFor="let mwqmanalysisreportparameter of mwqmanalysisreportparameterService.mwqmanalysisreportparameterList">
+    <mat-list *ngIf="mwqmanalysisreportparameterService.mwqmanalysisreportparameterListModel$.getValue()?.length">
+      <mat-list-item *ngFor="let mwqmanalysisreportparameter of mwqmanalysisreportparameterService.mwqmanalysisreportparameterListModel$.getValue()">
         <span mat-line>
           <button mat-raised-button (click)="DeleteMWQMAnalysisReportParameter(mwqmanalysisreportparameter)">
             <span>Delete MWQMAnalysisReportParameterID [{{ mwqmanalysisreportparameter.MWQMAnalysisReportParameterID }}]&nbsp;&nbsp;&nbsp;</span>
@@ -81,7 +81,7 @@
     <mat-card-title>Edit MWQMAnalysisReportParameter testing</mat-card-title>
   </mat-card-header>
   <mat-card-content>
-    <div *ngIf="mwqmanalysisreportparameterService.mwqmanalysisreportparameterList.length">
+    <div *ngIf="mwqmanalysisreportparameterService.mwqmanalysisreportparameterListModel$.getValue()?.length">
       <blockquote>
         <form [formGroup]="mwqmanalysisreportparameterFormPut" (ngSubmit)="PutMWQMAnalysisReportParameter(mwqmanalysisreportparameterFormPut.value)">
           <h3>
@@ -96,28 +96,55 @@
             <mat-form-field>
               <mat-label>MWQMAnalysisReportParameterID</mat-label>
               <input matInput type="number" formControlName="MWQMAnalysisReportParameterID">
+              <mat-error *ngIf="mwqmanalysisreportparameterFormPut.controls.MWQMAnalysisReportParameterID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>SubsectorTVItemID</mat-label>
               <input matInput type="number" formControlName="SubsectorTVItemID">
+              <mat-error *ngIf="mwqmanalysisreportparameterFormPut.controls.SubsectorTVItemID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>AnalysisName</mat-label>
               <input matInput type="text" formControlName="AnalysisName">
+              <mat-error *ngIf="mwqmanalysisreportparameterFormPut.controls.AnalysisName.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+                <span *ngIf="e.minlength">MinLength - 5<br /></span>
+                <span *ngIf="e.maxlength">MaxLength - 250<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>AnalysisReportYear</mat-label>
               <input matInput type="number" formControlName="AnalysisReportYear">
+              <mat-error *ngIf="mwqmanalysisreportparameterFormPut.controls.AnalysisReportYear.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.min">Min - 1980<br /></span>
+                <span *ngIf="e.min">Max - 2050<br /></span>
+              </mat-error>
             </mat-form-field>
           </p>
           <p>
             <mat-form-field>
               <mat-label>StartDate</mat-label>
               <input matInput type="text" formControlName="StartDate">
+              <mat-error *ngIf="mwqmanalysisreportparameterFormPut.controls.StartDate.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>EndDate</mat-label>
               <input matInput type="text" formControlName="EndDate">
+              <mat-error *ngIf="mwqmanalysisreportparameterFormPut.controls.EndDate.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>AnalysisCalculationType</mat-label>
@@ -126,78 +153,170 @@
                   {{ a.EnumText }}
                 </mat-option>
               </mat-select>
+              <mat-error *ngIf="mwqmanalysisreportparameterFormPut.controls.AnalysisCalculationType.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>NumberOfRuns</mat-label>
               <input matInput type="number" formControlName="NumberOfRuns">
+              <mat-error *ngIf="mwqmanalysisreportparameterFormPut.controls.NumberOfRuns.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+                <span *ngIf="e.min">Min - 1<br /></span>
+                <span *ngIf="e.min">Max - 1000<br /></span>
+              </mat-error>
             </mat-form-field>
           </p>
           <p>
             <mat-form-field>
               <mat-label>FullYear</mat-label>
               <input matInput type="text" formControlName="FullYear">
+              <mat-error *ngIf="mwqmanalysisreportparameterFormPut.controls.FullYear.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>SalinityHighlightDeviationFromAverage</mat-label>
               <input matInput type="number" formControlName="SalinityHighlightDeviationFromAverage">
+              <mat-error *ngIf="mwqmanalysisreportparameterFormPut.controls.SalinityHighlightDeviationFromAverage.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+                <span *ngIf="e.min">Min - 1<br /></span>
+                <span *ngIf="e.min">Max - 20<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>ShortRangeNumberOfDays</mat-label>
               <input matInput type="number" formControlName="ShortRangeNumberOfDays">
+              <mat-error *ngIf="mwqmanalysisreportparameterFormPut.controls.ShortRangeNumberOfDays.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+                <span *ngIf="e.min">Min - 0<br /></span>
+                <span *ngIf="e.min">Max - 5<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>MidRangeNumberOfDays</mat-label>
               <input matInput type="number" formControlName="MidRangeNumberOfDays">
+              <mat-error *ngIf="mwqmanalysisreportparameterFormPut.controls.MidRangeNumberOfDays.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+                <span *ngIf="e.min">Min - 2<br /></span>
+                <span *ngIf="e.min">Max - 7<br /></span>
+              </mat-error>
             </mat-form-field>
           </p>
           <p>
             <mat-form-field>
               <mat-label>DryLimit24h</mat-label>
               <input matInput type="number" formControlName="DryLimit24h">
+              <mat-error *ngIf="mwqmanalysisreportparameterFormPut.controls.DryLimit24h.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+                <span *ngIf="e.min">Min - 1<br /></span>
+                <span *ngIf="e.min">Max - 100<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>DryLimit48h</mat-label>
               <input matInput type="number" formControlName="DryLimit48h">
+              <mat-error *ngIf="mwqmanalysisreportparameterFormPut.controls.DryLimit48h.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+                <span *ngIf="e.min">Min - 1<br /></span>
+                <span *ngIf="e.min">Max - 100<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>DryLimit72h</mat-label>
               <input matInput type="number" formControlName="DryLimit72h">
+              <mat-error *ngIf="mwqmanalysisreportparameterFormPut.controls.DryLimit72h.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+                <span *ngIf="e.min">Min - 1<br /></span>
+                <span *ngIf="e.min">Max - 100<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>DryLimit96h</mat-label>
               <input matInput type="number" formControlName="DryLimit96h">
+              <mat-error *ngIf="mwqmanalysisreportparameterFormPut.controls.DryLimit96h.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+                <span *ngIf="e.min">Min - 1<br /></span>
+                <span *ngIf="e.min">Max - 100<br /></span>
+              </mat-error>
             </mat-form-field>
           </p>
           <p>
             <mat-form-field>
               <mat-label>WetLimit24h</mat-label>
               <input matInput type="number" formControlName="WetLimit24h">
+              <mat-error *ngIf="mwqmanalysisreportparameterFormPut.controls.WetLimit24h.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+                <span *ngIf="e.min">Min - 1<br /></span>
+                <span *ngIf="e.min">Max - 100<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>WetLimit48h</mat-label>
               <input matInput type="number" formControlName="WetLimit48h">
+              <mat-error *ngIf="mwqmanalysisreportparameterFormPut.controls.WetLimit48h.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+                <span *ngIf="e.min">Min - 1<br /></span>
+                <span *ngIf="e.min">Max - 100<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>WetLimit72h</mat-label>
               <input matInput type="number" formControlName="WetLimit72h">
+              <mat-error *ngIf="mwqmanalysisreportparameterFormPut.controls.WetLimit72h.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+                <span *ngIf="e.min">Min - 1<br /></span>
+                <span *ngIf="e.min">Max - 100<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>WetLimit96h</mat-label>
               <input matInput type="number" formControlName="WetLimit96h">
+              <mat-error *ngIf="mwqmanalysisreportparameterFormPut.controls.WetLimit96h.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+                <span *ngIf="e.min">Min - 1<br /></span>
+                <span *ngIf="e.min">Max - 100<br /></span>
+              </mat-error>
             </mat-form-field>
           </p>
           <p>
             <mat-form-field>
               <mat-label>RunsToOmit</mat-label>
               <input matInput type="text" formControlName="RunsToOmit">
+              <mat-error *ngIf="mwqmanalysisreportparameterFormPut.controls.RunsToOmit.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+                <span *ngIf="e.maxlength">MaxLength - 250<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>ShowDataTypes</mat-label>
               <input matInput type="text" formControlName="ShowDataTypes">
+              <mat-error *ngIf="mwqmanalysisreportparameterFormPut.controls.ShowDataTypes.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.maxlength">MaxLength - 20<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>ExcelTVFileTVItemID</mat-label>
               <input matInput type="number" formControlName="ExcelTVFileTVItemID">
+              <mat-error *ngIf="mwqmanalysisreportparameterFormPut.controls.ExcelTVFileTVItemID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>Command</mat-label>
@@ -206,16 +325,28 @@
                   {{ a.EnumText }}
                 </mat-option>
               </mat-select>
+              <mat-error *ngIf="mwqmanalysisreportparameterFormPut.controls.Command.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
           </p>
           <p>
             <mat-form-field>
               <mat-label>LastUpdateDate_UTC</mat-label>
               <input matInput type="text" formControlName="LastUpdateDate_UTC">
+              <mat-error *ngIf="mwqmanalysisreportparameterFormPut.controls.LastUpdateDate_UTC.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>LastUpdateContactTVItemID</mat-label>
               <input matInput type="number" formControlName="LastUpdateContactTVItemID">
+              <mat-error *ngIf="mwqmanalysisreportparameterFormPut.controls.LastUpdateContactTVItemID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
           </p>
         </form>
@@ -230,7 +361,7 @@
     <mat-card-title>Add MWQMAnalysisReportParameter testing</mat-card-title>
   </mat-card-header>
   <mat-card-content>
-    <div *ngIf="mwqmanalysisreportparameterService.mwqmanalysisreportparameterList.length">
+    <div *ngIf="mwqmanalysisreportparameterService.mwqmanalysisreportparameterListModel$.getValue()?.length">
       <blockquote>
         <form [formGroup]="mwqmanalysisreportparameterFormPost" (ngSubmit)="PostMWQMAnalysisReportParameter(mwqmanalysisreportparameterFormPost.value)">
           <h3>
@@ -245,28 +376,55 @@
             <mat-form-field>
               <mat-label>MWQMAnalysisReportParameterID</mat-label>
               <input matInput type="number" formControlName="MWQMAnalysisReportParameterID">
+              <mat-error *ngIf="mwqmanalysisreportparameterFormPut.controls.MWQMAnalysisReportParameterID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>SubsectorTVItemID</mat-label>
               <input matInput type="number" formControlName="SubsectorTVItemID">
+              <mat-error *ngIf="mwqmanalysisreportparameterFormPut.controls.SubsectorTVItemID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>AnalysisName</mat-label>
               <input matInput type="text" formControlName="AnalysisName">
+              <mat-error *ngIf="mwqmanalysisreportparameterFormPut.controls.AnalysisName.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+                <span *ngIf="e.minlength">MinLength - 5<br /></span>
+                <span *ngIf="e.maxlength">MaxLength - 250<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>AnalysisReportYear</mat-label>
               <input matInput type="number" formControlName="AnalysisReportYear">
+              <mat-error *ngIf="mwqmanalysisreportparameterFormPut.controls.AnalysisReportYear.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.min">Min - 1980<br /></span>
+                <span *ngIf="e.min">Max - 2050<br /></span>
+              </mat-error>
             </mat-form-field>
           </p>
           <p>
             <mat-form-field>
               <mat-label>StartDate</mat-label>
               <input matInput type="text" formControlName="StartDate">
+              <mat-error *ngIf="mwqmanalysisreportparameterFormPut.controls.StartDate.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>EndDate</mat-label>
               <input matInput type="text" formControlName="EndDate">
+              <mat-error *ngIf="mwqmanalysisreportparameterFormPut.controls.EndDate.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>AnalysisCalculationType</mat-label>
@@ -275,78 +433,170 @@
                   {{ a.EnumText }}
                 </mat-option>
               </mat-select>
+              <mat-error *ngIf="mwqmanalysisreportparameterFormPut.controls.AnalysisCalculationType.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>NumberOfRuns</mat-label>
               <input matInput type="number" formControlName="NumberOfRuns">
+              <mat-error *ngIf="mwqmanalysisreportparameterFormPut.controls.NumberOfRuns.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+                <span *ngIf="e.min">Min - 1<br /></span>
+                <span *ngIf="e.min">Max - 1000<br /></span>
+              </mat-error>
             </mat-form-field>
           </p>
           <p>
             <mat-form-field>
               <mat-label>FullYear</mat-label>
               <input matInput type="text" formControlName="FullYear">
+              <mat-error *ngIf="mwqmanalysisreportparameterFormPut.controls.FullYear.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>SalinityHighlightDeviationFromAverage</mat-label>
               <input matInput type="number" formControlName="SalinityHighlightDeviationFromAverage">
+              <mat-error *ngIf="mwqmanalysisreportparameterFormPut.controls.SalinityHighlightDeviationFromAverage.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+                <span *ngIf="e.min">Min - 1<br /></span>
+                <span *ngIf="e.min">Max - 20<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>ShortRangeNumberOfDays</mat-label>
               <input matInput type="number" formControlName="ShortRangeNumberOfDays">
+              <mat-error *ngIf="mwqmanalysisreportparameterFormPut.controls.ShortRangeNumberOfDays.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+                <span *ngIf="e.min">Min - 0<br /></span>
+                <span *ngIf="e.min">Max - 5<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>MidRangeNumberOfDays</mat-label>
               <input matInput type="number" formControlName="MidRangeNumberOfDays">
+              <mat-error *ngIf="mwqmanalysisreportparameterFormPut.controls.MidRangeNumberOfDays.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+                <span *ngIf="e.min">Min - 2<br /></span>
+                <span *ngIf="e.min">Max - 7<br /></span>
+              </mat-error>
             </mat-form-field>
           </p>
           <p>
             <mat-form-field>
               <mat-label>DryLimit24h</mat-label>
               <input matInput type="number" formControlName="DryLimit24h">
+              <mat-error *ngIf="mwqmanalysisreportparameterFormPut.controls.DryLimit24h.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+                <span *ngIf="e.min">Min - 1<br /></span>
+                <span *ngIf="e.min">Max - 100<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>DryLimit48h</mat-label>
               <input matInput type="number" formControlName="DryLimit48h">
+              <mat-error *ngIf="mwqmanalysisreportparameterFormPut.controls.DryLimit48h.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+                <span *ngIf="e.min">Min - 1<br /></span>
+                <span *ngIf="e.min">Max - 100<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>DryLimit72h</mat-label>
               <input matInput type="number" formControlName="DryLimit72h">
+              <mat-error *ngIf="mwqmanalysisreportparameterFormPut.controls.DryLimit72h.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+                <span *ngIf="e.min">Min - 1<br /></span>
+                <span *ngIf="e.min">Max - 100<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>DryLimit96h</mat-label>
               <input matInput type="number" formControlName="DryLimit96h">
+              <mat-error *ngIf="mwqmanalysisreportparameterFormPut.controls.DryLimit96h.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+                <span *ngIf="e.min">Min - 1<br /></span>
+                <span *ngIf="e.min">Max - 100<br /></span>
+              </mat-error>
             </mat-form-field>
           </p>
           <p>
             <mat-form-field>
               <mat-label>WetLimit24h</mat-label>
               <input matInput type="number" formControlName="WetLimit24h">
+              <mat-error *ngIf="mwqmanalysisreportparameterFormPut.controls.WetLimit24h.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+                <span *ngIf="e.min">Min - 1<br /></span>
+                <span *ngIf="e.min">Max - 100<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>WetLimit48h</mat-label>
               <input matInput type="number" formControlName="WetLimit48h">
+              <mat-error *ngIf="mwqmanalysisreportparameterFormPut.controls.WetLimit48h.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+                <span *ngIf="e.min">Min - 1<br /></span>
+                <span *ngIf="e.min">Max - 100<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>WetLimit72h</mat-label>
               <input matInput type="number" formControlName="WetLimit72h">
+              <mat-error *ngIf="mwqmanalysisreportparameterFormPut.controls.WetLimit72h.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+                <span *ngIf="e.min">Min - 1<br /></span>
+                <span *ngIf="e.min">Max - 100<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>WetLimit96h</mat-label>
               <input matInput type="number" formControlName="WetLimit96h">
+              <mat-error *ngIf="mwqmanalysisreportparameterFormPut.controls.WetLimit96h.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+                <span *ngIf="e.min">Min - 1<br /></span>
+                <span *ngIf="e.min">Max - 100<br /></span>
+              </mat-error>
             </mat-form-field>
           </p>
           <p>
             <mat-form-field>
               <mat-label>RunsToOmit</mat-label>
               <input matInput type="text" formControlName="RunsToOmit">
+              <mat-error *ngIf="mwqmanalysisreportparameterFormPut.controls.RunsToOmit.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+                <span *ngIf="e.maxlength">MaxLength - 250<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>ShowDataTypes</mat-label>
               <input matInput type="text" formControlName="ShowDataTypes">
+              <mat-error *ngIf="mwqmanalysisreportparameterFormPut.controls.ShowDataTypes.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.maxlength">MaxLength - 20<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>ExcelTVFileTVItemID</mat-label>
               <input matInput type="number" formControlName="ExcelTVFileTVItemID">
+              <mat-error *ngIf="mwqmanalysisreportparameterFormPut.controls.ExcelTVFileTVItemID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>Command</mat-label>
@@ -355,16 +605,28 @@
                   {{ a.EnumText }}
                 </mat-option>
               </mat-select>
+              <mat-error *ngIf="mwqmanalysisreportparameterFormPut.controls.Command.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
           </p>
           <p>
             <mat-form-field>
               <mat-label>LastUpdateDate_UTC</mat-label>
               <input matInput type="text" formControlName="LastUpdateDate_UTC">
+              <mat-error *ngIf="mwqmanalysisreportparameterFormPut.controls.LastUpdateDate_UTC.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>LastUpdateContactTVItemID</mat-label>
               <input matInput type="number" formControlName="LastUpdateContactTVItemID">
+              <mat-error *ngIf="mwqmanalysisreportparameterFormPut.controls.LastUpdateContactTVItemID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
           </p>
         </form>

@@ -9,11 +9,12 @@ import { Injectable } from '@angular/core';
 import { ClassificationTextModel } from './classification.models';
 import { BehaviorSubject, of } from 'rxjs';
 import { LoadLocalesClassificationText } from './classification.locales';
-import { Router } from '@angular/router';
-import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { map, catchError } from 'rxjs/operators';
 import { Classification } from '../../../models/generated/Classification.model';
 import { HttpRequestModel } from '../../../models/http.model';
+import { HttpClientService } from '../../../services/http-client.service';
+import { HttpClientCommand } from '../../../enums/app.enums';
 
 @Injectable({
   providedIn: 'root'
@@ -26,110 +27,63 @@ export class ClassificationService {
   classificationPutModel$: BehaviorSubject<HttpRequestModel> = new BehaviorSubject<HttpRequestModel>(<HttpRequestModel>{});
   classificationPostModel$: BehaviorSubject<HttpRequestModel> = new BehaviorSubject<HttpRequestModel>(<HttpRequestModel>{});
   classificationDeleteModel$: BehaviorSubject<HttpRequestModel> = new BehaviorSubject<HttpRequestModel>(<HttpRequestModel>{});
-  classificationList: Classification[] = [];
-  private oldURL: string;
-  private router: Router;
 
   /* Constructors */
-  constructor(private httpClient: HttpClient) {
+  constructor(private httpClient: HttpClient, private httpClientService: HttpClientService) {
     LoadLocalesClassificationText(this);
     this.classificationTextModel$.next(<ClassificationTextModel>{ Title: "Something2 for text" });
   }
 
   /* Functions public */
-  GetClassificationList(router: Router) {
-    this.BeforeHttpClient(this.classificationGetModel$, router);
+  GetClassificationList() {
+    this.httpClientService.BeforeHttpClient(this.classificationGetModel$);
 
     return this.httpClient.get<Classification[]>('/api/Classification').pipe(
       map((x: any) => {
-        this.DoSuccess(this.classificationGetModel$, x, 'Get', null);
+        this.httpClientService.DoSuccess<Classification>(this.classificationListModel$, this.classificationGetModel$, x, HttpClientCommand.Get, null);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.DoCatchError(this.classificationGetModel$, e, 'Get');
+        this.httpClientService.DoCatchError<Classification>(this.classificationListModel$, this.classificationGetModel$, e);
       })))
     );
   }
 
-  PutClassification(classification: Classification, router: Router) {
-    this.BeforeHttpClient(this.classificationPutModel$, router);
+  PutClassification(classification: Classification) {
+    this.httpClientService.BeforeHttpClient(this.classificationPutModel$);
 
     return this.httpClient.put<Classification>('/api/Classification', classification, { headers: new HttpHeaders() }).pipe(
       map((x: any) => {
-        this.DoSuccess(this.classificationPutModel$, x, 'Put', classification);
+        this.httpClientService.DoSuccess<Classification>(this.classificationListModel$, this.classificationPutModel$, x, HttpClientCommand.Put, classification);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.DoCatchError(this.classificationPutModel$, e, 'Put');
+       this.httpClientService.DoCatchError<Classification>(this.classificationListModel$, this.classificationPutModel$, e);
       })))
     );
   }
 
-  PostClassification(classification: Classification, router: Router) {
-    this.BeforeHttpClient(this.classificationPostModel$, router);
+  PostClassification(classification: Classification) {
+    this.httpClientService.BeforeHttpClient(this.classificationPostModel$);
 
     return this.httpClient.post<Classification>('/api/Classification', classification, { headers: new HttpHeaders() }).pipe(
       map((x: any) => {
-        this.DoSuccess(this.classificationPostModel$, x, 'Post', classification);
+        this.httpClientService.DoSuccess<Classification>(this.classificationListModel$, this.classificationPostModel$, x, HttpClientCommand.Post, classification);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.DoCatchError(this.classificationPostModel$, e, 'Post');
+        this.httpClientService.DoCatchError<Classification>(this.classificationListModel$, this.classificationPostModel$, e);
       })))
     );
   }
 
-  DeleteClassification(classification: Classification, router: Router) {
-    this.BeforeHttpClient(this.classificationDeleteModel$, router);
+  DeleteClassification(classification: Classification) {
+    this.httpClientService.BeforeHttpClient(this.classificationDeleteModel$);
 
     return this.httpClient.delete<boolean>(`/api/Classification/${ classification.ClassificationID }`).pipe(
       map((x: any) => {
-        this.DoSuccess(this.classificationDeleteModel$, x, 'Delete', classification);
+        this.httpClientService.DoSuccess<Classification>(this.classificationListModel$, this.classificationDeleteModel$, x, HttpClientCommand.Delete, classification);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.DoCatchError(this.classificationDeleteModel$, e, 'Delete');
+        this.httpClientService.DoCatchError<Classification>(this.classificationListModel$, this.classificationDeleteModel$, e);
       })))
     );
-  }
-
-  /* Functions private */
-  private BeforeHttpClient(httpRequestModel$: BehaviorSubject<HttpRequestModel>, router: Router) {
-    this.router = router;
-    this.oldURL = router.url;
-    httpRequestModel$.next(<HttpRequestModel>{ Working: true, Error: null, Status: null });
-  }
-
-  private DoCatchError(httpRequestModel$: BehaviorSubject<HttpRequestModel>, e: any, command: string) {
-    this.classificationListModel$.next(null);
-    httpRequestModel$.next(<HttpRequestModel>{ Working: false, Error: <HttpErrorResponse>e, Status: 'Error' });
-
-    this.classificationList = [];
-    console.debug(`Classification ${ command } ERROR. Return: ${ <HttpErrorResponse>e }`);
-    this.DoReload();
-  }
-
-  private DoReload() {
-    this.router.navigateByUrl('', { skipLocationChange: true }).then(() => {
-      this.router.navigate([`/${this.oldURL}`]);
-    });
-  }
-
-  private DoSuccess(httpRequestModel$: BehaviorSubject<HttpRequestModel>, x: any, command: string, classification?: Classification) {
-    console.debug(`Classification ${ command } OK. Return: ${ x }`);
-    if (command === 'Get') {
-      this.classificationListModel$.next(<Classification[]>x);
-    }
-    if (command === 'Put') {
-      this.classificationListModel$.getValue()[0] = <Classification>x;
-    }
-    if (command === 'Post') {
-      this.classificationListModel$.getValue().push(<Classification>x);
-    }
-    if (command === 'Delete') {
-      const index = this.classificationListModel$.getValue().indexOf(classification);
-      this.classificationListModel$.getValue().splice(index, 1);
-    }
-
-    this.classificationListModel$.next(this.classificationListModel$.getValue());
-    httpRequestModel$.next(<HttpRequestModel>{ Working: false, Error: null, Status: 'ok' });
-    this.classificationList = this.classificationListModel$.getValue();
-    this.DoReload();
   }
 }

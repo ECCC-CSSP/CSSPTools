@@ -9,11 +9,12 @@ import { Injectable } from '@angular/core';
 import { PolSourceSiteEffectTermTextModel } from './polsourcesiteeffectterm.models';
 import { BehaviorSubject, of } from 'rxjs';
 import { LoadLocalesPolSourceSiteEffectTermText } from './polsourcesiteeffectterm.locales';
-import { Router } from '@angular/router';
-import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { map, catchError } from 'rxjs/operators';
 import { PolSourceSiteEffectTerm } from '../../../models/generated/PolSourceSiteEffectTerm.model';
 import { HttpRequestModel } from '../../../models/http.model';
+import { HttpClientService } from '../../../services/http-client.service';
+import { HttpClientCommand } from '../../../enums/app.enums';
 
 @Injectable({
   providedIn: 'root'
@@ -26,110 +27,63 @@ export class PolSourceSiteEffectTermService {
   polsourcesiteeffecttermPutModel$: BehaviorSubject<HttpRequestModel> = new BehaviorSubject<HttpRequestModel>(<HttpRequestModel>{});
   polsourcesiteeffecttermPostModel$: BehaviorSubject<HttpRequestModel> = new BehaviorSubject<HttpRequestModel>(<HttpRequestModel>{});
   polsourcesiteeffecttermDeleteModel$: BehaviorSubject<HttpRequestModel> = new BehaviorSubject<HttpRequestModel>(<HttpRequestModel>{});
-  polsourcesiteeffecttermList: PolSourceSiteEffectTerm[] = [];
-  private oldURL: string;
-  private router: Router;
 
   /* Constructors */
-  constructor(private httpClient: HttpClient) {
+  constructor(private httpClient: HttpClient, private httpClientService: HttpClientService) {
     LoadLocalesPolSourceSiteEffectTermText(this);
     this.polsourcesiteeffecttermTextModel$.next(<PolSourceSiteEffectTermTextModel>{ Title: "Something2 for text" });
   }
 
   /* Functions public */
-  GetPolSourceSiteEffectTermList(router: Router) {
-    this.BeforeHttpClient(this.polsourcesiteeffecttermGetModel$, router);
+  GetPolSourceSiteEffectTermList() {
+    this.httpClientService.BeforeHttpClient(this.polsourcesiteeffecttermGetModel$);
 
     return this.httpClient.get<PolSourceSiteEffectTerm[]>('/api/PolSourceSiteEffectTerm').pipe(
       map((x: any) => {
-        this.DoSuccess(this.polsourcesiteeffecttermGetModel$, x, 'Get', null);
+        this.httpClientService.DoSuccess<PolSourceSiteEffectTerm>(this.polsourcesiteeffecttermListModel$, this.polsourcesiteeffecttermGetModel$, x, HttpClientCommand.Get, null);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.DoCatchError(this.polsourcesiteeffecttermGetModel$, e, 'Get');
+        this.httpClientService.DoCatchError<PolSourceSiteEffectTerm>(this.polsourcesiteeffecttermListModel$, this.polsourcesiteeffecttermGetModel$, e);
       })))
     );
   }
 
-  PutPolSourceSiteEffectTerm(polsourcesiteeffectterm: PolSourceSiteEffectTerm, router: Router) {
-    this.BeforeHttpClient(this.polsourcesiteeffecttermPutModel$, router);
+  PutPolSourceSiteEffectTerm(polsourcesiteeffectterm: PolSourceSiteEffectTerm) {
+    this.httpClientService.BeforeHttpClient(this.polsourcesiteeffecttermPutModel$);
 
     return this.httpClient.put<PolSourceSiteEffectTerm>('/api/PolSourceSiteEffectTerm', polsourcesiteeffectterm, { headers: new HttpHeaders() }).pipe(
       map((x: any) => {
-        this.DoSuccess(this.polsourcesiteeffecttermPutModel$, x, 'Put', polsourcesiteeffectterm);
+        this.httpClientService.DoSuccess<PolSourceSiteEffectTerm>(this.polsourcesiteeffecttermListModel$, this.polsourcesiteeffecttermPutModel$, x, HttpClientCommand.Put, polsourcesiteeffectterm);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.DoCatchError(this.polsourcesiteeffecttermPutModel$, e, 'Put');
+       this.httpClientService.DoCatchError<PolSourceSiteEffectTerm>(this.polsourcesiteeffecttermListModel$, this.polsourcesiteeffecttermPutModel$, e);
       })))
     );
   }
 
-  PostPolSourceSiteEffectTerm(polsourcesiteeffectterm: PolSourceSiteEffectTerm, router: Router) {
-    this.BeforeHttpClient(this.polsourcesiteeffecttermPostModel$, router);
+  PostPolSourceSiteEffectTerm(polsourcesiteeffectterm: PolSourceSiteEffectTerm) {
+    this.httpClientService.BeforeHttpClient(this.polsourcesiteeffecttermPostModel$);
 
     return this.httpClient.post<PolSourceSiteEffectTerm>('/api/PolSourceSiteEffectTerm', polsourcesiteeffectterm, { headers: new HttpHeaders() }).pipe(
       map((x: any) => {
-        this.DoSuccess(this.polsourcesiteeffecttermPostModel$, x, 'Post', polsourcesiteeffectterm);
+        this.httpClientService.DoSuccess<PolSourceSiteEffectTerm>(this.polsourcesiteeffecttermListModel$, this.polsourcesiteeffecttermPostModel$, x, HttpClientCommand.Post, polsourcesiteeffectterm);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.DoCatchError(this.polsourcesiteeffecttermPostModel$, e, 'Post');
+        this.httpClientService.DoCatchError<PolSourceSiteEffectTerm>(this.polsourcesiteeffecttermListModel$, this.polsourcesiteeffecttermPostModel$, e);
       })))
     );
   }
 
-  DeletePolSourceSiteEffectTerm(polsourcesiteeffectterm: PolSourceSiteEffectTerm, router: Router) {
-    this.BeforeHttpClient(this.polsourcesiteeffecttermDeleteModel$, router);
+  DeletePolSourceSiteEffectTerm(polsourcesiteeffectterm: PolSourceSiteEffectTerm) {
+    this.httpClientService.BeforeHttpClient(this.polsourcesiteeffecttermDeleteModel$);
 
     return this.httpClient.delete<boolean>(`/api/PolSourceSiteEffectTerm/${ polsourcesiteeffectterm.PolSourceSiteEffectTermID }`).pipe(
       map((x: any) => {
-        this.DoSuccess(this.polsourcesiteeffecttermDeleteModel$, x, 'Delete', polsourcesiteeffectterm);
+        this.httpClientService.DoSuccess<PolSourceSiteEffectTerm>(this.polsourcesiteeffecttermListModel$, this.polsourcesiteeffecttermDeleteModel$, x, HttpClientCommand.Delete, polsourcesiteeffectterm);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.DoCatchError(this.polsourcesiteeffecttermDeleteModel$, e, 'Delete');
+        this.httpClientService.DoCatchError<PolSourceSiteEffectTerm>(this.polsourcesiteeffecttermListModel$, this.polsourcesiteeffecttermDeleteModel$, e);
       })))
     );
-  }
-
-  /* Functions private */
-  private BeforeHttpClient(httpRequestModel$: BehaviorSubject<HttpRequestModel>, router: Router) {
-    this.router = router;
-    this.oldURL = router.url;
-    httpRequestModel$.next(<HttpRequestModel>{ Working: true, Error: null, Status: null });
-  }
-
-  private DoCatchError(httpRequestModel$: BehaviorSubject<HttpRequestModel>, e: any, command: string) {
-    this.polsourcesiteeffecttermListModel$.next(null);
-    httpRequestModel$.next(<HttpRequestModel>{ Working: false, Error: <HttpErrorResponse>e, Status: 'Error' });
-
-    this.polsourcesiteeffecttermList = [];
-    console.debug(`PolSourceSiteEffectTerm ${ command } ERROR. Return: ${ <HttpErrorResponse>e }`);
-    this.DoReload();
-  }
-
-  private DoReload() {
-    this.router.navigateByUrl('', { skipLocationChange: true }).then(() => {
-      this.router.navigate([`/${this.oldURL}`]);
-    });
-  }
-
-  private DoSuccess(httpRequestModel$: BehaviorSubject<HttpRequestModel>, x: any, command: string, polsourcesiteeffectterm?: PolSourceSiteEffectTerm) {
-    console.debug(`PolSourceSiteEffectTerm ${ command } OK. Return: ${ x }`);
-    if (command === 'Get') {
-      this.polsourcesiteeffecttermListModel$.next(<PolSourceSiteEffectTerm[]>x);
-    }
-    if (command === 'Put') {
-      this.polsourcesiteeffecttermListModel$.getValue()[0] = <PolSourceSiteEffectTerm>x;
-    }
-    if (command === 'Post') {
-      this.polsourcesiteeffecttermListModel$.getValue().push(<PolSourceSiteEffectTerm>x);
-    }
-    if (command === 'Delete') {
-      const index = this.polsourcesiteeffecttermListModel$.getValue().indexOf(polsourcesiteeffectterm);
-      this.polsourcesiteeffecttermListModel$.getValue().splice(index, 1);
-    }
-
-    this.polsourcesiteeffecttermListModel$.next(this.polsourcesiteeffecttermListModel$.getValue());
-    httpRequestModel$.next(<HttpRequestModel>{ Working: false, Error: null, Status: 'ok' });
-    this.polsourcesiteeffecttermList = this.polsourcesiteeffecttermListModel$.getValue();
-    this.DoReload();
   }
 }

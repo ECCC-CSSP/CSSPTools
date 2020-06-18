@@ -9,11 +9,12 @@ import { Injectable } from '@angular/core';
 import { VPAmbientTextModel } from './vpambient.models';
 import { BehaviorSubject, of } from 'rxjs';
 import { LoadLocalesVPAmbientText } from './vpambient.locales';
-import { Router } from '@angular/router';
-import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { map, catchError } from 'rxjs/operators';
 import { VPAmbient } from '../../../models/generated/VPAmbient.model';
 import { HttpRequestModel } from '../../../models/http.model';
+import { HttpClientService } from '../../../services/http-client.service';
+import { HttpClientCommand } from '../../../enums/app.enums';
 
 @Injectable({
   providedIn: 'root'
@@ -26,110 +27,63 @@ export class VPAmbientService {
   vpambientPutModel$: BehaviorSubject<HttpRequestModel> = new BehaviorSubject<HttpRequestModel>(<HttpRequestModel>{});
   vpambientPostModel$: BehaviorSubject<HttpRequestModel> = new BehaviorSubject<HttpRequestModel>(<HttpRequestModel>{});
   vpambientDeleteModel$: BehaviorSubject<HttpRequestModel> = new BehaviorSubject<HttpRequestModel>(<HttpRequestModel>{});
-  vpambientList: VPAmbient[] = [];
-  private oldURL: string;
-  private router: Router;
 
   /* Constructors */
-  constructor(private httpClient: HttpClient) {
+  constructor(private httpClient: HttpClient, private httpClientService: HttpClientService) {
     LoadLocalesVPAmbientText(this);
     this.vpambientTextModel$.next(<VPAmbientTextModel>{ Title: "Something2 for text" });
   }
 
   /* Functions public */
-  GetVPAmbientList(router: Router) {
-    this.BeforeHttpClient(this.vpambientGetModel$, router);
+  GetVPAmbientList() {
+    this.httpClientService.BeforeHttpClient(this.vpambientGetModel$);
 
     return this.httpClient.get<VPAmbient[]>('/api/VPAmbient').pipe(
       map((x: any) => {
-        this.DoSuccess(this.vpambientGetModel$, x, 'Get', null);
+        this.httpClientService.DoSuccess<VPAmbient>(this.vpambientListModel$, this.vpambientGetModel$, x, HttpClientCommand.Get, null);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.DoCatchError(this.vpambientGetModel$, e, 'Get');
+        this.httpClientService.DoCatchError<VPAmbient>(this.vpambientListModel$, this.vpambientGetModel$, e);
       })))
     );
   }
 
-  PutVPAmbient(vpambient: VPAmbient, router: Router) {
-    this.BeforeHttpClient(this.vpambientPutModel$, router);
+  PutVPAmbient(vpambient: VPAmbient) {
+    this.httpClientService.BeforeHttpClient(this.vpambientPutModel$);
 
     return this.httpClient.put<VPAmbient>('/api/VPAmbient', vpambient, { headers: new HttpHeaders() }).pipe(
       map((x: any) => {
-        this.DoSuccess(this.vpambientPutModel$, x, 'Put', vpambient);
+        this.httpClientService.DoSuccess<VPAmbient>(this.vpambientListModel$, this.vpambientPutModel$, x, HttpClientCommand.Put, vpambient);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.DoCatchError(this.vpambientPutModel$, e, 'Put');
+       this.httpClientService.DoCatchError<VPAmbient>(this.vpambientListModel$, this.vpambientPutModel$, e);
       })))
     );
   }
 
-  PostVPAmbient(vpambient: VPAmbient, router: Router) {
-    this.BeforeHttpClient(this.vpambientPostModel$, router);
+  PostVPAmbient(vpambient: VPAmbient) {
+    this.httpClientService.BeforeHttpClient(this.vpambientPostModel$);
 
     return this.httpClient.post<VPAmbient>('/api/VPAmbient', vpambient, { headers: new HttpHeaders() }).pipe(
       map((x: any) => {
-        this.DoSuccess(this.vpambientPostModel$, x, 'Post', vpambient);
+        this.httpClientService.DoSuccess<VPAmbient>(this.vpambientListModel$, this.vpambientPostModel$, x, HttpClientCommand.Post, vpambient);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.DoCatchError(this.vpambientPostModel$, e, 'Post');
+        this.httpClientService.DoCatchError<VPAmbient>(this.vpambientListModel$, this.vpambientPostModel$, e);
       })))
     );
   }
 
-  DeleteVPAmbient(vpambient: VPAmbient, router: Router) {
-    this.BeforeHttpClient(this.vpambientDeleteModel$, router);
+  DeleteVPAmbient(vpambient: VPAmbient) {
+    this.httpClientService.BeforeHttpClient(this.vpambientDeleteModel$);
 
     return this.httpClient.delete<boolean>(`/api/VPAmbient/${ vpambient.VPAmbientID }`).pipe(
       map((x: any) => {
-        this.DoSuccess(this.vpambientDeleteModel$, x, 'Delete', vpambient);
+        this.httpClientService.DoSuccess<VPAmbient>(this.vpambientListModel$, this.vpambientDeleteModel$, x, HttpClientCommand.Delete, vpambient);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.DoCatchError(this.vpambientDeleteModel$, e, 'Delete');
+        this.httpClientService.DoCatchError<VPAmbient>(this.vpambientListModel$, this.vpambientDeleteModel$, e);
       })))
     );
-  }
-
-  /* Functions private */
-  private BeforeHttpClient(httpRequestModel$: BehaviorSubject<HttpRequestModel>, router: Router) {
-    this.router = router;
-    this.oldURL = router.url;
-    httpRequestModel$.next(<HttpRequestModel>{ Working: true, Error: null, Status: null });
-  }
-
-  private DoCatchError(httpRequestModel$: BehaviorSubject<HttpRequestModel>, e: any, command: string) {
-    this.vpambientListModel$.next(null);
-    httpRequestModel$.next(<HttpRequestModel>{ Working: false, Error: <HttpErrorResponse>e, Status: 'Error' });
-
-    this.vpambientList = [];
-    console.debug(`VPAmbient ${ command } ERROR. Return: ${ <HttpErrorResponse>e }`);
-    this.DoReload();
-  }
-
-  private DoReload() {
-    this.router.navigateByUrl('', { skipLocationChange: true }).then(() => {
-      this.router.navigate([`/${this.oldURL}`]);
-    });
-  }
-
-  private DoSuccess(httpRequestModel$: BehaviorSubject<HttpRequestModel>, x: any, command: string, vpambient?: VPAmbient) {
-    console.debug(`VPAmbient ${ command } OK. Return: ${ x }`);
-    if (command === 'Get') {
-      this.vpambientListModel$.next(<VPAmbient[]>x);
-    }
-    if (command === 'Put') {
-      this.vpambientListModel$.getValue()[0] = <VPAmbient>x;
-    }
-    if (command === 'Post') {
-      this.vpambientListModel$.getValue().push(<VPAmbient>x);
-    }
-    if (command === 'Delete') {
-      const index = this.vpambientListModel$.getValue().indexOf(vpambient);
-      this.vpambientListModel$.getValue().splice(index, 1);
-    }
-
-    this.vpambientListModel$.next(this.vpambientListModel$.getValue());
-    httpRequestModel$.next(<HttpRequestModel>{ Working: false, Error: null, Status: 'ok' });
-    this.vpambientList = this.vpambientListModel$.getValue();
-    this.DoReload();
   }
 }

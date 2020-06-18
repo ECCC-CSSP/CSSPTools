@@ -9,11 +9,12 @@ import { Injectable } from '@angular/core';
 import { HydrometricSiteTextModel } from './hydrometricsite.models';
 import { BehaviorSubject, of } from 'rxjs';
 import { LoadLocalesHydrometricSiteText } from './hydrometricsite.locales';
-import { Router } from '@angular/router';
-import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { map, catchError } from 'rxjs/operators';
 import { HydrometricSite } from '../../../models/generated/HydrometricSite.model';
 import { HttpRequestModel } from '../../../models/http.model';
+import { HttpClientService } from '../../../services/http-client.service';
+import { HttpClientCommand } from '../../../enums/app.enums';
 
 @Injectable({
   providedIn: 'root'
@@ -26,110 +27,63 @@ export class HydrometricSiteService {
   hydrometricsitePutModel$: BehaviorSubject<HttpRequestModel> = new BehaviorSubject<HttpRequestModel>(<HttpRequestModel>{});
   hydrometricsitePostModel$: BehaviorSubject<HttpRequestModel> = new BehaviorSubject<HttpRequestModel>(<HttpRequestModel>{});
   hydrometricsiteDeleteModel$: BehaviorSubject<HttpRequestModel> = new BehaviorSubject<HttpRequestModel>(<HttpRequestModel>{});
-  hydrometricsiteList: HydrometricSite[] = [];
-  private oldURL: string;
-  private router: Router;
 
   /* Constructors */
-  constructor(private httpClient: HttpClient) {
+  constructor(private httpClient: HttpClient, private httpClientService: HttpClientService) {
     LoadLocalesHydrometricSiteText(this);
     this.hydrometricsiteTextModel$.next(<HydrometricSiteTextModel>{ Title: "Something2 for text" });
   }
 
   /* Functions public */
-  GetHydrometricSiteList(router: Router) {
-    this.BeforeHttpClient(this.hydrometricsiteGetModel$, router);
+  GetHydrometricSiteList() {
+    this.httpClientService.BeforeHttpClient(this.hydrometricsiteGetModel$);
 
     return this.httpClient.get<HydrometricSite[]>('/api/HydrometricSite').pipe(
       map((x: any) => {
-        this.DoSuccess(this.hydrometricsiteGetModel$, x, 'Get', null);
+        this.httpClientService.DoSuccess<HydrometricSite>(this.hydrometricsiteListModel$, this.hydrometricsiteGetModel$, x, HttpClientCommand.Get, null);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.DoCatchError(this.hydrometricsiteGetModel$, e, 'Get');
+        this.httpClientService.DoCatchError<HydrometricSite>(this.hydrometricsiteListModel$, this.hydrometricsiteGetModel$, e);
       })))
     );
   }
 
-  PutHydrometricSite(hydrometricsite: HydrometricSite, router: Router) {
-    this.BeforeHttpClient(this.hydrometricsitePutModel$, router);
+  PutHydrometricSite(hydrometricsite: HydrometricSite) {
+    this.httpClientService.BeforeHttpClient(this.hydrometricsitePutModel$);
 
     return this.httpClient.put<HydrometricSite>('/api/HydrometricSite', hydrometricsite, { headers: new HttpHeaders() }).pipe(
       map((x: any) => {
-        this.DoSuccess(this.hydrometricsitePutModel$, x, 'Put', hydrometricsite);
+        this.httpClientService.DoSuccess<HydrometricSite>(this.hydrometricsiteListModel$, this.hydrometricsitePutModel$, x, HttpClientCommand.Put, hydrometricsite);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.DoCatchError(this.hydrometricsitePutModel$, e, 'Put');
+       this.httpClientService.DoCatchError<HydrometricSite>(this.hydrometricsiteListModel$, this.hydrometricsitePutModel$, e);
       })))
     );
   }
 
-  PostHydrometricSite(hydrometricsite: HydrometricSite, router: Router) {
-    this.BeforeHttpClient(this.hydrometricsitePostModel$, router);
+  PostHydrometricSite(hydrometricsite: HydrometricSite) {
+    this.httpClientService.BeforeHttpClient(this.hydrometricsitePostModel$);
 
     return this.httpClient.post<HydrometricSite>('/api/HydrometricSite', hydrometricsite, { headers: new HttpHeaders() }).pipe(
       map((x: any) => {
-        this.DoSuccess(this.hydrometricsitePostModel$, x, 'Post', hydrometricsite);
+        this.httpClientService.DoSuccess<HydrometricSite>(this.hydrometricsiteListModel$, this.hydrometricsitePostModel$, x, HttpClientCommand.Post, hydrometricsite);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.DoCatchError(this.hydrometricsitePostModel$, e, 'Post');
+        this.httpClientService.DoCatchError<HydrometricSite>(this.hydrometricsiteListModel$, this.hydrometricsitePostModel$, e);
       })))
     );
   }
 
-  DeleteHydrometricSite(hydrometricsite: HydrometricSite, router: Router) {
-    this.BeforeHttpClient(this.hydrometricsiteDeleteModel$, router);
+  DeleteHydrometricSite(hydrometricsite: HydrometricSite) {
+    this.httpClientService.BeforeHttpClient(this.hydrometricsiteDeleteModel$);
 
     return this.httpClient.delete<boolean>(`/api/HydrometricSite/${ hydrometricsite.HydrometricSiteID }`).pipe(
       map((x: any) => {
-        this.DoSuccess(this.hydrometricsiteDeleteModel$, x, 'Delete', hydrometricsite);
+        this.httpClientService.DoSuccess<HydrometricSite>(this.hydrometricsiteListModel$, this.hydrometricsiteDeleteModel$, x, HttpClientCommand.Delete, hydrometricsite);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.DoCatchError(this.hydrometricsiteDeleteModel$, e, 'Delete');
+        this.httpClientService.DoCatchError<HydrometricSite>(this.hydrometricsiteListModel$, this.hydrometricsiteDeleteModel$, e);
       })))
     );
-  }
-
-  /* Functions private */
-  private BeforeHttpClient(httpRequestModel$: BehaviorSubject<HttpRequestModel>, router: Router) {
-    this.router = router;
-    this.oldURL = router.url;
-    httpRequestModel$.next(<HttpRequestModel>{ Working: true, Error: null, Status: null });
-  }
-
-  private DoCatchError(httpRequestModel$: BehaviorSubject<HttpRequestModel>, e: any, command: string) {
-    this.hydrometricsiteListModel$.next(null);
-    httpRequestModel$.next(<HttpRequestModel>{ Working: false, Error: <HttpErrorResponse>e, Status: 'Error' });
-
-    this.hydrometricsiteList = [];
-    console.debug(`HydrometricSite ${ command } ERROR. Return: ${ <HttpErrorResponse>e }`);
-    this.DoReload();
-  }
-
-  private DoReload() {
-    this.router.navigateByUrl('', { skipLocationChange: true }).then(() => {
-      this.router.navigate([`/${this.oldURL}`]);
-    });
-  }
-
-  private DoSuccess(httpRequestModel$: BehaviorSubject<HttpRequestModel>, x: any, command: string, hydrometricsite?: HydrometricSite) {
-    console.debug(`HydrometricSite ${ command } OK. Return: ${ x }`);
-    if (command === 'Get') {
-      this.hydrometricsiteListModel$.next(<HydrometricSite[]>x);
-    }
-    if (command === 'Put') {
-      this.hydrometricsiteListModel$.getValue()[0] = <HydrometricSite>x;
-    }
-    if (command === 'Post') {
-      this.hydrometricsiteListModel$.getValue().push(<HydrometricSite>x);
-    }
-    if (command === 'Delete') {
-      const index = this.hydrometricsiteListModel$.getValue().indexOf(hydrometricsite);
-      this.hydrometricsiteListModel$.getValue().splice(index, 1);
-    }
-
-    this.hydrometricsiteListModel$.next(this.hydrometricsiteListModel$.getValue());
-    httpRequestModel$.next(<HttpRequestModel>{ Working: false, Error: null, Status: 'ok' });
-    this.hydrometricsiteList = this.hydrometricsiteListModel$.getValue();
-    this.DoReload();
   }
 }

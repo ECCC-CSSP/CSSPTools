@@ -8,7 +8,6 @@
 import { Component, OnInit, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
 import { AppTaskService } from './apptask.service';
 import { LoadLocalesAppTaskText } from './apptask.locales';
-import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { AppTaskCommandEnum_GetIDText, AppTaskCommandEnum_GetOrderedText } from '../../../enums/generated/AppTaskCommandEnum';
 import { AppTaskStatusEnum_GetIDText, AppTaskStatusEnum_GetOrderedText } from '../../../enums/generated/AppTaskStatusEnum';
@@ -16,6 +15,9 @@ import { LanguageEnum_GetIDText, LanguageEnum_GetOrderedText } from '../../../en
 import { AppTask } from '../../../models/generated/AppTask.model';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
 import { EnumIDAndText } from '../../../models/enumidandtext.model';
+import { HttpClientService } from '../../../services/http-client.service';
+import { Router } from '@angular/router';
+import { HttpClientCommand } from '../../../enums/app.enums';
 
 @Component({
   selector: 'app-apptask',
@@ -31,22 +33,24 @@ export class AppTaskComponent implements OnInit, OnDestroy {
   apptaskFormPut: FormGroup;
   apptaskFormPost: FormGroup;
 
-  constructor(public apptaskService: AppTaskService, public router: Router, public fb: FormBuilder) { }
+  constructor(public apptaskService: AppTaskService, private router: Router, private httpClientService: HttpClientService, private fb: FormBuilder) {
+    httpClientService.oldURL = router.url;
+  }
 
   GetAppTaskList() {
-    this.sub = this.apptaskService.GetAppTaskList(this.router).subscribe();
+    this.sub = this.apptaskService.GetAppTaskList().subscribe();
   }
 
   PutAppTask(apptask: AppTask) {
-    this.sub = this.apptaskService.PutAppTask(apptask, this.router).subscribe();
+    this.sub = this.apptaskService.PutAppTask(apptask).subscribe();
   }
 
   PostAppTask(apptask: AppTask) {
-    this.sub = this.apptaskService.PostAppTask(apptask, this.router).subscribe();
+    this.sub = this.apptaskService.PostAppTask(apptask).subscribe();
   }
 
   DeleteAppTask(apptask: AppTask) {
-    this.sub = this.apptaskService.DeleteAppTask(apptask, this.router).subscribe();
+    this.sub = this.apptaskService.DeleteAppTask(apptask).subscribe();
   }
 
   GetAppTaskCommandEnumText(enumID: number) {
@@ -66,8 +70,8 @@ export class AppTaskComponent implements OnInit, OnDestroy {
     this.appTaskCommandList = AppTaskCommandEnum_GetOrderedText();
     this.appTaskStatusList = AppTaskStatusEnum_GetOrderedText();
     this.languageList = LanguageEnum_GetOrderedText();
-    this.FillFormBuilderGroup('Add');
-    this.FillFormBuilderGroup('Update');
+    this.FillFormBuilderGroup(HttpClientCommand.Post);
+    this.FillFormBuilderGroup(HttpClientCommand.Put);
   }
 
   ngOnDestroy() {
@@ -76,84 +80,84 @@ export class AppTaskComponent implements OnInit, OnDestroy {
     }
   }
 
-  FillFormBuilderGroup(AddOrUpdate: string) {
-    if (this.apptaskService.apptaskList.length) {
+  FillFormBuilderGroup(httpClientCommand: HttpClientCommand) {
+    if (this.apptaskService.apptaskListModel$.getValue().length) {
       let formGroup: FormGroup = this.fb.group(
         {
           AppTaskID: [
             {
-              value: (AddOrUpdate === 'Add' ? 0 : (this.apptaskService.apptaskList[0]?.AppTaskID)),
+              value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.apptaskService.apptaskListModel$.getValue()[0]?.AppTaskID)),
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
           TVItemID: [
             {
-              value: this.apptaskService.apptaskList[0]?.TVItemID,
+              value: this.apptaskService.apptaskListModel$.getValue()[0]?.TVItemID,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
           TVItemID2: [
             {
-              value: this.apptaskService.apptaskList[0]?.TVItemID2,
+              value: this.apptaskService.apptaskListModel$.getValue()[0]?.TVItemID2,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
           AppTaskCommand: [
             {
-              value: this.apptaskService.apptaskList[0]?.AppTaskCommand,
+              value: this.apptaskService.apptaskListModel$.getValue()[0]?.AppTaskCommand,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
           AppTaskStatus: [
             {
-              value: this.apptaskService.apptaskList[0]?.AppTaskStatus,
+              value: this.apptaskService.apptaskListModel$.getValue()[0]?.AppTaskStatus,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
           PercentCompleted: [
             {
-              value: this.apptaskService.apptaskList[0]?.PercentCompleted,
+              value: this.apptaskService.apptaskListModel$.getValue()[0]?.PercentCompleted,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required, Validators.min(0), Validators.max(100) ]],
           Parameters: [
             {
-              value: this.apptaskService.apptaskList[0]?.Parameters,
+              value: this.apptaskService.apptaskListModel$.getValue()[0]?.Parameters,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
           Language: [
             {
-              value: this.apptaskService.apptaskList[0]?.Language,
+              value: this.apptaskService.apptaskListModel$.getValue()[0]?.Language,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
           StartDateTime_UTC: [
             {
-              value: this.apptaskService.apptaskList[0]?.StartDateTime_UTC,
+              value: this.apptaskService.apptaskListModel$.getValue()[0]?.StartDateTime_UTC,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
           EndDateTime_UTC: [
             {
-              value: this.apptaskService.apptaskList[0]?.EndDateTime_UTC,
+              value: this.apptaskService.apptaskListModel$.getValue()[0]?.EndDateTime_UTC,
               disabled: false
-            }, [ Validators.required ]],
+            }],
           EstimatedLength_second: [
             {
-              value: this.apptaskService.apptaskList[0]?.EstimatedLength_second,
+              value: this.apptaskService.apptaskListModel$.getValue()[0]?.EstimatedLength_second,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.min(0), Validators.max(1000000) ]],
           RemainingTime_second: [
             {
-              value: this.apptaskService.apptaskList[0]?.RemainingTime_second,
+              value: this.apptaskService.apptaskListModel$.getValue()[0]?.RemainingTime_second,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.min(0), Validators.max(1000000) ]],
           LastUpdateDate_UTC: [
             {
-              value: this.apptaskService.apptaskList[0]?.LastUpdateDate_UTC,
+              value: this.apptaskService.apptaskListModel$.getValue()[0]?.LastUpdateDate_UTC,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
           LastUpdateContactTVItemID: [
             {
-              value: this.apptaskService.apptaskList[0]?.LastUpdateContactTVItemID,
+              value: this.apptaskService.apptaskListModel$.getValue()[0]?.LastUpdateContactTVItemID,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
         }
       );
 
-      if (AddOrUpdate === 'Add') {
+      if (httpClientCommand === HttpClientCommand.Post) {
         this.apptaskFormPost = formGroup
       }
       else {

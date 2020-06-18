@@ -8,10 +8,12 @@
 import { Component, OnInit, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
 import { ContactShortcutService } from './contactshortcut.service';
 import { LoadLocalesContactShortcutText } from './contactshortcut.locales';
-import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { ContactShortcut } from '../../../models/generated/ContactShortcut.model';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
+import { HttpClientService } from '../../../services/http-client.service';
+import { Router } from '@angular/router';
+import { HttpClientCommand } from '../../../enums/app.enums';
 
 @Component({
   selector: 'app-contactshortcut',
@@ -24,28 +26,30 @@ export class ContactShortcutComponent implements OnInit, OnDestroy {
   contactshortcutFormPut: FormGroup;
   contactshortcutFormPost: FormGroup;
 
-  constructor(public contactshortcutService: ContactShortcutService, public router: Router, public fb: FormBuilder) { }
+  constructor(public contactshortcutService: ContactShortcutService, private router: Router, private httpClientService: HttpClientService, private fb: FormBuilder) {
+    httpClientService.oldURL = router.url;
+  }
 
   GetContactShortcutList() {
-    this.sub = this.contactshortcutService.GetContactShortcutList(this.router).subscribe();
+    this.sub = this.contactshortcutService.GetContactShortcutList().subscribe();
   }
 
   PutContactShortcut(contactshortcut: ContactShortcut) {
-    this.sub = this.contactshortcutService.PutContactShortcut(contactshortcut, this.router).subscribe();
+    this.sub = this.contactshortcutService.PutContactShortcut(contactshortcut).subscribe();
   }
 
   PostContactShortcut(contactshortcut: ContactShortcut) {
-    this.sub = this.contactshortcutService.PostContactShortcut(contactshortcut, this.router).subscribe();
+    this.sub = this.contactshortcutService.PostContactShortcut(contactshortcut).subscribe();
   }
 
   DeleteContactShortcut(contactshortcut: ContactShortcut) {
-    this.sub = this.contactshortcutService.DeleteContactShortcut(contactshortcut, this.router).subscribe();
+    this.sub = this.contactshortcutService.DeleteContactShortcut(contactshortcut).subscribe();
   }
 
   ngOnInit(): void {
     LoadLocalesContactShortcutText(this.contactshortcutService);
-    this.FillFormBuilderGroup('Add');
-    this.FillFormBuilderGroup('Update');
+    this.FillFormBuilderGroup(HttpClientCommand.Post);
+    this.FillFormBuilderGroup(HttpClientCommand.Put);
   }
 
   ngOnDestroy() {
@@ -54,44 +58,44 @@ export class ContactShortcutComponent implements OnInit, OnDestroy {
     }
   }
 
-  FillFormBuilderGroup(AddOrUpdate: string) {
-    if (this.contactshortcutService.contactshortcutList.length) {
+  FillFormBuilderGroup(httpClientCommand: HttpClientCommand) {
+    if (this.contactshortcutService.contactshortcutListModel$.getValue().length) {
       let formGroup: FormGroup = this.fb.group(
         {
           ContactShortcutID: [
             {
-              value: (AddOrUpdate === 'Add' ? 0 : (this.contactshortcutService.contactshortcutList[0]?.ContactShortcutID)),
+              value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.contactshortcutService.contactshortcutListModel$.getValue()[0]?.ContactShortcutID)),
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
           ContactID: [
             {
-              value: this.contactshortcutService.contactshortcutList[0]?.ContactID,
+              value: this.contactshortcutService.contactshortcutListModel$.getValue()[0]?.ContactID,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
           ShortCutText: [
             {
-              value: this.contactshortcutService.contactshortcutList[0]?.ShortCutText,
+              value: this.contactshortcutService.contactshortcutListModel$.getValue()[0]?.ShortCutText,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required, Validators.maxLength(100) ]],
           ShortCutAddress: [
             {
-              value: this.contactshortcutService.contactshortcutList[0]?.ShortCutAddress,
+              value: this.contactshortcutService.contactshortcutListModel$.getValue()[0]?.ShortCutAddress,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required, Validators.maxLength(200) ]],
           LastUpdateDate_UTC: [
             {
-              value: this.contactshortcutService.contactshortcutList[0]?.LastUpdateDate_UTC,
+              value: this.contactshortcutService.contactshortcutListModel$.getValue()[0]?.LastUpdateDate_UTC,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
           LastUpdateContactTVItemID: [
             {
-              value: this.contactshortcutService.contactshortcutList[0]?.LastUpdateContactTVItemID,
+              value: this.contactshortcutService.contactshortcutListModel$.getValue()[0]?.LastUpdateContactTVItemID,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
         }
       );
 
-      if (AddOrUpdate === 'Add') {
+      if (httpClientCommand === HttpClientCommand.Post) {
         this.contactshortcutFormPost = formGroup
       }
       else {

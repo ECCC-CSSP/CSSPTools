@@ -9,11 +9,12 @@ import { Injectable } from '@angular/core';
 import { MWQMSiteTextModel } from './mwqmsite.models';
 import { BehaviorSubject, of } from 'rxjs';
 import { LoadLocalesMWQMSiteText } from './mwqmsite.locales';
-import { Router } from '@angular/router';
-import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { map, catchError } from 'rxjs/operators';
 import { MWQMSite } from '../../../models/generated/MWQMSite.model';
 import { HttpRequestModel } from '../../../models/http.model';
+import { HttpClientService } from '../../../services/http-client.service';
+import { HttpClientCommand } from '../../../enums/app.enums';
 
 @Injectable({
   providedIn: 'root'
@@ -26,110 +27,63 @@ export class MWQMSiteService {
   mwqmsitePutModel$: BehaviorSubject<HttpRequestModel> = new BehaviorSubject<HttpRequestModel>(<HttpRequestModel>{});
   mwqmsitePostModel$: BehaviorSubject<HttpRequestModel> = new BehaviorSubject<HttpRequestModel>(<HttpRequestModel>{});
   mwqmsiteDeleteModel$: BehaviorSubject<HttpRequestModel> = new BehaviorSubject<HttpRequestModel>(<HttpRequestModel>{});
-  mwqmsiteList: MWQMSite[] = [];
-  private oldURL: string;
-  private router: Router;
 
   /* Constructors */
-  constructor(private httpClient: HttpClient) {
+  constructor(private httpClient: HttpClient, private httpClientService: HttpClientService) {
     LoadLocalesMWQMSiteText(this);
     this.mwqmsiteTextModel$.next(<MWQMSiteTextModel>{ Title: "Something2 for text" });
   }
 
   /* Functions public */
-  GetMWQMSiteList(router: Router) {
-    this.BeforeHttpClient(this.mwqmsiteGetModel$, router);
+  GetMWQMSiteList() {
+    this.httpClientService.BeforeHttpClient(this.mwqmsiteGetModel$);
 
     return this.httpClient.get<MWQMSite[]>('/api/MWQMSite').pipe(
       map((x: any) => {
-        this.DoSuccess(this.mwqmsiteGetModel$, x, 'Get', null);
+        this.httpClientService.DoSuccess<MWQMSite>(this.mwqmsiteListModel$, this.mwqmsiteGetModel$, x, HttpClientCommand.Get, null);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.DoCatchError(this.mwqmsiteGetModel$, e, 'Get');
+        this.httpClientService.DoCatchError<MWQMSite>(this.mwqmsiteListModel$, this.mwqmsiteGetModel$, e);
       })))
     );
   }
 
-  PutMWQMSite(mwqmsite: MWQMSite, router: Router) {
-    this.BeforeHttpClient(this.mwqmsitePutModel$, router);
+  PutMWQMSite(mwqmsite: MWQMSite) {
+    this.httpClientService.BeforeHttpClient(this.mwqmsitePutModel$);
 
     return this.httpClient.put<MWQMSite>('/api/MWQMSite', mwqmsite, { headers: new HttpHeaders() }).pipe(
       map((x: any) => {
-        this.DoSuccess(this.mwqmsitePutModel$, x, 'Put', mwqmsite);
+        this.httpClientService.DoSuccess<MWQMSite>(this.mwqmsiteListModel$, this.mwqmsitePutModel$, x, HttpClientCommand.Put, mwqmsite);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.DoCatchError(this.mwqmsitePutModel$, e, 'Put');
+       this.httpClientService.DoCatchError<MWQMSite>(this.mwqmsiteListModel$, this.mwqmsitePutModel$, e);
       })))
     );
   }
 
-  PostMWQMSite(mwqmsite: MWQMSite, router: Router) {
-    this.BeforeHttpClient(this.mwqmsitePostModel$, router);
+  PostMWQMSite(mwqmsite: MWQMSite) {
+    this.httpClientService.BeforeHttpClient(this.mwqmsitePostModel$);
 
     return this.httpClient.post<MWQMSite>('/api/MWQMSite', mwqmsite, { headers: new HttpHeaders() }).pipe(
       map((x: any) => {
-        this.DoSuccess(this.mwqmsitePostModel$, x, 'Post', mwqmsite);
+        this.httpClientService.DoSuccess<MWQMSite>(this.mwqmsiteListModel$, this.mwqmsitePostModel$, x, HttpClientCommand.Post, mwqmsite);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.DoCatchError(this.mwqmsitePostModel$, e, 'Post');
+        this.httpClientService.DoCatchError<MWQMSite>(this.mwqmsiteListModel$, this.mwqmsitePostModel$, e);
       })))
     );
   }
 
-  DeleteMWQMSite(mwqmsite: MWQMSite, router: Router) {
-    this.BeforeHttpClient(this.mwqmsiteDeleteModel$, router);
+  DeleteMWQMSite(mwqmsite: MWQMSite) {
+    this.httpClientService.BeforeHttpClient(this.mwqmsiteDeleteModel$);
 
     return this.httpClient.delete<boolean>(`/api/MWQMSite/${ mwqmsite.MWQMSiteID }`).pipe(
       map((x: any) => {
-        this.DoSuccess(this.mwqmsiteDeleteModel$, x, 'Delete', mwqmsite);
+        this.httpClientService.DoSuccess<MWQMSite>(this.mwqmsiteListModel$, this.mwqmsiteDeleteModel$, x, HttpClientCommand.Delete, mwqmsite);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.DoCatchError(this.mwqmsiteDeleteModel$, e, 'Delete');
+        this.httpClientService.DoCatchError<MWQMSite>(this.mwqmsiteListModel$, this.mwqmsiteDeleteModel$, e);
       })))
     );
-  }
-
-  /* Functions private */
-  private BeforeHttpClient(httpRequestModel$: BehaviorSubject<HttpRequestModel>, router: Router) {
-    this.router = router;
-    this.oldURL = router.url;
-    httpRequestModel$.next(<HttpRequestModel>{ Working: true, Error: null, Status: null });
-  }
-
-  private DoCatchError(httpRequestModel$: BehaviorSubject<HttpRequestModel>, e: any, command: string) {
-    this.mwqmsiteListModel$.next(null);
-    httpRequestModel$.next(<HttpRequestModel>{ Working: false, Error: <HttpErrorResponse>e, Status: 'Error' });
-
-    this.mwqmsiteList = [];
-    console.debug(`MWQMSite ${ command } ERROR. Return: ${ <HttpErrorResponse>e }`);
-    this.DoReload();
-  }
-
-  private DoReload() {
-    this.router.navigateByUrl('', { skipLocationChange: true }).then(() => {
-      this.router.navigate([`/${this.oldURL}`]);
-    });
-  }
-
-  private DoSuccess(httpRequestModel$: BehaviorSubject<HttpRequestModel>, x: any, command: string, mwqmsite?: MWQMSite) {
-    console.debug(`MWQMSite ${ command } OK. Return: ${ x }`);
-    if (command === 'Get') {
-      this.mwqmsiteListModel$.next(<MWQMSite[]>x);
-    }
-    if (command === 'Put') {
-      this.mwqmsiteListModel$.getValue()[0] = <MWQMSite>x;
-    }
-    if (command === 'Post') {
-      this.mwqmsiteListModel$.getValue().push(<MWQMSite>x);
-    }
-    if (command === 'Delete') {
-      const index = this.mwqmsiteListModel$.getValue().indexOf(mwqmsite);
-      this.mwqmsiteListModel$.getValue().splice(index, 1);
-    }
-
-    this.mwqmsiteListModel$.next(this.mwqmsiteListModel$.getValue());
-    httpRequestModel$.next(<HttpRequestModel>{ Working: false, Error: null, Status: 'ok' });
-    this.mwqmsiteList = this.mwqmsiteListModel$.getValue();
-    this.DoReload();
   }
 }

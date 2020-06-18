@@ -5,7 +5,7 @@
  *
 -->
 
-<mat-progress-bar mode="indeterminate" *ngIf="mwqmrunService.mwqmrunGetModel$.getValue().Working"></mat-progress-bar>
+<mat-progress-bar mode="indeterminate" *ngIf="mwqmrunService.mwqmrunGetModel$.getValue()?.Working"></mat-progress-bar>
 <mat-card>
   <mat-card-header>
     <mat-card-title>
@@ -17,8 +17,8 @@
     <mat-card-subtitle>{{ mwqmrunService.mwqmrunTextModel$.getValue().Title }}</mat-card-subtitle>
   </mat-card-header>
   <mat-card-content>
-    <mat-list>
-      <mat-list-item *ngFor="let mwqmrun of mwqmrunService.mwqmrunList">
+    <mat-list *ngIf="mwqmrunService.mwqmrunListModel$.getValue()?.length">
+      <mat-list-item *ngFor="let mwqmrun of mwqmrunService.mwqmrunListModel$.getValue()">
         <span mat-line>
           <button mat-raised-button (click)="DeleteMWQMRun(mwqmrun)">
             <span>Delete MWQMRunID [{{ mwqmrun.MWQMRunID }}]&nbsp;&nbsp;&nbsp;</span>
@@ -105,7 +105,7 @@
     <mat-card-title>Edit MWQMRun testing</mat-card-title>
   </mat-card-header>
   <mat-card-content>
-    <div *ngIf="mwqmrunService.mwqmrunList.length">
+    <div *ngIf="mwqmrunService.mwqmrunListModel$.getValue()?.length">
       <blockquote>
         <form [formGroup]="mwqmrunFormPut" (ngSubmit)="PutMWQMRun(mwqmrunFormPut.value)">
           <h3>
@@ -120,14 +120,26 @@
             <mat-form-field>
               <mat-label>MWQMRunID</mat-label>
               <input matInput type="number" formControlName="MWQMRunID">
+              <mat-error *ngIf="mwqmrunFormPut.controls.MWQMRunID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>SubsectorTVItemID</mat-label>
               <input matInput type="number" formControlName="SubsectorTVItemID">
+              <mat-error *ngIf="mwqmrunFormPut.controls.SubsectorTVItemID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>MWQMRunTVItemID</mat-label>
               <input matInput type="number" formControlName="MWQMRunTVItemID">
+              <mat-error *ngIf="mwqmrunFormPut.controls.MWQMRunTVItemID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>RunSampleType</mat-label>
@@ -136,38 +148,71 @@
                   {{ a.EnumText }}
                 </mat-option>
               </mat-select>
+              <mat-error *ngIf="mwqmrunFormPut.controls.RunSampleType.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
           </p>
           <p>
             <mat-form-field>
               <mat-label>DateTime_Local</mat-label>
               <input matInput type="text" formControlName="DateTime_Local">
+              <mat-error *ngIf="mwqmrunFormPut.controls.DateTime_Local.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>RunNumber</mat-label>
               <input matInput type="number" formControlName="RunNumber">
+              <mat-error *ngIf="mwqmrunFormPut.controls.RunNumber.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+                <span *ngIf="e.min">Min - 1<br /></span>
+                <span *ngIf="e.min">Max - 1000<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>StartDateTime_Local</mat-label>
               <input matInput type="text" formControlName="StartDateTime_Local">
+              <mat-error *ngIf="mwqmrunFormPut.controls.StartDateTime_Local.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>EndDateTime_Local</mat-label>
               <input matInput type="text" formControlName="EndDateTime_Local">
+              <mat-error *ngIf="mwqmrunFormPut.controls.EndDateTime_Local.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+              </mat-error>
             </mat-form-field>
           </p>
           <p>
             <mat-form-field>
               <mat-label>LabReceivedDateTime_Local</mat-label>
               <input matInput type="text" formControlName="LabReceivedDateTime_Local">
+              <mat-error *ngIf="mwqmrunFormPut.controls.LabReceivedDateTime_Local.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>TemperatureControl1_C</mat-label>
               <input matInput type="number" formControlName="TemperatureControl1_C">
+              <mat-error *ngIf="mwqmrunFormPut.controls.TemperatureControl1_C.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.min">Min - -10<br /></span>
+                <span *ngIf="e.min">Max - 40<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>TemperatureControl2_C</mat-label>
               <input matInput type="number" formControlName="TemperatureControl2_C">
+              <mat-error *ngIf="mwqmrunFormPut.controls.TemperatureControl2_C.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.min">Min - -10<br /></span>
+                <span *ngIf="e.min">Max - 40<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>SeaStateAtStart_BeaufortScale</mat-label>
@@ -176,6 +221,9 @@
                   {{ a.EnumText }}
                 </mat-option>
               </mat-select>
+              <mat-error *ngIf="mwqmrunFormPut.controls.SeaStateAtStart_BeaufortScale.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+              </mat-error>
             </mat-form-field>
           </p>
           <p>
@@ -186,24 +234,46 @@
                   {{ a.EnumText }}
                 </mat-option>
               </mat-select>
+              <mat-error *ngIf="mwqmrunFormPut.controls.SeaStateAtEnd_BeaufortScale.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>WaterLevelAtBrook_m</mat-label>
               <input matInput type="number" formControlName="WaterLevelAtBrook_m">
+              <mat-error *ngIf="mwqmrunFormPut.controls.WaterLevelAtBrook_m.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.min">Min - 0<br /></span>
+                <span *ngIf="e.min">Max - 100<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>WaveHightAtStart_m</mat-label>
               <input matInput type="number" formControlName="WaveHightAtStart_m">
+              <mat-error *ngIf="mwqmrunFormPut.controls.WaveHightAtStart_m.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.min">Min - 0<br /></span>
+                <span *ngIf="e.min">Max - 100<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>WaveHightAtEnd_m</mat-label>
               <input matInput type="number" formControlName="WaveHightAtEnd_m">
+              <mat-error *ngIf="mwqmrunFormPut.controls.WaveHightAtEnd_m.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.min">Min - 0<br /></span>
+                <span *ngIf="e.min">Max - 100<br /></span>
+              </mat-error>
             </mat-form-field>
           </p>
           <p>
             <mat-form-field>
               <mat-label>SampleCrewInitials</mat-label>
               <input matInput type="text" formControlName="SampleCrewInitials">
+              <mat-error *ngIf="mwqmrunFormPut.controls.SampleCrewInitials.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.maxlength">MaxLength - 20<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>AnalyzeMethod</mat-label>
@@ -212,6 +282,9 @@
                   {{ a.EnumText }}
                 </mat-option>
               </mat-select>
+              <mat-error *ngIf="mwqmrunFormPut.controls.AnalyzeMethod.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>SampleMatrix</mat-label>
@@ -220,6 +293,9 @@
                   {{ a.EnumText }}
                 </mat-option>
               </mat-select>
+              <mat-error *ngIf="mwqmrunFormPut.controls.SampleMatrix.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>Laboratory</mat-label>
@@ -228,6 +304,9 @@
                   {{ a.EnumText }}
                 </mat-option>
               </mat-select>
+              <mat-error *ngIf="mwqmrunFormPut.controls.Laboratory.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+              </mat-error>
             </mat-form-field>
           </p>
           <p>
@@ -238,28 +317,46 @@
                   {{ a.EnumText }}
                 </mat-option>
               </mat-select>
+              <mat-error *ngIf="mwqmrunFormPut.controls.SampleStatus.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>LabSampleApprovalContactTVItemID</mat-label>
               <input matInput type="number" formControlName="LabSampleApprovalContactTVItemID">
+              <mat-error *ngIf="mwqmrunFormPut.controls.LabSampleApprovalContactTVItemID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>LabAnalyzeBath1IncubationStartDateTime_Local</mat-label>
               <input matInput type="text" formControlName="LabAnalyzeBath1IncubationStartDateTime_Local">
+              <mat-error *ngIf="mwqmrunFormPut.controls.LabAnalyzeBath1IncubationStartDateTime_Local.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>LabAnalyzeBath2IncubationStartDateTime_Local</mat-label>
               <input matInput type="text" formControlName="LabAnalyzeBath2IncubationStartDateTime_Local">
+              <mat-error *ngIf="mwqmrunFormPut.controls.LabAnalyzeBath2IncubationStartDateTime_Local.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+              </mat-error>
             </mat-form-field>
           </p>
           <p>
             <mat-form-field>
               <mat-label>LabAnalyzeBath3IncubationStartDateTime_Local</mat-label>
               <input matInput type="text" formControlName="LabAnalyzeBath3IncubationStartDateTime_Local">
+              <mat-error *ngIf="mwqmrunFormPut.controls.LabAnalyzeBath3IncubationStartDateTime_Local.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>LabRunSampleApprovalDateTime_Local</mat-label>
               <input matInput type="text" formControlName="LabRunSampleApprovalDateTime_Local">
+              <mat-error *ngIf="mwqmrunFormPut.controls.LabRunSampleApprovalDateTime_Local.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>Tide_Start</mat-label>
@@ -268,6 +365,9 @@
                   {{ a.EnumText }}
                 </mat-option>
               </mat-select>
+              <mat-error *ngIf="mwqmrunFormPut.controls.Tide_Start.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>Tide_End</mat-label>
@@ -276,70 +376,139 @@
                   {{ a.EnumText }}
                 </mat-option>
               </mat-select>
+              <mat-error *ngIf="mwqmrunFormPut.controls.Tide_End.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+              </mat-error>
             </mat-form-field>
           </p>
           <p>
             <mat-form-field>
               <mat-label>RainDay0_mm</mat-label>
               <input matInput type="number" formControlName="RainDay0_mm">
+              <mat-error *ngIf="mwqmrunFormPut.controls.RainDay0_mm.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.min">Min - 0<br /></span>
+                <span *ngIf="e.min">Max - 300<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>RainDay1_mm</mat-label>
               <input matInput type="number" formControlName="RainDay1_mm">
+              <mat-error *ngIf="mwqmrunFormPut.controls.RainDay1_mm.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.min">Min - 0<br /></span>
+                <span *ngIf="e.min">Max - 300<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>RainDay2_mm</mat-label>
               <input matInput type="number" formControlName="RainDay2_mm">
+              <mat-error *ngIf="mwqmrunFormPut.controls.RainDay2_mm.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.min">Min - 0<br /></span>
+                <span *ngIf="e.min">Max - 300<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>RainDay3_mm</mat-label>
               <input matInput type="number" formControlName="RainDay3_mm">
+              <mat-error *ngIf="mwqmrunFormPut.controls.RainDay3_mm.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.min">Min - 0<br /></span>
+                <span *ngIf="e.min">Max - 300<br /></span>
+              </mat-error>
             </mat-form-field>
           </p>
           <p>
             <mat-form-field>
               <mat-label>RainDay4_mm</mat-label>
               <input matInput type="number" formControlName="RainDay4_mm">
+              <mat-error *ngIf="mwqmrunFormPut.controls.RainDay4_mm.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.min">Min - 0<br /></span>
+                <span *ngIf="e.min">Max - 300<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>RainDay5_mm</mat-label>
               <input matInput type="number" formControlName="RainDay5_mm">
+              <mat-error *ngIf="mwqmrunFormPut.controls.RainDay5_mm.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.min">Min - 0<br /></span>
+                <span *ngIf="e.min">Max - 300<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>RainDay6_mm</mat-label>
               <input matInput type="number" formControlName="RainDay6_mm">
+              <mat-error *ngIf="mwqmrunFormPut.controls.RainDay6_mm.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.min">Min - 0<br /></span>
+                <span *ngIf="e.min">Max - 300<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>RainDay7_mm</mat-label>
               <input matInput type="number" formControlName="RainDay7_mm">
+              <mat-error *ngIf="mwqmrunFormPut.controls.RainDay7_mm.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.min">Min - 0<br /></span>
+                <span *ngIf="e.min">Max - 300<br /></span>
+              </mat-error>
             </mat-form-field>
           </p>
           <p>
             <mat-form-field>
               <mat-label>RainDay8_mm</mat-label>
               <input matInput type="number" formControlName="RainDay8_mm">
+              <mat-error *ngIf="mwqmrunFormPut.controls.RainDay8_mm.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.min">Min - 0<br /></span>
+                <span *ngIf="e.min">Max - 300<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>RainDay9_mm</mat-label>
               <input matInput type="number" formControlName="RainDay9_mm">
+              <mat-error *ngIf="mwqmrunFormPut.controls.RainDay9_mm.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.min">Min - 0<br /></span>
+                <span *ngIf="e.min">Max - 300<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>RainDay10_mm</mat-label>
               <input matInput type="number" formControlName="RainDay10_mm">
+              <mat-error *ngIf="mwqmrunFormPut.controls.RainDay10_mm.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.min">Min - 0<br /></span>
+                <span *ngIf="e.min">Max - 300<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>RemoveFromStat</mat-label>
               <input matInput type="text" formControlName="RemoveFromStat">
+              <mat-error *ngIf="mwqmrunFormPut.controls.RemoveFromStat.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+              </mat-error>
             </mat-form-field>
           </p>
           <p>
             <mat-form-field>
               <mat-label>LastUpdateDate_UTC</mat-label>
               <input matInput type="text" formControlName="LastUpdateDate_UTC">
+              <mat-error *ngIf="mwqmrunFormPut.controls.LastUpdateDate_UTC.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>LastUpdateContactTVItemID</mat-label>
               <input matInput type="number" formControlName="LastUpdateContactTVItemID">
+              <mat-error *ngIf="mwqmrunFormPut.controls.LastUpdateContactTVItemID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
           </p>
         </form>
@@ -354,7 +523,7 @@
     <mat-card-title>Add MWQMRun testing</mat-card-title>
   </mat-card-header>
   <mat-card-content>
-    <div *ngIf="mwqmrunService.mwqmrunList.length">
+    <div *ngIf="mwqmrunService.mwqmrunListModel$.getValue()?.length">
       <blockquote>
         <form [formGroup]="mwqmrunFormPost" (ngSubmit)="PostMWQMRun(mwqmrunFormPost.value)">
           <h3>
@@ -369,14 +538,26 @@
             <mat-form-field>
               <mat-label>MWQMRunID</mat-label>
               <input matInput type="number" formControlName="MWQMRunID">
+              <mat-error *ngIf="mwqmrunFormPut.controls.MWQMRunID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>SubsectorTVItemID</mat-label>
               <input matInput type="number" formControlName="SubsectorTVItemID">
+              <mat-error *ngIf="mwqmrunFormPut.controls.SubsectorTVItemID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>MWQMRunTVItemID</mat-label>
               <input matInput type="number" formControlName="MWQMRunTVItemID">
+              <mat-error *ngIf="mwqmrunFormPut.controls.MWQMRunTVItemID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>RunSampleType</mat-label>
@@ -385,38 +566,71 @@
                   {{ a.EnumText }}
                 </mat-option>
               </mat-select>
+              <mat-error *ngIf="mwqmrunFormPut.controls.RunSampleType.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
           </p>
           <p>
             <mat-form-field>
               <mat-label>DateTime_Local</mat-label>
               <input matInput type="text" formControlName="DateTime_Local">
+              <mat-error *ngIf="mwqmrunFormPut.controls.DateTime_Local.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>RunNumber</mat-label>
               <input matInput type="number" formControlName="RunNumber">
+              <mat-error *ngIf="mwqmrunFormPut.controls.RunNumber.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+                <span *ngIf="e.min">Min - 1<br /></span>
+                <span *ngIf="e.min">Max - 1000<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>StartDateTime_Local</mat-label>
               <input matInput type="text" formControlName="StartDateTime_Local">
+              <mat-error *ngIf="mwqmrunFormPut.controls.StartDateTime_Local.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>EndDateTime_Local</mat-label>
               <input matInput type="text" formControlName="EndDateTime_Local">
+              <mat-error *ngIf="mwqmrunFormPut.controls.EndDateTime_Local.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+              </mat-error>
             </mat-form-field>
           </p>
           <p>
             <mat-form-field>
               <mat-label>LabReceivedDateTime_Local</mat-label>
               <input matInput type="text" formControlName="LabReceivedDateTime_Local">
+              <mat-error *ngIf="mwqmrunFormPut.controls.LabReceivedDateTime_Local.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>TemperatureControl1_C</mat-label>
               <input matInput type="number" formControlName="TemperatureControl1_C">
+              <mat-error *ngIf="mwqmrunFormPut.controls.TemperatureControl1_C.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.min">Min - -10<br /></span>
+                <span *ngIf="e.min">Max - 40<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>TemperatureControl2_C</mat-label>
               <input matInput type="number" formControlName="TemperatureControl2_C">
+              <mat-error *ngIf="mwqmrunFormPut.controls.TemperatureControl2_C.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.min">Min - -10<br /></span>
+                <span *ngIf="e.min">Max - 40<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>SeaStateAtStart_BeaufortScale</mat-label>
@@ -425,6 +639,9 @@
                   {{ a.EnumText }}
                 </mat-option>
               </mat-select>
+              <mat-error *ngIf="mwqmrunFormPut.controls.SeaStateAtStart_BeaufortScale.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+              </mat-error>
             </mat-form-field>
           </p>
           <p>
@@ -435,24 +652,46 @@
                   {{ a.EnumText }}
                 </mat-option>
               </mat-select>
+              <mat-error *ngIf="mwqmrunFormPut.controls.SeaStateAtEnd_BeaufortScale.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>WaterLevelAtBrook_m</mat-label>
               <input matInput type="number" formControlName="WaterLevelAtBrook_m">
+              <mat-error *ngIf="mwqmrunFormPut.controls.WaterLevelAtBrook_m.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.min">Min - 0<br /></span>
+                <span *ngIf="e.min">Max - 100<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>WaveHightAtStart_m</mat-label>
               <input matInput type="number" formControlName="WaveHightAtStart_m">
+              <mat-error *ngIf="mwqmrunFormPut.controls.WaveHightAtStart_m.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.min">Min - 0<br /></span>
+                <span *ngIf="e.min">Max - 100<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>WaveHightAtEnd_m</mat-label>
               <input matInput type="number" formControlName="WaveHightAtEnd_m">
+              <mat-error *ngIf="mwqmrunFormPut.controls.WaveHightAtEnd_m.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.min">Min - 0<br /></span>
+                <span *ngIf="e.min">Max - 100<br /></span>
+              </mat-error>
             </mat-form-field>
           </p>
           <p>
             <mat-form-field>
               <mat-label>SampleCrewInitials</mat-label>
               <input matInput type="text" formControlName="SampleCrewInitials">
+              <mat-error *ngIf="mwqmrunFormPut.controls.SampleCrewInitials.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.maxlength">MaxLength - 20<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>AnalyzeMethod</mat-label>
@@ -461,6 +700,9 @@
                   {{ a.EnumText }}
                 </mat-option>
               </mat-select>
+              <mat-error *ngIf="mwqmrunFormPut.controls.AnalyzeMethod.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>SampleMatrix</mat-label>
@@ -469,6 +711,9 @@
                   {{ a.EnumText }}
                 </mat-option>
               </mat-select>
+              <mat-error *ngIf="mwqmrunFormPut.controls.SampleMatrix.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>Laboratory</mat-label>
@@ -477,6 +722,9 @@
                   {{ a.EnumText }}
                 </mat-option>
               </mat-select>
+              <mat-error *ngIf="mwqmrunFormPut.controls.Laboratory.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+              </mat-error>
             </mat-form-field>
           </p>
           <p>
@@ -487,28 +735,46 @@
                   {{ a.EnumText }}
                 </mat-option>
               </mat-select>
+              <mat-error *ngIf="mwqmrunFormPut.controls.SampleStatus.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>LabSampleApprovalContactTVItemID</mat-label>
               <input matInput type="number" formControlName="LabSampleApprovalContactTVItemID">
+              <mat-error *ngIf="mwqmrunFormPut.controls.LabSampleApprovalContactTVItemID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>LabAnalyzeBath1IncubationStartDateTime_Local</mat-label>
               <input matInput type="text" formControlName="LabAnalyzeBath1IncubationStartDateTime_Local">
+              <mat-error *ngIf="mwqmrunFormPut.controls.LabAnalyzeBath1IncubationStartDateTime_Local.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>LabAnalyzeBath2IncubationStartDateTime_Local</mat-label>
               <input matInput type="text" formControlName="LabAnalyzeBath2IncubationStartDateTime_Local">
+              <mat-error *ngIf="mwqmrunFormPut.controls.LabAnalyzeBath2IncubationStartDateTime_Local.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+              </mat-error>
             </mat-form-field>
           </p>
           <p>
             <mat-form-field>
               <mat-label>LabAnalyzeBath3IncubationStartDateTime_Local</mat-label>
               <input matInput type="text" formControlName="LabAnalyzeBath3IncubationStartDateTime_Local">
+              <mat-error *ngIf="mwqmrunFormPut.controls.LabAnalyzeBath3IncubationStartDateTime_Local.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>LabRunSampleApprovalDateTime_Local</mat-label>
               <input matInput type="text" formControlName="LabRunSampleApprovalDateTime_Local">
+              <mat-error *ngIf="mwqmrunFormPut.controls.LabRunSampleApprovalDateTime_Local.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>Tide_Start</mat-label>
@@ -517,6 +783,9 @@
                   {{ a.EnumText }}
                 </mat-option>
               </mat-select>
+              <mat-error *ngIf="mwqmrunFormPut.controls.Tide_Start.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>Tide_End</mat-label>
@@ -525,70 +794,139 @@
                   {{ a.EnumText }}
                 </mat-option>
               </mat-select>
+              <mat-error *ngIf="mwqmrunFormPut.controls.Tide_End.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+              </mat-error>
             </mat-form-field>
           </p>
           <p>
             <mat-form-field>
               <mat-label>RainDay0_mm</mat-label>
               <input matInput type="number" formControlName="RainDay0_mm">
+              <mat-error *ngIf="mwqmrunFormPut.controls.RainDay0_mm.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.min">Min - 0<br /></span>
+                <span *ngIf="e.min">Max - 300<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>RainDay1_mm</mat-label>
               <input matInput type="number" formControlName="RainDay1_mm">
+              <mat-error *ngIf="mwqmrunFormPut.controls.RainDay1_mm.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.min">Min - 0<br /></span>
+                <span *ngIf="e.min">Max - 300<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>RainDay2_mm</mat-label>
               <input matInput type="number" formControlName="RainDay2_mm">
+              <mat-error *ngIf="mwqmrunFormPut.controls.RainDay2_mm.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.min">Min - 0<br /></span>
+                <span *ngIf="e.min">Max - 300<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>RainDay3_mm</mat-label>
               <input matInput type="number" formControlName="RainDay3_mm">
+              <mat-error *ngIf="mwqmrunFormPut.controls.RainDay3_mm.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.min">Min - 0<br /></span>
+                <span *ngIf="e.min">Max - 300<br /></span>
+              </mat-error>
             </mat-form-field>
           </p>
           <p>
             <mat-form-field>
               <mat-label>RainDay4_mm</mat-label>
               <input matInput type="number" formControlName="RainDay4_mm">
+              <mat-error *ngIf="mwqmrunFormPut.controls.RainDay4_mm.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.min">Min - 0<br /></span>
+                <span *ngIf="e.min">Max - 300<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>RainDay5_mm</mat-label>
               <input matInput type="number" formControlName="RainDay5_mm">
+              <mat-error *ngIf="mwqmrunFormPut.controls.RainDay5_mm.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.min">Min - 0<br /></span>
+                <span *ngIf="e.min">Max - 300<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>RainDay6_mm</mat-label>
               <input matInput type="number" formControlName="RainDay6_mm">
+              <mat-error *ngIf="mwqmrunFormPut.controls.RainDay6_mm.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.min">Min - 0<br /></span>
+                <span *ngIf="e.min">Max - 300<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>RainDay7_mm</mat-label>
               <input matInput type="number" formControlName="RainDay7_mm">
+              <mat-error *ngIf="mwqmrunFormPut.controls.RainDay7_mm.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.min">Min - 0<br /></span>
+                <span *ngIf="e.min">Max - 300<br /></span>
+              </mat-error>
             </mat-form-field>
           </p>
           <p>
             <mat-form-field>
               <mat-label>RainDay8_mm</mat-label>
               <input matInput type="number" formControlName="RainDay8_mm">
+              <mat-error *ngIf="mwqmrunFormPut.controls.RainDay8_mm.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.min">Min - 0<br /></span>
+                <span *ngIf="e.min">Max - 300<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>RainDay9_mm</mat-label>
               <input matInput type="number" formControlName="RainDay9_mm">
+              <mat-error *ngIf="mwqmrunFormPut.controls.RainDay9_mm.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.min">Min - 0<br /></span>
+                <span *ngIf="e.min">Max - 300<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>RainDay10_mm</mat-label>
               <input matInput type="number" formControlName="RainDay10_mm">
+              <mat-error *ngIf="mwqmrunFormPut.controls.RainDay10_mm.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.min">Min - 0<br /></span>
+                <span *ngIf="e.min">Max - 300<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>RemoveFromStat</mat-label>
               <input matInput type="text" formControlName="RemoveFromStat">
+              <mat-error *ngIf="mwqmrunFormPut.controls.RemoveFromStat.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+              </mat-error>
             </mat-form-field>
           </p>
           <p>
             <mat-form-field>
               <mat-label>LastUpdateDate_UTC</mat-label>
               <input matInput type="text" formControlName="LastUpdateDate_UTC">
+              <mat-error *ngIf="mwqmrunFormPut.controls.LastUpdateDate_UTC.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>LastUpdateContactTVItemID</mat-label>
               <input matInput type="number" formControlName="LastUpdateContactTVItemID">
+              <mat-error *ngIf="mwqmrunFormPut.controls.LastUpdateContactTVItemID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
           </p>
         </form>

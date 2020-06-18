@@ -8,10 +8,12 @@
 import { Component, OnInit, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
 import { PolSourceGroupingService } from './polsourcegrouping.service';
 import { LoadLocalesPolSourceGroupingText } from './polsourcegrouping.locales';
-import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { PolSourceGrouping } from '../../../models/generated/PolSourceGrouping.model';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
+import { HttpClientService } from '../../../services/http-client.service';
+import { Router } from '@angular/router';
+import { HttpClientCommand } from '../../../enums/app.enums';
 
 @Component({
   selector: 'app-polsourcegrouping',
@@ -24,28 +26,30 @@ export class PolSourceGroupingComponent implements OnInit, OnDestroy {
   polsourcegroupingFormPut: FormGroup;
   polsourcegroupingFormPost: FormGroup;
 
-  constructor(public polsourcegroupingService: PolSourceGroupingService, public router: Router, public fb: FormBuilder) { }
+  constructor(public polsourcegroupingService: PolSourceGroupingService, private router: Router, private httpClientService: HttpClientService, private fb: FormBuilder) {
+    httpClientService.oldURL = router.url;
+  }
 
   GetPolSourceGroupingList() {
-    this.sub = this.polsourcegroupingService.GetPolSourceGroupingList(this.router).subscribe();
+    this.sub = this.polsourcegroupingService.GetPolSourceGroupingList().subscribe();
   }
 
   PutPolSourceGrouping(polsourcegrouping: PolSourceGrouping) {
-    this.sub = this.polsourcegroupingService.PutPolSourceGrouping(polsourcegrouping, this.router).subscribe();
+    this.sub = this.polsourcegroupingService.PutPolSourceGrouping(polsourcegrouping).subscribe();
   }
 
   PostPolSourceGrouping(polsourcegrouping: PolSourceGrouping) {
-    this.sub = this.polsourcegroupingService.PostPolSourceGrouping(polsourcegrouping, this.router).subscribe();
+    this.sub = this.polsourcegroupingService.PostPolSourceGrouping(polsourcegrouping).subscribe();
   }
 
   DeletePolSourceGrouping(polsourcegrouping: PolSourceGrouping) {
-    this.sub = this.polsourcegroupingService.DeletePolSourceGrouping(polsourcegrouping, this.router).subscribe();
+    this.sub = this.polsourcegroupingService.DeletePolSourceGrouping(polsourcegrouping).subscribe();
   }
 
   ngOnInit(): void {
     LoadLocalesPolSourceGroupingText(this.polsourcegroupingService);
-    this.FillFormBuilderGroup('Add');
-    this.FillFormBuilderGroup('Update');
+    this.FillFormBuilderGroup(HttpClientCommand.Post);
+    this.FillFormBuilderGroup(HttpClientCommand.Put);
   }
 
   ngOnDestroy() {
@@ -54,49 +58,49 @@ export class PolSourceGroupingComponent implements OnInit, OnDestroy {
     }
   }
 
-  FillFormBuilderGroup(AddOrUpdate: string) {
-    if (this.polsourcegroupingService.polsourcegroupingList.length) {
+  FillFormBuilderGroup(httpClientCommand: HttpClientCommand) {
+    if (this.polsourcegroupingService.polsourcegroupingListModel$.getValue().length) {
       let formGroup: FormGroup = this.fb.group(
         {
           PolSourceGroupingID: [
             {
-              value: (AddOrUpdate === 'Add' ? 0 : (this.polsourcegroupingService.polsourcegroupingList[0]?.PolSourceGroupingID)),
+              value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.polsourcegroupingService.polsourcegroupingListModel$.getValue()[0]?.PolSourceGroupingID)),
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
           CSSPID: [
             {
-              value: this.polsourcegroupingService.polsourcegroupingList[0]?.CSSPID,
+              value: this.polsourcegroupingService.polsourcegroupingListModel$.getValue()[0]?.CSSPID,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required, Validators.min(10000), Validators.max(100000) ]],
           GroupName: [
             {
-              value: this.polsourcegroupingService.polsourcegroupingList[0]?.GroupName,
+              value: this.polsourcegroupingService.polsourcegroupingListModel$.getValue()[0]?.GroupName,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required, Validators.maxLength(150) ]],
           Child: [
             {
-              value: this.polsourcegroupingService.polsourcegroupingList[0]?.Child,
+              value: this.polsourcegroupingService.polsourcegroupingListModel$.getValue()[0]?.Child,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required, Validators.maxLength(150) ]],
           Hide: [
             {
-              value: this.polsourcegroupingService.polsourcegroupingList[0]?.Hide,
+              value: this.polsourcegroupingService.polsourcegroupingListModel$.getValue()[0]?.Hide,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required, Validators.maxLength(150) ]],
           LastUpdateDate_UTC: [
             {
-              value: this.polsourcegroupingService.polsourcegroupingList[0]?.LastUpdateDate_UTC,
+              value: this.polsourcegroupingService.polsourcegroupingListModel$.getValue()[0]?.LastUpdateDate_UTC,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
           LastUpdateContactTVItemID: [
             {
-              value: this.polsourcegroupingService.polsourcegroupingList[0]?.LastUpdateContactTVItemID,
+              value: this.polsourcegroupingService.polsourcegroupingListModel$.getValue()[0]?.LastUpdateContactTVItemID,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
         }
       );
 
-      if (AddOrUpdate === 'Add') {
+      if (httpClientCommand === HttpClientCommand.Post) {
         this.polsourcegroupingFormPost = formGroup
       }
       else {

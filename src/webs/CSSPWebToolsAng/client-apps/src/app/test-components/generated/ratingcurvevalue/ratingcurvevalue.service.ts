@@ -9,11 +9,12 @@ import { Injectable } from '@angular/core';
 import { RatingCurveValueTextModel } from './ratingcurvevalue.models';
 import { BehaviorSubject, of } from 'rxjs';
 import { LoadLocalesRatingCurveValueText } from './ratingcurvevalue.locales';
-import { Router } from '@angular/router';
-import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { map, catchError } from 'rxjs/operators';
 import { RatingCurveValue } from '../../../models/generated/RatingCurveValue.model';
 import { HttpRequestModel } from '../../../models/http.model';
+import { HttpClientService } from '../../../services/http-client.service';
+import { HttpClientCommand } from '../../../enums/app.enums';
 
 @Injectable({
   providedIn: 'root'
@@ -26,110 +27,63 @@ export class RatingCurveValueService {
   ratingcurvevaluePutModel$: BehaviorSubject<HttpRequestModel> = new BehaviorSubject<HttpRequestModel>(<HttpRequestModel>{});
   ratingcurvevaluePostModel$: BehaviorSubject<HttpRequestModel> = new BehaviorSubject<HttpRequestModel>(<HttpRequestModel>{});
   ratingcurvevalueDeleteModel$: BehaviorSubject<HttpRequestModel> = new BehaviorSubject<HttpRequestModel>(<HttpRequestModel>{});
-  ratingcurvevalueList: RatingCurveValue[] = [];
-  private oldURL: string;
-  private router: Router;
 
   /* Constructors */
-  constructor(private httpClient: HttpClient) {
+  constructor(private httpClient: HttpClient, private httpClientService: HttpClientService) {
     LoadLocalesRatingCurveValueText(this);
     this.ratingcurvevalueTextModel$.next(<RatingCurveValueTextModel>{ Title: "Something2 for text" });
   }
 
   /* Functions public */
-  GetRatingCurveValueList(router: Router) {
-    this.BeforeHttpClient(this.ratingcurvevalueGetModel$, router);
+  GetRatingCurveValueList() {
+    this.httpClientService.BeforeHttpClient(this.ratingcurvevalueGetModel$);
 
     return this.httpClient.get<RatingCurveValue[]>('/api/RatingCurveValue').pipe(
       map((x: any) => {
-        this.DoSuccess(this.ratingcurvevalueGetModel$, x, 'Get', null);
+        this.httpClientService.DoSuccess<RatingCurveValue>(this.ratingcurvevalueListModel$, this.ratingcurvevalueGetModel$, x, HttpClientCommand.Get, null);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.DoCatchError(this.ratingcurvevalueGetModel$, e, 'Get');
+        this.httpClientService.DoCatchError<RatingCurveValue>(this.ratingcurvevalueListModel$, this.ratingcurvevalueGetModel$, e);
       })))
     );
   }
 
-  PutRatingCurveValue(ratingcurvevalue: RatingCurveValue, router: Router) {
-    this.BeforeHttpClient(this.ratingcurvevaluePutModel$, router);
+  PutRatingCurveValue(ratingcurvevalue: RatingCurveValue) {
+    this.httpClientService.BeforeHttpClient(this.ratingcurvevaluePutModel$);
 
     return this.httpClient.put<RatingCurveValue>('/api/RatingCurveValue', ratingcurvevalue, { headers: new HttpHeaders() }).pipe(
       map((x: any) => {
-        this.DoSuccess(this.ratingcurvevaluePutModel$, x, 'Put', ratingcurvevalue);
+        this.httpClientService.DoSuccess<RatingCurveValue>(this.ratingcurvevalueListModel$, this.ratingcurvevaluePutModel$, x, HttpClientCommand.Put, ratingcurvevalue);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.DoCatchError(this.ratingcurvevaluePutModel$, e, 'Put');
+       this.httpClientService.DoCatchError<RatingCurveValue>(this.ratingcurvevalueListModel$, this.ratingcurvevaluePutModel$, e);
       })))
     );
   }
 
-  PostRatingCurveValue(ratingcurvevalue: RatingCurveValue, router: Router) {
-    this.BeforeHttpClient(this.ratingcurvevaluePostModel$, router);
+  PostRatingCurveValue(ratingcurvevalue: RatingCurveValue) {
+    this.httpClientService.BeforeHttpClient(this.ratingcurvevaluePostModel$);
 
     return this.httpClient.post<RatingCurveValue>('/api/RatingCurveValue', ratingcurvevalue, { headers: new HttpHeaders() }).pipe(
       map((x: any) => {
-        this.DoSuccess(this.ratingcurvevaluePostModel$, x, 'Post', ratingcurvevalue);
+        this.httpClientService.DoSuccess<RatingCurveValue>(this.ratingcurvevalueListModel$, this.ratingcurvevaluePostModel$, x, HttpClientCommand.Post, ratingcurvevalue);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.DoCatchError(this.ratingcurvevaluePostModel$, e, 'Post');
+        this.httpClientService.DoCatchError<RatingCurveValue>(this.ratingcurvevalueListModel$, this.ratingcurvevaluePostModel$, e);
       })))
     );
   }
 
-  DeleteRatingCurveValue(ratingcurvevalue: RatingCurveValue, router: Router) {
-    this.BeforeHttpClient(this.ratingcurvevalueDeleteModel$, router);
+  DeleteRatingCurveValue(ratingcurvevalue: RatingCurveValue) {
+    this.httpClientService.BeforeHttpClient(this.ratingcurvevalueDeleteModel$);
 
     return this.httpClient.delete<boolean>(`/api/RatingCurveValue/${ ratingcurvevalue.RatingCurveValueID }`).pipe(
       map((x: any) => {
-        this.DoSuccess(this.ratingcurvevalueDeleteModel$, x, 'Delete', ratingcurvevalue);
+        this.httpClientService.DoSuccess<RatingCurveValue>(this.ratingcurvevalueListModel$, this.ratingcurvevalueDeleteModel$, x, HttpClientCommand.Delete, ratingcurvevalue);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.DoCatchError(this.ratingcurvevalueDeleteModel$, e, 'Delete');
+        this.httpClientService.DoCatchError<RatingCurveValue>(this.ratingcurvevalueListModel$, this.ratingcurvevalueDeleteModel$, e);
       })))
     );
-  }
-
-  /* Functions private */
-  private BeforeHttpClient(httpRequestModel$: BehaviorSubject<HttpRequestModel>, router: Router) {
-    this.router = router;
-    this.oldURL = router.url;
-    httpRequestModel$.next(<HttpRequestModel>{ Working: true, Error: null, Status: null });
-  }
-
-  private DoCatchError(httpRequestModel$: BehaviorSubject<HttpRequestModel>, e: any, command: string) {
-    this.ratingcurvevalueListModel$.next(null);
-    httpRequestModel$.next(<HttpRequestModel>{ Working: false, Error: <HttpErrorResponse>e, Status: 'Error' });
-
-    this.ratingcurvevalueList = [];
-    console.debug(`RatingCurveValue ${ command } ERROR. Return: ${ <HttpErrorResponse>e }`);
-    this.DoReload();
-  }
-
-  private DoReload() {
-    this.router.navigateByUrl('', { skipLocationChange: true }).then(() => {
-      this.router.navigate([`/${this.oldURL}`]);
-    });
-  }
-
-  private DoSuccess(httpRequestModel$: BehaviorSubject<HttpRequestModel>, x: any, command: string, ratingcurvevalue?: RatingCurveValue) {
-    console.debug(`RatingCurveValue ${ command } OK. Return: ${ x }`);
-    if (command === 'Get') {
-      this.ratingcurvevalueListModel$.next(<RatingCurveValue[]>x);
-    }
-    if (command === 'Put') {
-      this.ratingcurvevalueListModel$.getValue()[0] = <RatingCurveValue>x;
-    }
-    if (command === 'Post') {
-      this.ratingcurvevalueListModel$.getValue().push(<RatingCurveValue>x);
-    }
-    if (command === 'Delete') {
-      const index = this.ratingcurvevalueListModel$.getValue().indexOf(ratingcurvevalue);
-      this.ratingcurvevalueListModel$.getValue().splice(index, 1);
-    }
-
-    this.ratingcurvevalueListModel$.next(this.ratingcurvevalueListModel$.getValue());
-    httpRequestModel$.next(<HttpRequestModel>{ Working: false, Error: null, Status: 'ok' });
-    this.ratingcurvevalueList = this.ratingcurvevalueListModel$.getValue();
-    this.DoReload();
   }
 }

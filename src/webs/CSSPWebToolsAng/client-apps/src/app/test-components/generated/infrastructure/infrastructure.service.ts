@@ -9,11 +9,12 @@ import { Injectable } from '@angular/core';
 import { InfrastructureTextModel } from './infrastructure.models';
 import { BehaviorSubject, of } from 'rxjs';
 import { LoadLocalesInfrastructureText } from './infrastructure.locales';
-import { Router } from '@angular/router';
-import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { map, catchError } from 'rxjs/operators';
 import { Infrastructure } from '../../../models/generated/Infrastructure.model';
 import { HttpRequestModel } from '../../../models/http.model';
+import { HttpClientService } from '../../../services/http-client.service';
+import { HttpClientCommand } from '../../../enums/app.enums';
 
 @Injectable({
   providedIn: 'root'
@@ -26,110 +27,63 @@ export class InfrastructureService {
   infrastructurePutModel$: BehaviorSubject<HttpRequestModel> = new BehaviorSubject<HttpRequestModel>(<HttpRequestModel>{});
   infrastructurePostModel$: BehaviorSubject<HttpRequestModel> = new BehaviorSubject<HttpRequestModel>(<HttpRequestModel>{});
   infrastructureDeleteModel$: BehaviorSubject<HttpRequestModel> = new BehaviorSubject<HttpRequestModel>(<HttpRequestModel>{});
-  infrastructureList: Infrastructure[] = [];
-  private oldURL: string;
-  private router: Router;
 
   /* Constructors */
-  constructor(private httpClient: HttpClient) {
+  constructor(private httpClient: HttpClient, private httpClientService: HttpClientService) {
     LoadLocalesInfrastructureText(this);
     this.infrastructureTextModel$.next(<InfrastructureTextModel>{ Title: "Something2 for text" });
   }
 
   /* Functions public */
-  GetInfrastructureList(router: Router) {
-    this.BeforeHttpClient(this.infrastructureGetModel$, router);
+  GetInfrastructureList() {
+    this.httpClientService.BeforeHttpClient(this.infrastructureGetModel$);
 
     return this.httpClient.get<Infrastructure[]>('/api/Infrastructure').pipe(
       map((x: any) => {
-        this.DoSuccess(this.infrastructureGetModel$, x, 'Get', null);
+        this.httpClientService.DoSuccess<Infrastructure>(this.infrastructureListModel$, this.infrastructureGetModel$, x, HttpClientCommand.Get, null);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.DoCatchError(this.infrastructureGetModel$, e, 'Get');
+        this.httpClientService.DoCatchError<Infrastructure>(this.infrastructureListModel$, this.infrastructureGetModel$, e);
       })))
     );
   }
 
-  PutInfrastructure(infrastructure: Infrastructure, router: Router) {
-    this.BeforeHttpClient(this.infrastructurePutModel$, router);
+  PutInfrastructure(infrastructure: Infrastructure) {
+    this.httpClientService.BeforeHttpClient(this.infrastructurePutModel$);
 
     return this.httpClient.put<Infrastructure>('/api/Infrastructure', infrastructure, { headers: new HttpHeaders() }).pipe(
       map((x: any) => {
-        this.DoSuccess(this.infrastructurePutModel$, x, 'Put', infrastructure);
+        this.httpClientService.DoSuccess<Infrastructure>(this.infrastructureListModel$, this.infrastructurePutModel$, x, HttpClientCommand.Put, infrastructure);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.DoCatchError(this.infrastructurePutModel$, e, 'Put');
+       this.httpClientService.DoCatchError<Infrastructure>(this.infrastructureListModel$, this.infrastructurePutModel$, e);
       })))
     );
   }
 
-  PostInfrastructure(infrastructure: Infrastructure, router: Router) {
-    this.BeforeHttpClient(this.infrastructurePostModel$, router);
+  PostInfrastructure(infrastructure: Infrastructure) {
+    this.httpClientService.BeforeHttpClient(this.infrastructurePostModel$);
 
     return this.httpClient.post<Infrastructure>('/api/Infrastructure', infrastructure, { headers: new HttpHeaders() }).pipe(
       map((x: any) => {
-        this.DoSuccess(this.infrastructurePostModel$, x, 'Post', infrastructure);
+        this.httpClientService.DoSuccess<Infrastructure>(this.infrastructureListModel$, this.infrastructurePostModel$, x, HttpClientCommand.Post, infrastructure);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.DoCatchError(this.infrastructurePostModel$, e, 'Post');
+        this.httpClientService.DoCatchError<Infrastructure>(this.infrastructureListModel$, this.infrastructurePostModel$, e);
       })))
     );
   }
 
-  DeleteInfrastructure(infrastructure: Infrastructure, router: Router) {
-    this.BeforeHttpClient(this.infrastructureDeleteModel$, router);
+  DeleteInfrastructure(infrastructure: Infrastructure) {
+    this.httpClientService.BeforeHttpClient(this.infrastructureDeleteModel$);
 
     return this.httpClient.delete<boolean>(`/api/Infrastructure/${ infrastructure.InfrastructureID }`).pipe(
       map((x: any) => {
-        this.DoSuccess(this.infrastructureDeleteModel$, x, 'Delete', infrastructure);
+        this.httpClientService.DoSuccess<Infrastructure>(this.infrastructureListModel$, this.infrastructureDeleteModel$, x, HttpClientCommand.Delete, infrastructure);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.DoCatchError(this.infrastructureDeleteModel$, e, 'Delete');
+        this.httpClientService.DoCatchError<Infrastructure>(this.infrastructureListModel$, this.infrastructureDeleteModel$, e);
       })))
     );
-  }
-
-  /* Functions private */
-  private BeforeHttpClient(httpRequestModel$: BehaviorSubject<HttpRequestModel>, router: Router) {
-    this.router = router;
-    this.oldURL = router.url;
-    httpRequestModel$.next(<HttpRequestModel>{ Working: true, Error: null, Status: null });
-  }
-
-  private DoCatchError(httpRequestModel$: BehaviorSubject<HttpRequestModel>, e: any, command: string) {
-    this.infrastructureListModel$.next(null);
-    httpRequestModel$.next(<HttpRequestModel>{ Working: false, Error: <HttpErrorResponse>e, Status: 'Error' });
-
-    this.infrastructureList = [];
-    console.debug(`Infrastructure ${ command } ERROR. Return: ${ <HttpErrorResponse>e }`);
-    this.DoReload();
-  }
-
-  private DoReload() {
-    this.router.navigateByUrl('', { skipLocationChange: true }).then(() => {
-      this.router.navigate([`/${this.oldURL}`]);
-    });
-  }
-
-  private DoSuccess(httpRequestModel$: BehaviorSubject<HttpRequestModel>, x: any, command: string, infrastructure?: Infrastructure) {
-    console.debug(`Infrastructure ${ command } OK. Return: ${ x }`);
-    if (command === 'Get') {
-      this.infrastructureListModel$.next(<Infrastructure[]>x);
-    }
-    if (command === 'Put') {
-      this.infrastructureListModel$.getValue()[0] = <Infrastructure>x;
-    }
-    if (command === 'Post') {
-      this.infrastructureListModel$.getValue().push(<Infrastructure>x);
-    }
-    if (command === 'Delete') {
-      const index = this.infrastructureListModel$.getValue().indexOf(infrastructure);
-      this.infrastructureListModel$.getValue().splice(index, 1);
-    }
-
-    this.infrastructureListModel$.next(this.infrastructureListModel$.getValue());
-    httpRequestModel$.next(<HttpRequestModel>{ Working: false, Error: null, Status: 'ok' });
-    this.infrastructureList = this.infrastructureListModel$.getValue();
-    this.DoReload();
   }
 }

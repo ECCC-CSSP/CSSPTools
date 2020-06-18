@@ -8,10 +8,12 @@
 import { Component, OnInit, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
 import { MikeSourceStartEndService } from './mikesourcestartend.service';
 import { LoadLocalesMikeSourceStartEndText } from './mikesourcestartend.locales';
-import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { MikeSourceStartEnd } from '../../../models/generated/MikeSourceStartEnd.model';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
+import { HttpClientService } from '../../../services/http-client.service';
+import { Router } from '@angular/router';
+import { HttpClientCommand } from '../../../enums/app.enums';
 
 @Component({
   selector: 'app-mikesourcestartend',
@@ -24,28 +26,30 @@ export class MikeSourceStartEndComponent implements OnInit, OnDestroy {
   mikesourcestartendFormPut: FormGroup;
   mikesourcestartendFormPost: FormGroup;
 
-  constructor(public mikesourcestartendService: MikeSourceStartEndService, public router: Router, public fb: FormBuilder) { }
+  constructor(public mikesourcestartendService: MikeSourceStartEndService, private router: Router, private httpClientService: HttpClientService, private fb: FormBuilder) {
+    httpClientService.oldURL = router.url;
+  }
 
   GetMikeSourceStartEndList() {
-    this.sub = this.mikesourcestartendService.GetMikeSourceStartEndList(this.router).subscribe();
+    this.sub = this.mikesourcestartendService.GetMikeSourceStartEndList().subscribe();
   }
 
   PutMikeSourceStartEnd(mikesourcestartend: MikeSourceStartEnd) {
-    this.sub = this.mikesourcestartendService.PutMikeSourceStartEnd(mikesourcestartend, this.router).subscribe();
+    this.sub = this.mikesourcestartendService.PutMikeSourceStartEnd(mikesourcestartend).subscribe();
   }
 
   PostMikeSourceStartEnd(mikesourcestartend: MikeSourceStartEnd) {
-    this.sub = this.mikesourcestartendService.PostMikeSourceStartEnd(mikesourcestartend, this.router).subscribe();
+    this.sub = this.mikesourcestartendService.PostMikeSourceStartEnd(mikesourcestartend).subscribe();
   }
 
   DeleteMikeSourceStartEnd(mikesourcestartend: MikeSourceStartEnd) {
-    this.sub = this.mikesourcestartendService.DeleteMikeSourceStartEnd(mikesourcestartend, this.router).subscribe();
+    this.sub = this.mikesourcestartendService.DeleteMikeSourceStartEnd(mikesourcestartend).subscribe();
   }
 
   ngOnInit(): void {
     LoadLocalesMikeSourceStartEndText(this.mikesourcestartendService);
-    this.FillFormBuilderGroup('Add');
-    this.FillFormBuilderGroup('Update');
+    this.FillFormBuilderGroup(HttpClientCommand.Post);
+    this.FillFormBuilderGroup(HttpClientCommand.Put);
   }
 
   ngOnDestroy() {
@@ -54,84 +58,84 @@ export class MikeSourceStartEndComponent implements OnInit, OnDestroy {
     }
   }
 
-  FillFormBuilderGroup(AddOrUpdate: string) {
-    if (this.mikesourcestartendService.mikesourcestartendList.length) {
+  FillFormBuilderGroup(httpClientCommand: HttpClientCommand) {
+    if (this.mikesourcestartendService.mikesourcestartendListModel$.getValue().length) {
       let formGroup: FormGroup = this.fb.group(
         {
           MikeSourceStartEndID: [
             {
-              value: (AddOrUpdate === 'Add' ? 0 : (this.mikesourcestartendService.mikesourcestartendList[0]?.MikeSourceStartEndID)),
+              value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.mikesourcestartendService.mikesourcestartendListModel$.getValue()[0]?.MikeSourceStartEndID)),
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
           MikeSourceID: [
             {
-              value: this.mikesourcestartendService.mikesourcestartendList[0]?.MikeSourceID,
+              value: this.mikesourcestartendService.mikesourcestartendListModel$.getValue()[0]?.MikeSourceID,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
           StartDateAndTime_Local: [
             {
-              value: this.mikesourcestartendService.mikesourcestartendList[0]?.StartDateAndTime_Local,
+              value: this.mikesourcestartendService.mikesourcestartendListModel$.getValue()[0]?.StartDateAndTime_Local,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
           EndDateAndTime_Local: [
             {
-              value: this.mikesourcestartendService.mikesourcestartendList[0]?.EndDateAndTime_Local,
+              value: this.mikesourcestartendService.mikesourcestartendListModel$.getValue()[0]?.EndDateAndTime_Local,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
           SourceFlowStart_m3_day: [
             {
-              value: this.mikesourcestartendService.mikesourcestartendList[0]?.SourceFlowStart_m3_day,
+              value: this.mikesourcestartendService.mikesourcestartendListModel$.getValue()[0]?.SourceFlowStart_m3_day,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required, Validators.min(0), Validators.max(1000000) ]],
           SourceFlowEnd_m3_day: [
             {
-              value: this.mikesourcestartendService.mikesourcestartendList[0]?.SourceFlowEnd_m3_day,
+              value: this.mikesourcestartendService.mikesourcestartendListModel$.getValue()[0]?.SourceFlowEnd_m3_day,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required, Validators.min(0), Validators.max(1000000) ]],
           SourcePollutionStart_MPN_100ml: [
             {
-              value: this.mikesourcestartendService.mikesourcestartendList[0]?.SourcePollutionStart_MPN_100ml,
+              value: this.mikesourcestartendService.mikesourcestartendListModel$.getValue()[0]?.SourcePollutionStart_MPN_100ml,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required, Validators.min(0), Validators.max(10000000) ]],
           SourcePollutionEnd_MPN_100ml: [
             {
-              value: this.mikesourcestartendService.mikesourcestartendList[0]?.SourcePollutionEnd_MPN_100ml,
+              value: this.mikesourcestartendService.mikesourcestartendListModel$.getValue()[0]?.SourcePollutionEnd_MPN_100ml,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required, Validators.min(0), Validators.max(10000000) ]],
           SourceTemperatureStart_C: [
             {
-              value: this.mikesourcestartendService.mikesourcestartendList[0]?.SourceTemperatureStart_C,
+              value: this.mikesourcestartendService.mikesourcestartendListModel$.getValue()[0]?.SourceTemperatureStart_C,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required, Validators.min(-10), Validators.max(40) ]],
           SourceTemperatureEnd_C: [
             {
-              value: this.mikesourcestartendService.mikesourcestartendList[0]?.SourceTemperatureEnd_C,
+              value: this.mikesourcestartendService.mikesourcestartendListModel$.getValue()[0]?.SourceTemperatureEnd_C,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required, Validators.min(-10), Validators.max(40) ]],
           SourceSalinityStart_PSU: [
             {
-              value: this.mikesourcestartendService.mikesourcestartendList[0]?.SourceSalinityStart_PSU,
+              value: this.mikesourcestartendService.mikesourcestartendListModel$.getValue()[0]?.SourceSalinityStart_PSU,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required, Validators.min(0), Validators.max(40) ]],
           SourceSalinityEnd_PSU: [
             {
-              value: this.mikesourcestartendService.mikesourcestartendList[0]?.SourceSalinityEnd_PSU,
+              value: this.mikesourcestartendService.mikesourcestartendListModel$.getValue()[0]?.SourceSalinityEnd_PSU,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required, Validators.min(0), Validators.max(40) ]],
           LastUpdateDate_UTC: [
             {
-              value: this.mikesourcestartendService.mikesourcestartendList[0]?.LastUpdateDate_UTC,
+              value: this.mikesourcestartendService.mikesourcestartendListModel$.getValue()[0]?.LastUpdateDate_UTC,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
           LastUpdateContactTVItemID: [
             {
-              value: this.mikesourcestartendService.mikesourcestartendList[0]?.LastUpdateContactTVItemID,
+              value: this.mikesourcestartendService.mikesourcestartendListModel$.getValue()[0]?.LastUpdateContactTVItemID,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
         }
       );
 
-      if (AddOrUpdate === 'Add') {
+      if (httpClientCommand === HttpClientCommand.Post) {
         this.mikesourcestartendFormPost = formGroup
       }
       else {

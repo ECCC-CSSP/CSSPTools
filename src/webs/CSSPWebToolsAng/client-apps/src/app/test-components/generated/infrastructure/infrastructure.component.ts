@@ -8,7 +8,6 @@
 import { Component, OnInit, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
 import { InfrastructureService } from './infrastructure.service';
 import { LoadLocalesInfrastructureText } from './infrastructure.locales';
-import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { InfrastructureTypeEnum_GetIDText, InfrastructureTypeEnum_GetOrderedText } from '../../../enums/generated/InfrastructureTypeEnum';
 import { FacilityTypeEnum_GetIDText, FacilityTypeEnum_GetOrderedText } from '../../../enums/generated/FacilityTypeEnum';
@@ -25,6 +24,9 @@ import { ValveTypeEnum_GetIDText, ValveTypeEnum_GetOrderedText } from '../../../
 import { Infrastructure } from '../../../models/generated/Infrastructure.model';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
 import { EnumIDAndText } from '../../../models/enumidandtext.model';
+import { HttpClientService } from '../../../services/http-client.service';
+import { Router } from '@angular/router';
+import { HttpClientCommand } from '../../../enums/app.enums';
 
 @Component({
   selector: 'app-infrastructure',
@@ -49,22 +51,24 @@ export class InfrastructureComponent implements OnInit, OnDestroy {
   infrastructureFormPut: FormGroup;
   infrastructureFormPost: FormGroup;
 
-  constructor(public infrastructureService: InfrastructureService, public router: Router, public fb: FormBuilder) { }
+  constructor(public infrastructureService: InfrastructureService, private router: Router, private httpClientService: HttpClientService, private fb: FormBuilder) {
+    httpClientService.oldURL = router.url;
+  }
 
   GetInfrastructureList() {
-    this.sub = this.infrastructureService.GetInfrastructureList(this.router).subscribe();
+    this.sub = this.infrastructureService.GetInfrastructureList().subscribe();
   }
 
   PutInfrastructure(infrastructure: Infrastructure) {
-    this.sub = this.infrastructureService.PutInfrastructure(infrastructure, this.router).subscribe();
+    this.sub = this.infrastructureService.PutInfrastructure(infrastructure).subscribe();
   }
 
   PostInfrastructure(infrastructure: Infrastructure) {
-    this.sub = this.infrastructureService.PostInfrastructure(infrastructure, this.router).subscribe();
+    this.sub = this.infrastructureService.PostInfrastructure(infrastructure).subscribe();
   }
 
   DeleteInfrastructure(infrastructure: Infrastructure) {
-    this.sub = this.infrastructureService.DeleteInfrastructure(infrastructure, this.router).subscribe();
+    this.sub = this.infrastructureService.DeleteInfrastructure(infrastructure).subscribe();
   }
 
   GetInfrastructureTypeEnumText(enumID: number) {
@@ -129,8 +133,8 @@ export class InfrastructureComponent implements OnInit, OnDestroy {
     this.collectionSystemTypeList = CollectionSystemTypeEnum_GetOrderedText();
     this.alarmSystemTypeList = AlarmSystemTypeEnum_GetOrderedText();
     this.valveTypeList = ValveTypeEnum_GetOrderedText();
-    this.FillFormBuilderGroup('Add');
-    this.FillFormBuilderGroup('Update');
+    this.FillFormBuilderGroup(HttpClientCommand.Post);
+    this.FillFormBuilderGroup(HttpClientCommand.Put);
   }
 
   ngOnDestroy() {
@@ -139,264 +143,264 @@ export class InfrastructureComponent implements OnInit, OnDestroy {
     }
   }
 
-  FillFormBuilderGroup(AddOrUpdate: string) {
-    if (this.infrastructureService.infrastructureList.length) {
+  FillFormBuilderGroup(httpClientCommand: HttpClientCommand) {
+    if (this.infrastructureService.infrastructureListModel$.getValue().length) {
       let formGroup: FormGroup = this.fb.group(
         {
           InfrastructureID: [
             {
-              value: (AddOrUpdate === 'Add' ? 0 : (this.infrastructureService.infrastructureList[0]?.InfrastructureID)),
+              value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.infrastructureService.infrastructureListModel$.getValue()[0]?.InfrastructureID)),
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
           InfrastructureTVItemID: [
             {
-              value: this.infrastructureService.infrastructureList[0]?.InfrastructureTVItemID,
+              value: this.infrastructureService.infrastructureListModel$.getValue()[0]?.InfrastructureTVItemID,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
           PrismID: [
             {
-              value: this.infrastructureService.infrastructureList[0]?.PrismID,
+              value: this.infrastructureService.infrastructureListModel$.getValue()[0]?.PrismID,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.min(0), Validators.max(100000) ]],
           TPID: [
             {
-              value: this.infrastructureService.infrastructureList[0]?.TPID,
+              value: this.infrastructureService.infrastructureListModel$.getValue()[0]?.TPID,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.min(0), Validators.max(100000) ]],
           LSID: [
             {
-              value: this.infrastructureService.infrastructureList[0]?.LSID,
+              value: this.infrastructureService.infrastructureListModel$.getValue()[0]?.LSID,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.min(0), Validators.max(100000) ]],
           SiteID: [
             {
-              value: this.infrastructureService.infrastructureList[0]?.SiteID,
+              value: this.infrastructureService.infrastructureListModel$.getValue()[0]?.SiteID,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.min(0), Validators.max(100000) ]],
           Site: [
             {
-              value: this.infrastructureService.infrastructureList[0]?.Site,
+              value: this.infrastructureService.infrastructureListModel$.getValue()[0]?.Site,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.min(0), Validators.max(100000) ]],
           InfrastructureCategory: [
             {
-              value: this.infrastructureService.infrastructureList[0]?.InfrastructureCategory,
+              value: this.infrastructureService.infrastructureListModel$.getValue()[0]?.InfrastructureCategory,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.minLength(1), Validators.maxLength(1) ]],
           InfrastructureType: [
             {
-              value: this.infrastructureService.infrastructureList[0]?.InfrastructureType,
+              value: this.infrastructureService.infrastructureListModel$.getValue()[0]?.InfrastructureType,
               disabled: false
-            }, [ Validators.required ]],
+            }],
           FacilityType: [
             {
-              value: this.infrastructureService.infrastructureList[0]?.FacilityType,
+              value: this.infrastructureService.infrastructureListModel$.getValue()[0]?.FacilityType,
               disabled: false
-            }, [ Validators.required ]],
+            }],
           HasBackupPower: [
             {
-              value: this.infrastructureService.infrastructureList[0]?.HasBackupPower,
+              value: this.infrastructureService.infrastructureListModel$.getValue()[0]?.HasBackupPower,
               disabled: false
-            }, [ Validators.required ]],
+            }],
           IsMechanicallyAerated: [
             {
-              value: this.infrastructureService.infrastructureList[0]?.IsMechanicallyAerated,
+              value: this.infrastructureService.infrastructureListModel$.getValue()[0]?.IsMechanicallyAerated,
               disabled: false
-            }, [ Validators.required ]],
+            }],
           NumberOfCells: [
             {
-              value: this.infrastructureService.infrastructureList[0]?.NumberOfCells,
+              value: this.infrastructureService.infrastructureListModel$.getValue()[0]?.NumberOfCells,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.min(0), Validators.max(10) ]],
           NumberOfAeratedCells: [
             {
-              value: this.infrastructureService.infrastructureList[0]?.NumberOfAeratedCells,
+              value: this.infrastructureService.infrastructureListModel$.getValue()[0]?.NumberOfAeratedCells,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.min(0), Validators.max(10) ]],
           AerationType: [
             {
-              value: this.infrastructureService.infrastructureList[0]?.AerationType,
+              value: this.infrastructureService.infrastructureListModel$.getValue()[0]?.AerationType,
               disabled: false
-            }, [ Validators.required ]],
+            }],
           PreliminaryTreatmentType: [
             {
-              value: this.infrastructureService.infrastructureList[0]?.PreliminaryTreatmentType,
+              value: this.infrastructureService.infrastructureListModel$.getValue()[0]?.PreliminaryTreatmentType,
               disabled: false
-            }, [ Validators.required ]],
+            }],
           PrimaryTreatmentType: [
             {
-              value: this.infrastructureService.infrastructureList[0]?.PrimaryTreatmentType,
+              value: this.infrastructureService.infrastructureListModel$.getValue()[0]?.PrimaryTreatmentType,
               disabled: false
-            }, [ Validators.required ]],
+            }],
           SecondaryTreatmentType: [
             {
-              value: this.infrastructureService.infrastructureList[0]?.SecondaryTreatmentType,
+              value: this.infrastructureService.infrastructureListModel$.getValue()[0]?.SecondaryTreatmentType,
               disabled: false
-            }, [ Validators.required ]],
+            }],
           TertiaryTreatmentType: [
             {
-              value: this.infrastructureService.infrastructureList[0]?.TertiaryTreatmentType,
+              value: this.infrastructureService.infrastructureListModel$.getValue()[0]?.TertiaryTreatmentType,
               disabled: false
-            }, [ Validators.required ]],
+            }],
           TreatmentType: [
             {
-              value: this.infrastructureService.infrastructureList[0]?.TreatmentType,
+              value: this.infrastructureService.infrastructureListModel$.getValue()[0]?.TreatmentType,
               disabled: false
-            }, [ Validators.required ]],
+            }],
           DisinfectionType: [
             {
-              value: this.infrastructureService.infrastructureList[0]?.DisinfectionType,
+              value: this.infrastructureService.infrastructureListModel$.getValue()[0]?.DisinfectionType,
               disabled: false
-            }, [ Validators.required ]],
+            }],
           CollectionSystemType: [
             {
-              value: this.infrastructureService.infrastructureList[0]?.CollectionSystemType,
+              value: this.infrastructureService.infrastructureListModel$.getValue()[0]?.CollectionSystemType,
               disabled: false
-            }, [ Validators.required ]],
+            }],
           AlarmSystemType: [
             {
-              value: this.infrastructureService.infrastructureList[0]?.AlarmSystemType,
+              value: this.infrastructureService.infrastructureListModel$.getValue()[0]?.AlarmSystemType,
               disabled: false
-            }, [ Validators.required ]],
+            }],
           DesignFlow_m3_day: [
             {
-              value: this.infrastructureService.infrastructureList[0]?.DesignFlow_m3_day,
+              value: this.infrastructureService.infrastructureListModel$.getValue()[0]?.DesignFlow_m3_day,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.min(0), Validators.max(1000000) ]],
           AverageFlow_m3_day: [
             {
-              value: this.infrastructureService.infrastructureList[0]?.AverageFlow_m3_day,
+              value: this.infrastructureService.infrastructureListModel$.getValue()[0]?.AverageFlow_m3_day,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.min(0), Validators.max(1000000) ]],
           PeakFlow_m3_day: [
             {
-              value: this.infrastructureService.infrastructureList[0]?.PeakFlow_m3_day,
+              value: this.infrastructureService.infrastructureListModel$.getValue()[0]?.PeakFlow_m3_day,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.min(0), Validators.max(1000000) ]],
           PopServed: [
             {
-              value: this.infrastructureService.infrastructureList[0]?.PopServed,
+              value: this.infrastructureService.infrastructureListModel$.getValue()[0]?.PopServed,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.min(0), Validators.max(1000000) ]],
           CanOverflow: [
             {
-              value: this.infrastructureService.infrastructureList[0]?.CanOverflow,
+              value: this.infrastructureService.infrastructureListModel$.getValue()[0]?.CanOverflow,
               disabled: false
-            }, [ Validators.required ]],
+            }],
           ValveType: [
             {
-              value: this.infrastructureService.infrastructureList[0]?.ValveType,
+              value: this.infrastructureService.infrastructureListModel$.getValue()[0]?.ValveType,
               disabled: false
-            }, [ Validators.required ]],
+            }],
           PercFlowOfTotal: [
             {
-              value: this.infrastructureService.infrastructureList[0]?.PercFlowOfTotal,
+              value: this.infrastructureService.infrastructureListModel$.getValue()[0]?.PercFlowOfTotal,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.min(0), Validators.max(100) ]],
           TimeOffset_hour: [
             {
-              value: this.infrastructureService.infrastructureList[0]?.TimeOffset_hour,
+              value: this.infrastructureService.infrastructureListModel$.getValue()[0]?.TimeOffset_hour,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.min(-10), Validators.max(0) ]],
           TempCatchAllRemoveLater: [
             {
-              value: this.infrastructureService.infrastructureList[0]?.TempCatchAllRemoveLater,
+              value: this.infrastructureService.infrastructureListModel$.getValue()[0]?.TempCatchAllRemoveLater,
               disabled: false
-            }, [ Validators.required ]],
+            }],
           AverageDepth_m: [
             {
-              value: this.infrastructureService.infrastructureList[0]?.AverageDepth_m,
+              value: this.infrastructureService.infrastructureListModel$.getValue()[0]?.AverageDepth_m,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.min(0), Validators.max(1000) ]],
           NumberOfPorts: [
             {
-              value: this.infrastructureService.infrastructureList[0]?.NumberOfPorts,
+              value: this.infrastructureService.infrastructureListModel$.getValue()[0]?.NumberOfPorts,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.min(1), Validators.max(1000) ]],
           PortDiameter_m: [
             {
-              value: this.infrastructureService.infrastructureList[0]?.PortDiameter_m,
+              value: this.infrastructureService.infrastructureListModel$.getValue()[0]?.PortDiameter_m,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.min(0), Validators.max(10) ]],
           PortSpacing_m: [
             {
-              value: this.infrastructureService.infrastructureList[0]?.PortSpacing_m,
+              value: this.infrastructureService.infrastructureListModel$.getValue()[0]?.PortSpacing_m,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.min(0), Validators.max(10000) ]],
           PortElevation_m: [
             {
-              value: this.infrastructureService.infrastructureList[0]?.PortElevation_m,
+              value: this.infrastructureService.infrastructureListModel$.getValue()[0]?.PortElevation_m,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.min(0), Validators.max(1000) ]],
           VerticalAngle_deg: [
             {
-              value: this.infrastructureService.infrastructureList[0]?.VerticalAngle_deg,
+              value: this.infrastructureService.infrastructureListModel$.getValue()[0]?.VerticalAngle_deg,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.min(-90), Validators.max(90) ]],
           HorizontalAngle_deg: [
             {
-              value: this.infrastructureService.infrastructureList[0]?.HorizontalAngle_deg,
+              value: this.infrastructureService.infrastructureListModel$.getValue()[0]?.HorizontalAngle_deg,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.min(-180), Validators.max(180) ]],
           DecayRate_per_day: [
             {
-              value: this.infrastructureService.infrastructureList[0]?.DecayRate_per_day,
+              value: this.infrastructureService.infrastructureListModel$.getValue()[0]?.DecayRate_per_day,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.min(0), Validators.max(100) ]],
           NearFieldVelocity_m_s: [
             {
-              value: this.infrastructureService.infrastructureList[0]?.NearFieldVelocity_m_s,
+              value: this.infrastructureService.infrastructureListModel$.getValue()[0]?.NearFieldVelocity_m_s,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.min(0), Validators.max(10) ]],
           FarFieldVelocity_m_s: [
             {
-              value: this.infrastructureService.infrastructureList[0]?.FarFieldVelocity_m_s,
+              value: this.infrastructureService.infrastructureListModel$.getValue()[0]?.FarFieldVelocity_m_s,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.min(0), Validators.max(10) ]],
           ReceivingWaterSalinity_PSU: [
             {
-              value: this.infrastructureService.infrastructureList[0]?.ReceivingWaterSalinity_PSU,
+              value: this.infrastructureService.infrastructureListModel$.getValue()[0]?.ReceivingWaterSalinity_PSU,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.min(0), Validators.max(40) ]],
           ReceivingWaterTemperature_C: [
             {
-              value: this.infrastructureService.infrastructureList[0]?.ReceivingWaterTemperature_C,
+              value: this.infrastructureService.infrastructureListModel$.getValue()[0]?.ReceivingWaterTemperature_C,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.min(-10), Validators.max(40) ]],
           ReceivingWater_MPN_per_100ml: [
             {
-              value: this.infrastructureService.infrastructureList[0]?.ReceivingWater_MPN_per_100ml,
+              value: this.infrastructureService.infrastructureListModel$.getValue()[0]?.ReceivingWater_MPN_per_100ml,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.min(0), Validators.max(10000000) ]],
           DistanceFromShore_m: [
             {
-              value: this.infrastructureService.infrastructureList[0]?.DistanceFromShore_m,
+              value: this.infrastructureService.infrastructureListModel$.getValue()[0]?.DistanceFromShore_m,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.min(0), Validators.max(1000) ]],
           SeeOtherMunicipalityTVItemID: [
             {
-              value: this.infrastructureService.infrastructureList[0]?.SeeOtherMunicipalityTVItemID,
+              value: this.infrastructureService.infrastructureListModel$.getValue()[0]?.SeeOtherMunicipalityTVItemID,
               disabled: false
-            }, [ Validators.required ]],
+            }],
           CivicAddressTVItemID: [
             {
-              value: this.infrastructureService.infrastructureList[0]?.CivicAddressTVItemID,
+              value: this.infrastructureService.infrastructureListModel$.getValue()[0]?.CivicAddressTVItemID,
               disabled: false
-            }, [ Validators.required ]],
+            }],
           LastUpdateDate_UTC: [
             {
-              value: this.infrastructureService.infrastructureList[0]?.LastUpdateDate_UTC,
+              value: this.infrastructureService.infrastructureListModel$.getValue()[0]?.LastUpdateDate_UTC,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
           LastUpdateContactTVItemID: [
             {
-              value: this.infrastructureService.infrastructureList[0]?.LastUpdateContactTVItemID,
+              value: this.infrastructureService.infrastructureListModel$.getValue()[0]?.LastUpdateContactTVItemID,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
         }
       );
 
-      if (AddOrUpdate === 'Add') {
+      if (httpClientCommand === HttpClientCommand.Post) {
         this.infrastructureFormPost = formGroup
       }
       else {

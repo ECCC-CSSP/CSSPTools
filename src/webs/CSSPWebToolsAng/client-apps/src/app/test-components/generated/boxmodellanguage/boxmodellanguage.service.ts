@@ -9,11 +9,12 @@ import { Injectable } from '@angular/core';
 import { BoxModelLanguageTextModel } from './boxmodellanguage.models';
 import { BehaviorSubject, of } from 'rxjs';
 import { LoadLocalesBoxModelLanguageText } from './boxmodellanguage.locales';
-import { Router } from '@angular/router';
-import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { map, catchError } from 'rxjs/operators';
 import { BoxModelLanguage } from '../../../models/generated/BoxModelLanguage.model';
 import { HttpRequestModel } from '../../../models/http.model';
+import { HttpClientService } from '../../../services/http-client.service';
+import { HttpClientCommand } from '../../../enums/app.enums';
 
 @Injectable({
   providedIn: 'root'
@@ -26,110 +27,63 @@ export class BoxModelLanguageService {
   boxmodellanguagePutModel$: BehaviorSubject<HttpRequestModel> = new BehaviorSubject<HttpRequestModel>(<HttpRequestModel>{});
   boxmodellanguagePostModel$: BehaviorSubject<HttpRequestModel> = new BehaviorSubject<HttpRequestModel>(<HttpRequestModel>{});
   boxmodellanguageDeleteModel$: BehaviorSubject<HttpRequestModel> = new BehaviorSubject<HttpRequestModel>(<HttpRequestModel>{});
-  boxmodellanguageList: BoxModelLanguage[] = [];
-  private oldURL: string;
-  private router: Router;
 
   /* Constructors */
-  constructor(private httpClient: HttpClient) {
+  constructor(private httpClient: HttpClient, private httpClientService: HttpClientService) {
     LoadLocalesBoxModelLanguageText(this);
     this.boxmodellanguageTextModel$.next(<BoxModelLanguageTextModel>{ Title: "Something2 for text" });
   }
 
   /* Functions public */
-  GetBoxModelLanguageList(router: Router) {
-    this.BeforeHttpClient(this.boxmodellanguageGetModel$, router);
+  GetBoxModelLanguageList() {
+    this.httpClientService.BeforeHttpClient(this.boxmodellanguageGetModel$);
 
     return this.httpClient.get<BoxModelLanguage[]>('/api/BoxModelLanguage').pipe(
       map((x: any) => {
-        this.DoSuccess(this.boxmodellanguageGetModel$, x, 'Get', null);
+        this.httpClientService.DoSuccess<BoxModelLanguage>(this.boxmodellanguageListModel$, this.boxmodellanguageGetModel$, x, HttpClientCommand.Get, null);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.DoCatchError(this.boxmodellanguageGetModel$, e, 'Get');
+        this.httpClientService.DoCatchError<BoxModelLanguage>(this.boxmodellanguageListModel$, this.boxmodellanguageGetModel$, e);
       })))
     );
   }
 
-  PutBoxModelLanguage(boxmodellanguage: BoxModelLanguage, router: Router) {
-    this.BeforeHttpClient(this.boxmodellanguagePutModel$, router);
+  PutBoxModelLanguage(boxmodellanguage: BoxModelLanguage) {
+    this.httpClientService.BeforeHttpClient(this.boxmodellanguagePutModel$);
 
     return this.httpClient.put<BoxModelLanguage>('/api/BoxModelLanguage', boxmodellanguage, { headers: new HttpHeaders() }).pipe(
       map((x: any) => {
-        this.DoSuccess(this.boxmodellanguagePutModel$, x, 'Put', boxmodellanguage);
+        this.httpClientService.DoSuccess<BoxModelLanguage>(this.boxmodellanguageListModel$, this.boxmodellanguagePutModel$, x, HttpClientCommand.Put, boxmodellanguage);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.DoCatchError(this.boxmodellanguagePutModel$, e, 'Put');
+       this.httpClientService.DoCatchError<BoxModelLanguage>(this.boxmodellanguageListModel$, this.boxmodellanguagePutModel$, e);
       })))
     );
   }
 
-  PostBoxModelLanguage(boxmodellanguage: BoxModelLanguage, router: Router) {
-    this.BeforeHttpClient(this.boxmodellanguagePostModel$, router);
+  PostBoxModelLanguage(boxmodellanguage: BoxModelLanguage) {
+    this.httpClientService.BeforeHttpClient(this.boxmodellanguagePostModel$);
 
     return this.httpClient.post<BoxModelLanguage>('/api/BoxModelLanguage', boxmodellanguage, { headers: new HttpHeaders() }).pipe(
       map((x: any) => {
-        this.DoSuccess(this.boxmodellanguagePostModel$, x, 'Post', boxmodellanguage);
+        this.httpClientService.DoSuccess<BoxModelLanguage>(this.boxmodellanguageListModel$, this.boxmodellanguagePostModel$, x, HttpClientCommand.Post, boxmodellanguage);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.DoCatchError(this.boxmodellanguagePostModel$, e, 'Post');
+        this.httpClientService.DoCatchError<BoxModelLanguage>(this.boxmodellanguageListModel$, this.boxmodellanguagePostModel$, e);
       })))
     );
   }
 
-  DeleteBoxModelLanguage(boxmodellanguage: BoxModelLanguage, router: Router) {
-    this.BeforeHttpClient(this.boxmodellanguageDeleteModel$, router);
+  DeleteBoxModelLanguage(boxmodellanguage: BoxModelLanguage) {
+    this.httpClientService.BeforeHttpClient(this.boxmodellanguageDeleteModel$);
 
     return this.httpClient.delete<boolean>(`/api/BoxModelLanguage/${ boxmodellanguage.BoxModelLanguageID }`).pipe(
       map((x: any) => {
-        this.DoSuccess(this.boxmodellanguageDeleteModel$, x, 'Delete', boxmodellanguage);
+        this.httpClientService.DoSuccess<BoxModelLanguage>(this.boxmodellanguageListModel$, this.boxmodellanguageDeleteModel$, x, HttpClientCommand.Delete, boxmodellanguage);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.DoCatchError(this.boxmodellanguageDeleteModel$, e, 'Delete');
+        this.httpClientService.DoCatchError<BoxModelLanguage>(this.boxmodellanguageListModel$, this.boxmodellanguageDeleteModel$, e);
       })))
     );
-  }
-
-  /* Functions private */
-  private BeforeHttpClient(httpRequestModel$: BehaviorSubject<HttpRequestModel>, router: Router) {
-    this.router = router;
-    this.oldURL = router.url;
-    httpRequestModel$.next(<HttpRequestModel>{ Working: true, Error: null, Status: null });
-  }
-
-  private DoCatchError(httpRequestModel$: BehaviorSubject<HttpRequestModel>, e: any, command: string) {
-    this.boxmodellanguageListModel$.next(null);
-    httpRequestModel$.next(<HttpRequestModel>{ Working: false, Error: <HttpErrorResponse>e, Status: 'Error' });
-
-    this.boxmodellanguageList = [];
-    console.debug(`BoxModelLanguage ${ command } ERROR. Return: ${ <HttpErrorResponse>e }`);
-    this.DoReload();
-  }
-
-  private DoReload() {
-    this.router.navigateByUrl('', { skipLocationChange: true }).then(() => {
-      this.router.navigate([`/${this.oldURL}`]);
-    });
-  }
-
-  private DoSuccess(httpRequestModel$: BehaviorSubject<HttpRequestModel>, x: any, command: string, boxmodellanguage?: BoxModelLanguage) {
-    console.debug(`BoxModelLanguage ${ command } OK. Return: ${ x }`);
-    if (command === 'Get') {
-      this.boxmodellanguageListModel$.next(<BoxModelLanguage[]>x);
-    }
-    if (command === 'Put') {
-      this.boxmodellanguageListModel$.getValue()[0] = <BoxModelLanguage>x;
-    }
-    if (command === 'Post') {
-      this.boxmodellanguageListModel$.getValue().push(<BoxModelLanguage>x);
-    }
-    if (command === 'Delete') {
-      const index = this.boxmodellanguageListModel$.getValue().indexOf(boxmodellanguage);
-      this.boxmodellanguageListModel$.getValue().splice(index, 1);
-    }
-
-    this.boxmodellanguageListModel$.next(this.boxmodellanguageListModel$.getValue());
-    httpRequestModel$.next(<HttpRequestModel>{ Working: false, Error: null, Status: 'ok' });
-    this.boxmodellanguageList = this.boxmodellanguageListModel$.getValue();
-    this.DoReload();
   }
 }

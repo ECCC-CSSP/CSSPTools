@@ -5,7 +5,7 @@
  *
 -->
 
-<mat-progress-bar mode="indeterminate" *ngIf="reporttypeService.reporttypeGetModel$.getValue().Working"></mat-progress-bar>
+<mat-progress-bar mode="indeterminate" *ngIf="reporttypeService.reporttypeGetModel$.getValue()?.Working"></mat-progress-bar>
 <mat-card>
   <mat-card-header>
     <mat-card-title>
@@ -17,8 +17,8 @@
     <mat-card-subtitle>{{ reporttypeService.reporttypeTextModel$.getValue().Title }}</mat-card-subtitle>
   </mat-card-header>
   <mat-card-content>
-    <mat-list>
-      <mat-list-item *ngFor="let reporttype of reporttypeService.reporttypeList">
+    <mat-list *ngIf="reporttypeService.reporttypeListModel$.getValue()?.length">
+      <mat-list-item *ngFor="let reporttype of reporttypeService.reporttypeListModel$.getValue()">
         <span mat-line>
           <button mat-raised-button (click)="DeleteReportType(reporttype)">
             <span>Delete ReportTypeID [{{ reporttype.ReportTypeID }}]&nbsp;&nbsp;&nbsp;</span>
@@ -57,7 +57,7 @@
     <mat-card-title>Edit ReportType testing</mat-card-title>
   </mat-card-header>
   <mat-card-content>
-    <div *ngIf="reporttypeService.reporttypeList.length">
+    <div *ngIf="reporttypeService.reporttypeListModel$.getValue()?.length">
       <blockquote>
         <form [formGroup]="reporttypeFormPut" (ngSubmit)="PutReportType(reporttypeFormPut.value)">
           <h3>
@@ -72,6 +72,10 @@
             <mat-form-field>
               <mat-label>ReportTypeID</mat-label>
               <input matInput type="number" formControlName="ReportTypeID">
+              <mat-error *ngIf="reporttypeFormPut.controls.ReportTypeID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>TVType</mat-label>
@@ -80,6 +84,10 @@
                   {{ a.EnumText }}
                 </mat-option>
               </mat-select>
+              <mat-error *ngIf="reporttypeFormPut.controls.TVType.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>FileType</mat-label>
@@ -88,10 +96,19 @@
                   {{ a.EnumText }}
                 </mat-option>
               </mat-select>
+              <mat-error *ngIf="reporttypeFormPut.controls.FileType.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>UniqueCode</mat-label>
               <input matInput type="text" formControlName="UniqueCode">
+              <mat-error *ngIf="reporttypeFormPut.controls.UniqueCode.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+                <span *ngIf="e.maxlength">MaxLength - 100<br /></span>
+              </mat-error>
             </mat-form-field>
           </p>
           <p>
@@ -102,28 +119,51 @@
                   {{ a.EnumText }}
                 </mat-option>
               </mat-select>
+              <mat-error *ngIf="reporttypeFormPut.controls.Language.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>Name</mat-label>
               <input matInput type="text" formControlName="Name">
+              <mat-error *ngIf="reporttypeFormPut.controls.Name.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.maxlength">MaxLength - 100<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>Description</mat-label>
               <input matInput type="text" formControlName="Description">
+              <mat-error *ngIf="reporttypeFormPut.controls.Description.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.maxlength">MaxLength - 1000<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>StartOfFileName</mat-label>
               <input matInput type="text" formControlName="StartOfFileName">
+              <mat-error *ngIf="reporttypeFormPut.controls.StartOfFileName.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.maxlength">MaxLength - 100<br /></span>
+              </mat-error>
             </mat-form-field>
           </p>
           <p>
             <mat-form-field>
               <mat-label>LastUpdateDate_UTC</mat-label>
               <input matInput type="text" formControlName="LastUpdateDate_UTC">
+              <mat-error *ngIf="reporttypeFormPut.controls.LastUpdateDate_UTC.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>LastUpdateContactTVItemID</mat-label>
               <input matInput type="number" formControlName="LastUpdateContactTVItemID">
+              <mat-error *ngIf="reporttypeFormPut.controls.LastUpdateContactTVItemID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
           </p>
         </form>
@@ -138,7 +178,7 @@
     <mat-card-title>Add ReportType testing</mat-card-title>
   </mat-card-header>
   <mat-card-content>
-    <div *ngIf="reporttypeService.reporttypeList.length">
+    <div *ngIf="reporttypeService.reporttypeListModel$.getValue()?.length">
       <blockquote>
         <form [formGroup]="reporttypeFormPost" (ngSubmit)="PostReportType(reporttypeFormPost.value)">
           <h3>
@@ -153,6 +193,10 @@
             <mat-form-field>
               <mat-label>ReportTypeID</mat-label>
               <input matInput type="number" formControlName="ReportTypeID">
+              <mat-error *ngIf="reporttypeFormPut.controls.ReportTypeID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>TVType</mat-label>
@@ -161,6 +205,10 @@
                   {{ a.EnumText }}
                 </mat-option>
               </mat-select>
+              <mat-error *ngIf="reporttypeFormPut.controls.TVType.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>FileType</mat-label>
@@ -169,10 +217,19 @@
                   {{ a.EnumText }}
                 </mat-option>
               </mat-select>
+              <mat-error *ngIf="reporttypeFormPut.controls.FileType.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>UniqueCode</mat-label>
               <input matInput type="text" formControlName="UniqueCode">
+              <mat-error *ngIf="reporttypeFormPut.controls.UniqueCode.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+                <span *ngIf="e.maxlength">MaxLength - 100<br /></span>
+              </mat-error>
             </mat-form-field>
           </p>
           <p>
@@ -183,28 +240,51 @@
                   {{ a.EnumText }}
                 </mat-option>
               </mat-select>
+              <mat-error *ngIf="reporttypeFormPut.controls.Language.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>Name</mat-label>
               <input matInput type="text" formControlName="Name">
+              <mat-error *ngIf="reporttypeFormPut.controls.Name.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.maxlength">MaxLength - 100<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>Description</mat-label>
               <input matInput type="text" formControlName="Description">
+              <mat-error *ngIf="reporttypeFormPut.controls.Description.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.maxlength">MaxLength - 1000<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>StartOfFileName</mat-label>
               <input matInput type="text" formControlName="StartOfFileName">
+              <mat-error *ngIf="reporttypeFormPut.controls.StartOfFileName.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.maxlength">MaxLength - 100<br /></span>
+              </mat-error>
             </mat-form-field>
           </p>
           <p>
             <mat-form-field>
               <mat-label>LastUpdateDate_UTC</mat-label>
               <input matInput type="text" formControlName="LastUpdateDate_UTC">
+              <mat-error *ngIf="reporttypeFormPut.controls.LastUpdateDate_UTC.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>LastUpdateContactTVItemID</mat-label>
               <input matInput type="number" formControlName="LastUpdateContactTVItemID">
+              <mat-error *ngIf="reporttypeFormPut.controls.LastUpdateContactTVItemID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
           </p>
         </form>

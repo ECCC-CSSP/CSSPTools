@@ -8,13 +8,15 @@
 import { Component, OnInit, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
 import { MWQMSubsectorLanguageService } from './mwqmsubsectorlanguage.service';
 import { LoadLocalesMWQMSubsectorLanguageText } from './mwqmsubsectorlanguage.locales';
-import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { LanguageEnum_GetIDText, LanguageEnum_GetOrderedText } from '../../../enums/generated/LanguageEnum';
 import { TranslationStatusEnum_GetIDText, TranslationStatusEnum_GetOrderedText } from '../../../enums/generated/TranslationStatusEnum';
 import { MWQMSubsectorLanguage } from '../../../models/generated/MWQMSubsectorLanguage.model';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
 import { EnumIDAndText } from '../../../models/enumidandtext.model';
+import { HttpClientService } from '../../../services/http-client.service';
+import { Router } from '@angular/router';
+import { HttpClientCommand } from '../../../enums/app.enums';
 
 @Component({
   selector: 'app-mwqmsubsectorlanguage',
@@ -30,22 +32,24 @@ export class MWQMSubsectorLanguageComponent implements OnInit, OnDestroy {
   mwqmsubsectorlanguageFormPut: FormGroup;
   mwqmsubsectorlanguageFormPost: FormGroup;
 
-  constructor(public mwqmsubsectorlanguageService: MWQMSubsectorLanguageService, public router: Router, public fb: FormBuilder) { }
+  constructor(public mwqmsubsectorlanguageService: MWQMSubsectorLanguageService, private router: Router, private httpClientService: HttpClientService, private fb: FormBuilder) {
+    httpClientService.oldURL = router.url;
+  }
 
   GetMWQMSubsectorLanguageList() {
-    this.sub = this.mwqmsubsectorlanguageService.GetMWQMSubsectorLanguageList(this.router).subscribe();
+    this.sub = this.mwqmsubsectorlanguageService.GetMWQMSubsectorLanguageList().subscribe();
   }
 
   PutMWQMSubsectorLanguage(mwqmsubsectorlanguage: MWQMSubsectorLanguage) {
-    this.sub = this.mwqmsubsectorlanguageService.PutMWQMSubsectorLanguage(mwqmsubsectorlanguage, this.router).subscribe();
+    this.sub = this.mwqmsubsectorlanguageService.PutMWQMSubsectorLanguage(mwqmsubsectorlanguage).subscribe();
   }
 
   PostMWQMSubsectorLanguage(mwqmsubsectorlanguage: MWQMSubsectorLanguage) {
-    this.sub = this.mwqmsubsectorlanguageService.PostMWQMSubsectorLanguage(mwqmsubsectorlanguage, this.router).subscribe();
+    this.sub = this.mwqmsubsectorlanguageService.PostMWQMSubsectorLanguage(mwqmsubsectorlanguage).subscribe();
   }
 
   DeleteMWQMSubsectorLanguage(mwqmsubsectorlanguage: MWQMSubsectorLanguage) {
-    this.sub = this.mwqmsubsectorlanguageService.DeleteMWQMSubsectorLanguage(mwqmsubsectorlanguage, this.router).subscribe();
+    this.sub = this.mwqmsubsectorlanguageService.DeleteMWQMSubsectorLanguage(mwqmsubsectorlanguage).subscribe();
   }
 
   GetLanguageEnumText(enumID: number) {
@@ -61,8 +65,8 @@ export class MWQMSubsectorLanguageComponent implements OnInit, OnDestroy {
     this.languageList = LanguageEnum_GetOrderedText();
     this.translationStatusSubsectorDescList = TranslationStatusEnum_GetOrderedText();
     this.translationStatusLogBookList = TranslationStatusEnum_GetOrderedText();
-    this.FillFormBuilderGroup('Add');
-    this.FillFormBuilderGroup('Update');
+    this.FillFormBuilderGroup(HttpClientCommand.Post);
+    this.FillFormBuilderGroup(HttpClientCommand.Put);
   }
 
   ngOnDestroy() {
@@ -71,59 +75,59 @@ export class MWQMSubsectorLanguageComponent implements OnInit, OnDestroy {
     }
   }
 
-  FillFormBuilderGroup(AddOrUpdate: string) {
-    if (this.mwqmsubsectorlanguageService.mwqmsubsectorlanguageList.length) {
+  FillFormBuilderGroup(httpClientCommand: HttpClientCommand) {
+    if (this.mwqmsubsectorlanguageService.mwqmsubsectorlanguageListModel$.getValue().length) {
       let formGroup: FormGroup = this.fb.group(
         {
           MWQMSubsectorLanguageID: [
             {
-              value: (AddOrUpdate === 'Add' ? 0 : (this.mwqmsubsectorlanguageService.mwqmsubsectorlanguageList[0]?.MWQMSubsectorLanguageID)),
+              value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.mwqmsubsectorlanguageService.mwqmsubsectorlanguageListModel$.getValue()[0]?.MWQMSubsectorLanguageID)),
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
           MWQMSubsectorID: [
             {
-              value: this.mwqmsubsectorlanguageService.mwqmsubsectorlanguageList[0]?.MWQMSubsectorID,
+              value: this.mwqmsubsectorlanguageService.mwqmsubsectorlanguageListModel$.getValue()[0]?.MWQMSubsectorID,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
           Language: [
             {
-              value: this.mwqmsubsectorlanguageService.mwqmsubsectorlanguageList[0]?.Language,
+              value: this.mwqmsubsectorlanguageService.mwqmsubsectorlanguageListModel$.getValue()[0]?.Language,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
           SubsectorDesc: [
             {
-              value: this.mwqmsubsectorlanguageService.mwqmsubsectorlanguageList[0]?.SubsectorDesc,
+              value: this.mwqmsubsectorlanguageService.mwqmsubsectorlanguageListModel$.getValue()[0]?.SubsectorDesc,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required, Validators.maxLength(250) ]],
           TranslationStatusSubsectorDesc: [
             {
-              value: this.mwqmsubsectorlanguageService.mwqmsubsectorlanguageList[0]?.TranslationStatusSubsectorDesc,
+              value: this.mwqmsubsectorlanguageService.mwqmsubsectorlanguageListModel$.getValue()[0]?.TranslationStatusSubsectorDesc,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
           LogBook: [
             {
-              value: this.mwqmsubsectorlanguageService.mwqmsubsectorlanguageList[0]?.LogBook,
+              value: this.mwqmsubsectorlanguageService.mwqmsubsectorlanguageListModel$.getValue()[0]?.LogBook,
               disabled: false
-            }, [ Validators.required ]],
+            }],
           TranslationStatusLogBook: [
             {
-              value: this.mwqmsubsectorlanguageService.mwqmsubsectorlanguageList[0]?.TranslationStatusLogBook,
+              value: this.mwqmsubsectorlanguageService.mwqmsubsectorlanguageListModel$.getValue()[0]?.TranslationStatusLogBook,
               disabled: false
-            }, [ Validators.required ]],
+            }],
           LastUpdateDate_UTC: [
             {
-              value: this.mwqmsubsectorlanguageService.mwqmsubsectorlanguageList[0]?.LastUpdateDate_UTC,
+              value: this.mwqmsubsectorlanguageService.mwqmsubsectorlanguageListModel$.getValue()[0]?.LastUpdateDate_UTC,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
           LastUpdateContactTVItemID: [
             {
-              value: this.mwqmsubsectorlanguageService.mwqmsubsectorlanguageList[0]?.LastUpdateContactTVItemID,
+              value: this.mwqmsubsectorlanguageService.mwqmsubsectorlanguageListModel$.getValue()[0]?.LastUpdateContactTVItemID,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
         }
       );
 
-      if (AddOrUpdate === 'Add') {
+      if (httpClientCommand === HttpClientCommand.Post) {
         this.mwqmsubsectorlanguageFormPost = formGroup
       }
       else {

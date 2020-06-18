@@ -9,11 +9,12 @@ import { Injectable } from '@angular/core';
 import { SamplingPlanSubsectorSiteTextModel } from './samplingplansubsectorsite.models';
 import { BehaviorSubject, of } from 'rxjs';
 import { LoadLocalesSamplingPlanSubsectorSiteText } from './samplingplansubsectorsite.locales';
-import { Router } from '@angular/router';
-import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { map, catchError } from 'rxjs/operators';
 import { SamplingPlanSubsectorSite } from '../../../models/generated/SamplingPlanSubsectorSite.model';
 import { HttpRequestModel } from '../../../models/http.model';
+import { HttpClientService } from '../../../services/http-client.service';
+import { HttpClientCommand } from '../../../enums/app.enums';
 
 @Injectable({
   providedIn: 'root'
@@ -26,110 +27,63 @@ export class SamplingPlanSubsectorSiteService {
   samplingplansubsectorsitePutModel$: BehaviorSubject<HttpRequestModel> = new BehaviorSubject<HttpRequestModel>(<HttpRequestModel>{});
   samplingplansubsectorsitePostModel$: BehaviorSubject<HttpRequestModel> = new BehaviorSubject<HttpRequestModel>(<HttpRequestModel>{});
   samplingplansubsectorsiteDeleteModel$: BehaviorSubject<HttpRequestModel> = new BehaviorSubject<HttpRequestModel>(<HttpRequestModel>{});
-  samplingplansubsectorsiteList: SamplingPlanSubsectorSite[] = [];
-  private oldURL: string;
-  private router: Router;
 
   /* Constructors */
-  constructor(private httpClient: HttpClient) {
+  constructor(private httpClient: HttpClient, private httpClientService: HttpClientService) {
     LoadLocalesSamplingPlanSubsectorSiteText(this);
     this.samplingplansubsectorsiteTextModel$.next(<SamplingPlanSubsectorSiteTextModel>{ Title: "Something2 for text" });
   }
 
   /* Functions public */
-  GetSamplingPlanSubsectorSiteList(router: Router) {
-    this.BeforeHttpClient(this.samplingplansubsectorsiteGetModel$, router);
+  GetSamplingPlanSubsectorSiteList() {
+    this.httpClientService.BeforeHttpClient(this.samplingplansubsectorsiteGetModel$);
 
     return this.httpClient.get<SamplingPlanSubsectorSite[]>('/api/SamplingPlanSubsectorSite').pipe(
       map((x: any) => {
-        this.DoSuccess(this.samplingplansubsectorsiteGetModel$, x, 'Get', null);
+        this.httpClientService.DoSuccess<SamplingPlanSubsectorSite>(this.samplingplansubsectorsiteListModel$, this.samplingplansubsectorsiteGetModel$, x, HttpClientCommand.Get, null);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.DoCatchError(this.samplingplansubsectorsiteGetModel$, e, 'Get');
+        this.httpClientService.DoCatchError<SamplingPlanSubsectorSite>(this.samplingplansubsectorsiteListModel$, this.samplingplansubsectorsiteGetModel$, e);
       })))
     );
   }
 
-  PutSamplingPlanSubsectorSite(samplingplansubsectorsite: SamplingPlanSubsectorSite, router: Router) {
-    this.BeforeHttpClient(this.samplingplansubsectorsitePutModel$, router);
+  PutSamplingPlanSubsectorSite(samplingplansubsectorsite: SamplingPlanSubsectorSite) {
+    this.httpClientService.BeforeHttpClient(this.samplingplansubsectorsitePutModel$);
 
     return this.httpClient.put<SamplingPlanSubsectorSite>('/api/SamplingPlanSubsectorSite', samplingplansubsectorsite, { headers: new HttpHeaders() }).pipe(
       map((x: any) => {
-        this.DoSuccess(this.samplingplansubsectorsitePutModel$, x, 'Put', samplingplansubsectorsite);
+        this.httpClientService.DoSuccess<SamplingPlanSubsectorSite>(this.samplingplansubsectorsiteListModel$, this.samplingplansubsectorsitePutModel$, x, HttpClientCommand.Put, samplingplansubsectorsite);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.DoCatchError(this.samplingplansubsectorsitePutModel$, e, 'Put');
+       this.httpClientService.DoCatchError<SamplingPlanSubsectorSite>(this.samplingplansubsectorsiteListModel$, this.samplingplansubsectorsitePutModel$, e);
       })))
     );
   }
 
-  PostSamplingPlanSubsectorSite(samplingplansubsectorsite: SamplingPlanSubsectorSite, router: Router) {
-    this.BeforeHttpClient(this.samplingplansubsectorsitePostModel$, router);
+  PostSamplingPlanSubsectorSite(samplingplansubsectorsite: SamplingPlanSubsectorSite) {
+    this.httpClientService.BeforeHttpClient(this.samplingplansubsectorsitePostModel$);
 
     return this.httpClient.post<SamplingPlanSubsectorSite>('/api/SamplingPlanSubsectorSite', samplingplansubsectorsite, { headers: new HttpHeaders() }).pipe(
       map((x: any) => {
-        this.DoSuccess(this.samplingplansubsectorsitePostModel$, x, 'Post', samplingplansubsectorsite);
+        this.httpClientService.DoSuccess<SamplingPlanSubsectorSite>(this.samplingplansubsectorsiteListModel$, this.samplingplansubsectorsitePostModel$, x, HttpClientCommand.Post, samplingplansubsectorsite);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.DoCatchError(this.samplingplansubsectorsitePostModel$, e, 'Post');
+        this.httpClientService.DoCatchError<SamplingPlanSubsectorSite>(this.samplingplansubsectorsiteListModel$, this.samplingplansubsectorsitePostModel$, e);
       })))
     );
   }
 
-  DeleteSamplingPlanSubsectorSite(samplingplansubsectorsite: SamplingPlanSubsectorSite, router: Router) {
-    this.BeforeHttpClient(this.samplingplansubsectorsiteDeleteModel$, router);
+  DeleteSamplingPlanSubsectorSite(samplingplansubsectorsite: SamplingPlanSubsectorSite) {
+    this.httpClientService.BeforeHttpClient(this.samplingplansubsectorsiteDeleteModel$);
 
     return this.httpClient.delete<boolean>(`/api/SamplingPlanSubsectorSite/${ samplingplansubsectorsite.SamplingPlanSubsectorSiteID }`).pipe(
       map((x: any) => {
-        this.DoSuccess(this.samplingplansubsectorsiteDeleteModel$, x, 'Delete', samplingplansubsectorsite);
+        this.httpClientService.DoSuccess<SamplingPlanSubsectorSite>(this.samplingplansubsectorsiteListModel$, this.samplingplansubsectorsiteDeleteModel$, x, HttpClientCommand.Delete, samplingplansubsectorsite);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.DoCatchError(this.samplingplansubsectorsiteDeleteModel$, e, 'Delete');
+        this.httpClientService.DoCatchError<SamplingPlanSubsectorSite>(this.samplingplansubsectorsiteListModel$, this.samplingplansubsectorsiteDeleteModel$, e);
       })))
     );
-  }
-
-  /* Functions private */
-  private BeforeHttpClient(httpRequestModel$: BehaviorSubject<HttpRequestModel>, router: Router) {
-    this.router = router;
-    this.oldURL = router.url;
-    httpRequestModel$.next(<HttpRequestModel>{ Working: true, Error: null, Status: null });
-  }
-
-  private DoCatchError(httpRequestModel$: BehaviorSubject<HttpRequestModel>, e: any, command: string) {
-    this.samplingplansubsectorsiteListModel$.next(null);
-    httpRequestModel$.next(<HttpRequestModel>{ Working: false, Error: <HttpErrorResponse>e, Status: 'Error' });
-
-    this.samplingplansubsectorsiteList = [];
-    console.debug(`SamplingPlanSubsectorSite ${ command } ERROR. Return: ${ <HttpErrorResponse>e }`);
-    this.DoReload();
-  }
-
-  private DoReload() {
-    this.router.navigateByUrl('', { skipLocationChange: true }).then(() => {
-      this.router.navigate([`/${this.oldURL}`]);
-    });
-  }
-
-  private DoSuccess(httpRequestModel$: BehaviorSubject<HttpRequestModel>, x: any, command: string, samplingplansubsectorsite?: SamplingPlanSubsectorSite) {
-    console.debug(`SamplingPlanSubsectorSite ${ command } OK. Return: ${ x }`);
-    if (command === 'Get') {
-      this.samplingplansubsectorsiteListModel$.next(<SamplingPlanSubsectorSite[]>x);
-    }
-    if (command === 'Put') {
-      this.samplingplansubsectorsiteListModel$.getValue()[0] = <SamplingPlanSubsectorSite>x;
-    }
-    if (command === 'Post') {
-      this.samplingplansubsectorsiteListModel$.getValue().push(<SamplingPlanSubsectorSite>x);
-    }
-    if (command === 'Delete') {
-      const index = this.samplingplansubsectorsiteListModel$.getValue().indexOf(samplingplansubsectorsite);
-      this.samplingplansubsectorsiteListModel$.getValue().splice(index, 1);
-    }
-
-    this.samplingplansubsectorsiteListModel$.next(this.samplingplansubsectorsiteListModel$.getValue());
-    httpRequestModel$.next(<HttpRequestModel>{ Working: false, Error: null, Status: 'ok' });
-    this.samplingplansubsectorsiteList = this.samplingplansubsectorsiteListModel$.getValue();
-    this.DoReload();
   }
 }

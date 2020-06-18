@@ -9,11 +9,12 @@ import { Injectable } from '@angular/core';
 import { PolSourceGroupingTextModel } from './polsourcegrouping.models';
 import { BehaviorSubject, of } from 'rxjs';
 import { LoadLocalesPolSourceGroupingText } from './polsourcegrouping.locales';
-import { Router } from '@angular/router';
-import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { map, catchError } from 'rxjs/operators';
 import { PolSourceGrouping } from '../../../models/generated/PolSourceGrouping.model';
 import { HttpRequestModel } from '../../../models/http.model';
+import { HttpClientService } from '../../../services/http-client.service';
+import { HttpClientCommand } from '../../../enums/app.enums';
 
 @Injectable({
   providedIn: 'root'
@@ -26,110 +27,63 @@ export class PolSourceGroupingService {
   polsourcegroupingPutModel$: BehaviorSubject<HttpRequestModel> = new BehaviorSubject<HttpRequestModel>(<HttpRequestModel>{});
   polsourcegroupingPostModel$: BehaviorSubject<HttpRequestModel> = new BehaviorSubject<HttpRequestModel>(<HttpRequestModel>{});
   polsourcegroupingDeleteModel$: BehaviorSubject<HttpRequestModel> = new BehaviorSubject<HttpRequestModel>(<HttpRequestModel>{});
-  polsourcegroupingList: PolSourceGrouping[] = [];
-  private oldURL: string;
-  private router: Router;
 
   /* Constructors */
-  constructor(private httpClient: HttpClient) {
+  constructor(private httpClient: HttpClient, private httpClientService: HttpClientService) {
     LoadLocalesPolSourceGroupingText(this);
     this.polsourcegroupingTextModel$.next(<PolSourceGroupingTextModel>{ Title: "Something2 for text" });
   }
 
   /* Functions public */
-  GetPolSourceGroupingList(router: Router) {
-    this.BeforeHttpClient(this.polsourcegroupingGetModel$, router);
+  GetPolSourceGroupingList() {
+    this.httpClientService.BeforeHttpClient(this.polsourcegroupingGetModel$);
 
     return this.httpClient.get<PolSourceGrouping[]>('/api/PolSourceGrouping').pipe(
       map((x: any) => {
-        this.DoSuccess(this.polsourcegroupingGetModel$, x, 'Get', null);
+        this.httpClientService.DoSuccess<PolSourceGrouping>(this.polsourcegroupingListModel$, this.polsourcegroupingGetModel$, x, HttpClientCommand.Get, null);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.DoCatchError(this.polsourcegroupingGetModel$, e, 'Get');
+        this.httpClientService.DoCatchError<PolSourceGrouping>(this.polsourcegroupingListModel$, this.polsourcegroupingGetModel$, e);
       })))
     );
   }
 
-  PutPolSourceGrouping(polsourcegrouping: PolSourceGrouping, router: Router) {
-    this.BeforeHttpClient(this.polsourcegroupingPutModel$, router);
+  PutPolSourceGrouping(polsourcegrouping: PolSourceGrouping) {
+    this.httpClientService.BeforeHttpClient(this.polsourcegroupingPutModel$);
 
     return this.httpClient.put<PolSourceGrouping>('/api/PolSourceGrouping', polsourcegrouping, { headers: new HttpHeaders() }).pipe(
       map((x: any) => {
-        this.DoSuccess(this.polsourcegroupingPutModel$, x, 'Put', polsourcegrouping);
+        this.httpClientService.DoSuccess<PolSourceGrouping>(this.polsourcegroupingListModel$, this.polsourcegroupingPutModel$, x, HttpClientCommand.Put, polsourcegrouping);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.DoCatchError(this.polsourcegroupingPutModel$, e, 'Put');
+       this.httpClientService.DoCatchError<PolSourceGrouping>(this.polsourcegroupingListModel$, this.polsourcegroupingPutModel$, e);
       })))
     );
   }
 
-  PostPolSourceGrouping(polsourcegrouping: PolSourceGrouping, router: Router) {
-    this.BeforeHttpClient(this.polsourcegroupingPostModel$, router);
+  PostPolSourceGrouping(polsourcegrouping: PolSourceGrouping) {
+    this.httpClientService.BeforeHttpClient(this.polsourcegroupingPostModel$);
 
     return this.httpClient.post<PolSourceGrouping>('/api/PolSourceGrouping', polsourcegrouping, { headers: new HttpHeaders() }).pipe(
       map((x: any) => {
-        this.DoSuccess(this.polsourcegroupingPostModel$, x, 'Post', polsourcegrouping);
+        this.httpClientService.DoSuccess<PolSourceGrouping>(this.polsourcegroupingListModel$, this.polsourcegroupingPostModel$, x, HttpClientCommand.Post, polsourcegrouping);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.DoCatchError(this.polsourcegroupingPostModel$, e, 'Post');
+        this.httpClientService.DoCatchError<PolSourceGrouping>(this.polsourcegroupingListModel$, this.polsourcegroupingPostModel$, e);
       })))
     );
   }
 
-  DeletePolSourceGrouping(polsourcegrouping: PolSourceGrouping, router: Router) {
-    this.BeforeHttpClient(this.polsourcegroupingDeleteModel$, router);
+  DeletePolSourceGrouping(polsourcegrouping: PolSourceGrouping) {
+    this.httpClientService.BeforeHttpClient(this.polsourcegroupingDeleteModel$);
 
     return this.httpClient.delete<boolean>(`/api/PolSourceGrouping/${ polsourcegrouping.PolSourceGroupingID }`).pipe(
       map((x: any) => {
-        this.DoSuccess(this.polsourcegroupingDeleteModel$, x, 'Delete', polsourcegrouping);
+        this.httpClientService.DoSuccess<PolSourceGrouping>(this.polsourcegroupingListModel$, this.polsourcegroupingDeleteModel$, x, HttpClientCommand.Delete, polsourcegrouping);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.DoCatchError(this.polsourcegroupingDeleteModel$, e, 'Delete');
+        this.httpClientService.DoCatchError<PolSourceGrouping>(this.polsourcegroupingListModel$, this.polsourcegroupingDeleteModel$, e);
       })))
     );
-  }
-
-  /* Functions private */
-  private BeforeHttpClient(httpRequestModel$: BehaviorSubject<HttpRequestModel>, router: Router) {
-    this.router = router;
-    this.oldURL = router.url;
-    httpRequestModel$.next(<HttpRequestModel>{ Working: true, Error: null, Status: null });
-  }
-
-  private DoCatchError(httpRequestModel$: BehaviorSubject<HttpRequestModel>, e: any, command: string) {
-    this.polsourcegroupingListModel$.next(null);
-    httpRequestModel$.next(<HttpRequestModel>{ Working: false, Error: <HttpErrorResponse>e, Status: 'Error' });
-
-    this.polsourcegroupingList = [];
-    console.debug(`PolSourceGrouping ${ command } ERROR. Return: ${ <HttpErrorResponse>e }`);
-    this.DoReload();
-  }
-
-  private DoReload() {
-    this.router.navigateByUrl('', { skipLocationChange: true }).then(() => {
-      this.router.navigate([`/${this.oldURL}`]);
-    });
-  }
-
-  private DoSuccess(httpRequestModel$: BehaviorSubject<HttpRequestModel>, x: any, command: string, polsourcegrouping?: PolSourceGrouping) {
-    console.debug(`PolSourceGrouping ${ command } OK. Return: ${ x }`);
-    if (command === 'Get') {
-      this.polsourcegroupingListModel$.next(<PolSourceGrouping[]>x);
-    }
-    if (command === 'Put') {
-      this.polsourcegroupingListModel$.getValue()[0] = <PolSourceGrouping>x;
-    }
-    if (command === 'Post') {
-      this.polsourcegroupingListModel$.getValue().push(<PolSourceGrouping>x);
-    }
-    if (command === 'Delete') {
-      const index = this.polsourcegroupingListModel$.getValue().indexOf(polsourcegrouping);
-      this.polsourcegroupingListModel$.getValue().splice(index, 1);
-    }
-
-    this.polsourcegroupingListModel$.next(this.polsourcegroupingListModel$.getValue());
-    httpRequestModel$.next(<HttpRequestModel>{ Working: false, Error: null, Status: 'ok' });
-    this.polsourcegroupingList = this.polsourcegroupingListModel$.getValue();
-    this.DoReload();
   }
 }

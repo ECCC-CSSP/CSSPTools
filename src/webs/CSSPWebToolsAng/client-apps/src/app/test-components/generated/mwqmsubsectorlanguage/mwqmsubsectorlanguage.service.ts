@@ -9,11 +9,12 @@ import { Injectable } from '@angular/core';
 import { MWQMSubsectorLanguageTextModel } from './mwqmsubsectorlanguage.models';
 import { BehaviorSubject, of } from 'rxjs';
 import { LoadLocalesMWQMSubsectorLanguageText } from './mwqmsubsectorlanguage.locales';
-import { Router } from '@angular/router';
-import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { map, catchError } from 'rxjs/operators';
 import { MWQMSubsectorLanguage } from '../../../models/generated/MWQMSubsectorLanguage.model';
 import { HttpRequestModel } from '../../../models/http.model';
+import { HttpClientService } from '../../../services/http-client.service';
+import { HttpClientCommand } from '../../../enums/app.enums';
 
 @Injectable({
   providedIn: 'root'
@@ -26,110 +27,63 @@ export class MWQMSubsectorLanguageService {
   mwqmsubsectorlanguagePutModel$: BehaviorSubject<HttpRequestModel> = new BehaviorSubject<HttpRequestModel>(<HttpRequestModel>{});
   mwqmsubsectorlanguagePostModel$: BehaviorSubject<HttpRequestModel> = new BehaviorSubject<HttpRequestModel>(<HttpRequestModel>{});
   mwqmsubsectorlanguageDeleteModel$: BehaviorSubject<HttpRequestModel> = new BehaviorSubject<HttpRequestModel>(<HttpRequestModel>{});
-  mwqmsubsectorlanguageList: MWQMSubsectorLanguage[] = [];
-  private oldURL: string;
-  private router: Router;
 
   /* Constructors */
-  constructor(private httpClient: HttpClient) {
+  constructor(private httpClient: HttpClient, private httpClientService: HttpClientService) {
     LoadLocalesMWQMSubsectorLanguageText(this);
     this.mwqmsubsectorlanguageTextModel$.next(<MWQMSubsectorLanguageTextModel>{ Title: "Something2 for text" });
   }
 
   /* Functions public */
-  GetMWQMSubsectorLanguageList(router: Router) {
-    this.BeforeHttpClient(this.mwqmsubsectorlanguageGetModel$, router);
+  GetMWQMSubsectorLanguageList() {
+    this.httpClientService.BeforeHttpClient(this.mwqmsubsectorlanguageGetModel$);
 
     return this.httpClient.get<MWQMSubsectorLanguage[]>('/api/MWQMSubsectorLanguage').pipe(
       map((x: any) => {
-        this.DoSuccess(this.mwqmsubsectorlanguageGetModel$, x, 'Get', null);
+        this.httpClientService.DoSuccess<MWQMSubsectorLanguage>(this.mwqmsubsectorlanguageListModel$, this.mwqmsubsectorlanguageGetModel$, x, HttpClientCommand.Get, null);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.DoCatchError(this.mwqmsubsectorlanguageGetModel$, e, 'Get');
+        this.httpClientService.DoCatchError<MWQMSubsectorLanguage>(this.mwqmsubsectorlanguageListModel$, this.mwqmsubsectorlanguageGetModel$, e);
       })))
     );
   }
 
-  PutMWQMSubsectorLanguage(mwqmsubsectorlanguage: MWQMSubsectorLanguage, router: Router) {
-    this.BeforeHttpClient(this.mwqmsubsectorlanguagePutModel$, router);
+  PutMWQMSubsectorLanguage(mwqmsubsectorlanguage: MWQMSubsectorLanguage) {
+    this.httpClientService.BeforeHttpClient(this.mwqmsubsectorlanguagePutModel$);
 
     return this.httpClient.put<MWQMSubsectorLanguage>('/api/MWQMSubsectorLanguage', mwqmsubsectorlanguage, { headers: new HttpHeaders() }).pipe(
       map((x: any) => {
-        this.DoSuccess(this.mwqmsubsectorlanguagePutModel$, x, 'Put', mwqmsubsectorlanguage);
+        this.httpClientService.DoSuccess<MWQMSubsectorLanguage>(this.mwqmsubsectorlanguageListModel$, this.mwqmsubsectorlanguagePutModel$, x, HttpClientCommand.Put, mwqmsubsectorlanguage);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.DoCatchError(this.mwqmsubsectorlanguagePutModel$, e, 'Put');
+       this.httpClientService.DoCatchError<MWQMSubsectorLanguage>(this.mwqmsubsectorlanguageListModel$, this.mwqmsubsectorlanguagePutModel$, e);
       })))
     );
   }
 
-  PostMWQMSubsectorLanguage(mwqmsubsectorlanguage: MWQMSubsectorLanguage, router: Router) {
-    this.BeforeHttpClient(this.mwqmsubsectorlanguagePostModel$, router);
+  PostMWQMSubsectorLanguage(mwqmsubsectorlanguage: MWQMSubsectorLanguage) {
+    this.httpClientService.BeforeHttpClient(this.mwqmsubsectorlanguagePostModel$);
 
     return this.httpClient.post<MWQMSubsectorLanguage>('/api/MWQMSubsectorLanguage', mwqmsubsectorlanguage, { headers: new HttpHeaders() }).pipe(
       map((x: any) => {
-        this.DoSuccess(this.mwqmsubsectorlanguagePostModel$, x, 'Post', mwqmsubsectorlanguage);
+        this.httpClientService.DoSuccess<MWQMSubsectorLanguage>(this.mwqmsubsectorlanguageListModel$, this.mwqmsubsectorlanguagePostModel$, x, HttpClientCommand.Post, mwqmsubsectorlanguage);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.DoCatchError(this.mwqmsubsectorlanguagePostModel$, e, 'Post');
+        this.httpClientService.DoCatchError<MWQMSubsectorLanguage>(this.mwqmsubsectorlanguageListModel$, this.mwqmsubsectorlanguagePostModel$, e);
       })))
     );
   }
 
-  DeleteMWQMSubsectorLanguage(mwqmsubsectorlanguage: MWQMSubsectorLanguage, router: Router) {
-    this.BeforeHttpClient(this.mwqmsubsectorlanguageDeleteModel$, router);
+  DeleteMWQMSubsectorLanguage(mwqmsubsectorlanguage: MWQMSubsectorLanguage) {
+    this.httpClientService.BeforeHttpClient(this.mwqmsubsectorlanguageDeleteModel$);
 
     return this.httpClient.delete<boolean>(`/api/MWQMSubsectorLanguage/${ mwqmsubsectorlanguage.MWQMSubsectorLanguageID }`).pipe(
       map((x: any) => {
-        this.DoSuccess(this.mwqmsubsectorlanguageDeleteModel$, x, 'Delete', mwqmsubsectorlanguage);
+        this.httpClientService.DoSuccess<MWQMSubsectorLanguage>(this.mwqmsubsectorlanguageListModel$, this.mwqmsubsectorlanguageDeleteModel$, x, HttpClientCommand.Delete, mwqmsubsectorlanguage);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.DoCatchError(this.mwqmsubsectorlanguageDeleteModel$, e, 'Delete');
+        this.httpClientService.DoCatchError<MWQMSubsectorLanguage>(this.mwqmsubsectorlanguageListModel$, this.mwqmsubsectorlanguageDeleteModel$, e);
       })))
     );
-  }
-
-  /* Functions private */
-  private BeforeHttpClient(httpRequestModel$: BehaviorSubject<HttpRequestModel>, router: Router) {
-    this.router = router;
-    this.oldURL = router.url;
-    httpRequestModel$.next(<HttpRequestModel>{ Working: true, Error: null, Status: null });
-  }
-
-  private DoCatchError(httpRequestModel$: BehaviorSubject<HttpRequestModel>, e: any, command: string) {
-    this.mwqmsubsectorlanguageListModel$.next(null);
-    httpRequestModel$.next(<HttpRequestModel>{ Working: false, Error: <HttpErrorResponse>e, Status: 'Error' });
-
-    this.mwqmsubsectorlanguageList = [];
-    console.debug(`MWQMSubsectorLanguage ${ command } ERROR. Return: ${ <HttpErrorResponse>e }`);
-    this.DoReload();
-  }
-
-  private DoReload() {
-    this.router.navigateByUrl('', { skipLocationChange: true }).then(() => {
-      this.router.navigate([`/${this.oldURL}`]);
-    });
-  }
-
-  private DoSuccess(httpRequestModel$: BehaviorSubject<HttpRequestModel>, x: any, command: string, mwqmsubsectorlanguage?: MWQMSubsectorLanguage) {
-    console.debug(`MWQMSubsectorLanguage ${ command } OK. Return: ${ x }`);
-    if (command === 'Get') {
-      this.mwqmsubsectorlanguageListModel$.next(<MWQMSubsectorLanguage[]>x);
-    }
-    if (command === 'Put') {
-      this.mwqmsubsectorlanguageListModel$.getValue()[0] = <MWQMSubsectorLanguage>x;
-    }
-    if (command === 'Post') {
-      this.mwqmsubsectorlanguageListModel$.getValue().push(<MWQMSubsectorLanguage>x);
-    }
-    if (command === 'Delete') {
-      const index = this.mwqmsubsectorlanguageListModel$.getValue().indexOf(mwqmsubsectorlanguage);
-      this.mwqmsubsectorlanguageListModel$.getValue().splice(index, 1);
-    }
-
-    this.mwqmsubsectorlanguageListModel$.next(this.mwqmsubsectorlanguageListModel$.getValue());
-    httpRequestModel$.next(<HttpRequestModel>{ Working: false, Error: null, Status: 'ok' });
-    this.mwqmsubsectorlanguageList = this.mwqmsubsectorlanguageListModel$.getValue();
-    this.DoReload();
   }
 }

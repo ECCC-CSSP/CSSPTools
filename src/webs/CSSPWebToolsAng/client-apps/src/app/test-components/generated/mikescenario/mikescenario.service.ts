@@ -9,11 +9,12 @@ import { Injectable } from '@angular/core';
 import { MikeScenarioTextModel } from './mikescenario.models';
 import { BehaviorSubject, of } from 'rxjs';
 import { LoadLocalesMikeScenarioText } from './mikescenario.locales';
-import { Router } from '@angular/router';
-import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { map, catchError } from 'rxjs/operators';
 import { MikeScenario } from '../../../models/generated/MikeScenario.model';
 import { HttpRequestModel } from '../../../models/http.model';
+import { HttpClientService } from '../../../services/http-client.service';
+import { HttpClientCommand } from '../../../enums/app.enums';
 
 @Injectable({
   providedIn: 'root'
@@ -26,110 +27,63 @@ export class MikeScenarioService {
   mikescenarioPutModel$: BehaviorSubject<HttpRequestModel> = new BehaviorSubject<HttpRequestModel>(<HttpRequestModel>{});
   mikescenarioPostModel$: BehaviorSubject<HttpRequestModel> = new BehaviorSubject<HttpRequestModel>(<HttpRequestModel>{});
   mikescenarioDeleteModel$: BehaviorSubject<HttpRequestModel> = new BehaviorSubject<HttpRequestModel>(<HttpRequestModel>{});
-  mikescenarioList: MikeScenario[] = [];
-  private oldURL: string;
-  private router: Router;
 
   /* Constructors */
-  constructor(private httpClient: HttpClient) {
+  constructor(private httpClient: HttpClient, private httpClientService: HttpClientService) {
     LoadLocalesMikeScenarioText(this);
     this.mikescenarioTextModel$.next(<MikeScenarioTextModel>{ Title: "Something2 for text" });
   }
 
   /* Functions public */
-  GetMikeScenarioList(router: Router) {
-    this.BeforeHttpClient(this.mikescenarioGetModel$, router);
+  GetMikeScenarioList() {
+    this.httpClientService.BeforeHttpClient(this.mikescenarioGetModel$);
 
     return this.httpClient.get<MikeScenario[]>('/api/MikeScenario').pipe(
       map((x: any) => {
-        this.DoSuccess(this.mikescenarioGetModel$, x, 'Get', null);
+        this.httpClientService.DoSuccess<MikeScenario>(this.mikescenarioListModel$, this.mikescenarioGetModel$, x, HttpClientCommand.Get, null);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.DoCatchError(this.mikescenarioGetModel$, e, 'Get');
+        this.httpClientService.DoCatchError<MikeScenario>(this.mikescenarioListModel$, this.mikescenarioGetModel$, e);
       })))
     );
   }
 
-  PutMikeScenario(mikescenario: MikeScenario, router: Router) {
-    this.BeforeHttpClient(this.mikescenarioPutModel$, router);
+  PutMikeScenario(mikescenario: MikeScenario) {
+    this.httpClientService.BeforeHttpClient(this.mikescenarioPutModel$);
 
     return this.httpClient.put<MikeScenario>('/api/MikeScenario', mikescenario, { headers: new HttpHeaders() }).pipe(
       map((x: any) => {
-        this.DoSuccess(this.mikescenarioPutModel$, x, 'Put', mikescenario);
+        this.httpClientService.DoSuccess<MikeScenario>(this.mikescenarioListModel$, this.mikescenarioPutModel$, x, HttpClientCommand.Put, mikescenario);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.DoCatchError(this.mikescenarioPutModel$, e, 'Put');
+       this.httpClientService.DoCatchError<MikeScenario>(this.mikescenarioListModel$, this.mikescenarioPutModel$, e);
       })))
     );
   }
 
-  PostMikeScenario(mikescenario: MikeScenario, router: Router) {
-    this.BeforeHttpClient(this.mikescenarioPostModel$, router);
+  PostMikeScenario(mikescenario: MikeScenario) {
+    this.httpClientService.BeforeHttpClient(this.mikescenarioPostModel$);
 
     return this.httpClient.post<MikeScenario>('/api/MikeScenario', mikescenario, { headers: new HttpHeaders() }).pipe(
       map((x: any) => {
-        this.DoSuccess(this.mikescenarioPostModel$, x, 'Post', mikescenario);
+        this.httpClientService.DoSuccess<MikeScenario>(this.mikescenarioListModel$, this.mikescenarioPostModel$, x, HttpClientCommand.Post, mikescenario);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.DoCatchError(this.mikescenarioPostModel$, e, 'Post');
+        this.httpClientService.DoCatchError<MikeScenario>(this.mikescenarioListModel$, this.mikescenarioPostModel$, e);
       })))
     );
   }
 
-  DeleteMikeScenario(mikescenario: MikeScenario, router: Router) {
-    this.BeforeHttpClient(this.mikescenarioDeleteModel$, router);
+  DeleteMikeScenario(mikescenario: MikeScenario) {
+    this.httpClientService.BeforeHttpClient(this.mikescenarioDeleteModel$);
 
     return this.httpClient.delete<boolean>(`/api/MikeScenario/${ mikescenario.MikeScenarioID }`).pipe(
       map((x: any) => {
-        this.DoSuccess(this.mikescenarioDeleteModel$, x, 'Delete', mikescenario);
+        this.httpClientService.DoSuccess<MikeScenario>(this.mikescenarioListModel$, this.mikescenarioDeleteModel$, x, HttpClientCommand.Delete, mikescenario);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.DoCatchError(this.mikescenarioDeleteModel$, e, 'Delete');
+        this.httpClientService.DoCatchError<MikeScenario>(this.mikescenarioListModel$, this.mikescenarioDeleteModel$, e);
       })))
     );
-  }
-
-  /* Functions private */
-  private BeforeHttpClient(httpRequestModel$: BehaviorSubject<HttpRequestModel>, router: Router) {
-    this.router = router;
-    this.oldURL = router.url;
-    httpRequestModel$.next(<HttpRequestModel>{ Working: true, Error: null, Status: null });
-  }
-
-  private DoCatchError(httpRequestModel$: BehaviorSubject<HttpRequestModel>, e: any, command: string) {
-    this.mikescenarioListModel$.next(null);
-    httpRequestModel$.next(<HttpRequestModel>{ Working: false, Error: <HttpErrorResponse>e, Status: 'Error' });
-
-    this.mikescenarioList = [];
-    console.debug(`MikeScenario ${ command } ERROR. Return: ${ <HttpErrorResponse>e }`);
-    this.DoReload();
-  }
-
-  private DoReload() {
-    this.router.navigateByUrl('', { skipLocationChange: true }).then(() => {
-      this.router.navigate([`/${this.oldURL}`]);
-    });
-  }
-
-  private DoSuccess(httpRequestModel$: BehaviorSubject<HttpRequestModel>, x: any, command: string, mikescenario?: MikeScenario) {
-    console.debug(`MikeScenario ${ command } OK. Return: ${ x }`);
-    if (command === 'Get') {
-      this.mikescenarioListModel$.next(<MikeScenario[]>x);
-    }
-    if (command === 'Put') {
-      this.mikescenarioListModel$.getValue()[0] = <MikeScenario>x;
-    }
-    if (command === 'Post') {
-      this.mikescenarioListModel$.getValue().push(<MikeScenario>x);
-    }
-    if (command === 'Delete') {
-      const index = this.mikescenarioListModel$.getValue().indexOf(mikescenario);
-      this.mikescenarioListModel$.getValue().splice(index, 1);
-    }
-
-    this.mikescenarioListModel$.next(this.mikescenarioListModel$.getValue());
-    httpRequestModel$.next(<HttpRequestModel>{ Working: false, Error: null, Status: 'ok' });
-    this.mikescenarioList = this.mikescenarioListModel$.getValue();
-    this.DoReload();
   }
 }

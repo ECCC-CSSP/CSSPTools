@@ -9,11 +9,12 @@ import { Injectable } from '@angular/core';
 import { ContactPreferenceTextModel } from './contactpreference.models';
 import { BehaviorSubject, of } from 'rxjs';
 import { LoadLocalesContactPreferenceText } from './contactpreference.locales';
-import { Router } from '@angular/router';
-import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { map, catchError } from 'rxjs/operators';
 import { ContactPreference } from '../../../models/generated/ContactPreference.model';
 import { HttpRequestModel } from '../../../models/http.model';
+import { HttpClientService } from '../../../services/http-client.service';
+import { HttpClientCommand } from '../../../enums/app.enums';
 
 @Injectable({
   providedIn: 'root'
@@ -26,110 +27,63 @@ export class ContactPreferenceService {
   contactpreferencePutModel$: BehaviorSubject<HttpRequestModel> = new BehaviorSubject<HttpRequestModel>(<HttpRequestModel>{});
   contactpreferencePostModel$: BehaviorSubject<HttpRequestModel> = new BehaviorSubject<HttpRequestModel>(<HttpRequestModel>{});
   contactpreferenceDeleteModel$: BehaviorSubject<HttpRequestModel> = new BehaviorSubject<HttpRequestModel>(<HttpRequestModel>{});
-  contactpreferenceList: ContactPreference[] = [];
-  private oldURL: string;
-  private router: Router;
 
   /* Constructors */
-  constructor(private httpClient: HttpClient) {
+  constructor(private httpClient: HttpClient, private httpClientService: HttpClientService) {
     LoadLocalesContactPreferenceText(this);
     this.contactpreferenceTextModel$.next(<ContactPreferenceTextModel>{ Title: "Something2 for text" });
   }
 
   /* Functions public */
-  GetContactPreferenceList(router: Router) {
-    this.BeforeHttpClient(this.contactpreferenceGetModel$, router);
+  GetContactPreferenceList() {
+    this.httpClientService.BeforeHttpClient(this.contactpreferenceGetModel$);
 
     return this.httpClient.get<ContactPreference[]>('/api/ContactPreference').pipe(
       map((x: any) => {
-        this.DoSuccess(this.contactpreferenceGetModel$, x, 'Get', null);
+        this.httpClientService.DoSuccess<ContactPreference>(this.contactpreferenceListModel$, this.contactpreferenceGetModel$, x, HttpClientCommand.Get, null);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.DoCatchError(this.contactpreferenceGetModel$, e, 'Get');
+        this.httpClientService.DoCatchError<ContactPreference>(this.contactpreferenceListModel$, this.contactpreferenceGetModel$, e);
       })))
     );
   }
 
-  PutContactPreference(contactpreference: ContactPreference, router: Router) {
-    this.BeforeHttpClient(this.contactpreferencePutModel$, router);
+  PutContactPreference(contactpreference: ContactPreference) {
+    this.httpClientService.BeforeHttpClient(this.contactpreferencePutModel$);
 
     return this.httpClient.put<ContactPreference>('/api/ContactPreference', contactpreference, { headers: new HttpHeaders() }).pipe(
       map((x: any) => {
-        this.DoSuccess(this.contactpreferencePutModel$, x, 'Put', contactpreference);
+        this.httpClientService.DoSuccess<ContactPreference>(this.contactpreferenceListModel$, this.contactpreferencePutModel$, x, HttpClientCommand.Put, contactpreference);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.DoCatchError(this.contactpreferencePutModel$, e, 'Put');
+       this.httpClientService.DoCatchError<ContactPreference>(this.contactpreferenceListModel$, this.contactpreferencePutModel$, e);
       })))
     );
   }
 
-  PostContactPreference(contactpreference: ContactPreference, router: Router) {
-    this.BeforeHttpClient(this.contactpreferencePostModel$, router);
+  PostContactPreference(contactpreference: ContactPreference) {
+    this.httpClientService.BeforeHttpClient(this.contactpreferencePostModel$);
 
     return this.httpClient.post<ContactPreference>('/api/ContactPreference', contactpreference, { headers: new HttpHeaders() }).pipe(
       map((x: any) => {
-        this.DoSuccess(this.contactpreferencePostModel$, x, 'Post', contactpreference);
+        this.httpClientService.DoSuccess<ContactPreference>(this.contactpreferenceListModel$, this.contactpreferencePostModel$, x, HttpClientCommand.Post, contactpreference);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.DoCatchError(this.contactpreferencePostModel$, e, 'Post');
+        this.httpClientService.DoCatchError<ContactPreference>(this.contactpreferenceListModel$, this.contactpreferencePostModel$, e);
       })))
     );
   }
 
-  DeleteContactPreference(contactpreference: ContactPreference, router: Router) {
-    this.BeforeHttpClient(this.contactpreferenceDeleteModel$, router);
+  DeleteContactPreference(contactpreference: ContactPreference) {
+    this.httpClientService.BeforeHttpClient(this.contactpreferenceDeleteModel$);
 
     return this.httpClient.delete<boolean>(`/api/ContactPreference/${ contactpreference.ContactPreferenceID }`).pipe(
       map((x: any) => {
-        this.DoSuccess(this.contactpreferenceDeleteModel$, x, 'Delete', contactpreference);
+        this.httpClientService.DoSuccess<ContactPreference>(this.contactpreferenceListModel$, this.contactpreferenceDeleteModel$, x, HttpClientCommand.Delete, contactpreference);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.DoCatchError(this.contactpreferenceDeleteModel$, e, 'Delete');
+        this.httpClientService.DoCatchError<ContactPreference>(this.contactpreferenceListModel$, this.contactpreferenceDeleteModel$, e);
       })))
     );
-  }
-
-  /* Functions private */
-  private BeforeHttpClient(httpRequestModel$: BehaviorSubject<HttpRequestModel>, router: Router) {
-    this.router = router;
-    this.oldURL = router.url;
-    httpRequestModel$.next(<HttpRequestModel>{ Working: true, Error: null, Status: null });
-  }
-
-  private DoCatchError(httpRequestModel$: BehaviorSubject<HttpRequestModel>, e: any, command: string) {
-    this.contactpreferenceListModel$.next(null);
-    httpRequestModel$.next(<HttpRequestModel>{ Working: false, Error: <HttpErrorResponse>e, Status: 'Error' });
-
-    this.contactpreferenceList = [];
-    console.debug(`ContactPreference ${ command } ERROR. Return: ${ <HttpErrorResponse>e }`);
-    this.DoReload();
-  }
-
-  private DoReload() {
-    this.router.navigateByUrl('', { skipLocationChange: true }).then(() => {
-      this.router.navigate([`/${this.oldURL}`]);
-    });
-  }
-
-  private DoSuccess(httpRequestModel$: BehaviorSubject<HttpRequestModel>, x: any, command: string, contactpreference?: ContactPreference) {
-    console.debug(`ContactPreference ${ command } OK. Return: ${ x }`);
-    if (command === 'Get') {
-      this.contactpreferenceListModel$.next(<ContactPreference[]>x);
-    }
-    if (command === 'Put') {
-      this.contactpreferenceListModel$.getValue()[0] = <ContactPreference>x;
-    }
-    if (command === 'Post') {
-      this.contactpreferenceListModel$.getValue().push(<ContactPreference>x);
-    }
-    if (command === 'Delete') {
-      const index = this.contactpreferenceListModel$.getValue().indexOf(contactpreference);
-      this.contactpreferenceListModel$.getValue().splice(index, 1);
-    }
-
-    this.contactpreferenceListModel$.next(this.contactpreferenceListModel$.getValue());
-    httpRequestModel$.next(<HttpRequestModel>{ Working: false, Error: null, Status: 'ok' });
-    this.contactpreferenceList = this.contactpreferenceListModel$.getValue();
-    this.DoReload();
   }
 }

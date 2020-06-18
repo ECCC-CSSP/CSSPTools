@@ -5,7 +5,7 @@
  *
 -->
 
-<mat-progress-bar mode="indeterminate" *ngIf="helpdocService.helpdocGetModel$.getValue().Working"></mat-progress-bar>
+<mat-progress-bar mode="indeterminate" *ngIf="helpdocService.helpdocGetModel$.getValue()?.Working"></mat-progress-bar>
 <mat-card>
   <mat-card-header>
     <mat-card-title>
@@ -17,8 +17,8 @@
     <mat-card-subtitle>{{ helpdocService.helpdocTextModel$.getValue().Title }}</mat-card-subtitle>
   </mat-card-header>
   <mat-card-content>
-    <mat-list>
-      <mat-list-item *ngFor="let helpdoc of helpdocService.helpdocList">
+    <mat-list *ngIf="helpdocService.helpdocListModel$.getValue()?.length">
+      <mat-list-item *ngFor="let helpdoc of helpdocService.helpdocListModel$.getValue()">
         <span mat-line>
           <button mat-raised-button (click)="DeleteHelpDoc(helpdoc)">
             <span>Delete HelpDocID [{{ helpdoc.HelpDocID }}]&nbsp;&nbsp;&nbsp;</span>
@@ -51,7 +51,7 @@
     <mat-card-title>Edit HelpDoc testing</mat-card-title>
   </mat-card-header>
   <mat-card-content>
-    <div *ngIf="helpdocService.helpdocList.length">
+    <div *ngIf="helpdocService.helpdocListModel$.getValue()?.length">
       <blockquote>
         <form [formGroup]="helpdocFormPut" (ngSubmit)="PutHelpDoc(helpdocFormPut.value)">
           <h3>
@@ -66,10 +66,19 @@
             <mat-form-field>
               <mat-label>HelpDocID</mat-label>
               <input matInput type="number" formControlName="HelpDocID">
+              <mat-error *ngIf="helpdocFormPut.controls.HelpDocID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>DocKey</mat-label>
               <input matInput type="text" formControlName="DocKey">
+              <mat-error *ngIf="helpdocFormPut.controls.DocKey.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+                <span *ngIf="e.maxlength">MaxLength - 100<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>Language</mat-label>
@@ -78,20 +87,37 @@
                   {{ a.EnumText }}
                 </mat-option>
               </mat-select>
+              <mat-error *ngIf="helpdocFormPut.controls.Language.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>DocHTMLText</mat-label>
               <input matInput type="text" formControlName="DocHTMLText">
+              <mat-error *ngIf="helpdocFormPut.controls.DocHTMLText.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+                <span *ngIf="e.maxlength">MaxLength - 100000<br /></span>
+              </mat-error>
             </mat-form-field>
           </p>
           <p>
             <mat-form-field>
               <mat-label>LastUpdateDate_UTC</mat-label>
               <input matInput type="text" formControlName="LastUpdateDate_UTC">
+              <mat-error *ngIf="helpdocFormPut.controls.LastUpdateDate_UTC.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>LastUpdateContactTVItemID</mat-label>
               <input matInput type="number" formControlName="LastUpdateContactTVItemID">
+              <mat-error *ngIf="helpdocFormPut.controls.LastUpdateContactTVItemID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
           </p>
         </form>
@@ -106,7 +132,7 @@
     <mat-card-title>Add HelpDoc testing</mat-card-title>
   </mat-card-header>
   <mat-card-content>
-    <div *ngIf="helpdocService.helpdocList.length">
+    <div *ngIf="helpdocService.helpdocListModel$.getValue()?.length">
       <blockquote>
         <form [formGroup]="helpdocFormPost" (ngSubmit)="PostHelpDoc(helpdocFormPost.value)">
           <h3>
@@ -121,10 +147,19 @@
             <mat-form-field>
               <mat-label>HelpDocID</mat-label>
               <input matInput type="number" formControlName="HelpDocID">
+              <mat-error *ngIf="helpdocFormPut.controls.HelpDocID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>DocKey</mat-label>
               <input matInput type="text" formControlName="DocKey">
+              <mat-error *ngIf="helpdocFormPut.controls.DocKey.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+                <span *ngIf="e.maxlength">MaxLength - 100<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>Language</mat-label>
@@ -133,20 +168,37 @@
                   {{ a.EnumText }}
                 </mat-option>
               </mat-select>
+              <mat-error *ngIf="helpdocFormPut.controls.Language.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>DocHTMLText</mat-label>
               <input matInput type="text" formControlName="DocHTMLText">
+              <mat-error *ngIf="helpdocFormPut.controls.DocHTMLText.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+                <span *ngIf="e.maxlength">MaxLength - 100000<br /></span>
+              </mat-error>
             </mat-form-field>
           </p>
           <p>
             <mat-form-field>
               <mat-label>LastUpdateDate_UTC</mat-label>
               <input matInput type="text" formControlName="LastUpdateDate_UTC">
+              <mat-error *ngIf="helpdocFormPut.controls.LastUpdateDate_UTC.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>LastUpdateContactTVItemID</mat-label>
               <input matInput type="number" formControlName="LastUpdateContactTVItemID">
+              <mat-error *ngIf="helpdocFormPut.controls.LastUpdateContactTVItemID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
           </p>
         </form>

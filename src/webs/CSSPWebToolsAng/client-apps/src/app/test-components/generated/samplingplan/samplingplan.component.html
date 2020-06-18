@@ -5,7 +5,7 @@
  *
 -->
 
-<mat-progress-bar mode="indeterminate" *ngIf="samplingplanService.samplingplanGetModel$.getValue().Working"></mat-progress-bar>
+<mat-progress-bar mode="indeterminate" *ngIf="samplingplanService.samplingplanGetModel$.getValue()?.Working"></mat-progress-bar>
 <mat-card>
   <mat-card-header>
     <mat-card-title>
@@ -17,8 +17,8 @@
     <mat-card-subtitle>{{ samplingplanService.samplingplanTextModel$.getValue().Title }}</mat-card-subtitle>
   </mat-card-header>
   <mat-card-content>
-    <mat-list>
-      <mat-list-item *ngFor="let samplingplan of samplingplanService.samplingplanList">
+    <mat-list *ngIf="samplingplanService.samplingplanListModel$.getValue()?.length">
+      <mat-list-item *ngFor="let samplingplan of samplingplanService.samplingplanListModel$.getValue()">
         <span mat-line>
           <button mat-raised-button (click)="DeleteSamplingPlan(samplingplan)">
             <span>Delete SamplingPlanID [{{ samplingplan.SamplingPlanID }}]&nbsp;&nbsp;&nbsp;</span>
@@ -75,7 +75,7 @@
     <mat-card-title>Edit SamplingPlan testing</mat-card-title>
   </mat-card-header>
   <mat-card-content>
-    <div *ngIf="samplingplanService.samplingplanList.length">
+    <div *ngIf="samplingplanService.samplingplanListModel$.getValue()?.length">
       <blockquote>
         <form [formGroup]="samplingplanFormPut" (ngSubmit)="PutSamplingPlan(samplingplanFormPut.value)">
           <h3>
@@ -90,18 +90,36 @@
             <mat-form-field>
               <mat-label>SamplingPlanID</mat-label>
               <input matInput type="number" formControlName="SamplingPlanID">
+              <mat-error *ngIf="samplingplanFormPut.controls.SamplingPlanID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>IsActive</mat-label>
               <input matInput type="text" formControlName="IsActive">
+              <mat-error *ngIf="samplingplanFormPut.controls.IsActive.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>SamplingPlanName</mat-label>
               <input matInput type="text" formControlName="SamplingPlanName">
+              <mat-error *ngIf="samplingplanFormPut.controls.SamplingPlanName.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+                <span *ngIf="e.maxlength">MaxLength - 200<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>ForGroupName</mat-label>
               <input matInput type="text" formControlName="ForGroupName">
+              <mat-error *ngIf="samplingplanFormPut.controls.ForGroupName.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+                <span *ngIf="e.maxlength">MaxLength - 100<br /></span>
+              </mat-error>
             </mat-form-field>
           </p>
           <p>
@@ -112,6 +130,10 @@
                   {{ a.EnumText }}
                 </mat-option>
               </mat-select>
+              <mat-error *ngIf="samplingplanFormPut.controls.SampleType.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>SamplingPlanType</mat-label>
@@ -120,6 +142,10 @@
                   {{ a.EnumText }}
                 </mat-option>
               </mat-select>
+              <mat-error *ngIf="samplingplanFormPut.controls.SamplingPlanType.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>LabSheetType</mat-label>
@@ -128,46 +154,93 @@
                   {{ a.EnumText }}
                 </mat-option>
               </mat-select>
+              <mat-error *ngIf="samplingplanFormPut.controls.LabSheetType.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>ProvinceTVItemID</mat-label>
               <input matInput type="number" formControlName="ProvinceTVItemID">
+              <mat-error *ngIf="samplingplanFormPut.controls.ProvinceTVItemID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
           </p>
           <p>
             <mat-form-field>
               <mat-label>CreatorTVItemID</mat-label>
               <input matInput type="number" formControlName="CreatorTVItemID">
+              <mat-error *ngIf="samplingplanFormPut.controls.CreatorTVItemID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>Year</mat-label>
               <input matInput type="number" formControlName="Year">
+              <mat-error *ngIf="samplingplanFormPut.controls.Year.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+                <span *ngIf="e.min">Min - 2000<br /></span>
+                <span *ngIf="e.min">Max - 2050<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>AccessCode</mat-label>
               <input matInput type="text" formControlName="AccessCode">
+              <mat-error *ngIf="samplingplanFormPut.controls.AccessCode.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+                <span *ngIf="e.maxlength">MaxLength - 15<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>DailyDuplicatePrecisionCriteria</mat-label>
               <input matInput type="number" formControlName="DailyDuplicatePrecisionCriteria">
+              <mat-error *ngIf="samplingplanFormPut.controls.DailyDuplicatePrecisionCriteria.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+                <span *ngIf="e.min">Min - 0<br /></span>
+                <span *ngIf="e.min">Max - 100<br /></span>
+              </mat-error>
             </mat-form-field>
           </p>
           <p>
             <mat-form-field>
               <mat-label>IntertechDuplicatePrecisionCriteria</mat-label>
               <input matInput type="number" formControlName="IntertechDuplicatePrecisionCriteria">
+              <mat-error *ngIf="samplingplanFormPut.controls.IntertechDuplicatePrecisionCriteria.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+                <span *ngIf="e.min">Min - 0<br /></span>
+                <span *ngIf="e.min">Max - 100<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>IncludeLaboratoryQAQC</mat-label>
               <input matInput type="text" formControlName="IncludeLaboratoryQAQC">
+              <mat-error *ngIf="samplingplanFormPut.controls.IncludeLaboratoryQAQC.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>ApprovalCode</mat-label>
               <input matInput type="text" formControlName="ApprovalCode">
+              <mat-error *ngIf="samplingplanFormPut.controls.ApprovalCode.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+                <span *ngIf="e.maxlength">MaxLength - 15<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>SamplingPlanFileTVItemID</mat-label>
               <input matInput type="number" formControlName="SamplingPlanFileTVItemID">
+              <mat-error *ngIf="samplingplanFormPut.controls.SamplingPlanFileTVItemID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+              </mat-error>
             </mat-form-field>
           </p>
           <p>
@@ -178,6 +251,9 @@
                   {{ a.EnumText }}
                 </mat-option>
               </mat-select>
+              <mat-error *ngIf="samplingplanFormPut.controls.AnalyzeMethodDefault.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>SampleMatrixDefault</mat-label>
@@ -186,6 +262,9 @@
                   {{ a.EnumText }}
                 </mat-option>
               </mat-select>
+              <mat-error *ngIf="samplingplanFormPut.controls.SampleMatrixDefault.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>LaboratoryDefault</mat-label>
@@ -194,20 +273,36 @@
                   {{ a.EnumText }}
                 </mat-option>
               </mat-select>
+              <mat-error *ngIf="samplingplanFormPut.controls.LaboratoryDefault.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>BackupDirectory</mat-label>
               <input matInput type="text" formControlName="BackupDirectory">
+              <mat-error *ngIf="samplingplanFormPut.controls.BackupDirectory.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+                <span *ngIf="e.maxlength">MaxLength - 250<br /></span>
+              </mat-error>
             </mat-form-field>
           </p>
           <p>
             <mat-form-field>
               <mat-label>LastUpdateDate_UTC</mat-label>
               <input matInput type="text" formControlName="LastUpdateDate_UTC">
+              <mat-error *ngIf="samplingplanFormPut.controls.LastUpdateDate_UTC.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>LastUpdateContactTVItemID</mat-label>
               <input matInput type="number" formControlName="LastUpdateContactTVItemID">
+              <mat-error *ngIf="samplingplanFormPut.controls.LastUpdateContactTVItemID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
           </p>
         </form>
@@ -222,7 +317,7 @@
     <mat-card-title>Add SamplingPlan testing</mat-card-title>
   </mat-card-header>
   <mat-card-content>
-    <div *ngIf="samplingplanService.samplingplanList.length">
+    <div *ngIf="samplingplanService.samplingplanListModel$.getValue()?.length">
       <blockquote>
         <form [formGroup]="samplingplanFormPost" (ngSubmit)="PostSamplingPlan(samplingplanFormPost.value)">
           <h3>
@@ -237,18 +332,36 @@
             <mat-form-field>
               <mat-label>SamplingPlanID</mat-label>
               <input matInput type="number" formControlName="SamplingPlanID">
+              <mat-error *ngIf="samplingplanFormPut.controls.SamplingPlanID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>IsActive</mat-label>
               <input matInput type="text" formControlName="IsActive">
+              <mat-error *ngIf="samplingplanFormPut.controls.IsActive.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>SamplingPlanName</mat-label>
               <input matInput type="text" formControlName="SamplingPlanName">
+              <mat-error *ngIf="samplingplanFormPut.controls.SamplingPlanName.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+                <span *ngIf="e.maxlength">MaxLength - 200<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>ForGroupName</mat-label>
               <input matInput type="text" formControlName="ForGroupName">
+              <mat-error *ngIf="samplingplanFormPut.controls.ForGroupName.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+                <span *ngIf="e.maxlength">MaxLength - 100<br /></span>
+              </mat-error>
             </mat-form-field>
           </p>
           <p>
@@ -259,6 +372,10 @@
                   {{ a.EnumText }}
                 </mat-option>
               </mat-select>
+              <mat-error *ngIf="samplingplanFormPut.controls.SampleType.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>SamplingPlanType</mat-label>
@@ -267,6 +384,10 @@
                   {{ a.EnumText }}
                 </mat-option>
               </mat-select>
+              <mat-error *ngIf="samplingplanFormPut.controls.SamplingPlanType.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>LabSheetType</mat-label>
@@ -275,46 +396,93 @@
                   {{ a.EnumText }}
                 </mat-option>
               </mat-select>
+              <mat-error *ngIf="samplingplanFormPut.controls.LabSheetType.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>ProvinceTVItemID</mat-label>
               <input matInput type="number" formControlName="ProvinceTVItemID">
+              <mat-error *ngIf="samplingplanFormPut.controls.ProvinceTVItemID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
           </p>
           <p>
             <mat-form-field>
               <mat-label>CreatorTVItemID</mat-label>
               <input matInput type="number" formControlName="CreatorTVItemID">
+              <mat-error *ngIf="samplingplanFormPut.controls.CreatorTVItemID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>Year</mat-label>
               <input matInput type="number" formControlName="Year">
+              <mat-error *ngIf="samplingplanFormPut.controls.Year.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+                <span *ngIf="e.min">Min - 2000<br /></span>
+                <span *ngIf="e.min">Max - 2050<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>AccessCode</mat-label>
               <input matInput type="text" formControlName="AccessCode">
+              <mat-error *ngIf="samplingplanFormPut.controls.AccessCode.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+                <span *ngIf="e.maxlength">MaxLength - 15<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>DailyDuplicatePrecisionCriteria</mat-label>
               <input matInput type="number" formControlName="DailyDuplicatePrecisionCriteria">
+              <mat-error *ngIf="samplingplanFormPut.controls.DailyDuplicatePrecisionCriteria.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+                <span *ngIf="e.min">Min - 0<br /></span>
+                <span *ngIf="e.min">Max - 100<br /></span>
+              </mat-error>
             </mat-form-field>
           </p>
           <p>
             <mat-form-field>
               <mat-label>IntertechDuplicatePrecisionCriteria</mat-label>
               <input matInput type="number" formControlName="IntertechDuplicatePrecisionCriteria">
+              <mat-error *ngIf="samplingplanFormPut.controls.IntertechDuplicatePrecisionCriteria.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+                <span *ngIf="e.min">Min - 0<br /></span>
+                <span *ngIf="e.min">Max - 100<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>IncludeLaboratoryQAQC</mat-label>
               <input matInput type="text" formControlName="IncludeLaboratoryQAQC">
+              <mat-error *ngIf="samplingplanFormPut.controls.IncludeLaboratoryQAQC.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>ApprovalCode</mat-label>
               <input matInput type="text" formControlName="ApprovalCode">
+              <mat-error *ngIf="samplingplanFormPut.controls.ApprovalCode.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+                <span *ngIf="e.maxlength">MaxLength - 15<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>SamplingPlanFileTVItemID</mat-label>
               <input matInput type="number" formControlName="SamplingPlanFileTVItemID">
+              <mat-error *ngIf="samplingplanFormPut.controls.SamplingPlanFileTVItemID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+              </mat-error>
             </mat-form-field>
           </p>
           <p>
@@ -325,6 +493,9 @@
                   {{ a.EnumText }}
                 </mat-option>
               </mat-select>
+              <mat-error *ngIf="samplingplanFormPut.controls.AnalyzeMethodDefault.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>SampleMatrixDefault</mat-label>
@@ -333,6 +504,9 @@
                   {{ a.EnumText }}
                 </mat-option>
               </mat-select>
+              <mat-error *ngIf="samplingplanFormPut.controls.SampleMatrixDefault.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>LaboratoryDefault</mat-label>
@@ -341,20 +515,36 @@
                   {{ a.EnumText }}
                 </mat-option>
               </mat-select>
+              <mat-error *ngIf="samplingplanFormPut.controls.LaboratoryDefault.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>BackupDirectory</mat-label>
               <input matInput type="text" formControlName="BackupDirectory">
+              <mat-error *ngIf="samplingplanFormPut.controls.BackupDirectory.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+                <span *ngIf="e.maxlength">MaxLength - 250<br /></span>
+              </mat-error>
             </mat-form-field>
           </p>
           <p>
             <mat-form-field>
               <mat-label>LastUpdateDate_UTC</mat-label>
               <input matInput type="text" formControlName="LastUpdateDate_UTC">
+              <mat-error *ngIf="samplingplanFormPut.controls.LastUpdateDate_UTC.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>LastUpdateContactTVItemID</mat-label>
               <input matInput type="number" formControlName="LastUpdateContactTVItemID">
+              <mat-error *ngIf="samplingplanFormPut.controls.LastUpdateContactTVItemID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
           </p>
         </form>

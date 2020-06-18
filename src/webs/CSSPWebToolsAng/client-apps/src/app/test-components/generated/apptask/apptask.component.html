@@ -5,7 +5,7 @@
  *
 -->
 
-<mat-progress-bar mode="indeterminate" *ngIf="apptaskService.apptaskGetModel$.getValue().Working"></mat-progress-bar>
+<mat-progress-bar mode="indeterminate" *ngIf="apptaskService.apptaskGetModel$.getValue()?.Working"></mat-progress-bar>
 <mat-card>
   <mat-card-header>
     <mat-card-title>
@@ -17,8 +17,8 @@
     <mat-card-subtitle>{{ apptaskService.apptaskTextModel$.getValue().Title }}</mat-card-subtitle>
   </mat-card-header>
   <mat-card-content>
-    <mat-list>
-      <mat-list-item *ngFor="let apptask of apptaskService.apptaskList">
+    <mat-list *ngIf="apptaskService.apptaskListModel$.getValue()?.length">
+      <mat-list-item *ngFor="let apptask of apptaskService.apptaskListModel$.getValue()">
         <span mat-line>
           <button mat-raised-button (click)="DeleteAppTask(apptask)">
             <span>Delete AppTaskID [{{ apptask.AppTaskID }}]&nbsp;&nbsp;&nbsp;</span>
@@ -63,7 +63,7 @@
     <mat-card-title>Edit AppTask testing</mat-card-title>
   </mat-card-header>
   <mat-card-content>
-    <div *ngIf="apptaskService.apptaskList.length">
+    <div *ngIf="apptaskService.apptaskListModel$.getValue()?.length">
       <blockquote>
         <form [formGroup]="apptaskFormPut" (ngSubmit)="PutAppTask(apptaskFormPut.value)">
           <h3>
@@ -78,14 +78,26 @@
             <mat-form-field>
               <mat-label>AppTaskID</mat-label>
               <input matInput type="number" formControlName="AppTaskID">
+              <mat-error *ngIf="apptaskFormPut.controls.AppTaskID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>TVItemID</mat-label>
               <input matInput type="number" formControlName="TVItemID">
+              <mat-error *ngIf="apptaskFormPut.controls.TVItemID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>TVItemID2</mat-label>
               <input matInput type="number" formControlName="TVItemID2">
+              <mat-error *ngIf="apptaskFormPut.controls.TVItemID2.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>AppTaskCommand</mat-label>
@@ -94,6 +106,10 @@
                   {{ a.EnumText }}
                 </mat-option>
               </mat-select>
+              <mat-error *ngIf="apptaskFormPut.controls.AppTaskCommand.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
           </p>
           <p>
@@ -104,14 +120,28 @@
                   {{ a.EnumText }}
                 </mat-option>
               </mat-select>
+              <mat-error *ngIf="apptaskFormPut.controls.AppTaskStatus.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>PercentCompleted</mat-label>
               <input matInput type="number" formControlName="PercentCompleted">
+              <mat-error *ngIf="apptaskFormPut.controls.PercentCompleted.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+                <span *ngIf="e.min">Min - 0<br /></span>
+                <span *ngIf="e.min">Max - 100<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>Parameters</mat-label>
               <input matInput type="text" formControlName="Parameters">
+              <mat-error *ngIf="apptaskFormPut.controls.Parameters.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>Language</mat-label>
@@ -120,34 +150,63 @@
                   {{ a.EnumText }}
                 </mat-option>
               </mat-select>
+              <mat-error *ngIf="apptaskFormPut.controls.Language.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
           </p>
           <p>
             <mat-form-field>
               <mat-label>StartDateTime_UTC</mat-label>
               <input matInput type="text" formControlName="StartDateTime_UTC">
+              <mat-error *ngIf="apptaskFormPut.controls.StartDateTime_UTC.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>EndDateTime_UTC</mat-label>
               <input matInput type="text" formControlName="EndDateTime_UTC">
+              <mat-error *ngIf="apptaskFormPut.controls.EndDateTime_UTC.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>EstimatedLength_second</mat-label>
               <input matInput type="number" formControlName="EstimatedLength_second">
+              <mat-error *ngIf="apptaskFormPut.controls.EstimatedLength_second.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.min">Min - 0<br /></span>
+                <span *ngIf="e.min">Max - 1000000<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>RemainingTime_second</mat-label>
               <input matInput type="number" formControlName="RemainingTime_second">
+              <mat-error *ngIf="apptaskFormPut.controls.RemainingTime_second.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.min">Min - 0<br /></span>
+                <span *ngIf="e.min">Max - 1000000<br /></span>
+              </mat-error>
             </mat-form-field>
           </p>
           <p>
             <mat-form-field>
               <mat-label>LastUpdateDate_UTC</mat-label>
               <input matInput type="text" formControlName="LastUpdateDate_UTC">
+              <mat-error *ngIf="apptaskFormPut.controls.LastUpdateDate_UTC.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>LastUpdateContactTVItemID</mat-label>
               <input matInput type="number" formControlName="LastUpdateContactTVItemID">
+              <mat-error *ngIf="apptaskFormPut.controls.LastUpdateContactTVItemID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
           </p>
         </form>
@@ -162,7 +221,7 @@
     <mat-card-title>Add AppTask testing</mat-card-title>
   </mat-card-header>
   <mat-card-content>
-    <div *ngIf="apptaskService.apptaskList.length">
+    <div *ngIf="apptaskService.apptaskListModel$.getValue()?.length">
       <blockquote>
         <form [formGroup]="apptaskFormPost" (ngSubmit)="PostAppTask(apptaskFormPost.value)">
           <h3>
@@ -177,14 +236,26 @@
             <mat-form-field>
               <mat-label>AppTaskID</mat-label>
               <input matInput type="number" formControlName="AppTaskID">
+              <mat-error *ngIf="apptaskFormPut.controls.AppTaskID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>TVItemID</mat-label>
               <input matInput type="number" formControlName="TVItemID">
+              <mat-error *ngIf="apptaskFormPut.controls.TVItemID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>TVItemID2</mat-label>
               <input matInput type="number" formControlName="TVItemID2">
+              <mat-error *ngIf="apptaskFormPut.controls.TVItemID2.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>AppTaskCommand</mat-label>
@@ -193,6 +264,10 @@
                   {{ a.EnumText }}
                 </mat-option>
               </mat-select>
+              <mat-error *ngIf="apptaskFormPut.controls.AppTaskCommand.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
           </p>
           <p>
@@ -203,14 +278,28 @@
                   {{ a.EnumText }}
                 </mat-option>
               </mat-select>
+              <mat-error *ngIf="apptaskFormPut.controls.AppTaskStatus.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>PercentCompleted</mat-label>
               <input matInput type="number" formControlName="PercentCompleted">
+              <mat-error *ngIf="apptaskFormPut.controls.PercentCompleted.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+                <span *ngIf="e.min">Min - 0<br /></span>
+                <span *ngIf="e.min">Max - 100<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>Parameters</mat-label>
               <input matInput type="text" formControlName="Parameters">
+              <mat-error *ngIf="apptaskFormPut.controls.Parameters.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>Language</mat-label>
@@ -219,34 +308,63 @@
                   {{ a.EnumText }}
                 </mat-option>
               </mat-select>
+              <mat-error *ngIf="apptaskFormPut.controls.Language.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
           </p>
           <p>
             <mat-form-field>
               <mat-label>StartDateTime_UTC</mat-label>
               <input matInput type="text" formControlName="StartDateTime_UTC">
+              <mat-error *ngIf="apptaskFormPut.controls.StartDateTime_UTC.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>EndDateTime_UTC</mat-label>
               <input matInput type="text" formControlName="EndDateTime_UTC">
+              <mat-error *ngIf="apptaskFormPut.controls.EndDateTime_UTC.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>EstimatedLength_second</mat-label>
               <input matInput type="number" formControlName="EstimatedLength_second">
+              <mat-error *ngIf="apptaskFormPut.controls.EstimatedLength_second.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.min">Min - 0<br /></span>
+                <span *ngIf="e.min">Max - 1000000<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>RemainingTime_second</mat-label>
               <input matInput type="number" formControlName="RemainingTime_second">
+              <mat-error *ngIf="apptaskFormPut.controls.RemainingTime_second.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.min">Min - 0<br /></span>
+                <span *ngIf="e.min">Max - 1000000<br /></span>
+              </mat-error>
             </mat-form-field>
           </p>
           <p>
             <mat-form-field>
               <mat-label>LastUpdateDate_UTC</mat-label>
               <input matInput type="text" formControlName="LastUpdateDate_UTC">
+              <mat-error *ngIf="apptaskFormPut.controls.LastUpdateDate_UTC.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>LastUpdateContactTVItemID</mat-label>
               <input matInput type="number" formControlName="LastUpdateContactTVItemID">
+              <mat-error *ngIf="apptaskFormPut.controls.LastUpdateContactTVItemID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
           </p>
         </form>

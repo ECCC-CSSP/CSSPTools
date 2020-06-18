@@ -9,11 +9,12 @@ import { Injectable } from '@angular/core';
 import { TelTextModel } from './tel.models';
 import { BehaviorSubject, of } from 'rxjs';
 import { LoadLocalesTelText } from './tel.locales';
-import { Router } from '@angular/router';
-import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { map, catchError } from 'rxjs/operators';
 import { Tel } from '../../../models/generated/Tel.model';
 import { HttpRequestModel } from '../../../models/http.model';
+import { HttpClientService } from '../../../services/http-client.service';
+import { HttpClientCommand } from '../../../enums/app.enums';
 
 @Injectable({
   providedIn: 'root'
@@ -26,110 +27,63 @@ export class TelService {
   telPutModel$: BehaviorSubject<HttpRequestModel> = new BehaviorSubject<HttpRequestModel>(<HttpRequestModel>{});
   telPostModel$: BehaviorSubject<HttpRequestModel> = new BehaviorSubject<HttpRequestModel>(<HttpRequestModel>{});
   telDeleteModel$: BehaviorSubject<HttpRequestModel> = new BehaviorSubject<HttpRequestModel>(<HttpRequestModel>{});
-  telList: Tel[] = [];
-  private oldURL: string;
-  private router: Router;
 
   /* Constructors */
-  constructor(private httpClient: HttpClient) {
+  constructor(private httpClient: HttpClient, private httpClientService: HttpClientService) {
     LoadLocalesTelText(this);
     this.telTextModel$.next(<TelTextModel>{ Title: "Something2 for text" });
   }
 
   /* Functions public */
-  GetTelList(router: Router) {
-    this.BeforeHttpClient(this.telGetModel$, router);
+  GetTelList() {
+    this.httpClientService.BeforeHttpClient(this.telGetModel$);
 
     return this.httpClient.get<Tel[]>('/api/Tel').pipe(
       map((x: any) => {
-        this.DoSuccess(this.telGetModel$, x, 'Get', null);
+        this.httpClientService.DoSuccess<Tel>(this.telListModel$, this.telGetModel$, x, HttpClientCommand.Get, null);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.DoCatchError(this.telGetModel$, e, 'Get');
+        this.httpClientService.DoCatchError<Tel>(this.telListModel$, this.telGetModel$, e);
       })))
     );
   }
 
-  PutTel(tel: Tel, router: Router) {
-    this.BeforeHttpClient(this.telPutModel$, router);
+  PutTel(tel: Tel) {
+    this.httpClientService.BeforeHttpClient(this.telPutModel$);
 
     return this.httpClient.put<Tel>('/api/Tel', tel, { headers: new HttpHeaders() }).pipe(
       map((x: any) => {
-        this.DoSuccess(this.telPutModel$, x, 'Put', tel);
+        this.httpClientService.DoSuccess<Tel>(this.telListModel$, this.telPutModel$, x, HttpClientCommand.Put, tel);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.DoCatchError(this.telPutModel$, e, 'Put');
+       this.httpClientService.DoCatchError<Tel>(this.telListModel$, this.telPutModel$, e);
       })))
     );
   }
 
-  PostTel(tel: Tel, router: Router) {
-    this.BeforeHttpClient(this.telPostModel$, router);
+  PostTel(tel: Tel) {
+    this.httpClientService.BeforeHttpClient(this.telPostModel$);
 
     return this.httpClient.post<Tel>('/api/Tel', tel, { headers: new HttpHeaders() }).pipe(
       map((x: any) => {
-        this.DoSuccess(this.telPostModel$, x, 'Post', tel);
+        this.httpClientService.DoSuccess<Tel>(this.telListModel$, this.telPostModel$, x, HttpClientCommand.Post, tel);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.DoCatchError(this.telPostModel$, e, 'Post');
+        this.httpClientService.DoCatchError<Tel>(this.telListModel$, this.telPostModel$, e);
       })))
     );
   }
 
-  DeleteTel(tel: Tel, router: Router) {
-    this.BeforeHttpClient(this.telDeleteModel$, router);
+  DeleteTel(tel: Tel) {
+    this.httpClientService.BeforeHttpClient(this.telDeleteModel$);
 
     return this.httpClient.delete<boolean>(`/api/Tel/${ tel.TelID }`).pipe(
       map((x: any) => {
-        this.DoSuccess(this.telDeleteModel$, x, 'Delete', tel);
+        this.httpClientService.DoSuccess<Tel>(this.telListModel$, this.telDeleteModel$, x, HttpClientCommand.Delete, tel);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.DoCatchError(this.telDeleteModel$, e, 'Delete');
+        this.httpClientService.DoCatchError<Tel>(this.telListModel$, this.telDeleteModel$, e);
       })))
     );
-  }
-
-  /* Functions private */
-  private BeforeHttpClient(httpRequestModel$: BehaviorSubject<HttpRequestModel>, router: Router) {
-    this.router = router;
-    this.oldURL = router.url;
-    httpRequestModel$.next(<HttpRequestModel>{ Working: true, Error: null, Status: null });
-  }
-
-  private DoCatchError(httpRequestModel$: BehaviorSubject<HttpRequestModel>, e: any, command: string) {
-    this.telListModel$.next(null);
-    httpRequestModel$.next(<HttpRequestModel>{ Working: false, Error: <HttpErrorResponse>e, Status: 'Error' });
-
-    this.telList = [];
-    console.debug(`Tel ${ command } ERROR. Return: ${ <HttpErrorResponse>e }`);
-    this.DoReload();
-  }
-
-  private DoReload() {
-    this.router.navigateByUrl('', { skipLocationChange: true }).then(() => {
-      this.router.navigate([`/${this.oldURL}`]);
-    });
-  }
-
-  private DoSuccess(httpRequestModel$: BehaviorSubject<HttpRequestModel>, x: any, command: string, tel?: Tel) {
-    console.debug(`Tel ${ command } OK. Return: ${ x }`);
-    if (command === 'Get') {
-      this.telListModel$.next(<Tel[]>x);
-    }
-    if (command === 'Put') {
-      this.telListModel$.getValue()[0] = <Tel>x;
-    }
-    if (command === 'Post') {
-      this.telListModel$.getValue().push(<Tel>x);
-    }
-    if (command === 'Delete') {
-      const index = this.telListModel$.getValue().indexOf(tel);
-      this.telListModel$.getValue().splice(index, 1);
-    }
-
-    this.telListModel$.next(this.telListModel$.getValue());
-    httpRequestModel$.next(<HttpRequestModel>{ Working: false, Error: null, Status: 'ok' });
-    this.telList = this.telListModel$.getValue();
-    this.DoReload();
   }
 }

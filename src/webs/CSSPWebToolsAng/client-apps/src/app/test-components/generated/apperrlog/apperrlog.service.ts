@@ -9,11 +9,12 @@ import { Injectable } from '@angular/core';
 import { AppErrLogTextModel } from './apperrlog.models';
 import { BehaviorSubject, of } from 'rxjs';
 import { LoadLocalesAppErrLogText } from './apperrlog.locales';
-import { Router } from '@angular/router';
-import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { map, catchError } from 'rxjs/operators';
 import { AppErrLog } from '../../../models/generated/AppErrLog.model';
 import { HttpRequestModel } from '../../../models/http.model';
+import { HttpClientService } from '../../../services/http-client.service';
+import { HttpClientCommand } from '../../../enums/app.enums';
 
 @Injectable({
   providedIn: 'root'
@@ -26,110 +27,63 @@ export class AppErrLogService {
   apperrlogPutModel$: BehaviorSubject<HttpRequestModel> = new BehaviorSubject<HttpRequestModel>(<HttpRequestModel>{});
   apperrlogPostModel$: BehaviorSubject<HttpRequestModel> = new BehaviorSubject<HttpRequestModel>(<HttpRequestModel>{});
   apperrlogDeleteModel$: BehaviorSubject<HttpRequestModel> = new BehaviorSubject<HttpRequestModel>(<HttpRequestModel>{});
-  apperrlogList: AppErrLog[] = [];
-  private oldURL: string;
-  private router: Router;
 
   /* Constructors */
-  constructor(private httpClient: HttpClient) {
+  constructor(private httpClient: HttpClient, private httpClientService: HttpClientService) {
     LoadLocalesAppErrLogText(this);
     this.apperrlogTextModel$.next(<AppErrLogTextModel>{ Title: "Something2 for text" });
   }
 
   /* Functions public */
-  GetAppErrLogList(router: Router) {
-    this.BeforeHttpClient(this.apperrlogGetModel$, router);
+  GetAppErrLogList() {
+    this.httpClientService.BeforeHttpClient(this.apperrlogGetModel$);
 
     return this.httpClient.get<AppErrLog[]>('/api/AppErrLog').pipe(
       map((x: any) => {
-        this.DoSuccess(this.apperrlogGetModel$, x, 'Get', null);
+        this.httpClientService.DoSuccess<AppErrLog>(this.apperrlogListModel$, this.apperrlogGetModel$, x, HttpClientCommand.Get, null);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.DoCatchError(this.apperrlogGetModel$, e, 'Get');
+        this.httpClientService.DoCatchError<AppErrLog>(this.apperrlogListModel$, this.apperrlogGetModel$, e);
       })))
     );
   }
 
-  PutAppErrLog(apperrlog: AppErrLog, router: Router) {
-    this.BeforeHttpClient(this.apperrlogPutModel$, router);
+  PutAppErrLog(apperrlog: AppErrLog) {
+    this.httpClientService.BeforeHttpClient(this.apperrlogPutModel$);
 
     return this.httpClient.put<AppErrLog>('/api/AppErrLog', apperrlog, { headers: new HttpHeaders() }).pipe(
       map((x: any) => {
-        this.DoSuccess(this.apperrlogPutModel$, x, 'Put', apperrlog);
+        this.httpClientService.DoSuccess<AppErrLog>(this.apperrlogListModel$, this.apperrlogPutModel$, x, HttpClientCommand.Put, apperrlog);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.DoCatchError(this.apperrlogPutModel$, e, 'Put');
+       this.httpClientService.DoCatchError<AppErrLog>(this.apperrlogListModel$, this.apperrlogPutModel$, e);
       })))
     );
   }
 
-  PostAppErrLog(apperrlog: AppErrLog, router: Router) {
-    this.BeforeHttpClient(this.apperrlogPostModel$, router);
+  PostAppErrLog(apperrlog: AppErrLog) {
+    this.httpClientService.BeforeHttpClient(this.apperrlogPostModel$);
 
     return this.httpClient.post<AppErrLog>('/api/AppErrLog', apperrlog, { headers: new HttpHeaders() }).pipe(
       map((x: any) => {
-        this.DoSuccess(this.apperrlogPostModel$, x, 'Post', apperrlog);
+        this.httpClientService.DoSuccess<AppErrLog>(this.apperrlogListModel$, this.apperrlogPostModel$, x, HttpClientCommand.Post, apperrlog);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.DoCatchError(this.apperrlogPostModel$, e, 'Post');
+        this.httpClientService.DoCatchError<AppErrLog>(this.apperrlogListModel$, this.apperrlogPostModel$, e);
       })))
     );
   }
 
-  DeleteAppErrLog(apperrlog: AppErrLog, router: Router) {
-    this.BeforeHttpClient(this.apperrlogDeleteModel$, router);
+  DeleteAppErrLog(apperrlog: AppErrLog) {
+    this.httpClientService.BeforeHttpClient(this.apperrlogDeleteModel$);
 
     return this.httpClient.delete<boolean>(`/api/AppErrLog/${ apperrlog.AppErrLogID }`).pipe(
       map((x: any) => {
-        this.DoSuccess(this.apperrlogDeleteModel$, x, 'Delete', apperrlog);
+        this.httpClientService.DoSuccess<AppErrLog>(this.apperrlogListModel$, this.apperrlogDeleteModel$, x, HttpClientCommand.Delete, apperrlog);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.DoCatchError(this.apperrlogDeleteModel$, e, 'Delete');
+        this.httpClientService.DoCatchError<AppErrLog>(this.apperrlogListModel$, this.apperrlogDeleteModel$, e);
       })))
     );
-  }
-
-  /* Functions private */
-  private BeforeHttpClient(httpRequestModel$: BehaviorSubject<HttpRequestModel>, router: Router) {
-    this.router = router;
-    this.oldURL = router.url;
-    httpRequestModel$.next(<HttpRequestModel>{ Working: true, Error: null, Status: null });
-  }
-
-  private DoCatchError(httpRequestModel$: BehaviorSubject<HttpRequestModel>, e: any, command: string) {
-    this.apperrlogListModel$.next(null);
-    httpRequestModel$.next(<HttpRequestModel>{ Working: false, Error: <HttpErrorResponse>e, Status: 'Error' });
-
-    this.apperrlogList = [];
-    console.debug(`AppErrLog ${ command } ERROR. Return: ${ <HttpErrorResponse>e }`);
-    this.DoReload();
-  }
-
-  private DoReload() {
-    this.router.navigateByUrl('', { skipLocationChange: true }).then(() => {
-      this.router.navigate([`/${this.oldURL}`]);
-    });
-  }
-
-  private DoSuccess(httpRequestModel$: BehaviorSubject<HttpRequestModel>, x: any, command: string, apperrlog?: AppErrLog) {
-    console.debug(`AppErrLog ${ command } OK. Return: ${ x }`);
-    if (command === 'Get') {
-      this.apperrlogListModel$.next(<AppErrLog[]>x);
-    }
-    if (command === 'Put') {
-      this.apperrlogListModel$.getValue()[0] = <AppErrLog>x;
-    }
-    if (command === 'Post') {
-      this.apperrlogListModel$.getValue().push(<AppErrLog>x);
-    }
-    if (command === 'Delete') {
-      const index = this.apperrlogListModel$.getValue().indexOf(apperrlog);
-      this.apperrlogListModel$.getValue().splice(index, 1);
-    }
-
-    this.apperrlogListModel$.next(this.apperrlogListModel$.getValue());
-    httpRequestModel$.next(<HttpRequestModel>{ Working: false, Error: null, Status: 'ok' });
-    this.apperrlogList = this.apperrlogListModel$.getValue();
-    this.DoReload();
   }
 }

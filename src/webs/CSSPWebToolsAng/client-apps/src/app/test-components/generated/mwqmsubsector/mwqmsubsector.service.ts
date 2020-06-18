@@ -9,11 +9,12 @@ import { Injectable } from '@angular/core';
 import { MWQMSubsectorTextModel } from './mwqmsubsector.models';
 import { BehaviorSubject, of } from 'rxjs';
 import { LoadLocalesMWQMSubsectorText } from './mwqmsubsector.locales';
-import { Router } from '@angular/router';
-import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { map, catchError } from 'rxjs/operators';
 import { MWQMSubsector } from '../../../models/generated/MWQMSubsector.model';
 import { HttpRequestModel } from '../../../models/http.model';
+import { HttpClientService } from '../../../services/http-client.service';
+import { HttpClientCommand } from '../../../enums/app.enums';
 
 @Injectable({
   providedIn: 'root'
@@ -26,110 +27,63 @@ export class MWQMSubsectorService {
   mwqmsubsectorPutModel$: BehaviorSubject<HttpRequestModel> = new BehaviorSubject<HttpRequestModel>(<HttpRequestModel>{});
   mwqmsubsectorPostModel$: BehaviorSubject<HttpRequestModel> = new BehaviorSubject<HttpRequestModel>(<HttpRequestModel>{});
   mwqmsubsectorDeleteModel$: BehaviorSubject<HttpRequestModel> = new BehaviorSubject<HttpRequestModel>(<HttpRequestModel>{});
-  mwqmsubsectorList: MWQMSubsector[] = [];
-  private oldURL: string;
-  private router: Router;
 
   /* Constructors */
-  constructor(private httpClient: HttpClient) {
+  constructor(private httpClient: HttpClient, private httpClientService: HttpClientService) {
     LoadLocalesMWQMSubsectorText(this);
     this.mwqmsubsectorTextModel$.next(<MWQMSubsectorTextModel>{ Title: "Something2 for text" });
   }
 
   /* Functions public */
-  GetMWQMSubsectorList(router: Router) {
-    this.BeforeHttpClient(this.mwqmsubsectorGetModel$, router);
+  GetMWQMSubsectorList() {
+    this.httpClientService.BeforeHttpClient(this.mwqmsubsectorGetModel$);
 
     return this.httpClient.get<MWQMSubsector[]>('/api/MWQMSubsector').pipe(
       map((x: any) => {
-        this.DoSuccess(this.mwqmsubsectorGetModel$, x, 'Get', null);
+        this.httpClientService.DoSuccess<MWQMSubsector>(this.mwqmsubsectorListModel$, this.mwqmsubsectorGetModel$, x, HttpClientCommand.Get, null);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.DoCatchError(this.mwqmsubsectorGetModel$, e, 'Get');
+        this.httpClientService.DoCatchError<MWQMSubsector>(this.mwqmsubsectorListModel$, this.mwqmsubsectorGetModel$, e);
       })))
     );
   }
 
-  PutMWQMSubsector(mwqmsubsector: MWQMSubsector, router: Router) {
-    this.BeforeHttpClient(this.mwqmsubsectorPutModel$, router);
+  PutMWQMSubsector(mwqmsubsector: MWQMSubsector) {
+    this.httpClientService.BeforeHttpClient(this.mwqmsubsectorPutModel$);
 
     return this.httpClient.put<MWQMSubsector>('/api/MWQMSubsector', mwqmsubsector, { headers: new HttpHeaders() }).pipe(
       map((x: any) => {
-        this.DoSuccess(this.mwqmsubsectorPutModel$, x, 'Put', mwqmsubsector);
+        this.httpClientService.DoSuccess<MWQMSubsector>(this.mwqmsubsectorListModel$, this.mwqmsubsectorPutModel$, x, HttpClientCommand.Put, mwqmsubsector);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.DoCatchError(this.mwqmsubsectorPutModel$, e, 'Put');
+       this.httpClientService.DoCatchError<MWQMSubsector>(this.mwqmsubsectorListModel$, this.mwqmsubsectorPutModel$, e);
       })))
     );
   }
 
-  PostMWQMSubsector(mwqmsubsector: MWQMSubsector, router: Router) {
-    this.BeforeHttpClient(this.mwqmsubsectorPostModel$, router);
+  PostMWQMSubsector(mwqmsubsector: MWQMSubsector) {
+    this.httpClientService.BeforeHttpClient(this.mwqmsubsectorPostModel$);
 
     return this.httpClient.post<MWQMSubsector>('/api/MWQMSubsector', mwqmsubsector, { headers: new HttpHeaders() }).pipe(
       map((x: any) => {
-        this.DoSuccess(this.mwqmsubsectorPostModel$, x, 'Post', mwqmsubsector);
+        this.httpClientService.DoSuccess<MWQMSubsector>(this.mwqmsubsectorListModel$, this.mwqmsubsectorPostModel$, x, HttpClientCommand.Post, mwqmsubsector);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.DoCatchError(this.mwqmsubsectorPostModel$, e, 'Post');
+        this.httpClientService.DoCatchError<MWQMSubsector>(this.mwqmsubsectorListModel$, this.mwqmsubsectorPostModel$, e);
       })))
     );
   }
 
-  DeleteMWQMSubsector(mwqmsubsector: MWQMSubsector, router: Router) {
-    this.BeforeHttpClient(this.mwqmsubsectorDeleteModel$, router);
+  DeleteMWQMSubsector(mwqmsubsector: MWQMSubsector) {
+    this.httpClientService.BeforeHttpClient(this.mwqmsubsectorDeleteModel$);
 
     return this.httpClient.delete<boolean>(`/api/MWQMSubsector/${ mwqmsubsector.MWQMSubsectorID }`).pipe(
       map((x: any) => {
-        this.DoSuccess(this.mwqmsubsectorDeleteModel$, x, 'Delete', mwqmsubsector);
+        this.httpClientService.DoSuccess<MWQMSubsector>(this.mwqmsubsectorListModel$, this.mwqmsubsectorDeleteModel$, x, HttpClientCommand.Delete, mwqmsubsector);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.DoCatchError(this.mwqmsubsectorDeleteModel$, e, 'Delete');
+        this.httpClientService.DoCatchError<MWQMSubsector>(this.mwqmsubsectorListModel$, this.mwqmsubsectorDeleteModel$, e);
       })))
     );
-  }
-
-  /* Functions private */
-  private BeforeHttpClient(httpRequestModel$: BehaviorSubject<HttpRequestModel>, router: Router) {
-    this.router = router;
-    this.oldURL = router.url;
-    httpRequestModel$.next(<HttpRequestModel>{ Working: true, Error: null, Status: null });
-  }
-
-  private DoCatchError(httpRequestModel$: BehaviorSubject<HttpRequestModel>, e: any, command: string) {
-    this.mwqmsubsectorListModel$.next(null);
-    httpRequestModel$.next(<HttpRequestModel>{ Working: false, Error: <HttpErrorResponse>e, Status: 'Error' });
-
-    this.mwqmsubsectorList = [];
-    console.debug(`MWQMSubsector ${ command } ERROR. Return: ${ <HttpErrorResponse>e }`);
-    this.DoReload();
-  }
-
-  private DoReload() {
-    this.router.navigateByUrl('', { skipLocationChange: true }).then(() => {
-      this.router.navigate([`/${this.oldURL}`]);
-    });
-  }
-
-  private DoSuccess(httpRequestModel$: BehaviorSubject<HttpRequestModel>, x: any, command: string, mwqmsubsector?: MWQMSubsector) {
-    console.debug(`MWQMSubsector ${ command } OK. Return: ${ x }`);
-    if (command === 'Get') {
-      this.mwqmsubsectorListModel$.next(<MWQMSubsector[]>x);
-    }
-    if (command === 'Put') {
-      this.mwqmsubsectorListModel$.getValue()[0] = <MWQMSubsector>x;
-    }
-    if (command === 'Post') {
-      this.mwqmsubsectorListModel$.getValue().push(<MWQMSubsector>x);
-    }
-    if (command === 'Delete') {
-      const index = this.mwqmsubsectorListModel$.getValue().indexOf(mwqmsubsector);
-      this.mwqmsubsectorListModel$.getValue().splice(index, 1);
-    }
-
-    this.mwqmsubsectorListModel$.next(this.mwqmsubsectorListModel$.getValue());
-    httpRequestModel$.next(<HttpRequestModel>{ Working: false, Error: null, Status: 'ok' });
-    this.mwqmsubsectorList = this.mwqmsubsectorListModel$.getValue();
-    this.DoReload();
   }
 }

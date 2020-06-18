@@ -8,10 +8,12 @@
 import { Component, OnInit, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
 import { TideSiteService } from './tidesite.service';
 import { LoadLocalesTideSiteText } from './tidesite.locales';
-import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { TideSite } from '../../../models/generated/TideSite.model';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
+import { HttpClientService } from '../../../services/http-client.service';
+import { Router } from '@angular/router';
+import { HttpClientCommand } from '../../../enums/app.enums';
 
 @Component({
   selector: 'app-tidesite',
@@ -24,28 +26,30 @@ export class TideSiteComponent implements OnInit, OnDestroy {
   tidesiteFormPut: FormGroup;
   tidesiteFormPost: FormGroup;
 
-  constructor(public tidesiteService: TideSiteService, public router: Router, public fb: FormBuilder) { }
+  constructor(public tidesiteService: TideSiteService, private router: Router, private httpClientService: HttpClientService, private fb: FormBuilder) {
+    httpClientService.oldURL = router.url;
+  }
 
   GetTideSiteList() {
-    this.sub = this.tidesiteService.GetTideSiteList(this.router).subscribe();
+    this.sub = this.tidesiteService.GetTideSiteList().subscribe();
   }
 
   PutTideSite(tidesite: TideSite) {
-    this.sub = this.tidesiteService.PutTideSite(tidesite, this.router).subscribe();
+    this.sub = this.tidesiteService.PutTideSite(tidesite).subscribe();
   }
 
   PostTideSite(tidesite: TideSite) {
-    this.sub = this.tidesiteService.PostTideSite(tidesite, this.router).subscribe();
+    this.sub = this.tidesiteService.PostTideSite(tidesite).subscribe();
   }
 
   DeleteTideSite(tidesite: TideSite) {
-    this.sub = this.tidesiteService.DeleteTideSite(tidesite, this.router).subscribe();
+    this.sub = this.tidesiteService.DeleteTideSite(tidesite).subscribe();
   }
 
   ngOnInit(): void {
     LoadLocalesTideSiteText(this.tidesiteService);
-    this.FillFormBuilderGroup('Add');
-    this.FillFormBuilderGroup('Update');
+    this.FillFormBuilderGroup(HttpClientCommand.Post);
+    this.FillFormBuilderGroup(HttpClientCommand.Put);
   }
 
   ngOnDestroy() {
@@ -54,54 +58,54 @@ export class TideSiteComponent implements OnInit, OnDestroy {
     }
   }
 
-  FillFormBuilderGroup(AddOrUpdate: string) {
-    if (this.tidesiteService.tidesiteList.length) {
+  FillFormBuilderGroup(httpClientCommand: HttpClientCommand) {
+    if (this.tidesiteService.tidesiteListModel$.getValue().length) {
       let formGroup: FormGroup = this.fb.group(
         {
           TideSiteID: [
             {
-              value: (AddOrUpdate === 'Add' ? 0 : (this.tidesiteService.tidesiteList[0]?.TideSiteID)),
+              value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.tidesiteService.tidesiteListModel$.getValue()[0]?.TideSiteID)),
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
           TideSiteTVItemID: [
             {
-              value: this.tidesiteService.tidesiteList[0]?.TideSiteTVItemID,
+              value: this.tidesiteService.tidesiteListModel$.getValue()[0]?.TideSiteTVItemID,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
           TideSiteName: [
             {
-              value: this.tidesiteService.tidesiteList[0]?.TideSiteName,
+              value: this.tidesiteService.tidesiteListModel$.getValue()[0]?.TideSiteName,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required, Validators.maxLength(100) ]],
           Province: [
             {
-              value: this.tidesiteService.tidesiteList[0]?.Province,
+              value: this.tidesiteService.tidesiteListModel$.getValue()[0]?.Province,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required, Validators.minLength(2), Validators.maxLength(2) ]],
           sid: [
             {
-              value: this.tidesiteService.tidesiteList[0]?.sid,
+              value: this.tidesiteService.tidesiteListModel$.getValue()[0]?.sid,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required, Validators.min(0), Validators.max(10000) ]],
           Zone: [
             {
-              value: this.tidesiteService.tidesiteList[0]?.Zone,
+              value: this.tidesiteService.tidesiteListModel$.getValue()[0]?.Zone,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required, Validators.min(0), Validators.max(10000) ]],
           LastUpdateDate_UTC: [
             {
-              value: this.tidesiteService.tidesiteList[0]?.LastUpdateDate_UTC,
+              value: this.tidesiteService.tidesiteListModel$.getValue()[0]?.LastUpdateDate_UTC,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
           LastUpdateContactTVItemID: [
             {
-              value: this.tidesiteService.tidesiteList[0]?.LastUpdateContactTVItemID,
+              value: this.tidesiteService.tidesiteListModel$.getValue()[0]?.LastUpdateContactTVItemID,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
         }
       );
 
-      if (AddOrUpdate === 'Add') {
+      if (httpClientCommand === HttpClientCommand.Post) {
         this.tidesiteFormPost = formGroup
       }
       else {

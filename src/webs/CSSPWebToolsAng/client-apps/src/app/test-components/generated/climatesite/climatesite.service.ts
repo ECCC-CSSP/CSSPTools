@@ -9,11 +9,12 @@ import { Injectable } from '@angular/core';
 import { ClimateSiteTextModel } from './climatesite.models';
 import { BehaviorSubject, of } from 'rxjs';
 import { LoadLocalesClimateSiteText } from './climatesite.locales';
-import { Router } from '@angular/router';
-import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { map, catchError } from 'rxjs/operators';
 import { ClimateSite } from '../../../models/generated/ClimateSite.model';
 import { HttpRequestModel } from '../../../models/http.model';
+import { HttpClientService } from '../../../services/http-client.service';
+import { HttpClientCommand } from '../../../enums/app.enums';
 
 @Injectable({
   providedIn: 'root'
@@ -26,110 +27,63 @@ export class ClimateSiteService {
   climatesitePutModel$: BehaviorSubject<HttpRequestModel> = new BehaviorSubject<HttpRequestModel>(<HttpRequestModel>{});
   climatesitePostModel$: BehaviorSubject<HttpRequestModel> = new BehaviorSubject<HttpRequestModel>(<HttpRequestModel>{});
   climatesiteDeleteModel$: BehaviorSubject<HttpRequestModel> = new BehaviorSubject<HttpRequestModel>(<HttpRequestModel>{});
-  climatesiteList: ClimateSite[] = [];
-  private oldURL: string;
-  private router: Router;
 
   /* Constructors */
-  constructor(private httpClient: HttpClient) {
+  constructor(private httpClient: HttpClient, private httpClientService: HttpClientService) {
     LoadLocalesClimateSiteText(this);
     this.climatesiteTextModel$.next(<ClimateSiteTextModel>{ Title: "Something2 for text" });
   }
 
   /* Functions public */
-  GetClimateSiteList(router: Router) {
-    this.BeforeHttpClient(this.climatesiteGetModel$, router);
+  GetClimateSiteList() {
+    this.httpClientService.BeforeHttpClient(this.climatesiteGetModel$);
 
     return this.httpClient.get<ClimateSite[]>('/api/ClimateSite').pipe(
       map((x: any) => {
-        this.DoSuccess(this.climatesiteGetModel$, x, 'Get', null);
+        this.httpClientService.DoSuccess<ClimateSite>(this.climatesiteListModel$, this.climatesiteGetModel$, x, HttpClientCommand.Get, null);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.DoCatchError(this.climatesiteGetModel$, e, 'Get');
+        this.httpClientService.DoCatchError<ClimateSite>(this.climatesiteListModel$, this.climatesiteGetModel$, e);
       })))
     );
   }
 
-  PutClimateSite(climatesite: ClimateSite, router: Router) {
-    this.BeforeHttpClient(this.climatesitePutModel$, router);
+  PutClimateSite(climatesite: ClimateSite) {
+    this.httpClientService.BeforeHttpClient(this.climatesitePutModel$);
 
     return this.httpClient.put<ClimateSite>('/api/ClimateSite', climatesite, { headers: new HttpHeaders() }).pipe(
       map((x: any) => {
-        this.DoSuccess(this.climatesitePutModel$, x, 'Put', climatesite);
+        this.httpClientService.DoSuccess<ClimateSite>(this.climatesiteListModel$, this.climatesitePutModel$, x, HttpClientCommand.Put, climatesite);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.DoCatchError(this.climatesitePutModel$, e, 'Put');
+       this.httpClientService.DoCatchError<ClimateSite>(this.climatesiteListModel$, this.climatesitePutModel$, e);
       })))
     );
   }
 
-  PostClimateSite(climatesite: ClimateSite, router: Router) {
-    this.BeforeHttpClient(this.climatesitePostModel$, router);
+  PostClimateSite(climatesite: ClimateSite) {
+    this.httpClientService.BeforeHttpClient(this.climatesitePostModel$);
 
     return this.httpClient.post<ClimateSite>('/api/ClimateSite', climatesite, { headers: new HttpHeaders() }).pipe(
       map((x: any) => {
-        this.DoSuccess(this.climatesitePostModel$, x, 'Post', climatesite);
+        this.httpClientService.DoSuccess<ClimateSite>(this.climatesiteListModel$, this.climatesitePostModel$, x, HttpClientCommand.Post, climatesite);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.DoCatchError(this.climatesitePostModel$, e, 'Post');
+        this.httpClientService.DoCatchError<ClimateSite>(this.climatesiteListModel$, this.climatesitePostModel$, e);
       })))
     );
   }
 
-  DeleteClimateSite(climatesite: ClimateSite, router: Router) {
-    this.BeforeHttpClient(this.climatesiteDeleteModel$, router);
+  DeleteClimateSite(climatesite: ClimateSite) {
+    this.httpClientService.BeforeHttpClient(this.climatesiteDeleteModel$);
 
     return this.httpClient.delete<boolean>(`/api/ClimateSite/${ climatesite.ClimateSiteID }`).pipe(
       map((x: any) => {
-        this.DoSuccess(this.climatesiteDeleteModel$, x, 'Delete', climatesite);
+        this.httpClientService.DoSuccess<ClimateSite>(this.climatesiteListModel$, this.climatesiteDeleteModel$, x, HttpClientCommand.Delete, climatesite);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.DoCatchError(this.climatesiteDeleteModel$, e, 'Delete');
+        this.httpClientService.DoCatchError<ClimateSite>(this.climatesiteListModel$, this.climatesiteDeleteModel$, e);
       })))
     );
-  }
-
-  /* Functions private */
-  private BeforeHttpClient(httpRequestModel$: BehaviorSubject<HttpRequestModel>, router: Router) {
-    this.router = router;
-    this.oldURL = router.url;
-    httpRequestModel$.next(<HttpRequestModel>{ Working: true, Error: null, Status: null });
-  }
-
-  private DoCatchError(httpRequestModel$: BehaviorSubject<HttpRequestModel>, e: any, command: string) {
-    this.climatesiteListModel$.next(null);
-    httpRequestModel$.next(<HttpRequestModel>{ Working: false, Error: <HttpErrorResponse>e, Status: 'Error' });
-
-    this.climatesiteList = [];
-    console.debug(`ClimateSite ${ command } ERROR. Return: ${ <HttpErrorResponse>e }`);
-    this.DoReload();
-  }
-
-  private DoReload() {
-    this.router.navigateByUrl('', { skipLocationChange: true }).then(() => {
-      this.router.navigate([`/${this.oldURL}`]);
-    });
-  }
-
-  private DoSuccess(httpRequestModel$: BehaviorSubject<HttpRequestModel>, x: any, command: string, climatesite?: ClimateSite) {
-    console.debug(`ClimateSite ${ command } OK. Return: ${ x }`);
-    if (command === 'Get') {
-      this.climatesiteListModel$.next(<ClimateSite[]>x);
-    }
-    if (command === 'Put') {
-      this.climatesiteListModel$.getValue()[0] = <ClimateSite>x;
-    }
-    if (command === 'Post') {
-      this.climatesiteListModel$.getValue().push(<ClimateSite>x);
-    }
-    if (command === 'Delete') {
-      const index = this.climatesiteListModel$.getValue().indexOf(climatesite);
-      this.climatesiteListModel$.getValue().splice(index, 1);
-    }
-
-    this.climatesiteListModel$.next(this.climatesiteListModel$.getValue());
-    httpRequestModel$.next(<HttpRequestModel>{ Working: false, Error: null, Status: 'ok' });
-    this.climatesiteList = this.climatesiteListModel$.getValue();
-    this.DoReload();
   }
 }

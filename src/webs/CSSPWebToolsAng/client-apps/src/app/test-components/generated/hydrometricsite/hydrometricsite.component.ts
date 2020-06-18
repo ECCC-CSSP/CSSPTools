@@ -8,10 +8,12 @@
 import { Component, OnInit, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
 import { HydrometricSiteService } from './hydrometricsite.service';
 import { LoadLocalesHydrometricSiteText } from './hydrometricsite.locales';
-import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { HydrometricSite } from '../../../models/generated/HydrometricSite.model';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
+import { HttpClientService } from '../../../services/http-client.service';
+import { Router } from '@angular/router';
+import { HttpClientCommand } from '../../../enums/app.enums';
 
 @Component({
   selector: 'app-hydrometricsite',
@@ -24,28 +26,30 @@ export class HydrometricSiteComponent implements OnInit, OnDestroy {
   hydrometricsiteFormPut: FormGroup;
   hydrometricsiteFormPost: FormGroup;
 
-  constructor(public hydrometricsiteService: HydrometricSiteService, public router: Router, public fb: FormBuilder) { }
+  constructor(public hydrometricsiteService: HydrometricSiteService, private router: Router, private httpClientService: HttpClientService, private fb: FormBuilder) {
+    httpClientService.oldURL = router.url;
+  }
 
   GetHydrometricSiteList() {
-    this.sub = this.hydrometricsiteService.GetHydrometricSiteList(this.router).subscribe();
+    this.sub = this.hydrometricsiteService.GetHydrometricSiteList().subscribe();
   }
 
   PutHydrometricSite(hydrometricsite: HydrometricSite) {
-    this.sub = this.hydrometricsiteService.PutHydrometricSite(hydrometricsite, this.router).subscribe();
+    this.sub = this.hydrometricsiteService.PutHydrometricSite(hydrometricsite).subscribe();
   }
 
   PostHydrometricSite(hydrometricsite: HydrometricSite) {
-    this.sub = this.hydrometricsiteService.PostHydrometricSite(hydrometricsite, this.router).subscribe();
+    this.sub = this.hydrometricsiteService.PostHydrometricSite(hydrometricsite).subscribe();
   }
 
   DeleteHydrometricSite(hydrometricsite: HydrometricSite) {
-    this.sub = this.hydrometricsiteService.DeleteHydrometricSite(hydrometricsite, this.router).subscribe();
+    this.sub = this.hydrometricsiteService.DeleteHydrometricSite(hydrometricsite).subscribe();
   }
 
   ngOnInit(): void {
     LoadLocalesHydrometricSiteText(this.hydrometricsiteService);
-    this.FillFormBuilderGroup('Add');
-    this.FillFormBuilderGroup('Update');
+    this.FillFormBuilderGroup(HttpClientCommand.Post);
+    this.FillFormBuilderGroup(HttpClientCommand.Put);
   }
 
   ngOnDestroy() {
@@ -54,124 +58,124 @@ export class HydrometricSiteComponent implements OnInit, OnDestroy {
     }
   }
 
-  FillFormBuilderGroup(AddOrUpdate: string) {
-    if (this.hydrometricsiteService.hydrometricsiteList.length) {
+  FillFormBuilderGroup(httpClientCommand: HttpClientCommand) {
+    if (this.hydrometricsiteService.hydrometricsiteListModel$.getValue().length) {
       let formGroup: FormGroup = this.fb.group(
         {
           HydrometricSiteID: [
             {
-              value: (AddOrUpdate === 'Add' ? 0 : (this.hydrometricsiteService.hydrometricsiteList[0]?.HydrometricSiteID)),
+              value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.hydrometricsiteService.hydrometricsiteListModel$.getValue()[0]?.HydrometricSiteID)),
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
           HydrometricSiteTVItemID: [
             {
-              value: this.hydrometricsiteService.hydrometricsiteList[0]?.HydrometricSiteTVItemID,
+              value: this.hydrometricsiteService.hydrometricsiteListModel$.getValue()[0]?.HydrometricSiteTVItemID,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
           FedSiteNumber: [
             {
-              value: this.hydrometricsiteService.hydrometricsiteList[0]?.FedSiteNumber,
+              value: this.hydrometricsiteService.hydrometricsiteListModel$.getValue()[0]?.FedSiteNumber,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.maxLength(7) ]],
           QuebecSiteNumber: [
             {
-              value: this.hydrometricsiteService.hydrometricsiteList[0]?.QuebecSiteNumber,
+              value: this.hydrometricsiteService.hydrometricsiteListModel$.getValue()[0]?.QuebecSiteNumber,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.maxLength(7) ]],
           HydrometricSiteName: [
             {
-              value: this.hydrometricsiteService.hydrometricsiteList[0]?.HydrometricSiteName,
+              value: this.hydrometricsiteService.hydrometricsiteListModel$.getValue()[0]?.HydrometricSiteName,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required, Validators.maxLength(200) ]],
           Description: [
             {
-              value: this.hydrometricsiteService.hydrometricsiteList[0]?.Description,
+              value: this.hydrometricsiteService.hydrometricsiteListModel$.getValue()[0]?.Description,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.maxLength(200) ]],
           Province: [
             {
-              value: this.hydrometricsiteService.hydrometricsiteList[0]?.Province,
+              value: this.hydrometricsiteService.hydrometricsiteListModel$.getValue()[0]?.Province,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required, Validators.maxLength(4) ]],
           Elevation_m: [
             {
-              value: this.hydrometricsiteService.hydrometricsiteList[0]?.Elevation_m,
+              value: this.hydrometricsiteService.hydrometricsiteListModel$.getValue()[0]?.Elevation_m,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.min(0), Validators.max(10000) ]],
           StartDate_Local: [
             {
-              value: this.hydrometricsiteService.hydrometricsiteList[0]?.StartDate_Local,
+              value: this.hydrometricsiteService.hydrometricsiteListModel$.getValue()[0]?.StartDate_Local,
               disabled: false
-            }, [ Validators.required ]],
+            }],
           EndDate_Local: [
             {
-              value: this.hydrometricsiteService.hydrometricsiteList[0]?.EndDate_Local,
+              value: this.hydrometricsiteService.hydrometricsiteListModel$.getValue()[0]?.EndDate_Local,
               disabled: false
-            }, [ Validators.required ]],
+            }],
           TimeOffset_hour: [
             {
-              value: this.hydrometricsiteService.hydrometricsiteList[0]?.TimeOffset_hour,
+              value: this.hydrometricsiteService.hydrometricsiteListModel$.getValue()[0]?.TimeOffset_hour,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.min(-10), Validators.max(0) ]],
           DrainageArea_km2: [
             {
-              value: this.hydrometricsiteService.hydrometricsiteList[0]?.DrainageArea_km2,
+              value: this.hydrometricsiteService.hydrometricsiteListModel$.getValue()[0]?.DrainageArea_km2,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.min(0), Validators.max(1000000) ]],
           IsNatural: [
             {
-              value: this.hydrometricsiteService.hydrometricsiteList[0]?.IsNatural,
+              value: this.hydrometricsiteService.hydrometricsiteListModel$.getValue()[0]?.IsNatural,
               disabled: false
-            }, [ Validators.required ]],
+            }],
           IsActive: [
             {
-              value: this.hydrometricsiteService.hydrometricsiteList[0]?.IsActive,
+              value: this.hydrometricsiteService.hydrometricsiteListModel$.getValue()[0]?.IsActive,
               disabled: false
-            }, [ Validators.required ]],
+            }],
           Sediment: [
             {
-              value: this.hydrometricsiteService.hydrometricsiteList[0]?.Sediment,
+              value: this.hydrometricsiteService.hydrometricsiteListModel$.getValue()[0]?.Sediment,
               disabled: false
-            }, [ Validators.required ]],
+            }],
           RHBN: [
             {
-              value: this.hydrometricsiteService.hydrometricsiteList[0]?.RHBN,
+              value: this.hydrometricsiteService.hydrometricsiteListModel$.getValue()[0]?.RHBN,
               disabled: false
-            }, [ Validators.required ]],
+            }],
           RealTime: [
             {
-              value: this.hydrometricsiteService.hydrometricsiteList[0]?.RealTime,
+              value: this.hydrometricsiteService.hydrometricsiteListModel$.getValue()[0]?.RealTime,
               disabled: false
-            }, [ Validators.required ]],
+            }],
           HasDischarge: [
             {
-              value: this.hydrometricsiteService.hydrometricsiteList[0]?.HasDischarge,
+              value: this.hydrometricsiteService.hydrometricsiteListModel$.getValue()[0]?.HasDischarge,
               disabled: false
-            }, [ Validators.required ]],
+            }],
           HasLevel: [
             {
-              value: this.hydrometricsiteService.hydrometricsiteList[0]?.HasLevel,
+              value: this.hydrometricsiteService.hydrometricsiteListModel$.getValue()[0]?.HasLevel,
               disabled: false
-            }, [ Validators.required ]],
+            }],
           HasRatingCurve: [
             {
-              value: this.hydrometricsiteService.hydrometricsiteList[0]?.HasRatingCurve,
+              value: this.hydrometricsiteService.hydrometricsiteListModel$.getValue()[0]?.HasRatingCurve,
               disabled: false
-            }, [ Validators.required ]],
+            }],
           LastUpdateDate_UTC: [
             {
-              value: this.hydrometricsiteService.hydrometricsiteList[0]?.LastUpdateDate_UTC,
+              value: this.hydrometricsiteService.hydrometricsiteListModel$.getValue()[0]?.LastUpdateDate_UTC,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
           LastUpdateContactTVItemID: [
             {
-              value: this.hydrometricsiteService.hydrometricsiteList[0]?.LastUpdateContactTVItemID,
+              value: this.hydrometricsiteService.hydrometricsiteListModel$.getValue()[0]?.LastUpdateContactTVItemID,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
         }
       );
 
-      if (AddOrUpdate === 'Add') {
+      if (httpClientCommand === HttpClientCommand.Post) {
         this.hydrometricsiteFormPost = formGroup
       }
       else {

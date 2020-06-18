@@ -9,11 +9,12 @@ import { Injectable } from '@angular/core';
 import { DrogueRunTextModel } from './droguerun.models';
 import { BehaviorSubject, of } from 'rxjs';
 import { LoadLocalesDrogueRunText } from './droguerun.locales';
-import { Router } from '@angular/router';
-import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { map, catchError } from 'rxjs/operators';
 import { DrogueRun } from '../../../models/generated/DrogueRun.model';
 import { HttpRequestModel } from '../../../models/http.model';
+import { HttpClientService } from '../../../services/http-client.service';
+import { HttpClientCommand } from '../../../enums/app.enums';
 
 @Injectable({
   providedIn: 'root'
@@ -26,110 +27,63 @@ export class DrogueRunService {
   droguerunPutModel$: BehaviorSubject<HttpRequestModel> = new BehaviorSubject<HttpRequestModel>(<HttpRequestModel>{});
   droguerunPostModel$: BehaviorSubject<HttpRequestModel> = new BehaviorSubject<HttpRequestModel>(<HttpRequestModel>{});
   droguerunDeleteModel$: BehaviorSubject<HttpRequestModel> = new BehaviorSubject<HttpRequestModel>(<HttpRequestModel>{});
-  droguerunList: DrogueRun[] = [];
-  private oldURL: string;
-  private router: Router;
 
   /* Constructors */
-  constructor(private httpClient: HttpClient) {
+  constructor(private httpClient: HttpClient, private httpClientService: HttpClientService) {
     LoadLocalesDrogueRunText(this);
     this.droguerunTextModel$.next(<DrogueRunTextModel>{ Title: "Something2 for text" });
   }
 
   /* Functions public */
-  GetDrogueRunList(router: Router) {
-    this.BeforeHttpClient(this.droguerunGetModel$, router);
+  GetDrogueRunList() {
+    this.httpClientService.BeforeHttpClient(this.droguerunGetModel$);
 
     return this.httpClient.get<DrogueRun[]>('/api/DrogueRun').pipe(
       map((x: any) => {
-        this.DoSuccess(this.droguerunGetModel$, x, 'Get', null);
+        this.httpClientService.DoSuccess<DrogueRun>(this.droguerunListModel$, this.droguerunGetModel$, x, HttpClientCommand.Get, null);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.DoCatchError(this.droguerunGetModel$, e, 'Get');
+        this.httpClientService.DoCatchError<DrogueRun>(this.droguerunListModel$, this.droguerunGetModel$, e);
       })))
     );
   }
 
-  PutDrogueRun(droguerun: DrogueRun, router: Router) {
-    this.BeforeHttpClient(this.droguerunPutModel$, router);
+  PutDrogueRun(droguerun: DrogueRun) {
+    this.httpClientService.BeforeHttpClient(this.droguerunPutModel$);
 
     return this.httpClient.put<DrogueRun>('/api/DrogueRun', droguerun, { headers: new HttpHeaders() }).pipe(
       map((x: any) => {
-        this.DoSuccess(this.droguerunPutModel$, x, 'Put', droguerun);
+        this.httpClientService.DoSuccess<DrogueRun>(this.droguerunListModel$, this.droguerunPutModel$, x, HttpClientCommand.Put, droguerun);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.DoCatchError(this.droguerunPutModel$, e, 'Put');
+       this.httpClientService.DoCatchError<DrogueRun>(this.droguerunListModel$, this.droguerunPutModel$, e);
       })))
     );
   }
 
-  PostDrogueRun(droguerun: DrogueRun, router: Router) {
-    this.BeforeHttpClient(this.droguerunPostModel$, router);
+  PostDrogueRun(droguerun: DrogueRun) {
+    this.httpClientService.BeforeHttpClient(this.droguerunPostModel$);
 
     return this.httpClient.post<DrogueRun>('/api/DrogueRun', droguerun, { headers: new HttpHeaders() }).pipe(
       map((x: any) => {
-        this.DoSuccess(this.droguerunPostModel$, x, 'Post', droguerun);
+        this.httpClientService.DoSuccess<DrogueRun>(this.droguerunListModel$, this.droguerunPostModel$, x, HttpClientCommand.Post, droguerun);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.DoCatchError(this.droguerunPostModel$, e, 'Post');
+        this.httpClientService.DoCatchError<DrogueRun>(this.droguerunListModel$, this.droguerunPostModel$, e);
       })))
     );
   }
 
-  DeleteDrogueRun(droguerun: DrogueRun, router: Router) {
-    this.BeforeHttpClient(this.droguerunDeleteModel$, router);
+  DeleteDrogueRun(droguerun: DrogueRun) {
+    this.httpClientService.BeforeHttpClient(this.droguerunDeleteModel$);
 
     return this.httpClient.delete<boolean>(`/api/DrogueRun/${ droguerun.DrogueRunID }`).pipe(
       map((x: any) => {
-        this.DoSuccess(this.droguerunDeleteModel$, x, 'Delete', droguerun);
+        this.httpClientService.DoSuccess<DrogueRun>(this.droguerunListModel$, this.droguerunDeleteModel$, x, HttpClientCommand.Delete, droguerun);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.DoCatchError(this.droguerunDeleteModel$, e, 'Delete');
+        this.httpClientService.DoCatchError<DrogueRun>(this.droguerunListModel$, this.droguerunDeleteModel$, e);
       })))
     );
-  }
-
-  /* Functions private */
-  private BeforeHttpClient(httpRequestModel$: BehaviorSubject<HttpRequestModel>, router: Router) {
-    this.router = router;
-    this.oldURL = router.url;
-    httpRequestModel$.next(<HttpRequestModel>{ Working: true, Error: null, Status: null });
-  }
-
-  private DoCatchError(httpRequestModel$: BehaviorSubject<HttpRequestModel>, e: any, command: string) {
-    this.droguerunListModel$.next(null);
-    httpRequestModel$.next(<HttpRequestModel>{ Working: false, Error: <HttpErrorResponse>e, Status: 'Error' });
-
-    this.droguerunList = [];
-    console.debug(`DrogueRun ${ command } ERROR. Return: ${ <HttpErrorResponse>e }`);
-    this.DoReload();
-  }
-
-  private DoReload() {
-    this.router.navigateByUrl('', { skipLocationChange: true }).then(() => {
-      this.router.navigate([`/${this.oldURL}`]);
-    });
-  }
-
-  private DoSuccess(httpRequestModel$: BehaviorSubject<HttpRequestModel>, x: any, command: string, droguerun?: DrogueRun) {
-    console.debug(`DrogueRun ${ command } OK. Return: ${ x }`);
-    if (command === 'Get') {
-      this.droguerunListModel$.next(<DrogueRun[]>x);
-    }
-    if (command === 'Put') {
-      this.droguerunListModel$.getValue()[0] = <DrogueRun>x;
-    }
-    if (command === 'Post') {
-      this.droguerunListModel$.getValue().push(<DrogueRun>x);
-    }
-    if (command === 'Delete') {
-      const index = this.droguerunListModel$.getValue().indexOf(droguerun);
-      this.droguerunListModel$.getValue().splice(index, 1);
-    }
-
-    this.droguerunListModel$.next(this.droguerunListModel$.getValue());
-    httpRequestModel$.next(<HttpRequestModel>{ Working: false, Error: null, Status: 'ok' });
-    this.droguerunList = this.droguerunListModel$.getValue();
-    this.DoReload();
   }
 }

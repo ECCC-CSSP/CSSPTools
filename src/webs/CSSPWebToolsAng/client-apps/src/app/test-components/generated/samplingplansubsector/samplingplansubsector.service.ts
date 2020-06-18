@@ -9,11 +9,12 @@ import { Injectable } from '@angular/core';
 import { SamplingPlanSubsectorTextModel } from './samplingplansubsector.models';
 import { BehaviorSubject, of } from 'rxjs';
 import { LoadLocalesSamplingPlanSubsectorText } from './samplingplansubsector.locales';
-import { Router } from '@angular/router';
-import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { map, catchError } from 'rxjs/operators';
 import { SamplingPlanSubsector } from '../../../models/generated/SamplingPlanSubsector.model';
 import { HttpRequestModel } from '../../../models/http.model';
+import { HttpClientService } from '../../../services/http-client.service';
+import { HttpClientCommand } from '../../../enums/app.enums';
 
 @Injectable({
   providedIn: 'root'
@@ -26,110 +27,63 @@ export class SamplingPlanSubsectorService {
   samplingplansubsectorPutModel$: BehaviorSubject<HttpRequestModel> = new BehaviorSubject<HttpRequestModel>(<HttpRequestModel>{});
   samplingplansubsectorPostModel$: BehaviorSubject<HttpRequestModel> = new BehaviorSubject<HttpRequestModel>(<HttpRequestModel>{});
   samplingplansubsectorDeleteModel$: BehaviorSubject<HttpRequestModel> = new BehaviorSubject<HttpRequestModel>(<HttpRequestModel>{});
-  samplingplansubsectorList: SamplingPlanSubsector[] = [];
-  private oldURL: string;
-  private router: Router;
 
   /* Constructors */
-  constructor(private httpClient: HttpClient) {
+  constructor(private httpClient: HttpClient, private httpClientService: HttpClientService) {
     LoadLocalesSamplingPlanSubsectorText(this);
     this.samplingplansubsectorTextModel$.next(<SamplingPlanSubsectorTextModel>{ Title: "Something2 for text" });
   }
 
   /* Functions public */
-  GetSamplingPlanSubsectorList(router: Router) {
-    this.BeforeHttpClient(this.samplingplansubsectorGetModel$, router);
+  GetSamplingPlanSubsectorList() {
+    this.httpClientService.BeforeHttpClient(this.samplingplansubsectorGetModel$);
 
     return this.httpClient.get<SamplingPlanSubsector[]>('/api/SamplingPlanSubsector').pipe(
       map((x: any) => {
-        this.DoSuccess(this.samplingplansubsectorGetModel$, x, 'Get', null);
+        this.httpClientService.DoSuccess<SamplingPlanSubsector>(this.samplingplansubsectorListModel$, this.samplingplansubsectorGetModel$, x, HttpClientCommand.Get, null);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.DoCatchError(this.samplingplansubsectorGetModel$, e, 'Get');
+        this.httpClientService.DoCatchError<SamplingPlanSubsector>(this.samplingplansubsectorListModel$, this.samplingplansubsectorGetModel$, e);
       })))
     );
   }
 
-  PutSamplingPlanSubsector(samplingplansubsector: SamplingPlanSubsector, router: Router) {
-    this.BeforeHttpClient(this.samplingplansubsectorPutModel$, router);
+  PutSamplingPlanSubsector(samplingplansubsector: SamplingPlanSubsector) {
+    this.httpClientService.BeforeHttpClient(this.samplingplansubsectorPutModel$);
 
     return this.httpClient.put<SamplingPlanSubsector>('/api/SamplingPlanSubsector', samplingplansubsector, { headers: new HttpHeaders() }).pipe(
       map((x: any) => {
-        this.DoSuccess(this.samplingplansubsectorPutModel$, x, 'Put', samplingplansubsector);
+        this.httpClientService.DoSuccess<SamplingPlanSubsector>(this.samplingplansubsectorListModel$, this.samplingplansubsectorPutModel$, x, HttpClientCommand.Put, samplingplansubsector);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.DoCatchError(this.samplingplansubsectorPutModel$, e, 'Put');
+       this.httpClientService.DoCatchError<SamplingPlanSubsector>(this.samplingplansubsectorListModel$, this.samplingplansubsectorPutModel$, e);
       })))
     );
   }
 
-  PostSamplingPlanSubsector(samplingplansubsector: SamplingPlanSubsector, router: Router) {
-    this.BeforeHttpClient(this.samplingplansubsectorPostModel$, router);
+  PostSamplingPlanSubsector(samplingplansubsector: SamplingPlanSubsector) {
+    this.httpClientService.BeforeHttpClient(this.samplingplansubsectorPostModel$);
 
     return this.httpClient.post<SamplingPlanSubsector>('/api/SamplingPlanSubsector', samplingplansubsector, { headers: new HttpHeaders() }).pipe(
       map((x: any) => {
-        this.DoSuccess(this.samplingplansubsectorPostModel$, x, 'Post', samplingplansubsector);
+        this.httpClientService.DoSuccess<SamplingPlanSubsector>(this.samplingplansubsectorListModel$, this.samplingplansubsectorPostModel$, x, HttpClientCommand.Post, samplingplansubsector);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.DoCatchError(this.samplingplansubsectorPostModel$, e, 'Post');
+        this.httpClientService.DoCatchError<SamplingPlanSubsector>(this.samplingplansubsectorListModel$, this.samplingplansubsectorPostModel$, e);
       })))
     );
   }
 
-  DeleteSamplingPlanSubsector(samplingplansubsector: SamplingPlanSubsector, router: Router) {
-    this.BeforeHttpClient(this.samplingplansubsectorDeleteModel$, router);
+  DeleteSamplingPlanSubsector(samplingplansubsector: SamplingPlanSubsector) {
+    this.httpClientService.BeforeHttpClient(this.samplingplansubsectorDeleteModel$);
 
     return this.httpClient.delete<boolean>(`/api/SamplingPlanSubsector/${ samplingplansubsector.SamplingPlanSubsectorID }`).pipe(
       map((x: any) => {
-        this.DoSuccess(this.samplingplansubsectorDeleteModel$, x, 'Delete', samplingplansubsector);
+        this.httpClientService.DoSuccess<SamplingPlanSubsector>(this.samplingplansubsectorListModel$, this.samplingplansubsectorDeleteModel$, x, HttpClientCommand.Delete, samplingplansubsector);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.DoCatchError(this.samplingplansubsectorDeleteModel$, e, 'Delete');
+        this.httpClientService.DoCatchError<SamplingPlanSubsector>(this.samplingplansubsectorListModel$, this.samplingplansubsectorDeleteModel$, e);
       })))
     );
-  }
-
-  /* Functions private */
-  private BeforeHttpClient(httpRequestModel$: BehaviorSubject<HttpRequestModel>, router: Router) {
-    this.router = router;
-    this.oldURL = router.url;
-    httpRequestModel$.next(<HttpRequestModel>{ Working: true, Error: null, Status: null });
-  }
-
-  private DoCatchError(httpRequestModel$: BehaviorSubject<HttpRequestModel>, e: any, command: string) {
-    this.samplingplansubsectorListModel$.next(null);
-    httpRequestModel$.next(<HttpRequestModel>{ Working: false, Error: <HttpErrorResponse>e, Status: 'Error' });
-
-    this.samplingplansubsectorList = [];
-    console.debug(`SamplingPlanSubsector ${ command } ERROR. Return: ${ <HttpErrorResponse>e }`);
-    this.DoReload();
-  }
-
-  private DoReload() {
-    this.router.navigateByUrl('', { skipLocationChange: true }).then(() => {
-      this.router.navigate([`/${this.oldURL}`]);
-    });
-  }
-
-  private DoSuccess(httpRequestModel$: BehaviorSubject<HttpRequestModel>, x: any, command: string, samplingplansubsector?: SamplingPlanSubsector) {
-    console.debug(`SamplingPlanSubsector ${ command } OK. Return: ${ x }`);
-    if (command === 'Get') {
-      this.samplingplansubsectorListModel$.next(<SamplingPlanSubsector[]>x);
-    }
-    if (command === 'Put') {
-      this.samplingplansubsectorListModel$.getValue()[0] = <SamplingPlanSubsector>x;
-    }
-    if (command === 'Post') {
-      this.samplingplansubsectorListModel$.getValue().push(<SamplingPlanSubsector>x);
-    }
-    if (command === 'Delete') {
-      const index = this.samplingplansubsectorListModel$.getValue().indexOf(samplingplansubsector);
-      this.samplingplansubsectorListModel$.getValue().splice(index, 1);
-    }
-
-    this.samplingplansubsectorListModel$.next(this.samplingplansubsectorListModel$.getValue());
-    httpRequestModel$.next(<HttpRequestModel>{ Working: false, Error: null, Status: 'ok' });
-    this.samplingplansubsectorList = this.samplingplansubsectorListModel$.getValue();
-    this.DoReload();
   }
 }

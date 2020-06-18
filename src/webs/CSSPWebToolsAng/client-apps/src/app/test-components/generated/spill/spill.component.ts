@@ -8,10 +8,12 @@
 import { Component, OnInit, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
 import { SpillService } from './spill.service';
 import { LoadLocalesSpillText } from './spill.locales';
-import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { Spill } from '../../../models/generated/Spill.model';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
+import { HttpClientService } from '../../../services/http-client.service';
+import { Router } from '@angular/router';
+import { HttpClientCommand } from '../../../enums/app.enums';
 
 @Component({
   selector: 'app-spill',
@@ -24,28 +26,30 @@ export class SpillComponent implements OnInit, OnDestroy {
   spillFormPut: FormGroup;
   spillFormPost: FormGroup;
 
-  constructor(public spillService: SpillService, public router: Router, public fb: FormBuilder) { }
+  constructor(public spillService: SpillService, private router: Router, private httpClientService: HttpClientService, private fb: FormBuilder) {
+    httpClientService.oldURL = router.url;
+  }
 
   GetSpillList() {
-    this.sub = this.spillService.GetSpillList(this.router).subscribe();
+    this.sub = this.spillService.GetSpillList().subscribe();
   }
 
   PutSpill(spill: Spill) {
-    this.sub = this.spillService.PutSpill(spill, this.router).subscribe();
+    this.sub = this.spillService.PutSpill(spill).subscribe();
   }
 
   PostSpill(spill: Spill) {
-    this.sub = this.spillService.PostSpill(spill, this.router).subscribe();
+    this.sub = this.spillService.PostSpill(spill).subscribe();
   }
 
   DeleteSpill(spill: Spill) {
-    this.sub = this.spillService.DeleteSpill(spill, this.router).subscribe();
+    this.sub = this.spillService.DeleteSpill(spill).subscribe();
   }
 
   ngOnInit(): void {
     LoadLocalesSpillText(this.spillService);
-    this.FillFormBuilderGroup('Add');
-    this.FillFormBuilderGroup('Update');
+    this.FillFormBuilderGroup(HttpClientCommand.Post);
+    this.FillFormBuilderGroup(HttpClientCommand.Put);
   }
 
   ngOnDestroy() {
@@ -54,54 +58,54 @@ export class SpillComponent implements OnInit, OnDestroy {
     }
   }
 
-  FillFormBuilderGroup(AddOrUpdate: string) {
-    if (this.spillService.spillList.length) {
+  FillFormBuilderGroup(httpClientCommand: HttpClientCommand) {
+    if (this.spillService.spillListModel$.getValue().length) {
       let formGroup: FormGroup = this.fb.group(
         {
           SpillID: [
             {
-              value: (AddOrUpdate === 'Add' ? 0 : (this.spillService.spillList[0]?.SpillID)),
+              value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.spillService.spillListModel$.getValue()[0]?.SpillID)),
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
           MunicipalityTVItemID: [
             {
-              value: this.spillService.spillList[0]?.MunicipalityTVItemID,
+              value: this.spillService.spillListModel$.getValue()[0]?.MunicipalityTVItemID,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
           InfrastructureTVItemID: [
             {
-              value: this.spillService.spillList[0]?.InfrastructureTVItemID,
+              value: this.spillService.spillListModel$.getValue()[0]?.InfrastructureTVItemID,
               disabled: false
-            }, [ Validators.required ]],
+            }],
           StartDateTime_Local: [
             {
-              value: this.spillService.spillList[0]?.StartDateTime_Local,
+              value: this.spillService.spillListModel$.getValue()[0]?.StartDateTime_Local,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
           EndDateTime_Local: [
             {
-              value: this.spillService.spillList[0]?.EndDateTime_Local,
+              value: this.spillService.spillListModel$.getValue()[0]?.EndDateTime_Local,
               disabled: false
-            }, [ Validators.required ]],
+            }],
           AverageFlow_m3_day: [
             {
-              value: this.spillService.spillList[0]?.AverageFlow_m3_day,
+              value: this.spillService.spillListModel$.getValue()[0]?.AverageFlow_m3_day,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required, Validators.min(0), Validators.max(1000000) ]],
           LastUpdateDate_UTC: [
             {
-              value: this.spillService.spillList[0]?.LastUpdateDate_UTC,
+              value: this.spillService.spillListModel$.getValue()[0]?.LastUpdateDate_UTC,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
           LastUpdateContactTVItemID: [
             {
-              value: this.spillService.spillList[0]?.LastUpdateContactTVItemID,
+              value: this.spillService.spillListModel$.getValue()[0]?.LastUpdateContactTVItemID,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
         }
       );
 
-      if (AddOrUpdate === 'Add') {
+      if (httpClientCommand === HttpClientCommand.Post) {
         this.spillFormPost = formGroup
       }
       else {

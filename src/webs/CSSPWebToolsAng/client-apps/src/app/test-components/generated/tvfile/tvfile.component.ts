@@ -8,7 +8,6 @@
 import { Component, OnInit, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
 import { TVFileService } from './tvfile.service';
 import { LoadLocalesTVFileText } from './tvfile.locales';
-import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { TVTypeEnum_GetIDText, TVTypeEnum_GetOrderedText } from '../../../enums/generated/TVTypeEnum';
 import { LanguageEnum_GetIDText, LanguageEnum_GetOrderedText } from '../../../enums/generated/LanguageEnum';
@@ -17,6 +16,9 @@ import { FileTypeEnum_GetIDText, FileTypeEnum_GetOrderedText } from '../../../en
 import { TVFile } from '../../../models/generated/TVFile.model';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
 import { EnumIDAndText } from '../../../models/enumidandtext.model';
+import { HttpClientService } from '../../../services/http-client.service';
+import { Router } from '@angular/router';
+import { HttpClientCommand } from '../../../enums/app.enums';
 
 @Component({
   selector: 'app-tvfile',
@@ -33,22 +35,24 @@ export class TVFileComponent implements OnInit, OnDestroy {
   tvfileFormPut: FormGroup;
   tvfileFormPost: FormGroup;
 
-  constructor(public tvfileService: TVFileService, public router: Router, public fb: FormBuilder) { }
+  constructor(public tvfileService: TVFileService, private router: Router, private httpClientService: HttpClientService, private fb: FormBuilder) {
+    httpClientService.oldURL = router.url;
+  }
 
   GetTVFileList() {
-    this.sub = this.tvfileService.GetTVFileList(this.router).subscribe();
+    this.sub = this.tvfileService.GetTVFileList().subscribe();
   }
 
   PutTVFile(tvfile: TVFile) {
-    this.sub = this.tvfileService.PutTVFile(tvfile, this.router).subscribe();
+    this.sub = this.tvfileService.PutTVFile(tvfile).subscribe();
   }
 
   PostTVFile(tvfile: TVFile) {
-    this.sub = this.tvfileService.PostTVFile(tvfile, this.router).subscribe();
+    this.sub = this.tvfileService.PostTVFile(tvfile).subscribe();
   }
 
   DeleteTVFile(tvfile: TVFile) {
-    this.sub = this.tvfileService.DeleteTVFile(tvfile, this.router).subscribe();
+    this.sub = this.tvfileService.DeleteTVFile(tvfile).subscribe();
   }
 
   GetTVTypeEnumText(enumID: number) {
@@ -73,8 +77,8 @@ export class TVFileComponent implements OnInit, OnDestroy {
     this.languageList = LanguageEnum_GetOrderedText();
     this.filePurposeList = FilePurposeEnum_GetOrderedText();
     this.fileTypeList = FileTypeEnum_GetOrderedText();
-    this.FillFormBuilderGroup('Add');
-    this.FillFormBuilderGroup('Update');
+    this.FillFormBuilderGroup(HttpClientCommand.Post);
+    this.FillFormBuilderGroup(HttpClientCommand.Put);
   }
 
   ngOnDestroy() {
@@ -83,104 +87,104 @@ export class TVFileComponent implements OnInit, OnDestroy {
     }
   }
 
-  FillFormBuilderGroup(AddOrUpdate: string) {
-    if (this.tvfileService.tvfileList.length) {
+  FillFormBuilderGroup(httpClientCommand: HttpClientCommand) {
+    if (this.tvfileService.tvfileListModel$.getValue().length) {
       let formGroup: FormGroup = this.fb.group(
         {
           TVFileID: [
             {
-              value: (AddOrUpdate === 'Add' ? 0 : (this.tvfileService.tvfileList[0]?.TVFileID)),
+              value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.tvfileService.tvfileListModel$.getValue()[0]?.TVFileID)),
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
           TVFileTVItemID: [
             {
-              value: this.tvfileService.tvfileList[0]?.TVFileTVItemID,
+              value: this.tvfileService.tvfileListModel$.getValue()[0]?.TVFileTVItemID,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
           TemplateTVType: [
             {
-              value: this.tvfileService.tvfileList[0]?.TemplateTVType,
+              value: this.tvfileService.tvfileListModel$.getValue()[0]?.TemplateTVType,
               disabled: false
-            }, [ Validators.required ]],
+            }],
           ReportTypeID: [
             {
-              value: this.tvfileService.tvfileList[0]?.ReportTypeID,
+              value: this.tvfileService.tvfileListModel$.getValue()[0]?.ReportTypeID,
               disabled: false
-            }, [ Validators.required ]],
+            }],
           Parameters: [
             {
-              value: this.tvfileService.tvfileList[0]?.Parameters,
+              value: this.tvfileService.tvfileListModel$.getValue()[0]?.Parameters,
               disabled: false
-            }, [ Validators.required ]],
+            }],
           Year: [
             {
-              value: this.tvfileService.tvfileList[0]?.Year,
+              value: this.tvfileService.tvfileListModel$.getValue()[0]?.Year,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.min(1980), Validators.max(2050) ]],
           Language: [
             {
-              value: this.tvfileService.tvfileList[0]?.Language,
+              value: this.tvfileService.tvfileListModel$.getValue()[0]?.Language,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
           FilePurpose: [
             {
-              value: this.tvfileService.tvfileList[0]?.FilePurpose,
+              value: this.tvfileService.tvfileListModel$.getValue()[0]?.FilePurpose,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
           FileType: [
             {
-              value: this.tvfileService.tvfileList[0]?.FileType,
+              value: this.tvfileService.tvfileListModel$.getValue()[0]?.FileType,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
           FileSize_kb: [
             {
-              value: this.tvfileService.tvfileList[0]?.FileSize_kb,
+              value: this.tvfileService.tvfileListModel$.getValue()[0]?.FileSize_kb,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required, Validators.min(0), Validators.max(100000000) ]],
           FileInfo: [
             {
-              value: this.tvfileService.tvfileList[0]?.FileInfo,
+              value: this.tvfileService.tvfileListModel$.getValue()[0]?.FileInfo,
               disabled: false
-            }, [ Validators.required ]],
+            }],
           FileCreatedDate_UTC: [
             {
-              value: this.tvfileService.tvfileList[0]?.FileCreatedDate_UTC,
+              value: this.tvfileService.tvfileListModel$.getValue()[0]?.FileCreatedDate_UTC,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
           FromWater: [
             {
-              value: this.tvfileService.tvfileList[0]?.FromWater,
+              value: this.tvfileService.tvfileListModel$.getValue()[0]?.FromWater,
               disabled: false
-            }, [ Validators.required ]],
+            }],
           ClientFilePath: [
             {
-              value: this.tvfileService.tvfileList[0]?.ClientFilePath,
+              value: this.tvfileService.tvfileListModel$.getValue()[0]?.ClientFilePath,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.maxLength(250) ]],
           ServerFileName: [
             {
-              value: this.tvfileService.tvfileList[0]?.ServerFileName,
+              value: this.tvfileService.tvfileListModel$.getValue()[0]?.ServerFileName,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required, Validators.maxLength(250) ]],
           ServerFilePath: [
             {
-              value: this.tvfileService.tvfileList[0]?.ServerFilePath,
+              value: this.tvfileService.tvfileListModel$.getValue()[0]?.ServerFilePath,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required, Validators.maxLength(250) ]],
           LastUpdateDate_UTC: [
             {
-              value: this.tvfileService.tvfileList[0]?.LastUpdateDate_UTC,
+              value: this.tvfileService.tvfileListModel$.getValue()[0]?.LastUpdateDate_UTC,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
           LastUpdateContactTVItemID: [
             {
-              value: this.tvfileService.tvfileList[0]?.LastUpdateContactTVItemID,
+              value: this.tvfileService.tvfileListModel$.getValue()[0]?.LastUpdateContactTVItemID,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
         }
       );
 
-      if (AddOrUpdate === 'Add') {
+      if (httpClientCommand === HttpClientCommand.Post) {
         this.tvfileFormPost = formGroup
       }
       else {

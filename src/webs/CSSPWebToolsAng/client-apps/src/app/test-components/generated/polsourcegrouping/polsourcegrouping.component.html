@@ -5,7 +5,7 @@
  *
 -->
 
-<mat-progress-bar mode="indeterminate" *ngIf="polsourcegroupingService.polsourcegroupingGetModel$.getValue().Working"></mat-progress-bar>
+<mat-progress-bar mode="indeterminate" *ngIf="polsourcegroupingService.polsourcegroupingGetModel$.getValue()?.Working"></mat-progress-bar>
 <mat-card>
   <mat-card-header>
     <mat-card-title>
@@ -17,8 +17,8 @@
     <mat-card-subtitle>{{ polsourcegroupingService.polsourcegroupingTextModel$.getValue().Title }}</mat-card-subtitle>
   </mat-card-header>
   <mat-card-content>
-    <mat-list>
-      <mat-list-item *ngFor="let polsourcegrouping of polsourcegroupingService.polsourcegroupingList">
+    <mat-list *ngIf="polsourcegroupingService.polsourcegroupingListModel$.getValue()?.length">
+      <mat-list-item *ngFor="let polsourcegrouping of polsourcegroupingService.polsourcegroupingListModel$.getValue()">
         <span mat-line>
           <button mat-raised-button (click)="DeletePolSourceGrouping(polsourcegrouping)">
             <span>Delete PolSourceGroupingID [{{ polsourcegrouping.PolSourceGroupingID }}]&nbsp;&nbsp;&nbsp;</span>
@@ -52,7 +52,7 @@
     <mat-card-title>Edit PolSourceGrouping testing</mat-card-title>
   </mat-card-header>
   <mat-card-content>
-    <div *ngIf="polsourcegroupingService.polsourcegroupingList.length">
+    <div *ngIf="polsourcegroupingService.polsourcegroupingListModel$.getValue()?.length">
       <blockquote>
         <form [formGroup]="polsourcegroupingFormPut" (ngSubmit)="PutPolSourceGrouping(polsourcegroupingFormPut.value)">
           <h3>
@@ -67,32 +67,65 @@
             <mat-form-field>
               <mat-label>PolSourceGroupingID</mat-label>
               <input matInput type="number" formControlName="PolSourceGroupingID">
+              <mat-error *ngIf="polsourcegroupingFormPut.controls.PolSourceGroupingID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>CSSPID</mat-label>
               <input matInput type="number" formControlName="CSSPID">
+              <mat-error *ngIf="polsourcegroupingFormPut.controls.CSSPID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+                <span *ngIf="e.min">Min - 10000<br /></span>
+                <span *ngIf="e.min">Max - 100000<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>GroupName</mat-label>
               <input matInput type="text" formControlName="GroupName">
+              <mat-error *ngIf="polsourcegroupingFormPut.controls.GroupName.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+                <span *ngIf="e.maxlength">MaxLength - 150<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>Child</mat-label>
               <input matInput type="text" formControlName="Child">
+              <mat-error *ngIf="polsourcegroupingFormPut.controls.Child.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+                <span *ngIf="e.maxlength">MaxLength - 150<br /></span>
+              </mat-error>
             </mat-form-field>
           </p>
           <p>
             <mat-form-field>
               <mat-label>Hide</mat-label>
               <input matInput type="text" formControlName="Hide">
+              <mat-error *ngIf="polsourcegroupingFormPut.controls.Hide.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+                <span *ngIf="e.maxlength">MaxLength - 150<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>LastUpdateDate_UTC</mat-label>
               <input matInput type="text" formControlName="LastUpdateDate_UTC">
+              <mat-error *ngIf="polsourcegroupingFormPut.controls.LastUpdateDate_UTC.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>LastUpdateContactTVItemID</mat-label>
               <input matInput type="number" formControlName="LastUpdateContactTVItemID">
+              <mat-error *ngIf="polsourcegroupingFormPut.controls.LastUpdateContactTVItemID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
           </p>
         </form>
@@ -107,7 +140,7 @@
     <mat-card-title>Add PolSourceGrouping testing</mat-card-title>
   </mat-card-header>
   <mat-card-content>
-    <div *ngIf="polsourcegroupingService.polsourcegroupingList.length">
+    <div *ngIf="polsourcegroupingService.polsourcegroupingListModel$.getValue()?.length">
       <blockquote>
         <form [formGroup]="polsourcegroupingFormPost" (ngSubmit)="PostPolSourceGrouping(polsourcegroupingFormPost.value)">
           <h3>
@@ -122,32 +155,65 @@
             <mat-form-field>
               <mat-label>PolSourceGroupingID</mat-label>
               <input matInput type="number" formControlName="PolSourceGroupingID">
+              <mat-error *ngIf="polsourcegroupingFormPut.controls.PolSourceGroupingID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>CSSPID</mat-label>
               <input matInput type="number" formControlName="CSSPID">
+              <mat-error *ngIf="polsourcegroupingFormPut.controls.CSSPID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+                <span *ngIf="e.min">Min - 10000<br /></span>
+                <span *ngIf="e.min">Max - 100000<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>GroupName</mat-label>
               <input matInput type="text" formControlName="GroupName">
+              <mat-error *ngIf="polsourcegroupingFormPut.controls.GroupName.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+                <span *ngIf="e.maxlength">MaxLength - 150<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>Child</mat-label>
               <input matInput type="text" formControlName="Child">
+              <mat-error *ngIf="polsourcegroupingFormPut.controls.Child.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+                <span *ngIf="e.maxlength">MaxLength - 150<br /></span>
+              </mat-error>
             </mat-form-field>
           </p>
           <p>
             <mat-form-field>
               <mat-label>Hide</mat-label>
               <input matInput type="text" formControlName="Hide">
+              <mat-error *ngIf="polsourcegroupingFormPut.controls.Hide.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+                <span *ngIf="e.maxlength">MaxLength - 150<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>LastUpdateDate_UTC</mat-label>
               <input matInput type="text" formControlName="LastUpdateDate_UTC">
+              <mat-error *ngIf="polsourcegroupingFormPut.controls.LastUpdateDate_UTC.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>LastUpdateContactTVItemID</mat-label>
               <input matInput type="number" formControlName="LastUpdateContactTVItemID">
+              <mat-error *ngIf="polsourcegroupingFormPut.controls.LastUpdateContactTVItemID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
           </p>
         </form>

@@ -5,7 +5,7 @@
  *
 -->
 
-<mat-progress-bar mode="indeterminate" *ngIf="mikesourceService.mikesourceGetModel$.getValue().Working"></mat-progress-bar>
+<mat-progress-bar mode="indeterminate" *ngIf="mikesourceService.mikesourceGetModel$.getValue()?.Working"></mat-progress-bar>
 <mat-card>
   <mat-card-header>
     <mat-card-title>
@@ -17,8 +17,8 @@
     <mat-card-subtitle>{{ mikesourceService.mikesourceTextModel$.getValue().Title }}</mat-card-subtitle>
   </mat-card-header>
   <mat-card-content>
-    <mat-list>
-      <mat-list-item *ngFor="let mikesource of mikesourceService.mikesourceList">
+    <mat-list *ngIf="mikesourceService.mikesourceListModel$.getValue()?.length">
+      <mat-list-item *ngFor="let mikesource of mikesourceService.mikesourceListModel$.getValue()">
         <span mat-line>
           <button mat-raised-button (click)="DeleteMikeSource(mikesource)">
             <span>Delete MikeSourceID [{{ mikesource.MikeSourceID }}]&nbsp;&nbsp;&nbsp;</span>
@@ -59,7 +59,7 @@
     <mat-card-title>Edit MikeSource testing</mat-card-title>
   </mat-card-header>
   <mat-card-content>
-    <div *ngIf="mikesourceService.mikesourceList.length">
+    <div *ngIf="mikesourceService.mikesourceListModel$.getValue()?.length">
       <blockquote>
         <form [formGroup]="mikesourceFormPut" (ngSubmit)="PutMikeSource(mikesourceFormPut.value)">
           <h3>
@@ -74,54 +74,104 @@
             <mat-form-field>
               <mat-label>MikeSourceID</mat-label>
               <input matInput type="number" formControlName="MikeSourceID">
+              <mat-error *ngIf="mikesourceFormPut.controls.MikeSourceID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>MikeSourceTVItemID</mat-label>
               <input matInput type="number" formControlName="MikeSourceTVItemID">
+              <mat-error *ngIf="mikesourceFormPut.controls.MikeSourceTVItemID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>IsContinuous</mat-label>
               <input matInput type="text" formControlName="IsContinuous">
+              <mat-error *ngIf="mikesourceFormPut.controls.IsContinuous.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>Include</mat-label>
               <input matInput type="text" formControlName="Include">
+              <mat-error *ngIf="mikesourceFormPut.controls.Include.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
           </p>
           <p>
             <mat-form-field>
               <mat-label>IsRiver</mat-label>
               <input matInput type="text" formControlName="IsRiver">
+              <mat-error *ngIf="mikesourceFormPut.controls.IsRiver.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>UseHydrometric</mat-label>
               <input matInput type="text" formControlName="UseHydrometric">
+              <mat-error *ngIf="mikesourceFormPut.controls.UseHydrometric.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>HydrometricTVItemID</mat-label>
               <input matInput type="number" formControlName="HydrometricTVItemID">
+              <mat-error *ngIf="mikesourceFormPut.controls.HydrometricTVItemID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>DrainageArea_km2</mat-label>
               <input matInput type="number" formControlName="DrainageArea_km2">
+              <mat-error *ngIf="mikesourceFormPut.controls.DrainageArea_km2.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.min">Min - 0<br /></span>
+                <span *ngIf="e.min">Max - 1000000<br /></span>
+              </mat-error>
             </mat-form-field>
           </p>
           <p>
             <mat-form-field>
               <mat-label>Factor</mat-label>
               <input matInput type="number" formControlName="Factor">
+              <mat-error *ngIf="mikesourceFormPut.controls.Factor.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.min">Min - 0<br /></span>
+                <span *ngIf="e.min">Max - 1000000<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>SourceNumberString</mat-label>
               <input matInput type="text" formControlName="SourceNumberString">
+              <mat-error *ngIf="mikesourceFormPut.controls.SourceNumberString.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+                <span *ngIf="e.maxlength">MaxLength - 50<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>LastUpdateDate_UTC</mat-label>
               <input matInput type="text" formControlName="LastUpdateDate_UTC">
+              <mat-error *ngIf="mikesourceFormPut.controls.LastUpdateDate_UTC.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>LastUpdateContactTVItemID</mat-label>
               <input matInput type="number" formControlName="LastUpdateContactTVItemID">
+              <mat-error *ngIf="mikesourceFormPut.controls.LastUpdateContactTVItemID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
           </p>
         </form>
@@ -136,7 +186,7 @@
     <mat-card-title>Add MikeSource testing</mat-card-title>
   </mat-card-header>
   <mat-card-content>
-    <div *ngIf="mikesourceService.mikesourceList.length">
+    <div *ngIf="mikesourceService.mikesourceListModel$.getValue()?.length">
       <blockquote>
         <form [formGroup]="mikesourceFormPost" (ngSubmit)="PostMikeSource(mikesourceFormPost.value)">
           <h3>
@@ -151,54 +201,104 @@
             <mat-form-field>
               <mat-label>MikeSourceID</mat-label>
               <input matInput type="number" formControlName="MikeSourceID">
+              <mat-error *ngIf="mikesourceFormPut.controls.MikeSourceID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>MikeSourceTVItemID</mat-label>
               <input matInput type="number" formControlName="MikeSourceTVItemID">
+              <mat-error *ngIf="mikesourceFormPut.controls.MikeSourceTVItemID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>IsContinuous</mat-label>
               <input matInput type="text" formControlName="IsContinuous">
+              <mat-error *ngIf="mikesourceFormPut.controls.IsContinuous.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>Include</mat-label>
               <input matInput type="text" formControlName="Include">
+              <mat-error *ngIf="mikesourceFormPut.controls.Include.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
           </p>
           <p>
             <mat-form-field>
               <mat-label>IsRiver</mat-label>
               <input matInput type="text" formControlName="IsRiver">
+              <mat-error *ngIf="mikesourceFormPut.controls.IsRiver.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>UseHydrometric</mat-label>
               <input matInput type="text" formControlName="UseHydrometric">
+              <mat-error *ngIf="mikesourceFormPut.controls.UseHydrometric.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>HydrometricTVItemID</mat-label>
               <input matInput type="number" formControlName="HydrometricTVItemID">
+              <mat-error *ngIf="mikesourceFormPut.controls.HydrometricTVItemID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>DrainageArea_km2</mat-label>
               <input matInput type="number" formControlName="DrainageArea_km2">
+              <mat-error *ngIf="mikesourceFormPut.controls.DrainageArea_km2.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.min">Min - 0<br /></span>
+                <span *ngIf="e.min">Max - 1000000<br /></span>
+              </mat-error>
             </mat-form-field>
           </p>
           <p>
             <mat-form-field>
               <mat-label>Factor</mat-label>
               <input matInput type="number" formControlName="Factor">
+              <mat-error *ngIf="mikesourceFormPut.controls.Factor.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.min">Min - 0<br /></span>
+                <span *ngIf="e.min">Max - 1000000<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>SourceNumberString</mat-label>
               <input matInput type="text" formControlName="SourceNumberString">
+              <mat-error *ngIf="mikesourceFormPut.controls.SourceNumberString.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+                <span *ngIf="e.maxlength">MaxLength - 50<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>LastUpdateDate_UTC</mat-label>
               <input matInput type="text" formControlName="LastUpdateDate_UTC">
+              <mat-error *ngIf="mikesourceFormPut.controls.LastUpdateDate_UTC.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>LastUpdateContactTVItemID</mat-label>
               <input matInput type="number" formControlName="LastUpdateContactTVItemID">
+              <mat-error *ngIf="mikesourceFormPut.controls.LastUpdateContactTVItemID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
           </p>
         </form>

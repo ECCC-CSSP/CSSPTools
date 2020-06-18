@@ -9,11 +9,12 @@ import { Injectable } from '@angular/core';
 import { RainExceedanceClimateSiteTextModel } from './rainexceedanceclimatesite.models';
 import { BehaviorSubject, of } from 'rxjs';
 import { LoadLocalesRainExceedanceClimateSiteText } from './rainexceedanceclimatesite.locales';
-import { Router } from '@angular/router';
-import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { map, catchError } from 'rxjs/operators';
 import { RainExceedanceClimateSite } from '../../../models/generated/RainExceedanceClimateSite.model';
 import { HttpRequestModel } from '../../../models/http.model';
+import { HttpClientService } from '../../../services/http-client.service';
+import { HttpClientCommand } from '../../../enums/app.enums';
 
 @Injectable({
   providedIn: 'root'
@@ -26,110 +27,63 @@ export class RainExceedanceClimateSiteService {
   rainexceedanceclimatesitePutModel$: BehaviorSubject<HttpRequestModel> = new BehaviorSubject<HttpRequestModel>(<HttpRequestModel>{});
   rainexceedanceclimatesitePostModel$: BehaviorSubject<HttpRequestModel> = new BehaviorSubject<HttpRequestModel>(<HttpRequestModel>{});
   rainexceedanceclimatesiteDeleteModel$: BehaviorSubject<HttpRequestModel> = new BehaviorSubject<HttpRequestModel>(<HttpRequestModel>{});
-  rainexceedanceclimatesiteList: RainExceedanceClimateSite[] = [];
-  private oldURL: string;
-  private router: Router;
 
   /* Constructors */
-  constructor(private httpClient: HttpClient) {
+  constructor(private httpClient: HttpClient, private httpClientService: HttpClientService) {
     LoadLocalesRainExceedanceClimateSiteText(this);
     this.rainexceedanceclimatesiteTextModel$.next(<RainExceedanceClimateSiteTextModel>{ Title: "Something2 for text" });
   }
 
   /* Functions public */
-  GetRainExceedanceClimateSiteList(router: Router) {
-    this.BeforeHttpClient(this.rainexceedanceclimatesiteGetModel$, router);
+  GetRainExceedanceClimateSiteList() {
+    this.httpClientService.BeforeHttpClient(this.rainexceedanceclimatesiteGetModel$);
 
     return this.httpClient.get<RainExceedanceClimateSite[]>('/api/RainExceedanceClimateSite').pipe(
       map((x: any) => {
-        this.DoSuccess(this.rainexceedanceclimatesiteGetModel$, x, 'Get', null);
+        this.httpClientService.DoSuccess<RainExceedanceClimateSite>(this.rainexceedanceclimatesiteListModel$, this.rainexceedanceclimatesiteGetModel$, x, HttpClientCommand.Get, null);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.DoCatchError(this.rainexceedanceclimatesiteGetModel$, e, 'Get');
+        this.httpClientService.DoCatchError<RainExceedanceClimateSite>(this.rainexceedanceclimatesiteListModel$, this.rainexceedanceclimatesiteGetModel$, e);
       })))
     );
   }
 
-  PutRainExceedanceClimateSite(rainexceedanceclimatesite: RainExceedanceClimateSite, router: Router) {
-    this.BeforeHttpClient(this.rainexceedanceclimatesitePutModel$, router);
+  PutRainExceedanceClimateSite(rainexceedanceclimatesite: RainExceedanceClimateSite) {
+    this.httpClientService.BeforeHttpClient(this.rainexceedanceclimatesitePutModel$);
 
     return this.httpClient.put<RainExceedanceClimateSite>('/api/RainExceedanceClimateSite', rainexceedanceclimatesite, { headers: new HttpHeaders() }).pipe(
       map((x: any) => {
-        this.DoSuccess(this.rainexceedanceclimatesitePutModel$, x, 'Put', rainexceedanceclimatesite);
+        this.httpClientService.DoSuccess<RainExceedanceClimateSite>(this.rainexceedanceclimatesiteListModel$, this.rainexceedanceclimatesitePutModel$, x, HttpClientCommand.Put, rainexceedanceclimatesite);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.DoCatchError(this.rainexceedanceclimatesitePutModel$, e, 'Put');
+       this.httpClientService.DoCatchError<RainExceedanceClimateSite>(this.rainexceedanceclimatesiteListModel$, this.rainexceedanceclimatesitePutModel$, e);
       })))
     );
   }
 
-  PostRainExceedanceClimateSite(rainexceedanceclimatesite: RainExceedanceClimateSite, router: Router) {
-    this.BeforeHttpClient(this.rainexceedanceclimatesitePostModel$, router);
+  PostRainExceedanceClimateSite(rainexceedanceclimatesite: RainExceedanceClimateSite) {
+    this.httpClientService.BeforeHttpClient(this.rainexceedanceclimatesitePostModel$);
 
     return this.httpClient.post<RainExceedanceClimateSite>('/api/RainExceedanceClimateSite', rainexceedanceclimatesite, { headers: new HttpHeaders() }).pipe(
       map((x: any) => {
-        this.DoSuccess(this.rainexceedanceclimatesitePostModel$, x, 'Post', rainexceedanceclimatesite);
+        this.httpClientService.DoSuccess<RainExceedanceClimateSite>(this.rainexceedanceclimatesiteListModel$, this.rainexceedanceclimatesitePostModel$, x, HttpClientCommand.Post, rainexceedanceclimatesite);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.DoCatchError(this.rainexceedanceclimatesitePostModel$, e, 'Post');
+        this.httpClientService.DoCatchError<RainExceedanceClimateSite>(this.rainexceedanceclimatesiteListModel$, this.rainexceedanceclimatesitePostModel$, e);
       })))
     );
   }
 
-  DeleteRainExceedanceClimateSite(rainexceedanceclimatesite: RainExceedanceClimateSite, router: Router) {
-    this.BeforeHttpClient(this.rainexceedanceclimatesiteDeleteModel$, router);
+  DeleteRainExceedanceClimateSite(rainexceedanceclimatesite: RainExceedanceClimateSite) {
+    this.httpClientService.BeforeHttpClient(this.rainexceedanceclimatesiteDeleteModel$);
 
     return this.httpClient.delete<boolean>(`/api/RainExceedanceClimateSite/${ rainexceedanceclimatesite.RainExceedanceClimateSiteID }`).pipe(
       map((x: any) => {
-        this.DoSuccess(this.rainexceedanceclimatesiteDeleteModel$, x, 'Delete', rainexceedanceclimatesite);
+        this.httpClientService.DoSuccess<RainExceedanceClimateSite>(this.rainexceedanceclimatesiteListModel$, this.rainexceedanceclimatesiteDeleteModel$, x, HttpClientCommand.Delete, rainexceedanceclimatesite);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.DoCatchError(this.rainexceedanceclimatesiteDeleteModel$, e, 'Delete');
+        this.httpClientService.DoCatchError<RainExceedanceClimateSite>(this.rainexceedanceclimatesiteListModel$, this.rainexceedanceclimatesiteDeleteModel$, e);
       })))
     );
-  }
-
-  /* Functions private */
-  private BeforeHttpClient(httpRequestModel$: BehaviorSubject<HttpRequestModel>, router: Router) {
-    this.router = router;
-    this.oldURL = router.url;
-    httpRequestModel$.next(<HttpRequestModel>{ Working: true, Error: null, Status: null });
-  }
-
-  private DoCatchError(httpRequestModel$: BehaviorSubject<HttpRequestModel>, e: any, command: string) {
-    this.rainexceedanceclimatesiteListModel$.next(null);
-    httpRequestModel$.next(<HttpRequestModel>{ Working: false, Error: <HttpErrorResponse>e, Status: 'Error' });
-
-    this.rainexceedanceclimatesiteList = [];
-    console.debug(`RainExceedanceClimateSite ${ command } ERROR. Return: ${ <HttpErrorResponse>e }`);
-    this.DoReload();
-  }
-
-  private DoReload() {
-    this.router.navigateByUrl('', { skipLocationChange: true }).then(() => {
-      this.router.navigate([`/${this.oldURL}`]);
-    });
-  }
-
-  private DoSuccess(httpRequestModel$: BehaviorSubject<HttpRequestModel>, x: any, command: string, rainexceedanceclimatesite?: RainExceedanceClimateSite) {
-    console.debug(`RainExceedanceClimateSite ${ command } OK. Return: ${ x }`);
-    if (command === 'Get') {
-      this.rainexceedanceclimatesiteListModel$.next(<RainExceedanceClimateSite[]>x);
-    }
-    if (command === 'Put') {
-      this.rainexceedanceclimatesiteListModel$.getValue()[0] = <RainExceedanceClimateSite>x;
-    }
-    if (command === 'Post') {
-      this.rainexceedanceclimatesiteListModel$.getValue().push(<RainExceedanceClimateSite>x);
-    }
-    if (command === 'Delete') {
-      const index = this.rainexceedanceclimatesiteListModel$.getValue().indexOf(rainexceedanceclimatesite);
-      this.rainexceedanceclimatesiteListModel$.getValue().splice(index, 1);
-    }
-
-    this.rainexceedanceclimatesiteListModel$.next(this.rainexceedanceclimatesiteListModel$.getValue());
-    httpRequestModel$.next(<HttpRequestModel>{ Working: false, Error: null, Status: 'ok' });
-    this.rainexceedanceclimatesiteList = this.rainexceedanceclimatesiteListModel$.getValue();
-    this.DoReload();
   }
 }

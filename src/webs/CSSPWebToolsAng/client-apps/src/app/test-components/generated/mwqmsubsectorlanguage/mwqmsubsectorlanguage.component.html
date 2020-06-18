@@ -5,7 +5,7 @@
  *
 -->
 
-<mat-progress-bar mode="indeterminate" *ngIf="mwqmsubsectorlanguageService.mwqmsubsectorlanguageGetModel$.getValue().Working"></mat-progress-bar>
+<mat-progress-bar mode="indeterminate" *ngIf="mwqmsubsectorlanguageService.mwqmsubsectorlanguageGetModel$.getValue()?.Working"></mat-progress-bar>
 <mat-card>
   <mat-card-header>
     <mat-card-title>
@@ -17,8 +17,8 @@
     <mat-card-subtitle>{{ mwqmsubsectorlanguageService.mwqmsubsectorlanguageTextModel$.getValue().Title }}</mat-card-subtitle>
   </mat-card-header>
   <mat-card-content>
-    <mat-list>
-      <mat-list-item *ngFor="let mwqmsubsectorlanguage of mwqmsubsectorlanguageService.mwqmsubsectorlanguageList">
+    <mat-list *ngIf="mwqmsubsectorlanguageService.mwqmsubsectorlanguageListModel$.getValue()?.length">
+      <mat-list-item *ngFor="let mwqmsubsectorlanguage of mwqmsubsectorlanguageService.mwqmsubsectorlanguageListModel$.getValue()">
         <span mat-line>
           <button mat-raised-button (click)="DeleteMWQMSubsectorLanguage(mwqmsubsectorlanguage)">
             <span>Delete MWQMSubsectorLanguageID [{{ mwqmsubsectorlanguage.MWQMSubsectorLanguageID }}]&nbsp;&nbsp;&nbsp;</span>
@@ -56,7 +56,7 @@
     <mat-card-title>Edit MWQMSubsectorLanguage testing</mat-card-title>
   </mat-card-header>
   <mat-card-content>
-    <div *ngIf="mwqmsubsectorlanguageService.mwqmsubsectorlanguageList.length">
+    <div *ngIf="mwqmsubsectorlanguageService.mwqmsubsectorlanguageListModel$.getValue()?.length">
       <blockquote>
         <form [formGroup]="mwqmsubsectorlanguageFormPut" (ngSubmit)="PutMWQMSubsectorLanguage(mwqmsubsectorlanguageFormPut.value)">
           <h3>
@@ -71,10 +71,18 @@
             <mat-form-field>
               <mat-label>MWQMSubsectorLanguageID</mat-label>
               <input matInput type="number" formControlName="MWQMSubsectorLanguageID">
+              <mat-error *ngIf="mwqmsubsectorlanguageFormPut.controls.MWQMSubsectorLanguageID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>MWQMSubsectorID</mat-label>
               <input matInput type="number" formControlName="MWQMSubsectorID">
+              <mat-error *ngIf="mwqmsubsectorlanguageFormPut.controls.MWQMSubsectorID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>Language</mat-label>
@@ -83,10 +91,19 @@
                   {{ a.EnumText }}
                 </mat-option>
               </mat-select>
+              <mat-error *ngIf="mwqmsubsectorlanguageFormPut.controls.Language.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>SubsectorDesc</mat-label>
               <input matInput type="text" formControlName="SubsectorDesc">
+              <mat-error *ngIf="mwqmsubsectorlanguageFormPut.controls.SubsectorDesc.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+                <span *ngIf="e.maxlength">MaxLength - 250<br /></span>
+              </mat-error>
             </mat-form-field>
           </p>
           <p>
@@ -97,10 +114,17 @@
                   {{ a.EnumText }}
                 </mat-option>
               </mat-select>
+              <mat-error *ngIf="mwqmsubsectorlanguageFormPut.controls.TranslationStatusSubsectorDesc.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>LogBook</mat-label>
               <input matInput type="text" formControlName="LogBook">
+              <mat-error *ngIf="mwqmsubsectorlanguageFormPut.controls.LogBook.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>TranslationStatusLogBook</mat-label>
@@ -109,16 +133,27 @@
                   {{ a.EnumText }}
                 </mat-option>
               </mat-select>
+              <mat-error *ngIf="mwqmsubsectorlanguageFormPut.controls.TranslationStatusLogBook.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>LastUpdateDate_UTC</mat-label>
               <input matInput type="text" formControlName="LastUpdateDate_UTC">
+              <mat-error *ngIf="mwqmsubsectorlanguageFormPut.controls.LastUpdateDate_UTC.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
           </p>
           <p>
             <mat-form-field>
               <mat-label>LastUpdateContactTVItemID</mat-label>
               <input matInput type="number" formControlName="LastUpdateContactTVItemID">
+              <mat-error *ngIf="mwqmsubsectorlanguageFormPut.controls.LastUpdateContactTVItemID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
           </p>
         </form>
@@ -133,7 +168,7 @@
     <mat-card-title>Add MWQMSubsectorLanguage testing</mat-card-title>
   </mat-card-header>
   <mat-card-content>
-    <div *ngIf="mwqmsubsectorlanguageService.mwqmsubsectorlanguageList.length">
+    <div *ngIf="mwqmsubsectorlanguageService.mwqmsubsectorlanguageListModel$.getValue()?.length">
       <blockquote>
         <form [formGroup]="mwqmsubsectorlanguageFormPost" (ngSubmit)="PostMWQMSubsectorLanguage(mwqmsubsectorlanguageFormPost.value)">
           <h3>
@@ -148,10 +183,18 @@
             <mat-form-field>
               <mat-label>MWQMSubsectorLanguageID</mat-label>
               <input matInput type="number" formControlName="MWQMSubsectorLanguageID">
+              <mat-error *ngIf="mwqmsubsectorlanguageFormPut.controls.MWQMSubsectorLanguageID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>MWQMSubsectorID</mat-label>
               <input matInput type="number" formControlName="MWQMSubsectorID">
+              <mat-error *ngIf="mwqmsubsectorlanguageFormPut.controls.MWQMSubsectorID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>Language</mat-label>
@@ -160,10 +203,19 @@
                   {{ a.EnumText }}
                 </mat-option>
               </mat-select>
+              <mat-error *ngIf="mwqmsubsectorlanguageFormPut.controls.Language.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>SubsectorDesc</mat-label>
               <input matInput type="text" formControlName="SubsectorDesc">
+              <mat-error *ngIf="mwqmsubsectorlanguageFormPut.controls.SubsectorDesc.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+                <span *ngIf="e.maxlength">MaxLength - 250<br /></span>
+              </mat-error>
             </mat-form-field>
           </p>
           <p>
@@ -174,10 +226,17 @@
                   {{ a.EnumText }}
                 </mat-option>
               </mat-select>
+              <mat-error *ngIf="mwqmsubsectorlanguageFormPut.controls.TranslationStatusSubsectorDesc.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>LogBook</mat-label>
               <input matInput type="text" formControlName="LogBook">
+              <mat-error *ngIf="mwqmsubsectorlanguageFormPut.controls.LogBook.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>TranslationStatusLogBook</mat-label>
@@ -186,16 +245,27 @@
                   {{ a.EnumText }}
                 </mat-option>
               </mat-select>
+              <mat-error *ngIf="mwqmsubsectorlanguageFormPut.controls.TranslationStatusLogBook.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>LastUpdateDate_UTC</mat-label>
               <input matInput type="text" formControlName="LastUpdateDate_UTC">
+              <mat-error *ngIf="mwqmsubsectorlanguageFormPut.controls.LastUpdateDate_UTC.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
           </p>
           <p>
             <mat-form-field>
               <mat-label>LastUpdateContactTVItemID</mat-label>
               <input matInput type="number" formControlName="LastUpdateContactTVItemID">
+              <mat-error *ngIf="mwqmsubsectorlanguageFormPut.controls.LastUpdateContactTVItemID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
           </p>
         </form>

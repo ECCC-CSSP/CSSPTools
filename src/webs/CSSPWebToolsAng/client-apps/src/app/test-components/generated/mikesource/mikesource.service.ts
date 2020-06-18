@@ -9,11 +9,12 @@ import { Injectable } from '@angular/core';
 import { MikeSourceTextModel } from './mikesource.models';
 import { BehaviorSubject, of } from 'rxjs';
 import { LoadLocalesMikeSourceText } from './mikesource.locales';
-import { Router } from '@angular/router';
-import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { map, catchError } from 'rxjs/operators';
 import { MikeSource } from '../../../models/generated/MikeSource.model';
 import { HttpRequestModel } from '../../../models/http.model';
+import { HttpClientService } from '../../../services/http-client.service';
+import { HttpClientCommand } from '../../../enums/app.enums';
 
 @Injectable({
   providedIn: 'root'
@@ -26,110 +27,63 @@ export class MikeSourceService {
   mikesourcePutModel$: BehaviorSubject<HttpRequestModel> = new BehaviorSubject<HttpRequestModel>(<HttpRequestModel>{});
   mikesourcePostModel$: BehaviorSubject<HttpRequestModel> = new BehaviorSubject<HttpRequestModel>(<HttpRequestModel>{});
   mikesourceDeleteModel$: BehaviorSubject<HttpRequestModel> = new BehaviorSubject<HttpRequestModel>(<HttpRequestModel>{});
-  mikesourceList: MikeSource[] = [];
-  private oldURL: string;
-  private router: Router;
 
   /* Constructors */
-  constructor(private httpClient: HttpClient) {
+  constructor(private httpClient: HttpClient, private httpClientService: HttpClientService) {
     LoadLocalesMikeSourceText(this);
     this.mikesourceTextModel$.next(<MikeSourceTextModel>{ Title: "Something2 for text" });
   }
 
   /* Functions public */
-  GetMikeSourceList(router: Router) {
-    this.BeforeHttpClient(this.mikesourceGetModel$, router);
+  GetMikeSourceList() {
+    this.httpClientService.BeforeHttpClient(this.mikesourceGetModel$);
 
     return this.httpClient.get<MikeSource[]>('/api/MikeSource').pipe(
       map((x: any) => {
-        this.DoSuccess(this.mikesourceGetModel$, x, 'Get', null);
+        this.httpClientService.DoSuccess<MikeSource>(this.mikesourceListModel$, this.mikesourceGetModel$, x, HttpClientCommand.Get, null);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.DoCatchError(this.mikesourceGetModel$, e, 'Get');
+        this.httpClientService.DoCatchError<MikeSource>(this.mikesourceListModel$, this.mikesourceGetModel$, e);
       })))
     );
   }
 
-  PutMikeSource(mikesource: MikeSource, router: Router) {
-    this.BeforeHttpClient(this.mikesourcePutModel$, router);
+  PutMikeSource(mikesource: MikeSource) {
+    this.httpClientService.BeforeHttpClient(this.mikesourcePutModel$);
 
     return this.httpClient.put<MikeSource>('/api/MikeSource', mikesource, { headers: new HttpHeaders() }).pipe(
       map((x: any) => {
-        this.DoSuccess(this.mikesourcePutModel$, x, 'Put', mikesource);
+        this.httpClientService.DoSuccess<MikeSource>(this.mikesourceListModel$, this.mikesourcePutModel$, x, HttpClientCommand.Put, mikesource);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.DoCatchError(this.mikesourcePutModel$, e, 'Put');
+       this.httpClientService.DoCatchError<MikeSource>(this.mikesourceListModel$, this.mikesourcePutModel$, e);
       })))
     );
   }
 
-  PostMikeSource(mikesource: MikeSource, router: Router) {
-    this.BeforeHttpClient(this.mikesourcePostModel$, router);
+  PostMikeSource(mikesource: MikeSource) {
+    this.httpClientService.BeforeHttpClient(this.mikesourcePostModel$);
 
     return this.httpClient.post<MikeSource>('/api/MikeSource', mikesource, { headers: new HttpHeaders() }).pipe(
       map((x: any) => {
-        this.DoSuccess(this.mikesourcePostModel$, x, 'Post', mikesource);
+        this.httpClientService.DoSuccess<MikeSource>(this.mikesourceListModel$, this.mikesourcePostModel$, x, HttpClientCommand.Post, mikesource);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.DoCatchError(this.mikesourcePostModel$, e, 'Post');
+        this.httpClientService.DoCatchError<MikeSource>(this.mikesourceListModel$, this.mikesourcePostModel$, e);
       })))
     );
   }
 
-  DeleteMikeSource(mikesource: MikeSource, router: Router) {
-    this.BeforeHttpClient(this.mikesourceDeleteModel$, router);
+  DeleteMikeSource(mikesource: MikeSource) {
+    this.httpClientService.BeforeHttpClient(this.mikesourceDeleteModel$);
 
     return this.httpClient.delete<boolean>(`/api/MikeSource/${ mikesource.MikeSourceID }`).pipe(
       map((x: any) => {
-        this.DoSuccess(this.mikesourceDeleteModel$, x, 'Delete', mikesource);
+        this.httpClientService.DoSuccess<MikeSource>(this.mikesourceListModel$, this.mikesourceDeleteModel$, x, HttpClientCommand.Delete, mikesource);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.DoCatchError(this.mikesourceDeleteModel$, e, 'Delete');
+        this.httpClientService.DoCatchError<MikeSource>(this.mikesourceListModel$, this.mikesourceDeleteModel$, e);
       })))
     );
-  }
-
-  /* Functions private */
-  private BeforeHttpClient(httpRequestModel$: BehaviorSubject<HttpRequestModel>, router: Router) {
-    this.router = router;
-    this.oldURL = router.url;
-    httpRequestModel$.next(<HttpRequestModel>{ Working: true, Error: null, Status: null });
-  }
-
-  private DoCatchError(httpRequestModel$: BehaviorSubject<HttpRequestModel>, e: any, command: string) {
-    this.mikesourceListModel$.next(null);
-    httpRequestModel$.next(<HttpRequestModel>{ Working: false, Error: <HttpErrorResponse>e, Status: 'Error' });
-
-    this.mikesourceList = [];
-    console.debug(`MikeSource ${ command } ERROR. Return: ${ <HttpErrorResponse>e }`);
-    this.DoReload();
-  }
-
-  private DoReload() {
-    this.router.navigateByUrl('', { skipLocationChange: true }).then(() => {
-      this.router.navigate([`/${this.oldURL}`]);
-    });
-  }
-
-  private DoSuccess(httpRequestModel$: BehaviorSubject<HttpRequestModel>, x: any, command: string, mikesource?: MikeSource) {
-    console.debug(`MikeSource ${ command } OK. Return: ${ x }`);
-    if (command === 'Get') {
-      this.mikesourceListModel$.next(<MikeSource[]>x);
-    }
-    if (command === 'Put') {
-      this.mikesourceListModel$.getValue()[0] = <MikeSource>x;
-    }
-    if (command === 'Post') {
-      this.mikesourceListModel$.getValue().push(<MikeSource>x);
-    }
-    if (command === 'Delete') {
-      const index = this.mikesourceListModel$.getValue().indexOf(mikesource);
-      this.mikesourceListModel$.getValue().splice(index, 1);
-    }
-
-    this.mikesourceListModel$.next(this.mikesourceListModel$.getValue());
-    httpRequestModel$.next(<HttpRequestModel>{ Working: false, Error: null, Status: 'ok' });
-    this.mikesourceList = this.mikesourceListModel$.getValue();
-    this.DoReload();
   }
 }

@@ -8,12 +8,14 @@
 import { Component, OnInit, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
 import { PolSourceSiteService } from './polsourcesite.service';
 import { LoadLocalesPolSourceSiteText } from './polsourcesite.locales';
-import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { PolSourceInactiveReasonEnum_GetIDText, PolSourceInactiveReasonEnum_GetOrderedText } from '../../../enums/generated/PolSourceInactiveReasonEnum';
 import { PolSourceSite } from '../../../models/generated/PolSourceSite.model';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
 import { EnumIDAndText } from '../../../models/enumidandtext.model';
+import { HttpClientService } from '../../../services/http-client.service';
+import { Router } from '@angular/router';
+import { HttpClientCommand } from '../../../enums/app.enums';
 
 @Component({
   selector: 'app-polsourcesite',
@@ -27,22 +29,24 @@ export class PolSourceSiteComponent implements OnInit, OnDestroy {
   polsourcesiteFormPut: FormGroup;
   polsourcesiteFormPost: FormGroup;
 
-  constructor(public polsourcesiteService: PolSourceSiteService, public router: Router, public fb: FormBuilder) { }
+  constructor(public polsourcesiteService: PolSourceSiteService, private router: Router, private httpClientService: HttpClientService, private fb: FormBuilder) {
+    httpClientService.oldURL = router.url;
+  }
 
   GetPolSourceSiteList() {
-    this.sub = this.polsourcesiteService.GetPolSourceSiteList(this.router).subscribe();
+    this.sub = this.polsourcesiteService.GetPolSourceSiteList().subscribe();
   }
 
   PutPolSourceSite(polsourcesite: PolSourceSite) {
-    this.sub = this.polsourcesiteService.PutPolSourceSite(polsourcesite, this.router).subscribe();
+    this.sub = this.polsourcesiteService.PutPolSourceSite(polsourcesite).subscribe();
   }
 
   PostPolSourceSite(polsourcesite: PolSourceSite) {
-    this.sub = this.polsourcesiteService.PostPolSourceSite(polsourcesite, this.router).subscribe();
+    this.sub = this.polsourcesiteService.PostPolSourceSite(polsourcesite).subscribe();
   }
 
   DeletePolSourceSite(polsourcesite: PolSourceSite) {
-    this.sub = this.polsourcesiteService.DeletePolSourceSite(polsourcesite, this.router).subscribe();
+    this.sub = this.polsourcesiteService.DeletePolSourceSite(polsourcesite).subscribe();
   }
 
   GetPolSourceInactiveReasonEnumText(enumID: number) {
@@ -52,8 +56,8 @@ export class PolSourceSiteComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     LoadLocalesPolSourceSiteText(this.polsourcesiteService);
     this.inactiveReasonList = PolSourceInactiveReasonEnum_GetOrderedText();
-    this.FillFormBuilderGroup('Add');
-    this.FillFormBuilderGroup('Update');
+    this.FillFormBuilderGroup(HttpClientCommand.Post);
+    this.FillFormBuilderGroup(HttpClientCommand.Put);
   }
 
   ngOnDestroy() {
@@ -62,69 +66,69 @@ export class PolSourceSiteComponent implements OnInit, OnDestroy {
     }
   }
 
-  FillFormBuilderGroup(AddOrUpdate: string) {
-    if (this.polsourcesiteService.polsourcesiteList.length) {
+  FillFormBuilderGroup(httpClientCommand: HttpClientCommand) {
+    if (this.polsourcesiteService.polsourcesiteListModel$.getValue().length) {
       let formGroup: FormGroup = this.fb.group(
         {
           PolSourceSiteID: [
             {
-              value: (AddOrUpdate === 'Add' ? 0 : (this.polsourcesiteService.polsourcesiteList[0]?.PolSourceSiteID)),
+              value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.polsourcesiteService.polsourcesiteListModel$.getValue()[0]?.PolSourceSiteID)),
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
           PolSourceSiteTVItemID: [
             {
-              value: this.polsourcesiteService.polsourcesiteList[0]?.PolSourceSiteTVItemID,
+              value: this.polsourcesiteService.polsourcesiteListModel$.getValue()[0]?.PolSourceSiteTVItemID,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
           Temp_Locator_CanDelete: [
             {
-              value: this.polsourcesiteService.polsourcesiteList[0]?.Temp_Locator_CanDelete,
+              value: this.polsourcesiteService.polsourcesiteListModel$.getValue()[0]?.Temp_Locator_CanDelete,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.maxLength(50) ]],
           Oldsiteid: [
             {
-              value: this.polsourcesiteService.polsourcesiteList[0]?.Oldsiteid,
+              value: this.polsourcesiteService.polsourcesiteListModel$.getValue()[0]?.Oldsiteid,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.min(0), Validators.max(1000) ]],
           Site: [
             {
-              value: this.polsourcesiteService.polsourcesiteList[0]?.Site,
+              value: this.polsourcesiteService.polsourcesiteListModel$.getValue()[0]?.Site,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.min(0), Validators.max(1000) ]],
           SiteID: [
             {
-              value: this.polsourcesiteService.polsourcesiteList[0]?.SiteID,
+              value: this.polsourcesiteService.polsourcesiteListModel$.getValue()[0]?.SiteID,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.min(0), Validators.max(1000) ]],
           IsPointSource: [
             {
-              value: this.polsourcesiteService.polsourcesiteList[0]?.IsPointSource,
+              value: this.polsourcesiteService.polsourcesiteListModel$.getValue()[0]?.IsPointSource,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
           InactiveReason: [
             {
-              value: this.polsourcesiteService.polsourcesiteList[0]?.InactiveReason,
+              value: this.polsourcesiteService.polsourcesiteListModel$.getValue()[0]?.InactiveReason,
               disabled: false
-            }, [ Validators.required ]],
+            }],
           CivicAddressTVItemID: [
             {
-              value: this.polsourcesiteService.polsourcesiteList[0]?.CivicAddressTVItemID,
+              value: this.polsourcesiteService.polsourcesiteListModel$.getValue()[0]?.CivicAddressTVItemID,
               disabled: false
-            }, [ Validators.required ]],
+            }],
           LastUpdateDate_UTC: [
             {
-              value: this.polsourcesiteService.polsourcesiteList[0]?.LastUpdateDate_UTC,
+              value: this.polsourcesiteService.polsourcesiteListModel$.getValue()[0]?.LastUpdateDate_UTC,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
           LastUpdateContactTVItemID: [
             {
-              value: this.polsourcesiteService.polsourcesiteList[0]?.LastUpdateContactTVItemID,
+              value: this.polsourcesiteService.polsourcesiteListModel$.getValue()[0]?.LastUpdateContactTVItemID,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
         }
       );
 
-      if (AddOrUpdate === 'Add') {
+      if (httpClientCommand === HttpClientCommand.Post) {
         this.polsourcesiteFormPost = formGroup
       }
       else {

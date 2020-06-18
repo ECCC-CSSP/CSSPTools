@@ -8,10 +8,12 @@
 import { Component, OnInit, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
 import { MWQMSubsectorService } from './mwqmsubsector.service';
 import { LoadLocalesMWQMSubsectorText } from './mwqmsubsector.locales';
-import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { MWQMSubsector } from '../../../models/generated/MWQMSubsector.model';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
+import { HttpClientService } from '../../../services/http-client.service';
+import { Router } from '@angular/router';
+import { HttpClientCommand } from '../../../enums/app.enums';
 
 @Component({
   selector: 'app-mwqmsubsector',
@@ -24,28 +26,30 @@ export class MWQMSubsectorComponent implements OnInit, OnDestroy {
   mwqmsubsectorFormPut: FormGroup;
   mwqmsubsectorFormPost: FormGroup;
 
-  constructor(public mwqmsubsectorService: MWQMSubsectorService, public router: Router, public fb: FormBuilder) { }
+  constructor(public mwqmsubsectorService: MWQMSubsectorService, private router: Router, private httpClientService: HttpClientService, private fb: FormBuilder) {
+    httpClientService.oldURL = router.url;
+  }
 
   GetMWQMSubsectorList() {
-    this.sub = this.mwqmsubsectorService.GetMWQMSubsectorList(this.router).subscribe();
+    this.sub = this.mwqmsubsectorService.GetMWQMSubsectorList().subscribe();
   }
 
   PutMWQMSubsector(mwqmsubsector: MWQMSubsector) {
-    this.sub = this.mwqmsubsectorService.PutMWQMSubsector(mwqmsubsector, this.router).subscribe();
+    this.sub = this.mwqmsubsectorService.PutMWQMSubsector(mwqmsubsector).subscribe();
   }
 
   PostMWQMSubsector(mwqmsubsector: MWQMSubsector) {
-    this.sub = this.mwqmsubsectorService.PostMWQMSubsector(mwqmsubsector, this.router).subscribe();
+    this.sub = this.mwqmsubsectorService.PostMWQMSubsector(mwqmsubsector).subscribe();
   }
 
   DeleteMWQMSubsector(mwqmsubsector: MWQMSubsector) {
-    this.sub = this.mwqmsubsectorService.DeleteMWQMSubsector(mwqmsubsector, this.router).subscribe();
+    this.sub = this.mwqmsubsectorService.DeleteMWQMSubsector(mwqmsubsector).subscribe();
   }
 
   ngOnInit(): void {
     LoadLocalesMWQMSubsectorText(this.mwqmsubsectorService);
-    this.FillFormBuilderGroup('Add');
-    this.FillFormBuilderGroup('Update');
+    this.FillFormBuilderGroup(HttpClientCommand.Post);
+    this.FillFormBuilderGroup(HttpClientCommand.Put);
   }
 
   ngOnDestroy() {
@@ -54,44 +58,44 @@ export class MWQMSubsectorComponent implements OnInit, OnDestroy {
     }
   }
 
-  FillFormBuilderGroup(AddOrUpdate: string) {
-    if (this.mwqmsubsectorService.mwqmsubsectorList.length) {
+  FillFormBuilderGroup(httpClientCommand: HttpClientCommand) {
+    if (this.mwqmsubsectorService.mwqmsubsectorListModel$.getValue().length) {
       let formGroup: FormGroup = this.fb.group(
         {
           MWQMSubsectorID: [
             {
-              value: (AddOrUpdate === 'Add' ? 0 : (this.mwqmsubsectorService.mwqmsubsectorList[0]?.MWQMSubsectorID)),
+              value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.mwqmsubsectorService.mwqmsubsectorListModel$.getValue()[0]?.MWQMSubsectorID)),
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
           MWQMSubsectorTVItemID: [
             {
-              value: this.mwqmsubsectorService.mwqmsubsectorList[0]?.MWQMSubsectorTVItemID,
+              value: this.mwqmsubsectorService.mwqmsubsectorListModel$.getValue()[0]?.MWQMSubsectorTVItemID,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
           SubsectorHistoricKey: [
             {
-              value: this.mwqmsubsectorService.mwqmsubsectorList[0]?.SubsectorHistoricKey,
+              value: this.mwqmsubsectorService.mwqmsubsectorListModel$.getValue()[0]?.SubsectorHistoricKey,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required, Validators.maxLength(20) ]],
           TideLocationSIDText: [
             {
-              value: this.mwqmsubsectorService.mwqmsubsectorList[0]?.TideLocationSIDText,
+              value: this.mwqmsubsectorService.mwqmsubsectorListModel$.getValue()[0]?.TideLocationSIDText,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.maxLength(20) ]],
           LastUpdateDate_UTC: [
             {
-              value: this.mwqmsubsectorService.mwqmsubsectorList[0]?.LastUpdateDate_UTC,
+              value: this.mwqmsubsectorService.mwqmsubsectorListModel$.getValue()[0]?.LastUpdateDate_UTC,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
           LastUpdateContactTVItemID: [
             {
-              value: this.mwqmsubsectorService.mwqmsubsectorList[0]?.LastUpdateContactTVItemID,
+              value: this.mwqmsubsectorService.mwqmsubsectorListModel$.getValue()[0]?.LastUpdateContactTVItemID,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
         }
       );
 
-      if (AddOrUpdate === 'Add') {
+      if (httpClientCommand === HttpClientCommand.Post) {
         this.mwqmsubsectorFormPost = formGroup
       }
       else {

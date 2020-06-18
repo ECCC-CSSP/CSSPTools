@@ -8,10 +8,12 @@
 import { Component, OnInit, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
 import { MapInfoPointService } from './mapinfopoint.service';
 import { LoadLocalesMapInfoPointText } from './mapinfopoint.locales';
-import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { MapInfoPoint } from '../../../models/generated/MapInfoPoint.model';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
+import { HttpClientService } from '../../../services/http-client.service';
+import { Router } from '@angular/router';
+import { HttpClientCommand } from '../../../enums/app.enums';
 
 @Component({
   selector: 'app-mapinfopoint',
@@ -24,28 +26,30 @@ export class MapInfoPointComponent implements OnInit, OnDestroy {
   mapinfopointFormPut: FormGroup;
   mapinfopointFormPost: FormGroup;
 
-  constructor(public mapinfopointService: MapInfoPointService, public router: Router, public fb: FormBuilder) { }
+  constructor(public mapinfopointService: MapInfoPointService, private router: Router, private httpClientService: HttpClientService, private fb: FormBuilder) {
+    httpClientService.oldURL = router.url;
+  }
 
   GetMapInfoPointList() {
-    this.sub = this.mapinfopointService.GetMapInfoPointList(this.router).subscribe();
+    this.sub = this.mapinfopointService.GetMapInfoPointList().subscribe();
   }
 
   PutMapInfoPoint(mapinfopoint: MapInfoPoint) {
-    this.sub = this.mapinfopointService.PutMapInfoPoint(mapinfopoint, this.router).subscribe();
+    this.sub = this.mapinfopointService.PutMapInfoPoint(mapinfopoint).subscribe();
   }
 
   PostMapInfoPoint(mapinfopoint: MapInfoPoint) {
-    this.sub = this.mapinfopointService.PostMapInfoPoint(mapinfopoint, this.router).subscribe();
+    this.sub = this.mapinfopointService.PostMapInfoPoint(mapinfopoint).subscribe();
   }
 
   DeleteMapInfoPoint(mapinfopoint: MapInfoPoint) {
-    this.sub = this.mapinfopointService.DeleteMapInfoPoint(mapinfopoint, this.router).subscribe();
+    this.sub = this.mapinfopointService.DeleteMapInfoPoint(mapinfopoint).subscribe();
   }
 
   ngOnInit(): void {
     LoadLocalesMapInfoPointText(this.mapinfopointService);
-    this.FillFormBuilderGroup('Add');
-    this.FillFormBuilderGroup('Update');
+    this.FillFormBuilderGroup(HttpClientCommand.Post);
+    this.FillFormBuilderGroup(HttpClientCommand.Put);
   }
 
   ngOnDestroy() {
@@ -54,49 +58,49 @@ export class MapInfoPointComponent implements OnInit, OnDestroy {
     }
   }
 
-  FillFormBuilderGroup(AddOrUpdate: string) {
-    if (this.mapinfopointService.mapinfopointList.length) {
+  FillFormBuilderGroup(httpClientCommand: HttpClientCommand) {
+    if (this.mapinfopointService.mapinfopointListModel$.getValue().length) {
       let formGroup: FormGroup = this.fb.group(
         {
           MapInfoPointID: [
             {
-              value: (AddOrUpdate === 'Add' ? 0 : (this.mapinfopointService.mapinfopointList[0]?.MapInfoPointID)),
+              value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.mapinfopointService.mapinfopointListModel$.getValue()[0]?.MapInfoPointID)),
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
           MapInfoID: [
             {
-              value: this.mapinfopointService.mapinfopointList[0]?.MapInfoID,
+              value: this.mapinfopointService.mapinfopointListModel$.getValue()[0]?.MapInfoID,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
           Ordinal: [
             {
-              value: this.mapinfopointService.mapinfopointList[0]?.Ordinal,
+              value: this.mapinfopointService.mapinfopointListModel$.getValue()[0]?.Ordinal,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required, Validators.min(0) ]],
           Lat: [
             {
-              value: this.mapinfopointService.mapinfopointList[0]?.Lat,
+              value: this.mapinfopointService.mapinfopointListModel$.getValue()[0]?.Lat,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required, Validators.min(-90), Validators.max(90) ]],
           Lng: [
             {
-              value: this.mapinfopointService.mapinfopointList[0]?.Lng,
+              value: this.mapinfopointService.mapinfopointListModel$.getValue()[0]?.Lng,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required, Validators.min(-180), Validators.max(180) ]],
           LastUpdateDate_UTC: [
             {
-              value: this.mapinfopointService.mapinfopointList[0]?.LastUpdateDate_UTC,
+              value: this.mapinfopointService.mapinfopointListModel$.getValue()[0]?.LastUpdateDate_UTC,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
           LastUpdateContactTVItemID: [
             {
-              value: this.mapinfopointService.mapinfopointList[0]?.LastUpdateContactTVItemID,
+              value: this.mapinfopointService.mapinfopointListModel$.getValue()[0]?.LastUpdateContactTVItemID,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
         }
       );
 
-      if (AddOrUpdate === 'Add') {
+      if (httpClientCommand === HttpClientCommand.Post) {
         this.mapinfopointFormPost = formGroup
       }
       else {

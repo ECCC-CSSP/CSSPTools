@@ -5,7 +5,7 @@
  *
 -->
 
-<mat-progress-bar mode="indeterminate" *ngIf="boxmodellanguageService.boxmodellanguageGetModel$.getValue().Working"></mat-progress-bar>
+<mat-progress-bar mode="indeterminate" *ngIf="boxmodellanguageService.boxmodellanguageGetModel$.getValue()?.Working"></mat-progress-bar>
 <mat-card>
   <mat-card-header>
     <mat-card-title>
@@ -17,8 +17,8 @@
     <mat-card-subtitle>{{ boxmodellanguageService.boxmodellanguageTextModel$.getValue().Title }}</mat-card-subtitle>
   </mat-card-header>
   <mat-card-content>
-    <mat-list>
-      <mat-list-item *ngFor="let boxmodellanguage of boxmodellanguageService.boxmodellanguageList">
+    <mat-list *ngIf="boxmodellanguageService.boxmodellanguageListModel$.getValue()?.length">
+      <mat-list-item *ngFor="let boxmodellanguage of boxmodellanguageService.boxmodellanguageListModel$.getValue()">
         <span mat-line>
           <button mat-raised-button (click)="DeleteBoxModelLanguage(boxmodellanguage)">
             <span>Delete BoxModelLanguageID [{{ boxmodellanguage.BoxModelLanguageID }}]&nbsp;&nbsp;&nbsp;</span>
@@ -52,7 +52,7 @@
     <mat-card-title>Edit BoxModelLanguage testing</mat-card-title>
   </mat-card-header>
   <mat-card-content>
-    <div *ngIf="boxmodellanguageService.boxmodellanguageList.length">
+    <div *ngIf="boxmodellanguageService.boxmodellanguageListModel$.getValue()?.length">
       <blockquote>
         <form [formGroup]="boxmodellanguageFormPut" (ngSubmit)="PutBoxModelLanguage(boxmodellanguageFormPut.value)">
           <h3>
@@ -67,10 +67,18 @@
             <mat-form-field>
               <mat-label>BoxModelLanguageID</mat-label>
               <input matInput type="number" formControlName="BoxModelLanguageID">
+              <mat-error *ngIf="boxmodellanguageFormPut.controls.BoxModelLanguageID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>BoxModelID</mat-label>
               <input matInput type="number" formControlName="BoxModelID">
+              <mat-error *ngIf="boxmodellanguageFormPut.controls.BoxModelID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>Language</mat-label>
@@ -79,10 +87,19 @@
                   {{ a.EnumText }}
                 </mat-option>
               </mat-select>
+              <mat-error *ngIf="boxmodellanguageFormPut.controls.Language.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>ScenarioName</mat-label>
               <input matInput type="text" formControlName="ScenarioName">
+              <mat-error *ngIf="boxmodellanguageFormPut.controls.ScenarioName.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+                <span *ngIf="e.maxlength">MaxLength - 250<br /></span>
+              </mat-error>
             </mat-form-field>
           </p>
           <p>
@@ -93,14 +110,26 @@
                   {{ a.EnumText }}
                 </mat-option>
               </mat-select>
+              <mat-error *ngIf="boxmodellanguageFormPut.controls.TranslationStatus.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>LastUpdateDate_UTC</mat-label>
               <input matInput type="text" formControlName="LastUpdateDate_UTC">
+              <mat-error *ngIf="boxmodellanguageFormPut.controls.LastUpdateDate_UTC.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>LastUpdateContactTVItemID</mat-label>
               <input matInput type="number" formControlName="LastUpdateContactTVItemID">
+              <mat-error *ngIf="boxmodellanguageFormPut.controls.LastUpdateContactTVItemID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
           </p>
         </form>
@@ -115,7 +144,7 @@
     <mat-card-title>Add BoxModelLanguage testing</mat-card-title>
   </mat-card-header>
   <mat-card-content>
-    <div *ngIf="boxmodellanguageService.boxmodellanguageList.length">
+    <div *ngIf="boxmodellanguageService.boxmodellanguageListModel$.getValue()?.length">
       <blockquote>
         <form [formGroup]="boxmodellanguageFormPost" (ngSubmit)="PostBoxModelLanguage(boxmodellanguageFormPost.value)">
           <h3>
@@ -130,10 +159,18 @@
             <mat-form-field>
               <mat-label>BoxModelLanguageID</mat-label>
               <input matInput type="number" formControlName="BoxModelLanguageID">
+              <mat-error *ngIf="boxmodellanguageFormPut.controls.BoxModelLanguageID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>BoxModelID</mat-label>
               <input matInput type="number" formControlName="BoxModelID">
+              <mat-error *ngIf="boxmodellanguageFormPut.controls.BoxModelID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>Language</mat-label>
@@ -142,10 +179,19 @@
                   {{ a.EnumText }}
                 </mat-option>
               </mat-select>
+              <mat-error *ngIf="boxmodellanguageFormPut.controls.Language.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>ScenarioName</mat-label>
               <input matInput type="text" formControlName="ScenarioName">
+              <mat-error *ngIf="boxmodellanguageFormPut.controls.ScenarioName.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+                <span *ngIf="e.maxlength">MaxLength - 250<br /></span>
+              </mat-error>
             </mat-form-field>
           </p>
           <p>
@@ -156,14 +202,26 @@
                   {{ a.EnumText }}
                 </mat-option>
               </mat-select>
+              <mat-error *ngIf="boxmodellanguageFormPut.controls.TranslationStatus.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>LastUpdateDate_UTC</mat-label>
               <input matInput type="text" formControlName="LastUpdateDate_UTC">
+              <mat-error *ngIf="boxmodellanguageFormPut.controls.LastUpdateDate_UTC.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>LastUpdateContactTVItemID</mat-label>
               <input matInput type="number" formControlName="LastUpdateContactTVItemID">
+              <mat-error *ngIf="boxmodellanguageFormPut.controls.LastUpdateContactTVItemID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
           </p>
         </form>

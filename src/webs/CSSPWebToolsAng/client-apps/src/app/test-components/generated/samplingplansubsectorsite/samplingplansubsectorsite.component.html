@@ -5,7 +5,7 @@
  *
 -->
 
-<mat-progress-bar mode="indeterminate" *ngIf="samplingplansubsectorsiteService.samplingplansubsectorsiteGetModel$.getValue().Working"></mat-progress-bar>
+<mat-progress-bar mode="indeterminate" *ngIf="samplingplansubsectorsiteService.samplingplansubsectorsiteGetModel$.getValue()?.Working"></mat-progress-bar>
 <mat-card>
   <mat-card-header>
     <mat-card-title>
@@ -17,8 +17,8 @@
     <mat-card-subtitle>{{ samplingplansubsectorsiteService.samplingplansubsectorsiteTextModel$.getValue().Title }}</mat-card-subtitle>
   </mat-card-header>
   <mat-card-content>
-    <mat-list>
-      <mat-list-item *ngFor="let samplingplansubsectorsite of samplingplansubsectorsiteService.samplingplansubsectorsiteList">
+    <mat-list *ngIf="samplingplansubsectorsiteService.samplingplansubsectorsiteListModel$.getValue()?.length">
+      <mat-list-item *ngFor="let samplingplansubsectorsite of samplingplansubsectorsiteService.samplingplansubsectorsiteListModel$.getValue()">
         <span mat-line>
           <button mat-raised-button (click)="DeleteSamplingPlanSubsectorSite(samplingplansubsectorsite)">
             <span>Delete SamplingPlanSubsectorSiteID [{{ samplingplansubsectorsite.SamplingPlanSubsectorSiteID }}]&nbsp;&nbsp;&nbsp;</span>
@@ -51,7 +51,7 @@
     <mat-card-title>Edit SamplingPlanSubsectorSite testing</mat-card-title>
   </mat-card-header>
   <mat-card-content>
-    <div *ngIf="samplingplansubsectorsiteService.samplingplansubsectorsiteList.length">
+    <div *ngIf="samplingplansubsectorsiteService.samplingplansubsectorsiteListModel$.getValue()?.length">
       <blockquote>
         <form [formGroup]="samplingplansubsectorsiteFormPut" (ngSubmit)="PutSamplingPlanSubsectorSite(samplingplansubsectorsiteFormPut.value)">
           <h3>
@@ -66,28 +66,52 @@
             <mat-form-field>
               <mat-label>SamplingPlanSubsectorSiteID</mat-label>
               <input matInput type="number" formControlName="SamplingPlanSubsectorSiteID">
+              <mat-error *ngIf="samplingplansubsectorsiteFormPut.controls.SamplingPlanSubsectorSiteID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>SamplingPlanSubsectorID</mat-label>
               <input matInput type="number" formControlName="SamplingPlanSubsectorID">
+              <mat-error *ngIf="samplingplansubsectorsiteFormPut.controls.SamplingPlanSubsectorID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>MWQMSiteTVItemID</mat-label>
               <input matInput type="number" formControlName="MWQMSiteTVItemID">
+              <mat-error *ngIf="samplingplansubsectorsiteFormPut.controls.MWQMSiteTVItemID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>IsDuplicate</mat-label>
               <input matInput type="text" formControlName="IsDuplicate">
+              <mat-error *ngIf="samplingplansubsectorsiteFormPut.controls.IsDuplicate.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
           </p>
           <p>
             <mat-form-field>
               <mat-label>LastUpdateDate_UTC</mat-label>
               <input matInput type="text" formControlName="LastUpdateDate_UTC">
+              <mat-error *ngIf="samplingplansubsectorsiteFormPut.controls.LastUpdateDate_UTC.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>LastUpdateContactTVItemID</mat-label>
               <input matInput type="number" formControlName="LastUpdateContactTVItemID">
+              <mat-error *ngIf="samplingplansubsectorsiteFormPut.controls.LastUpdateContactTVItemID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
           </p>
         </form>
@@ -102,7 +126,7 @@
     <mat-card-title>Add SamplingPlanSubsectorSite testing</mat-card-title>
   </mat-card-header>
   <mat-card-content>
-    <div *ngIf="samplingplansubsectorsiteService.samplingplansubsectorsiteList.length">
+    <div *ngIf="samplingplansubsectorsiteService.samplingplansubsectorsiteListModel$.getValue()?.length">
       <blockquote>
         <form [formGroup]="samplingplansubsectorsiteFormPost" (ngSubmit)="PostSamplingPlanSubsectorSite(samplingplansubsectorsiteFormPost.value)">
           <h3>
@@ -117,28 +141,52 @@
             <mat-form-field>
               <mat-label>SamplingPlanSubsectorSiteID</mat-label>
               <input matInput type="number" formControlName="SamplingPlanSubsectorSiteID">
+              <mat-error *ngIf="samplingplansubsectorsiteFormPut.controls.SamplingPlanSubsectorSiteID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>SamplingPlanSubsectorID</mat-label>
               <input matInput type="number" formControlName="SamplingPlanSubsectorID">
+              <mat-error *ngIf="samplingplansubsectorsiteFormPut.controls.SamplingPlanSubsectorID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>MWQMSiteTVItemID</mat-label>
               <input matInput type="number" formControlName="MWQMSiteTVItemID">
+              <mat-error *ngIf="samplingplansubsectorsiteFormPut.controls.MWQMSiteTVItemID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>IsDuplicate</mat-label>
               <input matInput type="text" formControlName="IsDuplicate">
+              <mat-error *ngIf="samplingplansubsectorsiteFormPut.controls.IsDuplicate.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
           </p>
           <p>
             <mat-form-field>
               <mat-label>LastUpdateDate_UTC</mat-label>
               <input matInput type="text" formControlName="LastUpdateDate_UTC">
+              <mat-error *ngIf="samplingplansubsectorsiteFormPut.controls.LastUpdateDate_UTC.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>LastUpdateContactTVItemID</mat-label>
               <input matInput type="number" formControlName="LastUpdateContactTVItemID">
+              <mat-error *ngIf="samplingplansubsectorsiteFormPut.controls.LastUpdateContactTVItemID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
           </p>
         </form>

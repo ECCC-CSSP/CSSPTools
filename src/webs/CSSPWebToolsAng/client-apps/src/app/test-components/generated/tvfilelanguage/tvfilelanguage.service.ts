@@ -9,11 +9,12 @@ import { Injectable } from '@angular/core';
 import { TVFileLanguageTextModel } from './tvfilelanguage.models';
 import { BehaviorSubject, of } from 'rxjs';
 import { LoadLocalesTVFileLanguageText } from './tvfilelanguage.locales';
-import { Router } from '@angular/router';
-import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { map, catchError } from 'rxjs/operators';
 import { TVFileLanguage } from '../../../models/generated/TVFileLanguage.model';
 import { HttpRequestModel } from '../../../models/http.model';
+import { HttpClientService } from '../../../services/http-client.service';
+import { HttpClientCommand } from '../../../enums/app.enums';
 
 @Injectable({
   providedIn: 'root'
@@ -26,110 +27,63 @@ export class TVFileLanguageService {
   tvfilelanguagePutModel$: BehaviorSubject<HttpRequestModel> = new BehaviorSubject<HttpRequestModel>(<HttpRequestModel>{});
   tvfilelanguagePostModel$: BehaviorSubject<HttpRequestModel> = new BehaviorSubject<HttpRequestModel>(<HttpRequestModel>{});
   tvfilelanguageDeleteModel$: BehaviorSubject<HttpRequestModel> = new BehaviorSubject<HttpRequestModel>(<HttpRequestModel>{});
-  tvfilelanguageList: TVFileLanguage[] = [];
-  private oldURL: string;
-  private router: Router;
 
   /* Constructors */
-  constructor(private httpClient: HttpClient) {
+  constructor(private httpClient: HttpClient, private httpClientService: HttpClientService) {
     LoadLocalesTVFileLanguageText(this);
     this.tvfilelanguageTextModel$.next(<TVFileLanguageTextModel>{ Title: "Something2 for text" });
   }
 
   /* Functions public */
-  GetTVFileLanguageList(router: Router) {
-    this.BeforeHttpClient(this.tvfilelanguageGetModel$, router);
+  GetTVFileLanguageList() {
+    this.httpClientService.BeforeHttpClient(this.tvfilelanguageGetModel$);
 
     return this.httpClient.get<TVFileLanguage[]>('/api/TVFileLanguage').pipe(
       map((x: any) => {
-        this.DoSuccess(this.tvfilelanguageGetModel$, x, 'Get', null);
+        this.httpClientService.DoSuccess<TVFileLanguage>(this.tvfilelanguageListModel$, this.tvfilelanguageGetModel$, x, HttpClientCommand.Get, null);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.DoCatchError(this.tvfilelanguageGetModel$, e, 'Get');
+        this.httpClientService.DoCatchError<TVFileLanguage>(this.tvfilelanguageListModel$, this.tvfilelanguageGetModel$, e);
       })))
     );
   }
 
-  PutTVFileLanguage(tvfilelanguage: TVFileLanguage, router: Router) {
-    this.BeforeHttpClient(this.tvfilelanguagePutModel$, router);
+  PutTVFileLanguage(tvfilelanguage: TVFileLanguage) {
+    this.httpClientService.BeforeHttpClient(this.tvfilelanguagePutModel$);
 
     return this.httpClient.put<TVFileLanguage>('/api/TVFileLanguage', tvfilelanguage, { headers: new HttpHeaders() }).pipe(
       map((x: any) => {
-        this.DoSuccess(this.tvfilelanguagePutModel$, x, 'Put', tvfilelanguage);
+        this.httpClientService.DoSuccess<TVFileLanguage>(this.tvfilelanguageListModel$, this.tvfilelanguagePutModel$, x, HttpClientCommand.Put, tvfilelanguage);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.DoCatchError(this.tvfilelanguagePutModel$, e, 'Put');
+       this.httpClientService.DoCatchError<TVFileLanguage>(this.tvfilelanguageListModel$, this.tvfilelanguagePutModel$, e);
       })))
     );
   }
 
-  PostTVFileLanguage(tvfilelanguage: TVFileLanguage, router: Router) {
-    this.BeforeHttpClient(this.tvfilelanguagePostModel$, router);
+  PostTVFileLanguage(tvfilelanguage: TVFileLanguage) {
+    this.httpClientService.BeforeHttpClient(this.tvfilelanguagePostModel$);
 
     return this.httpClient.post<TVFileLanguage>('/api/TVFileLanguage', tvfilelanguage, { headers: new HttpHeaders() }).pipe(
       map((x: any) => {
-        this.DoSuccess(this.tvfilelanguagePostModel$, x, 'Post', tvfilelanguage);
+        this.httpClientService.DoSuccess<TVFileLanguage>(this.tvfilelanguageListModel$, this.tvfilelanguagePostModel$, x, HttpClientCommand.Post, tvfilelanguage);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.DoCatchError(this.tvfilelanguagePostModel$, e, 'Post');
+        this.httpClientService.DoCatchError<TVFileLanguage>(this.tvfilelanguageListModel$, this.tvfilelanguagePostModel$, e);
       })))
     );
   }
 
-  DeleteTVFileLanguage(tvfilelanguage: TVFileLanguage, router: Router) {
-    this.BeforeHttpClient(this.tvfilelanguageDeleteModel$, router);
+  DeleteTVFileLanguage(tvfilelanguage: TVFileLanguage) {
+    this.httpClientService.BeforeHttpClient(this.tvfilelanguageDeleteModel$);
 
     return this.httpClient.delete<boolean>(`/api/TVFileLanguage/${ tvfilelanguage.TVFileLanguageID }`).pipe(
       map((x: any) => {
-        this.DoSuccess(this.tvfilelanguageDeleteModel$, x, 'Delete', tvfilelanguage);
+        this.httpClientService.DoSuccess<TVFileLanguage>(this.tvfilelanguageListModel$, this.tvfilelanguageDeleteModel$, x, HttpClientCommand.Delete, tvfilelanguage);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.DoCatchError(this.tvfilelanguageDeleteModel$, e, 'Delete');
+        this.httpClientService.DoCatchError<TVFileLanguage>(this.tvfilelanguageListModel$, this.tvfilelanguageDeleteModel$, e);
       })))
     );
-  }
-
-  /* Functions private */
-  private BeforeHttpClient(httpRequestModel$: BehaviorSubject<HttpRequestModel>, router: Router) {
-    this.router = router;
-    this.oldURL = router.url;
-    httpRequestModel$.next(<HttpRequestModel>{ Working: true, Error: null, Status: null });
-  }
-
-  private DoCatchError(httpRequestModel$: BehaviorSubject<HttpRequestModel>, e: any, command: string) {
-    this.tvfilelanguageListModel$.next(null);
-    httpRequestModel$.next(<HttpRequestModel>{ Working: false, Error: <HttpErrorResponse>e, Status: 'Error' });
-
-    this.tvfilelanguageList = [];
-    console.debug(`TVFileLanguage ${ command } ERROR. Return: ${ <HttpErrorResponse>e }`);
-    this.DoReload();
-  }
-
-  private DoReload() {
-    this.router.navigateByUrl('', { skipLocationChange: true }).then(() => {
-      this.router.navigate([`/${this.oldURL}`]);
-    });
-  }
-
-  private DoSuccess(httpRequestModel$: BehaviorSubject<HttpRequestModel>, x: any, command: string, tvfilelanguage?: TVFileLanguage) {
-    console.debug(`TVFileLanguage ${ command } OK. Return: ${ x }`);
-    if (command === 'Get') {
-      this.tvfilelanguageListModel$.next(<TVFileLanguage[]>x);
-    }
-    if (command === 'Put') {
-      this.tvfilelanguageListModel$.getValue()[0] = <TVFileLanguage>x;
-    }
-    if (command === 'Post') {
-      this.tvfilelanguageListModel$.getValue().push(<TVFileLanguage>x);
-    }
-    if (command === 'Delete') {
-      const index = this.tvfilelanguageListModel$.getValue().indexOf(tvfilelanguage);
-      this.tvfilelanguageListModel$.getValue().splice(index, 1);
-    }
-
-    this.tvfilelanguageListModel$.next(this.tvfilelanguageListModel$.getValue());
-    httpRequestModel$.next(<HttpRequestModel>{ Working: false, Error: null, Status: 'ok' });
-    this.tvfilelanguageList = this.tvfilelanguageListModel$.getValue();
-    this.DoReload();
   }
 }

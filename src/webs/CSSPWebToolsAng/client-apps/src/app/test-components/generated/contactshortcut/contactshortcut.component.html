@@ -5,7 +5,7 @@
  *
 -->
 
-<mat-progress-bar mode="indeterminate" *ngIf="contactshortcutService.contactshortcutGetModel$.getValue().Working"></mat-progress-bar>
+<mat-progress-bar mode="indeterminate" *ngIf="contactshortcutService.contactshortcutGetModel$.getValue()?.Working"></mat-progress-bar>
 <mat-card>
   <mat-card-header>
     <mat-card-title>
@@ -17,8 +17,8 @@
     <mat-card-subtitle>{{ contactshortcutService.contactshortcutTextModel$.getValue().Title }}</mat-card-subtitle>
   </mat-card-header>
   <mat-card-content>
-    <mat-list>
-      <mat-list-item *ngFor="let contactshortcut of contactshortcutService.contactshortcutList">
+    <mat-list *ngIf="contactshortcutService.contactshortcutListModel$.getValue()?.length">
+      <mat-list-item *ngFor="let contactshortcut of contactshortcutService.contactshortcutListModel$.getValue()">
         <span mat-line>
           <button mat-raised-button (click)="DeleteContactShortcut(contactshortcut)">
             <span>Delete ContactShortcutID [{{ contactshortcut.ContactShortcutID }}]&nbsp;&nbsp;&nbsp;</span>
@@ -51,7 +51,7 @@
     <mat-card-title>Edit ContactShortcut testing</mat-card-title>
   </mat-card-header>
   <mat-card-content>
-    <div *ngIf="contactshortcutService.contactshortcutList.length">
+    <div *ngIf="contactshortcutService.contactshortcutListModel$.getValue()?.length">
       <blockquote>
         <form [formGroup]="contactshortcutFormPut" (ngSubmit)="PutContactShortcut(contactshortcutFormPut.value)">
           <h3>
@@ -66,28 +66,54 @@
             <mat-form-field>
               <mat-label>ContactShortcutID</mat-label>
               <input matInput type="number" formControlName="ContactShortcutID">
+              <mat-error *ngIf="contactshortcutFormPut.controls.ContactShortcutID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>ContactID</mat-label>
               <input matInput type="number" formControlName="ContactID">
+              <mat-error *ngIf="contactshortcutFormPut.controls.ContactID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>ShortCutText</mat-label>
               <input matInput type="text" formControlName="ShortCutText">
+              <mat-error *ngIf="contactshortcutFormPut.controls.ShortCutText.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+                <span *ngIf="e.maxlength">MaxLength - 100<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>ShortCutAddress</mat-label>
               <input matInput type="text" formControlName="ShortCutAddress">
+              <mat-error *ngIf="contactshortcutFormPut.controls.ShortCutAddress.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+                <span *ngIf="e.maxlength">MaxLength - 200<br /></span>
+              </mat-error>
             </mat-form-field>
           </p>
           <p>
             <mat-form-field>
               <mat-label>LastUpdateDate_UTC</mat-label>
               <input matInput type="text" formControlName="LastUpdateDate_UTC">
+              <mat-error *ngIf="contactshortcutFormPut.controls.LastUpdateDate_UTC.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>LastUpdateContactTVItemID</mat-label>
               <input matInput type="number" formControlName="LastUpdateContactTVItemID">
+              <mat-error *ngIf="contactshortcutFormPut.controls.LastUpdateContactTVItemID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
           </p>
         </form>
@@ -102,7 +128,7 @@
     <mat-card-title>Add ContactShortcut testing</mat-card-title>
   </mat-card-header>
   <mat-card-content>
-    <div *ngIf="contactshortcutService.contactshortcutList.length">
+    <div *ngIf="contactshortcutService.contactshortcutListModel$.getValue()?.length">
       <blockquote>
         <form [formGroup]="contactshortcutFormPost" (ngSubmit)="PostContactShortcut(contactshortcutFormPost.value)">
           <h3>
@@ -117,28 +143,54 @@
             <mat-form-field>
               <mat-label>ContactShortcutID</mat-label>
               <input matInput type="number" formControlName="ContactShortcutID">
+              <mat-error *ngIf="contactshortcutFormPut.controls.ContactShortcutID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>ContactID</mat-label>
               <input matInput type="number" formControlName="ContactID">
+              <mat-error *ngIf="contactshortcutFormPut.controls.ContactID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>ShortCutText</mat-label>
               <input matInput type="text" formControlName="ShortCutText">
+              <mat-error *ngIf="contactshortcutFormPut.controls.ShortCutText.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+                <span *ngIf="e.maxlength">MaxLength - 100<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>ShortCutAddress</mat-label>
               <input matInput type="text" formControlName="ShortCutAddress">
+              <mat-error *ngIf="contactshortcutFormPut.controls.ShortCutAddress.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+                <span *ngIf="e.maxlength">MaxLength - 200<br /></span>
+              </mat-error>
             </mat-form-field>
           </p>
           <p>
             <mat-form-field>
               <mat-label>LastUpdateDate_UTC</mat-label>
               <input matInput type="text" formControlName="LastUpdateDate_UTC">
+              <mat-error *ngIf="contactshortcutFormPut.controls.LastUpdateDate_UTC.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>LastUpdateContactTVItemID</mat-label>
               <input matInput type="number" formControlName="LastUpdateContactTVItemID">
+              <mat-error *ngIf="contactshortcutFormPut.controls.LastUpdateContactTVItemID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
           </p>
         </form>

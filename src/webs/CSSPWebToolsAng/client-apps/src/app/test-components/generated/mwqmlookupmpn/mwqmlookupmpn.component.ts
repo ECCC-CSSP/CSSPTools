@@ -8,10 +8,12 @@
 import { Component, OnInit, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
 import { MWQMLookupMPNService } from './mwqmlookupmpn.service';
 import { LoadLocalesMWQMLookupMPNText } from './mwqmlookupmpn.locales';
-import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { MWQMLookupMPN } from '../../../models/generated/MWQMLookupMPN.model';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
+import { HttpClientService } from '../../../services/http-client.service';
+import { Router } from '@angular/router';
+import { HttpClientCommand } from '../../../enums/app.enums';
 
 @Component({
   selector: 'app-mwqmlookupmpn',
@@ -24,28 +26,30 @@ export class MWQMLookupMPNComponent implements OnInit, OnDestroy {
   mwqmlookupmpnFormPut: FormGroup;
   mwqmlookupmpnFormPost: FormGroup;
 
-  constructor(public mwqmlookupmpnService: MWQMLookupMPNService, public router: Router, public fb: FormBuilder) { }
+  constructor(public mwqmlookupmpnService: MWQMLookupMPNService, private router: Router, private httpClientService: HttpClientService, private fb: FormBuilder) {
+    httpClientService.oldURL = router.url;
+  }
 
   GetMWQMLookupMPNList() {
-    this.sub = this.mwqmlookupmpnService.GetMWQMLookupMPNList(this.router).subscribe();
+    this.sub = this.mwqmlookupmpnService.GetMWQMLookupMPNList().subscribe();
   }
 
   PutMWQMLookupMPN(mwqmlookupmpn: MWQMLookupMPN) {
-    this.sub = this.mwqmlookupmpnService.PutMWQMLookupMPN(mwqmlookupmpn, this.router).subscribe();
+    this.sub = this.mwqmlookupmpnService.PutMWQMLookupMPN(mwqmlookupmpn).subscribe();
   }
 
   PostMWQMLookupMPN(mwqmlookupmpn: MWQMLookupMPN) {
-    this.sub = this.mwqmlookupmpnService.PostMWQMLookupMPN(mwqmlookupmpn, this.router).subscribe();
+    this.sub = this.mwqmlookupmpnService.PostMWQMLookupMPN(mwqmlookupmpn).subscribe();
   }
 
   DeleteMWQMLookupMPN(mwqmlookupmpn: MWQMLookupMPN) {
-    this.sub = this.mwqmlookupmpnService.DeleteMWQMLookupMPN(mwqmlookupmpn, this.router).subscribe();
+    this.sub = this.mwqmlookupmpnService.DeleteMWQMLookupMPN(mwqmlookupmpn).subscribe();
   }
 
   ngOnInit(): void {
     LoadLocalesMWQMLookupMPNText(this.mwqmlookupmpnService);
-    this.FillFormBuilderGroup('Add');
-    this.FillFormBuilderGroup('Update');
+    this.FillFormBuilderGroup(HttpClientCommand.Post);
+    this.FillFormBuilderGroup(HttpClientCommand.Put);
   }
 
   ngOnDestroy() {
@@ -54,49 +58,49 @@ export class MWQMLookupMPNComponent implements OnInit, OnDestroy {
     }
   }
 
-  FillFormBuilderGroup(AddOrUpdate: string) {
-    if (this.mwqmlookupmpnService.mwqmlookupmpnList.length) {
+  FillFormBuilderGroup(httpClientCommand: HttpClientCommand) {
+    if (this.mwqmlookupmpnService.mwqmlookupmpnListModel$.getValue().length) {
       let formGroup: FormGroup = this.fb.group(
         {
           MWQMLookupMPNID: [
             {
-              value: (AddOrUpdate === 'Add' ? 0 : (this.mwqmlookupmpnService.mwqmlookupmpnList[0]?.MWQMLookupMPNID)),
+              value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.mwqmlookupmpnService.mwqmlookupmpnListModel$.getValue()[0]?.MWQMLookupMPNID)),
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
           Tubes10: [
             {
-              value: this.mwqmlookupmpnService.mwqmlookupmpnList[0]?.Tubes10,
+              value: this.mwqmlookupmpnService.mwqmlookupmpnListModel$.getValue()[0]?.Tubes10,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required, Validators.min(0), Validators.max(5) ]],
           Tubes1: [
             {
-              value: this.mwqmlookupmpnService.mwqmlookupmpnList[0]?.Tubes1,
+              value: this.mwqmlookupmpnService.mwqmlookupmpnListModel$.getValue()[0]?.Tubes1,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required, Validators.min(0), Validators.max(5) ]],
           Tubes01: [
             {
-              value: this.mwqmlookupmpnService.mwqmlookupmpnList[0]?.Tubes01,
+              value: this.mwqmlookupmpnService.mwqmlookupmpnListModel$.getValue()[0]?.Tubes01,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required, Validators.min(0), Validators.max(5) ]],
           MPN_100ml: [
             {
-              value: this.mwqmlookupmpnService.mwqmlookupmpnList[0]?.MPN_100ml,
+              value: this.mwqmlookupmpnService.mwqmlookupmpnListModel$.getValue()[0]?.MPN_100ml,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required, Validators.min(1), Validators.max(10000) ]],
           LastUpdateDate_UTC: [
             {
-              value: this.mwqmlookupmpnService.mwqmlookupmpnList[0]?.LastUpdateDate_UTC,
+              value: this.mwqmlookupmpnService.mwqmlookupmpnListModel$.getValue()[0]?.LastUpdateDate_UTC,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
           LastUpdateContactTVItemID: [
             {
-              value: this.mwqmlookupmpnService.mwqmlookupmpnList[0]?.LastUpdateContactTVItemID,
+              value: this.mwqmlookupmpnService.mwqmlookupmpnListModel$.getValue()[0]?.LastUpdateContactTVItemID,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
         }
       );
 
-      if (AddOrUpdate === 'Add') {
+      if (httpClientCommand === HttpClientCommand.Post) {
         this.mwqmlookupmpnFormPost = formGroup
       }
       else {

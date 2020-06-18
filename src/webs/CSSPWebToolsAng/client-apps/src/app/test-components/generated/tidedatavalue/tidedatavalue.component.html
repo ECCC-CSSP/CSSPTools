@@ -5,7 +5,7 @@
  *
 -->
 
-<mat-progress-bar mode="indeterminate" *ngIf="tidedatavalueService.tidedatavalueGetModel$.getValue().Working"></mat-progress-bar>
+<mat-progress-bar mode="indeterminate" *ngIf="tidedatavalueService.tidedatavalueGetModel$.getValue()?.Working"></mat-progress-bar>
 <mat-card>
   <mat-card-header>
     <mat-card-title>
@@ -17,8 +17,8 @@
     <mat-card-subtitle>{{ tidedatavalueService.tidedatavalueTextModel$.getValue().Title }}</mat-card-subtitle>
   </mat-card-header>
   <mat-card-content>
-    <mat-list>
-      <mat-list-item *ngFor="let tidedatavalue of tidedatavalueService.tidedatavalueList">
+    <mat-list *ngIf="tidedatavalueService.tidedatavalueListModel$.getValue()?.length">
+      <mat-list-item *ngFor="let tidedatavalue of tidedatavalueService.tidedatavalueListModel$.getValue()">
         <span mat-line>
           <button mat-raised-button (click)="DeleteTideDataValue(tidedatavalue)">
             <span>Delete TideDataValueID [{{ tidedatavalue.TideDataValueID }}]&nbsp;&nbsp;&nbsp;</span>
@@ -62,7 +62,7 @@
     <mat-card-title>Edit TideDataValue testing</mat-card-title>
   </mat-card-header>
   <mat-card-content>
-    <div *ngIf="tidedatavalueService.tidedatavalueList.length">
+    <div *ngIf="tidedatavalueService.tidedatavalueListModel$.getValue()?.length">
       <blockquote>
         <form [formGroup]="tidedatavalueFormPut" (ngSubmit)="PutTideDataValue(tidedatavalueFormPut.value)">
           <h3>
@@ -77,18 +77,34 @@
             <mat-form-field>
               <mat-label>TideDataValueID</mat-label>
               <input matInput type="number" formControlName="TideDataValueID">
+              <mat-error *ngIf="tidedatavalueFormPut.controls.TideDataValueID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>TideSiteTVItemID</mat-label>
               <input matInput type="number" formControlName="TideSiteTVItemID">
+              <mat-error *ngIf="tidedatavalueFormPut.controls.TideSiteTVItemID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>DateTime_Local</mat-label>
               <input matInput type="text" formControlName="DateTime_Local">
+              <mat-error *ngIf="tidedatavalueFormPut.controls.DateTime_Local.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>Keep</mat-label>
               <input matInput type="text" formControlName="Keep">
+              <mat-error *ngIf="tidedatavalueFormPut.controls.Keep.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
           </p>
           <p>
@@ -99,6 +115,10 @@
                   {{ a.EnumText }}
                 </mat-option>
               </mat-select>
+              <mat-error *ngIf="tidedatavalueFormPut.controls.TideDataType.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>StorageDataType</mat-label>
@@ -107,20 +127,42 @@
                   {{ a.EnumText }}
                 </mat-option>
               </mat-select>
+              <mat-error *ngIf="tidedatavalueFormPut.controls.StorageDataType.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>Depth_m</mat-label>
               <input matInput type="number" formControlName="Depth_m">
+              <mat-error *ngIf="tidedatavalueFormPut.controls.Depth_m.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+                <span *ngIf="e.min">Min - 0<br /></span>
+                <span *ngIf="e.min">Max - 10000<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>UVelocity_m_s</mat-label>
               <input matInput type="number" formControlName="UVelocity_m_s">
+              <mat-error *ngIf="tidedatavalueFormPut.controls.UVelocity_m_s.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+                <span *ngIf="e.min">Min - 0<br /></span>
+                <span *ngIf="e.min">Max - 10<br /></span>
+              </mat-error>
             </mat-form-field>
           </p>
           <p>
             <mat-form-field>
               <mat-label>VVelocity_m_s</mat-label>
               <input matInput type="number" formControlName="VVelocity_m_s">
+              <mat-error *ngIf="tidedatavalueFormPut.controls.VVelocity_m_s.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+                <span *ngIf="e.min">Min - 0<br /></span>
+                <span *ngIf="e.min">Max - 10<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>TideStart</mat-label>
@@ -129,6 +171,9 @@
                   {{ a.EnumText }}
                 </mat-option>
               </mat-select>
+              <mat-error *ngIf="tidedatavalueFormPut.controls.TideStart.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>TideEnd</mat-label>
@@ -137,16 +182,27 @@
                   {{ a.EnumText }}
                 </mat-option>
               </mat-select>
+              <mat-error *ngIf="tidedatavalueFormPut.controls.TideEnd.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>LastUpdateDate_UTC</mat-label>
               <input matInput type="text" formControlName="LastUpdateDate_UTC">
+              <mat-error *ngIf="tidedatavalueFormPut.controls.LastUpdateDate_UTC.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
           </p>
           <p>
             <mat-form-field>
               <mat-label>LastUpdateContactTVItemID</mat-label>
               <input matInput type="number" formControlName="LastUpdateContactTVItemID">
+              <mat-error *ngIf="tidedatavalueFormPut.controls.LastUpdateContactTVItemID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
           </p>
         </form>
@@ -161,7 +217,7 @@
     <mat-card-title>Add TideDataValue testing</mat-card-title>
   </mat-card-header>
   <mat-card-content>
-    <div *ngIf="tidedatavalueService.tidedatavalueList.length">
+    <div *ngIf="tidedatavalueService.tidedatavalueListModel$.getValue()?.length">
       <blockquote>
         <form [formGroup]="tidedatavalueFormPost" (ngSubmit)="PostTideDataValue(tidedatavalueFormPost.value)">
           <h3>
@@ -176,18 +232,34 @@
             <mat-form-field>
               <mat-label>TideDataValueID</mat-label>
               <input matInput type="number" formControlName="TideDataValueID">
+              <mat-error *ngIf="tidedatavalueFormPut.controls.TideDataValueID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>TideSiteTVItemID</mat-label>
               <input matInput type="number" formControlName="TideSiteTVItemID">
+              <mat-error *ngIf="tidedatavalueFormPut.controls.TideSiteTVItemID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>DateTime_Local</mat-label>
               <input matInput type="text" formControlName="DateTime_Local">
+              <mat-error *ngIf="tidedatavalueFormPut.controls.DateTime_Local.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>Keep</mat-label>
               <input matInput type="text" formControlName="Keep">
+              <mat-error *ngIf="tidedatavalueFormPut.controls.Keep.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
           </p>
           <p>
@@ -198,6 +270,10 @@
                   {{ a.EnumText }}
                 </mat-option>
               </mat-select>
+              <mat-error *ngIf="tidedatavalueFormPut.controls.TideDataType.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>StorageDataType</mat-label>
@@ -206,20 +282,42 @@
                   {{ a.EnumText }}
                 </mat-option>
               </mat-select>
+              <mat-error *ngIf="tidedatavalueFormPut.controls.StorageDataType.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>Depth_m</mat-label>
               <input matInput type="number" formControlName="Depth_m">
+              <mat-error *ngIf="tidedatavalueFormPut.controls.Depth_m.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+                <span *ngIf="e.min">Min - 0<br /></span>
+                <span *ngIf="e.min">Max - 10000<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>UVelocity_m_s</mat-label>
               <input matInput type="number" formControlName="UVelocity_m_s">
+              <mat-error *ngIf="tidedatavalueFormPut.controls.UVelocity_m_s.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+                <span *ngIf="e.min">Min - 0<br /></span>
+                <span *ngIf="e.min">Max - 10<br /></span>
+              </mat-error>
             </mat-form-field>
           </p>
           <p>
             <mat-form-field>
               <mat-label>VVelocity_m_s</mat-label>
               <input matInput type="number" formControlName="VVelocity_m_s">
+              <mat-error *ngIf="tidedatavalueFormPut.controls.VVelocity_m_s.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+                <span *ngIf="e.min">Min - 0<br /></span>
+                <span *ngIf="e.min">Max - 10<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>TideStart</mat-label>
@@ -228,6 +326,9 @@
                   {{ a.EnumText }}
                 </mat-option>
               </mat-select>
+              <mat-error *ngIf="tidedatavalueFormPut.controls.TideStart.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>TideEnd</mat-label>
@@ -236,16 +337,27 @@
                   {{ a.EnumText }}
                 </mat-option>
               </mat-select>
+              <mat-error *ngIf="tidedatavalueFormPut.controls.TideEnd.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>LastUpdateDate_UTC</mat-label>
               <input matInput type="text" formControlName="LastUpdateDate_UTC">
+              <mat-error *ngIf="tidedatavalueFormPut.controls.LastUpdateDate_UTC.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
           </p>
           <p>
             <mat-form-field>
               <mat-label>LastUpdateContactTVItemID</mat-label>
               <input matInput type="number" formControlName="LastUpdateContactTVItemID">
+              <mat-error *ngIf="tidedatavalueFormPut.controls.LastUpdateContactTVItemID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
           </p>
         </form>

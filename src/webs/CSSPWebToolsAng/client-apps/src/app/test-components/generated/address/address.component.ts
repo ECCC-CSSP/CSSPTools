@@ -8,13 +8,15 @@
 import { Component, OnInit, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
 import { AddressService } from './address.service';
 import { LoadLocalesAddressText } from './address.locales';
-import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { AddressTypeEnum_GetIDText, AddressTypeEnum_GetOrderedText } from '../../../enums/generated/AddressTypeEnum';
 import { StreetTypeEnum_GetIDText, StreetTypeEnum_GetOrderedText } from '../../../enums/generated/StreetTypeEnum';
 import { Address } from '../../../models/generated/Address.model';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
 import { EnumIDAndText } from '../../../models/enumidandtext.model';
+import { HttpClientService } from '../../../services/http-client.service';
+import { Router } from '@angular/router';
+import { HttpClientCommand } from '../../../enums/app.enums';
 
 @Component({
   selector: 'app-address',
@@ -29,22 +31,24 @@ export class AddressComponent implements OnInit, OnDestroy {
   addressFormPut: FormGroup;
   addressFormPost: FormGroup;
 
-  constructor(public addressService: AddressService, public router: Router, public fb: FormBuilder) { }
+  constructor(public addressService: AddressService, private router: Router, private httpClientService: HttpClientService, private fb: FormBuilder) {
+    httpClientService.oldURL = router.url;
+  }
 
   GetAddressList() {
-    this.sub = this.addressService.GetAddressList(this.router).subscribe();
+    this.sub = this.addressService.GetAddressList().subscribe();
   }
 
   PutAddress(address: Address) {
-    this.sub = this.addressService.PutAddress(address, this.router).subscribe();
+    this.sub = this.addressService.PutAddress(address).subscribe();
   }
 
   PostAddress(address: Address) {
-    this.sub = this.addressService.PostAddress(address, this.router).subscribe();
+    this.sub = this.addressService.PostAddress(address).subscribe();
   }
 
   DeleteAddress(address: Address) {
-    this.sub = this.addressService.DeleteAddress(address, this.router).subscribe();
+    this.sub = this.addressService.DeleteAddress(address).subscribe();
   }
 
   GetAddressTypeEnumText(enumID: number) {
@@ -59,8 +63,8 @@ export class AddressComponent implements OnInit, OnDestroy {
     LoadLocalesAddressText(this.addressService);
     this.addressTypeList = AddressTypeEnum_GetOrderedText();
     this.streetTypeList = StreetTypeEnum_GetOrderedText();
-    this.FillFormBuilderGroup('Add');
-    this.FillFormBuilderGroup('Update');
+    this.FillFormBuilderGroup(HttpClientCommand.Post);
+    this.FillFormBuilderGroup(HttpClientCommand.Put);
   }
 
   ngOnDestroy() {
@@ -69,79 +73,79 @@ export class AddressComponent implements OnInit, OnDestroy {
     }
   }
 
-  FillFormBuilderGroup(AddOrUpdate: string) {
-    if (this.addressService.addressList.length) {
+  FillFormBuilderGroup(httpClientCommand: HttpClientCommand) {
+    if (this.addressService.addressListModel$.getValue().length) {
       let formGroup: FormGroup = this.fb.group(
         {
           AddressID: [
             {
-              value: (AddOrUpdate === 'Add' ? 0 : (this.addressService.addressList[0]?.AddressID)),
+              value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.addressService.addressListModel$.getValue()[0]?.AddressID)),
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
           AddressTVItemID: [
             {
-              value: this.addressService.addressList[0]?.AddressTVItemID,
+              value: this.addressService.addressListModel$.getValue()[0]?.AddressTVItemID,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
           AddressType: [
             {
-              value: this.addressService.addressList[0]?.AddressType,
+              value: this.addressService.addressListModel$.getValue()[0]?.AddressType,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
           CountryTVItemID: [
             {
-              value: this.addressService.addressList[0]?.CountryTVItemID,
+              value: this.addressService.addressListModel$.getValue()[0]?.CountryTVItemID,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
           ProvinceTVItemID: [
             {
-              value: this.addressService.addressList[0]?.ProvinceTVItemID,
+              value: this.addressService.addressListModel$.getValue()[0]?.ProvinceTVItemID,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
           MunicipalityTVItemID: [
             {
-              value: this.addressService.addressList[0]?.MunicipalityTVItemID,
+              value: this.addressService.addressListModel$.getValue()[0]?.MunicipalityTVItemID,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
           StreetName: [
             {
-              value: this.addressService.addressList[0]?.StreetName,
+              value: this.addressService.addressListModel$.getValue()[0]?.StreetName,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.maxLength(200) ]],
           StreetNumber: [
             {
-              value: this.addressService.addressList[0]?.StreetNumber,
+              value: this.addressService.addressListModel$.getValue()[0]?.StreetNumber,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.maxLength(50) ]],
           StreetType: [
             {
-              value: this.addressService.addressList[0]?.StreetType,
+              value: this.addressService.addressListModel$.getValue()[0]?.StreetType,
               disabled: false
-            }, [ Validators.required ]],
+            }],
           PostalCode: [
             {
-              value: this.addressService.addressList[0]?.PostalCode,
+              value: this.addressService.addressListModel$.getValue()[0]?.PostalCode,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.minLength(6), Validators.maxLength(11) ]],
           GoogleAddressText: [
             {
-              value: this.addressService.addressList[0]?.GoogleAddressText,
+              value: this.addressService.addressListModel$.getValue()[0]?.GoogleAddressText,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.minLength(10), Validators.maxLength(200) ]],
           LastUpdateDate_UTC: [
             {
-              value: this.addressService.addressList[0]?.LastUpdateDate_UTC,
+              value: this.addressService.addressListModel$.getValue()[0]?.LastUpdateDate_UTC,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
           LastUpdateContactTVItemID: [
             {
-              value: this.addressService.addressList[0]?.LastUpdateContactTVItemID,
+              value: this.addressService.addressListModel$.getValue()[0]?.LastUpdateContactTVItemID,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
         }
       );
 
-      if (AddOrUpdate === 'Add') {
+      if (httpClientCommand === HttpClientCommand.Post) {
         this.addressFormPost = formGroup
       }
       else {

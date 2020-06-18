@@ -8,13 +8,15 @@
 import { Component, OnInit, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
 import { MWQMRunLanguageService } from './mwqmrunlanguage.service';
 import { LoadLocalesMWQMRunLanguageText } from './mwqmrunlanguage.locales';
-import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { LanguageEnum_GetIDText, LanguageEnum_GetOrderedText } from '../../../enums/generated/LanguageEnum';
 import { TranslationStatusEnum_GetIDText, TranslationStatusEnum_GetOrderedText } from '../../../enums/generated/TranslationStatusEnum';
 import { MWQMRunLanguage } from '../../../models/generated/MWQMRunLanguage.model';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
 import { EnumIDAndText } from '../../../models/enumidandtext.model';
+import { HttpClientService } from '../../../services/http-client.service';
+import { Router } from '@angular/router';
+import { HttpClientCommand } from '../../../enums/app.enums';
 
 @Component({
   selector: 'app-mwqmrunlanguage',
@@ -30,22 +32,24 @@ export class MWQMRunLanguageComponent implements OnInit, OnDestroy {
   mwqmrunlanguageFormPut: FormGroup;
   mwqmrunlanguageFormPost: FormGroup;
 
-  constructor(public mwqmrunlanguageService: MWQMRunLanguageService, public router: Router, public fb: FormBuilder) { }
+  constructor(public mwqmrunlanguageService: MWQMRunLanguageService, private router: Router, private httpClientService: HttpClientService, private fb: FormBuilder) {
+    httpClientService.oldURL = router.url;
+  }
 
   GetMWQMRunLanguageList() {
-    this.sub = this.mwqmrunlanguageService.GetMWQMRunLanguageList(this.router).subscribe();
+    this.sub = this.mwqmrunlanguageService.GetMWQMRunLanguageList().subscribe();
   }
 
   PutMWQMRunLanguage(mwqmrunlanguage: MWQMRunLanguage) {
-    this.sub = this.mwqmrunlanguageService.PutMWQMRunLanguage(mwqmrunlanguage, this.router).subscribe();
+    this.sub = this.mwqmrunlanguageService.PutMWQMRunLanguage(mwqmrunlanguage).subscribe();
   }
 
   PostMWQMRunLanguage(mwqmrunlanguage: MWQMRunLanguage) {
-    this.sub = this.mwqmrunlanguageService.PostMWQMRunLanguage(mwqmrunlanguage, this.router).subscribe();
+    this.sub = this.mwqmrunlanguageService.PostMWQMRunLanguage(mwqmrunlanguage).subscribe();
   }
 
   DeleteMWQMRunLanguage(mwqmrunlanguage: MWQMRunLanguage) {
-    this.sub = this.mwqmrunlanguageService.DeleteMWQMRunLanguage(mwqmrunlanguage, this.router).subscribe();
+    this.sub = this.mwqmrunlanguageService.DeleteMWQMRunLanguage(mwqmrunlanguage).subscribe();
   }
 
   GetLanguageEnumText(enumID: number) {
@@ -61,8 +65,8 @@ export class MWQMRunLanguageComponent implements OnInit, OnDestroy {
     this.languageList = LanguageEnum_GetOrderedText();
     this.translationStatusRunCommentList = TranslationStatusEnum_GetOrderedText();
     this.translationStatusRunWeatherCommentList = TranslationStatusEnum_GetOrderedText();
-    this.FillFormBuilderGroup('Add');
-    this.FillFormBuilderGroup('Update');
+    this.FillFormBuilderGroup(HttpClientCommand.Post);
+    this.FillFormBuilderGroup(HttpClientCommand.Put);
   }
 
   ngOnDestroy() {
@@ -71,59 +75,59 @@ export class MWQMRunLanguageComponent implements OnInit, OnDestroy {
     }
   }
 
-  FillFormBuilderGroup(AddOrUpdate: string) {
-    if (this.mwqmrunlanguageService.mwqmrunlanguageList.length) {
+  FillFormBuilderGroup(httpClientCommand: HttpClientCommand) {
+    if (this.mwqmrunlanguageService.mwqmrunlanguageListModel$.getValue().length) {
       let formGroup: FormGroup = this.fb.group(
         {
           MWQMRunLanguageID: [
             {
-              value: (AddOrUpdate === 'Add' ? 0 : (this.mwqmrunlanguageService.mwqmrunlanguageList[0]?.MWQMRunLanguageID)),
+              value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.mwqmrunlanguageService.mwqmrunlanguageListModel$.getValue()[0]?.MWQMRunLanguageID)),
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
           MWQMRunID: [
             {
-              value: this.mwqmrunlanguageService.mwqmrunlanguageList[0]?.MWQMRunID,
+              value: this.mwqmrunlanguageService.mwqmrunlanguageListModel$.getValue()[0]?.MWQMRunID,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
           Language: [
             {
-              value: this.mwqmrunlanguageService.mwqmrunlanguageList[0]?.Language,
+              value: this.mwqmrunlanguageService.mwqmrunlanguageListModel$.getValue()[0]?.Language,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
           RunComment: [
             {
-              value: this.mwqmrunlanguageService.mwqmrunlanguageList[0]?.RunComment,
+              value: this.mwqmrunlanguageService.mwqmrunlanguageListModel$.getValue()[0]?.RunComment,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
           TranslationStatusRunComment: [
             {
-              value: this.mwqmrunlanguageService.mwqmrunlanguageList[0]?.TranslationStatusRunComment,
+              value: this.mwqmrunlanguageService.mwqmrunlanguageListModel$.getValue()[0]?.TranslationStatusRunComment,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
           RunWeatherComment: [
             {
-              value: this.mwqmrunlanguageService.mwqmrunlanguageList[0]?.RunWeatherComment,
+              value: this.mwqmrunlanguageService.mwqmrunlanguageListModel$.getValue()[0]?.RunWeatherComment,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
           TranslationStatusRunWeatherComment: [
             {
-              value: this.mwqmrunlanguageService.mwqmrunlanguageList[0]?.TranslationStatusRunWeatherComment,
+              value: this.mwqmrunlanguageService.mwqmrunlanguageListModel$.getValue()[0]?.TranslationStatusRunWeatherComment,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
           LastUpdateDate_UTC: [
             {
-              value: this.mwqmrunlanguageService.mwqmrunlanguageList[0]?.LastUpdateDate_UTC,
+              value: this.mwqmrunlanguageService.mwqmrunlanguageListModel$.getValue()[0]?.LastUpdateDate_UTC,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
           LastUpdateContactTVItemID: [
             {
-              value: this.mwqmrunlanguageService.mwqmrunlanguageList[0]?.LastUpdateContactTVItemID,
+              value: this.mwqmrunlanguageService.mwqmrunlanguageListModel$.getValue()[0]?.LastUpdateContactTVItemID,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
         }
       );
 
-      if (AddOrUpdate === 'Add') {
+      if (httpClientCommand === HttpClientCommand.Post) {
         this.mwqmrunlanguageFormPost = formGroup
       }
       else {

@@ -9,11 +9,12 @@ import { Injectable } from '@angular/core';
 import { SamplingPlanEmailTextModel } from './samplingplanemail.models';
 import { BehaviorSubject, of } from 'rxjs';
 import { LoadLocalesSamplingPlanEmailText } from './samplingplanemail.locales';
-import { Router } from '@angular/router';
-import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { map, catchError } from 'rxjs/operators';
 import { SamplingPlanEmail } from '../../../models/generated/SamplingPlanEmail.model';
 import { HttpRequestModel } from '../../../models/http.model';
+import { HttpClientService } from '../../../services/http-client.service';
+import { HttpClientCommand } from '../../../enums/app.enums';
 
 @Injectable({
   providedIn: 'root'
@@ -26,110 +27,63 @@ export class SamplingPlanEmailService {
   samplingplanemailPutModel$: BehaviorSubject<HttpRequestModel> = new BehaviorSubject<HttpRequestModel>(<HttpRequestModel>{});
   samplingplanemailPostModel$: BehaviorSubject<HttpRequestModel> = new BehaviorSubject<HttpRequestModel>(<HttpRequestModel>{});
   samplingplanemailDeleteModel$: BehaviorSubject<HttpRequestModel> = new BehaviorSubject<HttpRequestModel>(<HttpRequestModel>{});
-  samplingplanemailList: SamplingPlanEmail[] = [];
-  private oldURL: string;
-  private router: Router;
 
   /* Constructors */
-  constructor(private httpClient: HttpClient) {
+  constructor(private httpClient: HttpClient, private httpClientService: HttpClientService) {
     LoadLocalesSamplingPlanEmailText(this);
     this.samplingplanemailTextModel$.next(<SamplingPlanEmailTextModel>{ Title: "Something2 for text" });
   }
 
   /* Functions public */
-  GetSamplingPlanEmailList(router: Router) {
-    this.BeforeHttpClient(this.samplingplanemailGetModel$, router);
+  GetSamplingPlanEmailList() {
+    this.httpClientService.BeforeHttpClient(this.samplingplanemailGetModel$);
 
     return this.httpClient.get<SamplingPlanEmail[]>('/api/SamplingPlanEmail').pipe(
       map((x: any) => {
-        this.DoSuccess(this.samplingplanemailGetModel$, x, 'Get', null);
+        this.httpClientService.DoSuccess<SamplingPlanEmail>(this.samplingplanemailListModel$, this.samplingplanemailGetModel$, x, HttpClientCommand.Get, null);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.DoCatchError(this.samplingplanemailGetModel$, e, 'Get');
+        this.httpClientService.DoCatchError<SamplingPlanEmail>(this.samplingplanemailListModel$, this.samplingplanemailGetModel$, e);
       })))
     );
   }
 
-  PutSamplingPlanEmail(samplingplanemail: SamplingPlanEmail, router: Router) {
-    this.BeforeHttpClient(this.samplingplanemailPutModel$, router);
+  PutSamplingPlanEmail(samplingplanemail: SamplingPlanEmail) {
+    this.httpClientService.BeforeHttpClient(this.samplingplanemailPutModel$);
 
     return this.httpClient.put<SamplingPlanEmail>('/api/SamplingPlanEmail', samplingplanemail, { headers: new HttpHeaders() }).pipe(
       map((x: any) => {
-        this.DoSuccess(this.samplingplanemailPutModel$, x, 'Put', samplingplanemail);
+        this.httpClientService.DoSuccess<SamplingPlanEmail>(this.samplingplanemailListModel$, this.samplingplanemailPutModel$, x, HttpClientCommand.Put, samplingplanemail);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.DoCatchError(this.samplingplanemailPutModel$, e, 'Put');
+       this.httpClientService.DoCatchError<SamplingPlanEmail>(this.samplingplanemailListModel$, this.samplingplanemailPutModel$, e);
       })))
     );
   }
 
-  PostSamplingPlanEmail(samplingplanemail: SamplingPlanEmail, router: Router) {
-    this.BeforeHttpClient(this.samplingplanemailPostModel$, router);
+  PostSamplingPlanEmail(samplingplanemail: SamplingPlanEmail) {
+    this.httpClientService.BeforeHttpClient(this.samplingplanemailPostModel$);
 
     return this.httpClient.post<SamplingPlanEmail>('/api/SamplingPlanEmail', samplingplanemail, { headers: new HttpHeaders() }).pipe(
       map((x: any) => {
-        this.DoSuccess(this.samplingplanemailPostModel$, x, 'Post', samplingplanemail);
+        this.httpClientService.DoSuccess<SamplingPlanEmail>(this.samplingplanemailListModel$, this.samplingplanemailPostModel$, x, HttpClientCommand.Post, samplingplanemail);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.DoCatchError(this.samplingplanemailPostModel$, e, 'Post');
+        this.httpClientService.DoCatchError<SamplingPlanEmail>(this.samplingplanemailListModel$, this.samplingplanemailPostModel$, e);
       })))
     );
   }
 
-  DeleteSamplingPlanEmail(samplingplanemail: SamplingPlanEmail, router: Router) {
-    this.BeforeHttpClient(this.samplingplanemailDeleteModel$, router);
+  DeleteSamplingPlanEmail(samplingplanemail: SamplingPlanEmail) {
+    this.httpClientService.BeforeHttpClient(this.samplingplanemailDeleteModel$);
 
     return this.httpClient.delete<boolean>(`/api/SamplingPlanEmail/${ samplingplanemail.SamplingPlanEmailID }`).pipe(
       map((x: any) => {
-        this.DoSuccess(this.samplingplanemailDeleteModel$, x, 'Delete', samplingplanemail);
+        this.httpClientService.DoSuccess<SamplingPlanEmail>(this.samplingplanemailListModel$, this.samplingplanemailDeleteModel$, x, HttpClientCommand.Delete, samplingplanemail);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.DoCatchError(this.samplingplanemailDeleteModel$, e, 'Delete');
+        this.httpClientService.DoCatchError<SamplingPlanEmail>(this.samplingplanemailListModel$, this.samplingplanemailDeleteModel$, e);
       })))
     );
-  }
-
-  /* Functions private */
-  private BeforeHttpClient(httpRequestModel$: BehaviorSubject<HttpRequestModel>, router: Router) {
-    this.router = router;
-    this.oldURL = router.url;
-    httpRequestModel$.next(<HttpRequestModel>{ Working: true, Error: null, Status: null });
-  }
-
-  private DoCatchError(httpRequestModel$: BehaviorSubject<HttpRequestModel>, e: any, command: string) {
-    this.samplingplanemailListModel$.next(null);
-    httpRequestModel$.next(<HttpRequestModel>{ Working: false, Error: <HttpErrorResponse>e, Status: 'Error' });
-
-    this.samplingplanemailList = [];
-    console.debug(`SamplingPlanEmail ${ command } ERROR. Return: ${ <HttpErrorResponse>e }`);
-    this.DoReload();
-  }
-
-  private DoReload() {
-    this.router.navigateByUrl('', { skipLocationChange: true }).then(() => {
-      this.router.navigate([`/${this.oldURL}`]);
-    });
-  }
-
-  private DoSuccess(httpRequestModel$: BehaviorSubject<HttpRequestModel>, x: any, command: string, samplingplanemail?: SamplingPlanEmail) {
-    console.debug(`SamplingPlanEmail ${ command } OK. Return: ${ x }`);
-    if (command === 'Get') {
-      this.samplingplanemailListModel$.next(<SamplingPlanEmail[]>x);
-    }
-    if (command === 'Put') {
-      this.samplingplanemailListModel$.getValue()[0] = <SamplingPlanEmail>x;
-    }
-    if (command === 'Post') {
-      this.samplingplanemailListModel$.getValue().push(<SamplingPlanEmail>x);
-    }
-    if (command === 'Delete') {
-      const index = this.samplingplanemailListModel$.getValue().indexOf(samplingplanemail);
-      this.samplingplanemailListModel$.getValue().splice(index, 1);
-    }
-
-    this.samplingplanemailListModel$.next(this.samplingplanemailListModel$.getValue());
-    httpRequestModel$.next(<HttpRequestModel>{ Working: false, Error: null, Status: 'ok' });
-    this.samplingplanemailList = this.samplingplanemailListModel$.getValue();
-    this.DoReload();
   }
 }

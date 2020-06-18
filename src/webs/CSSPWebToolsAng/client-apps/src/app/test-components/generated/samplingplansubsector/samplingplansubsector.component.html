@@ -5,7 +5,7 @@
  *
 -->
 
-<mat-progress-bar mode="indeterminate" *ngIf="samplingplansubsectorService.samplingplansubsectorGetModel$.getValue().Working"></mat-progress-bar>
+<mat-progress-bar mode="indeterminate" *ngIf="samplingplansubsectorService.samplingplansubsectorGetModel$.getValue()?.Working"></mat-progress-bar>
 <mat-card>
   <mat-card-header>
     <mat-card-title>
@@ -17,8 +17,8 @@
     <mat-card-subtitle>{{ samplingplansubsectorService.samplingplansubsectorTextModel$.getValue().Title }}</mat-card-subtitle>
   </mat-card-header>
   <mat-card-content>
-    <mat-list>
-      <mat-list-item *ngFor="let samplingplansubsector of samplingplansubsectorService.samplingplansubsectorList">
+    <mat-list *ngIf="samplingplansubsectorService.samplingplansubsectorListModel$.getValue()?.length">
+      <mat-list-item *ngFor="let samplingplansubsector of samplingplansubsectorService.samplingplansubsectorListModel$.getValue()">
         <span mat-line>
           <button mat-raised-button (click)="DeleteSamplingPlanSubsector(samplingplansubsector)">
             <span>Delete SamplingPlanSubsectorID [{{ samplingplansubsector.SamplingPlanSubsectorID }}]&nbsp;&nbsp;&nbsp;</span>
@@ -50,7 +50,7 @@
     <mat-card-title>Edit SamplingPlanSubsector testing</mat-card-title>
   </mat-card-header>
   <mat-card-content>
-    <div *ngIf="samplingplansubsectorService.samplingplansubsectorList.length">
+    <div *ngIf="samplingplansubsectorService.samplingplansubsectorListModel$.getValue()?.length">
       <blockquote>
         <form [formGroup]="samplingplansubsectorFormPut" (ngSubmit)="PutSamplingPlanSubsector(samplingplansubsectorFormPut.value)">
           <h3>
@@ -65,24 +65,44 @@
             <mat-form-field>
               <mat-label>SamplingPlanSubsectorID</mat-label>
               <input matInput type="number" formControlName="SamplingPlanSubsectorID">
+              <mat-error *ngIf="samplingplansubsectorFormPut.controls.SamplingPlanSubsectorID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>SamplingPlanID</mat-label>
               <input matInput type="number" formControlName="SamplingPlanID">
+              <mat-error *ngIf="samplingplansubsectorFormPut.controls.SamplingPlanID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>SubsectorTVItemID</mat-label>
               <input matInput type="number" formControlName="SubsectorTVItemID">
+              <mat-error *ngIf="samplingplansubsectorFormPut.controls.SubsectorTVItemID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>LastUpdateDate_UTC</mat-label>
               <input matInput type="text" formControlName="LastUpdateDate_UTC">
+              <mat-error *ngIf="samplingplansubsectorFormPut.controls.LastUpdateDate_UTC.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
           </p>
           <p>
             <mat-form-field>
               <mat-label>LastUpdateContactTVItemID</mat-label>
               <input matInput type="number" formControlName="LastUpdateContactTVItemID">
+              <mat-error *ngIf="samplingplansubsectorFormPut.controls.LastUpdateContactTVItemID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
           </p>
         </form>
@@ -97,7 +117,7 @@
     <mat-card-title>Add SamplingPlanSubsector testing</mat-card-title>
   </mat-card-header>
   <mat-card-content>
-    <div *ngIf="samplingplansubsectorService.samplingplansubsectorList.length">
+    <div *ngIf="samplingplansubsectorService.samplingplansubsectorListModel$.getValue()?.length">
       <blockquote>
         <form [formGroup]="samplingplansubsectorFormPost" (ngSubmit)="PostSamplingPlanSubsector(samplingplansubsectorFormPost.value)">
           <h3>
@@ -112,24 +132,44 @@
             <mat-form-field>
               <mat-label>SamplingPlanSubsectorID</mat-label>
               <input matInput type="number" formControlName="SamplingPlanSubsectorID">
+              <mat-error *ngIf="samplingplansubsectorFormPut.controls.SamplingPlanSubsectorID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>SamplingPlanID</mat-label>
               <input matInput type="number" formControlName="SamplingPlanID">
+              <mat-error *ngIf="samplingplansubsectorFormPut.controls.SamplingPlanID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>SubsectorTVItemID</mat-label>
               <input matInput type="number" formControlName="SubsectorTVItemID">
+              <mat-error *ngIf="samplingplansubsectorFormPut.controls.SubsectorTVItemID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>LastUpdateDate_UTC</mat-label>
               <input matInput type="text" formControlName="LastUpdateDate_UTC">
+              <mat-error *ngIf="samplingplansubsectorFormPut.controls.LastUpdateDate_UTC.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
           </p>
           <p>
             <mat-form-field>
               <mat-label>LastUpdateContactTVItemID</mat-label>
               <input matInput type="number" formControlName="LastUpdateContactTVItemID">
+              <mat-error *ngIf="samplingplansubsectorFormPut.controls.LastUpdateContactTVItemID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
           </p>
         </form>

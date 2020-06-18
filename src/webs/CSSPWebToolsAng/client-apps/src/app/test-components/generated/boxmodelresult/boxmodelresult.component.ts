@@ -8,12 +8,14 @@
 import { Component, OnInit, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
 import { BoxModelResultService } from './boxmodelresult.service';
 import { LoadLocalesBoxModelResultText } from './boxmodelresult.locales';
-import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { BoxModelResultTypeEnum_GetIDText, BoxModelResultTypeEnum_GetOrderedText } from '../../../enums/generated/BoxModelResultTypeEnum';
 import { BoxModelResult } from '../../../models/generated/BoxModelResult.model';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
 import { EnumIDAndText } from '../../../models/enumidandtext.model';
+import { HttpClientService } from '../../../services/http-client.service';
+import { Router } from '@angular/router';
+import { HttpClientCommand } from '../../../enums/app.enums';
 
 @Component({
   selector: 'app-boxmodelresult',
@@ -27,22 +29,24 @@ export class BoxModelResultComponent implements OnInit, OnDestroy {
   boxmodelresultFormPut: FormGroup;
   boxmodelresultFormPost: FormGroup;
 
-  constructor(public boxmodelresultService: BoxModelResultService, public router: Router, public fb: FormBuilder) { }
+  constructor(public boxmodelresultService: BoxModelResultService, private router: Router, private httpClientService: HttpClientService, private fb: FormBuilder) {
+    httpClientService.oldURL = router.url;
+  }
 
   GetBoxModelResultList() {
-    this.sub = this.boxmodelresultService.GetBoxModelResultList(this.router).subscribe();
+    this.sub = this.boxmodelresultService.GetBoxModelResultList().subscribe();
   }
 
   PutBoxModelResult(boxmodelresult: BoxModelResult) {
-    this.sub = this.boxmodelresultService.PutBoxModelResult(boxmodelresult, this.router).subscribe();
+    this.sub = this.boxmodelresultService.PutBoxModelResult(boxmodelresult).subscribe();
   }
 
   PostBoxModelResult(boxmodelresult: BoxModelResult) {
-    this.sub = this.boxmodelresultService.PostBoxModelResult(boxmodelresult, this.router).subscribe();
+    this.sub = this.boxmodelresultService.PostBoxModelResult(boxmodelresult).subscribe();
   }
 
   DeleteBoxModelResult(boxmodelresult: BoxModelResult) {
-    this.sub = this.boxmodelresultService.DeleteBoxModelResult(boxmodelresult, this.router).subscribe();
+    this.sub = this.boxmodelresultService.DeleteBoxModelResult(boxmodelresult).subscribe();
   }
 
   GetBoxModelResultTypeEnumText(enumID: number) {
@@ -52,8 +56,8 @@ export class BoxModelResultComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     LoadLocalesBoxModelResultText(this.boxmodelresultService);
     this.boxModelResultTypeList = BoxModelResultTypeEnum_GetOrderedText();
-    this.FillFormBuilderGroup('Add');
-    this.FillFormBuilderGroup('Update');
+    this.FillFormBuilderGroup(HttpClientCommand.Post);
+    this.FillFormBuilderGroup(HttpClientCommand.Put);
   }
 
   ngOnDestroy() {
@@ -62,104 +66,104 @@ export class BoxModelResultComponent implements OnInit, OnDestroy {
     }
   }
 
-  FillFormBuilderGroup(AddOrUpdate: string) {
-    if (this.boxmodelresultService.boxmodelresultList.length) {
+  FillFormBuilderGroup(httpClientCommand: HttpClientCommand) {
+    if (this.boxmodelresultService.boxmodelresultListModel$.getValue().length) {
       let formGroup: FormGroup = this.fb.group(
         {
           BoxModelResultID: [
             {
-              value: (AddOrUpdate === 'Add' ? 0 : (this.boxmodelresultService.boxmodelresultList[0]?.BoxModelResultID)),
+              value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.boxmodelresultService.boxmodelresultListModel$.getValue()[0]?.BoxModelResultID)),
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
           BoxModelID: [
             {
-              value: this.boxmodelresultService.boxmodelresultList[0]?.BoxModelID,
+              value: this.boxmodelresultService.boxmodelresultListModel$.getValue()[0]?.BoxModelID,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
           BoxModelResultType: [
             {
-              value: this.boxmodelresultService.boxmodelresultList[0]?.BoxModelResultType,
+              value: this.boxmodelresultService.boxmodelresultListModel$.getValue()[0]?.BoxModelResultType,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
           Volume_m3: [
             {
-              value: this.boxmodelresultService.boxmodelresultList[0]?.Volume_m3,
+              value: this.boxmodelresultService.boxmodelresultListModel$.getValue()[0]?.Volume_m3,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required, Validators.min(0) ]],
           Surface_m2: [
             {
-              value: this.boxmodelresultService.boxmodelresultList[0]?.Surface_m2,
+              value: this.boxmodelresultService.boxmodelresultListModel$.getValue()[0]?.Surface_m2,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required, Validators.min(0) ]],
           Radius_m: [
             {
-              value: this.boxmodelresultService.boxmodelresultList[0]?.Radius_m,
+              value: this.boxmodelresultService.boxmodelresultListModel$.getValue()[0]?.Radius_m,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required, Validators.min(0), Validators.max(100000) ]],
           LeftSideDiameterLineAngle_deg: [
             {
-              value: this.boxmodelresultService.boxmodelresultList[0]?.LeftSideDiameterLineAngle_deg,
+              value: this.boxmodelresultService.boxmodelresultListModel$.getValue()[0]?.LeftSideDiameterLineAngle_deg,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.min(0), Validators.max(360) ]],
           CircleCenterLatitude: [
             {
-              value: this.boxmodelresultService.boxmodelresultList[0]?.CircleCenterLatitude,
+              value: this.boxmodelresultService.boxmodelresultListModel$.getValue()[0]?.CircleCenterLatitude,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.min(-90), Validators.max(90) ]],
           CircleCenterLongitude: [
             {
-              value: this.boxmodelresultService.boxmodelresultList[0]?.CircleCenterLongitude,
+              value: this.boxmodelresultService.boxmodelresultListModel$.getValue()[0]?.CircleCenterLongitude,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.min(-180), Validators.max(180) ]],
           FixLength: [
             {
-              value: this.boxmodelresultService.boxmodelresultList[0]?.FixLength,
+              value: this.boxmodelresultService.boxmodelresultListModel$.getValue()[0]?.FixLength,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
           FixWidth: [
             {
-              value: this.boxmodelresultService.boxmodelresultList[0]?.FixWidth,
+              value: this.boxmodelresultService.boxmodelresultListModel$.getValue()[0]?.FixWidth,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
           RectLength_m: [
             {
-              value: this.boxmodelresultService.boxmodelresultList[0]?.RectLength_m,
+              value: this.boxmodelresultService.boxmodelresultListModel$.getValue()[0]?.RectLength_m,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required, Validators.min(0), Validators.max(100000) ]],
           RectWidth_m: [
             {
-              value: this.boxmodelresultService.boxmodelresultList[0]?.RectWidth_m,
+              value: this.boxmodelresultService.boxmodelresultListModel$.getValue()[0]?.RectWidth_m,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required, Validators.min(0), Validators.max(100000) ]],
           LeftSideLineAngle_deg: [
             {
-              value: this.boxmodelresultService.boxmodelresultList[0]?.LeftSideLineAngle_deg,
+              value: this.boxmodelresultService.boxmodelresultListModel$.getValue()[0]?.LeftSideLineAngle_deg,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.min(0), Validators.max(360) ]],
           LeftSideLineStartLatitude: [
             {
-              value: this.boxmodelresultService.boxmodelresultList[0]?.LeftSideLineStartLatitude,
+              value: this.boxmodelresultService.boxmodelresultListModel$.getValue()[0]?.LeftSideLineStartLatitude,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.min(-90), Validators.max(90) ]],
           LeftSideLineStartLongitude: [
             {
-              value: this.boxmodelresultService.boxmodelresultList[0]?.LeftSideLineStartLongitude,
+              value: this.boxmodelresultService.boxmodelresultListModel$.getValue()[0]?.LeftSideLineStartLongitude,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.min(-180), Validators.max(180) ]],
           LastUpdateDate_UTC: [
             {
-              value: this.boxmodelresultService.boxmodelresultList[0]?.LastUpdateDate_UTC,
+              value: this.boxmodelresultService.boxmodelresultListModel$.getValue()[0]?.LastUpdateDate_UTC,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
           LastUpdateContactTVItemID: [
             {
-              value: this.boxmodelresultService.boxmodelresultList[0]?.LastUpdateContactTVItemID,
+              value: this.boxmodelresultService.boxmodelresultListModel$.getValue()[0]?.LastUpdateContactTVItemID,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
         }
       );
 
-      if (AddOrUpdate === 'Add') {
+      if (httpClientCommand === HttpClientCommand.Post) {
         this.boxmodelresultFormPost = formGroup
       }
       else {

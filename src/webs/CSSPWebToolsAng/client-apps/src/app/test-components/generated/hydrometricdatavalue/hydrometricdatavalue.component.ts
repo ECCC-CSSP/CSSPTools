@@ -8,12 +8,14 @@
 import { Component, OnInit, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
 import { HydrometricDataValueService } from './hydrometricdatavalue.service';
 import { LoadLocalesHydrometricDataValueText } from './hydrometricdatavalue.locales';
-import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { StorageDataTypeEnum_GetIDText, StorageDataTypeEnum_GetOrderedText } from '../../../enums/generated/StorageDataTypeEnum';
 import { HydrometricDataValue } from '../../../models/generated/HydrometricDataValue.model';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
 import { EnumIDAndText } from '../../../models/enumidandtext.model';
+import { HttpClientService } from '../../../services/http-client.service';
+import { Router } from '@angular/router';
+import { HttpClientCommand } from '../../../enums/app.enums';
 
 @Component({
   selector: 'app-hydrometricdatavalue',
@@ -27,22 +29,24 @@ export class HydrometricDataValueComponent implements OnInit, OnDestroy {
   hydrometricdatavalueFormPut: FormGroup;
   hydrometricdatavalueFormPost: FormGroup;
 
-  constructor(public hydrometricdatavalueService: HydrometricDataValueService, public router: Router, public fb: FormBuilder) { }
+  constructor(public hydrometricdatavalueService: HydrometricDataValueService, private router: Router, private httpClientService: HttpClientService, private fb: FormBuilder) {
+    httpClientService.oldURL = router.url;
+  }
 
   GetHydrometricDataValueList() {
-    this.sub = this.hydrometricdatavalueService.GetHydrometricDataValueList(this.router).subscribe();
+    this.sub = this.hydrometricdatavalueService.GetHydrometricDataValueList().subscribe();
   }
 
   PutHydrometricDataValue(hydrometricdatavalue: HydrometricDataValue) {
-    this.sub = this.hydrometricdatavalueService.PutHydrometricDataValue(hydrometricdatavalue, this.router).subscribe();
+    this.sub = this.hydrometricdatavalueService.PutHydrometricDataValue(hydrometricdatavalue).subscribe();
   }
 
   PostHydrometricDataValue(hydrometricdatavalue: HydrometricDataValue) {
-    this.sub = this.hydrometricdatavalueService.PostHydrometricDataValue(hydrometricdatavalue, this.router).subscribe();
+    this.sub = this.hydrometricdatavalueService.PostHydrometricDataValue(hydrometricdatavalue).subscribe();
   }
 
   DeleteHydrometricDataValue(hydrometricdatavalue: HydrometricDataValue) {
-    this.sub = this.hydrometricdatavalueService.DeleteHydrometricDataValue(hydrometricdatavalue, this.router).subscribe();
+    this.sub = this.hydrometricdatavalueService.DeleteHydrometricDataValue(hydrometricdatavalue).subscribe();
   }
 
   GetStorageDataTypeEnumText(enumID: number) {
@@ -52,8 +56,8 @@ export class HydrometricDataValueComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     LoadLocalesHydrometricDataValueText(this.hydrometricdatavalueService);
     this.storageDataTypeList = StorageDataTypeEnum_GetOrderedText();
-    this.FillFormBuilderGroup('Add');
-    this.FillFormBuilderGroup('Update');
+    this.FillFormBuilderGroup(HttpClientCommand.Post);
+    this.FillFormBuilderGroup(HttpClientCommand.Put);
   }
 
   ngOnDestroy() {
@@ -62,74 +66,74 @@ export class HydrometricDataValueComponent implements OnInit, OnDestroy {
     }
   }
 
-  FillFormBuilderGroup(AddOrUpdate: string) {
-    if (this.hydrometricdatavalueService.hydrometricdatavalueList.length) {
+  FillFormBuilderGroup(httpClientCommand: HttpClientCommand) {
+    if (this.hydrometricdatavalueService.hydrometricdatavalueListModel$.getValue().length) {
       let formGroup: FormGroup = this.fb.group(
         {
           HydrometricDataValueID: [
             {
-              value: (AddOrUpdate === 'Add' ? 0 : (this.hydrometricdatavalueService.hydrometricdatavalueList[0]?.HydrometricDataValueID)),
+              value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.hydrometricdatavalueService.hydrometricdatavalueListModel$.getValue()[0]?.HydrometricDataValueID)),
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
           HydrometricSiteID: [
             {
-              value: this.hydrometricdatavalueService.hydrometricdatavalueList[0]?.HydrometricSiteID,
+              value: this.hydrometricdatavalueService.hydrometricdatavalueListModel$.getValue()[0]?.HydrometricSiteID,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
           DateTime_Local: [
             {
-              value: this.hydrometricdatavalueService.hydrometricdatavalueList[0]?.DateTime_Local,
+              value: this.hydrometricdatavalueService.hydrometricdatavalueListModel$.getValue()[0]?.DateTime_Local,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
           Keep: [
             {
-              value: this.hydrometricdatavalueService.hydrometricdatavalueList[0]?.Keep,
+              value: this.hydrometricdatavalueService.hydrometricdatavalueListModel$.getValue()[0]?.Keep,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
           StorageDataType: [
             {
-              value: this.hydrometricdatavalueService.hydrometricdatavalueList[0]?.StorageDataType,
+              value: this.hydrometricdatavalueService.hydrometricdatavalueListModel$.getValue()[0]?.StorageDataType,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
           HasBeenRead: [
             {
-              value: this.hydrometricdatavalueService.hydrometricdatavalueList[0]?.HasBeenRead,
+              value: this.hydrometricdatavalueService.hydrometricdatavalueListModel$.getValue()[0]?.HasBeenRead,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
           Discharge_m3_s: [
             {
-              value: this.hydrometricdatavalueService.hydrometricdatavalueList[0]?.Discharge_m3_s,
+              value: this.hydrometricdatavalueService.hydrometricdatavalueListModel$.getValue()[0]?.Discharge_m3_s,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.min(0), Validators.max(100000) ]],
           DischargeEntered_m3_s: [
             {
-              value: this.hydrometricdatavalueService.hydrometricdatavalueList[0]?.DischargeEntered_m3_s,
+              value: this.hydrometricdatavalueService.hydrometricdatavalueListModel$.getValue()[0]?.DischargeEntered_m3_s,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.min(0), Validators.max(100000) ]],
           Level_m: [
             {
-              value: this.hydrometricdatavalueService.hydrometricdatavalueList[0]?.Level_m,
+              value: this.hydrometricdatavalueService.hydrometricdatavalueListModel$.getValue()[0]?.Level_m,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.min(0), Validators.max(10000) ]],
           HourlyValues: [
             {
-              value: this.hydrometricdatavalueService.hydrometricdatavalueList[0]?.HourlyValues,
+              value: this.hydrometricdatavalueService.hydrometricdatavalueListModel$.getValue()[0]?.HourlyValues,
               disabled: false
-            }, [ Validators.required ]],
+            }],
           LastUpdateDate_UTC: [
             {
-              value: this.hydrometricdatavalueService.hydrometricdatavalueList[0]?.LastUpdateDate_UTC,
+              value: this.hydrometricdatavalueService.hydrometricdatavalueListModel$.getValue()[0]?.LastUpdateDate_UTC,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
           LastUpdateContactTVItemID: [
             {
-              value: this.hydrometricdatavalueService.hydrometricdatavalueList[0]?.LastUpdateContactTVItemID,
+              value: this.hydrometricdatavalueService.hydrometricdatavalueListModel$.getValue()[0]?.LastUpdateContactTVItemID,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
         }
       );
 
-      if (AddOrUpdate === 'Add') {
+      if (httpClientCommand === HttpClientCommand.Post) {
         this.hydrometricdatavalueFormPost = formGroup
       }
       else {

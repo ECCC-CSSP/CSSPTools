@@ -9,11 +9,12 @@ import { Injectable } from '@angular/core';
 import { PolSourceSiteTextModel } from './polsourcesite.models';
 import { BehaviorSubject, of } from 'rxjs';
 import { LoadLocalesPolSourceSiteText } from './polsourcesite.locales';
-import { Router } from '@angular/router';
-import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { map, catchError } from 'rxjs/operators';
 import { PolSourceSite } from '../../../models/generated/PolSourceSite.model';
 import { HttpRequestModel } from '../../../models/http.model';
+import { HttpClientService } from '../../../services/http-client.service';
+import { HttpClientCommand } from '../../../enums/app.enums';
 
 @Injectable({
   providedIn: 'root'
@@ -26,110 +27,63 @@ export class PolSourceSiteService {
   polsourcesitePutModel$: BehaviorSubject<HttpRequestModel> = new BehaviorSubject<HttpRequestModel>(<HttpRequestModel>{});
   polsourcesitePostModel$: BehaviorSubject<HttpRequestModel> = new BehaviorSubject<HttpRequestModel>(<HttpRequestModel>{});
   polsourcesiteDeleteModel$: BehaviorSubject<HttpRequestModel> = new BehaviorSubject<HttpRequestModel>(<HttpRequestModel>{});
-  polsourcesiteList: PolSourceSite[] = [];
-  private oldURL: string;
-  private router: Router;
 
   /* Constructors */
-  constructor(private httpClient: HttpClient) {
+  constructor(private httpClient: HttpClient, private httpClientService: HttpClientService) {
     LoadLocalesPolSourceSiteText(this);
     this.polsourcesiteTextModel$.next(<PolSourceSiteTextModel>{ Title: "Something2 for text" });
   }
 
   /* Functions public */
-  GetPolSourceSiteList(router: Router) {
-    this.BeforeHttpClient(this.polsourcesiteGetModel$, router);
+  GetPolSourceSiteList() {
+    this.httpClientService.BeforeHttpClient(this.polsourcesiteGetModel$);
 
     return this.httpClient.get<PolSourceSite[]>('/api/PolSourceSite').pipe(
       map((x: any) => {
-        this.DoSuccess(this.polsourcesiteGetModel$, x, 'Get', null);
+        this.httpClientService.DoSuccess<PolSourceSite>(this.polsourcesiteListModel$, this.polsourcesiteGetModel$, x, HttpClientCommand.Get, null);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.DoCatchError(this.polsourcesiteGetModel$, e, 'Get');
+        this.httpClientService.DoCatchError<PolSourceSite>(this.polsourcesiteListModel$, this.polsourcesiteGetModel$, e);
       })))
     );
   }
 
-  PutPolSourceSite(polsourcesite: PolSourceSite, router: Router) {
-    this.BeforeHttpClient(this.polsourcesitePutModel$, router);
+  PutPolSourceSite(polsourcesite: PolSourceSite) {
+    this.httpClientService.BeforeHttpClient(this.polsourcesitePutModel$);
 
     return this.httpClient.put<PolSourceSite>('/api/PolSourceSite', polsourcesite, { headers: new HttpHeaders() }).pipe(
       map((x: any) => {
-        this.DoSuccess(this.polsourcesitePutModel$, x, 'Put', polsourcesite);
+        this.httpClientService.DoSuccess<PolSourceSite>(this.polsourcesiteListModel$, this.polsourcesitePutModel$, x, HttpClientCommand.Put, polsourcesite);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.DoCatchError(this.polsourcesitePutModel$, e, 'Put');
+       this.httpClientService.DoCatchError<PolSourceSite>(this.polsourcesiteListModel$, this.polsourcesitePutModel$, e);
       })))
     );
   }
 
-  PostPolSourceSite(polsourcesite: PolSourceSite, router: Router) {
-    this.BeforeHttpClient(this.polsourcesitePostModel$, router);
+  PostPolSourceSite(polsourcesite: PolSourceSite) {
+    this.httpClientService.BeforeHttpClient(this.polsourcesitePostModel$);
 
     return this.httpClient.post<PolSourceSite>('/api/PolSourceSite', polsourcesite, { headers: new HttpHeaders() }).pipe(
       map((x: any) => {
-        this.DoSuccess(this.polsourcesitePostModel$, x, 'Post', polsourcesite);
+        this.httpClientService.DoSuccess<PolSourceSite>(this.polsourcesiteListModel$, this.polsourcesitePostModel$, x, HttpClientCommand.Post, polsourcesite);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.DoCatchError(this.polsourcesitePostModel$, e, 'Post');
+        this.httpClientService.DoCatchError<PolSourceSite>(this.polsourcesiteListModel$, this.polsourcesitePostModel$, e);
       })))
     );
   }
 
-  DeletePolSourceSite(polsourcesite: PolSourceSite, router: Router) {
-    this.BeforeHttpClient(this.polsourcesiteDeleteModel$, router);
+  DeletePolSourceSite(polsourcesite: PolSourceSite) {
+    this.httpClientService.BeforeHttpClient(this.polsourcesiteDeleteModel$);
 
     return this.httpClient.delete<boolean>(`/api/PolSourceSite/${ polsourcesite.PolSourceSiteID }`).pipe(
       map((x: any) => {
-        this.DoSuccess(this.polsourcesiteDeleteModel$, x, 'Delete', polsourcesite);
+        this.httpClientService.DoSuccess<PolSourceSite>(this.polsourcesiteListModel$, this.polsourcesiteDeleteModel$, x, HttpClientCommand.Delete, polsourcesite);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.DoCatchError(this.polsourcesiteDeleteModel$, e, 'Delete');
+        this.httpClientService.DoCatchError<PolSourceSite>(this.polsourcesiteListModel$, this.polsourcesiteDeleteModel$, e);
       })))
     );
-  }
-
-  /* Functions private */
-  private BeforeHttpClient(httpRequestModel$: BehaviorSubject<HttpRequestModel>, router: Router) {
-    this.router = router;
-    this.oldURL = router.url;
-    httpRequestModel$.next(<HttpRequestModel>{ Working: true, Error: null, Status: null });
-  }
-
-  private DoCatchError(httpRequestModel$: BehaviorSubject<HttpRequestModel>, e: any, command: string) {
-    this.polsourcesiteListModel$.next(null);
-    httpRequestModel$.next(<HttpRequestModel>{ Working: false, Error: <HttpErrorResponse>e, Status: 'Error' });
-
-    this.polsourcesiteList = [];
-    console.debug(`PolSourceSite ${ command } ERROR. Return: ${ <HttpErrorResponse>e }`);
-    this.DoReload();
-  }
-
-  private DoReload() {
-    this.router.navigateByUrl('', { skipLocationChange: true }).then(() => {
-      this.router.navigate([`/${this.oldURL}`]);
-    });
-  }
-
-  private DoSuccess(httpRequestModel$: BehaviorSubject<HttpRequestModel>, x: any, command: string, polsourcesite?: PolSourceSite) {
-    console.debug(`PolSourceSite ${ command } OK. Return: ${ x }`);
-    if (command === 'Get') {
-      this.polsourcesiteListModel$.next(<PolSourceSite[]>x);
-    }
-    if (command === 'Put') {
-      this.polsourcesiteListModel$.getValue()[0] = <PolSourceSite>x;
-    }
-    if (command === 'Post') {
-      this.polsourcesiteListModel$.getValue().push(<PolSourceSite>x);
-    }
-    if (command === 'Delete') {
-      const index = this.polsourcesiteListModel$.getValue().indexOf(polsourcesite);
-      this.polsourcesiteListModel$.getValue().splice(index, 1);
-    }
-
-    this.polsourcesiteListModel$.next(this.polsourcesiteListModel$.getValue());
-    httpRequestModel$.next(<HttpRequestModel>{ Working: false, Error: null, Status: 'ok' });
-    this.polsourcesiteList = this.polsourcesiteListModel$.getValue();
-    this.DoReload();
   }
 }

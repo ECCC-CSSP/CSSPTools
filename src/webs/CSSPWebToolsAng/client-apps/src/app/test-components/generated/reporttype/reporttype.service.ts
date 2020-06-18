@@ -9,11 +9,12 @@ import { Injectable } from '@angular/core';
 import { ReportTypeTextModel } from './reporttype.models';
 import { BehaviorSubject, of } from 'rxjs';
 import { LoadLocalesReportTypeText } from './reporttype.locales';
-import { Router } from '@angular/router';
-import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { map, catchError } from 'rxjs/operators';
 import { ReportType } from '../../../models/generated/ReportType.model';
 import { HttpRequestModel } from '../../../models/http.model';
+import { HttpClientService } from '../../../services/http-client.service';
+import { HttpClientCommand } from '../../../enums/app.enums';
 
 @Injectable({
   providedIn: 'root'
@@ -26,110 +27,63 @@ export class ReportTypeService {
   reporttypePutModel$: BehaviorSubject<HttpRequestModel> = new BehaviorSubject<HttpRequestModel>(<HttpRequestModel>{});
   reporttypePostModel$: BehaviorSubject<HttpRequestModel> = new BehaviorSubject<HttpRequestModel>(<HttpRequestModel>{});
   reporttypeDeleteModel$: BehaviorSubject<HttpRequestModel> = new BehaviorSubject<HttpRequestModel>(<HttpRequestModel>{});
-  reporttypeList: ReportType[] = [];
-  private oldURL: string;
-  private router: Router;
 
   /* Constructors */
-  constructor(private httpClient: HttpClient) {
+  constructor(private httpClient: HttpClient, private httpClientService: HttpClientService) {
     LoadLocalesReportTypeText(this);
     this.reporttypeTextModel$.next(<ReportTypeTextModel>{ Title: "Something2 for text" });
   }
 
   /* Functions public */
-  GetReportTypeList(router: Router) {
-    this.BeforeHttpClient(this.reporttypeGetModel$, router);
+  GetReportTypeList() {
+    this.httpClientService.BeforeHttpClient(this.reporttypeGetModel$);
 
     return this.httpClient.get<ReportType[]>('/api/ReportType').pipe(
       map((x: any) => {
-        this.DoSuccess(this.reporttypeGetModel$, x, 'Get', null);
+        this.httpClientService.DoSuccess<ReportType>(this.reporttypeListModel$, this.reporttypeGetModel$, x, HttpClientCommand.Get, null);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.DoCatchError(this.reporttypeGetModel$, e, 'Get');
+        this.httpClientService.DoCatchError<ReportType>(this.reporttypeListModel$, this.reporttypeGetModel$, e);
       })))
     );
   }
 
-  PutReportType(reporttype: ReportType, router: Router) {
-    this.BeforeHttpClient(this.reporttypePutModel$, router);
+  PutReportType(reporttype: ReportType) {
+    this.httpClientService.BeforeHttpClient(this.reporttypePutModel$);
 
     return this.httpClient.put<ReportType>('/api/ReportType', reporttype, { headers: new HttpHeaders() }).pipe(
       map((x: any) => {
-        this.DoSuccess(this.reporttypePutModel$, x, 'Put', reporttype);
+        this.httpClientService.DoSuccess<ReportType>(this.reporttypeListModel$, this.reporttypePutModel$, x, HttpClientCommand.Put, reporttype);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.DoCatchError(this.reporttypePutModel$, e, 'Put');
+       this.httpClientService.DoCatchError<ReportType>(this.reporttypeListModel$, this.reporttypePutModel$, e);
       })))
     );
   }
 
-  PostReportType(reporttype: ReportType, router: Router) {
-    this.BeforeHttpClient(this.reporttypePostModel$, router);
+  PostReportType(reporttype: ReportType) {
+    this.httpClientService.BeforeHttpClient(this.reporttypePostModel$);
 
     return this.httpClient.post<ReportType>('/api/ReportType', reporttype, { headers: new HttpHeaders() }).pipe(
       map((x: any) => {
-        this.DoSuccess(this.reporttypePostModel$, x, 'Post', reporttype);
+        this.httpClientService.DoSuccess<ReportType>(this.reporttypeListModel$, this.reporttypePostModel$, x, HttpClientCommand.Post, reporttype);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.DoCatchError(this.reporttypePostModel$, e, 'Post');
+        this.httpClientService.DoCatchError<ReportType>(this.reporttypeListModel$, this.reporttypePostModel$, e);
       })))
     );
   }
 
-  DeleteReportType(reporttype: ReportType, router: Router) {
-    this.BeforeHttpClient(this.reporttypeDeleteModel$, router);
+  DeleteReportType(reporttype: ReportType) {
+    this.httpClientService.BeforeHttpClient(this.reporttypeDeleteModel$);
 
     return this.httpClient.delete<boolean>(`/api/ReportType/${ reporttype.ReportTypeID }`).pipe(
       map((x: any) => {
-        this.DoSuccess(this.reporttypeDeleteModel$, x, 'Delete', reporttype);
+        this.httpClientService.DoSuccess<ReportType>(this.reporttypeListModel$, this.reporttypeDeleteModel$, x, HttpClientCommand.Delete, reporttype);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.DoCatchError(this.reporttypeDeleteModel$, e, 'Delete');
+        this.httpClientService.DoCatchError<ReportType>(this.reporttypeListModel$, this.reporttypeDeleteModel$, e);
       })))
     );
-  }
-
-  /* Functions private */
-  private BeforeHttpClient(httpRequestModel$: BehaviorSubject<HttpRequestModel>, router: Router) {
-    this.router = router;
-    this.oldURL = router.url;
-    httpRequestModel$.next(<HttpRequestModel>{ Working: true, Error: null, Status: null });
-  }
-
-  private DoCatchError(httpRequestModel$: BehaviorSubject<HttpRequestModel>, e: any, command: string) {
-    this.reporttypeListModel$.next(null);
-    httpRequestModel$.next(<HttpRequestModel>{ Working: false, Error: <HttpErrorResponse>e, Status: 'Error' });
-
-    this.reporttypeList = [];
-    console.debug(`ReportType ${ command } ERROR. Return: ${ <HttpErrorResponse>e }`);
-    this.DoReload();
-  }
-
-  private DoReload() {
-    this.router.navigateByUrl('', { skipLocationChange: true }).then(() => {
-      this.router.navigate([`/${this.oldURL}`]);
-    });
-  }
-
-  private DoSuccess(httpRequestModel$: BehaviorSubject<HttpRequestModel>, x: any, command: string, reporttype?: ReportType) {
-    console.debug(`ReportType ${ command } OK. Return: ${ x }`);
-    if (command === 'Get') {
-      this.reporttypeListModel$.next(<ReportType[]>x);
-    }
-    if (command === 'Put') {
-      this.reporttypeListModel$.getValue()[0] = <ReportType>x;
-    }
-    if (command === 'Post') {
-      this.reporttypeListModel$.getValue().push(<ReportType>x);
-    }
-    if (command === 'Delete') {
-      const index = this.reporttypeListModel$.getValue().indexOf(reporttype);
-      this.reporttypeListModel$.getValue().splice(index, 1);
-    }
-
-    this.reporttypeListModel$.next(this.reporttypeListModel$.getValue());
-    httpRequestModel$.next(<HttpRequestModel>{ Working: false, Error: null, Status: 'ok' });
-    this.reporttypeList = this.reporttypeListModel$.getValue();
-    this.DoReload();
   }
 }

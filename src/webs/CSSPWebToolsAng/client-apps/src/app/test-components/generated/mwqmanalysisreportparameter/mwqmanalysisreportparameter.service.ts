@@ -9,11 +9,12 @@ import { Injectable } from '@angular/core';
 import { MWQMAnalysisReportParameterTextModel } from './mwqmanalysisreportparameter.models';
 import { BehaviorSubject, of } from 'rxjs';
 import { LoadLocalesMWQMAnalysisReportParameterText } from './mwqmanalysisreportparameter.locales';
-import { Router } from '@angular/router';
-import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { map, catchError } from 'rxjs/operators';
 import { MWQMAnalysisReportParameter } from '../../../models/generated/MWQMAnalysisReportParameter.model';
 import { HttpRequestModel } from '../../../models/http.model';
+import { HttpClientService } from '../../../services/http-client.service';
+import { HttpClientCommand } from '../../../enums/app.enums';
 
 @Injectable({
   providedIn: 'root'
@@ -26,110 +27,63 @@ export class MWQMAnalysisReportParameterService {
   mwqmanalysisreportparameterPutModel$: BehaviorSubject<HttpRequestModel> = new BehaviorSubject<HttpRequestModel>(<HttpRequestModel>{});
   mwqmanalysisreportparameterPostModel$: BehaviorSubject<HttpRequestModel> = new BehaviorSubject<HttpRequestModel>(<HttpRequestModel>{});
   mwqmanalysisreportparameterDeleteModel$: BehaviorSubject<HttpRequestModel> = new BehaviorSubject<HttpRequestModel>(<HttpRequestModel>{});
-  mwqmanalysisreportparameterList: MWQMAnalysisReportParameter[] = [];
-  private oldURL: string;
-  private router: Router;
 
   /* Constructors */
-  constructor(private httpClient: HttpClient) {
+  constructor(private httpClient: HttpClient, private httpClientService: HttpClientService) {
     LoadLocalesMWQMAnalysisReportParameterText(this);
     this.mwqmanalysisreportparameterTextModel$.next(<MWQMAnalysisReportParameterTextModel>{ Title: "Something2 for text" });
   }
 
   /* Functions public */
-  GetMWQMAnalysisReportParameterList(router: Router) {
-    this.BeforeHttpClient(this.mwqmanalysisreportparameterGetModel$, router);
+  GetMWQMAnalysisReportParameterList() {
+    this.httpClientService.BeforeHttpClient(this.mwqmanalysisreportparameterGetModel$);
 
     return this.httpClient.get<MWQMAnalysisReportParameter[]>('/api/MWQMAnalysisReportParameter').pipe(
       map((x: any) => {
-        this.DoSuccess(this.mwqmanalysisreportparameterGetModel$, x, 'Get', null);
+        this.httpClientService.DoSuccess<MWQMAnalysisReportParameter>(this.mwqmanalysisreportparameterListModel$, this.mwqmanalysisreportparameterGetModel$, x, HttpClientCommand.Get, null);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.DoCatchError(this.mwqmanalysisreportparameterGetModel$, e, 'Get');
+        this.httpClientService.DoCatchError<MWQMAnalysisReportParameter>(this.mwqmanalysisreportparameterListModel$, this.mwqmanalysisreportparameterGetModel$, e);
       })))
     );
   }
 
-  PutMWQMAnalysisReportParameter(mwqmanalysisreportparameter: MWQMAnalysisReportParameter, router: Router) {
-    this.BeforeHttpClient(this.mwqmanalysisreportparameterPutModel$, router);
+  PutMWQMAnalysisReportParameter(mwqmanalysisreportparameter: MWQMAnalysisReportParameter) {
+    this.httpClientService.BeforeHttpClient(this.mwqmanalysisreportparameterPutModel$);
 
     return this.httpClient.put<MWQMAnalysisReportParameter>('/api/MWQMAnalysisReportParameter', mwqmanalysisreportparameter, { headers: new HttpHeaders() }).pipe(
       map((x: any) => {
-        this.DoSuccess(this.mwqmanalysisreportparameterPutModel$, x, 'Put', mwqmanalysisreportparameter);
+        this.httpClientService.DoSuccess<MWQMAnalysisReportParameter>(this.mwqmanalysisreportparameterListModel$, this.mwqmanalysisreportparameterPutModel$, x, HttpClientCommand.Put, mwqmanalysisreportparameter);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.DoCatchError(this.mwqmanalysisreportparameterPutModel$, e, 'Put');
+       this.httpClientService.DoCatchError<MWQMAnalysisReportParameter>(this.mwqmanalysisreportparameterListModel$, this.mwqmanalysisreportparameterPutModel$, e);
       })))
     );
   }
 
-  PostMWQMAnalysisReportParameter(mwqmanalysisreportparameter: MWQMAnalysisReportParameter, router: Router) {
-    this.BeforeHttpClient(this.mwqmanalysisreportparameterPostModel$, router);
+  PostMWQMAnalysisReportParameter(mwqmanalysisreportparameter: MWQMAnalysisReportParameter) {
+    this.httpClientService.BeforeHttpClient(this.mwqmanalysisreportparameterPostModel$);
 
     return this.httpClient.post<MWQMAnalysisReportParameter>('/api/MWQMAnalysisReportParameter', mwqmanalysisreportparameter, { headers: new HttpHeaders() }).pipe(
       map((x: any) => {
-        this.DoSuccess(this.mwqmanalysisreportparameterPostModel$, x, 'Post', mwqmanalysisreportparameter);
+        this.httpClientService.DoSuccess<MWQMAnalysisReportParameter>(this.mwqmanalysisreportparameterListModel$, this.mwqmanalysisreportparameterPostModel$, x, HttpClientCommand.Post, mwqmanalysisreportparameter);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.DoCatchError(this.mwqmanalysisreportparameterPostModel$, e, 'Post');
+        this.httpClientService.DoCatchError<MWQMAnalysisReportParameter>(this.mwqmanalysisreportparameterListModel$, this.mwqmanalysisreportparameterPostModel$, e);
       })))
     );
   }
 
-  DeleteMWQMAnalysisReportParameter(mwqmanalysisreportparameter: MWQMAnalysisReportParameter, router: Router) {
-    this.BeforeHttpClient(this.mwqmanalysisreportparameterDeleteModel$, router);
+  DeleteMWQMAnalysisReportParameter(mwqmanalysisreportparameter: MWQMAnalysisReportParameter) {
+    this.httpClientService.BeforeHttpClient(this.mwqmanalysisreportparameterDeleteModel$);
 
     return this.httpClient.delete<boolean>(`/api/MWQMAnalysisReportParameter/${ mwqmanalysisreportparameter.MWQMAnalysisReportParameterID }`).pipe(
       map((x: any) => {
-        this.DoSuccess(this.mwqmanalysisreportparameterDeleteModel$, x, 'Delete', mwqmanalysisreportparameter);
+        this.httpClientService.DoSuccess<MWQMAnalysisReportParameter>(this.mwqmanalysisreportparameterListModel$, this.mwqmanalysisreportparameterDeleteModel$, x, HttpClientCommand.Delete, mwqmanalysisreportparameter);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.DoCatchError(this.mwqmanalysisreportparameterDeleteModel$, e, 'Delete');
+        this.httpClientService.DoCatchError<MWQMAnalysisReportParameter>(this.mwqmanalysisreportparameterListModel$, this.mwqmanalysisreportparameterDeleteModel$, e);
       })))
     );
-  }
-
-  /* Functions private */
-  private BeforeHttpClient(httpRequestModel$: BehaviorSubject<HttpRequestModel>, router: Router) {
-    this.router = router;
-    this.oldURL = router.url;
-    httpRequestModel$.next(<HttpRequestModel>{ Working: true, Error: null, Status: null });
-  }
-
-  private DoCatchError(httpRequestModel$: BehaviorSubject<HttpRequestModel>, e: any, command: string) {
-    this.mwqmanalysisreportparameterListModel$.next(null);
-    httpRequestModel$.next(<HttpRequestModel>{ Working: false, Error: <HttpErrorResponse>e, Status: 'Error' });
-
-    this.mwqmanalysisreportparameterList = [];
-    console.debug(`MWQMAnalysisReportParameter ${ command } ERROR. Return: ${ <HttpErrorResponse>e }`);
-    this.DoReload();
-  }
-
-  private DoReload() {
-    this.router.navigateByUrl('', { skipLocationChange: true }).then(() => {
-      this.router.navigate([`/${this.oldURL}`]);
-    });
-  }
-
-  private DoSuccess(httpRequestModel$: BehaviorSubject<HttpRequestModel>, x: any, command: string, mwqmanalysisreportparameter?: MWQMAnalysisReportParameter) {
-    console.debug(`MWQMAnalysisReportParameter ${ command } OK. Return: ${ x }`);
-    if (command === 'Get') {
-      this.mwqmanalysisreportparameterListModel$.next(<MWQMAnalysisReportParameter[]>x);
-    }
-    if (command === 'Put') {
-      this.mwqmanalysisreportparameterListModel$.getValue()[0] = <MWQMAnalysisReportParameter>x;
-    }
-    if (command === 'Post') {
-      this.mwqmanalysisreportparameterListModel$.getValue().push(<MWQMAnalysisReportParameter>x);
-    }
-    if (command === 'Delete') {
-      const index = this.mwqmanalysisreportparameterListModel$.getValue().indexOf(mwqmanalysisreportparameter);
-      this.mwqmanalysisreportparameterListModel$.getValue().splice(index, 1);
-    }
-
-    this.mwqmanalysisreportparameterListModel$.next(this.mwqmanalysisreportparameterListModel$.getValue());
-    httpRequestModel$.next(<HttpRequestModel>{ Working: false, Error: null, Status: 'ok' });
-    this.mwqmanalysisreportparameterList = this.mwqmanalysisreportparameterListModel$.getValue();
-    this.DoReload();
   }
 }

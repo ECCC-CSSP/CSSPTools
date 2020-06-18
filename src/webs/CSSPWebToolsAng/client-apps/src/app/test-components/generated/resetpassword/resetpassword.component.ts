@@ -8,10 +8,12 @@
 import { Component, OnInit, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
 import { ResetPasswordService } from './resetpassword.service';
 import { LoadLocalesResetPasswordText } from './resetpassword.locales';
-import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { ResetPassword } from '../../../models/generated/ResetPassword.model';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
+import { HttpClientService } from '../../../services/http-client.service';
+import { Router } from '@angular/router';
+import { HttpClientCommand } from '../../../enums/app.enums';
 
 @Component({
   selector: 'app-resetpassword',
@@ -24,28 +26,30 @@ export class ResetPasswordComponent implements OnInit, OnDestroy {
   resetpasswordFormPut: FormGroup;
   resetpasswordFormPost: FormGroup;
 
-  constructor(public resetpasswordService: ResetPasswordService, public router: Router, public fb: FormBuilder) { }
+  constructor(public resetpasswordService: ResetPasswordService, private router: Router, private httpClientService: HttpClientService, private fb: FormBuilder) {
+    httpClientService.oldURL = router.url;
+  }
 
   GetResetPasswordList() {
-    this.sub = this.resetpasswordService.GetResetPasswordList(this.router).subscribe();
+    this.sub = this.resetpasswordService.GetResetPasswordList().subscribe();
   }
 
   PutResetPassword(resetpassword: ResetPassword) {
-    this.sub = this.resetpasswordService.PutResetPassword(resetpassword, this.router).subscribe();
+    this.sub = this.resetpasswordService.PutResetPassword(resetpassword).subscribe();
   }
 
   PostResetPassword(resetpassword: ResetPassword) {
-    this.sub = this.resetpasswordService.PostResetPassword(resetpassword, this.router).subscribe();
+    this.sub = this.resetpasswordService.PostResetPassword(resetpassword).subscribe();
   }
 
   DeleteResetPassword(resetpassword: ResetPassword) {
-    this.sub = this.resetpasswordService.DeleteResetPassword(resetpassword, this.router).subscribe();
+    this.sub = this.resetpasswordService.DeleteResetPassword(resetpassword).subscribe();
   }
 
   ngOnInit(): void {
     LoadLocalesResetPasswordText(this.resetpasswordService);
-    this.FillFormBuilderGroup('Add');
-    this.FillFormBuilderGroup('Update');
+    this.FillFormBuilderGroup(HttpClientCommand.Post);
+    this.FillFormBuilderGroup(HttpClientCommand.Put);
   }
 
   ngOnDestroy() {
@@ -54,44 +58,44 @@ export class ResetPasswordComponent implements OnInit, OnDestroy {
     }
   }
 
-  FillFormBuilderGroup(AddOrUpdate: string) {
-    if (this.resetpasswordService.resetpasswordList.length) {
+  FillFormBuilderGroup(httpClientCommand: HttpClientCommand) {
+    if (this.resetpasswordService.resetpasswordListModel$.getValue().length) {
       let formGroup: FormGroup = this.fb.group(
         {
           ResetPasswordID: [
             {
-              value: (AddOrUpdate === 'Add' ? 0 : (this.resetpasswordService.resetpasswordList[0]?.ResetPasswordID)),
+              value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.resetpasswordService.resetpasswordListModel$.getValue()[0]?.ResetPasswordID)),
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
           Email: [
             {
-              value: this.resetpasswordService.resetpasswordList[0]?.Email,
+              value: this.resetpasswordService.resetpasswordListModel$.getValue()[0]?.Email,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required, Validators.email, Validators.maxLength(256) ]],
           ExpireDate_Local: [
             {
-              value: this.resetpasswordService.resetpasswordList[0]?.ExpireDate_Local,
+              value: this.resetpasswordService.resetpasswordListModel$.getValue()[0]?.ExpireDate_Local,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
           Code: [
             {
-              value: this.resetpasswordService.resetpasswordList[0]?.Code,
+              value: this.resetpasswordService.resetpasswordListModel$.getValue()[0]?.Code,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required, Validators.maxLength(8) ]],
           LastUpdateDate_UTC: [
             {
-              value: this.resetpasswordService.resetpasswordList[0]?.LastUpdateDate_UTC,
+              value: this.resetpasswordService.resetpasswordListModel$.getValue()[0]?.LastUpdateDate_UTC,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
           LastUpdateContactTVItemID: [
             {
-              value: this.resetpasswordService.resetpasswordList[0]?.LastUpdateContactTVItemID,
+              value: this.resetpasswordService.resetpasswordListModel$.getValue()[0]?.LastUpdateContactTVItemID,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
         }
       );
 
-      if (AddOrUpdate === 'Add') {
+      if (httpClientCommand === HttpClientCommand.Post) {
         this.resetpasswordFormPost = formGroup
       }
       else {

@@ -9,11 +9,12 @@ import { Injectable } from '@angular/core';
 import { EmailDistributionListContactTextModel } from './emaildistributionlistcontact.models';
 import { BehaviorSubject, of } from 'rxjs';
 import { LoadLocalesEmailDistributionListContactText } from './emaildistributionlistcontact.locales';
-import { Router } from '@angular/router';
-import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { map, catchError } from 'rxjs/operators';
 import { EmailDistributionListContact } from '../../../models/generated/EmailDistributionListContact.model';
 import { HttpRequestModel } from '../../../models/http.model';
+import { HttpClientService } from '../../../services/http-client.service';
+import { HttpClientCommand } from '../../../enums/app.enums';
 
 @Injectable({
   providedIn: 'root'
@@ -26,110 +27,63 @@ export class EmailDistributionListContactService {
   emaildistributionlistcontactPutModel$: BehaviorSubject<HttpRequestModel> = new BehaviorSubject<HttpRequestModel>(<HttpRequestModel>{});
   emaildistributionlistcontactPostModel$: BehaviorSubject<HttpRequestModel> = new BehaviorSubject<HttpRequestModel>(<HttpRequestModel>{});
   emaildistributionlistcontactDeleteModel$: BehaviorSubject<HttpRequestModel> = new BehaviorSubject<HttpRequestModel>(<HttpRequestModel>{});
-  emaildistributionlistcontactList: EmailDistributionListContact[] = [];
-  private oldURL: string;
-  private router: Router;
 
   /* Constructors */
-  constructor(private httpClient: HttpClient) {
+  constructor(private httpClient: HttpClient, private httpClientService: HttpClientService) {
     LoadLocalesEmailDistributionListContactText(this);
     this.emaildistributionlistcontactTextModel$.next(<EmailDistributionListContactTextModel>{ Title: "Something2 for text" });
   }
 
   /* Functions public */
-  GetEmailDistributionListContactList(router: Router) {
-    this.BeforeHttpClient(this.emaildistributionlistcontactGetModel$, router);
+  GetEmailDistributionListContactList() {
+    this.httpClientService.BeforeHttpClient(this.emaildistributionlistcontactGetModel$);
 
     return this.httpClient.get<EmailDistributionListContact[]>('/api/EmailDistributionListContact').pipe(
       map((x: any) => {
-        this.DoSuccess(this.emaildistributionlistcontactGetModel$, x, 'Get', null);
+        this.httpClientService.DoSuccess<EmailDistributionListContact>(this.emaildistributionlistcontactListModel$, this.emaildistributionlistcontactGetModel$, x, HttpClientCommand.Get, null);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.DoCatchError(this.emaildistributionlistcontactGetModel$, e, 'Get');
+        this.httpClientService.DoCatchError<EmailDistributionListContact>(this.emaildistributionlistcontactListModel$, this.emaildistributionlistcontactGetModel$, e);
       })))
     );
   }
 
-  PutEmailDistributionListContact(emaildistributionlistcontact: EmailDistributionListContact, router: Router) {
-    this.BeforeHttpClient(this.emaildistributionlistcontactPutModel$, router);
+  PutEmailDistributionListContact(emaildistributionlistcontact: EmailDistributionListContact) {
+    this.httpClientService.BeforeHttpClient(this.emaildistributionlistcontactPutModel$);
 
     return this.httpClient.put<EmailDistributionListContact>('/api/EmailDistributionListContact', emaildistributionlistcontact, { headers: new HttpHeaders() }).pipe(
       map((x: any) => {
-        this.DoSuccess(this.emaildistributionlistcontactPutModel$, x, 'Put', emaildistributionlistcontact);
+        this.httpClientService.DoSuccess<EmailDistributionListContact>(this.emaildistributionlistcontactListModel$, this.emaildistributionlistcontactPutModel$, x, HttpClientCommand.Put, emaildistributionlistcontact);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.DoCatchError(this.emaildistributionlistcontactPutModel$, e, 'Put');
+       this.httpClientService.DoCatchError<EmailDistributionListContact>(this.emaildistributionlistcontactListModel$, this.emaildistributionlistcontactPutModel$, e);
       })))
     );
   }
 
-  PostEmailDistributionListContact(emaildistributionlistcontact: EmailDistributionListContact, router: Router) {
-    this.BeforeHttpClient(this.emaildistributionlistcontactPostModel$, router);
+  PostEmailDistributionListContact(emaildistributionlistcontact: EmailDistributionListContact) {
+    this.httpClientService.BeforeHttpClient(this.emaildistributionlistcontactPostModel$);
 
     return this.httpClient.post<EmailDistributionListContact>('/api/EmailDistributionListContact', emaildistributionlistcontact, { headers: new HttpHeaders() }).pipe(
       map((x: any) => {
-        this.DoSuccess(this.emaildistributionlistcontactPostModel$, x, 'Post', emaildistributionlistcontact);
+        this.httpClientService.DoSuccess<EmailDistributionListContact>(this.emaildistributionlistcontactListModel$, this.emaildistributionlistcontactPostModel$, x, HttpClientCommand.Post, emaildistributionlistcontact);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.DoCatchError(this.emaildistributionlistcontactPostModel$, e, 'Post');
+        this.httpClientService.DoCatchError<EmailDistributionListContact>(this.emaildistributionlistcontactListModel$, this.emaildistributionlistcontactPostModel$, e);
       })))
     );
   }
 
-  DeleteEmailDistributionListContact(emaildistributionlistcontact: EmailDistributionListContact, router: Router) {
-    this.BeforeHttpClient(this.emaildistributionlistcontactDeleteModel$, router);
+  DeleteEmailDistributionListContact(emaildistributionlistcontact: EmailDistributionListContact) {
+    this.httpClientService.BeforeHttpClient(this.emaildistributionlistcontactDeleteModel$);
 
     return this.httpClient.delete<boolean>(`/api/EmailDistributionListContact/${ emaildistributionlistcontact.EmailDistributionListContactID }`).pipe(
       map((x: any) => {
-        this.DoSuccess(this.emaildistributionlistcontactDeleteModel$, x, 'Delete', emaildistributionlistcontact);
+        this.httpClientService.DoSuccess<EmailDistributionListContact>(this.emaildistributionlistcontactListModel$, this.emaildistributionlistcontactDeleteModel$, x, HttpClientCommand.Delete, emaildistributionlistcontact);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.DoCatchError(this.emaildistributionlistcontactDeleteModel$, e, 'Delete');
+        this.httpClientService.DoCatchError<EmailDistributionListContact>(this.emaildistributionlistcontactListModel$, this.emaildistributionlistcontactDeleteModel$, e);
       })))
     );
-  }
-
-  /* Functions private */
-  private BeforeHttpClient(httpRequestModel$: BehaviorSubject<HttpRequestModel>, router: Router) {
-    this.router = router;
-    this.oldURL = router.url;
-    httpRequestModel$.next(<HttpRequestModel>{ Working: true, Error: null, Status: null });
-  }
-
-  private DoCatchError(httpRequestModel$: BehaviorSubject<HttpRequestModel>, e: any, command: string) {
-    this.emaildistributionlistcontactListModel$.next(null);
-    httpRequestModel$.next(<HttpRequestModel>{ Working: false, Error: <HttpErrorResponse>e, Status: 'Error' });
-
-    this.emaildistributionlistcontactList = [];
-    console.debug(`EmailDistributionListContact ${ command } ERROR. Return: ${ <HttpErrorResponse>e }`);
-    this.DoReload();
-  }
-
-  private DoReload() {
-    this.router.navigateByUrl('', { skipLocationChange: true }).then(() => {
-      this.router.navigate([`/${this.oldURL}`]);
-    });
-  }
-
-  private DoSuccess(httpRequestModel$: BehaviorSubject<HttpRequestModel>, x: any, command: string, emaildistributionlistcontact?: EmailDistributionListContact) {
-    console.debug(`EmailDistributionListContact ${ command } OK. Return: ${ x }`);
-    if (command === 'Get') {
-      this.emaildistributionlistcontactListModel$.next(<EmailDistributionListContact[]>x);
-    }
-    if (command === 'Put') {
-      this.emaildistributionlistcontactListModel$.getValue()[0] = <EmailDistributionListContact>x;
-    }
-    if (command === 'Post') {
-      this.emaildistributionlistcontactListModel$.getValue().push(<EmailDistributionListContact>x);
-    }
-    if (command === 'Delete') {
-      const index = this.emaildistributionlistcontactListModel$.getValue().indexOf(emaildistributionlistcontact);
-      this.emaildistributionlistcontactListModel$.getValue().splice(index, 1);
-    }
-
-    this.emaildistributionlistcontactListModel$.next(this.emaildistributionlistcontactListModel$.getValue());
-    httpRequestModel$.next(<HttpRequestModel>{ Working: false, Error: null, Status: 'ok' });
-    this.emaildistributionlistcontactList = this.emaildistributionlistcontactListModel$.getValue();
-    this.DoReload();
   }
 }

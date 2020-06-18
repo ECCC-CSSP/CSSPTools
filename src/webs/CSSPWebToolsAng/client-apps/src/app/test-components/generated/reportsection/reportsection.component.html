@@ -5,7 +5,7 @@
  *
 -->
 
-<mat-progress-bar mode="indeterminate" *ngIf="reportsectionService.reportsectionGetModel$.getValue().Working"></mat-progress-bar>
+<mat-progress-bar mode="indeterminate" *ngIf="reportsectionService.reportsectionGetModel$.getValue()?.Working"></mat-progress-bar>
 <mat-card>
   <mat-card-header>
     <mat-card-title>
@@ -17,8 +17,8 @@
     <mat-card-subtitle>{{ reportsectionService.reportsectionTextModel$.getValue().Title }}</mat-card-subtitle>
   </mat-card-header>
   <mat-card-content>
-    <mat-list>
-      <mat-list-item *ngFor="let reportsection of reportsectionService.reportsectionList">
+    <mat-list *ngIf="reportsectionService.reportsectionListModel$.getValue()?.length">
+      <mat-list-item *ngFor="let reportsection of reportsectionService.reportsectionListModel$.getValue()">
         <span mat-line>
           <button mat-raised-button (click)="DeleteReportSection(reportsection)">
             <span>Delete ReportSectionID [{{ reportsection.ReportSectionID }}]&nbsp;&nbsp;&nbsp;</span>
@@ -63,7 +63,7 @@
     <mat-card-title>Edit ReportSection testing</mat-card-title>
   </mat-card-header>
   <mat-card-content>
-    <div *ngIf="reportsectionService.reportsectionList.length">
+    <div *ngIf="reportsectionService.reportsectionListModel$.getValue()?.length">
       <blockquote>
         <form [formGroup]="reportsectionFormPut" (ngSubmit)="PutReportSection(reportsectionFormPut.value)">
           <h3>
@@ -78,14 +78,25 @@
             <mat-form-field>
               <mat-label>ReportSectionID</mat-label>
               <input matInput type="number" formControlName="ReportSectionID">
+              <mat-error *ngIf="reportsectionFormPut.controls.ReportSectionID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>ReportTypeID</mat-label>
               <input matInput type="number" formControlName="ReportTypeID">
+              <mat-error *ngIf="reportsectionFormPut.controls.ReportTypeID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>TVItemID</mat-label>
               <input matInput type="number" formControlName="TVItemID">
+              <mat-error *ngIf="reportsectionFormPut.controls.TVItemID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>Language</mat-label>
@@ -94,52 +105,96 @@
                   {{ a.EnumText }}
                 </mat-option>
               </mat-select>
+              <mat-error *ngIf="reportsectionFormPut.controls.Language.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+              </mat-error>
             </mat-form-field>
           </p>
           <p>
             <mat-form-field>
               <mat-label>Ordinal</mat-label>
               <input matInput type="number" formControlName="Ordinal">
+              <mat-error *ngIf="reportsectionFormPut.controls.Ordinal.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+                <span *ngIf="e.min">Min - 0<br /></span>
+                <span *ngIf="e.min">Max - 1000<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>IsStatic</mat-label>
               <input matInput type="text" formControlName="IsStatic">
+              <mat-error *ngIf="reportsectionFormPut.controls.IsStatic.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>ParentReportSectionID</mat-label>
               <input matInput type="number" formControlName="ParentReportSectionID">
+              <mat-error *ngIf="reportsectionFormPut.controls.ParentReportSectionID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>Year</mat-label>
               <input matInput type="number" formControlName="Year">
+              <mat-error *ngIf="reportsectionFormPut.controls.Year.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.min">Min - 1979<br /></span>
+                <span *ngIf="e.min">Max - 2050<br /></span>
+              </mat-error>
             </mat-form-field>
           </p>
           <p>
             <mat-form-field>
               <mat-label>Locked</mat-label>
               <input matInput type="text" formControlName="Locked">
+              <mat-error *ngIf="reportsectionFormPut.controls.Locked.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>TemplateReportSectionID</mat-label>
               <input matInput type="number" formControlName="TemplateReportSectionID">
+              <mat-error *ngIf="reportsectionFormPut.controls.TemplateReportSectionID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>ReportSectionName</mat-label>
               <input matInput type="text" formControlName="ReportSectionName">
+              <mat-error *ngIf="reportsectionFormPut.controls.ReportSectionName.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.maxlength">MaxLength - 100<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>ReportSectionText</mat-label>
               <input matInput type="text" formControlName="ReportSectionText">
+              <mat-error *ngIf="reportsectionFormPut.controls.ReportSectionText.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.maxlength">MaxLength - 10000<br /></span>
+              </mat-error>
             </mat-form-field>
           </p>
           <p>
             <mat-form-field>
               <mat-label>LastUpdateDate_UTC</mat-label>
               <input matInput type="text" formControlName="LastUpdateDate_UTC">
+              <mat-error *ngIf="reportsectionFormPut.controls.LastUpdateDate_UTC.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>LastUpdateContactTVItemID</mat-label>
               <input matInput type="number" formControlName="LastUpdateContactTVItemID">
+              <mat-error *ngIf="reportsectionFormPut.controls.LastUpdateContactTVItemID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
           </p>
         </form>
@@ -154,7 +209,7 @@
     <mat-card-title>Add ReportSection testing</mat-card-title>
   </mat-card-header>
   <mat-card-content>
-    <div *ngIf="reportsectionService.reportsectionList.length">
+    <div *ngIf="reportsectionService.reportsectionListModel$.getValue()?.length">
       <blockquote>
         <form [formGroup]="reportsectionFormPost" (ngSubmit)="PostReportSection(reportsectionFormPost.value)">
           <h3>
@@ -169,14 +224,25 @@
             <mat-form-field>
               <mat-label>ReportSectionID</mat-label>
               <input matInput type="number" formControlName="ReportSectionID">
+              <mat-error *ngIf="reportsectionFormPut.controls.ReportSectionID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>ReportTypeID</mat-label>
               <input matInput type="number" formControlName="ReportTypeID">
+              <mat-error *ngIf="reportsectionFormPut.controls.ReportTypeID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>TVItemID</mat-label>
               <input matInput type="number" formControlName="TVItemID">
+              <mat-error *ngIf="reportsectionFormPut.controls.TVItemID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>Language</mat-label>
@@ -185,52 +251,96 @@
                   {{ a.EnumText }}
                 </mat-option>
               </mat-select>
+              <mat-error *ngIf="reportsectionFormPut.controls.Language.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+              </mat-error>
             </mat-form-field>
           </p>
           <p>
             <mat-form-field>
               <mat-label>Ordinal</mat-label>
               <input matInput type="number" formControlName="Ordinal">
+              <mat-error *ngIf="reportsectionFormPut.controls.Ordinal.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+                <span *ngIf="e.min">Min - 0<br /></span>
+                <span *ngIf="e.min">Max - 1000<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>IsStatic</mat-label>
               <input matInput type="text" formControlName="IsStatic">
+              <mat-error *ngIf="reportsectionFormPut.controls.IsStatic.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>ParentReportSectionID</mat-label>
               <input matInput type="number" formControlName="ParentReportSectionID">
+              <mat-error *ngIf="reportsectionFormPut.controls.ParentReportSectionID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>Year</mat-label>
               <input matInput type="number" formControlName="Year">
+              <mat-error *ngIf="reportsectionFormPut.controls.Year.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.min">Min - 1979<br /></span>
+                <span *ngIf="e.min">Max - 2050<br /></span>
+              </mat-error>
             </mat-form-field>
           </p>
           <p>
             <mat-form-field>
               <mat-label>Locked</mat-label>
               <input matInput type="text" formControlName="Locked">
+              <mat-error *ngIf="reportsectionFormPut.controls.Locked.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>TemplateReportSectionID</mat-label>
               <input matInput type="number" formControlName="TemplateReportSectionID">
+              <mat-error *ngIf="reportsectionFormPut.controls.TemplateReportSectionID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>ReportSectionName</mat-label>
               <input matInput type="text" formControlName="ReportSectionName">
+              <mat-error *ngIf="reportsectionFormPut.controls.ReportSectionName.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.maxlength">MaxLength - 100<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>ReportSectionText</mat-label>
               <input matInput type="text" formControlName="ReportSectionText">
+              <mat-error *ngIf="reportsectionFormPut.controls.ReportSectionText.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.maxlength">MaxLength - 10000<br /></span>
+              </mat-error>
             </mat-form-field>
           </p>
           <p>
             <mat-form-field>
               <mat-label>LastUpdateDate_UTC</mat-label>
               <input matInput type="text" formControlName="LastUpdateDate_UTC">
+              <mat-error *ngIf="reportsectionFormPut.controls.LastUpdateDate_UTC.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>LastUpdateContactTVItemID</mat-label>
               <input matInput type="number" formControlName="LastUpdateContactTVItemID">
+              <mat-error *ngIf="reportsectionFormPut.controls.LastUpdateContactTVItemID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
           </p>
         </form>

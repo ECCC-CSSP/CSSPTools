@@ -8,10 +8,12 @@
 import { Component, OnInit, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
 import { TideLocationService } from './tidelocation.service';
 import { LoadLocalesTideLocationText } from './tidelocation.locales';
-import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { TideLocation } from '../../../models/generated/TideLocation.model';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
+import { HttpClientService } from '../../../services/http-client.service';
+import { Router } from '@angular/router';
+import { HttpClientCommand } from '../../../enums/app.enums';
 
 @Component({
   selector: 'app-tidelocation',
@@ -24,28 +26,30 @@ export class TideLocationComponent implements OnInit, OnDestroy {
   tidelocationFormPut: FormGroup;
   tidelocationFormPost: FormGroup;
 
-  constructor(public tidelocationService: TideLocationService, public router: Router, public fb: FormBuilder) { }
+  constructor(public tidelocationService: TideLocationService, private router: Router, private httpClientService: HttpClientService, private fb: FormBuilder) {
+    httpClientService.oldURL = router.url;
+  }
 
   GetTideLocationList() {
-    this.sub = this.tidelocationService.GetTideLocationList(this.router).subscribe();
+    this.sub = this.tidelocationService.GetTideLocationList().subscribe();
   }
 
   PutTideLocation(tidelocation: TideLocation) {
-    this.sub = this.tidelocationService.PutTideLocation(tidelocation, this.router).subscribe();
+    this.sub = this.tidelocationService.PutTideLocation(tidelocation).subscribe();
   }
 
   PostTideLocation(tidelocation: TideLocation) {
-    this.sub = this.tidelocationService.PostTideLocation(tidelocation, this.router).subscribe();
+    this.sub = this.tidelocationService.PostTideLocation(tidelocation).subscribe();
   }
 
   DeleteTideLocation(tidelocation: TideLocation) {
-    this.sub = this.tidelocationService.DeleteTideLocation(tidelocation, this.router).subscribe();
+    this.sub = this.tidelocationService.DeleteTideLocation(tidelocation).subscribe();
   }
 
   ngOnInit(): void {
     LoadLocalesTideLocationText(this.tidelocationService);
-    this.FillFormBuilderGroup('Add');
-    this.FillFormBuilderGroup('Update');
+    this.FillFormBuilderGroup(HttpClientCommand.Post);
+    this.FillFormBuilderGroup(HttpClientCommand.Put);
   }
 
   ngOnDestroy() {
@@ -54,59 +58,59 @@ export class TideLocationComponent implements OnInit, OnDestroy {
     }
   }
 
-  FillFormBuilderGroup(AddOrUpdate: string) {
-    if (this.tidelocationService.tidelocationList.length) {
+  FillFormBuilderGroup(httpClientCommand: HttpClientCommand) {
+    if (this.tidelocationService.tidelocationListModel$.getValue().length) {
       let formGroup: FormGroup = this.fb.group(
         {
           TideLocationID: [
             {
-              value: (AddOrUpdate === 'Add' ? 0 : (this.tidelocationService.tidelocationList[0]?.TideLocationID)),
+              value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.tidelocationService.tidelocationListModel$.getValue()[0]?.TideLocationID)),
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
           Zone: [
             {
-              value: this.tidelocationService.tidelocationList[0]?.Zone,
+              value: this.tidelocationService.tidelocationListModel$.getValue()[0]?.Zone,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required, Validators.min(0), Validators.max(10000) ]],
           Name: [
             {
-              value: this.tidelocationService.tidelocationList[0]?.Name,
+              value: this.tidelocationService.tidelocationListModel$.getValue()[0]?.Name,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required, Validators.maxLength(100) ]],
           Prov: [
             {
-              value: this.tidelocationService.tidelocationList[0]?.Prov,
+              value: this.tidelocationService.tidelocationListModel$.getValue()[0]?.Prov,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required, Validators.maxLength(100) ]],
           sid: [
             {
-              value: this.tidelocationService.tidelocationList[0]?.sid,
+              value: this.tidelocationService.tidelocationListModel$.getValue()[0]?.sid,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required, Validators.min(0), Validators.max(100000) ]],
           Lat: [
             {
-              value: this.tidelocationService.tidelocationList[0]?.Lat,
+              value: this.tidelocationService.tidelocationListModel$.getValue()[0]?.Lat,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required, Validators.min(-90), Validators.max(90) ]],
           Lng: [
             {
-              value: this.tidelocationService.tidelocationList[0]?.Lng,
+              value: this.tidelocationService.tidelocationListModel$.getValue()[0]?.Lng,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required, Validators.min(-180), Validators.max(180) ]],
           LastUpdateDate_UTC: [
             {
-              value: this.tidelocationService.tidelocationList[0]?.LastUpdateDate_UTC,
+              value: this.tidelocationService.tidelocationListModel$.getValue()[0]?.LastUpdateDate_UTC,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
           LastUpdateContactTVItemID: [
             {
-              value: this.tidelocationService.tidelocationList[0]?.LastUpdateContactTVItemID,
+              value: this.tidelocationService.tidelocationListModel$.getValue()[0]?.LastUpdateContactTVItemID,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
         }
       );
 
-      if (AddOrUpdate === 'Add') {
+      if (httpClientCommand === HttpClientCommand.Post) {
         this.tidelocationFormPost = formGroup
       }
       else {

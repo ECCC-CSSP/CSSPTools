@@ -5,7 +5,7 @@
  *
 -->
 
-<mat-progress-bar mode="indeterminate" *ngIf="tidelocationService.tidelocationGetModel$.getValue().Working"></mat-progress-bar>
+<mat-progress-bar mode="indeterminate" *ngIf="tidelocationService.tidelocationGetModel$.getValue()?.Working"></mat-progress-bar>
 <mat-card>
   <mat-card-header>
     <mat-card-title>
@@ -17,8 +17,8 @@
     <mat-card-subtitle>{{ tidelocationService.tidelocationTextModel$.getValue().Title }}</mat-card-subtitle>
   </mat-card-header>
   <mat-card-content>
-    <mat-list>
-      <mat-list-item *ngFor="let tidelocation of tidelocationService.tidelocationList">
+    <mat-list *ngIf="tidelocationService.tidelocationListModel$.getValue()?.length">
+      <mat-list-item *ngFor="let tidelocation of tidelocationService.tidelocationListModel$.getValue()">
         <span mat-line>
           <button mat-raised-button (click)="DeleteTideLocation(tidelocation)">
             <span>Delete TideLocationID [{{ tidelocation.TideLocationID }}]&nbsp;&nbsp;&nbsp;</span>
@@ -56,7 +56,7 @@
     <mat-card-title>Edit TideLocation testing</mat-card-title>
   </mat-card-header>
   <mat-card-content>
-    <div *ngIf="tidelocationService.tidelocationList.length">
+    <div *ngIf="tidelocationService.tidelocationListModel$.getValue()?.length">
       <blockquote>
         <form [formGroup]="tidelocationFormPut" (ngSubmit)="PutTideLocation(tidelocationFormPut.value)">
           <h3>
@@ -71,42 +71,88 @@
             <mat-form-field>
               <mat-label>TideLocationID</mat-label>
               <input matInput type="number" formControlName="TideLocationID">
+              <mat-error *ngIf="tidelocationFormPut.controls.TideLocationID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>Zone</mat-label>
               <input matInput type="number" formControlName="Zone">
+              <mat-error *ngIf="tidelocationFormPut.controls.Zone.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+                <span *ngIf="e.min">Min - 0<br /></span>
+                <span *ngIf="e.min">Max - 10000<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>Name</mat-label>
               <input matInput type="text" formControlName="Name">
+              <mat-error *ngIf="tidelocationFormPut.controls.Name.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+                <span *ngIf="e.maxlength">MaxLength - 100<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>Prov</mat-label>
               <input matInput type="text" formControlName="Prov">
+              <mat-error *ngIf="tidelocationFormPut.controls.Prov.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+                <span *ngIf="e.maxlength">MaxLength - 100<br /></span>
+              </mat-error>
             </mat-form-field>
           </p>
           <p>
             <mat-form-field>
               <mat-label>sid</mat-label>
               <input matInput type="number" formControlName="sid">
+              <mat-error *ngIf="tidelocationFormPut.controls.sid.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+                <span *ngIf="e.min">Min - 0<br /></span>
+                <span *ngIf="e.min">Max - 100000<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>Lat</mat-label>
               <input matInput type="number" formControlName="Lat">
+              <mat-error *ngIf="tidelocationFormPut.controls.Lat.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+                <span *ngIf="e.min">Min - -90<br /></span>
+                <span *ngIf="e.min">Max - 90<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>Lng</mat-label>
               <input matInput type="number" formControlName="Lng">
+              <mat-error *ngIf="tidelocationFormPut.controls.Lng.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+                <span *ngIf="e.min">Min - -180<br /></span>
+                <span *ngIf="e.min">Max - 180<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>LastUpdateDate_UTC</mat-label>
               <input matInput type="text" formControlName="LastUpdateDate_UTC">
+              <mat-error *ngIf="tidelocationFormPut.controls.LastUpdateDate_UTC.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
           </p>
           <p>
             <mat-form-field>
               <mat-label>LastUpdateContactTVItemID</mat-label>
               <input matInput type="number" formControlName="LastUpdateContactTVItemID">
+              <mat-error *ngIf="tidelocationFormPut.controls.LastUpdateContactTVItemID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
           </p>
         </form>
@@ -121,7 +167,7 @@
     <mat-card-title>Add TideLocation testing</mat-card-title>
   </mat-card-header>
   <mat-card-content>
-    <div *ngIf="tidelocationService.tidelocationList.length">
+    <div *ngIf="tidelocationService.tidelocationListModel$.getValue()?.length">
       <blockquote>
         <form [formGroup]="tidelocationFormPost" (ngSubmit)="PostTideLocation(tidelocationFormPost.value)">
           <h3>
@@ -136,42 +182,88 @@
             <mat-form-field>
               <mat-label>TideLocationID</mat-label>
               <input matInput type="number" formControlName="TideLocationID">
+              <mat-error *ngIf="tidelocationFormPut.controls.TideLocationID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>Zone</mat-label>
               <input matInput type="number" formControlName="Zone">
+              <mat-error *ngIf="tidelocationFormPut.controls.Zone.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+                <span *ngIf="e.min">Min - 0<br /></span>
+                <span *ngIf="e.min">Max - 10000<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>Name</mat-label>
               <input matInput type="text" formControlName="Name">
+              <mat-error *ngIf="tidelocationFormPut.controls.Name.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+                <span *ngIf="e.maxlength">MaxLength - 100<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>Prov</mat-label>
               <input matInput type="text" formControlName="Prov">
+              <mat-error *ngIf="tidelocationFormPut.controls.Prov.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+                <span *ngIf="e.maxlength">MaxLength - 100<br /></span>
+              </mat-error>
             </mat-form-field>
           </p>
           <p>
             <mat-form-field>
               <mat-label>sid</mat-label>
               <input matInput type="number" formControlName="sid">
+              <mat-error *ngIf="tidelocationFormPut.controls.sid.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+                <span *ngIf="e.min">Min - 0<br /></span>
+                <span *ngIf="e.min">Max - 100000<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>Lat</mat-label>
               <input matInput type="number" formControlName="Lat">
+              <mat-error *ngIf="tidelocationFormPut.controls.Lat.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+                <span *ngIf="e.min">Min - -90<br /></span>
+                <span *ngIf="e.min">Max - 90<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>Lng</mat-label>
               <input matInput type="number" formControlName="Lng">
+              <mat-error *ngIf="tidelocationFormPut.controls.Lng.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+                <span *ngIf="e.min">Min - -180<br /></span>
+                <span *ngIf="e.min">Max - 180<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>LastUpdateDate_UTC</mat-label>
               <input matInput type="text" formControlName="LastUpdateDate_UTC">
+              <mat-error *ngIf="tidelocationFormPut.controls.LastUpdateDate_UTC.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
           </p>
           <p>
             <mat-form-field>
               <mat-label>LastUpdateContactTVItemID</mat-label>
               <input matInput type="number" formControlName="LastUpdateContactTVItemID">
+              <mat-error *ngIf="tidelocationFormPut.controls.LastUpdateContactTVItemID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
           </p>
         </form>

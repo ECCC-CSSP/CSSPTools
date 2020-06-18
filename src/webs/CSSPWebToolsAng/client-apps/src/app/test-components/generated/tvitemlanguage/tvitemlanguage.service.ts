@@ -9,11 +9,12 @@ import { Injectable } from '@angular/core';
 import { TVItemLanguageTextModel } from './tvitemlanguage.models';
 import { BehaviorSubject, of } from 'rxjs';
 import { LoadLocalesTVItemLanguageText } from './tvitemlanguage.locales';
-import { Router } from '@angular/router';
-import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { map, catchError } from 'rxjs/operators';
 import { TVItemLanguage } from '../../../models/generated/TVItemLanguage.model';
 import { HttpRequestModel } from '../../../models/http.model';
+import { HttpClientService } from '../../../services/http-client.service';
+import { HttpClientCommand } from '../../../enums/app.enums';
 
 @Injectable({
   providedIn: 'root'
@@ -26,110 +27,63 @@ export class TVItemLanguageService {
   tvitemlanguagePutModel$: BehaviorSubject<HttpRequestModel> = new BehaviorSubject<HttpRequestModel>(<HttpRequestModel>{});
   tvitemlanguagePostModel$: BehaviorSubject<HttpRequestModel> = new BehaviorSubject<HttpRequestModel>(<HttpRequestModel>{});
   tvitemlanguageDeleteModel$: BehaviorSubject<HttpRequestModel> = new BehaviorSubject<HttpRequestModel>(<HttpRequestModel>{});
-  tvitemlanguageList: TVItemLanguage[] = [];
-  private oldURL: string;
-  private router: Router;
 
   /* Constructors */
-  constructor(private httpClient: HttpClient) {
+  constructor(private httpClient: HttpClient, private httpClientService: HttpClientService) {
     LoadLocalesTVItemLanguageText(this);
     this.tvitemlanguageTextModel$.next(<TVItemLanguageTextModel>{ Title: "Something2 for text" });
   }
 
   /* Functions public */
-  GetTVItemLanguageList(router: Router) {
-    this.BeforeHttpClient(this.tvitemlanguageGetModel$, router);
+  GetTVItemLanguageList() {
+    this.httpClientService.BeforeHttpClient(this.tvitemlanguageGetModel$);
 
     return this.httpClient.get<TVItemLanguage[]>('/api/TVItemLanguage').pipe(
       map((x: any) => {
-        this.DoSuccess(this.tvitemlanguageGetModel$, x, 'Get', null);
+        this.httpClientService.DoSuccess<TVItemLanguage>(this.tvitemlanguageListModel$, this.tvitemlanguageGetModel$, x, HttpClientCommand.Get, null);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.DoCatchError(this.tvitemlanguageGetModel$, e, 'Get');
+        this.httpClientService.DoCatchError<TVItemLanguage>(this.tvitemlanguageListModel$, this.tvitemlanguageGetModel$, e);
       })))
     );
   }
 
-  PutTVItemLanguage(tvitemlanguage: TVItemLanguage, router: Router) {
-    this.BeforeHttpClient(this.tvitemlanguagePutModel$, router);
+  PutTVItemLanguage(tvitemlanguage: TVItemLanguage) {
+    this.httpClientService.BeforeHttpClient(this.tvitemlanguagePutModel$);
 
     return this.httpClient.put<TVItemLanguage>('/api/TVItemLanguage', tvitemlanguage, { headers: new HttpHeaders() }).pipe(
       map((x: any) => {
-        this.DoSuccess(this.tvitemlanguagePutModel$, x, 'Put', tvitemlanguage);
+        this.httpClientService.DoSuccess<TVItemLanguage>(this.tvitemlanguageListModel$, this.tvitemlanguagePutModel$, x, HttpClientCommand.Put, tvitemlanguage);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.DoCatchError(this.tvitemlanguagePutModel$, e, 'Put');
+       this.httpClientService.DoCatchError<TVItemLanguage>(this.tvitemlanguageListModel$, this.tvitemlanguagePutModel$, e);
       })))
     );
   }
 
-  PostTVItemLanguage(tvitemlanguage: TVItemLanguage, router: Router) {
-    this.BeforeHttpClient(this.tvitemlanguagePostModel$, router);
+  PostTVItemLanguage(tvitemlanguage: TVItemLanguage) {
+    this.httpClientService.BeforeHttpClient(this.tvitemlanguagePostModel$);
 
     return this.httpClient.post<TVItemLanguage>('/api/TVItemLanguage', tvitemlanguage, { headers: new HttpHeaders() }).pipe(
       map((x: any) => {
-        this.DoSuccess(this.tvitemlanguagePostModel$, x, 'Post', tvitemlanguage);
+        this.httpClientService.DoSuccess<TVItemLanguage>(this.tvitemlanguageListModel$, this.tvitemlanguagePostModel$, x, HttpClientCommand.Post, tvitemlanguage);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.DoCatchError(this.tvitemlanguagePostModel$, e, 'Post');
+        this.httpClientService.DoCatchError<TVItemLanguage>(this.tvitemlanguageListModel$, this.tvitemlanguagePostModel$, e);
       })))
     );
   }
 
-  DeleteTVItemLanguage(tvitemlanguage: TVItemLanguage, router: Router) {
-    this.BeforeHttpClient(this.tvitemlanguageDeleteModel$, router);
+  DeleteTVItemLanguage(tvitemlanguage: TVItemLanguage) {
+    this.httpClientService.BeforeHttpClient(this.tvitemlanguageDeleteModel$);
 
     return this.httpClient.delete<boolean>(`/api/TVItemLanguage/${ tvitemlanguage.TVItemLanguageID }`).pipe(
       map((x: any) => {
-        this.DoSuccess(this.tvitemlanguageDeleteModel$, x, 'Delete', tvitemlanguage);
+        this.httpClientService.DoSuccess<TVItemLanguage>(this.tvitemlanguageListModel$, this.tvitemlanguageDeleteModel$, x, HttpClientCommand.Delete, tvitemlanguage);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.DoCatchError(this.tvitemlanguageDeleteModel$, e, 'Delete');
+        this.httpClientService.DoCatchError<TVItemLanguage>(this.tvitemlanguageListModel$, this.tvitemlanguageDeleteModel$, e);
       })))
     );
-  }
-
-  /* Functions private */
-  private BeforeHttpClient(httpRequestModel$: BehaviorSubject<HttpRequestModel>, router: Router) {
-    this.router = router;
-    this.oldURL = router.url;
-    httpRequestModel$.next(<HttpRequestModel>{ Working: true, Error: null, Status: null });
-  }
-
-  private DoCatchError(httpRequestModel$: BehaviorSubject<HttpRequestModel>, e: any, command: string) {
-    this.tvitemlanguageListModel$.next(null);
-    httpRequestModel$.next(<HttpRequestModel>{ Working: false, Error: <HttpErrorResponse>e, Status: 'Error' });
-
-    this.tvitemlanguageList = [];
-    console.debug(`TVItemLanguage ${ command } ERROR. Return: ${ <HttpErrorResponse>e }`);
-    this.DoReload();
-  }
-
-  private DoReload() {
-    this.router.navigateByUrl('', { skipLocationChange: true }).then(() => {
-      this.router.navigate([`/${this.oldURL}`]);
-    });
-  }
-
-  private DoSuccess(httpRequestModel$: BehaviorSubject<HttpRequestModel>, x: any, command: string, tvitemlanguage?: TVItemLanguage) {
-    console.debug(`TVItemLanguage ${ command } OK. Return: ${ x }`);
-    if (command === 'Get') {
-      this.tvitemlanguageListModel$.next(<TVItemLanguage[]>x);
-    }
-    if (command === 'Put') {
-      this.tvitemlanguageListModel$.getValue()[0] = <TVItemLanguage>x;
-    }
-    if (command === 'Post') {
-      this.tvitemlanguageListModel$.getValue().push(<TVItemLanguage>x);
-    }
-    if (command === 'Delete') {
-      const index = this.tvitemlanguageListModel$.getValue().indexOf(tvitemlanguage);
-      this.tvitemlanguageListModel$.getValue().splice(index, 1);
-    }
-
-    this.tvitemlanguageListModel$.next(this.tvitemlanguageListModel$.getValue());
-    httpRequestModel$.next(<HttpRequestModel>{ Working: false, Error: null, Status: 'ok' });
-    this.tvitemlanguageList = this.tvitemlanguageListModel$.getValue();
-    this.DoReload();
   }
 }

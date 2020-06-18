@@ -8,7 +8,6 @@
 import { Component, OnInit, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
 import { TideDataValueService } from './tidedatavalue.service';
 import { LoadLocalesTideDataValueText } from './tidedatavalue.locales';
-import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { TideDataTypeEnum_GetIDText, TideDataTypeEnum_GetOrderedText } from '../../../enums/generated/TideDataTypeEnum';
 import { StorageDataTypeEnum_GetIDText, StorageDataTypeEnum_GetOrderedText } from '../../../enums/generated/StorageDataTypeEnum';
@@ -16,6 +15,9 @@ import { TideTextEnum_GetIDText, TideTextEnum_GetOrderedText } from '../../../en
 import { TideDataValue } from '../../../models/generated/TideDataValue.model';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
 import { EnumIDAndText } from '../../../models/enumidandtext.model';
+import { HttpClientService } from '../../../services/http-client.service';
+import { Router } from '@angular/router';
+import { HttpClientCommand } from '../../../enums/app.enums';
 
 @Component({
   selector: 'app-tidedatavalue',
@@ -32,22 +34,24 @@ export class TideDataValueComponent implements OnInit, OnDestroy {
   tidedatavalueFormPut: FormGroup;
   tidedatavalueFormPost: FormGroup;
 
-  constructor(public tidedatavalueService: TideDataValueService, public router: Router, public fb: FormBuilder) { }
+  constructor(public tidedatavalueService: TideDataValueService, private router: Router, private httpClientService: HttpClientService, private fb: FormBuilder) {
+    httpClientService.oldURL = router.url;
+  }
 
   GetTideDataValueList() {
-    this.sub = this.tidedatavalueService.GetTideDataValueList(this.router).subscribe();
+    this.sub = this.tidedatavalueService.GetTideDataValueList().subscribe();
   }
 
   PutTideDataValue(tidedatavalue: TideDataValue) {
-    this.sub = this.tidedatavalueService.PutTideDataValue(tidedatavalue, this.router).subscribe();
+    this.sub = this.tidedatavalueService.PutTideDataValue(tidedatavalue).subscribe();
   }
 
   PostTideDataValue(tidedatavalue: TideDataValue) {
-    this.sub = this.tidedatavalueService.PostTideDataValue(tidedatavalue, this.router).subscribe();
+    this.sub = this.tidedatavalueService.PostTideDataValue(tidedatavalue).subscribe();
   }
 
   DeleteTideDataValue(tidedatavalue: TideDataValue) {
-    this.sub = this.tidedatavalueService.DeleteTideDataValue(tidedatavalue, this.router).subscribe();
+    this.sub = this.tidedatavalueService.DeleteTideDataValue(tidedatavalue).subscribe();
   }
 
   GetTideDataTypeEnumText(enumID: number) {
@@ -68,8 +72,8 @@ export class TideDataValueComponent implements OnInit, OnDestroy {
     this.storageDataTypeList = StorageDataTypeEnum_GetOrderedText();
     this.tideStartList = TideTextEnum_GetOrderedText();
     this.tideEndList = TideTextEnum_GetOrderedText();
-    this.FillFormBuilderGroup('Add');
-    this.FillFormBuilderGroup('Update');
+    this.FillFormBuilderGroup(HttpClientCommand.Post);
+    this.FillFormBuilderGroup(HttpClientCommand.Put);
   }
 
   ngOnDestroy() {
@@ -78,79 +82,79 @@ export class TideDataValueComponent implements OnInit, OnDestroy {
     }
   }
 
-  FillFormBuilderGroup(AddOrUpdate: string) {
-    if (this.tidedatavalueService.tidedatavalueList.length) {
+  FillFormBuilderGroup(httpClientCommand: HttpClientCommand) {
+    if (this.tidedatavalueService.tidedatavalueListModel$.getValue().length) {
       let formGroup: FormGroup = this.fb.group(
         {
           TideDataValueID: [
             {
-              value: (AddOrUpdate === 'Add' ? 0 : (this.tidedatavalueService.tidedatavalueList[0]?.TideDataValueID)),
+              value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.tidedatavalueService.tidedatavalueListModel$.getValue()[0]?.TideDataValueID)),
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
           TideSiteTVItemID: [
             {
-              value: this.tidedatavalueService.tidedatavalueList[0]?.TideSiteTVItemID,
+              value: this.tidedatavalueService.tidedatavalueListModel$.getValue()[0]?.TideSiteTVItemID,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
           DateTime_Local: [
             {
-              value: this.tidedatavalueService.tidedatavalueList[0]?.DateTime_Local,
+              value: this.tidedatavalueService.tidedatavalueListModel$.getValue()[0]?.DateTime_Local,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
           Keep: [
             {
-              value: this.tidedatavalueService.tidedatavalueList[0]?.Keep,
+              value: this.tidedatavalueService.tidedatavalueListModel$.getValue()[0]?.Keep,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
           TideDataType: [
             {
-              value: this.tidedatavalueService.tidedatavalueList[0]?.TideDataType,
+              value: this.tidedatavalueService.tidedatavalueListModel$.getValue()[0]?.TideDataType,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
           StorageDataType: [
             {
-              value: this.tidedatavalueService.tidedatavalueList[0]?.StorageDataType,
+              value: this.tidedatavalueService.tidedatavalueListModel$.getValue()[0]?.StorageDataType,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
           Depth_m: [
             {
-              value: this.tidedatavalueService.tidedatavalueList[0]?.Depth_m,
+              value: this.tidedatavalueService.tidedatavalueListModel$.getValue()[0]?.Depth_m,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required, Validators.min(0), Validators.max(10000) ]],
           UVelocity_m_s: [
             {
-              value: this.tidedatavalueService.tidedatavalueList[0]?.UVelocity_m_s,
+              value: this.tidedatavalueService.tidedatavalueListModel$.getValue()[0]?.UVelocity_m_s,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required, Validators.min(0), Validators.max(10) ]],
           VVelocity_m_s: [
             {
-              value: this.tidedatavalueService.tidedatavalueList[0]?.VVelocity_m_s,
+              value: this.tidedatavalueService.tidedatavalueListModel$.getValue()[0]?.VVelocity_m_s,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required, Validators.min(0), Validators.max(10) ]],
           TideStart: [
             {
-              value: this.tidedatavalueService.tidedatavalueList[0]?.TideStart,
+              value: this.tidedatavalueService.tidedatavalueListModel$.getValue()[0]?.TideStart,
               disabled: false
-            }, [ Validators.required ]],
+            }],
           TideEnd: [
             {
-              value: this.tidedatavalueService.tidedatavalueList[0]?.TideEnd,
+              value: this.tidedatavalueService.tidedatavalueListModel$.getValue()[0]?.TideEnd,
               disabled: false
-            }, [ Validators.required ]],
+            }],
           LastUpdateDate_UTC: [
             {
-              value: this.tidedatavalueService.tidedatavalueList[0]?.LastUpdateDate_UTC,
+              value: this.tidedatavalueService.tidedatavalueListModel$.getValue()[0]?.LastUpdateDate_UTC,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
           LastUpdateContactTVItemID: [
             {
-              value: this.tidedatavalueService.tidedatavalueList[0]?.LastUpdateContactTVItemID,
+              value: this.tidedatavalueService.tidedatavalueListModel$.getValue()[0]?.LastUpdateContactTVItemID,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
         }
       );
 
-      if (AddOrUpdate === 'Add') {
+      if (httpClientCommand === HttpClientCommand.Post) {
         this.tidedatavalueFormPost = formGroup
       }
       else {

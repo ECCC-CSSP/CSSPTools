@@ -9,11 +9,12 @@ import { Injectable } from '@angular/core';
 import { MWQMSampleLanguageTextModel } from './mwqmsamplelanguage.models';
 import { BehaviorSubject, of } from 'rxjs';
 import { LoadLocalesMWQMSampleLanguageText } from './mwqmsamplelanguage.locales';
-import { Router } from '@angular/router';
-import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { map, catchError } from 'rxjs/operators';
 import { MWQMSampleLanguage } from '../../../models/generated/MWQMSampleLanguage.model';
 import { HttpRequestModel } from '../../../models/http.model';
+import { HttpClientService } from '../../../services/http-client.service';
+import { HttpClientCommand } from '../../../enums/app.enums';
 
 @Injectable({
   providedIn: 'root'
@@ -26,110 +27,63 @@ export class MWQMSampleLanguageService {
   mwqmsamplelanguagePutModel$: BehaviorSubject<HttpRequestModel> = new BehaviorSubject<HttpRequestModel>(<HttpRequestModel>{});
   mwqmsamplelanguagePostModel$: BehaviorSubject<HttpRequestModel> = new BehaviorSubject<HttpRequestModel>(<HttpRequestModel>{});
   mwqmsamplelanguageDeleteModel$: BehaviorSubject<HttpRequestModel> = new BehaviorSubject<HttpRequestModel>(<HttpRequestModel>{});
-  mwqmsamplelanguageList: MWQMSampleLanguage[] = [];
-  private oldURL: string;
-  private router: Router;
 
   /* Constructors */
-  constructor(private httpClient: HttpClient) {
+  constructor(private httpClient: HttpClient, private httpClientService: HttpClientService) {
     LoadLocalesMWQMSampleLanguageText(this);
     this.mwqmsamplelanguageTextModel$.next(<MWQMSampleLanguageTextModel>{ Title: "Something2 for text" });
   }
 
   /* Functions public */
-  GetMWQMSampleLanguageList(router: Router) {
-    this.BeforeHttpClient(this.mwqmsamplelanguageGetModel$, router);
+  GetMWQMSampleLanguageList() {
+    this.httpClientService.BeforeHttpClient(this.mwqmsamplelanguageGetModel$);
 
     return this.httpClient.get<MWQMSampleLanguage[]>('/api/MWQMSampleLanguage').pipe(
       map((x: any) => {
-        this.DoSuccess(this.mwqmsamplelanguageGetModel$, x, 'Get', null);
+        this.httpClientService.DoSuccess<MWQMSampleLanguage>(this.mwqmsamplelanguageListModel$, this.mwqmsamplelanguageGetModel$, x, HttpClientCommand.Get, null);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.DoCatchError(this.mwqmsamplelanguageGetModel$, e, 'Get');
+        this.httpClientService.DoCatchError<MWQMSampleLanguage>(this.mwqmsamplelanguageListModel$, this.mwqmsamplelanguageGetModel$, e);
       })))
     );
   }
 
-  PutMWQMSampleLanguage(mwqmsamplelanguage: MWQMSampleLanguage, router: Router) {
-    this.BeforeHttpClient(this.mwqmsamplelanguagePutModel$, router);
+  PutMWQMSampleLanguage(mwqmsamplelanguage: MWQMSampleLanguage) {
+    this.httpClientService.BeforeHttpClient(this.mwqmsamplelanguagePutModel$);
 
     return this.httpClient.put<MWQMSampleLanguage>('/api/MWQMSampleLanguage', mwqmsamplelanguage, { headers: new HttpHeaders() }).pipe(
       map((x: any) => {
-        this.DoSuccess(this.mwqmsamplelanguagePutModel$, x, 'Put', mwqmsamplelanguage);
+        this.httpClientService.DoSuccess<MWQMSampleLanguage>(this.mwqmsamplelanguageListModel$, this.mwqmsamplelanguagePutModel$, x, HttpClientCommand.Put, mwqmsamplelanguage);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.DoCatchError(this.mwqmsamplelanguagePutModel$, e, 'Put');
+       this.httpClientService.DoCatchError<MWQMSampleLanguage>(this.mwqmsamplelanguageListModel$, this.mwqmsamplelanguagePutModel$, e);
       })))
     );
   }
 
-  PostMWQMSampleLanguage(mwqmsamplelanguage: MWQMSampleLanguage, router: Router) {
-    this.BeforeHttpClient(this.mwqmsamplelanguagePostModel$, router);
+  PostMWQMSampleLanguage(mwqmsamplelanguage: MWQMSampleLanguage) {
+    this.httpClientService.BeforeHttpClient(this.mwqmsamplelanguagePostModel$);
 
     return this.httpClient.post<MWQMSampleLanguage>('/api/MWQMSampleLanguage', mwqmsamplelanguage, { headers: new HttpHeaders() }).pipe(
       map((x: any) => {
-        this.DoSuccess(this.mwqmsamplelanguagePostModel$, x, 'Post', mwqmsamplelanguage);
+        this.httpClientService.DoSuccess<MWQMSampleLanguage>(this.mwqmsamplelanguageListModel$, this.mwqmsamplelanguagePostModel$, x, HttpClientCommand.Post, mwqmsamplelanguage);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.DoCatchError(this.mwqmsamplelanguagePostModel$, e, 'Post');
+        this.httpClientService.DoCatchError<MWQMSampleLanguage>(this.mwqmsamplelanguageListModel$, this.mwqmsamplelanguagePostModel$, e);
       })))
     );
   }
 
-  DeleteMWQMSampleLanguage(mwqmsamplelanguage: MWQMSampleLanguage, router: Router) {
-    this.BeforeHttpClient(this.mwqmsamplelanguageDeleteModel$, router);
+  DeleteMWQMSampleLanguage(mwqmsamplelanguage: MWQMSampleLanguage) {
+    this.httpClientService.BeforeHttpClient(this.mwqmsamplelanguageDeleteModel$);
 
     return this.httpClient.delete<boolean>(`/api/MWQMSampleLanguage/${ mwqmsamplelanguage.MWQMSampleLanguageID }`).pipe(
       map((x: any) => {
-        this.DoSuccess(this.mwqmsamplelanguageDeleteModel$, x, 'Delete', mwqmsamplelanguage);
+        this.httpClientService.DoSuccess<MWQMSampleLanguage>(this.mwqmsamplelanguageListModel$, this.mwqmsamplelanguageDeleteModel$, x, HttpClientCommand.Delete, mwqmsamplelanguage);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.DoCatchError(this.mwqmsamplelanguageDeleteModel$, e, 'Delete');
+        this.httpClientService.DoCatchError<MWQMSampleLanguage>(this.mwqmsamplelanguageListModel$, this.mwqmsamplelanguageDeleteModel$, e);
       })))
     );
-  }
-
-  /* Functions private */
-  private BeforeHttpClient(httpRequestModel$: BehaviorSubject<HttpRequestModel>, router: Router) {
-    this.router = router;
-    this.oldURL = router.url;
-    httpRequestModel$.next(<HttpRequestModel>{ Working: true, Error: null, Status: null });
-  }
-
-  private DoCatchError(httpRequestModel$: BehaviorSubject<HttpRequestModel>, e: any, command: string) {
-    this.mwqmsamplelanguageListModel$.next(null);
-    httpRequestModel$.next(<HttpRequestModel>{ Working: false, Error: <HttpErrorResponse>e, Status: 'Error' });
-
-    this.mwqmsamplelanguageList = [];
-    console.debug(`MWQMSampleLanguage ${ command } ERROR. Return: ${ <HttpErrorResponse>e }`);
-    this.DoReload();
-  }
-
-  private DoReload() {
-    this.router.navigateByUrl('', { skipLocationChange: true }).then(() => {
-      this.router.navigate([`/${this.oldURL}`]);
-    });
-  }
-
-  private DoSuccess(httpRequestModel$: BehaviorSubject<HttpRequestModel>, x: any, command: string, mwqmsamplelanguage?: MWQMSampleLanguage) {
-    console.debug(`MWQMSampleLanguage ${ command } OK. Return: ${ x }`);
-    if (command === 'Get') {
-      this.mwqmsamplelanguageListModel$.next(<MWQMSampleLanguage[]>x);
-    }
-    if (command === 'Put') {
-      this.mwqmsamplelanguageListModel$.getValue()[0] = <MWQMSampleLanguage>x;
-    }
-    if (command === 'Post') {
-      this.mwqmsamplelanguageListModel$.getValue().push(<MWQMSampleLanguage>x);
-    }
-    if (command === 'Delete') {
-      const index = this.mwqmsamplelanguageListModel$.getValue().indexOf(mwqmsamplelanguage);
-      this.mwqmsamplelanguageListModel$.getValue().splice(index, 1);
-    }
-
-    this.mwqmsamplelanguageListModel$.next(this.mwqmsamplelanguageListModel$.getValue());
-    httpRequestModel$.next(<HttpRequestModel>{ Working: false, Error: null, Status: 'ok' });
-    this.mwqmsamplelanguageList = this.mwqmsamplelanguageListModel$.getValue();
-    this.DoReload();
   }
 }

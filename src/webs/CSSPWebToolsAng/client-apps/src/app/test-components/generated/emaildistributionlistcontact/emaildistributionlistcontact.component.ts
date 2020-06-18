@@ -8,10 +8,12 @@
 import { Component, OnInit, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
 import { EmailDistributionListContactService } from './emaildistributionlistcontact.service';
 import { LoadLocalesEmailDistributionListContactText } from './emaildistributionlistcontact.locales';
-import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { EmailDistributionListContact } from '../../../models/generated/EmailDistributionListContact.model';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
+import { HttpClientService } from '../../../services/http-client.service';
+import { Router } from '@angular/router';
+import { HttpClientCommand } from '../../../enums/app.enums';
 
 @Component({
   selector: 'app-emaildistributionlistcontact',
@@ -24,28 +26,30 @@ export class EmailDistributionListContactComponent implements OnInit, OnDestroy 
   emaildistributionlistcontactFormPut: FormGroup;
   emaildistributionlistcontactFormPost: FormGroup;
 
-  constructor(public emaildistributionlistcontactService: EmailDistributionListContactService, public router: Router, public fb: FormBuilder) { }
+  constructor(public emaildistributionlistcontactService: EmailDistributionListContactService, private router: Router, private httpClientService: HttpClientService, private fb: FormBuilder) {
+    httpClientService.oldURL = router.url;
+  }
 
   GetEmailDistributionListContactList() {
-    this.sub = this.emaildistributionlistcontactService.GetEmailDistributionListContactList(this.router).subscribe();
+    this.sub = this.emaildistributionlistcontactService.GetEmailDistributionListContactList().subscribe();
   }
 
   PutEmailDistributionListContact(emaildistributionlistcontact: EmailDistributionListContact) {
-    this.sub = this.emaildistributionlistcontactService.PutEmailDistributionListContact(emaildistributionlistcontact, this.router).subscribe();
+    this.sub = this.emaildistributionlistcontactService.PutEmailDistributionListContact(emaildistributionlistcontact).subscribe();
   }
 
   PostEmailDistributionListContact(emaildistributionlistcontact: EmailDistributionListContact) {
-    this.sub = this.emaildistributionlistcontactService.PostEmailDistributionListContact(emaildistributionlistcontact, this.router).subscribe();
+    this.sub = this.emaildistributionlistcontactService.PostEmailDistributionListContact(emaildistributionlistcontact).subscribe();
   }
 
   DeleteEmailDistributionListContact(emaildistributionlistcontact: EmailDistributionListContact) {
-    this.sub = this.emaildistributionlistcontactService.DeleteEmailDistributionListContact(emaildistributionlistcontact, this.router).subscribe();
+    this.sub = this.emaildistributionlistcontactService.DeleteEmailDistributionListContact(emaildistributionlistcontact).subscribe();
   }
 
   ngOnInit(): void {
     LoadLocalesEmailDistributionListContactText(this.emaildistributionlistcontactService);
-    this.FillFormBuilderGroup('Add');
-    this.FillFormBuilderGroup('Update');
+    this.FillFormBuilderGroup(HttpClientCommand.Post);
+    this.FillFormBuilderGroup(HttpClientCommand.Put);
   }
 
   ngOnDestroy() {
@@ -54,74 +58,74 @@ export class EmailDistributionListContactComponent implements OnInit, OnDestroy 
     }
   }
 
-  FillFormBuilderGroup(AddOrUpdate: string) {
-    if (this.emaildistributionlistcontactService.emaildistributionlistcontactList.length) {
+  FillFormBuilderGroup(httpClientCommand: HttpClientCommand) {
+    if (this.emaildistributionlistcontactService.emaildistributionlistcontactListModel$.getValue().length) {
       let formGroup: FormGroup = this.fb.group(
         {
           EmailDistributionListContactID: [
             {
-              value: (AddOrUpdate === 'Add' ? 0 : (this.emaildistributionlistcontactService.emaildistributionlistcontactList[0]?.EmailDistributionListContactID)),
+              value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.emaildistributionlistcontactService.emaildistributionlistcontactListModel$.getValue()[0]?.EmailDistributionListContactID)),
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
           EmailDistributionListID: [
             {
-              value: this.emaildistributionlistcontactService.emaildistributionlistcontactList[0]?.EmailDistributionListID,
+              value: this.emaildistributionlistcontactService.emaildistributionlistcontactListModel$.getValue()[0]?.EmailDistributionListID,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
           IsCC: [
             {
-              value: this.emaildistributionlistcontactService.emaildistributionlistcontactList[0]?.IsCC,
+              value: this.emaildistributionlistcontactService.emaildistributionlistcontactListModel$.getValue()[0]?.IsCC,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
           Name: [
             {
-              value: this.emaildistributionlistcontactService.emaildistributionlistcontactList[0]?.Name,
+              value: this.emaildistributionlistcontactService.emaildistributionlistcontactListModel$.getValue()[0]?.Name,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required, Validators.maxLength(100) ]],
           Email: [
             {
-              value: this.emaildistributionlistcontactService.emaildistributionlistcontactList[0]?.Email,
+              value: this.emaildistributionlistcontactService.emaildistributionlistcontactListModel$.getValue()[0]?.Email,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required, Validators.email, Validators.maxLength(200) ]],
           CMPRainfallSeasonal: [
             {
-              value: this.emaildistributionlistcontactService.emaildistributionlistcontactList[0]?.CMPRainfallSeasonal,
+              value: this.emaildistributionlistcontactService.emaildistributionlistcontactListModel$.getValue()[0]?.CMPRainfallSeasonal,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
           CMPWastewater: [
             {
-              value: this.emaildistributionlistcontactService.emaildistributionlistcontactList[0]?.CMPWastewater,
+              value: this.emaildistributionlistcontactService.emaildistributionlistcontactListModel$.getValue()[0]?.CMPWastewater,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
           EmergencyWeather: [
             {
-              value: this.emaildistributionlistcontactService.emaildistributionlistcontactList[0]?.EmergencyWeather,
+              value: this.emaildistributionlistcontactService.emaildistributionlistcontactListModel$.getValue()[0]?.EmergencyWeather,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
           EmergencyWastewater: [
             {
-              value: this.emaildistributionlistcontactService.emaildistributionlistcontactList[0]?.EmergencyWastewater,
+              value: this.emaildistributionlistcontactService.emaildistributionlistcontactListModel$.getValue()[0]?.EmergencyWastewater,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
           ReopeningAllTypes: [
             {
-              value: this.emaildistributionlistcontactService.emaildistributionlistcontactList[0]?.ReopeningAllTypes,
+              value: this.emaildistributionlistcontactService.emaildistributionlistcontactListModel$.getValue()[0]?.ReopeningAllTypes,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
           LastUpdateDate_UTC: [
             {
-              value: this.emaildistributionlistcontactService.emaildistributionlistcontactList[0]?.LastUpdateDate_UTC,
+              value: this.emaildistributionlistcontactService.emaildistributionlistcontactListModel$.getValue()[0]?.LastUpdateDate_UTC,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
           LastUpdateContactTVItemID: [
             {
-              value: this.emaildistributionlistcontactService.emaildistributionlistcontactList[0]?.LastUpdateContactTVItemID,
+              value: this.emaildistributionlistcontactService.emaildistributionlistcontactListModel$.getValue()[0]?.LastUpdateContactTVItemID,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
         }
       );
 
-      if (AddOrUpdate === 'Add') {
+      if (httpClientCommand === HttpClientCommand.Post) {
         this.emaildistributionlistcontactFormPost = formGroup
       }
       else {

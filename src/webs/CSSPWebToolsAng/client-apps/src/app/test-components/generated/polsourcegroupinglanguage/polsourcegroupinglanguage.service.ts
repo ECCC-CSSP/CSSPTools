@@ -9,11 +9,12 @@ import { Injectable } from '@angular/core';
 import { PolSourceGroupingLanguageTextModel } from './polsourcegroupinglanguage.models';
 import { BehaviorSubject, of } from 'rxjs';
 import { LoadLocalesPolSourceGroupingLanguageText } from './polsourcegroupinglanguage.locales';
-import { Router } from '@angular/router';
-import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { map, catchError } from 'rxjs/operators';
 import { PolSourceGroupingLanguage } from '../../../models/generated/PolSourceGroupingLanguage.model';
 import { HttpRequestModel } from '../../../models/http.model';
+import { HttpClientService } from '../../../services/http-client.service';
+import { HttpClientCommand } from '../../../enums/app.enums';
 
 @Injectable({
   providedIn: 'root'
@@ -26,110 +27,63 @@ export class PolSourceGroupingLanguageService {
   polsourcegroupinglanguagePutModel$: BehaviorSubject<HttpRequestModel> = new BehaviorSubject<HttpRequestModel>(<HttpRequestModel>{});
   polsourcegroupinglanguagePostModel$: BehaviorSubject<HttpRequestModel> = new BehaviorSubject<HttpRequestModel>(<HttpRequestModel>{});
   polsourcegroupinglanguageDeleteModel$: BehaviorSubject<HttpRequestModel> = new BehaviorSubject<HttpRequestModel>(<HttpRequestModel>{});
-  polsourcegroupinglanguageList: PolSourceGroupingLanguage[] = [];
-  private oldURL: string;
-  private router: Router;
 
   /* Constructors */
-  constructor(private httpClient: HttpClient) {
+  constructor(private httpClient: HttpClient, private httpClientService: HttpClientService) {
     LoadLocalesPolSourceGroupingLanguageText(this);
     this.polsourcegroupinglanguageTextModel$.next(<PolSourceGroupingLanguageTextModel>{ Title: "Something2 for text" });
   }
 
   /* Functions public */
-  GetPolSourceGroupingLanguageList(router: Router) {
-    this.BeforeHttpClient(this.polsourcegroupinglanguageGetModel$, router);
+  GetPolSourceGroupingLanguageList() {
+    this.httpClientService.BeforeHttpClient(this.polsourcegroupinglanguageGetModel$);
 
     return this.httpClient.get<PolSourceGroupingLanguage[]>('/api/PolSourceGroupingLanguage').pipe(
       map((x: any) => {
-        this.DoSuccess(this.polsourcegroupinglanguageGetModel$, x, 'Get', null);
+        this.httpClientService.DoSuccess<PolSourceGroupingLanguage>(this.polsourcegroupinglanguageListModel$, this.polsourcegroupinglanguageGetModel$, x, HttpClientCommand.Get, null);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.DoCatchError(this.polsourcegroupinglanguageGetModel$, e, 'Get');
+        this.httpClientService.DoCatchError<PolSourceGroupingLanguage>(this.polsourcegroupinglanguageListModel$, this.polsourcegroupinglanguageGetModel$, e);
       })))
     );
   }
 
-  PutPolSourceGroupingLanguage(polsourcegroupinglanguage: PolSourceGroupingLanguage, router: Router) {
-    this.BeforeHttpClient(this.polsourcegroupinglanguagePutModel$, router);
+  PutPolSourceGroupingLanguage(polsourcegroupinglanguage: PolSourceGroupingLanguage) {
+    this.httpClientService.BeforeHttpClient(this.polsourcegroupinglanguagePutModel$);
 
     return this.httpClient.put<PolSourceGroupingLanguage>('/api/PolSourceGroupingLanguage', polsourcegroupinglanguage, { headers: new HttpHeaders() }).pipe(
       map((x: any) => {
-        this.DoSuccess(this.polsourcegroupinglanguagePutModel$, x, 'Put', polsourcegroupinglanguage);
+        this.httpClientService.DoSuccess<PolSourceGroupingLanguage>(this.polsourcegroupinglanguageListModel$, this.polsourcegroupinglanguagePutModel$, x, HttpClientCommand.Put, polsourcegroupinglanguage);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.DoCatchError(this.polsourcegroupinglanguagePutModel$, e, 'Put');
+       this.httpClientService.DoCatchError<PolSourceGroupingLanguage>(this.polsourcegroupinglanguageListModel$, this.polsourcegroupinglanguagePutModel$, e);
       })))
     );
   }
 
-  PostPolSourceGroupingLanguage(polsourcegroupinglanguage: PolSourceGroupingLanguage, router: Router) {
-    this.BeforeHttpClient(this.polsourcegroupinglanguagePostModel$, router);
+  PostPolSourceGroupingLanguage(polsourcegroupinglanguage: PolSourceGroupingLanguage) {
+    this.httpClientService.BeforeHttpClient(this.polsourcegroupinglanguagePostModel$);
 
     return this.httpClient.post<PolSourceGroupingLanguage>('/api/PolSourceGroupingLanguage', polsourcegroupinglanguage, { headers: new HttpHeaders() }).pipe(
       map((x: any) => {
-        this.DoSuccess(this.polsourcegroupinglanguagePostModel$, x, 'Post', polsourcegroupinglanguage);
+        this.httpClientService.DoSuccess<PolSourceGroupingLanguage>(this.polsourcegroupinglanguageListModel$, this.polsourcegroupinglanguagePostModel$, x, HttpClientCommand.Post, polsourcegroupinglanguage);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.DoCatchError(this.polsourcegroupinglanguagePostModel$, e, 'Post');
+        this.httpClientService.DoCatchError<PolSourceGroupingLanguage>(this.polsourcegroupinglanguageListModel$, this.polsourcegroupinglanguagePostModel$, e);
       })))
     );
   }
 
-  DeletePolSourceGroupingLanguage(polsourcegroupinglanguage: PolSourceGroupingLanguage, router: Router) {
-    this.BeforeHttpClient(this.polsourcegroupinglanguageDeleteModel$, router);
+  DeletePolSourceGroupingLanguage(polsourcegroupinglanguage: PolSourceGroupingLanguage) {
+    this.httpClientService.BeforeHttpClient(this.polsourcegroupinglanguageDeleteModel$);
 
     return this.httpClient.delete<boolean>(`/api/PolSourceGroupingLanguage/${ polsourcegroupinglanguage.PolSourceGroupingLanguageID }`).pipe(
       map((x: any) => {
-        this.DoSuccess(this.polsourcegroupinglanguageDeleteModel$, x, 'Delete', polsourcegroupinglanguage);
+        this.httpClientService.DoSuccess<PolSourceGroupingLanguage>(this.polsourcegroupinglanguageListModel$, this.polsourcegroupinglanguageDeleteModel$, x, HttpClientCommand.Delete, polsourcegroupinglanguage);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.DoCatchError(this.polsourcegroupinglanguageDeleteModel$, e, 'Delete');
+        this.httpClientService.DoCatchError<PolSourceGroupingLanguage>(this.polsourcegroupinglanguageListModel$, this.polsourcegroupinglanguageDeleteModel$, e);
       })))
     );
-  }
-
-  /* Functions private */
-  private BeforeHttpClient(httpRequestModel$: BehaviorSubject<HttpRequestModel>, router: Router) {
-    this.router = router;
-    this.oldURL = router.url;
-    httpRequestModel$.next(<HttpRequestModel>{ Working: true, Error: null, Status: null });
-  }
-
-  private DoCatchError(httpRequestModel$: BehaviorSubject<HttpRequestModel>, e: any, command: string) {
-    this.polsourcegroupinglanguageListModel$.next(null);
-    httpRequestModel$.next(<HttpRequestModel>{ Working: false, Error: <HttpErrorResponse>e, Status: 'Error' });
-
-    this.polsourcegroupinglanguageList = [];
-    console.debug(`PolSourceGroupingLanguage ${ command } ERROR. Return: ${ <HttpErrorResponse>e }`);
-    this.DoReload();
-  }
-
-  private DoReload() {
-    this.router.navigateByUrl('', { skipLocationChange: true }).then(() => {
-      this.router.navigate([`/${this.oldURL}`]);
-    });
-  }
-
-  private DoSuccess(httpRequestModel$: BehaviorSubject<HttpRequestModel>, x: any, command: string, polsourcegroupinglanguage?: PolSourceGroupingLanguage) {
-    console.debug(`PolSourceGroupingLanguage ${ command } OK. Return: ${ x }`);
-    if (command === 'Get') {
-      this.polsourcegroupinglanguageListModel$.next(<PolSourceGroupingLanguage[]>x);
-    }
-    if (command === 'Put') {
-      this.polsourcegroupinglanguageListModel$.getValue()[0] = <PolSourceGroupingLanguage>x;
-    }
-    if (command === 'Post') {
-      this.polsourcegroupinglanguageListModel$.getValue().push(<PolSourceGroupingLanguage>x);
-    }
-    if (command === 'Delete') {
-      const index = this.polsourcegroupinglanguageListModel$.getValue().indexOf(polsourcegroupinglanguage);
-      this.polsourcegroupinglanguageListModel$.getValue().splice(index, 1);
-    }
-
-    this.polsourcegroupinglanguageListModel$.next(this.polsourcegroupinglanguageListModel$.getValue());
-    httpRequestModel$.next(<HttpRequestModel>{ Working: false, Error: null, Status: 'ok' });
-    this.polsourcegroupinglanguageList = this.polsourcegroupinglanguageListModel$.getValue();
-    this.DoReload();
   }
 }

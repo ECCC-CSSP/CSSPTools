@@ -8,10 +8,12 @@
 import { Component, OnInit, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
 import { SamplingPlanSubsectorService } from './samplingplansubsector.service';
 import { LoadLocalesSamplingPlanSubsectorText } from './samplingplansubsector.locales';
-import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { SamplingPlanSubsector } from '../../../models/generated/SamplingPlanSubsector.model';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
+import { HttpClientService } from '../../../services/http-client.service';
+import { Router } from '@angular/router';
+import { HttpClientCommand } from '../../../enums/app.enums';
 
 @Component({
   selector: 'app-samplingplansubsector',
@@ -24,28 +26,30 @@ export class SamplingPlanSubsectorComponent implements OnInit, OnDestroy {
   samplingplansubsectorFormPut: FormGroup;
   samplingplansubsectorFormPost: FormGroup;
 
-  constructor(public samplingplansubsectorService: SamplingPlanSubsectorService, public router: Router, public fb: FormBuilder) { }
+  constructor(public samplingplansubsectorService: SamplingPlanSubsectorService, private router: Router, private httpClientService: HttpClientService, private fb: FormBuilder) {
+    httpClientService.oldURL = router.url;
+  }
 
   GetSamplingPlanSubsectorList() {
-    this.sub = this.samplingplansubsectorService.GetSamplingPlanSubsectorList(this.router).subscribe();
+    this.sub = this.samplingplansubsectorService.GetSamplingPlanSubsectorList().subscribe();
   }
 
   PutSamplingPlanSubsector(samplingplansubsector: SamplingPlanSubsector) {
-    this.sub = this.samplingplansubsectorService.PutSamplingPlanSubsector(samplingplansubsector, this.router).subscribe();
+    this.sub = this.samplingplansubsectorService.PutSamplingPlanSubsector(samplingplansubsector).subscribe();
   }
 
   PostSamplingPlanSubsector(samplingplansubsector: SamplingPlanSubsector) {
-    this.sub = this.samplingplansubsectorService.PostSamplingPlanSubsector(samplingplansubsector, this.router).subscribe();
+    this.sub = this.samplingplansubsectorService.PostSamplingPlanSubsector(samplingplansubsector).subscribe();
   }
 
   DeleteSamplingPlanSubsector(samplingplansubsector: SamplingPlanSubsector) {
-    this.sub = this.samplingplansubsectorService.DeleteSamplingPlanSubsector(samplingplansubsector, this.router).subscribe();
+    this.sub = this.samplingplansubsectorService.DeleteSamplingPlanSubsector(samplingplansubsector).subscribe();
   }
 
   ngOnInit(): void {
     LoadLocalesSamplingPlanSubsectorText(this.samplingplansubsectorService);
-    this.FillFormBuilderGroup('Add');
-    this.FillFormBuilderGroup('Update');
+    this.FillFormBuilderGroup(HttpClientCommand.Post);
+    this.FillFormBuilderGroup(HttpClientCommand.Put);
   }
 
   ngOnDestroy() {
@@ -54,39 +58,39 @@ export class SamplingPlanSubsectorComponent implements OnInit, OnDestroy {
     }
   }
 
-  FillFormBuilderGroup(AddOrUpdate: string) {
-    if (this.samplingplansubsectorService.samplingplansubsectorList.length) {
+  FillFormBuilderGroup(httpClientCommand: HttpClientCommand) {
+    if (this.samplingplansubsectorService.samplingplansubsectorListModel$.getValue().length) {
       let formGroup: FormGroup = this.fb.group(
         {
           SamplingPlanSubsectorID: [
             {
-              value: (AddOrUpdate === 'Add' ? 0 : (this.samplingplansubsectorService.samplingplansubsectorList[0]?.SamplingPlanSubsectorID)),
+              value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.samplingplansubsectorService.samplingplansubsectorListModel$.getValue()[0]?.SamplingPlanSubsectorID)),
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
           SamplingPlanID: [
             {
-              value: this.samplingplansubsectorService.samplingplansubsectorList[0]?.SamplingPlanID,
+              value: this.samplingplansubsectorService.samplingplansubsectorListModel$.getValue()[0]?.SamplingPlanID,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
           SubsectorTVItemID: [
             {
-              value: this.samplingplansubsectorService.samplingplansubsectorList[0]?.SubsectorTVItemID,
+              value: this.samplingplansubsectorService.samplingplansubsectorListModel$.getValue()[0]?.SubsectorTVItemID,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
           LastUpdateDate_UTC: [
             {
-              value: this.samplingplansubsectorService.samplingplansubsectorList[0]?.LastUpdateDate_UTC,
+              value: this.samplingplansubsectorService.samplingplansubsectorListModel$.getValue()[0]?.LastUpdateDate_UTC,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
           LastUpdateContactTVItemID: [
             {
-              value: this.samplingplansubsectorService.samplingplansubsectorList[0]?.LastUpdateContactTVItemID,
+              value: this.samplingplansubsectorService.samplingplansubsectorListModel$.getValue()[0]?.LastUpdateContactTVItemID,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
         }
       );
 
-      if (AddOrUpdate === 'Add') {
+      if (httpClientCommand === HttpClientCommand.Post) {
         this.samplingplansubsectorFormPost = formGroup
       }
       else {

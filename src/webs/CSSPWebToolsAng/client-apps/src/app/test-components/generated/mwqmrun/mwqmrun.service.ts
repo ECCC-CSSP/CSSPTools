@@ -9,11 +9,12 @@ import { Injectable } from '@angular/core';
 import { MWQMRunTextModel } from './mwqmrun.models';
 import { BehaviorSubject, of } from 'rxjs';
 import { LoadLocalesMWQMRunText } from './mwqmrun.locales';
-import { Router } from '@angular/router';
-import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { map, catchError } from 'rxjs/operators';
 import { MWQMRun } from '../../../models/generated/MWQMRun.model';
 import { HttpRequestModel } from '../../../models/http.model';
+import { HttpClientService } from '../../../services/http-client.service';
+import { HttpClientCommand } from '../../../enums/app.enums';
 
 @Injectable({
   providedIn: 'root'
@@ -26,110 +27,63 @@ export class MWQMRunService {
   mwqmrunPutModel$: BehaviorSubject<HttpRequestModel> = new BehaviorSubject<HttpRequestModel>(<HttpRequestModel>{});
   mwqmrunPostModel$: BehaviorSubject<HttpRequestModel> = new BehaviorSubject<HttpRequestModel>(<HttpRequestModel>{});
   mwqmrunDeleteModel$: BehaviorSubject<HttpRequestModel> = new BehaviorSubject<HttpRequestModel>(<HttpRequestModel>{});
-  mwqmrunList: MWQMRun[] = [];
-  private oldURL: string;
-  private router: Router;
 
   /* Constructors */
-  constructor(private httpClient: HttpClient) {
+  constructor(private httpClient: HttpClient, private httpClientService: HttpClientService) {
     LoadLocalesMWQMRunText(this);
     this.mwqmrunTextModel$.next(<MWQMRunTextModel>{ Title: "Something2 for text" });
   }
 
   /* Functions public */
-  GetMWQMRunList(router: Router) {
-    this.BeforeHttpClient(this.mwqmrunGetModel$, router);
+  GetMWQMRunList() {
+    this.httpClientService.BeforeHttpClient(this.mwqmrunGetModel$);
 
     return this.httpClient.get<MWQMRun[]>('/api/MWQMRun').pipe(
       map((x: any) => {
-        this.DoSuccess(this.mwqmrunGetModel$, x, 'Get', null);
+        this.httpClientService.DoSuccess<MWQMRun>(this.mwqmrunListModel$, this.mwqmrunGetModel$, x, HttpClientCommand.Get, null);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.DoCatchError(this.mwqmrunGetModel$, e, 'Get');
+        this.httpClientService.DoCatchError<MWQMRun>(this.mwqmrunListModel$, this.mwqmrunGetModel$, e);
       })))
     );
   }
 
-  PutMWQMRun(mwqmrun: MWQMRun, router: Router) {
-    this.BeforeHttpClient(this.mwqmrunPutModel$, router);
+  PutMWQMRun(mwqmrun: MWQMRun) {
+    this.httpClientService.BeforeHttpClient(this.mwqmrunPutModel$);
 
     return this.httpClient.put<MWQMRun>('/api/MWQMRun', mwqmrun, { headers: new HttpHeaders() }).pipe(
       map((x: any) => {
-        this.DoSuccess(this.mwqmrunPutModel$, x, 'Put', mwqmrun);
+        this.httpClientService.DoSuccess<MWQMRun>(this.mwqmrunListModel$, this.mwqmrunPutModel$, x, HttpClientCommand.Put, mwqmrun);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.DoCatchError(this.mwqmrunPutModel$, e, 'Put');
+       this.httpClientService.DoCatchError<MWQMRun>(this.mwqmrunListModel$, this.mwqmrunPutModel$, e);
       })))
     );
   }
 
-  PostMWQMRun(mwqmrun: MWQMRun, router: Router) {
-    this.BeforeHttpClient(this.mwqmrunPostModel$, router);
+  PostMWQMRun(mwqmrun: MWQMRun) {
+    this.httpClientService.BeforeHttpClient(this.mwqmrunPostModel$);
 
     return this.httpClient.post<MWQMRun>('/api/MWQMRun', mwqmrun, { headers: new HttpHeaders() }).pipe(
       map((x: any) => {
-        this.DoSuccess(this.mwqmrunPostModel$, x, 'Post', mwqmrun);
+        this.httpClientService.DoSuccess<MWQMRun>(this.mwqmrunListModel$, this.mwqmrunPostModel$, x, HttpClientCommand.Post, mwqmrun);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.DoCatchError(this.mwqmrunPostModel$, e, 'Post');
+        this.httpClientService.DoCatchError<MWQMRun>(this.mwqmrunListModel$, this.mwqmrunPostModel$, e);
       })))
     );
   }
 
-  DeleteMWQMRun(mwqmrun: MWQMRun, router: Router) {
-    this.BeforeHttpClient(this.mwqmrunDeleteModel$, router);
+  DeleteMWQMRun(mwqmrun: MWQMRun) {
+    this.httpClientService.BeforeHttpClient(this.mwqmrunDeleteModel$);
 
     return this.httpClient.delete<boolean>(`/api/MWQMRun/${ mwqmrun.MWQMRunID }`).pipe(
       map((x: any) => {
-        this.DoSuccess(this.mwqmrunDeleteModel$, x, 'Delete', mwqmrun);
+        this.httpClientService.DoSuccess<MWQMRun>(this.mwqmrunListModel$, this.mwqmrunDeleteModel$, x, HttpClientCommand.Delete, mwqmrun);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.DoCatchError(this.mwqmrunDeleteModel$, e, 'Delete');
+        this.httpClientService.DoCatchError<MWQMRun>(this.mwqmrunListModel$, this.mwqmrunDeleteModel$, e);
       })))
     );
-  }
-
-  /* Functions private */
-  private BeforeHttpClient(httpRequestModel$: BehaviorSubject<HttpRequestModel>, router: Router) {
-    this.router = router;
-    this.oldURL = router.url;
-    httpRequestModel$.next(<HttpRequestModel>{ Working: true, Error: null, Status: null });
-  }
-
-  private DoCatchError(httpRequestModel$: BehaviorSubject<HttpRequestModel>, e: any, command: string) {
-    this.mwqmrunListModel$.next(null);
-    httpRequestModel$.next(<HttpRequestModel>{ Working: false, Error: <HttpErrorResponse>e, Status: 'Error' });
-
-    this.mwqmrunList = [];
-    console.debug(`MWQMRun ${ command } ERROR. Return: ${ <HttpErrorResponse>e }`);
-    this.DoReload();
-  }
-
-  private DoReload() {
-    this.router.navigateByUrl('', { skipLocationChange: true }).then(() => {
-      this.router.navigate([`/${this.oldURL}`]);
-    });
-  }
-
-  private DoSuccess(httpRequestModel$: BehaviorSubject<HttpRequestModel>, x: any, command: string, mwqmrun?: MWQMRun) {
-    console.debug(`MWQMRun ${ command } OK. Return: ${ x }`);
-    if (command === 'Get') {
-      this.mwqmrunListModel$.next(<MWQMRun[]>x);
-    }
-    if (command === 'Put') {
-      this.mwqmrunListModel$.getValue()[0] = <MWQMRun>x;
-    }
-    if (command === 'Post') {
-      this.mwqmrunListModel$.getValue().push(<MWQMRun>x);
-    }
-    if (command === 'Delete') {
-      const index = this.mwqmrunListModel$.getValue().indexOf(mwqmrun);
-      this.mwqmrunListModel$.getValue().splice(index, 1);
-    }
-
-    this.mwqmrunListModel$.next(this.mwqmrunListModel$.getValue());
-    httpRequestModel$.next(<HttpRequestModel>{ Working: false, Error: null, Status: 'ok' });
-    this.mwqmrunList = this.mwqmrunListModel$.getValue();
-    this.DoReload();
   }
 }

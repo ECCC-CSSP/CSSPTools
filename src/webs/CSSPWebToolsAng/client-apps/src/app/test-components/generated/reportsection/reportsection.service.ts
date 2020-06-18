@@ -9,11 +9,12 @@ import { Injectable } from '@angular/core';
 import { ReportSectionTextModel } from './reportsection.models';
 import { BehaviorSubject, of } from 'rxjs';
 import { LoadLocalesReportSectionText } from './reportsection.locales';
-import { Router } from '@angular/router';
-import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { map, catchError } from 'rxjs/operators';
 import { ReportSection } from '../../../models/generated/ReportSection.model';
 import { HttpRequestModel } from '../../../models/http.model';
+import { HttpClientService } from '../../../services/http-client.service';
+import { HttpClientCommand } from '../../../enums/app.enums';
 
 @Injectable({
   providedIn: 'root'
@@ -26,110 +27,63 @@ export class ReportSectionService {
   reportsectionPutModel$: BehaviorSubject<HttpRequestModel> = new BehaviorSubject<HttpRequestModel>(<HttpRequestModel>{});
   reportsectionPostModel$: BehaviorSubject<HttpRequestModel> = new BehaviorSubject<HttpRequestModel>(<HttpRequestModel>{});
   reportsectionDeleteModel$: BehaviorSubject<HttpRequestModel> = new BehaviorSubject<HttpRequestModel>(<HttpRequestModel>{});
-  reportsectionList: ReportSection[] = [];
-  private oldURL: string;
-  private router: Router;
 
   /* Constructors */
-  constructor(private httpClient: HttpClient) {
+  constructor(private httpClient: HttpClient, private httpClientService: HttpClientService) {
     LoadLocalesReportSectionText(this);
     this.reportsectionTextModel$.next(<ReportSectionTextModel>{ Title: "Something2 for text" });
   }
 
   /* Functions public */
-  GetReportSectionList(router: Router) {
-    this.BeforeHttpClient(this.reportsectionGetModel$, router);
+  GetReportSectionList() {
+    this.httpClientService.BeforeHttpClient(this.reportsectionGetModel$);
 
     return this.httpClient.get<ReportSection[]>('/api/ReportSection').pipe(
       map((x: any) => {
-        this.DoSuccess(this.reportsectionGetModel$, x, 'Get', null);
+        this.httpClientService.DoSuccess<ReportSection>(this.reportsectionListModel$, this.reportsectionGetModel$, x, HttpClientCommand.Get, null);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.DoCatchError(this.reportsectionGetModel$, e, 'Get');
+        this.httpClientService.DoCatchError<ReportSection>(this.reportsectionListModel$, this.reportsectionGetModel$, e);
       })))
     );
   }
 
-  PutReportSection(reportsection: ReportSection, router: Router) {
-    this.BeforeHttpClient(this.reportsectionPutModel$, router);
+  PutReportSection(reportsection: ReportSection) {
+    this.httpClientService.BeforeHttpClient(this.reportsectionPutModel$);
 
     return this.httpClient.put<ReportSection>('/api/ReportSection', reportsection, { headers: new HttpHeaders() }).pipe(
       map((x: any) => {
-        this.DoSuccess(this.reportsectionPutModel$, x, 'Put', reportsection);
+        this.httpClientService.DoSuccess<ReportSection>(this.reportsectionListModel$, this.reportsectionPutModel$, x, HttpClientCommand.Put, reportsection);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.DoCatchError(this.reportsectionPutModel$, e, 'Put');
+       this.httpClientService.DoCatchError<ReportSection>(this.reportsectionListModel$, this.reportsectionPutModel$, e);
       })))
     );
   }
 
-  PostReportSection(reportsection: ReportSection, router: Router) {
-    this.BeforeHttpClient(this.reportsectionPostModel$, router);
+  PostReportSection(reportsection: ReportSection) {
+    this.httpClientService.BeforeHttpClient(this.reportsectionPostModel$);
 
     return this.httpClient.post<ReportSection>('/api/ReportSection', reportsection, { headers: new HttpHeaders() }).pipe(
       map((x: any) => {
-        this.DoSuccess(this.reportsectionPostModel$, x, 'Post', reportsection);
+        this.httpClientService.DoSuccess<ReportSection>(this.reportsectionListModel$, this.reportsectionPostModel$, x, HttpClientCommand.Post, reportsection);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.DoCatchError(this.reportsectionPostModel$, e, 'Post');
+        this.httpClientService.DoCatchError<ReportSection>(this.reportsectionListModel$, this.reportsectionPostModel$, e);
       })))
     );
   }
 
-  DeleteReportSection(reportsection: ReportSection, router: Router) {
-    this.BeforeHttpClient(this.reportsectionDeleteModel$, router);
+  DeleteReportSection(reportsection: ReportSection) {
+    this.httpClientService.BeforeHttpClient(this.reportsectionDeleteModel$);
 
     return this.httpClient.delete<boolean>(`/api/ReportSection/${ reportsection.ReportSectionID }`).pipe(
       map((x: any) => {
-        this.DoSuccess(this.reportsectionDeleteModel$, x, 'Delete', reportsection);
+        this.httpClientService.DoSuccess<ReportSection>(this.reportsectionListModel$, this.reportsectionDeleteModel$, x, HttpClientCommand.Delete, reportsection);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.DoCatchError(this.reportsectionDeleteModel$, e, 'Delete');
+        this.httpClientService.DoCatchError<ReportSection>(this.reportsectionListModel$, this.reportsectionDeleteModel$, e);
       })))
     );
-  }
-
-  /* Functions private */
-  private BeforeHttpClient(httpRequestModel$: BehaviorSubject<HttpRequestModel>, router: Router) {
-    this.router = router;
-    this.oldURL = router.url;
-    httpRequestModel$.next(<HttpRequestModel>{ Working: true, Error: null, Status: null });
-  }
-
-  private DoCatchError(httpRequestModel$: BehaviorSubject<HttpRequestModel>, e: any, command: string) {
-    this.reportsectionListModel$.next(null);
-    httpRequestModel$.next(<HttpRequestModel>{ Working: false, Error: <HttpErrorResponse>e, Status: 'Error' });
-
-    this.reportsectionList = [];
-    console.debug(`ReportSection ${ command } ERROR. Return: ${ <HttpErrorResponse>e }`);
-    this.DoReload();
-  }
-
-  private DoReload() {
-    this.router.navigateByUrl('', { skipLocationChange: true }).then(() => {
-      this.router.navigate([`/${this.oldURL}`]);
-    });
-  }
-
-  private DoSuccess(httpRequestModel$: BehaviorSubject<HttpRequestModel>, x: any, command: string, reportsection?: ReportSection) {
-    console.debug(`ReportSection ${ command } OK. Return: ${ x }`);
-    if (command === 'Get') {
-      this.reportsectionListModel$.next(<ReportSection[]>x);
-    }
-    if (command === 'Put') {
-      this.reportsectionListModel$.getValue()[0] = <ReportSection>x;
-    }
-    if (command === 'Post') {
-      this.reportsectionListModel$.getValue().push(<ReportSection>x);
-    }
-    if (command === 'Delete') {
-      const index = this.reportsectionListModel$.getValue().indexOf(reportsection);
-      this.reportsectionListModel$.getValue().splice(index, 1);
-    }
-
-    this.reportsectionListModel$.next(this.reportsectionListModel$.getValue());
-    httpRequestModel$.next(<HttpRequestModel>{ Working: false, Error: null, Status: 'ok' });
-    this.reportsectionList = this.reportsectionListModel$.getValue();
-    this.DoReload();
   }
 }

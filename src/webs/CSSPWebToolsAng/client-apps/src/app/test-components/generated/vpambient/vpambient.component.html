@@ -5,7 +5,7 @@
  *
 -->
 
-<mat-progress-bar mode="indeterminate" *ngIf="vpambientService.vpambientGetModel$.getValue().Working"></mat-progress-bar>
+<mat-progress-bar mode="indeterminate" *ngIf="vpambientService.vpambientGetModel$.getValue()?.Working"></mat-progress-bar>
 <mat-card>
   <mat-card-header>
     <mat-card-title>
@@ -17,8 +17,8 @@
     <mat-card-subtitle>{{ vpambientService.vpambientTextModel$.getValue().Title }}</mat-card-subtitle>
   </mat-card-header>
   <mat-card-content>
-    <mat-list>
-      <mat-list-item *ngFor="let vpambient of vpambientService.vpambientList">
+    <mat-list *ngIf="vpambientService.vpambientListModel$.getValue()?.length">
+      <mat-list-item *ngFor="let vpambient of vpambientService.vpambientListModel$.getValue()">
         <span mat-line>
           <button mat-raised-button (click)="DeleteVPAmbient(vpambient)">
             <span>Delete VPAmbientID [{{ vpambient.VPAmbientID }}]&nbsp;&nbsp;&nbsp;</span>
@@ -64,7 +64,7 @@
     <mat-card-title>Edit VPAmbient testing</mat-card-title>
   </mat-card-header>
   <mat-card-content>
-    <div *ngIf="vpambientService.vpambientList.length">
+    <div *ngIf="vpambientService.vpambientListModel$.getValue()?.length">
       <blockquote>
         <form [formGroup]="vpambientFormPut" (ngSubmit)="PutVPAmbient(vpambientFormPut.value)">
           <h3>
@@ -79,68 +79,140 @@
             <mat-form-field>
               <mat-label>VPAmbientID</mat-label>
               <input matInput type="number" formControlName="VPAmbientID">
+              <mat-error *ngIf="vpambientFormPut.controls.VPAmbientID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>VPScenarioID</mat-label>
               <input matInput type="number" formControlName="VPScenarioID">
+              <mat-error *ngIf="vpambientFormPut.controls.VPScenarioID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>Row</mat-label>
               <input matInput type="number" formControlName="Row">
+              <mat-error *ngIf="vpambientFormPut.controls.Row.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+                <span *ngIf="e.min">Min - 0<br /></span>
+                <span *ngIf="e.min">Max - 10<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>MeasurementDepth_m</mat-label>
               <input matInput type="number" formControlName="MeasurementDepth_m">
+              <mat-error *ngIf="vpambientFormPut.controls.MeasurementDepth_m.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.min">Min - 0<br /></span>
+                <span *ngIf="e.min">Max - 1000<br /></span>
+              </mat-error>
             </mat-form-field>
           </p>
           <p>
             <mat-form-field>
               <mat-label>CurrentSpeed_m_s</mat-label>
               <input matInput type="number" formControlName="CurrentSpeed_m_s">
+              <mat-error *ngIf="vpambientFormPut.controls.CurrentSpeed_m_s.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.min">Min - 0<br /></span>
+                <span *ngIf="e.min">Max - 10<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>CurrentDirection_deg</mat-label>
               <input matInput type="number" formControlName="CurrentDirection_deg">
+              <mat-error *ngIf="vpambientFormPut.controls.CurrentDirection_deg.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.min">Min - -180<br /></span>
+                <span *ngIf="e.min">Max - 180<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>AmbientSalinity_PSU</mat-label>
               <input matInput type="number" formControlName="AmbientSalinity_PSU">
+              <mat-error *ngIf="vpambientFormPut.controls.AmbientSalinity_PSU.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.min">Min - 0<br /></span>
+                <span *ngIf="e.min">Max - 40<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>AmbientTemperature_C</mat-label>
               <input matInput type="number" formControlName="AmbientTemperature_C">
+              <mat-error *ngIf="vpambientFormPut.controls.AmbientTemperature_C.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.min">Min - -10<br /></span>
+                <span *ngIf="e.min">Max - 40<br /></span>
+              </mat-error>
             </mat-form-field>
           </p>
           <p>
             <mat-form-field>
               <mat-label>BackgroundConcentration_MPN_100ml</mat-label>
               <input matInput type="number" formControlName="BackgroundConcentration_MPN_100ml">
+              <mat-error *ngIf="vpambientFormPut.controls.BackgroundConcentration_MPN_100ml.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.min">Min - 0<br /></span>
+                <span *ngIf="e.min">Max - 10000000<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>PollutantDecayRate_per_day</mat-label>
               <input matInput type="number" formControlName="PollutantDecayRate_per_day">
+              <mat-error *ngIf="vpambientFormPut.controls.PollutantDecayRate_per_day.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.min">Min - 0<br /></span>
+                <span *ngIf="e.min">Max - 100<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>FarFieldCurrentSpeed_m_s</mat-label>
               <input matInput type="number" formControlName="FarFieldCurrentSpeed_m_s">
+              <mat-error *ngIf="vpambientFormPut.controls.FarFieldCurrentSpeed_m_s.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.min">Min - 0<br /></span>
+                <span *ngIf="e.min">Max - 10<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>FarFieldCurrentDirection_deg</mat-label>
               <input matInput type="number" formControlName="FarFieldCurrentDirection_deg">
+              <mat-error *ngIf="vpambientFormPut.controls.FarFieldCurrentDirection_deg.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.min">Min - -180<br /></span>
+                <span *ngIf="e.min">Max - 180<br /></span>
+              </mat-error>
             </mat-form-field>
           </p>
           <p>
             <mat-form-field>
               <mat-label>FarFieldDiffusionCoefficient</mat-label>
               <input matInput type="number" formControlName="FarFieldDiffusionCoefficient">
+              <mat-error *ngIf="vpambientFormPut.controls.FarFieldDiffusionCoefficient.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.min">Min - 0<br /></span>
+                <span *ngIf="e.min">Max - 1<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>LastUpdateDate_UTC</mat-label>
               <input matInput type="text" formControlName="LastUpdateDate_UTC">
+              <mat-error *ngIf="vpambientFormPut.controls.LastUpdateDate_UTC.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>LastUpdateContactTVItemID</mat-label>
               <input matInput type="number" formControlName="LastUpdateContactTVItemID">
+              <mat-error *ngIf="vpambientFormPut.controls.LastUpdateContactTVItemID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
           </p>
         </form>
@@ -155,7 +227,7 @@
     <mat-card-title>Add VPAmbient testing</mat-card-title>
   </mat-card-header>
   <mat-card-content>
-    <div *ngIf="vpambientService.vpambientList.length">
+    <div *ngIf="vpambientService.vpambientListModel$.getValue()?.length">
       <blockquote>
         <form [formGroup]="vpambientFormPost" (ngSubmit)="PostVPAmbient(vpambientFormPost.value)">
           <h3>
@@ -170,68 +242,140 @@
             <mat-form-field>
               <mat-label>VPAmbientID</mat-label>
               <input matInput type="number" formControlName="VPAmbientID">
+              <mat-error *ngIf="vpambientFormPut.controls.VPAmbientID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>VPScenarioID</mat-label>
               <input matInput type="number" formControlName="VPScenarioID">
+              <mat-error *ngIf="vpambientFormPut.controls.VPScenarioID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>Row</mat-label>
               <input matInput type="number" formControlName="Row">
+              <mat-error *ngIf="vpambientFormPut.controls.Row.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+                <span *ngIf="e.min">Min - 0<br /></span>
+                <span *ngIf="e.min">Max - 10<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>MeasurementDepth_m</mat-label>
               <input matInput type="number" formControlName="MeasurementDepth_m">
+              <mat-error *ngIf="vpambientFormPut.controls.MeasurementDepth_m.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.min">Min - 0<br /></span>
+                <span *ngIf="e.min">Max - 1000<br /></span>
+              </mat-error>
             </mat-form-field>
           </p>
           <p>
             <mat-form-field>
               <mat-label>CurrentSpeed_m_s</mat-label>
               <input matInput type="number" formControlName="CurrentSpeed_m_s">
+              <mat-error *ngIf="vpambientFormPut.controls.CurrentSpeed_m_s.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.min">Min - 0<br /></span>
+                <span *ngIf="e.min">Max - 10<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>CurrentDirection_deg</mat-label>
               <input matInput type="number" formControlName="CurrentDirection_deg">
+              <mat-error *ngIf="vpambientFormPut.controls.CurrentDirection_deg.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.min">Min - -180<br /></span>
+                <span *ngIf="e.min">Max - 180<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>AmbientSalinity_PSU</mat-label>
               <input matInput type="number" formControlName="AmbientSalinity_PSU">
+              <mat-error *ngIf="vpambientFormPut.controls.AmbientSalinity_PSU.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.min">Min - 0<br /></span>
+                <span *ngIf="e.min">Max - 40<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>AmbientTemperature_C</mat-label>
               <input matInput type="number" formControlName="AmbientTemperature_C">
+              <mat-error *ngIf="vpambientFormPut.controls.AmbientTemperature_C.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.min">Min - -10<br /></span>
+                <span *ngIf="e.min">Max - 40<br /></span>
+              </mat-error>
             </mat-form-field>
           </p>
           <p>
             <mat-form-field>
               <mat-label>BackgroundConcentration_MPN_100ml</mat-label>
               <input matInput type="number" formControlName="BackgroundConcentration_MPN_100ml">
+              <mat-error *ngIf="vpambientFormPut.controls.BackgroundConcentration_MPN_100ml.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.min">Min - 0<br /></span>
+                <span *ngIf="e.min">Max - 10000000<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>PollutantDecayRate_per_day</mat-label>
               <input matInput type="number" formControlName="PollutantDecayRate_per_day">
+              <mat-error *ngIf="vpambientFormPut.controls.PollutantDecayRate_per_day.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.min">Min - 0<br /></span>
+                <span *ngIf="e.min">Max - 100<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>FarFieldCurrentSpeed_m_s</mat-label>
               <input matInput type="number" formControlName="FarFieldCurrentSpeed_m_s">
+              <mat-error *ngIf="vpambientFormPut.controls.FarFieldCurrentSpeed_m_s.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.min">Min - 0<br /></span>
+                <span *ngIf="e.min">Max - 10<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>FarFieldCurrentDirection_deg</mat-label>
               <input matInput type="number" formControlName="FarFieldCurrentDirection_deg">
+              <mat-error *ngIf="vpambientFormPut.controls.FarFieldCurrentDirection_deg.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.min">Min - -180<br /></span>
+                <span *ngIf="e.min">Max - 180<br /></span>
+              </mat-error>
             </mat-form-field>
           </p>
           <p>
             <mat-form-field>
               <mat-label>FarFieldDiffusionCoefficient</mat-label>
               <input matInput type="number" formControlName="FarFieldDiffusionCoefficient">
+              <mat-error *ngIf="vpambientFormPut.controls.FarFieldDiffusionCoefficient.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.min">Min - 0<br /></span>
+                <span *ngIf="e.min">Max - 1<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>LastUpdateDate_UTC</mat-label>
               <input matInput type="text" formControlName="LastUpdateDate_UTC">
+              <mat-error *ngIf="vpambientFormPut.controls.LastUpdateDate_UTC.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>LastUpdateContactTVItemID</mat-label>
               <input matInput type="number" formControlName="LastUpdateContactTVItemID">
+              <mat-error *ngIf="vpambientFormPut.controls.LastUpdateContactTVItemID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
           </p>
         </form>

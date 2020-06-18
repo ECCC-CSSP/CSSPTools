@@ -8,12 +8,14 @@
 import { Component, OnInit, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
 import { TVItemUserAuthorizationService } from './tvitemuserauthorization.service';
 import { LoadLocalesTVItemUserAuthorizationText } from './tvitemuserauthorization.locales';
-import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { TVAuthEnum_GetIDText, TVAuthEnum_GetOrderedText } from '../../../enums/generated/TVAuthEnum';
 import { TVItemUserAuthorization } from '../../../models/generated/TVItemUserAuthorization.model';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
 import { EnumIDAndText } from '../../../models/enumidandtext.model';
+import { HttpClientService } from '../../../services/http-client.service';
+import { Router } from '@angular/router';
+import { HttpClientCommand } from '../../../enums/app.enums';
 
 @Component({
   selector: 'app-tvitemuserauthorization',
@@ -27,22 +29,24 @@ export class TVItemUserAuthorizationComponent implements OnInit, OnDestroy {
   tvitemuserauthorizationFormPut: FormGroup;
   tvitemuserauthorizationFormPost: FormGroup;
 
-  constructor(public tvitemuserauthorizationService: TVItemUserAuthorizationService, public router: Router, public fb: FormBuilder) { }
+  constructor(public tvitemuserauthorizationService: TVItemUserAuthorizationService, private router: Router, private httpClientService: HttpClientService, private fb: FormBuilder) {
+    httpClientService.oldURL = router.url;
+  }
 
   GetTVItemUserAuthorizationList() {
-    this.sub = this.tvitemuserauthorizationService.GetTVItemUserAuthorizationList(this.router).subscribe();
+    this.sub = this.tvitemuserauthorizationService.GetTVItemUserAuthorizationList().subscribe();
   }
 
   PutTVItemUserAuthorization(tvitemuserauthorization: TVItemUserAuthorization) {
-    this.sub = this.tvitemuserauthorizationService.PutTVItemUserAuthorization(tvitemuserauthorization, this.router).subscribe();
+    this.sub = this.tvitemuserauthorizationService.PutTVItemUserAuthorization(tvitemuserauthorization).subscribe();
   }
 
   PostTVItemUserAuthorization(tvitemuserauthorization: TVItemUserAuthorization) {
-    this.sub = this.tvitemuserauthorizationService.PostTVItemUserAuthorization(tvitemuserauthorization, this.router).subscribe();
+    this.sub = this.tvitemuserauthorizationService.PostTVItemUserAuthorization(tvitemuserauthorization).subscribe();
   }
 
   DeleteTVItemUserAuthorization(tvitemuserauthorization: TVItemUserAuthorization) {
-    this.sub = this.tvitemuserauthorizationService.DeleteTVItemUserAuthorization(tvitemuserauthorization, this.router).subscribe();
+    this.sub = this.tvitemuserauthorizationService.DeleteTVItemUserAuthorization(tvitemuserauthorization).subscribe();
   }
 
   GetTVAuthEnumText(enumID: number) {
@@ -52,8 +56,8 @@ export class TVItemUserAuthorizationComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     LoadLocalesTVItemUserAuthorizationText(this.tvitemuserauthorizationService);
     this.tVAuthList = TVAuthEnum_GetOrderedText();
-    this.FillFormBuilderGroup('Add');
-    this.FillFormBuilderGroup('Update');
+    this.FillFormBuilderGroup(HttpClientCommand.Post);
+    this.FillFormBuilderGroup(HttpClientCommand.Put);
   }
 
   ngOnDestroy() {
@@ -62,59 +66,59 @@ export class TVItemUserAuthorizationComponent implements OnInit, OnDestroy {
     }
   }
 
-  FillFormBuilderGroup(AddOrUpdate: string) {
-    if (this.tvitemuserauthorizationService.tvitemuserauthorizationList.length) {
+  FillFormBuilderGroup(httpClientCommand: HttpClientCommand) {
+    if (this.tvitemuserauthorizationService.tvitemuserauthorizationListModel$.getValue().length) {
       let formGroup: FormGroup = this.fb.group(
         {
           TVItemUserAuthorizationID: [
             {
-              value: (AddOrUpdate === 'Add' ? 0 : (this.tvitemuserauthorizationService.tvitemuserauthorizationList[0]?.TVItemUserAuthorizationID)),
+              value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.tvitemuserauthorizationService.tvitemuserauthorizationListModel$.getValue()[0]?.TVItemUserAuthorizationID)),
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
           ContactTVItemID: [
             {
-              value: this.tvitemuserauthorizationService.tvitemuserauthorizationList[0]?.ContactTVItemID,
+              value: this.tvitemuserauthorizationService.tvitemuserauthorizationListModel$.getValue()[0]?.ContactTVItemID,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
           TVItemID1: [
             {
-              value: this.tvitemuserauthorizationService.tvitemuserauthorizationList[0]?.TVItemID1,
+              value: this.tvitemuserauthorizationService.tvitemuserauthorizationListModel$.getValue()[0]?.TVItemID1,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
           TVItemID2: [
             {
-              value: this.tvitemuserauthorizationService.tvitemuserauthorizationList[0]?.TVItemID2,
+              value: this.tvitemuserauthorizationService.tvitemuserauthorizationListModel$.getValue()[0]?.TVItemID2,
               disabled: false
-            }, [ Validators.required ]],
+            }],
           TVItemID3: [
             {
-              value: this.tvitemuserauthorizationService.tvitemuserauthorizationList[0]?.TVItemID3,
+              value: this.tvitemuserauthorizationService.tvitemuserauthorizationListModel$.getValue()[0]?.TVItemID3,
               disabled: false
-            }, [ Validators.required ]],
+            }],
           TVItemID4: [
             {
-              value: this.tvitemuserauthorizationService.tvitemuserauthorizationList[0]?.TVItemID4,
+              value: this.tvitemuserauthorizationService.tvitemuserauthorizationListModel$.getValue()[0]?.TVItemID4,
               disabled: false
-            }, [ Validators.required ]],
+            }],
           TVAuth: [
             {
-              value: this.tvitemuserauthorizationService.tvitemuserauthorizationList[0]?.TVAuth,
+              value: this.tvitemuserauthorizationService.tvitemuserauthorizationListModel$.getValue()[0]?.TVAuth,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
           LastUpdateDate_UTC: [
             {
-              value: this.tvitemuserauthorizationService.tvitemuserauthorizationList[0]?.LastUpdateDate_UTC,
+              value: this.tvitemuserauthorizationService.tvitemuserauthorizationListModel$.getValue()[0]?.LastUpdateDate_UTC,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
           LastUpdateContactTVItemID: [
             {
-              value: this.tvitemuserauthorizationService.tvitemuserauthorizationList[0]?.LastUpdateContactTVItemID,
+              value: this.tvitemuserauthorizationService.tvitemuserauthorizationListModel$.getValue()[0]?.LastUpdateContactTVItemID,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
         }
       );
 
-      if (AddOrUpdate === 'Add') {
+      if (httpClientCommand === HttpClientCommand.Post) {
         this.tvitemuserauthorizationFormPost = formGroup
       }
       else {

@@ -9,11 +9,12 @@ import { Injectable } from '@angular/core';
 import { ClimateDataValueTextModel } from './climatedatavalue.models';
 import { BehaviorSubject, of } from 'rxjs';
 import { LoadLocalesClimateDataValueText } from './climatedatavalue.locales';
-import { Router } from '@angular/router';
-import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { map, catchError } from 'rxjs/operators';
 import { ClimateDataValue } from '../../../models/generated/ClimateDataValue.model';
 import { HttpRequestModel } from '../../../models/http.model';
+import { HttpClientService } from '../../../services/http-client.service';
+import { HttpClientCommand } from '../../../enums/app.enums';
 
 @Injectable({
   providedIn: 'root'
@@ -26,110 +27,63 @@ export class ClimateDataValueService {
   climatedatavaluePutModel$: BehaviorSubject<HttpRequestModel> = new BehaviorSubject<HttpRequestModel>(<HttpRequestModel>{});
   climatedatavaluePostModel$: BehaviorSubject<HttpRequestModel> = new BehaviorSubject<HttpRequestModel>(<HttpRequestModel>{});
   climatedatavalueDeleteModel$: BehaviorSubject<HttpRequestModel> = new BehaviorSubject<HttpRequestModel>(<HttpRequestModel>{});
-  climatedatavalueList: ClimateDataValue[] = [];
-  private oldURL: string;
-  private router: Router;
 
   /* Constructors */
-  constructor(private httpClient: HttpClient) {
+  constructor(private httpClient: HttpClient, private httpClientService: HttpClientService) {
     LoadLocalesClimateDataValueText(this);
     this.climatedatavalueTextModel$.next(<ClimateDataValueTextModel>{ Title: "Something2 for text" });
   }
 
   /* Functions public */
-  GetClimateDataValueList(router: Router) {
-    this.BeforeHttpClient(this.climatedatavalueGetModel$, router);
+  GetClimateDataValueList() {
+    this.httpClientService.BeforeHttpClient(this.climatedatavalueGetModel$);
 
     return this.httpClient.get<ClimateDataValue[]>('/api/ClimateDataValue').pipe(
       map((x: any) => {
-        this.DoSuccess(this.climatedatavalueGetModel$, x, 'Get', null);
+        this.httpClientService.DoSuccess<ClimateDataValue>(this.climatedatavalueListModel$, this.climatedatavalueGetModel$, x, HttpClientCommand.Get, null);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.DoCatchError(this.climatedatavalueGetModel$, e, 'Get');
+        this.httpClientService.DoCatchError<ClimateDataValue>(this.climatedatavalueListModel$, this.climatedatavalueGetModel$, e);
       })))
     );
   }
 
-  PutClimateDataValue(climatedatavalue: ClimateDataValue, router: Router) {
-    this.BeforeHttpClient(this.climatedatavaluePutModel$, router);
+  PutClimateDataValue(climatedatavalue: ClimateDataValue) {
+    this.httpClientService.BeforeHttpClient(this.climatedatavaluePutModel$);
 
     return this.httpClient.put<ClimateDataValue>('/api/ClimateDataValue', climatedatavalue, { headers: new HttpHeaders() }).pipe(
       map((x: any) => {
-        this.DoSuccess(this.climatedatavaluePutModel$, x, 'Put', climatedatavalue);
+        this.httpClientService.DoSuccess<ClimateDataValue>(this.climatedatavalueListModel$, this.climatedatavaluePutModel$, x, HttpClientCommand.Put, climatedatavalue);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.DoCatchError(this.climatedatavaluePutModel$, e, 'Put');
+       this.httpClientService.DoCatchError<ClimateDataValue>(this.climatedatavalueListModel$, this.climatedatavaluePutModel$, e);
       })))
     );
   }
 
-  PostClimateDataValue(climatedatavalue: ClimateDataValue, router: Router) {
-    this.BeforeHttpClient(this.climatedatavaluePostModel$, router);
+  PostClimateDataValue(climatedatavalue: ClimateDataValue) {
+    this.httpClientService.BeforeHttpClient(this.climatedatavaluePostModel$);
 
     return this.httpClient.post<ClimateDataValue>('/api/ClimateDataValue', climatedatavalue, { headers: new HttpHeaders() }).pipe(
       map((x: any) => {
-        this.DoSuccess(this.climatedatavaluePostModel$, x, 'Post', climatedatavalue);
+        this.httpClientService.DoSuccess<ClimateDataValue>(this.climatedatavalueListModel$, this.climatedatavaluePostModel$, x, HttpClientCommand.Post, climatedatavalue);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.DoCatchError(this.climatedatavaluePostModel$, e, 'Post');
+        this.httpClientService.DoCatchError<ClimateDataValue>(this.climatedatavalueListModel$, this.climatedatavaluePostModel$, e);
       })))
     );
   }
 
-  DeleteClimateDataValue(climatedatavalue: ClimateDataValue, router: Router) {
-    this.BeforeHttpClient(this.climatedatavalueDeleteModel$, router);
+  DeleteClimateDataValue(climatedatavalue: ClimateDataValue) {
+    this.httpClientService.BeforeHttpClient(this.climatedatavalueDeleteModel$);
 
     return this.httpClient.delete<boolean>(`/api/ClimateDataValue/${ climatedatavalue.ClimateDataValueID }`).pipe(
       map((x: any) => {
-        this.DoSuccess(this.climatedatavalueDeleteModel$, x, 'Delete', climatedatavalue);
+        this.httpClientService.DoSuccess<ClimateDataValue>(this.climatedatavalueListModel$, this.climatedatavalueDeleteModel$, x, HttpClientCommand.Delete, climatedatavalue);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.DoCatchError(this.climatedatavalueDeleteModel$, e, 'Delete');
+        this.httpClientService.DoCatchError<ClimateDataValue>(this.climatedatavalueListModel$, this.climatedatavalueDeleteModel$, e);
       })))
     );
-  }
-
-  /* Functions private */
-  private BeforeHttpClient(httpRequestModel$: BehaviorSubject<HttpRequestModel>, router: Router) {
-    this.router = router;
-    this.oldURL = router.url;
-    httpRequestModel$.next(<HttpRequestModel>{ Working: true, Error: null, Status: null });
-  }
-
-  private DoCatchError(httpRequestModel$: BehaviorSubject<HttpRequestModel>, e: any, command: string) {
-    this.climatedatavalueListModel$.next(null);
-    httpRequestModel$.next(<HttpRequestModel>{ Working: false, Error: <HttpErrorResponse>e, Status: 'Error' });
-
-    this.climatedatavalueList = [];
-    console.debug(`ClimateDataValue ${ command } ERROR. Return: ${ <HttpErrorResponse>e }`);
-    this.DoReload();
-  }
-
-  private DoReload() {
-    this.router.navigateByUrl('', { skipLocationChange: true }).then(() => {
-      this.router.navigate([`/${this.oldURL}`]);
-    });
-  }
-
-  private DoSuccess(httpRequestModel$: BehaviorSubject<HttpRequestModel>, x: any, command: string, climatedatavalue?: ClimateDataValue) {
-    console.debug(`ClimateDataValue ${ command } OK. Return: ${ x }`);
-    if (command === 'Get') {
-      this.climatedatavalueListModel$.next(<ClimateDataValue[]>x);
-    }
-    if (command === 'Put') {
-      this.climatedatavalueListModel$.getValue()[0] = <ClimateDataValue>x;
-    }
-    if (command === 'Post') {
-      this.climatedatavalueListModel$.getValue().push(<ClimateDataValue>x);
-    }
-    if (command === 'Delete') {
-      const index = this.climatedatavalueListModel$.getValue().indexOf(climatedatavalue);
-      this.climatedatavalueListModel$.getValue().splice(index, 1);
-    }
-
-    this.climatedatavalueListModel$.next(this.climatedatavalueListModel$.getValue());
-    httpRequestModel$.next(<HttpRequestModel>{ Working: false, Error: null, Status: 'ok' });
-    this.climatedatavalueList = this.climatedatavalueListModel$.getValue();
-    this.DoReload();
   }
 }

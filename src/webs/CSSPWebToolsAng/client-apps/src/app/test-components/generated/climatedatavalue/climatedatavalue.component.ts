@@ -8,12 +8,14 @@
 import { Component, OnInit, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
 import { ClimateDataValueService } from './climatedatavalue.service';
 import { LoadLocalesClimateDataValueText } from './climatedatavalue.locales';
-import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { StorageDataTypeEnum_GetIDText, StorageDataTypeEnum_GetOrderedText } from '../../../enums/generated/StorageDataTypeEnum';
 import { ClimateDataValue } from '../../../models/generated/ClimateDataValue.model';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
 import { EnumIDAndText } from '../../../models/enumidandtext.model';
+import { HttpClientService } from '../../../services/http-client.service';
+import { Router } from '@angular/router';
+import { HttpClientCommand } from '../../../enums/app.enums';
 
 @Component({
   selector: 'app-climatedatavalue',
@@ -27,22 +29,24 @@ export class ClimateDataValueComponent implements OnInit, OnDestroy {
   climatedatavalueFormPut: FormGroup;
   climatedatavalueFormPost: FormGroup;
 
-  constructor(public climatedatavalueService: ClimateDataValueService, public router: Router, public fb: FormBuilder) { }
+  constructor(public climatedatavalueService: ClimateDataValueService, private router: Router, private httpClientService: HttpClientService, private fb: FormBuilder) {
+    httpClientService.oldURL = router.url;
+  }
 
   GetClimateDataValueList() {
-    this.sub = this.climatedatavalueService.GetClimateDataValueList(this.router).subscribe();
+    this.sub = this.climatedatavalueService.GetClimateDataValueList().subscribe();
   }
 
   PutClimateDataValue(climatedatavalue: ClimateDataValue) {
-    this.sub = this.climatedatavalueService.PutClimateDataValue(climatedatavalue, this.router).subscribe();
+    this.sub = this.climatedatavalueService.PutClimateDataValue(climatedatavalue).subscribe();
   }
 
   PostClimateDataValue(climatedatavalue: ClimateDataValue) {
-    this.sub = this.climatedatavalueService.PostClimateDataValue(climatedatavalue, this.router).subscribe();
+    this.sub = this.climatedatavalueService.PostClimateDataValue(climatedatavalue).subscribe();
   }
 
   DeleteClimateDataValue(climatedatavalue: ClimateDataValue) {
-    this.sub = this.climatedatavalueService.DeleteClimateDataValue(climatedatavalue, this.router).subscribe();
+    this.sub = this.climatedatavalueService.DeleteClimateDataValue(climatedatavalue).subscribe();
   }
 
   GetStorageDataTypeEnumText(enumID: number) {
@@ -52,8 +56,8 @@ export class ClimateDataValueComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     LoadLocalesClimateDataValueText(this.climatedatavalueService);
     this.storageDataTypeList = StorageDataTypeEnum_GetOrderedText();
-    this.FillFormBuilderGroup('Add');
-    this.FillFormBuilderGroup('Update');
+    this.FillFormBuilderGroup(HttpClientCommand.Post);
+    this.FillFormBuilderGroup(HttpClientCommand.Put);
   }
 
   ngOnDestroy() {
@@ -62,114 +66,114 @@ export class ClimateDataValueComponent implements OnInit, OnDestroy {
     }
   }
 
-  FillFormBuilderGroup(AddOrUpdate: string) {
-    if (this.climatedatavalueService.climatedatavalueList.length) {
+  FillFormBuilderGroup(httpClientCommand: HttpClientCommand) {
+    if (this.climatedatavalueService.climatedatavalueListModel$.getValue().length) {
       let formGroup: FormGroup = this.fb.group(
         {
           ClimateDataValueID: [
             {
-              value: (AddOrUpdate === 'Add' ? 0 : (this.climatedatavalueService.climatedatavalueList[0]?.ClimateDataValueID)),
+              value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.climatedatavalueService.climatedatavalueListModel$.getValue()[0]?.ClimateDataValueID)),
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
           ClimateSiteID: [
             {
-              value: this.climatedatavalueService.climatedatavalueList[0]?.ClimateSiteID,
+              value: this.climatedatavalueService.climatedatavalueListModel$.getValue()[0]?.ClimateSiteID,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
           DateTime_Local: [
             {
-              value: this.climatedatavalueService.climatedatavalueList[0]?.DateTime_Local,
+              value: this.climatedatavalueService.climatedatavalueListModel$.getValue()[0]?.DateTime_Local,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
           Keep: [
             {
-              value: this.climatedatavalueService.climatedatavalueList[0]?.Keep,
+              value: this.climatedatavalueService.climatedatavalueListModel$.getValue()[0]?.Keep,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
           StorageDataType: [
             {
-              value: this.climatedatavalueService.climatedatavalueList[0]?.StorageDataType,
+              value: this.climatedatavalueService.climatedatavalueListModel$.getValue()[0]?.StorageDataType,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
           HasBeenRead: [
             {
-              value: this.climatedatavalueService.climatedatavalueList[0]?.HasBeenRead,
+              value: this.climatedatavalueService.climatedatavalueListModel$.getValue()[0]?.HasBeenRead,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
           Snow_cm: [
             {
-              value: this.climatedatavalueService.climatedatavalueList[0]?.Snow_cm,
+              value: this.climatedatavalueService.climatedatavalueListModel$.getValue()[0]?.Snow_cm,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.min(0), Validators.max(10000) ]],
           Rainfall_mm: [
             {
-              value: this.climatedatavalueService.climatedatavalueList[0]?.Rainfall_mm,
+              value: this.climatedatavalueService.climatedatavalueListModel$.getValue()[0]?.Rainfall_mm,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.min(0), Validators.max(10000) ]],
           RainfallEntered_mm: [
             {
-              value: this.climatedatavalueService.climatedatavalueList[0]?.RainfallEntered_mm,
+              value: this.climatedatavalueService.climatedatavalueListModel$.getValue()[0]?.RainfallEntered_mm,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.min(0), Validators.max(10000) ]],
           TotalPrecip_mm_cm: [
             {
-              value: this.climatedatavalueService.climatedatavalueList[0]?.TotalPrecip_mm_cm,
+              value: this.climatedatavalueService.climatedatavalueListModel$.getValue()[0]?.TotalPrecip_mm_cm,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.min(0), Validators.max(10000) ]],
           MaxTemp_C: [
             {
-              value: this.climatedatavalueService.climatedatavalueList[0]?.MaxTemp_C,
+              value: this.climatedatavalueService.climatedatavalueListModel$.getValue()[0]?.MaxTemp_C,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.min(-50), Validators.max(50) ]],
           MinTemp_C: [
             {
-              value: this.climatedatavalueService.climatedatavalueList[0]?.MinTemp_C,
+              value: this.climatedatavalueService.climatedatavalueListModel$.getValue()[0]?.MinTemp_C,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.min(-50), Validators.max(50) ]],
           HeatDegDays_C: [
             {
-              value: this.climatedatavalueService.climatedatavalueList[0]?.HeatDegDays_C,
+              value: this.climatedatavalueService.climatedatavalueListModel$.getValue()[0]?.HeatDegDays_C,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.min(-1000), Validators.max(100) ]],
           CoolDegDays_C: [
             {
-              value: this.climatedatavalueService.climatedatavalueList[0]?.CoolDegDays_C,
+              value: this.climatedatavalueService.climatedatavalueListModel$.getValue()[0]?.CoolDegDays_C,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.min(-1000), Validators.max(100) ]],
           SnowOnGround_cm: [
             {
-              value: this.climatedatavalueService.climatedatavalueList[0]?.SnowOnGround_cm,
+              value: this.climatedatavalueService.climatedatavalueListModel$.getValue()[0]?.SnowOnGround_cm,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.min(0), Validators.max(10000) ]],
           DirMaxGust_0North: [
             {
-              value: this.climatedatavalueService.climatedatavalueList[0]?.DirMaxGust_0North,
+              value: this.climatedatavalueService.climatedatavalueListModel$.getValue()[0]?.DirMaxGust_0North,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.min(0), Validators.max(360) ]],
           SpdMaxGust_kmh: [
             {
-              value: this.climatedatavalueService.climatedatavalueList[0]?.SpdMaxGust_kmh,
+              value: this.climatedatavalueService.climatedatavalueListModel$.getValue()[0]?.SpdMaxGust_kmh,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.min(0), Validators.max(300) ]],
           HourlyValues: [
             {
-              value: this.climatedatavalueService.climatedatavalueList[0]?.HourlyValues,
+              value: this.climatedatavalueService.climatedatavalueListModel$.getValue()[0]?.HourlyValues,
               disabled: false
-            }, [ Validators.required ]],
+            }],
           LastUpdateDate_UTC: [
             {
-              value: this.climatedatavalueService.climatedatavalueList[0]?.LastUpdateDate_UTC,
+              value: this.climatedatavalueService.climatedatavalueListModel$.getValue()[0]?.LastUpdateDate_UTC,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
           LastUpdateContactTVItemID: [
             {
-              value: this.climatedatavalueService.climatedatavalueList[0]?.LastUpdateContactTVItemID,
+              value: this.climatedatavalueService.climatedatavalueListModel$.getValue()[0]?.LastUpdateContactTVItemID,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
         }
       );
 
-      if (AddOrUpdate === 'Add') {
+      if (httpClientCommand === HttpClientCommand.Post) {
         this.climatedatavalueFormPost = formGroup
       }
       else {

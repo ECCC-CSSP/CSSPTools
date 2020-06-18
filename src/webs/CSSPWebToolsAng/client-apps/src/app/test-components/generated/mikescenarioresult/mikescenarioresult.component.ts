@@ -8,10 +8,12 @@
 import { Component, OnInit, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
 import { MikeScenarioResultService } from './mikescenarioresult.service';
 import { LoadLocalesMikeScenarioResultText } from './mikescenarioresult.locales';
-import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { MikeScenarioResult } from '../../../models/generated/MikeScenarioResult.model';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
+import { HttpClientService } from '../../../services/http-client.service';
+import { Router } from '@angular/router';
+import { HttpClientCommand } from '../../../enums/app.enums';
 
 @Component({
   selector: 'app-mikescenarioresult',
@@ -24,28 +26,30 @@ export class MikeScenarioResultComponent implements OnInit, OnDestroy {
   mikescenarioresultFormPut: FormGroup;
   mikescenarioresultFormPost: FormGroup;
 
-  constructor(public mikescenarioresultService: MikeScenarioResultService, public router: Router, public fb: FormBuilder) { }
+  constructor(public mikescenarioresultService: MikeScenarioResultService, private router: Router, private httpClientService: HttpClientService, private fb: FormBuilder) {
+    httpClientService.oldURL = router.url;
+  }
 
   GetMikeScenarioResultList() {
-    this.sub = this.mikescenarioresultService.GetMikeScenarioResultList(this.router).subscribe();
+    this.sub = this.mikescenarioresultService.GetMikeScenarioResultList().subscribe();
   }
 
   PutMikeScenarioResult(mikescenarioresult: MikeScenarioResult) {
-    this.sub = this.mikescenarioresultService.PutMikeScenarioResult(mikescenarioresult, this.router).subscribe();
+    this.sub = this.mikescenarioresultService.PutMikeScenarioResult(mikescenarioresult).subscribe();
   }
 
   PostMikeScenarioResult(mikescenarioresult: MikeScenarioResult) {
-    this.sub = this.mikescenarioresultService.PostMikeScenarioResult(mikescenarioresult, this.router).subscribe();
+    this.sub = this.mikescenarioresultService.PostMikeScenarioResult(mikescenarioresult).subscribe();
   }
 
   DeleteMikeScenarioResult(mikescenarioresult: MikeScenarioResult) {
-    this.sub = this.mikescenarioresultService.DeleteMikeScenarioResult(mikescenarioresult, this.router).subscribe();
+    this.sub = this.mikescenarioresultService.DeleteMikeScenarioResult(mikescenarioresult).subscribe();
   }
 
   ngOnInit(): void {
     LoadLocalesMikeScenarioResultText(this.mikescenarioresultService);
-    this.FillFormBuilderGroup('Add');
-    this.FillFormBuilderGroup('Update');
+    this.FillFormBuilderGroup(HttpClientCommand.Post);
+    this.FillFormBuilderGroup(HttpClientCommand.Put);
   }
 
   ngOnDestroy() {
@@ -54,39 +58,39 @@ export class MikeScenarioResultComponent implements OnInit, OnDestroy {
     }
   }
 
-  FillFormBuilderGroup(AddOrUpdate: string) {
-    if (this.mikescenarioresultService.mikescenarioresultList.length) {
+  FillFormBuilderGroup(httpClientCommand: HttpClientCommand) {
+    if (this.mikescenarioresultService.mikescenarioresultListModel$.getValue().length) {
       let formGroup: FormGroup = this.fb.group(
         {
           MikeScenarioResultID: [
             {
-              value: (AddOrUpdate === 'Add' ? 0 : (this.mikescenarioresultService.mikescenarioresultList[0]?.MikeScenarioResultID)),
+              value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.mikescenarioresultService.mikescenarioresultListModel$.getValue()[0]?.MikeScenarioResultID)),
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
           MikeScenarioTVItemID: [
             {
-              value: this.mikescenarioresultService.mikescenarioresultList[0]?.MikeScenarioTVItemID,
+              value: this.mikescenarioresultService.mikescenarioresultListModel$.getValue()[0]?.MikeScenarioTVItemID,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
           MikeResultsJSON: [
             {
-              value: this.mikescenarioresultService.mikescenarioresultList[0]?.MikeResultsJSON,
+              value: this.mikescenarioresultService.mikescenarioresultListModel$.getValue()[0]?.MikeResultsJSON,
               disabled: false
-            }, [ Validators.required ]],
+            }],
           LastUpdateDate_UTC: [
             {
-              value: this.mikescenarioresultService.mikescenarioresultList[0]?.LastUpdateDate_UTC,
+              value: this.mikescenarioresultService.mikescenarioresultListModel$.getValue()[0]?.LastUpdateDate_UTC,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
           LastUpdateContactTVItemID: [
             {
-              value: this.mikescenarioresultService.mikescenarioresultList[0]?.LastUpdateContactTVItemID,
+              value: this.mikescenarioresultService.mikescenarioresultListModel$.getValue()[0]?.LastUpdateContactTVItemID,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
         }
       );
 
-      if (AddOrUpdate === 'Add') {
+      if (httpClientCommand === HttpClientCommand.Post) {
         this.mikescenarioresultFormPost = formGroup
       }
       else {

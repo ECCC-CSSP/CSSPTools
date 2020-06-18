@@ -5,7 +5,7 @@
  *
 -->
 
-<mat-progress-bar mode="indeterminate" *ngIf="contactService.contactGetModel$.getValue().Working"></mat-progress-bar>
+<mat-progress-bar mode="indeterminate" *ngIf="contactService.contactGetModel$.getValue()?.Working"></mat-progress-bar>
 <mat-card>
   <mat-card-header>
     <mat-card-title>
@@ -17,8 +17,8 @@
     <mat-card-subtitle>{{ contactService.contactTextModel$.getValue().Title }}</mat-card-subtitle>
   </mat-card-header>
   <mat-card-content>
-    <mat-list>
-      <mat-list-item *ngFor="let contact of contactService.contactList">
+    <mat-list *ngIf="contactService.contactListModel$.getValue()?.length">
+      <mat-list-item *ngFor="let contact of contactService.contactListModel$.getValue()">
         <span mat-line>
           <button mat-raised-button (click)="DeleteContact(contact)">
             <span>Delete ContactID [{{ contact.ContactID }}]&nbsp;&nbsp;&nbsp;</span>
@@ -68,7 +68,7 @@
     <mat-card-title>Edit Contact testing</mat-card-title>
   </mat-card-header>
   <mat-card-content>
-    <div *ngIf="contactService.contactList.length">
+    <div *ngIf="contactService.contactListModel$.getValue()?.length">
       <blockquote>
         <form [formGroup]="contactFormPut" (ngSubmit)="PutContact(contactFormPut.value)">
           <h3>
@@ -83,36 +83,75 @@
             <mat-form-field>
               <mat-label>ContactID</mat-label>
               <input matInput type="number" formControlName="ContactID">
+              <mat-error *ngIf="contactFormPut.controls.ContactID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>Id</mat-label>
               <input matInput type="text" formControlName="Id">
+              <mat-error *ngIf="contactFormPut.controls.Id.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+                <span *ngIf="e.maxlength">MaxLength - 128<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>ContactTVItemID</mat-label>
               <input matInput type="number" formControlName="ContactTVItemID">
+              <mat-error *ngIf="contactFormPut.controls.ContactTVItemID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>LoginEmail</mat-label>
               <input matInput type="text" formControlName="LoginEmail">
+              <mat-error *ngIf="contactFormPut.controls.LoginEmail.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+                <span *ngIf="e.email">Need valid Email<br /></span>
+                <span *ngIf="e.minlength">MinLength - 6<br /></span>
+                <span *ngIf="e.maxlength">MaxLength - 255<br /></span>
+              </mat-error>
             </mat-form-field>
           </p>
           <p>
             <mat-form-field>
               <mat-label>FirstName</mat-label>
               <input matInput type="text" formControlName="FirstName">
+              <mat-error *ngIf="contactFormPut.controls.FirstName.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+                <span *ngIf="e.maxlength">MaxLength - 100<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>LastName</mat-label>
               <input matInput type="text" formControlName="LastName">
+              <mat-error *ngIf="contactFormPut.controls.LastName.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+                <span *ngIf="e.maxlength">MaxLength - 100<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>Initial</mat-label>
               <input matInput type="text" formControlName="Initial">
+              <mat-error *ngIf="contactFormPut.controls.Initial.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.maxlength">MaxLength - 50<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>WebName</mat-label>
               <input matInput type="text" formControlName="WebName">
+              <mat-error *ngIf="contactFormPut.controls.WebName.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+                <span *ngIf="e.maxlength">MaxLength - 100<br /></span>
+              </mat-error>
             </mat-form-field>
           </p>
           <p>
@@ -123,42 +162,77 @@
                   {{ a.EnumText }}
                 </mat-option>
               </mat-select>
+              <mat-error *ngIf="contactFormPut.controls.ContactTitle.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>IsAdmin</mat-label>
               <input matInput type="text" formControlName="IsAdmin">
+              <mat-error *ngIf="contactFormPut.controls.IsAdmin.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>EmailValidated</mat-label>
               <input matInput type="text" formControlName="EmailValidated">
+              <mat-error *ngIf="contactFormPut.controls.EmailValidated.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>Disabled</mat-label>
               <input matInput type="text" formControlName="Disabled">
+              <mat-error *ngIf="contactFormPut.controls.Disabled.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
           </p>
           <p>
             <mat-form-field>
               <mat-label>IsNew</mat-label>
               <input matInput type="text" formControlName="IsNew">
+              <mat-error *ngIf="contactFormPut.controls.IsNew.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>SamplingPlanner_ProvincesTVItemID</mat-label>
               <input matInput type="text" formControlName="SamplingPlanner_ProvincesTVItemID">
+              <mat-error *ngIf="contactFormPut.controls.SamplingPlanner_ProvincesTVItemID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.maxlength">MaxLength - 200<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>Token</mat-label>
               <input matInput type="text" formControlName="Token">
+              <mat-error *ngIf="contactFormPut.controls.Token.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.maxlength">MaxLength - 255<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>LastUpdateDate_UTC</mat-label>
               <input matInput type="text" formControlName="LastUpdateDate_UTC">
+              <mat-error *ngIf="contactFormPut.controls.LastUpdateDate_UTC.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
           </p>
           <p>
             <mat-form-field>
               <mat-label>LastUpdateContactTVItemID</mat-label>
               <input matInput type="number" formControlName="LastUpdateContactTVItemID">
+              <mat-error *ngIf="contactFormPut.controls.LastUpdateContactTVItemID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
           </p>
         </form>
@@ -173,7 +247,7 @@
     <mat-card-title>Add Contact testing</mat-card-title>
   </mat-card-header>
   <mat-card-content>
-    <div *ngIf="contactService.contactList.length">
+    <div *ngIf="contactService.contactListModel$.getValue()?.length">
       <blockquote>
         <form [formGroup]="contactFormPost" (ngSubmit)="PostContact(contactFormPost.value)">
           <h3>
@@ -188,36 +262,75 @@
             <mat-form-field>
               <mat-label>ContactID</mat-label>
               <input matInput type="number" formControlName="ContactID">
+              <mat-error *ngIf="contactFormPut.controls.ContactID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>Id</mat-label>
               <input matInput type="text" formControlName="Id">
+              <mat-error *ngIf="contactFormPut.controls.Id.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+                <span *ngIf="e.maxlength">MaxLength - 128<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>ContactTVItemID</mat-label>
               <input matInput type="number" formControlName="ContactTVItemID">
+              <mat-error *ngIf="contactFormPut.controls.ContactTVItemID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>LoginEmail</mat-label>
               <input matInput type="text" formControlName="LoginEmail">
+              <mat-error *ngIf="contactFormPut.controls.LoginEmail.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+                <span *ngIf="e.email">Need valid Email<br /></span>
+                <span *ngIf="e.minlength">MinLength - 6<br /></span>
+                <span *ngIf="e.maxlength">MaxLength - 255<br /></span>
+              </mat-error>
             </mat-form-field>
           </p>
           <p>
             <mat-form-field>
               <mat-label>FirstName</mat-label>
               <input matInput type="text" formControlName="FirstName">
+              <mat-error *ngIf="contactFormPut.controls.FirstName.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+                <span *ngIf="e.maxlength">MaxLength - 100<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>LastName</mat-label>
               <input matInput type="text" formControlName="LastName">
+              <mat-error *ngIf="contactFormPut.controls.LastName.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+                <span *ngIf="e.maxlength">MaxLength - 100<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>Initial</mat-label>
               <input matInput type="text" formControlName="Initial">
+              <mat-error *ngIf="contactFormPut.controls.Initial.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.maxlength">MaxLength - 50<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>WebName</mat-label>
               <input matInput type="text" formControlName="WebName">
+              <mat-error *ngIf="contactFormPut.controls.WebName.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+                <span *ngIf="e.maxlength">MaxLength - 100<br /></span>
+              </mat-error>
             </mat-form-field>
           </p>
           <p>
@@ -228,42 +341,77 @@
                   {{ a.EnumText }}
                 </mat-option>
               </mat-select>
+              <mat-error *ngIf="contactFormPut.controls.ContactTitle.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>IsAdmin</mat-label>
               <input matInput type="text" formControlName="IsAdmin">
+              <mat-error *ngIf="contactFormPut.controls.IsAdmin.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>EmailValidated</mat-label>
               <input matInput type="text" formControlName="EmailValidated">
+              <mat-error *ngIf="contactFormPut.controls.EmailValidated.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>Disabled</mat-label>
               <input matInput type="text" formControlName="Disabled">
+              <mat-error *ngIf="contactFormPut.controls.Disabled.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
           </p>
           <p>
             <mat-form-field>
               <mat-label>IsNew</mat-label>
               <input matInput type="text" formControlName="IsNew">
+              <mat-error *ngIf="contactFormPut.controls.IsNew.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>SamplingPlanner_ProvincesTVItemID</mat-label>
               <input matInput type="text" formControlName="SamplingPlanner_ProvincesTVItemID">
+              <mat-error *ngIf="contactFormPut.controls.SamplingPlanner_ProvincesTVItemID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.maxlength">MaxLength - 200<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>Token</mat-label>
               <input matInput type="text" formControlName="Token">
+              <mat-error *ngIf="contactFormPut.controls.Token.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.maxlength">MaxLength - 255<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>LastUpdateDate_UTC</mat-label>
               <input matInput type="text" formControlName="LastUpdateDate_UTC">
+              <mat-error *ngIf="contactFormPut.controls.LastUpdateDate_UTC.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
           </p>
           <p>
             <mat-form-field>
               <mat-label>LastUpdateContactTVItemID</mat-label>
               <input matInput type="number" formControlName="LastUpdateContactTVItemID">
+              <mat-error *ngIf="contactFormPut.controls.LastUpdateContactTVItemID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
           </p>
         </form>

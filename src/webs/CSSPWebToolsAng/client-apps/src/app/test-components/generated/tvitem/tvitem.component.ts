@@ -8,12 +8,14 @@
 import { Component, OnInit, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
 import { TVItemService } from './tvitem.service';
 import { LoadLocalesTVItemText } from './tvitem.locales';
-import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { TVTypeEnum_GetIDText, TVTypeEnum_GetOrderedText } from '../../../enums/generated/TVTypeEnum';
 import { TVItem } from '../../../models/generated/TVItem.model';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
 import { EnumIDAndText } from '../../../models/enumidandtext.model';
+import { HttpClientService } from '../../../services/http-client.service';
+import { Router } from '@angular/router';
+import { HttpClientCommand } from '../../../enums/app.enums';
 
 @Component({
   selector: 'app-tvitem',
@@ -27,22 +29,24 @@ export class TVItemComponent implements OnInit, OnDestroy {
   tvitemFormPut: FormGroup;
   tvitemFormPost: FormGroup;
 
-  constructor(public tvitemService: TVItemService, public router: Router, public fb: FormBuilder) { }
+  constructor(public tvitemService: TVItemService, private router: Router, private httpClientService: HttpClientService, private fb: FormBuilder) {
+    httpClientService.oldURL = router.url;
+  }
 
   GetTVItemList() {
-    this.sub = this.tvitemService.GetTVItemList(this.router).subscribe();
+    this.sub = this.tvitemService.GetTVItemList().subscribe();
   }
 
   PutTVItem(tvitem: TVItem) {
-    this.sub = this.tvitemService.PutTVItem(tvitem, this.router).subscribe();
+    this.sub = this.tvitemService.PutTVItem(tvitem).subscribe();
   }
 
   PostTVItem(tvitem: TVItem) {
-    this.sub = this.tvitemService.PostTVItem(tvitem, this.router).subscribe();
+    this.sub = this.tvitemService.PostTVItem(tvitem).subscribe();
   }
 
   DeleteTVItem(tvitem: TVItem) {
-    this.sub = this.tvitemService.DeleteTVItem(tvitem, this.router).subscribe();
+    this.sub = this.tvitemService.DeleteTVItem(tvitem).subscribe();
   }
 
   GetTVTypeEnumText(enumID: number) {
@@ -52,8 +56,8 @@ export class TVItemComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     LoadLocalesTVItemText(this.tvitemService);
     this.tVTypeList = TVTypeEnum_GetOrderedText();
-    this.FillFormBuilderGroup('Add');
-    this.FillFormBuilderGroup('Update');
+    this.FillFormBuilderGroup(HttpClientCommand.Post);
+    this.FillFormBuilderGroup(HttpClientCommand.Put);
   }
 
   ngOnDestroy() {
@@ -62,54 +66,54 @@ export class TVItemComponent implements OnInit, OnDestroy {
     }
   }
 
-  FillFormBuilderGroup(AddOrUpdate: string) {
-    if (this.tvitemService.tvitemList.length) {
+  FillFormBuilderGroup(httpClientCommand: HttpClientCommand) {
+    if (this.tvitemService.tvitemListModel$.getValue().length) {
       let formGroup: FormGroup = this.fb.group(
         {
           TVItemID: [
             {
-              value: (AddOrUpdate === 'Add' ? 0 : (this.tvitemService.tvitemList[0]?.TVItemID)),
+              value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.tvitemService.tvitemListModel$.getValue()[0]?.TVItemID)),
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
           TVLevel: [
             {
-              value: this.tvitemService.tvitemList[0]?.TVLevel,
+              value: this.tvitemService.tvitemListModel$.getValue()[0]?.TVLevel,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required, Validators.min(0), Validators.max(100) ]],
           TVPath: [
             {
-              value: this.tvitemService.tvitemList[0]?.TVPath,
+              value: this.tvitemService.tvitemListModel$.getValue()[0]?.TVPath,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required, Validators.maxLength(250) ]],
           TVType: [
             {
-              value: this.tvitemService.tvitemList[0]?.TVType,
+              value: this.tvitemService.tvitemListModel$.getValue()[0]?.TVType,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
           ParentID: [
             {
-              value: this.tvitemService.tvitemList[0]?.ParentID,
+              value: this.tvitemService.tvitemListModel$.getValue()[0]?.ParentID,
               disabled: false
-            }, [ Validators.required ]],
+            }],
           IsActive: [
             {
-              value: this.tvitemService.tvitemList[0]?.IsActive,
+              value: this.tvitemService.tvitemListModel$.getValue()[0]?.IsActive,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
           LastUpdateDate_UTC: [
             {
-              value: this.tvitemService.tvitemList[0]?.LastUpdateDate_UTC,
+              value: this.tvitemService.tvitemListModel$.getValue()[0]?.LastUpdateDate_UTC,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
           LastUpdateContactTVItemID: [
             {
-              value: this.tvitemService.tvitemList[0]?.LastUpdateContactTVItemID,
+              value: this.tvitemService.tvitemListModel$.getValue()[0]?.LastUpdateContactTVItemID,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
         }
       );
 
-      if (AddOrUpdate === 'Add') {
+      if (httpClientCommand === HttpClientCommand.Post) {
         this.tvitemFormPost = formGroup
       }
       else {

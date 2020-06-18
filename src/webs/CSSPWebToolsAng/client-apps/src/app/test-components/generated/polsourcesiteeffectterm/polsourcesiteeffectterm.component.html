@@ -5,7 +5,7 @@
  *
 -->
 
-<mat-progress-bar mode="indeterminate" *ngIf="polsourcesiteeffecttermService.polsourcesiteeffecttermGetModel$.getValue().Working"></mat-progress-bar>
+<mat-progress-bar mode="indeterminate" *ngIf="polsourcesiteeffecttermService.polsourcesiteeffecttermGetModel$.getValue()?.Working"></mat-progress-bar>
 <mat-card>
   <mat-card-header>
     <mat-card-title>
@@ -17,8 +17,8 @@
     <mat-card-subtitle>{{ polsourcesiteeffecttermService.polsourcesiteeffecttermTextModel$.getValue().Title }}</mat-card-subtitle>
   </mat-card-header>
   <mat-card-content>
-    <mat-list>
-      <mat-list-item *ngFor="let polsourcesiteeffectterm of polsourcesiteeffecttermService.polsourcesiteeffecttermList">
+    <mat-list *ngIf="polsourcesiteeffecttermService.polsourcesiteeffecttermListModel$.getValue()?.length">
+      <mat-list-item *ngFor="let polsourcesiteeffectterm of polsourcesiteeffecttermService.polsourcesiteeffecttermListModel$.getValue()">
         <span mat-line>
           <button mat-raised-button (click)="DeletePolSourceSiteEffectTerm(polsourcesiteeffectterm)">
             <span>Delete PolSourceSiteEffectTermID [{{ polsourcesiteeffectterm.PolSourceSiteEffectTermID }}]&nbsp;&nbsp;&nbsp;</span>
@@ -52,7 +52,7 @@
     <mat-card-title>Edit PolSourceSiteEffectTerm testing</mat-card-title>
   </mat-card-header>
   <mat-card-content>
-    <div *ngIf="polsourcesiteeffecttermService.polsourcesiteeffecttermList.length">
+    <div *ngIf="polsourcesiteeffecttermService.polsourcesiteeffecttermListModel$.getValue()?.length">
       <blockquote>
         <form [formGroup]="polsourcesiteeffecttermFormPut" (ngSubmit)="PutPolSourceSiteEffectTerm(polsourcesiteeffecttermFormPut.value)">
           <h3>
@@ -67,32 +67,61 @@
             <mat-form-field>
               <mat-label>PolSourceSiteEffectTermID</mat-label>
               <input matInput type="number" formControlName="PolSourceSiteEffectTermID">
+              <mat-error *ngIf="polsourcesiteeffecttermFormPut.controls.PolSourceSiteEffectTermID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>IsGroup</mat-label>
               <input matInput type="text" formControlName="IsGroup">
+              <mat-error *ngIf="polsourcesiteeffecttermFormPut.controls.IsGroup.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>UnderGroupID</mat-label>
               <input matInput type="number" formControlName="UnderGroupID">
+              <mat-error *ngIf="polsourcesiteeffecttermFormPut.controls.UnderGroupID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>EffectTermEN</mat-label>
               <input matInput type="text" formControlName="EffectTermEN">
+              <mat-error *ngIf="polsourcesiteeffecttermFormPut.controls.EffectTermEN.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+                <span *ngIf="e.maxlength">MaxLength - 100<br /></span>
+              </mat-error>
             </mat-form-field>
           </p>
           <p>
             <mat-form-field>
               <mat-label>EffectTermFR</mat-label>
               <input matInput type="text" formControlName="EffectTermFR">
+              <mat-error *ngIf="polsourcesiteeffecttermFormPut.controls.EffectTermFR.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+                <span *ngIf="e.maxlength">MaxLength - 100<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>LastUpdateDate_UTC</mat-label>
               <input matInput type="text" formControlName="LastUpdateDate_UTC">
+              <mat-error *ngIf="polsourcesiteeffecttermFormPut.controls.LastUpdateDate_UTC.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>LastUpdateContactTVItemID</mat-label>
               <input matInput type="number" formControlName="LastUpdateContactTVItemID">
+              <mat-error *ngIf="polsourcesiteeffecttermFormPut.controls.LastUpdateContactTVItemID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
           </p>
         </form>
@@ -107,7 +136,7 @@
     <mat-card-title>Add PolSourceSiteEffectTerm testing</mat-card-title>
   </mat-card-header>
   <mat-card-content>
-    <div *ngIf="polsourcesiteeffecttermService.polsourcesiteeffecttermList.length">
+    <div *ngIf="polsourcesiteeffecttermService.polsourcesiteeffecttermListModel$.getValue()?.length">
       <blockquote>
         <form [formGroup]="polsourcesiteeffecttermFormPost" (ngSubmit)="PostPolSourceSiteEffectTerm(polsourcesiteeffecttermFormPost.value)">
           <h3>
@@ -122,32 +151,61 @@
             <mat-form-field>
               <mat-label>PolSourceSiteEffectTermID</mat-label>
               <input matInput type="number" formControlName="PolSourceSiteEffectTermID">
+              <mat-error *ngIf="polsourcesiteeffecttermFormPut.controls.PolSourceSiteEffectTermID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>IsGroup</mat-label>
               <input matInput type="text" formControlName="IsGroup">
+              <mat-error *ngIf="polsourcesiteeffecttermFormPut.controls.IsGroup.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>UnderGroupID</mat-label>
               <input matInput type="number" formControlName="UnderGroupID">
+              <mat-error *ngIf="polsourcesiteeffecttermFormPut.controls.UnderGroupID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>EffectTermEN</mat-label>
               <input matInput type="text" formControlName="EffectTermEN">
+              <mat-error *ngIf="polsourcesiteeffecttermFormPut.controls.EffectTermEN.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+                <span *ngIf="e.maxlength">MaxLength - 100<br /></span>
+              </mat-error>
             </mat-form-field>
           </p>
           <p>
             <mat-form-field>
               <mat-label>EffectTermFR</mat-label>
               <input matInput type="text" formControlName="EffectTermFR">
+              <mat-error *ngIf="polsourcesiteeffecttermFormPut.controls.EffectTermFR.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+                <span *ngIf="e.maxlength">MaxLength - 100<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>LastUpdateDate_UTC</mat-label>
               <input matInput type="text" formControlName="LastUpdateDate_UTC">
+              <mat-error *ngIf="polsourcesiteeffecttermFormPut.controls.LastUpdateDate_UTC.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>LastUpdateContactTVItemID</mat-label>
               <input matInput type="number" formControlName="LastUpdateContactTVItemID">
+              <mat-error *ngIf="polsourcesiteeffecttermFormPut.controls.LastUpdateContactTVItemID.errors; let e;">
+                <span>{{ e | json }}<br /></span>
+                <span *ngIf="e.required">Is Required<br /></span>
+              </mat-error>
             </mat-form-field>
           </p>
         </form>

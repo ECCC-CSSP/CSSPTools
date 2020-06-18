@@ -9,11 +9,12 @@ import { Injectable } from '@angular/core';
 import { TideDataValueTextModel } from './tidedatavalue.models';
 import { BehaviorSubject, of } from 'rxjs';
 import { LoadLocalesTideDataValueText } from './tidedatavalue.locales';
-import { Router } from '@angular/router';
-import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { map, catchError } from 'rxjs/operators';
 import { TideDataValue } from '../../../models/generated/TideDataValue.model';
 import { HttpRequestModel } from '../../../models/http.model';
+import { HttpClientService } from '../../../services/http-client.service';
+import { HttpClientCommand } from '../../../enums/app.enums';
 
 @Injectable({
   providedIn: 'root'
@@ -26,110 +27,63 @@ export class TideDataValueService {
   tidedatavaluePutModel$: BehaviorSubject<HttpRequestModel> = new BehaviorSubject<HttpRequestModel>(<HttpRequestModel>{});
   tidedatavaluePostModel$: BehaviorSubject<HttpRequestModel> = new BehaviorSubject<HttpRequestModel>(<HttpRequestModel>{});
   tidedatavalueDeleteModel$: BehaviorSubject<HttpRequestModel> = new BehaviorSubject<HttpRequestModel>(<HttpRequestModel>{});
-  tidedatavalueList: TideDataValue[] = [];
-  private oldURL: string;
-  private router: Router;
 
   /* Constructors */
-  constructor(private httpClient: HttpClient) {
+  constructor(private httpClient: HttpClient, private httpClientService: HttpClientService) {
     LoadLocalesTideDataValueText(this);
     this.tidedatavalueTextModel$.next(<TideDataValueTextModel>{ Title: "Something2 for text" });
   }
 
   /* Functions public */
-  GetTideDataValueList(router: Router) {
-    this.BeforeHttpClient(this.tidedatavalueGetModel$, router);
+  GetTideDataValueList() {
+    this.httpClientService.BeforeHttpClient(this.tidedatavalueGetModel$);
 
     return this.httpClient.get<TideDataValue[]>('/api/TideDataValue').pipe(
       map((x: any) => {
-        this.DoSuccess(this.tidedatavalueGetModel$, x, 'Get', null);
+        this.httpClientService.DoSuccess<TideDataValue>(this.tidedatavalueListModel$, this.tidedatavalueGetModel$, x, HttpClientCommand.Get, null);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.DoCatchError(this.tidedatavalueGetModel$, e, 'Get');
+        this.httpClientService.DoCatchError<TideDataValue>(this.tidedatavalueListModel$, this.tidedatavalueGetModel$, e);
       })))
     );
   }
 
-  PutTideDataValue(tidedatavalue: TideDataValue, router: Router) {
-    this.BeforeHttpClient(this.tidedatavaluePutModel$, router);
+  PutTideDataValue(tidedatavalue: TideDataValue) {
+    this.httpClientService.BeforeHttpClient(this.tidedatavaluePutModel$);
 
     return this.httpClient.put<TideDataValue>('/api/TideDataValue', tidedatavalue, { headers: new HttpHeaders() }).pipe(
       map((x: any) => {
-        this.DoSuccess(this.tidedatavaluePutModel$, x, 'Put', tidedatavalue);
+        this.httpClientService.DoSuccess<TideDataValue>(this.tidedatavalueListModel$, this.tidedatavaluePutModel$, x, HttpClientCommand.Put, tidedatavalue);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.DoCatchError(this.tidedatavaluePutModel$, e, 'Put');
+       this.httpClientService.DoCatchError<TideDataValue>(this.tidedatavalueListModel$, this.tidedatavaluePutModel$, e);
       })))
     );
   }
 
-  PostTideDataValue(tidedatavalue: TideDataValue, router: Router) {
-    this.BeforeHttpClient(this.tidedatavaluePostModel$, router);
+  PostTideDataValue(tidedatavalue: TideDataValue) {
+    this.httpClientService.BeforeHttpClient(this.tidedatavaluePostModel$);
 
     return this.httpClient.post<TideDataValue>('/api/TideDataValue', tidedatavalue, { headers: new HttpHeaders() }).pipe(
       map((x: any) => {
-        this.DoSuccess(this.tidedatavaluePostModel$, x, 'Post', tidedatavalue);
+        this.httpClientService.DoSuccess<TideDataValue>(this.tidedatavalueListModel$, this.tidedatavaluePostModel$, x, HttpClientCommand.Post, tidedatavalue);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.DoCatchError(this.tidedatavaluePostModel$, e, 'Post');
+        this.httpClientService.DoCatchError<TideDataValue>(this.tidedatavalueListModel$, this.tidedatavaluePostModel$, e);
       })))
     );
   }
 
-  DeleteTideDataValue(tidedatavalue: TideDataValue, router: Router) {
-    this.BeforeHttpClient(this.tidedatavalueDeleteModel$, router);
+  DeleteTideDataValue(tidedatavalue: TideDataValue) {
+    this.httpClientService.BeforeHttpClient(this.tidedatavalueDeleteModel$);
 
     return this.httpClient.delete<boolean>(`/api/TideDataValue/${ tidedatavalue.TideDataValueID }`).pipe(
       map((x: any) => {
-        this.DoSuccess(this.tidedatavalueDeleteModel$, x, 'Delete', tidedatavalue);
+        this.httpClientService.DoSuccess<TideDataValue>(this.tidedatavalueListModel$, this.tidedatavalueDeleteModel$, x, HttpClientCommand.Delete, tidedatavalue);
       }),
       catchError(e => of(e).pipe(map(e => {
-        this.DoCatchError(this.tidedatavalueDeleteModel$, e, 'Delete');
+        this.httpClientService.DoCatchError<TideDataValue>(this.tidedatavalueListModel$, this.tidedatavalueDeleteModel$, e);
       })))
     );
-  }
-
-  /* Functions private */
-  private BeforeHttpClient(httpRequestModel$: BehaviorSubject<HttpRequestModel>, router: Router) {
-    this.router = router;
-    this.oldURL = router.url;
-    httpRequestModel$.next(<HttpRequestModel>{ Working: true, Error: null, Status: null });
-  }
-
-  private DoCatchError(httpRequestModel$: BehaviorSubject<HttpRequestModel>, e: any, command: string) {
-    this.tidedatavalueListModel$.next(null);
-    httpRequestModel$.next(<HttpRequestModel>{ Working: false, Error: <HttpErrorResponse>e, Status: 'Error' });
-
-    this.tidedatavalueList = [];
-    console.debug(`TideDataValue ${ command } ERROR. Return: ${ <HttpErrorResponse>e }`);
-    this.DoReload();
-  }
-
-  private DoReload() {
-    this.router.navigateByUrl('', { skipLocationChange: true }).then(() => {
-      this.router.navigate([`/${this.oldURL}`]);
-    });
-  }
-
-  private DoSuccess(httpRequestModel$: BehaviorSubject<HttpRequestModel>, x: any, command: string, tidedatavalue?: TideDataValue) {
-    console.debug(`TideDataValue ${ command } OK. Return: ${ x }`);
-    if (command === 'Get') {
-      this.tidedatavalueListModel$.next(<TideDataValue[]>x);
-    }
-    if (command === 'Put') {
-      this.tidedatavalueListModel$.getValue()[0] = <TideDataValue>x;
-    }
-    if (command === 'Post') {
-      this.tidedatavalueListModel$.getValue().push(<TideDataValue>x);
-    }
-    if (command === 'Delete') {
-      const index = this.tidedatavalueListModel$.getValue().indexOf(tidedatavalue);
-      this.tidedatavalueListModel$.getValue().splice(index, 1);
-    }
-
-    this.tidedatavalueListModel$.next(this.tidedatavalueListModel$.getValue());
-    httpRequestModel$.next(<HttpRequestModel>{ Working: false, Error: null, Status: 'ok' });
-    this.tidedatavalueList = this.tidedatavalueListModel$.getValue();
-    this.DoReload();
   }
 }

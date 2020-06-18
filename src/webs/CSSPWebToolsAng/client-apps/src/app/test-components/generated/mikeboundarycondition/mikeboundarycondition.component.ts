@@ -8,7 +8,6 @@
 import { Component, OnInit, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
 import { MikeBoundaryConditionService } from './mikeboundarycondition.service';
 import { LoadLocalesMikeBoundaryConditionText } from './mikeboundarycondition.locales';
-import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { MikeBoundaryConditionLevelOrVelocityEnum_GetIDText, MikeBoundaryConditionLevelOrVelocityEnum_GetOrderedText } from '../../../enums/generated/MikeBoundaryConditionLevelOrVelocityEnum';
 import { WebTideDataSetEnum_GetIDText, WebTideDataSetEnum_GetOrderedText } from '../../../enums/generated/WebTideDataSetEnum';
@@ -16,6 +15,9 @@ import { TVTypeEnum_GetIDText, TVTypeEnum_GetOrderedText } from '../../../enums/
 import { MikeBoundaryCondition } from '../../../models/generated/MikeBoundaryCondition.model';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
 import { EnumIDAndText } from '../../../models/enumidandtext.model';
+import { HttpClientService } from '../../../services/http-client.service';
+import { Router } from '@angular/router';
+import { HttpClientCommand } from '../../../enums/app.enums';
 
 @Component({
   selector: 'app-mikeboundarycondition',
@@ -31,22 +33,24 @@ export class MikeBoundaryConditionComponent implements OnInit, OnDestroy {
   mikeboundaryconditionFormPut: FormGroup;
   mikeboundaryconditionFormPost: FormGroup;
 
-  constructor(public mikeboundaryconditionService: MikeBoundaryConditionService, public router: Router, public fb: FormBuilder) { }
+  constructor(public mikeboundaryconditionService: MikeBoundaryConditionService, private router: Router, private httpClientService: HttpClientService, private fb: FormBuilder) {
+    httpClientService.oldURL = router.url;
+  }
 
   GetMikeBoundaryConditionList() {
-    this.sub = this.mikeboundaryconditionService.GetMikeBoundaryConditionList(this.router).subscribe();
+    this.sub = this.mikeboundaryconditionService.GetMikeBoundaryConditionList().subscribe();
   }
 
   PutMikeBoundaryCondition(mikeboundarycondition: MikeBoundaryCondition) {
-    this.sub = this.mikeboundaryconditionService.PutMikeBoundaryCondition(mikeboundarycondition, this.router).subscribe();
+    this.sub = this.mikeboundaryconditionService.PutMikeBoundaryCondition(mikeboundarycondition).subscribe();
   }
 
   PostMikeBoundaryCondition(mikeboundarycondition: MikeBoundaryCondition) {
-    this.sub = this.mikeboundaryconditionService.PostMikeBoundaryCondition(mikeboundarycondition, this.router).subscribe();
+    this.sub = this.mikeboundaryconditionService.PostMikeBoundaryCondition(mikeboundarycondition).subscribe();
   }
 
   DeleteMikeBoundaryCondition(mikeboundarycondition: MikeBoundaryCondition) {
-    this.sub = this.mikeboundaryconditionService.DeleteMikeBoundaryCondition(mikeboundarycondition, this.router).subscribe();
+    this.sub = this.mikeboundaryconditionService.DeleteMikeBoundaryCondition(mikeboundarycondition).subscribe();
   }
 
   GetMikeBoundaryConditionLevelOrVelocityEnumText(enumID: number) {
@@ -66,8 +70,8 @@ export class MikeBoundaryConditionComponent implements OnInit, OnDestroy {
     this.mikeBoundaryConditionLevelOrVelocityList = MikeBoundaryConditionLevelOrVelocityEnum_GetOrderedText();
     this.webTideDataSetList = WebTideDataSetEnum_GetOrderedText();
     this.tVTypeList = TVTypeEnum_GetOrderedText();
-    this.FillFormBuilderGroup('Add');
-    this.FillFormBuilderGroup('Update');
+    this.FillFormBuilderGroup(HttpClientCommand.Post);
+    this.FillFormBuilderGroup(HttpClientCommand.Put);
   }
 
   ngOnDestroy() {
@@ -76,79 +80,79 @@ export class MikeBoundaryConditionComponent implements OnInit, OnDestroy {
     }
   }
 
-  FillFormBuilderGroup(AddOrUpdate: string) {
-    if (this.mikeboundaryconditionService.mikeboundaryconditionList.length) {
+  FillFormBuilderGroup(httpClientCommand: HttpClientCommand) {
+    if (this.mikeboundaryconditionService.mikeboundaryconditionListModel$.getValue().length) {
       let formGroup: FormGroup = this.fb.group(
         {
           MikeBoundaryConditionID: [
             {
-              value: (AddOrUpdate === 'Add' ? 0 : (this.mikeboundaryconditionService.mikeboundaryconditionList[0]?.MikeBoundaryConditionID)),
+              value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.mikeboundaryconditionService.mikeboundaryconditionListModel$.getValue()[0]?.MikeBoundaryConditionID)),
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
           MikeBoundaryConditionTVItemID: [
             {
-              value: this.mikeboundaryconditionService.mikeboundaryconditionList[0]?.MikeBoundaryConditionTVItemID,
+              value: this.mikeboundaryconditionService.mikeboundaryconditionListModel$.getValue()[0]?.MikeBoundaryConditionTVItemID,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
           MikeBoundaryConditionCode: [
             {
-              value: this.mikeboundaryconditionService.mikeboundaryconditionList[0]?.MikeBoundaryConditionCode,
+              value: this.mikeboundaryconditionService.mikeboundaryconditionListModel$.getValue()[0]?.MikeBoundaryConditionCode,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required, Validators.maxLength(100) ]],
           MikeBoundaryConditionName: [
             {
-              value: this.mikeboundaryconditionService.mikeboundaryconditionList[0]?.MikeBoundaryConditionName,
+              value: this.mikeboundaryconditionService.mikeboundaryconditionListModel$.getValue()[0]?.MikeBoundaryConditionName,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required, Validators.maxLength(100) ]],
           MikeBoundaryConditionLength_m: [
             {
-              value: this.mikeboundaryconditionService.mikeboundaryconditionList[0]?.MikeBoundaryConditionLength_m,
+              value: this.mikeboundaryconditionService.mikeboundaryconditionListModel$.getValue()[0]?.MikeBoundaryConditionLength_m,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required, Validators.min(1), Validators.max(100000) ]],
           MikeBoundaryConditionFormat: [
             {
-              value: this.mikeboundaryconditionService.mikeboundaryconditionList[0]?.MikeBoundaryConditionFormat,
+              value: this.mikeboundaryconditionService.mikeboundaryconditionListModel$.getValue()[0]?.MikeBoundaryConditionFormat,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required, Validators.maxLength(100) ]],
           MikeBoundaryConditionLevelOrVelocity: [
             {
-              value: this.mikeboundaryconditionService.mikeboundaryconditionList[0]?.MikeBoundaryConditionLevelOrVelocity,
+              value: this.mikeboundaryconditionService.mikeboundaryconditionListModel$.getValue()[0]?.MikeBoundaryConditionLevelOrVelocity,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
           WebTideDataSet: [
             {
-              value: this.mikeboundaryconditionService.mikeboundaryconditionList[0]?.WebTideDataSet,
+              value: this.mikeboundaryconditionService.mikeboundaryconditionListModel$.getValue()[0]?.WebTideDataSet,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
           NumberOfWebTideNodes: [
             {
-              value: this.mikeboundaryconditionService.mikeboundaryconditionList[0]?.NumberOfWebTideNodes,
+              value: this.mikeboundaryconditionService.mikeboundaryconditionListModel$.getValue()[0]?.NumberOfWebTideNodes,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required, Validators.min(0), Validators.max(1000) ]],
           WebTideDataFromStartToEndDate: [
             {
-              value: this.mikeboundaryconditionService.mikeboundaryconditionList[0]?.WebTideDataFromStartToEndDate,
+              value: this.mikeboundaryconditionService.mikeboundaryconditionListModel$.getValue()[0]?.WebTideDataFromStartToEndDate,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
           TVType: [
             {
-              value: this.mikeboundaryconditionService.mikeboundaryconditionList[0]?.TVType,
+              value: this.mikeboundaryconditionService.mikeboundaryconditionListModel$.getValue()[0]?.TVType,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
           LastUpdateDate_UTC: [
             {
-              value: this.mikeboundaryconditionService.mikeboundaryconditionList[0]?.LastUpdateDate_UTC,
+              value: this.mikeboundaryconditionService.mikeboundaryconditionListModel$.getValue()[0]?.LastUpdateDate_UTC,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
           LastUpdateContactTVItemID: [
             {
-              value: this.mikeboundaryconditionService.mikeboundaryconditionList[0]?.LastUpdateContactTVItemID,
+              value: this.mikeboundaryconditionService.mikeboundaryconditionListModel$.getValue()[0]?.LastUpdateContactTVItemID,
               disabled: false
-            }, [ Validators.required ]],
+            }, [  Validators.required ]],
         }
       );
 
-      if (AddOrUpdate === 'Add') {
+      if (httpClientCommand === HttpClientCommand.Post) {
         this.mikeboundaryconditionFormPost = formGroup
       }
       else {
