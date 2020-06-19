@@ -41,7 +41,7 @@
         <span *ngIf="e.required">Is Required<br /></span>
       </mat-error>
     </mat-form-field>
-  <mat-form-field>
+    <mat-form-field>
       <mat-label>RunSampleType</mat-label>
       <mat-select formControlName="RunSampleType">
         <mat-option *ngFor="let a of runSampleTypeList" [value]="a.EnumID">
@@ -114,7 +114,7 @@
         <span *ngIf="e.min">Max - 40<br /></span>
       </mat-error>
     </mat-form-field>
-  <mat-form-field>
+    <mat-form-field>
       <mat-label>SeaStateAtStart_BeaufortScale</mat-label>
       <mat-select formControlName="SeaStateAtStart_BeaufortScale">
         <mat-option *ngFor="let a of seaStateAtStart_BeaufortScaleList" [value]="a.EnumID">
@@ -127,7 +127,7 @@
     </mat-form-field>
   </p>
   <p>
-  <mat-form-field>
+    <mat-form-field>
       <mat-label>SeaStateAtEnd_BeaufortScale</mat-label>
       <mat-select formControlName="SeaStateAtEnd_BeaufortScale">
         <mat-option *ngFor="let a of seaStateAtEnd_BeaufortScaleList" [value]="a.EnumID">
@@ -175,7 +175,7 @@
         <span *ngIf="e.maxlength">MaxLength - 20<br /></span>
       </mat-error>
     </mat-form-field>
-  <mat-form-field>
+    <mat-form-field>
       <mat-label>AnalyzeMethod</mat-label>
       <mat-select formControlName="AnalyzeMethod">
         <mat-option *ngFor="let a of analyzeMethodList" [value]="a.EnumID">
@@ -186,7 +186,7 @@
         <span>{{ e | json }}<br /></span>
       </mat-error>
     </mat-form-field>
-  <mat-form-field>
+    <mat-form-field>
       <mat-label>SampleMatrix</mat-label>
       <mat-select formControlName="SampleMatrix">
         <mat-option *ngFor="let a of sampleMatrixList" [value]="a.EnumID">
@@ -197,7 +197,7 @@
         <span>{{ e | json }}<br /></span>
       </mat-error>
     </mat-form-field>
-  <mat-form-field>
+    <mat-form-field>
       <mat-label>Laboratory</mat-label>
       <mat-select formControlName="Laboratory">
         <mat-option *ngFor="let a of laboratoryList" [value]="a.EnumID">
@@ -210,7 +210,7 @@
     </mat-form-field>
   </p>
   <p>
-  <mat-form-field>
+    <mat-form-field>
       <mat-label>SampleStatus</mat-label>
       <mat-select formControlName="SampleStatus">
         <mat-option *ngFor="let a of sampleStatusList" [value]="a.EnumID">
@@ -258,7 +258,7 @@
         <span>{{ e | json }}<br /></span>
       </mat-error>
     </mat-form-field>
-  <mat-form-field>
+    <mat-form-field>
       <mat-label>Tide_Start</mat-label>
       <mat-select formControlName="Tide_Start">
         <mat-option *ngFor="let a of tide_StartList" [value]="a.EnumID">
@@ -269,7 +269,7 @@
         <span>{{ e | json }}<br /></span>
       </mat-error>
     </mat-form-field>
-  <mat-form-field>
+    <mat-form-field>
       <mat-label>Tide_End</mat-label>
       <mat-select formControlName="Tide_End">
         <mat-option *ngFor="let a of tide_EndList" [value]="a.EnumID">

@@ -33,7 +33,7 @@
         <span *ngIf="e.required">Is Required<br /></span>
       </mat-error>
     </mat-form-field>
-  <mat-form-field>
+    <mat-form-field>
       <mat-label>TVType</mat-label>
       <mat-select formControlName="TVType">
         <mat-option *ngFor="let a of tVTypeList" [value]="a.EnumID">
@@ -87,7 +87,7 @@
         <span *ngIf="e.min">Max - 180<br /></span>
       </mat-error>
     </mat-form-field>
-  <mat-form-field>
+    <mat-form-field>
       <mat-label>MapInfoDrawType</mat-label>
       <mat-select formControlName="MapInfoDrawType">
         <mat-option *ngFor="let a of mapInfoDrawTypeList" [value]="a.EnumID">

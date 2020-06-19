@@ -53,7 +53,7 @@
     </mat-form-field>
   </p>
   <p>
-  <mat-form-field>
+    <mat-form-field>
       <mat-label>SampleType</mat-label>
       <mat-select formControlName="SampleType">
         <mat-option *ngFor="let a of sampleTypeList" [value]="a.EnumID">
@@ -65,7 +65,7 @@
         <span *ngIf="e.required">Is Required<br /></span>
       </mat-error>
     </mat-form-field>
-  <mat-form-field>
+    <mat-form-field>
       <mat-label>SamplingPlanType</mat-label>
       <mat-select formControlName="SamplingPlanType">
         <mat-option *ngFor="let a of samplingPlanTypeList" [value]="a.EnumID">
@@ -77,7 +77,7 @@
         <span *ngIf="e.required">Is Required<br /></span>
       </mat-error>
     </mat-form-field>
-  <mat-form-field>
+    <mat-form-field>
       <mat-label>LabSheetType</mat-label>
       <mat-select formControlName="LabSheetType">
         <mat-option *ngFor="let a of labSheetTypeList" [value]="a.EnumID">
@@ -174,7 +174,7 @@
     </mat-form-field>
   </p>
   <p>
-  <mat-form-field>
+    <mat-form-field>
       <mat-label>AnalyzeMethodDefault</mat-label>
       <mat-select formControlName="AnalyzeMethodDefault">
         <mat-option *ngFor="let a of analyzeMethodDefaultList" [value]="a.EnumID">
@@ -185,7 +185,7 @@
         <span>{{ e | json }}<br /></span>
       </mat-error>
     </mat-form-field>
-  <mat-form-field>
+    <mat-form-field>
       <mat-label>SampleMatrixDefault</mat-label>
       <mat-select formControlName="SampleMatrixDefault">
         <mat-option *ngFor="let a of sampleMatrixDefaultList" [value]="a.EnumID">
@@ -196,7 +196,7 @@
         <span>{{ e | json }}<br /></span>
       </mat-error>
     </mat-form-field>
-  <mat-form-field>
+    <mat-form-field>
       <mat-label>LaboratoryDefault</mat-label>
       <mat-select formControlName="LaboratoryDefault">
         <mat-option *ngFor="let a of laboratoryDefaultList" [value]="a.EnumID">

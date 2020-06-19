@@ -33,7 +33,7 @@
         <span *ngIf="e.required">Is Required<br /></span>
       </mat-error>
     </mat-form-field>
-  <mat-form-field>
+    <mat-form-field>
       <mat-label>Language</mat-label>
       <mat-select formControlName="Language">
         <mat-option *ngFor="let a of languageList" [value]="a.EnumID">
@@ -66,7 +66,7 @@
         <span *ngIf="e.min">Max - 1000<br /></span>
       </mat-error>
     </mat-form-field>
-  <mat-form-field>
+    <mat-form-field>
       <mat-label>TranslationStatusSourceName</mat-label>
       <mat-select formControlName="TranslationStatusSourceName">
         <mat-option *ngFor="let a of translationStatusSourceNameList" [value]="a.EnumID">
@@ -87,7 +87,7 @@
         <span *ngIf="e.maxlength">MaxLength - 50<br /></span>
       </mat-error>
     </mat-form-field>
-  <mat-form-field>
+    <mat-form-field>
       <mat-label>TranslationStatusInit</mat-label>
       <mat-select formControlName="TranslationStatusInit">
         <mat-option *ngFor="let a of translationStatusInitList" [value]="a.EnumID">
@@ -110,7 +110,7 @@
         <span *ngIf="e.maxlength">MaxLength - 250<br /></span>
       </mat-error>
     </mat-form-field>
-  <mat-form-field>
+    <mat-form-field>
       <mat-label>TranslationStatusDescription</mat-label>
       <mat-select formControlName="TranslationStatusDescription">
         <mat-option *ngFor="let a of translationStatusDescriptionList" [value]="a.EnumID">
@@ -131,7 +131,7 @@
         <span *ngIf="e.maxlength">MaxLength - 250<br /></span>
       </mat-error>
     </mat-form-field>
-  <mat-form-field>
+    <mat-form-field>
       <mat-label>TranslationStatusReport</mat-label>
       <mat-select formControlName="TranslationStatusReport">
         <mat-option *ngFor="let a of translationStatusReportList" [value]="a.EnumID">
@@ -154,7 +154,7 @@
         <span *ngIf="e.maxlength">MaxLength - 250<br /></span>
       </mat-error>
     </mat-form-field>
-  <mat-form-field>
+    <mat-form-field>
       <mat-label>TranslationStatusText</mat-label>
       <mat-select formControlName="TranslationStatusText">
         <mat-option *ngFor="let a of translationStatusTextList" [value]="a.EnumID">

@@ -33,7 +33,7 @@
         <span *ngIf="e.required">Is Required<br /></span>
       </mat-error>
     </mat-form-field>
-  <mat-form-field>
+    <mat-form-field>
       <mat-label>AddressType</mat-label>
       <mat-select formControlName="AddressType">
         <mat-option *ngFor="let a of addressTypeList" [value]="a.EnumID">
@@ -89,7 +89,7 @@
     </mat-form-field>
   </p>
   <p>
-  <mat-form-field>
+    <mat-form-field>
       <mat-label>StreetType</mat-label>
       <mat-select formControlName="StreetType">
         <mat-option *ngFor="let a of streetTypeList" [value]="a.EnumID">

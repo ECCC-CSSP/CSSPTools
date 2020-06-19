@@ -78,7 +78,7 @@
         <span *ngIf="e.required">Is Required<br /></span>
       </mat-error>
     </mat-form-field>
-  <mat-form-field>
+    <mat-form-field>
       <mat-label>InactiveReason</mat-label>
       <mat-select formControlName="InactiveReason">
         <mat-option *ngFor="let a of inactiveReasonList" [value]="a.EnumID">

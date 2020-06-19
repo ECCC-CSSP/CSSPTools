@@ -33,7 +33,7 @@
         <span *ngIf="e.required">Is Required<br /></span>
       </mat-error>
     </mat-form-field>
-  <mat-form-field>
+    <mat-form-field>
       <mat-label>TemplateTVType</mat-label>
       <mat-select formControlName="TemplateTVType">
         <mat-option *ngFor="let a of templateTVTypeList" [value]="a.EnumID">
@@ -69,7 +69,7 @@
         <span *ngIf="e.min">Max - 2050<br /></span>
       </mat-error>
     </mat-form-field>
-  <mat-form-field>
+    <mat-form-field>
       <mat-label>Language</mat-label>
       <mat-select formControlName="Language">
         <mat-option *ngFor="let a of languageList" [value]="a.EnumID">
@@ -81,7 +81,7 @@
         <span *ngIf="e.required">Is Required<br /></span>
       </mat-error>
     </mat-form-field>
-  <mat-form-field>
+    <mat-form-field>
       <mat-label>FilePurpose</mat-label>
       <mat-select formControlName="FilePurpose">
         <mat-option *ngFor="let a of filePurposeList" [value]="a.EnumID">
@@ -95,7 +95,7 @@
     </mat-form-field>
   </p>
   <p>
-  <mat-form-field>
+    <mat-form-field>
       <mat-label>FileType</mat-label>
       <mat-select formControlName="FileType">
         <mat-option *ngFor="let a of fileTypeList" [value]="a.EnumID">

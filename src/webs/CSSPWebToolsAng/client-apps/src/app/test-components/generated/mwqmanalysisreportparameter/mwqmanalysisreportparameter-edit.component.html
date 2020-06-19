@@ -70,7 +70,7 @@
         <span *ngIf="e.required">Is Required<br /></span>
       </mat-error>
     </mat-form-field>
-  <mat-form-field>
+    <mat-form-field>
       <mat-label>AnalysisCalculationType</mat-label>
       <mat-select formControlName="AnalysisCalculationType">
         <mat-option *ngFor="let a of analysisCalculationTypeList" [value]="a.EnumID">
@@ -242,7 +242,7 @@
         <span>{{ e | json }}<br /></span>
       </mat-error>
     </mat-form-field>
-  <mat-form-field>
+    <mat-form-field>
       <mat-label>Command</mat-label>
       <mat-select formControlName="Command">
         <mat-option *ngFor="let a of commandList" [value]="a.EnumID">

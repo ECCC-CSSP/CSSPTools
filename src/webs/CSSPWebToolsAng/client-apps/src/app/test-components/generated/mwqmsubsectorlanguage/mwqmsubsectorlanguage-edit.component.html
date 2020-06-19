@@ -33,7 +33,7 @@
         <span *ngIf="e.required">Is Required<br /></span>
       </mat-error>
     </mat-form-field>
-  <mat-form-field>
+    <mat-form-field>
       <mat-label>Language</mat-label>
       <mat-select formControlName="Language">
         <mat-option *ngFor="let a of languageList" [value]="a.EnumID">
@@ -56,7 +56,7 @@
     </mat-form-field>
   </p>
   <p>
-  <mat-form-field>
+    <mat-form-field>
       <mat-label>TranslationStatusSubsectorDesc</mat-label>
       <mat-select formControlName="TranslationStatusSubsectorDesc">
         <mat-option *ngFor="let a of translationStatusSubsectorDescList" [value]="a.EnumID">
@@ -75,7 +75,7 @@
         <span>{{ e | json }}<br /></span>
       </mat-error>
     </mat-form-field>
-  <mat-form-field>
+    <mat-form-field>
       <mat-label>TranslationStatusLogBook</mat-label>
       <mat-select formControlName="TranslationStatusLogBook">
         <mat-option *ngFor="let a of translationStatusLogBookList" [value]="a.EnumID">

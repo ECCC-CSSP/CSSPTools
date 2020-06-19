@@ -42,7 +42,7 @@
         <span *ngIf="e.maxlength">MaxLength - 50<br /></span>
       </mat-error>
     </mat-form-field>
-  <mat-form-field>
+    <mat-form-field>
       <mat-label>TelType</mat-label>
       <mat-select formControlName="TelType">
         <mat-option *ngFor="let a of telTypeList" [value]="a.EnumID">

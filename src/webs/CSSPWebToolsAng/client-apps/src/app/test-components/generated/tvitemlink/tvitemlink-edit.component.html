@@ -41,7 +41,7 @@
         <span *ngIf="e.required">Is Required<br /></span>
       </mat-error>
     </mat-form-field>
-  <mat-form-field>
+    <mat-form-field>
       <mat-label>FromTVType</mat-label>
       <mat-select formControlName="FromTVType">
         <mat-option *ngFor="let a of fromTVTypeList" [value]="a.EnumID">
@@ -55,7 +55,7 @@
     </mat-form-field>
   </p>
   <p>
-  <mat-form-field>
+    <mat-form-field>
       <mat-label>ToTVType</mat-label>
       <mat-select formControlName="ToTVType">
         <mat-option *ngFor="let a of toTVTypeList" [value]="a.EnumID">

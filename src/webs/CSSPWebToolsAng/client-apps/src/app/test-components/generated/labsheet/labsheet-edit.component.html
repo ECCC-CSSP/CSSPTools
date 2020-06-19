@@ -110,7 +110,7 @@
         <span>{{ e | json }}<br /></span>
       </mat-error>
     </mat-form-field>
-  <mat-form-field>
+    <mat-form-field>
       <mat-label>SamplingPlanType</mat-label>
       <mat-select formControlName="SamplingPlanType">
         <mat-option *ngFor="let a of samplingPlanTypeList" [value]="a.EnumID">
@@ -122,7 +122,7 @@
         <span *ngIf="e.required">Is Required<br /></span>
       </mat-error>
     </mat-form-field>
-  <mat-form-field>
+    <mat-form-field>
       <mat-label>SampleType</mat-label>
       <mat-select formControlName="SampleType">
         <mat-option *ngFor="let a of sampleTypeList" [value]="a.EnumID">
@@ -136,7 +136,7 @@
     </mat-form-field>
   </p>
   <p>
-  <mat-form-field>
+    <mat-form-field>
       <mat-label>LabSheetType</mat-label>
       <mat-select formControlName="LabSheetType">
         <mat-option *ngFor="let a of labSheetTypeList" [value]="a.EnumID">
@@ -148,7 +148,7 @@
         <span *ngIf="e.required">Is Required<br /></span>
       </mat-error>
     </mat-form-field>
-  <mat-form-field>
+    <mat-form-field>
       <mat-label>LabSheetStatus</mat-label>
       <mat-select formControlName="LabSheetStatus">
         <mat-option *ngFor="let a of labSheetStatusList" [value]="a.EnumID">

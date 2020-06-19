@@ -41,7 +41,7 @@
         <span *ngIf="e.required">Is Required<br /></span>
       </mat-error>
     </mat-form-field>
-  <mat-form-field>
+    <mat-form-field>
       <mat-label>AppTaskCommand</mat-label>
       <mat-select formControlName="AppTaskCommand">
         <mat-option *ngFor="let a of appTaskCommandList" [value]="a.EnumID">
@@ -55,7 +55,7 @@
     </mat-form-field>
   </p>
   <p>
-  <mat-form-field>
+    <mat-form-field>
       <mat-label>AppTaskStatus</mat-label>
       <mat-select formControlName="AppTaskStatus">
         <mat-option *ngFor="let a of appTaskStatusList" [value]="a.EnumID">
@@ -85,7 +85,7 @@
         <span *ngIf="e.required">Is Required<br /></span>
       </mat-error>
     </mat-form-field>
-  <mat-form-field>
+    <mat-form-field>
       <mat-label>Language</mat-label>
       <mat-select formControlName="Language">
         <mat-option *ngFor="let a of languageList" [value]="a.EnumID">

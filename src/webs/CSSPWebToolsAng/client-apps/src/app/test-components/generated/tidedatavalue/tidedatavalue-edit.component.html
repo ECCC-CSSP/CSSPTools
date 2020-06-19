@@ -51,7 +51,7 @@
     </mat-form-field>
   </p>
   <p>
-  <mat-form-field>
+    <mat-form-field>
       <mat-label>TideDataType</mat-label>
       <mat-select formControlName="TideDataType">
         <mat-option *ngFor="let a of tideDataTypeList" [value]="a.EnumID">
@@ -63,7 +63,7 @@
         <span *ngIf="e.required">Is Required<br /></span>
       </mat-error>
     </mat-form-field>
-  <mat-form-field>
+    <mat-form-field>
       <mat-label>StorageDataType</mat-label>
       <mat-select formControlName="StorageDataType">
         <mat-option *ngFor="let a of storageDataTypeList" [value]="a.EnumID">
@@ -107,7 +107,7 @@
         <span *ngIf="e.min">Max - 10<br /></span>
       </mat-error>
     </mat-form-field>
-  <mat-form-field>
+    <mat-form-field>
       <mat-label>TideStart</mat-label>
       <mat-select formControlName="TideStart">
         <mat-option *ngFor="let a of tideStartList" [value]="a.EnumID">
@@ -118,7 +118,7 @@
         <span>{{ e | json }}<br /></span>
       </mat-error>
     </mat-form-field>
-  <mat-form-field>
+    <mat-form-field>
       <mat-label>TideEnd</mat-label>
       <mat-select formControlName="TideEnd">
         <mat-option *ngFor="let a of tideEndList" [value]="a.EnumID">

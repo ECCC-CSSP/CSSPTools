@@ -72,7 +72,7 @@
         <span *ngIf="e.maxlength">MaxLength - 100<br /></span>
       </mat-error>
     </mat-form-field>
-  <mat-form-field>
+    <mat-form-field>
       <mat-label>MikeBoundaryConditionLevelOrVelocity</mat-label>
       <mat-select formControlName="MikeBoundaryConditionLevelOrVelocity">
         <mat-option *ngFor="let a of mikeBoundaryConditionLevelOrVelocityList" [value]="a.EnumID">
@@ -84,7 +84,7 @@
         <span *ngIf="e.required">Is Required<br /></span>
       </mat-error>
     </mat-form-field>
-  <mat-form-field>
+    <mat-form-field>
       <mat-label>WebTideDataSet</mat-label>
       <mat-select formControlName="WebTideDataSet">
         <mat-option *ngFor="let a of webTideDataSetList" [value]="a.EnumID">
@@ -116,7 +116,7 @@
         <span *ngIf="e.required">Is Required<br /></span>
       </mat-error>
     </mat-form-field>
-  <mat-form-field>
+    <mat-form-field>
       <mat-label>TVType</mat-label>
       <mat-select formControlName="TVType">
         <mat-option *ngFor="let a of tVTypeList" [value]="a.EnumID">

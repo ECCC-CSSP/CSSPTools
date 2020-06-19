@@ -33,7 +33,7 @@
         <span *ngIf="e.required">Is Required<br /></span>
       </mat-error>
     </mat-form-field>
-  <mat-form-field>
+    <mat-form-field>
       <mat-label>ClassificationType</mat-label>
       <mat-select formControlName="ClassificationType">
         <mat-option *ngFor="let a of classificationTypeList" [value]="a.EnumID">

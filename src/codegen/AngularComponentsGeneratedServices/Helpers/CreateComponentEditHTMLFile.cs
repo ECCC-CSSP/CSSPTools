@@ -58,7 +58,7 @@ namespace AngularComponentsGeneratedServices.Services
 
                 if (dllPropertyInfo.CSSPProp.HasCSSPEnumTypeAttribute)
                 {
-                    sb.AppendLine(@"  <mat-form-field>");
+                    sb.AppendLine(@"    <mat-form-field>");
                     sb.AppendLine($@"      <mat-label>{ dllPropertyInfo.CSSPProp.PropName }</mat-label>");
 
                     CreateMatSelectHTML(dllPropertyInfo, sb);
