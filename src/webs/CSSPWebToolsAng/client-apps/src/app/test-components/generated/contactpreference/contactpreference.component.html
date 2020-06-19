@@ -17,192 +17,44 @@
     <mat-card-subtitle>{{ contactpreferenceService.contactpreferenceTextModel$.getValue().Title }}</mat-card-subtitle>
   </mat-card-header>
   <mat-card-content>
-    <mat-list *ngIf="contactpreferenceService.contactpreferenceListModel$.getValue()?.length">
-      <mat-list-item *ngFor="let contactpreference of contactpreferenceService.contactpreferenceListModel$.getValue()">
-        <span mat-line>
+    <div *ngIf="contactpreferenceService.contactpreferenceListModel$.getValue()?.length">
+      <div *ngFor="let contactpreference of contactpreferenceService.contactpreferenceListModel$.getValue()">
+        <p>
           <button mat-raised-button (click)="DeleteContactPreference(contactpreference)">
             <span>Delete ContactPreferenceID [{{ contactpreference.ContactPreferenceID }}]&nbsp;&nbsp;&nbsp;</span>
             <mat-icon>delete</mat-icon>
-          </button>
+          </button>&nbsp;&nbsp;&nbsp;
+          <button mat-raised-button [color]="GetPutButtonColor(contactpreference)"(click)="ShowPut(contactpreference)">
+            <span>Show Put</span>
+          </button>&nbsp;&nbsp;
+          <button mat-raised-button [color]="GetPostButtonColor(contactpreference)"(click)="ShowPost(contactpreference)">
+            <span>Show Post</span>
+          </button>&nbsp;&nbsp;
           <mat-progress-bar mode="indeterminate" *ngIf="contactpreferenceService.contactpreferenceDeleteModel$.getValue().Working">
           </mat-progress-bar>
-          </span>
-        <span mat-line>
+        </p>
+        <p *ngIf="IDToShow === contactpreference.ContactPreferenceID && showType === GetPutEnum()">
+          <app-contactpreference-edit [contactpreference]="contactpreference" [httpClientCommand]="GetPutEnum()"></app-contactpreference-edit>
+        </p>
+        <p *ngIf="IDToShow === contactpreference.ContactPreferenceID && showType === GetPostEnum()">
+          <app-contactpreference-edit [contactpreference]="contactpreference" [httpClientCommand]="GetPostEnum()"></app-contactpreference-edit>
+        </p>
+        <blockquote>
+        <p>
           <span>ContactPreferenceID: [{{ contactpreference.ContactPreferenceID }}]</span>
           <span> --- ContactID: [{{ contactpreference.ContactID }}]</span>
           <span> --- TVType: [{{ GetTVTypeEnumText(contactpreference.TVType) }}]</span>
           <span> --- MarkerSize: [{{ contactpreference.MarkerSize }}]</span>
-        </span>
-        <span mat-line>
+ </p>
+        <p>
           <span>LastUpdateDate_UTC: [{{ contactpreference.LastUpdateDate_UTC }}]</span>
           <span> --- LastUpdateContactTVItemID: [{{ contactpreference.LastUpdateContactTVItemID }}]</span>
-        </span>
-       </mat-list-item>
-     </mat-list>
+        </p>
+        </blockquote>
+       </div>
+     </div>
    </mat-card-content>
  <mat-card-actions>
    <button mat-button>Allo</button>
  </mat-card-actions>
-</mat-card>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<mat-card>
-  <mat-card-header>
-    <mat-card-title>Edit ContactPreference testing</mat-card-title>
-  </mat-card-header>
-  <mat-card-content>
-    <div *ngIf="contactpreferenceService.contactpreferenceListModel$.getValue()?.length">
-      <blockquote>
-        <form [formGroup]="contactpreferenceFormPut" (ngSubmit)="PutContactPreference(contactpreferenceFormPut.value)">
-          <h3>
-            ContactPreference
-            <button mat-raised-button type="submit">
-              <span>Update ContactPreference</span>
-            </button>
-            <mat-progress-bar mode="indeterminate" *ngIf="contactpreferenceService.contactpreferencePutModel$.getValue().Working">
-            </mat-progress-bar>
-          </h3>
-          <p>
-            <mat-form-field>
-              <mat-label>ContactPreferenceID</mat-label>
-              <input matInput type="number" formControlName="ContactPreferenceID">
-              <mat-error *ngIf="contactpreferenceFormPut.controls.ContactPreferenceID.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>ContactID</mat-label>
-              <input matInput type="number" formControlName="ContactID">
-              <mat-error *ngIf="contactpreferenceFormPut.controls.ContactID.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>TVType</mat-label>
-              <mat-select formControlName="TVType">
-                <mat-option *ngFor="let a of tVTypeList" [value]="a.EnumID">
-                  {{ a.EnumText }}
-                </mat-option>
-              </mat-select>
-              <mat-error *ngIf="contactpreferenceFormPut.controls.TVType.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>MarkerSize</mat-label>
-              <input matInput type="number" formControlName="MarkerSize">
-              <mat-error *ngIf="contactpreferenceFormPut.controls.MarkerSize.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-                <span *ngIf="e.min">Min - 1<br /></span>
-                <span *ngIf="e.min">Max - 1000<br /></span>
-              </mat-error>
-            </mat-form-field>
-          </p>
-          <p>
-            <mat-form-field>
-              <mat-label>LastUpdateDate_UTC</mat-label>
-              <input matInput type="text" formControlName="LastUpdateDate_UTC">
-              <mat-error *ngIf="contactpreferenceFormPut.controls.LastUpdateDate_UTC.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>LastUpdateContactTVItemID</mat-label>
-              <input matInput type="number" formControlName="LastUpdateContactTVItemID">
-              <mat-error *ngIf="contactpreferenceFormPut.controls.LastUpdateContactTVItemID.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-          </p>
-        </form>
-      </blockquote>
-    </div>
-  </mat-card-content>
-</mat-card>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<mat-card>
-  <mat-card-header>
-    <mat-card-title>Add ContactPreference testing</mat-card-title>
-  </mat-card-header>
-  <mat-card-content>
-    <div *ngIf="contactpreferenceService.contactpreferenceListModel$.getValue()?.length">
-      <blockquote>
-        <form [formGroup]="contactpreferenceFormPost" (ngSubmit)="PostContactPreference(contactpreferenceFormPost.value)">
-          <h3>
-            ContactPreference
-            <button mat-raised-button type="submit">
-              <span>Add ContactPreference</span>
-            </button>
-            <mat-progress-bar mode="indeterminate" *ngIf="contactpreferenceService.contactpreferencePostModel$.getValue().Working">
-            </mat-progress-bar>
-          </h3>
-          <p>
-            <mat-form-field>
-              <mat-label>ContactPreferenceID</mat-label>
-              <input matInput type="number" formControlName="ContactPreferenceID">
-              <mat-error *ngIf="contactpreferenceFormPut.controls.ContactPreferenceID.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>ContactID</mat-label>
-              <input matInput type="number" formControlName="ContactID">
-              <mat-error *ngIf="contactpreferenceFormPut.controls.ContactID.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>TVType</mat-label>
-              <mat-select formControlName="TVType">
-                <mat-option *ngFor="let a of tVTypeList" [value]="a.EnumID">
-                  {{ a.EnumText }}
-                </mat-option>
-              </mat-select>
-              <mat-error *ngIf="contactpreferenceFormPut.controls.TVType.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>MarkerSize</mat-label>
-              <input matInput type="number" formControlName="MarkerSize">
-              <mat-error *ngIf="contactpreferenceFormPut.controls.MarkerSize.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-                <span *ngIf="e.min">Min - 1<br /></span>
-                <span *ngIf="e.min">Max - 1000<br /></span>
-              </mat-error>
-            </mat-form-field>
-          </p>
-          <p>
-            <mat-form-field>
-              <mat-label>LastUpdateDate_UTC</mat-label>
-              <input matInput type="text" formControlName="LastUpdateDate_UTC">
-              <mat-error *ngIf="contactpreferenceFormPut.controls.LastUpdateDate_UTC.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>LastUpdateContactTVItemID</mat-label>
-              <input matInput type="number" formControlName="LastUpdateContactTVItemID">
-              <mat-error *ngIf="contactpreferenceFormPut.controls.LastUpdateContactTVItemID.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-          </p>
-        </form>
-      </blockquote>
-    </div>
-  </mat-card-content>
 </mat-card>

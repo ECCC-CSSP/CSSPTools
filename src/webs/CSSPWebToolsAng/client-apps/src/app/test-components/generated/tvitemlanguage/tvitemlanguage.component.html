@@ -17,215 +17,45 @@
     <mat-card-subtitle>{{ tvitemlanguageService.tvitemlanguageTextModel$.getValue().Title }}</mat-card-subtitle>
   </mat-card-header>
   <mat-card-content>
-    <mat-list *ngIf="tvitemlanguageService.tvitemlanguageListModel$.getValue()?.length">
-      <mat-list-item *ngFor="let tvitemlanguage of tvitemlanguageService.tvitemlanguageListModel$.getValue()">
-        <span mat-line>
+    <div *ngIf="tvitemlanguageService.tvitemlanguageListModel$.getValue()?.length">
+      <div *ngFor="let tvitemlanguage of tvitemlanguageService.tvitemlanguageListModel$.getValue()">
+        <p>
           <button mat-raised-button (click)="DeleteTVItemLanguage(tvitemlanguage)">
             <span>Delete TVItemLanguageID [{{ tvitemlanguage.TVItemLanguageID }}]&nbsp;&nbsp;&nbsp;</span>
             <mat-icon>delete</mat-icon>
-          </button>
+          </button>&nbsp;&nbsp;&nbsp;
+          <button mat-raised-button [color]="GetPutButtonColor(tvitemlanguage)"(click)="ShowPut(tvitemlanguage)">
+            <span>Show Put</span>
+          </button>&nbsp;&nbsp;
+          <button mat-raised-button [color]="GetPostButtonColor(tvitemlanguage)"(click)="ShowPost(tvitemlanguage)">
+            <span>Show Post</span>
+          </button>&nbsp;&nbsp;
           <mat-progress-bar mode="indeterminate" *ngIf="tvitemlanguageService.tvitemlanguageDeleteModel$.getValue().Working">
           </mat-progress-bar>
-          </span>
-        <span mat-line>
+        </p>
+        <p *ngIf="IDToShow === tvitemlanguage.TVItemLanguageID && showType === GetPutEnum()">
+          <app-tvitemlanguage-edit [tvitemlanguage]="tvitemlanguage" [httpClientCommand]="GetPutEnum()"></app-tvitemlanguage-edit>
+        </p>
+        <p *ngIf="IDToShow === tvitemlanguage.TVItemLanguageID && showType === GetPostEnum()">
+          <app-tvitemlanguage-edit [tvitemlanguage]="tvitemlanguage" [httpClientCommand]="GetPostEnum()"></app-tvitemlanguage-edit>
+        </p>
+        <blockquote>
+        <p>
           <span>TVItemLanguageID: [{{ tvitemlanguage.TVItemLanguageID }}]</span>
           <span> --- TVItemID: [{{ tvitemlanguage.TVItemID }}]</span>
           <span> --- Language: [{{ GetLanguageEnumText(tvitemlanguage.Language) }}]</span>
           <span> --- TVText: [{{ tvitemlanguage.TVText }}]</span>
-        </span>
-        <span mat-line>
+ </p>
+        <p>
           <span>TranslationStatus: [{{ GetTranslationStatusEnumText(tvitemlanguage.TranslationStatus) }}]</span>
           <span> --- LastUpdateDate_UTC: [{{ tvitemlanguage.LastUpdateDate_UTC }}]</span>
           <span> --- LastUpdateContactTVItemID: [{{ tvitemlanguage.LastUpdateContactTVItemID }}]</span>
-        </span>
-       </mat-list-item>
-     </mat-list>
+        </p>
+        </blockquote>
+       </div>
+     </div>
    </mat-card-content>
  <mat-card-actions>
    <button mat-button>Allo</button>
  </mat-card-actions>
-</mat-card>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<mat-card>
-  <mat-card-header>
-    <mat-card-title>Edit TVItemLanguage testing</mat-card-title>
-  </mat-card-header>
-  <mat-card-content>
-    <div *ngIf="tvitemlanguageService.tvitemlanguageListModel$.getValue()?.length">
-      <blockquote>
-        <form [formGroup]="tvitemlanguageFormPut" (ngSubmit)="PutTVItemLanguage(tvitemlanguageFormPut.value)">
-          <h3>
-            TVItemLanguage
-            <button mat-raised-button type="submit">
-              <span>Update TVItemLanguage</span>
-            </button>
-            <mat-progress-bar mode="indeterminate" *ngIf="tvitemlanguageService.tvitemlanguagePutModel$.getValue().Working">
-            </mat-progress-bar>
-          </h3>
-          <p>
-            <mat-form-field>
-              <mat-label>TVItemLanguageID</mat-label>
-              <input matInput type="number" formControlName="TVItemLanguageID">
-              <mat-error *ngIf="tvitemlanguageFormPut.controls.TVItemLanguageID.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>TVItemID</mat-label>
-              <input matInput type="number" formControlName="TVItemID">
-              <mat-error *ngIf="tvitemlanguageFormPut.controls.TVItemID.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>Language</mat-label>
-              <mat-select formControlName="Language">
-                <mat-option *ngFor="let a of languageList" [value]="a.EnumID">
-                  {{ a.EnumText }}
-                </mat-option>
-              </mat-select>
-              <mat-error *ngIf="tvitemlanguageFormPut.controls.Language.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>TVText</mat-label>
-              <input matInput type="text" formControlName="TVText">
-              <mat-error *ngIf="tvitemlanguageFormPut.controls.TVText.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-                <span *ngIf="e.maxlength">MaxLength - 200<br /></span>
-              </mat-error>
-            </mat-form-field>
-          </p>
-          <p>
-            <mat-form-field>
-              <mat-label>TranslationStatus</mat-label>
-              <mat-select formControlName="TranslationStatus">
-                <mat-option *ngFor="let a of translationStatusList" [value]="a.EnumID">
-                  {{ a.EnumText }}
-                </mat-option>
-              </mat-select>
-              <mat-error *ngIf="tvitemlanguageFormPut.controls.TranslationStatus.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>LastUpdateDate_UTC</mat-label>
-              <input matInput type="text" formControlName="LastUpdateDate_UTC">
-              <mat-error *ngIf="tvitemlanguageFormPut.controls.LastUpdateDate_UTC.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>LastUpdateContactTVItemID</mat-label>
-              <input matInput type="number" formControlName="LastUpdateContactTVItemID">
-              <mat-error *ngIf="tvitemlanguageFormPut.controls.LastUpdateContactTVItemID.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-          </p>
-        </form>
-      </blockquote>
-    </div>
-  </mat-card-content>
-</mat-card>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<mat-card>
-  <mat-card-header>
-    <mat-card-title>Add TVItemLanguage testing</mat-card-title>
-  </mat-card-header>
-  <mat-card-content>
-    <div *ngIf="tvitemlanguageService.tvitemlanguageListModel$.getValue()?.length">
-      <blockquote>
-        <form [formGroup]="tvitemlanguageFormPost" (ngSubmit)="PostTVItemLanguage(tvitemlanguageFormPost.value)">
-          <h3>
-            TVItemLanguage
-            <button mat-raised-button type="submit">
-              <span>Add TVItemLanguage</span>
-            </button>
-            <mat-progress-bar mode="indeterminate" *ngIf="tvitemlanguageService.tvitemlanguagePostModel$.getValue().Working">
-            </mat-progress-bar>
-          </h3>
-          <p>
-            <mat-form-field>
-              <mat-label>TVItemLanguageID</mat-label>
-              <input matInput type="number" formControlName="TVItemLanguageID">
-              <mat-error *ngIf="tvitemlanguageFormPut.controls.TVItemLanguageID.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>TVItemID</mat-label>
-              <input matInput type="number" formControlName="TVItemID">
-              <mat-error *ngIf="tvitemlanguageFormPut.controls.TVItemID.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>Language</mat-label>
-              <mat-select formControlName="Language">
-                <mat-option *ngFor="let a of languageList" [value]="a.EnumID">
-                  {{ a.EnumText }}
-                </mat-option>
-              </mat-select>
-              <mat-error *ngIf="tvitemlanguageFormPut.controls.Language.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>TVText</mat-label>
-              <input matInput type="text" formControlName="TVText">
-              <mat-error *ngIf="tvitemlanguageFormPut.controls.TVText.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-                <span *ngIf="e.maxlength">MaxLength - 200<br /></span>
-              </mat-error>
-            </mat-form-field>
-          </p>
-          <p>
-            <mat-form-field>
-              <mat-label>TranslationStatus</mat-label>
-              <mat-select formControlName="TranslationStatus">
-                <mat-option *ngFor="let a of translationStatusList" [value]="a.EnumID">
-                  {{ a.EnumText }}
-                </mat-option>
-              </mat-select>
-              <mat-error *ngIf="tvitemlanguageFormPut.controls.TranslationStatus.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>LastUpdateDate_UTC</mat-label>
-              <input matInput type="text" formControlName="LastUpdateDate_UTC">
-              <mat-error *ngIf="tvitemlanguageFormPut.controls.LastUpdateDate_UTC.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>LastUpdateContactTVItemID</mat-label>
-              <input matInput type="number" formControlName="LastUpdateContactTVItemID">
-              <mat-error *ngIf="tvitemlanguageFormPut.controls.LastUpdateContactTVItemID.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-          </p>
-        </form>
-      </blockquote>
-    </div>
-  </mat-card-content>
 </mat-card>

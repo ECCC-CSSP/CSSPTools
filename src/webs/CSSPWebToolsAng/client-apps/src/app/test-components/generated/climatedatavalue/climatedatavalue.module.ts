@@ -12,9 +12,10 @@ import { ClimateDataValueRoutingModule } from './climatedatavalue-routing.module
 import { MaterialModule } from '../../../app-material.module';
 import { ClimateDataValueComponent } from './climatedatavalue.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ClimateDataValueEditComponent } from './climatedatavalue-edit.component';
 
 @NgModule({
-  declarations: [ ClimateDataValueComponent ],
+  declarations: [ClimateDataValueComponent, ClimateDataValueEditComponent],
   imports: [
     CommonModule,
     RouterModule,

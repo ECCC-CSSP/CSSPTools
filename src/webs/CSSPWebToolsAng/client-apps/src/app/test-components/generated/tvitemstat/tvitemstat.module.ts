@@ -12,9 +12,10 @@ import { TVItemStatRoutingModule } from './tvitemstat-routing.module';
 import { MaterialModule } from '../../../app-material.module';
 import { TVItemStatComponent } from './tvitemstat.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { TVItemStatEditComponent } from './tvitemstat-edit.component';
 
 @NgModule({
-  declarations: [ TVItemStatComponent ],
+  declarations: [TVItemStatComponent, TVItemStatEditComponent],
   imports: [
     CommonModule,
     RouterModule,

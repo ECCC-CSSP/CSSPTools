@@ -12,9 +12,10 @@ import { ReportSectionRoutingModule } from './reportsection-routing.module';
 import { MaterialModule } from '../../../app-material.module';
 import { ReportSectionComponent } from './reportsection.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ReportSectionEditComponent } from './reportsection-edit.component';
 
 @NgModule({
-  declarations: [ ReportSectionComponent ],
+  declarations: [ReportSectionComponent, ReportSectionEditComponent],
   imports: [
     CommonModule,
     RouterModule,

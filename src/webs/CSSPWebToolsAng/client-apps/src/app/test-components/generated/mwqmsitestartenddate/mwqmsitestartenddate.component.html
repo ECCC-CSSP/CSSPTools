@@ -17,178 +17,44 @@
     <mat-card-subtitle>{{ mwqmsitestartenddateService.mwqmsitestartenddateTextModel$.getValue().Title }}</mat-card-subtitle>
   </mat-card-header>
   <mat-card-content>
-    <mat-list *ngIf="mwqmsitestartenddateService.mwqmsitestartenddateListModel$.getValue()?.length">
-      <mat-list-item *ngFor="let mwqmsitestartenddate of mwqmsitestartenddateService.mwqmsitestartenddateListModel$.getValue()">
-        <span mat-line>
+    <div *ngIf="mwqmsitestartenddateService.mwqmsitestartenddateListModel$.getValue()?.length">
+      <div *ngFor="let mwqmsitestartenddate of mwqmsitestartenddateService.mwqmsitestartenddateListModel$.getValue()">
+        <p>
           <button mat-raised-button (click)="DeleteMWQMSiteStartEndDate(mwqmsitestartenddate)">
             <span>Delete MWQMSiteStartEndDateID [{{ mwqmsitestartenddate.MWQMSiteStartEndDateID }}]&nbsp;&nbsp;&nbsp;</span>
             <mat-icon>delete</mat-icon>
-          </button>
+          </button>&nbsp;&nbsp;&nbsp;
+          <button mat-raised-button [color]="GetPutButtonColor(mwqmsitestartenddate)"(click)="ShowPut(mwqmsitestartenddate)">
+            <span>Show Put</span>
+          </button>&nbsp;&nbsp;
+          <button mat-raised-button [color]="GetPostButtonColor(mwqmsitestartenddate)"(click)="ShowPost(mwqmsitestartenddate)">
+            <span>Show Post</span>
+          </button>&nbsp;&nbsp;
           <mat-progress-bar mode="indeterminate" *ngIf="mwqmsitestartenddateService.mwqmsitestartenddateDeleteModel$.getValue().Working">
           </mat-progress-bar>
-          </span>
-        <span mat-line>
+        </p>
+        <p *ngIf="IDToShow === mwqmsitestartenddate.MWQMSiteStartEndDateID && showType === GetPutEnum()">
+          <app-mwqmsitestartenddate-edit [mwqmsitestartenddate]="mwqmsitestartenddate" [httpClientCommand]="GetPutEnum()"></app-mwqmsitestartenddate-edit>
+        </p>
+        <p *ngIf="IDToShow === mwqmsitestartenddate.MWQMSiteStartEndDateID && showType === GetPostEnum()">
+          <app-mwqmsitestartenddate-edit [mwqmsitestartenddate]="mwqmsitestartenddate" [httpClientCommand]="GetPostEnum()"></app-mwqmsitestartenddate-edit>
+        </p>
+        <blockquote>
+        <p>
           <span>MWQMSiteStartEndDateID: [{{ mwqmsitestartenddate.MWQMSiteStartEndDateID }}]</span>
           <span> --- MWQMSiteTVItemID: [{{ mwqmsitestartenddate.MWQMSiteTVItemID }}]</span>
           <span> --- StartDate: [{{ mwqmsitestartenddate.StartDate }}]</span>
           <span> --- EndDate: [{{ mwqmsitestartenddate.EndDate }}]</span>
-        </span>
-        <span mat-line>
+ </p>
+        <p>
           <span>LastUpdateDate_UTC: [{{ mwqmsitestartenddate.LastUpdateDate_UTC }}]</span>
           <span> --- LastUpdateContactTVItemID: [{{ mwqmsitestartenddate.LastUpdateContactTVItemID }}]</span>
-        </span>
-       </mat-list-item>
-     </mat-list>
+        </p>
+        </blockquote>
+       </div>
+     </div>
    </mat-card-content>
  <mat-card-actions>
    <button mat-button>Allo</button>
  </mat-card-actions>
-</mat-card>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<mat-card>
-  <mat-card-header>
-    <mat-card-title>Edit MWQMSiteStartEndDate testing</mat-card-title>
-  </mat-card-header>
-  <mat-card-content>
-    <div *ngIf="mwqmsitestartenddateService.mwqmsitestartenddateListModel$.getValue()?.length">
-      <blockquote>
-        <form [formGroup]="mwqmsitestartenddateFormPut" (ngSubmit)="PutMWQMSiteStartEndDate(mwqmsitestartenddateFormPut.value)">
-          <h3>
-            MWQMSiteStartEndDate
-            <button mat-raised-button type="submit">
-              <span>Update MWQMSiteStartEndDate</span>
-            </button>
-            <mat-progress-bar mode="indeterminate" *ngIf="mwqmsitestartenddateService.mwqmsitestartenddatePutModel$.getValue().Working">
-            </mat-progress-bar>
-          </h3>
-          <p>
-            <mat-form-field>
-              <mat-label>MWQMSiteStartEndDateID</mat-label>
-              <input matInput type="number" formControlName="MWQMSiteStartEndDateID">
-              <mat-error *ngIf="mwqmsitestartenddateFormPut.controls.MWQMSiteStartEndDateID.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>MWQMSiteTVItemID</mat-label>
-              <input matInput type="number" formControlName="MWQMSiteTVItemID">
-              <mat-error *ngIf="mwqmsitestartenddateFormPut.controls.MWQMSiteTVItemID.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>StartDate</mat-label>
-              <input matInput type="text" formControlName="StartDate">
-              <mat-error *ngIf="mwqmsitestartenddateFormPut.controls.StartDate.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>EndDate</mat-label>
-              <input matInput type="text" formControlName="EndDate">
-              <mat-error *ngIf="mwqmsitestartenddateFormPut.controls.EndDate.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-              </mat-error>
-            </mat-form-field>
-          </p>
-          <p>
-            <mat-form-field>
-              <mat-label>LastUpdateDate_UTC</mat-label>
-              <input matInput type="text" formControlName="LastUpdateDate_UTC">
-              <mat-error *ngIf="mwqmsitestartenddateFormPut.controls.LastUpdateDate_UTC.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>LastUpdateContactTVItemID</mat-label>
-              <input matInput type="number" formControlName="LastUpdateContactTVItemID">
-              <mat-error *ngIf="mwqmsitestartenddateFormPut.controls.LastUpdateContactTVItemID.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-          </p>
-        </form>
-      </blockquote>
-    </div>
-  </mat-card-content>
-</mat-card>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<mat-card>
-  <mat-card-header>
-    <mat-card-title>Add MWQMSiteStartEndDate testing</mat-card-title>
-  </mat-card-header>
-  <mat-card-content>
-    <div *ngIf="mwqmsitestartenddateService.mwqmsitestartenddateListModel$.getValue()?.length">
-      <blockquote>
-        <form [formGroup]="mwqmsitestartenddateFormPost" (ngSubmit)="PostMWQMSiteStartEndDate(mwqmsitestartenddateFormPost.value)">
-          <h3>
-            MWQMSiteStartEndDate
-            <button mat-raised-button type="submit">
-              <span>Add MWQMSiteStartEndDate</span>
-            </button>
-            <mat-progress-bar mode="indeterminate" *ngIf="mwqmsitestartenddateService.mwqmsitestartenddatePostModel$.getValue().Working">
-            </mat-progress-bar>
-          </h3>
-          <p>
-            <mat-form-field>
-              <mat-label>MWQMSiteStartEndDateID</mat-label>
-              <input matInput type="number" formControlName="MWQMSiteStartEndDateID">
-              <mat-error *ngIf="mwqmsitestartenddateFormPut.controls.MWQMSiteStartEndDateID.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>MWQMSiteTVItemID</mat-label>
-              <input matInput type="number" formControlName="MWQMSiteTVItemID">
-              <mat-error *ngIf="mwqmsitestartenddateFormPut.controls.MWQMSiteTVItemID.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>StartDate</mat-label>
-              <input matInput type="text" formControlName="StartDate">
-              <mat-error *ngIf="mwqmsitestartenddateFormPut.controls.StartDate.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>EndDate</mat-label>
-              <input matInput type="text" formControlName="EndDate">
-              <mat-error *ngIf="mwqmsitestartenddateFormPut.controls.EndDate.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-              </mat-error>
-            </mat-form-field>
-          </p>
-          <p>
-            <mat-form-field>
-              <mat-label>LastUpdateDate_UTC</mat-label>
-              <input matInput type="text" formControlName="LastUpdateDate_UTC">
-              <mat-error *ngIf="mwqmsitestartenddateFormPut.controls.LastUpdateDate_UTC.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>LastUpdateContactTVItemID</mat-label>
-              <input matInput type="number" formControlName="LastUpdateContactTVItemID">
-              <mat-error *ngIf="mwqmsitestartenddateFormPut.controls.LastUpdateContactTVItemID.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-          </p>
-        </form>
-      </blockquote>
-    </div>
-  </mat-card-content>
 </mat-card>

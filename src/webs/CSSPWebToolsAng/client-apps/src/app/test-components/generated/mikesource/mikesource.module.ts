@@ -12,9 +12,10 @@ import { MikeSourceRoutingModule } from './mikesource-routing.module';
 import { MaterialModule } from '../../../app-material.module';
 import { MikeSourceComponent } from './mikesource.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MikeSourceEditComponent } from './mikesource-edit.component';
 
 @NgModule({
-  declarations: [ MikeSourceComponent ],
+  declarations: [MikeSourceComponent, MikeSourceEditComponent],
   imports: [
     CommonModule,
     RouterModule,

@@ -12,9 +12,10 @@ import { EmailRoutingModule } from './email-routing.module';
 import { MaterialModule } from '../../../app-material.module';
 import { EmailComponent } from './email.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { EmailEditComponent } from './email-edit.component';
 
 @NgModule({
-  declarations: [ EmailComponent ],
+  declarations: [EmailComponent, EmailEditComponent],
   imports: [
     CommonModule,
     RouterModule,

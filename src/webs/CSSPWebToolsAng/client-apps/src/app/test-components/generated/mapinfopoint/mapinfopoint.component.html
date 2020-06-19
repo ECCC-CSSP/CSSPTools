@@ -17,207 +17,45 @@
     <mat-card-subtitle>{{ mapinfopointService.mapinfopointTextModel$.getValue().Title }}</mat-card-subtitle>
   </mat-card-header>
   <mat-card-content>
-    <mat-list *ngIf="mapinfopointService.mapinfopointListModel$.getValue()?.length">
-      <mat-list-item *ngFor="let mapinfopoint of mapinfopointService.mapinfopointListModel$.getValue()">
-        <span mat-line>
+    <div *ngIf="mapinfopointService.mapinfopointListModel$.getValue()?.length">
+      <div *ngFor="let mapinfopoint of mapinfopointService.mapinfopointListModel$.getValue()">
+        <p>
           <button mat-raised-button (click)="DeleteMapInfoPoint(mapinfopoint)">
             <span>Delete MapInfoPointID [{{ mapinfopoint.MapInfoPointID }}]&nbsp;&nbsp;&nbsp;</span>
             <mat-icon>delete</mat-icon>
-          </button>
+          </button>&nbsp;&nbsp;&nbsp;
+          <button mat-raised-button [color]="GetPutButtonColor(mapinfopoint)"(click)="ShowPut(mapinfopoint)">
+            <span>Show Put</span>
+          </button>&nbsp;&nbsp;
+          <button mat-raised-button [color]="GetPostButtonColor(mapinfopoint)"(click)="ShowPost(mapinfopoint)">
+            <span>Show Post</span>
+          </button>&nbsp;&nbsp;
           <mat-progress-bar mode="indeterminate" *ngIf="mapinfopointService.mapinfopointDeleteModel$.getValue().Working">
           </mat-progress-bar>
-          </span>
-        <span mat-line>
+        </p>
+        <p *ngIf="IDToShow === mapinfopoint.MapInfoPointID && showType === GetPutEnum()">
+          <app-mapinfopoint-edit [mapinfopoint]="mapinfopoint" [httpClientCommand]="GetPutEnum()"></app-mapinfopoint-edit>
+        </p>
+        <p *ngIf="IDToShow === mapinfopoint.MapInfoPointID && showType === GetPostEnum()">
+          <app-mapinfopoint-edit [mapinfopoint]="mapinfopoint" [httpClientCommand]="GetPostEnum()"></app-mapinfopoint-edit>
+        </p>
+        <blockquote>
+        <p>
           <span>MapInfoPointID: [{{ mapinfopoint.MapInfoPointID }}]</span>
           <span> --- MapInfoID: [{{ mapinfopoint.MapInfoID }}]</span>
           <span> --- Ordinal: [{{ mapinfopoint.Ordinal }}]</span>
           <span> --- Lat: [{{ mapinfopoint.Lat }}]</span>
-        </span>
-        <span mat-line>
+ </p>
+        <p>
           <span>Lng: [{{ mapinfopoint.Lng }}]</span>
           <span> --- LastUpdateDate_UTC: [{{ mapinfopoint.LastUpdateDate_UTC }}]</span>
           <span> --- LastUpdateContactTVItemID: [{{ mapinfopoint.LastUpdateContactTVItemID }}]</span>
-        </span>
-       </mat-list-item>
-     </mat-list>
+        </p>
+        </blockquote>
+       </div>
+     </div>
    </mat-card-content>
  <mat-card-actions>
    <button mat-button>Allo</button>
  </mat-card-actions>
-</mat-card>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<mat-card>
-  <mat-card-header>
-    <mat-card-title>Edit MapInfoPoint testing</mat-card-title>
-  </mat-card-header>
-  <mat-card-content>
-    <div *ngIf="mapinfopointService.mapinfopointListModel$.getValue()?.length">
-      <blockquote>
-        <form [formGroup]="mapinfopointFormPut" (ngSubmit)="PutMapInfoPoint(mapinfopointFormPut.value)">
-          <h3>
-            MapInfoPoint
-            <button mat-raised-button type="submit">
-              <span>Update MapInfoPoint</span>
-            </button>
-            <mat-progress-bar mode="indeterminate" *ngIf="mapinfopointService.mapinfopointPutModel$.getValue().Working">
-            </mat-progress-bar>
-          </h3>
-          <p>
-            <mat-form-field>
-              <mat-label>MapInfoPointID</mat-label>
-              <input matInput type="number" formControlName="MapInfoPointID">
-              <mat-error *ngIf="mapinfopointFormPut.controls.MapInfoPointID.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>MapInfoID</mat-label>
-              <input matInput type="number" formControlName="MapInfoID">
-              <mat-error *ngIf="mapinfopointFormPut.controls.MapInfoID.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>Ordinal</mat-label>
-              <input matInput type="number" formControlName="Ordinal">
-              <mat-error *ngIf="mapinfopointFormPut.controls.Ordinal.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-                <span *ngIf="e.min">Min - 0<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>Lat</mat-label>
-              <input matInput type="number" formControlName="Lat">
-              <mat-error *ngIf="mapinfopointFormPut.controls.Lat.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-                <span *ngIf="e.min">Min - -90<br /></span>
-                <span *ngIf="e.min">Max - 90<br /></span>
-              </mat-error>
-            </mat-form-field>
-          </p>
-          <p>
-            <mat-form-field>
-              <mat-label>Lng</mat-label>
-              <input matInput type="number" formControlName="Lng">
-              <mat-error *ngIf="mapinfopointFormPut.controls.Lng.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-                <span *ngIf="e.min">Min - -180<br /></span>
-                <span *ngIf="e.min">Max - 180<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>LastUpdateDate_UTC</mat-label>
-              <input matInput type="text" formControlName="LastUpdateDate_UTC">
-              <mat-error *ngIf="mapinfopointFormPut.controls.LastUpdateDate_UTC.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>LastUpdateContactTVItemID</mat-label>
-              <input matInput type="number" formControlName="LastUpdateContactTVItemID">
-              <mat-error *ngIf="mapinfopointFormPut.controls.LastUpdateContactTVItemID.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-          </p>
-        </form>
-      </blockquote>
-    </div>
-  </mat-card-content>
-</mat-card>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<mat-card>
-  <mat-card-header>
-    <mat-card-title>Add MapInfoPoint testing</mat-card-title>
-  </mat-card-header>
-  <mat-card-content>
-    <div *ngIf="mapinfopointService.mapinfopointListModel$.getValue()?.length">
-      <blockquote>
-        <form [formGroup]="mapinfopointFormPost" (ngSubmit)="PostMapInfoPoint(mapinfopointFormPost.value)">
-          <h3>
-            MapInfoPoint
-            <button mat-raised-button type="submit">
-              <span>Add MapInfoPoint</span>
-            </button>
-            <mat-progress-bar mode="indeterminate" *ngIf="mapinfopointService.mapinfopointPostModel$.getValue().Working">
-            </mat-progress-bar>
-          </h3>
-          <p>
-            <mat-form-field>
-              <mat-label>MapInfoPointID</mat-label>
-              <input matInput type="number" formControlName="MapInfoPointID">
-              <mat-error *ngIf="mapinfopointFormPut.controls.MapInfoPointID.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>MapInfoID</mat-label>
-              <input matInput type="number" formControlName="MapInfoID">
-              <mat-error *ngIf="mapinfopointFormPut.controls.MapInfoID.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>Ordinal</mat-label>
-              <input matInput type="number" formControlName="Ordinal">
-              <mat-error *ngIf="mapinfopointFormPut.controls.Ordinal.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-                <span *ngIf="e.min">Min - 0<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>Lat</mat-label>
-              <input matInput type="number" formControlName="Lat">
-              <mat-error *ngIf="mapinfopointFormPut.controls.Lat.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-                <span *ngIf="e.min">Min - -90<br /></span>
-                <span *ngIf="e.min">Max - 90<br /></span>
-              </mat-error>
-            </mat-form-field>
-          </p>
-          <p>
-            <mat-form-field>
-              <mat-label>Lng</mat-label>
-              <input matInput type="number" formControlName="Lng">
-              <mat-error *ngIf="mapinfopointFormPut.controls.Lng.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-                <span *ngIf="e.min">Min - -180<br /></span>
-                <span *ngIf="e.min">Max - 180<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>LastUpdateDate_UTC</mat-label>
-              <input matInput type="text" formControlName="LastUpdateDate_UTC">
-              <mat-error *ngIf="mapinfopointFormPut.controls.LastUpdateDate_UTC.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>LastUpdateContactTVItemID</mat-label>
-              <input matInput type="number" formControlName="LastUpdateContactTVItemID">
-              <mat-error *ngIf="mapinfopointFormPut.controls.LastUpdateContactTVItemID.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-          </p>
-        </form>
-      </blockquote>
-    </div>
-  </mat-card-content>
 </mat-card>

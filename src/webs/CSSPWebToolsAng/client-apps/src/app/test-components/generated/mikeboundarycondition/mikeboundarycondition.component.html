@@ -17,349 +17,55 @@
     <mat-card-subtitle>{{ mikeboundaryconditionService.mikeboundaryconditionTextModel$.getValue().Title }}</mat-card-subtitle>
   </mat-card-header>
   <mat-card-content>
-    <mat-list *ngIf="mikeboundaryconditionService.mikeboundaryconditionListModel$.getValue()?.length">
-      <mat-list-item *ngFor="let mikeboundarycondition of mikeboundaryconditionService.mikeboundaryconditionListModel$.getValue()">
-        <span mat-line>
+    <div *ngIf="mikeboundaryconditionService.mikeboundaryconditionListModel$.getValue()?.length">
+      <div *ngFor="let mikeboundarycondition of mikeboundaryconditionService.mikeboundaryconditionListModel$.getValue()">
+        <p>
           <button mat-raised-button (click)="DeleteMikeBoundaryCondition(mikeboundarycondition)">
             <span>Delete MikeBoundaryConditionID [{{ mikeboundarycondition.MikeBoundaryConditionID }}]&nbsp;&nbsp;&nbsp;</span>
             <mat-icon>delete</mat-icon>
-          </button>
+          </button>&nbsp;&nbsp;&nbsp;
+          <button mat-raised-button [color]="GetPutButtonColor(mikeboundarycondition)"(click)="ShowPut(mikeboundarycondition)">
+            <span>Show Put</span>
+          </button>&nbsp;&nbsp;
+          <button mat-raised-button [color]="GetPostButtonColor(mikeboundarycondition)"(click)="ShowPost(mikeboundarycondition)">
+            <span>Show Post</span>
+          </button>&nbsp;&nbsp;
           <mat-progress-bar mode="indeterminate" *ngIf="mikeboundaryconditionService.mikeboundaryconditionDeleteModel$.getValue().Working">
           </mat-progress-bar>
-          </span>
-        <span mat-line>
+        </p>
+        <p *ngIf="IDToShow === mikeboundarycondition.MikeBoundaryConditionID && showType === GetPutEnum()">
+          <app-mikeboundarycondition-edit [mikeboundarycondition]="mikeboundarycondition" [httpClientCommand]="GetPutEnum()"></app-mikeboundarycondition-edit>
+        </p>
+        <p *ngIf="IDToShow === mikeboundarycondition.MikeBoundaryConditionID && showType === GetPostEnum()">
+          <app-mikeboundarycondition-edit [mikeboundarycondition]="mikeboundarycondition" [httpClientCommand]="GetPostEnum()"></app-mikeboundarycondition-edit>
+        </p>
+        <blockquote>
+        <p>
           <span>MikeBoundaryConditionID: [{{ mikeboundarycondition.MikeBoundaryConditionID }}]</span>
           <span> --- MikeBoundaryConditionTVItemID: [{{ mikeboundarycondition.MikeBoundaryConditionTVItemID }}]</span>
           <span> --- MikeBoundaryConditionCode: [{{ mikeboundarycondition.MikeBoundaryConditionCode }}]</span>
           <span> --- MikeBoundaryConditionName: [{{ mikeboundarycondition.MikeBoundaryConditionName }}]</span>
-        </span>
-        <span mat-line>
+ </p>
+        <p>
           <span>MikeBoundaryConditionLength_m: [{{ mikeboundarycondition.MikeBoundaryConditionLength_m }}]</span>
           <span> --- MikeBoundaryConditionFormat: [{{ mikeboundarycondition.MikeBoundaryConditionFormat }}]</span>
           <span> --- MikeBoundaryConditionLevelOrVelocity: [{{ GetMikeBoundaryConditionLevelOrVelocityEnumText(mikeboundarycondition.MikeBoundaryConditionLevelOrVelocity) }}]</span>
           <span> --- WebTideDataSet: [{{ GetWebTideDataSetEnumText(mikeboundarycondition.WebTideDataSet) }}]</span>
-        </span>
-        <span mat-line>
+ </p>
+        <p>
           <span>NumberOfWebTideNodes: [{{ mikeboundarycondition.NumberOfWebTideNodes }}]</span>
           <span> --- WebTideDataFromStartToEndDate: [{{ mikeboundarycondition.WebTideDataFromStartToEndDate }}]</span>
           <span> --- TVType: [{{ GetTVTypeEnumText(mikeboundarycondition.TVType) }}]</span>
           <span> --- LastUpdateDate_UTC: [{{ mikeboundarycondition.LastUpdateDate_UTC }}]</span>
-        </span>
-        <span mat-line>
+ </p>
+        <p>
           <span>LastUpdateContactTVItemID: [{{ mikeboundarycondition.LastUpdateContactTVItemID }}]</span>
-        </span>
-       </mat-list-item>
-     </mat-list>
+        </p>
+        </blockquote>
+       </div>
+     </div>
    </mat-card-content>
  <mat-card-actions>
    <button mat-button>Allo</button>
  </mat-card-actions>
-</mat-card>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<mat-card>
-  <mat-card-header>
-    <mat-card-title>Edit MikeBoundaryCondition testing</mat-card-title>
-  </mat-card-header>
-  <mat-card-content>
-    <div *ngIf="mikeboundaryconditionService.mikeboundaryconditionListModel$.getValue()?.length">
-      <blockquote>
-        <form [formGroup]="mikeboundaryconditionFormPut" (ngSubmit)="PutMikeBoundaryCondition(mikeboundaryconditionFormPut.value)">
-          <h3>
-            MikeBoundaryCondition
-            <button mat-raised-button type="submit">
-              <span>Update MikeBoundaryCondition</span>
-            </button>
-            <mat-progress-bar mode="indeterminate" *ngIf="mikeboundaryconditionService.mikeboundaryconditionPutModel$.getValue().Working">
-            </mat-progress-bar>
-          </h3>
-          <p>
-            <mat-form-field>
-              <mat-label>MikeBoundaryConditionID</mat-label>
-              <input matInput type="number" formControlName="MikeBoundaryConditionID">
-              <mat-error *ngIf="mikeboundaryconditionFormPut.controls.MikeBoundaryConditionID.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>MikeBoundaryConditionTVItemID</mat-label>
-              <input matInput type="number" formControlName="MikeBoundaryConditionTVItemID">
-              <mat-error *ngIf="mikeboundaryconditionFormPut.controls.MikeBoundaryConditionTVItemID.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>MikeBoundaryConditionCode</mat-label>
-              <input matInput type="text" formControlName="MikeBoundaryConditionCode">
-              <mat-error *ngIf="mikeboundaryconditionFormPut.controls.MikeBoundaryConditionCode.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-                <span *ngIf="e.maxlength">MaxLength - 100<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>MikeBoundaryConditionName</mat-label>
-              <input matInput type="text" formControlName="MikeBoundaryConditionName">
-              <mat-error *ngIf="mikeboundaryconditionFormPut.controls.MikeBoundaryConditionName.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-                <span *ngIf="e.maxlength">MaxLength - 100<br /></span>
-              </mat-error>
-            </mat-form-field>
-          </p>
-          <p>
-            <mat-form-field>
-              <mat-label>MikeBoundaryConditionLength_m</mat-label>
-              <input matInput type="number" formControlName="MikeBoundaryConditionLength_m">
-              <mat-error *ngIf="mikeboundaryconditionFormPut.controls.MikeBoundaryConditionLength_m.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-                <span *ngIf="e.min">Min - 1<br /></span>
-                <span *ngIf="e.min">Max - 100000<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>MikeBoundaryConditionFormat</mat-label>
-              <input matInput type="text" formControlName="MikeBoundaryConditionFormat">
-              <mat-error *ngIf="mikeboundaryconditionFormPut.controls.MikeBoundaryConditionFormat.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-                <span *ngIf="e.maxlength">MaxLength - 100<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>MikeBoundaryConditionLevelOrVelocity</mat-label>
-              <mat-select formControlName="MikeBoundaryConditionLevelOrVelocity">
-                <mat-option *ngFor="let a of mikeBoundaryConditionLevelOrVelocityList" [value]="a.EnumID">
-                  {{ a.EnumText }}
-                </mat-option>
-              </mat-select>
-              <mat-error *ngIf="mikeboundaryconditionFormPut.controls.MikeBoundaryConditionLevelOrVelocity.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>WebTideDataSet</mat-label>
-              <mat-select formControlName="WebTideDataSet">
-                <mat-option *ngFor="let a of webTideDataSetList" [value]="a.EnumID">
-                  {{ a.EnumText }}
-                </mat-option>
-              </mat-select>
-              <mat-error *ngIf="mikeboundaryconditionFormPut.controls.WebTideDataSet.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-          </p>
-          <p>
-            <mat-form-field>
-              <mat-label>NumberOfWebTideNodes</mat-label>
-              <input matInput type="number" formControlName="NumberOfWebTideNodes">
-              <mat-error *ngIf="mikeboundaryconditionFormPut.controls.NumberOfWebTideNodes.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-                <span *ngIf="e.min">Min - 0<br /></span>
-                <span *ngIf="e.min">Max - 1000<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>WebTideDataFromStartToEndDate</mat-label>
-              <input matInput type="text" formControlName="WebTideDataFromStartToEndDate">
-              <mat-error *ngIf="mikeboundaryconditionFormPut.controls.WebTideDataFromStartToEndDate.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>TVType</mat-label>
-              <mat-select formControlName="TVType">
-                <mat-option *ngFor="let a of tVTypeList" [value]="a.EnumID">
-                  {{ a.EnumText }}
-                </mat-option>
-              </mat-select>
-              <mat-error *ngIf="mikeboundaryconditionFormPut.controls.TVType.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>LastUpdateDate_UTC</mat-label>
-              <input matInput type="text" formControlName="LastUpdateDate_UTC">
-              <mat-error *ngIf="mikeboundaryconditionFormPut.controls.LastUpdateDate_UTC.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-          </p>
-          <p>
-            <mat-form-field>
-              <mat-label>LastUpdateContactTVItemID</mat-label>
-              <input matInput type="number" formControlName="LastUpdateContactTVItemID">
-              <mat-error *ngIf="mikeboundaryconditionFormPut.controls.LastUpdateContactTVItemID.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-          </p>
-        </form>
-      </blockquote>
-    </div>
-  </mat-card-content>
-</mat-card>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<mat-card>
-  <mat-card-header>
-    <mat-card-title>Add MikeBoundaryCondition testing</mat-card-title>
-  </mat-card-header>
-  <mat-card-content>
-    <div *ngIf="mikeboundaryconditionService.mikeboundaryconditionListModel$.getValue()?.length">
-      <blockquote>
-        <form [formGroup]="mikeboundaryconditionFormPost" (ngSubmit)="PostMikeBoundaryCondition(mikeboundaryconditionFormPost.value)">
-          <h3>
-            MikeBoundaryCondition
-            <button mat-raised-button type="submit">
-              <span>Add MikeBoundaryCondition</span>
-            </button>
-            <mat-progress-bar mode="indeterminate" *ngIf="mikeboundaryconditionService.mikeboundaryconditionPostModel$.getValue().Working">
-            </mat-progress-bar>
-          </h3>
-          <p>
-            <mat-form-field>
-              <mat-label>MikeBoundaryConditionID</mat-label>
-              <input matInput type="number" formControlName="MikeBoundaryConditionID">
-              <mat-error *ngIf="mikeboundaryconditionFormPut.controls.MikeBoundaryConditionID.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>MikeBoundaryConditionTVItemID</mat-label>
-              <input matInput type="number" formControlName="MikeBoundaryConditionTVItemID">
-              <mat-error *ngIf="mikeboundaryconditionFormPut.controls.MikeBoundaryConditionTVItemID.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>MikeBoundaryConditionCode</mat-label>
-              <input matInput type="text" formControlName="MikeBoundaryConditionCode">
-              <mat-error *ngIf="mikeboundaryconditionFormPut.controls.MikeBoundaryConditionCode.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-                <span *ngIf="e.maxlength">MaxLength - 100<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>MikeBoundaryConditionName</mat-label>
-              <input matInput type="text" formControlName="MikeBoundaryConditionName">
-              <mat-error *ngIf="mikeboundaryconditionFormPut.controls.MikeBoundaryConditionName.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-                <span *ngIf="e.maxlength">MaxLength - 100<br /></span>
-              </mat-error>
-            </mat-form-field>
-          </p>
-          <p>
-            <mat-form-field>
-              <mat-label>MikeBoundaryConditionLength_m</mat-label>
-              <input matInput type="number" formControlName="MikeBoundaryConditionLength_m">
-              <mat-error *ngIf="mikeboundaryconditionFormPut.controls.MikeBoundaryConditionLength_m.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-                <span *ngIf="e.min">Min - 1<br /></span>
-                <span *ngIf="e.min">Max - 100000<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>MikeBoundaryConditionFormat</mat-label>
-              <input matInput type="text" formControlName="MikeBoundaryConditionFormat">
-              <mat-error *ngIf="mikeboundaryconditionFormPut.controls.MikeBoundaryConditionFormat.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-                <span *ngIf="e.maxlength">MaxLength - 100<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>MikeBoundaryConditionLevelOrVelocity</mat-label>
-              <mat-select formControlName="MikeBoundaryConditionLevelOrVelocity">
-                <mat-option *ngFor="let a of mikeBoundaryConditionLevelOrVelocityList" [value]="a.EnumID">
-                  {{ a.EnumText }}
-                </mat-option>
-              </mat-select>
-              <mat-error *ngIf="mikeboundaryconditionFormPut.controls.MikeBoundaryConditionLevelOrVelocity.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>WebTideDataSet</mat-label>
-              <mat-select formControlName="WebTideDataSet">
-                <mat-option *ngFor="let a of webTideDataSetList" [value]="a.EnumID">
-                  {{ a.EnumText }}
-                </mat-option>
-              </mat-select>
-              <mat-error *ngIf="mikeboundaryconditionFormPut.controls.WebTideDataSet.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-          </p>
-          <p>
-            <mat-form-field>
-              <mat-label>NumberOfWebTideNodes</mat-label>
-              <input matInput type="number" formControlName="NumberOfWebTideNodes">
-              <mat-error *ngIf="mikeboundaryconditionFormPut.controls.NumberOfWebTideNodes.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-                <span *ngIf="e.min">Min - 0<br /></span>
-                <span *ngIf="e.min">Max - 1000<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>WebTideDataFromStartToEndDate</mat-label>
-              <input matInput type="text" formControlName="WebTideDataFromStartToEndDate">
-              <mat-error *ngIf="mikeboundaryconditionFormPut.controls.WebTideDataFromStartToEndDate.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>TVType</mat-label>
-              <mat-select formControlName="TVType">
-                <mat-option *ngFor="let a of tVTypeList" [value]="a.EnumID">
-                  {{ a.EnumText }}
-                </mat-option>
-              </mat-select>
-              <mat-error *ngIf="mikeboundaryconditionFormPut.controls.TVType.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>LastUpdateDate_UTC</mat-label>
-              <input matInput type="text" formControlName="LastUpdateDate_UTC">
-              <mat-error *ngIf="mikeboundaryconditionFormPut.controls.LastUpdateDate_UTC.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-          </p>
-          <p>
-            <mat-form-field>
-              <mat-label>LastUpdateContactTVItemID</mat-label>
-              <input matInput type="number" formControlName="LastUpdateContactTVItemID">
-              <mat-error *ngIf="mikeboundaryconditionFormPut.controls.LastUpdateContactTVItemID.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-          </p>
-        </form>
-      </blockquote>
-    </div>
-  </mat-card-content>
 </mat-card>

@@ -10,7 +10,6 @@ import { PolSourceObservationIssueService } from './polsourceobservationissue.se
 import { LoadLocalesPolSourceObservationIssueText } from './polsourceobservationissue.locales';
 import { Subscription } from 'rxjs';
 import { PolSourceObservationIssue } from '../../../models/generated/PolSourceObservationIssue.model';
-import { FormBuilder, Validators, FormGroup } from '@angular/forms';
 import { HttpClientService } from '../../../services/http-client.service';
 import { Router } from '@angular/router';
 import { HttpClientCommand } from '../../../enums/app.enums';
@@ -23,23 +22,63 @@ import { HttpClientCommand } from '../../../enums/app.enums';
 })
 export class PolSourceObservationIssueComponent implements OnInit, OnDestroy {
   sub: Subscription;
-  polsourceobservationissueFormPut: FormGroup;
-  polsourceobservationissueFormPost: FormGroup;
+  IDToShow: number;
+  showType?: HttpClientCommand = null;
 
-  constructor(public polsourceobservationissueService: PolSourceObservationIssueService, private router: Router, private httpClientService: HttpClientService, private fb: FormBuilder) {
+  constructor(public polsourceobservationissueService: PolSourceObservationIssueService, private router: Router, private httpClientService: HttpClientService) {
     httpClientService.oldURL = router.url;
+  }
+
+  GetPutButtonColor(polsourceobservationissue: PolSourceObservationIssue) {
+    if (this.IDToShow === polsourceobservationissue.PolSourceObservationIssueID && this.showType === HttpClientCommand.Put) {
+      return 'primary';
+    }
+    else {
+      return 'basic';
+    }
+  }
+
+  GetPostButtonColor(polsourceobservationissue: PolSourceObservationIssue) {
+    if (this.IDToShow === polsourceobservationissue.PolSourceObservationIssueID && this.showType === HttpClientCommand.Post) {
+      return 'primary';
+    }
+    else {
+      return 'basic';
+    }
+  }
+
+  ShowPut(polsourceobservationissue: PolSourceObservationIssue) {
+    if (this.IDToShow === polsourceobservationissue.PolSourceObservationIssueID && this.showType === HttpClientCommand.Put) {
+      this.IDToShow = 0;
+      this.showType = null;
+    }
+    else {
+      this.IDToShow = polsourceobservationissue.PolSourceObservationIssueID;
+      this.showType = HttpClientCommand.Put;
+    }
+  }
+
+  ShowPost(polsourceobservationissue: PolSourceObservationIssue) {
+    if (this.IDToShow === polsourceobservationissue.PolSourceObservationIssueID && this.showType === HttpClientCommand.Post) {
+      this.IDToShow = 0;
+      this.showType = null;
+    }
+    else {
+      this.IDToShow = polsourceobservationissue.PolSourceObservationIssueID;
+      this.showType = HttpClientCommand.Post;
+    }
+  }
+
+  GetPutEnum() {
+    return <number>HttpClientCommand.Put;
+  }
+
+  GetPostEnum() {
+    return <number>HttpClientCommand.Post;
   }
 
   GetPolSourceObservationIssueList() {
     this.sub = this.polsourceobservationissueService.GetPolSourceObservationIssueList().subscribe();
-  }
-
-  PutPolSourceObservationIssue(polsourceobservationissue: PolSourceObservationIssue) {
-    this.sub = this.polsourceobservationissueService.PutPolSourceObservationIssue(polsourceobservationissue).subscribe();
-  }
-
-  PostPolSourceObservationIssue(polsourceobservationissue: PolSourceObservationIssue) {
-    this.sub = this.polsourceobservationissueService.PostPolSourceObservationIssue(polsourceobservationissue).subscribe();
   }
 
   DeletePolSourceObservationIssue(polsourceobservationissue: PolSourceObservationIssue) {
@@ -48,64 +87,11 @@ export class PolSourceObservationIssueComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     LoadLocalesPolSourceObservationIssueText(this.polsourceobservationissueService);
-    this.FillFormBuilderGroup(HttpClientCommand.Post);
-    this.FillFormBuilderGroup(HttpClientCommand.Put);
   }
 
   ngOnDestroy() {
     if (this.sub) {
       this.sub.unsubscribe();
-    }
-  }
-
-  FillFormBuilderGroup(httpClientCommand: HttpClientCommand) {
-    if (this.polsourceobservationissueService.polsourceobservationissueListModel$.getValue().length) {
-      let formGroup: FormGroup = this.fb.group(
-        {
-          PolSourceObservationIssueID: [
-            {
-              value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.polsourceobservationissueService.polsourceobservationissueListModel$.getValue()[0]?.PolSourceObservationIssueID)),
-              disabled: false
-            }, [  Validators.required ]],
-          PolSourceObservationID: [
-            {
-              value: this.polsourceobservationissueService.polsourceobservationissueListModel$.getValue()[0]?.PolSourceObservationID,
-              disabled: false
-            }, [  Validators.required ]],
-          ObservationInfo: [
-            {
-              value: this.polsourceobservationissueService.polsourceobservationissueListModel$.getValue()[0]?.ObservationInfo,
-              disabled: false
-            }, [  Validators.required, Validators.maxLength(250) ]],
-          Ordinal: [
-            {
-              value: this.polsourceobservationissueService.polsourceobservationissueListModel$.getValue()[0]?.Ordinal,
-              disabled: false
-            }, [  Validators.required, Validators.min(0), Validators.max(1000) ]],
-          ExtraComment: [
-            {
-              value: this.polsourceobservationissueService.polsourceobservationissueListModel$.getValue()[0]?.ExtraComment,
-              disabled: false
-            }],
-          LastUpdateDate_UTC: [
-            {
-              value: this.polsourceobservationissueService.polsourceobservationissueListModel$.getValue()[0]?.LastUpdateDate_UTC,
-              disabled: false
-            }, [  Validators.required ]],
-          LastUpdateContactTVItemID: [
-            {
-              value: this.polsourceobservationissueService.polsourceobservationissueListModel$.getValue()[0]?.LastUpdateContactTVItemID,
-              disabled: false
-            }, [  Validators.required ]],
-        }
-      );
-
-      if (httpClientCommand === HttpClientCommand.Post) {
-        this.polsourceobservationissueFormPost = formGroup
-      }
-      else {
-        this.polsourceobservationissueFormPut = formGroup;
-      }
     }
   }
 }

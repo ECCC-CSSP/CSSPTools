@@ -12,9 +12,10 @@ import { AppTaskLanguageRoutingModule } from './apptasklanguage-routing.module';
 import { MaterialModule } from '../../../app-material.module';
 import { AppTaskLanguageComponent } from './apptasklanguage.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { AppTaskLanguageEditComponent } from './apptasklanguage-edit.component';
 
 @NgModule({
-  declarations: [ AppTaskLanguageComponent ],
+  declarations: [AppTaskLanguageComponent, AppTaskLanguageEditComponent],
   imports: [
     CommonModule,
     RouterModule,

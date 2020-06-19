@@ -9,16 +9,14 @@ import { Component, OnInit, OnDestroy, ChangeDetectionStrategy } from '@angular/
 import { MWQMRunService } from './mwqmrun.service';
 import { LoadLocalesMWQMRunText } from './mwqmrun.locales';
 import { Subscription } from 'rxjs';
-import { SampleTypeEnum_GetIDText, SampleTypeEnum_GetOrderedText } from '../../../enums/generated/SampleTypeEnum';
-import { BeaufortScaleEnum_GetIDText, BeaufortScaleEnum_GetOrderedText } from '../../../enums/generated/BeaufortScaleEnum';
-import { AnalyzeMethodEnum_GetIDText, AnalyzeMethodEnum_GetOrderedText } from '../../../enums/generated/AnalyzeMethodEnum';
-import { SampleMatrixEnum_GetIDText, SampleMatrixEnum_GetOrderedText } from '../../../enums/generated/SampleMatrixEnum';
-import { LaboratoryEnum_GetIDText, LaboratoryEnum_GetOrderedText } from '../../../enums/generated/LaboratoryEnum';
-import { SampleStatusEnum_GetIDText, SampleStatusEnum_GetOrderedText } from '../../../enums/generated/SampleStatusEnum';
-import { TideTextEnum_GetIDText, TideTextEnum_GetOrderedText } from '../../../enums/generated/TideTextEnum';
+import { SampleTypeEnum_GetIDText } from '../../../enums/generated/SampleTypeEnum';
+import { BeaufortScaleEnum_GetIDText } from '../../../enums/generated/BeaufortScaleEnum';
+import { AnalyzeMethodEnum_GetIDText } from '../../../enums/generated/AnalyzeMethodEnum';
+import { SampleMatrixEnum_GetIDText } from '../../../enums/generated/SampleMatrixEnum';
+import { LaboratoryEnum_GetIDText } from '../../../enums/generated/LaboratoryEnum';
+import { SampleStatusEnum_GetIDText } from '../../../enums/generated/SampleStatusEnum';
+import { TideTextEnum_GetIDText } from '../../../enums/generated/TideTextEnum';
 import { MWQMRun } from '../../../models/generated/MWQMRun.model';
-import { FormBuilder, Validators, FormGroup } from '@angular/forms';
-import { EnumIDAndText } from '../../../models/enumidandtext.model';
 import { HttpClientService } from '../../../services/http-client.service';
 import { Router } from '@angular/router';
 import { HttpClientCommand } from '../../../enums/app.enums';
@@ -31,32 +29,63 @@ import { HttpClientCommand } from '../../../enums/app.enums';
 })
 export class MWQMRunComponent implements OnInit, OnDestroy {
   sub: Subscription;
-  runSampleTypeList: EnumIDAndText[];
-  seaStateAtStart_BeaufortScaleList: EnumIDAndText[];
-  seaStateAtEnd_BeaufortScaleList: EnumIDAndText[];
-  analyzeMethodList: EnumIDAndText[];
-  sampleMatrixList: EnumIDAndText[];
-  laboratoryList: EnumIDAndText[];
-  sampleStatusList: EnumIDAndText[];
-  tide_StartList: EnumIDAndText[];
-  tide_EndList: EnumIDAndText[];
-  mwqmrunFormPut: FormGroup;
-  mwqmrunFormPost: FormGroup;
+  IDToShow: number;
+  showType?: HttpClientCommand = null;
 
-  constructor(public mwqmrunService: MWQMRunService, private router: Router, private httpClientService: HttpClientService, private fb: FormBuilder) {
+  constructor(public mwqmrunService: MWQMRunService, private router: Router, private httpClientService: HttpClientService) {
     httpClientService.oldURL = router.url;
+  }
+
+  GetPutButtonColor(mwqmrun: MWQMRun) {
+    if (this.IDToShow === mwqmrun.MWQMRunID && this.showType === HttpClientCommand.Put) {
+      return 'primary';
+    }
+    else {
+      return 'basic';
+    }
+  }
+
+  GetPostButtonColor(mwqmrun: MWQMRun) {
+    if (this.IDToShow === mwqmrun.MWQMRunID && this.showType === HttpClientCommand.Post) {
+      return 'primary';
+    }
+    else {
+      return 'basic';
+    }
+  }
+
+  ShowPut(mwqmrun: MWQMRun) {
+    if (this.IDToShow === mwqmrun.MWQMRunID && this.showType === HttpClientCommand.Put) {
+      this.IDToShow = 0;
+      this.showType = null;
+    }
+    else {
+      this.IDToShow = mwqmrun.MWQMRunID;
+      this.showType = HttpClientCommand.Put;
+    }
+  }
+
+  ShowPost(mwqmrun: MWQMRun) {
+    if (this.IDToShow === mwqmrun.MWQMRunID && this.showType === HttpClientCommand.Post) {
+      this.IDToShow = 0;
+      this.showType = null;
+    }
+    else {
+      this.IDToShow = mwqmrun.MWQMRunID;
+      this.showType = HttpClientCommand.Post;
+    }
+  }
+
+  GetPutEnum() {
+    return <number>HttpClientCommand.Put;
+  }
+
+  GetPostEnum() {
+    return <number>HttpClientCommand.Post;
   }
 
   GetMWQMRunList() {
     this.sub = this.mwqmrunService.GetMWQMRunList().subscribe();
-  }
-
-  PutMWQMRun(mwqmrun: MWQMRun) {
-    this.sub = this.mwqmrunService.PutMWQMRun(mwqmrun).subscribe();
-  }
-
-  PostMWQMRun(mwqmrun: MWQMRun) {
-    this.sub = this.mwqmrunService.PostMWQMRun(mwqmrun).subscribe();
   }
 
   DeleteMWQMRun(mwqmrun: MWQMRun) {
@@ -93,248 +122,11 @@ export class MWQMRunComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     LoadLocalesMWQMRunText(this.mwqmrunService);
-    this.runSampleTypeList = SampleTypeEnum_GetOrderedText();
-    this.seaStateAtStart_BeaufortScaleList = BeaufortScaleEnum_GetOrderedText();
-    this.seaStateAtEnd_BeaufortScaleList = BeaufortScaleEnum_GetOrderedText();
-    this.analyzeMethodList = AnalyzeMethodEnum_GetOrderedText();
-    this.sampleMatrixList = SampleMatrixEnum_GetOrderedText();
-    this.laboratoryList = LaboratoryEnum_GetOrderedText();
-    this.sampleStatusList = SampleStatusEnum_GetOrderedText();
-    this.tide_StartList = TideTextEnum_GetOrderedText();
-    this.tide_EndList = TideTextEnum_GetOrderedText();
-    this.FillFormBuilderGroup(HttpClientCommand.Post);
-    this.FillFormBuilderGroup(HttpClientCommand.Put);
   }
 
   ngOnDestroy() {
     if (this.sub) {
       this.sub.unsubscribe();
-    }
-  }
-
-  FillFormBuilderGroup(httpClientCommand: HttpClientCommand) {
-    if (this.mwqmrunService.mwqmrunListModel$.getValue().length) {
-      let formGroup: FormGroup = this.fb.group(
-        {
-          MWQMRunID: [
-            {
-              value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.mwqmrunService.mwqmrunListModel$.getValue()[0]?.MWQMRunID)),
-              disabled: false
-            }, [  Validators.required ]],
-          SubsectorTVItemID: [
-            {
-              value: this.mwqmrunService.mwqmrunListModel$.getValue()[0]?.SubsectorTVItemID,
-              disabled: false
-            }, [  Validators.required ]],
-          MWQMRunTVItemID: [
-            {
-              value: this.mwqmrunService.mwqmrunListModel$.getValue()[0]?.MWQMRunTVItemID,
-              disabled: false
-            }, [  Validators.required ]],
-          RunSampleType: [
-            {
-              value: this.mwqmrunService.mwqmrunListModel$.getValue()[0]?.RunSampleType,
-              disabled: false
-            }, [  Validators.required ]],
-          DateTime_Local: [
-            {
-              value: this.mwqmrunService.mwqmrunListModel$.getValue()[0]?.DateTime_Local,
-              disabled: false
-            }, [  Validators.required ]],
-          RunNumber: [
-            {
-              value: this.mwqmrunService.mwqmrunListModel$.getValue()[0]?.RunNumber,
-              disabled: false
-            }, [  Validators.required, Validators.min(1), Validators.max(1000) ]],
-          StartDateTime_Local: [
-            {
-              value: this.mwqmrunService.mwqmrunListModel$.getValue()[0]?.StartDateTime_Local,
-              disabled: false
-            }],
-          EndDateTime_Local: [
-            {
-              value: this.mwqmrunService.mwqmrunListModel$.getValue()[0]?.EndDateTime_Local,
-              disabled: false
-            }],
-          LabReceivedDateTime_Local: [
-            {
-              value: this.mwqmrunService.mwqmrunListModel$.getValue()[0]?.LabReceivedDateTime_Local,
-              disabled: false
-            }],
-          TemperatureControl1_C: [
-            {
-              value: this.mwqmrunService.mwqmrunListModel$.getValue()[0]?.TemperatureControl1_C,
-              disabled: false
-            }, [  Validators.min(-10), Validators.max(40) ]],
-          TemperatureControl2_C: [
-            {
-              value: this.mwqmrunService.mwqmrunListModel$.getValue()[0]?.TemperatureControl2_C,
-              disabled: false
-            }, [  Validators.min(-10), Validators.max(40) ]],
-          SeaStateAtStart_BeaufortScale: [
-            {
-              value: this.mwqmrunService.mwqmrunListModel$.getValue()[0]?.SeaStateAtStart_BeaufortScale,
-              disabled: false
-            }],
-          SeaStateAtEnd_BeaufortScale: [
-            {
-              value: this.mwqmrunService.mwqmrunListModel$.getValue()[0]?.SeaStateAtEnd_BeaufortScale,
-              disabled: false
-            }],
-          WaterLevelAtBrook_m: [
-            {
-              value: this.mwqmrunService.mwqmrunListModel$.getValue()[0]?.WaterLevelAtBrook_m,
-              disabled: false
-            }, [  Validators.min(0), Validators.max(100) ]],
-          WaveHightAtStart_m: [
-            {
-              value: this.mwqmrunService.mwqmrunListModel$.getValue()[0]?.WaveHightAtStart_m,
-              disabled: false
-            }, [  Validators.min(0), Validators.max(100) ]],
-          WaveHightAtEnd_m: [
-            {
-              value: this.mwqmrunService.mwqmrunListModel$.getValue()[0]?.WaveHightAtEnd_m,
-              disabled: false
-            }, [  Validators.min(0), Validators.max(100) ]],
-          SampleCrewInitials: [
-            {
-              value: this.mwqmrunService.mwqmrunListModel$.getValue()[0]?.SampleCrewInitials,
-              disabled: false
-            }, [  Validators.maxLength(20) ]],
-          AnalyzeMethod: [
-            {
-              value: this.mwqmrunService.mwqmrunListModel$.getValue()[0]?.AnalyzeMethod,
-              disabled: false
-            }],
-          SampleMatrix: [
-            {
-              value: this.mwqmrunService.mwqmrunListModel$.getValue()[0]?.SampleMatrix,
-              disabled: false
-            }],
-          Laboratory: [
-            {
-              value: this.mwqmrunService.mwqmrunListModel$.getValue()[0]?.Laboratory,
-              disabled: false
-            }],
-          SampleStatus: [
-            {
-              value: this.mwqmrunService.mwqmrunListModel$.getValue()[0]?.SampleStatus,
-              disabled: false
-            }],
-          LabSampleApprovalContactTVItemID: [
-            {
-              value: this.mwqmrunService.mwqmrunListModel$.getValue()[0]?.LabSampleApprovalContactTVItemID,
-              disabled: false
-            }],
-          LabAnalyzeBath1IncubationStartDateTime_Local: [
-            {
-              value: this.mwqmrunService.mwqmrunListModel$.getValue()[0]?.LabAnalyzeBath1IncubationStartDateTime_Local,
-              disabled: false
-            }],
-          LabAnalyzeBath2IncubationStartDateTime_Local: [
-            {
-              value: this.mwqmrunService.mwqmrunListModel$.getValue()[0]?.LabAnalyzeBath2IncubationStartDateTime_Local,
-              disabled: false
-            }],
-          LabAnalyzeBath3IncubationStartDateTime_Local: [
-            {
-              value: this.mwqmrunService.mwqmrunListModel$.getValue()[0]?.LabAnalyzeBath3IncubationStartDateTime_Local,
-              disabled: false
-            }],
-          LabRunSampleApprovalDateTime_Local: [
-            {
-              value: this.mwqmrunService.mwqmrunListModel$.getValue()[0]?.LabRunSampleApprovalDateTime_Local,
-              disabled: false
-            }],
-          Tide_Start: [
-            {
-              value: this.mwqmrunService.mwqmrunListModel$.getValue()[0]?.Tide_Start,
-              disabled: false
-            }],
-          Tide_End: [
-            {
-              value: this.mwqmrunService.mwqmrunListModel$.getValue()[0]?.Tide_End,
-              disabled: false
-            }],
-          RainDay0_mm: [
-            {
-              value: this.mwqmrunService.mwqmrunListModel$.getValue()[0]?.RainDay0_mm,
-              disabled: false
-            }, [  Validators.min(0), Validators.max(300) ]],
-          RainDay1_mm: [
-            {
-              value: this.mwqmrunService.mwqmrunListModel$.getValue()[0]?.RainDay1_mm,
-              disabled: false
-            }, [  Validators.min(0), Validators.max(300) ]],
-          RainDay2_mm: [
-            {
-              value: this.mwqmrunService.mwqmrunListModel$.getValue()[0]?.RainDay2_mm,
-              disabled: false
-            }, [  Validators.min(0), Validators.max(300) ]],
-          RainDay3_mm: [
-            {
-              value: this.mwqmrunService.mwqmrunListModel$.getValue()[0]?.RainDay3_mm,
-              disabled: false
-            }, [  Validators.min(0), Validators.max(300) ]],
-          RainDay4_mm: [
-            {
-              value: this.mwqmrunService.mwqmrunListModel$.getValue()[0]?.RainDay4_mm,
-              disabled: false
-            }, [  Validators.min(0), Validators.max(300) ]],
-          RainDay5_mm: [
-            {
-              value: this.mwqmrunService.mwqmrunListModel$.getValue()[0]?.RainDay5_mm,
-              disabled: false
-            }, [  Validators.min(0), Validators.max(300) ]],
-          RainDay6_mm: [
-            {
-              value: this.mwqmrunService.mwqmrunListModel$.getValue()[0]?.RainDay6_mm,
-              disabled: false
-            }, [  Validators.min(0), Validators.max(300) ]],
-          RainDay7_mm: [
-            {
-              value: this.mwqmrunService.mwqmrunListModel$.getValue()[0]?.RainDay7_mm,
-              disabled: false
-            }, [  Validators.min(0), Validators.max(300) ]],
-          RainDay8_mm: [
-            {
-              value: this.mwqmrunService.mwqmrunListModel$.getValue()[0]?.RainDay8_mm,
-              disabled: false
-            }, [  Validators.min(0), Validators.max(300) ]],
-          RainDay9_mm: [
-            {
-              value: this.mwqmrunService.mwqmrunListModel$.getValue()[0]?.RainDay9_mm,
-              disabled: false
-            }, [  Validators.min(0), Validators.max(300) ]],
-          RainDay10_mm: [
-            {
-              value: this.mwqmrunService.mwqmrunListModel$.getValue()[0]?.RainDay10_mm,
-              disabled: false
-            }, [  Validators.min(0), Validators.max(300) ]],
-          RemoveFromStat: [
-            {
-              value: this.mwqmrunService.mwqmrunListModel$.getValue()[0]?.RemoveFromStat,
-              disabled: false
-            }],
-          LastUpdateDate_UTC: [
-            {
-              value: this.mwqmrunService.mwqmrunListModel$.getValue()[0]?.LastUpdateDate_UTC,
-              disabled: false
-            }, [  Validators.required ]],
-          LastUpdateContactTVItemID: [
-            {
-              value: this.mwqmrunService.mwqmrunListModel$.getValue()[0]?.LastUpdateContactTVItemID,
-              disabled: false
-            }, [  Validators.required ]],
-        }
-      );
-
-      if (httpClientCommand === HttpClientCommand.Post) {
-        this.mwqmrunFormPost = formGroup
-      }
-      else {
-        this.mwqmrunFormPut = formGroup;
-      }
     }
   }
 }

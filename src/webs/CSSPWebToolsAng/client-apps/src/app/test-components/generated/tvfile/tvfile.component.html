@@ -17,434 +17,62 @@
     <mat-card-subtitle>{{ tvfileService.tvfileTextModel$.getValue().Title }}</mat-card-subtitle>
   </mat-card-header>
   <mat-card-content>
-    <mat-list *ngIf="tvfileService.tvfileListModel$.getValue()?.length">
-      <mat-list-item *ngFor="let tvfile of tvfileService.tvfileListModel$.getValue()">
-        <span mat-line>
+    <div *ngIf="tvfileService.tvfileListModel$.getValue()?.length">
+      <div *ngFor="let tvfile of tvfileService.tvfileListModel$.getValue()">
+        <p>
           <button mat-raised-button (click)="DeleteTVFile(tvfile)">
             <span>Delete TVFileID [{{ tvfile.TVFileID }}]&nbsp;&nbsp;&nbsp;</span>
             <mat-icon>delete</mat-icon>
-          </button>
+          </button>&nbsp;&nbsp;&nbsp;
+          <button mat-raised-button [color]="GetPutButtonColor(tvfile)"(click)="ShowPut(tvfile)">
+            <span>Show Put</span>
+          </button>&nbsp;&nbsp;
+          <button mat-raised-button [color]="GetPostButtonColor(tvfile)"(click)="ShowPost(tvfile)">
+            <span>Show Post</span>
+          </button>&nbsp;&nbsp;
           <mat-progress-bar mode="indeterminate" *ngIf="tvfileService.tvfileDeleteModel$.getValue().Working">
           </mat-progress-bar>
-          </span>
-        <span mat-line>
+        </p>
+        <p *ngIf="IDToShow === tvfile.TVFileID && showType === GetPutEnum()">
+          <app-tvfile-edit [tvfile]="tvfile" [httpClientCommand]="GetPutEnum()"></app-tvfile-edit>
+        </p>
+        <p *ngIf="IDToShow === tvfile.TVFileID && showType === GetPostEnum()">
+          <app-tvfile-edit [tvfile]="tvfile" [httpClientCommand]="GetPostEnum()"></app-tvfile-edit>
+        </p>
+        <blockquote>
+        <p>
           <span>TVFileID: [{{ tvfile.TVFileID }}]</span>
           <span> --- TVFileTVItemID: [{{ tvfile.TVFileTVItemID }}]</span>
           <span> --- TemplateTVType: [{{ GetTVTypeEnumText(tvfile.TemplateTVType) }}]</span>
           <span> --- ReportTypeID: [{{ tvfile.ReportTypeID }}]</span>
-        </span>
-        <span mat-line>
+ </p>
+        <p>
           <span>Parameters: [{{ tvfile.Parameters }}]</span>
           <span> --- Year: [{{ tvfile.Year }}]</span>
           <span> --- Language: [{{ GetLanguageEnumText(tvfile.Language) }}]</span>
           <span> --- FilePurpose: [{{ GetFilePurposeEnumText(tvfile.FilePurpose) }}]</span>
-        </span>
-        <span mat-line>
+ </p>
+        <p>
           <span>FileType: [{{ GetFileTypeEnumText(tvfile.FileType) }}]</span>
           <span> --- FileSize_kb: [{{ tvfile.FileSize_kb }}]</span>
           <span> --- FileInfo: [{{ tvfile.FileInfo }}]</span>
           <span> --- FileCreatedDate_UTC: [{{ tvfile.FileCreatedDate_UTC }}]</span>
-        </span>
-        <span mat-line>
+ </p>
+        <p>
           <span>FromWater: [{{ tvfile.FromWater }}]</span>
           <span> --- ClientFilePath: [{{ tvfile.ClientFilePath }}]</span>
           <span> --- ServerFileName: [{{ tvfile.ServerFileName }}]</span>
           <span> --- ServerFilePath: [{{ tvfile.ServerFilePath }}]</span>
-        </span>
-        <span mat-line>
+ </p>
+        <p>
           <span>LastUpdateDate_UTC: [{{ tvfile.LastUpdateDate_UTC }}]</span>
           <span> --- LastUpdateContactTVItemID: [{{ tvfile.LastUpdateContactTVItemID }}]</span>
-        </span>
-       </mat-list-item>
-     </mat-list>
+        </p>
+        </blockquote>
+       </div>
+     </div>
    </mat-card-content>
  <mat-card-actions>
    <button mat-button>Allo</button>
  </mat-card-actions>
-</mat-card>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<mat-card>
-  <mat-card-header>
-    <mat-card-title>Edit TVFile testing</mat-card-title>
-  </mat-card-header>
-  <mat-card-content>
-    <div *ngIf="tvfileService.tvfileListModel$.getValue()?.length">
-      <blockquote>
-        <form [formGroup]="tvfileFormPut" (ngSubmit)="PutTVFile(tvfileFormPut.value)">
-          <h3>
-            TVFile
-            <button mat-raised-button type="submit">
-              <span>Update TVFile</span>
-            </button>
-            <mat-progress-bar mode="indeterminate" *ngIf="tvfileService.tvfilePutModel$.getValue().Working">
-            </mat-progress-bar>
-          </h3>
-          <p>
-            <mat-form-field>
-              <mat-label>TVFileID</mat-label>
-              <input matInput type="number" formControlName="TVFileID">
-              <mat-error *ngIf="tvfileFormPut.controls.TVFileID.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>TVFileTVItemID</mat-label>
-              <input matInput type="number" formControlName="TVFileTVItemID">
-              <mat-error *ngIf="tvfileFormPut.controls.TVFileTVItemID.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>TemplateTVType</mat-label>
-              <mat-select formControlName="TemplateTVType">
-                <mat-option *ngFor="let a of templateTVTypeList" [value]="a.EnumID">
-                  {{ a.EnumText }}
-                </mat-option>
-              </mat-select>
-              <mat-error *ngIf="tvfileFormPut.controls.TemplateTVType.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>ReportTypeID</mat-label>
-              <input matInput type="number" formControlName="ReportTypeID">
-              <mat-error *ngIf="tvfileFormPut.controls.ReportTypeID.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-              </mat-error>
-            </mat-form-field>
-          </p>
-          <p>
-            <mat-form-field>
-              <mat-label>Parameters</mat-label>
-              <input matInput type="text" formControlName="Parameters">
-              <mat-error *ngIf="tvfileFormPut.controls.Parameters.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>Year</mat-label>
-              <input matInput type="number" formControlName="Year">
-              <mat-error *ngIf="tvfileFormPut.controls.Year.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.min">Min - 1980<br /></span>
-                <span *ngIf="e.min">Max - 2050<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>Language</mat-label>
-              <mat-select formControlName="Language">
-                <mat-option *ngFor="let a of languageList" [value]="a.EnumID">
-                  {{ a.EnumText }}
-                </mat-option>
-              </mat-select>
-              <mat-error *ngIf="tvfileFormPut.controls.Language.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>FilePurpose</mat-label>
-              <mat-select formControlName="FilePurpose">
-                <mat-option *ngFor="let a of filePurposeList" [value]="a.EnumID">
-                  {{ a.EnumText }}
-                </mat-option>
-              </mat-select>
-              <mat-error *ngIf="tvfileFormPut.controls.FilePurpose.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-          </p>
-          <p>
-            <mat-form-field>
-              <mat-label>FileType</mat-label>
-              <mat-select formControlName="FileType">
-                <mat-option *ngFor="let a of fileTypeList" [value]="a.EnumID">
-                  {{ a.EnumText }}
-                </mat-option>
-              </mat-select>
-              <mat-error *ngIf="tvfileFormPut.controls.FileType.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>FileSize_kb</mat-label>
-              <input matInput type="number" formControlName="FileSize_kb">
-              <mat-error *ngIf="tvfileFormPut.controls.FileSize_kb.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-                <span *ngIf="e.min">Min - 0<br /></span>
-                <span *ngIf="e.min">Max - 100000000<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>FileInfo</mat-label>
-              <input matInput type="text" formControlName="FileInfo">
-              <mat-error *ngIf="tvfileFormPut.controls.FileInfo.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>FileCreatedDate_UTC</mat-label>
-              <input matInput type="text" formControlName="FileCreatedDate_UTC">
-              <mat-error *ngIf="tvfileFormPut.controls.FileCreatedDate_UTC.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-          </p>
-          <p>
-            <mat-form-field>
-              <mat-label>FromWater</mat-label>
-              <input matInput type="text" formControlName="FromWater">
-              <mat-error *ngIf="tvfileFormPut.controls.FromWater.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>ClientFilePath</mat-label>
-              <input matInput type="text" formControlName="ClientFilePath">
-              <mat-error *ngIf="tvfileFormPut.controls.ClientFilePath.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.maxlength">MaxLength - 250<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>ServerFileName</mat-label>
-              <input matInput type="text" formControlName="ServerFileName">
-              <mat-error *ngIf="tvfileFormPut.controls.ServerFileName.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-                <span *ngIf="e.maxlength">MaxLength - 250<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>ServerFilePath</mat-label>
-              <input matInput type="text" formControlName="ServerFilePath">
-              <mat-error *ngIf="tvfileFormPut.controls.ServerFilePath.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-                <span *ngIf="e.maxlength">MaxLength - 250<br /></span>
-              </mat-error>
-            </mat-form-field>
-          </p>
-          <p>
-            <mat-form-field>
-              <mat-label>LastUpdateDate_UTC</mat-label>
-              <input matInput type="text" formControlName="LastUpdateDate_UTC">
-              <mat-error *ngIf="tvfileFormPut.controls.LastUpdateDate_UTC.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>LastUpdateContactTVItemID</mat-label>
-              <input matInput type="number" formControlName="LastUpdateContactTVItemID">
-              <mat-error *ngIf="tvfileFormPut.controls.LastUpdateContactTVItemID.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-          </p>
-        </form>
-      </blockquote>
-    </div>
-  </mat-card-content>
-</mat-card>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<mat-card>
-  <mat-card-header>
-    <mat-card-title>Add TVFile testing</mat-card-title>
-  </mat-card-header>
-  <mat-card-content>
-    <div *ngIf="tvfileService.tvfileListModel$.getValue()?.length">
-      <blockquote>
-        <form [formGroup]="tvfileFormPost" (ngSubmit)="PostTVFile(tvfileFormPost.value)">
-          <h3>
-            TVFile
-            <button mat-raised-button type="submit">
-              <span>Add TVFile</span>
-            </button>
-            <mat-progress-bar mode="indeterminate" *ngIf="tvfileService.tvfilePostModel$.getValue().Working">
-            </mat-progress-bar>
-          </h3>
-          <p>
-            <mat-form-field>
-              <mat-label>TVFileID</mat-label>
-              <input matInput type="number" formControlName="TVFileID">
-              <mat-error *ngIf="tvfileFormPut.controls.TVFileID.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>TVFileTVItemID</mat-label>
-              <input matInput type="number" formControlName="TVFileTVItemID">
-              <mat-error *ngIf="tvfileFormPut.controls.TVFileTVItemID.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>TemplateTVType</mat-label>
-              <mat-select formControlName="TemplateTVType">
-                <mat-option *ngFor="let a of templateTVTypeList" [value]="a.EnumID">
-                  {{ a.EnumText }}
-                </mat-option>
-              </mat-select>
-              <mat-error *ngIf="tvfileFormPut.controls.TemplateTVType.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>ReportTypeID</mat-label>
-              <input matInput type="number" formControlName="ReportTypeID">
-              <mat-error *ngIf="tvfileFormPut.controls.ReportTypeID.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-              </mat-error>
-            </mat-form-field>
-          </p>
-          <p>
-            <mat-form-field>
-              <mat-label>Parameters</mat-label>
-              <input matInput type="text" formControlName="Parameters">
-              <mat-error *ngIf="tvfileFormPut.controls.Parameters.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>Year</mat-label>
-              <input matInput type="number" formControlName="Year">
-              <mat-error *ngIf="tvfileFormPut.controls.Year.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.min">Min - 1980<br /></span>
-                <span *ngIf="e.min">Max - 2050<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>Language</mat-label>
-              <mat-select formControlName="Language">
-                <mat-option *ngFor="let a of languageList" [value]="a.EnumID">
-                  {{ a.EnumText }}
-                </mat-option>
-              </mat-select>
-              <mat-error *ngIf="tvfileFormPut.controls.Language.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>FilePurpose</mat-label>
-              <mat-select formControlName="FilePurpose">
-                <mat-option *ngFor="let a of filePurposeList" [value]="a.EnumID">
-                  {{ a.EnumText }}
-                </mat-option>
-              </mat-select>
-              <mat-error *ngIf="tvfileFormPut.controls.FilePurpose.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-          </p>
-          <p>
-            <mat-form-field>
-              <mat-label>FileType</mat-label>
-              <mat-select formControlName="FileType">
-                <mat-option *ngFor="let a of fileTypeList" [value]="a.EnumID">
-                  {{ a.EnumText }}
-                </mat-option>
-              </mat-select>
-              <mat-error *ngIf="tvfileFormPut.controls.FileType.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>FileSize_kb</mat-label>
-              <input matInput type="number" formControlName="FileSize_kb">
-              <mat-error *ngIf="tvfileFormPut.controls.FileSize_kb.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-                <span *ngIf="e.min">Min - 0<br /></span>
-                <span *ngIf="e.min">Max - 100000000<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>FileInfo</mat-label>
-              <input matInput type="text" formControlName="FileInfo">
-              <mat-error *ngIf="tvfileFormPut.controls.FileInfo.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>FileCreatedDate_UTC</mat-label>
-              <input matInput type="text" formControlName="FileCreatedDate_UTC">
-              <mat-error *ngIf="tvfileFormPut.controls.FileCreatedDate_UTC.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-          </p>
-          <p>
-            <mat-form-field>
-              <mat-label>FromWater</mat-label>
-              <input matInput type="text" formControlName="FromWater">
-              <mat-error *ngIf="tvfileFormPut.controls.FromWater.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>ClientFilePath</mat-label>
-              <input matInput type="text" formControlName="ClientFilePath">
-              <mat-error *ngIf="tvfileFormPut.controls.ClientFilePath.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.maxlength">MaxLength - 250<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>ServerFileName</mat-label>
-              <input matInput type="text" formControlName="ServerFileName">
-              <mat-error *ngIf="tvfileFormPut.controls.ServerFileName.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-                <span *ngIf="e.maxlength">MaxLength - 250<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>ServerFilePath</mat-label>
-              <input matInput type="text" formControlName="ServerFilePath">
-              <mat-error *ngIf="tvfileFormPut.controls.ServerFilePath.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-                <span *ngIf="e.maxlength">MaxLength - 250<br /></span>
-              </mat-error>
-            </mat-form-field>
-          </p>
-          <p>
-            <mat-form-field>
-              <mat-label>LastUpdateDate_UTC</mat-label>
-              <input matInput type="text" formControlName="LastUpdateDate_UTC">
-              <mat-error *ngIf="tvfileFormPut.controls.LastUpdateDate_UTC.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>LastUpdateContactTVItemID</mat-label>
-              <input matInput type="number" formControlName="LastUpdateContactTVItemID">
-              <mat-error *ngIf="tvfileFormPut.controls.LastUpdateContactTVItemID.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-          </p>
-        </form>
-      </blockquote>
-    </div>
-  </mat-card-content>
 </mat-card>

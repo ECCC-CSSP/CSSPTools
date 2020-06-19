@@ -17,230 +17,46 @@
     <mat-card-subtitle>{{ mwqmsiteService.mwqmsiteTextModel$.getValue().Title }}</mat-card-subtitle>
   </mat-card-header>
   <mat-card-content>
-    <mat-list *ngIf="mwqmsiteService.mwqmsiteListModel$.getValue()?.length">
-      <mat-list-item *ngFor="let mwqmsite of mwqmsiteService.mwqmsiteListModel$.getValue()">
-        <span mat-line>
+    <div *ngIf="mwqmsiteService.mwqmsiteListModel$.getValue()?.length">
+      <div *ngFor="let mwqmsite of mwqmsiteService.mwqmsiteListModel$.getValue()">
+        <p>
           <button mat-raised-button (click)="DeleteMWQMSite(mwqmsite)">
             <span>Delete MWQMSiteID [{{ mwqmsite.MWQMSiteID }}]&nbsp;&nbsp;&nbsp;</span>
             <mat-icon>delete</mat-icon>
-          </button>
+          </button>&nbsp;&nbsp;&nbsp;
+          <button mat-raised-button [color]="GetPutButtonColor(mwqmsite)"(click)="ShowPut(mwqmsite)">
+            <span>Show Put</span>
+          </button>&nbsp;&nbsp;
+          <button mat-raised-button [color]="GetPostButtonColor(mwqmsite)"(click)="ShowPost(mwqmsite)">
+            <span>Show Post</span>
+          </button>&nbsp;&nbsp;
           <mat-progress-bar mode="indeterminate" *ngIf="mwqmsiteService.mwqmsiteDeleteModel$.getValue().Working">
           </mat-progress-bar>
-          </span>
-        <span mat-line>
+        </p>
+        <p *ngIf="IDToShow === mwqmsite.MWQMSiteID && showType === GetPutEnum()">
+          <app-mwqmsite-edit [mwqmsite]="mwqmsite" [httpClientCommand]="GetPutEnum()"></app-mwqmsite-edit>
+        </p>
+        <p *ngIf="IDToShow === mwqmsite.MWQMSiteID && showType === GetPostEnum()">
+          <app-mwqmsite-edit [mwqmsite]="mwqmsite" [httpClientCommand]="GetPostEnum()"></app-mwqmsite-edit>
+        </p>
+        <blockquote>
+        <p>
           <span>MWQMSiteID: [{{ mwqmsite.MWQMSiteID }}]</span>
           <span> --- MWQMSiteTVItemID: [{{ mwqmsite.MWQMSiteTVItemID }}]</span>
           <span> --- MWQMSiteNumber: [{{ mwqmsite.MWQMSiteNumber }}]</span>
           <span> --- MWQMSiteDescription: [{{ mwqmsite.MWQMSiteDescription }}]</span>
-        </span>
-        <span mat-line>
+ </p>
+        <p>
           <span>MWQMSiteLatestClassification: [{{ GetMWQMSiteLatestClassificationEnumText(mwqmsite.MWQMSiteLatestClassification) }}]</span>
           <span> --- Ordinal: [{{ mwqmsite.Ordinal }}]</span>
           <span> --- LastUpdateDate_UTC: [{{ mwqmsite.LastUpdateDate_UTC }}]</span>
           <span> --- LastUpdateContactTVItemID: [{{ mwqmsite.LastUpdateContactTVItemID }}]</span>
-        </span>
-       </mat-list-item>
-     </mat-list>
+        </p>
+        </blockquote>
+       </div>
+     </div>
    </mat-card-content>
  <mat-card-actions>
    <button mat-button>Allo</button>
  </mat-card-actions>
-</mat-card>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<mat-card>
-  <mat-card-header>
-    <mat-card-title>Edit MWQMSite testing</mat-card-title>
-  </mat-card-header>
-  <mat-card-content>
-    <div *ngIf="mwqmsiteService.mwqmsiteListModel$.getValue()?.length">
-      <blockquote>
-        <form [formGroup]="mwqmsiteFormPut" (ngSubmit)="PutMWQMSite(mwqmsiteFormPut.value)">
-          <h3>
-            MWQMSite
-            <button mat-raised-button type="submit">
-              <span>Update MWQMSite</span>
-            </button>
-            <mat-progress-bar mode="indeterminate" *ngIf="mwqmsiteService.mwqmsitePutModel$.getValue().Working">
-            </mat-progress-bar>
-          </h3>
-          <p>
-            <mat-form-field>
-              <mat-label>MWQMSiteID</mat-label>
-              <input matInput type="number" formControlName="MWQMSiteID">
-              <mat-error *ngIf="mwqmsiteFormPut.controls.MWQMSiteID.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>MWQMSiteTVItemID</mat-label>
-              <input matInput type="number" formControlName="MWQMSiteTVItemID">
-              <mat-error *ngIf="mwqmsiteFormPut.controls.MWQMSiteTVItemID.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>MWQMSiteNumber</mat-label>
-              <input matInput type="text" formControlName="MWQMSiteNumber">
-              <mat-error *ngIf="mwqmsiteFormPut.controls.MWQMSiteNumber.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-                <span *ngIf="e.maxlength">MaxLength - 8<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>MWQMSiteDescription</mat-label>
-              <input matInput type="text" formControlName="MWQMSiteDescription">
-              <mat-error *ngIf="mwqmsiteFormPut.controls.MWQMSiteDescription.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-                <span *ngIf="e.maxlength">MaxLength - 200<br /></span>
-              </mat-error>
-            </mat-form-field>
-          </p>
-          <p>
-            <mat-form-field>
-              <mat-label>MWQMSiteLatestClassification</mat-label>
-              <mat-select formControlName="MWQMSiteLatestClassification">
-                <mat-option *ngFor="let a of mWQMSiteLatestClassificationList" [value]="a.EnumID">
-                  {{ a.EnumText }}
-                </mat-option>
-              </mat-select>
-              <mat-error *ngIf="mwqmsiteFormPut.controls.MWQMSiteLatestClassification.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>Ordinal</mat-label>
-              <input matInput type="number" formControlName="Ordinal">
-              <mat-error *ngIf="mwqmsiteFormPut.controls.Ordinal.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-                <span *ngIf="e.min">Min - 0<br /></span>
-                <span *ngIf="e.min">Max - 1000<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>LastUpdateDate_UTC</mat-label>
-              <input matInput type="text" formControlName="LastUpdateDate_UTC">
-              <mat-error *ngIf="mwqmsiteFormPut.controls.LastUpdateDate_UTC.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>LastUpdateContactTVItemID</mat-label>
-              <input matInput type="number" formControlName="LastUpdateContactTVItemID">
-              <mat-error *ngIf="mwqmsiteFormPut.controls.LastUpdateContactTVItemID.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-          </p>
-        </form>
-      </blockquote>
-    </div>
-  </mat-card-content>
-</mat-card>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<mat-card>
-  <mat-card-header>
-    <mat-card-title>Add MWQMSite testing</mat-card-title>
-  </mat-card-header>
-  <mat-card-content>
-    <div *ngIf="mwqmsiteService.mwqmsiteListModel$.getValue()?.length">
-      <blockquote>
-        <form [formGroup]="mwqmsiteFormPost" (ngSubmit)="PostMWQMSite(mwqmsiteFormPost.value)">
-          <h3>
-            MWQMSite
-            <button mat-raised-button type="submit">
-              <span>Add MWQMSite</span>
-            </button>
-            <mat-progress-bar mode="indeterminate" *ngIf="mwqmsiteService.mwqmsitePostModel$.getValue().Working">
-            </mat-progress-bar>
-          </h3>
-          <p>
-            <mat-form-field>
-              <mat-label>MWQMSiteID</mat-label>
-              <input matInput type="number" formControlName="MWQMSiteID">
-              <mat-error *ngIf="mwqmsiteFormPut.controls.MWQMSiteID.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>MWQMSiteTVItemID</mat-label>
-              <input matInput type="number" formControlName="MWQMSiteTVItemID">
-              <mat-error *ngIf="mwqmsiteFormPut.controls.MWQMSiteTVItemID.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>MWQMSiteNumber</mat-label>
-              <input matInput type="text" formControlName="MWQMSiteNumber">
-              <mat-error *ngIf="mwqmsiteFormPut.controls.MWQMSiteNumber.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-                <span *ngIf="e.maxlength">MaxLength - 8<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>MWQMSiteDescription</mat-label>
-              <input matInput type="text" formControlName="MWQMSiteDescription">
-              <mat-error *ngIf="mwqmsiteFormPut.controls.MWQMSiteDescription.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-                <span *ngIf="e.maxlength">MaxLength - 200<br /></span>
-              </mat-error>
-            </mat-form-field>
-          </p>
-          <p>
-            <mat-form-field>
-              <mat-label>MWQMSiteLatestClassification</mat-label>
-              <mat-select formControlName="MWQMSiteLatestClassification">
-                <mat-option *ngFor="let a of mWQMSiteLatestClassificationList" [value]="a.EnumID">
-                  {{ a.EnumText }}
-                </mat-option>
-              </mat-select>
-              <mat-error *ngIf="mwqmsiteFormPut.controls.MWQMSiteLatestClassification.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>Ordinal</mat-label>
-              <input matInput type="number" formControlName="Ordinal">
-              <mat-error *ngIf="mwqmsiteFormPut.controls.Ordinal.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-                <span *ngIf="e.min">Min - 0<br /></span>
-                <span *ngIf="e.min">Max - 1000<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>LastUpdateDate_UTC</mat-label>
-              <input matInput type="text" formControlName="LastUpdateDate_UTC">
-              <mat-error *ngIf="mwqmsiteFormPut.controls.LastUpdateDate_UTC.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>LastUpdateContactTVItemID</mat-label>
-              <input matInput type="number" formControlName="LastUpdateContactTVItemID">
-              <mat-error *ngIf="mwqmsiteFormPut.controls.LastUpdateContactTVItemID.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-          </p>
-        </form>
-      </blockquote>
-    </div>
-  </mat-card-content>
 </mat-card>

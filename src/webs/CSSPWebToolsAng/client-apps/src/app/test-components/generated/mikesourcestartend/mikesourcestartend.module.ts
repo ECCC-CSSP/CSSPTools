@@ -12,9 +12,10 @@ import { MikeSourceStartEndRoutingModule } from './mikesourcestartend-routing.mo
 import { MaterialModule } from '../../../app-material.module';
 import { MikeSourceStartEndComponent } from './mikesourcestartend.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MikeSourceStartEndEditComponent } from './mikesourcestartend-edit.component';
 
 @NgModule({
-  declarations: [ MikeSourceStartEndComponent ],
+  declarations: [MikeSourceStartEndComponent, MikeSourceStartEndEditComponent],
   imports: [
     CommonModule,
     RouterModule,

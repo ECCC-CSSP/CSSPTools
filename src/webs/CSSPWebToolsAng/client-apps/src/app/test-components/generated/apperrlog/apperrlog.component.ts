@@ -10,7 +10,6 @@ import { AppErrLogService } from './apperrlog.service';
 import { LoadLocalesAppErrLogText } from './apperrlog.locales';
 import { Subscription } from 'rxjs';
 import { AppErrLog } from '../../../models/generated/AppErrLog.model';
-import { FormBuilder, Validators, FormGroup } from '@angular/forms';
 import { HttpClientService } from '../../../services/http-client.service';
 import { Router } from '@angular/router';
 import { HttpClientCommand } from '../../../enums/app.enums';
@@ -23,23 +22,63 @@ import { HttpClientCommand } from '../../../enums/app.enums';
 })
 export class AppErrLogComponent implements OnInit, OnDestroy {
   sub: Subscription;
-  apperrlogFormPut: FormGroup;
-  apperrlogFormPost: FormGroup;
+  IDToShow: number;
+  showType?: HttpClientCommand = null;
 
-  constructor(public apperrlogService: AppErrLogService, private router: Router, private httpClientService: HttpClientService, private fb: FormBuilder) {
+  constructor(public apperrlogService: AppErrLogService, private router: Router, private httpClientService: HttpClientService) {
     httpClientService.oldURL = router.url;
+  }
+
+  GetPutButtonColor(apperrlog: AppErrLog) {
+    if (this.IDToShow === apperrlog.AppErrLogID && this.showType === HttpClientCommand.Put) {
+      return 'primary';
+    }
+    else {
+      return 'basic';
+    }
+  }
+
+  GetPostButtonColor(apperrlog: AppErrLog) {
+    if (this.IDToShow === apperrlog.AppErrLogID && this.showType === HttpClientCommand.Post) {
+      return 'primary';
+    }
+    else {
+      return 'basic';
+    }
+  }
+
+  ShowPut(apperrlog: AppErrLog) {
+    if (this.IDToShow === apperrlog.AppErrLogID && this.showType === HttpClientCommand.Put) {
+      this.IDToShow = 0;
+      this.showType = null;
+    }
+    else {
+      this.IDToShow = apperrlog.AppErrLogID;
+      this.showType = HttpClientCommand.Put;
+    }
+  }
+
+  ShowPost(apperrlog: AppErrLog) {
+    if (this.IDToShow === apperrlog.AppErrLogID && this.showType === HttpClientCommand.Post) {
+      this.IDToShow = 0;
+      this.showType = null;
+    }
+    else {
+      this.IDToShow = apperrlog.AppErrLogID;
+      this.showType = HttpClientCommand.Post;
+    }
+  }
+
+  GetPutEnum() {
+    return <number>HttpClientCommand.Put;
+  }
+
+  GetPostEnum() {
+    return <number>HttpClientCommand.Post;
   }
 
   GetAppErrLogList() {
     this.sub = this.apperrlogService.GetAppErrLogList().subscribe();
-  }
-
-  PutAppErrLog(apperrlog: AppErrLog) {
-    this.sub = this.apperrlogService.PutAppErrLog(apperrlog).subscribe();
-  }
-
-  PostAppErrLog(apperrlog: AppErrLog) {
-    this.sub = this.apperrlogService.PostAppErrLog(apperrlog).subscribe();
   }
 
   DeleteAppErrLog(apperrlog: AppErrLog) {
@@ -48,69 +87,11 @@ export class AppErrLogComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     LoadLocalesAppErrLogText(this.apperrlogService);
-    this.FillFormBuilderGroup(HttpClientCommand.Post);
-    this.FillFormBuilderGroup(HttpClientCommand.Put);
   }
 
   ngOnDestroy() {
     if (this.sub) {
       this.sub.unsubscribe();
-    }
-  }
-
-  FillFormBuilderGroup(httpClientCommand: HttpClientCommand) {
-    if (this.apperrlogService.apperrlogListModel$.getValue().length) {
-      let formGroup: FormGroup = this.fb.group(
-        {
-          AppErrLogID: [
-            {
-              value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.apperrlogService.apperrlogListModel$.getValue()[0]?.AppErrLogID)),
-              disabled: false
-            }, [  Validators.required ]],
-          Tag: [
-            {
-              value: this.apperrlogService.apperrlogListModel$.getValue()[0]?.Tag,
-              disabled: false
-            }, [  Validators.required, Validators.maxLength(100) ]],
-          LineNumber: [
-            {
-              value: this.apperrlogService.apperrlogListModel$.getValue()[0]?.LineNumber,
-              disabled: false
-            }, [  Validators.required, Validators.min(1) ]],
-          Source: [
-            {
-              value: this.apperrlogService.apperrlogListModel$.getValue()[0]?.Source,
-              disabled: false
-            }, [  Validators.required ]],
-          Message: [
-            {
-              value: this.apperrlogService.apperrlogListModel$.getValue()[0]?.Message,
-              disabled: false
-            }, [  Validators.required ]],
-          DateTime_UTC: [
-            {
-              value: this.apperrlogService.apperrlogListModel$.getValue()[0]?.DateTime_UTC,
-              disabled: false
-            }, [  Validators.required ]],
-          LastUpdateDate_UTC: [
-            {
-              value: this.apperrlogService.apperrlogListModel$.getValue()[0]?.LastUpdateDate_UTC,
-              disabled: false
-            }, [  Validators.required ]],
-          LastUpdateContactTVItemID: [
-            {
-              value: this.apperrlogService.apperrlogListModel$.getValue()[0]?.LastUpdateContactTVItemID,
-              disabled: false
-            }, [  Validators.required ]],
-        }
-      );
-
-      if (httpClientCommand === HttpClientCommand.Post) {
-        this.apperrlogFormPost = formGroup
-      }
-      else {
-        this.apperrlogFormPut = formGroup;
-      }
     }
   }
 }

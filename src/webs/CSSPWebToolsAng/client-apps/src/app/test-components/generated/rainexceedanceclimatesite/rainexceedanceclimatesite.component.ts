@@ -10,7 +10,6 @@ import { RainExceedanceClimateSiteService } from './rainexceedanceclimatesite.se
 import { LoadLocalesRainExceedanceClimateSiteText } from './rainexceedanceclimatesite.locales';
 import { Subscription } from 'rxjs';
 import { RainExceedanceClimateSite } from '../../../models/generated/RainExceedanceClimateSite.model';
-import { FormBuilder, Validators, FormGroup } from '@angular/forms';
 import { HttpClientService } from '../../../services/http-client.service';
 import { Router } from '@angular/router';
 import { HttpClientCommand } from '../../../enums/app.enums';
@@ -23,23 +22,63 @@ import { HttpClientCommand } from '../../../enums/app.enums';
 })
 export class RainExceedanceClimateSiteComponent implements OnInit, OnDestroy {
   sub: Subscription;
-  rainexceedanceclimatesiteFormPut: FormGroup;
-  rainexceedanceclimatesiteFormPost: FormGroup;
+  IDToShow: number;
+  showType?: HttpClientCommand = null;
 
-  constructor(public rainexceedanceclimatesiteService: RainExceedanceClimateSiteService, private router: Router, private httpClientService: HttpClientService, private fb: FormBuilder) {
+  constructor(public rainexceedanceclimatesiteService: RainExceedanceClimateSiteService, private router: Router, private httpClientService: HttpClientService) {
     httpClientService.oldURL = router.url;
+  }
+
+  GetPutButtonColor(rainexceedanceclimatesite: RainExceedanceClimateSite) {
+    if (this.IDToShow === rainexceedanceclimatesite.RainExceedanceClimateSiteID && this.showType === HttpClientCommand.Put) {
+      return 'primary';
+    }
+    else {
+      return 'basic';
+    }
+  }
+
+  GetPostButtonColor(rainexceedanceclimatesite: RainExceedanceClimateSite) {
+    if (this.IDToShow === rainexceedanceclimatesite.RainExceedanceClimateSiteID && this.showType === HttpClientCommand.Post) {
+      return 'primary';
+    }
+    else {
+      return 'basic';
+    }
+  }
+
+  ShowPut(rainexceedanceclimatesite: RainExceedanceClimateSite) {
+    if (this.IDToShow === rainexceedanceclimatesite.RainExceedanceClimateSiteID && this.showType === HttpClientCommand.Put) {
+      this.IDToShow = 0;
+      this.showType = null;
+    }
+    else {
+      this.IDToShow = rainexceedanceclimatesite.RainExceedanceClimateSiteID;
+      this.showType = HttpClientCommand.Put;
+    }
+  }
+
+  ShowPost(rainexceedanceclimatesite: RainExceedanceClimateSite) {
+    if (this.IDToShow === rainexceedanceclimatesite.RainExceedanceClimateSiteID && this.showType === HttpClientCommand.Post) {
+      this.IDToShow = 0;
+      this.showType = null;
+    }
+    else {
+      this.IDToShow = rainexceedanceclimatesite.RainExceedanceClimateSiteID;
+      this.showType = HttpClientCommand.Post;
+    }
+  }
+
+  GetPutEnum() {
+    return <number>HttpClientCommand.Put;
+  }
+
+  GetPostEnum() {
+    return <number>HttpClientCommand.Post;
   }
 
   GetRainExceedanceClimateSiteList() {
     this.sub = this.rainexceedanceclimatesiteService.GetRainExceedanceClimateSiteList().subscribe();
-  }
-
-  PutRainExceedanceClimateSite(rainexceedanceclimatesite: RainExceedanceClimateSite) {
-    this.sub = this.rainexceedanceclimatesiteService.PutRainExceedanceClimateSite(rainexceedanceclimatesite).subscribe();
-  }
-
-  PostRainExceedanceClimateSite(rainexceedanceclimatesite: RainExceedanceClimateSite) {
-    this.sub = this.rainexceedanceclimatesiteService.PostRainExceedanceClimateSite(rainexceedanceclimatesite).subscribe();
   }
 
   DeleteRainExceedanceClimateSite(rainexceedanceclimatesite: RainExceedanceClimateSite) {
@@ -48,54 +87,11 @@ export class RainExceedanceClimateSiteComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     LoadLocalesRainExceedanceClimateSiteText(this.rainexceedanceclimatesiteService);
-    this.FillFormBuilderGroup(HttpClientCommand.Post);
-    this.FillFormBuilderGroup(HttpClientCommand.Put);
   }
 
   ngOnDestroy() {
     if (this.sub) {
       this.sub.unsubscribe();
-    }
-  }
-
-  FillFormBuilderGroup(httpClientCommand: HttpClientCommand) {
-    if (this.rainexceedanceclimatesiteService.rainexceedanceclimatesiteListModel$.getValue().length) {
-      let formGroup: FormGroup = this.fb.group(
-        {
-          RainExceedanceClimateSiteID: [
-            {
-              value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.rainexceedanceclimatesiteService.rainexceedanceclimatesiteListModel$.getValue()[0]?.RainExceedanceClimateSiteID)),
-              disabled: false
-            }, [  Validators.required ]],
-          RainExceedanceTVItemID: [
-            {
-              value: this.rainexceedanceclimatesiteService.rainexceedanceclimatesiteListModel$.getValue()[0]?.RainExceedanceTVItemID,
-              disabled: false
-            }, [  Validators.required ]],
-          ClimateSiteTVItemID: [
-            {
-              value: this.rainexceedanceclimatesiteService.rainexceedanceclimatesiteListModel$.getValue()[0]?.ClimateSiteTVItemID,
-              disabled: false
-            }, [  Validators.required ]],
-          LastUpdateDate_UTC: [
-            {
-              value: this.rainexceedanceclimatesiteService.rainexceedanceclimatesiteListModel$.getValue()[0]?.LastUpdateDate_UTC,
-              disabled: false
-            }, [  Validators.required ]],
-          LastUpdateContactTVItemID: [
-            {
-              value: this.rainexceedanceclimatesiteService.rainexceedanceclimatesiteListModel$.getValue()[0]?.LastUpdateContactTVItemID,
-              disabled: false
-            }, [  Validators.required ]],
-        }
-      );
-
-      if (httpClientCommand === HttpClientCommand.Post) {
-        this.rainexceedanceclimatesiteFormPost = formGroup
-      }
-      else {
-        this.rainexceedanceclimatesiteFormPut = formGroup;
-      }
     }
   }
 }

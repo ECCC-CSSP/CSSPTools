@@ -9,10 +9,8 @@ import { Component, OnInit, OnDestroy, ChangeDetectionStrategy } from '@angular/
 import { ContactPreferenceService } from './contactpreference.service';
 import { LoadLocalesContactPreferenceText } from './contactpreference.locales';
 import { Subscription } from 'rxjs';
-import { TVTypeEnum_GetIDText, TVTypeEnum_GetOrderedText } from '../../../enums/generated/TVTypeEnum';
+import { TVTypeEnum_GetIDText } from '../../../enums/generated/TVTypeEnum';
 import { ContactPreference } from '../../../models/generated/ContactPreference.model';
-import { FormBuilder, Validators, FormGroup } from '@angular/forms';
-import { EnumIDAndText } from '../../../models/enumidandtext.model';
 import { HttpClientService } from '../../../services/http-client.service';
 import { Router } from '@angular/router';
 import { HttpClientCommand } from '../../../enums/app.enums';
@@ -25,24 +23,63 @@ import { HttpClientCommand } from '../../../enums/app.enums';
 })
 export class ContactPreferenceComponent implements OnInit, OnDestroy {
   sub: Subscription;
-  tVTypeList: EnumIDAndText[];
-  contactpreferenceFormPut: FormGroup;
-  contactpreferenceFormPost: FormGroup;
+  IDToShow: number;
+  showType?: HttpClientCommand = null;
 
-  constructor(public contactpreferenceService: ContactPreferenceService, private router: Router, private httpClientService: HttpClientService, private fb: FormBuilder) {
+  constructor(public contactpreferenceService: ContactPreferenceService, private router: Router, private httpClientService: HttpClientService) {
     httpClientService.oldURL = router.url;
+  }
+
+  GetPutButtonColor(contactpreference: ContactPreference) {
+    if (this.IDToShow === contactpreference.ContactPreferenceID && this.showType === HttpClientCommand.Put) {
+      return 'primary';
+    }
+    else {
+      return 'basic';
+    }
+  }
+
+  GetPostButtonColor(contactpreference: ContactPreference) {
+    if (this.IDToShow === contactpreference.ContactPreferenceID && this.showType === HttpClientCommand.Post) {
+      return 'primary';
+    }
+    else {
+      return 'basic';
+    }
+  }
+
+  ShowPut(contactpreference: ContactPreference) {
+    if (this.IDToShow === contactpreference.ContactPreferenceID && this.showType === HttpClientCommand.Put) {
+      this.IDToShow = 0;
+      this.showType = null;
+    }
+    else {
+      this.IDToShow = contactpreference.ContactPreferenceID;
+      this.showType = HttpClientCommand.Put;
+    }
+  }
+
+  ShowPost(contactpreference: ContactPreference) {
+    if (this.IDToShow === contactpreference.ContactPreferenceID && this.showType === HttpClientCommand.Post) {
+      this.IDToShow = 0;
+      this.showType = null;
+    }
+    else {
+      this.IDToShow = contactpreference.ContactPreferenceID;
+      this.showType = HttpClientCommand.Post;
+    }
+  }
+
+  GetPutEnum() {
+    return <number>HttpClientCommand.Put;
+  }
+
+  GetPostEnum() {
+    return <number>HttpClientCommand.Post;
   }
 
   GetContactPreferenceList() {
     this.sub = this.contactpreferenceService.GetContactPreferenceList().subscribe();
-  }
-
-  PutContactPreference(contactpreference: ContactPreference) {
-    this.sub = this.contactpreferenceService.PutContactPreference(contactpreference).subscribe();
-  }
-
-  PostContactPreference(contactpreference: ContactPreference) {
-    this.sub = this.contactpreferenceService.PostContactPreference(contactpreference).subscribe();
   }
 
   DeleteContactPreference(contactpreference: ContactPreference) {
@@ -55,60 +92,11 @@ export class ContactPreferenceComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     LoadLocalesContactPreferenceText(this.contactpreferenceService);
-    this.tVTypeList = TVTypeEnum_GetOrderedText();
-    this.FillFormBuilderGroup(HttpClientCommand.Post);
-    this.FillFormBuilderGroup(HttpClientCommand.Put);
   }
 
   ngOnDestroy() {
     if (this.sub) {
       this.sub.unsubscribe();
-    }
-  }
-
-  FillFormBuilderGroup(httpClientCommand: HttpClientCommand) {
-    if (this.contactpreferenceService.contactpreferenceListModel$.getValue().length) {
-      let formGroup: FormGroup = this.fb.group(
-        {
-          ContactPreferenceID: [
-            {
-              value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.contactpreferenceService.contactpreferenceListModel$.getValue()[0]?.ContactPreferenceID)),
-              disabled: false
-            }, [  Validators.required ]],
-          ContactID: [
-            {
-              value: this.contactpreferenceService.contactpreferenceListModel$.getValue()[0]?.ContactID,
-              disabled: false
-            }, [  Validators.required ]],
-          TVType: [
-            {
-              value: this.contactpreferenceService.contactpreferenceListModel$.getValue()[0]?.TVType,
-              disabled: false
-            }, [  Validators.required ]],
-          MarkerSize: [
-            {
-              value: this.contactpreferenceService.contactpreferenceListModel$.getValue()[0]?.MarkerSize,
-              disabled: false
-            }, [  Validators.required, Validators.min(1), Validators.max(1000) ]],
-          LastUpdateDate_UTC: [
-            {
-              value: this.contactpreferenceService.contactpreferenceListModel$.getValue()[0]?.LastUpdateDate_UTC,
-              disabled: false
-            }, [  Validators.required ]],
-          LastUpdateContactTVItemID: [
-            {
-              value: this.contactpreferenceService.contactpreferenceListModel$.getValue()[0]?.LastUpdateContactTVItemID,
-              disabled: false
-            }, [  Validators.required ]],
-        }
-      );
-
-      if (httpClientCommand === HttpClientCommand.Post) {
-        this.contactpreferenceFormPost = formGroup
-      }
-      else {
-        this.contactpreferenceFormPut = formGroup;
-      }
     }
   }
 }

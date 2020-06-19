@@ -12,9 +12,10 @@ import { TideDataValueRoutingModule } from './tidedatavalue-routing.module';
 import { MaterialModule } from '../../../app-material.module';
 import { TideDataValueComponent } from './tidedatavalue.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { TideDataValueEditComponent } from './tidedatavalue-edit.component';
 
 @NgModule({
-  declarations: [ TideDataValueComponent ],
+  declarations: [TideDataValueComponent, TideDataValueEditComponent],
   imports: [
     CommonModule,
     RouterModule,

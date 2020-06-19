@@ -9,11 +9,9 @@ import { Component, OnInit, OnDestroy, ChangeDetectionStrategy } from '@angular/
 import { EmailDistributionListContactLanguageService } from './emaildistributionlistcontactlanguage.service';
 import { LoadLocalesEmailDistributionListContactLanguageText } from './emaildistributionlistcontactlanguage.locales';
 import { Subscription } from 'rxjs';
-import { LanguageEnum_GetIDText, LanguageEnum_GetOrderedText } from '../../../enums/generated/LanguageEnum';
-import { TranslationStatusEnum_GetIDText, TranslationStatusEnum_GetOrderedText } from '../../../enums/generated/TranslationStatusEnum';
+import { LanguageEnum_GetIDText } from '../../../enums/generated/LanguageEnum';
+import { TranslationStatusEnum_GetIDText } from '../../../enums/generated/TranslationStatusEnum';
 import { EmailDistributionListContactLanguage } from '../../../models/generated/EmailDistributionListContactLanguage.model';
-import { FormBuilder, Validators, FormGroup } from '@angular/forms';
-import { EnumIDAndText } from '../../../models/enumidandtext.model';
 import { HttpClientService } from '../../../services/http-client.service';
 import { Router } from '@angular/router';
 import { HttpClientCommand } from '../../../enums/app.enums';
@@ -26,25 +24,63 @@ import { HttpClientCommand } from '../../../enums/app.enums';
 })
 export class EmailDistributionListContactLanguageComponent implements OnInit, OnDestroy {
   sub: Subscription;
-  languageList: EnumIDAndText[];
-  translationStatusList: EnumIDAndText[];
-  emaildistributionlistcontactlanguageFormPut: FormGroup;
-  emaildistributionlistcontactlanguageFormPost: FormGroup;
+  IDToShow: number;
+  showType?: HttpClientCommand = null;
 
-  constructor(public emaildistributionlistcontactlanguageService: EmailDistributionListContactLanguageService, private router: Router, private httpClientService: HttpClientService, private fb: FormBuilder) {
+  constructor(public emaildistributionlistcontactlanguageService: EmailDistributionListContactLanguageService, private router: Router, private httpClientService: HttpClientService) {
     httpClientService.oldURL = router.url;
+  }
+
+  GetPutButtonColor(emaildistributionlistcontactlanguage: EmailDistributionListContactLanguage) {
+    if (this.IDToShow === emaildistributionlistcontactlanguage.EmailDistributionListContactLanguageID && this.showType === HttpClientCommand.Put) {
+      return 'primary';
+    }
+    else {
+      return 'basic';
+    }
+  }
+
+  GetPostButtonColor(emaildistributionlistcontactlanguage: EmailDistributionListContactLanguage) {
+    if (this.IDToShow === emaildistributionlistcontactlanguage.EmailDistributionListContactLanguageID && this.showType === HttpClientCommand.Post) {
+      return 'primary';
+    }
+    else {
+      return 'basic';
+    }
+  }
+
+  ShowPut(emaildistributionlistcontactlanguage: EmailDistributionListContactLanguage) {
+    if (this.IDToShow === emaildistributionlistcontactlanguage.EmailDistributionListContactLanguageID && this.showType === HttpClientCommand.Put) {
+      this.IDToShow = 0;
+      this.showType = null;
+    }
+    else {
+      this.IDToShow = emaildistributionlistcontactlanguage.EmailDistributionListContactLanguageID;
+      this.showType = HttpClientCommand.Put;
+    }
+  }
+
+  ShowPost(emaildistributionlistcontactlanguage: EmailDistributionListContactLanguage) {
+    if (this.IDToShow === emaildistributionlistcontactlanguage.EmailDistributionListContactLanguageID && this.showType === HttpClientCommand.Post) {
+      this.IDToShow = 0;
+      this.showType = null;
+    }
+    else {
+      this.IDToShow = emaildistributionlistcontactlanguage.EmailDistributionListContactLanguageID;
+      this.showType = HttpClientCommand.Post;
+    }
+  }
+
+  GetPutEnum() {
+    return <number>HttpClientCommand.Put;
+  }
+
+  GetPostEnum() {
+    return <number>HttpClientCommand.Post;
   }
 
   GetEmailDistributionListContactLanguageList() {
     this.sub = this.emaildistributionlistcontactlanguageService.GetEmailDistributionListContactLanguageList().subscribe();
-  }
-
-  PutEmailDistributionListContactLanguage(emaildistributionlistcontactlanguage: EmailDistributionListContactLanguage) {
-    this.sub = this.emaildistributionlistcontactlanguageService.PutEmailDistributionListContactLanguage(emaildistributionlistcontactlanguage).subscribe();
-  }
-
-  PostEmailDistributionListContactLanguage(emaildistributionlistcontactlanguage: EmailDistributionListContactLanguage) {
-    this.sub = this.emaildistributionlistcontactlanguageService.PostEmailDistributionListContactLanguage(emaildistributionlistcontactlanguage).subscribe();
   }
 
   DeleteEmailDistributionListContactLanguage(emaildistributionlistcontactlanguage: EmailDistributionListContactLanguage) {
@@ -61,66 +97,11 @@ export class EmailDistributionListContactLanguageComponent implements OnInit, On
 
   ngOnInit(): void {
     LoadLocalesEmailDistributionListContactLanguageText(this.emaildistributionlistcontactlanguageService);
-    this.languageList = LanguageEnum_GetOrderedText();
-    this.translationStatusList = TranslationStatusEnum_GetOrderedText();
-    this.FillFormBuilderGroup(HttpClientCommand.Post);
-    this.FillFormBuilderGroup(HttpClientCommand.Put);
   }
 
   ngOnDestroy() {
     if (this.sub) {
       this.sub.unsubscribe();
-    }
-  }
-
-  FillFormBuilderGroup(httpClientCommand: HttpClientCommand) {
-    if (this.emaildistributionlistcontactlanguageService.emaildistributionlistcontactlanguageListModel$.getValue().length) {
-      let formGroup: FormGroup = this.fb.group(
-        {
-          EmailDistributionListContactLanguageID: [
-            {
-              value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.emaildistributionlistcontactlanguageService.emaildistributionlistcontactlanguageListModel$.getValue()[0]?.EmailDistributionListContactLanguageID)),
-              disabled: false
-            }, [  Validators.required ]],
-          EmailDistributionListContactID: [
-            {
-              value: this.emaildistributionlistcontactlanguageService.emaildistributionlistcontactlanguageListModel$.getValue()[0]?.EmailDistributionListContactID,
-              disabled: false
-            }, [  Validators.required ]],
-          Language: [
-            {
-              value: this.emaildistributionlistcontactlanguageService.emaildistributionlistcontactlanguageListModel$.getValue()[0]?.Language,
-              disabled: false
-            }, [  Validators.required ]],
-          Agency: [
-            {
-              value: this.emaildistributionlistcontactlanguageService.emaildistributionlistcontactlanguageListModel$.getValue()[0]?.Agency,
-              disabled: false
-            }, [  Validators.required, Validators.minLength(1), Validators.maxLength(100) ]],
-          TranslationStatus: [
-            {
-              value: this.emaildistributionlistcontactlanguageService.emaildistributionlistcontactlanguageListModel$.getValue()[0]?.TranslationStatus,
-              disabled: false
-            }, [  Validators.required ]],
-          LastUpdateDate_UTC: [
-            {
-              value: this.emaildistributionlistcontactlanguageService.emaildistributionlistcontactlanguageListModel$.getValue()[0]?.LastUpdateDate_UTC,
-              disabled: false
-            }, [  Validators.required ]],
-          LastUpdateContactTVItemID: [
-            {
-              value: this.emaildistributionlistcontactlanguageService.emaildistributionlistcontactlanguageListModel$.getValue()[0]?.LastUpdateContactTVItemID,
-              disabled: false
-            }, [  Validators.required ]],
-        }
-      );
-
-      if (httpClientCommand === HttpClientCommand.Post) {
-        this.emaildistributionlistcontactlanguageFormPost = formGroup
-      }
-      else {
-        this.emaildistributionlistcontactlanguageFormPut = formGroup;
-      }
     }
   }
 }

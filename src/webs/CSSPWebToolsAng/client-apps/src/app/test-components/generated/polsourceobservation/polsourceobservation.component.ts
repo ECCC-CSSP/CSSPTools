@@ -10,7 +10,6 @@ import { PolSourceObservationService } from './polsourceobservation.service';
 import { LoadLocalesPolSourceObservationText } from './polsourceobservation.locales';
 import { Subscription } from 'rxjs';
 import { PolSourceObservation } from '../../../models/generated/PolSourceObservation.model';
-import { FormBuilder, Validators, FormGroup } from '@angular/forms';
 import { HttpClientService } from '../../../services/http-client.service';
 import { Router } from '@angular/router';
 import { HttpClientCommand } from '../../../enums/app.enums';
@@ -23,23 +22,63 @@ import { HttpClientCommand } from '../../../enums/app.enums';
 })
 export class PolSourceObservationComponent implements OnInit, OnDestroy {
   sub: Subscription;
-  polsourceobservationFormPut: FormGroup;
-  polsourceobservationFormPost: FormGroup;
+  IDToShow: number;
+  showType?: HttpClientCommand = null;
 
-  constructor(public polsourceobservationService: PolSourceObservationService, private router: Router, private httpClientService: HttpClientService, private fb: FormBuilder) {
+  constructor(public polsourceobservationService: PolSourceObservationService, private router: Router, private httpClientService: HttpClientService) {
     httpClientService.oldURL = router.url;
+  }
+
+  GetPutButtonColor(polsourceobservation: PolSourceObservation) {
+    if (this.IDToShow === polsourceobservation.PolSourceObservationID && this.showType === HttpClientCommand.Put) {
+      return 'primary';
+    }
+    else {
+      return 'basic';
+    }
+  }
+
+  GetPostButtonColor(polsourceobservation: PolSourceObservation) {
+    if (this.IDToShow === polsourceobservation.PolSourceObservationID && this.showType === HttpClientCommand.Post) {
+      return 'primary';
+    }
+    else {
+      return 'basic';
+    }
+  }
+
+  ShowPut(polsourceobservation: PolSourceObservation) {
+    if (this.IDToShow === polsourceobservation.PolSourceObservationID && this.showType === HttpClientCommand.Put) {
+      this.IDToShow = 0;
+      this.showType = null;
+    }
+    else {
+      this.IDToShow = polsourceobservation.PolSourceObservationID;
+      this.showType = HttpClientCommand.Put;
+    }
+  }
+
+  ShowPost(polsourceobservation: PolSourceObservation) {
+    if (this.IDToShow === polsourceobservation.PolSourceObservationID && this.showType === HttpClientCommand.Post) {
+      this.IDToShow = 0;
+      this.showType = null;
+    }
+    else {
+      this.IDToShow = polsourceobservation.PolSourceObservationID;
+      this.showType = HttpClientCommand.Post;
+    }
+  }
+
+  GetPutEnum() {
+    return <number>HttpClientCommand.Put;
+  }
+
+  GetPostEnum() {
+    return <number>HttpClientCommand.Post;
   }
 
   GetPolSourceObservationList() {
     this.sub = this.polsourceobservationService.GetPolSourceObservationList().subscribe();
-  }
-
-  PutPolSourceObservation(polsourceobservation: PolSourceObservation) {
-    this.sub = this.polsourceobservationService.PutPolSourceObservation(polsourceobservation).subscribe();
-  }
-
-  PostPolSourceObservation(polsourceobservation: PolSourceObservation) {
-    this.sub = this.polsourceobservationService.PostPolSourceObservation(polsourceobservation).subscribe();
   }
 
   DeletePolSourceObservation(polsourceobservation: PolSourceObservation) {
@@ -48,69 +87,11 @@ export class PolSourceObservationComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     LoadLocalesPolSourceObservationText(this.polsourceobservationService);
-    this.FillFormBuilderGroup(HttpClientCommand.Post);
-    this.FillFormBuilderGroup(HttpClientCommand.Put);
   }
 
   ngOnDestroy() {
     if (this.sub) {
       this.sub.unsubscribe();
-    }
-  }
-
-  FillFormBuilderGroup(httpClientCommand: HttpClientCommand) {
-    if (this.polsourceobservationService.polsourceobservationListModel$.getValue().length) {
-      let formGroup: FormGroup = this.fb.group(
-        {
-          PolSourceObservationID: [
-            {
-              value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.polsourceobservationService.polsourceobservationListModel$.getValue()[0]?.PolSourceObservationID)),
-              disabled: false
-            }, [  Validators.required ]],
-          PolSourceSiteID: [
-            {
-              value: this.polsourceobservationService.polsourceobservationListModel$.getValue()[0]?.PolSourceSiteID,
-              disabled: false
-            }, [  Validators.required ]],
-          ObservationDate_Local: [
-            {
-              value: this.polsourceobservationService.polsourceobservationListModel$.getValue()[0]?.ObservationDate_Local,
-              disabled: false
-            }, [  Validators.required ]],
-          ContactTVItemID: [
-            {
-              value: this.polsourceobservationService.polsourceobservationListModel$.getValue()[0]?.ContactTVItemID,
-              disabled: false
-            }, [  Validators.required ]],
-          DesktopReviewed: [
-            {
-              value: this.polsourceobservationService.polsourceobservationListModel$.getValue()[0]?.DesktopReviewed,
-              disabled: false
-            }, [  Validators.required ]],
-          Observation_ToBeDeleted: [
-            {
-              value: this.polsourceobservationService.polsourceobservationListModel$.getValue()[0]?.Observation_ToBeDeleted,
-              disabled: false
-            }, [  Validators.required ]],
-          LastUpdateDate_UTC: [
-            {
-              value: this.polsourceobservationService.polsourceobservationListModel$.getValue()[0]?.LastUpdateDate_UTC,
-              disabled: false
-            }, [  Validators.required ]],
-          LastUpdateContactTVItemID: [
-            {
-              value: this.polsourceobservationService.polsourceobservationListModel$.getValue()[0]?.LastUpdateContactTVItemID,
-              disabled: false
-            }, [  Validators.required ]],
-        }
-      );
-
-      if (httpClientCommand === HttpClientCommand.Post) {
-        this.polsourceobservationFormPost = formGroup
-      }
-      else {
-        this.polsourceobservationFormPut = formGroup;
-      }
     }
   }
 }

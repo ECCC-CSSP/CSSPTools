@@ -17,213 +17,45 @@
     <mat-card-subtitle>{{ spilllanguageService.spilllanguageTextModel$.getValue().Title }}</mat-card-subtitle>
   </mat-card-header>
   <mat-card-content>
-    <mat-list *ngIf="spilllanguageService.spilllanguageListModel$.getValue()?.length">
-      <mat-list-item *ngFor="let spilllanguage of spilllanguageService.spilllanguageListModel$.getValue()">
-        <span mat-line>
+    <div *ngIf="spilllanguageService.spilllanguageListModel$.getValue()?.length">
+      <div *ngFor="let spilllanguage of spilllanguageService.spilllanguageListModel$.getValue()">
+        <p>
           <button mat-raised-button (click)="DeleteSpillLanguage(spilllanguage)">
             <span>Delete SpillLanguageID [{{ spilllanguage.SpillLanguageID }}]&nbsp;&nbsp;&nbsp;</span>
             <mat-icon>delete</mat-icon>
-          </button>
+          </button>&nbsp;&nbsp;&nbsp;
+          <button mat-raised-button [color]="GetPutButtonColor(spilllanguage)"(click)="ShowPut(spilllanguage)">
+            <span>Show Put</span>
+          </button>&nbsp;&nbsp;
+          <button mat-raised-button [color]="GetPostButtonColor(spilllanguage)"(click)="ShowPost(spilllanguage)">
+            <span>Show Post</span>
+          </button>&nbsp;&nbsp;
           <mat-progress-bar mode="indeterminate" *ngIf="spilllanguageService.spilllanguageDeleteModel$.getValue().Working">
           </mat-progress-bar>
-          </span>
-        <span mat-line>
+        </p>
+        <p *ngIf="IDToShow === spilllanguage.SpillLanguageID && showType === GetPutEnum()">
+          <app-spilllanguage-edit [spilllanguage]="spilllanguage" [httpClientCommand]="GetPutEnum()"></app-spilllanguage-edit>
+        </p>
+        <p *ngIf="IDToShow === spilllanguage.SpillLanguageID && showType === GetPostEnum()">
+          <app-spilllanguage-edit [spilllanguage]="spilllanguage" [httpClientCommand]="GetPostEnum()"></app-spilllanguage-edit>
+        </p>
+        <blockquote>
+        <p>
           <span>SpillLanguageID: [{{ spilllanguage.SpillLanguageID }}]</span>
           <span> --- SpillID: [{{ spilllanguage.SpillID }}]</span>
           <span> --- Language: [{{ GetLanguageEnumText(spilllanguage.Language) }}]</span>
           <span> --- SpillComment: [{{ spilllanguage.SpillComment }}]</span>
-        </span>
-        <span mat-line>
+ </p>
+        <p>
           <span>TranslationStatus: [{{ GetTranslationStatusEnumText(spilllanguage.TranslationStatus) }}]</span>
           <span> --- LastUpdateDate_UTC: [{{ spilllanguage.LastUpdateDate_UTC }}]</span>
           <span> --- LastUpdateContactTVItemID: [{{ spilllanguage.LastUpdateContactTVItemID }}]</span>
-        </span>
-       </mat-list-item>
-     </mat-list>
+        </p>
+        </blockquote>
+       </div>
+     </div>
    </mat-card-content>
  <mat-card-actions>
    <button mat-button>Allo</button>
  </mat-card-actions>
-</mat-card>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<mat-card>
-  <mat-card-header>
-    <mat-card-title>Edit SpillLanguage testing</mat-card-title>
-  </mat-card-header>
-  <mat-card-content>
-    <div *ngIf="spilllanguageService.spilllanguageListModel$.getValue()?.length">
-      <blockquote>
-        <form [formGroup]="spilllanguageFormPut" (ngSubmit)="PutSpillLanguage(spilllanguageFormPut.value)">
-          <h3>
-            SpillLanguage
-            <button mat-raised-button type="submit">
-              <span>Update SpillLanguage</span>
-            </button>
-            <mat-progress-bar mode="indeterminate" *ngIf="spilllanguageService.spilllanguagePutModel$.getValue().Working">
-            </mat-progress-bar>
-          </h3>
-          <p>
-            <mat-form-field>
-              <mat-label>SpillLanguageID</mat-label>
-              <input matInput type="number" formControlName="SpillLanguageID">
-              <mat-error *ngIf="spilllanguageFormPut.controls.SpillLanguageID.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>SpillID</mat-label>
-              <input matInput type="number" formControlName="SpillID">
-              <mat-error *ngIf="spilllanguageFormPut.controls.SpillID.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>Language</mat-label>
-              <mat-select formControlName="Language">
-                <mat-option *ngFor="let a of languageList" [value]="a.EnumID">
-                  {{ a.EnumText }}
-                </mat-option>
-              </mat-select>
-              <mat-error *ngIf="spilllanguageFormPut.controls.Language.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>SpillComment</mat-label>
-              <input matInput type="text" formControlName="SpillComment">
-              <mat-error *ngIf="spilllanguageFormPut.controls.SpillComment.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-          </p>
-          <p>
-            <mat-form-field>
-              <mat-label>TranslationStatus</mat-label>
-              <mat-select formControlName="TranslationStatus">
-                <mat-option *ngFor="let a of translationStatusList" [value]="a.EnumID">
-                  {{ a.EnumText }}
-                </mat-option>
-              </mat-select>
-              <mat-error *ngIf="spilllanguageFormPut.controls.TranslationStatus.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>LastUpdateDate_UTC</mat-label>
-              <input matInput type="text" formControlName="LastUpdateDate_UTC">
-              <mat-error *ngIf="spilllanguageFormPut.controls.LastUpdateDate_UTC.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>LastUpdateContactTVItemID</mat-label>
-              <input matInput type="number" formControlName="LastUpdateContactTVItemID">
-              <mat-error *ngIf="spilllanguageFormPut.controls.LastUpdateContactTVItemID.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-          </p>
-        </form>
-      </blockquote>
-    </div>
-  </mat-card-content>
-</mat-card>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<mat-card>
-  <mat-card-header>
-    <mat-card-title>Add SpillLanguage testing</mat-card-title>
-  </mat-card-header>
-  <mat-card-content>
-    <div *ngIf="spilllanguageService.spilllanguageListModel$.getValue()?.length">
-      <blockquote>
-        <form [formGroup]="spilllanguageFormPost" (ngSubmit)="PostSpillLanguage(spilllanguageFormPost.value)">
-          <h3>
-            SpillLanguage
-            <button mat-raised-button type="submit">
-              <span>Add SpillLanguage</span>
-            </button>
-            <mat-progress-bar mode="indeterminate" *ngIf="spilllanguageService.spilllanguagePostModel$.getValue().Working">
-            </mat-progress-bar>
-          </h3>
-          <p>
-            <mat-form-field>
-              <mat-label>SpillLanguageID</mat-label>
-              <input matInput type="number" formControlName="SpillLanguageID">
-              <mat-error *ngIf="spilllanguageFormPut.controls.SpillLanguageID.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>SpillID</mat-label>
-              <input matInput type="number" formControlName="SpillID">
-              <mat-error *ngIf="spilllanguageFormPut.controls.SpillID.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>Language</mat-label>
-              <mat-select formControlName="Language">
-                <mat-option *ngFor="let a of languageList" [value]="a.EnumID">
-                  {{ a.EnumText }}
-                </mat-option>
-              </mat-select>
-              <mat-error *ngIf="spilllanguageFormPut.controls.Language.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>SpillComment</mat-label>
-              <input matInput type="text" formControlName="SpillComment">
-              <mat-error *ngIf="spilllanguageFormPut.controls.SpillComment.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-          </p>
-          <p>
-            <mat-form-field>
-              <mat-label>TranslationStatus</mat-label>
-              <mat-select formControlName="TranslationStatus">
-                <mat-option *ngFor="let a of translationStatusList" [value]="a.EnumID">
-                  {{ a.EnumText }}
-                </mat-option>
-              </mat-select>
-              <mat-error *ngIf="spilllanguageFormPut.controls.TranslationStatus.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>LastUpdateDate_UTC</mat-label>
-              <input matInput type="text" formControlName="LastUpdateDate_UTC">
-              <mat-error *ngIf="spilllanguageFormPut.controls.LastUpdateDate_UTC.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>LastUpdateContactTVItemID</mat-label>
-              <input matInput type="number" formControlName="LastUpdateContactTVItemID">
-              <mat-error *ngIf="spilllanguageFormPut.controls.LastUpdateContactTVItemID.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-          </p>
-        </form>
-      </blockquote>
-    </div>
-  </mat-card-content>
 </mat-card>

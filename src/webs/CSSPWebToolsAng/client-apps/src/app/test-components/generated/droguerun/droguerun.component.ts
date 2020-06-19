@@ -9,10 +9,8 @@ import { Component, OnInit, OnDestroy, ChangeDetectionStrategy } from '@angular/
 import { DrogueRunService } from './droguerun.service';
 import { LoadLocalesDrogueRunText } from './droguerun.locales';
 import { Subscription } from 'rxjs';
-import { DrogueTypeEnum_GetIDText, DrogueTypeEnum_GetOrderedText } from '../../../enums/generated/DrogueTypeEnum';
+import { DrogueTypeEnum_GetIDText } from '../../../enums/generated/DrogueTypeEnum';
 import { DrogueRun } from '../../../models/generated/DrogueRun.model';
-import { FormBuilder, Validators, FormGroup } from '@angular/forms';
-import { EnumIDAndText } from '../../../models/enumidandtext.model';
 import { HttpClientService } from '../../../services/http-client.service';
 import { Router } from '@angular/router';
 import { HttpClientCommand } from '../../../enums/app.enums';
@@ -25,24 +23,63 @@ import { HttpClientCommand } from '../../../enums/app.enums';
 })
 export class DrogueRunComponent implements OnInit, OnDestroy {
   sub: Subscription;
-  drogueTypeList: EnumIDAndText[];
-  droguerunFormPut: FormGroup;
-  droguerunFormPost: FormGroup;
+  IDToShow: number;
+  showType?: HttpClientCommand = null;
 
-  constructor(public droguerunService: DrogueRunService, private router: Router, private httpClientService: HttpClientService, private fb: FormBuilder) {
+  constructor(public droguerunService: DrogueRunService, private router: Router, private httpClientService: HttpClientService) {
     httpClientService.oldURL = router.url;
+  }
+
+  GetPutButtonColor(droguerun: DrogueRun) {
+    if (this.IDToShow === droguerun.DrogueRunID && this.showType === HttpClientCommand.Put) {
+      return 'primary';
+    }
+    else {
+      return 'basic';
+    }
+  }
+
+  GetPostButtonColor(droguerun: DrogueRun) {
+    if (this.IDToShow === droguerun.DrogueRunID && this.showType === HttpClientCommand.Post) {
+      return 'primary';
+    }
+    else {
+      return 'basic';
+    }
+  }
+
+  ShowPut(droguerun: DrogueRun) {
+    if (this.IDToShow === droguerun.DrogueRunID && this.showType === HttpClientCommand.Put) {
+      this.IDToShow = 0;
+      this.showType = null;
+    }
+    else {
+      this.IDToShow = droguerun.DrogueRunID;
+      this.showType = HttpClientCommand.Put;
+    }
+  }
+
+  ShowPost(droguerun: DrogueRun) {
+    if (this.IDToShow === droguerun.DrogueRunID && this.showType === HttpClientCommand.Post) {
+      this.IDToShow = 0;
+      this.showType = null;
+    }
+    else {
+      this.IDToShow = droguerun.DrogueRunID;
+      this.showType = HttpClientCommand.Post;
+    }
+  }
+
+  GetPutEnum() {
+    return <number>HttpClientCommand.Put;
+  }
+
+  GetPostEnum() {
+    return <number>HttpClientCommand.Post;
   }
 
   GetDrogueRunList() {
     this.sub = this.droguerunService.GetDrogueRunList().subscribe();
-  }
-
-  PutDrogueRun(droguerun: DrogueRun) {
-    this.sub = this.droguerunService.PutDrogueRun(droguerun).subscribe();
-  }
-
-  PostDrogueRun(droguerun: DrogueRun) {
-    this.sub = this.droguerunService.PostDrogueRun(droguerun).subscribe();
   }
 
   DeleteDrogueRun(droguerun: DrogueRun) {
@@ -55,70 +92,11 @@ export class DrogueRunComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     LoadLocalesDrogueRunText(this.droguerunService);
-    this.drogueTypeList = DrogueTypeEnum_GetOrderedText();
-    this.FillFormBuilderGroup(HttpClientCommand.Post);
-    this.FillFormBuilderGroup(HttpClientCommand.Put);
   }
 
   ngOnDestroy() {
     if (this.sub) {
       this.sub.unsubscribe();
-    }
-  }
-
-  FillFormBuilderGroup(httpClientCommand: HttpClientCommand) {
-    if (this.droguerunService.droguerunListModel$.getValue().length) {
-      let formGroup: FormGroup = this.fb.group(
-        {
-          DrogueRunID: [
-            {
-              value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.droguerunService.droguerunListModel$.getValue()[0]?.DrogueRunID)),
-              disabled: false
-            }, [  Validators.required ]],
-          SubsectorTVItemID: [
-            {
-              value: this.droguerunService.droguerunListModel$.getValue()[0]?.SubsectorTVItemID,
-              disabled: false
-            }, [  Validators.required ]],
-          DrogueNumber: [
-            {
-              value: this.droguerunService.droguerunListModel$.getValue()[0]?.DrogueNumber,
-              disabled: false
-            }, [  Validators.required, Validators.min(0), Validators.max(100) ]],
-          DrogueType: [
-            {
-              value: this.droguerunService.droguerunListModel$.getValue()[0]?.DrogueType,
-              disabled: false
-            }, [  Validators.required ]],
-          RunStartDateTime: [
-            {
-              value: this.droguerunService.droguerunListModel$.getValue()[0]?.RunStartDateTime,
-              disabled: false
-            }, [  Validators.required ]],
-          IsRisingTide: [
-            {
-              value: this.droguerunService.droguerunListModel$.getValue()[0]?.IsRisingTide,
-              disabled: false
-            }, [  Validators.required ]],
-          LastUpdateDate_UTC: [
-            {
-              value: this.droguerunService.droguerunListModel$.getValue()[0]?.LastUpdateDate_UTC,
-              disabled: false
-            }, [  Validators.required ]],
-          LastUpdateContactTVItemID: [
-            {
-              value: this.droguerunService.droguerunListModel$.getValue()[0]?.LastUpdateContactTVItemID,
-              disabled: false
-            }, [  Validators.required ]],
-        }
-      );
-
-      if (httpClientCommand === HttpClientCommand.Post) {
-        this.droguerunFormPost = formGroup
-      }
-      else {
-        this.droguerunFormPut = formGroup;
-      }
     }
   }
 }

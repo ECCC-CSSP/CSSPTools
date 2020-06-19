@@ -12,9 +12,10 @@ import { ClimateSiteRoutingModule } from './climatesite-routing.module';
 import { MaterialModule } from '../../../app-material.module';
 import { ClimateSiteComponent } from './climatesite.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ClimateSiteEditComponent } from './climatesite-edit.component';
 
 @NgModule({
-  declarations: [ ClimateSiteComponent ],
+  declarations: [ClimateSiteComponent, ClimateSiteEditComponent],
   imports: [
     CommonModule,
     RouterModule,

@@ -17,384 +17,58 @@
     <mat-card-subtitle>{{ labsheettubempndetailService.labsheettubempndetailTextModel$.getValue().Title }}</mat-card-subtitle>
   </mat-card-header>
   <mat-card-content>
-    <mat-list *ngIf="labsheettubempndetailService.labsheettubempndetailListModel$.getValue()?.length">
-      <mat-list-item *ngFor="let labsheettubempndetail of labsheettubempndetailService.labsheettubempndetailListModel$.getValue()">
-        <span mat-line>
+    <div *ngIf="labsheettubempndetailService.labsheettubempndetailListModel$.getValue()?.length">
+      <div *ngFor="let labsheettubempndetail of labsheettubempndetailService.labsheettubempndetailListModel$.getValue()">
+        <p>
           <button mat-raised-button (click)="DeleteLabSheetTubeMPNDetail(labsheettubempndetail)">
             <span>Delete LabSheetTubeMPNDetailID [{{ labsheettubempndetail.LabSheetTubeMPNDetailID }}]&nbsp;&nbsp;&nbsp;</span>
             <mat-icon>delete</mat-icon>
-          </button>
+          </button>&nbsp;&nbsp;&nbsp;
+          <button mat-raised-button [color]="GetPutButtonColor(labsheettubempndetail)"(click)="ShowPut(labsheettubempndetail)">
+            <span>Show Put</span>
+          </button>&nbsp;&nbsp;
+          <button mat-raised-button [color]="GetPostButtonColor(labsheettubempndetail)"(click)="ShowPost(labsheettubempndetail)">
+            <span>Show Post</span>
+          </button>&nbsp;&nbsp;
           <mat-progress-bar mode="indeterminate" *ngIf="labsheettubempndetailService.labsheettubempndetailDeleteModel$.getValue().Working">
           </mat-progress-bar>
-          </span>
-        <span mat-line>
+        </p>
+        <p *ngIf="IDToShow === labsheettubempndetail.LabSheetTubeMPNDetailID && showType === GetPutEnum()">
+          <app-labsheettubempndetail-edit [labsheettubempndetail]="labsheettubempndetail" [httpClientCommand]="GetPutEnum()"></app-labsheettubempndetail-edit>
+        </p>
+        <p *ngIf="IDToShow === labsheettubempndetail.LabSheetTubeMPNDetailID && showType === GetPostEnum()">
+          <app-labsheettubempndetail-edit [labsheettubempndetail]="labsheettubempndetail" [httpClientCommand]="GetPostEnum()"></app-labsheettubempndetail-edit>
+        </p>
+        <blockquote>
+        <p>
           <span>LabSheetTubeMPNDetailID: [{{ labsheettubempndetail.LabSheetTubeMPNDetailID }}]</span>
           <span> --- LabSheetDetailID: [{{ labsheettubempndetail.LabSheetDetailID }}]</span>
           <span> --- Ordinal: [{{ labsheettubempndetail.Ordinal }}]</span>
           <span> --- MWQMSiteTVItemID: [{{ labsheettubempndetail.MWQMSiteTVItemID }}]</span>
-        </span>
-        <span mat-line>
+ </p>
+        <p>
           <span>SampleDateTime: [{{ labsheettubempndetail.SampleDateTime }}]</span>
           <span> --- MPN: [{{ labsheettubempndetail.MPN }}]</span>
           <span> --- Tube10: [{{ labsheettubempndetail.Tube10 }}]</span>
           <span> --- Tube1_0: [{{ labsheettubempndetail.Tube1_0 }}]</span>
-        </span>
-        <span mat-line>
+ </p>
+        <p>
           <span>Tube0_1: [{{ labsheettubempndetail.Tube0_1 }}]</span>
           <span> --- Salinity: [{{ labsheettubempndetail.Salinity }}]</span>
           <span> --- Temperature: [{{ labsheettubempndetail.Temperature }}]</span>
           <span> --- ProcessedBy: [{{ labsheettubempndetail.ProcessedBy }}]</span>
-        </span>
-        <span mat-line>
+ </p>
+        <p>
           <span>SampleType: [{{ GetSampleTypeEnumText(labsheettubempndetail.SampleType) }}]</span>
           <span> --- SiteComment: [{{ labsheettubempndetail.SiteComment }}]</span>
           <span> --- LastUpdateDate_UTC: [{{ labsheettubempndetail.LastUpdateDate_UTC }}]</span>
           <span> --- LastUpdateContactTVItemID: [{{ labsheettubempndetail.LastUpdateContactTVItemID }}]</span>
-        </span>
-       </mat-list-item>
-     </mat-list>
+        </p>
+        </blockquote>
+       </div>
+     </div>
    </mat-card-content>
  <mat-card-actions>
    <button mat-button>Allo</button>
  </mat-card-actions>
-</mat-card>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<mat-card>
-  <mat-card-header>
-    <mat-card-title>Edit LabSheetTubeMPNDetail testing</mat-card-title>
-  </mat-card-header>
-  <mat-card-content>
-    <div *ngIf="labsheettubempndetailService.labsheettubempndetailListModel$.getValue()?.length">
-      <blockquote>
-        <form [formGroup]="labsheettubempndetailFormPut" (ngSubmit)="PutLabSheetTubeMPNDetail(labsheettubempndetailFormPut.value)">
-          <h3>
-            LabSheetTubeMPNDetail
-            <button mat-raised-button type="submit">
-              <span>Update LabSheetTubeMPNDetail</span>
-            </button>
-            <mat-progress-bar mode="indeterminate" *ngIf="labsheettubempndetailService.labsheettubempndetailPutModel$.getValue().Working">
-            </mat-progress-bar>
-          </h3>
-          <p>
-            <mat-form-field>
-              <mat-label>LabSheetTubeMPNDetailID</mat-label>
-              <input matInput type="number" formControlName="LabSheetTubeMPNDetailID">
-              <mat-error *ngIf="labsheettubempndetailFormPut.controls.LabSheetTubeMPNDetailID.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>LabSheetDetailID</mat-label>
-              <input matInput type="number" formControlName="LabSheetDetailID">
-              <mat-error *ngIf="labsheettubempndetailFormPut.controls.LabSheetDetailID.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>Ordinal</mat-label>
-              <input matInput type="number" formControlName="Ordinal">
-              <mat-error *ngIf="labsheettubempndetailFormPut.controls.Ordinal.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-                <span *ngIf="e.min">Min - 0<br /></span>
-                <span *ngIf="e.min">Max - 1000<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>MWQMSiteTVItemID</mat-label>
-              <input matInput type="number" formControlName="MWQMSiteTVItemID">
-              <mat-error *ngIf="labsheettubempndetailFormPut.controls.MWQMSiteTVItemID.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-          </p>
-          <p>
-            <mat-form-field>
-              <mat-label>SampleDateTime</mat-label>
-              <input matInput type="text" formControlName="SampleDateTime">
-              <mat-error *ngIf="labsheettubempndetailFormPut.controls.SampleDateTime.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>MPN</mat-label>
-              <input matInput type="number" formControlName="MPN">
-              <mat-error *ngIf="labsheettubempndetailFormPut.controls.MPN.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.min">Min - 1<br /></span>
-                <span *ngIf="e.min">Max - 10000000<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>Tube10</mat-label>
-              <input matInput type="number" formControlName="Tube10">
-              <mat-error *ngIf="labsheettubempndetailFormPut.controls.Tube10.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.min">Min - 0<br /></span>
-                <span *ngIf="e.min">Max - 5<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>Tube1_0</mat-label>
-              <input matInput type="number" formControlName="Tube1_0">
-              <mat-error *ngIf="labsheettubempndetailFormPut.controls.Tube1_0.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.min">Min - 0<br /></span>
-                <span *ngIf="e.min">Max - 5<br /></span>
-              </mat-error>
-            </mat-form-field>
-          </p>
-          <p>
-            <mat-form-field>
-              <mat-label>Tube0_1</mat-label>
-              <input matInput type="number" formControlName="Tube0_1">
-              <mat-error *ngIf="labsheettubempndetailFormPut.controls.Tube0_1.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.min">Min - 0<br /></span>
-                <span *ngIf="e.min">Max - 5<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>Salinity</mat-label>
-              <input matInput type="number" formControlName="Salinity">
-              <mat-error *ngIf="labsheettubempndetailFormPut.controls.Salinity.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.min">Min - 0<br /></span>
-                <span *ngIf="e.min">Max - 40<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>Temperature</mat-label>
-              <input matInput type="number" formControlName="Temperature">
-              <mat-error *ngIf="labsheettubempndetailFormPut.controls.Temperature.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.min">Min - -10<br /></span>
-                <span *ngIf="e.min">Max - 40<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>ProcessedBy</mat-label>
-              <input matInput type="text" formControlName="ProcessedBy">
-              <mat-error *ngIf="labsheettubempndetailFormPut.controls.ProcessedBy.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.maxlength">MaxLength - 10<br /></span>
-              </mat-error>
-            </mat-form-field>
-          </p>
-          <p>
-            <mat-form-field>
-              <mat-label>SampleType</mat-label>
-              <mat-select formControlName="SampleType">
-                <mat-option *ngFor="let a of sampleTypeList" [value]="a.EnumID">
-                  {{ a.EnumText }}
-                </mat-option>
-              </mat-select>
-              <mat-error *ngIf="labsheettubempndetailFormPut.controls.SampleType.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>SiteComment</mat-label>
-              <input matInput type="text" formControlName="SiteComment">
-              <mat-error *ngIf="labsheettubempndetailFormPut.controls.SiteComment.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.maxlength">MaxLength - 250<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>LastUpdateDate_UTC</mat-label>
-              <input matInput type="text" formControlName="LastUpdateDate_UTC">
-              <mat-error *ngIf="labsheettubempndetailFormPut.controls.LastUpdateDate_UTC.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>LastUpdateContactTVItemID</mat-label>
-              <input matInput type="number" formControlName="LastUpdateContactTVItemID">
-              <mat-error *ngIf="labsheettubempndetailFormPut.controls.LastUpdateContactTVItemID.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-          </p>
-        </form>
-      </blockquote>
-    </div>
-  </mat-card-content>
-</mat-card>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<mat-card>
-  <mat-card-header>
-    <mat-card-title>Add LabSheetTubeMPNDetail testing</mat-card-title>
-  </mat-card-header>
-  <mat-card-content>
-    <div *ngIf="labsheettubempndetailService.labsheettubempndetailListModel$.getValue()?.length">
-      <blockquote>
-        <form [formGroup]="labsheettubempndetailFormPost" (ngSubmit)="PostLabSheetTubeMPNDetail(labsheettubempndetailFormPost.value)">
-          <h3>
-            LabSheetTubeMPNDetail
-            <button mat-raised-button type="submit">
-              <span>Add LabSheetTubeMPNDetail</span>
-            </button>
-            <mat-progress-bar mode="indeterminate" *ngIf="labsheettubempndetailService.labsheettubempndetailPostModel$.getValue().Working">
-            </mat-progress-bar>
-          </h3>
-          <p>
-            <mat-form-field>
-              <mat-label>LabSheetTubeMPNDetailID</mat-label>
-              <input matInput type="number" formControlName="LabSheetTubeMPNDetailID">
-              <mat-error *ngIf="labsheettubempndetailFormPut.controls.LabSheetTubeMPNDetailID.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>LabSheetDetailID</mat-label>
-              <input matInput type="number" formControlName="LabSheetDetailID">
-              <mat-error *ngIf="labsheettubempndetailFormPut.controls.LabSheetDetailID.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>Ordinal</mat-label>
-              <input matInput type="number" formControlName="Ordinal">
-              <mat-error *ngIf="labsheettubempndetailFormPut.controls.Ordinal.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-                <span *ngIf="e.min">Min - 0<br /></span>
-                <span *ngIf="e.min">Max - 1000<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>MWQMSiteTVItemID</mat-label>
-              <input matInput type="number" formControlName="MWQMSiteTVItemID">
-              <mat-error *ngIf="labsheettubempndetailFormPut.controls.MWQMSiteTVItemID.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-          </p>
-          <p>
-            <mat-form-field>
-              <mat-label>SampleDateTime</mat-label>
-              <input matInput type="text" formControlName="SampleDateTime">
-              <mat-error *ngIf="labsheettubempndetailFormPut.controls.SampleDateTime.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>MPN</mat-label>
-              <input matInput type="number" formControlName="MPN">
-              <mat-error *ngIf="labsheettubempndetailFormPut.controls.MPN.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.min">Min - 1<br /></span>
-                <span *ngIf="e.min">Max - 10000000<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>Tube10</mat-label>
-              <input matInput type="number" formControlName="Tube10">
-              <mat-error *ngIf="labsheettubempndetailFormPut.controls.Tube10.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.min">Min - 0<br /></span>
-                <span *ngIf="e.min">Max - 5<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>Tube1_0</mat-label>
-              <input matInput type="number" formControlName="Tube1_0">
-              <mat-error *ngIf="labsheettubempndetailFormPut.controls.Tube1_0.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.min">Min - 0<br /></span>
-                <span *ngIf="e.min">Max - 5<br /></span>
-              </mat-error>
-            </mat-form-field>
-          </p>
-          <p>
-            <mat-form-field>
-              <mat-label>Tube0_1</mat-label>
-              <input matInput type="number" formControlName="Tube0_1">
-              <mat-error *ngIf="labsheettubempndetailFormPut.controls.Tube0_1.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.min">Min - 0<br /></span>
-                <span *ngIf="e.min">Max - 5<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>Salinity</mat-label>
-              <input matInput type="number" formControlName="Salinity">
-              <mat-error *ngIf="labsheettubempndetailFormPut.controls.Salinity.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.min">Min - 0<br /></span>
-                <span *ngIf="e.min">Max - 40<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>Temperature</mat-label>
-              <input matInput type="number" formControlName="Temperature">
-              <mat-error *ngIf="labsheettubempndetailFormPut.controls.Temperature.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.min">Min - -10<br /></span>
-                <span *ngIf="e.min">Max - 40<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>ProcessedBy</mat-label>
-              <input matInput type="text" formControlName="ProcessedBy">
-              <mat-error *ngIf="labsheettubempndetailFormPut.controls.ProcessedBy.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.maxlength">MaxLength - 10<br /></span>
-              </mat-error>
-            </mat-form-field>
-          </p>
-          <p>
-            <mat-form-field>
-              <mat-label>SampleType</mat-label>
-              <mat-select formControlName="SampleType">
-                <mat-option *ngFor="let a of sampleTypeList" [value]="a.EnumID">
-                  {{ a.EnumText }}
-                </mat-option>
-              </mat-select>
-              <mat-error *ngIf="labsheettubempndetailFormPut.controls.SampleType.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>SiteComment</mat-label>
-              <input matInput type="text" formControlName="SiteComment">
-              <mat-error *ngIf="labsheettubempndetailFormPut.controls.SiteComment.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.maxlength">MaxLength - 250<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>LastUpdateDate_UTC</mat-label>
-              <input matInput type="text" formControlName="LastUpdateDate_UTC">
-              <mat-error *ngIf="labsheettubempndetailFormPut.controls.LastUpdateDate_UTC.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>LastUpdateContactTVItemID</mat-label>
-              <input matInput type="number" formControlName="LastUpdateContactTVItemID">
-              <mat-error *ngIf="labsheettubempndetailFormPut.controls.LastUpdateContactTVItemID.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-          </p>
-        </form>
-      </blockquote>
-    </div>
-  </mat-card-content>
 </mat-card>

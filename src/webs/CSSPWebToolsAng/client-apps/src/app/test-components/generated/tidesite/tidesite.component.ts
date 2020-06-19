@@ -10,7 +10,6 @@ import { TideSiteService } from './tidesite.service';
 import { LoadLocalesTideSiteText } from './tidesite.locales';
 import { Subscription } from 'rxjs';
 import { TideSite } from '../../../models/generated/TideSite.model';
-import { FormBuilder, Validators, FormGroup } from '@angular/forms';
 import { HttpClientService } from '../../../services/http-client.service';
 import { Router } from '@angular/router';
 import { HttpClientCommand } from '../../../enums/app.enums';
@@ -23,23 +22,63 @@ import { HttpClientCommand } from '../../../enums/app.enums';
 })
 export class TideSiteComponent implements OnInit, OnDestroy {
   sub: Subscription;
-  tidesiteFormPut: FormGroup;
-  tidesiteFormPost: FormGroup;
+  IDToShow: number;
+  showType?: HttpClientCommand = null;
 
-  constructor(public tidesiteService: TideSiteService, private router: Router, private httpClientService: HttpClientService, private fb: FormBuilder) {
+  constructor(public tidesiteService: TideSiteService, private router: Router, private httpClientService: HttpClientService) {
     httpClientService.oldURL = router.url;
+  }
+
+  GetPutButtonColor(tidesite: TideSite) {
+    if (this.IDToShow === tidesite.TideSiteID && this.showType === HttpClientCommand.Put) {
+      return 'primary';
+    }
+    else {
+      return 'basic';
+    }
+  }
+
+  GetPostButtonColor(tidesite: TideSite) {
+    if (this.IDToShow === tidesite.TideSiteID && this.showType === HttpClientCommand.Post) {
+      return 'primary';
+    }
+    else {
+      return 'basic';
+    }
+  }
+
+  ShowPut(tidesite: TideSite) {
+    if (this.IDToShow === tidesite.TideSiteID && this.showType === HttpClientCommand.Put) {
+      this.IDToShow = 0;
+      this.showType = null;
+    }
+    else {
+      this.IDToShow = tidesite.TideSiteID;
+      this.showType = HttpClientCommand.Put;
+    }
+  }
+
+  ShowPost(tidesite: TideSite) {
+    if (this.IDToShow === tidesite.TideSiteID && this.showType === HttpClientCommand.Post) {
+      this.IDToShow = 0;
+      this.showType = null;
+    }
+    else {
+      this.IDToShow = tidesite.TideSiteID;
+      this.showType = HttpClientCommand.Post;
+    }
+  }
+
+  GetPutEnum() {
+    return <number>HttpClientCommand.Put;
+  }
+
+  GetPostEnum() {
+    return <number>HttpClientCommand.Post;
   }
 
   GetTideSiteList() {
     this.sub = this.tidesiteService.GetTideSiteList().subscribe();
-  }
-
-  PutTideSite(tidesite: TideSite) {
-    this.sub = this.tidesiteService.PutTideSite(tidesite).subscribe();
-  }
-
-  PostTideSite(tidesite: TideSite) {
-    this.sub = this.tidesiteService.PostTideSite(tidesite).subscribe();
   }
 
   DeleteTideSite(tidesite: TideSite) {
@@ -48,69 +87,11 @@ export class TideSiteComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     LoadLocalesTideSiteText(this.tidesiteService);
-    this.FillFormBuilderGroup(HttpClientCommand.Post);
-    this.FillFormBuilderGroup(HttpClientCommand.Put);
   }
 
   ngOnDestroy() {
     if (this.sub) {
       this.sub.unsubscribe();
-    }
-  }
-
-  FillFormBuilderGroup(httpClientCommand: HttpClientCommand) {
-    if (this.tidesiteService.tidesiteListModel$.getValue().length) {
-      let formGroup: FormGroup = this.fb.group(
-        {
-          TideSiteID: [
-            {
-              value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.tidesiteService.tidesiteListModel$.getValue()[0]?.TideSiteID)),
-              disabled: false
-            }, [  Validators.required ]],
-          TideSiteTVItemID: [
-            {
-              value: this.tidesiteService.tidesiteListModel$.getValue()[0]?.TideSiteTVItemID,
-              disabled: false
-            }, [  Validators.required ]],
-          TideSiteName: [
-            {
-              value: this.tidesiteService.tidesiteListModel$.getValue()[0]?.TideSiteName,
-              disabled: false
-            }, [  Validators.required, Validators.maxLength(100) ]],
-          Province: [
-            {
-              value: this.tidesiteService.tidesiteListModel$.getValue()[0]?.Province,
-              disabled: false
-            }, [  Validators.required, Validators.minLength(2), Validators.maxLength(2) ]],
-          sid: [
-            {
-              value: this.tidesiteService.tidesiteListModel$.getValue()[0]?.sid,
-              disabled: false
-            }, [  Validators.required, Validators.min(0), Validators.max(10000) ]],
-          Zone: [
-            {
-              value: this.tidesiteService.tidesiteListModel$.getValue()[0]?.Zone,
-              disabled: false
-            }, [  Validators.required, Validators.min(0), Validators.max(10000) ]],
-          LastUpdateDate_UTC: [
-            {
-              value: this.tidesiteService.tidesiteListModel$.getValue()[0]?.LastUpdateDate_UTC,
-              disabled: false
-            }, [  Validators.required ]],
-          LastUpdateContactTVItemID: [
-            {
-              value: this.tidesiteService.tidesiteListModel$.getValue()[0]?.LastUpdateContactTVItemID,
-              disabled: false
-            }, [  Validators.required ]],
-        }
-      );
-
-      if (httpClientCommand === HttpClientCommand.Post) {
-        this.tidesiteFormPost = formGroup
-      }
-      else {
-        this.tidesiteFormPut = formGroup;
-      }
     }
   }
 }

@@ -17,230 +17,46 @@
     <mat-card-subtitle>{{ apptasklanguageService.apptasklanguageTextModel$.getValue().Title }}</mat-card-subtitle>
   </mat-card-header>
   <mat-card-content>
-    <mat-list *ngIf="apptasklanguageService.apptasklanguageListModel$.getValue()?.length">
-      <mat-list-item *ngFor="let apptasklanguage of apptasklanguageService.apptasklanguageListModel$.getValue()">
-        <span mat-line>
+    <div *ngIf="apptasklanguageService.apptasklanguageListModel$.getValue()?.length">
+      <div *ngFor="let apptasklanguage of apptasklanguageService.apptasklanguageListModel$.getValue()">
+        <p>
           <button mat-raised-button (click)="DeleteAppTaskLanguage(apptasklanguage)">
             <span>Delete AppTaskLanguageID [{{ apptasklanguage.AppTaskLanguageID }}]&nbsp;&nbsp;&nbsp;</span>
             <mat-icon>delete</mat-icon>
-          </button>
+          </button>&nbsp;&nbsp;&nbsp;
+          <button mat-raised-button [color]="GetPutButtonColor(apptasklanguage)"(click)="ShowPut(apptasklanguage)">
+            <span>Show Put</span>
+          </button>&nbsp;&nbsp;
+          <button mat-raised-button [color]="GetPostButtonColor(apptasklanguage)"(click)="ShowPost(apptasklanguage)">
+            <span>Show Post</span>
+          </button>&nbsp;&nbsp;
           <mat-progress-bar mode="indeterminate" *ngIf="apptasklanguageService.apptasklanguageDeleteModel$.getValue().Working">
           </mat-progress-bar>
-          </span>
-        <span mat-line>
+        </p>
+        <p *ngIf="IDToShow === apptasklanguage.AppTaskLanguageID && showType === GetPutEnum()">
+          <app-apptasklanguage-edit [apptasklanguage]="apptasklanguage" [httpClientCommand]="GetPutEnum()"></app-apptasklanguage-edit>
+        </p>
+        <p *ngIf="IDToShow === apptasklanguage.AppTaskLanguageID && showType === GetPostEnum()">
+          <app-apptasklanguage-edit [apptasklanguage]="apptasklanguage" [httpClientCommand]="GetPostEnum()"></app-apptasklanguage-edit>
+        </p>
+        <blockquote>
+        <p>
           <span>AppTaskLanguageID: [{{ apptasklanguage.AppTaskLanguageID }}]</span>
           <span> --- AppTaskID: [{{ apptasklanguage.AppTaskID }}]</span>
           <span> --- Language: [{{ GetLanguageEnumText(apptasklanguage.Language) }}]</span>
           <span> --- StatusText: [{{ apptasklanguage.StatusText }}]</span>
-        </span>
-        <span mat-line>
+ </p>
+        <p>
           <span>ErrorText: [{{ apptasklanguage.ErrorText }}]</span>
           <span> --- TranslationStatus: [{{ GetTranslationStatusEnumText(apptasklanguage.TranslationStatus) }}]</span>
           <span> --- LastUpdateDate_UTC: [{{ apptasklanguage.LastUpdateDate_UTC }}]</span>
           <span> --- LastUpdateContactTVItemID: [{{ apptasklanguage.LastUpdateContactTVItemID }}]</span>
-        </span>
-       </mat-list-item>
-     </mat-list>
+        </p>
+        </blockquote>
+       </div>
+     </div>
    </mat-card-content>
  <mat-card-actions>
    <button mat-button>Allo</button>
  </mat-card-actions>
-</mat-card>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<mat-card>
-  <mat-card-header>
-    <mat-card-title>Edit AppTaskLanguage testing</mat-card-title>
-  </mat-card-header>
-  <mat-card-content>
-    <div *ngIf="apptasklanguageService.apptasklanguageListModel$.getValue()?.length">
-      <blockquote>
-        <form [formGroup]="apptasklanguageFormPut" (ngSubmit)="PutAppTaskLanguage(apptasklanguageFormPut.value)">
-          <h3>
-            AppTaskLanguage
-            <button mat-raised-button type="submit">
-              <span>Update AppTaskLanguage</span>
-            </button>
-            <mat-progress-bar mode="indeterminate" *ngIf="apptasklanguageService.apptasklanguagePutModel$.getValue().Working">
-            </mat-progress-bar>
-          </h3>
-          <p>
-            <mat-form-field>
-              <mat-label>AppTaskLanguageID</mat-label>
-              <input matInput type="number" formControlName="AppTaskLanguageID">
-              <mat-error *ngIf="apptasklanguageFormPut.controls.AppTaskLanguageID.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>AppTaskID</mat-label>
-              <input matInput type="number" formControlName="AppTaskID">
-              <mat-error *ngIf="apptasklanguageFormPut.controls.AppTaskID.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>Language</mat-label>
-              <mat-select formControlName="Language">
-                <mat-option *ngFor="let a of languageList" [value]="a.EnumID">
-                  {{ a.EnumText }}
-                </mat-option>
-              </mat-select>
-              <mat-error *ngIf="apptasklanguageFormPut.controls.Language.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>StatusText</mat-label>
-              <input matInput type="text" formControlName="StatusText">
-              <mat-error *ngIf="apptasklanguageFormPut.controls.StatusText.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.maxlength">MaxLength - 250<br /></span>
-              </mat-error>
-            </mat-form-field>
-          </p>
-          <p>
-            <mat-form-field>
-              <mat-label>ErrorText</mat-label>
-              <input matInput type="text" formControlName="ErrorText">
-              <mat-error *ngIf="apptasklanguageFormPut.controls.ErrorText.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.maxlength">MaxLength - 250<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>TranslationStatus</mat-label>
-              <mat-select formControlName="TranslationStatus">
-                <mat-option *ngFor="let a of translationStatusList" [value]="a.EnumID">
-                  {{ a.EnumText }}
-                </mat-option>
-              </mat-select>
-              <mat-error *ngIf="apptasklanguageFormPut.controls.TranslationStatus.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>LastUpdateDate_UTC</mat-label>
-              <input matInput type="text" formControlName="LastUpdateDate_UTC">
-              <mat-error *ngIf="apptasklanguageFormPut.controls.LastUpdateDate_UTC.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>LastUpdateContactTVItemID</mat-label>
-              <input matInput type="number" formControlName="LastUpdateContactTVItemID">
-              <mat-error *ngIf="apptasklanguageFormPut.controls.LastUpdateContactTVItemID.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-          </p>
-        </form>
-      </blockquote>
-    </div>
-  </mat-card-content>
-</mat-card>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<mat-card>
-  <mat-card-header>
-    <mat-card-title>Add AppTaskLanguage testing</mat-card-title>
-  </mat-card-header>
-  <mat-card-content>
-    <div *ngIf="apptasklanguageService.apptasklanguageListModel$.getValue()?.length">
-      <blockquote>
-        <form [formGroup]="apptasklanguageFormPost" (ngSubmit)="PostAppTaskLanguage(apptasklanguageFormPost.value)">
-          <h3>
-            AppTaskLanguage
-            <button mat-raised-button type="submit">
-              <span>Add AppTaskLanguage</span>
-            </button>
-            <mat-progress-bar mode="indeterminate" *ngIf="apptasklanguageService.apptasklanguagePostModel$.getValue().Working">
-            </mat-progress-bar>
-          </h3>
-          <p>
-            <mat-form-field>
-              <mat-label>AppTaskLanguageID</mat-label>
-              <input matInput type="number" formControlName="AppTaskLanguageID">
-              <mat-error *ngIf="apptasklanguageFormPut.controls.AppTaskLanguageID.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>AppTaskID</mat-label>
-              <input matInput type="number" formControlName="AppTaskID">
-              <mat-error *ngIf="apptasklanguageFormPut.controls.AppTaskID.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>Language</mat-label>
-              <mat-select formControlName="Language">
-                <mat-option *ngFor="let a of languageList" [value]="a.EnumID">
-                  {{ a.EnumText }}
-                </mat-option>
-              </mat-select>
-              <mat-error *ngIf="apptasklanguageFormPut.controls.Language.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>StatusText</mat-label>
-              <input matInput type="text" formControlName="StatusText">
-              <mat-error *ngIf="apptasklanguageFormPut.controls.StatusText.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.maxlength">MaxLength - 250<br /></span>
-              </mat-error>
-            </mat-form-field>
-          </p>
-          <p>
-            <mat-form-field>
-              <mat-label>ErrorText</mat-label>
-              <input matInput type="text" formControlName="ErrorText">
-              <mat-error *ngIf="apptasklanguageFormPut.controls.ErrorText.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.maxlength">MaxLength - 250<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>TranslationStatus</mat-label>
-              <mat-select formControlName="TranslationStatus">
-                <mat-option *ngFor="let a of translationStatusList" [value]="a.EnumID">
-                  {{ a.EnumText }}
-                </mat-option>
-              </mat-select>
-              <mat-error *ngIf="apptasklanguageFormPut.controls.TranslationStatus.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>LastUpdateDate_UTC</mat-label>
-              <input matInput type="text" formControlName="LastUpdateDate_UTC">
-              <mat-error *ngIf="apptasklanguageFormPut.controls.LastUpdateDate_UTC.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>LastUpdateContactTVItemID</mat-label>
-              <input matInput type="number" formControlName="LastUpdateContactTVItemID">
-              <mat-error *ngIf="apptasklanguageFormPut.controls.LastUpdateContactTVItemID.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-          </p>
-        </form>
-      </blockquote>
-    </div>
-  </mat-card-content>
 </mat-card>

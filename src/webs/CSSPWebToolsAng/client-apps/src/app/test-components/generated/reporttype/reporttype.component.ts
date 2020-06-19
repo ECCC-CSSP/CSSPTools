@@ -9,12 +9,10 @@ import { Component, OnInit, OnDestroy, ChangeDetectionStrategy } from '@angular/
 import { ReportTypeService } from './reporttype.service';
 import { LoadLocalesReportTypeText } from './reporttype.locales';
 import { Subscription } from 'rxjs';
-import { TVTypeEnum_GetIDText, TVTypeEnum_GetOrderedText } from '../../../enums/generated/TVTypeEnum';
-import { FileTypeEnum_GetIDText, FileTypeEnum_GetOrderedText } from '../../../enums/generated/FileTypeEnum';
-import { LanguageEnum_GetIDText, LanguageEnum_GetOrderedText } from '../../../enums/generated/LanguageEnum';
+import { TVTypeEnum_GetIDText } from '../../../enums/generated/TVTypeEnum';
+import { FileTypeEnum_GetIDText } from '../../../enums/generated/FileTypeEnum';
+import { LanguageEnum_GetIDText } from '../../../enums/generated/LanguageEnum';
 import { ReportType } from '../../../models/generated/ReportType.model';
-import { FormBuilder, Validators, FormGroup } from '@angular/forms';
-import { EnumIDAndText } from '../../../models/enumidandtext.model';
 import { HttpClientService } from '../../../services/http-client.service';
 import { Router } from '@angular/router';
 import { HttpClientCommand } from '../../../enums/app.enums';
@@ -27,26 +25,63 @@ import { HttpClientCommand } from '../../../enums/app.enums';
 })
 export class ReportTypeComponent implements OnInit, OnDestroy {
   sub: Subscription;
-  tVTypeList: EnumIDAndText[];
-  fileTypeList: EnumIDAndText[];
-  languageList: EnumIDAndText[];
-  reporttypeFormPut: FormGroup;
-  reporttypeFormPost: FormGroup;
+  IDToShow: number;
+  showType?: HttpClientCommand = null;
 
-  constructor(public reporttypeService: ReportTypeService, private router: Router, private httpClientService: HttpClientService, private fb: FormBuilder) {
+  constructor(public reporttypeService: ReportTypeService, private router: Router, private httpClientService: HttpClientService) {
     httpClientService.oldURL = router.url;
+  }
+
+  GetPutButtonColor(reporttype: ReportType) {
+    if (this.IDToShow === reporttype.ReportTypeID && this.showType === HttpClientCommand.Put) {
+      return 'primary';
+    }
+    else {
+      return 'basic';
+    }
+  }
+
+  GetPostButtonColor(reporttype: ReportType) {
+    if (this.IDToShow === reporttype.ReportTypeID && this.showType === HttpClientCommand.Post) {
+      return 'primary';
+    }
+    else {
+      return 'basic';
+    }
+  }
+
+  ShowPut(reporttype: ReportType) {
+    if (this.IDToShow === reporttype.ReportTypeID && this.showType === HttpClientCommand.Put) {
+      this.IDToShow = 0;
+      this.showType = null;
+    }
+    else {
+      this.IDToShow = reporttype.ReportTypeID;
+      this.showType = HttpClientCommand.Put;
+    }
+  }
+
+  ShowPost(reporttype: ReportType) {
+    if (this.IDToShow === reporttype.ReportTypeID && this.showType === HttpClientCommand.Post) {
+      this.IDToShow = 0;
+      this.showType = null;
+    }
+    else {
+      this.IDToShow = reporttype.ReportTypeID;
+      this.showType = HttpClientCommand.Post;
+    }
+  }
+
+  GetPutEnum() {
+    return <number>HttpClientCommand.Put;
+  }
+
+  GetPostEnum() {
+    return <number>HttpClientCommand.Post;
   }
 
   GetReportTypeList() {
     this.sub = this.reporttypeService.GetReportTypeList().subscribe();
-  }
-
-  PutReportType(reporttype: ReportType) {
-    this.sub = this.reporttypeService.PutReportType(reporttype).subscribe();
-  }
-
-  PostReportType(reporttype: ReportType) {
-    this.sub = this.reporttypeService.PostReportType(reporttype).subscribe();
   }
 
   DeleteReportType(reporttype: ReportType) {
@@ -67,82 +102,11 @@ export class ReportTypeComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     LoadLocalesReportTypeText(this.reporttypeService);
-    this.tVTypeList = TVTypeEnum_GetOrderedText();
-    this.fileTypeList = FileTypeEnum_GetOrderedText();
-    this.languageList = LanguageEnum_GetOrderedText();
-    this.FillFormBuilderGroup(HttpClientCommand.Post);
-    this.FillFormBuilderGroup(HttpClientCommand.Put);
   }
 
   ngOnDestroy() {
     if (this.sub) {
       this.sub.unsubscribe();
-    }
-  }
-
-  FillFormBuilderGroup(httpClientCommand: HttpClientCommand) {
-    if (this.reporttypeService.reporttypeListModel$.getValue().length) {
-      let formGroup: FormGroup = this.fb.group(
-        {
-          ReportTypeID: [
-            {
-              value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.reporttypeService.reporttypeListModel$.getValue()[0]?.ReportTypeID)),
-              disabled: false
-            }, [  Validators.required ]],
-          TVType: [
-            {
-              value: this.reporttypeService.reporttypeListModel$.getValue()[0]?.TVType,
-              disabled: false
-            }, [  Validators.required ]],
-          FileType: [
-            {
-              value: this.reporttypeService.reporttypeListModel$.getValue()[0]?.FileType,
-              disabled: false
-            }, [  Validators.required ]],
-          UniqueCode: [
-            {
-              value: this.reporttypeService.reporttypeListModel$.getValue()[0]?.UniqueCode,
-              disabled: false
-            }, [  Validators.required, Validators.maxLength(100) ]],
-          Language: [
-            {
-              value: this.reporttypeService.reporttypeListModel$.getValue()[0]?.Language,
-              disabled: false
-            }],
-          Name: [
-            {
-              value: this.reporttypeService.reporttypeListModel$.getValue()[0]?.Name,
-              disabled: false
-            }, [  Validators.maxLength(100) ]],
-          Description: [
-            {
-              value: this.reporttypeService.reporttypeListModel$.getValue()[0]?.Description,
-              disabled: false
-            }, [  Validators.maxLength(1000) ]],
-          StartOfFileName: [
-            {
-              value: this.reporttypeService.reporttypeListModel$.getValue()[0]?.StartOfFileName,
-              disabled: false
-            }, [  Validators.maxLength(100) ]],
-          LastUpdateDate_UTC: [
-            {
-              value: this.reporttypeService.reporttypeListModel$.getValue()[0]?.LastUpdateDate_UTC,
-              disabled: false
-            }, [  Validators.required ]],
-          LastUpdateContactTVItemID: [
-            {
-              value: this.reporttypeService.reporttypeListModel$.getValue()[0]?.LastUpdateContactTVItemID,
-              disabled: false
-            }, [  Validators.required ]],
-        }
-      );
-
-      if (httpClientCommand === HttpClientCommand.Post) {
-        this.reporttypeFormPost = formGroup
-      }
-      else {
-        this.reporttypeFormPut = formGroup;
-      }
     }
   }
 }

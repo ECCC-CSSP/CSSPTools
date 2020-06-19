@@ -12,9 +12,10 @@ import { ReportTypeRoutingModule } from './reporttype-routing.module';
 import { MaterialModule } from '../../../app-material.module';
 import { ReportTypeComponent } from './reporttype.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ReportTypeEditComponent } from './reporttype-edit.component';
 
 @NgModule({
-  declarations: [ ReportTypeComponent ],
+  declarations: [ReportTypeComponent, ReportTypeEditComponent],
   imports: [
     CommonModule,
     RouterModule,

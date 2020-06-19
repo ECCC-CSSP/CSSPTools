@@ -9,11 +9,9 @@ import { Component, OnInit, OnDestroy, ChangeDetectionStrategy } from '@angular/
 import { MapInfoService } from './mapinfo.service';
 import { LoadLocalesMapInfoText } from './mapinfo.locales';
 import { Subscription } from 'rxjs';
-import { TVTypeEnum_GetIDText, TVTypeEnum_GetOrderedText } from '../../../enums/generated/TVTypeEnum';
-import { MapInfoDrawTypeEnum_GetIDText, MapInfoDrawTypeEnum_GetOrderedText } from '../../../enums/generated/MapInfoDrawTypeEnum';
+import { TVTypeEnum_GetIDText } from '../../../enums/generated/TVTypeEnum';
+import { MapInfoDrawTypeEnum_GetIDText } from '../../../enums/generated/MapInfoDrawTypeEnum';
 import { MapInfo } from '../../../models/generated/MapInfo.model';
-import { FormBuilder, Validators, FormGroup } from '@angular/forms';
-import { EnumIDAndText } from '../../../models/enumidandtext.model';
 import { HttpClientService } from '../../../services/http-client.service';
 import { Router } from '@angular/router';
 import { HttpClientCommand } from '../../../enums/app.enums';
@@ -26,25 +24,63 @@ import { HttpClientCommand } from '../../../enums/app.enums';
 })
 export class MapInfoComponent implements OnInit, OnDestroy {
   sub: Subscription;
-  tVTypeList: EnumIDAndText[];
-  mapInfoDrawTypeList: EnumIDAndText[];
-  mapinfoFormPut: FormGroup;
-  mapinfoFormPost: FormGroup;
+  IDToShow: number;
+  showType?: HttpClientCommand = null;
 
-  constructor(public mapinfoService: MapInfoService, private router: Router, private httpClientService: HttpClientService, private fb: FormBuilder) {
+  constructor(public mapinfoService: MapInfoService, private router: Router, private httpClientService: HttpClientService) {
     httpClientService.oldURL = router.url;
+  }
+
+  GetPutButtonColor(mapinfo: MapInfo) {
+    if (this.IDToShow === mapinfo.MapInfoID && this.showType === HttpClientCommand.Put) {
+      return 'primary';
+    }
+    else {
+      return 'basic';
+    }
+  }
+
+  GetPostButtonColor(mapinfo: MapInfo) {
+    if (this.IDToShow === mapinfo.MapInfoID && this.showType === HttpClientCommand.Post) {
+      return 'primary';
+    }
+    else {
+      return 'basic';
+    }
+  }
+
+  ShowPut(mapinfo: MapInfo) {
+    if (this.IDToShow === mapinfo.MapInfoID && this.showType === HttpClientCommand.Put) {
+      this.IDToShow = 0;
+      this.showType = null;
+    }
+    else {
+      this.IDToShow = mapinfo.MapInfoID;
+      this.showType = HttpClientCommand.Put;
+    }
+  }
+
+  ShowPost(mapinfo: MapInfo) {
+    if (this.IDToShow === mapinfo.MapInfoID && this.showType === HttpClientCommand.Post) {
+      this.IDToShow = 0;
+      this.showType = null;
+    }
+    else {
+      this.IDToShow = mapinfo.MapInfoID;
+      this.showType = HttpClientCommand.Post;
+    }
+  }
+
+  GetPutEnum() {
+    return <number>HttpClientCommand.Put;
+  }
+
+  GetPostEnum() {
+    return <number>HttpClientCommand.Post;
   }
 
   GetMapInfoList() {
     this.sub = this.mapinfoService.GetMapInfoList().subscribe();
-  }
-
-  PutMapInfo(mapinfo: MapInfo) {
-    this.sub = this.mapinfoService.PutMapInfo(mapinfo).subscribe();
-  }
-
-  PostMapInfo(mapinfo: MapInfo) {
-    this.sub = this.mapinfoService.PostMapInfo(mapinfo).subscribe();
   }
 
   DeleteMapInfo(mapinfo: MapInfo) {
@@ -61,81 +97,11 @@ export class MapInfoComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     LoadLocalesMapInfoText(this.mapinfoService);
-    this.tVTypeList = TVTypeEnum_GetOrderedText();
-    this.mapInfoDrawTypeList = MapInfoDrawTypeEnum_GetOrderedText();
-    this.FillFormBuilderGroup(HttpClientCommand.Post);
-    this.FillFormBuilderGroup(HttpClientCommand.Put);
   }
 
   ngOnDestroy() {
     if (this.sub) {
       this.sub.unsubscribe();
-    }
-  }
-
-  FillFormBuilderGroup(httpClientCommand: HttpClientCommand) {
-    if (this.mapinfoService.mapinfoListModel$.getValue().length) {
-      let formGroup: FormGroup = this.fb.group(
-        {
-          MapInfoID: [
-            {
-              value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.mapinfoService.mapinfoListModel$.getValue()[0]?.MapInfoID)),
-              disabled: false
-            }, [  Validators.required ]],
-          TVItemID: [
-            {
-              value: this.mapinfoService.mapinfoListModel$.getValue()[0]?.TVItemID,
-              disabled: false
-            }, [  Validators.required ]],
-          TVType: [
-            {
-              value: this.mapinfoService.mapinfoListModel$.getValue()[0]?.TVType,
-              disabled: false
-            }, [  Validators.required ]],
-          LatMin: [
-            {
-              value: this.mapinfoService.mapinfoListModel$.getValue()[0]?.LatMin,
-              disabled: false
-            }, [  Validators.required, Validators.min(-90), Validators.max(90) ]],
-          LatMax: [
-            {
-              value: this.mapinfoService.mapinfoListModel$.getValue()[0]?.LatMax,
-              disabled: false
-            }, [  Validators.required, Validators.min(-90), Validators.max(90) ]],
-          LngMin: [
-            {
-              value: this.mapinfoService.mapinfoListModel$.getValue()[0]?.LngMin,
-              disabled: false
-            }, [  Validators.required, Validators.min(-180), Validators.max(180) ]],
-          LngMax: [
-            {
-              value: this.mapinfoService.mapinfoListModel$.getValue()[0]?.LngMax,
-              disabled: false
-            }, [  Validators.required, Validators.min(-180), Validators.max(180) ]],
-          MapInfoDrawType: [
-            {
-              value: this.mapinfoService.mapinfoListModel$.getValue()[0]?.MapInfoDrawType,
-              disabled: false
-            }, [  Validators.required ]],
-          LastUpdateDate_UTC: [
-            {
-              value: this.mapinfoService.mapinfoListModel$.getValue()[0]?.LastUpdateDate_UTC,
-              disabled: false
-            }, [  Validators.required ]],
-          LastUpdateContactTVItemID: [
-            {
-              value: this.mapinfoService.mapinfoListModel$.getValue()[0]?.LastUpdateContactTVItemID,
-              disabled: false
-            }, [  Validators.required ]],
-        }
-      );
-
-      if (httpClientCommand === HttpClientCommand.Post) {
-        this.mapinfoFormPost = formGroup
-      }
-      else {
-        this.mapinfoFormPut = formGroup;
-      }
     }
   }
 }

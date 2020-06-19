@@ -12,9 +12,10 @@ import { AppErrLogRoutingModule } from './apperrlog-routing.module';
 import { MaterialModule } from '../../../app-material.module';
 import { AppErrLogComponent } from './apperrlog.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { AppErrLogEditComponent } from './apperrlog-edit.component';
 
 @NgModule({
-  declarations: [ AppErrLogComponent ],
+  declarations: [AppErrLogComponent, AppErrLogEditComponent],
   imports: [
     CommonModule,
     RouterModule,

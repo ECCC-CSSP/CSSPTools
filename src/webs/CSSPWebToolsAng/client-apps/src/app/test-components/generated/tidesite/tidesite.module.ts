@@ -12,9 +12,10 @@ import { TideSiteRoutingModule } from './tidesite-routing.module';
 import { MaterialModule } from '../../../app-material.module';
 import { TideSiteComponent } from './tidesite.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { TideSiteEditComponent } from './tidesite-edit.component';
 
 @NgModule({
-  declarations: [ TideSiteComponent ],
+  declarations: [TideSiteComponent, TideSiteEditComponent],
   imports: [
     CommonModule,
     RouterModule,

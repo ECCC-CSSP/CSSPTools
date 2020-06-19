@@ -12,9 +12,10 @@ import { MWQMSubsectorRoutingModule } from './mwqmsubsector-routing.module';
 import { MaterialModule } from '../../../app-material.module';
 import { MWQMSubsectorComponent } from './mwqmsubsector.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MWQMSubsectorEditComponent } from './mwqmsubsector-edit.component';
 
 @NgModule({
-  declarations: [ MWQMSubsectorComponent ],
+  declarations: [MWQMSubsectorComponent, MWQMSubsectorEditComponent],
   imports: [
     CommonModule,
     RouterModule,

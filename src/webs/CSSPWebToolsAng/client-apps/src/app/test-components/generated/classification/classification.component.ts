@@ -9,10 +9,8 @@ import { Component, OnInit, OnDestroy, ChangeDetectionStrategy } from '@angular/
 import { ClassificationService } from './classification.service';
 import { LoadLocalesClassificationText } from './classification.locales';
 import { Subscription } from 'rxjs';
-import { ClassificationTypeEnum_GetIDText, ClassificationTypeEnum_GetOrderedText } from '../../../enums/generated/ClassificationTypeEnum';
+import { ClassificationTypeEnum_GetIDText } from '../../../enums/generated/ClassificationTypeEnum';
 import { Classification } from '../../../models/generated/Classification.model';
-import { FormBuilder, Validators, FormGroup } from '@angular/forms';
-import { EnumIDAndText } from '../../../models/enumidandtext.model';
 import { HttpClientService } from '../../../services/http-client.service';
 import { Router } from '@angular/router';
 import { HttpClientCommand } from '../../../enums/app.enums';
@@ -25,24 +23,63 @@ import { HttpClientCommand } from '../../../enums/app.enums';
 })
 export class ClassificationComponent implements OnInit, OnDestroy {
   sub: Subscription;
-  classificationTypeList: EnumIDAndText[];
-  classificationFormPut: FormGroup;
-  classificationFormPost: FormGroup;
+  IDToShow: number;
+  showType?: HttpClientCommand = null;
 
-  constructor(public classificationService: ClassificationService, private router: Router, private httpClientService: HttpClientService, private fb: FormBuilder) {
+  constructor(public classificationService: ClassificationService, private router: Router, private httpClientService: HttpClientService) {
     httpClientService.oldURL = router.url;
+  }
+
+  GetPutButtonColor(classification: Classification) {
+    if (this.IDToShow === classification.ClassificationID && this.showType === HttpClientCommand.Put) {
+      return 'primary';
+    }
+    else {
+      return 'basic';
+    }
+  }
+
+  GetPostButtonColor(classification: Classification) {
+    if (this.IDToShow === classification.ClassificationID && this.showType === HttpClientCommand.Post) {
+      return 'primary';
+    }
+    else {
+      return 'basic';
+    }
+  }
+
+  ShowPut(classification: Classification) {
+    if (this.IDToShow === classification.ClassificationID && this.showType === HttpClientCommand.Put) {
+      this.IDToShow = 0;
+      this.showType = null;
+    }
+    else {
+      this.IDToShow = classification.ClassificationID;
+      this.showType = HttpClientCommand.Put;
+    }
+  }
+
+  ShowPost(classification: Classification) {
+    if (this.IDToShow === classification.ClassificationID && this.showType === HttpClientCommand.Post) {
+      this.IDToShow = 0;
+      this.showType = null;
+    }
+    else {
+      this.IDToShow = classification.ClassificationID;
+      this.showType = HttpClientCommand.Post;
+    }
+  }
+
+  GetPutEnum() {
+    return <number>HttpClientCommand.Put;
+  }
+
+  GetPostEnum() {
+    return <number>HttpClientCommand.Post;
   }
 
   GetClassificationList() {
     this.sub = this.classificationService.GetClassificationList().subscribe();
-  }
-
-  PutClassification(classification: Classification) {
-    this.sub = this.classificationService.PutClassification(classification).subscribe();
-  }
-
-  PostClassification(classification: Classification) {
-    this.sub = this.classificationService.PostClassification(classification).subscribe();
   }
 
   DeleteClassification(classification: Classification) {
@@ -55,60 +92,11 @@ export class ClassificationComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     LoadLocalesClassificationText(this.classificationService);
-    this.classificationTypeList = ClassificationTypeEnum_GetOrderedText();
-    this.FillFormBuilderGroup(HttpClientCommand.Post);
-    this.FillFormBuilderGroup(HttpClientCommand.Put);
   }
 
   ngOnDestroy() {
     if (this.sub) {
       this.sub.unsubscribe();
-    }
-  }
-
-  FillFormBuilderGroup(httpClientCommand: HttpClientCommand) {
-    if (this.classificationService.classificationListModel$.getValue().length) {
-      let formGroup: FormGroup = this.fb.group(
-        {
-          ClassificationID: [
-            {
-              value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.classificationService.classificationListModel$.getValue()[0]?.ClassificationID)),
-              disabled: false
-            }, [  Validators.required ]],
-          ClassificationTVItemID: [
-            {
-              value: this.classificationService.classificationListModel$.getValue()[0]?.ClassificationTVItemID,
-              disabled: false
-            }, [  Validators.required ]],
-          ClassificationType: [
-            {
-              value: this.classificationService.classificationListModel$.getValue()[0]?.ClassificationType,
-              disabled: false
-            }, [  Validators.required ]],
-          Ordinal: [
-            {
-              value: this.classificationService.classificationListModel$.getValue()[0]?.Ordinal,
-              disabled: false
-            }, [  Validators.required, Validators.min(0), Validators.max(10000) ]],
-          LastUpdateDate_UTC: [
-            {
-              value: this.classificationService.classificationListModel$.getValue()[0]?.LastUpdateDate_UTC,
-              disabled: false
-            }, [  Validators.required ]],
-          LastUpdateContactTVItemID: [
-            {
-              value: this.classificationService.classificationListModel$.getValue()[0]?.LastUpdateContactTVItemID,
-              disabled: false
-            }, [  Validators.required ]],
-        }
-      );
-
-      if (httpClientCommand === HttpClientCommand.Post) {
-        this.classificationFormPost = formGroup
-      }
-      else {
-        this.classificationFormPut = formGroup;
-      }
     }
   }
 }

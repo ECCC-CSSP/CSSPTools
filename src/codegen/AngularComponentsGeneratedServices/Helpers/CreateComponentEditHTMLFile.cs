@@ -44,9 +44,9 @@ namespace AngularComponentsGeneratedServices.Services
                 {
                     if (objCount != 0)
                     {
-                        sb.AppendLine($@"          </p>");
+                        sb.AppendLine($@"  </p>");
                     }
-                    sb.AppendLine($@"          <p>");
+                    sb.AppendLine($@"  <p>");
                     space = "";
                 }
                 else
@@ -58,32 +58,31 @@ namespace AngularComponentsGeneratedServices.Services
 
                 if (dllPropertyInfo.CSSPProp.HasCSSPEnumTypeAttribute)
                 {
-                    sb.AppendLine(@"            <mat-form-field>");
-                    sb.AppendLine($@"              <mat-label>{ dllPropertyInfo.CSSPProp.PropName }</mat-label>");
+                    sb.AppendLine(@"  <mat-form-field>");
+                    sb.AppendLine($@"      <mat-label>{ dllPropertyInfo.CSSPProp.PropName }</mat-label>");
 
                     CreateMatSelectHTML(dllPropertyInfo, sb);
 
                     CreateMatErrorHTML(dllTypeInfoModels, dllPropertyInfo, sb);
 
-                    sb.AppendLine(@"            </mat-form-field>");
+                    sb.AppendLine(@"    </mat-form-field>");
 
                 }
                 else
                 {
-                    sb.AppendLine(@"            <mat-form-field>");
-                    sb.AppendLine($@"              <mat-label>{ dllPropertyInfo.CSSPProp.PropName }</mat-label>");
-                    sb.AppendLine($@"              <mat-error *ngIf=""{ dllTypeInfoModels.Name.ToLower() }FormPut.controls.{ dllPropertyInfo.CSSPProp.PropName }.errors; let e;"">");
+                    sb.AppendLine(@"    <mat-form-field>");
+                    sb.AppendLine($@"      <mat-label>{ dllPropertyInfo.CSSPProp.PropName }</mat-label>");
 
                     CreateMatInputHTML(dllPropertyInfo, sb);
 
                     CreateMatErrorHTML(dllTypeInfoModels, dllPropertyInfo, sb);
 
-                    sb.AppendLine(@"            </mat-form-field>");
+                    sb.AppendLine(@"    </mat-form-field>");
                 }
             }
 
-            sb.AppendLine($@"          </p>");
-            sb.AppendLine(@"        </form>");
+            sb.AppendLine($@"  </p>");
+            sb.AppendLine(@"</form>");
 
             DirectoryInfo di = new DirectoryInfo(Config.GetValue<string>("OutputDir").Replace("{TypeNameLower}", dllTypeInfoModels.Name.ToLower()));
             if (!di.Exists)

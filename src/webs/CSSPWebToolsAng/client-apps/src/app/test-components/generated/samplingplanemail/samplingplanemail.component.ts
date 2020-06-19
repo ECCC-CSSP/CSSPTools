@@ -10,7 +10,6 @@ import { SamplingPlanEmailService } from './samplingplanemail.service';
 import { LoadLocalesSamplingPlanEmailText } from './samplingplanemail.locales';
 import { Subscription } from 'rxjs';
 import { SamplingPlanEmail } from '../../../models/generated/SamplingPlanEmail.model';
-import { FormBuilder, Validators, FormGroup } from '@angular/forms';
 import { HttpClientService } from '../../../services/http-client.service';
 import { Router } from '@angular/router';
 import { HttpClientCommand } from '../../../enums/app.enums';
@@ -23,23 +22,63 @@ import { HttpClientCommand } from '../../../enums/app.enums';
 })
 export class SamplingPlanEmailComponent implements OnInit, OnDestroy {
   sub: Subscription;
-  samplingplanemailFormPut: FormGroup;
-  samplingplanemailFormPost: FormGroup;
+  IDToShow: number;
+  showType?: HttpClientCommand = null;
 
-  constructor(public samplingplanemailService: SamplingPlanEmailService, private router: Router, private httpClientService: HttpClientService, private fb: FormBuilder) {
+  constructor(public samplingplanemailService: SamplingPlanEmailService, private router: Router, private httpClientService: HttpClientService) {
     httpClientService.oldURL = router.url;
+  }
+
+  GetPutButtonColor(samplingplanemail: SamplingPlanEmail) {
+    if (this.IDToShow === samplingplanemail.SamplingPlanEmailID && this.showType === HttpClientCommand.Put) {
+      return 'primary';
+    }
+    else {
+      return 'basic';
+    }
+  }
+
+  GetPostButtonColor(samplingplanemail: SamplingPlanEmail) {
+    if (this.IDToShow === samplingplanemail.SamplingPlanEmailID && this.showType === HttpClientCommand.Post) {
+      return 'primary';
+    }
+    else {
+      return 'basic';
+    }
+  }
+
+  ShowPut(samplingplanemail: SamplingPlanEmail) {
+    if (this.IDToShow === samplingplanemail.SamplingPlanEmailID && this.showType === HttpClientCommand.Put) {
+      this.IDToShow = 0;
+      this.showType = null;
+    }
+    else {
+      this.IDToShow = samplingplanemail.SamplingPlanEmailID;
+      this.showType = HttpClientCommand.Put;
+    }
+  }
+
+  ShowPost(samplingplanemail: SamplingPlanEmail) {
+    if (this.IDToShow === samplingplanemail.SamplingPlanEmailID && this.showType === HttpClientCommand.Post) {
+      this.IDToShow = 0;
+      this.showType = null;
+    }
+    else {
+      this.IDToShow = samplingplanemail.SamplingPlanEmailID;
+      this.showType = HttpClientCommand.Post;
+    }
+  }
+
+  GetPutEnum() {
+    return <number>HttpClientCommand.Put;
+  }
+
+  GetPostEnum() {
+    return <number>HttpClientCommand.Post;
   }
 
   GetSamplingPlanEmailList() {
     this.sub = this.samplingplanemailService.GetSamplingPlanEmailList().subscribe();
-  }
-
-  PutSamplingPlanEmail(samplingplanemail: SamplingPlanEmail) {
-    this.sub = this.samplingplanemailService.PutSamplingPlanEmail(samplingplanemail).subscribe();
-  }
-
-  PostSamplingPlanEmail(samplingplanemail: SamplingPlanEmail) {
-    this.sub = this.samplingplanemailService.PostSamplingPlanEmail(samplingplanemail).subscribe();
   }
 
   DeleteSamplingPlanEmail(samplingplanemail: SamplingPlanEmail) {
@@ -48,79 +87,11 @@ export class SamplingPlanEmailComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     LoadLocalesSamplingPlanEmailText(this.samplingplanemailService);
-    this.FillFormBuilderGroup(HttpClientCommand.Post);
-    this.FillFormBuilderGroup(HttpClientCommand.Put);
   }
 
   ngOnDestroy() {
     if (this.sub) {
       this.sub.unsubscribe();
-    }
-  }
-
-  FillFormBuilderGroup(httpClientCommand: HttpClientCommand) {
-    if (this.samplingplanemailService.samplingplanemailListModel$.getValue().length) {
-      let formGroup: FormGroup = this.fb.group(
-        {
-          SamplingPlanEmailID: [
-            {
-              value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.samplingplanemailService.samplingplanemailListModel$.getValue()[0]?.SamplingPlanEmailID)),
-              disabled: false
-            }, [  Validators.required ]],
-          SamplingPlanID: [
-            {
-              value: this.samplingplanemailService.samplingplanemailListModel$.getValue()[0]?.SamplingPlanID,
-              disabled: false
-            }, [  Validators.required ]],
-          Email: [
-            {
-              value: this.samplingplanemailService.samplingplanemailListModel$.getValue()[0]?.Email,
-              disabled: false
-            }, [  Validators.required, Validators.email, Validators.maxLength(150) ]],
-          IsContractor: [
-            {
-              value: this.samplingplanemailService.samplingplanemailListModel$.getValue()[0]?.IsContractor,
-              disabled: false
-            }, [  Validators.required ]],
-          LabSheetHasValueOver500: [
-            {
-              value: this.samplingplanemailService.samplingplanemailListModel$.getValue()[0]?.LabSheetHasValueOver500,
-              disabled: false
-            }, [  Validators.required ]],
-          LabSheetReceived: [
-            {
-              value: this.samplingplanemailService.samplingplanemailListModel$.getValue()[0]?.LabSheetReceived,
-              disabled: false
-            }, [  Validators.required ]],
-          LabSheetAccepted: [
-            {
-              value: this.samplingplanemailService.samplingplanemailListModel$.getValue()[0]?.LabSheetAccepted,
-              disabled: false
-            }, [  Validators.required ]],
-          LabSheetRejected: [
-            {
-              value: this.samplingplanemailService.samplingplanemailListModel$.getValue()[0]?.LabSheetRejected,
-              disabled: false
-            }, [  Validators.required ]],
-          LastUpdateDate_UTC: [
-            {
-              value: this.samplingplanemailService.samplingplanemailListModel$.getValue()[0]?.LastUpdateDate_UTC,
-              disabled: false
-            }, [  Validators.required ]],
-          LastUpdateContactTVItemID: [
-            {
-              value: this.samplingplanemailService.samplingplanemailListModel$.getValue()[0]?.LastUpdateContactTVItemID,
-              disabled: false
-            }, [  Validators.required ]],
-        }
-      );
-
-      if (httpClientCommand === HttpClientCommand.Post) {
-        this.samplingplanemailFormPost = formGroup
-      }
-      else {
-        this.samplingplanemailFormPut = formGroup;
-      }
     }
   }
 }

@@ -12,9 +12,10 @@ import { DrogueRunRoutingModule } from './droguerun-routing.module';
 import { MaterialModule } from '../../../app-material.module';
 import { DrogueRunComponent } from './droguerun.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { DrogueRunEditComponent } from './droguerun-edit.component';
 
 @NgModule({
-  declarations: [ DrogueRunComponent ],
+  declarations: [DrogueRunComponent, DrogueRunEditComponent],
   imports: [
     CommonModule,
     RouterModule,

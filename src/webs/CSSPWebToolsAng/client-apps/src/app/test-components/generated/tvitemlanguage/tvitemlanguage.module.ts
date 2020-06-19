@@ -12,9 +12,10 @@ import { TVItemLanguageRoutingModule } from './tvitemlanguage-routing.module';
 import { MaterialModule } from '../../../app-material.module';
 import { TVItemLanguageComponent } from './tvitemlanguage.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { TVItemLanguageEditComponent } from './tvitemlanguage-edit.component';
 
 @NgModule({
-  declarations: [ TVItemLanguageComponent ],
+  declarations: [TVItemLanguageComponent, TVItemLanguageEditComponent],
   imports: [
     CommonModule,
     RouterModule,

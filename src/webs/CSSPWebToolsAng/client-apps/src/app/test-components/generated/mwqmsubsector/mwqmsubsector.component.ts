@@ -10,7 +10,6 @@ import { MWQMSubsectorService } from './mwqmsubsector.service';
 import { LoadLocalesMWQMSubsectorText } from './mwqmsubsector.locales';
 import { Subscription } from 'rxjs';
 import { MWQMSubsector } from '../../../models/generated/MWQMSubsector.model';
-import { FormBuilder, Validators, FormGroup } from '@angular/forms';
 import { HttpClientService } from '../../../services/http-client.service';
 import { Router } from '@angular/router';
 import { HttpClientCommand } from '../../../enums/app.enums';
@@ -23,23 +22,63 @@ import { HttpClientCommand } from '../../../enums/app.enums';
 })
 export class MWQMSubsectorComponent implements OnInit, OnDestroy {
   sub: Subscription;
-  mwqmsubsectorFormPut: FormGroup;
-  mwqmsubsectorFormPost: FormGroup;
+  IDToShow: number;
+  showType?: HttpClientCommand = null;
 
-  constructor(public mwqmsubsectorService: MWQMSubsectorService, private router: Router, private httpClientService: HttpClientService, private fb: FormBuilder) {
+  constructor(public mwqmsubsectorService: MWQMSubsectorService, private router: Router, private httpClientService: HttpClientService) {
     httpClientService.oldURL = router.url;
+  }
+
+  GetPutButtonColor(mwqmsubsector: MWQMSubsector) {
+    if (this.IDToShow === mwqmsubsector.MWQMSubsectorID && this.showType === HttpClientCommand.Put) {
+      return 'primary';
+    }
+    else {
+      return 'basic';
+    }
+  }
+
+  GetPostButtonColor(mwqmsubsector: MWQMSubsector) {
+    if (this.IDToShow === mwqmsubsector.MWQMSubsectorID && this.showType === HttpClientCommand.Post) {
+      return 'primary';
+    }
+    else {
+      return 'basic';
+    }
+  }
+
+  ShowPut(mwqmsubsector: MWQMSubsector) {
+    if (this.IDToShow === mwqmsubsector.MWQMSubsectorID && this.showType === HttpClientCommand.Put) {
+      this.IDToShow = 0;
+      this.showType = null;
+    }
+    else {
+      this.IDToShow = mwqmsubsector.MWQMSubsectorID;
+      this.showType = HttpClientCommand.Put;
+    }
+  }
+
+  ShowPost(mwqmsubsector: MWQMSubsector) {
+    if (this.IDToShow === mwqmsubsector.MWQMSubsectorID && this.showType === HttpClientCommand.Post) {
+      this.IDToShow = 0;
+      this.showType = null;
+    }
+    else {
+      this.IDToShow = mwqmsubsector.MWQMSubsectorID;
+      this.showType = HttpClientCommand.Post;
+    }
+  }
+
+  GetPutEnum() {
+    return <number>HttpClientCommand.Put;
+  }
+
+  GetPostEnum() {
+    return <number>HttpClientCommand.Post;
   }
 
   GetMWQMSubsectorList() {
     this.sub = this.mwqmsubsectorService.GetMWQMSubsectorList().subscribe();
-  }
-
-  PutMWQMSubsector(mwqmsubsector: MWQMSubsector) {
-    this.sub = this.mwqmsubsectorService.PutMWQMSubsector(mwqmsubsector).subscribe();
-  }
-
-  PostMWQMSubsector(mwqmsubsector: MWQMSubsector) {
-    this.sub = this.mwqmsubsectorService.PostMWQMSubsector(mwqmsubsector).subscribe();
   }
 
   DeleteMWQMSubsector(mwqmsubsector: MWQMSubsector) {
@@ -48,59 +87,11 @@ export class MWQMSubsectorComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     LoadLocalesMWQMSubsectorText(this.mwqmsubsectorService);
-    this.FillFormBuilderGroup(HttpClientCommand.Post);
-    this.FillFormBuilderGroup(HttpClientCommand.Put);
   }
 
   ngOnDestroy() {
     if (this.sub) {
       this.sub.unsubscribe();
-    }
-  }
-
-  FillFormBuilderGroup(httpClientCommand: HttpClientCommand) {
-    if (this.mwqmsubsectorService.mwqmsubsectorListModel$.getValue().length) {
-      let formGroup: FormGroup = this.fb.group(
-        {
-          MWQMSubsectorID: [
-            {
-              value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.mwqmsubsectorService.mwqmsubsectorListModel$.getValue()[0]?.MWQMSubsectorID)),
-              disabled: false
-            }, [  Validators.required ]],
-          MWQMSubsectorTVItemID: [
-            {
-              value: this.mwqmsubsectorService.mwqmsubsectorListModel$.getValue()[0]?.MWQMSubsectorTVItemID,
-              disabled: false
-            }, [  Validators.required ]],
-          SubsectorHistoricKey: [
-            {
-              value: this.mwqmsubsectorService.mwqmsubsectorListModel$.getValue()[0]?.SubsectorHistoricKey,
-              disabled: false
-            }, [  Validators.required, Validators.maxLength(20) ]],
-          TideLocationSIDText: [
-            {
-              value: this.mwqmsubsectorService.mwqmsubsectorListModel$.getValue()[0]?.TideLocationSIDText,
-              disabled: false
-            }, [  Validators.maxLength(20) ]],
-          LastUpdateDate_UTC: [
-            {
-              value: this.mwqmsubsectorService.mwqmsubsectorListModel$.getValue()[0]?.LastUpdateDate_UTC,
-              disabled: false
-            }, [  Validators.required ]],
-          LastUpdateContactTVItemID: [
-            {
-              value: this.mwqmsubsectorService.mwqmsubsectorListModel$.getValue()[0]?.LastUpdateContactTVItemID,
-              disabled: false
-            }, [  Validators.required ]],
-        }
-      );
-
-      if (httpClientCommand === HttpClientCommand.Post) {
-        this.mwqmsubsectorFormPost = formGroup
-      }
-      else {
-        this.mwqmsubsectorFormPut = formGroup;
-      }
     }
   }
 }

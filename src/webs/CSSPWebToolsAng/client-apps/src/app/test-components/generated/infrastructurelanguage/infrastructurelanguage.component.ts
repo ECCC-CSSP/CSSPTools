@@ -9,11 +9,9 @@ import { Component, OnInit, OnDestroy, ChangeDetectionStrategy } from '@angular/
 import { InfrastructureLanguageService } from './infrastructurelanguage.service';
 import { LoadLocalesInfrastructureLanguageText } from './infrastructurelanguage.locales';
 import { Subscription } from 'rxjs';
-import { LanguageEnum_GetIDText, LanguageEnum_GetOrderedText } from '../../../enums/generated/LanguageEnum';
-import { TranslationStatusEnum_GetIDText, TranslationStatusEnum_GetOrderedText } from '../../../enums/generated/TranslationStatusEnum';
+import { LanguageEnum_GetIDText } from '../../../enums/generated/LanguageEnum';
+import { TranslationStatusEnum_GetIDText } from '../../../enums/generated/TranslationStatusEnum';
 import { InfrastructureLanguage } from '../../../models/generated/InfrastructureLanguage.model';
-import { FormBuilder, Validators, FormGroup } from '@angular/forms';
-import { EnumIDAndText } from '../../../models/enumidandtext.model';
 import { HttpClientService } from '../../../services/http-client.service';
 import { Router } from '@angular/router';
 import { HttpClientCommand } from '../../../enums/app.enums';
@@ -26,25 +24,63 @@ import { HttpClientCommand } from '../../../enums/app.enums';
 })
 export class InfrastructureLanguageComponent implements OnInit, OnDestroy {
   sub: Subscription;
-  languageList: EnumIDAndText[];
-  translationStatusList: EnumIDAndText[];
-  infrastructurelanguageFormPut: FormGroup;
-  infrastructurelanguageFormPost: FormGroup;
+  IDToShow: number;
+  showType?: HttpClientCommand = null;
 
-  constructor(public infrastructurelanguageService: InfrastructureLanguageService, private router: Router, private httpClientService: HttpClientService, private fb: FormBuilder) {
+  constructor(public infrastructurelanguageService: InfrastructureLanguageService, private router: Router, private httpClientService: HttpClientService) {
     httpClientService.oldURL = router.url;
+  }
+
+  GetPutButtonColor(infrastructurelanguage: InfrastructureLanguage) {
+    if (this.IDToShow === infrastructurelanguage.InfrastructureLanguageID && this.showType === HttpClientCommand.Put) {
+      return 'primary';
+    }
+    else {
+      return 'basic';
+    }
+  }
+
+  GetPostButtonColor(infrastructurelanguage: InfrastructureLanguage) {
+    if (this.IDToShow === infrastructurelanguage.InfrastructureLanguageID && this.showType === HttpClientCommand.Post) {
+      return 'primary';
+    }
+    else {
+      return 'basic';
+    }
+  }
+
+  ShowPut(infrastructurelanguage: InfrastructureLanguage) {
+    if (this.IDToShow === infrastructurelanguage.InfrastructureLanguageID && this.showType === HttpClientCommand.Put) {
+      this.IDToShow = 0;
+      this.showType = null;
+    }
+    else {
+      this.IDToShow = infrastructurelanguage.InfrastructureLanguageID;
+      this.showType = HttpClientCommand.Put;
+    }
+  }
+
+  ShowPost(infrastructurelanguage: InfrastructureLanguage) {
+    if (this.IDToShow === infrastructurelanguage.InfrastructureLanguageID && this.showType === HttpClientCommand.Post) {
+      this.IDToShow = 0;
+      this.showType = null;
+    }
+    else {
+      this.IDToShow = infrastructurelanguage.InfrastructureLanguageID;
+      this.showType = HttpClientCommand.Post;
+    }
+  }
+
+  GetPutEnum() {
+    return <number>HttpClientCommand.Put;
+  }
+
+  GetPostEnum() {
+    return <number>HttpClientCommand.Post;
   }
 
   GetInfrastructureLanguageList() {
     this.sub = this.infrastructurelanguageService.GetInfrastructureLanguageList().subscribe();
-  }
-
-  PutInfrastructureLanguage(infrastructurelanguage: InfrastructureLanguage) {
-    this.sub = this.infrastructurelanguageService.PutInfrastructureLanguage(infrastructurelanguage).subscribe();
-  }
-
-  PostInfrastructureLanguage(infrastructurelanguage: InfrastructureLanguage) {
-    this.sub = this.infrastructurelanguageService.PostInfrastructureLanguage(infrastructurelanguage).subscribe();
   }
 
   DeleteInfrastructureLanguage(infrastructurelanguage: InfrastructureLanguage) {
@@ -61,66 +97,11 @@ export class InfrastructureLanguageComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     LoadLocalesInfrastructureLanguageText(this.infrastructurelanguageService);
-    this.languageList = LanguageEnum_GetOrderedText();
-    this.translationStatusList = TranslationStatusEnum_GetOrderedText();
-    this.FillFormBuilderGroup(HttpClientCommand.Post);
-    this.FillFormBuilderGroup(HttpClientCommand.Put);
   }
 
   ngOnDestroy() {
     if (this.sub) {
       this.sub.unsubscribe();
-    }
-  }
-
-  FillFormBuilderGroup(httpClientCommand: HttpClientCommand) {
-    if (this.infrastructurelanguageService.infrastructurelanguageListModel$.getValue().length) {
-      let formGroup: FormGroup = this.fb.group(
-        {
-          InfrastructureLanguageID: [
-            {
-              value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.infrastructurelanguageService.infrastructurelanguageListModel$.getValue()[0]?.InfrastructureLanguageID)),
-              disabled: false
-            }, [  Validators.required ]],
-          InfrastructureID: [
-            {
-              value: this.infrastructurelanguageService.infrastructurelanguageListModel$.getValue()[0]?.InfrastructureID,
-              disabled: false
-            }, [  Validators.required ]],
-          Language: [
-            {
-              value: this.infrastructurelanguageService.infrastructurelanguageListModel$.getValue()[0]?.Language,
-              disabled: false
-            }, [  Validators.required ]],
-          Comment: [
-            {
-              value: this.infrastructurelanguageService.infrastructurelanguageListModel$.getValue()[0]?.Comment,
-              disabled: false
-            }, [  Validators.required ]],
-          TranslationStatus: [
-            {
-              value: this.infrastructurelanguageService.infrastructurelanguageListModel$.getValue()[0]?.TranslationStatus,
-              disabled: false
-            }, [  Validators.required ]],
-          LastUpdateDate_UTC: [
-            {
-              value: this.infrastructurelanguageService.infrastructurelanguageListModel$.getValue()[0]?.LastUpdateDate_UTC,
-              disabled: false
-            }, [  Validators.required ]],
-          LastUpdateContactTVItemID: [
-            {
-              value: this.infrastructurelanguageService.infrastructurelanguageListModel$.getValue()[0]?.LastUpdateContactTVItemID,
-              disabled: false
-            }, [  Validators.required ]],
-        }
-      );
-
-      if (httpClientCommand === HttpClientCommand.Post) {
-        this.infrastructurelanguageFormPost = formGroup
-      }
-      else {
-        this.infrastructurelanguageFormPut = formGroup;
-      }
     }
   }
 }

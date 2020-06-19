@@ -12,9 +12,10 @@ import { MWQMSampleRoutingModule } from './mwqmsample-routing.module';
 import { MaterialModule } from '../../../app-material.module';
 import { MWQMSampleComponent } from './mwqmsample.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MWQMSampleEditComponent } from './mwqmsample-edit.component';
 
 @NgModule({
-  declarations: [ MWQMSampleComponent ],
+  declarations: [MWQMSampleComponent, MWQMSampleEditComponent],
   imports: [
     CommonModule,
     RouterModule,

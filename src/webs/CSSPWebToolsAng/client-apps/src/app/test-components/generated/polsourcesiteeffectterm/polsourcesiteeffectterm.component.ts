@@ -10,7 +10,6 @@ import { PolSourceSiteEffectTermService } from './polsourcesiteeffectterm.servic
 import { LoadLocalesPolSourceSiteEffectTermText } from './polsourcesiteeffectterm.locales';
 import { Subscription } from 'rxjs';
 import { PolSourceSiteEffectTerm } from '../../../models/generated/PolSourceSiteEffectTerm.model';
-import { FormBuilder, Validators, FormGroup } from '@angular/forms';
 import { HttpClientService } from '../../../services/http-client.service';
 import { Router } from '@angular/router';
 import { HttpClientCommand } from '../../../enums/app.enums';
@@ -23,23 +22,63 @@ import { HttpClientCommand } from '../../../enums/app.enums';
 })
 export class PolSourceSiteEffectTermComponent implements OnInit, OnDestroy {
   sub: Subscription;
-  polsourcesiteeffecttermFormPut: FormGroup;
-  polsourcesiteeffecttermFormPost: FormGroup;
+  IDToShow: number;
+  showType?: HttpClientCommand = null;
 
-  constructor(public polsourcesiteeffecttermService: PolSourceSiteEffectTermService, private router: Router, private httpClientService: HttpClientService, private fb: FormBuilder) {
+  constructor(public polsourcesiteeffecttermService: PolSourceSiteEffectTermService, private router: Router, private httpClientService: HttpClientService) {
     httpClientService.oldURL = router.url;
+  }
+
+  GetPutButtonColor(polsourcesiteeffectterm: PolSourceSiteEffectTerm) {
+    if (this.IDToShow === polsourcesiteeffectterm.PolSourceSiteEffectTermID && this.showType === HttpClientCommand.Put) {
+      return 'primary';
+    }
+    else {
+      return 'basic';
+    }
+  }
+
+  GetPostButtonColor(polsourcesiteeffectterm: PolSourceSiteEffectTerm) {
+    if (this.IDToShow === polsourcesiteeffectterm.PolSourceSiteEffectTermID && this.showType === HttpClientCommand.Post) {
+      return 'primary';
+    }
+    else {
+      return 'basic';
+    }
+  }
+
+  ShowPut(polsourcesiteeffectterm: PolSourceSiteEffectTerm) {
+    if (this.IDToShow === polsourcesiteeffectterm.PolSourceSiteEffectTermID && this.showType === HttpClientCommand.Put) {
+      this.IDToShow = 0;
+      this.showType = null;
+    }
+    else {
+      this.IDToShow = polsourcesiteeffectterm.PolSourceSiteEffectTermID;
+      this.showType = HttpClientCommand.Put;
+    }
+  }
+
+  ShowPost(polsourcesiteeffectterm: PolSourceSiteEffectTerm) {
+    if (this.IDToShow === polsourcesiteeffectterm.PolSourceSiteEffectTermID && this.showType === HttpClientCommand.Post) {
+      this.IDToShow = 0;
+      this.showType = null;
+    }
+    else {
+      this.IDToShow = polsourcesiteeffectterm.PolSourceSiteEffectTermID;
+      this.showType = HttpClientCommand.Post;
+    }
+  }
+
+  GetPutEnum() {
+    return <number>HttpClientCommand.Put;
+  }
+
+  GetPostEnum() {
+    return <number>HttpClientCommand.Post;
   }
 
   GetPolSourceSiteEffectTermList() {
     this.sub = this.polsourcesiteeffecttermService.GetPolSourceSiteEffectTermList().subscribe();
-  }
-
-  PutPolSourceSiteEffectTerm(polsourcesiteeffectterm: PolSourceSiteEffectTerm) {
-    this.sub = this.polsourcesiteeffecttermService.PutPolSourceSiteEffectTerm(polsourcesiteeffectterm).subscribe();
-  }
-
-  PostPolSourceSiteEffectTerm(polsourcesiteeffectterm: PolSourceSiteEffectTerm) {
-    this.sub = this.polsourcesiteeffecttermService.PostPolSourceSiteEffectTerm(polsourcesiteeffectterm).subscribe();
   }
 
   DeletePolSourceSiteEffectTerm(polsourcesiteeffectterm: PolSourceSiteEffectTerm) {
@@ -48,64 +87,11 @@ export class PolSourceSiteEffectTermComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     LoadLocalesPolSourceSiteEffectTermText(this.polsourcesiteeffecttermService);
-    this.FillFormBuilderGroup(HttpClientCommand.Post);
-    this.FillFormBuilderGroup(HttpClientCommand.Put);
   }
 
   ngOnDestroy() {
     if (this.sub) {
       this.sub.unsubscribe();
-    }
-  }
-
-  FillFormBuilderGroup(httpClientCommand: HttpClientCommand) {
-    if (this.polsourcesiteeffecttermService.polsourcesiteeffecttermListModel$.getValue().length) {
-      let formGroup: FormGroup = this.fb.group(
-        {
-          PolSourceSiteEffectTermID: [
-            {
-              value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.polsourcesiteeffecttermService.polsourcesiteeffecttermListModel$.getValue()[0]?.PolSourceSiteEffectTermID)),
-              disabled: false
-            }, [  Validators.required ]],
-          IsGroup: [
-            {
-              value: this.polsourcesiteeffecttermService.polsourcesiteeffecttermListModel$.getValue()[0]?.IsGroup,
-              disabled: false
-            }, [  Validators.required ]],
-          UnderGroupID: [
-            {
-              value: this.polsourcesiteeffecttermService.polsourcesiteeffecttermListModel$.getValue()[0]?.UnderGroupID,
-              disabled: false
-            }],
-          EffectTermEN: [
-            {
-              value: this.polsourcesiteeffecttermService.polsourcesiteeffecttermListModel$.getValue()[0]?.EffectTermEN,
-              disabled: false
-            }, [  Validators.required, Validators.maxLength(100) ]],
-          EffectTermFR: [
-            {
-              value: this.polsourcesiteeffecttermService.polsourcesiteeffecttermListModel$.getValue()[0]?.EffectTermFR,
-              disabled: false
-            }, [  Validators.required, Validators.maxLength(100) ]],
-          LastUpdateDate_UTC: [
-            {
-              value: this.polsourcesiteeffecttermService.polsourcesiteeffecttermListModel$.getValue()[0]?.LastUpdateDate_UTC,
-              disabled: false
-            }, [  Validators.required ]],
-          LastUpdateContactTVItemID: [
-            {
-              value: this.polsourcesiteeffecttermService.polsourcesiteeffecttermListModel$.getValue()[0]?.LastUpdateContactTVItemID,
-              disabled: false
-            }, [  Validators.required ]],
-        }
-      );
-
-      if (httpClientCommand === HttpClientCommand.Post) {
-        this.polsourcesiteeffecttermFormPost = formGroup
-      }
-      else {
-        this.polsourcesiteeffecttermFormPut = formGroup;
-      }
     }
   }
 }

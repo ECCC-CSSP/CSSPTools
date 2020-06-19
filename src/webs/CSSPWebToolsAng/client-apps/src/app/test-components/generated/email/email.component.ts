@@ -9,10 +9,8 @@ import { Component, OnInit, OnDestroy, ChangeDetectionStrategy } from '@angular/
 import { EmailService } from './email.service';
 import { LoadLocalesEmailText } from './email.locales';
 import { Subscription } from 'rxjs';
-import { EmailTypeEnum_GetIDText, EmailTypeEnum_GetOrderedText } from '../../../enums/generated/EmailTypeEnum';
+import { EmailTypeEnum_GetIDText } from '../../../enums/generated/EmailTypeEnum';
 import { Email } from '../../../models/generated/Email.model';
-import { FormBuilder, Validators, FormGroup } from '@angular/forms';
-import { EnumIDAndText } from '../../../models/enumidandtext.model';
 import { HttpClientService } from '../../../services/http-client.service';
 import { Router } from '@angular/router';
 import { HttpClientCommand } from '../../../enums/app.enums';
@@ -25,24 +23,63 @@ import { HttpClientCommand } from '../../../enums/app.enums';
 })
 export class EmailComponent implements OnInit, OnDestroy {
   sub: Subscription;
-  emailTypeList: EnumIDAndText[];
-  emailFormPut: FormGroup;
-  emailFormPost: FormGroup;
+  IDToShow: number;
+  showType?: HttpClientCommand = null;
 
-  constructor(public emailService: EmailService, private router: Router, private httpClientService: HttpClientService, private fb: FormBuilder) {
+  constructor(public emailService: EmailService, private router: Router, private httpClientService: HttpClientService) {
     httpClientService.oldURL = router.url;
+  }
+
+  GetPutButtonColor(email: Email) {
+    if (this.IDToShow === email.EmailID && this.showType === HttpClientCommand.Put) {
+      return 'primary';
+    }
+    else {
+      return 'basic';
+    }
+  }
+
+  GetPostButtonColor(email: Email) {
+    if (this.IDToShow === email.EmailID && this.showType === HttpClientCommand.Post) {
+      return 'primary';
+    }
+    else {
+      return 'basic';
+    }
+  }
+
+  ShowPut(email: Email) {
+    if (this.IDToShow === email.EmailID && this.showType === HttpClientCommand.Put) {
+      this.IDToShow = 0;
+      this.showType = null;
+    }
+    else {
+      this.IDToShow = email.EmailID;
+      this.showType = HttpClientCommand.Put;
+    }
+  }
+
+  ShowPost(email: Email) {
+    if (this.IDToShow === email.EmailID && this.showType === HttpClientCommand.Post) {
+      this.IDToShow = 0;
+      this.showType = null;
+    }
+    else {
+      this.IDToShow = email.EmailID;
+      this.showType = HttpClientCommand.Post;
+    }
+  }
+
+  GetPutEnum() {
+    return <number>HttpClientCommand.Put;
+  }
+
+  GetPostEnum() {
+    return <number>HttpClientCommand.Post;
   }
 
   GetEmailList() {
     this.sub = this.emailService.GetEmailList().subscribe();
-  }
-
-  PutEmail(email: Email) {
-    this.sub = this.emailService.PutEmail(email).subscribe();
-  }
-
-  PostEmail(email: Email) {
-    this.sub = this.emailService.PostEmail(email).subscribe();
   }
 
   DeleteEmail(email: Email) {
@@ -55,60 +92,11 @@ export class EmailComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     LoadLocalesEmailText(this.emailService);
-    this.emailTypeList = EmailTypeEnum_GetOrderedText();
-    this.FillFormBuilderGroup(HttpClientCommand.Post);
-    this.FillFormBuilderGroup(HttpClientCommand.Put);
   }
 
   ngOnDestroy() {
     if (this.sub) {
       this.sub.unsubscribe();
-    }
-  }
-
-  FillFormBuilderGroup(httpClientCommand: HttpClientCommand) {
-    if (this.emailService.emailListModel$.getValue().length) {
-      let formGroup: FormGroup = this.fb.group(
-        {
-          EmailID: [
-            {
-              value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.emailService.emailListModel$.getValue()[0]?.EmailID)),
-              disabled: false
-            }, [  Validators.required ]],
-          EmailTVItemID: [
-            {
-              value: this.emailService.emailListModel$.getValue()[0]?.EmailTVItemID,
-              disabled: false
-            }, [  Validators.required ]],
-          EmailAddress: [
-            {
-              value: this.emailService.emailListModel$.getValue()[0]?.EmailAddress,
-              disabled: false
-            }, [  Validators.required, Validators.email, Validators.maxLength(255) ]],
-          EmailType: [
-            {
-              value: this.emailService.emailListModel$.getValue()[0]?.EmailType,
-              disabled: false
-            }, [  Validators.required ]],
-          LastUpdateDate_UTC: [
-            {
-              value: this.emailService.emailListModel$.getValue()[0]?.LastUpdateDate_UTC,
-              disabled: false
-            }, [  Validators.required ]],
-          LastUpdateContactTVItemID: [
-            {
-              value: this.emailService.emailListModel$.getValue()[0]?.LastUpdateContactTVItemID,
-              disabled: false
-            }, [  Validators.required ]],
-        }
-      );
-
-      if (httpClientCommand === HttpClientCommand.Post) {
-        this.emailFormPost = formGroup
-      }
-      else {
-        this.emailFormPut = formGroup;
-      }
     }
   }
 }

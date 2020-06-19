@@ -17,180 +17,44 @@
     <mat-card-subtitle>{{ samplingplansubsectorsiteService.samplingplansubsectorsiteTextModel$.getValue().Title }}</mat-card-subtitle>
   </mat-card-header>
   <mat-card-content>
-    <mat-list *ngIf="samplingplansubsectorsiteService.samplingplansubsectorsiteListModel$.getValue()?.length">
-      <mat-list-item *ngFor="let samplingplansubsectorsite of samplingplansubsectorsiteService.samplingplansubsectorsiteListModel$.getValue()">
-        <span mat-line>
+    <div *ngIf="samplingplansubsectorsiteService.samplingplansubsectorsiteListModel$.getValue()?.length">
+      <div *ngFor="let samplingplansubsectorsite of samplingplansubsectorsiteService.samplingplansubsectorsiteListModel$.getValue()">
+        <p>
           <button mat-raised-button (click)="DeleteSamplingPlanSubsectorSite(samplingplansubsectorsite)">
             <span>Delete SamplingPlanSubsectorSiteID [{{ samplingplansubsectorsite.SamplingPlanSubsectorSiteID }}]&nbsp;&nbsp;&nbsp;</span>
             <mat-icon>delete</mat-icon>
-          </button>
+          </button>&nbsp;&nbsp;&nbsp;
+          <button mat-raised-button [color]="GetPutButtonColor(samplingplansubsectorsite)"(click)="ShowPut(samplingplansubsectorsite)">
+            <span>Show Put</span>
+          </button>&nbsp;&nbsp;
+          <button mat-raised-button [color]="GetPostButtonColor(samplingplansubsectorsite)"(click)="ShowPost(samplingplansubsectorsite)">
+            <span>Show Post</span>
+          </button>&nbsp;&nbsp;
           <mat-progress-bar mode="indeterminate" *ngIf="samplingplansubsectorsiteService.samplingplansubsectorsiteDeleteModel$.getValue().Working">
           </mat-progress-bar>
-          </span>
-        <span mat-line>
+        </p>
+        <p *ngIf="IDToShow === samplingplansubsectorsite.SamplingPlanSubsectorSiteID && showType === GetPutEnum()">
+          <app-samplingplansubsectorsite-edit [samplingplansubsectorsite]="samplingplansubsectorsite" [httpClientCommand]="GetPutEnum()"></app-samplingplansubsectorsite-edit>
+        </p>
+        <p *ngIf="IDToShow === samplingplansubsectorsite.SamplingPlanSubsectorSiteID && showType === GetPostEnum()">
+          <app-samplingplansubsectorsite-edit [samplingplansubsectorsite]="samplingplansubsectorsite" [httpClientCommand]="GetPostEnum()"></app-samplingplansubsectorsite-edit>
+        </p>
+        <blockquote>
+        <p>
           <span>SamplingPlanSubsectorSiteID: [{{ samplingplansubsectorsite.SamplingPlanSubsectorSiteID }}]</span>
           <span> --- SamplingPlanSubsectorID: [{{ samplingplansubsectorsite.SamplingPlanSubsectorID }}]</span>
           <span> --- MWQMSiteTVItemID: [{{ samplingplansubsectorsite.MWQMSiteTVItemID }}]</span>
           <span> --- IsDuplicate: [{{ samplingplansubsectorsite.IsDuplicate }}]</span>
-        </span>
-        <span mat-line>
+ </p>
+        <p>
           <span>LastUpdateDate_UTC: [{{ samplingplansubsectorsite.LastUpdateDate_UTC }}]</span>
           <span> --- LastUpdateContactTVItemID: [{{ samplingplansubsectorsite.LastUpdateContactTVItemID }}]</span>
-        </span>
-       </mat-list-item>
-     </mat-list>
+        </p>
+        </blockquote>
+       </div>
+     </div>
    </mat-card-content>
  <mat-card-actions>
    <button mat-button>Allo</button>
  </mat-card-actions>
-</mat-card>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<mat-card>
-  <mat-card-header>
-    <mat-card-title>Edit SamplingPlanSubsectorSite testing</mat-card-title>
-  </mat-card-header>
-  <mat-card-content>
-    <div *ngIf="samplingplansubsectorsiteService.samplingplansubsectorsiteListModel$.getValue()?.length">
-      <blockquote>
-        <form [formGroup]="samplingplansubsectorsiteFormPut" (ngSubmit)="PutSamplingPlanSubsectorSite(samplingplansubsectorsiteFormPut.value)">
-          <h3>
-            SamplingPlanSubsectorSite
-            <button mat-raised-button type="submit">
-              <span>Update SamplingPlanSubsectorSite</span>
-            </button>
-            <mat-progress-bar mode="indeterminate" *ngIf="samplingplansubsectorsiteService.samplingplansubsectorsitePutModel$.getValue().Working">
-            </mat-progress-bar>
-          </h3>
-          <p>
-            <mat-form-field>
-              <mat-label>SamplingPlanSubsectorSiteID</mat-label>
-              <input matInput type="number" formControlName="SamplingPlanSubsectorSiteID">
-              <mat-error *ngIf="samplingplansubsectorsiteFormPut.controls.SamplingPlanSubsectorSiteID.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>SamplingPlanSubsectorID</mat-label>
-              <input matInput type="number" formControlName="SamplingPlanSubsectorID">
-              <mat-error *ngIf="samplingplansubsectorsiteFormPut.controls.SamplingPlanSubsectorID.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>MWQMSiteTVItemID</mat-label>
-              <input matInput type="number" formControlName="MWQMSiteTVItemID">
-              <mat-error *ngIf="samplingplansubsectorsiteFormPut.controls.MWQMSiteTVItemID.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>IsDuplicate</mat-label>
-              <input matInput type="text" formControlName="IsDuplicate">
-              <mat-error *ngIf="samplingplansubsectorsiteFormPut.controls.IsDuplicate.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-          </p>
-          <p>
-            <mat-form-field>
-              <mat-label>LastUpdateDate_UTC</mat-label>
-              <input matInput type="text" formControlName="LastUpdateDate_UTC">
-              <mat-error *ngIf="samplingplansubsectorsiteFormPut.controls.LastUpdateDate_UTC.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>LastUpdateContactTVItemID</mat-label>
-              <input matInput type="number" formControlName="LastUpdateContactTVItemID">
-              <mat-error *ngIf="samplingplansubsectorsiteFormPut.controls.LastUpdateContactTVItemID.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-          </p>
-        </form>
-      </blockquote>
-    </div>
-  </mat-card-content>
-</mat-card>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<mat-card>
-  <mat-card-header>
-    <mat-card-title>Add SamplingPlanSubsectorSite testing</mat-card-title>
-  </mat-card-header>
-  <mat-card-content>
-    <div *ngIf="samplingplansubsectorsiteService.samplingplansubsectorsiteListModel$.getValue()?.length">
-      <blockquote>
-        <form [formGroup]="samplingplansubsectorsiteFormPost" (ngSubmit)="PostSamplingPlanSubsectorSite(samplingplansubsectorsiteFormPost.value)">
-          <h3>
-            SamplingPlanSubsectorSite
-            <button mat-raised-button type="submit">
-              <span>Add SamplingPlanSubsectorSite</span>
-            </button>
-            <mat-progress-bar mode="indeterminate" *ngIf="samplingplansubsectorsiteService.samplingplansubsectorsitePostModel$.getValue().Working">
-            </mat-progress-bar>
-          </h3>
-          <p>
-            <mat-form-field>
-              <mat-label>SamplingPlanSubsectorSiteID</mat-label>
-              <input matInput type="number" formControlName="SamplingPlanSubsectorSiteID">
-              <mat-error *ngIf="samplingplansubsectorsiteFormPut.controls.SamplingPlanSubsectorSiteID.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>SamplingPlanSubsectorID</mat-label>
-              <input matInput type="number" formControlName="SamplingPlanSubsectorID">
-              <mat-error *ngIf="samplingplansubsectorsiteFormPut.controls.SamplingPlanSubsectorID.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>MWQMSiteTVItemID</mat-label>
-              <input matInput type="number" formControlName="MWQMSiteTVItemID">
-              <mat-error *ngIf="samplingplansubsectorsiteFormPut.controls.MWQMSiteTVItemID.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>IsDuplicate</mat-label>
-              <input matInput type="text" formControlName="IsDuplicate">
-              <mat-error *ngIf="samplingplansubsectorsiteFormPut.controls.IsDuplicate.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-          </p>
-          <p>
-            <mat-form-field>
-              <mat-label>LastUpdateDate_UTC</mat-label>
-              <input matInput type="text" formControlName="LastUpdateDate_UTC">
-              <mat-error *ngIf="samplingplansubsectorsiteFormPut.controls.LastUpdateDate_UTC.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>LastUpdateContactTVItemID</mat-label>
-              <input matInput type="number" formControlName="LastUpdateContactTVItemID">
-              <mat-error *ngIf="samplingplansubsectorsiteFormPut.controls.LastUpdateContactTVItemID.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-          </p>
-        </form>
-      </blockquote>
-    </div>
-  </mat-card-content>
 </mat-card>

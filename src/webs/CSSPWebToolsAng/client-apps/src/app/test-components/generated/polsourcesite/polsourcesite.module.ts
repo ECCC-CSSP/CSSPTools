@@ -12,9 +12,10 @@ import { PolSourceSiteRoutingModule } from './polsourcesite-routing.module';
 import { MaterialModule } from '../../../app-material.module';
 import { PolSourceSiteComponent } from './polsourcesite.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { PolSourceSiteEditComponent } from './polsourcesite-edit.component';
 
 @NgModule({
-  declarations: [ PolSourceSiteComponent ],
+  declarations: [PolSourceSiteComponent, PolSourceSiteEditComponent],
   imports: [
     CommonModule,
     RouterModule,

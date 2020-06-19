@@ -9,10 +9,8 @@ import { Component, OnInit, OnDestroy, ChangeDetectionStrategy } from '@angular/
 import { MikeScenarioService } from './mikescenario.service';
 import { LoadLocalesMikeScenarioText } from './mikescenario.locales';
 import { Subscription } from 'rxjs';
-import { ScenarioStatusEnum_GetIDText, ScenarioStatusEnum_GetOrderedText } from '../../../enums/generated/ScenarioStatusEnum';
+import { ScenarioStatusEnum_GetIDText } from '../../../enums/generated/ScenarioStatusEnum';
 import { MikeScenario } from '../../../models/generated/MikeScenario.model';
-import { FormBuilder, Validators, FormGroup } from '@angular/forms';
-import { EnumIDAndText } from '../../../models/enumidandtext.model';
 import { HttpClientService } from '../../../services/http-client.service';
 import { Router } from '@angular/router';
 import { HttpClientCommand } from '../../../enums/app.enums';
@@ -25,24 +23,63 @@ import { HttpClientCommand } from '../../../enums/app.enums';
 })
 export class MikeScenarioComponent implements OnInit, OnDestroy {
   sub: Subscription;
-  scenarioStatusList: EnumIDAndText[];
-  mikescenarioFormPut: FormGroup;
-  mikescenarioFormPost: FormGroup;
+  IDToShow: number;
+  showType?: HttpClientCommand = null;
 
-  constructor(public mikescenarioService: MikeScenarioService, private router: Router, private httpClientService: HttpClientService, private fb: FormBuilder) {
+  constructor(public mikescenarioService: MikeScenarioService, private router: Router, private httpClientService: HttpClientService) {
     httpClientService.oldURL = router.url;
+  }
+
+  GetPutButtonColor(mikescenario: MikeScenario) {
+    if (this.IDToShow === mikescenario.MikeScenarioID && this.showType === HttpClientCommand.Put) {
+      return 'primary';
+    }
+    else {
+      return 'basic';
+    }
+  }
+
+  GetPostButtonColor(mikescenario: MikeScenario) {
+    if (this.IDToShow === mikescenario.MikeScenarioID && this.showType === HttpClientCommand.Post) {
+      return 'primary';
+    }
+    else {
+      return 'basic';
+    }
+  }
+
+  ShowPut(mikescenario: MikeScenario) {
+    if (this.IDToShow === mikescenario.MikeScenarioID && this.showType === HttpClientCommand.Put) {
+      this.IDToShow = 0;
+      this.showType = null;
+    }
+    else {
+      this.IDToShow = mikescenario.MikeScenarioID;
+      this.showType = HttpClientCommand.Put;
+    }
+  }
+
+  ShowPost(mikescenario: MikeScenario) {
+    if (this.IDToShow === mikescenario.MikeScenarioID && this.showType === HttpClientCommand.Post) {
+      this.IDToShow = 0;
+      this.showType = null;
+    }
+    else {
+      this.IDToShow = mikescenario.MikeScenarioID;
+      this.showType = HttpClientCommand.Post;
+    }
+  }
+
+  GetPutEnum() {
+    return <number>HttpClientCommand.Put;
+  }
+
+  GetPostEnum() {
+    return <number>HttpClientCommand.Post;
   }
 
   GetMikeScenarioList() {
     this.sub = this.mikescenarioService.GetMikeScenarioList().subscribe();
-  }
-
-  PutMikeScenario(mikescenario: MikeScenario) {
-    this.sub = this.mikescenarioService.PutMikeScenario(mikescenario).subscribe();
-  }
-
-  PostMikeScenario(mikescenario: MikeScenario) {
-    this.sub = this.mikescenarioService.PostMikeScenario(mikescenario).subscribe();
   }
 
   DeleteMikeScenario(mikescenario: MikeScenario) {
@@ -55,190 +92,11 @@ export class MikeScenarioComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     LoadLocalesMikeScenarioText(this.mikescenarioService);
-    this.scenarioStatusList = ScenarioStatusEnum_GetOrderedText();
-    this.FillFormBuilderGroup(HttpClientCommand.Post);
-    this.FillFormBuilderGroup(HttpClientCommand.Put);
   }
 
   ngOnDestroy() {
     if (this.sub) {
       this.sub.unsubscribe();
-    }
-  }
-
-  FillFormBuilderGroup(httpClientCommand: HttpClientCommand) {
-    if (this.mikescenarioService.mikescenarioListModel$.getValue().length) {
-      let formGroup: FormGroup = this.fb.group(
-        {
-          MikeScenarioID: [
-            {
-              value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.mikescenarioService.mikescenarioListModel$.getValue()[0]?.MikeScenarioID)),
-              disabled: false
-            }, [  Validators.required ]],
-          MikeScenarioTVItemID: [
-            {
-              value: this.mikescenarioService.mikescenarioListModel$.getValue()[0]?.MikeScenarioTVItemID,
-              disabled: false
-            }, [  Validators.required ]],
-          ParentMikeScenarioID: [
-            {
-              value: this.mikescenarioService.mikescenarioListModel$.getValue()[0]?.ParentMikeScenarioID,
-              disabled: false
-            }],
-          ScenarioStatus: [
-            {
-              value: this.mikescenarioService.mikescenarioListModel$.getValue()[0]?.ScenarioStatus,
-              disabled: false
-            }, [  Validators.required ]],
-          ErrorInfo: [
-            {
-              value: this.mikescenarioService.mikescenarioListModel$.getValue()[0]?.ErrorInfo,
-              disabled: false
-            }],
-          MikeScenarioStartDateTime_Local: [
-            {
-              value: this.mikescenarioService.mikescenarioListModel$.getValue()[0]?.MikeScenarioStartDateTime_Local,
-              disabled: false
-            }, [  Validators.required ]],
-          MikeScenarioEndDateTime_Local: [
-            {
-              value: this.mikescenarioService.mikescenarioListModel$.getValue()[0]?.MikeScenarioEndDateTime_Local,
-              disabled: false
-            }, [  Validators.required ]],
-          MikeScenarioStartExecutionDateTime_Local: [
-            {
-              value: this.mikescenarioService.mikescenarioListModel$.getValue()[0]?.MikeScenarioStartExecutionDateTime_Local,
-              disabled: false
-            }],
-          MikeScenarioExecutionTime_min: [
-            {
-              value: this.mikescenarioService.mikescenarioListModel$.getValue()[0]?.MikeScenarioExecutionTime_min,
-              disabled: false
-            }, [  Validators.min(1), Validators.max(100000) ]],
-          WindSpeed_km_h: [
-            {
-              value: this.mikescenarioService.mikescenarioListModel$.getValue()[0]?.WindSpeed_km_h,
-              disabled: false
-            }, [  Validators.required, Validators.min(0), Validators.max(100) ]],
-          WindDirection_deg: [
-            {
-              value: this.mikescenarioService.mikescenarioListModel$.getValue()[0]?.WindDirection_deg,
-              disabled: false
-            }, [  Validators.required, Validators.min(0), Validators.max(360) ]],
-          DecayFactor_per_day: [
-            {
-              value: this.mikescenarioService.mikescenarioListModel$.getValue()[0]?.DecayFactor_per_day,
-              disabled: false
-            }, [  Validators.required, Validators.min(0), Validators.max(100) ]],
-          DecayIsConstant: [
-            {
-              value: this.mikescenarioService.mikescenarioListModel$.getValue()[0]?.DecayIsConstant,
-              disabled: false
-            }, [  Validators.required ]],
-          DecayFactorAmplitude: [
-            {
-              value: this.mikescenarioService.mikescenarioListModel$.getValue()[0]?.DecayFactorAmplitude,
-              disabled: false
-            }, [  Validators.required, Validators.min(0), Validators.max(100) ]],
-          ResultFrequency_min: [
-            {
-              value: this.mikescenarioService.mikescenarioListModel$.getValue()[0]?.ResultFrequency_min,
-              disabled: false
-            }, [  Validators.required, Validators.min(0), Validators.max(100) ]],
-          AmbientTemperature_C: [
-            {
-              value: this.mikescenarioService.mikescenarioListModel$.getValue()[0]?.AmbientTemperature_C,
-              disabled: false
-            }, [  Validators.required, Validators.min(-10), Validators.max(40) ]],
-          AmbientSalinity_PSU: [
-            {
-              value: this.mikescenarioService.mikescenarioListModel$.getValue()[0]?.AmbientSalinity_PSU,
-              disabled: false
-            }, [  Validators.required, Validators.min(0), Validators.max(40) ]],
-          GenerateDecouplingFiles: [
-            {
-              value: this.mikescenarioService.mikescenarioListModel$.getValue()[0]?.GenerateDecouplingFiles,
-              disabled: false
-            }],
-          UseDecouplingFiles: [
-            {
-              value: this.mikescenarioService.mikescenarioListModel$.getValue()[0]?.UseDecouplingFiles,
-              disabled: false
-            }],
-          UseSalinityAndTemperatureInitialConditionFromTVFileTVItemID: [
-            {
-              value: this.mikescenarioService.mikescenarioListModel$.getValue()[0]?.UseSalinityAndTemperatureInitialConditionFromTVFileTVItemID,
-              disabled: false
-            }],
-          ForSimulatingMWQMRunTVItemID: [
-            {
-              value: this.mikescenarioService.mikescenarioListModel$.getValue()[0]?.ForSimulatingMWQMRunTVItemID,
-              disabled: false
-            }],
-          ManningNumber: [
-            {
-              value: this.mikescenarioService.mikescenarioListModel$.getValue()[0]?.ManningNumber,
-              disabled: false
-            }, [  Validators.required, Validators.min(0), Validators.max(100) ]],
-          NumberOfElements: [
-            {
-              value: this.mikescenarioService.mikescenarioListModel$.getValue()[0]?.NumberOfElements,
-              disabled: false
-            }, [  Validators.min(1), Validators.max(1000000) ]],
-          NumberOfTimeSteps: [
-            {
-              value: this.mikescenarioService.mikescenarioListModel$.getValue()[0]?.NumberOfTimeSteps,
-              disabled: false
-            }, [  Validators.min(1), Validators.max(1000000) ]],
-          NumberOfSigmaLayers: [
-            {
-              value: this.mikescenarioService.mikescenarioListModel$.getValue()[0]?.NumberOfSigmaLayers,
-              disabled: false
-            }, [  Validators.min(0), Validators.max(100) ]],
-          NumberOfZLayers: [
-            {
-              value: this.mikescenarioService.mikescenarioListModel$.getValue()[0]?.NumberOfZLayers,
-              disabled: false
-            }, [  Validators.min(0), Validators.max(100) ]],
-          NumberOfHydroOutputParameters: [
-            {
-              value: this.mikescenarioService.mikescenarioListModel$.getValue()[0]?.NumberOfHydroOutputParameters,
-              disabled: false
-            }, [  Validators.min(0), Validators.max(100) ]],
-          NumberOfTransOutputParameters: [
-            {
-              value: this.mikescenarioService.mikescenarioListModel$.getValue()[0]?.NumberOfTransOutputParameters,
-              disabled: false
-            }, [  Validators.min(0), Validators.max(100) ]],
-          EstimatedHydroFileSize: [
-            {
-              value: this.mikescenarioService.mikescenarioListModel$.getValue()[0]?.EstimatedHydroFileSize,
-              disabled: false
-            }, [  Validators.min(0), Validators.max(100000000) ]],
-          EstimatedTransFileSize: [
-            {
-              value: this.mikescenarioService.mikescenarioListModel$.getValue()[0]?.EstimatedTransFileSize,
-              disabled: false
-            }, [  Validators.min(0), Validators.max(100000000) ]],
-          LastUpdateDate_UTC: [
-            {
-              value: this.mikescenarioService.mikescenarioListModel$.getValue()[0]?.LastUpdateDate_UTC,
-              disabled: false
-            }, [  Validators.required ]],
-          LastUpdateContactTVItemID: [
-            {
-              value: this.mikescenarioService.mikescenarioListModel$.getValue()[0]?.LastUpdateContactTVItemID,
-              disabled: false
-            }, [  Validators.required ]],
-        }
-      );
-
-      if (httpClientCommand === HttpClientCommand.Post) {
-        this.mikescenarioFormPost = formGroup
-      }
-      else {
-        this.mikescenarioFormPut = formGroup;
-      }
     }
   }
 }

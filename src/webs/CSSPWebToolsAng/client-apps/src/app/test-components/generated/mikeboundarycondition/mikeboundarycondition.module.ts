@@ -12,9 +12,10 @@ import { MikeBoundaryConditionRoutingModule } from './mikeboundarycondition-rout
 import { MaterialModule } from '../../../app-material.module';
 import { MikeBoundaryConditionComponent } from './mikeboundarycondition.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MikeBoundaryConditionEditComponent } from './mikeboundarycondition-edit.component';
 
 @NgModule({
-  declarations: [ MikeBoundaryConditionComponent ],
+  declarations: [MikeBoundaryConditionComponent, MikeBoundaryConditionEditComponent],
   imports: [
     CommonModule,
     RouterModule,

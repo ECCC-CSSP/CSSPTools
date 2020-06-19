@@ -10,7 +10,6 @@ import { MikeSourceService } from './mikesource.service';
 import { LoadLocalesMikeSourceText } from './mikesource.locales';
 import { Subscription } from 'rxjs';
 import { MikeSource } from '../../../models/generated/MikeSource.model';
-import { FormBuilder, Validators, FormGroup } from '@angular/forms';
 import { HttpClientService } from '../../../services/http-client.service';
 import { Router } from '@angular/router';
 import { HttpClientCommand } from '../../../enums/app.enums';
@@ -23,23 +22,63 @@ import { HttpClientCommand } from '../../../enums/app.enums';
 })
 export class MikeSourceComponent implements OnInit, OnDestroy {
   sub: Subscription;
-  mikesourceFormPut: FormGroup;
-  mikesourceFormPost: FormGroup;
+  IDToShow: number;
+  showType?: HttpClientCommand = null;
 
-  constructor(public mikesourceService: MikeSourceService, private router: Router, private httpClientService: HttpClientService, private fb: FormBuilder) {
+  constructor(public mikesourceService: MikeSourceService, private router: Router, private httpClientService: HttpClientService) {
     httpClientService.oldURL = router.url;
+  }
+
+  GetPutButtonColor(mikesource: MikeSource) {
+    if (this.IDToShow === mikesource.MikeSourceID && this.showType === HttpClientCommand.Put) {
+      return 'primary';
+    }
+    else {
+      return 'basic';
+    }
+  }
+
+  GetPostButtonColor(mikesource: MikeSource) {
+    if (this.IDToShow === mikesource.MikeSourceID && this.showType === HttpClientCommand.Post) {
+      return 'primary';
+    }
+    else {
+      return 'basic';
+    }
+  }
+
+  ShowPut(mikesource: MikeSource) {
+    if (this.IDToShow === mikesource.MikeSourceID && this.showType === HttpClientCommand.Put) {
+      this.IDToShow = 0;
+      this.showType = null;
+    }
+    else {
+      this.IDToShow = mikesource.MikeSourceID;
+      this.showType = HttpClientCommand.Put;
+    }
+  }
+
+  ShowPost(mikesource: MikeSource) {
+    if (this.IDToShow === mikesource.MikeSourceID && this.showType === HttpClientCommand.Post) {
+      this.IDToShow = 0;
+      this.showType = null;
+    }
+    else {
+      this.IDToShow = mikesource.MikeSourceID;
+      this.showType = HttpClientCommand.Post;
+    }
+  }
+
+  GetPutEnum() {
+    return <number>HttpClientCommand.Put;
+  }
+
+  GetPostEnum() {
+    return <number>HttpClientCommand.Post;
   }
 
   GetMikeSourceList() {
     this.sub = this.mikesourceService.GetMikeSourceList().subscribe();
-  }
-
-  PutMikeSource(mikesource: MikeSource) {
-    this.sub = this.mikesourceService.PutMikeSource(mikesource).subscribe();
-  }
-
-  PostMikeSource(mikesource: MikeSource) {
-    this.sub = this.mikesourceService.PostMikeSource(mikesource).subscribe();
   }
 
   DeleteMikeSource(mikesource: MikeSource) {
@@ -48,89 +87,11 @@ export class MikeSourceComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     LoadLocalesMikeSourceText(this.mikesourceService);
-    this.FillFormBuilderGroup(HttpClientCommand.Post);
-    this.FillFormBuilderGroup(HttpClientCommand.Put);
   }
 
   ngOnDestroy() {
     if (this.sub) {
       this.sub.unsubscribe();
-    }
-  }
-
-  FillFormBuilderGroup(httpClientCommand: HttpClientCommand) {
-    if (this.mikesourceService.mikesourceListModel$.getValue().length) {
-      let formGroup: FormGroup = this.fb.group(
-        {
-          MikeSourceID: [
-            {
-              value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.mikesourceService.mikesourceListModel$.getValue()[0]?.MikeSourceID)),
-              disabled: false
-            }, [  Validators.required ]],
-          MikeSourceTVItemID: [
-            {
-              value: this.mikesourceService.mikesourceListModel$.getValue()[0]?.MikeSourceTVItemID,
-              disabled: false
-            }, [  Validators.required ]],
-          IsContinuous: [
-            {
-              value: this.mikesourceService.mikesourceListModel$.getValue()[0]?.IsContinuous,
-              disabled: false
-            }, [  Validators.required ]],
-          Include: [
-            {
-              value: this.mikesourceService.mikesourceListModel$.getValue()[0]?.Include,
-              disabled: false
-            }, [  Validators.required ]],
-          IsRiver: [
-            {
-              value: this.mikesourceService.mikesourceListModel$.getValue()[0]?.IsRiver,
-              disabled: false
-            }, [  Validators.required ]],
-          UseHydrometric: [
-            {
-              value: this.mikesourceService.mikesourceListModel$.getValue()[0]?.UseHydrometric,
-              disabled: false
-            }, [  Validators.required ]],
-          HydrometricTVItemID: [
-            {
-              value: this.mikesourceService.mikesourceListModel$.getValue()[0]?.HydrometricTVItemID,
-              disabled: false
-            }],
-          DrainageArea_km2: [
-            {
-              value: this.mikesourceService.mikesourceListModel$.getValue()[0]?.DrainageArea_km2,
-              disabled: false
-            }, [  Validators.min(0), Validators.max(1000000) ]],
-          Factor: [
-            {
-              value: this.mikesourceService.mikesourceListModel$.getValue()[0]?.Factor,
-              disabled: false
-            }, [  Validators.min(0), Validators.max(1000000) ]],
-          SourceNumberString: [
-            {
-              value: this.mikesourceService.mikesourceListModel$.getValue()[0]?.SourceNumberString,
-              disabled: false
-            }, [  Validators.required, Validators.maxLength(50) ]],
-          LastUpdateDate_UTC: [
-            {
-              value: this.mikesourceService.mikesourceListModel$.getValue()[0]?.LastUpdateDate_UTC,
-              disabled: false
-            }, [  Validators.required ]],
-          LastUpdateContactTVItemID: [
-            {
-              value: this.mikesourceService.mikesourceListModel$.getValue()[0]?.LastUpdateContactTVItemID,
-              disabled: false
-            }, [  Validators.required ]],
-        }
-      );
-
-      if (httpClientCommand === HttpClientCommand.Post) {
-        this.mikesourceFormPost = formGroup
-      }
-      else {
-        this.mikesourceFormPut = formGroup;
-      }
     }
   }
 }

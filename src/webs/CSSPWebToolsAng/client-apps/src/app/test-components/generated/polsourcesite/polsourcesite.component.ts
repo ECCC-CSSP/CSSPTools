@@ -9,10 +9,8 @@ import { Component, OnInit, OnDestroy, ChangeDetectionStrategy } from '@angular/
 import { PolSourceSiteService } from './polsourcesite.service';
 import { LoadLocalesPolSourceSiteText } from './polsourcesite.locales';
 import { Subscription } from 'rxjs';
-import { PolSourceInactiveReasonEnum_GetIDText, PolSourceInactiveReasonEnum_GetOrderedText } from '../../../enums/generated/PolSourceInactiveReasonEnum';
+import { PolSourceInactiveReasonEnum_GetIDText } from '../../../enums/generated/PolSourceInactiveReasonEnum';
 import { PolSourceSite } from '../../../models/generated/PolSourceSite.model';
-import { FormBuilder, Validators, FormGroup } from '@angular/forms';
-import { EnumIDAndText } from '../../../models/enumidandtext.model';
 import { HttpClientService } from '../../../services/http-client.service';
 import { Router } from '@angular/router';
 import { HttpClientCommand } from '../../../enums/app.enums';
@@ -25,24 +23,63 @@ import { HttpClientCommand } from '../../../enums/app.enums';
 })
 export class PolSourceSiteComponent implements OnInit, OnDestroy {
   sub: Subscription;
-  inactiveReasonList: EnumIDAndText[];
-  polsourcesiteFormPut: FormGroup;
-  polsourcesiteFormPost: FormGroup;
+  IDToShow: number;
+  showType?: HttpClientCommand = null;
 
-  constructor(public polsourcesiteService: PolSourceSiteService, private router: Router, private httpClientService: HttpClientService, private fb: FormBuilder) {
+  constructor(public polsourcesiteService: PolSourceSiteService, private router: Router, private httpClientService: HttpClientService) {
     httpClientService.oldURL = router.url;
+  }
+
+  GetPutButtonColor(polsourcesite: PolSourceSite) {
+    if (this.IDToShow === polsourcesite.PolSourceSiteID && this.showType === HttpClientCommand.Put) {
+      return 'primary';
+    }
+    else {
+      return 'basic';
+    }
+  }
+
+  GetPostButtonColor(polsourcesite: PolSourceSite) {
+    if (this.IDToShow === polsourcesite.PolSourceSiteID && this.showType === HttpClientCommand.Post) {
+      return 'primary';
+    }
+    else {
+      return 'basic';
+    }
+  }
+
+  ShowPut(polsourcesite: PolSourceSite) {
+    if (this.IDToShow === polsourcesite.PolSourceSiteID && this.showType === HttpClientCommand.Put) {
+      this.IDToShow = 0;
+      this.showType = null;
+    }
+    else {
+      this.IDToShow = polsourcesite.PolSourceSiteID;
+      this.showType = HttpClientCommand.Put;
+    }
+  }
+
+  ShowPost(polsourcesite: PolSourceSite) {
+    if (this.IDToShow === polsourcesite.PolSourceSiteID && this.showType === HttpClientCommand.Post) {
+      this.IDToShow = 0;
+      this.showType = null;
+    }
+    else {
+      this.IDToShow = polsourcesite.PolSourceSiteID;
+      this.showType = HttpClientCommand.Post;
+    }
+  }
+
+  GetPutEnum() {
+    return <number>HttpClientCommand.Put;
+  }
+
+  GetPostEnum() {
+    return <number>HttpClientCommand.Post;
   }
 
   GetPolSourceSiteList() {
     this.sub = this.polsourcesiteService.GetPolSourceSiteList().subscribe();
-  }
-
-  PutPolSourceSite(polsourcesite: PolSourceSite) {
-    this.sub = this.polsourcesiteService.PutPolSourceSite(polsourcesite).subscribe();
-  }
-
-  PostPolSourceSite(polsourcesite: PolSourceSite) {
-    this.sub = this.polsourcesiteService.PostPolSourceSite(polsourcesite).subscribe();
   }
 
   DeletePolSourceSite(polsourcesite: PolSourceSite) {
@@ -55,85 +92,11 @@ export class PolSourceSiteComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     LoadLocalesPolSourceSiteText(this.polsourcesiteService);
-    this.inactiveReasonList = PolSourceInactiveReasonEnum_GetOrderedText();
-    this.FillFormBuilderGroup(HttpClientCommand.Post);
-    this.FillFormBuilderGroup(HttpClientCommand.Put);
   }
 
   ngOnDestroy() {
     if (this.sub) {
       this.sub.unsubscribe();
-    }
-  }
-
-  FillFormBuilderGroup(httpClientCommand: HttpClientCommand) {
-    if (this.polsourcesiteService.polsourcesiteListModel$.getValue().length) {
-      let formGroup: FormGroup = this.fb.group(
-        {
-          PolSourceSiteID: [
-            {
-              value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.polsourcesiteService.polsourcesiteListModel$.getValue()[0]?.PolSourceSiteID)),
-              disabled: false
-            }, [  Validators.required ]],
-          PolSourceSiteTVItemID: [
-            {
-              value: this.polsourcesiteService.polsourcesiteListModel$.getValue()[0]?.PolSourceSiteTVItemID,
-              disabled: false
-            }, [  Validators.required ]],
-          Temp_Locator_CanDelete: [
-            {
-              value: this.polsourcesiteService.polsourcesiteListModel$.getValue()[0]?.Temp_Locator_CanDelete,
-              disabled: false
-            }, [  Validators.maxLength(50) ]],
-          Oldsiteid: [
-            {
-              value: this.polsourcesiteService.polsourcesiteListModel$.getValue()[0]?.Oldsiteid,
-              disabled: false
-            }, [  Validators.min(0), Validators.max(1000) ]],
-          Site: [
-            {
-              value: this.polsourcesiteService.polsourcesiteListModel$.getValue()[0]?.Site,
-              disabled: false
-            }, [  Validators.min(0), Validators.max(1000) ]],
-          SiteID: [
-            {
-              value: this.polsourcesiteService.polsourcesiteListModel$.getValue()[0]?.SiteID,
-              disabled: false
-            }, [  Validators.min(0), Validators.max(1000) ]],
-          IsPointSource: [
-            {
-              value: this.polsourcesiteService.polsourcesiteListModel$.getValue()[0]?.IsPointSource,
-              disabled: false
-            }, [  Validators.required ]],
-          InactiveReason: [
-            {
-              value: this.polsourcesiteService.polsourcesiteListModel$.getValue()[0]?.InactiveReason,
-              disabled: false
-            }],
-          CivicAddressTVItemID: [
-            {
-              value: this.polsourcesiteService.polsourcesiteListModel$.getValue()[0]?.CivicAddressTVItemID,
-              disabled: false
-            }],
-          LastUpdateDate_UTC: [
-            {
-              value: this.polsourcesiteService.polsourcesiteListModel$.getValue()[0]?.LastUpdateDate_UTC,
-              disabled: false
-            }, [  Validators.required ]],
-          LastUpdateContactTVItemID: [
-            {
-              value: this.polsourcesiteService.polsourcesiteListModel$.getValue()[0]?.LastUpdateContactTVItemID,
-              disabled: false
-            }, [  Validators.required ]],
-        }
-      );
-
-      if (httpClientCommand === HttpClientCommand.Post) {
-        this.polsourcesiteFormPost = formGroup
-      }
-      else {
-        this.polsourcesiteFormPut = formGroup;
-      }
     }
   }
 }

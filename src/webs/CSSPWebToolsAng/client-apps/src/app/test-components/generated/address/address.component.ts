@@ -31,7 +31,7 @@ export class AddressComponent implements OnInit, OnDestroy {
     httpClientService.oldURL = router.url;
   }
 
-  GetPutButtonColor(address) {
+  GetPutButtonColor(address: Address) {
     if (this.IDToShow === address.AddressID && this.showType === HttpClientCommand.Put) {
       return 'primary';
     }
@@ -40,7 +40,7 @@ export class AddressComponent implements OnInit, OnDestroy {
     }
   }
 
-  GetPostButtonColor(address) {
+  GetPostButtonColor(address: Address) {
     if (this.IDToShow === address.AddressID && this.showType === HttpClientCommand.Post) {
       return 'primary';
     }

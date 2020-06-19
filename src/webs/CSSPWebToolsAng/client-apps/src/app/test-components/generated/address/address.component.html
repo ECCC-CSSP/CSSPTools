@@ -24,10 +24,12 @@
             <span>Delete AddressID [{{ address.AddressID }}]&nbsp;&nbsp;&nbsp;</span>
             <mat-icon>delete</mat-icon>
           </button>&nbsp;&nbsp;&nbsp;
-          <button mat-raised-button [color]="GetPutButtonColor(address)" (click)="ShowPut(address)">Show
-            Put</button>&nbsp;&nbsp;
-          <button mat-raised-button [color]="GetPostButtonColor(address)" (click)="ShowPost(address)">Show
-            Post</button><br />
+          <button mat-raised-button [color]="GetPutButtonColor(address)"(click)="ShowPut(address)">
+            <span>Show Put</span>
+          </button>&nbsp;&nbsp;
+          <button mat-raised-button [color]="GetPostButtonColor(address)"(click)="ShowPost(address)">
+            <span>Show Post</span>
+          </button>&nbsp;&nbsp;
           <mat-progress-bar mode="indeterminate" *ngIf="addressService.addressDeleteModel$.getValue().Working">
           </mat-progress-bar>
         </p>
@@ -38,32 +40,32 @@
           <app-address-edit [address]="address" [httpClientCommand]="GetPostEnum()"></app-address-edit>
         </p>
         <blockquote>
-          <p>
-            <span>AddressID: [{{ address.AddressID }}]</span>
-            <span> --- AddressTVItemID: [{{ address.AddressTVItemID }}]</span>
-            <span> --- AddressType: [{{ GetAddressTypeEnumText(address.AddressType) }}]</span>
-            <span> --- CountryTVItemID: [{{ address.CountryTVItemID }}]</span>
-          </p>
-          <p mat-line>
-            <span>ProvinceTVItemID: [{{ address.ProvinceTVItemID }}]</span>
-            <span> --- MunicipalityTVItemID: [{{ address.MunicipalityTVItemID }}]</span>
-            <span> --- StreetName: [{{ address.StreetName }}]</span>
-            <span> --- StreetNumber: [{{ address.StreetNumber }}]</span>
-          </p>
-          <p>
-            <span>StreetType: [{{ GetStreetTypeEnumText(address.StreetType) }}]</span>
-            <span> --- PostalCode: [{{ address.PostalCode }}]</span>
-            <span> --- GoogleAddressText: [{{ address.GoogleAddressText }}]</span>
-            <span> --- LastUpdateDate_UTC: [{{ address.LastUpdateDate_UTC }}]</span>
-          </p>
-          <p>
-            <span>LastUpdateContactTVItemID: [{{ address.LastUpdateContactTVItemID }}]</span>
-          </p>
+        <p>
+          <span>AddressID: [{{ address.AddressID }}]</span>
+          <span> --- AddressTVItemID: [{{ address.AddressTVItemID }}]</span>
+          <span> --- AddressType: [{{ GetAddressTypeEnumText(address.AddressType) }}]</span>
+          <span> --- CountryTVItemID: [{{ address.CountryTVItemID }}]</span>
+ </p>
+        <p>
+          <span>ProvinceTVItemID: [{{ address.ProvinceTVItemID }}]</span>
+          <span> --- MunicipalityTVItemID: [{{ address.MunicipalityTVItemID }}]</span>
+          <span> --- StreetName: [{{ address.StreetName }}]</span>
+          <span> --- StreetNumber: [{{ address.StreetNumber }}]</span>
+ </p>
+        <p>
+          <span>StreetType: [{{ GetStreetTypeEnumText(address.StreetType) }}]</span>
+          <span> --- PostalCode: [{{ address.PostalCode }}]</span>
+          <span> --- GoogleAddressText: [{{ address.GoogleAddressText }}]</span>
+          <span> --- LastUpdateDate_UTC: [{{ address.LastUpdateDate_UTC }}]</span>
+ </p>
+        <p>
+          <span>LastUpdateContactTVItemID: [{{ address.LastUpdateContactTVItemID }}]</span>
+        </p>
         </blockquote>
-      </div>
-    </div>
-  </mat-card-content>
-  <mat-card-actions>
-    <button mat-button>Allo</button>
-  </mat-card-actions>
+       </div>
+     </div>
+   </mat-card-content>
+ <mat-card-actions>
+   <button mat-button>Allo</button>
+ </mat-card-actions>
 </mat-card>

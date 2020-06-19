@@ -15,7 +15,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AddressEditComponent } from './address-edit.component';
 
 @NgModule({
-  declarations: [ AddressComponent, AddressEditComponent ],
+  declarations: [AddressComponent, AddressEditComponent],
   imports: [
     CommonModule,
     RouterModule,

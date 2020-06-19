@@ -17,464 +17,64 @@
     <mat-card-subtitle>{{ climatedatavalueService.climatedatavalueTextModel$.getValue().Title }}</mat-card-subtitle>
   </mat-card-header>
   <mat-card-content>
-    <mat-list *ngIf="climatedatavalueService.climatedatavalueListModel$.getValue()?.length">
-      <mat-list-item *ngFor="let climatedatavalue of climatedatavalueService.climatedatavalueListModel$.getValue()">
-        <span mat-line>
+    <div *ngIf="climatedatavalueService.climatedatavalueListModel$.getValue()?.length">
+      <div *ngFor="let climatedatavalue of climatedatavalueService.climatedatavalueListModel$.getValue()">
+        <p>
           <button mat-raised-button (click)="DeleteClimateDataValue(climatedatavalue)">
             <span>Delete ClimateDataValueID [{{ climatedatavalue.ClimateDataValueID }}]&nbsp;&nbsp;&nbsp;</span>
             <mat-icon>delete</mat-icon>
-          </button>
+          </button>&nbsp;&nbsp;&nbsp;
+          <button mat-raised-button [color]="GetPutButtonColor(climatedatavalue)"(click)="ShowPut(climatedatavalue)">
+            <span>Show Put</span>
+          </button>&nbsp;&nbsp;
+          <button mat-raised-button [color]="GetPostButtonColor(climatedatavalue)"(click)="ShowPost(climatedatavalue)">
+            <span>Show Post</span>
+          </button>&nbsp;&nbsp;
           <mat-progress-bar mode="indeterminate" *ngIf="climatedatavalueService.climatedatavalueDeleteModel$.getValue().Working">
           </mat-progress-bar>
-          </span>
-        <span mat-line>
+        </p>
+        <p *ngIf="IDToShow === climatedatavalue.ClimateDataValueID && showType === GetPutEnum()">
+          <app-climatedatavalue-edit [climatedatavalue]="climatedatavalue" [httpClientCommand]="GetPutEnum()"></app-climatedatavalue-edit>
+        </p>
+        <p *ngIf="IDToShow === climatedatavalue.ClimateDataValueID && showType === GetPostEnum()">
+          <app-climatedatavalue-edit [climatedatavalue]="climatedatavalue" [httpClientCommand]="GetPostEnum()"></app-climatedatavalue-edit>
+        </p>
+        <blockquote>
+        <p>
           <span>ClimateDataValueID: [{{ climatedatavalue.ClimateDataValueID }}]</span>
           <span> --- ClimateSiteID: [{{ climatedatavalue.ClimateSiteID }}]</span>
           <span> --- DateTime_Local: [{{ climatedatavalue.DateTime_Local }}]</span>
           <span> --- Keep: [{{ climatedatavalue.Keep }}]</span>
-        </span>
-        <span mat-line>
+ </p>
+        <p>
           <span>StorageDataType: [{{ GetStorageDataTypeEnumText(climatedatavalue.StorageDataType) }}]</span>
           <span> --- HasBeenRead: [{{ climatedatavalue.HasBeenRead }}]</span>
           <span> --- Snow_cm: [{{ climatedatavalue.Snow_cm }}]</span>
           <span> --- Rainfall_mm: [{{ climatedatavalue.Rainfall_mm }}]</span>
-        </span>
-        <span mat-line>
+ </p>
+        <p>
           <span>RainfallEntered_mm: [{{ climatedatavalue.RainfallEntered_mm }}]</span>
           <span> --- TotalPrecip_mm_cm: [{{ climatedatavalue.TotalPrecip_mm_cm }}]</span>
           <span> --- MaxTemp_C: [{{ climatedatavalue.MaxTemp_C }}]</span>
           <span> --- MinTemp_C: [{{ climatedatavalue.MinTemp_C }}]</span>
-        </span>
-        <span mat-line>
+ </p>
+        <p>
           <span>HeatDegDays_C: [{{ climatedatavalue.HeatDegDays_C }}]</span>
           <span> --- CoolDegDays_C: [{{ climatedatavalue.CoolDegDays_C }}]</span>
           <span> --- SnowOnGround_cm: [{{ climatedatavalue.SnowOnGround_cm }}]</span>
           <span> --- DirMaxGust_0North: [{{ climatedatavalue.DirMaxGust_0North }}]</span>
-        </span>
-        <span mat-line>
+ </p>
+        <p>
           <span>SpdMaxGust_kmh: [{{ climatedatavalue.SpdMaxGust_kmh }}]</span>
           <span> --- HourlyValues: [{{ climatedatavalue.HourlyValues }}]</span>
           <span> --- LastUpdateDate_UTC: [{{ climatedatavalue.LastUpdateDate_UTC }}]</span>
           <span> --- LastUpdateContactTVItemID: [{{ climatedatavalue.LastUpdateContactTVItemID }}]</span>
-        </span>
-       </mat-list-item>
-     </mat-list>
+        </p>
+        </blockquote>
+       </div>
+     </div>
    </mat-card-content>
  <mat-card-actions>
    <button mat-button>Allo</button>
  </mat-card-actions>
-</mat-card>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<mat-card>
-  <mat-card-header>
-    <mat-card-title>Edit ClimateDataValue testing</mat-card-title>
-  </mat-card-header>
-  <mat-card-content>
-    <div *ngIf="climatedatavalueService.climatedatavalueListModel$.getValue()?.length">
-      <blockquote>
-        <form [formGroup]="climatedatavalueFormPut" (ngSubmit)="PutClimateDataValue(climatedatavalueFormPut.value)">
-          <h3>
-            ClimateDataValue
-            <button mat-raised-button type="submit">
-              <span>Update ClimateDataValue</span>
-            </button>
-            <mat-progress-bar mode="indeterminate" *ngIf="climatedatavalueService.climatedatavaluePutModel$.getValue().Working">
-            </mat-progress-bar>
-          </h3>
-          <p>
-            <mat-form-field>
-              <mat-label>ClimateDataValueID</mat-label>
-              <input matInput type="number" formControlName="ClimateDataValueID">
-              <mat-error *ngIf="climatedatavalueFormPut.controls.ClimateDataValueID.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>ClimateSiteID</mat-label>
-              <input matInput type="number" formControlName="ClimateSiteID">
-              <mat-error *ngIf="climatedatavalueFormPut.controls.ClimateSiteID.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>DateTime_Local</mat-label>
-              <input matInput type="text" formControlName="DateTime_Local">
-              <mat-error *ngIf="climatedatavalueFormPut.controls.DateTime_Local.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>Keep</mat-label>
-              <input matInput type="text" formControlName="Keep">
-              <mat-error *ngIf="climatedatavalueFormPut.controls.Keep.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-          </p>
-          <p>
-            <mat-form-field>
-              <mat-label>StorageDataType</mat-label>
-              <mat-select formControlName="StorageDataType">
-                <mat-option *ngFor="let a of storageDataTypeList" [value]="a.EnumID">
-                  {{ a.EnumText }}
-                </mat-option>
-              </mat-select>
-              <mat-error *ngIf="climatedatavalueFormPut.controls.StorageDataType.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>HasBeenRead</mat-label>
-              <input matInput type="text" formControlName="HasBeenRead">
-              <mat-error *ngIf="climatedatavalueFormPut.controls.HasBeenRead.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>Snow_cm</mat-label>
-              <input matInput type="number" formControlName="Snow_cm">
-              <mat-error *ngIf="climatedatavalueFormPut.controls.Snow_cm.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.min">Min - 0<br /></span>
-                <span *ngIf="e.min">Max - 10000<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>Rainfall_mm</mat-label>
-              <input matInput type="number" formControlName="Rainfall_mm">
-              <mat-error *ngIf="climatedatavalueFormPut.controls.Rainfall_mm.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.min">Min - 0<br /></span>
-                <span *ngIf="e.min">Max - 10000<br /></span>
-              </mat-error>
-            </mat-form-field>
-          </p>
-          <p>
-            <mat-form-field>
-              <mat-label>RainfallEntered_mm</mat-label>
-              <input matInput type="number" formControlName="RainfallEntered_mm">
-              <mat-error *ngIf="climatedatavalueFormPut.controls.RainfallEntered_mm.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.min">Min - 0<br /></span>
-                <span *ngIf="e.min">Max - 10000<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>TotalPrecip_mm_cm</mat-label>
-              <input matInput type="number" formControlName="TotalPrecip_mm_cm">
-              <mat-error *ngIf="climatedatavalueFormPut.controls.TotalPrecip_mm_cm.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.min">Min - 0<br /></span>
-                <span *ngIf="e.min">Max - 10000<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>MaxTemp_C</mat-label>
-              <input matInput type="number" formControlName="MaxTemp_C">
-              <mat-error *ngIf="climatedatavalueFormPut.controls.MaxTemp_C.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.min">Min - -50<br /></span>
-                <span *ngIf="e.min">Max - 50<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>MinTemp_C</mat-label>
-              <input matInput type="number" formControlName="MinTemp_C">
-              <mat-error *ngIf="climatedatavalueFormPut.controls.MinTemp_C.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.min">Min - -50<br /></span>
-                <span *ngIf="e.min">Max - 50<br /></span>
-              </mat-error>
-            </mat-form-field>
-          </p>
-          <p>
-            <mat-form-field>
-              <mat-label>HeatDegDays_C</mat-label>
-              <input matInput type="number" formControlName="HeatDegDays_C">
-              <mat-error *ngIf="climatedatavalueFormPut.controls.HeatDegDays_C.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.min">Min - -1000<br /></span>
-                <span *ngIf="e.min">Max - 100<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>CoolDegDays_C</mat-label>
-              <input matInput type="number" formControlName="CoolDegDays_C">
-              <mat-error *ngIf="climatedatavalueFormPut.controls.CoolDegDays_C.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.min">Min - -1000<br /></span>
-                <span *ngIf="e.min">Max - 100<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>SnowOnGround_cm</mat-label>
-              <input matInput type="number" formControlName="SnowOnGround_cm">
-              <mat-error *ngIf="climatedatavalueFormPut.controls.SnowOnGround_cm.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.min">Min - 0<br /></span>
-                <span *ngIf="e.min">Max - 10000<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>DirMaxGust_0North</mat-label>
-              <input matInput type="number" formControlName="DirMaxGust_0North">
-              <mat-error *ngIf="climatedatavalueFormPut.controls.DirMaxGust_0North.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.min">Min - 0<br /></span>
-                <span *ngIf="e.min">Max - 360<br /></span>
-              </mat-error>
-            </mat-form-field>
-          </p>
-          <p>
-            <mat-form-field>
-              <mat-label>SpdMaxGust_kmh</mat-label>
-              <input matInput type="number" formControlName="SpdMaxGust_kmh">
-              <mat-error *ngIf="climatedatavalueFormPut.controls.SpdMaxGust_kmh.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.min">Min - 0<br /></span>
-                <span *ngIf="e.min">Max - 300<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>HourlyValues</mat-label>
-              <input matInput type="text" formControlName="HourlyValues">
-              <mat-error *ngIf="climatedatavalueFormPut.controls.HourlyValues.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>LastUpdateDate_UTC</mat-label>
-              <input matInput type="text" formControlName="LastUpdateDate_UTC">
-              <mat-error *ngIf="climatedatavalueFormPut.controls.LastUpdateDate_UTC.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>LastUpdateContactTVItemID</mat-label>
-              <input matInput type="number" formControlName="LastUpdateContactTVItemID">
-              <mat-error *ngIf="climatedatavalueFormPut.controls.LastUpdateContactTVItemID.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-          </p>
-        </form>
-      </blockquote>
-    </div>
-  </mat-card-content>
-</mat-card>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<mat-card>
-  <mat-card-header>
-    <mat-card-title>Add ClimateDataValue testing</mat-card-title>
-  </mat-card-header>
-  <mat-card-content>
-    <div *ngIf="climatedatavalueService.climatedatavalueListModel$.getValue()?.length">
-      <blockquote>
-        <form [formGroup]="climatedatavalueFormPost" (ngSubmit)="PostClimateDataValue(climatedatavalueFormPost.value)">
-          <h3>
-            ClimateDataValue
-            <button mat-raised-button type="submit">
-              <span>Add ClimateDataValue</span>
-            </button>
-            <mat-progress-bar mode="indeterminate" *ngIf="climatedatavalueService.climatedatavaluePostModel$.getValue().Working">
-            </mat-progress-bar>
-          </h3>
-          <p>
-            <mat-form-field>
-              <mat-label>ClimateDataValueID</mat-label>
-              <input matInput type="number" formControlName="ClimateDataValueID">
-              <mat-error *ngIf="climatedatavalueFormPut.controls.ClimateDataValueID.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>ClimateSiteID</mat-label>
-              <input matInput type="number" formControlName="ClimateSiteID">
-              <mat-error *ngIf="climatedatavalueFormPut.controls.ClimateSiteID.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>DateTime_Local</mat-label>
-              <input matInput type="text" formControlName="DateTime_Local">
-              <mat-error *ngIf="climatedatavalueFormPut.controls.DateTime_Local.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>Keep</mat-label>
-              <input matInput type="text" formControlName="Keep">
-              <mat-error *ngIf="climatedatavalueFormPut.controls.Keep.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-          </p>
-          <p>
-            <mat-form-field>
-              <mat-label>StorageDataType</mat-label>
-              <mat-select formControlName="StorageDataType">
-                <mat-option *ngFor="let a of storageDataTypeList" [value]="a.EnumID">
-                  {{ a.EnumText }}
-                </mat-option>
-              </mat-select>
-              <mat-error *ngIf="climatedatavalueFormPut.controls.StorageDataType.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>HasBeenRead</mat-label>
-              <input matInput type="text" formControlName="HasBeenRead">
-              <mat-error *ngIf="climatedatavalueFormPut.controls.HasBeenRead.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>Snow_cm</mat-label>
-              <input matInput type="number" formControlName="Snow_cm">
-              <mat-error *ngIf="climatedatavalueFormPut.controls.Snow_cm.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.min">Min - 0<br /></span>
-                <span *ngIf="e.min">Max - 10000<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>Rainfall_mm</mat-label>
-              <input matInput type="number" formControlName="Rainfall_mm">
-              <mat-error *ngIf="climatedatavalueFormPut.controls.Rainfall_mm.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.min">Min - 0<br /></span>
-                <span *ngIf="e.min">Max - 10000<br /></span>
-              </mat-error>
-            </mat-form-field>
-          </p>
-          <p>
-            <mat-form-field>
-              <mat-label>RainfallEntered_mm</mat-label>
-              <input matInput type="number" formControlName="RainfallEntered_mm">
-              <mat-error *ngIf="climatedatavalueFormPut.controls.RainfallEntered_mm.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.min">Min - 0<br /></span>
-                <span *ngIf="e.min">Max - 10000<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>TotalPrecip_mm_cm</mat-label>
-              <input matInput type="number" formControlName="TotalPrecip_mm_cm">
-              <mat-error *ngIf="climatedatavalueFormPut.controls.TotalPrecip_mm_cm.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.min">Min - 0<br /></span>
-                <span *ngIf="e.min">Max - 10000<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>MaxTemp_C</mat-label>
-              <input matInput type="number" formControlName="MaxTemp_C">
-              <mat-error *ngIf="climatedatavalueFormPut.controls.MaxTemp_C.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.min">Min - -50<br /></span>
-                <span *ngIf="e.min">Max - 50<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>MinTemp_C</mat-label>
-              <input matInput type="number" formControlName="MinTemp_C">
-              <mat-error *ngIf="climatedatavalueFormPut.controls.MinTemp_C.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.min">Min - -50<br /></span>
-                <span *ngIf="e.min">Max - 50<br /></span>
-              </mat-error>
-            </mat-form-field>
-          </p>
-          <p>
-            <mat-form-field>
-              <mat-label>HeatDegDays_C</mat-label>
-              <input matInput type="number" formControlName="HeatDegDays_C">
-              <mat-error *ngIf="climatedatavalueFormPut.controls.HeatDegDays_C.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.min">Min - -1000<br /></span>
-                <span *ngIf="e.min">Max - 100<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>CoolDegDays_C</mat-label>
-              <input matInput type="number" formControlName="CoolDegDays_C">
-              <mat-error *ngIf="climatedatavalueFormPut.controls.CoolDegDays_C.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.min">Min - -1000<br /></span>
-                <span *ngIf="e.min">Max - 100<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>SnowOnGround_cm</mat-label>
-              <input matInput type="number" formControlName="SnowOnGround_cm">
-              <mat-error *ngIf="climatedatavalueFormPut.controls.SnowOnGround_cm.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.min">Min - 0<br /></span>
-                <span *ngIf="e.min">Max - 10000<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>DirMaxGust_0North</mat-label>
-              <input matInput type="number" formControlName="DirMaxGust_0North">
-              <mat-error *ngIf="climatedatavalueFormPut.controls.DirMaxGust_0North.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.min">Min - 0<br /></span>
-                <span *ngIf="e.min">Max - 360<br /></span>
-              </mat-error>
-            </mat-form-field>
-          </p>
-          <p>
-            <mat-form-field>
-              <mat-label>SpdMaxGust_kmh</mat-label>
-              <input matInput type="number" formControlName="SpdMaxGust_kmh">
-              <mat-error *ngIf="climatedatavalueFormPut.controls.SpdMaxGust_kmh.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.min">Min - 0<br /></span>
-                <span *ngIf="e.min">Max - 300<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>HourlyValues</mat-label>
-              <input matInput type="text" formControlName="HourlyValues">
-              <mat-error *ngIf="climatedatavalueFormPut.controls.HourlyValues.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>LastUpdateDate_UTC</mat-label>
-              <input matInput type="text" formControlName="LastUpdateDate_UTC">
-              <mat-error *ngIf="climatedatavalueFormPut.controls.LastUpdateDate_UTC.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>LastUpdateContactTVItemID</mat-label>
-              <input matInput type="number" formControlName="LastUpdateContactTVItemID">
-              <mat-error *ngIf="climatedatavalueFormPut.controls.LastUpdateContactTVItemID.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-          </p>
-        </form>
-      </blockquote>
-    </div>
-  </mat-card-content>
 </mat-card>

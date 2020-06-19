@@ -12,9 +12,10 @@ import { MWQMSiteRoutingModule } from './mwqmsite-routing.module';
 import { MaterialModule } from '../../../app-material.module';
 import { MWQMSiteComponent } from './mwqmsite.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MWQMSiteEditComponent } from './mwqmsite-edit.component';
 
 @NgModule({
-  declarations: [ MWQMSiteComponent ],
+  declarations: [MWQMSiteComponent, MWQMSiteEditComponent],
   imports: [
     CommonModule,
     RouterModule,

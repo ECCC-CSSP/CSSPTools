@@ -10,7 +10,6 @@ import { MWQMLookupMPNService } from './mwqmlookupmpn.service';
 import { LoadLocalesMWQMLookupMPNText } from './mwqmlookupmpn.locales';
 import { Subscription } from 'rxjs';
 import { MWQMLookupMPN } from '../../../models/generated/MWQMLookupMPN.model';
-import { FormBuilder, Validators, FormGroup } from '@angular/forms';
 import { HttpClientService } from '../../../services/http-client.service';
 import { Router } from '@angular/router';
 import { HttpClientCommand } from '../../../enums/app.enums';
@@ -23,23 +22,63 @@ import { HttpClientCommand } from '../../../enums/app.enums';
 })
 export class MWQMLookupMPNComponent implements OnInit, OnDestroy {
   sub: Subscription;
-  mwqmlookupmpnFormPut: FormGroup;
-  mwqmlookupmpnFormPost: FormGroup;
+  IDToShow: number;
+  showType?: HttpClientCommand = null;
 
-  constructor(public mwqmlookupmpnService: MWQMLookupMPNService, private router: Router, private httpClientService: HttpClientService, private fb: FormBuilder) {
+  constructor(public mwqmlookupmpnService: MWQMLookupMPNService, private router: Router, private httpClientService: HttpClientService) {
     httpClientService.oldURL = router.url;
+  }
+
+  GetPutButtonColor(mwqmlookupmpn: MWQMLookupMPN) {
+    if (this.IDToShow === mwqmlookupmpn.MWQMLookupMPNID && this.showType === HttpClientCommand.Put) {
+      return 'primary';
+    }
+    else {
+      return 'basic';
+    }
+  }
+
+  GetPostButtonColor(mwqmlookupmpn: MWQMLookupMPN) {
+    if (this.IDToShow === mwqmlookupmpn.MWQMLookupMPNID && this.showType === HttpClientCommand.Post) {
+      return 'primary';
+    }
+    else {
+      return 'basic';
+    }
+  }
+
+  ShowPut(mwqmlookupmpn: MWQMLookupMPN) {
+    if (this.IDToShow === mwqmlookupmpn.MWQMLookupMPNID && this.showType === HttpClientCommand.Put) {
+      this.IDToShow = 0;
+      this.showType = null;
+    }
+    else {
+      this.IDToShow = mwqmlookupmpn.MWQMLookupMPNID;
+      this.showType = HttpClientCommand.Put;
+    }
+  }
+
+  ShowPost(mwqmlookupmpn: MWQMLookupMPN) {
+    if (this.IDToShow === mwqmlookupmpn.MWQMLookupMPNID && this.showType === HttpClientCommand.Post) {
+      this.IDToShow = 0;
+      this.showType = null;
+    }
+    else {
+      this.IDToShow = mwqmlookupmpn.MWQMLookupMPNID;
+      this.showType = HttpClientCommand.Post;
+    }
+  }
+
+  GetPutEnum() {
+    return <number>HttpClientCommand.Put;
+  }
+
+  GetPostEnum() {
+    return <number>HttpClientCommand.Post;
   }
 
   GetMWQMLookupMPNList() {
     this.sub = this.mwqmlookupmpnService.GetMWQMLookupMPNList().subscribe();
-  }
-
-  PutMWQMLookupMPN(mwqmlookupmpn: MWQMLookupMPN) {
-    this.sub = this.mwqmlookupmpnService.PutMWQMLookupMPN(mwqmlookupmpn).subscribe();
-  }
-
-  PostMWQMLookupMPN(mwqmlookupmpn: MWQMLookupMPN) {
-    this.sub = this.mwqmlookupmpnService.PostMWQMLookupMPN(mwqmlookupmpn).subscribe();
   }
 
   DeleteMWQMLookupMPN(mwqmlookupmpn: MWQMLookupMPN) {
@@ -48,64 +87,11 @@ export class MWQMLookupMPNComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     LoadLocalesMWQMLookupMPNText(this.mwqmlookupmpnService);
-    this.FillFormBuilderGroup(HttpClientCommand.Post);
-    this.FillFormBuilderGroup(HttpClientCommand.Put);
   }
 
   ngOnDestroy() {
     if (this.sub) {
       this.sub.unsubscribe();
-    }
-  }
-
-  FillFormBuilderGroup(httpClientCommand: HttpClientCommand) {
-    if (this.mwqmlookupmpnService.mwqmlookupmpnListModel$.getValue().length) {
-      let formGroup: FormGroup = this.fb.group(
-        {
-          MWQMLookupMPNID: [
-            {
-              value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.mwqmlookupmpnService.mwqmlookupmpnListModel$.getValue()[0]?.MWQMLookupMPNID)),
-              disabled: false
-            }, [  Validators.required ]],
-          Tubes10: [
-            {
-              value: this.mwqmlookupmpnService.mwqmlookupmpnListModel$.getValue()[0]?.Tubes10,
-              disabled: false
-            }, [  Validators.required, Validators.min(0), Validators.max(5) ]],
-          Tubes1: [
-            {
-              value: this.mwqmlookupmpnService.mwqmlookupmpnListModel$.getValue()[0]?.Tubes1,
-              disabled: false
-            }, [  Validators.required, Validators.min(0), Validators.max(5) ]],
-          Tubes01: [
-            {
-              value: this.mwqmlookupmpnService.mwqmlookupmpnListModel$.getValue()[0]?.Tubes01,
-              disabled: false
-            }, [  Validators.required, Validators.min(0), Validators.max(5) ]],
-          MPN_100ml: [
-            {
-              value: this.mwqmlookupmpnService.mwqmlookupmpnListModel$.getValue()[0]?.MPN_100ml,
-              disabled: false
-            }, [  Validators.required, Validators.min(1), Validators.max(10000) ]],
-          LastUpdateDate_UTC: [
-            {
-              value: this.mwqmlookupmpnService.mwqmlookupmpnListModel$.getValue()[0]?.LastUpdateDate_UTC,
-              disabled: false
-            }, [  Validators.required ]],
-          LastUpdateContactTVItemID: [
-            {
-              value: this.mwqmlookupmpnService.mwqmlookupmpnListModel$.getValue()[0]?.LastUpdateContactTVItemID,
-              disabled: false
-            }, [  Validators.required ]],
-        }
-      );
-
-      if (httpClientCommand === HttpClientCommand.Post) {
-        this.mwqmlookupmpnFormPost = formGroup
-      }
-      else {
-        this.mwqmlookupmpnFormPut = formGroup;
-      }
     }
   }
 }

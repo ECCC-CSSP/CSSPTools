@@ -12,9 +12,10 @@ import { MWQMSampleLanguageRoutingModule } from './mwqmsamplelanguage-routing.mo
 import { MaterialModule } from '../../../app-material.module';
 import { MWQMSampleLanguageComponent } from './mwqmsamplelanguage.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MWQMSampleLanguageEditComponent } from './mwqmsamplelanguage-edit.component';
 
 @NgModule({
-  declarations: [ MWQMSampleLanguageComponent ],
+  declarations: [MWQMSampleLanguageComponent, MWQMSampleLanguageEditComponent],
   imports: [
     CommonModule,
     RouterModule,

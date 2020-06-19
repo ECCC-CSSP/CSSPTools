@@ -58,7 +58,7 @@ namespace AngularComponentsGeneratedServices.Services
             sb.AppendLine($@"  styleUrls: ['./{ dllTypeInfoModels.Name.ToLower() }-edit.component.css'],");
             sb.AppendLine(@"  changeDetection: ChangeDetectionStrategy.OnPush");
             sb.AppendLine(@"})");
-            sb.AppendLine($@"export class { dllTypeInfoModels.Name }Component implements OnInit, OnDestroy {{");
+            sb.AppendLine($@"export class { dllTypeInfoModels.Name }EditComponent implements OnInit, OnDestroy {{");
             sb.AppendLine(@"  sub: Subscription;");
 
             usedPropTypeList = new List<string>();

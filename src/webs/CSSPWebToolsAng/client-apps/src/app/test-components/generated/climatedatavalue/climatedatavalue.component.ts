@@ -9,10 +9,8 @@ import { Component, OnInit, OnDestroy, ChangeDetectionStrategy } from '@angular/
 import { ClimateDataValueService } from './climatedatavalue.service';
 import { LoadLocalesClimateDataValueText } from './climatedatavalue.locales';
 import { Subscription } from 'rxjs';
-import { StorageDataTypeEnum_GetIDText, StorageDataTypeEnum_GetOrderedText } from '../../../enums/generated/StorageDataTypeEnum';
+import { StorageDataTypeEnum_GetIDText } from '../../../enums/generated/StorageDataTypeEnum';
 import { ClimateDataValue } from '../../../models/generated/ClimateDataValue.model';
-import { FormBuilder, Validators, FormGroup } from '@angular/forms';
-import { EnumIDAndText } from '../../../models/enumidandtext.model';
 import { HttpClientService } from '../../../services/http-client.service';
 import { Router } from '@angular/router';
 import { HttpClientCommand } from '../../../enums/app.enums';
@@ -25,24 +23,63 @@ import { HttpClientCommand } from '../../../enums/app.enums';
 })
 export class ClimateDataValueComponent implements OnInit, OnDestroy {
   sub: Subscription;
-  storageDataTypeList: EnumIDAndText[];
-  climatedatavalueFormPut: FormGroup;
-  climatedatavalueFormPost: FormGroup;
+  IDToShow: number;
+  showType?: HttpClientCommand = null;
 
-  constructor(public climatedatavalueService: ClimateDataValueService, private router: Router, private httpClientService: HttpClientService, private fb: FormBuilder) {
+  constructor(public climatedatavalueService: ClimateDataValueService, private router: Router, private httpClientService: HttpClientService) {
     httpClientService.oldURL = router.url;
+  }
+
+  GetPutButtonColor(climatedatavalue: ClimateDataValue) {
+    if (this.IDToShow === climatedatavalue.ClimateDataValueID && this.showType === HttpClientCommand.Put) {
+      return 'primary';
+    }
+    else {
+      return 'basic';
+    }
+  }
+
+  GetPostButtonColor(climatedatavalue: ClimateDataValue) {
+    if (this.IDToShow === climatedatavalue.ClimateDataValueID && this.showType === HttpClientCommand.Post) {
+      return 'primary';
+    }
+    else {
+      return 'basic';
+    }
+  }
+
+  ShowPut(climatedatavalue: ClimateDataValue) {
+    if (this.IDToShow === climatedatavalue.ClimateDataValueID && this.showType === HttpClientCommand.Put) {
+      this.IDToShow = 0;
+      this.showType = null;
+    }
+    else {
+      this.IDToShow = climatedatavalue.ClimateDataValueID;
+      this.showType = HttpClientCommand.Put;
+    }
+  }
+
+  ShowPost(climatedatavalue: ClimateDataValue) {
+    if (this.IDToShow === climatedatavalue.ClimateDataValueID && this.showType === HttpClientCommand.Post) {
+      this.IDToShow = 0;
+      this.showType = null;
+    }
+    else {
+      this.IDToShow = climatedatavalue.ClimateDataValueID;
+      this.showType = HttpClientCommand.Post;
+    }
+  }
+
+  GetPutEnum() {
+    return <number>HttpClientCommand.Put;
+  }
+
+  GetPostEnum() {
+    return <number>HttpClientCommand.Post;
   }
 
   GetClimateDataValueList() {
     this.sub = this.climatedatavalueService.GetClimateDataValueList().subscribe();
-  }
-
-  PutClimateDataValue(climatedatavalue: ClimateDataValue) {
-    this.sub = this.climatedatavalueService.PutClimateDataValue(climatedatavalue).subscribe();
-  }
-
-  PostClimateDataValue(climatedatavalue: ClimateDataValue) {
-    this.sub = this.climatedatavalueService.PostClimateDataValue(climatedatavalue).subscribe();
   }
 
   DeleteClimateDataValue(climatedatavalue: ClimateDataValue) {
@@ -55,130 +92,11 @@ export class ClimateDataValueComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     LoadLocalesClimateDataValueText(this.climatedatavalueService);
-    this.storageDataTypeList = StorageDataTypeEnum_GetOrderedText();
-    this.FillFormBuilderGroup(HttpClientCommand.Post);
-    this.FillFormBuilderGroup(HttpClientCommand.Put);
   }
 
   ngOnDestroy() {
     if (this.sub) {
       this.sub.unsubscribe();
-    }
-  }
-
-  FillFormBuilderGroup(httpClientCommand: HttpClientCommand) {
-    if (this.climatedatavalueService.climatedatavalueListModel$.getValue().length) {
-      let formGroup: FormGroup = this.fb.group(
-        {
-          ClimateDataValueID: [
-            {
-              value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.climatedatavalueService.climatedatavalueListModel$.getValue()[0]?.ClimateDataValueID)),
-              disabled: false
-            }, [  Validators.required ]],
-          ClimateSiteID: [
-            {
-              value: this.climatedatavalueService.climatedatavalueListModel$.getValue()[0]?.ClimateSiteID,
-              disabled: false
-            }, [  Validators.required ]],
-          DateTime_Local: [
-            {
-              value: this.climatedatavalueService.climatedatavalueListModel$.getValue()[0]?.DateTime_Local,
-              disabled: false
-            }, [  Validators.required ]],
-          Keep: [
-            {
-              value: this.climatedatavalueService.climatedatavalueListModel$.getValue()[0]?.Keep,
-              disabled: false
-            }, [  Validators.required ]],
-          StorageDataType: [
-            {
-              value: this.climatedatavalueService.climatedatavalueListModel$.getValue()[0]?.StorageDataType,
-              disabled: false
-            }, [  Validators.required ]],
-          HasBeenRead: [
-            {
-              value: this.climatedatavalueService.climatedatavalueListModel$.getValue()[0]?.HasBeenRead,
-              disabled: false
-            }, [  Validators.required ]],
-          Snow_cm: [
-            {
-              value: this.climatedatavalueService.climatedatavalueListModel$.getValue()[0]?.Snow_cm,
-              disabled: false
-            }, [  Validators.min(0), Validators.max(10000) ]],
-          Rainfall_mm: [
-            {
-              value: this.climatedatavalueService.climatedatavalueListModel$.getValue()[0]?.Rainfall_mm,
-              disabled: false
-            }, [  Validators.min(0), Validators.max(10000) ]],
-          RainfallEntered_mm: [
-            {
-              value: this.climatedatavalueService.climatedatavalueListModel$.getValue()[0]?.RainfallEntered_mm,
-              disabled: false
-            }, [  Validators.min(0), Validators.max(10000) ]],
-          TotalPrecip_mm_cm: [
-            {
-              value: this.climatedatavalueService.climatedatavalueListModel$.getValue()[0]?.TotalPrecip_mm_cm,
-              disabled: false
-            }, [  Validators.min(0), Validators.max(10000) ]],
-          MaxTemp_C: [
-            {
-              value: this.climatedatavalueService.climatedatavalueListModel$.getValue()[0]?.MaxTemp_C,
-              disabled: false
-            }, [  Validators.min(-50), Validators.max(50) ]],
-          MinTemp_C: [
-            {
-              value: this.climatedatavalueService.climatedatavalueListModel$.getValue()[0]?.MinTemp_C,
-              disabled: false
-            }, [  Validators.min(-50), Validators.max(50) ]],
-          HeatDegDays_C: [
-            {
-              value: this.climatedatavalueService.climatedatavalueListModel$.getValue()[0]?.HeatDegDays_C,
-              disabled: false
-            }, [  Validators.min(-1000), Validators.max(100) ]],
-          CoolDegDays_C: [
-            {
-              value: this.climatedatavalueService.climatedatavalueListModel$.getValue()[0]?.CoolDegDays_C,
-              disabled: false
-            }, [  Validators.min(-1000), Validators.max(100) ]],
-          SnowOnGround_cm: [
-            {
-              value: this.climatedatavalueService.climatedatavalueListModel$.getValue()[0]?.SnowOnGround_cm,
-              disabled: false
-            }, [  Validators.min(0), Validators.max(10000) ]],
-          DirMaxGust_0North: [
-            {
-              value: this.climatedatavalueService.climatedatavalueListModel$.getValue()[0]?.DirMaxGust_0North,
-              disabled: false
-            }, [  Validators.min(0), Validators.max(360) ]],
-          SpdMaxGust_kmh: [
-            {
-              value: this.climatedatavalueService.climatedatavalueListModel$.getValue()[0]?.SpdMaxGust_kmh,
-              disabled: false
-            }, [  Validators.min(0), Validators.max(300) ]],
-          HourlyValues: [
-            {
-              value: this.climatedatavalueService.climatedatavalueListModel$.getValue()[0]?.HourlyValues,
-              disabled: false
-            }],
-          LastUpdateDate_UTC: [
-            {
-              value: this.climatedatavalueService.climatedatavalueListModel$.getValue()[0]?.LastUpdateDate_UTC,
-              disabled: false
-            }, [  Validators.required ]],
-          LastUpdateContactTVItemID: [
-            {
-              value: this.climatedatavalueService.climatedatavalueListModel$.getValue()[0]?.LastUpdateContactTVItemID,
-              disabled: false
-            }, [  Validators.required ]],
-        }
-      );
-
-      if (httpClientCommand === HttpClientCommand.Post) {
-        this.climatedatavalueFormPost = formGroup
-      }
-      else {
-        this.climatedatavalueFormPut = formGroup;
-      }
     }
   }
 }

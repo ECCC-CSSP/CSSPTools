@@ -9,10 +9,8 @@ import { Component, OnInit, OnDestroy, ChangeDetectionStrategy } from '@angular/
 import { ReportSectionService } from './reportsection.service';
 import { LoadLocalesReportSectionText } from './reportsection.locales';
 import { Subscription } from 'rxjs';
-import { LanguageEnum_GetIDText, LanguageEnum_GetOrderedText } from '../../../enums/generated/LanguageEnum';
+import { LanguageEnum_GetIDText } from '../../../enums/generated/LanguageEnum';
 import { ReportSection } from '../../../models/generated/ReportSection.model';
-import { FormBuilder, Validators, FormGroup } from '@angular/forms';
-import { EnumIDAndText } from '../../../models/enumidandtext.model';
 import { HttpClientService } from '../../../services/http-client.service';
 import { Router } from '@angular/router';
 import { HttpClientCommand } from '../../../enums/app.enums';
@@ -25,24 +23,63 @@ import { HttpClientCommand } from '../../../enums/app.enums';
 })
 export class ReportSectionComponent implements OnInit, OnDestroy {
   sub: Subscription;
-  languageList: EnumIDAndText[];
-  reportsectionFormPut: FormGroup;
-  reportsectionFormPost: FormGroup;
+  IDToShow: number;
+  showType?: HttpClientCommand = null;
 
-  constructor(public reportsectionService: ReportSectionService, private router: Router, private httpClientService: HttpClientService, private fb: FormBuilder) {
+  constructor(public reportsectionService: ReportSectionService, private router: Router, private httpClientService: HttpClientService) {
     httpClientService.oldURL = router.url;
+  }
+
+  GetPutButtonColor(reportsection: ReportSection) {
+    if (this.IDToShow === reportsection.ReportSectionID && this.showType === HttpClientCommand.Put) {
+      return 'primary';
+    }
+    else {
+      return 'basic';
+    }
+  }
+
+  GetPostButtonColor(reportsection: ReportSection) {
+    if (this.IDToShow === reportsection.ReportSectionID && this.showType === HttpClientCommand.Post) {
+      return 'primary';
+    }
+    else {
+      return 'basic';
+    }
+  }
+
+  ShowPut(reportsection: ReportSection) {
+    if (this.IDToShow === reportsection.ReportSectionID && this.showType === HttpClientCommand.Put) {
+      this.IDToShow = 0;
+      this.showType = null;
+    }
+    else {
+      this.IDToShow = reportsection.ReportSectionID;
+      this.showType = HttpClientCommand.Put;
+    }
+  }
+
+  ShowPost(reportsection: ReportSection) {
+    if (this.IDToShow === reportsection.ReportSectionID && this.showType === HttpClientCommand.Post) {
+      this.IDToShow = 0;
+      this.showType = null;
+    }
+    else {
+      this.IDToShow = reportsection.ReportSectionID;
+      this.showType = HttpClientCommand.Post;
+    }
+  }
+
+  GetPutEnum() {
+    return <number>HttpClientCommand.Put;
+  }
+
+  GetPostEnum() {
+    return <number>HttpClientCommand.Post;
   }
 
   GetReportSectionList() {
     this.sub = this.reportsectionService.GetReportSectionList().subscribe();
-  }
-
-  PutReportSection(reportsection: ReportSection) {
-    this.sub = this.reportsectionService.PutReportSection(reportsection).subscribe();
-  }
-
-  PostReportSection(reportsection: ReportSection) {
-    this.sub = this.reportsectionService.PostReportSection(reportsection).subscribe();
   }
 
   DeleteReportSection(reportsection: ReportSection) {
@@ -55,100 +92,11 @@ export class ReportSectionComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     LoadLocalesReportSectionText(this.reportsectionService);
-    this.languageList = LanguageEnum_GetOrderedText();
-    this.FillFormBuilderGroup(HttpClientCommand.Post);
-    this.FillFormBuilderGroup(HttpClientCommand.Put);
   }
 
   ngOnDestroy() {
     if (this.sub) {
       this.sub.unsubscribe();
-    }
-  }
-
-  FillFormBuilderGroup(httpClientCommand: HttpClientCommand) {
-    if (this.reportsectionService.reportsectionListModel$.getValue().length) {
-      let formGroup: FormGroup = this.fb.group(
-        {
-          ReportSectionID: [
-            {
-              value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.reportsectionService.reportsectionListModel$.getValue()[0]?.ReportSectionID)),
-              disabled: false
-            }, [  Validators.required ]],
-          ReportTypeID: [
-            {
-              value: this.reportsectionService.reportsectionListModel$.getValue()[0]?.ReportTypeID,
-              disabled: false
-            }, [  Validators.required ]],
-          TVItemID: [
-            {
-              value: this.reportsectionService.reportsectionListModel$.getValue()[0]?.TVItemID,
-              disabled: false
-            }],
-          Language: [
-            {
-              value: this.reportsectionService.reportsectionListModel$.getValue()[0]?.Language,
-              disabled: false
-            }],
-          Ordinal: [
-            {
-              value: this.reportsectionService.reportsectionListModel$.getValue()[0]?.Ordinal,
-              disabled: false
-            }, [  Validators.required, Validators.min(0), Validators.max(1000) ]],
-          IsStatic: [
-            {
-              value: this.reportsectionService.reportsectionListModel$.getValue()[0]?.IsStatic,
-              disabled: false
-            }, [  Validators.required ]],
-          ParentReportSectionID: [
-            {
-              value: this.reportsectionService.reportsectionListModel$.getValue()[0]?.ParentReportSectionID,
-              disabled: false
-            }],
-          Year: [
-            {
-              value: this.reportsectionService.reportsectionListModel$.getValue()[0]?.Year,
-              disabled: false
-            }, [  Validators.min(1979), Validators.max(2050) ]],
-          Locked: [
-            {
-              value: this.reportsectionService.reportsectionListModel$.getValue()[0]?.Locked,
-              disabled: false
-            }, [  Validators.required ]],
-          TemplateReportSectionID: [
-            {
-              value: this.reportsectionService.reportsectionListModel$.getValue()[0]?.TemplateReportSectionID,
-              disabled: false
-            }],
-          ReportSectionName: [
-            {
-              value: this.reportsectionService.reportsectionListModel$.getValue()[0]?.ReportSectionName,
-              disabled: false
-            }, [  Validators.maxLength(100) ]],
-          ReportSectionText: [
-            {
-              value: this.reportsectionService.reportsectionListModel$.getValue()[0]?.ReportSectionText,
-              disabled: false
-            }, [  Validators.maxLength(10000) ]],
-          LastUpdateDate_UTC: [
-            {
-              value: this.reportsectionService.reportsectionListModel$.getValue()[0]?.LastUpdateDate_UTC,
-              disabled: false
-            }, [  Validators.required ]],
-          LastUpdateContactTVItemID: [
-            {
-              value: this.reportsectionService.reportsectionListModel$.getValue()[0]?.LastUpdateContactTVItemID,
-              disabled: false
-            }, [  Validators.required ]],
-        }
-      );
-
-      if (httpClientCommand === HttpClientCommand.Post) {
-        this.reportsectionFormPost = formGroup
-      }
-      else {
-        this.reportsectionFormPut = formGroup;
-      }
     }
   }
 }

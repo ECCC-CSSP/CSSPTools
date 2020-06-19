@@ -9,11 +9,9 @@ import { Component, OnInit, OnDestroy, ChangeDetectionStrategy } from '@angular/
 import { SpillLanguageService } from './spilllanguage.service';
 import { LoadLocalesSpillLanguageText } from './spilllanguage.locales';
 import { Subscription } from 'rxjs';
-import { LanguageEnum_GetIDText, LanguageEnum_GetOrderedText } from '../../../enums/generated/LanguageEnum';
-import { TranslationStatusEnum_GetIDText, TranslationStatusEnum_GetOrderedText } from '../../../enums/generated/TranslationStatusEnum';
+import { LanguageEnum_GetIDText } from '../../../enums/generated/LanguageEnum';
+import { TranslationStatusEnum_GetIDText } from '../../../enums/generated/TranslationStatusEnum';
 import { SpillLanguage } from '../../../models/generated/SpillLanguage.model';
-import { FormBuilder, Validators, FormGroup } from '@angular/forms';
-import { EnumIDAndText } from '../../../models/enumidandtext.model';
 import { HttpClientService } from '../../../services/http-client.service';
 import { Router } from '@angular/router';
 import { HttpClientCommand } from '../../../enums/app.enums';
@@ -26,25 +24,63 @@ import { HttpClientCommand } from '../../../enums/app.enums';
 })
 export class SpillLanguageComponent implements OnInit, OnDestroy {
   sub: Subscription;
-  languageList: EnumIDAndText[];
-  translationStatusList: EnumIDAndText[];
-  spilllanguageFormPut: FormGroup;
-  spilllanguageFormPost: FormGroup;
+  IDToShow: number;
+  showType?: HttpClientCommand = null;
 
-  constructor(public spilllanguageService: SpillLanguageService, private router: Router, private httpClientService: HttpClientService, private fb: FormBuilder) {
+  constructor(public spilllanguageService: SpillLanguageService, private router: Router, private httpClientService: HttpClientService) {
     httpClientService.oldURL = router.url;
+  }
+
+  GetPutButtonColor(spilllanguage: SpillLanguage) {
+    if (this.IDToShow === spilllanguage.SpillLanguageID && this.showType === HttpClientCommand.Put) {
+      return 'primary';
+    }
+    else {
+      return 'basic';
+    }
+  }
+
+  GetPostButtonColor(spilllanguage: SpillLanguage) {
+    if (this.IDToShow === spilllanguage.SpillLanguageID && this.showType === HttpClientCommand.Post) {
+      return 'primary';
+    }
+    else {
+      return 'basic';
+    }
+  }
+
+  ShowPut(spilllanguage: SpillLanguage) {
+    if (this.IDToShow === spilllanguage.SpillLanguageID && this.showType === HttpClientCommand.Put) {
+      this.IDToShow = 0;
+      this.showType = null;
+    }
+    else {
+      this.IDToShow = spilllanguage.SpillLanguageID;
+      this.showType = HttpClientCommand.Put;
+    }
+  }
+
+  ShowPost(spilllanguage: SpillLanguage) {
+    if (this.IDToShow === spilllanguage.SpillLanguageID && this.showType === HttpClientCommand.Post) {
+      this.IDToShow = 0;
+      this.showType = null;
+    }
+    else {
+      this.IDToShow = spilllanguage.SpillLanguageID;
+      this.showType = HttpClientCommand.Post;
+    }
+  }
+
+  GetPutEnum() {
+    return <number>HttpClientCommand.Put;
+  }
+
+  GetPostEnum() {
+    return <number>HttpClientCommand.Post;
   }
 
   GetSpillLanguageList() {
     this.sub = this.spilllanguageService.GetSpillLanguageList().subscribe();
-  }
-
-  PutSpillLanguage(spilllanguage: SpillLanguage) {
-    this.sub = this.spilllanguageService.PutSpillLanguage(spilllanguage).subscribe();
-  }
-
-  PostSpillLanguage(spilllanguage: SpillLanguage) {
-    this.sub = this.spilllanguageService.PostSpillLanguage(spilllanguage).subscribe();
   }
 
   DeleteSpillLanguage(spilllanguage: SpillLanguage) {
@@ -61,66 +97,11 @@ export class SpillLanguageComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     LoadLocalesSpillLanguageText(this.spilllanguageService);
-    this.languageList = LanguageEnum_GetOrderedText();
-    this.translationStatusList = TranslationStatusEnum_GetOrderedText();
-    this.FillFormBuilderGroup(HttpClientCommand.Post);
-    this.FillFormBuilderGroup(HttpClientCommand.Put);
   }
 
   ngOnDestroy() {
     if (this.sub) {
       this.sub.unsubscribe();
-    }
-  }
-
-  FillFormBuilderGroup(httpClientCommand: HttpClientCommand) {
-    if (this.spilllanguageService.spilllanguageListModel$.getValue().length) {
-      let formGroup: FormGroup = this.fb.group(
-        {
-          SpillLanguageID: [
-            {
-              value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.spilllanguageService.spilllanguageListModel$.getValue()[0]?.SpillLanguageID)),
-              disabled: false
-            }, [  Validators.required ]],
-          SpillID: [
-            {
-              value: this.spilllanguageService.spilllanguageListModel$.getValue()[0]?.SpillID,
-              disabled: false
-            }, [  Validators.required ]],
-          Language: [
-            {
-              value: this.spilllanguageService.spilllanguageListModel$.getValue()[0]?.Language,
-              disabled: false
-            }, [  Validators.required ]],
-          SpillComment: [
-            {
-              value: this.spilllanguageService.spilllanguageListModel$.getValue()[0]?.SpillComment,
-              disabled: false
-            }, [  Validators.required ]],
-          TranslationStatus: [
-            {
-              value: this.spilllanguageService.spilllanguageListModel$.getValue()[0]?.TranslationStatus,
-              disabled: false
-            }, [  Validators.required ]],
-          LastUpdateDate_UTC: [
-            {
-              value: this.spilllanguageService.spilllanguageListModel$.getValue()[0]?.LastUpdateDate_UTC,
-              disabled: false
-            }, [  Validators.required ]],
-          LastUpdateContactTVItemID: [
-            {
-              value: this.spilllanguageService.spilllanguageListModel$.getValue()[0]?.LastUpdateContactTVItemID,
-              disabled: false
-            }, [  Validators.required ]],
-        }
-      );
-
-      if (httpClientCommand === HttpClientCommand.Post) {
-        this.spilllanguageFormPost = formGroup
-      }
-      else {
-        this.spilllanguageFormPut = formGroup;
-      }
     }
   }
 }

@@ -12,9 +12,10 @@ import { InfrastructureLanguageRoutingModule } from './infrastructurelanguage-ro
 import { MaterialModule } from '../../../app-material.module';
 import { InfrastructureLanguageComponent } from './infrastructurelanguage.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { InfrastructureLanguageEditComponent } from './infrastructurelanguage-edit.component';
 
 @NgModule({
-  declarations: [ InfrastructureLanguageComponent ],
+  declarations: [InfrastructureLanguageComponent, InfrastructureLanguageEditComponent],
   imports: [
     CommonModule,
     RouterModule,

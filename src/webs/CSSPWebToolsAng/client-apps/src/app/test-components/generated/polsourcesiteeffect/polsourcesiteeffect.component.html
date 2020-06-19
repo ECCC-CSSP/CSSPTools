@@ -17,210 +17,46 @@
     <mat-card-subtitle>{{ polsourcesiteeffectService.polsourcesiteeffectTextModel$.getValue().Title }}</mat-card-subtitle>
   </mat-card-header>
   <mat-card-content>
-    <mat-list *ngIf="polsourcesiteeffectService.polsourcesiteeffectListModel$.getValue()?.length">
-      <mat-list-item *ngFor="let polsourcesiteeffect of polsourcesiteeffectService.polsourcesiteeffectListModel$.getValue()">
-        <span mat-line>
+    <div *ngIf="polsourcesiteeffectService.polsourcesiteeffectListModel$.getValue()?.length">
+      <div *ngFor="let polsourcesiteeffect of polsourcesiteeffectService.polsourcesiteeffectListModel$.getValue()">
+        <p>
           <button mat-raised-button (click)="DeletePolSourceSiteEffect(polsourcesiteeffect)">
             <span>Delete PolSourceSiteEffectID [{{ polsourcesiteeffect.PolSourceSiteEffectID }}]&nbsp;&nbsp;&nbsp;</span>
             <mat-icon>delete</mat-icon>
-          </button>
+          </button>&nbsp;&nbsp;&nbsp;
+          <button mat-raised-button [color]="GetPutButtonColor(polsourcesiteeffect)"(click)="ShowPut(polsourcesiteeffect)">
+            <span>Show Put</span>
+          </button>&nbsp;&nbsp;
+          <button mat-raised-button [color]="GetPostButtonColor(polsourcesiteeffect)"(click)="ShowPost(polsourcesiteeffect)">
+            <span>Show Post</span>
+          </button>&nbsp;&nbsp;
           <mat-progress-bar mode="indeterminate" *ngIf="polsourcesiteeffectService.polsourcesiteeffectDeleteModel$.getValue().Working">
           </mat-progress-bar>
-          </span>
-        <span mat-line>
+        </p>
+        <p *ngIf="IDToShow === polsourcesiteeffect.PolSourceSiteEffectID && showType === GetPutEnum()">
+          <app-polsourcesiteeffect-edit [polsourcesiteeffect]="polsourcesiteeffect" [httpClientCommand]="GetPutEnum()"></app-polsourcesiteeffect-edit>
+        </p>
+        <p *ngIf="IDToShow === polsourcesiteeffect.PolSourceSiteEffectID && showType === GetPostEnum()">
+          <app-polsourcesiteeffect-edit [polsourcesiteeffect]="polsourcesiteeffect" [httpClientCommand]="GetPostEnum()"></app-polsourcesiteeffect-edit>
+        </p>
+        <blockquote>
+        <p>
           <span>PolSourceSiteEffectID: [{{ polsourcesiteeffect.PolSourceSiteEffectID }}]</span>
           <span> --- PolSourceSiteOrInfrastructureTVItemID: [{{ polsourcesiteeffect.PolSourceSiteOrInfrastructureTVItemID }}]</span>
           <span> --- MWQMSiteTVItemID: [{{ polsourcesiteeffect.MWQMSiteTVItemID }}]</span>
           <span> --- PolSourceSiteEffectTermIDs: [{{ polsourcesiteeffect.PolSourceSiteEffectTermIDs }}]</span>
-        </span>
-        <span mat-line>
+ </p>
+        <p>
           <span>Comments: [{{ polsourcesiteeffect.Comments }}]</span>
           <span> --- AnalysisDocumentTVItemID: [{{ polsourcesiteeffect.AnalysisDocumentTVItemID }}]</span>
           <span> --- LastUpdateDate_UTC: [{{ polsourcesiteeffect.LastUpdateDate_UTC }}]</span>
           <span> --- LastUpdateContactTVItemID: [{{ polsourcesiteeffect.LastUpdateContactTVItemID }}]</span>
-        </span>
-       </mat-list-item>
-     </mat-list>
+        </p>
+        </blockquote>
+       </div>
+     </div>
    </mat-card-content>
  <mat-card-actions>
    <button mat-button>Allo</button>
  </mat-card-actions>
-</mat-card>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<mat-card>
-  <mat-card-header>
-    <mat-card-title>Edit PolSourceSiteEffect testing</mat-card-title>
-  </mat-card-header>
-  <mat-card-content>
-    <div *ngIf="polsourcesiteeffectService.polsourcesiteeffectListModel$.getValue()?.length">
-      <blockquote>
-        <form [formGroup]="polsourcesiteeffectFormPut" (ngSubmit)="PutPolSourceSiteEffect(polsourcesiteeffectFormPut.value)">
-          <h3>
-            PolSourceSiteEffect
-            <button mat-raised-button type="submit">
-              <span>Update PolSourceSiteEffect</span>
-            </button>
-            <mat-progress-bar mode="indeterminate" *ngIf="polsourcesiteeffectService.polsourcesiteeffectPutModel$.getValue().Working">
-            </mat-progress-bar>
-          </h3>
-          <p>
-            <mat-form-field>
-              <mat-label>PolSourceSiteEffectID</mat-label>
-              <input matInput type="number" formControlName="PolSourceSiteEffectID">
-              <mat-error *ngIf="polsourcesiteeffectFormPut.controls.PolSourceSiteEffectID.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>PolSourceSiteOrInfrastructureTVItemID</mat-label>
-              <input matInput type="number" formControlName="PolSourceSiteOrInfrastructureTVItemID">
-              <mat-error *ngIf="polsourcesiteeffectFormPut.controls.PolSourceSiteOrInfrastructureTVItemID.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>MWQMSiteTVItemID</mat-label>
-              <input matInput type="number" formControlName="MWQMSiteTVItemID">
-              <mat-error *ngIf="polsourcesiteeffectFormPut.controls.MWQMSiteTVItemID.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>PolSourceSiteEffectTermIDs</mat-label>
-              <input matInput type="text" formControlName="PolSourceSiteEffectTermIDs">
-              <mat-error *ngIf="polsourcesiteeffectFormPut.controls.PolSourceSiteEffectTermIDs.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.maxlength">MaxLength - 250<br /></span>
-              </mat-error>
-            </mat-form-field>
-          </p>
-          <p>
-            <mat-form-field>
-              <mat-label>Comments</mat-label>
-              <input matInput type="text" formControlName="Comments">
-              <mat-error *ngIf="polsourcesiteeffectFormPut.controls.Comments.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>AnalysisDocumentTVItemID</mat-label>
-              <input matInput type="number" formControlName="AnalysisDocumentTVItemID">
-              <mat-error *ngIf="polsourcesiteeffectFormPut.controls.AnalysisDocumentTVItemID.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>LastUpdateDate_UTC</mat-label>
-              <input matInput type="text" formControlName="LastUpdateDate_UTC">
-              <mat-error *ngIf="polsourcesiteeffectFormPut.controls.LastUpdateDate_UTC.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>LastUpdateContactTVItemID</mat-label>
-              <input matInput type="number" formControlName="LastUpdateContactTVItemID">
-              <mat-error *ngIf="polsourcesiteeffectFormPut.controls.LastUpdateContactTVItemID.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-          </p>
-        </form>
-      </blockquote>
-    </div>
-  </mat-card-content>
-</mat-card>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<mat-card>
-  <mat-card-header>
-    <mat-card-title>Add PolSourceSiteEffect testing</mat-card-title>
-  </mat-card-header>
-  <mat-card-content>
-    <div *ngIf="polsourcesiteeffectService.polsourcesiteeffectListModel$.getValue()?.length">
-      <blockquote>
-        <form [formGroup]="polsourcesiteeffectFormPost" (ngSubmit)="PostPolSourceSiteEffect(polsourcesiteeffectFormPost.value)">
-          <h3>
-            PolSourceSiteEffect
-            <button mat-raised-button type="submit">
-              <span>Add PolSourceSiteEffect</span>
-            </button>
-            <mat-progress-bar mode="indeterminate" *ngIf="polsourcesiteeffectService.polsourcesiteeffectPostModel$.getValue().Working">
-            </mat-progress-bar>
-          </h3>
-          <p>
-            <mat-form-field>
-              <mat-label>PolSourceSiteEffectID</mat-label>
-              <input matInput type="number" formControlName="PolSourceSiteEffectID">
-              <mat-error *ngIf="polsourcesiteeffectFormPut.controls.PolSourceSiteEffectID.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>PolSourceSiteOrInfrastructureTVItemID</mat-label>
-              <input matInput type="number" formControlName="PolSourceSiteOrInfrastructureTVItemID">
-              <mat-error *ngIf="polsourcesiteeffectFormPut.controls.PolSourceSiteOrInfrastructureTVItemID.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>MWQMSiteTVItemID</mat-label>
-              <input matInput type="number" formControlName="MWQMSiteTVItemID">
-              <mat-error *ngIf="polsourcesiteeffectFormPut.controls.MWQMSiteTVItemID.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>PolSourceSiteEffectTermIDs</mat-label>
-              <input matInput type="text" formControlName="PolSourceSiteEffectTermIDs">
-              <mat-error *ngIf="polsourcesiteeffectFormPut.controls.PolSourceSiteEffectTermIDs.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.maxlength">MaxLength - 250<br /></span>
-              </mat-error>
-            </mat-form-field>
-          </p>
-          <p>
-            <mat-form-field>
-              <mat-label>Comments</mat-label>
-              <input matInput type="text" formControlName="Comments">
-              <mat-error *ngIf="polsourcesiteeffectFormPut.controls.Comments.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>AnalysisDocumentTVItemID</mat-label>
-              <input matInput type="number" formControlName="AnalysisDocumentTVItemID">
-              <mat-error *ngIf="polsourcesiteeffectFormPut.controls.AnalysisDocumentTVItemID.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>LastUpdateDate_UTC</mat-label>
-              <input matInput type="text" formControlName="LastUpdateDate_UTC">
-              <mat-error *ngIf="polsourcesiteeffectFormPut.controls.LastUpdateDate_UTC.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>LastUpdateContactTVItemID</mat-label>
-              <input matInput type="number" formControlName="LastUpdateContactTVItemID">
-              <mat-error *ngIf="polsourcesiteeffectFormPut.controls.LastUpdateContactTVItemID.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-          </p>
-        </form>
-      </blockquote>
-    </div>
-  </mat-card-content>
 </mat-card>

@@ -10,7 +10,6 @@ import { TideLocationService } from './tidelocation.service';
 import { LoadLocalesTideLocationText } from './tidelocation.locales';
 import { Subscription } from 'rxjs';
 import { TideLocation } from '../../../models/generated/TideLocation.model';
-import { FormBuilder, Validators, FormGroup } from '@angular/forms';
 import { HttpClientService } from '../../../services/http-client.service';
 import { Router } from '@angular/router';
 import { HttpClientCommand } from '../../../enums/app.enums';
@@ -23,23 +22,63 @@ import { HttpClientCommand } from '../../../enums/app.enums';
 })
 export class TideLocationComponent implements OnInit, OnDestroy {
   sub: Subscription;
-  tidelocationFormPut: FormGroup;
-  tidelocationFormPost: FormGroup;
+  IDToShow: number;
+  showType?: HttpClientCommand = null;
 
-  constructor(public tidelocationService: TideLocationService, private router: Router, private httpClientService: HttpClientService, private fb: FormBuilder) {
+  constructor(public tidelocationService: TideLocationService, private router: Router, private httpClientService: HttpClientService) {
     httpClientService.oldURL = router.url;
+  }
+
+  GetPutButtonColor(tidelocation: TideLocation) {
+    if (this.IDToShow === tidelocation.TideLocationID && this.showType === HttpClientCommand.Put) {
+      return 'primary';
+    }
+    else {
+      return 'basic';
+    }
+  }
+
+  GetPostButtonColor(tidelocation: TideLocation) {
+    if (this.IDToShow === tidelocation.TideLocationID && this.showType === HttpClientCommand.Post) {
+      return 'primary';
+    }
+    else {
+      return 'basic';
+    }
+  }
+
+  ShowPut(tidelocation: TideLocation) {
+    if (this.IDToShow === tidelocation.TideLocationID && this.showType === HttpClientCommand.Put) {
+      this.IDToShow = 0;
+      this.showType = null;
+    }
+    else {
+      this.IDToShow = tidelocation.TideLocationID;
+      this.showType = HttpClientCommand.Put;
+    }
+  }
+
+  ShowPost(tidelocation: TideLocation) {
+    if (this.IDToShow === tidelocation.TideLocationID && this.showType === HttpClientCommand.Post) {
+      this.IDToShow = 0;
+      this.showType = null;
+    }
+    else {
+      this.IDToShow = tidelocation.TideLocationID;
+      this.showType = HttpClientCommand.Post;
+    }
+  }
+
+  GetPutEnum() {
+    return <number>HttpClientCommand.Put;
+  }
+
+  GetPostEnum() {
+    return <number>HttpClientCommand.Post;
   }
 
   GetTideLocationList() {
     this.sub = this.tidelocationService.GetTideLocationList().subscribe();
-  }
-
-  PutTideLocation(tidelocation: TideLocation) {
-    this.sub = this.tidelocationService.PutTideLocation(tidelocation).subscribe();
-  }
-
-  PostTideLocation(tidelocation: TideLocation) {
-    this.sub = this.tidelocationService.PostTideLocation(tidelocation).subscribe();
   }
 
   DeleteTideLocation(tidelocation: TideLocation) {
@@ -48,74 +87,11 @@ export class TideLocationComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     LoadLocalesTideLocationText(this.tidelocationService);
-    this.FillFormBuilderGroup(HttpClientCommand.Post);
-    this.FillFormBuilderGroup(HttpClientCommand.Put);
   }
 
   ngOnDestroy() {
     if (this.sub) {
       this.sub.unsubscribe();
-    }
-  }
-
-  FillFormBuilderGroup(httpClientCommand: HttpClientCommand) {
-    if (this.tidelocationService.tidelocationListModel$.getValue().length) {
-      let formGroup: FormGroup = this.fb.group(
-        {
-          TideLocationID: [
-            {
-              value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.tidelocationService.tidelocationListModel$.getValue()[0]?.TideLocationID)),
-              disabled: false
-            }, [  Validators.required ]],
-          Zone: [
-            {
-              value: this.tidelocationService.tidelocationListModel$.getValue()[0]?.Zone,
-              disabled: false
-            }, [  Validators.required, Validators.min(0), Validators.max(10000) ]],
-          Name: [
-            {
-              value: this.tidelocationService.tidelocationListModel$.getValue()[0]?.Name,
-              disabled: false
-            }, [  Validators.required, Validators.maxLength(100) ]],
-          Prov: [
-            {
-              value: this.tidelocationService.tidelocationListModel$.getValue()[0]?.Prov,
-              disabled: false
-            }, [  Validators.required, Validators.maxLength(100) ]],
-          sid: [
-            {
-              value: this.tidelocationService.tidelocationListModel$.getValue()[0]?.sid,
-              disabled: false
-            }, [  Validators.required, Validators.min(0), Validators.max(100000) ]],
-          Lat: [
-            {
-              value: this.tidelocationService.tidelocationListModel$.getValue()[0]?.Lat,
-              disabled: false
-            }, [  Validators.required, Validators.min(-90), Validators.max(90) ]],
-          Lng: [
-            {
-              value: this.tidelocationService.tidelocationListModel$.getValue()[0]?.Lng,
-              disabled: false
-            }, [  Validators.required, Validators.min(-180), Validators.max(180) ]],
-          LastUpdateDate_UTC: [
-            {
-              value: this.tidelocationService.tidelocationListModel$.getValue()[0]?.LastUpdateDate_UTC,
-              disabled: false
-            }, [  Validators.required ]],
-          LastUpdateContactTVItemID: [
-            {
-              value: this.tidelocationService.tidelocationListModel$.getValue()[0]?.LastUpdateContactTVItemID,
-              disabled: false
-            }, [  Validators.required ]],
-        }
-      );
-
-      if (httpClientCommand === HttpClientCommand.Post) {
-        this.tidelocationFormPost = formGroup
-      }
-      else {
-        this.tidelocationFormPut = formGroup;
-      }
     }
   }
 }

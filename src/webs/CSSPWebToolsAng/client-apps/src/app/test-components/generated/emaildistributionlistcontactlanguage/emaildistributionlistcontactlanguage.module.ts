@@ -12,9 +12,10 @@ import { EmailDistributionListContactLanguageRoutingModule } from './emaildistri
 import { MaterialModule } from '../../../app-material.module';
 import { EmailDistributionListContactLanguageComponent } from './emaildistributionlistcontactlanguage.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { EmailDistributionListContactLanguageEditComponent } from './emaildistributionlistcontactlanguage-edit.component';
 
 @NgModule({
-  declarations: [ EmailDistributionListContactLanguageComponent ],
+  declarations: [EmailDistributionListContactLanguageComponent, EmailDistributionListContactLanguageEditComponent],
   imports: [
     CommonModule,
     RouterModule,

@@ -12,9 +12,10 @@ import { PolSourceObservationRoutingModule } from './polsourceobservation-routin
 import { MaterialModule } from '../../../app-material.module';
 import { PolSourceObservationComponent } from './polsourceobservation.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { PolSourceObservationEditComponent } from './polsourceobservation-edit.component';
 
 @NgModule({
-  declarations: [ PolSourceObservationComponent ],
+  declarations: [PolSourceObservationComponent, PolSourceObservationEditComponent],
   imports: [
     CommonModule,
     RouterModule,

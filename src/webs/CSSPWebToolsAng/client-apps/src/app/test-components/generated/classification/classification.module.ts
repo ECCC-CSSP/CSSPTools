@@ -12,9 +12,10 @@ import { ClassificationRoutingModule } from './classification-routing.module';
 import { MaterialModule } from '../../../app-material.module';
 import { ClassificationComponent } from './classification.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ClassificationEditComponent } from './classification-edit.component';
 
 @NgModule({
-  declarations: [ ClassificationComponent ],
+  declarations: [ClassificationComponent, ClassificationEditComponent],
   imports: [
     CommonModule,
     RouterModule,

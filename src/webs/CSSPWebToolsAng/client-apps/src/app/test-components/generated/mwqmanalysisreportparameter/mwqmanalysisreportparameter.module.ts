@@ -12,9 +12,10 @@ import { MWQMAnalysisReportParameterRoutingModule } from './mwqmanalysisreportpa
 import { MaterialModule } from '../../../app-material.module';
 import { MWQMAnalysisReportParameterComponent } from './mwqmanalysisreportparameter.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MWQMAnalysisReportParameterEditComponent } from './mwqmanalysisreportparameter-edit.component';
 
 @NgModule({
-  declarations: [ MWQMAnalysisReportParameterComponent ],
+  declarations: [MWQMAnalysisReportParameterComponent, MWQMAnalysisReportParameterEditComponent],
   imports: [
     CommonModule,
     RouterModule,

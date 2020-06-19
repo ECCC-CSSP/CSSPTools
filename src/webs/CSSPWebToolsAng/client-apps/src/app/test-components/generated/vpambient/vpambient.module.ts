@@ -12,9 +12,10 @@ import { VPAmbientRoutingModule } from './vpambient-routing.module';
 import { MaterialModule } from '../../../app-material.module';
 import { VPAmbientComponent } from './vpambient.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { VPAmbientEditComponent } from './vpambient-edit.component';
 
 @NgModule({
-  declarations: [ VPAmbientComponent ],
+  declarations: [VPAmbientComponent, VPAmbientEditComponent],
   imports: [
     CommonModule,
     RouterModule,

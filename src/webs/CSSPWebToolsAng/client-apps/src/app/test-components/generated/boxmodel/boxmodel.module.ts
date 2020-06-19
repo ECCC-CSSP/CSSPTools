@@ -12,9 +12,10 @@ import { BoxModelRoutingModule } from './boxmodel-routing.module';
 import { MaterialModule } from '../../../app-material.module';
 import { BoxModelComponent } from './boxmodel.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { BoxModelEditComponent } from './boxmodel-edit.component';
 
 @NgModule({
-  declarations: [ BoxModelComponent ],
+  declarations: [BoxModelComponent, BoxModelEditComponent],
   imports: [
     CommonModule,
     RouterModule,

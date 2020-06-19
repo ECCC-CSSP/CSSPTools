@@ -12,9 +12,10 @@ import { HydrometricSiteRoutingModule } from './hydrometricsite-routing.module';
 import { MaterialModule } from '../../../app-material.module';
 import { HydrometricSiteComponent } from './hydrometricsite.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { HydrometricSiteEditComponent } from './hydrometricsite-edit.component';
 
 @NgModule({
-  declarations: [ HydrometricSiteComponent ],
+  declarations: [HydrometricSiteComponent, HydrometricSiteEditComponent],
   imports: [
     CommonModule,
     RouterModule,

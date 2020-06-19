@@ -9,11 +9,9 @@ import { Component, OnInit, OnDestroy, ChangeDetectionStrategy } from '@angular/
 import { DocTemplateService } from './doctemplate.service';
 import { LoadLocalesDocTemplateText } from './doctemplate.locales';
 import { Subscription } from 'rxjs';
-import { LanguageEnum_GetIDText, LanguageEnum_GetOrderedText } from '../../../enums/generated/LanguageEnum';
-import { TVTypeEnum_GetIDText, TVTypeEnum_GetOrderedText } from '../../../enums/generated/TVTypeEnum';
+import { LanguageEnum_GetIDText } from '../../../enums/generated/LanguageEnum';
+import { TVTypeEnum_GetIDText } from '../../../enums/generated/TVTypeEnum';
 import { DocTemplate } from '../../../models/generated/DocTemplate.model';
-import { FormBuilder, Validators, FormGroup } from '@angular/forms';
-import { EnumIDAndText } from '../../../models/enumidandtext.model';
 import { HttpClientService } from '../../../services/http-client.service';
 import { Router } from '@angular/router';
 import { HttpClientCommand } from '../../../enums/app.enums';
@@ -26,25 +24,63 @@ import { HttpClientCommand } from '../../../enums/app.enums';
 })
 export class DocTemplateComponent implements OnInit, OnDestroy {
   sub: Subscription;
-  languageList: EnumIDAndText[];
-  tVTypeList: EnumIDAndText[];
-  doctemplateFormPut: FormGroup;
-  doctemplateFormPost: FormGroup;
+  IDToShow: number;
+  showType?: HttpClientCommand = null;
 
-  constructor(public doctemplateService: DocTemplateService, private router: Router, private httpClientService: HttpClientService, private fb: FormBuilder) {
+  constructor(public doctemplateService: DocTemplateService, private router: Router, private httpClientService: HttpClientService) {
     httpClientService.oldURL = router.url;
+  }
+
+  GetPutButtonColor(doctemplate: DocTemplate) {
+    if (this.IDToShow === doctemplate.DocTemplateID && this.showType === HttpClientCommand.Put) {
+      return 'primary';
+    }
+    else {
+      return 'basic';
+    }
+  }
+
+  GetPostButtonColor(doctemplate: DocTemplate) {
+    if (this.IDToShow === doctemplate.DocTemplateID && this.showType === HttpClientCommand.Post) {
+      return 'primary';
+    }
+    else {
+      return 'basic';
+    }
+  }
+
+  ShowPut(doctemplate: DocTemplate) {
+    if (this.IDToShow === doctemplate.DocTemplateID && this.showType === HttpClientCommand.Put) {
+      this.IDToShow = 0;
+      this.showType = null;
+    }
+    else {
+      this.IDToShow = doctemplate.DocTemplateID;
+      this.showType = HttpClientCommand.Put;
+    }
+  }
+
+  ShowPost(doctemplate: DocTemplate) {
+    if (this.IDToShow === doctemplate.DocTemplateID && this.showType === HttpClientCommand.Post) {
+      this.IDToShow = 0;
+      this.showType = null;
+    }
+    else {
+      this.IDToShow = doctemplate.DocTemplateID;
+      this.showType = HttpClientCommand.Post;
+    }
+  }
+
+  GetPutEnum() {
+    return <number>HttpClientCommand.Put;
+  }
+
+  GetPostEnum() {
+    return <number>HttpClientCommand.Post;
   }
 
   GetDocTemplateList() {
     this.sub = this.doctemplateService.GetDocTemplateList().subscribe();
-  }
-
-  PutDocTemplate(doctemplate: DocTemplate) {
-    this.sub = this.doctemplateService.PutDocTemplate(doctemplate).subscribe();
-  }
-
-  PostDocTemplate(doctemplate: DocTemplate) {
-    this.sub = this.doctemplateService.PostDocTemplate(doctemplate).subscribe();
   }
 
   DeleteDocTemplate(doctemplate: DocTemplate) {
@@ -61,66 +97,11 @@ export class DocTemplateComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     LoadLocalesDocTemplateText(this.doctemplateService);
-    this.languageList = LanguageEnum_GetOrderedText();
-    this.tVTypeList = TVTypeEnum_GetOrderedText();
-    this.FillFormBuilderGroup(HttpClientCommand.Post);
-    this.FillFormBuilderGroup(HttpClientCommand.Put);
   }
 
   ngOnDestroy() {
     if (this.sub) {
       this.sub.unsubscribe();
-    }
-  }
-
-  FillFormBuilderGroup(httpClientCommand: HttpClientCommand) {
-    if (this.doctemplateService.doctemplateListModel$.getValue().length) {
-      let formGroup: FormGroup = this.fb.group(
-        {
-          DocTemplateID: [
-            {
-              value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.doctemplateService.doctemplateListModel$.getValue()[0]?.DocTemplateID)),
-              disabled: false
-            }, [  Validators.required ]],
-          Language: [
-            {
-              value: this.doctemplateService.doctemplateListModel$.getValue()[0]?.Language,
-              disabled: false
-            }, [  Validators.required ]],
-          TVType: [
-            {
-              value: this.doctemplateService.doctemplateListModel$.getValue()[0]?.TVType,
-              disabled: false
-            }, [  Validators.required ]],
-          TVFileTVItemID: [
-            {
-              value: this.doctemplateService.doctemplateListModel$.getValue()[0]?.TVFileTVItemID,
-              disabled: false
-            }, [  Validators.required ]],
-          FileName: [
-            {
-              value: this.doctemplateService.doctemplateListModel$.getValue()[0]?.FileName,
-              disabled: false
-            }, [  Validators.required, Validators.maxLength(150) ]],
-          LastUpdateDate_UTC: [
-            {
-              value: this.doctemplateService.doctemplateListModel$.getValue()[0]?.LastUpdateDate_UTC,
-              disabled: false
-            }, [  Validators.required ]],
-          LastUpdateContactTVItemID: [
-            {
-              value: this.doctemplateService.doctemplateListModel$.getValue()[0]?.LastUpdateContactTVItemID,
-              disabled: false
-            }, [  Validators.required ]],
-        }
-      );
-
-      if (httpClientCommand === HttpClientCommand.Post) {
-        this.doctemplateFormPost = formGroup
-      }
-      else {
-        this.doctemplateFormPut = formGroup;
-      }
     }
   }
 }

@@ -10,7 +10,6 @@ import { SpillService } from './spill.service';
 import { LoadLocalesSpillText } from './spill.locales';
 import { Subscription } from 'rxjs';
 import { Spill } from '../../../models/generated/Spill.model';
-import { FormBuilder, Validators, FormGroup } from '@angular/forms';
 import { HttpClientService } from '../../../services/http-client.service';
 import { Router } from '@angular/router';
 import { HttpClientCommand } from '../../../enums/app.enums';
@@ -23,23 +22,63 @@ import { HttpClientCommand } from '../../../enums/app.enums';
 })
 export class SpillComponent implements OnInit, OnDestroy {
   sub: Subscription;
-  spillFormPut: FormGroup;
-  spillFormPost: FormGroup;
+  IDToShow: number;
+  showType?: HttpClientCommand = null;
 
-  constructor(public spillService: SpillService, private router: Router, private httpClientService: HttpClientService, private fb: FormBuilder) {
+  constructor(public spillService: SpillService, private router: Router, private httpClientService: HttpClientService) {
     httpClientService.oldURL = router.url;
+  }
+
+  GetPutButtonColor(spill: Spill) {
+    if (this.IDToShow === spill.SpillID && this.showType === HttpClientCommand.Put) {
+      return 'primary';
+    }
+    else {
+      return 'basic';
+    }
+  }
+
+  GetPostButtonColor(spill: Spill) {
+    if (this.IDToShow === spill.SpillID && this.showType === HttpClientCommand.Post) {
+      return 'primary';
+    }
+    else {
+      return 'basic';
+    }
+  }
+
+  ShowPut(spill: Spill) {
+    if (this.IDToShow === spill.SpillID && this.showType === HttpClientCommand.Put) {
+      this.IDToShow = 0;
+      this.showType = null;
+    }
+    else {
+      this.IDToShow = spill.SpillID;
+      this.showType = HttpClientCommand.Put;
+    }
+  }
+
+  ShowPost(spill: Spill) {
+    if (this.IDToShow === spill.SpillID && this.showType === HttpClientCommand.Post) {
+      this.IDToShow = 0;
+      this.showType = null;
+    }
+    else {
+      this.IDToShow = spill.SpillID;
+      this.showType = HttpClientCommand.Post;
+    }
+  }
+
+  GetPutEnum() {
+    return <number>HttpClientCommand.Put;
+  }
+
+  GetPostEnum() {
+    return <number>HttpClientCommand.Post;
   }
 
   GetSpillList() {
     this.sub = this.spillService.GetSpillList().subscribe();
-  }
-
-  PutSpill(spill: Spill) {
-    this.sub = this.spillService.PutSpill(spill).subscribe();
-  }
-
-  PostSpill(spill: Spill) {
-    this.sub = this.spillService.PostSpill(spill).subscribe();
   }
 
   DeleteSpill(spill: Spill) {
@@ -48,69 +87,11 @@ export class SpillComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     LoadLocalesSpillText(this.spillService);
-    this.FillFormBuilderGroup(HttpClientCommand.Post);
-    this.FillFormBuilderGroup(HttpClientCommand.Put);
   }
 
   ngOnDestroy() {
     if (this.sub) {
       this.sub.unsubscribe();
-    }
-  }
-
-  FillFormBuilderGroup(httpClientCommand: HttpClientCommand) {
-    if (this.spillService.spillListModel$.getValue().length) {
-      let formGroup: FormGroup = this.fb.group(
-        {
-          SpillID: [
-            {
-              value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.spillService.spillListModel$.getValue()[0]?.SpillID)),
-              disabled: false
-            }, [  Validators.required ]],
-          MunicipalityTVItemID: [
-            {
-              value: this.spillService.spillListModel$.getValue()[0]?.MunicipalityTVItemID,
-              disabled: false
-            }, [  Validators.required ]],
-          InfrastructureTVItemID: [
-            {
-              value: this.spillService.spillListModel$.getValue()[0]?.InfrastructureTVItemID,
-              disabled: false
-            }],
-          StartDateTime_Local: [
-            {
-              value: this.spillService.spillListModel$.getValue()[0]?.StartDateTime_Local,
-              disabled: false
-            }, [  Validators.required ]],
-          EndDateTime_Local: [
-            {
-              value: this.spillService.spillListModel$.getValue()[0]?.EndDateTime_Local,
-              disabled: false
-            }],
-          AverageFlow_m3_day: [
-            {
-              value: this.spillService.spillListModel$.getValue()[0]?.AverageFlow_m3_day,
-              disabled: false
-            }, [  Validators.required, Validators.min(0), Validators.max(1000000) ]],
-          LastUpdateDate_UTC: [
-            {
-              value: this.spillService.spillListModel$.getValue()[0]?.LastUpdateDate_UTC,
-              disabled: false
-            }, [  Validators.required ]],
-          LastUpdateContactTVItemID: [
-            {
-              value: this.spillService.spillListModel$.getValue()[0]?.LastUpdateContactTVItemID,
-              disabled: false
-            }, [  Validators.required ]],
-        }
-      );
-
-      if (httpClientCommand === HttpClientCommand.Post) {
-        this.spillFormPost = formGroup
-      }
-      else {
-        this.spillFormPut = formGroup;
-      }
     }
   }
 }

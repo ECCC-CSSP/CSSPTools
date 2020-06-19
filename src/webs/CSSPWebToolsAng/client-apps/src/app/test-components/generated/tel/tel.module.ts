@@ -12,9 +12,10 @@ import { TelRoutingModule } from './tel-routing.module';
 import { MaterialModule } from '../../../app-material.module';
 import { TelComponent } from './tel.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { TelEditComponent } from './tel-edit.component';
 
 @NgModule({
-  declarations: [ TelComponent ],
+  declarations: [TelComponent, TelEditComponent],
   imports: [
     CommonModule,
     RouterModule,

@@ -64,69 +64,69 @@ export class AddressEditComponent implements OnInit, OnDestroy {
         {
           AddressID: [
             {
-              value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.address?.AddressID)),
+              value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.addressService.addressListModel$.getValue()[0]?.AddressID)),
               disabled: false
-            }, [Validators.required]],
+            }, [  Validators.required ]],
           AddressTVItemID: [
             {
-              value: this.address?.AddressTVItemID,
+              value: this.addressService.addressListModel$.getValue()[0]?.AddressTVItemID,
               disabled: false
-            }, [Validators.required]],
+            }, [  Validators.required ]],
           AddressType: [
             {
-              value: this.address?.AddressType,
+              value: this.addressService.addressListModel$.getValue()[0]?.AddressType,
               disabled: false
-            }, [Validators.required]],
+            }, [  Validators.required ]],
           CountryTVItemID: [
             {
-              value: this.address?.CountryTVItemID,
+              value: this.addressService.addressListModel$.getValue()[0]?.CountryTVItemID,
               disabled: false
-            }, [Validators.required]],
+            }, [  Validators.required ]],
           ProvinceTVItemID: [
             {
-              value: this.address?.ProvinceTVItemID,
+              value: this.addressService.addressListModel$.getValue()[0]?.ProvinceTVItemID,
               disabled: false
-            }, [Validators.required]],
+            }, [  Validators.required ]],
           MunicipalityTVItemID: [
             {
-              value: this.address?.MunicipalityTVItemID,
+              value: this.addressService.addressListModel$.getValue()[0]?.MunicipalityTVItemID,
               disabled: false
-            }, [Validators.required]],
+            }, [  Validators.required ]],
           StreetName: [
             {
-              value: this.address?.StreetName,
+              value: this.addressService.addressListModel$.getValue()[0]?.StreetName,
               disabled: false
-            }, [Validators.maxLength(200)]],
+            }, [  Validators.maxLength(200) ]],
           StreetNumber: [
             {
-              value: this.address?.StreetNumber,
+              value: this.addressService.addressListModel$.getValue()[0]?.StreetNumber,
               disabled: false
-            }, [Validators.maxLength(50)]],
+            }, [  Validators.maxLength(50) ]],
           StreetType: [
             {
-              value: this.address?.StreetType,
+              value: this.addressService.addressListModel$.getValue()[0]?.StreetType,
               disabled: false
             }],
           PostalCode: [
             {
-              value: this.address?.PostalCode,
+              value: this.addressService.addressListModel$.getValue()[0]?.PostalCode,
               disabled: false
-            }, [Validators.minLength(6), Validators.maxLength(11)]],
+            }, [  Validators.minLength(6), Validators.maxLength(11) ]],
           GoogleAddressText: [
             {
-              value: this.address?.GoogleAddressText,
+              value: this.addressService.addressListModel$.getValue()[0]?.GoogleAddressText,
               disabled: false
-            }, [Validators.minLength(10), Validators.maxLength(200)]],
+            }, [  Validators.minLength(10), Validators.maxLength(200) ]],
           LastUpdateDate_UTC: [
             {
-              value: this.address?.LastUpdateDate_UTC,
+              value: this.addressService.addressListModel$.getValue()[0]?.LastUpdateDate_UTC,
               disabled: false
-            }, [Validators.required]],
+            }, [  Validators.required ]],
           LastUpdateContactTVItemID: [
             {
-              value: this.address?.LastUpdateContactTVItemID,
+              value: this.addressService.addressListModel$.getValue()[0]?.LastUpdateContactTVItemID,
               disabled: false
-            }, [Validators.required]],
+            }, [  Validators.required ]],
         }
       );
 

@@ -12,9 +12,10 @@ import { ResetPasswordRoutingModule } from './resetpassword-routing.module';
 import { MaterialModule } from '../../../app-material.module';
 import { ResetPasswordComponent } from './resetpassword.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ResetPasswordEditComponent } from './resetpassword-edit.component';
 
 @NgModule({
-  declarations: [ ResetPasswordComponent ],
+  declarations: [ResetPasswordComponent, ResetPasswordEditComponent],
   imports: [
     CommonModule,
     RouterModule,

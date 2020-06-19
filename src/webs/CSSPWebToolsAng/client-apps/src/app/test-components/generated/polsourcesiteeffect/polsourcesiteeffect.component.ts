@@ -10,7 +10,6 @@ import { PolSourceSiteEffectService } from './polsourcesiteeffect.service';
 import { LoadLocalesPolSourceSiteEffectText } from './polsourcesiteeffect.locales';
 import { Subscription } from 'rxjs';
 import { PolSourceSiteEffect } from '../../../models/generated/PolSourceSiteEffect.model';
-import { FormBuilder, Validators, FormGroup } from '@angular/forms';
 import { HttpClientService } from '../../../services/http-client.service';
 import { Router } from '@angular/router';
 import { HttpClientCommand } from '../../../enums/app.enums';
@@ -23,23 +22,63 @@ import { HttpClientCommand } from '../../../enums/app.enums';
 })
 export class PolSourceSiteEffectComponent implements OnInit, OnDestroy {
   sub: Subscription;
-  polsourcesiteeffectFormPut: FormGroup;
-  polsourcesiteeffectFormPost: FormGroup;
+  IDToShow: number;
+  showType?: HttpClientCommand = null;
 
-  constructor(public polsourcesiteeffectService: PolSourceSiteEffectService, private router: Router, private httpClientService: HttpClientService, private fb: FormBuilder) {
+  constructor(public polsourcesiteeffectService: PolSourceSiteEffectService, private router: Router, private httpClientService: HttpClientService) {
     httpClientService.oldURL = router.url;
+  }
+
+  GetPutButtonColor(polsourcesiteeffect: PolSourceSiteEffect) {
+    if (this.IDToShow === polsourcesiteeffect.PolSourceSiteEffectID && this.showType === HttpClientCommand.Put) {
+      return 'primary';
+    }
+    else {
+      return 'basic';
+    }
+  }
+
+  GetPostButtonColor(polsourcesiteeffect: PolSourceSiteEffect) {
+    if (this.IDToShow === polsourcesiteeffect.PolSourceSiteEffectID && this.showType === HttpClientCommand.Post) {
+      return 'primary';
+    }
+    else {
+      return 'basic';
+    }
+  }
+
+  ShowPut(polsourcesiteeffect: PolSourceSiteEffect) {
+    if (this.IDToShow === polsourcesiteeffect.PolSourceSiteEffectID && this.showType === HttpClientCommand.Put) {
+      this.IDToShow = 0;
+      this.showType = null;
+    }
+    else {
+      this.IDToShow = polsourcesiteeffect.PolSourceSiteEffectID;
+      this.showType = HttpClientCommand.Put;
+    }
+  }
+
+  ShowPost(polsourcesiteeffect: PolSourceSiteEffect) {
+    if (this.IDToShow === polsourcesiteeffect.PolSourceSiteEffectID && this.showType === HttpClientCommand.Post) {
+      this.IDToShow = 0;
+      this.showType = null;
+    }
+    else {
+      this.IDToShow = polsourcesiteeffect.PolSourceSiteEffectID;
+      this.showType = HttpClientCommand.Post;
+    }
+  }
+
+  GetPutEnum() {
+    return <number>HttpClientCommand.Put;
+  }
+
+  GetPostEnum() {
+    return <number>HttpClientCommand.Post;
   }
 
   GetPolSourceSiteEffectList() {
     this.sub = this.polsourcesiteeffectService.GetPolSourceSiteEffectList().subscribe();
-  }
-
-  PutPolSourceSiteEffect(polsourcesiteeffect: PolSourceSiteEffect) {
-    this.sub = this.polsourcesiteeffectService.PutPolSourceSiteEffect(polsourcesiteeffect).subscribe();
-  }
-
-  PostPolSourceSiteEffect(polsourcesiteeffect: PolSourceSiteEffect) {
-    this.sub = this.polsourcesiteeffectService.PostPolSourceSiteEffect(polsourcesiteeffect).subscribe();
   }
 
   DeletePolSourceSiteEffect(polsourcesiteeffect: PolSourceSiteEffect) {
@@ -48,69 +87,11 @@ export class PolSourceSiteEffectComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     LoadLocalesPolSourceSiteEffectText(this.polsourcesiteeffectService);
-    this.FillFormBuilderGroup(HttpClientCommand.Post);
-    this.FillFormBuilderGroup(HttpClientCommand.Put);
   }
 
   ngOnDestroy() {
     if (this.sub) {
       this.sub.unsubscribe();
-    }
-  }
-
-  FillFormBuilderGroup(httpClientCommand: HttpClientCommand) {
-    if (this.polsourcesiteeffectService.polsourcesiteeffectListModel$.getValue().length) {
-      let formGroup: FormGroup = this.fb.group(
-        {
-          PolSourceSiteEffectID: [
-            {
-              value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.polsourcesiteeffectService.polsourcesiteeffectListModel$.getValue()[0]?.PolSourceSiteEffectID)),
-              disabled: false
-            }, [  Validators.required ]],
-          PolSourceSiteOrInfrastructureTVItemID: [
-            {
-              value: this.polsourcesiteeffectService.polsourcesiteeffectListModel$.getValue()[0]?.PolSourceSiteOrInfrastructureTVItemID,
-              disabled: false
-            }, [  Validators.required ]],
-          MWQMSiteTVItemID: [
-            {
-              value: this.polsourcesiteeffectService.polsourcesiteeffectListModel$.getValue()[0]?.MWQMSiteTVItemID,
-              disabled: false
-            }, [  Validators.required ]],
-          PolSourceSiteEffectTermIDs: [
-            {
-              value: this.polsourcesiteeffectService.polsourcesiteeffectListModel$.getValue()[0]?.PolSourceSiteEffectTermIDs,
-              disabled: false
-            }, [  Validators.maxLength(250) ]],
-          Comments: [
-            {
-              value: this.polsourcesiteeffectService.polsourcesiteeffectListModel$.getValue()[0]?.Comments,
-              disabled: false
-            }],
-          AnalysisDocumentTVItemID: [
-            {
-              value: this.polsourcesiteeffectService.polsourcesiteeffectListModel$.getValue()[0]?.AnalysisDocumentTVItemID,
-              disabled: false
-            }],
-          LastUpdateDate_UTC: [
-            {
-              value: this.polsourcesiteeffectService.polsourcesiteeffectListModel$.getValue()[0]?.LastUpdateDate_UTC,
-              disabled: false
-            }, [  Validators.required ]],
-          LastUpdateContactTVItemID: [
-            {
-              value: this.polsourcesiteeffectService.polsourcesiteeffectListModel$.getValue()[0]?.LastUpdateContactTVItemID,
-              disabled: false
-            }, [  Validators.required ]],
-        }
-      );
-
-      if (httpClientCommand === HttpClientCommand.Post) {
-        this.polsourcesiteeffectFormPost = formGroup
-      }
-      else {
-        this.polsourcesiteeffectFormPut = formGroup;
-      }
     }
   }
 }

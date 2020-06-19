@@ -10,7 +10,6 @@ import { SamplingPlanSubsectorSiteService } from './samplingplansubsectorsite.se
 import { LoadLocalesSamplingPlanSubsectorSiteText } from './samplingplansubsectorsite.locales';
 import { Subscription } from 'rxjs';
 import { SamplingPlanSubsectorSite } from '../../../models/generated/SamplingPlanSubsectorSite.model';
-import { FormBuilder, Validators, FormGroup } from '@angular/forms';
 import { HttpClientService } from '../../../services/http-client.service';
 import { Router } from '@angular/router';
 import { HttpClientCommand } from '../../../enums/app.enums';
@@ -23,23 +22,63 @@ import { HttpClientCommand } from '../../../enums/app.enums';
 })
 export class SamplingPlanSubsectorSiteComponent implements OnInit, OnDestroy {
   sub: Subscription;
-  samplingplansubsectorsiteFormPut: FormGroup;
-  samplingplansubsectorsiteFormPost: FormGroup;
+  IDToShow: number;
+  showType?: HttpClientCommand = null;
 
-  constructor(public samplingplansubsectorsiteService: SamplingPlanSubsectorSiteService, private router: Router, private httpClientService: HttpClientService, private fb: FormBuilder) {
+  constructor(public samplingplansubsectorsiteService: SamplingPlanSubsectorSiteService, private router: Router, private httpClientService: HttpClientService) {
     httpClientService.oldURL = router.url;
+  }
+
+  GetPutButtonColor(samplingplansubsectorsite: SamplingPlanSubsectorSite) {
+    if (this.IDToShow === samplingplansubsectorsite.SamplingPlanSubsectorSiteID && this.showType === HttpClientCommand.Put) {
+      return 'primary';
+    }
+    else {
+      return 'basic';
+    }
+  }
+
+  GetPostButtonColor(samplingplansubsectorsite: SamplingPlanSubsectorSite) {
+    if (this.IDToShow === samplingplansubsectorsite.SamplingPlanSubsectorSiteID && this.showType === HttpClientCommand.Post) {
+      return 'primary';
+    }
+    else {
+      return 'basic';
+    }
+  }
+
+  ShowPut(samplingplansubsectorsite: SamplingPlanSubsectorSite) {
+    if (this.IDToShow === samplingplansubsectorsite.SamplingPlanSubsectorSiteID && this.showType === HttpClientCommand.Put) {
+      this.IDToShow = 0;
+      this.showType = null;
+    }
+    else {
+      this.IDToShow = samplingplansubsectorsite.SamplingPlanSubsectorSiteID;
+      this.showType = HttpClientCommand.Put;
+    }
+  }
+
+  ShowPost(samplingplansubsectorsite: SamplingPlanSubsectorSite) {
+    if (this.IDToShow === samplingplansubsectorsite.SamplingPlanSubsectorSiteID && this.showType === HttpClientCommand.Post) {
+      this.IDToShow = 0;
+      this.showType = null;
+    }
+    else {
+      this.IDToShow = samplingplansubsectorsite.SamplingPlanSubsectorSiteID;
+      this.showType = HttpClientCommand.Post;
+    }
+  }
+
+  GetPutEnum() {
+    return <number>HttpClientCommand.Put;
+  }
+
+  GetPostEnum() {
+    return <number>HttpClientCommand.Post;
   }
 
   GetSamplingPlanSubsectorSiteList() {
     this.sub = this.samplingplansubsectorsiteService.GetSamplingPlanSubsectorSiteList().subscribe();
-  }
-
-  PutSamplingPlanSubsectorSite(samplingplansubsectorsite: SamplingPlanSubsectorSite) {
-    this.sub = this.samplingplansubsectorsiteService.PutSamplingPlanSubsectorSite(samplingplansubsectorsite).subscribe();
-  }
-
-  PostSamplingPlanSubsectorSite(samplingplansubsectorsite: SamplingPlanSubsectorSite) {
-    this.sub = this.samplingplansubsectorsiteService.PostSamplingPlanSubsectorSite(samplingplansubsectorsite).subscribe();
   }
 
   DeleteSamplingPlanSubsectorSite(samplingplansubsectorsite: SamplingPlanSubsectorSite) {
@@ -48,59 +87,11 @@ export class SamplingPlanSubsectorSiteComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     LoadLocalesSamplingPlanSubsectorSiteText(this.samplingplansubsectorsiteService);
-    this.FillFormBuilderGroup(HttpClientCommand.Post);
-    this.FillFormBuilderGroup(HttpClientCommand.Put);
   }
 
   ngOnDestroy() {
     if (this.sub) {
       this.sub.unsubscribe();
-    }
-  }
-
-  FillFormBuilderGroup(httpClientCommand: HttpClientCommand) {
-    if (this.samplingplansubsectorsiteService.samplingplansubsectorsiteListModel$.getValue().length) {
-      let formGroup: FormGroup = this.fb.group(
-        {
-          SamplingPlanSubsectorSiteID: [
-            {
-              value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.samplingplansubsectorsiteService.samplingplansubsectorsiteListModel$.getValue()[0]?.SamplingPlanSubsectorSiteID)),
-              disabled: false
-            }, [  Validators.required ]],
-          SamplingPlanSubsectorID: [
-            {
-              value: this.samplingplansubsectorsiteService.samplingplansubsectorsiteListModel$.getValue()[0]?.SamplingPlanSubsectorID,
-              disabled: false
-            }, [  Validators.required ]],
-          MWQMSiteTVItemID: [
-            {
-              value: this.samplingplansubsectorsiteService.samplingplansubsectorsiteListModel$.getValue()[0]?.MWQMSiteTVItemID,
-              disabled: false
-            }, [  Validators.required ]],
-          IsDuplicate: [
-            {
-              value: this.samplingplansubsectorsiteService.samplingplansubsectorsiteListModel$.getValue()[0]?.IsDuplicate,
-              disabled: false
-            }, [  Validators.required ]],
-          LastUpdateDate_UTC: [
-            {
-              value: this.samplingplansubsectorsiteService.samplingplansubsectorsiteListModel$.getValue()[0]?.LastUpdateDate_UTC,
-              disabled: false
-            }, [  Validators.required ]],
-          LastUpdateContactTVItemID: [
-            {
-              value: this.samplingplansubsectorsiteService.samplingplansubsectorsiteListModel$.getValue()[0]?.LastUpdateContactTVItemID,
-              disabled: false
-            }, [  Validators.required ]],
-        }
-      );
-
-      if (httpClientCommand === HttpClientCommand.Post) {
-        this.samplingplansubsectorsiteFormPost = formGroup
-      }
-      else {
-        this.samplingplansubsectorsiteFormPut = formGroup;
-      }
     }
   }
 }

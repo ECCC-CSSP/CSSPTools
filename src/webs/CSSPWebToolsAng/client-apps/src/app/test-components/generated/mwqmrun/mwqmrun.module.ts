@@ -12,9 +12,10 @@ import { MWQMRunRoutingModule } from './mwqmrun-routing.module';
 import { MaterialModule } from '../../../app-material.module';
 import { MWQMRunComponent } from './mwqmrun.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MWQMRunEditComponent } from './mwqmrun-edit.component';
 
 @NgModule({
-  declarations: [ MWQMRunComponent ],
+  declarations: [MWQMRunComponent, MWQMRunEditComponent],
   imports: [
     CommonModule,
     RouterModule,

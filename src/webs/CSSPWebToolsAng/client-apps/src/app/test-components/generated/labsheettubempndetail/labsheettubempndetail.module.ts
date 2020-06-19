@@ -12,9 +12,10 @@ import { LabSheetTubeMPNDetailRoutingModule } from './labsheettubempndetail-rout
 import { MaterialModule } from '../../../app-material.module';
 import { LabSheetTubeMPNDetailComponent } from './labsheettubempndetail.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { LabSheetTubeMPNDetailEditComponent } from './labsheettubempndetail-edit.component';
 
 @NgModule({
-  declarations: [ LabSheetTubeMPNDetailComponent ],
+  declarations: [LabSheetTubeMPNDetailComponent, LabSheetTubeMPNDetailEditComponent],
   imports: [
     CommonModule,
     RouterModule,

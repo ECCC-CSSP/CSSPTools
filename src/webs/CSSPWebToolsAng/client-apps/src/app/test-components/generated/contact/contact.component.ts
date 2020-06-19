@@ -9,10 +9,8 @@ import { Component, OnInit, OnDestroy, ChangeDetectionStrategy } from '@angular/
 import { ContactService } from './contact.service';
 import { LoadLocalesContactText } from './contact.locales';
 import { Subscription } from 'rxjs';
-import { ContactTitleEnum_GetIDText, ContactTitleEnum_GetOrderedText } from '../../../enums/generated/ContactTitleEnum';
+import { ContactTitleEnum_GetIDText } from '../../../enums/generated/ContactTitleEnum';
 import { Contact } from '../../../models/generated/Contact.model';
-import { FormBuilder, Validators, FormGroup } from '@angular/forms';
-import { EnumIDAndText } from '../../../models/enumidandtext.model';
 import { HttpClientService } from '../../../services/http-client.service';
 import { Router } from '@angular/router';
 import { HttpClientCommand } from '../../../enums/app.enums';
@@ -25,24 +23,63 @@ import { HttpClientCommand } from '../../../enums/app.enums';
 })
 export class ContactComponent implements OnInit, OnDestroy {
   sub: Subscription;
-  contactTitleList: EnumIDAndText[];
-  contactFormPut: FormGroup;
-  contactFormPost: FormGroup;
+  IDToShow: number;
+  showType?: HttpClientCommand = null;
 
-  constructor(public contactService: ContactService, private router: Router, private httpClientService: HttpClientService, private fb: FormBuilder) {
+  constructor(public contactService: ContactService, private router: Router, private httpClientService: HttpClientService) {
     httpClientService.oldURL = router.url;
+  }
+
+  GetPutButtonColor(contact: Contact) {
+    if (this.IDToShow === contact.ContactID && this.showType === HttpClientCommand.Put) {
+      return 'primary';
+    }
+    else {
+      return 'basic';
+    }
+  }
+
+  GetPostButtonColor(contact: Contact) {
+    if (this.IDToShow === contact.ContactID && this.showType === HttpClientCommand.Post) {
+      return 'primary';
+    }
+    else {
+      return 'basic';
+    }
+  }
+
+  ShowPut(contact: Contact) {
+    if (this.IDToShow === contact.ContactID && this.showType === HttpClientCommand.Put) {
+      this.IDToShow = 0;
+      this.showType = null;
+    }
+    else {
+      this.IDToShow = contact.ContactID;
+      this.showType = HttpClientCommand.Put;
+    }
+  }
+
+  ShowPost(contact: Contact) {
+    if (this.IDToShow === contact.ContactID && this.showType === HttpClientCommand.Post) {
+      this.IDToShow = 0;
+      this.showType = null;
+    }
+    else {
+      this.IDToShow = contact.ContactID;
+      this.showType = HttpClientCommand.Post;
+    }
+  }
+
+  GetPutEnum() {
+    return <number>HttpClientCommand.Put;
+  }
+
+  GetPostEnum() {
+    return <number>HttpClientCommand.Post;
   }
 
   GetContactList() {
     this.sub = this.contactService.GetContactList().subscribe();
-  }
-
-  PutContact(contact: Contact) {
-    this.sub = this.contactService.PutContact(contact).subscribe();
-  }
-
-  PostContact(contact: Contact) {
-    this.sub = this.contactService.PostContact(contact).subscribe();
   }
 
   DeleteContact(contact: Contact) {
@@ -55,115 +92,11 @@ export class ContactComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     LoadLocalesContactText(this.contactService);
-    this.contactTitleList = ContactTitleEnum_GetOrderedText();
-    this.FillFormBuilderGroup(HttpClientCommand.Post);
-    this.FillFormBuilderGroup(HttpClientCommand.Put);
   }
 
   ngOnDestroy() {
     if (this.sub) {
       this.sub.unsubscribe();
-    }
-  }
-
-  FillFormBuilderGroup(httpClientCommand: HttpClientCommand) {
-    if (this.contactService.contactListModel$.getValue().length) {
-      let formGroup: FormGroup = this.fb.group(
-        {
-          ContactID: [
-            {
-              value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.contactService.contactListModel$.getValue()[0]?.ContactID)),
-              disabled: false
-            }, [  Validators.required ]],
-          Id: [
-            {
-              value: this.contactService.contactListModel$.getValue()[0]?.Id,
-              disabled: false
-            }, [  Validators.required, Validators.maxLength(128) ]],
-          ContactTVItemID: [
-            {
-              value: this.contactService.contactListModel$.getValue()[0]?.ContactTVItemID,
-              disabled: false
-            }, [  Validators.required ]],
-          LoginEmail: [
-            {
-              value: this.contactService.contactListModel$.getValue()[0]?.LoginEmail,
-              disabled: false
-            }, [  Validators.required, Validators.email, Validators.minLength(6), Validators.maxLength(255) ]],
-          FirstName: [
-            {
-              value: this.contactService.contactListModel$.getValue()[0]?.FirstName,
-              disabled: false
-            }, [  Validators.required, Validators.maxLength(100) ]],
-          LastName: [
-            {
-              value: this.contactService.contactListModel$.getValue()[0]?.LastName,
-              disabled: false
-            }, [  Validators.required, Validators.maxLength(100) ]],
-          Initial: [
-            {
-              value: this.contactService.contactListModel$.getValue()[0]?.Initial,
-              disabled: false
-            }, [  Validators.maxLength(50) ]],
-          WebName: [
-            {
-              value: this.contactService.contactListModel$.getValue()[0]?.WebName,
-              disabled: false
-            }, [  Validators.required, Validators.maxLength(100) ]],
-          ContactTitle: [
-            {
-              value: this.contactService.contactListModel$.getValue()[0]?.ContactTitle,
-              disabled: false
-            }],
-          IsAdmin: [
-            {
-              value: this.contactService.contactListModel$.getValue()[0]?.IsAdmin,
-              disabled: false
-            }, [  Validators.required ]],
-          EmailValidated: [
-            {
-              value: this.contactService.contactListModel$.getValue()[0]?.EmailValidated,
-              disabled: false
-            }, [  Validators.required ]],
-          Disabled: [
-            {
-              value: this.contactService.contactListModel$.getValue()[0]?.Disabled,
-              disabled: false
-            }, [  Validators.required ]],
-          IsNew: [
-            {
-              value: this.contactService.contactListModel$.getValue()[0]?.IsNew,
-              disabled: false
-            }, [  Validators.required ]],
-          SamplingPlanner_ProvincesTVItemID: [
-            {
-              value: this.contactService.contactListModel$.getValue()[0]?.SamplingPlanner_ProvincesTVItemID,
-              disabled: false
-            }, [  Validators.maxLength(200) ]],
-          Token: [
-            {
-              value: this.contactService.contactListModel$.getValue()[0]?.Token,
-              disabled: false
-            }, [  Validators.maxLength(255) ]],
-          LastUpdateDate_UTC: [
-            {
-              value: this.contactService.contactListModel$.getValue()[0]?.LastUpdateDate_UTC,
-              disabled: false
-            }, [  Validators.required ]],
-          LastUpdateContactTVItemID: [
-            {
-              value: this.contactService.contactListModel$.getValue()[0]?.LastUpdateContactTVItemID,
-              disabled: false
-            }, [  Validators.required ]],
-        }
-      );
-
-      if (httpClientCommand === HttpClientCommand.Post) {
-        this.contactFormPost = formGroup
-      }
-      else {
-        this.contactFormPut = formGroup;
-      }
     }
   }
 }

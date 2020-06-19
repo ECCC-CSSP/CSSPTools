@@ -12,9 +12,10 @@ import { PolSourceSiteEffectTermRoutingModule } from './polsourcesiteeffectterm-
 import { MaterialModule } from '../../../app-material.module';
 import { PolSourceSiteEffectTermComponent } from './polsourcesiteeffectterm.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { PolSourceSiteEffectTermEditComponent } from './polsourcesiteeffectterm-edit.component';
 
 @NgModule({
-  declarations: [ PolSourceSiteEffectTermComponent ],
+  declarations: [PolSourceSiteEffectTermComponent, PolSourceSiteEffectTermEditComponent],
   imports: [
     CommonModule,
     RouterModule,

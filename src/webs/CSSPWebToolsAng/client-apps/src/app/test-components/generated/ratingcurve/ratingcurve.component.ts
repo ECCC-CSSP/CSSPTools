@@ -10,7 +10,6 @@ import { RatingCurveService } from './ratingcurve.service';
 import { LoadLocalesRatingCurveText } from './ratingcurve.locales';
 import { Subscription } from 'rxjs';
 import { RatingCurve } from '../../../models/generated/RatingCurve.model';
-import { FormBuilder, Validators, FormGroup } from '@angular/forms';
 import { HttpClientService } from '../../../services/http-client.service';
 import { Router } from '@angular/router';
 import { HttpClientCommand } from '../../../enums/app.enums';
@@ -23,23 +22,63 @@ import { HttpClientCommand } from '../../../enums/app.enums';
 })
 export class RatingCurveComponent implements OnInit, OnDestroy {
   sub: Subscription;
-  ratingcurveFormPut: FormGroup;
-  ratingcurveFormPost: FormGroup;
+  IDToShow: number;
+  showType?: HttpClientCommand = null;
 
-  constructor(public ratingcurveService: RatingCurveService, private router: Router, private httpClientService: HttpClientService, private fb: FormBuilder) {
+  constructor(public ratingcurveService: RatingCurveService, private router: Router, private httpClientService: HttpClientService) {
     httpClientService.oldURL = router.url;
+  }
+
+  GetPutButtonColor(ratingcurve: RatingCurve) {
+    if (this.IDToShow === ratingcurve.RatingCurveID && this.showType === HttpClientCommand.Put) {
+      return 'primary';
+    }
+    else {
+      return 'basic';
+    }
+  }
+
+  GetPostButtonColor(ratingcurve: RatingCurve) {
+    if (this.IDToShow === ratingcurve.RatingCurveID && this.showType === HttpClientCommand.Post) {
+      return 'primary';
+    }
+    else {
+      return 'basic';
+    }
+  }
+
+  ShowPut(ratingcurve: RatingCurve) {
+    if (this.IDToShow === ratingcurve.RatingCurveID && this.showType === HttpClientCommand.Put) {
+      this.IDToShow = 0;
+      this.showType = null;
+    }
+    else {
+      this.IDToShow = ratingcurve.RatingCurveID;
+      this.showType = HttpClientCommand.Put;
+    }
+  }
+
+  ShowPost(ratingcurve: RatingCurve) {
+    if (this.IDToShow === ratingcurve.RatingCurveID && this.showType === HttpClientCommand.Post) {
+      this.IDToShow = 0;
+      this.showType = null;
+    }
+    else {
+      this.IDToShow = ratingcurve.RatingCurveID;
+      this.showType = HttpClientCommand.Post;
+    }
+  }
+
+  GetPutEnum() {
+    return <number>HttpClientCommand.Put;
+  }
+
+  GetPostEnum() {
+    return <number>HttpClientCommand.Post;
   }
 
   GetRatingCurveList() {
     this.sub = this.ratingcurveService.GetRatingCurveList().subscribe();
-  }
-
-  PutRatingCurve(ratingcurve: RatingCurve) {
-    this.sub = this.ratingcurveService.PutRatingCurve(ratingcurve).subscribe();
-  }
-
-  PostRatingCurve(ratingcurve: RatingCurve) {
-    this.sub = this.ratingcurveService.PostRatingCurve(ratingcurve).subscribe();
   }
 
   DeleteRatingCurve(ratingcurve: RatingCurve) {
@@ -48,54 +87,11 @@ export class RatingCurveComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     LoadLocalesRatingCurveText(this.ratingcurveService);
-    this.FillFormBuilderGroup(HttpClientCommand.Post);
-    this.FillFormBuilderGroup(HttpClientCommand.Put);
   }
 
   ngOnDestroy() {
     if (this.sub) {
       this.sub.unsubscribe();
-    }
-  }
-
-  FillFormBuilderGroup(httpClientCommand: HttpClientCommand) {
-    if (this.ratingcurveService.ratingcurveListModel$.getValue().length) {
-      let formGroup: FormGroup = this.fb.group(
-        {
-          RatingCurveID: [
-            {
-              value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.ratingcurveService.ratingcurveListModel$.getValue()[0]?.RatingCurveID)),
-              disabled: false
-            }, [  Validators.required ]],
-          HydrometricSiteID: [
-            {
-              value: this.ratingcurveService.ratingcurveListModel$.getValue()[0]?.HydrometricSiteID,
-              disabled: false
-            }, [  Validators.required ]],
-          RatingCurveNumber: [
-            {
-              value: this.ratingcurveService.ratingcurveListModel$.getValue()[0]?.RatingCurveNumber,
-              disabled: false
-            }, [  Validators.required, Validators.maxLength(50) ]],
-          LastUpdateDate_UTC: [
-            {
-              value: this.ratingcurveService.ratingcurveListModel$.getValue()[0]?.LastUpdateDate_UTC,
-              disabled: false
-            }, [  Validators.required ]],
-          LastUpdateContactTVItemID: [
-            {
-              value: this.ratingcurveService.ratingcurveListModel$.getValue()[0]?.LastUpdateContactTVItemID,
-              disabled: false
-            }, [  Validators.required ]],
-        }
-      );
-
-      if (httpClientCommand === HttpClientCommand.Post) {
-        this.ratingcurveFormPost = formGroup
-      }
-      else {
-        this.ratingcurveFormPut = formGroup;
-      }
     }
   }
 }

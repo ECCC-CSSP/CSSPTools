@@ -17,190 +17,44 @@
     <mat-card-subtitle>{{ telService.telTextModel$.getValue().Title }}</mat-card-subtitle>
   </mat-card-header>
   <mat-card-content>
-    <mat-list *ngIf="telService.telListModel$.getValue()?.length">
-      <mat-list-item *ngFor="let tel of telService.telListModel$.getValue()">
-        <span mat-line>
+    <div *ngIf="telService.telListModel$.getValue()?.length">
+      <div *ngFor="let tel of telService.telListModel$.getValue()">
+        <p>
           <button mat-raised-button (click)="DeleteTel(tel)">
             <span>Delete TelID [{{ tel.TelID }}]&nbsp;&nbsp;&nbsp;</span>
             <mat-icon>delete</mat-icon>
-          </button>
+          </button>&nbsp;&nbsp;&nbsp;
+          <button mat-raised-button [color]="GetPutButtonColor(tel)"(click)="ShowPut(tel)">
+            <span>Show Put</span>
+          </button>&nbsp;&nbsp;
+          <button mat-raised-button [color]="GetPostButtonColor(tel)"(click)="ShowPost(tel)">
+            <span>Show Post</span>
+          </button>&nbsp;&nbsp;
           <mat-progress-bar mode="indeterminate" *ngIf="telService.telDeleteModel$.getValue().Working">
           </mat-progress-bar>
-          </span>
-        <span mat-line>
+        </p>
+        <p *ngIf="IDToShow === tel.TelID && showType === GetPutEnum()">
+          <app-tel-edit [tel]="tel" [httpClientCommand]="GetPutEnum()"></app-tel-edit>
+        </p>
+        <p *ngIf="IDToShow === tel.TelID && showType === GetPostEnum()">
+          <app-tel-edit [tel]="tel" [httpClientCommand]="GetPostEnum()"></app-tel-edit>
+        </p>
+        <blockquote>
+        <p>
           <span>TelID: [{{ tel.TelID }}]</span>
           <span> --- TelTVItemID: [{{ tel.TelTVItemID }}]</span>
           <span> --- TelNumber: [{{ tel.TelNumber }}]</span>
           <span> --- TelType: [{{ GetTelTypeEnumText(tel.TelType) }}]</span>
-        </span>
-        <span mat-line>
+ </p>
+        <p>
           <span>LastUpdateDate_UTC: [{{ tel.LastUpdateDate_UTC }}]</span>
           <span> --- LastUpdateContactTVItemID: [{{ tel.LastUpdateContactTVItemID }}]</span>
-        </span>
-       </mat-list-item>
-     </mat-list>
+        </p>
+        </blockquote>
+       </div>
+     </div>
    </mat-card-content>
  <mat-card-actions>
    <button mat-button>Allo</button>
  </mat-card-actions>
-</mat-card>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<mat-card>
-  <mat-card-header>
-    <mat-card-title>Edit Tel testing</mat-card-title>
-  </mat-card-header>
-  <mat-card-content>
-    <div *ngIf="telService.telListModel$.getValue()?.length">
-      <blockquote>
-        <form [formGroup]="telFormPut" (ngSubmit)="PutTel(telFormPut.value)">
-          <h3>
-            Tel
-            <button mat-raised-button type="submit">
-              <span>Update Tel</span>
-            </button>
-            <mat-progress-bar mode="indeterminate" *ngIf="telService.telPutModel$.getValue().Working">
-            </mat-progress-bar>
-          </h3>
-          <p>
-            <mat-form-field>
-              <mat-label>TelID</mat-label>
-              <input matInput type="number" formControlName="TelID">
-              <mat-error *ngIf="telFormPut.controls.TelID.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>TelTVItemID</mat-label>
-              <input matInput type="number" formControlName="TelTVItemID">
-              <mat-error *ngIf="telFormPut.controls.TelTVItemID.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>TelNumber</mat-label>
-              <input matInput type="text" formControlName="TelNumber">
-              <mat-error *ngIf="telFormPut.controls.TelNumber.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-                <span *ngIf="e.maxlength">MaxLength - 50<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>TelType</mat-label>
-              <mat-select formControlName="TelType">
-                <mat-option *ngFor="let a of telTypeList" [value]="a.EnumID">
-                  {{ a.EnumText }}
-                </mat-option>
-              </mat-select>
-              <mat-error *ngIf="telFormPut.controls.TelType.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-          </p>
-          <p>
-            <mat-form-field>
-              <mat-label>LastUpdateDate_UTC</mat-label>
-              <input matInput type="text" formControlName="LastUpdateDate_UTC">
-              <mat-error *ngIf="telFormPut.controls.LastUpdateDate_UTC.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>LastUpdateContactTVItemID</mat-label>
-              <input matInput type="number" formControlName="LastUpdateContactTVItemID">
-              <mat-error *ngIf="telFormPut.controls.LastUpdateContactTVItemID.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-          </p>
-        </form>
-      </blockquote>
-    </div>
-  </mat-card-content>
-</mat-card>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<mat-card>
-  <mat-card-header>
-    <mat-card-title>Add Tel testing</mat-card-title>
-  </mat-card-header>
-  <mat-card-content>
-    <div *ngIf="telService.telListModel$.getValue()?.length">
-      <blockquote>
-        <form [formGroup]="telFormPost" (ngSubmit)="PostTel(telFormPost.value)">
-          <h3>
-            Tel
-            <button mat-raised-button type="submit">
-              <span>Add Tel</span>
-            </button>
-            <mat-progress-bar mode="indeterminate" *ngIf="telService.telPostModel$.getValue().Working">
-            </mat-progress-bar>
-          </h3>
-          <p>
-            <mat-form-field>
-              <mat-label>TelID</mat-label>
-              <input matInput type="number" formControlName="TelID">
-              <mat-error *ngIf="telFormPut.controls.TelID.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>TelTVItemID</mat-label>
-              <input matInput type="number" formControlName="TelTVItemID">
-              <mat-error *ngIf="telFormPut.controls.TelTVItemID.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>TelNumber</mat-label>
-              <input matInput type="text" formControlName="TelNumber">
-              <mat-error *ngIf="telFormPut.controls.TelNumber.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-                <span *ngIf="e.maxlength">MaxLength - 50<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>TelType</mat-label>
-              <mat-select formControlName="TelType">
-                <mat-option *ngFor="let a of telTypeList" [value]="a.EnumID">
-                  {{ a.EnumText }}
-                </mat-option>
-              </mat-select>
-              <mat-error *ngIf="telFormPut.controls.TelType.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-          </p>
-          <p>
-            <mat-form-field>
-              <mat-label>LastUpdateDate_UTC</mat-label>
-              <input matInput type="text" formControlName="LastUpdateDate_UTC">
-              <mat-error *ngIf="telFormPut.controls.LastUpdateDate_UTC.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>LastUpdateContactTVItemID</mat-label>
-              <input matInput type="number" formControlName="LastUpdateContactTVItemID">
-              <mat-error *ngIf="telFormPut.controls.LastUpdateContactTVItemID.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-          </p>
-        </form>
-      </blockquote>
-    </div>
-  </mat-card-content>
 </mat-card>

@@ -12,9 +12,10 @@ import { SamplingPlanRoutingModule } from './samplingplan-routing.module';
 import { MaterialModule } from '../../../app-material.module';
 import { SamplingPlanComponent } from './samplingplan.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { SamplingPlanEditComponent } from './samplingplan-edit.component';
 
 @NgModule({
-  declarations: [ SamplingPlanComponent ],
+  declarations: [SamplingPlanComponent, SamplingPlanEditComponent],
   imports: [
     CommonModule,
     RouterModule,

@@ -12,9 +12,10 @@ import { SpillRoutingModule } from './spill-routing.module';
 import { MaterialModule } from '../../../app-material.module';
 import { SpillComponent } from './spill.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { SpillEditComponent } from './spill-edit.component';
 
 @NgModule({
-  declarations: [ SpillComponent ],
+  declarations: [SpillComponent, SpillEditComponent],
   imports: [
     CommonModule,
     RouterModule,

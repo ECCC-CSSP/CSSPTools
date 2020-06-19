@@ -9,11 +9,9 @@ import { Component, OnInit, OnDestroy, ChangeDetectionStrategy } from '@angular/
 import { TVTypeUserAuthorizationService } from './tvtypeuserauthorization.service';
 import { LoadLocalesTVTypeUserAuthorizationText } from './tvtypeuserauthorization.locales';
 import { Subscription } from 'rxjs';
-import { TVTypeEnum_GetIDText, TVTypeEnum_GetOrderedText } from '../../../enums/generated/TVTypeEnum';
-import { TVAuthEnum_GetIDText, TVAuthEnum_GetOrderedText } from '../../../enums/generated/TVAuthEnum';
+import { TVTypeEnum_GetIDText } from '../../../enums/generated/TVTypeEnum';
+import { TVAuthEnum_GetIDText } from '../../../enums/generated/TVAuthEnum';
 import { TVTypeUserAuthorization } from '../../../models/generated/TVTypeUserAuthorization.model';
-import { FormBuilder, Validators, FormGroup } from '@angular/forms';
-import { EnumIDAndText } from '../../../models/enumidandtext.model';
 import { HttpClientService } from '../../../services/http-client.service';
 import { Router } from '@angular/router';
 import { HttpClientCommand } from '../../../enums/app.enums';
@@ -26,25 +24,63 @@ import { HttpClientCommand } from '../../../enums/app.enums';
 })
 export class TVTypeUserAuthorizationComponent implements OnInit, OnDestroy {
   sub: Subscription;
-  tVTypeList: EnumIDAndText[];
-  tVAuthList: EnumIDAndText[];
-  tvtypeuserauthorizationFormPut: FormGroup;
-  tvtypeuserauthorizationFormPost: FormGroup;
+  IDToShow: number;
+  showType?: HttpClientCommand = null;
 
-  constructor(public tvtypeuserauthorizationService: TVTypeUserAuthorizationService, private router: Router, private httpClientService: HttpClientService, private fb: FormBuilder) {
+  constructor(public tvtypeuserauthorizationService: TVTypeUserAuthorizationService, private router: Router, private httpClientService: HttpClientService) {
     httpClientService.oldURL = router.url;
+  }
+
+  GetPutButtonColor(tvtypeuserauthorization: TVTypeUserAuthorization) {
+    if (this.IDToShow === tvtypeuserauthorization.TVTypeUserAuthorizationID && this.showType === HttpClientCommand.Put) {
+      return 'primary';
+    }
+    else {
+      return 'basic';
+    }
+  }
+
+  GetPostButtonColor(tvtypeuserauthorization: TVTypeUserAuthorization) {
+    if (this.IDToShow === tvtypeuserauthorization.TVTypeUserAuthorizationID && this.showType === HttpClientCommand.Post) {
+      return 'primary';
+    }
+    else {
+      return 'basic';
+    }
+  }
+
+  ShowPut(tvtypeuserauthorization: TVTypeUserAuthorization) {
+    if (this.IDToShow === tvtypeuserauthorization.TVTypeUserAuthorizationID && this.showType === HttpClientCommand.Put) {
+      this.IDToShow = 0;
+      this.showType = null;
+    }
+    else {
+      this.IDToShow = tvtypeuserauthorization.TVTypeUserAuthorizationID;
+      this.showType = HttpClientCommand.Put;
+    }
+  }
+
+  ShowPost(tvtypeuserauthorization: TVTypeUserAuthorization) {
+    if (this.IDToShow === tvtypeuserauthorization.TVTypeUserAuthorizationID && this.showType === HttpClientCommand.Post) {
+      this.IDToShow = 0;
+      this.showType = null;
+    }
+    else {
+      this.IDToShow = tvtypeuserauthorization.TVTypeUserAuthorizationID;
+      this.showType = HttpClientCommand.Post;
+    }
+  }
+
+  GetPutEnum() {
+    return <number>HttpClientCommand.Put;
+  }
+
+  GetPostEnum() {
+    return <number>HttpClientCommand.Post;
   }
 
   GetTVTypeUserAuthorizationList() {
     this.sub = this.tvtypeuserauthorizationService.GetTVTypeUserAuthorizationList().subscribe();
-  }
-
-  PutTVTypeUserAuthorization(tvtypeuserauthorization: TVTypeUserAuthorization) {
-    this.sub = this.tvtypeuserauthorizationService.PutTVTypeUserAuthorization(tvtypeuserauthorization).subscribe();
-  }
-
-  PostTVTypeUserAuthorization(tvtypeuserauthorization: TVTypeUserAuthorization) {
-    this.sub = this.tvtypeuserauthorizationService.PostTVTypeUserAuthorization(tvtypeuserauthorization).subscribe();
   }
 
   DeleteTVTypeUserAuthorization(tvtypeuserauthorization: TVTypeUserAuthorization) {
@@ -61,61 +97,11 @@ export class TVTypeUserAuthorizationComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     LoadLocalesTVTypeUserAuthorizationText(this.tvtypeuserauthorizationService);
-    this.tVTypeList = TVTypeEnum_GetOrderedText();
-    this.tVAuthList = TVAuthEnum_GetOrderedText();
-    this.FillFormBuilderGroup(HttpClientCommand.Post);
-    this.FillFormBuilderGroup(HttpClientCommand.Put);
   }
 
   ngOnDestroy() {
     if (this.sub) {
       this.sub.unsubscribe();
-    }
-  }
-
-  FillFormBuilderGroup(httpClientCommand: HttpClientCommand) {
-    if (this.tvtypeuserauthorizationService.tvtypeuserauthorizationListModel$.getValue().length) {
-      let formGroup: FormGroup = this.fb.group(
-        {
-          TVTypeUserAuthorizationID: [
-            {
-              value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.tvtypeuserauthorizationService.tvtypeuserauthorizationListModel$.getValue()[0]?.TVTypeUserAuthorizationID)),
-              disabled: false
-            }, [  Validators.required ]],
-          ContactTVItemID: [
-            {
-              value: this.tvtypeuserauthorizationService.tvtypeuserauthorizationListModel$.getValue()[0]?.ContactTVItemID,
-              disabled: false
-            }, [  Validators.required ]],
-          TVType: [
-            {
-              value: this.tvtypeuserauthorizationService.tvtypeuserauthorizationListModel$.getValue()[0]?.TVType,
-              disabled: false
-            }, [  Validators.required ]],
-          TVAuth: [
-            {
-              value: this.tvtypeuserauthorizationService.tvtypeuserauthorizationListModel$.getValue()[0]?.TVAuth,
-              disabled: false
-            }, [  Validators.required ]],
-          LastUpdateDate_UTC: [
-            {
-              value: this.tvtypeuserauthorizationService.tvtypeuserauthorizationListModel$.getValue()[0]?.LastUpdateDate_UTC,
-              disabled: false
-            }, [  Validators.required ]],
-          LastUpdateContactTVItemID: [
-            {
-              value: this.tvtypeuserauthorizationService.tvtypeuserauthorizationListModel$.getValue()[0]?.LastUpdateContactTVItemID,
-              disabled: false
-            }, [  Validators.required ]],
-        }
-      );
-
-      if (httpClientCommand === HttpClientCommand.Post) {
-        this.tvtypeuserauthorizationFormPost = formGroup
-      }
-      else {
-        this.tvtypeuserauthorizationFormPut = formGroup;
-      }
     }
   }
 }

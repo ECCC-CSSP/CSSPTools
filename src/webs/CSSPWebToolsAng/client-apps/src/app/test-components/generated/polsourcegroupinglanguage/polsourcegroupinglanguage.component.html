@@ -17,424 +17,58 @@
     <mat-card-subtitle>{{ polsourcegroupinglanguageService.polsourcegroupinglanguageTextModel$.getValue().Title }}</mat-card-subtitle>
   </mat-card-header>
   <mat-card-content>
-    <mat-list *ngIf="polsourcegroupinglanguageService.polsourcegroupinglanguageListModel$.getValue()?.length">
-      <mat-list-item *ngFor="let polsourcegroupinglanguage of polsourcegroupinglanguageService.polsourcegroupinglanguageListModel$.getValue()">
-        <span mat-line>
+    <div *ngIf="polsourcegroupinglanguageService.polsourcegroupinglanguageListModel$.getValue()?.length">
+      <div *ngFor="let polsourcegroupinglanguage of polsourcegroupinglanguageService.polsourcegroupinglanguageListModel$.getValue()">
+        <p>
           <button mat-raised-button (click)="DeletePolSourceGroupingLanguage(polsourcegroupinglanguage)">
             <span>Delete PolSourceGroupingLanguageID [{{ polsourcegroupinglanguage.PolSourceGroupingLanguageID }}]&nbsp;&nbsp;&nbsp;</span>
             <mat-icon>delete</mat-icon>
-          </button>
+          </button>&nbsp;&nbsp;&nbsp;
+          <button mat-raised-button [color]="GetPutButtonColor(polsourcegroupinglanguage)"(click)="ShowPut(polsourcegroupinglanguage)">
+            <span>Show Put</span>
+          </button>&nbsp;&nbsp;
+          <button mat-raised-button [color]="GetPostButtonColor(polsourcegroupinglanguage)"(click)="ShowPost(polsourcegroupinglanguage)">
+            <span>Show Post</span>
+          </button>&nbsp;&nbsp;
           <mat-progress-bar mode="indeterminate" *ngIf="polsourcegroupinglanguageService.polsourcegroupinglanguageDeleteModel$.getValue().Working">
           </mat-progress-bar>
-          </span>
-        <span mat-line>
+        </p>
+        <p *ngIf="IDToShow === polsourcegroupinglanguage.PolSourceGroupingLanguageID && showType === GetPutEnum()">
+          <app-polsourcegroupinglanguage-edit [polsourcegroupinglanguage]="polsourcegroupinglanguage" [httpClientCommand]="GetPutEnum()"></app-polsourcegroupinglanguage-edit>
+        </p>
+        <p *ngIf="IDToShow === polsourcegroupinglanguage.PolSourceGroupingLanguageID && showType === GetPostEnum()">
+          <app-polsourcegroupinglanguage-edit [polsourcegroupinglanguage]="polsourcegroupinglanguage" [httpClientCommand]="GetPostEnum()"></app-polsourcegroupinglanguage-edit>
+        </p>
+        <blockquote>
+        <p>
           <span>PolSourceGroupingLanguageID: [{{ polsourcegroupinglanguage.PolSourceGroupingLanguageID }}]</span>
           <span> --- PolSourceGroupingID: [{{ polsourcegroupinglanguage.PolSourceGroupingID }}]</span>
           <span> --- Language: [{{ GetLanguageEnumText(polsourcegroupinglanguage.Language) }}]</span>
           <span> --- SourceName: [{{ polsourcegroupinglanguage.SourceName }}]</span>
-        </span>
-        <span mat-line>
+ </p>
+        <p>
           <span>SourceNameOrder: [{{ polsourcegroupinglanguage.SourceNameOrder }}]</span>
           <span> --- TranslationStatusSourceName: [{{ GetTranslationStatusEnumText(polsourcegroupinglanguage.TranslationStatusSourceName) }}]</span>
           <span> --- Init: [{{ polsourcegroupinglanguage.Init }}]</span>
           <span> --- TranslationStatusInit: [{{ GetTranslationStatusEnumText(polsourcegroupinglanguage.TranslationStatusInit) }}]</span>
-        </span>
-        <span mat-line>
+ </p>
+        <p>
           <span>Description: [{{ polsourcegroupinglanguage.Description }}]</span>
           <span> --- TranslationStatusDescription: [{{ GetTranslationStatusEnumText(polsourcegroupinglanguage.TranslationStatusDescription) }}]</span>
           <span> --- Report: [{{ polsourcegroupinglanguage.Report }}]</span>
           <span> --- TranslationStatusReport: [{{ GetTranslationStatusEnumText(polsourcegroupinglanguage.TranslationStatusReport) }}]</span>
-        </span>
-        <span mat-line>
+ </p>
+        <p>
           <span>Text: [{{ polsourcegroupinglanguage.Text }}]</span>
           <span> --- TranslationStatusText: [{{ GetTranslationStatusEnumText(polsourcegroupinglanguage.TranslationStatusText) }}]</span>
           <span> --- LastUpdateDate_UTC: [{{ polsourcegroupinglanguage.LastUpdateDate_UTC }}]</span>
           <span> --- LastUpdateContactTVItemID: [{{ polsourcegroupinglanguage.LastUpdateContactTVItemID }}]</span>
-        </span>
-       </mat-list-item>
-     </mat-list>
+        </p>
+        </blockquote>
+       </div>
+     </div>
    </mat-card-content>
  <mat-card-actions>
    <button mat-button>Allo</button>
  </mat-card-actions>
-</mat-card>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<mat-card>
-  <mat-card-header>
-    <mat-card-title>Edit PolSourceGroupingLanguage testing</mat-card-title>
-  </mat-card-header>
-  <mat-card-content>
-    <div *ngIf="polsourcegroupinglanguageService.polsourcegroupinglanguageListModel$.getValue()?.length">
-      <blockquote>
-        <form [formGroup]="polsourcegroupinglanguageFormPut" (ngSubmit)="PutPolSourceGroupingLanguage(polsourcegroupinglanguageFormPut.value)">
-          <h3>
-            PolSourceGroupingLanguage
-            <button mat-raised-button type="submit">
-              <span>Update PolSourceGroupingLanguage</span>
-            </button>
-            <mat-progress-bar mode="indeterminate" *ngIf="polsourcegroupinglanguageService.polsourcegroupinglanguagePutModel$.getValue().Working">
-            </mat-progress-bar>
-          </h3>
-          <p>
-            <mat-form-field>
-              <mat-label>PolSourceGroupingLanguageID</mat-label>
-              <input matInput type="number" formControlName="PolSourceGroupingLanguageID">
-              <mat-error *ngIf="polsourcegroupinglanguageFormPut.controls.PolSourceGroupingLanguageID.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>PolSourceGroupingID</mat-label>
-              <input matInput type="number" formControlName="PolSourceGroupingID">
-              <mat-error *ngIf="polsourcegroupinglanguageFormPut.controls.PolSourceGroupingID.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>Language</mat-label>
-              <mat-select formControlName="Language">
-                <mat-option *ngFor="let a of languageList" [value]="a.EnumID">
-                  {{ a.EnumText }}
-                </mat-option>
-              </mat-select>
-              <mat-error *ngIf="polsourcegroupinglanguageFormPut.controls.Language.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>SourceName</mat-label>
-              <input matInput type="text" formControlName="SourceName">
-              <mat-error *ngIf="polsourcegroupinglanguageFormPut.controls.SourceName.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-                <span *ngIf="e.maxlength">MaxLength - 250<br /></span>
-              </mat-error>
-            </mat-form-field>
-          </p>
-          <p>
-            <mat-form-field>
-              <mat-label>SourceNameOrder</mat-label>
-              <input matInput type="number" formControlName="SourceNameOrder">
-              <mat-error *ngIf="polsourcegroupinglanguageFormPut.controls.SourceNameOrder.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-                <span *ngIf="e.min">Min - 0<br /></span>
-                <span *ngIf="e.min">Max - 1000<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>TranslationStatusSourceName</mat-label>
-              <mat-select formControlName="TranslationStatusSourceName">
-                <mat-option *ngFor="let a of translationStatusSourceNameList" [value]="a.EnumID">
-                  {{ a.EnumText }}
-                </mat-option>
-              </mat-select>
-              <mat-error *ngIf="polsourcegroupinglanguageFormPut.controls.TranslationStatusSourceName.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>Init</mat-label>
-              <input matInput type="text" formControlName="Init">
-              <mat-error *ngIf="polsourcegroupinglanguageFormPut.controls.Init.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-                <span *ngIf="e.maxlength">MaxLength - 50<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>TranslationStatusInit</mat-label>
-              <mat-select formControlName="TranslationStatusInit">
-                <mat-option *ngFor="let a of translationStatusInitList" [value]="a.EnumID">
-                  {{ a.EnumText }}
-                </mat-option>
-              </mat-select>
-              <mat-error *ngIf="polsourcegroupinglanguageFormPut.controls.TranslationStatusInit.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-          </p>
-          <p>
-            <mat-form-field>
-              <mat-label>Description</mat-label>
-              <input matInput type="text" formControlName="Description">
-              <mat-error *ngIf="polsourcegroupinglanguageFormPut.controls.Description.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-                <span *ngIf="e.maxlength">MaxLength - 250<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>TranslationStatusDescription</mat-label>
-              <mat-select formControlName="TranslationStatusDescription">
-                <mat-option *ngFor="let a of translationStatusDescriptionList" [value]="a.EnumID">
-                  {{ a.EnumText }}
-                </mat-option>
-              </mat-select>
-              <mat-error *ngIf="polsourcegroupinglanguageFormPut.controls.TranslationStatusDescription.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>Report</mat-label>
-              <input matInput type="text" formControlName="Report">
-              <mat-error *ngIf="polsourcegroupinglanguageFormPut.controls.Report.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-                <span *ngIf="e.maxlength">MaxLength - 250<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>TranslationStatusReport</mat-label>
-              <mat-select formControlName="TranslationStatusReport">
-                <mat-option *ngFor="let a of translationStatusReportList" [value]="a.EnumID">
-                  {{ a.EnumText }}
-                </mat-option>
-              </mat-select>
-              <mat-error *ngIf="polsourcegroupinglanguageFormPut.controls.TranslationStatusReport.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-          </p>
-          <p>
-            <mat-form-field>
-              <mat-label>Text</mat-label>
-              <input matInput type="text" formControlName="Text">
-              <mat-error *ngIf="polsourcegroupinglanguageFormPut.controls.Text.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-                <span *ngIf="e.maxlength">MaxLength - 250<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>TranslationStatusText</mat-label>
-              <mat-select formControlName="TranslationStatusText">
-                <mat-option *ngFor="let a of translationStatusTextList" [value]="a.EnumID">
-                  {{ a.EnumText }}
-                </mat-option>
-              </mat-select>
-              <mat-error *ngIf="polsourcegroupinglanguageFormPut.controls.TranslationStatusText.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>LastUpdateDate_UTC</mat-label>
-              <input matInput type="text" formControlName="LastUpdateDate_UTC">
-              <mat-error *ngIf="polsourcegroupinglanguageFormPut.controls.LastUpdateDate_UTC.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>LastUpdateContactTVItemID</mat-label>
-              <input matInput type="number" formControlName="LastUpdateContactTVItemID">
-              <mat-error *ngIf="polsourcegroupinglanguageFormPut.controls.LastUpdateContactTVItemID.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-          </p>
-        </form>
-      </blockquote>
-    </div>
-  </mat-card-content>
-</mat-card>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<mat-card>
-  <mat-card-header>
-    <mat-card-title>Add PolSourceGroupingLanguage testing</mat-card-title>
-  </mat-card-header>
-  <mat-card-content>
-    <div *ngIf="polsourcegroupinglanguageService.polsourcegroupinglanguageListModel$.getValue()?.length">
-      <blockquote>
-        <form [formGroup]="polsourcegroupinglanguageFormPost" (ngSubmit)="PostPolSourceGroupingLanguage(polsourcegroupinglanguageFormPost.value)">
-          <h3>
-            PolSourceGroupingLanguage
-            <button mat-raised-button type="submit">
-              <span>Add PolSourceGroupingLanguage</span>
-            </button>
-            <mat-progress-bar mode="indeterminate" *ngIf="polsourcegroupinglanguageService.polsourcegroupinglanguagePostModel$.getValue().Working">
-            </mat-progress-bar>
-          </h3>
-          <p>
-            <mat-form-field>
-              <mat-label>PolSourceGroupingLanguageID</mat-label>
-              <input matInput type="number" formControlName="PolSourceGroupingLanguageID">
-              <mat-error *ngIf="polsourcegroupinglanguageFormPut.controls.PolSourceGroupingLanguageID.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>PolSourceGroupingID</mat-label>
-              <input matInput type="number" formControlName="PolSourceGroupingID">
-              <mat-error *ngIf="polsourcegroupinglanguageFormPut.controls.PolSourceGroupingID.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>Language</mat-label>
-              <mat-select formControlName="Language">
-                <mat-option *ngFor="let a of languageList" [value]="a.EnumID">
-                  {{ a.EnumText }}
-                </mat-option>
-              </mat-select>
-              <mat-error *ngIf="polsourcegroupinglanguageFormPut.controls.Language.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>SourceName</mat-label>
-              <input matInput type="text" formControlName="SourceName">
-              <mat-error *ngIf="polsourcegroupinglanguageFormPut.controls.SourceName.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-                <span *ngIf="e.maxlength">MaxLength - 250<br /></span>
-              </mat-error>
-            </mat-form-field>
-          </p>
-          <p>
-            <mat-form-field>
-              <mat-label>SourceNameOrder</mat-label>
-              <input matInput type="number" formControlName="SourceNameOrder">
-              <mat-error *ngIf="polsourcegroupinglanguageFormPut.controls.SourceNameOrder.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-                <span *ngIf="e.min">Min - 0<br /></span>
-                <span *ngIf="e.min">Max - 1000<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>TranslationStatusSourceName</mat-label>
-              <mat-select formControlName="TranslationStatusSourceName">
-                <mat-option *ngFor="let a of translationStatusSourceNameList" [value]="a.EnumID">
-                  {{ a.EnumText }}
-                </mat-option>
-              </mat-select>
-              <mat-error *ngIf="polsourcegroupinglanguageFormPut.controls.TranslationStatusSourceName.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>Init</mat-label>
-              <input matInput type="text" formControlName="Init">
-              <mat-error *ngIf="polsourcegroupinglanguageFormPut.controls.Init.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-                <span *ngIf="e.maxlength">MaxLength - 50<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>TranslationStatusInit</mat-label>
-              <mat-select formControlName="TranslationStatusInit">
-                <mat-option *ngFor="let a of translationStatusInitList" [value]="a.EnumID">
-                  {{ a.EnumText }}
-                </mat-option>
-              </mat-select>
-              <mat-error *ngIf="polsourcegroupinglanguageFormPut.controls.TranslationStatusInit.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-          </p>
-          <p>
-            <mat-form-field>
-              <mat-label>Description</mat-label>
-              <input matInput type="text" formControlName="Description">
-              <mat-error *ngIf="polsourcegroupinglanguageFormPut.controls.Description.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-                <span *ngIf="e.maxlength">MaxLength - 250<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>TranslationStatusDescription</mat-label>
-              <mat-select formControlName="TranslationStatusDescription">
-                <mat-option *ngFor="let a of translationStatusDescriptionList" [value]="a.EnumID">
-                  {{ a.EnumText }}
-                </mat-option>
-              </mat-select>
-              <mat-error *ngIf="polsourcegroupinglanguageFormPut.controls.TranslationStatusDescription.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>Report</mat-label>
-              <input matInput type="text" formControlName="Report">
-              <mat-error *ngIf="polsourcegroupinglanguageFormPut.controls.Report.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-                <span *ngIf="e.maxlength">MaxLength - 250<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>TranslationStatusReport</mat-label>
-              <mat-select formControlName="TranslationStatusReport">
-                <mat-option *ngFor="let a of translationStatusReportList" [value]="a.EnumID">
-                  {{ a.EnumText }}
-                </mat-option>
-              </mat-select>
-              <mat-error *ngIf="polsourcegroupinglanguageFormPut.controls.TranslationStatusReport.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-          </p>
-          <p>
-            <mat-form-field>
-              <mat-label>Text</mat-label>
-              <input matInput type="text" formControlName="Text">
-              <mat-error *ngIf="polsourcegroupinglanguageFormPut.controls.Text.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-                <span *ngIf="e.maxlength">MaxLength - 250<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>TranslationStatusText</mat-label>
-              <mat-select formControlName="TranslationStatusText">
-                <mat-option *ngFor="let a of translationStatusTextList" [value]="a.EnumID">
-                  {{ a.EnumText }}
-                </mat-option>
-              </mat-select>
-              <mat-error *ngIf="polsourcegroupinglanguageFormPut.controls.TranslationStatusText.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>LastUpdateDate_UTC</mat-label>
-              <input matInput type="text" formControlName="LastUpdateDate_UTC">
-              <mat-error *ngIf="polsourcegroupinglanguageFormPut.controls.LastUpdateDate_UTC.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>LastUpdateContactTVItemID</mat-label>
-              <input matInput type="number" formControlName="LastUpdateContactTVItemID">
-              <mat-error *ngIf="polsourcegroupinglanguageFormPut.controls.LastUpdateContactTVItemID.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-          </p>
-        </form>
-      </blockquote>
-    </div>
-  </mat-card-content>
 </mat-card>

@@ -9,11 +9,9 @@ import { Component, OnInit, OnDestroy, ChangeDetectionStrategy } from '@angular/
 import { AppTaskLanguageService } from './apptasklanguage.service';
 import { LoadLocalesAppTaskLanguageText } from './apptasklanguage.locales';
 import { Subscription } from 'rxjs';
-import { LanguageEnum_GetIDText, LanguageEnum_GetOrderedText } from '../../../enums/generated/LanguageEnum';
-import { TranslationStatusEnum_GetIDText, TranslationStatusEnum_GetOrderedText } from '../../../enums/generated/TranslationStatusEnum';
+import { LanguageEnum_GetIDText } from '../../../enums/generated/LanguageEnum';
+import { TranslationStatusEnum_GetIDText } from '../../../enums/generated/TranslationStatusEnum';
 import { AppTaskLanguage } from '../../../models/generated/AppTaskLanguage.model';
-import { FormBuilder, Validators, FormGroup } from '@angular/forms';
-import { EnumIDAndText } from '../../../models/enumidandtext.model';
 import { HttpClientService } from '../../../services/http-client.service';
 import { Router } from '@angular/router';
 import { HttpClientCommand } from '../../../enums/app.enums';
@@ -26,25 +24,63 @@ import { HttpClientCommand } from '../../../enums/app.enums';
 })
 export class AppTaskLanguageComponent implements OnInit, OnDestroy {
   sub: Subscription;
-  languageList: EnumIDAndText[];
-  translationStatusList: EnumIDAndText[];
-  apptasklanguageFormPut: FormGroup;
-  apptasklanguageFormPost: FormGroup;
+  IDToShow: number;
+  showType?: HttpClientCommand = null;
 
-  constructor(public apptasklanguageService: AppTaskLanguageService, private router: Router, private httpClientService: HttpClientService, private fb: FormBuilder) {
+  constructor(public apptasklanguageService: AppTaskLanguageService, private router: Router, private httpClientService: HttpClientService) {
     httpClientService.oldURL = router.url;
+  }
+
+  GetPutButtonColor(apptasklanguage: AppTaskLanguage) {
+    if (this.IDToShow === apptasklanguage.AppTaskLanguageID && this.showType === HttpClientCommand.Put) {
+      return 'primary';
+    }
+    else {
+      return 'basic';
+    }
+  }
+
+  GetPostButtonColor(apptasklanguage: AppTaskLanguage) {
+    if (this.IDToShow === apptasklanguage.AppTaskLanguageID && this.showType === HttpClientCommand.Post) {
+      return 'primary';
+    }
+    else {
+      return 'basic';
+    }
+  }
+
+  ShowPut(apptasklanguage: AppTaskLanguage) {
+    if (this.IDToShow === apptasklanguage.AppTaskLanguageID && this.showType === HttpClientCommand.Put) {
+      this.IDToShow = 0;
+      this.showType = null;
+    }
+    else {
+      this.IDToShow = apptasklanguage.AppTaskLanguageID;
+      this.showType = HttpClientCommand.Put;
+    }
+  }
+
+  ShowPost(apptasklanguage: AppTaskLanguage) {
+    if (this.IDToShow === apptasklanguage.AppTaskLanguageID && this.showType === HttpClientCommand.Post) {
+      this.IDToShow = 0;
+      this.showType = null;
+    }
+    else {
+      this.IDToShow = apptasklanguage.AppTaskLanguageID;
+      this.showType = HttpClientCommand.Post;
+    }
+  }
+
+  GetPutEnum() {
+    return <number>HttpClientCommand.Put;
+  }
+
+  GetPostEnum() {
+    return <number>HttpClientCommand.Post;
   }
 
   GetAppTaskLanguageList() {
     this.sub = this.apptasklanguageService.GetAppTaskLanguageList().subscribe();
-  }
-
-  PutAppTaskLanguage(apptasklanguage: AppTaskLanguage) {
-    this.sub = this.apptasklanguageService.PutAppTaskLanguage(apptasklanguage).subscribe();
-  }
-
-  PostAppTaskLanguage(apptasklanguage: AppTaskLanguage) {
-    this.sub = this.apptasklanguageService.PostAppTaskLanguage(apptasklanguage).subscribe();
   }
 
   DeleteAppTaskLanguage(apptasklanguage: AppTaskLanguage) {
@@ -61,71 +97,11 @@ export class AppTaskLanguageComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     LoadLocalesAppTaskLanguageText(this.apptasklanguageService);
-    this.languageList = LanguageEnum_GetOrderedText();
-    this.translationStatusList = TranslationStatusEnum_GetOrderedText();
-    this.FillFormBuilderGroup(HttpClientCommand.Post);
-    this.FillFormBuilderGroup(HttpClientCommand.Put);
   }
 
   ngOnDestroy() {
     if (this.sub) {
       this.sub.unsubscribe();
-    }
-  }
-
-  FillFormBuilderGroup(httpClientCommand: HttpClientCommand) {
-    if (this.apptasklanguageService.apptasklanguageListModel$.getValue().length) {
-      let formGroup: FormGroup = this.fb.group(
-        {
-          AppTaskLanguageID: [
-            {
-              value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.apptasklanguageService.apptasklanguageListModel$.getValue()[0]?.AppTaskLanguageID)),
-              disabled: false
-            }, [  Validators.required ]],
-          AppTaskID: [
-            {
-              value: this.apptasklanguageService.apptasklanguageListModel$.getValue()[0]?.AppTaskID,
-              disabled: false
-            }, [  Validators.required ]],
-          Language: [
-            {
-              value: this.apptasklanguageService.apptasklanguageListModel$.getValue()[0]?.Language,
-              disabled: false
-            }, [  Validators.required ]],
-          StatusText: [
-            {
-              value: this.apptasklanguageService.apptasklanguageListModel$.getValue()[0]?.StatusText,
-              disabled: false
-            }, [  Validators.maxLength(250) ]],
-          ErrorText: [
-            {
-              value: this.apptasklanguageService.apptasklanguageListModel$.getValue()[0]?.ErrorText,
-              disabled: false
-            }, [  Validators.maxLength(250) ]],
-          TranslationStatus: [
-            {
-              value: this.apptasklanguageService.apptasklanguageListModel$.getValue()[0]?.TranslationStatus,
-              disabled: false
-            }, [  Validators.required ]],
-          LastUpdateDate_UTC: [
-            {
-              value: this.apptasklanguageService.apptasklanguageListModel$.getValue()[0]?.LastUpdateDate_UTC,
-              disabled: false
-            }, [  Validators.required ]],
-          LastUpdateContactTVItemID: [
-            {
-              value: this.apptasklanguageService.apptasklanguageListModel$.getValue()[0]?.LastUpdateContactTVItemID,
-              disabled: false
-            }, [  Validators.required ]],
-        }
-      );
-
-      if (httpClientCommand === HttpClientCommand.Post) {
-        this.apptasklanguageFormPost = formGroup
-      }
-      else {
-        this.apptasklanguageFormPut = formGroup;
-      }
     }
   }
 }

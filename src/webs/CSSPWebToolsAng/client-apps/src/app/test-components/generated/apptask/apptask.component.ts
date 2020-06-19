@@ -9,12 +9,10 @@ import { Component, OnInit, OnDestroy, ChangeDetectionStrategy } from '@angular/
 import { AppTaskService } from './apptask.service';
 import { LoadLocalesAppTaskText } from './apptask.locales';
 import { Subscription } from 'rxjs';
-import { AppTaskCommandEnum_GetIDText, AppTaskCommandEnum_GetOrderedText } from '../../../enums/generated/AppTaskCommandEnum';
-import { AppTaskStatusEnum_GetIDText, AppTaskStatusEnum_GetOrderedText } from '../../../enums/generated/AppTaskStatusEnum';
-import { LanguageEnum_GetIDText, LanguageEnum_GetOrderedText } from '../../../enums/generated/LanguageEnum';
+import { AppTaskCommandEnum_GetIDText } from '../../../enums/generated/AppTaskCommandEnum';
+import { AppTaskStatusEnum_GetIDText } from '../../../enums/generated/AppTaskStatusEnum';
+import { LanguageEnum_GetIDText } from '../../../enums/generated/LanguageEnum';
 import { AppTask } from '../../../models/generated/AppTask.model';
-import { FormBuilder, Validators, FormGroup } from '@angular/forms';
-import { EnumIDAndText } from '../../../models/enumidandtext.model';
 import { HttpClientService } from '../../../services/http-client.service';
 import { Router } from '@angular/router';
 import { HttpClientCommand } from '../../../enums/app.enums';
@@ -27,26 +25,63 @@ import { HttpClientCommand } from '../../../enums/app.enums';
 })
 export class AppTaskComponent implements OnInit, OnDestroy {
   sub: Subscription;
-  appTaskCommandList: EnumIDAndText[];
-  appTaskStatusList: EnumIDAndText[];
-  languageList: EnumIDAndText[];
-  apptaskFormPut: FormGroup;
-  apptaskFormPost: FormGroup;
+  IDToShow: number;
+  showType?: HttpClientCommand = null;
 
-  constructor(public apptaskService: AppTaskService, private router: Router, private httpClientService: HttpClientService, private fb: FormBuilder) {
+  constructor(public apptaskService: AppTaskService, private router: Router, private httpClientService: HttpClientService) {
     httpClientService.oldURL = router.url;
+  }
+
+  GetPutButtonColor(apptask: AppTask) {
+    if (this.IDToShow === apptask.AppTaskID && this.showType === HttpClientCommand.Put) {
+      return 'primary';
+    }
+    else {
+      return 'basic';
+    }
+  }
+
+  GetPostButtonColor(apptask: AppTask) {
+    if (this.IDToShow === apptask.AppTaskID && this.showType === HttpClientCommand.Post) {
+      return 'primary';
+    }
+    else {
+      return 'basic';
+    }
+  }
+
+  ShowPut(apptask: AppTask) {
+    if (this.IDToShow === apptask.AppTaskID && this.showType === HttpClientCommand.Put) {
+      this.IDToShow = 0;
+      this.showType = null;
+    }
+    else {
+      this.IDToShow = apptask.AppTaskID;
+      this.showType = HttpClientCommand.Put;
+    }
+  }
+
+  ShowPost(apptask: AppTask) {
+    if (this.IDToShow === apptask.AppTaskID && this.showType === HttpClientCommand.Post) {
+      this.IDToShow = 0;
+      this.showType = null;
+    }
+    else {
+      this.IDToShow = apptask.AppTaskID;
+      this.showType = HttpClientCommand.Post;
+    }
+  }
+
+  GetPutEnum() {
+    return <number>HttpClientCommand.Put;
+  }
+
+  GetPostEnum() {
+    return <number>HttpClientCommand.Post;
   }
 
   GetAppTaskList() {
     this.sub = this.apptaskService.GetAppTaskList().subscribe();
-  }
-
-  PutAppTask(apptask: AppTask) {
-    this.sub = this.apptaskService.PutAppTask(apptask).subscribe();
-  }
-
-  PostAppTask(apptask: AppTask) {
-    this.sub = this.apptaskService.PostAppTask(apptask).subscribe();
   }
 
   DeleteAppTask(apptask: AppTask) {
@@ -67,102 +102,11 @@ export class AppTaskComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     LoadLocalesAppTaskText(this.apptaskService);
-    this.appTaskCommandList = AppTaskCommandEnum_GetOrderedText();
-    this.appTaskStatusList = AppTaskStatusEnum_GetOrderedText();
-    this.languageList = LanguageEnum_GetOrderedText();
-    this.FillFormBuilderGroup(HttpClientCommand.Post);
-    this.FillFormBuilderGroup(HttpClientCommand.Put);
   }
 
   ngOnDestroy() {
     if (this.sub) {
       this.sub.unsubscribe();
-    }
-  }
-
-  FillFormBuilderGroup(httpClientCommand: HttpClientCommand) {
-    if (this.apptaskService.apptaskListModel$.getValue().length) {
-      let formGroup: FormGroup = this.fb.group(
-        {
-          AppTaskID: [
-            {
-              value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.apptaskService.apptaskListModel$.getValue()[0]?.AppTaskID)),
-              disabled: false
-            }, [  Validators.required ]],
-          TVItemID: [
-            {
-              value: this.apptaskService.apptaskListModel$.getValue()[0]?.TVItemID,
-              disabled: false
-            }, [  Validators.required ]],
-          TVItemID2: [
-            {
-              value: this.apptaskService.apptaskListModel$.getValue()[0]?.TVItemID2,
-              disabled: false
-            }, [  Validators.required ]],
-          AppTaskCommand: [
-            {
-              value: this.apptaskService.apptaskListModel$.getValue()[0]?.AppTaskCommand,
-              disabled: false
-            }, [  Validators.required ]],
-          AppTaskStatus: [
-            {
-              value: this.apptaskService.apptaskListModel$.getValue()[0]?.AppTaskStatus,
-              disabled: false
-            }, [  Validators.required ]],
-          PercentCompleted: [
-            {
-              value: this.apptaskService.apptaskListModel$.getValue()[0]?.PercentCompleted,
-              disabled: false
-            }, [  Validators.required, Validators.min(0), Validators.max(100) ]],
-          Parameters: [
-            {
-              value: this.apptaskService.apptaskListModel$.getValue()[0]?.Parameters,
-              disabled: false
-            }, [  Validators.required ]],
-          Language: [
-            {
-              value: this.apptaskService.apptaskListModel$.getValue()[0]?.Language,
-              disabled: false
-            }, [  Validators.required ]],
-          StartDateTime_UTC: [
-            {
-              value: this.apptaskService.apptaskListModel$.getValue()[0]?.StartDateTime_UTC,
-              disabled: false
-            }, [  Validators.required ]],
-          EndDateTime_UTC: [
-            {
-              value: this.apptaskService.apptaskListModel$.getValue()[0]?.EndDateTime_UTC,
-              disabled: false
-            }],
-          EstimatedLength_second: [
-            {
-              value: this.apptaskService.apptaskListModel$.getValue()[0]?.EstimatedLength_second,
-              disabled: false
-            }, [  Validators.min(0), Validators.max(1000000) ]],
-          RemainingTime_second: [
-            {
-              value: this.apptaskService.apptaskListModel$.getValue()[0]?.RemainingTime_second,
-              disabled: false
-            }, [  Validators.min(0), Validators.max(1000000) ]],
-          LastUpdateDate_UTC: [
-            {
-              value: this.apptaskService.apptaskListModel$.getValue()[0]?.LastUpdateDate_UTC,
-              disabled: false
-            }, [  Validators.required ]],
-          LastUpdateContactTVItemID: [
-            {
-              value: this.apptaskService.apptaskListModel$.getValue()[0]?.LastUpdateContactTVItemID,
-              disabled: false
-            }, [  Validators.required ]],
-        }
-      );
-
-      if (httpClientCommand === HttpClientCommand.Post) {
-        this.apptaskFormPost = formGroup
-      }
-      else {
-        this.apptaskFormPut = formGroup;
-      }
     }
   }
 }

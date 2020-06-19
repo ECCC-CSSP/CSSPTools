@@ -12,9 +12,10 @@ import { RainExceedanceRoutingModule } from './rainexceedance-routing.module';
 import { MaterialModule } from '../../../app-material.module';
 import { RainExceedanceComponent } from './rainexceedance.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { RainExceedanceEditComponent } from './rainexceedance-edit.component';
 
 @NgModule({
-  declarations: [ RainExceedanceComponent ],
+  declarations: [RainExceedanceComponent, RainExceedanceEditComponent],
   imports: [
     CommonModule,
     RouterModule,

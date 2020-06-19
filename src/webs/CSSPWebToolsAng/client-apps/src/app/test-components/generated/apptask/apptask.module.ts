@@ -12,9 +12,10 @@ import { AppTaskRoutingModule } from './apptask-routing.module';
 import { MaterialModule } from '../../../app-material.module';
 import { AppTaskComponent } from './apptask.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { AppTaskEditComponent } from './apptask-edit.component';
 
 @NgModule({
-  declarations: [ AppTaskComponent ],
+  declarations: [AppTaskComponent, AppTaskEditComponent],
   imports: [
     CommonModule,
     RouterModule,

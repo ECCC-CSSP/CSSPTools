@@ -12,9 +12,10 @@ import { MWQMLookupMPNRoutingModule } from './mwqmlookupmpn-routing.module';
 import { MaterialModule } from '../../../app-material.module';
 import { MWQMLookupMPNComponent } from './mwqmlookupmpn.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MWQMLookupMPNEditComponent } from './mwqmlookupmpn-edit.component';
 
 @NgModule({
-  declarations: [ MWQMLookupMPNComponent ],
+  declarations: [MWQMLookupMPNComponent, MWQMLookupMPNEditComponent],
   imports: [
     CommonModule,
     RouterModule,

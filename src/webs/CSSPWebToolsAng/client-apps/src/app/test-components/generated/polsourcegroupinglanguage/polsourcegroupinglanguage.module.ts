@@ -12,9 +12,10 @@ import { PolSourceGroupingLanguageRoutingModule } from './polsourcegroupinglangu
 import { MaterialModule } from '../../../app-material.module';
 import { PolSourceGroupingLanguageComponent } from './polsourcegroupinglanguage.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { PolSourceGroupingLanguageEditComponent } from './polsourcegroupinglanguage-edit.component';
 
 @NgModule({
-  declarations: [ PolSourceGroupingLanguageComponent ],
+  declarations: [PolSourceGroupingLanguageComponent, PolSourceGroupingLanguageEditComponent],
   imports: [
     CommonModule,
     RouterModule,

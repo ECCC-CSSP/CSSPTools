@@ -10,7 +10,6 @@ import { MWQMSiteStartEndDateService } from './mwqmsitestartenddate.service';
 import { LoadLocalesMWQMSiteStartEndDateText } from './mwqmsitestartenddate.locales';
 import { Subscription } from 'rxjs';
 import { MWQMSiteStartEndDate } from '../../../models/generated/MWQMSiteStartEndDate.model';
-import { FormBuilder, Validators, FormGroup } from '@angular/forms';
 import { HttpClientService } from '../../../services/http-client.service';
 import { Router } from '@angular/router';
 import { HttpClientCommand } from '../../../enums/app.enums';
@@ -23,23 +22,63 @@ import { HttpClientCommand } from '../../../enums/app.enums';
 })
 export class MWQMSiteStartEndDateComponent implements OnInit, OnDestroy {
   sub: Subscription;
-  mwqmsitestartenddateFormPut: FormGroup;
-  mwqmsitestartenddateFormPost: FormGroup;
+  IDToShow: number;
+  showType?: HttpClientCommand = null;
 
-  constructor(public mwqmsitestartenddateService: MWQMSiteStartEndDateService, private router: Router, private httpClientService: HttpClientService, private fb: FormBuilder) {
+  constructor(public mwqmsitestartenddateService: MWQMSiteStartEndDateService, private router: Router, private httpClientService: HttpClientService) {
     httpClientService.oldURL = router.url;
+  }
+
+  GetPutButtonColor(mwqmsitestartenddate: MWQMSiteStartEndDate) {
+    if (this.IDToShow === mwqmsitestartenddate.MWQMSiteStartEndDateID && this.showType === HttpClientCommand.Put) {
+      return 'primary';
+    }
+    else {
+      return 'basic';
+    }
+  }
+
+  GetPostButtonColor(mwqmsitestartenddate: MWQMSiteStartEndDate) {
+    if (this.IDToShow === mwqmsitestartenddate.MWQMSiteStartEndDateID && this.showType === HttpClientCommand.Post) {
+      return 'primary';
+    }
+    else {
+      return 'basic';
+    }
+  }
+
+  ShowPut(mwqmsitestartenddate: MWQMSiteStartEndDate) {
+    if (this.IDToShow === mwqmsitestartenddate.MWQMSiteStartEndDateID && this.showType === HttpClientCommand.Put) {
+      this.IDToShow = 0;
+      this.showType = null;
+    }
+    else {
+      this.IDToShow = mwqmsitestartenddate.MWQMSiteStartEndDateID;
+      this.showType = HttpClientCommand.Put;
+    }
+  }
+
+  ShowPost(mwqmsitestartenddate: MWQMSiteStartEndDate) {
+    if (this.IDToShow === mwqmsitestartenddate.MWQMSiteStartEndDateID && this.showType === HttpClientCommand.Post) {
+      this.IDToShow = 0;
+      this.showType = null;
+    }
+    else {
+      this.IDToShow = mwqmsitestartenddate.MWQMSiteStartEndDateID;
+      this.showType = HttpClientCommand.Post;
+    }
+  }
+
+  GetPutEnum() {
+    return <number>HttpClientCommand.Put;
+  }
+
+  GetPostEnum() {
+    return <number>HttpClientCommand.Post;
   }
 
   GetMWQMSiteStartEndDateList() {
     this.sub = this.mwqmsitestartenddateService.GetMWQMSiteStartEndDateList().subscribe();
-  }
-
-  PutMWQMSiteStartEndDate(mwqmsitestartenddate: MWQMSiteStartEndDate) {
-    this.sub = this.mwqmsitestartenddateService.PutMWQMSiteStartEndDate(mwqmsitestartenddate).subscribe();
-  }
-
-  PostMWQMSiteStartEndDate(mwqmsitestartenddate: MWQMSiteStartEndDate) {
-    this.sub = this.mwqmsitestartenddateService.PostMWQMSiteStartEndDate(mwqmsitestartenddate).subscribe();
   }
 
   DeleteMWQMSiteStartEndDate(mwqmsitestartenddate: MWQMSiteStartEndDate) {
@@ -48,59 +87,11 @@ export class MWQMSiteStartEndDateComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     LoadLocalesMWQMSiteStartEndDateText(this.mwqmsitestartenddateService);
-    this.FillFormBuilderGroup(HttpClientCommand.Post);
-    this.FillFormBuilderGroup(HttpClientCommand.Put);
   }
 
   ngOnDestroy() {
     if (this.sub) {
       this.sub.unsubscribe();
-    }
-  }
-
-  FillFormBuilderGroup(httpClientCommand: HttpClientCommand) {
-    if (this.mwqmsitestartenddateService.mwqmsitestartenddateListModel$.getValue().length) {
-      let formGroup: FormGroup = this.fb.group(
-        {
-          MWQMSiteStartEndDateID: [
-            {
-              value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.mwqmsitestartenddateService.mwqmsitestartenddateListModel$.getValue()[0]?.MWQMSiteStartEndDateID)),
-              disabled: false
-            }, [  Validators.required ]],
-          MWQMSiteTVItemID: [
-            {
-              value: this.mwqmsitestartenddateService.mwqmsitestartenddateListModel$.getValue()[0]?.MWQMSiteTVItemID,
-              disabled: false
-            }, [  Validators.required ]],
-          StartDate: [
-            {
-              value: this.mwqmsitestartenddateService.mwqmsitestartenddateListModel$.getValue()[0]?.StartDate,
-              disabled: false
-            }, [  Validators.required ]],
-          EndDate: [
-            {
-              value: this.mwqmsitestartenddateService.mwqmsitestartenddateListModel$.getValue()[0]?.EndDate,
-              disabled: false
-            }],
-          LastUpdateDate_UTC: [
-            {
-              value: this.mwqmsitestartenddateService.mwqmsitestartenddateListModel$.getValue()[0]?.LastUpdateDate_UTC,
-              disabled: false
-            }, [  Validators.required ]],
-          LastUpdateContactTVItemID: [
-            {
-              value: this.mwqmsitestartenddateService.mwqmsitestartenddateListModel$.getValue()[0]?.LastUpdateContactTVItemID,
-              disabled: false
-            }, [  Validators.required ]],
-        }
-      );
-
-      if (httpClientCommand === HttpClientCommand.Post) {
-        this.mwqmsitestartenddateFormPost = formGroup
-      }
-      else {
-        this.mwqmsitestartenddateFormPut = formGroup;
-      }
     }
   }
 }

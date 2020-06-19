@@ -9,10 +9,8 @@ import { Component, OnInit, OnDestroy, ChangeDetectionStrategy } from '@angular/
 import { HelpDocService } from './helpdoc.service';
 import { LoadLocalesHelpDocText } from './helpdoc.locales';
 import { Subscription } from 'rxjs';
-import { LanguageEnum_GetIDText, LanguageEnum_GetOrderedText } from '../../../enums/generated/LanguageEnum';
+import { LanguageEnum_GetIDText } from '../../../enums/generated/LanguageEnum';
 import { HelpDoc } from '../../../models/generated/HelpDoc.model';
-import { FormBuilder, Validators, FormGroup } from '@angular/forms';
-import { EnumIDAndText } from '../../../models/enumidandtext.model';
 import { HttpClientService } from '../../../services/http-client.service';
 import { Router } from '@angular/router';
 import { HttpClientCommand } from '../../../enums/app.enums';
@@ -25,24 +23,63 @@ import { HttpClientCommand } from '../../../enums/app.enums';
 })
 export class HelpDocComponent implements OnInit, OnDestroy {
   sub: Subscription;
-  languageList: EnumIDAndText[];
-  helpdocFormPut: FormGroup;
-  helpdocFormPost: FormGroup;
+  IDToShow: number;
+  showType?: HttpClientCommand = null;
 
-  constructor(public helpdocService: HelpDocService, private router: Router, private httpClientService: HttpClientService, private fb: FormBuilder) {
+  constructor(public helpdocService: HelpDocService, private router: Router, private httpClientService: HttpClientService) {
     httpClientService.oldURL = router.url;
+  }
+
+  GetPutButtonColor(helpdoc: HelpDoc) {
+    if (this.IDToShow === helpdoc.HelpDocID && this.showType === HttpClientCommand.Put) {
+      return 'primary';
+    }
+    else {
+      return 'basic';
+    }
+  }
+
+  GetPostButtonColor(helpdoc: HelpDoc) {
+    if (this.IDToShow === helpdoc.HelpDocID && this.showType === HttpClientCommand.Post) {
+      return 'primary';
+    }
+    else {
+      return 'basic';
+    }
+  }
+
+  ShowPut(helpdoc: HelpDoc) {
+    if (this.IDToShow === helpdoc.HelpDocID && this.showType === HttpClientCommand.Put) {
+      this.IDToShow = 0;
+      this.showType = null;
+    }
+    else {
+      this.IDToShow = helpdoc.HelpDocID;
+      this.showType = HttpClientCommand.Put;
+    }
+  }
+
+  ShowPost(helpdoc: HelpDoc) {
+    if (this.IDToShow === helpdoc.HelpDocID && this.showType === HttpClientCommand.Post) {
+      this.IDToShow = 0;
+      this.showType = null;
+    }
+    else {
+      this.IDToShow = helpdoc.HelpDocID;
+      this.showType = HttpClientCommand.Post;
+    }
+  }
+
+  GetPutEnum() {
+    return <number>HttpClientCommand.Put;
+  }
+
+  GetPostEnum() {
+    return <number>HttpClientCommand.Post;
   }
 
   GetHelpDocList() {
     this.sub = this.helpdocService.GetHelpDocList().subscribe();
-  }
-
-  PutHelpDoc(helpdoc: HelpDoc) {
-    this.sub = this.helpdocService.PutHelpDoc(helpdoc).subscribe();
-  }
-
-  PostHelpDoc(helpdoc: HelpDoc) {
-    this.sub = this.helpdocService.PostHelpDoc(helpdoc).subscribe();
   }
 
   DeleteHelpDoc(helpdoc: HelpDoc) {
@@ -55,60 +92,11 @@ export class HelpDocComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     LoadLocalesHelpDocText(this.helpdocService);
-    this.languageList = LanguageEnum_GetOrderedText();
-    this.FillFormBuilderGroup(HttpClientCommand.Post);
-    this.FillFormBuilderGroup(HttpClientCommand.Put);
   }
 
   ngOnDestroy() {
     if (this.sub) {
       this.sub.unsubscribe();
-    }
-  }
-
-  FillFormBuilderGroup(httpClientCommand: HttpClientCommand) {
-    if (this.helpdocService.helpdocListModel$.getValue().length) {
-      let formGroup: FormGroup = this.fb.group(
-        {
-          HelpDocID: [
-            {
-              value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.helpdocService.helpdocListModel$.getValue()[0]?.HelpDocID)),
-              disabled: false
-            }, [  Validators.required ]],
-          DocKey: [
-            {
-              value: this.helpdocService.helpdocListModel$.getValue()[0]?.DocKey,
-              disabled: false
-            }, [  Validators.required, Validators.maxLength(100) ]],
-          Language: [
-            {
-              value: this.helpdocService.helpdocListModel$.getValue()[0]?.Language,
-              disabled: false
-            }, [  Validators.required ]],
-          DocHTMLText: [
-            {
-              value: this.helpdocService.helpdocListModel$.getValue()[0]?.DocHTMLText,
-              disabled: false
-            }, [  Validators.required, Validators.maxLength(100000) ]],
-          LastUpdateDate_UTC: [
-            {
-              value: this.helpdocService.helpdocListModel$.getValue()[0]?.LastUpdateDate_UTC,
-              disabled: false
-            }, [  Validators.required ]],
-          LastUpdateContactTVItemID: [
-            {
-              value: this.helpdocService.helpdocListModel$.getValue()[0]?.LastUpdateContactTVItemID,
-              disabled: false
-            }, [  Validators.required ]],
-        }
-      );
-
-      if (httpClientCommand === HttpClientCommand.Post) {
-        this.helpdocFormPost = formGroup
-      }
-      else {
-        this.helpdocFormPut = formGroup;
-      }
     }
   }
 }

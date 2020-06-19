@@ -17,228 +17,46 @@
     <mat-card-subtitle>{{ tidesiteService.tidesiteTextModel$.getValue().Title }}</mat-card-subtitle>
   </mat-card-header>
   <mat-card-content>
-    <mat-list *ngIf="tidesiteService.tidesiteListModel$.getValue()?.length">
-      <mat-list-item *ngFor="let tidesite of tidesiteService.tidesiteListModel$.getValue()">
-        <span mat-line>
+    <div *ngIf="tidesiteService.tidesiteListModel$.getValue()?.length">
+      <div *ngFor="let tidesite of tidesiteService.tidesiteListModel$.getValue()">
+        <p>
           <button mat-raised-button (click)="DeleteTideSite(tidesite)">
             <span>Delete TideSiteID [{{ tidesite.TideSiteID }}]&nbsp;&nbsp;&nbsp;</span>
             <mat-icon>delete</mat-icon>
-          </button>
+          </button>&nbsp;&nbsp;&nbsp;
+          <button mat-raised-button [color]="GetPutButtonColor(tidesite)"(click)="ShowPut(tidesite)">
+            <span>Show Put</span>
+          </button>&nbsp;&nbsp;
+          <button mat-raised-button [color]="GetPostButtonColor(tidesite)"(click)="ShowPost(tidesite)">
+            <span>Show Post</span>
+          </button>&nbsp;&nbsp;
           <mat-progress-bar mode="indeterminate" *ngIf="tidesiteService.tidesiteDeleteModel$.getValue().Working">
           </mat-progress-bar>
-          </span>
-        <span mat-line>
+        </p>
+        <p *ngIf="IDToShow === tidesite.TideSiteID && showType === GetPutEnum()">
+          <app-tidesite-edit [tidesite]="tidesite" [httpClientCommand]="GetPutEnum()"></app-tidesite-edit>
+        </p>
+        <p *ngIf="IDToShow === tidesite.TideSiteID && showType === GetPostEnum()">
+          <app-tidesite-edit [tidesite]="tidesite" [httpClientCommand]="GetPostEnum()"></app-tidesite-edit>
+        </p>
+        <blockquote>
+        <p>
           <span>TideSiteID: [{{ tidesite.TideSiteID }}]</span>
           <span> --- TideSiteTVItemID: [{{ tidesite.TideSiteTVItemID }}]</span>
           <span> --- TideSiteName: [{{ tidesite.TideSiteName }}]</span>
           <span> --- Province: [{{ tidesite.Province }}]</span>
-        </span>
-        <span mat-line>
+ </p>
+        <p>
           <span>sid: [{{ tidesite.sid }}]</span>
           <span> --- Zone: [{{ tidesite.Zone }}]</span>
           <span> --- LastUpdateDate_UTC: [{{ tidesite.LastUpdateDate_UTC }}]</span>
           <span> --- LastUpdateContactTVItemID: [{{ tidesite.LastUpdateContactTVItemID }}]</span>
-        </span>
-       </mat-list-item>
-     </mat-list>
+        </p>
+        </blockquote>
+       </div>
+     </div>
    </mat-card-content>
  <mat-card-actions>
    <button mat-button>Allo</button>
  </mat-card-actions>
-</mat-card>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<mat-card>
-  <mat-card-header>
-    <mat-card-title>Edit TideSite testing</mat-card-title>
-  </mat-card-header>
-  <mat-card-content>
-    <div *ngIf="tidesiteService.tidesiteListModel$.getValue()?.length">
-      <blockquote>
-        <form [formGroup]="tidesiteFormPut" (ngSubmit)="PutTideSite(tidesiteFormPut.value)">
-          <h3>
-            TideSite
-            <button mat-raised-button type="submit">
-              <span>Update TideSite</span>
-            </button>
-            <mat-progress-bar mode="indeterminate" *ngIf="tidesiteService.tidesitePutModel$.getValue().Working">
-            </mat-progress-bar>
-          </h3>
-          <p>
-            <mat-form-field>
-              <mat-label>TideSiteID</mat-label>
-              <input matInput type="number" formControlName="TideSiteID">
-              <mat-error *ngIf="tidesiteFormPut.controls.TideSiteID.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>TideSiteTVItemID</mat-label>
-              <input matInput type="number" formControlName="TideSiteTVItemID">
-              <mat-error *ngIf="tidesiteFormPut.controls.TideSiteTVItemID.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>TideSiteName</mat-label>
-              <input matInput type="text" formControlName="TideSiteName">
-              <mat-error *ngIf="tidesiteFormPut.controls.TideSiteName.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-                <span *ngIf="e.maxlength">MaxLength - 100<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>Province</mat-label>
-              <input matInput type="text" formControlName="Province">
-              <mat-error *ngIf="tidesiteFormPut.controls.Province.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-                <span *ngIf="e.minlength">MinLength - 2<br /></span>
-                <span *ngIf="e.maxlength">MaxLength - 2<br /></span>
-              </mat-error>
-            </mat-form-field>
-          </p>
-          <p>
-            <mat-form-field>
-              <mat-label>sid</mat-label>
-              <input matInput type="number" formControlName="sid">
-              <mat-error *ngIf="tidesiteFormPut.controls.sid.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-                <span *ngIf="e.min">Min - 0<br /></span>
-                <span *ngIf="e.min">Max - 10000<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>Zone</mat-label>
-              <input matInput type="number" formControlName="Zone">
-              <mat-error *ngIf="tidesiteFormPut.controls.Zone.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-                <span *ngIf="e.min">Min - 0<br /></span>
-                <span *ngIf="e.min">Max - 10000<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>LastUpdateDate_UTC</mat-label>
-              <input matInput type="text" formControlName="LastUpdateDate_UTC">
-              <mat-error *ngIf="tidesiteFormPut.controls.LastUpdateDate_UTC.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>LastUpdateContactTVItemID</mat-label>
-              <input matInput type="number" formControlName="LastUpdateContactTVItemID">
-              <mat-error *ngIf="tidesiteFormPut.controls.LastUpdateContactTVItemID.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-          </p>
-        </form>
-      </blockquote>
-    </div>
-  </mat-card-content>
-</mat-card>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<mat-card>
-  <mat-card-header>
-    <mat-card-title>Add TideSite testing</mat-card-title>
-  </mat-card-header>
-  <mat-card-content>
-    <div *ngIf="tidesiteService.tidesiteListModel$.getValue()?.length">
-      <blockquote>
-        <form [formGroup]="tidesiteFormPost" (ngSubmit)="PostTideSite(tidesiteFormPost.value)">
-          <h3>
-            TideSite
-            <button mat-raised-button type="submit">
-              <span>Add TideSite</span>
-            </button>
-            <mat-progress-bar mode="indeterminate" *ngIf="tidesiteService.tidesitePostModel$.getValue().Working">
-            </mat-progress-bar>
-          </h3>
-          <p>
-            <mat-form-field>
-              <mat-label>TideSiteID</mat-label>
-              <input matInput type="number" formControlName="TideSiteID">
-              <mat-error *ngIf="tidesiteFormPut.controls.TideSiteID.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>TideSiteTVItemID</mat-label>
-              <input matInput type="number" formControlName="TideSiteTVItemID">
-              <mat-error *ngIf="tidesiteFormPut.controls.TideSiteTVItemID.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>TideSiteName</mat-label>
-              <input matInput type="text" formControlName="TideSiteName">
-              <mat-error *ngIf="tidesiteFormPut.controls.TideSiteName.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-                <span *ngIf="e.maxlength">MaxLength - 100<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>Province</mat-label>
-              <input matInput type="text" formControlName="Province">
-              <mat-error *ngIf="tidesiteFormPut.controls.Province.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-                <span *ngIf="e.minlength">MinLength - 2<br /></span>
-                <span *ngIf="e.maxlength">MaxLength - 2<br /></span>
-              </mat-error>
-            </mat-form-field>
-          </p>
-          <p>
-            <mat-form-field>
-              <mat-label>sid</mat-label>
-              <input matInput type="number" formControlName="sid">
-              <mat-error *ngIf="tidesiteFormPut.controls.sid.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-                <span *ngIf="e.min">Min - 0<br /></span>
-                <span *ngIf="e.min">Max - 10000<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>Zone</mat-label>
-              <input matInput type="number" formControlName="Zone">
-              <mat-error *ngIf="tidesiteFormPut.controls.Zone.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-                <span *ngIf="e.min">Min - 0<br /></span>
-                <span *ngIf="e.min">Max - 10000<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>LastUpdateDate_UTC</mat-label>
-              <input matInput type="text" formControlName="LastUpdateDate_UTC">
-              <mat-error *ngIf="tidesiteFormPut.controls.LastUpdateDate_UTC.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>LastUpdateContactTVItemID</mat-label>
-              <input matInput type="number" formControlName="LastUpdateContactTVItemID">
-              <mat-error *ngIf="tidesiteFormPut.controls.LastUpdateContactTVItemID.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-          </p>
-        </form>
-      </blockquote>
-    </div>
-  </mat-card-content>
 </mat-card>

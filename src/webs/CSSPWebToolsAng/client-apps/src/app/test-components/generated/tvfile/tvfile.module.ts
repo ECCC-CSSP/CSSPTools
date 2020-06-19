@@ -12,9 +12,10 @@ import { TVFileRoutingModule } from './tvfile-routing.module';
 import { MaterialModule } from '../../../app-material.module';
 import { TVFileComponent } from './tvfile.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { TVFileEditComponent } from './tvfile-edit.component';
 
 @NgModule({
-  declarations: [ TVFileComponent ],
+  declarations: [TVFileComponent, TVFileEditComponent],
   imports: [
     CommonModule,
     RouterModule,

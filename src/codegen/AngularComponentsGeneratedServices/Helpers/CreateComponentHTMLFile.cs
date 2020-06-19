@@ -54,10 +54,10 @@ namespace AngularComponentsGeneratedServices.Services
             sb.AppendLine(@"          </mat-progress-bar>");
             sb.AppendLine(@"        </p>");
             sb.AppendLine($@"        <p *ngIf=""IDToShow === { dllTypeInfoModels.Name.ToLower() }.{ dllTypeInfoModels.Name }ID && showType === GetPutEnum()"">");
-            sb.AppendLine($@"          <app-address-edit [{ dllTypeInfoModels.Name.ToLower() }]=""{ dllTypeInfoModels.Name.ToLower() }"" [httpClientCommand]=""GetPutEnum()""></app-address-edit>");
+            sb.AppendLine($@"          <app-{ dllTypeInfoModels.Name.ToLower() }-edit [{ dllTypeInfoModels.Name.ToLower() }]=""{ dllTypeInfoModels.Name.ToLower() }"" [httpClientCommand]=""GetPutEnum()""></app-{ dllTypeInfoModels.Name.ToLower() }-edit>");
             sb.AppendLine(@"        </p>");
             sb.AppendLine($@"        <p *ngIf=""IDToShow === { dllTypeInfoModels.Name.ToLower() }.{ dllTypeInfoModels.Name }ID && showType === GetPostEnum()"">");
-            sb.AppendLine($@"          <app-address-edit [{ dllTypeInfoModels.Name.ToLower() }]=""{ dllTypeInfoModels.Name.ToLower() }"" [httpClientCommand]=""GetPostEnum()""></app-address-edit>");
+            sb.AppendLine($@"          <app-{ dllTypeInfoModels.Name.ToLower() }-edit [{ dllTypeInfoModels.Name.ToLower() }]=""{ dllTypeInfoModels.Name.ToLower() }"" [httpClientCommand]=""GetPostEnum()""></app-{ dllTypeInfoModels.Name.ToLower() }-edit>");
             sb.AppendLine(@"        </p>");
             sb.AppendLine(@"        <blockquote>");
 

@@ -17,215 +17,45 @@
     <mat-card-subtitle>{{ doctemplateService.doctemplateTextModel$.getValue().Title }}</mat-card-subtitle>
   </mat-card-header>
   <mat-card-content>
-    <mat-list *ngIf="doctemplateService.doctemplateListModel$.getValue()?.length">
-      <mat-list-item *ngFor="let doctemplate of doctemplateService.doctemplateListModel$.getValue()">
-        <span mat-line>
+    <div *ngIf="doctemplateService.doctemplateListModel$.getValue()?.length">
+      <div *ngFor="let doctemplate of doctemplateService.doctemplateListModel$.getValue()">
+        <p>
           <button mat-raised-button (click)="DeleteDocTemplate(doctemplate)">
             <span>Delete DocTemplateID [{{ doctemplate.DocTemplateID }}]&nbsp;&nbsp;&nbsp;</span>
             <mat-icon>delete</mat-icon>
-          </button>
+          </button>&nbsp;&nbsp;&nbsp;
+          <button mat-raised-button [color]="GetPutButtonColor(doctemplate)"(click)="ShowPut(doctemplate)">
+            <span>Show Put</span>
+          </button>&nbsp;&nbsp;
+          <button mat-raised-button [color]="GetPostButtonColor(doctemplate)"(click)="ShowPost(doctemplate)">
+            <span>Show Post</span>
+          </button>&nbsp;&nbsp;
           <mat-progress-bar mode="indeterminate" *ngIf="doctemplateService.doctemplateDeleteModel$.getValue().Working">
           </mat-progress-bar>
-          </span>
-        <span mat-line>
+        </p>
+        <p *ngIf="IDToShow === doctemplate.DocTemplateID && showType === GetPutEnum()">
+          <app-doctemplate-edit [doctemplate]="doctemplate" [httpClientCommand]="GetPutEnum()"></app-doctemplate-edit>
+        </p>
+        <p *ngIf="IDToShow === doctemplate.DocTemplateID && showType === GetPostEnum()">
+          <app-doctemplate-edit [doctemplate]="doctemplate" [httpClientCommand]="GetPostEnum()"></app-doctemplate-edit>
+        </p>
+        <blockquote>
+        <p>
           <span>DocTemplateID: [{{ doctemplate.DocTemplateID }}]</span>
           <span> --- Language: [{{ GetLanguageEnumText(doctemplate.Language) }}]</span>
           <span> --- TVType: [{{ GetTVTypeEnumText(doctemplate.TVType) }}]</span>
           <span> --- TVFileTVItemID: [{{ doctemplate.TVFileTVItemID }}]</span>
-        </span>
-        <span mat-line>
+ </p>
+        <p>
           <span>FileName: [{{ doctemplate.FileName }}]</span>
           <span> --- LastUpdateDate_UTC: [{{ doctemplate.LastUpdateDate_UTC }}]</span>
           <span> --- LastUpdateContactTVItemID: [{{ doctemplate.LastUpdateContactTVItemID }}]</span>
-        </span>
-       </mat-list-item>
-     </mat-list>
+        </p>
+        </blockquote>
+       </div>
+     </div>
    </mat-card-content>
  <mat-card-actions>
    <button mat-button>Allo</button>
  </mat-card-actions>
-</mat-card>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<mat-card>
-  <mat-card-header>
-    <mat-card-title>Edit DocTemplate testing</mat-card-title>
-  </mat-card-header>
-  <mat-card-content>
-    <div *ngIf="doctemplateService.doctemplateListModel$.getValue()?.length">
-      <blockquote>
-        <form [formGroup]="doctemplateFormPut" (ngSubmit)="PutDocTemplate(doctemplateFormPut.value)">
-          <h3>
-            DocTemplate
-            <button mat-raised-button type="submit">
-              <span>Update DocTemplate</span>
-            </button>
-            <mat-progress-bar mode="indeterminate" *ngIf="doctemplateService.doctemplatePutModel$.getValue().Working">
-            </mat-progress-bar>
-          </h3>
-          <p>
-            <mat-form-field>
-              <mat-label>DocTemplateID</mat-label>
-              <input matInput type="number" formControlName="DocTemplateID">
-              <mat-error *ngIf="doctemplateFormPut.controls.DocTemplateID.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>Language</mat-label>
-              <mat-select formControlName="Language">
-                <mat-option *ngFor="let a of languageList" [value]="a.EnumID">
-                  {{ a.EnumText }}
-                </mat-option>
-              </mat-select>
-              <mat-error *ngIf="doctemplateFormPut.controls.Language.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>TVType</mat-label>
-              <mat-select formControlName="TVType">
-                <mat-option *ngFor="let a of tVTypeList" [value]="a.EnumID">
-                  {{ a.EnumText }}
-                </mat-option>
-              </mat-select>
-              <mat-error *ngIf="doctemplateFormPut.controls.TVType.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>TVFileTVItemID</mat-label>
-              <input matInput type="number" formControlName="TVFileTVItemID">
-              <mat-error *ngIf="doctemplateFormPut.controls.TVFileTVItemID.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-          </p>
-          <p>
-            <mat-form-field>
-              <mat-label>FileName</mat-label>
-              <input matInput type="text" formControlName="FileName">
-              <mat-error *ngIf="doctemplateFormPut.controls.FileName.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-                <span *ngIf="e.maxlength">MaxLength - 150<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>LastUpdateDate_UTC</mat-label>
-              <input matInput type="text" formControlName="LastUpdateDate_UTC">
-              <mat-error *ngIf="doctemplateFormPut.controls.LastUpdateDate_UTC.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>LastUpdateContactTVItemID</mat-label>
-              <input matInput type="number" formControlName="LastUpdateContactTVItemID">
-              <mat-error *ngIf="doctemplateFormPut.controls.LastUpdateContactTVItemID.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-          </p>
-        </form>
-      </blockquote>
-    </div>
-  </mat-card-content>
-</mat-card>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<mat-card>
-  <mat-card-header>
-    <mat-card-title>Add DocTemplate testing</mat-card-title>
-  </mat-card-header>
-  <mat-card-content>
-    <div *ngIf="doctemplateService.doctemplateListModel$.getValue()?.length">
-      <blockquote>
-        <form [formGroup]="doctemplateFormPost" (ngSubmit)="PostDocTemplate(doctemplateFormPost.value)">
-          <h3>
-            DocTemplate
-            <button mat-raised-button type="submit">
-              <span>Add DocTemplate</span>
-            </button>
-            <mat-progress-bar mode="indeterminate" *ngIf="doctemplateService.doctemplatePostModel$.getValue().Working">
-            </mat-progress-bar>
-          </h3>
-          <p>
-            <mat-form-field>
-              <mat-label>DocTemplateID</mat-label>
-              <input matInput type="number" formControlName="DocTemplateID">
-              <mat-error *ngIf="doctemplateFormPut.controls.DocTemplateID.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>Language</mat-label>
-              <mat-select formControlName="Language">
-                <mat-option *ngFor="let a of languageList" [value]="a.EnumID">
-                  {{ a.EnumText }}
-                </mat-option>
-              </mat-select>
-              <mat-error *ngIf="doctemplateFormPut.controls.Language.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>TVType</mat-label>
-              <mat-select formControlName="TVType">
-                <mat-option *ngFor="let a of tVTypeList" [value]="a.EnumID">
-                  {{ a.EnumText }}
-                </mat-option>
-              </mat-select>
-              <mat-error *ngIf="doctemplateFormPut.controls.TVType.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>TVFileTVItemID</mat-label>
-              <input matInput type="number" formControlName="TVFileTVItemID">
-              <mat-error *ngIf="doctemplateFormPut.controls.TVFileTVItemID.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-          </p>
-          <p>
-            <mat-form-field>
-              <mat-label>FileName</mat-label>
-              <input matInput type="text" formControlName="FileName">
-              <mat-error *ngIf="doctemplateFormPut.controls.FileName.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-                <span *ngIf="e.maxlength">MaxLength - 150<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>LastUpdateDate_UTC</mat-label>
-              <input matInput type="text" formControlName="LastUpdateDate_UTC">
-              <mat-error *ngIf="doctemplateFormPut.controls.LastUpdateDate_UTC.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>LastUpdateContactTVItemID</mat-label>
-              <input matInput type="number" formControlName="LastUpdateContactTVItemID">
-              <mat-error *ngIf="doctemplateFormPut.controls.LastUpdateContactTVItemID.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-          </p>
-        </form>
-      </blockquote>
-    </div>
-  </mat-card-content>
 </mat-card>

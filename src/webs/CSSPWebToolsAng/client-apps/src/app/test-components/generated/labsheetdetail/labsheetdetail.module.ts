@@ -12,9 +12,10 @@ import { LabSheetDetailRoutingModule } from './labsheetdetail-routing.module';
 import { MaterialModule } from '../../../app-material.module';
 import { LabSheetDetailComponent } from './labsheetdetail.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { LabSheetDetailEditComponent } from './labsheetdetail-edit.component';
 
 @NgModule({
-  declarations: [ LabSheetDetailComponent ],
+  declarations: [LabSheetDetailComponent, LabSheetDetailEditComponent],
   imports: [
     CommonModule,
     RouterModule,

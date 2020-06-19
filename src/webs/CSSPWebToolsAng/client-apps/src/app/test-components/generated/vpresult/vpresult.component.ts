@@ -10,7 +10,6 @@ import { VPResultService } from './vpresult.service';
 import { LoadLocalesVPResultText } from './vpresult.locales';
 import { Subscription } from 'rxjs';
 import { VPResult } from '../../../models/generated/VPResult.model';
-import { FormBuilder, Validators, FormGroup } from '@angular/forms';
 import { HttpClientService } from '../../../services/http-client.service';
 import { Router } from '@angular/router';
 import { HttpClientCommand } from '../../../enums/app.enums';
@@ -23,23 +22,63 @@ import { HttpClientCommand } from '../../../enums/app.enums';
 })
 export class VPResultComponent implements OnInit, OnDestroy {
   sub: Subscription;
-  vpresultFormPut: FormGroup;
-  vpresultFormPost: FormGroup;
+  IDToShow: number;
+  showType?: HttpClientCommand = null;
 
-  constructor(public vpresultService: VPResultService, private router: Router, private httpClientService: HttpClientService, private fb: FormBuilder) {
+  constructor(public vpresultService: VPResultService, private router: Router, private httpClientService: HttpClientService) {
     httpClientService.oldURL = router.url;
+  }
+
+  GetPutButtonColor(vpresult: VPResult) {
+    if (this.IDToShow === vpresult.VPResultID && this.showType === HttpClientCommand.Put) {
+      return 'primary';
+    }
+    else {
+      return 'basic';
+    }
+  }
+
+  GetPostButtonColor(vpresult: VPResult) {
+    if (this.IDToShow === vpresult.VPResultID && this.showType === HttpClientCommand.Post) {
+      return 'primary';
+    }
+    else {
+      return 'basic';
+    }
+  }
+
+  ShowPut(vpresult: VPResult) {
+    if (this.IDToShow === vpresult.VPResultID && this.showType === HttpClientCommand.Put) {
+      this.IDToShow = 0;
+      this.showType = null;
+    }
+    else {
+      this.IDToShow = vpresult.VPResultID;
+      this.showType = HttpClientCommand.Put;
+    }
+  }
+
+  ShowPost(vpresult: VPResult) {
+    if (this.IDToShow === vpresult.VPResultID && this.showType === HttpClientCommand.Post) {
+      this.IDToShow = 0;
+      this.showType = null;
+    }
+    else {
+      this.IDToShow = vpresult.VPResultID;
+      this.showType = HttpClientCommand.Post;
+    }
+  }
+
+  GetPutEnum() {
+    return <number>HttpClientCommand.Put;
+  }
+
+  GetPostEnum() {
+    return <number>HttpClientCommand.Post;
   }
 
   GetVPResultList() {
     this.sub = this.vpresultService.GetVPResultList().subscribe();
-  }
-
-  PutVPResult(vpresult: VPResult) {
-    this.sub = this.vpresultService.PutVPResult(vpresult).subscribe();
-  }
-
-  PostVPResult(vpresult: VPResult) {
-    this.sub = this.vpresultService.PostVPResult(vpresult).subscribe();
   }
 
   DeleteVPResult(vpresult: VPResult) {
@@ -48,79 +87,11 @@ export class VPResultComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     LoadLocalesVPResultText(this.vpresultService);
-    this.FillFormBuilderGroup(HttpClientCommand.Post);
-    this.FillFormBuilderGroup(HttpClientCommand.Put);
   }
 
   ngOnDestroy() {
     if (this.sub) {
       this.sub.unsubscribe();
-    }
-  }
-
-  FillFormBuilderGroup(httpClientCommand: HttpClientCommand) {
-    if (this.vpresultService.vpresultListModel$.getValue().length) {
-      let formGroup: FormGroup = this.fb.group(
-        {
-          VPResultID: [
-            {
-              value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.vpresultService.vpresultListModel$.getValue()[0]?.VPResultID)),
-              disabled: false
-            }, [  Validators.required ]],
-          VPScenarioID: [
-            {
-              value: this.vpresultService.vpresultListModel$.getValue()[0]?.VPScenarioID,
-              disabled: false
-            }, [  Validators.required ]],
-          Ordinal: [
-            {
-              value: this.vpresultService.vpresultListModel$.getValue()[0]?.Ordinal,
-              disabled: false
-            }, [  Validators.required, Validators.min(0), Validators.max(1000) ]],
-          Concentration_MPN_100ml: [
-            {
-              value: this.vpresultService.vpresultListModel$.getValue()[0]?.Concentration_MPN_100ml,
-              disabled: false
-            }, [  Validators.required, Validators.min(0), Validators.max(10000000) ]],
-          Dilution: [
-            {
-              value: this.vpresultService.vpresultListModel$.getValue()[0]?.Dilution,
-              disabled: false
-            }, [  Validators.required, Validators.min(0), Validators.max(1000000) ]],
-          FarFieldWidth_m: [
-            {
-              value: this.vpresultService.vpresultListModel$.getValue()[0]?.FarFieldWidth_m,
-              disabled: false
-            }, [  Validators.required, Validators.min(0), Validators.max(10000) ]],
-          DispersionDistance_m: [
-            {
-              value: this.vpresultService.vpresultListModel$.getValue()[0]?.DispersionDistance_m,
-              disabled: false
-            }, [  Validators.required, Validators.min(0), Validators.max(100000) ]],
-          TravelTime_hour: [
-            {
-              value: this.vpresultService.vpresultListModel$.getValue()[0]?.TravelTime_hour,
-              disabled: false
-            }, [  Validators.required, Validators.min(0), Validators.max(100) ]],
-          LastUpdateDate_UTC: [
-            {
-              value: this.vpresultService.vpresultListModel$.getValue()[0]?.LastUpdateDate_UTC,
-              disabled: false
-            }, [  Validators.required ]],
-          LastUpdateContactTVItemID: [
-            {
-              value: this.vpresultService.vpresultListModel$.getValue()[0]?.LastUpdateContactTVItemID,
-              disabled: false
-            }, [  Validators.required ]],
-        }
-      );
-
-      if (httpClientCommand === HttpClientCommand.Post) {
-        this.vpresultFormPost = formGroup
-      }
-      else {
-        this.vpresultFormPut = formGroup;
-      }
     }
   }
 }

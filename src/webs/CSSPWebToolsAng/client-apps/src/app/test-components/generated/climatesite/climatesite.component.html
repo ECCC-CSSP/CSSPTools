@@ -17,500 +17,70 @@
     <mat-card-subtitle>{{ climatesiteService.climatesiteTextModel$.getValue().Title }}</mat-card-subtitle>
   </mat-card-header>
   <mat-card-content>
-    <mat-list *ngIf="climatesiteService.climatesiteListModel$.getValue()?.length">
-      <mat-list-item *ngFor="let climatesite of climatesiteService.climatesiteListModel$.getValue()">
-        <span mat-line>
+    <div *ngIf="climatesiteService.climatesiteListModel$.getValue()?.length">
+      <div *ngFor="let climatesite of climatesiteService.climatesiteListModel$.getValue()">
+        <p>
           <button mat-raised-button (click)="DeleteClimateSite(climatesite)">
             <span>Delete ClimateSiteID [{{ climatesite.ClimateSiteID }}]&nbsp;&nbsp;&nbsp;</span>
             <mat-icon>delete</mat-icon>
-          </button>
+          </button>&nbsp;&nbsp;&nbsp;
+          <button mat-raised-button [color]="GetPutButtonColor(climatesite)"(click)="ShowPut(climatesite)">
+            <span>Show Put</span>
+          </button>&nbsp;&nbsp;
+          <button mat-raised-button [color]="GetPostButtonColor(climatesite)"(click)="ShowPost(climatesite)">
+            <span>Show Post</span>
+          </button>&nbsp;&nbsp;
           <mat-progress-bar mode="indeterminate" *ngIf="climatesiteService.climatesiteDeleteModel$.getValue().Working">
           </mat-progress-bar>
-          </span>
-        <span mat-line>
+        </p>
+        <p *ngIf="IDToShow === climatesite.ClimateSiteID && showType === GetPutEnum()">
+          <app-climatesite-edit [climatesite]="climatesite" [httpClientCommand]="GetPutEnum()"></app-climatesite-edit>
+        </p>
+        <p *ngIf="IDToShow === climatesite.ClimateSiteID && showType === GetPostEnum()">
+          <app-climatesite-edit [climatesite]="climatesite" [httpClientCommand]="GetPostEnum()"></app-climatesite-edit>
+        </p>
+        <blockquote>
+        <p>
           <span>ClimateSiteID: [{{ climatesite.ClimateSiteID }}]</span>
           <span> --- ClimateSiteTVItemID: [{{ climatesite.ClimateSiteTVItemID }}]</span>
           <span> --- ECDBID: [{{ climatesite.ECDBID }}]</span>
           <span> --- ClimateSiteName: [{{ climatesite.ClimateSiteName }}]</span>
-        </span>
-        <span mat-line>
+ </p>
+        <p>
           <span>Province: [{{ climatesite.Province }}]</span>
           <span> --- Elevation_m: [{{ climatesite.Elevation_m }}]</span>
           <span> --- ClimateID: [{{ climatesite.ClimateID }}]</span>
           <span> --- WMOID: [{{ climatesite.WMOID }}]</span>
-        </span>
-        <span mat-line>
+ </p>
+        <p>
           <span>TCID: [{{ climatesite.TCID }}]</span>
           <span> --- IsQuebecSite: [{{ climatesite.IsQuebecSite }}]</span>
           <span> --- IsCoCoRaHS: [{{ climatesite.IsCoCoRaHS }}]</span>
           <span> --- TimeOffset_hour: [{{ climatesite.TimeOffset_hour }}]</span>
-        </span>
-        <span mat-line>
+ </p>
+        <p>
           <span>File_desc: [{{ climatesite.File_desc }}]</span>
           <span> --- HourlyStartDate_Local: [{{ climatesite.HourlyStartDate_Local }}]</span>
           <span> --- HourlyEndDate_Local: [{{ climatesite.HourlyEndDate_Local }}]</span>
           <span> --- HourlyNow: [{{ climatesite.HourlyNow }}]</span>
-        </span>
-        <span mat-line>
+ </p>
+        <p>
           <span>DailyStartDate_Local: [{{ climatesite.DailyStartDate_Local }}]</span>
           <span> --- DailyEndDate_Local: [{{ climatesite.DailyEndDate_Local }}]</span>
           <span> --- DailyNow: [{{ climatesite.DailyNow }}]</span>
           <span> --- MonthlyStartDate_Local: [{{ climatesite.MonthlyStartDate_Local }}]</span>
-        </span>
-        <span mat-line>
+ </p>
+        <p>
           <span>MonthlyEndDate_Local: [{{ climatesite.MonthlyEndDate_Local }}]</span>
           <span> --- MonthlyNow: [{{ climatesite.MonthlyNow }}]</span>
           <span> --- LastUpdateDate_UTC: [{{ climatesite.LastUpdateDate_UTC }}]</span>
           <span> --- LastUpdateContactTVItemID: [{{ climatesite.LastUpdateContactTVItemID }}]</span>
-        </span>
-       </mat-list-item>
-     </mat-list>
+        </p>
+        </blockquote>
+       </div>
+     </div>
    </mat-card-content>
  <mat-card-actions>
    <button mat-button>Allo</button>
  </mat-card-actions>
-</mat-card>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<mat-card>
-  <mat-card-header>
-    <mat-card-title>Edit ClimateSite testing</mat-card-title>
-  </mat-card-header>
-  <mat-card-content>
-    <div *ngIf="climatesiteService.climatesiteListModel$.getValue()?.length">
-      <blockquote>
-        <form [formGroup]="climatesiteFormPut" (ngSubmit)="PutClimateSite(climatesiteFormPut.value)">
-          <h3>
-            ClimateSite
-            <button mat-raised-button type="submit">
-              <span>Update ClimateSite</span>
-            </button>
-            <mat-progress-bar mode="indeterminate" *ngIf="climatesiteService.climatesitePutModel$.getValue().Working">
-            </mat-progress-bar>
-          </h3>
-          <p>
-            <mat-form-field>
-              <mat-label>ClimateSiteID</mat-label>
-              <input matInput type="number" formControlName="ClimateSiteID">
-              <mat-error *ngIf="climatesiteFormPut.controls.ClimateSiteID.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>ClimateSiteTVItemID</mat-label>
-              <input matInput type="number" formControlName="ClimateSiteTVItemID">
-              <mat-error *ngIf="climatesiteFormPut.controls.ClimateSiteTVItemID.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>ECDBID</mat-label>
-              <input matInput type="number" formControlName="ECDBID">
-              <mat-error *ngIf="climatesiteFormPut.controls.ECDBID.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.min">Min - 1<br /></span>
-                <span *ngIf="e.min">Max - 100000<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>ClimateSiteName</mat-label>
-              <input matInput type="text" formControlName="ClimateSiteName">
-              <mat-error *ngIf="climatesiteFormPut.controls.ClimateSiteName.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-                <span *ngIf="e.maxlength">MaxLength - 100<br /></span>
-              </mat-error>
-            </mat-form-field>
-          </p>
-          <p>
-            <mat-form-field>
-              <mat-label>Province</mat-label>
-              <input matInput type="text" formControlName="Province">
-              <mat-error *ngIf="climatesiteFormPut.controls.Province.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-                <span *ngIf="e.maxlength">MaxLength - 4<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>Elevation_m</mat-label>
-              <input matInput type="number" formControlName="Elevation_m">
-              <mat-error *ngIf="climatesiteFormPut.controls.Elevation_m.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.min">Min - 0<br /></span>
-                <span *ngIf="e.min">Max - 10000<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>ClimateID</mat-label>
-              <input matInput type="text" formControlName="ClimateID">
-              <mat-error *ngIf="climatesiteFormPut.controls.ClimateID.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.maxlength">MaxLength - 10<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>WMOID</mat-label>
-              <input matInput type="number" formControlName="WMOID">
-              <mat-error *ngIf="climatesiteFormPut.controls.WMOID.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.min">Min - 1<br /></span>
-                <span *ngIf="e.min">Max - 100000<br /></span>
-              </mat-error>
-            </mat-form-field>
-          </p>
-          <p>
-            <mat-form-field>
-              <mat-label>TCID</mat-label>
-              <input matInput type="text" formControlName="TCID">
-              <mat-error *ngIf="climatesiteFormPut.controls.TCID.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.maxlength">MaxLength - 3<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>IsQuebecSite</mat-label>
-              <input matInput type="text" formControlName="IsQuebecSite">
-              <mat-error *ngIf="climatesiteFormPut.controls.IsQuebecSite.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>IsCoCoRaHS</mat-label>
-              <input matInput type="text" formControlName="IsCoCoRaHS">
-              <mat-error *ngIf="climatesiteFormPut.controls.IsCoCoRaHS.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>TimeOffset_hour</mat-label>
-              <input matInput type="number" formControlName="TimeOffset_hour">
-              <mat-error *ngIf="climatesiteFormPut.controls.TimeOffset_hour.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.min">Min - -10<br /></span>
-                <span *ngIf="e.min">Max - 0<br /></span>
-              </mat-error>
-            </mat-form-field>
-          </p>
-          <p>
-            <mat-form-field>
-              <mat-label>File_desc</mat-label>
-              <input matInput type="text" formControlName="File_desc">
-              <mat-error *ngIf="climatesiteFormPut.controls.File_desc.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.maxlength">MaxLength - 50<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>HourlyStartDate_Local</mat-label>
-              <input matInput type="text" formControlName="HourlyStartDate_Local">
-              <mat-error *ngIf="climatesiteFormPut.controls.HourlyStartDate_Local.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>HourlyEndDate_Local</mat-label>
-              <input matInput type="text" formControlName="HourlyEndDate_Local">
-              <mat-error *ngIf="climatesiteFormPut.controls.HourlyEndDate_Local.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>HourlyNow</mat-label>
-              <input matInput type="text" formControlName="HourlyNow">
-              <mat-error *ngIf="climatesiteFormPut.controls.HourlyNow.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-              </mat-error>
-            </mat-form-field>
-          </p>
-          <p>
-            <mat-form-field>
-              <mat-label>DailyStartDate_Local</mat-label>
-              <input matInput type="text" formControlName="DailyStartDate_Local">
-              <mat-error *ngIf="climatesiteFormPut.controls.DailyStartDate_Local.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>DailyEndDate_Local</mat-label>
-              <input matInput type="text" formControlName="DailyEndDate_Local">
-              <mat-error *ngIf="climatesiteFormPut.controls.DailyEndDate_Local.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>DailyNow</mat-label>
-              <input matInput type="text" formControlName="DailyNow">
-              <mat-error *ngIf="climatesiteFormPut.controls.DailyNow.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>MonthlyStartDate_Local</mat-label>
-              <input matInput type="text" formControlName="MonthlyStartDate_Local">
-              <mat-error *ngIf="climatesiteFormPut.controls.MonthlyStartDate_Local.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-              </mat-error>
-            </mat-form-field>
-          </p>
-          <p>
-            <mat-form-field>
-              <mat-label>MonthlyEndDate_Local</mat-label>
-              <input matInput type="text" formControlName="MonthlyEndDate_Local">
-              <mat-error *ngIf="climatesiteFormPut.controls.MonthlyEndDate_Local.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>MonthlyNow</mat-label>
-              <input matInput type="text" formControlName="MonthlyNow">
-              <mat-error *ngIf="climatesiteFormPut.controls.MonthlyNow.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>LastUpdateDate_UTC</mat-label>
-              <input matInput type="text" formControlName="LastUpdateDate_UTC">
-              <mat-error *ngIf="climatesiteFormPut.controls.LastUpdateDate_UTC.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>LastUpdateContactTVItemID</mat-label>
-              <input matInput type="number" formControlName="LastUpdateContactTVItemID">
-              <mat-error *ngIf="climatesiteFormPut.controls.LastUpdateContactTVItemID.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-          </p>
-        </form>
-      </blockquote>
-    </div>
-  </mat-card-content>
-</mat-card>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<mat-card>
-  <mat-card-header>
-    <mat-card-title>Add ClimateSite testing</mat-card-title>
-  </mat-card-header>
-  <mat-card-content>
-    <div *ngIf="climatesiteService.climatesiteListModel$.getValue()?.length">
-      <blockquote>
-        <form [formGroup]="climatesiteFormPost" (ngSubmit)="PostClimateSite(climatesiteFormPost.value)">
-          <h3>
-            ClimateSite
-            <button mat-raised-button type="submit">
-              <span>Add ClimateSite</span>
-            </button>
-            <mat-progress-bar mode="indeterminate" *ngIf="climatesiteService.climatesitePostModel$.getValue().Working">
-            </mat-progress-bar>
-          </h3>
-          <p>
-            <mat-form-field>
-              <mat-label>ClimateSiteID</mat-label>
-              <input matInput type="number" formControlName="ClimateSiteID">
-              <mat-error *ngIf="climatesiteFormPut.controls.ClimateSiteID.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>ClimateSiteTVItemID</mat-label>
-              <input matInput type="number" formControlName="ClimateSiteTVItemID">
-              <mat-error *ngIf="climatesiteFormPut.controls.ClimateSiteTVItemID.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>ECDBID</mat-label>
-              <input matInput type="number" formControlName="ECDBID">
-              <mat-error *ngIf="climatesiteFormPut.controls.ECDBID.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.min">Min - 1<br /></span>
-                <span *ngIf="e.min">Max - 100000<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>ClimateSiteName</mat-label>
-              <input matInput type="text" formControlName="ClimateSiteName">
-              <mat-error *ngIf="climatesiteFormPut.controls.ClimateSiteName.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-                <span *ngIf="e.maxlength">MaxLength - 100<br /></span>
-              </mat-error>
-            </mat-form-field>
-          </p>
-          <p>
-            <mat-form-field>
-              <mat-label>Province</mat-label>
-              <input matInput type="text" formControlName="Province">
-              <mat-error *ngIf="climatesiteFormPut.controls.Province.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-                <span *ngIf="e.maxlength">MaxLength - 4<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>Elevation_m</mat-label>
-              <input matInput type="number" formControlName="Elevation_m">
-              <mat-error *ngIf="climatesiteFormPut.controls.Elevation_m.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.min">Min - 0<br /></span>
-                <span *ngIf="e.min">Max - 10000<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>ClimateID</mat-label>
-              <input matInput type="text" formControlName="ClimateID">
-              <mat-error *ngIf="climatesiteFormPut.controls.ClimateID.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.maxlength">MaxLength - 10<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>WMOID</mat-label>
-              <input matInput type="number" formControlName="WMOID">
-              <mat-error *ngIf="climatesiteFormPut.controls.WMOID.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.min">Min - 1<br /></span>
-                <span *ngIf="e.min">Max - 100000<br /></span>
-              </mat-error>
-            </mat-form-field>
-          </p>
-          <p>
-            <mat-form-field>
-              <mat-label>TCID</mat-label>
-              <input matInput type="text" formControlName="TCID">
-              <mat-error *ngIf="climatesiteFormPut.controls.TCID.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.maxlength">MaxLength - 3<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>IsQuebecSite</mat-label>
-              <input matInput type="text" formControlName="IsQuebecSite">
-              <mat-error *ngIf="climatesiteFormPut.controls.IsQuebecSite.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>IsCoCoRaHS</mat-label>
-              <input matInput type="text" formControlName="IsCoCoRaHS">
-              <mat-error *ngIf="climatesiteFormPut.controls.IsCoCoRaHS.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>TimeOffset_hour</mat-label>
-              <input matInput type="number" formControlName="TimeOffset_hour">
-              <mat-error *ngIf="climatesiteFormPut.controls.TimeOffset_hour.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.min">Min - -10<br /></span>
-                <span *ngIf="e.min">Max - 0<br /></span>
-              </mat-error>
-            </mat-form-field>
-          </p>
-          <p>
-            <mat-form-field>
-              <mat-label>File_desc</mat-label>
-              <input matInput type="text" formControlName="File_desc">
-              <mat-error *ngIf="climatesiteFormPut.controls.File_desc.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.maxlength">MaxLength - 50<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>HourlyStartDate_Local</mat-label>
-              <input matInput type="text" formControlName="HourlyStartDate_Local">
-              <mat-error *ngIf="climatesiteFormPut.controls.HourlyStartDate_Local.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>HourlyEndDate_Local</mat-label>
-              <input matInput type="text" formControlName="HourlyEndDate_Local">
-              <mat-error *ngIf="climatesiteFormPut.controls.HourlyEndDate_Local.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>HourlyNow</mat-label>
-              <input matInput type="text" formControlName="HourlyNow">
-              <mat-error *ngIf="climatesiteFormPut.controls.HourlyNow.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-              </mat-error>
-            </mat-form-field>
-          </p>
-          <p>
-            <mat-form-field>
-              <mat-label>DailyStartDate_Local</mat-label>
-              <input matInput type="text" formControlName="DailyStartDate_Local">
-              <mat-error *ngIf="climatesiteFormPut.controls.DailyStartDate_Local.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>DailyEndDate_Local</mat-label>
-              <input matInput type="text" formControlName="DailyEndDate_Local">
-              <mat-error *ngIf="climatesiteFormPut.controls.DailyEndDate_Local.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>DailyNow</mat-label>
-              <input matInput type="text" formControlName="DailyNow">
-              <mat-error *ngIf="climatesiteFormPut.controls.DailyNow.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>MonthlyStartDate_Local</mat-label>
-              <input matInput type="text" formControlName="MonthlyStartDate_Local">
-              <mat-error *ngIf="climatesiteFormPut.controls.MonthlyStartDate_Local.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-              </mat-error>
-            </mat-form-field>
-          </p>
-          <p>
-            <mat-form-field>
-              <mat-label>MonthlyEndDate_Local</mat-label>
-              <input matInput type="text" formControlName="MonthlyEndDate_Local">
-              <mat-error *ngIf="climatesiteFormPut.controls.MonthlyEndDate_Local.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>MonthlyNow</mat-label>
-              <input matInput type="text" formControlName="MonthlyNow">
-              <mat-error *ngIf="climatesiteFormPut.controls.MonthlyNow.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>LastUpdateDate_UTC</mat-label>
-              <input matInput type="text" formControlName="LastUpdateDate_UTC">
-              <mat-error *ngIf="climatesiteFormPut.controls.LastUpdateDate_UTC.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>LastUpdateContactTVItemID</mat-label>
-              <input matInput type="number" formControlName="LastUpdateContactTVItemID">
-              <mat-error *ngIf="climatesiteFormPut.controls.LastUpdateContactTVItemID.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-          </p>
-        </form>
-      </blockquote>
-    </div>
-  </mat-card-content>
 </mat-card>

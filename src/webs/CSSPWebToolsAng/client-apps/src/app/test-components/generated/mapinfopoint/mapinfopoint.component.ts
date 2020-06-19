@@ -10,7 +10,6 @@ import { MapInfoPointService } from './mapinfopoint.service';
 import { LoadLocalesMapInfoPointText } from './mapinfopoint.locales';
 import { Subscription } from 'rxjs';
 import { MapInfoPoint } from '../../../models/generated/MapInfoPoint.model';
-import { FormBuilder, Validators, FormGroup } from '@angular/forms';
 import { HttpClientService } from '../../../services/http-client.service';
 import { Router } from '@angular/router';
 import { HttpClientCommand } from '../../../enums/app.enums';
@@ -23,23 +22,63 @@ import { HttpClientCommand } from '../../../enums/app.enums';
 })
 export class MapInfoPointComponent implements OnInit, OnDestroy {
   sub: Subscription;
-  mapinfopointFormPut: FormGroup;
-  mapinfopointFormPost: FormGroup;
+  IDToShow: number;
+  showType?: HttpClientCommand = null;
 
-  constructor(public mapinfopointService: MapInfoPointService, private router: Router, private httpClientService: HttpClientService, private fb: FormBuilder) {
+  constructor(public mapinfopointService: MapInfoPointService, private router: Router, private httpClientService: HttpClientService) {
     httpClientService.oldURL = router.url;
+  }
+
+  GetPutButtonColor(mapinfopoint: MapInfoPoint) {
+    if (this.IDToShow === mapinfopoint.MapInfoPointID && this.showType === HttpClientCommand.Put) {
+      return 'primary';
+    }
+    else {
+      return 'basic';
+    }
+  }
+
+  GetPostButtonColor(mapinfopoint: MapInfoPoint) {
+    if (this.IDToShow === mapinfopoint.MapInfoPointID && this.showType === HttpClientCommand.Post) {
+      return 'primary';
+    }
+    else {
+      return 'basic';
+    }
+  }
+
+  ShowPut(mapinfopoint: MapInfoPoint) {
+    if (this.IDToShow === mapinfopoint.MapInfoPointID && this.showType === HttpClientCommand.Put) {
+      this.IDToShow = 0;
+      this.showType = null;
+    }
+    else {
+      this.IDToShow = mapinfopoint.MapInfoPointID;
+      this.showType = HttpClientCommand.Put;
+    }
+  }
+
+  ShowPost(mapinfopoint: MapInfoPoint) {
+    if (this.IDToShow === mapinfopoint.MapInfoPointID && this.showType === HttpClientCommand.Post) {
+      this.IDToShow = 0;
+      this.showType = null;
+    }
+    else {
+      this.IDToShow = mapinfopoint.MapInfoPointID;
+      this.showType = HttpClientCommand.Post;
+    }
+  }
+
+  GetPutEnum() {
+    return <number>HttpClientCommand.Put;
+  }
+
+  GetPostEnum() {
+    return <number>HttpClientCommand.Post;
   }
 
   GetMapInfoPointList() {
     this.sub = this.mapinfopointService.GetMapInfoPointList().subscribe();
-  }
-
-  PutMapInfoPoint(mapinfopoint: MapInfoPoint) {
-    this.sub = this.mapinfopointService.PutMapInfoPoint(mapinfopoint).subscribe();
-  }
-
-  PostMapInfoPoint(mapinfopoint: MapInfoPoint) {
-    this.sub = this.mapinfopointService.PostMapInfoPoint(mapinfopoint).subscribe();
   }
 
   DeleteMapInfoPoint(mapinfopoint: MapInfoPoint) {
@@ -48,64 +87,11 @@ export class MapInfoPointComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     LoadLocalesMapInfoPointText(this.mapinfopointService);
-    this.FillFormBuilderGroup(HttpClientCommand.Post);
-    this.FillFormBuilderGroup(HttpClientCommand.Put);
   }
 
   ngOnDestroy() {
     if (this.sub) {
       this.sub.unsubscribe();
-    }
-  }
-
-  FillFormBuilderGroup(httpClientCommand: HttpClientCommand) {
-    if (this.mapinfopointService.mapinfopointListModel$.getValue().length) {
-      let formGroup: FormGroup = this.fb.group(
-        {
-          MapInfoPointID: [
-            {
-              value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.mapinfopointService.mapinfopointListModel$.getValue()[0]?.MapInfoPointID)),
-              disabled: false
-            }, [  Validators.required ]],
-          MapInfoID: [
-            {
-              value: this.mapinfopointService.mapinfopointListModel$.getValue()[0]?.MapInfoID,
-              disabled: false
-            }, [  Validators.required ]],
-          Ordinal: [
-            {
-              value: this.mapinfopointService.mapinfopointListModel$.getValue()[0]?.Ordinal,
-              disabled: false
-            }, [  Validators.required, Validators.min(0) ]],
-          Lat: [
-            {
-              value: this.mapinfopointService.mapinfopointListModel$.getValue()[0]?.Lat,
-              disabled: false
-            }, [  Validators.required, Validators.min(-90), Validators.max(90) ]],
-          Lng: [
-            {
-              value: this.mapinfopointService.mapinfopointListModel$.getValue()[0]?.Lng,
-              disabled: false
-            }, [  Validators.required, Validators.min(-180), Validators.max(180) ]],
-          LastUpdateDate_UTC: [
-            {
-              value: this.mapinfopointService.mapinfopointListModel$.getValue()[0]?.LastUpdateDate_UTC,
-              disabled: false
-            }, [  Validators.required ]],
-          LastUpdateContactTVItemID: [
-            {
-              value: this.mapinfopointService.mapinfopointListModel$.getValue()[0]?.LastUpdateContactTVItemID,
-              disabled: false
-            }, [  Validators.required ]],
-        }
-      );
-
-      if (httpClientCommand === HttpClientCommand.Post) {
-        this.mapinfopointFormPost = formGroup
-      }
-      else {
-        this.mapinfopointFormPut = formGroup;
-      }
     }
   }
 }

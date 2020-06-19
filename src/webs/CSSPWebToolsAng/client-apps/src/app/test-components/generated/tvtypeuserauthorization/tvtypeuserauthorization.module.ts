@@ -12,9 +12,10 @@ import { TVTypeUserAuthorizationRoutingModule } from './tvtypeuserauthorization-
 import { MaterialModule } from '../../../app-material.module';
 import { TVTypeUserAuthorizationComponent } from './tvtypeuserauthorization.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { TVTypeUserAuthorizationEditComponent } from './tvtypeuserauthorization-edit.component';
 
 @NgModule({
-  declarations: [ TVTypeUserAuthorizationComponent ],
+  declarations: [TVTypeUserAuthorizationComponent, TVTypeUserAuthorizationEditComponent],
   imports: [
     CommonModule,
     RouterModule,

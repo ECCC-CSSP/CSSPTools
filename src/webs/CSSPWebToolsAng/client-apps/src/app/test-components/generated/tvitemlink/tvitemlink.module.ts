@@ -12,9 +12,10 @@ import { TVItemLinkRoutingModule } from './tvitemlink-routing.module';
 import { MaterialModule } from '../../../app-material.module';
 import { TVItemLinkComponent } from './tvitemlink.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { TVItemLinkEditComponent } from './tvitemlink-edit.component';
 
 @NgModule({
-  declarations: [ TVItemLinkComponent ],
+  declarations: [TVItemLinkComponent, TVItemLinkEditComponent],
   imports: [
     CommonModule,
     RouterModule,

@@ -12,9 +12,10 @@ import { MikeScenarioRoutingModule } from './mikescenario-routing.module';
 import { MaterialModule } from '../../../app-material.module';
 import { MikeScenarioComponent } from './mikescenario.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MikeScenarioEditComponent } from './mikescenario-edit.component';
 
 @NgModule({
-  declarations: [ MikeScenarioComponent ],
+  declarations: [MikeScenarioComponent, MikeScenarioEditComponent],
   imports: [
     CommonModule,
     RouterModule,

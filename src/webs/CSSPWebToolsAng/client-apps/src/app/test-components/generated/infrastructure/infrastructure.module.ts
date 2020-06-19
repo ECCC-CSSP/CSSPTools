@@ -12,9 +12,10 @@ import { InfrastructureRoutingModule } from './infrastructure-routing.module';
 import { MaterialModule } from '../../../app-material.module';
 import { InfrastructureComponent } from './infrastructure.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { InfrastructureEditComponent } from './infrastructure-edit.component';
 
 @NgModule({
-  declarations: [ InfrastructureComponent ],
+  declarations: [InfrastructureComponent, InfrastructureEditComponent],
   imports: [
     CommonModule,
     RouterModule,

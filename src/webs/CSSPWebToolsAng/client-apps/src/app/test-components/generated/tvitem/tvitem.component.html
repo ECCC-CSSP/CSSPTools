@@ -17,226 +17,46 @@
     <mat-card-subtitle>{{ tvitemService.tvitemTextModel$.getValue().Title }}</mat-card-subtitle>
   </mat-card-header>
   <mat-card-content>
-    <mat-list *ngIf="tvitemService.tvitemListModel$.getValue()?.length">
-      <mat-list-item *ngFor="let tvitem of tvitemService.tvitemListModel$.getValue()">
-        <span mat-line>
+    <div *ngIf="tvitemService.tvitemListModel$.getValue()?.length">
+      <div *ngFor="let tvitem of tvitemService.tvitemListModel$.getValue()">
+        <p>
           <button mat-raised-button (click)="DeleteTVItem(tvitem)">
             <span>Delete TVItemID [{{ tvitem.TVItemID }}]&nbsp;&nbsp;&nbsp;</span>
             <mat-icon>delete</mat-icon>
-          </button>
+          </button>&nbsp;&nbsp;&nbsp;
+          <button mat-raised-button [color]="GetPutButtonColor(tvitem)"(click)="ShowPut(tvitem)">
+            <span>Show Put</span>
+          </button>&nbsp;&nbsp;
+          <button mat-raised-button [color]="GetPostButtonColor(tvitem)"(click)="ShowPost(tvitem)">
+            <span>Show Post</span>
+          </button>&nbsp;&nbsp;
           <mat-progress-bar mode="indeterminate" *ngIf="tvitemService.tvitemDeleteModel$.getValue().Working">
           </mat-progress-bar>
-          </span>
-        <span mat-line>
+        </p>
+        <p *ngIf="IDToShow === tvitem.TVItemID && showType === GetPutEnum()">
+          <app-tvitem-edit [tvitem]="tvitem" [httpClientCommand]="GetPutEnum()"></app-tvitem-edit>
+        </p>
+        <p *ngIf="IDToShow === tvitem.TVItemID && showType === GetPostEnum()">
+          <app-tvitem-edit [tvitem]="tvitem" [httpClientCommand]="GetPostEnum()"></app-tvitem-edit>
+        </p>
+        <blockquote>
+        <p>
           <span>TVItemID: [{{ tvitem.TVItemID }}]</span>
           <span> --- TVLevel: [{{ tvitem.TVLevel }}]</span>
           <span> --- TVPath: [{{ tvitem.TVPath }}]</span>
           <span> --- TVType: [{{ GetTVTypeEnumText(tvitem.TVType) }}]</span>
-        </span>
-        <span mat-line>
+ </p>
+        <p>
           <span>ParentID: [{{ tvitem.ParentID }}]</span>
           <span> --- IsActive: [{{ tvitem.IsActive }}]</span>
           <span> --- LastUpdateDate_UTC: [{{ tvitem.LastUpdateDate_UTC }}]</span>
           <span> --- LastUpdateContactTVItemID: [{{ tvitem.LastUpdateContactTVItemID }}]</span>
-        </span>
-       </mat-list-item>
-     </mat-list>
+        </p>
+        </blockquote>
+       </div>
+     </div>
    </mat-card-content>
  <mat-card-actions>
    <button mat-button>Allo</button>
  </mat-card-actions>
-</mat-card>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<mat-card>
-  <mat-card-header>
-    <mat-card-title>Edit TVItem testing</mat-card-title>
-  </mat-card-header>
-  <mat-card-content>
-    <div *ngIf="tvitemService.tvitemListModel$.getValue()?.length">
-      <blockquote>
-        <form [formGroup]="tvitemFormPut" (ngSubmit)="PutTVItem(tvitemFormPut.value)">
-          <h3>
-            TVItem
-            <button mat-raised-button type="submit">
-              <span>Update TVItem</span>
-            </button>
-            <mat-progress-bar mode="indeterminate" *ngIf="tvitemService.tvitemPutModel$.getValue().Working">
-            </mat-progress-bar>
-          </h3>
-          <p>
-            <mat-form-field>
-              <mat-label>TVItemID</mat-label>
-              <input matInput type="number" formControlName="TVItemID">
-              <mat-error *ngIf="tvitemFormPut.controls.TVItemID.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>TVLevel</mat-label>
-              <input matInput type="number" formControlName="TVLevel">
-              <mat-error *ngIf="tvitemFormPut.controls.TVLevel.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-                <span *ngIf="e.min">Min - 0<br /></span>
-                <span *ngIf="e.min">Max - 100<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>TVPath</mat-label>
-              <input matInput type="text" formControlName="TVPath">
-              <mat-error *ngIf="tvitemFormPut.controls.TVPath.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-                <span *ngIf="e.maxlength">MaxLength - 250<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>TVType</mat-label>
-              <mat-select formControlName="TVType">
-                <mat-option *ngFor="let a of tVTypeList" [value]="a.EnumID">
-                  {{ a.EnumText }}
-                </mat-option>
-              </mat-select>
-              <mat-error *ngIf="tvitemFormPut.controls.TVType.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-          </p>
-          <p>
-            <mat-form-field>
-              <mat-label>ParentID</mat-label>
-              <input matInput type="number" formControlName="ParentID">
-              <mat-error *ngIf="tvitemFormPut.controls.ParentID.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>IsActive</mat-label>
-              <input matInput type="text" formControlName="IsActive">
-              <mat-error *ngIf="tvitemFormPut.controls.IsActive.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>LastUpdateDate_UTC</mat-label>
-              <input matInput type="text" formControlName="LastUpdateDate_UTC">
-              <mat-error *ngIf="tvitemFormPut.controls.LastUpdateDate_UTC.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>LastUpdateContactTVItemID</mat-label>
-              <input matInput type="number" formControlName="LastUpdateContactTVItemID">
-              <mat-error *ngIf="tvitemFormPut.controls.LastUpdateContactTVItemID.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-          </p>
-        </form>
-      </blockquote>
-    </div>
-  </mat-card-content>
-</mat-card>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<mat-card>
-  <mat-card-header>
-    <mat-card-title>Add TVItem testing</mat-card-title>
-  </mat-card-header>
-  <mat-card-content>
-    <div *ngIf="tvitemService.tvitemListModel$.getValue()?.length">
-      <blockquote>
-        <form [formGroup]="tvitemFormPost" (ngSubmit)="PostTVItem(tvitemFormPost.value)">
-          <h3>
-            TVItem
-            <button mat-raised-button type="submit">
-              <span>Add TVItem</span>
-            </button>
-            <mat-progress-bar mode="indeterminate" *ngIf="tvitemService.tvitemPostModel$.getValue().Working">
-            </mat-progress-bar>
-          </h3>
-          <p>
-            <mat-form-field>
-              <mat-label>TVItemID</mat-label>
-              <input matInput type="number" formControlName="TVItemID">
-              <mat-error *ngIf="tvitemFormPut.controls.TVItemID.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>TVLevel</mat-label>
-              <input matInput type="number" formControlName="TVLevel">
-              <mat-error *ngIf="tvitemFormPut.controls.TVLevel.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-                <span *ngIf="e.min">Min - 0<br /></span>
-                <span *ngIf="e.min">Max - 100<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>TVPath</mat-label>
-              <input matInput type="text" formControlName="TVPath">
-              <mat-error *ngIf="tvitemFormPut.controls.TVPath.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-                <span *ngIf="e.maxlength">MaxLength - 250<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>TVType</mat-label>
-              <mat-select formControlName="TVType">
-                <mat-option *ngFor="let a of tVTypeList" [value]="a.EnumID">
-                  {{ a.EnumText }}
-                </mat-option>
-              </mat-select>
-              <mat-error *ngIf="tvitemFormPut.controls.TVType.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-          </p>
-          <p>
-            <mat-form-field>
-              <mat-label>ParentID</mat-label>
-              <input matInput type="number" formControlName="ParentID">
-              <mat-error *ngIf="tvitemFormPut.controls.ParentID.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>IsActive</mat-label>
-              <input matInput type="text" formControlName="IsActive">
-              <mat-error *ngIf="tvitemFormPut.controls.IsActive.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>LastUpdateDate_UTC</mat-label>
-              <input matInput type="text" formControlName="LastUpdateDate_UTC">
-              <mat-error *ngIf="tvitemFormPut.controls.LastUpdateDate_UTC.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>LastUpdateContactTVItemID</mat-label>
-              <input matInput type="number" formControlName="LastUpdateContactTVItemID">
-              <mat-error *ngIf="tvitemFormPut.controls.LastUpdateContactTVItemID.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-          </p>
-        </form>
-      </blockquote>
-    </div>
-  </mat-card-content>
 </mat-card>

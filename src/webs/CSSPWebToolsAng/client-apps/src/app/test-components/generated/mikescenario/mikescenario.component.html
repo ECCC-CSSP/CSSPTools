@@ -17,702 +17,82 @@
     <mat-card-subtitle>{{ mikescenarioService.mikescenarioTextModel$.getValue().Title }}</mat-card-subtitle>
   </mat-card-header>
   <mat-card-content>
-    <mat-list *ngIf="mikescenarioService.mikescenarioListModel$.getValue()?.length">
-      <mat-list-item *ngFor="let mikescenario of mikescenarioService.mikescenarioListModel$.getValue()">
-        <span mat-line>
+    <div *ngIf="mikescenarioService.mikescenarioListModel$.getValue()?.length">
+      <div *ngFor="let mikescenario of mikescenarioService.mikescenarioListModel$.getValue()">
+        <p>
           <button mat-raised-button (click)="DeleteMikeScenario(mikescenario)">
             <span>Delete MikeScenarioID [{{ mikescenario.MikeScenarioID }}]&nbsp;&nbsp;&nbsp;</span>
             <mat-icon>delete</mat-icon>
-          </button>
+          </button>&nbsp;&nbsp;&nbsp;
+          <button mat-raised-button [color]="GetPutButtonColor(mikescenario)"(click)="ShowPut(mikescenario)">
+            <span>Show Put</span>
+          </button>&nbsp;&nbsp;
+          <button mat-raised-button [color]="GetPostButtonColor(mikescenario)"(click)="ShowPost(mikescenario)">
+            <span>Show Post</span>
+          </button>&nbsp;&nbsp;
           <mat-progress-bar mode="indeterminate" *ngIf="mikescenarioService.mikescenarioDeleteModel$.getValue().Working">
           </mat-progress-bar>
-          </span>
-        <span mat-line>
+        </p>
+        <p *ngIf="IDToShow === mikescenario.MikeScenarioID && showType === GetPutEnum()">
+          <app-mikescenario-edit [mikescenario]="mikescenario" [httpClientCommand]="GetPutEnum()"></app-mikescenario-edit>
+        </p>
+        <p *ngIf="IDToShow === mikescenario.MikeScenarioID && showType === GetPostEnum()">
+          <app-mikescenario-edit [mikescenario]="mikescenario" [httpClientCommand]="GetPostEnum()"></app-mikescenario-edit>
+        </p>
+        <blockquote>
+        <p>
           <span>MikeScenarioID: [{{ mikescenario.MikeScenarioID }}]</span>
           <span> --- MikeScenarioTVItemID: [{{ mikescenario.MikeScenarioTVItemID }}]</span>
           <span> --- ParentMikeScenarioID: [{{ mikescenario.ParentMikeScenarioID }}]</span>
           <span> --- ScenarioStatus: [{{ GetScenarioStatusEnumText(mikescenario.ScenarioStatus) }}]</span>
-        </span>
-        <span mat-line>
+ </p>
+        <p>
           <span>ErrorInfo: [{{ mikescenario.ErrorInfo }}]</span>
           <span> --- MikeScenarioStartDateTime_Local: [{{ mikescenario.MikeScenarioStartDateTime_Local }}]</span>
           <span> --- MikeScenarioEndDateTime_Local: [{{ mikescenario.MikeScenarioEndDateTime_Local }}]</span>
           <span> --- MikeScenarioStartExecutionDateTime_Local: [{{ mikescenario.MikeScenarioStartExecutionDateTime_Local }}]</span>
-        </span>
-        <span mat-line>
+ </p>
+        <p>
           <span>MikeScenarioExecutionTime_min: [{{ mikescenario.MikeScenarioExecutionTime_min }}]</span>
           <span> --- WindSpeed_km_h: [{{ mikescenario.WindSpeed_km_h }}]</span>
           <span> --- WindDirection_deg: [{{ mikescenario.WindDirection_deg }}]</span>
           <span> --- DecayFactor_per_day: [{{ mikescenario.DecayFactor_per_day }}]</span>
-        </span>
-        <span mat-line>
+ </p>
+        <p>
           <span>DecayIsConstant: [{{ mikescenario.DecayIsConstant }}]</span>
           <span> --- DecayFactorAmplitude: [{{ mikescenario.DecayFactorAmplitude }}]</span>
           <span> --- ResultFrequency_min: [{{ mikescenario.ResultFrequency_min }}]</span>
           <span> --- AmbientTemperature_C: [{{ mikescenario.AmbientTemperature_C }}]</span>
-        </span>
-        <span mat-line>
+ </p>
+        <p>
           <span>AmbientSalinity_PSU: [{{ mikescenario.AmbientSalinity_PSU }}]</span>
           <span> --- GenerateDecouplingFiles: [{{ mikescenario.GenerateDecouplingFiles }}]</span>
           <span> --- UseDecouplingFiles: [{{ mikescenario.UseDecouplingFiles }}]</span>
           <span> --- UseSalinityAndTemperatureInitialConditionFromTVFileTVItemID: [{{ mikescenario.UseSalinityAndTemperatureInitialConditionFromTVFileTVItemID }}]</span>
-        </span>
-        <span mat-line>
+ </p>
+        <p>
           <span>ForSimulatingMWQMRunTVItemID: [{{ mikescenario.ForSimulatingMWQMRunTVItemID }}]</span>
           <span> --- ManningNumber: [{{ mikescenario.ManningNumber }}]</span>
           <span> --- NumberOfElements: [{{ mikescenario.NumberOfElements }}]</span>
           <span> --- NumberOfTimeSteps: [{{ mikescenario.NumberOfTimeSteps }}]</span>
-        </span>
-        <span mat-line>
+ </p>
+        <p>
           <span>NumberOfSigmaLayers: [{{ mikescenario.NumberOfSigmaLayers }}]</span>
           <span> --- NumberOfZLayers: [{{ mikescenario.NumberOfZLayers }}]</span>
           <span> --- NumberOfHydroOutputParameters: [{{ mikescenario.NumberOfHydroOutputParameters }}]</span>
           <span> --- NumberOfTransOutputParameters: [{{ mikescenario.NumberOfTransOutputParameters }}]</span>
-        </span>
-        <span mat-line>
+ </p>
+        <p>
           <span>EstimatedHydroFileSize: [{{ mikescenario.EstimatedHydroFileSize }}]</span>
           <span> --- EstimatedTransFileSize: [{{ mikescenario.EstimatedTransFileSize }}]</span>
           <span> --- LastUpdateDate_UTC: [{{ mikescenario.LastUpdateDate_UTC }}]</span>
           <span> --- LastUpdateContactTVItemID: [{{ mikescenario.LastUpdateContactTVItemID }}]</span>
-        </span>
-       </mat-list-item>
-     </mat-list>
+        </p>
+        </blockquote>
+       </div>
+     </div>
    </mat-card-content>
  <mat-card-actions>
    <button mat-button>Allo</button>
  </mat-card-actions>
-</mat-card>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<mat-card>
-  <mat-card-header>
-    <mat-card-title>Edit MikeScenario testing</mat-card-title>
-  </mat-card-header>
-  <mat-card-content>
-    <div *ngIf="mikescenarioService.mikescenarioListModel$.getValue()?.length">
-      <blockquote>
-        <form [formGroup]="mikescenarioFormPut" (ngSubmit)="PutMikeScenario(mikescenarioFormPut.value)">
-          <h3>
-            MikeScenario
-            <button mat-raised-button type="submit">
-              <span>Update MikeScenario</span>
-            </button>
-            <mat-progress-bar mode="indeterminate" *ngIf="mikescenarioService.mikescenarioPutModel$.getValue().Working">
-            </mat-progress-bar>
-          </h3>
-          <p>
-            <mat-form-field>
-              <mat-label>MikeScenarioID</mat-label>
-              <input matInput type="number" formControlName="MikeScenarioID">
-              <mat-error *ngIf="mikescenarioFormPut.controls.MikeScenarioID.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>MikeScenarioTVItemID</mat-label>
-              <input matInput type="number" formControlName="MikeScenarioTVItemID">
-              <mat-error *ngIf="mikescenarioFormPut.controls.MikeScenarioTVItemID.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>ParentMikeScenarioID</mat-label>
-              <input matInput type="number" formControlName="ParentMikeScenarioID">
-              <mat-error *ngIf="mikescenarioFormPut.controls.ParentMikeScenarioID.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>ScenarioStatus</mat-label>
-              <mat-select formControlName="ScenarioStatus">
-                <mat-option *ngFor="let a of scenarioStatusList" [value]="a.EnumID">
-                  {{ a.EnumText }}
-                </mat-option>
-              </mat-select>
-              <mat-error *ngIf="mikescenarioFormPut.controls.ScenarioStatus.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-          </p>
-          <p>
-            <mat-form-field>
-              <mat-label>ErrorInfo</mat-label>
-              <input matInput type="text" formControlName="ErrorInfo">
-              <mat-error *ngIf="mikescenarioFormPut.controls.ErrorInfo.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>MikeScenarioStartDateTime_Local</mat-label>
-              <input matInput type="text" formControlName="MikeScenarioStartDateTime_Local">
-              <mat-error *ngIf="mikescenarioFormPut.controls.MikeScenarioStartDateTime_Local.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>MikeScenarioEndDateTime_Local</mat-label>
-              <input matInput type="text" formControlName="MikeScenarioEndDateTime_Local">
-              <mat-error *ngIf="mikescenarioFormPut.controls.MikeScenarioEndDateTime_Local.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>MikeScenarioStartExecutionDateTime_Local</mat-label>
-              <input matInput type="text" formControlName="MikeScenarioStartExecutionDateTime_Local">
-              <mat-error *ngIf="mikescenarioFormPut.controls.MikeScenarioStartExecutionDateTime_Local.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-              </mat-error>
-            </mat-form-field>
-          </p>
-          <p>
-            <mat-form-field>
-              <mat-label>MikeScenarioExecutionTime_min</mat-label>
-              <input matInput type="number" formControlName="MikeScenarioExecutionTime_min">
-              <mat-error *ngIf="mikescenarioFormPut.controls.MikeScenarioExecutionTime_min.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.min">Min - 1<br /></span>
-                <span *ngIf="e.min">Max - 100000<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>WindSpeed_km_h</mat-label>
-              <input matInput type="number" formControlName="WindSpeed_km_h">
-              <mat-error *ngIf="mikescenarioFormPut.controls.WindSpeed_km_h.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-                <span *ngIf="e.min">Min - 0<br /></span>
-                <span *ngIf="e.min">Max - 100<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>WindDirection_deg</mat-label>
-              <input matInput type="number" formControlName="WindDirection_deg">
-              <mat-error *ngIf="mikescenarioFormPut.controls.WindDirection_deg.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-                <span *ngIf="e.min">Min - 0<br /></span>
-                <span *ngIf="e.min">Max - 360<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>DecayFactor_per_day</mat-label>
-              <input matInput type="number" formControlName="DecayFactor_per_day">
-              <mat-error *ngIf="mikescenarioFormPut.controls.DecayFactor_per_day.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-                <span *ngIf="e.min">Min - 0<br /></span>
-                <span *ngIf="e.min">Max - 100<br /></span>
-              </mat-error>
-            </mat-form-field>
-          </p>
-          <p>
-            <mat-form-field>
-              <mat-label>DecayIsConstant</mat-label>
-              <input matInput type="text" formControlName="DecayIsConstant">
-              <mat-error *ngIf="mikescenarioFormPut.controls.DecayIsConstant.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>DecayFactorAmplitude</mat-label>
-              <input matInput type="number" formControlName="DecayFactorAmplitude">
-              <mat-error *ngIf="mikescenarioFormPut.controls.DecayFactorAmplitude.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-                <span *ngIf="e.min">Min - 0<br /></span>
-                <span *ngIf="e.min">Max - 100<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>ResultFrequency_min</mat-label>
-              <input matInput type="number" formControlName="ResultFrequency_min">
-              <mat-error *ngIf="mikescenarioFormPut.controls.ResultFrequency_min.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-                <span *ngIf="e.min">Min - 0<br /></span>
-                <span *ngIf="e.min">Max - 100<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>AmbientTemperature_C</mat-label>
-              <input matInput type="number" formControlName="AmbientTemperature_C">
-              <mat-error *ngIf="mikescenarioFormPut.controls.AmbientTemperature_C.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-                <span *ngIf="e.min">Min - -10<br /></span>
-                <span *ngIf="e.min">Max - 40<br /></span>
-              </mat-error>
-            </mat-form-field>
-          </p>
-          <p>
-            <mat-form-field>
-              <mat-label>AmbientSalinity_PSU</mat-label>
-              <input matInput type="number" formControlName="AmbientSalinity_PSU">
-              <mat-error *ngIf="mikescenarioFormPut.controls.AmbientSalinity_PSU.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-                <span *ngIf="e.min">Min - 0<br /></span>
-                <span *ngIf="e.min">Max - 40<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>GenerateDecouplingFiles</mat-label>
-              <input matInput type="text" formControlName="GenerateDecouplingFiles">
-              <mat-error *ngIf="mikescenarioFormPut.controls.GenerateDecouplingFiles.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>UseDecouplingFiles</mat-label>
-              <input matInput type="text" formControlName="UseDecouplingFiles">
-              <mat-error *ngIf="mikescenarioFormPut.controls.UseDecouplingFiles.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>UseSalinityAndTemperatureInitialConditionFromTVFileTVItemID</mat-label>
-              <input matInput type="number" formControlName="UseSalinityAndTemperatureInitialConditionFromTVFileTVItemID">
-              <mat-error *ngIf="mikescenarioFormPut.controls.UseSalinityAndTemperatureInitialConditionFromTVFileTVItemID.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-              </mat-error>
-            </mat-form-field>
-          </p>
-          <p>
-            <mat-form-field>
-              <mat-label>ForSimulatingMWQMRunTVItemID</mat-label>
-              <input matInput type="number" formControlName="ForSimulatingMWQMRunTVItemID">
-              <mat-error *ngIf="mikescenarioFormPut.controls.ForSimulatingMWQMRunTVItemID.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>ManningNumber</mat-label>
-              <input matInput type="number" formControlName="ManningNumber">
-              <mat-error *ngIf="mikescenarioFormPut.controls.ManningNumber.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-                <span *ngIf="e.min">Min - 0<br /></span>
-                <span *ngIf="e.min">Max - 100<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>NumberOfElements</mat-label>
-              <input matInput type="number" formControlName="NumberOfElements">
-              <mat-error *ngIf="mikescenarioFormPut.controls.NumberOfElements.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.min">Min - 1<br /></span>
-                <span *ngIf="e.min">Max - 1000000<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>NumberOfTimeSteps</mat-label>
-              <input matInput type="number" formControlName="NumberOfTimeSteps">
-              <mat-error *ngIf="mikescenarioFormPut.controls.NumberOfTimeSteps.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.min">Min - 1<br /></span>
-                <span *ngIf="e.min">Max - 1000000<br /></span>
-              </mat-error>
-            </mat-form-field>
-          </p>
-          <p>
-            <mat-form-field>
-              <mat-label>NumberOfSigmaLayers</mat-label>
-              <input matInput type="number" formControlName="NumberOfSigmaLayers">
-              <mat-error *ngIf="mikescenarioFormPut.controls.NumberOfSigmaLayers.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.min">Min - 0<br /></span>
-                <span *ngIf="e.min">Max - 100<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>NumberOfZLayers</mat-label>
-              <input matInput type="number" formControlName="NumberOfZLayers">
-              <mat-error *ngIf="mikescenarioFormPut.controls.NumberOfZLayers.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.min">Min - 0<br /></span>
-                <span *ngIf="e.min">Max - 100<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>NumberOfHydroOutputParameters</mat-label>
-              <input matInput type="number" formControlName="NumberOfHydroOutputParameters">
-              <mat-error *ngIf="mikescenarioFormPut.controls.NumberOfHydroOutputParameters.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.min">Min - 0<br /></span>
-                <span *ngIf="e.min">Max - 100<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>NumberOfTransOutputParameters</mat-label>
-              <input matInput type="number" formControlName="NumberOfTransOutputParameters">
-              <mat-error *ngIf="mikescenarioFormPut.controls.NumberOfTransOutputParameters.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.min">Min - 0<br /></span>
-                <span *ngIf="e.min">Max - 100<br /></span>
-              </mat-error>
-            </mat-form-field>
-          </p>
-          <p>
-            <mat-form-field>
-              <mat-label>EstimatedHydroFileSize</mat-label>
-              <input matInput type="number" formControlName="EstimatedHydroFileSize">
-              <mat-error *ngIf="mikescenarioFormPut.controls.EstimatedHydroFileSize.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.min">Min - 0<br /></span>
-                <span *ngIf="e.min">Max - 100000000<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>EstimatedTransFileSize</mat-label>
-              <input matInput type="number" formControlName="EstimatedTransFileSize">
-              <mat-error *ngIf="mikescenarioFormPut.controls.EstimatedTransFileSize.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.min">Min - 0<br /></span>
-                <span *ngIf="e.min">Max - 100000000<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>LastUpdateDate_UTC</mat-label>
-              <input matInput type="text" formControlName="LastUpdateDate_UTC">
-              <mat-error *ngIf="mikescenarioFormPut.controls.LastUpdateDate_UTC.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>LastUpdateContactTVItemID</mat-label>
-              <input matInput type="number" formControlName="LastUpdateContactTVItemID">
-              <mat-error *ngIf="mikescenarioFormPut.controls.LastUpdateContactTVItemID.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-          </p>
-        </form>
-      </blockquote>
-    </div>
-  </mat-card-content>
-</mat-card>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<mat-card>
-  <mat-card-header>
-    <mat-card-title>Add MikeScenario testing</mat-card-title>
-  </mat-card-header>
-  <mat-card-content>
-    <div *ngIf="mikescenarioService.mikescenarioListModel$.getValue()?.length">
-      <blockquote>
-        <form [formGroup]="mikescenarioFormPost" (ngSubmit)="PostMikeScenario(mikescenarioFormPost.value)">
-          <h3>
-            MikeScenario
-            <button mat-raised-button type="submit">
-              <span>Add MikeScenario</span>
-            </button>
-            <mat-progress-bar mode="indeterminate" *ngIf="mikescenarioService.mikescenarioPostModel$.getValue().Working">
-            </mat-progress-bar>
-          </h3>
-          <p>
-            <mat-form-field>
-              <mat-label>MikeScenarioID</mat-label>
-              <input matInput type="number" formControlName="MikeScenarioID">
-              <mat-error *ngIf="mikescenarioFormPut.controls.MikeScenarioID.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>MikeScenarioTVItemID</mat-label>
-              <input matInput type="number" formControlName="MikeScenarioTVItemID">
-              <mat-error *ngIf="mikescenarioFormPut.controls.MikeScenarioTVItemID.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>ParentMikeScenarioID</mat-label>
-              <input matInput type="number" formControlName="ParentMikeScenarioID">
-              <mat-error *ngIf="mikescenarioFormPut.controls.ParentMikeScenarioID.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>ScenarioStatus</mat-label>
-              <mat-select formControlName="ScenarioStatus">
-                <mat-option *ngFor="let a of scenarioStatusList" [value]="a.EnumID">
-                  {{ a.EnumText }}
-                </mat-option>
-              </mat-select>
-              <mat-error *ngIf="mikescenarioFormPut.controls.ScenarioStatus.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-          </p>
-          <p>
-            <mat-form-field>
-              <mat-label>ErrorInfo</mat-label>
-              <input matInput type="text" formControlName="ErrorInfo">
-              <mat-error *ngIf="mikescenarioFormPut.controls.ErrorInfo.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>MikeScenarioStartDateTime_Local</mat-label>
-              <input matInput type="text" formControlName="MikeScenarioStartDateTime_Local">
-              <mat-error *ngIf="mikescenarioFormPut.controls.MikeScenarioStartDateTime_Local.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>MikeScenarioEndDateTime_Local</mat-label>
-              <input matInput type="text" formControlName="MikeScenarioEndDateTime_Local">
-              <mat-error *ngIf="mikescenarioFormPut.controls.MikeScenarioEndDateTime_Local.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>MikeScenarioStartExecutionDateTime_Local</mat-label>
-              <input matInput type="text" formControlName="MikeScenarioStartExecutionDateTime_Local">
-              <mat-error *ngIf="mikescenarioFormPut.controls.MikeScenarioStartExecutionDateTime_Local.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-              </mat-error>
-            </mat-form-field>
-          </p>
-          <p>
-            <mat-form-field>
-              <mat-label>MikeScenarioExecutionTime_min</mat-label>
-              <input matInput type="number" formControlName="MikeScenarioExecutionTime_min">
-              <mat-error *ngIf="mikescenarioFormPut.controls.MikeScenarioExecutionTime_min.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.min">Min - 1<br /></span>
-                <span *ngIf="e.min">Max - 100000<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>WindSpeed_km_h</mat-label>
-              <input matInput type="number" formControlName="WindSpeed_km_h">
-              <mat-error *ngIf="mikescenarioFormPut.controls.WindSpeed_km_h.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-                <span *ngIf="e.min">Min - 0<br /></span>
-                <span *ngIf="e.min">Max - 100<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>WindDirection_deg</mat-label>
-              <input matInput type="number" formControlName="WindDirection_deg">
-              <mat-error *ngIf="mikescenarioFormPut.controls.WindDirection_deg.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-                <span *ngIf="e.min">Min - 0<br /></span>
-                <span *ngIf="e.min">Max - 360<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>DecayFactor_per_day</mat-label>
-              <input matInput type="number" formControlName="DecayFactor_per_day">
-              <mat-error *ngIf="mikescenarioFormPut.controls.DecayFactor_per_day.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-                <span *ngIf="e.min">Min - 0<br /></span>
-                <span *ngIf="e.min">Max - 100<br /></span>
-              </mat-error>
-            </mat-form-field>
-          </p>
-          <p>
-            <mat-form-field>
-              <mat-label>DecayIsConstant</mat-label>
-              <input matInput type="text" formControlName="DecayIsConstant">
-              <mat-error *ngIf="mikescenarioFormPut.controls.DecayIsConstant.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>DecayFactorAmplitude</mat-label>
-              <input matInput type="number" formControlName="DecayFactorAmplitude">
-              <mat-error *ngIf="mikescenarioFormPut.controls.DecayFactorAmplitude.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-                <span *ngIf="e.min">Min - 0<br /></span>
-                <span *ngIf="e.min">Max - 100<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>ResultFrequency_min</mat-label>
-              <input matInput type="number" formControlName="ResultFrequency_min">
-              <mat-error *ngIf="mikescenarioFormPut.controls.ResultFrequency_min.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-                <span *ngIf="e.min">Min - 0<br /></span>
-                <span *ngIf="e.min">Max - 100<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>AmbientTemperature_C</mat-label>
-              <input matInput type="number" formControlName="AmbientTemperature_C">
-              <mat-error *ngIf="mikescenarioFormPut.controls.AmbientTemperature_C.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-                <span *ngIf="e.min">Min - -10<br /></span>
-                <span *ngIf="e.min">Max - 40<br /></span>
-              </mat-error>
-            </mat-form-field>
-          </p>
-          <p>
-            <mat-form-field>
-              <mat-label>AmbientSalinity_PSU</mat-label>
-              <input matInput type="number" formControlName="AmbientSalinity_PSU">
-              <mat-error *ngIf="mikescenarioFormPut.controls.AmbientSalinity_PSU.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-                <span *ngIf="e.min">Min - 0<br /></span>
-                <span *ngIf="e.min">Max - 40<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>GenerateDecouplingFiles</mat-label>
-              <input matInput type="text" formControlName="GenerateDecouplingFiles">
-              <mat-error *ngIf="mikescenarioFormPut.controls.GenerateDecouplingFiles.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>UseDecouplingFiles</mat-label>
-              <input matInput type="text" formControlName="UseDecouplingFiles">
-              <mat-error *ngIf="mikescenarioFormPut.controls.UseDecouplingFiles.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>UseSalinityAndTemperatureInitialConditionFromTVFileTVItemID</mat-label>
-              <input matInput type="number" formControlName="UseSalinityAndTemperatureInitialConditionFromTVFileTVItemID">
-              <mat-error *ngIf="mikescenarioFormPut.controls.UseSalinityAndTemperatureInitialConditionFromTVFileTVItemID.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-              </mat-error>
-            </mat-form-field>
-          </p>
-          <p>
-            <mat-form-field>
-              <mat-label>ForSimulatingMWQMRunTVItemID</mat-label>
-              <input matInput type="number" formControlName="ForSimulatingMWQMRunTVItemID">
-              <mat-error *ngIf="mikescenarioFormPut.controls.ForSimulatingMWQMRunTVItemID.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>ManningNumber</mat-label>
-              <input matInput type="number" formControlName="ManningNumber">
-              <mat-error *ngIf="mikescenarioFormPut.controls.ManningNumber.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-                <span *ngIf="e.min">Min - 0<br /></span>
-                <span *ngIf="e.min">Max - 100<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>NumberOfElements</mat-label>
-              <input matInput type="number" formControlName="NumberOfElements">
-              <mat-error *ngIf="mikescenarioFormPut.controls.NumberOfElements.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.min">Min - 1<br /></span>
-                <span *ngIf="e.min">Max - 1000000<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>NumberOfTimeSteps</mat-label>
-              <input matInput type="number" formControlName="NumberOfTimeSteps">
-              <mat-error *ngIf="mikescenarioFormPut.controls.NumberOfTimeSteps.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.min">Min - 1<br /></span>
-                <span *ngIf="e.min">Max - 1000000<br /></span>
-              </mat-error>
-            </mat-form-field>
-          </p>
-          <p>
-            <mat-form-field>
-              <mat-label>NumberOfSigmaLayers</mat-label>
-              <input matInput type="number" formControlName="NumberOfSigmaLayers">
-              <mat-error *ngIf="mikescenarioFormPut.controls.NumberOfSigmaLayers.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.min">Min - 0<br /></span>
-                <span *ngIf="e.min">Max - 100<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>NumberOfZLayers</mat-label>
-              <input matInput type="number" formControlName="NumberOfZLayers">
-              <mat-error *ngIf="mikescenarioFormPut.controls.NumberOfZLayers.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.min">Min - 0<br /></span>
-                <span *ngIf="e.min">Max - 100<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>NumberOfHydroOutputParameters</mat-label>
-              <input matInput type="number" formControlName="NumberOfHydroOutputParameters">
-              <mat-error *ngIf="mikescenarioFormPut.controls.NumberOfHydroOutputParameters.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.min">Min - 0<br /></span>
-                <span *ngIf="e.min">Max - 100<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>NumberOfTransOutputParameters</mat-label>
-              <input matInput type="number" formControlName="NumberOfTransOutputParameters">
-              <mat-error *ngIf="mikescenarioFormPut.controls.NumberOfTransOutputParameters.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.min">Min - 0<br /></span>
-                <span *ngIf="e.min">Max - 100<br /></span>
-              </mat-error>
-            </mat-form-field>
-          </p>
-          <p>
-            <mat-form-field>
-              <mat-label>EstimatedHydroFileSize</mat-label>
-              <input matInput type="number" formControlName="EstimatedHydroFileSize">
-              <mat-error *ngIf="mikescenarioFormPut.controls.EstimatedHydroFileSize.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.min">Min - 0<br /></span>
-                <span *ngIf="e.min">Max - 100000000<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>EstimatedTransFileSize</mat-label>
-              <input matInput type="number" formControlName="EstimatedTransFileSize">
-              <mat-error *ngIf="mikescenarioFormPut.controls.EstimatedTransFileSize.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.min">Min - 0<br /></span>
-                <span *ngIf="e.min">Max - 100000000<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>LastUpdateDate_UTC</mat-label>
-              <input matInput type="text" formControlName="LastUpdateDate_UTC">
-              <mat-error *ngIf="mikescenarioFormPut.controls.LastUpdateDate_UTC.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>LastUpdateContactTVItemID</mat-label>
-              <input matInput type="number" formControlName="LastUpdateContactTVItemID">
-              <mat-error *ngIf="mikescenarioFormPut.controls.LastUpdateContactTVItemID.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-          </p>
-        </form>
-      </blockquote>
-    </div>
-  </mat-card-content>
 </mat-card>

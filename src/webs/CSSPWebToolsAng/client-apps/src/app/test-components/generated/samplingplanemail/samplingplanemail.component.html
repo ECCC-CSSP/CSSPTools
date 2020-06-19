@@ -17,258 +17,50 @@
     <mat-card-subtitle>{{ samplingplanemailService.samplingplanemailTextModel$.getValue().Title }}</mat-card-subtitle>
   </mat-card-header>
   <mat-card-content>
-    <mat-list *ngIf="samplingplanemailService.samplingplanemailListModel$.getValue()?.length">
-      <mat-list-item *ngFor="let samplingplanemail of samplingplanemailService.samplingplanemailListModel$.getValue()">
-        <span mat-line>
+    <div *ngIf="samplingplanemailService.samplingplanemailListModel$.getValue()?.length">
+      <div *ngFor="let samplingplanemail of samplingplanemailService.samplingplanemailListModel$.getValue()">
+        <p>
           <button mat-raised-button (click)="DeleteSamplingPlanEmail(samplingplanemail)">
             <span>Delete SamplingPlanEmailID [{{ samplingplanemail.SamplingPlanEmailID }}]&nbsp;&nbsp;&nbsp;</span>
             <mat-icon>delete</mat-icon>
-          </button>
+          </button>&nbsp;&nbsp;&nbsp;
+          <button mat-raised-button [color]="GetPutButtonColor(samplingplanemail)"(click)="ShowPut(samplingplanemail)">
+            <span>Show Put</span>
+          </button>&nbsp;&nbsp;
+          <button mat-raised-button [color]="GetPostButtonColor(samplingplanemail)"(click)="ShowPost(samplingplanemail)">
+            <span>Show Post</span>
+          </button>&nbsp;&nbsp;
           <mat-progress-bar mode="indeterminate" *ngIf="samplingplanemailService.samplingplanemailDeleteModel$.getValue().Working">
           </mat-progress-bar>
-          </span>
-        <span mat-line>
+        </p>
+        <p *ngIf="IDToShow === samplingplanemail.SamplingPlanEmailID && showType === GetPutEnum()">
+          <app-samplingplanemail-edit [samplingplanemail]="samplingplanemail" [httpClientCommand]="GetPutEnum()"></app-samplingplanemail-edit>
+        </p>
+        <p *ngIf="IDToShow === samplingplanemail.SamplingPlanEmailID && showType === GetPostEnum()">
+          <app-samplingplanemail-edit [samplingplanemail]="samplingplanemail" [httpClientCommand]="GetPostEnum()"></app-samplingplanemail-edit>
+        </p>
+        <blockquote>
+        <p>
           <span>SamplingPlanEmailID: [{{ samplingplanemail.SamplingPlanEmailID }}]</span>
           <span> --- SamplingPlanID: [{{ samplingplanemail.SamplingPlanID }}]</span>
           <span> --- Email: [{{ samplingplanemail.Email }}]</span>
           <span> --- IsContractor: [{{ samplingplanemail.IsContractor }}]</span>
-        </span>
-        <span mat-line>
+ </p>
+        <p>
           <span>LabSheetHasValueOver500: [{{ samplingplanemail.LabSheetHasValueOver500 }}]</span>
           <span> --- LabSheetReceived: [{{ samplingplanemail.LabSheetReceived }}]</span>
           <span> --- LabSheetAccepted: [{{ samplingplanemail.LabSheetAccepted }}]</span>
           <span> --- LabSheetRejected: [{{ samplingplanemail.LabSheetRejected }}]</span>
-        </span>
-        <span mat-line>
+ </p>
+        <p>
           <span>LastUpdateDate_UTC: [{{ samplingplanemail.LastUpdateDate_UTC }}]</span>
           <span> --- LastUpdateContactTVItemID: [{{ samplingplanemail.LastUpdateContactTVItemID }}]</span>
-        </span>
-       </mat-list-item>
-     </mat-list>
+        </p>
+        </blockquote>
+       </div>
+     </div>
    </mat-card-content>
  <mat-card-actions>
    <button mat-button>Allo</button>
  </mat-card-actions>
-</mat-card>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<mat-card>
-  <mat-card-header>
-    <mat-card-title>Edit SamplingPlanEmail testing</mat-card-title>
-  </mat-card-header>
-  <mat-card-content>
-    <div *ngIf="samplingplanemailService.samplingplanemailListModel$.getValue()?.length">
-      <blockquote>
-        <form [formGroup]="samplingplanemailFormPut" (ngSubmit)="PutSamplingPlanEmail(samplingplanemailFormPut.value)">
-          <h3>
-            SamplingPlanEmail
-            <button mat-raised-button type="submit">
-              <span>Update SamplingPlanEmail</span>
-            </button>
-            <mat-progress-bar mode="indeterminate" *ngIf="samplingplanemailService.samplingplanemailPutModel$.getValue().Working">
-            </mat-progress-bar>
-          </h3>
-          <p>
-            <mat-form-field>
-              <mat-label>SamplingPlanEmailID</mat-label>
-              <input matInput type="number" formControlName="SamplingPlanEmailID">
-              <mat-error *ngIf="samplingplanemailFormPut.controls.SamplingPlanEmailID.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>SamplingPlanID</mat-label>
-              <input matInput type="number" formControlName="SamplingPlanID">
-              <mat-error *ngIf="samplingplanemailFormPut.controls.SamplingPlanID.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>Email</mat-label>
-              <input matInput type="text" formControlName="Email">
-              <mat-error *ngIf="samplingplanemailFormPut.controls.Email.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-                <span *ngIf="e.email">Need valid Email<br /></span>
-                <span *ngIf="e.maxlength">MaxLength - 150<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>IsContractor</mat-label>
-              <input matInput type="text" formControlName="IsContractor">
-              <mat-error *ngIf="samplingplanemailFormPut.controls.IsContractor.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-          </p>
-          <p>
-            <mat-form-field>
-              <mat-label>LabSheetHasValueOver500</mat-label>
-              <input matInput type="text" formControlName="LabSheetHasValueOver500">
-              <mat-error *ngIf="samplingplanemailFormPut.controls.LabSheetHasValueOver500.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>LabSheetReceived</mat-label>
-              <input matInput type="text" formControlName="LabSheetReceived">
-              <mat-error *ngIf="samplingplanemailFormPut.controls.LabSheetReceived.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>LabSheetAccepted</mat-label>
-              <input matInput type="text" formControlName="LabSheetAccepted">
-              <mat-error *ngIf="samplingplanemailFormPut.controls.LabSheetAccepted.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>LabSheetRejected</mat-label>
-              <input matInput type="text" formControlName="LabSheetRejected">
-              <mat-error *ngIf="samplingplanemailFormPut.controls.LabSheetRejected.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-          </p>
-          <p>
-            <mat-form-field>
-              <mat-label>LastUpdateDate_UTC</mat-label>
-              <input matInput type="text" formControlName="LastUpdateDate_UTC">
-              <mat-error *ngIf="samplingplanemailFormPut.controls.LastUpdateDate_UTC.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>LastUpdateContactTVItemID</mat-label>
-              <input matInput type="number" formControlName="LastUpdateContactTVItemID">
-              <mat-error *ngIf="samplingplanemailFormPut.controls.LastUpdateContactTVItemID.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-          </p>
-        </form>
-      </blockquote>
-    </div>
-  </mat-card-content>
-</mat-card>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<mat-card>
-  <mat-card-header>
-    <mat-card-title>Add SamplingPlanEmail testing</mat-card-title>
-  </mat-card-header>
-  <mat-card-content>
-    <div *ngIf="samplingplanemailService.samplingplanemailListModel$.getValue()?.length">
-      <blockquote>
-        <form [formGroup]="samplingplanemailFormPost" (ngSubmit)="PostSamplingPlanEmail(samplingplanemailFormPost.value)">
-          <h3>
-            SamplingPlanEmail
-            <button mat-raised-button type="submit">
-              <span>Add SamplingPlanEmail</span>
-            </button>
-            <mat-progress-bar mode="indeterminate" *ngIf="samplingplanemailService.samplingplanemailPostModel$.getValue().Working">
-            </mat-progress-bar>
-          </h3>
-          <p>
-            <mat-form-field>
-              <mat-label>SamplingPlanEmailID</mat-label>
-              <input matInput type="number" formControlName="SamplingPlanEmailID">
-              <mat-error *ngIf="samplingplanemailFormPut.controls.SamplingPlanEmailID.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>SamplingPlanID</mat-label>
-              <input matInput type="number" formControlName="SamplingPlanID">
-              <mat-error *ngIf="samplingplanemailFormPut.controls.SamplingPlanID.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>Email</mat-label>
-              <input matInput type="text" formControlName="Email">
-              <mat-error *ngIf="samplingplanemailFormPut.controls.Email.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-                <span *ngIf="e.email">Need valid Email<br /></span>
-                <span *ngIf="e.maxlength">MaxLength - 150<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>IsContractor</mat-label>
-              <input matInput type="text" formControlName="IsContractor">
-              <mat-error *ngIf="samplingplanemailFormPut.controls.IsContractor.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-          </p>
-          <p>
-            <mat-form-field>
-              <mat-label>LabSheetHasValueOver500</mat-label>
-              <input matInput type="text" formControlName="LabSheetHasValueOver500">
-              <mat-error *ngIf="samplingplanemailFormPut.controls.LabSheetHasValueOver500.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>LabSheetReceived</mat-label>
-              <input matInput type="text" formControlName="LabSheetReceived">
-              <mat-error *ngIf="samplingplanemailFormPut.controls.LabSheetReceived.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>LabSheetAccepted</mat-label>
-              <input matInput type="text" formControlName="LabSheetAccepted">
-              <mat-error *ngIf="samplingplanemailFormPut.controls.LabSheetAccepted.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>LabSheetRejected</mat-label>
-              <input matInput type="text" formControlName="LabSheetRejected">
-              <mat-error *ngIf="samplingplanemailFormPut.controls.LabSheetRejected.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-          </p>
-          <p>
-            <mat-form-field>
-              <mat-label>LastUpdateDate_UTC</mat-label>
-              <input matInput type="text" formControlName="LastUpdateDate_UTC">
-              <mat-error *ngIf="samplingplanemailFormPut.controls.LastUpdateDate_UTC.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>LastUpdateContactTVItemID</mat-label>
-              <input matInput type="number" formControlName="LastUpdateContactTVItemID">
-              <mat-error *ngIf="samplingplanemailFormPut.controls.LastUpdateContactTVItemID.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-          </p>
-        </form>
-      </blockquote>
-    </div>
-  </mat-card-content>
 </mat-card>

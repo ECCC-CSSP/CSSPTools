@@ -17,196 +17,44 @@
     <mat-card-subtitle>{{ tvtypeuserauthorizationService.tvtypeuserauthorizationTextModel$.getValue().Title }}</mat-card-subtitle>
   </mat-card-header>
   <mat-card-content>
-    <mat-list *ngIf="tvtypeuserauthorizationService.tvtypeuserauthorizationListModel$.getValue()?.length">
-      <mat-list-item *ngFor="let tvtypeuserauthorization of tvtypeuserauthorizationService.tvtypeuserauthorizationListModel$.getValue()">
-        <span mat-line>
+    <div *ngIf="tvtypeuserauthorizationService.tvtypeuserauthorizationListModel$.getValue()?.length">
+      <div *ngFor="let tvtypeuserauthorization of tvtypeuserauthorizationService.tvtypeuserauthorizationListModel$.getValue()">
+        <p>
           <button mat-raised-button (click)="DeleteTVTypeUserAuthorization(tvtypeuserauthorization)">
             <span>Delete TVTypeUserAuthorizationID [{{ tvtypeuserauthorization.TVTypeUserAuthorizationID }}]&nbsp;&nbsp;&nbsp;</span>
             <mat-icon>delete</mat-icon>
-          </button>
+          </button>&nbsp;&nbsp;&nbsp;
+          <button mat-raised-button [color]="GetPutButtonColor(tvtypeuserauthorization)"(click)="ShowPut(tvtypeuserauthorization)">
+            <span>Show Put</span>
+          </button>&nbsp;&nbsp;
+          <button mat-raised-button [color]="GetPostButtonColor(tvtypeuserauthorization)"(click)="ShowPost(tvtypeuserauthorization)">
+            <span>Show Post</span>
+          </button>&nbsp;&nbsp;
           <mat-progress-bar mode="indeterminate" *ngIf="tvtypeuserauthorizationService.tvtypeuserauthorizationDeleteModel$.getValue().Working">
           </mat-progress-bar>
-          </span>
-        <span mat-line>
+        </p>
+        <p *ngIf="IDToShow === tvtypeuserauthorization.TVTypeUserAuthorizationID && showType === GetPutEnum()">
+          <app-tvtypeuserauthorization-edit [tvtypeuserauthorization]="tvtypeuserauthorization" [httpClientCommand]="GetPutEnum()"></app-tvtypeuserauthorization-edit>
+        </p>
+        <p *ngIf="IDToShow === tvtypeuserauthorization.TVTypeUserAuthorizationID && showType === GetPostEnum()">
+          <app-tvtypeuserauthorization-edit [tvtypeuserauthorization]="tvtypeuserauthorization" [httpClientCommand]="GetPostEnum()"></app-tvtypeuserauthorization-edit>
+        </p>
+        <blockquote>
+        <p>
           <span>TVTypeUserAuthorizationID: [{{ tvtypeuserauthorization.TVTypeUserAuthorizationID }}]</span>
           <span> --- ContactTVItemID: [{{ tvtypeuserauthorization.ContactTVItemID }}]</span>
           <span> --- TVType: [{{ GetTVTypeEnumText(tvtypeuserauthorization.TVType) }}]</span>
           <span> --- TVAuth: [{{ GetTVAuthEnumText(tvtypeuserauthorization.TVAuth) }}]</span>
-        </span>
-        <span mat-line>
+ </p>
+        <p>
           <span>LastUpdateDate_UTC: [{{ tvtypeuserauthorization.LastUpdateDate_UTC }}]</span>
           <span> --- LastUpdateContactTVItemID: [{{ tvtypeuserauthorization.LastUpdateContactTVItemID }}]</span>
-        </span>
-       </mat-list-item>
-     </mat-list>
+        </p>
+        </blockquote>
+       </div>
+     </div>
    </mat-card-content>
  <mat-card-actions>
    <button mat-button>Allo</button>
  </mat-card-actions>
-</mat-card>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<mat-card>
-  <mat-card-header>
-    <mat-card-title>Edit TVTypeUserAuthorization testing</mat-card-title>
-  </mat-card-header>
-  <mat-card-content>
-    <div *ngIf="tvtypeuserauthorizationService.tvtypeuserauthorizationListModel$.getValue()?.length">
-      <blockquote>
-        <form [formGroup]="tvtypeuserauthorizationFormPut" (ngSubmit)="PutTVTypeUserAuthorization(tvtypeuserauthorizationFormPut.value)">
-          <h3>
-            TVTypeUserAuthorization
-            <button mat-raised-button type="submit">
-              <span>Update TVTypeUserAuthorization</span>
-            </button>
-            <mat-progress-bar mode="indeterminate" *ngIf="tvtypeuserauthorizationService.tvtypeuserauthorizationPutModel$.getValue().Working">
-            </mat-progress-bar>
-          </h3>
-          <p>
-            <mat-form-field>
-              <mat-label>TVTypeUserAuthorizationID</mat-label>
-              <input matInput type="number" formControlName="TVTypeUserAuthorizationID">
-              <mat-error *ngIf="tvtypeuserauthorizationFormPut.controls.TVTypeUserAuthorizationID.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>ContactTVItemID</mat-label>
-              <input matInput type="number" formControlName="ContactTVItemID">
-              <mat-error *ngIf="tvtypeuserauthorizationFormPut.controls.ContactTVItemID.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>TVType</mat-label>
-              <mat-select formControlName="TVType">
-                <mat-option *ngFor="let a of tVTypeList" [value]="a.EnumID">
-                  {{ a.EnumText }}
-                </mat-option>
-              </mat-select>
-              <mat-error *ngIf="tvtypeuserauthorizationFormPut.controls.TVType.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>TVAuth</mat-label>
-              <mat-select formControlName="TVAuth">
-                <mat-option *ngFor="let a of tVAuthList" [value]="a.EnumID">
-                  {{ a.EnumText }}
-                </mat-option>
-              </mat-select>
-              <mat-error *ngIf="tvtypeuserauthorizationFormPut.controls.TVAuth.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-          </p>
-          <p>
-            <mat-form-field>
-              <mat-label>LastUpdateDate_UTC</mat-label>
-              <input matInput type="text" formControlName="LastUpdateDate_UTC">
-              <mat-error *ngIf="tvtypeuserauthorizationFormPut.controls.LastUpdateDate_UTC.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>LastUpdateContactTVItemID</mat-label>
-              <input matInput type="number" formControlName="LastUpdateContactTVItemID">
-              <mat-error *ngIf="tvtypeuserauthorizationFormPut.controls.LastUpdateContactTVItemID.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-          </p>
-        </form>
-      </blockquote>
-    </div>
-  </mat-card-content>
-</mat-card>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<mat-card>
-  <mat-card-header>
-    <mat-card-title>Add TVTypeUserAuthorization testing</mat-card-title>
-  </mat-card-header>
-  <mat-card-content>
-    <div *ngIf="tvtypeuserauthorizationService.tvtypeuserauthorizationListModel$.getValue()?.length">
-      <blockquote>
-        <form [formGroup]="tvtypeuserauthorizationFormPost" (ngSubmit)="PostTVTypeUserAuthorization(tvtypeuserauthorizationFormPost.value)">
-          <h3>
-            TVTypeUserAuthorization
-            <button mat-raised-button type="submit">
-              <span>Add TVTypeUserAuthorization</span>
-            </button>
-            <mat-progress-bar mode="indeterminate" *ngIf="tvtypeuserauthorizationService.tvtypeuserauthorizationPostModel$.getValue().Working">
-            </mat-progress-bar>
-          </h3>
-          <p>
-            <mat-form-field>
-              <mat-label>TVTypeUserAuthorizationID</mat-label>
-              <input matInput type="number" formControlName="TVTypeUserAuthorizationID">
-              <mat-error *ngIf="tvtypeuserauthorizationFormPut.controls.TVTypeUserAuthorizationID.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>ContactTVItemID</mat-label>
-              <input matInput type="number" formControlName="ContactTVItemID">
-              <mat-error *ngIf="tvtypeuserauthorizationFormPut.controls.ContactTVItemID.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>TVType</mat-label>
-              <mat-select formControlName="TVType">
-                <mat-option *ngFor="let a of tVTypeList" [value]="a.EnumID">
-                  {{ a.EnumText }}
-                </mat-option>
-              </mat-select>
-              <mat-error *ngIf="tvtypeuserauthorizationFormPut.controls.TVType.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>TVAuth</mat-label>
-              <mat-select formControlName="TVAuth">
-                <mat-option *ngFor="let a of tVAuthList" [value]="a.EnumID">
-                  {{ a.EnumText }}
-                </mat-option>
-              </mat-select>
-              <mat-error *ngIf="tvtypeuserauthorizationFormPut.controls.TVAuth.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-          </p>
-          <p>
-            <mat-form-field>
-              <mat-label>LastUpdateDate_UTC</mat-label>
-              <input matInput type="text" formControlName="LastUpdateDate_UTC">
-              <mat-error *ngIf="tvtypeuserauthorizationFormPut.controls.LastUpdateDate_UTC.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>LastUpdateContactTVItemID</mat-label>
-              <input matInput type="number" formControlName="LastUpdateContactTVItemID">
-              <mat-error *ngIf="tvtypeuserauthorizationFormPut.controls.LastUpdateContactTVItemID.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-          </p>
-        </form>
-      </blockquote>
-    </div>
-  </mat-card-content>
 </mat-card>

@@ -9,10 +9,8 @@ import { Component, OnInit, OnDestroy, ChangeDetectionStrategy } from '@angular/
 import { HydrometricDataValueService } from './hydrometricdatavalue.service';
 import { LoadLocalesHydrometricDataValueText } from './hydrometricdatavalue.locales';
 import { Subscription } from 'rxjs';
-import { StorageDataTypeEnum_GetIDText, StorageDataTypeEnum_GetOrderedText } from '../../../enums/generated/StorageDataTypeEnum';
+import { StorageDataTypeEnum_GetIDText } from '../../../enums/generated/StorageDataTypeEnum';
 import { HydrometricDataValue } from '../../../models/generated/HydrometricDataValue.model';
-import { FormBuilder, Validators, FormGroup } from '@angular/forms';
-import { EnumIDAndText } from '../../../models/enumidandtext.model';
 import { HttpClientService } from '../../../services/http-client.service';
 import { Router } from '@angular/router';
 import { HttpClientCommand } from '../../../enums/app.enums';
@@ -25,24 +23,63 @@ import { HttpClientCommand } from '../../../enums/app.enums';
 })
 export class HydrometricDataValueComponent implements OnInit, OnDestroy {
   sub: Subscription;
-  storageDataTypeList: EnumIDAndText[];
-  hydrometricdatavalueFormPut: FormGroup;
-  hydrometricdatavalueFormPost: FormGroup;
+  IDToShow: number;
+  showType?: HttpClientCommand = null;
 
-  constructor(public hydrometricdatavalueService: HydrometricDataValueService, private router: Router, private httpClientService: HttpClientService, private fb: FormBuilder) {
+  constructor(public hydrometricdatavalueService: HydrometricDataValueService, private router: Router, private httpClientService: HttpClientService) {
     httpClientService.oldURL = router.url;
+  }
+
+  GetPutButtonColor(hydrometricdatavalue: HydrometricDataValue) {
+    if (this.IDToShow === hydrometricdatavalue.HydrometricDataValueID && this.showType === HttpClientCommand.Put) {
+      return 'primary';
+    }
+    else {
+      return 'basic';
+    }
+  }
+
+  GetPostButtonColor(hydrometricdatavalue: HydrometricDataValue) {
+    if (this.IDToShow === hydrometricdatavalue.HydrometricDataValueID && this.showType === HttpClientCommand.Post) {
+      return 'primary';
+    }
+    else {
+      return 'basic';
+    }
+  }
+
+  ShowPut(hydrometricdatavalue: HydrometricDataValue) {
+    if (this.IDToShow === hydrometricdatavalue.HydrometricDataValueID && this.showType === HttpClientCommand.Put) {
+      this.IDToShow = 0;
+      this.showType = null;
+    }
+    else {
+      this.IDToShow = hydrometricdatavalue.HydrometricDataValueID;
+      this.showType = HttpClientCommand.Put;
+    }
+  }
+
+  ShowPost(hydrometricdatavalue: HydrometricDataValue) {
+    if (this.IDToShow === hydrometricdatavalue.HydrometricDataValueID && this.showType === HttpClientCommand.Post) {
+      this.IDToShow = 0;
+      this.showType = null;
+    }
+    else {
+      this.IDToShow = hydrometricdatavalue.HydrometricDataValueID;
+      this.showType = HttpClientCommand.Post;
+    }
+  }
+
+  GetPutEnum() {
+    return <number>HttpClientCommand.Put;
+  }
+
+  GetPostEnum() {
+    return <number>HttpClientCommand.Post;
   }
 
   GetHydrometricDataValueList() {
     this.sub = this.hydrometricdatavalueService.GetHydrometricDataValueList().subscribe();
-  }
-
-  PutHydrometricDataValue(hydrometricdatavalue: HydrometricDataValue) {
-    this.sub = this.hydrometricdatavalueService.PutHydrometricDataValue(hydrometricdatavalue).subscribe();
-  }
-
-  PostHydrometricDataValue(hydrometricdatavalue: HydrometricDataValue) {
-    this.sub = this.hydrometricdatavalueService.PostHydrometricDataValue(hydrometricdatavalue).subscribe();
   }
 
   DeleteHydrometricDataValue(hydrometricdatavalue: HydrometricDataValue) {
@@ -55,90 +92,11 @@ export class HydrometricDataValueComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     LoadLocalesHydrometricDataValueText(this.hydrometricdatavalueService);
-    this.storageDataTypeList = StorageDataTypeEnum_GetOrderedText();
-    this.FillFormBuilderGroup(HttpClientCommand.Post);
-    this.FillFormBuilderGroup(HttpClientCommand.Put);
   }
 
   ngOnDestroy() {
     if (this.sub) {
       this.sub.unsubscribe();
-    }
-  }
-
-  FillFormBuilderGroup(httpClientCommand: HttpClientCommand) {
-    if (this.hydrometricdatavalueService.hydrometricdatavalueListModel$.getValue().length) {
-      let formGroup: FormGroup = this.fb.group(
-        {
-          HydrometricDataValueID: [
-            {
-              value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.hydrometricdatavalueService.hydrometricdatavalueListModel$.getValue()[0]?.HydrometricDataValueID)),
-              disabled: false
-            }, [  Validators.required ]],
-          HydrometricSiteID: [
-            {
-              value: this.hydrometricdatavalueService.hydrometricdatavalueListModel$.getValue()[0]?.HydrometricSiteID,
-              disabled: false
-            }, [  Validators.required ]],
-          DateTime_Local: [
-            {
-              value: this.hydrometricdatavalueService.hydrometricdatavalueListModel$.getValue()[0]?.DateTime_Local,
-              disabled: false
-            }, [  Validators.required ]],
-          Keep: [
-            {
-              value: this.hydrometricdatavalueService.hydrometricdatavalueListModel$.getValue()[0]?.Keep,
-              disabled: false
-            }, [  Validators.required ]],
-          StorageDataType: [
-            {
-              value: this.hydrometricdatavalueService.hydrometricdatavalueListModel$.getValue()[0]?.StorageDataType,
-              disabled: false
-            }, [  Validators.required ]],
-          HasBeenRead: [
-            {
-              value: this.hydrometricdatavalueService.hydrometricdatavalueListModel$.getValue()[0]?.HasBeenRead,
-              disabled: false
-            }, [  Validators.required ]],
-          Discharge_m3_s: [
-            {
-              value: this.hydrometricdatavalueService.hydrometricdatavalueListModel$.getValue()[0]?.Discharge_m3_s,
-              disabled: false
-            }, [  Validators.min(0), Validators.max(100000) ]],
-          DischargeEntered_m3_s: [
-            {
-              value: this.hydrometricdatavalueService.hydrometricdatavalueListModel$.getValue()[0]?.DischargeEntered_m3_s,
-              disabled: false
-            }, [  Validators.min(0), Validators.max(100000) ]],
-          Level_m: [
-            {
-              value: this.hydrometricdatavalueService.hydrometricdatavalueListModel$.getValue()[0]?.Level_m,
-              disabled: false
-            }, [  Validators.min(0), Validators.max(10000) ]],
-          HourlyValues: [
-            {
-              value: this.hydrometricdatavalueService.hydrometricdatavalueListModel$.getValue()[0]?.HourlyValues,
-              disabled: false
-            }],
-          LastUpdateDate_UTC: [
-            {
-              value: this.hydrometricdatavalueService.hydrometricdatavalueListModel$.getValue()[0]?.LastUpdateDate_UTC,
-              disabled: false
-            }, [  Validators.required ]],
-          LastUpdateContactTVItemID: [
-            {
-              value: this.hydrometricdatavalueService.hydrometricdatavalueListModel$.getValue()[0]?.LastUpdateContactTVItemID,
-              disabled: false
-            }, [  Validators.required ]],
-        }
-      );
-
-      if (httpClientCommand === HttpClientCommand.Post) {
-        this.hydrometricdatavalueFormPost = formGroup
-      }
-      else {
-        this.hydrometricdatavalueFormPut = formGroup;
-      }
     }
   }
 }

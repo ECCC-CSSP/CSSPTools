@@ -9,15 +9,13 @@ import { Component, OnInit, OnDestroy, ChangeDetectionStrategy } from '@angular/
 import { SamplingPlanService } from './samplingplan.service';
 import { LoadLocalesSamplingPlanText } from './samplingplan.locales';
 import { Subscription } from 'rxjs';
-import { SampleTypeEnum_GetIDText, SampleTypeEnum_GetOrderedText } from '../../../enums/generated/SampleTypeEnum';
-import { SamplingPlanTypeEnum_GetIDText, SamplingPlanTypeEnum_GetOrderedText } from '../../../enums/generated/SamplingPlanTypeEnum';
-import { LabSheetTypeEnum_GetIDText, LabSheetTypeEnum_GetOrderedText } from '../../../enums/generated/LabSheetTypeEnum';
-import { AnalyzeMethodEnum_GetIDText, AnalyzeMethodEnum_GetOrderedText } from '../../../enums/generated/AnalyzeMethodEnum';
-import { SampleMatrixEnum_GetIDText, SampleMatrixEnum_GetOrderedText } from '../../../enums/generated/SampleMatrixEnum';
-import { LaboratoryEnum_GetIDText, LaboratoryEnum_GetOrderedText } from '../../../enums/generated/LaboratoryEnum';
+import { SampleTypeEnum_GetIDText } from '../../../enums/generated/SampleTypeEnum';
+import { SamplingPlanTypeEnum_GetIDText } from '../../../enums/generated/SamplingPlanTypeEnum';
+import { LabSheetTypeEnum_GetIDText } from '../../../enums/generated/LabSheetTypeEnum';
+import { AnalyzeMethodEnum_GetIDText } from '../../../enums/generated/AnalyzeMethodEnum';
+import { SampleMatrixEnum_GetIDText } from '../../../enums/generated/SampleMatrixEnum';
+import { LaboratoryEnum_GetIDText } from '../../../enums/generated/LaboratoryEnum';
 import { SamplingPlan } from '../../../models/generated/SamplingPlan.model';
-import { FormBuilder, Validators, FormGroup } from '@angular/forms';
-import { EnumIDAndText } from '../../../models/enumidandtext.model';
 import { HttpClientService } from '../../../services/http-client.service';
 import { Router } from '@angular/router';
 import { HttpClientCommand } from '../../../enums/app.enums';
@@ -30,29 +28,63 @@ import { HttpClientCommand } from '../../../enums/app.enums';
 })
 export class SamplingPlanComponent implements OnInit, OnDestroy {
   sub: Subscription;
-  sampleTypeList: EnumIDAndText[];
-  samplingPlanTypeList: EnumIDAndText[];
-  labSheetTypeList: EnumIDAndText[];
-  analyzeMethodDefaultList: EnumIDAndText[];
-  sampleMatrixDefaultList: EnumIDAndText[];
-  laboratoryDefaultList: EnumIDAndText[];
-  samplingplanFormPut: FormGroup;
-  samplingplanFormPost: FormGroup;
+  IDToShow: number;
+  showType?: HttpClientCommand = null;
 
-  constructor(public samplingplanService: SamplingPlanService, private router: Router, private httpClientService: HttpClientService, private fb: FormBuilder) {
+  constructor(public samplingplanService: SamplingPlanService, private router: Router, private httpClientService: HttpClientService) {
     httpClientService.oldURL = router.url;
+  }
+
+  GetPutButtonColor(samplingplan: SamplingPlan) {
+    if (this.IDToShow === samplingplan.SamplingPlanID && this.showType === HttpClientCommand.Put) {
+      return 'primary';
+    }
+    else {
+      return 'basic';
+    }
+  }
+
+  GetPostButtonColor(samplingplan: SamplingPlan) {
+    if (this.IDToShow === samplingplan.SamplingPlanID && this.showType === HttpClientCommand.Post) {
+      return 'primary';
+    }
+    else {
+      return 'basic';
+    }
+  }
+
+  ShowPut(samplingplan: SamplingPlan) {
+    if (this.IDToShow === samplingplan.SamplingPlanID && this.showType === HttpClientCommand.Put) {
+      this.IDToShow = 0;
+      this.showType = null;
+    }
+    else {
+      this.IDToShow = samplingplan.SamplingPlanID;
+      this.showType = HttpClientCommand.Put;
+    }
+  }
+
+  ShowPost(samplingplan: SamplingPlan) {
+    if (this.IDToShow === samplingplan.SamplingPlanID && this.showType === HttpClientCommand.Post) {
+      this.IDToShow = 0;
+      this.showType = null;
+    }
+    else {
+      this.IDToShow = samplingplan.SamplingPlanID;
+      this.showType = HttpClientCommand.Post;
+    }
+  }
+
+  GetPutEnum() {
+    return <number>HttpClientCommand.Put;
+  }
+
+  GetPostEnum() {
+    return <number>HttpClientCommand.Post;
   }
 
   GetSamplingPlanList() {
     this.sub = this.samplingplanService.GetSamplingPlanList().subscribe();
-  }
-
-  PutSamplingPlan(samplingplan: SamplingPlan) {
-    this.sub = this.samplingplanService.PutSamplingPlan(samplingplan).subscribe();
-  }
-
-  PostSamplingPlan(samplingplan: SamplingPlan) {
-    this.sub = this.samplingplanService.PostSamplingPlan(samplingplan).subscribe();
   }
 
   DeleteSamplingPlan(samplingplan: SamplingPlan) {
@@ -85,145 +117,11 @@ export class SamplingPlanComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     LoadLocalesSamplingPlanText(this.samplingplanService);
-    this.sampleTypeList = SampleTypeEnum_GetOrderedText();
-    this.samplingPlanTypeList = SamplingPlanTypeEnum_GetOrderedText();
-    this.labSheetTypeList = LabSheetTypeEnum_GetOrderedText();
-    this.analyzeMethodDefaultList = AnalyzeMethodEnum_GetOrderedText();
-    this.sampleMatrixDefaultList = SampleMatrixEnum_GetOrderedText();
-    this.laboratoryDefaultList = LaboratoryEnum_GetOrderedText();
-    this.FillFormBuilderGroup(HttpClientCommand.Post);
-    this.FillFormBuilderGroup(HttpClientCommand.Put);
   }
 
   ngOnDestroy() {
     if (this.sub) {
       this.sub.unsubscribe();
-    }
-  }
-
-  FillFormBuilderGroup(httpClientCommand: HttpClientCommand) {
-    if (this.samplingplanService.samplingplanListModel$.getValue().length) {
-      let formGroup: FormGroup = this.fb.group(
-        {
-          SamplingPlanID: [
-            {
-              value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.samplingplanService.samplingplanListModel$.getValue()[0]?.SamplingPlanID)),
-              disabled: false
-            }, [  Validators.required ]],
-          IsActive: [
-            {
-              value: this.samplingplanService.samplingplanListModel$.getValue()[0]?.IsActive,
-              disabled: false
-            }, [  Validators.required ]],
-          SamplingPlanName: [
-            {
-              value: this.samplingplanService.samplingplanListModel$.getValue()[0]?.SamplingPlanName,
-              disabled: false
-            }, [  Validators.required, Validators.maxLength(200) ]],
-          ForGroupName: [
-            {
-              value: this.samplingplanService.samplingplanListModel$.getValue()[0]?.ForGroupName,
-              disabled: false
-            }, [  Validators.required, Validators.maxLength(100) ]],
-          SampleType: [
-            {
-              value: this.samplingplanService.samplingplanListModel$.getValue()[0]?.SampleType,
-              disabled: false
-            }, [  Validators.required ]],
-          SamplingPlanType: [
-            {
-              value: this.samplingplanService.samplingplanListModel$.getValue()[0]?.SamplingPlanType,
-              disabled: false
-            }, [  Validators.required ]],
-          LabSheetType: [
-            {
-              value: this.samplingplanService.samplingplanListModel$.getValue()[0]?.LabSheetType,
-              disabled: false
-            }, [  Validators.required ]],
-          ProvinceTVItemID: [
-            {
-              value: this.samplingplanService.samplingplanListModel$.getValue()[0]?.ProvinceTVItemID,
-              disabled: false
-            }, [  Validators.required ]],
-          CreatorTVItemID: [
-            {
-              value: this.samplingplanService.samplingplanListModel$.getValue()[0]?.CreatorTVItemID,
-              disabled: false
-            }, [  Validators.required ]],
-          Year: [
-            {
-              value: this.samplingplanService.samplingplanListModel$.getValue()[0]?.Year,
-              disabled: false
-            }, [  Validators.required, Validators.min(2000), Validators.max(2050) ]],
-          AccessCode: [
-            {
-              value: this.samplingplanService.samplingplanListModel$.getValue()[0]?.AccessCode,
-              disabled: false
-            }, [  Validators.required, Validators.maxLength(15) ]],
-          DailyDuplicatePrecisionCriteria: [
-            {
-              value: this.samplingplanService.samplingplanListModel$.getValue()[0]?.DailyDuplicatePrecisionCriteria,
-              disabled: false
-            }, [  Validators.required, Validators.min(0), Validators.max(100) ]],
-          IntertechDuplicatePrecisionCriteria: [
-            {
-              value: this.samplingplanService.samplingplanListModel$.getValue()[0]?.IntertechDuplicatePrecisionCriteria,
-              disabled: false
-            }, [  Validators.required, Validators.min(0), Validators.max(100) ]],
-          IncludeLaboratoryQAQC: [
-            {
-              value: this.samplingplanService.samplingplanListModel$.getValue()[0]?.IncludeLaboratoryQAQC,
-              disabled: false
-            }, [  Validators.required ]],
-          ApprovalCode: [
-            {
-              value: this.samplingplanService.samplingplanListModel$.getValue()[0]?.ApprovalCode,
-              disabled: false
-            }, [  Validators.required, Validators.maxLength(15) ]],
-          SamplingPlanFileTVItemID: [
-            {
-              value: this.samplingplanService.samplingplanListModel$.getValue()[0]?.SamplingPlanFileTVItemID,
-              disabled: false
-            }],
-          AnalyzeMethodDefault: [
-            {
-              value: this.samplingplanService.samplingplanListModel$.getValue()[0]?.AnalyzeMethodDefault,
-              disabled: false
-            }],
-          SampleMatrixDefault: [
-            {
-              value: this.samplingplanService.samplingplanListModel$.getValue()[0]?.SampleMatrixDefault,
-              disabled: false
-            }],
-          LaboratoryDefault: [
-            {
-              value: this.samplingplanService.samplingplanListModel$.getValue()[0]?.LaboratoryDefault,
-              disabled: false
-            }],
-          BackupDirectory: [
-            {
-              value: this.samplingplanService.samplingplanListModel$.getValue()[0]?.BackupDirectory,
-              disabled: false
-            }, [  Validators.required, Validators.maxLength(250) ]],
-          LastUpdateDate_UTC: [
-            {
-              value: this.samplingplanService.samplingplanListModel$.getValue()[0]?.LastUpdateDate_UTC,
-              disabled: false
-            }, [  Validators.required ]],
-          LastUpdateContactTVItemID: [
-            {
-              value: this.samplingplanService.samplingplanListModel$.getValue()[0]?.LastUpdateContactTVItemID,
-              disabled: false
-            }, [  Validators.required ]],
-        }
-      );
-
-      if (httpClientCommand === HttpClientCommand.Post) {
-        this.samplingplanFormPost = formGroup
-      }
-      else {
-        this.samplingplanFormPut = formGroup;
-      }
     }
   }
 }

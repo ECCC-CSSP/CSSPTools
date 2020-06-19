@@ -12,9 +12,10 @@ import { ContactRoutingModule } from './contact-routing.module';
 import { MaterialModule } from '../../../app-material.module';
 import { ContactComponent } from './contact.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ContactEditComponent } from './contact-edit.component';
 
 @NgModule({
-  declarations: [ ContactComponent ],
+  declarations: [ContactComponent, ContactEditComponent],
   imports: [
     CommonModule,
     RouterModule,

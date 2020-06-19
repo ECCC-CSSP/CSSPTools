@@ -9,11 +9,9 @@ import { Component, OnInit, OnDestroy, ChangeDetectionStrategy } from '@angular/
 import { TVFileLanguageService } from './tvfilelanguage.service';
 import { LoadLocalesTVFileLanguageText } from './tvfilelanguage.locales';
 import { Subscription } from 'rxjs';
-import { LanguageEnum_GetIDText, LanguageEnum_GetOrderedText } from '../../../enums/generated/LanguageEnum';
-import { TranslationStatusEnum_GetIDText, TranslationStatusEnum_GetOrderedText } from '../../../enums/generated/TranslationStatusEnum';
+import { LanguageEnum_GetIDText } from '../../../enums/generated/LanguageEnum';
+import { TranslationStatusEnum_GetIDText } from '../../../enums/generated/TranslationStatusEnum';
 import { TVFileLanguage } from '../../../models/generated/TVFileLanguage.model';
-import { FormBuilder, Validators, FormGroup } from '@angular/forms';
-import { EnumIDAndText } from '../../../models/enumidandtext.model';
 import { HttpClientService } from '../../../services/http-client.service';
 import { Router } from '@angular/router';
 import { HttpClientCommand } from '../../../enums/app.enums';
@@ -26,25 +24,63 @@ import { HttpClientCommand } from '../../../enums/app.enums';
 })
 export class TVFileLanguageComponent implements OnInit, OnDestroy {
   sub: Subscription;
-  languageList: EnumIDAndText[];
-  translationStatusList: EnumIDAndText[];
-  tvfilelanguageFormPut: FormGroup;
-  tvfilelanguageFormPost: FormGroup;
+  IDToShow: number;
+  showType?: HttpClientCommand = null;
 
-  constructor(public tvfilelanguageService: TVFileLanguageService, private router: Router, private httpClientService: HttpClientService, private fb: FormBuilder) {
+  constructor(public tvfilelanguageService: TVFileLanguageService, private router: Router, private httpClientService: HttpClientService) {
     httpClientService.oldURL = router.url;
+  }
+
+  GetPutButtonColor(tvfilelanguage: TVFileLanguage) {
+    if (this.IDToShow === tvfilelanguage.TVFileLanguageID && this.showType === HttpClientCommand.Put) {
+      return 'primary';
+    }
+    else {
+      return 'basic';
+    }
+  }
+
+  GetPostButtonColor(tvfilelanguage: TVFileLanguage) {
+    if (this.IDToShow === tvfilelanguage.TVFileLanguageID && this.showType === HttpClientCommand.Post) {
+      return 'primary';
+    }
+    else {
+      return 'basic';
+    }
+  }
+
+  ShowPut(tvfilelanguage: TVFileLanguage) {
+    if (this.IDToShow === tvfilelanguage.TVFileLanguageID && this.showType === HttpClientCommand.Put) {
+      this.IDToShow = 0;
+      this.showType = null;
+    }
+    else {
+      this.IDToShow = tvfilelanguage.TVFileLanguageID;
+      this.showType = HttpClientCommand.Put;
+    }
+  }
+
+  ShowPost(tvfilelanguage: TVFileLanguage) {
+    if (this.IDToShow === tvfilelanguage.TVFileLanguageID && this.showType === HttpClientCommand.Post) {
+      this.IDToShow = 0;
+      this.showType = null;
+    }
+    else {
+      this.IDToShow = tvfilelanguage.TVFileLanguageID;
+      this.showType = HttpClientCommand.Post;
+    }
+  }
+
+  GetPutEnum() {
+    return <number>HttpClientCommand.Put;
+  }
+
+  GetPostEnum() {
+    return <number>HttpClientCommand.Post;
   }
 
   GetTVFileLanguageList() {
     this.sub = this.tvfilelanguageService.GetTVFileLanguageList().subscribe();
-  }
-
-  PutTVFileLanguage(tvfilelanguage: TVFileLanguage) {
-    this.sub = this.tvfilelanguageService.PutTVFileLanguage(tvfilelanguage).subscribe();
-  }
-
-  PostTVFileLanguage(tvfilelanguage: TVFileLanguage) {
-    this.sub = this.tvfilelanguageService.PostTVFileLanguage(tvfilelanguage).subscribe();
   }
 
   DeleteTVFileLanguage(tvfilelanguage: TVFileLanguage) {
@@ -61,66 +97,11 @@ export class TVFileLanguageComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     LoadLocalesTVFileLanguageText(this.tvfilelanguageService);
-    this.languageList = LanguageEnum_GetOrderedText();
-    this.translationStatusList = TranslationStatusEnum_GetOrderedText();
-    this.FillFormBuilderGroup(HttpClientCommand.Post);
-    this.FillFormBuilderGroup(HttpClientCommand.Put);
   }
 
   ngOnDestroy() {
     if (this.sub) {
       this.sub.unsubscribe();
-    }
-  }
-
-  FillFormBuilderGroup(httpClientCommand: HttpClientCommand) {
-    if (this.tvfilelanguageService.tvfilelanguageListModel$.getValue().length) {
-      let formGroup: FormGroup = this.fb.group(
-        {
-          TVFileLanguageID: [
-            {
-              value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.tvfilelanguageService.tvfilelanguageListModel$.getValue()[0]?.TVFileLanguageID)),
-              disabled: false
-            }, [  Validators.required ]],
-          TVFileID: [
-            {
-              value: this.tvfilelanguageService.tvfilelanguageListModel$.getValue()[0]?.TVFileID,
-              disabled: false
-            }, [  Validators.required ]],
-          Language: [
-            {
-              value: this.tvfilelanguageService.tvfilelanguageListModel$.getValue()[0]?.Language,
-              disabled: false
-            }, [  Validators.required ]],
-          FileDescription: [
-            {
-              value: this.tvfilelanguageService.tvfilelanguageListModel$.getValue()[0]?.FileDescription,
-              disabled: false
-            }],
-          TranslationStatus: [
-            {
-              value: this.tvfilelanguageService.tvfilelanguageListModel$.getValue()[0]?.TranslationStatus,
-              disabled: false
-            }, [  Validators.required ]],
-          LastUpdateDate_UTC: [
-            {
-              value: this.tvfilelanguageService.tvfilelanguageListModel$.getValue()[0]?.LastUpdateDate_UTC,
-              disabled: false
-            }, [  Validators.required ]],
-          LastUpdateContactTVItemID: [
-            {
-              value: this.tvfilelanguageService.tvfilelanguageListModel$.getValue()[0]?.LastUpdateContactTVItemID,
-              disabled: false
-            }, [  Validators.required ]],
-        }
-      );
-
-      if (httpClientCommand === HttpClientCommand.Post) {
-        this.tvfilelanguageFormPost = formGroup
-      }
-      else {
-        this.tvfilelanguageFormPut = formGroup;
-      }
     }
   }
 }

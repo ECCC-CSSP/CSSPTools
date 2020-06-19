@@ -9,10 +9,8 @@ import { Component, OnInit, OnDestroy, ChangeDetectionStrategy } from '@angular/
 import { TVItemService } from './tvitem.service';
 import { LoadLocalesTVItemText } from './tvitem.locales';
 import { Subscription } from 'rxjs';
-import { TVTypeEnum_GetIDText, TVTypeEnum_GetOrderedText } from '../../../enums/generated/TVTypeEnum';
+import { TVTypeEnum_GetIDText } from '../../../enums/generated/TVTypeEnum';
 import { TVItem } from '../../../models/generated/TVItem.model';
-import { FormBuilder, Validators, FormGroup } from '@angular/forms';
-import { EnumIDAndText } from '../../../models/enumidandtext.model';
 import { HttpClientService } from '../../../services/http-client.service';
 import { Router } from '@angular/router';
 import { HttpClientCommand } from '../../../enums/app.enums';
@@ -25,24 +23,63 @@ import { HttpClientCommand } from '../../../enums/app.enums';
 })
 export class TVItemComponent implements OnInit, OnDestroy {
   sub: Subscription;
-  tVTypeList: EnumIDAndText[];
-  tvitemFormPut: FormGroup;
-  tvitemFormPost: FormGroup;
+  IDToShow: number;
+  showType?: HttpClientCommand = null;
 
-  constructor(public tvitemService: TVItemService, private router: Router, private httpClientService: HttpClientService, private fb: FormBuilder) {
+  constructor(public tvitemService: TVItemService, private router: Router, private httpClientService: HttpClientService) {
     httpClientService.oldURL = router.url;
+  }
+
+  GetPutButtonColor(tvitem: TVItem) {
+    if (this.IDToShow === tvitem.TVItemID && this.showType === HttpClientCommand.Put) {
+      return 'primary';
+    }
+    else {
+      return 'basic';
+    }
+  }
+
+  GetPostButtonColor(tvitem: TVItem) {
+    if (this.IDToShow === tvitem.TVItemID && this.showType === HttpClientCommand.Post) {
+      return 'primary';
+    }
+    else {
+      return 'basic';
+    }
+  }
+
+  ShowPut(tvitem: TVItem) {
+    if (this.IDToShow === tvitem.TVItemID && this.showType === HttpClientCommand.Put) {
+      this.IDToShow = 0;
+      this.showType = null;
+    }
+    else {
+      this.IDToShow = tvitem.TVItemID;
+      this.showType = HttpClientCommand.Put;
+    }
+  }
+
+  ShowPost(tvitem: TVItem) {
+    if (this.IDToShow === tvitem.TVItemID && this.showType === HttpClientCommand.Post) {
+      this.IDToShow = 0;
+      this.showType = null;
+    }
+    else {
+      this.IDToShow = tvitem.TVItemID;
+      this.showType = HttpClientCommand.Post;
+    }
+  }
+
+  GetPutEnum() {
+    return <number>HttpClientCommand.Put;
+  }
+
+  GetPostEnum() {
+    return <number>HttpClientCommand.Post;
   }
 
   GetTVItemList() {
     this.sub = this.tvitemService.GetTVItemList().subscribe();
-  }
-
-  PutTVItem(tvitem: TVItem) {
-    this.sub = this.tvitemService.PutTVItem(tvitem).subscribe();
-  }
-
-  PostTVItem(tvitem: TVItem) {
-    this.sub = this.tvitemService.PostTVItem(tvitem).subscribe();
   }
 
   DeleteTVItem(tvitem: TVItem) {
@@ -55,70 +92,11 @@ export class TVItemComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     LoadLocalesTVItemText(this.tvitemService);
-    this.tVTypeList = TVTypeEnum_GetOrderedText();
-    this.FillFormBuilderGroup(HttpClientCommand.Post);
-    this.FillFormBuilderGroup(HttpClientCommand.Put);
   }
 
   ngOnDestroy() {
     if (this.sub) {
       this.sub.unsubscribe();
-    }
-  }
-
-  FillFormBuilderGroup(httpClientCommand: HttpClientCommand) {
-    if (this.tvitemService.tvitemListModel$.getValue().length) {
-      let formGroup: FormGroup = this.fb.group(
-        {
-          TVItemID: [
-            {
-              value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.tvitemService.tvitemListModel$.getValue()[0]?.TVItemID)),
-              disabled: false
-            }, [  Validators.required ]],
-          TVLevel: [
-            {
-              value: this.tvitemService.tvitemListModel$.getValue()[0]?.TVLevel,
-              disabled: false
-            }, [  Validators.required, Validators.min(0), Validators.max(100) ]],
-          TVPath: [
-            {
-              value: this.tvitemService.tvitemListModel$.getValue()[0]?.TVPath,
-              disabled: false
-            }, [  Validators.required, Validators.maxLength(250) ]],
-          TVType: [
-            {
-              value: this.tvitemService.tvitemListModel$.getValue()[0]?.TVType,
-              disabled: false
-            }, [  Validators.required ]],
-          ParentID: [
-            {
-              value: this.tvitemService.tvitemListModel$.getValue()[0]?.ParentID,
-              disabled: false
-            }],
-          IsActive: [
-            {
-              value: this.tvitemService.tvitemListModel$.getValue()[0]?.IsActive,
-              disabled: false
-            }, [  Validators.required ]],
-          LastUpdateDate_UTC: [
-            {
-              value: this.tvitemService.tvitemListModel$.getValue()[0]?.LastUpdateDate_UTC,
-              disabled: false
-            }, [  Validators.required ]],
-          LastUpdateContactTVItemID: [
-            {
-              value: this.tvitemService.tvitemListModel$.getValue()[0]?.LastUpdateContactTVItemID,
-              disabled: false
-            }, [  Validators.required ]],
-        }
-      );
-
-      if (httpClientCommand === HttpClientCommand.Post) {
-        this.tvitemFormPost = formGroup
-      }
-      else {
-        this.tvitemFormPut = formGroup;
-      }
     }
   }
 }

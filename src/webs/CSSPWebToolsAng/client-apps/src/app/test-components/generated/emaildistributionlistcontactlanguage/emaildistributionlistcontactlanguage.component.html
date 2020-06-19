@@ -17,217 +17,45 @@
     <mat-card-subtitle>{{ emaildistributionlistcontactlanguageService.emaildistributionlistcontactlanguageTextModel$.getValue().Title }}</mat-card-subtitle>
   </mat-card-header>
   <mat-card-content>
-    <mat-list *ngIf="emaildistributionlistcontactlanguageService.emaildistributionlistcontactlanguageListModel$.getValue()?.length">
-      <mat-list-item *ngFor="let emaildistributionlistcontactlanguage of emaildistributionlistcontactlanguageService.emaildistributionlistcontactlanguageListModel$.getValue()">
-        <span mat-line>
+    <div *ngIf="emaildistributionlistcontactlanguageService.emaildistributionlistcontactlanguageListModel$.getValue()?.length">
+      <div *ngFor="let emaildistributionlistcontactlanguage of emaildistributionlistcontactlanguageService.emaildistributionlistcontactlanguageListModel$.getValue()">
+        <p>
           <button mat-raised-button (click)="DeleteEmailDistributionListContactLanguage(emaildistributionlistcontactlanguage)">
             <span>Delete EmailDistributionListContactLanguageID [{{ emaildistributionlistcontactlanguage.EmailDistributionListContactLanguageID }}]&nbsp;&nbsp;&nbsp;</span>
             <mat-icon>delete</mat-icon>
-          </button>
+          </button>&nbsp;&nbsp;&nbsp;
+          <button mat-raised-button [color]="GetPutButtonColor(emaildistributionlistcontactlanguage)"(click)="ShowPut(emaildistributionlistcontactlanguage)">
+            <span>Show Put</span>
+          </button>&nbsp;&nbsp;
+          <button mat-raised-button [color]="GetPostButtonColor(emaildistributionlistcontactlanguage)"(click)="ShowPost(emaildistributionlistcontactlanguage)">
+            <span>Show Post</span>
+          </button>&nbsp;&nbsp;
           <mat-progress-bar mode="indeterminate" *ngIf="emaildistributionlistcontactlanguageService.emaildistributionlistcontactlanguageDeleteModel$.getValue().Working">
           </mat-progress-bar>
-          </span>
-        <span mat-line>
+        </p>
+        <p *ngIf="IDToShow === emaildistributionlistcontactlanguage.EmailDistributionListContactLanguageID && showType === GetPutEnum()">
+          <app-emaildistributionlistcontactlanguage-edit [emaildistributionlistcontactlanguage]="emaildistributionlistcontactlanguage" [httpClientCommand]="GetPutEnum()"></app-emaildistributionlistcontactlanguage-edit>
+        </p>
+        <p *ngIf="IDToShow === emaildistributionlistcontactlanguage.EmailDistributionListContactLanguageID && showType === GetPostEnum()">
+          <app-emaildistributionlistcontactlanguage-edit [emaildistributionlistcontactlanguage]="emaildistributionlistcontactlanguage" [httpClientCommand]="GetPostEnum()"></app-emaildistributionlistcontactlanguage-edit>
+        </p>
+        <blockquote>
+        <p>
           <span>EmailDistributionListContactLanguageID: [{{ emaildistributionlistcontactlanguage.EmailDistributionListContactLanguageID }}]</span>
           <span> --- EmailDistributionListContactID: [{{ emaildistributionlistcontactlanguage.EmailDistributionListContactID }}]</span>
           <span> --- Language: [{{ GetLanguageEnumText(emaildistributionlistcontactlanguage.Language) }}]</span>
           <span> --- Agency: [{{ emaildistributionlistcontactlanguage.Agency }}]</span>
-        </span>
-        <span mat-line>
+ </p>
+        <p>
           <span>TranslationStatus: [{{ GetTranslationStatusEnumText(emaildistributionlistcontactlanguage.TranslationStatus) }}]</span>
           <span> --- LastUpdateDate_UTC: [{{ emaildistributionlistcontactlanguage.LastUpdateDate_UTC }}]</span>
           <span> --- LastUpdateContactTVItemID: [{{ emaildistributionlistcontactlanguage.LastUpdateContactTVItemID }}]</span>
-        </span>
-       </mat-list-item>
-     </mat-list>
+        </p>
+        </blockquote>
+       </div>
+     </div>
    </mat-card-content>
  <mat-card-actions>
    <button mat-button>Allo</button>
  </mat-card-actions>
-</mat-card>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<mat-card>
-  <mat-card-header>
-    <mat-card-title>Edit EmailDistributionListContactLanguage testing</mat-card-title>
-  </mat-card-header>
-  <mat-card-content>
-    <div *ngIf="emaildistributionlistcontactlanguageService.emaildistributionlistcontactlanguageListModel$.getValue()?.length">
-      <blockquote>
-        <form [formGroup]="emaildistributionlistcontactlanguageFormPut" (ngSubmit)="PutEmailDistributionListContactLanguage(emaildistributionlistcontactlanguageFormPut.value)">
-          <h3>
-            EmailDistributionListContactLanguage
-            <button mat-raised-button type="submit">
-              <span>Update EmailDistributionListContactLanguage</span>
-            </button>
-            <mat-progress-bar mode="indeterminate" *ngIf="emaildistributionlistcontactlanguageService.emaildistributionlistcontactlanguagePutModel$.getValue().Working">
-            </mat-progress-bar>
-          </h3>
-          <p>
-            <mat-form-field>
-              <mat-label>EmailDistributionListContactLanguageID</mat-label>
-              <input matInput type="number" formControlName="EmailDistributionListContactLanguageID">
-              <mat-error *ngIf="emaildistributionlistcontactlanguageFormPut.controls.EmailDistributionListContactLanguageID.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>EmailDistributionListContactID</mat-label>
-              <input matInput type="number" formControlName="EmailDistributionListContactID">
-              <mat-error *ngIf="emaildistributionlistcontactlanguageFormPut.controls.EmailDistributionListContactID.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>Language</mat-label>
-              <mat-select formControlName="Language">
-                <mat-option *ngFor="let a of languageList" [value]="a.EnumID">
-                  {{ a.EnumText }}
-                </mat-option>
-              </mat-select>
-              <mat-error *ngIf="emaildistributionlistcontactlanguageFormPut.controls.Language.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>Agency</mat-label>
-              <input matInput type="text" formControlName="Agency">
-              <mat-error *ngIf="emaildistributionlistcontactlanguageFormPut.controls.Agency.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-                <span *ngIf="e.minlength">MinLength - 1<br /></span>
-                <span *ngIf="e.maxlength">MaxLength - 100<br /></span>
-              </mat-error>
-            </mat-form-field>
-          </p>
-          <p>
-            <mat-form-field>
-              <mat-label>TranslationStatus</mat-label>
-              <mat-select formControlName="TranslationStatus">
-                <mat-option *ngFor="let a of translationStatusList" [value]="a.EnumID">
-                  {{ a.EnumText }}
-                </mat-option>
-              </mat-select>
-              <mat-error *ngIf="emaildistributionlistcontactlanguageFormPut.controls.TranslationStatus.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>LastUpdateDate_UTC</mat-label>
-              <input matInput type="text" formControlName="LastUpdateDate_UTC">
-              <mat-error *ngIf="emaildistributionlistcontactlanguageFormPut.controls.LastUpdateDate_UTC.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>LastUpdateContactTVItemID</mat-label>
-              <input matInput type="number" formControlName="LastUpdateContactTVItemID">
-              <mat-error *ngIf="emaildistributionlistcontactlanguageFormPut.controls.LastUpdateContactTVItemID.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-          </p>
-        </form>
-      </blockquote>
-    </div>
-  </mat-card-content>
-</mat-card>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<mat-card>
-  <mat-card-header>
-    <mat-card-title>Add EmailDistributionListContactLanguage testing</mat-card-title>
-  </mat-card-header>
-  <mat-card-content>
-    <div *ngIf="emaildistributionlistcontactlanguageService.emaildistributionlistcontactlanguageListModel$.getValue()?.length">
-      <blockquote>
-        <form [formGroup]="emaildistributionlistcontactlanguageFormPost" (ngSubmit)="PostEmailDistributionListContactLanguage(emaildistributionlistcontactlanguageFormPost.value)">
-          <h3>
-            EmailDistributionListContactLanguage
-            <button mat-raised-button type="submit">
-              <span>Add EmailDistributionListContactLanguage</span>
-            </button>
-            <mat-progress-bar mode="indeterminate" *ngIf="emaildistributionlistcontactlanguageService.emaildistributionlistcontactlanguagePostModel$.getValue().Working">
-            </mat-progress-bar>
-          </h3>
-          <p>
-            <mat-form-field>
-              <mat-label>EmailDistributionListContactLanguageID</mat-label>
-              <input matInput type="number" formControlName="EmailDistributionListContactLanguageID">
-              <mat-error *ngIf="emaildistributionlistcontactlanguageFormPut.controls.EmailDistributionListContactLanguageID.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>EmailDistributionListContactID</mat-label>
-              <input matInput type="number" formControlName="EmailDistributionListContactID">
-              <mat-error *ngIf="emaildistributionlistcontactlanguageFormPut.controls.EmailDistributionListContactID.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>Language</mat-label>
-              <mat-select formControlName="Language">
-                <mat-option *ngFor="let a of languageList" [value]="a.EnumID">
-                  {{ a.EnumText }}
-                </mat-option>
-              </mat-select>
-              <mat-error *ngIf="emaildistributionlistcontactlanguageFormPut.controls.Language.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>Agency</mat-label>
-              <input matInput type="text" formControlName="Agency">
-              <mat-error *ngIf="emaildistributionlistcontactlanguageFormPut.controls.Agency.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-                <span *ngIf="e.minlength">MinLength - 1<br /></span>
-                <span *ngIf="e.maxlength">MaxLength - 100<br /></span>
-              </mat-error>
-            </mat-form-field>
-          </p>
-          <p>
-            <mat-form-field>
-              <mat-label>TranslationStatus</mat-label>
-              <mat-select formControlName="TranslationStatus">
-                <mat-option *ngFor="let a of translationStatusList" [value]="a.EnumID">
-                  {{ a.EnumText }}
-                </mat-option>
-              </mat-select>
-              <mat-error *ngIf="emaildistributionlistcontactlanguageFormPut.controls.TranslationStatus.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>LastUpdateDate_UTC</mat-label>
-              <input matInput type="text" formControlName="LastUpdateDate_UTC">
-              <mat-error *ngIf="emaildistributionlistcontactlanguageFormPut.controls.LastUpdateDate_UTC.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>LastUpdateContactTVItemID</mat-label>
-              <input matInput type="number" formControlName="LastUpdateContactTVItemID">
-              <mat-error *ngIf="emaildistributionlistcontactlanguageFormPut.controls.LastUpdateContactTVItemID.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-          </p>
-        </form>
-      </blockquote>
-    </div>
-  </mat-card-content>
 </mat-card>

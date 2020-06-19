@@ -10,7 +10,6 @@ import { DrogueRunPositionService } from './droguerunposition.service';
 import { LoadLocalesDrogueRunPositionText } from './droguerunposition.locales';
 import { Subscription } from 'rxjs';
 import { DrogueRunPosition } from '../../../models/generated/DrogueRunPosition.model';
-import { FormBuilder, Validators, FormGroup } from '@angular/forms';
 import { HttpClientService } from '../../../services/http-client.service';
 import { Router } from '@angular/router';
 import { HttpClientCommand } from '../../../enums/app.enums';
@@ -23,23 +22,63 @@ import { HttpClientCommand } from '../../../enums/app.enums';
 })
 export class DrogueRunPositionComponent implements OnInit, OnDestroy {
   sub: Subscription;
-  droguerunpositionFormPut: FormGroup;
-  droguerunpositionFormPost: FormGroup;
+  IDToShow: number;
+  showType?: HttpClientCommand = null;
 
-  constructor(public droguerunpositionService: DrogueRunPositionService, private router: Router, private httpClientService: HttpClientService, private fb: FormBuilder) {
+  constructor(public droguerunpositionService: DrogueRunPositionService, private router: Router, private httpClientService: HttpClientService) {
     httpClientService.oldURL = router.url;
+  }
+
+  GetPutButtonColor(droguerunposition: DrogueRunPosition) {
+    if (this.IDToShow === droguerunposition.DrogueRunPositionID && this.showType === HttpClientCommand.Put) {
+      return 'primary';
+    }
+    else {
+      return 'basic';
+    }
+  }
+
+  GetPostButtonColor(droguerunposition: DrogueRunPosition) {
+    if (this.IDToShow === droguerunposition.DrogueRunPositionID && this.showType === HttpClientCommand.Post) {
+      return 'primary';
+    }
+    else {
+      return 'basic';
+    }
+  }
+
+  ShowPut(droguerunposition: DrogueRunPosition) {
+    if (this.IDToShow === droguerunposition.DrogueRunPositionID && this.showType === HttpClientCommand.Put) {
+      this.IDToShow = 0;
+      this.showType = null;
+    }
+    else {
+      this.IDToShow = droguerunposition.DrogueRunPositionID;
+      this.showType = HttpClientCommand.Put;
+    }
+  }
+
+  ShowPost(droguerunposition: DrogueRunPosition) {
+    if (this.IDToShow === droguerunposition.DrogueRunPositionID && this.showType === HttpClientCommand.Post) {
+      this.IDToShow = 0;
+      this.showType = null;
+    }
+    else {
+      this.IDToShow = droguerunposition.DrogueRunPositionID;
+      this.showType = HttpClientCommand.Post;
+    }
+  }
+
+  GetPutEnum() {
+    return <number>HttpClientCommand.Put;
+  }
+
+  GetPostEnum() {
+    return <number>HttpClientCommand.Post;
   }
 
   GetDrogueRunPositionList() {
     this.sub = this.droguerunpositionService.GetDrogueRunPositionList().subscribe();
-  }
-
-  PutDrogueRunPosition(droguerunposition: DrogueRunPosition) {
-    this.sub = this.droguerunpositionService.PutDrogueRunPosition(droguerunposition).subscribe();
-  }
-
-  PostDrogueRunPosition(droguerunposition: DrogueRunPosition) {
-    this.sub = this.droguerunpositionService.PostDrogueRunPosition(droguerunposition).subscribe();
   }
 
   DeleteDrogueRunPosition(droguerunposition: DrogueRunPosition) {
@@ -48,79 +87,11 @@ export class DrogueRunPositionComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     LoadLocalesDrogueRunPositionText(this.droguerunpositionService);
-    this.FillFormBuilderGroup(HttpClientCommand.Post);
-    this.FillFormBuilderGroup(HttpClientCommand.Put);
   }
 
   ngOnDestroy() {
     if (this.sub) {
       this.sub.unsubscribe();
-    }
-  }
-
-  FillFormBuilderGroup(httpClientCommand: HttpClientCommand) {
-    if (this.droguerunpositionService.droguerunpositionListModel$.getValue().length) {
-      let formGroup: FormGroup = this.fb.group(
-        {
-          DrogueRunPositionID: [
-            {
-              value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.droguerunpositionService.droguerunpositionListModel$.getValue()[0]?.DrogueRunPositionID)),
-              disabled: false
-            }, [  Validators.required ]],
-          DrogueRunID: [
-            {
-              value: this.droguerunpositionService.droguerunpositionListModel$.getValue()[0]?.DrogueRunID,
-              disabled: false
-            }, [  Validators.required ]],
-          Ordinal: [
-            {
-              value: this.droguerunpositionService.droguerunpositionListModel$.getValue()[0]?.Ordinal,
-              disabled: false
-            }, [  Validators.required, Validators.min(0), Validators.max(100000) ]],
-          StepLat: [
-            {
-              value: this.droguerunpositionService.droguerunpositionListModel$.getValue()[0]?.StepLat,
-              disabled: false
-            }, [  Validators.required, Validators.min(-180), Validators.max(180) ]],
-          StepLng: [
-            {
-              value: this.droguerunpositionService.droguerunpositionListModel$.getValue()[0]?.StepLng,
-              disabled: false
-            }, [  Validators.required, Validators.min(-90), Validators.max(90) ]],
-          StepDateTime_Local: [
-            {
-              value: this.droguerunpositionService.droguerunpositionListModel$.getValue()[0]?.StepDateTime_Local,
-              disabled: false
-            }, [  Validators.required ]],
-          CalculatedSpeed_m_s: [
-            {
-              value: this.droguerunpositionService.droguerunpositionListModel$.getValue()[0]?.CalculatedSpeed_m_s,
-              disabled: false
-            }, [  Validators.required, Validators.min(0), Validators.max(10) ]],
-          CalculatedDirection_deg: [
-            {
-              value: this.droguerunpositionService.droguerunpositionListModel$.getValue()[0]?.CalculatedDirection_deg,
-              disabled: false
-            }, [  Validators.required, Validators.min(0), Validators.max(360) ]],
-          LastUpdateDate_UTC: [
-            {
-              value: this.droguerunpositionService.droguerunpositionListModel$.getValue()[0]?.LastUpdateDate_UTC,
-              disabled: false
-            }, [  Validators.required ]],
-          LastUpdateContactTVItemID: [
-            {
-              value: this.droguerunpositionService.droguerunpositionListModel$.getValue()[0]?.LastUpdateContactTVItemID,
-              disabled: false
-            }, [  Validators.required ]],
-        }
-      );
-
-      if (httpClientCommand === HttpClientCommand.Post) {
-        this.droguerunpositionFormPost = formGroup
-      }
-      else {
-        this.droguerunpositionFormPut = formGroup;
-      }
     }
   }
 }

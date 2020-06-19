@@ -12,9 +12,10 @@ import { MapInfoRoutingModule } from './mapinfo-routing.module';
 import { MaterialModule } from '../../../app-material.module';
 import { MapInfoComponent } from './mapinfo.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MapInfoEditComponent } from './mapinfo-edit.component';
 
 @NgModule({
-  declarations: [ MapInfoComponent ],
+  declarations: [MapInfoComponent, MapInfoEditComponent],
   imports: [
     CommonModule,
     RouterModule,

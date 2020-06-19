@@ -12,9 +12,10 @@ import { BoxModelLanguageRoutingModule } from './boxmodellanguage-routing.module
 import { MaterialModule } from '../../../app-material.module';
 import { BoxModelLanguageComponent } from './boxmodellanguage.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { BoxModelLanguageEditComponent } from './boxmodellanguage-edit.component';
 
 @NgModule({
-  declarations: [ BoxModelLanguageComponent ],
+  declarations: [BoxModelLanguageComponent, BoxModelLanguageEditComponent],
   imports: [
     CommonModule,
     RouterModule,

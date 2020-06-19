@@ -9,11 +9,9 @@ import { Component, OnInit, OnDestroy, ChangeDetectionStrategy } from '@angular/
 import { MWQMSubsectorLanguageService } from './mwqmsubsectorlanguage.service';
 import { LoadLocalesMWQMSubsectorLanguageText } from './mwqmsubsectorlanguage.locales';
 import { Subscription } from 'rxjs';
-import { LanguageEnum_GetIDText, LanguageEnum_GetOrderedText } from '../../../enums/generated/LanguageEnum';
-import { TranslationStatusEnum_GetIDText, TranslationStatusEnum_GetOrderedText } from '../../../enums/generated/TranslationStatusEnum';
+import { LanguageEnum_GetIDText } from '../../../enums/generated/LanguageEnum';
+import { TranslationStatusEnum_GetIDText } from '../../../enums/generated/TranslationStatusEnum';
 import { MWQMSubsectorLanguage } from '../../../models/generated/MWQMSubsectorLanguage.model';
-import { FormBuilder, Validators, FormGroup } from '@angular/forms';
-import { EnumIDAndText } from '../../../models/enumidandtext.model';
 import { HttpClientService } from '../../../services/http-client.service';
 import { Router } from '@angular/router';
 import { HttpClientCommand } from '../../../enums/app.enums';
@@ -26,26 +24,63 @@ import { HttpClientCommand } from '../../../enums/app.enums';
 })
 export class MWQMSubsectorLanguageComponent implements OnInit, OnDestroy {
   sub: Subscription;
-  languageList: EnumIDAndText[];
-  translationStatusSubsectorDescList: EnumIDAndText[];
-  translationStatusLogBookList: EnumIDAndText[];
-  mwqmsubsectorlanguageFormPut: FormGroup;
-  mwqmsubsectorlanguageFormPost: FormGroup;
+  IDToShow: number;
+  showType?: HttpClientCommand = null;
 
-  constructor(public mwqmsubsectorlanguageService: MWQMSubsectorLanguageService, private router: Router, private httpClientService: HttpClientService, private fb: FormBuilder) {
+  constructor(public mwqmsubsectorlanguageService: MWQMSubsectorLanguageService, private router: Router, private httpClientService: HttpClientService) {
     httpClientService.oldURL = router.url;
+  }
+
+  GetPutButtonColor(mwqmsubsectorlanguage: MWQMSubsectorLanguage) {
+    if (this.IDToShow === mwqmsubsectorlanguage.MWQMSubsectorLanguageID && this.showType === HttpClientCommand.Put) {
+      return 'primary';
+    }
+    else {
+      return 'basic';
+    }
+  }
+
+  GetPostButtonColor(mwqmsubsectorlanguage: MWQMSubsectorLanguage) {
+    if (this.IDToShow === mwqmsubsectorlanguage.MWQMSubsectorLanguageID && this.showType === HttpClientCommand.Post) {
+      return 'primary';
+    }
+    else {
+      return 'basic';
+    }
+  }
+
+  ShowPut(mwqmsubsectorlanguage: MWQMSubsectorLanguage) {
+    if (this.IDToShow === mwqmsubsectorlanguage.MWQMSubsectorLanguageID && this.showType === HttpClientCommand.Put) {
+      this.IDToShow = 0;
+      this.showType = null;
+    }
+    else {
+      this.IDToShow = mwqmsubsectorlanguage.MWQMSubsectorLanguageID;
+      this.showType = HttpClientCommand.Put;
+    }
+  }
+
+  ShowPost(mwqmsubsectorlanguage: MWQMSubsectorLanguage) {
+    if (this.IDToShow === mwqmsubsectorlanguage.MWQMSubsectorLanguageID && this.showType === HttpClientCommand.Post) {
+      this.IDToShow = 0;
+      this.showType = null;
+    }
+    else {
+      this.IDToShow = mwqmsubsectorlanguage.MWQMSubsectorLanguageID;
+      this.showType = HttpClientCommand.Post;
+    }
+  }
+
+  GetPutEnum() {
+    return <number>HttpClientCommand.Put;
+  }
+
+  GetPostEnum() {
+    return <number>HttpClientCommand.Post;
   }
 
   GetMWQMSubsectorLanguageList() {
     this.sub = this.mwqmsubsectorlanguageService.GetMWQMSubsectorLanguageList().subscribe();
-  }
-
-  PutMWQMSubsectorLanguage(mwqmsubsectorlanguage: MWQMSubsectorLanguage) {
-    this.sub = this.mwqmsubsectorlanguageService.PutMWQMSubsectorLanguage(mwqmsubsectorlanguage).subscribe();
-  }
-
-  PostMWQMSubsectorLanguage(mwqmsubsectorlanguage: MWQMSubsectorLanguage) {
-    this.sub = this.mwqmsubsectorlanguageService.PostMWQMSubsectorLanguage(mwqmsubsectorlanguage).subscribe();
   }
 
   DeleteMWQMSubsectorLanguage(mwqmsubsectorlanguage: MWQMSubsectorLanguage) {
@@ -62,77 +97,11 @@ export class MWQMSubsectorLanguageComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     LoadLocalesMWQMSubsectorLanguageText(this.mwqmsubsectorlanguageService);
-    this.languageList = LanguageEnum_GetOrderedText();
-    this.translationStatusSubsectorDescList = TranslationStatusEnum_GetOrderedText();
-    this.translationStatusLogBookList = TranslationStatusEnum_GetOrderedText();
-    this.FillFormBuilderGroup(HttpClientCommand.Post);
-    this.FillFormBuilderGroup(HttpClientCommand.Put);
   }
 
   ngOnDestroy() {
     if (this.sub) {
       this.sub.unsubscribe();
-    }
-  }
-
-  FillFormBuilderGroup(httpClientCommand: HttpClientCommand) {
-    if (this.mwqmsubsectorlanguageService.mwqmsubsectorlanguageListModel$.getValue().length) {
-      let formGroup: FormGroup = this.fb.group(
-        {
-          MWQMSubsectorLanguageID: [
-            {
-              value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.mwqmsubsectorlanguageService.mwqmsubsectorlanguageListModel$.getValue()[0]?.MWQMSubsectorLanguageID)),
-              disabled: false
-            }, [  Validators.required ]],
-          MWQMSubsectorID: [
-            {
-              value: this.mwqmsubsectorlanguageService.mwqmsubsectorlanguageListModel$.getValue()[0]?.MWQMSubsectorID,
-              disabled: false
-            }, [  Validators.required ]],
-          Language: [
-            {
-              value: this.mwqmsubsectorlanguageService.mwqmsubsectorlanguageListModel$.getValue()[0]?.Language,
-              disabled: false
-            }, [  Validators.required ]],
-          SubsectorDesc: [
-            {
-              value: this.mwqmsubsectorlanguageService.mwqmsubsectorlanguageListModel$.getValue()[0]?.SubsectorDesc,
-              disabled: false
-            }, [  Validators.required, Validators.maxLength(250) ]],
-          TranslationStatusSubsectorDesc: [
-            {
-              value: this.mwqmsubsectorlanguageService.mwqmsubsectorlanguageListModel$.getValue()[0]?.TranslationStatusSubsectorDesc,
-              disabled: false
-            }, [  Validators.required ]],
-          LogBook: [
-            {
-              value: this.mwqmsubsectorlanguageService.mwqmsubsectorlanguageListModel$.getValue()[0]?.LogBook,
-              disabled: false
-            }],
-          TranslationStatusLogBook: [
-            {
-              value: this.mwqmsubsectorlanguageService.mwqmsubsectorlanguageListModel$.getValue()[0]?.TranslationStatusLogBook,
-              disabled: false
-            }],
-          LastUpdateDate_UTC: [
-            {
-              value: this.mwqmsubsectorlanguageService.mwqmsubsectorlanguageListModel$.getValue()[0]?.LastUpdateDate_UTC,
-              disabled: false
-            }, [  Validators.required ]],
-          LastUpdateContactTVItemID: [
-            {
-              value: this.mwqmsubsectorlanguageService.mwqmsubsectorlanguageListModel$.getValue()[0]?.LastUpdateContactTVItemID,
-              disabled: false
-            }, [  Validators.required ]],
-        }
-      );
-
-      if (httpClientCommand === HttpClientCommand.Post) {
-        this.mwqmsubsectorlanguageFormPost = formGroup
-      }
-      else {
-        this.mwqmsubsectorlanguageFormPut = formGroup;
-      }
     }
   }
 }

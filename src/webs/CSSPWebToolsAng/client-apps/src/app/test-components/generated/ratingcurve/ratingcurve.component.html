@@ -17,165 +17,43 @@
     <mat-card-subtitle>{{ ratingcurveService.ratingcurveTextModel$.getValue().Title }}</mat-card-subtitle>
   </mat-card-header>
   <mat-card-content>
-    <mat-list *ngIf="ratingcurveService.ratingcurveListModel$.getValue()?.length">
-      <mat-list-item *ngFor="let ratingcurve of ratingcurveService.ratingcurveListModel$.getValue()">
-        <span mat-line>
+    <div *ngIf="ratingcurveService.ratingcurveListModel$.getValue()?.length">
+      <div *ngFor="let ratingcurve of ratingcurveService.ratingcurveListModel$.getValue()">
+        <p>
           <button mat-raised-button (click)="DeleteRatingCurve(ratingcurve)">
             <span>Delete RatingCurveID [{{ ratingcurve.RatingCurveID }}]&nbsp;&nbsp;&nbsp;</span>
             <mat-icon>delete</mat-icon>
-          </button>
+          </button>&nbsp;&nbsp;&nbsp;
+          <button mat-raised-button [color]="GetPutButtonColor(ratingcurve)"(click)="ShowPut(ratingcurve)">
+            <span>Show Put</span>
+          </button>&nbsp;&nbsp;
+          <button mat-raised-button [color]="GetPostButtonColor(ratingcurve)"(click)="ShowPost(ratingcurve)">
+            <span>Show Post</span>
+          </button>&nbsp;&nbsp;
           <mat-progress-bar mode="indeterminate" *ngIf="ratingcurveService.ratingcurveDeleteModel$.getValue().Working">
           </mat-progress-bar>
-          </span>
-        <span mat-line>
+        </p>
+        <p *ngIf="IDToShow === ratingcurve.RatingCurveID && showType === GetPutEnum()">
+          <app-ratingcurve-edit [ratingcurve]="ratingcurve" [httpClientCommand]="GetPutEnum()"></app-ratingcurve-edit>
+        </p>
+        <p *ngIf="IDToShow === ratingcurve.RatingCurveID && showType === GetPostEnum()">
+          <app-ratingcurve-edit [ratingcurve]="ratingcurve" [httpClientCommand]="GetPostEnum()"></app-ratingcurve-edit>
+        </p>
+        <blockquote>
+        <p>
           <span>RatingCurveID: [{{ ratingcurve.RatingCurveID }}]</span>
           <span> --- HydrometricSiteID: [{{ ratingcurve.HydrometricSiteID }}]</span>
           <span> --- RatingCurveNumber: [{{ ratingcurve.RatingCurveNumber }}]</span>
           <span> --- LastUpdateDate_UTC: [{{ ratingcurve.LastUpdateDate_UTC }}]</span>
-        </span>
-        <span mat-line>
+ </p>
+        <p>
           <span>LastUpdateContactTVItemID: [{{ ratingcurve.LastUpdateContactTVItemID }}]</span>
-        </span>
-       </mat-list-item>
-     </mat-list>
+        </p>
+        </blockquote>
+       </div>
+     </div>
    </mat-card-content>
  <mat-card-actions>
    <button mat-button>Allo</button>
  </mat-card-actions>
-</mat-card>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<mat-card>
-  <mat-card-header>
-    <mat-card-title>Edit RatingCurve testing</mat-card-title>
-  </mat-card-header>
-  <mat-card-content>
-    <div *ngIf="ratingcurveService.ratingcurveListModel$.getValue()?.length">
-      <blockquote>
-        <form [formGroup]="ratingcurveFormPut" (ngSubmit)="PutRatingCurve(ratingcurveFormPut.value)">
-          <h3>
-            RatingCurve
-            <button mat-raised-button type="submit">
-              <span>Update RatingCurve</span>
-            </button>
-            <mat-progress-bar mode="indeterminate" *ngIf="ratingcurveService.ratingcurvePutModel$.getValue().Working">
-            </mat-progress-bar>
-          </h3>
-          <p>
-            <mat-form-field>
-              <mat-label>RatingCurveID</mat-label>
-              <input matInput type="number" formControlName="RatingCurveID">
-              <mat-error *ngIf="ratingcurveFormPut.controls.RatingCurveID.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>HydrometricSiteID</mat-label>
-              <input matInput type="number" formControlName="HydrometricSiteID">
-              <mat-error *ngIf="ratingcurveFormPut.controls.HydrometricSiteID.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>RatingCurveNumber</mat-label>
-              <input matInput type="text" formControlName="RatingCurveNumber">
-              <mat-error *ngIf="ratingcurveFormPut.controls.RatingCurveNumber.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-                <span *ngIf="e.maxlength">MaxLength - 50<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>LastUpdateDate_UTC</mat-label>
-              <input matInput type="text" formControlName="LastUpdateDate_UTC">
-              <mat-error *ngIf="ratingcurveFormPut.controls.LastUpdateDate_UTC.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-          </p>
-          <p>
-            <mat-form-field>
-              <mat-label>LastUpdateContactTVItemID</mat-label>
-              <input matInput type="number" formControlName="LastUpdateContactTVItemID">
-              <mat-error *ngIf="ratingcurveFormPut.controls.LastUpdateContactTVItemID.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-          </p>
-        </form>
-      </blockquote>
-    </div>
-  </mat-card-content>
-</mat-card>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<mat-card>
-  <mat-card-header>
-    <mat-card-title>Add RatingCurve testing</mat-card-title>
-  </mat-card-header>
-  <mat-card-content>
-    <div *ngIf="ratingcurveService.ratingcurveListModel$.getValue()?.length">
-      <blockquote>
-        <form [formGroup]="ratingcurveFormPost" (ngSubmit)="PostRatingCurve(ratingcurveFormPost.value)">
-          <h3>
-            RatingCurve
-            <button mat-raised-button type="submit">
-              <span>Add RatingCurve</span>
-            </button>
-            <mat-progress-bar mode="indeterminate" *ngIf="ratingcurveService.ratingcurvePostModel$.getValue().Working">
-            </mat-progress-bar>
-          </h3>
-          <p>
-            <mat-form-field>
-              <mat-label>RatingCurveID</mat-label>
-              <input matInput type="number" formControlName="RatingCurveID">
-              <mat-error *ngIf="ratingcurveFormPut.controls.RatingCurveID.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>HydrometricSiteID</mat-label>
-              <input matInput type="number" formControlName="HydrometricSiteID">
-              <mat-error *ngIf="ratingcurveFormPut.controls.HydrometricSiteID.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>RatingCurveNumber</mat-label>
-              <input matInput type="text" formControlName="RatingCurveNumber">
-              <mat-error *ngIf="ratingcurveFormPut.controls.RatingCurveNumber.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-                <span *ngIf="e.maxlength">MaxLength - 50<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>LastUpdateDate_UTC</mat-label>
-              <input matInput type="text" formControlName="LastUpdateDate_UTC">
-              <mat-error *ngIf="ratingcurveFormPut.controls.LastUpdateDate_UTC.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-          </p>
-          <p>
-            <mat-form-field>
-              <mat-label>LastUpdateContactTVItemID</mat-label>
-              <input matInput type="number" formControlName="LastUpdateContactTVItemID">
-              <mat-error *ngIf="ratingcurveFormPut.controls.LastUpdateContactTVItemID.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-          </p>
-        </form>
-      </blockquote>
-    </div>
-  </mat-card-content>
 </mat-card>

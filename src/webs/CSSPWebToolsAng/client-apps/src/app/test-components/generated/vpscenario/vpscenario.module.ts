@@ -12,9 +12,10 @@ import { VPScenarioRoutingModule } from './vpscenario-routing.module';
 import { MaterialModule } from '../../../app-material.module';
 import { VPScenarioComponent } from './vpscenario.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { VPScenarioEditComponent } from './vpscenario-edit.component';
 
 @NgModule({
-  declarations: [ VPScenarioComponent ],
+  declarations: [VPScenarioComponent, VPScenarioEditComponent],
   imports: [
     CommonModule,
     RouterModule,

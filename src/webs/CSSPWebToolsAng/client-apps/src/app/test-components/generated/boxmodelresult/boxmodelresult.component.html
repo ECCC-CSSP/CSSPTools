@@ -17,438 +17,62 @@
     <mat-card-subtitle>{{ boxmodelresultService.boxmodelresultTextModel$.getValue().Title }}</mat-card-subtitle>
   </mat-card-header>
   <mat-card-content>
-    <mat-list *ngIf="boxmodelresultService.boxmodelresultListModel$.getValue()?.length">
-      <mat-list-item *ngFor="let boxmodelresult of boxmodelresultService.boxmodelresultListModel$.getValue()">
-        <span mat-line>
+    <div *ngIf="boxmodelresultService.boxmodelresultListModel$.getValue()?.length">
+      <div *ngFor="let boxmodelresult of boxmodelresultService.boxmodelresultListModel$.getValue()">
+        <p>
           <button mat-raised-button (click)="DeleteBoxModelResult(boxmodelresult)">
             <span>Delete BoxModelResultID [{{ boxmodelresult.BoxModelResultID }}]&nbsp;&nbsp;&nbsp;</span>
             <mat-icon>delete</mat-icon>
-          </button>
+          </button>&nbsp;&nbsp;&nbsp;
+          <button mat-raised-button [color]="GetPutButtonColor(boxmodelresult)"(click)="ShowPut(boxmodelresult)">
+            <span>Show Put</span>
+          </button>&nbsp;&nbsp;
+          <button mat-raised-button [color]="GetPostButtonColor(boxmodelresult)"(click)="ShowPost(boxmodelresult)">
+            <span>Show Post</span>
+          </button>&nbsp;&nbsp;
           <mat-progress-bar mode="indeterminate" *ngIf="boxmodelresultService.boxmodelresultDeleteModel$.getValue().Working">
           </mat-progress-bar>
-          </span>
-        <span mat-line>
+        </p>
+        <p *ngIf="IDToShow === boxmodelresult.BoxModelResultID && showType === GetPutEnum()">
+          <app-boxmodelresult-edit [boxmodelresult]="boxmodelresult" [httpClientCommand]="GetPutEnum()"></app-boxmodelresult-edit>
+        </p>
+        <p *ngIf="IDToShow === boxmodelresult.BoxModelResultID && showType === GetPostEnum()">
+          <app-boxmodelresult-edit [boxmodelresult]="boxmodelresult" [httpClientCommand]="GetPostEnum()"></app-boxmodelresult-edit>
+        </p>
+        <blockquote>
+        <p>
           <span>BoxModelResultID: [{{ boxmodelresult.BoxModelResultID }}]</span>
           <span> --- BoxModelID: [{{ boxmodelresult.BoxModelID }}]</span>
           <span> --- BoxModelResultType: [{{ GetBoxModelResultTypeEnumText(boxmodelresult.BoxModelResultType) }}]</span>
           <span> --- Volume_m3: [{{ boxmodelresult.Volume_m3 }}]</span>
-        </span>
-        <span mat-line>
+ </p>
+        <p>
           <span>Surface_m2: [{{ boxmodelresult.Surface_m2 }}]</span>
           <span> --- Radius_m: [{{ boxmodelresult.Radius_m }}]</span>
           <span> --- LeftSideDiameterLineAngle_deg: [{{ boxmodelresult.LeftSideDiameterLineAngle_deg }}]</span>
           <span> --- CircleCenterLatitude: [{{ boxmodelresult.CircleCenterLatitude }}]</span>
-        </span>
-        <span mat-line>
+ </p>
+        <p>
           <span>CircleCenterLongitude: [{{ boxmodelresult.CircleCenterLongitude }}]</span>
           <span> --- FixLength: [{{ boxmodelresult.FixLength }}]</span>
           <span> --- FixWidth: [{{ boxmodelresult.FixWidth }}]</span>
           <span> --- RectLength_m: [{{ boxmodelresult.RectLength_m }}]</span>
-        </span>
-        <span mat-line>
+ </p>
+        <p>
           <span>RectWidth_m: [{{ boxmodelresult.RectWidth_m }}]</span>
           <span> --- LeftSideLineAngle_deg: [{{ boxmodelresult.LeftSideLineAngle_deg }}]</span>
           <span> --- LeftSideLineStartLatitude: [{{ boxmodelresult.LeftSideLineStartLatitude }}]</span>
           <span> --- LeftSideLineStartLongitude: [{{ boxmodelresult.LeftSideLineStartLongitude }}]</span>
-        </span>
-        <span mat-line>
+ </p>
+        <p>
           <span>LastUpdateDate_UTC: [{{ boxmodelresult.LastUpdateDate_UTC }}]</span>
           <span> --- LastUpdateContactTVItemID: [{{ boxmodelresult.LastUpdateContactTVItemID }}]</span>
-        </span>
-       </mat-list-item>
-     </mat-list>
+        </p>
+        </blockquote>
+       </div>
+     </div>
    </mat-card-content>
  <mat-card-actions>
    <button mat-button>Allo</button>
  </mat-card-actions>
-</mat-card>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<mat-card>
-  <mat-card-header>
-    <mat-card-title>Edit BoxModelResult testing</mat-card-title>
-  </mat-card-header>
-  <mat-card-content>
-    <div *ngIf="boxmodelresultService.boxmodelresultListModel$.getValue()?.length">
-      <blockquote>
-        <form [formGroup]="boxmodelresultFormPut" (ngSubmit)="PutBoxModelResult(boxmodelresultFormPut.value)">
-          <h3>
-            BoxModelResult
-            <button mat-raised-button type="submit">
-              <span>Update BoxModelResult</span>
-            </button>
-            <mat-progress-bar mode="indeterminate" *ngIf="boxmodelresultService.boxmodelresultPutModel$.getValue().Working">
-            </mat-progress-bar>
-          </h3>
-          <p>
-            <mat-form-field>
-              <mat-label>BoxModelResultID</mat-label>
-              <input matInput type="number" formControlName="BoxModelResultID">
-              <mat-error *ngIf="boxmodelresultFormPut.controls.BoxModelResultID.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>BoxModelID</mat-label>
-              <input matInput type="number" formControlName="BoxModelID">
-              <mat-error *ngIf="boxmodelresultFormPut.controls.BoxModelID.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>BoxModelResultType</mat-label>
-              <mat-select formControlName="BoxModelResultType">
-                <mat-option *ngFor="let a of boxModelResultTypeList" [value]="a.EnumID">
-                  {{ a.EnumText }}
-                </mat-option>
-              </mat-select>
-              <mat-error *ngIf="boxmodelresultFormPut.controls.BoxModelResultType.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>Volume_m3</mat-label>
-              <input matInput type="number" formControlName="Volume_m3">
-              <mat-error *ngIf="boxmodelresultFormPut.controls.Volume_m3.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-                <span *ngIf="e.min">Min - 0<br /></span>
-              </mat-error>
-            </mat-form-field>
-          </p>
-          <p>
-            <mat-form-field>
-              <mat-label>Surface_m2</mat-label>
-              <input matInput type="number" formControlName="Surface_m2">
-              <mat-error *ngIf="boxmodelresultFormPut.controls.Surface_m2.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-                <span *ngIf="e.min">Min - 0<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>Radius_m</mat-label>
-              <input matInput type="number" formControlName="Radius_m">
-              <mat-error *ngIf="boxmodelresultFormPut.controls.Radius_m.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-                <span *ngIf="e.min">Min - 0<br /></span>
-                <span *ngIf="e.min">Max - 100000<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>LeftSideDiameterLineAngle_deg</mat-label>
-              <input matInput type="number" formControlName="LeftSideDiameterLineAngle_deg">
-              <mat-error *ngIf="boxmodelresultFormPut.controls.LeftSideDiameterLineAngle_deg.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.min">Min - 0<br /></span>
-                <span *ngIf="e.min">Max - 360<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>CircleCenterLatitude</mat-label>
-              <input matInput type="number" formControlName="CircleCenterLatitude">
-              <mat-error *ngIf="boxmodelresultFormPut.controls.CircleCenterLatitude.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.min">Min - -90<br /></span>
-                <span *ngIf="e.min">Max - 90<br /></span>
-              </mat-error>
-            </mat-form-field>
-          </p>
-          <p>
-            <mat-form-field>
-              <mat-label>CircleCenterLongitude</mat-label>
-              <input matInput type="number" formControlName="CircleCenterLongitude">
-              <mat-error *ngIf="boxmodelresultFormPut.controls.CircleCenterLongitude.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.min">Min - -180<br /></span>
-                <span *ngIf="e.min">Max - 180<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>FixLength</mat-label>
-              <input matInput type="text" formControlName="FixLength">
-              <mat-error *ngIf="boxmodelresultFormPut.controls.FixLength.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>FixWidth</mat-label>
-              <input matInput type="text" formControlName="FixWidth">
-              <mat-error *ngIf="boxmodelresultFormPut.controls.FixWidth.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>RectLength_m</mat-label>
-              <input matInput type="number" formControlName="RectLength_m">
-              <mat-error *ngIf="boxmodelresultFormPut.controls.RectLength_m.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-                <span *ngIf="e.min">Min - 0<br /></span>
-                <span *ngIf="e.min">Max - 100000<br /></span>
-              </mat-error>
-            </mat-form-field>
-          </p>
-          <p>
-            <mat-form-field>
-              <mat-label>RectWidth_m</mat-label>
-              <input matInput type="number" formControlName="RectWidth_m">
-              <mat-error *ngIf="boxmodelresultFormPut.controls.RectWidth_m.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-                <span *ngIf="e.min">Min - 0<br /></span>
-                <span *ngIf="e.min">Max - 100000<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>LeftSideLineAngle_deg</mat-label>
-              <input matInput type="number" formControlName="LeftSideLineAngle_deg">
-              <mat-error *ngIf="boxmodelresultFormPut.controls.LeftSideLineAngle_deg.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.min">Min - 0<br /></span>
-                <span *ngIf="e.min">Max - 360<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>LeftSideLineStartLatitude</mat-label>
-              <input matInput type="number" formControlName="LeftSideLineStartLatitude">
-              <mat-error *ngIf="boxmodelresultFormPut.controls.LeftSideLineStartLatitude.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.min">Min - -90<br /></span>
-                <span *ngIf="e.min">Max - 90<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>LeftSideLineStartLongitude</mat-label>
-              <input matInput type="number" formControlName="LeftSideLineStartLongitude">
-              <mat-error *ngIf="boxmodelresultFormPut.controls.LeftSideLineStartLongitude.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.min">Min - -180<br /></span>
-                <span *ngIf="e.min">Max - 180<br /></span>
-              </mat-error>
-            </mat-form-field>
-          </p>
-          <p>
-            <mat-form-field>
-              <mat-label>LastUpdateDate_UTC</mat-label>
-              <input matInput type="text" formControlName="LastUpdateDate_UTC">
-              <mat-error *ngIf="boxmodelresultFormPut.controls.LastUpdateDate_UTC.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>LastUpdateContactTVItemID</mat-label>
-              <input matInput type="number" formControlName="LastUpdateContactTVItemID">
-              <mat-error *ngIf="boxmodelresultFormPut.controls.LastUpdateContactTVItemID.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-          </p>
-        </form>
-      </blockquote>
-    </div>
-  </mat-card-content>
-</mat-card>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<mat-card>
-  <mat-card-header>
-    <mat-card-title>Add BoxModelResult testing</mat-card-title>
-  </mat-card-header>
-  <mat-card-content>
-    <div *ngIf="boxmodelresultService.boxmodelresultListModel$.getValue()?.length">
-      <blockquote>
-        <form [formGroup]="boxmodelresultFormPost" (ngSubmit)="PostBoxModelResult(boxmodelresultFormPost.value)">
-          <h3>
-            BoxModelResult
-            <button mat-raised-button type="submit">
-              <span>Add BoxModelResult</span>
-            </button>
-            <mat-progress-bar mode="indeterminate" *ngIf="boxmodelresultService.boxmodelresultPostModel$.getValue().Working">
-            </mat-progress-bar>
-          </h3>
-          <p>
-            <mat-form-field>
-              <mat-label>BoxModelResultID</mat-label>
-              <input matInput type="number" formControlName="BoxModelResultID">
-              <mat-error *ngIf="boxmodelresultFormPut.controls.BoxModelResultID.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>BoxModelID</mat-label>
-              <input matInput type="number" formControlName="BoxModelID">
-              <mat-error *ngIf="boxmodelresultFormPut.controls.BoxModelID.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>BoxModelResultType</mat-label>
-              <mat-select formControlName="BoxModelResultType">
-                <mat-option *ngFor="let a of boxModelResultTypeList" [value]="a.EnumID">
-                  {{ a.EnumText }}
-                </mat-option>
-              </mat-select>
-              <mat-error *ngIf="boxmodelresultFormPut.controls.BoxModelResultType.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>Volume_m3</mat-label>
-              <input matInput type="number" formControlName="Volume_m3">
-              <mat-error *ngIf="boxmodelresultFormPut.controls.Volume_m3.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-                <span *ngIf="e.min">Min - 0<br /></span>
-              </mat-error>
-            </mat-form-field>
-          </p>
-          <p>
-            <mat-form-field>
-              <mat-label>Surface_m2</mat-label>
-              <input matInput type="number" formControlName="Surface_m2">
-              <mat-error *ngIf="boxmodelresultFormPut.controls.Surface_m2.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-                <span *ngIf="e.min">Min - 0<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>Radius_m</mat-label>
-              <input matInput type="number" formControlName="Radius_m">
-              <mat-error *ngIf="boxmodelresultFormPut.controls.Radius_m.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-                <span *ngIf="e.min">Min - 0<br /></span>
-                <span *ngIf="e.min">Max - 100000<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>LeftSideDiameterLineAngle_deg</mat-label>
-              <input matInput type="number" formControlName="LeftSideDiameterLineAngle_deg">
-              <mat-error *ngIf="boxmodelresultFormPut.controls.LeftSideDiameterLineAngle_deg.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.min">Min - 0<br /></span>
-                <span *ngIf="e.min">Max - 360<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>CircleCenterLatitude</mat-label>
-              <input matInput type="number" formControlName="CircleCenterLatitude">
-              <mat-error *ngIf="boxmodelresultFormPut.controls.CircleCenterLatitude.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.min">Min - -90<br /></span>
-                <span *ngIf="e.min">Max - 90<br /></span>
-              </mat-error>
-            </mat-form-field>
-          </p>
-          <p>
-            <mat-form-field>
-              <mat-label>CircleCenterLongitude</mat-label>
-              <input matInput type="number" formControlName="CircleCenterLongitude">
-              <mat-error *ngIf="boxmodelresultFormPut.controls.CircleCenterLongitude.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.min">Min - -180<br /></span>
-                <span *ngIf="e.min">Max - 180<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>FixLength</mat-label>
-              <input matInput type="text" formControlName="FixLength">
-              <mat-error *ngIf="boxmodelresultFormPut.controls.FixLength.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>FixWidth</mat-label>
-              <input matInput type="text" formControlName="FixWidth">
-              <mat-error *ngIf="boxmodelresultFormPut.controls.FixWidth.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>RectLength_m</mat-label>
-              <input matInput type="number" formControlName="RectLength_m">
-              <mat-error *ngIf="boxmodelresultFormPut.controls.RectLength_m.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-                <span *ngIf="e.min">Min - 0<br /></span>
-                <span *ngIf="e.min">Max - 100000<br /></span>
-              </mat-error>
-            </mat-form-field>
-          </p>
-          <p>
-            <mat-form-field>
-              <mat-label>RectWidth_m</mat-label>
-              <input matInput type="number" formControlName="RectWidth_m">
-              <mat-error *ngIf="boxmodelresultFormPut.controls.RectWidth_m.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-                <span *ngIf="e.min">Min - 0<br /></span>
-                <span *ngIf="e.min">Max - 100000<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>LeftSideLineAngle_deg</mat-label>
-              <input matInput type="number" formControlName="LeftSideLineAngle_deg">
-              <mat-error *ngIf="boxmodelresultFormPut.controls.LeftSideLineAngle_deg.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.min">Min - 0<br /></span>
-                <span *ngIf="e.min">Max - 360<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>LeftSideLineStartLatitude</mat-label>
-              <input matInput type="number" formControlName="LeftSideLineStartLatitude">
-              <mat-error *ngIf="boxmodelresultFormPut.controls.LeftSideLineStartLatitude.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.min">Min - -90<br /></span>
-                <span *ngIf="e.min">Max - 90<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>LeftSideLineStartLongitude</mat-label>
-              <input matInput type="number" formControlName="LeftSideLineStartLongitude">
-              <mat-error *ngIf="boxmodelresultFormPut.controls.LeftSideLineStartLongitude.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.min">Min - -180<br /></span>
-                <span *ngIf="e.min">Max - 180<br /></span>
-              </mat-error>
-            </mat-form-field>
-          </p>
-          <p>
-            <mat-form-field>
-              <mat-label>LastUpdateDate_UTC</mat-label>
-              <input matInput type="text" formControlName="LastUpdateDate_UTC">
-              <mat-error *ngIf="boxmodelresultFormPut.controls.LastUpdateDate_UTC.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>LastUpdateContactTVItemID</mat-label>
-              <input matInput type="number" formControlName="LastUpdateContactTVItemID">
-              <mat-error *ngIf="boxmodelresultFormPut.controls.LastUpdateContactTVItemID.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-          </p>
-        </form>
-      </blockquote>
-    </div>
-  </mat-card-content>
 </mat-card>

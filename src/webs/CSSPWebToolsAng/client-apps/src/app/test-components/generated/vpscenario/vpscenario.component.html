@@ -17,512 +17,68 @@
     <mat-card-subtitle>{{ vpscenarioService.vpscenarioTextModel$.getValue().Title }}</mat-card-subtitle>
   </mat-card-header>
   <mat-card-content>
-    <mat-list *ngIf="vpscenarioService.vpscenarioListModel$.getValue()?.length">
-      <mat-list-item *ngFor="let vpscenario of vpscenarioService.vpscenarioListModel$.getValue()">
-        <span mat-line>
+    <div *ngIf="vpscenarioService.vpscenarioListModel$.getValue()?.length">
+      <div *ngFor="let vpscenario of vpscenarioService.vpscenarioListModel$.getValue()">
+        <p>
           <button mat-raised-button (click)="DeleteVPScenario(vpscenario)">
             <span>Delete VPScenarioID [{{ vpscenario.VPScenarioID }}]&nbsp;&nbsp;&nbsp;</span>
             <mat-icon>delete</mat-icon>
-          </button>
+          </button>&nbsp;&nbsp;&nbsp;
+          <button mat-raised-button [color]="GetPutButtonColor(vpscenario)"(click)="ShowPut(vpscenario)">
+            <span>Show Put</span>
+          </button>&nbsp;&nbsp;
+          <button mat-raised-button [color]="GetPostButtonColor(vpscenario)"(click)="ShowPost(vpscenario)">
+            <span>Show Post</span>
+          </button>&nbsp;&nbsp;
           <mat-progress-bar mode="indeterminate" *ngIf="vpscenarioService.vpscenarioDeleteModel$.getValue().Working">
           </mat-progress-bar>
-          </span>
-        <span mat-line>
+        </p>
+        <p *ngIf="IDToShow === vpscenario.VPScenarioID && showType === GetPutEnum()">
+          <app-vpscenario-edit [vpscenario]="vpscenario" [httpClientCommand]="GetPutEnum()"></app-vpscenario-edit>
+        </p>
+        <p *ngIf="IDToShow === vpscenario.VPScenarioID && showType === GetPostEnum()">
+          <app-vpscenario-edit [vpscenario]="vpscenario" [httpClientCommand]="GetPostEnum()"></app-vpscenario-edit>
+        </p>
+        <blockquote>
+        <p>
           <span>VPScenarioID: [{{ vpscenario.VPScenarioID }}]</span>
           <span> --- InfrastructureTVItemID: [{{ vpscenario.InfrastructureTVItemID }}]</span>
           <span> --- VPScenarioStatus: [{{ GetScenarioStatusEnumText(vpscenario.VPScenarioStatus) }}]</span>
           <span> --- UseAsBestEstimate: [{{ vpscenario.UseAsBestEstimate }}]</span>
-        </span>
-        <span mat-line>
+ </p>
+        <p>
           <span>EffluentFlow_m3_s: [{{ vpscenario.EffluentFlow_m3_s }}]</span>
           <span> --- EffluentConcentration_MPN_100ml: [{{ vpscenario.EffluentConcentration_MPN_100ml }}]</span>
           <span> --- FroudeNumber: [{{ vpscenario.FroudeNumber }}]</span>
           <span> --- PortDiameter_m: [{{ vpscenario.PortDiameter_m }}]</span>
-        </span>
-        <span mat-line>
+ </p>
+        <p>
           <span>PortDepth_m: [{{ vpscenario.PortDepth_m }}]</span>
           <span> --- PortElevation_m: [{{ vpscenario.PortElevation_m }}]</span>
           <span> --- VerticalAngle_deg: [{{ vpscenario.VerticalAngle_deg }}]</span>
           <span> --- HorizontalAngle_deg: [{{ vpscenario.HorizontalAngle_deg }}]</span>
-        </span>
-        <span mat-line>
+ </p>
+        <p>
           <span>NumberOfPorts: [{{ vpscenario.NumberOfPorts }}]</span>
           <span> --- PortSpacing_m: [{{ vpscenario.PortSpacing_m }}]</span>
           <span> --- AcuteMixZone_m: [{{ vpscenario.AcuteMixZone_m }}]</span>
           <span> --- ChronicMixZone_m: [{{ vpscenario.ChronicMixZone_m }}]</span>
-        </span>
-        <span mat-line>
+ </p>
+        <p>
           <span>EffluentSalinity_PSU: [{{ vpscenario.EffluentSalinity_PSU }}]</span>
           <span> --- EffluentTemperature_C: [{{ vpscenario.EffluentTemperature_C }}]</span>
           <span> --- EffluentVelocity_m_s: [{{ vpscenario.EffluentVelocity_m_s }}]</span>
           <span> --- RawResults: [{{ vpscenario.RawResults }}]</span>
-        </span>
-        <span mat-line>
+ </p>
+        <p>
           <span>LastUpdateDate_UTC: [{{ vpscenario.LastUpdateDate_UTC }}]</span>
           <span> --- LastUpdateContactTVItemID: [{{ vpscenario.LastUpdateContactTVItemID }}]</span>
-        </span>
-       </mat-list-item>
-     </mat-list>
+        </p>
+        </blockquote>
+       </div>
+     </div>
    </mat-card-content>
  <mat-card-actions>
    <button mat-button>Allo</button>
  </mat-card-actions>
-</mat-card>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<mat-card>
-  <mat-card-header>
-    <mat-card-title>Edit VPScenario testing</mat-card-title>
-  </mat-card-header>
-  <mat-card-content>
-    <div *ngIf="vpscenarioService.vpscenarioListModel$.getValue()?.length">
-      <blockquote>
-        <form [formGroup]="vpscenarioFormPut" (ngSubmit)="PutVPScenario(vpscenarioFormPut.value)">
-          <h3>
-            VPScenario
-            <button mat-raised-button type="submit">
-              <span>Update VPScenario</span>
-            </button>
-            <mat-progress-bar mode="indeterminate" *ngIf="vpscenarioService.vpscenarioPutModel$.getValue().Working">
-            </mat-progress-bar>
-          </h3>
-          <p>
-            <mat-form-field>
-              <mat-label>VPScenarioID</mat-label>
-              <input matInput type="number" formControlName="VPScenarioID">
-              <mat-error *ngIf="vpscenarioFormPut.controls.VPScenarioID.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>InfrastructureTVItemID</mat-label>
-              <input matInput type="number" formControlName="InfrastructureTVItemID">
-              <mat-error *ngIf="vpscenarioFormPut.controls.InfrastructureTVItemID.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>VPScenarioStatus</mat-label>
-              <mat-select formControlName="VPScenarioStatus">
-                <mat-option *ngFor="let a of vPScenarioStatusList" [value]="a.EnumID">
-                  {{ a.EnumText }}
-                </mat-option>
-              </mat-select>
-              <mat-error *ngIf="vpscenarioFormPut.controls.VPScenarioStatus.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>UseAsBestEstimate</mat-label>
-              <input matInput type="text" formControlName="UseAsBestEstimate">
-              <mat-error *ngIf="vpscenarioFormPut.controls.UseAsBestEstimate.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-          </p>
-          <p>
-            <mat-form-field>
-              <mat-label>EffluentFlow_m3_s</mat-label>
-              <input matInput type="number" formControlName="EffluentFlow_m3_s">
-              <mat-error *ngIf="vpscenarioFormPut.controls.EffluentFlow_m3_s.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.min">Min - 0<br /></span>
-                <span *ngIf="e.min">Max - 1000<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>EffluentConcentration_MPN_100ml</mat-label>
-              <input matInput type="number" formControlName="EffluentConcentration_MPN_100ml">
-              <mat-error *ngIf="vpscenarioFormPut.controls.EffluentConcentration_MPN_100ml.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.min">Min - 0<br /></span>
-                <span *ngIf="e.min">Max - 10000000<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>FroudeNumber</mat-label>
-              <input matInput type="number" formControlName="FroudeNumber">
-              <mat-error *ngIf="vpscenarioFormPut.controls.FroudeNumber.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.min">Min - 0<br /></span>
-                <span *ngIf="e.min">Max - 10000<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>PortDiameter_m</mat-label>
-              <input matInput type="number" formControlName="PortDiameter_m">
-              <mat-error *ngIf="vpscenarioFormPut.controls.PortDiameter_m.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.min">Min - 0<br /></span>
-                <span *ngIf="e.min">Max - 10<br /></span>
-              </mat-error>
-            </mat-form-field>
-          </p>
-          <p>
-            <mat-form-field>
-              <mat-label>PortDepth_m</mat-label>
-              <input matInput type="number" formControlName="PortDepth_m">
-              <mat-error *ngIf="vpscenarioFormPut.controls.PortDepth_m.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.min">Min - 0<br /></span>
-                <span *ngIf="e.min">Max - 1000<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>PortElevation_m</mat-label>
-              <input matInput type="number" formControlName="PortElevation_m">
-              <mat-error *ngIf="vpscenarioFormPut.controls.PortElevation_m.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.min">Min - 0<br /></span>
-                <span *ngIf="e.min">Max - 1000<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>VerticalAngle_deg</mat-label>
-              <input matInput type="number" formControlName="VerticalAngle_deg">
-              <mat-error *ngIf="vpscenarioFormPut.controls.VerticalAngle_deg.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.min">Min - -90<br /></span>
-                <span *ngIf="e.min">Max - 90<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>HorizontalAngle_deg</mat-label>
-              <input matInput type="number" formControlName="HorizontalAngle_deg">
-              <mat-error *ngIf="vpscenarioFormPut.controls.HorizontalAngle_deg.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.min">Min - -180<br /></span>
-                <span *ngIf="e.min">Max - 180<br /></span>
-              </mat-error>
-            </mat-form-field>
-          </p>
-          <p>
-            <mat-form-field>
-              <mat-label>NumberOfPorts</mat-label>
-              <input matInput type="number" formControlName="NumberOfPorts">
-              <mat-error *ngIf="vpscenarioFormPut.controls.NumberOfPorts.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.min">Min - 1<br /></span>
-                <span *ngIf="e.min">Max - 100<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>PortSpacing_m</mat-label>
-              <input matInput type="number" formControlName="PortSpacing_m">
-              <mat-error *ngIf="vpscenarioFormPut.controls.PortSpacing_m.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.min">Min - 0<br /></span>
-                <span *ngIf="e.min">Max - 1000<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>AcuteMixZone_m</mat-label>
-              <input matInput type="number" formControlName="AcuteMixZone_m">
-              <mat-error *ngIf="vpscenarioFormPut.controls.AcuteMixZone_m.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.min">Min - 0<br /></span>
-                <span *ngIf="e.min">Max - 100<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>ChronicMixZone_m</mat-label>
-              <input matInput type="number" formControlName="ChronicMixZone_m">
-              <mat-error *ngIf="vpscenarioFormPut.controls.ChronicMixZone_m.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.min">Min - 0<br /></span>
-                <span *ngIf="e.min">Max - 40000<br /></span>
-              </mat-error>
-            </mat-form-field>
-          </p>
-          <p>
-            <mat-form-field>
-              <mat-label>EffluentSalinity_PSU</mat-label>
-              <input matInput type="number" formControlName="EffluentSalinity_PSU">
-              <mat-error *ngIf="vpscenarioFormPut.controls.EffluentSalinity_PSU.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.min">Min - 0<br /></span>
-                <span *ngIf="e.min">Max - 40<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>EffluentTemperature_C</mat-label>
-              <input matInput type="number" formControlName="EffluentTemperature_C">
-              <mat-error *ngIf="vpscenarioFormPut.controls.EffluentTemperature_C.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.min">Min - -10<br /></span>
-                <span *ngIf="e.min">Max - 40<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>EffluentVelocity_m_s</mat-label>
-              <input matInput type="number" formControlName="EffluentVelocity_m_s">
-              <mat-error *ngIf="vpscenarioFormPut.controls.EffluentVelocity_m_s.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.min">Min - 0<br /></span>
-                <span *ngIf="e.min">Max - 100<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>RawResults</mat-label>
-              <input matInput type="text" formControlName="RawResults">
-              <mat-error *ngIf="vpscenarioFormPut.controls.RawResults.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-              </mat-error>
-            </mat-form-field>
-          </p>
-          <p>
-            <mat-form-field>
-              <mat-label>LastUpdateDate_UTC</mat-label>
-              <input matInput type="text" formControlName="LastUpdateDate_UTC">
-              <mat-error *ngIf="vpscenarioFormPut.controls.LastUpdateDate_UTC.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>LastUpdateContactTVItemID</mat-label>
-              <input matInput type="number" formControlName="LastUpdateContactTVItemID">
-              <mat-error *ngIf="vpscenarioFormPut.controls.LastUpdateContactTVItemID.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-          </p>
-        </form>
-      </blockquote>
-    </div>
-  </mat-card-content>
-</mat-card>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<mat-card>
-  <mat-card-header>
-    <mat-card-title>Add VPScenario testing</mat-card-title>
-  </mat-card-header>
-  <mat-card-content>
-    <div *ngIf="vpscenarioService.vpscenarioListModel$.getValue()?.length">
-      <blockquote>
-        <form [formGroup]="vpscenarioFormPost" (ngSubmit)="PostVPScenario(vpscenarioFormPost.value)">
-          <h3>
-            VPScenario
-            <button mat-raised-button type="submit">
-              <span>Add VPScenario</span>
-            </button>
-            <mat-progress-bar mode="indeterminate" *ngIf="vpscenarioService.vpscenarioPostModel$.getValue().Working">
-            </mat-progress-bar>
-          </h3>
-          <p>
-            <mat-form-field>
-              <mat-label>VPScenarioID</mat-label>
-              <input matInput type="number" formControlName="VPScenarioID">
-              <mat-error *ngIf="vpscenarioFormPut.controls.VPScenarioID.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>InfrastructureTVItemID</mat-label>
-              <input matInput type="number" formControlName="InfrastructureTVItemID">
-              <mat-error *ngIf="vpscenarioFormPut.controls.InfrastructureTVItemID.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>VPScenarioStatus</mat-label>
-              <mat-select formControlName="VPScenarioStatus">
-                <mat-option *ngFor="let a of vPScenarioStatusList" [value]="a.EnumID">
-                  {{ a.EnumText }}
-                </mat-option>
-              </mat-select>
-              <mat-error *ngIf="vpscenarioFormPut.controls.VPScenarioStatus.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>UseAsBestEstimate</mat-label>
-              <input matInput type="text" formControlName="UseAsBestEstimate">
-              <mat-error *ngIf="vpscenarioFormPut.controls.UseAsBestEstimate.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-          </p>
-          <p>
-            <mat-form-field>
-              <mat-label>EffluentFlow_m3_s</mat-label>
-              <input matInput type="number" formControlName="EffluentFlow_m3_s">
-              <mat-error *ngIf="vpscenarioFormPut.controls.EffluentFlow_m3_s.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.min">Min - 0<br /></span>
-                <span *ngIf="e.min">Max - 1000<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>EffluentConcentration_MPN_100ml</mat-label>
-              <input matInput type="number" formControlName="EffluentConcentration_MPN_100ml">
-              <mat-error *ngIf="vpscenarioFormPut.controls.EffluentConcentration_MPN_100ml.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.min">Min - 0<br /></span>
-                <span *ngIf="e.min">Max - 10000000<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>FroudeNumber</mat-label>
-              <input matInput type="number" formControlName="FroudeNumber">
-              <mat-error *ngIf="vpscenarioFormPut.controls.FroudeNumber.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.min">Min - 0<br /></span>
-                <span *ngIf="e.min">Max - 10000<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>PortDiameter_m</mat-label>
-              <input matInput type="number" formControlName="PortDiameter_m">
-              <mat-error *ngIf="vpscenarioFormPut.controls.PortDiameter_m.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.min">Min - 0<br /></span>
-                <span *ngIf="e.min">Max - 10<br /></span>
-              </mat-error>
-            </mat-form-field>
-          </p>
-          <p>
-            <mat-form-field>
-              <mat-label>PortDepth_m</mat-label>
-              <input matInput type="number" formControlName="PortDepth_m">
-              <mat-error *ngIf="vpscenarioFormPut.controls.PortDepth_m.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.min">Min - 0<br /></span>
-                <span *ngIf="e.min">Max - 1000<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>PortElevation_m</mat-label>
-              <input matInput type="number" formControlName="PortElevation_m">
-              <mat-error *ngIf="vpscenarioFormPut.controls.PortElevation_m.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.min">Min - 0<br /></span>
-                <span *ngIf="e.min">Max - 1000<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>VerticalAngle_deg</mat-label>
-              <input matInput type="number" formControlName="VerticalAngle_deg">
-              <mat-error *ngIf="vpscenarioFormPut.controls.VerticalAngle_deg.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.min">Min - -90<br /></span>
-                <span *ngIf="e.min">Max - 90<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>HorizontalAngle_deg</mat-label>
-              <input matInput type="number" formControlName="HorizontalAngle_deg">
-              <mat-error *ngIf="vpscenarioFormPut.controls.HorizontalAngle_deg.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.min">Min - -180<br /></span>
-                <span *ngIf="e.min">Max - 180<br /></span>
-              </mat-error>
-            </mat-form-field>
-          </p>
-          <p>
-            <mat-form-field>
-              <mat-label>NumberOfPorts</mat-label>
-              <input matInput type="number" formControlName="NumberOfPorts">
-              <mat-error *ngIf="vpscenarioFormPut.controls.NumberOfPorts.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.min">Min - 1<br /></span>
-                <span *ngIf="e.min">Max - 100<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>PortSpacing_m</mat-label>
-              <input matInput type="number" formControlName="PortSpacing_m">
-              <mat-error *ngIf="vpscenarioFormPut.controls.PortSpacing_m.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.min">Min - 0<br /></span>
-                <span *ngIf="e.min">Max - 1000<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>AcuteMixZone_m</mat-label>
-              <input matInput type="number" formControlName="AcuteMixZone_m">
-              <mat-error *ngIf="vpscenarioFormPut.controls.AcuteMixZone_m.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.min">Min - 0<br /></span>
-                <span *ngIf="e.min">Max - 100<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>ChronicMixZone_m</mat-label>
-              <input matInput type="number" formControlName="ChronicMixZone_m">
-              <mat-error *ngIf="vpscenarioFormPut.controls.ChronicMixZone_m.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.min">Min - 0<br /></span>
-                <span *ngIf="e.min">Max - 40000<br /></span>
-              </mat-error>
-            </mat-form-field>
-          </p>
-          <p>
-            <mat-form-field>
-              <mat-label>EffluentSalinity_PSU</mat-label>
-              <input matInput type="number" formControlName="EffluentSalinity_PSU">
-              <mat-error *ngIf="vpscenarioFormPut.controls.EffluentSalinity_PSU.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.min">Min - 0<br /></span>
-                <span *ngIf="e.min">Max - 40<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>EffluentTemperature_C</mat-label>
-              <input matInput type="number" formControlName="EffluentTemperature_C">
-              <mat-error *ngIf="vpscenarioFormPut.controls.EffluentTemperature_C.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.min">Min - -10<br /></span>
-                <span *ngIf="e.min">Max - 40<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>EffluentVelocity_m_s</mat-label>
-              <input matInput type="number" formControlName="EffluentVelocity_m_s">
-              <mat-error *ngIf="vpscenarioFormPut.controls.EffluentVelocity_m_s.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.min">Min - 0<br /></span>
-                <span *ngIf="e.min">Max - 100<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>RawResults</mat-label>
-              <input matInput type="text" formControlName="RawResults">
-              <mat-error *ngIf="vpscenarioFormPut.controls.RawResults.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-              </mat-error>
-            </mat-form-field>
-          </p>
-          <p>
-            <mat-form-field>
-              <mat-label>LastUpdateDate_UTC</mat-label>
-              <input matInput type="text" formControlName="LastUpdateDate_UTC">
-              <mat-error *ngIf="vpscenarioFormPut.controls.LastUpdateDate_UTC.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>LastUpdateContactTVItemID</mat-label>
-              <input matInput type="number" formControlName="LastUpdateContactTVItemID">
-              <mat-error *ngIf="vpscenarioFormPut.controls.LastUpdateContactTVItemID.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-          </p>
-        </form>
-      </blockquote>
-    </div>
-  </mat-card-content>
 </mat-card>

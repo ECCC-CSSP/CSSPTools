@@ -9,10 +9,8 @@ import { Component, OnInit, OnDestroy, ChangeDetectionStrategy } from '@angular/
 import { MWQMSiteService } from './mwqmsite.service';
 import { LoadLocalesMWQMSiteText } from './mwqmsite.locales';
 import { Subscription } from 'rxjs';
-import { MWQMSiteLatestClassificationEnum_GetIDText, MWQMSiteLatestClassificationEnum_GetOrderedText } from '../../../enums/generated/MWQMSiteLatestClassificationEnum';
+import { MWQMSiteLatestClassificationEnum_GetIDText } from '../../../enums/generated/MWQMSiteLatestClassificationEnum';
 import { MWQMSite } from '../../../models/generated/MWQMSite.model';
-import { FormBuilder, Validators, FormGroup } from '@angular/forms';
-import { EnumIDAndText } from '../../../models/enumidandtext.model';
 import { HttpClientService } from '../../../services/http-client.service';
 import { Router } from '@angular/router';
 import { HttpClientCommand } from '../../../enums/app.enums';
@@ -25,24 +23,63 @@ import { HttpClientCommand } from '../../../enums/app.enums';
 })
 export class MWQMSiteComponent implements OnInit, OnDestroy {
   sub: Subscription;
-  mWQMSiteLatestClassificationList: EnumIDAndText[];
-  mwqmsiteFormPut: FormGroup;
-  mwqmsiteFormPost: FormGroup;
+  IDToShow: number;
+  showType?: HttpClientCommand = null;
 
-  constructor(public mwqmsiteService: MWQMSiteService, private router: Router, private httpClientService: HttpClientService, private fb: FormBuilder) {
+  constructor(public mwqmsiteService: MWQMSiteService, private router: Router, private httpClientService: HttpClientService) {
     httpClientService.oldURL = router.url;
+  }
+
+  GetPutButtonColor(mwqmsite: MWQMSite) {
+    if (this.IDToShow === mwqmsite.MWQMSiteID && this.showType === HttpClientCommand.Put) {
+      return 'primary';
+    }
+    else {
+      return 'basic';
+    }
+  }
+
+  GetPostButtonColor(mwqmsite: MWQMSite) {
+    if (this.IDToShow === mwqmsite.MWQMSiteID && this.showType === HttpClientCommand.Post) {
+      return 'primary';
+    }
+    else {
+      return 'basic';
+    }
+  }
+
+  ShowPut(mwqmsite: MWQMSite) {
+    if (this.IDToShow === mwqmsite.MWQMSiteID && this.showType === HttpClientCommand.Put) {
+      this.IDToShow = 0;
+      this.showType = null;
+    }
+    else {
+      this.IDToShow = mwqmsite.MWQMSiteID;
+      this.showType = HttpClientCommand.Put;
+    }
+  }
+
+  ShowPost(mwqmsite: MWQMSite) {
+    if (this.IDToShow === mwqmsite.MWQMSiteID && this.showType === HttpClientCommand.Post) {
+      this.IDToShow = 0;
+      this.showType = null;
+    }
+    else {
+      this.IDToShow = mwqmsite.MWQMSiteID;
+      this.showType = HttpClientCommand.Post;
+    }
+  }
+
+  GetPutEnum() {
+    return <number>HttpClientCommand.Put;
+  }
+
+  GetPostEnum() {
+    return <number>HttpClientCommand.Post;
   }
 
   GetMWQMSiteList() {
     this.sub = this.mwqmsiteService.GetMWQMSiteList().subscribe();
-  }
-
-  PutMWQMSite(mwqmsite: MWQMSite) {
-    this.sub = this.mwqmsiteService.PutMWQMSite(mwqmsite).subscribe();
-  }
-
-  PostMWQMSite(mwqmsite: MWQMSite) {
-    this.sub = this.mwqmsiteService.PostMWQMSite(mwqmsite).subscribe();
   }
 
   DeleteMWQMSite(mwqmsite: MWQMSite) {
@@ -55,70 +92,11 @@ export class MWQMSiteComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     LoadLocalesMWQMSiteText(this.mwqmsiteService);
-    this.mWQMSiteLatestClassificationList = MWQMSiteLatestClassificationEnum_GetOrderedText();
-    this.FillFormBuilderGroup(HttpClientCommand.Post);
-    this.FillFormBuilderGroup(HttpClientCommand.Put);
   }
 
   ngOnDestroy() {
     if (this.sub) {
       this.sub.unsubscribe();
-    }
-  }
-
-  FillFormBuilderGroup(httpClientCommand: HttpClientCommand) {
-    if (this.mwqmsiteService.mwqmsiteListModel$.getValue().length) {
-      let formGroup: FormGroup = this.fb.group(
-        {
-          MWQMSiteID: [
-            {
-              value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.mwqmsiteService.mwqmsiteListModel$.getValue()[0]?.MWQMSiteID)),
-              disabled: false
-            }, [  Validators.required ]],
-          MWQMSiteTVItemID: [
-            {
-              value: this.mwqmsiteService.mwqmsiteListModel$.getValue()[0]?.MWQMSiteTVItemID,
-              disabled: false
-            }, [  Validators.required ]],
-          MWQMSiteNumber: [
-            {
-              value: this.mwqmsiteService.mwqmsiteListModel$.getValue()[0]?.MWQMSiteNumber,
-              disabled: false
-            }, [  Validators.required, Validators.maxLength(8) ]],
-          MWQMSiteDescription: [
-            {
-              value: this.mwqmsiteService.mwqmsiteListModel$.getValue()[0]?.MWQMSiteDescription,
-              disabled: false
-            }, [  Validators.required, Validators.maxLength(200) ]],
-          MWQMSiteLatestClassification: [
-            {
-              value: this.mwqmsiteService.mwqmsiteListModel$.getValue()[0]?.MWQMSiteLatestClassification,
-              disabled: false
-            }, [  Validators.required ]],
-          Ordinal: [
-            {
-              value: this.mwqmsiteService.mwqmsiteListModel$.getValue()[0]?.Ordinal,
-              disabled: false
-            }, [  Validators.required, Validators.min(0), Validators.max(1000) ]],
-          LastUpdateDate_UTC: [
-            {
-              value: this.mwqmsiteService.mwqmsiteListModel$.getValue()[0]?.LastUpdateDate_UTC,
-              disabled: false
-            }, [  Validators.required ]],
-          LastUpdateContactTVItemID: [
-            {
-              value: this.mwqmsiteService.mwqmsiteListModel$.getValue()[0]?.LastUpdateContactTVItemID,
-              disabled: false
-            }, [  Validators.required ]],
-        }
-      );
-
-      if (httpClientCommand === HttpClientCommand.Post) {
-        this.mwqmsiteFormPost = formGroup
-      }
-      else {
-        this.mwqmsiteFormPut = formGroup;
-      }
     }
   }
 }

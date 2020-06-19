@@ -17,218 +17,46 @@
     <mat-card-subtitle>{{ apperrlogService.apperrlogTextModel$.getValue().Title }}</mat-card-subtitle>
   </mat-card-header>
   <mat-card-content>
-    <mat-list *ngIf="apperrlogService.apperrlogListModel$.getValue()?.length">
-      <mat-list-item *ngFor="let apperrlog of apperrlogService.apperrlogListModel$.getValue()">
-        <span mat-line>
+    <div *ngIf="apperrlogService.apperrlogListModel$.getValue()?.length">
+      <div *ngFor="let apperrlog of apperrlogService.apperrlogListModel$.getValue()">
+        <p>
           <button mat-raised-button (click)="DeleteAppErrLog(apperrlog)">
             <span>Delete AppErrLogID [{{ apperrlog.AppErrLogID }}]&nbsp;&nbsp;&nbsp;</span>
             <mat-icon>delete</mat-icon>
-          </button>
+          </button>&nbsp;&nbsp;&nbsp;
+          <button mat-raised-button [color]="GetPutButtonColor(apperrlog)"(click)="ShowPut(apperrlog)">
+            <span>Show Put</span>
+          </button>&nbsp;&nbsp;
+          <button mat-raised-button [color]="GetPostButtonColor(apperrlog)"(click)="ShowPost(apperrlog)">
+            <span>Show Post</span>
+          </button>&nbsp;&nbsp;
           <mat-progress-bar mode="indeterminate" *ngIf="apperrlogService.apperrlogDeleteModel$.getValue().Working">
           </mat-progress-bar>
-          </span>
-        <span mat-line>
+        </p>
+        <p *ngIf="IDToShow === apperrlog.AppErrLogID && showType === GetPutEnum()">
+          <app-apperrlog-edit [apperrlog]="apperrlog" [httpClientCommand]="GetPutEnum()"></app-apperrlog-edit>
+        </p>
+        <p *ngIf="IDToShow === apperrlog.AppErrLogID && showType === GetPostEnum()">
+          <app-apperrlog-edit [apperrlog]="apperrlog" [httpClientCommand]="GetPostEnum()"></app-apperrlog-edit>
+        </p>
+        <blockquote>
+        <p>
           <span>AppErrLogID: [{{ apperrlog.AppErrLogID }}]</span>
           <span> --- Tag: [{{ apperrlog.Tag }}]</span>
           <span> --- LineNumber: [{{ apperrlog.LineNumber }}]</span>
           <span> --- Source: [{{ apperrlog.Source }}]</span>
-        </span>
-        <span mat-line>
+ </p>
+        <p>
           <span>Message: [{{ apperrlog.Message }}]</span>
           <span> --- DateTime_UTC: [{{ apperrlog.DateTime_UTC }}]</span>
           <span> --- LastUpdateDate_UTC: [{{ apperrlog.LastUpdateDate_UTC }}]</span>
           <span> --- LastUpdateContactTVItemID: [{{ apperrlog.LastUpdateContactTVItemID }}]</span>
-        </span>
-       </mat-list-item>
-     </mat-list>
+        </p>
+        </blockquote>
+       </div>
+     </div>
    </mat-card-content>
  <mat-card-actions>
    <button mat-button>Allo</button>
  </mat-card-actions>
-</mat-card>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<mat-card>
-  <mat-card-header>
-    <mat-card-title>Edit AppErrLog testing</mat-card-title>
-  </mat-card-header>
-  <mat-card-content>
-    <div *ngIf="apperrlogService.apperrlogListModel$.getValue()?.length">
-      <blockquote>
-        <form [formGroup]="apperrlogFormPut" (ngSubmit)="PutAppErrLog(apperrlogFormPut.value)">
-          <h3>
-            AppErrLog
-            <button mat-raised-button type="submit">
-              <span>Update AppErrLog</span>
-            </button>
-            <mat-progress-bar mode="indeterminate" *ngIf="apperrlogService.apperrlogPutModel$.getValue().Working">
-            </mat-progress-bar>
-          </h3>
-          <p>
-            <mat-form-field>
-              <mat-label>AppErrLogID</mat-label>
-              <input matInput type="number" formControlName="AppErrLogID">
-              <mat-error *ngIf="apperrlogFormPut.controls.AppErrLogID.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>Tag</mat-label>
-              <input matInput type="text" formControlName="Tag">
-              <mat-error *ngIf="apperrlogFormPut.controls.Tag.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-                <span *ngIf="e.maxlength">MaxLength - 100<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>LineNumber</mat-label>
-              <input matInput type="number" formControlName="LineNumber">
-              <mat-error *ngIf="apperrlogFormPut.controls.LineNumber.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-                <span *ngIf="e.min">Min - 1<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>Source</mat-label>
-              <input matInput type="text" formControlName="Source">
-              <mat-error *ngIf="apperrlogFormPut.controls.Source.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-          </p>
-          <p>
-            <mat-form-field>
-              <mat-label>Message</mat-label>
-              <input matInput type="text" formControlName="Message">
-              <mat-error *ngIf="apperrlogFormPut.controls.Message.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>DateTime_UTC</mat-label>
-              <input matInput type="text" formControlName="DateTime_UTC">
-              <mat-error *ngIf="apperrlogFormPut.controls.DateTime_UTC.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>LastUpdateDate_UTC</mat-label>
-              <input matInput type="text" formControlName="LastUpdateDate_UTC">
-              <mat-error *ngIf="apperrlogFormPut.controls.LastUpdateDate_UTC.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>LastUpdateContactTVItemID</mat-label>
-              <input matInput type="number" formControlName="LastUpdateContactTVItemID">
-              <mat-error *ngIf="apperrlogFormPut.controls.LastUpdateContactTVItemID.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-          </p>
-        </form>
-      </blockquote>
-    </div>
-  </mat-card-content>
-</mat-card>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<mat-card>
-  <mat-card-header>
-    <mat-card-title>Add AppErrLog testing</mat-card-title>
-  </mat-card-header>
-  <mat-card-content>
-    <div *ngIf="apperrlogService.apperrlogListModel$.getValue()?.length">
-      <blockquote>
-        <form [formGroup]="apperrlogFormPost" (ngSubmit)="PostAppErrLog(apperrlogFormPost.value)">
-          <h3>
-            AppErrLog
-            <button mat-raised-button type="submit">
-              <span>Add AppErrLog</span>
-            </button>
-            <mat-progress-bar mode="indeterminate" *ngIf="apperrlogService.apperrlogPostModel$.getValue().Working">
-            </mat-progress-bar>
-          </h3>
-          <p>
-            <mat-form-field>
-              <mat-label>AppErrLogID</mat-label>
-              <input matInput type="number" formControlName="AppErrLogID">
-              <mat-error *ngIf="apperrlogFormPut.controls.AppErrLogID.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>Tag</mat-label>
-              <input matInput type="text" formControlName="Tag">
-              <mat-error *ngIf="apperrlogFormPut.controls.Tag.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-                <span *ngIf="e.maxlength">MaxLength - 100<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>LineNumber</mat-label>
-              <input matInput type="number" formControlName="LineNumber">
-              <mat-error *ngIf="apperrlogFormPut.controls.LineNumber.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-                <span *ngIf="e.min">Min - 1<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>Source</mat-label>
-              <input matInput type="text" formControlName="Source">
-              <mat-error *ngIf="apperrlogFormPut.controls.Source.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-          </p>
-          <p>
-            <mat-form-field>
-              <mat-label>Message</mat-label>
-              <input matInput type="text" formControlName="Message">
-              <mat-error *ngIf="apperrlogFormPut.controls.Message.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>DateTime_UTC</mat-label>
-              <input matInput type="text" formControlName="DateTime_UTC">
-              <mat-error *ngIf="apperrlogFormPut.controls.DateTime_UTC.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>LastUpdateDate_UTC</mat-label>
-              <input matInput type="text" formControlName="LastUpdateDate_UTC">
-              <mat-error *ngIf="apperrlogFormPut.controls.LastUpdateDate_UTC.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>LastUpdateContactTVItemID</mat-label>
-              <input matInput type="number" formControlName="LastUpdateContactTVItemID">
-              <mat-error *ngIf="apperrlogFormPut.controls.LastUpdateContactTVItemID.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-          </p>
-        </form>
-      </blockquote>
-    </div>
-  </mat-card-content>
 </mat-card>

@@ -12,9 +12,10 @@ import { RatingCurveValueRoutingModule } from './ratingcurvevalue-routing.module
 import { MaterialModule } from '../../../app-material.module';
 import { RatingCurveValueComponent } from './ratingcurvevalue.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { RatingCurveValueEditComponent } from './ratingcurvevalue-edit.component';
 
 @NgModule({
-  declarations: [ RatingCurveValueComponent ],
+  declarations: [RatingCurveValueComponent, RatingCurveValueEditComponent],
   imports: [
     CommonModule,
     RouterModule,

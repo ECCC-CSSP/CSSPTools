@@ -12,9 +12,10 @@ import { HydrometricDataValueRoutingModule } from './hydrometricdatavalue-routin
 import { MaterialModule } from '../../../app-material.module';
 import { HydrometricDataValueComponent } from './hydrometricdatavalue.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { HydrometricDataValueEditComponent } from './hydrometricdatavalue-edit.component';
 
 @NgModule({
-  declarations: [ HydrometricDataValueComponent ],
+  declarations: [HydrometricDataValueComponent, HydrometricDataValueEditComponent],
   imports: [
     CommonModule,
     RouterModule,

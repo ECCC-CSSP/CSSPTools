@@ -17,360 +17,56 @@
     <mat-card-subtitle>{{ mikesourcestartendService.mikesourcestartendTextModel$.getValue().Title }}</mat-card-subtitle>
   </mat-card-header>
   <mat-card-content>
-    <mat-list *ngIf="mikesourcestartendService.mikesourcestartendListModel$.getValue()?.length">
-      <mat-list-item *ngFor="let mikesourcestartend of mikesourcestartendService.mikesourcestartendListModel$.getValue()">
-        <span mat-line>
+    <div *ngIf="mikesourcestartendService.mikesourcestartendListModel$.getValue()?.length">
+      <div *ngFor="let mikesourcestartend of mikesourcestartendService.mikesourcestartendListModel$.getValue()">
+        <p>
           <button mat-raised-button (click)="DeleteMikeSourceStartEnd(mikesourcestartend)">
             <span>Delete MikeSourceStartEndID [{{ mikesourcestartend.MikeSourceStartEndID }}]&nbsp;&nbsp;&nbsp;</span>
             <mat-icon>delete</mat-icon>
-          </button>
+          </button>&nbsp;&nbsp;&nbsp;
+          <button mat-raised-button [color]="GetPutButtonColor(mikesourcestartend)"(click)="ShowPut(mikesourcestartend)">
+            <span>Show Put</span>
+          </button>&nbsp;&nbsp;
+          <button mat-raised-button [color]="GetPostButtonColor(mikesourcestartend)"(click)="ShowPost(mikesourcestartend)">
+            <span>Show Post</span>
+          </button>&nbsp;&nbsp;
           <mat-progress-bar mode="indeterminate" *ngIf="mikesourcestartendService.mikesourcestartendDeleteModel$.getValue().Working">
           </mat-progress-bar>
-          </span>
-        <span mat-line>
+        </p>
+        <p *ngIf="IDToShow === mikesourcestartend.MikeSourceStartEndID && showType === GetPutEnum()">
+          <app-mikesourcestartend-edit [mikesourcestartend]="mikesourcestartend" [httpClientCommand]="GetPutEnum()"></app-mikesourcestartend-edit>
+        </p>
+        <p *ngIf="IDToShow === mikesourcestartend.MikeSourceStartEndID && showType === GetPostEnum()">
+          <app-mikesourcestartend-edit [mikesourcestartend]="mikesourcestartend" [httpClientCommand]="GetPostEnum()"></app-mikesourcestartend-edit>
+        </p>
+        <blockquote>
+        <p>
           <span>MikeSourceStartEndID: [{{ mikesourcestartend.MikeSourceStartEndID }}]</span>
           <span> --- MikeSourceID: [{{ mikesourcestartend.MikeSourceID }}]</span>
           <span> --- StartDateAndTime_Local: [{{ mikesourcestartend.StartDateAndTime_Local }}]</span>
           <span> --- EndDateAndTime_Local: [{{ mikesourcestartend.EndDateAndTime_Local }}]</span>
-        </span>
-        <span mat-line>
+ </p>
+        <p>
           <span>SourceFlowStart_m3_day: [{{ mikesourcestartend.SourceFlowStart_m3_day }}]</span>
           <span> --- SourceFlowEnd_m3_day: [{{ mikesourcestartend.SourceFlowEnd_m3_day }}]</span>
           <span> --- SourcePollutionStart_MPN_100ml: [{{ mikesourcestartend.SourcePollutionStart_MPN_100ml }}]</span>
           <span> --- SourcePollutionEnd_MPN_100ml: [{{ mikesourcestartend.SourcePollutionEnd_MPN_100ml }}]</span>
-        </span>
-        <span mat-line>
+ </p>
+        <p>
           <span>SourceTemperatureStart_C: [{{ mikesourcestartend.SourceTemperatureStart_C }}]</span>
           <span> --- SourceTemperatureEnd_C: [{{ mikesourcestartend.SourceTemperatureEnd_C }}]</span>
           <span> --- SourceSalinityStart_PSU: [{{ mikesourcestartend.SourceSalinityStart_PSU }}]</span>
           <span> --- SourceSalinityEnd_PSU: [{{ mikesourcestartend.SourceSalinityEnd_PSU }}]</span>
-        </span>
-        <span mat-line>
+ </p>
+        <p>
           <span>LastUpdateDate_UTC: [{{ mikesourcestartend.LastUpdateDate_UTC }}]</span>
           <span> --- LastUpdateContactTVItemID: [{{ mikesourcestartend.LastUpdateContactTVItemID }}]</span>
-        </span>
-       </mat-list-item>
-     </mat-list>
+        </p>
+        </blockquote>
+       </div>
+     </div>
    </mat-card-content>
  <mat-card-actions>
    <button mat-button>Allo</button>
  </mat-card-actions>
-</mat-card>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<mat-card>
-  <mat-card-header>
-    <mat-card-title>Edit MikeSourceStartEnd testing</mat-card-title>
-  </mat-card-header>
-  <mat-card-content>
-    <div *ngIf="mikesourcestartendService.mikesourcestartendListModel$.getValue()?.length">
-      <blockquote>
-        <form [formGroup]="mikesourcestartendFormPut" (ngSubmit)="PutMikeSourceStartEnd(mikesourcestartendFormPut.value)">
-          <h3>
-            MikeSourceStartEnd
-            <button mat-raised-button type="submit">
-              <span>Update MikeSourceStartEnd</span>
-            </button>
-            <mat-progress-bar mode="indeterminate" *ngIf="mikesourcestartendService.mikesourcestartendPutModel$.getValue().Working">
-            </mat-progress-bar>
-          </h3>
-          <p>
-            <mat-form-field>
-              <mat-label>MikeSourceStartEndID</mat-label>
-              <input matInput type="number" formControlName="MikeSourceStartEndID">
-              <mat-error *ngIf="mikesourcestartendFormPut.controls.MikeSourceStartEndID.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>MikeSourceID</mat-label>
-              <input matInput type="number" formControlName="MikeSourceID">
-              <mat-error *ngIf="mikesourcestartendFormPut.controls.MikeSourceID.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>StartDateAndTime_Local</mat-label>
-              <input matInput type="text" formControlName="StartDateAndTime_Local">
-              <mat-error *ngIf="mikesourcestartendFormPut.controls.StartDateAndTime_Local.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>EndDateAndTime_Local</mat-label>
-              <input matInput type="text" formControlName="EndDateAndTime_Local">
-              <mat-error *ngIf="mikesourcestartendFormPut.controls.EndDateAndTime_Local.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-          </p>
-          <p>
-            <mat-form-field>
-              <mat-label>SourceFlowStart_m3_day</mat-label>
-              <input matInput type="number" formControlName="SourceFlowStart_m3_day">
-              <mat-error *ngIf="mikesourcestartendFormPut.controls.SourceFlowStart_m3_day.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-                <span *ngIf="e.min">Min - 0<br /></span>
-                <span *ngIf="e.min">Max - 1000000<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>SourceFlowEnd_m3_day</mat-label>
-              <input matInput type="number" formControlName="SourceFlowEnd_m3_day">
-              <mat-error *ngIf="mikesourcestartendFormPut.controls.SourceFlowEnd_m3_day.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-                <span *ngIf="e.min">Min - 0<br /></span>
-                <span *ngIf="e.min">Max - 1000000<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>SourcePollutionStart_MPN_100ml</mat-label>
-              <input matInput type="number" formControlName="SourcePollutionStart_MPN_100ml">
-              <mat-error *ngIf="mikesourcestartendFormPut.controls.SourcePollutionStart_MPN_100ml.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-                <span *ngIf="e.min">Min - 0<br /></span>
-                <span *ngIf="e.min">Max - 10000000<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>SourcePollutionEnd_MPN_100ml</mat-label>
-              <input matInput type="number" formControlName="SourcePollutionEnd_MPN_100ml">
-              <mat-error *ngIf="mikesourcestartendFormPut.controls.SourcePollutionEnd_MPN_100ml.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-                <span *ngIf="e.min">Min - 0<br /></span>
-                <span *ngIf="e.min">Max - 10000000<br /></span>
-              </mat-error>
-            </mat-form-field>
-          </p>
-          <p>
-            <mat-form-field>
-              <mat-label>SourceTemperatureStart_C</mat-label>
-              <input matInput type="number" formControlName="SourceTemperatureStart_C">
-              <mat-error *ngIf="mikesourcestartendFormPut.controls.SourceTemperatureStart_C.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-                <span *ngIf="e.min">Min - -10<br /></span>
-                <span *ngIf="e.min">Max - 40<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>SourceTemperatureEnd_C</mat-label>
-              <input matInput type="number" formControlName="SourceTemperatureEnd_C">
-              <mat-error *ngIf="mikesourcestartendFormPut.controls.SourceTemperatureEnd_C.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-                <span *ngIf="e.min">Min - -10<br /></span>
-                <span *ngIf="e.min">Max - 40<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>SourceSalinityStart_PSU</mat-label>
-              <input matInput type="number" formControlName="SourceSalinityStart_PSU">
-              <mat-error *ngIf="mikesourcestartendFormPut.controls.SourceSalinityStart_PSU.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-                <span *ngIf="e.min">Min - 0<br /></span>
-                <span *ngIf="e.min">Max - 40<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>SourceSalinityEnd_PSU</mat-label>
-              <input matInput type="number" formControlName="SourceSalinityEnd_PSU">
-              <mat-error *ngIf="mikesourcestartendFormPut.controls.SourceSalinityEnd_PSU.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-                <span *ngIf="e.min">Min - 0<br /></span>
-                <span *ngIf="e.min">Max - 40<br /></span>
-              </mat-error>
-            </mat-form-field>
-          </p>
-          <p>
-            <mat-form-field>
-              <mat-label>LastUpdateDate_UTC</mat-label>
-              <input matInput type="text" formControlName="LastUpdateDate_UTC">
-              <mat-error *ngIf="mikesourcestartendFormPut.controls.LastUpdateDate_UTC.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>LastUpdateContactTVItemID</mat-label>
-              <input matInput type="number" formControlName="LastUpdateContactTVItemID">
-              <mat-error *ngIf="mikesourcestartendFormPut.controls.LastUpdateContactTVItemID.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-          </p>
-        </form>
-      </blockquote>
-    </div>
-  </mat-card-content>
-</mat-card>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<mat-card>
-  <mat-card-header>
-    <mat-card-title>Add MikeSourceStartEnd testing</mat-card-title>
-  </mat-card-header>
-  <mat-card-content>
-    <div *ngIf="mikesourcestartendService.mikesourcestartendListModel$.getValue()?.length">
-      <blockquote>
-        <form [formGroup]="mikesourcestartendFormPost" (ngSubmit)="PostMikeSourceStartEnd(mikesourcestartendFormPost.value)">
-          <h3>
-            MikeSourceStartEnd
-            <button mat-raised-button type="submit">
-              <span>Add MikeSourceStartEnd</span>
-            </button>
-            <mat-progress-bar mode="indeterminate" *ngIf="mikesourcestartendService.mikesourcestartendPostModel$.getValue().Working">
-            </mat-progress-bar>
-          </h3>
-          <p>
-            <mat-form-field>
-              <mat-label>MikeSourceStartEndID</mat-label>
-              <input matInput type="number" formControlName="MikeSourceStartEndID">
-              <mat-error *ngIf="mikesourcestartendFormPut.controls.MikeSourceStartEndID.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>MikeSourceID</mat-label>
-              <input matInput type="number" formControlName="MikeSourceID">
-              <mat-error *ngIf="mikesourcestartendFormPut.controls.MikeSourceID.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>StartDateAndTime_Local</mat-label>
-              <input matInput type="text" formControlName="StartDateAndTime_Local">
-              <mat-error *ngIf="mikesourcestartendFormPut.controls.StartDateAndTime_Local.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>EndDateAndTime_Local</mat-label>
-              <input matInput type="text" formControlName="EndDateAndTime_Local">
-              <mat-error *ngIf="mikesourcestartendFormPut.controls.EndDateAndTime_Local.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-          </p>
-          <p>
-            <mat-form-field>
-              <mat-label>SourceFlowStart_m3_day</mat-label>
-              <input matInput type="number" formControlName="SourceFlowStart_m3_day">
-              <mat-error *ngIf="mikesourcestartendFormPut.controls.SourceFlowStart_m3_day.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-                <span *ngIf="e.min">Min - 0<br /></span>
-                <span *ngIf="e.min">Max - 1000000<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>SourceFlowEnd_m3_day</mat-label>
-              <input matInput type="number" formControlName="SourceFlowEnd_m3_day">
-              <mat-error *ngIf="mikesourcestartendFormPut.controls.SourceFlowEnd_m3_day.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-                <span *ngIf="e.min">Min - 0<br /></span>
-                <span *ngIf="e.min">Max - 1000000<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>SourcePollutionStart_MPN_100ml</mat-label>
-              <input matInput type="number" formControlName="SourcePollutionStart_MPN_100ml">
-              <mat-error *ngIf="mikesourcestartendFormPut.controls.SourcePollutionStart_MPN_100ml.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-                <span *ngIf="e.min">Min - 0<br /></span>
-                <span *ngIf="e.min">Max - 10000000<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>SourcePollutionEnd_MPN_100ml</mat-label>
-              <input matInput type="number" formControlName="SourcePollutionEnd_MPN_100ml">
-              <mat-error *ngIf="mikesourcestartendFormPut.controls.SourcePollutionEnd_MPN_100ml.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-                <span *ngIf="e.min">Min - 0<br /></span>
-                <span *ngIf="e.min">Max - 10000000<br /></span>
-              </mat-error>
-            </mat-form-field>
-          </p>
-          <p>
-            <mat-form-field>
-              <mat-label>SourceTemperatureStart_C</mat-label>
-              <input matInput type="number" formControlName="SourceTemperatureStart_C">
-              <mat-error *ngIf="mikesourcestartendFormPut.controls.SourceTemperatureStart_C.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-                <span *ngIf="e.min">Min - -10<br /></span>
-                <span *ngIf="e.min">Max - 40<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>SourceTemperatureEnd_C</mat-label>
-              <input matInput type="number" formControlName="SourceTemperatureEnd_C">
-              <mat-error *ngIf="mikesourcestartendFormPut.controls.SourceTemperatureEnd_C.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-                <span *ngIf="e.min">Min - -10<br /></span>
-                <span *ngIf="e.min">Max - 40<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>SourceSalinityStart_PSU</mat-label>
-              <input matInput type="number" formControlName="SourceSalinityStart_PSU">
-              <mat-error *ngIf="mikesourcestartendFormPut.controls.SourceSalinityStart_PSU.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-                <span *ngIf="e.min">Min - 0<br /></span>
-                <span *ngIf="e.min">Max - 40<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>SourceSalinityEnd_PSU</mat-label>
-              <input matInput type="number" formControlName="SourceSalinityEnd_PSU">
-              <mat-error *ngIf="mikesourcestartendFormPut.controls.SourceSalinityEnd_PSU.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-                <span *ngIf="e.min">Min - 0<br /></span>
-                <span *ngIf="e.min">Max - 40<br /></span>
-              </mat-error>
-            </mat-form-field>
-          </p>
-          <p>
-            <mat-form-field>
-              <mat-label>LastUpdateDate_UTC</mat-label>
-              <input matInput type="text" formControlName="LastUpdateDate_UTC">
-              <mat-error *ngIf="mikesourcestartendFormPut.controls.LastUpdateDate_UTC.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>LastUpdateContactTVItemID</mat-label>
-              <input matInput type="number" formControlName="LastUpdateContactTVItemID">
-              <mat-error *ngIf="mikesourcestartendFormPut.controls.LastUpdateContactTVItemID.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-          </p>
-        </form>
-      </blockquote>
-    </div>
-  </mat-card-content>
 </mat-card>

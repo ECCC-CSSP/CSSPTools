@@ -10,7 +10,6 @@ import { VPAmbientService } from './vpambient.service';
 import { LoadLocalesVPAmbientText } from './vpambient.locales';
 import { Subscription } from 'rxjs';
 import { VPAmbient } from '../../../models/generated/VPAmbient.model';
-import { FormBuilder, Validators, FormGroup } from '@angular/forms';
 import { HttpClientService } from '../../../services/http-client.service';
 import { Router } from '@angular/router';
 import { HttpClientCommand } from '../../../enums/app.enums';
@@ -23,23 +22,63 @@ import { HttpClientCommand } from '../../../enums/app.enums';
 })
 export class VPAmbientComponent implements OnInit, OnDestroy {
   sub: Subscription;
-  vpambientFormPut: FormGroup;
-  vpambientFormPost: FormGroup;
+  IDToShow: number;
+  showType?: HttpClientCommand = null;
 
-  constructor(public vpambientService: VPAmbientService, private router: Router, private httpClientService: HttpClientService, private fb: FormBuilder) {
+  constructor(public vpambientService: VPAmbientService, private router: Router, private httpClientService: HttpClientService) {
     httpClientService.oldURL = router.url;
+  }
+
+  GetPutButtonColor(vpambient: VPAmbient) {
+    if (this.IDToShow === vpambient.VPAmbientID && this.showType === HttpClientCommand.Put) {
+      return 'primary';
+    }
+    else {
+      return 'basic';
+    }
+  }
+
+  GetPostButtonColor(vpambient: VPAmbient) {
+    if (this.IDToShow === vpambient.VPAmbientID && this.showType === HttpClientCommand.Post) {
+      return 'primary';
+    }
+    else {
+      return 'basic';
+    }
+  }
+
+  ShowPut(vpambient: VPAmbient) {
+    if (this.IDToShow === vpambient.VPAmbientID && this.showType === HttpClientCommand.Put) {
+      this.IDToShow = 0;
+      this.showType = null;
+    }
+    else {
+      this.IDToShow = vpambient.VPAmbientID;
+      this.showType = HttpClientCommand.Put;
+    }
+  }
+
+  ShowPost(vpambient: VPAmbient) {
+    if (this.IDToShow === vpambient.VPAmbientID && this.showType === HttpClientCommand.Post) {
+      this.IDToShow = 0;
+      this.showType = null;
+    }
+    else {
+      this.IDToShow = vpambient.VPAmbientID;
+      this.showType = HttpClientCommand.Post;
+    }
+  }
+
+  GetPutEnum() {
+    return <number>HttpClientCommand.Put;
+  }
+
+  GetPostEnum() {
+    return <number>HttpClientCommand.Post;
   }
 
   GetVPAmbientList() {
     this.sub = this.vpambientService.GetVPAmbientList().subscribe();
-  }
-
-  PutVPAmbient(vpambient: VPAmbient) {
-    this.sub = this.vpambientService.PutVPAmbient(vpambient).subscribe();
-  }
-
-  PostVPAmbient(vpambient: VPAmbient) {
-    this.sub = this.vpambientService.PostVPAmbient(vpambient).subscribe();
   }
 
   DeleteVPAmbient(vpambient: VPAmbient) {
@@ -48,104 +87,11 @@ export class VPAmbientComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     LoadLocalesVPAmbientText(this.vpambientService);
-    this.FillFormBuilderGroup(HttpClientCommand.Post);
-    this.FillFormBuilderGroup(HttpClientCommand.Put);
   }
 
   ngOnDestroy() {
     if (this.sub) {
       this.sub.unsubscribe();
-    }
-  }
-
-  FillFormBuilderGroup(httpClientCommand: HttpClientCommand) {
-    if (this.vpambientService.vpambientListModel$.getValue().length) {
-      let formGroup: FormGroup = this.fb.group(
-        {
-          VPAmbientID: [
-            {
-              value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.vpambientService.vpambientListModel$.getValue()[0]?.VPAmbientID)),
-              disabled: false
-            }, [  Validators.required ]],
-          VPScenarioID: [
-            {
-              value: this.vpambientService.vpambientListModel$.getValue()[0]?.VPScenarioID,
-              disabled: false
-            }, [  Validators.required ]],
-          Row: [
-            {
-              value: this.vpambientService.vpambientListModel$.getValue()[0]?.Row,
-              disabled: false
-            }, [  Validators.required, Validators.min(0), Validators.max(10) ]],
-          MeasurementDepth_m: [
-            {
-              value: this.vpambientService.vpambientListModel$.getValue()[0]?.MeasurementDepth_m,
-              disabled: false
-            }, [  Validators.min(0), Validators.max(1000) ]],
-          CurrentSpeed_m_s: [
-            {
-              value: this.vpambientService.vpambientListModel$.getValue()[0]?.CurrentSpeed_m_s,
-              disabled: false
-            }, [  Validators.min(0), Validators.max(10) ]],
-          CurrentDirection_deg: [
-            {
-              value: this.vpambientService.vpambientListModel$.getValue()[0]?.CurrentDirection_deg,
-              disabled: false
-            }, [  Validators.min(-180), Validators.max(180) ]],
-          AmbientSalinity_PSU: [
-            {
-              value: this.vpambientService.vpambientListModel$.getValue()[0]?.AmbientSalinity_PSU,
-              disabled: false
-            }, [  Validators.min(0), Validators.max(40) ]],
-          AmbientTemperature_C: [
-            {
-              value: this.vpambientService.vpambientListModel$.getValue()[0]?.AmbientTemperature_C,
-              disabled: false
-            }, [  Validators.min(-10), Validators.max(40) ]],
-          BackgroundConcentration_MPN_100ml: [
-            {
-              value: this.vpambientService.vpambientListModel$.getValue()[0]?.BackgroundConcentration_MPN_100ml,
-              disabled: false
-            }, [  Validators.min(0), Validators.max(10000000) ]],
-          PollutantDecayRate_per_day: [
-            {
-              value: this.vpambientService.vpambientListModel$.getValue()[0]?.PollutantDecayRate_per_day,
-              disabled: false
-            }, [  Validators.min(0), Validators.max(100) ]],
-          FarFieldCurrentSpeed_m_s: [
-            {
-              value: this.vpambientService.vpambientListModel$.getValue()[0]?.FarFieldCurrentSpeed_m_s,
-              disabled: false
-            }, [  Validators.min(0), Validators.max(10) ]],
-          FarFieldCurrentDirection_deg: [
-            {
-              value: this.vpambientService.vpambientListModel$.getValue()[0]?.FarFieldCurrentDirection_deg,
-              disabled: false
-            }, [  Validators.min(-180), Validators.max(180) ]],
-          FarFieldDiffusionCoefficient: [
-            {
-              value: this.vpambientService.vpambientListModel$.getValue()[0]?.FarFieldDiffusionCoefficient,
-              disabled: false
-            }, [  Validators.min(0), Validators.max(1) ]],
-          LastUpdateDate_UTC: [
-            {
-              value: this.vpambientService.vpambientListModel$.getValue()[0]?.LastUpdateDate_UTC,
-              disabled: false
-            }, [  Validators.required ]],
-          LastUpdateContactTVItemID: [
-            {
-              value: this.vpambientService.vpambientListModel$.getValue()[0]?.LastUpdateContactTVItemID,
-              disabled: false
-            }, [  Validators.required ]],
-        }
-      );
-
-      if (httpClientCommand === HttpClientCommand.Post) {
-        this.vpambientFormPost = formGroup
-      }
-      else {
-        this.vpambientFormPut = formGroup;
-      }
     }
   }
 }

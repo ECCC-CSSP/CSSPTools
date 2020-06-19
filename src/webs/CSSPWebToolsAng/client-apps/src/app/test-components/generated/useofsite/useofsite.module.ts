@@ -12,9 +12,10 @@ import { UseOfSiteRoutingModule } from './useofsite-routing.module';
 import { MaterialModule } from '../../../app-material.module';
 import { UseOfSiteComponent } from './useofsite.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { UseOfSiteEditComponent } from './useofsite-edit.component';
 
 @NgModule({
-  declarations: [ UseOfSiteComponent ],
+  declarations: [UseOfSiteComponent, UseOfSiteEditComponent],
   imports: [
     CommonModule,
     RouterModule,

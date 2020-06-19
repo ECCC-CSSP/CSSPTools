@@ -12,9 +12,10 @@ import { RainExceedanceClimateSiteRoutingModule } from './rainexceedanceclimates
 import { MaterialModule } from '../../../app-material.module';
 import { RainExceedanceClimateSiteComponent } from './rainexceedanceclimatesite.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { RainExceedanceClimateSiteEditComponent } from './rainexceedanceclimatesite-edit.component';
 
 @NgModule({
-  declarations: [ RainExceedanceClimateSiteComponent ],
+  declarations: [RainExceedanceClimateSiteComponent, RainExceedanceClimateSiteEditComponent],
   imports: [
     CommonModule,
     RouterModule,

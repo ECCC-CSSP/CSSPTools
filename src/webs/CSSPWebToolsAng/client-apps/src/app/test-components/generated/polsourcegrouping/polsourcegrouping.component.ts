@@ -10,7 +10,6 @@ import { PolSourceGroupingService } from './polsourcegrouping.service';
 import { LoadLocalesPolSourceGroupingText } from './polsourcegrouping.locales';
 import { Subscription } from 'rxjs';
 import { PolSourceGrouping } from '../../../models/generated/PolSourceGrouping.model';
-import { FormBuilder, Validators, FormGroup } from '@angular/forms';
 import { HttpClientService } from '../../../services/http-client.service';
 import { Router } from '@angular/router';
 import { HttpClientCommand } from '../../../enums/app.enums';
@@ -23,23 +22,63 @@ import { HttpClientCommand } from '../../../enums/app.enums';
 })
 export class PolSourceGroupingComponent implements OnInit, OnDestroy {
   sub: Subscription;
-  polsourcegroupingFormPut: FormGroup;
-  polsourcegroupingFormPost: FormGroup;
+  IDToShow: number;
+  showType?: HttpClientCommand = null;
 
-  constructor(public polsourcegroupingService: PolSourceGroupingService, private router: Router, private httpClientService: HttpClientService, private fb: FormBuilder) {
+  constructor(public polsourcegroupingService: PolSourceGroupingService, private router: Router, private httpClientService: HttpClientService) {
     httpClientService.oldURL = router.url;
+  }
+
+  GetPutButtonColor(polsourcegrouping: PolSourceGrouping) {
+    if (this.IDToShow === polsourcegrouping.PolSourceGroupingID && this.showType === HttpClientCommand.Put) {
+      return 'primary';
+    }
+    else {
+      return 'basic';
+    }
+  }
+
+  GetPostButtonColor(polsourcegrouping: PolSourceGrouping) {
+    if (this.IDToShow === polsourcegrouping.PolSourceGroupingID && this.showType === HttpClientCommand.Post) {
+      return 'primary';
+    }
+    else {
+      return 'basic';
+    }
+  }
+
+  ShowPut(polsourcegrouping: PolSourceGrouping) {
+    if (this.IDToShow === polsourcegrouping.PolSourceGroupingID && this.showType === HttpClientCommand.Put) {
+      this.IDToShow = 0;
+      this.showType = null;
+    }
+    else {
+      this.IDToShow = polsourcegrouping.PolSourceGroupingID;
+      this.showType = HttpClientCommand.Put;
+    }
+  }
+
+  ShowPost(polsourcegrouping: PolSourceGrouping) {
+    if (this.IDToShow === polsourcegrouping.PolSourceGroupingID && this.showType === HttpClientCommand.Post) {
+      this.IDToShow = 0;
+      this.showType = null;
+    }
+    else {
+      this.IDToShow = polsourcegrouping.PolSourceGroupingID;
+      this.showType = HttpClientCommand.Post;
+    }
+  }
+
+  GetPutEnum() {
+    return <number>HttpClientCommand.Put;
+  }
+
+  GetPostEnum() {
+    return <number>HttpClientCommand.Post;
   }
 
   GetPolSourceGroupingList() {
     this.sub = this.polsourcegroupingService.GetPolSourceGroupingList().subscribe();
-  }
-
-  PutPolSourceGrouping(polsourcegrouping: PolSourceGrouping) {
-    this.sub = this.polsourcegroupingService.PutPolSourceGrouping(polsourcegrouping).subscribe();
-  }
-
-  PostPolSourceGrouping(polsourcegrouping: PolSourceGrouping) {
-    this.sub = this.polsourcegroupingService.PostPolSourceGrouping(polsourcegrouping).subscribe();
   }
 
   DeletePolSourceGrouping(polsourcegrouping: PolSourceGrouping) {
@@ -48,64 +87,11 @@ export class PolSourceGroupingComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     LoadLocalesPolSourceGroupingText(this.polsourcegroupingService);
-    this.FillFormBuilderGroup(HttpClientCommand.Post);
-    this.FillFormBuilderGroup(HttpClientCommand.Put);
   }
 
   ngOnDestroy() {
     if (this.sub) {
       this.sub.unsubscribe();
-    }
-  }
-
-  FillFormBuilderGroup(httpClientCommand: HttpClientCommand) {
-    if (this.polsourcegroupingService.polsourcegroupingListModel$.getValue().length) {
-      let formGroup: FormGroup = this.fb.group(
-        {
-          PolSourceGroupingID: [
-            {
-              value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.polsourcegroupingService.polsourcegroupingListModel$.getValue()[0]?.PolSourceGroupingID)),
-              disabled: false
-            }, [  Validators.required ]],
-          CSSPID: [
-            {
-              value: this.polsourcegroupingService.polsourcegroupingListModel$.getValue()[0]?.CSSPID,
-              disabled: false
-            }, [  Validators.required, Validators.min(10000), Validators.max(100000) ]],
-          GroupName: [
-            {
-              value: this.polsourcegroupingService.polsourcegroupingListModel$.getValue()[0]?.GroupName,
-              disabled: false
-            }, [  Validators.required, Validators.maxLength(150) ]],
-          Child: [
-            {
-              value: this.polsourcegroupingService.polsourcegroupingListModel$.getValue()[0]?.Child,
-              disabled: false
-            }, [  Validators.required, Validators.maxLength(150) ]],
-          Hide: [
-            {
-              value: this.polsourcegroupingService.polsourcegroupingListModel$.getValue()[0]?.Hide,
-              disabled: false
-            }, [  Validators.required, Validators.maxLength(150) ]],
-          LastUpdateDate_UTC: [
-            {
-              value: this.polsourcegroupingService.polsourcegroupingListModel$.getValue()[0]?.LastUpdateDate_UTC,
-              disabled: false
-            }, [  Validators.required ]],
-          LastUpdateContactTVItemID: [
-            {
-              value: this.polsourcegroupingService.polsourcegroupingListModel$.getValue()[0]?.LastUpdateContactTVItemID,
-              disabled: false
-            }, [  Validators.required ]],
-        }
-      );
-
-      if (httpClientCommand === HttpClientCommand.Post) {
-        this.polsourcegroupingFormPost = formGroup
-      }
-      else {
-        this.polsourcegroupingFormPut = formGroup;
-      }
     }
   }
 }

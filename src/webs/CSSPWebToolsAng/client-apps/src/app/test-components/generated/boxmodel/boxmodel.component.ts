@@ -10,7 +10,6 @@ import { BoxModelService } from './boxmodel.service';
 import { LoadLocalesBoxModelText } from './boxmodel.locales';
 import { Subscription } from 'rxjs';
 import { BoxModel } from '../../../models/generated/BoxModel.model';
-import { FormBuilder, Validators, FormGroup } from '@angular/forms';
 import { HttpClientService } from '../../../services/http-client.service';
 import { Router } from '@angular/router';
 import { HttpClientCommand } from '../../../enums/app.enums';
@@ -23,23 +22,63 @@ import { HttpClientCommand } from '../../../enums/app.enums';
 })
 export class BoxModelComponent implements OnInit, OnDestroy {
   sub: Subscription;
-  boxmodelFormPut: FormGroup;
-  boxmodelFormPost: FormGroup;
+  IDToShow: number;
+  showType?: HttpClientCommand = null;
 
-  constructor(public boxmodelService: BoxModelService, private router: Router, private httpClientService: HttpClientService, private fb: FormBuilder) {
+  constructor(public boxmodelService: BoxModelService, private router: Router, private httpClientService: HttpClientService) {
     httpClientService.oldURL = router.url;
+  }
+
+  GetPutButtonColor(boxmodel: BoxModel) {
+    if (this.IDToShow === boxmodel.BoxModelID && this.showType === HttpClientCommand.Put) {
+      return 'primary';
+    }
+    else {
+      return 'basic';
+    }
+  }
+
+  GetPostButtonColor(boxmodel: BoxModel) {
+    if (this.IDToShow === boxmodel.BoxModelID && this.showType === HttpClientCommand.Post) {
+      return 'primary';
+    }
+    else {
+      return 'basic';
+    }
+  }
+
+  ShowPut(boxmodel: BoxModel) {
+    if (this.IDToShow === boxmodel.BoxModelID && this.showType === HttpClientCommand.Put) {
+      this.IDToShow = 0;
+      this.showType = null;
+    }
+    else {
+      this.IDToShow = boxmodel.BoxModelID;
+      this.showType = HttpClientCommand.Put;
+    }
+  }
+
+  ShowPost(boxmodel: BoxModel) {
+    if (this.IDToShow === boxmodel.BoxModelID && this.showType === HttpClientCommand.Post) {
+      this.IDToShow = 0;
+      this.showType = null;
+    }
+    else {
+      this.IDToShow = boxmodel.BoxModelID;
+      this.showType = HttpClientCommand.Post;
+    }
+  }
+
+  GetPutEnum() {
+    return <number>HttpClientCommand.Put;
+  }
+
+  GetPostEnum() {
+    return <number>HttpClientCommand.Post;
   }
 
   GetBoxModelList() {
     this.sub = this.boxmodelService.GetBoxModelList().subscribe();
-  }
-
-  PutBoxModel(boxmodel: BoxModel) {
-    this.sub = this.boxmodelService.PutBoxModel(boxmodel).subscribe();
-  }
-
-  PostBoxModel(boxmodel: BoxModel) {
-    this.sub = this.boxmodelService.PostBoxModel(boxmodel).subscribe();
   }
 
   DeleteBoxModel(boxmodel: BoxModel) {
@@ -48,99 +87,11 @@ export class BoxModelComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     LoadLocalesBoxModelText(this.boxmodelService);
-    this.FillFormBuilderGroup(HttpClientCommand.Post);
-    this.FillFormBuilderGroup(HttpClientCommand.Put);
   }
 
   ngOnDestroy() {
     if (this.sub) {
       this.sub.unsubscribe();
-    }
-  }
-
-  FillFormBuilderGroup(httpClientCommand: HttpClientCommand) {
-    if (this.boxmodelService.boxmodelListModel$.getValue().length) {
-      let formGroup: FormGroup = this.fb.group(
-        {
-          BoxModelID: [
-            {
-              value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.boxmodelService.boxmodelListModel$.getValue()[0]?.BoxModelID)),
-              disabled: false
-            }, [  Validators.required ]],
-          InfrastructureTVItemID: [
-            {
-              value: this.boxmodelService.boxmodelListModel$.getValue()[0]?.InfrastructureTVItemID,
-              disabled: false
-            }, [  Validators.required ]],
-          Discharge_m3_day: [
-            {
-              value: this.boxmodelService.boxmodelListModel$.getValue()[0]?.Discharge_m3_day,
-              disabled: false
-            }, [  Validators.required, Validators.min(0), Validators.max(10000) ]],
-          Depth_m: [
-            {
-              value: this.boxmodelService.boxmodelListModel$.getValue()[0]?.Depth_m,
-              disabled: false
-            }, [  Validators.required, Validators.min(0), Validators.max(1000) ]],
-          Temperature_C: [
-            {
-              value: this.boxmodelService.boxmodelListModel$.getValue()[0]?.Temperature_C,
-              disabled: false
-            }, [  Validators.required, Validators.min(-15), Validators.max(40) ]],
-          Dilution: [
-            {
-              value: this.boxmodelService.boxmodelListModel$.getValue()[0]?.Dilution,
-              disabled: false
-            }, [  Validators.required, Validators.min(0), Validators.max(10000000) ]],
-          DecayRate_per_day: [
-            {
-              value: this.boxmodelService.boxmodelListModel$.getValue()[0]?.DecayRate_per_day,
-              disabled: false
-            }, [  Validators.required, Validators.min(0), Validators.max(100) ]],
-          FCUntreated_MPN_100ml: [
-            {
-              value: this.boxmodelService.boxmodelListModel$.getValue()[0]?.FCUntreated_MPN_100ml,
-              disabled: false
-            }, [  Validators.required, Validators.min(0), Validators.max(10000000) ]],
-          FCPreDisinfection_MPN_100ml: [
-            {
-              value: this.boxmodelService.boxmodelListModel$.getValue()[0]?.FCPreDisinfection_MPN_100ml,
-              disabled: false
-            }, [  Validators.required, Validators.min(0), Validators.max(10000000) ]],
-          Concentration_MPN_100ml: [
-            {
-              value: this.boxmodelService.boxmodelListModel$.getValue()[0]?.Concentration_MPN_100ml,
-              disabled: false
-            }, [  Validators.required, Validators.min(0), Validators.max(10000000) ]],
-          T90_hour: [
-            {
-              value: this.boxmodelService.boxmodelListModel$.getValue()[0]?.T90_hour,
-              disabled: false
-            }, [  Validators.required, Validators.min(0) ]],
-          DischargeDuration_hour: [
-            {
-              value: this.boxmodelService.boxmodelListModel$.getValue()[0]?.DischargeDuration_hour,
-              disabled: false
-            }, [  Validators.required, Validators.min(0), Validators.max(24) ]],
-          LastUpdateDate_UTC: [
-            {
-              value: this.boxmodelService.boxmodelListModel$.getValue()[0]?.LastUpdateDate_UTC,
-              disabled: false
-            }, [  Validators.required ]],
-          LastUpdateContactTVItemID: [
-            {
-              value: this.boxmodelService.boxmodelListModel$.getValue()[0]?.LastUpdateContactTVItemID,
-              disabled: false
-            }, [  Validators.required ]],
-        }
-      );
-
-      if (httpClientCommand === HttpClientCommand.Post) {
-        this.boxmodelFormPost = formGroup
-      }
-      else {
-        this.boxmodelFormPut = formGroup;
-      }
     }
   }
 }

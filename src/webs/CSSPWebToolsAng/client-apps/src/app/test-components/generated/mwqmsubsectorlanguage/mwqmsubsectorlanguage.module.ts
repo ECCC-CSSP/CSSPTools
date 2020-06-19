@@ -12,9 +12,10 @@ import { MWQMSubsectorLanguageRoutingModule } from './mwqmsubsectorlanguage-rout
 import { MaterialModule } from '../../../app-material.module';
 import { MWQMSubsectorLanguageComponent } from './mwqmsubsectorlanguage.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MWQMSubsectorLanguageEditComponent } from './mwqmsubsectorlanguage-edit.component';
 
 @NgModule({
-  declarations: [ MWQMSubsectorLanguageComponent ],
+  declarations: [MWQMSubsectorLanguageComponent, MWQMSubsectorLanguageEditComponent],
   imports: [
     CommonModule,
     RouterModule,

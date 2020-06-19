@@ -9,13 +9,11 @@ import { Component, OnInit, OnDestroy, ChangeDetectionStrategy } from '@angular/
 import { TVFileService } from './tvfile.service';
 import { LoadLocalesTVFileText } from './tvfile.locales';
 import { Subscription } from 'rxjs';
-import { TVTypeEnum_GetIDText, TVTypeEnum_GetOrderedText } from '../../../enums/generated/TVTypeEnum';
-import { LanguageEnum_GetIDText, LanguageEnum_GetOrderedText } from '../../../enums/generated/LanguageEnum';
-import { FilePurposeEnum_GetIDText, FilePurposeEnum_GetOrderedText } from '../../../enums/generated/FilePurposeEnum';
-import { FileTypeEnum_GetIDText, FileTypeEnum_GetOrderedText } from '../../../enums/generated/FileTypeEnum';
+import { TVTypeEnum_GetIDText } from '../../../enums/generated/TVTypeEnum';
+import { LanguageEnum_GetIDText } from '../../../enums/generated/LanguageEnum';
+import { FilePurposeEnum_GetIDText } from '../../../enums/generated/FilePurposeEnum';
+import { FileTypeEnum_GetIDText } from '../../../enums/generated/FileTypeEnum';
 import { TVFile } from '../../../models/generated/TVFile.model';
-import { FormBuilder, Validators, FormGroup } from '@angular/forms';
-import { EnumIDAndText } from '../../../models/enumidandtext.model';
 import { HttpClientService } from '../../../services/http-client.service';
 import { Router } from '@angular/router';
 import { HttpClientCommand } from '../../../enums/app.enums';
@@ -28,27 +26,63 @@ import { HttpClientCommand } from '../../../enums/app.enums';
 })
 export class TVFileComponent implements OnInit, OnDestroy {
   sub: Subscription;
-  templateTVTypeList: EnumIDAndText[];
-  languageList: EnumIDAndText[];
-  filePurposeList: EnumIDAndText[];
-  fileTypeList: EnumIDAndText[];
-  tvfileFormPut: FormGroup;
-  tvfileFormPost: FormGroup;
+  IDToShow: number;
+  showType?: HttpClientCommand = null;
 
-  constructor(public tvfileService: TVFileService, private router: Router, private httpClientService: HttpClientService, private fb: FormBuilder) {
+  constructor(public tvfileService: TVFileService, private router: Router, private httpClientService: HttpClientService) {
     httpClientService.oldURL = router.url;
+  }
+
+  GetPutButtonColor(tvfile: TVFile) {
+    if (this.IDToShow === tvfile.TVFileID && this.showType === HttpClientCommand.Put) {
+      return 'primary';
+    }
+    else {
+      return 'basic';
+    }
+  }
+
+  GetPostButtonColor(tvfile: TVFile) {
+    if (this.IDToShow === tvfile.TVFileID && this.showType === HttpClientCommand.Post) {
+      return 'primary';
+    }
+    else {
+      return 'basic';
+    }
+  }
+
+  ShowPut(tvfile: TVFile) {
+    if (this.IDToShow === tvfile.TVFileID && this.showType === HttpClientCommand.Put) {
+      this.IDToShow = 0;
+      this.showType = null;
+    }
+    else {
+      this.IDToShow = tvfile.TVFileID;
+      this.showType = HttpClientCommand.Put;
+    }
+  }
+
+  ShowPost(tvfile: TVFile) {
+    if (this.IDToShow === tvfile.TVFileID && this.showType === HttpClientCommand.Post) {
+      this.IDToShow = 0;
+      this.showType = null;
+    }
+    else {
+      this.IDToShow = tvfile.TVFileID;
+      this.showType = HttpClientCommand.Post;
+    }
+  }
+
+  GetPutEnum() {
+    return <number>HttpClientCommand.Put;
+  }
+
+  GetPostEnum() {
+    return <number>HttpClientCommand.Post;
   }
 
   GetTVFileList() {
     this.sub = this.tvfileService.GetTVFileList().subscribe();
-  }
-
-  PutTVFile(tvfile: TVFile) {
-    this.sub = this.tvfileService.PutTVFile(tvfile).subscribe();
-  }
-
-  PostTVFile(tvfile: TVFile) {
-    this.sub = this.tvfileService.PostTVFile(tvfile).subscribe();
   }
 
   DeleteTVFile(tvfile: TVFile) {
@@ -73,123 +107,11 @@ export class TVFileComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     LoadLocalesTVFileText(this.tvfileService);
-    this.templateTVTypeList = TVTypeEnum_GetOrderedText();
-    this.languageList = LanguageEnum_GetOrderedText();
-    this.filePurposeList = FilePurposeEnum_GetOrderedText();
-    this.fileTypeList = FileTypeEnum_GetOrderedText();
-    this.FillFormBuilderGroup(HttpClientCommand.Post);
-    this.FillFormBuilderGroup(HttpClientCommand.Put);
   }
 
   ngOnDestroy() {
     if (this.sub) {
       this.sub.unsubscribe();
-    }
-  }
-
-  FillFormBuilderGroup(httpClientCommand: HttpClientCommand) {
-    if (this.tvfileService.tvfileListModel$.getValue().length) {
-      let formGroup: FormGroup = this.fb.group(
-        {
-          TVFileID: [
-            {
-              value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.tvfileService.tvfileListModel$.getValue()[0]?.TVFileID)),
-              disabled: false
-            }, [  Validators.required ]],
-          TVFileTVItemID: [
-            {
-              value: this.tvfileService.tvfileListModel$.getValue()[0]?.TVFileTVItemID,
-              disabled: false
-            }, [  Validators.required ]],
-          TemplateTVType: [
-            {
-              value: this.tvfileService.tvfileListModel$.getValue()[0]?.TemplateTVType,
-              disabled: false
-            }],
-          ReportTypeID: [
-            {
-              value: this.tvfileService.tvfileListModel$.getValue()[0]?.ReportTypeID,
-              disabled: false
-            }],
-          Parameters: [
-            {
-              value: this.tvfileService.tvfileListModel$.getValue()[0]?.Parameters,
-              disabled: false
-            }],
-          Year: [
-            {
-              value: this.tvfileService.tvfileListModel$.getValue()[0]?.Year,
-              disabled: false
-            }, [  Validators.min(1980), Validators.max(2050) ]],
-          Language: [
-            {
-              value: this.tvfileService.tvfileListModel$.getValue()[0]?.Language,
-              disabled: false
-            }, [  Validators.required ]],
-          FilePurpose: [
-            {
-              value: this.tvfileService.tvfileListModel$.getValue()[0]?.FilePurpose,
-              disabled: false
-            }, [  Validators.required ]],
-          FileType: [
-            {
-              value: this.tvfileService.tvfileListModel$.getValue()[0]?.FileType,
-              disabled: false
-            }, [  Validators.required ]],
-          FileSize_kb: [
-            {
-              value: this.tvfileService.tvfileListModel$.getValue()[0]?.FileSize_kb,
-              disabled: false
-            }, [  Validators.required, Validators.min(0), Validators.max(100000000) ]],
-          FileInfo: [
-            {
-              value: this.tvfileService.tvfileListModel$.getValue()[0]?.FileInfo,
-              disabled: false
-            }],
-          FileCreatedDate_UTC: [
-            {
-              value: this.tvfileService.tvfileListModel$.getValue()[0]?.FileCreatedDate_UTC,
-              disabled: false
-            }, [  Validators.required ]],
-          FromWater: [
-            {
-              value: this.tvfileService.tvfileListModel$.getValue()[0]?.FromWater,
-              disabled: false
-            }],
-          ClientFilePath: [
-            {
-              value: this.tvfileService.tvfileListModel$.getValue()[0]?.ClientFilePath,
-              disabled: false
-            }, [  Validators.maxLength(250) ]],
-          ServerFileName: [
-            {
-              value: this.tvfileService.tvfileListModel$.getValue()[0]?.ServerFileName,
-              disabled: false
-            }, [  Validators.required, Validators.maxLength(250) ]],
-          ServerFilePath: [
-            {
-              value: this.tvfileService.tvfileListModel$.getValue()[0]?.ServerFilePath,
-              disabled: false
-            }, [  Validators.required, Validators.maxLength(250) ]],
-          LastUpdateDate_UTC: [
-            {
-              value: this.tvfileService.tvfileListModel$.getValue()[0]?.LastUpdateDate_UTC,
-              disabled: false
-            }, [  Validators.required ]],
-          LastUpdateContactTVItemID: [
-            {
-              value: this.tvfileService.tvfileListModel$.getValue()[0]?.LastUpdateContactTVItemID,
-              disabled: false
-            }, [  Validators.required ]],
-        }
-      );
-
-      if (httpClientCommand === HttpClientCommand.Post) {
-        this.tvfileFormPost = formGroup
-      }
-      else {
-        this.tvfileFormPut = formGroup;
-      }
     }
   }
 }

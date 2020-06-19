@@ -10,7 +10,6 @@ import { MikeScenarioResultService } from './mikescenarioresult.service';
 import { LoadLocalesMikeScenarioResultText } from './mikescenarioresult.locales';
 import { Subscription } from 'rxjs';
 import { MikeScenarioResult } from '../../../models/generated/MikeScenarioResult.model';
-import { FormBuilder, Validators, FormGroup } from '@angular/forms';
 import { HttpClientService } from '../../../services/http-client.service';
 import { Router } from '@angular/router';
 import { HttpClientCommand } from '../../../enums/app.enums';
@@ -23,23 +22,63 @@ import { HttpClientCommand } from '../../../enums/app.enums';
 })
 export class MikeScenarioResultComponent implements OnInit, OnDestroy {
   sub: Subscription;
-  mikescenarioresultFormPut: FormGroup;
-  mikescenarioresultFormPost: FormGroup;
+  IDToShow: number;
+  showType?: HttpClientCommand = null;
 
-  constructor(public mikescenarioresultService: MikeScenarioResultService, private router: Router, private httpClientService: HttpClientService, private fb: FormBuilder) {
+  constructor(public mikescenarioresultService: MikeScenarioResultService, private router: Router, private httpClientService: HttpClientService) {
     httpClientService.oldURL = router.url;
+  }
+
+  GetPutButtonColor(mikescenarioresult: MikeScenarioResult) {
+    if (this.IDToShow === mikescenarioresult.MikeScenarioResultID && this.showType === HttpClientCommand.Put) {
+      return 'primary';
+    }
+    else {
+      return 'basic';
+    }
+  }
+
+  GetPostButtonColor(mikescenarioresult: MikeScenarioResult) {
+    if (this.IDToShow === mikescenarioresult.MikeScenarioResultID && this.showType === HttpClientCommand.Post) {
+      return 'primary';
+    }
+    else {
+      return 'basic';
+    }
+  }
+
+  ShowPut(mikescenarioresult: MikeScenarioResult) {
+    if (this.IDToShow === mikescenarioresult.MikeScenarioResultID && this.showType === HttpClientCommand.Put) {
+      this.IDToShow = 0;
+      this.showType = null;
+    }
+    else {
+      this.IDToShow = mikescenarioresult.MikeScenarioResultID;
+      this.showType = HttpClientCommand.Put;
+    }
+  }
+
+  ShowPost(mikescenarioresult: MikeScenarioResult) {
+    if (this.IDToShow === mikescenarioresult.MikeScenarioResultID && this.showType === HttpClientCommand.Post) {
+      this.IDToShow = 0;
+      this.showType = null;
+    }
+    else {
+      this.IDToShow = mikescenarioresult.MikeScenarioResultID;
+      this.showType = HttpClientCommand.Post;
+    }
+  }
+
+  GetPutEnum() {
+    return <number>HttpClientCommand.Put;
+  }
+
+  GetPostEnum() {
+    return <number>HttpClientCommand.Post;
   }
 
   GetMikeScenarioResultList() {
     this.sub = this.mikescenarioresultService.GetMikeScenarioResultList().subscribe();
-  }
-
-  PutMikeScenarioResult(mikescenarioresult: MikeScenarioResult) {
-    this.sub = this.mikescenarioresultService.PutMikeScenarioResult(mikescenarioresult).subscribe();
-  }
-
-  PostMikeScenarioResult(mikescenarioresult: MikeScenarioResult) {
-    this.sub = this.mikescenarioresultService.PostMikeScenarioResult(mikescenarioresult).subscribe();
   }
 
   DeleteMikeScenarioResult(mikescenarioresult: MikeScenarioResult) {
@@ -48,54 +87,11 @@ export class MikeScenarioResultComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     LoadLocalesMikeScenarioResultText(this.mikescenarioresultService);
-    this.FillFormBuilderGroup(HttpClientCommand.Post);
-    this.FillFormBuilderGroup(HttpClientCommand.Put);
   }
 
   ngOnDestroy() {
     if (this.sub) {
       this.sub.unsubscribe();
-    }
-  }
-
-  FillFormBuilderGroup(httpClientCommand: HttpClientCommand) {
-    if (this.mikescenarioresultService.mikescenarioresultListModel$.getValue().length) {
-      let formGroup: FormGroup = this.fb.group(
-        {
-          MikeScenarioResultID: [
-            {
-              value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.mikescenarioresultService.mikescenarioresultListModel$.getValue()[0]?.MikeScenarioResultID)),
-              disabled: false
-            }, [  Validators.required ]],
-          MikeScenarioTVItemID: [
-            {
-              value: this.mikescenarioresultService.mikescenarioresultListModel$.getValue()[0]?.MikeScenarioTVItemID,
-              disabled: false
-            }, [  Validators.required ]],
-          MikeResultsJSON: [
-            {
-              value: this.mikescenarioresultService.mikescenarioresultListModel$.getValue()[0]?.MikeResultsJSON,
-              disabled: false
-            }],
-          LastUpdateDate_UTC: [
-            {
-              value: this.mikescenarioresultService.mikescenarioresultListModel$.getValue()[0]?.LastUpdateDate_UTC,
-              disabled: false
-            }, [  Validators.required ]],
-          LastUpdateContactTVItemID: [
-            {
-              value: this.mikescenarioresultService.mikescenarioresultListModel$.getValue()[0]?.LastUpdateContactTVItemID,
-              disabled: false
-            }, [  Validators.required ]],
-        }
-      );
-
-      if (httpClientCommand === HttpClientCommand.Post) {
-        this.mikescenarioresultFormPost = formGroup
-      }
-      else {
-        this.mikescenarioresultFormPut = formGroup;
-      }
     }
   }
 }

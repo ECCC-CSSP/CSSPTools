@@ -17,214 +17,46 @@
     <mat-card-subtitle>{{ polsourceobservationService.polsourceobservationTextModel$.getValue().Title }}</mat-card-subtitle>
   </mat-card-header>
   <mat-card-content>
-    <mat-list *ngIf="polsourceobservationService.polsourceobservationListModel$.getValue()?.length">
-      <mat-list-item *ngFor="let polsourceobservation of polsourceobservationService.polsourceobservationListModel$.getValue()">
-        <span mat-line>
+    <div *ngIf="polsourceobservationService.polsourceobservationListModel$.getValue()?.length">
+      <div *ngFor="let polsourceobservation of polsourceobservationService.polsourceobservationListModel$.getValue()">
+        <p>
           <button mat-raised-button (click)="DeletePolSourceObservation(polsourceobservation)">
             <span>Delete PolSourceObservationID [{{ polsourceobservation.PolSourceObservationID }}]&nbsp;&nbsp;&nbsp;</span>
             <mat-icon>delete</mat-icon>
-          </button>
+          </button>&nbsp;&nbsp;&nbsp;
+          <button mat-raised-button [color]="GetPutButtonColor(polsourceobservation)"(click)="ShowPut(polsourceobservation)">
+            <span>Show Put</span>
+          </button>&nbsp;&nbsp;
+          <button mat-raised-button [color]="GetPostButtonColor(polsourceobservation)"(click)="ShowPost(polsourceobservation)">
+            <span>Show Post</span>
+          </button>&nbsp;&nbsp;
           <mat-progress-bar mode="indeterminate" *ngIf="polsourceobservationService.polsourceobservationDeleteModel$.getValue().Working">
           </mat-progress-bar>
-          </span>
-        <span mat-line>
+        </p>
+        <p *ngIf="IDToShow === polsourceobservation.PolSourceObservationID && showType === GetPutEnum()">
+          <app-polsourceobservation-edit [polsourceobservation]="polsourceobservation" [httpClientCommand]="GetPutEnum()"></app-polsourceobservation-edit>
+        </p>
+        <p *ngIf="IDToShow === polsourceobservation.PolSourceObservationID && showType === GetPostEnum()">
+          <app-polsourceobservation-edit [polsourceobservation]="polsourceobservation" [httpClientCommand]="GetPostEnum()"></app-polsourceobservation-edit>
+        </p>
+        <blockquote>
+        <p>
           <span>PolSourceObservationID: [{{ polsourceobservation.PolSourceObservationID }}]</span>
           <span> --- PolSourceSiteID: [{{ polsourceobservation.PolSourceSiteID }}]</span>
           <span> --- ObservationDate_Local: [{{ polsourceobservation.ObservationDate_Local }}]</span>
           <span> --- ContactTVItemID: [{{ polsourceobservation.ContactTVItemID }}]</span>
-        </span>
-        <span mat-line>
+ </p>
+        <p>
           <span>DesktopReviewed: [{{ polsourceobservation.DesktopReviewed }}]</span>
           <span> --- Observation_ToBeDeleted: [{{ polsourceobservation.Observation_ToBeDeleted }}]</span>
           <span> --- LastUpdateDate_UTC: [{{ polsourceobservation.LastUpdateDate_UTC }}]</span>
           <span> --- LastUpdateContactTVItemID: [{{ polsourceobservation.LastUpdateContactTVItemID }}]</span>
-        </span>
-       </mat-list-item>
-     </mat-list>
+        </p>
+        </blockquote>
+       </div>
+     </div>
    </mat-card-content>
  <mat-card-actions>
    <button mat-button>Allo</button>
  </mat-card-actions>
-</mat-card>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<mat-card>
-  <mat-card-header>
-    <mat-card-title>Edit PolSourceObservation testing</mat-card-title>
-  </mat-card-header>
-  <mat-card-content>
-    <div *ngIf="polsourceobservationService.polsourceobservationListModel$.getValue()?.length">
-      <blockquote>
-        <form [formGroup]="polsourceobservationFormPut" (ngSubmit)="PutPolSourceObservation(polsourceobservationFormPut.value)">
-          <h3>
-            PolSourceObservation
-            <button mat-raised-button type="submit">
-              <span>Update PolSourceObservation</span>
-            </button>
-            <mat-progress-bar mode="indeterminate" *ngIf="polsourceobservationService.polsourceobservationPutModel$.getValue().Working">
-            </mat-progress-bar>
-          </h3>
-          <p>
-            <mat-form-field>
-              <mat-label>PolSourceObservationID</mat-label>
-              <input matInput type="number" formControlName="PolSourceObservationID">
-              <mat-error *ngIf="polsourceobservationFormPut.controls.PolSourceObservationID.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>PolSourceSiteID</mat-label>
-              <input matInput type="number" formControlName="PolSourceSiteID">
-              <mat-error *ngIf="polsourceobservationFormPut.controls.PolSourceSiteID.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>ObservationDate_Local</mat-label>
-              <input matInput type="text" formControlName="ObservationDate_Local">
-              <mat-error *ngIf="polsourceobservationFormPut.controls.ObservationDate_Local.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>ContactTVItemID</mat-label>
-              <input matInput type="number" formControlName="ContactTVItemID">
-              <mat-error *ngIf="polsourceobservationFormPut.controls.ContactTVItemID.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-          </p>
-          <p>
-            <mat-form-field>
-              <mat-label>DesktopReviewed</mat-label>
-              <input matInput type="text" formControlName="DesktopReviewed">
-              <mat-error *ngIf="polsourceobservationFormPut.controls.DesktopReviewed.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>Observation_ToBeDeleted</mat-label>
-              <input matInput type="text" formControlName="Observation_ToBeDeleted">
-              <mat-error *ngIf="polsourceobservationFormPut.controls.Observation_ToBeDeleted.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>LastUpdateDate_UTC</mat-label>
-              <input matInput type="text" formControlName="LastUpdateDate_UTC">
-              <mat-error *ngIf="polsourceobservationFormPut.controls.LastUpdateDate_UTC.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>LastUpdateContactTVItemID</mat-label>
-              <input matInput type="number" formControlName="LastUpdateContactTVItemID">
-              <mat-error *ngIf="polsourceobservationFormPut.controls.LastUpdateContactTVItemID.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-          </p>
-        </form>
-      </blockquote>
-    </div>
-  </mat-card-content>
-</mat-card>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<mat-card>
-  <mat-card-header>
-    <mat-card-title>Add PolSourceObservation testing</mat-card-title>
-  </mat-card-header>
-  <mat-card-content>
-    <div *ngIf="polsourceobservationService.polsourceobservationListModel$.getValue()?.length">
-      <blockquote>
-        <form [formGroup]="polsourceobservationFormPost" (ngSubmit)="PostPolSourceObservation(polsourceobservationFormPost.value)">
-          <h3>
-            PolSourceObservation
-            <button mat-raised-button type="submit">
-              <span>Add PolSourceObservation</span>
-            </button>
-            <mat-progress-bar mode="indeterminate" *ngIf="polsourceobservationService.polsourceobservationPostModel$.getValue().Working">
-            </mat-progress-bar>
-          </h3>
-          <p>
-            <mat-form-field>
-              <mat-label>PolSourceObservationID</mat-label>
-              <input matInput type="number" formControlName="PolSourceObservationID">
-              <mat-error *ngIf="polsourceobservationFormPut.controls.PolSourceObservationID.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>PolSourceSiteID</mat-label>
-              <input matInput type="number" formControlName="PolSourceSiteID">
-              <mat-error *ngIf="polsourceobservationFormPut.controls.PolSourceSiteID.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>ObservationDate_Local</mat-label>
-              <input matInput type="text" formControlName="ObservationDate_Local">
-              <mat-error *ngIf="polsourceobservationFormPut.controls.ObservationDate_Local.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>ContactTVItemID</mat-label>
-              <input matInput type="number" formControlName="ContactTVItemID">
-              <mat-error *ngIf="polsourceobservationFormPut.controls.ContactTVItemID.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-          </p>
-          <p>
-            <mat-form-field>
-              <mat-label>DesktopReviewed</mat-label>
-              <input matInput type="text" formControlName="DesktopReviewed">
-              <mat-error *ngIf="polsourceobservationFormPut.controls.DesktopReviewed.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>Observation_ToBeDeleted</mat-label>
-              <input matInput type="text" formControlName="Observation_ToBeDeleted">
-              <mat-error *ngIf="polsourceobservationFormPut.controls.Observation_ToBeDeleted.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>LastUpdateDate_UTC</mat-label>
-              <input matInput type="text" formControlName="LastUpdateDate_UTC">
-              <mat-error *ngIf="polsourceobservationFormPut.controls.LastUpdateDate_UTC.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>LastUpdateContactTVItemID</mat-label>
-              <input matInput type="number" formControlName="LastUpdateContactTVItemID">
-              <mat-error *ngIf="polsourceobservationFormPut.controls.LastUpdateContactTVItemID.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-          </p>
-        </form>
-      </blockquote>
-    </div>
-  </mat-card-content>
 </mat-card>

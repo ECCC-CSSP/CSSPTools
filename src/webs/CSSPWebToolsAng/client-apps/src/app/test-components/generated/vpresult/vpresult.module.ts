@@ -12,9 +12,10 @@ import { VPResultRoutingModule } from './vpresult-routing.module';
 import { MaterialModule } from '../../../app-material.module';
 import { VPResultComponent } from './vpresult.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { VPResultEditComponent } from './vpresult-edit.component';
 
 @NgModule({
-  declarations: [ VPResultComponent ],
+  declarations: [VPResultComponent, VPResultEditComponent],
   imports: [
     CommonModule,
     RouterModule,

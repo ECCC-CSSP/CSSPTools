@@ -12,9 +12,10 @@ import { SamplingPlanEmailRoutingModule } from './samplingplanemail-routing.modu
 import { MaterialModule } from '../../../app-material.module';
 import { SamplingPlanEmailComponent } from './samplingplanemail.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { SamplingPlanEmailEditComponent } from './samplingplanemail-edit.component';
 
 @NgModule({
-  declarations: [ SamplingPlanEmailComponent ],
+  declarations: [SamplingPlanEmailComponent, SamplingPlanEmailEditComponent],
   imports: [
     CommonModule,
     RouterModule,

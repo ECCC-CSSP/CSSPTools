@@ -12,9 +12,10 @@ import { VPScenarioLanguageRoutingModule } from './vpscenariolanguage-routing.mo
 import { MaterialModule } from '../../../app-material.module';
 import { VPScenarioLanguageComponent } from './vpscenariolanguage.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { VPScenarioLanguageEditComponent } from './vpscenariolanguage-edit.component';
 
 @NgModule({
-  declarations: [ VPScenarioLanguageComponent ],
+  declarations: [VPScenarioLanguageComponent, VPScenarioLanguageEditComponent],
   imports: [
     CommonModule,
     RouterModule,

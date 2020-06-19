@@ -9,11 +9,9 @@ import { Component, OnInit, OnDestroy, ChangeDetectionStrategy } from '@angular/
 import { MWQMSampleLanguageService } from './mwqmsamplelanguage.service';
 import { LoadLocalesMWQMSampleLanguageText } from './mwqmsamplelanguage.locales';
 import { Subscription } from 'rxjs';
-import { LanguageEnum_GetIDText, LanguageEnum_GetOrderedText } from '../../../enums/generated/LanguageEnum';
-import { TranslationStatusEnum_GetIDText, TranslationStatusEnum_GetOrderedText } from '../../../enums/generated/TranslationStatusEnum';
+import { LanguageEnum_GetIDText } from '../../../enums/generated/LanguageEnum';
+import { TranslationStatusEnum_GetIDText } from '../../../enums/generated/TranslationStatusEnum';
 import { MWQMSampleLanguage } from '../../../models/generated/MWQMSampleLanguage.model';
-import { FormBuilder, Validators, FormGroup } from '@angular/forms';
-import { EnumIDAndText } from '../../../models/enumidandtext.model';
 import { HttpClientService } from '../../../services/http-client.service';
 import { Router } from '@angular/router';
 import { HttpClientCommand } from '../../../enums/app.enums';
@@ -26,25 +24,63 @@ import { HttpClientCommand } from '../../../enums/app.enums';
 })
 export class MWQMSampleLanguageComponent implements OnInit, OnDestroy {
   sub: Subscription;
-  languageList: EnumIDAndText[];
-  translationStatusList: EnumIDAndText[];
-  mwqmsamplelanguageFormPut: FormGroup;
-  mwqmsamplelanguageFormPost: FormGroup;
+  IDToShow: number;
+  showType?: HttpClientCommand = null;
 
-  constructor(public mwqmsamplelanguageService: MWQMSampleLanguageService, private router: Router, private httpClientService: HttpClientService, private fb: FormBuilder) {
+  constructor(public mwqmsamplelanguageService: MWQMSampleLanguageService, private router: Router, private httpClientService: HttpClientService) {
     httpClientService.oldURL = router.url;
+  }
+
+  GetPutButtonColor(mwqmsamplelanguage: MWQMSampleLanguage) {
+    if (this.IDToShow === mwqmsamplelanguage.MWQMSampleLanguageID && this.showType === HttpClientCommand.Put) {
+      return 'primary';
+    }
+    else {
+      return 'basic';
+    }
+  }
+
+  GetPostButtonColor(mwqmsamplelanguage: MWQMSampleLanguage) {
+    if (this.IDToShow === mwqmsamplelanguage.MWQMSampleLanguageID && this.showType === HttpClientCommand.Post) {
+      return 'primary';
+    }
+    else {
+      return 'basic';
+    }
+  }
+
+  ShowPut(mwqmsamplelanguage: MWQMSampleLanguage) {
+    if (this.IDToShow === mwqmsamplelanguage.MWQMSampleLanguageID && this.showType === HttpClientCommand.Put) {
+      this.IDToShow = 0;
+      this.showType = null;
+    }
+    else {
+      this.IDToShow = mwqmsamplelanguage.MWQMSampleLanguageID;
+      this.showType = HttpClientCommand.Put;
+    }
+  }
+
+  ShowPost(mwqmsamplelanguage: MWQMSampleLanguage) {
+    if (this.IDToShow === mwqmsamplelanguage.MWQMSampleLanguageID && this.showType === HttpClientCommand.Post) {
+      this.IDToShow = 0;
+      this.showType = null;
+    }
+    else {
+      this.IDToShow = mwqmsamplelanguage.MWQMSampleLanguageID;
+      this.showType = HttpClientCommand.Post;
+    }
+  }
+
+  GetPutEnum() {
+    return <number>HttpClientCommand.Put;
+  }
+
+  GetPostEnum() {
+    return <number>HttpClientCommand.Post;
   }
 
   GetMWQMSampleLanguageList() {
     this.sub = this.mwqmsamplelanguageService.GetMWQMSampleLanguageList().subscribe();
-  }
-
-  PutMWQMSampleLanguage(mwqmsamplelanguage: MWQMSampleLanguage) {
-    this.sub = this.mwqmsamplelanguageService.PutMWQMSampleLanguage(mwqmsamplelanguage).subscribe();
-  }
-
-  PostMWQMSampleLanguage(mwqmsamplelanguage: MWQMSampleLanguage) {
-    this.sub = this.mwqmsamplelanguageService.PostMWQMSampleLanguage(mwqmsamplelanguage).subscribe();
   }
 
   DeleteMWQMSampleLanguage(mwqmsamplelanguage: MWQMSampleLanguage) {
@@ -61,66 +97,11 @@ export class MWQMSampleLanguageComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     LoadLocalesMWQMSampleLanguageText(this.mwqmsamplelanguageService);
-    this.languageList = LanguageEnum_GetOrderedText();
-    this.translationStatusList = TranslationStatusEnum_GetOrderedText();
-    this.FillFormBuilderGroup(HttpClientCommand.Post);
-    this.FillFormBuilderGroup(HttpClientCommand.Put);
   }
 
   ngOnDestroy() {
     if (this.sub) {
       this.sub.unsubscribe();
-    }
-  }
-
-  FillFormBuilderGroup(httpClientCommand: HttpClientCommand) {
-    if (this.mwqmsamplelanguageService.mwqmsamplelanguageListModel$.getValue().length) {
-      let formGroup: FormGroup = this.fb.group(
-        {
-          MWQMSampleLanguageID: [
-            {
-              value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.mwqmsamplelanguageService.mwqmsamplelanguageListModel$.getValue()[0]?.MWQMSampleLanguageID)),
-              disabled: false
-            }, [  Validators.required ]],
-          MWQMSampleID: [
-            {
-              value: this.mwqmsamplelanguageService.mwqmsamplelanguageListModel$.getValue()[0]?.MWQMSampleID,
-              disabled: false
-            }, [  Validators.required ]],
-          Language: [
-            {
-              value: this.mwqmsamplelanguageService.mwqmsamplelanguageListModel$.getValue()[0]?.Language,
-              disabled: false
-            }, [  Validators.required ]],
-          MWQMSampleNote: [
-            {
-              value: this.mwqmsamplelanguageService.mwqmsamplelanguageListModel$.getValue()[0]?.MWQMSampleNote,
-              disabled: false
-            }, [  Validators.required ]],
-          TranslationStatus: [
-            {
-              value: this.mwqmsamplelanguageService.mwqmsamplelanguageListModel$.getValue()[0]?.TranslationStatus,
-              disabled: false
-            }, [  Validators.required ]],
-          LastUpdateDate_UTC: [
-            {
-              value: this.mwqmsamplelanguageService.mwqmsamplelanguageListModel$.getValue()[0]?.LastUpdateDate_UTC,
-              disabled: false
-            }, [  Validators.required ]],
-          LastUpdateContactTVItemID: [
-            {
-              value: this.mwqmsamplelanguageService.mwqmsamplelanguageListModel$.getValue()[0]?.LastUpdateContactTVItemID,
-              disabled: false
-            }, [  Validators.required ]],
-        }
-      );
-
-      if (httpClientCommand === HttpClientCommand.Post) {
-        this.mwqmsamplelanguageFormPost = formGroup
-      }
-      else {
-        this.mwqmsamplelanguageFormPut = formGroup;
-      }
     }
   }
 }

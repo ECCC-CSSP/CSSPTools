@@ -12,9 +12,10 @@ import { TVFileLanguageRoutingModule } from './tvfilelanguage-routing.module';
 import { MaterialModule } from '../../../app-material.module';
 import { TVFileLanguageComponent } from './tvfilelanguage.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { TVFileLanguageEditComponent } from './tvfilelanguage-edit.component';
 
 @NgModule({
-  declarations: [ TVFileLanguageComponent ],
+  declarations: [TVFileLanguageComponent, TVFileLanguageEditComponent],
   imports: [
     CommonModule,
     RouterModule,

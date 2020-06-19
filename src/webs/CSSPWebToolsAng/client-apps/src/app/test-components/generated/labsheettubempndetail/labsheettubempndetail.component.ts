@@ -9,10 +9,8 @@ import { Component, OnInit, OnDestroy, ChangeDetectionStrategy } from '@angular/
 import { LabSheetTubeMPNDetailService } from './labsheettubempndetail.service';
 import { LoadLocalesLabSheetTubeMPNDetailText } from './labsheettubempndetail.locales';
 import { Subscription } from 'rxjs';
-import { SampleTypeEnum_GetIDText, SampleTypeEnum_GetOrderedText } from '../../../enums/generated/SampleTypeEnum';
+import { SampleTypeEnum_GetIDText } from '../../../enums/generated/SampleTypeEnum';
 import { LabSheetTubeMPNDetail } from '../../../models/generated/LabSheetTubeMPNDetail.model';
-import { FormBuilder, Validators, FormGroup } from '@angular/forms';
-import { EnumIDAndText } from '../../../models/enumidandtext.model';
 import { HttpClientService } from '../../../services/http-client.service';
 import { Router } from '@angular/router';
 import { HttpClientCommand } from '../../../enums/app.enums';
@@ -25,24 +23,63 @@ import { HttpClientCommand } from '../../../enums/app.enums';
 })
 export class LabSheetTubeMPNDetailComponent implements OnInit, OnDestroy {
   sub: Subscription;
-  sampleTypeList: EnumIDAndText[];
-  labsheettubempndetailFormPut: FormGroup;
-  labsheettubempndetailFormPost: FormGroup;
+  IDToShow: number;
+  showType?: HttpClientCommand = null;
 
-  constructor(public labsheettubempndetailService: LabSheetTubeMPNDetailService, private router: Router, private httpClientService: HttpClientService, private fb: FormBuilder) {
+  constructor(public labsheettubempndetailService: LabSheetTubeMPNDetailService, private router: Router, private httpClientService: HttpClientService) {
     httpClientService.oldURL = router.url;
+  }
+
+  GetPutButtonColor(labsheettubempndetail: LabSheetTubeMPNDetail) {
+    if (this.IDToShow === labsheettubempndetail.LabSheetTubeMPNDetailID && this.showType === HttpClientCommand.Put) {
+      return 'primary';
+    }
+    else {
+      return 'basic';
+    }
+  }
+
+  GetPostButtonColor(labsheettubempndetail: LabSheetTubeMPNDetail) {
+    if (this.IDToShow === labsheettubempndetail.LabSheetTubeMPNDetailID && this.showType === HttpClientCommand.Post) {
+      return 'primary';
+    }
+    else {
+      return 'basic';
+    }
+  }
+
+  ShowPut(labsheettubempndetail: LabSheetTubeMPNDetail) {
+    if (this.IDToShow === labsheettubempndetail.LabSheetTubeMPNDetailID && this.showType === HttpClientCommand.Put) {
+      this.IDToShow = 0;
+      this.showType = null;
+    }
+    else {
+      this.IDToShow = labsheettubempndetail.LabSheetTubeMPNDetailID;
+      this.showType = HttpClientCommand.Put;
+    }
+  }
+
+  ShowPost(labsheettubempndetail: LabSheetTubeMPNDetail) {
+    if (this.IDToShow === labsheettubempndetail.LabSheetTubeMPNDetailID && this.showType === HttpClientCommand.Post) {
+      this.IDToShow = 0;
+      this.showType = null;
+    }
+    else {
+      this.IDToShow = labsheettubempndetail.LabSheetTubeMPNDetailID;
+      this.showType = HttpClientCommand.Post;
+    }
+  }
+
+  GetPutEnum() {
+    return <number>HttpClientCommand.Put;
+  }
+
+  GetPostEnum() {
+    return <number>HttpClientCommand.Post;
   }
 
   GetLabSheetTubeMPNDetailList() {
     this.sub = this.labsheettubempndetailService.GetLabSheetTubeMPNDetailList().subscribe();
-  }
-
-  PutLabSheetTubeMPNDetail(labsheettubempndetail: LabSheetTubeMPNDetail) {
-    this.sub = this.labsheettubempndetailService.PutLabSheetTubeMPNDetail(labsheettubempndetail).subscribe();
-  }
-
-  PostLabSheetTubeMPNDetail(labsheettubempndetail: LabSheetTubeMPNDetail) {
-    this.sub = this.labsheettubempndetailService.PostLabSheetTubeMPNDetail(labsheettubempndetail).subscribe();
   }
 
   DeleteLabSheetTubeMPNDetail(labsheettubempndetail: LabSheetTubeMPNDetail) {
@@ -55,110 +92,11 @@ export class LabSheetTubeMPNDetailComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     LoadLocalesLabSheetTubeMPNDetailText(this.labsheettubempndetailService);
-    this.sampleTypeList = SampleTypeEnum_GetOrderedText();
-    this.FillFormBuilderGroup(HttpClientCommand.Post);
-    this.FillFormBuilderGroup(HttpClientCommand.Put);
   }
 
   ngOnDestroy() {
     if (this.sub) {
       this.sub.unsubscribe();
-    }
-  }
-
-  FillFormBuilderGroup(httpClientCommand: HttpClientCommand) {
-    if (this.labsheettubempndetailService.labsheettubempndetailListModel$.getValue().length) {
-      let formGroup: FormGroup = this.fb.group(
-        {
-          LabSheetTubeMPNDetailID: [
-            {
-              value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.labsheettubempndetailService.labsheettubempndetailListModel$.getValue()[0]?.LabSheetTubeMPNDetailID)),
-              disabled: false
-            }, [  Validators.required ]],
-          LabSheetDetailID: [
-            {
-              value: this.labsheettubempndetailService.labsheettubempndetailListModel$.getValue()[0]?.LabSheetDetailID,
-              disabled: false
-            }, [  Validators.required ]],
-          Ordinal: [
-            {
-              value: this.labsheettubempndetailService.labsheettubempndetailListModel$.getValue()[0]?.Ordinal,
-              disabled: false
-            }, [  Validators.required, Validators.min(0), Validators.max(1000) ]],
-          MWQMSiteTVItemID: [
-            {
-              value: this.labsheettubempndetailService.labsheettubempndetailListModel$.getValue()[0]?.MWQMSiteTVItemID,
-              disabled: false
-            }, [  Validators.required ]],
-          SampleDateTime: [
-            {
-              value: this.labsheettubempndetailService.labsheettubempndetailListModel$.getValue()[0]?.SampleDateTime,
-              disabled: false
-            }],
-          MPN: [
-            {
-              value: this.labsheettubempndetailService.labsheettubempndetailListModel$.getValue()[0]?.MPN,
-              disabled: false
-            }, [  Validators.min(1), Validators.max(10000000) ]],
-          Tube10: [
-            {
-              value: this.labsheettubempndetailService.labsheettubempndetailListModel$.getValue()[0]?.Tube10,
-              disabled: false
-            }, [  Validators.min(0), Validators.max(5) ]],
-          Tube1_0: [
-            {
-              value: this.labsheettubempndetailService.labsheettubempndetailListModel$.getValue()[0]?.Tube1_0,
-              disabled: false
-            }, [  Validators.min(0), Validators.max(5) ]],
-          Tube0_1: [
-            {
-              value: this.labsheettubempndetailService.labsheettubempndetailListModel$.getValue()[0]?.Tube0_1,
-              disabled: false
-            }, [  Validators.min(0), Validators.max(5) ]],
-          Salinity: [
-            {
-              value: this.labsheettubempndetailService.labsheettubempndetailListModel$.getValue()[0]?.Salinity,
-              disabled: false
-            }, [  Validators.min(0), Validators.max(40) ]],
-          Temperature: [
-            {
-              value: this.labsheettubempndetailService.labsheettubempndetailListModel$.getValue()[0]?.Temperature,
-              disabled: false
-            }, [  Validators.min(-10), Validators.max(40) ]],
-          ProcessedBy: [
-            {
-              value: this.labsheettubempndetailService.labsheettubempndetailListModel$.getValue()[0]?.ProcessedBy,
-              disabled: false
-            }, [  Validators.maxLength(10) ]],
-          SampleType: [
-            {
-              value: this.labsheettubempndetailService.labsheettubempndetailListModel$.getValue()[0]?.SampleType,
-              disabled: false
-            }, [  Validators.required ]],
-          SiteComment: [
-            {
-              value: this.labsheettubempndetailService.labsheettubempndetailListModel$.getValue()[0]?.SiteComment,
-              disabled: false
-            }, [  Validators.maxLength(250) ]],
-          LastUpdateDate_UTC: [
-            {
-              value: this.labsheettubempndetailService.labsheettubempndetailListModel$.getValue()[0]?.LastUpdateDate_UTC,
-              disabled: false
-            }, [  Validators.required ]],
-          LastUpdateContactTVItemID: [
-            {
-              value: this.labsheettubempndetailService.labsheettubempndetailListModel$.getValue()[0]?.LastUpdateContactTVItemID,
-              disabled: false
-            }, [  Validators.required ]],
-        }
-      );
-
-      if (httpClientCommand === HttpClientCommand.Post) {
-        this.labsheettubempndetailFormPost = formGroup
-      }
-      else {
-        this.labsheettubempndetailFormPut = formGroup;
-      }
     }
   }
 }

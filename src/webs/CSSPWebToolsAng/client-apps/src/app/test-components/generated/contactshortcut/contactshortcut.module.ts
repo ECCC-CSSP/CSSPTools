@@ -12,9 +12,10 @@ import { ContactShortcutRoutingModule } from './contactshortcut-routing.module';
 import { MaterialModule } from '../../../app-material.module';
 import { ContactShortcutComponent } from './contactshortcut.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ContactShortcutEditComponent } from './contactshortcut-edit.component';
 
 @NgModule({
-  declarations: [ ContactShortcutComponent ],
+  declarations: [ContactShortcutComponent, ContactShortcutEditComponent],
   imports: [
     CommonModule,
     RouterModule,

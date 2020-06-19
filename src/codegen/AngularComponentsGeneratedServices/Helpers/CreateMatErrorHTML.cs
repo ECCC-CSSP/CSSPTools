@@ -15,43 +15,43 @@ namespace AngularComponentsGeneratedServices.Services
     {
         private void CreateMatErrorHTML(DLLTypeInfo dllTypeInfoModels, DLLPropertyInfo dllPropertyInfo, StringBuilder sb)
         {
-            sb.AppendLine($@"              <mat-error *ngIf=""{ dllTypeInfoModels.Name.ToLower() }FormPut.controls.{ dllPropertyInfo.CSSPProp.PropName }.errors; let e;"">");
+            sb.AppendLine($@"      <mat-error *ngIf=""{ dllTypeInfoModels.Name.ToLower() }FormEdit.controls.{ dllPropertyInfo.CSSPProp.PropName }.errors; let e;"">");
 
             // repllicated
-            sb.AppendLine($@"                <span>{{{{ e | json }}}}<br /></span>");
+            sb.AppendLine($@"        <span>{{{{ e | json }}}}<br /></span>");
 
             // doing required
             if (!dllPropertyInfo.CSSPProp.IsNullable)
             {
-                sb.AppendLine($@"                <span *ngIf=""e.required"">Is Required<br /></span>");
+                sb.AppendLine($@"        <span *ngIf=""e.required"">Is Required<br /></span>");
             }
             // doing min
             if (dllPropertyInfo.CSSPProp.HasCSSPRangeAttribute && dllPropertyInfo.CSSPProp.Min != null)
             {
-                sb.AppendLine($@"                <span *ngIf=""e.min"">Min - { dllPropertyInfo.CSSPProp.Min }<br /></span>");
+                sb.AppendLine($@"        <span *ngIf=""e.min"">Min - { dllPropertyInfo.CSSPProp.Min }<br /></span>");
             }
             // doing max
             if (dllPropertyInfo.CSSPProp.HasCSSPRangeAttribute && dllPropertyInfo.CSSPProp.Max != null)
             {
-                sb.AppendLine($@"                <span *ngIf=""e.min"">Max - { dllPropertyInfo.CSSPProp.Max }<br /></span>");
+                sb.AppendLine($@"        <span *ngIf=""e.min"">Max - { dllPropertyInfo.CSSPProp.Max }<br /></span>");
             }
             // doing email
             if (dllPropertyInfo.CSSPProp.HasDataTypeAttribute)
             {
                 if (dllPropertyInfo.CSSPProp.dataType == DataType.EmailAddress)
                 {
-                    sb.AppendLine($@"                <span *ngIf=""e.email"">Need valid Email<br /></span>");
+                    sb.AppendLine($@"        <span *ngIf=""e.email"">Need valid Email<br /></span>");
                 }
             }
             // doing minLength
             if (dllPropertyInfo.CSSPProp.HasCSSPMinLengthAttribute)
             {
-                sb.AppendLine($@"                <span *ngIf=""e.minlength"">MinLength - { dllPropertyInfo.CSSPProp.Min }<br /></span>");
+                sb.AppendLine($@"        <span *ngIf=""e.minlength"">MinLength - { dllPropertyInfo.CSSPProp.Min }<br /></span>");
             }
             // doing maxLength
             if (dllPropertyInfo.CSSPProp.HasCSSPMaxLengthAttribute)
             {
-                sb.AppendLine($@"                <span *ngIf=""e.maxlength"">MaxLength - { dllPropertyInfo.CSSPProp.Max }<br /></span>");
+                sb.AppendLine($@"        <span *ngIf=""e.maxlength"">MaxLength - { dllPropertyInfo.CSSPProp.Max }<br /></span>");
             }
             //// doing pattern
             //if (dllPropertyInfo.CSSPProp.)
@@ -60,7 +60,7 @@ namespace AngularComponentsGeneratedServices.Services
             //}
 
 
-            sb.AppendLine(@"              </mat-error>");
+            sb.AppendLine(@"      </mat-error>");
         }
     }
 }

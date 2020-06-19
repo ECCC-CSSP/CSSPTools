@@ -17,445 +17,63 @@
     <mat-card-subtitle>{{ mwqmsampleService.mwqmsampleTextModel$.getValue().Title }}</mat-card-subtitle>
   </mat-card-header>
   <mat-card-content>
-    <mat-list *ngIf="mwqmsampleService.mwqmsampleListModel$.getValue()?.length">
-      <mat-list-item *ngFor="let mwqmsample of mwqmsampleService.mwqmsampleListModel$.getValue()">
-        <span mat-line>
+    <div *ngIf="mwqmsampleService.mwqmsampleListModel$.getValue()?.length">
+      <div *ngFor="let mwqmsample of mwqmsampleService.mwqmsampleListModel$.getValue()">
+        <p>
           <button mat-raised-button (click)="DeleteMWQMSample(mwqmsample)">
             <span>Delete MWQMSampleID [{{ mwqmsample.MWQMSampleID }}]&nbsp;&nbsp;&nbsp;</span>
             <mat-icon>delete</mat-icon>
-          </button>
+          </button>&nbsp;&nbsp;&nbsp;
+          <button mat-raised-button [color]="GetPutButtonColor(mwqmsample)"(click)="ShowPut(mwqmsample)">
+            <span>Show Put</span>
+          </button>&nbsp;&nbsp;
+          <button mat-raised-button [color]="GetPostButtonColor(mwqmsample)"(click)="ShowPost(mwqmsample)">
+            <span>Show Post</span>
+          </button>&nbsp;&nbsp;
           <mat-progress-bar mode="indeterminate" *ngIf="mwqmsampleService.mwqmsampleDeleteModel$.getValue().Working">
           </mat-progress-bar>
-          </span>
-        <span mat-line>
+        </p>
+        <p *ngIf="IDToShow === mwqmsample.MWQMSampleID && showType === GetPutEnum()">
+          <app-mwqmsample-edit [mwqmsample]="mwqmsample" [httpClientCommand]="GetPutEnum()"></app-mwqmsample-edit>
+        </p>
+        <p *ngIf="IDToShow === mwqmsample.MWQMSampleID && showType === GetPostEnum()">
+          <app-mwqmsample-edit [mwqmsample]="mwqmsample" [httpClientCommand]="GetPostEnum()"></app-mwqmsample-edit>
+        </p>
+        <blockquote>
+        <p>
           <span>MWQMSampleID: [{{ mwqmsample.MWQMSampleID }}]</span>
           <span> --- MWQMSiteTVItemID: [{{ mwqmsample.MWQMSiteTVItemID }}]</span>
           <span> --- MWQMRunTVItemID: [{{ mwqmsample.MWQMRunTVItemID }}]</span>
           <span> --- SampleDateTime_Local: [{{ mwqmsample.SampleDateTime_Local }}]</span>
-        </span>
-        <span mat-line>
+ </p>
+        <p>
           <span>TimeText: [{{ mwqmsample.TimeText }}]</span>
           <span> --- Depth_m: [{{ mwqmsample.Depth_m }}]</span>
           <span> --- FecCol_MPN_100ml: [{{ mwqmsample.FecCol_MPN_100ml }}]</span>
           <span> --- Salinity_PPT: [{{ mwqmsample.Salinity_PPT }}]</span>
-        </span>
-        <span mat-line>
+ </p>
+        <p>
           <span>WaterTemp_C: [{{ mwqmsample.WaterTemp_C }}]</span>
           <span> --- PH: [{{ mwqmsample.PH }}]</span>
           <span> --- SampleTypesText: [{{ mwqmsample.SampleTypesText }}]</span>
           <span> --- SampleType_old: [{{ GetSampleTypeEnumText(mwqmsample.SampleType_old) }}]</span>
-        </span>
-        <span mat-line>
+ </p>
+        <p>
           <span>Tube_10: [{{ mwqmsample.Tube_10 }}]</span>
           <span> --- Tube_1_0: [{{ mwqmsample.Tube_1_0 }}]</span>
           <span> --- Tube_0_1: [{{ mwqmsample.Tube_0_1 }}]</span>
           <span> --- ProcessedBy: [{{ mwqmsample.ProcessedBy }}]</span>
-        </span>
-        <span mat-line>
+ </p>
+        <p>
           <span>UseForOpenData: [{{ mwqmsample.UseForOpenData }}]</span>
           <span> --- LastUpdateDate_UTC: [{{ mwqmsample.LastUpdateDate_UTC }}]</span>
           <span> --- LastUpdateContactTVItemID: [{{ mwqmsample.LastUpdateContactTVItemID }}]</span>
-        </span>
-       </mat-list-item>
-     </mat-list>
+        </p>
+        </blockquote>
+       </div>
+     </div>
    </mat-card-content>
  <mat-card-actions>
    <button mat-button>Allo</button>
  </mat-card-actions>
-</mat-card>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<mat-card>
-  <mat-card-header>
-    <mat-card-title>Edit MWQMSample testing</mat-card-title>
-  </mat-card-header>
-  <mat-card-content>
-    <div *ngIf="mwqmsampleService.mwqmsampleListModel$.getValue()?.length">
-      <blockquote>
-        <form [formGroup]="mwqmsampleFormPut" (ngSubmit)="PutMWQMSample(mwqmsampleFormPut.value)">
-          <h3>
-            MWQMSample
-            <button mat-raised-button type="submit">
-              <span>Update MWQMSample</span>
-            </button>
-            <mat-progress-bar mode="indeterminate" *ngIf="mwqmsampleService.mwqmsamplePutModel$.getValue().Working">
-            </mat-progress-bar>
-          </h3>
-          <p>
-            <mat-form-field>
-              <mat-label>MWQMSampleID</mat-label>
-              <input matInput type="number" formControlName="MWQMSampleID">
-              <mat-error *ngIf="mwqmsampleFormPut.controls.MWQMSampleID.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>MWQMSiteTVItemID</mat-label>
-              <input matInput type="number" formControlName="MWQMSiteTVItemID">
-              <mat-error *ngIf="mwqmsampleFormPut.controls.MWQMSiteTVItemID.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>MWQMRunTVItemID</mat-label>
-              <input matInput type="number" formControlName="MWQMRunTVItemID">
-              <mat-error *ngIf="mwqmsampleFormPut.controls.MWQMRunTVItemID.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>SampleDateTime_Local</mat-label>
-              <input matInput type="text" formControlName="SampleDateTime_Local">
-              <mat-error *ngIf="mwqmsampleFormPut.controls.SampleDateTime_Local.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-          </p>
-          <p>
-            <mat-form-field>
-              <mat-label>TimeText</mat-label>
-              <input matInput type="text" formControlName="TimeText">
-              <mat-error *ngIf="mwqmsampleFormPut.controls.TimeText.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.maxlength">MaxLength - 6<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>Depth_m</mat-label>
-              <input matInput type="number" formControlName="Depth_m">
-              <mat-error *ngIf="mwqmsampleFormPut.controls.Depth_m.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.min">Min - 0<br /></span>
-                <span *ngIf="e.min">Max - 1000<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>FecCol_MPN_100ml</mat-label>
-              <input matInput type="number" formControlName="FecCol_MPN_100ml">
-              <mat-error *ngIf="mwqmsampleFormPut.controls.FecCol_MPN_100ml.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-                <span *ngIf="e.min">Min - 0<br /></span>
-                <span *ngIf="e.min">Max - 10000000<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>Salinity_PPT</mat-label>
-              <input matInput type="number" formControlName="Salinity_PPT">
-              <mat-error *ngIf="mwqmsampleFormPut.controls.Salinity_PPT.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.min">Min - 0<br /></span>
-                <span *ngIf="e.min">Max - 40<br /></span>
-              </mat-error>
-            </mat-form-field>
-          </p>
-          <p>
-            <mat-form-field>
-              <mat-label>WaterTemp_C</mat-label>
-              <input matInput type="number" formControlName="WaterTemp_C">
-              <mat-error *ngIf="mwqmsampleFormPut.controls.WaterTemp_C.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.min">Min - -10<br /></span>
-                <span *ngIf="e.min">Max - 40<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>PH</mat-label>
-              <input matInput type="number" formControlName="PH">
-              <mat-error *ngIf="mwqmsampleFormPut.controls.PH.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.min">Min - 0<br /></span>
-                <span *ngIf="e.min">Max - 14<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>SampleTypesText</mat-label>
-              <input matInput type="text" formControlName="SampleTypesText">
-              <mat-error *ngIf="mwqmsampleFormPut.controls.SampleTypesText.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-                <span *ngIf="e.maxlength">MaxLength - 50<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>SampleType_old</mat-label>
-              <mat-select formControlName="SampleType_old">
-                <mat-option *ngFor="let a of sampleType_oldList" [value]="a.EnumID">
-                  {{ a.EnumText }}
-                </mat-option>
-              </mat-select>
-              <mat-error *ngIf="mwqmsampleFormPut.controls.SampleType_old.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-              </mat-error>
-            </mat-form-field>
-          </p>
-          <p>
-            <mat-form-field>
-              <mat-label>Tube_10</mat-label>
-              <input matInput type="number" formControlName="Tube_10">
-              <mat-error *ngIf="mwqmsampleFormPut.controls.Tube_10.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.min">Min - 0<br /></span>
-                <span *ngIf="e.min">Max - 5<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>Tube_1_0</mat-label>
-              <input matInput type="number" formControlName="Tube_1_0">
-              <mat-error *ngIf="mwqmsampleFormPut.controls.Tube_1_0.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.min">Min - 0<br /></span>
-                <span *ngIf="e.min">Max - 5<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>Tube_0_1</mat-label>
-              <input matInput type="number" formControlName="Tube_0_1">
-              <mat-error *ngIf="mwqmsampleFormPut.controls.Tube_0_1.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.min">Min - 0<br /></span>
-                <span *ngIf="e.min">Max - 5<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>ProcessedBy</mat-label>
-              <input matInput type="text" formControlName="ProcessedBy">
-              <mat-error *ngIf="mwqmsampleFormPut.controls.ProcessedBy.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.maxlength">MaxLength - 10<br /></span>
-              </mat-error>
-            </mat-form-field>
-          </p>
-          <p>
-            <mat-form-field>
-              <mat-label>UseForOpenData</mat-label>
-              <input matInput type="text" formControlName="UseForOpenData">
-              <mat-error *ngIf="mwqmsampleFormPut.controls.UseForOpenData.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>LastUpdateDate_UTC</mat-label>
-              <input matInput type="text" formControlName="LastUpdateDate_UTC">
-              <mat-error *ngIf="mwqmsampleFormPut.controls.LastUpdateDate_UTC.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>LastUpdateContactTVItemID</mat-label>
-              <input matInput type="number" formControlName="LastUpdateContactTVItemID">
-              <mat-error *ngIf="mwqmsampleFormPut.controls.LastUpdateContactTVItemID.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-          </p>
-        </form>
-      </blockquote>
-    </div>
-  </mat-card-content>
-</mat-card>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<mat-card>
-  <mat-card-header>
-    <mat-card-title>Add MWQMSample testing</mat-card-title>
-  </mat-card-header>
-  <mat-card-content>
-    <div *ngIf="mwqmsampleService.mwqmsampleListModel$.getValue()?.length">
-      <blockquote>
-        <form [formGroup]="mwqmsampleFormPost" (ngSubmit)="PostMWQMSample(mwqmsampleFormPost.value)">
-          <h3>
-            MWQMSample
-            <button mat-raised-button type="submit">
-              <span>Add MWQMSample</span>
-            </button>
-            <mat-progress-bar mode="indeterminate" *ngIf="mwqmsampleService.mwqmsamplePostModel$.getValue().Working">
-            </mat-progress-bar>
-          </h3>
-          <p>
-            <mat-form-field>
-              <mat-label>MWQMSampleID</mat-label>
-              <input matInput type="number" formControlName="MWQMSampleID">
-              <mat-error *ngIf="mwqmsampleFormPut.controls.MWQMSampleID.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>MWQMSiteTVItemID</mat-label>
-              <input matInput type="number" formControlName="MWQMSiteTVItemID">
-              <mat-error *ngIf="mwqmsampleFormPut.controls.MWQMSiteTVItemID.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>MWQMRunTVItemID</mat-label>
-              <input matInput type="number" formControlName="MWQMRunTVItemID">
-              <mat-error *ngIf="mwqmsampleFormPut.controls.MWQMRunTVItemID.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>SampleDateTime_Local</mat-label>
-              <input matInput type="text" formControlName="SampleDateTime_Local">
-              <mat-error *ngIf="mwqmsampleFormPut.controls.SampleDateTime_Local.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-          </p>
-          <p>
-            <mat-form-field>
-              <mat-label>TimeText</mat-label>
-              <input matInput type="text" formControlName="TimeText">
-              <mat-error *ngIf="mwqmsampleFormPut.controls.TimeText.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.maxlength">MaxLength - 6<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>Depth_m</mat-label>
-              <input matInput type="number" formControlName="Depth_m">
-              <mat-error *ngIf="mwqmsampleFormPut.controls.Depth_m.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.min">Min - 0<br /></span>
-                <span *ngIf="e.min">Max - 1000<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>FecCol_MPN_100ml</mat-label>
-              <input matInput type="number" formControlName="FecCol_MPN_100ml">
-              <mat-error *ngIf="mwqmsampleFormPut.controls.FecCol_MPN_100ml.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-                <span *ngIf="e.min">Min - 0<br /></span>
-                <span *ngIf="e.min">Max - 10000000<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>Salinity_PPT</mat-label>
-              <input matInput type="number" formControlName="Salinity_PPT">
-              <mat-error *ngIf="mwqmsampleFormPut.controls.Salinity_PPT.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.min">Min - 0<br /></span>
-                <span *ngIf="e.min">Max - 40<br /></span>
-              </mat-error>
-            </mat-form-field>
-          </p>
-          <p>
-            <mat-form-field>
-              <mat-label>WaterTemp_C</mat-label>
-              <input matInput type="number" formControlName="WaterTemp_C">
-              <mat-error *ngIf="mwqmsampleFormPut.controls.WaterTemp_C.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.min">Min - -10<br /></span>
-                <span *ngIf="e.min">Max - 40<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>PH</mat-label>
-              <input matInput type="number" formControlName="PH">
-              <mat-error *ngIf="mwqmsampleFormPut.controls.PH.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.min">Min - 0<br /></span>
-                <span *ngIf="e.min">Max - 14<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>SampleTypesText</mat-label>
-              <input matInput type="text" formControlName="SampleTypesText">
-              <mat-error *ngIf="mwqmsampleFormPut.controls.SampleTypesText.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-                <span *ngIf="e.maxlength">MaxLength - 50<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>SampleType_old</mat-label>
-              <mat-select formControlName="SampleType_old">
-                <mat-option *ngFor="let a of sampleType_oldList" [value]="a.EnumID">
-                  {{ a.EnumText }}
-                </mat-option>
-              </mat-select>
-              <mat-error *ngIf="mwqmsampleFormPut.controls.SampleType_old.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-              </mat-error>
-            </mat-form-field>
-          </p>
-          <p>
-            <mat-form-field>
-              <mat-label>Tube_10</mat-label>
-              <input matInput type="number" formControlName="Tube_10">
-              <mat-error *ngIf="mwqmsampleFormPut.controls.Tube_10.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.min">Min - 0<br /></span>
-                <span *ngIf="e.min">Max - 5<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>Tube_1_0</mat-label>
-              <input matInput type="number" formControlName="Tube_1_0">
-              <mat-error *ngIf="mwqmsampleFormPut.controls.Tube_1_0.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.min">Min - 0<br /></span>
-                <span *ngIf="e.min">Max - 5<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>Tube_0_1</mat-label>
-              <input matInput type="number" formControlName="Tube_0_1">
-              <mat-error *ngIf="mwqmsampleFormPut.controls.Tube_0_1.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.min">Min - 0<br /></span>
-                <span *ngIf="e.min">Max - 5<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>ProcessedBy</mat-label>
-              <input matInput type="text" formControlName="ProcessedBy">
-              <mat-error *ngIf="mwqmsampleFormPut.controls.ProcessedBy.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.maxlength">MaxLength - 10<br /></span>
-              </mat-error>
-            </mat-form-field>
-          </p>
-          <p>
-            <mat-form-field>
-              <mat-label>UseForOpenData</mat-label>
-              <input matInput type="text" formControlName="UseForOpenData">
-              <mat-error *ngIf="mwqmsampleFormPut.controls.UseForOpenData.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>LastUpdateDate_UTC</mat-label>
-              <input matInput type="text" formControlName="LastUpdateDate_UTC">
-              <mat-error *ngIf="mwqmsampleFormPut.controls.LastUpdateDate_UTC.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>LastUpdateContactTVItemID</mat-label>
-              <input matInput type="number" formControlName="LastUpdateContactTVItemID">
-              <mat-error *ngIf="mwqmsampleFormPut.controls.LastUpdateContactTVItemID.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-          </p>
-        </form>
-      </blockquote>
-    </div>
-  </mat-card-content>
 </mat-card>

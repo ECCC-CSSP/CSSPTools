@@ -12,9 +12,10 @@ import { TideLocationRoutingModule } from './tidelocation-routing.module';
 import { MaterialModule } from '../../../app-material.module';
 import { TideLocationComponent } from './tidelocation.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { TideLocationEditComponent } from './tidelocation-edit.component';
 
 @NgModule({
-  declarations: [ TideLocationComponent ],
+  declarations: [TideLocationComponent, TideLocationEditComponent],
   imports: [
     CommonModule,
     RouterModule,

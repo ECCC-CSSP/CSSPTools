@@ -9,21 +9,19 @@ import { Component, OnInit, OnDestroy, ChangeDetectionStrategy } from '@angular/
 import { InfrastructureService } from './infrastructure.service';
 import { LoadLocalesInfrastructureText } from './infrastructure.locales';
 import { Subscription } from 'rxjs';
-import { InfrastructureTypeEnum_GetIDText, InfrastructureTypeEnum_GetOrderedText } from '../../../enums/generated/InfrastructureTypeEnum';
-import { FacilityTypeEnum_GetIDText, FacilityTypeEnum_GetOrderedText } from '../../../enums/generated/FacilityTypeEnum';
-import { AerationTypeEnum_GetIDText, AerationTypeEnum_GetOrderedText } from '../../../enums/generated/AerationTypeEnum';
-import { PreliminaryTreatmentTypeEnum_GetIDText, PreliminaryTreatmentTypeEnum_GetOrderedText } from '../../../enums/generated/PreliminaryTreatmentTypeEnum';
-import { PrimaryTreatmentTypeEnum_GetIDText, PrimaryTreatmentTypeEnum_GetOrderedText } from '../../../enums/generated/PrimaryTreatmentTypeEnum';
-import { SecondaryTreatmentTypeEnum_GetIDText, SecondaryTreatmentTypeEnum_GetOrderedText } from '../../../enums/generated/SecondaryTreatmentTypeEnum';
-import { TertiaryTreatmentTypeEnum_GetIDText, TertiaryTreatmentTypeEnum_GetOrderedText } from '../../../enums/generated/TertiaryTreatmentTypeEnum';
-import { TreatmentTypeEnum_GetIDText, TreatmentTypeEnum_GetOrderedText } from '../../../enums/generated/TreatmentTypeEnum';
-import { DisinfectionTypeEnum_GetIDText, DisinfectionTypeEnum_GetOrderedText } from '../../../enums/generated/DisinfectionTypeEnum';
-import { CollectionSystemTypeEnum_GetIDText, CollectionSystemTypeEnum_GetOrderedText } from '../../../enums/generated/CollectionSystemTypeEnum';
-import { AlarmSystemTypeEnum_GetIDText, AlarmSystemTypeEnum_GetOrderedText } from '../../../enums/generated/AlarmSystemTypeEnum';
-import { ValveTypeEnum_GetIDText, ValveTypeEnum_GetOrderedText } from '../../../enums/generated/ValveTypeEnum';
+import { InfrastructureTypeEnum_GetIDText } from '../../../enums/generated/InfrastructureTypeEnum';
+import { FacilityTypeEnum_GetIDText } from '../../../enums/generated/FacilityTypeEnum';
+import { AerationTypeEnum_GetIDText } from '../../../enums/generated/AerationTypeEnum';
+import { PreliminaryTreatmentTypeEnum_GetIDText } from '../../../enums/generated/PreliminaryTreatmentTypeEnum';
+import { PrimaryTreatmentTypeEnum_GetIDText } from '../../../enums/generated/PrimaryTreatmentTypeEnum';
+import { SecondaryTreatmentTypeEnum_GetIDText } from '../../../enums/generated/SecondaryTreatmentTypeEnum';
+import { TertiaryTreatmentTypeEnum_GetIDText } from '../../../enums/generated/TertiaryTreatmentTypeEnum';
+import { TreatmentTypeEnum_GetIDText } from '../../../enums/generated/TreatmentTypeEnum';
+import { DisinfectionTypeEnum_GetIDText } from '../../../enums/generated/DisinfectionTypeEnum';
+import { CollectionSystemTypeEnum_GetIDText } from '../../../enums/generated/CollectionSystemTypeEnum';
+import { AlarmSystemTypeEnum_GetIDText } from '../../../enums/generated/AlarmSystemTypeEnum';
+import { ValveTypeEnum_GetIDText } from '../../../enums/generated/ValveTypeEnum';
 import { Infrastructure } from '../../../models/generated/Infrastructure.model';
-import { FormBuilder, Validators, FormGroup } from '@angular/forms';
-import { EnumIDAndText } from '../../../models/enumidandtext.model';
 import { HttpClientService } from '../../../services/http-client.service';
 import { Router } from '@angular/router';
 import { HttpClientCommand } from '../../../enums/app.enums';
@@ -36,35 +34,63 @@ import { HttpClientCommand } from '../../../enums/app.enums';
 })
 export class InfrastructureComponent implements OnInit, OnDestroy {
   sub: Subscription;
-  infrastructureTypeList: EnumIDAndText[];
-  facilityTypeList: EnumIDAndText[];
-  aerationTypeList: EnumIDAndText[];
-  preliminaryTreatmentTypeList: EnumIDAndText[];
-  primaryTreatmentTypeList: EnumIDAndText[];
-  secondaryTreatmentTypeList: EnumIDAndText[];
-  tertiaryTreatmentTypeList: EnumIDAndText[];
-  treatmentTypeList: EnumIDAndText[];
-  disinfectionTypeList: EnumIDAndText[];
-  collectionSystemTypeList: EnumIDAndText[];
-  alarmSystemTypeList: EnumIDAndText[];
-  valveTypeList: EnumIDAndText[];
-  infrastructureFormPut: FormGroup;
-  infrastructureFormPost: FormGroup;
+  IDToShow: number;
+  showType?: HttpClientCommand = null;
 
-  constructor(public infrastructureService: InfrastructureService, private router: Router, private httpClientService: HttpClientService, private fb: FormBuilder) {
+  constructor(public infrastructureService: InfrastructureService, private router: Router, private httpClientService: HttpClientService) {
     httpClientService.oldURL = router.url;
+  }
+
+  GetPutButtonColor(infrastructure: Infrastructure) {
+    if (this.IDToShow === infrastructure.InfrastructureID && this.showType === HttpClientCommand.Put) {
+      return 'primary';
+    }
+    else {
+      return 'basic';
+    }
+  }
+
+  GetPostButtonColor(infrastructure: Infrastructure) {
+    if (this.IDToShow === infrastructure.InfrastructureID && this.showType === HttpClientCommand.Post) {
+      return 'primary';
+    }
+    else {
+      return 'basic';
+    }
+  }
+
+  ShowPut(infrastructure: Infrastructure) {
+    if (this.IDToShow === infrastructure.InfrastructureID && this.showType === HttpClientCommand.Put) {
+      this.IDToShow = 0;
+      this.showType = null;
+    }
+    else {
+      this.IDToShow = infrastructure.InfrastructureID;
+      this.showType = HttpClientCommand.Put;
+    }
+  }
+
+  ShowPost(infrastructure: Infrastructure) {
+    if (this.IDToShow === infrastructure.InfrastructureID && this.showType === HttpClientCommand.Post) {
+      this.IDToShow = 0;
+      this.showType = null;
+    }
+    else {
+      this.IDToShow = infrastructure.InfrastructureID;
+      this.showType = HttpClientCommand.Post;
+    }
+  }
+
+  GetPutEnum() {
+    return <number>HttpClientCommand.Put;
+  }
+
+  GetPostEnum() {
+    return <number>HttpClientCommand.Post;
   }
 
   GetInfrastructureList() {
     this.sub = this.infrastructureService.GetInfrastructureList().subscribe();
-  }
-
-  PutInfrastructure(infrastructure: Infrastructure) {
-    this.sub = this.infrastructureService.PutInfrastructure(infrastructure).subscribe();
-  }
-
-  PostInfrastructure(infrastructure: Infrastructure) {
-    this.sub = this.infrastructureService.PostInfrastructure(infrastructure).subscribe();
   }
 
   DeleteInfrastructure(infrastructure: Infrastructure) {
@@ -121,291 +147,11 @@ export class InfrastructureComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     LoadLocalesInfrastructureText(this.infrastructureService);
-    this.infrastructureTypeList = InfrastructureTypeEnum_GetOrderedText();
-    this.facilityTypeList = FacilityTypeEnum_GetOrderedText();
-    this.aerationTypeList = AerationTypeEnum_GetOrderedText();
-    this.preliminaryTreatmentTypeList = PreliminaryTreatmentTypeEnum_GetOrderedText();
-    this.primaryTreatmentTypeList = PrimaryTreatmentTypeEnum_GetOrderedText();
-    this.secondaryTreatmentTypeList = SecondaryTreatmentTypeEnum_GetOrderedText();
-    this.tertiaryTreatmentTypeList = TertiaryTreatmentTypeEnum_GetOrderedText();
-    this.treatmentTypeList = TreatmentTypeEnum_GetOrderedText();
-    this.disinfectionTypeList = DisinfectionTypeEnum_GetOrderedText();
-    this.collectionSystemTypeList = CollectionSystemTypeEnum_GetOrderedText();
-    this.alarmSystemTypeList = AlarmSystemTypeEnum_GetOrderedText();
-    this.valveTypeList = ValveTypeEnum_GetOrderedText();
-    this.FillFormBuilderGroup(HttpClientCommand.Post);
-    this.FillFormBuilderGroup(HttpClientCommand.Put);
   }
 
   ngOnDestroy() {
     if (this.sub) {
       this.sub.unsubscribe();
-    }
-  }
-
-  FillFormBuilderGroup(httpClientCommand: HttpClientCommand) {
-    if (this.infrastructureService.infrastructureListModel$.getValue().length) {
-      let formGroup: FormGroup = this.fb.group(
-        {
-          InfrastructureID: [
-            {
-              value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.infrastructureService.infrastructureListModel$.getValue()[0]?.InfrastructureID)),
-              disabled: false
-            }, [  Validators.required ]],
-          InfrastructureTVItemID: [
-            {
-              value: this.infrastructureService.infrastructureListModel$.getValue()[0]?.InfrastructureTVItemID,
-              disabled: false
-            }, [  Validators.required ]],
-          PrismID: [
-            {
-              value: this.infrastructureService.infrastructureListModel$.getValue()[0]?.PrismID,
-              disabled: false
-            }, [  Validators.min(0), Validators.max(100000) ]],
-          TPID: [
-            {
-              value: this.infrastructureService.infrastructureListModel$.getValue()[0]?.TPID,
-              disabled: false
-            }, [  Validators.min(0), Validators.max(100000) ]],
-          LSID: [
-            {
-              value: this.infrastructureService.infrastructureListModel$.getValue()[0]?.LSID,
-              disabled: false
-            }, [  Validators.min(0), Validators.max(100000) ]],
-          SiteID: [
-            {
-              value: this.infrastructureService.infrastructureListModel$.getValue()[0]?.SiteID,
-              disabled: false
-            }, [  Validators.min(0), Validators.max(100000) ]],
-          Site: [
-            {
-              value: this.infrastructureService.infrastructureListModel$.getValue()[0]?.Site,
-              disabled: false
-            }, [  Validators.min(0), Validators.max(100000) ]],
-          InfrastructureCategory: [
-            {
-              value: this.infrastructureService.infrastructureListModel$.getValue()[0]?.InfrastructureCategory,
-              disabled: false
-            }, [  Validators.minLength(1), Validators.maxLength(1) ]],
-          InfrastructureType: [
-            {
-              value: this.infrastructureService.infrastructureListModel$.getValue()[0]?.InfrastructureType,
-              disabled: false
-            }],
-          FacilityType: [
-            {
-              value: this.infrastructureService.infrastructureListModel$.getValue()[0]?.FacilityType,
-              disabled: false
-            }],
-          HasBackupPower: [
-            {
-              value: this.infrastructureService.infrastructureListModel$.getValue()[0]?.HasBackupPower,
-              disabled: false
-            }],
-          IsMechanicallyAerated: [
-            {
-              value: this.infrastructureService.infrastructureListModel$.getValue()[0]?.IsMechanicallyAerated,
-              disabled: false
-            }],
-          NumberOfCells: [
-            {
-              value: this.infrastructureService.infrastructureListModel$.getValue()[0]?.NumberOfCells,
-              disabled: false
-            }, [  Validators.min(0), Validators.max(10) ]],
-          NumberOfAeratedCells: [
-            {
-              value: this.infrastructureService.infrastructureListModel$.getValue()[0]?.NumberOfAeratedCells,
-              disabled: false
-            }, [  Validators.min(0), Validators.max(10) ]],
-          AerationType: [
-            {
-              value: this.infrastructureService.infrastructureListModel$.getValue()[0]?.AerationType,
-              disabled: false
-            }],
-          PreliminaryTreatmentType: [
-            {
-              value: this.infrastructureService.infrastructureListModel$.getValue()[0]?.PreliminaryTreatmentType,
-              disabled: false
-            }],
-          PrimaryTreatmentType: [
-            {
-              value: this.infrastructureService.infrastructureListModel$.getValue()[0]?.PrimaryTreatmentType,
-              disabled: false
-            }],
-          SecondaryTreatmentType: [
-            {
-              value: this.infrastructureService.infrastructureListModel$.getValue()[0]?.SecondaryTreatmentType,
-              disabled: false
-            }],
-          TertiaryTreatmentType: [
-            {
-              value: this.infrastructureService.infrastructureListModel$.getValue()[0]?.TertiaryTreatmentType,
-              disabled: false
-            }],
-          TreatmentType: [
-            {
-              value: this.infrastructureService.infrastructureListModel$.getValue()[0]?.TreatmentType,
-              disabled: false
-            }],
-          DisinfectionType: [
-            {
-              value: this.infrastructureService.infrastructureListModel$.getValue()[0]?.DisinfectionType,
-              disabled: false
-            }],
-          CollectionSystemType: [
-            {
-              value: this.infrastructureService.infrastructureListModel$.getValue()[0]?.CollectionSystemType,
-              disabled: false
-            }],
-          AlarmSystemType: [
-            {
-              value: this.infrastructureService.infrastructureListModel$.getValue()[0]?.AlarmSystemType,
-              disabled: false
-            }],
-          DesignFlow_m3_day: [
-            {
-              value: this.infrastructureService.infrastructureListModel$.getValue()[0]?.DesignFlow_m3_day,
-              disabled: false
-            }, [  Validators.min(0), Validators.max(1000000) ]],
-          AverageFlow_m3_day: [
-            {
-              value: this.infrastructureService.infrastructureListModel$.getValue()[0]?.AverageFlow_m3_day,
-              disabled: false
-            }, [  Validators.min(0), Validators.max(1000000) ]],
-          PeakFlow_m3_day: [
-            {
-              value: this.infrastructureService.infrastructureListModel$.getValue()[0]?.PeakFlow_m3_day,
-              disabled: false
-            }, [  Validators.min(0), Validators.max(1000000) ]],
-          PopServed: [
-            {
-              value: this.infrastructureService.infrastructureListModel$.getValue()[0]?.PopServed,
-              disabled: false
-            }, [  Validators.min(0), Validators.max(1000000) ]],
-          CanOverflow: [
-            {
-              value: this.infrastructureService.infrastructureListModel$.getValue()[0]?.CanOverflow,
-              disabled: false
-            }],
-          ValveType: [
-            {
-              value: this.infrastructureService.infrastructureListModel$.getValue()[0]?.ValveType,
-              disabled: false
-            }],
-          PercFlowOfTotal: [
-            {
-              value: this.infrastructureService.infrastructureListModel$.getValue()[0]?.PercFlowOfTotal,
-              disabled: false
-            }, [  Validators.min(0), Validators.max(100) ]],
-          TimeOffset_hour: [
-            {
-              value: this.infrastructureService.infrastructureListModel$.getValue()[0]?.TimeOffset_hour,
-              disabled: false
-            }, [  Validators.min(-10), Validators.max(0) ]],
-          TempCatchAllRemoveLater: [
-            {
-              value: this.infrastructureService.infrastructureListModel$.getValue()[0]?.TempCatchAllRemoveLater,
-              disabled: false
-            }],
-          AverageDepth_m: [
-            {
-              value: this.infrastructureService.infrastructureListModel$.getValue()[0]?.AverageDepth_m,
-              disabled: false
-            }, [  Validators.min(0), Validators.max(1000) ]],
-          NumberOfPorts: [
-            {
-              value: this.infrastructureService.infrastructureListModel$.getValue()[0]?.NumberOfPorts,
-              disabled: false
-            }, [  Validators.min(1), Validators.max(1000) ]],
-          PortDiameter_m: [
-            {
-              value: this.infrastructureService.infrastructureListModel$.getValue()[0]?.PortDiameter_m,
-              disabled: false
-            }, [  Validators.min(0), Validators.max(10) ]],
-          PortSpacing_m: [
-            {
-              value: this.infrastructureService.infrastructureListModel$.getValue()[0]?.PortSpacing_m,
-              disabled: false
-            }, [  Validators.min(0), Validators.max(10000) ]],
-          PortElevation_m: [
-            {
-              value: this.infrastructureService.infrastructureListModel$.getValue()[0]?.PortElevation_m,
-              disabled: false
-            }, [  Validators.min(0), Validators.max(1000) ]],
-          VerticalAngle_deg: [
-            {
-              value: this.infrastructureService.infrastructureListModel$.getValue()[0]?.VerticalAngle_deg,
-              disabled: false
-            }, [  Validators.min(-90), Validators.max(90) ]],
-          HorizontalAngle_deg: [
-            {
-              value: this.infrastructureService.infrastructureListModel$.getValue()[0]?.HorizontalAngle_deg,
-              disabled: false
-            }, [  Validators.min(-180), Validators.max(180) ]],
-          DecayRate_per_day: [
-            {
-              value: this.infrastructureService.infrastructureListModel$.getValue()[0]?.DecayRate_per_day,
-              disabled: false
-            }, [  Validators.min(0), Validators.max(100) ]],
-          NearFieldVelocity_m_s: [
-            {
-              value: this.infrastructureService.infrastructureListModel$.getValue()[0]?.NearFieldVelocity_m_s,
-              disabled: false
-            }, [  Validators.min(0), Validators.max(10) ]],
-          FarFieldVelocity_m_s: [
-            {
-              value: this.infrastructureService.infrastructureListModel$.getValue()[0]?.FarFieldVelocity_m_s,
-              disabled: false
-            }, [  Validators.min(0), Validators.max(10) ]],
-          ReceivingWaterSalinity_PSU: [
-            {
-              value: this.infrastructureService.infrastructureListModel$.getValue()[0]?.ReceivingWaterSalinity_PSU,
-              disabled: false
-            }, [  Validators.min(0), Validators.max(40) ]],
-          ReceivingWaterTemperature_C: [
-            {
-              value: this.infrastructureService.infrastructureListModel$.getValue()[0]?.ReceivingWaterTemperature_C,
-              disabled: false
-            }, [  Validators.min(-10), Validators.max(40) ]],
-          ReceivingWater_MPN_per_100ml: [
-            {
-              value: this.infrastructureService.infrastructureListModel$.getValue()[0]?.ReceivingWater_MPN_per_100ml,
-              disabled: false
-            }, [  Validators.min(0), Validators.max(10000000) ]],
-          DistanceFromShore_m: [
-            {
-              value: this.infrastructureService.infrastructureListModel$.getValue()[0]?.DistanceFromShore_m,
-              disabled: false
-            }, [  Validators.min(0), Validators.max(1000) ]],
-          SeeOtherMunicipalityTVItemID: [
-            {
-              value: this.infrastructureService.infrastructureListModel$.getValue()[0]?.SeeOtherMunicipalityTVItemID,
-              disabled: false
-            }],
-          CivicAddressTVItemID: [
-            {
-              value: this.infrastructureService.infrastructureListModel$.getValue()[0]?.CivicAddressTVItemID,
-              disabled: false
-            }],
-          LastUpdateDate_UTC: [
-            {
-              value: this.infrastructureService.infrastructureListModel$.getValue()[0]?.LastUpdateDate_UTC,
-              disabled: false
-            }, [  Validators.required ]],
-          LastUpdateContactTVItemID: [
-            {
-              value: this.infrastructureService.infrastructureListModel$.getValue()[0]?.LastUpdateContactTVItemID,
-              disabled: false
-            }, [  Validators.required ]],
-        }
-      );
-
-      if (httpClientCommand === HttpClientCommand.Post) {
-        this.infrastructureFormPost = formGroup
-      }
-      else {
-        this.infrastructureFormPut = formGroup;
-      }
     }
   }
 }

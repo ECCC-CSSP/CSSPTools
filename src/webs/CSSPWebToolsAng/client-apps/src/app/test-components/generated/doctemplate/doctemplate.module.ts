@@ -12,9 +12,10 @@ import { DocTemplateRoutingModule } from './doctemplate-routing.module';
 import { MaterialModule } from '../../../app-material.module';
 import { DocTemplateComponent } from './doctemplate.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { DocTemplateEditComponent } from './doctemplate-edit.component';
 
 @NgModule({
-  declarations: [ DocTemplateComponent ],
+  declarations: [DocTemplateComponent, DocTemplateEditComponent],
   imports: [
     CommonModule,
     RouterModule,

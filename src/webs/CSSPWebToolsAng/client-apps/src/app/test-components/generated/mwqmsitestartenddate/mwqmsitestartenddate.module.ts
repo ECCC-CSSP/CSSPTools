@@ -12,9 +12,10 @@ import { MWQMSiteStartEndDateRoutingModule } from './mwqmsitestartenddate-routin
 import { MaterialModule } from '../../../app-material.module';
 import { MWQMSiteStartEndDateComponent } from './mwqmsitestartenddate.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MWQMSiteStartEndDateEditComponent } from './mwqmsitestartenddate-edit.component';
 
 @NgModule({
-  declarations: [ MWQMSiteStartEndDateComponent ],
+  declarations: [MWQMSiteStartEndDateComponent, MWQMSiteStartEndDateEditComponent],
   imports: [
     CommonModule,
     RouterModule,

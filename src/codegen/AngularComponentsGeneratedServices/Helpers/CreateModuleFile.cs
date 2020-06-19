@@ -34,7 +34,7 @@ namespace AngularComponentsGeneratedServices.Services
             sb.AppendLine($@"import {{ { dllTypeInfoModels.Name }EditComponent }} from './{ dllTypeInfoModels.Name.ToLower() }-edit.component';");
             sb.AppendLine(@"");
             sb.AppendLine(@"@NgModule({");
-            sb.AppendLine($@"  declarations: [ { dllTypeInfoModels.Name }Component, { dllTypeInfoModels.Name }EditComponent ],");
+            sb.AppendLine($@"  declarations: [{ dllTypeInfoModels.Name }Component, { dllTypeInfoModels.Name }EditComponent],");
             sb.AppendLine(@"  imports: [");
             sb.AppendLine(@"    CommonModule,");
             sb.AppendLine(@"    RouterModule,");

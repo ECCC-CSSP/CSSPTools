@@ -9,12 +9,10 @@ import { Component, OnInit, OnDestroy, ChangeDetectionStrategy } from '@angular/
 import { TideDataValueService } from './tidedatavalue.service';
 import { LoadLocalesTideDataValueText } from './tidedatavalue.locales';
 import { Subscription } from 'rxjs';
-import { TideDataTypeEnum_GetIDText, TideDataTypeEnum_GetOrderedText } from '../../../enums/generated/TideDataTypeEnum';
-import { StorageDataTypeEnum_GetIDText, StorageDataTypeEnum_GetOrderedText } from '../../../enums/generated/StorageDataTypeEnum';
-import { TideTextEnum_GetIDText, TideTextEnum_GetOrderedText } from '../../../enums/generated/TideTextEnum';
+import { TideDataTypeEnum_GetIDText } from '../../../enums/generated/TideDataTypeEnum';
+import { StorageDataTypeEnum_GetIDText } from '../../../enums/generated/StorageDataTypeEnum';
+import { TideTextEnum_GetIDText } from '../../../enums/generated/TideTextEnum';
 import { TideDataValue } from '../../../models/generated/TideDataValue.model';
-import { FormBuilder, Validators, FormGroup } from '@angular/forms';
-import { EnumIDAndText } from '../../../models/enumidandtext.model';
 import { HttpClientService } from '../../../services/http-client.service';
 import { Router } from '@angular/router';
 import { HttpClientCommand } from '../../../enums/app.enums';
@@ -27,27 +25,63 @@ import { HttpClientCommand } from '../../../enums/app.enums';
 })
 export class TideDataValueComponent implements OnInit, OnDestroy {
   sub: Subscription;
-  tideDataTypeList: EnumIDAndText[];
-  storageDataTypeList: EnumIDAndText[];
-  tideStartList: EnumIDAndText[];
-  tideEndList: EnumIDAndText[];
-  tidedatavalueFormPut: FormGroup;
-  tidedatavalueFormPost: FormGroup;
+  IDToShow: number;
+  showType?: HttpClientCommand = null;
 
-  constructor(public tidedatavalueService: TideDataValueService, private router: Router, private httpClientService: HttpClientService, private fb: FormBuilder) {
+  constructor(public tidedatavalueService: TideDataValueService, private router: Router, private httpClientService: HttpClientService) {
     httpClientService.oldURL = router.url;
+  }
+
+  GetPutButtonColor(tidedatavalue: TideDataValue) {
+    if (this.IDToShow === tidedatavalue.TideDataValueID && this.showType === HttpClientCommand.Put) {
+      return 'primary';
+    }
+    else {
+      return 'basic';
+    }
+  }
+
+  GetPostButtonColor(tidedatavalue: TideDataValue) {
+    if (this.IDToShow === tidedatavalue.TideDataValueID && this.showType === HttpClientCommand.Post) {
+      return 'primary';
+    }
+    else {
+      return 'basic';
+    }
+  }
+
+  ShowPut(tidedatavalue: TideDataValue) {
+    if (this.IDToShow === tidedatavalue.TideDataValueID && this.showType === HttpClientCommand.Put) {
+      this.IDToShow = 0;
+      this.showType = null;
+    }
+    else {
+      this.IDToShow = tidedatavalue.TideDataValueID;
+      this.showType = HttpClientCommand.Put;
+    }
+  }
+
+  ShowPost(tidedatavalue: TideDataValue) {
+    if (this.IDToShow === tidedatavalue.TideDataValueID && this.showType === HttpClientCommand.Post) {
+      this.IDToShow = 0;
+      this.showType = null;
+    }
+    else {
+      this.IDToShow = tidedatavalue.TideDataValueID;
+      this.showType = HttpClientCommand.Post;
+    }
+  }
+
+  GetPutEnum() {
+    return <number>HttpClientCommand.Put;
+  }
+
+  GetPostEnum() {
+    return <number>HttpClientCommand.Post;
   }
 
   GetTideDataValueList() {
     this.sub = this.tidedatavalueService.GetTideDataValueList().subscribe();
-  }
-
-  PutTideDataValue(tidedatavalue: TideDataValue) {
-    this.sub = this.tidedatavalueService.PutTideDataValue(tidedatavalue).subscribe();
-  }
-
-  PostTideDataValue(tidedatavalue: TideDataValue) {
-    this.sub = this.tidedatavalueService.PostTideDataValue(tidedatavalue).subscribe();
   }
 
   DeleteTideDataValue(tidedatavalue: TideDataValue) {
@@ -68,98 +102,11 @@ export class TideDataValueComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     LoadLocalesTideDataValueText(this.tidedatavalueService);
-    this.tideDataTypeList = TideDataTypeEnum_GetOrderedText();
-    this.storageDataTypeList = StorageDataTypeEnum_GetOrderedText();
-    this.tideStartList = TideTextEnum_GetOrderedText();
-    this.tideEndList = TideTextEnum_GetOrderedText();
-    this.FillFormBuilderGroup(HttpClientCommand.Post);
-    this.FillFormBuilderGroup(HttpClientCommand.Put);
   }
 
   ngOnDestroy() {
     if (this.sub) {
       this.sub.unsubscribe();
-    }
-  }
-
-  FillFormBuilderGroup(httpClientCommand: HttpClientCommand) {
-    if (this.tidedatavalueService.tidedatavalueListModel$.getValue().length) {
-      let formGroup: FormGroup = this.fb.group(
-        {
-          TideDataValueID: [
-            {
-              value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.tidedatavalueService.tidedatavalueListModel$.getValue()[0]?.TideDataValueID)),
-              disabled: false
-            }, [  Validators.required ]],
-          TideSiteTVItemID: [
-            {
-              value: this.tidedatavalueService.tidedatavalueListModel$.getValue()[0]?.TideSiteTVItemID,
-              disabled: false
-            }, [  Validators.required ]],
-          DateTime_Local: [
-            {
-              value: this.tidedatavalueService.tidedatavalueListModel$.getValue()[0]?.DateTime_Local,
-              disabled: false
-            }, [  Validators.required ]],
-          Keep: [
-            {
-              value: this.tidedatavalueService.tidedatavalueListModel$.getValue()[0]?.Keep,
-              disabled: false
-            }, [  Validators.required ]],
-          TideDataType: [
-            {
-              value: this.tidedatavalueService.tidedatavalueListModel$.getValue()[0]?.TideDataType,
-              disabled: false
-            }, [  Validators.required ]],
-          StorageDataType: [
-            {
-              value: this.tidedatavalueService.tidedatavalueListModel$.getValue()[0]?.StorageDataType,
-              disabled: false
-            }, [  Validators.required ]],
-          Depth_m: [
-            {
-              value: this.tidedatavalueService.tidedatavalueListModel$.getValue()[0]?.Depth_m,
-              disabled: false
-            }, [  Validators.required, Validators.min(0), Validators.max(10000) ]],
-          UVelocity_m_s: [
-            {
-              value: this.tidedatavalueService.tidedatavalueListModel$.getValue()[0]?.UVelocity_m_s,
-              disabled: false
-            }, [  Validators.required, Validators.min(0), Validators.max(10) ]],
-          VVelocity_m_s: [
-            {
-              value: this.tidedatavalueService.tidedatavalueListModel$.getValue()[0]?.VVelocity_m_s,
-              disabled: false
-            }, [  Validators.required, Validators.min(0), Validators.max(10) ]],
-          TideStart: [
-            {
-              value: this.tidedatavalueService.tidedatavalueListModel$.getValue()[0]?.TideStart,
-              disabled: false
-            }],
-          TideEnd: [
-            {
-              value: this.tidedatavalueService.tidedatavalueListModel$.getValue()[0]?.TideEnd,
-              disabled: false
-            }],
-          LastUpdateDate_UTC: [
-            {
-              value: this.tidedatavalueService.tidedatavalueListModel$.getValue()[0]?.LastUpdateDate_UTC,
-              disabled: false
-            }, [  Validators.required ]],
-          LastUpdateContactTVItemID: [
-            {
-              value: this.tidedatavalueService.tidedatavalueListModel$.getValue()[0]?.LastUpdateContactTVItemID,
-              disabled: false
-            }, [  Validators.required ]],
-        }
-      );
-
-      if (httpClientCommand === HttpClientCommand.Post) {
-        this.tidedatavalueFormPost = formGroup
-      }
-      else {
-        this.tidedatavalueFormPut = formGroup;
-      }
     }
   }
 }

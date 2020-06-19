@@ -17,214 +17,46 @@
     <mat-card-subtitle>{{ spillService.spillTextModel$.getValue().Title }}</mat-card-subtitle>
   </mat-card-header>
   <mat-card-content>
-    <mat-list *ngIf="spillService.spillListModel$.getValue()?.length">
-      <mat-list-item *ngFor="let spill of spillService.spillListModel$.getValue()">
-        <span mat-line>
+    <div *ngIf="spillService.spillListModel$.getValue()?.length">
+      <div *ngFor="let spill of spillService.spillListModel$.getValue()">
+        <p>
           <button mat-raised-button (click)="DeleteSpill(spill)">
             <span>Delete SpillID [{{ spill.SpillID }}]&nbsp;&nbsp;&nbsp;</span>
             <mat-icon>delete</mat-icon>
-          </button>
+          </button>&nbsp;&nbsp;&nbsp;
+          <button mat-raised-button [color]="GetPutButtonColor(spill)"(click)="ShowPut(spill)">
+            <span>Show Put</span>
+          </button>&nbsp;&nbsp;
+          <button mat-raised-button [color]="GetPostButtonColor(spill)"(click)="ShowPost(spill)">
+            <span>Show Post</span>
+          </button>&nbsp;&nbsp;
           <mat-progress-bar mode="indeterminate" *ngIf="spillService.spillDeleteModel$.getValue().Working">
           </mat-progress-bar>
-          </span>
-        <span mat-line>
+        </p>
+        <p *ngIf="IDToShow === spill.SpillID && showType === GetPutEnum()">
+          <app-spill-edit [spill]="spill" [httpClientCommand]="GetPutEnum()"></app-spill-edit>
+        </p>
+        <p *ngIf="IDToShow === spill.SpillID && showType === GetPostEnum()">
+          <app-spill-edit [spill]="spill" [httpClientCommand]="GetPostEnum()"></app-spill-edit>
+        </p>
+        <blockquote>
+        <p>
           <span>SpillID: [{{ spill.SpillID }}]</span>
           <span> --- MunicipalityTVItemID: [{{ spill.MunicipalityTVItemID }}]</span>
           <span> --- InfrastructureTVItemID: [{{ spill.InfrastructureTVItemID }}]</span>
           <span> --- StartDateTime_Local: [{{ spill.StartDateTime_Local }}]</span>
-        </span>
-        <span mat-line>
+ </p>
+        <p>
           <span>EndDateTime_Local: [{{ spill.EndDateTime_Local }}]</span>
           <span> --- AverageFlow_m3_day: [{{ spill.AverageFlow_m3_day }}]</span>
           <span> --- LastUpdateDate_UTC: [{{ spill.LastUpdateDate_UTC }}]</span>
           <span> --- LastUpdateContactTVItemID: [{{ spill.LastUpdateContactTVItemID }}]</span>
-        </span>
-       </mat-list-item>
-     </mat-list>
+        </p>
+        </blockquote>
+       </div>
+     </div>
    </mat-card-content>
  <mat-card-actions>
    <button mat-button>Allo</button>
  </mat-card-actions>
-</mat-card>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<mat-card>
-  <mat-card-header>
-    <mat-card-title>Edit Spill testing</mat-card-title>
-  </mat-card-header>
-  <mat-card-content>
-    <div *ngIf="spillService.spillListModel$.getValue()?.length">
-      <blockquote>
-        <form [formGroup]="spillFormPut" (ngSubmit)="PutSpill(spillFormPut.value)">
-          <h3>
-            Spill
-            <button mat-raised-button type="submit">
-              <span>Update Spill</span>
-            </button>
-            <mat-progress-bar mode="indeterminate" *ngIf="spillService.spillPutModel$.getValue().Working">
-            </mat-progress-bar>
-          </h3>
-          <p>
-            <mat-form-field>
-              <mat-label>SpillID</mat-label>
-              <input matInput type="number" formControlName="SpillID">
-              <mat-error *ngIf="spillFormPut.controls.SpillID.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>MunicipalityTVItemID</mat-label>
-              <input matInput type="number" formControlName="MunicipalityTVItemID">
-              <mat-error *ngIf="spillFormPut.controls.MunicipalityTVItemID.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>InfrastructureTVItemID</mat-label>
-              <input matInput type="number" formControlName="InfrastructureTVItemID">
-              <mat-error *ngIf="spillFormPut.controls.InfrastructureTVItemID.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>StartDateTime_Local</mat-label>
-              <input matInput type="text" formControlName="StartDateTime_Local">
-              <mat-error *ngIf="spillFormPut.controls.StartDateTime_Local.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-          </p>
-          <p>
-            <mat-form-field>
-              <mat-label>EndDateTime_Local</mat-label>
-              <input matInput type="text" formControlName="EndDateTime_Local">
-              <mat-error *ngIf="spillFormPut.controls.EndDateTime_Local.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>AverageFlow_m3_day</mat-label>
-              <input matInput type="number" formControlName="AverageFlow_m3_day">
-              <mat-error *ngIf="spillFormPut.controls.AverageFlow_m3_day.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-                <span *ngIf="e.min">Min - 0<br /></span>
-                <span *ngIf="e.min">Max - 1000000<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>LastUpdateDate_UTC</mat-label>
-              <input matInput type="text" formControlName="LastUpdateDate_UTC">
-              <mat-error *ngIf="spillFormPut.controls.LastUpdateDate_UTC.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>LastUpdateContactTVItemID</mat-label>
-              <input matInput type="number" formControlName="LastUpdateContactTVItemID">
-              <mat-error *ngIf="spillFormPut.controls.LastUpdateContactTVItemID.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-          </p>
-        </form>
-      </blockquote>
-    </div>
-  </mat-card-content>
-</mat-card>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<mat-card>
-  <mat-card-header>
-    <mat-card-title>Add Spill testing</mat-card-title>
-  </mat-card-header>
-  <mat-card-content>
-    <div *ngIf="spillService.spillListModel$.getValue()?.length">
-      <blockquote>
-        <form [formGroup]="spillFormPost" (ngSubmit)="PostSpill(spillFormPost.value)">
-          <h3>
-            Spill
-            <button mat-raised-button type="submit">
-              <span>Add Spill</span>
-            </button>
-            <mat-progress-bar mode="indeterminate" *ngIf="spillService.spillPostModel$.getValue().Working">
-            </mat-progress-bar>
-          </h3>
-          <p>
-            <mat-form-field>
-              <mat-label>SpillID</mat-label>
-              <input matInput type="number" formControlName="SpillID">
-              <mat-error *ngIf="spillFormPut.controls.SpillID.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>MunicipalityTVItemID</mat-label>
-              <input matInput type="number" formControlName="MunicipalityTVItemID">
-              <mat-error *ngIf="spillFormPut.controls.MunicipalityTVItemID.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>InfrastructureTVItemID</mat-label>
-              <input matInput type="number" formControlName="InfrastructureTVItemID">
-              <mat-error *ngIf="spillFormPut.controls.InfrastructureTVItemID.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>StartDateTime_Local</mat-label>
-              <input matInput type="text" formControlName="StartDateTime_Local">
-              <mat-error *ngIf="spillFormPut.controls.StartDateTime_Local.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-          </p>
-          <p>
-            <mat-form-field>
-              <mat-label>EndDateTime_Local</mat-label>
-              <input matInput type="text" formControlName="EndDateTime_Local">
-              <mat-error *ngIf="spillFormPut.controls.EndDateTime_Local.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>AverageFlow_m3_day</mat-label>
-              <input matInput type="number" formControlName="AverageFlow_m3_day">
-              <mat-error *ngIf="spillFormPut.controls.AverageFlow_m3_day.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-                <span *ngIf="e.min">Min - 0<br /></span>
-                <span *ngIf="e.min">Max - 1000000<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>LastUpdateDate_UTC</mat-label>
-              <input matInput type="text" formControlName="LastUpdateDate_UTC">
-              <mat-error *ngIf="spillFormPut.controls.LastUpdateDate_UTC.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>LastUpdateContactTVItemID</mat-label>
-              <input matInput type="number" formControlName="LastUpdateContactTVItemID">
-              <mat-error *ngIf="spillFormPut.controls.LastUpdateContactTVItemID.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-          </p>
-        </form>
-      </blockquote>
-    </div>
-  </mat-card-content>
 </mat-card>

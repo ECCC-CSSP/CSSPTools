@@ -12,9 +12,10 @@ import { EmailDistributionListRoutingModule } from './emaildistributionlist-rout
 import { MaterialModule } from '../../../app-material.module';
 import { EmailDistributionListComponent } from './emaildistributionlist.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { EmailDistributionListEditComponent } from './emaildistributionlist-edit.component';
 
 @NgModule({
-  declarations: [ EmailDistributionListComponent ],
+  declarations: [EmailDistributionListComponent, EmailDistributionListEditComponent],
   imports: [
     CommonModule,
     RouterModule,

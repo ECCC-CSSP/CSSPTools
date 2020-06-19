@@ -17,167 +17,43 @@
     <mat-card-subtitle>{{ emaildistributionlistService.emaildistributionlistTextModel$.getValue().Title }}</mat-card-subtitle>
   </mat-card-header>
   <mat-card-content>
-    <mat-list *ngIf="emaildistributionlistService.emaildistributionlistListModel$.getValue()?.length">
-      <mat-list-item *ngFor="let emaildistributionlist of emaildistributionlistService.emaildistributionlistListModel$.getValue()">
-        <span mat-line>
+    <div *ngIf="emaildistributionlistService.emaildistributionlistListModel$.getValue()?.length">
+      <div *ngFor="let emaildistributionlist of emaildistributionlistService.emaildistributionlistListModel$.getValue()">
+        <p>
           <button mat-raised-button (click)="DeleteEmailDistributionList(emaildistributionlist)">
             <span>Delete EmailDistributionListID [{{ emaildistributionlist.EmailDistributionListID }}]&nbsp;&nbsp;&nbsp;</span>
             <mat-icon>delete</mat-icon>
-          </button>
+          </button>&nbsp;&nbsp;&nbsp;
+          <button mat-raised-button [color]="GetPutButtonColor(emaildistributionlist)"(click)="ShowPut(emaildistributionlist)">
+            <span>Show Put</span>
+          </button>&nbsp;&nbsp;
+          <button mat-raised-button [color]="GetPostButtonColor(emaildistributionlist)"(click)="ShowPost(emaildistributionlist)">
+            <span>Show Post</span>
+          </button>&nbsp;&nbsp;
           <mat-progress-bar mode="indeterminate" *ngIf="emaildistributionlistService.emaildistributionlistDeleteModel$.getValue().Working">
           </mat-progress-bar>
-          </span>
-        <span mat-line>
+        </p>
+        <p *ngIf="IDToShow === emaildistributionlist.EmailDistributionListID && showType === GetPutEnum()">
+          <app-emaildistributionlist-edit [emaildistributionlist]="emaildistributionlist" [httpClientCommand]="GetPutEnum()"></app-emaildistributionlist-edit>
+        </p>
+        <p *ngIf="IDToShow === emaildistributionlist.EmailDistributionListID && showType === GetPostEnum()">
+          <app-emaildistributionlist-edit [emaildistributionlist]="emaildistributionlist" [httpClientCommand]="GetPostEnum()"></app-emaildistributionlist-edit>
+        </p>
+        <blockquote>
+        <p>
           <span>EmailDistributionListID: [{{ emaildistributionlist.EmailDistributionListID }}]</span>
           <span> --- ParentTVItemID: [{{ emaildistributionlist.ParentTVItemID }}]</span>
           <span> --- Ordinal: [{{ emaildistributionlist.Ordinal }}]</span>
           <span> --- LastUpdateDate_UTC: [{{ emaildistributionlist.LastUpdateDate_UTC }}]</span>
-        </span>
-        <span mat-line>
+ </p>
+        <p>
           <span>LastUpdateContactTVItemID: [{{ emaildistributionlist.LastUpdateContactTVItemID }}]</span>
-        </span>
-       </mat-list-item>
-     </mat-list>
+        </p>
+        </blockquote>
+       </div>
+     </div>
    </mat-card-content>
  <mat-card-actions>
    <button mat-button>Allo</button>
  </mat-card-actions>
-</mat-card>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<mat-card>
-  <mat-card-header>
-    <mat-card-title>Edit EmailDistributionList testing</mat-card-title>
-  </mat-card-header>
-  <mat-card-content>
-    <div *ngIf="emaildistributionlistService.emaildistributionlistListModel$.getValue()?.length">
-      <blockquote>
-        <form [formGroup]="emaildistributionlistFormPut" (ngSubmit)="PutEmailDistributionList(emaildistributionlistFormPut.value)">
-          <h3>
-            EmailDistributionList
-            <button mat-raised-button type="submit">
-              <span>Update EmailDistributionList</span>
-            </button>
-            <mat-progress-bar mode="indeterminate" *ngIf="emaildistributionlistService.emaildistributionlistPutModel$.getValue().Working">
-            </mat-progress-bar>
-          </h3>
-          <p>
-            <mat-form-field>
-              <mat-label>EmailDistributionListID</mat-label>
-              <input matInput type="number" formControlName="EmailDistributionListID">
-              <mat-error *ngIf="emaildistributionlistFormPut.controls.EmailDistributionListID.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>ParentTVItemID</mat-label>
-              <input matInput type="number" formControlName="ParentTVItemID">
-              <mat-error *ngIf="emaildistributionlistFormPut.controls.ParentTVItemID.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>Ordinal</mat-label>
-              <input matInput type="number" formControlName="Ordinal">
-              <mat-error *ngIf="emaildistributionlistFormPut.controls.Ordinal.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-                <span *ngIf="e.min">Min - 0<br /></span>
-                <span *ngIf="e.min">Max - 1000<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>LastUpdateDate_UTC</mat-label>
-              <input matInput type="text" formControlName="LastUpdateDate_UTC">
-              <mat-error *ngIf="emaildistributionlistFormPut.controls.LastUpdateDate_UTC.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-          </p>
-          <p>
-            <mat-form-field>
-              <mat-label>LastUpdateContactTVItemID</mat-label>
-              <input matInput type="number" formControlName="LastUpdateContactTVItemID">
-              <mat-error *ngIf="emaildistributionlistFormPut.controls.LastUpdateContactTVItemID.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-          </p>
-        </form>
-      </blockquote>
-    </div>
-  </mat-card-content>
-</mat-card>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<mat-card>
-  <mat-card-header>
-    <mat-card-title>Add EmailDistributionList testing</mat-card-title>
-  </mat-card-header>
-  <mat-card-content>
-    <div *ngIf="emaildistributionlistService.emaildistributionlistListModel$.getValue()?.length">
-      <blockquote>
-        <form [formGroup]="emaildistributionlistFormPost" (ngSubmit)="PostEmailDistributionList(emaildistributionlistFormPost.value)">
-          <h3>
-            EmailDistributionList
-            <button mat-raised-button type="submit">
-              <span>Add EmailDistributionList</span>
-            </button>
-            <mat-progress-bar mode="indeterminate" *ngIf="emaildistributionlistService.emaildistributionlistPostModel$.getValue().Working">
-            </mat-progress-bar>
-          </h3>
-          <p>
-            <mat-form-field>
-              <mat-label>EmailDistributionListID</mat-label>
-              <input matInput type="number" formControlName="EmailDistributionListID">
-              <mat-error *ngIf="emaildistributionlistFormPut.controls.EmailDistributionListID.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>ParentTVItemID</mat-label>
-              <input matInput type="number" formControlName="ParentTVItemID">
-              <mat-error *ngIf="emaildistributionlistFormPut.controls.ParentTVItemID.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>Ordinal</mat-label>
-              <input matInput type="number" formControlName="Ordinal">
-              <mat-error *ngIf="emaildistributionlistFormPut.controls.Ordinal.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-                <span *ngIf="e.min">Min - 0<br /></span>
-                <span *ngIf="e.min">Max - 1000<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>LastUpdateDate_UTC</mat-label>
-              <input matInput type="text" formControlName="LastUpdateDate_UTC">
-              <mat-error *ngIf="emaildistributionlistFormPut.controls.LastUpdateDate_UTC.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-          </p>
-          <p>
-            <mat-form-field>
-              <mat-label>LastUpdateContactTVItemID</mat-label>
-              <input matInput type="number" formControlName="LastUpdateContactTVItemID">
-              <mat-error *ngIf="emaildistributionlistFormPut.controls.LastUpdateContactTVItemID.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-          </p>
-        </form>
-      </blockquote>
-    </div>
-  </mat-card-content>
 </mat-card>

@@ -10,7 +10,6 @@ import { EmailDistributionListContactService } from './emaildistributionlistcont
 import { LoadLocalesEmailDistributionListContactText } from './emaildistributionlistcontact.locales';
 import { Subscription } from 'rxjs';
 import { EmailDistributionListContact } from '../../../models/generated/EmailDistributionListContact.model';
-import { FormBuilder, Validators, FormGroup } from '@angular/forms';
 import { HttpClientService } from '../../../services/http-client.service';
 import { Router } from '@angular/router';
 import { HttpClientCommand } from '../../../enums/app.enums';
@@ -23,23 +22,63 @@ import { HttpClientCommand } from '../../../enums/app.enums';
 })
 export class EmailDistributionListContactComponent implements OnInit, OnDestroy {
   sub: Subscription;
-  emaildistributionlistcontactFormPut: FormGroup;
-  emaildistributionlistcontactFormPost: FormGroup;
+  IDToShow: number;
+  showType?: HttpClientCommand = null;
 
-  constructor(public emaildistributionlistcontactService: EmailDistributionListContactService, private router: Router, private httpClientService: HttpClientService, private fb: FormBuilder) {
+  constructor(public emaildistributionlistcontactService: EmailDistributionListContactService, private router: Router, private httpClientService: HttpClientService) {
     httpClientService.oldURL = router.url;
+  }
+
+  GetPutButtonColor(emaildistributionlistcontact: EmailDistributionListContact) {
+    if (this.IDToShow === emaildistributionlistcontact.EmailDistributionListContactID && this.showType === HttpClientCommand.Put) {
+      return 'primary';
+    }
+    else {
+      return 'basic';
+    }
+  }
+
+  GetPostButtonColor(emaildistributionlistcontact: EmailDistributionListContact) {
+    if (this.IDToShow === emaildistributionlistcontact.EmailDistributionListContactID && this.showType === HttpClientCommand.Post) {
+      return 'primary';
+    }
+    else {
+      return 'basic';
+    }
+  }
+
+  ShowPut(emaildistributionlistcontact: EmailDistributionListContact) {
+    if (this.IDToShow === emaildistributionlistcontact.EmailDistributionListContactID && this.showType === HttpClientCommand.Put) {
+      this.IDToShow = 0;
+      this.showType = null;
+    }
+    else {
+      this.IDToShow = emaildistributionlistcontact.EmailDistributionListContactID;
+      this.showType = HttpClientCommand.Put;
+    }
+  }
+
+  ShowPost(emaildistributionlistcontact: EmailDistributionListContact) {
+    if (this.IDToShow === emaildistributionlistcontact.EmailDistributionListContactID && this.showType === HttpClientCommand.Post) {
+      this.IDToShow = 0;
+      this.showType = null;
+    }
+    else {
+      this.IDToShow = emaildistributionlistcontact.EmailDistributionListContactID;
+      this.showType = HttpClientCommand.Post;
+    }
+  }
+
+  GetPutEnum() {
+    return <number>HttpClientCommand.Put;
+  }
+
+  GetPostEnum() {
+    return <number>HttpClientCommand.Post;
   }
 
   GetEmailDistributionListContactList() {
     this.sub = this.emaildistributionlistcontactService.GetEmailDistributionListContactList().subscribe();
-  }
-
-  PutEmailDistributionListContact(emaildistributionlistcontact: EmailDistributionListContact) {
-    this.sub = this.emaildistributionlistcontactService.PutEmailDistributionListContact(emaildistributionlistcontact).subscribe();
-  }
-
-  PostEmailDistributionListContact(emaildistributionlistcontact: EmailDistributionListContact) {
-    this.sub = this.emaildistributionlistcontactService.PostEmailDistributionListContact(emaildistributionlistcontact).subscribe();
   }
 
   DeleteEmailDistributionListContact(emaildistributionlistcontact: EmailDistributionListContact) {
@@ -48,89 +87,11 @@ export class EmailDistributionListContactComponent implements OnInit, OnDestroy 
 
   ngOnInit(): void {
     LoadLocalesEmailDistributionListContactText(this.emaildistributionlistcontactService);
-    this.FillFormBuilderGroup(HttpClientCommand.Post);
-    this.FillFormBuilderGroup(HttpClientCommand.Put);
   }
 
   ngOnDestroy() {
     if (this.sub) {
       this.sub.unsubscribe();
-    }
-  }
-
-  FillFormBuilderGroup(httpClientCommand: HttpClientCommand) {
-    if (this.emaildistributionlistcontactService.emaildistributionlistcontactListModel$.getValue().length) {
-      let formGroup: FormGroup = this.fb.group(
-        {
-          EmailDistributionListContactID: [
-            {
-              value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.emaildistributionlistcontactService.emaildistributionlistcontactListModel$.getValue()[0]?.EmailDistributionListContactID)),
-              disabled: false
-            }, [  Validators.required ]],
-          EmailDistributionListID: [
-            {
-              value: this.emaildistributionlistcontactService.emaildistributionlistcontactListModel$.getValue()[0]?.EmailDistributionListID,
-              disabled: false
-            }, [  Validators.required ]],
-          IsCC: [
-            {
-              value: this.emaildistributionlistcontactService.emaildistributionlistcontactListModel$.getValue()[0]?.IsCC,
-              disabled: false
-            }, [  Validators.required ]],
-          Name: [
-            {
-              value: this.emaildistributionlistcontactService.emaildistributionlistcontactListModel$.getValue()[0]?.Name,
-              disabled: false
-            }, [  Validators.required, Validators.maxLength(100) ]],
-          Email: [
-            {
-              value: this.emaildistributionlistcontactService.emaildistributionlistcontactListModel$.getValue()[0]?.Email,
-              disabled: false
-            }, [  Validators.required, Validators.email, Validators.maxLength(200) ]],
-          CMPRainfallSeasonal: [
-            {
-              value: this.emaildistributionlistcontactService.emaildistributionlistcontactListModel$.getValue()[0]?.CMPRainfallSeasonal,
-              disabled: false
-            }, [  Validators.required ]],
-          CMPWastewater: [
-            {
-              value: this.emaildistributionlistcontactService.emaildistributionlistcontactListModel$.getValue()[0]?.CMPWastewater,
-              disabled: false
-            }, [  Validators.required ]],
-          EmergencyWeather: [
-            {
-              value: this.emaildistributionlistcontactService.emaildistributionlistcontactListModel$.getValue()[0]?.EmergencyWeather,
-              disabled: false
-            }, [  Validators.required ]],
-          EmergencyWastewater: [
-            {
-              value: this.emaildistributionlistcontactService.emaildistributionlistcontactListModel$.getValue()[0]?.EmergencyWastewater,
-              disabled: false
-            }, [  Validators.required ]],
-          ReopeningAllTypes: [
-            {
-              value: this.emaildistributionlistcontactService.emaildistributionlistcontactListModel$.getValue()[0]?.ReopeningAllTypes,
-              disabled: false
-            }, [  Validators.required ]],
-          LastUpdateDate_UTC: [
-            {
-              value: this.emaildistributionlistcontactService.emaildistributionlistcontactListModel$.getValue()[0]?.LastUpdateDate_UTC,
-              disabled: false
-            }, [  Validators.required ]],
-          LastUpdateContactTVItemID: [
-            {
-              value: this.emaildistributionlistcontactService.emaildistributionlistcontactListModel$.getValue()[0]?.LastUpdateContactTVItemID,
-              disabled: false
-            }, [  Validators.required ]],
-        }
-      );
-
-      if (httpClientCommand === HttpClientCommand.Post) {
-        this.emaildistributionlistcontactFormPost = formGroup
-      }
-      else {
-        this.emaildistributionlistcontactFormPut = formGroup;
-      }
     }
   }
 }

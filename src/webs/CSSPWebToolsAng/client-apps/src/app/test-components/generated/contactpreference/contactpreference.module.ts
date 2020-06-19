@@ -12,9 +12,10 @@ import { ContactPreferenceRoutingModule } from './contactpreference-routing.modu
 import { MaterialModule } from '../../../app-material.module';
 import { ContactPreferenceComponent } from './contactpreference.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ContactPreferenceEditComponent } from './contactpreference-edit.component';
 
 @NgModule({
-  declarations: [ ContactPreferenceComponent ],
+  declarations: [ContactPreferenceComponent, ContactPreferenceEditComponent],
   imports: [
     CommonModule,
     RouterModule,

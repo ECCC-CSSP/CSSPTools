@@ -9,13 +9,11 @@ import { Component, OnInit, OnDestroy, ChangeDetectionStrategy } from '@angular/
 import { LabSheetService } from './labsheet.service';
 import { LoadLocalesLabSheetText } from './labsheet.locales';
 import { Subscription } from 'rxjs';
-import { SamplingPlanTypeEnum_GetIDText, SamplingPlanTypeEnum_GetOrderedText } from '../../../enums/generated/SamplingPlanTypeEnum';
-import { SampleTypeEnum_GetIDText, SampleTypeEnum_GetOrderedText } from '../../../enums/generated/SampleTypeEnum';
-import { LabSheetTypeEnum_GetIDText, LabSheetTypeEnum_GetOrderedText } from '../../../enums/generated/LabSheetTypeEnum';
-import { LabSheetStatusEnum_GetIDText, LabSheetStatusEnum_GetOrderedText } from '../../../enums/generated/LabSheetStatusEnum';
+import { SamplingPlanTypeEnum_GetIDText } from '../../../enums/generated/SamplingPlanTypeEnum';
+import { SampleTypeEnum_GetIDText } from '../../../enums/generated/SampleTypeEnum';
+import { LabSheetTypeEnum_GetIDText } from '../../../enums/generated/LabSheetTypeEnum';
+import { LabSheetStatusEnum_GetIDText } from '../../../enums/generated/LabSheetStatusEnum';
 import { LabSheet } from '../../../models/generated/LabSheet.model';
-import { FormBuilder, Validators, FormGroup } from '@angular/forms';
-import { EnumIDAndText } from '../../../models/enumidandtext.model';
 import { HttpClientService } from '../../../services/http-client.service';
 import { Router } from '@angular/router';
 import { HttpClientCommand } from '../../../enums/app.enums';
@@ -28,27 +26,63 @@ import { HttpClientCommand } from '../../../enums/app.enums';
 })
 export class LabSheetComponent implements OnInit, OnDestroy {
   sub: Subscription;
-  samplingPlanTypeList: EnumIDAndText[];
-  sampleTypeList: EnumIDAndText[];
-  labSheetTypeList: EnumIDAndText[];
-  labSheetStatusList: EnumIDAndText[];
-  labsheetFormPut: FormGroup;
-  labsheetFormPost: FormGroup;
+  IDToShow: number;
+  showType?: HttpClientCommand = null;
 
-  constructor(public labsheetService: LabSheetService, private router: Router, private httpClientService: HttpClientService, private fb: FormBuilder) {
+  constructor(public labsheetService: LabSheetService, private router: Router, private httpClientService: HttpClientService) {
     httpClientService.oldURL = router.url;
+  }
+
+  GetPutButtonColor(labsheet: LabSheet) {
+    if (this.IDToShow === labsheet.LabSheetID && this.showType === HttpClientCommand.Put) {
+      return 'primary';
+    }
+    else {
+      return 'basic';
+    }
+  }
+
+  GetPostButtonColor(labsheet: LabSheet) {
+    if (this.IDToShow === labsheet.LabSheetID && this.showType === HttpClientCommand.Post) {
+      return 'primary';
+    }
+    else {
+      return 'basic';
+    }
+  }
+
+  ShowPut(labsheet: LabSheet) {
+    if (this.IDToShow === labsheet.LabSheetID && this.showType === HttpClientCommand.Put) {
+      this.IDToShow = 0;
+      this.showType = null;
+    }
+    else {
+      this.IDToShow = labsheet.LabSheetID;
+      this.showType = HttpClientCommand.Put;
+    }
+  }
+
+  ShowPost(labsheet: LabSheet) {
+    if (this.IDToShow === labsheet.LabSheetID && this.showType === HttpClientCommand.Post) {
+      this.IDToShow = 0;
+      this.showType = null;
+    }
+    else {
+      this.IDToShow = labsheet.LabSheetID;
+      this.showType = HttpClientCommand.Post;
+    }
+  }
+
+  GetPutEnum() {
+    return <number>HttpClientCommand.Put;
+  }
+
+  GetPostEnum() {
+    return <number>HttpClientCommand.Post;
   }
 
   GetLabSheetList() {
     this.sub = this.labsheetService.GetLabSheetList().subscribe();
-  }
-
-  PutLabSheet(labsheet: LabSheet) {
-    this.sub = this.labsheetService.PutLabSheet(labsheet).subscribe();
-  }
-
-  PostLabSheet(labsheet: LabSheet) {
-    this.sub = this.labsheetService.PostLabSheet(labsheet).subscribe();
   }
 
   DeleteLabSheet(labsheet: LabSheet) {
@@ -73,143 +107,11 @@ export class LabSheetComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     LoadLocalesLabSheetText(this.labsheetService);
-    this.samplingPlanTypeList = SamplingPlanTypeEnum_GetOrderedText();
-    this.sampleTypeList = SampleTypeEnum_GetOrderedText();
-    this.labSheetTypeList = LabSheetTypeEnum_GetOrderedText();
-    this.labSheetStatusList = LabSheetStatusEnum_GetOrderedText();
-    this.FillFormBuilderGroup(HttpClientCommand.Post);
-    this.FillFormBuilderGroup(HttpClientCommand.Put);
   }
 
   ngOnDestroy() {
     if (this.sub) {
       this.sub.unsubscribe();
-    }
-  }
-
-  FillFormBuilderGroup(httpClientCommand: HttpClientCommand) {
-    if (this.labsheetService.labsheetListModel$.getValue().length) {
-      let formGroup: FormGroup = this.fb.group(
-        {
-          LabSheetID: [
-            {
-              value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.labsheetService.labsheetListModel$.getValue()[0]?.LabSheetID)),
-              disabled: false
-            }, [  Validators.required ]],
-          OtherServerLabSheetID: [
-            {
-              value: this.labsheetService.labsheetListModel$.getValue()[0]?.OtherServerLabSheetID,
-              disabled: false
-            }, [  Validators.required, Validators.min(1) ]],
-          SamplingPlanID: [
-            {
-              value: this.labsheetService.labsheetListModel$.getValue()[0]?.SamplingPlanID,
-              disabled: false
-            }, [  Validators.required ]],
-          SamplingPlanName: [
-            {
-              value: this.labsheetService.labsheetListModel$.getValue()[0]?.SamplingPlanName,
-              disabled: false
-            }, [  Validators.required, Validators.minLength(1), Validators.maxLength(250) ]],
-          Year: [
-            {
-              value: this.labsheetService.labsheetListModel$.getValue()[0]?.Year,
-              disabled: false
-            }, [  Validators.required, Validators.min(1980) ]],
-          Month: [
-            {
-              value: this.labsheetService.labsheetListModel$.getValue()[0]?.Month,
-              disabled: false
-            }, [  Validators.required, Validators.min(1), Validators.max(12) ]],
-          Day: [
-            {
-              value: this.labsheetService.labsheetListModel$.getValue()[0]?.Day,
-              disabled: false
-            }, [  Validators.required, Validators.min(1), Validators.max(31) ]],
-          RunNumber: [
-            {
-              value: this.labsheetService.labsheetListModel$.getValue()[0]?.RunNumber,
-              disabled: false
-            }, [  Validators.required, Validators.min(1), Validators.max(100) ]],
-          SubsectorTVItemID: [
-            {
-              value: this.labsheetService.labsheetListModel$.getValue()[0]?.SubsectorTVItemID,
-              disabled: false
-            }, [  Validators.required ]],
-          MWQMRunTVItemID: [
-            {
-              value: this.labsheetService.labsheetListModel$.getValue()[0]?.MWQMRunTVItemID,
-              disabled: false
-            }],
-          SamplingPlanType: [
-            {
-              value: this.labsheetService.labsheetListModel$.getValue()[0]?.SamplingPlanType,
-              disabled: false
-            }, [  Validators.required ]],
-          SampleType: [
-            {
-              value: this.labsheetService.labsheetListModel$.getValue()[0]?.SampleType,
-              disabled: false
-            }, [  Validators.required ]],
-          LabSheetType: [
-            {
-              value: this.labsheetService.labsheetListModel$.getValue()[0]?.LabSheetType,
-              disabled: false
-            }, [  Validators.required ]],
-          LabSheetStatus: [
-            {
-              value: this.labsheetService.labsheetListModel$.getValue()[0]?.LabSheetStatus,
-              disabled: false
-            }, [  Validators.required ]],
-          FileName: [
-            {
-              value: this.labsheetService.labsheetListModel$.getValue()[0]?.FileName,
-              disabled: false
-            }, [  Validators.required, Validators.minLength(1), Validators.maxLength(250) ]],
-          FileLastModifiedDate_Local: [
-            {
-              value: this.labsheetService.labsheetListModel$.getValue()[0]?.FileLastModifiedDate_Local,
-              disabled: false
-            }, [  Validators.required ]],
-          FileContent: [
-            {
-              value: this.labsheetService.labsheetListModel$.getValue()[0]?.FileContent,
-              disabled: false
-            }, [  Validators.required ]],
-          AcceptedOrRejectedByContactTVItemID: [
-            {
-              value: this.labsheetService.labsheetListModel$.getValue()[0]?.AcceptedOrRejectedByContactTVItemID,
-              disabled: false
-            }],
-          AcceptedOrRejectedDateTime: [
-            {
-              value: this.labsheetService.labsheetListModel$.getValue()[0]?.AcceptedOrRejectedDateTime,
-              disabled: false
-            }],
-          RejectReason: [
-            {
-              value: this.labsheetService.labsheetListModel$.getValue()[0]?.RejectReason,
-              disabled: false
-            }, [  Validators.maxLength(250) ]],
-          LastUpdateDate_UTC: [
-            {
-              value: this.labsheetService.labsheetListModel$.getValue()[0]?.LastUpdateDate_UTC,
-              disabled: false
-            }, [  Validators.required ]],
-          LastUpdateContactTVItemID: [
-            {
-              value: this.labsheetService.labsheetListModel$.getValue()[0]?.LastUpdateContactTVItemID,
-              disabled: false
-            }, [  Validators.required ]],
-        }
-      );
-
-      if (httpClientCommand === HttpClientCommand.Post) {
-        this.labsheetFormPost = formGroup
-      }
-      else {
-        this.labsheetFormPut = formGroup;
-      }
     }
   }
 }

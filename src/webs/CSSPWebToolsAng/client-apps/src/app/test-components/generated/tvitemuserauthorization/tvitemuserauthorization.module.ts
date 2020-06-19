@@ -12,9 +12,10 @@ import { TVItemUserAuthorizationRoutingModule } from './tvitemuserauthorization-
 import { MaterialModule } from '../../../app-material.module';
 import { TVItemUserAuthorizationComponent } from './tvitemuserauthorization.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { TVItemUserAuthorizationEditComponent } from './tvitemuserauthorization-edit.component';
 
 @NgModule({
-  declarations: [ TVItemUserAuthorizationComponent ],
+  declarations: [TVItemUserAuthorizationComponent, TVItemUserAuthorizationEditComponent],
   imports: [
     CommonModule,
     RouterModule,

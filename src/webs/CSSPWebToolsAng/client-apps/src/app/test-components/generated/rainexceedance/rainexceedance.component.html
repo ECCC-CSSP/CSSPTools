@@ -17,304 +17,52 @@
     <mat-card-subtitle>{{ rainexceedanceService.rainexceedanceTextModel$.getValue().Title }}</mat-card-subtitle>
   </mat-card-header>
   <mat-card-content>
-    <mat-list *ngIf="rainexceedanceService.rainexceedanceListModel$.getValue()?.length">
-      <mat-list-item *ngFor="let rainexceedance of rainexceedanceService.rainexceedanceListModel$.getValue()">
-        <span mat-line>
+    <div *ngIf="rainexceedanceService.rainexceedanceListModel$.getValue()?.length">
+      <div *ngFor="let rainexceedance of rainexceedanceService.rainexceedanceListModel$.getValue()">
+        <p>
           <button mat-raised-button (click)="DeleteRainExceedance(rainexceedance)">
             <span>Delete RainExceedanceID [{{ rainexceedance.RainExceedanceID }}]&nbsp;&nbsp;&nbsp;</span>
             <mat-icon>delete</mat-icon>
-          </button>
+          </button>&nbsp;&nbsp;&nbsp;
+          <button mat-raised-button [color]="GetPutButtonColor(rainexceedance)"(click)="ShowPut(rainexceedance)">
+            <span>Show Put</span>
+          </button>&nbsp;&nbsp;
+          <button mat-raised-button [color]="GetPostButtonColor(rainexceedance)"(click)="ShowPost(rainexceedance)">
+            <span>Show Post</span>
+          </button>&nbsp;&nbsp;
           <mat-progress-bar mode="indeterminate" *ngIf="rainexceedanceService.rainexceedanceDeleteModel$.getValue().Working">
           </mat-progress-bar>
-          </span>
-        <span mat-line>
+        </p>
+        <p *ngIf="IDToShow === rainexceedance.RainExceedanceID && showType === GetPutEnum()">
+          <app-rainexceedance-edit [rainexceedance]="rainexceedance" [httpClientCommand]="GetPutEnum()"></app-rainexceedance-edit>
+        </p>
+        <p *ngIf="IDToShow === rainexceedance.RainExceedanceID && showType === GetPostEnum()">
+          <app-rainexceedance-edit [rainexceedance]="rainexceedance" [httpClientCommand]="GetPostEnum()"></app-rainexceedance-edit>
+        </p>
+        <blockquote>
+        <p>
           <span>RainExceedanceID: [{{ rainexceedance.RainExceedanceID }}]</span>
           <span> --- RainExceedanceTVItemID: [{{ rainexceedance.RainExceedanceTVItemID }}]</span>
           <span> --- StartMonth: [{{ rainexceedance.StartMonth }}]</span>
           <span> --- StartDay: [{{ rainexceedance.StartDay }}]</span>
-        </span>
-        <span mat-line>
+ </p>
+        <p>
           <span>EndMonth: [{{ rainexceedance.EndMonth }}]</span>
           <span> --- EndDay: [{{ rainexceedance.EndDay }}]</span>
           <span> --- RainMaximum_mm: [{{ rainexceedance.RainMaximum_mm }}]</span>
           <span> --- StakeholdersEmailDistributionListID: [{{ rainexceedance.StakeholdersEmailDistributionListID }}]</span>
-        </span>
-        <span mat-line>
+ </p>
+        <p>
           <span>OnlyStaffEmailDistributionListID: [{{ rainexceedance.OnlyStaffEmailDistributionListID }}]</span>
           <span> --- IsActive: [{{ rainexceedance.IsActive }}]</span>
           <span> --- LastUpdateDate_UTC: [{{ rainexceedance.LastUpdateDate_UTC }}]</span>
           <span> --- LastUpdateContactTVItemID: [{{ rainexceedance.LastUpdateContactTVItemID }}]</span>
-        </span>
-       </mat-list-item>
-     </mat-list>
+        </p>
+        </blockquote>
+       </div>
+     </div>
    </mat-card-content>
  <mat-card-actions>
    <button mat-button>Allo</button>
  </mat-card-actions>
-</mat-card>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<mat-card>
-  <mat-card-header>
-    <mat-card-title>Edit RainExceedance testing</mat-card-title>
-  </mat-card-header>
-  <mat-card-content>
-    <div *ngIf="rainexceedanceService.rainexceedanceListModel$.getValue()?.length">
-      <blockquote>
-        <form [formGroup]="rainexceedanceFormPut" (ngSubmit)="PutRainExceedance(rainexceedanceFormPut.value)">
-          <h3>
-            RainExceedance
-            <button mat-raised-button type="submit">
-              <span>Update RainExceedance</span>
-            </button>
-            <mat-progress-bar mode="indeterminate" *ngIf="rainexceedanceService.rainexceedancePutModel$.getValue().Working">
-            </mat-progress-bar>
-          </h3>
-          <p>
-            <mat-form-field>
-              <mat-label>RainExceedanceID</mat-label>
-              <input matInput type="number" formControlName="RainExceedanceID">
-              <mat-error *ngIf="rainexceedanceFormPut.controls.RainExceedanceID.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>RainExceedanceTVItemID</mat-label>
-              <input matInput type="number" formControlName="RainExceedanceTVItemID">
-              <mat-error *ngIf="rainexceedanceFormPut.controls.RainExceedanceTVItemID.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>StartMonth</mat-label>
-              <input matInput type="number" formControlName="StartMonth">
-              <mat-error *ngIf="rainexceedanceFormPut.controls.StartMonth.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-                <span *ngIf="e.min">Min - 1<br /></span>
-                <span *ngIf="e.min">Max - 12<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>StartDay</mat-label>
-              <input matInput type="number" formControlName="StartDay">
-              <mat-error *ngIf="rainexceedanceFormPut.controls.StartDay.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-                <span *ngIf="e.min">Min - 1<br /></span>
-                <span *ngIf="e.min">Max - 31<br /></span>
-              </mat-error>
-            </mat-form-field>
-          </p>
-          <p>
-            <mat-form-field>
-              <mat-label>EndMonth</mat-label>
-              <input matInput type="number" formControlName="EndMonth">
-              <mat-error *ngIf="rainexceedanceFormPut.controls.EndMonth.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-                <span *ngIf="e.min">Min - 1<br /></span>
-                <span *ngIf="e.min">Max - 12<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>EndDay</mat-label>
-              <input matInput type="number" formControlName="EndDay">
-              <mat-error *ngIf="rainexceedanceFormPut.controls.EndDay.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-                <span *ngIf="e.min">Min - 1<br /></span>
-                <span *ngIf="e.min">Max - 31<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>RainMaximum_mm</mat-label>
-              <input matInput type="number" formControlName="RainMaximum_mm">
-              <mat-error *ngIf="rainexceedanceFormPut.controls.RainMaximum_mm.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-                <span *ngIf="e.min">Min - 0<br /></span>
-                <span *ngIf="e.min">Max - 300<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>StakeholdersEmailDistributionListID</mat-label>
-              <input matInput type="number" formControlName="StakeholdersEmailDistributionListID">
-              <mat-error *ngIf="rainexceedanceFormPut.controls.StakeholdersEmailDistributionListID.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-              </mat-error>
-            </mat-form-field>
-          </p>
-          <p>
-            <mat-form-field>
-              <mat-label>OnlyStaffEmailDistributionListID</mat-label>
-              <input matInput type="number" formControlName="OnlyStaffEmailDistributionListID">
-              <mat-error *ngIf="rainexceedanceFormPut.controls.OnlyStaffEmailDistributionListID.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>IsActive</mat-label>
-              <input matInput type="text" formControlName="IsActive">
-              <mat-error *ngIf="rainexceedanceFormPut.controls.IsActive.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>LastUpdateDate_UTC</mat-label>
-              <input matInput type="text" formControlName="LastUpdateDate_UTC">
-              <mat-error *ngIf="rainexceedanceFormPut.controls.LastUpdateDate_UTC.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>LastUpdateContactTVItemID</mat-label>
-              <input matInput type="number" formControlName="LastUpdateContactTVItemID">
-              <mat-error *ngIf="rainexceedanceFormPut.controls.LastUpdateContactTVItemID.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-          </p>
-        </form>
-      </blockquote>
-    </div>
-  </mat-card-content>
-</mat-card>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<mat-card>
-  <mat-card-header>
-    <mat-card-title>Add RainExceedance testing</mat-card-title>
-  </mat-card-header>
-  <mat-card-content>
-    <div *ngIf="rainexceedanceService.rainexceedanceListModel$.getValue()?.length">
-      <blockquote>
-        <form [formGroup]="rainexceedanceFormPost" (ngSubmit)="PostRainExceedance(rainexceedanceFormPost.value)">
-          <h3>
-            RainExceedance
-            <button mat-raised-button type="submit">
-              <span>Add RainExceedance</span>
-            </button>
-            <mat-progress-bar mode="indeterminate" *ngIf="rainexceedanceService.rainexceedancePostModel$.getValue().Working">
-            </mat-progress-bar>
-          </h3>
-          <p>
-            <mat-form-field>
-              <mat-label>RainExceedanceID</mat-label>
-              <input matInput type="number" formControlName="RainExceedanceID">
-              <mat-error *ngIf="rainexceedanceFormPut.controls.RainExceedanceID.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>RainExceedanceTVItemID</mat-label>
-              <input matInput type="number" formControlName="RainExceedanceTVItemID">
-              <mat-error *ngIf="rainexceedanceFormPut.controls.RainExceedanceTVItemID.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>StartMonth</mat-label>
-              <input matInput type="number" formControlName="StartMonth">
-              <mat-error *ngIf="rainexceedanceFormPut.controls.StartMonth.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-                <span *ngIf="e.min">Min - 1<br /></span>
-                <span *ngIf="e.min">Max - 12<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>StartDay</mat-label>
-              <input matInput type="number" formControlName="StartDay">
-              <mat-error *ngIf="rainexceedanceFormPut.controls.StartDay.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-                <span *ngIf="e.min">Min - 1<br /></span>
-                <span *ngIf="e.min">Max - 31<br /></span>
-              </mat-error>
-            </mat-form-field>
-          </p>
-          <p>
-            <mat-form-field>
-              <mat-label>EndMonth</mat-label>
-              <input matInput type="number" formControlName="EndMonth">
-              <mat-error *ngIf="rainexceedanceFormPut.controls.EndMonth.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-                <span *ngIf="e.min">Min - 1<br /></span>
-                <span *ngIf="e.min">Max - 12<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>EndDay</mat-label>
-              <input matInput type="number" formControlName="EndDay">
-              <mat-error *ngIf="rainexceedanceFormPut.controls.EndDay.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-                <span *ngIf="e.min">Min - 1<br /></span>
-                <span *ngIf="e.min">Max - 31<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>RainMaximum_mm</mat-label>
-              <input matInput type="number" formControlName="RainMaximum_mm">
-              <mat-error *ngIf="rainexceedanceFormPut.controls.RainMaximum_mm.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-                <span *ngIf="e.min">Min - 0<br /></span>
-                <span *ngIf="e.min">Max - 300<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>StakeholdersEmailDistributionListID</mat-label>
-              <input matInput type="number" formControlName="StakeholdersEmailDistributionListID">
-              <mat-error *ngIf="rainexceedanceFormPut.controls.StakeholdersEmailDistributionListID.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-              </mat-error>
-            </mat-form-field>
-          </p>
-          <p>
-            <mat-form-field>
-              <mat-label>OnlyStaffEmailDistributionListID</mat-label>
-              <input matInput type="number" formControlName="OnlyStaffEmailDistributionListID">
-              <mat-error *ngIf="rainexceedanceFormPut.controls.OnlyStaffEmailDistributionListID.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>IsActive</mat-label>
-              <input matInput type="text" formControlName="IsActive">
-              <mat-error *ngIf="rainexceedanceFormPut.controls.IsActive.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>LastUpdateDate_UTC</mat-label>
-              <input matInput type="text" formControlName="LastUpdateDate_UTC">
-              <mat-error *ngIf="rainexceedanceFormPut.controls.LastUpdateDate_UTC.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>LastUpdateContactTVItemID</mat-label>
-              <input matInput type="number" formControlName="LastUpdateContactTVItemID">
-              <mat-error *ngIf="rainexceedanceFormPut.controls.LastUpdateContactTVItemID.errors; let e;">
-                <span>{{ e | json }}<br /></span>
-                <span *ngIf="e.required">Is Required<br /></span>
-              </mat-error>
-            </mat-form-field>
-          </p>
-        </form>
-      </blockquote>
-    </div>
-  </mat-card-content>
 </mat-card>

@@ -18,15 +18,15 @@ namespace AngularComponentsGeneratedServices.Services
             if (dllPropertyInfo.CSSPProp.PropType == "Int16" || dllPropertyInfo.CSSPProp.PropType == "Int32"
                 || dllPropertyInfo.CSSPProp.PropType == "Int64" || dllPropertyInfo.CSSPProp.PropType == "Single" || dllPropertyInfo.CSSPProp.PropType == "Double")
             {
-                sb.AppendLine($@"              <input matInput type=""number"" formControlName=""{ dllPropertyInfo.CSSPProp.PropName }"">");
+                sb.AppendLine($@"      <input matInput type=""number"" formControlName=""{ dllPropertyInfo.CSSPProp.PropName }"">");
             }
             else if (dllPropertyInfo.CSSPProp.PropType == "String")
             {
-                sb.AppendLine($@"              <input matInput type=""text"" formControlName=""{ dllPropertyInfo.CSSPProp.PropName }"">");
+                sb.AppendLine($@"      <input matInput type=""text"" formControlName=""{ dllPropertyInfo.CSSPProp.PropName }"">");
             }
             else // will need to do email ...
             {
-                sb.AppendLine($@"              <input matInput type=""text"" formControlName=""{ dllPropertyInfo.CSSPProp.PropName }"">");
+                sb.AppendLine($@"      <input matInput type=""text"" formControlName=""{ dllPropertyInfo.CSSPProp.PropName }"">");
             }
         }
     }

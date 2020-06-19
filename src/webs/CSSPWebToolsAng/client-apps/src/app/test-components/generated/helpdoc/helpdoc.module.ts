@@ -12,9 +12,10 @@ import { HelpDocRoutingModule } from './helpdoc-routing.module';
 import { MaterialModule } from '../../../app-material.module';
 import { HelpDocComponent } from './helpdoc.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { HelpDocEditComponent } from './helpdoc-edit.component';
 
 @NgModule({
-  declarations: [ HelpDocComponent ],
+  declarations: [HelpDocComponent, HelpDocEditComponent],
   imports: [
     CommonModule,
     RouterModule,

@@ -9,11 +9,9 @@ import { Component, OnInit, OnDestroy, ChangeDetectionStrategy } from '@angular/
 import { TVItemLanguageService } from './tvitemlanguage.service';
 import { LoadLocalesTVItemLanguageText } from './tvitemlanguage.locales';
 import { Subscription } from 'rxjs';
-import { LanguageEnum_GetIDText, LanguageEnum_GetOrderedText } from '../../../enums/generated/LanguageEnum';
-import { TranslationStatusEnum_GetIDText, TranslationStatusEnum_GetOrderedText } from '../../../enums/generated/TranslationStatusEnum';
+import { LanguageEnum_GetIDText } from '../../../enums/generated/LanguageEnum';
+import { TranslationStatusEnum_GetIDText } from '../../../enums/generated/TranslationStatusEnum';
 import { TVItemLanguage } from '../../../models/generated/TVItemLanguage.model';
-import { FormBuilder, Validators, FormGroup } from '@angular/forms';
-import { EnumIDAndText } from '../../../models/enumidandtext.model';
 import { HttpClientService } from '../../../services/http-client.service';
 import { Router } from '@angular/router';
 import { HttpClientCommand } from '../../../enums/app.enums';
@@ -26,25 +24,63 @@ import { HttpClientCommand } from '../../../enums/app.enums';
 })
 export class TVItemLanguageComponent implements OnInit, OnDestroy {
   sub: Subscription;
-  languageList: EnumIDAndText[];
-  translationStatusList: EnumIDAndText[];
-  tvitemlanguageFormPut: FormGroup;
-  tvitemlanguageFormPost: FormGroup;
+  IDToShow: number;
+  showType?: HttpClientCommand = null;
 
-  constructor(public tvitemlanguageService: TVItemLanguageService, private router: Router, private httpClientService: HttpClientService, private fb: FormBuilder) {
+  constructor(public tvitemlanguageService: TVItemLanguageService, private router: Router, private httpClientService: HttpClientService) {
     httpClientService.oldURL = router.url;
+  }
+
+  GetPutButtonColor(tvitemlanguage: TVItemLanguage) {
+    if (this.IDToShow === tvitemlanguage.TVItemLanguageID && this.showType === HttpClientCommand.Put) {
+      return 'primary';
+    }
+    else {
+      return 'basic';
+    }
+  }
+
+  GetPostButtonColor(tvitemlanguage: TVItemLanguage) {
+    if (this.IDToShow === tvitemlanguage.TVItemLanguageID && this.showType === HttpClientCommand.Post) {
+      return 'primary';
+    }
+    else {
+      return 'basic';
+    }
+  }
+
+  ShowPut(tvitemlanguage: TVItemLanguage) {
+    if (this.IDToShow === tvitemlanguage.TVItemLanguageID && this.showType === HttpClientCommand.Put) {
+      this.IDToShow = 0;
+      this.showType = null;
+    }
+    else {
+      this.IDToShow = tvitemlanguage.TVItemLanguageID;
+      this.showType = HttpClientCommand.Put;
+    }
+  }
+
+  ShowPost(tvitemlanguage: TVItemLanguage) {
+    if (this.IDToShow === tvitemlanguage.TVItemLanguageID && this.showType === HttpClientCommand.Post) {
+      this.IDToShow = 0;
+      this.showType = null;
+    }
+    else {
+      this.IDToShow = tvitemlanguage.TVItemLanguageID;
+      this.showType = HttpClientCommand.Post;
+    }
+  }
+
+  GetPutEnum() {
+    return <number>HttpClientCommand.Put;
+  }
+
+  GetPostEnum() {
+    return <number>HttpClientCommand.Post;
   }
 
   GetTVItemLanguageList() {
     this.sub = this.tvitemlanguageService.GetTVItemLanguageList().subscribe();
-  }
-
-  PutTVItemLanguage(tvitemlanguage: TVItemLanguage) {
-    this.sub = this.tvitemlanguageService.PutTVItemLanguage(tvitemlanguage).subscribe();
-  }
-
-  PostTVItemLanguage(tvitemlanguage: TVItemLanguage) {
-    this.sub = this.tvitemlanguageService.PostTVItemLanguage(tvitemlanguage).subscribe();
   }
 
   DeleteTVItemLanguage(tvitemlanguage: TVItemLanguage) {
@@ -61,66 +97,11 @@ export class TVItemLanguageComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     LoadLocalesTVItemLanguageText(this.tvitemlanguageService);
-    this.languageList = LanguageEnum_GetOrderedText();
-    this.translationStatusList = TranslationStatusEnum_GetOrderedText();
-    this.FillFormBuilderGroup(HttpClientCommand.Post);
-    this.FillFormBuilderGroup(HttpClientCommand.Put);
   }
 
   ngOnDestroy() {
     if (this.sub) {
       this.sub.unsubscribe();
-    }
-  }
-
-  FillFormBuilderGroup(httpClientCommand: HttpClientCommand) {
-    if (this.tvitemlanguageService.tvitemlanguageListModel$.getValue().length) {
-      let formGroup: FormGroup = this.fb.group(
-        {
-          TVItemLanguageID: [
-            {
-              value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.tvitemlanguageService.tvitemlanguageListModel$.getValue()[0]?.TVItemLanguageID)),
-              disabled: false
-            }, [  Validators.required ]],
-          TVItemID: [
-            {
-              value: this.tvitemlanguageService.tvitemlanguageListModel$.getValue()[0]?.TVItemID,
-              disabled: false
-            }, [  Validators.required ]],
-          Language: [
-            {
-              value: this.tvitemlanguageService.tvitemlanguageListModel$.getValue()[0]?.Language,
-              disabled: false
-            }, [  Validators.required ]],
-          TVText: [
-            {
-              value: this.tvitemlanguageService.tvitemlanguageListModel$.getValue()[0]?.TVText,
-              disabled: false
-            }, [  Validators.required, Validators.maxLength(200) ]],
-          TranslationStatus: [
-            {
-              value: this.tvitemlanguageService.tvitemlanguageListModel$.getValue()[0]?.TranslationStatus,
-              disabled: false
-            }, [  Validators.required ]],
-          LastUpdateDate_UTC: [
-            {
-              value: this.tvitemlanguageService.tvitemlanguageListModel$.getValue()[0]?.LastUpdateDate_UTC,
-              disabled: false
-            }, [  Validators.required ]],
-          LastUpdateContactTVItemID: [
-            {
-              value: this.tvitemlanguageService.tvitemlanguageListModel$.getValue()[0]?.LastUpdateContactTVItemID,
-              disabled: false
-            }, [  Validators.required ]],
-        }
-      );
-
-      if (httpClientCommand === HttpClientCommand.Post) {
-        this.tvitemlanguageFormPost = formGroup
-      }
-      else {
-        this.tvitemlanguageFormPut = formGroup;
-      }
     }
   }
 }

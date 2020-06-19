@@ -12,9 +12,10 @@ import { PolSourceGroupingRoutingModule } from './polsourcegrouping-routing.modu
 import { MaterialModule } from '../../../app-material.module';
 import { PolSourceGroupingComponent } from './polsourcegrouping.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { PolSourceGroupingEditComponent } from './polsourcegrouping-edit.component';
 
 @NgModule({
-  declarations: [ PolSourceGroupingComponent ],
+  declarations: [PolSourceGroupingComponent, PolSourceGroupingEditComponent],
   imports: [
     CommonModule,
     RouterModule,
