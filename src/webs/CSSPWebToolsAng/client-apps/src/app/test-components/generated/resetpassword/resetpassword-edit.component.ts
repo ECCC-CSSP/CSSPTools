@@ -57,32 +57,32 @@ export class ResetPasswordEditComponent implements OnInit, OnDestroy {
         {
           ResetPasswordID: [
             {
-              value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.resetpasswordService.resetpasswordListModel$.getValue()[0]?.ResetPasswordID)),
+              value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.resetpassword.ResetPasswordID)),
               disabled: false
             }, [Validators.required]],
           Email: [
             {
-              value: this.resetpasswordService.resetpasswordListModel$.getValue()[0]?.Email,
+              value: this.resetpassword.Email,
               disabled: false
             }, [Validators.required, Validators.email, Validators.maxLength(256)]],
           ExpireDate_Local: [
             {
-              value: this.resetpasswordService.resetpasswordListModel$.getValue()[0]?.ExpireDate_Local,
+              value: this.resetpassword.ExpireDate_Local,
               disabled: false
             }, [Validators.required]],
           Code: [
             {
-              value: this.resetpasswordService.resetpasswordListModel$.getValue()[0]?.Code,
+              value: this.resetpassword.Code,
               disabled: false
             }, [Validators.required, Validators.maxLength(8)]],
           LastUpdateDate_UTC: [
             {
-              value: this.resetpasswordService.resetpasswordListModel$.getValue()[0]?.LastUpdateDate_UTC,
+              value: this.resetpassword.LastUpdateDate_UTC,
               disabled: false
             }, [Validators.required]],
           LastUpdateContactTVItemID: [
             {
-              value: this.resetpasswordService.resetpasswordListModel$.getValue()[0]?.LastUpdateContactTVItemID,
+              value: this.resetpassword.LastUpdateContactTVItemID,
               disabled: false
             }, [Validators.required]],
         }

@@ -70,112 +70,112 @@ export class LabSheetEditComponent implements OnInit, OnDestroy {
         {
           LabSheetID: [
             {
-              value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.labsheetService.labsheetListModel$.getValue()[0]?.LabSheetID)),
+              value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.labsheet.LabSheetID)),
               disabled: false
             }, [Validators.required]],
           OtherServerLabSheetID: [
             {
-              value: this.labsheetService.labsheetListModel$.getValue()[0]?.OtherServerLabSheetID,
+              value: this.labsheet.OtherServerLabSheetID,
               disabled: false
             }, [Validators.required, Validators.min(1)]],
           SamplingPlanID: [
             {
-              value: this.labsheetService.labsheetListModel$.getValue()[0]?.SamplingPlanID,
+              value: this.labsheet.SamplingPlanID,
               disabled: false
             }, [Validators.required]],
           SamplingPlanName: [
             {
-              value: this.labsheetService.labsheetListModel$.getValue()[0]?.SamplingPlanName,
+              value: this.labsheet.SamplingPlanName,
               disabled: false
             }, [Validators.required, Validators.minLength(1), Validators.maxLength(250)]],
           Year: [
             {
-              value: this.labsheetService.labsheetListModel$.getValue()[0]?.Year,
+              value: this.labsheet.Year,
               disabled: false
             }, [Validators.required, Validators.min(1980)]],
           Month: [
             {
-              value: this.labsheetService.labsheetListModel$.getValue()[0]?.Month,
+              value: this.labsheet.Month,
               disabled: false
             }, [Validators.required, Validators.min(1), Validators.max(12)]],
           Day: [
             {
-              value: this.labsheetService.labsheetListModel$.getValue()[0]?.Day,
+              value: this.labsheet.Day,
               disabled: false
             }, [Validators.required, Validators.min(1), Validators.max(31)]],
           RunNumber: [
             {
-              value: this.labsheetService.labsheetListModel$.getValue()[0]?.RunNumber,
+              value: this.labsheet.RunNumber,
               disabled: false
             }, [Validators.required, Validators.min(1), Validators.max(100)]],
           SubsectorTVItemID: [
             {
-              value: this.labsheetService.labsheetListModel$.getValue()[0]?.SubsectorTVItemID,
+              value: this.labsheet.SubsectorTVItemID,
               disabled: false
             }, [Validators.required]],
           MWQMRunTVItemID: [
             {
-              value: this.labsheetService.labsheetListModel$.getValue()[0]?.MWQMRunTVItemID,
+              value: this.labsheet.MWQMRunTVItemID,
               disabled: false
             }],
           SamplingPlanType: [
             {
-              value: this.labsheetService.labsheetListModel$.getValue()[0]?.SamplingPlanType,
+              value: this.labsheet.SamplingPlanType,
               disabled: false
             }, [Validators.required]],
           SampleType: [
             {
-              value: this.labsheetService.labsheetListModel$.getValue()[0]?.SampleType,
+              value: this.labsheet.SampleType,
               disabled: false
             }, [Validators.required]],
           LabSheetType: [
             {
-              value: this.labsheetService.labsheetListModel$.getValue()[0]?.LabSheetType,
+              value: this.labsheet.LabSheetType,
               disabled: false
             }, [Validators.required]],
           LabSheetStatus: [
             {
-              value: this.labsheetService.labsheetListModel$.getValue()[0]?.LabSheetStatus,
+              value: this.labsheet.LabSheetStatus,
               disabled: false
             }, [Validators.required]],
           FileName: [
             {
-              value: this.labsheetService.labsheetListModel$.getValue()[0]?.FileName,
+              value: this.labsheet.FileName,
               disabled: false
             }, [Validators.required, Validators.minLength(1), Validators.maxLength(250)]],
           FileLastModifiedDate_Local: [
             {
-              value: this.labsheetService.labsheetListModel$.getValue()[0]?.FileLastModifiedDate_Local,
+              value: this.labsheet.FileLastModifiedDate_Local,
               disabled: false
             }, [Validators.required]],
           FileContent: [
             {
-              value: this.labsheetService.labsheetListModel$.getValue()[0]?.FileContent,
+              value: this.labsheet.FileContent,
               disabled: false
             }, [Validators.required]],
           AcceptedOrRejectedByContactTVItemID: [
             {
-              value: this.labsheetService.labsheetListModel$.getValue()[0]?.AcceptedOrRejectedByContactTVItemID,
+              value: this.labsheet.AcceptedOrRejectedByContactTVItemID,
               disabled: false
             }],
           AcceptedOrRejectedDateTime: [
             {
-              value: this.labsheetService.labsheetListModel$.getValue()[0]?.AcceptedOrRejectedDateTime,
+              value: this.labsheet.AcceptedOrRejectedDateTime,
               disabled: false
             }],
           RejectReason: [
             {
-              value: this.labsheetService.labsheetListModel$.getValue()[0]?.RejectReason,
+              value: this.labsheet.RejectReason,
               disabled: false
             }, [Validators.maxLength(250)]],
           LastUpdateDate_UTC: [
             {
-              value: this.labsheetService.labsheetListModel$.getValue()[0]?.LastUpdateDate_UTC,
+              value: this.labsheet.LastUpdateDate_UTC,
               disabled: false
             }, [Validators.required]],
           LastUpdateContactTVItemID: [
             {
-              value: this.labsheetService.labsheetListModel$.getValue()[0]?.LastUpdateContactTVItemID,
+              value: this.labsheet.LastUpdateContactTVItemID,
               disabled: false
             }, [Validators.required]],
         }

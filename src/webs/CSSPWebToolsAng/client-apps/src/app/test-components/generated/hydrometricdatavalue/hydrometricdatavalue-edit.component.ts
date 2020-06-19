@@ -61,62 +61,62 @@ export class HydrometricDataValueEditComponent implements OnInit, OnDestroy {
         {
           HydrometricDataValueID: [
             {
-              value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.hydrometricdatavalueService.hydrometricdatavalueListModel$.getValue()[0]?.HydrometricDataValueID)),
+              value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.hydrometricdatavalue.HydrometricDataValueID)),
               disabled: false
             }, [Validators.required]],
           HydrometricSiteID: [
             {
-              value: this.hydrometricdatavalueService.hydrometricdatavalueListModel$.getValue()[0]?.HydrometricSiteID,
+              value: this.hydrometricdatavalue.HydrometricSiteID,
               disabled: false
             }, [Validators.required]],
           DateTime_Local: [
             {
-              value: this.hydrometricdatavalueService.hydrometricdatavalueListModel$.getValue()[0]?.DateTime_Local,
+              value: this.hydrometricdatavalue.DateTime_Local,
               disabled: false
             }, [Validators.required]],
           Keep: [
             {
-              value: this.hydrometricdatavalueService.hydrometricdatavalueListModel$.getValue()[0]?.Keep,
+              value: this.hydrometricdatavalue.Keep,
               disabled: false
             }, [Validators.required]],
           StorageDataType: [
             {
-              value: this.hydrometricdatavalueService.hydrometricdatavalueListModel$.getValue()[0]?.StorageDataType,
+              value: this.hydrometricdatavalue.StorageDataType,
               disabled: false
             }, [Validators.required]],
           HasBeenRead: [
             {
-              value: this.hydrometricdatavalueService.hydrometricdatavalueListModel$.getValue()[0]?.HasBeenRead,
+              value: this.hydrometricdatavalue.HasBeenRead,
               disabled: false
             }, [Validators.required]],
           Discharge_m3_s: [
             {
-              value: this.hydrometricdatavalueService.hydrometricdatavalueListModel$.getValue()[0]?.Discharge_m3_s,
+              value: this.hydrometricdatavalue.Discharge_m3_s,
               disabled: false
             }, [Validators.min(0), Validators.max(100000)]],
           DischargeEntered_m3_s: [
             {
-              value: this.hydrometricdatavalueService.hydrometricdatavalueListModel$.getValue()[0]?.DischargeEntered_m3_s,
+              value: this.hydrometricdatavalue.DischargeEntered_m3_s,
               disabled: false
             }, [Validators.min(0), Validators.max(100000)]],
           Level_m: [
             {
-              value: this.hydrometricdatavalueService.hydrometricdatavalueListModel$.getValue()[0]?.Level_m,
+              value: this.hydrometricdatavalue.Level_m,
               disabled: false
             }, [Validators.min(0), Validators.max(10000)]],
           HourlyValues: [
             {
-              value: this.hydrometricdatavalueService.hydrometricdatavalueListModel$.getValue()[0]?.HourlyValues,
+              value: this.hydrometricdatavalue.HourlyValues,
               disabled: false
             }],
           LastUpdateDate_UTC: [
             {
-              value: this.hydrometricdatavalueService.hydrometricdatavalueListModel$.getValue()[0]?.LastUpdateDate_UTC,
+              value: this.hydrometricdatavalue.LastUpdateDate_UTC,
               disabled: false
             }, [Validators.required]],
           LastUpdateContactTVItemID: [
             {
-              value: this.hydrometricdatavalueService.hydrometricdatavalueListModel$.getValue()[0]?.LastUpdateContactTVItemID,
+              value: this.hydrometricdatavalue.LastUpdateContactTVItemID,
               disabled: false
             }, [Validators.required]],
         }

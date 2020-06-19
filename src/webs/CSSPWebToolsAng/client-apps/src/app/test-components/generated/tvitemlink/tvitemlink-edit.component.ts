@@ -63,67 +63,67 @@ export class TVItemLinkEditComponent implements OnInit, OnDestroy {
         {
           TVItemLinkID: [
             {
-              value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.tvitemlinkService.tvitemlinkListModel$.getValue()[0]?.TVItemLinkID)),
+              value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.tvitemlink.TVItemLinkID)),
               disabled: false
             }, [Validators.required]],
           FromTVItemID: [
             {
-              value: this.tvitemlinkService.tvitemlinkListModel$.getValue()[0]?.FromTVItemID,
+              value: this.tvitemlink.FromTVItemID,
               disabled: false
             }, [Validators.required]],
           ToTVItemID: [
             {
-              value: this.tvitemlinkService.tvitemlinkListModel$.getValue()[0]?.ToTVItemID,
+              value: this.tvitemlink.ToTVItemID,
               disabled: false
             }, [Validators.required]],
           FromTVType: [
             {
-              value: this.tvitemlinkService.tvitemlinkListModel$.getValue()[0]?.FromTVType,
+              value: this.tvitemlink.FromTVType,
               disabled: false
             }, [Validators.required]],
           ToTVType: [
             {
-              value: this.tvitemlinkService.tvitemlinkListModel$.getValue()[0]?.ToTVType,
+              value: this.tvitemlink.ToTVType,
               disabled: false
             }, [Validators.required]],
           StartDateTime_Local: [
             {
-              value: this.tvitemlinkService.tvitemlinkListModel$.getValue()[0]?.StartDateTime_Local,
+              value: this.tvitemlink.StartDateTime_Local,
               disabled: false
             }],
           EndDateTime_Local: [
             {
-              value: this.tvitemlinkService.tvitemlinkListModel$.getValue()[0]?.EndDateTime_Local,
+              value: this.tvitemlink.EndDateTime_Local,
               disabled: false
             }],
           Ordinal: [
             {
-              value: this.tvitemlinkService.tvitemlinkListModel$.getValue()[0]?.Ordinal,
+              value: this.tvitemlink.Ordinal,
               disabled: false
             }, [Validators.required, Validators.min(0), Validators.max(100)]],
           TVLevel: [
             {
-              value: this.tvitemlinkService.tvitemlinkListModel$.getValue()[0]?.TVLevel,
+              value: this.tvitemlink.TVLevel,
               disabled: false
             }, [Validators.required, Validators.min(0), Validators.max(100)]],
           TVPath: [
             {
-              value: this.tvitemlinkService.tvitemlinkListModel$.getValue()[0]?.TVPath,
+              value: this.tvitemlink.TVPath,
               disabled: false
             }, [Validators.required, Validators.maxLength(250)]],
           ParentTVItemLinkID: [
             {
-              value: this.tvitemlinkService.tvitemlinkListModel$.getValue()[0]?.ParentTVItemLinkID,
+              value: this.tvitemlink.ParentTVItemLinkID,
               disabled: false
             }],
           LastUpdateDate_UTC: [
             {
-              value: this.tvitemlinkService.tvitemlinkListModel$.getValue()[0]?.LastUpdateDate_UTC,
+              value: this.tvitemlink.LastUpdateDate_UTC,
               disabled: false
             }, [Validators.required]],
           LastUpdateContactTVItemID: [
             {
-              value: this.tvitemlinkService.tvitemlinkListModel$.getValue()[0]?.LastUpdateContactTVItemID,
+              value: this.tvitemlink.LastUpdateContactTVItemID,
               disabled: false
             }, [Validators.required]],
         }

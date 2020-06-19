@@ -61,42 +61,42 @@ export class DrogueRunEditComponent implements OnInit, OnDestroy {
         {
           DrogueRunID: [
             {
-              value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.droguerunService.droguerunListModel$.getValue()[0]?.DrogueRunID)),
+              value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.droguerun.DrogueRunID)),
               disabled: false
             }, [Validators.required]],
           SubsectorTVItemID: [
             {
-              value: this.droguerunService.droguerunListModel$.getValue()[0]?.SubsectorTVItemID,
+              value: this.droguerun.SubsectorTVItemID,
               disabled: false
             }, [Validators.required]],
           DrogueNumber: [
             {
-              value: this.droguerunService.droguerunListModel$.getValue()[0]?.DrogueNumber,
+              value: this.droguerun.DrogueNumber,
               disabled: false
             }, [Validators.required, Validators.min(0), Validators.max(100)]],
           DrogueType: [
             {
-              value: this.droguerunService.droguerunListModel$.getValue()[0]?.DrogueType,
+              value: this.droguerun.DrogueType,
               disabled: false
             }, [Validators.required]],
           RunStartDateTime: [
             {
-              value: this.droguerunService.droguerunListModel$.getValue()[0]?.RunStartDateTime,
+              value: this.droguerun.RunStartDateTime,
               disabled: false
             }, [Validators.required]],
           IsRisingTide: [
             {
-              value: this.droguerunService.droguerunListModel$.getValue()[0]?.IsRisingTide,
+              value: this.droguerun.IsRisingTide,
               disabled: false
             }, [Validators.required]],
           LastUpdateDate_UTC: [
             {
-              value: this.droguerunService.droguerunListModel$.getValue()[0]?.LastUpdateDate_UTC,
+              value: this.droguerun.LastUpdateDate_UTC,
               disabled: false
             }, [Validators.required]],
           LastUpdateContactTVItemID: [
             {
-              value: this.droguerunService.droguerunListModel$.getValue()[0]?.LastUpdateContactTVItemID,
+              value: this.droguerun.LastUpdateContactTVItemID,
               disabled: false
             }, [Validators.required]],
         }

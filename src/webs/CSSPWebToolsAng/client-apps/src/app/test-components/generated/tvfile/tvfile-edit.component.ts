@@ -70,92 +70,92 @@ export class TVFileEditComponent implements OnInit, OnDestroy {
         {
           TVFileID: [
             {
-              value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.tvfileService.tvfileListModel$.getValue()[0]?.TVFileID)),
+              value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.tvfile.TVFileID)),
               disabled: false
             }, [Validators.required]],
           TVFileTVItemID: [
             {
-              value: this.tvfileService.tvfileListModel$.getValue()[0]?.TVFileTVItemID,
+              value: this.tvfile.TVFileTVItemID,
               disabled: false
             }, [Validators.required]],
           TemplateTVType: [
             {
-              value: this.tvfileService.tvfileListModel$.getValue()[0]?.TemplateTVType,
+              value: this.tvfile.TemplateTVType,
               disabled: false
             }],
           ReportTypeID: [
             {
-              value: this.tvfileService.tvfileListModel$.getValue()[0]?.ReportTypeID,
+              value: this.tvfile.ReportTypeID,
               disabled: false
             }],
           Parameters: [
             {
-              value: this.tvfileService.tvfileListModel$.getValue()[0]?.Parameters,
+              value: this.tvfile.Parameters,
               disabled: false
             }],
           Year: [
             {
-              value: this.tvfileService.tvfileListModel$.getValue()[0]?.Year,
+              value: this.tvfile.Year,
               disabled: false
             }, [Validators.min(1980), Validators.max(2050)]],
           Language: [
             {
-              value: this.tvfileService.tvfileListModel$.getValue()[0]?.Language,
+              value: this.tvfile.Language,
               disabled: false
             }, [Validators.required]],
           FilePurpose: [
             {
-              value: this.tvfileService.tvfileListModel$.getValue()[0]?.FilePurpose,
+              value: this.tvfile.FilePurpose,
               disabled: false
             }, [Validators.required]],
           FileType: [
             {
-              value: this.tvfileService.tvfileListModel$.getValue()[0]?.FileType,
+              value: this.tvfile.FileType,
               disabled: false
             }, [Validators.required]],
           FileSize_kb: [
             {
-              value: this.tvfileService.tvfileListModel$.getValue()[0]?.FileSize_kb,
+              value: this.tvfile.FileSize_kb,
               disabled: false
             }, [Validators.required, Validators.min(0), Validators.max(100000000)]],
           FileInfo: [
             {
-              value: this.tvfileService.tvfileListModel$.getValue()[0]?.FileInfo,
+              value: this.tvfile.FileInfo,
               disabled: false
             }],
           FileCreatedDate_UTC: [
             {
-              value: this.tvfileService.tvfileListModel$.getValue()[0]?.FileCreatedDate_UTC,
+              value: this.tvfile.FileCreatedDate_UTC,
               disabled: false
             }, [Validators.required]],
           FromWater: [
             {
-              value: this.tvfileService.tvfileListModel$.getValue()[0]?.FromWater,
+              value: this.tvfile.FromWater,
               disabled: false
             }],
           ClientFilePath: [
             {
-              value: this.tvfileService.tvfileListModel$.getValue()[0]?.ClientFilePath,
+              value: this.tvfile.ClientFilePath,
               disabled: false
             }, [Validators.maxLength(250)]],
           ServerFileName: [
             {
-              value: this.tvfileService.tvfileListModel$.getValue()[0]?.ServerFileName,
+              value: this.tvfile.ServerFileName,
               disabled: false
             }, [Validators.required, Validators.maxLength(250)]],
           ServerFilePath: [
             {
-              value: this.tvfileService.tvfileListModel$.getValue()[0]?.ServerFilePath,
+              value: this.tvfile.ServerFilePath,
               disabled: false
             }, [Validators.required, Validators.maxLength(250)]],
           LastUpdateDate_UTC: [
             {
-              value: this.tvfileService.tvfileListModel$.getValue()[0]?.LastUpdateDate_UTC,
+              value: this.tvfile.LastUpdateDate_UTC,
               disabled: false
             }, [Validators.required]],
           LastUpdateContactTVItemID: [
             {
-              value: this.tvfileService.tvfileListModel$.getValue()[0]?.LastUpdateContactTVItemID,
+              value: this.tvfile.LastUpdateContactTVItemID,
               disabled: false
             }, [Validators.required]],
         }

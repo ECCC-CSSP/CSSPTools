@@ -61,42 +61,42 @@ export class MWQMSiteEditComponent implements OnInit, OnDestroy {
         {
           MWQMSiteID: [
             {
-              value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.mwqmsiteService.mwqmsiteListModel$.getValue()[0]?.MWQMSiteID)),
+              value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.mwqmsite.MWQMSiteID)),
               disabled: false
             }, [Validators.required]],
           MWQMSiteTVItemID: [
             {
-              value: this.mwqmsiteService.mwqmsiteListModel$.getValue()[0]?.MWQMSiteTVItemID,
+              value: this.mwqmsite.MWQMSiteTVItemID,
               disabled: false
             }, [Validators.required]],
           MWQMSiteNumber: [
             {
-              value: this.mwqmsiteService.mwqmsiteListModel$.getValue()[0]?.MWQMSiteNumber,
+              value: this.mwqmsite.MWQMSiteNumber,
               disabled: false
             }, [Validators.required, Validators.maxLength(8)]],
           MWQMSiteDescription: [
             {
-              value: this.mwqmsiteService.mwqmsiteListModel$.getValue()[0]?.MWQMSiteDescription,
+              value: this.mwqmsite.MWQMSiteDescription,
               disabled: false
             }, [Validators.required, Validators.maxLength(200)]],
           MWQMSiteLatestClassification: [
             {
-              value: this.mwqmsiteService.mwqmsiteListModel$.getValue()[0]?.MWQMSiteLatestClassification,
+              value: this.mwqmsite.MWQMSiteLatestClassification,
               disabled: false
             }, [Validators.required]],
           Ordinal: [
             {
-              value: this.mwqmsiteService.mwqmsiteListModel$.getValue()[0]?.Ordinal,
+              value: this.mwqmsite.Ordinal,
               disabled: false
             }, [Validators.required, Validators.min(0), Validators.max(1000)]],
           LastUpdateDate_UTC: [
             {
-              value: this.mwqmsiteService.mwqmsiteListModel$.getValue()[0]?.LastUpdateDate_UTC,
+              value: this.mwqmsite.LastUpdateDate_UTC,
               disabled: false
             }, [Validators.required]],
           LastUpdateContactTVItemID: [
             {
-              value: this.mwqmsiteService.mwqmsiteListModel$.getValue()[0]?.LastUpdateContactTVItemID,
+              value: this.mwqmsite.LastUpdateContactTVItemID,
               disabled: false
             }, [Validators.required]],
         }

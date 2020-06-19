@@ -61,42 +61,42 @@ export class TVItemEditComponent implements OnInit, OnDestroy {
         {
           TVItemID: [
             {
-              value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.tvitemService.tvitemListModel$.getValue()[0]?.TVItemID)),
+              value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.tvitem.TVItemID)),
               disabled: false
             }, [Validators.required]],
           TVLevel: [
             {
-              value: this.tvitemService.tvitemListModel$.getValue()[0]?.TVLevel,
+              value: this.tvitem.TVLevel,
               disabled: false
             }, [Validators.required, Validators.min(0), Validators.max(100)]],
           TVPath: [
             {
-              value: this.tvitemService.tvitemListModel$.getValue()[0]?.TVPath,
+              value: this.tvitem.TVPath,
               disabled: false
             }, [Validators.required, Validators.maxLength(250)]],
           TVType: [
             {
-              value: this.tvitemService.tvitemListModel$.getValue()[0]?.TVType,
+              value: this.tvitem.TVType,
               disabled: false
             }, [Validators.required]],
           ParentID: [
             {
-              value: this.tvitemService.tvitemListModel$.getValue()[0]?.ParentID,
+              value: this.tvitem.ParentID,
               disabled: false
             }],
           IsActive: [
             {
-              value: this.tvitemService.tvitemListModel$.getValue()[0]?.IsActive,
+              value: this.tvitem.IsActive,
               disabled: false
             }, [Validators.required]],
           LastUpdateDate_UTC: [
             {
-              value: this.tvitemService.tvitemListModel$.getValue()[0]?.LastUpdateDate_UTC,
+              value: this.tvitem.LastUpdateDate_UTC,
               disabled: false
             }, [Validators.required]],
           LastUpdateContactTVItemID: [
             {
-              value: this.tvitemService.tvitemListModel$.getValue()[0]?.LastUpdateContactTVItemID,
+              value: this.tvitem.LastUpdateContactTVItemID,
               disabled: false
             }, [Validators.required]],
         }

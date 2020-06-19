@@ -57,27 +57,27 @@ export class RatingCurveEditComponent implements OnInit, OnDestroy {
         {
           RatingCurveID: [
             {
-              value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.ratingcurveService.ratingcurveListModel$.getValue()[0]?.RatingCurveID)),
+              value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.ratingcurve.RatingCurveID)),
               disabled: false
             }, [Validators.required]],
           HydrometricSiteID: [
             {
-              value: this.ratingcurveService.ratingcurveListModel$.getValue()[0]?.HydrometricSiteID,
+              value: this.ratingcurve.HydrometricSiteID,
               disabled: false
             }, [Validators.required]],
           RatingCurveNumber: [
             {
-              value: this.ratingcurveService.ratingcurveListModel$.getValue()[0]?.RatingCurveNumber,
+              value: this.ratingcurve.RatingCurveNumber,
               disabled: false
             }, [Validators.required, Validators.maxLength(50)]],
           LastUpdateDate_UTC: [
             {
-              value: this.ratingcurveService.ratingcurveListModel$.getValue()[0]?.LastUpdateDate_UTC,
+              value: this.ratingcurve.LastUpdateDate_UTC,
               disabled: false
             }, [Validators.required]],
           LastUpdateContactTVItemID: [
             {
-              value: this.ratingcurveService.ratingcurveListModel$.getValue()[0]?.LastUpdateContactTVItemID,
+              value: this.ratingcurve.LastUpdateContactTVItemID,
               disabled: false
             }, [Validators.required]],
         }

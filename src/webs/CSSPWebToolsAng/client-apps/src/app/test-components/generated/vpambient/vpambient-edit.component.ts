@@ -57,77 +57,77 @@ export class VPAmbientEditComponent implements OnInit, OnDestroy {
         {
           VPAmbientID: [
             {
-              value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.vpambientService.vpambientListModel$.getValue()[0]?.VPAmbientID)),
+              value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.vpambient.VPAmbientID)),
               disabled: false
             }, [Validators.required]],
           VPScenarioID: [
             {
-              value: this.vpambientService.vpambientListModel$.getValue()[0]?.VPScenarioID,
+              value: this.vpambient.VPScenarioID,
               disabled: false
             }, [Validators.required]],
           Row: [
             {
-              value: this.vpambientService.vpambientListModel$.getValue()[0]?.Row,
+              value: this.vpambient.Row,
               disabled: false
             }, [Validators.required, Validators.min(0), Validators.max(10)]],
           MeasurementDepth_m: [
             {
-              value: this.vpambientService.vpambientListModel$.getValue()[0]?.MeasurementDepth_m,
+              value: this.vpambient.MeasurementDepth_m,
               disabled: false
             }, [Validators.min(0), Validators.max(1000)]],
           CurrentSpeed_m_s: [
             {
-              value: this.vpambientService.vpambientListModel$.getValue()[0]?.CurrentSpeed_m_s,
+              value: this.vpambient.CurrentSpeed_m_s,
               disabled: false
             }, [Validators.min(0), Validators.max(10)]],
           CurrentDirection_deg: [
             {
-              value: this.vpambientService.vpambientListModel$.getValue()[0]?.CurrentDirection_deg,
+              value: this.vpambient.CurrentDirection_deg,
               disabled: false
             }, [Validators.min(-180), Validators.max(180)]],
           AmbientSalinity_PSU: [
             {
-              value: this.vpambientService.vpambientListModel$.getValue()[0]?.AmbientSalinity_PSU,
+              value: this.vpambient.AmbientSalinity_PSU,
               disabled: false
             }, [Validators.min(0), Validators.max(40)]],
           AmbientTemperature_C: [
             {
-              value: this.vpambientService.vpambientListModel$.getValue()[0]?.AmbientTemperature_C,
+              value: this.vpambient.AmbientTemperature_C,
               disabled: false
             }, [Validators.min(-10), Validators.max(40)]],
           BackgroundConcentration_MPN_100ml: [
             {
-              value: this.vpambientService.vpambientListModel$.getValue()[0]?.BackgroundConcentration_MPN_100ml,
+              value: this.vpambient.BackgroundConcentration_MPN_100ml,
               disabled: false
             }, [Validators.min(0), Validators.max(10000000)]],
           PollutantDecayRate_per_day: [
             {
-              value: this.vpambientService.vpambientListModel$.getValue()[0]?.PollutantDecayRate_per_day,
+              value: this.vpambient.PollutantDecayRate_per_day,
               disabled: false
             }, [Validators.min(0), Validators.max(100)]],
           FarFieldCurrentSpeed_m_s: [
             {
-              value: this.vpambientService.vpambientListModel$.getValue()[0]?.FarFieldCurrentSpeed_m_s,
+              value: this.vpambient.FarFieldCurrentSpeed_m_s,
               disabled: false
             }, [Validators.min(0), Validators.max(10)]],
           FarFieldCurrentDirection_deg: [
             {
-              value: this.vpambientService.vpambientListModel$.getValue()[0]?.FarFieldCurrentDirection_deg,
+              value: this.vpambient.FarFieldCurrentDirection_deg,
               disabled: false
             }, [Validators.min(-180), Validators.max(180)]],
           FarFieldDiffusionCoefficient: [
             {
-              value: this.vpambientService.vpambientListModel$.getValue()[0]?.FarFieldDiffusionCoefficient,
+              value: this.vpambient.FarFieldDiffusionCoefficient,
               disabled: false
             }, [Validators.min(0), Validators.max(1)]],
           LastUpdateDate_UTC: [
             {
-              value: this.vpambientService.vpambientListModel$.getValue()[0]?.LastUpdateDate_UTC,
+              value: this.vpambient.LastUpdateDate_UTC,
               disabled: false
             }, [Validators.required]],
           LastUpdateContactTVItemID: [
             {
-              value: this.vpambientService.vpambientListModel$.getValue()[0]?.LastUpdateContactTVItemID,
+              value: this.vpambient.LastUpdateContactTVItemID,
               disabled: false
             }, [Validators.required]],
         }

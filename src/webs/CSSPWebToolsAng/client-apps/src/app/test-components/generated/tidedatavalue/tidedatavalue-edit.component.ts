@@ -69,67 +69,67 @@ export class TideDataValueEditComponent implements OnInit, OnDestroy {
         {
           TideDataValueID: [
             {
-              value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.tidedatavalueService.tidedatavalueListModel$.getValue()[0]?.TideDataValueID)),
+              value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.tidedatavalue.TideDataValueID)),
               disabled: false
             }, [Validators.required]],
           TideSiteTVItemID: [
             {
-              value: this.tidedatavalueService.tidedatavalueListModel$.getValue()[0]?.TideSiteTVItemID,
+              value: this.tidedatavalue.TideSiteTVItemID,
               disabled: false
             }, [Validators.required]],
           DateTime_Local: [
             {
-              value: this.tidedatavalueService.tidedatavalueListModel$.getValue()[0]?.DateTime_Local,
+              value: this.tidedatavalue.DateTime_Local,
               disabled: false
             }, [Validators.required]],
           Keep: [
             {
-              value: this.tidedatavalueService.tidedatavalueListModel$.getValue()[0]?.Keep,
+              value: this.tidedatavalue.Keep,
               disabled: false
             }, [Validators.required]],
           TideDataType: [
             {
-              value: this.tidedatavalueService.tidedatavalueListModel$.getValue()[0]?.TideDataType,
+              value: this.tidedatavalue.TideDataType,
               disabled: false
             }, [Validators.required]],
           StorageDataType: [
             {
-              value: this.tidedatavalueService.tidedatavalueListModel$.getValue()[0]?.StorageDataType,
+              value: this.tidedatavalue.StorageDataType,
               disabled: false
             }, [Validators.required]],
           Depth_m: [
             {
-              value: this.tidedatavalueService.tidedatavalueListModel$.getValue()[0]?.Depth_m,
+              value: this.tidedatavalue.Depth_m,
               disabled: false
             }, [Validators.required, Validators.min(0), Validators.max(10000)]],
           UVelocity_m_s: [
             {
-              value: this.tidedatavalueService.tidedatavalueListModel$.getValue()[0]?.UVelocity_m_s,
+              value: this.tidedatavalue.UVelocity_m_s,
               disabled: false
             }, [Validators.required, Validators.min(0), Validators.max(10)]],
           VVelocity_m_s: [
             {
-              value: this.tidedatavalueService.tidedatavalueListModel$.getValue()[0]?.VVelocity_m_s,
+              value: this.tidedatavalue.VVelocity_m_s,
               disabled: false
             }, [Validators.required, Validators.min(0), Validators.max(10)]],
           TideStart: [
             {
-              value: this.tidedatavalueService.tidedatavalueListModel$.getValue()[0]?.TideStart,
+              value: this.tidedatavalue.TideStart,
               disabled: false
             }],
           TideEnd: [
             {
-              value: this.tidedatavalueService.tidedatavalueListModel$.getValue()[0]?.TideEnd,
+              value: this.tidedatavalue.TideEnd,
               disabled: false
             }],
           LastUpdateDate_UTC: [
             {
-              value: this.tidedatavalueService.tidedatavalueListModel$.getValue()[0]?.LastUpdateDate_UTC,
+              value: this.tidedatavalue.LastUpdateDate_UTC,
               disabled: false
             }, [Validators.required]],
           LastUpdateContactTVItemID: [
             {
-              value: this.tidedatavalueService.tidedatavalueListModel$.getValue()[0]?.LastUpdateContactTVItemID,
+              value: this.tidedatavalue.LastUpdateContactTVItemID,
               disabled: false
             }, [Validators.required]],
         }

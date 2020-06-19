@@ -66,47 +66,47 @@ export class MWQMSubsectorLanguageEditComponent implements OnInit, OnDestroy {
         {
           MWQMSubsectorLanguageID: [
             {
-              value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.mwqmsubsectorlanguageService.mwqmsubsectorlanguageListModel$.getValue()[0]?.MWQMSubsectorLanguageID)),
+              value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.mwqmsubsectorlanguage.MWQMSubsectorLanguageID)),
               disabled: false
             }, [Validators.required]],
           MWQMSubsectorID: [
             {
-              value: this.mwqmsubsectorlanguageService.mwqmsubsectorlanguageListModel$.getValue()[0]?.MWQMSubsectorID,
+              value: this.mwqmsubsectorlanguage.MWQMSubsectorID,
               disabled: false
             }, [Validators.required]],
           Language: [
             {
-              value: this.mwqmsubsectorlanguageService.mwqmsubsectorlanguageListModel$.getValue()[0]?.Language,
+              value: this.mwqmsubsectorlanguage.Language,
               disabled: false
             }, [Validators.required]],
           SubsectorDesc: [
             {
-              value: this.mwqmsubsectorlanguageService.mwqmsubsectorlanguageListModel$.getValue()[0]?.SubsectorDesc,
+              value: this.mwqmsubsectorlanguage.SubsectorDesc,
               disabled: false
             }, [Validators.required, Validators.maxLength(250)]],
           TranslationStatusSubsectorDesc: [
             {
-              value: this.mwqmsubsectorlanguageService.mwqmsubsectorlanguageListModel$.getValue()[0]?.TranslationStatusSubsectorDesc,
+              value: this.mwqmsubsectorlanguage.TranslationStatusSubsectorDesc,
               disabled: false
             }, [Validators.required]],
           LogBook: [
             {
-              value: this.mwqmsubsectorlanguageService.mwqmsubsectorlanguageListModel$.getValue()[0]?.LogBook,
+              value: this.mwqmsubsectorlanguage.LogBook,
               disabled: false
             }],
           TranslationStatusLogBook: [
             {
-              value: this.mwqmsubsectorlanguageService.mwqmsubsectorlanguageListModel$.getValue()[0]?.TranslationStatusLogBook,
+              value: this.mwqmsubsectorlanguage.TranslationStatusLogBook,
               disabled: false
             }],
           LastUpdateDate_UTC: [
             {
-              value: this.mwqmsubsectorlanguageService.mwqmsubsectorlanguageListModel$.getValue()[0]?.LastUpdateDate_UTC,
+              value: this.mwqmsubsectorlanguage.LastUpdateDate_UTC,
               disabled: false
             }, [Validators.required]],
           LastUpdateContactTVItemID: [
             {
-              value: this.mwqmsubsectorlanguageService.mwqmsubsectorlanguageListModel$.getValue()[0]?.LastUpdateContactTVItemID,
+              value: this.mwqmsubsectorlanguage.LastUpdateContactTVItemID,
               disabled: false
             }, [Validators.required]],
         }

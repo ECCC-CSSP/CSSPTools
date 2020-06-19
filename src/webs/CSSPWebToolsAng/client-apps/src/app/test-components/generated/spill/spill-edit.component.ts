@@ -57,42 +57,42 @@ export class SpillEditComponent implements OnInit, OnDestroy {
         {
           SpillID: [
             {
-              value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.spillService.spillListModel$.getValue()[0]?.SpillID)),
+              value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.spill.SpillID)),
               disabled: false
             }, [Validators.required]],
           MunicipalityTVItemID: [
             {
-              value: this.spillService.spillListModel$.getValue()[0]?.MunicipalityTVItemID,
+              value: this.spill.MunicipalityTVItemID,
               disabled: false
             }, [Validators.required]],
           InfrastructureTVItemID: [
             {
-              value: this.spillService.spillListModel$.getValue()[0]?.InfrastructureTVItemID,
+              value: this.spill.InfrastructureTVItemID,
               disabled: false
             }],
           StartDateTime_Local: [
             {
-              value: this.spillService.spillListModel$.getValue()[0]?.StartDateTime_Local,
+              value: this.spill.StartDateTime_Local,
               disabled: false
             }, [Validators.required]],
           EndDateTime_Local: [
             {
-              value: this.spillService.spillListModel$.getValue()[0]?.EndDateTime_Local,
+              value: this.spill.EndDateTime_Local,
               disabled: false
             }],
           AverageFlow_m3_day: [
             {
-              value: this.spillService.spillListModel$.getValue()[0]?.AverageFlow_m3_day,
+              value: this.spill.AverageFlow_m3_day,
               disabled: false
             }, [Validators.required, Validators.min(0), Validators.max(1000000)]],
           LastUpdateDate_UTC: [
             {
-              value: this.spillService.spillListModel$.getValue()[0]?.LastUpdateDate_UTC,
+              value: this.spill.LastUpdateDate_UTC,
               disabled: false
             }, [Validators.required]],
           LastUpdateContactTVItemID: [
             {
-              value: this.spillService.spillListModel$.getValue()[0]?.LastUpdateContactTVItemID,
+              value: this.spill.LastUpdateContactTVItemID,
               disabled: false
             }, [Validators.required]],
         }

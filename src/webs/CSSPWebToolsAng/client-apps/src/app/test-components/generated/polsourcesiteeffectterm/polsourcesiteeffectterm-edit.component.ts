@@ -57,37 +57,37 @@ export class PolSourceSiteEffectTermEditComponent implements OnInit, OnDestroy {
         {
           PolSourceSiteEffectTermID: [
             {
-              value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.polsourcesiteeffecttermService.polsourcesiteeffecttermListModel$.getValue()[0]?.PolSourceSiteEffectTermID)),
+              value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.polsourcesiteeffectterm.PolSourceSiteEffectTermID)),
               disabled: false
             }, [Validators.required]],
           IsGroup: [
             {
-              value: this.polsourcesiteeffecttermService.polsourcesiteeffecttermListModel$.getValue()[0]?.IsGroup,
+              value: this.polsourcesiteeffectterm.IsGroup,
               disabled: false
             }, [Validators.required]],
           UnderGroupID: [
             {
-              value: this.polsourcesiteeffecttermService.polsourcesiteeffecttermListModel$.getValue()[0]?.UnderGroupID,
+              value: this.polsourcesiteeffectterm.UnderGroupID,
               disabled: false
             }],
           EffectTermEN: [
             {
-              value: this.polsourcesiteeffecttermService.polsourcesiteeffecttermListModel$.getValue()[0]?.EffectTermEN,
+              value: this.polsourcesiteeffectterm.EffectTermEN,
               disabled: false
             }, [Validators.required, Validators.maxLength(100)]],
           EffectTermFR: [
             {
-              value: this.polsourcesiteeffecttermService.polsourcesiteeffecttermListModel$.getValue()[0]?.EffectTermFR,
+              value: this.polsourcesiteeffectterm.EffectTermFR,
               disabled: false
             }, [Validators.required, Validators.maxLength(100)]],
           LastUpdateDate_UTC: [
             {
-              value: this.polsourcesiteeffecttermService.polsourcesiteeffecttermListModel$.getValue()[0]?.LastUpdateDate_UTC,
+              value: this.polsourcesiteeffectterm.LastUpdateDate_UTC,
               disabled: false
             }, [Validators.required]],
           LastUpdateContactTVItemID: [
             {
-              value: this.polsourcesiteeffecttermService.polsourcesiteeffecttermListModel$.getValue()[0]?.LastUpdateContactTVItemID,
+              value: this.polsourcesiteeffectterm.LastUpdateContactTVItemID,
               disabled: false
             }, [Validators.required]],
         }

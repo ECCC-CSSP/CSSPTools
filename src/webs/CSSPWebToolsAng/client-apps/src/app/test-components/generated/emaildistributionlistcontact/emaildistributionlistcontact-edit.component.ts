@@ -57,62 +57,62 @@ export class EmailDistributionListContactEditComponent implements OnInit, OnDest
         {
           EmailDistributionListContactID: [
             {
-              value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.emaildistributionlistcontactService.emaildistributionlistcontactListModel$.getValue()[0]?.EmailDistributionListContactID)),
+              value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.emaildistributionlistcontact.EmailDistributionListContactID)),
               disabled: false
             }, [Validators.required]],
           EmailDistributionListID: [
             {
-              value: this.emaildistributionlistcontactService.emaildistributionlistcontactListModel$.getValue()[0]?.EmailDistributionListID,
+              value: this.emaildistributionlistcontact.EmailDistributionListID,
               disabled: false
             }, [Validators.required]],
           IsCC: [
             {
-              value: this.emaildistributionlistcontactService.emaildistributionlistcontactListModel$.getValue()[0]?.IsCC,
+              value: this.emaildistributionlistcontact.IsCC,
               disabled: false
             }, [Validators.required]],
           Name: [
             {
-              value: this.emaildistributionlistcontactService.emaildistributionlistcontactListModel$.getValue()[0]?.Name,
+              value: this.emaildistributionlistcontact.Name,
               disabled: false
             }, [Validators.required, Validators.maxLength(100)]],
           Email: [
             {
-              value: this.emaildistributionlistcontactService.emaildistributionlistcontactListModel$.getValue()[0]?.Email,
+              value: this.emaildistributionlistcontact.Email,
               disabled: false
             }, [Validators.required, Validators.email, Validators.maxLength(200)]],
           CMPRainfallSeasonal: [
             {
-              value: this.emaildistributionlistcontactService.emaildistributionlistcontactListModel$.getValue()[0]?.CMPRainfallSeasonal,
+              value: this.emaildistributionlistcontact.CMPRainfallSeasonal,
               disabled: false
             }, [Validators.required]],
           CMPWastewater: [
             {
-              value: this.emaildistributionlistcontactService.emaildistributionlistcontactListModel$.getValue()[0]?.CMPWastewater,
+              value: this.emaildistributionlistcontact.CMPWastewater,
               disabled: false
             }, [Validators.required]],
           EmergencyWeather: [
             {
-              value: this.emaildistributionlistcontactService.emaildistributionlistcontactListModel$.getValue()[0]?.EmergencyWeather,
+              value: this.emaildistributionlistcontact.EmergencyWeather,
               disabled: false
             }, [Validators.required]],
           EmergencyWastewater: [
             {
-              value: this.emaildistributionlistcontactService.emaildistributionlistcontactListModel$.getValue()[0]?.EmergencyWastewater,
+              value: this.emaildistributionlistcontact.EmergencyWastewater,
               disabled: false
             }, [Validators.required]],
           ReopeningAllTypes: [
             {
-              value: this.emaildistributionlistcontactService.emaildistributionlistcontactListModel$.getValue()[0]?.ReopeningAllTypes,
+              value: this.emaildistributionlistcontact.ReopeningAllTypes,
               disabled: false
             }, [Validators.required]],
           LastUpdateDate_UTC: [
             {
-              value: this.emaildistributionlistcontactService.emaildistributionlistcontactListModel$.getValue()[0]?.LastUpdateDate_UTC,
+              value: this.emaildistributionlistcontact.LastUpdateDate_UTC,
               disabled: false
             }, [Validators.required]],
           LastUpdateContactTVItemID: [
             {
-              value: this.emaildistributionlistcontactService.emaildistributionlistcontactListModel$.getValue()[0]?.LastUpdateContactTVItemID,
+              value: this.emaildistributionlistcontact.LastUpdateContactTVItemID,
               disabled: false
             }, [Validators.required]],
         }

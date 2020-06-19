@@ -57,42 +57,42 @@ export class PolSourceSiteEffectEditComponent implements OnInit, OnDestroy {
         {
           PolSourceSiteEffectID: [
             {
-              value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.polsourcesiteeffectService.polsourcesiteeffectListModel$.getValue()[0]?.PolSourceSiteEffectID)),
+              value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.polsourcesiteeffect.PolSourceSiteEffectID)),
               disabled: false
             }, [Validators.required]],
           PolSourceSiteOrInfrastructureTVItemID: [
             {
-              value: this.polsourcesiteeffectService.polsourcesiteeffectListModel$.getValue()[0]?.PolSourceSiteOrInfrastructureTVItemID,
+              value: this.polsourcesiteeffect.PolSourceSiteOrInfrastructureTVItemID,
               disabled: false
             }, [Validators.required]],
           MWQMSiteTVItemID: [
             {
-              value: this.polsourcesiteeffectService.polsourcesiteeffectListModel$.getValue()[0]?.MWQMSiteTVItemID,
+              value: this.polsourcesiteeffect.MWQMSiteTVItemID,
               disabled: false
             }, [Validators.required]],
           PolSourceSiteEffectTermIDs: [
             {
-              value: this.polsourcesiteeffectService.polsourcesiteeffectListModel$.getValue()[0]?.PolSourceSiteEffectTermIDs,
+              value: this.polsourcesiteeffect.PolSourceSiteEffectTermIDs,
               disabled: false
             }, [Validators.maxLength(250)]],
           Comments: [
             {
-              value: this.polsourcesiteeffectService.polsourcesiteeffectListModel$.getValue()[0]?.Comments,
+              value: this.polsourcesiteeffect.Comments,
               disabled: false
             }],
           AnalysisDocumentTVItemID: [
             {
-              value: this.polsourcesiteeffectService.polsourcesiteeffectListModel$.getValue()[0]?.AnalysisDocumentTVItemID,
+              value: this.polsourcesiteeffect.AnalysisDocumentTVItemID,
               disabled: false
             }],
           LastUpdateDate_UTC: [
             {
-              value: this.polsourcesiteeffectService.polsourcesiteeffectListModel$.getValue()[0]?.LastUpdateDate_UTC,
+              value: this.polsourcesiteeffect.LastUpdateDate_UTC,
               disabled: false
             }, [Validators.required]],
           LastUpdateContactTVItemID: [
             {
-              value: this.polsourcesiteeffectService.polsourcesiteeffectListModel$.getValue()[0]?.LastUpdateContactTVItemID,
+              value: this.polsourcesiteeffect.LastUpdateContactTVItemID,
               disabled: false
             }, [Validators.required]],
         }

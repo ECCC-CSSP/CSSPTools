@@ -64,37 +64,37 @@ export class EmailDistributionListLanguageEditComponent implements OnInit, OnDes
         {
           EmailDistributionListLanguageID: [
             {
-              value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.emaildistributionlistlanguageService.emaildistributionlistlanguageListModel$.getValue()[0]?.EmailDistributionListLanguageID)),
+              value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.emaildistributionlistlanguage.EmailDistributionListLanguageID)),
               disabled: false
             }, [Validators.required]],
           EmailDistributionListID: [
             {
-              value: this.emaildistributionlistlanguageService.emaildistributionlistlanguageListModel$.getValue()[0]?.EmailDistributionListID,
+              value: this.emaildistributionlistlanguage.EmailDistributionListID,
               disabled: false
             }, [Validators.required]],
           Language: [
             {
-              value: this.emaildistributionlistlanguageService.emaildistributionlistlanguageListModel$.getValue()[0]?.Language,
+              value: this.emaildistributionlistlanguage.Language,
               disabled: false
             }, [Validators.required]],
           EmailListName: [
             {
-              value: this.emaildistributionlistlanguageService.emaildistributionlistlanguageListModel$.getValue()[0]?.EmailListName,
+              value: this.emaildistributionlistlanguage.EmailListName,
               disabled: false
             }, [Validators.required, Validators.minLength(1), Validators.maxLength(100)]],
           TranslationStatus: [
             {
-              value: this.emaildistributionlistlanguageService.emaildistributionlistlanguageListModel$.getValue()[0]?.TranslationStatus,
+              value: this.emaildistributionlistlanguage.TranslationStatus,
               disabled: false
             }, [Validators.required]],
           LastUpdateDate_UTC: [
             {
-              value: this.emaildistributionlistlanguageService.emaildistributionlistlanguageListModel$.getValue()[0]?.LastUpdateDate_UTC,
+              value: this.emaildistributionlistlanguage.LastUpdateDate_UTC,
               disabled: false
             }, [Validators.required]],
           LastUpdateContactTVItemID: [
             {
-              value: this.emaildistributionlistlanguageService.emaildistributionlistlanguageListModel$.getValue()[0]?.LastUpdateContactTVItemID,
+              value: this.emaildistributionlistlanguage.LastUpdateContactTVItemID,
               disabled: false
             }, [Validators.required]],
         }

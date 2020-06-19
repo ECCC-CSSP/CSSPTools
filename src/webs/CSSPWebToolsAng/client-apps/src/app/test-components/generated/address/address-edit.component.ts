@@ -64,67 +64,67 @@ export class AddressEditComponent implements OnInit, OnDestroy {
         {
           AddressID: [
             {
-              value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.addressService.addressListModel$.getValue()[0]?.AddressID)),
+              value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.address.AddressID)),
               disabled: false
             }, [Validators.required]],
           AddressTVItemID: [
             {
-              value: this.addressService.addressListModel$.getValue()[0]?.AddressTVItemID,
+              value: this.address.AddressTVItemID,
               disabled: false
             }, [Validators.required]],
           AddressType: [
             {
-              value: this.addressService.addressListModel$.getValue()[0]?.AddressType,
+              value: this.address.AddressType,
               disabled: false
             }, [Validators.required]],
           CountryTVItemID: [
             {
-              value: this.addressService.addressListModel$.getValue()[0]?.CountryTVItemID,
+              value: this.address.CountryTVItemID,
               disabled: false
             }, [Validators.required]],
           ProvinceTVItemID: [
             {
-              value: this.addressService.addressListModel$.getValue()[0]?.ProvinceTVItemID,
+              value: this.address.ProvinceTVItemID,
               disabled: false
             }, [Validators.required]],
           MunicipalityTVItemID: [
             {
-              value: this.addressService.addressListModel$.getValue()[0]?.MunicipalityTVItemID,
+              value: this.address.MunicipalityTVItemID,
               disabled: false
             }, [Validators.required]],
           StreetName: [
             {
-              value: this.addressService.addressListModel$.getValue()[0]?.StreetName,
+              value: this.address.StreetName,
               disabled: false
             }, [Validators.maxLength(200)]],
           StreetNumber: [
             {
-              value: this.addressService.addressListModel$.getValue()[0]?.StreetNumber,
+              value: this.address.StreetNumber,
               disabled: false
             }, [Validators.maxLength(50)]],
           StreetType: [
             {
-              value: this.addressService.addressListModel$.getValue()[0]?.StreetType,
+              value: this.address.StreetType,
               disabled: false
             }],
           PostalCode: [
             {
-              value: this.addressService.addressListModel$.getValue()[0]?.PostalCode,
+              value: this.address.PostalCode,
               disabled: false
             }, [Validators.minLength(6), Validators.maxLength(11)]],
           GoogleAddressText: [
             {
-              value: this.addressService.addressListModel$.getValue()[0]?.GoogleAddressText,
+              value: this.address.GoogleAddressText,
               disabled: false
             }, [Validators.minLength(10), Validators.maxLength(200)]],
           LastUpdateDate_UTC: [
             {
-              value: this.addressService.addressListModel$.getValue()[0]?.LastUpdateDate_UTC,
+              value: this.address.LastUpdateDate_UTC,
               disabled: false
             }, [Validators.required]],
           LastUpdateContactTVItemID: [
             {
-              value: this.addressService.addressListModel$.getValue()[0]?.LastUpdateContactTVItemID,
+              value: this.address.LastUpdateContactTVItemID,
               disabled: false
             }, [Validators.required]],
         }

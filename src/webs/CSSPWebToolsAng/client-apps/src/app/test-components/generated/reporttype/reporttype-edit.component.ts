@@ -67,52 +67,52 @@ export class ReportTypeEditComponent implements OnInit, OnDestroy {
         {
           ReportTypeID: [
             {
-              value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.reporttypeService.reporttypeListModel$.getValue()[0]?.ReportTypeID)),
+              value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.reporttype.ReportTypeID)),
               disabled: false
             }, [Validators.required]],
           TVType: [
             {
-              value: this.reporttypeService.reporttypeListModel$.getValue()[0]?.TVType,
+              value: this.reporttype.TVType,
               disabled: false
             }, [Validators.required]],
           FileType: [
             {
-              value: this.reporttypeService.reporttypeListModel$.getValue()[0]?.FileType,
+              value: this.reporttype.FileType,
               disabled: false
             }, [Validators.required]],
           UniqueCode: [
             {
-              value: this.reporttypeService.reporttypeListModel$.getValue()[0]?.UniqueCode,
+              value: this.reporttype.UniqueCode,
               disabled: false
             }, [Validators.required, Validators.maxLength(100)]],
           Language: [
             {
-              value: this.reporttypeService.reporttypeListModel$.getValue()[0]?.Language,
+              value: this.reporttype.Language,
               disabled: false
             }],
           Name: [
             {
-              value: this.reporttypeService.reporttypeListModel$.getValue()[0]?.Name,
+              value: this.reporttype.Name,
               disabled: false
             }, [Validators.maxLength(100)]],
           Description: [
             {
-              value: this.reporttypeService.reporttypeListModel$.getValue()[0]?.Description,
+              value: this.reporttype.Description,
               disabled: false
             }, [Validators.maxLength(1000)]],
           StartOfFileName: [
             {
-              value: this.reporttypeService.reporttypeListModel$.getValue()[0]?.StartOfFileName,
+              value: this.reporttype.StartOfFileName,
               disabled: false
             }, [Validators.maxLength(100)]],
           LastUpdateDate_UTC: [
             {
-              value: this.reporttypeService.reporttypeListModel$.getValue()[0]?.LastUpdateDate_UTC,
+              value: this.reporttype.LastUpdateDate_UTC,
               disabled: false
             }, [Validators.required]],
           LastUpdateContactTVItemID: [
             {
-              value: this.reporttypeService.reporttypeListModel$.getValue()[0]?.LastUpdateContactTVItemID,
+              value: this.reporttype.LastUpdateContactTVItemID,
               disabled: false
             }, [Validators.required]],
         }

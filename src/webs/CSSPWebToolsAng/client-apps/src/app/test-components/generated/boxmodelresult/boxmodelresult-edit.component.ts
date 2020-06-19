@@ -61,92 +61,92 @@ export class BoxModelResultEditComponent implements OnInit, OnDestroy {
         {
           BoxModelResultID: [
             {
-              value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.boxmodelresultService.boxmodelresultListModel$.getValue()[0]?.BoxModelResultID)),
+              value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.boxmodelresult.BoxModelResultID)),
               disabled: false
             }, [Validators.required]],
           BoxModelID: [
             {
-              value: this.boxmodelresultService.boxmodelresultListModel$.getValue()[0]?.BoxModelID,
+              value: this.boxmodelresult.BoxModelID,
               disabled: false
             }, [Validators.required]],
           BoxModelResultType: [
             {
-              value: this.boxmodelresultService.boxmodelresultListModel$.getValue()[0]?.BoxModelResultType,
+              value: this.boxmodelresult.BoxModelResultType,
               disabled: false
             }, [Validators.required]],
           Volume_m3: [
             {
-              value: this.boxmodelresultService.boxmodelresultListModel$.getValue()[0]?.Volume_m3,
+              value: this.boxmodelresult.Volume_m3,
               disabled: false
             }, [Validators.required, Validators.min(0)]],
           Surface_m2: [
             {
-              value: this.boxmodelresultService.boxmodelresultListModel$.getValue()[0]?.Surface_m2,
+              value: this.boxmodelresult.Surface_m2,
               disabled: false
             }, [Validators.required, Validators.min(0)]],
           Radius_m: [
             {
-              value: this.boxmodelresultService.boxmodelresultListModel$.getValue()[0]?.Radius_m,
+              value: this.boxmodelresult.Radius_m,
               disabled: false
             }, [Validators.required, Validators.min(0), Validators.max(100000)]],
           LeftSideDiameterLineAngle_deg: [
             {
-              value: this.boxmodelresultService.boxmodelresultListModel$.getValue()[0]?.LeftSideDiameterLineAngle_deg,
+              value: this.boxmodelresult.LeftSideDiameterLineAngle_deg,
               disabled: false
             }, [Validators.min(0), Validators.max(360)]],
           CircleCenterLatitude: [
             {
-              value: this.boxmodelresultService.boxmodelresultListModel$.getValue()[0]?.CircleCenterLatitude,
+              value: this.boxmodelresult.CircleCenterLatitude,
               disabled: false
             }, [Validators.min(-90), Validators.max(90)]],
           CircleCenterLongitude: [
             {
-              value: this.boxmodelresultService.boxmodelresultListModel$.getValue()[0]?.CircleCenterLongitude,
+              value: this.boxmodelresult.CircleCenterLongitude,
               disabled: false
             }, [Validators.min(-180), Validators.max(180)]],
           FixLength: [
             {
-              value: this.boxmodelresultService.boxmodelresultListModel$.getValue()[0]?.FixLength,
+              value: this.boxmodelresult.FixLength,
               disabled: false
             }, [Validators.required]],
           FixWidth: [
             {
-              value: this.boxmodelresultService.boxmodelresultListModel$.getValue()[0]?.FixWidth,
+              value: this.boxmodelresult.FixWidth,
               disabled: false
             }, [Validators.required]],
           RectLength_m: [
             {
-              value: this.boxmodelresultService.boxmodelresultListModel$.getValue()[0]?.RectLength_m,
+              value: this.boxmodelresult.RectLength_m,
               disabled: false
             }, [Validators.required, Validators.min(0), Validators.max(100000)]],
           RectWidth_m: [
             {
-              value: this.boxmodelresultService.boxmodelresultListModel$.getValue()[0]?.RectWidth_m,
+              value: this.boxmodelresult.RectWidth_m,
               disabled: false
             }, [Validators.required, Validators.min(0), Validators.max(100000)]],
           LeftSideLineAngle_deg: [
             {
-              value: this.boxmodelresultService.boxmodelresultListModel$.getValue()[0]?.LeftSideLineAngle_deg,
+              value: this.boxmodelresult.LeftSideLineAngle_deg,
               disabled: false
             }, [Validators.min(0), Validators.max(360)]],
           LeftSideLineStartLatitude: [
             {
-              value: this.boxmodelresultService.boxmodelresultListModel$.getValue()[0]?.LeftSideLineStartLatitude,
+              value: this.boxmodelresult.LeftSideLineStartLatitude,
               disabled: false
             }, [Validators.min(-90), Validators.max(90)]],
           LeftSideLineStartLongitude: [
             {
-              value: this.boxmodelresultService.boxmodelresultListModel$.getValue()[0]?.LeftSideLineStartLongitude,
+              value: this.boxmodelresult.LeftSideLineStartLongitude,
               disabled: false
             }, [Validators.min(-180), Validators.max(180)]],
           LastUpdateDate_UTC: [
             {
-              value: this.boxmodelresultService.boxmodelresultListModel$.getValue()[0]?.LastUpdateDate_UTC,
+              value: this.boxmodelresult.LastUpdateDate_UTC,
               disabled: false
             }, [Validators.required]],
           LastUpdateContactTVItemID: [
             {
-              value: this.boxmodelresultService.boxmodelresultListModel$.getValue()[0]?.LastUpdateContactTVItemID,
+              value: this.boxmodelresult.LastUpdateContactTVItemID,
               disabled: false
             }, [Validators.required]],
         }

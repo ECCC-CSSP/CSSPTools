@@ -61,47 +61,47 @@ export class TVItemUserAuthorizationEditComponent implements OnInit, OnDestroy {
         {
           TVItemUserAuthorizationID: [
             {
-              value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.tvitemuserauthorizationService.tvitemuserauthorizationListModel$.getValue()[0]?.TVItemUserAuthorizationID)),
+              value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.tvitemuserauthorization.TVItemUserAuthorizationID)),
               disabled: false
             }, [Validators.required]],
           ContactTVItemID: [
             {
-              value: this.tvitemuserauthorizationService.tvitemuserauthorizationListModel$.getValue()[0]?.ContactTVItemID,
+              value: this.tvitemuserauthorization.ContactTVItemID,
               disabled: false
             }, [Validators.required]],
           TVItemID1: [
             {
-              value: this.tvitemuserauthorizationService.tvitemuserauthorizationListModel$.getValue()[0]?.TVItemID1,
+              value: this.tvitemuserauthorization.TVItemID1,
               disabled: false
             }, [Validators.required]],
           TVItemID2: [
             {
-              value: this.tvitemuserauthorizationService.tvitemuserauthorizationListModel$.getValue()[0]?.TVItemID2,
+              value: this.tvitemuserauthorization.TVItemID2,
               disabled: false
             }],
           TVItemID3: [
             {
-              value: this.tvitemuserauthorizationService.tvitemuserauthorizationListModel$.getValue()[0]?.TVItemID3,
+              value: this.tvitemuserauthorization.TVItemID3,
               disabled: false
             }],
           TVItemID4: [
             {
-              value: this.tvitemuserauthorizationService.tvitemuserauthorizationListModel$.getValue()[0]?.TVItemID4,
+              value: this.tvitemuserauthorization.TVItemID4,
               disabled: false
             }],
           TVAuth: [
             {
-              value: this.tvitemuserauthorizationService.tvitemuserauthorizationListModel$.getValue()[0]?.TVAuth,
+              value: this.tvitemuserauthorization.TVAuth,
               disabled: false
             }, [Validators.required]],
           LastUpdateDate_UTC: [
             {
-              value: this.tvitemuserauthorizationService.tvitemuserauthorizationListModel$.getValue()[0]?.LastUpdateDate_UTC,
+              value: this.tvitemuserauthorization.LastUpdateDate_UTC,
               disabled: false
             }, [Validators.required]],
           LastUpdateContactTVItemID: [
             {
-              value: this.tvitemuserauthorizationService.tvitemuserauthorizationListModel$.getValue()[0]?.LastUpdateContactTVItemID,
+              value: this.tvitemuserauthorization.LastUpdateContactTVItemID,
               disabled: false
             }, [Validators.required]],
         }

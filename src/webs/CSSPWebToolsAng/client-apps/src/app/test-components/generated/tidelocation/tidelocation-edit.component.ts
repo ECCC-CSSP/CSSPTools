@@ -57,47 +57,47 @@ export class TideLocationEditComponent implements OnInit, OnDestroy {
         {
           TideLocationID: [
             {
-              value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.tidelocationService.tidelocationListModel$.getValue()[0]?.TideLocationID)),
+              value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.tidelocation.TideLocationID)),
               disabled: false
             }, [Validators.required]],
           Zone: [
             {
-              value: this.tidelocationService.tidelocationListModel$.getValue()[0]?.Zone,
+              value: this.tidelocation.Zone,
               disabled: false
             }, [Validators.required, Validators.min(0), Validators.max(10000)]],
           Name: [
             {
-              value: this.tidelocationService.tidelocationListModel$.getValue()[0]?.Name,
+              value: this.tidelocation.Name,
               disabled: false
             }, [Validators.required, Validators.maxLength(100)]],
           Prov: [
             {
-              value: this.tidelocationService.tidelocationListModel$.getValue()[0]?.Prov,
+              value: this.tidelocation.Prov,
               disabled: false
             }, [Validators.required, Validators.maxLength(100)]],
           sid: [
             {
-              value: this.tidelocationService.tidelocationListModel$.getValue()[0]?.sid,
+              value: this.tidelocation.sid,
               disabled: false
             }, [Validators.required, Validators.min(0), Validators.max(100000)]],
           Lat: [
             {
-              value: this.tidelocationService.tidelocationListModel$.getValue()[0]?.Lat,
+              value: this.tidelocation.Lat,
               disabled: false
             }, [Validators.required, Validators.min(-90), Validators.max(90)]],
           Lng: [
             {
-              value: this.tidelocationService.tidelocationListModel$.getValue()[0]?.Lng,
+              value: this.tidelocation.Lng,
               disabled: false
             }, [Validators.required, Validators.min(-180), Validators.max(180)]],
           LastUpdateDate_UTC: [
             {
-              value: this.tidelocationService.tidelocationListModel$.getValue()[0]?.LastUpdateDate_UTC,
+              value: this.tidelocation.LastUpdateDate_UTC,
               disabled: false
             }, [Validators.required]],
           LastUpdateContactTVItemID: [
             {
-              value: this.tidelocationService.tidelocationListModel$.getValue()[0]?.LastUpdateContactTVItemID,
+              value: this.tidelocation.LastUpdateContactTVItemID,
               disabled: false
             }, [Validators.required]],
         }

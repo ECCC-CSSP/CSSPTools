@@ -57,42 +57,42 @@ export class AppErrLogEditComponent implements OnInit, OnDestroy {
         {
           AppErrLogID: [
             {
-              value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.apperrlogService.apperrlogListModel$.getValue()[0]?.AppErrLogID)),
+              value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.apperrlog.AppErrLogID)),
               disabled: false
             }, [Validators.required]],
           Tag: [
             {
-              value: this.apperrlogService.apperrlogListModel$.getValue()[0]?.Tag,
+              value: this.apperrlog.Tag,
               disabled: false
             }, [Validators.required, Validators.maxLength(100)]],
           LineNumber: [
             {
-              value: this.apperrlogService.apperrlogListModel$.getValue()[0]?.LineNumber,
+              value: this.apperrlog.LineNumber,
               disabled: false
             }, [Validators.required, Validators.min(1)]],
           Source: [
             {
-              value: this.apperrlogService.apperrlogListModel$.getValue()[0]?.Source,
+              value: this.apperrlog.Source,
               disabled: false
             }, [Validators.required]],
           Message: [
             {
-              value: this.apperrlogService.apperrlogListModel$.getValue()[0]?.Message,
+              value: this.apperrlog.Message,
               disabled: false
             }, [Validators.required]],
           DateTime_UTC: [
             {
-              value: this.apperrlogService.apperrlogListModel$.getValue()[0]?.DateTime_UTC,
+              value: this.apperrlog.DateTime_UTC,
               disabled: false
             }, [Validators.required]],
           LastUpdateDate_UTC: [
             {
-              value: this.apperrlogService.apperrlogListModel$.getValue()[0]?.LastUpdateDate_UTC,
+              value: this.apperrlog.LastUpdateDate_UTC,
               disabled: false
             }, [Validators.required]],
           LastUpdateContactTVItemID: [
             {
-              value: this.apperrlogService.apperrlogListModel$.getValue()[0]?.LastUpdateContactTVItemID,
+              value: this.apperrlog.LastUpdateContactTVItemID,
               disabled: false
             }, [Validators.required]],
         }

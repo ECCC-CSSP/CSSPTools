@@ -61,32 +61,32 @@ export class TVItemStatEditComponent implements OnInit, OnDestroy {
         {
           TVItemStatID: [
             {
-              value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.tvitemstatService.tvitemstatListModel$.getValue()[0]?.TVItemStatID)),
+              value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.tvitemstat.TVItemStatID)),
               disabled: false
             }, [Validators.required]],
           TVItemID: [
             {
-              value: this.tvitemstatService.tvitemstatListModel$.getValue()[0]?.TVItemID,
+              value: this.tvitemstat.TVItemID,
               disabled: false
             }, [Validators.required]],
           TVType: [
             {
-              value: this.tvitemstatService.tvitemstatListModel$.getValue()[0]?.TVType,
+              value: this.tvitemstat.TVType,
               disabled: false
             }, [Validators.required]],
           ChildCount: [
             {
-              value: this.tvitemstatService.tvitemstatListModel$.getValue()[0]?.ChildCount,
+              value: this.tvitemstat.ChildCount,
               disabled: false
             }, [Validators.required, Validators.min(0), Validators.max(10000000)]],
           LastUpdateDate_UTC: [
             {
-              value: this.tvitemstatService.tvitemstatListModel$.getValue()[0]?.LastUpdateDate_UTC,
+              value: this.tvitemstat.LastUpdateDate_UTC,
               disabled: false
             }, [Validators.required]],
           LastUpdateContactTVItemID: [
             {
-              value: this.tvitemstatService.tvitemstatListModel$.getValue()[0]?.LastUpdateContactTVItemID,
+              value: this.tvitemstat.LastUpdateContactTVItemID,
               disabled: false
             }, [Validators.required]],
         }

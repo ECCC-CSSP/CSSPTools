@@ -57,37 +57,37 @@ export class MapInfoPointEditComponent implements OnInit, OnDestroy {
         {
           MapInfoPointID: [
             {
-              value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.mapinfopointService.mapinfopointListModel$.getValue()[0]?.MapInfoPointID)),
+              value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.mapinfopoint.MapInfoPointID)),
               disabled: false
             }, [Validators.required]],
           MapInfoID: [
             {
-              value: this.mapinfopointService.mapinfopointListModel$.getValue()[0]?.MapInfoID,
+              value: this.mapinfopoint.MapInfoID,
               disabled: false
             }, [Validators.required]],
           Ordinal: [
             {
-              value: this.mapinfopointService.mapinfopointListModel$.getValue()[0]?.Ordinal,
+              value: this.mapinfopoint.Ordinal,
               disabled: false
             }, [Validators.required, Validators.min(0)]],
           Lat: [
             {
-              value: this.mapinfopointService.mapinfopointListModel$.getValue()[0]?.Lat,
+              value: this.mapinfopoint.Lat,
               disabled: false
             }, [Validators.required, Validators.min(-90), Validators.max(90)]],
           Lng: [
             {
-              value: this.mapinfopointService.mapinfopointListModel$.getValue()[0]?.Lng,
+              value: this.mapinfopoint.Lng,
               disabled: false
             }, [Validators.required, Validators.min(-180), Validators.max(180)]],
           LastUpdateDate_UTC: [
             {
-              value: this.mapinfopointService.mapinfopointListModel$.getValue()[0]?.LastUpdateDate_UTC,
+              value: this.mapinfopoint.LastUpdateDate_UTC,
               disabled: false
             }, [Validators.required]],
           LastUpdateContactTVItemID: [
             {
-              value: this.mapinfopointService.mapinfopointListModel$.getValue()[0]?.LastUpdateContactTVItemID,
+              value: this.mapinfopoint.LastUpdateContactTVItemID,
               disabled: false
             }, [Validators.required]],
         }

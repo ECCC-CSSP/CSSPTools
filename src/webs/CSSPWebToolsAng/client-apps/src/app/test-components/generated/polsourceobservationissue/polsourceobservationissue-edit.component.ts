@@ -57,37 +57,37 @@ export class PolSourceObservationIssueEditComponent implements OnInit, OnDestroy
         {
           PolSourceObservationIssueID: [
             {
-              value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.polsourceobservationissueService.polsourceobservationissueListModel$.getValue()[0]?.PolSourceObservationIssueID)),
+              value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.polsourceobservationissue.PolSourceObservationIssueID)),
               disabled: false
             }, [Validators.required]],
           PolSourceObservationID: [
             {
-              value: this.polsourceobservationissueService.polsourceobservationissueListModel$.getValue()[0]?.PolSourceObservationID,
+              value: this.polsourceobservationissue.PolSourceObservationID,
               disabled: false
             }, [Validators.required]],
           ObservationInfo: [
             {
-              value: this.polsourceobservationissueService.polsourceobservationissueListModel$.getValue()[0]?.ObservationInfo,
+              value: this.polsourceobservationissue.ObservationInfo,
               disabled: false
             }, [Validators.required, Validators.maxLength(250)]],
           Ordinal: [
             {
-              value: this.polsourceobservationissueService.polsourceobservationissueListModel$.getValue()[0]?.Ordinal,
+              value: this.polsourceobservationissue.Ordinal,
               disabled: false
             }, [Validators.required, Validators.min(0), Validators.max(1000)]],
           ExtraComment: [
             {
-              value: this.polsourceobservationissueService.polsourceobservationissueListModel$.getValue()[0]?.ExtraComment,
+              value: this.polsourceobservationissue.ExtraComment,
               disabled: false
             }],
           LastUpdateDate_UTC: [
             {
-              value: this.polsourceobservationissueService.polsourceobservationissueListModel$.getValue()[0]?.LastUpdateDate_UTC,
+              value: this.polsourceobservationissue.LastUpdateDate_UTC,
               disabled: false
             }, [Validators.required]],
           LastUpdateContactTVItemID: [
             {
-              value: this.polsourceobservationissueService.polsourceobservationissueListModel$.getValue()[0]?.LastUpdateContactTVItemID,
+              value: this.polsourceobservationissue.LastUpdateContactTVItemID,
               disabled: false
             }, [Validators.required]],
         }

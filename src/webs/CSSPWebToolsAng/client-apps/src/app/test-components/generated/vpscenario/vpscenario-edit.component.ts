@@ -61,112 +61,112 @@ export class VPScenarioEditComponent implements OnInit, OnDestroy {
         {
           VPScenarioID: [
             {
-              value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.vpscenarioService.vpscenarioListModel$.getValue()[0]?.VPScenarioID)),
+              value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.vpscenario.VPScenarioID)),
               disabled: false
             }, [Validators.required]],
           InfrastructureTVItemID: [
             {
-              value: this.vpscenarioService.vpscenarioListModel$.getValue()[0]?.InfrastructureTVItemID,
+              value: this.vpscenario.InfrastructureTVItemID,
               disabled: false
             }, [Validators.required]],
           VPScenarioStatus: [
             {
-              value: this.vpscenarioService.vpscenarioListModel$.getValue()[0]?.VPScenarioStatus,
+              value: this.vpscenario.VPScenarioStatus,
               disabled: false
             }, [Validators.required]],
           UseAsBestEstimate: [
             {
-              value: this.vpscenarioService.vpscenarioListModel$.getValue()[0]?.UseAsBestEstimate,
+              value: this.vpscenario.UseAsBestEstimate,
               disabled: false
             }, [Validators.required]],
           EffluentFlow_m3_s: [
             {
-              value: this.vpscenarioService.vpscenarioListModel$.getValue()[0]?.EffluentFlow_m3_s,
+              value: this.vpscenario.EffluentFlow_m3_s,
               disabled: false
             }, [Validators.min(0), Validators.max(1000)]],
           EffluentConcentration_MPN_100ml: [
             {
-              value: this.vpscenarioService.vpscenarioListModel$.getValue()[0]?.EffluentConcentration_MPN_100ml,
+              value: this.vpscenario.EffluentConcentration_MPN_100ml,
               disabled: false
             }, [Validators.min(0), Validators.max(10000000)]],
           FroudeNumber: [
             {
-              value: this.vpscenarioService.vpscenarioListModel$.getValue()[0]?.FroudeNumber,
+              value: this.vpscenario.FroudeNumber,
               disabled: false
             }, [Validators.min(0), Validators.max(10000)]],
           PortDiameter_m: [
             {
-              value: this.vpscenarioService.vpscenarioListModel$.getValue()[0]?.PortDiameter_m,
+              value: this.vpscenario.PortDiameter_m,
               disabled: false
             }, [Validators.min(0), Validators.max(10)]],
           PortDepth_m: [
             {
-              value: this.vpscenarioService.vpscenarioListModel$.getValue()[0]?.PortDepth_m,
+              value: this.vpscenario.PortDepth_m,
               disabled: false
             }, [Validators.min(0), Validators.max(1000)]],
           PortElevation_m: [
             {
-              value: this.vpscenarioService.vpscenarioListModel$.getValue()[0]?.PortElevation_m,
+              value: this.vpscenario.PortElevation_m,
               disabled: false
             }, [Validators.min(0), Validators.max(1000)]],
           VerticalAngle_deg: [
             {
-              value: this.vpscenarioService.vpscenarioListModel$.getValue()[0]?.VerticalAngle_deg,
+              value: this.vpscenario.VerticalAngle_deg,
               disabled: false
             }, [Validators.min(-90), Validators.max(90)]],
           HorizontalAngle_deg: [
             {
-              value: this.vpscenarioService.vpscenarioListModel$.getValue()[0]?.HorizontalAngle_deg,
+              value: this.vpscenario.HorizontalAngle_deg,
               disabled: false
             }, [Validators.min(-180), Validators.max(180)]],
           NumberOfPorts: [
             {
-              value: this.vpscenarioService.vpscenarioListModel$.getValue()[0]?.NumberOfPorts,
+              value: this.vpscenario.NumberOfPorts,
               disabled: false
             }, [Validators.min(1), Validators.max(100)]],
           PortSpacing_m: [
             {
-              value: this.vpscenarioService.vpscenarioListModel$.getValue()[0]?.PortSpacing_m,
+              value: this.vpscenario.PortSpacing_m,
               disabled: false
             }, [Validators.min(0), Validators.max(1000)]],
           AcuteMixZone_m: [
             {
-              value: this.vpscenarioService.vpscenarioListModel$.getValue()[0]?.AcuteMixZone_m,
+              value: this.vpscenario.AcuteMixZone_m,
               disabled: false
             }, [Validators.min(0), Validators.max(100)]],
           ChronicMixZone_m: [
             {
-              value: this.vpscenarioService.vpscenarioListModel$.getValue()[0]?.ChronicMixZone_m,
+              value: this.vpscenario.ChronicMixZone_m,
               disabled: false
             }, [Validators.min(0), Validators.max(40000)]],
           EffluentSalinity_PSU: [
             {
-              value: this.vpscenarioService.vpscenarioListModel$.getValue()[0]?.EffluentSalinity_PSU,
+              value: this.vpscenario.EffluentSalinity_PSU,
               disabled: false
             }, [Validators.min(0), Validators.max(40)]],
           EffluentTemperature_C: [
             {
-              value: this.vpscenarioService.vpscenarioListModel$.getValue()[0]?.EffluentTemperature_C,
+              value: this.vpscenario.EffluentTemperature_C,
               disabled: false
             }, [Validators.min(-10), Validators.max(40)]],
           EffluentVelocity_m_s: [
             {
-              value: this.vpscenarioService.vpscenarioListModel$.getValue()[0]?.EffluentVelocity_m_s,
+              value: this.vpscenario.EffluentVelocity_m_s,
               disabled: false
             }, [Validators.min(0), Validators.max(100)]],
           RawResults: [
             {
-              value: this.vpscenarioService.vpscenarioListModel$.getValue()[0]?.RawResults,
+              value: this.vpscenario.RawResults,
               disabled: false
             }],
           LastUpdateDate_UTC: [
             {
-              value: this.vpscenarioService.vpscenarioListModel$.getValue()[0]?.LastUpdateDate_UTC,
+              value: this.vpscenario.LastUpdateDate_UTC,
               disabled: false
             }, [Validators.required]],
           LastUpdateContactTVItemID: [
             {
-              value: this.vpscenarioService.vpscenarioListModel$.getValue()[0]?.LastUpdateContactTVItemID,
+              value: this.vpscenario.LastUpdateContactTVItemID,
               disabled: false
             }, [Validators.required]],
         }

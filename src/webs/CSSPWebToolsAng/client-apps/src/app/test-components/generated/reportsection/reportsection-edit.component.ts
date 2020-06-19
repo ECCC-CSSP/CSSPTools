@@ -61,72 +61,72 @@ export class ReportSectionEditComponent implements OnInit, OnDestroy {
         {
           ReportSectionID: [
             {
-              value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.reportsectionService.reportsectionListModel$.getValue()[0]?.ReportSectionID)),
+              value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.reportsection.ReportSectionID)),
               disabled: false
             }, [Validators.required]],
           ReportTypeID: [
             {
-              value: this.reportsectionService.reportsectionListModel$.getValue()[0]?.ReportTypeID,
+              value: this.reportsection.ReportTypeID,
               disabled: false
             }, [Validators.required]],
           TVItemID: [
             {
-              value: this.reportsectionService.reportsectionListModel$.getValue()[0]?.TVItemID,
+              value: this.reportsection.TVItemID,
               disabled: false
             }],
           Language: [
             {
-              value: this.reportsectionService.reportsectionListModel$.getValue()[0]?.Language,
+              value: this.reportsection.Language,
               disabled: false
             }],
           Ordinal: [
             {
-              value: this.reportsectionService.reportsectionListModel$.getValue()[0]?.Ordinal,
+              value: this.reportsection.Ordinal,
               disabled: false
             }, [Validators.required, Validators.min(0), Validators.max(1000)]],
           IsStatic: [
             {
-              value: this.reportsectionService.reportsectionListModel$.getValue()[0]?.IsStatic,
+              value: this.reportsection.IsStatic,
               disabled: false
             }, [Validators.required]],
           ParentReportSectionID: [
             {
-              value: this.reportsectionService.reportsectionListModel$.getValue()[0]?.ParentReportSectionID,
+              value: this.reportsection.ParentReportSectionID,
               disabled: false
             }],
           Year: [
             {
-              value: this.reportsectionService.reportsectionListModel$.getValue()[0]?.Year,
+              value: this.reportsection.Year,
               disabled: false
             }, [Validators.min(1979), Validators.max(2050)]],
           Locked: [
             {
-              value: this.reportsectionService.reportsectionListModel$.getValue()[0]?.Locked,
+              value: this.reportsection.Locked,
               disabled: false
             }, [Validators.required]],
           TemplateReportSectionID: [
             {
-              value: this.reportsectionService.reportsectionListModel$.getValue()[0]?.TemplateReportSectionID,
+              value: this.reportsection.TemplateReportSectionID,
               disabled: false
             }],
           ReportSectionName: [
             {
-              value: this.reportsectionService.reportsectionListModel$.getValue()[0]?.ReportSectionName,
+              value: this.reportsection.ReportSectionName,
               disabled: false
             }, [Validators.maxLength(100)]],
           ReportSectionText: [
             {
-              value: this.reportsectionService.reportsectionListModel$.getValue()[0]?.ReportSectionText,
+              value: this.reportsection.ReportSectionText,
               disabled: false
             }, [Validators.maxLength(10000)]],
           LastUpdateDate_UTC: [
             {
-              value: this.reportsectionService.reportsectionListModel$.getValue()[0]?.LastUpdateDate_UTC,
+              value: this.reportsection.LastUpdateDate_UTC,
               disabled: false
             }, [Validators.required]],
           LastUpdateContactTVItemID: [
             {
-              value: this.reportsectionService.reportsectionListModel$.getValue()[0]?.LastUpdateContactTVItemID,
+              value: this.reportsection.LastUpdateContactTVItemID,
               disabled: false
             }, [Validators.required]],
         }

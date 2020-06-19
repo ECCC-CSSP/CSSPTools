@@ -57,52 +57,52 @@ export class SamplingPlanEmailEditComponent implements OnInit, OnDestroy {
         {
           SamplingPlanEmailID: [
             {
-              value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.samplingplanemailService.samplingplanemailListModel$.getValue()[0]?.SamplingPlanEmailID)),
+              value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.samplingplanemail.SamplingPlanEmailID)),
               disabled: false
             }, [Validators.required]],
           SamplingPlanID: [
             {
-              value: this.samplingplanemailService.samplingplanemailListModel$.getValue()[0]?.SamplingPlanID,
+              value: this.samplingplanemail.SamplingPlanID,
               disabled: false
             }, [Validators.required]],
           Email: [
             {
-              value: this.samplingplanemailService.samplingplanemailListModel$.getValue()[0]?.Email,
+              value: this.samplingplanemail.Email,
               disabled: false
             }, [Validators.required, Validators.email, Validators.maxLength(150)]],
           IsContractor: [
             {
-              value: this.samplingplanemailService.samplingplanemailListModel$.getValue()[0]?.IsContractor,
+              value: this.samplingplanemail.IsContractor,
               disabled: false
             }, [Validators.required]],
           LabSheetHasValueOver500: [
             {
-              value: this.samplingplanemailService.samplingplanemailListModel$.getValue()[0]?.LabSheetHasValueOver500,
+              value: this.samplingplanemail.LabSheetHasValueOver500,
               disabled: false
             }, [Validators.required]],
           LabSheetReceived: [
             {
-              value: this.samplingplanemailService.samplingplanemailListModel$.getValue()[0]?.LabSheetReceived,
+              value: this.samplingplanemail.LabSheetReceived,
               disabled: false
             }, [Validators.required]],
           LabSheetAccepted: [
             {
-              value: this.samplingplanemailService.samplingplanemailListModel$.getValue()[0]?.LabSheetAccepted,
+              value: this.samplingplanemail.LabSheetAccepted,
               disabled: false
             }, [Validators.required]],
           LabSheetRejected: [
             {
-              value: this.samplingplanemailService.samplingplanemailListModel$.getValue()[0]?.LabSheetRejected,
+              value: this.samplingplanemail.LabSheetRejected,
               disabled: false
             }, [Validators.required]],
           LastUpdateDate_UTC: [
             {
-              value: this.samplingplanemailService.samplingplanemailListModel$.getValue()[0]?.LastUpdateDate_UTC,
+              value: this.samplingplanemail.LastUpdateDate_UTC,
               disabled: false
             }, [Validators.required]],
           LastUpdateContactTVItemID: [
             {
-              value: this.samplingplanemailService.samplingplanemailListModel$.getValue()[0]?.LastUpdateContactTVItemID,
+              value: this.samplingplanemail.LastUpdateContactTVItemID,
               disabled: false
             }, [Validators.required]],
         }

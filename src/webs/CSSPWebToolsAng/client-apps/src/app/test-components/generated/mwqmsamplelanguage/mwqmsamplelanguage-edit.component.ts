@@ -64,37 +64,37 @@ export class MWQMSampleLanguageEditComponent implements OnInit, OnDestroy {
         {
           MWQMSampleLanguageID: [
             {
-              value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.mwqmsamplelanguageService.mwqmsamplelanguageListModel$.getValue()[0]?.MWQMSampleLanguageID)),
+              value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.mwqmsamplelanguage.MWQMSampleLanguageID)),
               disabled: false
             }, [Validators.required]],
           MWQMSampleID: [
             {
-              value: this.mwqmsamplelanguageService.mwqmsamplelanguageListModel$.getValue()[0]?.MWQMSampleID,
+              value: this.mwqmsamplelanguage.MWQMSampleID,
               disabled: false
             }, [Validators.required]],
           Language: [
             {
-              value: this.mwqmsamplelanguageService.mwqmsamplelanguageListModel$.getValue()[0]?.Language,
+              value: this.mwqmsamplelanguage.Language,
               disabled: false
             }, [Validators.required]],
           MWQMSampleNote: [
             {
-              value: this.mwqmsamplelanguageService.mwqmsamplelanguageListModel$.getValue()[0]?.MWQMSampleNote,
+              value: this.mwqmsamplelanguage.MWQMSampleNote,
               disabled: false
             }, [Validators.required]],
           TranslationStatus: [
             {
-              value: this.mwqmsamplelanguageService.mwqmsamplelanguageListModel$.getValue()[0]?.TranslationStatus,
+              value: this.mwqmsamplelanguage.TranslationStatus,
               disabled: false
             }, [Validators.required]],
           LastUpdateDate_UTC: [
             {
-              value: this.mwqmsamplelanguageService.mwqmsamplelanguageListModel$.getValue()[0]?.LastUpdateDate_UTC,
+              value: this.mwqmsamplelanguage.LastUpdateDate_UTC,
               disabled: false
             }, [Validators.required]],
           LastUpdateContactTVItemID: [
             {
-              value: this.mwqmsamplelanguageService.mwqmsamplelanguageListModel$.getValue()[0]?.LastUpdateContactTVItemID,
+              value: this.mwqmsamplelanguage.LastUpdateContactTVItemID,
               disabled: false
             }, [Validators.required]],
         }

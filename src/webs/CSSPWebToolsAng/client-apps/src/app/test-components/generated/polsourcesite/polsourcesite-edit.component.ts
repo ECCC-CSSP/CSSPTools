@@ -61,57 +61,57 @@ export class PolSourceSiteEditComponent implements OnInit, OnDestroy {
         {
           PolSourceSiteID: [
             {
-              value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.polsourcesiteService.polsourcesiteListModel$.getValue()[0]?.PolSourceSiteID)),
+              value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.polsourcesite.PolSourceSiteID)),
               disabled: false
             }, [Validators.required]],
           PolSourceSiteTVItemID: [
             {
-              value: this.polsourcesiteService.polsourcesiteListModel$.getValue()[0]?.PolSourceSiteTVItemID,
+              value: this.polsourcesite.PolSourceSiteTVItemID,
               disabled: false
             }, [Validators.required]],
           Temp_Locator_CanDelete: [
             {
-              value: this.polsourcesiteService.polsourcesiteListModel$.getValue()[0]?.Temp_Locator_CanDelete,
+              value: this.polsourcesite.Temp_Locator_CanDelete,
               disabled: false
             }, [Validators.maxLength(50)]],
           Oldsiteid: [
             {
-              value: this.polsourcesiteService.polsourcesiteListModel$.getValue()[0]?.Oldsiteid,
+              value: this.polsourcesite.Oldsiteid,
               disabled: false
             }, [Validators.min(0), Validators.max(1000)]],
           Site: [
             {
-              value: this.polsourcesiteService.polsourcesiteListModel$.getValue()[0]?.Site,
+              value: this.polsourcesite.Site,
               disabled: false
             }, [Validators.min(0), Validators.max(1000)]],
           SiteID: [
             {
-              value: this.polsourcesiteService.polsourcesiteListModel$.getValue()[0]?.SiteID,
+              value: this.polsourcesite.SiteID,
               disabled: false
             }, [Validators.min(0), Validators.max(1000)]],
           IsPointSource: [
             {
-              value: this.polsourcesiteService.polsourcesiteListModel$.getValue()[0]?.IsPointSource,
+              value: this.polsourcesite.IsPointSource,
               disabled: false
             }, [Validators.required]],
           InactiveReason: [
             {
-              value: this.polsourcesiteService.polsourcesiteListModel$.getValue()[0]?.InactiveReason,
+              value: this.polsourcesite.InactiveReason,
               disabled: false
             }],
           CivicAddressTVItemID: [
             {
-              value: this.polsourcesiteService.polsourcesiteListModel$.getValue()[0]?.CivicAddressTVItemID,
+              value: this.polsourcesite.CivicAddressTVItemID,
               disabled: false
             }],
           LastUpdateDate_UTC: [
             {
-              value: this.polsourcesiteService.polsourcesiteListModel$.getValue()[0]?.LastUpdateDate_UTC,
+              value: this.polsourcesite.LastUpdateDate_UTC,
               disabled: false
             }, [Validators.required]],
           LastUpdateContactTVItemID: [
             {
-              value: this.polsourcesiteService.polsourcesiteListModel$.getValue()[0]?.LastUpdateContactTVItemID,
+              value: this.polsourcesite.LastUpdateContactTVItemID,
               disabled: false
             }, [Validators.required]],
         }

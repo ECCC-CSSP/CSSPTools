@@ -66,47 +66,47 @@ export class MWQMRunLanguageEditComponent implements OnInit, OnDestroy {
         {
           MWQMRunLanguageID: [
             {
-              value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.mwqmrunlanguageService.mwqmrunlanguageListModel$.getValue()[0]?.MWQMRunLanguageID)),
+              value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.mwqmrunlanguage.MWQMRunLanguageID)),
               disabled: false
             }, [Validators.required]],
           MWQMRunID: [
             {
-              value: this.mwqmrunlanguageService.mwqmrunlanguageListModel$.getValue()[0]?.MWQMRunID,
+              value: this.mwqmrunlanguage.MWQMRunID,
               disabled: false
             }, [Validators.required]],
           Language: [
             {
-              value: this.mwqmrunlanguageService.mwqmrunlanguageListModel$.getValue()[0]?.Language,
+              value: this.mwqmrunlanguage.Language,
               disabled: false
             }, [Validators.required]],
           RunComment: [
             {
-              value: this.mwqmrunlanguageService.mwqmrunlanguageListModel$.getValue()[0]?.RunComment,
+              value: this.mwqmrunlanguage.RunComment,
               disabled: false
             }, [Validators.required]],
           TranslationStatusRunComment: [
             {
-              value: this.mwqmrunlanguageService.mwqmrunlanguageListModel$.getValue()[0]?.TranslationStatusRunComment,
+              value: this.mwqmrunlanguage.TranslationStatusRunComment,
               disabled: false
             }, [Validators.required]],
           RunWeatherComment: [
             {
-              value: this.mwqmrunlanguageService.mwqmrunlanguageListModel$.getValue()[0]?.RunWeatherComment,
+              value: this.mwqmrunlanguage.RunWeatherComment,
               disabled: false
             }, [Validators.required]],
           TranslationStatusRunWeatherComment: [
             {
-              value: this.mwqmrunlanguageService.mwqmrunlanguageListModel$.getValue()[0]?.TranslationStatusRunWeatherComment,
+              value: this.mwqmrunlanguage.TranslationStatusRunWeatherComment,
               disabled: false
             }, [Validators.required]],
           LastUpdateDate_UTC: [
             {
-              value: this.mwqmrunlanguageService.mwqmrunlanguageListModel$.getValue()[0]?.LastUpdateDate_UTC,
+              value: this.mwqmrunlanguage.LastUpdateDate_UTC,
               disabled: false
             }, [Validators.required]],
           LastUpdateContactTVItemID: [
             {
-              value: this.mwqmrunlanguageService.mwqmrunlanguageListModel$.getValue()[0]?.LastUpdateContactTVItemID,
+              value: this.mwqmrunlanguage.LastUpdateContactTVItemID,
               disabled: false
             }, [Validators.required]],
         }

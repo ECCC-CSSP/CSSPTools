@@ -64,37 +64,37 @@ export class TVFileLanguageEditComponent implements OnInit, OnDestroy {
         {
           TVFileLanguageID: [
             {
-              value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.tvfilelanguageService.tvfilelanguageListModel$.getValue()[0]?.TVFileLanguageID)),
+              value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.tvfilelanguage.TVFileLanguageID)),
               disabled: false
             }, [Validators.required]],
           TVFileID: [
             {
-              value: this.tvfilelanguageService.tvfilelanguageListModel$.getValue()[0]?.TVFileID,
+              value: this.tvfilelanguage.TVFileID,
               disabled: false
             }, [Validators.required]],
           Language: [
             {
-              value: this.tvfilelanguageService.tvfilelanguageListModel$.getValue()[0]?.Language,
+              value: this.tvfilelanguage.Language,
               disabled: false
             }, [Validators.required]],
           FileDescription: [
             {
-              value: this.tvfilelanguageService.tvfilelanguageListModel$.getValue()[0]?.FileDescription,
+              value: this.tvfilelanguage.FileDescription,
               disabled: false
             }],
           TranslationStatus: [
             {
-              value: this.tvfilelanguageService.tvfilelanguageListModel$.getValue()[0]?.TranslationStatus,
+              value: this.tvfilelanguage.TranslationStatus,
               disabled: false
             }, [Validators.required]],
           LastUpdateDate_UTC: [
             {
-              value: this.tvfilelanguageService.tvfilelanguageListModel$.getValue()[0]?.LastUpdateDate_UTC,
+              value: this.tvfilelanguage.LastUpdateDate_UTC,
               disabled: false
             }, [Validators.required]],
           LastUpdateContactTVItemID: [
             {
-              value: this.tvfilelanguageService.tvfilelanguageListModel$.getValue()[0]?.LastUpdateContactTVItemID,
+              value: this.tvfilelanguage.LastUpdateContactTVItemID,
               disabled: false
             }, [Validators.required]],
         }

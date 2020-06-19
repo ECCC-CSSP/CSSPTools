@@ -64,37 +64,37 @@ export class TVItemLanguageEditComponent implements OnInit, OnDestroy {
         {
           TVItemLanguageID: [
             {
-              value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.tvitemlanguageService.tvitemlanguageListModel$.getValue()[0]?.TVItemLanguageID)),
+              value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.tvitemlanguage.TVItemLanguageID)),
               disabled: false
             }, [Validators.required]],
           TVItemID: [
             {
-              value: this.tvitemlanguageService.tvitemlanguageListModel$.getValue()[0]?.TVItemID,
+              value: this.tvitemlanguage.TVItemID,
               disabled: false
             }, [Validators.required]],
           Language: [
             {
-              value: this.tvitemlanguageService.tvitemlanguageListModel$.getValue()[0]?.Language,
+              value: this.tvitemlanguage.Language,
               disabled: false
             }, [Validators.required]],
           TVText: [
             {
-              value: this.tvitemlanguageService.tvitemlanguageListModel$.getValue()[0]?.TVText,
+              value: this.tvitemlanguage.TVText,
               disabled: false
             }, [Validators.required, Validators.maxLength(200)]],
           TranslationStatus: [
             {
-              value: this.tvitemlanguageService.tvitemlanguageListModel$.getValue()[0]?.TranslationStatus,
+              value: this.tvitemlanguage.TranslationStatus,
               disabled: false
             }, [Validators.required]],
           LastUpdateDate_UTC: [
             {
-              value: this.tvitemlanguageService.tvitemlanguageListModel$.getValue()[0]?.LastUpdateDate_UTC,
+              value: this.tvitemlanguage.LastUpdateDate_UTC,
               disabled: false
             }, [Validators.required]],
           LastUpdateContactTVItemID: [
             {
-              value: this.tvitemlanguageService.tvitemlanguageListModel$.getValue()[0]?.LastUpdateContactTVItemID,
+              value: this.tvitemlanguage.LastUpdateContactTVItemID,
               disabled: false
             }, [Validators.required]],
         }

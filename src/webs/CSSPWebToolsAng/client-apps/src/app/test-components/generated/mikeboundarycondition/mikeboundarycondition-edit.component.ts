@@ -67,67 +67,67 @@ export class MikeBoundaryConditionEditComponent implements OnInit, OnDestroy {
         {
           MikeBoundaryConditionID: [
             {
-              value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.mikeboundaryconditionService.mikeboundaryconditionListModel$.getValue()[0]?.MikeBoundaryConditionID)),
+              value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.mikeboundarycondition.MikeBoundaryConditionID)),
               disabled: false
             }, [Validators.required]],
           MikeBoundaryConditionTVItemID: [
             {
-              value: this.mikeboundaryconditionService.mikeboundaryconditionListModel$.getValue()[0]?.MikeBoundaryConditionTVItemID,
+              value: this.mikeboundarycondition.MikeBoundaryConditionTVItemID,
               disabled: false
             }, [Validators.required]],
           MikeBoundaryConditionCode: [
             {
-              value: this.mikeboundaryconditionService.mikeboundaryconditionListModel$.getValue()[0]?.MikeBoundaryConditionCode,
+              value: this.mikeboundarycondition.MikeBoundaryConditionCode,
               disabled: false
             }, [Validators.required, Validators.maxLength(100)]],
           MikeBoundaryConditionName: [
             {
-              value: this.mikeboundaryconditionService.mikeboundaryconditionListModel$.getValue()[0]?.MikeBoundaryConditionName,
+              value: this.mikeboundarycondition.MikeBoundaryConditionName,
               disabled: false
             }, [Validators.required, Validators.maxLength(100)]],
           MikeBoundaryConditionLength_m: [
             {
-              value: this.mikeboundaryconditionService.mikeboundaryconditionListModel$.getValue()[0]?.MikeBoundaryConditionLength_m,
+              value: this.mikeboundarycondition.MikeBoundaryConditionLength_m,
               disabled: false
             }, [Validators.required, Validators.min(1), Validators.max(100000)]],
           MikeBoundaryConditionFormat: [
             {
-              value: this.mikeboundaryconditionService.mikeboundaryconditionListModel$.getValue()[0]?.MikeBoundaryConditionFormat,
+              value: this.mikeboundarycondition.MikeBoundaryConditionFormat,
               disabled: false
             }, [Validators.required, Validators.maxLength(100)]],
           MikeBoundaryConditionLevelOrVelocity: [
             {
-              value: this.mikeboundaryconditionService.mikeboundaryconditionListModel$.getValue()[0]?.MikeBoundaryConditionLevelOrVelocity,
+              value: this.mikeboundarycondition.MikeBoundaryConditionLevelOrVelocity,
               disabled: false
             }, [Validators.required]],
           WebTideDataSet: [
             {
-              value: this.mikeboundaryconditionService.mikeboundaryconditionListModel$.getValue()[0]?.WebTideDataSet,
+              value: this.mikeboundarycondition.WebTideDataSet,
               disabled: false
             }, [Validators.required]],
           NumberOfWebTideNodes: [
             {
-              value: this.mikeboundaryconditionService.mikeboundaryconditionListModel$.getValue()[0]?.NumberOfWebTideNodes,
+              value: this.mikeboundarycondition.NumberOfWebTideNodes,
               disabled: false
             }, [Validators.required, Validators.min(0), Validators.max(1000)]],
           WebTideDataFromStartToEndDate: [
             {
-              value: this.mikeboundaryconditionService.mikeboundaryconditionListModel$.getValue()[0]?.WebTideDataFromStartToEndDate,
+              value: this.mikeboundarycondition.WebTideDataFromStartToEndDate,
               disabled: false
             }, [Validators.required]],
           TVType: [
             {
-              value: this.mikeboundaryconditionService.mikeboundaryconditionListModel$.getValue()[0]?.TVType,
+              value: this.mikeboundarycondition.TVType,
               disabled: false
             }, [Validators.required]],
           LastUpdateDate_UTC: [
             {
-              value: this.mikeboundaryconditionService.mikeboundaryconditionListModel$.getValue()[0]?.LastUpdateDate_UTC,
+              value: this.mikeboundarycondition.LastUpdateDate_UTC,
               disabled: false
             }, [Validators.required]],
           LastUpdateContactTVItemID: [
             {
-              value: this.mikeboundaryconditionService.mikeboundaryconditionListModel$.getValue()[0]?.LastUpdateContactTVItemID,
+              value: this.mikeboundarycondition.LastUpdateContactTVItemID,
               disabled: false
             }, [Validators.required]],
         }

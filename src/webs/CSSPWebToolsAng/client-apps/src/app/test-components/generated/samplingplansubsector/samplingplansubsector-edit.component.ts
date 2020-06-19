@@ -57,27 +57,27 @@ export class SamplingPlanSubsectorEditComponent implements OnInit, OnDestroy {
         {
           SamplingPlanSubsectorID: [
             {
-              value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.samplingplansubsectorService.samplingplansubsectorListModel$.getValue()[0]?.SamplingPlanSubsectorID)),
+              value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.samplingplansubsector.SamplingPlanSubsectorID)),
               disabled: false
             }, [Validators.required]],
           SamplingPlanID: [
             {
-              value: this.samplingplansubsectorService.samplingplansubsectorListModel$.getValue()[0]?.SamplingPlanID,
+              value: this.samplingplansubsector.SamplingPlanID,
               disabled: false
             }, [Validators.required]],
           SubsectorTVItemID: [
             {
-              value: this.samplingplansubsectorService.samplingplansubsectorListModel$.getValue()[0]?.SubsectorTVItemID,
+              value: this.samplingplansubsector.SubsectorTVItemID,
               disabled: false
             }, [Validators.required]],
           LastUpdateDate_UTC: [
             {
-              value: this.samplingplansubsectorService.samplingplansubsectorListModel$.getValue()[0]?.LastUpdateDate_UTC,
+              value: this.samplingplansubsector.LastUpdateDate_UTC,
               disabled: false
             }, [Validators.required]],
           LastUpdateContactTVItemID: [
             {
-              value: this.samplingplansubsectorService.samplingplansubsectorListModel$.getValue()[0]?.LastUpdateContactTVItemID,
+              value: this.samplingplansubsector.LastUpdateContactTVItemID,
               disabled: false
             }, [Validators.required]],
         }

@@ -83,212 +83,212 @@ export class MWQMRunEditComponent implements OnInit, OnDestroy {
         {
           MWQMRunID: [
             {
-              value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.mwqmrunService.mwqmrunListModel$.getValue()[0]?.MWQMRunID)),
+              value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.mwqmrun.MWQMRunID)),
               disabled: false
             }, [Validators.required]],
           SubsectorTVItemID: [
             {
-              value: this.mwqmrunService.mwqmrunListModel$.getValue()[0]?.SubsectorTVItemID,
+              value: this.mwqmrun.SubsectorTVItemID,
               disabled: false
             }, [Validators.required]],
           MWQMRunTVItemID: [
             {
-              value: this.mwqmrunService.mwqmrunListModel$.getValue()[0]?.MWQMRunTVItemID,
+              value: this.mwqmrun.MWQMRunTVItemID,
               disabled: false
             }, [Validators.required]],
           RunSampleType: [
             {
-              value: this.mwqmrunService.mwqmrunListModel$.getValue()[0]?.RunSampleType,
+              value: this.mwqmrun.RunSampleType,
               disabled: false
             }, [Validators.required]],
           DateTime_Local: [
             {
-              value: this.mwqmrunService.mwqmrunListModel$.getValue()[0]?.DateTime_Local,
+              value: this.mwqmrun.DateTime_Local,
               disabled: false
             }, [Validators.required]],
           RunNumber: [
             {
-              value: this.mwqmrunService.mwqmrunListModel$.getValue()[0]?.RunNumber,
+              value: this.mwqmrun.RunNumber,
               disabled: false
             }, [Validators.required, Validators.min(1), Validators.max(1000)]],
           StartDateTime_Local: [
             {
-              value: this.mwqmrunService.mwqmrunListModel$.getValue()[0]?.StartDateTime_Local,
+              value: this.mwqmrun.StartDateTime_Local,
               disabled: false
             }],
           EndDateTime_Local: [
             {
-              value: this.mwqmrunService.mwqmrunListModel$.getValue()[0]?.EndDateTime_Local,
+              value: this.mwqmrun.EndDateTime_Local,
               disabled: false
             }],
           LabReceivedDateTime_Local: [
             {
-              value: this.mwqmrunService.mwqmrunListModel$.getValue()[0]?.LabReceivedDateTime_Local,
+              value: this.mwqmrun.LabReceivedDateTime_Local,
               disabled: false
             }],
           TemperatureControl1_C: [
             {
-              value: this.mwqmrunService.mwqmrunListModel$.getValue()[0]?.TemperatureControl1_C,
+              value: this.mwqmrun.TemperatureControl1_C,
               disabled: false
             }, [Validators.min(-10), Validators.max(40)]],
           TemperatureControl2_C: [
             {
-              value: this.mwqmrunService.mwqmrunListModel$.getValue()[0]?.TemperatureControl2_C,
+              value: this.mwqmrun.TemperatureControl2_C,
               disabled: false
             }, [Validators.min(-10), Validators.max(40)]],
           SeaStateAtStart_BeaufortScale: [
             {
-              value: this.mwqmrunService.mwqmrunListModel$.getValue()[0]?.SeaStateAtStart_BeaufortScale,
+              value: this.mwqmrun.SeaStateAtStart_BeaufortScale,
               disabled: false
             }],
           SeaStateAtEnd_BeaufortScale: [
             {
-              value: this.mwqmrunService.mwqmrunListModel$.getValue()[0]?.SeaStateAtEnd_BeaufortScale,
+              value: this.mwqmrun.SeaStateAtEnd_BeaufortScale,
               disabled: false
             }],
           WaterLevelAtBrook_m: [
             {
-              value: this.mwqmrunService.mwqmrunListModel$.getValue()[0]?.WaterLevelAtBrook_m,
+              value: this.mwqmrun.WaterLevelAtBrook_m,
               disabled: false
             }, [Validators.min(0), Validators.max(100)]],
           WaveHightAtStart_m: [
             {
-              value: this.mwqmrunService.mwqmrunListModel$.getValue()[0]?.WaveHightAtStart_m,
+              value: this.mwqmrun.WaveHightAtStart_m,
               disabled: false
             }, [Validators.min(0), Validators.max(100)]],
           WaveHightAtEnd_m: [
             {
-              value: this.mwqmrunService.mwqmrunListModel$.getValue()[0]?.WaveHightAtEnd_m,
+              value: this.mwqmrun.WaveHightAtEnd_m,
               disabled: false
             }, [Validators.min(0), Validators.max(100)]],
           SampleCrewInitials: [
             {
-              value: this.mwqmrunService.mwqmrunListModel$.getValue()[0]?.SampleCrewInitials,
+              value: this.mwqmrun.SampleCrewInitials,
               disabled: false
             }, [Validators.maxLength(20)]],
           AnalyzeMethod: [
             {
-              value: this.mwqmrunService.mwqmrunListModel$.getValue()[0]?.AnalyzeMethod,
+              value: this.mwqmrun.AnalyzeMethod,
               disabled: false
             }],
           SampleMatrix: [
             {
-              value: this.mwqmrunService.mwqmrunListModel$.getValue()[0]?.SampleMatrix,
+              value: this.mwqmrun.SampleMatrix,
               disabled: false
             }],
           Laboratory: [
             {
-              value: this.mwqmrunService.mwqmrunListModel$.getValue()[0]?.Laboratory,
+              value: this.mwqmrun.Laboratory,
               disabled: false
             }],
           SampleStatus: [
             {
-              value: this.mwqmrunService.mwqmrunListModel$.getValue()[0]?.SampleStatus,
+              value: this.mwqmrun.SampleStatus,
               disabled: false
             }],
           LabSampleApprovalContactTVItemID: [
             {
-              value: this.mwqmrunService.mwqmrunListModel$.getValue()[0]?.LabSampleApprovalContactTVItemID,
+              value: this.mwqmrun.LabSampleApprovalContactTVItemID,
               disabled: false
             }],
           LabAnalyzeBath1IncubationStartDateTime_Local: [
             {
-              value: this.mwqmrunService.mwqmrunListModel$.getValue()[0]?.LabAnalyzeBath1IncubationStartDateTime_Local,
+              value: this.mwqmrun.LabAnalyzeBath1IncubationStartDateTime_Local,
               disabled: false
             }],
           LabAnalyzeBath2IncubationStartDateTime_Local: [
             {
-              value: this.mwqmrunService.mwqmrunListModel$.getValue()[0]?.LabAnalyzeBath2IncubationStartDateTime_Local,
+              value: this.mwqmrun.LabAnalyzeBath2IncubationStartDateTime_Local,
               disabled: false
             }],
           LabAnalyzeBath3IncubationStartDateTime_Local: [
             {
-              value: this.mwqmrunService.mwqmrunListModel$.getValue()[0]?.LabAnalyzeBath3IncubationStartDateTime_Local,
+              value: this.mwqmrun.LabAnalyzeBath3IncubationStartDateTime_Local,
               disabled: false
             }],
           LabRunSampleApprovalDateTime_Local: [
             {
-              value: this.mwqmrunService.mwqmrunListModel$.getValue()[0]?.LabRunSampleApprovalDateTime_Local,
+              value: this.mwqmrun.LabRunSampleApprovalDateTime_Local,
               disabled: false
             }],
           Tide_Start: [
             {
-              value: this.mwqmrunService.mwqmrunListModel$.getValue()[0]?.Tide_Start,
+              value: this.mwqmrun.Tide_Start,
               disabled: false
             }],
           Tide_End: [
             {
-              value: this.mwqmrunService.mwqmrunListModel$.getValue()[0]?.Tide_End,
+              value: this.mwqmrun.Tide_End,
               disabled: false
             }],
           RainDay0_mm: [
             {
-              value: this.mwqmrunService.mwqmrunListModel$.getValue()[0]?.RainDay0_mm,
+              value: this.mwqmrun.RainDay0_mm,
               disabled: false
             }, [Validators.min(0), Validators.max(300)]],
           RainDay1_mm: [
             {
-              value: this.mwqmrunService.mwqmrunListModel$.getValue()[0]?.RainDay1_mm,
+              value: this.mwqmrun.RainDay1_mm,
               disabled: false
             }, [Validators.min(0), Validators.max(300)]],
           RainDay2_mm: [
             {
-              value: this.mwqmrunService.mwqmrunListModel$.getValue()[0]?.RainDay2_mm,
+              value: this.mwqmrun.RainDay2_mm,
               disabled: false
             }, [Validators.min(0), Validators.max(300)]],
           RainDay3_mm: [
             {
-              value: this.mwqmrunService.mwqmrunListModel$.getValue()[0]?.RainDay3_mm,
+              value: this.mwqmrun.RainDay3_mm,
               disabled: false
             }, [Validators.min(0), Validators.max(300)]],
           RainDay4_mm: [
             {
-              value: this.mwqmrunService.mwqmrunListModel$.getValue()[0]?.RainDay4_mm,
+              value: this.mwqmrun.RainDay4_mm,
               disabled: false
             }, [Validators.min(0), Validators.max(300)]],
           RainDay5_mm: [
             {
-              value: this.mwqmrunService.mwqmrunListModel$.getValue()[0]?.RainDay5_mm,
+              value: this.mwqmrun.RainDay5_mm,
               disabled: false
             }, [Validators.min(0), Validators.max(300)]],
           RainDay6_mm: [
             {
-              value: this.mwqmrunService.mwqmrunListModel$.getValue()[0]?.RainDay6_mm,
+              value: this.mwqmrun.RainDay6_mm,
               disabled: false
             }, [Validators.min(0), Validators.max(300)]],
           RainDay7_mm: [
             {
-              value: this.mwqmrunService.mwqmrunListModel$.getValue()[0]?.RainDay7_mm,
+              value: this.mwqmrun.RainDay7_mm,
               disabled: false
             }, [Validators.min(0), Validators.max(300)]],
           RainDay8_mm: [
             {
-              value: this.mwqmrunService.mwqmrunListModel$.getValue()[0]?.RainDay8_mm,
+              value: this.mwqmrun.RainDay8_mm,
               disabled: false
             }, [Validators.min(0), Validators.max(300)]],
           RainDay9_mm: [
             {
-              value: this.mwqmrunService.mwqmrunListModel$.getValue()[0]?.RainDay9_mm,
+              value: this.mwqmrun.RainDay9_mm,
               disabled: false
             }, [Validators.min(0), Validators.max(300)]],
           RainDay10_mm: [
             {
-              value: this.mwqmrunService.mwqmrunListModel$.getValue()[0]?.RainDay10_mm,
+              value: this.mwqmrun.RainDay10_mm,
               disabled: false
             }, [Validators.min(0), Validators.max(300)]],
           RemoveFromStat: [
             {
-              value: this.mwqmrunService.mwqmrunListModel$.getValue()[0]?.RemoveFromStat,
+              value: this.mwqmrun.RemoveFromStat,
               disabled: false
             }],
           LastUpdateDate_UTC: [
             {
-              value: this.mwqmrunService.mwqmrunListModel$.getValue()[0]?.LastUpdateDate_UTC,
+              value: this.mwqmrun.LastUpdateDate_UTC,
               disabled: false
             }, [Validators.required]],
           LastUpdateContactTVItemID: [
             {
-              value: this.mwqmrunService.mwqmrunListModel$.getValue()[0]?.LastUpdateContactTVItemID,
+              value: this.mwqmrun.LastUpdateContactTVItemID,
               disabled: false
             }, [Validators.required]],
         }

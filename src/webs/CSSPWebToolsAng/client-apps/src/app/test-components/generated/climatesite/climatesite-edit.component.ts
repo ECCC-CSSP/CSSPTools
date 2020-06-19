@@ -57,122 +57,122 @@ export class ClimateSiteEditComponent implements OnInit, OnDestroy {
         {
           ClimateSiteID: [
             {
-              value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.climatesiteService.climatesiteListModel$.getValue()[0]?.ClimateSiteID)),
+              value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.climatesite.ClimateSiteID)),
               disabled: false
             }, [Validators.required]],
           ClimateSiteTVItemID: [
             {
-              value: this.climatesiteService.climatesiteListModel$.getValue()[0]?.ClimateSiteTVItemID,
+              value: this.climatesite.ClimateSiteTVItemID,
               disabled: false
             }, [Validators.required]],
           ECDBID: [
             {
-              value: this.climatesiteService.climatesiteListModel$.getValue()[0]?.ECDBID,
+              value: this.climatesite.ECDBID,
               disabled: false
             }, [Validators.min(1), Validators.max(100000)]],
           ClimateSiteName: [
             {
-              value: this.climatesiteService.climatesiteListModel$.getValue()[0]?.ClimateSiteName,
+              value: this.climatesite.ClimateSiteName,
               disabled: false
             }, [Validators.required, Validators.maxLength(100)]],
           Province: [
             {
-              value: this.climatesiteService.climatesiteListModel$.getValue()[0]?.Province,
+              value: this.climatesite.Province,
               disabled: false
             }, [Validators.required, Validators.maxLength(4)]],
           Elevation_m: [
             {
-              value: this.climatesiteService.climatesiteListModel$.getValue()[0]?.Elevation_m,
+              value: this.climatesite.Elevation_m,
               disabled: false
             }, [Validators.min(0), Validators.max(10000)]],
           ClimateID: [
             {
-              value: this.climatesiteService.climatesiteListModel$.getValue()[0]?.ClimateID,
+              value: this.climatesite.ClimateID,
               disabled: false
             }, [Validators.maxLength(10)]],
           WMOID: [
             {
-              value: this.climatesiteService.climatesiteListModel$.getValue()[0]?.WMOID,
+              value: this.climatesite.WMOID,
               disabled: false
             }, [Validators.min(1), Validators.max(100000)]],
           TCID: [
             {
-              value: this.climatesiteService.climatesiteListModel$.getValue()[0]?.TCID,
+              value: this.climatesite.TCID,
               disabled: false
             }, [Validators.maxLength(3)]],
           IsQuebecSite: [
             {
-              value: this.climatesiteService.climatesiteListModel$.getValue()[0]?.IsQuebecSite,
+              value: this.climatesite.IsQuebecSite,
               disabled: false
             }],
           IsCoCoRaHS: [
             {
-              value: this.climatesiteService.climatesiteListModel$.getValue()[0]?.IsCoCoRaHS,
+              value: this.climatesite.IsCoCoRaHS,
               disabled: false
             }],
           TimeOffset_hour: [
             {
-              value: this.climatesiteService.climatesiteListModel$.getValue()[0]?.TimeOffset_hour,
+              value: this.climatesite.TimeOffset_hour,
               disabled: false
             }, [Validators.min(-10), Validators.max(0)]],
           File_desc: [
             {
-              value: this.climatesiteService.climatesiteListModel$.getValue()[0]?.File_desc,
+              value: this.climatesite.File_desc,
               disabled: false
             }, [Validators.maxLength(50)]],
           HourlyStartDate_Local: [
             {
-              value: this.climatesiteService.climatesiteListModel$.getValue()[0]?.HourlyStartDate_Local,
+              value: this.climatesite.HourlyStartDate_Local,
               disabled: false
             }],
           HourlyEndDate_Local: [
             {
-              value: this.climatesiteService.climatesiteListModel$.getValue()[0]?.HourlyEndDate_Local,
+              value: this.climatesite.HourlyEndDate_Local,
               disabled: false
             }],
           HourlyNow: [
             {
-              value: this.climatesiteService.climatesiteListModel$.getValue()[0]?.HourlyNow,
+              value: this.climatesite.HourlyNow,
               disabled: false
             }],
           DailyStartDate_Local: [
             {
-              value: this.climatesiteService.climatesiteListModel$.getValue()[0]?.DailyStartDate_Local,
+              value: this.climatesite.DailyStartDate_Local,
               disabled: false
             }],
           DailyEndDate_Local: [
             {
-              value: this.climatesiteService.climatesiteListModel$.getValue()[0]?.DailyEndDate_Local,
+              value: this.climatesite.DailyEndDate_Local,
               disabled: false
             }],
           DailyNow: [
             {
-              value: this.climatesiteService.climatesiteListModel$.getValue()[0]?.DailyNow,
+              value: this.climatesite.DailyNow,
               disabled: false
             }],
           MonthlyStartDate_Local: [
             {
-              value: this.climatesiteService.climatesiteListModel$.getValue()[0]?.MonthlyStartDate_Local,
+              value: this.climatesite.MonthlyStartDate_Local,
               disabled: false
             }],
           MonthlyEndDate_Local: [
             {
-              value: this.climatesiteService.climatesiteListModel$.getValue()[0]?.MonthlyEndDate_Local,
+              value: this.climatesite.MonthlyEndDate_Local,
               disabled: false
             }],
           MonthlyNow: [
             {
-              value: this.climatesiteService.climatesiteListModel$.getValue()[0]?.MonthlyNow,
+              value: this.climatesite.MonthlyNow,
               disabled: false
             }],
           LastUpdateDate_UTC: [
             {
-              value: this.climatesiteService.climatesiteListModel$.getValue()[0]?.LastUpdateDate_UTC,
+              value: this.climatesite.LastUpdateDate_UTC,
               disabled: false
             }, [Validators.required]],
           LastUpdateContactTVItemID: [
             {
-              value: this.climatesiteService.climatesiteListModel$.getValue()[0]?.LastUpdateContactTVItemID,
+              value: this.climatesite.LastUpdateContactTVItemID,
               disabled: false
             }, [Validators.required]],
         }

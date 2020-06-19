@@ -57,32 +57,32 @@ export class MWQMSiteStartEndDateEditComponent implements OnInit, OnDestroy {
         {
           MWQMSiteStartEndDateID: [
             {
-              value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.mwqmsitestartenddateService.mwqmsitestartenddateListModel$.getValue()[0]?.MWQMSiteStartEndDateID)),
+              value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.mwqmsitestartenddate.MWQMSiteStartEndDateID)),
               disabled: false
             }, [Validators.required]],
           MWQMSiteTVItemID: [
             {
-              value: this.mwqmsitestartenddateService.mwqmsitestartenddateListModel$.getValue()[0]?.MWQMSiteTVItemID,
+              value: this.mwqmsitestartenddate.MWQMSiteTVItemID,
               disabled: false
             }, [Validators.required]],
           StartDate: [
             {
-              value: this.mwqmsitestartenddateService.mwqmsitestartenddateListModel$.getValue()[0]?.StartDate,
+              value: this.mwqmsitestartenddate.StartDate,
               disabled: false
             }, [Validators.required]],
           EndDate: [
             {
-              value: this.mwqmsitestartenddateService.mwqmsitestartenddateListModel$.getValue()[0]?.EndDate,
+              value: this.mwqmsitestartenddate.EndDate,
               disabled: false
             }],
           LastUpdateDate_UTC: [
             {
-              value: this.mwqmsitestartenddateService.mwqmsitestartenddateListModel$.getValue()[0]?.LastUpdateDate_UTC,
+              value: this.mwqmsitestartenddate.LastUpdateDate_UTC,
               disabled: false
             }, [Validators.required]],
           LastUpdateContactTVItemID: [
             {
-              value: this.mwqmsitestartenddateService.mwqmsitestartenddateListModel$.getValue()[0]?.LastUpdateContactTVItemID,
+              value: this.mwqmsitestartenddate.LastUpdateContactTVItemID,
               disabled: false
             }, [Validators.required]],
         }

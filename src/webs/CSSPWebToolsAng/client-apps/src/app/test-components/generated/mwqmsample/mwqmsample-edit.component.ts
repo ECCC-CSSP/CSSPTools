@@ -61,97 +61,97 @@ export class MWQMSampleEditComponent implements OnInit, OnDestroy {
         {
           MWQMSampleID: [
             {
-              value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.mwqmsampleService.mwqmsampleListModel$.getValue()[0]?.MWQMSampleID)),
+              value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.mwqmsample.MWQMSampleID)),
               disabled: false
             }, [Validators.required]],
           MWQMSiteTVItemID: [
             {
-              value: this.mwqmsampleService.mwqmsampleListModel$.getValue()[0]?.MWQMSiteTVItemID,
+              value: this.mwqmsample.MWQMSiteTVItemID,
               disabled: false
             }, [Validators.required]],
           MWQMRunTVItemID: [
             {
-              value: this.mwqmsampleService.mwqmsampleListModel$.getValue()[0]?.MWQMRunTVItemID,
+              value: this.mwqmsample.MWQMRunTVItemID,
               disabled: false
             }, [Validators.required]],
           SampleDateTime_Local: [
             {
-              value: this.mwqmsampleService.mwqmsampleListModel$.getValue()[0]?.SampleDateTime_Local,
+              value: this.mwqmsample.SampleDateTime_Local,
               disabled: false
             }, [Validators.required]],
           TimeText: [
             {
-              value: this.mwqmsampleService.mwqmsampleListModel$.getValue()[0]?.TimeText,
+              value: this.mwqmsample.TimeText,
               disabled: false
             }, [Validators.maxLength(6)]],
           Depth_m: [
             {
-              value: this.mwqmsampleService.mwqmsampleListModel$.getValue()[0]?.Depth_m,
+              value: this.mwqmsample.Depth_m,
               disabled: false
             }, [Validators.min(0), Validators.max(1000)]],
           FecCol_MPN_100ml: [
             {
-              value: this.mwqmsampleService.mwqmsampleListModel$.getValue()[0]?.FecCol_MPN_100ml,
+              value: this.mwqmsample.FecCol_MPN_100ml,
               disabled: false
             }, [Validators.required, Validators.min(0), Validators.max(10000000)]],
           Salinity_PPT: [
             {
-              value: this.mwqmsampleService.mwqmsampleListModel$.getValue()[0]?.Salinity_PPT,
+              value: this.mwqmsample.Salinity_PPT,
               disabled: false
             }, [Validators.min(0), Validators.max(40)]],
           WaterTemp_C: [
             {
-              value: this.mwqmsampleService.mwqmsampleListModel$.getValue()[0]?.WaterTemp_C,
+              value: this.mwqmsample.WaterTemp_C,
               disabled: false
             }, [Validators.min(-10), Validators.max(40)]],
           PH: [
             {
-              value: this.mwqmsampleService.mwqmsampleListModel$.getValue()[0]?.PH,
+              value: this.mwqmsample.PH,
               disabled: false
             }, [Validators.min(0), Validators.max(14)]],
           SampleTypesText: [
             {
-              value: this.mwqmsampleService.mwqmsampleListModel$.getValue()[0]?.SampleTypesText,
+              value: this.mwqmsample.SampleTypesText,
               disabled: false
             }, [Validators.required, Validators.maxLength(50)]],
           SampleType_old: [
             {
-              value: this.mwqmsampleService.mwqmsampleListModel$.getValue()[0]?.SampleType_old,
+              value: this.mwqmsample.SampleType_old,
               disabled: false
             }],
           Tube_10: [
             {
-              value: this.mwqmsampleService.mwqmsampleListModel$.getValue()[0]?.Tube_10,
+              value: this.mwqmsample.Tube_10,
               disabled: false
             }, [Validators.min(0), Validators.max(5)]],
           Tube_1_0: [
             {
-              value: this.mwqmsampleService.mwqmsampleListModel$.getValue()[0]?.Tube_1_0,
+              value: this.mwqmsample.Tube_1_0,
               disabled: false
             }, [Validators.min(0), Validators.max(5)]],
           Tube_0_1: [
             {
-              value: this.mwqmsampleService.mwqmsampleListModel$.getValue()[0]?.Tube_0_1,
+              value: this.mwqmsample.Tube_0_1,
               disabled: false
             }, [Validators.min(0), Validators.max(5)]],
           ProcessedBy: [
             {
-              value: this.mwqmsampleService.mwqmsampleListModel$.getValue()[0]?.ProcessedBy,
+              value: this.mwqmsample.ProcessedBy,
               disabled: false
             }, [Validators.maxLength(10)]],
           UseForOpenData: [
             {
-              value: this.mwqmsampleService.mwqmsampleListModel$.getValue()[0]?.UseForOpenData,
+              value: this.mwqmsample.UseForOpenData,
               disabled: false
             }, [Validators.required]],
           LastUpdateDate_UTC: [
             {
-              value: this.mwqmsampleService.mwqmsampleListModel$.getValue()[0]?.LastUpdateDate_UTC,
+              value: this.mwqmsample.LastUpdateDate_UTC,
               disabled: false
             }, [Validators.required]],
           LastUpdateContactTVItemID: [
             {
-              value: this.mwqmsampleService.mwqmsampleListModel$.getValue()[0]?.LastUpdateContactTVItemID,
+              value: this.mwqmsample.LastUpdateContactTVItemID,
               disabled: false
             }, [Validators.required]],
         }

@@ -57,32 +57,32 @@ export class RatingCurveValueEditComponent implements OnInit, OnDestroy {
         {
           RatingCurveValueID: [
             {
-              value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.ratingcurvevalueService.ratingcurvevalueListModel$.getValue()[0]?.RatingCurveValueID)),
+              value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.ratingcurvevalue.RatingCurveValueID)),
               disabled: false
             }, [Validators.required]],
           RatingCurveID: [
             {
-              value: this.ratingcurvevalueService.ratingcurvevalueListModel$.getValue()[0]?.RatingCurveID,
+              value: this.ratingcurvevalue.RatingCurveID,
               disabled: false
             }, [Validators.required]],
           StageValue_m: [
             {
-              value: this.ratingcurvevalueService.ratingcurvevalueListModel$.getValue()[0]?.StageValue_m,
+              value: this.ratingcurvevalue.StageValue_m,
               disabled: false
             }, [Validators.required, Validators.min(0), Validators.max(1000)]],
           DischargeValue_m3_s: [
             {
-              value: this.ratingcurvevalueService.ratingcurvevalueListModel$.getValue()[0]?.DischargeValue_m3_s,
+              value: this.ratingcurvevalue.DischargeValue_m3_s,
               disabled: false
             }, [Validators.required, Validators.min(0), Validators.max(1000000)]],
           LastUpdateDate_UTC: [
             {
-              value: this.ratingcurvevalueService.ratingcurvevalueListModel$.getValue()[0]?.LastUpdateDate_UTC,
+              value: this.ratingcurvevalue.LastUpdateDate_UTC,
               disabled: false
             }, [Validators.required]],
           LastUpdateContactTVItemID: [
             {
-              value: this.ratingcurvevalueService.ratingcurvevalueListModel$.getValue()[0]?.LastUpdateContactTVItemID,
+              value: this.ratingcurvevalue.LastUpdateContactTVItemID,
               disabled: false
             }, [Validators.required]],
         }

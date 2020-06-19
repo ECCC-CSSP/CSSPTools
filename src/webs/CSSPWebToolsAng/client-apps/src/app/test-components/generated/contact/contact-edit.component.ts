@@ -61,87 +61,87 @@ export class ContactEditComponent implements OnInit, OnDestroy {
         {
           ContactID: [
             {
-              value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.contactService.contactListModel$.getValue()[0]?.ContactID)),
+              value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.contact.ContactID)),
               disabled: false
             }, [Validators.required]],
           Id: [
             {
-              value: this.contactService.contactListModel$.getValue()[0]?.Id,
+              value: this.contact.Id,
               disabled: false
             }, [Validators.required, Validators.maxLength(128)]],
           ContactTVItemID: [
             {
-              value: this.contactService.contactListModel$.getValue()[0]?.ContactTVItemID,
+              value: this.contact.ContactTVItemID,
               disabled: false
             }, [Validators.required]],
           LoginEmail: [
             {
-              value: this.contactService.contactListModel$.getValue()[0]?.LoginEmail,
+              value: this.contact.LoginEmail,
               disabled: false
             }, [Validators.required, Validators.email, Validators.minLength(6), Validators.maxLength(255)]],
           FirstName: [
             {
-              value: this.contactService.contactListModel$.getValue()[0]?.FirstName,
+              value: this.contact.FirstName,
               disabled: false
             }, [Validators.required, Validators.maxLength(100)]],
           LastName: [
             {
-              value: this.contactService.contactListModel$.getValue()[0]?.LastName,
+              value: this.contact.LastName,
               disabled: false
             }, [Validators.required, Validators.maxLength(100)]],
           Initial: [
             {
-              value: this.contactService.contactListModel$.getValue()[0]?.Initial,
+              value: this.contact.Initial,
               disabled: false
             }, [Validators.maxLength(50)]],
           WebName: [
             {
-              value: this.contactService.contactListModel$.getValue()[0]?.WebName,
+              value: this.contact.WebName,
               disabled: false
             }, [Validators.required, Validators.maxLength(100)]],
           ContactTitle: [
             {
-              value: this.contactService.contactListModel$.getValue()[0]?.ContactTitle,
+              value: this.contact.ContactTitle,
               disabled: false
             }],
           IsAdmin: [
             {
-              value: this.contactService.contactListModel$.getValue()[0]?.IsAdmin,
+              value: this.contact.IsAdmin,
               disabled: false
             }, [Validators.required]],
           EmailValidated: [
             {
-              value: this.contactService.contactListModel$.getValue()[0]?.EmailValidated,
+              value: this.contact.EmailValidated,
               disabled: false
             }, [Validators.required]],
           Disabled: [
             {
-              value: this.contactService.contactListModel$.getValue()[0]?.Disabled,
+              value: this.contact.Disabled,
               disabled: false
             }, [Validators.required]],
           IsNew: [
             {
-              value: this.contactService.contactListModel$.getValue()[0]?.IsNew,
+              value: this.contact.IsNew,
               disabled: false
             }, [Validators.required]],
           SamplingPlanner_ProvincesTVItemID: [
             {
-              value: this.contactService.contactListModel$.getValue()[0]?.SamplingPlanner_ProvincesTVItemID,
+              value: this.contact.SamplingPlanner_ProvincesTVItemID,
               disabled: false
             }, [Validators.maxLength(200)]],
           Token: [
             {
-              value: this.contactService.contactListModel$.getValue()[0]?.Token,
+              value: this.contact.Token,
               disabled: false
             }, [Validators.maxLength(255)]],
           LastUpdateDate_UTC: [
             {
-              value: this.contactService.contactListModel$.getValue()[0]?.LastUpdateDate_UTC,
+              value: this.contact.LastUpdateDate_UTC,
               disabled: false
             }, [Validators.required]],
           LastUpdateContactTVItemID: [
             {
-              value: this.contactService.contactListModel$.getValue()[0]?.LastUpdateContactTVItemID,
+              value: this.contact.LastUpdateContactTVItemID,
               disabled: false
             }, [Validators.required]],
         }

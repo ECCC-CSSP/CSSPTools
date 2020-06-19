@@ -61,32 +61,32 @@ export class ClassificationEditComponent implements OnInit, OnDestroy {
         {
           ClassificationID: [
             {
-              value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.classificationService.classificationListModel$.getValue()[0]?.ClassificationID)),
+              value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.classification.ClassificationID)),
               disabled: false
             }, [Validators.required]],
           ClassificationTVItemID: [
             {
-              value: this.classificationService.classificationListModel$.getValue()[0]?.ClassificationTVItemID,
+              value: this.classification.ClassificationTVItemID,
               disabled: false
             }, [Validators.required]],
           ClassificationType: [
             {
-              value: this.classificationService.classificationListModel$.getValue()[0]?.ClassificationType,
+              value: this.classification.ClassificationType,
               disabled: false
             }, [Validators.required]],
           Ordinal: [
             {
-              value: this.classificationService.classificationListModel$.getValue()[0]?.Ordinal,
+              value: this.classification.Ordinal,
               disabled: false
             }, [Validators.required, Validators.min(0), Validators.max(10000)]],
           LastUpdateDate_UTC: [
             {
-              value: this.classificationService.classificationListModel$.getValue()[0]?.LastUpdateDate_UTC,
+              value: this.classification.LastUpdateDate_UTC,
               disabled: false
             }, [Validators.required]],
           LastUpdateContactTVItemID: [
             {
-              value: this.classificationService.classificationListModel$.getValue()[0]?.LastUpdateContactTVItemID,
+              value: this.classification.LastUpdateContactTVItemID,
               disabled: false
             }, [Validators.required]],
         }

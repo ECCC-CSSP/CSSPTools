@@ -64,37 +64,37 @@ export class SpillLanguageEditComponent implements OnInit, OnDestroy {
         {
           SpillLanguageID: [
             {
-              value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.spilllanguageService.spilllanguageListModel$.getValue()[0]?.SpillLanguageID)),
+              value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.spilllanguage.SpillLanguageID)),
               disabled: false
             }, [Validators.required]],
           SpillID: [
             {
-              value: this.spilllanguageService.spilllanguageListModel$.getValue()[0]?.SpillID,
+              value: this.spilllanguage.SpillID,
               disabled: false
             }, [Validators.required]],
           Language: [
             {
-              value: this.spilllanguageService.spilllanguageListModel$.getValue()[0]?.Language,
+              value: this.spilllanguage.Language,
               disabled: false
             }, [Validators.required]],
           SpillComment: [
             {
-              value: this.spilllanguageService.spilllanguageListModel$.getValue()[0]?.SpillComment,
+              value: this.spilllanguage.SpillComment,
               disabled: false
             }, [Validators.required]],
           TranslationStatus: [
             {
-              value: this.spilllanguageService.spilllanguageListModel$.getValue()[0]?.TranslationStatus,
+              value: this.spilllanguage.TranslationStatus,
               disabled: false
             }, [Validators.required]],
           LastUpdateDate_UTC: [
             {
-              value: this.spilllanguageService.spilllanguageListModel$.getValue()[0]?.LastUpdateDate_UTC,
+              value: this.spilllanguage.LastUpdateDate_UTC,
               disabled: false
             }, [Validators.required]],
           LastUpdateContactTVItemID: [
             {
-              value: this.spilllanguageService.spilllanguageListModel$.getValue()[0]?.LastUpdateContactTVItemID,
+              value: this.spilllanguage.LastUpdateContactTVItemID,
               disabled: false
             }, [Validators.required]],
         }

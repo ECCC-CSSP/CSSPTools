@@ -64,37 +64,37 @@ export class VPScenarioLanguageEditComponent implements OnInit, OnDestroy {
         {
           VPScenarioLanguageID: [
             {
-              value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.vpscenariolanguageService.vpscenariolanguageListModel$.getValue()[0]?.VPScenarioLanguageID)),
+              value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.vpscenariolanguage.VPScenarioLanguageID)),
               disabled: false
             }, [Validators.required]],
           VPScenarioID: [
             {
-              value: this.vpscenariolanguageService.vpscenariolanguageListModel$.getValue()[0]?.VPScenarioID,
+              value: this.vpscenariolanguage.VPScenarioID,
               disabled: false
             }, [Validators.required]],
           Language: [
             {
-              value: this.vpscenariolanguageService.vpscenariolanguageListModel$.getValue()[0]?.Language,
+              value: this.vpscenariolanguage.Language,
               disabled: false
             }, [Validators.required]],
           VPScenarioName: [
             {
-              value: this.vpscenariolanguageService.vpscenariolanguageListModel$.getValue()[0]?.VPScenarioName,
+              value: this.vpscenariolanguage.VPScenarioName,
               disabled: false
             }, [Validators.required, Validators.maxLength(100)]],
           TranslationStatus: [
             {
-              value: this.vpscenariolanguageService.vpscenariolanguageListModel$.getValue()[0]?.TranslationStatus,
+              value: this.vpscenariolanguage.TranslationStatus,
               disabled: false
             }, [Validators.required]],
           LastUpdateDate_UTC: [
             {
-              value: this.vpscenariolanguageService.vpscenariolanguageListModel$.getValue()[0]?.LastUpdateDate_UTC,
+              value: this.vpscenariolanguage.LastUpdateDate_UTC,
               disabled: false
             }, [Validators.required]],
           LastUpdateContactTVItemID: [
             {
-              value: this.vpscenariolanguageService.vpscenariolanguageListModel$.getValue()[0]?.LastUpdateContactTVItemID,
+              value: this.vpscenariolanguage.LastUpdateContactTVItemID,
               disabled: false
             }, [Validators.required]],
         }

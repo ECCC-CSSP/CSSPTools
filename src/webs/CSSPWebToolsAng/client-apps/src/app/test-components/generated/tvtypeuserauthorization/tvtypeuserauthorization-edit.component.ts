@@ -64,32 +64,32 @@ export class TVTypeUserAuthorizationEditComponent implements OnInit, OnDestroy {
         {
           TVTypeUserAuthorizationID: [
             {
-              value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.tvtypeuserauthorizationService.tvtypeuserauthorizationListModel$.getValue()[0]?.TVTypeUserAuthorizationID)),
+              value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.tvtypeuserauthorization.TVTypeUserAuthorizationID)),
               disabled: false
             }, [Validators.required]],
           ContactTVItemID: [
             {
-              value: this.tvtypeuserauthorizationService.tvtypeuserauthorizationListModel$.getValue()[0]?.ContactTVItemID,
+              value: this.tvtypeuserauthorization.ContactTVItemID,
               disabled: false
             }, [Validators.required]],
           TVType: [
             {
-              value: this.tvtypeuserauthorizationService.tvtypeuserauthorizationListModel$.getValue()[0]?.TVType,
+              value: this.tvtypeuserauthorization.TVType,
               disabled: false
             }, [Validators.required]],
           TVAuth: [
             {
-              value: this.tvtypeuserauthorizationService.tvtypeuserauthorizationListModel$.getValue()[0]?.TVAuth,
+              value: this.tvtypeuserauthorization.TVAuth,
               disabled: false
             }, [Validators.required]],
           LastUpdateDate_UTC: [
             {
-              value: this.tvtypeuserauthorizationService.tvtypeuserauthorizationListModel$.getValue()[0]?.LastUpdateDate_UTC,
+              value: this.tvtypeuserauthorization.LastUpdateDate_UTC,
               disabled: false
             }, [Validators.required]],
           LastUpdateContactTVItemID: [
             {
-              value: this.tvtypeuserauthorizationService.tvtypeuserauthorizationListModel$.getValue()[0]?.LastUpdateContactTVItemID,
+              value: this.tvtypeuserauthorization.LastUpdateContactTVItemID,
               disabled: false
             }, [Validators.required]],
         }

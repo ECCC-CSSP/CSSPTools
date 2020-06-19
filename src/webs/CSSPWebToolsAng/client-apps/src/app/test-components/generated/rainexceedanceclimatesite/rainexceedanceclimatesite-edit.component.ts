@@ -57,27 +57,27 @@ export class RainExceedanceClimateSiteEditComponent implements OnInit, OnDestroy
         {
           RainExceedanceClimateSiteID: [
             {
-              value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.rainexceedanceclimatesiteService.rainexceedanceclimatesiteListModel$.getValue()[0]?.RainExceedanceClimateSiteID)),
+              value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.rainexceedanceclimatesite.RainExceedanceClimateSiteID)),
               disabled: false
             }, [Validators.required]],
           RainExceedanceTVItemID: [
             {
-              value: this.rainexceedanceclimatesiteService.rainexceedanceclimatesiteListModel$.getValue()[0]?.RainExceedanceTVItemID,
+              value: this.rainexceedanceclimatesite.RainExceedanceTVItemID,
               disabled: false
             }, [Validators.required]],
           ClimateSiteTVItemID: [
             {
-              value: this.rainexceedanceclimatesiteService.rainexceedanceclimatesiteListModel$.getValue()[0]?.ClimateSiteTVItemID,
+              value: this.rainexceedanceclimatesite.ClimateSiteTVItemID,
               disabled: false
             }, [Validators.required]],
           LastUpdateDate_UTC: [
             {
-              value: this.rainexceedanceclimatesiteService.rainexceedanceclimatesiteListModel$.getValue()[0]?.LastUpdateDate_UTC,
+              value: this.rainexceedanceclimatesite.LastUpdateDate_UTC,
               disabled: false
             }, [Validators.required]],
           LastUpdateContactTVItemID: [
             {
-              value: this.rainexceedanceclimatesiteService.rainexceedanceclimatesiteListModel$.getValue()[0]?.LastUpdateContactTVItemID,
+              value: this.rainexceedanceclimatesite.LastUpdateContactTVItemID,
               disabled: false
             }, [Validators.required]],
         }

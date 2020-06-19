@@ -76,112 +76,112 @@ export class SamplingPlanEditComponent implements OnInit, OnDestroy {
         {
           SamplingPlanID: [
             {
-              value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.samplingplanService.samplingplanListModel$.getValue()[0]?.SamplingPlanID)),
+              value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.samplingplan.SamplingPlanID)),
               disabled: false
             }, [Validators.required]],
           IsActive: [
             {
-              value: this.samplingplanService.samplingplanListModel$.getValue()[0]?.IsActive,
+              value: this.samplingplan.IsActive,
               disabled: false
             }, [Validators.required]],
           SamplingPlanName: [
             {
-              value: this.samplingplanService.samplingplanListModel$.getValue()[0]?.SamplingPlanName,
+              value: this.samplingplan.SamplingPlanName,
               disabled: false
             }, [Validators.required, Validators.maxLength(200)]],
           ForGroupName: [
             {
-              value: this.samplingplanService.samplingplanListModel$.getValue()[0]?.ForGroupName,
+              value: this.samplingplan.ForGroupName,
               disabled: false
             }, [Validators.required, Validators.maxLength(100)]],
           SampleType: [
             {
-              value: this.samplingplanService.samplingplanListModel$.getValue()[0]?.SampleType,
+              value: this.samplingplan.SampleType,
               disabled: false
             }, [Validators.required]],
           SamplingPlanType: [
             {
-              value: this.samplingplanService.samplingplanListModel$.getValue()[0]?.SamplingPlanType,
+              value: this.samplingplan.SamplingPlanType,
               disabled: false
             }, [Validators.required]],
           LabSheetType: [
             {
-              value: this.samplingplanService.samplingplanListModel$.getValue()[0]?.LabSheetType,
+              value: this.samplingplan.LabSheetType,
               disabled: false
             }, [Validators.required]],
           ProvinceTVItemID: [
             {
-              value: this.samplingplanService.samplingplanListModel$.getValue()[0]?.ProvinceTVItemID,
+              value: this.samplingplan.ProvinceTVItemID,
               disabled: false
             }, [Validators.required]],
           CreatorTVItemID: [
             {
-              value: this.samplingplanService.samplingplanListModel$.getValue()[0]?.CreatorTVItemID,
+              value: this.samplingplan.CreatorTVItemID,
               disabled: false
             }, [Validators.required]],
           Year: [
             {
-              value: this.samplingplanService.samplingplanListModel$.getValue()[0]?.Year,
+              value: this.samplingplan.Year,
               disabled: false
             }, [Validators.required, Validators.min(2000), Validators.max(2050)]],
           AccessCode: [
             {
-              value: this.samplingplanService.samplingplanListModel$.getValue()[0]?.AccessCode,
+              value: this.samplingplan.AccessCode,
               disabled: false
             }, [Validators.required, Validators.maxLength(15)]],
           DailyDuplicatePrecisionCriteria: [
             {
-              value: this.samplingplanService.samplingplanListModel$.getValue()[0]?.DailyDuplicatePrecisionCriteria,
+              value: this.samplingplan.DailyDuplicatePrecisionCriteria,
               disabled: false
             }, [Validators.required, Validators.min(0), Validators.max(100)]],
           IntertechDuplicatePrecisionCriteria: [
             {
-              value: this.samplingplanService.samplingplanListModel$.getValue()[0]?.IntertechDuplicatePrecisionCriteria,
+              value: this.samplingplan.IntertechDuplicatePrecisionCriteria,
               disabled: false
             }, [Validators.required, Validators.min(0), Validators.max(100)]],
           IncludeLaboratoryQAQC: [
             {
-              value: this.samplingplanService.samplingplanListModel$.getValue()[0]?.IncludeLaboratoryQAQC,
+              value: this.samplingplan.IncludeLaboratoryQAQC,
               disabled: false
             }, [Validators.required]],
           ApprovalCode: [
             {
-              value: this.samplingplanService.samplingplanListModel$.getValue()[0]?.ApprovalCode,
+              value: this.samplingplan.ApprovalCode,
               disabled: false
             }, [Validators.required, Validators.maxLength(15)]],
           SamplingPlanFileTVItemID: [
             {
-              value: this.samplingplanService.samplingplanListModel$.getValue()[0]?.SamplingPlanFileTVItemID,
+              value: this.samplingplan.SamplingPlanFileTVItemID,
               disabled: false
             }],
           AnalyzeMethodDefault: [
             {
-              value: this.samplingplanService.samplingplanListModel$.getValue()[0]?.AnalyzeMethodDefault,
+              value: this.samplingplan.AnalyzeMethodDefault,
               disabled: false
             }],
           SampleMatrixDefault: [
             {
-              value: this.samplingplanService.samplingplanListModel$.getValue()[0]?.SampleMatrixDefault,
+              value: this.samplingplan.SampleMatrixDefault,
               disabled: false
             }],
           LaboratoryDefault: [
             {
-              value: this.samplingplanService.samplingplanListModel$.getValue()[0]?.LaboratoryDefault,
+              value: this.samplingplan.LaboratoryDefault,
               disabled: false
             }],
           BackupDirectory: [
             {
-              value: this.samplingplanService.samplingplanListModel$.getValue()[0]?.BackupDirectory,
+              value: this.samplingplan.BackupDirectory,
               disabled: false
             }, [Validators.required, Validators.maxLength(250)]],
           LastUpdateDate_UTC: [
             {
-              value: this.samplingplanService.samplingplanListModel$.getValue()[0]?.LastUpdateDate_UTC,
+              value: this.samplingplan.LastUpdateDate_UTC,
               disabled: false
             }, [Validators.required]],
           LastUpdateContactTVItemID: [
             {
-              value: this.samplingplanService.samplingplanListModel$.getValue()[0]?.LastUpdateContactTVItemID,
+              value: this.samplingplan.LastUpdateContactTVItemID,
               disabled: false
             }, [Validators.required]],
         }

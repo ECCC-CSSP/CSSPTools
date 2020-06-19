@@ -57,112 +57,112 @@ export class HydrometricSiteEditComponent implements OnInit, OnDestroy {
         {
           HydrometricSiteID: [
             {
-              value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.hydrometricsiteService.hydrometricsiteListModel$.getValue()[0]?.HydrometricSiteID)),
+              value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.hydrometricsite.HydrometricSiteID)),
               disabled: false
             }, [Validators.required]],
           HydrometricSiteTVItemID: [
             {
-              value: this.hydrometricsiteService.hydrometricsiteListModel$.getValue()[0]?.HydrometricSiteTVItemID,
+              value: this.hydrometricsite.HydrometricSiteTVItemID,
               disabled: false
             }, [Validators.required]],
           FedSiteNumber: [
             {
-              value: this.hydrometricsiteService.hydrometricsiteListModel$.getValue()[0]?.FedSiteNumber,
+              value: this.hydrometricsite.FedSiteNumber,
               disabled: false
             }, [Validators.maxLength(7)]],
           QuebecSiteNumber: [
             {
-              value: this.hydrometricsiteService.hydrometricsiteListModel$.getValue()[0]?.QuebecSiteNumber,
+              value: this.hydrometricsite.QuebecSiteNumber,
               disabled: false
             }, [Validators.maxLength(7)]],
           HydrometricSiteName: [
             {
-              value: this.hydrometricsiteService.hydrometricsiteListModel$.getValue()[0]?.HydrometricSiteName,
+              value: this.hydrometricsite.HydrometricSiteName,
               disabled: false
             }, [Validators.required, Validators.maxLength(200)]],
           Description: [
             {
-              value: this.hydrometricsiteService.hydrometricsiteListModel$.getValue()[0]?.Description,
+              value: this.hydrometricsite.Description,
               disabled: false
             }, [Validators.maxLength(200)]],
           Province: [
             {
-              value: this.hydrometricsiteService.hydrometricsiteListModel$.getValue()[0]?.Province,
+              value: this.hydrometricsite.Province,
               disabled: false
             }, [Validators.required, Validators.maxLength(4)]],
           Elevation_m: [
             {
-              value: this.hydrometricsiteService.hydrometricsiteListModel$.getValue()[0]?.Elevation_m,
+              value: this.hydrometricsite.Elevation_m,
               disabled: false
             }, [Validators.min(0), Validators.max(10000)]],
           StartDate_Local: [
             {
-              value: this.hydrometricsiteService.hydrometricsiteListModel$.getValue()[0]?.StartDate_Local,
+              value: this.hydrometricsite.StartDate_Local,
               disabled: false
             }],
           EndDate_Local: [
             {
-              value: this.hydrometricsiteService.hydrometricsiteListModel$.getValue()[0]?.EndDate_Local,
+              value: this.hydrometricsite.EndDate_Local,
               disabled: false
             }],
           TimeOffset_hour: [
             {
-              value: this.hydrometricsiteService.hydrometricsiteListModel$.getValue()[0]?.TimeOffset_hour,
+              value: this.hydrometricsite.TimeOffset_hour,
               disabled: false
             }, [Validators.min(-10), Validators.max(0)]],
           DrainageArea_km2: [
             {
-              value: this.hydrometricsiteService.hydrometricsiteListModel$.getValue()[0]?.DrainageArea_km2,
+              value: this.hydrometricsite.DrainageArea_km2,
               disabled: false
             }, [Validators.min(0), Validators.max(1000000)]],
           IsNatural: [
             {
-              value: this.hydrometricsiteService.hydrometricsiteListModel$.getValue()[0]?.IsNatural,
+              value: this.hydrometricsite.IsNatural,
               disabled: false
             }],
           IsActive: [
             {
-              value: this.hydrometricsiteService.hydrometricsiteListModel$.getValue()[0]?.IsActive,
+              value: this.hydrometricsite.IsActive,
               disabled: false
             }],
           Sediment: [
             {
-              value: this.hydrometricsiteService.hydrometricsiteListModel$.getValue()[0]?.Sediment,
+              value: this.hydrometricsite.Sediment,
               disabled: false
             }],
           RHBN: [
             {
-              value: this.hydrometricsiteService.hydrometricsiteListModel$.getValue()[0]?.RHBN,
+              value: this.hydrometricsite.RHBN,
               disabled: false
             }],
           RealTime: [
             {
-              value: this.hydrometricsiteService.hydrometricsiteListModel$.getValue()[0]?.RealTime,
+              value: this.hydrometricsite.RealTime,
               disabled: false
             }],
           HasDischarge: [
             {
-              value: this.hydrometricsiteService.hydrometricsiteListModel$.getValue()[0]?.HasDischarge,
+              value: this.hydrometricsite.HasDischarge,
               disabled: false
             }],
           HasLevel: [
             {
-              value: this.hydrometricsiteService.hydrometricsiteListModel$.getValue()[0]?.HasLevel,
+              value: this.hydrometricsite.HasLevel,
               disabled: false
             }],
           HasRatingCurve: [
             {
-              value: this.hydrometricsiteService.hydrometricsiteListModel$.getValue()[0]?.HasRatingCurve,
+              value: this.hydrometricsite.HasRatingCurve,
               disabled: false
             }],
           LastUpdateDate_UTC: [
             {
-              value: this.hydrometricsiteService.hydrometricsiteListModel$.getValue()[0]?.LastUpdateDate_UTC,
+              value: this.hydrometricsite.LastUpdateDate_UTC,
               disabled: false
             }, [Validators.required]],
           LastUpdateContactTVItemID: [
             {
-              value: this.hydrometricsiteService.hydrometricsiteListModel$.getValue()[0]?.LastUpdateContactTVItemID,
+              value: this.hydrometricsite.LastUpdateContactTVItemID,
               disabled: false
             }, [Validators.required]],
         }

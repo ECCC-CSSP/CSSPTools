@@ -61,32 +61,32 @@ export class EmailEditComponent implements OnInit, OnDestroy {
         {
           EmailID: [
             {
-              value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.emailService.emailListModel$.getValue()[0]?.EmailID)),
+              value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.email.EmailID)),
               disabled: false
             }, [Validators.required]],
           EmailTVItemID: [
             {
-              value: this.emailService.emailListModel$.getValue()[0]?.EmailTVItemID,
+              value: this.email.EmailTVItemID,
               disabled: false
             }, [Validators.required]],
           EmailAddress: [
             {
-              value: this.emailService.emailListModel$.getValue()[0]?.EmailAddress,
+              value: this.email.EmailAddress,
               disabled: false
             }, [Validators.required, Validators.email, Validators.maxLength(255)]],
           EmailType: [
             {
-              value: this.emailService.emailListModel$.getValue()[0]?.EmailType,
+              value: this.email.EmailType,
               disabled: false
             }, [Validators.required]],
           LastUpdateDate_UTC: [
             {
-              value: this.emailService.emailListModel$.getValue()[0]?.LastUpdateDate_UTC,
+              value: this.email.LastUpdateDate_UTC,
               disabled: false
             }, [Validators.required]],
           LastUpdateContactTVItemID: [
             {
-              value: this.emailService.emailListModel$.getValue()[0]?.LastUpdateContactTVItemID,
+              value: this.email.LastUpdateContactTVItemID,
               disabled: false
             }, [Validators.required]],
         }

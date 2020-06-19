@@ -61,32 +61,32 @@ export class TelEditComponent implements OnInit, OnDestroy {
         {
           TelID: [
             {
-              value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.telService.telListModel$.getValue()[0]?.TelID)),
+              value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.tel.TelID)),
               disabled: false
             }, [Validators.required]],
           TelTVItemID: [
             {
-              value: this.telService.telListModel$.getValue()[0]?.TelTVItemID,
+              value: this.tel.TelTVItemID,
               disabled: false
             }, [Validators.required]],
           TelNumber: [
             {
-              value: this.telService.telListModel$.getValue()[0]?.TelNumber,
+              value: this.tel.TelNumber,
               disabled: false
             }, [Validators.required, Validators.maxLength(50)]],
           TelType: [
             {
-              value: this.telService.telListModel$.getValue()[0]?.TelType,
+              value: this.tel.TelType,
               disabled: false
             }, [Validators.required]],
           LastUpdateDate_UTC: [
             {
-              value: this.telService.telListModel$.getValue()[0]?.LastUpdateDate_UTC,
+              value: this.tel.LastUpdateDate_UTC,
               disabled: false
             }, [Validators.required]],
           LastUpdateContactTVItemID: [
             {
-              value: this.telService.telListModel$.getValue()[0]?.LastUpdateContactTVItemID,
+              value: this.tel.LastUpdateContactTVItemID,
               disabled: false
             }, [Validators.required]],
         }

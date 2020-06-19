@@ -64,37 +64,37 @@ export class DocTemplateEditComponent implements OnInit, OnDestroy {
         {
           DocTemplateID: [
             {
-              value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.doctemplateService.doctemplateListModel$.getValue()[0]?.DocTemplateID)),
+              value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.doctemplate.DocTemplateID)),
               disabled: false
             }, [Validators.required]],
           Language: [
             {
-              value: this.doctemplateService.doctemplateListModel$.getValue()[0]?.Language,
+              value: this.doctemplate.Language,
               disabled: false
             }, [Validators.required]],
           TVType: [
             {
-              value: this.doctemplateService.doctemplateListModel$.getValue()[0]?.TVType,
+              value: this.doctemplate.TVType,
               disabled: false
             }, [Validators.required]],
           TVFileTVItemID: [
             {
-              value: this.doctemplateService.doctemplateListModel$.getValue()[0]?.TVFileTVItemID,
+              value: this.doctemplate.TVFileTVItemID,
               disabled: false
             }, [Validators.required]],
           FileName: [
             {
-              value: this.doctemplateService.doctemplateListModel$.getValue()[0]?.FileName,
+              value: this.doctemplate.FileName,
               disabled: false
             }, [Validators.required, Validators.maxLength(150)]],
           LastUpdateDate_UTC: [
             {
-              value: this.doctemplateService.doctemplateListModel$.getValue()[0]?.LastUpdateDate_UTC,
+              value: this.doctemplate.LastUpdateDate_UTC,
               disabled: false
             }, [Validators.required]],
           LastUpdateContactTVItemID: [
             {
-              value: this.doctemplateService.doctemplateListModel$.getValue()[0]?.LastUpdateContactTVItemID,
+              value: this.doctemplate.LastUpdateContactTVItemID,
               disabled: false
             }, [Validators.required]],
         }

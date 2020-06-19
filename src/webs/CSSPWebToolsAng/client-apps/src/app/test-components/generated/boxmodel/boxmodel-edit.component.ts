@@ -57,72 +57,72 @@ export class BoxModelEditComponent implements OnInit, OnDestroy {
         {
           BoxModelID: [
             {
-              value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.boxmodelService.boxmodelListModel$.getValue()[0]?.BoxModelID)),
+              value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.boxmodel.BoxModelID)),
               disabled: false
             }, [Validators.required]],
           InfrastructureTVItemID: [
             {
-              value: this.boxmodelService.boxmodelListModel$.getValue()[0]?.InfrastructureTVItemID,
+              value: this.boxmodel.InfrastructureTVItemID,
               disabled: false
             }, [Validators.required]],
           Discharge_m3_day: [
             {
-              value: this.boxmodelService.boxmodelListModel$.getValue()[0]?.Discharge_m3_day,
+              value: this.boxmodel.Discharge_m3_day,
               disabled: false
             }, [Validators.required, Validators.min(0), Validators.max(10000)]],
           Depth_m: [
             {
-              value: this.boxmodelService.boxmodelListModel$.getValue()[0]?.Depth_m,
+              value: this.boxmodel.Depth_m,
               disabled: false
             }, [Validators.required, Validators.min(0), Validators.max(1000)]],
           Temperature_C: [
             {
-              value: this.boxmodelService.boxmodelListModel$.getValue()[0]?.Temperature_C,
+              value: this.boxmodel.Temperature_C,
               disabled: false
             }, [Validators.required, Validators.min(-15), Validators.max(40)]],
           Dilution: [
             {
-              value: this.boxmodelService.boxmodelListModel$.getValue()[0]?.Dilution,
+              value: this.boxmodel.Dilution,
               disabled: false
             }, [Validators.required, Validators.min(0), Validators.max(10000000)]],
           DecayRate_per_day: [
             {
-              value: this.boxmodelService.boxmodelListModel$.getValue()[0]?.DecayRate_per_day,
+              value: this.boxmodel.DecayRate_per_day,
               disabled: false
             }, [Validators.required, Validators.min(0), Validators.max(100)]],
           FCUntreated_MPN_100ml: [
             {
-              value: this.boxmodelService.boxmodelListModel$.getValue()[0]?.FCUntreated_MPN_100ml,
+              value: this.boxmodel.FCUntreated_MPN_100ml,
               disabled: false
             }, [Validators.required, Validators.min(0), Validators.max(10000000)]],
           FCPreDisinfection_MPN_100ml: [
             {
-              value: this.boxmodelService.boxmodelListModel$.getValue()[0]?.FCPreDisinfection_MPN_100ml,
+              value: this.boxmodel.FCPreDisinfection_MPN_100ml,
               disabled: false
             }, [Validators.required, Validators.min(0), Validators.max(10000000)]],
           Concentration_MPN_100ml: [
             {
-              value: this.boxmodelService.boxmodelListModel$.getValue()[0]?.Concentration_MPN_100ml,
+              value: this.boxmodel.Concentration_MPN_100ml,
               disabled: false
             }, [Validators.required, Validators.min(0), Validators.max(10000000)]],
           T90_hour: [
             {
-              value: this.boxmodelService.boxmodelListModel$.getValue()[0]?.T90_hour,
+              value: this.boxmodel.T90_hour,
               disabled: false
             }, [Validators.required, Validators.min(0)]],
           DischargeDuration_hour: [
             {
-              value: this.boxmodelService.boxmodelListModel$.getValue()[0]?.DischargeDuration_hour,
+              value: this.boxmodel.DischargeDuration_hour,
               disabled: false
             }, [Validators.required, Validators.min(0), Validators.max(24)]],
           LastUpdateDate_UTC: [
             {
-              value: this.boxmodelService.boxmodelListModel$.getValue()[0]?.LastUpdateDate_UTC,
+              value: this.boxmodel.LastUpdateDate_UTC,
               disabled: false
             }, [Validators.required]],
           LastUpdateContactTVItemID: [
             {
-              value: this.boxmodelService.boxmodelListModel$.getValue()[0]?.LastUpdateContactTVItemID,
+              value: this.boxmodel.LastUpdateContactTVItemID,
               disabled: false
             }, [Validators.required]],
         }

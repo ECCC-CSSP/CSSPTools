@@ -57,27 +57,27 @@ export class MikeScenarioResultEditComponent implements OnInit, OnDestroy {
         {
           MikeScenarioResultID: [
             {
-              value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.mikescenarioresultService.mikescenarioresultListModel$.getValue()[0]?.MikeScenarioResultID)),
+              value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.mikescenarioresult.MikeScenarioResultID)),
               disabled: false
             }, [Validators.required]],
           MikeScenarioTVItemID: [
             {
-              value: this.mikescenarioresultService.mikescenarioresultListModel$.getValue()[0]?.MikeScenarioTVItemID,
+              value: this.mikescenarioresult.MikeScenarioTVItemID,
               disabled: false
             }, [Validators.required]],
           MikeResultsJSON: [
             {
-              value: this.mikescenarioresultService.mikescenarioresultListModel$.getValue()[0]?.MikeResultsJSON,
+              value: this.mikescenarioresult.MikeResultsJSON,
               disabled: false
             }],
           LastUpdateDate_UTC: [
             {
-              value: this.mikescenarioresultService.mikescenarioresultListModel$.getValue()[0]?.LastUpdateDate_UTC,
+              value: this.mikescenarioresult.LastUpdateDate_UTC,
               disabled: false
             }, [Validators.required]],
           LastUpdateContactTVItemID: [
             {
-              value: this.mikescenarioresultService.mikescenarioresultListModel$.getValue()[0]?.LastUpdateContactTVItemID,
+              value: this.mikescenarioresult.LastUpdateContactTVItemID,
               disabled: false
             }, [Validators.required]],
         }

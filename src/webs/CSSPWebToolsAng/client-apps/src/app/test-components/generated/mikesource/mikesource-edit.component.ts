@@ -57,62 +57,62 @@ export class MikeSourceEditComponent implements OnInit, OnDestroy {
         {
           MikeSourceID: [
             {
-              value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.mikesourceService.mikesourceListModel$.getValue()[0]?.MikeSourceID)),
+              value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.mikesource.MikeSourceID)),
               disabled: false
             }, [Validators.required]],
           MikeSourceTVItemID: [
             {
-              value: this.mikesourceService.mikesourceListModel$.getValue()[0]?.MikeSourceTVItemID,
+              value: this.mikesource.MikeSourceTVItemID,
               disabled: false
             }, [Validators.required]],
           IsContinuous: [
             {
-              value: this.mikesourceService.mikesourceListModel$.getValue()[0]?.IsContinuous,
+              value: this.mikesource.IsContinuous,
               disabled: false
             }, [Validators.required]],
           Include: [
             {
-              value: this.mikesourceService.mikesourceListModel$.getValue()[0]?.Include,
+              value: this.mikesource.Include,
               disabled: false
             }, [Validators.required]],
           IsRiver: [
             {
-              value: this.mikesourceService.mikesourceListModel$.getValue()[0]?.IsRiver,
+              value: this.mikesource.IsRiver,
               disabled: false
             }, [Validators.required]],
           UseHydrometric: [
             {
-              value: this.mikesourceService.mikesourceListModel$.getValue()[0]?.UseHydrometric,
+              value: this.mikesource.UseHydrometric,
               disabled: false
             }, [Validators.required]],
           HydrometricTVItemID: [
             {
-              value: this.mikesourceService.mikesourceListModel$.getValue()[0]?.HydrometricTVItemID,
+              value: this.mikesource.HydrometricTVItemID,
               disabled: false
             }],
           DrainageArea_km2: [
             {
-              value: this.mikesourceService.mikesourceListModel$.getValue()[0]?.DrainageArea_km2,
+              value: this.mikesource.DrainageArea_km2,
               disabled: false
             }, [Validators.min(0), Validators.max(1000000)]],
           Factor: [
             {
-              value: this.mikesourceService.mikesourceListModel$.getValue()[0]?.Factor,
+              value: this.mikesource.Factor,
               disabled: false
             }, [Validators.min(0), Validators.max(1000000)]],
           SourceNumberString: [
             {
-              value: this.mikesourceService.mikesourceListModel$.getValue()[0]?.SourceNumberString,
+              value: this.mikesource.SourceNumberString,
               disabled: false
             }, [Validators.required, Validators.maxLength(50)]],
           LastUpdateDate_UTC: [
             {
-              value: this.mikesourceService.mikesourceListModel$.getValue()[0]?.LastUpdateDate_UTC,
+              value: this.mikesource.LastUpdateDate_UTC,
               disabled: false
             }, [Validators.required]],
           LastUpdateContactTVItemID: [
             {
-              value: this.mikesourceService.mikesourceListModel$.getValue()[0]?.LastUpdateContactTVItemID,
+              value: this.mikesource.LastUpdateContactTVItemID,
               disabled: false
             }, [Validators.required]],
         }

@@ -72,82 +72,82 @@ export class PolSourceGroupingLanguageEditComponent implements OnInit, OnDestroy
         {
           PolSourceGroupingLanguageID: [
             {
-              value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.polsourcegroupinglanguageService.polsourcegroupinglanguageListModel$.getValue()[0]?.PolSourceGroupingLanguageID)),
+              value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.polsourcegroupinglanguage.PolSourceGroupingLanguageID)),
               disabled: false
             }, [Validators.required]],
           PolSourceGroupingID: [
             {
-              value: this.polsourcegroupinglanguageService.polsourcegroupinglanguageListModel$.getValue()[0]?.PolSourceGroupingID,
+              value: this.polsourcegroupinglanguage.PolSourceGroupingID,
               disabled: false
             }, [Validators.required]],
           Language: [
             {
-              value: this.polsourcegroupinglanguageService.polsourcegroupinglanguageListModel$.getValue()[0]?.Language,
+              value: this.polsourcegroupinglanguage.Language,
               disabled: false
             }, [Validators.required]],
           SourceName: [
             {
-              value: this.polsourcegroupinglanguageService.polsourcegroupinglanguageListModel$.getValue()[0]?.SourceName,
+              value: this.polsourcegroupinglanguage.SourceName,
               disabled: false
             }, [Validators.required, Validators.maxLength(250)]],
           SourceNameOrder: [
             {
-              value: this.polsourcegroupinglanguageService.polsourcegroupinglanguageListModel$.getValue()[0]?.SourceNameOrder,
+              value: this.polsourcegroupinglanguage.SourceNameOrder,
               disabled: false
             }, [Validators.required, Validators.min(0), Validators.max(1000)]],
           TranslationStatusSourceName: [
             {
-              value: this.polsourcegroupinglanguageService.polsourcegroupinglanguageListModel$.getValue()[0]?.TranslationStatusSourceName,
+              value: this.polsourcegroupinglanguage.TranslationStatusSourceName,
               disabled: false
             }, [Validators.required]],
           Init: [
             {
-              value: this.polsourcegroupinglanguageService.polsourcegroupinglanguageListModel$.getValue()[0]?.Init,
+              value: this.polsourcegroupinglanguage.Init,
               disabled: false
             }, [Validators.required, Validators.maxLength(50)]],
           TranslationStatusInit: [
             {
-              value: this.polsourcegroupinglanguageService.polsourcegroupinglanguageListModel$.getValue()[0]?.TranslationStatusInit,
+              value: this.polsourcegroupinglanguage.TranslationStatusInit,
               disabled: false
             }, [Validators.required]],
           Description: [
             {
-              value: this.polsourcegroupinglanguageService.polsourcegroupinglanguageListModel$.getValue()[0]?.Description,
+              value: this.polsourcegroupinglanguage.Description,
               disabled: false
             }, [Validators.required, Validators.maxLength(250)]],
           TranslationStatusDescription: [
             {
-              value: this.polsourcegroupinglanguageService.polsourcegroupinglanguageListModel$.getValue()[0]?.TranslationStatusDescription,
+              value: this.polsourcegroupinglanguage.TranslationStatusDescription,
               disabled: false
             }, [Validators.required]],
           Report: [
             {
-              value: this.polsourcegroupinglanguageService.polsourcegroupinglanguageListModel$.getValue()[0]?.Report,
+              value: this.polsourcegroupinglanguage.Report,
               disabled: false
             }, [Validators.required, Validators.maxLength(250)]],
           TranslationStatusReport: [
             {
-              value: this.polsourcegroupinglanguageService.polsourcegroupinglanguageListModel$.getValue()[0]?.TranslationStatusReport,
+              value: this.polsourcegroupinglanguage.TranslationStatusReport,
               disabled: false
             }, [Validators.required]],
           Text: [
             {
-              value: this.polsourcegroupinglanguageService.polsourcegroupinglanguageListModel$.getValue()[0]?.Text,
+              value: this.polsourcegroupinglanguage.Text,
               disabled: false
             }, [Validators.required, Validators.maxLength(250)]],
           TranslationStatusText: [
             {
-              value: this.polsourcegroupinglanguageService.polsourcegroupinglanguageListModel$.getValue()[0]?.TranslationStatusText,
+              value: this.polsourcegroupinglanguage.TranslationStatusText,
               disabled: false
             }, [Validators.required]],
           LastUpdateDate_UTC: [
             {
-              value: this.polsourcegroupinglanguageService.polsourcegroupinglanguageListModel$.getValue()[0]?.LastUpdateDate_UTC,
+              value: this.polsourcegroupinglanguage.LastUpdateDate_UTC,
               disabled: false
             }, [Validators.required]],
           LastUpdateContactTVItemID: [
             {
-              value: this.polsourcegroupinglanguageService.polsourcegroupinglanguageListModel$.getValue()[0]?.LastUpdateContactTVItemID,
+              value: this.polsourcegroupinglanguage.LastUpdateContactTVItemID,
               disabled: false
             }, [Validators.required]],
         }

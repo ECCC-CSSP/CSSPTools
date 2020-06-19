@@ -64,37 +64,37 @@ export class InfrastructureLanguageEditComponent implements OnInit, OnDestroy {
         {
           InfrastructureLanguageID: [
             {
-              value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.infrastructurelanguageService.infrastructurelanguageListModel$.getValue()[0]?.InfrastructureLanguageID)),
+              value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.infrastructurelanguage.InfrastructureLanguageID)),
               disabled: false
             }, [Validators.required]],
           InfrastructureID: [
             {
-              value: this.infrastructurelanguageService.infrastructurelanguageListModel$.getValue()[0]?.InfrastructureID,
+              value: this.infrastructurelanguage.InfrastructureID,
               disabled: false
             }, [Validators.required]],
           Language: [
             {
-              value: this.infrastructurelanguageService.infrastructurelanguageListModel$.getValue()[0]?.Language,
+              value: this.infrastructurelanguage.Language,
               disabled: false
             }, [Validators.required]],
           Comment: [
             {
-              value: this.infrastructurelanguageService.infrastructurelanguageListModel$.getValue()[0]?.Comment,
+              value: this.infrastructurelanguage.Comment,
               disabled: false
             }, [Validators.required]],
           TranslationStatus: [
             {
-              value: this.infrastructurelanguageService.infrastructurelanguageListModel$.getValue()[0]?.TranslationStatus,
+              value: this.infrastructurelanguage.TranslationStatus,
               disabled: false
             }, [Validators.required]],
           LastUpdateDate_UTC: [
             {
-              value: this.infrastructurelanguageService.infrastructurelanguageListModel$.getValue()[0]?.LastUpdateDate_UTC,
+              value: this.infrastructurelanguage.LastUpdateDate_UTC,
               disabled: false
             }, [Validators.required]],
           LastUpdateContactTVItemID: [
             {
-              value: this.infrastructurelanguageService.infrastructurelanguageListModel$.getValue()[0]?.LastUpdateContactTVItemID,
+              value: this.infrastructurelanguage.LastUpdateContactTVItemID,
               disabled: false
             }, [Validators.required]],
         }

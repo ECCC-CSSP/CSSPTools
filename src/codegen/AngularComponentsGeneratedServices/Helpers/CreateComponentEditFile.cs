@@ -134,11 +134,11 @@ namespace AngularComponentsGeneratedServices.Services
                 sb.AppendLine($@"            {{");
                 if (dllPropertyInfo.CSSPProp.IsKey)
                 {
-                    sb.AppendLine($@"              value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.{ dllTypeInfoModels.Name.ToLower() }Service.{ dllTypeInfoModels.Name.ToLower() }ListModel$.getValue()[0]?.{ dllPropertyInfo.CSSPProp.PropName })),");
+                    sb.AppendLine($@"              value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.{ dllTypeInfoModels.Name.ToLower() }.{ dllPropertyInfo.CSSPProp.PropName })),");
                 }
                 else
                 {
-                    sb.AppendLine($@"              value: this.{ dllTypeInfoModels.Name.ToLower() }Service.{ dllTypeInfoModels.Name.ToLower() }ListModel$.getValue()[0]?.{ dllPropertyInfo.CSSPProp.PropName },");
+                    sb.AppendLine($@"              value: this.{ dllTypeInfoModels.Name.ToLower() }.{ dllPropertyInfo.CSSPProp.PropName },");
                 }
                 sb.AppendLine($@"              disabled: false");
                 StringBuilder sbValidators = new StringBuilder();

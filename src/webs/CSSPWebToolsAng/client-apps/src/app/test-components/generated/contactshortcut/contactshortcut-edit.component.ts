@@ -57,32 +57,32 @@ export class ContactShortcutEditComponent implements OnInit, OnDestroy {
         {
           ContactShortcutID: [
             {
-              value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.contactshortcutService.contactshortcutListModel$.getValue()[0]?.ContactShortcutID)),
+              value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.contactshortcut.ContactShortcutID)),
               disabled: false
             }, [Validators.required]],
           ContactID: [
             {
-              value: this.contactshortcutService.contactshortcutListModel$.getValue()[0]?.ContactID,
+              value: this.contactshortcut.ContactID,
               disabled: false
             }, [Validators.required]],
           ShortCutText: [
             {
-              value: this.contactshortcutService.contactshortcutListModel$.getValue()[0]?.ShortCutText,
+              value: this.contactshortcut.ShortCutText,
               disabled: false
             }, [Validators.required, Validators.maxLength(100)]],
           ShortCutAddress: [
             {
-              value: this.contactshortcutService.contactshortcutListModel$.getValue()[0]?.ShortCutAddress,
+              value: this.contactshortcut.ShortCutAddress,
               disabled: false
             }, [Validators.required, Validators.maxLength(200)]],
           LastUpdateDate_UTC: [
             {
-              value: this.contactshortcutService.contactshortcutListModel$.getValue()[0]?.LastUpdateDate_UTC,
+              value: this.contactshortcut.LastUpdateDate_UTC,
               disabled: false
             }, [Validators.required]],
           LastUpdateContactTVItemID: [
             {
-              value: this.contactshortcutService.contactshortcutListModel$.getValue()[0]?.LastUpdateContactTVItemID,
+              value: this.contactshortcut.LastUpdateContactTVItemID,
               disabled: false
             }, [Validators.required]],
         }

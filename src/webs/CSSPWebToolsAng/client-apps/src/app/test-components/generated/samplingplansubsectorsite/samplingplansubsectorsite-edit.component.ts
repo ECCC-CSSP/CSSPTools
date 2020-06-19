@@ -57,32 +57,32 @@ export class SamplingPlanSubsectorSiteEditComponent implements OnInit, OnDestroy
         {
           SamplingPlanSubsectorSiteID: [
             {
-              value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.samplingplansubsectorsiteService.samplingplansubsectorsiteListModel$.getValue()[0]?.SamplingPlanSubsectorSiteID)),
+              value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.samplingplansubsectorsite.SamplingPlanSubsectorSiteID)),
               disabled: false
             }, [Validators.required]],
           SamplingPlanSubsectorID: [
             {
-              value: this.samplingplansubsectorsiteService.samplingplansubsectorsiteListModel$.getValue()[0]?.SamplingPlanSubsectorID,
+              value: this.samplingplansubsectorsite.SamplingPlanSubsectorID,
               disabled: false
             }, [Validators.required]],
           MWQMSiteTVItemID: [
             {
-              value: this.samplingplansubsectorsiteService.samplingplansubsectorsiteListModel$.getValue()[0]?.MWQMSiteTVItemID,
+              value: this.samplingplansubsectorsite.MWQMSiteTVItemID,
               disabled: false
             }, [Validators.required]],
           IsDuplicate: [
             {
-              value: this.samplingplansubsectorsiteService.samplingplansubsectorsiteListModel$.getValue()[0]?.IsDuplicate,
+              value: this.samplingplansubsectorsite.IsDuplicate,
               disabled: false
             }, [Validators.required]],
           LastUpdateDate_UTC: [
             {
-              value: this.samplingplansubsectorsiteService.samplingplansubsectorsiteListModel$.getValue()[0]?.LastUpdateDate_UTC,
+              value: this.samplingplansubsectorsite.LastUpdateDate_UTC,
               disabled: false
             }, [Validators.required]],
           LastUpdateContactTVItemID: [
             {
-              value: this.samplingplansubsectorsiteService.samplingplansubsectorsiteListModel$.getValue()[0]?.LastUpdateContactTVItemID,
+              value: this.samplingplansubsectorsite.LastUpdateContactTVItemID,
               disabled: false
             }, [Validators.required]],
         }

@@ -64,37 +64,37 @@ export class BoxModelLanguageEditComponent implements OnInit, OnDestroy {
         {
           BoxModelLanguageID: [
             {
-              value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.boxmodellanguageService.boxmodellanguageListModel$.getValue()[0]?.BoxModelLanguageID)),
+              value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.boxmodellanguage.BoxModelLanguageID)),
               disabled: false
             }, [Validators.required]],
           BoxModelID: [
             {
-              value: this.boxmodellanguageService.boxmodellanguageListModel$.getValue()[0]?.BoxModelID,
+              value: this.boxmodellanguage.BoxModelID,
               disabled: false
             }, [Validators.required]],
           Language: [
             {
-              value: this.boxmodellanguageService.boxmodellanguageListModel$.getValue()[0]?.Language,
+              value: this.boxmodellanguage.Language,
               disabled: false
             }, [Validators.required]],
           ScenarioName: [
             {
-              value: this.boxmodellanguageService.boxmodellanguageListModel$.getValue()[0]?.ScenarioName,
+              value: this.boxmodellanguage.ScenarioName,
               disabled: false
             }, [Validators.required, Validators.maxLength(250)]],
           TranslationStatus: [
             {
-              value: this.boxmodellanguageService.boxmodellanguageListModel$.getValue()[0]?.TranslationStatus,
+              value: this.boxmodellanguage.TranslationStatus,
               disabled: false
             }, [Validators.required]],
           LastUpdateDate_UTC: [
             {
-              value: this.boxmodellanguageService.boxmodellanguageListModel$.getValue()[0]?.LastUpdateDate_UTC,
+              value: this.boxmodellanguage.LastUpdateDate_UTC,
               disabled: false
             }, [Validators.required]],
           LastUpdateContactTVItemID: [
             {
-              value: this.boxmodellanguageService.boxmodellanguageListModel$.getValue()[0]?.LastUpdateContactTVItemID,
+              value: this.boxmodellanguage.LastUpdateContactTVItemID,
               disabled: false
             }, [Validators.required]],
         }

@@ -57,72 +57,72 @@ export class MikeSourceStartEndEditComponent implements OnInit, OnDestroy {
         {
           MikeSourceStartEndID: [
             {
-              value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.mikesourcestartendService.mikesourcestartendListModel$.getValue()[0]?.MikeSourceStartEndID)),
+              value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.mikesourcestartend.MikeSourceStartEndID)),
               disabled: false
             }, [Validators.required]],
           MikeSourceID: [
             {
-              value: this.mikesourcestartendService.mikesourcestartendListModel$.getValue()[0]?.MikeSourceID,
+              value: this.mikesourcestartend.MikeSourceID,
               disabled: false
             }, [Validators.required]],
           StartDateAndTime_Local: [
             {
-              value: this.mikesourcestartendService.mikesourcestartendListModel$.getValue()[0]?.StartDateAndTime_Local,
+              value: this.mikesourcestartend.StartDateAndTime_Local,
               disabled: false
             }, [Validators.required]],
           EndDateAndTime_Local: [
             {
-              value: this.mikesourcestartendService.mikesourcestartendListModel$.getValue()[0]?.EndDateAndTime_Local,
+              value: this.mikesourcestartend.EndDateAndTime_Local,
               disabled: false
             }, [Validators.required]],
           SourceFlowStart_m3_day: [
             {
-              value: this.mikesourcestartendService.mikesourcestartendListModel$.getValue()[0]?.SourceFlowStart_m3_day,
+              value: this.mikesourcestartend.SourceFlowStart_m3_day,
               disabled: false
             }, [Validators.required, Validators.min(0), Validators.max(1000000)]],
           SourceFlowEnd_m3_day: [
             {
-              value: this.mikesourcestartendService.mikesourcestartendListModel$.getValue()[0]?.SourceFlowEnd_m3_day,
+              value: this.mikesourcestartend.SourceFlowEnd_m3_day,
               disabled: false
             }, [Validators.required, Validators.min(0), Validators.max(1000000)]],
           SourcePollutionStart_MPN_100ml: [
             {
-              value: this.mikesourcestartendService.mikesourcestartendListModel$.getValue()[0]?.SourcePollutionStart_MPN_100ml,
+              value: this.mikesourcestartend.SourcePollutionStart_MPN_100ml,
               disabled: false
             }, [Validators.required, Validators.min(0), Validators.max(10000000)]],
           SourcePollutionEnd_MPN_100ml: [
             {
-              value: this.mikesourcestartendService.mikesourcestartendListModel$.getValue()[0]?.SourcePollutionEnd_MPN_100ml,
+              value: this.mikesourcestartend.SourcePollutionEnd_MPN_100ml,
               disabled: false
             }, [Validators.required, Validators.min(0), Validators.max(10000000)]],
           SourceTemperatureStart_C: [
             {
-              value: this.mikesourcestartendService.mikesourcestartendListModel$.getValue()[0]?.SourceTemperatureStart_C,
+              value: this.mikesourcestartend.SourceTemperatureStart_C,
               disabled: false
             }, [Validators.required, Validators.min(-10), Validators.max(40)]],
           SourceTemperatureEnd_C: [
             {
-              value: this.mikesourcestartendService.mikesourcestartendListModel$.getValue()[0]?.SourceTemperatureEnd_C,
+              value: this.mikesourcestartend.SourceTemperatureEnd_C,
               disabled: false
             }, [Validators.required, Validators.min(-10), Validators.max(40)]],
           SourceSalinityStart_PSU: [
             {
-              value: this.mikesourcestartendService.mikesourcestartendListModel$.getValue()[0]?.SourceSalinityStart_PSU,
+              value: this.mikesourcestartend.SourceSalinityStart_PSU,
               disabled: false
             }, [Validators.required, Validators.min(0), Validators.max(40)]],
           SourceSalinityEnd_PSU: [
             {
-              value: this.mikesourcestartendService.mikesourcestartendListModel$.getValue()[0]?.SourceSalinityEnd_PSU,
+              value: this.mikesourcestartend.SourceSalinityEnd_PSU,
               disabled: false
             }, [Validators.required, Validators.min(0), Validators.max(40)]],
           LastUpdateDate_UTC: [
             {
-              value: this.mikesourcestartendService.mikesourcestartendListModel$.getValue()[0]?.LastUpdateDate_UTC,
+              value: this.mikesourcestartend.LastUpdateDate_UTC,
               disabled: false
             }, [Validators.required]],
           LastUpdateContactTVItemID: [
             {
-              value: this.mikesourcestartendService.mikesourcestartendListModel$.getValue()[0]?.LastUpdateContactTVItemID,
+              value: this.mikesourcestartend.LastUpdateContactTVItemID,
               disabled: false
             }, [Validators.required]],
         }

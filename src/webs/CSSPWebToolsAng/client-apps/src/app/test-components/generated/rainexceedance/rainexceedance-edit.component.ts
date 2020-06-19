@@ -57,62 +57,62 @@ export class RainExceedanceEditComponent implements OnInit, OnDestroy {
         {
           RainExceedanceID: [
             {
-              value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.rainexceedanceService.rainexceedanceListModel$.getValue()[0]?.RainExceedanceID)),
+              value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.rainexceedance.RainExceedanceID)),
               disabled: false
             }, [Validators.required]],
           RainExceedanceTVItemID: [
             {
-              value: this.rainexceedanceService.rainexceedanceListModel$.getValue()[0]?.RainExceedanceTVItemID,
+              value: this.rainexceedance.RainExceedanceTVItemID,
               disabled: false
             }, [Validators.required]],
           StartMonth: [
             {
-              value: this.rainexceedanceService.rainexceedanceListModel$.getValue()[0]?.StartMonth,
+              value: this.rainexceedance.StartMonth,
               disabled: false
             }, [Validators.required, Validators.min(1), Validators.max(12)]],
           StartDay: [
             {
-              value: this.rainexceedanceService.rainexceedanceListModel$.getValue()[0]?.StartDay,
+              value: this.rainexceedance.StartDay,
               disabled: false
             }, [Validators.required, Validators.min(1), Validators.max(31)]],
           EndMonth: [
             {
-              value: this.rainexceedanceService.rainexceedanceListModel$.getValue()[0]?.EndMonth,
+              value: this.rainexceedance.EndMonth,
               disabled: false
             }, [Validators.required, Validators.min(1), Validators.max(12)]],
           EndDay: [
             {
-              value: this.rainexceedanceService.rainexceedanceListModel$.getValue()[0]?.EndDay,
+              value: this.rainexceedance.EndDay,
               disabled: false
             }, [Validators.required, Validators.min(1), Validators.max(31)]],
           RainMaximum_mm: [
             {
-              value: this.rainexceedanceService.rainexceedanceListModel$.getValue()[0]?.RainMaximum_mm,
+              value: this.rainexceedance.RainMaximum_mm,
               disabled: false
             }, [Validators.required, Validators.min(0), Validators.max(300)]],
           StakeholdersEmailDistributionListID: [
             {
-              value: this.rainexceedanceService.rainexceedanceListModel$.getValue()[0]?.StakeholdersEmailDistributionListID,
+              value: this.rainexceedance.StakeholdersEmailDistributionListID,
               disabled: false
             }],
           OnlyStaffEmailDistributionListID: [
             {
-              value: this.rainexceedanceService.rainexceedanceListModel$.getValue()[0]?.OnlyStaffEmailDistributionListID,
+              value: this.rainexceedance.OnlyStaffEmailDistributionListID,
               disabled: false
             }],
           IsActive: [
             {
-              value: this.rainexceedanceService.rainexceedanceListModel$.getValue()[0]?.IsActive,
+              value: this.rainexceedance.IsActive,
               disabled: false
             }, [Validators.required]],
           LastUpdateDate_UTC: [
             {
-              value: this.rainexceedanceService.rainexceedanceListModel$.getValue()[0]?.LastUpdateDate_UTC,
+              value: this.rainexceedance.LastUpdateDate_UTC,
               disabled: false
             }, [Validators.required]],
           LastUpdateContactTVItemID: [
             {
-              value: this.rainexceedanceService.rainexceedanceListModel$.getValue()[0]?.LastUpdateContactTVItemID,
+              value: this.rainexceedance.LastUpdateContactTVItemID,
               disabled: false
             }, [Validators.required]],
         }
