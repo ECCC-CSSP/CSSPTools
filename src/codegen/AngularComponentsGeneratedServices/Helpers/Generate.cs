@@ -73,9 +73,12 @@ namespace AngularComponentsGeneratedServices.Services
 
                         CreateRoutingModuleFile(dllTypeInfoModels, DLLTypeInfoCSSPModelsList);
                         CreateComponentCSSFile(dllTypeInfoModels, DLLTypeInfoCSSPModelsList);
+                        CreateComponentEditCSSFile(dllTypeInfoModels, DLLTypeInfoCSSPModelsList);
                         CreateComponentHTMLFile(dllTypeInfoModels, DLLTypeInfoCSSPModelsList);
+                        CreateComponentEditHTMLFile(dllTypeInfoModels, DLLTypeInfoCSSPModelsList);
                         CreateComponentSpecFile(dllTypeInfoModels, DLLTypeInfoCSSPModelsList);
                         CreateComponentFile(dllTypeInfoModels, DLLTypeInfoCSSPModelsList);
+                        CreateComponentEditFile(dllTypeInfoModels, DLLTypeInfoCSSPModelsList);
                         CreateLocalesFile(dllTypeInfoModels, DLLTypeInfoCSSPModelsList);
                         CreateModelsFile(dllTypeInfoModels, DLLTypeInfoCSSPModelsList);
                         CreateModuleFile(dllTypeInfoModels, DLLTypeInfoCSSPModelsList);

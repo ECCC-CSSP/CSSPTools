@@ -12,7 +12,7 @@ namespace AngularComponentsGeneratedServices.Services
 {
     public partial class AngularComponentsGeneratedService : ConfigService, IAngularComponentsGeneratedService
     {
-        private void CreateModuleFile(DLLTypeInfo dllTypeInfoModels, List<DLLTypeInfo> DLLTypeInfoCSSPModelsList)
+        private void CreateComponentEditCSSFile(DLLTypeInfo dllTypeInfoModels, List<DLLTypeInfo> DLLTypeInfoCSSPModelsList)
         {
             StringBuilder sb = new StringBuilder();
 
@@ -24,27 +24,7 @@ namespace AngularComponentsGeneratedServices.Services
             sb.AppendLine(@" */");
             sb.AppendLine(@"");
 
-            sb.AppendLine(@"import { NgModule } from '@angular/core';");
-            sb.AppendLine(@"import { CommonModule } from '@angular/common';");
-            sb.AppendLine(@"import { RouterModule } from '@angular/router';");
-            sb.AppendLine($@"import {{ { dllTypeInfoModels.Name }RoutingModule }} from './{ dllTypeInfoModels.Name.ToLower() }-routing.module';");
-            sb.AppendLine(@"import { MaterialModule } from '../../../app-material.module';");
-            sb.AppendLine($@"import {{ { dllTypeInfoModels.Name }Component }} from './{ dllTypeInfoModels.Name.ToLower() }.component';");
-            sb.AppendLine(@"import { FormsModule, ReactiveFormsModule } from '@angular/forms';");
-            sb.AppendLine($@"import {{ { dllTypeInfoModels.Name }EditComponent }} from './{ dllTypeInfoModels.Name.ToLower() }-edit.component';");
-            sb.AppendLine(@"");
-            sb.AppendLine(@"@NgModule({");
-            sb.AppendLine($@"  declarations: [ { dllTypeInfoModels.Name }Component, { dllTypeInfoModels.Name }EditComponent ],");
-            sb.AppendLine(@"  imports: [");
-            sb.AppendLine(@"    CommonModule,");
-            sb.AppendLine(@"    RouterModule,");
-            sb.AppendLine($@"    { dllTypeInfoModels.Name }RoutingModule,");
-            sb.AppendLine(@"    MaterialModule,");
-            sb.AppendLine(@"    FormsModule,");
-            sb.AppendLine(@"    ReactiveFormsModule");
-            sb.AppendLine(@"  ]");
-            sb.AppendLine(@"})");
-            sb.AppendLine($@"export class { dllTypeInfoModels.Name }Module {{ }}");
+            sb.AppendLine(@"/* empty for now */");
 
             DirectoryInfo di = new DirectoryInfo(Config.GetValue<string>("OutputDir").Replace("{TypeNameLower}", dllTypeInfoModels.Name.ToLower()));
             if (!di.Exists)
@@ -61,14 +41,14 @@ namespace AngularComponentsGeneratedServices.Services
                 }
             }
 
-            FileInfo fiOutputGen = new FileInfo(Config.GetValue<string>("ModuleFileName").Replace("{TypeNameLower}", dllTypeInfoModels.Name.ToLower()).Replace("{TypeNameLower}", dllTypeInfoModels.Name.ToLower()));
+            FileInfo fiOutputGen = new FileInfo(Config.GetValue<string>("ComponentEditCSSFileName").Replace("{TypeNameLower}", dllTypeInfoModels.Name.ToLower()).Replace("{TypeNameLower}", dllTypeInfoModels.Name.ToLower()));
             using (StreamWriter sw2 = fiOutputGen.CreateText())
             {
                 sw2.Write(sb.ToString());
                 ActionCommandDBService.ExecutionStatusText.AppendLine($"{ string.Format(CultureServicesRes.Created_, fiOutputGen.FullName) }");
             }
 
-            fiOutputGen = new FileInfo(Config.GetValue<string>("ModuleFileName").Replace("{TypeNameLower}", dllTypeInfoModels.Name.ToLower()).Replace("{TypeNameLower}", dllTypeInfoModels.Name.ToLower()));
+            fiOutputGen = new FileInfo(Config.GetValue<string>("ComponentEditCSSFileName").Replace("{TypeNameLower}", dllTypeInfoModels.Name.ToLower()).Replace("{TypeNameLower}", dllTypeInfoModels.Name.ToLower()));
             if (fiOutputGen.Exists)
             {
                 string fileLine = "Last Write Time [" + fiOutputGen.LastWriteTime.ToString("yyyy MMMM dd HH:mm:ss") + "] " + fiOutputGen.FullName;

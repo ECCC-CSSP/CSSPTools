@@ -38,18 +38,13 @@ namespace AngularComponentsGeneratedServices.Services
                     if (!usedPropTypeList.Contains(dllPropertyInfo.CSSPProp.PropType))
                     {
                         HasEnums = true;
-                        sb.AppendLine($@"import {{ { dllPropertyInfo.CSSPProp.PropType }_GetIDText, { dllPropertyInfo.CSSPProp.PropType }_GetOrderedText }} from '../../../enums/generated/{ dllPropertyInfo.CSSPProp.PropType }';");
+                        sb.AppendLine($@"import {{ { dllPropertyInfo.CSSPProp.PropType }_GetIDText }} from '../../../enums/generated/{ dllPropertyInfo.CSSPProp.PropType }';");
 
                         usedPropTypeList.Add(dllPropertyInfo.CSSPProp.PropType);
                     }
                 }
             }
             sb.AppendLine($@"import {{ { dllTypeInfoModels.Name } }} from '../../../models/generated/{ dllTypeInfoModels.Name }.model';");
-            sb.AppendLine(@"import { FormBuilder, Validators, FormGroup } from '@angular/forms';");
-            if (HasEnums)
-            {
-                sb.AppendLine(@"import { EnumIDAndText } from '../../../models/enumidandtext.model';");
-            }
             sb.AppendLine(@"import { HttpClientService } from '../../../services/http-client.service';");
             sb.AppendLine(@"import { Router } from '@angular/router';");
             sb.AppendLine(@"import { HttpClientCommand } from '../../../enums/app.enums';");
@@ -62,39 +57,62 @@ namespace AngularComponentsGeneratedServices.Services
             sb.AppendLine(@"})");
             sb.AppendLine($@"export class { dllTypeInfoModels.Name }Component implements OnInit, OnDestroy {{");
             sb.AppendLine(@"  sub: Subscription;");
-
-            usedPropTypeList = new List<string>();
-            foreach (DLLPropertyInfo dllPropertyInfo in dllTypeInfoModels.PropertyInfoList)
-            {
-                if (dllPropertyInfo.CSSPProp.HasCSSPEnumTypeAttribute)
-                {
-                    if (!usedPropTypeList.Contains(dllPropertyInfo.CSSPProp.PropType))
-                    {
-                        string PropNameFirstLetterLowerCase = dllPropertyInfo.CSSPProp.PropName;
-                        PropNameFirstLetterLowerCase = PropNameFirstLetterLowerCase[0].ToString().ToLower() + PropNameFirstLetterLowerCase.Substring(1);
-                        sb.AppendLine($@"  { PropNameFirstLetterLowerCase }List: EnumIDAndText[];");
-
-                        usedPropTypeList.Add(PropNameFirstLetterLowerCase);
-                    }
-                }
-            }
-            sb.AppendLine($@"  { dllTypeInfoModels.Name.ToLower() }FormPut: FormGroup;");
-            sb.AppendLine($@"  { dllTypeInfoModels.Name.ToLower() }FormPost: FormGroup;");
+            sb.AppendLine($@"  IDToShow: number;");
+            sb.AppendLine($@"  showType?: HttpClientCommand = null;");
             sb.AppendLine(@"");
-            sb.AppendLine($@"  constructor(public { dllTypeInfoModels.Name.ToLower() }Service: { dllTypeInfoModels.Name }Service, private router: Router, private httpClientService: HttpClientService, private fb: FormBuilder) {{");
+            sb.AppendLine($@"  constructor(public { dllTypeInfoModels.Name.ToLower() }Service: { dllTypeInfoModels.Name }Service, private router: Router, private httpClientService: HttpClientService) {{");
             sb.AppendLine($@"    httpClientService.oldURL = router.url;");
             sb.AppendLine($@"  }}");
             sb.AppendLine(@"");
+            sb.AppendLine($@"GetPutButtonColor({ dllTypeInfoModels.Name.ToLower() }: { dllTypeInfoModels.Name }) {{");
+            sb.AppendLine($@"  if (this.IDToShow === { dllTypeInfoModels.Name.ToLower() }.{ dllTypeInfoModels.Name }ID && this.showType === HttpClientCommand.Put) {{");
+            sb.AppendLine(@"    return 'primary';");
+            sb.AppendLine(@"  }");
+            sb.AppendLine(@"  else {");
+            sb.AppendLine(@"    return 'basic';");
+            sb.AppendLine(@"  }}");
+            sb.AppendLine(@"}");
+            sb.AppendLine($@"");
+            sb.AppendLine($@"GetPostButtonColor({ dllTypeInfoModels.Name.ToLower() }: { dllTypeInfoModels.Name }) {{");
+            sb.AppendLine($@"  if (this.IDToShow === { dllTypeInfoModels.Name.ToLower() }.{ dllTypeInfoModels.Name }ID && this.showType === HttpClientCommand.Post) {{");
+            sb.AppendLine(@"    return 'primary';");
+            sb.AppendLine(@"  }");
+            sb.AppendLine(@"  else {");
+            sb.AppendLine(@"    return 'basic';");
+            sb.AppendLine(@"  }");
+            sb.AppendLine(@"}");
+            sb.AppendLine(@"");
+            sb.AppendLine($@"ShowPut({ dllTypeInfoModels.Name }: { dllTypeInfoModels.Name.ToLower() }) {{");
+            sb.AppendLine($@"  if (this.IDToShow === { dllTypeInfoModels.Name.ToLower() }.{ dllTypeInfoModels.Name }ID && this.showType === HttpClientCommand.Put) {{");
+            sb.AppendLine(@"    this.IDToShow = 0;");
+            sb.AppendLine(@"    this.showType = null;");
+            sb.AppendLine(@"  }");
+            sb.AppendLine(@"  else {");
+            sb.AppendLine($@"    this.IDToShow = { dllTypeInfoModels.Name.ToLower() }.{ dllTypeInfoModels.Name }ID;");
+            sb.AppendLine(@"    this.showType = HttpClientCommand.Put;");
+            sb.AppendLine(@"  }");
+            sb.AppendLine(@"}");
+            sb.AppendLine(@"");
+            sb.AppendLine($@"ShowPost({ dllTypeInfoModels.Name.ToLower() }: { dllTypeInfoModels.Name }) {{");
+            sb.AppendLine($@"  if (this.IDToShow === { dllTypeInfoModels.Name.ToLower() }.{ dllTypeInfoModels.Name }ID && this.showType === HttpClientCommand.Post) {{");
+            sb.AppendLine(@"    this.IDToShow = 0;");
+            sb.AppendLine(@"    this.showType = null;");
+            sb.AppendLine(@"  }");
+            sb.AppendLine(@"  else {");
+            sb.AppendLine($@"    this.IDToShow = { dllTypeInfoModels.Name.ToLower() }.{ dllTypeInfoModels.Name }ID;");
+            sb.AppendLine(@"    this.showType = HttpClientCommand.Post;");
+            sb.AppendLine(@"  }");
+            sb.AppendLine(@"}");
+            sb.AppendLine(@"");
+            sb.AppendLine(@"GetPutEnum() {");
+            sb.AppendLine(@"  return <number>HttpClientCommand.Put;");
+            sb.AppendLine(@"}");
+            sb.AppendLine(@"");
+            sb.AppendLine(@"GetPostEnum() {");
+            sb.AppendLine(@"  return <number>HttpClientCommand.Post;");
+            sb.AppendLine(@"}");
             sb.AppendLine($@"  Get{ dllTypeInfoModels.Name }List() {{");
             sb.AppendLine($@"    this.sub = this.{ dllTypeInfoModels.Name.ToLower() }Service.Get{ dllTypeInfoModels.Name }List().subscribe();");
-            sb.AppendLine(@"  }");
-            sb.AppendLine(@"");
-            sb.AppendLine($@"  Put{ dllTypeInfoModels.Name }({ dllTypeInfoModels.Name.ToLower() }: { dllTypeInfoModels.Name }) {{");
-            sb.AppendLine($@"    this.sub = this.{ dllTypeInfoModels.Name.ToLower() }Service.Put{ dllTypeInfoModels.Name }({ dllTypeInfoModels.Name.ToLower() }).subscribe();");
-            sb.AppendLine(@"  }");
-            sb.AppendLine(@"");
-            sb.AppendLine($@"  Post{ dllTypeInfoModels.Name }({ dllTypeInfoModels.Name.ToLower() }: { dllTypeInfoModels.Name }) {{");
-            sb.AppendLine($@"    this.sub = this.{ dllTypeInfoModels.Name.ToLower() }Service.Post{ dllTypeInfoModels.Name }({ dllTypeInfoModels.Name.ToLower() }).subscribe();");
             sb.AppendLine(@"  }");
             sb.AppendLine(@"");
             sb.AppendLine($@"  Delete{ dllTypeInfoModels.Name }({ dllTypeInfoModels.Name.ToLower() }: { dllTypeInfoModels.Name }) {{");
@@ -120,25 +138,6 @@ namespace AngularComponentsGeneratedServices.Services
             }
             sb.AppendLine(@"  ngOnInit(): void {");
             sb.AppendLine($@"    LoadLocales{ dllTypeInfoModels.Name }Text(this.{ dllTypeInfoModels.Name.ToLower() }Service);");
-
-            usedPropTypeList = new List<string>();
-            foreach (DLLPropertyInfo dllPropertyInfo in dllTypeInfoModels.PropertyInfoList)
-            {
-                if (dllPropertyInfo.CSSPProp.HasCSSPEnumTypeAttribute)
-                {
-                    if (!usedPropTypeList.Contains(dllPropertyInfo.CSSPProp.PropType))
-                    {
-                        string PropNameFirstLetterLowerCase = dllPropertyInfo.CSSPProp.PropName;
-                        PropNameFirstLetterLowerCase = PropNameFirstLetterLowerCase[0].ToString().ToLower() + PropNameFirstLetterLowerCase.Substring(1);
-                        sb.AppendLine($@"    this.{ PropNameFirstLetterLowerCase }List = { dllPropertyInfo.CSSPProp.PropType }_GetOrderedText();");
-
-                        usedPropTypeList.Add(PropNameFirstLetterLowerCase);
-                    }
-                }
-            }
-
-            sb.AppendLine(@"    this.FillFormBuilderGroup(HttpClientCommand.Post);");
-            sb.AppendLine(@"    this.FillFormBuilderGroup(HttpClientCommand.Put);");
             sb.AppendLine(@"  }");
             sb.AppendLine(@"");
             sb.AppendLine(@"  ngOnDestroy() {");
@@ -146,95 +145,6 @@ namespace AngularComponentsGeneratedServices.Services
             sb.AppendLine(@"      this.sub.unsubscribe();");
             sb.AppendLine(@"    }");
             sb.AppendLine(@"  }");
-            sb.AppendLine(@"");
-            sb.AppendLine(@"  FillFormBuilderGroup(httpClientCommand: HttpClientCommand) {");
-            sb.AppendLine($@"    if (this.{ dllTypeInfoModels.Name.ToLower() }Service.{ dllTypeInfoModels.Name.ToLower() }ListModel$.getValue().length) {{");
-            sb.AppendLine(@"      let formGroup: FormGroup = this.fb.group(");
-            sb.AppendLine(@"        {");
-
-            foreach (DLLPropertyInfo dllPropertyInfo in dllTypeInfoModels.PropertyInfoList)
-            {
-                sb.AppendLine($@"          { dllPropertyInfo.CSSPProp.PropName }: [");
-                sb.AppendLine($@"            {{");
-                if (dllPropertyInfo.CSSPProp.IsKey)
-                {
-                    sb.AppendLine($@"              value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.{ dllTypeInfoModels.Name.ToLower() }Service.{ dllTypeInfoModels.Name.ToLower() }ListModel$.getValue()[0]?.{ dllPropertyInfo.CSSPProp.PropName })),");
-                }
-                else
-                {
-                    sb.AppendLine($@"              value: this.{ dllTypeInfoModels.Name.ToLower() }Service.{ dllTypeInfoModels.Name.ToLower() }ListModel$.getValue()[0]?.{ dllPropertyInfo.CSSPProp.PropName },");
-                }
-                sb.AppendLine($@"              disabled: false");
-                StringBuilder sbValidators = new StringBuilder();
-                
-                // doing required
-                if (!dllPropertyInfo.CSSPProp.IsNullable)
-                {
-                    sbValidators.Append($@" Validators.required,");
-                }
-                // doing min
-                if (dllPropertyInfo.CSSPProp.HasCSSPRangeAttribute && dllPropertyInfo.CSSPProp.Min != null)
-                {
-                    sbValidators.Append($@" Validators.min({ dllPropertyInfo.CSSPProp.Min }),");
-                }
-                // doing max
-                if (dllPropertyInfo.CSSPProp.HasCSSPRangeAttribute && dllPropertyInfo.CSSPProp.Max != null)
-                {
-                    sbValidators.Append($@" Validators.max({ dllPropertyInfo.CSSPProp.Max }),");
-                }
-                // doing email
-                if (dllPropertyInfo.CSSPProp.HasDataTypeAttribute)
-                {
-                    if (dllPropertyInfo.CSSPProp.dataType == DataType.EmailAddress)
-                    {
-                        sbValidators.Append($@" Validators.email,");
-                    }
-                }
-                // doing minLength
-                if (dllPropertyInfo.CSSPProp.HasCSSPMinLengthAttribute)
-                {
-                    sbValidators.Append($@" Validators.minLength({ dllPropertyInfo.CSSPProp.Min }),");
-                }
-                // doing maxLength
-                if (dllPropertyInfo.CSSPProp.HasCSSPMaxLengthAttribute)
-                {
-                    sbValidators.Append($@" Validators.maxLength({ dllPropertyInfo.CSSPProp.Max }),");
-                }
-                //// doing pattern
-                //if (dllPropertyInfo.CSSPProp.)
-                //{
-                //    sbValidators.Append($@" Validators.maxLength({ dllPropertyInfo.CSSPProp.Max }),");
-                //}
-
-                string ValidatorsStr = sbValidators.ToString();
-                if (ValidatorsStr.Length > 0)
-                {
-                    if (ValidatorsStr.Last() == ",".ToCharArray()[0])
-                    {
-                        ValidatorsStr = ValidatorsStr.Substring(0, ValidatorsStr.Length - 1);
-                    }
-                }
-                if (string.IsNullOrWhiteSpace(ValidatorsStr))
-                {
-                    sb.AppendLine($@"            }}],");
-                }
-                else
-                {
-                    sb.AppendLine($@"            }}, [ { ValidatorsStr } ]],");
-                }
-            }
-            sb.AppendLine(@"        }");
-            sb.AppendLine(@"      );");
-            sb.AppendLine(@"");
-            sb.AppendLine(@"      if (httpClientCommand === HttpClientCommand.Post) {");
-            sb.AppendLine($@"        this.{ dllTypeInfoModels.Name.ToLower() }FormPost = formGroup");
-            sb.AppendLine(@"      }");
-            sb.AppendLine(@"      else {");
-            sb.AppendLine($@"        this.{ dllTypeInfoModels.Name.ToLower() }FormPut = formGroup;");
-            sb.AppendLine(@"      }");
-            sb.AppendLine(@"    }");
-            sb.AppendLine(@"  }");
-            sb.AppendLine(@"}");
 
             DirectoryInfo di = new DirectoryInfo(Config.GetValue<string>("OutputDir").Replace("{TypeNameLower}", dllTypeInfoModels.Name.ToLower()));
             if (!di.Exists)

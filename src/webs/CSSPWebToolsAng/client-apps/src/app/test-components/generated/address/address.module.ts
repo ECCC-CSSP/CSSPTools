@@ -12,9 +12,10 @@ import { AddressRoutingModule } from './address-routing.module';
 import { MaterialModule } from '../../../app-material.module';
 import { AddressComponent } from './address.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { AddressEditComponent } from './address-edit.component';
 
 @NgModule({
-  declarations: [ AddressComponent ],
+  declarations: [ AddressComponent, AddressEditComponent ],
   imports: [
     CommonModule,
     RouterModule,
