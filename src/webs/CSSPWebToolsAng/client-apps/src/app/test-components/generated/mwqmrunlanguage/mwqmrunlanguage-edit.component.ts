@@ -68,47 +68,47 @@ export class MWQMRunLanguageEditComponent implements OnInit, OnDestroy {
             {
               value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.mwqmrunlanguageService.mwqmrunlanguageListModel$.getValue()[0]?.MWQMRunLanguageID)),
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           MWQMRunID: [
             {
               value: this.mwqmrunlanguageService.mwqmrunlanguageListModel$.getValue()[0]?.MWQMRunID,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           Language: [
             {
               value: this.mwqmrunlanguageService.mwqmrunlanguageListModel$.getValue()[0]?.Language,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           RunComment: [
             {
               value: this.mwqmrunlanguageService.mwqmrunlanguageListModel$.getValue()[0]?.RunComment,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           TranslationStatusRunComment: [
             {
               value: this.mwqmrunlanguageService.mwqmrunlanguageListModel$.getValue()[0]?.TranslationStatusRunComment,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           RunWeatherComment: [
             {
               value: this.mwqmrunlanguageService.mwqmrunlanguageListModel$.getValue()[0]?.RunWeatherComment,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           TranslationStatusRunWeatherComment: [
             {
               value: this.mwqmrunlanguageService.mwqmrunlanguageListModel$.getValue()[0]?.TranslationStatusRunWeatherComment,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           LastUpdateDate_UTC: [
             {
               value: this.mwqmrunlanguageService.mwqmrunlanguageListModel$.getValue()[0]?.LastUpdateDate_UTC,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           LastUpdateContactTVItemID: [
             {
               value: this.mwqmrunlanguageService.mwqmrunlanguageListModel$.getValue()[0]?.LastUpdateContactTVItemID,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
         }
       );
 

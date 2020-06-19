@@ -96,42 +96,42 @@ export class InfrastructureEditComponent implements OnInit, OnDestroy {
             {
               value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.infrastructureService.infrastructureListModel$.getValue()[0]?.InfrastructureID)),
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           InfrastructureTVItemID: [
             {
               value: this.infrastructureService.infrastructureListModel$.getValue()[0]?.InfrastructureTVItemID,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           PrismID: [
             {
               value: this.infrastructureService.infrastructureListModel$.getValue()[0]?.PrismID,
               disabled: false
-            }, [  Validators.min(0), Validators.max(100000) ]],
+            }, [Validators.min(0), Validators.max(100000)]],
           TPID: [
             {
               value: this.infrastructureService.infrastructureListModel$.getValue()[0]?.TPID,
               disabled: false
-            }, [  Validators.min(0), Validators.max(100000) ]],
+            }, [Validators.min(0), Validators.max(100000)]],
           LSID: [
             {
               value: this.infrastructureService.infrastructureListModel$.getValue()[0]?.LSID,
               disabled: false
-            }, [  Validators.min(0), Validators.max(100000) ]],
+            }, [Validators.min(0), Validators.max(100000)]],
           SiteID: [
             {
               value: this.infrastructureService.infrastructureListModel$.getValue()[0]?.SiteID,
               disabled: false
-            }, [  Validators.min(0), Validators.max(100000) ]],
+            }, [Validators.min(0), Validators.max(100000)]],
           Site: [
             {
               value: this.infrastructureService.infrastructureListModel$.getValue()[0]?.Site,
               disabled: false
-            }, [  Validators.min(0), Validators.max(100000) ]],
+            }, [Validators.min(0), Validators.max(100000)]],
           InfrastructureCategory: [
             {
               value: this.infrastructureService.infrastructureListModel$.getValue()[0]?.InfrastructureCategory,
               disabled: false
-            }, [  Validators.minLength(1), Validators.maxLength(1) ]],
+            }, [Validators.minLength(1), Validators.maxLength(1)]],
           InfrastructureType: [
             {
               value: this.infrastructureService.infrastructureListModel$.getValue()[0]?.InfrastructureType,
@@ -156,12 +156,12 @@ export class InfrastructureEditComponent implements OnInit, OnDestroy {
             {
               value: this.infrastructureService.infrastructureListModel$.getValue()[0]?.NumberOfCells,
               disabled: false
-            }, [  Validators.min(0), Validators.max(10) ]],
+            }, [Validators.min(0), Validators.max(10)]],
           NumberOfAeratedCells: [
             {
               value: this.infrastructureService.infrastructureListModel$.getValue()[0]?.NumberOfAeratedCells,
               disabled: false
-            }, [  Validators.min(0), Validators.max(10) ]],
+            }, [Validators.min(0), Validators.max(10)]],
           AerationType: [
             {
               value: this.infrastructureService.infrastructureListModel$.getValue()[0]?.AerationType,
@@ -211,22 +211,22 @@ export class InfrastructureEditComponent implements OnInit, OnDestroy {
             {
               value: this.infrastructureService.infrastructureListModel$.getValue()[0]?.DesignFlow_m3_day,
               disabled: false
-            }, [  Validators.min(0), Validators.max(1000000) ]],
+            }, [Validators.min(0), Validators.max(1000000)]],
           AverageFlow_m3_day: [
             {
               value: this.infrastructureService.infrastructureListModel$.getValue()[0]?.AverageFlow_m3_day,
               disabled: false
-            }, [  Validators.min(0), Validators.max(1000000) ]],
+            }, [Validators.min(0), Validators.max(1000000)]],
           PeakFlow_m3_day: [
             {
               value: this.infrastructureService.infrastructureListModel$.getValue()[0]?.PeakFlow_m3_day,
               disabled: false
-            }, [  Validators.min(0), Validators.max(1000000) ]],
+            }, [Validators.min(0), Validators.max(1000000)]],
           PopServed: [
             {
               value: this.infrastructureService.infrastructureListModel$.getValue()[0]?.PopServed,
               disabled: false
-            }, [  Validators.min(0), Validators.max(1000000) ]],
+            }, [Validators.min(0), Validators.max(1000000)]],
           CanOverflow: [
             {
               value: this.infrastructureService.infrastructureListModel$.getValue()[0]?.CanOverflow,
@@ -241,12 +241,12 @@ export class InfrastructureEditComponent implements OnInit, OnDestroy {
             {
               value: this.infrastructureService.infrastructureListModel$.getValue()[0]?.PercFlowOfTotal,
               disabled: false
-            }, [  Validators.min(0), Validators.max(100) ]],
+            }, [Validators.min(0), Validators.max(100)]],
           TimeOffset_hour: [
             {
               value: this.infrastructureService.infrastructureListModel$.getValue()[0]?.TimeOffset_hour,
               disabled: false
-            }, [  Validators.min(-10), Validators.max(0) ]],
+            }, [Validators.min(-10), Validators.max(0)]],
           TempCatchAllRemoveLater: [
             {
               value: this.infrastructureService.infrastructureListModel$.getValue()[0]?.TempCatchAllRemoveLater,
@@ -256,72 +256,72 @@ export class InfrastructureEditComponent implements OnInit, OnDestroy {
             {
               value: this.infrastructureService.infrastructureListModel$.getValue()[0]?.AverageDepth_m,
               disabled: false
-            }, [  Validators.min(0), Validators.max(1000) ]],
+            }, [Validators.min(0), Validators.max(1000)]],
           NumberOfPorts: [
             {
               value: this.infrastructureService.infrastructureListModel$.getValue()[0]?.NumberOfPorts,
               disabled: false
-            }, [  Validators.min(1), Validators.max(1000) ]],
+            }, [Validators.min(1), Validators.max(1000)]],
           PortDiameter_m: [
             {
               value: this.infrastructureService.infrastructureListModel$.getValue()[0]?.PortDiameter_m,
               disabled: false
-            }, [  Validators.min(0), Validators.max(10) ]],
+            }, [Validators.min(0), Validators.max(10)]],
           PortSpacing_m: [
             {
               value: this.infrastructureService.infrastructureListModel$.getValue()[0]?.PortSpacing_m,
               disabled: false
-            }, [  Validators.min(0), Validators.max(10000) ]],
+            }, [Validators.min(0), Validators.max(10000)]],
           PortElevation_m: [
             {
               value: this.infrastructureService.infrastructureListModel$.getValue()[0]?.PortElevation_m,
               disabled: false
-            }, [  Validators.min(0), Validators.max(1000) ]],
+            }, [Validators.min(0), Validators.max(1000)]],
           VerticalAngle_deg: [
             {
               value: this.infrastructureService.infrastructureListModel$.getValue()[0]?.VerticalAngle_deg,
               disabled: false
-            }, [  Validators.min(-90), Validators.max(90) ]],
+            }, [Validators.min(-90), Validators.max(90)]],
           HorizontalAngle_deg: [
             {
               value: this.infrastructureService.infrastructureListModel$.getValue()[0]?.HorizontalAngle_deg,
               disabled: false
-            }, [  Validators.min(-180), Validators.max(180) ]],
+            }, [Validators.min(-180), Validators.max(180)]],
           DecayRate_per_day: [
             {
               value: this.infrastructureService.infrastructureListModel$.getValue()[0]?.DecayRate_per_day,
               disabled: false
-            }, [  Validators.min(0), Validators.max(100) ]],
+            }, [Validators.min(0), Validators.max(100)]],
           NearFieldVelocity_m_s: [
             {
               value: this.infrastructureService.infrastructureListModel$.getValue()[0]?.NearFieldVelocity_m_s,
               disabled: false
-            }, [  Validators.min(0), Validators.max(10) ]],
+            }, [Validators.min(0), Validators.max(10)]],
           FarFieldVelocity_m_s: [
             {
               value: this.infrastructureService.infrastructureListModel$.getValue()[0]?.FarFieldVelocity_m_s,
               disabled: false
-            }, [  Validators.min(0), Validators.max(10) ]],
+            }, [Validators.min(0), Validators.max(10)]],
           ReceivingWaterSalinity_PSU: [
             {
               value: this.infrastructureService.infrastructureListModel$.getValue()[0]?.ReceivingWaterSalinity_PSU,
               disabled: false
-            }, [  Validators.min(0), Validators.max(40) ]],
+            }, [Validators.min(0), Validators.max(40)]],
           ReceivingWaterTemperature_C: [
             {
               value: this.infrastructureService.infrastructureListModel$.getValue()[0]?.ReceivingWaterTemperature_C,
               disabled: false
-            }, [  Validators.min(-10), Validators.max(40) ]],
+            }, [Validators.min(-10), Validators.max(40)]],
           ReceivingWater_MPN_per_100ml: [
             {
               value: this.infrastructureService.infrastructureListModel$.getValue()[0]?.ReceivingWater_MPN_per_100ml,
               disabled: false
-            }, [  Validators.min(0), Validators.max(10000000) ]],
+            }, [Validators.min(0), Validators.max(10000000)]],
           DistanceFromShore_m: [
             {
               value: this.infrastructureService.infrastructureListModel$.getValue()[0]?.DistanceFromShore_m,
               disabled: false
-            }, [  Validators.min(0), Validators.max(1000) ]],
+            }, [Validators.min(0), Validators.max(1000)]],
           SeeOtherMunicipalityTVItemID: [
             {
               value: this.infrastructureService.infrastructureListModel$.getValue()[0]?.SeeOtherMunicipalityTVItemID,
@@ -336,12 +336,12 @@ export class InfrastructureEditComponent implements OnInit, OnDestroy {
             {
               value: this.infrastructureService.infrastructureListModel$.getValue()[0]?.LastUpdateDate_UTC,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           LastUpdateContactTVItemID: [
             {
               value: this.infrastructureService.infrastructureListModel$.getValue()[0]?.LastUpdateContactTVItemID,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
         }
       );
 

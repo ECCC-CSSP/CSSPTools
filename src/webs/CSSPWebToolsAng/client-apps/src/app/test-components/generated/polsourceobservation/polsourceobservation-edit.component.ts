@@ -59,42 +59,42 @@ export class PolSourceObservationEditComponent implements OnInit, OnDestroy {
             {
               value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.polsourceobservationService.polsourceobservationListModel$.getValue()[0]?.PolSourceObservationID)),
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           PolSourceSiteID: [
             {
               value: this.polsourceobservationService.polsourceobservationListModel$.getValue()[0]?.PolSourceSiteID,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           ObservationDate_Local: [
             {
               value: this.polsourceobservationService.polsourceobservationListModel$.getValue()[0]?.ObservationDate_Local,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           ContactTVItemID: [
             {
               value: this.polsourceobservationService.polsourceobservationListModel$.getValue()[0]?.ContactTVItemID,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           DesktopReviewed: [
             {
               value: this.polsourceobservationService.polsourceobservationListModel$.getValue()[0]?.DesktopReviewed,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           Observation_ToBeDeleted: [
             {
               value: this.polsourceobservationService.polsourceobservationListModel$.getValue()[0]?.Observation_ToBeDeleted,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           LastUpdateDate_UTC: [
             {
               value: this.polsourceobservationService.polsourceobservationListModel$.getValue()[0]?.LastUpdateDate_UTC,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           LastUpdateContactTVItemID: [
             {
               value: this.polsourceobservationService.polsourceobservationListModel$.getValue()[0]?.LastUpdateContactTVItemID,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
         }
       );
 

@@ -66,37 +66,37 @@ export class TVItemLanguageEditComponent implements OnInit, OnDestroy {
             {
               value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.tvitemlanguageService.tvitemlanguageListModel$.getValue()[0]?.TVItemLanguageID)),
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           TVItemID: [
             {
               value: this.tvitemlanguageService.tvitemlanguageListModel$.getValue()[0]?.TVItemID,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           Language: [
             {
               value: this.tvitemlanguageService.tvitemlanguageListModel$.getValue()[0]?.Language,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           TVText: [
             {
               value: this.tvitemlanguageService.tvitemlanguageListModel$.getValue()[0]?.TVText,
               disabled: false
-            }, [  Validators.required, Validators.maxLength(200) ]],
+            }, [Validators.required, Validators.maxLength(200)]],
           TranslationStatus: [
             {
               value: this.tvitemlanguageService.tvitemlanguageListModel$.getValue()[0]?.TranslationStatus,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           LastUpdateDate_UTC: [
             {
               value: this.tvitemlanguageService.tvitemlanguageListModel$.getValue()[0]?.LastUpdateDate_UTC,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           LastUpdateContactTVItemID: [
             {
               value: this.tvitemlanguageService.tvitemlanguageListModel$.getValue()[0]?.LastUpdateContactTVItemID,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
         }
       );
 

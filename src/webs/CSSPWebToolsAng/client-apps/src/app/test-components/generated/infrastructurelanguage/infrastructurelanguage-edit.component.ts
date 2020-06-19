@@ -66,37 +66,37 @@ export class InfrastructureLanguageEditComponent implements OnInit, OnDestroy {
             {
               value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.infrastructurelanguageService.infrastructurelanguageListModel$.getValue()[0]?.InfrastructureLanguageID)),
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           InfrastructureID: [
             {
               value: this.infrastructurelanguageService.infrastructurelanguageListModel$.getValue()[0]?.InfrastructureID,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           Language: [
             {
               value: this.infrastructurelanguageService.infrastructurelanguageListModel$.getValue()[0]?.Language,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           Comment: [
             {
               value: this.infrastructurelanguageService.infrastructurelanguageListModel$.getValue()[0]?.Comment,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           TranslationStatus: [
             {
               value: this.infrastructurelanguageService.infrastructurelanguageListModel$.getValue()[0]?.TranslationStatus,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           LastUpdateDate_UTC: [
             {
               value: this.infrastructurelanguageService.infrastructurelanguageListModel$.getValue()[0]?.LastUpdateDate_UTC,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           LastUpdateContactTVItemID: [
             {
               value: this.infrastructurelanguageService.infrastructurelanguageListModel$.getValue()[0]?.LastUpdateContactTVItemID,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
         }
       );
 

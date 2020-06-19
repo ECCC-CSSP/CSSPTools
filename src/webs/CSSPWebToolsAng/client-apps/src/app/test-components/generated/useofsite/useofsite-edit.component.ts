@@ -63,37 +63,37 @@ export class UseOfSiteEditComponent implements OnInit, OnDestroy {
             {
               value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.useofsiteService.useofsiteListModel$.getValue()[0]?.UseOfSiteID)),
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           SiteTVItemID: [
             {
               value: this.useofsiteService.useofsiteListModel$.getValue()[0]?.SiteTVItemID,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           SubsectorTVItemID: [
             {
               value: this.useofsiteService.useofsiteListModel$.getValue()[0]?.SubsectorTVItemID,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           TVType: [
             {
               value: this.useofsiteService.useofsiteListModel$.getValue()[0]?.TVType,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           Ordinal: [
             {
               value: this.useofsiteService.useofsiteListModel$.getValue()[0]?.Ordinal,
               disabled: false
-            }, [  Validators.required, Validators.min(0), Validators.max(1000) ]],
+            }, [Validators.required, Validators.min(0), Validators.max(1000)]],
           StartYear: [
             {
               value: this.useofsiteService.useofsiteListModel$.getValue()[0]?.StartYear,
               disabled: false
-            }, [  Validators.required, Validators.min(1980), Validators.max(2050) ]],
+            }, [Validators.required, Validators.min(1980), Validators.max(2050)]],
           EndYear: [
             {
               value: this.useofsiteService.useofsiteListModel$.getValue()[0]?.EndYear,
               disabled: false
-            }, [  Validators.min(1980), Validators.max(2050) ]],
+            }, [Validators.min(1980), Validators.max(2050)]],
           UseWeight: [
             {
               value: this.useofsiteService.useofsiteListModel$.getValue()[0]?.UseWeight,
@@ -103,7 +103,7 @@ export class UseOfSiteEditComponent implements OnInit, OnDestroy {
             {
               value: this.useofsiteService.useofsiteListModel$.getValue()[0]?.Weight_perc,
               disabled: false
-            }, [  Validators.min(0), Validators.max(100) ]],
+            }, [Validators.min(0), Validators.max(100)]],
           UseEquation: [
             {
               value: this.useofsiteService.useofsiteListModel$.getValue()[0]?.UseEquation,
@@ -113,32 +113,32 @@ export class UseOfSiteEditComponent implements OnInit, OnDestroy {
             {
               value: this.useofsiteService.useofsiteListModel$.getValue()[0]?.Param1,
               disabled: false
-            }, [  Validators.min(0), Validators.max(100) ]],
+            }, [Validators.min(0), Validators.max(100)]],
           Param2: [
             {
               value: this.useofsiteService.useofsiteListModel$.getValue()[0]?.Param2,
               disabled: false
-            }, [  Validators.min(0), Validators.max(100) ]],
+            }, [Validators.min(0), Validators.max(100)]],
           Param3: [
             {
               value: this.useofsiteService.useofsiteListModel$.getValue()[0]?.Param3,
               disabled: false
-            }, [  Validators.min(0), Validators.max(100) ]],
+            }, [Validators.min(0), Validators.max(100)]],
           Param4: [
             {
               value: this.useofsiteService.useofsiteListModel$.getValue()[0]?.Param4,
               disabled: false
-            }, [  Validators.min(0), Validators.max(100) ]],
+            }, [Validators.min(0), Validators.max(100)]],
           LastUpdateDate_UTC: [
             {
               value: this.useofsiteService.useofsiteListModel$.getValue()[0]?.LastUpdateDate_UTC,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           LastUpdateContactTVItemID: [
             {
               value: this.useofsiteService.useofsiteListModel$.getValue()[0]?.LastUpdateContactTVItemID,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
         }
       );
 

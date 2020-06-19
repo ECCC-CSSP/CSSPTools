@@ -66,52 +66,52 @@ export class MapInfoEditComponent implements OnInit, OnDestroy {
             {
               value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.mapinfoService.mapinfoListModel$.getValue()[0]?.MapInfoID)),
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           TVItemID: [
             {
               value: this.mapinfoService.mapinfoListModel$.getValue()[0]?.TVItemID,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           TVType: [
             {
               value: this.mapinfoService.mapinfoListModel$.getValue()[0]?.TVType,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           LatMin: [
             {
               value: this.mapinfoService.mapinfoListModel$.getValue()[0]?.LatMin,
               disabled: false
-            }, [  Validators.required, Validators.min(-90), Validators.max(90) ]],
+            }, [Validators.required, Validators.min(-90), Validators.max(90)]],
           LatMax: [
             {
               value: this.mapinfoService.mapinfoListModel$.getValue()[0]?.LatMax,
               disabled: false
-            }, [  Validators.required, Validators.min(-90), Validators.max(90) ]],
+            }, [Validators.required, Validators.min(-90), Validators.max(90)]],
           LngMin: [
             {
               value: this.mapinfoService.mapinfoListModel$.getValue()[0]?.LngMin,
               disabled: false
-            }, [  Validators.required, Validators.min(-180), Validators.max(180) ]],
+            }, [Validators.required, Validators.min(-180), Validators.max(180)]],
           LngMax: [
             {
               value: this.mapinfoService.mapinfoListModel$.getValue()[0]?.LngMax,
               disabled: false
-            }, [  Validators.required, Validators.min(-180), Validators.max(180) ]],
+            }, [Validators.required, Validators.min(-180), Validators.max(180)]],
           MapInfoDrawType: [
             {
               value: this.mapinfoService.mapinfoListModel$.getValue()[0]?.MapInfoDrawType,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           LastUpdateDate_UTC: [
             {
               value: this.mapinfoService.mapinfoListModel$.getValue()[0]?.LastUpdateDate_UTC,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           LastUpdateContactTVItemID: [
             {
               value: this.mapinfoService.mapinfoListModel$.getValue()[0]?.LastUpdateContactTVItemID,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
         }
       );
 

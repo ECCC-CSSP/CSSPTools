@@ -59,52 +59,52 @@ export class VPResultEditComponent implements OnInit, OnDestroy {
             {
               value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.vpresultService.vpresultListModel$.getValue()[0]?.VPResultID)),
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           VPScenarioID: [
             {
               value: this.vpresultService.vpresultListModel$.getValue()[0]?.VPScenarioID,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           Ordinal: [
             {
               value: this.vpresultService.vpresultListModel$.getValue()[0]?.Ordinal,
               disabled: false
-            }, [  Validators.required, Validators.min(0), Validators.max(1000) ]],
+            }, [Validators.required, Validators.min(0), Validators.max(1000)]],
           Concentration_MPN_100ml: [
             {
               value: this.vpresultService.vpresultListModel$.getValue()[0]?.Concentration_MPN_100ml,
               disabled: false
-            }, [  Validators.required, Validators.min(0), Validators.max(10000000) ]],
+            }, [Validators.required, Validators.min(0), Validators.max(10000000)]],
           Dilution: [
             {
               value: this.vpresultService.vpresultListModel$.getValue()[0]?.Dilution,
               disabled: false
-            }, [  Validators.required, Validators.min(0), Validators.max(1000000) ]],
+            }, [Validators.required, Validators.min(0), Validators.max(1000000)]],
           FarFieldWidth_m: [
             {
               value: this.vpresultService.vpresultListModel$.getValue()[0]?.FarFieldWidth_m,
               disabled: false
-            }, [  Validators.required, Validators.min(0), Validators.max(10000) ]],
+            }, [Validators.required, Validators.min(0), Validators.max(10000)]],
           DispersionDistance_m: [
             {
               value: this.vpresultService.vpresultListModel$.getValue()[0]?.DispersionDistance_m,
               disabled: false
-            }, [  Validators.required, Validators.min(0), Validators.max(100000) ]],
+            }, [Validators.required, Validators.min(0), Validators.max(100000)]],
           TravelTime_hour: [
             {
               value: this.vpresultService.vpresultListModel$.getValue()[0]?.TravelTime_hour,
               disabled: false
-            }, [  Validators.required, Validators.min(0), Validators.max(100) ]],
+            }, [Validators.required, Validators.min(0), Validators.max(100)]],
           LastUpdateDate_UTC: [
             {
               value: this.vpresultService.vpresultListModel$.getValue()[0]?.LastUpdateDate_UTC,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           LastUpdateContactTVItemID: [
             {
               value: this.vpresultService.vpresultListModel$.getValue()[0]?.LastUpdateContactTVItemID,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
         }
       );
 

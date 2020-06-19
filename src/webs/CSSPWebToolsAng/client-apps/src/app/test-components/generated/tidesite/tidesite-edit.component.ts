@@ -59,42 +59,42 @@ export class TideSiteEditComponent implements OnInit, OnDestroy {
             {
               value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.tidesiteService.tidesiteListModel$.getValue()[0]?.TideSiteID)),
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           TideSiteTVItemID: [
             {
               value: this.tidesiteService.tidesiteListModel$.getValue()[0]?.TideSiteTVItemID,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           TideSiteName: [
             {
               value: this.tidesiteService.tidesiteListModel$.getValue()[0]?.TideSiteName,
               disabled: false
-            }, [  Validators.required, Validators.maxLength(100) ]],
+            }, [Validators.required, Validators.maxLength(100)]],
           Province: [
             {
               value: this.tidesiteService.tidesiteListModel$.getValue()[0]?.Province,
               disabled: false
-            }, [  Validators.required, Validators.minLength(2), Validators.maxLength(2) ]],
+            }, [Validators.required, Validators.minLength(2), Validators.maxLength(2)]],
           sid: [
             {
               value: this.tidesiteService.tidesiteListModel$.getValue()[0]?.sid,
               disabled: false
-            }, [  Validators.required, Validators.min(0), Validators.max(10000) ]],
+            }, [Validators.required, Validators.min(0), Validators.max(10000)]],
           Zone: [
             {
               value: this.tidesiteService.tidesiteListModel$.getValue()[0]?.Zone,
               disabled: false
-            }, [  Validators.required, Validators.min(0), Validators.max(10000) ]],
+            }, [Validators.required, Validators.min(0), Validators.max(10000)]],
           LastUpdateDate_UTC: [
             {
               value: this.tidesiteService.tidesiteListModel$.getValue()[0]?.LastUpdateDate_UTC,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           LastUpdateContactTVItemID: [
             {
               value: this.tidesiteService.tidesiteListModel$.getValue()[0]?.LastUpdateContactTVItemID,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
         }
       );
 

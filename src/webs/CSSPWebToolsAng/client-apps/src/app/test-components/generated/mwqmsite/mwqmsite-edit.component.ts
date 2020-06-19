@@ -63,42 +63,42 @@ export class MWQMSiteEditComponent implements OnInit, OnDestroy {
             {
               value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.mwqmsiteService.mwqmsiteListModel$.getValue()[0]?.MWQMSiteID)),
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           MWQMSiteTVItemID: [
             {
               value: this.mwqmsiteService.mwqmsiteListModel$.getValue()[0]?.MWQMSiteTVItemID,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           MWQMSiteNumber: [
             {
               value: this.mwqmsiteService.mwqmsiteListModel$.getValue()[0]?.MWQMSiteNumber,
               disabled: false
-            }, [  Validators.required, Validators.maxLength(8) ]],
+            }, [Validators.required, Validators.maxLength(8)]],
           MWQMSiteDescription: [
             {
               value: this.mwqmsiteService.mwqmsiteListModel$.getValue()[0]?.MWQMSiteDescription,
               disabled: false
-            }, [  Validators.required, Validators.maxLength(200) ]],
+            }, [Validators.required, Validators.maxLength(200)]],
           MWQMSiteLatestClassification: [
             {
               value: this.mwqmsiteService.mwqmsiteListModel$.getValue()[0]?.MWQMSiteLatestClassification,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           Ordinal: [
             {
               value: this.mwqmsiteService.mwqmsiteListModel$.getValue()[0]?.Ordinal,
               disabled: false
-            }, [  Validators.required, Validators.min(0), Validators.max(1000) ]],
+            }, [Validators.required, Validators.min(0), Validators.max(1000)]],
           LastUpdateDate_UTC: [
             {
               value: this.mwqmsiteService.mwqmsiteListModel$.getValue()[0]?.LastUpdateDate_UTC,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           LastUpdateContactTVItemID: [
             {
               value: this.mwqmsiteService.mwqmsiteListModel$.getValue()[0]?.LastUpdateContactTVItemID,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
         }
       );
 

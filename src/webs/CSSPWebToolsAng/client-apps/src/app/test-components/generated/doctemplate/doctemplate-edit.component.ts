@@ -66,37 +66,37 @@ export class DocTemplateEditComponent implements OnInit, OnDestroy {
             {
               value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.doctemplateService.doctemplateListModel$.getValue()[0]?.DocTemplateID)),
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           Language: [
             {
               value: this.doctemplateService.doctemplateListModel$.getValue()[0]?.Language,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           TVType: [
             {
               value: this.doctemplateService.doctemplateListModel$.getValue()[0]?.TVType,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           TVFileTVItemID: [
             {
               value: this.doctemplateService.doctemplateListModel$.getValue()[0]?.TVFileTVItemID,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           FileName: [
             {
               value: this.doctemplateService.doctemplateListModel$.getValue()[0]?.FileName,
               disabled: false
-            }, [  Validators.required, Validators.maxLength(150) ]],
+            }, [Validators.required, Validators.maxLength(150)]],
           LastUpdateDate_UTC: [
             {
               value: this.doctemplateService.doctemplateListModel$.getValue()[0]?.LastUpdateDate_UTC,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           LastUpdateContactTVItemID: [
             {
               value: this.doctemplateService.doctemplateListModel$.getValue()[0]?.LastUpdateContactTVItemID,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
         }
       );
 

@@ -59,32 +59,32 @@ export class ResetPasswordEditComponent implements OnInit, OnDestroy {
             {
               value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.resetpasswordService.resetpasswordListModel$.getValue()[0]?.ResetPasswordID)),
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           Email: [
             {
               value: this.resetpasswordService.resetpasswordListModel$.getValue()[0]?.Email,
               disabled: false
-            }, [  Validators.required, Validators.email, Validators.maxLength(256) ]],
+            }, [Validators.required, Validators.email, Validators.maxLength(256)]],
           ExpireDate_Local: [
             {
               value: this.resetpasswordService.resetpasswordListModel$.getValue()[0]?.ExpireDate_Local,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           Code: [
             {
               value: this.resetpasswordService.resetpasswordListModel$.getValue()[0]?.Code,
               disabled: false
-            }, [  Validators.required, Validators.maxLength(8) ]],
+            }, [Validators.required, Validators.maxLength(8)]],
           LastUpdateDate_UTC: [
             {
               value: this.resetpasswordService.resetpasswordListModel$.getValue()[0]?.LastUpdateDate_UTC,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           LastUpdateContactTVItemID: [
             {
               value: this.resetpasswordService.resetpasswordListModel$.getValue()[0]?.LastUpdateContactTVItemID,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
         }
       );
 

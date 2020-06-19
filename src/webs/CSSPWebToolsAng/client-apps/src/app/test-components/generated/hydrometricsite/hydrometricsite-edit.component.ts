@@ -59,42 +59,42 @@ export class HydrometricSiteEditComponent implements OnInit, OnDestroy {
             {
               value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.hydrometricsiteService.hydrometricsiteListModel$.getValue()[0]?.HydrometricSiteID)),
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           HydrometricSiteTVItemID: [
             {
               value: this.hydrometricsiteService.hydrometricsiteListModel$.getValue()[0]?.HydrometricSiteTVItemID,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           FedSiteNumber: [
             {
               value: this.hydrometricsiteService.hydrometricsiteListModel$.getValue()[0]?.FedSiteNumber,
               disabled: false
-            }, [  Validators.maxLength(7) ]],
+            }, [Validators.maxLength(7)]],
           QuebecSiteNumber: [
             {
               value: this.hydrometricsiteService.hydrometricsiteListModel$.getValue()[0]?.QuebecSiteNumber,
               disabled: false
-            }, [  Validators.maxLength(7) ]],
+            }, [Validators.maxLength(7)]],
           HydrometricSiteName: [
             {
               value: this.hydrometricsiteService.hydrometricsiteListModel$.getValue()[0]?.HydrometricSiteName,
               disabled: false
-            }, [  Validators.required, Validators.maxLength(200) ]],
+            }, [Validators.required, Validators.maxLength(200)]],
           Description: [
             {
               value: this.hydrometricsiteService.hydrometricsiteListModel$.getValue()[0]?.Description,
               disabled: false
-            }, [  Validators.maxLength(200) ]],
+            }, [Validators.maxLength(200)]],
           Province: [
             {
               value: this.hydrometricsiteService.hydrometricsiteListModel$.getValue()[0]?.Province,
               disabled: false
-            }, [  Validators.required, Validators.maxLength(4) ]],
+            }, [Validators.required, Validators.maxLength(4)]],
           Elevation_m: [
             {
               value: this.hydrometricsiteService.hydrometricsiteListModel$.getValue()[0]?.Elevation_m,
               disabled: false
-            }, [  Validators.min(0), Validators.max(10000) ]],
+            }, [Validators.min(0), Validators.max(10000)]],
           StartDate_Local: [
             {
               value: this.hydrometricsiteService.hydrometricsiteListModel$.getValue()[0]?.StartDate_Local,
@@ -109,12 +109,12 @@ export class HydrometricSiteEditComponent implements OnInit, OnDestroy {
             {
               value: this.hydrometricsiteService.hydrometricsiteListModel$.getValue()[0]?.TimeOffset_hour,
               disabled: false
-            }, [  Validators.min(-10), Validators.max(0) ]],
+            }, [Validators.min(-10), Validators.max(0)]],
           DrainageArea_km2: [
             {
               value: this.hydrometricsiteService.hydrometricsiteListModel$.getValue()[0]?.DrainageArea_km2,
               disabled: false
-            }, [  Validators.min(0), Validators.max(1000000) ]],
+            }, [Validators.min(0), Validators.max(1000000)]],
           IsNatural: [
             {
               value: this.hydrometricsiteService.hydrometricsiteListModel$.getValue()[0]?.IsNatural,
@@ -159,12 +159,12 @@ export class HydrometricSiteEditComponent implements OnInit, OnDestroy {
             {
               value: this.hydrometricsiteService.hydrometricsiteListModel$.getValue()[0]?.LastUpdateDate_UTC,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           LastUpdateContactTVItemID: [
             {
               value: this.hydrometricsiteService.hydrometricsiteListModel$.getValue()[0]?.LastUpdateContactTVItemID,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
         }
       );
 

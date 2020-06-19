@@ -59,37 +59,37 @@ export class MWQMLookupMPNEditComponent implements OnInit, OnDestroy {
             {
               value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.mwqmlookupmpnService.mwqmlookupmpnListModel$.getValue()[0]?.MWQMLookupMPNID)),
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           Tubes10: [
             {
               value: this.mwqmlookupmpnService.mwqmlookupmpnListModel$.getValue()[0]?.Tubes10,
               disabled: false
-            }, [  Validators.required, Validators.min(0), Validators.max(5) ]],
+            }, [Validators.required, Validators.min(0), Validators.max(5)]],
           Tubes1: [
             {
               value: this.mwqmlookupmpnService.mwqmlookupmpnListModel$.getValue()[0]?.Tubes1,
               disabled: false
-            }, [  Validators.required, Validators.min(0), Validators.max(5) ]],
+            }, [Validators.required, Validators.min(0), Validators.max(5)]],
           Tubes01: [
             {
               value: this.mwqmlookupmpnService.mwqmlookupmpnListModel$.getValue()[0]?.Tubes01,
               disabled: false
-            }, [  Validators.required, Validators.min(0), Validators.max(5) ]],
+            }, [Validators.required, Validators.min(0), Validators.max(5)]],
           MPN_100ml: [
             {
               value: this.mwqmlookupmpnService.mwqmlookupmpnListModel$.getValue()[0]?.MPN_100ml,
               disabled: false
-            }, [  Validators.required, Validators.min(1), Validators.max(10000) ]],
+            }, [Validators.required, Validators.min(1), Validators.max(10000)]],
           LastUpdateDate_UTC: [
             {
               value: this.mwqmlookupmpnService.mwqmlookupmpnListModel$.getValue()[0]?.LastUpdateDate_UTC,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           LastUpdateContactTVItemID: [
             {
               value: this.mwqmlookupmpnService.mwqmlookupmpnListModel$.getValue()[0]?.LastUpdateContactTVItemID,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
         }
       );
 

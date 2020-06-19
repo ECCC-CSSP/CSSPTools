@@ -66,37 +66,37 @@ export class BoxModelLanguageEditComponent implements OnInit, OnDestroy {
             {
               value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.boxmodellanguageService.boxmodellanguageListModel$.getValue()[0]?.BoxModelLanguageID)),
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           BoxModelID: [
             {
               value: this.boxmodellanguageService.boxmodellanguageListModel$.getValue()[0]?.BoxModelID,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           Language: [
             {
               value: this.boxmodellanguageService.boxmodellanguageListModel$.getValue()[0]?.Language,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           ScenarioName: [
             {
               value: this.boxmodellanguageService.boxmodellanguageListModel$.getValue()[0]?.ScenarioName,
               disabled: false
-            }, [  Validators.required, Validators.maxLength(250) ]],
+            }, [Validators.required, Validators.maxLength(250)]],
           TranslationStatus: [
             {
               value: this.boxmodellanguageService.boxmodellanguageListModel$.getValue()[0]?.TranslationStatus,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           LastUpdateDate_UTC: [
             {
               value: this.boxmodellanguageService.boxmodellanguageListModel$.getValue()[0]?.LastUpdateDate_UTC,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           LastUpdateContactTVItemID: [
             {
               value: this.boxmodellanguageService.boxmodellanguageListModel$.getValue()[0]?.LastUpdateContactTVItemID,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
         }
       );
 

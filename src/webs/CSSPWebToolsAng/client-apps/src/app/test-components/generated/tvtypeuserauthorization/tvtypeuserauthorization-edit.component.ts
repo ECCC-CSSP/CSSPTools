@@ -66,32 +66,32 @@ export class TVTypeUserAuthorizationEditComponent implements OnInit, OnDestroy {
             {
               value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.tvtypeuserauthorizationService.tvtypeuserauthorizationListModel$.getValue()[0]?.TVTypeUserAuthorizationID)),
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           ContactTVItemID: [
             {
               value: this.tvtypeuserauthorizationService.tvtypeuserauthorizationListModel$.getValue()[0]?.ContactTVItemID,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           TVType: [
             {
               value: this.tvtypeuserauthorizationService.tvtypeuserauthorizationListModel$.getValue()[0]?.TVType,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           TVAuth: [
             {
               value: this.tvtypeuserauthorizationService.tvtypeuserauthorizationListModel$.getValue()[0]?.TVAuth,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           LastUpdateDate_UTC: [
             {
               value: this.tvtypeuserauthorizationService.tvtypeuserauthorizationListModel$.getValue()[0]?.LastUpdateDate_UTC,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           LastUpdateContactTVItemID: [
             {
               value: this.tvtypeuserauthorizationService.tvtypeuserauthorizationListModel$.getValue()[0]?.LastUpdateContactTVItemID,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
         }
       );
 

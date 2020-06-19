@@ -65,27 +65,27 @@ export class TVItemLinkEditComponent implements OnInit, OnDestroy {
             {
               value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.tvitemlinkService.tvitemlinkListModel$.getValue()[0]?.TVItemLinkID)),
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           FromTVItemID: [
             {
               value: this.tvitemlinkService.tvitemlinkListModel$.getValue()[0]?.FromTVItemID,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           ToTVItemID: [
             {
               value: this.tvitemlinkService.tvitemlinkListModel$.getValue()[0]?.ToTVItemID,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           FromTVType: [
             {
               value: this.tvitemlinkService.tvitemlinkListModel$.getValue()[0]?.FromTVType,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           ToTVType: [
             {
               value: this.tvitemlinkService.tvitemlinkListModel$.getValue()[0]?.ToTVType,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           StartDateTime_Local: [
             {
               value: this.tvitemlinkService.tvitemlinkListModel$.getValue()[0]?.StartDateTime_Local,
@@ -100,17 +100,17 @@ export class TVItemLinkEditComponent implements OnInit, OnDestroy {
             {
               value: this.tvitemlinkService.tvitemlinkListModel$.getValue()[0]?.Ordinal,
               disabled: false
-            }, [  Validators.required, Validators.min(0), Validators.max(100) ]],
+            }, [Validators.required, Validators.min(0), Validators.max(100)]],
           TVLevel: [
             {
               value: this.tvitemlinkService.tvitemlinkListModel$.getValue()[0]?.TVLevel,
               disabled: false
-            }, [  Validators.required, Validators.min(0), Validators.max(100) ]],
+            }, [Validators.required, Validators.min(0), Validators.max(100)]],
           TVPath: [
             {
               value: this.tvitemlinkService.tvitemlinkListModel$.getValue()[0]?.TVPath,
               disabled: false
-            }, [  Validators.required, Validators.maxLength(250) ]],
+            }, [Validators.required, Validators.maxLength(250)]],
           ParentTVItemLinkID: [
             {
               value: this.tvitemlinkService.tvitemlinkListModel$.getValue()[0]?.ParentTVItemLinkID,
@@ -120,12 +120,12 @@ export class TVItemLinkEditComponent implements OnInit, OnDestroy {
             {
               value: this.tvitemlinkService.tvitemlinkListModel$.getValue()[0]?.LastUpdateDate_UTC,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           LastUpdateContactTVItemID: [
             {
               value: this.tvitemlinkService.tvitemlinkListModel$.getValue()[0]?.LastUpdateContactTVItemID,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
         }
       );
 

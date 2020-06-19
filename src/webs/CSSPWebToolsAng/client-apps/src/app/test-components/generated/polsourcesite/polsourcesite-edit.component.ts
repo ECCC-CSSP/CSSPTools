@@ -63,37 +63,37 @@ export class PolSourceSiteEditComponent implements OnInit, OnDestroy {
             {
               value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.polsourcesiteService.polsourcesiteListModel$.getValue()[0]?.PolSourceSiteID)),
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           PolSourceSiteTVItemID: [
             {
               value: this.polsourcesiteService.polsourcesiteListModel$.getValue()[0]?.PolSourceSiteTVItemID,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           Temp_Locator_CanDelete: [
             {
               value: this.polsourcesiteService.polsourcesiteListModel$.getValue()[0]?.Temp_Locator_CanDelete,
               disabled: false
-            }, [  Validators.maxLength(50) ]],
+            }, [Validators.maxLength(50)]],
           Oldsiteid: [
             {
               value: this.polsourcesiteService.polsourcesiteListModel$.getValue()[0]?.Oldsiteid,
               disabled: false
-            }, [  Validators.min(0), Validators.max(1000) ]],
+            }, [Validators.min(0), Validators.max(1000)]],
           Site: [
             {
               value: this.polsourcesiteService.polsourcesiteListModel$.getValue()[0]?.Site,
               disabled: false
-            }, [  Validators.min(0), Validators.max(1000) ]],
+            }, [Validators.min(0), Validators.max(1000)]],
           SiteID: [
             {
               value: this.polsourcesiteService.polsourcesiteListModel$.getValue()[0]?.SiteID,
               disabled: false
-            }, [  Validators.min(0), Validators.max(1000) ]],
+            }, [Validators.min(0), Validators.max(1000)]],
           IsPointSource: [
             {
               value: this.polsourcesiteService.polsourcesiteListModel$.getValue()[0]?.IsPointSource,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           InactiveReason: [
             {
               value: this.polsourcesiteService.polsourcesiteListModel$.getValue()[0]?.InactiveReason,
@@ -108,12 +108,12 @@ export class PolSourceSiteEditComponent implements OnInit, OnDestroy {
             {
               value: this.polsourcesiteService.polsourcesiteListModel$.getValue()[0]?.LastUpdateDate_UTC,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           LastUpdateContactTVItemID: [
             {
               value: this.polsourcesiteService.polsourcesiteListModel$.getValue()[0]?.LastUpdateContactTVItemID,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
         }
       );
 

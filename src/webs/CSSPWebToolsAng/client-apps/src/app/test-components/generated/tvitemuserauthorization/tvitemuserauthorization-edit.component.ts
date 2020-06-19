@@ -63,17 +63,17 @@ export class TVItemUserAuthorizationEditComponent implements OnInit, OnDestroy {
             {
               value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.tvitemuserauthorizationService.tvitemuserauthorizationListModel$.getValue()[0]?.TVItemUserAuthorizationID)),
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           ContactTVItemID: [
             {
               value: this.tvitemuserauthorizationService.tvitemuserauthorizationListModel$.getValue()[0]?.ContactTVItemID,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           TVItemID1: [
             {
               value: this.tvitemuserauthorizationService.tvitemuserauthorizationListModel$.getValue()[0]?.TVItemID1,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           TVItemID2: [
             {
               value: this.tvitemuserauthorizationService.tvitemuserauthorizationListModel$.getValue()[0]?.TVItemID2,
@@ -93,17 +93,17 @@ export class TVItemUserAuthorizationEditComponent implements OnInit, OnDestroy {
             {
               value: this.tvitemuserauthorizationService.tvitemuserauthorizationListModel$.getValue()[0]?.TVAuth,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           LastUpdateDate_UTC: [
             {
               value: this.tvitemuserauthorizationService.tvitemuserauthorizationListModel$.getValue()[0]?.LastUpdateDate_UTC,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           LastUpdateContactTVItemID: [
             {
               value: this.tvitemuserauthorizationService.tvitemuserauthorizationListModel$.getValue()[0]?.LastUpdateContactTVItemID,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
         }
       );
 

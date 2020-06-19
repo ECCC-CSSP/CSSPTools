@@ -59,12 +59,12 @@ export class SpillEditComponent implements OnInit, OnDestroy {
             {
               value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.spillService.spillListModel$.getValue()[0]?.SpillID)),
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           MunicipalityTVItemID: [
             {
               value: this.spillService.spillListModel$.getValue()[0]?.MunicipalityTVItemID,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           InfrastructureTVItemID: [
             {
               value: this.spillService.spillListModel$.getValue()[0]?.InfrastructureTVItemID,
@@ -74,7 +74,7 @@ export class SpillEditComponent implements OnInit, OnDestroy {
             {
               value: this.spillService.spillListModel$.getValue()[0]?.StartDateTime_Local,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           EndDateTime_Local: [
             {
               value: this.spillService.spillListModel$.getValue()[0]?.EndDateTime_Local,
@@ -84,17 +84,17 @@ export class SpillEditComponent implements OnInit, OnDestroy {
             {
               value: this.spillService.spillListModel$.getValue()[0]?.AverageFlow_m3_day,
               disabled: false
-            }, [  Validators.required, Validators.min(0), Validators.max(1000000) ]],
+            }, [Validators.required, Validators.min(0), Validators.max(1000000)]],
           LastUpdateDate_UTC: [
             {
               value: this.spillService.spillListModel$.getValue()[0]?.LastUpdateDate_UTC,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           LastUpdateContactTVItemID: [
             {
               value: this.spillService.spillListModel$.getValue()[0]?.LastUpdateContactTVItemID,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
         }
       );
 

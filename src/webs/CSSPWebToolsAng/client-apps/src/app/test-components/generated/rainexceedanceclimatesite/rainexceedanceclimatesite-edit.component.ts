@@ -59,27 +59,27 @@ export class RainExceedanceClimateSiteEditComponent implements OnInit, OnDestroy
             {
               value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.rainexceedanceclimatesiteService.rainexceedanceclimatesiteListModel$.getValue()[0]?.RainExceedanceClimateSiteID)),
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           RainExceedanceTVItemID: [
             {
               value: this.rainexceedanceclimatesiteService.rainexceedanceclimatesiteListModel$.getValue()[0]?.RainExceedanceTVItemID,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           ClimateSiteTVItemID: [
             {
               value: this.rainexceedanceclimatesiteService.rainexceedanceclimatesiteListModel$.getValue()[0]?.ClimateSiteTVItemID,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           LastUpdateDate_UTC: [
             {
               value: this.rainexceedanceclimatesiteService.rainexceedanceclimatesiteListModel$.getValue()[0]?.LastUpdateDate_UTC,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           LastUpdateContactTVItemID: [
             {
               value: this.rainexceedanceclimatesiteService.rainexceedanceclimatesiteListModel$.getValue()[0]?.LastUpdateContactTVItemID,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
         }
       );
 

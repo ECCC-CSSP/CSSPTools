@@ -63,22 +63,22 @@ export class TVItemEditComponent implements OnInit, OnDestroy {
             {
               value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.tvitemService.tvitemListModel$.getValue()[0]?.TVItemID)),
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           TVLevel: [
             {
               value: this.tvitemService.tvitemListModel$.getValue()[0]?.TVLevel,
               disabled: false
-            }, [  Validators.required, Validators.min(0), Validators.max(100) ]],
+            }, [Validators.required, Validators.min(0), Validators.max(100)]],
           TVPath: [
             {
               value: this.tvitemService.tvitemListModel$.getValue()[0]?.TVPath,
               disabled: false
-            }, [  Validators.required, Validators.maxLength(250) ]],
+            }, [Validators.required, Validators.maxLength(250)]],
           TVType: [
             {
               value: this.tvitemService.tvitemListModel$.getValue()[0]?.TVType,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           ParentID: [
             {
               value: this.tvitemService.tvitemListModel$.getValue()[0]?.ParentID,
@@ -88,17 +88,17 @@ export class TVItemEditComponent implements OnInit, OnDestroy {
             {
               value: this.tvitemService.tvitemListModel$.getValue()[0]?.IsActive,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           LastUpdateDate_UTC: [
             {
               value: this.tvitemService.tvitemListModel$.getValue()[0]?.LastUpdateDate_UTC,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           LastUpdateContactTVItemID: [
             {
               value: this.tvitemService.tvitemListModel$.getValue()[0]?.LastUpdateContactTVItemID,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
         }
       );
 

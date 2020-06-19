@@ -69,47 +69,47 @@ export class AppTaskEditComponent implements OnInit, OnDestroy {
             {
               value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.apptaskService.apptaskListModel$.getValue()[0]?.AppTaskID)),
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           TVItemID: [
             {
               value: this.apptaskService.apptaskListModel$.getValue()[0]?.TVItemID,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           TVItemID2: [
             {
               value: this.apptaskService.apptaskListModel$.getValue()[0]?.TVItemID2,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           AppTaskCommand: [
             {
               value: this.apptaskService.apptaskListModel$.getValue()[0]?.AppTaskCommand,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           AppTaskStatus: [
             {
               value: this.apptaskService.apptaskListModel$.getValue()[0]?.AppTaskStatus,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           PercentCompleted: [
             {
               value: this.apptaskService.apptaskListModel$.getValue()[0]?.PercentCompleted,
               disabled: false
-            }, [  Validators.required, Validators.min(0), Validators.max(100) ]],
+            }, [Validators.required, Validators.min(0), Validators.max(100)]],
           Parameters: [
             {
               value: this.apptaskService.apptaskListModel$.getValue()[0]?.Parameters,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           Language: [
             {
               value: this.apptaskService.apptaskListModel$.getValue()[0]?.Language,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           StartDateTime_UTC: [
             {
               value: this.apptaskService.apptaskListModel$.getValue()[0]?.StartDateTime_UTC,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           EndDateTime_UTC: [
             {
               value: this.apptaskService.apptaskListModel$.getValue()[0]?.EndDateTime_UTC,
@@ -119,22 +119,22 @@ export class AppTaskEditComponent implements OnInit, OnDestroy {
             {
               value: this.apptaskService.apptaskListModel$.getValue()[0]?.EstimatedLength_second,
               disabled: false
-            }, [  Validators.min(0), Validators.max(1000000) ]],
+            }, [Validators.min(0), Validators.max(1000000)]],
           RemainingTime_second: [
             {
               value: this.apptaskService.apptaskListModel$.getValue()[0]?.RemainingTime_second,
               disabled: false
-            }, [  Validators.min(0), Validators.max(1000000) ]],
+            }, [Validators.min(0), Validators.max(1000000)]],
           LastUpdateDate_UTC: [
             {
               value: this.apptaskService.apptaskListModel$.getValue()[0]?.LastUpdateDate_UTC,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           LastUpdateContactTVItemID: [
             {
               value: this.apptaskService.apptaskListModel$.getValue()[0]?.LastUpdateContactTVItemID,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
         }
       );
 

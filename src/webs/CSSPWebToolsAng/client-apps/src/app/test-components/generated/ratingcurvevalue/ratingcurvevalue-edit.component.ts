@@ -59,32 +59,32 @@ export class RatingCurveValueEditComponent implements OnInit, OnDestroy {
             {
               value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.ratingcurvevalueService.ratingcurvevalueListModel$.getValue()[0]?.RatingCurveValueID)),
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           RatingCurveID: [
             {
               value: this.ratingcurvevalueService.ratingcurvevalueListModel$.getValue()[0]?.RatingCurveID,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           StageValue_m: [
             {
               value: this.ratingcurvevalueService.ratingcurvevalueListModel$.getValue()[0]?.StageValue_m,
               disabled: false
-            }, [  Validators.required, Validators.min(0), Validators.max(1000) ]],
+            }, [Validators.required, Validators.min(0), Validators.max(1000)]],
           DischargeValue_m3_s: [
             {
               value: this.ratingcurvevalueService.ratingcurvevalueListModel$.getValue()[0]?.DischargeValue_m3_s,
               disabled: false
-            }, [  Validators.required, Validators.min(0), Validators.max(1000000) ]],
+            }, [Validators.required, Validators.min(0), Validators.max(1000000)]],
           LastUpdateDate_UTC: [
             {
               value: this.ratingcurvevalueService.ratingcurvevalueListModel$.getValue()[0]?.LastUpdateDate_UTC,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           LastUpdateContactTVItemID: [
             {
               value: this.ratingcurvevalueService.ratingcurvevalueListModel$.getValue()[0]?.LastUpdateContactTVItemID,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
         }
       );
 

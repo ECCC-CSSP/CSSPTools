@@ -59,37 +59,37 @@ export class PolSourceGroupingEditComponent implements OnInit, OnDestroy {
             {
               value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.polsourcegroupingService.polsourcegroupingListModel$.getValue()[0]?.PolSourceGroupingID)),
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           CSSPID: [
             {
               value: this.polsourcegroupingService.polsourcegroupingListModel$.getValue()[0]?.CSSPID,
               disabled: false
-            }, [  Validators.required, Validators.min(10000), Validators.max(100000) ]],
+            }, [Validators.required, Validators.min(10000), Validators.max(100000)]],
           GroupName: [
             {
               value: this.polsourcegroupingService.polsourcegroupingListModel$.getValue()[0]?.GroupName,
               disabled: false
-            }, [  Validators.required, Validators.maxLength(150) ]],
+            }, [Validators.required, Validators.maxLength(150)]],
           Child: [
             {
               value: this.polsourcegroupingService.polsourcegroupingListModel$.getValue()[0]?.Child,
               disabled: false
-            }, [  Validators.required, Validators.maxLength(150) ]],
+            }, [Validators.required, Validators.maxLength(150)]],
           Hide: [
             {
               value: this.polsourcegroupingService.polsourcegroupingListModel$.getValue()[0]?.Hide,
               disabled: false
-            }, [  Validators.required, Validators.maxLength(150) ]],
+            }, [Validators.required, Validators.maxLength(150)]],
           LastUpdateDate_UTC: [
             {
               value: this.polsourcegroupingService.polsourcegroupingListModel$.getValue()[0]?.LastUpdateDate_UTC,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           LastUpdateContactTVItemID: [
             {
               value: this.polsourcegroupingService.polsourcegroupingListModel$.getValue()[0]?.LastUpdateContactTVItemID,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
         }
       );
 

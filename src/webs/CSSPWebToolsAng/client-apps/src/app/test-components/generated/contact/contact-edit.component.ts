@@ -63,42 +63,42 @@ export class ContactEditComponent implements OnInit, OnDestroy {
             {
               value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.contactService.contactListModel$.getValue()[0]?.ContactID)),
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           Id: [
             {
               value: this.contactService.contactListModel$.getValue()[0]?.Id,
               disabled: false
-            }, [  Validators.required, Validators.maxLength(128) ]],
+            }, [Validators.required, Validators.maxLength(128)]],
           ContactTVItemID: [
             {
               value: this.contactService.contactListModel$.getValue()[0]?.ContactTVItemID,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           LoginEmail: [
             {
               value: this.contactService.contactListModel$.getValue()[0]?.LoginEmail,
               disabled: false
-            }, [  Validators.required, Validators.email, Validators.minLength(6), Validators.maxLength(255) ]],
+            }, [Validators.required, Validators.email, Validators.minLength(6), Validators.maxLength(255)]],
           FirstName: [
             {
               value: this.contactService.contactListModel$.getValue()[0]?.FirstName,
               disabled: false
-            }, [  Validators.required, Validators.maxLength(100) ]],
+            }, [Validators.required, Validators.maxLength(100)]],
           LastName: [
             {
               value: this.contactService.contactListModel$.getValue()[0]?.LastName,
               disabled: false
-            }, [  Validators.required, Validators.maxLength(100) ]],
+            }, [Validators.required, Validators.maxLength(100)]],
           Initial: [
             {
               value: this.contactService.contactListModel$.getValue()[0]?.Initial,
               disabled: false
-            }, [  Validators.maxLength(50) ]],
+            }, [Validators.maxLength(50)]],
           WebName: [
             {
               value: this.contactService.contactListModel$.getValue()[0]?.WebName,
               disabled: false
-            }, [  Validators.required, Validators.maxLength(100) ]],
+            }, [Validators.required, Validators.maxLength(100)]],
           ContactTitle: [
             {
               value: this.contactService.contactListModel$.getValue()[0]?.ContactTitle,
@@ -108,42 +108,42 @@ export class ContactEditComponent implements OnInit, OnDestroy {
             {
               value: this.contactService.contactListModel$.getValue()[0]?.IsAdmin,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           EmailValidated: [
             {
               value: this.contactService.contactListModel$.getValue()[0]?.EmailValidated,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           Disabled: [
             {
               value: this.contactService.contactListModel$.getValue()[0]?.Disabled,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           IsNew: [
             {
               value: this.contactService.contactListModel$.getValue()[0]?.IsNew,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           SamplingPlanner_ProvincesTVItemID: [
             {
               value: this.contactService.contactListModel$.getValue()[0]?.SamplingPlanner_ProvincesTVItemID,
               disabled: false
-            }, [  Validators.maxLength(200) ]],
+            }, [Validators.maxLength(200)]],
           Token: [
             {
               value: this.contactService.contactListModel$.getValue()[0]?.Token,
               disabled: false
-            }, [  Validators.maxLength(255) ]],
+            }, [Validators.maxLength(255)]],
           LastUpdateDate_UTC: [
             {
               value: this.contactService.contactListModel$.getValue()[0]?.LastUpdateDate_UTC,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           LastUpdateContactTVItemID: [
             {
               value: this.contactService.contactListModel$.getValue()[0]?.LastUpdateContactTVItemID,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
         }
       );
 

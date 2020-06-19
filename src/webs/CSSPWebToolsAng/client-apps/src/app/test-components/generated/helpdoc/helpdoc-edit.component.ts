@@ -63,32 +63,32 @@ export class HelpDocEditComponent implements OnInit, OnDestroy {
             {
               value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.helpdocService.helpdocListModel$.getValue()[0]?.HelpDocID)),
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           DocKey: [
             {
               value: this.helpdocService.helpdocListModel$.getValue()[0]?.DocKey,
               disabled: false
-            }, [  Validators.required, Validators.maxLength(100) ]],
+            }, [Validators.required, Validators.maxLength(100)]],
           Language: [
             {
               value: this.helpdocService.helpdocListModel$.getValue()[0]?.Language,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           DocHTMLText: [
             {
               value: this.helpdocService.helpdocListModel$.getValue()[0]?.DocHTMLText,
               disabled: false
-            }, [  Validators.required, Validators.maxLength(100000) ]],
+            }, [Validators.required, Validators.maxLength(100000)]],
           LastUpdateDate_UTC: [
             {
               value: this.helpdocService.helpdocListModel$.getValue()[0]?.LastUpdateDate_UTC,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           LastUpdateContactTVItemID: [
             {
               value: this.helpdocService.helpdocListModel$.getValue()[0]?.LastUpdateContactTVItemID,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
         }
       );
 

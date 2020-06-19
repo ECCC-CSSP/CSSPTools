@@ -59,22 +59,22 @@ export class PolSourceObservationIssueEditComponent implements OnInit, OnDestroy
             {
               value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.polsourceobservationissueService.polsourceobservationissueListModel$.getValue()[0]?.PolSourceObservationIssueID)),
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           PolSourceObservationID: [
             {
               value: this.polsourceobservationissueService.polsourceobservationissueListModel$.getValue()[0]?.PolSourceObservationID,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           ObservationInfo: [
             {
               value: this.polsourceobservationissueService.polsourceobservationissueListModel$.getValue()[0]?.ObservationInfo,
               disabled: false
-            }, [  Validators.required, Validators.maxLength(250) ]],
+            }, [Validators.required, Validators.maxLength(250)]],
           Ordinal: [
             {
               value: this.polsourceobservationissueService.polsourceobservationissueListModel$.getValue()[0]?.Ordinal,
               disabled: false
-            }, [  Validators.required, Validators.min(0), Validators.max(1000) ]],
+            }, [Validators.required, Validators.min(0), Validators.max(1000)]],
           ExtraComment: [
             {
               value: this.polsourceobservationissueService.polsourceobservationissueListModel$.getValue()[0]?.ExtraComment,
@@ -84,12 +84,12 @@ export class PolSourceObservationIssueEditComponent implements OnInit, OnDestroy
             {
               value: this.polsourceobservationissueService.polsourceobservationissueListModel$.getValue()[0]?.LastUpdateDate_UTC,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           LastUpdateContactTVItemID: [
             {
               value: this.polsourceobservationissueService.polsourceobservationissueListModel$.getValue()[0]?.LastUpdateContactTVItemID,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
         }
       );
 

@@ -59,47 +59,47 @@ export class LabSheetDetailEditComponent implements OnInit, OnDestroy {
             {
               value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.labsheetdetailService.labsheetdetailListModel$.getValue()[0]?.LabSheetDetailID)),
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           LabSheetID: [
             {
               value: this.labsheetdetailService.labsheetdetailListModel$.getValue()[0]?.LabSheetID,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           SamplingPlanID: [
             {
               value: this.labsheetdetailService.labsheetdetailListModel$.getValue()[0]?.SamplingPlanID,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           SubsectorTVItemID: [
             {
               value: this.labsheetdetailService.labsheetdetailListModel$.getValue()[0]?.SubsectorTVItemID,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           Version: [
             {
               value: this.labsheetdetailService.labsheetdetailListModel$.getValue()[0]?.Version,
               disabled: false
-            }, [  Validators.required, Validators.min(1), Validators.max(5) ]],
+            }, [Validators.required, Validators.min(1), Validators.max(5)]],
           RunDate: [
             {
               value: this.labsheetdetailService.labsheetdetailListModel$.getValue()[0]?.RunDate,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           Tides: [
             {
               value: this.labsheetdetailService.labsheetdetailListModel$.getValue()[0]?.Tides,
               disabled: false
-            }, [  Validators.required, Validators.minLength(1), Validators.maxLength(7) ]],
+            }, [Validators.required, Validators.minLength(1), Validators.maxLength(7)]],
           SampleCrewInitials: [
             {
               value: this.labsheetdetailService.labsheetdetailListModel$.getValue()[0]?.SampleCrewInitials,
               disabled: false
-            }, [  Validators.maxLength(20) ]],
+            }, [Validators.maxLength(20)]],
           WaterBathCount: [
             {
               value: this.labsheetdetailService.labsheetdetailListModel$.getValue()[0]?.WaterBathCount,
               disabled: false
-            }, [  Validators.min(1), Validators.max(3) ]],
+            }, [Validators.min(1), Validators.max(3)]],
           IncubationBath1StartTime: [
             {
               value: this.labsheetdetailService.labsheetdetailListModel$.getValue()[0]?.IncubationBath1StartTime,
@@ -134,182 +134,182 @@ export class LabSheetDetailEditComponent implements OnInit, OnDestroy {
             {
               value: this.labsheetdetailService.labsheetdetailListModel$.getValue()[0]?.IncubationBath1TimeCalculated_minutes,
               disabled: false
-            }, [  Validators.min(0), Validators.max(10000) ]],
+            }, [Validators.min(0), Validators.max(10000)]],
           IncubationBath2TimeCalculated_minutes: [
             {
               value: this.labsheetdetailService.labsheetdetailListModel$.getValue()[0]?.IncubationBath2TimeCalculated_minutes,
               disabled: false
-            }, [  Validators.min(0), Validators.max(10000) ]],
+            }, [Validators.min(0), Validators.max(10000)]],
           IncubationBath3TimeCalculated_minutes: [
             {
               value: this.labsheetdetailService.labsheetdetailListModel$.getValue()[0]?.IncubationBath3TimeCalculated_minutes,
               disabled: false
-            }, [  Validators.min(0), Validators.max(10000) ]],
+            }, [Validators.min(0), Validators.max(10000)]],
           WaterBath1: [
             {
               value: this.labsheetdetailService.labsheetdetailListModel$.getValue()[0]?.WaterBath1,
               disabled: false
-            }, [  Validators.maxLength(10) ]],
+            }, [Validators.maxLength(10)]],
           WaterBath2: [
             {
               value: this.labsheetdetailService.labsheetdetailListModel$.getValue()[0]?.WaterBath2,
               disabled: false
-            }, [  Validators.maxLength(10) ]],
+            }, [Validators.maxLength(10)]],
           WaterBath3: [
             {
               value: this.labsheetdetailService.labsheetdetailListModel$.getValue()[0]?.WaterBath3,
               disabled: false
-            }, [  Validators.maxLength(10) ]],
+            }, [Validators.maxLength(10)]],
           TCField1: [
             {
               value: this.labsheetdetailService.labsheetdetailListModel$.getValue()[0]?.TCField1,
               disabled: false
-            }, [  Validators.min(-10), Validators.max(40) ]],
+            }, [Validators.min(-10), Validators.max(40)]],
           TCLab1: [
             {
               value: this.labsheetdetailService.labsheetdetailListModel$.getValue()[0]?.TCLab1,
               disabled: false
-            }, [  Validators.min(-10), Validators.max(40) ]],
+            }, [Validators.min(-10), Validators.max(40)]],
           TCField2: [
             {
               value: this.labsheetdetailService.labsheetdetailListModel$.getValue()[0]?.TCField2,
               disabled: false
-            }, [  Validators.min(-10), Validators.max(40) ]],
+            }, [Validators.min(-10), Validators.max(40)]],
           TCLab2: [
             {
               value: this.labsheetdetailService.labsheetdetailListModel$.getValue()[0]?.TCLab2,
               disabled: false
-            }, [  Validators.min(-10), Validators.max(40) ]],
+            }, [Validators.min(-10), Validators.max(40)]],
           TCFirst: [
             {
               value: this.labsheetdetailService.labsheetdetailListModel$.getValue()[0]?.TCFirst,
               disabled: false
-            }, [  Validators.min(-10), Validators.max(40) ]],
+            }, [Validators.min(-10), Validators.max(40)]],
           TCAverage: [
             {
               value: this.labsheetdetailService.labsheetdetailListModel$.getValue()[0]?.TCAverage,
               disabled: false
-            }, [  Validators.min(-10), Validators.max(40) ]],
+            }, [Validators.min(-10), Validators.max(40)]],
           ControlLot: [
             {
               value: this.labsheetdetailService.labsheetdetailListModel$.getValue()[0]?.ControlLot,
               disabled: false
-            }, [  Validators.maxLength(100) ]],
+            }, [Validators.maxLength(100)]],
           Positive35: [
             {
               value: this.labsheetdetailService.labsheetdetailListModel$.getValue()[0]?.Positive35,
               disabled: false
-            }, [  Validators.minLength(1), Validators.maxLength(1) ]],
+            }, [Validators.minLength(1), Validators.maxLength(1)]],
           NonTarget35: [
             {
               value: this.labsheetdetailService.labsheetdetailListModel$.getValue()[0]?.NonTarget35,
               disabled: false
-            }, [  Validators.minLength(1), Validators.maxLength(1) ]],
+            }, [Validators.minLength(1), Validators.maxLength(1)]],
           Negative35: [
             {
               value: this.labsheetdetailService.labsheetdetailListModel$.getValue()[0]?.Negative35,
               disabled: false
-            }, [  Validators.minLength(1), Validators.maxLength(1) ]],
+            }, [Validators.minLength(1), Validators.maxLength(1)]],
           Bath1Positive44_5: [
             {
               value: this.labsheetdetailService.labsheetdetailListModel$.getValue()[0]?.Bath1Positive44_5,
               disabled: false
-            }, [  Validators.minLength(1), Validators.maxLength(1) ]],
+            }, [Validators.minLength(1), Validators.maxLength(1)]],
           Bath2Positive44_5: [
             {
               value: this.labsheetdetailService.labsheetdetailListModel$.getValue()[0]?.Bath2Positive44_5,
               disabled: false
-            }, [  Validators.minLength(1), Validators.maxLength(1) ]],
+            }, [Validators.minLength(1), Validators.maxLength(1)]],
           Bath3Positive44_5: [
             {
               value: this.labsheetdetailService.labsheetdetailListModel$.getValue()[0]?.Bath3Positive44_5,
               disabled: false
-            }, [  Validators.minLength(1), Validators.maxLength(1) ]],
+            }, [Validators.minLength(1), Validators.maxLength(1)]],
           Bath1NonTarget44_5: [
             {
               value: this.labsheetdetailService.labsheetdetailListModel$.getValue()[0]?.Bath1NonTarget44_5,
               disabled: false
-            }, [  Validators.minLength(1), Validators.maxLength(1) ]],
+            }, [Validators.minLength(1), Validators.maxLength(1)]],
           Bath2NonTarget44_5: [
             {
               value: this.labsheetdetailService.labsheetdetailListModel$.getValue()[0]?.Bath2NonTarget44_5,
               disabled: false
-            }, [  Validators.minLength(1), Validators.maxLength(1) ]],
+            }, [Validators.minLength(1), Validators.maxLength(1)]],
           Bath3NonTarget44_5: [
             {
               value: this.labsheetdetailService.labsheetdetailListModel$.getValue()[0]?.Bath3NonTarget44_5,
               disabled: false
-            }, [  Validators.minLength(1), Validators.maxLength(1) ]],
+            }, [Validators.minLength(1), Validators.maxLength(1)]],
           Bath1Negative44_5: [
             {
               value: this.labsheetdetailService.labsheetdetailListModel$.getValue()[0]?.Bath1Negative44_5,
               disabled: false
-            }, [  Validators.minLength(1), Validators.maxLength(1) ]],
+            }, [Validators.minLength(1), Validators.maxLength(1)]],
           Bath2Negative44_5: [
             {
               value: this.labsheetdetailService.labsheetdetailListModel$.getValue()[0]?.Bath2Negative44_5,
               disabled: false
-            }, [  Validators.minLength(1), Validators.maxLength(1) ]],
+            }, [Validators.minLength(1), Validators.maxLength(1)]],
           Bath3Negative44_5: [
             {
               value: this.labsheetdetailService.labsheetdetailListModel$.getValue()[0]?.Bath3Negative44_5,
               disabled: false
-            }, [  Validators.minLength(1), Validators.maxLength(1) ]],
+            }, [Validators.minLength(1), Validators.maxLength(1)]],
           Blank35: [
             {
               value: this.labsheetdetailService.labsheetdetailListModel$.getValue()[0]?.Blank35,
               disabled: false
-            }, [  Validators.minLength(1), Validators.maxLength(1) ]],
+            }, [Validators.minLength(1), Validators.maxLength(1)]],
           Bath1Blank44_5: [
             {
               value: this.labsheetdetailService.labsheetdetailListModel$.getValue()[0]?.Bath1Blank44_5,
               disabled: false
-            }, [  Validators.minLength(1), Validators.maxLength(1) ]],
+            }, [Validators.minLength(1), Validators.maxLength(1)]],
           Bath2Blank44_5: [
             {
               value: this.labsheetdetailService.labsheetdetailListModel$.getValue()[0]?.Bath2Blank44_5,
               disabled: false
-            }, [  Validators.minLength(1), Validators.maxLength(1) ]],
+            }, [Validators.minLength(1), Validators.maxLength(1)]],
           Bath3Blank44_5: [
             {
               value: this.labsheetdetailService.labsheetdetailListModel$.getValue()[0]?.Bath3Blank44_5,
               disabled: false
-            }, [  Validators.minLength(1), Validators.maxLength(1) ]],
+            }, [Validators.minLength(1), Validators.maxLength(1)]],
           Lot35: [
             {
               value: this.labsheetdetailService.labsheetdetailListModel$.getValue()[0]?.Lot35,
               disabled: false
-            }, [  Validators.maxLength(20) ]],
+            }, [Validators.maxLength(20)]],
           Lot44_5: [
             {
               value: this.labsheetdetailService.labsheetdetailListModel$.getValue()[0]?.Lot44_5,
               disabled: false
-            }, [  Validators.maxLength(20) ]],
+            }, [Validators.maxLength(20)]],
           Weather: [
             {
               value: this.labsheetdetailService.labsheetdetailListModel$.getValue()[0]?.Weather,
               disabled: false
-            }, [  Validators.maxLength(250) ]],
+            }, [Validators.maxLength(250)]],
           RunComment: [
             {
               value: this.labsheetdetailService.labsheetdetailListModel$.getValue()[0]?.RunComment,
               disabled: false
-            }, [  Validators.maxLength(250) ]],
+            }, [Validators.maxLength(250)]],
           RunWeatherComment: [
             {
               value: this.labsheetdetailService.labsheetdetailListModel$.getValue()[0]?.RunWeatherComment,
               disabled: false
-            }, [  Validators.maxLength(250) ]],
+            }, [Validators.maxLength(250)]],
           SampleBottleLotNumber: [
             {
               value: this.labsheetdetailService.labsheetdetailListModel$.getValue()[0]?.SampleBottleLotNumber,
               disabled: false
-            }, [  Validators.maxLength(20) ]],
+            }, [Validators.maxLength(20)]],
           SalinitiesReadBy: [
             {
               value: this.labsheetdetailService.labsheetdetailListModel$.getValue()[0]?.SalinitiesReadBy,
               disabled: false
-            }, [  Validators.maxLength(20) ]],
+            }, [Validators.maxLength(20)]],
           SalinitiesReadDate: [
             {
               value: this.labsheetdetailService.labsheetdetailListModel$.getValue()[0]?.SalinitiesReadDate,
@@ -319,7 +319,7 @@ export class LabSheetDetailEditComponent implements OnInit, OnDestroy {
             {
               value: this.labsheetdetailService.labsheetdetailListModel$.getValue()[0]?.ResultsReadBy,
               disabled: false
-            }, [  Validators.maxLength(20) ]],
+            }, [Validators.maxLength(20)]],
           ResultsReadDate: [
             {
               value: this.labsheetdetailService.labsheetdetailListModel$.getValue()[0]?.ResultsReadDate,
@@ -329,7 +329,7 @@ export class LabSheetDetailEditComponent implements OnInit, OnDestroy {
             {
               value: this.labsheetdetailService.labsheetdetailListModel$.getValue()[0]?.ResultsRecordedBy,
               disabled: false
-            }, [  Validators.maxLength(20) ]],
+            }, [Validators.maxLength(20)]],
           ResultsRecordedDate: [
             {
               value: this.labsheetdetailService.labsheetdetailListModel$.getValue()[0]?.ResultsRecordedDate,
@@ -339,12 +339,12 @@ export class LabSheetDetailEditComponent implements OnInit, OnDestroy {
             {
               value: this.labsheetdetailService.labsheetdetailListModel$.getValue()[0]?.DailyDuplicateRLog,
               disabled: false
-            }, [  Validators.min(0), Validators.max(100) ]],
+            }, [Validators.min(0), Validators.max(100)]],
           DailyDuplicatePrecisionCriteria: [
             {
               value: this.labsheetdetailService.labsheetdetailListModel$.getValue()[0]?.DailyDuplicatePrecisionCriteria,
               disabled: false
-            }, [  Validators.min(0), Validators.max(100) ]],
+            }, [Validators.min(0), Validators.max(100)]],
           DailyDuplicateAcceptable: [
             {
               value: this.labsheetdetailService.labsheetdetailListModel$.getValue()[0]?.DailyDuplicateAcceptable,
@@ -354,12 +354,12 @@ export class LabSheetDetailEditComponent implements OnInit, OnDestroy {
             {
               value: this.labsheetdetailService.labsheetdetailListModel$.getValue()[0]?.IntertechDuplicateRLog,
               disabled: false
-            }, [  Validators.min(0), Validators.max(100) ]],
+            }, [Validators.min(0), Validators.max(100)]],
           IntertechDuplicatePrecisionCriteria: [
             {
               value: this.labsheetdetailService.labsheetdetailListModel$.getValue()[0]?.IntertechDuplicatePrecisionCriteria,
               disabled: false
-            }, [  Validators.min(0), Validators.max(100) ]],
+            }, [Validators.min(0), Validators.max(100)]],
           IntertechDuplicateAcceptable: [
             {
               value: this.labsheetdetailService.labsheetdetailListModel$.getValue()[0]?.IntertechDuplicateAcceptable,
@@ -374,12 +374,12 @@ export class LabSheetDetailEditComponent implements OnInit, OnDestroy {
             {
               value: this.labsheetdetailService.labsheetdetailListModel$.getValue()[0]?.LastUpdateDate_UTC,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           LastUpdateContactTVItemID: [
             {
               value: this.labsheetdetailService.labsheetdetailListModel$.getValue()[0]?.LastUpdateContactTVItemID,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
         }
       );
 

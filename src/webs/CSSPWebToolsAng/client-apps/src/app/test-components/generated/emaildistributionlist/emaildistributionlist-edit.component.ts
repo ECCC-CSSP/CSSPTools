@@ -59,27 +59,27 @@ export class EmailDistributionListEditComponent implements OnInit, OnDestroy {
             {
               value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.emaildistributionlistService.emaildistributionlistListModel$.getValue()[0]?.EmailDistributionListID)),
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           ParentTVItemID: [
             {
               value: this.emaildistributionlistService.emaildistributionlistListModel$.getValue()[0]?.ParentTVItemID,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           Ordinal: [
             {
               value: this.emaildistributionlistService.emaildistributionlistListModel$.getValue()[0]?.Ordinal,
               disabled: false
-            }, [  Validators.required, Validators.min(0), Validators.max(1000) ]],
+            }, [Validators.required, Validators.min(0), Validators.max(1000)]],
           LastUpdateDate_UTC: [
             {
               value: this.emaildistributionlistService.emaildistributionlistListModel$.getValue()[0]?.LastUpdateDate_UTC,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           LastUpdateContactTVItemID: [
             {
               value: this.emaildistributionlistService.emaildistributionlistListModel$.getValue()[0]?.LastUpdateContactTVItemID,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
         }
       );
 

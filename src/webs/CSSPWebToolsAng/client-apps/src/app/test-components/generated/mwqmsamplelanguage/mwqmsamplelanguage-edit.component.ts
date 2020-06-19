@@ -66,37 +66,37 @@ export class MWQMSampleLanguageEditComponent implements OnInit, OnDestroy {
             {
               value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.mwqmsamplelanguageService.mwqmsamplelanguageListModel$.getValue()[0]?.MWQMSampleLanguageID)),
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           MWQMSampleID: [
             {
               value: this.mwqmsamplelanguageService.mwqmsamplelanguageListModel$.getValue()[0]?.MWQMSampleID,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           Language: [
             {
               value: this.mwqmsamplelanguageService.mwqmsamplelanguageListModel$.getValue()[0]?.Language,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           MWQMSampleNote: [
             {
               value: this.mwqmsamplelanguageService.mwqmsamplelanguageListModel$.getValue()[0]?.MWQMSampleNote,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           TranslationStatus: [
             {
               value: this.mwqmsamplelanguageService.mwqmsamplelanguageListModel$.getValue()[0]?.TranslationStatus,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           LastUpdateDate_UTC: [
             {
               value: this.mwqmsamplelanguageService.mwqmsamplelanguageListModel$.getValue()[0]?.LastUpdateDate_UTC,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           LastUpdateContactTVItemID: [
             {
               value: this.mwqmsamplelanguageService.mwqmsamplelanguageListModel$.getValue()[0]?.LastUpdateContactTVItemID,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
         }
       );
 

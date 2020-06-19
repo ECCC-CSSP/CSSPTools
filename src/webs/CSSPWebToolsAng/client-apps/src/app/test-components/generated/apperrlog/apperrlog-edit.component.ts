@@ -59,42 +59,42 @@ export class AppErrLogEditComponent implements OnInit, OnDestroy {
             {
               value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.apperrlogService.apperrlogListModel$.getValue()[0]?.AppErrLogID)),
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           Tag: [
             {
               value: this.apperrlogService.apperrlogListModel$.getValue()[0]?.Tag,
               disabled: false
-            }, [  Validators.required, Validators.maxLength(100) ]],
+            }, [Validators.required, Validators.maxLength(100)]],
           LineNumber: [
             {
               value: this.apperrlogService.apperrlogListModel$.getValue()[0]?.LineNumber,
               disabled: false
-            }, [  Validators.required, Validators.min(1) ]],
+            }, [Validators.required, Validators.min(1)]],
           Source: [
             {
               value: this.apperrlogService.apperrlogListModel$.getValue()[0]?.Source,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           Message: [
             {
               value: this.apperrlogService.apperrlogListModel$.getValue()[0]?.Message,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           DateTime_UTC: [
             {
               value: this.apperrlogService.apperrlogListModel$.getValue()[0]?.DateTime_UTC,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           LastUpdateDate_UTC: [
             {
               value: this.apperrlogService.apperrlogListModel$.getValue()[0]?.LastUpdateDate_UTC,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           LastUpdateContactTVItemID: [
             {
               value: this.apperrlogService.apperrlogListModel$.getValue()[0]?.LastUpdateContactTVItemID,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
         }
       );
 

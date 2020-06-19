@@ -59,12 +59,12 @@ export class PolSourceSiteEffectTermEditComponent implements OnInit, OnDestroy {
             {
               value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.polsourcesiteeffecttermService.polsourcesiteeffecttermListModel$.getValue()[0]?.PolSourceSiteEffectTermID)),
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           IsGroup: [
             {
               value: this.polsourcesiteeffecttermService.polsourcesiteeffecttermListModel$.getValue()[0]?.IsGroup,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           UnderGroupID: [
             {
               value: this.polsourcesiteeffecttermService.polsourcesiteeffecttermListModel$.getValue()[0]?.UnderGroupID,
@@ -74,22 +74,22 @@ export class PolSourceSiteEffectTermEditComponent implements OnInit, OnDestroy {
             {
               value: this.polsourcesiteeffecttermService.polsourcesiteeffecttermListModel$.getValue()[0]?.EffectTermEN,
               disabled: false
-            }, [  Validators.required, Validators.maxLength(100) ]],
+            }, [Validators.required, Validators.maxLength(100)]],
           EffectTermFR: [
             {
               value: this.polsourcesiteeffecttermService.polsourcesiteeffecttermListModel$.getValue()[0]?.EffectTermFR,
               disabled: false
-            }, [  Validators.required, Validators.maxLength(100) ]],
+            }, [Validators.required, Validators.maxLength(100)]],
           LastUpdateDate_UTC: [
             {
               value: this.polsourcesiteeffecttermService.polsourcesiteeffecttermListModel$.getValue()[0]?.LastUpdateDate_UTC,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           LastUpdateContactTVItemID: [
             {
               value: this.polsourcesiteeffecttermService.polsourcesiteeffecttermListModel$.getValue()[0]?.LastUpdateContactTVItemID,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
         }
       );
 

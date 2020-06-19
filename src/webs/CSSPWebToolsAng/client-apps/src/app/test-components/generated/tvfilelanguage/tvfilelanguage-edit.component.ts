@@ -66,17 +66,17 @@ export class TVFileLanguageEditComponent implements OnInit, OnDestroy {
             {
               value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.tvfilelanguageService.tvfilelanguageListModel$.getValue()[0]?.TVFileLanguageID)),
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           TVFileID: [
             {
               value: this.tvfilelanguageService.tvfilelanguageListModel$.getValue()[0]?.TVFileID,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           Language: [
             {
               value: this.tvfilelanguageService.tvfilelanguageListModel$.getValue()[0]?.Language,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           FileDescription: [
             {
               value: this.tvfilelanguageService.tvfilelanguageListModel$.getValue()[0]?.FileDescription,
@@ -86,17 +86,17 @@ export class TVFileLanguageEditComponent implements OnInit, OnDestroy {
             {
               value: this.tvfilelanguageService.tvfilelanguageListModel$.getValue()[0]?.TranslationStatus,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           LastUpdateDate_UTC: [
             {
               value: this.tvfilelanguageService.tvfilelanguageListModel$.getValue()[0]?.LastUpdateDate_UTC,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           LastUpdateContactTVItemID: [
             {
               value: this.tvfilelanguageService.tvfilelanguageListModel$.getValue()[0]?.LastUpdateContactTVItemID,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
         }
       );
 

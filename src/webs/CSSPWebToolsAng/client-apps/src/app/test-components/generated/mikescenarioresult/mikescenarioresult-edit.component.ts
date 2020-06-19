@@ -59,12 +59,12 @@ export class MikeScenarioResultEditComponent implements OnInit, OnDestroy {
             {
               value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.mikescenarioresultService.mikescenarioresultListModel$.getValue()[0]?.MikeScenarioResultID)),
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           MikeScenarioTVItemID: [
             {
               value: this.mikescenarioresultService.mikescenarioresultListModel$.getValue()[0]?.MikeScenarioTVItemID,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           MikeResultsJSON: [
             {
               value: this.mikescenarioresultService.mikescenarioresultListModel$.getValue()[0]?.MikeResultsJSON,
@@ -74,12 +74,12 @@ export class MikeScenarioResultEditComponent implements OnInit, OnDestroy {
             {
               value: this.mikescenarioresultService.mikescenarioresultListModel$.getValue()[0]?.LastUpdateDate_UTC,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           LastUpdateContactTVItemID: [
             {
               value: this.mikescenarioresultService.mikescenarioresultListModel$.getValue()[0]?.LastUpdateContactTVItemID,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
         }
       );
 

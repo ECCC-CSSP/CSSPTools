@@ -72,12 +72,12 @@ export class TVFileEditComponent implements OnInit, OnDestroy {
             {
               value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.tvfileService.tvfileListModel$.getValue()[0]?.TVFileID)),
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           TVFileTVItemID: [
             {
               value: this.tvfileService.tvfileListModel$.getValue()[0]?.TVFileTVItemID,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           TemplateTVType: [
             {
               value: this.tvfileService.tvfileListModel$.getValue()[0]?.TemplateTVType,
@@ -97,27 +97,27 @@ export class TVFileEditComponent implements OnInit, OnDestroy {
             {
               value: this.tvfileService.tvfileListModel$.getValue()[0]?.Year,
               disabled: false
-            }, [  Validators.min(1980), Validators.max(2050) ]],
+            }, [Validators.min(1980), Validators.max(2050)]],
           Language: [
             {
               value: this.tvfileService.tvfileListModel$.getValue()[0]?.Language,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           FilePurpose: [
             {
               value: this.tvfileService.tvfileListModel$.getValue()[0]?.FilePurpose,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           FileType: [
             {
               value: this.tvfileService.tvfileListModel$.getValue()[0]?.FileType,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           FileSize_kb: [
             {
               value: this.tvfileService.tvfileListModel$.getValue()[0]?.FileSize_kb,
               disabled: false
-            }, [  Validators.required, Validators.min(0), Validators.max(100000000) ]],
+            }, [Validators.required, Validators.min(0), Validators.max(100000000)]],
           FileInfo: [
             {
               value: this.tvfileService.tvfileListModel$.getValue()[0]?.FileInfo,
@@ -127,7 +127,7 @@ export class TVFileEditComponent implements OnInit, OnDestroy {
             {
               value: this.tvfileService.tvfileListModel$.getValue()[0]?.FileCreatedDate_UTC,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           FromWater: [
             {
               value: this.tvfileService.tvfileListModel$.getValue()[0]?.FromWater,
@@ -137,27 +137,27 @@ export class TVFileEditComponent implements OnInit, OnDestroy {
             {
               value: this.tvfileService.tvfileListModel$.getValue()[0]?.ClientFilePath,
               disabled: false
-            }, [  Validators.maxLength(250) ]],
+            }, [Validators.maxLength(250)]],
           ServerFileName: [
             {
               value: this.tvfileService.tvfileListModel$.getValue()[0]?.ServerFileName,
               disabled: false
-            }, [  Validators.required, Validators.maxLength(250) ]],
+            }, [Validators.required, Validators.maxLength(250)]],
           ServerFilePath: [
             {
               value: this.tvfileService.tvfileListModel$.getValue()[0]?.ServerFilePath,
               disabled: false
-            }, [  Validators.required, Validators.maxLength(250) ]],
+            }, [Validators.required, Validators.maxLength(250)]],
           LastUpdateDate_UTC: [
             {
               value: this.tvfileService.tvfileListModel$.getValue()[0]?.LastUpdateDate_UTC,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           LastUpdateContactTVItemID: [
             {
               value: this.tvfileService.tvfileListModel$.getValue()[0]?.LastUpdateContactTVItemID,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
         }
       );
 

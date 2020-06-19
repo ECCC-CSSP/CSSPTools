@@ -59,32 +59,32 @@ export class ContactShortcutEditComponent implements OnInit, OnDestroy {
             {
               value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.contactshortcutService.contactshortcutListModel$.getValue()[0]?.ContactShortcutID)),
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           ContactID: [
             {
               value: this.contactshortcutService.contactshortcutListModel$.getValue()[0]?.ContactID,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           ShortCutText: [
             {
               value: this.contactshortcutService.contactshortcutListModel$.getValue()[0]?.ShortCutText,
               disabled: false
-            }, [  Validators.required, Validators.maxLength(100) ]],
+            }, [Validators.required, Validators.maxLength(100)]],
           ShortCutAddress: [
             {
               value: this.contactshortcutService.contactshortcutListModel$.getValue()[0]?.ShortCutAddress,
               disabled: false
-            }, [  Validators.required, Validators.maxLength(200) ]],
+            }, [Validators.required, Validators.maxLength(200)]],
           LastUpdateDate_UTC: [
             {
               value: this.contactshortcutService.contactshortcutListModel$.getValue()[0]?.LastUpdateDate_UTC,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           LastUpdateContactTVItemID: [
             {
               value: this.contactshortcutService.contactshortcutListModel$.getValue()[0]?.LastUpdateContactTVItemID,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
         }
       );
 

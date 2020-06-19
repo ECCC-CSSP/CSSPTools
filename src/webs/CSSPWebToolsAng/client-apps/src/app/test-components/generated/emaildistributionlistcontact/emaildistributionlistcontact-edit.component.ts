@@ -59,62 +59,62 @@ export class EmailDistributionListContactEditComponent implements OnInit, OnDest
             {
               value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.emaildistributionlistcontactService.emaildistributionlistcontactListModel$.getValue()[0]?.EmailDistributionListContactID)),
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           EmailDistributionListID: [
             {
               value: this.emaildistributionlistcontactService.emaildistributionlistcontactListModel$.getValue()[0]?.EmailDistributionListID,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           IsCC: [
             {
               value: this.emaildistributionlistcontactService.emaildistributionlistcontactListModel$.getValue()[0]?.IsCC,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           Name: [
             {
               value: this.emaildistributionlistcontactService.emaildistributionlistcontactListModel$.getValue()[0]?.Name,
               disabled: false
-            }, [  Validators.required, Validators.maxLength(100) ]],
+            }, [Validators.required, Validators.maxLength(100)]],
           Email: [
             {
               value: this.emaildistributionlistcontactService.emaildistributionlistcontactListModel$.getValue()[0]?.Email,
               disabled: false
-            }, [  Validators.required, Validators.email, Validators.maxLength(200) ]],
+            }, [Validators.required, Validators.email, Validators.maxLength(200)]],
           CMPRainfallSeasonal: [
             {
               value: this.emaildistributionlistcontactService.emaildistributionlistcontactListModel$.getValue()[0]?.CMPRainfallSeasonal,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           CMPWastewater: [
             {
               value: this.emaildistributionlistcontactService.emaildistributionlistcontactListModel$.getValue()[0]?.CMPWastewater,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           EmergencyWeather: [
             {
               value: this.emaildistributionlistcontactService.emaildistributionlistcontactListModel$.getValue()[0]?.EmergencyWeather,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           EmergencyWastewater: [
             {
               value: this.emaildistributionlistcontactService.emaildistributionlistcontactListModel$.getValue()[0]?.EmergencyWastewater,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           ReopeningAllTypes: [
             {
               value: this.emaildistributionlistcontactService.emaildistributionlistcontactListModel$.getValue()[0]?.ReopeningAllTypes,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           LastUpdateDate_UTC: [
             {
               value: this.emaildistributionlistcontactService.emaildistributionlistcontactListModel$.getValue()[0]?.LastUpdateDate_UTC,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           LastUpdateContactTVItemID: [
             {
               value: this.emaildistributionlistcontactService.emaildistributionlistcontactListModel$.getValue()[0]?.LastUpdateContactTVItemID,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
         }
       );
 

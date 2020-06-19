@@ -72,47 +72,47 @@ export class LabSheetEditComponent implements OnInit, OnDestroy {
             {
               value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.labsheetService.labsheetListModel$.getValue()[0]?.LabSheetID)),
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           OtherServerLabSheetID: [
             {
               value: this.labsheetService.labsheetListModel$.getValue()[0]?.OtherServerLabSheetID,
               disabled: false
-            }, [  Validators.required, Validators.min(1) ]],
+            }, [Validators.required, Validators.min(1)]],
           SamplingPlanID: [
             {
               value: this.labsheetService.labsheetListModel$.getValue()[0]?.SamplingPlanID,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           SamplingPlanName: [
             {
               value: this.labsheetService.labsheetListModel$.getValue()[0]?.SamplingPlanName,
               disabled: false
-            }, [  Validators.required, Validators.minLength(1), Validators.maxLength(250) ]],
+            }, [Validators.required, Validators.minLength(1), Validators.maxLength(250)]],
           Year: [
             {
               value: this.labsheetService.labsheetListModel$.getValue()[0]?.Year,
               disabled: false
-            }, [  Validators.required, Validators.min(1980) ]],
+            }, [Validators.required, Validators.min(1980)]],
           Month: [
             {
               value: this.labsheetService.labsheetListModel$.getValue()[0]?.Month,
               disabled: false
-            }, [  Validators.required, Validators.min(1), Validators.max(12) ]],
+            }, [Validators.required, Validators.min(1), Validators.max(12)]],
           Day: [
             {
               value: this.labsheetService.labsheetListModel$.getValue()[0]?.Day,
               disabled: false
-            }, [  Validators.required, Validators.min(1), Validators.max(31) ]],
+            }, [Validators.required, Validators.min(1), Validators.max(31)]],
           RunNumber: [
             {
               value: this.labsheetService.labsheetListModel$.getValue()[0]?.RunNumber,
               disabled: false
-            }, [  Validators.required, Validators.min(1), Validators.max(100) ]],
+            }, [Validators.required, Validators.min(1), Validators.max(100)]],
           SubsectorTVItemID: [
             {
               value: this.labsheetService.labsheetListModel$.getValue()[0]?.SubsectorTVItemID,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           MWQMRunTVItemID: [
             {
               value: this.labsheetService.labsheetListModel$.getValue()[0]?.MWQMRunTVItemID,
@@ -122,37 +122,37 @@ export class LabSheetEditComponent implements OnInit, OnDestroy {
             {
               value: this.labsheetService.labsheetListModel$.getValue()[0]?.SamplingPlanType,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           SampleType: [
             {
               value: this.labsheetService.labsheetListModel$.getValue()[0]?.SampleType,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           LabSheetType: [
             {
               value: this.labsheetService.labsheetListModel$.getValue()[0]?.LabSheetType,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           LabSheetStatus: [
             {
               value: this.labsheetService.labsheetListModel$.getValue()[0]?.LabSheetStatus,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           FileName: [
             {
               value: this.labsheetService.labsheetListModel$.getValue()[0]?.FileName,
               disabled: false
-            }, [  Validators.required, Validators.minLength(1), Validators.maxLength(250) ]],
+            }, [Validators.required, Validators.minLength(1), Validators.maxLength(250)]],
           FileLastModifiedDate_Local: [
             {
               value: this.labsheetService.labsheetListModel$.getValue()[0]?.FileLastModifiedDate_Local,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           FileContent: [
             {
               value: this.labsheetService.labsheetListModel$.getValue()[0]?.FileContent,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           AcceptedOrRejectedByContactTVItemID: [
             {
               value: this.labsheetService.labsheetListModel$.getValue()[0]?.AcceptedOrRejectedByContactTVItemID,
@@ -167,17 +167,17 @@ export class LabSheetEditComponent implements OnInit, OnDestroy {
             {
               value: this.labsheetService.labsheetListModel$.getValue()[0]?.RejectReason,
               disabled: false
-            }, [  Validators.maxLength(250) ]],
+            }, [Validators.maxLength(250)]],
           LastUpdateDate_UTC: [
             {
               value: this.labsheetService.labsheetListModel$.getValue()[0]?.LastUpdateDate_UTC,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           LastUpdateContactTVItemID: [
             {
               value: this.labsheetService.labsheetListModel$.getValue()[0]?.LastUpdateContactTVItemID,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
         }
       );
 

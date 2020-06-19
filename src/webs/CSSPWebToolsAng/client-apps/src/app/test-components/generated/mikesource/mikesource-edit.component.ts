@@ -59,32 +59,32 @@ export class MikeSourceEditComponent implements OnInit, OnDestroy {
             {
               value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.mikesourceService.mikesourceListModel$.getValue()[0]?.MikeSourceID)),
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           MikeSourceTVItemID: [
             {
               value: this.mikesourceService.mikesourceListModel$.getValue()[0]?.MikeSourceTVItemID,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           IsContinuous: [
             {
               value: this.mikesourceService.mikesourceListModel$.getValue()[0]?.IsContinuous,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           Include: [
             {
               value: this.mikesourceService.mikesourceListModel$.getValue()[0]?.Include,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           IsRiver: [
             {
               value: this.mikesourceService.mikesourceListModel$.getValue()[0]?.IsRiver,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           UseHydrometric: [
             {
               value: this.mikesourceService.mikesourceListModel$.getValue()[0]?.UseHydrometric,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           HydrometricTVItemID: [
             {
               value: this.mikesourceService.mikesourceListModel$.getValue()[0]?.HydrometricTVItemID,
@@ -94,27 +94,27 @@ export class MikeSourceEditComponent implements OnInit, OnDestroy {
             {
               value: this.mikesourceService.mikesourceListModel$.getValue()[0]?.DrainageArea_km2,
               disabled: false
-            }, [  Validators.min(0), Validators.max(1000000) ]],
+            }, [Validators.min(0), Validators.max(1000000)]],
           Factor: [
             {
               value: this.mikesourceService.mikesourceListModel$.getValue()[0]?.Factor,
               disabled: false
-            }, [  Validators.min(0), Validators.max(1000000) ]],
+            }, [Validators.min(0), Validators.max(1000000)]],
           SourceNumberString: [
             {
               value: this.mikesourceService.mikesourceListModel$.getValue()[0]?.SourceNumberString,
               disabled: false
-            }, [  Validators.required, Validators.maxLength(50) ]],
+            }, [Validators.required, Validators.maxLength(50)]],
           LastUpdateDate_UTC: [
             {
               value: this.mikesourceService.mikesourceListModel$.getValue()[0]?.LastUpdateDate_UTC,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           LastUpdateContactTVItemID: [
             {
               value: this.mikesourceService.mikesourceListModel$.getValue()[0]?.LastUpdateContactTVItemID,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
         }
       );
 

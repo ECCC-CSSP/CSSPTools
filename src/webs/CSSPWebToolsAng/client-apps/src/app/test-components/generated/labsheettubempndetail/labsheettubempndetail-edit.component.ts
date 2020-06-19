@@ -63,22 +63,22 @@ export class LabSheetTubeMPNDetailEditComponent implements OnInit, OnDestroy {
             {
               value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.labsheettubempndetailService.labsheettubempndetailListModel$.getValue()[0]?.LabSheetTubeMPNDetailID)),
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           LabSheetDetailID: [
             {
               value: this.labsheettubempndetailService.labsheettubempndetailListModel$.getValue()[0]?.LabSheetDetailID,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           Ordinal: [
             {
               value: this.labsheettubempndetailService.labsheettubempndetailListModel$.getValue()[0]?.Ordinal,
               disabled: false
-            }, [  Validators.required, Validators.min(0), Validators.max(1000) ]],
+            }, [Validators.required, Validators.min(0), Validators.max(1000)]],
           MWQMSiteTVItemID: [
             {
               value: this.labsheettubempndetailService.labsheettubempndetailListModel$.getValue()[0]?.MWQMSiteTVItemID,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           SampleDateTime: [
             {
               value: this.labsheettubempndetailService.labsheettubempndetailListModel$.getValue()[0]?.SampleDateTime,
@@ -88,57 +88,57 @@ export class LabSheetTubeMPNDetailEditComponent implements OnInit, OnDestroy {
             {
               value: this.labsheettubempndetailService.labsheettubempndetailListModel$.getValue()[0]?.MPN,
               disabled: false
-            }, [  Validators.min(1), Validators.max(10000000) ]],
+            }, [Validators.min(1), Validators.max(10000000)]],
           Tube10: [
             {
               value: this.labsheettubempndetailService.labsheettubempndetailListModel$.getValue()[0]?.Tube10,
               disabled: false
-            }, [  Validators.min(0), Validators.max(5) ]],
+            }, [Validators.min(0), Validators.max(5)]],
           Tube1_0: [
             {
               value: this.labsheettubempndetailService.labsheettubempndetailListModel$.getValue()[0]?.Tube1_0,
               disabled: false
-            }, [  Validators.min(0), Validators.max(5) ]],
+            }, [Validators.min(0), Validators.max(5)]],
           Tube0_1: [
             {
               value: this.labsheettubempndetailService.labsheettubempndetailListModel$.getValue()[0]?.Tube0_1,
               disabled: false
-            }, [  Validators.min(0), Validators.max(5) ]],
+            }, [Validators.min(0), Validators.max(5)]],
           Salinity: [
             {
               value: this.labsheettubempndetailService.labsheettubempndetailListModel$.getValue()[0]?.Salinity,
               disabled: false
-            }, [  Validators.min(0), Validators.max(40) ]],
+            }, [Validators.min(0), Validators.max(40)]],
           Temperature: [
             {
               value: this.labsheettubempndetailService.labsheettubempndetailListModel$.getValue()[0]?.Temperature,
               disabled: false
-            }, [  Validators.min(-10), Validators.max(40) ]],
+            }, [Validators.min(-10), Validators.max(40)]],
           ProcessedBy: [
             {
               value: this.labsheettubempndetailService.labsheettubempndetailListModel$.getValue()[0]?.ProcessedBy,
               disabled: false
-            }, [  Validators.maxLength(10) ]],
+            }, [Validators.maxLength(10)]],
           SampleType: [
             {
               value: this.labsheettubempndetailService.labsheettubempndetailListModel$.getValue()[0]?.SampleType,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           SiteComment: [
             {
               value: this.labsheettubempndetailService.labsheettubempndetailListModel$.getValue()[0]?.SiteComment,
               disabled: false
-            }, [  Validators.maxLength(250) ]],
+            }, [Validators.maxLength(250)]],
           LastUpdateDate_UTC: [
             {
               value: this.labsheettubempndetailService.labsheettubempndetailListModel$.getValue()[0]?.LastUpdateDate_UTC,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           LastUpdateContactTVItemID: [
             {
               value: this.labsheettubempndetailService.labsheettubempndetailListModel$.getValue()[0]?.LastUpdateContactTVItemID,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
         }
       );
 

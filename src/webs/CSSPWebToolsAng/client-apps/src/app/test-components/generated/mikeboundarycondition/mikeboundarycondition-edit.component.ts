@@ -69,67 +69,67 @@ export class MikeBoundaryConditionEditComponent implements OnInit, OnDestroy {
             {
               value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.mikeboundaryconditionService.mikeboundaryconditionListModel$.getValue()[0]?.MikeBoundaryConditionID)),
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           MikeBoundaryConditionTVItemID: [
             {
               value: this.mikeboundaryconditionService.mikeboundaryconditionListModel$.getValue()[0]?.MikeBoundaryConditionTVItemID,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           MikeBoundaryConditionCode: [
             {
               value: this.mikeboundaryconditionService.mikeboundaryconditionListModel$.getValue()[0]?.MikeBoundaryConditionCode,
               disabled: false
-            }, [  Validators.required, Validators.maxLength(100) ]],
+            }, [Validators.required, Validators.maxLength(100)]],
           MikeBoundaryConditionName: [
             {
               value: this.mikeboundaryconditionService.mikeboundaryconditionListModel$.getValue()[0]?.MikeBoundaryConditionName,
               disabled: false
-            }, [  Validators.required, Validators.maxLength(100) ]],
+            }, [Validators.required, Validators.maxLength(100)]],
           MikeBoundaryConditionLength_m: [
             {
               value: this.mikeboundaryconditionService.mikeboundaryconditionListModel$.getValue()[0]?.MikeBoundaryConditionLength_m,
               disabled: false
-            }, [  Validators.required, Validators.min(1), Validators.max(100000) ]],
+            }, [Validators.required, Validators.min(1), Validators.max(100000)]],
           MikeBoundaryConditionFormat: [
             {
               value: this.mikeboundaryconditionService.mikeboundaryconditionListModel$.getValue()[0]?.MikeBoundaryConditionFormat,
               disabled: false
-            }, [  Validators.required, Validators.maxLength(100) ]],
+            }, [Validators.required, Validators.maxLength(100)]],
           MikeBoundaryConditionLevelOrVelocity: [
             {
               value: this.mikeboundaryconditionService.mikeboundaryconditionListModel$.getValue()[0]?.MikeBoundaryConditionLevelOrVelocity,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           WebTideDataSet: [
             {
               value: this.mikeboundaryconditionService.mikeboundaryconditionListModel$.getValue()[0]?.WebTideDataSet,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           NumberOfWebTideNodes: [
             {
               value: this.mikeboundaryconditionService.mikeboundaryconditionListModel$.getValue()[0]?.NumberOfWebTideNodes,
               disabled: false
-            }, [  Validators.required, Validators.min(0), Validators.max(1000) ]],
+            }, [Validators.required, Validators.min(0), Validators.max(1000)]],
           WebTideDataFromStartToEndDate: [
             {
               value: this.mikeboundaryconditionService.mikeboundaryconditionListModel$.getValue()[0]?.WebTideDataFromStartToEndDate,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           TVType: [
             {
               value: this.mikeboundaryconditionService.mikeboundaryconditionListModel$.getValue()[0]?.TVType,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           LastUpdateDate_UTC: [
             {
               value: this.mikeboundaryconditionService.mikeboundaryconditionListModel$.getValue()[0]?.LastUpdateDate_UTC,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           LastUpdateContactTVItemID: [
             {
               value: this.mikeboundaryconditionService.mikeboundaryconditionListModel$.getValue()[0]?.LastUpdateContactTVItemID,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
         }
       );
 

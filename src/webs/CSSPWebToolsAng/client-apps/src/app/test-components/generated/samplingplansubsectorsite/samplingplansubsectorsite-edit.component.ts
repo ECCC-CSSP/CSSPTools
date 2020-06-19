@@ -59,32 +59,32 @@ export class SamplingPlanSubsectorSiteEditComponent implements OnInit, OnDestroy
             {
               value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.samplingplansubsectorsiteService.samplingplansubsectorsiteListModel$.getValue()[0]?.SamplingPlanSubsectorSiteID)),
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           SamplingPlanSubsectorID: [
             {
               value: this.samplingplansubsectorsiteService.samplingplansubsectorsiteListModel$.getValue()[0]?.SamplingPlanSubsectorID,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           MWQMSiteTVItemID: [
             {
               value: this.samplingplansubsectorsiteService.samplingplansubsectorsiteListModel$.getValue()[0]?.MWQMSiteTVItemID,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           IsDuplicate: [
             {
               value: this.samplingplansubsectorsiteService.samplingplansubsectorsiteListModel$.getValue()[0]?.IsDuplicate,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           LastUpdateDate_UTC: [
             {
               value: this.samplingplansubsectorsiteService.samplingplansubsectorsiteListModel$.getValue()[0]?.LastUpdateDate_UTC,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           LastUpdateContactTVItemID: [
             {
               value: this.samplingplansubsectorsiteService.samplingplansubsectorsiteListModel$.getValue()[0]?.LastUpdateContactTVItemID,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
         }
       );
 

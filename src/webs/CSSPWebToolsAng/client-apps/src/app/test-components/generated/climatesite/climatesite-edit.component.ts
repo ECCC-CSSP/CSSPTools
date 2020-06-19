@@ -59,47 +59,47 @@ export class ClimateSiteEditComponent implements OnInit, OnDestroy {
             {
               value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.climatesiteService.climatesiteListModel$.getValue()[0]?.ClimateSiteID)),
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           ClimateSiteTVItemID: [
             {
               value: this.climatesiteService.climatesiteListModel$.getValue()[0]?.ClimateSiteTVItemID,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           ECDBID: [
             {
               value: this.climatesiteService.climatesiteListModel$.getValue()[0]?.ECDBID,
               disabled: false
-            }, [  Validators.min(1), Validators.max(100000) ]],
+            }, [Validators.min(1), Validators.max(100000)]],
           ClimateSiteName: [
             {
               value: this.climatesiteService.climatesiteListModel$.getValue()[0]?.ClimateSiteName,
               disabled: false
-            }, [  Validators.required, Validators.maxLength(100) ]],
+            }, [Validators.required, Validators.maxLength(100)]],
           Province: [
             {
               value: this.climatesiteService.climatesiteListModel$.getValue()[0]?.Province,
               disabled: false
-            }, [  Validators.required, Validators.maxLength(4) ]],
+            }, [Validators.required, Validators.maxLength(4)]],
           Elevation_m: [
             {
               value: this.climatesiteService.climatesiteListModel$.getValue()[0]?.Elevation_m,
               disabled: false
-            }, [  Validators.min(0), Validators.max(10000) ]],
+            }, [Validators.min(0), Validators.max(10000)]],
           ClimateID: [
             {
               value: this.climatesiteService.climatesiteListModel$.getValue()[0]?.ClimateID,
               disabled: false
-            }, [  Validators.maxLength(10) ]],
+            }, [Validators.maxLength(10)]],
           WMOID: [
             {
               value: this.climatesiteService.climatesiteListModel$.getValue()[0]?.WMOID,
               disabled: false
-            }, [  Validators.min(1), Validators.max(100000) ]],
+            }, [Validators.min(1), Validators.max(100000)]],
           TCID: [
             {
               value: this.climatesiteService.climatesiteListModel$.getValue()[0]?.TCID,
               disabled: false
-            }, [  Validators.maxLength(3) ]],
+            }, [Validators.maxLength(3)]],
           IsQuebecSite: [
             {
               value: this.climatesiteService.climatesiteListModel$.getValue()[0]?.IsQuebecSite,
@@ -114,12 +114,12 @@ export class ClimateSiteEditComponent implements OnInit, OnDestroy {
             {
               value: this.climatesiteService.climatesiteListModel$.getValue()[0]?.TimeOffset_hour,
               disabled: false
-            }, [  Validators.min(-10), Validators.max(0) ]],
+            }, [Validators.min(-10), Validators.max(0)]],
           File_desc: [
             {
               value: this.climatesiteService.climatesiteListModel$.getValue()[0]?.File_desc,
               disabled: false
-            }, [  Validators.maxLength(50) ]],
+            }, [Validators.maxLength(50)]],
           HourlyStartDate_Local: [
             {
               value: this.climatesiteService.climatesiteListModel$.getValue()[0]?.HourlyStartDate_Local,
@@ -169,12 +169,12 @@ export class ClimateSiteEditComponent implements OnInit, OnDestroy {
             {
               value: this.climatesiteService.climatesiteListModel$.getValue()[0]?.LastUpdateDate_UTC,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           LastUpdateContactTVItemID: [
             {
               value: this.climatesiteService.climatesiteListModel$.getValue()[0]?.LastUpdateContactTVItemID,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
         }
       );
 

@@ -78,77 +78,77 @@ export class SamplingPlanEditComponent implements OnInit, OnDestroy {
             {
               value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.samplingplanService.samplingplanListModel$.getValue()[0]?.SamplingPlanID)),
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           IsActive: [
             {
               value: this.samplingplanService.samplingplanListModel$.getValue()[0]?.IsActive,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           SamplingPlanName: [
             {
               value: this.samplingplanService.samplingplanListModel$.getValue()[0]?.SamplingPlanName,
               disabled: false
-            }, [  Validators.required, Validators.maxLength(200) ]],
+            }, [Validators.required, Validators.maxLength(200)]],
           ForGroupName: [
             {
               value: this.samplingplanService.samplingplanListModel$.getValue()[0]?.ForGroupName,
               disabled: false
-            }, [  Validators.required, Validators.maxLength(100) ]],
+            }, [Validators.required, Validators.maxLength(100)]],
           SampleType: [
             {
               value: this.samplingplanService.samplingplanListModel$.getValue()[0]?.SampleType,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           SamplingPlanType: [
             {
               value: this.samplingplanService.samplingplanListModel$.getValue()[0]?.SamplingPlanType,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           LabSheetType: [
             {
               value: this.samplingplanService.samplingplanListModel$.getValue()[0]?.LabSheetType,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           ProvinceTVItemID: [
             {
               value: this.samplingplanService.samplingplanListModel$.getValue()[0]?.ProvinceTVItemID,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           CreatorTVItemID: [
             {
               value: this.samplingplanService.samplingplanListModel$.getValue()[0]?.CreatorTVItemID,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           Year: [
             {
               value: this.samplingplanService.samplingplanListModel$.getValue()[0]?.Year,
               disabled: false
-            }, [  Validators.required, Validators.min(2000), Validators.max(2050) ]],
+            }, [Validators.required, Validators.min(2000), Validators.max(2050)]],
           AccessCode: [
             {
               value: this.samplingplanService.samplingplanListModel$.getValue()[0]?.AccessCode,
               disabled: false
-            }, [  Validators.required, Validators.maxLength(15) ]],
+            }, [Validators.required, Validators.maxLength(15)]],
           DailyDuplicatePrecisionCriteria: [
             {
               value: this.samplingplanService.samplingplanListModel$.getValue()[0]?.DailyDuplicatePrecisionCriteria,
               disabled: false
-            }, [  Validators.required, Validators.min(0), Validators.max(100) ]],
+            }, [Validators.required, Validators.min(0), Validators.max(100)]],
           IntertechDuplicatePrecisionCriteria: [
             {
               value: this.samplingplanService.samplingplanListModel$.getValue()[0]?.IntertechDuplicatePrecisionCriteria,
               disabled: false
-            }, [  Validators.required, Validators.min(0), Validators.max(100) ]],
+            }, [Validators.required, Validators.min(0), Validators.max(100)]],
           IncludeLaboratoryQAQC: [
             {
               value: this.samplingplanService.samplingplanListModel$.getValue()[0]?.IncludeLaboratoryQAQC,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           ApprovalCode: [
             {
               value: this.samplingplanService.samplingplanListModel$.getValue()[0]?.ApprovalCode,
               disabled: false
-            }, [  Validators.required, Validators.maxLength(15) ]],
+            }, [Validators.required, Validators.maxLength(15)]],
           SamplingPlanFileTVItemID: [
             {
               value: this.samplingplanService.samplingplanListModel$.getValue()[0]?.SamplingPlanFileTVItemID,
@@ -173,17 +173,17 @@ export class SamplingPlanEditComponent implements OnInit, OnDestroy {
             {
               value: this.samplingplanService.samplingplanListModel$.getValue()[0]?.BackupDirectory,
               disabled: false
-            }, [  Validators.required, Validators.maxLength(250) ]],
+            }, [Validators.required, Validators.maxLength(250)]],
           LastUpdateDate_UTC: [
             {
               value: this.samplingplanService.samplingplanListModel$.getValue()[0]?.LastUpdateDate_UTC,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           LastUpdateContactTVItemID: [
             {
               value: this.samplingplanService.samplingplanListModel$.getValue()[0]?.LastUpdateContactTVItemID,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
         }
       );
 

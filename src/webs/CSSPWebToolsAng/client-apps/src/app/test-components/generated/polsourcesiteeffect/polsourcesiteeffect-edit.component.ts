@@ -59,22 +59,22 @@ export class PolSourceSiteEffectEditComponent implements OnInit, OnDestroy {
             {
               value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.polsourcesiteeffectService.polsourcesiteeffectListModel$.getValue()[0]?.PolSourceSiteEffectID)),
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           PolSourceSiteOrInfrastructureTVItemID: [
             {
               value: this.polsourcesiteeffectService.polsourcesiteeffectListModel$.getValue()[0]?.PolSourceSiteOrInfrastructureTVItemID,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           MWQMSiteTVItemID: [
             {
               value: this.polsourcesiteeffectService.polsourcesiteeffectListModel$.getValue()[0]?.MWQMSiteTVItemID,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           PolSourceSiteEffectTermIDs: [
             {
               value: this.polsourcesiteeffectService.polsourcesiteeffectListModel$.getValue()[0]?.PolSourceSiteEffectTermIDs,
               disabled: false
-            }, [  Validators.maxLength(250) ]],
+            }, [Validators.maxLength(250)]],
           Comments: [
             {
               value: this.polsourcesiteeffectService.polsourcesiteeffectListModel$.getValue()[0]?.Comments,
@@ -89,12 +89,12 @@ export class PolSourceSiteEffectEditComponent implements OnInit, OnDestroy {
             {
               value: this.polsourcesiteeffectService.polsourcesiteeffectListModel$.getValue()[0]?.LastUpdateDate_UTC,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           LastUpdateContactTVItemID: [
             {
               value: this.polsourcesiteeffectService.polsourcesiteeffectListModel$.getValue()[0]?.LastUpdateContactTVItemID,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
         }
       );
 

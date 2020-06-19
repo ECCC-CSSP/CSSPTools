@@ -59,32 +59,32 @@ export class MWQMSubsectorEditComponent implements OnInit, OnDestroy {
             {
               value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.mwqmsubsectorService.mwqmsubsectorListModel$.getValue()[0]?.MWQMSubsectorID)),
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           MWQMSubsectorTVItemID: [
             {
               value: this.mwqmsubsectorService.mwqmsubsectorListModel$.getValue()[0]?.MWQMSubsectorTVItemID,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           SubsectorHistoricKey: [
             {
               value: this.mwqmsubsectorService.mwqmsubsectorListModel$.getValue()[0]?.SubsectorHistoricKey,
               disabled: false
-            }, [  Validators.required, Validators.maxLength(20) ]],
+            }, [Validators.required, Validators.maxLength(20)]],
           TideLocationSIDText: [
             {
               value: this.mwqmsubsectorService.mwqmsubsectorListModel$.getValue()[0]?.TideLocationSIDText,
               disabled: false
-            }, [  Validators.maxLength(20) ]],
+            }, [Validators.maxLength(20)]],
           LastUpdateDate_UTC: [
             {
               value: this.mwqmsubsectorService.mwqmsubsectorListModel$.getValue()[0]?.LastUpdateDate_UTC,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           LastUpdateContactTVItemID: [
             {
               value: this.mwqmsubsectorService.mwqmsubsectorListModel$.getValue()[0]?.LastUpdateContactTVItemID,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
         }
       );
 

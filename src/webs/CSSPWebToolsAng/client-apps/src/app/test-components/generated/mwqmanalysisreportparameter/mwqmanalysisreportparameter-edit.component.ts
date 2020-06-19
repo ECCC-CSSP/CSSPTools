@@ -66,112 +66,112 @@ export class MWQMAnalysisReportParameterEditComponent implements OnInit, OnDestr
             {
               value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.mwqmanalysisreportparameterService.mwqmanalysisreportparameterListModel$.getValue()[0]?.MWQMAnalysisReportParameterID)),
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           SubsectorTVItemID: [
             {
               value: this.mwqmanalysisreportparameterService.mwqmanalysisreportparameterListModel$.getValue()[0]?.SubsectorTVItemID,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           AnalysisName: [
             {
               value: this.mwqmanalysisreportparameterService.mwqmanalysisreportparameterListModel$.getValue()[0]?.AnalysisName,
               disabled: false
-            }, [  Validators.required, Validators.minLength(5), Validators.maxLength(250) ]],
+            }, [Validators.required, Validators.minLength(5), Validators.maxLength(250)]],
           AnalysisReportYear: [
             {
               value: this.mwqmanalysisreportparameterService.mwqmanalysisreportparameterListModel$.getValue()[0]?.AnalysisReportYear,
               disabled: false
-            }, [  Validators.min(1980), Validators.max(2050) ]],
+            }, [Validators.min(1980), Validators.max(2050)]],
           StartDate: [
             {
               value: this.mwqmanalysisreportparameterService.mwqmanalysisreportparameterListModel$.getValue()[0]?.StartDate,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           EndDate: [
             {
               value: this.mwqmanalysisreportparameterService.mwqmanalysisreportparameterListModel$.getValue()[0]?.EndDate,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           AnalysisCalculationType: [
             {
               value: this.mwqmanalysisreportparameterService.mwqmanalysisreportparameterListModel$.getValue()[0]?.AnalysisCalculationType,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           NumberOfRuns: [
             {
               value: this.mwqmanalysisreportparameterService.mwqmanalysisreportparameterListModel$.getValue()[0]?.NumberOfRuns,
               disabled: false
-            }, [  Validators.required, Validators.min(1), Validators.max(1000) ]],
+            }, [Validators.required, Validators.min(1), Validators.max(1000)]],
           FullYear: [
             {
               value: this.mwqmanalysisreportparameterService.mwqmanalysisreportparameterListModel$.getValue()[0]?.FullYear,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           SalinityHighlightDeviationFromAverage: [
             {
               value: this.mwqmanalysisreportparameterService.mwqmanalysisreportparameterListModel$.getValue()[0]?.SalinityHighlightDeviationFromAverage,
               disabled: false
-            }, [  Validators.required, Validators.min(1), Validators.max(20) ]],
+            }, [Validators.required, Validators.min(1), Validators.max(20)]],
           ShortRangeNumberOfDays: [
             {
               value: this.mwqmanalysisreportparameterService.mwqmanalysisreportparameterListModel$.getValue()[0]?.ShortRangeNumberOfDays,
               disabled: false
-            }, [  Validators.required, Validators.min(0), Validators.max(5) ]],
+            }, [Validators.required, Validators.min(0), Validators.max(5)]],
           MidRangeNumberOfDays: [
             {
               value: this.mwqmanalysisreportparameterService.mwqmanalysisreportparameterListModel$.getValue()[0]?.MidRangeNumberOfDays,
               disabled: false
-            }, [  Validators.required, Validators.min(2), Validators.max(7) ]],
+            }, [Validators.required, Validators.min(2), Validators.max(7)]],
           DryLimit24h: [
             {
               value: this.mwqmanalysisreportparameterService.mwqmanalysisreportparameterListModel$.getValue()[0]?.DryLimit24h,
               disabled: false
-            }, [  Validators.required, Validators.min(1), Validators.max(100) ]],
+            }, [Validators.required, Validators.min(1), Validators.max(100)]],
           DryLimit48h: [
             {
               value: this.mwqmanalysisreportparameterService.mwqmanalysisreportparameterListModel$.getValue()[0]?.DryLimit48h,
               disabled: false
-            }, [  Validators.required, Validators.min(1), Validators.max(100) ]],
+            }, [Validators.required, Validators.min(1), Validators.max(100)]],
           DryLimit72h: [
             {
               value: this.mwqmanalysisreportparameterService.mwqmanalysisreportparameterListModel$.getValue()[0]?.DryLimit72h,
               disabled: false
-            }, [  Validators.required, Validators.min(1), Validators.max(100) ]],
+            }, [Validators.required, Validators.min(1), Validators.max(100)]],
           DryLimit96h: [
             {
               value: this.mwqmanalysisreportparameterService.mwqmanalysisreportparameterListModel$.getValue()[0]?.DryLimit96h,
               disabled: false
-            }, [  Validators.required, Validators.min(1), Validators.max(100) ]],
+            }, [Validators.required, Validators.min(1), Validators.max(100)]],
           WetLimit24h: [
             {
               value: this.mwqmanalysisreportparameterService.mwqmanalysisreportparameterListModel$.getValue()[0]?.WetLimit24h,
               disabled: false
-            }, [  Validators.required, Validators.min(1), Validators.max(100) ]],
+            }, [Validators.required, Validators.min(1), Validators.max(100)]],
           WetLimit48h: [
             {
               value: this.mwqmanalysisreportparameterService.mwqmanalysisreportparameterListModel$.getValue()[0]?.WetLimit48h,
               disabled: false
-            }, [  Validators.required, Validators.min(1), Validators.max(100) ]],
+            }, [Validators.required, Validators.min(1), Validators.max(100)]],
           WetLimit72h: [
             {
               value: this.mwqmanalysisreportparameterService.mwqmanalysisreportparameterListModel$.getValue()[0]?.WetLimit72h,
               disabled: false
-            }, [  Validators.required, Validators.min(1), Validators.max(100) ]],
+            }, [Validators.required, Validators.min(1), Validators.max(100)]],
           WetLimit96h: [
             {
               value: this.mwqmanalysisreportparameterService.mwqmanalysisreportparameterListModel$.getValue()[0]?.WetLimit96h,
               disabled: false
-            }, [  Validators.required, Validators.min(1), Validators.max(100) ]],
+            }, [Validators.required, Validators.min(1), Validators.max(100)]],
           RunsToOmit: [
             {
               value: this.mwqmanalysisreportparameterService.mwqmanalysisreportparameterListModel$.getValue()[0]?.RunsToOmit,
               disabled: false
-            }, [  Validators.required, Validators.maxLength(250) ]],
+            }, [Validators.required, Validators.maxLength(250)]],
           ShowDataTypes: [
             {
               value: this.mwqmanalysisreportparameterService.mwqmanalysisreportparameterListModel$.getValue()[0]?.ShowDataTypes,
               disabled: false
-            }, [  Validators.maxLength(20) ]],
+            }, [Validators.maxLength(20)]],
           ExcelTVFileTVItemID: [
             {
               value: this.mwqmanalysisreportparameterService.mwqmanalysisreportparameterListModel$.getValue()[0]?.ExcelTVFileTVItemID,
@@ -181,17 +181,17 @@ export class MWQMAnalysisReportParameterEditComponent implements OnInit, OnDestr
             {
               value: this.mwqmanalysisreportparameterService.mwqmanalysisreportparameterListModel$.getValue()[0]?.Command,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           LastUpdateDate_UTC: [
             {
               value: this.mwqmanalysisreportparameterService.mwqmanalysisreportparameterListModel$.getValue()[0]?.LastUpdateDate_UTC,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           LastUpdateContactTVItemID: [
             {
               value: this.mwqmanalysisreportparameterService.mwqmanalysisreportparameterListModel$.getValue()[0]?.LastUpdateContactTVItemID,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
         }
       );
 

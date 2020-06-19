@@ -69,22 +69,22 @@ export class ReportTypeEditComponent implements OnInit, OnDestroy {
             {
               value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.reporttypeService.reporttypeListModel$.getValue()[0]?.ReportTypeID)),
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           TVType: [
             {
               value: this.reporttypeService.reporttypeListModel$.getValue()[0]?.TVType,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           FileType: [
             {
               value: this.reporttypeService.reporttypeListModel$.getValue()[0]?.FileType,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           UniqueCode: [
             {
               value: this.reporttypeService.reporttypeListModel$.getValue()[0]?.UniqueCode,
               disabled: false
-            }, [  Validators.required, Validators.maxLength(100) ]],
+            }, [Validators.required, Validators.maxLength(100)]],
           Language: [
             {
               value: this.reporttypeService.reporttypeListModel$.getValue()[0]?.Language,
@@ -94,27 +94,27 @@ export class ReportTypeEditComponent implements OnInit, OnDestroy {
             {
               value: this.reporttypeService.reporttypeListModel$.getValue()[0]?.Name,
               disabled: false
-            }, [  Validators.maxLength(100) ]],
+            }, [Validators.maxLength(100)]],
           Description: [
             {
               value: this.reporttypeService.reporttypeListModel$.getValue()[0]?.Description,
               disabled: false
-            }, [  Validators.maxLength(1000) ]],
+            }, [Validators.maxLength(1000)]],
           StartOfFileName: [
             {
               value: this.reporttypeService.reporttypeListModel$.getValue()[0]?.StartOfFileName,
               disabled: false
-            }, [  Validators.maxLength(100) ]],
+            }, [Validators.maxLength(100)]],
           LastUpdateDate_UTC: [
             {
               value: this.reporttypeService.reporttypeListModel$.getValue()[0]?.LastUpdateDate_UTC,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           LastUpdateContactTVItemID: [
             {
               value: this.reporttypeService.reporttypeListModel$.getValue()[0]?.LastUpdateContactTVItemID,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
         }
       );
 

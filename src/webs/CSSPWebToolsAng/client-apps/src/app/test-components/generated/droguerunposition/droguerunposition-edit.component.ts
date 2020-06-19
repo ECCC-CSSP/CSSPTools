@@ -59,52 +59,52 @@ export class DrogueRunPositionEditComponent implements OnInit, OnDestroy {
             {
               value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.droguerunpositionService.droguerunpositionListModel$.getValue()[0]?.DrogueRunPositionID)),
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           DrogueRunID: [
             {
               value: this.droguerunpositionService.droguerunpositionListModel$.getValue()[0]?.DrogueRunID,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           Ordinal: [
             {
               value: this.droguerunpositionService.droguerunpositionListModel$.getValue()[0]?.Ordinal,
               disabled: false
-            }, [  Validators.required, Validators.min(0), Validators.max(100000) ]],
+            }, [Validators.required, Validators.min(0), Validators.max(100000)]],
           StepLat: [
             {
               value: this.droguerunpositionService.droguerunpositionListModel$.getValue()[0]?.StepLat,
               disabled: false
-            }, [  Validators.required, Validators.min(-180), Validators.max(180) ]],
+            }, [Validators.required, Validators.min(-180), Validators.max(180)]],
           StepLng: [
             {
               value: this.droguerunpositionService.droguerunpositionListModel$.getValue()[0]?.StepLng,
               disabled: false
-            }, [  Validators.required, Validators.min(-90), Validators.max(90) ]],
+            }, [Validators.required, Validators.min(-90), Validators.max(90)]],
           StepDateTime_Local: [
             {
               value: this.droguerunpositionService.droguerunpositionListModel$.getValue()[0]?.StepDateTime_Local,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           CalculatedSpeed_m_s: [
             {
               value: this.droguerunpositionService.droguerunpositionListModel$.getValue()[0]?.CalculatedSpeed_m_s,
               disabled: false
-            }, [  Validators.required, Validators.min(0), Validators.max(10) ]],
+            }, [Validators.required, Validators.min(0), Validators.max(10)]],
           CalculatedDirection_deg: [
             {
               value: this.droguerunpositionService.droguerunpositionListModel$.getValue()[0]?.CalculatedDirection_deg,
               disabled: false
-            }, [  Validators.required, Validators.min(0), Validators.max(360) ]],
+            }, [Validators.required, Validators.min(0), Validators.max(360)]],
           LastUpdateDate_UTC: [
             {
               value: this.droguerunpositionService.droguerunpositionListModel$.getValue()[0]?.LastUpdateDate_UTC,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           LastUpdateContactTVItemID: [
             {
               value: this.droguerunpositionService.droguerunpositionListModel$.getValue()[0]?.LastUpdateContactTVItemID,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
         }
       );
 

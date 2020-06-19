@@ -196,7 +196,7 @@ namespace AngularComponentsGeneratedServices.Services
                 }
                 else
                 {
-                    sb.AppendLine($@"            }}, [ { ValidatorsStr } ]],");
+                    sb.AppendLine($@"            }}, [{ ValidatorsStr.Trim() }]],");
                 }
             }
             sb.AppendLine(@"        }");

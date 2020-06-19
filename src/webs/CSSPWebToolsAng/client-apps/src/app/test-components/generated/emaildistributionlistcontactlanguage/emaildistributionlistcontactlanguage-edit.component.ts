@@ -66,37 +66,37 @@ export class EmailDistributionListContactLanguageEditComponent implements OnInit
             {
               value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.emaildistributionlistcontactlanguageService.emaildistributionlistcontactlanguageListModel$.getValue()[0]?.EmailDistributionListContactLanguageID)),
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           EmailDistributionListContactID: [
             {
               value: this.emaildistributionlistcontactlanguageService.emaildistributionlistcontactlanguageListModel$.getValue()[0]?.EmailDistributionListContactID,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           Language: [
             {
               value: this.emaildistributionlistcontactlanguageService.emaildistributionlistcontactlanguageListModel$.getValue()[0]?.Language,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           Agency: [
             {
               value: this.emaildistributionlistcontactlanguageService.emaildistributionlistcontactlanguageListModel$.getValue()[0]?.Agency,
               disabled: false
-            }, [  Validators.required, Validators.minLength(1), Validators.maxLength(100) ]],
+            }, [Validators.required, Validators.minLength(1), Validators.maxLength(100)]],
           TranslationStatus: [
             {
               value: this.emaildistributionlistcontactlanguageService.emaildistributionlistcontactlanguageListModel$.getValue()[0]?.TranslationStatus,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           LastUpdateDate_UTC: [
             {
               value: this.emaildistributionlistcontactlanguageService.emaildistributionlistcontactlanguageListModel$.getValue()[0]?.LastUpdateDate_UTC,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           LastUpdateContactTVItemID: [
             {
               value: this.emaildistributionlistcontactlanguageService.emaildistributionlistcontactlanguageListModel$.getValue()[0]?.LastUpdateContactTVItemID,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
         }
       );
 

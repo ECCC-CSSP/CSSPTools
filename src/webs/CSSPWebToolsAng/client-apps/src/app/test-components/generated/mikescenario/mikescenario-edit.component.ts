@@ -63,12 +63,12 @@ export class MikeScenarioEditComponent implements OnInit, OnDestroy {
             {
               value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.mikescenarioService.mikescenarioListModel$.getValue()[0]?.MikeScenarioID)),
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           MikeScenarioTVItemID: [
             {
               value: this.mikescenarioService.mikescenarioListModel$.getValue()[0]?.MikeScenarioTVItemID,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           ParentMikeScenarioID: [
             {
               value: this.mikescenarioService.mikescenarioListModel$.getValue()[0]?.ParentMikeScenarioID,
@@ -78,7 +78,7 @@ export class MikeScenarioEditComponent implements OnInit, OnDestroy {
             {
               value: this.mikescenarioService.mikescenarioListModel$.getValue()[0]?.ScenarioStatus,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           ErrorInfo: [
             {
               value: this.mikescenarioService.mikescenarioListModel$.getValue()[0]?.ErrorInfo,
@@ -88,12 +88,12 @@ export class MikeScenarioEditComponent implements OnInit, OnDestroy {
             {
               value: this.mikescenarioService.mikescenarioListModel$.getValue()[0]?.MikeScenarioStartDateTime_Local,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           MikeScenarioEndDateTime_Local: [
             {
               value: this.mikescenarioService.mikescenarioListModel$.getValue()[0]?.MikeScenarioEndDateTime_Local,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           MikeScenarioStartExecutionDateTime_Local: [
             {
               value: this.mikescenarioService.mikescenarioListModel$.getValue()[0]?.MikeScenarioStartExecutionDateTime_Local,
@@ -103,47 +103,47 @@ export class MikeScenarioEditComponent implements OnInit, OnDestroy {
             {
               value: this.mikescenarioService.mikescenarioListModel$.getValue()[0]?.MikeScenarioExecutionTime_min,
               disabled: false
-            }, [  Validators.min(1), Validators.max(100000) ]],
+            }, [Validators.min(1), Validators.max(100000)]],
           WindSpeed_km_h: [
             {
               value: this.mikescenarioService.mikescenarioListModel$.getValue()[0]?.WindSpeed_km_h,
               disabled: false
-            }, [  Validators.required, Validators.min(0), Validators.max(100) ]],
+            }, [Validators.required, Validators.min(0), Validators.max(100)]],
           WindDirection_deg: [
             {
               value: this.mikescenarioService.mikescenarioListModel$.getValue()[0]?.WindDirection_deg,
               disabled: false
-            }, [  Validators.required, Validators.min(0), Validators.max(360) ]],
+            }, [Validators.required, Validators.min(0), Validators.max(360)]],
           DecayFactor_per_day: [
             {
               value: this.mikescenarioService.mikescenarioListModel$.getValue()[0]?.DecayFactor_per_day,
               disabled: false
-            }, [  Validators.required, Validators.min(0), Validators.max(100) ]],
+            }, [Validators.required, Validators.min(0), Validators.max(100)]],
           DecayIsConstant: [
             {
               value: this.mikescenarioService.mikescenarioListModel$.getValue()[0]?.DecayIsConstant,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           DecayFactorAmplitude: [
             {
               value: this.mikescenarioService.mikescenarioListModel$.getValue()[0]?.DecayFactorAmplitude,
               disabled: false
-            }, [  Validators.required, Validators.min(0), Validators.max(100) ]],
+            }, [Validators.required, Validators.min(0), Validators.max(100)]],
           ResultFrequency_min: [
             {
               value: this.mikescenarioService.mikescenarioListModel$.getValue()[0]?.ResultFrequency_min,
               disabled: false
-            }, [  Validators.required, Validators.min(0), Validators.max(100) ]],
+            }, [Validators.required, Validators.min(0), Validators.max(100)]],
           AmbientTemperature_C: [
             {
               value: this.mikescenarioService.mikescenarioListModel$.getValue()[0]?.AmbientTemperature_C,
               disabled: false
-            }, [  Validators.required, Validators.min(-10), Validators.max(40) ]],
+            }, [Validators.required, Validators.min(-10), Validators.max(40)]],
           AmbientSalinity_PSU: [
             {
               value: this.mikescenarioService.mikescenarioListModel$.getValue()[0]?.AmbientSalinity_PSU,
               disabled: false
-            }, [  Validators.required, Validators.min(0), Validators.max(40) ]],
+            }, [Validators.required, Validators.min(0), Validators.max(40)]],
           GenerateDecouplingFiles: [
             {
               value: this.mikescenarioService.mikescenarioListModel$.getValue()[0]?.GenerateDecouplingFiles,
@@ -168,57 +168,57 @@ export class MikeScenarioEditComponent implements OnInit, OnDestroy {
             {
               value: this.mikescenarioService.mikescenarioListModel$.getValue()[0]?.ManningNumber,
               disabled: false
-            }, [  Validators.required, Validators.min(0), Validators.max(100) ]],
+            }, [Validators.required, Validators.min(0), Validators.max(100)]],
           NumberOfElements: [
             {
               value: this.mikescenarioService.mikescenarioListModel$.getValue()[0]?.NumberOfElements,
               disabled: false
-            }, [  Validators.min(1), Validators.max(1000000) ]],
+            }, [Validators.min(1), Validators.max(1000000)]],
           NumberOfTimeSteps: [
             {
               value: this.mikescenarioService.mikescenarioListModel$.getValue()[0]?.NumberOfTimeSteps,
               disabled: false
-            }, [  Validators.min(1), Validators.max(1000000) ]],
+            }, [Validators.min(1), Validators.max(1000000)]],
           NumberOfSigmaLayers: [
             {
               value: this.mikescenarioService.mikescenarioListModel$.getValue()[0]?.NumberOfSigmaLayers,
               disabled: false
-            }, [  Validators.min(0), Validators.max(100) ]],
+            }, [Validators.min(0), Validators.max(100)]],
           NumberOfZLayers: [
             {
               value: this.mikescenarioService.mikescenarioListModel$.getValue()[0]?.NumberOfZLayers,
               disabled: false
-            }, [  Validators.min(0), Validators.max(100) ]],
+            }, [Validators.min(0), Validators.max(100)]],
           NumberOfHydroOutputParameters: [
             {
               value: this.mikescenarioService.mikescenarioListModel$.getValue()[0]?.NumberOfHydroOutputParameters,
               disabled: false
-            }, [  Validators.min(0), Validators.max(100) ]],
+            }, [Validators.min(0), Validators.max(100)]],
           NumberOfTransOutputParameters: [
             {
               value: this.mikescenarioService.mikescenarioListModel$.getValue()[0]?.NumberOfTransOutputParameters,
               disabled: false
-            }, [  Validators.min(0), Validators.max(100) ]],
+            }, [Validators.min(0), Validators.max(100)]],
           EstimatedHydroFileSize: [
             {
               value: this.mikescenarioService.mikescenarioListModel$.getValue()[0]?.EstimatedHydroFileSize,
               disabled: false
-            }, [  Validators.min(0), Validators.max(100000000) ]],
+            }, [Validators.min(0), Validators.max(100000000)]],
           EstimatedTransFileSize: [
             {
               value: this.mikescenarioService.mikescenarioListModel$.getValue()[0]?.EstimatedTransFileSize,
               disabled: false
-            }, [  Validators.min(0), Validators.max(100000000) ]],
+            }, [Validators.min(0), Validators.max(100000000)]],
           LastUpdateDate_UTC: [
             {
               value: this.mikescenarioService.mikescenarioListModel$.getValue()[0]?.LastUpdateDate_UTC,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           LastUpdateContactTVItemID: [
             {
               value: this.mikescenarioService.mikescenarioListModel$.getValue()[0]?.LastUpdateContactTVItemID,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
         }
       );
 

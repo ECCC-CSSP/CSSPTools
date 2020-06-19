@@ -66,42 +66,42 @@ export class AppTaskLanguageEditComponent implements OnInit, OnDestroy {
             {
               value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.apptasklanguageService.apptasklanguageListModel$.getValue()[0]?.AppTaskLanguageID)),
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           AppTaskID: [
             {
               value: this.apptasklanguageService.apptasklanguageListModel$.getValue()[0]?.AppTaskID,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           Language: [
             {
               value: this.apptasklanguageService.apptasklanguageListModel$.getValue()[0]?.Language,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           StatusText: [
             {
               value: this.apptasklanguageService.apptasklanguageListModel$.getValue()[0]?.StatusText,
               disabled: false
-            }, [  Validators.maxLength(250) ]],
+            }, [Validators.maxLength(250)]],
           ErrorText: [
             {
               value: this.apptasklanguageService.apptasklanguageListModel$.getValue()[0]?.ErrorText,
               disabled: false
-            }, [  Validators.maxLength(250) ]],
+            }, [Validators.maxLength(250)]],
           TranslationStatus: [
             {
               value: this.apptasklanguageService.apptasklanguageListModel$.getValue()[0]?.TranslationStatus,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           LastUpdateDate_UTC: [
             {
               value: this.apptasklanguageService.apptasklanguageListModel$.getValue()[0]?.LastUpdateDate_UTC,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           LastUpdateContactTVItemID: [
             {
               value: this.apptasklanguageService.apptasklanguageListModel$.getValue()[0]?.LastUpdateContactTVItemID,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
         }
       );
 

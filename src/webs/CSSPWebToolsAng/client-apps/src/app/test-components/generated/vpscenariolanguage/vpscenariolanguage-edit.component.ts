@@ -66,37 +66,37 @@ export class VPScenarioLanguageEditComponent implements OnInit, OnDestroy {
             {
               value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.vpscenariolanguageService.vpscenariolanguageListModel$.getValue()[0]?.VPScenarioLanguageID)),
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           VPScenarioID: [
             {
               value: this.vpscenariolanguageService.vpscenariolanguageListModel$.getValue()[0]?.VPScenarioID,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           Language: [
             {
               value: this.vpscenariolanguageService.vpscenariolanguageListModel$.getValue()[0]?.Language,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           VPScenarioName: [
             {
               value: this.vpscenariolanguageService.vpscenariolanguageListModel$.getValue()[0]?.VPScenarioName,
               disabled: false
-            }, [  Validators.required, Validators.maxLength(100) ]],
+            }, [Validators.required, Validators.maxLength(100)]],
           TranslationStatus: [
             {
               value: this.vpscenariolanguageService.vpscenariolanguageListModel$.getValue()[0]?.TranslationStatus,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           LastUpdateDate_UTC: [
             {
               value: this.vpscenariolanguageService.vpscenariolanguageListModel$.getValue()[0]?.LastUpdateDate_UTC,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           LastUpdateContactTVItemID: [
             {
               value: this.vpscenariolanguageService.vpscenariolanguageListModel$.getValue()[0]?.LastUpdateContactTVItemID,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
         }
       );
 

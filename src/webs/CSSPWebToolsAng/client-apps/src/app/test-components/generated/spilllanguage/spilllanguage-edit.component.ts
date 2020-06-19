@@ -66,37 +66,37 @@ export class SpillLanguageEditComponent implements OnInit, OnDestroy {
             {
               value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.spilllanguageService.spilllanguageListModel$.getValue()[0]?.SpillLanguageID)),
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           SpillID: [
             {
               value: this.spilllanguageService.spilllanguageListModel$.getValue()[0]?.SpillID,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           Language: [
             {
               value: this.spilllanguageService.spilllanguageListModel$.getValue()[0]?.Language,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           SpillComment: [
             {
               value: this.spilllanguageService.spilllanguageListModel$.getValue()[0]?.SpillComment,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           TranslationStatus: [
             {
               value: this.spilllanguageService.spilllanguageListModel$.getValue()[0]?.TranslationStatus,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           LastUpdateDate_UTC: [
             {
               value: this.spilllanguageService.spilllanguageListModel$.getValue()[0]?.LastUpdateDate_UTC,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           LastUpdateContactTVItemID: [
             {
               value: this.spilllanguageService.spilllanguageListModel$.getValue()[0]?.LastUpdateContactTVItemID,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
         }
       );
 

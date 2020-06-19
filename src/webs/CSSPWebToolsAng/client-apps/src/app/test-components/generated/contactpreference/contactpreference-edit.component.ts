@@ -63,32 +63,32 @@ export class ContactPreferenceEditComponent implements OnInit, OnDestroy {
             {
               value: (httpClientCommand === HttpClientCommand.Post ? 0 : (this.contactpreferenceService.contactpreferenceListModel$.getValue()[0]?.ContactPreferenceID)),
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           ContactID: [
             {
               value: this.contactpreferenceService.contactpreferenceListModel$.getValue()[0]?.ContactID,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           TVType: [
             {
               value: this.contactpreferenceService.contactpreferenceListModel$.getValue()[0]?.TVType,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           MarkerSize: [
             {
               value: this.contactpreferenceService.contactpreferenceListModel$.getValue()[0]?.MarkerSize,
               disabled: false
-            }, [  Validators.required, Validators.min(1), Validators.max(1000) ]],
+            }, [Validators.required, Validators.min(1), Validators.max(1000)]],
           LastUpdateDate_UTC: [
             {
               value: this.contactpreferenceService.contactpreferenceListModel$.getValue()[0]?.LastUpdateDate_UTC,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
           LastUpdateContactTVItemID: [
             {
               value: this.contactpreferenceService.contactpreferenceListModel$.getValue()[0]?.LastUpdateContactTVItemID,
               disabled: false
-            }, [  Validators.required ]],
+            }, [Validators.required]],
         }
       );
 
