@@ -24,10 +24,10 @@
             <span>Delete MWQMSampleID [{{ mwqmsample.MWQMSampleID }}]&nbsp;&nbsp;&nbsp;</span>
             <mat-icon>delete</mat-icon>
           </button>&nbsp;&nbsp;&nbsp;
-          <button mat-raised-button [color]="GetPutButtonColor(mwqmsample)"(click)="ShowPut(mwqmsample)">
+          <button mat-raised-button [color]="GetPutButtonColor(mwqmsample)" (click)="ShowPut(mwqmsample)">
             <span>Show Put</span>
           </button>&nbsp;&nbsp;
-          <button mat-raised-button [color]="GetPostButtonColor(mwqmsample)"(click)="ShowPost(mwqmsample)">
+          <button mat-raised-button [color]="GetPostButtonColor(mwqmsample)" (click)="ShowPost(mwqmsample)">
             <span>Show Post</span>
           </button>&nbsp;&nbsp;
           <mat-progress-bar mode="indeterminate" *ngIf="mwqmsampleService.mwqmsampleDeleteModel$.getValue().Working">
@@ -40,35 +40,35 @@
           <app-mwqmsample-edit [mwqmsample]="mwqmsample" [httpClientCommand]="GetPostEnum()"></app-mwqmsample-edit>
         </p>
         <blockquote>
-        <p>
-          <span>MWQMSampleID: [{{ mwqmsample.MWQMSampleID }}]</span>
-          <span> --- MWQMSiteTVItemID: [{{ mwqmsample.MWQMSiteTVItemID }}]</span>
-          <span> --- MWQMRunTVItemID: [{{ mwqmsample.MWQMRunTVItemID }}]</span>
-          <span> --- SampleDateTime_Local: [{{ mwqmsample.SampleDateTime_Local }}]</span>
- </p>
-        <p>
-          <span>TimeText: [{{ mwqmsample.TimeText }}]</span>
-          <span> --- Depth_m: [{{ mwqmsample.Depth_m }}]</span>
-          <span> --- FecCol_MPN_100ml: [{{ mwqmsample.FecCol_MPN_100ml }}]</span>
-          <span> --- Salinity_PPT: [{{ mwqmsample.Salinity_PPT }}]</span>
- </p>
-        <p>
-          <span>WaterTemp_C: [{{ mwqmsample.WaterTemp_C }}]</span>
-          <span> --- PH: [{{ mwqmsample.PH }}]</span>
-          <span> --- SampleTypesText: [{{ mwqmsample.SampleTypesText }}]</span>
-          <span> --- SampleType_old: [{{ GetSampleTypeEnumText(mwqmsample.SampleType_old) }}]</span>
- </p>
-        <p>
-          <span>Tube_10: [{{ mwqmsample.Tube_10 }}]</span>
-          <span> --- Tube_1_0: [{{ mwqmsample.Tube_1_0 }}]</span>
-          <span> --- Tube_0_1: [{{ mwqmsample.Tube_0_1 }}]</span>
-          <span> --- ProcessedBy: [{{ mwqmsample.ProcessedBy }}]</span>
- </p>
-        <p>
-          <span>UseForOpenData: [{{ mwqmsample.UseForOpenData }}]</span>
-          <span> --- LastUpdateDate_UTC: [{{ mwqmsample.LastUpdateDate_UTC }}]</span>
-          <span> --- LastUpdateContactTVItemID: [{{ mwqmsample.LastUpdateContactTVItemID }}]</span>
-        </p>
+          <p>
+            <span>MWQMSampleID: [{{ mwqmsample.MWQMSampleID }}]</span>
+            <span> --- MWQMSiteTVItemID: [{{ mwqmsample.MWQMSiteTVItemID }}]</span>
+            <span> --- MWQMRunTVItemID: [{{ mwqmsample.MWQMRunTVItemID }}]</span>
+            <span> --- SampleDateTime_Local: [{{ mwqmsample.SampleDateTime_Local }}]</span>
+          </p>
+          <p>
+            <span>TimeText: [{{ mwqmsample.TimeText }}]</span>
+            <span> --- Depth_m: [{{ mwqmsample.Depth_m }}]</span>
+            <span> --- FecCol_MPN_100ml: [{{ mwqmsample.FecCol_MPN_100ml }}]</span>
+            <span> --- Salinity_PPT: [{{ mwqmsample.Salinity_PPT }}]</span>
+          </p>
+          <p>
+            <span>WaterTemp_C: [{{ mwqmsample.WaterTemp_C }}]</span>
+            <span> --- PH: [{{ mwqmsample.PH }}]</span>
+            <span> --- SampleTypesText: [{{ mwqmsample.SampleTypesText }}]</span>
+            <span> --- SampleType_old: [{{ GetSampleTypeEnumText(mwqmsample.SampleType_old) }}]</span>
+          </p>
+          <p>
+            <span>Tube_10: [{{ mwqmsample.Tube_10 }}]</span>
+            <span> --- Tube_1_0: [{{ mwqmsample.Tube_1_0 }}]</span>
+            <span> --- Tube_0_1: [{{ mwqmsample.Tube_0_1 }}]</span>
+            <span> --- ProcessedBy: [{{ mwqmsample.ProcessedBy }}]</span>
+          </p>
+          <p>
+            <span>UseForOpenData: [{{ mwqmsample.UseForOpenData }}]</span>
+            <span> --- LastUpdateDate_UTC: [{{ mwqmsample.LastUpdateDate_UTC }}]</span>
+            <span> --- LastUpdateContactTVItemID: [{{ mwqmsample.LastUpdateContactTVItemID }}]</span>
+          </p>
         </blockquote>
        </div>
      </div>

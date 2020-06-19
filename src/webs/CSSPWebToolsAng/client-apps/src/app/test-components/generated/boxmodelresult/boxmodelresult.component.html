@@ -24,10 +24,10 @@
             <span>Delete BoxModelResultID [{{ boxmodelresult.BoxModelResultID }}]&nbsp;&nbsp;&nbsp;</span>
             <mat-icon>delete</mat-icon>
           </button>&nbsp;&nbsp;&nbsp;
-          <button mat-raised-button [color]="GetPutButtonColor(boxmodelresult)"(click)="ShowPut(boxmodelresult)">
+          <button mat-raised-button [color]="GetPutButtonColor(boxmodelresult)" (click)="ShowPut(boxmodelresult)">
             <span>Show Put</span>
           </button>&nbsp;&nbsp;
-          <button mat-raised-button [color]="GetPostButtonColor(boxmodelresult)"(click)="ShowPost(boxmodelresult)">
+          <button mat-raised-button [color]="GetPostButtonColor(boxmodelresult)" (click)="ShowPost(boxmodelresult)">
             <span>Show Post</span>
           </button>&nbsp;&nbsp;
           <mat-progress-bar mode="indeterminate" *ngIf="boxmodelresultService.boxmodelresultDeleteModel$.getValue().Working">
@@ -40,34 +40,34 @@
           <app-boxmodelresult-edit [boxmodelresult]="boxmodelresult" [httpClientCommand]="GetPostEnum()"></app-boxmodelresult-edit>
         </p>
         <blockquote>
-        <p>
-          <span>BoxModelResultID: [{{ boxmodelresult.BoxModelResultID }}]</span>
-          <span> --- BoxModelID: [{{ boxmodelresult.BoxModelID }}]</span>
-          <span> --- BoxModelResultType: [{{ GetBoxModelResultTypeEnumText(boxmodelresult.BoxModelResultType) }}]</span>
-          <span> --- Volume_m3: [{{ boxmodelresult.Volume_m3 }}]</span>
- </p>
-        <p>
-          <span>Surface_m2: [{{ boxmodelresult.Surface_m2 }}]</span>
-          <span> --- Radius_m: [{{ boxmodelresult.Radius_m }}]</span>
-          <span> --- LeftSideDiameterLineAngle_deg: [{{ boxmodelresult.LeftSideDiameterLineAngle_deg }}]</span>
-          <span> --- CircleCenterLatitude: [{{ boxmodelresult.CircleCenterLatitude }}]</span>
- </p>
-        <p>
-          <span>CircleCenterLongitude: [{{ boxmodelresult.CircleCenterLongitude }}]</span>
-          <span> --- FixLength: [{{ boxmodelresult.FixLength }}]</span>
-          <span> --- FixWidth: [{{ boxmodelresult.FixWidth }}]</span>
-          <span> --- RectLength_m: [{{ boxmodelresult.RectLength_m }}]</span>
- </p>
-        <p>
-          <span>RectWidth_m: [{{ boxmodelresult.RectWidth_m }}]</span>
-          <span> --- LeftSideLineAngle_deg: [{{ boxmodelresult.LeftSideLineAngle_deg }}]</span>
-          <span> --- LeftSideLineStartLatitude: [{{ boxmodelresult.LeftSideLineStartLatitude }}]</span>
-          <span> --- LeftSideLineStartLongitude: [{{ boxmodelresult.LeftSideLineStartLongitude }}]</span>
- </p>
-        <p>
-          <span>LastUpdateDate_UTC: [{{ boxmodelresult.LastUpdateDate_UTC }}]</span>
-          <span> --- LastUpdateContactTVItemID: [{{ boxmodelresult.LastUpdateContactTVItemID }}]</span>
-        </p>
+          <p>
+            <span>BoxModelResultID: [{{ boxmodelresult.BoxModelResultID }}]</span>
+            <span> --- BoxModelID: [{{ boxmodelresult.BoxModelID }}]</span>
+            <span> --- BoxModelResultType: [{{ GetBoxModelResultTypeEnumText(boxmodelresult.BoxModelResultType) }}]</span>
+            <span> --- Volume_m3: [{{ boxmodelresult.Volume_m3 }}]</span>
+          </p>
+          <p>
+            <span>Surface_m2: [{{ boxmodelresult.Surface_m2 }}]</span>
+            <span> --- Radius_m: [{{ boxmodelresult.Radius_m }}]</span>
+            <span> --- LeftSideDiameterLineAngle_deg: [{{ boxmodelresult.LeftSideDiameterLineAngle_deg }}]</span>
+            <span> --- CircleCenterLatitude: [{{ boxmodelresult.CircleCenterLatitude }}]</span>
+          </p>
+          <p>
+            <span>CircleCenterLongitude: [{{ boxmodelresult.CircleCenterLongitude }}]</span>
+            <span> --- FixLength: [{{ boxmodelresult.FixLength }}]</span>
+            <span> --- FixWidth: [{{ boxmodelresult.FixWidth }}]</span>
+            <span> --- RectLength_m: [{{ boxmodelresult.RectLength_m }}]</span>
+          </p>
+          <p>
+            <span>RectWidth_m: [{{ boxmodelresult.RectWidth_m }}]</span>
+            <span> --- LeftSideLineAngle_deg: [{{ boxmodelresult.LeftSideLineAngle_deg }}]</span>
+            <span> --- LeftSideLineStartLatitude: [{{ boxmodelresult.LeftSideLineStartLatitude }}]</span>
+            <span> --- LeftSideLineStartLongitude: [{{ boxmodelresult.LeftSideLineStartLongitude }}]</span>
+          </p>
+          <p>
+            <span>LastUpdateDate_UTC: [{{ boxmodelresult.LastUpdateDate_UTC }}]</span>
+            <span> --- LastUpdateContactTVItemID: [{{ boxmodelresult.LastUpdateContactTVItemID }}]</span>
+          </p>
         </blockquote>
        </div>
      </div>

@@ -24,10 +24,10 @@
             <span>Delete BoxModelID [{{ boxmodel.BoxModelID }}]&nbsp;&nbsp;&nbsp;</span>
             <mat-icon>delete</mat-icon>
           </button>&nbsp;&nbsp;&nbsp;
-          <button mat-raised-button [color]="GetPutButtonColor(boxmodel)"(click)="ShowPut(boxmodel)">
+          <button mat-raised-button [color]="GetPutButtonColor(boxmodel)" (click)="ShowPut(boxmodel)">
             <span>Show Put</span>
           </button>&nbsp;&nbsp;
-          <button mat-raised-button [color]="GetPostButtonColor(boxmodel)"(click)="ShowPost(boxmodel)">
+          <button mat-raised-button [color]="GetPostButtonColor(boxmodel)" (click)="ShowPost(boxmodel)">
             <span>Show Post</span>
           </button>&nbsp;&nbsp;
           <mat-progress-bar mode="indeterminate" *ngIf="boxmodelService.boxmodelDeleteModel$.getValue().Working">
@@ -40,28 +40,28 @@
           <app-boxmodel-edit [boxmodel]="boxmodel" [httpClientCommand]="GetPostEnum()"></app-boxmodel-edit>
         </p>
         <blockquote>
-        <p>
-          <span>BoxModelID: [{{ boxmodel.BoxModelID }}]</span>
-          <span> --- InfrastructureTVItemID: [{{ boxmodel.InfrastructureTVItemID }}]</span>
-          <span> --- Discharge_m3_day: [{{ boxmodel.Discharge_m3_day }}]</span>
-          <span> --- Depth_m: [{{ boxmodel.Depth_m }}]</span>
- </p>
-        <p>
-          <span>Temperature_C: [{{ boxmodel.Temperature_C }}]</span>
-          <span> --- Dilution: [{{ boxmodel.Dilution }}]</span>
-          <span> --- DecayRate_per_day: [{{ boxmodel.DecayRate_per_day }}]</span>
-          <span> --- FCUntreated_MPN_100ml: [{{ boxmodel.FCUntreated_MPN_100ml }}]</span>
- </p>
-        <p>
-          <span>FCPreDisinfection_MPN_100ml: [{{ boxmodel.FCPreDisinfection_MPN_100ml }}]</span>
-          <span> --- Concentration_MPN_100ml: [{{ boxmodel.Concentration_MPN_100ml }}]</span>
-          <span> --- T90_hour: [{{ boxmodel.T90_hour }}]</span>
-          <span> --- DischargeDuration_hour: [{{ boxmodel.DischargeDuration_hour }}]</span>
- </p>
-        <p>
-          <span>LastUpdateDate_UTC: [{{ boxmodel.LastUpdateDate_UTC }}]</span>
-          <span> --- LastUpdateContactTVItemID: [{{ boxmodel.LastUpdateContactTVItemID }}]</span>
-        </p>
+          <p>
+            <span>BoxModelID: [{{ boxmodel.BoxModelID }}]</span>
+            <span> --- InfrastructureTVItemID: [{{ boxmodel.InfrastructureTVItemID }}]</span>
+            <span> --- Discharge_m3_day: [{{ boxmodel.Discharge_m3_day }}]</span>
+            <span> --- Depth_m: [{{ boxmodel.Depth_m }}]</span>
+          </p>
+          <p>
+            <span>Temperature_C: [{{ boxmodel.Temperature_C }}]</span>
+            <span> --- Dilution: [{{ boxmodel.Dilution }}]</span>
+            <span> --- DecayRate_per_day: [{{ boxmodel.DecayRate_per_day }}]</span>
+            <span> --- FCUntreated_MPN_100ml: [{{ boxmodel.FCUntreated_MPN_100ml }}]</span>
+          </p>
+          <p>
+            <span>FCPreDisinfection_MPN_100ml: [{{ boxmodel.FCPreDisinfection_MPN_100ml }}]</span>
+            <span> --- Concentration_MPN_100ml: [{{ boxmodel.Concentration_MPN_100ml }}]</span>
+            <span> --- T90_hour: [{{ boxmodel.T90_hour }}]</span>
+            <span> --- DischargeDuration_hour: [{{ boxmodel.DischargeDuration_hour }}]</span>
+          </p>
+          <p>
+            <span>LastUpdateDate_UTC: [{{ boxmodel.LastUpdateDate_UTC }}]</span>
+            <span> --- LastUpdateContactTVItemID: [{{ boxmodel.LastUpdateContactTVItemID }}]</span>
+          </p>
         </blockquote>
        </div>
      </div>

@@ -24,10 +24,10 @@
             <span>Delete TVFileID [{{ tvfile.TVFileID }}]&nbsp;&nbsp;&nbsp;</span>
             <mat-icon>delete</mat-icon>
           </button>&nbsp;&nbsp;&nbsp;
-          <button mat-raised-button [color]="GetPutButtonColor(tvfile)"(click)="ShowPut(tvfile)">
+          <button mat-raised-button [color]="GetPutButtonColor(tvfile)" (click)="ShowPut(tvfile)">
             <span>Show Put</span>
           </button>&nbsp;&nbsp;
-          <button mat-raised-button [color]="GetPostButtonColor(tvfile)"(click)="ShowPost(tvfile)">
+          <button mat-raised-button [color]="GetPostButtonColor(tvfile)" (click)="ShowPost(tvfile)">
             <span>Show Post</span>
           </button>&nbsp;&nbsp;
           <mat-progress-bar mode="indeterminate" *ngIf="tvfileService.tvfileDeleteModel$.getValue().Working">
@@ -40,34 +40,34 @@
           <app-tvfile-edit [tvfile]="tvfile" [httpClientCommand]="GetPostEnum()"></app-tvfile-edit>
         </p>
         <blockquote>
-        <p>
-          <span>TVFileID: [{{ tvfile.TVFileID }}]</span>
-          <span> --- TVFileTVItemID: [{{ tvfile.TVFileTVItemID }}]</span>
-          <span> --- TemplateTVType: [{{ GetTVTypeEnumText(tvfile.TemplateTVType) }}]</span>
-          <span> --- ReportTypeID: [{{ tvfile.ReportTypeID }}]</span>
- </p>
-        <p>
-          <span>Parameters: [{{ tvfile.Parameters }}]</span>
-          <span> --- Year: [{{ tvfile.Year }}]</span>
-          <span> --- Language: [{{ GetLanguageEnumText(tvfile.Language) }}]</span>
-          <span> --- FilePurpose: [{{ GetFilePurposeEnumText(tvfile.FilePurpose) }}]</span>
- </p>
-        <p>
-          <span>FileType: [{{ GetFileTypeEnumText(tvfile.FileType) }}]</span>
-          <span> --- FileSize_kb: [{{ tvfile.FileSize_kb }}]</span>
-          <span> --- FileInfo: [{{ tvfile.FileInfo }}]</span>
-          <span> --- FileCreatedDate_UTC: [{{ tvfile.FileCreatedDate_UTC }}]</span>
- </p>
-        <p>
-          <span>FromWater: [{{ tvfile.FromWater }}]</span>
-          <span> --- ClientFilePath: [{{ tvfile.ClientFilePath }}]</span>
-          <span> --- ServerFileName: [{{ tvfile.ServerFileName }}]</span>
-          <span> --- ServerFilePath: [{{ tvfile.ServerFilePath }}]</span>
- </p>
-        <p>
-          <span>LastUpdateDate_UTC: [{{ tvfile.LastUpdateDate_UTC }}]</span>
-          <span> --- LastUpdateContactTVItemID: [{{ tvfile.LastUpdateContactTVItemID }}]</span>
-        </p>
+          <p>
+            <span>TVFileID: [{{ tvfile.TVFileID }}]</span>
+            <span> --- TVFileTVItemID: [{{ tvfile.TVFileTVItemID }}]</span>
+            <span> --- TemplateTVType: [{{ GetTVTypeEnumText(tvfile.TemplateTVType) }}]</span>
+            <span> --- ReportTypeID: [{{ tvfile.ReportTypeID }}]</span>
+          </p>
+          <p>
+            <span>Parameters: [{{ tvfile.Parameters }}]</span>
+            <span> --- Year: [{{ tvfile.Year }}]</span>
+            <span> --- Language: [{{ GetLanguageEnumText(tvfile.Language) }}]</span>
+            <span> --- FilePurpose: [{{ GetFilePurposeEnumText(tvfile.FilePurpose) }}]</span>
+          </p>
+          <p>
+            <span>FileType: [{{ GetFileTypeEnumText(tvfile.FileType) }}]</span>
+            <span> --- FileSize_kb: [{{ tvfile.FileSize_kb }}]</span>
+            <span> --- FileInfo: [{{ tvfile.FileInfo }}]</span>
+            <span> --- FileCreatedDate_UTC: [{{ tvfile.FileCreatedDate_UTC }}]</span>
+          </p>
+          <p>
+            <span>FromWater: [{{ tvfile.FromWater }}]</span>
+            <span> --- ClientFilePath: [{{ tvfile.ClientFilePath }}]</span>
+            <span> --- ServerFileName: [{{ tvfile.ServerFileName }}]</span>
+            <span> --- ServerFilePath: [{{ tvfile.ServerFilePath }}]</span>
+          </p>
+          <p>
+            <span>LastUpdateDate_UTC: [{{ tvfile.LastUpdateDate_UTC }}]</span>
+            <span> --- LastUpdateContactTVItemID: [{{ tvfile.LastUpdateContactTVItemID }}]</span>
+          </p>
         </blockquote>
        </div>
      </div>

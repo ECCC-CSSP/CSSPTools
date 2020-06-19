@@ -24,10 +24,10 @@
             <span>Delete PolSourceSiteID [{{ polsourcesite.PolSourceSiteID }}]&nbsp;&nbsp;&nbsp;</span>
             <mat-icon>delete</mat-icon>
           </button>&nbsp;&nbsp;&nbsp;
-          <button mat-raised-button [color]="GetPutButtonColor(polsourcesite)"(click)="ShowPut(polsourcesite)">
+          <button mat-raised-button [color]="GetPutButtonColor(polsourcesite)" (click)="ShowPut(polsourcesite)">
             <span>Show Put</span>
           </button>&nbsp;&nbsp;
-          <button mat-raised-button [color]="GetPostButtonColor(polsourcesite)"(click)="ShowPost(polsourcesite)">
+          <button mat-raised-button [color]="GetPostButtonColor(polsourcesite)" (click)="ShowPost(polsourcesite)">
             <span>Show Post</span>
           </button>&nbsp;&nbsp;
           <mat-progress-bar mode="indeterminate" *ngIf="polsourcesiteService.polsourcesiteDeleteModel$.getValue().Working">
@@ -40,23 +40,23 @@
           <app-polsourcesite-edit [polsourcesite]="polsourcesite" [httpClientCommand]="GetPostEnum()"></app-polsourcesite-edit>
         </p>
         <blockquote>
-        <p>
-          <span>PolSourceSiteID: [{{ polsourcesite.PolSourceSiteID }}]</span>
-          <span> --- PolSourceSiteTVItemID: [{{ polsourcesite.PolSourceSiteTVItemID }}]</span>
-          <span> --- Temp_Locator_CanDelete: [{{ polsourcesite.Temp_Locator_CanDelete }}]</span>
-          <span> --- Oldsiteid: [{{ polsourcesite.Oldsiteid }}]</span>
- </p>
-        <p>
-          <span>Site: [{{ polsourcesite.Site }}]</span>
-          <span> --- SiteID: [{{ polsourcesite.SiteID }}]</span>
-          <span> --- IsPointSource: [{{ polsourcesite.IsPointSource }}]</span>
-          <span> --- InactiveReason: [{{ GetPolSourceInactiveReasonEnumText(polsourcesite.InactiveReason) }}]</span>
- </p>
-        <p>
-          <span>CivicAddressTVItemID: [{{ polsourcesite.CivicAddressTVItemID }}]</span>
-          <span> --- LastUpdateDate_UTC: [{{ polsourcesite.LastUpdateDate_UTC }}]</span>
-          <span> --- LastUpdateContactTVItemID: [{{ polsourcesite.LastUpdateContactTVItemID }}]</span>
-        </p>
+          <p>
+            <span>PolSourceSiteID: [{{ polsourcesite.PolSourceSiteID }}]</span>
+            <span> --- PolSourceSiteTVItemID: [{{ polsourcesite.PolSourceSiteTVItemID }}]</span>
+            <span> --- Temp_Locator_CanDelete: [{{ polsourcesite.Temp_Locator_CanDelete }}]</span>
+            <span> --- Oldsiteid: [{{ polsourcesite.Oldsiteid }}]</span>
+          </p>
+          <p>
+            <span>Site: [{{ polsourcesite.Site }}]</span>
+            <span> --- SiteID: [{{ polsourcesite.SiteID }}]</span>
+            <span> --- IsPointSource: [{{ polsourcesite.IsPointSource }}]</span>
+            <span> --- InactiveReason: [{{ GetPolSourceInactiveReasonEnumText(polsourcesite.InactiveReason) }}]</span>
+          </p>
+          <p>
+            <span>CivicAddressTVItemID: [{{ polsourcesite.CivicAddressTVItemID }}]</span>
+            <span> --- LastUpdateDate_UTC: [{{ polsourcesite.LastUpdateDate_UTC }}]</span>
+            <span> --- LastUpdateContactTVItemID: [{{ polsourcesite.LastUpdateContactTVItemID }}]</span>
+          </p>
         </blockquote>
        </div>
      </div>

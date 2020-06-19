@@ -24,10 +24,10 @@
             <span>Delete VPScenarioID [{{ vpscenario.VPScenarioID }}]&nbsp;&nbsp;&nbsp;</span>
             <mat-icon>delete</mat-icon>
           </button>&nbsp;&nbsp;&nbsp;
-          <button mat-raised-button [color]="GetPutButtonColor(vpscenario)"(click)="ShowPut(vpscenario)">
+          <button mat-raised-button [color]="GetPutButtonColor(vpscenario)" (click)="ShowPut(vpscenario)">
             <span>Show Put</span>
           </button>&nbsp;&nbsp;
-          <button mat-raised-button [color]="GetPostButtonColor(vpscenario)"(click)="ShowPost(vpscenario)">
+          <button mat-raised-button [color]="GetPostButtonColor(vpscenario)" (click)="ShowPost(vpscenario)">
             <span>Show Post</span>
           </button>&nbsp;&nbsp;
           <mat-progress-bar mode="indeterminate" *ngIf="vpscenarioService.vpscenarioDeleteModel$.getValue().Working">
@@ -40,40 +40,40 @@
           <app-vpscenario-edit [vpscenario]="vpscenario" [httpClientCommand]="GetPostEnum()"></app-vpscenario-edit>
         </p>
         <blockquote>
-        <p>
-          <span>VPScenarioID: [{{ vpscenario.VPScenarioID }}]</span>
-          <span> --- InfrastructureTVItemID: [{{ vpscenario.InfrastructureTVItemID }}]</span>
-          <span> --- VPScenarioStatus: [{{ GetScenarioStatusEnumText(vpscenario.VPScenarioStatus) }}]</span>
-          <span> --- UseAsBestEstimate: [{{ vpscenario.UseAsBestEstimate }}]</span>
- </p>
-        <p>
-          <span>EffluentFlow_m3_s: [{{ vpscenario.EffluentFlow_m3_s }}]</span>
-          <span> --- EffluentConcentration_MPN_100ml: [{{ vpscenario.EffluentConcentration_MPN_100ml }}]</span>
-          <span> --- FroudeNumber: [{{ vpscenario.FroudeNumber }}]</span>
-          <span> --- PortDiameter_m: [{{ vpscenario.PortDiameter_m }}]</span>
- </p>
-        <p>
-          <span>PortDepth_m: [{{ vpscenario.PortDepth_m }}]</span>
-          <span> --- PortElevation_m: [{{ vpscenario.PortElevation_m }}]</span>
-          <span> --- VerticalAngle_deg: [{{ vpscenario.VerticalAngle_deg }}]</span>
-          <span> --- HorizontalAngle_deg: [{{ vpscenario.HorizontalAngle_deg }}]</span>
- </p>
-        <p>
-          <span>NumberOfPorts: [{{ vpscenario.NumberOfPorts }}]</span>
-          <span> --- PortSpacing_m: [{{ vpscenario.PortSpacing_m }}]</span>
-          <span> --- AcuteMixZone_m: [{{ vpscenario.AcuteMixZone_m }}]</span>
-          <span> --- ChronicMixZone_m: [{{ vpscenario.ChronicMixZone_m }}]</span>
- </p>
-        <p>
-          <span>EffluentSalinity_PSU: [{{ vpscenario.EffluentSalinity_PSU }}]</span>
-          <span> --- EffluentTemperature_C: [{{ vpscenario.EffluentTemperature_C }}]</span>
-          <span> --- EffluentVelocity_m_s: [{{ vpscenario.EffluentVelocity_m_s }}]</span>
-          <span> --- RawResults: [{{ vpscenario.RawResults }}]</span>
- </p>
-        <p>
-          <span>LastUpdateDate_UTC: [{{ vpscenario.LastUpdateDate_UTC }}]</span>
-          <span> --- LastUpdateContactTVItemID: [{{ vpscenario.LastUpdateContactTVItemID }}]</span>
-        </p>
+          <p>
+            <span>VPScenarioID: [{{ vpscenario.VPScenarioID }}]</span>
+            <span> --- InfrastructureTVItemID: [{{ vpscenario.InfrastructureTVItemID }}]</span>
+            <span> --- VPScenarioStatus: [{{ GetScenarioStatusEnumText(vpscenario.VPScenarioStatus) }}]</span>
+            <span> --- UseAsBestEstimate: [{{ vpscenario.UseAsBestEstimate }}]</span>
+          </p>
+          <p>
+            <span>EffluentFlow_m3_s: [{{ vpscenario.EffluentFlow_m3_s }}]</span>
+            <span> --- EffluentConcentration_MPN_100ml: [{{ vpscenario.EffluentConcentration_MPN_100ml }}]</span>
+            <span> --- FroudeNumber: [{{ vpscenario.FroudeNumber }}]</span>
+            <span> --- PortDiameter_m: [{{ vpscenario.PortDiameter_m }}]</span>
+          </p>
+          <p>
+            <span>PortDepth_m: [{{ vpscenario.PortDepth_m }}]</span>
+            <span> --- PortElevation_m: [{{ vpscenario.PortElevation_m }}]</span>
+            <span> --- VerticalAngle_deg: [{{ vpscenario.VerticalAngle_deg }}]</span>
+            <span> --- HorizontalAngle_deg: [{{ vpscenario.HorizontalAngle_deg }}]</span>
+          </p>
+          <p>
+            <span>NumberOfPorts: [{{ vpscenario.NumberOfPorts }}]</span>
+            <span> --- PortSpacing_m: [{{ vpscenario.PortSpacing_m }}]</span>
+            <span> --- AcuteMixZone_m: [{{ vpscenario.AcuteMixZone_m }}]</span>
+            <span> --- ChronicMixZone_m: [{{ vpscenario.ChronicMixZone_m }}]</span>
+          </p>
+          <p>
+            <span>EffluentSalinity_PSU: [{{ vpscenario.EffluentSalinity_PSU }}]</span>
+            <span> --- EffluentTemperature_C: [{{ vpscenario.EffluentTemperature_C }}]</span>
+            <span> --- EffluentVelocity_m_s: [{{ vpscenario.EffluentVelocity_m_s }}]</span>
+            <span> --- RawResults: [{{ vpscenario.RawResults }}]</span>
+          </p>
+          <p>
+            <span>LastUpdateDate_UTC: [{{ vpscenario.LastUpdateDate_UTC }}]</span>
+            <span> --- LastUpdateContactTVItemID: [{{ vpscenario.LastUpdateContactTVItemID }}]</span>
+          </p>
         </blockquote>
        </div>
      </div>

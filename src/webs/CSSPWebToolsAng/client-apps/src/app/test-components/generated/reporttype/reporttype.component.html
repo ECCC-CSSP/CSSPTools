@@ -24,10 +24,10 @@
             <span>Delete ReportTypeID [{{ reporttype.ReportTypeID }}]&nbsp;&nbsp;&nbsp;</span>
             <mat-icon>delete</mat-icon>
           </button>&nbsp;&nbsp;&nbsp;
-          <button mat-raised-button [color]="GetPutButtonColor(reporttype)"(click)="ShowPut(reporttype)">
+          <button mat-raised-button [color]="GetPutButtonColor(reporttype)" (click)="ShowPut(reporttype)">
             <span>Show Put</span>
           </button>&nbsp;&nbsp;
-          <button mat-raised-button [color]="GetPostButtonColor(reporttype)"(click)="ShowPost(reporttype)">
+          <button mat-raised-button [color]="GetPostButtonColor(reporttype)" (click)="ShowPost(reporttype)">
             <span>Show Post</span>
           </button>&nbsp;&nbsp;
           <mat-progress-bar mode="indeterminate" *ngIf="reporttypeService.reporttypeDeleteModel$.getValue().Working">
@@ -40,22 +40,22 @@
           <app-reporttype-edit [reporttype]="reporttype" [httpClientCommand]="GetPostEnum()"></app-reporttype-edit>
         </p>
         <blockquote>
-        <p>
-          <span>ReportTypeID: [{{ reporttype.ReportTypeID }}]</span>
-          <span> --- TVType: [{{ GetTVTypeEnumText(reporttype.TVType) }}]</span>
-          <span> --- FileType: [{{ GetFileTypeEnumText(reporttype.FileType) }}]</span>
-          <span> --- UniqueCode: [{{ reporttype.UniqueCode }}]</span>
- </p>
-        <p>
-          <span>Language: [{{ GetLanguageEnumText(reporttype.Language) }}]</span>
-          <span> --- Name: [{{ reporttype.Name }}]</span>
-          <span> --- Description: [{{ reporttype.Description }}]</span>
-          <span> --- StartOfFileName: [{{ reporttype.StartOfFileName }}]</span>
- </p>
-        <p>
-          <span>LastUpdateDate_UTC: [{{ reporttype.LastUpdateDate_UTC }}]</span>
-          <span> --- LastUpdateContactTVItemID: [{{ reporttype.LastUpdateContactTVItemID }}]</span>
-        </p>
+          <p>
+            <span>ReportTypeID: [{{ reporttype.ReportTypeID }}]</span>
+            <span> --- TVType: [{{ GetTVTypeEnumText(reporttype.TVType) }}]</span>
+            <span> --- FileType: [{{ GetFileTypeEnumText(reporttype.FileType) }}]</span>
+            <span> --- UniqueCode: [{{ reporttype.UniqueCode }}]</span>
+          </p>
+          <p>
+            <span>Language: [{{ GetLanguageEnumText(reporttype.Language) }}]</span>
+            <span> --- Name: [{{ reporttype.Name }}]</span>
+            <span> --- Description: [{{ reporttype.Description }}]</span>
+            <span> --- StartOfFileName: [{{ reporttype.StartOfFileName }}]</span>
+          </p>
+          <p>
+            <span>LastUpdateDate_UTC: [{{ reporttype.LastUpdateDate_UTC }}]</span>
+            <span> --- LastUpdateContactTVItemID: [{{ reporttype.LastUpdateContactTVItemID }}]</span>
+          </p>
         </blockquote>
        </div>
      </div>

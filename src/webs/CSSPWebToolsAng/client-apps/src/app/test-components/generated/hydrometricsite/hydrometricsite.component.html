@@ -24,10 +24,10 @@
             <span>Delete HydrometricSiteID [{{ hydrometricsite.HydrometricSiteID }}]&nbsp;&nbsp;&nbsp;</span>
             <mat-icon>delete</mat-icon>
           </button>&nbsp;&nbsp;&nbsp;
-          <button mat-raised-button [color]="GetPutButtonColor(hydrometricsite)"(click)="ShowPut(hydrometricsite)">
+          <button mat-raised-button [color]="GetPutButtonColor(hydrometricsite)" (click)="ShowPut(hydrometricsite)">
             <span>Show Put</span>
           </button>&nbsp;&nbsp;
-          <button mat-raised-button [color]="GetPostButtonColor(hydrometricsite)"(click)="ShowPost(hydrometricsite)">
+          <button mat-raised-button [color]="GetPostButtonColor(hydrometricsite)" (click)="ShowPost(hydrometricsite)">
             <span>Show Post</span>
           </button>&nbsp;&nbsp;
           <mat-progress-bar mode="indeterminate" *ngIf="hydrometricsiteService.hydrometricsiteDeleteModel$.getValue().Working">
@@ -40,40 +40,40 @@
           <app-hydrometricsite-edit [hydrometricsite]="hydrometricsite" [httpClientCommand]="GetPostEnum()"></app-hydrometricsite-edit>
         </p>
         <blockquote>
-        <p>
-          <span>HydrometricSiteID: [{{ hydrometricsite.HydrometricSiteID }}]</span>
-          <span> --- HydrometricSiteTVItemID: [{{ hydrometricsite.HydrometricSiteTVItemID }}]</span>
-          <span> --- FedSiteNumber: [{{ hydrometricsite.FedSiteNumber }}]</span>
-          <span> --- QuebecSiteNumber: [{{ hydrometricsite.QuebecSiteNumber }}]</span>
- </p>
-        <p>
-          <span>HydrometricSiteName: [{{ hydrometricsite.HydrometricSiteName }}]</span>
-          <span> --- Description: [{{ hydrometricsite.Description }}]</span>
-          <span> --- Province: [{{ hydrometricsite.Province }}]</span>
-          <span> --- Elevation_m: [{{ hydrometricsite.Elevation_m }}]</span>
- </p>
-        <p>
-          <span>StartDate_Local: [{{ hydrometricsite.StartDate_Local }}]</span>
-          <span> --- EndDate_Local: [{{ hydrometricsite.EndDate_Local }}]</span>
-          <span> --- TimeOffset_hour: [{{ hydrometricsite.TimeOffset_hour }}]</span>
-          <span> --- DrainageArea_km2: [{{ hydrometricsite.DrainageArea_km2 }}]</span>
- </p>
-        <p>
-          <span>IsNatural: [{{ hydrometricsite.IsNatural }}]</span>
-          <span> --- IsActive: [{{ hydrometricsite.IsActive }}]</span>
-          <span> --- Sediment: [{{ hydrometricsite.Sediment }}]</span>
-          <span> --- RHBN: [{{ hydrometricsite.RHBN }}]</span>
- </p>
-        <p>
-          <span>RealTime: [{{ hydrometricsite.RealTime }}]</span>
-          <span> --- HasDischarge: [{{ hydrometricsite.HasDischarge }}]</span>
-          <span> --- HasLevel: [{{ hydrometricsite.HasLevel }}]</span>
-          <span> --- HasRatingCurve: [{{ hydrometricsite.HasRatingCurve }}]</span>
- </p>
-        <p>
-          <span>LastUpdateDate_UTC: [{{ hydrometricsite.LastUpdateDate_UTC }}]</span>
-          <span> --- LastUpdateContactTVItemID: [{{ hydrometricsite.LastUpdateContactTVItemID }}]</span>
-        </p>
+          <p>
+            <span>HydrometricSiteID: [{{ hydrometricsite.HydrometricSiteID }}]</span>
+            <span> --- HydrometricSiteTVItemID: [{{ hydrometricsite.HydrometricSiteTVItemID }}]</span>
+            <span> --- FedSiteNumber: [{{ hydrometricsite.FedSiteNumber }}]</span>
+            <span> --- QuebecSiteNumber: [{{ hydrometricsite.QuebecSiteNumber }}]</span>
+          </p>
+          <p>
+            <span>HydrometricSiteName: [{{ hydrometricsite.HydrometricSiteName }}]</span>
+            <span> --- Description: [{{ hydrometricsite.Description }}]</span>
+            <span> --- Province: [{{ hydrometricsite.Province }}]</span>
+            <span> --- Elevation_m: [{{ hydrometricsite.Elevation_m }}]</span>
+          </p>
+          <p>
+            <span>StartDate_Local: [{{ hydrometricsite.StartDate_Local }}]</span>
+            <span> --- EndDate_Local: [{{ hydrometricsite.EndDate_Local }}]</span>
+            <span> --- TimeOffset_hour: [{{ hydrometricsite.TimeOffset_hour }}]</span>
+            <span> --- DrainageArea_km2: [{{ hydrometricsite.DrainageArea_km2 }}]</span>
+          </p>
+          <p>
+            <span>IsNatural: [{{ hydrometricsite.IsNatural }}]</span>
+            <span> --- IsActive: [{{ hydrometricsite.IsActive }}]</span>
+            <span> --- Sediment: [{{ hydrometricsite.Sediment }}]</span>
+            <span> --- RHBN: [{{ hydrometricsite.RHBN }}]</span>
+          </p>
+          <p>
+            <span>RealTime: [{{ hydrometricsite.RealTime }}]</span>
+            <span> --- HasDischarge: [{{ hydrometricsite.HasDischarge }}]</span>
+            <span> --- HasLevel: [{{ hydrometricsite.HasLevel }}]</span>
+            <span> --- HasRatingCurve: [{{ hydrometricsite.HasRatingCurve }}]</span>
+          </p>
+          <p>
+            <span>LastUpdateDate_UTC: [{{ hydrometricsite.LastUpdateDate_UTC }}]</span>
+            <span> --- LastUpdateContactTVItemID: [{{ hydrometricsite.LastUpdateContactTVItemID }}]</span>
+          </p>
         </blockquote>
        </div>
      </div>

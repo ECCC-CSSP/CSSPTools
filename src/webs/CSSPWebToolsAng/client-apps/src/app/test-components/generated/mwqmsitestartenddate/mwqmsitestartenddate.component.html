@@ -24,10 +24,10 @@
             <span>Delete MWQMSiteStartEndDateID [{{ mwqmsitestartenddate.MWQMSiteStartEndDateID }}]&nbsp;&nbsp;&nbsp;</span>
             <mat-icon>delete</mat-icon>
           </button>&nbsp;&nbsp;&nbsp;
-          <button mat-raised-button [color]="GetPutButtonColor(mwqmsitestartenddate)"(click)="ShowPut(mwqmsitestartenddate)">
+          <button mat-raised-button [color]="GetPutButtonColor(mwqmsitestartenddate)" (click)="ShowPut(mwqmsitestartenddate)">
             <span>Show Put</span>
           </button>&nbsp;&nbsp;
-          <button mat-raised-button [color]="GetPostButtonColor(mwqmsitestartenddate)"(click)="ShowPost(mwqmsitestartenddate)">
+          <button mat-raised-button [color]="GetPostButtonColor(mwqmsitestartenddate)" (click)="ShowPost(mwqmsitestartenddate)">
             <span>Show Post</span>
           </button>&nbsp;&nbsp;
           <mat-progress-bar mode="indeterminate" *ngIf="mwqmsitestartenddateService.mwqmsitestartenddateDeleteModel$.getValue().Working">
@@ -40,16 +40,16 @@
           <app-mwqmsitestartenddate-edit [mwqmsitestartenddate]="mwqmsitestartenddate" [httpClientCommand]="GetPostEnum()"></app-mwqmsitestartenddate-edit>
         </p>
         <blockquote>
-        <p>
-          <span>MWQMSiteStartEndDateID: [{{ mwqmsitestartenddate.MWQMSiteStartEndDateID }}]</span>
-          <span> --- MWQMSiteTVItemID: [{{ mwqmsitestartenddate.MWQMSiteTVItemID }}]</span>
-          <span> --- StartDate: [{{ mwqmsitestartenddate.StartDate }}]</span>
-          <span> --- EndDate: [{{ mwqmsitestartenddate.EndDate }}]</span>
- </p>
-        <p>
-          <span>LastUpdateDate_UTC: [{{ mwqmsitestartenddate.LastUpdateDate_UTC }}]</span>
-          <span> --- LastUpdateContactTVItemID: [{{ mwqmsitestartenddate.LastUpdateContactTVItemID }}]</span>
-        </p>
+          <p>
+            <span>MWQMSiteStartEndDateID: [{{ mwqmsitestartenddate.MWQMSiteStartEndDateID }}]</span>
+            <span> --- MWQMSiteTVItemID: [{{ mwqmsitestartenddate.MWQMSiteTVItemID }}]</span>
+            <span> --- StartDate: [{{ mwqmsitestartenddate.StartDate }}]</span>
+            <span> --- EndDate: [{{ mwqmsitestartenddate.EndDate }}]</span>
+          </p>
+          <p>
+            <span>LastUpdateDate_UTC: [{{ mwqmsitestartenddate.LastUpdateDate_UTC }}]</span>
+            <span> --- LastUpdateContactTVItemID: [{{ mwqmsitestartenddate.LastUpdateContactTVItemID }}]</span>
+          </p>
         </blockquote>
        </div>
      </div>

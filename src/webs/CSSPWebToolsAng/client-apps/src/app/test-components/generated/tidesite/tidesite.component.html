@@ -24,10 +24,10 @@
             <span>Delete TideSiteID [{{ tidesite.TideSiteID }}]&nbsp;&nbsp;&nbsp;</span>
             <mat-icon>delete</mat-icon>
           </button>&nbsp;&nbsp;&nbsp;
-          <button mat-raised-button [color]="GetPutButtonColor(tidesite)"(click)="ShowPut(tidesite)">
+          <button mat-raised-button [color]="GetPutButtonColor(tidesite)" (click)="ShowPut(tidesite)">
             <span>Show Put</span>
           </button>&nbsp;&nbsp;
-          <button mat-raised-button [color]="GetPostButtonColor(tidesite)"(click)="ShowPost(tidesite)">
+          <button mat-raised-button [color]="GetPostButtonColor(tidesite)" (click)="ShowPost(tidesite)">
             <span>Show Post</span>
           </button>&nbsp;&nbsp;
           <mat-progress-bar mode="indeterminate" *ngIf="tidesiteService.tidesiteDeleteModel$.getValue().Working">
@@ -40,18 +40,18 @@
           <app-tidesite-edit [tidesite]="tidesite" [httpClientCommand]="GetPostEnum()"></app-tidesite-edit>
         </p>
         <blockquote>
-        <p>
-          <span>TideSiteID: [{{ tidesite.TideSiteID }}]</span>
-          <span> --- TideSiteTVItemID: [{{ tidesite.TideSiteTVItemID }}]</span>
-          <span> --- TideSiteName: [{{ tidesite.TideSiteName }}]</span>
-          <span> --- Province: [{{ tidesite.Province }}]</span>
- </p>
-        <p>
-          <span>sid: [{{ tidesite.sid }}]</span>
-          <span> --- Zone: [{{ tidesite.Zone }}]</span>
-          <span> --- LastUpdateDate_UTC: [{{ tidesite.LastUpdateDate_UTC }}]</span>
-          <span> --- LastUpdateContactTVItemID: [{{ tidesite.LastUpdateContactTVItemID }}]</span>
-        </p>
+          <p>
+            <span>TideSiteID: [{{ tidesite.TideSiteID }}]</span>
+            <span> --- TideSiteTVItemID: [{{ tidesite.TideSiteTVItemID }}]</span>
+            <span> --- TideSiteName: [{{ tidesite.TideSiteName }}]</span>
+            <span> --- Province: [{{ tidesite.Province }}]</span>
+          </p>
+          <p>
+            <span>sid: [{{ tidesite.sid }}]</span>
+            <span> --- Zone: [{{ tidesite.Zone }}]</span>
+            <span> --- LastUpdateDate_UTC: [{{ tidesite.LastUpdateDate_UTC }}]</span>
+            <span> --- LastUpdateContactTVItemID: [{{ tidesite.LastUpdateContactTVItemID }}]</span>
+          </p>
         </blockquote>
        </div>
      </div>

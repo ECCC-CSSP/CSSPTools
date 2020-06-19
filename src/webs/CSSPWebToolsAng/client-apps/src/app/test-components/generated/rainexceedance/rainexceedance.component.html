@@ -24,10 +24,10 @@
             <span>Delete RainExceedanceID [{{ rainexceedance.RainExceedanceID }}]&nbsp;&nbsp;&nbsp;</span>
             <mat-icon>delete</mat-icon>
           </button>&nbsp;&nbsp;&nbsp;
-          <button mat-raised-button [color]="GetPutButtonColor(rainexceedance)"(click)="ShowPut(rainexceedance)">
+          <button mat-raised-button [color]="GetPutButtonColor(rainexceedance)" (click)="ShowPut(rainexceedance)">
             <span>Show Put</span>
           </button>&nbsp;&nbsp;
-          <button mat-raised-button [color]="GetPostButtonColor(rainexceedance)"(click)="ShowPost(rainexceedance)">
+          <button mat-raised-button [color]="GetPostButtonColor(rainexceedance)" (click)="ShowPost(rainexceedance)">
             <span>Show Post</span>
           </button>&nbsp;&nbsp;
           <mat-progress-bar mode="indeterminate" *ngIf="rainexceedanceService.rainexceedanceDeleteModel$.getValue().Working">
@@ -40,24 +40,24 @@
           <app-rainexceedance-edit [rainexceedance]="rainexceedance" [httpClientCommand]="GetPostEnum()"></app-rainexceedance-edit>
         </p>
         <blockquote>
-        <p>
-          <span>RainExceedanceID: [{{ rainexceedance.RainExceedanceID }}]</span>
-          <span> --- RainExceedanceTVItemID: [{{ rainexceedance.RainExceedanceTVItemID }}]</span>
-          <span> --- StartMonth: [{{ rainexceedance.StartMonth }}]</span>
-          <span> --- StartDay: [{{ rainexceedance.StartDay }}]</span>
- </p>
-        <p>
-          <span>EndMonth: [{{ rainexceedance.EndMonth }}]</span>
-          <span> --- EndDay: [{{ rainexceedance.EndDay }}]</span>
-          <span> --- RainMaximum_mm: [{{ rainexceedance.RainMaximum_mm }}]</span>
-          <span> --- StakeholdersEmailDistributionListID: [{{ rainexceedance.StakeholdersEmailDistributionListID }}]</span>
- </p>
-        <p>
-          <span>OnlyStaffEmailDistributionListID: [{{ rainexceedance.OnlyStaffEmailDistributionListID }}]</span>
-          <span> --- IsActive: [{{ rainexceedance.IsActive }}]</span>
-          <span> --- LastUpdateDate_UTC: [{{ rainexceedance.LastUpdateDate_UTC }}]</span>
-          <span> --- LastUpdateContactTVItemID: [{{ rainexceedance.LastUpdateContactTVItemID }}]</span>
-        </p>
+          <p>
+            <span>RainExceedanceID: [{{ rainexceedance.RainExceedanceID }}]</span>
+            <span> --- RainExceedanceTVItemID: [{{ rainexceedance.RainExceedanceTVItemID }}]</span>
+            <span> --- StartMonth: [{{ rainexceedance.StartMonth }}]</span>
+            <span> --- StartDay: [{{ rainexceedance.StartDay }}]</span>
+          </p>
+          <p>
+            <span>EndMonth: [{{ rainexceedance.EndMonth }}]</span>
+            <span> --- EndDay: [{{ rainexceedance.EndDay }}]</span>
+            <span> --- RainMaximum_mm: [{{ rainexceedance.RainMaximum_mm }}]</span>
+            <span> --- StakeholdersEmailDistributionListID: [{{ rainexceedance.StakeholdersEmailDistributionListID }}]</span>
+          </p>
+          <p>
+            <span>OnlyStaffEmailDistributionListID: [{{ rainexceedance.OnlyStaffEmailDistributionListID }}]</span>
+            <span> --- IsActive: [{{ rainexceedance.IsActive }}]</span>
+            <span> --- LastUpdateDate_UTC: [{{ rainexceedance.LastUpdateDate_UTC }}]</span>
+            <span> --- LastUpdateContactTVItemID: [{{ rainexceedance.LastUpdateContactTVItemID }}]</span>
+          </p>
         </blockquote>
        </div>
      </div>

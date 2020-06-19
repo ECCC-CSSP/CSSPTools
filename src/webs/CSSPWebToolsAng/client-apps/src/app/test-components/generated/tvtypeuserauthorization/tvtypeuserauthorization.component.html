@@ -24,10 +24,10 @@
             <span>Delete TVTypeUserAuthorizationID [{{ tvtypeuserauthorization.TVTypeUserAuthorizationID }}]&nbsp;&nbsp;&nbsp;</span>
             <mat-icon>delete</mat-icon>
           </button>&nbsp;&nbsp;&nbsp;
-          <button mat-raised-button [color]="GetPutButtonColor(tvtypeuserauthorization)"(click)="ShowPut(tvtypeuserauthorization)">
+          <button mat-raised-button [color]="GetPutButtonColor(tvtypeuserauthorization)" (click)="ShowPut(tvtypeuserauthorization)">
             <span>Show Put</span>
           </button>&nbsp;&nbsp;
-          <button mat-raised-button [color]="GetPostButtonColor(tvtypeuserauthorization)"(click)="ShowPost(tvtypeuserauthorization)">
+          <button mat-raised-button [color]="GetPostButtonColor(tvtypeuserauthorization)" (click)="ShowPost(tvtypeuserauthorization)">
             <span>Show Post</span>
           </button>&nbsp;&nbsp;
           <mat-progress-bar mode="indeterminate" *ngIf="tvtypeuserauthorizationService.tvtypeuserauthorizationDeleteModel$.getValue().Working">
@@ -40,16 +40,16 @@
           <app-tvtypeuserauthorization-edit [tvtypeuserauthorization]="tvtypeuserauthorization" [httpClientCommand]="GetPostEnum()"></app-tvtypeuserauthorization-edit>
         </p>
         <blockquote>
-        <p>
-          <span>TVTypeUserAuthorizationID: [{{ tvtypeuserauthorization.TVTypeUserAuthorizationID }}]</span>
-          <span> --- ContactTVItemID: [{{ tvtypeuserauthorization.ContactTVItemID }}]</span>
-          <span> --- TVType: [{{ GetTVTypeEnumText(tvtypeuserauthorization.TVType) }}]</span>
-          <span> --- TVAuth: [{{ GetTVAuthEnumText(tvtypeuserauthorization.TVAuth) }}]</span>
- </p>
-        <p>
-          <span>LastUpdateDate_UTC: [{{ tvtypeuserauthorization.LastUpdateDate_UTC }}]</span>
-          <span> --- LastUpdateContactTVItemID: [{{ tvtypeuserauthorization.LastUpdateContactTVItemID }}]</span>
-        </p>
+          <p>
+            <span>TVTypeUserAuthorizationID: [{{ tvtypeuserauthorization.TVTypeUserAuthorizationID }}]</span>
+            <span> --- ContactTVItemID: [{{ tvtypeuserauthorization.ContactTVItemID }}]</span>
+            <span> --- TVType: [{{ GetTVTypeEnumText(tvtypeuserauthorization.TVType) }}]</span>
+            <span> --- TVAuth: [{{ GetTVAuthEnumText(tvtypeuserauthorization.TVAuth) }}]</span>
+          </p>
+          <p>
+            <span>LastUpdateDate_UTC: [{{ tvtypeuserauthorization.LastUpdateDate_UTC }}]</span>
+            <span> --- LastUpdateContactTVItemID: [{{ tvtypeuserauthorization.LastUpdateContactTVItemID }}]</span>
+          </p>
         </blockquote>
        </div>
      </div>

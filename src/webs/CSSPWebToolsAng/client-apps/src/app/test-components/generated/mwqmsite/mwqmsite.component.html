@@ -24,10 +24,10 @@
             <span>Delete MWQMSiteID [{{ mwqmsite.MWQMSiteID }}]&nbsp;&nbsp;&nbsp;</span>
             <mat-icon>delete</mat-icon>
           </button>&nbsp;&nbsp;&nbsp;
-          <button mat-raised-button [color]="GetPutButtonColor(mwqmsite)"(click)="ShowPut(mwqmsite)">
+          <button mat-raised-button [color]="GetPutButtonColor(mwqmsite)" (click)="ShowPut(mwqmsite)">
             <span>Show Put</span>
           </button>&nbsp;&nbsp;
-          <button mat-raised-button [color]="GetPostButtonColor(mwqmsite)"(click)="ShowPost(mwqmsite)">
+          <button mat-raised-button [color]="GetPostButtonColor(mwqmsite)" (click)="ShowPost(mwqmsite)">
             <span>Show Post</span>
           </button>&nbsp;&nbsp;
           <mat-progress-bar mode="indeterminate" *ngIf="mwqmsiteService.mwqmsiteDeleteModel$.getValue().Working">
@@ -40,18 +40,18 @@
           <app-mwqmsite-edit [mwqmsite]="mwqmsite" [httpClientCommand]="GetPostEnum()"></app-mwqmsite-edit>
         </p>
         <blockquote>
-        <p>
-          <span>MWQMSiteID: [{{ mwqmsite.MWQMSiteID }}]</span>
-          <span> --- MWQMSiteTVItemID: [{{ mwqmsite.MWQMSiteTVItemID }}]</span>
-          <span> --- MWQMSiteNumber: [{{ mwqmsite.MWQMSiteNumber }}]</span>
-          <span> --- MWQMSiteDescription: [{{ mwqmsite.MWQMSiteDescription }}]</span>
- </p>
-        <p>
-          <span>MWQMSiteLatestClassification: [{{ GetMWQMSiteLatestClassificationEnumText(mwqmsite.MWQMSiteLatestClassification) }}]</span>
-          <span> --- Ordinal: [{{ mwqmsite.Ordinal }}]</span>
-          <span> --- LastUpdateDate_UTC: [{{ mwqmsite.LastUpdateDate_UTC }}]</span>
-          <span> --- LastUpdateContactTVItemID: [{{ mwqmsite.LastUpdateContactTVItemID }}]</span>
-        </p>
+          <p>
+            <span>MWQMSiteID: [{{ mwqmsite.MWQMSiteID }}]</span>
+            <span> --- MWQMSiteTVItemID: [{{ mwqmsite.MWQMSiteTVItemID }}]</span>
+            <span> --- MWQMSiteNumber: [{{ mwqmsite.MWQMSiteNumber }}]</span>
+            <span> --- MWQMSiteDescription: [{{ mwqmsite.MWQMSiteDescription }}]</span>
+          </p>
+          <p>
+            <span>MWQMSiteLatestClassification: [{{ GetMWQMSiteLatestClassificationEnumText(mwqmsite.MWQMSiteLatestClassification) }}]</span>
+            <span> --- Ordinal: [{{ mwqmsite.Ordinal }}]</span>
+            <span> --- LastUpdateDate_UTC: [{{ mwqmsite.LastUpdateDate_UTC }}]</span>
+            <span> --- LastUpdateContactTVItemID: [{{ mwqmsite.LastUpdateContactTVItemID }}]</span>
+          </p>
         </blockquote>
        </div>
      </div>

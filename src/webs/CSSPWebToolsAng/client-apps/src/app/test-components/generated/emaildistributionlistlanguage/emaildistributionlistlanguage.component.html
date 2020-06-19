@@ -24,10 +24,10 @@
             <span>Delete EmailDistributionListLanguageID [{{ emaildistributionlistlanguage.EmailDistributionListLanguageID }}]&nbsp;&nbsp;&nbsp;</span>
             <mat-icon>delete</mat-icon>
           </button>&nbsp;&nbsp;&nbsp;
-          <button mat-raised-button [color]="GetPutButtonColor(emaildistributionlistlanguage)"(click)="ShowPut(emaildistributionlistlanguage)">
+          <button mat-raised-button [color]="GetPutButtonColor(emaildistributionlistlanguage)" (click)="ShowPut(emaildistributionlistlanguage)">
             <span>Show Put</span>
           </button>&nbsp;&nbsp;
-          <button mat-raised-button [color]="GetPostButtonColor(emaildistributionlistlanguage)"(click)="ShowPost(emaildistributionlistlanguage)">
+          <button mat-raised-button [color]="GetPostButtonColor(emaildistributionlistlanguage)" (click)="ShowPost(emaildistributionlistlanguage)">
             <span>Show Post</span>
           </button>&nbsp;&nbsp;
           <mat-progress-bar mode="indeterminate" *ngIf="emaildistributionlistlanguageService.emaildistributionlistlanguageDeleteModel$.getValue().Working">
@@ -40,17 +40,17 @@
           <app-emaildistributionlistlanguage-edit [emaildistributionlistlanguage]="emaildistributionlistlanguage" [httpClientCommand]="GetPostEnum()"></app-emaildistributionlistlanguage-edit>
         </p>
         <blockquote>
-        <p>
-          <span>EmailDistributionListLanguageID: [{{ emaildistributionlistlanguage.EmailDistributionListLanguageID }}]</span>
-          <span> --- EmailDistributionListID: [{{ emaildistributionlistlanguage.EmailDistributionListID }}]</span>
-          <span> --- Language: [{{ GetLanguageEnumText(emaildistributionlistlanguage.Language) }}]</span>
-          <span> --- EmailListName: [{{ emaildistributionlistlanguage.EmailListName }}]</span>
- </p>
-        <p>
-          <span>TranslationStatus: [{{ GetTranslationStatusEnumText(emaildistributionlistlanguage.TranslationStatus) }}]</span>
-          <span> --- LastUpdateDate_UTC: [{{ emaildistributionlistlanguage.LastUpdateDate_UTC }}]</span>
-          <span> --- LastUpdateContactTVItemID: [{{ emaildistributionlistlanguage.LastUpdateContactTVItemID }}]</span>
-        </p>
+          <p>
+            <span>EmailDistributionListLanguageID: [{{ emaildistributionlistlanguage.EmailDistributionListLanguageID }}]</span>
+            <span> --- EmailDistributionListID: [{{ emaildistributionlistlanguage.EmailDistributionListID }}]</span>
+            <span> --- Language: [{{ GetLanguageEnumText(emaildistributionlistlanguage.Language) }}]</span>
+            <span> --- EmailListName: [{{ emaildistributionlistlanguage.EmailListName }}]</span>
+          </p>
+          <p>
+            <span>TranslationStatus: [{{ GetTranslationStatusEnumText(emaildistributionlistlanguage.TranslationStatus) }}]</span>
+            <span> --- LastUpdateDate_UTC: [{{ emaildistributionlistlanguage.LastUpdateDate_UTC }}]</span>
+            <span> --- LastUpdateContactTVItemID: [{{ emaildistributionlistlanguage.LastUpdateContactTVItemID }}]</span>
+          </p>
         </blockquote>
        </div>
      </div>

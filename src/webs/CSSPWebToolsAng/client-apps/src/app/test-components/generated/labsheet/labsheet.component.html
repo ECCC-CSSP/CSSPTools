@@ -24,10 +24,10 @@
             <span>Delete LabSheetID [{{ labsheet.LabSheetID }}]&nbsp;&nbsp;&nbsp;</span>
             <mat-icon>delete</mat-icon>
           </button>&nbsp;&nbsp;&nbsp;
-          <button mat-raised-button [color]="GetPutButtonColor(labsheet)"(click)="ShowPut(labsheet)">
+          <button mat-raised-button [color]="GetPutButtonColor(labsheet)" (click)="ShowPut(labsheet)">
             <span>Show Put</span>
           </button>&nbsp;&nbsp;
-          <button mat-raised-button [color]="GetPostButtonColor(labsheet)"(click)="ShowPost(labsheet)">
+          <button mat-raised-button [color]="GetPostButtonColor(labsheet)" (click)="ShowPost(labsheet)">
             <span>Show Post</span>
           </button>&nbsp;&nbsp;
           <mat-progress-bar mode="indeterminate" *ngIf="labsheetService.labsheetDeleteModel$.getValue().Working">
@@ -40,40 +40,40 @@
           <app-labsheet-edit [labsheet]="labsheet" [httpClientCommand]="GetPostEnum()"></app-labsheet-edit>
         </p>
         <blockquote>
-        <p>
-          <span>LabSheetID: [{{ labsheet.LabSheetID }}]</span>
-          <span> --- OtherServerLabSheetID: [{{ labsheet.OtherServerLabSheetID }}]</span>
-          <span> --- SamplingPlanID: [{{ labsheet.SamplingPlanID }}]</span>
-          <span> --- SamplingPlanName: [{{ labsheet.SamplingPlanName }}]</span>
- </p>
-        <p>
-          <span>Year: [{{ labsheet.Year }}]</span>
-          <span> --- Month: [{{ labsheet.Month }}]</span>
-          <span> --- Day: [{{ labsheet.Day }}]</span>
-          <span> --- RunNumber: [{{ labsheet.RunNumber }}]</span>
- </p>
-        <p>
-          <span>SubsectorTVItemID: [{{ labsheet.SubsectorTVItemID }}]</span>
-          <span> --- MWQMRunTVItemID: [{{ labsheet.MWQMRunTVItemID }}]</span>
-          <span> --- SamplingPlanType: [{{ GetSamplingPlanTypeEnumText(labsheet.SamplingPlanType) }}]</span>
-          <span> --- SampleType: [{{ GetSampleTypeEnumText(labsheet.SampleType) }}]</span>
- </p>
-        <p>
-          <span>LabSheetType: [{{ GetLabSheetTypeEnumText(labsheet.LabSheetType) }}]</span>
-          <span> --- LabSheetStatus: [{{ GetLabSheetStatusEnumText(labsheet.LabSheetStatus) }}]</span>
-          <span> --- FileName: [{{ labsheet.FileName }}]</span>
-          <span> --- FileLastModifiedDate_Local: [{{ labsheet.FileLastModifiedDate_Local }}]</span>
- </p>
-        <p>
-          <span>FileContent: [{{ labsheet.FileContent }}]</span>
-          <span> --- AcceptedOrRejectedByContactTVItemID: [{{ labsheet.AcceptedOrRejectedByContactTVItemID }}]</span>
-          <span> --- AcceptedOrRejectedDateTime: [{{ labsheet.AcceptedOrRejectedDateTime }}]</span>
-          <span> --- RejectReason: [{{ labsheet.RejectReason }}]</span>
- </p>
-        <p>
-          <span>LastUpdateDate_UTC: [{{ labsheet.LastUpdateDate_UTC }}]</span>
-          <span> --- LastUpdateContactTVItemID: [{{ labsheet.LastUpdateContactTVItemID }}]</span>
-        </p>
+          <p>
+            <span>LabSheetID: [{{ labsheet.LabSheetID }}]</span>
+            <span> --- OtherServerLabSheetID: [{{ labsheet.OtherServerLabSheetID }}]</span>
+            <span> --- SamplingPlanID: [{{ labsheet.SamplingPlanID }}]</span>
+            <span> --- SamplingPlanName: [{{ labsheet.SamplingPlanName }}]</span>
+          </p>
+          <p>
+            <span>Year: [{{ labsheet.Year }}]</span>
+            <span> --- Month: [{{ labsheet.Month }}]</span>
+            <span> --- Day: [{{ labsheet.Day }}]</span>
+            <span> --- RunNumber: [{{ labsheet.RunNumber }}]</span>
+          </p>
+          <p>
+            <span>SubsectorTVItemID: [{{ labsheet.SubsectorTVItemID }}]</span>
+            <span> --- MWQMRunTVItemID: [{{ labsheet.MWQMRunTVItemID }}]</span>
+            <span> --- SamplingPlanType: [{{ GetSamplingPlanTypeEnumText(labsheet.SamplingPlanType) }}]</span>
+            <span> --- SampleType: [{{ GetSampleTypeEnumText(labsheet.SampleType) }}]</span>
+          </p>
+          <p>
+            <span>LabSheetType: [{{ GetLabSheetTypeEnumText(labsheet.LabSheetType) }}]</span>
+            <span> --- LabSheetStatus: [{{ GetLabSheetStatusEnumText(labsheet.LabSheetStatus) }}]</span>
+            <span> --- FileName: [{{ labsheet.FileName }}]</span>
+            <span> --- FileLastModifiedDate_Local: [{{ labsheet.FileLastModifiedDate_Local }}]</span>
+          </p>
+          <p>
+            <span>FileContent: [{{ labsheet.FileContent }}]</span>
+            <span> --- AcceptedOrRejectedByContactTVItemID: [{{ labsheet.AcceptedOrRejectedByContactTVItemID }}]</span>
+            <span> --- AcceptedOrRejectedDateTime: [{{ labsheet.AcceptedOrRejectedDateTime }}]</span>
+            <span> --- RejectReason: [{{ labsheet.RejectReason }}]</span>
+          </p>
+          <p>
+            <span>LastUpdateDate_UTC: [{{ labsheet.LastUpdateDate_UTC }}]</span>
+            <span> --- LastUpdateContactTVItemID: [{{ labsheet.LastUpdateContactTVItemID }}]</span>
+          </p>
         </blockquote>
        </div>
      </div>

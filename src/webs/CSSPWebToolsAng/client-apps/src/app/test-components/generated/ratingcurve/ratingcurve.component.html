@@ -24,10 +24,10 @@
             <span>Delete RatingCurveID [{{ ratingcurve.RatingCurveID }}]&nbsp;&nbsp;&nbsp;</span>
             <mat-icon>delete</mat-icon>
           </button>&nbsp;&nbsp;&nbsp;
-          <button mat-raised-button [color]="GetPutButtonColor(ratingcurve)"(click)="ShowPut(ratingcurve)">
+          <button mat-raised-button [color]="GetPutButtonColor(ratingcurve)" (click)="ShowPut(ratingcurve)">
             <span>Show Put</span>
           </button>&nbsp;&nbsp;
-          <button mat-raised-button [color]="GetPostButtonColor(ratingcurve)"(click)="ShowPost(ratingcurve)">
+          <button mat-raised-button [color]="GetPostButtonColor(ratingcurve)" (click)="ShowPost(ratingcurve)">
             <span>Show Post</span>
           </button>&nbsp;&nbsp;
           <mat-progress-bar mode="indeterminate" *ngIf="ratingcurveService.ratingcurveDeleteModel$.getValue().Working">
@@ -40,15 +40,15 @@
           <app-ratingcurve-edit [ratingcurve]="ratingcurve" [httpClientCommand]="GetPostEnum()"></app-ratingcurve-edit>
         </p>
         <blockquote>
-        <p>
-          <span>RatingCurveID: [{{ ratingcurve.RatingCurveID }}]</span>
-          <span> --- HydrometricSiteID: [{{ ratingcurve.HydrometricSiteID }}]</span>
-          <span> --- RatingCurveNumber: [{{ ratingcurve.RatingCurveNumber }}]</span>
-          <span> --- LastUpdateDate_UTC: [{{ ratingcurve.LastUpdateDate_UTC }}]</span>
- </p>
-        <p>
-          <span>LastUpdateContactTVItemID: [{{ ratingcurve.LastUpdateContactTVItemID }}]</span>
-        </p>
+          <p>
+            <span>RatingCurveID: [{{ ratingcurve.RatingCurveID }}]</span>
+            <span> --- HydrometricSiteID: [{{ ratingcurve.HydrometricSiteID }}]</span>
+            <span> --- RatingCurveNumber: [{{ ratingcurve.RatingCurveNumber }}]</span>
+            <span> --- LastUpdateDate_UTC: [{{ ratingcurve.LastUpdateDate_UTC }}]</span>
+          </p>
+          <p>
+            <span>LastUpdateContactTVItemID: [{{ ratingcurve.LastUpdateContactTVItemID }}]</span>
+          </p>
         </blockquote>
        </div>
      </div>

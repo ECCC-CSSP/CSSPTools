@@ -24,10 +24,10 @@
             <span>Delete BoxModelLanguageID [{{ boxmodellanguage.BoxModelLanguageID }}]&nbsp;&nbsp;&nbsp;</span>
             <mat-icon>delete</mat-icon>
           </button>&nbsp;&nbsp;&nbsp;
-          <button mat-raised-button [color]="GetPutButtonColor(boxmodellanguage)"(click)="ShowPut(boxmodellanguage)">
+          <button mat-raised-button [color]="GetPutButtonColor(boxmodellanguage)" (click)="ShowPut(boxmodellanguage)">
             <span>Show Put</span>
           </button>&nbsp;&nbsp;
-          <button mat-raised-button [color]="GetPostButtonColor(boxmodellanguage)"(click)="ShowPost(boxmodellanguage)">
+          <button mat-raised-button [color]="GetPostButtonColor(boxmodellanguage)" (click)="ShowPost(boxmodellanguage)">
             <span>Show Post</span>
           </button>&nbsp;&nbsp;
           <mat-progress-bar mode="indeterminate" *ngIf="boxmodellanguageService.boxmodellanguageDeleteModel$.getValue().Working">
@@ -40,17 +40,17 @@
           <app-boxmodellanguage-edit [boxmodellanguage]="boxmodellanguage" [httpClientCommand]="GetPostEnum()"></app-boxmodellanguage-edit>
         </p>
         <blockquote>
-        <p>
-          <span>BoxModelLanguageID: [{{ boxmodellanguage.BoxModelLanguageID }}]</span>
-          <span> --- BoxModelID: [{{ boxmodellanguage.BoxModelID }}]</span>
-          <span> --- Language: [{{ GetLanguageEnumText(boxmodellanguage.Language) }}]</span>
-          <span> --- ScenarioName: [{{ boxmodellanguage.ScenarioName }}]</span>
- </p>
-        <p>
-          <span>TranslationStatus: [{{ GetTranslationStatusEnumText(boxmodellanguage.TranslationStatus) }}]</span>
-          <span> --- LastUpdateDate_UTC: [{{ boxmodellanguage.LastUpdateDate_UTC }}]</span>
-          <span> --- LastUpdateContactTVItemID: [{{ boxmodellanguage.LastUpdateContactTVItemID }}]</span>
-        </p>
+          <p>
+            <span>BoxModelLanguageID: [{{ boxmodellanguage.BoxModelLanguageID }}]</span>
+            <span> --- BoxModelID: [{{ boxmodellanguage.BoxModelID }}]</span>
+            <span> --- Language: [{{ GetLanguageEnumText(boxmodellanguage.Language) }}]</span>
+            <span> --- ScenarioName: [{{ boxmodellanguage.ScenarioName }}]</span>
+          </p>
+          <p>
+            <span>TranslationStatus: [{{ GetTranslationStatusEnumText(boxmodellanguage.TranslationStatus) }}]</span>
+            <span> --- LastUpdateDate_UTC: [{{ boxmodellanguage.LastUpdateDate_UTC }}]</span>
+            <span> --- LastUpdateContactTVItemID: [{{ boxmodellanguage.LastUpdateContactTVItemID }}]</span>
+          </p>
         </blockquote>
        </div>
      </div>

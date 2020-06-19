@@ -24,10 +24,10 @@
             <span>Delete PolSourceObservationID [{{ polsourceobservation.PolSourceObservationID }}]&nbsp;&nbsp;&nbsp;</span>
             <mat-icon>delete</mat-icon>
           </button>&nbsp;&nbsp;&nbsp;
-          <button mat-raised-button [color]="GetPutButtonColor(polsourceobservation)"(click)="ShowPut(polsourceobservation)">
+          <button mat-raised-button [color]="GetPutButtonColor(polsourceobservation)" (click)="ShowPut(polsourceobservation)">
             <span>Show Put</span>
           </button>&nbsp;&nbsp;
-          <button mat-raised-button [color]="GetPostButtonColor(polsourceobservation)"(click)="ShowPost(polsourceobservation)">
+          <button mat-raised-button [color]="GetPostButtonColor(polsourceobservation)" (click)="ShowPost(polsourceobservation)">
             <span>Show Post</span>
           </button>&nbsp;&nbsp;
           <mat-progress-bar mode="indeterminate" *ngIf="polsourceobservationService.polsourceobservationDeleteModel$.getValue().Working">
@@ -40,18 +40,18 @@
           <app-polsourceobservation-edit [polsourceobservation]="polsourceobservation" [httpClientCommand]="GetPostEnum()"></app-polsourceobservation-edit>
         </p>
         <blockquote>
-        <p>
-          <span>PolSourceObservationID: [{{ polsourceobservation.PolSourceObservationID }}]</span>
-          <span> --- PolSourceSiteID: [{{ polsourceobservation.PolSourceSiteID }}]</span>
-          <span> --- ObservationDate_Local: [{{ polsourceobservation.ObservationDate_Local }}]</span>
-          <span> --- ContactTVItemID: [{{ polsourceobservation.ContactTVItemID }}]</span>
- </p>
-        <p>
-          <span>DesktopReviewed: [{{ polsourceobservation.DesktopReviewed }}]</span>
-          <span> --- Observation_ToBeDeleted: [{{ polsourceobservation.Observation_ToBeDeleted }}]</span>
-          <span> --- LastUpdateDate_UTC: [{{ polsourceobservation.LastUpdateDate_UTC }}]</span>
-          <span> --- LastUpdateContactTVItemID: [{{ polsourceobservation.LastUpdateContactTVItemID }}]</span>
-        </p>
+          <p>
+            <span>PolSourceObservationID: [{{ polsourceobservation.PolSourceObservationID }}]</span>
+            <span> --- PolSourceSiteID: [{{ polsourceobservation.PolSourceSiteID }}]</span>
+            <span> --- ObservationDate_Local: [{{ polsourceobservation.ObservationDate_Local }}]</span>
+            <span> --- ContactTVItemID: [{{ polsourceobservation.ContactTVItemID }}]</span>
+          </p>
+          <p>
+            <span>DesktopReviewed: [{{ polsourceobservation.DesktopReviewed }}]</span>
+            <span> --- Observation_ToBeDeleted: [{{ polsourceobservation.Observation_ToBeDeleted }}]</span>
+            <span> --- LastUpdateDate_UTC: [{{ polsourceobservation.LastUpdateDate_UTC }}]</span>
+            <span> --- LastUpdateContactTVItemID: [{{ polsourceobservation.LastUpdateContactTVItemID }}]</span>
+          </p>
         </blockquote>
        </div>
      </div>

@@ -24,10 +24,10 @@
             <span>Delete LabSheetDetailID [{{ labsheetdetail.LabSheetDetailID }}]&nbsp;&nbsp;&nbsp;</span>
             <mat-icon>delete</mat-icon>
           </button>&nbsp;&nbsp;&nbsp;
-          <button mat-raised-button [color]="GetPutButtonColor(labsheetdetail)"(click)="ShowPut(labsheetdetail)">
+          <button mat-raised-button [color]="GetPutButtonColor(labsheetdetail)" (click)="ShowPut(labsheetdetail)">
             <span>Show Put</span>
           </button>&nbsp;&nbsp;
-          <button mat-raised-button [color]="GetPostButtonColor(labsheetdetail)"(click)="ShowPost(labsheetdetail)">
+          <button mat-raised-button [color]="GetPostButtonColor(labsheetdetail)" (click)="ShowPost(labsheetdetail)">
             <span>Show Post</span>
           </button>&nbsp;&nbsp;
           <mat-progress-bar mode="indeterminate" *ngIf="labsheetdetailService.labsheetdetailDeleteModel$.getValue().Working">
@@ -40,105 +40,105 @@
           <app-labsheetdetail-edit [labsheetdetail]="labsheetdetail" [httpClientCommand]="GetPostEnum()"></app-labsheetdetail-edit>
         </p>
         <blockquote>
-        <p>
-          <span>LabSheetDetailID: [{{ labsheetdetail.LabSheetDetailID }}]</span>
-          <span> --- LabSheetID: [{{ labsheetdetail.LabSheetID }}]</span>
-          <span> --- SamplingPlanID: [{{ labsheetdetail.SamplingPlanID }}]</span>
-          <span> --- SubsectorTVItemID: [{{ labsheetdetail.SubsectorTVItemID }}]</span>
- </p>
-        <p>
-          <span>Version: [{{ labsheetdetail.Version }}]</span>
-          <span> --- RunDate: [{{ labsheetdetail.RunDate }}]</span>
-          <span> --- Tides: [{{ labsheetdetail.Tides }}]</span>
-          <span> --- SampleCrewInitials: [{{ labsheetdetail.SampleCrewInitials }}]</span>
- </p>
-        <p>
-          <span>WaterBathCount: [{{ labsheetdetail.WaterBathCount }}]</span>
-          <span> --- IncubationBath1StartTime: [{{ labsheetdetail.IncubationBath1StartTime }}]</span>
-          <span> --- IncubationBath2StartTime: [{{ labsheetdetail.IncubationBath2StartTime }}]</span>
-          <span> --- IncubationBath3StartTime: [{{ labsheetdetail.IncubationBath3StartTime }}]</span>
- </p>
-        <p>
-          <span>IncubationBath1EndTime: [{{ labsheetdetail.IncubationBath1EndTime }}]</span>
-          <span> --- IncubationBath2EndTime: [{{ labsheetdetail.IncubationBath2EndTime }}]</span>
-          <span> --- IncubationBath3EndTime: [{{ labsheetdetail.IncubationBath3EndTime }}]</span>
-          <span> --- IncubationBath1TimeCalculated_minutes: [{{ labsheetdetail.IncubationBath1TimeCalculated_minutes }}]</span>
- </p>
-        <p>
-          <span>IncubationBath2TimeCalculated_minutes: [{{ labsheetdetail.IncubationBath2TimeCalculated_minutes }}]</span>
-          <span> --- IncubationBath3TimeCalculated_minutes: [{{ labsheetdetail.IncubationBath3TimeCalculated_minutes }}]</span>
-          <span> --- WaterBath1: [{{ labsheetdetail.WaterBath1 }}]</span>
-          <span> --- WaterBath2: [{{ labsheetdetail.WaterBath2 }}]</span>
- </p>
-        <p>
-          <span>WaterBath3: [{{ labsheetdetail.WaterBath3 }}]</span>
-          <span> --- TCField1: [{{ labsheetdetail.TCField1 }}]</span>
-          <span> --- TCLab1: [{{ labsheetdetail.TCLab1 }}]</span>
-          <span> --- TCField2: [{{ labsheetdetail.TCField2 }}]</span>
- </p>
-        <p>
-          <span>TCLab2: [{{ labsheetdetail.TCLab2 }}]</span>
-          <span> --- TCFirst: [{{ labsheetdetail.TCFirst }}]</span>
-          <span> --- TCAverage: [{{ labsheetdetail.TCAverage }}]</span>
-          <span> --- ControlLot: [{{ labsheetdetail.ControlLot }}]</span>
- </p>
-        <p>
-          <span>Positive35: [{{ labsheetdetail.Positive35 }}]</span>
-          <span> --- NonTarget35: [{{ labsheetdetail.NonTarget35 }}]</span>
-          <span> --- Negative35: [{{ labsheetdetail.Negative35 }}]</span>
-          <span> --- Bath1Positive44_5: [{{ labsheetdetail.Bath1Positive44_5 }}]</span>
- </p>
-        <p>
-          <span>Bath2Positive44_5: [{{ labsheetdetail.Bath2Positive44_5 }}]</span>
-          <span> --- Bath3Positive44_5: [{{ labsheetdetail.Bath3Positive44_5 }}]</span>
-          <span> --- Bath1NonTarget44_5: [{{ labsheetdetail.Bath1NonTarget44_5 }}]</span>
-          <span> --- Bath2NonTarget44_5: [{{ labsheetdetail.Bath2NonTarget44_5 }}]</span>
- </p>
-        <p>
-          <span>Bath3NonTarget44_5: [{{ labsheetdetail.Bath3NonTarget44_5 }}]</span>
-          <span> --- Bath1Negative44_5: [{{ labsheetdetail.Bath1Negative44_5 }}]</span>
-          <span> --- Bath2Negative44_5: [{{ labsheetdetail.Bath2Negative44_5 }}]</span>
-          <span> --- Bath3Negative44_5: [{{ labsheetdetail.Bath3Negative44_5 }}]</span>
- </p>
-        <p>
-          <span>Blank35: [{{ labsheetdetail.Blank35 }}]</span>
-          <span> --- Bath1Blank44_5: [{{ labsheetdetail.Bath1Blank44_5 }}]</span>
-          <span> --- Bath2Blank44_5: [{{ labsheetdetail.Bath2Blank44_5 }}]</span>
-          <span> --- Bath3Blank44_5: [{{ labsheetdetail.Bath3Blank44_5 }}]</span>
- </p>
-        <p>
-          <span>Lot35: [{{ labsheetdetail.Lot35 }}]</span>
-          <span> --- Lot44_5: [{{ labsheetdetail.Lot44_5 }}]</span>
-          <span> --- Weather: [{{ labsheetdetail.Weather }}]</span>
-          <span> --- RunComment: [{{ labsheetdetail.RunComment }}]</span>
- </p>
-        <p>
-          <span>RunWeatherComment: [{{ labsheetdetail.RunWeatherComment }}]</span>
-          <span> --- SampleBottleLotNumber: [{{ labsheetdetail.SampleBottleLotNumber }}]</span>
-          <span> --- SalinitiesReadBy: [{{ labsheetdetail.SalinitiesReadBy }}]</span>
-          <span> --- SalinitiesReadDate: [{{ labsheetdetail.SalinitiesReadDate }}]</span>
- </p>
-        <p>
-          <span>ResultsReadBy: [{{ labsheetdetail.ResultsReadBy }}]</span>
-          <span> --- ResultsReadDate: [{{ labsheetdetail.ResultsReadDate }}]</span>
-          <span> --- ResultsRecordedBy: [{{ labsheetdetail.ResultsRecordedBy }}]</span>
-          <span> --- ResultsRecordedDate: [{{ labsheetdetail.ResultsRecordedDate }}]</span>
- </p>
-        <p>
-          <span>DailyDuplicateRLog: [{{ labsheetdetail.DailyDuplicateRLog }}]</span>
-          <span> --- DailyDuplicatePrecisionCriteria: [{{ labsheetdetail.DailyDuplicatePrecisionCriteria }}]</span>
-          <span> --- DailyDuplicateAcceptable: [{{ labsheetdetail.DailyDuplicateAcceptable }}]</span>
-          <span> --- IntertechDuplicateRLog: [{{ labsheetdetail.IntertechDuplicateRLog }}]</span>
- </p>
-        <p>
-          <span>IntertechDuplicatePrecisionCriteria: [{{ labsheetdetail.IntertechDuplicatePrecisionCriteria }}]</span>
-          <span> --- IntertechDuplicateAcceptable: [{{ labsheetdetail.IntertechDuplicateAcceptable }}]</span>
-          <span> --- IntertechReadAcceptable: [{{ labsheetdetail.IntertechReadAcceptable }}]</span>
-          <span> --- LastUpdateDate_UTC: [{{ labsheetdetail.LastUpdateDate_UTC }}]</span>
- </p>
-        <p>
-          <span>LastUpdateContactTVItemID: [{{ labsheetdetail.LastUpdateContactTVItemID }}]</span>
-        </p>
+          <p>
+            <span>LabSheetDetailID: [{{ labsheetdetail.LabSheetDetailID }}]</span>
+            <span> --- LabSheetID: [{{ labsheetdetail.LabSheetID }}]</span>
+            <span> --- SamplingPlanID: [{{ labsheetdetail.SamplingPlanID }}]</span>
+            <span> --- SubsectorTVItemID: [{{ labsheetdetail.SubsectorTVItemID }}]</span>
+          </p>
+          <p>
+            <span>Version: [{{ labsheetdetail.Version }}]</span>
+            <span> --- RunDate: [{{ labsheetdetail.RunDate }}]</span>
+            <span> --- Tides: [{{ labsheetdetail.Tides }}]</span>
+            <span> --- SampleCrewInitials: [{{ labsheetdetail.SampleCrewInitials }}]</span>
+          </p>
+          <p>
+            <span>WaterBathCount: [{{ labsheetdetail.WaterBathCount }}]</span>
+            <span> --- IncubationBath1StartTime: [{{ labsheetdetail.IncubationBath1StartTime }}]</span>
+            <span> --- IncubationBath2StartTime: [{{ labsheetdetail.IncubationBath2StartTime }}]</span>
+            <span> --- IncubationBath3StartTime: [{{ labsheetdetail.IncubationBath3StartTime }}]</span>
+          </p>
+          <p>
+            <span>IncubationBath1EndTime: [{{ labsheetdetail.IncubationBath1EndTime }}]</span>
+            <span> --- IncubationBath2EndTime: [{{ labsheetdetail.IncubationBath2EndTime }}]</span>
+            <span> --- IncubationBath3EndTime: [{{ labsheetdetail.IncubationBath3EndTime }}]</span>
+            <span> --- IncubationBath1TimeCalculated_minutes: [{{ labsheetdetail.IncubationBath1TimeCalculated_minutes }}]</span>
+          </p>
+          <p>
+            <span>IncubationBath2TimeCalculated_minutes: [{{ labsheetdetail.IncubationBath2TimeCalculated_minutes }}]</span>
+            <span> --- IncubationBath3TimeCalculated_minutes: [{{ labsheetdetail.IncubationBath3TimeCalculated_minutes }}]</span>
+            <span> --- WaterBath1: [{{ labsheetdetail.WaterBath1 }}]</span>
+            <span> --- WaterBath2: [{{ labsheetdetail.WaterBath2 }}]</span>
+          </p>
+          <p>
+            <span>WaterBath3: [{{ labsheetdetail.WaterBath3 }}]</span>
+            <span> --- TCField1: [{{ labsheetdetail.TCField1 }}]</span>
+            <span> --- TCLab1: [{{ labsheetdetail.TCLab1 }}]</span>
+            <span> --- TCField2: [{{ labsheetdetail.TCField2 }}]</span>
+          </p>
+          <p>
+            <span>TCLab2: [{{ labsheetdetail.TCLab2 }}]</span>
+            <span> --- TCFirst: [{{ labsheetdetail.TCFirst }}]</span>
+            <span> --- TCAverage: [{{ labsheetdetail.TCAverage }}]</span>
+            <span> --- ControlLot: [{{ labsheetdetail.ControlLot }}]</span>
+          </p>
+          <p>
+            <span>Positive35: [{{ labsheetdetail.Positive35 }}]</span>
+            <span> --- NonTarget35: [{{ labsheetdetail.NonTarget35 }}]</span>
+            <span> --- Negative35: [{{ labsheetdetail.Negative35 }}]</span>
+            <span> --- Bath1Positive44_5: [{{ labsheetdetail.Bath1Positive44_5 }}]</span>
+          </p>
+          <p>
+            <span>Bath2Positive44_5: [{{ labsheetdetail.Bath2Positive44_5 }}]</span>
+            <span> --- Bath3Positive44_5: [{{ labsheetdetail.Bath3Positive44_5 }}]</span>
+            <span> --- Bath1NonTarget44_5: [{{ labsheetdetail.Bath1NonTarget44_5 }}]</span>
+            <span> --- Bath2NonTarget44_5: [{{ labsheetdetail.Bath2NonTarget44_5 }}]</span>
+          </p>
+          <p>
+            <span>Bath3NonTarget44_5: [{{ labsheetdetail.Bath3NonTarget44_5 }}]</span>
+            <span> --- Bath1Negative44_5: [{{ labsheetdetail.Bath1Negative44_5 }}]</span>
+            <span> --- Bath2Negative44_5: [{{ labsheetdetail.Bath2Negative44_5 }}]</span>
+            <span> --- Bath3Negative44_5: [{{ labsheetdetail.Bath3Negative44_5 }}]</span>
+          </p>
+          <p>
+            <span>Blank35: [{{ labsheetdetail.Blank35 }}]</span>
+            <span> --- Bath1Blank44_5: [{{ labsheetdetail.Bath1Blank44_5 }}]</span>
+            <span> --- Bath2Blank44_5: [{{ labsheetdetail.Bath2Blank44_5 }}]</span>
+            <span> --- Bath3Blank44_5: [{{ labsheetdetail.Bath3Blank44_5 }}]</span>
+          </p>
+          <p>
+            <span>Lot35: [{{ labsheetdetail.Lot35 }}]</span>
+            <span> --- Lot44_5: [{{ labsheetdetail.Lot44_5 }}]</span>
+            <span> --- Weather: [{{ labsheetdetail.Weather }}]</span>
+            <span> --- RunComment: [{{ labsheetdetail.RunComment }}]</span>
+          </p>
+          <p>
+            <span>RunWeatherComment: [{{ labsheetdetail.RunWeatherComment }}]</span>
+            <span> --- SampleBottleLotNumber: [{{ labsheetdetail.SampleBottleLotNumber }}]</span>
+            <span> --- SalinitiesReadBy: [{{ labsheetdetail.SalinitiesReadBy }}]</span>
+            <span> --- SalinitiesReadDate: [{{ labsheetdetail.SalinitiesReadDate }}]</span>
+          </p>
+          <p>
+            <span>ResultsReadBy: [{{ labsheetdetail.ResultsReadBy }}]</span>
+            <span> --- ResultsReadDate: [{{ labsheetdetail.ResultsReadDate }}]</span>
+            <span> --- ResultsRecordedBy: [{{ labsheetdetail.ResultsRecordedBy }}]</span>
+            <span> --- ResultsRecordedDate: [{{ labsheetdetail.ResultsRecordedDate }}]</span>
+          </p>
+          <p>
+            <span>DailyDuplicateRLog: [{{ labsheetdetail.DailyDuplicateRLog }}]</span>
+            <span> --- DailyDuplicatePrecisionCriteria: [{{ labsheetdetail.DailyDuplicatePrecisionCriteria }}]</span>
+            <span> --- DailyDuplicateAcceptable: [{{ labsheetdetail.DailyDuplicateAcceptable }}]</span>
+            <span> --- IntertechDuplicateRLog: [{{ labsheetdetail.IntertechDuplicateRLog }}]</span>
+          </p>
+          <p>
+            <span>IntertechDuplicatePrecisionCriteria: [{{ labsheetdetail.IntertechDuplicatePrecisionCriteria }}]</span>
+            <span> --- IntertechDuplicateAcceptable: [{{ labsheetdetail.IntertechDuplicateAcceptable }}]</span>
+            <span> --- IntertechReadAcceptable: [{{ labsheetdetail.IntertechReadAcceptable }}]</span>
+            <span> --- LastUpdateDate_UTC: [{{ labsheetdetail.LastUpdateDate_UTC }}]</span>
+          </p>
+          <p>
+            <span>LastUpdateContactTVItemID: [{{ labsheetdetail.LastUpdateContactTVItemID }}]</span>
+          </p>
         </blockquote>
        </div>
      </div>

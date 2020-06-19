@@ -24,10 +24,10 @@
             <span>Delete ClimateSiteID [{{ climatesite.ClimateSiteID }}]&nbsp;&nbsp;&nbsp;</span>
             <mat-icon>delete</mat-icon>
           </button>&nbsp;&nbsp;&nbsp;
-          <button mat-raised-button [color]="GetPutButtonColor(climatesite)"(click)="ShowPut(climatesite)">
+          <button mat-raised-button [color]="GetPutButtonColor(climatesite)" (click)="ShowPut(climatesite)">
             <span>Show Put</span>
           </button>&nbsp;&nbsp;
-          <button mat-raised-button [color]="GetPostButtonColor(climatesite)"(click)="ShowPost(climatesite)">
+          <button mat-raised-button [color]="GetPostButtonColor(climatesite)" (click)="ShowPost(climatesite)">
             <span>Show Post</span>
           </button>&nbsp;&nbsp;
           <mat-progress-bar mode="indeterminate" *ngIf="climatesiteService.climatesiteDeleteModel$.getValue().Working">
@@ -40,42 +40,42 @@
           <app-climatesite-edit [climatesite]="climatesite" [httpClientCommand]="GetPostEnum()"></app-climatesite-edit>
         </p>
         <blockquote>
-        <p>
-          <span>ClimateSiteID: [{{ climatesite.ClimateSiteID }}]</span>
-          <span> --- ClimateSiteTVItemID: [{{ climatesite.ClimateSiteTVItemID }}]</span>
-          <span> --- ECDBID: [{{ climatesite.ECDBID }}]</span>
-          <span> --- ClimateSiteName: [{{ climatesite.ClimateSiteName }}]</span>
- </p>
-        <p>
-          <span>Province: [{{ climatesite.Province }}]</span>
-          <span> --- Elevation_m: [{{ climatesite.Elevation_m }}]</span>
-          <span> --- ClimateID: [{{ climatesite.ClimateID }}]</span>
-          <span> --- WMOID: [{{ climatesite.WMOID }}]</span>
- </p>
-        <p>
-          <span>TCID: [{{ climatesite.TCID }}]</span>
-          <span> --- IsQuebecSite: [{{ climatesite.IsQuebecSite }}]</span>
-          <span> --- IsCoCoRaHS: [{{ climatesite.IsCoCoRaHS }}]</span>
-          <span> --- TimeOffset_hour: [{{ climatesite.TimeOffset_hour }}]</span>
- </p>
-        <p>
-          <span>File_desc: [{{ climatesite.File_desc }}]</span>
-          <span> --- HourlyStartDate_Local: [{{ climatesite.HourlyStartDate_Local }}]</span>
-          <span> --- HourlyEndDate_Local: [{{ climatesite.HourlyEndDate_Local }}]</span>
-          <span> --- HourlyNow: [{{ climatesite.HourlyNow }}]</span>
- </p>
-        <p>
-          <span>DailyStartDate_Local: [{{ climatesite.DailyStartDate_Local }}]</span>
-          <span> --- DailyEndDate_Local: [{{ climatesite.DailyEndDate_Local }}]</span>
-          <span> --- DailyNow: [{{ climatesite.DailyNow }}]</span>
-          <span> --- MonthlyStartDate_Local: [{{ climatesite.MonthlyStartDate_Local }}]</span>
- </p>
-        <p>
-          <span>MonthlyEndDate_Local: [{{ climatesite.MonthlyEndDate_Local }}]</span>
-          <span> --- MonthlyNow: [{{ climatesite.MonthlyNow }}]</span>
-          <span> --- LastUpdateDate_UTC: [{{ climatesite.LastUpdateDate_UTC }}]</span>
-          <span> --- LastUpdateContactTVItemID: [{{ climatesite.LastUpdateContactTVItemID }}]</span>
-        </p>
+          <p>
+            <span>ClimateSiteID: [{{ climatesite.ClimateSiteID }}]</span>
+            <span> --- ClimateSiteTVItemID: [{{ climatesite.ClimateSiteTVItemID }}]</span>
+            <span> --- ECDBID: [{{ climatesite.ECDBID }}]</span>
+            <span> --- ClimateSiteName: [{{ climatesite.ClimateSiteName }}]</span>
+          </p>
+          <p>
+            <span>Province: [{{ climatesite.Province }}]</span>
+            <span> --- Elevation_m: [{{ climatesite.Elevation_m }}]</span>
+            <span> --- ClimateID: [{{ climatesite.ClimateID }}]</span>
+            <span> --- WMOID: [{{ climatesite.WMOID }}]</span>
+          </p>
+          <p>
+            <span>TCID: [{{ climatesite.TCID }}]</span>
+            <span> --- IsQuebecSite: [{{ climatesite.IsQuebecSite }}]</span>
+            <span> --- IsCoCoRaHS: [{{ climatesite.IsCoCoRaHS }}]</span>
+            <span> --- TimeOffset_hour: [{{ climatesite.TimeOffset_hour }}]</span>
+          </p>
+          <p>
+            <span>File_desc: [{{ climatesite.File_desc }}]</span>
+            <span> --- HourlyStartDate_Local: [{{ climatesite.HourlyStartDate_Local }}]</span>
+            <span> --- HourlyEndDate_Local: [{{ climatesite.HourlyEndDate_Local }}]</span>
+            <span> --- HourlyNow: [{{ climatesite.HourlyNow }}]</span>
+          </p>
+          <p>
+            <span>DailyStartDate_Local: [{{ climatesite.DailyStartDate_Local }}]</span>
+            <span> --- DailyEndDate_Local: [{{ climatesite.DailyEndDate_Local }}]</span>
+            <span> --- DailyNow: [{{ climatesite.DailyNow }}]</span>
+            <span> --- MonthlyStartDate_Local: [{{ climatesite.MonthlyStartDate_Local }}]</span>
+          </p>
+          <p>
+            <span>MonthlyEndDate_Local: [{{ climatesite.MonthlyEndDate_Local }}]</span>
+            <span> --- MonthlyNow: [{{ climatesite.MonthlyNow }}]</span>
+            <span> --- LastUpdateDate_UTC: [{{ climatesite.LastUpdateDate_UTC }}]</span>
+            <span> --- LastUpdateContactTVItemID: [{{ climatesite.LastUpdateContactTVItemID }}]</span>
+          </p>
         </blockquote>
        </div>
      </div>

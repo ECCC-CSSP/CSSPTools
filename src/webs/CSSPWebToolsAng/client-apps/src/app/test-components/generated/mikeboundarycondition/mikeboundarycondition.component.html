@@ -24,10 +24,10 @@
             <span>Delete MikeBoundaryConditionID [{{ mikeboundarycondition.MikeBoundaryConditionID }}]&nbsp;&nbsp;&nbsp;</span>
             <mat-icon>delete</mat-icon>
           </button>&nbsp;&nbsp;&nbsp;
-          <button mat-raised-button [color]="GetPutButtonColor(mikeboundarycondition)"(click)="ShowPut(mikeboundarycondition)">
+          <button mat-raised-button [color]="GetPutButtonColor(mikeboundarycondition)" (click)="ShowPut(mikeboundarycondition)">
             <span>Show Put</span>
           </button>&nbsp;&nbsp;
-          <button mat-raised-button [color]="GetPostButtonColor(mikeboundarycondition)"(click)="ShowPost(mikeboundarycondition)">
+          <button mat-raised-button [color]="GetPostButtonColor(mikeboundarycondition)" (click)="ShowPost(mikeboundarycondition)">
             <span>Show Post</span>
           </button>&nbsp;&nbsp;
           <mat-progress-bar mode="indeterminate" *ngIf="mikeboundaryconditionService.mikeboundaryconditionDeleteModel$.getValue().Working">
@@ -40,27 +40,27 @@
           <app-mikeboundarycondition-edit [mikeboundarycondition]="mikeboundarycondition" [httpClientCommand]="GetPostEnum()"></app-mikeboundarycondition-edit>
         </p>
         <blockquote>
-        <p>
-          <span>MikeBoundaryConditionID: [{{ mikeboundarycondition.MikeBoundaryConditionID }}]</span>
-          <span> --- MikeBoundaryConditionTVItemID: [{{ mikeboundarycondition.MikeBoundaryConditionTVItemID }}]</span>
-          <span> --- MikeBoundaryConditionCode: [{{ mikeboundarycondition.MikeBoundaryConditionCode }}]</span>
-          <span> --- MikeBoundaryConditionName: [{{ mikeboundarycondition.MikeBoundaryConditionName }}]</span>
- </p>
-        <p>
-          <span>MikeBoundaryConditionLength_m: [{{ mikeboundarycondition.MikeBoundaryConditionLength_m }}]</span>
-          <span> --- MikeBoundaryConditionFormat: [{{ mikeboundarycondition.MikeBoundaryConditionFormat }}]</span>
-          <span> --- MikeBoundaryConditionLevelOrVelocity: [{{ GetMikeBoundaryConditionLevelOrVelocityEnumText(mikeboundarycondition.MikeBoundaryConditionLevelOrVelocity) }}]</span>
-          <span> --- WebTideDataSet: [{{ GetWebTideDataSetEnumText(mikeboundarycondition.WebTideDataSet) }}]</span>
- </p>
-        <p>
-          <span>NumberOfWebTideNodes: [{{ mikeboundarycondition.NumberOfWebTideNodes }}]</span>
-          <span> --- WebTideDataFromStartToEndDate: [{{ mikeboundarycondition.WebTideDataFromStartToEndDate }}]</span>
-          <span> --- TVType: [{{ GetTVTypeEnumText(mikeboundarycondition.TVType) }}]</span>
-          <span> --- LastUpdateDate_UTC: [{{ mikeboundarycondition.LastUpdateDate_UTC }}]</span>
- </p>
-        <p>
-          <span>LastUpdateContactTVItemID: [{{ mikeboundarycondition.LastUpdateContactTVItemID }}]</span>
-        </p>
+          <p>
+            <span>MikeBoundaryConditionID: [{{ mikeboundarycondition.MikeBoundaryConditionID }}]</span>
+            <span> --- MikeBoundaryConditionTVItemID: [{{ mikeboundarycondition.MikeBoundaryConditionTVItemID }}]</span>
+            <span> --- MikeBoundaryConditionCode: [{{ mikeboundarycondition.MikeBoundaryConditionCode }}]</span>
+            <span> --- MikeBoundaryConditionName: [{{ mikeboundarycondition.MikeBoundaryConditionName }}]</span>
+          </p>
+          <p>
+            <span>MikeBoundaryConditionLength_m: [{{ mikeboundarycondition.MikeBoundaryConditionLength_m }}]</span>
+            <span> --- MikeBoundaryConditionFormat: [{{ mikeboundarycondition.MikeBoundaryConditionFormat }}]</span>
+            <span> --- MikeBoundaryConditionLevelOrVelocity: [{{ GetMikeBoundaryConditionLevelOrVelocityEnumText(mikeboundarycondition.MikeBoundaryConditionLevelOrVelocity) }}]</span>
+            <span> --- WebTideDataSet: [{{ GetWebTideDataSetEnumText(mikeboundarycondition.WebTideDataSet) }}]</span>
+          </p>
+          <p>
+            <span>NumberOfWebTideNodes: [{{ mikeboundarycondition.NumberOfWebTideNodes }}]</span>
+            <span> --- WebTideDataFromStartToEndDate: [{{ mikeboundarycondition.WebTideDataFromStartToEndDate }}]</span>
+            <span> --- TVType: [{{ GetTVTypeEnumText(mikeboundarycondition.TVType) }}]</span>
+            <span> --- LastUpdateDate_UTC: [{{ mikeboundarycondition.LastUpdateDate_UTC }}]</span>
+          </p>
+          <p>
+            <span>LastUpdateContactTVItemID: [{{ mikeboundarycondition.LastUpdateContactTVItemID }}]</span>
+          </p>
         </blockquote>
        </div>
      </div>

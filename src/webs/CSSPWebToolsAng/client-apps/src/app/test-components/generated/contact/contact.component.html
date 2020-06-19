@@ -24,10 +24,10 @@
             <span>Delete ContactID [{{ contact.ContactID }}]&nbsp;&nbsp;&nbsp;</span>
             <mat-icon>delete</mat-icon>
           </button>&nbsp;&nbsp;&nbsp;
-          <button mat-raised-button [color]="GetPutButtonColor(contact)"(click)="ShowPut(contact)">
+          <button mat-raised-button [color]="GetPutButtonColor(contact)" (click)="ShowPut(contact)">
             <span>Show Put</span>
           </button>&nbsp;&nbsp;
-          <button mat-raised-button [color]="GetPostButtonColor(contact)"(click)="ShowPost(contact)">
+          <button mat-raised-button [color]="GetPostButtonColor(contact)" (click)="ShowPost(contact)">
             <span>Show Post</span>
           </button>&nbsp;&nbsp;
           <mat-progress-bar mode="indeterminate" *ngIf="contactService.contactDeleteModel$.getValue().Working">
@@ -40,33 +40,33 @@
           <app-contact-edit [contact]="contact" [httpClientCommand]="GetPostEnum()"></app-contact-edit>
         </p>
         <blockquote>
-        <p>
-          <span>ContactID: [{{ contact.ContactID }}]</span>
-          <span> --- Id: [{{ contact.Id }}]</span>
-          <span> --- ContactTVItemID: [{{ contact.ContactTVItemID }}]</span>
-          <span> --- LoginEmail: [{{ contact.LoginEmail }}]</span>
- </p>
-        <p>
-          <span>FirstName: [{{ contact.FirstName }}]</span>
-          <span> --- LastName: [{{ contact.LastName }}]</span>
-          <span> --- Initial: [{{ contact.Initial }}]</span>
-          <span> --- WebName: [{{ contact.WebName }}]</span>
- </p>
-        <p>
-          <span>ContactTitle: [{{ GetContactTitleEnumText(contact.ContactTitle) }}]</span>
-          <span> --- IsAdmin: [{{ contact.IsAdmin }}]</span>
-          <span> --- EmailValidated: [{{ contact.EmailValidated }}]</span>
-          <span> --- Disabled: [{{ contact.Disabled }}]</span>
- </p>
-        <p>
-          <span>IsNew: [{{ contact.IsNew }}]</span>
-          <span> --- SamplingPlanner_ProvincesTVItemID: [{{ contact.SamplingPlanner_ProvincesTVItemID }}]</span>
-          <span> --- Token: [{{ contact.Token }}]</span>
-          <span> --- LastUpdateDate_UTC: [{{ contact.LastUpdateDate_UTC }}]</span>
- </p>
-        <p>
-          <span>LastUpdateContactTVItemID: [{{ contact.LastUpdateContactTVItemID }}]</span>
-        </p>
+          <p>
+            <span>ContactID: [{{ contact.ContactID }}]</span>
+            <span> --- Id: [{{ contact.Id }}]</span>
+            <span> --- ContactTVItemID: [{{ contact.ContactTVItemID }}]</span>
+            <span> --- LoginEmail: [{{ contact.LoginEmail }}]</span>
+          </p>
+          <p>
+            <span>FirstName: [{{ contact.FirstName }}]</span>
+            <span> --- LastName: [{{ contact.LastName }}]</span>
+            <span> --- Initial: [{{ contact.Initial }}]</span>
+            <span> --- WebName: [{{ contact.WebName }}]</span>
+          </p>
+          <p>
+            <span>ContactTitle: [{{ GetContactTitleEnumText(contact.ContactTitle) }}]</span>
+            <span> --- IsAdmin: [{{ contact.IsAdmin }}]</span>
+            <span> --- EmailValidated: [{{ contact.EmailValidated }}]</span>
+            <span> --- Disabled: [{{ contact.Disabled }}]</span>
+          </p>
+          <p>
+            <span>IsNew: [{{ contact.IsNew }}]</span>
+            <span> --- SamplingPlanner_ProvincesTVItemID: [{{ contact.SamplingPlanner_ProvincesTVItemID }}]</span>
+            <span> --- Token: [{{ contact.Token }}]</span>
+            <span> --- LastUpdateDate_UTC: [{{ contact.LastUpdateDate_UTC }}]</span>
+          </p>
+          <p>
+            <span>LastUpdateContactTVItemID: [{{ contact.LastUpdateContactTVItemID }}]</span>
+          </p>
         </blockquote>
        </div>
      </div>

@@ -24,10 +24,10 @@
             <span>Delete TVItemLinkID [{{ tvitemlink.TVItemLinkID }}]&nbsp;&nbsp;&nbsp;</span>
             <mat-icon>delete</mat-icon>
           </button>&nbsp;&nbsp;&nbsp;
-          <button mat-raised-button [color]="GetPutButtonColor(tvitemlink)"(click)="ShowPut(tvitemlink)">
+          <button mat-raised-button [color]="GetPutButtonColor(tvitemlink)" (click)="ShowPut(tvitemlink)">
             <span>Show Put</span>
           </button>&nbsp;&nbsp;
-          <button mat-raised-button [color]="GetPostButtonColor(tvitemlink)"(click)="ShowPost(tvitemlink)">
+          <button mat-raised-button [color]="GetPostButtonColor(tvitemlink)" (click)="ShowPost(tvitemlink)">
             <span>Show Post</span>
           </button>&nbsp;&nbsp;
           <mat-progress-bar mode="indeterminate" *ngIf="tvitemlinkService.tvitemlinkDeleteModel$.getValue().Working">
@@ -40,27 +40,27 @@
           <app-tvitemlink-edit [tvitemlink]="tvitemlink" [httpClientCommand]="GetPostEnum()"></app-tvitemlink-edit>
         </p>
         <blockquote>
-        <p>
-          <span>TVItemLinkID: [{{ tvitemlink.TVItemLinkID }}]</span>
-          <span> --- FromTVItemID: [{{ tvitemlink.FromTVItemID }}]</span>
-          <span> --- ToTVItemID: [{{ tvitemlink.ToTVItemID }}]</span>
-          <span> --- FromTVType: [{{ GetTVTypeEnumText(tvitemlink.FromTVType) }}]</span>
- </p>
-        <p>
-          <span>ToTVType: [{{ GetTVTypeEnumText(tvitemlink.ToTVType) }}]</span>
-          <span> --- StartDateTime_Local: [{{ tvitemlink.StartDateTime_Local }}]</span>
-          <span> --- EndDateTime_Local: [{{ tvitemlink.EndDateTime_Local }}]</span>
-          <span> --- Ordinal: [{{ tvitemlink.Ordinal }}]</span>
- </p>
-        <p>
-          <span>TVLevel: [{{ tvitemlink.TVLevel }}]</span>
-          <span> --- TVPath: [{{ tvitemlink.TVPath }}]</span>
-          <span> --- ParentTVItemLinkID: [{{ tvitemlink.ParentTVItemLinkID }}]</span>
-          <span> --- LastUpdateDate_UTC: [{{ tvitemlink.LastUpdateDate_UTC }}]</span>
- </p>
-        <p>
-          <span>LastUpdateContactTVItemID: [{{ tvitemlink.LastUpdateContactTVItemID }}]</span>
-        </p>
+          <p>
+            <span>TVItemLinkID: [{{ tvitemlink.TVItemLinkID }}]</span>
+            <span> --- FromTVItemID: [{{ tvitemlink.FromTVItemID }}]</span>
+            <span> --- ToTVItemID: [{{ tvitemlink.ToTVItemID }}]</span>
+            <span> --- FromTVType: [{{ GetTVTypeEnumText(tvitemlink.FromTVType) }}]</span>
+          </p>
+          <p>
+            <span>ToTVType: [{{ GetTVTypeEnumText(tvitemlink.ToTVType) }}]</span>
+            <span> --- StartDateTime_Local: [{{ tvitemlink.StartDateTime_Local }}]</span>
+            <span> --- EndDateTime_Local: [{{ tvitemlink.EndDateTime_Local }}]</span>
+            <span> --- Ordinal: [{{ tvitemlink.Ordinal }}]</span>
+          </p>
+          <p>
+            <span>TVLevel: [{{ tvitemlink.TVLevel }}]</span>
+            <span> --- TVPath: [{{ tvitemlink.TVPath }}]</span>
+            <span> --- ParentTVItemLinkID: [{{ tvitemlink.ParentTVItemLinkID }}]</span>
+            <span> --- LastUpdateDate_UTC: [{{ tvitemlink.LastUpdateDate_UTC }}]</span>
+          </p>
+          <p>
+            <span>LastUpdateContactTVItemID: [{{ tvitemlink.LastUpdateContactTVItemID }}]</span>
+          </p>
         </blockquote>
        </div>
      </div>

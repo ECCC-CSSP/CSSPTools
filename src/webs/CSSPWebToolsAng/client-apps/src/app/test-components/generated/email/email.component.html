@@ -24,10 +24,10 @@
             <span>Delete EmailID [{{ email.EmailID }}]&nbsp;&nbsp;&nbsp;</span>
             <mat-icon>delete</mat-icon>
           </button>&nbsp;&nbsp;&nbsp;
-          <button mat-raised-button [color]="GetPutButtonColor(email)"(click)="ShowPut(email)">
+          <button mat-raised-button [color]="GetPutButtonColor(email)" (click)="ShowPut(email)">
             <span>Show Put</span>
           </button>&nbsp;&nbsp;
-          <button mat-raised-button [color]="GetPostButtonColor(email)"(click)="ShowPost(email)">
+          <button mat-raised-button [color]="GetPostButtonColor(email)" (click)="ShowPost(email)">
             <span>Show Post</span>
           </button>&nbsp;&nbsp;
           <mat-progress-bar mode="indeterminate" *ngIf="emailService.emailDeleteModel$.getValue().Working">
@@ -40,16 +40,16 @@
           <app-email-edit [email]="email" [httpClientCommand]="GetPostEnum()"></app-email-edit>
         </p>
         <blockquote>
-        <p>
-          <span>EmailID: [{{ email.EmailID }}]</span>
-          <span> --- EmailTVItemID: [{{ email.EmailTVItemID }}]</span>
-          <span> --- EmailAddress: [{{ email.EmailAddress }}]</span>
-          <span> --- EmailType: [{{ GetEmailTypeEnumText(email.EmailType) }}]</span>
- </p>
-        <p>
-          <span>LastUpdateDate_UTC: [{{ email.LastUpdateDate_UTC }}]</span>
-          <span> --- LastUpdateContactTVItemID: [{{ email.LastUpdateContactTVItemID }}]</span>
-        </p>
+          <p>
+            <span>EmailID: [{{ email.EmailID }}]</span>
+            <span> --- EmailTVItemID: [{{ email.EmailTVItemID }}]</span>
+            <span> --- EmailAddress: [{{ email.EmailAddress }}]</span>
+            <span> --- EmailType: [{{ GetEmailTypeEnumText(email.EmailType) }}]</span>
+          </p>
+          <p>
+            <span>LastUpdateDate_UTC: [{{ email.LastUpdateDate_UTC }}]</span>
+            <span> --- LastUpdateContactTVItemID: [{{ email.LastUpdateContactTVItemID }}]</span>
+          </p>
         </blockquote>
        </div>
      </div>

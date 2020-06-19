@@ -24,10 +24,10 @@
             <span>Delete TVFileLanguageID [{{ tvfilelanguage.TVFileLanguageID }}]&nbsp;&nbsp;&nbsp;</span>
             <mat-icon>delete</mat-icon>
           </button>&nbsp;&nbsp;&nbsp;
-          <button mat-raised-button [color]="GetPutButtonColor(tvfilelanguage)"(click)="ShowPut(tvfilelanguage)">
+          <button mat-raised-button [color]="GetPutButtonColor(tvfilelanguage)" (click)="ShowPut(tvfilelanguage)">
             <span>Show Put</span>
           </button>&nbsp;&nbsp;
-          <button mat-raised-button [color]="GetPostButtonColor(tvfilelanguage)"(click)="ShowPost(tvfilelanguage)">
+          <button mat-raised-button [color]="GetPostButtonColor(tvfilelanguage)" (click)="ShowPost(tvfilelanguage)">
             <span>Show Post</span>
           </button>&nbsp;&nbsp;
           <mat-progress-bar mode="indeterminate" *ngIf="tvfilelanguageService.tvfilelanguageDeleteModel$.getValue().Working">
@@ -40,17 +40,17 @@
           <app-tvfilelanguage-edit [tvfilelanguage]="tvfilelanguage" [httpClientCommand]="GetPostEnum()"></app-tvfilelanguage-edit>
         </p>
         <blockquote>
-        <p>
-          <span>TVFileLanguageID: [{{ tvfilelanguage.TVFileLanguageID }}]</span>
-          <span> --- TVFileID: [{{ tvfilelanguage.TVFileID }}]</span>
-          <span> --- Language: [{{ GetLanguageEnumText(tvfilelanguage.Language) }}]</span>
-          <span> --- FileDescription: [{{ tvfilelanguage.FileDescription }}]</span>
- </p>
-        <p>
-          <span>TranslationStatus: [{{ GetTranslationStatusEnumText(tvfilelanguage.TranslationStatus) }}]</span>
-          <span> --- LastUpdateDate_UTC: [{{ tvfilelanguage.LastUpdateDate_UTC }}]</span>
-          <span> --- LastUpdateContactTVItemID: [{{ tvfilelanguage.LastUpdateContactTVItemID }}]</span>
-        </p>
+          <p>
+            <span>TVFileLanguageID: [{{ tvfilelanguage.TVFileLanguageID }}]</span>
+            <span> --- TVFileID: [{{ tvfilelanguage.TVFileID }}]</span>
+            <span> --- Language: [{{ GetLanguageEnumText(tvfilelanguage.Language) }}]</span>
+            <span> --- FileDescription: [{{ tvfilelanguage.FileDescription }}]</span>
+          </p>
+          <p>
+            <span>TranslationStatus: [{{ GetTranslationStatusEnumText(tvfilelanguage.TranslationStatus) }}]</span>
+            <span> --- LastUpdateDate_UTC: [{{ tvfilelanguage.LastUpdateDate_UTC }}]</span>
+            <span> --- LastUpdateContactTVItemID: [{{ tvfilelanguage.LastUpdateContactTVItemID }}]</span>
+          </p>
         </blockquote>
        </div>
      </div>

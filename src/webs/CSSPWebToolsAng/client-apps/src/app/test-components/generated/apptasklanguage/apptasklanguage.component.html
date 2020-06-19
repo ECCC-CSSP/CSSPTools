@@ -24,10 +24,10 @@
             <span>Delete AppTaskLanguageID [{{ apptasklanguage.AppTaskLanguageID }}]&nbsp;&nbsp;&nbsp;</span>
             <mat-icon>delete</mat-icon>
           </button>&nbsp;&nbsp;&nbsp;
-          <button mat-raised-button [color]="GetPutButtonColor(apptasklanguage)"(click)="ShowPut(apptasklanguage)">
+          <button mat-raised-button [color]="GetPutButtonColor(apptasklanguage)" (click)="ShowPut(apptasklanguage)">
             <span>Show Put</span>
           </button>&nbsp;&nbsp;
-          <button mat-raised-button [color]="GetPostButtonColor(apptasklanguage)"(click)="ShowPost(apptasklanguage)">
+          <button mat-raised-button [color]="GetPostButtonColor(apptasklanguage)" (click)="ShowPost(apptasklanguage)">
             <span>Show Post</span>
           </button>&nbsp;&nbsp;
           <mat-progress-bar mode="indeterminate" *ngIf="apptasklanguageService.apptasklanguageDeleteModel$.getValue().Working">
@@ -40,18 +40,18 @@
           <app-apptasklanguage-edit [apptasklanguage]="apptasklanguage" [httpClientCommand]="GetPostEnum()"></app-apptasklanguage-edit>
         </p>
         <blockquote>
-        <p>
-          <span>AppTaskLanguageID: [{{ apptasklanguage.AppTaskLanguageID }}]</span>
-          <span> --- AppTaskID: [{{ apptasklanguage.AppTaskID }}]</span>
-          <span> --- Language: [{{ GetLanguageEnumText(apptasklanguage.Language) }}]</span>
-          <span> --- StatusText: [{{ apptasklanguage.StatusText }}]</span>
- </p>
-        <p>
-          <span>ErrorText: [{{ apptasklanguage.ErrorText }}]</span>
-          <span> --- TranslationStatus: [{{ GetTranslationStatusEnumText(apptasklanguage.TranslationStatus) }}]</span>
-          <span> --- LastUpdateDate_UTC: [{{ apptasklanguage.LastUpdateDate_UTC }}]</span>
-          <span> --- LastUpdateContactTVItemID: [{{ apptasklanguage.LastUpdateContactTVItemID }}]</span>
-        </p>
+          <p>
+            <span>AppTaskLanguageID: [{{ apptasklanguage.AppTaskLanguageID }}]</span>
+            <span> --- AppTaskID: [{{ apptasklanguage.AppTaskID }}]</span>
+            <span> --- Language: [{{ GetLanguageEnumText(apptasklanguage.Language) }}]</span>
+            <span> --- StatusText: [{{ apptasklanguage.StatusText }}]</span>
+          </p>
+          <p>
+            <span>ErrorText: [{{ apptasklanguage.ErrorText }}]</span>
+            <span> --- TranslationStatus: [{{ GetTranslationStatusEnumText(apptasklanguage.TranslationStatus) }}]</span>
+            <span> --- LastUpdateDate_UTC: [{{ apptasklanguage.LastUpdateDate_UTC }}]</span>
+            <span> --- LastUpdateContactTVItemID: [{{ apptasklanguage.LastUpdateContactTVItemID }}]</span>
+          </p>
         </blockquote>
        </div>
      </div>

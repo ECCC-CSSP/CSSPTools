@@ -24,10 +24,10 @@
             <span>Delete TideDataValueID [{{ tidedatavalue.TideDataValueID }}]&nbsp;&nbsp;&nbsp;</span>
             <mat-icon>delete</mat-icon>
           </button>&nbsp;&nbsp;&nbsp;
-          <button mat-raised-button [color]="GetPutButtonColor(tidedatavalue)"(click)="ShowPut(tidedatavalue)">
+          <button mat-raised-button [color]="GetPutButtonColor(tidedatavalue)" (click)="ShowPut(tidedatavalue)">
             <span>Show Put</span>
           </button>&nbsp;&nbsp;
-          <button mat-raised-button [color]="GetPostButtonColor(tidedatavalue)"(click)="ShowPost(tidedatavalue)">
+          <button mat-raised-button [color]="GetPostButtonColor(tidedatavalue)" (click)="ShowPost(tidedatavalue)">
             <span>Show Post</span>
           </button>&nbsp;&nbsp;
           <mat-progress-bar mode="indeterminate" *ngIf="tidedatavalueService.tidedatavalueDeleteModel$.getValue().Working">
@@ -40,27 +40,27 @@
           <app-tidedatavalue-edit [tidedatavalue]="tidedatavalue" [httpClientCommand]="GetPostEnum()"></app-tidedatavalue-edit>
         </p>
         <blockquote>
-        <p>
-          <span>TideDataValueID: [{{ tidedatavalue.TideDataValueID }}]</span>
-          <span> --- TideSiteTVItemID: [{{ tidedatavalue.TideSiteTVItemID }}]</span>
-          <span> --- DateTime_Local: [{{ tidedatavalue.DateTime_Local }}]</span>
-          <span> --- Keep: [{{ tidedatavalue.Keep }}]</span>
- </p>
-        <p>
-          <span>TideDataType: [{{ GetTideDataTypeEnumText(tidedatavalue.TideDataType) }}]</span>
-          <span> --- StorageDataType: [{{ GetStorageDataTypeEnumText(tidedatavalue.StorageDataType) }}]</span>
-          <span> --- Depth_m: [{{ tidedatavalue.Depth_m }}]</span>
-          <span> --- UVelocity_m_s: [{{ tidedatavalue.UVelocity_m_s }}]</span>
- </p>
-        <p>
-          <span>VVelocity_m_s: [{{ tidedatavalue.VVelocity_m_s }}]</span>
-          <span> --- TideStart: [{{ GetTideTextEnumText(tidedatavalue.TideStart) }}]</span>
-          <span> --- TideEnd: [{{ GetTideTextEnumText(tidedatavalue.TideEnd) }}]</span>
-          <span> --- LastUpdateDate_UTC: [{{ tidedatavalue.LastUpdateDate_UTC }}]</span>
- </p>
-        <p>
-          <span>LastUpdateContactTVItemID: [{{ tidedatavalue.LastUpdateContactTVItemID }}]</span>
-        </p>
+          <p>
+            <span>TideDataValueID: [{{ tidedatavalue.TideDataValueID }}]</span>
+            <span> --- TideSiteTVItemID: [{{ tidedatavalue.TideSiteTVItemID }}]</span>
+            <span> --- DateTime_Local: [{{ tidedatavalue.DateTime_Local }}]</span>
+            <span> --- Keep: [{{ tidedatavalue.Keep }}]</span>
+          </p>
+          <p>
+            <span>TideDataType: [{{ GetTideDataTypeEnumText(tidedatavalue.TideDataType) }}]</span>
+            <span> --- StorageDataType: [{{ GetStorageDataTypeEnumText(tidedatavalue.StorageDataType) }}]</span>
+            <span> --- Depth_m: [{{ tidedatavalue.Depth_m }}]</span>
+            <span> --- UVelocity_m_s: [{{ tidedatavalue.UVelocity_m_s }}]</span>
+          </p>
+          <p>
+            <span>VVelocity_m_s: [{{ tidedatavalue.VVelocity_m_s }}]</span>
+            <span> --- TideStart: [{{ GetTideTextEnumText(tidedatavalue.TideStart) }}]</span>
+            <span> --- TideEnd: [{{ GetTideTextEnumText(tidedatavalue.TideEnd) }}]</span>
+            <span> --- LastUpdateDate_UTC: [{{ tidedatavalue.LastUpdateDate_UTC }}]</span>
+          </p>
+          <p>
+            <span>LastUpdateContactTVItemID: [{{ tidedatavalue.LastUpdateContactTVItemID }}]</span>
+          </p>
         </blockquote>
        </div>
      </div>

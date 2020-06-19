@@ -24,10 +24,10 @@
             <span>Delete SpillLanguageID [{{ spilllanguage.SpillLanguageID }}]&nbsp;&nbsp;&nbsp;</span>
             <mat-icon>delete</mat-icon>
           </button>&nbsp;&nbsp;&nbsp;
-          <button mat-raised-button [color]="GetPutButtonColor(spilllanguage)"(click)="ShowPut(spilllanguage)">
+          <button mat-raised-button [color]="GetPutButtonColor(spilllanguage)" (click)="ShowPut(spilllanguage)">
             <span>Show Put</span>
           </button>&nbsp;&nbsp;
-          <button mat-raised-button [color]="GetPostButtonColor(spilllanguage)"(click)="ShowPost(spilllanguage)">
+          <button mat-raised-button [color]="GetPostButtonColor(spilllanguage)" (click)="ShowPost(spilllanguage)">
             <span>Show Post</span>
           </button>&nbsp;&nbsp;
           <mat-progress-bar mode="indeterminate" *ngIf="spilllanguageService.spilllanguageDeleteModel$.getValue().Working">
@@ -40,17 +40,17 @@
           <app-spilllanguage-edit [spilllanguage]="spilllanguage" [httpClientCommand]="GetPostEnum()"></app-spilllanguage-edit>
         </p>
         <blockquote>
-        <p>
-          <span>SpillLanguageID: [{{ spilllanguage.SpillLanguageID }}]</span>
-          <span> --- SpillID: [{{ spilllanguage.SpillID }}]</span>
-          <span> --- Language: [{{ GetLanguageEnumText(spilllanguage.Language) }}]</span>
-          <span> --- SpillComment: [{{ spilllanguage.SpillComment }}]</span>
- </p>
-        <p>
-          <span>TranslationStatus: [{{ GetTranslationStatusEnumText(spilllanguage.TranslationStatus) }}]</span>
-          <span> --- LastUpdateDate_UTC: [{{ spilllanguage.LastUpdateDate_UTC }}]</span>
-          <span> --- LastUpdateContactTVItemID: [{{ spilllanguage.LastUpdateContactTVItemID }}]</span>
-        </p>
+          <p>
+            <span>SpillLanguageID: [{{ spilllanguage.SpillLanguageID }}]</span>
+            <span> --- SpillID: [{{ spilllanguage.SpillID }}]</span>
+            <span> --- Language: [{{ GetLanguageEnumText(spilllanguage.Language) }}]</span>
+            <span> --- SpillComment: [{{ spilllanguage.SpillComment }}]</span>
+          </p>
+          <p>
+            <span>TranslationStatus: [{{ GetTranslationStatusEnumText(spilllanguage.TranslationStatus) }}]</span>
+            <span> --- LastUpdateDate_UTC: [{{ spilllanguage.LastUpdateDate_UTC }}]</span>
+            <span> --- LastUpdateContactTVItemID: [{{ spilllanguage.LastUpdateContactTVItemID }}]</span>
+          </p>
         </blockquote>
        </div>
      </div>

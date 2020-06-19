@@ -24,10 +24,10 @@
             <span>Delete ContactShortcutID [{{ contactshortcut.ContactShortcutID }}]&nbsp;&nbsp;&nbsp;</span>
             <mat-icon>delete</mat-icon>
           </button>&nbsp;&nbsp;&nbsp;
-          <button mat-raised-button [color]="GetPutButtonColor(contactshortcut)"(click)="ShowPut(contactshortcut)">
+          <button mat-raised-button [color]="GetPutButtonColor(contactshortcut)" (click)="ShowPut(contactshortcut)">
             <span>Show Put</span>
           </button>&nbsp;&nbsp;
-          <button mat-raised-button [color]="GetPostButtonColor(contactshortcut)"(click)="ShowPost(contactshortcut)">
+          <button mat-raised-button [color]="GetPostButtonColor(contactshortcut)" (click)="ShowPost(contactshortcut)">
             <span>Show Post</span>
           </button>&nbsp;&nbsp;
           <mat-progress-bar mode="indeterminate" *ngIf="contactshortcutService.contactshortcutDeleteModel$.getValue().Working">
@@ -40,16 +40,16 @@
           <app-contactshortcut-edit [contactshortcut]="contactshortcut" [httpClientCommand]="GetPostEnum()"></app-contactshortcut-edit>
         </p>
         <blockquote>
-        <p>
-          <span>ContactShortcutID: [{{ contactshortcut.ContactShortcutID }}]</span>
-          <span> --- ContactID: [{{ contactshortcut.ContactID }}]</span>
-          <span> --- ShortCutText: [{{ contactshortcut.ShortCutText }}]</span>
-          <span> --- ShortCutAddress: [{{ contactshortcut.ShortCutAddress }}]</span>
- </p>
-        <p>
-          <span>LastUpdateDate_UTC: [{{ contactshortcut.LastUpdateDate_UTC }}]</span>
-          <span> --- LastUpdateContactTVItemID: [{{ contactshortcut.LastUpdateContactTVItemID }}]</span>
-        </p>
+          <p>
+            <span>ContactShortcutID: [{{ contactshortcut.ContactShortcutID }}]</span>
+            <span> --- ContactID: [{{ contactshortcut.ContactID }}]</span>
+            <span> --- ShortCutText: [{{ contactshortcut.ShortCutText }}]</span>
+            <span> --- ShortCutAddress: [{{ contactshortcut.ShortCutAddress }}]</span>
+          </p>
+          <p>
+            <span>LastUpdateDate_UTC: [{{ contactshortcut.LastUpdateDate_UTC }}]</span>
+            <span> --- LastUpdateContactTVItemID: [{{ contactshortcut.LastUpdateContactTVItemID }}]</span>
+          </p>
         </blockquote>
        </div>
      </div>

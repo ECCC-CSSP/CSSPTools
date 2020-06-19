@@ -24,10 +24,10 @@
             <span>Delete VPAmbientID [{{ vpambient.VPAmbientID }}]&nbsp;&nbsp;&nbsp;</span>
             <mat-icon>delete</mat-icon>
           </button>&nbsp;&nbsp;&nbsp;
-          <button mat-raised-button [color]="GetPutButtonColor(vpambient)"(click)="ShowPut(vpambient)">
+          <button mat-raised-button [color]="GetPutButtonColor(vpambient)" (click)="ShowPut(vpambient)">
             <span>Show Put</span>
           </button>&nbsp;&nbsp;
-          <button mat-raised-button [color]="GetPostButtonColor(vpambient)"(click)="ShowPost(vpambient)">
+          <button mat-raised-button [color]="GetPostButtonColor(vpambient)" (click)="ShowPost(vpambient)">
             <span>Show Post</span>
           </button>&nbsp;&nbsp;
           <mat-progress-bar mode="indeterminate" *ngIf="vpambientService.vpambientDeleteModel$.getValue().Working">
@@ -40,29 +40,29 @@
           <app-vpambient-edit [vpambient]="vpambient" [httpClientCommand]="GetPostEnum()"></app-vpambient-edit>
         </p>
         <blockquote>
-        <p>
-          <span>VPAmbientID: [{{ vpambient.VPAmbientID }}]</span>
-          <span> --- VPScenarioID: [{{ vpambient.VPScenarioID }}]</span>
-          <span> --- Row: [{{ vpambient.Row }}]</span>
-          <span> --- MeasurementDepth_m: [{{ vpambient.MeasurementDepth_m }}]</span>
- </p>
-        <p>
-          <span>CurrentSpeed_m_s: [{{ vpambient.CurrentSpeed_m_s }}]</span>
-          <span> --- CurrentDirection_deg: [{{ vpambient.CurrentDirection_deg }}]</span>
-          <span> --- AmbientSalinity_PSU: [{{ vpambient.AmbientSalinity_PSU }}]</span>
-          <span> --- AmbientTemperature_C: [{{ vpambient.AmbientTemperature_C }}]</span>
- </p>
-        <p>
-          <span>BackgroundConcentration_MPN_100ml: [{{ vpambient.BackgroundConcentration_MPN_100ml }}]</span>
-          <span> --- PollutantDecayRate_per_day: [{{ vpambient.PollutantDecayRate_per_day }}]</span>
-          <span> --- FarFieldCurrentSpeed_m_s: [{{ vpambient.FarFieldCurrentSpeed_m_s }}]</span>
-          <span> --- FarFieldCurrentDirection_deg: [{{ vpambient.FarFieldCurrentDirection_deg }}]</span>
- </p>
-        <p>
-          <span>FarFieldDiffusionCoefficient: [{{ vpambient.FarFieldDiffusionCoefficient }}]</span>
-          <span> --- LastUpdateDate_UTC: [{{ vpambient.LastUpdateDate_UTC }}]</span>
-          <span> --- LastUpdateContactTVItemID: [{{ vpambient.LastUpdateContactTVItemID }}]</span>
-        </p>
+          <p>
+            <span>VPAmbientID: [{{ vpambient.VPAmbientID }}]</span>
+            <span> --- VPScenarioID: [{{ vpambient.VPScenarioID }}]</span>
+            <span> --- Row: [{{ vpambient.Row }}]</span>
+            <span> --- MeasurementDepth_m: [{{ vpambient.MeasurementDepth_m }}]</span>
+          </p>
+          <p>
+            <span>CurrentSpeed_m_s: [{{ vpambient.CurrentSpeed_m_s }}]</span>
+            <span> --- CurrentDirection_deg: [{{ vpambient.CurrentDirection_deg }}]</span>
+            <span> --- AmbientSalinity_PSU: [{{ vpambient.AmbientSalinity_PSU }}]</span>
+            <span> --- AmbientTemperature_C: [{{ vpambient.AmbientTemperature_C }}]</span>
+          </p>
+          <p>
+            <span>BackgroundConcentration_MPN_100ml: [{{ vpambient.BackgroundConcentration_MPN_100ml }}]</span>
+            <span> --- PollutantDecayRate_per_day: [{{ vpambient.PollutantDecayRate_per_day }}]</span>
+            <span> --- FarFieldCurrentSpeed_m_s: [{{ vpambient.FarFieldCurrentSpeed_m_s }}]</span>
+            <span> --- FarFieldCurrentDirection_deg: [{{ vpambient.FarFieldCurrentDirection_deg }}]</span>
+          </p>
+          <p>
+            <span>FarFieldDiffusionCoefficient: [{{ vpambient.FarFieldDiffusionCoefficient }}]</span>
+            <span> --- LastUpdateDate_UTC: [{{ vpambient.LastUpdateDate_UTC }}]</span>
+            <span> --- LastUpdateContactTVItemID: [{{ vpambient.LastUpdateContactTVItemID }}]</span>
+          </p>
         </blockquote>
        </div>
      </div>

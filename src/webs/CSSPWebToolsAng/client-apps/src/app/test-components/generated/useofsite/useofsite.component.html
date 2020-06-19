@@ -24,10 +24,10 @@
             <span>Delete UseOfSiteID [{{ useofsite.UseOfSiteID }}]&nbsp;&nbsp;&nbsp;</span>
             <mat-icon>delete</mat-icon>
           </button>&nbsp;&nbsp;&nbsp;
-          <button mat-raised-button [color]="GetPutButtonColor(useofsite)"(click)="ShowPut(useofsite)">
+          <button mat-raised-button [color]="GetPutButtonColor(useofsite)" (click)="ShowPut(useofsite)">
             <span>Show Put</span>
           </button>&nbsp;&nbsp;
-          <button mat-raised-button [color]="GetPostButtonColor(useofsite)"(click)="ShowPost(useofsite)">
+          <button mat-raised-button [color]="GetPostButtonColor(useofsite)" (click)="ShowPost(useofsite)">
             <span>Show Post</span>
           </button>&nbsp;&nbsp;
           <mat-progress-bar mode="indeterminate" *ngIf="useofsiteService.useofsiteDeleteModel$.getValue().Working">
@@ -40,30 +40,30 @@
           <app-useofsite-edit [useofsite]="useofsite" [httpClientCommand]="GetPostEnum()"></app-useofsite-edit>
         </p>
         <blockquote>
-        <p>
-          <span>UseOfSiteID: [{{ useofsite.UseOfSiteID }}]</span>
-          <span> --- SiteTVItemID: [{{ useofsite.SiteTVItemID }}]</span>
-          <span> --- SubsectorTVItemID: [{{ useofsite.SubsectorTVItemID }}]</span>
-          <span> --- TVType: [{{ GetTVTypeEnumText(useofsite.TVType) }}]</span>
- </p>
-        <p>
-          <span>Ordinal: [{{ useofsite.Ordinal }}]</span>
-          <span> --- StartYear: [{{ useofsite.StartYear }}]</span>
-          <span> --- EndYear: [{{ useofsite.EndYear }}]</span>
-          <span> --- UseWeight: [{{ useofsite.UseWeight }}]</span>
- </p>
-        <p>
-          <span>Weight_perc: [{{ useofsite.Weight_perc }}]</span>
-          <span> --- UseEquation: [{{ useofsite.UseEquation }}]</span>
-          <span> --- Param1: [{{ useofsite.Param1 }}]</span>
-          <span> --- Param2: [{{ useofsite.Param2 }}]</span>
- </p>
-        <p>
-          <span>Param3: [{{ useofsite.Param3 }}]</span>
-          <span> --- Param4: [{{ useofsite.Param4 }}]</span>
-          <span> --- LastUpdateDate_UTC: [{{ useofsite.LastUpdateDate_UTC }}]</span>
-          <span> --- LastUpdateContactTVItemID: [{{ useofsite.LastUpdateContactTVItemID }}]</span>
-        </p>
+          <p>
+            <span>UseOfSiteID: [{{ useofsite.UseOfSiteID }}]</span>
+            <span> --- SiteTVItemID: [{{ useofsite.SiteTVItemID }}]</span>
+            <span> --- SubsectorTVItemID: [{{ useofsite.SubsectorTVItemID }}]</span>
+            <span> --- TVType: [{{ GetTVTypeEnumText(useofsite.TVType) }}]</span>
+          </p>
+          <p>
+            <span>Ordinal: [{{ useofsite.Ordinal }}]</span>
+            <span> --- StartYear: [{{ useofsite.StartYear }}]</span>
+            <span> --- EndYear: [{{ useofsite.EndYear }}]</span>
+            <span> --- UseWeight: [{{ useofsite.UseWeight }}]</span>
+          </p>
+          <p>
+            <span>Weight_perc: [{{ useofsite.Weight_perc }}]</span>
+            <span> --- UseEquation: [{{ useofsite.UseEquation }}]</span>
+            <span> --- Param1: [{{ useofsite.Param1 }}]</span>
+            <span> --- Param2: [{{ useofsite.Param2 }}]</span>
+          </p>
+          <p>
+            <span>Param3: [{{ useofsite.Param3 }}]</span>
+            <span> --- Param4: [{{ useofsite.Param4 }}]</span>
+            <span> --- LastUpdateDate_UTC: [{{ useofsite.LastUpdateDate_UTC }}]</span>
+            <span> --- LastUpdateContactTVItemID: [{{ useofsite.LastUpdateContactTVItemID }}]</span>
+          </p>
         </blockquote>
        </div>
      </div>

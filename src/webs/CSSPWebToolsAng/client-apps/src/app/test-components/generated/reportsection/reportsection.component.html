@@ -24,10 +24,10 @@
             <span>Delete ReportSectionID [{{ reportsection.ReportSectionID }}]&nbsp;&nbsp;&nbsp;</span>
             <mat-icon>delete</mat-icon>
           </button>&nbsp;&nbsp;&nbsp;
-          <button mat-raised-button [color]="GetPutButtonColor(reportsection)"(click)="ShowPut(reportsection)">
+          <button mat-raised-button [color]="GetPutButtonColor(reportsection)" (click)="ShowPut(reportsection)">
             <span>Show Put</span>
           </button>&nbsp;&nbsp;
-          <button mat-raised-button [color]="GetPostButtonColor(reportsection)"(click)="ShowPost(reportsection)">
+          <button mat-raised-button [color]="GetPostButtonColor(reportsection)" (click)="ShowPost(reportsection)">
             <span>Show Post</span>
           </button>&nbsp;&nbsp;
           <mat-progress-bar mode="indeterminate" *ngIf="reportsectionService.reportsectionDeleteModel$.getValue().Working">
@@ -40,28 +40,28 @@
           <app-reportsection-edit [reportsection]="reportsection" [httpClientCommand]="GetPostEnum()"></app-reportsection-edit>
         </p>
         <blockquote>
-        <p>
-          <span>ReportSectionID: [{{ reportsection.ReportSectionID }}]</span>
-          <span> --- ReportTypeID: [{{ reportsection.ReportTypeID }}]</span>
-          <span> --- TVItemID: [{{ reportsection.TVItemID }}]</span>
-          <span> --- Language: [{{ GetLanguageEnumText(reportsection.Language) }}]</span>
- </p>
-        <p>
-          <span>Ordinal: [{{ reportsection.Ordinal }}]</span>
-          <span> --- IsStatic: [{{ reportsection.IsStatic }}]</span>
-          <span> --- ParentReportSectionID: [{{ reportsection.ParentReportSectionID }}]</span>
-          <span> --- Year: [{{ reportsection.Year }}]</span>
- </p>
-        <p>
-          <span>Locked: [{{ reportsection.Locked }}]</span>
-          <span> --- TemplateReportSectionID: [{{ reportsection.TemplateReportSectionID }}]</span>
-          <span> --- ReportSectionName: [{{ reportsection.ReportSectionName }}]</span>
-          <span> --- ReportSectionText: [{{ reportsection.ReportSectionText }}]</span>
- </p>
-        <p>
-          <span>LastUpdateDate_UTC: [{{ reportsection.LastUpdateDate_UTC }}]</span>
-          <span> --- LastUpdateContactTVItemID: [{{ reportsection.LastUpdateContactTVItemID }}]</span>
-        </p>
+          <p>
+            <span>ReportSectionID: [{{ reportsection.ReportSectionID }}]</span>
+            <span> --- ReportTypeID: [{{ reportsection.ReportTypeID }}]</span>
+            <span> --- TVItemID: [{{ reportsection.TVItemID }}]</span>
+            <span> --- Language: [{{ GetLanguageEnumText(reportsection.Language) }}]</span>
+          </p>
+          <p>
+            <span>Ordinal: [{{ reportsection.Ordinal }}]</span>
+            <span> --- IsStatic: [{{ reportsection.IsStatic }}]</span>
+            <span> --- ParentReportSectionID: [{{ reportsection.ParentReportSectionID }}]</span>
+            <span> --- Year: [{{ reportsection.Year }}]</span>
+          </p>
+          <p>
+            <span>Locked: [{{ reportsection.Locked }}]</span>
+            <span> --- TemplateReportSectionID: [{{ reportsection.TemplateReportSectionID }}]</span>
+            <span> --- ReportSectionName: [{{ reportsection.ReportSectionName }}]</span>
+            <span> --- ReportSectionText: [{{ reportsection.ReportSectionText }}]</span>
+          </p>
+          <p>
+            <span>LastUpdateDate_UTC: [{{ reportsection.LastUpdateDate_UTC }}]</span>
+            <span> --- LastUpdateContactTVItemID: [{{ reportsection.LastUpdateContactTVItemID }}]</span>
+          </p>
         </blockquote>
        </div>
      </div>

@@ -24,10 +24,10 @@
             <span>Delete TVItemStatID [{{ tvitemstat.TVItemStatID }}]&nbsp;&nbsp;&nbsp;</span>
             <mat-icon>delete</mat-icon>
           </button>&nbsp;&nbsp;&nbsp;
-          <button mat-raised-button [color]="GetPutButtonColor(tvitemstat)"(click)="ShowPut(tvitemstat)">
+          <button mat-raised-button [color]="GetPutButtonColor(tvitemstat)" (click)="ShowPut(tvitemstat)">
             <span>Show Put</span>
           </button>&nbsp;&nbsp;
-          <button mat-raised-button [color]="GetPostButtonColor(tvitemstat)"(click)="ShowPost(tvitemstat)">
+          <button mat-raised-button [color]="GetPostButtonColor(tvitemstat)" (click)="ShowPost(tvitemstat)">
             <span>Show Post</span>
           </button>&nbsp;&nbsp;
           <mat-progress-bar mode="indeterminate" *ngIf="tvitemstatService.tvitemstatDeleteModel$.getValue().Working">
@@ -40,16 +40,16 @@
           <app-tvitemstat-edit [tvitemstat]="tvitemstat" [httpClientCommand]="GetPostEnum()"></app-tvitemstat-edit>
         </p>
         <blockquote>
-        <p>
-          <span>TVItemStatID: [{{ tvitemstat.TVItemStatID }}]</span>
-          <span> --- TVItemID: [{{ tvitemstat.TVItemID }}]</span>
-          <span> --- TVType: [{{ GetTVTypeEnumText(tvitemstat.TVType) }}]</span>
-          <span> --- ChildCount: [{{ tvitemstat.ChildCount }}]</span>
- </p>
-        <p>
-          <span>LastUpdateDate_UTC: [{{ tvitemstat.LastUpdateDate_UTC }}]</span>
-          <span> --- LastUpdateContactTVItemID: [{{ tvitemstat.LastUpdateContactTVItemID }}]</span>
-        </p>
+          <p>
+            <span>TVItemStatID: [{{ tvitemstat.TVItemStatID }}]</span>
+            <span> --- TVItemID: [{{ tvitemstat.TVItemID }}]</span>
+            <span> --- TVType: [{{ GetTVTypeEnumText(tvitemstat.TVType) }}]</span>
+            <span> --- ChildCount: [{{ tvitemstat.ChildCount }}]</span>
+          </p>
+          <p>
+            <span>LastUpdateDate_UTC: [{{ tvitemstat.LastUpdateDate_UTC }}]</span>
+            <span> --- LastUpdateContactTVItemID: [{{ tvitemstat.LastUpdateContactTVItemID }}]</span>
+          </p>
         </blockquote>
        </div>
      </div>

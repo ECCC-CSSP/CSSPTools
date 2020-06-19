@@ -24,10 +24,10 @@
             <span>Delete SamplingPlanSubsectorID [{{ samplingplansubsector.SamplingPlanSubsectorID }}]&nbsp;&nbsp;&nbsp;</span>
             <mat-icon>delete</mat-icon>
           </button>&nbsp;&nbsp;&nbsp;
-          <button mat-raised-button [color]="GetPutButtonColor(samplingplansubsector)"(click)="ShowPut(samplingplansubsector)">
+          <button mat-raised-button [color]="GetPutButtonColor(samplingplansubsector)" (click)="ShowPut(samplingplansubsector)">
             <span>Show Put</span>
           </button>&nbsp;&nbsp;
-          <button mat-raised-button [color]="GetPostButtonColor(samplingplansubsector)"(click)="ShowPost(samplingplansubsector)">
+          <button mat-raised-button [color]="GetPostButtonColor(samplingplansubsector)" (click)="ShowPost(samplingplansubsector)">
             <span>Show Post</span>
           </button>&nbsp;&nbsp;
           <mat-progress-bar mode="indeterminate" *ngIf="samplingplansubsectorService.samplingplansubsectorDeleteModel$.getValue().Working">
@@ -40,15 +40,15 @@
           <app-samplingplansubsector-edit [samplingplansubsector]="samplingplansubsector" [httpClientCommand]="GetPostEnum()"></app-samplingplansubsector-edit>
         </p>
         <blockquote>
-        <p>
-          <span>SamplingPlanSubsectorID: [{{ samplingplansubsector.SamplingPlanSubsectorID }}]</span>
-          <span> --- SamplingPlanID: [{{ samplingplansubsector.SamplingPlanID }}]</span>
-          <span> --- SubsectorTVItemID: [{{ samplingplansubsector.SubsectorTVItemID }}]</span>
-          <span> --- LastUpdateDate_UTC: [{{ samplingplansubsector.LastUpdateDate_UTC }}]</span>
- </p>
-        <p>
-          <span>LastUpdateContactTVItemID: [{{ samplingplansubsector.LastUpdateContactTVItemID }}]</span>
-        </p>
+          <p>
+            <span>SamplingPlanSubsectorID: [{{ samplingplansubsector.SamplingPlanSubsectorID }}]</span>
+            <span> --- SamplingPlanID: [{{ samplingplansubsector.SamplingPlanID }}]</span>
+            <span> --- SubsectorTVItemID: [{{ samplingplansubsector.SubsectorTVItemID }}]</span>
+            <span> --- LastUpdateDate_UTC: [{{ samplingplansubsector.LastUpdateDate_UTC }}]</span>
+          </p>
+          <p>
+            <span>LastUpdateContactTVItemID: [{{ samplingplansubsector.LastUpdateContactTVItemID }}]</span>
+          </p>
         </blockquote>
        </div>
      </div>

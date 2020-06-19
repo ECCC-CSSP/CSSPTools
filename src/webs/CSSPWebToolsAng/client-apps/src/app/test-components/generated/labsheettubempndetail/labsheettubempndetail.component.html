@@ -24,10 +24,10 @@
             <span>Delete LabSheetTubeMPNDetailID [{{ labsheettubempndetail.LabSheetTubeMPNDetailID }}]&nbsp;&nbsp;&nbsp;</span>
             <mat-icon>delete</mat-icon>
           </button>&nbsp;&nbsp;&nbsp;
-          <button mat-raised-button [color]="GetPutButtonColor(labsheettubempndetail)"(click)="ShowPut(labsheettubempndetail)">
+          <button mat-raised-button [color]="GetPutButtonColor(labsheettubempndetail)" (click)="ShowPut(labsheettubempndetail)">
             <span>Show Put</span>
           </button>&nbsp;&nbsp;
-          <button mat-raised-button [color]="GetPostButtonColor(labsheettubempndetail)"(click)="ShowPost(labsheettubempndetail)">
+          <button mat-raised-button [color]="GetPostButtonColor(labsheettubempndetail)" (click)="ShowPost(labsheettubempndetail)">
             <span>Show Post</span>
           </button>&nbsp;&nbsp;
           <mat-progress-bar mode="indeterminate" *ngIf="labsheettubempndetailService.labsheettubempndetailDeleteModel$.getValue().Working">
@@ -40,30 +40,30 @@
           <app-labsheettubempndetail-edit [labsheettubempndetail]="labsheettubempndetail" [httpClientCommand]="GetPostEnum()"></app-labsheettubempndetail-edit>
         </p>
         <blockquote>
-        <p>
-          <span>LabSheetTubeMPNDetailID: [{{ labsheettubempndetail.LabSheetTubeMPNDetailID }}]</span>
-          <span> --- LabSheetDetailID: [{{ labsheettubempndetail.LabSheetDetailID }}]</span>
-          <span> --- Ordinal: [{{ labsheettubempndetail.Ordinal }}]</span>
-          <span> --- MWQMSiteTVItemID: [{{ labsheettubempndetail.MWQMSiteTVItemID }}]</span>
- </p>
-        <p>
-          <span>SampleDateTime: [{{ labsheettubempndetail.SampleDateTime }}]</span>
-          <span> --- MPN: [{{ labsheettubempndetail.MPN }}]</span>
-          <span> --- Tube10: [{{ labsheettubempndetail.Tube10 }}]</span>
-          <span> --- Tube1_0: [{{ labsheettubempndetail.Tube1_0 }}]</span>
- </p>
-        <p>
-          <span>Tube0_1: [{{ labsheettubempndetail.Tube0_1 }}]</span>
-          <span> --- Salinity: [{{ labsheettubempndetail.Salinity }}]</span>
-          <span> --- Temperature: [{{ labsheettubempndetail.Temperature }}]</span>
-          <span> --- ProcessedBy: [{{ labsheettubempndetail.ProcessedBy }}]</span>
- </p>
-        <p>
-          <span>SampleType: [{{ GetSampleTypeEnumText(labsheettubempndetail.SampleType) }}]</span>
-          <span> --- SiteComment: [{{ labsheettubempndetail.SiteComment }}]</span>
-          <span> --- LastUpdateDate_UTC: [{{ labsheettubempndetail.LastUpdateDate_UTC }}]</span>
-          <span> --- LastUpdateContactTVItemID: [{{ labsheettubempndetail.LastUpdateContactTVItemID }}]</span>
-        </p>
+          <p>
+            <span>LabSheetTubeMPNDetailID: [{{ labsheettubempndetail.LabSheetTubeMPNDetailID }}]</span>
+            <span> --- LabSheetDetailID: [{{ labsheettubempndetail.LabSheetDetailID }}]</span>
+            <span> --- Ordinal: [{{ labsheettubempndetail.Ordinal }}]</span>
+            <span> --- MWQMSiteTVItemID: [{{ labsheettubempndetail.MWQMSiteTVItemID }}]</span>
+          </p>
+          <p>
+            <span>SampleDateTime: [{{ labsheettubempndetail.SampleDateTime }}]</span>
+            <span> --- MPN: [{{ labsheettubempndetail.MPN }}]</span>
+            <span> --- Tube10: [{{ labsheettubempndetail.Tube10 }}]</span>
+            <span> --- Tube1_0: [{{ labsheettubempndetail.Tube1_0 }}]</span>
+          </p>
+          <p>
+            <span>Tube0_1: [{{ labsheettubempndetail.Tube0_1 }}]</span>
+            <span> --- Salinity: [{{ labsheettubempndetail.Salinity }}]</span>
+            <span> --- Temperature: [{{ labsheettubempndetail.Temperature }}]</span>
+            <span> --- ProcessedBy: [{{ labsheettubempndetail.ProcessedBy }}]</span>
+          </p>
+          <p>
+            <span>SampleType: [{{ GetSampleTypeEnumText(labsheettubempndetail.SampleType) }}]</span>
+            <span> --- SiteComment: [{{ labsheettubempndetail.SiteComment }}]</span>
+            <span> --- LastUpdateDate_UTC: [{{ labsheettubempndetail.LastUpdateDate_UTC }}]</span>
+            <span> --- LastUpdateContactTVItemID: [{{ labsheettubempndetail.LastUpdateContactTVItemID }}]</span>
+          </p>
         </blockquote>
        </div>
      </div>

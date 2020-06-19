@@ -24,10 +24,10 @@
             <span>Delete MWQMSubsectorLanguageID [{{ mwqmsubsectorlanguage.MWQMSubsectorLanguageID }}]&nbsp;&nbsp;&nbsp;</span>
             <mat-icon>delete</mat-icon>
           </button>&nbsp;&nbsp;&nbsp;
-          <button mat-raised-button [color]="GetPutButtonColor(mwqmsubsectorlanguage)"(click)="ShowPut(mwqmsubsectorlanguage)">
+          <button mat-raised-button [color]="GetPutButtonColor(mwqmsubsectorlanguage)" (click)="ShowPut(mwqmsubsectorlanguage)">
             <span>Show Put</span>
           </button>&nbsp;&nbsp;
-          <button mat-raised-button [color]="GetPostButtonColor(mwqmsubsectorlanguage)"(click)="ShowPost(mwqmsubsectorlanguage)">
+          <button mat-raised-button [color]="GetPostButtonColor(mwqmsubsectorlanguage)" (click)="ShowPost(mwqmsubsectorlanguage)">
             <span>Show Post</span>
           </button>&nbsp;&nbsp;
           <mat-progress-bar mode="indeterminate" *ngIf="mwqmsubsectorlanguageService.mwqmsubsectorlanguageDeleteModel$.getValue().Working">
@@ -40,21 +40,21 @@
           <app-mwqmsubsectorlanguage-edit [mwqmsubsectorlanguage]="mwqmsubsectorlanguage" [httpClientCommand]="GetPostEnum()"></app-mwqmsubsectorlanguage-edit>
         </p>
         <blockquote>
-        <p>
-          <span>MWQMSubsectorLanguageID: [{{ mwqmsubsectorlanguage.MWQMSubsectorLanguageID }}]</span>
-          <span> --- MWQMSubsectorID: [{{ mwqmsubsectorlanguage.MWQMSubsectorID }}]</span>
-          <span> --- Language: [{{ GetLanguageEnumText(mwqmsubsectorlanguage.Language) }}]</span>
-          <span> --- SubsectorDesc: [{{ mwqmsubsectorlanguage.SubsectorDesc }}]</span>
- </p>
-        <p>
-          <span>TranslationStatusSubsectorDesc: [{{ GetTranslationStatusEnumText(mwqmsubsectorlanguage.TranslationStatusSubsectorDesc) }}]</span>
-          <span> --- LogBook: [{{ mwqmsubsectorlanguage.LogBook }}]</span>
-          <span> --- TranslationStatusLogBook: [{{ GetTranslationStatusEnumText(mwqmsubsectorlanguage.TranslationStatusLogBook) }}]</span>
-          <span> --- LastUpdateDate_UTC: [{{ mwqmsubsectorlanguage.LastUpdateDate_UTC }}]</span>
- </p>
-        <p>
-          <span>LastUpdateContactTVItemID: [{{ mwqmsubsectorlanguage.LastUpdateContactTVItemID }}]</span>
-        </p>
+          <p>
+            <span>MWQMSubsectorLanguageID: [{{ mwqmsubsectorlanguage.MWQMSubsectorLanguageID }}]</span>
+            <span> --- MWQMSubsectorID: [{{ mwqmsubsectorlanguage.MWQMSubsectorID }}]</span>
+            <span> --- Language: [{{ GetLanguageEnumText(mwqmsubsectorlanguage.Language) }}]</span>
+            <span> --- SubsectorDesc: [{{ mwqmsubsectorlanguage.SubsectorDesc }}]</span>
+          </p>
+          <p>
+            <span>TranslationStatusSubsectorDesc: [{{ GetTranslationStatusEnumText(mwqmsubsectorlanguage.TranslationStatusSubsectorDesc) }}]</span>
+            <span> --- LogBook: [{{ mwqmsubsectorlanguage.LogBook }}]</span>
+            <span> --- TranslationStatusLogBook: [{{ GetTranslationStatusEnumText(mwqmsubsectorlanguage.TranslationStatusLogBook) }}]</span>
+            <span> --- LastUpdateDate_UTC: [{{ mwqmsubsectorlanguage.LastUpdateDate_UTC }}]</span>
+          </p>
+          <p>
+            <span>LastUpdateContactTVItemID: [{{ mwqmsubsectorlanguage.LastUpdateContactTVItemID }}]</span>
+          </p>
         </blockquote>
        </div>
      </div>

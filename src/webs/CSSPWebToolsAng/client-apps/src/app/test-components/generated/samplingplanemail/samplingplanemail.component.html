@@ -24,10 +24,10 @@
             <span>Delete SamplingPlanEmailID [{{ samplingplanemail.SamplingPlanEmailID }}]&nbsp;&nbsp;&nbsp;</span>
             <mat-icon>delete</mat-icon>
           </button>&nbsp;&nbsp;&nbsp;
-          <button mat-raised-button [color]="GetPutButtonColor(samplingplanemail)"(click)="ShowPut(samplingplanemail)">
+          <button mat-raised-button [color]="GetPutButtonColor(samplingplanemail)" (click)="ShowPut(samplingplanemail)">
             <span>Show Put</span>
           </button>&nbsp;&nbsp;
-          <button mat-raised-button [color]="GetPostButtonColor(samplingplanemail)"(click)="ShowPost(samplingplanemail)">
+          <button mat-raised-button [color]="GetPostButtonColor(samplingplanemail)" (click)="ShowPost(samplingplanemail)">
             <span>Show Post</span>
           </button>&nbsp;&nbsp;
           <mat-progress-bar mode="indeterminate" *ngIf="samplingplanemailService.samplingplanemailDeleteModel$.getValue().Working">
@@ -40,22 +40,22 @@
           <app-samplingplanemail-edit [samplingplanemail]="samplingplanemail" [httpClientCommand]="GetPostEnum()"></app-samplingplanemail-edit>
         </p>
         <blockquote>
-        <p>
-          <span>SamplingPlanEmailID: [{{ samplingplanemail.SamplingPlanEmailID }}]</span>
-          <span> --- SamplingPlanID: [{{ samplingplanemail.SamplingPlanID }}]</span>
-          <span> --- Email: [{{ samplingplanemail.Email }}]</span>
-          <span> --- IsContractor: [{{ samplingplanemail.IsContractor }}]</span>
- </p>
-        <p>
-          <span>LabSheetHasValueOver500: [{{ samplingplanemail.LabSheetHasValueOver500 }}]</span>
-          <span> --- LabSheetReceived: [{{ samplingplanemail.LabSheetReceived }}]</span>
-          <span> --- LabSheetAccepted: [{{ samplingplanemail.LabSheetAccepted }}]</span>
-          <span> --- LabSheetRejected: [{{ samplingplanemail.LabSheetRejected }}]</span>
- </p>
-        <p>
-          <span>LastUpdateDate_UTC: [{{ samplingplanemail.LastUpdateDate_UTC }}]</span>
-          <span> --- LastUpdateContactTVItemID: [{{ samplingplanemail.LastUpdateContactTVItemID }}]</span>
-        </p>
+          <p>
+            <span>SamplingPlanEmailID: [{{ samplingplanemail.SamplingPlanEmailID }}]</span>
+            <span> --- SamplingPlanID: [{{ samplingplanemail.SamplingPlanID }}]</span>
+            <span> --- Email: [{{ samplingplanemail.Email }}]</span>
+            <span> --- IsContractor: [{{ samplingplanemail.IsContractor }}]</span>
+          </p>
+          <p>
+            <span>LabSheetHasValueOver500: [{{ samplingplanemail.LabSheetHasValueOver500 }}]</span>
+            <span> --- LabSheetReceived: [{{ samplingplanemail.LabSheetReceived }}]</span>
+            <span> --- LabSheetAccepted: [{{ samplingplanemail.LabSheetAccepted }}]</span>
+            <span> --- LabSheetRejected: [{{ samplingplanemail.LabSheetRejected }}]</span>
+          </p>
+          <p>
+            <span>LastUpdateDate_UTC: [{{ samplingplanemail.LastUpdateDate_UTC }}]</span>
+            <span> --- LastUpdateContactTVItemID: [{{ samplingplanemail.LastUpdateContactTVItemID }}]</span>
+          </p>
         </blockquote>
        </div>
      </div>

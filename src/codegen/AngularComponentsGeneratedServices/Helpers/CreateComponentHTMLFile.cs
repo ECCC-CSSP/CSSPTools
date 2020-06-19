@@ -44,10 +44,10 @@ namespace AngularComponentsGeneratedServices.Services
             sb.AppendLine($@"            <span>Delete { dllTypeInfoModels.Name }ID [{{{{ { dllTypeInfoModels.Name.ToLower() }.{ dllTypeInfoModels.Name }ID }}}}]&nbsp;&nbsp;&nbsp;</span>");
             sb.AppendLine(@"            <mat-icon>delete</mat-icon>");
             sb.AppendLine(@"          </button>&nbsp;&nbsp;&nbsp;");
-            sb.AppendLine($@"          <button mat-raised-button [color]=""GetPutButtonColor({ dllTypeInfoModels.Name.ToLower() })""(click)=""ShowPut({ dllTypeInfoModels.Name.ToLower() })"">");
+            sb.AppendLine($@"          <button mat-raised-button [color]=""GetPutButtonColor({ dllTypeInfoModels.Name.ToLower() })"" (click)=""ShowPut({ dllTypeInfoModels.Name.ToLower() })"">");
             sb.AppendLine($@"            <span>Show Put</span>");
             sb.AppendLine(@"          </button>&nbsp;&nbsp;");
-            sb.AppendLine($@"          <button mat-raised-button [color]=""GetPostButtonColor({ dllTypeInfoModels.Name.ToLower() })""(click)=""ShowPost({ dllTypeInfoModels.Name.ToLower() })"">");
+            sb.AppendLine($@"          <button mat-raised-button [color]=""GetPostButtonColor({ dllTypeInfoModels.Name.ToLower() })"" (click)=""ShowPost({ dllTypeInfoModels.Name.ToLower() })"">");
             sb.AppendLine($@"            <span>Show Post</span>");
             sb.AppendLine(@"          </button>&nbsp;&nbsp;");
             sb.AppendLine($@"          <mat-progress-bar mode=""indeterminate"" *ngIf=""{ dllTypeInfoModels.Name.ToLower() }Service.{ dllTypeInfoModels.Name.ToLower() }DeleteModel$.getValue().Working"">");
@@ -69,9 +69,9 @@ namespace AngularComponentsGeneratedServices.Services
                 {
                     if (objCount != 0)
                     {
-                        sb.AppendLine($@" </p>");
+                        sb.AppendLine($@"          </p>");
                     }
-                    sb.AppendLine($@"        <p>");
+                    sb.AppendLine($@"          <p>");
                     space = "";
                 }
                 else
@@ -83,14 +83,14 @@ namespace AngularComponentsGeneratedServices.Services
 
                 if (dllPropertyInfo.CSSPProp.HasCSSPEnumTypeAttribute)
                 {
-                    sb.AppendLine($@"          <span>{ space }{ dllPropertyInfo.CSSPProp.PropName }: [{{{{ Get{ dllPropertyInfo.CSSPProp.PropType }Text({ dllTypeInfoModels.Name.ToLower() }.{ dllPropertyInfo.CSSPProp.PropName }) }}}}]</span>");
+                    sb.AppendLine($@"            <span>{ space }{ dllPropertyInfo.CSSPProp.PropName }: [{{{{ Get{ dllPropertyInfo.CSSPProp.PropType }Text({ dllTypeInfoModels.Name.ToLower() }.{ dllPropertyInfo.CSSPProp.PropName }) }}}}]</span>");
                 }
                 else
                 {
-                    sb.AppendLine($@"          <span>{ space }{ dllPropertyInfo.CSSPProp.PropName }: [{{{{ { dllTypeInfoModels.Name.ToLower() }.{ dllPropertyInfo.CSSPProp.PropName } }}}}]</span>");
+                    sb.AppendLine($@"            <span>{ space }{ dllPropertyInfo.CSSPProp.PropName }: [{{{{ { dllTypeInfoModels.Name.ToLower() }.{ dllPropertyInfo.CSSPProp.PropName } }}}}]</span>");
                 }
             }
-            sb.AppendLine($@"        </p>");
+            sb.AppendLine($@"          </p>");
             sb.AppendLine($@"        </blockquote>");
             sb.AppendLine(@"       </div>");
             sb.AppendLine(@"     </div>");

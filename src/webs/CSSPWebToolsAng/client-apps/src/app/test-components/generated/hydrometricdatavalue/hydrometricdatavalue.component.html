@@ -24,10 +24,10 @@
             <span>Delete HydrometricDataValueID [{{ hydrometricdatavalue.HydrometricDataValueID }}]&nbsp;&nbsp;&nbsp;</span>
             <mat-icon>delete</mat-icon>
           </button>&nbsp;&nbsp;&nbsp;
-          <button mat-raised-button [color]="GetPutButtonColor(hydrometricdatavalue)"(click)="ShowPut(hydrometricdatavalue)">
+          <button mat-raised-button [color]="GetPutButtonColor(hydrometricdatavalue)" (click)="ShowPut(hydrometricdatavalue)">
             <span>Show Put</span>
           </button>&nbsp;&nbsp;
-          <button mat-raised-button [color]="GetPostButtonColor(hydrometricdatavalue)"(click)="ShowPost(hydrometricdatavalue)">
+          <button mat-raised-button [color]="GetPostButtonColor(hydrometricdatavalue)" (click)="ShowPost(hydrometricdatavalue)">
             <span>Show Post</span>
           </button>&nbsp;&nbsp;
           <mat-progress-bar mode="indeterminate" *ngIf="hydrometricdatavalueService.hydrometricdatavalueDeleteModel$.getValue().Working">
@@ -40,24 +40,24 @@
           <app-hydrometricdatavalue-edit [hydrometricdatavalue]="hydrometricdatavalue" [httpClientCommand]="GetPostEnum()"></app-hydrometricdatavalue-edit>
         </p>
         <blockquote>
-        <p>
-          <span>HydrometricDataValueID: [{{ hydrometricdatavalue.HydrometricDataValueID }}]</span>
-          <span> --- HydrometricSiteID: [{{ hydrometricdatavalue.HydrometricSiteID }}]</span>
-          <span> --- DateTime_Local: [{{ hydrometricdatavalue.DateTime_Local }}]</span>
-          <span> --- Keep: [{{ hydrometricdatavalue.Keep }}]</span>
- </p>
-        <p>
-          <span>StorageDataType: [{{ GetStorageDataTypeEnumText(hydrometricdatavalue.StorageDataType) }}]</span>
-          <span> --- HasBeenRead: [{{ hydrometricdatavalue.HasBeenRead }}]</span>
-          <span> --- Discharge_m3_s: [{{ hydrometricdatavalue.Discharge_m3_s }}]</span>
-          <span> --- DischargeEntered_m3_s: [{{ hydrometricdatavalue.DischargeEntered_m3_s }}]</span>
- </p>
-        <p>
-          <span>Level_m: [{{ hydrometricdatavalue.Level_m }}]</span>
-          <span> --- HourlyValues: [{{ hydrometricdatavalue.HourlyValues }}]</span>
-          <span> --- LastUpdateDate_UTC: [{{ hydrometricdatavalue.LastUpdateDate_UTC }}]</span>
-          <span> --- LastUpdateContactTVItemID: [{{ hydrometricdatavalue.LastUpdateContactTVItemID }}]</span>
-        </p>
+          <p>
+            <span>HydrometricDataValueID: [{{ hydrometricdatavalue.HydrometricDataValueID }}]</span>
+            <span> --- HydrometricSiteID: [{{ hydrometricdatavalue.HydrometricSiteID }}]</span>
+            <span> --- DateTime_Local: [{{ hydrometricdatavalue.DateTime_Local }}]</span>
+            <span> --- Keep: [{{ hydrometricdatavalue.Keep }}]</span>
+          </p>
+          <p>
+            <span>StorageDataType: [{{ GetStorageDataTypeEnumText(hydrometricdatavalue.StorageDataType) }}]</span>
+            <span> --- HasBeenRead: [{{ hydrometricdatavalue.HasBeenRead }}]</span>
+            <span> --- Discharge_m3_s: [{{ hydrometricdatavalue.Discharge_m3_s }}]</span>
+            <span> --- DischargeEntered_m3_s: [{{ hydrometricdatavalue.DischargeEntered_m3_s }}]</span>
+          </p>
+          <p>
+            <span>Level_m: [{{ hydrometricdatavalue.Level_m }}]</span>
+            <span> --- HourlyValues: [{{ hydrometricdatavalue.HourlyValues }}]</span>
+            <span> --- LastUpdateDate_UTC: [{{ hydrometricdatavalue.LastUpdateDate_UTC }}]</span>
+            <span> --- LastUpdateContactTVItemID: [{{ hydrometricdatavalue.LastUpdateContactTVItemID }}]</span>
+          </p>
         </blockquote>
        </div>
      </div>

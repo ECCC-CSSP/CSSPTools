@@ -24,10 +24,10 @@
             <span>Delete InfrastructureLanguageID [{{ infrastructurelanguage.InfrastructureLanguageID }}]&nbsp;&nbsp;&nbsp;</span>
             <mat-icon>delete</mat-icon>
           </button>&nbsp;&nbsp;&nbsp;
-          <button mat-raised-button [color]="GetPutButtonColor(infrastructurelanguage)"(click)="ShowPut(infrastructurelanguage)">
+          <button mat-raised-button [color]="GetPutButtonColor(infrastructurelanguage)" (click)="ShowPut(infrastructurelanguage)">
             <span>Show Put</span>
           </button>&nbsp;&nbsp;
-          <button mat-raised-button [color]="GetPostButtonColor(infrastructurelanguage)"(click)="ShowPost(infrastructurelanguage)">
+          <button mat-raised-button [color]="GetPostButtonColor(infrastructurelanguage)" (click)="ShowPost(infrastructurelanguage)">
             <span>Show Post</span>
           </button>&nbsp;&nbsp;
           <mat-progress-bar mode="indeterminate" *ngIf="infrastructurelanguageService.infrastructurelanguageDeleteModel$.getValue().Working">
@@ -40,17 +40,17 @@
           <app-infrastructurelanguage-edit [infrastructurelanguage]="infrastructurelanguage" [httpClientCommand]="GetPostEnum()"></app-infrastructurelanguage-edit>
         </p>
         <blockquote>
-        <p>
-          <span>InfrastructureLanguageID: [{{ infrastructurelanguage.InfrastructureLanguageID }}]</span>
-          <span> --- InfrastructureID: [{{ infrastructurelanguage.InfrastructureID }}]</span>
-          <span> --- Language: [{{ GetLanguageEnumText(infrastructurelanguage.Language) }}]</span>
-          <span> --- Comment: [{{ infrastructurelanguage.Comment }}]</span>
- </p>
-        <p>
-          <span>TranslationStatus: [{{ GetTranslationStatusEnumText(infrastructurelanguage.TranslationStatus) }}]</span>
-          <span> --- LastUpdateDate_UTC: [{{ infrastructurelanguage.LastUpdateDate_UTC }}]</span>
-          <span> --- LastUpdateContactTVItemID: [{{ infrastructurelanguage.LastUpdateContactTVItemID }}]</span>
-        </p>
+          <p>
+            <span>InfrastructureLanguageID: [{{ infrastructurelanguage.InfrastructureLanguageID }}]</span>
+            <span> --- InfrastructureID: [{{ infrastructurelanguage.InfrastructureID }}]</span>
+            <span> --- Language: [{{ GetLanguageEnumText(infrastructurelanguage.Language) }}]</span>
+            <span> --- Comment: [{{ infrastructurelanguage.Comment }}]</span>
+          </p>
+          <p>
+            <span>TranslationStatus: [{{ GetTranslationStatusEnumText(infrastructurelanguage.TranslationStatus) }}]</span>
+            <span> --- LastUpdateDate_UTC: [{{ infrastructurelanguage.LastUpdateDate_UTC }}]</span>
+            <span> --- LastUpdateContactTVItemID: [{{ infrastructurelanguage.LastUpdateContactTVItemID }}]</span>
+          </p>
         </blockquote>
        </div>
      </div>

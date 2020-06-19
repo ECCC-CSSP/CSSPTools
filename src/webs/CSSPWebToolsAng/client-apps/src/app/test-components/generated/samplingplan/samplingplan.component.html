@@ -24,10 +24,10 @@
             <span>Delete SamplingPlanID [{{ samplingplan.SamplingPlanID }}]&nbsp;&nbsp;&nbsp;</span>
             <mat-icon>delete</mat-icon>
           </button>&nbsp;&nbsp;&nbsp;
-          <button mat-raised-button [color]="GetPutButtonColor(samplingplan)"(click)="ShowPut(samplingplan)">
+          <button mat-raised-button [color]="GetPutButtonColor(samplingplan)" (click)="ShowPut(samplingplan)">
             <span>Show Put</span>
           </button>&nbsp;&nbsp;
-          <button mat-raised-button [color]="GetPostButtonColor(samplingplan)"(click)="ShowPost(samplingplan)">
+          <button mat-raised-button [color]="GetPostButtonColor(samplingplan)" (click)="ShowPost(samplingplan)">
             <span>Show Post</span>
           </button>&nbsp;&nbsp;
           <mat-progress-bar mode="indeterminate" *ngIf="samplingplanService.samplingplanDeleteModel$.getValue().Working">
@@ -40,40 +40,40 @@
           <app-samplingplan-edit [samplingplan]="samplingplan" [httpClientCommand]="GetPostEnum()"></app-samplingplan-edit>
         </p>
         <blockquote>
-        <p>
-          <span>SamplingPlanID: [{{ samplingplan.SamplingPlanID }}]</span>
-          <span> --- IsActive: [{{ samplingplan.IsActive }}]</span>
-          <span> --- SamplingPlanName: [{{ samplingplan.SamplingPlanName }}]</span>
-          <span> --- ForGroupName: [{{ samplingplan.ForGroupName }}]</span>
- </p>
-        <p>
-          <span>SampleType: [{{ GetSampleTypeEnumText(samplingplan.SampleType) }}]</span>
-          <span> --- SamplingPlanType: [{{ GetSamplingPlanTypeEnumText(samplingplan.SamplingPlanType) }}]</span>
-          <span> --- LabSheetType: [{{ GetLabSheetTypeEnumText(samplingplan.LabSheetType) }}]</span>
-          <span> --- ProvinceTVItemID: [{{ samplingplan.ProvinceTVItemID }}]</span>
- </p>
-        <p>
-          <span>CreatorTVItemID: [{{ samplingplan.CreatorTVItemID }}]</span>
-          <span> --- Year: [{{ samplingplan.Year }}]</span>
-          <span> --- AccessCode: [{{ samplingplan.AccessCode }}]</span>
-          <span> --- DailyDuplicatePrecisionCriteria: [{{ samplingplan.DailyDuplicatePrecisionCriteria }}]</span>
- </p>
-        <p>
-          <span>IntertechDuplicatePrecisionCriteria: [{{ samplingplan.IntertechDuplicatePrecisionCriteria }}]</span>
-          <span> --- IncludeLaboratoryQAQC: [{{ samplingplan.IncludeLaboratoryQAQC }}]</span>
-          <span> --- ApprovalCode: [{{ samplingplan.ApprovalCode }}]</span>
-          <span> --- SamplingPlanFileTVItemID: [{{ samplingplan.SamplingPlanFileTVItemID }}]</span>
- </p>
-        <p>
-          <span>AnalyzeMethodDefault: [{{ GetAnalyzeMethodEnumText(samplingplan.AnalyzeMethodDefault) }}]</span>
-          <span> --- SampleMatrixDefault: [{{ GetSampleMatrixEnumText(samplingplan.SampleMatrixDefault) }}]</span>
-          <span> --- LaboratoryDefault: [{{ GetLaboratoryEnumText(samplingplan.LaboratoryDefault) }}]</span>
-          <span> --- BackupDirectory: [{{ samplingplan.BackupDirectory }}]</span>
- </p>
-        <p>
-          <span>LastUpdateDate_UTC: [{{ samplingplan.LastUpdateDate_UTC }}]</span>
-          <span> --- LastUpdateContactTVItemID: [{{ samplingplan.LastUpdateContactTVItemID }}]</span>
-        </p>
+          <p>
+            <span>SamplingPlanID: [{{ samplingplan.SamplingPlanID }}]</span>
+            <span> --- IsActive: [{{ samplingplan.IsActive }}]</span>
+            <span> --- SamplingPlanName: [{{ samplingplan.SamplingPlanName }}]</span>
+            <span> --- ForGroupName: [{{ samplingplan.ForGroupName }}]</span>
+          </p>
+          <p>
+            <span>SampleType: [{{ GetSampleTypeEnumText(samplingplan.SampleType) }}]</span>
+            <span> --- SamplingPlanType: [{{ GetSamplingPlanTypeEnumText(samplingplan.SamplingPlanType) }}]</span>
+            <span> --- LabSheetType: [{{ GetLabSheetTypeEnumText(samplingplan.LabSheetType) }}]</span>
+            <span> --- ProvinceTVItemID: [{{ samplingplan.ProvinceTVItemID }}]</span>
+          </p>
+          <p>
+            <span>CreatorTVItemID: [{{ samplingplan.CreatorTVItemID }}]</span>
+            <span> --- Year: [{{ samplingplan.Year }}]</span>
+            <span> --- AccessCode: [{{ samplingplan.AccessCode }}]</span>
+            <span> --- DailyDuplicatePrecisionCriteria: [{{ samplingplan.DailyDuplicatePrecisionCriteria }}]</span>
+          </p>
+          <p>
+            <span>IntertechDuplicatePrecisionCriteria: [{{ samplingplan.IntertechDuplicatePrecisionCriteria }}]</span>
+            <span> --- IncludeLaboratoryQAQC: [{{ samplingplan.IncludeLaboratoryQAQC }}]</span>
+            <span> --- ApprovalCode: [{{ samplingplan.ApprovalCode }}]</span>
+            <span> --- SamplingPlanFileTVItemID: [{{ samplingplan.SamplingPlanFileTVItemID }}]</span>
+          </p>
+          <p>
+            <span>AnalyzeMethodDefault: [{{ GetAnalyzeMethodEnumText(samplingplan.AnalyzeMethodDefault) }}]</span>
+            <span> --- SampleMatrixDefault: [{{ GetSampleMatrixEnumText(samplingplan.SampleMatrixDefault) }}]</span>
+            <span> --- LaboratoryDefault: [{{ GetLaboratoryEnumText(samplingplan.LaboratoryDefault) }}]</span>
+            <span> --- BackupDirectory: [{{ samplingplan.BackupDirectory }}]</span>
+          </p>
+          <p>
+            <span>LastUpdateDate_UTC: [{{ samplingplan.LastUpdateDate_UTC }}]</span>
+            <span> --- LastUpdateContactTVItemID: [{{ samplingplan.LastUpdateContactTVItemID }}]</span>
+          </p>
         </blockquote>
        </div>
      </div>

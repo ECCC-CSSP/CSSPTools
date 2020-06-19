@@ -24,10 +24,10 @@
             <span>Delete VPResultID [{{ vpresult.VPResultID }}]&nbsp;&nbsp;&nbsp;</span>
             <mat-icon>delete</mat-icon>
           </button>&nbsp;&nbsp;&nbsp;
-          <button mat-raised-button [color]="GetPutButtonColor(vpresult)"(click)="ShowPut(vpresult)">
+          <button mat-raised-button [color]="GetPutButtonColor(vpresult)" (click)="ShowPut(vpresult)">
             <span>Show Put</span>
           </button>&nbsp;&nbsp;
-          <button mat-raised-button [color]="GetPostButtonColor(vpresult)"(click)="ShowPost(vpresult)">
+          <button mat-raised-button [color]="GetPostButtonColor(vpresult)" (click)="ShowPost(vpresult)">
             <span>Show Post</span>
           </button>&nbsp;&nbsp;
           <mat-progress-bar mode="indeterminate" *ngIf="vpresultService.vpresultDeleteModel$.getValue().Working">
@@ -40,22 +40,22 @@
           <app-vpresult-edit [vpresult]="vpresult" [httpClientCommand]="GetPostEnum()"></app-vpresult-edit>
         </p>
         <blockquote>
-        <p>
-          <span>VPResultID: [{{ vpresult.VPResultID }}]</span>
-          <span> --- VPScenarioID: [{{ vpresult.VPScenarioID }}]</span>
-          <span> --- Ordinal: [{{ vpresult.Ordinal }}]</span>
-          <span> --- Concentration_MPN_100ml: [{{ vpresult.Concentration_MPN_100ml }}]</span>
- </p>
-        <p>
-          <span>Dilution: [{{ vpresult.Dilution }}]</span>
-          <span> --- FarFieldWidth_m: [{{ vpresult.FarFieldWidth_m }}]</span>
-          <span> --- DispersionDistance_m: [{{ vpresult.DispersionDistance_m }}]</span>
-          <span> --- TravelTime_hour: [{{ vpresult.TravelTime_hour }}]</span>
- </p>
-        <p>
-          <span>LastUpdateDate_UTC: [{{ vpresult.LastUpdateDate_UTC }}]</span>
-          <span> --- LastUpdateContactTVItemID: [{{ vpresult.LastUpdateContactTVItemID }}]</span>
-        </p>
+          <p>
+            <span>VPResultID: [{{ vpresult.VPResultID }}]</span>
+            <span> --- VPScenarioID: [{{ vpresult.VPScenarioID }}]</span>
+            <span> --- Ordinal: [{{ vpresult.Ordinal }}]</span>
+            <span> --- Concentration_MPN_100ml: [{{ vpresult.Concentration_MPN_100ml }}]</span>
+          </p>
+          <p>
+            <span>Dilution: [{{ vpresult.Dilution }}]</span>
+            <span> --- FarFieldWidth_m: [{{ vpresult.FarFieldWidth_m }}]</span>
+            <span> --- DispersionDistance_m: [{{ vpresult.DispersionDistance_m }}]</span>
+            <span> --- TravelTime_hour: [{{ vpresult.TravelTime_hour }}]</span>
+          </p>
+          <p>
+            <span>LastUpdateDate_UTC: [{{ vpresult.LastUpdateDate_UTC }}]</span>
+            <span> --- LastUpdateContactTVItemID: [{{ vpresult.LastUpdateContactTVItemID }}]</span>
+          </p>
         </blockquote>
        </div>
      </div>

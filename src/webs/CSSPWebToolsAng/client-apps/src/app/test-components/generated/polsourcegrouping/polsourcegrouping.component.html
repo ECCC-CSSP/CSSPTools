@@ -24,10 +24,10 @@
             <span>Delete PolSourceGroupingID [{{ polsourcegrouping.PolSourceGroupingID }}]&nbsp;&nbsp;&nbsp;</span>
             <mat-icon>delete</mat-icon>
           </button>&nbsp;&nbsp;&nbsp;
-          <button mat-raised-button [color]="GetPutButtonColor(polsourcegrouping)"(click)="ShowPut(polsourcegrouping)">
+          <button mat-raised-button [color]="GetPutButtonColor(polsourcegrouping)" (click)="ShowPut(polsourcegrouping)">
             <span>Show Put</span>
           </button>&nbsp;&nbsp;
-          <button mat-raised-button [color]="GetPostButtonColor(polsourcegrouping)"(click)="ShowPost(polsourcegrouping)">
+          <button mat-raised-button [color]="GetPostButtonColor(polsourcegrouping)" (click)="ShowPost(polsourcegrouping)">
             <span>Show Post</span>
           </button>&nbsp;&nbsp;
           <mat-progress-bar mode="indeterminate" *ngIf="polsourcegroupingService.polsourcegroupingDeleteModel$.getValue().Working">
@@ -40,17 +40,17 @@
           <app-polsourcegrouping-edit [polsourcegrouping]="polsourcegrouping" [httpClientCommand]="GetPostEnum()"></app-polsourcegrouping-edit>
         </p>
         <blockquote>
-        <p>
-          <span>PolSourceGroupingID: [{{ polsourcegrouping.PolSourceGroupingID }}]</span>
-          <span> --- CSSPID: [{{ polsourcegrouping.CSSPID }}]</span>
-          <span> --- GroupName: [{{ polsourcegrouping.GroupName }}]</span>
-          <span> --- Child: [{{ polsourcegrouping.Child }}]</span>
- </p>
-        <p>
-          <span>Hide: [{{ polsourcegrouping.Hide }}]</span>
-          <span> --- LastUpdateDate_UTC: [{{ polsourcegrouping.LastUpdateDate_UTC }}]</span>
-          <span> --- LastUpdateContactTVItemID: [{{ polsourcegrouping.LastUpdateContactTVItemID }}]</span>
-        </p>
+          <p>
+            <span>PolSourceGroupingID: [{{ polsourcegrouping.PolSourceGroupingID }}]</span>
+            <span> --- CSSPID: [{{ polsourcegrouping.CSSPID }}]</span>
+            <span> --- GroupName: [{{ polsourcegrouping.GroupName }}]</span>
+            <span> --- Child: [{{ polsourcegrouping.Child }}]</span>
+          </p>
+          <p>
+            <span>Hide: [{{ polsourcegrouping.Hide }}]</span>
+            <span> --- LastUpdateDate_UTC: [{{ polsourcegrouping.LastUpdateDate_UTC }}]</span>
+            <span> --- LastUpdateContactTVItemID: [{{ polsourcegrouping.LastUpdateContactTVItemID }}]</span>
+          </p>
         </blockquote>
        </div>
      </div>

@@ -24,10 +24,10 @@
             <span>Delete ClimateDataValueID [{{ climatedatavalue.ClimateDataValueID }}]&nbsp;&nbsp;&nbsp;</span>
             <mat-icon>delete</mat-icon>
           </button>&nbsp;&nbsp;&nbsp;
-          <button mat-raised-button [color]="GetPutButtonColor(climatedatavalue)"(click)="ShowPut(climatedatavalue)">
+          <button mat-raised-button [color]="GetPutButtonColor(climatedatavalue)" (click)="ShowPut(climatedatavalue)">
             <span>Show Put</span>
           </button>&nbsp;&nbsp;
-          <button mat-raised-button [color]="GetPostButtonColor(climatedatavalue)"(click)="ShowPost(climatedatavalue)">
+          <button mat-raised-button [color]="GetPostButtonColor(climatedatavalue)" (click)="ShowPost(climatedatavalue)">
             <span>Show Post</span>
           </button>&nbsp;&nbsp;
           <mat-progress-bar mode="indeterminate" *ngIf="climatedatavalueService.climatedatavalueDeleteModel$.getValue().Working">
@@ -40,36 +40,36 @@
           <app-climatedatavalue-edit [climatedatavalue]="climatedatavalue" [httpClientCommand]="GetPostEnum()"></app-climatedatavalue-edit>
         </p>
         <blockquote>
-        <p>
-          <span>ClimateDataValueID: [{{ climatedatavalue.ClimateDataValueID }}]</span>
-          <span> --- ClimateSiteID: [{{ climatedatavalue.ClimateSiteID }}]</span>
-          <span> --- DateTime_Local: [{{ climatedatavalue.DateTime_Local }}]</span>
-          <span> --- Keep: [{{ climatedatavalue.Keep }}]</span>
- </p>
-        <p>
-          <span>StorageDataType: [{{ GetStorageDataTypeEnumText(climatedatavalue.StorageDataType) }}]</span>
-          <span> --- HasBeenRead: [{{ climatedatavalue.HasBeenRead }}]</span>
-          <span> --- Snow_cm: [{{ climatedatavalue.Snow_cm }}]</span>
-          <span> --- Rainfall_mm: [{{ climatedatavalue.Rainfall_mm }}]</span>
- </p>
-        <p>
-          <span>RainfallEntered_mm: [{{ climatedatavalue.RainfallEntered_mm }}]</span>
-          <span> --- TotalPrecip_mm_cm: [{{ climatedatavalue.TotalPrecip_mm_cm }}]</span>
-          <span> --- MaxTemp_C: [{{ climatedatavalue.MaxTemp_C }}]</span>
-          <span> --- MinTemp_C: [{{ climatedatavalue.MinTemp_C }}]</span>
- </p>
-        <p>
-          <span>HeatDegDays_C: [{{ climatedatavalue.HeatDegDays_C }}]</span>
-          <span> --- CoolDegDays_C: [{{ climatedatavalue.CoolDegDays_C }}]</span>
-          <span> --- SnowOnGround_cm: [{{ climatedatavalue.SnowOnGround_cm }}]</span>
-          <span> --- DirMaxGust_0North: [{{ climatedatavalue.DirMaxGust_0North }}]</span>
- </p>
-        <p>
-          <span>SpdMaxGust_kmh: [{{ climatedatavalue.SpdMaxGust_kmh }}]</span>
-          <span> --- HourlyValues: [{{ climatedatavalue.HourlyValues }}]</span>
-          <span> --- LastUpdateDate_UTC: [{{ climatedatavalue.LastUpdateDate_UTC }}]</span>
-          <span> --- LastUpdateContactTVItemID: [{{ climatedatavalue.LastUpdateContactTVItemID }}]</span>
-        </p>
+          <p>
+            <span>ClimateDataValueID: [{{ climatedatavalue.ClimateDataValueID }}]</span>
+            <span> --- ClimateSiteID: [{{ climatedatavalue.ClimateSiteID }}]</span>
+            <span> --- DateTime_Local: [{{ climatedatavalue.DateTime_Local }}]</span>
+            <span> --- Keep: [{{ climatedatavalue.Keep }}]</span>
+          </p>
+          <p>
+            <span>StorageDataType: [{{ GetStorageDataTypeEnumText(climatedatavalue.StorageDataType) }}]</span>
+            <span> --- HasBeenRead: [{{ climatedatavalue.HasBeenRead }}]</span>
+            <span> --- Snow_cm: [{{ climatedatavalue.Snow_cm }}]</span>
+            <span> --- Rainfall_mm: [{{ climatedatavalue.Rainfall_mm }}]</span>
+          </p>
+          <p>
+            <span>RainfallEntered_mm: [{{ climatedatavalue.RainfallEntered_mm }}]</span>
+            <span> --- TotalPrecip_mm_cm: [{{ climatedatavalue.TotalPrecip_mm_cm }}]</span>
+            <span> --- MaxTemp_C: [{{ climatedatavalue.MaxTemp_C }}]</span>
+            <span> --- MinTemp_C: [{{ climatedatavalue.MinTemp_C }}]</span>
+          </p>
+          <p>
+            <span>HeatDegDays_C: [{{ climatedatavalue.HeatDegDays_C }}]</span>
+            <span> --- CoolDegDays_C: [{{ climatedatavalue.CoolDegDays_C }}]</span>
+            <span> --- SnowOnGround_cm: [{{ climatedatavalue.SnowOnGround_cm }}]</span>
+            <span> --- DirMaxGust_0North: [{{ climatedatavalue.DirMaxGust_0North }}]</span>
+          </p>
+          <p>
+            <span>SpdMaxGust_kmh: [{{ climatedatavalue.SpdMaxGust_kmh }}]</span>
+            <span> --- HourlyValues: [{{ climatedatavalue.HourlyValues }}]</span>
+            <span> --- LastUpdateDate_UTC: [{{ climatedatavalue.LastUpdateDate_UTC }}]</span>
+            <span> --- LastUpdateContactTVItemID: [{{ climatedatavalue.LastUpdateContactTVItemID }}]</span>
+          </p>
         </blockquote>
        </div>
      </div>

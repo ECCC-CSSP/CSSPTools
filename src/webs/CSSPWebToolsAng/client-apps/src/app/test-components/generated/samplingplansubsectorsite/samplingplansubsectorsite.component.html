@@ -24,10 +24,10 @@
             <span>Delete SamplingPlanSubsectorSiteID [{{ samplingplansubsectorsite.SamplingPlanSubsectorSiteID }}]&nbsp;&nbsp;&nbsp;</span>
             <mat-icon>delete</mat-icon>
           </button>&nbsp;&nbsp;&nbsp;
-          <button mat-raised-button [color]="GetPutButtonColor(samplingplansubsectorsite)"(click)="ShowPut(samplingplansubsectorsite)">
+          <button mat-raised-button [color]="GetPutButtonColor(samplingplansubsectorsite)" (click)="ShowPut(samplingplansubsectorsite)">
             <span>Show Put</span>
           </button>&nbsp;&nbsp;
-          <button mat-raised-button [color]="GetPostButtonColor(samplingplansubsectorsite)"(click)="ShowPost(samplingplansubsectorsite)">
+          <button mat-raised-button [color]="GetPostButtonColor(samplingplansubsectorsite)" (click)="ShowPost(samplingplansubsectorsite)">
             <span>Show Post</span>
           </button>&nbsp;&nbsp;
           <mat-progress-bar mode="indeterminate" *ngIf="samplingplansubsectorsiteService.samplingplansubsectorsiteDeleteModel$.getValue().Working">
@@ -40,16 +40,16 @@
           <app-samplingplansubsectorsite-edit [samplingplansubsectorsite]="samplingplansubsectorsite" [httpClientCommand]="GetPostEnum()"></app-samplingplansubsectorsite-edit>
         </p>
         <blockquote>
-        <p>
-          <span>SamplingPlanSubsectorSiteID: [{{ samplingplansubsectorsite.SamplingPlanSubsectorSiteID }}]</span>
-          <span> --- SamplingPlanSubsectorID: [{{ samplingplansubsectorsite.SamplingPlanSubsectorID }}]</span>
-          <span> --- MWQMSiteTVItemID: [{{ samplingplansubsectorsite.MWQMSiteTVItemID }}]</span>
-          <span> --- IsDuplicate: [{{ samplingplansubsectorsite.IsDuplicate }}]</span>
- </p>
-        <p>
-          <span>LastUpdateDate_UTC: [{{ samplingplansubsectorsite.LastUpdateDate_UTC }}]</span>
-          <span> --- LastUpdateContactTVItemID: [{{ samplingplansubsectorsite.LastUpdateContactTVItemID }}]</span>
-        </p>
+          <p>
+            <span>SamplingPlanSubsectorSiteID: [{{ samplingplansubsectorsite.SamplingPlanSubsectorSiteID }}]</span>
+            <span> --- SamplingPlanSubsectorID: [{{ samplingplansubsectorsite.SamplingPlanSubsectorID }}]</span>
+            <span> --- MWQMSiteTVItemID: [{{ samplingplansubsectorsite.MWQMSiteTVItemID }}]</span>
+            <span> --- IsDuplicate: [{{ samplingplansubsectorsite.IsDuplicate }}]</span>
+          </p>
+          <p>
+            <span>LastUpdateDate_UTC: [{{ samplingplansubsectorsite.LastUpdateDate_UTC }}]</span>
+            <span> --- LastUpdateContactTVItemID: [{{ samplingplansubsectorsite.LastUpdateContactTVItemID }}]</span>
+          </p>
         </blockquote>
        </div>
      </div>

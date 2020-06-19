@@ -24,10 +24,10 @@
             <span>Delete MWQMLookupMPNID [{{ mwqmlookupmpn.MWQMLookupMPNID }}]&nbsp;&nbsp;&nbsp;</span>
             <mat-icon>delete</mat-icon>
           </button>&nbsp;&nbsp;&nbsp;
-          <button mat-raised-button [color]="GetPutButtonColor(mwqmlookupmpn)"(click)="ShowPut(mwqmlookupmpn)">
+          <button mat-raised-button [color]="GetPutButtonColor(mwqmlookupmpn)" (click)="ShowPut(mwqmlookupmpn)">
             <span>Show Put</span>
           </button>&nbsp;&nbsp;
-          <button mat-raised-button [color]="GetPostButtonColor(mwqmlookupmpn)"(click)="ShowPost(mwqmlookupmpn)">
+          <button mat-raised-button [color]="GetPostButtonColor(mwqmlookupmpn)" (click)="ShowPost(mwqmlookupmpn)">
             <span>Show Post</span>
           </button>&nbsp;&nbsp;
           <mat-progress-bar mode="indeterminate" *ngIf="mwqmlookupmpnService.mwqmlookupmpnDeleteModel$.getValue().Working">
@@ -40,17 +40,17 @@
           <app-mwqmlookupmpn-edit [mwqmlookupmpn]="mwqmlookupmpn" [httpClientCommand]="GetPostEnum()"></app-mwqmlookupmpn-edit>
         </p>
         <blockquote>
-        <p>
-          <span>MWQMLookupMPNID: [{{ mwqmlookupmpn.MWQMLookupMPNID }}]</span>
-          <span> --- Tubes10: [{{ mwqmlookupmpn.Tubes10 }}]</span>
-          <span> --- Tubes1: [{{ mwqmlookupmpn.Tubes1 }}]</span>
-          <span> --- Tubes01: [{{ mwqmlookupmpn.Tubes01 }}]</span>
- </p>
-        <p>
-          <span>MPN_100ml: [{{ mwqmlookupmpn.MPN_100ml }}]</span>
-          <span> --- LastUpdateDate_UTC: [{{ mwqmlookupmpn.LastUpdateDate_UTC }}]</span>
-          <span> --- LastUpdateContactTVItemID: [{{ mwqmlookupmpn.LastUpdateContactTVItemID }}]</span>
-        </p>
+          <p>
+            <span>MWQMLookupMPNID: [{{ mwqmlookupmpn.MWQMLookupMPNID }}]</span>
+            <span> --- Tubes10: [{{ mwqmlookupmpn.Tubes10 }}]</span>
+            <span> --- Tubes1: [{{ mwqmlookupmpn.Tubes1 }}]</span>
+            <span> --- Tubes01: [{{ mwqmlookupmpn.Tubes01 }}]</span>
+          </p>
+          <p>
+            <span>MPN_100ml: [{{ mwqmlookupmpn.MPN_100ml }}]</span>
+            <span> --- LastUpdateDate_UTC: [{{ mwqmlookupmpn.LastUpdateDate_UTC }}]</span>
+            <span> --- LastUpdateContactTVItemID: [{{ mwqmlookupmpn.LastUpdateContactTVItemID }}]</span>
+          </p>
         </blockquote>
        </div>
      </div>

@@ -24,10 +24,10 @@
             <span>Delete TVItemID [{{ tvitem.TVItemID }}]&nbsp;&nbsp;&nbsp;</span>
             <mat-icon>delete</mat-icon>
           </button>&nbsp;&nbsp;&nbsp;
-          <button mat-raised-button [color]="GetPutButtonColor(tvitem)"(click)="ShowPut(tvitem)">
+          <button mat-raised-button [color]="GetPutButtonColor(tvitem)" (click)="ShowPut(tvitem)">
             <span>Show Put</span>
           </button>&nbsp;&nbsp;
-          <button mat-raised-button [color]="GetPostButtonColor(tvitem)"(click)="ShowPost(tvitem)">
+          <button mat-raised-button [color]="GetPostButtonColor(tvitem)" (click)="ShowPost(tvitem)">
             <span>Show Post</span>
           </button>&nbsp;&nbsp;
           <mat-progress-bar mode="indeterminate" *ngIf="tvitemService.tvitemDeleteModel$.getValue().Working">
@@ -40,18 +40,18 @@
           <app-tvitem-edit [tvitem]="tvitem" [httpClientCommand]="GetPostEnum()"></app-tvitem-edit>
         </p>
         <blockquote>
-        <p>
-          <span>TVItemID: [{{ tvitem.TVItemID }}]</span>
-          <span> --- TVLevel: [{{ tvitem.TVLevel }}]</span>
-          <span> --- TVPath: [{{ tvitem.TVPath }}]</span>
-          <span> --- TVType: [{{ GetTVTypeEnumText(tvitem.TVType) }}]</span>
- </p>
-        <p>
-          <span>ParentID: [{{ tvitem.ParentID }}]</span>
-          <span> --- IsActive: [{{ tvitem.IsActive }}]</span>
-          <span> --- LastUpdateDate_UTC: [{{ tvitem.LastUpdateDate_UTC }}]</span>
-          <span> --- LastUpdateContactTVItemID: [{{ tvitem.LastUpdateContactTVItemID }}]</span>
-        </p>
+          <p>
+            <span>TVItemID: [{{ tvitem.TVItemID }}]</span>
+            <span> --- TVLevel: [{{ tvitem.TVLevel }}]</span>
+            <span> --- TVPath: [{{ tvitem.TVPath }}]</span>
+            <span> --- TVType: [{{ GetTVTypeEnumText(tvitem.TVType) }}]</span>
+          </p>
+          <p>
+            <span>ParentID: [{{ tvitem.ParentID }}]</span>
+            <span> --- IsActive: [{{ tvitem.IsActive }}]</span>
+            <span> --- LastUpdateDate_UTC: [{{ tvitem.LastUpdateDate_UTC }}]</span>
+            <span> --- LastUpdateContactTVItemID: [{{ tvitem.LastUpdateContactTVItemID }}]</span>
+          </p>
         </blockquote>
        </div>
      </div>

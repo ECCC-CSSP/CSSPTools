@@ -24,10 +24,10 @@
             <span>Delete AppErrLogID [{{ apperrlog.AppErrLogID }}]&nbsp;&nbsp;&nbsp;</span>
             <mat-icon>delete</mat-icon>
           </button>&nbsp;&nbsp;&nbsp;
-          <button mat-raised-button [color]="GetPutButtonColor(apperrlog)"(click)="ShowPut(apperrlog)">
+          <button mat-raised-button [color]="GetPutButtonColor(apperrlog)" (click)="ShowPut(apperrlog)">
             <span>Show Put</span>
           </button>&nbsp;&nbsp;
-          <button mat-raised-button [color]="GetPostButtonColor(apperrlog)"(click)="ShowPost(apperrlog)">
+          <button mat-raised-button [color]="GetPostButtonColor(apperrlog)" (click)="ShowPost(apperrlog)">
             <span>Show Post</span>
           </button>&nbsp;&nbsp;
           <mat-progress-bar mode="indeterminate" *ngIf="apperrlogService.apperrlogDeleteModel$.getValue().Working">
@@ -40,18 +40,18 @@
           <app-apperrlog-edit [apperrlog]="apperrlog" [httpClientCommand]="GetPostEnum()"></app-apperrlog-edit>
         </p>
         <blockquote>
-        <p>
-          <span>AppErrLogID: [{{ apperrlog.AppErrLogID }}]</span>
-          <span> --- Tag: [{{ apperrlog.Tag }}]</span>
-          <span> --- LineNumber: [{{ apperrlog.LineNumber }}]</span>
-          <span> --- Source: [{{ apperrlog.Source }}]</span>
- </p>
-        <p>
-          <span>Message: [{{ apperrlog.Message }}]</span>
-          <span> --- DateTime_UTC: [{{ apperrlog.DateTime_UTC }}]</span>
-          <span> --- LastUpdateDate_UTC: [{{ apperrlog.LastUpdateDate_UTC }}]</span>
-          <span> --- LastUpdateContactTVItemID: [{{ apperrlog.LastUpdateContactTVItemID }}]</span>
-        </p>
+          <p>
+            <span>AppErrLogID: [{{ apperrlog.AppErrLogID }}]</span>
+            <span> --- Tag: [{{ apperrlog.Tag }}]</span>
+            <span> --- LineNumber: [{{ apperrlog.LineNumber }}]</span>
+            <span> --- Source: [{{ apperrlog.Source }}]</span>
+          </p>
+          <p>
+            <span>Message: [{{ apperrlog.Message }}]</span>
+            <span> --- DateTime_UTC: [{{ apperrlog.DateTime_UTC }}]</span>
+            <span> --- LastUpdateDate_UTC: [{{ apperrlog.LastUpdateDate_UTC }}]</span>
+            <span> --- LastUpdateContactTVItemID: [{{ apperrlog.LastUpdateContactTVItemID }}]</span>
+          </p>
         </blockquote>
        </div>
      </div>

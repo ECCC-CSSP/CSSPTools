@@ -24,10 +24,10 @@
             <span>Delete MikeSourceStartEndID [{{ mikesourcestartend.MikeSourceStartEndID }}]&nbsp;&nbsp;&nbsp;</span>
             <mat-icon>delete</mat-icon>
           </button>&nbsp;&nbsp;&nbsp;
-          <button mat-raised-button [color]="GetPutButtonColor(mikesourcestartend)"(click)="ShowPut(mikesourcestartend)">
+          <button mat-raised-button [color]="GetPutButtonColor(mikesourcestartend)" (click)="ShowPut(mikesourcestartend)">
             <span>Show Put</span>
           </button>&nbsp;&nbsp;
-          <button mat-raised-button [color]="GetPostButtonColor(mikesourcestartend)"(click)="ShowPost(mikesourcestartend)">
+          <button mat-raised-button [color]="GetPostButtonColor(mikesourcestartend)" (click)="ShowPost(mikesourcestartend)">
             <span>Show Post</span>
           </button>&nbsp;&nbsp;
           <mat-progress-bar mode="indeterminate" *ngIf="mikesourcestartendService.mikesourcestartendDeleteModel$.getValue().Working">
@@ -40,28 +40,28 @@
           <app-mikesourcestartend-edit [mikesourcestartend]="mikesourcestartend" [httpClientCommand]="GetPostEnum()"></app-mikesourcestartend-edit>
         </p>
         <blockquote>
-        <p>
-          <span>MikeSourceStartEndID: [{{ mikesourcestartend.MikeSourceStartEndID }}]</span>
-          <span> --- MikeSourceID: [{{ mikesourcestartend.MikeSourceID }}]</span>
-          <span> --- StartDateAndTime_Local: [{{ mikesourcestartend.StartDateAndTime_Local }}]</span>
-          <span> --- EndDateAndTime_Local: [{{ mikesourcestartend.EndDateAndTime_Local }}]</span>
- </p>
-        <p>
-          <span>SourceFlowStart_m3_day: [{{ mikesourcestartend.SourceFlowStart_m3_day }}]</span>
-          <span> --- SourceFlowEnd_m3_day: [{{ mikesourcestartend.SourceFlowEnd_m3_day }}]</span>
-          <span> --- SourcePollutionStart_MPN_100ml: [{{ mikesourcestartend.SourcePollutionStart_MPN_100ml }}]</span>
-          <span> --- SourcePollutionEnd_MPN_100ml: [{{ mikesourcestartend.SourcePollutionEnd_MPN_100ml }}]</span>
- </p>
-        <p>
-          <span>SourceTemperatureStart_C: [{{ mikesourcestartend.SourceTemperatureStart_C }}]</span>
-          <span> --- SourceTemperatureEnd_C: [{{ mikesourcestartend.SourceTemperatureEnd_C }}]</span>
-          <span> --- SourceSalinityStart_PSU: [{{ mikesourcestartend.SourceSalinityStart_PSU }}]</span>
-          <span> --- SourceSalinityEnd_PSU: [{{ mikesourcestartend.SourceSalinityEnd_PSU }}]</span>
- </p>
-        <p>
-          <span>LastUpdateDate_UTC: [{{ mikesourcestartend.LastUpdateDate_UTC }}]</span>
-          <span> --- LastUpdateContactTVItemID: [{{ mikesourcestartend.LastUpdateContactTVItemID }}]</span>
-        </p>
+          <p>
+            <span>MikeSourceStartEndID: [{{ mikesourcestartend.MikeSourceStartEndID }}]</span>
+            <span> --- MikeSourceID: [{{ mikesourcestartend.MikeSourceID }}]</span>
+            <span> --- StartDateAndTime_Local: [{{ mikesourcestartend.StartDateAndTime_Local }}]</span>
+            <span> --- EndDateAndTime_Local: [{{ mikesourcestartend.EndDateAndTime_Local }}]</span>
+          </p>
+          <p>
+            <span>SourceFlowStart_m3_day: [{{ mikesourcestartend.SourceFlowStart_m3_day }}]</span>
+            <span> --- SourceFlowEnd_m3_day: [{{ mikesourcestartend.SourceFlowEnd_m3_day }}]</span>
+            <span> --- SourcePollutionStart_MPN_100ml: [{{ mikesourcestartend.SourcePollutionStart_MPN_100ml }}]</span>
+            <span> --- SourcePollutionEnd_MPN_100ml: [{{ mikesourcestartend.SourcePollutionEnd_MPN_100ml }}]</span>
+          </p>
+          <p>
+            <span>SourceTemperatureStart_C: [{{ mikesourcestartend.SourceTemperatureStart_C }}]</span>
+            <span> --- SourceTemperatureEnd_C: [{{ mikesourcestartend.SourceTemperatureEnd_C }}]</span>
+            <span> --- SourceSalinityStart_PSU: [{{ mikesourcestartend.SourceSalinityStart_PSU }}]</span>
+            <span> --- SourceSalinityEnd_PSU: [{{ mikesourcestartend.SourceSalinityEnd_PSU }}]</span>
+          </p>
+          <p>
+            <span>LastUpdateDate_UTC: [{{ mikesourcestartend.LastUpdateDate_UTC }}]</span>
+            <span> --- LastUpdateContactTVItemID: [{{ mikesourcestartend.LastUpdateContactTVItemID }}]</span>
+          </p>
         </blockquote>
        </div>
      </div>

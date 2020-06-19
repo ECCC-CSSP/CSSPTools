@@ -24,10 +24,10 @@
             <span>Delete MikeSourceID [{{ mikesource.MikeSourceID }}]&nbsp;&nbsp;&nbsp;</span>
             <mat-icon>delete</mat-icon>
           </button>&nbsp;&nbsp;&nbsp;
-          <button mat-raised-button [color]="GetPutButtonColor(mikesource)"(click)="ShowPut(mikesource)">
+          <button mat-raised-button [color]="GetPutButtonColor(mikesource)" (click)="ShowPut(mikesource)">
             <span>Show Put</span>
           </button>&nbsp;&nbsp;
-          <button mat-raised-button [color]="GetPostButtonColor(mikesource)"(click)="ShowPost(mikesource)">
+          <button mat-raised-button [color]="GetPostButtonColor(mikesource)" (click)="ShowPost(mikesource)">
             <span>Show Post</span>
           </button>&nbsp;&nbsp;
           <mat-progress-bar mode="indeterminate" *ngIf="mikesourceService.mikesourceDeleteModel$.getValue().Working">
@@ -40,24 +40,24 @@
           <app-mikesource-edit [mikesource]="mikesource" [httpClientCommand]="GetPostEnum()"></app-mikesource-edit>
         </p>
         <blockquote>
-        <p>
-          <span>MikeSourceID: [{{ mikesource.MikeSourceID }}]</span>
-          <span> --- MikeSourceTVItemID: [{{ mikesource.MikeSourceTVItemID }}]</span>
-          <span> --- IsContinuous: [{{ mikesource.IsContinuous }}]</span>
-          <span> --- Include: [{{ mikesource.Include }}]</span>
- </p>
-        <p>
-          <span>IsRiver: [{{ mikesource.IsRiver }}]</span>
-          <span> --- UseHydrometric: [{{ mikesource.UseHydrometric }}]</span>
-          <span> --- HydrometricTVItemID: [{{ mikesource.HydrometricTVItemID }}]</span>
-          <span> --- DrainageArea_km2: [{{ mikesource.DrainageArea_km2 }}]</span>
- </p>
-        <p>
-          <span>Factor: [{{ mikesource.Factor }}]</span>
-          <span> --- SourceNumberString: [{{ mikesource.SourceNumberString }}]</span>
-          <span> --- LastUpdateDate_UTC: [{{ mikesource.LastUpdateDate_UTC }}]</span>
-          <span> --- LastUpdateContactTVItemID: [{{ mikesource.LastUpdateContactTVItemID }}]</span>
-        </p>
+          <p>
+            <span>MikeSourceID: [{{ mikesource.MikeSourceID }}]</span>
+            <span> --- MikeSourceTVItemID: [{{ mikesource.MikeSourceTVItemID }}]</span>
+            <span> --- IsContinuous: [{{ mikesource.IsContinuous }}]</span>
+            <span> --- Include: [{{ mikesource.Include }}]</span>
+          </p>
+          <p>
+            <span>IsRiver: [{{ mikesource.IsRiver }}]</span>
+            <span> --- UseHydrometric: [{{ mikesource.UseHydrometric }}]</span>
+            <span> --- HydrometricTVItemID: [{{ mikesource.HydrometricTVItemID }}]</span>
+            <span> --- DrainageArea_km2: [{{ mikesource.DrainageArea_km2 }}]</span>
+          </p>
+          <p>
+            <span>Factor: [{{ mikesource.Factor }}]</span>
+            <span> --- SourceNumberString: [{{ mikesource.SourceNumberString }}]</span>
+            <span> --- LastUpdateDate_UTC: [{{ mikesource.LastUpdateDate_UTC }}]</span>
+            <span> --- LastUpdateContactTVItemID: [{{ mikesource.LastUpdateContactTVItemID }}]</span>
+          </p>
         </blockquote>
        </div>
      </div>

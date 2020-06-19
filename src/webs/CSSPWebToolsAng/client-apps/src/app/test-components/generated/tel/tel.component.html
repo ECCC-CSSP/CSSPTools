@@ -24,10 +24,10 @@
             <span>Delete TelID [{{ tel.TelID }}]&nbsp;&nbsp;&nbsp;</span>
             <mat-icon>delete</mat-icon>
           </button>&nbsp;&nbsp;&nbsp;
-          <button mat-raised-button [color]="GetPutButtonColor(tel)"(click)="ShowPut(tel)">
+          <button mat-raised-button [color]="GetPutButtonColor(tel)" (click)="ShowPut(tel)">
             <span>Show Put</span>
           </button>&nbsp;&nbsp;
-          <button mat-raised-button [color]="GetPostButtonColor(tel)"(click)="ShowPost(tel)">
+          <button mat-raised-button [color]="GetPostButtonColor(tel)" (click)="ShowPost(tel)">
             <span>Show Post</span>
           </button>&nbsp;&nbsp;
           <mat-progress-bar mode="indeterminate" *ngIf="telService.telDeleteModel$.getValue().Working">
@@ -40,16 +40,16 @@
           <app-tel-edit [tel]="tel" [httpClientCommand]="GetPostEnum()"></app-tel-edit>
         </p>
         <blockquote>
-        <p>
-          <span>TelID: [{{ tel.TelID }}]</span>
-          <span> --- TelTVItemID: [{{ tel.TelTVItemID }}]</span>
-          <span> --- TelNumber: [{{ tel.TelNumber }}]</span>
-          <span> --- TelType: [{{ GetTelTypeEnumText(tel.TelType) }}]</span>
- </p>
-        <p>
-          <span>LastUpdateDate_UTC: [{{ tel.LastUpdateDate_UTC }}]</span>
-          <span> --- LastUpdateContactTVItemID: [{{ tel.LastUpdateContactTVItemID }}]</span>
-        </p>
+          <p>
+            <span>TelID: [{{ tel.TelID }}]</span>
+            <span> --- TelTVItemID: [{{ tel.TelTVItemID }}]</span>
+            <span> --- TelNumber: [{{ tel.TelNumber }}]</span>
+            <span> --- TelType: [{{ GetTelTypeEnumText(tel.TelType) }}]</span>
+          </p>
+          <p>
+            <span>LastUpdateDate_UTC: [{{ tel.LastUpdateDate_UTC }}]</span>
+            <span> --- LastUpdateContactTVItemID: [{{ tel.LastUpdateContactTVItemID }}]</span>
+          </p>
         </blockquote>
        </div>
      </div>
