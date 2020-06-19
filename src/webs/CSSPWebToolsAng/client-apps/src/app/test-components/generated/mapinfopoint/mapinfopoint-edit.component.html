@@ -5,7 +5,8 @@
  *
 -->
 
-<form [formGroup]="mapinfopointFormEdit" (ngSubmit)="GetPut() ? PutMapInfoPoint(mapinfopointFormEdit.value) : PostMapInfoPoint(mapinfopointFormEdit.value)">
+<form [formGroup]="mapinfopointFormEdit"
+  (ngSubmit)="GetPut() ? PutMapInfoPoint(mapinfopointFormEdit.value) : PostMapInfoPoint(mapinfopointFormEdit.value)">
   <h3>
     MapInfoPoint
     <button mat-raised-button type="submit">

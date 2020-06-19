@@ -5,7 +5,8 @@
  *
 -->
 
-<form [formGroup]="contactpreferenceFormEdit" (ngSubmit)="GetPut() ? PutContactPreference(contactpreferenceFormEdit.value) : PostContactPreference(contactpreferenceFormEdit.value)">
+<form [formGroup]="contactpreferenceFormEdit"
+  (ngSubmit)="GetPut() ? PutContactPreference(contactpreferenceFormEdit.value) : PostContactPreference(contactpreferenceFormEdit.value)">
   <h3>
     ContactPreference
     <button mat-raised-button type="submit">
@@ -37,7 +38,7 @@
       <mat-label>TVType</mat-label>
       <mat-select formControlName="TVType">
         <mat-option *ngFor="let a of tVTypeList" [value]="a.EnumID">
-        {{ a.EnumText }}
+          {{ a.EnumText }}
         </mat-option>
       </mat-select>
       <mat-error *ngIf="contactpreferenceFormEdit.controls.TVType.errors; let e;">

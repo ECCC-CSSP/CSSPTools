@@ -5,7 +5,8 @@
  *
 -->
 
-<form [formGroup]="spillFormEdit" (ngSubmit)="GetPut() ? PutSpill(spillFormEdit.value) : PostSpill(spillFormEdit.value)">
+<form [formGroup]="spillFormEdit"
+  (ngSubmit)="GetPut() ? PutSpill(spillFormEdit.value) : PostSpill(spillFormEdit.value)">
   <h3>
     Spill
     <button mat-raised-button type="submit">

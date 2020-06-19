@@ -5,7 +5,8 @@
  *
 -->
 
-<form [formGroup]="vpresultFormEdit" (ngSubmit)="GetPut() ? PutVPResult(vpresultFormEdit.value) : PostVPResult(vpresultFormEdit.value)">
+<form [formGroup]="vpresultFormEdit"
+  (ngSubmit)="GetPut() ? PutVPResult(vpresultFormEdit.value) : PostVPResult(vpresultFormEdit.value)">
   <h3>
     VPResult
     <button mat-raised-button type="submit">

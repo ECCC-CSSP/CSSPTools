@@ -5,7 +5,8 @@
  *
 -->
 
-<form [formGroup]="boxmodelresultFormEdit" (ngSubmit)="GetPut() ? PutBoxModelResult(boxmodelresultFormEdit.value) : PostBoxModelResult(boxmodelresultFormEdit.value)">
+<form [formGroup]="boxmodelresultFormEdit"
+  (ngSubmit)="GetPut() ? PutBoxModelResult(boxmodelresultFormEdit.value) : PostBoxModelResult(boxmodelresultFormEdit.value)">
   <h3>
     BoxModelResult
     <button mat-raised-button type="submit">
@@ -37,7 +38,7 @@
       <mat-label>BoxModelResultType</mat-label>
       <mat-select formControlName="BoxModelResultType">
         <mat-option *ngFor="let a of boxModelResultTypeList" [value]="a.EnumID">
-        {{ a.EnumText }}
+          {{ a.EnumText }}
         </mat-option>
       </mat-select>
       <mat-error *ngIf="boxmodelresultFormEdit.controls.BoxModelResultType.errors; let e;">

@@ -5,7 +5,8 @@
  *
 -->
 
-<form [formGroup]="mikescenarioFormEdit" (ngSubmit)="GetPut() ? PutMikeScenario(mikescenarioFormEdit.value) : PostMikeScenario(mikescenarioFormEdit.value)">
+<form [formGroup]="mikescenarioFormEdit"
+  (ngSubmit)="GetPut() ? PutMikeScenario(mikescenarioFormEdit.value) : PostMikeScenario(mikescenarioFormEdit.value)">
   <h3>
     MikeScenario
     <button mat-raised-button type="submit">
@@ -44,7 +45,7 @@
       <mat-label>ScenarioStatus</mat-label>
       <mat-select formControlName="ScenarioStatus">
         <mat-option *ngFor="let a of scenarioStatusList" [value]="a.EnumID">
-        {{ a.EnumText }}
+          {{ a.EnumText }}
         </mat-option>
       </mat-select>
       <mat-error *ngIf="mikescenarioFormEdit.controls.ScenarioStatus.errors; let e;">

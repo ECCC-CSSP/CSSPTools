@@ -5,7 +5,8 @@
  *
 -->
 
-<form [formGroup]="tvtypeuserauthorizationFormEdit" (ngSubmit)="GetPut() ? PutTVTypeUserAuthorization(tvtypeuserauthorizationFormEdit.value) : PostTVTypeUserAuthorization(tvtypeuserauthorizationFormEdit.value)">
+<form [formGroup]="tvtypeuserauthorizationFormEdit"
+  (ngSubmit)="GetPut() ? PutTVTypeUserAuthorization(tvtypeuserauthorizationFormEdit.value) : PostTVTypeUserAuthorization(tvtypeuserauthorizationFormEdit.value)">
   <h3>
     TVTypeUserAuthorization
     <button mat-raised-button type="submit">
@@ -37,7 +38,7 @@
       <mat-label>TVType</mat-label>
       <mat-select formControlName="TVType">
         <mat-option *ngFor="let a of tVTypeList" [value]="a.EnumID">
-        {{ a.EnumText }}
+          {{ a.EnumText }}
         </mat-option>
       </mat-select>
       <mat-error *ngIf="tvtypeuserauthorizationFormEdit.controls.TVType.errors; let e;">
@@ -49,7 +50,7 @@
       <mat-label>TVAuth</mat-label>
       <mat-select formControlName="TVAuth">
         <mat-option *ngFor="let a of tVAuthList" [value]="a.EnumID">
-        {{ a.EnumText }}
+          {{ a.EnumText }}
         </mat-option>
       </mat-select>
       <mat-error *ngIf="tvtypeuserauthorizationFormEdit.controls.TVAuth.errors; let e;">

@@ -5,7 +5,8 @@
  *
 -->
 
-<form [formGroup]="contactFormEdit" (ngSubmit)="GetPut() ? PutContact(contactFormEdit.value) : PostContact(contactFormEdit.value)">
+<form [formGroup]="contactFormEdit"
+  (ngSubmit)="GetPut() ? PutContact(contactFormEdit.value) : PostContact(contactFormEdit.value)">
   <h3>
     Contact
     <button mat-raised-button type="submit">
@@ -96,7 +97,7 @@
       <mat-label>ContactTitle</mat-label>
       <mat-select formControlName="ContactTitle">
         <mat-option *ngFor="let a of contactTitleList" [value]="a.EnumID">
-        {{ a.EnumText }}
+          {{ a.EnumText }}
         </mat-option>
       </mat-select>
       <mat-error *ngIf="contactFormEdit.controls.ContactTitle.errors; let e;">

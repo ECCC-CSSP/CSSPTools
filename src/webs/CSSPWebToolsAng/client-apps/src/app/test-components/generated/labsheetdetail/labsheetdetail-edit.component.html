@@ -5,7 +5,8 @@
  *
 -->
 
-<form [formGroup]="labsheetdetailFormEdit" (ngSubmit)="GetPut() ? PutLabSheetDetail(labsheetdetailFormEdit.value) : PostLabSheetDetail(labsheetdetailFormEdit.value)">
+<form [formGroup]="labsheetdetailFormEdit"
+  (ngSubmit)="GetPut() ? PutLabSheetDetail(labsheetdetailFormEdit.value) : PostLabSheetDetail(labsheetdetailFormEdit.value)">
   <h3>
     LabSheetDetail
     <button mat-raised-button type="submit">

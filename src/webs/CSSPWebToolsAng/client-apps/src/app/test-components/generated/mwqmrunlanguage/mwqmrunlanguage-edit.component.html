@@ -5,7 +5,8 @@
  *
 -->
 
-<form [formGroup]="mwqmrunlanguageFormEdit" (ngSubmit)="GetPut() ? PutMWQMRunLanguage(mwqmrunlanguageFormEdit.value) : PostMWQMRunLanguage(mwqmrunlanguageFormEdit.value)">
+<form [formGroup]="mwqmrunlanguageFormEdit"
+  (ngSubmit)="GetPut() ? PutMWQMRunLanguage(mwqmrunlanguageFormEdit.value) : PostMWQMRunLanguage(mwqmrunlanguageFormEdit.value)">
   <h3>
     MWQMRunLanguage
     <button mat-raised-button type="submit">
@@ -37,7 +38,7 @@
       <mat-label>Language</mat-label>
       <mat-select formControlName="Language">
         <mat-option *ngFor="let a of languageList" [value]="a.EnumID">
-        {{ a.EnumText }}
+          {{ a.EnumText }}
         </mat-option>
       </mat-select>
       <mat-error *ngIf="mwqmrunlanguageFormEdit.controls.Language.errors; let e;">
@@ -59,7 +60,7 @@
       <mat-label>TranslationStatusRunComment</mat-label>
       <mat-select formControlName="TranslationStatusRunComment">
         <mat-option *ngFor="let a of translationStatusRunCommentList" [value]="a.EnumID">
-        {{ a.EnumText }}
+          {{ a.EnumText }}
         </mat-option>
       </mat-select>
       <mat-error *ngIf="mwqmrunlanguageFormEdit.controls.TranslationStatusRunComment.errors; let e;">
@@ -79,7 +80,7 @@
       <mat-label>TranslationStatusRunWeatherComment</mat-label>
       <mat-select formControlName="TranslationStatusRunWeatherComment">
         <mat-option *ngFor="let a of translationStatusRunWeatherCommentList" [value]="a.EnumID">
-        {{ a.EnumText }}
+          {{ a.EnumText }}
         </mat-option>
       </mat-select>
       <mat-error *ngIf="mwqmrunlanguageFormEdit.controls.TranslationStatusRunWeatherComment.errors; let e;">

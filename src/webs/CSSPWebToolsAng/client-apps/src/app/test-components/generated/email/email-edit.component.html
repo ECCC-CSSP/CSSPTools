@@ -5,7 +5,8 @@
  *
 -->
 
-<form [formGroup]="emailFormEdit" (ngSubmit)="GetPut() ? PutEmail(emailFormEdit.value) : PostEmail(emailFormEdit.value)">
+<form [formGroup]="emailFormEdit"
+  (ngSubmit)="GetPut() ? PutEmail(emailFormEdit.value) : PostEmail(emailFormEdit.value)">
   <h3>
     Email
     <button mat-raised-button type="submit">
@@ -47,7 +48,7 @@
       <mat-label>EmailType</mat-label>
       <mat-select formControlName="EmailType">
         <mat-option *ngFor="let a of emailTypeList" [value]="a.EnumID">
-        {{ a.EnumText }}
+          {{ a.EnumText }}
         </mat-option>
       </mat-select>
       <mat-error *ngIf="emailFormEdit.controls.EmailType.errors; let e;">

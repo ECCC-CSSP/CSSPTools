@@ -5,7 +5,8 @@
  *
 -->
 
-<form [formGroup]="apperrlogFormEdit" (ngSubmit)="GetPut() ? PutAppErrLog(apperrlogFormEdit.value) : PostAppErrLog(apperrlogFormEdit.value)">
+<form [formGroup]="apperrlogFormEdit"
+  (ngSubmit)="GetPut() ? PutAppErrLog(apperrlogFormEdit.value) : PostAppErrLog(apperrlogFormEdit.value)">
   <h3>
     AppErrLog
     <button mat-raised-button type="submit">

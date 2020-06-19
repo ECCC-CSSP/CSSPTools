@@ -24,7 +24,8 @@ namespace AngularComponentsGeneratedServices.Services
             sb.AppendLine(@" *");
             sb.AppendLine(@"-->");
             sb.AppendLine(@"");
-            sb.AppendLine($@"<form [formGroup]=""{ dllTypeInfoModels.Name.ToLower() }FormEdit"" (ngSubmit)=""GetPut() ? Put{ dllTypeInfoModels.Name }({ dllTypeInfoModels.Name.ToLower() }FormEdit.value) : Post{ dllTypeInfoModels.Name }({ dllTypeInfoModels.Name.ToLower() }FormEdit.value)"">");
+            sb.AppendLine($@"<form [formGroup]=""{ dllTypeInfoModels.Name.ToLower() }FormEdit""");
+            sb.AppendLine($@"  (ngSubmit)=""GetPut() ? Put{ dllTypeInfoModels.Name }({ dllTypeInfoModels.Name.ToLower() }FormEdit.value) : Post{ dllTypeInfoModels.Name }({ dllTypeInfoModels.Name.ToLower() }FormEdit.value)"">");
             sb.AppendLine(@"  <h3>");
             sb.AppendLine($@"    { dllTypeInfoModels.Name }");
             sb.AppendLine(@"    <button mat-raised-button type=""submit"">");

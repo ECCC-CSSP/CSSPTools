@@ -5,7 +5,8 @@
  *
 -->
 
-<form [formGroup]="classificationFormEdit" (ngSubmit)="GetPut() ? PutClassification(classificationFormEdit.value) : PostClassification(classificationFormEdit.value)">
+<form [formGroup]="classificationFormEdit"
+  (ngSubmit)="GetPut() ? PutClassification(classificationFormEdit.value) : PostClassification(classificationFormEdit.value)">
   <h3>
     Classification
     <button mat-raised-button type="submit">
@@ -37,7 +38,7 @@
       <mat-label>ClassificationType</mat-label>
       <mat-select formControlName="ClassificationType">
         <mat-option *ngFor="let a of classificationTypeList" [value]="a.EnumID">
-        {{ a.EnumText }}
+          {{ a.EnumText }}
         </mat-option>
       </mat-select>
       <mat-error *ngIf="classificationFormEdit.controls.ClassificationType.errors; let e;">

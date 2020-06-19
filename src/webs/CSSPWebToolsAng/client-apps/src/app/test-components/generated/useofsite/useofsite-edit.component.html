@@ -5,7 +5,8 @@
  *
 -->
 
-<form [formGroup]="useofsiteFormEdit" (ngSubmit)="GetPut() ? PutUseOfSite(useofsiteFormEdit.value) : PostUseOfSite(useofsiteFormEdit.value)">
+<form [formGroup]="useofsiteFormEdit"
+  (ngSubmit)="GetPut() ? PutUseOfSite(useofsiteFormEdit.value) : PostUseOfSite(useofsiteFormEdit.value)">
   <h3>
     UseOfSite
     <button mat-raised-button type="submit">
@@ -45,7 +46,7 @@
       <mat-label>TVType</mat-label>
       <mat-select formControlName="TVType">
         <mat-option *ngFor="let a of tVTypeList" [value]="a.EnumID">
-        {{ a.EnumText }}
+          {{ a.EnumText }}
         </mat-option>
       </mat-select>
       <mat-error *ngIf="useofsiteFormEdit.controls.TVType.errors; let e;">

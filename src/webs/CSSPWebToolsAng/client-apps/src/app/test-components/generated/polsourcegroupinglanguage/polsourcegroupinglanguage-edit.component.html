@@ -5,7 +5,8 @@
  *
 -->
 
-<form [formGroup]="polsourcegroupinglanguageFormEdit" (ngSubmit)="GetPut() ? PutPolSourceGroupingLanguage(polsourcegroupinglanguageFormEdit.value) : PostPolSourceGroupingLanguage(polsourcegroupinglanguageFormEdit.value)">
+<form [formGroup]="polsourcegroupinglanguageFormEdit"
+  (ngSubmit)="GetPut() ? PutPolSourceGroupingLanguage(polsourcegroupinglanguageFormEdit.value) : PostPolSourceGroupingLanguage(polsourcegroupinglanguageFormEdit.value)">
   <h3>
     PolSourceGroupingLanguage
     <button mat-raised-button type="submit">
@@ -37,7 +38,7 @@
       <mat-label>Language</mat-label>
       <mat-select formControlName="Language">
         <mat-option *ngFor="let a of languageList" [value]="a.EnumID">
-        {{ a.EnumText }}
+          {{ a.EnumText }}
         </mat-option>
       </mat-select>
       <mat-error *ngIf="polsourcegroupinglanguageFormEdit.controls.Language.errors; let e;">
@@ -70,7 +71,7 @@
       <mat-label>TranslationStatusSourceName</mat-label>
       <mat-select formControlName="TranslationStatusSourceName">
         <mat-option *ngFor="let a of translationStatusSourceNameList" [value]="a.EnumID">
-        {{ a.EnumText }}
+          {{ a.EnumText }}
         </mat-option>
       </mat-select>
       <mat-error *ngIf="polsourcegroupinglanguageFormEdit.controls.TranslationStatusSourceName.errors; let e;">
@@ -91,7 +92,7 @@
       <mat-label>TranslationStatusInit</mat-label>
       <mat-select formControlName="TranslationStatusInit">
         <mat-option *ngFor="let a of translationStatusInitList" [value]="a.EnumID">
-        {{ a.EnumText }}
+          {{ a.EnumText }}
         </mat-option>
       </mat-select>
       <mat-error *ngIf="polsourcegroupinglanguageFormEdit.controls.TranslationStatusInit.errors; let e;">
@@ -114,7 +115,7 @@
       <mat-label>TranslationStatusDescription</mat-label>
       <mat-select formControlName="TranslationStatusDescription">
         <mat-option *ngFor="let a of translationStatusDescriptionList" [value]="a.EnumID">
-        {{ a.EnumText }}
+          {{ a.EnumText }}
         </mat-option>
       </mat-select>
       <mat-error *ngIf="polsourcegroupinglanguageFormEdit.controls.TranslationStatusDescription.errors; let e;">
@@ -135,7 +136,7 @@
       <mat-label>TranslationStatusReport</mat-label>
       <mat-select formControlName="TranslationStatusReport">
         <mat-option *ngFor="let a of translationStatusReportList" [value]="a.EnumID">
-        {{ a.EnumText }}
+          {{ a.EnumText }}
         </mat-option>
       </mat-select>
       <mat-error *ngIf="polsourcegroupinglanguageFormEdit.controls.TranslationStatusReport.errors; let e;">
@@ -158,7 +159,7 @@
       <mat-label>TranslationStatusText</mat-label>
       <mat-select formControlName="TranslationStatusText">
         <mat-option *ngFor="let a of translationStatusTextList" [value]="a.EnumID">
-        {{ a.EnumText }}
+          {{ a.EnumText }}
         </mat-option>
       </mat-select>
       <mat-error *ngIf="polsourcegroupinglanguageFormEdit.controls.TranslationStatusText.errors; let e;">

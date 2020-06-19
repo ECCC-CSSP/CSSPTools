@@ -5,7 +5,8 @@
  *
 -->
 
-<form [formGroup]="mikeboundaryconditionFormEdit" (ngSubmit)="GetPut() ? PutMikeBoundaryCondition(mikeboundaryconditionFormEdit.value) : PostMikeBoundaryCondition(mikeboundaryconditionFormEdit.value)">
+<form [formGroup]="mikeboundaryconditionFormEdit"
+  (ngSubmit)="GetPut() ? PutMikeBoundaryCondition(mikeboundaryconditionFormEdit.value) : PostMikeBoundaryCondition(mikeboundaryconditionFormEdit.value)">
   <h3>
     MikeBoundaryCondition
     <button mat-raised-button type="submit">
@@ -76,7 +77,7 @@
       <mat-label>MikeBoundaryConditionLevelOrVelocity</mat-label>
       <mat-select formControlName="MikeBoundaryConditionLevelOrVelocity">
         <mat-option *ngFor="let a of mikeBoundaryConditionLevelOrVelocityList" [value]="a.EnumID">
-        {{ a.EnumText }}
+          {{ a.EnumText }}
         </mat-option>
       </mat-select>
       <mat-error *ngIf="mikeboundaryconditionFormEdit.controls.MikeBoundaryConditionLevelOrVelocity.errors; let e;">
@@ -88,7 +89,7 @@
       <mat-label>WebTideDataSet</mat-label>
       <mat-select formControlName="WebTideDataSet">
         <mat-option *ngFor="let a of webTideDataSetList" [value]="a.EnumID">
-        {{ a.EnumText }}
+          {{ a.EnumText }}
         </mat-option>
       </mat-select>
       <mat-error *ngIf="mikeboundaryconditionFormEdit.controls.WebTideDataSet.errors; let e;">
@@ -120,7 +121,7 @@
       <mat-label>TVType</mat-label>
       <mat-select formControlName="TVType">
         <mat-option *ngFor="let a of tVTypeList" [value]="a.EnumID">
-        {{ a.EnumText }}
+          {{ a.EnumText }}
         </mat-option>
       </mat-select>
       <mat-error *ngIf="mikeboundaryconditionFormEdit.controls.TVType.errors; let e;">

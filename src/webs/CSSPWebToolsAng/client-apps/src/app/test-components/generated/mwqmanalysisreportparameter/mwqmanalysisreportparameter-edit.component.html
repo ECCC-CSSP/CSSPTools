@@ -5,7 +5,8 @@
  *
 -->
 
-<form [formGroup]="mwqmanalysisreportparameterFormEdit" (ngSubmit)="GetPut() ? PutMWQMAnalysisReportParameter(mwqmanalysisreportparameterFormEdit.value) : PostMWQMAnalysisReportParameter(mwqmanalysisreportparameterFormEdit.value)">
+<form [formGroup]="mwqmanalysisreportparameterFormEdit"
+  (ngSubmit)="GetPut() ? PutMWQMAnalysisReportParameter(mwqmanalysisreportparameterFormEdit.value) : PostMWQMAnalysisReportParameter(mwqmanalysisreportparameterFormEdit.value)">
   <h3>
     MWQMAnalysisReportParameter
     <button mat-raised-button type="submit">
@@ -74,7 +75,7 @@
       <mat-label>AnalysisCalculationType</mat-label>
       <mat-select formControlName="AnalysisCalculationType">
         <mat-option *ngFor="let a of analysisCalculationTypeList" [value]="a.EnumID">
-        {{ a.EnumText }}
+          {{ a.EnumText }}
         </mat-option>
       </mat-select>
       <mat-error *ngIf="mwqmanalysisreportparameterFormEdit.controls.AnalysisCalculationType.errors; let e;">
@@ -246,7 +247,7 @@
       <mat-label>Command</mat-label>
       <mat-select formControlName="Command">
         <mat-option *ngFor="let a of commandList" [value]="a.EnumID">
-        {{ a.EnumText }}
+          {{ a.EnumText }}
         </mat-option>
       </mat-select>
       <mat-error *ngIf="mwqmanalysisreportparameterFormEdit.controls.Command.errors; let e;">

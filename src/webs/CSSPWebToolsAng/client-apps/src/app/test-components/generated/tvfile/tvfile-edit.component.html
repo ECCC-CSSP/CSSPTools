@@ -5,7 +5,8 @@
  *
 -->
 
-<form [formGroup]="tvfileFormEdit" (ngSubmit)="GetPut() ? PutTVFile(tvfileFormEdit.value) : PostTVFile(tvfileFormEdit.value)">
+<form [formGroup]="tvfileFormEdit"
+  (ngSubmit)="GetPut() ? PutTVFile(tvfileFormEdit.value) : PostTVFile(tvfileFormEdit.value)">
   <h3>
     TVFile
     <button mat-raised-button type="submit">
@@ -37,7 +38,7 @@
       <mat-label>TemplateTVType</mat-label>
       <mat-select formControlName="TemplateTVType">
         <mat-option *ngFor="let a of templateTVTypeList" [value]="a.EnumID">
-        {{ a.EnumText }}
+          {{ a.EnumText }}
         </mat-option>
       </mat-select>
       <mat-error *ngIf="tvfileFormEdit.controls.TemplateTVType.errors; let e;">
@@ -73,7 +74,7 @@
       <mat-label>Language</mat-label>
       <mat-select formControlName="Language">
         <mat-option *ngFor="let a of languageList" [value]="a.EnumID">
-        {{ a.EnumText }}
+          {{ a.EnumText }}
         </mat-option>
       </mat-select>
       <mat-error *ngIf="tvfileFormEdit.controls.Language.errors; let e;">
@@ -85,7 +86,7 @@
       <mat-label>FilePurpose</mat-label>
       <mat-select formControlName="FilePurpose">
         <mat-option *ngFor="let a of filePurposeList" [value]="a.EnumID">
-        {{ a.EnumText }}
+          {{ a.EnumText }}
         </mat-option>
       </mat-select>
       <mat-error *ngIf="tvfileFormEdit.controls.FilePurpose.errors; let e;">
@@ -99,7 +100,7 @@
       <mat-label>FileType</mat-label>
       <mat-select formControlName="FileType">
         <mat-option *ngFor="let a of fileTypeList" [value]="a.EnumID">
-        {{ a.EnumText }}
+          {{ a.EnumText }}
         </mat-option>
       </mat-select>
       <mat-error *ngIf="tvfileFormEdit.controls.FileType.errors; let e;">

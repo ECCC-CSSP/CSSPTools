@@ -5,7 +5,8 @@
  *
 -->
 
-<form [formGroup]="addressFormEdit" (ngSubmit)="GetPut() ? PutAddress(addressFormEdit.value) : PostAddress(addressFormEdit.value)">
+<form [formGroup]="addressFormEdit"
+  (ngSubmit)="GetPut() ? PutAddress(addressFormEdit.value) : PostAddress(addressFormEdit.value)">
   <h3>
     Address
     <button mat-raised-button type="submit">
@@ -37,7 +38,7 @@
       <mat-label>AddressType</mat-label>
       <mat-select formControlName="AddressType">
         <mat-option *ngFor="let a of addressTypeList" [value]="a.EnumID">
-        {{ a.EnumText }}
+          {{ a.EnumText }}
         </mat-option>
       </mat-select>
       <mat-error *ngIf="addressFormEdit.controls.AddressType.errors; let e;">
@@ -93,7 +94,7 @@
       <mat-label>StreetType</mat-label>
       <mat-select formControlName="StreetType">
         <mat-option *ngFor="let a of streetTypeList" [value]="a.EnumID">
-        {{ a.EnumText }}
+          {{ a.EnumText }}
         </mat-option>
       </mat-select>
       <mat-error *ngIf="addressFormEdit.controls.StreetType.errors; let e;">

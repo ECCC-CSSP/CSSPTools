@@ -5,7 +5,8 @@
  *
 -->
 
-<form [formGroup]="contactshortcutFormEdit" (ngSubmit)="GetPut() ? PutContactShortcut(contactshortcutFormEdit.value) : PostContactShortcut(contactshortcutFormEdit.value)">
+<form [formGroup]="contactshortcutFormEdit"
+  (ngSubmit)="GetPut() ? PutContactShortcut(contactshortcutFormEdit.value) : PostContactShortcut(contactshortcutFormEdit.value)">
   <h3>
     ContactShortcut
     <button mat-raised-button type="submit">

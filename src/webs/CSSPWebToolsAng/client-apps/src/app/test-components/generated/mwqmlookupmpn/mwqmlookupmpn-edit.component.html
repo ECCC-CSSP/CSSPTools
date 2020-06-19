@@ -5,7 +5,8 @@
  *
 -->
 
-<form [formGroup]="mwqmlookupmpnFormEdit" (ngSubmit)="GetPut() ? PutMWQMLookupMPN(mwqmlookupmpnFormEdit.value) : PostMWQMLookupMPN(mwqmlookupmpnFormEdit.value)">
+<form [formGroup]="mwqmlookupmpnFormEdit"
+  (ngSubmit)="GetPut() ? PutMWQMLookupMPN(mwqmlookupmpnFormEdit.value) : PostMWQMLookupMPN(mwqmlookupmpnFormEdit.value)">
   <h3>
     MWQMLookupMPN
     <button mat-raised-button type="submit">

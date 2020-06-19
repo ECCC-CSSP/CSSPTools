@@ -5,7 +5,8 @@
  *
 -->
 
-<form [formGroup]="mwqmsubsectorlanguageFormEdit" (ngSubmit)="GetPut() ? PutMWQMSubsectorLanguage(mwqmsubsectorlanguageFormEdit.value) : PostMWQMSubsectorLanguage(mwqmsubsectorlanguageFormEdit.value)">
+<form [formGroup]="mwqmsubsectorlanguageFormEdit"
+  (ngSubmit)="GetPut() ? PutMWQMSubsectorLanguage(mwqmsubsectorlanguageFormEdit.value) : PostMWQMSubsectorLanguage(mwqmsubsectorlanguageFormEdit.value)">
   <h3>
     MWQMSubsectorLanguage
     <button mat-raised-button type="submit">
@@ -37,7 +38,7 @@
       <mat-label>Language</mat-label>
       <mat-select formControlName="Language">
         <mat-option *ngFor="let a of languageList" [value]="a.EnumID">
-        {{ a.EnumText }}
+          {{ a.EnumText }}
         </mat-option>
       </mat-select>
       <mat-error *ngIf="mwqmsubsectorlanguageFormEdit.controls.Language.errors; let e;">
@@ -60,7 +61,7 @@
       <mat-label>TranslationStatusSubsectorDesc</mat-label>
       <mat-select formControlName="TranslationStatusSubsectorDesc">
         <mat-option *ngFor="let a of translationStatusSubsectorDescList" [value]="a.EnumID">
-        {{ a.EnumText }}
+          {{ a.EnumText }}
         </mat-option>
       </mat-select>
       <mat-error *ngIf="mwqmsubsectorlanguageFormEdit.controls.TranslationStatusSubsectorDesc.errors; let e;">
@@ -79,7 +80,7 @@
       <mat-label>TranslationStatusLogBook</mat-label>
       <mat-select formControlName="TranslationStatusLogBook">
         <mat-option *ngFor="let a of translationStatusLogBookList" [value]="a.EnumID">
-        {{ a.EnumText }}
+          {{ a.EnumText }}
         </mat-option>
       </mat-select>
       <mat-error *ngIf="mwqmsubsectorlanguageFormEdit.controls.TranslationStatusLogBook.errors; let e;">

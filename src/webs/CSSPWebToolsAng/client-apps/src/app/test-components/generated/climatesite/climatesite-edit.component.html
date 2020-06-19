@@ -5,7 +5,8 @@
  *
 -->
 
-<form [formGroup]="climatesiteFormEdit" (ngSubmit)="GetPut() ? PutClimateSite(climatesiteFormEdit.value) : PostClimateSite(climatesiteFormEdit.value)">
+<form [formGroup]="climatesiteFormEdit"
+  (ngSubmit)="GetPut() ? PutClimateSite(climatesiteFormEdit.value) : PostClimateSite(climatesiteFormEdit.value)">
   <h3>
     ClimateSite
     <button mat-raised-button type="submit">

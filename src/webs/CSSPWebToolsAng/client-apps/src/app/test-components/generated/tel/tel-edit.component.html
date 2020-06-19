@@ -5,7 +5,8 @@
  *
 -->
 
-<form [formGroup]="telFormEdit" (ngSubmit)="GetPut() ? PutTel(telFormEdit.value) : PostTel(telFormEdit.value)">
+<form [formGroup]="telFormEdit"
+  (ngSubmit)="GetPut() ? PutTel(telFormEdit.value) : PostTel(telFormEdit.value)">
   <h3>
     Tel
     <button mat-raised-button type="submit">
@@ -46,7 +47,7 @@
       <mat-label>TelType</mat-label>
       <mat-select formControlName="TelType">
         <mat-option *ngFor="let a of telTypeList" [value]="a.EnumID">
-        {{ a.EnumText }}
+          {{ a.EnumText }}
         </mat-option>
       </mat-select>
       <mat-error *ngIf="telFormEdit.controls.TelType.errors; let e;">

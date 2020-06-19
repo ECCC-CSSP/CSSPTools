@@ -5,7 +5,8 @@
  *
 -->
 
-<form [formGroup]="mwqmsitestartenddateFormEdit" (ngSubmit)="GetPut() ? PutMWQMSiteStartEndDate(mwqmsitestartenddateFormEdit.value) : PostMWQMSiteStartEndDate(mwqmsitestartenddateFormEdit.value)">
+<form [formGroup]="mwqmsitestartenddateFormEdit"
+  (ngSubmit)="GetPut() ? PutMWQMSiteStartEndDate(mwqmsitestartenddateFormEdit.value) : PostMWQMSiteStartEndDate(mwqmsitestartenddateFormEdit.value)">
   <h3>
     MWQMSiteStartEndDate
     <button mat-raised-button type="submit">

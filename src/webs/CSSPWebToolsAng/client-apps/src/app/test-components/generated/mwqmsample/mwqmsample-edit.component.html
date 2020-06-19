@@ -5,7 +5,8 @@
  *
 -->
 
-<form [formGroup]="mwqmsampleFormEdit" (ngSubmit)="GetPut() ? PutMWQMSample(mwqmsampleFormEdit.value) : PostMWQMSample(mwqmsampleFormEdit.value)">
+<form [formGroup]="mwqmsampleFormEdit"
+  (ngSubmit)="GetPut() ? PutMWQMSample(mwqmsampleFormEdit.value) : PostMWQMSample(mwqmsampleFormEdit.value)">
   <h3>
     MWQMSample
     <button mat-raised-button type="submit">
@@ -120,7 +121,7 @@
       <mat-label>SampleType_old</mat-label>
       <mat-select formControlName="SampleType_old">
         <mat-option *ngFor="let a of sampleType_oldList" [value]="a.EnumID">
-        {{ a.EnumText }}
+          {{ a.EnumText }}
         </mat-option>
       </mat-select>
       <mat-error *ngIf="mwqmsampleFormEdit.controls.SampleType_old.errors; let e;">

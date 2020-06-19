@@ -5,7 +5,8 @@
  *
 -->
 
-<form [formGroup]="mapinfoFormEdit" (ngSubmit)="GetPut() ? PutMapInfo(mapinfoFormEdit.value) : PostMapInfo(mapinfoFormEdit.value)">
+<form [formGroup]="mapinfoFormEdit"
+  (ngSubmit)="GetPut() ? PutMapInfo(mapinfoFormEdit.value) : PostMapInfo(mapinfoFormEdit.value)">
   <h3>
     MapInfo
     <button mat-raised-button type="submit">
@@ -37,7 +38,7 @@
       <mat-label>TVType</mat-label>
       <mat-select formControlName="TVType">
         <mat-option *ngFor="let a of tVTypeList" [value]="a.EnumID">
-        {{ a.EnumText }}
+          {{ a.EnumText }}
         </mat-option>
       </mat-select>
       <mat-error *ngIf="mapinfoFormEdit.controls.TVType.errors; let e;">
@@ -91,7 +92,7 @@
       <mat-label>MapInfoDrawType</mat-label>
       <mat-select formControlName="MapInfoDrawType">
         <mat-option *ngFor="let a of mapInfoDrawTypeList" [value]="a.EnumID">
-        {{ a.EnumText }}
+          {{ a.EnumText }}
         </mat-option>
       </mat-select>
       <mat-error *ngIf="mapinfoFormEdit.controls.MapInfoDrawType.errors; let e;">

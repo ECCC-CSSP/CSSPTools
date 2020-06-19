@@ -5,7 +5,8 @@
  *
 -->
 
-<form [formGroup]="reporttypeFormEdit" (ngSubmit)="GetPut() ? PutReportType(reporttypeFormEdit.value) : PostReportType(reporttypeFormEdit.value)">
+<form [formGroup]="reporttypeFormEdit"
+  (ngSubmit)="GetPut() ? PutReportType(reporttypeFormEdit.value) : PostReportType(reporttypeFormEdit.value)">
   <h3>
     ReportType
     <button mat-raised-button type="submit">
@@ -29,7 +30,7 @@
       <mat-label>TVType</mat-label>
       <mat-select formControlName="TVType">
         <mat-option *ngFor="let a of tVTypeList" [value]="a.EnumID">
-        {{ a.EnumText }}
+          {{ a.EnumText }}
         </mat-option>
       </mat-select>
       <mat-error *ngIf="reporttypeFormEdit.controls.TVType.errors; let e;">
@@ -41,7 +42,7 @@
       <mat-label>FileType</mat-label>
       <mat-select formControlName="FileType">
         <mat-option *ngFor="let a of fileTypeList" [value]="a.EnumID">
-        {{ a.EnumText }}
+          {{ a.EnumText }}
         </mat-option>
       </mat-select>
       <mat-error *ngIf="reporttypeFormEdit.controls.FileType.errors; let e;">
@@ -64,7 +65,7 @@
       <mat-label>Language</mat-label>
       <mat-select formControlName="Language">
         <mat-option *ngFor="let a of languageList" [value]="a.EnumID">
-        {{ a.EnumText }}
+          {{ a.EnumText }}
         </mat-option>
       </mat-select>
       <mat-error *ngIf="reporttypeFormEdit.controls.Language.errors; let e;">

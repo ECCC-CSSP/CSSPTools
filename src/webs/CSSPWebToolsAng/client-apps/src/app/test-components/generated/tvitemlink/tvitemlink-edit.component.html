@@ -5,7 +5,8 @@
  *
 -->
 
-<form [formGroup]="tvitemlinkFormEdit" (ngSubmit)="GetPut() ? PutTVItemLink(tvitemlinkFormEdit.value) : PostTVItemLink(tvitemlinkFormEdit.value)">
+<form [formGroup]="tvitemlinkFormEdit"
+  (ngSubmit)="GetPut() ? PutTVItemLink(tvitemlinkFormEdit.value) : PostTVItemLink(tvitemlinkFormEdit.value)">
   <h3>
     TVItemLink
     <button mat-raised-button type="submit">
@@ -45,7 +46,7 @@
       <mat-label>FromTVType</mat-label>
       <mat-select formControlName="FromTVType">
         <mat-option *ngFor="let a of fromTVTypeList" [value]="a.EnumID">
-        {{ a.EnumText }}
+          {{ a.EnumText }}
         </mat-option>
       </mat-select>
       <mat-error *ngIf="tvitemlinkFormEdit.controls.FromTVType.errors; let e;">
@@ -59,7 +60,7 @@
       <mat-label>ToTVType</mat-label>
       <mat-select formControlName="ToTVType">
         <mat-option *ngFor="let a of toTVTypeList" [value]="a.EnumID">
-        {{ a.EnumText }}
+          {{ a.EnumText }}
         </mat-option>
       </mat-select>
       <mat-error *ngIf="tvitemlinkFormEdit.controls.ToTVType.errors; let e;">

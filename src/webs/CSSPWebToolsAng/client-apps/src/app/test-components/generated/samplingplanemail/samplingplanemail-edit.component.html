@@ -5,7 +5,8 @@
  *
 -->
 
-<form [formGroup]="samplingplanemailFormEdit" (ngSubmit)="GetPut() ? PutSamplingPlanEmail(samplingplanemailFormEdit.value) : PostSamplingPlanEmail(samplingplanemailFormEdit.value)">
+<form [formGroup]="samplingplanemailFormEdit"
+  (ngSubmit)="GetPut() ? PutSamplingPlanEmail(samplingplanemailFormEdit.value) : PostSamplingPlanEmail(samplingplanemailFormEdit.value)">
   <h3>
     SamplingPlanEmail
     <button mat-raised-button type="submit">

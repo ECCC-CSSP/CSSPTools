@@ -5,7 +5,8 @@
  *
 -->
 
-<form [formGroup]="infrastructureFormEdit" (ngSubmit)="GetPut() ? PutInfrastructure(infrastructureFormEdit.value) : PostInfrastructure(infrastructureFormEdit.value)">
+<form [formGroup]="infrastructureFormEdit"
+  (ngSubmit)="GetPut() ? PutInfrastructure(infrastructureFormEdit.value) : PostInfrastructure(infrastructureFormEdit.value)">
   <h3>
     Infrastructure
     <button mat-raised-button type="submit">
@@ -95,7 +96,7 @@
       <mat-label>InfrastructureType</mat-label>
       <mat-select formControlName="InfrastructureType">
         <mat-option *ngFor="let a of infrastructureTypeList" [value]="a.EnumID">
-        {{ a.EnumText }}
+          {{ a.EnumText }}
         </mat-option>
       </mat-select>
       <mat-error *ngIf="infrastructureFormEdit.controls.InfrastructureType.errors; let e;">
@@ -106,7 +107,7 @@
       <mat-label>FacilityType</mat-label>
       <mat-select formControlName="FacilityType">
         <mat-option *ngFor="let a of facilityTypeList" [value]="a.EnumID">
-        {{ a.EnumText }}
+          {{ a.EnumText }}
         </mat-option>
       </mat-select>
       <mat-error *ngIf="infrastructureFormEdit.controls.FacilityType.errors; let e;">
@@ -151,7 +152,7 @@
       <mat-label>AerationType</mat-label>
       <mat-select formControlName="AerationType">
         <mat-option *ngFor="let a of aerationTypeList" [value]="a.EnumID">
-        {{ a.EnumText }}
+          {{ a.EnumText }}
         </mat-option>
       </mat-select>
       <mat-error *ngIf="infrastructureFormEdit.controls.AerationType.errors; let e;">
@@ -162,7 +163,7 @@
       <mat-label>PreliminaryTreatmentType</mat-label>
       <mat-select formControlName="PreliminaryTreatmentType">
         <mat-option *ngFor="let a of preliminaryTreatmentTypeList" [value]="a.EnumID">
-        {{ a.EnumText }}
+          {{ a.EnumText }}
         </mat-option>
       </mat-select>
       <mat-error *ngIf="infrastructureFormEdit.controls.PreliminaryTreatmentType.errors; let e;">
@@ -175,7 +176,7 @@
       <mat-label>PrimaryTreatmentType</mat-label>
       <mat-select formControlName="PrimaryTreatmentType">
         <mat-option *ngFor="let a of primaryTreatmentTypeList" [value]="a.EnumID">
-        {{ a.EnumText }}
+          {{ a.EnumText }}
         </mat-option>
       </mat-select>
       <mat-error *ngIf="infrastructureFormEdit.controls.PrimaryTreatmentType.errors; let e;">
@@ -186,7 +187,7 @@
       <mat-label>SecondaryTreatmentType</mat-label>
       <mat-select formControlName="SecondaryTreatmentType">
         <mat-option *ngFor="let a of secondaryTreatmentTypeList" [value]="a.EnumID">
-        {{ a.EnumText }}
+          {{ a.EnumText }}
         </mat-option>
       </mat-select>
       <mat-error *ngIf="infrastructureFormEdit.controls.SecondaryTreatmentType.errors; let e;">
@@ -197,7 +198,7 @@
       <mat-label>TertiaryTreatmentType</mat-label>
       <mat-select formControlName="TertiaryTreatmentType">
         <mat-option *ngFor="let a of tertiaryTreatmentTypeList" [value]="a.EnumID">
-        {{ a.EnumText }}
+          {{ a.EnumText }}
         </mat-option>
       </mat-select>
       <mat-error *ngIf="infrastructureFormEdit.controls.TertiaryTreatmentType.errors; let e;">
@@ -208,7 +209,7 @@
       <mat-label>TreatmentType</mat-label>
       <mat-select formControlName="TreatmentType">
         <mat-option *ngFor="let a of treatmentTypeList" [value]="a.EnumID">
-        {{ a.EnumText }}
+          {{ a.EnumText }}
         </mat-option>
       </mat-select>
       <mat-error *ngIf="infrastructureFormEdit.controls.TreatmentType.errors; let e;">
@@ -221,7 +222,7 @@
       <mat-label>DisinfectionType</mat-label>
       <mat-select formControlName="DisinfectionType">
         <mat-option *ngFor="let a of disinfectionTypeList" [value]="a.EnumID">
-        {{ a.EnumText }}
+          {{ a.EnumText }}
         </mat-option>
       </mat-select>
       <mat-error *ngIf="infrastructureFormEdit.controls.DisinfectionType.errors; let e;">
@@ -232,7 +233,7 @@
       <mat-label>CollectionSystemType</mat-label>
       <mat-select formControlName="CollectionSystemType">
         <mat-option *ngFor="let a of collectionSystemTypeList" [value]="a.EnumID">
-        {{ a.EnumText }}
+          {{ a.EnumText }}
         </mat-option>
       </mat-select>
       <mat-error *ngIf="infrastructureFormEdit.controls.CollectionSystemType.errors; let e;">
@@ -243,7 +244,7 @@
       <mat-label>AlarmSystemType</mat-label>
       <mat-select formControlName="AlarmSystemType">
         <mat-option *ngFor="let a of alarmSystemTypeList" [value]="a.EnumID">
-        {{ a.EnumText }}
+          {{ a.EnumText }}
         </mat-option>
       </mat-select>
       <mat-error *ngIf="infrastructureFormEdit.controls.AlarmSystemType.errors; let e;">
@@ -301,7 +302,7 @@
       <mat-label>ValveType</mat-label>
       <mat-select formControlName="ValveType">
         <mat-option *ngFor="let a of valveTypeList" [value]="a.EnumID">
-        {{ a.EnumText }}
+          {{ a.EnumText }}
         </mat-option>
       </mat-select>
       <mat-error *ngIf="infrastructureFormEdit.controls.ValveType.errors; let e;">

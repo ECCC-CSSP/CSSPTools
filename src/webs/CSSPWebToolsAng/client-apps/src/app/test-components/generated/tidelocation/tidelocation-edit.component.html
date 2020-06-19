@@ -5,7 +5,8 @@
  *
 -->
 
-<form [formGroup]="tidelocationFormEdit" (ngSubmit)="GetPut() ? PutTideLocation(tidelocationFormEdit.value) : PostTideLocation(tidelocationFormEdit.value)">
+<form [formGroup]="tidelocationFormEdit"
+  (ngSubmit)="GetPut() ? PutTideLocation(tidelocationFormEdit.value) : PostTideLocation(tidelocationFormEdit.value)">
   <h3>
     TideLocation
     <button mat-raised-button type="submit">

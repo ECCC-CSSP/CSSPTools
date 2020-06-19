@@ -5,7 +5,8 @@
  *
 -->
 
-<form [formGroup]="emaildistributionlistcontactlanguageFormEdit" (ngSubmit)="GetPut() ? PutEmailDistributionListContactLanguage(emaildistributionlistcontactlanguageFormEdit.value) : PostEmailDistributionListContactLanguage(emaildistributionlistcontactlanguageFormEdit.value)">
+<form [formGroup]="emaildistributionlistcontactlanguageFormEdit"
+  (ngSubmit)="GetPut() ? PutEmailDistributionListContactLanguage(emaildistributionlistcontactlanguageFormEdit.value) : PostEmailDistributionListContactLanguage(emaildistributionlistcontactlanguageFormEdit.value)">
   <h3>
     EmailDistributionListContactLanguage
     <button mat-raised-button type="submit">
@@ -37,7 +38,7 @@
       <mat-label>Language</mat-label>
       <mat-select formControlName="Language">
         <mat-option *ngFor="let a of languageList" [value]="a.EnumID">
-        {{ a.EnumText }}
+          {{ a.EnumText }}
         </mat-option>
       </mat-select>
       <mat-error *ngIf="emaildistributionlistcontactlanguageFormEdit.controls.Language.errors; let e;">
@@ -61,7 +62,7 @@
       <mat-label>TranslationStatus</mat-label>
       <mat-select formControlName="TranslationStatus">
         <mat-option *ngFor="let a of translationStatusList" [value]="a.EnumID">
-        {{ a.EnumText }}
+          {{ a.EnumText }}
         </mat-option>
       </mat-select>
       <mat-error *ngIf="emaildistributionlistcontactlanguageFormEdit.controls.TranslationStatus.errors; let e;">

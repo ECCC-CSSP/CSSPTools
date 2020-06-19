@@ -5,7 +5,8 @@
  *
 -->
 
-<form [formGroup]="hydrometricsiteFormEdit" (ngSubmit)="GetPut() ? PutHydrometricSite(hydrometricsiteFormEdit.value) : PostHydrometricSite(hydrometricsiteFormEdit.value)">
+<form [formGroup]="hydrometricsiteFormEdit"
+  (ngSubmit)="GetPut() ? PutHydrometricSite(hydrometricsiteFormEdit.value) : PostHydrometricSite(hydrometricsiteFormEdit.value)">
   <h3>
     HydrometricSite
     <button mat-raised-button type="submit">

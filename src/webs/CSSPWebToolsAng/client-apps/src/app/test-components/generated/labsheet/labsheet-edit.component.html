@@ -5,7 +5,8 @@
  *
 -->
 
-<form [formGroup]="labsheetFormEdit" (ngSubmit)="GetPut() ? PutLabSheet(labsheetFormEdit.value) : PostLabSheet(labsheetFormEdit.value)">
+<form [formGroup]="labsheetFormEdit"
+  (ngSubmit)="GetPut() ? PutLabSheet(labsheetFormEdit.value) : PostLabSheet(labsheetFormEdit.value)">
   <h3>
     LabSheet
     <button mat-raised-button type="submit">
@@ -114,7 +115,7 @@
       <mat-label>SamplingPlanType</mat-label>
       <mat-select formControlName="SamplingPlanType">
         <mat-option *ngFor="let a of samplingPlanTypeList" [value]="a.EnumID">
-        {{ a.EnumText }}
+          {{ a.EnumText }}
         </mat-option>
       </mat-select>
       <mat-error *ngIf="labsheetFormEdit.controls.SamplingPlanType.errors; let e;">
@@ -126,7 +127,7 @@
       <mat-label>SampleType</mat-label>
       <mat-select formControlName="SampleType">
         <mat-option *ngFor="let a of sampleTypeList" [value]="a.EnumID">
-        {{ a.EnumText }}
+          {{ a.EnumText }}
         </mat-option>
       </mat-select>
       <mat-error *ngIf="labsheetFormEdit.controls.SampleType.errors; let e;">
@@ -140,7 +141,7 @@
       <mat-label>LabSheetType</mat-label>
       <mat-select formControlName="LabSheetType">
         <mat-option *ngFor="let a of labSheetTypeList" [value]="a.EnumID">
-        {{ a.EnumText }}
+          {{ a.EnumText }}
         </mat-option>
       </mat-select>
       <mat-error *ngIf="labsheetFormEdit.controls.LabSheetType.errors; let e;">
@@ -152,7 +153,7 @@
       <mat-label>LabSheetStatus</mat-label>
       <mat-select formControlName="LabSheetStatus">
         <mat-option *ngFor="let a of labSheetStatusList" [value]="a.EnumID">
-        {{ a.EnumText }}
+          {{ a.EnumText }}
         </mat-option>
       </mat-select>
       <mat-error *ngIf="labsheetFormEdit.controls.LabSheetStatus.errors; let e;">

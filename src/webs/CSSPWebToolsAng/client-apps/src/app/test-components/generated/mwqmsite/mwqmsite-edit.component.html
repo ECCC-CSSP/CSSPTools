@@ -5,7 +5,8 @@
  *
 -->
 
-<form [formGroup]="mwqmsiteFormEdit" (ngSubmit)="GetPut() ? PutMWQMSite(mwqmsiteFormEdit.value) : PostMWQMSite(mwqmsiteFormEdit.value)">
+<form [formGroup]="mwqmsiteFormEdit"
+  (ngSubmit)="GetPut() ? PutMWQMSite(mwqmsiteFormEdit.value) : PostMWQMSite(mwqmsiteFormEdit.value)">
   <h3>
     MWQMSite
     <button mat-raised-button type="submit">
@@ -57,7 +58,7 @@
       <mat-label>MWQMSiteLatestClassification</mat-label>
       <mat-select formControlName="MWQMSiteLatestClassification">
         <mat-option *ngFor="let a of mWQMSiteLatestClassificationList" [value]="a.EnumID">
-        {{ a.EnumText }}
+          {{ a.EnumText }}
         </mat-option>
       </mat-select>
       <mat-error *ngIf="mwqmsiteFormEdit.controls.MWQMSiteLatestClassification.errors; let e;">

@@ -5,7 +5,8 @@
  *
 -->
 
-<form [formGroup]="boxmodelFormEdit" (ngSubmit)="GetPut() ? PutBoxModel(boxmodelFormEdit.value) : PostBoxModel(boxmodelFormEdit.value)">
+<form [formGroup]="boxmodelFormEdit"
+  (ngSubmit)="GetPut() ? PutBoxModel(boxmodelFormEdit.value) : PostBoxModel(boxmodelFormEdit.value)">
   <h3>
     BoxModel
     <button mat-raised-button type="submit">

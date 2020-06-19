@@ -5,7 +5,8 @@
  *
 -->
 
-<form [formGroup]="ratingcurvevalueFormEdit" (ngSubmit)="GetPut() ? PutRatingCurveValue(ratingcurvevalueFormEdit.value) : PostRatingCurveValue(ratingcurvevalueFormEdit.value)">
+<form [formGroup]="ratingcurvevalueFormEdit"
+  (ngSubmit)="GetPut() ? PutRatingCurveValue(ratingcurvevalueFormEdit.value) : PostRatingCurveValue(ratingcurvevalueFormEdit.value)">
   <h3>
     RatingCurveValue
     <button mat-raised-button type="submit">

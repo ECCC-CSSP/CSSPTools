@@ -5,7 +5,8 @@
  *
 -->
 
-<form [formGroup]="vpambientFormEdit" (ngSubmit)="GetPut() ? PutVPAmbient(vpambientFormEdit.value) : PostVPAmbient(vpambientFormEdit.value)">
+<form [formGroup]="vpambientFormEdit"
+  (ngSubmit)="GetPut() ? PutVPAmbient(vpambientFormEdit.value) : PostVPAmbient(vpambientFormEdit.value)">
   <h3>
     VPAmbient
     <button mat-raised-button type="submit">

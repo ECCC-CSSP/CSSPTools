@@ -5,7 +5,8 @@
  *
 -->
 
-<form [formGroup]="samplingplansubsectorFormEdit" (ngSubmit)="GetPut() ? PutSamplingPlanSubsector(samplingplansubsectorFormEdit.value) : PostSamplingPlanSubsector(samplingplansubsectorFormEdit.value)">
+<form [formGroup]="samplingplansubsectorFormEdit"
+  (ngSubmit)="GetPut() ? PutSamplingPlanSubsector(samplingplansubsectorFormEdit.value) : PostSamplingPlanSubsector(samplingplansubsectorFormEdit.value)">
   <h3>
     SamplingPlanSubsector
     <button mat-raised-button type="submit">

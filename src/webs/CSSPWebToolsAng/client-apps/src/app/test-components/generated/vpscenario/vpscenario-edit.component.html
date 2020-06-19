@@ -5,7 +5,8 @@
  *
 -->
 
-<form [formGroup]="vpscenarioFormEdit" (ngSubmit)="GetPut() ? PutVPScenario(vpscenarioFormEdit.value) : PostVPScenario(vpscenarioFormEdit.value)">
+<form [formGroup]="vpscenarioFormEdit"
+  (ngSubmit)="GetPut() ? PutVPScenario(vpscenarioFormEdit.value) : PostVPScenario(vpscenarioFormEdit.value)">
   <h3>
     VPScenario
     <button mat-raised-button type="submit">
@@ -37,7 +38,7 @@
       <mat-label>VPScenarioStatus</mat-label>
       <mat-select formControlName="VPScenarioStatus">
         <mat-option *ngFor="let a of vPScenarioStatusList" [value]="a.EnumID">
-        {{ a.EnumText }}
+          {{ a.EnumText }}
         </mat-option>
       </mat-select>
       <mat-error *ngIf="vpscenarioFormEdit.controls.VPScenarioStatus.errors; let e;">

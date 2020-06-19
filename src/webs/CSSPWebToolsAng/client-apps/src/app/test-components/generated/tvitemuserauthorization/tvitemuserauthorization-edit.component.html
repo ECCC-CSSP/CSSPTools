@@ -5,7 +5,8 @@
  *
 -->
 
-<form [formGroup]="tvitemuserauthorizationFormEdit" (ngSubmit)="GetPut() ? PutTVItemUserAuthorization(tvitemuserauthorizationFormEdit.value) : PostTVItemUserAuthorization(tvitemuserauthorizationFormEdit.value)">
+<form [formGroup]="tvitemuserauthorizationFormEdit"
+  (ngSubmit)="GetPut() ? PutTVItemUserAuthorization(tvitemuserauthorizationFormEdit.value) : PostTVItemUserAuthorization(tvitemuserauthorizationFormEdit.value)">
   <h3>
     TVItemUserAuthorization
     <button mat-raised-button type="submit">
@@ -68,7 +69,7 @@
       <mat-label>TVAuth</mat-label>
       <mat-select formControlName="TVAuth">
         <mat-option *ngFor="let a of tVAuthList" [value]="a.EnumID">
-        {{ a.EnumText }}
+          {{ a.EnumText }}
         </mat-option>
       </mat-select>
       <mat-error *ngIf="tvitemuserauthorizationFormEdit.controls.TVAuth.errors; let e;">

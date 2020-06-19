@@ -5,7 +5,8 @@
  *
 -->
 
-<form [formGroup]="hydrometricdatavalueFormEdit" (ngSubmit)="GetPut() ? PutHydrometricDataValue(hydrometricdatavalueFormEdit.value) : PostHydrometricDataValue(hydrometricdatavalueFormEdit.value)">
+<form [formGroup]="hydrometricdatavalueFormEdit"
+  (ngSubmit)="GetPut() ? PutHydrometricDataValue(hydrometricdatavalueFormEdit.value) : PostHydrometricDataValue(hydrometricdatavalueFormEdit.value)">
   <h3>
     HydrometricDataValue
     <button mat-raised-button type="submit">
@@ -55,7 +56,7 @@
       <mat-label>StorageDataType</mat-label>
       <mat-select formControlName="StorageDataType">
         <mat-option *ngFor="let a of storageDataTypeList" [value]="a.EnumID">
-        {{ a.EnumText }}
+          {{ a.EnumText }}
         </mat-option>
       </mat-select>
       <mat-error *ngIf="hydrometricdatavalueFormEdit.controls.StorageDataType.errors; let e;">

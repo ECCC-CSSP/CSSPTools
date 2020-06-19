@@ -5,7 +5,8 @@
  *
 -->
 
-<form [formGroup]="infrastructurelanguageFormEdit" (ngSubmit)="GetPut() ? PutInfrastructureLanguage(infrastructurelanguageFormEdit.value) : PostInfrastructureLanguage(infrastructurelanguageFormEdit.value)">
+<form [formGroup]="infrastructurelanguageFormEdit"
+  (ngSubmit)="GetPut() ? PutInfrastructureLanguage(infrastructurelanguageFormEdit.value) : PostInfrastructureLanguage(infrastructurelanguageFormEdit.value)">
   <h3>
     InfrastructureLanguage
     <button mat-raised-button type="submit">
@@ -37,7 +38,7 @@
       <mat-label>Language</mat-label>
       <mat-select formControlName="Language">
         <mat-option *ngFor="let a of languageList" [value]="a.EnumID">
-        {{ a.EnumText }}
+          {{ a.EnumText }}
         </mat-option>
       </mat-select>
       <mat-error *ngIf="infrastructurelanguageFormEdit.controls.Language.errors; let e;">
@@ -59,7 +60,7 @@
       <mat-label>TranslationStatus</mat-label>
       <mat-select formControlName="TranslationStatus">
         <mat-option *ngFor="let a of translationStatusList" [value]="a.EnumID">
-        {{ a.EnumText }}
+          {{ a.EnumText }}
         </mat-option>
       </mat-select>
       <mat-error *ngIf="infrastructurelanguageFormEdit.controls.TranslationStatus.errors; let e;">

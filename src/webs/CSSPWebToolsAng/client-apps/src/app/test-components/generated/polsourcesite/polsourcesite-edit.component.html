@@ -5,7 +5,8 @@
  *
 -->
 
-<form [formGroup]="polsourcesiteFormEdit" (ngSubmit)="GetPut() ? PutPolSourceSite(polsourcesiteFormEdit.value) : PostPolSourceSite(polsourcesiteFormEdit.value)">
+<form [formGroup]="polsourcesiteFormEdit"
+  (ngSubmit)="GetPut() ? PutPolSourceSite(polsourcesiteFormEdit.value) : PostPolSourceSite(polsourcesiteFormEdit.value)">
   <h3>
     PolSourceSite
     <button mat-raised-button type="submit">
@@ -82,7 +83,7 @@
       <mat-label>InactiveReason</mat-label>
       <mat-select formControlName="InactiveReason">
         <mat-option *ngFor="let a of inactiveReasonList" [value]="a.EnumID">
-        {{ a.EnumText }}
+          {{ a.EnumText }}
         </mat-option>
       </mat-select>
       <mat-error *ngIf="polsourcesiteFormEdit.controls.InactiveReason.errors; let e;">

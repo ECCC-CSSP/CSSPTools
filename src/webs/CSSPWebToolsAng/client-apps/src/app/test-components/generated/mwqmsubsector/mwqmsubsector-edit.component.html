@@ -5,7 +5,8 @@
  *
 -->
 
-<form [formGroup]="mwqmsubsectorFormEdit" (ngSubmit)="GetPut() ? PutMWQMSubsector(mwqmsubsectorFormEdit.value) : PostMWQMSubsector(mwqmsubsectorFormEdit.value)">
+<form [formGroup]="mwqmsubsectorFormEdit"
+  (ngSubmit)="GetPut() ? PutMWQMSubsector(mwqmsubsectorFormEdit.value) : PostMWQMSubsector(mwqmsubsectorFormEdit.value)">
   <h3>
     MWQMSubsector
     <button mat-raised-button type="submit">

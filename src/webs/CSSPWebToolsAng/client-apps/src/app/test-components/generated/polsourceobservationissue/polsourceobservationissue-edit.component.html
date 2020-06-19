@@ -5,7 +5,8 @@
  *
 -->
 
-<form [formGroup]="polsourceobservationissueFormEdit" (ngSubmit)="GetPut() ? PutPolSourceObservationIssue(polsourceobservationissueFormEdit.value) : PostPolSourceObservationIssue(polsourceobservationissueFormEdit.value)">
+<form [formGroup]="polsourceobservationissueFormEdit"
+  (ngSubmit)="GetPut() ? PutPolSourceObservationIssue(polsourceobservationissueFormEdit.value) : PostPolSourceObservationIssue(polsourceobservationissueFormEdit.value)">
   <h3>
     PolSourceObservationIssue
     <button mat-raised-button type="submit">

@@ -5,7 +5,8 @@
  *
 -->
 
-<form [formGroup]="mikescenarioresultFormEdit" (ngSubmit)="GetPut() ? PutMikeScenarioResult(mikescenarioresultFormEdit.value) : PostMikeScenarioResult(mikescenarioresultFormEdit.value)">
+<form [formGroup]="mikescenarioresultFormEdit"
+  (ngSubmit)="GetPut() ? PutMikeScenarioResult(mikescenarioresultFormEdit.value) : PostMikeScenarioResult(mikescenarioresultFormEdit.value)">
   <h3>
     MikeScenarioResult
     <button mat-raised-button type="submit">

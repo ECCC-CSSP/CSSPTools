@@ -5,7 +5,8 @@
  *
 -->
 
-<form [formGroup]="tvitemstatFormEdit" (ngSubmit)="GetPut() ? PutTVItemStat(tvitemstatFormEdit.value) : PostTVItemStat(tvitemstatFormEdit.value)">
+<form [formGroup]="tvitemstatFormEdit"
+  (ngSubmit)="GetPut() ? PutTVItemStat(tvitemstatFormEdit.value) : PostTVItemStat(tvitemstatFormEdit.value)">
   <h3>
     TVItemStat
     <button mat-raised-button type="submit">
@@ -37,7 +38,7 @@
       <mat-label>TVType</mat-label>
       <mat-select formControlName="TVType">
         <mat-option *ngFor="let a of tVTypeList" [value]="a.EnumID">
-        {{ a.EnumText }}
+          {{ a.EnumText }}
         </mat-option>
       </mat-select>
       <mat-error *ngIf="tvitemstatFormEdit.controls.TVType.errors; let e;">

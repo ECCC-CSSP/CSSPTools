@@ -5,7 +5,8 @@
  *
 -->
 
-<form [formGroup]="labsheettubempndetailFormEdit" (ngSubmit)="GetPut() ? PutLabSheetTubeMPNDetail(labsheettubempndetailFormEdit.value) : PostLabSheetTubeMPNDetail(labsheettubempndetailFormEdit.value)">
+<form [formGroup]="labsheettubempndetailFormEdit"
+  (ngSubmit)="GetPut() ? PutLabSheetTubeMPNDetail(labsheettubempndetailFormEdit.value) : PostLabSheetTubeMPNDetail(labsheettubempndetailFormEdit.value)">
   <h3>
     LabSheetTubeMPNDetail
     <button mat-raised-button type="submit">
@@ -130,7 +131,7 @@
       <mat-label>SampleType</mat-label>
       <mat-select formControlName="SampleType">
         <mat-option *ngFor="let a of sampleTypeList" [value]="a.EnumID">
-        {{ a.EnumText }}
+          {{ a.EnumText }}
         </mat-option>
       </mat-select>
       <mat-error *ngIf="labsheettubempndetailFormEdit.controls.SampleType.errors; let e;">

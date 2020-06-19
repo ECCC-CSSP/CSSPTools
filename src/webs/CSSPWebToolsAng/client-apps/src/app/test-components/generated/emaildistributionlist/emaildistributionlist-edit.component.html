@@ -5,7 +5,8 @@
  *
 -->
 
-<form [formGroup]="emaildistributionlistFormEdit" (ngSubmit)="GetPut() ? PutEmailDistributionList(emaildistributionlistFormEdit.value) : PostEmailDistributionList(emaildistributionlistFormEdit.value)">
+<form [formGroup]="emaildistributionlistFormEdit"
+  (ngSubmit)="GetPut() ? PutEmailDistributionList(emaildistributionlistFormEdit.value) : PostEmailDistributionList(emaildistributionlistFormEdit.value)">
   <h3>
     EmailDistributionList
     <button mat-raised-button type="submit">

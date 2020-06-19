@@ -5,7 +5,8 @@
  *
 -->
 
-<form [formGroup]="rainexceedanceFormEdit" (ngSubmit)="GetPut() ? PutRainExceedance(rainexceedanceFormEdit.value) : PostRainExceedance(rainexceedanceFormEdit.value)">
+<form [formGroup]="rainexceedanceFormEdit"
+  (ngSubmit)="GetPut() ? PutRainExceedance(rainexceedanceFormEdit.value) : PostRainExceedance(rainexceedanceFormEdit.value)">
   <h3>
     RainExceedance
     <button mat-raised-button type="submit">

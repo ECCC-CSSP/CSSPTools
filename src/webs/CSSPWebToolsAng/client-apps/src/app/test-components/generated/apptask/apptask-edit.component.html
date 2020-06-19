@@ -5,7 +5,8 @@
  *
 -->
 
-<form [formGroup]="apptaskFormEdit" (ngSubmit)="GetPut() ? PutAppTask(apptaskFormEdit.value) : PostAppTask(apptaskFormEdit.value)">
+<form [formGroup]="apptaskFormEdit"
+  (ngSubmit)="GetPut() ? PutAppTask(apptaskFormEdit.value) : PostAppTask(apptaskFormEdit.value)">
   <h3>
     AppTask
     <button mat-raised-button type="submit">
@@ -45,7 +46,7 @@
       <mat-label>AppTaskCommand</mat-label>
       <mat-select formControlName="AppTaskCommand">
         <mat-option *ngFor="let a of appTaskCommandList" [value]="a.EnumID">
-        {{ a.EnumText }}
+          {{ a.EnumText }}
         </mat-option>
       </mat-select>
       <mat-error *ngIf="apptaskFormEdit.controls.AppTaskCommand.errors; let e;">
@@ -59,7 +60,7 @@
       <mat-label>AppTaskStatus</mat-label>
       <mat-select formControlName="AppTaskStatus">
         <mat-option *ngFor="let a of appTaskStatusList" [value]="a.EnumID">
-        {{ a.EnumText }}
+          {{ a.EnumText }}
         </mat-option>
       </mat-select>
       <mat-error *ngIf="apptaskFormEdit.controls.AppTaskStatus.errors; let e;">
@@ -89,7 +90,7 @@
       <mat-label>Language</mat-label>
       <mat-select formControlName="Language">
         <mat-option *ngFor="let a of languageList" [value]="a.EnumID">
-        {{ a.EnumText }}
+          {{ a.EnumText }}
         </mat-option>
       </mat-select>
       <mat-error *ngIf="apptaskFormEdit.controls.Language.errors; let e;">

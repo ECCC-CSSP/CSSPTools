@@ -5,7 +5,8 @@
  *
 -->
 
-<form [formGroup]="tidesiteFormEdit" (ngSubmit)="GetPut() ? PutTideSite(tidesiteFormEdit.value) : PostTideSite(tidesiteFormEdit.value)">
+<form [formGroup]="tidesiteFormEdit"
+  (ngSubmit)="GetPut() ? PutTideSite(tidesiteFormEdit.value) : PostTideSite(tidesiteFormEdit.value)">
   <h3>
     TideSite
     <button mat-raised-button type="submit">

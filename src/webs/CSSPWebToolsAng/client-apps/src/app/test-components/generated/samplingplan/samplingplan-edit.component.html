@@ -5,7 +5,8 @@
  *
 -->
 
-<form [formGroup]="samplingplanFormEdit" (ngSubmit)="GetPut() ? PutSamplingPlan(samplingplanFormEdit.value) : PostSamplingPlan(samplingplanFormEdit.value)">
+<form [formGroup]="samplingplanFormEdit"
+  (ngSubmit)="GetPut() ? PutSamplingPlan(samplingplanFormEdit.value) : PostSamplingPlan(samplingplanFormEdit.value)">
   <h3>
     SamplingPlan
     <button mat-raised-button type="submit">
@@ -57,7 +58,7 @@
       <mat-label>SampleType</mat-label>
       <mat-select formControlName="SampleType">
         <mat-option *ngFor="let a of sampleTypeList" [value]="a.EnumID">
-        {{ a.EnumText }}
+          {{ a.EnumText }}
         </mat-option>
       </mat-select>
       <mat-error *ngIf="samplingplanFormEdit.controls.SampleType.errors; let e;">
@@ -69,7 +70,7 @@
       <mat-label>SamplingPlanType</mat-label>
       <mat-select formControlName="SamplingPlanType">
         <mat-option *ngFor="let a of samplingPlanTypeList" [value]="a.EnumID">
-        {{ a.EnumText }}
+          {{ a.EnumText }}
         </mat-option>
       </mat-select>
       <mat-error *ngIf="samplingplanFormEdit.controls.SamplingPlanType.errors; let e;">
@@ -81,7 +82,7 @@
       <mat-label>LabSheetType</mat-label>
       <mat-select formControlName="LabSheetType">
         <mat-option *ngFor="let a of labSheetTypeList" [value]="a.EnumID">
-        {{ a.EnumText }}
+          {{ a.EnumText }}
         </mat-option>
       </mat-select>
       <mat-error *ngIf="samplingplanFormEdit.controls.LabSheetType.errors; let e;">
@@ -178,7 +179,7 @@
       <mat-label>AnalyzeMethodDefault</mat-label>
       <mat-select formControlName="AnalyzeMethodDefault">
         <mat-option *ngFor="let a of analyzeMethodDefaultList" [value]="a.EnumID">
-        {{ a.EnumText }}
+          {{ a.EnumText }}
         </mat-option>
       </mat-select>
       <mat-error *ngIf="samplingplanFormEdit.controls.AnalyzeMethodDefault.errors; let e;">
@@ -189,7 +190,7 @@
       <mat-label>SampleMatrixDefault</mat-label>
       <mat-select formControlName="SampleMatrixDefault">
         <mat-option *ngFor="let a of sampleMatrixDefaultList" [value]="a.EnumID">
-        {{ a.EnumText }}
+          {{ a.EnumText }}
         </mat-option>
       </mat-select>
       <mat-error *ngIf="samplingplanFormEdit.controls.SampleMatrixDefault.errors; let e;">
@@ -200,7 +201,7 @@
       <mat-label>LaboratoryDefault</mat-label>
       <mat-select formControlName="LaboratoryDefault">
         <mat-option *ngFor="let a of laboratoryDefaultList" [value]="a.EnumID">
-        {{ a.EnumText }}
+          {{ a.EnumText }}
         </mat-option>
       </mat-select>
       <mat-error *ngIf="samplingplanFormEdit.controls.LaboratoryDefault.errors; let e;">

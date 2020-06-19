@@ -5,7 +5,8 @@
  *
 -->
 
-<form [formGroup]="droguerunFormEdit" (ngSubmit)="GetPut() ? PutDrogueRun(droguerunFormEdit.value) : PostDrogueRun(droguerunFormEdit.value)">
+<form [formGroup]="droguerunFormEdit"
+  (ngSubmit)="GetPut() ? PutDrogueRun(droguerunFormEdit.value) : PostDrogueRun(droguerunFormEdit.value)">
   <h3>
     DrogueRun
     <button mat-raised-button type="submit">
@@ -47,7 +48,7 @@
       <mat-label>DrogueType</mat-label>
       <mat-select formControlName="DrogueType">
         <mat-option *ngFor="let a of drogueTypeList" [value]="a.EnumID">
-        {{ a.EnumText }}
+          {{ a.EnumText }}
         </mat-option>
       </mat-select>
       <mat-error *ngIf="droguerunFormEdit.controls.DrogueType.errors; let e;">
