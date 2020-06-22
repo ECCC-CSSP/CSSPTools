@@ -48,7 +48,6 @@ export class ReportTypeEditComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    LoadLocalesReportTypeText(this.reporttypeService);
     this.tVTypeList = TVTypeEnum_GetOrderedText();
     this.fileTypeList = FileTypeEnum_GetOrderedText();
     this.languageList = LanguageEnum_GetOrderedText();
@@ -56,9 +55,7 @@ export class ReportTypeEditComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    if (this.sub) {
-      this.sub.unsubscribe();
-    }
+    this.sub?.unsubscribe();
   }
 
   FillFormBuilderGroup(httpClientCommand: HttpClientCommand) {

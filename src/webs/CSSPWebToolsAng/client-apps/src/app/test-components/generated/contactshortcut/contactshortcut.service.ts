@@ -30,7 +30,7 @@ export class ContactShortcutService {
 
   /* Constructors */
   constructor(private httpClient: HttpClient, private httpClientService: HttpClientService) {
-    LoadLocalesContactShortcutText(this);
+    LoadLocalesContactShortcutText(this.contactshortcutTextModel$);
     this.contactshortcutTextModel$.next(<ContactShortcutTextModel>{ Title: "Something2 for text" });
   }
 

@@ -101,12 +101,10 @@ export class ReportTypeComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    LoadLocalesReportTypeText(this.reporttypeService);
+    LoadLocalesReportTypeText(this.reporttypeService.reporttypeTextModel$);
   }
 
   ngOnDestroy() {
-    if (this.sub) {
-      this.sub.unsubscribe();
-    }
+    this.sub?.unsubscribe();
   }
 }

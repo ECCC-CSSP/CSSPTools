@@ -91,12 +91,10 @@ export class TVItemUserAuthorizationComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    LoadLocalesTVItemUserAuthorizationText(this.tvitemuserauthorizationService);
+    LoadLocalesTVItemUserAuthorizationText(this.tvitemuserauthorizationService.tvitemuserauthorizationTextModel$);
   }
 
   ngOnDestroy() {
-    if (this.sub) {
-      this.sub.unsubscribe();
-    }
+    this.sub?.unsubscribe();
   }
 }

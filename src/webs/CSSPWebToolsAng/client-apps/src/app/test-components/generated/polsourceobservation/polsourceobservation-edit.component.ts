@@ -41,14 +41,11 @@ export class PolSourceObservationEditComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    LoadLocalesPolSourceObservationText(this.polsourceobservationService);
     this.FillFormBuilderGroup(this.httpClientCommand);
   }
 
   ngOnDestroy() {
-    if (this.sub) {
-      this.sub.unsubscribe();
-    }
+    this.sub?.unsubscribe();
   }
 
   FillFormBuilderGroup(httpClientCommand: HttpClientCommand) {

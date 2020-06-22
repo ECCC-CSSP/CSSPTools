@@ -30,7 +30,7 @@ export class DrogueRunService {
 
   /* Constructors */
   constructor(private httpClient: HttpClient, private httpClientService: HttpClientService) {
-    LoadLocalesDrogueRunText(this);
+    LoadLocalesDrogueRunText(this.droguerunTextModel$);
     this.droguerunTextModel$.next(<DrogueRunTextModel>{ Title: "Something2 for text" });
   }
 

@@ -6,9 +6,9 @@
  */
 
 import { VPResultTextModel } from './vpresult.models';
-import { VPResultService } from './vpresult.service';
+import { BehaviorSubject } from 'rxjs';
 
-export function LoadLocalesVPResultText(vpresultService: VPResultService) {
+export function LoadLocalesVPResultText(vpresultTextModel$: BehaviorSubject<VPResultTextModel>) {
     let vpresultTextModel: VPResultTextModel = {
         Title: 'The title',
 }
@@ -17,5 +17,5 @@ export function LoadLocalesVPResultText(vpresultService: VPResultService) {
         vpresultTextModel.Title = 'Le Titre';
     }
 
-    vpresultService.vpresultTextModel$.next(vpresultTextModel);
+    vpresultTextModel$.next(vpresultTextModel);
 }

@@ -6,9 +6,9 @@
  */
 
 import { PolSourceGroupingLanguageTextModel } from './polsourcegroupinglanguage.models';
-import { PolSourceGroupingLanguageService } from './polsourcegroupinglanguage.service';
+import { BehaviorSubject } from 'rxjs';
 
-export function LoadLocalesPolSourceGroupingLanguageText(polsourcegroupinglanguageService: PolSourceGroupingLanguageService) {
+export function LoadLocalesPolSourceGroupingLanguageText(polsourcegroupinglanguageTextModel$: BehaviorSubject<PolSourceGroupingLanguageTextModel>) {
     let polsourcegroupinglanguageTextModel: PolSourceGroupingLanguageTextModel = {
         Title: 'The title',
 }
@@ -17,5 +17,5 @@ export function LoadLocalesPolSourceGroupingLanguageText(polsourcegroupinglangua
         polsourcegroupinglanguageTextModel.Title = 'Le Titre';
     }
 
-    polsourcegroupinglanguageService.polsourcegroupinglanguageTextModel$.next(polsourcegroupinglanguageTextModel);
+    polsourcegroupinglanguageTextModel$.next(polsourcegroupinglanguageTextModel);
 }

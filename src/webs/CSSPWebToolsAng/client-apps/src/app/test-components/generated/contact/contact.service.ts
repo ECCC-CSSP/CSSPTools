@@ -30,7 +30,7 @@ export class ContactService {
 
   /* Constructors */
   constructor(private httpClient: HttpClient, private httpClientService: HttpClientService) {
-    LoadLocalesContactText(this);
+    LoadLocalesContactText(this.contactTextModel$);
     this.contactTextModel$.next(<ContactTextModel>{ Title: "Something2 for text" });
   }
 

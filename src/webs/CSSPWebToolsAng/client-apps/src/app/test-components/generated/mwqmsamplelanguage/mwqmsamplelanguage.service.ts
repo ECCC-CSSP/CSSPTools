@@ -30,7 +30,7 @@ export class MWQMSampleLanguageService {
 
   /* Constructors */
   constructor(private httpClient: HttpClient, private httpClientService: HttpClientService) {
-    LoadLocalesMWQMSampleLanguageText(this);
+    LoadLocalesMWQMSampleLanguageText(this.mwqmsamplelanguageTextModel$);
     this.mwqmsamplelanguageTextModel$.next(<MWQMSampleLanguageTextModel>{ Title: "Something2 for text" });
   }
 

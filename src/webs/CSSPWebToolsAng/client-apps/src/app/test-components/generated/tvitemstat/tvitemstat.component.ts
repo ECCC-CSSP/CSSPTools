@@ -91,12 +91,10 @@ export class TVItemStatComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    LoadLocalesTVItemStatText(this.tvitemstatService);
+    LoadLocalesTVItemStatText(this.tvitemstatService.tvitemstatTextModel$);
   }
 
   ngOnDestroy() {
-    if (this.sub) {
-      this.sub.unsubscribe();
-    }
+    this.sub?.unsubscribe();
   }
 }

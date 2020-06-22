@@ -44,15 +44,12 @@ export class LabSheetTubeMPNDetailEditComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    LoadLocalesLabSheetTubeMPNDetailText(this.labsheettubempndetailService);
     this.sampleTypeList = SampleTypeEnum_GetOrderedText();
     this.FillFormBuilderGroup(this.httpClientCommand);
   }
 
   ngOnDestroy() {
-    if (this.sub) {
-      this.sub.unsubscribe();
-    }
+    this.sub?.unsubscribe();
   }
 
   FillFormBuilderGroup(httpClientCommand: HttpClientCommand) {

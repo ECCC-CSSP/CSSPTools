@@ -6,9 +6,9 @@
  */
 
 import { MWQMSiteStartEndDateTextModel } from './mwqmsitestartenddate.models';
-import { MWQMSiteStartEndDateService } from './mwqmsitestartenddate.service';
+import { BehaviorSubject } from 'rxjs';
 
-export function LoadLocalesMWQMSiteStartEndDateText(mwqmsitestartenddateService: MWQMSiteStartEndDateService) {
+export function LoadLocalesMWQMSiteStartEndDateText(mwqmsitestartenddateTextModel$: BehaviorSubject<MWQMSiteStartEndDateTextModel>) {
     let mwqmsitestartenddateTextModel: MWQMSiteStartEndDateTextModel = {
         Title: 'The title',
 }
@@ -17,5 +17,5 @@ export function LoadLocalesMWQMSiteStartEndDateText(mwqmsitestartenddateService:
         mwqmsitestartenddateTextModel.Title = 'Le Titre';
     }
 
-    mwqmsitestartenddateService.mwqmsitestartenddateTextModel$.next(mwqmsitestartenddateTextModel);
+    mwqmsitestartenddateTextModel$.next(mwqmsitestartenddateTextModel);
 }

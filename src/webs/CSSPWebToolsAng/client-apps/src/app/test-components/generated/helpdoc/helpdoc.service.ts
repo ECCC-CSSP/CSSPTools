@@ -30,7 +30,7 @@ export class HelpDocService {
 
   /* Constructors */
   constructor(private httpClient: HttpClient, private httpClientService: HttpClientService) {
-    LoadLocalesHelpDocText(this);
+    LoadLocalesHelpDocText(this.helpdocTextModel$);
     this.helpdocTextModel$.next(<HelpDocTextModel>{ Title: "Something2 for text" });
   }
 

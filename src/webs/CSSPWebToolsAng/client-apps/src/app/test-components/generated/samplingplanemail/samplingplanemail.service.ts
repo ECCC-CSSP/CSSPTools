@@ -30,7 +30,7 @@ export class SamplingPlanEmailService {
 
   /* Constructors */
   constructor(private httpClient: HttpClient, private httpClientService: HttpClientService) {
-    LoadLocalesSamplingPlanEmailText(this);
+    LoadLocalesSamplingPlanEmailText(this.samplingplanemailTextModel$);
     this.samplingplanemailTextModel$.next(<SamplingPlanEmailTextModel>{ Title: "Something2 for text" });
   }
 

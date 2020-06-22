@@ -96,12 +96,10 @@ export class MWQMAnalysisReportParameterComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    LoadLocalesMWQMAnalysisReportParameterText(this.mwqmanalysisreportparameterService);
+    LoadLocalesMWQMAnalysisReportParameterText(this.mwqmanalysisreportparameterService.mwqmanalysisreportparameterTextModel$);
   }
 
   ngOnDestroy() {
-    if (this.sub) {
-      this.sub.unsubscribe();
-    }
+    this.sub?.unsubscribe();
   }
 }

@@ -86,12 +86,10 @@ export class ClimateSiteComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    LoadLocalesClimateSiteText(this.climatesiteService);
+    LoadLocalesClimateSiteText(this.climatesiteService.climatesiteTextModel$);
   }
 
   ngOnDestroy() {
-    if (this.sub) {
-      this.sub.unsubscribe();
-    }
+    this.sub?.unsubscribe();
   }
 }

@@ -6,9 +6,9 @@
  */
 
 import { TelTextModel } from './tel.models';
-import { TelService } from './tel.service';
+import { BehaviorSubject } from 'rxjs';
 
-export function LoadLocalesTelText(telService: TelService) {
+export function LoadLocalesTelText(telTextModel$: BehaviorSubject<TelTextModel>) {
     let telTextModel: TelTextModel = {
         Title: 'The title',
 }
@@ -17,5 +17,5 @@ export function LoadLocalesTelText(telService: TelService) {
         telTextModel.Title = 'Le Titre';
     }
 
-    telService.telTextModel$.next(telTextModel);
+    telTextModel$.next(telTextModel);
 }

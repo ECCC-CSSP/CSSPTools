@@ -50,7 +50,6 @@ export class PolSourceGroupingLanguageEditComponent implements OnInit, OnDestroy
   }
 
   ngOnInit(): void {
-    LoadLocalesPolSourceGroupingLanguageText(this.polsourcegroupinglanguageService);
     this.languageList = LanguageEnum_GetOrderedText();
     this.translationStatusSourceNameList = TranslationStatusEnum_GetOrderedText();
     this.translationStatusInitList = TranslationStatusEnum_GetOrderedText();
@@ -61,9 +60,7 @@ export class PolSourceGroupingLanguageEditComponent implements OnInit, OnDestroy
   }
 
   ngOnDestroy() {
-    if (this.sub) {
-      this.sub.unsubscribe();
-    }
+    this.sub?.unsubscribe();
   }
 
   FillFormBuilderGroup(httpClientCommand: HttpClientCommand) {

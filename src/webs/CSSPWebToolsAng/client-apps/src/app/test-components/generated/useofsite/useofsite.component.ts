@@ -91,12 +91,10 @@ export class UseOfSiteComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    LoadLocalesUseOfSiteText(this.useofsiteService);
+    LoadLocalesUseOfSiteText(this.useofsiteService.useofsiteTextModel$);
   }
 
   ngOnDestroy() {
-    if (this.sub) {
-      this.sub.unsubscribe();
-    }
+    this.sub?.unsubscribe();
   }
 }

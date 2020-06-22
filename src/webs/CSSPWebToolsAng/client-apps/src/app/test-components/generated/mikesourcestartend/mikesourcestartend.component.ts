@@ -86,12 +86,10 @@ export class MikeSourceStartEndComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    LoadLocalesMikeSourceStartEndText(this.mikesourcestartendService);
+    LoadLocalesMikeSourceStartEndText(this.mikesourcestartendService.mikesourcestartendTextModel$);
   }
 
   ngOnDestroy() {
-    if (this.sub) {
-      this.sub.unsubscribe();
-    }
+    this.sub?.unsubscribe();
   }
 }

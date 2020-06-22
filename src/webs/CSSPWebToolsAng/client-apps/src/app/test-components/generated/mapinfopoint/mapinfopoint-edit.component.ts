@@ -41,14 +41,11 @@ export class MapInfoPointEditComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    LoadLocalesMapInfoPointText(this.mapinfopointService);
     this.FillFormBuilderGroup(this.httpClientCommand);
   }
 
   ngOnDestroy() {
-    if (this.sub) {
-      this.sub.unsubscribe();
-    }
+    this.sub?.unsubscribe();
   }
 
   FillFormBuilderGroup(httpClientCommand: HttpClientCommand) {

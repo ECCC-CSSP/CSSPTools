@@ -96,12 +96,10 @@ export class EmailDistributionListLanguageComponent implements OnInit, OnDestroy
   }
 
   ngOnInit(): void {
-    LoadLocalesEmailDistributionListLanguageText(this.emaildistributionlistlanguageService);
+    LoadLocalesEmailDistributionListLanguageText(this.emaildistributionlistlanguageService.emaildistributionlistlanguageTextModel$);
   }
 
   ngOnDestroy() {
-    if (this.sub) {
-      this.sub.unsubscribe();
-    }
+    this.sub?.unsubscribe();
   }
 }

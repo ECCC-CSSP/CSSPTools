@@ -101,12 +101,10 @@ export class MikeBoundaryConditionComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    LoadLocalesMikeBoundaryConditionText(this.mikeboundaryconditionService);
+    LoadLocalesMikeBoundaryConditionText(this.mikeboundaryconditionService.mikeboundaryconditionTextModel$);
   }
 
   ngOnDestroy() {
-    if (this.sub) {
-      this.sub.unsubscribe();
-    }
+    this.sub?.unsubscribe();
   }
 }

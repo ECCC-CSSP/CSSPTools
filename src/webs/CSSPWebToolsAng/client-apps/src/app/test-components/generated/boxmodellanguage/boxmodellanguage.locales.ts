@@ -6,9 +6,9 @@
  */
 
 import { BoxModelLanguageTextModel } from './boxmodellanguage.models';
-import { BoxModelLanguageService } from './boxmodellanguage.service';
+import { BehaviorSubject } from 'rxjs';
 
-export function LoadLocalesBoxModelLanguageText(boxmodellanguageService: BoxModelLanguageService) {
+export function LoadLocalesBoxModelLanguageText(boxmodellanguageTextModel$: BehaviorSubject<BoxModelLanguageTextModel>) {
     let boxmodellanguageTextModel: BoxModelLanguageTextModel = {
         Title: 'The title',
 }
@@ -17,5 +17,5 @@ export function LoadLocalesBoxModelLanguageText(boxmodellanguageService: BoxMode
         boxmodellanguageTextModel.Title = 'Le Titre';
     }
 
-    boxmodellanguageService.boxmodellanguageTextModel$.next(boxmodellanguageTextModel);
+    boxmodellanguageTextModel$.next(boxmodellanguageTextModel);
 }

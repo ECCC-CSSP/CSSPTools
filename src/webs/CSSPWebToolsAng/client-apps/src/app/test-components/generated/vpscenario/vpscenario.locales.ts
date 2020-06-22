@@ -6,9 +6,9 @@
  */
 
 import { VPScenarioTextModel } from './vpscenario.models';
-import { VPScenarioService } from './vpscenario.service';
+import { BehaviorSubject } from 'rxjs';
 
-export function LoadLocalesVPScenarioText(vpscenarioService: VPScenarioService) {
+export function LoadLocalesVPScenarioText(vpscenarioTextModel$: BehaviorSubject<VPScenarioTextModel>) {
     let vpscenarioTextModel: VPScenarioTextModel = {
         Title: 'The title',
 }
@@ -17,5 +17,5 @@ export function LoadLocalesVPScenarioText(vpscenarioService: VPScenarioService) 
         vpscenarioTextModel.Title = 'Le Titre';
     }
 
-    vpscenarioService.vpscenarioTextModel$.next(vpscenarioTextModel);
+    vpscenarioTextModel$.next(vpscenarioTextModel);
 }

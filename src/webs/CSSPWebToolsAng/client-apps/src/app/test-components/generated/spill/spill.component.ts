@@ -86,12 +86,10 @@ export class SpillComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    LoadLocalesSpillText(this.spillService);
+    LoadLocalesSpillText(this.spillService.spillTextModel$);
   }
 
   ngOnDestroy() {
-    if (this.sub) {
-      this.sub.unsubscribe();
-    }
+    this.sub?.unsubscribe();
   }
 }

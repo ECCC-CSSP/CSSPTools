@@ -96,12 +96,10 @@ export class MWQMRunLanguageComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    LoadLocalesMWQMRunLanguageText(this.mwqmrunlanguageService);
+    LoadLocalesMWQMRunLanguageText(this.mwqmrunlanguageService.mwqmrunlanguageTextModel$);
   }
 
   ngOnDestroy() {
-    if (this.sub) {
-      this.sub.unsubscribe();
-    }
+    this.sub?.unsubscribe();
   }
 }

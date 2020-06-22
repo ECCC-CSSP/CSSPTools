@@ -41,14 +41,11 @@ export class SamplingPlanSubsectorSiteEditComponent implements OnInit, OnDestroy
   }
 
   ngOnInit(): void {
-    LoadLocalesSamplingPlanSubsectorSiteText(this.samplingplansubsectorsiteService);
     this.FillFormBuilderGroup(this.httpClientCommand);
   }
 
   ngOnDestroy() {
-    if (this.sub) {
-      this.sub.unsubscribe();
-    }
+    this.sub?.unsubscribe();
   }
 
   FillFormBuilderGroup(httpClientCommand: HttpClientCommand) {

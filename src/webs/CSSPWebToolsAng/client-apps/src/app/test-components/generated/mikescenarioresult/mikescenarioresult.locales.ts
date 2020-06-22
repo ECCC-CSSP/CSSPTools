@@ -6,9 +6,9 @@
  */
 
 import { MikeScenarioResultTextModel } from './mikescenarioresult.models';
-import { MikeScenarioResultService } from './mikescenarioresult.service';
+import { BehaviorSubject } from 'rxjs';
 
-export function LoadLocalesMikeScenarioResultText(mikescenarioresultService: MikeScenarioResultService) {
+export function LoadLocalesMikeScenarioResultText(mikescenarioresultTextModel$: BehaviorSubject<MikeScenarioResultTextModel>) {
     let mikescenarioresultTextModel: MikeScenarioResultTextModel = {
         Title: 'The title',
 }
@@ -17,5 +17,5 @@ export function LoadLocalesMikeScenarioResultText(mikescenarioresultService: Mik
         mikescenarioresultTextModel.Title = 'Le Titre';
     }
 
-    mikescenarioresultService.mikescenarioresultTextModel$.next(mikescenarioresultTextModel);
+    mikescenarioresultTextModel$.next(mikescenarioresultTextModel);
 }

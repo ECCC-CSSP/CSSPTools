@@ -6,9 +6,9 @@
  */
 
 import { EmailDistributionListTextModel } from './emaildistributionlist.models';
-import { EmailDistributionListService } from './emaildistributionlist.service';
+import { BehaviorSubject } from 'rxjs';
 
-export function LoadLocalesEmailDistributionListText(emaildistributionlistService: EmailDistributionListService) {
+export function LoadLocalesEmailDistributionListText(emaildistributionlistTextModel$: BehaviorSubject<EmailDistributionListTextModel>) {
     let emaildistributionlistTextModel: EmailDistributionListTextModel = {
         Title: 'The title',
 }
@@ -17,5 +17,5 @@ export function LoadLocalesEmailDistributionListText(emaildistributionlistServic
         emaildistributionlistTextModel.Title = 'Le Titre';
     }
 
-    emaildistributionlistService.emaildistributionlistTextModel$.next(emaildistributionlistTextModel);
+    emaildistributionlistTextModel$.next(emaildistributionlistTextModel);
 }

@@ -30,7 +30,7 @@ export class ResetPasswordService {
 
   /* Constructors */
   constructor(private httpClient: HttpClient, private httpClientService: HttpClientService) {
-    LoadLocalesResetPasswordText(this);
+    LoadLocalesResetPasswordText(this.resetpasswordTextModel$);
     this.resetpasswordTextModel$.next(<ResetPasswordTextModel>{ Title: "Something2 for text" });
   }
 

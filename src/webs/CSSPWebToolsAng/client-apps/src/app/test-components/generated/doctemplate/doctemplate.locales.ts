@@ -6,9 +6,9 @@
  */
 
 import { DocTemplateTextModel } from './doctemplate.models';
-import { DocTemplateService } from './doctemplate.service';
+import { BehaviorSubject } from 'rxjs';
 
-export function LoadLocalesDocTemplateText(doctemplateService: DocTemplateService) {
+export function LoadLocalesDocTemplateText(doctemplateTextModel$: BehaviorSubject<DocTemplateTextModel>) {
     let doctemplateTextModel: DocTemplateTextModel = {
         Title: 'The title',
 }
@@ -17,5 +17,5 @@ export function LoadLocalesDocTemplateText(doctemplateService: DocTemplateServic
         doctemplateTextModel.Title = 'Le Titre';
     }
 
-    doctemplateService.doctemplateTextModel$.next(doctemplateTextModel);
+    doctemplateTextModel$.next(doctemplateTextModel);
 }

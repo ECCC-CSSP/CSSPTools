@@ -41,14 +41,11 @@ export class EmailDistributionListContactEditComponent implements OnInit, OnDest
   }
 
   ngOnInit(): void {
-    LoadLocalesEmailDistributionListContactText(this.emaildistributionlistcontactService);
     this.FillFormBuilderGroup(this.httpClientCommand);
   }
 
   ngOnDestroy() {
-    if (this.sub) {
-      this.sub.unsubscribe();
-    }
+    this.sub?.unsubscribe();
   }
 
   FillFormBuilderGroup(httpClientCommand: HttpClientCommand) {

@@ -30,7 +30,7 @@ export class MikeBoundaryConditionService {
 
   /* Constructors */
   constructor(private httpClient: HttpClient, private httpClientService: HttpClientService) {
-    LoadLocalesMikeBoundaryConditionText(this);
+    LoadLocalesMikeBoundaryConditionText(this.mikeboundaryconditionTextModel$);
     this.mikeboundaryconditionTextModel$.next(<MikeBoundaryConditionTextModel>{ Title: "Something2 for text" });
   }
 

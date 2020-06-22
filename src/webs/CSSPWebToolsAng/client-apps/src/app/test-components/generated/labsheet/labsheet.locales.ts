@@ -6,9 +6,9 @@
  */
 
 import { LabSheetTextModel } from './labsheet.models';
-import { LabSheetService } from './labsheet.service';
+import { BehaviorSubject } from 'rxjs';
 
-export function LoadLocalesLabSheetText(labsheetService: LabSheetService) {
+export function LoadLocalesLabSheetText(labsheetTextModel$: BehaviorSubject<LabSheetTextModel>) {
     let labsheetTextModel: LabSheetTextModel = {
         Title: 'The title',
 }
@@ -17,5 +17,5 @@ export function LoadLocalesLabSheetText(labsheetService: LabSheetService) {
         labsheetTextModel.Title = 'Le Titre';
     }
 
-    labsheetService.labsheetTextModel$.next(labsheetTextModel);
+    labsheetTextModel$.next(labsheetTextModel);
 }

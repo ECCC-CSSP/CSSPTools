@@ -6,9 +6,9 @@
  */
 
 import { AppTaskTextModel } from './apptask.models';
-import { AppTaskService } from './apptask.service';
+import { BehaviorSubject } from 'rxjs';
 
-export function LoadLocalesAppTaskText(apptaskService: AppTaskService) {
+export function LoadLocalesAppTaskText(apptaskTextModel$: BehaviorSubject<AppTaskTextModel>) {
     let apptaskTextModel: AppTaskTextModel = {
         Title: 'The title',
 }
@@ -17,5 +17,5 @@ export function LoadLocalesAppTaskText(apptaskService: AppTaskService) {
         apptaskTextModel.Title = 'Le Titre';
     }
 
-    apptaskService.apptaskTextModel$.next(apptaskTextModel);
+    apptaskTextModel$.next(apptaskTextModel);
 }

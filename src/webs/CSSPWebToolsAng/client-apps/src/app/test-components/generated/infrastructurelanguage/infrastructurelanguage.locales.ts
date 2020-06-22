@@ -6,9 +6,9 @@
  */
 
 import { InfrastructureLanguageTextModel } from './infrastructurelanguage.models';
-import { InfrastructureLanguageService } from './infrastructurelanguage.service';
+import { BehaviorSubject } from 'rxjs';
 
-export function LoadLocalesInfrastructureLanguageText(infrastructurelanguageService: InfrastructureLanguageService) {
+export function LoadLocalesInfrastructureLanguageText(infrastructurelanguageTextModel$: BehaviorSubject<InfrastructureLanguageTextModel>) {
     let infrastructurelanguageTextModel: InfrastructureLanguageTextModel = {
         Title: 'The title',
 }
@@ -17,5 +17,5 @@ export function LoadLocalesInfrastructureLanguageText(infrastructurelanguageServ
         infrastructurelanguageTextModel.Title = 'Le Titre';
     }
 
-    infrastructurelanguageService.infrastructurelanguageTextModel$.next(infrastructurelanguageTextModel);
+    infrastructurelanguageTextModel$.next(infrastructurelanguageTextModel);
 }

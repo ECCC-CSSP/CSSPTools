@@ -6,9 +6,9 @@
  */
 
 import { InfrastructureTextModel } from './infrastructure.models';
-import { InfrastructureService } from './infrastructure.service';
+import { BehaviorSubject } from 'rxjs';
 
-export function LoadLocalesInfrastructureText(infrastructureService: InfrastructureService) {
+export function LoadLocalesInfrastructureText(infrastructureTextModel$: BehaviorSubject<InfrastructureTextModel>) {
     let infrastructureTextModel: InfrastructureTextModel = {
         Title: 'The title',
 }
@@ -17,5 +17,5 @@ export function LoadLocalesInfrastructureText(infrastructureService: Infrastruct
         infrastructureTextModel.Title = 'Le Titre';
     }
 
-    infrastructureService.infrastructureTextModel$.next(infrastructureTextModel);
+    infrastructureTextModel$.next(infrastructureTextModel);
 }

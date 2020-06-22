@@ -30,7 +30,7 @@ export class SpillLanguageService {
 
   /* Constructors */
   constructor(private httpClient: HttpClient, private httpClientService: HttpClientService) {
-    LoadLocalesSpillLanguageText(this);
+    LoadLocalesSpillLanguageText(this.spilllanguageTextModel$);
     this.spilllanguageTextModel$.next(<SpillLanguageTextModel>{ Title: "Something2 for text" });
   }
 

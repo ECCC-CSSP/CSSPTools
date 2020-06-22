@@ -91,12 +91,10 @@ export class TVItemLinkComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    LoadLocalesTVItemLinkText(this.tvitemlinkService);
+    LoadLocalesTVItemLinkText(this.tvitemlinkService.tvitemlinkTextModel$);
   }
 
   ngOnDestroy() {
-    if (this.sub) {
-      this.sub.unsubscribe();
-    }
+    this.sub?.unsubscribe();
   }
 }

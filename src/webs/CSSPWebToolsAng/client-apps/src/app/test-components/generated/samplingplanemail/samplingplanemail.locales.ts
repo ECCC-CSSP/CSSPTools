@@ -6,9 +6,9 @@
  */
 
 import { SamplingPlanEmailTextModel } from './samplingplanemail.models';
-import { SamplingPlanEmailService } from './samplingplanemail.service';
+import { BehaviorSubject } from 'rxjs';
 
-export function LoadLocalesSamplingPlanEmailText(samplingplanemailService: SamplingPlanEmailService) {
+export function LoadLocalesSamplingPlanEmailText(samplingplanemailTextModel$: BehaviorSubject<SamplingPlanEmailTextModel>) {
     let samplingplanemailTextModel: SamplingPlanEmailTextModel = {
         Title: 'The title',
 }
@@ -17,5 +17,5 @@ export function LoadLocalesSamplingPlanEmailText(samplingplanemailService: Sampl
         samplingplanemailTextModel.Title = 'Le Titre';
     }
 
-    samplingplanemailService.samplingplanemailTextModel$.next(samplingplanemailTextModel);
+    samplingplanemailTextModel$.next(samplingplanemailTextModel);
 }

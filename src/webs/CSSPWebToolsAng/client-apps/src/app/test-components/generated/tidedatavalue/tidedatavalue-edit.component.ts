@@ -49,7 +49,6 @@ export class TideDataValueEditComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    LoadLocalesTideDataValueText(this.tidedatavalueService);
     this.tideDataTypeList = TideDataTypeEnum_GetOrderedText();
     this.storageDataTypeList = StorageDataTypeEnum_GetOrderedText();
     this.tideStartList = TideTextEnum_GetOrderedText();
@@ -58,9 +57,7 @@ export class TideDataValueEditComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    if (this.sub) {
-      this.sub.unsubscribe();
-    }
+    this.sub?.unsubscribe();
   }
 
   FillFormBuilderGroup(httpClientCommand: HttpClientCommand) {

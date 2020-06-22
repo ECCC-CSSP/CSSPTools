@@ -6,9 +6,9 @@
  */
 
 import { EmailTextModel } from './email.models';
-import { EmailService } from './email.service';
+import { BehaviorSubject } from 'rxjs';
 
-export function LoadLocalesEmailText(emailService: EmailService) {
+export function LoadLocalesEmailText(emailTextModel$: BehaviorSubject<EmailTextModel>) {
     let emailTextModel: EmailTextModel = {
         Title: 'The title',
 }
@@ -17,5 +17,5 @@ export function LoadLocalesEmailText(emailService: EmailService) {
         emailTextModel.Title = 'Le Titre';
     }
 
-    emailService.emailTextModel$.next(emailTextModel);
+    emailTextModel$.next(emailTextModel);
 }

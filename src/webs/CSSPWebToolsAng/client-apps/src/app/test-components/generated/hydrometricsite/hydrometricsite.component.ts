@@ -86,12 +86,10 @@ export class HydrometricSiteComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    LoadLocalesHydrometricSiteText(this.hydrometricsiteService);
+    LoadLocalesHydrometricSiteText(this.hydrometricsiteService.hydrometricsiteTextModel$);
   }
 
   ngOnDestroy() {
-    if (this.sub) {
-      this.sub.unsubscribe();
-    }
+    this.sub?.unsubscribe();
   }
 }

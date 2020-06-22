@@ -106,12 +106,10 @@ export class LabSheetComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    LoadLocalesLabSheetText(this.labsheetService);
+    LoadLocalesLabSheetText(this.labsheetService.labsheetTextModel$);
   }
 
   ngOnDestroy() {
-    if (this.sub) {
-      this.sub.unsubscribe();
-    }
+    this.sub?.unsubscribe();
   }
 }

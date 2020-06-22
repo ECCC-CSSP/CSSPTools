@@ -86,12 +86,10 @@ export class ResetPasswordComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    LoadLocalesResetPasswordText(this.resetpasswordService);
+    LoadLocalesResetPasswordText(this.resetpasswordService.resetpasswordTextModel$);
   }
 
   ngOnDestroy() {
-    if (this.sub) {
-      this.sub.unsubscribe();
-    }
+    this.sub?.unsubscribe();
   }
 }

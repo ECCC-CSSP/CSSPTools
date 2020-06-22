@@ -30,7 +30,7 @@ export class ReportSectionService {
 
   /* Constructors */
   constructor(private httpClient: HttpClient, private httpClientService: HttpClientService) {
-    LoadLocalesReportSectionText(this);
+    LoadLocalesReportSectionText(this.reportsectionTextModel$);
     this.reportsectionTextModel$.next(<ReportSectionTextModel>{ Title: "Something2 for text" });
   }
 

@@ -96,12 +96,10 @@ export class VPScenarioLanguageComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    LoadLocalesVPScenarioLanguageText(this.vpscenariolanguageService);
+    LoadLocalesVPScenarioLanguageText(this.vpscenariolanguageService.vpscenariolanguageTextModel$);
   }
 
   ngOnDestroy() {
-    if (this.sub) {
-      this.sub.unsubscribe();
-    }
+    this.sub?.unsubscribe();
   }
 }

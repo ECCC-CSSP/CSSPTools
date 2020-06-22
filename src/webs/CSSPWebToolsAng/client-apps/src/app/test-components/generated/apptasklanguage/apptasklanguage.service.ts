@@ -30,7 +30,7 @@ export class AppTaskLanguageService {
 
   /* Constructors */
   constructor(private httpClient: HttpClient, private httpClientService: HttpClientService) {
-    LoadLocalesAppTaskLanguageText(this);
+    LoadLocalesAppTaskLanguageText(this.apptasklanguageTextModel$);
     this.apptasklanguageTextModel$.next(<AppTaskLanguageTextModel>{ Title: "Something2 for text" });
   }
 

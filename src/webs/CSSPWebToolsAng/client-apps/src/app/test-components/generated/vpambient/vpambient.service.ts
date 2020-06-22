@@ -30,7 +30,7 @@ export class VPAmbientService {
 
   /* Constructors */
   constructor(private httpClient: HttpClient, private httpClientService: HttpClientService) {
-    LoadLocalesVPAmbientText(this);
+    LoadLocalesVPAmbientText(this.vpambientTextModel$);
     this.vpambientTextModel$.next(<VPAmbientTextModel>{ Title: "Something2 for text" });
   }
 

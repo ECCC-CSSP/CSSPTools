@@ -2034,6 +2034,14 @@
             "fileVersion": "1.0.0.0"
           }
         }
+      },
+      "LoggedInServices/1.0.0.0": {
+        "runtime": {
+          "LoggedInServices.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "1.0.0.0"
+          }
+        }
       }
     }
   },
@@ -3246,6 +3254,11 @@
       "sha512": ""
     },
     "ValidateAppSettingsServices/1.0.0.0": {
+      "type": "reference",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "LoggedInServices/1.0.0.0": {
       "type": "reference",
       "serviceable": false,
       "sha512": ""

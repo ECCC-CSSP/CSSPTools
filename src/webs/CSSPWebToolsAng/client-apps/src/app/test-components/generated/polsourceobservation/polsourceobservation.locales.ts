@@ -6,9 +6,9 @@
  */
 
 import { PolSourceObservationTextModel } from './polsourceobservation.models';
-import { PolSourceObservationService } from './polsourceobservation.service';
+import { BehaviorSubject } from 'rxjs';
 
-export function LoadLocalesPolSourceObservationText(polsourceobservationService: PolSourceObservationService) {
+export function LoadLocalesPolSourceObservationText(polsourceobservationTextModel$: BehaviorSubject<PolSourceObservationTextModel>) {
     let polsourceobservationTextModel: PolSourceObservationTextModel = {
         Title: 'The title',
 }
@@ -17,5 +17,5 @@ export function LoadLocalesPolSourceObservationText(polsourceobservationService:
         polsourceobservationTextModel.Title = 'Le Titre';
     }
 
-    polsourceobservationService.polsourceobservationTextModel$.next(polsourceobservationTextModel);
+    polsourceobservationTextModel$.next(polsourceobservationTextModel);
 }

@@ -86,12 +86,10 @@ export class EmailDistributionListComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    LoadLocalesEmailDistributionListText(this.emaildistributionlistService);
+    LoadLocalesEmailDistributionListText(this.emaildistributionlistService.emaildistributionlistTextModel$);
   }
 
   ngOnDestroy() {
-    if (this.sub) {
-      this.sub.unsubscribe();
-    }
+    this.sub?.unsubscribe();
   }
 }

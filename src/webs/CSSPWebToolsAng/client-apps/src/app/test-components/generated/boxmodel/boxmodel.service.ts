@@ -30,7 +30,7 @@ export class BoxModelService {
 
   /* Constructors */
   constructor(private httpClient: HttpClient, private httpClientService: HttpClientService) {
-    LoadLocalesBoxModelText(this);
+    LoadLocalesBoxModelText(this.boxmodelTextModel$);
     this.boxmodelTextModel$.next(<BoxModelTextModel>{ Title: "Something2 for text" });
   }
 

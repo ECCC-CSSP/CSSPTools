@@ -44,15 +44,12 @@ export class TVItemUserAuthorizationEditComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    LoadLocalesTVItemUserAuthorizationText(this.tvitemuserauthorizationService);
     this.tVAuthList = TVAuthEnum_GetOrderedText();
     this.FillFormBuilderGroup(this.httpClientCommand);
   }
 
   ngOnDestroy() {
-    if (this.sub) {
-      this.sub.unsubscribe();
-    }
+    this.sub?.unsubscribe();
   }
 
   FillFormBuilderGroup(httpClientCommand: HttpClientCommand) {

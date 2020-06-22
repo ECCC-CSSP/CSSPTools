@@ -6,9 +6,9 @@
  */
 
 import { DrogueRunPositionTextModel } from './droguerunposition.models';
-import { DrogueRunPositionService } from './droguerunposition.service';
+import { BehaviorSubject } from 'rxjs';
 
-export function LoadLocalesDrogueRunPositionText(droguerunpositionService: DrogueRunPositionService) {
+export function LoadLocalesDrogueRunPositionText(droguerunpositionTextModel$: BehaviorSubject<DrogueRunPositionTextModel>) {
     let droguerunpositionTextModel: DrogueRunPositionTextModel = {
         Title: 'The title',
 }
@@ -17,5 +17,5 @@ export function LoadLocalesDrogueRunPositionText(droguerunpositionService: Drogu
         droguerunpositionTextModel.Title = 'Le Titre';
     }
 
-    droguerunpositionService.droguerunpositionTextModel$.next(droguerunpositionTextModel);
+    droguerunpositionTextModel$.next(droguerunpositionTextModel);
 }

@@ -30,7 +30,7 @@ export class MWQMLookupMPNService {
 
   /* Constructors */
   constructor(private httpClient: HttpClient, private httpClientService: HttpClientService) {
-    LoadLocalesMWQMLookupMPNText(this);
+    LoadLocalesMWQMLookupMPNText(this.mwqmlookupmpnTextModel$);
     this.mwqmlookupmpnTextModel$.next(<MWQMLookupMPNTextModel>{ Title: "Something2 for text" });
   }
 

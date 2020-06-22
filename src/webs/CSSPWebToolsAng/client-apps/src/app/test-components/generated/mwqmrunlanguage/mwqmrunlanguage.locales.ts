@@ -6,9 +6,9 @@
  */
 
 import { MWQMRunLanguageTextModel } from './mwqmrunlanguage.models';
-import { MWQMRunLanguageService } from './mwqmrunlanguage.service';
+import { BehaviorSubject } from 'rxjs';
 
-export function LoadLocalesMWQMRunLanguageText(mwqmrunlanguageService: MWQMRunLanguageService) {
+export function LoadLocalesMWQMRunLanguageText(mwqmrunlanguageTextModel$: BehaviorSubject<MWQMRunLanguageTextModel>) {
     let mwqmrunlanguageTextModel: MWQMRunLanguageTextModel = {
         Title: 'The title',
 }
@@ -17,5 +17,5 @@ export function LoadLocalesMWQMRunLanguageText(mwqmrunlanguageService: MWQMRunLa
         mwqmrunlanguageTextModel.Title = 'Le Titre';
     }
 
-    mwqmrunlanguageService.mwqmrunlanguageTextModel$.next(mwqmrunlanguageTextModel);
+    mwqmrunlanguageTextModel$.next(mwqmrunlanguageTextModel);
 }

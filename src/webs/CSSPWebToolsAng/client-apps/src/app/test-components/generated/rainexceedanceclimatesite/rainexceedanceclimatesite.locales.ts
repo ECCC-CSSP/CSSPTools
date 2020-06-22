@@ -6,9 +6,9 @@
  */
 
 import { RainExceedanceClimateSiteTextModel } from './rainexceedanceclimatesite.models';
-import { RainExceedanceClimateSiteService } from './rainexceedanceclimatesite.service';
+import { BehaviorSubject } from 'rxjs';
 
-export function LoadLocalesRainExceedanceClimateSiteText(rainexceedanceclimatesiteService: RainExceedanceClimateSiteService) {
+export function LoadLocalesRainExceedanceClimateSiteText(rainexceedanceclimatesiteTextModel$: BehaviorSubject<RainExceedanceClimateSiteTextModel>) {
     let rainexceedanceclimatesiteTextModel: RainExceedanceClimateSiteTextModel = {
         Title: 'The title',
 }
@@ -17,5 +17,5 @@ export function LoadLocalesRainExceedanceClimateSiteText(rainexceedanceclimatesi
         rainexceedanceclimatesiteTextModel.Title = 'Le Titre';
     }
 
-    rainexceedanceclimatesiteService.rainexceedanceclimatesiteTextModel$.next(rainexceedanceclimatesiteTextModel);
+    rainexceedanceclimatesiteTextModel$.next(rainexceedanceclimatesiteTextModel);
 }

@@ -6,9 +6,9 @@
  */
 
 import { ClassificationTextModel } from './classification.models';
-import { ClassificationService } from './classification.service';
+import { BehaviorSubject } from 'rxjs';
 
-export function LoadLocalesClassificationText(classificationService: ClassificationService) {
+export function LoadLocalesClassificationText(classificationTextModel$: BehaviorSubject<ClassificationTextModel>) {
     let classificationTextModel: ClassificationTextModel = {
         Title: 'The title',
 }
@@ -17,5 +17,5 @@ export function LoadLocalesClassificationText(classificationService: Classificat
         classificationTextModel.Title = 'Le Titre';
     }
 
-    classificationService.classificationTextModel$.next(classificationTextModel);
+    classificationTextModel$.next(classificationTextModel);
 }

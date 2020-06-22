@@ -30,7 +30,7 @@ export class DocTemplateService {
 
   /* Constructors */
   constructor(private httpClient: HttpClient, private httpClientService: HttpClientService) {
-    LoadLocalesDocTemplateText(this);
+    LoadLocalesDocTemplateText(this.doctemplateTextModel$);
     this.doctemplateTextModel$.next(<DocTemplateTextModel>{ Title: "Something2 for text" });
   }
 

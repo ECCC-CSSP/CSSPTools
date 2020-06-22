@@ -96,12 +96,10 @@ export class MapInfoComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    LoadLocalesMapInfoText(this.mapinfoService);
+    LoadLocalesMapInfoText(this.mapinfoService.mapinfoTextModel$);
   }
 
   ngOnDestroy() {
-    if (this.sub) {
-      this.sub.unsubscribe();
-    }
+    this.sub?.unsubscribe();
   }
 }

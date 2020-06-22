@@ -6,9 +6,9 @@
  */
 
 import { ReportTypeTextModel } from './reporttype.models';
-import { ReportTypeService } from './reporttype.service';
+import { BehaviorSubject } from 'rxjs';
 
-export function LoadLocalesReportTypeText(reporttypeService: ReportTypeService) {
+export function LoadLocalesReportTypeText(reporttypeTextModel$: BehaviorSubject<ReportTypeTextModel>) {
     let reporttypeTextModel: ReportTypeTextModel = {
         Title: 'The title',
 }
@@ -17,5 +17,5 @@ export function LoadLocalesReportTypeText(reporttypeService: ReportTypeService) 
         reporttypeTextModel.Title = 'Le Titre';
     }
 
-    reporttypeService.reporttypeTextModel$.next(reporttypeTextModel);
+    reporttypeTextModel$.next(reporttypeTextModel);
 }

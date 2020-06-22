@@ -6,9 +6,9 @@
  */
 
 import { TideDataValueTextModel } from './tidedatavalue.models';
-import { TideDataValueService } from './tidedatavalue.service';
+import { BehaviorSubject } from 'rxjs';
 
-export function LoadLocalesTideDataValueText(tidedatavalueService: TideDataValueService) {
+export function LoadLocalesTideDataValueText(tidedatavalueTextModel$: BehaviorSubject<TideDataValueTextModel>) {
     let tidedatavalueTextModel: TideDataValueTextModel = {
         Title: 'The title',
 }
@@ -17,5 +17,5 @@ export function LoadLocalesTideDataValueText(tidedatavalueService: TideDataValue
         tidedatavalueTextModel.Title = 'Le Titre';
     }
 
-    tidedatavalueService.tidedatavalueTextModel$.next(tidedatavalueTextModel);
+    tidedatavalueTextModel$.next(tidedatavalueTextModel);
 }

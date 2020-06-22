@@ -30,7 +30,7 @@ export class EmailService {
 
   /* Constructors */
   constructor(private httpClient: HttpClient, private httpClientService: HttpClientService) {
-    LoadLocalesEmailText(this);
+    LoadLocalesEmailText(this.emailTextModel$);
     this.emailTextModel$.next(<EmailTextModel>{ Title: "Something2 for text" });
   }
 

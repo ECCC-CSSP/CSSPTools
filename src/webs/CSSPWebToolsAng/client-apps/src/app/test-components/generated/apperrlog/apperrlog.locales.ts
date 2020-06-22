@@ -6,9 +6,9 @@
  */
 
 import { AppErrLogTextModel } from './apperrlog.models';
-import { AppErrLogService } from './apperrlog.service';
+import { BehaviorSubject } from 'rxjs';
 
-export function LoadLocalesAppErrLogText(apperrlogService: AppErrLogService) {
+export function LoadLocalesAppErrLogText(apperrlogTextModel$: BehaviorSubject<AppErrLogTextModel>) {
     let apperrlogTextModel: AppErrLogTextModel = {
         Title: 'The title',
 }
@@ -17,5 +17,5 @@ export function LoadLocalesAppErrLogText(apperrlogService: AppErrLogService) {
         apperrlogTextModel.Title = 'Le Titre';
     }
 
-    apperrlogService.apperrlogTextModel$.next(apperrlogTextModel);
+    apperrlogTextModel$.next(apperrlogTextModel);
 }

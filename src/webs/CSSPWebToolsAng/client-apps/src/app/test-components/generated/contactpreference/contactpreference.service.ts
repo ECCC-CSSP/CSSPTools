@@ -30,7 +30,7 @@ export class ContactPreferenceService {
 
   /* Constructors */
   constructor(private httpClient: HttpClient, private httpClientService: HttpClientService) {
-    LoadLocalesContactPreferenceText(this);
+    LoadLocalesContactPreferenceText(this.contactpreferenceTextModel$);
     this.contactpreferenceTextModel$.next(<ContactPreferenceTextModel>{ Title: "Something2 for text" });
   }
 

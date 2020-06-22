@@ -6,9 +6,9 @@
  */
 
 import { PolSourceSiteTextModel } from './polsourcesite.models';
-import { PolSourceSiteService } from './polsourcesite.service';
+import { BehaviorSubject } from 'rxjs';
 
-export function LoadLocalesPolSourceSiteText(polsourcesiteService: PolSourceSiteService) {
+export function LoadLocalesPolSourceSiteText(polsourcesiteTextModel$: BehaviorSubject<PolSourceSiteTextModel>) {
     let polsourcesiteTextModel: PolSourceSiteTextModel = {
         Title: 'The title',
 }
@@ -17,5 +17,5 @@ export function LoadLocalesPolSourceSiteText(polsourcesiteService: PolSourceSite
         polsourcesiteTextModel.Title = 'Le Titre';
     }
 
-    polsourcesiteService.polsourcesiteTextModel$.next(polsourcesiteTextModel);
+    polsourcesiteTextModel$.next(polsourcesiteTextModel);
 }

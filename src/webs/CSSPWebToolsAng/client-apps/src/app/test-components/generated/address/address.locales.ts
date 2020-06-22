@@ -6,9 +6,9 @@
  */
 
 import { AddressTextModel } from './address.models';
-import { AddressService } from './address.service';
+import { BehaviorSubject } from 'rxjs';
 
-export function LoadLocalesAddressText(addressService: AddressService) {
+export function LoadLocalesAddressText(addressTextModel$: BehaviorSubject<AddressTextModel>) {
     let addressTextModel: AddressTextModel = {
         Title: 'The title',
 }
@@ -17,5 +17,5 @@ export function LoadLocalesAddressText(addressService: AddressService) {
         addressTextModel.Title = 'Le Titre';
     }
 
-    addressService.addressTextModel$.next(addressTextModel);
+    addressTextModel$.next(addressTextModel);
 }

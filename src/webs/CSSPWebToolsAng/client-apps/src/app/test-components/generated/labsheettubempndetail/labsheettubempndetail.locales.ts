@@ -6,9 +6,9 @@
  */
 
 import { LabSheetTubeMPNDetailTextModel } from './labsheettubempndetail.models';
-import { LabSheetTubeMPNDetailService } from './labsheettubempndetail.service';
+import { BehaviorSubject } from 'rxjs';
 
-export function LoadLocalesLabSheetTubeMPNDetailText(labsheettubempndetailService: LabSheetTubeMPNDetailService) {
+export function LoadLocalesLabSheetTubeMPNDetailText(labsheettubempndetailTextModel$: BehaviorSubject<LabSheetTubeMPNDetailTextModel>) {
     let labsheettubempndetailTextModel: LabSheetTubeMPNDetailTextModel = {
         Title: 'The title',
 }
@@ -17,5 +17,5 @@ export function LoadLocalesLabSheetTubeMPNDetailText(labsheettubempndetailServic
         labsheettubempndetailTextModel.Title = 'Le Titre';
     }
 
-    labsheettubempndetailService.labsheettubempndetailTextModel$.next(labsheettubempndetailTextModel);
+    labsheettubempndetailTextModel$.next(labsheettubempndetailTextModel);
 }

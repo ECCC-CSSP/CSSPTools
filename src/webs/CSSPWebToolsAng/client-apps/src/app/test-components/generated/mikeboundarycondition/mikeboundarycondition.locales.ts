@@ -6,9 +6,9 @@
  */
 
 import { MikeBoundaryConditionTextModel } from './mikeboundarycondition.models';
-import { MikeBoundaryConditionService } from './mikeboundarycondition.service';
+import { BehaviorSubject } from 'rxjs';
 
-export function LoadLocalesMikeBoundaryConditionText(mikeboundaryconditionService: MikeBoundaryConditionService) {
+export function LoadLocalesMikeBoundaryConditionText(mikeboundaryconditionTextModel$: BehaviorSubject<MikeBoundaryConditionTextModel>) {
     let mikeboundaryconditionTextModel: MikeBoundaryConditionTextModel = {
         Title: 'The title',
 }
@@ -17,5 +17,5 @@ export function LoadLocalesMikeBoundaryConditionText(mikeboundaryconditionServic
         mikeboundaryconditionTextModel.Title = 'Le Titre';
     }
 
-    mikeboundaryconditionService.mikeboundaryconditionTextModel$.next(mikeboundaryconditionTextModel);
+    mikeboundaryconditionTextModel$.next(mikeboundaryconditionTextModel);
 }

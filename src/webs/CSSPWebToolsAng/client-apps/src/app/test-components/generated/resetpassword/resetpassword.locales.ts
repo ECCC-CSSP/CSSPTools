@@ -6,9 +6,9 @@
  */
 
 import { ResetPasswordTextModel } from './resetpassword.models';
-import { ResetPasswordService } from './resetpassword.service';
+import { BehaviorSubject } from 'rxjs';
 
-export function LoadLocalesResetPasswordText(resetpasswordService: ResetPasswordService) {
+export function LoadLocalesResetPasswordText(resetpasswordTextModel$: BehaviorSubject<ResetPasswordTextModel>) {
     let resetpasswordTextModel: ResetPasswordTextModel = {
         Title: 'The title',
 }
@@ -17,5 +17,5 @@ export function LoadLocalesResetPasswordText(resetpasswordService: ResetPassword
         resetpasswordTextModel.Title = 'Le Titre';
     }
 
-    resetpasswordService.resetpasswordTextModel$.next(resetpasswordTextModel);
+    resetpasswordTextModel$.next(resetpasswordTextModel);
 }

@@ -6,9 +6,9 @@
  */
 
 import { HelpDocTextModel } from './helpdoc.models';
-import { HelpDocService } from './helpdoc.service';
+import { BehaviorSubject } from 'rxjs';
 
-export function LoadLocalesHelpDocText(helpdocService: HelpDocService) {
+export function LoadLocalesHelpDocText(helpdocTextModel$: BehaviorSubject<HelpDocTextModel>) {
     let helpdocTextModel: HelpDocTextModel = {
         Title: 'The title',
 }
@@ -17,5 +17,5 @@ export function LoadLocalesHelpDocText(helpdocService: HelpDocService) {
         helpdocTextModel.Title = 'Le Titre';
     }
 
-    helpdocService.helpdocTextModel$.next(helpdocTextModel);
+    helpdocTextModel$.next(helpdocTextModel);
 }

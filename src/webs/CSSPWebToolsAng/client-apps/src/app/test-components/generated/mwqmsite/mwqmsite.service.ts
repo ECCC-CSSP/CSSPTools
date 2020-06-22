@@ -30,7 +30,7 @@ export class MWQMSiteService {
 
   /* Constructors */
   constructor(private httpClient: HttpClient, private httpClientService: HttpClientService) {
-    LoadLocalesMWQMSiteText(this);
+    LoadLocalesMWQMSiteText(this.mwqmsiteTextModel$);
     this.mwqmsiteTextModel$.next(<MWQMSiteTextModel>{ Title: "Something2 for text" });
   }
 

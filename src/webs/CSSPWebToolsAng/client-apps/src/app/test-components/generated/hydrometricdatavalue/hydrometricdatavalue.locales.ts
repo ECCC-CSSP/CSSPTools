@@ -6,9 +6,9 @@
  */
 
 import { HydrometricDataValueTextModel } from './hydrometricdatavalue.models';
-import { HydrometricDataValueService } from './hydrometricdatavalue.service';
+import { BehaviorSubject } from 'rxjs';
 
-export function LoadLocalesHydrometricDataValueText(hydrometricdatavalueService: HydrometricDataValueService) {
+export function LoadLocalesHydrometricDataValueText(hydrometricdatavalueTextModel$: BehaviorSubject<HydrometricDataValueTextModel>) {
     let hydrometricdatavalueTextModel: HydrometricDataValueTextModel = {
         Title: 'The title',
 }
@@ -17,5 +17,5 @@ export function LoadLocalesHydrometricDataValueText(hydrometricdatavalueService:
         hydrometricdatavalueTextModel.Title = 'Le Titre';
     }
 
-    hydrometricdatavalueService.hydrometricdatavalueTextModel$.next(hydrometricdatavalueTextModel);
+    hydrometricdatavalueTextModel$.next(hydrometricdatavalueTextModel);
 }

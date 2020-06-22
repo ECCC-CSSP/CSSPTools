@@ -96,12 +96,10 @@ export class MWQMSubsectorLanguageComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    LoadLocalesMWQMSubsectorLanguageText(this.mwqmsubsectorlanguageService);
+    LoadLocalesMWQMSubsectorLanguageText(this.mwqmsubsectorlanguageService.mwqmsubsectorlanguageTextModel$);
   }
 
   ngOnDestroy() {
-    if (this.sub) {
-      this.sub.unsubscribe();
-    }
+    this.sub?.unsubscribe();
   }
 }

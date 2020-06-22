@@ -44,15 +44,12 @@ export class BoxModelResultEditComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    LoadLocalesBoxModelResultText(this.boxmodelresultService);
     this.boxModelResultTypeList = BoxModelResultTypeEnum_GetOrderedText();
     this.FillFormBuilderGroup(this.httpClientCommand);
   }
 
   ngOnDestroy() {
-    if (this.sub) {
-      this.sub.unsubscribe();
-    }
+    this.sub?.unsubscribe();
   }
 
   FillFormBuilderGroup(httpClientCommand: HttpClientCommand) {

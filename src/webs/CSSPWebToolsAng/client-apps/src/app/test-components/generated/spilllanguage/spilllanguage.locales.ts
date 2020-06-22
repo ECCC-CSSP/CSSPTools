@@ -6,9 +6,9 @@
  */
 
 import { SpillLanguageTextModel } from './spilllanguage.models';
-import { SpillLanguageService } from './spilllanguage.service';
+import { BehaviorSubject } from 'rxjs';
 
-export function LoadLocalesSpillLanguageText(spilllanguageService: SpillLanguageService) {
+export function LoadLocalesSpillLanguageText(spilllanguageTextModel$: BehaviorSubject<SpillLanguageTextModel>) {
     let spilllanguageTextModel: SpillLanguageTextModel = {
         Title: 'The title',
 }
@@ -17,5 +17,5 @@ export function LoadLocalesSpillLanguageText(spilllanguageService: SpillLanguage
         spilllanguageTextModel.Title = 'Le Titre';
     }
 
-    spilllanguageService.spilllanguageTextModel$.next(spilllanguageTextModel);
+    spilllanguageTextModel$.next(spilllanguageTextModel);
 }

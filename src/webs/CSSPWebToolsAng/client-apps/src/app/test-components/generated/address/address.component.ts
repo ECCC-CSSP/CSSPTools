@@ -96,12 +96,10 @@ export class AddressComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    LoadLocalesAddressText(this.addressService);
+    LoadLocalesAddressText(this.addressService.addressTextModel$);
   }
 
   ngOnDestroy() {
-    if (this.sub) {
-      this.sub.unsubscribe();
-    }
+    this.sub?.unsubscribe();
   }
 }

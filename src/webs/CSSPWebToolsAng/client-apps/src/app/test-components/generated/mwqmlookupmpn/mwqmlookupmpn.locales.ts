@@ -6,9 +6,9 @@
  */
 
 import { MWQMLookupMPNTextModel } from './mwqmlookupmpn.models';
-import { MWQMLookupMPNService } from './mwqmlookupmpn.service';
+import { BehaviorSubject } from 'rxjs';
 
-export function LoadLocalesMWQMLookupMPNText(mwqmlookupmpnService: MWQMLookupMPNService) {
+export function LoadLocalesMWQMLookupMPNText(mwqmlookupmpnTextModel$: BehaviorSubject<MWQMLookupMPNTextModel>) {
     let mwqmlookupmpnTextModel: MWQMLookupMPNTextModel = {
         Title: 'The title',
 }
@@ -17,5 +17,5 @@ export function LoadLocalesMWQMLookupMPNText(mwqmlookupmpnService: MWQMLookupMPN
         mwqmlookupmpnTextModel.Title = 'Le Titre';
     }
 
-    mwqmlookupmpnService.mwqmlookupmpnTextModel$.next(mwqmlookupmpnTextModel);
+    mwqmlookupmpnTextModel$.next(mwqmlookupmpnTextModel);
 }

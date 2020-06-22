@@ -101,12 +101,10 @@ export class TideDataValueComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    LoadLocalesTideDataValueText(this.tidedatavalueService);
+    LoadLocalesTideDataValueText(this.tidedatavalueService.tidedatavalueTextModel$);
   }
 
   ngOnDestroy() {
-    if (this.sub) {
-      this.sub.unsubscribe();
-    }
+    this.sub?.unsubscribe();
   }
 }

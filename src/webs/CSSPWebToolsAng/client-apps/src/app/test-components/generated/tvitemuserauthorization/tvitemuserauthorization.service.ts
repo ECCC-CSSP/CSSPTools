@@ -30,7 +30,7 @@ export class TVItemUserAuthorizationService {
 
   /* Constructors */
   constructor(private httpClient: HttpClient, private httpClientService: HttpClientService) {
-    LoadLocalesTVItemUserAuthorizationText(this);
+    LoadLocalesTVItemUserAuthorizationText(this.tvitemuserauthorizationTextModel$);
     this.tvitemuserauthorizationTextModel$.next(<TVItemUserAuthorizationTextModel>{ Title: "Something2 for text" });
   }
 

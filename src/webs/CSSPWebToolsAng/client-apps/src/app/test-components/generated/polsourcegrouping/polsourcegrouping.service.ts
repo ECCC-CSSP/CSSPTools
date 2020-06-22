@@ -30,7 +30,7 @@ export class PolSourceGroupingService {
 
   /* Constructors */
   constructor(private httpClient: HttpClient, private httpClientService: HttpClientService) {
-    LoadLocalesPolSourceGroupingText(this);
+    LoadLocalesPolSourceGroupingText(this.polsourcegroupingTextModel$);
     this.polsourcegroupingTextModel$.next(<PolSourceGroupingTextModel>{ Title: "Something2 for text" });
   }
 

@@ -6,9 +6,9 @@
  */
 
 import { EmailDistributionListLanguageTextModel } from './emaildistributionlistlanguage.models';
-import { EmailDistributionListLanguageService } from './emaildistributionlistlanguage.service';
+import { BehaviorSubject } from 'rxjs';
 
-export function LoadLocalesEmailDistributionListLanguageText(emaildistributionlistlanguageService: EmailDistributionListLanguageService) {
+export function LoadLocalesEmailDistributionListLanguageText(emaildistributionlistlanguageTextModel$: BehaviorSubject<EmailDistributionListLanguageTextModel>) {
     let emaildistributionlistlanguageTextModel: EmailDistributionListLanguageTextModel = {
         Title: 'The title',
 }
@@ -17,5 +17,5 @@ export function LoadLocalesEmailDistributionListLanguageText(emaildistributionli
         emaildistributionlistlanguageTextModel.Title = 'Le Titre';
     }
 
-    emaildistributionlistlanguageService.emaildistributionlistlanguageTextModel$.next(emaildistributionlistlanguageTextModel);
+    emaildistributionlistlanguageTextModel$.next(emaildistributionlistlanguageTextModel);
 }

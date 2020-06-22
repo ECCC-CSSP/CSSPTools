@@ -44,15 +44,12 @@ export class VPScenarioEditComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    LoadLocalesVPScenarioText(this.vpscenarioService);
     this.vPScenarioStatusList = ScenarioStatusEnum_GetOrderedText();
     this.FillFormBuilderGroup(this.httpClientCommand);
   }
 
   ngOnDestroy() {
-    if (this.sub) {
-      this.sub.unsubscribe();
-    }
+    this.sub?.unsubscribe();
   }
 
   FillFormBuilderGroup(httpClientCommand: HttpClientCommand) {

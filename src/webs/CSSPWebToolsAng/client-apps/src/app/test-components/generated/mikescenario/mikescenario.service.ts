@@ -30,7 +30,7 @@ export class MikeScenarioService {
 
   /* Constructors */
   constructor(private httpClient: HttpClient, private httpClientService: HttpClientService) {
-    LoadLocalesMikeScenarioText(this);
+    LoadLocalesMikeScenarioText(this.mikescenarioTextModel$);
     this.mikescenarioTextModel$.next(<MikeScenarioTextModel>{ Title: "Something2 for text" });
   }
 

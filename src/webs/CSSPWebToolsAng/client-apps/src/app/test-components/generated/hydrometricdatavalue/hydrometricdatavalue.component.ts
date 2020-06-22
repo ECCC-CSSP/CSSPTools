@@ -91,12 +91,10 @@ export class HydrometricDataValueComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    LoadLocalesHydrometricDataValueText(this.hydrometricdatavalueService);
+    LoadLocalesHydrometricDataValueText(this.hydrometricdatavalueService.hydrometricdatavalueTextModel$);
   }
 
   ngOnDestroy() {
-    if (this.sub) {
-      this.sub.unsubscribe();
-    }
+    this.sub?.unsubscribe();
   }
 }

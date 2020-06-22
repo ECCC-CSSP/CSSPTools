@@ -91,12 +91,10 @@ export class EmailComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    LoadLocalesEmailText(this.emailService);
+    LoadLocalesEmailText(this.emailService.emailTextModel$);
   }
 
   ngOnDestroy() {
-    if (this.sub) {
-      this.sub.unsubscribe();
-    }
+    this.sub?.unsubscribe();
   }
 }

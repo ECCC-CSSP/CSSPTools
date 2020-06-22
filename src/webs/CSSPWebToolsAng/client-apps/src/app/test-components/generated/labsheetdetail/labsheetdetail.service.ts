@@ -30,7 +30,7 @@ export class LabSheetDetailService {
 
   /* Constructors */
   constructor(private httpClient: HttpClient, private httpClientService: HttpClientService) {
-    LoadLocalesLabSheetDetailText(this);
+    LoadLocalesLabSheetDetailText(this.labsheetdetailTextModel$);
     this.labsheetdetailTextModel$.next(<LabSheetDetailTextModel>{ Title: "Something2 for text" });
   }
 

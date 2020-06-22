@@ -86,12 +86,10 @@ export class MWQMSiteStartEndDateComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    LoadLocalesMWQMSiteStartEndDateText(this.mwqmsitestartenddateService);
+    LoadLocalesMWQMSiteStartEndDateText(this.mwqmsitestartenddateService.mwqmsitestartenddateTextModel$);
   }
 
   ngOnDestroy() {
-    if (this.sub) {
-      this.sub.unsubscribe();
-    }
+    this.sub?.unsubscribe();
   }
 }

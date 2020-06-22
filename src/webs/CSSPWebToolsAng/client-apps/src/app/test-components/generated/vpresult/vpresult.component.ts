@@ -86,12 +86,10 @@ export class VPResultComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    LoadLocalesVPResultText(this.vpresultService);
+    LoadLocalesVPResultText(this.vpresultService.vpresultTextModel$);
   }
 
   ngOnDestroy() {
-    if (this.sub) {
-      this.sub.unsubscribe();
-    }
+    this.sub?.unsubscribe();
   }
 }

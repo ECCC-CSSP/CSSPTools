@@ -30,7 +30,7 @@ export class ClassificationService {
 
   /* Constructors */
   constructor(private httpClient: HttpClient, private httpClientService: HttpClientService) {
-    LoadLocalesClassificationText(this);
+    LoadLocalesClassificationText(this.classificationTextModel$);
     this.classificationTextModel$.next(<ClassificationTextModel>{ Title: "Something2 for text" });
   }
 

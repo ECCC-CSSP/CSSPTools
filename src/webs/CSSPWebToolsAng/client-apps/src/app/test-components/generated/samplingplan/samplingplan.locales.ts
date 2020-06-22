@@ -6,9 +6,9 @@
  */
 
 import { SamplingPlanTextModel } from './samplingplan.models';
-import { SamplingPlanService } from './samplingplan.service';
+import { BehaviorSubject } from 'rxjs';
 
-export function LoadLocalesSamplingPlanText(samplingplanService: SamplingPlanService) {
+export function LoadLocalesSamplingPlanText(samplingplanTextModel$: BehaviorSubject<SamplingPlanTextModel>) {
     let samplingplanTextModel: SamplingPlanTextModel = {
         Title: 'The title',
 }
@@ -17,5 +17,5 @@ export function LoadLocalesSamplingPlanText(samplingplanService: SamplingPlanSer
         samplingplanTextModel.Title = 'Le Titre';
     }
 
-    samplingplanService.samplingplanTextModel$.next(samplingplanTextModel);
+    samplingplanTextModel$.next(samplingplanTextModel);
 }

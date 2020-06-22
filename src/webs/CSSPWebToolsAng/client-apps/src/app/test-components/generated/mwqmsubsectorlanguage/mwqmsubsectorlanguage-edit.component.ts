@@ -47,7 +47,6 @@ export class MWQMSubsectorLanguageEditComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    LoadLocalesMWQMSubsectorLanguageText(this.mwqmsubsectorlanguageService);
     this.languageList = LanguageEnum_GetOrderedText();
     this.translationStatusSubsectorDescList = TranslationStatusEnum_GetOrderedText();
     this.translationStatusLogBookList = TranslationStatusEnum_GetOrderedText();
@@ -55,9 +54,7 @@ export class MWQMSubsectorLanguageEditComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    if (this.sub) {
-      this.sub.unsubscribe();
-    }
+    this.sub?.unsubscribe();
   }
 
   FillFormBuilderGroup(httpClientCommand: HttpClientCommand) {

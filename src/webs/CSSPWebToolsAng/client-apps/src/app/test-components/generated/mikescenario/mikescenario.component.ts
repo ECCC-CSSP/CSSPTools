@@ -91,12 +91,10 @@ export class MikeScenarioComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    LoadLocalesMikeScenarioText(this.mikescenarioService);
+    LoadLocalesMikeScenarioText(this.mikescenarioService.mikescenarioTextModel$);
   }
 
   ngOnDestroy() {
-    if (this.sub) {
-      this.sub.unsubscribe();
-    }
+    this.sub?.unsubscribe();
   }
 }

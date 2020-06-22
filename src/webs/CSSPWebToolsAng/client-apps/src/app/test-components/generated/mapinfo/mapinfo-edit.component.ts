@@ -46,16 +46,13 @@ export class MapInfoEditComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    LoadLocalesMapInfoText(this.mapinfoService);
     this.tVTypeList = TVTypeEnum_GetOrderedText();
     this.mapInfoDrawTypeList = MapInfoDrawTypeEnum_GetOrderedText();
     this.FillFormBuilderGroup(this.httpClientCommand);
   }
 
   ngOnDestroy() {
-    if (this.sub) {
-      this.sub.unsubscribe();
-    }
+    this.sub?.unsubscribe();
   }
 
   FillFormBuilderGroup(httpClientCommand: HttpClientCommand) {

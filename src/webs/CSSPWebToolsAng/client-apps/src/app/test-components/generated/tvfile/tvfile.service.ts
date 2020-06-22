@@ -30,7 +30,7 @@ export class TVFileService {
 
   /* Constructors */
   constructor(private httpClient: HttpClient, private httpClientService: HttpClientService) {
-    LoadLocalesTVFileText(this);
+    LoadLocalesTVFileText(this.tvfileTextModel$);
     this.tvfileTextModel$.next(<TVFileTextModel>{ Title: "Something2 for text" });
   }
 

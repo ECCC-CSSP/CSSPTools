@@ -6,9 +6,9 @@
  */
 
 import { PolSourceSiteEffectTermTextModel } from './polsourcesiteeffectterm.models';
-import { PolSourceSiteEffectTermService } from './polsourcesiteeffectterm.service';
+import { BehaviorSubject } from 'rxjs';
 
-export function LoadLocalesPolSourceSiteEffectTermText(polsourcesiteeffecttermService: PolSourceSiteEffectTermService) {
+export function LoadLocalesPolSourceSiteEffectTermText(polsourcesiteeffecttermTextModel$: BehaviorSubject<PolSourceSiteEffectTermTextModel>) {
     let polsourcesiteeffecttermTextModel: PolSourceSiteEffectTermTextModel = {
         Title: 'The title',
 }
@@ -17,5 +17,5 @@ export function LoadLocalesPolSourceSiteEffectTermText(polsourcesiteeffecttermSe
         polsourcesiteeffecttermTextModel.Title = 'Le Titre';
     }
 
-    polsourcesiteeffecttermService.polsourcesiteeffecttermTextModel$.next(polsourcesiteeffecttermTextModel);
+    polsourcesiteeffecttermTextModel$.next(polsourcesiteeffecttermTextModel);
 }

@@ -6,9 +6,9 @@
  */
 
 import { VPAmbientTextModel } from './vpambient.models';
-import { VPAmbientService } from './vpambient.service';
+import { BehaviorSubject } from 'rxjs';
 
-export function LoadLocalesVPAmbientText(vpambientService: VPAmbientService) {
+export function LoadLocalesVPAmbientText(vpambientTextModel$: BehaviorSubject<VPAmbientTextModel>) {
     let vpambientTextModel: VPAmbientTextModel = {
         Title: 'The title',
 }
@@ -17,5 +17,5 @@ export function LoadLocalesVPAmbientText(vpambientService: VPAmbientService) {
         vpambientTextModel.Title = 'Le Titre';
     }
 
-    vpambientService.vpambientTextModel$.next(vpambientTextModel);
+    vpambientTextModel$.next(vpambientTextModel);
 }

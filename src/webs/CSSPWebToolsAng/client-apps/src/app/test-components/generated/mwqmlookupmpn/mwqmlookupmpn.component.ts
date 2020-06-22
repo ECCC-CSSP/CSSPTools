@@ -86,12 +86,10 @@ export class MWQMLookupMPNComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    LoadLocalesMWQMLookupMPNText(this.mwqmlookupmpnService);
+    LoadLocalesMWQMLookupMPNText(this.mwqmlookupmpnService.mwqmlookupmpnTextModel$);
   }
 
   ngOnDestroy() {
-    if (this.sub) {
-      this.sub.unsubscribe();
-    }
+    this.sub?.unsubscribe();
   }
 }

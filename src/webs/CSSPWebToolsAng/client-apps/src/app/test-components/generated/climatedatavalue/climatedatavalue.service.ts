@@ -30,7 +30,7 @@ export class ClimateDataValueService {
 
   /* Constructors */
   constructor(private httpClient: HttpClient, private httpClientService: HttpClientService) {
-    LoadLocalesClimateDataValueText(this);
+    LoadLocalesClimateDataValueText(this.climatedatavalueTextModel$);
     this.climatedatavalueTextModel$.next(<ClimateDataValueTextModel>{ Title: "Something2 for text" });
   }
 

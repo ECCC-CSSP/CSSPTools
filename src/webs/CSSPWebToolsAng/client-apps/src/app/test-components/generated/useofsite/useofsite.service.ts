@@ -30,7 +30,7 @@ export class UseOfSiteService {
 
   /* Constructors */
   constructor(private httpClient: HttpClient, private httpClientService: HttpClientService) {
-    LoadLocalesUseOfSiteText(this);
+    LoadLocalesUseOfSiteText(this.useofsiteTextModel$);
     this.useofsiteTextModel$.next(<UseOfSiteTextModel>{ Title: "Something2 for text" });
   }
 

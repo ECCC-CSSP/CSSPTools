@@ -86,12 +86,10 @@ export class PolSourceSiteEffectTermComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    LoadLocalesPolSourceSiteEffectTermText(this.polsourcesiteeffecttermService);
+    LoadLocalesPolSourceSiteEffectTermText(this.polsourcesiteeffecttermService.polsourcesiteeffecttermTextModel$);
   }
 
   ngOnDestroy() {
-    if (this.sub) {
-      this.sub.unsubscribe();
-    }
+    this.sub?.unsubscribe();
   }
 }

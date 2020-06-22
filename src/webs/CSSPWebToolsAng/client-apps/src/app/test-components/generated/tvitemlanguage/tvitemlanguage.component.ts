@@ -96,12 +96,10 @@ export class TVItemLanguageComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    LoadLocalesTVItemLanguageText(this.tvitemlanguageService);
+    LoadLocalesTVItemLanguageText(this.tvitemlanguageService.tvitemlanguageTextModel$);
   }
 
   ngOnDestroy() {
-    if (this.sub) {
-      this.sub.unsubscribe();
-    }
+    this.sub?.unsubscribe();
   }
 }

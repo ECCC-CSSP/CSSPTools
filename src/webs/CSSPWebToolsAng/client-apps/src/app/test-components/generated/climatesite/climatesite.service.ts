@@ -30,7 +30,7 @@ export class ClimateSiteService {
 
   /* Constructors */
   constructor(private httpClient: HttpClient, private httpClientService: HttpClientService) {
-    LoadLocalesClimateSiteText(this);
+    LoadLocalesClimateSiteText(this.climatesiteTextModel$);
     this.climatesiteTextModel$.next(<ClimateSiteTextModel>{ Title: "Something2 for text" });
   }
 

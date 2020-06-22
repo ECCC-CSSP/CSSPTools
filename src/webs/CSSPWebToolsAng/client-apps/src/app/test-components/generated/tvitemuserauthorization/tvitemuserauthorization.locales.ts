@@ -6,9 +6,9 @@
  */
 
 import { TVItemUserAuthorizationTextModel } from './tvitemuserauthorization.models';
-import { TVItemUserAuthorizationService } from './tvitemuserauthorization.service';
+import { BehaviorSubject } from 'rxjs';
 
-export function LoadLocalesTVItemUserAuthorizationText(tvitemuserauthorizationService: TVItemUserAuthorizationService) {
+export function LoadLocalesTVItemUserAuthorizationText(tvitemuserauthorizationTextModel$: BehaviorSubject<TVItemUserAuthorizationTextModel>) {
     let tvitemuserauthorizationTextModel: TVItemUserAuthorizationTextModel = {
         Title: 'The title',
 }
@@ -17,5 +17,5 @@ export function LoadLocalesTVItemUserAuthorizationText(tvitemuserauthorizationSe
         tvitemuserauthorizationTextModel.Title = 'Le Titre';
     }
 
-    tvitemuserauthorizationService.tvitemuserauthorizationTextModel$.next(tvitemuserauthorizationTextModel);
+    tvitemuserauthorizationTextModel$.next(tvitemuserauthorizationTextModel);
 }

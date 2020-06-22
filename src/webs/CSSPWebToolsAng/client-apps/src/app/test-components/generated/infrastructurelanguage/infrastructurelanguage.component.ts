@@ -96,12 +96,10 @@ export class InfrastructureLanguageComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    LoadLocalesInfrastructureLanguageText(this.infrastructurelanguageService);
+    LoadLocalesInfrastructureLanguageText(this.infrastructurelanguageService.infrastructurelanguageTextModel$);
   }
 
   ngOnDestroy() {
-    if (this.sub) {
-      this.sub.unsubscribe();
-    }
+    this.sub?.unsubscribe();
   }
 }

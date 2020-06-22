@@ -96,12 +96,10 @@ export class TVTypeUserAuthorizationComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    LoadLocalesTVTypeUserAuthorizationText(this.tvtypeuserauthorizationService);
+    LoadLocalesTVTypeUserAuthorizationText(this.tvtypeuserauthorizationService.tvtypeuserauthorizationTextModel$);
   }
 
   ngOnDestroy() {
-    if (this.sub) {
-      this.sub.unsubscribe();
-    }
+    this.sub?.unsubscribe();
   }
 }

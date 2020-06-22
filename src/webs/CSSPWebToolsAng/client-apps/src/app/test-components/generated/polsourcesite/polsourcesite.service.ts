@@ -30,7 +30,7 @@ export class PolSourceSiteService {
 
   /* Constructors */
   constructor(private httpClient: HttpClient, private httpClientService: HttpClientService) {
-    LoadLocalesPolSourceSiteText(this);
+    LoadLocalesPolSourceSiteText(this.polsourcesiteTextModel$);
     this.polsourcesiteTextModel$.next(<PolSourceSiteTextModel>{ Title: "Something2 for text" });
   }
 

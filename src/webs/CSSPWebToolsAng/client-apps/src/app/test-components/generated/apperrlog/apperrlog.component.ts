@@ -86,12 +86,10 @@ export class AppErrLogComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    LoadLocalesAppErrLogText(this.apperrlogService);
+    LoadLocalesAppErrLogText(this.apperrlogService.apperrlogTextModel$);
   }
 
   ngOnDestroy() {
-    if (this.sub) {
-      this.sub.unsubscribe();
-    }
+    this.sub?.unsubscribe();
   }
 }

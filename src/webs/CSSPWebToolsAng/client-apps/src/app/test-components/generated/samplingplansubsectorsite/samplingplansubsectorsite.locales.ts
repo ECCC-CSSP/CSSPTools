@@ -6,9 +6,9 @@
  */
 
 import { SamplingPlanSubsectorSiteTextModel } from './samplingplansubsectorsite.models';
-import { SamplingPlanSubsectorSiteService } from './samplingplansubsectorsite.service';
+import { BehaviorSubject } from 'rxjs';
 
-export function LoadLocalesSamplingPlanSubsectorSiteText(samplingplansubsectorsiteService: SamplingPlanSubsectorSiteService) {
+export function LoadLocalesSamplingPlanSubsectorSiteText(samplingplansubsectorsiteTextModel$: BehaviorSubject<SamplingPlanSubsectorSiteTextModel>) {
     let samplingplansubsectorsiteTextModel: SamplingPlanSubsectorSiteTextModel = {
         Title: 'The title',
 }
@@ -17,5 +17,5 @@ export function LoadLocalesSamplingPlanSubsectorSiteText(samplingplansubsectorsi
         samplingplansubsectorsiteTextModel.Title = 'Le Titre';
     }
 
-    samplingplansubsectorsiteService.samplingplansubsectorsiteTextModel$.next(samplingplansubsectorsiteTextModel);
+    samplingplansubsectorsiteTextModel$.next(samplingplansubsectorsiteTextModel);
 }

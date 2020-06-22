@@ -6,9 +6,9 @@
  */
 
 import { RainExceedanceTextModel } from './rainexceedance.models';
-import { RainExceedanceService } from './rainexceedance.service';
+import { BehaviorSubject } from 'rxjs';
 
-export function LoadLocalesRainExceedanceText(rainexceedanceService: RainExceedanceService) {
+export function LoadLocalesRainExceedanceText(rainexceedanceTextModel$: BehaviorSubject<RainExceedanceTextModel>) {
     let rainexceedanceTextModel: RainExceedanceTextModel = {
         Title: 'The title',
 }
@@ -17,5 +17,5 @@ export function LoadLocalesRainExceedanceText(rainexceedanceService: RainExceeda
         rainexceedanceTextModel.Title = 'Le Titre';
     }
 
-    rainexceedanceService.rainexceedanceTextModel$.next(rainexceedanceTextModel);
+    rainexceedanceTextModel$.next(rainexceedanceTextModel);
 }

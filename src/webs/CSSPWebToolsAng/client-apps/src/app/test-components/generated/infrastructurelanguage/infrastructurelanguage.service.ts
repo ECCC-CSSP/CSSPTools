@@ -30,7 +30,7 @@ export class InfrastructureLanguageService {
 
   /* Constructors */
   constructor(private httpClient: HttpClient, private httpClientService: HttpClientService) {
-    LoadLocalesInfrastructureLanguageText(this);
+    LoadLocalesInfrastructureLanguageText(this.infrastructurelanguageTextModel$);
     this.infrastructurelanguageTextModel$.next(<InfrastructureLanguageTextModel>{ Title: "Something2 for text" });
   }
 

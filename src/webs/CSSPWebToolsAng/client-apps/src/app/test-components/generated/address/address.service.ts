@@ -30,7 +30,7 @@ export class AddressService {
 
   /* Constructors */
   constructor(private httpClient: HttpClient, private httpClientService: HttpClientService) {
-    LoadLocalesAddressText(this);
+    LoadLocalesAddressText(this.addressTextModel$);
     this.addressTextModel$.next(<AddressTextModel>{ Title: "Something2 for text" });
   }
 

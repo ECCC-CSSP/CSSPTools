@@ -116,12 +116,10 @@ export class SamplingPlanComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    LoadLocalesSamplingPlanText(this.samplingplanService);
+    LoadLocalesSamplingPlanText(this.samplingplanService.samplingplanTextModel$);
   }
 
   ngOnDestroy() {
-    if (this.sub) {
-      this.sub.unsubscribe();
-    }
+    this.sub?.unsubscribe();
   }
 }

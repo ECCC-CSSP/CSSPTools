@@ -86,12 +86,10 @@ export class BoxModelComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    LoadLocalesBoxModelText(this.boxmodelService);
+    LoadLocalesBoxModelText(this.boxmodelService.boxmodelTextModel$);
   }
 
   ngOnDestroy() {
-    if (this.sub) {
-      this.sub.unsubscribe();
-    }
+    this.sub?.unsubscribe();
   }
 }

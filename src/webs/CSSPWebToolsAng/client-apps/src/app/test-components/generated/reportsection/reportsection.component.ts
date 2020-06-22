@@ -91,12 +91,10 @@ export class ReportSectionComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    LoadLocalesReportSectionText(this.reportsectionService);
+    LoadLocalesReportSectionText(this.reportsectionService.reportsectionTextModel$);
   }
 
   ngOnDestroy() {
-    if (this.sub) {
-      this.sub.unsubscribe();
-    }
+    this.sub?.unsubscribe();
   }
 }

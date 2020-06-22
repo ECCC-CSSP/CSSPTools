@@ -30,7 +30,7 @@ export class VPResultService {
 
   /* Constructors */
   constructor(private httpClient: HttpClient, private httpClientService: HttpClientService) {
-    LoadLocalesVPResultText(this);
+    LoadLocalesVPResultText(this.vpresultTextModel$);
     this.vpresultTextModel$.next(<VPResultTextModel>{ Title: "Something2 for text" });
   }
 

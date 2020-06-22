@@ -6,9 +6,9 @@
  */
 
 import { ContactTextModel } from './contact.models';
-import { ContactService } from './contact.service';
+import { BehaviorSubject } from 'rxjs';
 
-export function LoadLocalesContactText(contactService: ContactService) {
+export function LoadLocalesContactText(contactTextModel$: BehaviorSubject<ContactTextModel>) {
     let contactTextModel: ContactTextModel = {
         Title: 'The title',
 }
@@ -17,5 +17,5 @@ export function LoadLocalesContactText(contactService: ContactService) {
         contactTextModel.Title = 'Le Titre';
     }
 
-    contactService.contactTextModel$.next(contactTextModel);
+    contactTextModel$.next(contactTextModel);
 }

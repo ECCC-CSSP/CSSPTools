@@ -86,12 +86,10 @@ export class MikeSourceComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    LoadLocalesMikeSourceText(this.mikesourceService);
+    LoadLocalesMikeSourceText(this.mikesourceService.mikesourceTextModel$);
   }
 
   ngOnDestroy() {
-    if (this.sub) {
-      this.sub.unsubscribe();
-    }
+    this.sub?.unsubscribe();
   }
 }

@@ -30,7 +30,7 @@ export class TelService {
 
   /* Constructors */
   constructor(private httpClient: HttpClient, private httpClientService: HttpClientService) {
-    LoadLocalesTelText(this);
+    LoadLocalesTelText(this.telTextModel$);
     this.telTextModel$.next(<TelTextModel>{ Title: "Something2 for text" });
   }
 

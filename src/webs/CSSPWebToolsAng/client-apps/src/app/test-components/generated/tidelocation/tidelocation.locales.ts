@@ -6,9 +6,9 @@
  */
 
 import { TideLocationTextModel } from './tidelocation.models';
-import { TideLocationService } from './tidelocation.service';
+import { BehaviorSubject } from 'rxjs';
 
-export function LoadLocalesTideLocationText(tidelocationService: TideLocationService) {
+export function LoadLocalesTideLocationText(tidelocationTextModel$: BehaviorSubject<TideLocationTextModel>) {
     let tidelocationTextModel: TideLocationTextModel = {
         Title: 'The title',
 }
@@ -17,5 +17,5 @@ export function LoadLocalesTideLocationText(tidelocationService: TideLocationSer
         tidelocationTextModel.Title = 'Le Titre';
     }
 
-    tidelocationService.tidelocationTextModel$.next(tidelocationTextModel);
+    tidelocationTextModel$.next(tidelocationTextModel);
 }

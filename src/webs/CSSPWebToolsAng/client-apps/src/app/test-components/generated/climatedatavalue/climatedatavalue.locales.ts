@@ -6,9 +6,9 @@
  */
 
 import { ClimateDataValueTextModel } from './climatedatavalue.models';
-import { ClimateDataValueService } from './climatedatavalue.service';
+import { BehaviorSubject } from 'rxjs';
 
-export function LoadLocalesClimateDataValueText(climatedatavalueService: ClimateDataValueService) {
+export function LoadLocalesClimateDataValueText(climatedatavalueTextModel$: BehaviorSubject<ClimateDataValueTextModel>) {
     let climatedatavalueTextModel: ClimateDataValueTextModel = {
         Title: 'The title',
 }
@@ -17,5 +17,5 @@ export function LoadLocalesClimateDataValueText(climatedatavalueService: Climate
         climatedatavalueTextModel.Title = 'Le Titre';
     }
 
-    climatedatavalueService.climatedatavalueTextModel$.next(climatedatavalueTextModel);
+    climatedatavalueTextModel$.next(climatedatavalueTextModel);
 }

@@ -6,9 +6,9 @@
  */
 
 import { MikeSourceTextModel } from './mikesource.models';
-import { MikeSourceService } from './mikesource.service';
+import { BehaviorSubject } from 'rxjs';
 
-export function LoadLocalesMikeSourceText(mikesourceService: MikeSourceService) {
+export function LoadLocalesMikeSourceText(mikesourceTextModel$: BehaviorSubject<MikeSourceTextModel>) {
     let mikesourceTextModel: MikeSourceTextModel = {
         Title: 'The title',
 }
@@ -17,5 +17,5 @@ export function LoadLocalesMikeSourceText(mikesourceService: MikeSourceService) 
         mikesourceTextModel.Title = 'Le Titre';
     }
 
-    mikesourceService.mikesourceTextModel$.next(mikesourceTextModel);
+    mikesourceTextModel$.next(mikesourceTextModel);
 }

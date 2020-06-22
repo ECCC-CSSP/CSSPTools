@@ -30,7 +30,7 @@ export class PolSourceObservationIssueService {
 
   /* Constructors */
   constructor(private httpClient: HttpClient, private httpClientService: HttpClientService) {
-    LoadLocalesPolSourceObservationIssueText(this);
+    LoadLocalesPolSourceObservationIssueText(this.polsourceobservationissueTextModel$);
     this.polsourceobservationissueTextModel$.next(<PolSourceObservationIssueTextModel>{ Title: "Something2 for text" });
   }
 

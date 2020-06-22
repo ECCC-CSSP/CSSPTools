@@ -30,7 +30,7 @@ export class TideLocationService {
 
   /* Constructors */
   constructor(private httpClient: HttpClient, private httpClientService: HttpClientService) {
-    LoadLocalesTideLocationText(this);
+    LoadLocalesTideLocationText(this.tidelocationTextModel$);
     this.tidelocationTextModel$.next(<TideLocationTextModel>{ Title: "Something2 for text" });
   }
 

@@ -30,7 +30,7 @@ export class PolSourceSiteEffectTermService {
 
   /* Constructors */
   constructor(private httpClient: HttpClient, private httpClientService: HttpClientService) {
-    LoadLocalesPolSourceSiteEffectTermText(this);
+    LoadLocalesPolSourceSiteEffectTermText(this.polsourcesiteeffecttermTextModel$);
     this.polsourcesiteeffecttermTextModel$.next(<PolSourceSiteEffectTermTextModel>{ Title: "Something2 for text" });
   }
 

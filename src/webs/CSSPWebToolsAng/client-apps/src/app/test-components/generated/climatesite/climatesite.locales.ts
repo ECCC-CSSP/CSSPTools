@@ -6,9 +6,9 @@
  */
 
 import { ClimateSiteTextModel } from './climatesite.models';
-import { ClimateSiteService } from './climatesite.service';
+import { BehaviorSubject } from 'rxjs';
 
-export function LoadLocalesClimateSiteText(climatesiteService: ClimateSiteService) {
+export function LoadLocalesClimateSiteText(climatesiteTextModel$: BehaviorSubject<ClimateSiteTextModel>) {
     let climatesiteTextModel: ClimateSiteTextModel = {
         Title: 'The title',
 }
@@ -17,5 +17,5 @@ export function LoadLocalesClimateSiteText(climatesiteService: ClimateSiteServic
         climatesiteTextModel.Title = 'Le Titre';
     }
 
-    climatesiteService.climatesiteTextModel$.next(climatesiteTextModel);
+    climatesiteTextModel$.next(climatesiteTextModel);
 }

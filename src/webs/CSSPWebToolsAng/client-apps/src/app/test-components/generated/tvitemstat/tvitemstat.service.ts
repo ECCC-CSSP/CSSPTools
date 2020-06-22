@@ -30,7 +30,7 @@ export class TVItemStatService {
 
   /* Constructors */
   constructor(private httpClient: HttpClient, private httpClientService: HttpClientService) {
-    LoadLocalesTVItemStatText(this);
+    LoadLocalesTVItemStatText(this.tvitemstatTextModel$);
     this.tvitemstatTextModel$.next(<TVItemStatTextModel>{ Title: "Something2 for text" });
   }
 

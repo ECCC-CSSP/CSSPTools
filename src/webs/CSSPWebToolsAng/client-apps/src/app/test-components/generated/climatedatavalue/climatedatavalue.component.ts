@@ -91,12 +91,10 @@ export class ClimateDataValueComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    LoadLocalesClimateDataValueText(this.climatedatavalueService);
+    LoadLocalesClimateDataValueText(this.climatedatavalueService.climatedatavalueTextModel$);
   }
 
   ngOnDestroy() {
-    if (this.sub) {
-      this.sub.unsubscribe();
-    }
+    this.sub?.unsubscribe();
   }
 }

@@ -48,7 +48,6 @@ export class MikeBoundaryConditionEditComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    LoadLocalesMikeBoundaryConditionText(this.mikeboundaryconditionService);
     this.mikeBoundaryConditionLevelOrVelocityList = MikeBoundaryConditionLevelOrVelocityEnum_GetOrderedText();
     this.webTideDataSetList = WebTideDataSetEnum_GetOrderedText();
     this.tVTypeList = TVTypeEnum_GetOrderedText();
@@ -56,9 +55,7 @@ export class MikeBoundaryConditionEditComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    if (this.sub) {
-      this.sub.unsubscribe();
-    }
+    this.sub?.unsubscribe();
   }
 
   FillFormBuilderGroup(httpClientCommand: HttpClientCommand) {

@@ -47,7 +47,6 @@ export class MWQMRunLanguageEditComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    LoadLocalesMWQMRunLanguageText(this.mwqmrunlanguageService);
     this.languageList = LanguageEnum_GetOrderedText();
     this.translationStatusRunCommentList = TranslationStatusEnum_GetOrderedText();
     this.translationStatusRunWeatherCommentList = TranslationStatusEnum_GetOrderedText();
@@ -55,9 +54,7 @@ export class MWQMRunLanguageEditComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    if (this.sub) {
-      this.sub.unsubscribe();
-    }
+    this.sub?.unsubscribe();
   }
 
   FillFormBuilderGroup(httpClientCommand: HttpClientCommand) {

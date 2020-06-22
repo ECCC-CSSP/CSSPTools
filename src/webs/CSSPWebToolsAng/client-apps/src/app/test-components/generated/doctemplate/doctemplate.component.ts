@@ -96,12 +96,10 @@ export class DocTemplateComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    LoadLocalesDocTemplateText(this.doctemplateService);
+    LoadLocalesDocTemplateText(this.doctemplateService.doctemplateTextModel$);
   }
 
   ngOnDestroy() {
-    if (this.sub) {
-      this.sub.unsubscribe();
-    }
+    this.sub?.unsubscribe();
   }
 }

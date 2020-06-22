@@ -6,9 +6,9 @@
  */
 
 import { ContactPreferenceTextModel } from './contactpreference.models';
-import { ContactPreferenceService } from './contactpreference.service';
+import { BehaviorSubject } from 'rxjs';
 
-export function LoadLocalesContactPreferenceText(contactpreferenceService: ContactPreferenceService) {
+export function LoadLocalesContactPreferenceText(contactpreferenceTextModel$: BehaviorSubject<ContactPreferenceTextModel>) {
     let contactpreferenceTextModel: ContactPreferenceTextModel = {
         Title: 'The title',
 }
@@ -17,5 +17,5 @@ export function LoadLocalesContactPreferenceText(contactpreferenceService: Conta
         contactpreferenceTextModel.Title = 'Le Titre';
     }
 
-    contactpreferenceService.contactpreferenceTextModel$.next(contactpreferenceTextModel);
+    contactpreferenceTextModel$.next(contactpreferenceTextModel);
 }

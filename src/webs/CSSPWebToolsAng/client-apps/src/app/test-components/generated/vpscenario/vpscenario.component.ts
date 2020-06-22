@@ -91,12 +91,10 @@ export class VPScenarioComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    LoadLocalesVPScenarioText(this.vpscenarioService);
+    LoadLocalesVPScenarioText(this.vpscenarioService.vpscenarioTextModel$);
   }
 
   ngOnDestroy() {
-    if (this.sub) {
-      this.sub.unsubscribe();
-    }
+    this.sub?.unsubscribe();
   }
 }

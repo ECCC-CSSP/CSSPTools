@@ -86,12 +86,10 @@ export class RainExceedanceComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    LoadLocalesRainExceedanceText(this.rainexceedanceService);
+    LoadLocalesRainExceedanceText(this.rainexceedanceService.rainexceedanceTextModel$);
   }
 
   ngOnDestroy() {
-    if (this.sub) {
-      this.sub.unsubscribe();
-    }
+    this.sub?.unsubscribe();
   }
 }

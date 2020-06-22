@@ -30,7 +30,7 @@ export class MWQMAnalysisReportParameterService {
 
   /* Constructors */
   constructor(private httpClient: HttpClient, private httpClientService: HttpClientService) {
-    LoadLocalesMWQMAnalysisReportParameterText(this);
+    LoadLocalesMWQMAnalysisReportParameterText(this.mwqmanalysisreportparameterTextModel$);
     this.mwqmanalysisreportparameterTextModel$.next(<MWQMAnalysisReportParameterTextModel>{ Title: "Something2 for text" });
   }
 

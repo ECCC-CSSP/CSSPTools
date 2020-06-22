@@ -91,12 +91,10 @@ export class MWQMSiteComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    LoadLocalesMWQMSiteText(this.mwqmsiteService);
+    LoadLocalesMWQMSiteText(this.mwqmsiteService.mwqmsiteTextModel$);
   }
 
   ngOnDestroy() {
-    if (this.sub) {
-      this.sub.unsubscribe();
-    }
+    this.sub?.unsubscribe();
   }
 }

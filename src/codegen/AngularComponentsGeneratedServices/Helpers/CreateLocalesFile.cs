@@ -25,9 +25,9 @@ namespace AngularComponentsGeneratedServices.Services
             sb.AppendLine(@"");
 
             sb.AppendLine($@"import {{ { dllTypeInfoModels.Name }TextModel }} from './{ dllTypeInfoModels.Name.ToLower() }.models';");
-            sb.AppendLine($@"import {{ { dllTypeInfoModels.Name }Service }} from './{ dllTypeInfoModels.Name.ToLower() }.service';");
+            sb.AppendLine($@"import {{ BehaviorSubject }} from 'rxjs';");
             sb.AppendLine(@"");
-            sb.AppendLine($@"export function LoadLocales{ dllTypeInfoModels.Name }Text({ dllTypeInfoModels.Name.ToLower() }Service: { dllTypeInfoModels.Name }Service) {{");
+            sb.AppendLine($@"export function LoadLocales{ dllTypeInfoModels.Name }Text({ dllTypeInfoModels.Name.ToLower() }TextModel$: BehaviorSubject<{ dllTypeInfoModels.Name }TextModel>) {{");
             sb.AppendLine($@"    let { dllTypeInfoModels.Name.ToLower() }TextModel: { dllTypeInfoModels.Name }TextModel = {{");
             sb.AppendLine(@"        Title: 'The title',");
             sb.AppendLine(@"}");
@@ -36,7 +36,7 @@ namespace AngularComponentsGeneratedServices.Services
             sb.AppendLine($@"        { dllTypeInfoModels.Name.ToLower() }TextModel.Title = 'Le Titre';");
             sb.AppendLine(@"    }");
             sb.AppendLine(@"");
-            sb.AppendLine($@"    { dllTypeInfoModels.Name.ToLower() }Service.{ dllTypeInfoModels.Name.ToLower() }TextModel$.next({ dllTypeInfoModels.Name.ToLower() }TextModel);");
+            sb.AppendLine($@"    { dllTypeInfoModels.Name.ToLower() }TextModel$.next({ dllTypeInfoModels.Name.ToLower() }TextModel);");
             sb.AppendLine(@"}");
 
             DirectoryInfo di = new DirectoryInfo(Config.GetValue<string>("OutputDir").Replace("{TypeNameLower}", dllTypeInfoModels.Name.ToLower()));

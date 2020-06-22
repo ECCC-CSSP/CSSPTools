@@ -6,9 +6,9 @@
  */
 
 import { TVItemLanguageTextModel } from './tvitemlanguage.models';
-import { TVItemLanguageService } from './tvitemlanguage.service';
+import { BehaviorSubject } from 'rxjs';
 
-export function LoadLocalesTVItemLanguageText(tvitemlanguageService: TVItemLanguageService) {
+export function LoadLocalesTVItemLanguageText(tvitemlanguageTextModel$: BehaviorSubject<TVItemLanguageTextModel>) {
     let tvitemlanguageTextModel: TVItemLanguageTextModel = {
         Title: 'The title',
 }
@@ -17,5 +17,5 @@ export function LoadLocalesTVItemLanguageText(tvitemlanguageService: TVItemLangu
         tvitemlanguageTextModel.Title = 'Le Titre';
     }
 
-    tvitemlanguageService.tvitemlanguageTextModel$.next(tvitemlanguageTextModel);
+    tvitemlanguageTextModel$.next(tvitemlanguageTextModel);
 }

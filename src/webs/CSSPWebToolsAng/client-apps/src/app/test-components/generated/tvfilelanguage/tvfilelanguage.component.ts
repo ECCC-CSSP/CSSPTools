@@ -96,12 +96,10 @@ export class TVFileLanguageComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    LoadLocalesTVFileLanguageText(this.tvfilelanguageService);
+    LoadLocalesTVFileLanguageText(this.tvfilelanguageService.tvfilelanguageTextModel$);
   }
 
   ngOnDestroy() {
-    if (this.sub) {
-      this.sub.unsubscribe();
-    }
+    this.sub?.unsubscribe();
   }
 }

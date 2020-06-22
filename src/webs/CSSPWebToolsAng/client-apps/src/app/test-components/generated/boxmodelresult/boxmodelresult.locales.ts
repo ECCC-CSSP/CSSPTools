@@ -6,9 +6,9 @@
  */
 
 import { BoxModelResultTextModel } from './boxmodelresult.models';
-import { BoxModelResultService } from './boxmodelresult.service';
+import { BehaviorSubject } from 'rxjs';
 
-export function LoadLocalesBoxModelResultText(boxmodelresultService: BoxModelResultService) {
+export function LoadLocalesBoxModelResultText(boxmodelresultTextModel$: BehaviorSubject<BoxModelResultTextModel>) {
     let boxmodelresultTextModel: BoxModelResultTextModel = {
         Title: 'The title',
 }
@@ -17,5 +17,5 @@ export function LoadLocalesBoxModelResultText(boxmodelresultService: BoxModelRes
         boxmodelresultTextModel.Title = 'Le Titre';
     }
 
-    boxmodelresultService.boxmodelresultTextModel$.next(boxmodelresultTextModel);
+    boxmodelresultTextModel$.next(boxmodelresultTextModel);
 }

@@ -46,16 +46,13 @@ export class MWQMAnalysisReportParameterEditComponent implements OnInit, OnDestr
   }
 
   ngOnInit(): void {
-    LoadLocalesMWQMAnalysisReportParameterText(this.mwqmanalysisreportparameterService);
     this.analysisCalculationTypeList = AnalysisCalculationTypeEnum_GetOrderedText();
     this.commandList = AnalysisReportExportCommandEnum_GetOrderedText();
     this.FillFormBuilderGroup(this.httpClientCommand);
   }
 
   ngOnDestroy() {
-    if (this.sub) {
-      this.sub.unsubscribe();
-    }
+    this.sub?.unsubscribe();
   }
 
   FillFormBuilderGroup(httpClientCommand: HttpClientCommand) {

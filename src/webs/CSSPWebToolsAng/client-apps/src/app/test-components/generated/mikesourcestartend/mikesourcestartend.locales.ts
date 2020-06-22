@@ -6,9 +6,9 @@
  */
 
 import { MikeSourceStartEndTextModel } from './mikesourcestartend.models';
-import { MikeSourceStartEndService } from './mikesourcestartend.service';
+import { BehaviorSubject } from 'rxjs';
 
-export function LoadLocalesMikeSourceStartEndText(mikesourcestartendService: MikeSourceStartEndService) {
+export function LoadLocalesMikeSourceStartEndText(mikesourcestartendTextModel$: BehaviorSubject<MikeSourceStartEndTextModel>) {
     let mikesourcestartendTextModel: MikeSourceStartEndTextModel = {
         Title: 'The title',
 }
@@ -17,5 +17,5 @@ export function LoadLocalesMikeSourceStartEndText(mikesourcestartendService: Mik
         mikesourcestartendTextModel.Title = 'Le Titre';
     }
 
-    mikesourcestartendService.mikesourcestartendTextModel$.next(mikesourcestartendTextModel);
+    mikesourcestartendTextModel$.next(mikesourcestartendTextModel);
 }

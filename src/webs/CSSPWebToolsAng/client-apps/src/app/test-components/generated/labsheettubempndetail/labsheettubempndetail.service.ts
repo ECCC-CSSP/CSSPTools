@@ -30,7 +30,7 @@ export class LabSheetTubeMPNDetailService {
 
   /* Constructors */
   constructor(private httpClient: HttpClient, private httpClientService: HttpClientService) {
-    LoadLocalesLabSheetTubeMPNDetailText(this);
+    LoadLocalesLabSheetTubeMPNDetailText(this.labsheettubempndetailTextModel$);
     this.labsheettubempndetailTextModel$.next(<LabSheetTubeMPNDetailTextModel>{ Title: "Something2 for text" });
   }
 

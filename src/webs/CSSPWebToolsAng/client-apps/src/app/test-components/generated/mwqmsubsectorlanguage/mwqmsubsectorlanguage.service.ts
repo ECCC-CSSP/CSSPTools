@@ -30,7 +30,7 @@ export class MWQMSubsectorLanguageService {
 
   /* Constructors */
   constructor(private httpClient: HttpClient, private httpClientService: HttpClientService) {
-    LoadLocalesMWQMSubsectorLanguageText(this);
+    LoadLocalesMWQMSubsectorLanguageText(this.mwqmsubsectorlanguageTextModel$);
     this.mwqmsubsectorlanguageTextModel$.next(<MWQMSubsectorLanguageTextModel>{ Title: "Something2 for text" });
   }
 

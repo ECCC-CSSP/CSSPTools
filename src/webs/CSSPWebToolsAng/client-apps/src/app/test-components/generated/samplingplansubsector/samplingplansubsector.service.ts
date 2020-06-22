@@ -30,7 +30,7 @@ export class SamplingPlanSubsectorService {
 
   /* Constructors */
   constructor(private httpClient: HttpClient, private httpClientService: HttpClientService) {
-    LoadLocalesSamplingPlanSubsectorText(this);
+    LoadLocalesSamplingPlanSubsectorText(this.samplingplansubsectorTextModel$);
     this.samplingplansubsectorTextModel$.next(<SamplingPlanSubsectorTextModel>{ Title: "Something2 for text" });
   }
 

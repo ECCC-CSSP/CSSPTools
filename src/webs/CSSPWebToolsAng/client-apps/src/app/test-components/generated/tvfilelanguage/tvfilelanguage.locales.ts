@@ -6,9 +6,9 @@
  */
 
 import { TVFileLanguageTextModel } from './tvfilelanguage.models';
-import { TVFileLanguageService } from './tvfilelanguage.service';
+import { BehaviorSubject } from 'rxjs';
 
-export function LoadLocalesTVFileLanguageText(tvfilelanguageService: TVFileLanguageService) {
+export function LoadLocalesTVFileLanguageText(tvfilelanguageTextModel$: BehaviorSubject<TVFileLanguageTextModel>) {
     let tvfilelanguageTextModel: TVFileLanguageTextModel = {
         Title: 'The title',
 }
@@ -17,5 +17,5 @@ export function LoadLocalesTVFileLanguageText(tvfilelanguageService: TVFileLangu
         tvfilelanguageTextModel.Title = 'Le Titre';
     }
 
-    tvfilelanguageService.tvfilelanguageTextModel$.next(tvfilelanguageTextModel);
+    tvfilelanguageTextModel$.next(tvfilelanguageTextModel);
 }

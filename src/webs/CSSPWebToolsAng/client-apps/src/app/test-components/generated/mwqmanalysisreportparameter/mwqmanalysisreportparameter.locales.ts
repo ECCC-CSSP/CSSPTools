@@ -6,9 +6,9 @@
  */
 
 import { MWQMAnalysisReportParameterTextModel } from './mwqmanalysisreportparameter.models';
-import { MWQMAnalysisReportParameterService } from './mwqmanalysisreportparameter.service';
+import { BehaviorSubject } from 'rxjs';
 
-export function LoadLocalesMWQMAnalysisReportParameterText(mwqmanalysisreportparameterService: MWQMAnalysisReportParameterService) {
+export function LoadLocalesMWQMAnalysisReportParameterText(mwqmanalysisreportparameterTextModel$: BehaviorSubject<MWQMAnalysisReportParameterTextModel>) {
     let mwqmanalysisreportparameterTextModel: MWQMAnalysisReportParameterTextModel = {
         Title: 'The title',
 }
@@ -17,5 +17,5 @@ export function LoadLocalesMWQMAnalysisReportParameterText(mwqmanalysisreportpar
         mwqmanalysisreportparameterTextModel.Title = 'Le Titre';
     }
 
-    mwqmanalysisreportparameterService.mwqmanalysisreportparameterTextModel$.next(mwqmanalysisreportparameterTextModel);
+    mwqmanalysisreportparameterTextModel$.next(mwqmanalysisreportparameterTextModel);
 }

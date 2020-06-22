@@ -91,12 +91,10 @@ export class BoxModelResultComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    LoadLocalesBoxModelResultText(this.boxmodelresultService);
+    LoadLocalesBoxModelResultText(this.boxmodelresultService.boxmodelresultTextModel$);
   }
 
   ngOnDestroy() {
-    if (this.sub) {
-      this.sub.unsubscribe();
-    }
+    this.sub?.unsubscribe();
   }
 }

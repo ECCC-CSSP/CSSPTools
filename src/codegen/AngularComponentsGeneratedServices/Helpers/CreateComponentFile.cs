@@ -138,13 +138,11 @@ namespace AngularComponentsGeneratedServices.Services
                 }
             }
             sb.AppendLine(@"  ngOnInit(): void {");
-            sb.AppendLine($@"    LoadLocales{ dllTypeInfoModels.Name }Text(this.{ dllTypeInfoModels.Name.ToLower() }Service);");
+            sb.AppendLine($@"    LoadLocales{ dllTypeInfoModels.Name }Text(this.{ dllTypeInfoModels.Name.ToLower() }Service.{ dllTypeInfoModels.Name.ToLower() }TextModel$);");
             sb.AppendLine(@"  }");
             sb.AppendLine(@"");
             sb.AppendLine(@"  ngOnDestroy() {");
-            sb.AppendLine(@"    if (this.sub) {");
-            sb.AppendLine(@"      this.sub.unsubscribe();");
-            sb.AppendLine(@"    }");
+            sb.AppendLine(@"    this.sub?.unsubscribe();");
             sb.AppendLine(@"  }");
             sb.AppendLine(@"}");
 

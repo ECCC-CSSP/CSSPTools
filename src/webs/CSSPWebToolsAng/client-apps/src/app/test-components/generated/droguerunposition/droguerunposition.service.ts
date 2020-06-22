@@ -30,7 +30,7 @@ export class DrogueRunPositionService {
 
   /* Constructors */
   constructor(private httpClient: HttpClient, private httpClientService: HttpClientService) {
-    LoadLocalesDrogueRunPositionText(this);
+    LoadLocalesDrogueRunPositionText(this.droguerunpositionTextModel$);
     this.droguerunpositionTextModel$.next(<DrogueRunPositionTextModel>{ Title: "Something2 for text" });
   }
 

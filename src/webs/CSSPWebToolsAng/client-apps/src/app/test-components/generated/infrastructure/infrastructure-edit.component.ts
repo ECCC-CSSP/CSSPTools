@@ -66,7 +66,6 @@ export class InfrastructureEditComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    LoadLocalesInfrastructureText(this.infrastructureService);
     this.infrastructureTypeList = InfrastructureTypeEnum_GetOrderedText();
     this.facilityTypeList = FacilityTypeEnum_GetOrderedText();
     this.aerationTypeList = AerationTypeEnum_GetOrderedText();
@@ -83,9 +82,7 @@ export class InfrastructureEditComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    if (this.sub) {
-      this.sub.unsubscribe();
-    }
+    this.sub?.unsubscribe();
   }
 
   FillFormBuilderGroup(httpClientCommand: HttpClientCommand) {

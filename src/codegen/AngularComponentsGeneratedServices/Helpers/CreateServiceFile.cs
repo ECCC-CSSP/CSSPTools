@@ -49,7 +49,7 @@ namespace AngularComponentsGeneratedServices.Services
             sb.AppendLine(@"");
             sb.AppendLine(@"  /* Constructors */");
             sb.AppendLine(@"  constructor(private httpClient: HttpClient, private httpClientService: HttpClientService) {");
-            sb.AppendLine($@"    LoadLocales{ dllTypeInfoModels.Name }Text(this);");
+            sb.AppendLine($@"    LoadLocales{ dllTypeInfoModels.Name }Text(this.{ dllTypeInfoModels.Name.ToLower() }TextModel$);");
             sb.AppendLine($@"    this.{ dllTypeInfoModels.Name.ToLower() }TextModel$.next(<{ dllTypeInfoModels.Name }TextModel>{{ Title: ""Something2 for text"" }});") ;
             sb.AppendLine(@"  }");
             sb.AppendLine(@"");

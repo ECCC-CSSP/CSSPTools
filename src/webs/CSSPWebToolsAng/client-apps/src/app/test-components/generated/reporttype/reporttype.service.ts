@@ -30,7 +30,7 @@ export class ReportTypeService {
 
   /* Constructors */
   constructor(private httpClient: HttpClient, private httpClientService: HttpClientService) {
-    LoadLocalesReportTypeText(this);
+    LoadLocalesReportTypeText(this.reporttypeTextModel$);
     this.reporttypeTextModel$.next(<ReportTypeTextModel>{ Title: "Something2 for text" });
   }
 

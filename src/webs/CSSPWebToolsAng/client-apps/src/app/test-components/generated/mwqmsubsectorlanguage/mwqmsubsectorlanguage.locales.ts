@@ -6,9 +6,9 @@
  */
 
 import { MWQMSubsectorLanguageTextModel } from './mwqmsubsectorlanguage.models';
-import { MWQMSubsectorLanguageService } from './mwqmsubsectorlanguage.service';
+import { BehaviorSubject } from 'rxjs';
 
-export function LoadLocalesMWQMSubsectorLanguageText(mwqmsubsectorlanguageService: MWQMSubsectorLanguageService) {
+export function LoadLocalesMWQMSubsectorLanguageText(mwqmsubsectorlanguageTextModel$: BehaviorSubject<MWQMSubsectorLanguageTextModel>) {
     let mwqmsubsectorlanguageTextModel: MWQMSubsectorLanguageTextModel = {
         Title: 'The title',
 }
@@ -17,5 +17,5 @@ export function LoadLocalesMWQMSubsectorLanguageText(mwqmsubsectorlanguageServic
         mwqmsubsectorlanguageTextModel.Title = 'Le Titre';
     }
 
-    mwqmsubsectorlanguageService.mwqmsubsectorlanguageTextModel$.next(mwqmsubsectorlanguageTextModel);
+    mwqmsubsectorlanguageTextModel$.next(mwqmsubsectorlanguageTextModel);
 }

@@ -50,7 +50,6 @@ export class LabSheetEditComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    LoadLocalesLabSheetText(this.labsheetService);
     this.samplingPlanTypeList = SamplingPlanTypeEnum_GetOrderedText();
     this.sampleTypeList = SampleTypeEnum_GetOrderedText();
     this.labSheetTypeList = LabSheetTypeEnum_GetOrderedText();
@@ -59,9 +58,7 @@ export class LabSheetEditComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    if (this.sub) {
-      this.sub.unsubscribe();
-    }
+    this.sub?.unsubscribe();
   }
 
   FillFormBuilderGroup(httpClientCommand: HttpClientCommand) {

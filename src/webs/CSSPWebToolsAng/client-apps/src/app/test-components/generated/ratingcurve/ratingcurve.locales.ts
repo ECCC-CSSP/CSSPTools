@@ -6,9 +6,9 @@
  */
 
 import { RatingCurveTextModel } from './ratingcurve.models';
-import { RatingCurveService } from './ratingcurve.service';
+import { BehaviorSubject } from 'rxjs';
 
-export function LoadLocalesRatingCurveText(ratingcurveService: RatingCurveService) {
+export function LoadLocalesRatingCurveText(ratingcurveTextModel$: BehaviorSubject<RatingCurveTextModel>) {
     let ratingcurveTextModel: RatingCurveTextModel = {
         Title: 'The title',
 }
@@ -17,5 +17,5 @@ export function LoadLocalesRatingCurveText(ratingcurveService: RatingCurveServic
         ratingcurveTextModel.Title = 'Le Titre';
     }
 
-    ratingcurveService.ratingcurveTextModel$.next(ratingcurveTextModel);
+    ratingcurveTextModel$.next(ratingcurveTextModel);
 }

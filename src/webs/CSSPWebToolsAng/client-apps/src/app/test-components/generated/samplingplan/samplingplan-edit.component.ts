@@ -54,7 +54,6 @@ export class SamplingPlanEditComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    LoadLocalesSamplingPlanText(this.samplingplanService);
     this.sampleTypeList = SampleTypeEnum_GetOrderedText();
     this.samplingPlanTypeList = SamplingPlanTypeEnum_GetOrderedText();
     this.labSheetTypeList = LabSheetTypeEnum_GetOrderedText();
@@ -65,9 +64,7 @@ export class SamplingPlanEditComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    if (this.sub) {
-      this.sub.unsubscribe();
-    }
+    this.sub?.unsubscribe();
   }
 
   FillFormBuilderGroup(httpClientCommand: HttpClientCommand) {

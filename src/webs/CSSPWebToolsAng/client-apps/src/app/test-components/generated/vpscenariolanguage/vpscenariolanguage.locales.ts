@@ -6,9 +6,9 @@
  */
 
 import { VPScenarioLanguageTextModel } from './vpscenariolanguage.models';
-import { VPScenarioLanguageService } from './vpscenariolanguage.service';
+import { BehaviorSubject } from 'rxjs';
 
-export function LoadLocalesVPScenarioLanguageText(vpscenariolanguageService: VPScenarioLanguageService) {
+export function LoadLocalesVPScenarioLanguageText(vpscenariolanguageTextModel$: BehaviorSubject<VPScenarioLanguageTextModel>) {
     let vpscenariolanguageTextModel: VPScenarioLanguageTextModel = {
         Title: 'The title',
 }
@@ -17,5 +17,5 @@ export function LoadLocalesVPScenarioLanguageText(vpscenariolanguageService: VPS
         vpscenariolanguageTextModel.Title = 'Le Titre';
     }
 
-    vpscenariolanguageService.vpscenariolanguageTextModel$.next(vpscenariolanguageTextModel);
+    vpscenariolanguageTextModel$.next(vpscenariolanguageTextModel);
 }

@@ -30,7 +30,7 @@ export class VPScenarioService {
 
   /* Constructors */
   constructor(private httpClient: HttpClient, private httpClientService: HttpClientService) {
-    LoadLocalesVPScenarioText(this);
+    LoadLocalesVPScenarioText(this.vpscenarioTextModel$);
     this.vpscenarioTextModel$.next(<VPScenarioTextModel>{ Title: "Something2 for text" });
   }
 

@@ -86,12 +86,10 @@ export class TideLocationComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    LoadLocalesTideLocationText(this.tidelocationService);
+    LoadLocalesTideLocationText(this.tidelocationService.tidelocationTextModel$);
   }
 
   ngOnDestroy() {
-    if (this.sub) {
-      this.sub.unsubscribe();
-    }
+    this.sub?.unsubscribe();
   }
 }

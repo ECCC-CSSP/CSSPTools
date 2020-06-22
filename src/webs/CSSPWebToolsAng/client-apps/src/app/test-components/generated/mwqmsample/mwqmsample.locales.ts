@@ -6,9 +6,9 @@
  */
 
 import { MWQMSampleTextModel } from './mwqmsample.models';
-import { MWQMSampleService } from './mwqmsample.service';
+import { BehaviorSubject } from 'rxjs';
 
-export function LoadLocalesMWQMSampleText(mwqmsampleService: MWQMSampleService) {
+export function LoadLocalesMWQMSampleText(mwqmsampleTextModel$: BehaviorSubject<MWQMSampleTextModel>) {
     let mwqmsampleTextModel: MWQMSampleTextModel = {
         Title: 'The title',
 }
@@ -17,5 +17,5 @@ export function LoadLocalesMWQMSampleText(mwqmsampleService: MWQMSampleService) 
         mwqmsampleTextModel.Title = 'Le Titre';
     }
 
-    mwqmsampleService.mwqmsampleTextModel$.next(mwqmsampleTextModel);
+    mwqmsampleTextModel$.next(mwqmsampleTextModel);
 }

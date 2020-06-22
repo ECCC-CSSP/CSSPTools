@@ -23,16 +23,15 @@ export class NoPageFoundComponent implements OnInit, OnDestroy {
     this.sub = this.noPageFoundService.noPageFoundModel$.subscribe(x => this.noPageFoundModel = x);
   }
 
-  restart()
-  {
+  restart() {
     this.router.navigateByUrl('');
   }
-  goBack()
-  {
+
+  goBack() {
     this.location.back();
   }
-  ngOnDestroy()
-  {
+
+  ngOnDestroy() {
     this.sub?.unsubscribe();
   }
 }

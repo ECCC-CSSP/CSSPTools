@@ -30,7 +30,7 @@ export class MikeSourceService {
 
   /* Constructors */
   constructor(private httpClient: HttpClient, private httpClientService: HttpClientService) {
-    LoadLocalesMikeSourceText(this);
+    LoadLocalesMikeSourceText(this.mikesourceTextModel$);
     this.mikesourceTextModel$.next(<MikeSourceTextModel>{ Title: "Something2 for text" });
   }
 

@@ -6,9 +6,9 @@
  */
 
 import { UseOfSiteTextModel } from './useofsite.models';
-import { UseOfSiteService } from './useofsite.service';
+import { BehaviorSubject } from 'rxjs';
 
-export function LoadLocalesUseOfSiteText(useofsiteService: UseOfSiteService) {
+export function LoadLocalesUseOfSiteText(useofsiteTextModel$: BehaviorSubject<UseOfSiteTextModel>) {
     let useofsiteTextModel: UseOfSiteTextModel = {
         Title: 'The title',
 }
@@ -17,5 +17,5 @@ export function LoadLocalesUseOfSiteText(useofsiteService: UseOfSiteService) {
         useofsiteTextModel.Title = 'Le Titre';
     }
 
-    useofsiteService.useofsiteTextModel$.next(useofsiteTextModel);
+    useofsiteTextModel$.next(useofsiteTextModel);
 }

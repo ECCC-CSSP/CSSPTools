@@ -6,9 +6,9 @@
  */
 
 import { TideSiteTextModel } from './tidesite.models';
-import { TideSiteService } from './tidesite.service';
+import { BehaviorSubject } from 'rxjs';
 
-export function LoadLocalesTideSiteText(tidesiteService: TideSiteService) {
+export function LoadLocalesTideSiteText(tidesiteTextModel$: BehaviorSubject<TideSiteTextModel>) {
     let tidesiteTextModel: TideSiteTextModel = {
         Title: 'The title',
 }
@@ -17,5 +17,5 @@ export function LoadLocalesTideSiteText(tidesiteService: TideSiteService) {
         tidesiteTextModel.Title = 'Le Titre';
     }
 
-    tidesiteService.tidesiteTextModel$.next(tidesiteTextModel);
+    tidesiteTextModel$.next(tidesiteTextModel);
 }

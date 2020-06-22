@@ -96,12 +96,10 @@ export class PolSourceGroupingLanguageComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    LoadLocalesPolSourceGroupingLanguageText(this.polsourcegroupinglanguageService);
+    LoadLocalesPolSourceGroupingLanguageText(this.polsourcegroupinglanguageService.polsourcegroupinglanguageTextModel$);
   }
 
   ngOnDestroy() {
-    if (this.sub) {
-      this.sub.unsubscribe();
-    }
+    this.sub?.unsubscribe();
   }
 }

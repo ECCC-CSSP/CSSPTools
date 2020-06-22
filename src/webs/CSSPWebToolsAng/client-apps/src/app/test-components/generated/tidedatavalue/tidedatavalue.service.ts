@@ -30,7 +30,7 @@ export class TideDataValueService {
 
   /* Constructors */
   constructor(private httpClient: HttpClient, private httpClientService: HttpClientService) {
-    LoadLocalesTideDataValueText(this);
+    LoadLocalesTideDataValueText(this.tidedatavalueTextModel$);
     this.tidedatavalueTextModel$.next(<TideDataValueTextModel>{ Title: "Something2 for text" });
   }
 

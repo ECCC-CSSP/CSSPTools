@@ -48,7 +48,6 @@ export class AppTaskEditComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    LoadLocalesAppTaskText(this.apptaskService);
     this.appTaskCommandList = AppTaskCommandEnum_GetOrderedText();
     this.appTaskStatusList = AppTaskStatusEnum_GetOrderedText();
     this.languageList = LanguageEnum_GetOrderedText();
@@ -56,9 +55,7 @@ export class AppTaskEditComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    if (this.sub) {
-      this.sub.unsubscribe();
-    }
+    this.sub?.unsubscribe();
   }
 
   FillFormBuilderGroup(httpClientCommand: HttpClientCommand) {

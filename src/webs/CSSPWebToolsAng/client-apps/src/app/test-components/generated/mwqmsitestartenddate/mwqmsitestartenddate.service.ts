@@ -30,7 +30,7 @@ export class MWQMSiteStartEndDateService {
 
   /* Constructors */
   constructor(private httpClient: HttpClient, private httpClientService: HttpClientService) {
-    LoadLocalesMWQMSiteStartEndDateText(this);
+    LoadLocalesMWQMSiteStartEndDateText(this.mwqmsitestartenddateTextModel$);
     this.mwqmsitestartenddateTextModel$.next(<MWQMSiteStartEndDateTextModel>{ Title: "Something2 for text" });
   }
 

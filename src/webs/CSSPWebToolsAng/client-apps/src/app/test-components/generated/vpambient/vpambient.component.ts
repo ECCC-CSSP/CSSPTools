@@ -86,12 +86,10 @@ export class VPAmbientComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    LoadLocalesVPAmbientText(this.vpambientService);
+    LoadLocalesVPAmbientText(this.vpambientService.vpambientTextModel$);
   }
 
   ngOnDestroy() {
-    if (this.sub) {
-      this.sub.unsubscribe();
-    }
+    this.sub?.unsubscribe();
   }
 }

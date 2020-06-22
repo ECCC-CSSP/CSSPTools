@@ -96,7 +96,6 @@ namespace AngularComponentsGeneratedServices.Services
             sb.AppendLine(@"  }");
             sb.AppendLine(@"");
             sb.AppendLine(@"  ngOnInit(): void {");
-            sb.AppendLine($@"    LoadLocales{ dllTypeInfoModels.Name }Text(this.{ dllTypeInfoModels.Name.ToLower() }Service);");
 
             usedPropTypeList = new List<string>();
             foreach (DLLPropertyInfo dllPropertyInfo in dllTypeInfoModels.PropertyInfoList)
@@ -118,9 +117,7 @@ namespace AngularComponentsGeneratedServices.Services
             sb.AppendLine(@"  }");
             sb.AppendLine(@"");
             sb.AppendLine(@"  ngOnDestroy() {");
-            sb.AppendLine(@"    if (this.sub) {");
-            sb.AppendLine(@"      this.sub.unsubscribe();");
-            sb.AppendLine(@"    }");
+            sb.AppendLine(@"    this.sub?.unsubscribe();");
             sb.AppendLine(@"  }");
             sb.AppendLine(@"");
             sb.AppendLine(@"  FillFormBuilderGroup(httpClientCommand: HttpClientCommand) {");

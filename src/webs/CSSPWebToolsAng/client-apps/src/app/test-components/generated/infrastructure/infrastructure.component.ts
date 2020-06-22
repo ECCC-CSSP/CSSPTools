@@ -146,12 +146,10 @@ export class InfrastructureComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    LoadLocalesInfrastructureText(this.infrastructureService);
+    LoadLocalesInfrastructureText(this.infrastructureService.infrastructureTextModel$);
   }
 
   ngOnDestroy() {
-    if (this.sub) {
-      this.sub.unsubscribe();
-    }
+    this.sub?.unsubscribe();
   }
 }

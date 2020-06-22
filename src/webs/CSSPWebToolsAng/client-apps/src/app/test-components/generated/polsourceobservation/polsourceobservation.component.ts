@@ -86,12 +86,10 @@ export class PolSourceObservationComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    LoadLocalesPolSourceObservationText(this.polsourceobservationService);
+    LoadLocalesPolSourceObservationText(this.polsourceobservationService.polsourceobservationTextModel$);
   }
 
   ngOnDestroy() {
-    if (this.sub) {
-      this.sub.unsubscribe();
-    }
+    this.sub?.unsubscribe();
   }
 }

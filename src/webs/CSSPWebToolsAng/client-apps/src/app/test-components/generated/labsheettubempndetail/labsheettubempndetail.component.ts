@@ -91,12 +91,10 @@ export class LabSheetTubeMPNDetailComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    LoadLocalesLabSheetTubeMPNDetailText(this.labsheettubempndetailService);
+    LoadLocalesLabSheetTubeMPNDetailText(this.labsheettubempndetailService.labsheettubempndetailTextModel$);
   }
 
   ngOnDestroy() {
-    if (this.sub) {
-      this.sub.unsubscribe();
-    }
+    this.sub?.unsubscribe();
   }
 }

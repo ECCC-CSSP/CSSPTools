@@ -30,7 +30,7 @@ export class TVTypeUserAuthorizationService {
 
   /* Constructors */
   constructor(private httpClient: HttpClient, private httpClientService: HttpClientService) {
-    LoadLocalesTVTypeUserAuthorizationText(this);
+    LoadLocalesTVTypeUserAuthorizationText(this.tvtypeuserauthorizationTextModel$);
     this.tvtypeuserauthorizationTextModel$.next(<TVTypeUserAuthorizationTextModel>{ Title: "Something2 for text" });
   }
 

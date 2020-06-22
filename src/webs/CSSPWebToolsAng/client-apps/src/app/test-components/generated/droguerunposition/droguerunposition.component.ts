@@ -86,12 +86,10 @@ export class DrogueRunPositionComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    LoadLocalesDrogueRunPositionText(this.droguerunpositionService);
+    LoadLocalesDrogueRunPositionText(this.droguerunpositionService.droguerunpositionTextModel$);
   }
 
   ngOnDestroy() {
-    if (this.sub) {
-      this.sub.unsubscribe();
-    }
+    this.sub?.unsubscribe();
   }
 }

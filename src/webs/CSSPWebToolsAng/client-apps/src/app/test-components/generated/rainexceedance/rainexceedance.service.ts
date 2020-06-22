@@ -30,7 +30,7 @@ export class RainExceedanceService {
 
   /* Constructors */
   constructor(private httpClient: HttpClient, private httpClientService: HttpClientService) {
-    LoadLocalesRainExceedanceText(this);
+    LoadLocalesRainExceedanceText(this.rainexceedanceTextModel$);
     this.rainexceedanceTextModel$.next(<RainExceedanceTextModel>{ Title: "Something2 for text" });
   }
 

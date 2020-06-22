@@ -91,12 +91,10 @@ export class PolSourceSiteComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    LoadLocalesPolSourceSiteText(this.polsourcesiteService);
+    LoadLocalesPolSourceSiteText(this.polsourcesiteService.polsourcesiteTextModel$);
   }
 
   ngOnDestroy() {
-    if (this.sub) {
-      this.sub.unsubscribe();
-    }
+    this.sub?.unsubscribe();
   }
 }

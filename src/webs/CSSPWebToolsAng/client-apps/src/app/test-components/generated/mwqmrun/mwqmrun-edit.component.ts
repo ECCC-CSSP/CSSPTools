@@ -58,7 +58,6 @@ export class MWQMRunEditComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    LoadLocalesMWQMRunText(this.mwqmrunService);
     this.runSampleTypeList = SampleTypeEnum_GetOrderedText();
     this.seaStateAtStart_BeaufortScaleList = BeaufortScaleEnum_GetOrderedText();
     this.seaStateAtEnd_BeaufortScaleList = BeaufortScaleEnum_GetOrderedText();
@@ -72,9 +71,7 @@ export class MWQMRunEditComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    if (this.sub) {
-      this.sub.unsubscribe();
-    }
+    this.sub?.unsubscribe();
   }
 
   FillFormBuilderGroup(httpClientCommand: HttpClientCommand) {

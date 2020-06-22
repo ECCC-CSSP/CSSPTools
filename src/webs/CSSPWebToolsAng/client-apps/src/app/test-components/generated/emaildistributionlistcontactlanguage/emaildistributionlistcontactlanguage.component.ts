@@ -96,12 +96,10 @@ export class EmailDistributionListContactLanguageComponent implements OnInit, On
   }
 
   ngOnInit(): void {
-    LoadLocalesEmailDistributionListContactLanguageText(this.emaildistributionlistcontactlanguageService);
+    LoadLocalesEmailDistributionListContactLanguageText(this.emaildistributionlistcontactlanguageService.emaildistributionlistcontactlanguageTextModel$);
   }
 
   ngOnDestroy() {
-    if (this.sub) {
-      this.sub.unsubscribe();
-    }
+    this.sub?.unsubscribe();
   }
 }

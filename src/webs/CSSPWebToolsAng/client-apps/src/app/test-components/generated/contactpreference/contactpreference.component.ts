@@ -91,12 +91,10 @@ export class ContactPreferenceComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    LoadLocalesContactPreferenceText(this.contactpreferenceService);
+    LoadLocalesContactPreferenceText(this.contactpreferenceService.contactpreferenceTextModel$);
   }
 
   ngOnDestroy() {
-    if (this.sub) {
-      this.sub.unsubscribe();
-    }
+    this.sub?.unsubscribe();
   }
 }

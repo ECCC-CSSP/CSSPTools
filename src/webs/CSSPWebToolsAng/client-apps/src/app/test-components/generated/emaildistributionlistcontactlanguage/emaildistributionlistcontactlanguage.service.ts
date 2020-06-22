@@ -30,7 +30,7 @@ export class EmailDistributionListContactLanguageService {
 
   /* Constructors */
   constructor(private httpClient: HttpClient, private httpClientService: HttpClientService) {
-    LoadLocalesEmailDistributionListContactLanguageText(this);
+    LoadLocalesEmailDistributionListContactLanguageText(this.emaildistributionlistcontactlanguageTextModel$);
     this.emaildistributionlistcontactlanguageTextModel$.next(<EmailDistributionListContactLanguageTextModel>{ Title: "Something2 for text" });
   }
 

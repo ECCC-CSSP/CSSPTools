@@ -86,12 +86,10 @@ export class SamplingPlanSubsectorComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    LoadLocalesSamplingPlanSubsectorText(this.samplingplansubsectorService);
+    LoadLocalesSamplingPlanSubsectorText(this.samplingplansubsectorService.samplingplansubsectorTextModel$);
   }
 
   ngOnDestroy() {
-    if (this.sub) {
-      this.sub.unsubscribe();
-    }
+    this.sub?.unsubscribe();
   }
 }

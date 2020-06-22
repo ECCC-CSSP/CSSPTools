@@ -86,12 +86,10 @@ export class RatingCurveComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    LoadLocalesRatingCurveText(this.ratingcurveService);
+    LoadLocalesRatingCurveText(this.ratingcurveService.ratingcurveTextModel$);
   }
 
   ngOnDestroy() {
-    if (this.sub) {
-      this.sub.unsubscribe();
-    }
+    this.sub?.unsubscribe();
   }
 }

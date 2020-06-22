@@ -30,7 +30,7 @@ export class AppErrLogService {
 
   /* Constructors */
   constructor(private httpClient: HttpClient, private httpClientService: HttpClientService) {
-    LoadLocalesAppErrLogText(this);
+    LoadLocalesAppErrLogText(this.apperrlogTextModel$);
     this.apperrlogTextModel$.next(<AppErrLogTextModel>{ Title: "Something2 for text" });
   }
 

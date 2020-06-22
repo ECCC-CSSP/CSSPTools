@@ -30,7 +30,7 @@ export class HydrometricSiteService {
 
   /* Constructors */
   constructor(private httpClient: HttpClient, private httpClientService: HttpClientService) {
-    LoadLocalesHydrometricSiteText(this);
+    LoadLocalesHydrometricSiteText(this.hydrometricsiteTextModel$);
     this.hydrometricsiteTextModel$.next(<HydrometricSiteTextModel>{ Title: "Something2 for text" });
   }
 

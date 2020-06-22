@@ -30,7 +30,7 @@ export class RatingCurveService {
 
   /* Constructors */
   constructor(private httpClient: HttpClient, private httpClientService: HttpClientService) {
-    LoadLocalesRatingCurveText(this);
+    LoadLocalesRatingCurveText(this.ratingcurveTextModel$);
     this.ratingcurveTextModel$.next(<RatingCurveTextModel>{ Title: "Something2 for text" });
   }
 

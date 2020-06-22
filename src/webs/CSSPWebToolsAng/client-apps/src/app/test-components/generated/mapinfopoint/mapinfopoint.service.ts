@@ -30,7 +30,7 @@ export class MapInfoPointService {
 
   /* Constructors */
   constructor(private httpClient: HttpClient, private httpClientService: HttpClientService) {
-    LoadLocalesMapInfoPointText(this);
+    LoadLocalesMapInfoPointText(this.mapinfopointTextModel$);
     this.mapinfopointTextModel$.next(<MapInfoPointTextModel>{ Title: "Something2 for text" });
   }
 

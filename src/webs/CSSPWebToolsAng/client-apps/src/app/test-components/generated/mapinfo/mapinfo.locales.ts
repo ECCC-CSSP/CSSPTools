@@ -6,9 +6,9 @@
  */
 
 import { MapInfoTextModel } from './mapinfo.models';
-import { MapInfoService } from './mapinfo.service';
+import { BehaviorSubject } from 'rxjs';
 
-export function LoadLocalesMapInfoText(mapinfoService: MapInfoService) {
+export function LoadLocalesMapInfoText(mapinfoTextModel$: BehaviorSubject<MapInfoTextModel>) {
     let mapinfoTextModel: MapInfoTextModel = {
         Title: 'The title',
 }
@@ -17,5 +17,5 @@ export function LoadLocalesMapInfoText(mapinfoService: MapInfoService) {
         mapinfoTextModel.Title = 'Le Titre';
     }
 
-    mapinfoService.mapinfoTextModel$.next(mapinfoTextModel);
+    mapinfoTextModel$.next(mapinfoTextModel);
 }

@@ -6,9 +6,9 @@
  */
 
 import { TVTypeUserAuthorizationTextModel } from './tvtypeuserauthorization.models';
-import { TVTypeUserAuthorizationService } from './tvtypeuserauthorization.service';
+import { BehaviorSubject } from 'rxjs';
 
-export function LoadLocalesTVTypeUserAuthorizationText(tvtypeuserauthorizationService: TVTypeUserAuthorizationService) {
+export function LoadLocalesTVTypeUserAuthorizationText(tvtypeuserauthorizationTextModel$: BehaviorSubject<TVTypeUserAuthorizationTextModel>) {
     let tvtypeuserauthorizationTextModel: TVTypeUserAuthorizationTextModel = {
         Title: 'The title',
 }
@@ -17,5 +17,5 @@ export function LoadLocalesTVTypeUserAuthorizationText(tvtypeuserauthorizationSe
         tvtypeuserauthorizationTextModel.Title = 'Le Titre';
     }
 
-    tvtypeuserauthorizationService.tvtypeuserauthorizationTextModel$.next(tvtypeuserauthorizationTextModel);
+    tvtypeuserauthorizationTextModel$.next(tvtypeuserauthorizationTextModel);
 }

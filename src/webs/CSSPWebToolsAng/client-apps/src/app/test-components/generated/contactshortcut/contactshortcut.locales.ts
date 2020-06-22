@@ -6,9 +6,9 @@
  */
 
 import { ContactShortcutTextModel } from './contactshortcut.models';
-import { ContactShortcutService } from './contactshortcut.service';
+import { BehaviorSubject } from 'rxjs';
 
-export function LoadLocalesContactShortcutText(contactshortcutService: ContactShortcutService) {
+export function LoadLocalesContactShortcutText(contactshortcutTextModel$: BehaviorSubject<ContactShortcutTextModel>) {
     let contactshortcutTextModel: ContactShortcutTextModel = {
         Title: 'The title',
 }
@@ -17,5 +17,5 @@ export function LoadLocalesContactShortcutText(contactshortcutService: ContactSh
         contactshortcutTextModel.Title = 'Le Titre';
     }
 
-    contactshortcutService.contactshortcutTextModel$.next(contactshortcutTextModel);
+    contactshortcutTextModel$.next(contactshortcutTextModel);
 }

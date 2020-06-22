@@ -50,7 +50,6 @@ export class TVFileEditComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    LoadLocalesTVFileText(this.tvfileService);
     this.templateTVTypeList = TVTypeEnum_GetOrderedText();
     this.languageList = LanguageEnum_GetOrderedText();
     this.filePurposeList = FilePurposeEnum_GetOrderedText();
@@ -59,9 +58,7 @@ export class TVFileEditComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    if (this.sub) {
-      this.sub.unsubscribe();
-    }
+    this.sub?.unsubscribe();
   }
 
   FillFormBuilderGroup(httpClientCommand: HttpClientCommand) {

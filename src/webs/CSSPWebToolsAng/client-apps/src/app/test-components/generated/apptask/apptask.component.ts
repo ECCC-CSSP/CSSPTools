@@ -101,12 +101,10 @@ export class AppTaskComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    LoadLocalesAppTaskText(this.apptaskService);
+    LoadLocalesAppTaskText(this.apptaskService.apptaskTextModel$);
   }
 
   ngOnDestroy() {
-    if (this.sub) {
-      this.sub.unsubscribe();
-    }
+    this.sub?.unsubscribe();
   }
 }
