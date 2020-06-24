@@ -9,24 +9,44 @@ using System.Text;
 
 namespace CSSPWebModels
 {
-    public partial class WebSubsector
+    public partial class WebSubsector : WebBase
     {
         #region Properties
-        public List<TVItem> TVItemList { get; set; }
-        public List<TVItemLanguage> TVItemLanguageList { get; set; }
-        public List<TVItemStat> TVItemStatList { get; set; }
-        public List<MapInfo> MapInfoList { get; set; }
-        public List<MapInfoPoint> MapInfoPointList { get; set; }
+        public List<TVItem> TVItemMWQMSiteList { get; set; }
+        public List<TVItemLanguage> TVItemLanguageMWQMSiteList { get; set; }
+        public List<TVItemStat> TVItemStatMWQMSiteList { get; set; }
+        public List<MapInfo> MapInfoMWQMSiteList { get; set; }
+        public List<MapInfoPoint> MapInfoPointMWQMSiteList { get; set; }
+
+        public List<TVItem> TVItemMWQMRunList { get; set; }
+        public List<TVItemLanguage> TVItemLanguageMWQMRunList { get; set; }
+        public List<TVItemStat> TVItemStatMWQMRunList { get; set; }
+
+        public List<TVItem> TVItemPolSourceSiteList { get; set; }
+        public List<TVItemLanguage> TVItemLanguagePolSourceSiteList { get; set; }
+        public List<TVItemStat> TVItemStatPolSourceSiteList { get; set; }
+        public List<MapInfo> MapInfoPolSourceSiteList { get; set; }
+        public List<MapInfoPoint> MapInfoPointPolSourceSiteList { get; set; }
         #endregion Properties
 
         #region Constructors
         public WebSubsector()
         {
-            TVItemList = new List<TVItem>();
-            TVItemStatList = new List<TVItemStat>();
-            TVItemStatList = new List<TVItemStat>();
-            MapInfoList = new List<MapInfo>();
-            MapInfoPointList = new List<MapInfoPoint>();
+            TVItemMWQMSiteList = new List<TVItem>();
+            TVItemLanguageMWQMSiteList = new List<TVItemLanguage>();
+            TVItemStatMWQMSiteList = new List<TVItemStat>();
+            MapInfoMWQMSiteList = new List<MapInfo>();
+            MapInfoPointMWQMSiteList = new List<MapInfoPoint>();
+
+            TVItemMWQMRunList = new List<TVItem>();
+            TVItemLanguageMWQMRunList = new List<TVItemLanguage>();
+            TVItemStatMWQMRunList = new List<TVItemStat>();
+
+            TVItemPolSourceSiteList = new List<TVItem>();
+            TVItemLanguagePolSourceSiteList = new List<TVItemLanguage>();
+            TVItemStatPolSourceSiteList = new List<TVItemStat>();
+            MapInfoPolSourceSiteList = new List<MapInfo>();
+            MapInfoPointPolSourceSiteList = new List<MapInfoPoint>();
         }
         #endregion Constructors
     }

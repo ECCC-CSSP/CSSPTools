@@ -9,24 +9,24 @@ using System.Text;
 
 namespace CSSPWebModels
 {
-    public partial class WebRoot
+    public partial class WebRoot : WebBase
     {
         #region Properties
-        public List<TVItem> TVItemList { get; set; }
-        public List<TVItemLanguage> TVItemLanguageList { get; set; }
-        public List<TVItemStat> TVItemStatList { get; set; }
-        public List<MapInfo> MapInfoList { get; set; }
-        public List<MapInfoPoint> MapInfoPointList { get; set; }
+        public List<TVItem> TVItemCountryList { get; set; }
+        public List<TVItemLanguage> TVItemLanguageCountryList { get; set; }
+        public List<TVItemStat> TVItemStatCountryList { get; set; }
+        public List<MapInfo> MapInfoCountryList { get; set; }
+        public List<MapInfoPoint> MapInfoPointCountryList { get; set; }
         #endregion Properties
 
         #region Constructors
-        public WebRoot()
+        public WebRoot() : base()
         {
-            TVItemList = new List<TVItem>();
-            TVItemStatList = new List<TVItemStat>();
-            TVItemStatList = new List<TVItemStat>();
-            MapInfoList = new List<MapInfo>();
-            MapInfoPointList = new List<MapInfoPoint>();
+            TVItemCountryList = new List<TVItem>();
+            TVItemLanguageCountryList = new List<TVItemLanguage>();
+            TVItemStatCountryList = new List<TVItemStat>();
+            MapInfoCountryList = new List<MapInfo>();
+            MapInfoPointCountryList = new List<MapInfoPoint>();
         }
         #endregion Constructors
     }

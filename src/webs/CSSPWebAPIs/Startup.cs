@@ -70,14 +70,14 @@ namespace CSSPCodeGenWebAPI
              * ---------------------------------------------------------------------------------      
              */
 
-            services.AddDbContext<CSSPDBContext>(options =>
-                    options.UseSqlServer(connectionStrings.CSSPDB));
+            //services.AddDbContext<CSSPDBContext>(options =>
+            //        options.UseSqlServer(connectionStrings.CSSPDB));
 
-            services.AddDbContext<InMemoryDBContext>(options =>
-                    options.UseInMemoryDatabase(connectionStrings.CSSPDB));
+            //services.AddDbContext<InMemoryDBContext>(options =>
+            //        options.UseInMemoryDatabase(connectionStrings.CSSPDB));
 
-            services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlServer(connectionStrings.CSSPDB));
+            //services.AddDbContext<ApplicationDbContext>(options =>
+            //    options.UseSqlServer(connectionStrings.CSSPDB));
 
 
 
@@ -86,14 +86,14 @@ namespace CSSPCodeGenWebAPI
              * ---------------------------------------------------------------------------------      
              */
 
-            //services.AddDbContext<CSSPDBContext>(options =>
-            //        options.UseSqlServer(connectionStrings.CSSPDB2));
+            services.AddDbContext<CSSPDBContext>(options =>
+                    options.UseSqlServer(connectionStrings.CSSPDB2));
 
-            //services.AddDbContext<InMemoryDBContext>(options =>
-            //        options.UseInMemoryDatabase(connectionStrings.CSSPDB2));
+            services.AddDbContext<InMemoryDBContext>(options =>
+                    options.UseInMemoryDatabase(connectionStrings.CSSPDB2));
 
-            //services.AddDbContext<ApplicationDbContext>(options =>
-            //    options.UseSqlServer(connectionStrings.CSSPDB2));
+            services.AddDbContext<ApplicationDbContext>(options =>
+                options.UseSqlServer(connectionStrings.CSSPDB2));
 
 
 
@@ -140,6 +140,8 @@ namespace CSSPCodeGenWebAPI
 
             LoadAllDBServices(services);
             services.AddScoped<IWebService, WebService>();
+
+            //services.AddResponseCompression();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -160,6 +162,8 @@ namespace CSSPCodeGenWebAPI
 
             app.UseAuthentication();
             app.UseAuthorization();
+
+            //app.UseResponseCompression();
 
             app.UseEndpoints(endpoints =>
             {

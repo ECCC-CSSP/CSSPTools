@@ -9,24 +9,36 @@ using System.Text;
 
 namespace CSSPWebModels
 {
-    public partial class WebSector
+    public partial class WebSector : WebBase
     {
         #region Properties
-        public List<TVItem> TVItemList { get; set; }
-        public List<TVItemLanguage> TVItemLanguageList { get; set; }
-        public List<TVItemStat> TVItemStatList { get; set; }
-        public List<MapInfo> MapInfoList { get; set; }
-        public List<MapInfoPoint> MapInfoPointList { get; set; }
+        public List<TVItem> TVItemSubsectorList { get; set; }
+        public List<TVItemLanguage> TVItemLanguageSubsectorList { get; set; }
+        public List<TVItemStat> TVItemStatSubsectorList { get; set; }
+        public List<MapInfo> MapInfoSubsectorList { get; set; }
+        public List<MapInfoPoint> MapInfoPointSubsectorList { get; set; }
+        
+        public List<TVItem> TVItemMikeScenarioList { get; set; }
+        public List<TVItemLanguage> TVItemLanguageMikeScenarioList { get; set; }
+        public List<TVItemStat> TVItemStatMikeScenarioList { get; set; }
+        public List<MapInfo> MapInfoMikeScenarioList { get; set; }
+        public List<MapInfoPoint> MapInfoPointMikeScenarioList { get; set; }
         #endregion Properties
 
         #region Constructors
         public WebSector()
         {
-            TVItemList = new List<TVItem>();
-            TVItemStatList = new List<TVItemStat>();
-            TVItemStatList = new List<TVItemStat>();
-            MapInfoList = new List<MapInfo>();
-            MapInfoPointList = new List<MapInfoPoint>();
+            TVItemSubsectorList = new List<TVItem>();
+            TVItemLanguageSubsectorList = new List<TVItemLanguage>();
+            TVItemStatSubsectorList = new List<TVItemStat>();
+            MapInfoSubsectorList = new List<MapInfo>();
+            MapInfoPointSubsectorList = new List<MapInfoPoint>();
+            
+            TVItemMikeScenarioList = new List<TVItem>();
+            TVItemLanguageMikeScenarioList = new List<TVItemLanguage>();
+            TVItemStatMikeScenarioList = new List<TVItemStat>();
+            MapInfoMikeScenarioList = new List<MapInfo>();
+            MapInfoPointMikeScenarioList = new List<MapInfoPoint>();
         }
         #endregion Constructors
     }
