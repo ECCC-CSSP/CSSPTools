@@ -1,5 +1,7 @@
 using CSSPEnums;
 using CSSPModels;
+using CSSPServices;
+using CSSPWebServices;
 using CultureServices.Services;
 using LoggedInServices.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -68,14 +70,14 @@ namespace CSSPCodeGenWebAPI
              * ---------------------------------------------------------------------------------      
              */
 
-            //services.AddDbContext<CSSPDBContext>(options =>
-            //        options.UseSqlServer(connectionStrings.CSSPDB));
+            services.AddDbContext<CSSPDBContext>(options =>
+                    options.UseSqlServer(connectionStrings.CSSPDB));
 
-            //services.AddDbContext<InMemoryDBContext>(options =>
-            //        options.UseInMemoryDatabase(connectionStrings.CSSPDB));
+            services.AddDbContext<InMemoryDBContext>(options =>
+                    options.UseInMemoryDatabase(connectionStrings.CSSPDB));
 
-            //services.AddDbContext<ApplicationDbContext>(options =>
-            //    options.UseSqlServer(connectionStrings.CSSPDB));
+            services.AddDbContext<ApplicationDbContext>(options =>
+                options.UseSqlServer(connectionStrings.CSSPDB));
 
 
 
@@ -100,14 +102,14 @@ namespace CSSPCodeGenWebAPI
              * ---------------------------------------------------------------------------------      
              */
 
-            services.AddDbContext<CSSPDBContext>(options =>
-                    options.UseSqlServer(connectionStrings.TestDB));
+            //services.AddDbContext<CSSPDBContext>(options =>
+            //        options.UseSqlServer(connectionStrings.TestDB));
 
-            services.AddDbContext<InMemoryDBContext>(options =>
-                    options.UseInMemoryDatabase(connectionStrings.TestDB));
+            //services.AddDbContext<InMemoryDBContext>(options =>
+            //        options.UseInMemoryDatabase(connectionStrings.TestDB));
 
-            services.AddDbContext<ApplicationDbContext>(options =>
-                    options.UseSqlServer(connectionStrings.TestDB));
+            //services.AddDbContext<ApplicationDbContext>(options =>
+            //        options.UseSqlServer(connectionStrings.TestDB));
 
 
             /* ---------------------------------------------------------------------------------
@@ -137,6 +139,7 @@ namespace CSSPCodeGenWebAPI
             //services.AddScoped<IPolSourceGroupingExcelFileReadService, PolSourceGroupingExcelFileReadService>();
 
             LoadAllDBServices(services);
+            services.AddScoped<IWebService, WebService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

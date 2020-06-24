@@ -46,13 +46,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="tests\Generated\" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Reference Include="ActionCommandDBServices">
-      <HintPath>..\..\codegen\_package\netcoreapp3.1\ActionCommandDBServices.dll</HintPath>
-    </Reference>
     <Reference Include="CSSPEnums">
       <HintPath>..\..\dlls\_package\netcoreapp3.1\CSSPEnums.dll</HintPath>
     </Reference>
@@ -61,9 +54,6 @@
     </Reference>
     <Reference Include="CultureServices">
       <HintPath>..\..\dlls\_package\netcoreapp3.1\CultureServices.dll</HintPath>
-    </Reference>
-    <Reference Include="GenerateCodeBaseServices">
-      <HintPath>..\..\codegen\_package\netcoreapp3.1\GenerateCodeBaseServices.dll</HintPath>
     </Reference>
   </ItemGroup>
 

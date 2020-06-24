@@ -1809,11 +1809,6 @@
             "assemblyVersion": "1.0.0.0",
             "fileVersion": "1.0.0.0"
           }
-        },
-        "resources": {
-          "fr/CSSPServices.resources.dll": {
-            "locale": "fr"
-          }
         }
       },
       "CultureServices/1.0.0.0": {

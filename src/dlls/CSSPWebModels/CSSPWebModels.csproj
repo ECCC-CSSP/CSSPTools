@@ -1,0 +1,17 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <OutputPath>..\_package\</OutputPath>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Reference Include="CSSPModels">
+      <HintPath>..\_package\netcoreapp3.1\CSSPModels.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+</Project>

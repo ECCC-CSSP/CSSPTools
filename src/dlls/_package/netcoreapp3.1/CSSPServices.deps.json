@@ -22,11 +22,6 @@
         },
         "runtime": {
           "CSSPServices.dll": {}
-        },
-        "resources": {
-          "fr/CSSPServices.resources.dll": {
-            "locale": "fr"
-          }
         }
       },
       "Microsoft.AspNetCore.Authentication.JwtBearer/3.1.2": {

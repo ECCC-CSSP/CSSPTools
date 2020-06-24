@@ -34,6 +34,12 @@
     <Reference Include="CSSPServices">
       <HintPath>..\..\dlls\_package\netcoreapp3.1\CSSPServices.dll</HintPath>
     </Reference>
+    <Reference Include="CSSPWebModels">
+      <HintPath>..\..\dlls\_package\netcoreapp3.1\CSSPWebModels.dll</HintPath>
+    </Reference>
+    <Reference Include="CSSPWebServices">
+      <HintPath>..\..\dlls\_package\netcoreapp3.1\CSSPWebServices.dll</HintPath>
+    </Reference>
     <Reference Include="CultureServices">
       <HintPath>..\..\dlls\_package\netcoreapp3.1\CultureServices.dll</HintPath>
     </Reference>
@@ -144,10 +150,6 @@
     <None Update="runEnumsGenerated_cs.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Controllers\src\Generated\" />
   </ItemGroup>
 
 

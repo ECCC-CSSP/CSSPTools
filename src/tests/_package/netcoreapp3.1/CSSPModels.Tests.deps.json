@@ -22,11 +22,9 @@
           "coverlet.collector": "1.2.0",
           "xunit": "2.4.1",
           "xunit.runner.visualstudio": "2.4.1",
-          "ActionCommandDBServices": "1.0.0.0",
           "CSSPEnums": "1.0.0.0",
           "CSSPModels": "1.0.0.0",
-          "CultureServices": "1.0.0.0",
-          "GenerateCodeBaseServices": "1.0.0.0"
+          "CultureServices": "1.0.0.0"
         },
         "runtime": {
           "CSSPModels.Tests.dll": {}
@@ -1955,14 +1953,6 @@
           "Microsoft.NET.Test.Sdk": "16.5.0"
         }
       },
-      "ActionCommandDBServices/1.0.0.0": {
-        "runtime": {
-          "ActionCommandDBServices.dll": {
-            "assemblyVersion": "1.0.0.0",
-            "fileVersion": "1.0.0.0"
-          }
-        }
-      },
       "CSSPEnums/1.0.0.0": {
         "runtime": {
           "CSSPEnums.dll": {
@@ -1989,14 +1979,6 @@
         "resources": {
           "fr/CultureServices.resources.dll": {
             "locale": "fr"
-          }
-        }
-      },
-      "GenerateCodeBaseServices/1.0.0.0": {
-        "runtime": {
-          "GenerateCodeBaseServices.dll": {
-            "assemblyVersion": "1.0.0.0",
-            "fileVersion": "1.0.0.0"
           }
         }
       }
@@ -3184,11 +3166,6 @@
       "path": "xunit.runner.visualstudio/2.4.1",
       "hashPath": "xunit.runner.visualstudio.2.4.1.nupkg.sha512"
     },
-    "ActionCommandDBServices/1.0.0.0": {
-      "type": "reference",
-      "serviceable": false,
-      "sha512": ""
-    },
     "CSSPEnums/1.0.0.0": {
       "type": "reference",
       "serviceable": false,
@@ -3200,11 +3177,6 @@
       "sha512": ""
     },
     "CultureServices/1.0.0.0": {
-      "type": "reference",
-      "serviceable": false,
-      "sha512": ""
-    },
-    "GenerateCodeBaseServices/1.0.0.0": {
       "type": "reference",
       "serviceable": false,
       "sha512": ""
