@@ -6,6 +6,7 @@ using CSSPModels;
 using CSSPServices;
 using CSSPWebModels;
 using CSSPWebServices;
+using CSSPWebServices.Services;
 using CultureServices.Services;
 using LoggedInServices.Services;
 using Microsoft.AspNetCore.Authorization;
@@ -92,69 +93,69 @@ namespace CSSPWebAPI.Controllers
 
             return await WebService.GetWebSubsector(TVItemID);
         }
-        [HttpGet("GetWeb10YearOfSampleStartingIn1980FromSubsector/{TVItemID:int}")]
-        public async Task<ActionResult<WebSample>> GetWeb10YearOfSampleStartingIn1980FromSubsector(int TVItemID)
+        [HttpGet("GetWeb10YearOfSample1980_1989FromSubsector/{TVItemID:int}")]
+        public async Task<ActionResult<WebSample>> GetWeb10YearOfSample1980_1989FromSubsector(int TVItemID)
         {
             CultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await WebService.GetWeb10YearOfSampleStartingIn1980FromSubsector(TVItemID);
+            return await WebService.GetWeb10YearOfSample1980_1989FromSubsector(TVItemID);
         }
-        [HttpGet("GetWeb10YearOfSampleStartingIn1990FromSubsector/{TVItemID:int}")]
-        public async Task<ActionResult<WebSample>> GetWeb10YearOfSampleStartingIn1990FromSubsector(int TVItemID)
+        [HttpGet("GetWeb10YearOfSample1990_1999FromSubsector/{TVItemID:int}")]
+        public async Task<ActionResult<WebSample>> GetWeb10YearOfSample1990_1999FromSubsector(int TVItemID)
         {
             CultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await WebService.GetWeb10YearOfSampleStartingIn1990FromSubsector(TVItemID);
+            return await WebService.GetWeb10YearOfSample1990_1999FromSubsector(TVItemID);
         }
-        [HttpGet("GetWeb10YearOfSampleStartingIn2000FromSubsector/{TVItemID:int}")]
-        public async Task<ActionResult<WebSample>> GetWeb10YearOfSampleStartingIn2000FromSubsector(int TVItemID)
+        [HttpGet("GetWeb10YearOfSample2000_2009FromSubsector/{TVItemID:int}")]
+        public async Task<ActionResult<WebSample>> GetWeb10YearOfSample2000_2009FromSubsector(int TVItemID)
         {
             CultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await WebService.GetWeb10YearOfSampleStartingIn2000FromSubsector(TVItemID);
+            return await WebService.GetWeb10YearOfSample2000_2009FromSubsector(TVItemID);
         }
-        [HttpGet("GetWeb10YearOfSampleStartingIn2010FromSubsector/{TVItemID:int}")]
-        public async Task<ActionResult<WebSample>> GetWeb10YearOfSampleStartingIn2010FromSubsector(int TVItemID)
+        [HttpGet("GetWeb10YearOfSample2010_2019FromSubsector/{TVItemID:int}")]
+        public async Task<ActionResult<WebSample>> GetWeb10YearOfSample2010_2019FromSubsector(int TVItemID)
         {
             CultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await WebService.GetWeb10YearOfSampleStartingIn2010FromSubsector(TVItemID);
+            return await WebService.GetWeb10YearOfSample2010_2019FromSubsector(TVItemID);
         }
-        [HttpGet("GetWeb10YearOfSampleStartingIn2020FromSubsector/{TVItemID:int}")]
-        public async Task<ActionResult<WebSample>> GetWeb10YearOfSampleStartingIn2020FromSubsector(int TVItemID)
+        [HttpGet("GetWeb10YearOfSample2020_2029FromSubsector/{TVItemID:int}")]
+        public async Task<ActionResult<WebSample>> GetWeb10YearOfSample2020_2029FromSubsector(int TVItemID)
         {
             CultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await WebService.GetWeb10YearOfSampleStartingIn2020FromSubsector(TVItemID);
+            return await WebService.GetWeb10YearOfSample2020_2029FromSubsector(TVItemID);
         }
-        [HttpGet("GetWeb10YearOfSampleStartingIn2030FromSubsector/{TVItemID:int}")]
-        public async Task<ActionResult<WebSample>> GetWeb10YearOfSampleStartingIn2030FromSubsector(int TVItemID)
+        [HttpGet("GetWeb10YearOfSample2030_2039FromSubsector/{TVItemID:int}")]
+        public async Task<ActionResult<WebSample>> GetWeb10YearOfSample2030_2039FromSubsector(int TVItemID)
         {
             CultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await WebService.GetWeb10YearOfSampleStartingIn2030FromSubsector(TVItemID);
+            return await WebService.GetWeb10YearOfSample2030_2039FromSubsector(TVItemID);
         }
-        [HttpGet("GetWeb10YearOfSampleStartingIn2040FromSubsector/{TVItemID:int}")]
-        public async Task<ActionResult<WebSample>> GetWeb10YearOfSampleStartingIn2040FromSubsector(int TVItemID)
+        [HttpGet("GetWeb10YearOfSample2040_2049FromSubsector/{TVItemID:int}")]
+        public async Task<ActionResult<WebSample>> GetWeb10YearOfSample2040_2049FromSubsector(int TVItemID)
         {
             CultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await WebService.GetWeb10YearOfSampleStartingIn2040FromSubsector(TVItemID);
+            return await WebService.GetWeb10YearOfSample2040_2049FromSubsector(TVItemID);
         }
-        [HttpGet("GetWeb10YearOfSampleStartingIn2050FromSubsector/{TVItemID:int}")]
-        public async Task<ActionResult<WebSample>> GetWeb10YearOfSampleStartingIn2050FromSubsector(int TVItemID)
+        [HttpGet("GetWeb10YearOfSample2050_2059FromSubsector/{TVItemID:int}")]
+        public async Task<ActionResult<WebSample>> GetWeb10YearOfSample2050_2059FromSubsector(int TVItemID)
         {
             CultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await WebService.GetWeb10YearOfSampleStartingIn2050FromSubsector(TVItemID);
+            return await WebService.GetWeb10YearOfSample2050_2059FromSubsector(TVItemID);
         }
         [HttpGet("GetWebSamplingPlan/{SamplingPlanID:int}")]
         public async Task<ActionResult<WebSamplingPlan>> GetWebSamplingPlan(int SamplingPlanID)
@@ -163,6 +164,14 @@ namespace CSSPWebAPI.Controllers
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
             return await WebService.GetWebSamplingPlan(SamplingPlanID);
+        }
+        [HttpGet("GetWebMunicipality/{TVItemID:int}")]
+        public async Task<ActionResult<WebMunicipality>> GetWebMunicipality(int TVItemID)
+        {
+            CultureService.SetCulture((string)RouteData.Values["culture"]);
+            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+
+            return await WebService.GetWebMunicipality(TVItemID);
         }
         #endregion Functions public
 

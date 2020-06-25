@@ -12,7 +12,7 @@ namespace CSSPWebModels
     public partial class WebBase
     {
         #region Properties
-        public List<TVItem> TVItemList { get; set; }
+        public TVItem TVItem { get; set; }
         public List<TVItemLanguage> TVItemLanguageList { get; set; }
         public List<TVItemLink> TVItemLinkList { get; set; }
         public List<TVItemStat> TVItemStatList { get; set; }
@@ -25,7 +25,7 @@ namespace CSSPWebModels
         #region Constructors
         public WebBase()
         {
-            TVItemList = new List<TVItem>();
+            TVItem = new TVItem();
             TVItemLinkList = new List<TVItemLink>();
             TVItemLanguageList = new List<TVItemLanguage>();
             TVItemStatList = new List<TVItemStat>();

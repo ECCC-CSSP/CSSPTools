@@ -12,6 +12,8 @@ namespace CSSPWebModels
     public partial class WebCountry : WebBase
     {
         #region Properties
+        public TVItem TVItemCountry { get; set; }
+        public List<TVItemLanguage> TVItemLanguageCountryList { get; set; }
         public List<TVItem> TVItemProvinceList { get; set; }
         public List<TVItemLanguage> TVItemLanguageProvinceList { get; set; }
         public List<TVItemStat> TVItemStatProvinceList { get; set; }
@@ -22,6 +24,8 @@ namespace CSSPWebModels
         #region Constructors
         public WebCountry()
         {
+            TVItemCountry = new TVItem();
+            TVItemLanguageCountryList = new List<TVItemLanguage>();
             TVItemProvinceList = new List<TVItem>();
             TVItemLanguageProvinceList = new List<TVItemLanguage>();
             TVItemStatProvinceList = new List<TVItemStat>();
