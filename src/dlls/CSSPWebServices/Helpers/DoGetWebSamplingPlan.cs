@@ -30,7 +30,7 @@ namespace CSSPWebServices.Services
                 return await Task.FromResult(Unauthorized());
             }
 
-            SamplingPlan samplingPlan = GetSamplingPlanWithSamplingPlanID(samplingPlanID);
+            SamplingPlan samplingPlan = await GetSamplingPlanWithSamplingPlanID(samplingPlanID);
 
             if (samplingPlan == null)
             {
@@ -42,12 +42,9 @@ namespace CSSPWebServices.Services
             try
             {
                 webSamplingPlan.SamplingPlan = samplingPlan;
-
-                webSamplingPlan.SamplingPlanEmailList = GetSamplingPlanEmailListWithSamplingPlanID(samplingPlanID);
-
-                webSamplingPlan.SamplingPlanSubsectorList = GetSamplingPlanSubsectorListWithSamplingPlanID(samplingPlanID);
-
-                webSamplingPlan.SamplingPlanSubsectorSiteList = GetSamplingPlanSubsectorSiteListWithSamplingPlanID(samplingPlanID);
+                webSamplingPlan.SamplingPlanEmailList = await GetSamplingPlanEmailListWithSamplingPlanID(samplingPlanID);
+                webSamplingPlan.SamplingPlanSubsectorList = await GetSamplingPlanSubsectorListWithSamplingPlanID(samplingPlanID);
+                webSamplingPlan.SamplingPlanSubsectorSiteList = await GetSamplingPlanSubsectorSiteListWithSamplingPlanID(samplingPlanID);
             }
             catch (Exception ex)
             {

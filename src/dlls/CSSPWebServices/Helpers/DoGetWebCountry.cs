@@ -29,7 +29,7 @@ namespace CSSPWebServices.Services
                 return await Task.FromResult(Unauthorized());
             }
 
-            TVItem tvItem = GetTVItemWithTVItemID(TVItemID);
+            TVItem tvItem = await GetTVItemWithTVItemID(TVItemID);
 
             if (tvItem == null || tvItem.TVType != TVTypeEnum.Country)
             {
@@ -41,28 +41,21 @@ namespace CSSPWebServices.Services
             try
             {
                 webCountry.TVItem = tvItem;
-
-                webCountry.TVItemLanguageList = GetTVItemLanguageListWithTVItemID(TVItemID);
-
-                webCountry.TVItemStatList = GetTVItemStatListWithTVItemID(TVItemID);
-
-                webCountry.MapInfoList = GetMapInfoListWithTVItemID(TVItemID);
-
-                webCountry.MapInfoPointList = GetMapInfoPointListWithTVItemID(TVItemID);
-
-                webCountry.TVFileList = GetTVFileListWithTVItemID(TVItemID);
-
-                webCountry.TVFileLanguageList = GetTVFileLanguageListWithTVItemID(TVItemID);
-
-                webCountry.TVItemProvinceList = GetTVItemChildrenListWithTVItemID(tvItem, TVTypeEnum.Province);
-
-                webCountry.TVItemLanguageProvinceList = GetTVItemLanguageChildrenListWithTVItemID(tvItem, TVTypeEnum.Province);
-
-                webCountry.TVItemStatProvinceList = GetTVItemStatChildrenListWithTVItemID(tvItem, TVTypeEnum.Province);
-
-                webCountry.MapInfoProvinceList = GetMapInfoChildrenListWithTVItemID(tvItem, TVTypeEnum.Province);
-
-                webCountry.MapInfoPointProvinceList = GetMapInfoPointChildrenListWithTVItemID(tvItem, TVTypeEnum.Province);
+                webCountry.TVItemLanguageList = await GetTVItemLanguageListWithTVItemID(TVItemID);
+                webCountry.TVItemStatList = await GetTVItemStatListWithTVItemID(TVItemID);
+                webCountry.MapInfoList = await GetMapInfoListWithTVItemID(TVItemID);
+                webCountry.MapInfoPointList = await GetMapInfoPointListWithTVItemID(TVItemID);
+                webCountry.TVFileList = await GetTVFileListWithTVItemID(TVItemID);
+                webCountry.TVFileLanguageList = await GetTVFileLanguageListWithTVItemID(TVItemID);
+                webCountry.TVItemProvinceList = await GetTVItemChildrenListWithTVItemID(tvItem, TVTypeEnum.Province);
+                webCountry.TVItemLanguageProvinceList = await GetTVItemLanguageChildrenListWithTVItemID(tvItem, TVTypeEnum.Province);
+                webCountry.TVItemStatProvinceList = await GetTVItemStatChildrenListWithTVItemID(tvItem, TVTypeEnum.Province);
+                webCountry.MapInfoProvinceList = await GetMapInfoChildrenListWithTVItemID(tvItem, TVTypeEnum.Province);
+                webCountry.MapInfoPointProvinceList = await GetMapInfoPointChildrenListWithTVItemID(tvItem, TVTypeEnum.Province);
+                webCountry.EmailDistributionListList = await GetEmailDistributionListListUnderCountry(tvItem.TVItemID);
+                webCountry.EmailDistributionListLanguageList = await GetEmailDistributionListLanguageListUnderCountry(tvItem.TVItemID);
+                webCountry.EmailDistributionListContactList = await GetEmailDistributionListContactListUnderCountry(tvItem.TVItemID);
+                webCountry.EmailDistributionListContactLanguageList = await GetEmailDistributionListContactLanguageListUnderCountry(tvItem.TVItemID);
             }
             catch (Exception ex)
             {

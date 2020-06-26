@@ -18,11 +18,11 @@ namespace CSSPModels
         public int PolSourceGroupingID { get; set; }
         [CSSPRange(10000, 100000)]
         public int CSSPID { get; set; }
-        [CSSPMaxLength(150)]
+        [CSSPMaxLength(500)]
         public string GroupName { get; set; }
-        [CSSPMaxLength(150)]
+        [CSSPMaxLength(500)]
         public string Child { get; set; }
-        [CSSPMaxLength(150)]
+        [CSSPMaxLength(500)]
         public string Hide { get; set; }
         #endregion Properties in DB
 

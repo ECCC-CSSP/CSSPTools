@@ -27,7 +27,7 @@ namespace CSSPCodeGenWebAPI.Controllers
         #endregion Properties
 
         #region Constructors
-        public PolSourceGroupingController(IPolSourceGroupingExcelFileReadService polSourceGroupingExcelFileReadService, 
+        public PolSourceGroupingController(IPolSourceGroupingExcelFileReadService polSourceGroupingExcelFileReadService,
             CSSPDBContext db, ILoggedInService loggedInService)
         {
             PolSourceGroupingExcelFileReadService = polSourceGroupingExcelFileReadService;
@@ -37,8 +37,7 @@ namespace CSSPCodeGenWebAPI.Controllers
         #endregion Constructors
 
         #region Functions public
-        [Route("GetGrouping")]
-        [HttpGet]
+        [HttpGet("GetGrouping")]
         public async Task<ActionResult<GroupSourceGroupingModel>> GetGrouping()
         {
             await loggedInService.SetLoggedInContactInfo(User.Identity.Name);
@@ -57,10 +56,23 @@ namespace CSSPCodeGenWebAPI.Controllers
             return Ok(groupSourceGroupingModel);
         }
 
-        [Route("FillDBWithGrouping")]
-        [HttpGet]
+        [HttpGet("FillDBWithGrouping")]
         public async Task<ActionResult<GroupSourceGroupingModel>> FillDBWithGrouping()
         {
+            List<PolSourceGrouping> polSourceGroupingListToDelete = (from c in db.PolSourceGroupings
+                                                             select c).ToList();
+
+            db.PolSourceGroupings.RemoveRange(polSourceGroupingListToDelete);
+
+            try
+            {
+                db.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"Could not clean PolSourceGrouping Table before filling it with new data Error: [{ ex.Message }]");
+            }
+
             GroupSourceGroupingModel groupSourceGroupingModel = new GroupSourceGroupingModel();
 
             await PolSourceGroupingExcelFileReadService.ReadExcelSheet(@"C:\CSSPTools\src\assets\PolSourceGrouping.xlsm", false);
@@ -72,7 +84,9 @@ namespace CSSPCodeGenWebAPI.Controllers
                     CSSPID = int.Parse(groupChoiceChildLevel.CSSPID),
                     GroupName = groupChoiceChildLevel.Group,
                     Child = groupChoiceChildLevel.Child,
-                    Hide = groupChoiceChildLevel.Hide
+                    Hide = groupChoiceChildLevel.Hide,
+                    LastUpdateDate_UTC = DateTime.Now,
+                    LastUpdateContactTVItemID = 2
                 };
 
                 try
@@ -99,7 +113,9 @@ namespace CSSPCodeGenWebAPI.Controllers
                     Report = groupChoiceChildLevel.ReportEN,
                     TranslationStatusReport = TranslationStatusEnum.Translated,
                     Text = groupChoiceChildLevel.TextEN,
-                    TranslationStatusText = TranslationStatusEnum.Translated
+                    TranslationStatusText = TranslationStatusEnum.Translated,
+                    LastUpdateDate_UTC = DateTime.Now,
+                    LastUpdateContactTVItemID = 2
                 };
 
                 try
@@ -126,7 +142,9 @@ namespace CSSPCodeGenWebAPI.Controllers
                     Report = groupChoiceChildLevel.ReportFR,
                     TranslationStatusReport = TranslationStatusEnum.Translated,
                     Text = groupChoiceChildLevel.TextFR,
-                    TranslationStatusText = TranslationStatusEnum.Translated
+                    TranslationStatusText = TranslationStatusEnum.Translated,
+                    LastUpdateDate_UTC = DateTime.Now,
+                    LastUpdateContactTVItemID = 2
                 };
 
                 try

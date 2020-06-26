@@ -1865,17 +1865,17 @@
           }
         }
       },
-      "CSSPWebModels/1.0.0.0": {
+      "CSSPWebServices/1.0.0.0": {
         "runtime": {
-          "CSSPWebModels.dll": {
+          "CSSPWebServices.dll": {
             "assemblyVersion": "1.0.0.0",
             "fileVersion": "1.0.0.0"
           }
         }
       },
-      "CSSPWebServices/1.0.0.0": {
+      "CSSPWebModels/1.0.0.0": {
         "runtime": {
-          "CSSPWebServices.dll": {
+          "CSSPWebModels.dll": {
             "assemblyVersion": "1.0.0.0",
             "fileVersion": "1.0.0.0"
           }
@@ -3056,12 +3056,12 @@
       "serviceable": false,
       "sha512": ""
     },
-    "CSSPWebModels/1.0.0.0": {
+    "CSSPWebServices/1.0.0.0": {
       "type": "reference",
       "serviceable": false,
       "sha512": ""
     },
-    "CSSPWebServices/1.0.0.0": {
+    "CSSPWebModels/1.0.0.0": {
       "type": "reference",
       "serviceable": false,
       "sha512": ""

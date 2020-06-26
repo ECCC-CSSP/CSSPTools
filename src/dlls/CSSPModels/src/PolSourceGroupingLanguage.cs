@@ -20,7 +20,7 @@ namespace CSSPModels
         public int PolSourceGroupingID { get; set; }
         [CSSPEnumType]
         public LanguageEnum Language { get; set; }
-        [CSSPMaxLength(250)]
+        [CSSPMaxLength(500)]
         public string SourceName { get; set; }
         [CSSPRange(0, 1000)]
         public int SourceNameOrder { get; set; }
@@ -30,15 +30,15 @@ namespace CSSPModels
         public string Init { get; set; }
         [CSSPEnumType]
         public TranslationStatusEnum TranslationStatusInit { get; set; }
-        [CSSPMaxLength(250)]
+        [CSSPMaxLength(500)]
         public string Description { get; set; }
         [CSSPEnumType]
         public TranslationStatusEnum TranslationStatusDescription { get; set; }
-        [CSSPMaxLength(250)]
+        [CSSPMaxLength(500)]
         public string Report { get; set; }
         [CSSPEnumType]
         public TranslationStatusEnum TranslationStatusReport { get; set; }
-        [CSSPMaxLength(250)]
+        [CSSPMaxLength(500)]
         public string Text { get; set; }
         [CSSPEnumType]
         public TranslationStatusEnum TranslationStatusText { get; set; }

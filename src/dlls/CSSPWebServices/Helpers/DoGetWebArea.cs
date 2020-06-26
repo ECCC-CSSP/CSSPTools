@@ -30,7 +30,7 @@ namespace CSSPWebServices.Services
                 return await Task.FromResult(Unauthorized());
             }
 
-            TVItem tvItem = GetTVItemWithTVItemID(TVItemID);
+            TVItem tvItem = await GetTVItemWithTVItemID(TVItemID);
 
             if (tvItem == null || tvItem.TVType != TVTypeEnum.Area)
             {
@@ -42,29 +42,18 @@ namespace CSSPWebServices.Services
             try
             {
                 webArea.TVItem = tvItem;
-
-                webArea.TVItemLanguageList = GetTVItemLanguageListWithTVItemID(TVItemID);
-
-                webArea.TVItemStatList = GetTVItemStatListWithTVItemID(TVItemID);
-
-                webArea.MapInfoList = GetMapInfoListWithTVItemID(TVItemID);
-
-                webArea.MapInfoPointList = GetMapInfoPointListWithTVItemID(TVItemID);
-
-                webArea.TVFileList = GetTVFileListWithTVItemID(TVItemID);
-
-                webArea.TVFileLanguageList = GetTVFileLanguageListWithTVItemID(TVItemID);
-
-                webArea.TVItemSectorList = GetTVItemChildrenListWithTVItemID(tvItem, TVTypeEnum.Sector);
-
-                webArea.TVItemLanguageSectorList = GetTVItemLanguageChildrenListWithTVItemID(tvItem, TVTypeEnum.Sector);
-
-                webArea.TVItemStatSectorList = GetTVItemStatChildrenListWithTVItemID(tvItem, TVTypeEnum.Sector);
-
-                webArea.MapInfoSectorList = GetMapInfoChildrenListWithTVItemID(tvItem, TVTypeEnum.Sector);
-
-                webArea.MapInfoPointSectorList = GetMapInfoPointChildrenListWithTVItemID(tvItem, TVTypeEnum.Sector);
-            }
+                webArea.TVItemLanguageList = await GetTVItemLanguageListWithTVItemID(TVItemID);
+                webArea.TVItemStatList = await GetTVItemStatListWithTVItemID(TVItemID);
+                webArea.MapInfoList = await GetMapInfoListWithTVItemID(TVItemID);
+                webArea.MapInfoPointList = await GetMapInfoPointListWithTVItemID(TVItemID);
+                webArea.TVFileList = await GetTVFileListWithTVItemID(TVItemID);
+                webArea.TVFileLanguageList = await GetTVFileLanguageListWithTVItemID(TVItemID);
+                webArea.TVItemSectorList = await GetTVItemChildrenListWithTVItemID(tvItem, TVTypeEnum.Sector);
+                webArea.TVItemLanguageSectorList = await GetTVItemLanguageChildrenListWithTVItemID(tvItem, TVTypeEnum.Sector);
+                webArea.TVItemStatSectorList = await GetTVItemStatChildrenListWithTVItemID(tvItem, TVTypeEnum.Sector);
+                webArea.MapInfoSectorList = await GetMapInfoChildrenListWithTVItemID(tvItem, TVTypeEnum.Sector);
+                webArea.MapInfoPointSectorList = await GetMapInfoPointChildrenListWithTVItemID(tvItem, TVTypeEnum.Sector);
+           }
             catch (Exception ex)
             {
                 string inner = ex.InnerException != null ? $"Inner: { ex.InnerException.Message }" : "";

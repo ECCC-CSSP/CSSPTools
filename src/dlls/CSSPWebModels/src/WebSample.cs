@@ -9,7 +9,7 @@ using System.Text;
 
 namespace CSSPWebModels
 {
-    public partial class WebSample
+    public partial class WebMWQMSample
     {
         #region Properties
         public List<MWQMSample> MWQMSampleList { get; set; }
@@ -17,7 +17,7 @@ namespace CSSPWebModels
         #endregion Properties
 
         #region Constructors
-        public WebSample()
+        public WebMWQMSample()
         {
             MWQMSampleList = new List<MWQMSample>();
             MWQMSampleLanguageList = new List<MWQMSampleLanguage>();

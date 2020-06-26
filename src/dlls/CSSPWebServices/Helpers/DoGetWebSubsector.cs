@@ -30,7 +30,7 @@ namespace CSSPWebServices.Services
                 return await Task.FromResult(Unauthorized());
             }
 
-            TVItem tvItem = GetTVItemWithTVItemID(TVItemID);
+            TVItem tvItem = await GetTVItemWithTVItemID(TVItemID);
 
             if (tvItem == null || tvItem.TVType != TVTypeEnum.Subsector)
             {
@@ -42,44 +42,32 @@ namespace CSSPWebServices.Services
             try
             {
                 webSubsector.TVItem = tvItem;
-
-                webSubsector.TVItemLanguageList = GetTVItemLanguageListWithTVItemID(TVItemID);
-
-                webSubsector.TVItemStatList = GetTVItemStatListWithTVItemID(TVItemID);
-
-                webSubsector.MapInfoList = GetMapInfoListWithTVItemID(TVItemID);
-
-                webSubsector.MapInfoPointList = GetMapInfoPointListWithTVItemID(TVItemID);
-
-                webSubsector.TVFileList = GetTVFileListWithTVItemID(TVItemID);
-
-                webSubsector.TVFileLanguageList = GetTVFileLanguageListWithTVItemID(TVItemID);
-
-                webSubsector.TVItemMWQMSiteList = GetTVItemChildrenListWithTVItemID(tvItem, TVTypeEnum.MWQMSite);
-
-                webSubsector.TVItemLanguageMWQMSiteList = GetTVItemLanguageChildrenListWithTVItemID(tvItem, TVTypeEnum.MWQMSite);
-
-                webSubsector.TVItemStatMWQMSiteList = GetTVItemStatChildrenListWithTVItemID(tvItem, TVTypeEnum.MWQMSite);
-
-                webSubsector.MapInfoMWQMSiteList = GetMapInfoChildrenListWithTVItemID(tvItem, TVTypeEnum.MWQMSite);
-
-                webSubsector.MapInfoPointMWQMSiteList = GetMapInfoPointChildrenListWithTVItemID(tvItem, TVTypeEnum.MWQMSite);
-
-                webSubsector.TVItemMWQMRunList = GetTVItemChildrenListWithTVItemID(tvItem, TVTypeEnum.MWQMRun);
-
-                webSubsector.TVItemLanguageMWQMRunList = GetTVItemLanguageChildrenListWithTVItemID(tvItem, TVTypeEnum.MWQMRun);
-
-                webSubsector.TVItemStatMWQMRunList = GetTVItemStatChildrenListWithTVItemID(tvItem, TVTypeEnum.MWQMRun);
-
-                webSubsector.TVItemPolSourceSiteList = GetTVItemChildrenListWithTVItemID(tvItem, TVTypeEnum.PolSourceSite);
-
-                webSubsector.TVItemLanguagePolSourceSiteList = GetTVItemLanguageChildrenListWithTVItemID(tvItem, TVTypeEnum.PolSourceSite);
-
-                webSubsector.TVItemStatPolSourceSiteList = GetTVItemStatChildrenListWithTVItemID(tvItem, TVTypeEnum.PolSourceSite);
-
-                webSubsector.MapInfoPolSourceSiteList = GetMapInfoChildrenListWithTVItemID(tvItem, TVTypeEnum.PolSourceSite);
-
-                webSubsector.MapInfoPointPolSourceSiteList = GetMapInfoPointChildrenListWithTVItemID(tvItem, TVTypeEnum.PolSourceSite);
+                webSubsector.TVItemLanguageList = await GetTVItemLanguageListWithTVItemID(TVItemID);
+                webSubsector.TVItemStatList = await GetTVItemStatListWithTVItemID(TVItemID);
+                webSubsector.MapInfoList = await GetMapInfoListWithTVItemID(TVItemID);
+                webSubsector.MapInfoPointList = await GetMapInfoPointListWithTVItemID(TVItemID);
+                webSubsector.TVFileList = await GetTVFileListWithTVItemID(TVItemID);
+                webSubsector.TVFileLanguageList = await GetTVFileLanguageListWithTVItemID(TVItemID);
+                webSubsector.TVItemMWQMSiteList = await GetTVItemChildrenListWithTVItemID(tvItem, TVTypeEnum.MWQMSite);
+                webSubsector.TVItemLanguageMWQMSiteList = await GetTVItemLanguageChildrenListWithTVItemID(tvItem, TVTypeEnum.MWQMSite);
+                webSubsector.TVItemStatMWQMSiteList = await GetTVItemStatChildrenListWithTVItemID(tvItem, TVTypeEnum.MWQMSite);
+                webSubsector.MapInfoMWQMSiteList = await GetMapInfoChildrenListWithTVItemID(tvItem, TVTypeEnum.MWQMSite);
+                webSubsector.MapInfoPointMWQMSiteList = await GetMapInfoPointChildrenListWithTVItemID(tvItem, TVTypeEnum.MWQMSite);
+                webSubsector.TVItemMWQMRunList = await GetTVItemChildrenListWithTVItemID(tvItem, TVTypeEnum.MWQMRun);
+                webSubsector.TVItemLanguageMWQMRunList = await GetTVItemLanguageChildrenListWithTVItemID(tvItem, TVTypeEnum.MWQMRun);
+                webSubsector.TVItemStatMWQMRunList = await GetTVItemStatChildrenListWithTVItemID(tvItem, TVTypeEnum.MWQMRun);
+                webSubsector.TVItemPolSourceSiteList = await GetTVItemChildrenListWithTVItemID(tvItem, TVTypeEnum.PolSourceSite);
+                webSubsector.TVItemLanguagePolSourceSiteList = await GetTVItemLanguageChildrenListWithTVItemID(tvItem, TVTypeEnum.PolSourceSite);
+                webSubsector.TVItemStatPolSourceSiteList = await GetTVItemStatChildrenListWithTVItemID(tvItem, TVTypeEnum.PolSourceSite);
+                webSubsector.MapInfoPolSourceSiteList = await GetMapInfoChildrenListWithTVItemID(tvItem, TVTypeEnum.PolSourceSite);
+                webSubsector.MapInfoPointPolSourceSiteList = await GetMapInfoPointChildrenListWithTVItemID(tvItem, TVTypeEnum.PolSourceSite);
+                webSubsector.MWQMAnalysisReportParameterList = await GetMWQMAnalysisReportParameterListUnderSubsector(TVItemID);
+                webSubsector.LabSheetList = await GetLabSheetListUnderSubsector(TVItemID);
+                webSubsector.LabSheetDetailList = await GetLabSheetDetailListUnderSubsector(TVItemID);
+                webSubsector.LabSheetTubeMPNDetailList = await GetLabSheetTubeMPNDetailListUnderSubsector(TVItemID);
+                webSubsector.MWQMSubsector = await GetMWQMSubsector(TVItemID);
+                webSubsector.MWQMSubsectorLanguageList = await GetMWQMSubsectorLanguageList(TVItemID);
+                webSubsector.UseOfSiteList = await GetUseOfSiteList(TVItemID);
             }
             catch (Exception ex)
             {

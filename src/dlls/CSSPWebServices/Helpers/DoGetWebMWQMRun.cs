@@ -21,7 +21,7 @@ namespace CSSPWebServices.Services
 {
     public partial class WebService : ControllerBase, IWebService
     {
-        private async Task<ActionResult<WebSample>> DoGetWebSample(int TVItemID, int Year)
+        private async Task<ActionResult<WebMWQMRun>> DoGetWebMWQMRun(int TVItemID)
         {
             var LoggedInContactInfo = await LoggedInService.GetLoggedInContactInfo();
             if (LoggedInContactInfo == null || LoggedInContactInfo.LoggedInContact == null)
@@ -29,20 +29,19 @@ namespace CSSPWebServices.Services
                 return await Task.FromResult(Unauthorized());
             }
 
-            TVItem tvItem = GetTVItemWithTVItemID(TVItemID);
+            TVItem tvItem = await GetTVItemWithTVItemID(TVItemID);
 
             if (tvItem == null || tvItem.TVType != TVTypeEnum.Subsector)
             {
                 return BadRequest($"TVItem could not be found for TVItemID = [{ TVItemID }] and TVType = [{ TVTypeEnum.Subsector }]");
             }
 
-            WebSample webSample = new WebSample();
+            WebMWQMRun webRun = new WebMWQMRun();
 
             try
             {
-                webSample.MWQMSampleList = GetWQMSampleListFromSubsector10Years(tvItem, Year);
-
-                webSample.MWQMSampleLanguageList = GetWQMSampleLanguageListFromSubsector10Years(tvItem, Year);
+                webRun.MWQMRunList = await GetMWQMRunListFromSubsector(tvItem);
+                webRun.MWQMRunLanguageList = await GetMWQMRunLanguageListFromSubsector(tvItem);
             }
             catch (Exception ex)
             {
@@ -50,7 +49,7 @@ namespace CSSPWebServices.Services
                 return BadRequest($"{ ex.Message } { inner }");
             }
 
-            return await Task.FromResult(Ok(webSample));
+            return await Task.FromResult(Ok(webRun));
         }
     }
 }

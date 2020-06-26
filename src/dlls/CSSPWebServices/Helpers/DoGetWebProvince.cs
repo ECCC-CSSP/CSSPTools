@@ -29,7 +29,7 @@ namespace CSSPWebServices.Services
                 return await Task.FromResult(Unauthorized());
             }
 
-            TVItem tvItem = GetTVItemWithTVItemID(TVItemID);
+            TVItem tvItem = await GetTVItemWithTVItemID(TVItemID);
 
             if (tvItem == null || tvItem.TVType != TVTypeEnum.Province)
             {
@@ -41,40 +41,23 @@ namespace CSSPWebServices.Services
             try
             {
                 webProvince.TVItem = tvItem;
-
-                webProvince.TVItemLanguageList = GetTVItemLanguageListWithTVItemID(TVItemID);
-
-                webProvince.TVItemStatList = GetTVItemStatListWithTVItemID(TVItemID);
-
-                webProvince.MapInfoList = GetMapInfoListWithTVItemID(TVItemID);
-
-                webProvince.MapInfoPointList = GetMapInfoPointListWithTVItemID(TVItemID);
-
-                webProvince.TVFileList = GetTVFileListWithTVItemID(TVItemID);
-
-                webProvince.TVFileLanguageList = GetTVFileLanguageListWithTVItemID(TVItemID);
-
-                webProvince.TVItemAreaList = GetTVItemChildrenListWithTVItemID(tvItem, TVTypeEnum.Area);
-
-                webProvince.TVItemLanguageAreaList = GetTVItemLanguageChildrenListWithTVItemID(tvItem, TVTypeEnum.Area);
-
-                webProvince.TVItemStatAreaList = GetTVItemStatChildrenListWithTVItemID(tvItem, TVTypeEnum.Area);
-
-                webProvince.MapInfoAreaList = GetMapInfoChildrenListWithTVItemID(tvItem, TVTypeEnum.Area);
-
-                webProvince.MapInfoPointAreaList = GetMapInfoPointChildrenListWithTVItemID(tvItem, TVTypeEnum.Area);
-
-                webProvince.TVItemMunicipalityList = GetTVItemChildrenListWithTVItemID(tvItem, TVTypeEnum.Municipality);
-
-                webProvince.TVItemLanguageMunicipalityList = GetTVItemLanguageChildrenListWithTVItemID(tvItem, TVTypeEnum.Municipality);
-
-                webProvince.TVItemStatMunicipalityList = GetTVItemStatChildrenListWithTVItemID(tvItem, TVTypeEnum.Municipality);
-
-                webProvince.MapInfoMunicipalityList = GetMapInfoChildrenListWithTVItemID(tvItem, TVTypeEnum.Municipality);
-
-                webProvince.MapInfoPointMunicipalityList = GetMapInfoPointChildrenListWithTVItemID(tvItem, TVTypeEnum.Municipality);
-
-                webProvince.SamplingPlanList = GetSamplingPlanListWithProvinceTVItemID(tvItem.TVItemID);
+                webProvince.TVItemLanguageList = await GetTVItemLanguageListWithTVItemID(TVItemID);
+                webProvince.TVItemStatList = await GetTVItemStatListWithTVItemID(TVItemID);
+                webProvince.MapInfoList = await GetMapInfoListWithTVItemID(TVItemID);
+                webProvince.MapInfoPointList = await GetMapInfoPointListWithTVItemID(TVItemID);
+                webProvince.TVFileList = await GetTVFileListWithTVItemID(TVItemID);
+                webProvince.TVFileLanguageList = await GetTVFileLanguageListWithTVItemID(TVItemID);
+                webProvince.TVItemAreaList = await GetTVItemChildrenListWithTVItemID(tvItem, TVTypeEnum.Area);
+                webProvince.TVItemLanguageAreaList = await GetTVItemLanguageChildrenListWithTVItemID(tvItem, TVTypeEnum.Area);
+                webProvince.TVItemStatAreaList = await GetTVItemStatChildrenListWithTVItemID(tvItem, TVTypeEnum.Area);
+                webProvince.MapInfoAreaList = await GetMapInfoChildrenListWithTVItemID(tvItem, TVTypeEnum.Area);
+                webProvince.MapInfoPointAreaList = await GetMapInfoPointChildrenListWithTVItemID(tvItem, TVTypeEnum.Area);
+                webProvince.TVItemMunicipalityList = await GetTVItemChildrenListWithTVItemID(tvItem, TVTypeEnum.Municipality);
+                webProvince.TVItemLanguageMunicipalityList = await GetTVItemLanguageChildrenListWithTVItemID(tvItem, TVTypeEnum.Municipality);
+                webProvince.TVItemStatMunicipalityList = await GetTVItemStatChildrenListWithTVItemID(tvItem, TVTypeEnum.Municipality);
+                webProvince.MapInfoMunicipalityList = await GetMapInfoChildrenListWithTVItemID(tvItem, TVTypeEnum.Municipality);
+                webProvince.MapInfoPointMunicipalityList = await GetMapInfoPointChildrenListWithTVItemID(tvItem, TVTypeEnum.Municipality);
+                webProvince.SamplingPlanList = await GetSamplingPlanListWithProvinceTVItemID(tvItem.TVItemID);
             }
             catch (Exception ex)
             {

@@ -27,6 +27,16 @@ namespace CSSPWebModels
         public List<TVItemStat> TVItemStatPolSourceSiteList { get; set; }
         public List<MapInfo> MapInfoPolSourceSiteList { get; set; }
         public List<MapInfoPoint> MapInfoPointPolSourceSiteList { get; set; }
+
+        public List<MWQMAnalysisReportParameter> MWQMAnalysisReportParameterList { get; set; }
+
+        public List<LabSheet> LabSheetList { get; set; }
+        public List<LabSheetDetail> LabSheetDetailList { get; set; }
+        public List<LabSheetTubeMPNDetail> LabSheetTubeMPNDetailList { get; set; }
+
+        public MWQMSubsector MWQMSubsector { get; set; }
+        public List<MWQMSubsectorLanguage> MWQMSubsectorLanguageList { get; set; }
+        public List<UseOfSite> UseOfSiteList { get; set; }
         #endregion Properties
 
         #region Constructors
@@ -47,6 +57,16 @@ namespace CSSPWebModels
             TVItemStatPolSourceSiteList = new List<TVItemStat>();
             MapInfoPolSourceSiteList = new List<MapInfo>();
             MapInfoPointPolSourceSiteList = new List<MapInfoPoint>();
+
+            MWQMAnalysisReportParameterList = new List<MWQMAnalysisReportParameter>();
+
+            LabSheetList = new List<LabSheet>();
+            LabSheetDetailList = new List<LabSheetDetail>();
+            LabSheetTubeMPNDetailList = new List<LabSheetTubeMPNDetail>();
+
+            MWQMSubsector = new MWQMSubsector();
+            MWQMSubsectorLanguageList = new List<MWQMSubsectorLanguage>();
+            UseOfSiteList = new List<UseOfSite>();
         }
         #endregion Constructors
     }

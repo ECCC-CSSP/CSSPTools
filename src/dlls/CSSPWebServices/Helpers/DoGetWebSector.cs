@@ -30,7 +30,7 @@ namespace CSSPWebServices.Services
                 return await Task.FromResult(Unauthorized());
             }
 
-            TVItem tvItem = GetTVItemWithTVItemID(TVItemID);
+            TVItem tvItem = await GetTVItemWithTVItemID(TVItemID);
 
             if (tvItem == null || tvItem.TVType != TVTypeEnum.Sector)
             {
@@ -42,38 +42,22 @@ namespace CSSPWebServices.Services
             try
             {
                 webSector.TVItem = tvItem;
-
-                webSector.TVItemLanguageList = GetTVItemLanguageListWithTVItemID(TVItemID);
-
-                webSector.TVItemStatList = GetTVItemStatListWithTVItemID(TVItemID);
-
-                webSector.MapInfoList = GetMapInfoListWithTVItemID(TVItemID);
-
-                webSector.MapInfoPointList = GetMapInfoPointListWithTVItemID(TVItemID);
-
-                webSector.TVFileList = GetTVFileListWithTVItemID(TVItemID);
-
-                webSector.TVFileLanguageList = GetTVFileLanguageListWithTVItemID(TVItemID);
-
-                webSector.TVItemSubsectorList = GetTVItemChildrenListWithTVItemID(tvItem, TVTypeEnum.Subsector);
-
-                webSector.TVItemLanguageSubsectorList = GetTVItemLanguageChildrenListWithTVItemID(tvItem, TVTypeEnum.Subsector);
-
-                webSector.TVItemStatSubsectorList = GetTVItemStatChildrenListWithTVItemID(tvItem, TVTypeEnum.Subsector);
-
-                webSector.MapInfoSubsectorList = GetMapInfoChildrenListWithTVItemID(tvItem, TVTypeEnum.Subsector);
-
-                webSector.MapInfoPointSubsectorList = GetMapInfoPointChildrenListWithTVItemID(tvItem, TVTypeEnum.Subsector);
-
-                webSector.TVItemMikeScenarioList = GetTVItemChildrenListWithTVItemID(tvItem, TVTypeEnum.MikeScenario);
-
-                webSector.TVItemLanguageMikeScenarioList = GetTVItemLanguageChildrenListWithTVItemID(tvItem, TVTypeEnum.MikeScenario);
-
-                webSector.TVItemStatMikeScenarioList = GetTVItemStatChildrenListWithTVItemID(tvItem, TVTypeEnum.MikeScenario);
-
-                webSector.MapInfoMikeScenarioList = GetMapInfoChildrenListWithTVItemID(tvItem, TVTypeEnum.MikeScenario);
-
-                webSector.MapInfoPointMikeScenarioList = GetMapInfoPointChildrenListWithTVItemID(tvItem, TVTypeEnum.MikeScenario);
+                webSector.TVItemLanguageList = await GetTVItemLanguageListWithTVItemID(TVItemID);
+                webSector.TVItemStatList = await GetTVItemStatListWithTVItemID(TVItemID);
+                webSector.MapInfoList = await GetMapInfoListWithTVItemID(TVItemID);
+                webSector.MapInfoPointList = await GetMapInfoPointListWithTVItemID(TVItemID);
+                webSector.TVFileList = await GetTVFileListWithTVItemID(TVItemID);
+                webSector.TVFileLanguageList = await GetTVFileLanguageListWithTVItemID(TVItemID);
+                webSector.TVItemSubsectorList = await GetTVItemChildrenListWithTVItemID(tvItem, TVTypeEnum.Subsector);
+                webSector.TVItemLanguageSubsectorList = await GetTVItemLanguageChildrenListWithTVItemID(tvItem, TVTypeEnum.Subsector);
+                webSector.TVItemStatSubsectorList = await GetTVItemStatChildrenListWithTVItemID(tvItem, TVTypeEnum.Subsector);
+                webSector.MapInfoSubsectorList = await GetMapInfoChildrenListWithTVItemID(tvItem, TVTypeEnum.Subsector);
+                webSector.MapInfoPointSubsectorList = await GetMapInfoPointChildrenListWithTVItemID(tvItem, TVTypeEnum.Subsector);
+                webSector.TVItemMikeScenarioList = await GetTVItemChildrenListWithTVItemID(tvItem, TVTypeEnum.MikeScenario);
+                webSector.TVItemLanguageMikeScenarioList = await GetTVItemLanguageChildrenListWithTVItemID(tvItem, TVTypeEnum.MikeScenario);
+                webSector.TVItemStatMikeScenarioList = await GetTVItemStatChildrenListWithTVItemID(tvItem, TVTypeEnum.MikeScenario);
+                webSector.MapInfoMikeScenarioList = await GetMapInfoChildrenListWithTVItemID(tvItem, TVTypeEnum.MikeScenario);
+                webSector.MapInfoPointMikeScenarioList = await GetMapInfoPointChildrenListWithTVItemID(tvItem, TVTypeEnum.MikeScenario);
             }
             catch (Exception ex)
             {
