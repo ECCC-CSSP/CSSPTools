@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30223.230
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CSSPWebLocal", "CSSPWebLocal\CSSPWebLocal.csproj", "{A5B63D18-7C1C-48D4-AF52-8DEB92D0D5AF}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A5B63D18-7C1C-48D4-AF52-8DEB92D0D5AF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A5B63D18-7C1C-48D4-AF52-8DEB92D0D5AF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A5B63D18-7C1C-48D4-AF52-8DEB92D0D5AF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A5B63D18-7C1C-48D4-AF52-8DEB92D0D5AF}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {43173372-6537-4434-A81C-36E5F394246B}
+	EndGlobalSection
+EndGlobal
