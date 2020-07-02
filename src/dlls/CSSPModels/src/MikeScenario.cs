@@ -17,8 +17,10 @@ namespace CSSPModels
         [Key]
         public int MikeScenarioID { get; set; }
         [CSSPExist(ExistTypeName = "TVItem", ExistPlurial = "s", ExistFieldID = "TVItemID", AllowableTVTypeList = "13")]
+        [CSSPForeignKey(TableName = "TVItems", FieldName = "TVItemID")]
         public int MikeScenarioTVItemID { get; set; }
-        [CSSPExist(ExistTypeName = "TVItem", ExistPlurial = "s", ExistFieldID = "TVItemID", AllowableTVTypeList = "13")]
+        [CSSPExist(ExistTypeName = "MikeScenario", ExistPlurial = "s", ExistFieldID = "MikeScenarioID", AllowableTVTypeList = "13")]
+        [CSSPForeignKey(TableName = "MikeScenarios", FieldName = "MikeScenarioID")]
         public int? ParentMikeScenarioID { get; set; }
         [CSSPEnumType]
         public ScenarioStatusEnum ScenarioStatus { get; set; }
@@ -50,8 +52,10 @@ namespace CSSPModels
         public bool? GenerateDecouplingFiles { get; set; }
         public bool? UseDecouplingFiles { get; set; }
         [CSSPExist(ExistTypeName = "TVItem", ExistPlurial = "s", ExistFieldID = "TVItemID", AllowableTVTypeList = "8")]
+        [CSSPForeignKey(TableName = "TVItems", FieldName = "TVItemID")]
         public int? UseSalinityAndTemperatureInitialConditionFromTVFileTVItemID { get; set; }
         [CSSPExist(ExistTypeName = "TVItem", ExistPlurial = "s", ExistFieldID = "TVItemID", AllowableTVTypeList = "31")]
+        [CSSPForeignKey(TableName = "TVItems", FieldName = "TVItemID")]
         public int? ForSimulatingMWQMRunTVItemID { get; set; }
         [CSSPRange(0.0D, 100.0D)]
         public double ManningNumber { get; set; }

@@ -17,8 +17,10 @@ namespace CSSPModels
         [Key]
         public int SpillID { get; set; }
         [CSSPExist(ExistTypeName = "TVItem", ExistPlurial = "s", ExistFieldID = "TVItemID", AllowableTVTypeList = "15")]
+        [CSSPForeignKey(TableName = "TVItems", FieldName = "TVItemID")]
         public int MunicipalityTVItemID { get; set; }
         [CSSPExist(ExistTypeName = "TVItem", ExistPlurial = "s", ExistFieldID = "TVItemID", AllowableTVTypeList = "10")]
+        [CSSPForeignKey(TableName = "TVItems", FieldName = "TVItemID")]
         public int? InfrastructureTVItemID { get; set; }
         [CSSPAfter(Year = 1980)]
         public DateTime StartDateTime_Local { get; set; }

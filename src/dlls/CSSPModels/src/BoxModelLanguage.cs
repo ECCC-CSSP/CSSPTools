@@ -17,6 +17,7 @@ namespace CSSPModels
         [Key]
         public int BoxModelLanguageID { get; set; }
         [CSSPExist(ExistTypeName = "BoxModel", ExistPlurial = "s", ExistFieldID = "BoxModelID")]
+        [CSSPForeignKey(TableName = "BoxModels", FieldName = "BoxModelID")]
         public int BoxModelID { get; set; }
         [CSSPEnumType]
         public LanguageEnum Language { get; set; }

@@ -17,6 +17,7 @@ namespace CSSPModels
         [Key]
         public int TVTypeUserAuthorizationID { get; set; }
         [CSSPExist(ExistTypeName = "TVItem", ExistPlurial = "s", ExistFieldID = "TVItemID", AllowableTVTypeList = "5")]
+        [CSSPForeignKey(TableName = "TVItems", FieldName = "TVItemID")]
         public int ContactTVItemID { get; set; }
         [CSSPEnumType]
         public TVTypeEnum TVType { get; set; }

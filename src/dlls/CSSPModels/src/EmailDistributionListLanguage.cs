@@ -17,6 +17,7 @@ namespace CSSPModels
         [Key]
         public int EmailDistributionListLanguageID { get; set; }
         [CSSPExist(ExistTypeName = "EmailDistributionList", ExistPlurial = "s", ExistFieldID = "EmailDistributionListID")]
+        [CSSPForeignKey(TableName = "EmailDistributionLists", FieldName = "EmailDistributionListID")]
         public int EmailDistributionListID { get; set; }
         [CSSPEnumType]
         public LanguageEnum Language { get; set; }

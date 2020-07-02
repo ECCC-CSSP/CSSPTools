@@ -65,7 +65,7 @@ export class ContactEditComponent implements OnInit, OnDestroy {
             {
               value: this.contact.Id,
               disabled: false
-            }, [Validators.required, Validators.maxLength(128)]],
+            }, [Validators.required, Validators.maxLength(450)]],
           ContactTVItemID: [
             {
               value: this.contact.ContactTVItemID,

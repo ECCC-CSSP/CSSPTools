@@ -7,6 +7,7 @@
 using CSSPEnums;
 using CSSPModels;
 using CultureServices.Services;
+using LoggedInServices.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -32,6 +33,7 @@ namespace CSSPServices.Tests
         private IServiceProvider Provider { get; set; }
         private IServiceCollection Services { get; set; }
         private ICultureService CultureService { get; set; }
+        private ILoggedInService LoggedInService { get; set; }
         private IClimateDataValueService ClimateDataValueService { get; set; }
         private CSSPDBContext db { get; set; }
         #endregion Properties
@@ -100,6 +102,7 @@ namespace CSSPServices.Tests
             Config = new ConfigurationBuilder()
                .SetBasePath(Directory.GetParent(AppContext.BaseDirectory).FullName)
                .AddJsonFile("appsettings.json")
+               .AddUserSecrets("6f27cbbe-6ffb-4154-b49b-d739597c4f60")
                .Build();
 
             Services = new ServiceCollection();
@@ -114,7 +117,13 @@ namespace CSSPServices.Tests
                 options.UseSqlServer(TestDBConnString);
             });
 
+            Services.AddDbContext<InMemoryDBContext>(options =>
+            {
+                options.UseInMemoryDatabase(TestDBConnString);
+            });
+
             Services.AddSingleton<ICultureService, CultureService>();
+            Services.AddSingleton<ILoggedInService, LoggedInService>();
             Services.AddSingleton<IEnums, Enums>();
             Services.AddSingleton<IClimateDataValueService, ClimateDataValueService>();
 
@@ -125,6 +134,12 @@ namespace CSSPServices.Tests
             Assert.NotNull(CultureService);
 
             CultureService.SetCulture(culture);
+
+            LoggedInService = Provider.GetService<ILoggedInService>();
+            Assert.NotNull(LoggedInService);
+
+            string Id = Config.GetValue<string>("Id");
+            Assert.True(await LoggedInService.SetLoggedInContactInfo(Id));
 
             ClimateDataValueService = Provider.GetService<IClimateDataValueService>();
             Assert.NotNull(ClimateDataValueService);

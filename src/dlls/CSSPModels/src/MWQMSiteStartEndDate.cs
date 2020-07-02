@@ -17,6 +17,7 @@ namespace CSSPModels
         [Key]
         public int MWQMSiteStartEndDateID { get; set; }
         [CSSPExist(ExistTypeName = "TVItem", ExistPlurial = "s", ExistFieldID = "TVItemID", AllowableTVTypeList = "16")]
+        [CSSPForeignKey(TableName = "TVItems", FieldName = "TVItemID")]
         public int MWQMSiteTVItemID { get; set; }
         [CSSPAfter(Year = 1980)]
         public DateTime StartDate { get; set; }

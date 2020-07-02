@@ -29,6 +29,7 @@ namespace GenerateCodeBaseServices.Models
             HasCSSPEnumTypeAttribute = false;
             HasCSSPExistAttribute = false;
             HasCSSPFillAttribute = false;
+            HasCSSPForeignKeyAttribute = false;
             HasCSSPMaxLengthAttribute = false;
             HasCSSPMinLengthAttribute = false;
             HasCSSPRangeAttribute = false;
@@ -48,10 +49,8 @@ namespace GenerateCodeBaseServices.Models
             EnumType = "";
             FillNeedLanguage = false;
             FillIsList = false;
-            DescriptionEN = "";
-            DescriptionFR = "";
-            DisplayEN = "";
-            DisplayFR = "";
+            TableName = "";
+            FieldName = "";
         }
         public string PropName { get; set; }
         public string PropType { get; set; }
@@ -74,6 +73,7 @@ namespace GenerateCodeBaseServices.Models
         public bool HasCSSPEnumTypeAttribute { get; set; }
         public bool HasCSSPExistAttribute { get; set; }
         public bool HasCSSPFillAttribute { get; set; }
+        public bool HasCSSPForeignKeyAttribute { get; set; }
         public bool HasCSSPMaxLengthAttribute { get; set; }
         public bool HasCSSPMinLengthAttribute { get; set; }
         public bool HasCSSPRangeAttribute { get; set; }
@@ -93,9 +93,7 @@ namespace GenerateCodeBaseServices.Models
         public string EnumType { get; set; }
         public bool FillNeedLanguage { get; set; }
         public bool FillIsList { get; set; }
-        public string DescriptionEN { get; set; }
-        public string DescriptionFR { get; set; }
-        public string DisplayEN { get; set; }
-        public string DisplayFR { get; set; }
+        public string TableName { get; set; }
+        public string FieldName { get; set; }
     }
 }

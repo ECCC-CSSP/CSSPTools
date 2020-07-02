@@ -17,6 +17,7 @@ namespace CSSPModels
         [Key]
         public int DrogueRunPositionID { get; set; }
         [CSSPExist(ExistTypeName = "DrogueRun", ExistPlurial = "s", ExistFieldID = "DrogueRunID")]
+        [CSSPForeignKey(TableName = "DrogueRuns", FieldName = "DrogueRunID")]
         public int DrogueRunID { get; set; }
         [CSSPRange(0, 100000)]
         public int Ordinal { get; set; }

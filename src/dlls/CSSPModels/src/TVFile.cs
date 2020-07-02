@@ -17,11 +17,13 @@ namespace CSSPModels
         [Key]
         public int TVFileID { get; set; }
         [CSSPExist(ExistTypeName = "TVItem", ExistPlurial = "s", ExistFieldID = "TVItemID", AllowableTVTypeList = "8")]
+        [CSSPForeignKey(TableName = "TVItems", FieldName = "TVItemID")]
         public int TVFileTVItemID { get; set; }
         [CSSPEnumType]
         [CSSPAllowNull]
         public TVTypeEnum? TemplateTVType { get; set; }
         [CSSPExist(ExistTypeName = "ReportType", ExistPlurial = "s", ExistFieldID = "ReportTypeID")]
+        [CSSPForeignKey(TableName = "ReportTypes", FieldName = "ReportTypeID")]
         public int? ReportTypeID { get; set; }
         [CSSPAllowNull]
         public string Parameters { get; set; }

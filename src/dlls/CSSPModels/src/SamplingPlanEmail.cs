@@ -17,6 +17,7 @@ namespace CSSPModels
         [Key]
         public int SamplingPlanEmailID { get; set; }
         [CSSPExist(ExistTypeName = "SamplingPlan", ExistPlurial = "s", ExistFieldID = "SamplingPlanID")]
+        [CSSPForeignKey(TableName = "SamplingPlans", FieldName = "SamplingPlanID")]
         public int SamplingPlanID { get; set; }
         [CSSPMaxLength(150)]
         [DataType(DataType.EmailAddress)]

@@ -17,8 +17,10 @@ namespace CSSPModels
         [Key]
         public int RainExceedanceClimateSiteID { get; set; }
         [CSSPExist(ExistTypeName = "TVItem", ExistPlurial = "s", ExistFieldID = "TVItemID", AllowableTVTypeList = "75")]
+        [CSSPForeignKey(TableName = "TVItems", FieldName = "TVItemID")]
         public int RainExceedanceTVItemID { get; set; }
         [CSSPExist(ExistTypeName = "TVItem", ExistPlurial = "s", ExistFieldID = "TVItemID", AllowableTVTypeList = "4")]
+        [CSSPForeignKey(TableName = "TVItems", FieldName = "TVItemID")]
         public int ClimateSiteTVItemID { get; set; }
         #endregion Properties in DB
 

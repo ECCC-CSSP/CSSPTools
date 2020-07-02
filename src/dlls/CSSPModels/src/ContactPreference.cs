@@ -17,6 +17,7 @@ namespace CSSPModels
         [Key]
         public int ContactPreferenceID { get; set; }
         [CSSPExist(ExistTypeName = "Contact", ExistPlurial = "s", ExistFieldID = "ContactID")]
+        [CSSPForeignKey(TableName = "Contacts", FieldName = "ContactID")]
         public int ContactID { get; set; }
         [CSSPEnumType]
         public TVTypeEnum TVType { get; set; }

@@ -15,6 +15,7 @@
           "Microsoft.Extensions.Configuration": "3.1.3",
           "Microsoft.Extensions.Configuration.FileExtensions": "3.1.3",
           "Microsoft.Extensions.Configuration.Json": "3.1.3",
+          "Microsoft.Extensions.Configuration.UserSecrets": "3.1.0",
           "Microsoft.Extensions.DependencyInjection": "3.1.3",
           "Microsoft.NET.Test.Sdk": "16.6.0-preview-20200309-01",
           "System.IdentityModel.Tokens.Jwt": "6.5.0",
@@ -273,6 +274,11 @@
             "assemblyVersion": "3.1.3.0",
             "fileVersion": "3.100.320.12802"
           }
+        }
+      },
+      "Microsoft.Extensions.Configuration.UserSecrets/3.1.0": {
+        "dependencies": {
+          "Microsoft.Extensions.Configuration.Json": "3.1.3"
         }
       },
       "Microsoft.Extensions.DependencyInjection/3.1.3": {
@@ -2000,6 +2006,13 @@
       "sha512": "sha512-E26XwzU3Y+J4etuXwX0ScOxNwuBdifU/BGM0nI/GwY7SjvVkkBQDgYphUcujaiAZWJ7h7yh1KL9tBAMPgGthqg==",
       "path": "microsoft.extensions.configuration.json/3.1.3",
       "hashPath": "microsoft.extensions.configuration.json.3.1.3.nupkg.sha512"
+    },
+    "Microsoft.Extensions.Configuration.UserSecrets/3.1.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-ZS71TEcxggal3Koh2qHo6s7aNLhwpW2veNCKaxB6nPJabdZBU/sExhszd6JjuCeYMFxDHL1ygJ/N+ghKSrFNDQ==",
+      "path": "microsoft.extensions.configuration.usersecrets/3.1.0",
+      "hashPath": "microsoft.extensions.configuration.usersecrets.3.1.0.nupkg.sha512"
     },
     "Microsoft.Extensions.DependencyInjection/3.1.3": {
       "type": "package",

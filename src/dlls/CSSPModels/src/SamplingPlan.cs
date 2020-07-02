@@ -28,8 +28,10 @@ namespace CSSPModels
         [CSSPEnumType]
         public LabSheetTypeEnum LabSheetType { get; set; }
         [CSSPExist(ExistTypeName = "TVItem", ExistPlurial = "s", ExistFieldID = "TVItemID", AllowableTVTypeList = "18")]
+        [CSSPForeignKey(TableName = "TVItems", FieldName = "TVItemID")]
         public int ProvinceTVItemID { get; set; }
         [CSSPExist(ExistTypeName = "TVItem", ExistPlurial = "s", ExistFieldID = "TVItemID", AllowableTVTypeList = "5")]
+        [CSSPForeignKey(TableName = "TVItems", FieldName = "TVItemID")]
         public int CreatorTVItemID { get; set; }
         [CSSPRange(2000, 2050)]
         public int Year { get; set; }
@@ -43,6 +45,7 @@ namespace CSSPModels
         [CSSPMaxLength(15)]
         public string ApprovalCode { get; set; }
         [CSSPExist(ExistTypeName = "TVItem", ExistPlurial = "s", ExistFieldID = "TVItemID", AllowableTVTypeList = "8")]
+        [CSSPForeignKey(TableName = "TVItems", FieldName = "TVItemID")]
         public int? SamplingPlanFileTVItemID { get; set; }
         [CSSPEnumType]
         [CSSPAllowNull]

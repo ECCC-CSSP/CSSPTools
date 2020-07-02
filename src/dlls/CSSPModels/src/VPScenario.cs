@@ -17,6 +17,7 @@ namespace CSSPModels
         [Key]
         public int VPScenarioID { get; set; }
         [CSSPExist(ExistTypeName = "TVItem", ExistPlurial = "s", ExistFieldID = "TVItemID", AllowableTVTypeList = "10")]
+        [CSSPForeignKey(TableName = "TVItems", FieldName = "TVItemID")]
         public int InfrastructureTVItemID { get; set; }
         [CSSPEnumType]
         public ScenarioStatusEnum VPScenarioStatus { get; set; }

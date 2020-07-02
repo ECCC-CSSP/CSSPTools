@@ -17,6 +17,7 @@ namespace CSSPModels
         [Key]
         public int MWQMRunLanguageID { get; set; }
         [CSSPExist(ExistTypeName = "MWQMRun", ExistPlurial = "s", ExistFieldID = "MWQMRunID")]
+        [CSSPForeignKey(TableName = "MWQMRuns", FieldName = "MWQMRunID")]
         public int MWQMRunID { get; set; }
         [CSSPEnumType]
         public LanguageEnum Language { get; set; }

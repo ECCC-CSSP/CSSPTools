@@ -186,9 +186,9 @@ namespace CSSPServices
                 yield return new ValidationResult(string.Format(CultureServicesRes._IsRequired, "Id"), new[] { "Id" });
             }
 
-            if (!string.IsNullOrWhiteSpace(contact.Id) && contact.Id.Length > 128)
+            if (!string.IsNullOrWhiteSpace(contact.Id) && contact.Id.Length > 450)
             {
-                yield return new ValidationResult(string.Format(CultureServicesRes._MaxLengthIs_, "Id", "128"), new[] { "Id" });
+                yield return new ValidationResult(string.Format(CultureServicesRes._MaxLengthIs_, "Id", "450"), new[] { "Id" });
             }
 
             AspNetUser AspNetUserId = (from c in db.AspNetUsers where c.Id == contact.Id select c).FirstOrDefault();

@@ -61,13 +61,16 @@ namespace CSSPModels.Tests
                     || type.Name.StartsWith("CSSPEnumTypeText")
                     || type.Name.StartsWith("CSSPExist")
                     || type.Name.StartsWith("CSSPFill")
+                    || type.Name.StartsWith("CSSPForeignKey")
                     || type.Name.StartsWith("CSSPMaxLengthAttribute")
                     || type.Name.StartsWith("CSSPMinLengthAttribute")
                     || type.Name.StartsWith("CSSPRangeAttribute")
                     || type.Name.StartsWith("CSSPRequiredAttribute")
                     || type.Name.StartsWith("CSSPRegularExpressionAttribute")
                     || type.Name == "LastUpdate"
-                    || type.Name == "AspNetUser")
+                    || type.Name.StartsWith("AspNet")
+                    || type.Name.StartsWith("Persisted")
+                    || type.Name.StartsWith("Device"))
                 {
                     continue;
                 }

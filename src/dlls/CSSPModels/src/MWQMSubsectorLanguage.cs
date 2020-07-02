@@ -17,6 +17,7 @@ namespace CSSPModels
         [Key]
         public int MWQMSubsectorLanguageID { get; set; }
         [CSSPExist(ExistTypeName = "MWQMSubsector", ExistPlurial = "s", ExistFieldID = "MWQMSubsectorID")]
+        [CSSPForeignKey(TableName = "MWQMSubsectors", FieldName = "MWQMSubsectorID")]
         public int MWQMSubsectorID { get; set; }
         [CSSPEnumType]
         public LanguageEnum Language { get; set; }

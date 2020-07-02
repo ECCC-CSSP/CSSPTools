@@ -28,6 +28,7 @@ namespace CSSPModels
         public virtual DbSet<Contact> Contacts { get; set; }
         public virtual DbSet<ContactPreference> ContactPreferences { get; set; }
         public virtual DbSet<ContactShortcut> ContactShortcuts { get; set; }
+        public virtual DbSet<DeviceCode> DeviceCodes { get; set; }
         public virtual DbSet<DocTemplate> DocTemplates { get; set; }
         public virtual DbSet<DrogueRun> DrogueRuns { get; set; }
         public virtual DbSet<DrogueRunPosition> DrogueRunPositions { get; set; }
@@ -62,6 +63,7 @@ namespace CSSPModels
         public virtual DbSet<MWQMSite> MWQMSites { get; set; }
         public virtual DbSet<MWQMSubsectorLanguage> MWQMSubsectorLanguages { get; set; }
         public virtual DbSet<MWQMSubsector> MWQMSubsectors { get; set; }
+        public virtual DbSet<PersistedGrant> PersistedGrants { get; set; }
         public virtual DbSet<PolSourceGroupingLanguage> PolSourceGroupingLanguages { get; set; }
         public virtual DbSet<PolSourceGrouping> PolSourceGroupings { get; set; }
         public virtual DbSet<PolSourceObservationIssue> PolSourceObservationIssues { get; set; }

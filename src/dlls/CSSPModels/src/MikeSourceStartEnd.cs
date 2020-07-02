@@ -17,6 +17,7 @@ namespace CSSPModels
         [Key]
         public int MikeSourceStartEndID { get; set; }
         [CSSPExist(ExistTypeName = "MikeSource", ExistPlurial = "s", ExistFieldID = "MikeSourceID")]
+        [CSSPForeignKey(TableName = "MikeSources", FieldName = "MikeSourceID")]
         public int MikeSourceID { get; set; }
         [CSSPAfter(Year = 1980)]
         public DateTime StartDateAndTime_Local { get; set; }

@@ -17,6 +17,7 @@ namespace CSSPModels
         [Key]
         public int PolSourceObservationIssueID { get; set; }
         [CSSPExist(ExistTypeName = "PolSourceObservation", ExistPlurial = "s", ExistFieldID = "PolSourceObservationID")]
+        [CSSPForeignKey(TableName = "PolSourceObservations", FieldName = "PolSourceObservationID")]
         public int PolSourceObservationID { get; set; }
         [CSSPMaxLength(250)]
         public string ObservationInfo { get; set; }

@@ -18,7 +18,7 @@ namespace ModelsCompareDBFieldsAndCSSPModelsDLLPropServices.Services
             sb.AppendLine("");
             foreach (Table table in tableList.OrderBy(c => c.TableName))
             {
-                if (table.TableName.StartsWith("AspNet") || table.TableName.StartsWith("sys"))
+                if (table.TableName.StartsWith("AspNet") || table.TableName.StartsWith("sys") || table.TableName.StartsWith("DeviceCodes") || table.TableName.StartsWith("PersistedGrants"))
                 {
                     continue;
                 }

@@ -17,6 +17,7 @@ namespace CSSPModels
         [Key]
         public int RatingCurveID { get; set; }
         [CSSPExist(ExistTypeName = "HydrometricSite", ExistPlurial = "s", ExistFieldID = "HydrometricSiteID")]
+        [CSSPForeignKey(TableName = "HydrometricSites", FieldName = "HydrometricSiteID")]
         public int HydrometricSiteID { get; set; }
         [CSSPMaxLength(50)]
         public string RatingCurveNumber { get; set; }

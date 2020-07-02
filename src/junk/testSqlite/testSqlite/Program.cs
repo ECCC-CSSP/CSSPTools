@@ -47,6 +47,20 @@ namespace testSqlite
             }
 
         }
+        public void CreateSQLiteCSSPDBTables()
+        {
+            string a = @"CREATE TABLE TVItems (
+            TVItemID INTEGER NOT NULL UNIQUE,
+            TVLevel INTEGER NOT NULL,
+            TVPath TEXT NOT NULL,
+            TVType INTEGER NOT NULL,
+            ParentID INTEGER NOT NULL,
+            IsActive INTEGER NOT NULL,
+            LastUpdateDate_UTC TEXT NOT NULL,
+            LastUpdateContactTVItemID INTEGER NOT NULL,
+            PRIMARY KEY(TVItemID AUTOINCREMENT))";
+
+        }
         public static void InitializeDatabase(string dbName)
         {
             string appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);

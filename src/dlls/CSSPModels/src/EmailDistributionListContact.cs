@@ -17,6 +17,7 @@ namespace CSSPModels
         [Key]
         public int EmailDistributionListContactID { get; set; }
         [CSSPExist(ExistTypeName = "EmailDistributionList", ExistPlurial = "s", ExistFieldID = "EmailDistributionListID")]
+        [CSSPForeignKey(TableName = "EmailDistributionLists", FieldName = "EmailDistributionListID")]
         public int EmailDistributionListID { get; set; }
         public bool IsCC { get; set; }
         [CSSPMaxLength(100)]

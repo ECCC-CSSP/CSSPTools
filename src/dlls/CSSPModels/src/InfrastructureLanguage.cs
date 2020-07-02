@@ -17,6 +17,7 @@ namespace CSSPModels
         [Key]
         public int InfrastructureLanguageID { get; set; }
         [CSSPExist(ExistTypeName = "Infrastructure", ExistPlurial = "s", ExistFieldID = "InfrastructureID")]
+        [CSSPForeignKey(TableName = "Infrastructures", FieldName = "InfrastructureID")]
         public int InfrastructureID { get; set; }
         [CSSPEnumType]
         public LanguageEnum Language { get; set; }

@@ -66,17 +66,17 @@ export class PolSourceGroupingEditComponent implements OnInit, OnDestroy {
             {
               value: this.polsourcegrouping.GroupName,
               disabled: false
-            }, [Validators.required, Validators.maxLength(150)]],
+            }, [Validators.required, Validators.maxLength(500)]],
           Child: [
             {
               value: this.polsourcegrouping.Child,
               disabled: false
-            }, [Validators.required, Validators.maxLength(150)]],
+            }, [Validators.required, Validators.maxLength(500)]],
           Hide: [
             {
               value: this.polsourcegrouping.Hide,
               disabled: false
-            }, [Validators.required, Validators.maxLength(150)]],
+            }, [Validators.required, Validators.maxLength(500)]],
           LastUpdateDate_UTC: [
             {
               value: this.polsourcegrouping.LastUpdateDate_UTC,

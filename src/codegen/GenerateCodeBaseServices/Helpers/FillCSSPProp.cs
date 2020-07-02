@@ -302,6 +302,31 @@ namespace GenerateCodeBaseServices.Services
                 }
             }
 
+            if (propInfo.CustomAttributes.Where(c => c.AttributeType.Name == "CSSPForeignKeyAttribute").Any())
+            {
+                csspProp.HasCSSPForeignKeyAttribute = true;
+                CustomAttributeData customAttributeData = propInfo.CustomAttributes.Where(c => c.AttributeType.Name == "CSSPForeignKeyAttribute").First();
+                for (int i = 0, count = customAttributeData.NamedArguments.ToArray().Count(); i < count; i++)
+                {
+                    switch (customAttributeData.NamedArguments.ToArray()[i].MemberName)
+                    {
+                        case "TableName":
+                            {
+                                csspProp.TableName = (string)customAttributeData.NamedArguments.ToArray()[i].TypedValue.Value;
+                            }
+                            break;
+                        case "FieldName":
+                            {
+                                csspProp.FieldName = (string)customAttributeData.NamedArguments.ToArray()[i].TypedValue.Value;
+                            }
+                            break;
+                        default:
+                            ActionCommandDBService.ErrorText.AppendLine($"{ CultureServicesRes.Property } [{ csspProp.PropName }] { CultureServicesRes.OfType } [{ csspProp.PropType }] --- { CultureServicesRes.MemberName }  { customAttributeData.NamedArguments.ToArray()[i].MemberName } { CultureServicesRes.DoesNotExistFor } CSSPFillAttribute");
+                            return false;
+                    }
+                }
+            }
+
             if (propInfo.CustomAttributes.Where(c => c.AttributeType.Name == "CSSPEnumTypeTextAttribute").Any())
             {
                 csspProp.HasCSSPEnumTypeTextAttribute = true;
@@ -331,11 +356,6 @@ namespace GenerateCodeBaseServices.Services
 
             csspProp.HasCSSPEnumTypeAttribute = propInfo.CustomAttributes.Where(c => c.AttributeType.Name.StartsWith("CSSPEnumTypeAttribute")).Any();
             csspProp.HasNotMappedAttribute = propInfo.CustomAttributes.Where(c => c.AttributeType.Name == "NotMappedAttribute").Any();
-
-            csspProp.DescriptionEN = CultureModelsRes.ResourceManager.GetString($"{type.Name}_{propInfo.Name}_Description", new CultureInfo("en-CA"));
-            csspProp.DescriptionFR = CultureModelsRes.ResourceManager.GetString($"{type.Name}_{propInfo.Name}_Description", new CultureInfo("fr-CA"));
-            csspProp.DisplayEN = CultureModelsRes.ResourceManager.GetString($"{type.Name}_{propInfo.Name}_Display", new CultureInfo("en-CA"));
-            csspProp.DisplayFR = CultureModelsRes.ResourceManager.GetString($"{type.Name}_{propInfo.Name}_Display", new CultureInfo("fr-CA"));
 
             return true;
         }

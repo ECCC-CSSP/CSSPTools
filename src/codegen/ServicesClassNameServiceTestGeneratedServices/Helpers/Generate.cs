@@ -85,6 +85,7 @@ namespace ServicesClassNameServiceTestGeneratedServices.Services
                 sb.AppendLine(@"using CSSPEnums;");
                 sb.AppendLine(@"using CSSPModels;");
                 sb.AppendLine(@"using CultureServices.Services;");
+                sb.AppendLine(@"using LoggedInServices.Services;");
                 sb.AppendLine(@"using Microsoft.AspNetCore.Mvc;");
                 sb.AppendLine(@"using Microsoft.EntityFrameworkCore;");
                 sb.AppendLine(@"using Microsoft.Extensions.Configuration;");
@@ -112,6 +113,7 @@ namespace ServicesClassNameServiceTestGeneratedServices.Services
                     sb.AppendLine(@"        private IServiceProvider Provider { get; set; }");
                     sb.AppendLine(@"        private IServiceCollection Services { get; set; }");
                     sb.AppendLine(@"        private ICultureService CultureService { get; set; }");
+                    sb.AppendLine(@"        private ILoggedInService LoggedInService { get; set; }");
                     sb.AppendLine($@"        private I{ TypeName }Service { TypeName }Service {{ get; set; }}");
                     sb.AppendLine(@"        private CSSPDBContext db { get; set; }");
                 }
@@ -126,7 +128,16 @@ namespace ServicesClassNameServiceTestGeneratedServices.Services
                 sb.AppendLine(@"");
                 if (!ClassNotMapped)
                 {
-                    if (!await GenerateCRUDTestCode(TypeName, TypeNameLower, sb)) return await Task.FromResult(false);
+                    try
+                    {
+                        if (!await GenerateCRUDTestCode(TypeName, TypeNameLower, sb)) return await Task.FromResult(false);
+
+                    }
+                    catch (Exception ex)
+                    {
+
+                        throw;
+                    }
 
                     //if (!await GeneratePropertiesTestCode(TypeName, TypeNameLower, type, sb)) return await Task.FromResult(false);
 

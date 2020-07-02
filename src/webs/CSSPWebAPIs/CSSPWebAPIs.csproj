@@ -2,6 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
+    <UserSecretsId>dd0c74e5-2064-419f-9779-c12942e685ee</UserSecretsId>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -63,11 +64,6 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>ControllersRes.resx</DependentUpon>
     </Compile>
-    <Compile Update="Services\Resources\ServicesRes.Designer.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>ServicesRes.resx</DependentUpon>
-    </Compile>
   </ItemGroup>
 
   <ItemGroup>
@@ -84,14 +80,6 @@
     <EmbeddedResource Update="Controllers\Resources\ControllersRes.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>ControllersRes.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Services\Resources\ServicesRes.fr.resx">
-      <LastGenOutput>ServicesRes.Designer.cs</LastGenOutput>
-      <Generator>PublicResXFileCodeGenerator</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Services\Resources\ServicesRes.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>ServicesRes.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
 

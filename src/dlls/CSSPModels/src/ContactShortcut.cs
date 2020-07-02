@@ -17,6 +17,7 @@ namespace CSSPModels
         [Key]
         public int ContactShortcutID { get; set; }
         [CSSPExist(ExistTypeName = "Contact", ExistPlurial = "s", ExistFieldID = "ContactID")]
+        [CSSPForeignKey(TableName = "Contacts", FieldName = "ContactID")]
         public int ContactID { get; set; }
         [CSSPMaxLength(100)]
         public string ShortCutText { get; set; }

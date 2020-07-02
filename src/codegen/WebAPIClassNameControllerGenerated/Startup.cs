@@ -5,7 +5,7 @@ using System;
 using System.Threading.Tasks;
 using WebAPIClassNameControllerGeneratedServices.Services;
 
-namespace WebAPIClassNameControllerGeneratedServices
+namespace WebAPIClassNameControllerGenerated
 {
     public class Startup : ConfigService
     {

@@ -17,6 +17,7 @@ namespace CSSPModels
         [Key]
         public int BoxModelID { get; set; }
         [CSSPExist(ExistTypeName = "TVItem", ExistPlurial = "s", ExistFieldID = "TVItemID", AllowableTVTypeList = "10")]
+        [CSSPForeignKey(TableName = "TVItems", FieldName = "TVItemID")]
         public int InfrastructureTVItemID { get; set; }
         [CSSPRange(0.0D, 10000.0D)]
         public double Discharge_m3_day { get; set; }

@@ -17,6 +17,7 @@ namespace CSSPModels
         [Key]
         public int MWQMSiteID { get; set; }
         [CSSPExist(ExistTypeName = "TVItem", ExistPlurial = "s", ExistFieldID = "TVItemID", AllowableTVTypeList = "16")]
+        [CSSPForeignKey(TableName = "TVItems", FieldName = "TVItemID")]
         public int MWQMSiteTVItemID { get; set; }
         [CSSPMaxLength(8)]
         public string MWQMSiteNumber { get; set; }

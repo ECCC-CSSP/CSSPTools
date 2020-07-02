@@ -17,6 +17,7 @@ namespace CSSPModels
         [Key]
         public int InfrastructureID { get; set; }
         [CSSPExist(ExistTypeName = "TVItem", ExistPlurial = "s", ExistFieldID = "TVItemID", AllowableTVTypeList = "10")]
+        [CSSPForeignKey(TableName = "TVItems", FieldName = "TVItemID")]
         public int InfrastructureTVItemID { get; set; }
         [CSSPRange(0, 100000)]
         public int? PrismID { get; set; }
@@ -118,8 +119,10 @@ namespace CSSPModels
         [CSSPRange(0.0D, 1000.0D)]
         public double? DistanceFromShore_m { get; set; }
         [CSSPExist(ExistTypeName = "TVItem", ExistPlurial = "s", ExistFieldID = "TVItemID", AllowableTVTypeList = "10")]
+        [CSSPForeignKey(TableName = "TVItems", FieldName = "TVItemID")]
         public int? SeeOtherMunicipalityTVItemID { get; set; }
         [CSSPExist(ExistTypeName = "TVItem", ExistPlurial = "s", ExistFieldID = "TVItemID", AllowableTVTypeList = "2")]
+        [CSSPForeignKey(TableName = "TVItems", FieldName = "TVItemID")]
         public int? CivicAddressTVItemID { get; set; }
         #endregion Properties in DB
 

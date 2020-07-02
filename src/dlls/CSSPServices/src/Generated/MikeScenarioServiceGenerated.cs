@@ -201,22 +201,11 @@ namespace CSSPServices
 
             if (mikeScenario.ParentMikeScenarioID != null)
             {
-                TVItem TVItemParentMikeScenarioID = (from c in db.TVItems where c.TVItemID == mikeScenario.ParentMikeScenarioID select c).FirstOrDefault();
+                MikeScenario MikeScenarioParentMikeScenarioID = (from c in db.MikeScenarios where c.MikeScenarioID == mikeScenario.ParentMikeScenarioID select c).FirstOrDefault();
 
-                if (TVItemParentMikeScenarioID == null)
+                if (MikeScenarioParentMikeScenarioID == null)
                 {
-                    yield return new ValidationResult(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "TVItem", "ParentMikeScenarioID", (mikeScenario.ParentMikeScenarioID == null ? "" : mikeScenario.ParentMikeScenarioID.ToString())), new[] { "ParentMikeScenarioID" });
-                }
-                else
-                {
-                    List<TVTypeEnum> AllowableTVTypes = new List<TVTypeEnum>()
-                    {
-                        TVTypeEnum.MikeScenario,
-                    };
-                    if (!AllowableTVTypes.Contains(TVItemParentMikeScenarioID.TVType))
-                    {
-                        yield return new ValidationResult(string.Format(CultureServicesRes._IsNotOfType_, "ParentMikeScenarioID", "MikeScenario"), new[] { "ParentMikeScenarioID" });
-                    }
+                    yield return new ValidationResult(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "MikeScenario", "ParentMikeScenarioID", (mikeScenario.ParentMikeScenarioID == null ? "" : mikeScenario.ParentMikeScenarioID.ToString())), new[] { "ParentMikeScenarioID" });
                 }
             }
 

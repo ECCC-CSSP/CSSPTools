@@ -36,7 +36,7 @@ namespace CSSPCodeGenWebAPI
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
-        {
+        {           
             services.AddCors();
             services.AddControllers()
         .       AddJsonOptions(options => {
@@ -67,10 +67,28 @@ namespace CSSPCodeGenWebAPI
                 };
             });
 
+
             IConfigurationSection connectionStringsSection = Configuration.GetSection("ConnectionStrings");
             services.Configure<ConnectionStringsModel>(connectionStringsSection);
 
             ConnectionStringsModel connectionStrings = connectionStringsSection.Get<ConnectionStringsModel>();
+
+            /* ---------------------------------------------------------------------------------
+             * using AzureCSSPDB 
+             * ---------------------------------------------------------------------------------      
+             */
+
+            //string AzureConnStr = Configuration.GetValue<string>("AzureCSSPDB");
+
+            //services.AddDbContext<CSSPDBContext>(options =>
+            //        options.UseSqlServer(AzureConnStr));
+
+            //services.AddDbContext<InMemoryDBContext>(options =>
+            //        options.UseInMemoryDatabase(AzureConnStr));
+
+            //services.AddDbContext<ApplicationDbContext>(options =>
+            //    options.UseSqlServer(AzureConnStr));
+
 
             /* ---------------------------------------------------------------------------------
              * using CSSPDB 

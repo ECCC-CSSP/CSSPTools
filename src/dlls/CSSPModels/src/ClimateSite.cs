@@ -17,6 +17,7 @@ namespace CSSPModels
         [Key]
         public int ClimateSiteID { get; set; }
         [CSSPExist(ExistTypeName = "TVItem", ExistPlurial = "s", ExistFieldID = "TVItemID", AllowableTVTypeList = "4")]
+        [CSSPForeignKey(TableName = "TVItems", FieldName = "TVItemID")]
         public int ClimateSiteTVItemID { get; set; }
         [CSSPRange(1, 100000)]
         public int? ECDBID { get; set; }

@@ -17,8 +17,10 @@ namespace CSSPModels
         [Key]
         public int MWQMSampleID { get; set; }
         [CSSPExist(ExistTypeName = "TVItem", ExistPlurial = "s", ExistFieldID = "TVItemID", AllowableTVTypeList = "16")]
+        [CSSPForeignKey(TableName = "TVItems", FieldName = "TVItemID")]
         public int MWQMSiteTVItemID { get; set; }
         [CSSPExist(ExistTypeName = "TVItem", ExistPlurial = "s", ExistFieldID = "TVItemID", AllowableTVTypeList = "31")]
+        [CSSPForeignKey(TableName = "TVItems", FieldName = "TVItemID")]
         public int MWQMRunTVItemID { get; set; }
         [CSSPAfter(Year = 1980)]
         public DateTime SampleDateTime_Local { get; set; }

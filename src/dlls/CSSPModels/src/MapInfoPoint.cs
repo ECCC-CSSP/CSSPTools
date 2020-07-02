@@ -17,6 +17,7 @@ namespace CSSPModels
         [Key]
         public int MapInfoPointID { get; set; }
         [CSSPExist(ExistTypeName = "MapInfo", ExistPlurial = "s", ExistFieldID = "MapInfoID")]
+        [CSSPForeignKey(TableName = "MapInfos", FieldName = "MapInfoID")]
         public int MapInfoID { get; set; }
         [CSSPRange(0, -1)]
         public int Ordinal { get; set; }

@@ -17,6 +17,7 @@ namespace CSSPModels
         [Key]
         public int TideDataValueID { get; set; }
         [CSSPExist(ExistTypeName = "TVItem", ExistPlurial = "s", ExistFieldID = "TVItemID", AllowableTVTypeList = "22")]
+        [CSSPForeignKey(TableName = "TVItems", FieldName = "TVItemID")]
         public int TideSiteTVItemID { get; set; }
         [CSSPAfter(Year = 1980)]
         public DateTime DateTime_Local { get; set; }

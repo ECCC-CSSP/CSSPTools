@@ -17,6 +17,7 @@ namespace CSSPModels
         [Key]
         public int MikeBoundaryConditionID { get; set; }
         [CSSPExist(ExistTypeName = "TVItem", ExistPlurial = "s", ExistFieldID = "TVItemID", AllowableTVTypeList = "12,11")]
+        [CSSPForeignKey(TableName = "TVItems", FieldName = "TVItemID")]
         public int MikeBoundaryConditionTVItemID { get; set; }
         [CSSPMaxLength(100)]
         public string MikeBoundaryConditionCode { get; set; }

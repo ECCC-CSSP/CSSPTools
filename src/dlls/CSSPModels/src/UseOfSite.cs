@@ -17,8 +17,10 @@ namespace CSSPModels
         [Key]
         public int UseOfSiteID { get; set; }
         [CSSPExist(ExistTypeName = "TVItem", ExistPlurial = "s", ExistFieldID = "TVItemID", AllowableTVTypeList = "4,9,22")]
+        [CSSPForeignKey(TableName = "TVItems", FieldName = "TVItemID")]
         public int SiteTVItemID { get; set; }
         [CSSPExist(ExistTypeName = "TVItem", ExistPlurial = "s", ExistFieldID = "TVItemID", AllowableTVTypeList = "20")]
+        [CSSPForeignKey(TableName = "TVItems", FieldName = "TVItemID")]
         public int SubsectorTVItemID { get; set; }
         [CSSPEnumType]
         public TVTypeEnum TVType { get; set; }

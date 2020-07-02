@@ -17,8 +17,10 @@ namespace CSSPModels
         [Key]
         public int MWQMRunID { get; set; }
         [CSSPExist(ExistTypeName = "TVItem", ExistPlurial = "s", ExistFieldID = "TVItemID", AllowableTVTypeList = "20")]
+        [CSSPForeignKey(TableName = "TVItems", FieldName = "TVItemID")]
         public int SubsectorTVItemID { get; set; }
         [CSSPExist(ExistTypeName = "TVItem", ExistPlurial = "s", ExistFieldID = "TVItemID", AllowableTVTypeList = "31")]
+        [CSSPForeignKey(TableName = "TVItems", FieldName = "TVItemID")]
         public int MWQMRunTVItemID { get; set; }
         [CSSPEnumType]
         public SampleTypeEnum RunSampleType { get; set; }
@@ -65,6 +67,7 @@ namespace CSSPModels
         [CSSPAllowNull]
         public SampleStatusEnum? SampleStatus { get; set; }
         [CSSPExist(ExistTypeName = "TVItem", ExistPlurial = "s", ExistFieldID = "TVItemID", AllowableTVTypeList = "5")]
+        [CSSPForeignKey(TableName = "TVItems", FieldName = "TVItemID")]
         public int? LabSampleApprovalContactTVItemID { get; set; }
         [CSSPAfter(Year = 1980)]
         public DateTime? LabAnalyzeBath1IncubationStartDateTime_Local { get; set; }

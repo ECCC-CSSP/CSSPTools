@@ -17,14 +17,18 @@ namespace CSSPModels
         [Key]
         public int AddressID { get; set; }
         [CSSPExist(ExistTypeName = "TVItem", ExistPlurial = "s", ExistFieldID = "TVItemID", AllowableTVTypeList = "2")]
+        [CSSPForeignKey(TableName = "TVItems", FieldName = "TVItemID")]
         public int AddressTVItemID { get; set; }
         [CSSPEnumType]
         public AddressTypeEnum AddressType { get; set; }
         [CSSPExist(ExistTypeName = "TVItem", ExistPlurial = "s", ExistFieldID = "TVItemID", AllowableTVTypeList = "6")]
+        [CSSPForeignKey(TableName = "TVItems", FieldName = "TVItemID")]
         public int CountryTVItemID { get; set; }
         [CSSPExist(ExistTypeName = "TVItem", ExistPlurial = "s", ExistFieldID = "TVItemID", AllowableTVTypeList = "18")]
+        [CSSPForeignKey(TableName = "TVItems", FieldName = "TVItemID")]
         public int ProvinceTVItemID { get; set; }
         [CSSPExist(ExistTypeName = "TVItem", ExistPlurial = "s", ExistFieldID = "TVItemID", AllowableTVTypeList = "15")]
+        [CSSPForeignKey(TableName = "TVItems", FieldName = "TVItemID")]
         public int MunicipalityTVItemID { get; set; }
         [CSSPMaxLength(200)]
         [CSSPAllowNull]

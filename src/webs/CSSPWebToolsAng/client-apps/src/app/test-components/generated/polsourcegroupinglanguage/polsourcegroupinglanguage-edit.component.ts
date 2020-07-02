@@ -86,7 +86,7 @@ export class PolSourceGroupingLanguageEditComponent implements OnInit, OnDestroy
             {
               value: this.polsourcegroupinglanguage.SourceName,
               disabled: false
-            }, [Validators.required, Validators.maxLength(250)]],
+            }, [Validators.required, Validators.maxLength(500)]],
           SourceNameOrder: [
             {
               value: this.polsourcegroupinglanguage.SourceNameOrder,
@@ -111,7 +111,7 @@ export class PolSourceGroupingLanguageEditComponent implements OnInit, OnDestroy
             {
               value: this.polsourcegroupinglanguage.Description,
               disabled: false
-            }, [Validators.required, Validators.maxLength(250)]],
+            }, [Validators.required, Validators.maxLength(500)]],
           TranslationStatusDescription: [
             {
               value: this.polsourcegroupinglanguage.TranslationStatusDescription,
@@ -121,7 +121,7 @@ export class PolSourceGroupingLanguageEditComponent implements OnInit, OnDestroy
             {
               value: this.polsourcegroupinglanguage.Report,
               disabled: false
-            }, [Validators.required, Validators.maxLength(250)]],
+            }, [Validators.required, Validators.maxLength(500)]],
           TranslationStatusReport: [
             {
               value: this.polsourcegroupinglanguage.TranslationStatusReport,
@@ -131,7 +131,7 @@ export class PolSourceGroupingLanguageEditComponent implements OnInit, OnDestroy
             {
               value: this.polsourcegroupinglanguage.Text,
               disabled: false
-            }, [Validators.required, Validators.maxLength(250)]],
+            }, [Validators.required, Validators.maxLength(500)]],
           TranslationStatusText: [
             {
               value: this.polsourcegroupinglanguage.TranslationStatusText,

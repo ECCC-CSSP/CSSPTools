@@ -1998,11 +1998,6 @@
             "assemblyVersion": "1.0.0.0",
             "fileVersion": "1.0.0.0"
           }
-        },
-        "resources": {
-          "fr/CSSPServices.resources.dll": {
-            "locale": "fr"
-          }
         }
       },
       "CultureServices/1.0.0.0": {
@@ -2029,6 +2024,14 @@
       "GenerateCodeBaseServices/1.0.0.0": {
         "runtime": {
           "GenerateCodeBaseServices.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "1.0.0.0"
+          }
+        }
+      },
+      "LoggedInServices/1.0.0.0": {
+        "runtime": {
+          "LoggedInServices.dll": {
             "assemblyVersion": "1.0.0.0",
             "fileVersion": "1.0.0.0"
           }
@@ -3245,6 +3248,11 @@
       "sha512": ""
     },
     "GenerateCodeBaseServices/1.0.0.0": {
+      "type": "reference",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "LoggedInServices/1.0.0.0": {
       "type": "reference",
       "serviceable": false,
       "sha512": ""

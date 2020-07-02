@@ -17,10 +17,12 @@ namespace CSSPModels
         [Key]
         public int LabSheetTubeMPNDetailID { get; set; }
         [CSSPExist(ExistTypeName = "LabSheetDetail", ExistPlurial = "s", ExistFieldID = "LabSheetDetailID")]
+        [CSSPForeignKey(TableName = "LabSheetDetails", FieldName = "LabSheetDetailID")]
         public int LabSheetDetailID { get; set; }
         [CSSPRange(0, 1000)]
         public int Ordinal { get; set; }
         [CSSPExist(ExistTypeName = "TVItem", ExistPlurial = "s", ExistFieldID = "TVItemID", AllowableTVTypeList = "16")]
+        [CSSPForeignKey(TableName = "TVItems", FieldName = "TVItemID")]
         public int MWQMSiteTVItemID { get; set; }
         [CSSPAfter(Year = 1980)]
         public DateTime? SampleDateTime { get; set; }

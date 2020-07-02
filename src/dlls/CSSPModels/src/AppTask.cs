@@ -17,8 +17,10 @@ namespace CSSPModels
         [Key]
         public int AppTaskID { get; set; }
         [CSSPExist(ExistTypeName = "TVItem", ExistPlurial = "s", ExistFieldID = "TVItemID", AllowableTVTypeList = "1,2,3,4,6,8,9,11,12,14,15,16,17,18,19,20,22,24,25,26,29,30,41,42")]
+        [CSSPForeignKey(TableName = "TVItems", FieldName = "TVItemID")]
         public int TVItemID { get; set; }
         [CSSPExist(ExistTypeName = "TVItem", ExistPlurial = "s", ExistFieldID = "TVItemID", AllowableTVTypeList = "1,2,3,4,6,8,9,11,12,14,15,16,17,18,19,20,22,24,25,26,29,30,41,42")]
+        [CSSPForeignKey(TableName = "TVItems", FieldName = "TVItemID")]
         public int TVItemID2 { get; set; }
         [CSSPEnumType]
         public AppTaskCommandEnum AppTaskCommand { get; set; }

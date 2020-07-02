@@ -17,6 +17,7 @@ namespace CSSPModels
         [Key]
         public int MWQMAnalysisReportParameterID { get; set; }
         [CSSPExist(ExistTypeName = "TVItem", ExistPlurial = "s", ExistFieldID = "TVItemID", AllowableTVTypeList = "20")]
+        [CSSPForeignKey(TableName = "TVItems", FieldName = "TVItemID")]
         public int SubsectorTVItemID { get; set; }
         [CSSPMaxLength(250)]
         [CSSPMinLength(5)]
@@ -61,6 +62,7 @@ namespace CSSPModels
         [CSSPAllowNull]
         public string ShowDataTypes { get; set; }
         [CSSPExist(ExistTypeName = "TVItem", ExistPlurial = "s", ExistFieldID = "TVItemID", AllowableTVTypeList = "8")]
+        [CSSPForeignKey(TableName = "TVItems", FieldName = "TVItemID")]
         public int? ExcelTVFileTVItemID { get; set; }
         [CSSPEnumType]
         public AnalysisReportExportCommandEnum Command { get; set; }

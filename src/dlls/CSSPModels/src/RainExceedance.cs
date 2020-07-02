@@ -17,6 +17,7 @@ namespace CSSPModels
         [Key]
         public int RainExceedanceID { get; set; }
         [CSSPExist(ExistTypeName = "TVItem", ExistPlurial = "s", ExistFieldID = "TVItemID", AllowableTVTypeList = "75")]
+        [CSSPForeignKey(TableName = "TVItems", FieldName = "TVItemID")]
         public int RainExceedanceTVItemID { get; set; }
         [CSSPRange(1, 12)]
         public int StartMonth { get; set; }
@@ -29,8 +30,10 @@ namespace CSSPModels
         [CSSPRange(0.0D, 300.0D)]
         public double RainMaximum_mm { get; set; }
         [CSSPExist(ExistTypeName = "EmailDistributionList", ExistPlurial = "s", ExistFieldID = "EmailDistributionListID")]
+        [CSSPForeignKey(TableName = "EmailDistributionLists", FieldName = "EmailDistributionListID")]
         public int? StakeholdersEmailDistributionListID { get; set; }
         [CSSPExist(ExistTypeName = "EmailDistributionList", ExistPlurial = "s", ExistFieldID = "EmailDistributionListID")]
+        [CSSPForeignKey(TableName = "EmailDistributionLists", FieldName = "EmailDistributionListID")]
         public int? OnlyStaffEmailDistributionListID { get; set; }
         public bool IsActive { get; set; }
         #endregion Properties in DB

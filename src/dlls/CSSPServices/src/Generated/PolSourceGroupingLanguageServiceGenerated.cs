@@ -199,9 +199,9 @@ namespace CSSPServices
                 yield return new ValidationResult(string.Format(CultureServicesRes._IsRequired, "SourceName"), new[] { "SourceName" });
             }
 
-            if (!string.IsNullOrWhiteSpace(polSourceGroupingLanguage.SourceName) && polSourceGroupingLanguage.SourceName.Length > 250)
+            if (!string.IsNullOrWhiteSpace(polSourceGroupingLanguage.SourceName) && polSourceGroupingLanguage.SourceName.Length > 500)
             {
-                yield return new ValidationResult(string.Format(CultureServicesRes._MaxLengthIs_, "SourceName", "250"), new[] { "SourceName" });
+                yield return new ValidationResult(string.Format(CultureServicesRes._MaxLengthIs_, "SourceName", "500"), new[] { "SourceName" });
             }
 
             if (polSourceGroupingLanguage.SourceNameOrder < 0 || polSourceGroupingLanguage.SourceNameOrder > 1000)
@@ -236,9 +236,9 @@ namespace CSSPServices
                 yield return new ValidationResult(string.Format(CultureServicesRes._IsRequired, "Description"), new[] { "Description" });
             }
 
-            if (!string.IsNullOrWhiteSpace(polSourceGroupingLanguage.Description) && polSourceGroupingLanguage.Description.Length > 250)
+            if (!string.IsNullOrWhiteSpace(polSourceGroupingLanguage.Description) && polSourceGroupingLanguage.Description.Length > 500)
             {
-                yield return new ValidationResult(string.Format(CultureServicesRes._MaxLengthIs_, "Description", "250"), new[] { "Description" });
+                yield return new ValidationResult(string.Format(CultureServicesRes._MaxLengthIs_, "Description", "500"), new[] { "Description" });
             }
 
             retStr = enums.EnumTypeOK(typeof(TranslationStatusEnum), (int?)polSourceGroupingLanguage.TranslationStatusDescription);
@@ -252,9 +252,9 @@ namespace CSSPServices
                 yield return new ValidationResult(string.Format(CultureServicesRes._IsRequired, "Report"), new[] { "Report" });
             }
 
-            if (!string.IsNullOrWhiteSpace(polSourceGroupingLanguage.Report) && polSourceGroupingLanguage.Report.Length > 250)
+            if (!string.IsNullOrWhiteSpace(polSourceGroupingLanguage.Report) && polSourceGroupingLanguage.Report.Length > 500)
             {
-                yield return new ValidationResult(string.Format(CultureServicesRes._MaxLengthIs_, "Report", "250"), new[] { "Report" });
+                yield return new ValidationResult(string.Format(CultureServicesRes._MaxLengthIs_, "Report", "500"), new[] { "Report" });
             }
 
             retStr = enums.EnumTypeOK(typeof(TranslationStatusEnum), (int?)polSourceGroupingLanguage.TranslationStatusReport);
@@ -268,9 +268,9 @@ namespace CSSPServices
                 yield return new ValidationResult(string.Format(CultureServicesRes._IsRequired, "Text"), new[] { "Text" });
             }
 
-            if (!string.IsNullOrWhiteSpace(polSourceGroupingLanguage.Text) && polSourceGroupingLanguage.Text.Length > 250)
+            if (!string.IsNullOrWhiteSpace(polSourceGroupingLanguage.Text) && polSourceGroupingLanguage.Text.Length > 500)
             {
-                yield return new ValidationResult(string.Format(CultureServicesRes._MaxLengthIs_, "Text", "250"), new[] { "Text" });
+                yield return new ValidationResult(string.Format(CultureServicesRes._MaxLengthIs_, "Text", "500"), new[] { "Text" });
             }
 
             retStr = enums.EnumTypeOK(typeof(TranslationStatusEnum), (int?)polSourceGroupingLanguage.TranslationStatusText);

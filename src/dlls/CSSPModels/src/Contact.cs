@@ -17,9 +17,11 @@ namespace CSSPModels
         [Key]
         public int ContactID { get; set; }
         [CSSPExist(ExistTypeName = "AspNetUser", ExistPlurial = "s", ExistFieldID = "Id")]
-        [CSSPMaxLength(128)]
+        [CSSPMaxLength(450)]
+        [CSSPForeignKey(TableName = "AspNetUsers", FieldName = "Id")]
         public string Id { get; set; }
         [CSSPExist(ExistTypeName = "TVItem", ExistPlurial = "s", ExistFieldID = "TVItemID", AllowableTVTypeList = "5")]
+        [CSSPForeignKey(TableName = "TVItems", FieldName = "TVItemID")]
         public int ContactTVItemID { get; set; }
         [CSSPMaxLength(255)]
         [CSSPMinLength(6)]

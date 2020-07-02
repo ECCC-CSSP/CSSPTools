@@ -12,6 +12,7 @@ namespace ServicesClassNameServiceTestGeneratedServices.Services
             sb.AppendLine(@"            Config = new ConfigurationBuilder()");
             sb.AppendLine(@"               .SetBasePath(Directory.GetParent(AppContext.BaseDirectory).FullName)");
             sb.AppendLine(@"               .AddJsonFile(""appsettings.json"")");
+            sb.AppendLine(@"               .AddUserSecrets(""6f27cbbe-6ffb-4154-b49b-d739597c4f60"")");
             sb.AppendLine(@"               .Build();");
             sb.AppendLine(@"");
             sb.AppendLine(@"            Services = new ServiceCollection();");
@@ -26,7 +27,13 @@ namespace ServicesClassNameServiceTestGeneratedServices.Services
             sb.AppendLine(@"                options.UseSqlServer(TestDBConnString);");
             sb.AppendLine(@"            });");
             sb.AppendLine(@"");
+            sb.AppendLine(@"            Services.AddDbContext<InMemoryDBContext>(options =>");
+            sb.AppendLine(@"            {");
+            sb.AppendLine(@"                options.UseInMemoryDatabase(TestDBConnString);");
+            sb.AppendLine(@"            });");
+            sb.AppendLine(@"");
             sb.AppendLine(@"            Services.AddSingleton<ICultureService, CultureService>();");
+            sb.AppendLine(@"            Services.AddSingleton<ILoggedInService, LoggedInService>();");
             sb.AppendLine(@"            Services.AddSingleton<IEnums, Enums>();");
             sb.AppendLine($@"            Services.AddSingleton<I{ TypeName }Service, { TypeName }Service>();");
             sb.AppendLine(@"");
@@ -37,6 +44,12 @@ namespace ServicesClassNameServiceTestGeneratedServices.Services
             sb.AppendLine(@"            Assert.NotNull(CultureService);");
             sb.AppendLine(@"");
             sb.AppendLine(@"            CultureService.SetCulture(culture);");
+            sb.AppendLine(@"");
+            sb.AppendLine(@"            LoggedInService = Provider.GetService<ILoggedInService>();");
+            sb.AppendLine(@"            Assert.NotNull(LoggedInService);");
+            sb.AppendLine(@"");
+            sb.AppendLine(@"            string Id = Config.GetValue<string>(""Id"");");
+            sb.AppendLine(@"            Assert.True(await LoggedInService.SetLoggedInContactInfo(Id));");
             sb.AppendLine(@"");
             sb.AppendLine($@"            { TypeName }Service = Provider.GetService<I{ TypeName }Service>();");
             sb.AppendLine($@"            Assert.NotNull({ TypeName }Service);");

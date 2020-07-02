@@ -37,9 +37,10 @@ namespace CSSPCodeGenWebAPI.Controllers
         #endregion Properties
 
         #region Constructors
-        public ActionCommandController(IConfiguration configuration, IActionCommandDBService actionCommandDBService)
+        public ActionCommandController(IConfiguration configuration, ICultureService cultureService, IActionCommandDBService actionCommandDBService)
         {
             this.configuration = configuration;
+            this.CultureService = cultureService;
             this.actionCommandDBService = actionCommandDBService;
 
             //Thread.Sleep(1000);

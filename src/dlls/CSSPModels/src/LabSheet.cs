@@ -19,6 +19,7 @@ namespace CSSPModels
         [CSSPRange(1, -1)]
         public int OtherServerLabSheetID { get; set; }
         [CSSPExist(ExistTypeName = "SamplingPlan", ExistPlurial = "s", ExistFieldID = "SamplingPlanID")]
+        [CSSPForeignKey(TableName = "SamplingPlans", FieldName = "SamplingPlanID")]
         public int SamplingPlanID { get; set; }
         [CSSPMaxLength(250)]
         [CSSPMinLength(1)]
@@ -32,8 +33,10 @@ namespace CSSPModels
         [CSSPRange(1, 100)]
         public int RunNumber { get; set; }
         [CSSPExist(ExistTypeName = "TVItem", ExistPlurial = "s", ExistFieldID = "TVItemID", AllowableTVTypeList = "20")]
+        [CSSPForeignKey(TableName = "TVItems", FieldName = "TVItemID")]
         public int SubsectorTVItemID { get; set; }
         [CSSPExist(ExistTypeName = "TVItem", ExistPlurial = "s", ExistFieldID = "TVItemID", AllowableTVTypeList = "31")]
+        [CSSPForeignKey(TableName = "TVItems", FieldName = "TVItemID")]
         public int? MWQMRunTVItemID { get; set; }
         [CSSPEnumType]
         public SamplingPlanTypeEnum SamplingPlanType { get; set; }
@@ -50,6 +53,7 @@ namespace CSSPModels
         public DateTime FileLastModifiedDate_Local { get; set; }
         public string FileContent { get; set; }
         [CSSPExist(ExistTypeName = "TVItem", ExistPlurial = "s", ExistFieldID = "TVItemID", AllowableTVTypeList = "5")]
+        [CSSPForeignKey(TableName = "TVItems", FieldName = "TVItemID")]
         public int? AcceptedOrRejectedByContactTVItemID { get; set; }
         [CSSPAfter(Year = 1980)]
         public DateTime? AcceptedOrRejectedDateTime { get; set; }

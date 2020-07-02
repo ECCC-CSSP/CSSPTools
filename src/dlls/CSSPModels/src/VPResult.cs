@@ -17,6 +17,7 @@ namespace CSSPModels
         [Key]
         public int VPResultID { get; set; }
         [CSSPExist(ExistTypeName = "VPScenario", ExistPlurial = "s", ExistFieldID = "VPScenarioID")]
+        [CSSPForeignKey(TableName = "VPScenarios", FieldName = "VPScenarioID")]
         public int VPScenarioID { get; set; }
         [CSSPRange(0, 1000)]
         public int Ordinal { get; set; }

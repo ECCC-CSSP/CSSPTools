@@ -17,6 +17,7 @@ namespace CSSPModels
         [Key]
         public int HydrometricDataValueID { get; set; }
         [CSSPExist(ExistTypeName = "HydrometricSite", ExistPlurial = "s", ExistFieldID = "HydrometricSiteID")]
+        [CSSPForeignKey(TableName = "HydrometricSites", FieldName = "HydrometricSiteID")]
         public int HydrometricSiteID { get; set; }
         [CSSPAfter(Year = 1980)]
         public DateTime DateTime_Local { get; set; }

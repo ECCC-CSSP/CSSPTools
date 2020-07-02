@@ -17,6 +17,7 @@ namespace CSSPModels
         [Key]
         public int TVFileLanguageID { get; set; }
         [CSSPExist(ExistTypeName = "TVFile", ExistPlurial = "s", ExistFieldID = "TVFileID")]
+        [CSSPForeignKey(TableName = "TVFiles", FieldName = "TVFileID")]
         public int TVFileID { get; set; }
         [CSSPEnumType]
         public LanguageEnum Language { get; set; }

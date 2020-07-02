@@ -17,6 +17,7 @@ namespace CSSPModels
         [Key]
         public int TelID { get; set; }
         [CSSPExist(ExistTypeName = "TVItem", ExistPlurial = "s", ExistFieldID = "TVItemID", AllowableTVTypeList = "21")]
+        [CSSPForeignKey(TableName = "TVItems", FieldName = "TVItemID")]
         public int TelTVItemID { get; set; }
         [CSSPMaxLength(50)]
         public string TelNumber { get; set; }

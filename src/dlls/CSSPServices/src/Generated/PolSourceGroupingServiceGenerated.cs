@@ -191,9 +191,9 @@ namespace CSSPServices
                 yield return new ValidationResult(string.Format(CultureServicesRes._IsRequired, "GroupName"), new[] { "GroupName" });
             }
 
-            if (!string.IsNullOrWhiteSpace(polSourceGrouping.GroupName) && polSourceGrouping.GroupName.Length > 150)
+            if (!string.IsNullOrWhiteSpace(polSourceGrouping.GroupName) && polSourceGrouping.GroupName.Length > 500)
             {
-                yield return new ValidationResult(string.Format(CultureServicesRes._MaxLengthIs_, "GroupName", "150"), new[] { "GroupName" });
+                yield return new ValidationResult(string.Format(CultureServicesRes._MaxLengthIs_, "GroupName", "500"), new[] { "GroupName" });
             }
 
             if (string.IsNullOrWhiteSpace(polSourceGrouping.Child))
@@ -201,9 +201,9 @@ namespace CSSPServices
                 yield return new ValidationResult(string.Format(CultureServicesRes._IsRequired, "Child"), new[] { "Child" });
             }
 
-            if (!string.IsNullOrWhiteSpace(polSourceGrouping.Child) && polSourceGrouping.Child.Length > 150)
+            if (!string.IsNullOrWhiteSpace(polSourceGrouping.Child) && polSourceGrouping.Child.Length > 500)
             {
-                yield return new ValidationResult(string.Format(CultureServicesRes._MaxLengthIs_, "Child", "150"), new[] { "Child" });
+                yield return new ValidationResult(string.Format(CultureServicesRes._MaxLengthIs_, "Child", "500"), new[] { "Child" });
             }
 
             if (string.IsNullOrWhiteSpace(polSourceGrouping.Hide))
@@ -211,9 +211,9 @@ namespace CSSPServices
                 yield return new ValidationResult(string.Format(CultureServicesRes._IsRequired, "Hide"), new[] { "Hide" });
             }
 
-            if (!string.IsNullOrWhiteSpace(polSourceGrouping.Hide) && polSourceGrouping.Hide.Length > 150)
+            if (!string.IsNullOrWhiteSpace(polSourceGrouping.Hide) && polSourceGrouping.Hide.Length > 500)
             {
-                yield return new ValidationResult(string.Format(CultureServicesRes._MaxLengthIs_, "Hide", "150"), new[] { "Hide" });
+                yield return new ValidationResult(string.Format(CultureServicesRes._MaxLengthIs_, "Hide", "500"), new[] { "Hide" });
             }
 
             if (polSourceGrouping.LastUpdateDate_UTC.Year == 1)

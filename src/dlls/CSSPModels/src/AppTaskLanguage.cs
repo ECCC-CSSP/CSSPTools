@@ -17,6 +17,7 @@ namespace CSSPModels
         [Key]
         public int AppTaskLanguageID { get; set; }
         [CSSPExist(ExistTypeName = "AppTask", ExistPlurial = "s", ExistFieldID = "AppTaskID")]
+        [CSSPForeignKey(TableName = "TVItems", FieldName = "TVItemID")]
         public int AppTaskID { get; set; }
         [CSSPEnumType]
         public LanguageEnum Language { get; set; }

@@ -17,6 +17,7 @@ namespace CSSPModels
         [Key]
         public int PolSourceSiteID { get; set; }
         [CSSPExist(ExistTypeName = "TVItem", ExistPlurial = "s", ExistFieldID = "TVItemID", AllowableTVTypeList = "17")]
+        [CSSPForeignKey(TableName = "TVItems", FieldName = "TVItemID")]
         public int PolSourceSiteTVItemID { get; set; }
         [CSSPMaxLength(50)]
         [CSSPAllowNull]
@@ -32,6 +33,7 @@ namespace CSSPModels
         [CSSPAllowNull]
         public PolSourceInactiveReasonEnum? InactiveReason { get; set; }
         [CSSPExist(ExistTypeName = "TVItem", ExistPlurial = "s", ExistFieldID = "TVItemID", AllowableTVTypeList = "2")]
+        [CSSPForeignKey(TableName = "TVItems", FieldName = "TVItemID")]
         public int? CivicAddressTVItemID { get; set; }
         #endregion Properties in DB
 

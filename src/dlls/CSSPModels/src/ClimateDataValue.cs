@@ -17,6 +17,7 @@ namespace CSSPModels
         [Key]
         public int ClimateDataValueID { get; set; }
         [CSSPExist(ExistTypeName = "ClimateSite", ExistPlurial = "s", ExistFieldID = "ClimateSiteID")]
+        [CSSPForeignKey(TableName = "ClimateSites", FieldName = "ClimateSiteID")]
         public int ClimateSiteID { get; set; }
         [CSSPAfter(Year = 1980)]
         public DateTime DateTime_Local { get; set; }
