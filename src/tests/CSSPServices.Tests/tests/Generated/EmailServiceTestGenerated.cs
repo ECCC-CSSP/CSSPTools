@@ -23,6 +23,7 @@ using Xunit;
 
 namespace CSSPServices.Tests
 {
+    [Collection("Sequential")]
     public partial class EmailServiceTest : TestHelper
     {
         #region Variables
@@ -177,6 +178,9 @@ namespace CSSPServices.Tests
             dbIM = Provider.GetService<InMemoryDBContext>();
             Assert.NotNull(dbIM);
 
+            dbLocal = Provider.GetService<CSSPDBLocalContext>();
+            Assert.NotNull(dbLocal);
+
             EmailService = Provider.GetService<IEmailService>();
             Assert.NotNull(EmailService);
 
@@ -184,6 +188,19 @@ namespace CSSPServices.Tests
         }
         private Email GetFilledRandomEmail(string OmitPropName)
         {
+            List<Email> emailListToDelete = (from c in dbLocal.Emails
+                                                               select c).ToList(); 
+            
+            dbLocal.Emails.RemoveRange(emailListToDelete);
+            try
+            {
+                dbLocal.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                Assert.True(false, ex.Message);
+            }
+            
             dbIM.Database.EnsureDeleted();
 
             Email email = new Email();
@@ -198,10 +215,24 @@ namespace CSSPServices.Tests
             {
                 if (OmitPropName != "EmailID") email.EmailID = 10000000;
 
+                try
+                {
                 dbIM.TVItems.Add(new TVItem() { TVItemID = 54, TVLevel = 1, TVPath = "p1p54", TVType = (TVTypeEnum)7, ParentID = 5, IsActive = true, LastUpdateDate_UTC = new DateTime(2015, 2, 17, 16, 15, 51), LastUpdateContactTVItemID = 2});
-                dbIM.SaveChanges();
+                    dbIM.SaveChanges();
+                }
+                catch (Exception)
+                {
+                   // nothing for now
+                }
+                try
+                {
                 dbIM.TVItems.Add(new TVItem() { TVItemID = 2, TVLevel = 1, TVPath = "p1p2", TVType = (TVTypeEnum)5, ParentID = 1, IsActive = true, LastUpdateDate_UTC = new DateTime(2014, 12, 2, 16, 58, 16), LastUpdateContactTVItemID = 2});
-                dbIM.SaveChanges();
+                    dbIM.SaveChanges();
+                }
+                catch (Exception)
+                {
+                   // nothing for now
+                }
             }
 
             return email;

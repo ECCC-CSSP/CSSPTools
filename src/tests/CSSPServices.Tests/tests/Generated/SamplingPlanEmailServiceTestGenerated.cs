@@ -23,6 +23,7 @@ using Xunit;
 
 namespace CSSPServices.Tests
 {
+    [Collection("Sequential")]
     public partial class SamplingPlanEmailServiceTest : TestHelper
     {
         #region Variables
@@ -177,6 +178,9 @@ namespace CSSPServices.Tests
             dbIM = Provider.GetService<InMemoryDBContext>();
             Assert.NotNull(dbIM);
 
+            dbLocal = Provider.GetService<CSSPDBLocalContext>();
+            Assert.NotNull(dbLocal);
+
             SamplingPlanEmailService = Provider.GetService<ISamplingPlanEmailService>();
             Assert.NotNull(SamplingPlanEmailService);
 
@@ -184,6 +188,19 @@ namespace CSSPServices.Tests
         }
         private SamplingPlanEmail GetFilledRandomSamplingPlanEmail(string OmitPropName)
         {
+            List<SamplingPlanEmail> samplingPlanEmailListToDelete = (from c in dbLocal.SamplingPlanEmails
+                                                               select c).ToList(); 
+            
+            dbLocal.SamplingPlanEmails.RemoveRange(samplingPlanEmailListToDelete);
+            try
+            {
+                dbLocal.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                Assert.True(false, ex.Message);
+            }
+            
             dbIM.Database.EnsureDeleted();
 
             SamplingPlanEmail samplingPlanEmail = new SamplingPlanEmail();
@@ -202,10 +219,24 @@ namespace CSSPServices.Tests
             {
                 if (OmitPropName != "SamplingPlanEmailID") samplingPlanEmail.SamplingPlanEmailID = 10000000;
 
-                dbIM.SamplingPlans.Add(new SamplingPlan() { SamplingPlanID = 1 });
-                dbIM.SaveChanges();
+                try
+                {
+                dbIM.SamplingPlans.Add(new SamplingPlan() { SamplingPlanID = 1, IsActive = false, SamplingPlanName = @"C:\CSSPLabSheets\SamplingPlan_Subsector_Routine_A1_2019_a_aa.txt", ForGroupName = "a_aa", SampleType = (SampleTypeEnum)109, SamplingPlanType = (SamplingPlanTypeEnum)1, LabSheetType = (LabSheetTypeEnum)1, ProvinceTVItemID = 6, CreatorTVItemID = 2, Year = 2019, AccessCode = "Microlab12", DailyDuplicatePrecisionCriteria = 0.6872000098228455, IntertechDuplicatePrecisionCriteria = 0.09300000220537186, IncludeLaboratoryQAQC = false, ApprovalCode = "aaabbb", SamplingPlanFileTVItemID = 49, AnalyzeMethodDefault = (AnalyzeMethodEnum)6, SampleMatrixDefault = (SampleMatrixEnum)7, LaboratoryDefault = (LaboratoryEnum)19, BackupDirectory = @"\\Atlantic.int.ec.gc.ca\shares\Branches\EPB\ShellFish\CSSPTools\CSSPLabSheets\", LastUpdateDate_UTC = new DateTime(2019, 1, 28, 15, 15, 42), LastUpdateContactTVItemID = 2 });
+                    dbIM.SaveChanges();
+                }
+                catch (Exception)
+                {
+                   // nothing for now
+                }
+                try
+                {
                 dbIM.TVItems.Add(new TVItem() { TVItemID = 2, TVLevel = 1, TVPath = "p1p2", TVType = (TVTypeEnum)5, ParentID = 1, IsActive = true, LastUpdateDate_UTC = new DateTime(2014, 12, 2, 16, 58, 16), LastUpdateContactTVItemID = 2});
-                dbIM.SaveChanges();
+                    dbIM.SaveChanges();
+                }
+                catch (Exception)
+                {
+                   // nothing for now
+                }
             }
 
             return samplingPlanEmail;

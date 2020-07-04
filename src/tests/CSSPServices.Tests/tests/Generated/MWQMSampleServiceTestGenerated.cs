@@ -23,6 +23,7 @@ using Xunit;
 
 namespace CSSPServices.Tests
 {
+    [Collection("Sequential")]
     public partial class MWQMSampleServiceTest : TestHelper
     {
         #region Variables
@@ -177,6 +178,9 @@ namespace CSSPServices.Tests
             dbIM = Provider.GetService<InMemoryDBContext>();
             Assert.NotNull(dbIM);
 
+            dbLocal = Provider.GetService<CSSPDBLocalContext>();
+            Assert.NotNull(dbLocal);
+
             MWQMSampleService = Provider.GetService<IMWQMSampleService>();
             Assert.NotNull(MWQMSampleService);
 
@@ -184,6 +188,19 @@ namespace CSSPServices.Tests
         }
         private MWQMSample GetFilledRandomMWQMSample(string OmitPropName)
         {
+            List<MWQMSample> mwqmSampleListToDelete = (from c in dbLocal.MWQMSamples
+                                                               select c).ToList(); 
+            
+            dbLocal.MWQMSamples.RemoveRange(mwqmSampleListToDelete);
+            try
+            {
+                dbLocal.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                Assert.True(false, ex.Message);
+            }
+            
             dbIM.Database.EnsureDeleted();
 
             MWQMSample mwqmSample = new MWQMSample();
@@ -211,12 +228,33 @@ namespace CSSPServices.Tests
             {
                 if (OmitPropName != "MWQMSampleID") mwqmSample.MWQMSampleID = 10000000;
 
+                try
+                {
                 dbIM.TVItems.Add(new TVItem() { TVItemID = 44, TVLevel = 6, TVPath = "p1p5p6p9p10p12p44", TVType = (TVTypeEnum)16, ParentID = 12, IsActive = true, LastUpdateDate_UTC = new DateTime(2017, 10, 12, 17, 39, 34), LastUpdateContactTVItemID = 2});
-                dbIM.SaveChanges();
+                    dbIM.SaveChanges();
+                }
+                catch (Exception)
+                {
+                   // nothing for now
+                }
+                try
+                {
                 dbIM.TVItems.Add(new TVItem() { TVItemID = 50, TVLevel = 6, TVPath = "p1p5p6p9p10p12p50", TVType = (TVTypeEnum)31, ParentID = 12, IsActive = true, LastUpdateDate_UTC = new DateTime(2017, 6, 28, 12, 41, 23), LastUpdateContactTVItemID = 2});
-                dbIM.SaveChanges();
+                    dbIM.SaveChanges();
+                }
+                catch (Exception)
+                {
+                   // nothing for now
+                }
+                try
+                {
                 dbIM.TVItems.Add(new TVItem() { TVItemID = 2, TVLevel = 1, TVPath = "p1p2", TVType = (TVTypeEnum)5, ParentID = 1, IsActive = true, LastUpdateDate_UTC = new DateTime(2014, 12, 2, 16, 58, 16), LastUpdateContactTVItemID = 2});
-                dbIM.SaveChanges();
+                    dbIM.SaveChanges();
+                }
+                catch (Exception)
+                {
+                   // nothing for now
+                }
             }
 
             return mwqmSample;

@@ -23,6 +23,7 @@ using Xunit;
 
 namespace CSSPServices.Tests
 {
+    [Collection("Sequential")]
     public partial class AddressServiceTest : TestHelper
     {
         #region Variables
@@ -177,6 +178,9 @@ namespace CSSPServices.Tests
             dbIM = Provider.GetService<InMemoryDBContext>();
             Assert.NotNull(dbIM);
 
+            dbLocal = Provider.GetService<CSSPDBLocalContext>();
+            Assert.NotNull(dbLocal);
+
             AddressService = Provider.GetService<IAddressService>();
             Assert.NotNull(AddressService);
 
@@ -184,6 +188,19 @@ namespace CSSPServices.Tests
         }
         private Address GetFilledRandomAddress(string OmitPropName)
         {
+            List<Address> addressListToDelete = (from c in dbLocal.Addresses
+                                                               select c).ToList(); 
+            
+            dbLocal.Addresses.RemoveRange(addressListToDelete);
+            try
+            {
+                dbLocal.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                Assert.True(false, ex.Message);
+            }
+            
             dbIM.Database.EnsureDeleted();
 
             Address address = new Address();
@@ -205,16 +222,51 @@ namespace CSSPServices.Tests
             {
                 if (OmitPropName != "AddressID") address.AddressID = 10000000;
 
+                try
+                {
                 dbIM.TVItems.Add(new TVItem() { TVItemID = 46, TVLevel = 1, TVPath = "p1p46", TVType = (TVTypeEnum)2, ParentID = 1, IsActive = true, LastUpdateDate_UTC = new DateTime(2015, 9, 8, 17, 8, 14), LastUpdateContactTVItemID = 2});
-                dbIM.SaveChanges();
+                    dbIM.SaveChanges();
+                }
+                catch (Exception)
+                {
+                   // nothing for now
+                }
+                try
+                {
                 dbIM.TVItems.Add(new TVItem() { TVItemID = 5, TVLevel = 1, TVPath = "p1p5", TVType = (TVTypeEnum)6, ParentID = 1, IsActive = true, LastUpdateDate_UTC = new DateTime(2017, 8, 8, 16, 36, 15), LastUpdateContactTVItemID = 2});
-                dbIM.SaveChanges();
+                    dbIM.SaveChanges();
+                }
+                catch (Exception)
+                {
+                   // nothing for now
+                }
+                try
+                {
                 dbIM.TVItems.Add(new TVItem() { TVItemID = 6, TVLevel = 2, TVPath = "p1p5p6", TVType = (TVTypeEnum)18, ParentID = 5, IsActive = true, LastUpdateDate_UTC = new DateTime(2015, 2, 17, 14, 14, 24), LastUpdateContactTVItemID = 2});
-                dbIM.SaveChanges();
+                    dbIM.SaveChanges();
+                }
+                catch (Exception)
+                {
+                   // nothing for now
+                }
+                try
+                {
                 dbIM.TVItems.Add(new TVItem() { TVItemID = 39, TVLevel = 3, TVPath = "p1p5p6p39", TVType = (TVTypeEnum)15, ParentID = 6, IsActive = true, LastUpdateDate_UTC = new DateTime(2015, 2, 22, 14, 12, 19), LastUpdateContactTVItemID = 2});
-                dbIM.SaveChanges();
+                    dbIM.SaveChanges();
+                }
+                catch (Exception)
+                {
+                   // nothing for now
+                }
+                try
+                {
                 dbIM.TVItems.Add(new TVItem() { TVItemID = 2, TVLevel = 1, TVPath = "p1p2", TVType = (TVTypeEnum)5, ParentID = 1, IsActive = true, LastUpdateDate_UTC = new DateTime(2014, 12, 2, 16, 58, 16), LastUpdateContactTVItemID = 2});
-                dbIM.SaveChanges();
+                    dbIM.SaveChanges();
+                }
+                catch (Exception)
+                {
+                   // nothing for now
+                }
             }
 
             return address;

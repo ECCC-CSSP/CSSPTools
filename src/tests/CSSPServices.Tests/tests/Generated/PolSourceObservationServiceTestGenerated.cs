@@ -23,6 +23,7 @@ using Xunit;
 
 namespace CSSPServices.Tests
 {
+    [Collection("Sequential")]
     public partial class PolSourceObservationServiceTest : TestHelper
     {
         #region Variables
@@ -177,6 +178,9 @@ namespace CSSPServices.Tests
             dbIM = Provider.GetService<InMemoryDBContext>();
             Assert.NotNull(dbIM);
 
+            dbLocal = Provider.GetService<CSSPDBLocalContext>();
+            Assert.NotNull(dbLocal);
+
             PolSourceObservationService = Provider.GetService<IPolSourceObservationService>();
             Assert.NotNull(PolSourceObservationService);
 
@@ -184,6 +188,19 @@ namespace CSSPServices.Tests
         }
         private PolSourceObservation GetFilledRandomPolSourceObservation(string OmitPropName)
         {
+            List<PolSourceObservation> polSourceObservationListToDelete = (from c in dbLocal.PolSourceObservations
+                                                               select c).ToList(); 
+            
+            dbLocal.PolSourceObservations.RemoveRange(polSourceObservationListToDelete);
+            try
+            {
+                dbLocal.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                Assert.True(false, ex.Message);
+            }
+            
             dbIM.Database.EnsureDeleted();
 
             PolSourceObservation polSourceObservation = new PolSourceObservation();
@@ -200,10 +217,24 @@ namespace CSSPServices.Tests
             {
                 if (OmitPropName != "PolSourceObservationID") polSourceObservation.PolSourceObservationID = 10000000;
 
-                dbIM.PolSourceSites.Add(new PolSourceSite() { PolSourceSiteID = 1 });
-                dbIM.SaveChanges();
+                try
+                {
+                dbIM.PolSourceSites.Add(new PolSourceSite() { PolSourceSiteID = 1, PolSourceSiteTVItemID = 47, Temp_Locator_CanDelete = "NB-06-020-002", Oldsiteid = null, Site = 23, SiteID = null, IsPointSource = false, InactiveReason = null, CivicAddressTVItemID = 46, LastUpdateDate_UTC = new DateTime(2016, 5, 2, 14, 44, 28), LastUpdateContactTVItemID = 2 });
+                    dbIM.SaveChanges();
+                }
+                catch (Exception)
+                {
+                   // nothing for now
+                }
+                try
+                {
                 dbIM.TVItems.Add(new TVItem() { TVItemID = 2, TVLevel = 1, TVPath = "p1p2", TVType = (TVTypeEnum)5, ParentID = 1, IsActive = true, LastUpdateDate_UTC = new DateTime(2014, 12, 2, 16, 58, 16), LastUpdateContactTVItemID = 2});
-                dbIM.SaveChanges();
+                    dbIM.SaveChanges();
+                }
+                catch (Exception)
+                {
+                   // nothing for now
+                }
             }
 
             return polSourceObservation;

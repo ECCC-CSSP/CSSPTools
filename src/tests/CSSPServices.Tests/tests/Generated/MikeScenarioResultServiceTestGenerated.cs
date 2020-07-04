@@ -23,6 +23,7 @@ using Xunit;
 
 namespace CSSPServices.Tests
 {
+    [Collection("Sequential")]
     public partial class MikeScenarioResultServiceTest : TestHelper
     {
         #region Variables
@@ -177,6 +178,9 @@ namespace CSSPServices.Tests
             dbIM = Provider.GetService<InMemoryDBContext>();
             Assert.NotNull(dbIM);
 
+            dbLocal = Provider.GetService<CSSPDBLocalContext>();
+            Assert.NotNull(dbLocal);
+
             MikeScenarioResultService = Provider.GetService<IMikeScenarioResultService>();
             Assert.NotNull(MikeScenarioResultService);
 
@@ -184,6 +188,19 @@ namespace CSSPServices.Tests
         }
         private MikeScenarioResult GetFilledRandomMikeScenarioResult(string OmitPropName)
         {
+            List<MikeScenarioResult> mikeScenarioResultListToDelete = (from c in dbLocal.MikeScenarioResults
+                                                               select c).ToList(); 
+            
+            dbLocal.MikeScenarioResults.RemoveRange(mikeScenarioResultListToDelete);
+            try
+            {
+                dbLocal.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                Assert.True(false, ex.Message);
+            }
+            
             dbIM.Database.EnsureDeleted();
 
             MikeScenarioResult mikeScenarioResult = new MikeScenarioResult();
@@ -197,10 +214,24 @@ namespace CSSPServices.Tests
             {
                 if (OmitPropName != "MikeScenarioResultID") mikeScenarioResult.MikeScenarioResultID = 10000000;
 
+                try
+                {
                 dbIM.TVItems.Add(new TVItem() { TVItemID = 51, TVLevel = 4, TVPath = "p1p5p6p39p51", TVType = (TVTypeEnum)13, ParentID = 39, IsActive = true, LastUpdateDate_UTC = new DateTime(2014, 12, 2, 21, 28, 56), LastUpdateContactTVItemID = 2});
-                dbIM.SaveChanges();
+                    dbIM.SaveChanges();
+                }
+                catch (Exception)
+                {
+                   // nothing for now
+                }
+                try
+                {
                 dbIM.TVItems.Add(new TVItem() { TVItemID = 2, TVLevel = 1, TVPath = "p1p2", TVType = (TVTypeEnum)5, ParentID = 1, IsActive = true, LastUpdateDate_UTC = new DateTime(2014, 12, 2, 16, 58, 16), LastUpdateContactTVItemID = 2});
-                dbIM.SaveChanges();
+                    dbIM.SaveChanges();
+                }
+                catch (Exception)
+                {
+                   // nothing for now
+                }
             }
 
             return mikeScenarioResult;

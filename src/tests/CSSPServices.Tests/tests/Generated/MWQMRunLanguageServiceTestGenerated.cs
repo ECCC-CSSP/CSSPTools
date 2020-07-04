@@ -23,6 +23,7 @@ using Xunit;
 
 namespace CSSPServices.Tests
 {
+    [Collection("Sequential")]
     public partial class MWQMRunLanguageServiceTest : TestHelper
     {
         #region Variables
@@ -177,6 +178,9 @@ namespace CSSPServices.Tests
             dbIM = Provider.GetService<InMemoryDBContext>();
             Assert.NotNull(dbIM);
 
+            dbLocal = Provider.GetService<CSSPDBLocalContext>();
+            Assert.NotNull(dbLocal);
+
             MWQMRunLanguageService = Provider.GetService<IMWQMRunLanguageService>();
             Assert.NotNull(MWQMRunLanguageService);
 
@@ -184,6 +188,19 @@ namespace CSSPServices.Tests
         }
         private MWQMRunLanguage GetFilledRandomMWQMRunLanguage(string OmitPropName)
         {
+            List<MWQMRunLanguage> mwqmRunLanguageListToDelete = (from c in dbLocal.MWQMRunLanguages
+                                                               select c).ToList(); 
+            
+            dbLocal.MWQMRunLanguages.RemoveRange(mwqmRunLanguageListToDelete);
+            try
+            {
+                dbLocal.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                Assert.True(false, ex.Message);
+            }
+            
             dbIM.Database.EnsureDeleted();
 
             MWQMRunLanguage mwqmRunLanguage = new MWQMRunLanguage();
@@ -201,10 +218,24 @@ namespace CSSPServices.Tests
             {
                 if (OmitPropName != "MWQMRunLanguageID") mwqmRunLanguage.MWQMRunLanguageID = 10000000;
 
+                try
+                {
                 dbIM.MWQMRuns.Add(new MWQMRun() { MWQMRunID = 1, SubsectorTVItemID = 12, MWQMRunTVItemID = 50, RunSampleType = (SampleTypeEnum)109, DateTime_Local = new DateTime(2017, 6, 21, 0, 0, 0), RunNumber = 1, StartDateTime_Local = new DateTime(2017, 6, 21, 6, 28, 0), EndDateTime_Local = new DateTime(2017, 6, 21, 7, 59, 0), LabReceivedDateTime_Local = new DateTime(2017, 6, 21, 0, 0, 0), TemperatureControl1_C = null, TemperatureControl2_C = null, SeaStateAtStart_BeaufortScale = null, SeaStateAtEnd_BeaufortScale = null, WaterLevelAtBrook_m = null, WaveHightAtStart_m = null, WaveHightAtEnd_m = null, SampleCrewInitials = "null", AnalyzeMethod = (AnalyzeMethodEnum)6, SampleMatrix = (SampleMatrixEnum)7, Laboratory = (LaboratoryEnum)19, SampleStatus = (SampleStatusEnum)2, LabSampleApprovalContactTVItemID = 2, LabAnalyzeBath1IncubationStartDateTime_Local = null, LabAnalyzeBath2IncubationStartDateTime_Local = null, LabAnalyzeBath3IncubationStartDateTime_Local = null, LabRunSampleApprovalDateTime_Local = new DateTime(2017, 6, 28, 9, 41, 23), Tide_Start = (TideTextEnum)7, Tide_End = (TideTextEnum)8, RainDay0_mm = 2.3, RainDay1_mm = 4.8, RainDay2_mm = 0, RainDay3_mm = 0, RainDay4_mm = 7.4, RainDay5_mm = 1.1, RainDay6_mm = 1, RainDay7_mm = 0, RainDay8_mm = 0.2, RainDay9_mm = 0.2, RainDay10_mm = 0, RemoveFromStat = null, LastUpdateDate_UTC = new DateTime(2018, 4, 27, 17, 23, 2), LastUpdateContactTVItemID = 2 });
-                dbIM.SaveChanges();
+                    dbIM.SaveChanges();
+                }
+                catch (Exception)
+                {
+                   // nothing for now
+                }
+                try
+                {
                 dbIM.TVItems.Add(new TVItem() { TVItemID = 2, TVLevel = 1, TVPath = "p1p2", TVType = (TVTypeEnum)5, ParentID = 1, IsActive = true, LastUpdateDate_UTC = new DateTime(2014, 12, 2, 16, 58, 16), LastUpdateContactTVItemID = 2});
-                dbIM.SaveChanges();
+                    dbIM.SaveChanges();
+                }
+                catch (Exception)
+                {
+                   // nothing for now
+                }
             }
 
             return mwqmRunLanguage;

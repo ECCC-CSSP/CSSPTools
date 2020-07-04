@@ -86,8 +86,15 @@ namespace ServicesClassNameServiceTestGeneratedServices.Services
                                                     $@"}});";
                                                 if (!sbInMemory.ToString().Contains(TempStr))
                                                 {
+                                                    sbInMemory.AppendLine($@"                try");
+                                                    sbInMemory.AppendLine($@"                {{");
                                                     sbInMemory.AppendLine(TempStr);
-                                                    sbInMemory.AppendLine($@"                dbIM.SaveChanges();");
+                                                    sbInMemory.AppendLine($@"                    dbIM.SaveChanges();");
+                                                    sbInMemory.AppendLine($@"                }}");
+                                                    sbInMemory.AppendLine($@"                catch (Exception)");
+                                                    sbInMemory.AppendLine($@"                {{");
+                                                    sbInMemory.AppendLine($@"                   // nothing for now");
+                                                    sbInMemory.AppendLine($@"                }}");
                                                 }
                                             }
                                         }
@@ -121,8 +128,15 @@ namespace ServicesClassNameServiceTestGeneratedServices.Services
                                                     $@"}});";
                                                 if (!sbInMemory.ToString().Contains(TempStr))
                                                 {
+                                                    sbInMemory.AppendLine($@"                try");
+                                                    sbInMemory.AppendLine($@"                {{");
                                                     sbInMemory.AppendLine(TempStr);
-                                                    sbInMemory.AppendLine($@"                dbIM.SaveChanges();");
+                                                    sbInMemory.AppendLine($@"                    dbIM.SaveChanges();");
+                                                    sbInMemory.AppendLine($@"                }}");
+                                                    sbInMemory.AppendLine($@"                catch (Exception)");
+                                                    sbInMemory.AppendLine($@"                {{");
+                                                    sbInMemory.AppendLine($@"                   // nothing for now");
+                                                    sbInMemory.AppendLine($@"                }}");
                                                 }
                                             }
                                         }
@@ -184,8 +198,15 @@ namespace ServicesClassNameServiceTestGeneratedServices.Services
                                                     $@"}});";
                                                 if (!sbInMemory.ToString().Contains(TempStr))
                                                 {
+                                                    sbInMemory.AppendLine($@"                try");
+                                                    sbInMemory.AppendLine($@"                {{");
                                                     sbInMemory.AppendLine(TempStr);
-                                                    sbInMemory.AppendLine($@"                dbIM.SaveChanges();");
+                                                    sbInMemory.AppendLine($@"                    dbIM.SaveChanges();");
+                                                    sbInMemory.AppendLine($@"                }}");
+                                                    sbInMemory.AppendLine($@"                catch (Exception)");
+                                                    sbInMemory.AppendLine($@"                {{");
+                                                    sbInMemory.AppendLine($@"                   // nothing for now");
+                                                    sbInMemory.AppendLine($@"                }}");
                                                 }
                                             }
                                         }
@@ -210,7 +231,7 @@ namespace ServicesClassNameServiceTestGeneratedServices.Services
                                                 string ProvincesTVItemID = contact.SamplingPlanner_ProvincesTVItemID ?? "";
                                                 string Token = contact.Token ?? "";
                                                 string ContactTitle = contact.ContactTitle == null ? "0" : ((int)contact.ContactTitle).ToString();
-                                                string TempStr = $@"                dbIM.{ csspProp.ExistTypeName }s.Add(new { csspProp.ExistTypeName }() {{ " +
+                                                string TempStr = $@"                    dbIM.{ csspProp.ExistTypeName }s.Add(new { csspProp.ExistTypeName }() {{ " +
                                                     $@"ContactID = { contact.ContactID }, " +
                                                     $@"Id = ""{ Id }"" ?? """", " +
                                                     $@"ContactTVItemID = { contact.ContactTVItemID }, " +
@@ -231,8 +252,15 @@ namespace ServicesClassNameServiceTestGeneratedServices.Services
                                                     $@"}});";
                                                 if (!sbInMemory.ToString().Contains(TempStr))
                                                 {
+                                                    sbInMemory.AppendLine($@"                try");
+                                                    sbInMemory.AppendLine($@"                {{");
                                                     sbInMemory.AppendLine(TempStr);
-                                                    sbInMemory.AppendLine($@"                dbIM.SaveChanges();");
+                                                    sbInMemory.AppendLine($@"                    dbIM.SaveChanges();");
+                                                    sbInMemory.AppendLine($@"                }}");
+                                                    sbInMemory.AppendLine($@"                catch (Exception)");
+                                                    sbInMemory.AppendLine($@"                {{");
+                                                    sbInMemory.AppendLine($@"                   // nothing for now");
+                                                    sbInMemory.AppendLine($@"                }}");
                                                 }
                                             }
                                         }
@@ -261,8 +289,15 @@ namespace ServicesClassNameServiceTestGeneratedServices.Services
                                                     $@"}});";
                                                 if (!sbInMemory.ToString().Contains(TempStr))
                                                 {
+                                                    sbInMemory.AppendLine($@"                try");
+                                                    sbInMemory.AppendLine($@"                {{");
                                                     sbInMemory.AppendLine(TempStr);
-                                                    sbInMemory.AppendLine($@"                dbIM.SaveChanges();");
+                                                    sbInMemory.AppendLine($@"                    dbIM.SaveChanges();");
+                                                    sbInMemory.AppendLine($@"                }}");
+                                                    sbInMemory.AppendLine($@"                catch (Exception)");
+                                                    sbInMemory.AppendLine($@"                {{");
+                                                    sbInMemory.AppendLine($@"                   // nothing for now");
+                                                    sbInMemory.AppendLine($@"                }}");
                                                 }
                                             }
                                         }
@@ -287,8 +322,15 @@ namespace ServicesClassNameServiceTestGeneratedServices.Services
                                                     $@"}});";
                                                 if (!sbInMemory.ToString().Contains(TempStr))
                                                 {
+                                                    sbInMemory.AppendLine($@"                try");
+                                                    sbInMemory.AppendLine($@"                {{");
                                                     sbInMemory.AppendLine(TempStr);
-                                                    sbInMemory.AppendLine($@"                dbIM.SaveChanges();");
+                                                    sbInMemory.AppendLine($@"                    dbIM.SaveChanges();");
+                                                    sbInMemory.AppendLine($@"                }}");
+                                                    sbInMemory.AppendLine($@"                catch (Exception)");
+                                                    sbInMemory.AppendLine($@"                {{");
+                                                    sbInMemory.AppendLine($@"                   // nothing for now");
+                                                    sbInMemory.AppendLine($@"                }}");
                                                 }
                                             }
                                         }
@@ -320,8 +362,15 @@ namespace ServicesClassNameServiceTestGeneratedServices.Services
                                                     $@"}});";
                                                 if (!sbInMemory.ToString().Contains(TempStr))
                                                 {
+                                                    sbInMemory.AppendLine($@"                try");
+                                                    sbInMemory.AppendLine($@"                {{");
                                                     sbInMemory.AppendLine(TempStr);
-                                                    sbInMemory.AppendLine($@"                dbIM.SaveChanges();");
+                                                    sbInMemory.AppendLine($@"                    dbIM.SaveChanges();");
+                                                    sbInMemory.AppendLine($@"                }}");
+                                                    sbInMemory.AppendLine($@"                catch (Exception)");
+                                                    sbInMemory.AppendLine($@"                {{");
+                                                    sbInMemory.AppendLine($@"                   // nothing for now");
+                                                    sbInMemory.AppendLine($@"                }}");
                                                 }
                                             }
                                         }
@@ -379,8 +428,15 @@ namespace ServicesClassNameServiceTestGeneratedServices.Services
                                                     $@"}});";
                                                 if (!sbInMemory.ToString().Contains(TempStr))
                                                 {
+                                                    sbInMemory.AppendLine($@"                try");
+                                                    sbInMemory.AppendLine($@"                {{");
                                                     sbInMemory.AppendLine(TempStr);
-                                                    sbInMemory.AppendLine($@"                dbIM.SaveChanges();");
+                                                    sbInMemory.AppendLine($@"                    dbIM.SaveChanges();");
+                                                    sbInMemory.AppendLine($@"                }}");
+                                                    sbInMemory.AppendLine($@"                catch (Exception)");
+                                                    sbInMemory.AppendLine($@"                {{");
+                                                    sbInMemory.AppendLine($@"                   // nothing for now");
+                                                    sbInMemory.AppendLine($@"                }}");
                                                 }
                                             }
                                         }
@@ -496,8 +552,15 @@ namespace ServicesClassNameServiceTestGeneratedServices.Services
                                                     $@"}});";
                                                 if (!sbInMemory.ToString().Contains(TempStr))
                                                 {
+                                                    sbInMemory.AppendLine($@"                try");
+                                                    sbInMemory.AppendLine($@"                {{");
                                                     sbInMemory.AppendLine(TempStr);
-                                                    sbInMemory.AppendLine($@"                dbIM.SaveChanges();");
+                                                    sbInMemory.AppendLine($@"                    dbIM.SaveChanges();");
+                                                    sbInMemory.AppendLine($@"                }}");
+                                                    sbInMemory.AppendLine($@"                catch (Exception)");
+                                                    sbInMemory.AppendLine($@"                {{");
+                                                    sbInMemory.AppendLine($@"                   // nothing for now");
+                                                    sbInMemory.AppendLine($@"                }}");
                                                 }
                                             }
                                         }
@@ -543,8 +606,15 @@ namespace ServicesClassNameServiceTestGeneratedServices.Services
                                                     $@"}});";
                                                 if (!sbInMemory.ToString().Contains(TempStr))
                                                 {
+                                                    sbInMemory.AppendLine($@"                try");
+                                                    sbInMemory.AppendLine($@"                {{");
                                                     sbInMemory.AppendLine(TempStr);
-                                                    sbInMemory.AppendLine($@"                dbIM.SaveChanges();");
+                                                    sbInMemory.AppendLine($@"                    dbIM.SaveChanges();");
+                                                    sbInMemory.AppendLine($@"                }}");
+                                                    sbInMemory.AppendLine($@"                catch (Exception)");
+                                                    sbInMemory.AppendLine($@"                {{");
+                                                    sbInMemory.AppendLine($@"                   // nothing for now");
+                                                    sbInMemory.AppendLine($@"                }}");
                                                 }
                                             }
                                         }
@@ -682,8 +752,15 @@ namespace ServicesClassNameServiceTestGeneratedServices.Services
                                                     $@"}});";
                                                 if (!sbInMemory.ToString().Contains(TempStr))
                                                 {
+                                                    sbInMemory.AppendLine($@"                try");
+                                                    sbInMemory.AppendLine($@"                {{");
                                                     sbInMemory.AppendLine(TempStr);
-                                                    sbInMemory.AppendLine($@"                dbIM.SaveChanges();");
+                                                    sbInMemory.AppendLine($@"                    dbIM.SaveChanges();");
+                                                    sbInMemory.AppendLine($@"                }}");
+                                                    sbInMemory.AppendLine($@"                catch (Exception)");
+                                                    sbInMemory.AppendLine($@"                {{");
+                                                    sbInMemory.AppendLine($@"                   // nothing for now");
+                                                    sbInMemory.AppendLine($@"                }}");
                                                 }
                                             }
                                         }
@@ -712,8 +789,15 @@ namespace ServicesClassNameServiceTestGeneratedServices.Services
                                                     $@"}});";
                                                 if (!sbInMemory.ToString().Contains(TempStr))
                                                 {
+                                                    sbInMemory.AppendLine($@"                try");
+                                                    sbInMemory.AppendLine($@"                {{");
                                                     sbInMemory.AppendLine(TempStr);
-                                                    sbInMemory.AppendLine($@"                dbIM.SaveChanges();");
+                                                    sbInMemory.AppendLine($@"                    dbIM.SaveChanges();");
+                                                    sbInMemory.AppendLine($@"                }}");
+                                                    sbInMemory.AppendLine($@"                catch (Exception)");
+                                                    sbInMemory.AppendLine($@"                {{");
+                                                    sbInMemory.AppendLine($@"                   // nothing for now");
+                                                    sbInMemory.AppendLine($@"                }}");
                                                 }
                                             }
                                         }
@@ -748,8 +832,15 @@ namespace ServicesClassNameServiceTestGeneratedServices.Services
                                                     $@"}});";
                                                 if (!sbInMemory.ToString().Contains(TempStr))
                                                 {
+                                                    sbInMemory.AppendLine($@"                try");
+                                                    sbInMemory.AppendLine($@"                {{");
                                                     sbInMemory.AppendLine(TempStr);
-                                                    sbInMemory.AppendLine($@"                dbIM.SaveChanges();");
+                                                    sbInMemory.AppendLine($@"                    dbIM.SaveChanges();");
+                                                    sbInMemory.AppendLine($@"                }}");
+                                                    sbInMemory.AppendLine($@"                catch (Exception)");
+                                                    sbInMemory.AppendLine($@"                {{");
+                                                    sbInMemory.AppendLine($@"                   // nothing for now");
+                                                    sbInMemory.AppendLine($@"                }}");
                                                 }
                                             }
                                         }
@@ -800,8 +891,15 @@ namespace ServicesClassNameServiceTestGeneratedServices.Services
                                                     $@"}});";
                                                 if (!sbInMemory.ToString().Contains(TempStr))
                                                 {
+                                                    sbInMemory.AppendLine($@"                try");
+                                                    sbInMemory.AppendLine($@"                {{");
                                                     sbInMemory.AppendLine(TempStr);
-                                                    sbInMemory.AppendLine($@"                dbIM.SaveChanges();");
+                                                    sbInMemory.AppendLine($@"                    dbIM.SaveChanges();");
+                                                    sbInMemory.AppendLine($@"                }}");
+                                                    sbInMemory.AppendLine($@"                catch (Exception)");
+                                                    sbInMemory.AppendLine($@"                {{");
+                                                    sbInMemory.AppendLine($@"                   // nothing for now");
+                                                    sbInMemory.AppendLine($@"                }}");
                                                 }
                                             }
                                         }
@@ -898,8 +996,15 @@ namespace ServicesClassNameServiceTestGeneratedServices.Services
                                                     $@"}});";
                                                 if (!sbInMemory.ToString().Contains(TempStr))
                                                 {
+                                                    sbInMemory.AppendLine($@"                try");
+                                                    sbInMemory.AppendLine($@"                {{");
                                                     sbInMemory.AppendLine(TempStr);
-                                                    sbInMemory.AppendLine($@"                dbIM.SaveChanges();");
+                                                    sbInMemory.AppendLine($@"                    dbIM.SaveChanges();");
+                                                    sbInMemory.AppendLine($@"                }}");
+                                                    sbInMemory.AppendLine($@"                catch (Exception)");
+                                                    sbInMemory.AppendLine($@"                {{");
+                                                    sbInMemory.AppendLine($@"                   // nothing for now");
+                                                    sbInMemory.AppendLine($@"                }}");
                                                 }
                                             }
                                         }
@@ -949,8 +1054,15 @@ namespace ServicesClassNameServiceTestGeneratedServices.Services
                                                     $@"}});";
                                                 if (!sbInMemory.ToString().Contains(TempStr))
                                                 {
+                                                    sbInMemory.AppendLine($@"                try");
+                                                    sbInMemory.AppendLine($@"                {{");
                                                     sbInMemory.AppendLine(TempStr);
-                                                    sbInMemory.AppendLine($@"                dbIM.SaveChanges();");
+                                                    sbInMemory.AppendLine($@"                    dbIM.SaveChanges();");
+                                                    sbInMemory.AppendLine($@"                }}");
+                                                    sbInMemory.AppendLine($@"                catch (Exception)");
+                                                    sbInMemory.AppendLine($@"                {{");
+                                                    sbInMemory.AppendLine($@"                   // nothing for now");
+                                                    sbInMemory.AppendLine($@"                }}");
                                                 }
                                             }
                                         }
@@ -965,11 +1077,27 @@ namespace ServicesClassNameServiceTestGeneratedServices.Services
                                             else
                                             {
                                                 sb.AppendLine($@"            if (OmitPropName != ""{ prop.Name }"") { TypeNameLower }.{ prop.Name } = { mwqmSubsector.MWQMSubsectorID };");
-                                                string TempStr = $@"                dbIM.{ csspProp.ExistTypeName }s.Add(new { csspProp.ExistTypeName }() {{ { csspProp.ExistTypeName }ID = { mwqmSubsector.MWQMSubsectorID } }});";
+                                                string TideLocationSIDText = mwqmSubsector.TideLocationSIDText == null ? "null" : mwqmSubsector.TideLocationSIDText.ToString();
+                                                string LastUpdateDate_UTC = $@"new DateTime({ mwqmSubsector.LastUpdateDate_UTC.Year }, { mwqmSubsector.LastUpdateDate_UTC.Month }, { mwqmSubsector.LastUpdateDate_UTC.Day }, { mwqmSubsector.LastUpdateDate_UTC.Hour }, { mwqmSubsector.LastUpdateDate_UTC.Minute }, { mwqmSubsector.LastUpdateDate_UTC.Second })";
+                                                string TempStr = $@"                dbIM.{ csspProp.ExistTypeName }s.Add(new { csspProp.ExistTypeName }() {{ " +
+                                                    $@"MWQMSubsectorID = { mwqmSubsector.MWQMSubsectorID }, " +
+                                                    $@"MWQMSubsectorTVItemID = { mwqmSubsector.MWQMSubsectorTVItemID }, " +
+                                                    $@"SubsectorHistoricKey = ""{ mwqmSubsector.SubsectorHistoricKey }"", " +
+                                                    $@"TideLocationSIDText = ""{ TideLocationSIDText }"", " +
+                                                    $@"LastUpdateDate_UTC = { LastUpdateDate_UTC }, " +
+                                                    $@"LastUpdateContactTVItemID = { mwqmSubsector.LastUpdateContactTVItemID } " +
+                                                    $@"}});";
                                                 if (!sbInMemory.ToString().Contains(TempStr))
                                                 {
+                                                    sbInMemory.AppendLine($@"                try");
+                                                    sbInMemory.AppendLine($@"                {{");
                                                     sbInMemory.AppendLine(TempStr);
-                                                    sbInMemory.AppendLine($@"                dbIM.SaveChanges();");
+                                                    sbInMemory.AppendLine($@"                    dbIM.SaveChanges();");
+                                                    sbInMemory.AppendLine($@"                }}");
+                                                    sbInMemory.AppendLine($@"                catch (Exception)");
+                                                    sbInMemory.AppendLine($@"                {{");
+                                                    sbInMemory.AppendLine($@"                   // nothing for now");
+                                                    sbInMemory.AppendLine($@"                }}");
                                                 }
                                             }
                                         }
@@ -984,11 +1112,27 @@ namespace ServicesClassNameServiceTestGeneratedServices.Services
                                             else
                                             {
                                                 sb.AppendLine($@"            if (OmitPropName != ""{ prop.Name }"") { TypeNameLower }.{ prop.Name } = { polSourceGrouping.PolSourceGroupingID };");
-                                                string TempStr = $@"                dbIM.{ csspProp.ExistTypeName }s.Add(new { csspProp.ExistTypeName }() {{ { csspProp.ExistTypeName }ID = { polSourceGrouping.PolSourceGroupingID } }});";
+                                                string LastUpdateDate_UTC = $@"new DateTime({ polSourceGrouping.LastUpdateDate_UTC.Year }, { polSourceGrouping.LastUpdateDate_UTC.Month }, { polSourceGrouping.LastUpdateDate_UTC.Day }, { polSourceGrouping.LastUpdateDate_UTC.Hour }, { polSourceGrouping.LastUpdateDate_UTC.Minute }, { polSourceGrouping.LastUpdateDate_UTC.Second })";
+                                                string TempStr = $@"                dbIM.{ csspProp.ExistTypeName }s.Add(new { csspProp.ExistTypeName }() {{ " +
+                                                    $@"PolSourceGroupingID = { polSourceGrouping.PolSourceGroupingID }, " +
+                                                    $@"CSSPID = { polSourceGrouping.CSSPID }, " +
+                                                    $@"GroupName = ""{ polSourceGrouping.GroupName }"", " +
+                                                    $@"Child = ""{ polSourceGrouping.Child }"", " +
+                                                    $@"Hide = ""{ polSourceGrouping.Hide }"", " +
+                                                    $@"LastUpdateDate_UTC = { LastUpdateDate_UTC }, " +
+                                                    $@"LastUpdateContactTVItemID = { polSourceGrouping.LastUpdateContactTVItemID } " +
+                                                    $@"}});";
                                                 if (!sbInMemory.ToString().Contains(TempStr))
                                                 {
+                                                    sbInMemory.AppendLine($@"                try");
+                                                    sbInMemory.AppendLine($@"                {{");
                                                     sbInMemory.AppendLine(TempStr);
-                                                    sbInMemory.AppendLine($@"                dbIM.SaveChanges();");
+                                                    sbInMemory.AppendLine($@"                    dbIM.SaveChanges();");
+                                                    sbInMemory.AppendLine($@"                }}");
+                                                    sbInMemory.AppendLine($@"                catch (Exception)");
+                                                    sbInMemory.AppendLine($@"                {{");
+                                                    sbInMemory.AppendLine($@"                   // nothing for now");
+                                                    sbInMemory.AppendLine($@"                }}");
                                                 }
                                             }
                                         }
@@ -1003,11 +1147,29 @@ namespace ServicesClassNameServiceTestGeneratedServices.Services
                                             else
                                             {
                                                 sb.AppendLine($@"            if (OmitPropName != ""{ prop.Name }"") { TypeNameLower }.{ prop.Name } = { polSourceObservation.PolSourceObservationID };");
-                                                string TempStr = $@"                dbIM.{ csspProp.ExistTypeName }s.Add(new { csspProp.ExistTypeName }() {{ { csspProp.ExistTypeName }ID = { polSourceObservation.PolSourceObservationID } }});";
+                                                string ObservationDate_Local = $@"new DateTime({ polSourceObservation.ObservationDate_Local.Year }, { polSourceObservation.ObservationDate_Local.Month }, { polSourceObservation.ObservationDate_Local.Day }, { polSourceObservation.ObservationDate_Local.Hour }, { polSourceObservation.ObservationDate_Local.Minute }, { polSourceObservation.ObservationDate_Local.Second })";
+                                                string LastUpdateDate_UTC = $@"new DateTime({ polSourceObservation.LastUpdateDate_UTC.Year }, { polSourceObservation.LastUpdateDate_UTC.Month }, { polSourceObservation.LastUpdateDate_UTC.Day }, { polSourceObservation.LastUpdateDate_UTC.Hour }, { polSourceObservation.LastUpdateDate_UTC.Minute }, { polSourceObservation.LastUpdateDate_UTC.Second })";
+                                                string TempStr = $@"                dbIM.{ csspProp.ExistTypeName }s.Add(new { csspProp.ExistTypeName }() {{ " +
+                                                    $@"PolSourceObservationID = { polSourceObservation.PolSourceObservationID }, " +
+                                                    $@"PolSourceSiteID = { polSourceObservation.PolSourceSiteID }, " +
+                                                    $@"ObservationDate_Local = { ObservationDate_Local }, " +
+                                                    $@"ContactTVItemID = { polSourceObservation.ContactTVItemID }, " +
+                                                    $@"DesktopReviewed = { polSourceObservation.DesktopReviewed.ToString().ToLower() }, " +
+                                                    $@"Observation_ToBeDeleted = ""{ polSourceObservation.Observation_ToBeDeleted.Replace("\r\n", "---") }"", " +
+                                                    $@"LastUpdateDate_UTC = { LastUpdateDate_UTC }, " +
+                                                    $@"LastUpdateContactTVItemID = { polSourceObservation.LastUpdateContactTVItemID } " +
+                                                    $@"}});";
                                                 if (!sbInMemory.ToString().Contains(TempStr))
                                                 {
+                                                    sbInMemory.AppendLine($@"                try");
+                                                    sbInMemory.AppendLine($@"                {{");
                                                     sbInMemory.AppendLine(TempStr);
-                                                    sbInMemory.AppendLine($@"                dbIM.SaveChanges();");
+                                                    sbInMemory.AppendLine($@"                    dbIM.SaveChanges();");
+                                                    sbInMemory.AppendLine($@"                }}");
+                                                    sbInMemory.AppendLine($@"                catch (Exception)");
+                                                    sbInMemory.AppendLine($@"                {{");
+                                                    sbInMemory.AppendLine($@"                   // nothing for now");
+                                                    sbInMemory.AppendLine($@"                }}");
                                                 }
                                             }
                                         }
@@ -1022,11 +1184,37 @@ namespace ServicesClassNameServiceTestGeneratedServices.Services
                                             else
                                             {
                                                 sb.AppendLine($@"            if (OmitPropName != ""{ prop.Name }"") { TypeNameLower }.{ prop.Name } = { polSourceSite.PolSourceSiteID };");
-                                                string TempStr = $@"                dbIM.{ csspProp.ExistTypeName }s.Add(new { csspProp.ExistTypeName }() {{ { csspProp.ExistTypeName }ID = { polSourceSite.PolSourceSiteID } }});";
+                                                string Temp_Locator_CanDelete = polSourceSite.Temp_Locator_CanDelete == null ? null : polSourceSite.Temp_Locator_CanDelete.ToString();
+                                                string Oldsiteid = polSourceSite.Oldsiteid == null ? "null" : polSourceSite.Oldsiteid.ToString();
+                                                string Site = polSourceSite.Site == null ? "null" : polSourceSite.Site.ToString();
+                                                string SiteID = polSourceSite.SiteID == null ? "null" : polSourceSite.SiteID.ToString();
+                                                string InactiveReason = polSourceSite.InactiveReason == null ? "null" : polSourceSite.InactiveReason.ToString();
+                                                string CivicAddressTVItemID = polSourceSite.CivicAddressTVItemID == null ? "null" : polSourceSite.CivicAddressTVItemID.ToString();
+                                                string LastUpdateDate_UTC = $@"new DateTime({ polSourceSite.LastUpdateDate_UTC.Year }, { polSourceSite.LastUpdateDate_UTC.Month }, { polSourceSite.LastUpdateDate_UTC.Day }, { polSourceSite.LastUpdateDate_UTC.Hour }, { polSourceSite.LastUpdateDate_UTC.Minute }, { polSourceSite.LastUpdateDate_UTC.Second })";
+                                                string TempStr = $@"                dbIM.{ csspProp.ExistTypeName }s.Add(new { csspProp.ExistTypeName }() {{ " +
+                                                    $@"PolSourceSiteID = { polSourceSite.PolSourceSiteID }, " +
+                                                    $@"PolSourceSiteTVItemID = { polSourceSite.PolSourceSiteTVItemID }, " +
+                                                    $@"Temp_Locator_CanDelete = ""{ Temp_Locator_CanDelete }"", " +
+                                                    $@"Oldsiteid = { Oldsiteid }, " +
+                                                    $@"Site = { Site }, " +
+                                                    $@"SiteID = { SiteID }, " +
+                                                    $@"IsPointSource = { polSourceSite.IsPointSource.ToString().ToLower() }, " +
+                                                    $@"InactiveReason = { InactiveReason }, " +
+                                                    $@"CivicAddressTVItemID = { CivicAddressTVItemID }, " +
+                                                    $@"LastUpdateDate_UTC = { LastUpdateDate_UTC }, " +
+                                                    $@"LastUpdateContactTVItemID = { polSourceSite.LastUpdateContactTVItemID } " +
+                                                    $@"}});";
                                                 if (!sbInMemory.ToString().Contains(TempStr))
                                                 {
+                                                    sbInMemory.AppendLine($@"                try");
+                                                    sbInMemory.AppendLine($@"                {{");
                                                     sbInMemory.AppendLine(TempStr);
-                                                    sbInMemory.AppendLine($@"                dbIM.SaveChanges();");
+                                                    sbInMemory.AppendLine($@"                    dbIM.SaveChanges();");
+                                                    sbInMemory.AppendLine($@"                }}");
+                                                    sbInMemory.AppendLine($@"                catch (Exception)");
+                                                    sbInMemory.AppendLine($@"                {{");
+                                                    sbInMemory.AppendLine($@"                   // nothing for now");
+                                                    sbInMemory.AppendLine($@"                }}");
                                                 }
                                             }
                                         }
@@ -1041,49 +1229,25 @@ namespace ServicesClassNameServiceTestGeneratedServices.Services
                                             else
                                             {
                                                 sb.AppendLine($@"            if (OmitPropName != ""{ prop.Name }"") { TypeNameLower }.{ prop.Name } = { ratingCurve.RatingCurveID };");
-                                                string TempStr = $@"                dbIM.{ csspProp.ExistTypeName }s.Add(new { csspProp.ExistTypeName }() {{ { csspProp.ExistTypeName }ID = { ratingCurve.RatingCurveID } }});";
+                                                string LastUpdateDate_UTC = $@"new DateTime({ ratingCurve.LastUpdateDate_UTC.Year }, { ratingCurve.LastUpdateDate_UTC.Month }, { ratingCurve.LastUpdateDate_UTC.Day }, { ratingCurve.LastUpdateDate_UTC.Hour }, { ratingCurve.LastUpdateDate_UTC.Minute }, { ratingCurve.LastUpdateDate_UTC.Second })";
+                                                string TempStr = $@"                dbIM.{ csspProp.ExistTypeName }s.Add(new { csspProp.ExistTypeName }() {{ " +
+                                                    $@"RatingCurveID = { ratingCurve.RatingCurveID }, " +
+                                                    $@"HydrometricSiteID = { ratingCurve.HydrometricSiteID }, " +
+                                                    $@"RatingCurveNumber = ""{ ratingCurve.RatingCurveNumber }"", " +
+                                                    $@"LastUpdateDate_UTC = { LastUpdateDate_UTC }, " +
+                                                    $@"LastUpdateContactTVItemID = { ratingCurve.LastUpdateContactTVItemID } " +
+                                                    $@"}});";
                                                 if (!sbInMemory.ToString().Contains(TempStr))
                                                 {
+                                                    sbInMemory.AppendLine($@"                try");
+                                                    sbInMemory.AppendLine($@"                {{");
                                                     sbInMemory.AppendLine(TempStr);
-                                                    sbInMemory.AppendLine($@"                dbIM.SaveChanges();");
-                                                }
-                                            }
-                                        }
-                                        break;
-                                    case "ReportSection":
-                                        {
-                                            ReportSection reportSection = dbTestDB.ReportSections.AsNoTracking().FirstOrDefault();
-                                            if (reportSection == null)
-                                            {
-                                                sb.AppendLine($@"            // Need to implement (no items found, would need to add at least one in the TestDB) [{ TypeName } { csspProp.PropName } { csspProp.ExistTypeName } { csspProp.ExistFieldID }]");
-                                            }
-                                            else
-                                            {
-                                                sb.AppendLine($@"            if (OmitPropName != ""{ prop.Name }"") { TypeNameLower }.{ prop.Name } = { reportSection.ReportSectionID };");
-                                                string TempStr = $@"                dbIM.{ csspProp.ExistTypeName }s.Add(new { csspProp.ExistTypeName }() {{ { csspProp.ExistTypeName }ID = { reportSection.ReportSectionID } }});";
-                                                if (!sbInMemory.ToString().Contains(TempStr))
-                                                {
-                                                    sbInMemory.AppendLine(TempStr);
-                                                    sbInMemory.AppendLine($@"                dbIM.SaveChanges();");
-                                                }
-                                            }
-                                        }
-                                        break;
-                                    case "ReportType":
-                                        {
-                                            ReportType reportType = dbTestDB.ReportTypes.AsNoTracking().FirstOrDefault();
-                                            if (reportType == null)
-                                            {
-                                                sb.AppendLine($@"            // Need to implement (no items found, would need to add at least one in the TestDB) [{ TypeName } { csspProp.PropName } { csspProp.ExistTypeName } { csspProp.ExistFieldID }]");
-                                            }
-                                            else
-                                            {
-                                                sb.AppendLine($@"            if (OmitPropName != ""{ prop.Name }"") { TypeNameLower }.{ prop.Name } = { reportType.ReportTypeID };");
-                                                string TempStr = $@"                dbIM.{ csspProp.ExistTypeName }s.Add(new { csspProp.ExistTypeName }() {{ { csspProp.ExistTypeName }ID = { reportType.ReportTypeID } }});";
-                                                if (!sbInMemory.ToString().Contains(TempStr))
-                                                {
-                                                    sbInMemory.AppendLine(TempStr);
-                                                    sbInMemory.AppendLine($@"                dbIM.SaveChanges();");
+                                                    sbInMemory.AppendLine($@"                    dbIM.SaveChanges();");
+                                                    sbInMemory.AppendLine($@"                }}");
+                                                    sbInMemory.AppendLine($@"                catch (Exception)");
+                                                    sbInMemory.AppendLine($@"                {{");
+                                                    sbInMemory.AppendLine($@"                   // nothing for now");
+                                                    sbInMemory.AppendLine($@"                }}");
                                                 }
                                             }
                                         }
@@ -1098,11 +1262,25 @@ namespace ServicesClassNameServiceTestGeneratedServices.Services
                                             else
                                             {
                                                 sb.AppendLine($@"            if (OmitPropName != ""{ prop.Name }"") { TypeNameLower }.{ prop.Name } = { samplingPlanSubsector.SamplingPlanSubsectorID };");
-                                                string TempStr = $@"                dbIM.{ csspProp.ExistTypeName }s.Add(new { csspProp.ExistTypeName }() {{ { csspProp.ExistTypeName }ID = { samplingPlanSubsector.SamplingPlanSubsectorID } }});";
+                                                string LastUpdateDate_UTC = $@"new DateTime({ samplingPlanSubsector.LastUpdateDate_UTC.Year }, { samplingPlanSubsector.LastUpdateDate_UTC.Month }, { samplingPlanSubsector.LastUpdateDate_UTC.Day }, { samplingPlanSubsector.LastUpdateDate_UTC.Hour }, { samplingPlanSubsector.LastUpdateDate_UTC.Minute }, { samplingPlanSubsector.LastUpdateDate_UTC.Second })";
+                                                string TempStr = $@"                dbIM.{ csspProp.ExistTypeName }s.Add(new { csspProp.ExistTypeName }() {{ " +
+                                                    $@"SamplingPlanSubsectorID = { samplingPlanSubsector.SamplingPlanSubsectorID }, " +
+                                                    $@"SamplingPlanID = { samplingPlanSubsector.SamplingPlanID }, " +
+                                                    $@"SubsectorTVItemID = { samplingPlanSubsector.SubsectorTVItemID }, " +
+                                                    $@"LastUpdateDate_UTC = { LastUpdateDate_UTC }, " +
+                                                    $@"LastUpdateContactTVItemID = { samplingPlanSubsector.LastUpdateContactTVItemID } " +
+                                                    $@"}});";
                                                 if (!sbInMemory.ToString().Contains(TempStr))
                                                 {
+                                                    sbInMemory.AppendLine($@"                try");
+                                                    sbInMemory.AppendLine($@"                {{");
                                                     sbInMemory.AppendLine(TempStr);
-                                                    sbInMemory.AppendLine($@"                dbIM.SaveChanges();");
+                                                    sbInMemory.AppendLine($@"                    dbIM.SaveChanges();");
+                                                    sbInMemory.AppendLine($@"                }}");
+                                                    sbInMemory.AppendLine($@"                catch (Exception)");
+                                                    sbInMemory.AppendLine($@"                {{");
+                                                    sbInMemory.AppendLine($@"                   // nothing for now");
+                                                    sbInMemory.AppendLine($@"                }}");
                                                 }
                                             }
                                         }
@@ -1117,11 +1295,46 @@ namespace ServicesClassNameServiceTestGeneratedServices.Services
                                             else
                                             {
                                                 sb.AppendLine($@"            if (OmitPropName != ""{ prop.Name }"") { TypeNameLower }.{ prop.Name } = { samplingPlan.SamplingPlanID };");
-                                                string TempStr = $@"                dbIM.{ csspProp.ExistTypeName }s.Add(new { csspProp.ExistTypeName }() {{ { csspProp.ExistTypeName }ID = { samplingPlan.SamplingPlanID } }});";
+                                                string SamplingPlanFileTVItemID = samplingPlan.SamplingPlanFileTVItemID == null ? "null" : samplingPlan.SamplingPlanFileTVItemID.ToString();
+                                                string AnalyzeMethodDefault = samplingPlan.AnalyzeMethodDefault == null ? "null" : "(AnalyzeMethodEnum)" + ((int)samplingPlan.AnalyzeMethodDefault).ToString();
+                                                string SampleMatrixDefault = samplingPlan.SampleMatrixDefault == null ? "null" : "(SampleMatrixEnum)" + ((int)samplingPlan.SampleMatrixDefault).ToString();
+                                                string LaboratoryDefault = samplingPlan.LaboratoryDefault == null ? "null" : "(LaboratoryEnum)" + ((int)samplingPlan.LaboratoryDefault).ToString();
+                                                string LastUpdateDate_UTC = $@"new DateTime({ samplingPlan.LastUpdateDate_UTC.Year }, { samplingPlan.LastUpdateDate_UTC.Month }, { samplingPlan.LastUpdateDate_UTC.Day }, { samplingPlan.LastUpdateDate_UTC.Hour }, { samplingPlan.LastUpdateDate_UTC.Minute }, { samplingPlan.LastUpdateDate_UTC.Second })";
+                                                string TempStr = $@"                dbIM.{ csspProp.ExistTypeName }s.Add(new { csspProp.ExistTypeName }() {{ " +
+                                                    $@"SamplingPlanID = { samplingPlan.SamplingPlanID }, " +
+                                                    $@"IsActive = { samplingPlan.IsActive.ToString().ToLower() }, " +
+                                                    $@"SamplingPlanName = @""{ samplingPlan.SamplingPlanName }"", " +
+                                                    $@"ForGroupName = ""{ samplingPlan.ForGroupName }"", " +
+                                                    $@"SampleType = (SampleTypeEnum){ (int)samplingPlan.SampleType }, " +
+                                                    $@"SamplingPlanType = (SamplingPlanTypeEnum){ (int)samplingPlan.SamplingPlanType }, " +
+                                                    $@"LabSheetType = (LabSheetTypeEnum){ (int)samplingPlan.LabSheetType }, " +
+                                                    $@"ProvinceTVItemID = { samplingPlan.ProvinceTVItemID }, " +
+                                                    $@"CreatorTVItemID = { samplingPlan.CreatorTVItemID }, " +
+                                                    $@"Year = { samplingPlan.Year }, " +
+                                                    $@"AccessCode = ""{ samplingPlan.AccessCode }"", " +
+                                                    $@"DailyDuplicatePrecisionCriteria = { samplingPlan.DailyDuplicatePrecisionCriteria }, " +
+                                                    $@"IntertechDuplicatePrecisionCriteria = { samplingPlan.IntertechDuplicatePrecisionCriteria }, " +
+                                                    $@"IncludeLaboratoryQAQC = { samplingPlan.IncludeLaboratoryQAQC.ToString().ToLower() }, " +
+                                                    $@"ApprovalCode = ""{ samplingPlan.ApprovalCode }"", " +
+                                                    $@"SamplingPlanFileTVItemID = { SamplingPlanFileTVItemID }, " +
+                                                    $@"AnalyzeMethodDefault = { AnalyzeMethodDefault }, " +
+                                                    $@"SampleMatrixDefault = { SampleMatrixDefault }, " +
+                                                    $@"LaboratoryDefault = { LaboratoryDefault }, " +
+                                                    $@"BackupDirectory = @""{ samplingPlan.BackupDirectory }"", " +
+                                                    $@"LastUpdateDate_UTC = { LastUpdateDate_UTC }, " +
+                                                    $@"LastUpdateContactTVItemID = { samplingPlan.LastUpdateContactTVItemID } " +
+                                                    $@"}});";
                                                 if (!sbInMemory.ToString().Contains(TempStr))
                                                 {
+                                                    sbInMemory.AppendLine($@"                try");
+                                                    sbInMemory.AppendLine($@"                {{");
                                                     sbInMemory.AppendLine(TempStr);
-                                                    sbInMemory.AppendLine($@"                dbIM.SaveChanges();");
+                                                    sbInMemory.AppendLine($@"                    dbIM.SaveChanges();");
+                                                    sbInMemory.AppendLine($@"                }}");
+                                                    sbInMemory.AppendLine($@"                catch (Exception)");
+                                                    sbInMemory.AppendLine($@"                {{");
+                                                    sbInMemory.AppendLine($@"                   // nothing for now");
+                                                    sbInMemory.AppendLine($@"                }}");
                                                 }
                                             }
                                         }
@@ -1136,11 +1349,31 @@ namespace ServicesClassNameServiceTestGeneratedServices.Services
                                             else
                                             {
                                                 sb.AppendLine($@"            if (OmitPropName != ""{ prop.Name }"") { TypeNameLower }.{ prop.Name } = { spill.SpillID };");
-                                                string TempStr = $@"                dbIM.{ csspProp.ExistTypeName }s.Add(new { csspProp.ExistTypeName }() {{ { csspProp.ExistTypeName }ID = { spill.SpillID } }});";
+                                                string InfrastructureTVItemID = spill.InfrastructureTVItemID == null ? "null" : spill.InfrastructureTVItemID.ToString();
+                                                string StartDateTime_Local = $@"new DateTime({ spill.StartDateTime_Local.Year }, { spill.StartDateTime_Local.Month }, { spill.StartDateTime_Local.Day }, { spill.StartDateTime_Local.Hour }, { spill.StartDateTime_Local.Minute }, { spill.StartDateTime_Local.Second })";
+                                                string EndDateTime_Local = spill.EndDateTime_Local == null ? "null" : $@"new DateTime({ ((DateTime)spill.EndDateTime_Local).Year }, { ((DateTime)spill.EndDateTime_Local).Month }, { ((DateTime)spill.EndDateTime_Local).Day }, { ((DateTime)spill.EndDateTime_Local).Hour }, { ((DateTime)spill.EndDateTime_Local).Minute }, { ((DateTime)spill.EndDateTime_Local).Second })";
+                                                string LastUpdateDate_UTC = $@"new DateTime({ spill.LastUpdateDate_UTC.Year }, { spill.LastUpdateDate_UTC.Month }, { spill.LastUpdateDate_UTC.Day }, { spill.LastUpdateDate_UTC.Hour }, { spill.LastUpdateDate_UTC.Minute }, { spill.LastUpdateDate_UTC.Second })";
+                                                string TempStr = $@"                dbIM.{ csspProp.ExistTypeName }s.Add(new { csspProp.ExistTypeName }() {{ " +
+                                                    $@"SpillID = { spill.SpillID }, " +
+                                                    $@"MunicipalityTVItemID = { spill.MunicipalityTVItemID }, " +
+                                                    $@"InfrastructureTVItemID = { InfrastructureTVItemID }, " +
+                                                    $@"StartDateTime_Local = { StartDateTime_Local }, " +
+                                                    $@"EndDateTime_Local = { EndDateTime_Local }, " +
+                                                    $@"AverageFlow_m3_day = { spill.AverageFlow_m3_day }, " +
+                                                    $@"LastUpdateDate_UTC = { LastUpdateDate_UTC }, " +
+                                                    $@"LastUpdateContactTVItemID = { spill.LastUpdateContactTVItemID } " +
+                                                    $@"}});";
                                                 if (!sbInMemory.ToString().Contains(TempStr))
                                                 {
+                                                    sbInMemory.AppendLine($@"                try");
+                                                    sbInMemory.AppendLine($@"                {{");
                                                     sbInMemory.AppendLine(TempStr);
-                                                    sbInMemory.AppendLine($@"                dbIM.SaveChanges();");
+                                                    sbInMemory.AppendLine($@"                    dbIM.SaveChanges();");
+                                                    sbInMemory.AppendLine($@"                }}");
+                                                    sbInMemory.AppendLine($@"                catch (Exception)");
+                                                    sbInMemory.AppendLine($@"                {{");
+                                                    sbInMemory.AppendLine($@"                   // nothing for now");
+                                                    sbInMemory.AppendLine($@"                }}");
                                                 }
                                             }
                                         }
@@ -1155,11 +1388,46 @@ namespace ServicesClassNameServiceTestGeneratedServices.Services
                                             else
                                             {
                                                 sb.AppendLine($@"            if (OmitPropName != ""{ prop.Name }"") { TypeNameLower }.{ prop.Name } = { tvFile.TVFileID };");
-                                                string TempStr = $@"                dbIM.{ csspProp.ExistTypeName }s.Add(new { csspProp.ExistTypeName }() {{ { csspProp.ExistTypeName }ID = { tvFile.TVFileID } }});";
+                                                string TemplateTVType = tvFile.TemplateTVType == null ? "null" : "(TVTypeEnum)" + ((int)tvFile.TemplateTVType).ToString();
+                                                string ReportTypeID = tvFile.ReportTypeID == null ? "null" : tvFile.ReportTypeID.ToString();
+                                                string Parameters = tvFile.Parameters == null ? "null" : tvFile.Parameters.ToString();
+                                                string Year = tvFile.Year == null ? "null" : tvFile.Year.ToString();
+                                                string FileInfo = tvFile.FileInfo == null ? "null" : tvFile.FileInfo.ToString();
+                                                string FileCreatedDate_UTC = $@"new DateTime({ tvFile.FileCreatedDate_UTC.Year }, { tvFile.FileCreatedDate_UTC.Month }, { tvFile.FileCreatedDate_UTC.Day }, { tvFile.FileCreatedDate_UTC.Hour }, { tvFile.FileCreatedDate_UTC.Minute }, { tvFile.FileCreatedDate_UTC.Second })";
+                                                string FromWater = tvFile.FromWater == null ? "null" : tvFile.FromWater.ToString().ToLower();
+                                                string ClientFilePath = tvFile.ClientFilePath == null ? "null" : tvFile.ClientFilePath.ToString();
+                                                string LastUpdateDate_UTC = $@"new DateTime({ tvFile.LastUpdateDate_UTC.Year }, { tvFile.LastUpdateDate_UTC.Month }, { tvFile.LastUpdateDate_UTC.Day }, { tvFile.LastUpdateDate_UTC.Hour }, { tvFile.LastUpdateDate_UTC.Minute }, { tvFile.LastUpdateDate_UTC.Second })";
+                                                string TempStr = $@"                dbIM.{ csspProp.ExistTypeName }s.Add(new { csspProp.ExistTypeName }() {{ " +
+                                                    $@"TVFileID = { tvFile.TVFileID }, " +
+                                                    $@"TVFileTVItemID = { tvFile.TVFileTVItemID }, " +
+                                                    $@"TemplateTVType = { TemplateTVType }, " +
+                                                    $@"ReportTypeID = { ReportTypeID }, " +
+                                                    $@"Parameters = { Parameters }, " +
+                                                    $@"Year = { Year }, " +
+                                                    $@"Language = (LanguageEnum){ (int)tvFile.Language }, " +
+                                                    $@"FilePurpose = (FilePurposeEnum){ (int)tvFile.FilePurpose }, " +
+                                                    $@"FileType = (FileTypeEnum){ (int)tvFile.FileType }, " +
+                                                    $@"FileSize_kb = { tvFile.FileSize_kb }, " +
+                                                    $@"FileInfo = ""{ FileInfo }"", " +
+                                                    $@"FileCreatedDate_UTC = { FileCreatedDate_UTC }, " +
+                                                    $@"FromWater = { FromWater }, " +
+                                                    $@"ClientFilePath = @""{ ClientFilePath }"", " +
+                                                    $@"ServerFileName = @""{ tvFile.ServerFileName }"", " +
+                                                    $@"ServerFilePath = @""{ tvFile.ServerFilePath }"", " +
+                                                    $@"LastUpdateDate_UTC = { LastUpdateDate_UTC }, " +
+                                                    $@"LastUpdateContactTVItemID = { tvFile.LastUpdateContactTVItemID } " +
+                                                    $@"}});";
                                                 if (!sbInMemory.ToString().Contains(TempStr))
                                                 {
+                                                    sbInMemory.AppendLine($@"                try");
+                                                    sbInMemory.AppendLine($@"                {{");
                                                     sbInMemory.AppendLine(TempStr);
-                                                    sbInMemory.AppendLine($@"                dbIM.SaveChanges();");
+                                                    sbInMemory.AppendLine($@"                    dbIM.SaveChanges();");
+                                                    sbInMemory.AppendLine($@"                }}");
+                                                    sbInMemory.AppendLine($@"                catch (Exception)");
+                                                    sbInMemory.AppendLine($@"                {{");
+                                                    sbInMemory.AppendLine($@"                   // nothing for now");
+                                                    sbInMemory.AppendLine($@"                }}");
                                                 }
                                             }
                                         }
@@ -1174,11 +1442,58 @@ namespace ServicesClassNameServiceTestGeneratedServices.Services
                                             else
                                             {
                                                 sb.AppendLine($@"            if (OmitPropName != ""{ prop.Name }"") { TypeNameLower }.{ prop.Name } = { vpScenario.VPScenarioID };");
-                                                string TempStr = $@"                dbIM.{ csspProp.ExistTypeName }s.Add(new { csspProp.ExistTypeName }() {{ { csspProp.ExistTypeName }ID = { vpScenario.VPScenarioID } }});";
+                                                string EffluentFlow_m3_s = vpScenario.EffluentFlow_m3_s == null ? "null" : vpScenario.EffluentFlow_m3_s.ToString();
+                                                string EffluentConcentration_MPN_100ml = vpScenario.EffluentConcentration_MPN_100ml == null ? "null" : vpScenario.EffluentConcentration_MPN_100ml.ToString();
+                                                string FroudeNumber = vpScenario.FroudeNumber == null ? "null" : vpScenario.FroudeNumber.ToString();
+                                                string PortDiameter_m = vpScenario.PortDiameter_m == null ? "null" : vpScenario.PortDiameter_m.ToString();
+                                                string PortDepth_m = vpScenario.PortDepth_m == null ? "null" : vpScenario.PortDepth_m.ToString();
+                                                string PortElevation_m = vpScenario.PortElevation_m == null ? "null" : vpScenario.PortElevation_m.ToString();
+                                                string VerticalAngle_deg = vpScenario.VerticalAngle_deg == null ? "null" : vpScenario.VerticalAngle_deg.ToString();
+                                                string HorizontalAngle_deg = vpScenario.HorizontalAngle_deg == null ? "null" : vpScenario.HorizontalAngle_deg.ToString();
+                                                string NumberOfPorts = vpScenario.NumberOfPorts == null ? "null" : vpScenario.NumberOfPorts.ToString();
+                                                string PortSpacing_m = vpScenario.PortSpacing_m == null ? "null" : vpScenario.PortSpacing_m.ToString();
+                                                string AcuteMixZone_m = vpScenario.AcuteMixZone_m == null ? "null" : vpScenario.AcuteMixZone_m.ToString();
+                                                string ChronicMixZone_m = vpScenario.ChronicMixZone_m == null ? "null" : vpScenario.ChronicMixZone_m.ToString();
+                                                string EffluentSalinity_PSU = vpScenario.EffluentSalinity_PSU == null ? "null" : vpScenario.EffluentSalinity_PSU.ToString();
+                                                string EffluentTemperature_C = vpScenario.EffluentTemperature_C == null ? "null" : vpScenario.EffluentTemperature_C.ToString();
+                                                string EffluentVelocity_m_s = vpScenario.EffluentVelocity_m_s == null ? "null" : vpScenario.EffluentVelocity_m_s.ToString();
+                                                string RawResults = vpScenario.RawResults == null ? "null" : vpScenario.RawResults.ToString();
+                                                string LastUpdateDate_UTC = $@"new DateTime({ vpScenario.LastUpdateDate_UTC.Year }, { vpScenario.LastUpdateDate_UTC.Month }, { vpScenario.LastUpdateDate_UTC.Day }, { vpScenario.LastUpdateDate_UTC.Hour }, { vpScenario.LastUpdateDate_UTC.Minute }, { vpScenario.LastUpdateDate_UTC.Second })";
+                                                string TempStr = $@"                dbIM.{ csspProp.ExistTypeName }s.Add(new { csspProp.ExistTypeName }() {{ " +
+                                                    $@"VPScenarioID = { vpScenario.VPScenarioID }, " +
+                                                    $@"InfrastructureTVItemID = { vpScenario.InfrastructureTVItemID }, " +
+                                                    $@"VPScenarioStatus = (ScenarioStatusEnum){ (int)vpScenario.VPScenarioStatus }, " +
+                                                    $@"UseAsBestEstimate = { vpScenario.UseAsBestEstimate.ToString().ToLower() }, " +
+                                                    $@"EffluentFlow_m3_s = { EffluentFlow_m3_s }, " +
+                                                    $@"EffluentConcentration_MPN_100ml = { EffluentConcentration_MPN_100ml }, " +
+                                                    $@"FroudeNumber = { FroudeNumber }, " +
+                                                    $@"PortDiameter_m = { PortDiameter_m }, " +
+                                                    $@"PortDepth_m = { PortDepth_m }, " +
+                                                    $@"PortElevation_m = { PortElevation_m }, " +
+                                                    $@"VerticalAngle_deg = { VerticalAngle_deg }, " +
+                                                    $@"HorizontalAngle_deg = { HorizontalAngle_deg }, " +
+                                                    $@"NumberOfPorts = { NumberOfPorts }, " +
+                                                    $@"PortSpacing_m = { PortSpacing_m }, " +
+                                                    $@"AcuteMixZone_m = { AcuteMixZone_m }, " +
+                                                    $@"ChronicMixZone_m = { ChronicMixZone_m }, " +
+                                                    $@"EffluentSalinity_PSU = { EffluentSalinity_PSU }, " +
+                                                    $@"EffluentTemperature_C = { EffluentTemperature_C }, " +
+                                                    $@"EffluentVelocity_m_s = { EffluentVelocity_m_s }, " +
+                                                    $@"RawResults = ""Raw Results not shown... too long"", " +
+                                                    $@"LastUpdateDate_UTC = { LastUpdateDate_UTC }, " +
+                                                    $@"LastUpdateContactTVItemID = { vpScenario.LastUpdateContactTVItemID } " +
+                                                    $@"}});";
                                                 if (!sbInMemory.ToString().Contains(TempStr))
                                                 {
+                                                    sbInMemory.AppendLine($@"                try");
+                                                    sbInMemory.AppendLine($@"                {{");
                                                     sbInMemory.AppendLine(TempStr);
-                                                    sbInMemory.AppendLine($@"                dbIM.SaveChanges();");
+                                                    sbInMemory.AppendLine($@"                    dbIM.SaveChanges();");
+                                                    sbInMemory.AppendLine($@"                }}");
+                                                    sbInMemory.AppendLine($@"                catch (Exception)");
+                                                    sbInMemory.AppendLine($@"                {{");
+                                                    sbInMemory.AppendLine($@"                   // nothing for now");
+                                                    sbInMemory.AppendLine($@"                }}");
                                                 }
                                             }
                                         }
@@ -1218,8 +1533,15 @@ namespace ServicesClassNameServiceTestGeneratedServices.Services
                                                             $@"}});";
                                                         if (!sbInMemory.ToString().Contains(TempStr))
                                                         {
+                                                            sbInMemory.AppendLine($@"                try");
+                                                            sbInMemory.AppendLine($@"                {{");
                                                             sbInMemory.AppendLine(TempStr);
-                                                            sbInMemory.AppendLine($@"                dbIM.SaveChanges();");
+                                                            sbInMemory.AppendLine($@"                    dbIM.SaveChanges();");
+                                                            sbInMemory.AppendLine($@"                }}");
+                                                            sbInMemory.AppendLine($@"                catch (Exception)");
+                                                            sbInMemory.AppendLine($@"                {{");
+                                                            sbInMemory.AppendLine($@"                   // nothing for now");
+                                                            sbInMemory.AppendLine($@"                }}");
                                                         }
                                                     }
                                                 }

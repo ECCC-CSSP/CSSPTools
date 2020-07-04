@@ -23,6 +23,7 @@ using Xunit;
 
 namespace CSSPServices.Tests
 {
+    [Collection("Sequential")]
     public partial class MWQMSampleLanguageServiceTest : TestHelper
     {
         #region Variables
@@ -177,6 +178,9 @@ namespace CSSPServices.Tests
             dbIM = Provider.GetService<InMemoryDBContext>();
             Assert.NotNull(dbIM);
 
+            dbLocal = Provider.GetService<CSSPDBLocalContext>();
+            Assert.NotNull(dbLocal);
+
             MWQMSampleLanguageService = Provider.GetService<IMWQMSampleLanguageService>();
             Assert.NotNull(MWQMSampleLanguageService);
 
@@ -184,6 +188,19 @@ namespace CSSPServices.Tests
         }
         private MWQMSampleLanguage GetFilledRandomMWQMSampleLanguage(string OmitPropName)
         {
+            List<MWQMSampleLanguage> mwqmSampleLanguageListToDelete = (from c in dbLocal.MWQMSampleLanguages
+                                                               select c).ToList(); 
+            
+            dbLocal.MWQMSampleLanguages.RemoveRange(mwqmSampleLanguageListToDelete);
+            try
+            {
+                dbLocal.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                Assert.True(false, ex.Message);
+            }
+            
             dbIM.Database.EnsureDeleted();
 
             MWQMSampleLanguage mwqmSampleLanguage = new MWQMSampleLanguage();
@@ -199,10 +216,24 @@ namespace CSSPServices.Tests
             {
                 if (OmitPropName != "MWQMSampleLanguageID") mwqmSampleLanguage.MWQMSampleLanguageID = 10000000;
 
+                try
+                {
                 dbIM.MWQMSamples.Add(new MWQMSample() { MWQMSampleID = 1, MWQMSiteTVItemID = 44, MWQMRunTVItemID = 50, SampleDateTime_Local = new DateTime(2017, 6, 21, 7, 59, 0), TimeText = null, Depth_m = null, FecCol_MPN_100ml = 49, Salinity_PPT = 12, WaterTemp_C = 19, PH = null, SampleTypesText = "109,", SampleType_old = null, Tube_10 = 5, Tube_1_0 = 1, Tube_0_1 = 0, ProcessedBy = null, UseForOpenData = true, LastUpdateDate_UTC = new DateTime(2017, 6, 28, 12, 41, 37), LastUpdateContactTVItemID = 2 });
-                dbIM.SaveChanges();
+                    dbIM.SaveChanges();
+                }
+                catch (Exception)
+                {
+                   // nothing for now
+                }
+                try
+                {
                 dbIM.TVItems.Add(new TVItem() { TVItemID = 2, TVLevel = 1, TVPath = "p1p2", TVType = (TVTypeEnum)5, ParentID = 1, IsActive = true, LastUpdateDate_UTC = new DateTime(2014, 12, 2, 16, 58, 16), LastUpdateContactTVItemID = 2});
-                dbIM.SaveChanges();
+                    dbIM.SaveChanges();
+                }
+                catch (Exception)
+                {
+                   // nothing for now
+                }
             }
 
             return mwqmSampleLanguage;

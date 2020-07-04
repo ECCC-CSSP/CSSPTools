@@ -23,6 +23,7 @@ using Xunit;
 
 namespace CSSPServices.Tests
 {
+    [Collection("Sequential")]
     public partial class PolSourceSiteEffectTermServiceTest : TestHelper
     {
         #region Variables
@@ -177,6 +178,9 @@ namespace CSSPServices.Tests
             dbIM = Provider.GetService<InMemoryDBContext>();
             Assert.NotNull(dbIM);
 
+            dbLocal = Provider.GetService<CSSPDBLocalContext>();
+            Assert.NotNull(dbLocal);
+
             PolSourceSiteEffectTermService = Provider.GetService<IPolSourceSiteEffectTermService>();
             Assert.NotNull(PolSourceSiteEffectTermService);
 
@@ -184,6 +188,19 @@ namespace CSSPServices.Tests
         }
         private PolSourceSiteEffectTerm GetFilledRandomPolSourceSiteEffectTerm(string OmitPropName)
         {
+            List<PolSourceSiteEffectTerm> polSourceSiteEffectTermListToDelete = (from c in dbLocal.PolSourceSiteEffectTerms
+                                                               select c).ToList(); 
+            
+            dbLocal.PolSourceSiteEffectTerms.RemoveRange(polSourceSiteEffectTermListToDelete);
+            try
+            {
+                dbLocal.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                Assert.True(false, ex.Message);
+            }
+            
             dbIM.Database.EnsureDeleted();
 
             PolSourceSiteEffectTerm polSourceSiteEffectTerm = new PolSourceSiteEffectTerm();
@@ -199,8 +216,15 @@ namespace CSSPServices.Tests
             {
                 if (OmitPropName != "PolSourceSiteEffectTermID") polSourceSiteEffectTerm.PolSourceSiteEffectTermID = 10000000;
 
+                try
+                {
                 dbIM.TVItems.Add(new TVItem() { TVItemID = 2, TVLevel = 1, TVPath = "p1p2", TVType = (TVTypeEnum)5, ParentID = 1, IsActive = true, LastUpdateDate_UTC = new DateTime(2014, 12, 2, 16, 58, 16), LastUpdateContactTVItemID = 2});
-                dbIM.SaveChanges();
+                    dbIM.SaveChanges();
+                }
+                catch (Exception)
+                {
+                   // nothing for now
+                }
             }
 
             return polSourceSiteEffectTerm;

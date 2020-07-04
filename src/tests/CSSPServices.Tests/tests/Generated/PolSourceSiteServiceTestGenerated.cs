@@ -23,6 +23,7 @@ using Xunit;
 
 namespace CSSPServices.Tests
 {
+    [Collection("Sequential")]
     public partial class PolSourceSiteServiceTest : TestHelper
     {
         #region Variables
@@ -177,6 +178,9 @@ namespace CSSPServices.Tests
             dbIM = Provider.GetService<InMemoryDBContext>();
             Assert.NotNull(dbIM);
 
+            dbLocal = Provider.GetService<CSSPDBLocalContext>();
+            Assert.NotNull(dbLocal);
+
             PolSourceSiteService = Provider.GetService<IPolSourceSiteService>();
             Assert.NotNull(PolSourceSiteService);
 
@@ -184,6 +188,19 @@ namespace CSSPServices.Tests
         }
         private PolSourceSite GetFilledRandomPolSourceSite(string OmitPropName)
         {
+            List<PolSourceSite> polSourceSiteListToDelete = (from c in dbLocal.PolSourceSites
+                                                               select c).ToList(); 
+            
+            dbLocal.PolSourceSites.RemoveRange(polSourceSiteListToDelete);
+            try
+            {
+                dbLocal.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                Assert.True(false, ex.Message);
+            }
+            
             dbIM.Database.EnsureDeleted();
 
             PolSourceSite polSourceSite = new PolSourceSite();
@@ -203,12 +220,33 @@ namespace CSSPServices.Tests
             {
                 if (OmitPropName != "PolSourceSiteID") polSourceSite.PolSourceSiteID = 10000000;
 
+                try
+                {
                 dbIM.TVItems.Add(new TVItem() { TVItemID = 47, TVLevel = 6, TVPath = "p1p5p6p9p10p12p47", TVType = (TVTypeEnum)17, ParentID = 12, IsActive = true, LastUpdateDate_UTC = new DateTime(2016, 5, 2, 14, 44, 28), LastUpdateContactTVItemID = 2});
-                dbIM.SaveChanges();
+                    dbIM.SaveChanges();
+                }
+                catch (Exception)
+                {
+                   // nothing for now
+                }
+                try
+                {
                 dbIM.TVItems.Add(new TVItem() { TVItemID = 46, TVLevel = 1, TVPath = "p1p46", TVType = (TVTypeEnum)2, ParentID = 1, IsActive = true, LastUpdateDate_UTC = new DateTime(2015, 9, 8, 17, 8, 14), LastUpdateContactTVItemID = 2});
-                dbIM.SaveChanges();
+                    dbIM.SaveChanges();
+                }
+                catch (Exception)
+                {
+                   // nothing for now
+                }
+                try
+                {
                 dbIM.TVItems.Add(new TVItem() { TVItemID = 2, TVLevel = 1, TVPath = "p1p2", TVType = (TVTypeEnum)5, ParentID = 1, IsActive = true, LastUpdateDate_UTC = new DateTime(2014, 12, 2, 16, 58, 16), LastUpdateContactTVItemID = 2});
-                dbIM.SaveChanges();
+                    dbIM.SaveChanges();
+                }
+                catch (Exception)
+                {
+                   // nothing for now
+                }
             }
 
             return polSourceSite;

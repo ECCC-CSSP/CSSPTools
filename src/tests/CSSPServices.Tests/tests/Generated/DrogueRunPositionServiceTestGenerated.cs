@@ -23,6 +23,7 @@ using Xunit;
 
 namespace CSSPServices.Tests
 {
+    [Collection("Sequential")]
     public partial class DrogueRunPositionServiceTest : TestHelper
     {
         #region Variables
@@ -177,6 +178,9 @@ namespace CSSPServices.Tests
             dbIM = Provider.GetService<InMemoryDBContext>();
             Assert.NotNull(dbIM);
 
+            dbLocal = Provider.GetService<CSSPDBLocalContext>();
+            Assert.NotNull(dbLocal);
+
             DrogueRunPositionService = Provider.GetService<IDrogueRunPositionService>();
             Assert.NotNull(DrogueRunPositionService);
 
@@ -184,6 +188,19 @@ namespace CSSPServices.Tests
         }
         private DrogueRunPosition GetFilledRandomDrogueRunPosition(string OmitPropName)
         {
+            List<DrogueRunPosition> drogueRunPositionListToDelete = (from c in dbLocal.DrogueRunPositions
+                                                               select c).ToList(); 
+            
+            dbLocal.DrogueRunPositions.RemoveRange(drogueRunPositionListToDelete);
+            try
+            {
+                dbLocal.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                Assert.True(false, ex.Message);
+            }
+            
             dbIM.Database.EnsureDeleted();
 
             DrogueRunPosition drogueRunPosition = new DrogueRunPosition();
@@ -202,10 +219,24 @@ namespace CSSPServices.Tests
             {
                 if (OmitPropName != "DrogueRunPositionID") drogueRunPosition.DrogueRunPositionID = 10000000;
 
+                try
+                {
                 dbIM.DrogueRuns.Add(new DrogueRun() { DrogueRunID = 1, SubsectorTVItemID = 12, DrogueNumber = 12, DrogueType = (DrogueTypeEnum)2, RunStartDateTime = new DateTime(2018, 10, 11, 12, 42, 7), IsRisingTide = true, LastUpdateDate_UTC = new DateTime(2019, 2, 11, 16, 27, 53), LastUpdateContactTVItemID = 2 });
-                dbIM.SaveChanges();
+                    dbIM.SaveChanges();
+                }
+                catch (Exception)
+                {
+                   // nothing for now
+                }
+                try
+                {
                 dbIM.TVItems.Add(new TVItem() { TVItemID = 2, TVLevel = 1, TVPath = "p1p2", TVType = (TVTypeEnum)5, ParentID = 1, IsActive = true, LastUpdateDate_UTC = new DateTime(2014, 12, 2, 16, 58, 16), LastUpdateContactTVItemID = 2});
-                dbIM.SaveChanges();
+                    dbIM.SaveChanges();
+                }
+                catch (Exception)
+                {
+                   // nothing for now
+                }
             }
 
             return drogueRunPosition;

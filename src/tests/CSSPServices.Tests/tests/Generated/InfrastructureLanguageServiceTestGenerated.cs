@@ -23,6 +23,7 @@ using Xunit;
 
 namespace CSSPServices.Tests
 {
+    [Collection("Sequential")]
     public partial class InfrastructureLanguageServiceTest : TestHelper
     {
         #region Variables
@@ -177,6 +178,9 @@ namespace CSSPServices.Tests
             dbIM = Provider.GetService<InMemoryDBContext>();
             Assert.NotNull(dbIM);
 
+            dbLocal = Provider.GetService<CSSPDBLocalContext>();
+            Assert.NotNull(dbLocal);
+
             InfrastructureLanguageService = Provider.GetService<IInfrastructureLanguageService>();
             Assert.NotNull(InfrastructureLanguageService);
 
@@ -184,6 +188,19 @@ namespace CSSPServices.Tests
         }
         private InfrastructureLanguage GetFilledRandomInfrastructureLanguage(string OmitPropName)
         {
+            List<InfrastructureLanguage> infrastructureLanguageListToDelete = (from c in dbLocal.InfrastructureLanguages
+                                                               select c).ToList(); 
+            
+            dbLocal.InfrastructureLanguages.RemoveRange(infrastructureLanguageListToDelete);
+            try
+            {
+                dbLocal.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                Assert.True(false, ex.Message);
+            }
+            
             dbIM.Database.EnsureDeleted();
 
             InfrastructureLanguage infrastructureLanguage = new InfrastructureLanguage();
@@ -199,10 +216,24 @@ namespace CSSPServices.Tests
             {
                 if (OmitPropName != "InfrastructureLanguageID") infrastructureLanguage.InfrastructureLanguageID = 10000000;
 
+                try
+                {
                 dbIM.Infrastructures.Add(new Infrastructure() { InfrastructureID = 1, InfrastructureTVItemID = 41, PrismID = null, TPID = 64, LSID = null, SiteID = 1593, Site = 14, InfrastructureCategory = "null", InfrastructureType = (InfrastructureTypeEnum)1, FacilityType = (FacilityTypeEnum)1, HasBackupPower = null, IsMechanicallyAerated = true, NumberOfCells = null, NumberOfAeratedCells = 2, AerationType = (AerationTypeEnum)1, PreliminaryTreatmentType = null, PrimaryTreatmentType = null, SecondaryTreatmentType = null, TertiaryTreatmentType = null, TreatmentType = (TreatmentTypeEnum)9, DisinfectionType = (DisinfectionTypeEnum)2, CollectionSystemType = null, AlarmSystemType = null, DesignFlow_m3_day = 2280, AverageFlow_m3_day = 1021, PeakFlow_m3_day = 2347, PopServed = 2383, CanOverflow = false, ValveType = null, PercFlowOfTotal = 100, TimeOffset_hour = -4, TempCatchAllRemoveLater = "               Year of assessment:	[]---              Design flow in m3/d:	2280---             Average flow in m3/d:	1021---                Peak flow in m3/d:	2347---           Estimated flow in m3/d:	[]---             Date of construction:	[]---           Date of recent upgrade:	[]---Number of visit to plant per week:	[]---                 Has alarm system:	[]---              Combined percentage:	[]---------Please add the contact info in the system------ Operator name:	Denny Richard---  Operator tel:	(506)  743-7318, Cell (506) 744-0837---Operator email:	---Infrastructure type:	WWTP------Disinfection Type Text---Chlorination and Dechlorination------Infrastructure Type Text---WWTP------Treatment Type Text---2 Cell Aerated Lagoon---", AverageDepth_m = 1, NumberOfPorts = 1, PortDiameter_m = 0.4, PortSpacing_m = 1000, PortElevation_m = 0.5, VerticalAngle_deg = null, HorizontalAngle_deg = 90, DecayRate_per_day = 4.6821, NearFieldVelocity_m_s = null, FarFieldVelocity_m_s = 0.18, ReceivingWaterSalinity_PSU = 28, ReceivingWaterTemperature_C = null, ReceivingWater_MPN_per_100ml = 2500000, DistanceFromShore_m = null, SeeOtherMunicipalityTVItemID = null, CivicAddressTVItemID = null, LastUpdateDate_UTC = new DateTime(2018, 7, 5, 19, 20, 50), LastUpdateContactTVItemID = 2 });
-                dbIM.SaveChanges();
+                    dbIM.SaveChanges();
+                }
+                catch (Exception)
+                {
+                   // nothing for now
+                }
+                try
+                {
                 dbIM.TVItems.Add(new TVItem() { TVItemID = 2, TVLevel = 1, TVPath = "p1p2", TVType = (TVTypeEnum)5, ParentID = 1, IsActive = true, LastUpdateDate_UTC = new DateTime(2014, 12, 2, 16, 58, 16), LastUpdateContactTVItemID = 2});
-                dbIM.SaveChanges();
+                    dbIM.SaveChanges();
+                }
+                catch (Exception)
+                {
+                   // nothing for now
+                }
             }
 
             return infrastructureLanguage;

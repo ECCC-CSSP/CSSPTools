@@ -13,13 +13,28 @@ namespace ServicesClassNameServiceTestGeneratedServices.Services
         {
             StringBuilder sbInMemory = new StringBuilder();
 
-            if (TypeName == "AppTask")
+            string plurial = "s";
+            if (TypeName == "Address")
             {
-                int sleijf = 34;
+                plurial = "es";
             }
 
             sb.AppendLine($@"        private { TypeName } GetFilledRandom{ TypeName }(string OmitPropName)");
             sb.AppendLine(@"        {");
+            sb.AppendLine($@"            List<{ TypeName }> { TypeNameLower }ListToDelete = (from c in dbLocal.{ TypeName }{ plurial }");
+            sb.AppendLine($@"                                                               select c).ToList(); ");
+            sb.AppendLine($@"            ");
+            sb.AppendLine($@"            dbLocal.{ TypeName }{ plurial }.RemoveRange({ TypeNameLower }ListToDelete);");
+            sb.AppendLine($@"            try");
+            sb.AppendLine($@"            {{");
+            sb.AppendLine($@"                dbLocal.SaveChanges();");
+            sb.AppendLine($@"            }}");
+            sb.AppendLine($@"            catch (Exception ex)");
+            sb.AppendLine($@"            {{");
+            sb.AppendLine($@"                Assert.True(false, ex.Message);");
+            sb.AppendLine($@"            }}");
+            sb.AppendLine($@"            ");
+
             sb.AppendLine($@"            dbIM.Database.EnsureDeleted();");
             sb.AppendLine(@"");
             sb.AppendLine($@"            { TypeName } { TypeNameLower } = new { TypeName }();");

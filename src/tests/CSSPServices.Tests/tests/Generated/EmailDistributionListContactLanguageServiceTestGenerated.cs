@@ -23,6 +23,7 @@ using Xunit;
 
 namespace CSSPServices.Tests
 {
+    [Collection("Sequential")]
     public partial class EmailDistributionListContactLanguageServiceTest : TestHelper
     {
         #region Variables
@@ -177,6 +178,9 @@ namespace CSSPServices.Tests
             dbIM = Provider.GetService<InMemoryDBContext>();
             Assert.NotNull(dbIM);
 
+            dbLocal = Provider.GetService<CSSPDBLocalContext>();
+            Assert.NotNull(dbLocal);
+
             EmailDistributionListContactLanguageService = Provider.GetService<IEmailDistributionListContactLanguageService>();
             Assert.NotNull(EmailDistributionListContactLanguageService);
 
@@ -184,6 +188,19 @@ namespace CSSPServices.Tests
         }
         private EmailDistributionListContactLanguage GetFilledRandomEmailDistributionListContactLanguage(string OmitPropName)
         {
+            List<EmailDistributionListContactLanguage> emailDistributionListContactLanguageListToDelete = (from c in dbLocal.EmailDistributionListContactLanguages
+                                                               select c).ToList(); 
+            
+            dbLocal.EmailDistributionListContactLanguages.RemoveRange(emailDistributionListContactLanguageListToDelete);
+            try
+            {
+                dbLocal.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                Assert.True(false, ex.Message);
+            }
+            
             dbIM.Database.EnsureDeleted();
 
             EmailDistributionListContactLanguage emailDistributionListContactLanguage = new EmailDistributionListContactLanguage();
@@ -199,10 +216,24 @@ namespace CSSPServices.Tests
             {
                 if (OmitPropName != "EmailDistributionListContactLanguageID") emailDistributionListContactLanguage.EmailDistributionListContactLanguageID = 10000000;
 
+                try
+                {
                 dbIM.EmailDistributionListContacts.Add(new EmailDistributionListContact() { EmailDistributionListContactID = 1, EmailDistributionListID = 1, IsCC = true, Name = "Bernice Losier", Email = "bernice.losier@inspection.gc.ca", CMPRainfallSeasonal = true, CMPWastewater = true, EmergencyWeather = true, EmergencyWastewater = true, ReopeningAllTypes = true, LastUpdateDate_UTC = new DateTime(2017, 6, 16, 12, 58, 34), LastUpdateContactTVItemID = 2 });
-                dbIM.SaveChanges();
+                    dbIM.SaveChanges();
+                }
+                catch (Exception)
+                {
+                   // nothing for now
+                }
+                try
+                {
                 dbIM.TVItems.Add(new TVItem() { TVItemID = 2, TVLevel = 1, TVPath = "p1p2", TVType = (TVTypeEnum)5, ParentID = 1, IsActive = true, LastUpdateDate_UTC = new DateTime(2014, 12, 2, 16, 58, 16), LastUpdateContactTVItemID = 2});
-                dbIM.SaveChanges();
+                    dbIM.SaveChanges();
+                }
+                catch (Exception)
+                {
+                   // nothing for now
+                }
             }
 
             return emailDistributionListContactLanguage;

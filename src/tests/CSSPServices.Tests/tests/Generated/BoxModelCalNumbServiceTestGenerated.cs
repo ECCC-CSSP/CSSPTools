@@ -23,6 +23,7 @@ using Xunit;
 
 namespace CSSPServices.Tests
 {
+    [Collection("Sequential")]
     public partial class BoxModelCalNumbServiceTest : TestHelper
     {
         #region Variables

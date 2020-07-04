@@ -23,6 +23,7 @@ using Xunit;
 
 namespace CSSPServices.Tests
 {
+    [Collection("Sequential")]
     public partial class EmailDistributionListLanguageServiceTest : TestHelper
     {
         #region Variables
@@ -177,6 +178,9 @@ namespace CSSPServices.Tests
             dbIM = Provider.GetService<InMemoryDBContext>();
             Assert.NotNull(dbIM);
 
+            dbLocal = Provider.GetService<CSSPDBLocalContext>();
+            Assert.NotNull(dbLocal);
+
             EmailDistributionListLanguageService = Provider.GetService<IEmailDistributionListLanguageService>();
             Assert.NotNull(EmailDistributionListLanguageService);
 
@@ -184,6 +188,19 @@ namespace CSSPServices.Tests
         }
         private EmailDistributionListLanguage GetFilledRandomEmailDistributionListLanguage(string OmitPropName)
         {
+            List<EmailDistributionListLanguage> emailDistributionListLanguageListToDelete = (from c in dbLocal.EmailDistributionListLanguages
+                                                               select c).ToList(); 
+            
+            dbLocal.EmailDistributionListLanguages.RemoveRange(emailDistributionListLanguageListToDelete);
+            try
+            {
+                dbLocal.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                Assert.True(false, ex.Message);
+            }
+            
             dbIM.Database.EnsureDeleted();
 
             EmailDistributionListLanguage emailDistributionListLanguage = new EmailDistributionListLanguage();
@@ -199,10 +216,24 @@ namespace CSSPServices.Tests
             {
                 if (OmitPropName != "EmailDistributionListLanguageID") emailDistributionListLanguage.EmailDistributionListLanguageID = 10000000;
 
+                try
+                {
                 dbIM.EmailDistributionLists.Add(new EmailDistributionList() { EmailDistributionListID = 1, ParentTVItemID = 5, Ordinal = 1, LastUpdateDate_UTC = new DateTime(2017, 6, 14, 18, 7, 57), LastUpdateContactTVItemID = 2 });
-                dbIM.SaveChanges();
+                    dbIM.SaveChanges();
+                }
+                catch (Exception)
+                {
+                   // nothing for now
+                }
+                try
+                {
                 dbIM.TVItems.Add(new TVItem() { TVItemID = 2, TVLevel = 1, TVPath = "p1p2", TVType = (TVTypeEnum)5, ParentID = 1, IsActive = true, LastUpdateDate_UTC = new DateTime(2014, 12, 2, 16, 58, 16), LastUpdateContactTVItemID = 2});
-                dbIM.SaveChanges();
+                    dbIM.SaveChanges();
+                }
+                catch (Exception)
+                {
+                   // nothing for now
+                }
             }
 
             return emailDistributionListLanguage;

@@ -23,6 +23,7 @@ using Xunit;
 
 namespace CSSPServices.Tests
 {
+    [Collection("Sequential")]
     public partial class SpillLanguageServiceTest : TestHelper
     {
         #region Variables
@@ -177,6 +178,9 @@ namespace CSSPServices.Tests
             dbIM = Provider.GetService<InMemoryDBContext>();
             Assert.NotNull(dbIM);
 
+            dbLocal = Provider.GetService<CSSPDBLocalContext>();
+            Assert.NotNull(dbLocal);
+
             SpillLanguageService = Provider.GetService<ISpillLanguageService>();
             Assert.NotNull(SpillLanguageService);
 
@@ -184,6 +188,19 @@ namespace CSSPServices.Tests
         }
         private SpillLanguage GetFilledRandomSpillLanguage(string OmitPropName)
         {
+            List<SpillLanguage> spillLanguageListToDelete = (from c in dbLocal.SpillLanguages
+                                                               select c).ToList(); 
+            
+            dbLocal.SpillLanguages.RemoveRange(spillLanguageListToDelete);
+            try
+            {
+                dbLocal.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                Assert.True(false, ex.Message);
+            }
+            
             dbIM.Database.EnsureDeleted();
 
             SpillLanguage spillLanguage = new SpillLanguage();
@@ -199,10 +216,24 @@ namespace CSSPServices.Tests
             {
                 if (OmitPropName != "SpillLanguageID") spillLanguage.SpillLanguageID = 10000000;
 
-                dbIM.Spills.Add(new Spill() { SpillID = 1 });
-                dbIM.SaveChanges();
+                try
+                {
+                dbIM.Spills.Add(new Spill() { SpillID = 1, MunicipalityTVItemID = 39, InfrastructureTVItemID = 41, StartDateTime_Local = new DateTime(2015, 7, 2, 5, 59, 52), EndDateTime_Local = new DateTime(2015, 7, 2, 11, 59, 52), AverageFlow_m3_day = 34.5, LastUpdateDate_UTC = new DateTime(2020, 7, 2, 5, 59, 52), LastUpdateContactTVItemID = 2 });
+                    dbIM.SaveChanges();
+                }
+                catch (Exception)
+                {
+                   // nothing for now
+                }
+                try
+                {
                 dbIM.TVItems.Add(new TVItem() { TVItemID = 2, TVLevel = 1, TVPath = "p1p2", TVType = (TVTypeEnum)5, ParentID = 1, IsActive = true, LastUpdateDate_UTC = new DateTime(2014, 12, 2, 16, 58, 16), LastUpdateContactTVItemID = 2});
-                dbIM.SaveChanges();
+                    dbIM.SaveChanges();
+                }
+                catch (Exception)
+                {
+                   // nothing for now
+                }
             }
 
             return spillLanguage;

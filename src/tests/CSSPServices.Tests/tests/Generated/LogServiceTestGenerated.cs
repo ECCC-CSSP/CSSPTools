@@ -23,6 +23,7 @@ using Xunit;
 
 namespace CSSPServices.Tests
 {
+    [Collection("Sequential")]
     public partial class LogServiceTest : TestHelper
     {
         #region Variables
@@ -177,6 +178,9 @@ namespace CSSPServices.Tests
             dbIM = Provider.GetService<InMemoryDBContext>();
             Assert.NotNull(dbIM);
 
+            dbLocal = Provider.GetService<CSSPDBLocalContext>();
+            Assert.NotNull(dbLocal);
+
             LogService = Provider.GetService<ILogService>();
             Assert.NotNull(LogService);
 
@@ -184,6 +188,19 @@ namespace CSSPServices.Tests
         }
         private Log GetFilledRandomLog(string OmitPropName)
         {
+            List<Log> logListToDelete = (from c in dbLocal.Logs
+                                                               select c).ToList(); 
+            
+            dbLocal.Logs.RemoveRange(logListToDelete);
+            try
+            {
+                dbLocal.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                Assert.True(false, ex.Message);
+            }
+            
             dbIM.Database.EnsureDeleted();
 
             Log log = new Log();
@@ -199,8 +216,15 @@ namespace CSSPServices.Tests
             {
                 if (OmitPropName != "LogID") log.LogID = 10000000;
 
+                try
+                {
                 dbIM.TVItems.Add(new TVItem() { TVItemID = 2, TVLevel = 1, TVPath = "p1p2", TVType = (TVTypeEnum)5, ParentID = 1, IsActive = true, LastUpdateDate_UTC = new DateTime(2014, 12, 2, 16, 58, 16), LastUpdateContactTVItemID = 2});
-                dbIM.SaveChanges();
+                    dbIM.SaveChanges();
+                }
+                catch (Exception)
+                {
+                   // nothing for now
+                }
             }
 
             return log;

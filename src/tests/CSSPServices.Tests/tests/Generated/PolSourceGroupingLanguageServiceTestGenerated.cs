@@ -23,6 +23,7 @@ using Xunit;
 
 namespace CSSPServices.Tests
 {
+    [Collection("Sequential")]
     public partial class PolSourceGroupingLanguageServiceTest : TestHelper
     {
         #region Variables
@@ -177,6 +178,9 @@ namespace CSSPServices.Tests
             dbIM = Provider.GetService<InMemoryDBContext>();
             Assert.NotNull(dbIM);
 
+            dbLocal = Provider.GetService<CSSPDBLocalContext>();
+            Assert.NotNull(dbLocal);
+
             PolSourceGroupingLanguageService = Provider.GetService<IPolSourceGroupingLanguageService>();
             Assert.NotNull(PolSourceGroupingLanguageService);
 
@@ -184,6 +188,19 @@ namespace CSSPServices.Tests
         }
         private PolSourceGroupingLanguage GetFilledRandomPolSourceGroupingLanguage(string OmitPropName)
         {
+            List<PolSourceGroupingLanguage> polSourceGroupingLanguageListToDelete = (from c in dbLocal.PolSourceGroupingLanguages
+                                                               select c).ToList(); 
+            
+            dbLocal.PolSourceGroupingLanguages.RemoveRange(polSourceGroupingLanguageListToDelete);
+            try
+            {
+                dbLocal.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                Assert.True(false, ex.Message);
+            }
+            
             dbIM.Database.EnsureDeleted();
 
             PolSourceGroupingLanguage polSourceGroupingLanguage = new PolSourceGroupingLanguage();
@@ -208,10 +225,24 @@ namespace CSSPServices.Tests
             {
                 if (OmitPropName != "PolSourceGroupingLanguageID") polSourceGroupingLanguage.PolSourceGroupingLanguageID = 10000000;
 
-                dbIM.PolSourceGroupings.Add(new PolSourceGrouping() { PolSourceGroupingID = 1 });
-                dbIM.SaveChanges();
+                try
+                {
+                dbIM.PolSourceGroupings.Add(new PolSourceGrouping() { PolSourceGroupingID = 1, CSSPID = 10003, GroupName = "FirstGroupName", Child = "FirstChild", Hide = "FirstHide", LastUpdateDate_UTC = new DateTime(2020, 7, 2, 5, 59, 53), LastUpdateContactTVItemID = 2 });
+                    dbIM.SaveChanges();
+                }
+                catch (Exception)
+                {
+                   // nothing for now
+                }
+                try
+                {
                 dbIM.TVItems.Add(new TVItem() { TVItemID = 2, TVLevel = 1, TVPath = "p1p2", TVType = (TVTypeEnum)5, ParentID = 1, IsActive = true, LastUpdateDate_UTC = new DateTime(2014, 12, 2, 16, 58, 16), LastUpdateContactTVItemID = 2});
-                dbIM.SaveChanges();
+                    dbIM.SaveChanges();
+                }
+                catch (Exception)
+                {
+                   // nothing for now
+                }
             }
 
             return polSourceGroupingLanguage;

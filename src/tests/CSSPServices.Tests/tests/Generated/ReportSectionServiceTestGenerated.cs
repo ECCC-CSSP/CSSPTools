@@ -23,6 +23,7 @@ using Xunit;
 
 namespace CSSPServices.Tests
 {
+    [Collection("Sequential")]
     public partial class ReportSectionServiceTest : TestHelper
     {
         #region Variables
@@ -177,6 +178,9 @@ namespace CSSPServices.Tests
             dbIM = Provider.GetService<InMemoryDBContext>();
             Assert.NotNull(dbIM);
 
+            dbLocal = Provider.GetService<CSSPDBLocalContext>();
+            Assert.NotNull(dbLocal);
+
             ReportSectionService = Provider.GetService<IReportSectionService>();
             Assert.NotNull(ReportSectionService);
 
@@ -184,19 +188,32 @@ namespace CSSPServices.Tests
         }
         private ReportSection GetFilledRandomReportSection(string OmitPropName)
         {
+            List<ReportSection> reportSectionListToDelete = (from c in dbLocal.ReportSections
+                                                               select c).ToList(); 
+            
+            dbLocal.ReportSections.RemoveRange(reportSectionListToDelete);
+            try
+            {
+                dbLocal.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                Assert.True(false, ex.Message);
+            }
+            
             dbIM.Database.EnsureDeleted();
 
             ReportSection reportSection = new ReportSection();
 
-            if (OmitPropName != "ReportTypeID") reportSection.ReportTypeID = 1;
+            // Need to implement [ReportSection ReportTypeID ReportType ReportTypeID]
             // Need to implement (no items found, would need to add at least one in the TestDB) [ReportSection TVItemID TVItem TVItemID]
             if (OmitPropName != "Language") reportSection.Language = LanguageRequest;
             if (OmitPropName != "Ordinal") reportSection.Ordinal = GetRandomInt(0, 1000);
             if (OmitPropName != "IsStatic") reportSection.IsStatic = true;
-            if (OmitPropName != "ParentReportSectionID") reportSection.ParentReportSectionID = 1;
+            // Need to implement [ReportSection ParentReportSectionID ReportSection ReportSectionID]
             if (OmitPropName != "Year") reportSection.Year = GetRandomInt(1979, 2050);
             if (OmitPropName != "Locked") reportSection.Locked = true;
-            if (OmitPropName != "TemplateReportSectionID") reportSection.TemplateReportSectionID = 1;
+            // Need to implement [ReportSection TemplateReportSectionID ReportSection ReportSectionID]
             if (OmitPropName != "ReportSectionName") reportSection.ReportSectionName = GetRandomString("", 5);
             if (OmitPropName != "ReportSectionText") reportSection.ReportSectionText = GetRandomString("", 5);
             if (OmitPropName != "LastUpdateDate_UTC") reportSection.LastUpdateDate_UTC = new DateTime(2005, 3, 6);
@@ -206,12 +223,15 @@ namespace CSSPServices.Tests
             {
                 if (OmitPropName != "ReportSectionID") reportSection.ReportSectionID = 10000000;
 
-                dbIM.ReportTypes.Add(new ReportType() { ReportTypeID = 1 });
-                dbIM.SaveChanges();
-                dbIM.ReportSections.Add(new ReportSection() { ReportSectionID = 1 });
-                dbIM.SaveChanges();
+                try
+                {
                 dbIM.TVItems.Add(new TVItem() { TVItemID = 2, TVLevel = 1, TVPath = "p1p2", TVType = (TVTypeEnum)5, ParentID = 1, IsActive = true, LastUpdateDate_UTC = new DateTime(2014, 12, 2, 16, 58, 16), LastUpdateContactTVItemID = 2});
-                dbIM.SaveChanges();
+                    dbIM.SaveChanges();
+                }
+                catch (Exception)
+                {
+                   // nothing for now
+                }
             }
 
             return reportSection;

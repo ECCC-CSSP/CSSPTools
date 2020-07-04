@@ -23,6 +23,7 @@ using Xunit;
 
 namespace CSSPServices.Tests
 {
+    [Collection("Sequential")]
     public partial class TVTypeUserAuthorizationServiceTest : TestHelper
     {
         #region Variables
@@ -177,6 +178,9 @@ namespace CSSPServices.Tests
             dbIM = Provider.GetService<InMemoryDBContext>();
             Assert.NotNull(dbIM);
 
+            dbLocal = Provider.GetService<CSSPDBLocalContext>();
+            Assert.NotNull(dbLocal);
+
             TVTypeUserAuthorizationService = Provider.GetService<ITVTypeUserAuthorizationService>();
             Assert.NotNull(TVTypeUserAuthorizationService);
 
@@ -184,6 +188,19 @@ namespace CSSPServices.Tests
         }
         private TVTypeUserAuthorization GetFilledRandomTVTypeUserAuthorization(string OmitPropName)
         {
+            List<TVTypeUserAuthorization> tvTypeUserAuthorizationListToDelete = (from c in dbLocal.TVTypeUserAuthorizations
+                                                               select c).ToList(); 
+            
+            dbLocal.TVTypeUserAuthorizations.RemoveRange(tvTypeUserAuthorizationListToDelete);
+            try
+            {
+                dbLocal.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                Assert.True(false, ex.Message);
+            }
+            
             dbIM.Database.EnsureDeleted();
 
             TVTypeUserAuthorization tvTypeUserAuthorization = new TVTypeUserAuthorization();
@@ -198,8 +215,15 @@ namespace CSSPServices.Tests
             {
                 if (OmitPropName != "TVTypeUserAuthorizationID") tvTypeUserAuthorization.TVTypeUserAuthorizationID = 10000000;
 
+                try
+                {
                 dbIM.TVItems.Add(new TVItem() { TVItemID = 2, TVLevel = 1, TVPath = "p1p2", TVType = (TVTypeEnum)5, ParentID = 1, IsActive = true, LastUpdateDate_UTC = new DateTime(2014, 12, 2, 16, 58, 16), LastUpdateContactTVItemID = 2});
-                dbIM.SaveChanges();
+                    dbIM.SaveChanges();
+                }
+                catch (Exception)
+                {
+                   // nothing for now
+                }
             }
 
             return tvTypeUserAuthorization;

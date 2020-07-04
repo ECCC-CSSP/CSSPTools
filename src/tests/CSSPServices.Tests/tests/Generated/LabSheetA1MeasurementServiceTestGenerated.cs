@@ -23,6 +23,7 @@ using Xunit;
 
 namespace CSSPServices.Tests
 {
+    [Collection("Sequential")]
     public partial class LabSheetA1MeasurementServiceTest : TestHelper
     {
         #region Variables

@@ -23,6 +23,7 @@ using Xunit;
 
 namespace CSSPServices.Tests
 {
+    [Collection("Sequential")]
     public partial class TVFileServiceTest : TestHelper
     {
         #region Variables
@@ -177,6 +178,9 @@ namespace CSSPServices.Tests
             dbIM = Provider.GetService<InMemoryDBContext>();
             Assert.NotNull(dbIM);
 
+            dbLocal = Provider.GetService<CSSPDBLocalContext>();
+            Assert.NotNull(dbLocal);
+
             TVFileService = Provider.GetService<ITVFileService>();
             Assert.NotNull(TVFileService);
 
@@ -184,13 +188,26 @@ namespace CSSPServices.Tests
         }
         private TVFile GetFilledRandomTVFile(string OmitPropName)
         {
+            List<TVFile> tvFileListToDelete = (from c in dbLocal.TVFiles
+                                                               select c).ToList(); 
+            
+            dbLocal.TVFiles.RemoveRange(tvFileListToDelete);
+            try
+            {
+                dbLocal.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                Assert.True(false, ex.Message);
+            }
+            
             dbIM.Database.EnsureDeleted();
 
             TVFile tvFile = new TVFile();
 
             if (OmitPropName != "TVFileTVItemID") tvFile.TVFileTVItemID = 42;
             if (OmitPropName != "TemplateTVType") tvFile.TemplateTVType = (TVTypeEnum)GetRandomEnumType(typeof(TVTypeEnum));
-            if (OmitPropName != "ReportTypeID") tvFile.ReportTypeID = 1;
+            // Need to implement [TVFile ReportTypeID ReportType ReportTypeID]
             if (OmitPropName != "Parameters") tvFile.Parameters = GetRandomString("", 20);
             if (OmitPropName != "Year") tvFile.Year = GetRandomInt(1980, 2050);
             if (OmitPropName != "Language") tvFile.Language = LanguageRequest;
@@ -210,12 +227,24 @@ namespace CSSPServices.Tests
             {
                 if (OmitPropName != "TVFileID") tvFile.TVFileID = 10000000;
 
+                try
+                {
                 dbIM.TVItems.Add(new TVItem() { TVItemID = 42, TVLevel = 5, TVPath = "p1p5p6p39p41p42", TVType = (TVTypeEnum)8, ParentID = 41, IsActive = true, LastUpdateDate_UTC = new DateTime(2016, 5, 5, 17, 18, 26), LastUpdateContactTVItemID = 2});
-                dbIM.SaveChanges();
-                dbIM.ReportTypes.Add(new ReportType() { ReportTypeID = 1 });
-                dbIM.SaveChanges();
+                    dbIM.SaveChanges();
+                }
+                catch (Exception)
+                {
+                   // nothing for now
+                }
+                try
+                {
                 dbIM.TVItems.Add(new TVItem() { TVItemID = 2, TVLevel = 1, TVPath = "p1p2", TVType = (TVTypeEnum)5, ParentID = 1, IsActive = true, LastUpdateDate_UTC = new DateTime(2014, 12, 2, 16, 58, 16), LastUpdateContactTVItemID = 2});
-                dbIM.SaveChanges();
+                    dbIM.SaveChanges();
+                }
+                catch (Exception)
+                {
+                   // nothing for now
+                }
             }
 
             return tvFile;

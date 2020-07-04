@@ -101,6 +101,7 @@ namespace ServicesClassNameServiceTestGeneratedServices.Services
                 sb.AppendLine(@"");
                 sb.AppendLine(@"namespace CSSPServices.Tests");
                 sb.AppendLine(@"{");
+                sb.AppendLine(@"    [Collection(""Sequential"")]");
                 sb.AppendLine($@"    public partial class { TypeName }ServiceTest : TestHelper");
                 sb.AppendLine(@"    {");
                 sb.AppendLine(@"        #region Variables");

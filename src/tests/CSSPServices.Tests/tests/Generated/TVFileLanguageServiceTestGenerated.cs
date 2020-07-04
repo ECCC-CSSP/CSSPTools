@@ -23,6 +23,7 @@ using Xunit;
 
 namespace CSSPServices.Tests
 {
+    [Collection("Sequential")]
     public partial class TVFileLanguageServiceTest : TestHelper
     {
         #region Variables
@@ -177,6 +178,9 @@ namespace CSSPServices.Tests
             dbIM = Provider.GetService<InMemoryDBContext>();
             Assert.NotNull(dbIM);
 
+            dbLocal = Provider.GetService<CSSPDBLocalContext>();
+            Assert.NotNull(dbLocal);
+
             TVFileLanguageService = Provider.GetService<ITVFileLanguageService>();
             Assert.NotNull(TVFileLanguageService);
 
@@ -184,6 +188,19 @@ namespace CSSPServices.Tests
         }
         private TVFileLanguage GetFilledRandomTVFileLanguage(string OmitPropName)
         {
+            List<TVFileLanguage> tvFileLanguageListToDelete = (from c in dbLocal.TVFileLanguages
+                                                               select c).ToList(); 
+            
+            dbLocal.TVFileLanguages.RemoveRange(tvFileLanguageListToDelete);
+            try
+            {
+                dbLocal.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                Assert.True(false, ex.Message);
+            }
+            
             dbIM.Database.EnsureDeleted();
 
             TVFileLanguage tvFileLanguage = new TVFileLanguage();
@@ -199,10 +216,24 @@ namespace CSSPServices.Tests
             {
                 if (OmitPropName != "TVFileLanguageID") tvFileLanguage.TVFileLanguageID = 10000000;
 
-                dbIM.TVFiles.Add(new TVFile() { TVFileID = 1 });
-                dbIM.SaveChanges();
+                try
+                {
+                dbIM.TVFiles.Add(new TVFile() { TVFileID = 1, TVFileTVItemID = 42, TemplateTVType = null, ReportTypeID = null, Parameters = null, Year = null, Language = (LanguageEnum)3, FilePurpose = (FilePurposeEnum)7, FileType = (FileTypeEnum)13, FileSize_kb = 3806224, FileInfo = "Uploaded file", FileCreatedDate_UTC = new DateTime(2016, 5, 5, 14, 18, 26), FromWater = null, ClientFilePath = @"DSCF6003.JPG", ServerFileName = @"TP - Bouctouche Lagoon.JPG", ServerFilePath = @"E:\inetpub\wwwroot\csspwebtools\App_Data\28689\", LastUpdateDate_UTC = new DateTime(2016, 5, 5, 17, 18, 26), LastUpdateContactTVItemID = 2 });
+                    dbIM.SaveChanges();
+                }
+                catch (Exception)
+                {
+                   // nothing for now
+                }
+                try
+                {
                 dbIM.TVItems.Add(new TVItem() { TVItemID = 2, TVLevel = 1, TVPath = "p1p2", TVType = (TVTypeEnum)5, ParentID = 1, IsActive = true, LastUpdateDate_UTC = new DateTime(2014, 12, 2, 16, 58, 16), LastUpdateContactTVItemID = 2});
-                dbIM.SaveChanges();
+                    dbIM.SaveChanges();
+                }
+                catch (Exception)
+                {
+                   // nothing for now
+                }
             }
 
             return tvFileLanguage;

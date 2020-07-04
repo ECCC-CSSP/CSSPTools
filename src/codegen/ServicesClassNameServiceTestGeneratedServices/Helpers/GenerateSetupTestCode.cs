@@ -69,6 +69,9 @@ namespace ServicesClassNameServiceTestGeneratedServices.Services
             sb.AppendLine(@"            dbIM = Provider.GetService<InMemoryDBContext>();");
             sb.AppendLine(@"            Assert.NotNull(dbIM);");
             sb.AppendLine(@"");
+            sb.AppendLine(@"            dbLocal = Provider.GetService<CSSPDBLocalContext>();");
+            sb.AppendLine(@"            Assert.NotNull(dbLocal);");
+            sb.AppendLine(@"");
             sb.AppendLine($@"            { TypeName }Service = Provider.GetService<I{ TypeName }Service>();");
             sb.AppendLine($@"            Assert.NotNull({ TypeName }Service);");
             sb.AppendLine(@"");

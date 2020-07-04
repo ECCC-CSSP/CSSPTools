@@ -23,6 +23,7 @@ using Xunit;
 
 namespace CSSPServices.Tests
 {
+    [Collection("Sequential")]
     public partial class PolSourceObservationIssueServiceTest : TestHelper
     {
         #region Variables
@@ -177,6 +178,9 @@ namespace CSSPServices.Tests
             dbIM = Provider.GetService<InMemoryDBContext>();
             Assert.NotNull(dbIM);
 
+            dbLocal = Provider.GetService<CSSPDBLocalContext>();
+            Assert.NotNull(dbLocal);
+
             PolSourceObservationIssueService = Provider.GetService<IPolSourceObservationIssueService>();
             Assert.NotNull(PolSourceObservationIssueService);
 
@@ -184,6 +188,19 @@ namespace CSSPServices.Tests
         }
         private PolSourceObservationIssue GetFilledRandomPolSourceObservationIssue(string OmitPropName)
         {
+            List<PolSourceObservationIssue> polSourceObservationIssueListToDelete = (from c in dbLocal.PolSourceObservationIssues
+                                                               select c).ToList(); 
+            
+            dbLocal.PolSourceObservationIssues.RemoveRange(polSourceObservationIssueListToDelete);
+            try
+            {
+                dbLocal.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                Assert.True(false, ex.Message);
+            }
+            
             dbIM.Database.EnsureDeleted();
 
             PolSourceObservationIssue polSourceObservationIssue = new PolSourceObservationIssue();
@@ -199,10 +216,24 @@ namespace CSSPServices.Tests
             {
                 if (OmitPropName != "PolSourceObservationIssueID") polSourceObservationIssue.PolSourceObservationIssueID = 10000000;
 
-                dbIM.PolSourceObservations.Add(new PolSourceObservation() { PolSourceObservationID = 1 });
-                dbIM.SaveChanges();
+                try
+                {
+                dbIM.PolSourceObservations.Add(new PolSourceObservation() { PolSourceObservationID = 1, PolSourceSiteID = 1, ObservationDate_Local = new DateTime(2007, 4, 24, 0, 0, 0), ContactTVItemID = 2, DesktopReviewed = false, Observation_ToBeDeleted = "NP Farm area, 20+ animals observed and manure piled 4m high behind barn approx. 350m from shore. Drainage ditches lead to river with a heavy slope.", LastUpdateDate_UTC = new DateTime(2015, 4, 13, 20, 1, 31), LastUpdateContactTVItemID = 2 });
+                    dbIM.SaveChanges();
+                }
+                catch (Exception)
+                {
+                   // nothing for now
+                }
+                try
+                {
                 dbIM.TVItems.Add(new TVItem() { TVItemID = 2, TVLevel = 1, TVPath = "p1p2", TVType = (TVTypeEnum)5, ParentID = 1, IsActive = true, LastUpdateDate_UTC = new DateTime(2014, 12, 2, 16, 58, 16), LastUpdateContactTVItemID = 2});
-                dbIM.SaveChanges();
+                    dbIM.SaveChanges();
+                }
+                catch (Exception)
+                {
+                   // nothing for now
+                }
             }
 
             return polSourceObservationIssue;

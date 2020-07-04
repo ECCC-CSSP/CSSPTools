@@ -23,6 +23,7 @@ using Xunit;
 
 namespace CSSPServices.Tests
 {
+    [Collection("Sequential")]
     public partial class MapInfoPointServiceTest : TestHelper
     {
         #region Variables
@@ -177,6 +178,9 @@ namespace CSSPServices.Tests
             dbIM = Provider.GetService<InMemoryDBContext>();
             Assert.NotNull(dbIM);
 
+            dbLocal = Provider.GetService<CSSPDBLocalContext>();
+            Assert.NotNull(dbLocal);
+
             MapInfoPointService = Provider.GetService<IMapInfoPointService>();
             Assert.NotNull(MapInfoPointService);
 
@@ -184,6 +188,19 @@ namespace CSSPServices.Tests
         }
         private MapInfoPoint GetFilledRandomMapInfoPoint(string OmitPropName)
         {
+            List<MapInfoPoint> mapInfoPointListToDelete = (from c in dbLocal.MapInfoPoints
+                                                               select c).ToList(); 
+            
+            dbLocal.MapInfoPoints.RemoveRange(mapInfoPointListToDelete);
+            try
+            {
+                dbLocal.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                Assert.True(false, ex.Message);
+            }
+            
             dbIM.Database.EnsureDeleted();
 
             MapInfoPoint mapInfoPoint = new MapInfoPoint();
@@ -199,10 +216,24 @@ namespace CSSPServices.Tests
             {
                 if (OmitPropName != "MapInfoPointID") mapInfoPoint.MapInfoPointID = 10000000;
 
+                try
+                {
                 dbIM.MapInfos.Add(new MapInfo() { MapInfoID = 1, TVItemID = 5, TVType = (TVTypeEnum)6, LatMin = 49.999000549316406, LatMax = 50.000999450683594, LngMax = -89.9990005493164, MapInfoDrawType = (MapInfoDrawTypeEnum)1, LastUpdateDate_UTC = new DateTime(2017, 11, 10, 16, 23, 48), LastUpdateContactTVItemID = 2 });
-                dbIM.SaveChanges();
+                    dbIM.SaveChanges();
+                }
+                catch (Exception)
+                {
+                   // nothing for now
+                }
+                try
+                {
                 dbIM.TVItems.Add(new TVItem() { TVItemID = 2, TVLevel = 1, TVPath = "p1p2", TVType = (TVTypeEnum)5, ParentID = 1, IsActive = true, LastUpdateDate_UTC = new DateTime(2014, 12, 2, 16, 58, 16), LastUpdateContactTVItemID = 2});
-                dbIM.SaveChanges();
+                    dbIM.SaveChanges();
+                }
+                catch (Exception)
+                {
+                   // nothing for now
+                }
             }
 
             return mapInfoPoint;

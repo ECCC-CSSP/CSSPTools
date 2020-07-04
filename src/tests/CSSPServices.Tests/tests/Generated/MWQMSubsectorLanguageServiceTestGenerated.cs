@@ -23,6 +23,7 @@ using Xunit;
 
 namespace CSSPServices.Tests
 {
+    [Collection("Sequential")]
     public partial class MWQMSubsectorLanguageServiceTest : TestHelper
     {
         #region Variables
@@ -177,6 +178,9 @@ namespace CSSPServices.Tests
             dbIM = Provider.GetService<InMemoryDBContext>();
             Assert.NotNull(dbIM);
 
+            dbLocal = Provider.GetService<CSSPDBLocalContext>();
+            Assert.NotNull(dbLocal);
+
             MWQMSubsectorLanguageService = Provider.GetService<IMWQMSubsectorLanguageService>();
             Assert.NotNull(MWQMSubsectorLanguageService);
 
@@ -184,6 +188,19 @@ namespace CSSPServices.Tests
         }
         private MWQMSubsectorLanguage GetFilledRandomMWQMSubsectorLanguage(string OmitPropName)
         {
+            List<MWQMSubsectorLanguage> mwqmSubsectorLanguageListToDelete = (from c in dbLocal.MWQMSubsectorLanguages
+                                                               select c).ToList(); 
+            
+            dbLocal.MWQMSubsectorLanguages.RemoveRange(mwqmSubsectorLanguageListToDelete);
+            try
+            {
+                dbLocal.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                Assert.True(false, ex.Message);
+            }
+            
             dbIM.Database.EnsureDeleted();
 
             MWQMSubsectorLanguage mwqmSubsectorLanguage = new MWQMSubsectorLanguage();
@@ -201,10 +218,24 @@ namespace CSSPServices.Tests
             {
                 if (OmitPropName != "MWQMSubsectorLanguageID") mwqmSubsectorLanguage.MWQMSubsectorLanguageID = 10000000;
 
-                dbIM.MWQMSubsectors.Add(new MWQMSubsector() { MWQMSubsectorID = 1 });
-                dbIM.SaveChanges();
+                try
+                {
+                dbIM.MWQMSubsectors.Add(new MWQMSubsector() { MWQMSubsectorID = 1, MWQMSubsectorTVItemID = 11, SubsectorHistoricKey = "NB-06-020-001", TideLocationSIDText = "1815,1812,1810", LastUpdateDate_UTC = new DateTime(2014, 12, 2, 18, 53, 40), LastUpdateContactTVItemID = 2 });
+                    dbIM.SaveChanges();
+                }
+                catch (Exception)
+                {
+                   // nothing for now
+                }
+                try
+                {
                 dbIM.TVItems.Add(new TVItem() { TVItemID = 2, TVLevel = 1, TVPath = "p1p2", TVType = (TVTypeEnum)5, ParentID = 1, IsActive = true, LastUpdateDate_UTC = new DateTime(2014, 12, 2, 16, 58, 16), LastUpdateContactTVItemID = 2});
-                dbIM.SaveChanges();
+                    dbIM.SaveChanges();
+                }
+                catch (Exception)
+                {
+                   // nothing for now
+                }
             }
 
             return mwqmSubsectorLanguage;

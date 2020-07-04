@@ -23,6 +23,7 @@ using Xunit;
 
 namespace CSSPServices.Tests
 {
+    [Collection("Sequential")]
     public partial class RatingCurveValueServiceTest : TestHelper
     {
         #region Variables
@@ -177,6 +178,9 @@ namespace CSSPServices.Tests
             dbIM = Provider.GetService<InMemoryDBContext>();
             Assert.NotNull(dbIM);
 
+            dbLocal = Provider.GetService<CSSPDBLocalContext>();
+            Assert.NotNull(dbLocal);
+
             RatingCurveValueService = Provider.GetService<IRatingCurveValueService>();
             Assert.NotNull(RatingCurveValueService);
 
@@ -184,6 +188,19 @@ namespace CSSPServices.Tests
         }
         private RatingCurveValue GetFilledRandomRatingCurveValue(string OmitPropName)
         {
+            List<RatingCurveValue> ratingCurveValueListToDelete = (from c in dbLocal.RatingCurveValues
+                                                               select c).ToList(); 
+            
+            dbLocal.RatingCurveValues.RemoveRange(ratingCurveValueListToDelete);
+            try
+            {
+                dbLocal.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                Assert.True(false, ex.Message);
+            }
+            
             dbIM.Database.EnsureDeleted();
 
             RatingCurveValue ratingCurveValue = new RatingCurveValue();
@@ -198,10 +215,24 @@ namespace CSSPServices.Tests
             {
                 if (OmitPropName != "RatingCurveValueID") ratingCurveValue.RatingCurveValueID = 10000000;
 
-                dbIM.RatingCurves.Add(new RatingCurve() { RatingCurveID = 1 });
-                dbIM.SaveChanges();
+                try
+                {
+                dbIM.RatingCurves.Add(new RatingCurve() { RatingCurveID = 1, HydrometricSiteID = 1, RatingCurveNumber = "17", LastUpdateDate_UTC = new DateTime(2014, 12, 3, 20, 45, 2), LastUpdateContactTVItemID = 2 });
+                    dbIM.SaveChanges();
+                }
+                catch (Exception)
+                {
+                   // nothing for now
+                }
+                try
+                {
                 dbIM.TVItems.Add(new TVItem() { TVItemID = 2, TVLevel = 1, TVPath = "p1p2", TVType = (TVTypeEnum)5, ParentID = 1, IsActive = true, LastUpdateDate_UTC = new DateTime(2014, 12, 2, 16, 58, 16), LastUpdateContactTVItemID = 2});
-                dbIM.SaveChanges();
+                    dbIM.SaveChanges();
+                }
+                catch (Exception)
+                {
+                   // nothing for now
+                }
             }
 
             return ratingCurveValue;

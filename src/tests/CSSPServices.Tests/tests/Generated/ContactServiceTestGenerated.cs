@@ -23,6 +23,7 @@ using Xunit;
 
 namespace CSSPServices.Tests
 {
+    [Collection("Sequential")]
     public partial class ContactServiceTest : TestHelper
     {
         #region Variables
@@ -177,6 +178,9 @@ namespace CSSPServices.Tests
             dbIM = Provider.GetService<InMemoryDBContext>();
             Assert.NotNull(dbIM);
 
+            dbLocal = Provider.GetService<CSSPDBLocalContext>();
+            Assert.NotNull(dbLocal);
+
             ContactService = Provider.GetService<IContactService>();
             Assert.NotNull(ContactService);
 
@@ -184,6 +188,19 @@ namespace CSSPServices.Tests
         }
         private Contact GetFilledRandomContact(string OmitPropName)
         {
+            List<Contact> contactListToDelete = (from c in dbLocal.Contacts
+                                                               select c).ToList(); 
+            
+            dbLocal.Contacts.RemoveRange(contactListToDelete);
+            try
+            {
+                dbLocal.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                Assert.True(false, ex.Message);
+            }
+            
             dbIM.Database.EnsureDeleted();
 
             Contact contact = new Contact();
@@ -209,8 +226,15 @@ namespace CSSPServices.Tests
             {
                 if (OmitPropName != "ContactID") contact.ContactID = 10000000;
 
+                try
+                {
                 dbIM.TVItems.Add(new TVItem() { TVItemID = 2, TVLevel = 1, TVPath = "p1p2", TVType = (TVTypeEnum)5, ParentID = 1, IsActive = true, LastUpdateDate_UTC = new DateTime(2014, 12, 2, 16, 58, 16), LastUpdateContactTVItemID = 2});
-                dbIM.SaveChanges();
+                    dbIM.SaveChanges();
+                }
+                catch (Exception)
+                {
+                   // nothing for now
+                }
             }
 
             return contact;

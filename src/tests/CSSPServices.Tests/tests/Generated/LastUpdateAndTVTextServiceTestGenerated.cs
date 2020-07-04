@@ -23,6 +23,7 @@ using Xunit;
 
 namespace CSSPServices.Tests
 {
+    [Collection("Sequential")]
     public partial class LastUpdateAndTVTextServiceTest : TestHelper
     {
         #region Variables

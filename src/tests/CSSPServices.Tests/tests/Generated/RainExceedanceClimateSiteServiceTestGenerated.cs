@@ -23,6 +23,7 @@ using Xunit;
 
 namespace CSSPServices.Tests
 {
+    [Collection("Sequential")]
     public partial class RainExceedanceClimateSiteServiceTest : TestHelper
     {
         #region Variables
@@ -177,6 +178,9 @@ namespace CSSPServices.Tests
             dbIM = Provider.GetService<InMemoryDBContext>();
             Assert.NotNull(dbIM);
 
+            dbLocal = Provider.GetService<CSSPDBLocalContext>();
+            Assert.NotNull(dbLocal);
+
             RainExceedanceClimateSiteService = Provider.GetService<IRainExceedanceClimateSiteService>();
             Assert.NotNull(RainExceedanceClimateSiteService);
 
@@ -184,6 +188,19 @@ namespace CSSPServices.Tests
         }
         private RainExceedanceClimateSite GetFilledRandomRainExceedanceClimateSite(string OmitPropName)
         {
+            List<RainExceedanceClimateSite> rainExceedanceClimateSiteListToDelete = (from c in dbLocal.RainExceedanceClimateSites
+                                                               select c).ToList(); 
+            
+            dbLocal.RainExceedanceClimateSites.RemoveRange(rainExceedanceClimateSiteListToDelete);
+            try
+            {
+                dbLocal.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                Assert.True(false, ex.Message);
+            }
+            
             dbIM.Database.EnsureDeleted();
 
             RainExceedanceClimateSite rainExceedanceClimateSite = new RainExceedanceClimateSite();
@@ -197,12 +214,33 @@ namespace CSSPServices.Tests
             {
                 if (OmitPropName != "RainExceedanceClimateSiteID") rainExceedanceClimateSite.RainExceedanceClimateSiteID = 10000000;
 
+                try
+                {
                 dbIM.TVItems.Add(new TVItem() { TVItemID = 56, TVLevel = 2, TVPath = "p1p5p56", TVType = (TVTypeEnum)75, ParentID = 5, IsActive = true, LastUpdateDate_UTC = new DateTime(2019, 8, 16, 14, 13, 49), LastUpdateContactTVItemID = 2});
-                dbIM.SaveChanges();
+                    dbIM.SaveChanges();
+                }
+                catch (Exception)
+                {
+                   // nothing for now
+                }
+                try
+                {
                 dbIM.TVItems.Add(new TVItem() { TVItemID = 7, TVLevel = 3, TVPath = "p1p5p6p7", TVType = (TVTypeEnum)4, ParentID = 6, IsActive = true, LastUpdateDate_UTC = new DateTime(2015, 6, 18, 14, 40, 7), LastUpdateContactTVItemID = 2});
-                dbIM.SaveChanges();
+                    dbIM.SaveChanges();
+                }
+                catch (Exception)
+                {
+                   // nothing for now
+                }
+                try
+                {
                 dbIM.TVItems.Add(new TVItem() { TVItemID = 2, TVLevel = 1, TVPath = "p1p2", TVType = (TVTypeEnum)5, ParentID = 1, IsActive = true, LastUpdateDate_UTC = new DateTime(2014, 12, 2, 16, 58, 16), LastUpdateContactTVItemID = 2});
-                dbIM.SaveChanges();
+                    dbIM.SaveChanges();
+                }
+                catch (Exception)
+                {
+                   // nothing for now
+                }
             }
 
             return rainExceedanceClimateSite;

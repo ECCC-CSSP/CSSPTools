@@ -23,6 +23,7 @@ using Xunit;
 
 namespace CSSPServices.Tests
 {
+    [Collection("Sequential")]
     public partial class MikeSourceStartEndServiceTest : TestHelper
     {
         #region Variables
@@ -177,6 +178,9 @@ namespace CSSPServices.Tests
             dbIM = Provider.GetService<InMemoryDBContext>();
             Assert.NotNull(dbIM);
 
+            dbLocal = Provider.GetService<CSSPDBLocalContext>();
+            Assert.NotNull(dbLocal);
+
             MikeSourceStartEndService = Provider.GetService<IMikeSourceStartEndService>();
             Assert.NotNull(MikeSourceStartEndService);
 
@@ -184,6 +188,19 @@ namespace CSSPServices.Tests
         }
         private MikeSourceStartEnd GetFilledRandomMikeSourceStartEnd(string OmitPropName)
         {
+            List<MikeSourceStartEnd> mikeSourceStartEndListToDelete = (from c in dbLocal.MikeSourceStartEnds
+                                                               select c).ToList(); 
+            
+            dbLocal.MikeSourceStartEnds.RemoveRange(mikeSourceStartEndListToDelete);
+            try
+            {
+                dbLocal.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                Assert.True(false, ex.Message);
+            }
+            
             dbIM.Database.EnsureDeleted();
 
             MikeSourceStartEnd mikeSourceStartEnd = new MikeSourceStartEnd();
@@ -206,10 +223,24 @@ namespace CSSPServices.Tests
             {
                 if (OmitPropName != "MikeSourceStartEndID") mikeSourceStartEnd.MikeSourceStartEndID = 10000000;
 
+                try
+                {
                 dbIM.MikeSources.Add(new MikeSource() { MikeSourceID = 1, MikeSourceTVItemID = 53, IsContinuous = true, Include = false, IsRiver = false, UseHydrometric = false, HydrometricTVItemID = null, DrainageArea_km2 = null, Factor = null, SourceNumberString = "SOURCE_1", LastUpdateDate_UTC = new DateTime(2014, 12, 2, 21, 28, 56), LastUpdateContactTVItemID = 2 });
-                dbIM.SaveChanges();
+                    dbIM.SaveChanges();
+                }
+                catch (Exception)
+                {
+                   // nothing for now
+                }
+                try
+                {
                 dbIM.TVItems.Add(new TVItem() { TVItemID = 2, TVLevel = 1, TVPath = "p1p2", TVType = (TVTypeEnum)5, ParentID = 1, IsActive = true, LastUpdateDate_UTC = new DateTime(2014, 12, 2, 16, 58, 16), LastUpdateContactTVItemID = 2});
-                dbIM.SaveChanges();
+                    dbIM.SaveChanges();
+                }
+                catch (Exception)
+                {
+                   // nothing for now
+                }
             }
 
             return mikeSourceStartEnd;
