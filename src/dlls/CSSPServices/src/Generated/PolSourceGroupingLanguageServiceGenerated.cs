@@ -36,6 +36,8 @@ namespace CSSPServices
 
         #region Properties
         private CSSPDBContext db { get; }
+        private CSSPDBLocalContext dbLocal { get; }
+        private InMemoryDBContext dbIM { get; }
         private ICultureService CultureService { get; }
         private ILoggedInService LoggedInService { get; }
         private IEnums enums { get; }
@@ -43,12 +45,14 @@ namespace CSSPServices
         #endregion Properties
 
         #region Constructors
-        public PolSourceGroupingLanguageService(ICultureService CultureService, ILoggedInService LoggedInService, IEnums enums, CSSPDBContext db)
+        public PolSourceGroupingLanguageService(ICultureService CultureService, ILoggedInService LoggedInService, IEnums enums, CSSPDBContext db, CSSPDBLocalContext dbLocal, InMemoryDBContext dbIM)
         {
             this.CultureService = CultureService;
             this.LoggedInService = LoggedInService;
             this.enums = enums;
             this.db = db;
+            this.dbLocal = dbLocal;
+            this.dbIM = dbIM;
         }
         #endregion Constructors
 
@@ -60,16 +64,32 @@ namespace CSSPServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            PolSourceGroupingLanguage polsourcegroupinglanguage = (from c in db.PolSourceGroupingLanguages.AsNoTracking()
-                    where c.PolSourceGroupingLanguageID == PolSourceGroupingLanguageID
-                    select c).FirstOrDefault();
-
-            if (polsourcegroupinglanguage == null)
+            if (LoggedInService.IsLocal)
             {
-               return await Task.FromResult(NotFound());
-            }
+                PolSourceGroupingLanguage polsourcegroupinglanguage = (from c in dbLocal.PolSourceGroupingLanguages.AsNoTracking()
+                        where c.PolSourceGroupingLanguageID == PolSourceGroupingLanguageID
+                        select c).FirstOrDefault();
 
-            return await Task.FromResult(Ok(polsourcegroupinglanguage));
+                if (polsourcegroupinglanguage == null)
+                {
+                   return await Task.FromResult(NotFound());
+                }
+
+                return await Task.FromResult(Ok(polsourcegroupinglanguage));
+            }
+            else
+            {
+                PolSourceGroupingLanguage polsourcegroupinglanguage = (from c in db.PolSourceGroupingLanguages.AsNoTracking()
+                        where c.PolSourceGroupingLanguageID == PolSourceGroupingLanguageID
+                        select c).FirstOrDefault();
+
+                if (polsourcegroupinglanguage == null)
+                {
+                   return await Task.FromResult(NotFound());
+                }
+
+                return await Task.FromResult(Ok(polsourcegroupinglanguage));
+            }
         }
         public async Task<ActionResult<List<PolSourceGroupingLanguage>>> GetPolSourceGroupingLanguageList()
         {
@@ -78,9 +98,18 @@ namespace CSSPServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            List<PolSourceGroupingLanguage> polsourcegroupinglanguageList = (from c in db.PolSourceGroupingLanguages.AsNoTracking() select c).Take(100).ToList();
+            if (LoggedInService.IsLocal)
+            {
+                List<PolSourceGroupingLanguage> polsourcegroupinglanguageList = (from c in dbLocal.PolSourceGroupingLanguages.AsNoTracking() select c).Take(100).ToList();
 
-            return await Task.FromResult(Ok(polsourcegroupinglanguageList));
+                return await Task.FromResult(Ok(polsourcegroupinglanguageList));
+            }
+            else
+            {
+                List<PolSourceGroupingLanguage> polsourcegroupinglanguageList = (from c in db.PolSourceGroupingLanguages.AsNoTracking() select c).Take(100).ToList();
+
+                return await Task.FromResult(Ok(polsourcegroupinglanguageList));
+            }
         }
         public async Task<ActionResult<bool>> Delete(int PolSourceGroupingLanguageID)
         {
@@ -89,26 +118,52 @@ namespace CSSPServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            PolSourceGroupingLanguage polSourceGroupingLanguage = (from c in db.PolSourceGroupingLanguages
-                               where c.PolSourceGroupingLanguageID == PolSourceGroupingLanguageID
-                               select c).FirstOrDefault();
-            
-            if (polSourceGroupingLanguage == null)
+            if (LoggedInService.IsLocal)
             {
-                return await Task.FromResult(BadRequest(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "PolSourceGroupingLanguage", "PolSourceGroupingLanguageID", PolSourceGroupingLanguageID.ToString())));
-            }
+                PolSourceGroupingLanguage polSourceGroupingLanguage = (from c in dbLocal.PolSourceGroupingLanguages
+                                   where c.PolSourceGroupingLanguageID == PolSourceGroupingLanguageID
+                                   select c).FirstOrDefault();
+                
+                if (polSourceGroupingLanguage == null)
+                {
+                    return await Task.FromResult(BadRequest(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "PolSourceGroupingLanguage", "PolSourceGroupingLanguageID", PolSourceGroupingLanguageID.ToString())));
+                }
 
-            try
-            {
-               db.PolSourceGroupingLanguages.Remove(polSourceGroupingLanguage);
-               db.SaveChanges();
-            }
-            catch (DbUpdateException ex)
-            {
-               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
-            }
+                try
+                {
+                   dbLocal.PolSourceGroupingLanguages.Remove(polSourceGroupingLanguage);
+                   dbLocal.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                   return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
 
-            return await Task.FromResult(Ok(true));
+                return await Task.FromResult(Ok(true));
+            }
+            else
+            {
+                PolSourceGroupingLanguage polSourceGroupingLanguage = (from c in db.PolSourceGroupingLanguages
+                                   where c.PolSourceGroupingLanguageID == PolSourceGroupingLanguageID
+                                   select c).FirstOrDefault();
+                
+                if (polSourceGroupingLanguage == null)
+                {
+                    return await Task.FromResult(BadRequest(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "PolSourceGroupingLanguage", "PolSourceGroupingLanguageID", PolSourceGroupingLanguageID.ToString())));
+                }
+
+                try
+                {
+                   db.PolSourceGroupingLanguages.Remove(polSourceGroupingLanguage);
+                   db.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                   return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
+
+                return await Task.FromResult(Ok(true));
+            }
         }
         public async Task<ActionResult<PolSourceGroupingLanguage>> Post(PolSourceGroupingLanguage polSourceGroupingLanguage)
         {
@@ -123,17 +178,34 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ValidationResults));
             }
 
-            try
+            if (LoggedInService.IsLocal)
             {
-               db.PolSourceGroupingLanguages.Add(polSourceGroupingLanguage);
-               db.SaveChanges();
-            }
-            catch (DbUpdateException ex)
-            {
-               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
-            }
+                try
+                {
+                   dbLocal.PolSourceGroupingLanguages.Add(polSourceGroupingLanguage);
+                   dbLocal.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                   return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
 
-            return await Task.FromResult(Ok(polSourceGroupingLanguage));
+                return await Task.FromResult(Ok(polSourceGroupingLanguage));
+            }
+            else
+            {
+                try
+                {
+                   db.PolSourceGroupingLanguages.Add(polSourceGroupingLanguage);
+                   db.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                   return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
+
+                return await Task.FromResult(Ok(polSourceGroupingLanguage));
+            }
         }
         public async Task<ActionResult<PolSourceGroupingLanguage>> Put(PolSourceGroupingLanguage polSourceGroupingLanguage)
         {
@@ -148,6 +220,22 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ValidationResults));
             }
 
+            if (LoggedInService.IsLocal)
+            {
+            try
+            {
+               dbLocal.PolSourceGroupingLanguages.Update(polSourceGroupingLanguage);
+               dbLocal.SaveChanges();
+            }
+            catch (DbUpdateException ex)
+            {
+               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+            }
+
+            return await Task.FromResult(Ok(polSourceGroupingLanguage));
+            }
+            else
+            {
             try
             {
                db.PolSourceGroupingLanguages.Update(polSourceGroupingLanguage);
@@ -159,6 +247,7 @@ namespace CSSPServices
             }
 
             return await Task.FromResult(Ok(polSourceGroupingLanguage));
+            }
         }
         #endregion Functions public
 
@@ -175,13 +264,35 @@ namespace CSSPServices
                     yield return new ValidationResult(string.Format(CultureServicesRes._IsRequired, "PolSourceGroupingLanguageID"), new[] { "PolSourceGroupingLanguageID" });
                 }
 
-                if (!(from c in db.PolSourceGroupingLanguages select c).Where(c => c.PolSourceGroupingLanguageID == polSourceGroupingLanguage.PolSourceGroupingLanguageID).Any())
+                if (LoggedInService.IsLocal)
                 {
-                    yield return new ValidationResult(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "PolSourceGroupingLanguage", "PolSourceGroupingLanguageID", polSourceGroupingLanguage.PolSourceGroupingLanguageID.ToString()), new[] { "PolSourceGroupingLanguageID" });
+                    if (!(from c in dbLocal.PolSourceGroupingLanguages select c).Where(c => c.PolSourceGroupingLanguageID == polSourceGroupingLanguage.PolSourceGroupingLanguageID).Any())
+                    {
+                        yield return new ValidationResult(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "PolSourceGroupingLanguage", "PolSourceGroupingLanguageID", polSourceGroupingLanguage.PolSourceGroupingLanguageID.ToString()), new[] { "PolSourceGroupingLanguageID" });
+                    }
+                }
+                else
+                {
+                    if (!(from c in db.PolSourceGroupingLanguages select c).Where(c => c.PolSourceGroupingLanguageID == polSourceGroupingLanguage.PolSourceGroupingLanguageID).Any())
+                    {
+                        yield return new ValidationResult(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "PolSourceGroupingLanguage", "PolSourceGroupingLanguageID", polSourceGroupingLanguage.PolSourceGroupingLanguageID.ToString()), new[] { "PolSourceGroupingLanguageID" });
+                    }
                 }
             }
 
-            PolSourceGrouping PolSourceGroupingPolSourceGroupingID = (from c in db.PolSourceGroupings where c.PolSourceGroupingID == polSourceGroupingLanguage.PolSourceGroupingID select c).FirstOrDefault();
+            PolSourceGrouping PolSourceGroupingPolSourceGroupingID = null;
+            if (LoggedInService.IsLocal)
+            {
+                PolSourceGroupingPolSourceGroupingID = (from c in dbLocal.PolSourceGroupings where c.PolSourceGroupingID == polSourceGroupingLanguage.PolSourceGroupingID select c).FirstOrDefault();
+                if (PolSourceGroupingPolSourceGroupingID == null)
+                {
+                    PolSourceGroupingPolSourceGroupingID = (from c in dbIM.PolSourceGroupings where c.PolSourceGroupingID == polSourceGroupingLanguage.PolSourceGroupingID select c).FirstOrDefault();
+                }
+            }
+            else
+            {
+                PolSourceGroupingPolSourceGroupingID = (from c in db.PolSourceGroupings where c.PolSourceGroupingID == polSourceGroupingLanguage.PolSourceGroupingID select c).FirstOrDefault();
+            }
 
             if (PolSourceGroupingPolSourceGroupingID == null)
             {
@@ -291,7 +402,19 @@ namespace CSSPServices
                 }
             }
 
-            TVItem TVItemLastUpdateContactTVItemID = (from c in db.TVItems where c.TVItemID == polSourceGroupingLanguage.LastUpdateContactTVItemID select c).FirstOrDefault();
+            TVItem TVItemLastUpdateContactTVItemID = null;
+            if (LoggedInService.IsLocal)
+            {
+                TVItemLastUpdateContactTVItemID = (from c in dbLocal.TVItems where c.TVItemID == polSourceGroupingLanguage.LastUpdateContactTVItemID select c).FirstOrDefault();
+                if (TVItemLastUpdateContactTVItemID == null)
+                {
+                    TVItemLastUpdateContactTVItemID = (from c in dbIM.TVItems where c.TVItemID == polSourceGroupingLanguage.LastUpdateContactTVItemID select c).FirstOrDefault();
+                }
+            }
+            else
+            {
+                TVItemLastUpdateContactTVItemID = (from c in db.TVItems where c.TVItemID == polSourceGroupingLanguage.LastUpdateContactTVItemID select c).FirstOrDefault();
+            }
 
             if (TVItemLastUpdateContactTVItemID == null)
             {

@@ -36,6 +36,9 @@ namespace CSSPServices.Tests
         private ILoggedInService LoggedInService { get; set; }
         private ITideSiteService TideSiteService { get; set; }
         private CSSPDBContext db { get; set; }
+        private CSSPDBLocalContext dbLocal { get; set; }
+        private InMemoryDBContext dbIM { get; set; }
+        private TideSite tideSite { get; set; }
         #endregion Properties
 
         #region Constructors
@@ -47,9 +50,11 @@ namespace CSSPServices.Tests
 
         #region Tests Generated CRUD
         [Theory]
-        [InlineData("en-CA")]
-        [InlineData("fr-CA")]
-        public async Task TideSite_CRUD_Good_Test(string culture)
+        [InlineData("en-CA", "true")]
+        [InlineData("fr-CA", "true")]
+        [InlineData("en-CA", "false")]
+        [InlineData("fr-CA", "false")]
+        public async Task TideSite_CRUD_Good_Test(string culture, string IsLocalStr)
         {
             // -------------------------------
             // -------------------------------
@@ -59,44 +64,57 @@ namespace CSSPServices.Tests
 
             Assert.True(await Setup(culture));
 
-            using (TransactionScope ts = new TransactionScope())
+            LoggedInService.IsLocal = bool.Parse(IsLocalStr);
+
+            tideSite = GetFilledRandomTideSite("");
+
+            if (LoggedInService.IsLocal)
             {
-               TideSite tideSite = GetFilledRandomTideSite(""); 
-
-               // List<TideSite>
-               var actionTideSiteList = await TideSiteService.GetTideSiteList();
-               Assert.Equal(200, ((ObjectResult)actionTideSiteList.Result).StatusCode);
-               Assert.NotNull(((OkObjectResult)actionTideSiteList.Result).Value);
-               List<TideSite> tideSiteList = (List<TideSite>)((OkObjectResult)actionTideSiteList.Result).Value;
-
-               int count = ((List<TideSite>)((OkObjectResult)actionTideSiteList.Result).Value).Count();
-                Assert.True(count > 0);
-
-               // Post TideSite
-               var actionTideSiteAdded = await TideSiteService.Post(tideSite);
-               Assert.Equal(200, ((ObjectResult)actionTideSiteAdded.Result).StatusCode);
-               Assert.NotNull(((OkObjectResult)actionTideSiteAdded.Result).Value);
-               TideSite tideSiteAdded = (TideSite)((OkObjectResult)actionTideSiteAdded.Result).Value;
-               Assert.NotNull(tideSiteAdded);
-
-               // Put TideSite
-               var actionTideSiteUpdated = await TideSiteService.Put(tideSite);
-               Assert.Equal(200, ((ObjectResult)actionTideSiteUpdated.Result).StatusCode);
-               Assert.NotNull(((OkObjectResult)actionTideSiteUpdated.Result).Value);
-               TideSite tideSiteUpdated = (TideSite)((OkObjectResult)actionTideSiteUpdated.Result).Value;
-               Assert.NotNull(tideSiteUpdated);
-
-               // Delete TideSite
-               var actionTideSiteDeleted = await TideSiteService.Delete(tideSite.TideSiteID);
-               Assert.Equal(200, ((ObjectResult)actionTideSiteDeleted.Result).StatusCode);
-               Assert.NotNull(((OkObjectResult)actionTideSiteDeleted.Result).Value);
-               bool retBool = (bool)((OkObjectResult)actionTideSiteDeleted.Result).Value;
-               Assert.True(retBool);
+                await DoCRUDTest();
+            }
+            else
+            {
+                using (TransactionScope ts = new TransactionScope())
+                {
+                    await DoCRUDTest();
+                }
             }
         }
         #endregion Tests Generated CRUD
 
         #region Functions private
+        private async Task DoCRUDTest()
+        {
+            // Post TideSite
+            var actionTideSiteAdded = await TideSiteService.Post(tideSite);
+            Assert.Equal(200, ((ObjectResult)actionTideSiteAdded.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionTideSiteAdded.Result).Value);
+            TideSite tideSiteAdded = (TideSite)((OkObjectResult)actionTideSiteAdded.Result).Value;
+            Assert.NotNull(tideSiteAdded);
+
+            // List<TideSite>
+            var actionTideSiteList = await TideSiteService.GetTideSiteList();
+            Assert.Equal(200, ((ObjectResult)actionTideSiteList.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionTideSiteList.Result).Value);
+            List<TideSite> tideSiteList = (List<TideSite>)((OkObjectResult)actionTideSiteList.Result).Value;
+
+            int count = ((List<TideSite>)((OkObjectResult)actionTideSiteList.Result).Value).Count();
+            Assert.True(count > 0);
+
+            // Put TideSite
+            var actionTideSiteUpdated = await TideSiteService.Put(tideSite);
+            Assert.Equal(200, ((ObjectResult)actionTideSiteUpdated.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionTideSiteUpdated.Result).Value);
+            TideSite tideSiteUpdated = (TideSite)((OkObjectResult)actionTideSiteUpdated.Result).Value;
+            Assert.NotNull(tideSiteUpdated);
+
+            // Delete TideSite
+            var actionTideSiteDeleted = await TideSiteService.Delete(tideSite.TideSiteID);
+            Assert.Equal(200, ((ObjectResult)actionTideSiteDeleted.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionTideSiteDeleted.Result).Value);
+            bool retBool = (bool)((OkObjectResult)actionTideSiteDeleted.Result).Value;
+            Assert.True(retBool);
+        }
         private async Task<bool> Setup(string culture)
         {
             Config = new ConfigurationBuilder()
@@ -109,6 +127,9 @@ namespace CSSPServices.Tests
 
             Services.AddSingleton<IConfiguration>(Config);
 
+            string CSSPDBLocalFileName = Config.GetValue<string>("CSSPDBLocal");
+            Assert.NotNull(CSSPDBLocalFileName);
+
             string TestDBConnString = Config.GetValue<string>("TestDBConnectionString");
             Assert.NotNull(TestDBConnString);
 
@@ -120,6 +141,15 @@ namespace CSSPServices.Tests
             Services.AddDbContext<InMemoryDBContext>(options =>
             {
                 options.UseInMemoryDatabase(TestDBConnString);
+            });
+
+            string appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+
+            FileInfo fiAppDataPath = new FileInfo(CSSPDBLocalFileName.Replace("{appDataPath}", appDataPath));
+
+            Services.AddDbContext<CSSPDBLocalContext>(options =>
+            {
+                options.UseSqlite($"Data Source={ fiAppDataPath.FullName }");
             });
 
             Services.AddSingleton<ICultureService, CultureService>();
@@ -141,6 +171,12 @@ namespace CSSPServices.Tests
             string Id = Config.GetValue<string>("Id");
             Assert.True(await LoggedInService.SetLoggedInContactInfo(Id));
 
+            //string IsLocalStr = Config.GetValue<string>("IsLocal");
+            //Assert.NotNull(IsLocalStr);
+
+            dbIM = Provider.GetService<InMemoryDBContext>();
+            Assert.NotNull(dbIM);
+
             TideSiteService = Provider.GetService<ITideSiteService>();
             Assert.NotNull(TideSiteService);
 
@@ -148,6 +184,8 @@ namespace CSSPServices.Tests
         }
         private TideSite GetFilledRandomTideSite(string OmitPropName)
         {
+            dbIM.Database.EnsureDeleted();
+
             TideSite tideSite = new TideSite();
 
             if (OmitPropName != "TideSiteTVItemID") tideSite.TideSiteTVItemID = 38;
@@ -157,6 +195,16 @@ namespace CSSPServices.Tests
             if (OmitPropName != "Zone") tideSite.Zone = GetRandomInt(0, 10000);
             if (OmitPropName != "LastUpdateDate_UTC") tideSite.LastUpdateDate_UTC = new DateTime(2005, 3, 6);
             if (OmitPropName != "LastUpdateContactTVItemID") tideSite.LastUpdateContactTVItemID = 2;
+
+            if (LoggedInService.IsLocal)
+            {
+                if (OmitPropName != "TideSiteID") tideSite.TideSiteID = 10000000;
+
+                dbIM.TVItems.Add(new TVItem() { TVItemID = 38, TVLevel = 3, TVPath = "p1p5p6p38", TVType = (TVTypeEnum)22, ParentID = 6, IsActive = true, LastUpdateDate_UTC = new DateTime(2019, 1, 22, 18, 36, 9), LastUpdateContactTVItemID = 2});
+                dbIM.SaveChanges();
+                dbIM.TVItems.Add(new TVItem() { TVItemID = 2, TVLevel = 1, TVPath = "p1p2", TVType = (TVTypeEnum)5, ParentID = 1, IsActive = true, LastUpdateDate_UTC = new DateTime(2014, 12, 2, 16, 58, 16), LastUpdateContactTVItemID = 2});
+                dbIM.SaveChanges();
+            }
 
             return tideSite;
         }

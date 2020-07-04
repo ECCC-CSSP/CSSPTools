@@ -36,6 +36,8 @@ namespace CSSPServices
 
         #region Properties
         private CSSPDBContext db { get; }
+        private CSSPDBLocalContext dbLocal { get; }
+        private InMemoryDBContext dbIM { get; }
         private ICultureService CultureService { get; }
         private ILoggedInService LoggedInService { get; }
         private IEnums enums { get; }
@@ -43,12 +45,14 @@ namespace CSSPServices
         #endregion Properties
 
         #region Constructors
-        public MWQMSiteStartEndDateService(ICultureService CultureService, ILoggedInService LoggedInService, IEnums enums, CSSPDBContext db)
+        public MWQMSiteStartEndDateService(ICultureService CultureService, ILoggedInService LoggedInService, IEnums enums, CSSPDBContext db, CSSPDBLocalContext dbLocal, InMemoryDBContext dbIM)
         {
             this.CultureService = CultureService;
             this.LoggedInService = LoggedInService;
             this.enums = enums;
             this.db = db;
+            this.dbLocal = dbLocal;
+            this.dbIM = dbIM;
         }
         #endregion Constructors
 
@@ -60,16 +64,32 @@ namespace CSSPServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            MWQMSiteStartEndDate mwqmsitestartenddate = (from c in db.MWQMSiteStartEndDates.AsNoTracking()
-                    where c.MWQMSiteStartEndDateID == MWQMSiteStartEndDateID
-                    select c).FirstOrDefault();
-
-            if (mwqmsitestartenddate == null)
+            if (LoggedInService.IsLocal)
             {
-               return await Task.FromResult(NotFound());
-            }
+                MWQMSiteStartEndDate mwqmsitestartenddate = (from c in dbLocal.MWQMSiteStartEndDates.AsNoTracking()
+                        where c.MWQMSiteStartEndDateID == MWQMSiteStartEndDateID
+                        select c).FirstOrDefault();
 
-            return await Task.FromResult(Ok(mwqmsitestartenddate));
+                if (mwqmsitestartenddate == null)
+                {
+                   return await Task.FromResult(NotFound());
+                }
+
+                return await Task.FromResult(Ok(mwqmsitestartenddate));
+            }
+            else
+            {
+                MWQMSiteStartEndDate mwqmsitestartenddate = (from c in db.MWQMSiteStartEndDates.AsNoTracking()
+                        where c.MWQMSiteStartEndDateID == MWQMSiteStartEndDateID
+                        select c).FirstOrDefault();
+
+                if (mwqmsitestartenddate == null)
+                {
+                   return await Task.FromResult(NotFound());
+                }
+
+                return await Task.FromResult(Ok(mwqmsitestartenddate));
+            }
         }
         public async Task<ActionResult<List<MWQMSiteStartEndDate>>> GetMWQMSiteStartEndDateList()
         {
@@ -78,9 +98,18 @@ namespace CSSPServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            List<MWQMSiteStartEndDate> mwqmsitestartenddateList = (from c in db.MWQMSiteStartEndDates.AsNoTracking() select c).Take(100).ToList();
+            if (LoggedInService.IsLocal)
+            {
+                List<MWQMSiteStartEndDate> mwqmsitestartenddateList = (from c in dbLocal.MWQMSiteStartEndDates.AsNoTracking() select c).Take(100).ToList();
 
-            return await Task.FromResult(Ok(mwqmsitestartenddateList));
+                return await Task.FromResult(Ok(mwqmsitestartenddateList));
+            }
+            else
+            {
+                List<MWQMSiteStartEndDate> mwqmsitestartenddateList = (from c in db.MWQMSiteStartEndDates.AsNoTracking() select c).Take(100).ToList();
+
+                return await Task.FromResult(Ok(mwqmsitestartenddateList));
+            }
         }
         public async Task<ActionResult<bool>> Delete(int MWQMSiteStartEndDateID)
         {
@@ -89,26 +118,52 @@ namespace CSSPServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            MWQMSiteStartEndDate mwqmSiteStartEndDate = (from c in db.MWQMSiteStartEndDates
-                               where c.MWQMSiteStartEndDateID == MWQMSiteStartEndDateID
-                               select c).FirstOrDefault();
-            
-            if (mwqmSiteStartEndDate == null)
+            if (LoggedInService.IsLocal)
             {
-                return await Task.FromResult(BadRequest(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "MWQMSiteStartEndDate", "MWQMSiteStartEndDateID", MWQMSiteStartEndDateID.ToString())));
-            }
+                MWQMSiteStartEndDate mwqmSiteStartEndDate = (from c in dbLocal.MWQMSiteStartEndDates
+                                   where c.MWQMSiteStartEndDateID == MWQMSiteStartEndDateID
+                                   select c).FirstOrDefault();
+                
+                if (mwqmSiteStartEndDate == null)
+                {
+                    return await Task.FromResult(BadRequest(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "MWQMSiteStartEndDate", "MWQMSiteStartEndDateID", MWQMSiteStartEndDateID.ToString())));
+                }
 
-            try
-            {
-               db.MWQMSiteStartEndDates.Remove(mwqmSiteStartEndDate);
-               db.SaveChanges();
-            }
-            catch (DbUpdateException ex)
-            {
-               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
-            }
+                try
+                {
+                   dbLocal.MWQMSiteStartEndDates.Remove(mwqmSiteStartEndDate);
+                   dbLocal.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                   return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
 
-            return await Task.FromResult(Ok(true));
+                return await Task.FromResult(Ok(true));
+            }
+            else
+            {
+                MWQMSiteStartEndDate mwqmSiteStartEndDate = (from c in db.MWQMSiteStartEndDates
+                                   where c.MWQMSiteStartEndDateID == MWQMSiteStartEndDateID
+                                   select c).FirstOrDefault();
+                
+                if (mwqmSiteStartEndDate == null)
+                {
+                    return await Task.FromResult(BadRequest(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "MWQMSiteStartEndDate", "MWQMSiteStartEndDateID", MWQMSiteStartEndDateID.ToString())));
+                }
+
+                try
+                {
+                   db.MWQMSiteStartEndDates.Remove(mwqmSiteStartEndDate);
+                   db.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                   return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
+
+                return await Task.FromResult(Ok(true));
+            }
         }
         public async Task<ActionResult<MWQMSiteStartEndDate>> Post(MWQMSiteStartEndDate mwqmSiteStartEndDate)
         {
@@ -123,17 +178,34 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ValidationResults));
             }
 
-            try
+            if (LoggedInService.IsLocal)
             {
-               db.MWQMSiteStartEndDates.Add(mwqmSiteStartEndDate);
-               db.SaveChanges();
-            }
-            catch (DbUpdateException ex)
-            {
-               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
-            }
+                try
+                {
+                   dbLocal.MWQMSiteStartEndDates.Add(mwqmSiteStartEndDate);
+                   dbLocal.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                   return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
 
-            return await Task.FromResult(Ok(mwqmSiteStartEndDate));
+                return await Task.FromResult(Ok(mwqmSiteStartEndDate));
+            }
+            else
+            {
+                try
+                {
+                   db.MWQMSiteStartEndDates.Add(mwqmSiteStartEndDate);
+                   db.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                   return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
+
+                return await Task.FromResult(Ok(mwqmSiteStartEndDate));
+            }
         }
         public async Task<ActionResult<MWQMSiteStartEndDate>> Put(MWQMSiteStartEndDate mwqmSiteStartEndDate)
         {
@@ -148,6 +220,22 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ValidationResults));
             }
 
+            if (LoggedInService.IsLocal)
+            {
+            try
+            {
+               dbLocal.MWQMSiteStartEndDates.Update(mwqmSiteStartEndDate);
+               dbLocal.SaveChanges();
+            }
+            catch (DbUpdateException ex)
+            {
+               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+            }
+
+            return await Task.FromResult(Ok(mwqmSiteStartEndDate));
+            }
+            else
+            {
             try
             {
                db.MWQMSiteStartEndDates.Update(mwqmSiteStartEndDate);
@@ -159,6 +247,7 @@ namespace CSSPServices
             }
 
             return await Task.FromResult(Ok(mwqmSiteStartEndDate));
+            }
         }
         #endregion Functions public
 
@@ -175,13 +264,35 @@ namespace CSSPServices
                     yield return new ValidationResult(string.Format(CultureServicesRes._IsRequired, "MWQMSiteStartEndDateID"), new[] { "MWQMSiteStartEndDateID" });
                 }
 
-                if (!(from c in db.MWQMSiteStartEndDates select c).Where(c => c.MWQMSiteStartEndDateID == mwqmSiteStartEndDate.MWQMSiteStartEndDateID).Any())
+                if (LoggedInService.IsLocal)
                 {
-                    yield return new ValidationResult(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "MWQMSiteStartEndDate", "MWQMSiteStartEndDateID", mwqmSiteStartEndDate.MWQMSiteStartEndDateID.ToString()), new[] { "MWQMSiteStartEndDateID" });
+                    if (!(from c in dbLocal.MWQMSiteStartEndDates select c).Where(c => c.MWQMSiteStartEndDateID == mwqmSiteStartEndDate.MWQMSiteStartEndDateID).Any())
+                    {
+                        yield return new ValidationResult(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "MWQMSiteStartEndDate", "MWQMSiteStartEndDateID", mwqmSiteStartEndDate.MWQMSiteStartEndDateID.ToString()), new[] { "MWQMSiteStartEndDateID" });
+                    }
+                }
+                else
+                {
+                    if (!(from c in db.MWQMSiteStartEndDates select c).Where(c => c.MWQMSiteStartEndDateID == mwqmSiteStartEndDate.MWQMSiteStartEndDateID).Any())
+                    {
+                        yield return new ValidationResult(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "MWQMSiteStartEndDate", "MWQMSiteStartEndDateID", mwqmSiteStartEndDate.MWQMSiteStartEndDateID.ToString()), new[] { "MWQMSiteStartEndDateID" });
+                    }
                 }
             }
 
-            TVItem TVItemMWQMSiteTVItemID = (from c in db.TVItems where c.TVItemID == mwqmSiteStartEndDate.MWQMSiteTVItemID select c).FirstOrDefault();
+            TVItem TVItemMWQMSiteTVItemID = null;
+            if (LoggedInService.IsLocal)
+            {
+                TVItemMWQMSiteTVItemID = (from c in dbLocal.TVItems where c.TVItemID == mwqmSiteStartEndDate.MWQMSiteTVItemID select c).FirstOrDefault();
+                if (TVItemMWQMSiteTVItemID == null)
+                {
+                    TVItemMWQMSiteTVItemID = (from c in dbIM.TVItems where c.TVItemID == mwqmSiteStartEndDate.MWQMSiteTVItemID select c).FirstOrDefault();
+                }
+            }
+            else
+            {
+                TVItemMWQMSiteTVItemID = (from c in db.TVItems where c.TVItemID == mwqmSiteStartEndDate.MWQMSiteTVItemID select c).FirstOrDefault();
+            }
 
             if (TVItemMWQMSiteTVItemID == null)
             {
@@ -233,7 +344,19 @@ namespace CSSPServices
                 }
             }
 
-            TVItem TVItemLastUpdateContactTVItemID = (from c in db.TVItems where c.TVItemID == mwqmSiteStartEndDate.LastUpdateContactTVItemID select c).FirstOrDefault();
+            TVItem TVItemLastUpdateContactTVItemID = null;
+            if (LoggedInService.IsLocal)
+            {
+                TVItemLastUpdateContactTVItemID = (from c in dbLocal.TVItems where c.TVItemID == mwqmSiteStartEndDate.LastUpdateContactTVItemID select c).FirstOrDefault();
+                if (TVItemLastUpdateContactTVItemID == null)
+                {
+                    TVItemLastUpdateContactTVItemID = (from c in dbIM.TVItems where c.TVItemID == mwqmSiteStartEndDate.LastUpdateContactTVItemID select c).FirstOrDefault();
+                }
+            }
+            else
+            {
+                TVItemLastUpdateContactTVItemID = (from c in db.TVItems where c.TVItemID == mwqmSiteStartEndDate.LastUpdateContactTVItemID select c).FirstOrDefault();
+            }
 
             if (TVItemLastUpdateContactTVItemID == null)
             {

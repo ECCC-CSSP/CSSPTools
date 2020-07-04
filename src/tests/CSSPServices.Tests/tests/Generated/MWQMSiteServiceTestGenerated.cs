@@ -36,6 +36,9 @@ namespace CSSPServices.Tests
         private ILoggedInService LoggedInService { get; set; }
         private IMWQMSiteService MWQMSiteService { get; set; }
         private CSSPDBContext db { get; set; }
+        private CSSPDBLocalContext dbLocal { get; set; }
+        private InMemoryDBContext dbIM { get; set; }
+        private MWQMSite mwqmSite { get; set; }
         #endregion Properties
 
         #region Constructors
@@ -47,9 +50,11 @@ namespace CSSPServices.Tests
 
         #region Tests Generated CRUD
         [Theory]
-        [InlineData("en-CA")]
-        [InlineData("fr-CA")]
-        public async Task MWQMSite_CRUD_Good_Test(string culture)
+        [InlineData("en-CA", "true")]
+        [InlineData("fr-CA", "true")]
+        [InlineData("en-CA", "false")]
+        [InlineData("fr-CA", "false")]
+        public async Task MWQMSite_CRUD_Good_Test(string culture, string IsLocalStr)
         {
             // -------------------------------
             // -------------------------------
@@ -59,44 +64,57 @@ namespace CSSPServices.Tests
 
             Assert.True(await Setup(culture));
 
-            using (TransactionScope ts = new TransactionScope())
+            LoggedInService.IsLocal = bool.Parse(IsLocalStr);
+
+            mwqmSite = GetFilledRandomMWQMSite("");
+
+            if (LoggedInService.IsLocal)
             {
-               MWQMSite mwqmSite = GetFilledRandomMWQMSite(""); 
-
-               // List<MWQMSite>
-               var actionMWQMSiteList = await MWQMSiteService.GetMWQMSiteList();
-               Assert.Equal(200, ((ObjectResult)actionMWQMSiteList.Result).StatusCode);
-               Assert.NotNull(((OkObjectResult)actionMWQMSiteList.Result).Value);
-               List<MWQMSite> mwqmSiteList = (List<MWQMSite>)((OkObjectResult)actionMWQMSiteList.Result).Value;
-
-               int count = ((List<MWQMSite>)((OkObjectResult)actionMWQMSiteList.Result).Value).Count();
-                Assert.True(count > 0);
-
-               // Post MWQMSite
-               var actionMWQMSiteAdded = await MWQMSiteService.Post(mwqmSite);
-               Assert.Equal(200, ((ObjectResult)actionMWQMSiteAdded.Result).StatusCode);
-               Assert.NotNull(((OkObjectResult)actionMWQMSiteAdded.Result).Value);
-               MWQMSite mwqmSiteAdded = (MWQMSite)((OkObjectResult)actionMWQMSiteAdded.Result).Value;
-               Assert.NotNull(mwqmSiteAdded);
-
-               // Put MWQMSite
-               var actionMWQMSiteUpdated = await MWQMSiteService.Put(mwqmSite);
-               Assert.Equal(200, ((ObjectResult)actionMWQMSiteUpdated.Result).StatusCode);
-               Assert.NotNull(((OkObjectResult)actionMWQMSiteUpdated.Result).Value);
-               MWQMSite mwqmSiteUpdated = (MWQMSite)((OkObjectResult)actionMWQMSiteUpdated.Result).Value;
-               Assert.NotNull(mwqmSiteUpdated);
-
-               // Delete MWQMSite
-               var actionMWQMSiteDeleted = await MWQMSiteService.Delete(mwqmSite.MWQMSiteID);
-               Assert.Equal(200, ((ObjectResult)actionMWQMSiteDeleted.Result).StatusCode);
-               Assert.NotNull(((OkObjectResult)actionMWQMSiteDeleted.Result).Value);
-               bool retBool = (bool)((OkObjectResult)actionMWQMSiteDeleted.Result).Value;
-               Assert.True(retBool);
+                await DoCRUDTest();
+            }
+            else
+            {
+                using (TransactionScope ts = new TransactionScope())
+                {
+                    await DoCRUDTest();
+                }
             }
         }
         #endregion Tests Generated CRUD
 
         #region Functions private
+        private async Task DoCRUDTest()
+        {
+            // Post MWQMSite
+            var actionMWQMSiteAdded = await MWQMSiteService.Post(mwqmSite);
+            Assert.Equal(200, ((ObjectResult)actionMWQMSiteAdded.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionMWQMSiteAdded.Result).Value);
+            MWQMSite mwqmSiteAdded = (MWQMSite)((OkObjectResult)actionMWQMSiteAdded.Result).Value;
+            Assert.NotNull(mwqmSiteAdded);
+
+            // List<MWQMSite>
+            var actionMWQMSiteList = await MWQMSiteService.GetMWQMSiteList();
+            Assert.Equal(200, ((ObjectResult)actionMWQMSiteList.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionMWQMSiteList.Result).Value);
+            List<MWQMSite> mwqmSiteList = (List<MWQMSite>)((OkObjectResult)actionMWQMSiteList.Result).Value;
+
+            int count = ((List<MWQMSite>)((OkObjectResult)actionMWQMSiteList.Result).Value).Count();
+            Assert.True(count > 0);
+
+            // Put MWQMSite
+            var actionMWQMSiteUpdated = await MWQMSiteService.Put(mwqmSite);
+            Assert.Equal(200, ((ObjectResult)actionMWQMSiteUpdated.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionMWQMSiteUpdated.Result).Value);
+            MWQMSite mwqmSiteUpdated = (MWQMSite)((OkObjectResult)actionMWQMSiteUpdated.Result).Value;
+            Assert.NotNull(mwqmSiteUpdated);
+
+            // Delete MWQMSite
+            var actionMWQMSiteDeleted = await MWQMSiteService.Delete(mwqmSite.MWQMSiteID);
+            Assert.Equal(200, ((ObjectResult)actionMWQMSiteDeleted.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionMWQMSiteDeleted.Result).Value);
+            bool retBool = (bool)((OkObjectResult)actionMWQMSiteDeleted.Result).Value;
+            Assert.True(retBool);
+        }
         private async Task<bool> Setup(string culture)
         {
             Config = new ConfigurationBuilder()
@@ -109,6 +127,9 @@ namespace CSSPServices.Tests
 
             Services.AddSingleton<IConfiguration>(Config);
 
+            string CSSPDBLocalFileName = Config.GetValue<string>("CSSPDBLocal");
+            Assert.NotNull(CSSPDBLocalFileName);
+
             string TestDBConnString = Config.GetValue<string>("TestDBConnectionString");
             Assert.NotNull(TestDBConnString);
 
@@ -120,6 +141,15 @@ namespace CSSPServices.Tests
             Services.AddDbContext<InMemoryDBContext>(options =>
             {
                 options.UseInMemoryDatabase(TestDBConnString);
+            });
+
+            string appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+
+            FileInfo fiAppDataPath = new FileInfo(CSSPDBLocalFileName.Replace("{appDataPath}", appDataPath));
+
+            Services.AddDbContext<CSSPDBLocalContext>(options =>
+            {
+                options.UseSqlite($"Data Source={ fiAppDataPath.FullName }");
             });
 
             Services.AddSingleton<ICultureService, CultureService>();
@@ -141,6 +171,12 @@ namespace CSSPServices.Tests
             string Id = Config.GetValue<string>("Id");
             Assert.True(await LoggedInService.SetLoggedInContactInfo(Id));
 
+            //string IsLocalStr = Config.GetValue<string>("IsLocal");
+            //Assert.NotNull(IsLocalStr);
+
+            dbIM = Provider.GetService<InMemoryDBContext>();
+            Assert.NotNull(dbIM);
+
             MWQMSiteService = Provider.GetService<IMWQMSiteService>();
             Assert.NotNull(MWQMSiteService);
 
@@ -148,6 +184,8 @@ namespace CSSPServices.Tests
         }
         private MWQMSite GetFilledRandomMWQMSite(string OmitPropName)
         {
+            dbIM.Database.EnsureDeleted();
+
             MWQMSite mwqmSite = new MWQMSite();
 
             if (OmitPropName != "MWQMSiteTVItemID") mwqmSite.MWQMSiteTVItemID = 44;
@@ -157,6 +195,16 @@ namespace CSSPServices.Tests
             if (OmitPropName != "Ordinal") mwqmSite.Ordinal = GetRandomInt(0, 1000);
             if (OmitPropName != "LastUpdateDate_UTC") mwqmSite.LastUpdateDate_UTC = new DateTime(2005, 3, 6);
             if (OmitPropName != "LastUpdateContactTVItemID") mwqmSite.LastUpdateContactTVItemID = 2;
+
+            if (LoggedInService.IsLocal)
+            {
+                if (OmitPropName != "MWQMSiteID") mwqmSite.MWQMSiteID = 10000000;
+
+                dbIM.TVItems.Add(new TVItem() { TVItemID = 44, TVLevel = 6, TVPath = "p1p5p6p9p10p12p44", TVType = (TVTypeEnum)16, ParentID = 12, IsActive = true, LastUpdateDate_UTC = new DateTime(2017, 10, 12, 17, 39, 34), LastUpdateContactTVItemID = 2});
+                dbIM.SaveChanges();
+                dbIM.TVItems.Add(new TVItem() { TVItemID = 2, TVLevel = 1, TVPath = "p1p2", TVType = (TVTypeEnum)5, ParentID = 1, IsActive = true, LastUpdateDate_UTC = new DateTime(2014, 12, 2, 16, 58, 16), LastUpdateContactTVItemID = 2});
+                dbIM.SaveChanges();
+            }
 
             return mwqmSite;
         }

@@ -36,6 +36,9 @@ namespace CSSPServices.Tests
         private ILoggedInService LoggedInService { get; set; }
         private IEmailService EmailService { get; set; }
         private CSSPDBContext db { get; set; }
+        private CSSPDBLocalContext dbLocal { get; set; }
+        private InMemoryDBContext dbIM { get; set; }
+        private Email email { get; set; }
         #endregion Properties
 
         #region Constructors
@@ -47,9 +50,11 @@ namespace CSSPServices.Tests
 
         #region Tests Generated CRUD
         [Theory]
-        [InlineData("en-CA")]
-        [InlineData("fr-CA")]
-        public async Task Email_CRUD_Good_Test(string culture)
+        [InlineData("en-CA", "true")]
+        [InlineData("fr-CA", "true")]
+        [InlineData("en-CA", "false")]
+        [InlineData("fr-CA", "false")]
+        public async Task Email_CRUD_Good_Test(string culture, string IsLocalStr)
         {
             // -------------------------------
             // -------------------------------
@@ -59,44 +64,57 @@ namespace CSSPServices.Tests
 
             Assert.True(await Setup(culture));
 
-            using (TransactionScope ts = new TransactionScope())
+            LoggedInService.IsLocal = bool.Parse(IsLocalStr);
+
+            email = GetFilledRandomEmail("");
+
+            if (LoggedInService.IsLocal)
             {
-               Email email = GetFilledRandomEmail(""); 
-
-               // List<Email>
-               var actionEmailList = await EmailService.GetEmailList();
-               Assert.Equal(200, ((ObjectResult)actionEmailList.Result).StatusCode);
-               Assert.NotNull(((OkObjectResult)actionEmailList.Result).Value);
-               List<Email> emailList = (List<Email>)((OkObjectResult)actionEmailList.Result).Value;
-
-               int count = ((List<Email>)((OkObjectResult)actionEmailList.Result).Value).Count();
-                Assert.True(count > 0);
-
-               // Post Email
-               var actionEmailAdded = await EmailService.Post(email);
-               Assert.Equal(200, ((ObjectResult)actionEmailAdded.Result).StatusCode);
-               Assert.NotNull(((OkObjectResult)actionEmailAdded.Result).Value);
-               Email emailAdded = (Email)((OkObjectResult)actionEmailAdded.Result).Value;
-               Assert.NotNull(emailAdded);
-
-               // Put Email
-               var actionEmailUpdated = await EmailService.Put(email);
-               Assert.Equal(200, ((ObjectResult)actionEmailUpdated.Result).StatusCode);
-               Assert.NotNull(((OkObjectResult)actionEmailUpdated.Result).Value);
-               Email emailUpdated = (Email)((OkObjectResult)actionEmailUpdated.Result).Value;
-               Assert.NotNull(emailUpdated);
-
-               // Delete Email
-               var actionEmailDeleted = await EmailService.Delete(email.EmailID);
-               Assert.Equal(200, ((ObjectResult)actionEmailDeleted.Result).StatusCode);
-               Assert.NotNull(((OkObjectResult)actionEmailDeleted.Result).Value);
-               bool retBool = (bool)((OkObjectResult)actionEmailDeleted.Result).Value;
-               Assert.True(retBool);
+                await DoCRUDTest();
+            }
+            else
+            {
+                using (TransactionScope ts = new TransactionScope())
+                {
+                    await DoCRUDTest();
+                }
             }
         }
         #endregion Tests Generated CRUD
 
         #region Functions private
+        private async Task DoCRUDTest()
+        {
+            // Post Email
+            var actionEmailAdded = await EmailService.Post(email);
+            Assert.Equal(200, ((ObjectResult)actionEmailAdded.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionEmailAdded.Result).Value);
+            Email emailAdded = (Email)((OkObjectResult)actionEmailAdded.Result).Value;
+            Assert.NotNull(emailAdded);
+
+            // List<Email>
+            var actionEmailList = await EmailService.GetEmailList();
+            Assert.Equal(200, ((ObjectResult)actionEmailList.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionEmailList.Result).Value);
+            List<Email> emailList = (List<Email>)((OkObjectResult)actionEmailList.Result).Value;
+
+            int count = ((List<Email>)((OkObjectResult)actionEmailList.Result).Value).Count();
+            Assert.True(count > 0);
+
+            // Put Email
+            var actionEmailUpdated = await EmailService.Put(email);
+            Assert.Equal(200, ((ObjectResult)actionEmailUpdated.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionEmailUpdated.Result).Value);
+            Email emailUpdated = (Email)((OkObjectResult)actionEmailUpdated.Result).Value;
+            Assert.NotNull(emailUpdated);
+
+            // Delete Email
+            var actionEmailDeleted = await EmailService.Delete(email.EmailID);
+            Assert.Equal(200, ((ObjectResult)actionEmailDeleted.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionEmailDeleted.Result).Value);
+            bool retBool = (bool)((OkObjectResult)actionEmailDeleted.Result).Value;
+            Assert.True(retBool);
+        }
         private async Task<bool> Setup(string culture)
         {
             Config = new ConfigurationBuilder()
@@ -109,6 +127,9 @@ namespace CSSPServices.Tests
 
             Services.AddSingleton<IConfiguration>(Config);
 
+            string CSSPDBLocalFileName = Config.GetValue<string>("CSSPDBLocal");
+            Assert.NotNull(CSSPDBLocalFileName);
+
             string TestDBConnString = Config.GetValue<string>("TestDBConnectionString");
             Assert.NotNull(TestDBConnString);
 
@@ -120,6 +141,15 @@ namespace CSSPServices.Tests
             Services.AddDbContext<InMemoryDBContext>(options =>
             {
                 options.UseInMemoryDatabase(TestDBConnString);
+            });
+
+            string appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+
+            FileInfo fiAppDataPath = new FileInfo(CSSPDBLocalFileName.Replace("{appDataPath}", appDataPath));
+
+            Services.AddDbContext<CSSPDBLocalContext>(options =>
+            {
+                options.UseSqlite($"Data Source={ fiAppDataPath.FullName }");
             });
 
             Services.AddSingleton<ICultureService, CultureService>();
@@ -141,6 +171,12 @@ namespace CSSPServices.Tests
             string Id = Config.GetValue<string>("Id");
             Assert.True(await LoggedInService.SetLoggedInContactInfo(Id));
 
+            //string IsLocalStr = Config.GetValue<string>("IsLocal");
+            //Assert.NotNull(IsLocalStr);
+
+            dbIM = Provider.GetService<InMemoryDBContext>();
+            Assert.NotNull(dbIM);
+
             EmailService = Provider.GetService<IEmailService>();
             Assert.NotNull(EmailService);
 
@@ -148,6 +184,8 @@ namespace CSSPServices.Tests
         }
         private Email GetFilledRandomEmail(string OmitPropName)
         {
+            dbIM.Database.EnsureDeleted();
+
             Email email = new Email();
 
             if (OmitPropName != "EmailTVItemID") email.EmailTVItemID = 54;
@@ -155,6 +193,16 @@ namespace CSSPServices.Tests
             if (OmitPropName != "EmailType") email.EmailType = (EmailTypeEnum)GetRandomEnumType(typeof(EmailTypeEnum));
             if (OmitPropName != "LastUpdateDate_UTC") email.LastUpdateDate_UTC = new DateTime(2005, 3, 6);
             if (OmitPropName != "LastUpdateContactTVItemID") email.LastUpdateContactTVItemID = 2;
+
+            if (LoggedInService.IsLocal)
+            {
+                if (OmitPropName != "EmailID") email.EmailID = 10000000;
+
+                dbIM.TVItems.Add(new TVItem() { TVItemID = 54, TVLevel = 1, TVPath = "p1p54", TVType = (TVTypeEnum)7, ParentID = 5, IsActive = true, LastUpdateDate_UTC = new DateTime(2015, 2, 17, 16, 15, 51), LastUpdateContactTVItemID = 2});
+                dbIM.SaveChanges();
+                dbIM.TVItems.Add(new TVItem() { TVItemID = 2, TVLevel = 1, TVPath = "p1p2", TVType = (TVTypeEnum)5, ParentID = 1, IsActive = true, LastUpdateDate_UTC = new DateTime(2014, 12, 2, 16, 58, 16), LastUpdateContactTVItemID = 2});
+                dbIM.SaveChanges();
+            }
 
             return email;
         }

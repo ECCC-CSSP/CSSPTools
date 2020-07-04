@@ -36,6 +36,9 @@ namespace CSSPServices.Tests
         private ILoggedInService LoggedInService { get; set; }
         private IContactShortcutService ContactShortcutService { get; set; }
         private CSSPDBContext db { get; set; }
+        private CSSPDBLocalContext dbLocal { get; set; }
+        private InMemoryDBContext dbIM { get; set; }
+        private ContactShortcut contactShortcut { get; set; }
         #endregion Properties
 
         #region Constructors
@@ -47,9 +50,11 @@ namespace CSSPServices.Tests
 
         #region Tests Generated CRUD
         [Theory]
-        [InlineData("en-CA")]
-        [InlineData("fr-CA")]
-        public async Task ContactShortcut_CRUD_Good_Test(string culture)
+        [InlineData("en-CA", "true")]
+        [InlineData("fr-CA", "true")]
+        [InlineData("en-CA", "false")]
+        [InlineData("fr-CA", "false")]
+        public async Task ContactShortcut_CRUD_Good_Test(string culture, string IsLocalStr)
         {
             // -------------------------------
             // -------------------------------
@@ -59,44 +64,57 @@ namespace CSSPServices.Tests
 
             Assert.True(await Setup(culture));
 
-            using (TransactionScope ts = new TransactionScope())
+            LoggedInService.IsLocal = bool.Parse(IsLocalStr);
+
+            contactShortcut = GetFilledRandomContactShortcut("");
+
+            if (LoggedInService.IsLocal)
             {
-               ContactShortcut contactShortcut = GetFilledRandomContactShortcut(""); 
-
-               // List<ContactShortcut>
-               var actionContactShortcutList = await ContactShortcutService.GetContactShortcutList();
-               Assert.Equal(200, ((ObjectResult)actionContactShortcutList.Result).StatusCode);
-               Assert.NotNull(((OkObjectResult)actionContactShortcutList.Result).Value);
-               List<ContactShortcut> contactShortcutList = (List<ContactShortcut>)((OkObjectResult)actionContactShortcutList.Result).Value;
-
-               int count = ((List<ContactShortcut>)((OkObjectResult)actionContactShortcutList.Result).Value).Count();
-                Assert.True(count > 0);
-
-               // Post ContactShortcut
-               var actionContactShortcutAdded = await ContactShortcutService.Post(contactShortcut);
-               Assert.Equal(200, ((ObjectResult)actionContactShortcutAdded.Result).StatusCode);
-               Assert.NotNull(((OkObjectResult)actionContactShortcutAdded.Result).Value);
-               ContactShortcut contactShortcutAdded = (ContactShortcut)((OkObjectResult)actionContactShortcutAdded.Result).Value;
-               Assert.NotNull(contactShortcutAdded);
-
-               // Put ContactShortcut
-               var actionContactShortcutUpdated = await ContactShortcutService.Put(contactShortcut);
-               Assert.Equal(200, ((ObjectResult)actionContactShortcutUpdated.Result).StatusCode);
-               Assert.NotNull(((OkObjectResult)actionContactShortcutUpdated.Result).Value);
-               ContactShortcut contactShortcutUpdated = (ContactShortcut)((OkObjectResult)actionContactShortcutUpdated.Result).Value;
-               Assert.NotNull(contactShortcutUpdated);
-
-               // Delete ContactShortcut
-               var actionContactShortcutDeleted = await ContactShortcutService.Delete(contactShortcut.ContactShortcutID);
-               Assert.Equal(200, ((ObjectResult)actionContactShortcutDeleted.Result).StatusCode);
-               Assert.NotNull(((OkObjectResult)actionContactShortcutDeleted.Result).Value);
-               bool retBool = (bool)((OkObjectResult)actionContactShortcutDeleted.Result).Value;
-               Assert.True(retBool);
+                await DoCRUDTest();
+            }
+            else
+            {
+                using (TransactionScope ts = new TransactionScope())
+                {
+                    await DoCRUDTest();
+                }
             }
         }
         #endregion Tests Generated CRUD
 
         #region Functions private
+        private async Task DoCRUDTest()
+        {
+            // Post ContactShortcut
+            var actionContactShortcutAdded = await ContactShortcutService.Post(contactShortcut);
+            Assert.Equal(200, ((ObjectResult)actionContactShortcutAdded.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionContactShortcutAdded.Result).Value);
+            ContactShortcut contactShortcutAdded = (ContactShortcut)((OkObjectResult)actionContactShortcutAdded.Result).Value;
+            Assert.NotNull(contactShortcutAdded);
+
+            // List<ContactShortcut>
+            var actionContactShortcutList = await ContactShortcutService.GetContactShortcutList();
+            Assert.Equal(200, ((ObjectResult)actionContactShortcutList.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionContactShortcutList.Result).Value);
+            List<ContactShortcut> contactShortcutList = (List<ContactShortcut>)((OkObjectResult)actionContactShortcutList.Result).Value;
+
+            int count = ((List<ContactShortcut>)((OkObjectResult)actionContactShortcutList.Result).Value).Count();
+            Assert.True(count > 0);
+
+            // Put ContactShortcut
+            var actionContactShortcutUpdated = await ContactShortcutService.Put(contactShortcut);
+            Assert.Equal(200, ((ObjectResult)actionContactShortcutUpdated.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionContactShortcutUpdated.Result).Value);
+            ContactShortcut contactShortcutUpdated = (ContactShortcut)((OkObjectResult)actionContactShortcutUpdated.Result).Value;
+            Assert.NotNull(contactShortcutUpdated);
+
+            // Delete ContactShortcut
+            var actionContactShortcutDeleted = await ContactShortcutService.Delete(contactShortcut.ContactShortcutID);
+            Assert.Equal(200, ((ObjectResult)actionContactShortcutDeleted.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionContactShortcutDeleted.Result).Value);
+            bool retBool = (bool)((OkObjectResult)actionContactShortcutDeleted.Result).Value;
+            Assert.True(retBool);
+        }
         private async Task<bool> Setup(string culture)
         {
             Config = new ConfigurationBuilder()
@@ -109,6 +127,9 @@ namespace CSSPServices.Tests
 
             Services.AddSingleton<IConfiguration>(Config);
 
+            string CSSPDBLocalFileName = Config.GetValue<string>("CSSPDBLocal");
+            Assert.NotNull(CSSPDBLocalFileName);
+
             string TestDBConnString = Config.GetValue<string>("TestDBConnectionString");
             Assert.NotNull(TestDBConnString);
 
@@ -120,6 +141,15 @@ namespace CSSPServices.Tests
             Services.AddDbContext<InMemoryDBContext>(options =>
             {
                 options.UseInMemoryDatabase(TestDBConnString);
+            });
+
+            string appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+
+            FileInfo fiAppDataPath = new FileInfo(CSSPDBLocalFileName.Replace("{appDataPath}", appDataPath));
+
+            Services.AddDbContext<CSSPDBLocalContext>(options =>
+            {
+                options.UseSqlite($"Data Source={ fiAppDataPath.FullName }");
             });
 
             Services.AddSingleton<ICultureService, CultureService>();
@@ -141,6 +171,12 @@ namespace CSSPServices.Tests
             string Id = Config.GetValue<string>("Id");
             Assert.True(await LoggedInService.SetLoggedInContactInfo(Id));
 
+            //string IsLocalStr = Config.GetValue<string>("IsLocal");
+            //Assert.NotNull(IsLocalStr);
+
+            dbIM = Provider.GetService<InMemoryDBContext>();
+            Assert.NotNull(dbIM);
+
             ContactShortcutService = Provider.GetService<IContactShortcutService>();
             Assert.NotNull(ContactShortcutService);
 
@@ -148,6 +184,8 @@ namespace CSSPServices.Tests
         }
         private ContactShortcut GetFilledRandomContactShortcut(string OmitPropName)
         {
+            dbIM.Database.EnsureDeleted();
+
             ContactShortcut contactShortcut = new ContactShortcut();
 
             if (OmitPropName != "ContactID") contactShortcut.ContactID = 1;
@@ -155,6 +193,16 @@ namespace CSSPServices.Tests
             if (OmitPropName != "ShortCutAddress") contactShortcut.ShortCutAddress = GetRandomString("", 5);
             if (OmitPropName != "LastUpdateDate_UTC") contactShortcut.LastUpdateDate_UTC = new DateTime(2005, 3, 6);
             if (OmitPropName != "LastUpdateContactTVItemID") contactShortcut.LastUpdateContactTVItemID = 2;
+
+            if (LoggedInService.IsLocal)
+            {
+                if (OmitPropName != "ContactShortcutID") contactShortcut.ContactShortcutID = 10000000;
+
+                dbIM.Contacts.Add(new Contact() { ContactID = 1, Id = "f837a0d7-783e-498e-b821-de9c9bd981de" ?? "", ContactTVItemID = 2, LoginEmail = "Charles.LeBlanc2@Canada.ca", FirstName = "Charles", LastName = "LeBlanc", Initial = "G", WebName = "Charles", ContactTitle = (ContactTitleEnum)0, IsAdmin = true, EmailValidated = true, Disabled = false, IsNew = false, SamplingPlanner_ProvincesTVItemID = "7,8,9,10,11,12,", Token = "", LastUpdateDate_UTC = new DateTime(2015, 5, 25, 14, 51, 31), LastUpdateContactTVItemID = 2});
+                dbIM.SaveChanges();
+                dbIM.TVItems.Add(new TVItem() { TVItemID = 2, TVLevel = 1, TVPath = "p1p2", TVType = (TVTypeEnum)5, ParentID = 1, IsActive = true, LastUpdateDate_UTC = new DateTime(2014, 12, 2, 16, 58, 16), LastUpdateContactTVItemID = 2});
+                dbIM.SaveChanges();
+            }
 
             return contactShortcut;
         }

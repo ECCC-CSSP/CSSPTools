@@ -36,6 +36,8 @@ namespace CSSPServices
 
         #region Properties
         private CSSPDBContext db { get; }
+        private CSSPDBLocalContext dbLocal { get; }
+        private InMemoryDBContext dbIM { get; }
         private ICultureService CultureService { get; }
         private ILoggedInService LoggedInService { get; }
         private IEnums enums { get; }
@@ -43,12 +45,14 @@ namespace CSSPServices
         #endregion Properties
 
         #region Constructors
-        public EmailService(ICultureService CultureService, ILoggedInService LoggedInService, IEnums enums, CSSPDBContext db)
+        public EmailService(ICultureService CultureService, ILoggedInService LoggedInService, IEnums enums, CSSPDBContext db, CSSPDBLocalContext dbLocal, InMemoryDBContext dbIM)
         {
             this.CultureService = CultureService;
             this.LoggedInService = LoggedInService;
             this.enums = enums;
             this.db = db;
+            this.dbLocal = dbLocal;
+            this.dbIM = dbIM;
         }
         #endregion Constructors
 
@@ -60,16 +64,32 @@ namespace CSSPServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            Email email = (from c in db.Emails.AsNoTracking()
-                    where c.EmailID == EmailID
-                    select c).FirstOrDefault();
-
-            if (email == null)
+            if (LoggedInService.IsLocal)
             {
-               return await Task.FromResult(NotFound());
-            }
+                Email email = (from c in dbLocal.Emails.AsNoTracking()
+                        where c.EmailID == EmailID
+                        select c).FirstOrDefault();
 
-            return await Task.FromResult(Ok(email));
+                if (email == null)
+                {
+                   return await Task.FromResult(NotFound());
+                }
+
+                return await Task.FromResult(Ok(email));
+            }
+            else
+            {
+                Email email = (from c in db.Emails.AsNoTracking()
+                        where c.EmailID == EmailID
+                        select c).FirstOrDefault();
+
+                if (email == null)
+                {
+                   return await Task.FromResult(NotFound());
+                }
+
+                return await Task.FromResult(Ok(email));
+            }
         }
         public async Task<ActionResult<List<Email>>> GetEmailList()
         {
@@ -78,9 +98,18 @@ namespace CSSPServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            List<Email> emailList = (from c in db.Emails.AsNoTracking() select c).Take(100).ToList();
+            if (LoggedInService.IsLocal)
+            {
+                List<Email> emailList = (from c in dbLocal.Emails.AsNoTracking() select c).Take(100).ToList();
 
-            return await Task.FromResult(Ok(emailList));
+                return await Task.FromResult(Ok(emailList));
+            }
+            else
+            {
+                List<Email> emailList = (from c in db.Emails.AsNoTracking() select c).Take(100).ToList();
+
+                return await Task.FromResult(Ok(emailList));
+            }
         }
         public async Task<ActionResult<bool>> Delete(int EmailID)
         {
@@ -89,26 +118,52 @@ namespace CSSPServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            Email email = (from c in db.Emails
-                               where c.EmailID == EmailID
-                               select c).FirstOrDefault();
-            
-            if (email == null)
+            if (LoggedInService.IsLocal)
             {
-                return await Task.FromResult(BadRequest(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "Email", "EmailID", EmailID.ToString())));
-            }
+                Email email = (from c in dbLocal.Emails
+                                   where c.EmailID == EmailID
+                                   select c).FirstOrDefault();
+                
+                if (email == null)
+                {
+                    return await Task.FromResult(BadRequest(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "Email", "EmailID", EmailID.ToString())));
+                }
 
-            try
-            {
-               db.Emails.Remove(email);
-               db.SaveChanges();
-            }
-            catch (DbUpdateException ex)
-            {
-               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
-            }
+                try
+                {
+                   dbLocal.Emails.Remove(email);
+                   dbLocal.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                   return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
 
-            return await Task.FromResult(Ok(true));
+                return await Task.FromResult(Ok(true));
+            }
+            else
+            {
+                Email email = (from c in db.Emails
+                                   where c.EmailID == EmailID
+                                   select c).FirstOrDefault();
+                
+                if (email == null)
+                {
+                    return await Task.FromResult(BadRequest(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "Email", "EmailID", EmailID.ToString())));
+                }
+
+                try
+                {
+                   db.Emails.Remove(email);
+                   db.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                   return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
+
+                return await Task.FromResult(Ok(true));
+            }
         }
         public async Task<ActionResult<Email>> Post(Email email)
         {
@@ -123,17 +178,34 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ValidationResults));
             }
 
-            try
+            if (LoggedInService.IsLocal)
             {
-               db.Emails.Add(email);
-               db.SaveChanges();
-            }
-            catch (DbUpdateException ex)
-            {
-               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
-            }
+                try
+                {
+                   dbLocal.Emails.Add(email);
+                   dbLocal.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                   return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
 
-            return await Task.FromResult(Ok(email));
+                return await Task.FromResult(Ok(email));
+            }
+            else
+            {
+                try
+                {
+                   db.Emails.Add(email);
+                   db.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                   return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
+
+                return await Task.FromResult(Ok(email));
+            }
         }
         public async Task<ActionResult<Email>> Put(Email email)
         {
@@ -148,6 +220,22 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ValidationResults));
             }
 
+            if (LoggedInService.IsLocal)
+            {
+            try
+            {
+               dbLocal.Emails.Update(email);
+               dbLocal.SaveChanges();
+            }
+            catch (DbUpdateException ex)
+            {
+               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+            }
+
+            return await Task.FromResult(Ok(email));
+            }
+            else
+            {
             try
             {
                db.Emails.Update(email);
@@ -159,6 +247,7 @@ namespace CSSPServices
             }
 
             return await Task.FromResult(Ok(email));
+            }
         }
         #endregion Functions public
 
@@ -175,13 +264,35 @@ namespace CSSPServices
                     yield return new ValidationResult(string.Format(CultureServicesRes._IsRequired, "EmailID"), new[] { "EmailID" });
                 }
 
-                if (!(from c in db.Emails select c).Where(c => c.EmailID == email.EmailID).Any())
+                if (LoggedInService.IsLocal)
                 {
-                    yield return new ValidationResult(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "Email", "EmailID", email.EmailID.ToString()), new[] { "EmailID" });
+                    if (!(from c in dbLocal.Emails select c).Where(c => c.EmailID == email.EmailID).Any())
+                    {
+                        yield return new ValidationResult(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "Email", "EmailID", email.EmailID.ToString()), new[] { "EmailID" });
+                    }
+                }
+                else
+                {
+                    if (!(from c in db.Emails select c).Where(c => c.EmailID == email.EmailID).Any())
+                    {
+                        yield return new ValidationResult(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "Email", "EmailID", email.EmailID.ToString()), new[] { "EmailID" });
+                    }
                 }
             }
 
-            TVItem TVItemEmailTVItemID = (from c in db.TVItems where c.TVItemID == email.EmailTVItemID select c).FirstOrDefault();
+            TVItem TVItemEmailTVItemID = null;
+            if (LoggedInService.IsLocal)
+            {
+                TVItemEmailTVItemID = (from c in dbLocal.TVItems where c.TVItemID == email.EmailTVItemID select c).FirstOrDefault();
+                if (TVItemEmailTVItemID == null)
+                {
+                    TVItemEmailTVItemID = (from c in dbIM.TVItems where c.TVItemID == email.EmailTVItemID select c).FirstOrDefault();
+                }
+            }
+            else
+            {
+                TVItemEmailTVItemID = (from c in db.TVItems where c.TVItemID == email.EmailTVItemID select c).FirstOrDefault();
+            }
 
             if (TVItemEmailTVItemID == null)
             {
@@ -236,7 +347,19 @@ namespace CSSPServices
                 }
             }
 
-            TVItem TVItemLastUpdateContactTVItemID = (from c in db.TVItems where c.TVItemID == email.LastUpdateContactTVItemID select c).FirstOrDefault();
+            TVItem TVItemLastUpdateContactTVItemID = null;
+            if (LoggedInService.IsLocal)
+            {
+                TVItemLastUpdateContactTVItemID = (from c in dbLocal.TVItems where c.TVItemID == email.LastUpdateContactTVItemID select c).FirstOrDefault();
+                if (TVItemLastUpdateContactTVItemID == null)
+                {
+                    TVItemLastUpdateContactTVItemID = (from c in dbIM.TVItems where c.TVItemID == email.LastUpdateContactTVItemID select c).FirstOrDefault();
+                }
+            }
+            else
+            {
+                TVItemLastUpdateContactTVItemID = (from c in db.TVItems where c.TVItemID == email.LastUpdateContactTVItemID select c).FirstOrDefault();
+            }
 
             if (TVItemLastUpdateContactTVItemID == null)
             {

@@ -36,6 +36,9 @@ namespace CSSPServices.Tests
         private ILoggedInService LoggedInService { get; set; }
         private IReportSectionService ReportSectionService { get; set; }
         private CSSPDBContext db { get; set; }
+        private CSSPDBLocalContext dbLocal { get; set; }
+        private InMemoryDBContext dbIM { get; set; }
+        private ReportSection reportSection { get; set; }
         #endregion Properties
 
         #region Constructors
@@ -47,9 +50,11 @@ namespace CSSPServices.Tests
 
         #region Tests Generated CRUD
         [Theory]
-        [InlineData("en-CA")]
-        [InlineData("fr-CA")]
-        public async Task ReportSection_CRUD_Good_Test(string culture)
+        [InlineData("en-CA", "true")]
+        [InlineData("fr-CA", "true")]
+        [InlineData("en-CA", "false")]
+        [InlineData("fr-CA", "false")]
+        public async Task ReportSection_CRUD_Good_Test(string culture, string IsLocalStr)
         {
             // -------------------------------
             // -------------------------------
@@ -59,44 +64,57 @@ namespace CSSPServices.Tests
 
             Assert.True(await Setup(culture));
 
-            using (TransactionScope ts = new TransactionScope())
+            LoggedInService.IsLocal = bool.Parse(IsLocalStr);
+
+            reportSection = GetFilledRandomReportSection("");
+
+            if (LoggedInService.IsLocal)
             {
-               ReportSection reportSection = GetFilledRandomReportSection(""); 
-
-               // List<ReportSection>
-               var actionReportSectionList = await ReportSectionService.GetReportSectionList();
-               Assert.Equal(200, ((ObjectResult)actionReportSectionList.Result).StatusCode);
-               Assert.NotNull(((OkObjectResult)actionReportSectionList.Result).Value);
-               List<ReportSection> reportSectionList = (List<ReportSection>)((OkObjectResult)actionReportSectionList.Result).Value;
-
-               int count = ((List<ReportSection>)((OkObjectResult)actionReportSectionList.Result).Value).Count();
-                Assert.True(count > 0);
-
-               // Post ReportSection
-               var actionReportSectionAdded = await ReportSectionService.Post(reportSection);
-               Assert.Equal(200, ((ObjectResult)actionReportSectionAdded.Result).StatusCode);
-               Assert.NotNull(((OkObjectResult)actionReportSectionAdded.Result).Value);
-               ReportSection reportSectionAdded = (ReportSection)((OkObjectResult)actionReportSectionAdded.Result).Value;
-               Assert.NotNull(reportSectionAdded);
-
-               // Put ReportSection
-               var actionReportSectionUpdated = await ReportSectionService.Put(reportSection);
-               Assert.Equal(200, ((ObjectResult)actionReportSectionUpdated.Result).StatusCode);
-               Assert.NotNull(((OkObjectResult)actionReportSectionUpdated.Result).Value);
-               ReportSection reportSectionUpdated = (ReportSection)((OkObjectResult)actionReportSectionUpdated.Result).Value;
-               Assert.NotNull(reportSectionUpdated);
-
-               // Delete ReportSection
-               var actionReportSectionDeleted = await ReportSectionService.Delete(reportSection.ReportSectionID);
-               Assert.Equal(200, ((ObjectResult)actionReportSectionDeleted.Result).StatusCode);
-               Assert.NotNull(((OkObjectResult)actionReportSectionDeleted.Result).Value);
-               bool retBool = (bool)((OkObjectResult)actionReportSectionDeleted.Result).Value;
-               Assert.True(retBool);
+                await DoCRUDTest();
+            }
+            else
+            {
+                using (TransactionScope ts = new TransactionScope())
+                {
+                    await DoCRUDTest();
+                }
             }
         }
         #endregion Tests Generated CRUD
 
         #region Functions private
+        private async Task DoCRUDTest()
+        {
+            // Post ReportSection
+            var actionReportSectionAdded = await ReportSectionService.Post(reportSection);
+            Assert.Equal(200, ((ObjectResult)actionReportSectionAdded.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionReportSectionAdded.Result).Value);
+            ReportSection reportSectionAdded = (ReportSection)((OkObjectResult)actionReportSectionAdded.Result).Value;
+            Assert.NotNull(reportSectionAdded);
+
+            // List<ReportSection>
+            var actionReportSectionList = await ReportSectionService.GetReportSectionList();
+            Assert.Equal(200, ((ObjectResult)actionReportSectionList.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionReportSectionList.Result).Value);
+            List<ReportSection> reportSectionList = (List<ReportSection>)((OkObjectResult)actionReportSectionList.Result).Value;
+
+            int count = ((List<ReportSection>)((OkObjectResult)actionReportSectionList.Result).Value).Count();
+            Assert.True(count > 0);
+
+            // Put ReportSection
+            var actionReportSectionUpdated = await ReportSectionService.Put(reportSection);
+            Assert.Equal(200, ((ObjectResult)actionReportSectionUpdated.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionReportSectionUpdated.Result).Value);
+            ReportSection reportSectionUpdated = (ReportSection)((OkObjectResult)actionReportSectionUpdated.Result).Value;
+            Assert.NotNull(reportSectionUpdated);
+
+            // Delete ReportSection
+            var actionReportSectionDeleted = await ReportSectionService.Delete(reportSection.ReportSectionID);
+            Assert.Equal(200, ((ObjectResult)actionReportSectionDeleted.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionReportSectionDeleted.Result).Value);
+            bool retBool = (bool)((OkObjectResult)actionReportSectionDeleted.Result).Value;
+            Assert.True(retBool);
+        }
         private async Task<bool> Setup(string culture)
         {
             Config = new ConfigurationBuilder()
@@ -109,6 +127,9 @@ namespace CSSPServices.Tests
 
             Services.AddSingleton<IConfiguration>(Config);
 
+            string CSSPDBLocalFileName = Config.GetValue<string>("CSSPDBLocal");
+            Assert.NotNull(CSSPDBLocalFileName);
+
             string TestDBConnString = Config.GetValue<string>("TestDBConnectionString");
             Assert.NotNull(TestDBConnString);
 
@@ -120,6 +141,15 @@ namespace CSSPServices.Tests
             Services.AddDbContext<InMemoryDBContext>(options =>
             {
                 options.UseInMemoryDatabase(TestDBConnString);
+            });
+
+            string appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+
+            FileInfo fiAppDataPath = new FileInfo(CSSPDBLocalFileName.Replace("{appDataPath}", appDataPath));
+
+            Services.AddDbContext<CSSPDBLocalContext>(options =>
+            {
+                options.UseSqlite($"Data Source={ fiAppDataPath.FullName }");
             });
 
             Services.AddSingleton<ICultureService, CultureService>();
@@ -141,6 +171,12 @@ namespace CSSPServices.Tests
             string Id = Config.GetValue<string>("Id");
             Assert.True(await LoggedInService.SetLoggedInContactInfo(Id));
 
+            //string IsLocalStr = Config.GetValue<string>("IsLocal");
+            //Assert.NotNull(IsLocalStr);
+
+            dbIM = Provider.GetService<InMemoryDBContext>();
+            Assert.NotNull(dbIM);
+
             ReportSectionService = Provider.GetService<IReportSectionService>();
             Assert.NotNull(ReportSectionService);
 
@@ -148,6 +184,8 @@ namespace CSSPServices.Tests
         }
         private ReportSection GetFilledRandomReportSection(string OmitPropName)
         {
+            dbIM.Database.EnsureDeleted();
+
             ReportSection reportSection = new ReportSection();
 
             if (OmitPropName != "ReportTypeID") reportSection.ReportTypeID = 1;
@@ -163,6 +201,18 @@ namespace CSSPServices.Tests
             if (OmitPropName != "ReportSectionText") reportSection.ReportSectionText = GetRandomString("", 5);
             if (OmitPropName != "LastUpdateDate_UTC") reportSection.LastUpdateDate_UTC = new DateTime(2005, 3, 6);
             if (OmitPropName != "LastUpdateContactTVItemID") reportSection.LastUpdateContactTVItemID = 2;
+
+            if (LoggedInService.IsLocal)
+            {
+                if (OmitPropName != "ReportSectionID") reportSection.ReportSectionID = 10000000;
+
+                dbIM.ReportTypes.Add(new ReportType() { ReportTypeID = 1 });
+                dbIM.SaveChanges();
+                dbIM.ReportSections.Add(new ReportSection() { ReportSectionID = 1 });
+                dbIM.SaveChanges();
+                dbIM.TVItems.Add(new TVItem() { TVItemID = 2, TVLevel = 1, TVPath = "p1p2", TVType = (TVTypeEnum)5, ParentID = 1, IsActive = true, LastUpdateDate_UTC = new DateTime(2014, 12, 2, 16, 58, 16), LastUpdateContactTVItemID = 2});
+                dbIM.SaveChanges();
+            }
 
             return reportSection;
         }

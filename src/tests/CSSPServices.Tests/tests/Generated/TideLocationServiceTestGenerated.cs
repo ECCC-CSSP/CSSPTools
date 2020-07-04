@@ -36,6 +36,9 @@ namespace CSSPServices.Tests
         private ILoggedInService LoggedInService { get; set; }
         private ITideLocationService TideLocationService { get; set; }
         private CSSPDBContext db { get; set; }
+        private CSSPDBLocalContext dbLocal { get; set; }
+        private InMemoryDBContext dbIM { get; set; }
+        private TideLocation tideLocation { get; set; }
         #endregion Properties
 
         #region Constructors
@@ -47,9 +50,11 @@ namespace CSSPServices.Tests
 
         #region Tests Generated CRUD
         [Theory]
-        [InlineData("en-CA")]
-        [InlineData("fr-CA")]
-        public async Task TideLocation_CRUD_Good_Test(string culture)
+        [InlineData("en-CA", "true")]
+        [InlineData("fr-CA", "true")]
+        [InlineData("en-CA", "false")]
+        [InlineData("fr-CA", "false")]
+        public async Task TideLocation_CRUD_Good_Test(string culture, string IsLocalStr)
         {
             // -------------------------------
             // -------------------------------
@@ -59,44 +64,57 @@ namespace CSSPServices.Tests
 
             Assert.True(await Setup(culture));
 
-            using (TransactionScope ts = new TransactionScope())
+            LoggedInService.IsLocal = bool.Parse(IsLocalStr);
+
+            tideLocation = GetFilledRandomTideLocation("");
+
+            if (LoggedInService.IsLocal)
             {
-               TideLocation tideLocation = GetFilledRandomTideLocation(""); 
-
-               // List<TideLocation>
-               var actionTideLocationList = await TideLocationService.GetTideLocationList();
-               Assert.Equal(200, ((ObjectResult)actionTideLocationList.Result).StatusCode);
-               Assert.NotNull(((OkObjectResult)actionTideLocationList.Result).Value);
-               List<TideLocation> tideLocationList = (List<TideLocation>)((OkObjectResult)actionTideLocationList.Result).Value;
-
-               int count = ((List<TideLocation>)((OkObjectResult)actionTideLocationList.Result).Value).Count();
-                Assert.True(count > 0);
-
-               // Post TideLocation
-               var actionTideLocationAdded = await TideLocationService.Post(tideLocation);
-               Assert.Equal(200, ((ObjectResult)actionTideLocationAdded.Result).StatusCode);
-               Assert.NotNull(((OkObjectResult)actionTideLocationAdded.Result).Value);
-               TideLocation tideLocationAdded = (TideLocation)((OkObjectResult)actionTideLocationAdded.Result).Value;
-               Assert.NotNull(tideLocationAdded);
-
-               // Put TideLocation
-               var actionTideLocationUpdated = await TideLocationService.Put(tideLocation);
-               Assert.Equal(200, ((ObjectResult)actionTideLocationUpdated.Result).StatusCode);
-               Assert.NotNull(((OkObjectResult)actionTideLocationUpdated.Result).Value);
-               TideLocation tideLocationUpdated = (TideLocation)((OkObjectResult)actionTideLocationUpdated.Result).Value;
-               Assert.NotNull(tideLocationUpdated);
-
-               // Delete TideLocation
-               var actionTideLocationDeleted = await TideLocationService.Delete(tideLocation.TideLocationID);
-               Assert.Equal(200, ((ObjectResult)actionTideLocationDeleted.Result).StatusCode);
-               Assert.NotNull(((OkObjectResult)actionTideLocationDeleted.Result).Value);
-               bool retBool = (bool)((OkObjectResult)actionTideLocationDeleted.Result).Value;
-               Assert.True(retBool);
+                await DoCRUDTest();
+            }
+            else
+            {
+                using (TransactionScope ts = new TransactionScope())
+                {
+                    await DoCRUDTest();
+                }
             }
         }
         #endregion Tests Generated CRUD
 
         #region Functions private
+        private async Task DoCRUDTest()
+        {
+            // Post TideLocation
+            var actionTideLocationAdded = await TideLocationService.Post(tideLocation);
+            Assert.Equal(200, ((ObjectResult)actionTideLocationAdded.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionTideLocationAdded.Result).Value);
+            TideLocation tideLocationAdded = (TideLocation)((OkObjectResult)actionTideLocationAdded.Result).Value;
+            Assert.NotNull(tideLocationAdded);
+
+            // List<TideLocation>
+            var actionTideLocationList = await TideLocationService.GetTideLocationList();
+            Assert.Equal(200, ((ObjectResult)actionTideLocationList.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionTideLocationList.Result).Value);
+            List<TideLocation> tideLocationList = (List<TideLocation>)((OkObjectResult)actionTideLocationList.Result).Value;
+
+            int count = ((List<TideLocation>)((OkObjectResult)actionTideLocationList.Result).Value).Count();
+            Assert.True(count > 0);
+
+            // Put TideLocation
+            var actionTideLocationUpdated = await TideLocationService.Put(tideLocation);
+            Assert.Equal(200, ((ObjectResult)actionTideLocationUpdated.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionTideLocationUpdated.Result).Value);
+            TideLocation tideLocationUpdated = (TideLocation)((OkObjectResult)actionTideLocationUpdated.Result).Value;
+            Assert.NotNull(tideLocationUpdated);
+
+            // Delete TideLocation
+            var actionTideLocationDeleted = await TideLocationService.Delete(tideLocation.TideLocationID);
+            Assert.Equal(200, ((ObjectResult)actionTideLocationDeleted.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionTideLocationDeleted.Result).Value);
+            bool retBool = (bool)((OkObjectResult)actionTideLocationDeleted.Result).Value;
+            Assert.True(retBool);
+        }
         private async Task<bool> Setup(string culture)
         {
             Config = new ConfigurationBuilder()
@@ -109,6 +127,9 @@ namespace CSSPServices.Tests
 
             Services.AddSingleton<IConfiguration>(Config);
 
+            string CSSPDBLocalFileName = Config.GetValue<string>("CSSPDBLocal");
+            Assert.NotNull(CSSPDBLocalFileName);
+
             string TestDBConnString = Config.GetValue<string>("TestDBConnectionString");
             Assert.NotNull(TestDBConnString);
 
@@ -120,6 +141,15 @@ namespace CSSPServices.Tests
             Services.AddDbContext<InMemoryDBContext>(options =>
             {
                 options.UseInMemoryDatabase(TestDBConnString);
+            });
+
+            string appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+
+            FileInfo fiAppDataPath = new FileInfo(CSSPDBLocalFileName.Replace("{appDataPath}", appDataPath));
+
+            Services.AddDbContext<CSSPDBLocalContext>(options =>
+            {
+                options.UseSqlite($"Data Source={ fiAppDataPath.FullName }");
             });
 
             Services.AddSingleton<ICultureService, CultureService>();
@@ -141,6 +171,12 @@ namespace CSSPServices.Tests
             string Id = Config.GetValue<string>("Id");
             Assert.True(await LoggedInService.SetLoggedInContactInfo(Id));
 
+            //string IsLocalStr = Config.GetValue<string>("IsLocal");
+            //Assert.NotNull(IsLocalStr);
+
+            dbIM = Provider.GetService<InMemoryDBContext>();
+            Assert.NotNull(dbIM);
+
             TideLocationService = Provider.GetService<ITideLocationService>();
             Assert.NotNull(TideLocationService);
 
@@ -148,6 +184,8 @@ namespace CSSPServices.Tests
         }
         private TideLocation GetFilledRandomTideLocation(string OmitPropName)
         {
+            dbIM.Database.EnsureDeleted();
+
             TideLocation tideLocation = new TideLocation();
 
             if (OmitPropName != "Zone") tideLocation.Zone = GetRandomInt(0, 10000);
@@ -158,6 +196,14 @@ namespace CSSPServices.Tests
             if (OmitPropName != "Lng") tideLocation.Lng = GetRandomDouble(-180.0D, 180.0D);
             if (OmitPropName != "LastUpdateDate_UTC") tideLocation.LastUpdateDate_UTC = new DateTime(2005, 3, 6);
             if (OmitPropName != "LastUpdateContactTVItemID") tideLocation.LastUpdateContactTVItemID = 2;
+
+            if (LoggedInService.IsLocal)
+            {
+                if (OmitPropName != "TideLocationID") tideLocation.TideLocationID = 10000000;
+
+                dbIM.TVItems.Add(new TVItem() { TVItemID = 2, TVLevel = 1, TVPath = "p1p2", TVType = (TVTypeEnum)5, ParentID = 1, IsActive = true, LastUpdateDate_UTC = new DateTime(2014, 12, 2, 16, 58, 16), LastUpdateContactTVItemID = 2});
+                dbIM.SaveChanges();
+            }
 
             return tideLocation;
         }

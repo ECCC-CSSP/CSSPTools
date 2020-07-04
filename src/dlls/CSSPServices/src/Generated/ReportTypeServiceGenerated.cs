@@ -36,6 +36,8 @@ namespace CSSPServices
 
         #region Properties
         private CSSPDBContext db { get; }
+        private CSSPDBLocalContext dbLocal { get; }
+        private InMemoryDBContext dbIM { get; }
         private ICultureService CultureService { get; }
         private ILoggedInService LoggedInService { get; }
         private IEnums enums { get; }
@@ -43,12 +45,14 @@ namespace CSSPServices
         #endregion Properties
 
         #region Constructors
-        public ReportTypeService(ICultureService CultureService, ILoggedInService LoggedInService, IEnums enums, CSSPDBContext db)
+        public ReportTypeService(ICultureService CultureService, ILoggedInService LoggedInService, IEnums enums, CSSPDBContext db, CSSPDBLocalContext dbLocal, InMemoryDBContext dbIM)
         {
             this.CultureService = CultureService;
             this.LoggedInService = LoggedInService;
             this.enums = enums;
             this.db = db;
+            this.dbLocal = dbLocal;
+            this.dbIM = dbIM;
         }
         #endregion Constructors
 
@@ -60,16 +64,32 @@ namespace CSSPServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            ReportType reporttype = (from c in db.ReportTypes.AsNoTracking()
-                    where c.ReportTypeID == ReportTypeID
-                    select c).FirstOrDefault();
-
-            if (reporttype == null)
+            if (LoggedInService.IsLocal)
             {
-               return await Task.FromResult(NotFound());
-            }
+                ReportType reporttype = (from c in dbLocal.ReportTypes.AsNoTracking()
+                        where c.ReportTypeID == ReportTypeID
+                        select c).FirstOrDefault();
 
-            return await Task.FromResult(Ok(reporttype));
+                if (reporttype == null)
+                {
+                   return await Task.FromResult(NotFound());
+                }
+
+                return await Task.FromResult(Ok(reporttype));
+            }
+            else
+            {
+                ReportType reporttype = (from c in db.ReportTypes.AsNoTracking()
+                        where c.ReportTypeID == ReportTypeID
+                        select c).FirstOrDefault();
+
+                if (reporttype == null)
+                {
+                   return await Task.FromResult(NotFound());
+                }
+
+                return await Task.FromResult(Ok(reporttype));
+            }
         }
         public async Task<ActionResult<List<ReportType>>> GetReportTypeList()
         {
@@ -78,9 +98,18 @@ namespace CSSPServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            List<ReportType> reporttypeList = (from c in db.ReportTypes.AsNoTracking() select c).Take(100).ToList();
+            if (LoggedInService.IsLocal)
+            {
+                List<ReportType> reporttypeList = (from c in dbLocal.ReportTypes.AsNoTracking() select c).Take(100).ToList();
 
-            return await Task.FromResult(Ok(reporttypeList));
+                return await Task.FromResult(Ok(reporttypeList));
+            }
+            else
+            {
+                List<ReportType> reporttypeList = (from c in db.ReportTypes.AsNoTracking() select c).Take(100).ToList();
+
+                return await Task.FromResult(Ok(reporttypeList));
+            }
         }
         public async Task<ActionResult<bool>> Delete(int ReportTypeID)
         {
@@ -89,26 +118,52 @@ namespace CSSPServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            ReportType reportType = (from c in db.ReportTypes
-                               where c.ReportTypeID == ReportTypeID
-                               select c).FirstOrDefault();
-            
-            if (reportType == null)
+            if (LoggedInService.IsLocal)
             {
-                return await Task.FromResult(BadRequest(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "ReportType", "ReportTypeID", ReportTypeID.ToString())));
-            }
+                ReportType reportType = (from c in dbLocal.ReportTypes
+                                   where c.ReportTypeID == ReportTypeID
+                                   select c).FirstOrDefault();
+                
+                if (reportType == null)
+                {
+                    return await Task.FromResult(BadRequest(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "ReportType", "ReportTypeID", ReportTypeID.ToString())));
+                }
 
-            try
-            {
-               db.ReportTypes.Remove(reportType);
-               db.SaveChanges();
-            }
-            catch (DbUpdateException ex)
-            {
-               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
-            }
+                try
+                {
+                   dbLocal.ReportTypes.Remove(reportType);
+                   dbLocal.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                   return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
 
-            return await Task.FromResult(Ok(true));
+                return await Task.FromResult(Ok(true));
+            }
+            else
+            {
+                ReportType reportType = (from c in db.ReportTypes
+                                   where c.ReportTypeID == ReportTypeID
+                                   select c).FirstOrDefault();
+                
+                if (reportType == null)
+                {
+                    return await Task.FromResult(BadRequest(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "ReportType", "ReportTypeID", ReportTypeID.ToString())));
+                }
+
+                try
+                {
+                   db.ReportTypes.Remove(reportType);
+                   db.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                   return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
+
+                return await Task.FromResult(Ok(true));
+            }
         }
         public async Task<ActionResult<ReportType>> Post(ReportType reportType)
         {
@@ -123,17 +178,34 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ValidationResults));
             }
 
-            try
+            if (LoggedInService.IsLocal)
             {
-               db.ReportTypes.Add(reportType);
-               db.SaveChanges();
-            }
-            catch (DbUpdateException ex)
-            {
-               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
-            }
+                try
+                {
+                   dbLocal.ReportTypes.Add(reportType);
+                   dbLocal.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                   return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
 
-            return await Task.FromResult(Ok(reportType));
+                return await Task.FromResult(Ok(reportType));
+            }
+            else
+            {
+                try
+                {
+                   db.ReportTypes.Add(reportType);
+                   db.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                   return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
+
+                return await Task.FromResult(Ok(reportType));
+            }
         }
         public async Task<ActionResult<ReportType>> Put(ReportType reportType)
         {
@@ -148,6 +220,22 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ValidationResults));
             }
 
+            if (LoggedInService.IsLocal)
+            {
+            try
+            {
+               dbLocal.ReportTypes.Update(reportType);
+               dbLocal.SaveChanges();
+            }
+            catch (DbUpdateException ex)
+            {
+               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+            }
+
+            return await Task.FromResult(Ok(reportType));
+            }
+            else
+            {
             try
             {
                db.ReportTypes.Update(reportType);
@@ -159,6 +247,7 @@ namespace CSSPServices
             }
 
             return await Task.FromResult(Ok(reportType));
+            }
         }
         #endregion Functions public
 
@@ -175,9 +264,19 @@ namespace CSSPServices
                     yield return new ValidationResult(string.Format(CultureServicesRes._IsRequired, "ReportTypeID"), new[] { "ReportTypeID" });
                 }
 
-                if (!(from c in db.ReportTypes select c).Where(c => c.ReportTypeID == reportType.ReportTypeID).Any())
+                if (LoggedInService.IsLocal)
                 {
-                    yield return new ValidationResult(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "ReportType", "ReportTypeID", reportType.ReportTypeID.ToString()), new[] { "ReportTypeID" });
+                    if (!(from c in dbLocal.ReportTypes select c).Where(c => c.ReportTypeID == reportType.ReportTypeID).Any())
+                    {
+                        yield return new ValidationResult(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "ReportType", "ReportTypeID", reportType.ReportTypeID.ToString()), new[] { "ReportTypeID" });
+                    }
+                }
+                else
+                {
+                    if (!(from c in db.ReportTypes select c).Where(c => c.ReportTypeID == reportType.ReportTypeID).Any())
+                    {
+                        yield return new ValidationResult(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "ReportType", "ReportTypeID", reportType.ReportTypeID.ToString()), new[] { "ReportTypeID" });
+                    }
                 }
             }
 
@@ -239,7 +338,19 @@ namespace CSSPServices
                 }
             }
 
-            TVItem TVItemLastUpdateContactTVItemID = (from c in db.TVItems where c.TVItemID == reportType.LastUpdateContactTVItemID select c).FirstOrDefault();
+            TVItem TVItemLastUpdateContactTVItemID = null;
+            if (LoggedInService.IsLocal)
+            {
+                TVItemLastUpdateContactTVItemID = (from c in dbLocal.TVItems where c.TVItemID == reportType.LastUpdateContactTVItemID select c).FirstOrDefault();
+                if (TVItemLastUpdateContactTVItemID == null)
+                {
+                    TVItemLastUpdateContactTVItemID = (from c in dbIM.TVItems where c.TVItemID == reportType.LastUpdateContactTVItemID select c).FirstOrDefault();
+                }
+            }
+            else
+            {
+                TVItemLastUpdateContactTVItemID = (from c in db.TVItems where c.TVItemID == reportType.LastUpdateContactTVItemID select c).FirstOrDefault();
+            }
 
             if (TVItemLastUpdateContactTVItemID == null)
             {

@@ -36,6 +36,8 @@ namespace CSSPServices
 
         #region Properties
         private CSSPDBContext db { get; }
+        private CSSPDBLocalContext dbLocal { get; }
+        private InMemoryDBContext dbIM { get; }
         private ICultureService CultureService { get; }
         private ILoggedInService LoggedInService { get; }
         private IEnums enums { get; }
@@ -43,12 +45,14 @@ namespace CSSPServices
         #endregion Properties
 
         #region Constructors
-        public MWQMSiteService(ICultureService CultureService, ILoggedInService LoggedInService, IEnums enums, CSSPDBContext db)
+        public MWQMSiteService(ICultureService CultureService, ILoggedInService LoggedInService, IEnums enums, CSSPDBContext db, CSSPDBLocalContext dbLocal, InMemoryDBContext dbIM)
         {
             this.CultureService = CultureService;
             this.LoggedInService = LoggedInService;
             this.enums = enums;
             this.db = db;
+            this.dbLocal = dbLocal;
+            this.dbIM = dbIM;
         }
         #endregion Constructors
 
@@ -60,16 +64,32 @@ namespace CSSPServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            MWQMSite mwqmsite = (from c in db.MWQMSites.AsNoTracking()
-                    where c.MWQMSiteID == MWQMSiteID
-                    select c).FirstOrDefault();
-
-            if (mwqmsite == null)
+            if (LoggedInService.IsLocal)
             {
-               return await Task.FromResult(NotFound());
-            }
+                MWQMSite mwqmsite = (from c in dbLocal.MWQMSites.AsNoTracking()
+                        where c.MWQMSiteID == MWQMSiteID
+                        select c).FirstOrDefault();
 
-            return await Task.FromResult(Ok(mwqmsite));
+                if (mwqmsite == null)
+                {
+                   return await Task.FromResult(NotFound());
+                }
+
+                return await Task.FromResult(Ok(mwqmsite));
+            }
+            else
+            {
+                MWQMSite mwqmsite = (from c in db.MWQMSites.AsNoTracking()
+                        where c.MWQMSiteID == MWQMSiteID
+                        select c).FirstOrDefault();
+
+                if (mwqmsite == null)
+                {
+                   return await Task.FromResult(NotFound());
+                }
+
+                return await Task.FromResult(Ok(mwqmsite));
+            }
         }
         public async Task<ActionResult<List<MWQMSite>>> GetMWQMSiteList()
         {
@@ -78,9 +98,18 @@ namespace CSSPServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            List<MWQMSite> mwqmsiteList = (from c in db.MWQMSites.AsNoTracking() select c).Take(100).ToList();
+            if (LoggedInService.IsLocal)
+            {
+                List<MWQMSite> mwqmsiteList = (from c in dbLocal.MWQMSites.AsNoTracking() select c).Take(100).ToList();
 
-            return await Task.FromResult(Ok(mwqmsiteList));
+                return await Task.FromResult(Ok(mwqmsiteList));
+            }
+            else
+            {
+                List<MWQMSite> mwqmsiteList = (from c in db.MWQMSites.AsNoTracking() select c).Take(100).ToList();
+
+                return await Task.FromResult(Ok(mwqmsiteList));
+            }
         }
         public async Task<ActionResult<bool>> Delete(int MWQMSiteID)
         {
@@ -89,26 +118,52 @@ namespace CSSPServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            MWQMSite mwqmSite = (from c in db.MWQMSites
-                               where c.MWQMSiteID == MWQMSiteID
-                               select c).FirstOrDefault();
-            
-            if (mwqmSite == null)
+            if (LoggedInService.IsLocal)
             {
-                return await Task.FromResult(BadRequest(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "MWQMSite", "MWQMSiteID", MWQMSiteID.ToString())));
-            }
+                MWQMSite mwqmSite = (from c in dbLocal.MWQMSites
+                                   where c.MWQMSiteID == MWQMSiteID
+                                   select c).FirstOrDefault();
+                
+                if (mwqmSite == null)
+                {
+                    return await Task.FromResult(BadRequest(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "MWQMSite", "MWQMSiteID", MWQMSiteID.ToString())));
+                }
 
-            try
-            {
-               db.MWQMSites.Remove(mwqmSite);
-               db.SaveChanges();
-            }
-            catch (DbUpdateException ex)
-            {
-               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
-            }
+                try
+                {
+                   dbLocal.MWQMSites.Remove(mwqmSite);
+                   dbLocal.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                   return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
 
-            return await Task.FromResult(Ok(true));
+                return await Task.FromResult(Ok(true));
+            }
+            else
+            {
+                MWQMSite mwqmSite = (from c in db.MWQMSites
+                                   where c.MWQMSiteID == MWQMSiteID
+                                   select c).FirstOrDefault();
+                
+                if (mwqmSite == null)
+                {
+                    return await Task.FromResult(BadRequest(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "MWQMSite", "MWQMSiteID", MWQMSiteID.ToString())));
+                }
+
+                try
+                {
+                   db.MWQMSites.Remove(mwqmSite);
+                   db.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                   return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
+
+                return await Task.FromResult(Ok(true));
+            }
         }
         public async Task<ActionResult<MWQMSite>> Post(MWQMSite mwqmSite)
         {
@@ -123,17 +178,34 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ValidationResults));
             }
 
-            try
+            if (LoggedInService.IsLocal)
             {
-               db.MWQMSites.Add(mwqmSite);
-               db.SaveChanges();
-            }
-            catch (DbUpdateException ex)
-            {
-               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
-            }
+                try
+                {
+                   dbLocal.MWQMSites.Add(mwqmSite);
+                   dbLocal.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                   return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
 
-            return await Task.FromResult(Ok(mwqmSite));
+                return await Task.FromResult(Ok(mwqmSite));
+            }
+            else
+            {
+                try
+                {
+                   db.MWQMSites.Add(mwqmSite);
+                   db.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                   return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
+
+                return await Task.FromResult(Ok(mwqmSite));
+            }
         }
         public async Task<ActionResult<MWQMSite>> Put(MWQMSite mwqmSite)
         {
@@ -148,6 +220,22 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ValidationResults));
             }
 
+            if (LoggedInService.IsLocal)
+            {
+            try
+            {
+               dbLocal.MWQMSites.Update(mwqmSite);
+               dbLocal.SaveChanges();
+            }
+            catch (DbUpdateException ex)
+            {
+               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+            }
+
+            return await Task.FromResult(Ok(mwqmSite));
+            }
+            else
+            {
             try
             {
                db.MWQMSites.Update(mwqmSite);
@@ -159,6 +247,7 @@ namespace CSSPServices
             }
 
             return await Task.FromResult(Ok(mwqmSite));
+            }
         }
         #endregion Functions public
 
@@ -175,13 +264,35 @@ namespace CSSPServices
                     yield return new ValidationResult(string.Format(CultureServicesRes._IsRequired, "MWQMSiteID"), new[] { "MWQMSiteID" });
                 }
 
-                if (!(from c in db.MWQMSites select c).Where(c => c.MWQMSiteID == mwqmSite.MWQMSiteID).Any())
+                if (LoggedInService.IsLocal)
                 {
-                    yield return new ValidationResult(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "MWQMSite", "MWQMSiteID", mwqmSite.MWQMSiteID.ToString()), new[] { "MWQMSiteID" });
+                    if (!(from c in dbLocal.MWQMSites select c).Where(c => c.MWQMSiteID == mwqmSite.MWQMSiteID).Any())
+                    {
+                        yield return new ValidationResult(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "MWQMSite", "MWQMSiteID", mwqmSite.MWQMSiteID.ToString()), new[] { "MWQMSiteID" });
+                    }
+                }
+                else
+                {
+                    if (!(from c in db.MWQMSites select c).Where(c => c.MWQMSiteID == mwqmSite.MWQMSiteID).Any())
+                    {
+                        yield return new ValidationResult(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "MWQMSite", "MWQMSiteID", mwqmSite.MWQMSiteID.ToString()), new[] { "MWQMSiteID" });
+                    }
                 }
             }
 
-            TVItem TVItemMWQMSiteTVItemID = (from c in db.TVItems where c.TVItemID == mwqmSite.MWQMSiteTVItemID select c).FirstOrDefault();
+            TVItem TVItemMWQMSiteTVItemID = null;
+            if (LoggedInService.IsLocal)
+            {
+                TVItemMWQMSiteTVItemID = (from c in dbLocal.TVItems where c.TVItemID == mwqmSite.MWQMSiteTVItemID select c).FirstOrDefault();
+                if (TVItemMWQMSiteTVItemID == null)
+                {
+                    TVItemMWQMSiteTVItemID = (from c in dbIM.TVItems where c.TVItemID == mwqmSite.MWQMSiteTVItemID select c).FirstOrDefault();
+                }
+            }
+            else
+            {
+                TVItemMWQMSiteTVItemID = (from c in db.TVItems where c.TVItemID == mwqmSite.MWQMSiteTVItemID select c).FirstOrDefault();
+            }
 
             if (TVItemMWQMSiteTVItemID == null)
             {
@@ -242,7 +353,19 @@ namespace CSSPServices
                 }
             }
 
-            TVItem TVItemLastUpdateContactTVItemID = (from c in db.TVItems where c.TVItemID == mwqmSite.LastUpdateContactTVItemID select c).FirstOrDefault();
+            TVItem TVItemLastUpdateContactTVItemID = null;
+            if (LoggedInService.IsLocal)
+            {
+                TVItemLastUpdateContactTVItemID = (from c in dbLocal.TVItems where c.TVItemID == mwqmSite.LastUpdateContactTVItemID select c).FirstOrDefault();
+                if (TVItemLastUpdateContactTVItemID == null)
+                {
+                    TVItemLastUpdateContactTVItemID = (from c in dbIM.TVItems where c.TVItemID == mwqmSite.LastUpdateContactTVItemID select c).FirstOrDefault();
+                }
+            }
+            else
+            {
+                TVItemLastUpdateContactTVItemID = (from c in db.TVItems where c.TVItemID == mwqmSite.LastUpdateContactTVItemID select c).FirstOrDefault();
+            }
 
             if (TVItemLastUpdateContactTVItemID == null)
             {

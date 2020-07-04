@@ -36,6 +36,9 @@ namespace CSSPServices.Tests
         private ILoggedInService LoggedInService { get; set; }
         private IPolSourceSiteService PolSourceSiteService { get; set; }
         private CSSPDBContext db { get; set; }
+        private CSSPDBLocalContext dbLocal { get; set; }
+        private InMemoryDBContext dbIM { get; set; }
+        private PolSourceSite polSourceSite { get; set; }
         #endregion Properties
 
         #region Constructors
@@ -47,9 +50,11 @@ namespace CSSPServices.Tests
 
         #region Tests Generated CRUD
         [Theory]
-        [InlineData("en-CA")]
-        [InlineData("fr-CA")]
-        public async Task PolSourceSite_CRUD_Good_Test(string culture)
+        [InlineData("en-CA", "true")]
+        [InlineData("fr-CA", "true")]
+        [InlineData("en-CA", "false")]
+        [InlineData("fr-CA", "false")]
+        public async Task PolSourceSite_CRUD_Good_Test(string culture, string IsLocalStr)
         {
             // -------------------------------
             // -------------------------------
@@ -59,44 +64,57 @@ namespace CSSPServices.Tests
 
             Assert.True(await Setup(culture));
 
-            using (TransactionScope ts = new TransactionScope())
+            LoggedInService.IsLocal = bool.Parse(IsLocalStr);
+
+            polSourceSite = GetFilledRandomPolSourceSite("");
+
+            if (LoggedInService.IsLocal)
             {
-               PolSourceSite polSourceSite = GetFilledRandomPolSourceSite(""); 
-
-               // List<PolSourceSite>
-               var actionPolSourceSiteList = await PolSourceSiteService.GetPolSourceSiteList();
-               Assert.Equal(200, ((ObjectResult)actionPolSourceSiteList.Result).StatusCode);
-               Assert.NotNull(((OkObjectResult)actionPolSourceSiteList.Result).Value);
-               List<PolSourceSite> polSourceSiteList = (List<PolSourceSite>)((OkObjectResult)actionPolSourceSiteList.Result).Value;
-
-               int count = ((List<PolSourceSite>)((OkObjectResult)actionPolSourceSiteList.Result).Value).Count();
-                Assert.True(count > 0);
-
-               // Post PolSourceSite
-               var actionPolSourceSiteAdded = await PolSourceSiteService.Post(polSourceSite);
-               Assert.Equal(200, ((ObjectResult)actionPolSourceSiteAdded.Result).StatusCode);
-               Assert.NotNull(((OkObjectResult)actionPolSourceSiteAdded.Result).Value);
-               PolSourceSite polSourceSiteAdded = (PolSourceSite)((OkObjectResult)actionPolSourceSiteAdded.Result).Value;
-               Assert.NotNull(polSourceSiteAdded);
-
-               // Put PolSourceSite
-               var actionPolSourceSiteUpdated = await PolSourceSiteService.Put(polSourceSite);
-               Assert.Equal(200, ((ObjectResult)actionPolSourceSiteUpdated.Result).StatusCode);
-               Assert.NotNull(((OkObjectResult)actionPolSourceSiteUpdated.Result).Value);
-               PolSourceSite polSourceSiteUpdated = (PolSourceSite)((OkObjectResult)actionPolSourceSiteUpdated.Result).Value;
-               Assert.NotNull(polSourceSiteUpdated);
-
-               // Delete PolSourceSite
-               var actionPolSourceSiteDeleted = await PolSourceSiteService.Delete(polSourceSite.PolSourceSiteID);
-               Assert.Equal(200, ((ObjectResult)actionPolSourceSiteDeleted.Result).StatusCode);
-               Assert.NotNull(((OkObjectResult)actionPolSourceSiteDeleted.Result).Value);
-               bool retBool = (bool)((OkObjectResult)actionPolSourceSiteDeleted.Result).Value;
-               Assert.True(retBool);
+                await DoCRUDTest();
+            }
+            else
+            {
+                using (TransactionScope ts = new TransactionScope())
+                {
+                    await DoCRUDTest();
+                }
             }
         }
         #endregion Tests Generated CRUD
 
         #region Functions private
+        private async Task DoCRUDTest()
+        {
+            // Post PolSourceSite
+            var actionPolSourceSiteAdded = await PolSourceSiteService.Post(polSourceSite);
+            Assert.Equal(200, ((ObjectResult)actionPolSourceSiteAdded.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionPolSourceSiteAdded.Result).Value);
+            PolSourceSite polSourceSiteAdded = (PolSourceSite)((OkObjectResult)actionPolSourceSiteAdded.Result).Value;
+            Assert.NotNull(polSourceSiteAdded);
+
+            // List<PolSourceSite>
+            var actionPolSourceSiteList = await PolSourceSiteService.GetPolSourceSiteList();
+            Assert.Equal(200, ((ObjectResult)actionPolSourceSiteList.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionPolSourceSiteList.Result).Value);
+            List<PolSourceSite> polSourceSiteList = (List<PolSourceSite>)((OkObjectResult)actionPolSourceSiteList.Result).Value;
+
+            int count = ((List<PolSourceSite>)((OkObjectResult)actionPolSourceSiteList.Result).Value).Count();
+            Assert.True(count > 0);
+
+            // Put PolSourceSite
+            var actionPolSourceSiteUpdated = await PolSourceSiteService.Put(polSourceSite);
+            Assert.Equal(200, ((ObjectResult)actionPolSourceSiteUpdated.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionPolSourceSiteUpdated.Result).Value);
+            PolSourceSite polSourceSiteUpdated = (PolSourceSite)((OkObjectResult)actionPolSourceSiteUpdated.Result).Value;
+            Assert.NotNull(polSourceSiteUpdated);
+
+            // Delete PolSourceSite
+            var actionPolSourceSiteDeleted = await PolSourceSiteService.Delete(polSourceSite.PolSourceSiteID);
+            Assert.Equal(200, ((ObjectResult)actionPolSourceSiteDeleted.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionPolSourceSiteDeleted.Result).Value);
+            bool retBool = (bool)((OkObjectResult)actionPolSourceSiteDeleted.Result).Value;
+            Assert.True(retBool);
+        }
         private async Task<bool> Setup(string culture)
         {
             Config = new ConfigurationBuilder()
@@ -109,6 +127,9 @@ namespace CSSPServices.Tests
 
             Services.AddSingleton<IConfiguration>(Config);
 
+            string CSSPDBLocalFileName = Config.GetValue<string>("CSSPDBLocal");
+            Assert.NotNull(CSSPDBLocalFileName);
+
             string TestDBConnString = Config.GetValue<string>("TestDBConnectionString");
             Assert.NotNull(TestDBConnString);
 
@@ -120,6 +141,15 @@ namespace CSSPServices.Tests
             Services.AddDbContext<InMemoryDBContext>(options =>
             {
                 options.UseInMemoryDatabase(TestDBConnString);
+            });
+
+            string appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+
+            FileInfo fiAppDataPath = new FileInfo(CSSPDBLocalFileName.Replace("{appDataPath}", appDataPath));
+
+            Services.AddDbContext<CSSPDBLocalContext>(options =>
+            {
+                options.UseSqlite($"Data Source={ fiAppDataPath.FullName }");
             });
 
             Services.AddSingleton<ICultureService, CultureService>();
@@ -141,6 +171,12 @@ namespace CSSPServices.Tests
             string Id = Config.GetValue<string>("Id");
             Assert.True(await LoggedInService.SetLoggedInContactInfo(Id));
 
+            //string IsLocalStr = Config.GetValue<string>("IsLocal");
+            //Assert.NotNull(IsLocalStr);
+
+            dbIM = Provider.GetService<InMemoryDBContext>();
+            Assert.NotNull(dbIM);
+
             PolSourceSiteService = Provider.GetService<IPolSourceSiteService>();
             Assert.NotNull(PolSourceSiteService);
 
@@ -148,6 +184,8 @@ namespace CSSPServices.Tests
         }
         private PolSourceSite GetFilledRandomPolSourceSite(string OmitPropName)
         {
+            dbIM.Database.EnsureDeleted();
+
             PolSourceSite polSourceSite = new PolSourceSite();
 
             if (OmitPropName != "PolSourceSiteTVItemID") polSourceSite.PolSourceSiteTVItemID = 47;
@@ -160,6 +198,18 @@ namespace CSSPServices.Tests
             if (OmitPropName != "CivicAddressTVItemID") polSourceSite.CivicAddressTVItemID = 46;
             if (OmitPropName != "LastUpdateDate_UTC") polSourceSite.LastUpdateDate_UTC = new DateTime(2005, 3, 6);
             if (OmitPropName != "LastUpdateContactTVItemID") polSourceSite.LastUpdateContactTVItemID = 2;
+
+            if (LoggedInService.IsLocal)
+            {
+                if (OmitPropName != "PolSourceSiteID") polSourceSite.PolSourceSiteID = 10000000;
+
+                dbIM.TVItems.Add(new TVItem() { TVItemID = 47, TVLevel = 6, TVPath = "p1p5p6p9p10p12p47", TVType = (TVTypeEnum)17, ParentID = 12, IsActive = true, LastUpdateDate_UTC = new DateTime(2016, 5, 2, 14, 44, 28), LastUpdateContactTVItemID = 2});
+                dbIM.SaveChanges();
+                dbIM.TVItems.Add(new TVItem() { TVItemID = 46, TVLevel = 1, TVPath = "p1p46", TVType = (TVTypeEnum)2, ParentID = 1, IsActive = true, LastUpdateDate_UTC = new DateTime(2015, 9, 8, 17, 8, 14), LastUpdateContactTVItemID = 2});
+                dbIM.SaveChanges();
+                dbIM.TVItems.Add(new TVItem() { TVItemID = 2, TVLevel = 1, TVPath = "p1p2", TVType = (TVTypeEnum)5, ParentID = 1, IsActive = true, LastUpdateDate_UTC = new DateTime(2014, 12, 2, 16, 58, 16), LastUpdateContactTVItemID = 2});
+                dbIM.SaveChanges();
+            }
 
             return polSourceSite;
         }

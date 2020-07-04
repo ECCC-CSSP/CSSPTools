@@ -36,6 +36,9 @@ namespace CSSPServices.Tests
         private ILoggedInService LoggedInService { get; set; }
         private IAddressService AddressService { get; set; }
         private CSSPDBContext db { get; set; }
+        private CSSPDBLocalContext dbLocal { get; set; }
+        private InMemoryDBContext dbIM { get; set; }
+        private Address address { get; set; }
         #endregion Properties
 
         #region Constructors
@@ -47,9 +50,11 @@ namespace CSSPServices.Tests
 
         #region Tests Generated CRUD
         [Theory]
-        [InlineData("en-CA")]
-        [InlineData("fr-CA")]
-        public async Task Address_CRUD_Good_Test(string culture)
+        [InlineData("en-CA", "true")]
+        [InlineData("fr-CA", "true")]
+        [InlineData("en-CA", "false")]
+        [InlineData("fr-CA", "false")]
+        public async Task Address_CRUD_Good_Test(string culture, string IsLocalStr)
         {
             // -------------------------------
             // -------------------------------
@@ -59,44 +64,57 @@ namespace CSSPServices.Tests
 
             Assert.True(await Setup(culture));
 
-            using (TransactionScope ts = new TransactionScope())
+            LoggedInService.IsLocal = bool.Parse(IsLocalStr);
+
+            address = GetFilledRandomAddress("");
+
+            if (LoggedInService.IsLocal)
             {
-               Address address = GetFilledRandomAddress(""); 
-
-               // List<Address>
-               var actionAddressList = await AddressService.GetAddressList();
-               Assert.Equal(200, ((ObjectResult)actionAddressList.Result).StatusCode);
-               Assert.NotNull(((OkObjectResult)actionAddressList.Result).Value);
-               List<Address> addressList = (List<Address>)((OkObjectResult)actionAddressList.Result).Value;
-
-               int count = ((List<Address>)((OkObjectResult)actionAddressList.Result).Value).Count();
-                Assert.True(count > 0);
-
-               // Post Address
-               var actionAddressAdded = await AddressService.Post(address);
-               Assert.Equal(200, ((ObjectResult)actionAddressAdded.Result).StatusCode);
-               Assert.NotNull(((OkObjectResult)actionAddressAdded.Result).Value);
-               Address addressAdded = (Address)((OkObjectResult)actionAddressAdded.Result).Value;
-               Assert.NotNull(addressAdded);
-
-               // Put Address
-               var actionAddressUpdated = await AddressService.Put(address);
-               Assert.Equal(200, ((ObjectResult)actionAddressUpdated.Result).StatusCode);
-               Assert.NotNull(((OkObjectResult)actionAddressUpdated.Result).Value);
-               Address addressUpdated = (Address)((OkObjectResult)actionAddressUpdated.Result).Value;
-               Assert.NotNull(addressUpdated);
-
-               // Delete Address
-               var actionAddressDeleted = await AddressService.Delete(address.AddressID);
-               Assert.Equal(200, ((ObjectResult)actionAddressDeleted.Result).StatusCode);
-               Assert.NotNull(((OkObjectResult)actionAddressDeleted.Result).Value);
-               bool retBool = (bool)((OkObjectResult)actionAddressDeleted.Result).Value;
-               Assert.True(retBool);
+                await DoCRUDTest();
+            }
+            else
+            {
+                using (TransactionScope ts = new TransactionScope())
+                {
+                    await DoCRUDTest();
+                }
             }
         }
         #endregion Tests Generated CRUD
 
         #region Functions private
+        private async Task DoCRUDTest()
+        {
+            // Post Address
+            var actionAddressAdded = await AddressService.Post(address);
+            Assert.Equal(200, ((ObjectResult)actionAddressAdded.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionAddressAdded.Result).Value);
+            Address addressAdded = (Address)((OkObjectResult)actionAddressAdded.Result).Value;
+            Assert.NotNull(addressAdded);
+
+            // List<Address>
+            var actionAddressList = await AddressService.GetAddressList();
+            Assert.Equal(200, ((ObjectResult)actionAddressList.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionAddressList.Result).Value);
+            List<Address> addressList = (List<Address>)((OkObjectResult)actionAddressList.Result).Value;
+
+            int count = ((List<Address>)((OkObjectResult)actionAddressList.Result).Value).Count();
+            Assert.True(count > 0);
+
+            // Put Address
+            var actionAddressUpdated = await AddressService.Put(address);
+            Assert.Equal(200, ((ObjectResult)actionAddressUpdated.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionAddressUpdated.Result).Value);
+            Address addressUpdated = (Address)((OkObjectResult)actionAddressUpdated.Result).Value;
+            Assert.NotNull(addressUpdated);
+
+            // Delete Address
+            var actionAddressDeleted = await AddressService.Delete(address.AddressID);
+            Assert.Equal(200, ((ObjectResult)actionAddressDeleted.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionAddressDeleted.Result).Value);
+            bool retBool = (bool)((OkObjectResult)actionAddressDeleted.Result).Value;
+            Assert.True(retBool);
+        }
         private async Task<bool> Setup(string culture)
         {
             Config = new ConfigurationBuilder()
@@ -109,6 +127,9 @@ namespace CSSPServices.Tests
 
             Services.AddSingleton<IConfiguration>(Config);
 
+            string CSSPDBLocalFileName = Config.GetValue<string>("CSSPDBLocal");
+            Assert.NotNull(CSSPDBLocalFileName);
+
             string TestDBConnString = Config.GetValue<string>("TestDBConnectionString");
             Assert.NotNull(TestDBConnString);
 
@@ -120,6 +141,15 @@ namespace CSSPServices.Tests
             Services.AddDbContext<InMemoryDBContext>(options =>
             {
                 options.UseInMemoryDatabase(TestDBConnString);
+            });
+
+            string appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+
+            FileInfo fiAppDataPath = new FileInfo(CSSPDBLocalFileName.Replace("{appDataPath}", appDataPath));
+
+            Services.AddDbContext<CSSPDBLocalContext>(options =>
+            {
+                options.UseSqlite($"Data Source={ fiAppDataPath.FullName }");
             });
 
             Services.AddSingleton<ICultureService, CultureService>();
@@ -141,6 +171,12 @@ namespace CSSPServices.Tests
             string Id = Config.GetValue<string>("Id");
             Assert.True(await LoggedInService.SetLoggedInContactInfo(Id));
 
+            //string IsLocalStr = Config.GetValue<string>("IsLocal");
+            //Assert.NotNull(IsLocalStr);
+
+            dbIM = Provider.GetService<InMemoryDBContext>();
+            Assert.NotNull(dbIM);
+
             AddressService = Provider.GetService<IAddressService>();
             Assert.NotNull(AddressService);
 
@@ -148,6 +184,8 @@ namespace CSSPServices.Tests
         }
         private Address GetFilledRandomAddress(string OmitPropName)
         {
+            dbIM.Database.EnsureDeleted();
+
             Address address = new Address();
 
             if (OmitPropName != "AddressTVItemID") address.AddressTVItemID = 46;
@@ -162,6 +200,22 @@ namespace CSSPServices.Tests
             if (OmitPropName != "GoogleAddressText") address.GoogleAddressText = GetRandomString("", 15);
             if (OmitPropName != "LastUpdateDate_UTC") address.LastUpdateDate_UTC = new DateTime(2005, 3, 6);
             if (OmitPropName != "LastUpdateContactTVItemID") address.LastUpdateContactTVItemID = 2;
+
+            if (LoggedInService.IsLocal)
+            {
+                if (OmitPropName != "AddressID") address.AddressID = 10000000;
+
+                dbIM.TVItems.Add(new TVItem() { TVItemID = 46, TVLevel = 1, TVPath = "p1p46", TVType = (TVTypeEnum)2, ParentID = 1, IsActive = true, LastUpdateDate_UTC = new DateTime(2015, 9, 8, 17, 8, 14), LastUpdateContactTVItemID = 2});
+                dbIM.SaveChanges();
+                dbIM.TVItems.Add(new TVItem() { TVItemID = 5, TVLevel = 1, TVPath = "p1p5", TVType = (TVTypeEnum)6, ParentID = 1, IsActive = true, LastUpdateDate_UTC = new DateTime(2017, 8, 8, 16, 36, 15), LastUpdateContactTVItemID = 2});
+                dbIM.SaveChanges();
+                dbIM.TVItems.Add(new TVItem() { TVItemID = 6, TVLevel = 2, TVPath = "p1p5p6", TVType = (TVTypeEnum)18, ParentID = 5, IsActive = true, LastUpdateDate_UTC = new DateTime(2015, 2, 17, 14, 14, 24), LastUpdateContactTVItemID = 2});
+                dbIM.SaveChanges();
+                dbIM.TVItems.Add(new TVItem() { TVItemID = 39, TVLevel = 3, TVPath = "p1p5p6p39", TVType = (TVTypeEnum)15, ParentID = 6, IsActive = true, LastUpdateDate_UTC = new DateTime(2015, 2, 22, 14, 12, 19), LastUpdateContactTVItemID = 2});
+                dbIM.SaveChanges();
+                dbIM.TVItems.Add(new TVItem() { TVItemID = 2, TVLevel = 1, TVPath = "p1p2", TVType = (TVTypeEnum)5, ParentID = 1, IsActive = true, LastUpdateDate_UTC = new DateTime(2014, 12, 2, 16, 58, 16), LastUpdateContactTVItemID = 2});
+                dbIM.SaveChanges();
+            }
 
             return address;
         }

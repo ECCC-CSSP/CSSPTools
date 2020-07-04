@@ -36,6 +36,9 @@ namespace CSSPServices.Tests
         private ILoggedInService LoggedInService { get; set; }
         private IMapInfoPointService MapInfoPointService { get; set; }
         private CSSPDBContext db { get; set; }
+        private CSSPDBLocalContext dbLocal { get; set; }
+        private InMemoryDBContext dbIM { get; set; }
+        private MapInfoPoint mapInfoPoint { get; set; }
         #endregion Properties
 
         #region Constructors
@@ -47,9 +50,11 @@ namespace CSSPServices.Tests
 
         #region Tests Generated CRUD
         [Theory]
-        [InlineData("en-CA")]
-        [InlineData("fr-CA")]
-        public async Task MapInfoPoint_CRUD_Good_Test(string culture)
+        [InlineData("en-CA", "true")]
+        [InlineData("fr-CA", "true")]
+        [InlineData("en-CA", "false")]
+        [InlineData("fr-CA", "false")]
+        public async Task MapInfoPoint_CRUD_Good_Test(string culture, string IsLocalStr)
         {
             // -------------------------------
             // -------------------------------
@@ -59,44 +64,57 @@ namespace CSSPServices.Tests
 
             Assert.True(await Setup(culture));
 
-            using (TransactionScope ts = new TransactionScope())
+            LoggedInService.IsLocal = bool.Parse(IsLocalStr);
+
+            mapInfoPoint = GetFilledRandomMapInfoPoint("");
+
+            if (LoggedInService.IsLocal)
             {
-               MapInfoPoint mapInfoPoint = GetFilledRandomMapInfoPoint(""); 
-
-               // List<MapInfoPoint>
-               var actionMapInfoPointList = await MapInfoPointService.GetMapInfoPointList();
-               Assert.Equal(200, ((ObjectResult)actionMapInfoPointList.Result).StatusCode);
-               Assert.NotNull(((OkObjectResult)actionMapInfoPointList.Result).Value);
-               List<MapInfoPoint> mapInfoPointList = (List<MapInfoPoint>)((OkObjectResult)actionMapInfoPointList.Result).Value;
-
-               int count = ((List<MapInfoPoint>)((OkObjectResult)actionMapInfoPointList.Result).Value).Count();
-                Assert.True(count > 0);
-
-               // Post MapInfoPoint
-               var actionMapInfoPointAdded = await MapInfoPointService.Post(mapInfoPoint);
-               Assert.Equal(200, ((ObjectResult)actionMapInfoPointAdded.Result).StatusCode);
-               Assert.NotNull(((OkObjectResult)actionMapInfoPointAdded.Result).Value);
-               MapInfoPoint mapInfoPointAdded = (MapInfoPoint)((OkObjectResult)actionMapInfoPointAdded.Result).Value;
-               Assert.NotNull(mapInfoPointAdded);
-
-               // Put MapInfoPoint
-               var actionMapInfoPointUpdated = await MapInfoPointService.Put(mapInfoPoint);
-               Assert.Equal(200, ((ObjectResult)actionMapInfoPointUpdated.Result).StatusCode);
-               Assert.NotNull(((OkObjectResult)actionMapInfoPointUpdated.Result).Value);
-               MapInfoPoint mapInfoPointUpdated = (MapInfoPoint)((OkObjectResult)actionMapInfoPointUpdated.Result).Value;
-               Assert.NotNull(mapInfoPointUpdated);
-
-               // Delete MapInfoPoint
-               var actionMapInfoPointDeleted = await MapInfoPointService.Delete(mapInfoPoint.MapInfoPointID);
-               Assert.Equal(200, ((ObjectResult)actionMapInfoPointDeleted.Result).StatusCode);
-               Assert.NotNull(((OkObjectResult)actionMapInfoPointDeleted.Result).Value);
-               bool retBool = (bool)((OkObjectResult)actionMapInfoPointDeleted.Result).Value;
-               Assert.True(retBool);
+                await DoCRUDTest();
+            }
+            else
+            {
+                using (TransactionScope ts = new TransactionScope())
+                {
+                    await DoCRUDTest();
+                }
             }
         }
         #endregion Tests Generated CRUD
 
         #region Functions private
+        private async Task DoCRUDTest()
+        {
+            // Post MapInfoPoint
+            var actionMapInfoPointAdded = await MapInfoPointService.Post(mapInfoPoint);
+            Assert.Equal(200, ((ObjectResult)actionMapInfoPointAdded.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionMapInfoPointAdded.Result).Value);
+            MapInfoPoint mapInfoPointAdded = (MapInfoPoint)((OkObjectResult)actionMapInfoPointAdded.Result).Value;
+            Assert.NotNull(mapInfoPointAdded);
+
+            // List<MapInfoPoint>
+            var actionMapInfoPointList = await MapInfoPointService.GetMapInfoPointList();
+            Assert.Equal(200, ((ObjectResult)actionMapInfoPointList.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionMapInfoPointList.Result).Value);
+            List<MapInfoPoint> mapInfoPointList = (List<MapInfoPoint>)((OkObjectResult)actionMapInfoPointList.Result).Value;
+
+            int count = ((List<MapInfoPoint>)((OkObjectResult)actionMapInfoPointList.Result).Value).Count();
+            Assert.True(count > 0);
+
+            // Put MapInfoPoint
+            var actionMapInfoPointUpdated = await MapInfoPointService.Put(mapInfoPoint);
+            Assert.Equal(200, ((ObjectResult)actionMapInfoPointUpdated.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionMapInfoPointUpdated.Result).Value);
+            MapInfoPoint mapInfoPointUpdated = (MapInfoPoint)((OkObjectResult)actionMapInfoPointUpdated.Result).Value;
+            Assert.NotNull(mapInfoPointUpdated);
+
+            // Delete MapInfoPoint
+            var actionMapInfoPointDeleted = await MapInfoPointService.Delete(mapInfoPoint.MapInfoPointID);
+            Assert.Equal(200, ((ObjectResult)actionMapInfoPointDeleted.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionMapInfoPointDeleted.Result).Value);
+            bool retBool = (bool)((OkObjectResult)actionMapInfoPointDeleted.Result).Value;
+            Assert.True(retBool);
+        }
         private async Task<bool> Setup(string culture)
         {
             Config = new ConfigurationBuilder()
@@ -109,6 +127,9 @@ namespace CSSPServices.Tests
 
             Services.AddSingleton<IConfiguration>(Config);
 
+            string CSSPDBLocalFileName = Config.GetValue<string>("CSSPDBLocal");
+            Assert.NotNull(CSSPDBLocalFileName);
+
             string TestDBConnString = Config.GetValue<string>("TestDBConnectionString");
             Assert.NotNull(TestDBConnString);
 
@@ -120,6 +141,15 @@ namespace CSSPServices.Tests
             Services.AddDbContext<InMemoryDBContext>(options =>
             {
                 options.UseInMemoryDatabase(TestDBConnString);
+            });
+
+            string appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+
+            FileInfo fiAppDataPath = new FileInfo(CSSPDBLocalFileName.Replace("{appDataPath}", appDataPath));
+
+            Services.AddDbContext<CSSPDBLocalContext>(options =>
+            {
+                options.UseSqlite($"Data Source={ fiAppDataPath.FullName }");
             });
 
             Services.AddSingleton<ICultureService, CultureService>();
@@ -141,6 +171,12 @@ namespace CSSPServices.Tests
             string Id = Config.GetValue<string>("Id");
             Assert.True(await LoggedInService.SetLoggedInContactInfo(Id));
 
+            //string IsLocalStr = Config.GetValue<string>("IsLocal");
+            //Assert.NotNull(IsLocalStr);
+
+            dbIM = Provider.GetService<InMemoryDBContext>();
+            Assert.NotNull(dbIM);
+
             MapInfoPointService = Provider.GetService<IMapInfoPointService>();
             Assert.NotNull(MapInfoPointService);
 
@@ -148,6 +184,8 @@ namespace CSSPServices.Tests
         }
         private MapInfoPoint GetFilledRandomMapInfoPoint(string OmitPropName)
         {
+            dbIM.Database.EnsureDeleted();
+
             MapInfoPoint mapInfoPoint = new MapInfoPoint();
 
             if (OmitPropName != "MapInfoID") mapInfoPoint.MapInfoID = 1;
@@ -156,6 +194,16 @@ namespace CSSPServices.Tests
             if (OmitPropName != "Lng") mapInfoPoint.Lng = GetRandomDouble(-180.0D, 180.0D);
             if (OmitPropName != "LastUpdateDate_UTC") mapInfoPoint.LastUpdateDate_UTC = new DateTime(2005, 3, 6);
             if (OmitPropName != "LastUpdateContactTVItemID") mapInfoPoint.LastUpdateContactTVItemID = 2;
+
+            if (LoggedInService.IsLocal)
+            {
+                if (OmitPropName != "MapInfoPointID") mapInfoPoint.MapInfoPointID = 10000000;
+
+                dbIM.MapInfos.Add(new MapInfo() { MapInfoID = 1, TVItemID = 5, TVType = (TVTypeEnum)6, LatMin = 49.999000549316406, LatMax = 50.000999450683594, LngMax = -89.9990005493164, MapInfoDrawType = (MapInfoDrawTypeEnum)1, LastUpdateDate_UTC = new DateTime(2017, 11, 10, 16, 23, 48), LastUpdateContactTVItemID = 2 });
+                dbIM.SaveChanges();
+                dbIM.TVItems.Add(new TVItem() { TVItemID = 2, TVLevel = 1, TVPath = "p1p2", TVType = (TVTypeEnum)5, ParentID = 1, IsActive = true, LastUpdateDate_UTC = new DateTime(2014, 12, 2, 16, 58, 16), LastUpdateContactTVItemID = 2});
+                dbIM.SaveChanges();
+            }
 
             return mapInfoPoint;
         }

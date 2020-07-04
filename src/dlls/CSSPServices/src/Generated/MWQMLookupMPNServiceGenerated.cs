@@ -36,6 +36,8 @@ namespace CSSPServices
 
         #region Properties
         private CSSPDBContext db { get; }
+        private CSSPDBLocalContext dbLocal { get; }
+        private InMemoryDBContext dbIM { get; }
         private ICultureService CultureService { get; }
         private ILoggedInService LoggedInService { get; }
         private IEnums enums { get; }
@@ -43,12 +45,14 @@ namespace CSSPServices
         #endregion Properties
 
         #region Constructors
-        public MWQMLookupMPNService(ICultureService CultureService, ILoggedInService LoggedInService, IEnums enums, CSSPDBContext db)
+        public MWQMLookupMPNService(ICultureService CultureService, ILoggedInService LoggedInService, IEnums enums, CSSPDBContext db, CSSPDBLocalContext dbLocal, InMemoryDBContext dbIM)
         {
             this.CultureService = CultureService;
             this.LoggedInService = LoggedInService;
             this.enums = enums;
             this.db = db;
+            this.dbLocal = dbLocal;
+            this.dbIM = dbIM;
         }
         #endregion Constructors
 
@@ -60,16 +64,32 @@ namespace CSSPServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            MWQMLookupMPN mwqmlookupmpn = (from c in db.MWQMLookupMPNs.AsNoTracking()
-                    where c.MWQMLookupMPNID == MWQMLookupMPNID
-                    select c).FirstOrDefault();
-
-            if (mwqmlookupmpn == null)
+            if (LoggedInService.IsLocal)
             {
-               return await Task.FromResult(NotFound());
-            }
+                MWQMLookupMPN mwqmlookupmpn = (from c in dbLocal.MWQMLookupMPNs.AsNoTracking()
+                        where c.MWQMLookupMPNID == MWQMLookupMPNID
+                        select c).FirstOrDefault();
 
-            return await Task.FromResult(Ok(mwqmlookupmpn));
+                if (mwqmlookupmpn == null)
+                {
+                   return await Task.FromResult(NotFound());
+                }
+
+                return await Task.FromResult(Ok(mwqmlookupmpn));
+            }
+            else
+            {
+                MWQMLookupMPN mwqmlookupmpn = (from c in db.MWQMLookupMPNs.AsNoTracking()
+                        where c.MWQMLookupMPNID == MWQMLookupMPNID
+                        select c).FirstOrDefault();
+
+                if (mwqmlookupmpn == null)
+                {
+                   return await Task.FromResult(NotFound());
+                }
+
+                return await Task.FromResult(Ok(mwqmlookupmpn));
+            }
         }
         public async Task<ActionResult<List<MWQMLookupMPN>>> GetMWQMLookupMPNList()
         {
@@ -78,9 +98,18 @@ namespace CSSPServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            List<MWQMLookupMPN> mwqmlookupmpnList = (from c in db.MWQMLookupMPNs.AsNoTracking() select c).Take(100).ToList();
+            if (LoggedInService.IsLocal)
+            {
+                List<MWQMLookupMPN> mwqmlookupmpnList = (from c in dbLocal.MWQMLookupMPNs.AsNoTracking() select c).Take(100).ToList();
 
-            return await Task.FromResult(Ok(mwqmlookupmpnList));
+                return await Task.FromResult(Ok(mwqmlookupmpnList));
+            }
+            else
+            {
+                List<MWQMLookupMPN> mwqmlookupmpnList = (from c in db.MWQMLookupMPNs.AsNoTracking() select c).Take(100).ToList();
+
+                return await Task.FromResult(Ok(mwqmlookupmpnList));
+            }
         }
         public async Task<ActionResult<bool>> Delete(int MWQMLookupMPNID)
         {
@@ -89,26 +118,52 @@ namespace CSSPServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            MWQMLookupMPN mwqmLookupMPN = (from c in db.MWQMLookupMPNs
-                               where c.MWQMLookupMPNID == MWQMLookupMPNID
-                               select c).FirstOrDefault();
-            
-            if (mwqmLookupMPN == null)
+            if (LoggedInService.IsLocal)
             {
-                return await Task.FromResult(BadRequest(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "MWQMLookupMPN", "MWQMLookupMPNID", MWQMLookupMPNID.ToString())));
-            }
+                MWQMLookupMPN mwqmLookupMPN = (from c in dbLocal.MWQMLookupMPNs
+                                   where c.MWQMLookupMPNID == MWQMLookupMPNID
+                                   select c).FirstOrDefault();
+                
+                if (mwqmLookupMPN == null)
+                {
+                    return await Task.FromResult(BadRequest(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "MWQMLookupMPN", "MWQMLookupMPNID", MWQMLookupMPNID.ToString())));
+                }
 
-            try
-            {
-               db.MWQMLookupMPNs.Remove(mwqmLookupMPN);
-               db.SaveChanges();
-            }
-            catch (DbUpdateException ex)
-            {
-               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
-            }
+                try
+                {
+                   dbLocal.MWQMLookupMPNs.Remove(mwqmLookupMPN);
+                   dbLocal.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                   return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
 
-            return await Task.FromResult(Ok(true));
+                return await Task.FromResult(Ok(true));
+            }
+            else
+            {
+                MWQMLookupMPN mwqmLookupMPN = (from c in db.MWQMLookupMPNs
+                                   where c.MWQMLookupMPNID == MWQMLookupMPNID
+                                   select c).FirstOrDefault();
+                
+                if (mwqmLookupMPN == null)
+                {
+                    return await Task.FromResult(BadRequest(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "MWQMLookupMPN", "MWQMLookupMPNID", MWQMLookupMPNID.ToString())));
+                }
+
+                try
+                {
+                   db.MWQMLookupMPNs.Remove(mwqmLookupMPN);
+                   db.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                   return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
+
+                return await Task.FromResult(Ok(true));
+            }
         }
         public async Task<ActionResult<MWQMLookupMPN>> Post(MWQMLookupMPN mwqmLookupMPN)
         {
@@ -123,17 +178,34 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ValidationResults));
             }
 
-            try
+            if (LoggedInService.IsLocal)
             {
-               db.MWQMLookupMPNs.Add(mwqmLookupMPN);
-               db.SaveChanges();
-            }
-            catch (DbUpdateException ex)
-            {
-               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
-            }
+                try
+                {
+                   dbLocal.MWQMLookupMPNs.Add(mwqmLookupMPN);
+                   dbLocal.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                   return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
 
-            return await Task.FromResult(Ok(mwqmLookupMPN));
+                return await Task.FromResult(Ok(mwqmLookupMPN));
+            }
+            else
+            {
+                try
+                {
+                   db.MWQMLookupMPNs.Add(mwqmLookupMPN);
+                   db.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                   return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
+
+                return await Task.FromResult(Ok(mwqmLookupMPN));
+            }
         }
         public async Task<ActionResult<MWQMLookupMPN>> Put(MWQMLookupMPN mwqmLookupMPN)
         {
@@ -148,6 +220,22 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ValidationResults));
             }
 
+            if (LoggedInService.IsLocal)
+            {
+            try
+            {
+               dbLocal.MWQMLookupMPNs.Update(mwqmLookupMPN);
+               dbLocal.SaveChanges();
+            }
+            catch (DbUpdateException ex)
+            {
+               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+            }
+
+            return await Task.FromResult(Ok(mwqmLookupMPN));
+            }
+            else
+            {
             try
             {
                db.MWQMLookupMPNs.Update(mwqmLookupMPN);
@@ -159,6 +247,7 @@ namespace CSSPServices
             }
 
             return await Task.FromResult(Ok(mwqmLookupMPN));
+            }
         }
         #endregion Functions public
 
@@ -175,9 +264,19 @@ namespace CSSPServices
                     yield return new ValidationResult(string.Format(CultureServicesRes._IsRequired, "MWQMLookupMPNID"), new[] { "MWQMLookupMPNID" });
                 }
 
-                if (!(from c in db.MWQMLookupMPNs select c).Where(c => c.MWQMLookupMPNID == mwqmLookupMPN.MWQMLookupMPNID).Any())
+                if (LoggedInService.IsLocal)
                 {
-                    yield return new ValidationResult(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "MWQMLookupMPN", "MWQMLookupMPNID", mwqmLookupMPN.MWQMLookupMPNID.ToString()), new[] { "MWQMLookupMPNID" });
+                    if (!(from c in dbLocal.MWQMLookupMPNs select c).Where(c => c.MWQMLookupMPNID == mwqmLookupMPN.MWQMLookupMPNID).Any())
+                    {
+                        yield return new ValidationResult(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "MWQMLookupMPN", "MWQMLookupMPNID", mwqmLookupMPN.MWQMLookupMPNID.ToString()), new[] { "MWQMLookupMPNID" });
+                    }
+                }
+                else
+                {
+                    if (!(from c in db.MWQMLookupMPNs select c).Where(c => c.MWQMLookupMPNID == mwqmLookupMPN.MWQMLookupMPNID).Any())
+                    {
+                        yield return new ValidationResult(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "MWQMLookupMPN", "MWQMLookupMPNID", mwqmLookupMPN.MWQMLookupMPNID.ToString()), new[] { "MWQMLookupMPNID" });
+                    }
                 }
             }
 
@@ -213,7 +312,19 @@ namespace CSSPServices
                 }
             }
 
-            TVItem TVItemLastUpdateContactTVItemID = (from c in db.TVItems where c.TVItemID == mwqmLookupMPN.LastUpdateContactTVItemID select c).FirstOrDefault();
+            TVItem TVItemLastUpdateContactTVItemID = null;
+            if (LoggedInService.IsLocal)
+            {
+                TVItemLastUpdateContactTVItemID = (from c in dbLocal.TVItems where c.TVItemID == mwqmLookupMPN.LastUpdateContactTVItemID select c).FirstOrDefault();
+                if (TVItemLastUpdateContactTVItemID == null)
+                {
+                    TVItemLastUpdateContactTVItemID = (from c in dbIM.TVItems where c.TVItemID == mwqmLookupMPN.LastUpdateContactTVItemID select c).FirstOrDefault();
+                }
+            }
+            else
+            {
+                TVItemLastUpdateContactTVItemID = (from c in db.TVItems where c.TVItemID == mwqmLookupMPN.LastUpdateContactTVItemID select c).FirstOrDefault();
+            }
 
             if (TVItemLastUpdateContactTVItemID == null)
             {

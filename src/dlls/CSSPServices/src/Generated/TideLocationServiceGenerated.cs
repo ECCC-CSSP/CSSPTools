@@ -36,6 +36,8 @@ namespace CSSPServices
 
         #region Properties
         private CSSPDBContext db { get; }
+        private CSSPDBLocalContext dbLocal { get; }
+        private InMemoryDBContext dbIM { get; }
         private ICultureService CultureService { get; }
         private ILoggedInService LoggedInService { get; }
         private IEnums enums { get; }
@@ -43,12 +45,14 @@ namespace CSSPServices
         #endregion Properties
 
         #region Constructors
-        public TideLocationService(ICultureService CultureService, ILoggedInService LoggedInService, IEnums enums, CSSPDBContext db)
+        public TideLocationService(ICultureService CultureService, ILoggedInService LoggedInService, IEnums enums, CSSPDBContext db, CSSPDBLocalContext dbLocal, InMemoryDBContext dbIM)
         {
             this.CultureService = CultureService;
             this.LoggedInService = LoggedInService;
             this.enums = enums;
             this.db = db;
+            this.dbLocal = dbLocal;
+            this.dbIM = dbIM;
         }
         #endregion Constructors
 
@@ -60,16 +64,32 @@ namespace CSSPServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            TideLocation tidelocation = (from c in db.TideLocations.AsNoTracking()
-                    where c.TideLocationID == TideLocationID
-                    select c).FirstOrDefault();
-
-            if (tidelocation == null)
+            if (LoggedInService.IsLocal)
             {
-               return await Task.FromResult(NotFound());
-            }
+                TideLocation tidelocation = (from c in dbLocal.TideLocations.AsNoTracking()
+                        where c.TideLocationID == TideLocationID
+                        select c).FirstOrDefault();
 
-            return await Task.FromResult(Ok(tidelocation));
+                if (tidelocation == null)
+                {
+                   return await Task.FromResult(NotFound());
+                }
+
+                return await Task.FromResult(Ok(tidelocation));
+            }
+            else
+            {
+                TideLocation tidelocation = (from c in db.TideLocations.AsNoTracking()
+                        where c.TideLocationID == TideLocationID
+                        select c).FirstOrDefault();
+
+                if (tidelocation == null)
+                {
+                   return await Task.FromResult(NotFound());
+                }
+
+                return await Task.FromResult(Ok(tidelocation));
+            }
         }
         public async Task<ActionResult<List<TideLocation>>> GetTideLocationList()
         {
@@ -78,9 +98,18 @@ namespace CSSPServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            List<TideLocation> tidelocationList = (from c in db.TideLocations.AsNoTracking() select c).Take(100).ToList();
+            if (LoggedInService.IsLocal)
+            {
+                List<TideLocation> tidelocationList = (from c in dbLocal.TideLocations.AsNoTracking() select c).Take(100).ToList();
 
-            return await Task.FromResult(Ok(tidelocationList));
+                return await Task.FromResult(Ok(tidelocationList));
+            }
+            else
+            {
+                List<TideLocation> tidelocationList = (from c in db.TideLocations.AsNoTracking() select c).Take(100).ToList();
+
+                return await Task.FromResult(Ok(tidelocationList));
+            }
         }
         public async Task<ActionResult<bool>> Delete(int TideLocationID)
         {
@@ -89,26 +118,52 @@ namespace CSSPServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            TideLocation tideLocation = (from c in db.TideLocations
-                               where c.TideLocationID == TideLocationID
-                               select c).FirstOrDefault();
-            
-            if (tideLocation == null)
+            if (LoggedInService.IsLocal)
             {
-                return await Task.FromResult(BadRequest(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "TideLocation", "TideLocationID", TideLocationID.ToString())));
-            }
+                TideLocation tideLocation = (from c in dbLocal.TideLocations
+                                   where c.TideLocationID == TideLocationID
+                                   select c).FirstOrDefault();
+                
+                if (tideLocation == null)
+                {
+                    return await Task.FromResult(BadRequest(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "TideLocation", "TideLocationID", TideLocationID.ToString())));
+                }
 
-            try
-            {
-               db.TideLocations.Remove(tideLocation);
-               db.SaveChanges();
-            }
-            catch (DbUpdateException ex)
-            {
-               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
-            }
+                try
+                {
+                   dbLocal.TideLocations.Remove(tideLocation);
+                   dbLocal.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                   return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
 
-            return await Task.FromResult(Ok(true));
+                return await Task.FromResult(Ok(true));
+            }
+            else
+            {
+                TideLocation tideLocation = (from c in db.TideLocations
+                                   where c.TideLocationID == TideLocationID
+                                   select c).FirstOrDefault();
+                
+                if (tideLocation == null)
+                {
+                    return await Task.FromResult(BadRequest(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "TideLocation", "TideLocationID", TideLocationID.ToString())));
+                }
+
+                try
+                {
+                   db.TideLocations.Remove(tideLocation);
+                   db.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                   return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
+
+                return await Task.FromResult(Ok(true));
+            }
         }
         public async Task<ActionResult<TideLocation>> Post(TideLocation tideLocation)
         {
@@ -123,17 +178,34 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ValidationResults));
             }
 
-            try
+            if (LoggedInService.IsLocal)
             {
-               db.TideLocations.Add(tideLocation);
-               db.SaveChanges();
-            }
-            catch (DbUpdateException ex)
-            {
-               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
-            }
+                try
+                {
+                   dbLocal.TideLocations.Add(tideLocation);
+                   dbLocal.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                   return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
 
-            return await Task.FromResult(Ok(tideLocation));
+                return await Task.FromResult(Ok(tideLocation));
+            }
+            else
+            {
+                try
+                {
+                   db.TideLocations.Add(tideLocation);
+                   db.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                   return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
+
+                return await Task.FromResult(Ok(tideLocation));
+            }
         }
         public async Task<ActionResult<TideLocation>> Put(TideLocation tideLocation)
         {
@@ -148,6 +220,22 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ValidationResults));
             }
 
+            if (LoggedInService.IsLocal)
+            {
+            try
+            {
+               dbLocal.TideLocations.Update(tideLocation);
+               dbLocal.SaveChanges();
+            }
+            catch (DbUpdateException ex)
+            {
+               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+            }
+
+            return await Task.FromResult(Ok(tideLocation));
+            }
+            else
+            {
             try
             {
                db.TideLocations.Update(tideLocation);
@@ -159,6 +247,7 @@ namespace CSSPServices
             }
 
             return await Task.FromResult(Ok(tideLocation));
+            }
         }
         #endregion Functions public
 
@@ -175,9 +264,19 @@ namespace CSSPServices
                     yield return new ValidationResult(string.Format(CultureServicesRes._IsRequired, "TideLocationID"), new[] { "TideLocationID" });
                 }
 
-                if (!(from c in db.TideLocations select c).Where(c => c.TideLocationID == tideLocation.TideLocationID).Any())
+                if (LoggedInService.IsLocal)
                 {
-                    yield return new ValidationResult(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "TideLocation", "TideLocationID", tideLocation.TideLocationID.ToString()), new[] { "TideLocationID" });
+                    if (!(from c in dbLocal.TideLocations select c).Where(c => c.TideLocationID == tideLocation.TideLocationID).Any())
+                    {
+                        yield return new ValidationResult(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "TideLocation", "TideLocationID", tideLocation.TideLocationID.ToString()), new[] { "TideLocationID" });
+                    }
+                }
+                else
+                {
+                    if (!(from c in db.TideLocations select c).Where(c => c.TideLocationID == tideLocation.TideLocationID).Any())
+                    {
+                        yield return new ValidationResult(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "TideLocation", "TideLocationID", tideLocation.TideLocationID.ToString()), new[] { "TideLocationID" });
+                    }
                 }
             }
 
@@ -233,7 +332,19 @@ namespace CSSPServices
                 }
             }
 
-            TVItem TVItemLastUpdateContactTVItemID = (from c in db.TVItems where c.TVItemID == tideLocation.LastUpdateContactTVItemID select c).FirstOrDefault();
+            TVItem TVItemLastUpdateContactTVItemID = null;
+            if (LoggedInService.IsLocal)
+            {
+                TVItemLastUpdateContactTVItemID = (from c in dbLocal.TVItems where c.TVItemID == tideLocation.LastUpdateContactTVItemID select c).FirstOrDefault();
+                if (TVItemLastUpdateContactTVItemID == null)
+                {
+                    TVItemLastUpdateContactTVItemID = (from c in dbIM.TVItems where c.TVItemID == tideLocation.LastUpdateContactTVItemID select c).FirstOrDefault();
+                }
+            }
+            else
+            {
+                TVItemLastUpdateContactTVItemID = (from c in db.TVItems where c.TVItemID == tideLocation.LastUpdateContactTVItemID select c).FirstOrDefault();
+            }
 
             if (TVItemLastUpdateContactTVItemID == null)
             {

@@ -36,6 +36,9 @@ namespace CSSPServices.Tests
         private ILoggedInService LoggedInService { get; set; }
         private ISpillLanguageService SpillLanguageService { get; set; }
         private CSSPDBContext db { get; set; }
+        private CSSPDBLocalContext dbLocal { get; set; }
+        private InMemoryDBContext dbIM { get; set; }
+        private SpillLanguage spillLanguage { get; set; }
         #endregion Properties
 
         #region Constructors
@@ -47,9 +50,11 @@ namespace CSSPServices.Tests
 
         #region Tests Generated CRUD
         [Theory]
-        [InlineData("en-CA")]
-        [InlineData("fr-CA")]
-        public async Task SpillLanguage_CRUD_Good_Test(string culture)
+        [InlineData("en-CA", "true")]
+        [InlineData("fr-CA", "true")]
+        [InlineData("en-CA", "false")]
+        [InlineData("fr-CA", "false")]
+        public async Task SpillLanguage_CRUD_Good_Test(string culture, string IsLocalStr)
         {
             // -------------------------------
             // -------------------------------
@@ -59,44 +64,57 @@ namespace CSSPServices.Tests
 
             Assert.True(await Setup(culture));
 
-            using (TransactionScope ts = new TransactionScope())
+            LoggedInService.IsLocal = bool.Parse(IsLocalStr);
+
+            spillLanguage = GetFilledRandomSpillLanguage("");
+
+            if (LoggedInService.IsLocal)
             {
-               SpillLanguage spillLanguage = GetFilledRandomSpillLanguage(""); 
-
-               // List<SpillLanguage>
-               var actionSpillLanguageList = await SpillLanguageService.GetSpillLanguageList();
-               Assert.Equal(200, ((ObjectResult)actionSpillLanguageList.Result).StatusCode);
-               Assert.NotNull(((OkObjectResult)actionSpillLanguageList.Result).Value);
-               List<SpillLanguage> spillLanguageList = (List<SpillLanguage>)((OkObjectResult)actionSpillLanguageList.Result).Value;
-
-               int count = ((List<SpillLanguage>)((OkObjectResult)actionSpillLanguageList.Result).Value).Count();
-                Assert.True(count > 0);
-
-               // Post SpillLanguage
-               var actionSpillLanguageAdded = await SpillLanguageService.Post(spillLanguage);
-               Assert.Equal(200, ((ObjectResult)actionSpillLanguageAdded.Result).StatusCode);
-               Assert.NotNull(((OkObjectResult)actionSpillLanguageAdded.Result).Value);
-               SpillLanguage spillLanguageAdded = (SpillLanguage)((OkObjectResult)actionSpillLanguageAdded.Result).Value;
-               Assert.NotNull(spillLanguageAdded);
-
-               // Put SpillLanguage
-               var actionSpillLanguageUpdated = await SpillLanguageService.Put(spillLanguage);
-               Assert.Equal(200, ((ObjectResult)actionSpillLanguageUpdated.Result).StatusCode);
-               Assert.NotNull(((OkObjectResult)actionSpillLanguageUpdated.Result).Value);
-               SpillLanguage spillLanguageUpdated = (SpillLanguage)((OkObjectResult)actionSpillLanguageUpdated.Result).Value;
-               Assert.NotNull(spillLanguageUpdated);
-
-               // Delete SpillLanguage
-               var actionSpillLanguageDeleted = await SpillLanguageService.Delete(spillLanguage.SpillLanguageID);
-               Assert.Equal(200, ((ObjectResult)actionSpillLanguageDeleted.Result).StatusCode);
-               Assert.NotNull(((OkObjectResult)actionSpillLanguageDeleted.Result).Value);
-               bool retBool = (bool)((OkObjectResult)actionSpillLanguageDeleted.Result).Value;
-               Assert.True(retBool);
+                await DoCRUDTest();
+            }
+            else
+            {
+                using (TransactionScope ts = new TransactionScope())
+                {
+                    await DoCRUDTest();
+                }
             }
         }
         #endregion Tests Generated CRUD
 
         #region Functions private
+        private async Task DoCRUDTest()
+        {
+            // Post SpillLanguage
+            var actionSpillLanguageAdded = await SpillLanguageService.Post(spillLanguage);
+            Assert.Equal(200, ((ObjectResult)actionSpillLanguageAdded.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionSpillLanguageAdded.Result).Value);
+            SpillLanguage spillLanguageAdded = (SpillLanguage)((OkObjectResult)actionSpillLanguageAdded.Result).Value;
+            Assert.NotNull(spillLanguageAdded);
+
+            // List<SpillLanguage>
+            var actionSpillLanguageList = await SpillLanguageService.GetSpillLanguageList();
+            Assert.Equal(200, ((ObjectResult)actionSpillLanguageList.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionSpillLanguageList.Result).Value);
+            List<SpillLanguage> spillLanguageList = (List<SpillLanguage>)((OkObjectResult)actionSpillLanguageList.Result).Value;
+
+            int count = ((List<SpillLanguage>)((OkObjectResult)actionSpillLanguageList.Result).Value).Count();
+            Assert.True(count > 0);
+
+            // Put SpillLanguage
+            var actionSpillLanguageUpdated = await SpillLanguageService.Put(spillLanguage);
+            Assert.Equal(200, ((ObjectResult)actionSpillLanguageUpdated.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionSpillLanguageUpdated.Result).Value);
+            SpillLanguage spillLanguageUpdated = (SpillLanguage)((OkObjectResult)actionSpillLanguageUpdated.Result).Value;
+            Assert.NotNull(spillLanguageUpdated);
+
+            // Delete SpillLanguage
+            var actionSpillLanguageDeleted = await SpillLanguageService.Delete(spillLanguage.SpillLanguageID);
+            Assert.Equal(200, ((ObjectResult)actionSpillLanguageDeleted.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionSpillLanguageDeleted.Result).Value);
+            bool retBool = (bool)((OkObjectResult)actionSpillLanguageDeleted.Result).Value;
+            Assert.True(retBool);
+        }
         private async Task<bool> Setup(string culture)
         {
             Config = new ConfigurationBuilder()
@@ -109,6 +127,9 @@ namespace CSSPServices.Tests
 
             Services.AddSingleton<IConfiguration>(Config);
 
+            string CSSPDBLocalFileName = Config.GetValue<string>("CSSPDBLocal");
+            Assert.NotNull(CSSPDBLocalFileName);
+
             string TestDBConnString = Config.GetValue<string>("TestDBConnectionString");
             Assert.NotNull(TestDBConnString);
 
@@ -120,6 +141,15 @@ namespace CSSPServices.Tests
             Services.AddDbContext<InMemoryDBContext>(options =>
             {
                 options.UseInMemoryDatabase(TestDBConnString);
+            });
+
+            string appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+
+            FileInfo fiAppDataPath = new FileInfo(CSSPDBLocalFileName.Replace("{appDataPath}", appDataPath));
+
+            Services.AddDbContext<CSSPDBLocalContext>(options =>
+            {
+                options.UseSqlite($"Data Source={ fiAppDataPath.FullName }");
             });
 
             Services.AddSingleton<ICultureService, CultureService>();
@@ -141,6 +171,12 @@ namespace CSSPServices.Tests
             string Id = Config.GetValue<string>("Id");
             Assert.True(await LoggedInService.SetLoggedInContactInfo(Id));
 
+            //string IsLocalStr = Config.GetValue<string>("IsLocal");
+            //Assert.NotNull(IsLocalStr);
+
+            dbIM = Provider.GetService<InMemoryDBContext>();
+            Assert.NotNull(dbIM);
+
             SpillLanguageService = Provider.GetService<ISpillLanguageService>();
             Assert.NotNull(SpillLanguageService);
 
@@ -148,6 +184,8 @@ namespace CSSPServices.Tests
         }
         private SpillLanguage GetFilledRandomSpillLanguage(string OmitPropName)
         {
+            dbIM.Database.EnsureDeleted();
+
             SpillLanguage spillLanguage = new SpillLanguage();
 
             if (OmitPropName != "SpillID") spillLanguage.SpillID = 1;
@@ -156,6 +194,16 @@ namespace CSSPServices.Tests
             if (OmitPropName != "TranslationStatus") spillLanguage.TranslationStatus = (TranslationStatusEnum)GetRandomEnumType(typeof(TranslationStatusEnum));
             if (OmitPropName != "LastUpdateDate_UTC") spillLanguage.LastUpdateDate_UTC = new DateTime(2005, 3, 6);
             if (OmitPropName != "LastUpdateContactTVItemID") spillLanguage.LastUpdateContactTVItemID = 2;
+
+            if (LoggedInService.IsLocal)
+            {
+                if (OmitPropName != "SpillLanguageID") spillLanguage.SpillLanguageID = 10000000;
+
+                dbIM.Spills.Add(new Spill() { SpillID = 1 });
+                dbIM.SaveChanges();
+                dbIM.TVItems.Add(new TVItem() { TVItemID = 2, TVLevel = 1, TVPath = "p1p2", TVType = (TVTypeEnum)5, ParentID = 1, IsActive = true, LastUpdateDate_UTC = new DateTime(2014, 12, 2, 16, 58, 16), LastUpdateContactTVItemID = 2});
+                dbIM.SaveChanges();
+            }
 
             return spillLanguage;
         }

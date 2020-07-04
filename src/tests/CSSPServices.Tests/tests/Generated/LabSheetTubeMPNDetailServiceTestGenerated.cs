@@ -36,6 +36,9 @@ namespace CSSPServices.Tests
         private ILoggedInService LoggedInService { get; set; }
         private ILabSheetTubeMPNDetailService LabSheetTubeMPNDetailService { get; set; }
         private CSSPDBContext db { get; set; }
+        private CSSPDBLocalContext dbLocal { get; set; }
+        private InMemoryDBContext dbIM { get; set; }
+        private LabSheetTubeMPNDetail labSheetTubeMPNDetail { get; set; }
         #endregion Properties
 
         #region Constructors
@@ -47,9 +50,11 @@ namespace CSSPServices.Tests
 
         #region Tests Generated CRUD
         [Theory]
-        [InlineData("en-CA")]
-        [InlineData("fr-CA")]
-        public async Task LabSheetTubeMPNDetail_CRUD_Good_Test(string culture)
+        [InlineData("en-CA", "true")]
+        [InlineData("fr-CA", "true")]
+        [InlineData("en-CA", "false")]
+        [InlineData("fr-CA", "false")]
+        public async Task LabSheetTubeMPNDetail_CRUD_Good_Test(string culture, string IsLocalStr)
         {
             // -------------------------------
             // -------------------------------
@@ -59,44 +64,57 @@ namespace CSSPServices.Tests
 
             Assert.True(await Setup(culture));
 
-            using (TransactionScope ts = new TransactionScope())
+            LoggedInService.IsLocal = bool.Parse(IsLocalStr);
+
+            labSheetTubeMPNDetail = GetFilledRandomLabSheetTubeMPNDetail("");
+
+            if (LoggedInService.IsLocal)
             {
-               LabSheetTubeMPNDetail labSheetTubeMPNDetail = GetFilledRandomLabSheetTubeMPNDetail(""); 
-
-               // List<LabSheetTubeMPNDetail>
-               var actionLabSheetTubeMPNDetailList = await LabSheetTubeMPNDetailService.GetLabSheetTubeMPNDetailList();
-               Assert.Equal(200, ((ObjectResult)actionLabSheetTubeMPNDetailList.Result).StatusCode);
-               Assert.NotNull(((OkObjectResult)actionLabSheetTubeMPNDetailList.Result).Value);
-               List<LabSheetTubeMPNDetail> labSheetTubeMPNDetailList = (List<LabSheetTubeMPNDetail>)((OkObjectResult)actionLabSheetTubeMPNDetailList.Result).Value;
-
-               int count = ((List<LabSheetTubeMPNDetail>)((OkObjectResult)actionLabSheetTubeMPNDetailList.Result).Value).Count();
-                Assert.True(count > 0);
-
-               // Post LabSheetTubeMPNDetail
-               var actionLabSheetTubeMPNDetailAdded = await LabSheetTubeMPNDetailService.Post(labSheetTubeMPNDetail);
-               Assert.Equal(200, ((ObjectResult)actionLabSheetTubeMPNDetailAdded.Result).StatusCode);
-               Assert.NotNull(((OkObjectResult)actionLabSheetTubeMPNDetailAdded.Result).Value);
-               LabSheetTubeMPNDetail labSheetTubeMPNDetailAdded = (LabSheetTubeMPNDetail)((OkObjectResult)actionLabSheetTubeMPNDetailAdded.Result).Value;
-               Assert.NotNull(labSheetTubeMPNDetailAdded);
-
-               // Put LabSheetTubeMPNDetail
-               var actionLabSheetTubeMPNDetailUpdated = await LabSheetTubeMPNDetailService.Put(labSheetTubeMPNDetail);
-               Assert.Equal(200, ((ObjectResult)actionLabSheetTubeMPNDetailUpdated.Result).StatusCode);
-               Assert.NotNull(((OkObjectResult)actionLabSheetTubeMPNDetailUpdated.Result).Value);
-               LabSheetTubeMPNDetail labSheetTubeMPNDetailUpdated = (LabSheetTubeMPNDetail)((OkObjectResult)actionLabSheetTubeMPNDetailUpdated.Result).Value;
-               Assert.NotNull(labSheetTubeMPNDetailUpdated);
-
-               // Delete LabSheetTubeMPNDetail
-               var actionLabSheetTubeMPNDetailDeleted = await LabSheetTubeMPNDetailService.Delete(labSheetTubeMPNDetail.LabSheetTubeMPNDetailID);
-               Assert.Equal(200, ((ObjectResult)actionLabSheetTubeMPNDetailDeleted.Result).StatusCode);
-               Assert.NotNull(((OkObjectResult)actionLabSheetTubeMPNDetailDeleted.Result).Value);
-               bool retBool = (bool)((OkObjectResult)actionLabSheetTubeMPNDetailDeleted.Result).Value;
-               Assert.True(retBool);
+                await DoCRUDTest();
+            }
+            else
+            {
+                using (TransactionScope ts = new TransactionScope())
+                {
+                    await DoCRUDTest();
+                }
             }
         }
         #endregion Tests Generated CRUD
 
         #region Functions private
+        private async Task DoCRUDTest()
+        {
+            // Post LabSheetTubeMPNDetail
+            var actionLabSheetTubeMPNDetailAdded = await LabSheetTubeMPNDetailService.Post(labSheetTubeMPNDetail);
+            Assert.Equal(200, ((ObjectResult)actionLabSheetTubeMPNDetailAdded.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionLabSheetTubeMPNDetailAdded.Result).Value);
+            LabSheetTubeMPNDetail labSheetTubeMPNDetailAdded = (LabSheetTubeMPNDetail)((OkObjectResult)actionLabSheetTubeMPNDetailAdded.Result).Value;
+            Assert.NotNull(labSheetTubeMPNDetailAdded);
+
+            // List<LabSheetTubeMPNDetail>
+            var actionLabSheetTubeMPNDetailList = await LabSheetTubeMPNDetailService.GetLabSheetTubeMPNDetailList();
+            Assert.Equal(200, ((ObjectResult)actionLabSheetTubeMPNDetailList.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionLabSheetTubeMPNDetailList.Result).Value);
+            List<LabSheetTubeMPNDetail> labSheetTubeMPNDetailList = (List<LabSheetTubeMPNDetail>)((OkObjectResult)actionLabSheetTubeMPNDetailList.Result).Value;
+
+            int count = ((List<LabSheetTubeMPNDetail>)((OkObjectResult)actionLabSheetTubeMPNDetailList.Result).Value).Count();
+            Assert.True(count > 0);
+
+            // Put LabSheetTubeMPNDetail
+            var actionLabSheetTubeMPNDetailUpdated = await LabSheetTubeMPNDetailService.Put(labSheetTubeMPNDetail);
+            Assert.Equal(200, ((ObjectResult)actionLabSheetTubeMPNDetailUpdated.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionLabSheetTubeMPNDetailUpdated.Result).Value);
+            LabSheetTubeMPNDetail labSheetTubeMPNDetailUpdated = (LabSheetTubeMPNDetail)((OkObjectResult)actionLabSheetTubeMPNDetailUpdated.Result).Value;
+            Assert.NotNull(labSheetTubeMPNDetailUpdated);
+
+            // Delete LabSheetTubeMPNDetail
+            var actionLabSheetTubeMPNDetailDeleted = await LabSheetTubeMPNDetailService.Delete(labSheetTubeMPNDetail.LabSheetTubeMPNDetailID);
+            Assert.Equal(200, ((ObjectResult)actionLabSheetTubeMPNDetailDeleted.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionLabSheetTubeMPNDetailDeleted.Result).Value);
+            bool retBool = (bool)((OkObjectResult)actionLabSheetTubeMPNDetailDeleted.Result).Value;
+            Assert.True(retBool);
+        }
         private async Task<bool> Setup(string culture)
         {
             Config = new ConfigurationBuilder()
@@ -109,6 +127,9 @@ namespace CSSPServices.Tests
 
             Services.AddSingleton<IConfiguration>(Config);
 
+            string CSSPDBLocalFileName = Config.GetValue<string>("CSSPDBLocal");
+            Assert.NotNull(CSSPDBLocalFileName);
+
             string TestDBConnString = Config.GetValue<string>("TestDBConnectionString");
             Assert.NotNull(TestDBConnString);
 
@@ -120,6 +141,15 @@ namespace CSSPServices.Tests
             Services.AddDbContext<InMemoryDBContext>(options =>
             {
                 options.UseInMemoryDatabase(TestDBConnString);
+            });
+
+            string appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+
+            FileInfo fiAppDataPath = new FileInfo(CSSPDBLocalFileName.Replace("{appDataPath}", appDataPath));
+
+            Services.AddDbContext<CSSPDBLocalContext>(options =>
+            {
+                options.UseSqlite($"Data Source={ fiAppDataPath.FullName }");
             });
 
             Services.AddSingleton<ICultureService, CultureService>();
@@ -141,6 +171,12 @@ namespace CSSPServices.Tests
             string Id = Config.GetValue<string>("Id");
             Assert.True(await LoggedInService.SetLoggedInContactInfo(Id));
 
+            //string IsLocalStr = Config.GetValue<string>("IsLocal");
+            //Assert.NotNull(IsLocalStr);
+
+            dbIM = Provider.GetService<InMemoryDBContext>();
+            Assert.NotNull(dbIM);
+
             LabSheetTubeMPNDetailService = Provider.GetService<ILabSheetTubeMPNDetailService>();
             Assert.NotNull(LabSheetTubeMPNDetailService);
 
@@ -148,6 +184,8 @@ namespace CSSPServices.Tests
         }
         private LabSheetTubeMPNDetail GetFilledRandomLabSheetTubeMPNDetail(string OmitPropName)
         {
+            dbIM.Database.EnsureDeleted();
+
             LabSheetTubeMPNDetail labSheetTubeMPNDetail = new LabSheetTubeMPNDetail();
 
             if (OmitPropName != "LabSheetDetailID") labSheetTubeMPNDetail.LabSheetDetailID = 1;
@@ -165,6 +203,18 @@ namespace CSSPServices.Tests
             if (OmitPropName != "SiteComment") labSheetTubeMPNDetail.SiteComment = GetRandomString("", 5);
             if (OmitPropName != "LastUpdateDate_UTC") labSheetTubeMPNDetail.LastUpdateDate_UTC = new DateTime(2005, 3, 6);
             if (OmitPropName != "LastUpdateContactTVItemID") labSheetTubeMPNDetail.LastUpdateContactTVItemID = 2;
+
+            if (LoggedInService.IsLocal)
+            {
+                if (OmitPropName != "LabSheetTubeMPNDetailID") labSheetTubeMPNDetail.LabSheetTubeMPNDetailID = 10000000;
+
+                dbIM.LabSheetDetails.Add(new LabSheetDetail() { LabSheetDetailID = 1, LabSheetID = 1, SamplingPlanID = 1, SubsectorTVItemID = 12, Version = 1, RunDate = new DateTime(2017, 6, 21, 0, 0, 0), Tides = @"HT / HF", SampleCrewInitials = "", WaterBathCount = null, IncubationBath1StartTime = null, IncubationBath2StartTime = null, IncubationBath3StartTime = null, IncubationBath1EndTime = null, IncubationBath2EndTime = null, IncubationBath3EndTime = null, IncubationBath1TimeCalculated_minutes = null, IncubationBath2TimeCalculated_minutes = null, IncubationBath3TimeCalculated_minutes = null, WaterBath1 = "", WaterBath2 = "", WaterBath3 = "", TCField1 = null, TCLab1 = null, TCField2 = null, TCLab2 = null, TCFirst = null, TCAverage = null, ControlLot = "null", Positive35 = "null", NonTarget35 = "null", Negative35 = "null", Bath1Positive44_5 = "null", Bath2Positive44_5 = "null", Bath3Positive44_5 = "null", Bath1NonTarget44_5 = "null", Bath2NonTarget44_5 = "null", Bath3NonTarget44_5 = "null", Bath1Negative44_5 = "null", Bath2Negative44_5 = "null", Bath3Negative44_5 = "null", Blank35 = null, Bath1Blank44_5 = "null", Bath2Blank44_5 = "null", Bath3Blank44_5 = "null", Lot35 = "null", Lot44_5 = "null", Weather = "null", RunComment = "null", RunWeatherComment = "null", SampleBottleLotNumber = "null", SalinitiesReadBy = "null", SalinitiesReadDate = null, ResultsReadBy = "null", ResultsReadDate = null, ResultsRecordedBy = "null", ResultsRecordedDate = null, DailyDuplicateRLog = null, DailyDuplicatePrecisionCriteria = null, DailyDuplicateAcceptable = null, IntertechDuplicateRLog = null, IntertechDuplicatePrecisionCriteria = null, IntertechDuplicateAcceptable = null, IntertechReadAcceptable = null, LastUpdateDate_UTC = new DateTime(2017, 6, 26, 18, 38, 21), LastUpdateContactTVItemID = 2 });
+                dbIM.SaveChanges();
+                dbIM.TVItems.Add(new TVItem() { TVItemID = 44, TVLevel = 6, TVPath = "p1p5p6p9p10p12p44", TVType = (TVTypeEnum)16, ParentID = 12, IsActive = true, LastUpdateDate_UTC = new DateTime(2017, 10, 12, 17, 39, 34), LastUpdateContactTVItemID = 2});
+                dbIM.SaveChanges();
+                dbIM.TVItems.Add(new TVItem() { TVItemID = 2, TVLevel = 1, TVPath = "p1p2", TVType = (TVTypeEnum)5, ParentID = 1, IsActive = true, LastUpdateDate_UTC = new DateTime(2014, 12, 2, 16, 58, 16), LastUpdateContactTVItemID = 2});
+                dbIM.SaveChanges();
+            }
 
             return labSheetTubeMPNDetail;
         }

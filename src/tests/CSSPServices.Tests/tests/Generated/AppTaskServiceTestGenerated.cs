@@ -36,6 +36,9 @@ namespace CSSPServices.Tests
         private ILoggedInService LoggedInService { get; set; }
         private IAppTaskService AppTaskService { get; set; }
         private CSSPDBContext db { get; set; }
+        private CSSPDBLocalContext dbLocal { get; set; }
+        private InMemoryDBContext dbIM { get; set; }
+        private AppTask appTask { get; set; }
         #endregion Properties
 
         #region Constructors
@@ -47,9 +50,11 @@ namespace CSSPServices.Tests
 
         #region Tests Generated CRUD
         [Theory]
-        [InlineData("en-CA")]
-        [InlineData("fr-CA")]
-        public async Task AppTask_CRUD_Good_Test(string culture)
+        [InlineData("en-CA", "true")]
+        [InlineData("fr-CA", "true")]
+        [InlineData("en-CA", "false")]
+        [InlineData("fr-CA", "false")]
+        public async Task AppTask_CRUD_Good_Test(string culture, string IsLocalStr)
         {
             // -------------------------------
             // -------------------------------
@@ -59,44 +64,57 @@ namespace CSSPServices.Tests
 
             Assert.True(await Setup(culture));
 
-            using (TransactionScope ts = new TransactionScope())
+            LoggedInService.IsLocal = bool.Parse(IsLocalStr);
+
+            appTask = GetFilledRandomAppTask("");
+
+            if (LoggedInService.IsLocal)
             {
-               AppTask appTask = GetFilledRandomAppTask(""); 
-
-               // List<AppTask>
-               var actionAppTaskList = await AppTaskService.GetAppTaskList();
-               Assert.Equal(200, ((ObjectResult)actionAppTaskList.Result).StatusCode);
-               Assert.NotNull(((OkObjectResult)actionAppTaskList.Result).Value);
-               List<AppTask> appTaskList = (List<AppTask>)((OkObjectResult)actionAppTaskList.Result).Value;
-
-               int count = ((List<AppTask>)((OkObjectResult)actionAppTaskList.Result).Value).Count();
-                Assert.True(count > 0);
-
-               // Post AppTask
-               var actionAppTaskAdded = await AppTaskService.Post(appTask);
-               Assert.Equal(200, ((ObjectResult)actionAppTaskAdded.Result).StatusCode);
-               Assert.NotNull(((OkObjectResult)actionAppTaskAdded.Result).Value);
-               AppTask appTaskAdded = (AppTask)((OkObjectResult)actionAppTaskAdded.Result).Value;
-               Assert.NotNull(appTaskAdded);
-
-               // Put AppTask
-               var actionAppTaskUpdated = await AppTaskService.Put(appTask);
-               Assert.Equal(200, ((ObjectResult)actionAppTaskUpdated.Result).StatusCode);
-               Assert.NotNull(((OkObjectResult)actionAppTaskUpdated.Result).Value);
-               AppTask appTaskUpdated = (AppTask)((OkObjectResult)actionAppTaskUpdated.Result).Value;
-               Assert.NotNull(appTaskUpdated);
-
-               // Delete AppTask
-               var actionAppTaskDeleted = await AppTaskService.Delete(appTask.AppTaskID);
-               Assert.Equal(200, ((ObjectResult)actionAppTaskDeleted.Result).StatusCode);
-               Assert.NotNull(((OkObjectResult)actionAppTaskDeleted.Result).Value);
-               bool retBool = (bool)((OkObjectResult)actionAppTaskDeleted.Result).Value;
-               Assert.True(retBool);
+                await DoCRUDTest();
+            }
+            else
+            {
+                using (TransactionScope ts = new TransactionScope())
+                {
+                    await DoCRUDTest();
+                }
             }
         }
         #endregion Tests Generated CRUD
 
         #region Functions private
+        private async Task DoCRUDTest()
+        {
+            // Post AppTask
+            var actionAppTaskAdded = await AppTaskService.Post(appTask);
+            Assert.Equal(200, ((ObjectResult)actionAppTaskAdded.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionAppTaskAdded.Result).Value);
+            AppTask appTaskAdded = (AppTask)((OkObjectResult)actionAppTaskAdded.Result).Value;
+            Assert.NotNull(appTaskAdded);
+
+            // List<AppTask>
+            var actionAppTaskList = await AppTaskService.GetAppTaskList();
+            Assert.Equal(200, ((ObjectResult)actionAppTaskList.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionAppTaskList.Result).Value);
+            List<AppTask> appTaskList = (List<AppTask>)((OkObjectResult)actionAppTaskList.Result).Value;
+
+            int count = ((List<AppTask>)((OkObjectResult)actionAppTaskList.Result).Value).Count();
+            Assert.True(count > 0);
+
+            // Put AppTask
+            var actionAppTaskUpdated = await AppTaskService.Put(appTask);
+            Assert.Equal(200, ((ObjectResult)actionAppTaskUpdated.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionAppTaskUpdated.Result).Value);
+            AppTask appTaskUpdated = (AppTask)((OkObjectResult)actionAppTaskUpdated.Result).Value;
+            Assert.NotNull(appTaskUpdated);
+
+            // Delete AppTask
+            var actionAppTaskDeleted = await AppTaskService.Delete(appTask.AppTaskID);
+            Assert.Equal(200, ((ObjectResult)actionAppTaskDeleted.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionAppTaskDeleted.Result).Value);
+            bool retBool = (bool)((OkObjectResult)actionAppTaskDeleted.Result).Value;
+            Assert.True(retBool);
+        }
         private async Task<bool> Setup(string culture)
         {
             Config = new ConfigurationBuilder()
@@ -109,6 +127,9 @@ namespace CSSPServices.Tests
 
             Services.AddSingleton<IConfiguration>(Config);
 
+            string CSSPDBLocalFileName = Config.GetValue<string>("CSSPDBLocal");
+            Assert.NotNull(CSSPDBLocalFileName);
+
             string TestDBConnString = Config.GetValue<string>("TestDBConnectionString");
             Assert.NotNull(TestDBConnString);
 
@@ -120,6 +141,15 @@ namespace CSSPServices.Tests
             Services.AddDbContext<InMemoryDBContext>(options =>
             {
                 options.UseInMemoryDatabase(TestDBConnString);
+            });
+
+            string appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+
+            FileInfo fiAppDataPath = new FileInfo(CSSPDBLocalFileName.Replace("{appDataPath}", appDataPath));
+
+            Services.AddDbContext<CSSPDBLocalContext>(options =>
+            {
+                options.UseSqlite($"Data Source={ fiAppDataPath.FullName }");
             });
 
             Services.AddSingleton<ICultureService, CultureService>();
@@ -141,6 +171,12 @@ namespace CSSPServices.Tests
             string Id = Config.GetValue<string>("Id");
             Assert.True(await LoggedInService.SetLoggedInContactInfo(Id));
 
+            //string IsLocalStr = Config.GetValue<string>("IsLocal");
+            //Assert.NotNull(IsLocalStr);
+
+            dbIM = Provider.GetService<InMemoryDBContext>();
+            Assert.NotNull(dbIM);
+
             AppTaskService = Provider.GetService<IAppTaskService>();
             Assert.NotNull(AppTaskService);
 
@@ -148,6 +184,8 @@ namespace CSSPServices.Tests
         }
         private AppTask GetFilledRandomAppTask(string OmitPropName)
         {
+            dbIM.Database.EnsureDeleted();
+
             AppTask appTask = new AppTask();
 
             if (OmitPropName != "TVItemID") appTask.TVItemID = 1;
@@ -163,6 +201,16 @@ namespace CSSPServices.Tests
             if (OmitPropName != "RemainingTime_second") appTask.RemainingTime_second = GetRandomInt(0, 1000000);
             if (OmitPropName != "LastUpdateDate_UTC") appTask.LastUpdateDate_UTC = new DateTime(2005, 3, 6);
             if (OmitPropName != "LastUpdateContactTVItemID") appTask.LastUpdateContactTVItemID = 2;
+
+            if (LoggedInService.IsLocal)
+            {
+                if (OmitPropName != "AppTaskID") appTask.AppTaskID = 10000000;
+
+                dbIM.TVItems.Add(new TVItem() { TVItemID = 1, TVLevel = 0, TVPath = "p1", TVType = (TVTypeEnum)1, ParentID = 1, IsActive = true, LastUpdateDate_UTC = new DateTime(2014, 12, 2, 16, 58, 16), LastUpdateContactTVItemID = 2});
+                dbIM.SaveChanges();
+                dbIM.TVItems.Add(new TVItem() { TVItemID = 2, TVLevel = 1, TVPath = "p1p2", TVType = (TVTypeEnum)5, ParentID = 1, IsActive = true, LastUpdateDate_UTC = new DateTime(2014, 12, 2, 16, 58, 16), LastUpdateContactTVItemID = 2});
+                dbIM.SaveChanges();
+            }
 
             return appTask;
         }

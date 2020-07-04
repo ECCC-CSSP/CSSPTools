@@ -36,6 +36,9 @@ namespace CSSPServices.Tests
         private ILoggedInService LoggedInService { get; set; }
         private IClimateSiteService ClimateSiteService { get; set; }
         private CSSPDBContext db { get; set; }
+        private CSSPDBLocalContext dbLocal { get; set; }
+        private InMemoryDBContext dbIM { get; set; }
+        private ClimateSite climateSite { get; set; }
         #endregion Properties
 
         #region Constructors
@@ -47,9 +50,11 @@ namespace CSSPServices.Tests
 
         #region Tests Generated CRUD
         [Theory]
-        [InlineData("en-CA")]
-        [InlineData("fr-CA")]
-        public async Task ClimateSite_CRUD_Good_Test(string culture)
+        [InlineData("en-CA", "true")]
+        [InlineData("fr-CA", "true")]
+        [InlineData("en-CA", "false")]
+        [InlineData("fr-CA", "false")]
+        public async Task ClimateSite_CRUD_Good_Test(string culture, string IsLocalStr)
         {
             // -------------------------------
             // -------------------------------
@@ -59,44 +64,57 @@ namespace CSSPServices.Tests
 
             Assert.True(await Setup(culture));
 
-            using (TransactionScope ts = new TransactionScope())
+            LoggedInService.IsLocal = bool.Parse(IsLocalStr);
+
+            climateSite = GetFilledRandomClimateSite("");
+
+            if (LoggedInService.IsLocal)
             {
-               ClimateSite climateSite = GetFilledRandomClimateSite(""); 
-
-               // List<ClimateSite>
-               var actionClimateSiteList = await ClimateSiteService.GetClimateSiteList();
-               Assert.Equal(200, ((ObjectResult)actionClimateSiteList.Result).StatusCode);
-               Assert.NotNull(((OkObjectResult)actionClimateSiteList.Result).Value);
-               List<ClimateSite> climateSiteList = (List<ClimateSite>)((OkObjectResult)actionClimateSiteList.Result).Value;
-
-               int count = ((List<ClimateSite>)((OkObjectResult)actionClimateSiteList.Result).Value).Count();
-                Assert.True(count > 0);
-
-               // Post ClimateSite
-               var actionClimateSiteAdded = await ClimateSiteService.Post(climateSite);
-               Assert.Equal(200, ((ObjectResult)actionClimateSiteAdded.Result).StatusCode);
-               Assert.NotNull(((OkObjectResult)actionClimateSiteAdded.Result).Value);
-               ClimateSite climateSiteAdded = (ClimateSite)((OkObjectResult)actionClimateSiteAdded.Result).Value;
-               Assert.NotNull(climateSiteAdded);
-
-               // Put ClimateSite
-               var actionClimateSiteUpdated = await ClimateSiteService.Put(climateSite);
-               Assert.Equal(200, ((ObjectResult)actionClimateSiteUpdated.Result).StatusCode);
-               Assert.NotNull(((OkObjectResult)actionClimateSiteUpdated.Result).Value);
-               ClimateSite climateSiteUpdated = (ClimateSite)((OkObjectResult)actionClimateSiteUpdated.Result).Value;
-               Assert.NotNull(climateSiteUpdated);
-
-               // Delete ClimateSite
-               var actionClimateSiteDeleted = await ClimateSiteService.Delete(climateSite.ClimateSiteID);
-               Assert.Equal(200, ((ObjectResult)actionClimateSiteDeleted.Result).StatusCode);
-               Assert.NotNull(((OkObjectResult)actionClimateSiteDeleted.Result).Value);
-               bool retBool = (bool)((OkObjectResult)actionClimateSiteDeleted.Result).Value;
-               Assert.True(retBool);
+                await DoCRUDTest();
+            }
+            else
+            {
+                using (TransactionScope ts = new TransactionScope())
+                {
+                    await DoCRUDTest();
+                }
             }
         }
         #endregion Tests Generated CRUD
 
         #region Functions private
+        private async Task DoCRUDTest()
+        {
+            // Post ClimateSite
+            var actionClimateSiteAdded = await ClimateSiteService.Post(climateSite);
+            Assert.Equal(200, ((ObjectResult)actionClimateSiteAdded.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionClimateSiteAdded.Result).Value);
+            ClimateSite climateSiteAdded = (ClimateSite)((OkObjectResult)actionClimateSiteAdded.Result).Value;
+            Assert.NotNull(climateSiteAdded);
+
+            // List<ClimateSite>
+            var actionClimateSiteList = await ClimateSiteService.GetClimateSiteList();
+            Assert.Equal(200, ((ObjectResult)actionClimateSiteList.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionClimateSiteList.Result).Value);
+            List<ClimateSite> climateSiteList = (List<ClimateSite>)((OkObjectResult)actionClimateSiteList.Result).Value;
+
+            int count = ((List<ClimateSite>)((OkObjectResult)actionClimateSiteList.Result).Value).Count();
+            Assert.True(count > 0);
+
+            // Put ClimateSite
+            var actionClimateSiteUpdated = await ClimateSiteService.Put(climateSite);
+            Assert.Equal(200, ((ObjectResult)actionClimateSiteUpdated.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionClimateSiteUpdated.Result).Value);
+            ClimateSite climateSiteUpdated = (ClimateSite)((OkObjectResult)actionClimateSiteUpdated.Result).Value;
+            Assert.NotNull(climateSiteUpdated);
+
+            // Delete ClimateSite
+            var actionClimateSiteDeleted = await ClimateSiteService.Delete(climateSite.ClimateSiteID);
+            Assert.Equal(200, ((ObjectResult)actionClimateSiteDeleted.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionClimateSiteDeleted.Result).Value);
+            bool retBool = (bool)((OkObjectResult)actionClimateSiteDeleted.Result).Value;
+            Assert.True(retBool);
+        }
         private async Task<bool> Setup(string culture)
         {
             Config = new ConfigurationBuilder()
@@ -109,6 +127,9 @@ namespace CSSPServices.Tests
 
             Services.AddSingleton<IConfiguration>(Config);
 
+            string CSSPDBLocalFileName = Config.GetValue<string>("CSSPDBLocal");
+            Assert.NotNull(CSSPDBLocalFileName);
+
             string TestDBConnString = Config.GetValue<string>("TestDBConnectionString");
             Assert.NotNull(TestDBConnString);
 
@@ -120,6 +141,15 @@ namespace CSSPServices.Tests
             Services.AddDbContext<InMemoryDBContext>(options =>
             {
                 options.UseInMemoryDatabase(TestDBConnString);
+            });
+
+            string appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+
+            FileInfo fiAppDataPath = new FileInfo(CSSPDBLocalFileName.Replace("{appDataPath}", appDataPath));
+
+            Services.AddDbContext<CSSPDBLocalContext>(options =>
+            {
+                options.UseSqlite($"Data Source={ fiAppDataPath.FullName }");
             });
 
             Services.AddSingleton<ICultureService, CultureService>();
@@ -141,6 +171,12 @@ namespace CSSPServices.Tests
             string Id = Config.GetValue<string>("Id");
             Assert.True(await LoggedInService.SetLoggedInContactInfo(Id));
 
+            //string IsLocalStr = Config.GetValue<string>("IsLocal");
+            //Assert.NotNull(IsLocalStr);
+
+            dbIM = Provider.GetService<InMemoryDBContext>();
+            Assert.NotNull(dbIM);
+
             ClimateSiteService = Provider.GetService<IClimateSiteService>();
             Assert.NotNull(ClimateSiteService);
 
@@ -148,6 +184,8 @@ namespace CSSPServices.Tests
         }
         private ClimateSite GetFilledRandomClimateSite(string OmitPropName)
         {
+            dbIM.Database.EnsureDeleted();
+
             ClimateSite climateSite = new ClimateSite();
 
             if (OmitPropName != "ClimateSiteTVItemID") climateSite.ClimateSiteTVItemID = 7;
@@ -173,6 +211,16 @@ namespace CSSPServices.Tests
             if (OmitPropName != "MonthlyNow") climateSite.MonthlyNow = true;
             if (OmitPropName != "LastUpdateDate_UTC") climateSite.LastUpdateDate_UTC = new DateTime(2005, 3, 6);
             if (OmitPropName != "LastUpdateContactTVItemID") climateSite.LastUpdateContactTVItemID = 2;
+
+            if (LoggedInService.IsLocal)
+            {
+                if (OmitPropName != "ClimateSiteID") climateSite.ClimateSiteID = 10000000;
+
+                dbIM.TVItems.Add(new TVItem() { TVItemID = 7, TVLevel = 3, TVPath = "p1p5p6p7", TVType = (TVTypeEnum)4, ParentID = 6, IsActive = true, LastUpdateDate_UTC = new DateTime(2015, 6, 18, 14, 40, 7), LastUpdateContactTVItemID = 2});
+                dbIM.SaveChanges();
+                dbIM.TVItems.Add(new TVItem() { TVItemID = 2, TVLevel = 1, TVPath = "p1p2", TVType = (TVTypeEnum)5, ParentID = 1, IsActive = true, LastUpdateDate_UTC = new DateTime(2014, 12, 2, 16, 58, 16), LastUpdateContactTVItemID = 2});
+                dbIM.SaveChanges();
+            }
 
             return climateSite;
         }

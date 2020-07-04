@@ -36,6 +36,8 @@ namespace CSSPServices
 
         #region Properties
         private CSSPDBContext db { get; }
+        private CSSPDBLocalContext dbLocal { get; }
+        private InMemoryDBContext dbIM { get; }
         private ICultureService CultureService { get; }
         private ILoggedInService LoggedInService { get; }
         private IEnums enums { get; }
@@ -43,12 +45,14 @@ namespace CSSPServices
         #endregion Properties
 
         #region Constructors
-        public LabSheetService(ICultureService CultureService, ILoggedInService LoggedInService, IEnums enums, CSSPDBContext db)
+        public LabSheetService(ICultureService CultureService, ILoggedInService LoggedInService, IEnums enums, CSSPDBContext db, CSSPDBLocalContext dbLocal, InMemoryDBContext dbIM)
         {
             this.CultureService = CultureService;
             this.LoggedInService = LoggedInService;
             this.enums = enums;
             this.db = db;
+            this.dbLocal = dbLocal;
+            this.dbIM = dbIM;
         }
         #endregion Constructors
 
@@ -60,16 +64,32 @@ namespace CSSPServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            LabSheet labsheet = (from c in db.LabSheets.AsNoTracking()
-                    where c.LabSheetID == LabSheetID
-                    select c).FirstOrDefault();
-
-            if (labsheet == null)
+            if (LoggedInService.IsLocal)
             {
-               return await Task.FromResult(NotFound());
-            }
+                LabSheet labsheet = (from c in dbLocal.LabSheets.AsNoTracking()
+                        where c.LabSheetID == LabSheetID
+                        select c).FirstOrDefault();
 
-            return await Task.FromResult(Ok(labsheet));
+                if (labsheet == null)
+                {
+                   return await Task.FromResult(NotFound());
+                }
+
+                return await Task.FromResult(Ok(labsheet));
+            }
+            else
+            {
+                LabSheet labsheet = (from c in db.LabSheets.AsNoTracking()
+                        where c.LabSheetID == LabSheetID
+                        select c).FirstOrDefault();
+
+                if (labsheet == null)
+                {
+                   return await Task.FromResult(NotFound());
+                }
+
+                return await Task.FromResult(Ok(labsheet));
+            }
         }
         public async Task<ActionResult<List<LabSheet>>> GetLabSheetList()
         {
@@ -78,9 +98,18 @@ namespace CSSPServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            List<LabSheet> labsheetList = (from c in db.LabSheets.AsNoTracking() select c).Take(100).ToList();
+            if (LoggedInService.IsLocal)
+            {
+                List<LabSheet> labsheetList = (from c in dbLocal.LabSheets.AsNoTracking() select c).Take(100).ToList();
 
-            return await Task.FromResult(Ok(labsheetList));
+                return await Task.FromResult(Ok(labsheetList));
+            }
+            else
+            {
+                List<LabSheet> labsheetList = (from c in db.LabSheets.AsNoTracking() select c).Take(100).ToList();
+
+                return await Task.FromResult(Ok(labsheetList));
+            }
         }
         public async Task<ActionResult<bool>> Delete(int LabSheetID)
         {
@@ -89,26 +118,52 @@ namespace CSSPServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            LabSheet labSheet = (from c in db.LabSheets
-                               where c.LabSheetID == LabSheetID
-                               select c).FirstOrDefault();
-            
-            if (labSheet == null)
+            if (LoggedInService.IsLocal)
             {
-                return await Task.FromResult(BadRequest(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "LabSheet", "LabSheetID", LabSheetID.ToString())));
-            }
+                LabSheet labSheet = (from c in dbLocal.LabSheets
+                                   where c.LabSheetID == LabSheetID
+                                   select c).FirstOrDefault();
+                
+                if (labSheet == null)
+                {
+                    return await Task.FromResult(BadRequest(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "LabSheet", "LabSheetID", LabSheetID.ToString())));
+                }
 
-            try
-            {
-               db.LabSheets.Remove(labSheet);
-               db.SaveChanges();
-            }
-            catch (DbUpdateException ex)
-            {
-               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
-            }
+                try
+                {
+                   dbLocal.LabSheets.Remove(labSheet);
+                   dbLocal.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                   return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
 
-            return await Task.FromResult(Ok(true));
+                return await Task.FromResult(Ok(true));
+            }
+            else
+            {
+                LabSheet labSheet = (from c in db.LabSheets
+                                   where c.LabSheetID == LabSheetID
+                                   select c).FirstOrDefault();
+                
+                if (labSheet == null)
+                {
+                    return await Task.FromResult(BadRequest(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "LabSheet", "LabSheetID", LabSheetID.ToString())));
+                }
+
+                try
+                {
+                   db.LabSheets.Remove(labSheet);
+                   db.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                   return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
+
+                return await Task.FromResult(Ok(true));
+            }
         }
         public async Task<ActionResult<LabSheet>> Post(LabSheet labSheet)
         {
@@ -123,17 +178,34 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ValidationResults));
             }
 
-            try
+            if (LoggedInService.IsLocal)
             {
-               db.LabSheets.Add(labSheet);
-               db.SaveChanges();
-            }
-            catch (DbUpdateException ex)
-            {
-               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
-            }
+                try
+                {
+                   dbLocal.LabSheets.Add(labSheet);
+                   dbLocal.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                   return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
 
-            return await Task.FromResult(Ok(labSheet));
+                return await Task.FromResult(Ok(labSheet));
+            }
+            else
+            {
+                try
+                {
+                   db.LabSheets.Add(labSheet);
+                   db.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                   return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
+
+                return await Task.FromResult(Ok(labSheet));
+            }
         }
         public async Task<ActionResult<LabSheet>> Put(LabSheet labSheet)
         {
@@ -148,6 +220,22 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ValidationResults));
             }
 
+            if (LoggedInService.IsLocal)
+            {
+            try
+            {
+               dbLocal.LabSheets.Update(labSheet);
+               dbLocal.SaveChanges();
+            }
+            catch (DbUpdateException ex)
+            {
+               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+            }
+
+            return await Task.FromResult(Ok(labSheet));
+            }
+            else
+            {
             try
             {
                db.LabSheets.Update(labSheet);
@@ -159,6 +247,7 @@ namespace CSSPServices
             }
 
             return await Task.FromResult(Ok(labSheet));
+            }
         }
         #endregion Functions public
 
@@ -175,9 +264,19 @@ namespace CSSPServices
                     yield return new ValidationResult(string.Format(CultureServicesRes._IsRequired, "LabSheetID"), new[] { "LabSheetID" });
                 }
 
-                if (!(from c in db.LabSheets select c).Where(c => c.LabSheetID == labSheet.LabSheetID).Any())
+                if (LoggedInService.IsLocal)
                 {
-                    yield return new ValidationResult(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "LabSheet", "LabSheetID", labSheet.LabSheetID.ToString()), new[] { "LabSheetID" });
+                    if (!(from c in dbLocal.LabSheets select c).Where(c => c.LabSheetID == labSheet.LabSheetID).Any())
+                    {
+                        yield return new ValidationResult(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "LabSheet", "LabSheetID", labSheet.LabSheetID.ToString()), new[] { "LabSheetID" });
+                    }
+                }
+                else
+                {
+                    if (!(from c in db.LabSheets select c).Where(c => c.LabSheetID == labSheet.LabSheetID).Any())
+                    {
+                        yield return new ValidationResult(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "LabSheet", "LabSheetID", labSheet.LabSheetID.ToString()), new[] { "LabSheetID" });
+                    }
                 }
             }
 
@@ -186,7 +285,19 @@ namespace CSSPServices
                 yield return new ValidationResult(string.Format(CultureServicesRes._MinValueIs_, "OtherServerLabSheetID", "1"), new[] { "OtherServerLabSheetID" });
             }
 
-            SamplingPlan SamplingPlanSamplingPlanID = (from c in db.SamplingPlans where c.SamplingPlanID == labSheet.SamplingPlanID select c).FirstOrDefault();
+            SamplingPlan SamplingPlanSamplingPlanID = null;
+            if (LoggedInService.IsLocal)
+            {
+                SamplingPlanSamplingPlanID = (from c in dbLocal.SamplingPlans where c.SamplingPlanID == labSheet.SamplingPlanID select c).FirstOrDefault();
+                if (SamplingPlanSamplingPlanID == null)
+                {
+                    SamplingPlanSamplingPlanID = (from c in dbIM.SamplingPlans where c.SamplingPlanID == labSheet.SamplingPlanID select c).FirstOrDefault();
+                }
+            }
+            else
+            {
+                SamplingPlanSamplingPlanID = (from c in db.SamplingPlans where c.SamplingPlanID == labSheet.SamplingPlanID select c).FirstOrDefault();
+            }
 
             if (SamplingPlanSamplingPlanID == null)
             {
@@ -223,7 +334,19 @@ namespace CSSPServices
                 yield return new ValidationResult(string.Format(CultureServicesRes._ValueShouldBeBetween_And_, "RunNumber", "1", "100"), new[] { "RunNumber" });
             }
 
-            TVItem TVItemSubsectorTVItemID = (from c in db.TVItems where c.TVItemID == labSheet.SubsectorTVItemID select c).FirstOrDefault();
+            TVItem TVItemSubsectorTVItemID = null;
+            if (LoggedInService.IsLocal)
+            {
+                TVItemSubsectorTVItemID = (from c in dbLocal.TVItems where c.TVItemID == labSheet.SubsectorTVItemID select c).FirstOrDefault();
+                if (TVItemSubsectorTVItemID == null)
+                {
+                    TVItemSubsectorTVItemID = (from c in dbIM.TVItems where c.TVItemID == labSheet.SubsectorTVItemID select c).FirstOrDefault();
+                }
+            }
+            else
+            {
+                TVItemSubsectorTVItemID = (from c in db.TVItems where c.TVItemID == labSheet.SubsectorTVItemID select c).FirstOrDefault();
+            }
 
             if (TVItemSubsectorTVItemID == null)
             {
@@ -243,7 +366,19 @@ namespace CSSPServices
 
             if (labSheet.MWQMRunTVItemID != null)
             {
-                TVItem TVItemMWQMRunTVItemID = (from c in db.TVItems where c.TVItemID == labSheet.MWQMRunTVItemID select c).FirstOrDefault();
+                TVItem TVItemMWQMRunTVItemID = null;
+                if (LoggedInService.IsLocal)
+                {
+                    TVItemMWQMRunTVItemID = (from c in dbLocal.TVItems where c.TVItemID == labSheet.MWQMRunTVItemID select c).FirstOrDefault();
+                    if (TVItemMWQMRunTVItemID == null)
+                    {
+                        TVItemMWQMRunTVItemID = (from c in dbIM.TVItems where c.TVItemID == labSheet.MWQMRunTVItemID select c).FirstOrDefault();
+                    }
+                }
+                else
+                {
+                    TVItemMWQMRunTVItemID = (from c in db.TVItems where c.TVItemID == labSheet.MWQMRunTVItemID select c).FirstOrDefault();
+                }
 
                 if (TVItemMWQMRunTVItemID == null)
                 {
@@ -317,7 +452,19 @@ namespace CSSPServices
 
             if (labSheet.AcceptedOrRejectedByContactTVItemID != null)
             {
-                TVItem TVItemAcceptedOrRejectedByContactTVItemID = (from c in db.TVItems where c.TVItemID == labSheet.AcceptedOrRejectedByContactTVItemID select c).FirstOrDefault();
+                TVItem TVItemAcceptedOrRejectedByContactTVItemID = null;
+                if (LoggedInService.IsLocal)
+                {
+                    TVItemAcceptedOrRejectedByContactTVItemID = (from c in dbLocal.TVItems where c.TVItemID == labSheet.AcceptedOrRejectedByContactTVItemID select c).FirstOrDefault();
+                    if (TVItemAcceptedOrRejectedByContactTVItemID == null)
+                    {
+                        TVItemAcceptedOrRejectedByContactTVItemID = (from c in dbIM.TVItems where c.TVItemID == labSheet.AcceptedOrRejectedByContactTVItemID select c).FirstOrDefault();
+                    }
+                }
+                else
+                {
+                    TVItemAcceptedOrRejectedByContactTVItemID = (from c in db.TVItems where c.TVItemID == labSheet.AcceptedOrRejectedByContactTVItemID select c).FirstOrDefault();
+                }
 
                 if (TVItemAcceptedOrRejectedByContactTVItemID == null)
                 {
@@ -358,7 +505,19 @@ namespace CSSPServices
                 }
             }
 
-            TVItem TVItemLastUpdateContactTVItemID = (from c in db.TVItems where c.TVItemID == labSheet.LastUpdateContactTVItemID select c).FirstOrDefault();
+            TVItem TVItemLastUpdateContactTVItemID = null;
+            if (LoggedInService.IsLocal)
+            {
+                TVItemLastUpdateContactTVItemID = (from c in dbLocal.TVItems where c.TVItemID == labSheet.LastUpdateContactTVItemID select c).FirstOrDefault();
+                if (TVItemLastUpdateContactTVItemID == null)
+                {
+                    TVItemLastUpdateContactTVItemID = (from c in dbIM.TVItems where c.TVItemID == labSheet.LastUpdateContactTVItemID select c).FirstOrDefault();
+                }
+            }
+            else
+            {
+                TVItemLastUpdateContactTVItemID = (from c in db.TVItems where c.TVItemID == labSheet.LastUpdateContactTVItemID select c).FirstOrDefault();
+            }
 
             if (TVItemLastUpdateContactTVItemID == null)
             {

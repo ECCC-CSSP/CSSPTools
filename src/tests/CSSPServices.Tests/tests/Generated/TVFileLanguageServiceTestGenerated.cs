@@ -36,6 +36,9 @@ namespace CSSPServices.Tests
         private ILoggedInService LoggedInService { get; set; }
         private ITVFileLanguageService TVFileLanguageService { get; set; }
         private CSSPDBContext db { get; set; }
+        private CSSPDBLocalContext dbLocal { get; set; }
+        private InMemoryDBContext dbIM { get; set; }
+        private TVFileLanguage tvFileLanguage { get; set; }
         #endregion Properties
 
         #region Constructors
@@ -47,9 +50,11 @@ namespace CSSPServices.Tests
 
         #region Tests Generated CRUD
         [Theory]
-        [InlineData("en-CA")]
-        [InlineData("fr-CA")]
-        public async Task TVFileLanguage_CRUD_Good_Test(string culture)
+        [InlineData("en-CA", "true")]
+        [InlineData("fr-CA", "true")]
+        [InlineData("en-CA", "false")]
+        [InlineData("fr-CA", "false")]
+        public async Task TVFileLanguage_CRUD_Good_Test(string culture, string IsLocalStr)
         {
             // -------------------------------
             // -------------------------------
@@ -59,44 +64,57 @@ namespace CSSPServices.Tests
 
             Assert.True(await Setup(culture));
 
-            using (TransactionScope ts = new TransactionScope())
+            LoggedInService.IsLocal = bool.Parse(IsLocalStr);
+
+            tvFileLanguage = GetFilledRandomTVFileLanguage("");
+
+            if (LoggedInService.IsLocal)
             {
-               TVFileLanguage tvFileLanguage = GetFilledRandomTVFileLanguage(""); 
-
-               // List<TVFileLanguage>
-               var actionTVFileLanguageList = await TVFileLanguageService.GetTVFileLanguageList();
-               Assert.Equal(200, ((ObjectResult)actionTVFileLanguageList.Result).StatusCode);
-               Assert.NotNull(((OkObjectResult)actionTVFileLanguageList.Result).Value);
-               List<TVFileLanguage> tvFileLanguageList = (List<TVFileLanguage>)((OkObjectResult)actionTVFileLanguageList.Result).Value;
-
-               int count = ((List<TVFileLanguage>)((OkObjectResult)actionTVFileLanguageList.Result).Value).Count();
-                Assert.True(count > 0);
-
-               // Post TVFileLanguage
-               var actionTVFileLanguageAdded = await TVFileLanguageService.Post(tvFileLanguage);
-               Assert.Equal(200, ((ObjectResult)actionTVFileLanguageAdded.Result).StatusCode);
-               Assert.NotNull(((OkObjectResult)actionTVFileLanguageAdded.Result).Value);
-               TVFileLanguage tvFileLanguageAdded = (TVFileLanguage)((OkObjectResult)actionTVFileLanguageAdded.Result).Value;
-               Assert.NotNull(tvFileLanguageAdded);
-
-               // Put TVFileLanguage
-               var actionTVFileLanguageUpdated = await TVFileLanguageService.Put(tvFileLanguage);
-               Assert.Equal(200, ((ObjectResult)actionTVFileLanguageUpdated.Result).StatusCode);
-               Assert.NotNull(((OkObjectResult)actionTVFileLanguageUpdated.Result).Value);
-               TVFileLanguage tvFileLanguageUpdated = (TVFileLanguage)((OkObjectResult)actionTVFileLanguageUpdated.Result).Value;
-               Assert.NotNull(tvFileLanguageUpdated);
-
-               // Delete TVFileLanguage
-               var actionTVFileLanguageDeleted = await TVFileLanguageService.Delete(tvFileLanguage.TVFileLanguageID);
-               Assert.Equal(200, ((ObjectResult)actionTVFileLanguageDeleted.Result).StatusCode);
-               Assert.NotNull(((OkObjectResult)actionTVFileLanguageDeleted.Result).Value);
-               bool retBool = (bool)((OkObjectResult)actionTVFileLanguageDeleted.Result).Value;
-               Assert.True(retBool);
+                await DoCRUDTest();
+            }
+            else
+            {
+                using (TransactionScope ts = new TransactionScope())
+                {
+                    await DoCRUDTest();
+                }
             }
         }
         #endregion Tests Generated CRUD
 
         #region Functions private
+        private async Task DoCRUDTest()
+        {
+            // Post TVFileLanguage
+            var actionTVFileLanguageAdded = await TVFileLanguageService.Post(tvFileLanguage);
+            Assert.Equal(200, ((ObjectResult)actionTVFileLanguageAdded.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionTVFileLanguageAdded.Result).Value);
+            TVFileLanguage tvFileLanguageAdded = (TVFileLanguage)((OkObjectResult)actionTVFileLanguageAdded.Result).Value;
+            Assert.NotNull(tvFileLanguageAdded);
+
+            // List<TVFileLanguage>
+            var actionTVFileLanguageList = await TVFileLanguageService.GetTVFileLanguageList();
+            Assert.Equal(200, ((ObjectResult)actionTVFileLanguageList.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionTVFileLanguageList.Result).Value);
+            List<TVFileLanguage> tvFileLanguageList = (List<TVFileLanguage>)((OkObjectResult)actionTVFileLanguageList.Result).Value;
+
+            int count = ((List<TVFileLanguage>)((OkObjectResult)actionTVFileLanguageList.Result).Value).Count();
+            Assert.True(count > 0);
+
+            // Put TVFileLanguage
+            var actionTVFileLanguageUpdated = await TVFileLanguageService.Put(tvFileLanguage);
+            Assert.Equal(200, ((ObjectResult)actionTVFileLanguageUpdated.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionTVFileLanguageUpdated.Result).Value);
+            TVFileLanguage tvFileLanguageUpdated = (TVFileLanguage)((OkObjectResult)actionTVFileLanguageUpdated.Result).Value;
+            Assert.NotNull(tvFileLanguageUpdated);
+
+            // Delete TVFileLanguage
+            var actionTVFileLanguageDeleted = await TVFileLanguageService.Delete(tvFileLanguage.TVFileLanguageID);
+            Assert.Equal(200, ((ObjectResult)actionTVFileLanguageDeleted.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionTVFileLanguageDeleted.Result).Value);
+            bool retBool = (bool)((OkObjectResult)actionTVFileLanguageDeleted.Result).Value;
+            Assert.True(retBool);
+        }
         private async Task<bool> Setup(string culture)
         {
             Config = new ConfigurationBuilder()
@@ -109,6 +127,9 @@ namespace CSSPServices.Tests
 
             Services.AddSingleton<IConfiguration>(Config);
 
+            string CSSPDBLocalFileName = Config.GetValue<string>("CSSPDBLocal");
+            Assert.NotNull(CSSPDBLocalFileName);
+
             string TestDBConnString = Config.GetValue<string>("TestDBConnectionString");
             Assert.NotNull(TestDBConnString);
 
@@ -120,6 +141,15 @@ namespace CSSPServices.Tests
             Services.AddDbContext<InMemoryDBContext>(options =>
             {
                 options.UseInMemoryDatabase(TestDBConnString);
+            });
+
+            string appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+
+            FileInfo fiAppDataPath = new FileInfo(CSSPDBLocalFileName.Replace("{appDataPath}", appDataPath));
+
+            Services.AddDbContext<CSSPDBLocalContext>(options =>
+            {
+                options.UseSqlite($"Data Source={ fiAppDataPath.FullName }");
             });
 
             Services.AddSingleton<ICultureService, CultureService>();
@@ -141,6 +171,12 @@ namespace CSSPServices.Tests
             string Id = Config.GetValue<string>("Id");
             Assert.True(await LoggedInService.SetLoggedInContactInfo(Id));
 
+            //string IsLocalStr = Config.GetValue<string>("IsLocal");
+            //Assert.NotNull(IsLocalStr);
+
+            dbIM = Provider.GetService<InMemoryDBContext>();
+            Assert.NotNull(dbIM);
+
             TVFileLanguageService = Provider.GetService<ITVFileLanguageService>();
             Assert.NotNull(TVFileLanguageService);
 
@@ -148,6 +184,8 @@ namespace CSSPServices.Tests
         }
         private TVFileLanguage GetFilledRandomTVFileLanguage(string OmitPropName)
         {
+            dbIM.Database.EnsureDeleted();
+
             TVFileLanguage tvFileLanguage = new TVFileLanguage();
 
             if (OmitPropName != "TVFileID") tvFileLanguage.TVFileID = 1;
@@ -156,6 +194,16 @@ namespace CSSPServices.Tests
             if (OmitPropName != "TranslationStatus") tvFileLanguage.TranslationStatus = (TranslationStatusEnum)GetRandomEnumType(typeof(TranslationStatusEnum));
             if (OmitPropName != "LastUpdateDate_UTC") tvFileLanguage.LastUpdateDate_UTC = new DateTime(2005, 3, 6);
             if (OmitPropName != "LastUpdateContactTVItemID") tvFileLanguage.LastUpdateContactTVItemID = 2;
+
+            if (LoggedInService.IsLocal)
+            {
+                if (OmitPropName != "TVFileLanguageID") tvFileLanguage.TVFileLanguageID = 10000000;
+
+                dbIM.TVFiles.Add(new TVFile() { TVFileID = 1 });
+                dbIM.SaveChanges();
+                dbIM.TVItems.Add(new TVItem() { TVItemID = 2, TVLevel = 1, TVPath = "p1p2", TVType = (TVTypeEnum)5, ParentID = 1, IsActive = true, LastUpdateDate_UTC = new DateTime(2014, 12, 2, 16, 58, 16), LastUpdateContactTVItemID = 2});
+                dbIM.SaveChanges();
+            }
 
             return tvFileLanguage;
         }

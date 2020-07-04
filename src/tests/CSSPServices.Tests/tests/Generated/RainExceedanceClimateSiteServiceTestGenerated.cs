@@ -36,6 +36,9 @@ namespace CSSPServices.Tests
         private ILoggedInService LoggedInService { get; set; }
         private IRainExceedanceClimateSiteService RainExceedanceClimateSiteService { get; set; }
         private CSSPDBContext db { get; set; }
+        private CSSPDBLocalContext dbLocal { get; set; }
+        private InMemoryDBContext dbIM { get; set; }
+        private RainExceedanceClimateSite rainExceedanceClimateSite { get; set; }
         #endregion Properties
 
         #region Constructors
@@ -47,9 +50,11 @@ namespace CSSPServices.Tests
 
         #region Tests Generated CRUD
         [Theory]
-        [InlineData("en-CA")]
-        [InlineData("fr-CA")]
-        public async Task RainExceedanceClimateSite_CRUD_Good_Test(string culture)
+        [InlineData("en-CA", "true")]
+        [InlineData("fr-CA", "true")]
+        [InlineData("en-CA", "false")]
+        [InlineData("fr-CA", "false")]
+        public async Task RainExceedanceClimateSite_CRUD_Good_Test(string culture, string IsLocalStr)
         {
             // -------------------------------
             // -------------------------------
@@ -59,44 +64,57 @@ namespace CSSPServices.Tests
 
             Assert.True(await Setup(culture));
 
-            using (TransactionScope ts = new TransactionScope())
+            LoggedInService.IsLocal = bool.Parse(IsLocalStr);
+
+            rainExceedanceClimateSite = GetFilledRandomRainExceedanceClimateSite("");
+
+            if (LoggedInService.IsLocal)
             {
-               RainExceedanceClimateSite rainExceedanceClimateSite = GetFilledRandomRainExceedanceClimateSite(""); 
-
-               // List<RainExceedanceClimateSite>
-               var actionRainExceedanceClimateSiteList = await RainExceedanceClimateSiteService.GetRainExceedanceClimateSiteList();
-               Assert.Equal(200, ((ObjectResult)actionRainExceedanceClimateSiteList.Result).StatusCode);
-               Assert.NotNull(((OkObjectResult)actionRainExceedanceClimateSiteList.Result).Value);
-               List<RainExceedanceClimateSite> rainExceedanceClimateSiteList = (List<RainExceedanceClimateSite>)((OkObjectResult)actionRainExceedanceClimateSiteList.Result).Value;
-
-               int count = ((List<RainExceedanceClimateSite>)((OkObjectResult)actionRainExceedanceClimateSiteList.Result).Value).Count();
-                Assert.True(count > 0);
-
-               // Post RainExceedanceClimateSite
-               var actionRainExceedanceClimateSiteAdded = await RainExceedanceClimateSiteService.Post(rainExceedanceClimateSite);
-               Assert.Equal(200, ((ObjectResult)actionRainExceedanceClimateSiteAdded.Result).StatusCode);
-               Assert.NotNull(((OkObjectResult)actionRainExceedanceClimateSiteAdded.Result).Value);
-               RainExceedanceClimateSite rainExceedanceClimateSiteAdded = (RainExceedanceClimateSite)((OkObjectResult)actionRainExceedanceClimateSiteAdded.Result).Value;
-               Assert.NotNull(rainExceedanceClimateSiteAdded);
-
-               // Put RainExceedanceClimateSite
-               var actionRainExceedanceClimateSiteUpdated = await RainExceedanceClimateSiteService.Put(rainExceedanceClimateSite);
-               Assert.Equal(200, ((ObjectResult)actionRainExceedanceClimateSiteUpdated.Result).StatusCode);
-               Assert.NotNull(((OkObjectResult)actionRainExceedanceClimateSiteUpdated.Result).Value);
-               RainExceedanceClimateSite rainExceedanceClimateSiteUpdated = (RainExceedanceClimateSite)((OkObjectResult)actionRainExceedanceClimateSiteUpdated.Result).Value;
-               Assert.NotNull(rainExceedanceClimateSiteUpdated);
-
-               // Delete RainExceedanceClimateSite
-               var actionRainExceedanceClimateSiteDeleted = await RainExceedanceClimateSiteService.Delete(rainExceedanceClimateSite.RainExceedanceClimateSiteID);
-               Assert.Equal(200, ((ObjectResult)actionRainExceedanceClimateSiteDeleted.Result).StatusCode);
-               Assert.NotNull(((OkObjectResult)actionRainExceedanceClimateSiteDeleted.Result).Value);
-               bool retBool = (bool)((OkObjectResult)actionRainExceedanceClimateSiteDeleted.Result).Value;
-               Assert.True(retBool);
+                await DoCRUDTest();
+            }
+            else
+            {
+                using (TransactionScope ts = new TransactionScope())
+                {
+                    await DoCRUDTest();
+                }
             }
         }
         #endregion Tests Generated CRUD
 
         #region Functions private
+        private async Task DoCRUDTest()
+        {
+            // Post RainExceedanceClimateSite
+            var actionRainExceedanceClimateSiteAdded = await RainExceedanceClimateSiteService.Post(rainExceedanceClimateSite);
+            Assert.Equal(200, ((ObjectResult)actionRainExceedanceClimateSiteAdded.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionRainExceedanceClimateSiteAdded.Result).Value);
+            RainExceedanceClimateSite rainExceedanceClimateSiteAdded = (RainExceedanceClimateSite)((OkObjectResult)actionRainExceedanceClimateSiteAdded.Result).Value;
+            Assert.NotNull(rainExceedanceClimateSiteAdded);
+
+            // List<RainExceedanceClimateSite>
+            var actionRainExceedanceClimateSiteList = await RainExceedanceClimateSiteService.GetRainExceedanceClimateSiteList();
+            Assert.Equal(200, ((ObjectResult)actionRainExceedanceClimateSiteList.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionRainExceedanceClimateSiteList.Result).Value);
+            List<RainExceedanceClimateSite> rainExceedanceClimateSiteList = (List<RainExceedanceClimateSite>)((OkObjectResult)actionRainExceedanceClimateSiteList.Result).Value;
+
+            int count = ((List<RainExceedanceClimateSite>)((OkObjectResult)actionRainExceedanceClimateSiteList.Result).Value).Count();
+            Assert.True(count > 0);
+
+            // Put RainExceedanceClimateSite
+            var actionRainExceedanceClimateSiteUpdated = await RainExceedanceClimateSiteService.Put(rainExceedanceClimateSite);
+            Assert.Equal(200, ((ObjectResult)actionRainExceedanceClimateSiteUpdated.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionRainExceedanceClimateSiteUpdated.Result).Value);
+            RainExceedanceClimateSite rainExceedanceClimateSiteUpdated = (RainExceedanceClimateSite)((OkObjectResult)actionRainExceedanceClimateSiteUpdated.Result).Value;
+            Assert.NotNull(rainExceedanceClimateSiteUpdated);
+
+            // Delete RainExceedanceClimateSite
+            var actionRainExceedanceClimateSiteDeleted = await RainExceedanceClimateSiteService.Delete(rainExceedanceClimateSite.RainExceedanceClimateSiteID);
+            Assert.Equal(200, ((ObjectResult)actionRainExceedanceClimateSiteDeleted.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionRainExceedanceClimateSiteDeleted.Result).Value);
+            bool retBool = (bool)((OkObjectResult)actionRainExceedanceClimateSiteDeleted.Result).Value;
+            Assert.True(retBool);
+        }
         private async Task<bool> Setup(string culture)
         {
             Config = new ConfigurationBuilder()
@@ -109,6 +127,9 @@ namespace CSSPServices.Tests
 
             Services.AddSingleton<IConfiguration>(Config);
 
+            string CSSPDBLocalFileName = Config.GetValue<string>("CSSPDBLocal");
+            Assert.NotNull(CSSPDBLocalFileName);
+
             string TestDBConnString = Config.GetValue<string>("TestDBConnectionString");
             Assert.NotNull(TestDBConnString);
 
@@ -120,6 +141,15 @@ namespace CSSPServices.Tests
             Services.AddDbContext<InMemoryDBContext>(options =>
             {
                 options.UseInMemoryDatabase(TestDBConnString);
+            });
+
+            string appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+
+            FileInfo fiAppDataPath = new FileInfo(CSSPDBLocalFileName.Replace("{appDataPath}", appDataPath));
+
+            Services.AddDbContext<CSSPDBLocalContext>(options =>
+            {
+                options.UseSqlite($"Data Source={ fiAppDataPath.FullName }");
             });
 
             Services.AddSingleton<ICultureService, CultureService>();
@@ -141,6 +171,12 @@ namespace CSSPServices.Tests
             string Id = Config.GetValue<string>("Id");
             Assert.True(await LoggedInService.SetLoggedInContactInfo(Id));
 
+            //string IsLocalStr = Config.GetValue<string>("IsLocal");
+            //Assert.NotNull(IsLocalStr);
+
+            dbIM = Provider.GetService<InMemoryDBContext>();
+            Assert.NotNull(dbIM);
+
             RainExceedanceClimateSiteService = Provider.GetService<IRainExceedanceClimateSiteService>();
             Assert.NotNull(RainExceedanceClimateSiteService);
 
@@ -148,12 +184,26 @@ namespace CSSPServices.Tests
         }
         private RainExceedanceClimateSite GetFilledRandomRainExceedanceClimateSite(string OmitPropName)
         {
+            dbIM.Database.EnsureDeleted();
+
             RainExceedanceClimateSite rainExceedanceClimateSite = new RainExceedanceClimateSite();
 
             if (OmitPropName != "RainExceedanceTVItemID") rainExceedanceClimateSite.RainExceedanceTVItemID = 56;
             if (OmitPropName != "ClimateSiteTVItemID") rainExceedanceClimateSite.ClimateSiteTVItemID = 7;
             if (OmitPropName != "LastUpdateDate_UTC") rainExceedanceClimateSite.LastUpdateDate_UTC = new DateTime(2005, 3, 6);
             if (OmitPropName != "LastUpdateContactTVItemID") rainExceedanceClimateSite.LastUpdateContactTVItemID = 2;
+
+            if (LoggedInService.IsLocal)
+            {
+                if (OmitPropName != "RainExceedanceClimateSiteID") rainExceedanceClimateSite.RainExceedanceClimateSiteID = 10000000;
+
+                dbIM.TVItems.Add(new TVItem() { TVItemID = 56, TVLevel = 2, TVPath = "p1p5p56", TVType = (TVTypeEnum)75, ParentID = 5, IsActive = true, LastUpdateDate_UTC = new DateTime(2019, 8, 16, 14, 13, 49), LastUpdateContactTVItemID = 2});
+                dbIM.SaveChanges();
+                dbIM.TVItems.Add(new TVItem() { TVItemID = 7, TVLevel = 3, TVPath = "p1p5p6p7", TVType = (TVTypeEnum)4, ParentID = 6, IsActive = true, LastUpdateDate_UTC = new DateTime(2015, 6, 18, 14, 40, 7), LastUpdateContactTVItemID = 2});
+                dbIM.SaveChanges();
+                dbIM.TVItems.Add(new TVItem() { TVItemID = 2, TVLevel = 1, TVPath = "p1p2", TVType = (TVTypeEnum)5, ParentID = 1, IsActive = true, LastUpdateDate_UTC = new DateTime(2014, 12, 2, 16, 58, 16), LastUpdateContactTVItemID = 2});
+                dbIM.SaveChanges();
+            }
 
             return rainExceedanceClimateSite;
         }

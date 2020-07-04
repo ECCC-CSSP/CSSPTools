@@ -36,6 +36,8 @@ namespace CSSPServices
 
         #region Properties
         private CSSPDBContext db { get; }
+        private CSSPDBLocalContext dbLocal { get; }
+        private InMemoryDBContext dbIM { get; }
         private ICultureService CultureService { get; }
         private ILoggedInService LoggedInService { get; }
         private IEnums enums { get; }
@@ -43,12 +45,14 @@ namespace CSSPServices
         #endregion Properties
 
         #region Constructors
-        public MapInfoService(ICultureService CultureService, ILoggedInService LoggedInService, IEnums enums, CSSPDBContext db)
+        public MapInfoService(ICultureService CultureService, ILoggedInService LoggedInService, IEnums enums, CSSPDBContext db, CSSPDBLocalContext dbLocal, InMemoryDBContext dbIM)
         {
             this.CultureService = CultureService;
             this.LoggedInService = LoggedInService;
             this.enums = enums;
             this.db = db;
+            this.dbLocal = dbLocal;
+            this.dbIM = dbIM;
         }
         #endregion Constructors
 
@@ -60,16 +64,32 @@ namespace CSSPServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            MapInfo mapinfo = (from c in db.MapInfos.AsNoTracking()
-                    where c.MapInfoID == MapInfoID
-                    select c).FirstOrDefault();
-
-            if (mapinfo == null)
+            if (LoggedInService.IsLocal)
             {
-               return await Task.FromResult(NotFound());
-            }
+                MapInfo mapinfo = (from c in dbLocal.MapInfos.AsNoTracking()
+                        where c.MapInfoID == MapInfoID
+                        select c).FirstOrDefault();
 
-            return await Task.FromResult(Ok(mapinfo));
+                if (mapinfo == null)
+                {
+                   return await Task.FromResult(NotFound());
+                }
+
+                return await Task.FromResult(Ok(mapinfo));
+            }
+            else
+            {
+                MapInfo mapinfo = (from c in db.MapInfos.AsNoTracking()
+                        where c.MapInfoID == MapInfoID
+                        select c).FirstOrDefault();
+
+                if (mapinfo == null)
+                {
+                   return await Task.FromResult(NotFound());
+                }
+
+                return await Task.FromResult(Ok(mapinfo));
+            }
         }
         public async Task<ActionResult<List<MapInfo>>> GetMapInfoList()
         {
@@ -78,9 +98,18 @@ namespace CSSPServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            List<MapInfo> mapinfoList = (from c in db.MapInfos.AsNoTracking() select c).Take(100).ToList();
+            if (LoggedInService.IsLocal)
+            {
+                List<MapInfo> mapinfoList = (from c in dbLocal.MapInfos.AsNoTracking() select c).Take(100).ToList();
 
-            return await Task.FromResult(Ok(mapinfoList));
+                return await Task.FromResult(Ok(mapinfoList));
+            }
+            else
+            {
+                List<MapInfo> mapinfoList = (from c in db.MapInfos.AsNoTracking() select c).Take(100).ToList();
+
+                return await Task.FromResult(Ok(mapinfoList));
+            }
         }
         public async Task<ActionResult<bool>> Delete(int MapInfoID)
         {
@@ -89,26 +118,52 @@ namespace CSSPServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            MapInfo mapInfo = (from c in db.MapInfos
-                               where c.MapInfoID == MapInfoID
-                               select c).FirstOrDefault();
-            
-            if (mapInfo == null)
+            if (LoggedInService.IsLocal)
             {
-                return await Task.FromResult(BadRequest(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "MapInfo", "MapInfoID", MapInfoID.ToString())));
-            }
+                MapInfo mapInfo = (from c in dbLocal.MapInfos
+                                   where c.MapInfoID == MapInfoID
+                                   select c).FirstOrDefault();
+                
+                if (mapInfo == null)
+                {
+                    return await Task.FromResult(BadRequest(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "MapInfo", "MapInfoID", MapInfoID.ToString())));
+                }
 
-            try
-            {
-               db.MapInfos.Remove(mapInfo);
-               db.SaveChanges();
-            }
-            catch (DbUpdateException ex)
-            {
-               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
-            }
+                try
+                {
+                   dbLocal.MapInfos.Remove(mapInfo);
+                   dbLocal.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                   return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
 
-            return await Task.FromResult(Ok(true));
+                return await Task.FromResult(Ok(true));
+            }
+            else
+            {
+                MapInfo mapInfo = (from c in db.MapInfos
+                                   where c.MapInfoID == MapInfoID
+                                   select c).FirstOrDefault();
+                
+                if (mapInfo == null)
+                {
+                    return await Task.FromResult(BadRequest(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "MapInfo", "MapInfoID", MapInfoID.ToString())));
+                }
+
+                try
+                {
+                   db.MapInfos.Remove(mapInfo);
+                   db.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                   return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
+
+                return await Task.FromResult(Ok(true));
+            }
         }
         public async Task<ActionResult<MapInfo>> Post(MapInfo mapInfo)
         {
@@ -123,17 +178,34 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ValidationResults));
             }
 
-            try
+            if (LoggedInService.IsLocal)
             {
-               db.MapInfos.Add(mapInfo);
-               db.SaveChanges();
-            }
-            catch (DbUpdateException ex)
-            {
-               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
-            }
+                try
+                {
+                   dbLocal.MapInfos.Add(mapInfo);
+                   dbLocal.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                   return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
 
-            return await Task.FromResult(Ok(mapInfo));
+                return await Task.FromResult(Ok(mapInfo));
+            }
+            else
+            {
+                try
+                {
+                   db.MapInfos.Add(mapInfo);
+                   db.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                   return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
+
+                return await Task.FromResult(Ok(mapInfo));
+            }
         }
         public async Task<ActionResult<MapInfo>> Put(MapInfo mapInfo)
         {
@@ -148,6 +220,22 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ValidationResults));
             }
 
+            if (LoggedInService.IsLocal)
+            {
+            try
+            {
+               dbLocal.MapInfos.Update(mapInfo);
+               dbLocal.SaveChanges();
+            }
+            catch (DbUpdateException ex)
+            {
+               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+            }
+
+            return await Task.FromResult(Ok(mapInfo));
+            }
+            else
+            {
             try
             {
                db.MapInfos.Update(mapInfo);
@@ -159,6 +247,7 @@ namespace CSSPServices
             }
 
             return await Task.FromResult(Ok(mapInfo));
+            }
         }
         #endregion Functions public
 
@@ -175,13 +264,35 @@ namespace CSSPServices
                     yield return new ValidationResult(string.Format(CultureServicesRes._IsRequired, "MapInfoID"), new[] { "MapInfoID" });
                 }
 
-                if (!(from c in db.MapInfos select c).Where(c => c.MapInfoID == mapInfo.MapInfoID).Any())
+                if (LoggedInService.IsLocal)
                 {
-                    yield return new ValidationResult(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "MapInfo", "MapInfoID", mapInfo.MapInfoID.ToString()), new[] { "MapInfoID" });
+                    if (!(from c in dbLocal.MapInfos select c).Where(c => c.MapInfoID == mapInfo.MapInfoID).Any())
+                    {
+                        yield return new ValidationResult(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "MapInfo", "MapInfoID", mapInfo.MapInfoID.ToString()), new[] { "MapInfoID" });
+                    }
+                }
+                else
+                {
+                    if (!(from c in db.MapInfos select c).Where(c => c.MapInfoID == mapInfo.MapInfoID).Any())
+                    {
+                        yield return new ValidationResult(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "MapInfo", "MapInfoID", mapInfo.MapInfoID.ToString()), new[] { "MapInfoID" });
+                    }
                 }
             }
 
-            TVItem TVItemTVItemID = (from c in db.TVItems where c.TVItemID == mapInfo.TVItemID select c).FirstOrDefault();
+            TVItem TVItemTVItemID = null;
+            if (LoggedInService.IsLocal)
+            {
+                TVItemTVItemID = (from c in dbLocal.TVItems where c.TVItemID == mapInfo.TVItemID select c).FirstOrDefault();
+                if (TVItemTVItemID == null)
+                {
+                    TVItemTVItemID = (from c in dbIM.TVItems where c.TVItemID == mapInfo.TVItemID select c).FirstOrDefault();
+                }
+            }
+            else
+            {
+                TVItemTVItemID = (from c in db.TVItems where c.TVItemID == mapInfo.TVItemID select c).FirstOrDefault();
+            }
 
             if (TVItemTVItemID == null)
             {
@@ -273,7 +384,19 @@ namespace CSSPServices
                 }
             }
 
-            TVItem TVItemLastUpdateContactTVItemID = (from c in db.TVItems where c.TVItemID == mapInfo.LastUpdateContactTVItemID select c).FirstOrDefault();
+            TVItem TVItemLastUpdateContactTVItemID = null;
+            if (LoggedInService.IsLocal)
+            {
+                TVItemLastUpdateContactTVItemID = (from c in dbLocal.TVItems where c.TVItemID == mapInfo.LastUpdateContactTVItemID select c).FirstOrDefault();
+                if (TVItemLastUpdateContactTVItemID == null)
+                {
+                    TVItemLastUpdateContactTVItemID = (from c in dbIM.TVItems where c.TVItemID == mapInfo.LastUpdateContactTVItemID select c).FirstOrDefault();
+                }
+            }
+            else
+            {
+                TVItemLastUpdateContactTVItemID = (from c in db.TVItems where c.TVItemID == mapInfo.LastUpdateContactTVItemID select c).FirstOrDefault();
+            }
 
             if (TVItemLastUpdateContactTVItemID == null)
             {

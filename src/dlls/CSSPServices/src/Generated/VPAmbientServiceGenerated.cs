@@ -36,6 +36,8 @@ namespace CSSPServices
 
         #region Properties
         private CSSPDBContext db { get; }
+        private CSSPDBLocalContext dbLocal { get; }
+        private InMemoryDBContext dbIM { get; }
         private ICultureService CultureService { get; }
         private ILoggedInService LoggedInService { get; }
         private IEnums enums { get; }
@@ -43,12 +45,14 @@ namespace CSSPServices
         #endregion Properties
 
         #region Constructors
-        public VPAmbientService(ICultureService CultureService, ILoggedInService LoggedInService, IEnums enums, CSSPDBContext db)
+        public VPAmbientService(ICultureService CultureService, ILoggedInService LoggedInService, IEnums enums, CSSPDBContext db, CSSPDBLocalContext dbLocal, InMemoryDBContext dbIM)
         {
             this.CultureService = CultureService;
             this.LoggedInService = LoggedInService;
             this.enums = enums;
             this.db = db;
+            this.dbLocal = dbLocal;
+            this.dbIM = dbIM;
         }
         #endregion Constructors
 
@@ -60,16 +64,32 @@ namespace CSSPServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            VPAmbient vpambient = (from c in db.VPAmbients.AsNoTracking()
-                    where c.VPAmbientID == VPAmbientID
-                    select c).FirstOrDefault();
-
-            if (vpambient == null)
+            if (LoggedInService.IsLocal)
             {
-               return await Task.FromResult(NotFound());
-            }
+                VPAmbient vpambient = (from c in dbLocal.VPAmbients.AsNoTracking()
+                        where c.VPAmbientID == VPAmbientID
+                        select c).FirstOrDefault();
 
-            return await Task.FromResult(Ok(vpambient));
+                if (vpambient == null)
+                {
+                   return await Task.FromResult(NotFound());
+                }
+
+                return await Task.FromResult(Ok(vpambient));
+            }
+            else
+            {
+                VPAmbient vpambient = (from c in db.VPAmbients.AsNoTracking()
+                        where c.VPAmbientID == VPAmbientID
+                        select c).FirstOrDefault();
+
+                if (vpambient == null)
+                {
+                   return await Task.FromResult(NotFound());
+                }
+
+                return await Task.FromResult(Ok(vpambient));
+            }
         }
         public async Task<ActionResult<List<VPAmbient>>> GetVPAmbientList()
         {
@@ -78,9 +98,18 @@ namespace CSSPServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            List<VPAmbient> vpambientList = (from c in db.VPAmbients.AsNoTracking() select c).Take(100).ToList();
+            if (LoggedInService.IsLocal)
+            {
+                List<VPAmbient> vpambientList = (from c in dbLocal.VPAmbients.AsNoTracking() select c).Take(100).ToList();
 
-            return await Task.FromResult(Ok(vpambientList));
+                return await Task.FromResult(Ok(vpambientList));
+            }
+            else
+            {
+                List<VPAmbient> vpambientList = (from c in db.VPAmbients.AsNoTracking() select c).Take(100).ToList();
+
+                return await Task.FromResult(Ok(vpambientList));
+            }
         }
         public async Task<ActionResult<bool>> Delete(int VPAmbientID)
         {
@@ -89,26 +118,52 @@ namespace CSSPServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            VPAmbient vpAmbient = (from c in db.VPAmbients
-                               where c.VPAmbientID == VPAmbientID
-                               select c).FirstOrDefault();
-            
-            if (vpAmbient == null)
+            if (LoggedInService.IsLocal)
             {
-                return await Task.FromResult(BadRequest(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "VPAmbient", "VPAmbientID", VPAmbientID.ToString())));
-            }
+                VPAmbient vpAmbient = (from c in dbLocal.VPAmbients
+                                   where c.VPAmbientID == VPAmbientID
+                                   select c).FirstOrDefault();
+                
+                if (vpAmbient == null)
+                {
+                    return await Task.FromResult(BadRequest(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "VPAmbient", "VPAmbientID", VPAmbientID.ToString())));
+                }
 
-            try
-            {
-               db.VPAmbients.Remove(vpAmbient);
-               db.SaveChanges();
-            }
-            catch (DbUpdateException ex)
-            {
-               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
-            }
+                try
+                {
+                   dbLocal.VPAmbients.Remove(vpAmbient);
+                   dbLocal.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                   return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
 
-            return await Task.FromResult(Ok(true));
+                return await Task.FromResult(Ok(true));
+            }
+            else
+            {
+                VPAmbient vpAmbient = (from c in db.VPAmbients
+                                   where c.VPAmbientID == VPAmbientID
+                                   select c).FirstOrDefault();
+                
+                if (vpAmbient == null)
+                {
+                    return await Task.FromResult(BadRequest(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "VPAmbient", "VPAmbientID", VPAmbientID.ToString())));
+                }
+
+                try
+                {
+                   db.VPAmbients.Remove(vpAmbient);
+                   db.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                   return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
+
+                return await Task.FromResult(Ok(true));
+            }
         }
         public async Task<ActionResult<VPAmbient>> Post(VPAmbient vpAmbient)
         {
@@ -123,17 +178,34 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ValidationResults));
             }
 
-            try
+            if (LoggedInService.IsLocal)
             {
-               db.VPAmbients.Add(vpAmbient);
-               db.SaveChanges();
-            }
-            catch (DbUpdateException ex)
-            {
-               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
-            }
+                try
+                {
+                   dbLocal.VPAmbients.Add(vpAmbient);
+                   dbLocal.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                   return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
 
-            return await Task.FromResult(Ok(vpAmbient));
+                return await Task.FromResult(Ok(vpAmbient));
+            }
+            else
+            {
+                try
+                {
+                   db.VPAmbients.Add(vpAmbient);
+                   db.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                   return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
+
+                return await Task.FromResult(Ok(vpAmbient));
+            }
         }
         public async Task<ActionResult<VPAmbient>> Put(VPAmbient vpAmbient)
         {
@@ -148,6 +220,22 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ValidationResults));
             }
 
+            if (LoggedInService.IsLocal)
+            {
+            try
+            {
+               dbLocal.VPAmbients.Update(vpAmbient);
+               dbLocal.SaveChanges();
+            }
+            catch (DbUpdateException ex)
+            {
+               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+            }
+
+            return await Task.FromResult(Ok(vpAmbient));
+            }
+            else
+            {
             try
             {
                db.VPAmbients.Update(vpAmbient);
@@ -159,6 +247,7 @@ namespace CSSPServices
             }
 
             return await Task.FromResult(Ok(vpAmbient));
+            }
         }
         #endregion Functions public
 
@@ -175,13 +264,35 @@ namespace CSSPServices
                     yield return new ValidationResult(string.Format(CultureServicesRes._IsRequired, "VPAmbientID"), new[] { "VPAmbientID" });
                 }
 
-                if (!(from c in db.VPAmbients select c).Where(c => c.VPAmbientID == vpAmbient.VPAmbientID).Any())
+                if (LoggedInService.IsLocal)
                 {
-                    yield return new ValidationResult(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "VPAmbient", "VPAmbientID", vpAmbient.VPAmbientID.ToString()), new[] { "VPAmbientID" });
+                    if (!(from c in dbLocal.VPAmbients select c).Where(c => c.VPAmbientID == vpAmbient.VPAmbientID).Any())
+                    {
+                        yield return new ValidationResult(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "VPAmbient", "VPAmbientID", vpAmbient.VPAmbientID.ToString()), new[] { "VPAmbientID" });
+                    }
+                }
+                else
+                {
+                    if (!(from c in db.VPAmbients select c).Where(c => c.VPAmbientID == vpAmbient.VPAmbientID).Any())
+                    {
+                        yield return new ValidationResult(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "VPAmbient", "VPAmbientID", vpAmbient.VPAmbientID.ToString()), new[] { "VPAmbientID" });
+                    }
                 }
             }
 
-            VPScenario VPScenarioVPScenarioID = (from c in db.VPScenarios where c.VPScenarioID == vpAmbient.VPScenarioID select c).FirstOrDefault();
+            VPScenario VPScenarioVPScenarioID = null;
+            if (LoggedInService.IsLocal)
+            {
+                VPScenarioVPScenarioID = (from c in dbLocal.VPScenarios where c.VPScenarioID == vpAmbient.VPScenarioID select c).FirstOrDefault();
+                if (VPScenarioVPScenarioID == null)
+                {
+                    VPScenarioVPScenarioID = (from c in dbIM.VPScenarios where c.VPScenarioID == vpAmbient.VPScenarioID select c).FirstOrDefault();
+                }
+            }
+            else
+            {
+                VPScenarioVPScenarioID = (from c in db.VPScenarios where c.VPScenarioID == vpAmbient.VPScenarioID select c).FirstOrDefault();
+            }
 
             if (VPScenarioVPScenarioID == null)
             {
@@ -285,7 +396,19 @@ namespace CSSPServices
                 }
             }
 
-            TVItem TVItemLastUpdateContactTVItemID = (from c in db.TVItems where c.TVItemID == vpAmbient.LastUpdateContactTVItemID select c).FirstOrDefault();
+            TVItem TVItemLastUpdateContactTVItemID = null;
+            if (LoggedInService.IsLocal)
+            {
+                TVItemLastUpdateContactTVItemID = (from c in dbLocal.TVItems where c.TVItemID == vpAmbient.LastUpdateContactTVItemID select c).FirstOrDefault();
+                if (TVItemLastUpdateContactTVItemID == null)
+                {
+                    TVItemLastUpdateContactTVItemID = (from c in dbIM.TVItems where c.TVItemID == vpAmbient.LastUpdateContactTVItemID select c).FirstOrDefault();
+                }
+            }
+            else
+            {
+                TVItemLastUpdateContactTVItemID = (from c in db.TVItems where c.TVItemID == vpAmbient.LastUpdateContactTVItemID select c).FirstOrDefault();
+            }
 
             if (TVItemLastUpdateContactTVItemID == null)
             {

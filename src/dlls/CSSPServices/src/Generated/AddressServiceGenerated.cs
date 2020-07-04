@@ -36,6 +36,8 @@ namespace CSSPServices
 
         #region Properties
         private CSSPDBContext db { get; }
+        private CSSPDBLocalContext dbLocal { get; }
+        private InMemoryDBContext dbIM { get; }
         private ICultureService CultureService { get; }
         private ILoggedInService LoggedInService { get; }
         private IEnums enums { get; }
@@ -43,12 +45,14 @@ namespace CSSPServices
         #endregion Properties
 
         #region Constructors
-        public AddressService(ICultureService CultureService, ILoggedInService LoggedInService, IEnums enums, CSSPDBContext db)
+        public AddressService(ICultureService CultureService, ILoggedInService LoggedInService, IEnums enums, CSSPDBContext db, CSSPDBLocalContext dbLocal, InMemoryDBContext dbIM)
         {
             this.CultureService = CultureService;
             this.LoggedInService = LoggedInService;
             this.enums = enums;
             this.db = db;
+            this.dbLocal = dbLocal;
+            this.dbIM = dbIM;
         }
         #endregion Constructors
 
@@ -60,16 +64,32 @@ namespace CSSPServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            Address address = (from c in db.Addresses.AsNoTracking()
-                    where c.AddressID == AddressID
-                    select c).FirstOrDefault();
-
-            if (address == null)
+            if (LoggedInService.IsLocal)
             {
-               return await Task.FromResult(NotFound());
-            }
+                Address address = (from c in dbLocal.Addresses.AsNoTracking()
+                        where c.AddressID == AddressID
+                        select c).FirstOrDefault();
 
-            return await Task.FromResult(Ok(address));
+                if (address == null)
+                {
+                   return await Task.FromResult(NotFound());
+                }
+
+                return await Task.FromResult(Ok(address));
+            }
+            else
+            {
+                Address address = (from c in db.Addresses.AsNoTracking()
+                        where c.AddressID == AddressID
+                        select c).FirstOrDefault();
+
+                if (address == null)
+                {
+                   return await Task.FromResult(NotFound());
+                }
+
+                return await Task.FromResult(Ok(address));
+            }
         }
         public async Task<ActionResult<List<Address>>> GetAddressList()
         {
@@ -78,9 +98,18 @@ namespace CSSPServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            List<Address> addressList = (from c in db.Addresses.AsNoTracking() select c).Take(100).ToList();
+            if (LoggedInService.IsLocal)
+            {
+                List<Address> addressList = (from c in dbLocal.Addresses.AsNoTracking() select c).Take(100).ToList();
 
-            return await Task.FromResult(Ok(addressList));
+                return await Task.FromResult(Ok(addressList));
+            }
+            else
+            {
+                List<Address> addressList = (from c in db.Addresses.AsNoTracking() select c).Take(100).ToList();
+
+                return await Task.FromResult(Ok(addressList));
+            }
         }
         public async Task<ActionResult<bool>> Delete(int AddressID)
         {
@@ -89,26 +118,52 @@ namespace CSSPServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            Address address = (from c in db.Addresses
-                               where c.AddressID == AddressID
-                               select c).FirstOrDefault();
-            
-            if (address == null)
+            if (LoggedInService.IsLocal)
             {
-                return await Task.FromResult(BadRequest(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "Address", "AddressID", AddressID.ToString())));
-            }
+                Address address = (from c in dbLocal.Addresses
+                                   where c.AddressID == AddressID
+                                   select c).FirstOrDefault();
+                
+                if (address == null)
+                {
+                    return await Task.FromResult(BadRequest(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "Address", "AddressID", AddressID.ToString())));
+                }
 
-            try
-            {
-               db.Addresses.Remove(address);
-               db.SaveChanges();
-            }
-            catch (DbUpdateException ex)
-            {
-               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
-            }
+                try
+                {
+                   dbLocal.Addresses.Remove(address);
+                   dbLocal.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                   return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
 
-            return await Task.FromResult(Ok(true));
+                return await Task.FromResult(Ok(true));
+            }
+            else
+            {
+                Address address = (from c in db.Addresses
+                                   where c.AddressID == AddressID
+                                   select c).FirstOrDefault();
+                
+                if (address == null)
+                {
+                    return await Task.FromResult(BadRequest(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "Address", "AddressID", AddressID.ToString())));
+                }
+
+                try
+                {
+                   db.Addresses.Remove(address);
+                   db.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                   return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
+
+                return await Task.FromResult(Ok(true));
+            }
         }
         public async Task<ActionResult<Address>> Post(Address address)
         {
@@ -123,17 +178,34 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ValidationResults));
             }
 
-            try
+            if (LoggedInService.IsLocal)
             {
-               db.Addresses.Add(address);
-               db.SaveChanges();
-            }
-            catch (DbUpdateException ex)
-            {
-               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
-            }
+                try
+                {
+                   dbLocal.Addresses.Add(address);
+                   dbLocal.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                   return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
 
-            return await Task.FromResult(Ok(address));
+                return await Task.FromResult(Ok(address));
+            }
+            else
+            {
+                try
+                {
+                   db.Addresses.Add(address);
+                   db.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                   return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
+
+                return await Task.FromResult(Ok(address));
+            }
         }
         public async Task<ActionResult<Address>> Put(Address address)
         {
@@ -148,6 +220,22 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ValidationResults));
             }
 
+            if (LoggedInService.IsLocal)
+            {
+            try
+            {
+               dbLocal.Addresses.Update(address);
+               dbLocal.SaveChanges();
+            }
+            catch (DbUpdateException ex)
+            {
+               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+            }
+
+            return await Task.FromResult(Ok(address));
+            }
+            else
+            {
             try
             {
                db.Addresses.Update(address);
@@ -159,6 +247,7 @@ namespace CSSPServices
             }
 
             return await Task.FromResult(Ok(address));
+            }
         }
         #endregion Functions public
 
@@ -175,13 +264,35 @@ namespace CSSPServices
                     yield return new ValidationResult(string.Format(CultureServicesRes._IsRequired, "AddressID"), new[] { "AddressID" });
                 }
 
-                if (!(from c in db.Addresses select c).Where(c => c.AddressID == address.AddressID).Any())
+                if (LoggedInService.IsLocal)
                 {
-                    yield return new ValidationResult(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "Address", "AddressID", address.AddressID.ToString()), new[] { "AddressID" });
+                    if (!(from c in dbLocal.Addresses select c).Where(c => c.AddressID == address.AddressID).Any())
+                    {
+                        yield return new ValidationResult(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "Address", "AddressID", address.AddressID.ToString()), new[] { "AddressID" });
+                    }
+                }
+                else
+                {
+                    if (!(from c in db.Addresses select c).Where(c => c.AddressID == address.AddressID).Any())
+                    {
+                        yield return new ValidationResult(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "Address", "AddressID", address.AddressID.ToString()), new[] { "AddressID" });
+                    }
                 }
             }
 
-            TVItem TVItemAddressTVItemID = (from c in db.TVItems where c.TVItemID == address.AddressTVItemID select c).FirstOrDefault();
+            TVItem TVItemAddressTVItemID = null;
+            if (LoggedInService.IsLocal)
+            {
+                TVItemAddressTVItemID = (from c in dbLocal.TVItems where c.TVItemID == address.AddressTVItemID select c).FirstOrDefault();
+                if (TVItemAddressTVItemID == null)
+                {
+                    TVItemAddressTVItemID = (from c in dbIM.TVItems where c.TVItemID == address.AddressTVItemID select c).FirstOrDefault();
+                }
+            }
+            else
+            {
+                TVItemAddressTVItemID = (from c in db.TVItems where c.TVItemID == address.AddressTVItemID select c).FirstOrDefault();
+            }
 
             if (TVItemAddressTVItemID == null)
             {
@@ -205,7 +316,19 @@ namespace CSSPServices
                 yield return new ValidationResult(string.Format(CultureServicesRes._IsRequired, "AddressType"), new[] { "AddressType" });
             }
 
-            TVItem TVItemCountryTVItemID = (from c in db.TVItems where c.TVItemID == address.CountryTVItemID select c).FirstOrDefault();
+            TVItem TVItemCountryTVItemID = null;
+            if (LoggedInService.IsLocal)
+            {
+                TVItemCountryTVItemID = (from c in dbLocal.TVItems where c.TVItemID == address.CountryTVItemID select c).FirstOrDefault();
+                if (TVItemCountryTVItemID == null)
+                {
+                    TVItemCountryTVItemID = (from c in dbIM.TVItems where c.TVItemID == address.CountryTVItemID select c).FirstOrDefault();
+                }
+            }
+            else
+            {
+                TVItemCountryTVItemID = (from c in db.TVItems where c.TVItemID == address.CountryTVItemID select c).FirstOrDefault();
+            }
 
             if (TVItemCountryTVItemID == null)
             {
@@ -223,7 +346,19 @@ namespace CSSPServices
                 }
             }
 
-            TVItem TVItemProvinceTVItemID = (from c in db.TVItems where c.TVItemID == address.ProvinceTVItemID select c).FirstOrDefault();
+            TVItem TVItemProvinceTVItemID = null;
+            if (LoggedInService.IsLocal)
+            {
+                TVItemProvinceTVItemID = (from c in dbLocal.TVItems where c.TVItemID == address.ProvinceTVItemID select c).FirstOrDefault();
+                if (TVItemProvinceTVItemID == null)
+                {
+                    TVItemProvinceTVItemID = (from c in dbIM.TVItems where c.TVItemID == address.ProvinceTVItemID select c).FirstOrDefault();
+                }
+            }
+            else
+            {
+                TVItemProvinceTVItemID = (from c in db.TVItems where c.TVItemID == address.ProvinceTVItemID select c).FirstOrDefault();
+            }
 
             if (TVItemProvinceTVItemID == null)
             {
@@ -241,7 +376,19 @@ namespace CSSPServices
                 }
             }
 
-            TVItem TVItemMunicipalityTVItemID = (from c in db.TVItems where c.TVItemID == address.MunicipalityTVItemID select c).FirstOrDefault();
+            TVItem TVItemMunicipalityTVItemID = null;
+            if (LoggedInService.IsLocal)
+            {
+                TVItemMunicipalityTVItemID = (from c in dbLocal.TVItems where c.TVItemID == address.MunicipalityTVItemID select c).FirstOrDefault();
+                if (TVItemMunicipalityTVItemID == null)
+                {
+                    TVItemMunicipalityTVItemID = (from c in dbIM.TVItems where c.TVItemID == address.MunicipalityTVItemID select c).FirstOrDefault();
+                }
+            }
+            else
+            {
+                TVItemMunicipalityTVItemID = (from c in db.TVItems where c.TVItemID == address.MunicipalityTVItemID select c).FirstOrDefault();
+            }
 
             if (TVItemMunicipalityTVItemID == null)
             {
@@ -300,7 +447,19 @@ namespace CSSPServices
                 }
             }
 
-            TVItem TVItemLastUpdateContactTVItemID = (from c in db.TVItems where c.TVItemID == address.LastUpdateContactTVItemID select c).FirstOrDefault();
+            TVItem TVItemLastUpdateContactTVItemID = null;
+            if (LoggedInService.IsLocal)
+            {
+                TVItemLastUpdateContactTVItemID = (from c in dbLocal.TVItems where c.TVItemID == address.LastUpdateContactTVItemID select c).FirstOrDefault();
+                if (TVItemLastUpdateContactTVItemID == null)
+                {
+                    TVItemLastUpdateContactTVItemID = (from c in dbIM.TVItems where c.TVItemID == address.LastUpdateContactTVItemID select c).FirstOrDefault();
+                }
+            }
+            else
+            {
+                TVItemLastUpdateContactTVItemID = (from c in db.TVItems where c.TVItemID == address.LastUpdateContactTVItemID select c).FirstOrDefault();
+            }
 
             if (TVItemLastUpdateContactTVItemID == null)
             {

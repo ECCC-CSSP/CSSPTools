@@ -36,6 +36,9 @@ namespace CSSPServices.Tests
         private ILoggedInService LoggedInService { get; set; }
         private IPolSourceGroupingLanguageService PolSourceGroupingLanguageService { get; set; }
         private CSSPDBContext db { get; set; }
+        private CSSPDBLocalContext dbLocal { get; set; }
+        private InMemoryDBContext dbIM { get; set; }
+        private PolSourceGroupingLanguage polSourceGroupingLanguage { get; set; }
         #endregion Properties
 
         #region Constructors
@@ -47,9 +50,11 @@ namespace CSSPServices.Tests
 
         #region Tests Generated CRUD
         [Theory]
-        [InlineData("en-CA")]
-        [InlineData("fr-CA")]
-        public async Task PolSourceGroupingLanguage_CRUD_Good_Test(string culture)
+        [InlineData("en-CA", "true")]
+        [InlineData("fr-CA", "true")]
+        [InlineData("en-CA", "false")]
+        [InlineData("fr-CA", "false")]
+        public async Task PolSourceGroupingLanguage_CRUD_Good_Test(string culture, string IsLocalStr)
         {
             // -------------------------------
             // -------------------------------
@@ -59,44 +64,57 @@ namespace CSSPServices.Tests
 
             Assert.True(await Setup(culture));
 
-            using (TransactionScope ts = new TransactionScope())
+            LoggedInService.IsLocal = bool.Parse(IsLocalStr);
+
+            polSourceGroupingLanguage = GetFilledRandomPolSourceGroupingLanguage("");
+
+            if (LoggedInService.IsLocal)
             {
-               PolSourceGroupingLanguage polSourceGroupingLanguage = GetFilledRandomPolSourceGroupingLanguage(""); 
-
-               // List<PolSourceGroupingLanguage>
-               var actionPolSourceGroupingLanguageList = await PolSourceGroupingLanguageService.GetPolSourceGroupingLanguageList();
-               Assert.Equal(200, ((ObjectResult)actionPolSourceGroupingLanguageList.Result).StatusCode);
-               Assert.NotNull(((OkObjectResult)actionPolSourceGroupingLanguageList.Result).Value);
-               List<PolSourceGroupingLanguage> polSourceGroupingLanguageList = (List<PolSourceGroupingLanguage>)((OkObjectResult)actionPolSourceGroupingLanguageList.Result).Value;
-
-               int count = ((List<PolSourceGroupingLanguage>)((OkObjectResult)actionPolSourceGroupingLanguageList.Result).Value).Count();
-                Assert.True(count > 0);
-
-               // Post PolSourceGroupingLanguage
-               var actionPolSourceGroupingLanguageAdded = await PolSourceGroupingLanguageService.Post(polSourceGroupingLanguage);
-               Assert.Equal(200, ((ObjectResult)actionPolSourceGroupingLanguageAdded.Result).StatusCode);
-               Assert.NotNull(((OkObjectResult)actionPolSourceGroupingLanguageAdded.Result).Value);
-               PolSourceGroupingLanguage polSourceGroupingLanguageAdded = (PolSourceGroupingLanguage)((OkObjectResult)actionPolSourceGroupingLanguageAdded.Result).Value;
-               Assert.NotNull(polSourceGroupingLanguageAdded);
-
-               // Put PolSourceGroupingLanguage
-               var actionPolSourceGroupingLanguageUpdated = await PolSourceGroupingLanguageService.Put(polSourceGroupingLanguage);
-               Assert.Equal(200, ((ObjectResult)actionPolSourceGroupingLanguageUpdated.Result).StatusCode);
-               Assert.NotNull(((OkObjectResult)actionPolSourceGroupingLanguageUpdated.Result).Value);
-               PolSourceGroupingLanguage polSourceGroupingLanguageUpdated = (PolSourceGroupingLanguage)((OkObjectResult)actionPolSourceGroupingLanguageUpdated.Result).Value;
-               Assert.NotNull(polSourceGroupingLanguageUpdated);
-
-               // Delete PolSourceGroupingLanguage
-               var actionPolSourceGroupingLanguageDeleted = await PolSourceGroupingLanguageService.Delete(polSourceGroupingLanguage.PolSourceGroupingLanguageID);
-               Assert.Equal(200, ((ObjectResult)actionPolSourceGroupingLanguageDeleted.Result).StatusCode);
-               Assert.NotNull(((OkObjectResult)actionPolSourceGroupingLanguageDeleted.Result).Value);
-               bool retBool = (bool)((OkObjectResult)actionPolSourceGroupingLanguageDeleted.Result).Value;
-               Assert.True(retBool);
+                await DoCRUDTest();
+            }
+            else
+            {
+                using (TransactionScope ts = new TransactionScope())
+                {
+                    await DoCRUDTest();
+                }
             }
         }
         #endregion Tests Generated CRUD
 
         #region Functions private
+        private async Task DoCRUDTest()
+        {
+            // Post PolSourceGroupingLanguage
+            var actionPolSourceGroupingLanguageAdded = await PolSourceGroupingLanguageService.Post(polSourceGroupingLanguage);
+            Assert.Equal(200, ((ObjectResult)actionPolSourceGroupingLanguageAdded.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionPolSourceGroupingLanguageAdded.Result).Value);
+            PolSourceGroupingLanguage polSourceGroupingLanguageAdded = (PolSourceGroupingLanguage)((OkObjectResult)actionPolSourceGroupingLanguageAdded.Result).Value;
+            Assert.NotNull(polSourceGroupingLanguageAdded);
+
+            // List<PolSourceGroupingLanguage>
+            var actionPolSourceGroupingLanguageList = await PolSourceGroupingLanguageService.GetPolSourceGroupingLanguageList();
+            Assert.Equal(200, ((ObjectResult)actionPolSourceGroupingLanguageList.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionPolSourceGroupingLanguageList.Result).Value);
+            List<PolSourceGroupingLanguage> polSourceGroupingLanguageList = (List<PolSourceGroupingLanguage>)((OkObjectResult)actionPolSourceGroupingLanguageList.Result).Value;
+
+            int count = ((List<PolSourceGroupingLanguage>)((OkObjectResult)actionPolSourceGroupingLanguageList.Result).Value).Count();
+            Assert.True(count > 0);
+
+            // Put PolSourceGroupingLanguage
+            var actionPolSourceGroupingLanguageUpdated = await PolSourceGroupingLanguageService.Put(polSourceGroupingLanguage);
+            Assert.Equal(200, ((ObjectResult)actionPolSourceGroupingLanguageUpdated.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionPolSourceGroupingLanguageUpdated.Result).Value);
+            PolSourceGroupingLanguage polSourceGroupingLanguageUpdated = (PolSourceGroupingLanguage)((OkObjectResult)actionPolSourceGroupingLanguageUpdated.Result).Value;
+            Assert.NotNull(polSourceGroupingLanguageUpdated);
+
+            // Delete PolSourceGroupingLanguage
+            var actionPolSourceGroupingLanguageDeleted = await PolSourceGroupingLanguageService.Delete(polSourceGroupingLanguage.PolSourceGroupingLanguageID);
+            Assert.Equal(200, ((ObjectResult)actionPolSourceGroupingLanguageDeleted.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionPolSourceGroupingLanguageDeleted.Result).Value);
+            bool retBool = (bool)((OkObjectResult)actionPolSourceGroupingLanguageDeleted.Result).Value;
+            Assert.True(retBool);
+        }
         private async Task<bool> Setup(string culture)
         {
             Config = new ConfigurationBuilder()
@@ -109,6 +127,9 @@ namespace CSSPServices.Tests
 
             Services.AddSingleton<IConfiguration>(Config);
 
+            string CSSPDBLocalFileName = Config.GetValue<string>("CSSPDBLocal");
+            Assert.NotNull(CSSPDBLocalFileName);
+
             string TestDBConnString = Config.GetValue<string>("TestDBConnectionString");
             Assert.NotNull(TestDBConnString);
 
@@ -120,6 +141,15 @@ namespace CSSPServices.Tests
             Services.AddDbContext<InMemoryDBContext>(options =>
             {
                 options.UseInMemoryDatabase(TestDBConnString);
+            });
+
+            string appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+
+            FileInfo fiAppDataPath = new FileInfo(CSSPDBLocalFileName.Replace("{appDataPath}", appDataPath));
+
+            Services.AddDbContext<CSSPDBLocalContext>(options =>
+            {
+                options.UseSqlite($"Data Source={ fiAppDataPath.FullName }");
             });
 
             Services.AddSingleton<ICultureService, CultureService>();
@@ -141,6 +171,12 @@ namespace CSSPServices.Tests
             string Id = Config.GetValue<string>("Id");
             Assert.True(await LoggedInService.SetLoggedInContactInfo(Id));
 
+            //string IsLocalStr = Config.GetValue<string>("IsLocal");
+            //Assert.NotNull(IsLocalStr);
+
+            dbIM = Provider.GetService<InMemoryDBContext>();
+            Assert.NotNull(dbIM);
+
             PolSourceGroupingLanguageService = Provider.GetService<IPolSourceGroupingLanguageService>();
             Assert.NotNull(PolSourceGroupingLanguageService);
 
@@ -148,6 +184,8 @@ namespace CSSPServices.Tests
         }
         private PolSourceGroupingLanguage GetFilledRandomPolSourceGroupingLanguage(string OmitPropName)
         {
+            dbIM.Database.EnsureDeleted();
+
             PolSourceGroupingLanguage polSourceGroupingLanguage = new PolSourceGroupingLanguage();
 
             if (OmitPropName != "PolSourceGroupingID") polSourceGroupingLanguage.PolSourceGroupingID = 1;
@@ -165,6 +203,16 @@ namespace CSSPServices.Tests
             if (OmitPropName != "TranslationStatusText") polSourceGroupingLanguage.TranslationStatusText = (TranslationStatusEnum)GetRandomEnumType(typeof(TranslationStatusEnum));
             if (OmitPropName != "LastUpdateDate_UTC") polSourceGroupingLanguage.LastUpdateDate_UTC = new DateTime(2005, 3, 6);
             if (OmitPropName != "LastUpdateContactTVItemID") polSourceGroupingLanguage.LastUpdateContactTVItemID = 2;
+
+            if (LoggedInService.IsLocal)
+            {
+                if (OmitPropName != "PolSourceGroupingLanguageID") polSourceGroupingLanguage.PolSourceGroupingLanguageID = 10000000;
+
+                dbIM.PolSourceGroupings.Add(new PolSourceGrouping() { PolSourceGroupingID = 1 });
+                dbIM.SaveChanges();
+                dbIM.TVItems.Add(new TVItem() { TVItemID = 2, TVLevel = 1, TVPath = "p1p2", TVType = (TVTypeEnum)5, ParentID = 1, IsActive = true, LastUpdateDate_UTC = new DateTime(2014, 12, 2, 16, 58, 16), LastUpdateContactTVItemID = 2});
+                dbIM.SaveChanges();
+            }
 
             return polSourceGroupingLanguage;
         }

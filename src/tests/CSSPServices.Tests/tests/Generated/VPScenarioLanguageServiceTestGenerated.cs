@@ -36,6 +36,9 @@ namespace CSSPServices.Tests
         private ILoggedInService LoggedInService { get; set; }
         private IVPScenarioLanguageService VPScenarioLanguageService { get; set; }
         private CSSPDBContext db { get; set; }
+        private CSSPDBLocalContext dbLocal { get; set; }
+        private InMemoryDBContext dbIM { get; set; }
+        private VPScenarioLanguage vpScenarioLanguage { get; set; }
         #endregion Properties
 
         #region Constructors
@@ -47,9 +50,11 @@ namespace CSSPServices.Tests
 
         #region Tests Generated CRUD
         [Theory]
-        [InlineData("en-CA")]
-        [InlineData("fr-CA")]
-        public async Task VPScenarioLanguage_CRUD_Good_Test(string culture)
+        [InlineData("en-CA", "true")]
+        [InlineData("fr-CA", "true")]
+        [InlineData("en-CA", "false")]
+        [InlineData("fr-CA", "false")]
+        public async Task VPScenarioLanguage_CRUD_Good_Test(string culture, string IsLocalStr)
         {
             // -------------------------------
             // -------------------------------
@@ -59,44 +64,57 @@ namespace CSSPServices.Tests
 
             Assert.True(await Setup(culture));
 
-            using (TransactionScope ts = new TransactionScope())
+            LoggedInService.IsLocal = bool.Parse(IsLocalStr);
+
+            vpScenarioLanguage = GetFilledRandomVPScenarioLanguage("");
+
+            if (LoggedInService.IsLocal)
             {
-               VPScenarioLanguage vpScenarioLanguage = GetFilledRandomVPScenarioLanguage(""); 
-
-               // List<VPScenarioLanguage>
-               var actionVPScenarioLanguageList = await VPScenarioLanguageService.GetVPScenarioLanguageList();
-               Assert.Equal(200, ((ObjectResult)actionVPScenarioLanguageList.Result).StatusCode);
-               Assert.NotNull(((OkObjectResult)actionVPScenarioLanguageList.Result).Value);
-               List<VPScenarioLanguage> vpScenarioLanguageList = (List<VPScenarioLanguage>)((OkObjectResult)actionVPScenarioLanguageList.Result).Value;
-
-               int count = ((List<VPScenarioLanguage>)((OkObjectResult)actionVPScenarioLanguageList.Result).Value).Count();
-                Assert.True(count > 0);
-
-               // Post VPScenarioLanguage
-               var actionVPScenarioLanguageAdded = await VPScenarioLanguageService.Post(vpScenarioLanguage);
-               Assert.Equal(200, ((ObjectResult)actionVPScenarioLanguageAdded.Result).StatusCode);
-               Assert.NotNull(((OkObjectResult)actionVPScenarioLanguageAdded.Result).Value);
-               VPScenarioLanguage vpScenarioLanguageAdded = (VPScenarioLanguage)((OkObjectResult)actionVPScenarioLanguageAdded.Result).Value;
-               Assert.NotNull(vpScenarioLanguageAdded);
-
-               // Put VPScenarioLanguage
-               var actionVPScenarioLanguageUpdated = await VPScenarioLanguageService.Put(vpScenarioLanguage);
-               Assert.Equal(200, ((ObjectResult)actionVPScenarioLanguageUpdated.Result).StatusCode);
-               Assert.NotNull(((OkObjectResult)actionVPScenarioLanguageUpdated.Result).Value);
-               VPScenarioLanguage vpScenarioLanguageUpdated = (VPScenarioLanguage)((OkObjectResult)actionVPScenarioLanguageUpdated.Result).Value;
-               Assert.NotNull(vpScenarioLanguageUpdated);
-
-               // Delete VPScenarioLanguage
-               var actionVPScenarioLanguageDeleted = await VPScenarioLanguageService.Delete(vpScenarioLanguage.VPScenarioLanguageID);
-               Assert.Equal(200, ((ObjectResult)actionVPScenarioLanguageDeleted.Result).StatusCode);
-               Assert.NotNull(((OkObjectResult)actionVPScenarioLanguageDeleted.Result).Value);
-               bool retBool = (bool)((OkObjectResult)actionVPScenarioLanguageDeleted.Result).Value;
-               Assert.True(retBool);
+                await DoCRUDTest();
+            }
+            else
+            {
+                using (TransactionScope ts = new TransactionScope())
+                {
+                    await DoCRUDTest();
+                }
             }
         }
         #endregion Tests Generated CRUD
 
         #region Functions private
+        private async Task DoCRUDTest()
+        {
+            // Post VPScenarioLanguage
+            var actionVPScenarioLanguageAdded = await VPScenarioLanguageService.Post(vpScenarioLanguage);
+            Assert.Equal(200, ((ObjectResult)actionVPScenarioLanguageAdded.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionVPScenarioLanguageAdded.Result).Value);
+            VPScenarioLanguage vpScenarioLanguageAdded = (VPScenarioLanguage)((OkObjectResult)actionVPScenarioLanguageAdded.Result).Value;
+            Assert.NotNull(vpScenarioLanguageAdded);
+
+            // List<VPScenarioLanguage>
+            var actionVPScenarioLanguageList = await VPScenarioLanguageService.GetVPScenarioLanguageList();
+            Assert.Equal(200, ((ObjectResult)actionVPScenarioLanguageList.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionVPScenarioLanguageList.Result).Value);
+            List<VPScenarioLanguage> vpScenarioLanguageList = (List<VPScenarioLanguage>)((OkObjectResult)actionVPScenarioLanguageList.Result).Value;
+
+            int count = ((List<VPScenarioLanguage>)((OkObjectResult)actionVPScenarioLanguageList.Result).Value).Count();
+            Assert.True(count > 0);
+
+            // Put VPScenarioLanguage
+            var actionVPScenarioLanguageUpdated = await VPScenarioLanguageService.Put(vpScenarioLanguage);
+            Assert.Equal(200, ((ObjectResult)actionVPScenarioLanguageUpdated.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionVPScenarioLanguageUpdated.Result).Value);
+            VPScenarioLanguage vpScenarioLanguageUpdated = (VPScenarioLanguage)((OkObjectResult)actionVPScenarioLanguageUpdated.Result).Value;
+            Assert.NotNull(vpScenarioLanguageUpdated);
+
+            // Delete VPScenarioLanguage
+            var actionVPScenarioLanguageDeleted = await VPScenarioLanguageService.Delete(vpScenarioLanguage.VPScenarioLanguageID);
+            Assert.Equal(200, ((ObjectResult)actionVPScenarioLanguageDeleted.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionVPScenarioLanguageDeleted.Result).Value);
+            bool retBool = (bool)((OkObjectResult)actionVPScenarioLanguageDeleted.Result).Value;
+            Assert.True(retBool);
+        }
         private async Task<bool> Setup(string culture)
         {
             Config = new ConfigurationBuilder()
@@ -109,6 +127,9 @@ namespace CSSPServices.Tests
 
             Services.AddSingleton<IConfiguration>(Config);
 
+            string CSSPDBLocalFileName = Config.GetValue<string>("CSSPDBLocal");
+            Assert.NotNull(CSSPDBLocalFileName);
+
             string TestDBConnString = Config.GetValue<string>("TestDBConnectionString");
             Assert.NotNull(TestDBConnString);
 
@@ -120,6 +141,15 @@ namespace CSSPServices.Tests
             Services.AddDbContext<InMemoryDBContext>(options =>
             {
                 options.UseInMemoryDatabase(TestDBConnString);
+            });
+
+            string appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+
+            FileInfo fiAppDataPath = new FileInfo(CSSPDBLocalFileName.Replace("{appDataPath}", appDataPath));
+
+            Services.AddDbContext<CSSPDBLocalContext>(options =>
+            {
+                options.UseSqlite($"Data Source={ fiAppDataPath.FullName }");
             });
 
             Services.AddSingleton<ICultureService, CultureService>();
@@ -141,6 +171,12 @@ namespace CSSPServices.Tests
             string Id = Config.GetValue<string>("Id");
             Assert.True(await LoggedInService.SetLoggedInContactInfo(Id));
 
+            //string IsLocalStr = Config.GetValue<string>("IsLocal");
+            //Assert.NotNull(IsLocalStr);
+
+            dbIM = Provider.GetService<InMemoryDBContext>();
+            Assert.NotNull(dbIM);
+
             VPScenarioLanguageService = Provider.GetService<IVPScenarioLanguageService>();
             Assert.NotNull(VPScenarioLanguageService);
 
@@ -148,6 +184,8 @@ namespace CSSPServices.Tests
         }
         private VPScenarioLanguage GetFilledRandomVPScenarioLanguage(string OmitPropName)
         {
+            dbIM.Database.EnsureDeleted();
+
             VPScenarioLanguage vpScenarioLanguage = new VPScenarioLanguage();
 
             if (OmitPropName != "VPScenarioID") vpScenarioLanguage.VPScenarioID = 1;
@@ -156,6 +194,16 @@ namespace CSSPServices.Tests
             if (OmitPropName != "TranslationStatus") vpScenarioLanguage.TranslationStatus = (TranslationStatusEnum)GetRandomEnumType(typeof(TranslationStatusEnum));
             if (OmitPropName != "LastUpdateDate_UTC") vpScenarioLanguage.LastUpdateDate_UTC = new DateTime(2005, 3, 6);
             if (OmitPropName != "LastUpdateContactTVItemID") vpScenarioLanguage.LastUpdateContactTVItemID = 2;
+
+            if (LoggedInService.IsLocal)
+            {
+                if (OmitPropName != "VPScenarioLanguageID") vpScenarioLanguage.VPScenarioLanguageID = 10000000;
+
+                dbIM.VPScenarios.Add(new VPScenario() { VPScenarioID = 1 });
+                dbIM.SaveChanges();
+                dbIM.TVItems.Add(new TVItem() { TVItemID = 2, TVLevel = 1, TVPath = "p1p2", TVType = (TVTypeEnum)5, ParentID = 1, IsActive = true, LastUpdateDate_UTC = new DateTime(2014, 12, 2, 16, 58, 16), LastUpdateContactTVItemID = 2});
+                dbIM.SaveChanges();
+            }
 
             return vpScenarioLanguage;
         }

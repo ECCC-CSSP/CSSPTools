@@ -36,6 +36,9 @@ namespace CSSPServices.Tests
         private ILoggedInService LoggedInService { get; set; }
         private IPolSourceGroupingService PolSourceGroupingService { get; set; }
         private CSSPDBContext db { get; set; }
+        private CSSPDBLocalContext dbLocal { get; set; }
+        private InMemoryDBContext dbIM { get; set; }
+        private PolSourceGrouping polSourceGrouping { get; set; }
         #endregion Properties
 
         #region Constructors
@@ -47,9 +50,11 @@ namespace CSSPServices.Tests
 
         #region Tests Generated CRUD
         [Theory]
-        [InlineData("en-CA")]
-        [InlineData("fr-CA")]
-        public async Task PolSourceGrouping_CRUD_Good_Test(string culture)
+        [InlineData("en-CA", "true")]
+        [InlineData("fr-CA", "true")]
+        [InlineData("en-CA", "false")]
+        [InlineData("fr-CA", "false")]
+        public async Task PolSourceGrouping_CRUD_Good_Test(string culture, string IsLocalStr)
         {
             // -------------------------------
             // -------------------------------
@@ -59,44 +64,57 @@ namespace CSSPServices.Tests
 
             Assert.True(await Setup(culture));
 
-            using (TransactionScope ts = new TransactionScope())
+            LoggedInService.IsLocal = bool.Parse(IsLocalStr);
+
+            polSourceGrouping = GetFilledRandomPolSourceGrouping("");
+
+            if (LoggedInService.IsLocal)
             {
-               PolSourceGrouping polSourceGrouping = GetFilledRandomPolSourceGrouping(""); 
-
-               // List<PolSourceGrouping>
-               var actionPolSourceGroupingList = await PolSourceGroupingService.GetPolSourceGroupingList();
-               Assert.Equal(200, ((ObjectResult)actionPolSourceGroupingList.Result).StatusCode);
-               Assert.NotNull(((OkObjectResult)actionPolSourceGroupingList.Result).Value);
-               List<PolSourceGrouping> polSourceGroupingList = (List<PolSourceGrouping>)((OkObjectResult)actionPolSourceGroupingList.Result).Value;
-
-               int count = ((List<PolSourceGrouping>)((OkObjectResult)actionPolSourceGroupingList.Result).Value).Count();
-                Assert.True(count > 0);
-
-               // Post PolSourceGrouping
-               var actionPolSourceGroupingAdded = await PolSourceGroupingService.Post(polSourceGrouping);
-               Assert.Equal(200, ((ObjectResult)actionPolSourceGroupingAdded.Result).StatusCode);
-               Assert.NotNull(((OkObjectResult)actionPolSourceGroupingAdded.Result).Value);
-               PolSourceGrouping polSourceGroupingAdded = (PolSourceGrouping)((OkObjectResult)actionPolSourceGroupingAdded.Result).Value;
-               Assert.NotNull(polSourceGroupingAdded);
-
-               // Put PolSourceGrouping
-               var actionPolSourceGroupingUpdated = await PolSourceGroupingService.Put(polSourceGrouping);
-               Assert.Equal(200, ((ObjectResult)actionPolSourceGroupingUpdated.Result).StatusCode);
-               Assert.NotNull(((OkObjectResult)actionPolSourceGroupingUpdated.Result).Value);
-               PolSourceGrouping polSourceGroupingUpdated = (PolSourceGrouping)((OkObjectResult)actionPolSourceGroupingUpdated.Result).Value;
-               Assert.NotNull(polSourceGroupingUpdated);
-
-               // Delete PolSourceGrouping
-               var actionPolSourceGroupingDeleted = await PolSourceGroupingService.Delete(polSourceGrouping.PolSourceGroupingID);
-               Assert.Equal(200, ((ObjectResult)actionPolSourceGroupingDeleted.Result).StatusCode);
-               Assert.NotNull(((OkObjectResult)actionPolSourceGroupingDeleted.Result).Value);
-               bool retBool = (bool)((OkObjectResult)actionPolSourceGroupingDeleted.Result).Value;
-               Assert.True(retBool);
+                await DoCRUDTest();
+            }
+            else
+            {
+                using (TransactionScope ts = new TransactionScope())
+                {
+                    await DoCRUDTest();
+                }
             }
         }
         #endregion Tests Generated CRUD
 
         #region Functions private
+        private async Task DoCRUDTest()
+        {
+            // Post PolSourceGrouping
+            var actionPolSourceGroupingAdded = await PolSourceGroupingService.Post(polSourceGrouping);
+            Assert.Equal(200, ((ObjectResult)actionPolSourceGroupingAdded.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionPolSourceGroupingAdded.Result).Value);
+            PolSourceGrouping polSourceGroupingAdded = (PolSourceGrouping)((OkObjectResult)actionPolSourceGroupingAdded.Result).Value;
+            Assert.NotNull(polSourceGroupingAdded);
+
+            // List<PolSourceGrouping>
+            var actionPolSourceGroupingList = await PolSourceGroupingService.GetPolSourceGroupingList();
+            Assert.Equal(200, ((ObjectResult)actionPolSourceGroupingList.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionPolSourceGroupingList.Result).Value);
+            List<PolSourceGrouping> polSourceGroupingList = (List<PolSourceGrouping>)((OkObjectResult)actionPolSourceGroupingList.Result).Value;
+
+            int count = ((List<PolSourceGrouping>)((OkObjectResult)actionPolSourceGroupingList.Result).Value).Count();
+            Assert.True(count > 0);
+
+            // Put PolSourceGrouping
+            var actionPolSourceGroupingUpdated = await PolSourceGroupingService.Put(polSourceGrouping);
+            Assert.Equal(200, ((ObjectResult)actionPolSourceGroupingUpdated.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionPolSourceGroupingUpdated.Result).Value);
+            PolSourceGrouping polSourceGroupingUpdated = (PolSourceGrouping)((OkObjectResult)actionPolSourceGroupingUpdated.Result).Value;
+            Assert.NotNull(polSourceGroupingUpdated);
+
+            // Delete PolSourceGrouping
+            var actionPolSourceGroupingDeleted = await PolSourceGroupingService.Delete(polSourceGrouping.PolSourceGroupingID);
+            Assert.Equal(200, ((ObjectResult)actionPolSourceGroupingDeleted.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionPolSourceGroupingDeleted.Result).Value);
+            bool retBool = (bool)((OkObjectResult)actionPolSourceGroupingDeleted.Result).Value;
+            Assert.True(retBool);
+        }
         private async Task<bool> Setup(string culture)
         {
             Config = new ConfigurationBuilder()
@@ -109,6 +127,9 @@ namespace CSSPServices.Tests
 
             Services.AddSingleton<IConfiguration>(Config);
 
+            string CSSPDBLocalFileName = Config.GetValue<string>("CSSPDBLocal");
+            Assert.NotNull(CSSPDBLocalFileName);
+
             string TestDBConnString = Config.GetValue<string>("TestDBConnectionString");
             Assert.NotNull(TestDBConnString);
 
@@ -120,6 +141,15 @@ namespace CSSPServices.Tests
             Services.AddDbContext<InMemoryDBContext>(options =>
             {
                 options.UseInMemoryDatabase(TestDBConnString);
+            });
+
+            string appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+
+            FileInfo fiAppDataPath = new FileInfo(CSSPDBLocalFileName.Replace("{appDataPath}", appDataPath));
+
+            Services.AddDbContext<CSSPDBLocalContext>(options =>
+            {
+                options.UseSqlite($"Data Source={ fiAppDataPath.FullName }");
             });
 
             Services.AddSingleton<ICultureService, CultureService>();
@@ -141,6 +171,12 @@ namespace CSSPServices.Tests
             string Id = Config.GetValue<string>("Id");
             Assert.True(await LoggedInService.SetLoggedInContactInfo(Id));
 
+            //string IsLocalStr = Config.GetValue<string>("IsLocal");
+            //Assert.NotNull(IsLocalStr);
+
+            dbIM = Provider.GetService<InMemoryDBContext>();
+            Assert.NotNull(dbIM);
+
             PolSourceGroupingService = Provider.GetService<IPolSourceGroupingService>();
             Assert.NotNull(PolSourceGroupingService);
 
@@ -148,6 +184,8 @@ namespace CSSPServices.Tests
         }
         private PolSourceGrouping GetFilledRandomPolSourceGrouping(string OmitPropName)
         {
+            dbIM.Database.EnsureDeleted();
+
             PolSourceGrouping polSourceGrouping = new PolSourceGrouping();
 
             if (OmitPropName != "CSSPID") polSourceGrouping.CSSPID = GetRandomInt(10000, 100000);
@@ -156,6 +194,14 @@ namespace CSSPServices.Tests
             if (OmitPropName != "Hide") polSourceGrouping.Hide = GetRandomString("", 5);
             if (OmitPropName != "LastUpdateDate_UTC") polSourceGrouping.LastUpdateDate_UTC = new DateTime(2005, 3, 6);
             if (OmitPropName != "LastUpdateContactTVItemID") polSourceGrouping.LastUpdateContactTVItemID = 2;
+
+            if (LoggedInService.IsLocal)
+            {
+                if (OmitPropName != "PolSourceGroupingID") polSourceGrouping.PolSourceGroupingID = 10000000;
+
+                dbIM.TVItems.Add(new TVItem() { TVItemID = 2, TVLevel = 1, TVPath = "p1p2", TVType = (TVTypeEnum)5, ParentID = 1, IsActive = true, LastUpdateDate_UTC = new DateTime(2014, 12, 2, 16, 58, 16), LastUpdateContactTVItemID = 2});
+                dbIM.SaveChanges();
+            }
 
             return polSourceGrouping;
         }

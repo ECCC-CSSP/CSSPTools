@@ -36,6 +36,9 @@ namespace CSSPServices.Tests
         private ILoggedInService LoggedInService { get; set; }
         private IRainExceedanceService RainExceedanceService { get; set; }
         private CSSPDBContext db { get; set; }
+        private CSSPDBLocalContext dbLocal { get; set; }
+        private InMemoryDBContext dbIM { get; set; }
+        private RainExceedance rainExceedance { get; set; }
         #endregion Properties
 
         #region Constructors
@@ -47,9 +50,11 @@ namespace CSSPServices.Tests
 
         #region Tests Generated CRUD
         [Theory]
-        [InlineData("en-CA")]
-        [InlineData("fr-CA")]
-        public async Task RainExceedance_CRUD_Good_Test(string culture)
+        [InlineData("en-CA", "true")]
+        [InlineData("fr-CA", "true")]
+        [InlineData("en-CA", "false")]
+        [InlineData("fr-CA", "false")]
+        public async Task RainExceedance_CRUD_Good_Test(string culture, string IsLocalStr)
         {
             // -------------------------------
             // -------------------------------
@@ -59,44 +64,57 @@ namespace CSSPServices.Tests
 
             Assert.True(await Setup(culture));
 
-            using (TransactionScope ts = new TransactionScope())
+            LoggedInService.IsLocal = bool.Parse(IsLocalStr);
+
+            rainExceedance = GetFilledRandomRainExceedance("");
+
+            if (LoggedInService.IsLocal)
             {
-               RainExceedance rainExceedance = GetFilledRandomRainExceedance(""); 
-
-               // List<RainExceedance>
-               var actionRainExceedanceList = await RainExceedanceService.GetRainExceedanceList();
-               Assert.Equal(200, ((ObjectResult)actionRainExceedanceList.Result).StatusCode);
-               Assert.NotNull(((OkObjectResult)actionRainExceedanceList.Result).Value);
-               List<RainExceedance> rainExceedanceList = (List<RainExceedance>)((OkObjectResult)actionRainExceedanceList.Result).Value;
-
-               int count = ((List<RainExceedance>)((OkObjectResult)actionRainExceedanceList.Result).Value).Count();
-                Assert.True(count > 0);
-
-               // Post RainExceedance
-               var actionRainExceedanceAdded = await RainExceedanceService.Post(rainExceedance);
-               Assert.Equal(200, ((ObjectResult)actionRainExceedanceAdded.Result).StatusCode);
-               Assert.NotNull(((OkObjectResult)actionRainExceedanceAdded.Result).Value);
-               RainExceedance rainExceedanceAdded = (RainExceedance)((OkObjectResult)actionRainExceedanceAdded.Result).Value;
-               Assert.NotNull(rainExceedanceAdded);
-
-               // Put RainExceedance
-               var actionRainExceedanceUpdated = await RainExceedanceService.Put(rainExceedance);
-               Assert.Equal(200, ((ObjectResult)actionRainExceedanceUpdated.Result).StatusCode);
-               Assert.NotNull(((OkObjectResult)actionRainExceedanceUpdated.Result).Value);
-               RainExceedance rainExceedanceUpdated = (RainExceedance)((OkObjectResult)actionRainExceedanceUpdated.Result).Value;
-               Assert.NotNull(rainExceedanceUpdated);
-
-               // Delete RainExceedance
-               var actionRainExceedanceDeleted = await RainExceedanceService.Delete(rainExceedance.RainExceedanceID);
-               Assert.Equal(200, ((ObjectResult)actionRainExceedanceDeleted.Result).StatusCode);
-               Assert.NotNull(((OkObjectResult)actionRainExceedanceDeleted.Result).Value);
-               bool retBool = (bool)((OkObjectResult)actionRainExceedanceDeleted.Result).Value;
-               Assert.True(retBool);
+                await DoCRUDTest();
+            }
+            else
+            {
+                using (TransactionScope ts = new TransactionScope())
+                {
+                    await DoCRUDTest();
+                }
             }
         }
         #endregion Tests Generated CRUD
 
         #region Functions private
+        private async Task DoCRUDTest()
+        {
+            // Post RainExceedance
+            var actionRainExceedanceAdded = await RainExceedanceService.Post(rainExceedance);
+            Assert.Equal(200, ((ObjectResult)actionRainExceedanceAdded.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionRainExceedanceAdded.Result).Value);
+            RainExceedance rainExceedanceAdded = (RainExceedance)((OkObjectResult)actionRainExceedanceAdded.Result).Value;
+            Assert.NotNull(rainExceedanceAdded);
+
+            // List<RainExceedance>
+            var actionRainExceedanceList = await RainExceedanceService.GetRainExceedanceList();
+            Assert.Equal(200, ((ObjectResult)actionRainExceedanceList.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionRainExceedanceList.Result).Value);
+            List<RainExceedance> rainExceedanceList = (List<RainExceedance>)((OkObjectResult)actionRainExceedanceList.Result).Value;
+
+            int count = ((List<RainExceedance>)((OkObjectResult)actionRainExceedanceList.Result).Value).Count();
+            Assert.True(count > 0);
+
+            // Put RainExceedance
+            var actionRainExceedanceUpdated = await RainExceedanceService.Put(rainExceedance);
+            Assert.Equal(200, ((ObjectResult)actionRainExceedanceUpdated.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionRainExceedanceUpdated.Result).Value);
+            RainExceedance rainExceedanceUpdated = (RainExceedance)((OkObjectResult)actionRainExceedanceUpdated.Result).Value;
+            Assert.NotNull(rainExceedanceUpdated);
+
+            // Delete RainExceedance
+            var actionRainExceedanceDeleted = await RainExceedanceService.Delete(rainExceedance.RainExceedanceID);
+            Assert.Equal(200, ((ObjectResult)actionRainExceedanceDeleted.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionRainExceedanceDeleted.Result).Value);
+            bool retBool = (bool)((OkObjectResult)actionRainExceedanceDeleted.Result).Value;
+            Assert.True(retBool);
+        }
         private async Task<bool> Setup(string culture)
         {
             Config = new ConfigurationBuilder()
@@ -109,6 +127,9 @@ namespace CSSPServices.Tests
 
             Services.AddSingleton<IConfiguration>(Config);
 
+            string CSSPDBLocalFileName = Config.GetValue<string>("CSSPDBLocal");
+            Assert.NotNull(CSSPDBLocalFileName);
+
             string TestDBConnString = Config.GetValue<string>("TestDBConnectionString");
             Assert.NotNull(TestDBConnString);
 
@@ -120,6 +141,15 @@ namespace CSSPServices.Tests
             Services.AddDbContext<InMemoryDBContext>(options =>
             {
                 options.UseInMemoryDatabase(TestDBConnString);
+            });
+
+            string appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+
+            FileInfo fiAppDataPath = new FileInfo(CSSPDBLocalFileName.Replace("{appDataPath}", appDataPath));
+
+            Services.AddDbContext<CSSPDBLocalContext>(options =>
+            {
+                options.UseSqlite($"Data Source={ fiAppDataPath.FullName }");
             });
 
             Services.AddSingleton<ICultureService, CultureService>();
@@ -141,6 +171,12 @@ namespace CSSPServices.Tests
             string Id = Config.GetValue<string>("Id");
             Assert.True(await LoggedInService.SetLoggedInContactInfo(Id));
 
+            //string IsLocalStr = Config.GetValue<string>("IsLocal");
+            //Assert.NotNull(IsLocalStr);
+
+            dbIM = Provider.GetService<InMemoryDBContext>();
+            Assert.NotNull(dbIM);
+
             RainExceedanceService = Provider.GetService<IRainExceedanceService>();
             Assert.NotNull(RainExceedanceService);
 
@@ -148,6 +184,8 @@ namespace CSSPServices.Tests
         }
         private RainExceedance GetFilledRandomRainExceedance(string OmitPropName)
         {
+            dbIM.Database.EnsureDeleted();
+
             RainExceedance rainExceedance = new RainExceedance();
 
             if (OmitPropName != "RainExceedanceTVItemID") rainExceedance.RainExceedanceTVItemID = 56;
@@ -161,6 +199,18 @@ namespace CSSPServices.Tests
             if (OmitPropName != "IsActive") rainExceedance.IsActive = true;
             if (OmitPropName != "LastUpdateDate_UTC") rainExceedance.LastUpdateDate_UTC = new DateTime(2005, 3, 6);
             if (OmitPropName != "LastUpdateContactTVItemID") rainExceedance.LastUpdateContactTVItemID = 2;
+
+            if (LoggedInService.IsLocal)
+            {
+                if (OmitPropName != "RainExceedanceID") rainExceedance.RainExceedanceID = 10000000;
+
+                dbIM.TVItems.Add(new TVItem() { TVItemID = 56, TVLevel = 2, TVPath = "p1p5p56", TVType = (TVTypeEnum)75, ParentID = 5, IsActive = true, LastUpdateDate_UTC = new DateTime(2019, 8, 16, 14, 13, 49), LastUpdateContactTVItemID = 2});
+                dbIM.SaveChanges();
+                dbIM.EmailDistributionLists.Add(new EmailDistributionList() { EmailDistributionListID = 1, ParentTVItemID = 5, Ordinal = 1, LastUpdateDate_UTC = new DateTime(2017, 6, 14, 18, 7, 57), LastUpdateContactTVItemID = 2 });
+                dbIM.SaveChanges();
+                dbIM.TVItems.Add(new TVItem() { TVItemID = 2, TVLevel = 1, TVPath = "p1p2", TVType = (TVTypeEnum)5, ParentID = 1, IsActive = true, LastUpdateDate_UTC = new DateTime(2014, 12, 2, 16, 58, 16), LastUpdateContactTVItemID = 2});
+                dbIM.SaveChanges();
+            }
 
             return rainExceedance;
         }

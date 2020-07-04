@@ -36,6 +36,8 @@ namespace CSSPServices
 
         #region Properties
         private CSSPDBContext db { get; }
+        private CSSPDBLocalContext dbLocal { get; }
+        private InMemoryDBContext dbIM { get; }
         private ICultureService CultureService { get; }
         private ILoggedInService LoggedInService { get; }
         private IEnums enums { get; }
@@ -43,12 +45,14 @@ namespace CSSPServices
         #endregion Properties
 
         #region Constructors
-        public InfrastructureService(ICultureService CultureService, ILoggedInService LoggedInService, IEnums enums, CSSPDBContext db)
+        public InfrastructureService(ICultureService CultureService, ILoggedInService LoggedInService, IEnums enums, CSSPDBContext db, CSSPDBLocalContext dbLocal, InMemoryDBContext dbIM)
         {
             this.CultureService = CultureService;
             this.LoggedInService = LoggedInService;
             this.enums = enums;
             this.db = db;
+            this.dbLocal = dbLocal;
+            this.dbIM = dbIM;
         }
         #endregion Constructors
 
@@ -60,16 +64,32 @@ namespace CSSPServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            Infrastructure infrastructure = (from c in db.Infrastructures.AsNoTracking()
-                    where c.InfrastructureID == InfrastructureID
-                    select c).FirstOrDefault();
-
-            if (infrastructure == null)
+            if (LoggedInService.IsLocal)
             {
-               return await Task.FromResult(NotFound());
-            }
+                Infrastructure infrastructure = (from c in dbLocal.Infrastructures.AsNoTracking()
+                        where c.InfrastructureID == InfrastructureID
+                        select c).FirstOrDefault();
 
-            return await Task.FromResult(Ok(infrastructure));
+                if (infrastructure == null)
+                {
+                   return await Task.FromResult(NotFound());
+                }
+
+                return await Task.FromResult(Ok(infrastructure));
+            }
+            else
+            {
+                Infrastructure infrastructure = (from c in db.Infrastructures.AsNoTracking()
+                        where c.InfrastructureID == InfrastructureID
+                        select c).FirstOrDefault();
+
+                if (infrastructure == null)
+                {
+                   return await Task.FromResult(NotFound());
+                }
+
+                return await Task.FromResult(Ok(infrastructure));
+            }
         }
         public async Task<ActionResult<List<Infrastructure>>> GetInfrastructureList()
         {
@@ -78,9 +98,18 @@ namespace CSSPServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            List<Infrastructure> infrastructureList = (from c in db.Infrastructures.AsNoTracking() select c).Take(100).ToList();
+            if (LoggedInService.IsLocal)
+            {
+                List<Infrastructure> infrastructureList = (from c in dbLocal.Infrastructures.AsNoTracking() select c).Take(100).ToList();
 
-            return await Task.FromResult(Ok(infrastructureList));
+                return await Task.FromResult(Ok(infrastructureList));
+            }
+            else
+            {
+                List<Infrastructure> infrastructureList = (from c in db.Infrastructures.AsNoTracking() select c).Take(100).ToList();
+
+                return await Task.FromResult(Ok(infrastructureList));
+            }
         }
         public async Task<ActionResult<bool>> Delete(int InfrastructureID)
         {
@@ -89,26 +118,52 @@ namespace CSSPServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            Infrastructure infrastructure = (from c in db.Infrastructures
-                               where c.InfrastructureID == InfrastructureID
-                               select c).FirstOrDefault();
-            
-            if (infrastructure == null)
+            if (LoggedInService.IsLocal)
             {
-                return await Task.FromResult(BadRequest(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "Infrastructure", "InfrastructureID", InfrastructureID.ToString())));
-            }
+                Infrastructure infrastructure = (from c in dbLocal.Infrastructures
+                                   where c.InfrastructureID == InfrastructureID
+                                   select c).FirstOrDefault();
+                
+                if (infrastructure == null)
+                {
+                    return await Task.FromResult(BadRequest(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "Infrastructure", "InfrastructureID", InfrastructureID.ToString())));
+                }
 
-            try
-            {
-               db.Infrastructures.Remove(infrastructure);
-               db.SaveChanges();
-            }
-            catch (DbUpdateException ex)
-            {
-               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
-            }
+                try
+                {
+                   dbLocal.Infrastructures.Remove(infrastructure);
+                   dbLocal.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                   return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
 
-            return await Task.FromResult(Ok(true));
+                return await Task.FromResult(Ok(true));
+            }
+            else
+            {
+                Infrastructure infrastructure = (from c in db.Infrastructures
+                                   where c.InfrastructureID == InfrastructureID
+                                   select c).FirstOrDefault();
+                
+                if (infrastructure == null)
+                {
+                    return await Task.FromResult(BadRequest(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "Infrastructure", "InfrastructureID", InfrastructureID.ToString())));
+                }
+
+                try
+                {
+                   db.Infrastructures.Remove(infrastructure);
+                   db.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                   return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
+
+                return await Task.FromResult(Ok(true));
+            }
         }
         public async Task<ActionResult<Infrastructure>> Post(Infrastructure infrastructure)
         {
@@ -123,17 +178,34 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ValidationResults));
             }
 
-            try
+            if (LoggedInService.IsLocal)
             {
-               db.Infrastructures.Add(infrastructure);
-               db.SaveChanges();
-            }
-            catch (DbUpdateException ex)
-            {
-               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
-            }
+                try
+                {
+                   dbLocal.Infrastructures.Add(infrastructure);
+                   dbLocal.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                   return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
 
-            return await Task.FromResult(Ok(infrastructure));
+                return await Task.FromResult(Ok(infrastructure));
+            }
+            else
+            {
+                try
+                {
+                   db.Infrastructures.Add(infrastructure);
+                   db.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                   return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
+
+                return await Task.FromResult(Ok(infrastructure));
+            }
         }
         public async Task<ActionResult<Infrastructure>> Put(Infrastructure infrastructure)
         {
@@ -148,6 +220,22 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ValidationResults));
             }
 
+            if (LoggedInService.IsLocal)
+            {
+            try
+            {
+               dbLocal.Infrastructures.Update(infrastructure);
+               dbLocal.SaveChanges();
+            }
+            catch (DbUpdateException ex)
+            {
+               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+            }
+
+            return await Task.FromResult(Ok(infrastructure));
+            }
+            else
+            {
             try
             {
                db.Infrastructures.Update(infrastructure);
@@ -159,6 +247,7 @@ namespace CSSPServices
             }
 
             return await Task.FromResult(Ok(infrastructure));
+            }
         }
         #endregion Functions public
 
@@ -175,13 +264,35 @@ namespace CSSPServices
                     yield return new ValidationResult(string.Format(CultureServicesRes._IsRequired, "InfrastructureID"), new[] { "InfrastructureID" });
                 }
 
-                if (!(from c in db.Infrastructures select c).Where(c => c.InfrastructureID == infrastructure.InfrastructureID).Any())
+                if (LoggedInService.IsLocal)
                 {
-                    yield return new ValidationResult(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "Infrastructure", "InfrastructureID", infrastructure.InfrastructureID.ToString()), new[] { "InfrastructureID" });
+                    if (!(from c in dbLocal.Infrastructures select c).Where(c => c.InfrastructureID == infrastructure.InfrastructureID).Any())
+                    {
+                        yield return new ValidationResult(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "Infrastructure", "InfrastructureID", infrastructure.InfrastructureID.ToString()), new[] { "InfrastructureID" });
+                    }
+                }
+                else
+                {
+                    if (!(from c in db.Infrastructures select c).Where(c => c.InfrastructureID == infrastructure.InfrastructureID).Any())
+                    {
+                        yield return new ValidationResult(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "Infrastructure", "InfrastructureID", infrastructure.InfrastructureID.ToString()), new[] { "InfrastructureID" });
+                    }
                 }
             }
 
-            TVItem TVItemInfrastructureTVItemID = (from c in db.TVItems where c.TVItemID == infrastructure.InfrastructureTVItemID select c).FirstOrDefault();
+            TVItem TVItemInfrastructureTVItemID = null;
+            if (LoggedInService.IsLocal)
+            {
+                TVItemInfrastructureTVItemID = (from c in dbLocal.TVItems where c.TVItemID == infrastructure.InfrastructureTVItemID select c).FirstOrDefault();
+                if (TVItemInfrastructureTVItemID == null)
+                {
+                    TVItemInfrastructureTVItemID = (from c in dbIM.TVItems where c.TVItemID == infrastructure.InfrastructureTVItemID select c).FirstOrDefault();
+                }
+            }
+            else
+            {
+                TVItemInfrastructureTVItemID = (from c in db.TVItems where c.TVItemID == infrastructure.InfrastructureTVItemID select c).FirstOrDefault();
+            }
 
             if (TVItemInfrastructureTVItemID == null)
             {
@@ -532,7 +643,19 @@ namespace CSSPServices
 
             if (infrastructure.SeeOtherMunicipalityTVItemID != null)
             {
-                TVItem TVItemSeeOtherMunicipalityTVItemID = (from c in db.TVItems where c.TVItemID == infrastructure.SeeOtherMunicipalityTVItemID select c).FirstOrDefault();
+                TVItem TVItemSeeOtherMunicipalityTVItemID = null;
+                if (LoggedInService.IsLocal)
+                {
+                    TVItemSeeOtherMunicipalityTVItemID = (from c in dbLocal.TVItems where c.TVItemID == infrastructure.SeeOtherMunicipalityTVItemID select c).FirstOrDefault();
+                    if (TVItemSeeOtherMunicipalityTVItemID == null)
+                    {
+                        TVItemSeeOtherMunicipalityTVItemID = (from c in dbIM.TVItems where c.TVItemID == infrastructure.SeeOtherMunicipalityTVItemID select c).FirstOrDefault();
+                    }
+                }
+                else
+                {
+                    TVItemSeeOtherMunicipalityTVItemID = (from c in db.TVItems where c.TVItemID == infrastructure.SeeOtherMunicipalityTVItemID select c).FirstOrDefault();
+                }
 
                 if (TVItemSeeOtherMunicipalityTVItemID == null)
                 {
@@ -553,7 +676,19 @@ namespace CSSPServices
 
             if (infrastructure.CivicAddressTVItemID != null)
             {
-                TVItem TVItemCivicAddressTVItemID = (from c in db.TVItems where c.TVItemID == infrastructure.CivicAddressTVItemID select c).FirstOrDefault();
+                TVItem TVItemCivicAddressTVItemID = null;
+                if (LoggedInService.IsLocal)
+                {
+                    TVItemCivicAddressTVItemID = (from c in dbLocal.TVItems where c.TVItemID == infrastructure.CivicAddressTVItemID select c).FirstOrDefault();
+                    if (TVItemCivicAddressTVItemID == null)
+                    {
+                        TVItemCivicAddressTVItemID = (from c in dbIM.TVItems where c.TVItemID == infrastructure.CivicAddressTVItemID select c).FirstOrDefault();
+                    }
+                }
+                else
+                {
+                    TVItemCivicAddressTVItemID = (from c in db.TVItems where c.TVItemID == infrastructure.CivicAddressTVItemID select c).FirstOrDefault();
+                }
 
                 if (TVItemCivicAddressTVItemID == null)
                 {
@@ -584,7 +719,19 @@ namespace CSSPServices
                 }
             }
 
-            TVItem TVItemLastUpdateContactTVItemID = (from c in db.TVItems where c.TVItemID == infrastructure.LastUpdateContactTVItemID select c).FirstOrDefault();
+            TVItem TVItemLastUpdateContactTVItemID = null;
+            if (LoggedInService.IsLocal)
+            {
+                TVItemLastUpdateContactTVItemID = (from c in dbLocal.TVItems where c.TVItemID == infrastructure.LastUpdateContactTVItemID select c).FirstOrDefault();
+                if (TVItemLastUpdateContactTVItemID == null)
+                {
+                    TVItemLastUpdateContactTVItemID = (from c in dbIM.TVItems where c.TVItemID == infrastructure.LastUpdateContactTVItemID select c).FirstOrDefault();
+                }
+            }
+            else
+            {
+                TVItemLastUpdateContactTVItemID = (from c in db.TVItems where c.TVItemID == infrastructure.LastUpdateContactTVItemID select c).FirstOrDefault();
+            }
 
             if (TVItemLastUpdateContactTVItemID == null)
             {

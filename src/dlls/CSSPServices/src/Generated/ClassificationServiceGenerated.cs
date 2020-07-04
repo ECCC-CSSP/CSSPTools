@@ -36,6 +36,8 @@ namespace CSSPServices
 
         #region Properties
         private CSSPDBContext db { get; }
+        private CSSPDBLocalContext dbLocal { get; }
+        private InMemoryDBContext dbIM { get; }
         private ICultureService CultureService { get; }
         private ILoggedInService LoggedInService { get; }
         private IEnums enums { get; }
@@ -43,12 +45,14 @@ namespace CSSPServices
         #endregion Properties
 
         #region Constructors
-        public ClassificationService(ICultureService CultureService, ILoggedInService LoggedInService, IEnums enums, CSSPDBContext db)
+        public ClassificationService(ICultureService CultureService, ILoggedInService LoggedInService, IEnums enums, CSSPDBContext db, CSSPDBLocalContext dbLocal, InMemoryDBContext dbIM)
         {
             this.CultureService = CultureService;
             this.LoggedInService = LoggedInService;
             this.enums = enums;
             this.db = db;
+            this.dbLocal = dbLocal;
+            this.dbIM = dbIM;
         }
         #endregion Constructors
 
@@ -60,16 +64,32 @@ namespace CSSPServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            Classification classification = (from c in db.Classifications.AsNoTracking()
-                    where c.ClassificationID == ClassificationID
-                    select c).FirstOrDefault();
-
-            if (classification == null)
+            if (LoggedInService.IsLocal)
             {
-               return await Task.FromResult(NotFound());
-            }
+                Classification classification = (from c in dbLocal.Classifications.AsNoTracking()
+                        where c.ClassificationID == ClassificationID
+                        select c).FirstOrDefault();
 
-            return await Task.FromResult(Ok(classification));
+                if (classification == null)
+                {
+                   return await Task.FromResult(NotFound());
+                }
+
+                return await Task.FromResult(Ok(classification));
+            }
+            else
+            {
+                Classification classification = (from c in db.Classifications.AsNoTracking()
+                        where c.ClassificationID == ClassificationID
+                        select c).FirstOrDefault();
+
+                if (classification == null)
+                {
+                   return await Task.FromResult(NotFound());
+                }
+
+                return await Task.FromResult(Ok(classification));
+            }
         }
         public async Task<ActionResult<List<Classification>>> GetClassificationList()
         {
@@ -78,9 +98,18 @@ namespace CSSPServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            List<Classification> classificationList = (from c in db.Classifications.AsNoTracking() select c).Take(100).ToList();
+            if (LoggedInService.IsLocal)
+            {
+                List<Classification> classificationList = (from c in dbLocal.Classifications.AsNoTracking() select c).Take(100).ToList();
 
-            return await Task.FromResult(Ok(classificationList));
+                return await Task.FromResult(Ok(classificationList));
+            }
+            else
+            {
+                List<Classification> classificationList = (from c in db.Classifications.AsNoTracking() select c).Take(100).ToList();
+
+                return await Task.FromResult(Ok(classificationList));
+            }
         }
         public async Task<ActionResult<bool>> Delete(int ClassificationID)
         {
@@ -89,26 +118,52 @@ namespace CSSPServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            Classification classification = (from c in db.Classifications
-                               where c.ClassificationID == ClassificationID
-                               select c).FirstOrDefault();
-            
-            if (classification == null)
+            if (LoggedInService.IsLocal)
             {
-                return await Task.FromResult(BadRequest(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "Classification", "ClassificationID", ClassificationID.ToString())));
-            }
+                Classification classification = (from c in dbLocal.Classifications
+                                   where c.ClassificationID == ClassificationID
+                                   select c).FirstOrDefault();
+                
+                if (classification == null)
+                {
+                    return await Task.FromResult(BadRequest(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "Classification", "ClassificationID", ClassificationID.ToString())));
+                }
 
-            try
-            {
-               db.Classifications.Remove(classification);
-               db.SaveChanges();
-            }
-            catch (DbUpdateException ex)
-            {
-               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
-            }
+                try
+                {
+                   dbLocal.Classifications.Remove(classification);
+                   dbLocal.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                   return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
 
-            return await Task.FromResult(Ok(true));
+                return await Task.FromResult(Ok(true));
+            }
+            else
+            {
+                Classification classification = (from c in db.Classifications
+                                   where c.ClassificationID == ClassificationID
+                                   select c).FirstOrDefault();
+                
+                if (classification == null)
+                {
+                    return await Task.FromResult(BadRequest(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "Classification", "ClassificationID", ClassificationID.ToString())));
+                }
+
+                try
+                {
+                   db.Classifications.Remove(classification);
+                   db.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                   return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
+
+                return await Task.FromResult(Ok(true));
+            }
         }
         public async Task<ActionResult<Classification>> Post(Classification classification)
         {
@@ -123,17 +178,34 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ValidationResults));
             }
 
-            try
+            if (LoggedInService.IsLocal)
             {
-               db.Classifications.Add(classification);
-               db.SaveChanges();
-            }
-            catch (DbUpdateException ex)
-            {
-               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
-            }
+                try
+                {
+                   dbLocal.Classifications.Add(classification);
+                   dbLocal.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                   return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
 
-            return await Task.FromResult(Ok(classification));
+                return await Task.FromResult(Ok(classification));
+            }
+            else
+            {
+                try
+                {
+                   db.Classifications.Add(classification);
+                   db.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                   return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
+
+                return await Task.FromResult(Ok(classification));
+            }
         }
         public async Task<ActionResult<Classification>> Put(Classification classification)
         {
@@ -148,6 +220,22 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ValidationResults));
             }
 
+            if (LoggedInService.IsLocal)
+            {
+            try
+            {
+               dbLocal.Classifications.Update(classification);
+               dbLocal.SaveChanges();
+            }
+            catch (DbUpdateException ex)
+            {
+               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+            }
+
+            return await Task.FromResult(Ok(classification));
+            }
+            else
+            {
             try
             {
                db.Classifications.Update(classification);
@@ -159,6 +247,7 @@ namespace CSSPServices
             }
 
             return await Task.FromResult(Ok(classification));
+            }
         }
         #endregion Functions public
 
@@ -175,13 +264,35 @@ namespace CSSPServices
                     yield return new ValidationResult(string.Format(CultureServicesRes._IsRequired, "ClassificationID"), new[] { "ClassificationID" });
                 }
 
-                if (!(from c in db.Classifications select c).Where(c => c.ClassificationID == classification.ClassificationID).Any())
+                if (LoggedInService.IsLocal)
                 {
-                    yield return new ValidationResult(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "Classification", "ClassificationID", classification.ClassificationID.ToString()), new[] { "ClassificationID" });
+                    if (!(from c in dbLocal.Classifications select c).Where(c => c.ClassificationID == classification.ClassificationID).Any())
+                    {
+                        yield return new ValidationResult(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "Classification", "ClassificationID", classification.ClassificationID.ToString()), new[] { "ClassificationID" });
+                    }
+                }
+                else
+                {
+                    if (!(from c in db.Classifications select c).Where(c => c.ClassificationID == classification.ClassificationID).Any())
+                    {
+                        yield return new ValidationResult(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "Classification", "ClassificationID", classification.ClassificationID.ToString()), new[] { "ClassificationID" });
+                    }
                 }
             }
 
-            TVItem TVItemClassificationTVItemID = (from c in db.TVItems where c.TVItemID == classification.ClassificationTVItemID select c).FirstOrDefault();
+            TVItem TVItemClassificationTVItemID = null;
+            if (LoggedInService.IsLocal)
+            {
+                TVItemClassificationTVItemID = (from c in dbLocal.TVItems where c.TVItemID == classification.ClassificationTVItemID select c).FirstOrDefault();
+                if (TVItemClassificationTVItemID == null)
+                {
+                    TVItemClassificationTVItemID = (from c in dbIM.TVItems where c.TVItemID == classification.ClassificationTVItemID select c).FirstOrDefault();
+                }
+            }
+            else
+            {
+                TVItemClassificationTVItemID = (from c in db.TVItems where c.TVItemID == classification.ClassificationTVItemID select c).FirstOrDefault();
+            }
 
             if (TVItemClassificationTVItemID == null)
             {
@@ -222,7 +333,19 @@ namespace CSSPServices
                 }
             }
 
-            TVItem TVItemLastUpdateContactTVItemID = (from c in db.TVItems where c.TVItemID == classification.LastUpdateContactTVItemID select c).FirstOrDefault();
+            TVItem TVItemLastUpdateContactTVItemID = null;
+            if (LoggedInService.IsLocal)
+            {
+                TVItemLastUpdateContactTVItemID = (from c in dbLocal.TVItems where c.TVItemID == classification.LastUpdateContactTVItemID select c).FirstOrDefault();
+                if (TVItemLastUpdateContactTVItemID == null)
+                {
+                    TVItemLastUpdateContactTVItemID = (from c in dbIM.TVItems where c.TVItemID == classification.LastUpdateContactTVItemID select c).FirstOrDefault();
+                }
+            }
+            else
+            {
+                TVItemLastUpdateContactTVItemID = (from c in db.TVItems where c.TVItemID == classification.LastUpdateContactTVItemID select c).FirstOrDefault();
+            }
 
             if (TVItemLastUpdateContactTVItemID == null)
             {

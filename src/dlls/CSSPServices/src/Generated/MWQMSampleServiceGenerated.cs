@@ -36,6 +36,8 @@ namespace CSSPServices
 
         #region Properties
         private CSSPDBContext db { get; }
+        private CSSPDBLocalContext dbLocal { get; }
+        private InMemoryDBContext dbIM { get; }
         private ICultureService CultureService { get; }
         private ILoggedInService LoggedInService { get; }
         private IEnums enums { get; }
@@ -43,12 +45,14 @@ namespace CSSPServices
         #endregion Properties
 
         #region Constructors
-        public MWQMSampleService(ICultureService CultureService, ILoggedInService LoggedInService, IEnums enums, CSSPDBContext db)
+        public MWQMSampleService(ICultureService CultureService, ILoggedInService LoggedInService, IEnums enums, CSSPDBContext db, CSSPDBLocalContext dbLocal, InMemoryDBContext dbIM)
         {
             this.CultureService = CultureService;
             this.LoggedInService = LoggedInService;
             this.enums = enums;
             this.db = db;
+            this.dbLocal = dbLocal;
+            this.dbIM = dbIM;
         }
         #endregion Constructors
 
@@ -60,16 +64,32 @@ namespace CSSPServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            MWQMSample mwqmsample = (from c in db.MWQMSamples.AsNoTracking()
-                    where c.MWQMSampleID == MWQMSampleID
-                    select c).FirstOrDefault();
-
-            if (mwqmsample == null)
+            if (LoggedInService.IsLocal)
             {
-               return await Task.FromResult(NotFound());
-            }
+                MWQMSample mwqmsample = (from c in dbLocal.MWQMSamples.AsNoTracking()
+                        where c.MWQMSampleID == MWQMSampleID
+                        select c).FirstOrDefault();
 
-            return await Task.FromResult(Ok(mwqmsample));
+                if (mwqmsample == null)
+                {
+                   return await Task.FromResult(NotFound());
+                }
+
+                return await Task.FromResult(Ok(mwqmsample));
+            }
+            else
+            {
+                MWQMSample mwqmsample = (from c in db.MWQMSamples.AsNoTracking()
+                        where c.MWQMSampleID == MWQMSampleID
+                        select c).FirstOrDefault();
+
+                if (mwqmsample == null)
+                {
+                   return await Task.FromResult(NotFound());
+                }
+
+                return await Task.FromResult(Ok(mwqmsample));
+            }
         }
         public async Task<ActionResult<List<MWQMSample>>> GetMWQMSampleList()
         {
@@ -78,9 +98,18 @@ namespace CSSPServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            List<MWQMSample> mwqmsampleList = (from c in db.MWQMSamples.AsNoTracking() select c).Take(100).ToList();
+            if (LoggedInService.IsLocal)
+            {
+                List<MWQMSample> mwqmsampleList = (from c in dbLocal.MWQMSamples.AsNoTracking() select c).Take(100).ToList();
 
-            return await Task.FromResult(Ok(mwqmsampleList));
+                return await Task.FromResult(Ok(mwqmsampleList));
+            }
+            else
+            {
+                List<MWQMSample> mwqmsampleList = (from c in db.MWQMSamples.AsNoTracking() select c).Take(100).ToList();
+
+                return await Task.FromResult(Ok(mwqmsampleList));
+            }
         }
         public async Task<ActionResult<bool>> Delete(int MWQMSampleID)
         {
@@ -89,26 +118,52 @@ namespace CSSPServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            MWQMSample mwqmSample = (from c in db.MWQMSamples
-                               where c.MWQMSampleID == MWQMSampleID
-                               select c).FirstOrDefault();
-            
-            if (mwqmSample == null)
+            if (LoggedInService.IsLocal)
             {
-                return await Task.FromResult(BadRequest(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "MWQMSample", "MWQMSampleID", MWQMSampleID.ToString())));
-            }
+                MWQMSample mwqmSample = (from c in dbLocal.MWQMSamples
+                                   where c.MWQMSampleID == MWQMSampleID
+                                   select c).FirstOrDefault();
+                
+                if (mwqmSample == null)
+                {
+                    return await Task.FromResult(BadRequest(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "MWQMSample", "MWQMSampleID", MWQMSampleID.ToString())));
+                }
 
-            try
-            {
-               db.MWQMSamples.Remove(mwqmSample);
-               db.SaveChanges();
-            }
-            catch (DbUpdateException ex)
-            {
-               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
-            }
+                try
+                {
+                   dbLocal.MWQMSamples.Remove(mwqmSample);
+                   dbLocal.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                   return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
 
-            return await Task.FromResult(Ok(true));
+                return await Task.FromResult(Ok(true));
+            }
+            else
+            {
+                MWQMSample mwqmSample = (from c in db.MWQMSamples
+                                   where c.MWQMSampleID == MWQMSampleID
+                                   select c).FirstOrDefault();
+                
+                if (mwqmSample == null)
+                {
+                    return await Task.FromResult(BadRequest(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "MWQMSample", "MWQMSampleID", MWQMSampleID.ToString())));
+                }
+
+                try
+                {
+                   db.MWQMSamples.Remove(mwqmSample);
+                   db.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                   return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
+
+                return await Task.FromResult(Ok(true));
+            }
         }
         public async Task<ActionResult<MWQMSample>> Post(MWQMSample mwqmSample)
         {
@@ -123,17 +178,34 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ValidationResults));
             }
 
-            try
+            if (LoggedInService.IsLocal)
             {
-               db.MWQMSamples.Add(mwqmSample);
-               db.SaveChanges();
-            }
-            catch (DbUpdateException ex)
-            {
-               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
-            }
+                try
+                {
+                   dbLocal.MWQMSamples.Add(mwqmSample);
+                   dbLocal.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                   return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
 
-            return await Task.FromResult(Ok(mwqmSample));
+                return await Task.FromResult(Ok(mwqmSample));
+            }
+            else
+            {
+                try
+                {
+                   db.MWQMSamples.Add(mwqmSample);
+                   db.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                   return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
+
+                return await Task.FromResult(Ok(mwqmSample));
+            }
         }
         public async Task<ActionResult<MWQMSample>> Put(MWQMSample mwqmSample)
         {
@@ -148,6 +220,22 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ValidationResults));
             }
 
+            if (LoggedInService.IsLocal)
+            {
+            try
+            {
+               dbLocal.MWQMSamples.Update(mwqmSample);
+               dbLocal.SaveChanges();
+            }
+            catch (DbUpdateException ex)
+            {
+               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+            }
+
+            return await Task.FromResult(Ok(mwqmSample));
+            }
+            else
+            {
             try
             {
                db.MWQMSamples.Update(mwqmSample);
@@ -159,6 +247,7 @@ namespace CSSPServices
             }
 
             return await Task.FromResult(Ok(mwqmSample));
+            }
         }
         #endregion Functions public
 
@@ -175,13 +264,35 @@ namespace CSSPServices
                     yield return new ValidationResult(string.Format(CultureServicesRes._IsRequired, "MWQMSampleID"), new[] { "MWQMSampleID" });
                 }
 
-                if (!(from c in db.MWQMSamples select c).Where(c => c.MWQMSampleID == mwqmSample.MWQMSampleID).Any())
+                if (LoggedInService.IsLocal)
                 {
-                    yield return new ValidationResult(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "MWQMSample", "MWQMSampleID", mwqmSample.MWQMSampleID.ToString()), new[] { "MWQMSampleID" });
+                    if (!(from c in dbLocal.MWQMSamples select c).Where(c => c.MWQMSampleID == mwqmSample.MWQMSampleID).Any())
+                    {
+                        yield return new ValidationResult(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "MWQMSample", "MWQMSampleID", mwqmSample.MWQMSampleID.ToString()), new[] { "MWQMSampleID" });
+                    }
+                }
+                else
+                {
+                    if (!(from c in db.MWQMSamples select c).Where(c => c.MWQMSampleID == mwqmSample.MWQMSampleID).Any())
+                    {
+                        yield return new ValidationResult(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "MWQMSample", "MWQMSampleID", mwqmSample.MWQMSampleID.ToString()), new[] { "MWQMSampleID" });
+                    }
                 }
             }
 
-            TVItem TVItemMWQMSiteTVItemID = (from c in db.TVItems where c.TVItemID == mwqmSample.MWQMSiteTVItemID select c).FirstOrDefault();
+            TVItem TVItemMWQMSiteTVItemID = null;
+            if (LoggedInService.IsLocal)
+            {
+                TVItemMWQMSiteTVItemID = (from c in dbLocal.TVItems where c.TVItemID == mwqmSample.MWQMSiteTVItemID select c).FirstOrDefault();
+                if (TVItemMWQMSiteTVItemID == null)
+                {
+                    TVItemMWQMSiteTVItemID = (from c in dbIM.TVItems where c.TVItemID == mwqmSample.MWQMSiteTVItemID select c).FirstOrDefault();
+                }
+            }
+            else
+            {
+                TVItemMWQMSiteTVItemID = (from c in db.TVItems where c.TVItemID == mwqmSample.MWQMSiteTVItemID select c).FirstOrDefault();
+            }
 
             if (TVItemMWQMSiteTVItemID == null)
             {
@@ -199,7 +310,19 @@ namespace CSSPServices
                 }
             }
 
-            TVItem TVItemMWQMRunTVItemID = (from c in db.TVItems where c.TVItemID == mwqmSample.MWQMRunTVItemID select c).FirstOrDefault();
+            TVItem TVItemMWQMRunTVItemID = null;
+            if (LoggedInService.IsLocal)
+            {
+                TVItemMWQMRunTVItemID = (from c in dbLocal.TVItems where c.TVItemID == mwqmSample.MWQMRunTVItemID select c).FirstOrDefault();
+                if (TVItemMWQMRunTVItemID == null)
+                {
+                    TVItemMWQMRunTVItemID = (from c in dbIM.TVItems where c.TVItemID == mwqmSample.MWQMRunTVItemID select c).FirstOrDefault();
+                }
+            }
+            else
+            {
+                TVItemMWQMRunTVItemID = (from c in db.TVItems where c.TVItemID == mwqmSample.MWQMRunTVItemID select c).FirstOrDefault();
+            }
 
             if (TVItemMWQMRunTVItemID == null)
             {
@@ -331,7 +454,19 @@ namespace CSSPServices
                 }
             }
 
-            TVItem TVItemLastUpdateContactTVItemID = (from c in db.TVItems where c.TVItemID == mwqmSample.LastUpdateContactTVItemID select c).FirstOrDefault();
+            TVItem TVItemLastUpdateContactTVItemID = null;
+            if (LoggedInService.IsLocal)
+            {
+                TVItemLastUpdateContactTVItemID = (from c in dbLocal.TVItems where c.TVItemID == mwqmSample.LastUpdateContactTVItemID select c).FirstOrDefault();
+                if (TVItemLastUpdateContactTVItemID == null)
+                {
+                    TVItemLastUpdateContactTVItemID = (from c in dbIM.TVItems where c.TVItemID == mwqmSample.LastUpdateContactTVItemID select c).FirstOrDefault();
+                }
+            }
+            else
+            {
+                TVItemLastUpdateContactTVItemID = (from c in db.TVItems where c.TVItemID == mwqmSample.LastUpdateContactTVItemID select c).FirstOrDefault();
+            }
 
             if (TVItemLastUpdateContactTVItemID == null)
             {

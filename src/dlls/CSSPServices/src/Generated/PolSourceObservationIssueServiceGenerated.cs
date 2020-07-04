@@ -36,6 +36,8 @@ namespace CSSPServices
 
         #region Properties
         private CSSPDBContext db { get; }
+        private CSSPDBLocalContext dbLocal { get; }
+        private InMemoryDBContext dbIM { get; }
         private ICultureService CultureService { get; }
         private ILoggedInService LoggedInService { get; }
         private IEnums enums { get; }
@@ -43,12 +45,14 @@ namespace CSSPServices
         #endregion Properties
 
         #region Constructors
-        public PolSourceObservationIssueService(ICultureService CultureService, ILoggedInService LoggedInService, IEnums enums, CSSPDBContext db)
+        public PolSourceObservationIssueService(ICultureService CultureService, ILoggedInService LoggedInService, IEnums enums, CSSPDBContext db, CSSPDBLocalContext dbLocal, InMemoryDBContext dbIM)
         {
             this.CultureService = CultureService;
             this.LoggedInService = LoggedInService;
             this.enums = enums;
             this.db = db;
+            this.dbLocal = dbLocal;
+            this.dbIM = dbIM;
         }
         #endregion Constructors
 
@@ -60,16 +64,32 @@ namespace CSSPServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            PolSourceObservationIssue polsourceobservationissue = (from c in db.PolSourceObservationIssues.AsNoTracking()
-                    where c.PolSourceObservationIssueID == PolSourceObservationIssueID
-                    select c).FirstOrDefault();
-
-            if (polsourceobservationissue == null)
+            if (LoggedInService.IsLocal)
             {
-               return await Task.FromResult(NotFound());
-            }
+                PolSourceObservationIssue polsourceobservationissue = (from c in dbLocal.PolSourceObservationIssues.AsNoTracking()
+                        where c.PolSourceObservationIssueID == PolSourceObservationIssueID
+                        select c).FirstOrDefault();
 
-            return await Task.FromResult(Ok(polsourceobservationissue));
+                if (polsourceobservationissue == null)
+                {
+                   return await Task.FromResult(NotFound());
+                }
+
+                return await Task.FromResult(Ok(polsourceobservationissue));
+            }
+            else
+            {
+                PolSourceObservationIssue polsourceobservationissue = (from c in db.PolSourceObservationIssues.AsNoTracking()
+                        where c.PolSourceObservationIssueID == PolSourceObservationIssueID
+                        select c).FirstOrDefault();
+
+                if (polsourceobservationissue == null)
+                {
+                   return await Task.FromResult(NotFound());
+                }
+
+                return await Task.FromResult(Ok(polsourceobservationissue));
+            }
         }
         public async Task<ActionResult<List<PolSourceObservationIssue>>> GetPolSourceObservationIssueList()
         {
@@ -78,9 +98,18 @@ namespace CSSPServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            List<PolSourceObservationIssue> polsourceobservationissueList = (from c in db.PolSourceObservationIssues.AsNoTracking() select c).Take(100).ToList();
+            if (LoggedInService.IsLocal)
+            {
+                List<PolSourceObservationIssue> polsourceobservationissueList = (from c in dbLocal.PolSourceObservationIssues.AsNoTracking() select c).Take(100).ToList();
 
-            return await Task.FromResult(Ok(polsourceobservationissueList));
+                return await Task.FromResult(Ok(polsourceobservationissueList));
+            }
+            else
+            {
+                List<PolSourceObservationIssue> polsourceobservationissueList = (from c in db.PolSourceObservationIssues.AsNoTracking() select c).Take(100).ToList();
+
+                return await Task.FromResult(Ok(polsourceobservationissueList));
+            }
         }
         public async Task<ActionResult<bool>> Delete(int PolSourceObservationIssueID)
         {
@@ -89,26 +118,52 @@ namespace CSSPServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            PolSourceObservationIssue polSourceObservationIssue = (from c in db.PolSourceObservationIssues
-                               where c.PolSourceObservationIssueID == PolSourceObservationIssueID
-                               select c).FirstOrDefault();
-            
-            if (polSourceObservationIssue == null)
+            if (LoggedInService.IsLocal)
             {
-                return await Task.FromResult(BadRequest(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "PolSourceObservationIssue", "PolSourceObservationIssueID", PolSourceObservationIssueID.ToString())));
-            }
+                PolSourceObservationIssue polSourceObservationIssue = (from c in dbLocal.PolSourceObservationIssues
+                                   where c.PolSourceObservationIssueID == PolSourceObservationIssueID
+                                   select c).FirstOrDefault();
+                
+                if (polSourceObservationIssue == null)
+                {
+                    return await Task.FromResult(BadRequest(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "PolSourceObservationIssue", "PolSourceObservationIssueID", PolSourceObservationIssueID.ToString())));
+                }
 
-            try
-            {
-               db.PolSourceObservationIssues.Remove(polSourceObservationIssue);
-               db.SaveChanges();
-            }
-            catch (DbUpdateException ex)
-            {
-               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
-            }
+                try
+                {
+                   dbLocal.PolSourceObservationIssues.Remove(polSourceObservationIssue);
+                   dbLocal.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                   return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
 
-            return await Task.FromResult(Ok(true));
+                return await Task.FromResult(Ok(true));
+            }
+            else
+            {
+                PolSourceObservationIssue polSourceObservationIssue = (from c in db.PolSourceObservationIssues
+                                   where c.PolSourceObservationIssueID == PolSourceObservationIssueID
+                                   select c).FirstOrDefault();
+                
+                if (polSourceObservationIssue == null)
+                {
+                    return await Task.FromResult(BadRequest(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "PolSourceObservationIssue", "PolSourceObservationIssueID", PolSourceObservationIssueID.ToString())));
+                }
+
+                try
+                {
+                   db.PolSourceObservationIssues.Remove(polSourceObservationIssue);
+                   db.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                   return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
+
+                return await Task.FromResult(Ok(true));
+            }
         }
         public async Task<ActionResult<PolSourceObservationIssue>> Post(PolSourceObservationIssue polSourceObservationIssue)
         {
@@ -123,17 +178,34 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ValidationResults));
             }
 
-            try
+            if (LoggedInService.IsLocal)
             {
-               db.PolSourceObservationIssues.Add(polSourceObservationIssue);
-               db.SaveChanges();
-            }
-            catch (DbUpdateException ex)
-            {
-               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
-            }
+                try
+                {
+                   dbLocal.PolSourceObservationIssues.Add(polSourceObservationIssue);
+                   dbLocal.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                   return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
 
-            return await Task.FromResult(Ok(polSourceObservationIssue));
+                return await Task.FromResult(Ok(polSourceObservationIssue));
+            }
+            else
+            {
+                try
+                {
+                   db.PolSourceObservationIssues.Add(polSourceObservationIssue);
+                   db.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                   return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
+
+                return await Task.FromResult(Ok(polSourceObservationIssue));
+            }
         }
         public async Task<ActionResult<PolSourceObservationIssue>> Put(PolSourceObservationIssue polSourceObservationIssue)
         {
@@ -148,6 +220,22 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ValidationResults));
             }
 
+            if (LoggedInService.IsLocal)
+            {
+            try
+            {
+               dbLocal.PolSourceObservationIssues.Update(polSourceObservationIssue);
+               dbLocal.SaveChanges();
+            }
+            catch (DbUpdateException ex)
+            {
+               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+            }
+
+            return await Task.FromResult(Ok(polSourceObservationIssue));
+            }
+            else
+            {
             try
             {
                db.PolSourceObservationIssues.Update(polSourceObservationIssue);
@@ -159,6 +247,7 @@ namespace CSSPServices
             }
 
             return await Task.FromResult(Ok(polSourceObservationIssue));
+            }
         }
         #endregion Functions public
 
@@ -175,13 +264,35 @@ namespace CSSPServices
                     yield return new ValidationResult(string.Format(CultureServicesRes._IsRequired, "PolSourceObservationIssueID"), new[] { "PolSourceObservationIssueID" });
                 }
 
-                if (!(from c in db.PolSourceObservationIssues select c).Where(c => c.PolSourceObservationIssueID == polSourceObservationIssue.PolSourceObservationIssueID).Any())
+                if (LoggedInService.IsLocal)
                 {
-                    yield return new ValidationResult(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "PolSourceObservationIssue", "PolSourceObservationIssueID", polSourceObservationIssue.PolSourceObservationIssueID.ToString()), new[] { "PolSourceObservationIssueID" });
+                    if (!(from c in dbLocal.PolSourceObservationIssues select c).Where(c => c.PolSourceObservationIssueID == polSourceObservationIssue.PolSourceObservationIssueID).Any())
+                    {
+                        yield return new ValidationResult(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "PolSourceObservationIssue", "PolSourceObservationIssueID", polSourceObservationIssue.PolSourceObservationIssueID.ToString()), new[] { "PolSourceObservationIssueID" });
+                    }
+                }
+                else
+                {
+                    if (!(from c in db.PolSourceObservationIssues select c).Where(c => c.PolSourceObservationIssueID == polSourceObservationIssue.PolSourceObservationIssueID).Any())
+                    {
+                        yield return new ValidationResult(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "PolSourceObservationIssue", "PolSourceObservationIssueID", polSourceObservationIssue.PolSourceObservationIssueID.ToString()), new[] { "PolSourceObservationIssueID" });
+                    }
                 }
             }
 
-            PolSourceObservation PolSourceObservationPolSourceObservationID = (from c in db.PolSourceObservations where c.PolSourceObservationID == polSourceObservationIssue.PolSourceObservationID select c).FirstOrDefault();
+            PolSourceObservation PolSourceObservationPolSourceObservationID = null;
+            if (LoggedInService.IsLocal)
+            {
+                PolSourceObservationPolSourceObservationID = (from c in dbLocal.PolSourceObservations where c.PolSourceObservationID == polSourceObservationIssue.PolSourceObservationID select c).FirstOrDefault();
+                if (PolSourceObservationPolSourceObservationID == null)
+                {
+                    PolSourceObservationPolSourceObservationID = (from c in dbIM.PolSourceObservations where c.PolSourceObservationID == polSourceObservationIssue.PolSourceObservationID select c).FirstOrDefault();
+                }
+            }
+            else
+            {
+                PolSourceObservationPolSourceObservationID = (from c in db.PolSourceObservations where c.PolSourceObservationID == polSourceObservationIssue.PolSourceObservationID select c).FirstOrDefault();
+            }
 
             if (PolSourceObservationPolSourceObservationID == null)
             {
@@ -217,7 +328,19 @@ namespace CSSPServices
                 }
             }
 
-            TVItem TVItemLastUpdateContactTVItemID = (from c in db.TVItems where c.TVItemID == polSourceObservationIssue.LastUpdateContactTVItemID select c).FirstOrDefault();
+            TVItem TVItemLastUpdateContactTVItemID = null;
+            if (LoggedInService.IsLocal)
+            {
+                TVItemLastUpdateContactTVItemID = (from c in dbLocal.TVItems where c.TVItemID == polSourceObservationIssue.LastUpdateContactTVItemID select c).FirstOrDefault();
+                if (TVItemLastUpdateContactTVItemID == null)
+                {
+                    TVItemLastUpdateContactTVItemID = (from c in dbIM.TVItems where c.TVItemID == polSourceObservationIssue.LastUpdateContactTVItemID select c).FirstOrDefault();
+                }
+            }
+            else
+            {
+                TVItemLastUpdateContactTVItemID = (from c in db.TVItems where c.TVItemID == polSourceObservationIssue.LastUpdateContactTVItemID select c).FirstOrDefault();
+            }
 
             if (TVItemLastUpdateContactTVItemID == null)
             {

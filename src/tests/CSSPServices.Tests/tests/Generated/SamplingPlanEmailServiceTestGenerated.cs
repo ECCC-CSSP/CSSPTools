@@ -36,6 +36,9 @@ namespace CSSPServices.Tests
         private ILoggedInService LoggedInService { get; set; }
         private ISamplingPlanEmailService SamplingPlanEmailService { get; set; }
         private CSSPDBContext db { get; set; }
+        private CSSPDBLocalContext dbLocal { get; set; }
+        private InMemoryDBContext dbIM { get; set; }
+        private SamplingPlanEmail samplingPlanEmail { get; set; }
         #endregion Properties
 
         #region Constructors
@@ -47,9 +50,11 @@ namespace CSSPServices.Tests
 
         #region Tests Generated CRUD
         [Theory]
-        [InlineData("en-CA")]
-        [InlineData("fr-CA")]
-        public async Task SamplingPlanEmail_CRUD_Good_Test(string culture)
+        [InlineData("en-CA", "true")]
+        [InlineData("fr-CA", "true")]
+        [InlineData("en-CA", "false")]
+        [InlineData("fr-CA", "false")]
+        public async Task SamplingPlanEmail_CRUD_Good_Test(string culture, string IsLocalStr)
         {
             // -------------------------------
             // -------------------------------
@@ -59,44 +64,57 @@ namespace CSSPServices.Tests
 
             Assert.True(await Setup(culture));
 
-            using (TransactionScope ts = new TransactionScope())
+            LoggedInService.IsLocal = bool.Parse(IsLocalStr);
+
+            samplingPlanEmail = GetFilledRandomSamplingPlanEmail("");
+
+            if (LoggedInService.IsLocal)
             {
-               SamplingPlanEmail samplingPlanEmail = GetFilledRandomSamplingPlanEmail(""); 
-
-               // List<SamplingPlanEmail>
-               var actionSamplingPlanEmailList = await SamplingPlanEmailService.GetSamplingPlanEmailList();
-               Assert.Equal(200, ((ObjectResult)actionSamplingPlanEmailList.Result).StatusCode);
-               Assert.NotNull(((OkObjectResult)actionSamplingPlanEmailList.Result).Value);
-               List<SamplingPlanEmail> samplingPlanEmailList = (List<SamplingPlanEmail>)((OkObjectResult)actionSamplingPlanEmailList.Result).Value;
-
-               int count = ((List<SamplingPlanEmail>)((OkObjectResult)actionSamplingPlanEmailList.Result).Value).Count();
-                Assert.True(count > 0);
-
-               // Post SamplingPlanEmail
-               var actionSamplingPlanEmailAdded = await SamplingPlanEmailService.Post(samplingPlanEmail);
-               Assert.Equal(200, ((ObjectResult)actionSamplingPlanEmailAdded.Result).StatusCode);
-               Assert.NotNull(((OkObjectResult)actionSamplingPlanEmailAdded.Result).Value);
-               SamplingPlanEmail samplingPlanEmailAdded = (SamplingPlanEmail)((OkObjectResult)actionSamplingPlanEmailAdded.Result).Value;
-               Assert.NotNull(samplingPlanEmailAdded);
-
-               // Put SamplingPlanEmail
-               var actionSamplingPlanEmailUpdated = await SamplingPlanEmailService.Put(samplingPlanEmail);
-               Assert.Equal(200, ((ObjectResult)actionSamplingPlanEmailUpdated.Result).StatusCode);
-               Assert.NotNull(((OkObjectResult)actionSamplingPlanEmailUpdated.Result).Value);
-               SamplingPlanEmail samplingPlanEmailUpdated = (SamplingPlanEmail)((OkObjectResult)actionSamplingPlanEmailUpdated.Result).Value;
-               Assert.NotNull(samplingPlanEmailUpdated);
-
-               // Delete SamplingPlanEmail
-               var actionSamplingPlanEmailDeleted = await SamplingPlanEmailService.Delete(samplingPlanEmail.SamplingPlanEmailID);
-               Assert.Equal(200, ((ObjectResult)actionSamplingPlanEmailDeleted.Result).StatusCode);
-               Assert.NotNull(((OkObjectResult)actionSamplingPlanEmailDeleted.Result).Value);
-               bool retBool = (bool)((OkObjectResult)actionSamplingPlanEmailDeleted.Result).Value;
-               Assert.True(retBool);
+                await DoCRUDTest();
+            }
+            else
+            {
+                using (TransactionScope ts = new TransactionScope())
+                {
+                    await DoCRUDTest();
+                }
             }
         }
         #endregion Tests Generated CRUD
 
         #region Functions private
+        private async Task DoCRUDTest()
+        {
+            // Post SamplingPlanEmail
+            var actionSamplingPlanEmailAdded = await SamplingPlanEmailService.Post(samplingPlanEmail);
+            Assert.Equal(200, ((ObjectResult)actionSamplingPlanEmailAdded.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionSamplingPlanEmailAdded.Result).Value);
+            SamplingPlanEmail samplingPlanEmailAdded = (SamplingPlanEmail)((OkObjectResult)actionSamplingPlanEmailAdded.Result).Value;
+            Assert.NotNull(samplingPlanEmailAdded);
+
+            // List<SamplingPlanEmail>
+            var actionSamplingPlanEmailList = await SamplingPlanEmailService.GetSamplingPlanEmailList();
+            Assert.Equal(200, ((ObjectResult)actionSamplingPlanEmailList.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionSamplingPlanEmailList.Result).Value);
+            List<SamplingPlanEmail> samplingPlanEmailList = (List<SamplingPlanEmail>)((OkObjectResult)actionSamplingPlanEmailList.Result).Value;
+
+            int count = ((List<SamplingPlanEmail>)((OkObjectResult)actionSamplingPlanEmailList.Result).Value).Count();
+            Assert.True(count > 0);
+
+            // Put SamplingPlanEmail
+            var actionSamplingPlanEmailUpdated = await SamplingPlanEmailService.Put(samplingPlanEmail);
+            Assert.Equal(200, ((ObjectResult)actionSamplingPlanEmailUpdated.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionSamplingPlanEmailUpdated.Result).Value);
+            SamplingPlanEmail samplingPlanEmailUpdated = (SamplingPlanEmail)((OkObjectResult)actionSamplingPlanEmailUpdated.Result).Value;
+            Assert.NotNull(samplingPlanEmailUpdated);
+
+            // Delete SamplingPlanEmail
+            var actionSamplingPlanEmailDeleted = await SamplingPlanEmailService.Delete(samplingPlanEmail.SamplingPlanEmailID);
+            Assert.Equal(200, ((ObjectResult)actionSamplingPlanEmailDeleted.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionSamplingPlanEmailDeleted.Result).Value);
+            bool retBool = (bool)((OkObjectResult)actionSamplingPlanEmailDeleted.Result).Value;
+            Assert.True(retBool);
+        }
         private async Task<bool> Setup(string culture)
         {
             Config = new ConfigurationBuilder()
@@ -109,6 +127,9 @@ namespace CSSPServices.Tests
 
             Services.AddSingleton<IConfiguration>(Config);
 
+            string CSSPDBLocalFileName = Config.GetValue<string>("CSSPDBLocal");
+            Assert.NotNull(CSSPDBLocalFileName);
+
             string TestDBConnString = Config.GetValue<string>("TestDBConnectionString");
             Assert.NotNull(TestDBConnString);
 
@@ -120,6 +141,15 @@ namespace CSSPServices.Tests
             Services.AddDbContext<InMemoryDBContext>(options =>
             {
                 options.UseInMemoryDatabase(TestDBConnString);
+            });
+
+            string appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+
+            FileInfo fiAppDataPath = new FileInfo(CSSPDBLocalFileName.Replace("{appDataPath}", appDataPath));
+
+            Services.AddDbContext<CSSPDBLocalContext>(options =>
+            {
+                options.UseSqlite($"Data Source={ fiAppDataPath.FullName }");
             });
 
             Services.AddSingleton<ICultureService, CultureService>();
@@ -141,6 +171,12 @@ namespace CSSPServices.Tests
             string Id = Config.GetValue<string>("Id");
             Assert.True(await LoggedInService.SetLoggedInContactInfo(Id));
 
+            //string IsLocalStr = Config.GetValue<string>("IsLocal");
+            //Assert.NotNull(IsLocalStr);
+
+            dbIM = Provider.GetService<InMemoryDBContext>();
+            Assert.NotNull(dbIM);
+
             SamplingPlanEmailService = Provider.GetService<ISamplingPlanEmailService>();
             Assert.NotNull(SamplingPlanEmailService);
 
@@ -148,6 +184,8 @@ namespace CSSPServices.Tests
         }
         private SamplingPlanEmail GetFilledRandomSamplingPlanEmail(string OmitPropName)
         {
+            dbIM.Database.EnsureDeleted();
+
             SamplingPlanEmail samplingPlanEmail = new SamplingPlanEmail();
 
             if (OmitPropName != "SamplingPlanID") samplingPlanEmail.SamplingPlanID = 1;
@@ -159,6 +197,16 @@ namespace CSSPServices.Tests
             if (OmitPropName != "LabSheetRejected") samplingPlanEmail.LabSheetRejected = true;
             if (OmitPropName != "LastUpdateDate_UTC") samplingPlanEmail.LastUpdateDate_UTC = new DateTime(2005, 3, 6);
             if (OmitPropName != "LastUpdateContactTVItemID") samplingPlanEmail.LastUpdateContactTVItemID = 2;
+
+            if (LoggedInService.IsLocal)
+            {
+                if (OmitPropName != "SamplingPlanEmailID") samplingPlanEmail.SamplingPlanEmailID = 10000000;
+
+                dbIM.SamplingPlans.Add(new SamplingPlan() { SamplingPlanID = 1 });
+                dbIM.SaveChanges();
+                dbIM.TVItems.Add(new TVItem() { TVItemID = 2, TVLevel = 1, TVPath = "p1p2", TVType = (TVTypeEnum)5, ParentID = 1, IsActive = true, LastUpdateDate_UTC = new DateTime(2014, 12, 2, 16, 58, 16), LastUpdateContactTVItemID = 2});
+                dbIM.SaveChanges();
+            }
 
             return samplingPlanEmail;
         }

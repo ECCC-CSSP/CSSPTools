@@ -36,6 +36,9 @@ namespace CSSPServices.Tests
         private ILoggedInService LoggedInService { get; set; }
         private IContactPreferenceService ContactPreferenceService { get; set; }
         private CSSPDBContext db { get; set; }
+        private CSSPDBLocalContext dbLocal { get; set; }
+        private InMemoryDBContext dbIM { get; set; }
+        private ContactPreference contactPreference { get; set; }
         #endregion Properties
 
         #region Constructors
@@ -47,9 +50,11 @@ namespace CSSPServices.Tests
 
         #region Tests Generated CRUD
         [Theory]
-        [InlineData("en-CA")]
-        [InlineData("fr-CA")]
-        public async Task ContactPreference_CRUD_Good_Test(string culture)
+        [InlineData("en-CA", "true")]
+        [InlineData("fr-CA", "true")]
+        [InlineData("en-CA", "false")]
+        [InlineData("fr-CA", "false")]
+        public async Task ContactPreference_CRUD_Good_Test(string culture, string IsLocalStr)
         {
             // -------------------------------
             // -------------------------------
@@ -59,44 +64,57 @@ namespace CSSPServices.Tests
 
             Assert.True(await Setup(culture));
 
-            using (TransactionScope ts = new TransactionScope())
+            LoggedInService.IsLocal = bool.Parse(IsLocalStr);
+
+            contactPreference = GetFilledRandomContactPreference("");
+
+            if (LoggedInService.IsLocal)
             {
-               ContactPreference contactPreference = GetFilledRandomContactPreference(""); 
-
-               // List<ContactPreference>
-               var actionContactPreferenceList = await ContactPreferenceService.GetContactPreferenceList();
-               Assert.Equal(200, ((ObjectResult)actionContactPreferenceList.Result).StatusCode);
-               Assert.NotNull(((OkObjectResult)actionContactPreferenceList.Result).Value);
-               List<ContactPreference> contactPreferenceList = (List<ContactPreference>)((OkObjectResult)actionContactPreferenceList.Result).Value;
-
-               int count = ((List<ContactPreference>)((OkObjectResult)actionContactPreferenceList.Result).Value).Count();
-                Assert.True(count > 0);
-
-               // Post ContactPreference
-               var actionContactPreferenceAdded = await ContactPreferenceService.Post(contactPreference);
-               Assert.Equal(200, ((ObjectResult)actionContactPreferenceAdded.Result).StatusCode);
-               Assert.NotNull(((OkObjectResult)actionContactPreferenceAdded.Result).Value);
-               ContactPreference contactPreferenceAdded = (ContactPreference)((OkObjectResult)actionContactPreferenceAdded.Result).Value;
-               Assert.NotNull(contactPreferenceAdded);
-
-               // Put ContactPreference
-               var actionContactPreferenceUpdated = await ContactPreferenceService.Put(contactPreference);
-               Assert.Equal(200, ((ObjectResult)actionContactPreferenceUpdated.Result).StatusCode);
-               Assert.NotNull(((OkObjectResult)actionContactPreferenceUpdated.Result).Value);
-               ContactPreference contactPreferenceUpdated = (ContactPreference)((OkObjectResult)actionContactPreferenceUpdated.Result).Value;
-               Assert.NotNull(contactPreferenceUpdated);
-
-               // Delete ContactPreference
-               var actionContactPreferenceDeleted = await ContactPreferenceService.Delete(contactPreference.ContactPreferenceID);
-               Assert.Equal(200, ((ObjectResult)actionContactPreferenceDeleted.Result).StatusCode);
-               Assert.NotNull(((OkObjectResult)actionContactPreferenceDeleted.Result).Value);
-               bool retBool = (bool)((OkObjectResult)actionContactPreferenceDeleted.Result).Value;
-               Assert.True(retBool);
+                await DoCRUDTest();
+            }
+            else
+            {
+                using (TransactionScope ts = new TransactionScope())
+                {
+                    await DoCRUDTest();
+                }
             }
         }
         #endregion Tests Generated CRUD
 
         #region Functions private
+        private async Task DoCRUDTest()
+        {
+            // Post ContactPreference
+            var actionContactPreferenceAdded = await ContactPreferenceService.Post(contactPreference);
+            Assert.Equal(200, ((ObjectResult)actionContactPreferenceAdded.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionContactPreferenceAdded.Result).Value);
+            ContactPreference contactPreferenceAdded = (ContactPreference)((OkObjectResult)actionContactPreferenceAdded.Result).Value;
+            Assert.NotNull(contactPreferenceAdded);
+
+            // List<ContactPreference>
+            var actionContactPreferenceList = await ContactPreferenceService.GetContactPreferenceList();
+            Assert.Equal(200, ((ObjectResult)actionContactPreferenceList.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionContactPreferenceList.Result).Value);
+            List<ContactPreference> contactPreferenceList = (List<ContactPreference>)((OkObjectResult)actionContactPreferenceList.Result).Value;
+
+            int count = ((List<ContactPreference>)((OkObjectResult)actionContactPreferenceList.Result).Value).Count();
+            Assert.True(count > 0);
+
+            // Put ContactPreference
+            var actionContactPreferenceUpdated = await ContactPreferenceService.Put(contactPreference);
+            Assert.Equal(200, ((ObjectResult)actionContactPreferenceUpdated.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionContactPreferenceUpdated.Result).Value);
+            ContactPreference contactPreferenceUpdated = (ContactPreference)((OkObjectResult)actionContactPreferenceUpdated.Result).Value;
+            Assert.NotNull(contactPreferenceUpdated);
+
+            // Delete ContactPreference
+            var actionContactPreferenceDeleted = await ContactPreferenceService.Delete(contactPreference.ContactPreferenceID);
+            Assert.Equal(200, ((ObjectResult)actionContactPreferenceDeleted.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionContactPreferenceDeleted.Result).Value);
+            bool retBool = (bool)((OkObjectResult)actionContactPreferenceDeleted.Result).Value;
+            Assert.True(retBool);
+        }
         private async Task<bool> Setup(string culture)
         {
             Config = new ConfigurationBuilder()
@@ -109,6 +127,9 @@ namespace CSSPServices.Tests
 
             Services.AddSingleton<IConfiguration>(Config);
 
+            string CSSPDBLocalFileName = Config.GetValue<string>("CSSPDBLocal");
+            Assert.NotNull(CSSPDBLocalFileName);
+
             string TestDBConnString = Config.GetValue<string>("TestDBConnectionString");
             Assert.NotNull(TestDBConnString);
 
@@ -120,6 +141,15 @@ namespace CSSPServices.Tests
             Services.AddDbContext<InMemoryDBContext>(options =>
             {
                 options.UseInMemoryDatabase(TestDBConnString);
+            });
+
+            string appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+
+            FileInfo fiAppDataPath = new FileInfo(CSSPDBLocalFileName.Replace("{appDataPath}", appDataPath));
+
+            Services.AddDbContext<CSSPDBLocalContext>(options =>
+            {
+                options.UseSqlite($"Data Source={ fiAppDataPath.FullName }");
             });
 
             Services.AddSingleton<ICultureService, CultureService>();
@@ -141,6 +171,12 @@ namespace CSSPServices.Tests
             string Id = Config.GetValue<string>("Id");
             Assert.True(await LoggedInService.SetLoggedInContactInfo(Id));
 
+            //string IsLocalStr = Config.GetValue<string>("IsLocal");
+            //Assert.NotNull(IsLocalStr);
+
+            dbIM = Provider.GetService<InMemoryDBContext>();
+            Assert.NotNull(dbIM);
+
             ContactPreferenceService = Provider.GetService<IContactPreferenceService>();
             Assert.NotNull(ContactPreferenceService);
 
@@ -148,6 +184,8 @@ namespace CSSPServices.Tests
         }
         private ContactPreference GetFilledRandomContactPreference(string OmitPropName)
         {
+            dbIM.Database.EnsureDeleted();
+
             ContactPreference contactPreference = new ContactPreference();
 
             if (OmitPropName != "ContactID") contactPreference.ContactID = 1;
@@ -155,6 +193,16 @@ namespace CSSPServices.Tests
             if (OmitPropName != "MarkerSize") contactPreference.MarkerSize = GetRandomInt(1, 1000);
             if (OmitPropName != "LastUpdateDate_UTC") contactPreference.LastUpdateDate_UTC = new DateTime(2005, 3, 6);
             if (OmitPropName != "LastUpdateContactTVItemID") contactPreference.LastUpdateContactTVItemID = 2;
+
+            if (LoggedInService.IsLocal)
+            {
+                if (OmitPropName != "ContactPreferenceID") contactPreference.ContactPreferenceID = 10000000;
+
+                dbIM.Contacts.Add(new Contact() { ContactID = 1, Id = "f837a0d7-783e-498e-b821-de9c9bd981de" ?? "", ContactTVItemID = 2, LoginEmail = "Charles.LeBlanc2@Canada.ca", FirstName = "Charles", LastName = "LeBlanc", Initial = "G", WebName = "Charles", ContactTitle = (ContactTitleEnum)0, IsAdmin = true, EmailValidated = true, Disabled = false, IsNew = false, SamplingPlanner_ProvincesTVItemID = "7,8,9,10,11,12,", Token = "", LastUpdateDate_UTC = new DateTime(2015, 5, 25, 14, 51, 31), LastUpdateContactTVItemID = 2});
+                dbIM.SaveChanges();
+                dbIM.TVItems.Add(new TVItem() { TVItemID = 2, TVLevel = 1, TVPath = "p1p2", TVType = (TVTypeEnum)5, ParentID = 1, IsActive = true, LastUpdateDate_UTC = new DateTime(2014, 12, 2, 16, 58, 16), LastUpdateContactTVItemID = 2});
+                dbIM.SaveChanges();
+            }
 
             return contactPreference;
         }

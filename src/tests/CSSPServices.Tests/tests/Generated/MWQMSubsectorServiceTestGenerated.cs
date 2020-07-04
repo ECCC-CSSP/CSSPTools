@@ -36,6 +36,9 @@ namespace CSSPServices.Tests
         private ILoggedInService LoggedInService { get; set; }
         private IMWQMSubsectorService MWQMSubsectorService { get; set; }
         private CSSPDBContext db { get; set; }
+        private CSSPDBLocalContext dbLocal { get; set; }
+        private InMemoryDBContext dbIM { get; set; }
+        private MWQMSubsector mwqmSubsector { get; set; }
         #endregion Properties
 
         #region Constructors
@@ -47,9 +50,11 @@ namespace CSSPServices.Tests
 
         #region Tests Generated CRUD
         [Theory]
-        [InlineData("en-CA")]
-        [InlineData("fr-CA")]
-        public async Task MWQMSubsector_CRUD_Good_Test(string culture)
+        [InlineData("en-CA", "true")]
+        [InlineData("fr-CA", "true")]
+        [InlineData("en-CA", "false")]
+        [InlineData("fr-CA", "false")]
+        public async Task MWQMSubsector_CRUD_Good_Test(string culture, string IsLocalStr)
         {
             // -------------------------------
             // -------------------------------
@@ -59,44 +64,57 @@ namespace CSSPServices.Tests
 
             Assert.True(await Setup(culture));
 
-            using (TransactionScope ts = new TransactionScope())
+            LoggedInService.IsLocal = bool.Parse(IsLocalStr);
+
+            mwqmSubsector = GetFilledRandomMWQMSubsector("");
+
+            if (LoggedInService.IsLocal)
             {
-               MWQMSubsector mwqmSubsector = GetFilledRandomMWQMSubsector(""); 
-
-               // List<MWQMSubsector>
-               var actionMWQMSubsectorList = await MWQMSubsectorService.GetMWQMSubsectorList();
-               Assert.Equal(200, ((ObjectResult)actionMWQMSubsectorList.Result).StatusCode);
-               Assert.NotNull(((OkObjectResult)actionMWQMSubsectorList.Result).Value);
-               List<MWQMSubsector> mwqmSubsectorList = (List<MWQMSubsector>)((OkObjectResult)actionMWQMSubsectorList.Result).Value;
-
-               int count = ((List<MWQMSubsector>)((OkObjectResult)actionMWQMSubsectorList.Result).Value).Count();
-                Assert.True(count > 0);
-
-               // Post MWQMSubsector
-               var actionMWQMSubsectorAdded = await MWQMSubsectorService.Post(mwqmSubsector);
-               Assert.Equal(200, ((ObjectResult)actionMWQMSubsectorAdded.Result).StatusCode);
-               Assert.NotNull(((OkObjectResult)actionMWQMSubsectorAdded.Result).Value);
-               MWQMSubsector mwqmSubsectorAdded = (MWQMSubsector)((OkObjectResult)actionMWQMSubsectorAdded.Result).Value;
-               Assert.NotNull(mwqmSubsectorAdded);
-
-               // Put MWQMSubsector
-               var actionMWQMSubsectorUpdated = await MWQMSubsectorService.Put(mwqmSubsector);
-               Assert.Equal(200, ((ObjectResult)actionMWQMSubsectorUpdated.Result).StatusCode);
-               Assert.NotNull(((OkObjectResult)actionMWQMSubsectorUpdated.Result).Value);
-               MWQMSubsector mwqmSubsectorUpdated = (MWQMSubsector)((OkObjectResult)actionMWQMSubsectorUpdated.Result).Value;
-               Assert.NotNull(mwqmSubsectorUpdated);
-
-               // Delete MWQMSubsector
-               var actionMWQMSubsectorDeleted = await MWQMSubsectorService.Delete(mwqmSubsector.MWQMSubsectorID);
-               Assert.Equal(200, ((ObjectResult)actionMWQMSubsectorDeleted.Result).StatusCode);
-               Assert.NotNull(((OkObjectResult)actionMWQMSubsectorDeleted.Result).Value);
-               bool retBool = (bool)((OkObjectResult)actionMWQMSubsectorDeleted.Result).Value;
-               Assert.True(retBool);
+                await DoCRUDTest();
+            }
+            else
+            {
+                using (TransactionScope ts = new TransactionScope())
+                {
+                    await DoCRUDTest();
+                }
             }
         }
         #endregion Tests Generated CRUD
 
         #region Functions private
+        private async Task DoCRUDTest()
+        {
+            // Post MWQMSubsector
+            var actionMWQMSubsectorAdded = await MWQMSubsectorService.Post(mwqmSubsector);
+            Assert.Equal(200, ((ObjectResult)actionMWQMSubsectorAdded.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionMWQMSubsectorAdded.Result).Value);
+            MWQMSubsector mwqmSubsectorAdded = (MWQMSubsector)((OkObjectResult)actionMWQMSubsectorAdded.Result).Value;
+            Assert.NotNull(mwqmSubsectorAdded);
+
+            // List<MWQMSubsector>
+            var actionMWQMSubsectorList = await MWQMSubsectorService.GetMWQMSubsectorList();
+            Assert.Equal(200, ((ObjectResult)actionMWQMSubsectorList.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionMWQMSubsectorList.Result).Value);
+            List<MWQMSubsector> mwqmSubsectorList = (List<MWQMSubsector>)((OkObjectResult)actionMWQMSubsectorList.Result).Value;
+
+            int count = ((List<MWQMSubsector>)((OkObjectResult)actionMWQMSubsectorList.Result).Value).Count();
+            Assert.True(count > 0);
+
+            // Put MWQMSubsector
+            var actionMWQMSubsectorUpdated = await MWQMSubsectorService.Put(mwqmSubsector);
+            Assert.Equal(200, ((ObjectResult)actionMWQMSubsectorUpdated.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionMWQMSubsectorUpdated.Result).Value);
+            MWQMSubsector mwqmSubsectorUpdated = (MWQMSubsector)((OkObjectResult)actionMWQMSubsectorUpdated.Result).Value;
+            Assert.NotNull(mwqmSubsectorUpdated);
+
+            // Delete MWQMSubsector
+            var actionMWQMSubsectorDeleted = await MWQMSubsectorService.Delete(mwqmSubsector.MWQMSubsectorID);
+            Assert.Equal(200, ((ObjectResult)actionMWQMSubsectorDeleted.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionMWQMSubsectorDeleted.Result).Value);
+            bool retBool = (bool)((OkObjectResult)actionMWQMSubsectorDeleted.Result).Value;
+            Assert.True(retBool);
+        }
         private async Task<bool> Setup(string culture)
         {
             Config = new ConfigurationBuilder()
@@ -109,6 +127,9 @@ namespace CSSPServices.Tests
 
             Services.AddSingleton<IConfiguration>(Config);
 
+            string CSSPDBLocalFileName = Config.GetValue<string>("CSSPDBLocal");
+            Assert.NotNull(CSSPDBLocalFileName);
+
             string TestDBConnString = Config.GetValue<string>("TestDBConnectionString");
             Assert.NotNull(TestDBConnString);
 
@@ -120,6 +141,15 @@ namespace CSSPServices.Tests
             Services.AddDbContext<InMemoryDBContext>(options =>
             {
                 options.UseInMemoryDatabase(TestDBConnString);
+            });
+
+            string appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+
+            FileInfo fiAppDataPath = new FileInfo(CSSPDBLocalFileName.Replace("{appDataPath}", appDataPath));
+
+            Services.AddDbContext<CSSPDBLocalContext>(options =>
+            {
+                options.UseSqlite($"Data Source={ fiAppDataPath.FullName }");
             });
 
             Services.AddSingleton<ICultureService, CultureService>();
@@ -141,6 +171,12 @@ namespace CSSPServices.Tests
             string Id = Config.GetValue<string>("Id");
             Assert.True(await LoggedInService.SetLoggedInContactInfo(Id));
 
+            //string IsLocalStr = Config.GetValue<string>("IsLocal");
+            //Assert.NotNull(IsLocalStr);
+
+            dbIM = Provider.GetService<InMemoryDBContext>();
+            Assert.NotNull(dbIM);
+
             MWQMSubsectorService = Provider.GetService<IMWQMSubsectorService>();
             Assert.NotNull(MWQMSubsectorService);
 
@@ -148,6 +184,8 @@ namespace CSSPServices.Tests
         }
         private MWQMSubsector GetFilledRandomMWQMSubsector(string OmitPropName)
         {
+            dbIM.Database.EnsureDeleted();
+
             MWQMSubsector mwqmSubsector = new MWQMSubsector();
 
             if (OmitPropName != "MWQMSubsectorTVItemID") mwqmSubsector.MWQMSubsectorTVItemID = 11;
@@ -155,6 +193,16 @@ namespace CSSPServices.Tests
             if (OmitPropName != "TideLocationSIDText") mwqmSubsector.TideLocationSIDText = GetRandomString("", 5);
             if (OmitPropName != "LastUpdateDate_UTC") mwqmSubsector.LastUpdateDate_UTC = new DateTime(2005, 3, 6);
             if (OmitPropName != "LastUpdateContactTVItemID") mwqmSubsector.LastUpdateContactTVItemID = 2;
+
+            if (LoggedInService.IsLocal)
+            {
+                if (OmitPropName != "MWQMSubsectorID") mwqmSubsector.MWQMSubsectorID = 10000000;
+
+                dbIM.TVItems.Add(new TVItem() { TVItemID = 11, TVLevel = 5, TVPath = "p1p5p6p9p10p11", TVType = (TVTypeEnum)20, ParentID = 10, IsActive = true, LastUpdateDate_UTC = new DateTime(2014, 12, 2, 18, 53, 40), LastUpdateContactTVItemID = 2});
+                dbIM.SaveChanges();
+                dbIM.TVItems.Add(new TVItem() { TVItemID = 2, TVLevel = 1, TVPath = "p1p2", TVType = (TVTypeEnum)5, ParentID = 1, IsActive = true, LastUpdateDate_UTC = new DateTime(2014, 12, 2, 16, 58, 16), LastUpdateContactTVItemID = 2});
+                dbIM.SaveChanges();
+            }
 
             return mwqmSubsector;
         }

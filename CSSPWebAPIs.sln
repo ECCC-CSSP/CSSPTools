@@ -47,9 +47,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CSSPWebLocalAPIs", "src\web
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CSSPWebLocalAPIs.Tests", "src\webs\Tests\CSSPWebLocalAPIs.Tests\CSSPWebLocalAPIs.Tests.csproj", "{8A602E47-AE79-4A51-8112-0B43C4197650}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CSSPSQLiteServices", "src\dlls\CSSPSQLiteServices\CSSPSQLiteServices.csproj", "{D48CBB44-929D-439B-ABAD-E8D59703A76D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CSSPSQLiteServices", "src\dlls\CSSPSQLiteServices\CSSPSQLiteServices.csproj", "{D48CBB44-929D-439B-ABAD-E8D59703A76D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CSSPSQLiteServices.Tests", "src\tests\CSSPSQLiteServices.Tests\CSSPSQLiteServices.Tests.csproj", "{87C19C1E-008B-44BD-BF93-6C2EE118B141}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CSSPSQLiteServices.Tests", "src\tests\CSSPSQLiteServices.Tests\CSSPSQLiteServices.Tests.csproj", "{87C19C1E-008B-44BD-BF93-6C2EE118B141}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

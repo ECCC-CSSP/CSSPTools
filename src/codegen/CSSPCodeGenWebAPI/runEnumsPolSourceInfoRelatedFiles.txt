@@ -2,7 +2,7 @@
 C:\CSSPTools\src\assets\PolSourceGrouping.xlsm
 
 Files created:
-C:\CSSPTools\src\dlls\CSSPServices\Generated\FillPolSourceObsInfoChildServiceGenerated.cs
+C:\CSSPTools\src\dlls\CSSPModels\Generated\FillPolSourceObsInfoChildServiceGenerated.cs
 C:\CSSPTools\src\dlls\CSSPEnums\Generated\EnumsPolSourceInfoGenerated.cs
 C:\CSSPTools\src\dlls\CSSPEnums\Generated\PolSourceObsInfoEnumGenerated.cs
 C:\CSSPTools\src\tests\CSSPEnums.Tests\tests\Generated\EnumsPolSourceObsInfoEnumTestGenerated.cs

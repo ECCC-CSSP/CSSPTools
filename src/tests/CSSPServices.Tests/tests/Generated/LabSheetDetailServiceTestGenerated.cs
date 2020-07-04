@@ -36,6 +36,9 @@ namespace CSSPServices.Tests
         private ILoggedInService LoggedInService { get; set; }
         private ILabSheetDetailService LabSheetDetailService { get; set; }
         private CSSPDBContext db { get; set; }
+        private CSSPDBLocalContext dbLocal { get; set; }
+        private InMemoryDBContext dbIM { get; set; }
+        private LabSheetDetail labSheetDetail { get; set; }
         #endregion Properties
 
         #region Constructors
@@ -47,9 +50,11 @@ namespace CSSPServices.Tests
 
         #region Tests Generated CRUD
         [Theory]
-        [InlineData("en-CA")]
-        [InlineData("fr-CA")]
-        public async Task LabSheetDetail_CRUD_Good_Test(string culture)
+        [InlineData("en-CA", "true")]
+        [InlineData("fr-CA", "true")]
+        [InlineData("en-CA", "false")]
+        [InlineData("fr-CA", "false")]
+        public async Task LabSheetDetail_CRUD_Good_Test(string culture, string IsLocalStr)
         {
             // -------------------------------
             // -------------------------------
@@ -59,44 +64,57 @@ namespace CSSPServices.Tests
 
             Assert.True(await Setup(culture));
 
-            using (TransactionScope ts = new TransactionScope())
+            LoggedInService.IsLocal = bool.Parse(IsLocalStr);
+
+            labSheetDetail = GetFilledRandomLabSheetDetail("");
+
+            if (LoggedInService.IsLocal)
             {
-               LabSheetDetail labSheetDetail = GetFilledRandomLabSheetDetail(""); 
-
-               // List<LabSheetDetail>
-               var actionLabSheetDetailList = await LabSheetDetailService.GetLabSheetDetailList();
-               Assert.Equal(200, ((ObjectResult)actionLabSheetDetailList.Result).StatusCode);
-               Assert.NotNull(((OkObjectResult)actionLabSheetDetailList.Result).Value);
-               List<LabSheetDetail> labSheetDetailList = (List<LabSheetDetail>)((OkObjectResult)actionLabSheetDetailList.Result).Value;
-
-               int count = ((List<LabSheetDetail>)((OkObjectResult)actionLabSheetDetailList.Result).Value).Count();
-                Assert.True(count > 0);
-
-               // Post LabSheetDetail
-               var actionLabSheetDetailAdded = await LabSheetDetailService.Post(labSheetDetail);
-               Assert.Equal(200, ((ObjectResult)actionLabSheetDetailAdded.Result).StatusCode);
-               Assert.NotNull(((OkObjectResult)actionLabSheetDetailAdded.Result).Value);
-               LabSheetDetail labSheetDetailAdded = (LabSheetDetail)((OkObjectResult)actionLabSheetDetailAdded.Result).Value;
-               Assert.NotNull(labSheetDetailAdded);
-
-               // Put LabSheetDetail
-               var actionLabSheetDetailUpdated = await LabSheetDetailService.Put(labSheetDetail);
-               Assert.Equal(200, ((ObjectResult)actionLabSheetDetailUpdated.Result).StatusCode);
-               Assert.NotNull(((OkObjectResult)actionLabSheetDetailUpdated.Result).Value);
-               LabSheetDetail labSheetDetailUpdated = (LabSheetDetail)((OkObjectResult)actionLabSheetDetailUpdated.Result).Value;
-               Assert.NotNull(labSheetDetailUpdated);
-
-               // Delete LabSheetDetail
-               var actionLabSheetDetailDeleted = await LabSheetDetailService.Delete(labSheetDetail.LabSheetDetailID);
-               Assert.Equal(200, ((ObjectResult)actionLabSheetDetailDeleted.Result).StatusCode);
-               Assert.NotNull(((OkObjectResult)actionLabSheetDetailDeleted.Result).Value);
-               bool retBool = (bool)((OkObjectResult)actionLabSheetDetailDeleted.Result).Value;
-               Assert.True(retBool);
+                await DoCRUDTest();
+            }
+            else
+            {
+                using (TransactionScope ts = new TransactionScope())
+                {
+                    await DoCRUDTest();
+                }
             }
         }
         #endregion Tests Generated CRUD
 
         #region Functions private
+        private async Task DoCRUDTest()
+        {
+            // Post LabSheetDetail
+            var actionLabSheetDetailAdded = await LabSheetDetailService.Post(labSheetDetail);
+            Assert.Equal(200, ((ObjectResult)actionLabSheetDetailAdded.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionLabSheetDetailAdded.Result).Value);
+            LabSheetDetail labSheetDetailAdded = (LabSheetDetail)((OkObjectResult)actionLabSheetDetailAdded.Result).Value;
+            Assert.NotNull(labSheetDetailAdded);
+
+            // List<LabSheetDetail>
+            var actionLabSheetDetailList = await LabSheetDetailService.GetLabSheetDetailList();
+            Assert.Equal(200, ((ObjectResult)actionLabSheetDetailList.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionLabSheetDetailList.Result).Value);
+            List<LabSheetDetail> labSheetDetailList = (List<LabSheetDetail>)((OkObjectResult)actionLabSheetDetailList.Result).Value;
+
+            int count = ((List<LabSheetDetail>)((OkObjectResult)actionLabSheetDetailList.Result).Value).Count();
+            Assert.True(count > 0);
+
+            // Put LabSheetDetail
+            var actionLabSheetDetailUpdated = await LabSheetDetailService.Put(labSheetDetail);
+            Assert.Equal(200, ((ObjectResult)actionLabSheetDetailUpdated.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionLabSheetDetailUpdated.Result).Value);
+            LabSheetDetail labSheetDetailUpdated = (LabSheetDetail)((OkObjectResult)actionLabSheetDetailUpdated.Result).Value;
+            Assert.NotNull(labSheetDetailUpdated);
+
+            // Delete LabSheetDetail
+            var actionLabSheetDetailDeleted = await LabSheetDetailService.Delete(labSheetDetail.LabSheetDetailID);
+            Assert.Equal(200, ((ObjectResult)actionLabSheetDetailDeleted.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionLabSheetDetailDeleted.Result).Value);
+            bool retBool = (bool)((OkObjectResult)actionLabSheetDetailDeleted.Result).Value;
+            Assert.True(retBool);
+        }
         private async Task<bool> Setup(string culture)
         {
             Config = new ConfigurationBuilder()
@@ -109,6 +127,9 @@ namespace CSSPServices.Tests
 
             Services.AddSingleton<IConfiguration>(Config);
 
+            string CSSPDBLocalFileName = Config.GetValue<string>("CSSPDBLocal");
+            Assert.NotNull(CSSPDBLocalFileName);
+
             string TestDBConnString = Config.GetValue<string>("TestDBConnectionString");
             Assert.NotNull(TestDBConnString);
 
@@ -120,6 +141,15 @@ namespace CSSPServices.Tests
             Services.AddDbContext<InMemoryDBContext>(options =>
             {
                 options.UseInMemoryDatabase(TestDBConnString);
+            });
+
+            string appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+
+            FileInfo fiAppDataPath = new FileInfo(CSSPDBLocalFileName.Replace("{appDataPath}", appDataPath));
+
+            Services.AddDbContext<CSSPDBLocalContext>(options =>
+            {
+                options.UseSqlite($"Data Source={ fiAppDataPath.FullName }");
             });
 
             Services.AddSingleton<ICultureService, CultureService>();
@@ -141,6 +171,12 @@ namespace CSSPServices.Tests
             string Id = Config.GetValue<string>("Id");
             Assert.True(await LoggedInService.SetLoggedInContactInfo(Id));
 
+            //string IsLocalStr = Config.GetValue<string>("IsLocal");
+            //Assert.NotNull(IsLocalStr);
+
+            dbIM = Provider.GetService<InMemoryDBContext>();
+            Assert.NotNull(dbIM);
+
             LabSheetDetailService = Provider.GetService<ILabSheetDetailService>();
             Assert.NotNull(LabSheetDetailService);
 
@@ -148,6 +184,8 @@ namespace CSSPServices.Tests
         }
         private LabSheetDetail GetFilledRandomLabSheetDetail(string OmitPropName)
         {
+            dbIM.Database.EnsureDeleted();
+
             LabSheetDetail labSheetDetail = new LabSheetDetail();
 
             if (OmitPropName != "LabSheetID") labSheetDetail.LabSheetID = 1;
@@ -214,6 +252,20 @@ namespace CSSPServices.Tests
             if (OmitPropName != "IntertechReadAcceptable") labSheetDetail.IntertechReadAcceptable = true;
             if (OmitPropName != "LastUpdateDate_UTC") labSheetDetail.LastUpdateDate_UTC = new DateTime(2005, 3, 6);
             if (OmitPropName != "LastUpdateContactTVItemID") labSheetDetail.LastUpdateContactTVItemID = 2;
+
+            if (LoggedInService.IsLocal)
+            {
+                if (OmitPropName != "LabSheetDetailID") labSheetDetail.LabSheetDetailID = 10000000;
+
+                dbIM.LabSheets.Add(new LabSheet() { LabSheetID = 1, OtherServerLabSheetID = 52, SamplingPlanID = 1, SamplingPlanName = @"C:\CSSPLabSheets\SamplingPlan_Subsector_Routine_A1_2017_Classification-Moncton.txt", Year = 2017, Month = 6, Day = 21, RunNumber = 1, SubsectorTVItemID = 12, MWQMRunTVItemID = 50, SamplingPlanType = (SamplingPlanTypeEnum)1, SampleType = (SampleTypeEnum)109, LabSheetType = (LabSheetTypeEnum)1, LabSheetStatus = (LabSheetStatusEnum)3, FileName = @"C:\CSSPLabSheets\SamplingPlan_Subsector_Routine_A1_2017_Classification-Moncton\2017\NB-06-020-002_2017_06_21_A1_R01_C.txt", FileLastModifiedDate_Local = new DateTime(2017, 6, 26, 15, 37, 48), FileContent = "", AcceptedOrRejectedByContactTVItemID = 2, AcceptedOrRejectedDateTime = new DateTime(2017, 6, 28, 9, 41, 35), RejectReason = "", LastUpdateDate_UTC = new DateTime(2017, 6, 28, 12, 41, 35), LastUpdateContactTVItemID = 2 });
+                dbIM.SaveChanges();
+                dbIM.SamplingPlans.Add(new SamplingPlan() { SamplingPlanID = 1 });
+                dbIM.SaveChanges();
+                dbIM.TVItems.Add(new TVItem() { TVItemID = 11, TVLevel = 5, TVPath = "p1p5p6p9p10p11", TVType = (TVTypeEnum)20, ParentID = 10, IsActive = true, LastUpdateDate_UTC = new DateTime(2014, 12, 2, 18, 53, 40), LastUpdateContactTVItemID = 2});
+                dbIM.SaveChanges();
+                dbIM.TVItems.Add(new TVItem() { TVItemID = 2, TVLevel = 1, TVPath = "p1p2", TVType = (TVTypeEnum)5, ParentID = 1, IsActive = true, LastUpdateDate_UTC = new DateTime(2014, 12, 2, 16, 58, 16), LastUpdateContactTVItemID = 2});
+                dbIM.SaveChanges();
+            }
 
             return labSheetDetail;
         }

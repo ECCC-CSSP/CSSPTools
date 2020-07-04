@@ -36,6 +36,8 @@ namespace CSSPServices
 
         #region Properties
         private CSSPDBContext db { get; }
+        private CSSPDBLocalContext dbLocal { get; }
+        private InMemoryDBContext dbIM { get; }
         private ICultureService CultureService { get; }
         private ILoggedInService LoggedInService { get; }
         private IEnums enums { get; }
@@ -43,12 +45,14 @@ namespace CSSPServices
         #endregion Properties
 
         #region Constructors
-        public AppTaskService(ICultureService CultureService, ILoggedInService LoggedInService, IEnums enums, CSSPDBContext db)
+        public AppTaskService(ICultureService CultureService, ILoggedInService LoggedInService, IEnums enums, CSSPDBContext db, CSSPDBLocalContext dbLocal, InMemoryDBContext dbIM)
         {
             this.CultureService = CultureService;
             this.LoggedInService = LoggedInService;
             this.enums = enums;
             this.db = db;
+            this.dbLocal = dbLocal;
+            this.dbIM = dbIM;
         }
         #endregion Constructors
 
@@ -60,16 +64,32 @@ namespace CSSPServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            AppTask apptask = (from c in db.AppTasks.AsNoTracking()
-                    where c.AppTaskID == AppTaskID
-                    select c).FirstOrDefault();
-
-            if (apptask == null)
+            if (LoggedInService.IsLocal)
             {
-               return await Task.FromResult(NotFound());
-            }
+                AppTask apptask = (from c in dbLocal.AppTasks.AsNoTracking()
+                        where c.AppTaskID == AppTaskID
+                        select c).FirstOrDefault();
 
-            return await Task.FromResult(Ok(apptask));
+                if (apptask == null)
+                {
+                   return await Task.FromResult(NotFound());
+                }
+
+                return await Task.FromResult(Ok(apptask));
+            }
+            else
+            {
+                AppTask apptask = (from c in db.AppTasks.AsNoTracking()
+                        where c.AppTaskID == AppTaskID
+                        select c).FirstOrDefault();
+
+                if (apptask == null)
+                {
+                   return await Task.FromResult(NotFound());
+                }
+
+                return await Task.FromResult(Ok(apptask));
+            }
         }
         public async Task<ActionResult<List<AppTask>>> GetAppTaskList()
         {
@@ -78,9 +98,18 @@ namespace CSSPServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            List<AppTask> apptaskList = (from c in db.AppTasks.AsNoTracking() select c).Take(100).ToList();
+            if (LoggedInService.IsLocal)
+            {
+                List<AppTask> apptaskList = (from c in dbLocal.AppTasks.AsNoTracking() select c).Take(100).ToList();
 
-            return await Task.FromResult(Ok(apptaskList));
+                return await Task.FromResult(Ok(apptaskList));
+            }
+            else
+            {
+                List<AppTask> apptaskList = (from c in db.AppTasks.AsNoTracking() select c).Take(100).ToList();
+
+                return await Task.FromResult(Ok(apptaskList));
+            }
         }
         public async Task<ActionResult<bool>> Delete(int AppTaskID)
         {
@@ -89,26 +118,52 @@ namespace CSSPServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            AppTask appTask = (from c in db.AppTasks
-                               where c.AppTaskID == AppTaskID
-                               select c).FirstOrDefault();
-            
-            if (appTask == null)
+            if (LoggedInService.IsLocal)
             {
-                return await Task.FromResult(BadRequest(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "AppTask", "AppTaskID", AppTaskID.ToString())));
-            }
+                AppTask appTask = (from c in dbLocal.AppTasks
+                                   where c.AppTaskID == AppTaskID
+                                   select c).FirstOrDefault();
+                
+                if (appTask == null)
+                {
+                    return await Task.FromResult(BadRequest(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "AppTask", "AppTaskID", AppTaskID.ToString())));
+                }
 
-            try
-            {
-               db.AppTasks.Remove(appTask);
-               db.SaveChanges();
-            }
-            catch (DbUpdateException ex)
-            {
-               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
-            }
+                try
+                {
+                   dbLocal.AppTasks.Remove(appTask);
+                   dbLocal.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                   return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
 
-            return await Task.FromResult(Ok(true));
+                return await Task.FromResult(Ok(true));
+            }
+            else
+            {
+                AppTask appTask = (from c in db.AppTasks
+                                   where c.AppTaskID == AppTaskID
+                                   select c).FirstOrDefault();
+                
+                if (appTask == null)
+                {
+                    return await Task.FromResult(BadRequest(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "AppTask", "AppTaskID", AppTaskID.ToString())));
+                }
+
+                try
+                {
+                   db.AppTasks.Remove(appTask);
+                   db.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                   return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
+
+                return await Task.FromResult(Ok(true));
+            }
         }
         public async Task<ActionResult<AppTask>> Post(AppTask appTask)
         {
@@ -123,17 +178,34 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ValidationResults));
             }
 
-            try
+            if (LoggedInService.IsLocal)
             {
-               db.AppTasks.Add(appTask);
-               db.SaveChanges();
-            }
-            catch (DbUpdateException ex)
-            {
-               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
-            }
+                try
+                {
+                   dbLocal.AppTasks.Add(appTask);
+                   dbLocal.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                   return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
 
-            return await Task.FromResult(Ok(appTask));
+                return await Task.FromResult(Ok(appTask));
+            }
+            else
+            {
+                try
+                {
+                   db.AppTasks.Add(appTask);
+                   db.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                   return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
+
+                return await Task.FromResult(Ok(appTask));
+            }
         }
         public async Task<ActionResult<AppTask>> Put(AppTask appTask)
         {
@@ -148,6 +220,22 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ValidationResults));
             }
 
+            if (LoggedInService.IsLocal)
+            {
+            try
+            {
+               dbLocal.AppTasks.Update(appTask);
+               dbLocal.SaveChanges();
+            }
+            catch (DbUpdateException ex)
+            {
+               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+            }
+
+            return await Task.FromResult(Ok(appTask));
+            }
+            else
+            {
             try
             {
                db.AppTasks.Update(appTask);
@@ -159,6 +247,7 @@ namespace CSSPServices
             }
 
             return await Task.FromResult(Ok(appTask));
+            }
         }
         #endregion Functions public
 
@@ -175,13 +264,35 @@ namespace CSSPServices
                     yield return new ValidationResult(string.Format(CultureServicesRes._IsRequired, "AppTaskID"), new[] { "AppTaskID" });
                 }
 
-                if (!(from c in db.AppTasks select c).Where(c => c.AppTaskID == appTask.AppTaskID).Any())
+                if (LoggedInService.IsLocal)
                 {
-                    yield return new ValidationResult(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "AppTask", "AppTaskID", appTask.AppTaskID.ToString()), new[] { "AppTaskID" });
+                    if (!(from c in dbLocal.AppTasks select c).Where(c => c.AppTaskID == appTask.AppTaskID).Any())
+                    {
+                        yield return new ValidationResult(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "AppTask", "AppTaskID", appTask.AppTaskID.ToString()), new[] { "AppTaskID" });
+                    }
+                }
+                else
+                {
+                    if (!(from c in db.AppTasks select c).Where(c => c.AppTaskID == appTask.AppTaskID).Any())
+                    {
+                        yield return new ValidationResult(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "AppTask", "AppTaskID", appTask.AppTaskID.ToString()), new[] { "AppTaskID" });
+                    }
                 }
             }
 
-            TVItem TVItemTVItemID = (from c in db.TVItems where c.TVItemID == appTask.TVItemID select c).FirstOrDefault();
+            TVItem TVItemTVItemID = null;
+            if (LoggedInService.IsLocal)
+            {
+                TVItemTVItemID = (from c in dbLocal.TVItems where c.TVItemID == appTask.TVItemID select c).FirstOrDefault();
+                if (TVItemTVItemID == null)
+                {
+                    TVItemTVItemID = (from c in dbIM.TVItems where c.TVItemID == appTask.TVItemID select c).FirstOrDefault();
+                }
+            }
+            else
+            {
+                TVItemTVItemID = (from c in db.TVItems where c.TVItemID == appTask.TVItemID select c).FirstOrDefault();
+            }
 
             if (TVItemTVItemID == null)
             {
@@ -222,7 +333,19 @@ namespace CSSPServices
                 }
             }
 
-            TVItem TVItemTVItemID2 = (from c in db.TVItems where c.TVItemID == appTask.TVItemID2 select c).FirstOrDefault();
+            TVItem TVItemTVItemID2 = null;
+            if (LoggedInService.IsLocal)
+            {
+                TVItemTVItemID2 = (from c in dbLocal.TVItems where c.TVItemID == appTask.TVItemID2 select c).FirstOrDefault();
+                if (TVItemTVItemID2 == null)
+                {
+                    TVItemTVItemID2 = (from c in dbIM.TVItems where c.TVItemID == appTask.TVItemID2 select c).FirstOrDefault();
+                }
+            }
+            else
+            {
+                TVItemTVItemID2 = (from c in db.TVItems where c.TVItemID == appTask.TVItemID2 select c).FirstOrDefault();
+            }
 
             if (TVItemTVItemID2 == null)
             {
@@ -343,7 +466,19 @@ namespace CSSPServices
                 }
             }
 
-            TVItem TVItemLastUpdateContactTVItemID = (from c in db.TVItems where c.TVItemID == appTask.LastUpdateContactTVItemID select c).FirstOrDefault();
+            TVItem TVItemLastUpdateContactTVItemID = null;
+            if (LoggedInService.IsLocal)
+            {
+                TVItemLastUpdateContactTVItemID = (from c in dbLocal.TVItems where c.TVItemID == appTask.LastUpdateContactTVItemID select c).FirstOrDefault();
+                if (TVItemLastUpdateContactTVItemID == null)
+                {
+                    TVItemLastUpdateContactTVItemID = (from c in dbIM.TVItems where c.TVItemID == appTask.LastUpdateContactTVItemID select c).FirstOrDefault();
+                }
+            }
+            else
+            {
+                TVItemLastUpdateContactTVItemID = (from c in db.TVItems where c.TVItemID == appTask.LastUpdateContactTVItemID select c).FirstOrDefault();
+            }
 
             if (TVItemLastUpdateContactTVItemID == null)
             {

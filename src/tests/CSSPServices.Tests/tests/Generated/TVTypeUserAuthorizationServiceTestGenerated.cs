@@ -36,6 +36,9 @@ namespace CSSPServices.Tests
         private ILoggedInService LoggedInService { get; set; }
         private ITVTypeUserAuthorizationService TVTypeUserAuthorizationService { get; set; }
         private CSSPDBContext db { get; set; }
+        private CSSPDBLocalContext dbLocal { get; set; }
+        private InMemoryDBContext dbIM { get; set; }
+        private TVTypeUserAuthorization tvTypeUserAuthorization { get; set; }
         #endregion Properties
 
         #region Constructors
@@ -47,9 +50,11 @@ namespace CSSPServices.Tests
 
         #region Tests Generated CRUD
         [Theory]
-        [InlineData("en-CA")]
-        [InlineData("fr-CA")]
-        public async Task TVTypeUserAuthorization_CRUD_Good_Test(string culture)
+        [InlineData("en-CA", "true")]
+        [InlineData("fr-CA", "true")]
+        [InlineData("en-CA", "false")]
+        [InlineData("fr-CA", "false")]
+        public async Task TVTypeUserAuthorization_CRUD_Good_Test(string culture, string IsLocalStr)
         {
             // -------------------------------
             // -------------------------------
@@ -59,44 +64,57 @@ namespace CSSPServices.Tests
 
             Assert.True(await Setup(culture));
 
-            using (TransactionScope ts = new TransactionScope())
+            LoggedInService.IsLocal = bool.Parse(IsLocalStr);
+
+            tvTypeUserAuthorization = GetFilledRandomTVTypeUserAuthorization("");
+
+            if (LoggedInService.IsLocal)
             {
-               TVTypeUserAuthorization tvTypeUserAuthorization = GetFilledRandomTVTypeUserAuthorization(""); 
-
-               // List<TVTypeUserAuthorization>
-               var actionTVTypeUserAuthorizationList = await TVTypeUserAuthorizationService.GetTVTypeUserAuthorizationList();
-               Assert.Equal(200, ((ObjectResult)actionTVTypeUserAuthorizationList.Result).StatusCode);
-               Assert.NotNull(((OkObjectResult)actionTVTypeUserAuthorizationList.Result).Value);
-               List<TVTypeUserAuthorization> tvTypeUserAuthorizationList = (List<TVTypeUserAuthorization>)((OkObjectResult)actionTVTypeUserAuthorizationList.Result).Value;
-
-               int count = ((List<TVTypeUserAuthorization>)((OkObjectResult)actionTVTypeUserAuthorizationList.Result).Value).Count();
-                Assert.True(count > 0);
-
-               // Post TVTypeUserAuthorization
-               var actionTVTypeUserAuthorizationAdded = await TVTypeUserAuthorizationService.Post(tvTypeUserAuthorization);
-               Assert.Equal(200, ((ObjectResult)actionTVTypeUserAuthorizationAdded.Result).StatusCode);
-               Assert.NotNull(((OkObjectResult)actionTVTypeUserAuthorizationAdded.Result).Value);
-               TVTypeUserAuthorization tvTypeUserAuthorizationAdded = (TVTypeUserAuthorization)((OkObjectResult)actionTVTypeUserAuthorizationAdded.Result).Value;
-               Assert.NotNull(tvTypeUserAuthorizationAdded);
-
-               // Put TVTypeUserAuthorization
-               var actionTVTypeUserAuthorizationUpdated = await TVTypeUserAuthorizationService.Put(tvTypeUserAuthorization);
-               Assert.Equal(200, ((ObjectResult)actionTVTypeUserAuthorizationUpdated.Result).StatusCode);
-               Assert.NotNull(((OkObjectResult)actionTVTypeUserAuthorizationUpdated.Result).Value);
-               TVTypeUserAuthorization tvTypeUserAuthorizationUpdated = (TVTypeUserAuthorization)((OkObjectResult)actionTVTypeUserAuthorizationUpdated.Result).Value;
-               Assert.NotNull(tvTypeUserAuthorizationUpdated);
-
-               // Delete TVTypeUserAuthorization
-               var actionTVTypeUserAuthorizationDeleted = await TVTypeUserAuthorizationService.Delete(tvTypeUserAuthorization.TVTypeUserAuthorizationID);
-               Assert.Equal(200, ((ObjectResult)actionTVTypeUserAuthorizationDeleted.Result).StatusCode);
-               Assert.NotNull(((OkObjectResult)actionTVTypeUserAuthorizationDeleted.Result).Value);
-               bool retBool = (bool)((OkObjectResult)actionTVTypeUserAuthorizationDeleted.Result).Value;
-               Assert.True(retBool);
+                await DoCRUDTest();
+            }
+            else
+            {
+                using (TransactionScope ts = new TransactionScope())
+                {
+                    await DoCRUDTest();
+                }
             }
         }
         #endregion Tests Generated CRUD
 
         #region Functions private
+        private async Task DoCRUDTest()
+        {
+            // Post TVTypeUserAuthorization
+            var actionTVTypeUserAuthorizationAdded = await TVTypeUserAuthorizationService.Post(tvTypeUserAuthorization);
+            Assert.Equal(200, ((ObjectResult)actionTVTypeUserAuthorizationAdded.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionTVTypeUserAuthorizationAdded.Result).Value);
+            TVTypeUserAuthorization tvTypeUserAuthorizationAdded = (TVTypeUserAuthorization)((OkObjectResult)actionTVTypeUserAuthorizationAdded.Result).Value;
+            Assert.NotNull(tvTypeUserAuthorizationAdded);
+
+            // List<TVTypeUserAuthorization>
+            var actionTVTypeUserAuthorizationList = await TVTypeUserAuthorizationService.GetTVTypeUserAuthorizationList();
+            Assert.Equal(200, ((ObjectResult)actionTVTypeUserAuthorizationList.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionTVTypeUserAuthorizationList.Result).Value);
+            List<TVTypeUserAuthorization> tvTypeUserAuthorizationList = (List<TVTypeUserAuthorization>)((OkObjectResult)actionTVTypeUserAuthorizationList.Result).Value;
+
+            int count = ((List<TVTypeUserAuthorization>)((OkObjectResult)actionTVTypeUserAuthorizationList.Result).Value).Count();
+            Assert.True(count > 0);
+
+            // Put TVTypeUserAuthorization
+            var actionTVTypeUserAuthorizationUpdated = await TVTypeUserAuthorizationService.Put(tvTypeUserAuthorization);
+            Assert.Equal(200, ((ObjectResult)actionTVTypeUserAuthorizationUpdated.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionTVTypeUserAuthorizationUpdated.Result).Value);
+            TVTypeUserAuthorization tvTypeUserAuthorizationUpdated = (TVTypeUserAuthorization)((OkObjectResult)actionTVTypeUserAuthorizationUpdated.Result).Value;
+            Assert.NotNull(tvTypeUserAuthorizationUpdated);
+
+            // Delete TVTypeUserAuthorization
+            var actionTVTypeUserAuthorizationDeleted = await TVTypeUserAuthorizationService.Delete(tvTypeUserAuthorization.TVTypeUserAuthorizationID);
+            Assert.Equal(200, ((ObjectResult)actionTVTypeUserAuthorizationDeleted.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionTVTypeUserAuthorizationDeleted.Result).Value);
+            bool retBool = (bool)((OkObjectResult)actionTVTypeUserAuthorizationDeleted.Result).Value;
+            Assert.True(retBool);
+        }
         private async Task<bool> Setup(string culture)
         {
             Config = new ConfigurationBuilder()
@@ -109,6 +127,9 @@ namespace CSSPServices.Tests
 
             Services.AddSingleton<IConfiguration>(Config);
 
+            string CSSPDBLocalFileName = Config.GetValue<string>("CSSPDBLocal");
+            Assert.NotNull(CSSPDBLocalFileName);
+
             string TestDBConnString = Config.GetValue<string>("TestDBConnectionString");
             Assert.NotNull(TestDBConnString);
 
@@ -120,6 +141,15 @@ namespace CSSPServices.Tests
             Services.AddDbContext<InMemoryDBContext>(options =>
             {
                 options.UseInMemoryDatabase(TestDBConnString);
+            });
+
+            string appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+
+            FileInfo fiAppDataPath = new FileInfo(CSSPDBLocalFileName.Replace("{appDataPath}", appDataPath));
+
+            Services.AddDbContext<CSSPDBLocalContext>(options =>
+            {
+                options.UseSqlite($"Data Source={ fiAppDataPath.FullName }");
             });
 
             Services.AddSingleton<ICultureService, CultureService>();
@@ -141,6 +171,12 @@ namespace CSSPServices.Tests
             string Id = Config.GetValue<string>("Id");
             Assert.True(await LoggedInService.SetLoggedInContactInfo(Id));
 
+            //string IsLocalStr = Config.GetValue<string>("IsLocal");
+            //Assert.NotNull(IsLocalStr);
+
+            dbIM = Provider.GetService<InMemoryDBContext>();
+            Assert.NotNull(dbIM);
+
             TVTypeUserAuthorizationService = Provider.GetService<ITVTypeUserAuthorizationService>();
             Assert.NotNull(TVTypeUserAuthorizationService);
 
@@ -148,6 +184,8 @@ namespace CSSPServices.Tests
         }
         private TVTypeUserAuthorization GetFilledRandomTVTypeUserAuthorization(string OmitPropName)
         {
+            dbIM.Database.EnsureDeleted();
+
             TVTypeUserAuthorization tvTypeUserAuthorization = new TVTypeUserAuthorization();
 
             if (OmitPropName != "ContactTVItemID") tvTypeUserAuthorization.ContactTVItemID = 2;
@@ -155,6 +193,14 @@ namespace CSSPServices.Tests
             if (OmitPropName != "TVAuth") tvTypeUserAuthorization.TVAuth = (TVAuthEnum)GetRandomEnumType(typeof(TVAuthEnum));
             if (OmitPropName != "LastUpdateDate_UTC") tvTypeUserAuthorization.LastUpdateDate_UTC = new DateTime(2005, 3, 6);
             if (OmitPropName != "LastUpdateContactTVItemID") tvTypeUserAuthorization.LastUpdateContactTVItemID = 2;
+
+            if (LoggedInService.IsLocal)
+            {
+                if (OmitPropName != "TVTypeUserAuthorizationID") tvTypeUserAuthorization.TVTypeUserAuthorizationID = 10000000;
+
+                dbIM.TVItems.Add(new TVItem() { TVItemID = 2, TVLevel = 1, TVPath = "p1p2", TVType = (TVTypeEnum)5, ParentID = 1, IsActive = true, LastUpdateDate_UTC = new DateTime(2014, 12, 2, 16, 58, 16), LastUpdateContactTVItemID = 2});
+                dbIM.SaveChanges();
+            }
 
             return tvTypeUserAuthorization;
         }

@@ -36,6 +36,9 @@ namespace CSSPServices.Tests
         private ILoggedInService LoggedInService { get; set; }
         private ITVItemLinkService TVItemLinkService { get; set; }
         private CSSPDBContext db { get; set; }
+        private CSSPDBLocalContext dbLocal { get; set; }
+        private InMemoryDBContext dbIM { get; set; }
+        private TVItemLink tvItemLink { get; set; }
         #endregion Properties
 
         #region Constructors
@@ -47,9 +50,11 @@ namespace CSSPServices.Tests
 
         #region Tests Generated CRUD
         [Theory]
-        [InlineData("en-CA")]
-        [InlineData("fr-CA")]
-        public async Task TVItemLink_CRUD_Good_Test(string culture)
+        [InlineData("en-CA", "true")]
+        [InlineData("fr-CA", "true")]
+        [InlineData("en-CA", "false")]
+        [InlineData("fr-CA", "false")]
+        public async Task TVItemLink_CRUD_Good_Test(string culture, string IsLocalStr)
         {
             // -------------------------------
             // -------------------------------
@@ -59,44 +64,57 @@ namespace CSSPServices.Tests
 
             Assert.True(await Setup(culture));
 
-            using (TransactionScope ts = new TransactionScope())
+            LoggedInService.IsLocal = bool.Parse(IsLocalStr);
+
+            tvItemLink = GetFilledRandomTVItemLink("");
+
+            if (LoggedInService.IsLocal)
             {
-               TVItemLink tvItemLink = GetFilledRandomTVItemLink(""); 
-
-               // List<TVItemLink>
-               var actionTVItemLinkList = await TVItemLinkService.GetTVItemLinkList();
-               Assert.Equal(200, ((ObjectResult)actionTVItemLinkList.Result).StatusCode);
-               Assert.NotNull(((OkObjectResult)actionTVItemLinkList.Result).Value);
-               List<TVItemLink> tvItemLinkList = (List<TVItemLink>)((OkObjectResult)actionTVItemLinkList.Result).Value;
-
-               int count = ((List<TVItemLink>)((OkObjectResult)actionTVItemLinkList.Result).Value).Count();
-                Assert.True(count > 0);
-
-               // Post TVItemLink
-               var actionTVItemLinkAdded = await TVItemLinkService.Post(tvItemLink);
-               Assert.Equal(200, ((ObjectResult)actionTVItemLinkAdded.Result).StatusCode);
-               Assert.NotNull(((OkObjectResult)actionTVItemLinkAdded.Result).Value);
-               TVItemLink tvItemLinkAdded = (TVItemLink)((OkObjectResult)actionTVItemLinkAdded.Result).Value;
-               Assert.NotNull(tvItemLinkAdded);
-
-               // Put TVItemLink
-               var actionTVItemLinkUpdated = await TVItemLinkService.Put(tvItemLink);
-               Assert.Equal(200, ((ObjectResult)actionTVItemLinkUpdated.Result).StatusCode);
-               Assert.NotNull(((OkObjectResult)actionTVItemLinkUpdated.Result).Value);
-               TVItemLink tvItemLinkUpdated = (TVItemLink)((OkObjectResult)actionTVItemLinkUpdated.Result).Value;
-               Assert.NotNull(tvItemLinkUpdated);
-
-               // Delete TVItemLink
-               var actionTVItemLinkDeleted = await TVItemLinkService.Delete(tvItemLink.TVItemLinkID);
-               Assert.Equal(200, ((ObjectResult)actionTVItemLinkDeleted.Result).StatusCode);
-               Assert.NotNull(((OkObjectResult)actionTVItemLinkDeleted.Result).Value);
-               bool retBool = (bool)((OkObjectResult)actionTVItemLinkDeleted.Result).Value;
-               Assert.True(retBool);
+                await DoCRUDTest();
+            }
+            else
+            {
+                using (TransactionScope ts = new TransactionScope())
+                {
+                    await DoCRUDTest();
+                }
             }
         }
         #endregion Tests Generated CRUD
 
         #region Functions private
+        private async Task DoCRUDTest()
+        {
+            // Post TVItemLink
+            var actionTVItemLinkAdded = await TVItemLinkService.Post(tvItemLink);
+            Assert.Equal(200, ((ObjectResult)actionTVItemLinkAdded.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionTVItemLinkAdded.Result).Value);
+            TVItemLink tvItemLinkAdded = (TVItemLink)((OkObjectResult)actionTVItemLinkAdded.Result).Value;
+            Assert.NotNull(tvItemLinkAdded);
+
+            // List<TVItemLink>
+            var actionTVItemLinkList = await TVItemLinkService.GetTVItemLinkList();
+            Assert.Equal(200, ((ObjectResult)actionTVItemLinkList.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionTVItemLinkList.Result).Value);
+            List<TVItemLink> tvItemLinkList = (List<TVItemLink>)((OkObjectResult)actionTVItemLinkList.Result).Value;
+
+            int count = ((List<TVItemLink>)((OkObjectResult)actionTVItemLinkList.Result).Value).Count();
+            Assert.True(count > 0);
+
+            // Put TVItemLink
+            var actionTVItemLinkUpdated = await TVItemLinkService.Put(tvItemLink);
+            Assert.Equal(200, ((ObjectResult)actionTVItemLinkUpdated.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionTVItemLinkUpdated.Result).Value);
+            TVItemLink tvItemLinkUpdated = (TVItemLink)((OkObjectResult)actionTVItemLinkUpdated.Result).Value;
+            Assert.NotNull(tvItemLinkUpdated);
+
+            // Delete TVItemLink
+            var actionTVItemLinkDeleted = await TVItemLinkService.Delete(tvItemLink.TVItemLinkID);
+            Assert.Equal(200, ((ObjectResult)actionTVItemLinkDeleted.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionTVItemLinkDeleted.Result).Value);
+            bool retBool = (bool)((OkObjectResult)actionTVItemLinkDeleted.Result).Value;
+            Assert.True(retBool);
+        }
         private async Task<bool> Setup(string culture)
         {
             Config = new ConfigurationBuilder()
@@ -109,6 +127,9 @@ namespace CSSPServices.Tests
 
             Services.AddSingleton<IConfiguration>(Config);
 
+            string CSSPDBLocalFileName = Config.GetValue<string>("CSSPDBLocal");
+            Assert.NotNull(CSSPDBLocalFileName);
+
             string TestDBConnString = Config.GetValue<string>("TestDBConnectionString");
             Assert.NotNull(TestDBConnString);
 
@@ -120,6 +141,15 @@ namespace CSSPServices.Tests
             Services.AddDbContext<InMemoryDBContext>(options =>
             {
                 options.UseInMemoryDatabase(TestDBConnString);
+            });
+
+            string appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+
+            FileInfo fiAppDataPath = new FileInfo(CSSPDBLocalFileName.Replace("{appDataPath}", appDataPath));
+
+            Services.AddDbContext<CSSPDBLocalContext>(options =>
+            {
+                options.UseSqlite($"Data Source={ fiAppDataPath.FullName }");
             });
 
             Services.AddSingleton<ICultureService, CultureService>();
@@ -141,6 +171,12 @@ namespace CSSPServices.Tests
             string Id = Config.GetValue<string>("Id");
             Assert.True(await LoggedInService.SetLoggedInContactInfo(Id));
 
+            //string IsLocalStr = Config.GetValue<string>("IsLocal");
+            //Assert.NotNull(IsLocalStr);
+
+            dbIM = Provider.GetService<InMemoryDBContext>();
+            Assert.NotNull(dbIM);
+
             TVItemLinkService = Provider.GetService<ITVItemLinkService>();
             Assert.NotNull(TVItemLinkService);
 
@@ -148,6 +184,8 @@ namespace CSSPServices.Tests
         }
         private TVItemLink GetFilledRandomTVItemLink(string OmitPropName)
         {
+            dbIM.Database.EnsureDeleted();
+
             TVItemLink tvItemLink = new TVItemLink();
 
             if (OmitPropName != "FromTVItemID") tvItemLink.FromTVItemID = 1;
@@ -162,6 +200,16 @@ namespace CSSPServices.Tests
             // Need to implement [TVItemLink ParentTVItemLinkID TVItemLink TVItemLinkID]
             if (OmitPropName != "LastUpdateDate_UTC") tvItemLink.LastUpdateDate_UTC = new DateTime(2005, 3, 6);
             if (OmitPropName != "LastUpdateContactTVItemID") tvItemLink.LastUpdateContactTVItemID = 2;
+
+            if (LoggedInService.IsLocal)
+            {
+                if (OmitPropName != "TVItemLinkID") tvItemLink.TVItemLinkID = 10000000;
+
+                dbIM.TVItems.Add(new TVItem() { TVItemID = 1, TVLevel = 0, TVPath = "p1", TVType = (TVTypeEnum)1, ParentID = 1, IsActive = true, LastUpdateDate_UTC = new DateTime(2014, 12, 2, 16, 58, 16), LastUpdateContactTVItemID = 2});
+                dbIM.SaveChanges();
+                dbIM.TVItems.Add(new TVItem() { TVItemID = 2, TVLevel = 1, TVPath = "p1p2", TVType = (TVTypeEnum)5, ParentID = 1, IsActive = true, LastUpdateDate_UTC = new DateTime(2014, 12, 2, 16, 58, 16), LastUpdateContactTVItemID = 2});
+                dbIM.SaveChanges();
+            }
 
             return tvItemLink;
         }

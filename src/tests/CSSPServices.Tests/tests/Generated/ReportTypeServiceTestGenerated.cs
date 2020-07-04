@@ -36,6 +36,9 @@ namespace CSSPServices.Tests
         private ILoggedInService LoggedInService { get; set; }
         private IReportTypeService ReportTypeService { get; set; }
         private CSSPDBContext db { get; set; }
+        private CSSPDBLocalContext dbLocal { get; set; }
+        private InMemoryDBContext dbIM { get; set; }
+        private ReportType reportType { get; set; }
         #endregion Properties
 
         #region Constructors
@@ -47,9 +50,11 @@ namespace CSSPServices.Tests
 
         #region Tests Generated CRUD
         [Theory]
-        [InlineData("en-CA")]
-        [InlineData("fr-CA")]
-        public async Task ReportType_CRUD_Good_Test(string culture)
+        [InlineData("en-CA", "true")]
+        [InlineData("fr-CA", "true")]
+        [InlineData("en-CA", "false")]
+        [InlineData("fr-CA", "false")]
+        public async Task ReportType_CRUD_Good_Test(string culture, string IsLocalStr)
         {
             // -------------------------------
             // -------------------------------
@@ -59,44 +64,57 @@ namespace CSSPServices.Tests
 
             Assert.True(await Setup(culture));
 
-            using (TransactionScope ts = new TransactionScope())
+            LoggedInService.IsLocal = bool.Parse(IsLocalStr);
+
+            reportType = GetFilledRandomReportType("");
+
+            if (LoggedInService.IsLocal)
             {
-               ReportType reportType = GetFilledRandomReportType(""); 
-
-               // List<ReportType>
-               var actionReportTypeList = await ReportTypeService.GetReportTypeList();
-               Assert.Equal(200, ((ObjectResult)actionReportTypeList.Result).StatusCode);
-               Assert.NotNull(((OkObjectResult)actionReportTypeList.Result).Value);
-               List<ReportType> reportTypeList = (List<ReportType>)((OkObjectResult)actionReportTypeList.Result).Value;
-
-               int count = ((List<ReportType>)((OkObjectResult)actionReportTypeList.Result).Value).Count();
-                Assert.True(count > 0);
-
-               // Post ReportType
-               var actionReportTypeAdded = await ReportTypeService.Post(reportType);
-               Assert.Equal(200, ((ObjectResult)actionReportTypeAdded.Result).StatusCode);
-               Assert.NotNull(((OkObjectResult)actionReportTypeAdded.Result).Value);
-               ReportType reportTypeAdded = (ReportType)((OkObjectResult)actionReportTypeAdded.Result).Value;
-               Assert.NotNull(reportTypeAdded);
-
-               // Put ReportType
-               var actionReportTypeUpdated = await ReportTypeService.Put(reportType);
-               Assert.Equal(200, ((ObjectResult)actionReportTypeUpdated.Result).StatusCode);
-               Assert.NotNull(((OkObjectResult)actionReportTypeUpdated.Result).Value);
-               ReportType reportTypeUpdated = (ReportType)((OkObjectResult)actionReportTypeUpdated.Result).Value;
-               Assert.NotNull(reportTypeUpdated);
-
-               // Delete ReportType
-               var actionReportTypeDeleted = await ReportTypeService.Delete(reportType.ReportTypeID);
-               Assert.Equal(200, ((ObjectResult)actionReportTypeDeleted.Result).StatusCode);
-               Assert.NotNull(((OkObjectResult)actionReportTypeDeleted.Result).Value);
-               bool retBool = (bool)((OkObjectResult)actionReportTypeDeleted.Result).Value;
-               Assert.True(retBool);
+                await DoCRUDTest();
+            }
+            else
+            {
+                using (TransactionScope ts = new TransactionScope())
+                {
+                    await DoCRUDTest();
+                }
             }
         }
         #endregion Tests Generated CRUD
 
         #region Functions private
+        private async Task DoCRUDTest()
+        {
+            // Post ReportType
+            var actionReportTypeAdded = await ReportTypeService.Post(reportType);
+            Assert.Equal(200, ((ObjectResult)actionReportTypeAdded.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionReportTypeAdded.Result).Value);
+            ReportType reportTypeAdded = (ReportType)((OkObjectResult)actionReportTypeAdded.Result).Value;
+            Assert.NotNull(reportTypeAdded);
+
+            // List<ReportType>
+            var actionReportTypeList = await ReportTypeService.GetReportTypeList();
+            Assert.Equal(200, ((ObjectResult)actionReportTypeList.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionReportTypeList.Result).Value);
+            List<ReportType> reportTypeList = (List<ReportType>)((OkObjectResult)actionReportTypeList.Result).Value;
+
+            int count = ((List<ReportType>)((OkObjectResult)actionReportTypeList.Result).Value).Count();
+            Assert.True(count > 0);
+
+            // Put ReportType
+            var actionReportTypeUpdated = await ReportTypeService.Put(reportType);
+            Assert.Equal(200, ((ObjectResult)actionReportTypeUpdated.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionReportTypeUpdated.Result).Value);
+            ReportType reportTypeUpdated = (ReportType)((OkObjectResult)actionReportTypeUpdated.Result).Value;
+            Assert.NotNull(reportTypeUpdated);
+
+            // Delete ReportType
+            var actionReportTypeDeleted = await ReportTypeService.Delete(reportType.ReportTypeID);
+            Assert.Equal(200, ((ObjectResult)actionReportTypeDeleted.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionReportTypeDeleted.Result).Value);
+            bool retBool = (bool)((OkObjectResult)actionReportTypeDeleted.Result).Value;
+            Assert.True(retBool);
+        }
         private async Task<bool> Setup(string culture)
         {
             Config = new ConfigurationBuilder()
@@ -109,6 +127,9 @@ namespace CSSPServices.Tests
 
             Services.AddSingleton<IConfiguration>(Config);
 
+            string CSSPDBLocalFileName = Config.GetValue<string>("CSSPDBLocal");
+            Assert.NotNull(CSSPDBLocalFileName);
+
             string TestDBConnString = Config.GetValue<string>("TestDBConnectionString");
             Assert.NotNull(TestDBConnString);
 
@@ -120,6 +141,15 @@ namespace CSSPServices.Tests
             Services.AddDbContext<InMemoryDBContext>(options =>
             {
                 options.UseInMemoryDatabase(TestDBConnString);
+            });
+
+            string appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+
+            FileInfo fiAppDataPath = new FileInfo(CSSPDBLocalFileName.Replace("{appDataPath}", appDataPath));
+
+            Services.AddDbContext<CSSPDBLocalContext>(options =>
+            {
+                options.UseSqlite($"Data Source={ fiAppDataPath.FullName }");
             });
 
             Services.AddSingleton<ICultureService, CultureService>();
@@ -141,6 +171,12 @@ namespace CSSPServices.Tests
             string Id = Config.GetValue<string>("Id");
             Assert.True(await LoggedInService.SetLoggedInContactInfo(Id));
 
+            //string IsLocalStr = Config.GetValue<string>("IsLocal");
+            //Assert.NotNull(IsLocalStr);
+
+            dbIM = Provider.GetService<InMemoryDBContext>();
+            Assert.NotNull(dbIM);
+
             ReportTypeService = Provider.GetService<IReportTypeService>();
             Assert.NotNull(ReportTypeService);
 
@@ -148,6 +184,8 @@ namespace CSSPServices.Tests
         }
         private ReportType GetFilledRandomReportType(string OmitPropName)
         {
+            dbIM.Database.EnsureDeleted();
+
             ReportType reportType = new ReportType();
 
             if (OmitPropName != "TVType") reportType.TVType = (TVTypeEnum)GetRandomEnumType(typeof(TVTypeEnum));
@@ -159,6 +197,14 @@ namespace CSSPServices.Tests
             if (OmitPropName != "StartOfFileName") reportType.StartOfFileName = GetRandomString("", 5);
             if (OmitPropName != "LastUpdateDate_UTC") reportType.LastUpdateDate_UTC = new DateTime(2005, 3, 6);
             if (OmitPropName != "LastUpdateContactTVItemID") reportType.LastUpdateContactTVItemID = 2;
+
+            if (LoggedInService.IsLocal)
+            {
+                if (OmitPropName != "ReportTypeID") reportType.ReportTypeID = 10000000;
+
+                dbIM.TVItems.Add(new TVItem() { TVItemID = 2, TVLevel = 1, TVPath = "p1p2", TVType = (TVTypeEnum)5, ParentID = 1, IsActive = true, LastUpdateDate_UTC = new DateTime(2014, 12, 2, 16, 58, 16), LastUpdateContactTVItemID = 2});
+                dbIM.SaveChanges();
+            }
 
             return reportType;
         }

@@ -36,6 +36,9 @@ namespace CSSPServices.Tests
         private ILoggedInService LoggedInService { get; set; }
         private IClimateDataValueService ClimateDataValueService { get; set; }
         private CSSPDBContext db { get; set; }
+        private CSSPDBLocalContext dbLocal { get; set; }
+        private InMemoryDBContext dbIM { get; set; }
+        private ClimateDataValue climateDataValue { get; set; }
         #endregion Properties
 
         #region Constructors
@@ -47,9 +50,11 @@ namespace CSSPServices.Tests
 
         #region Tests Generated CRUD
         [Theory]
-        [InlineData("en-CA")]
-        [InlineData("fr-CA")]
-        public async Task ClimateDataValue_CRUD_Good_Test(string culture)
+        [InlineData("en-CA", "true")]
+        [InlineData("fr-CA", "true")]
+        [InlineData("en-CA", "false")]
+        [InlineData("fr-CA", "false")]
+        public async Task ClimateDataValue_CRUD_Good_Test(string culture, string IsLocalStr)
         {
             // -------------------------------
             // -------------------------------
@@ -59,44 +64,57 @@ namespace CSSPServices.Tests
 
             Assert.True(await Setup(culture));
 
-            using (TransactionScope ts = new TransactionScope())
+            LoggedInService.IsLocal = bool.Parse(IsLocalStr);
+
+            climateDataValue = GetFilledRandomClimateDataValue("");
+
+            if (LoggedInService.IsLocal)
             {
-               ClimateDataValue climateDataValue = GetFilledRandomClimateDataValue(""); 
-
-               // List<ClimateDataValue>
-               var actionClimateDataValueList = await ClimateDataValueService.GetClimateDataValueList();
-               Assert.Equal(200, ((ObjectResult)actionClimateDataValueList.Result).StatusCode);
-               Assert.NotNull(((OkObjectResult)actionClimateDataValueList.Result).Value);
-               List<ClimateDataValue> climateDataValueList = (List<ClimateDataValue>)((OkObjectResult)actionClimateDataValueList.Result).Value;
-
-               int count = ((List<ClimateDataValue>)((OkObjectResult)actionClimateDataValueList.Result).Value).Count();
-                Assert.True(count > 0);
-
-               // Post ClimateDataValue
-               var actionClimateDataValueAdded = await ClimateDataValueService.Post(climateDataValue);
-               Assert.Equal(200, ((ObjectResult)actionClimateDataValueAdded.Result).StatusCode);
-               Assert.NotNull(((OkObjectResult)actionClimateDataValueAdded.Result).Value);
-               ClimateDataValue climateDataValueAdded = (ClimateDataValue)((OkObjectResult)actionClimateDataValueAdded.Result).Value;
-               Assert.NotNull(climateDataValueAdded);
-
-               // Put ClimateDataValue
-               var actionClimateDataValueUpdated = await ClimateDataValueService.Put(climateDataValue);
-               Assert.Equal(200, ((ObjectResult)actionClimateDataValueUpdated.Result).StatusCode);
-               Assert.NotNull(((OkObjectResult)actionClimateDataValueUpdated.Result).Value);
-               ClimateDataValue climateDataValueUpdated = (ClimateDataValue)((OkObjectResult)actionClimateDataValueUpdated.Result).Value;
-               Assert.NotNull(climateDataValueUpdated);
-
-               // Delete ClimateDataValue
-               var actionClimateDataValueDeleted = await ClimateDataValueService.Delete(climateDataValue.ClimateDataValueID);
-               Assert.Equal(200, ((ObjectResult)actionClimateDataValueDeleted.Result).StatusCode);
-               Assert.NotNull(((OkObjectResult)actionClimateDataValueDeleted.Result).Value);
-               bool retBool = (bool)((OkObjectResult)actionClimateDataValueDeleted.Result).Value;
-               Assert.True(retBool);
+                await DoCRUDTest();
+            }
+            else
+            {
+                using (TransactionScope ts = new TransactionScope())
+                {
+                    await DoCRUDTest();
+                }
             }
         }
         #endregion Tests Generated CRUD
 
         #region Functions private
+        private async Task DoCRUDTest()
+        {
+            // Post ClimateDataValue
+            var actionClimateDataValueAdded = await ClimateDataValueService.Post(climateDataValue);
+            Assert.Equal(200, ((ObjectResult)actionClimateDataValueAdded.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionClimateDataValueAdded.Result).Value);
+            ClimateDataValue climateDataValueAdded = (ClimateDataValue)((OkObjectResult)actionClimateDataValueAdded.Result).Value;
+            Assert.NotNull(climateDataValueAdded);
+
+            // List<ClimateDataValue>
+            var actionClimateDataValueList = await ClimateDataValueService.GetClimateDataValueList();
+            Assert.Equal(200, ((ObjectResult)actionClimateDataValueList.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionClimateDataValueList.Result).Value);
+            List<ClimateDataValue> climateDataValueList = (List<ClimateDataValue>)((OkObjectResult)actionClimateDataValueList.Result).Value;
+
+            int count = ((List<ClimateDataValue>)((OkObjectResult)actionClimateDataValueList.Result).Value).Count();
+            Assert.True(count > 0);
+
+            // Put ClimateDataValue
+            var actionClimateDataValueUpdated = await ClimateDataValueService.Put(climateDataValue);
+            Assert.Equal(200, ((ObjectResult)actionClimateDataValueUpdated.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionClimateDataValueUpdated.Result).Value);
+            ClimateDataValue climateDataValueUpdated = (ClimateDataValue)((OkObjectResult)actionClimateDataValueUpdated.Result).Value;
+            Assert.NotNull(climateDataValueUpdated);
+
+            // Delete ClimateDataValue
+            var actionClimateDataValueDeleted = await ClimateDataValueService.Delete(climateDataValue.ClimateDataValueID);
+            Assert.Equal(200, ((ObjectResult)actionClimateDataValueDeleted.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionClimateDataValueDeleted.Result).Value);
+            bool retBool = (bool)((OkObjectResult)actionClimateDataValueDeleted.Result).Value;
+            Assert.True(retBool);
+        }
         private async Task<bool> Setup(string culture)
         {
             Config = new ConfigurationBuilder()
@@ -109,6 +127,9 @@ namespace CSSPServices.Tests
 
             Services.AddSingleton<IConfiguration>(Config);
 
+            string CSSPDBLocalFileName = Config.GetValue<string>("CSSPDBLocal");
+            Assert.NotNull(CSSPDBLocalFileName);
+
             string TestDBConnString = Config.GetValue<string>("TestDBConnectionString");
             Assert.NotNull(TestDBConnString);
 
@@ -120,6 +141,15 @@ namespace CSSPServices.Tests
             Services.AddDbContext<InMemoryDBContext>(options =>
             {
                 options.UseInMemoryDatabase(TestDBConnString);
+            });
+
+            string appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+
+            FileInfo fiAppDataPath = new FileInfo(CSSPDBLocalFileName.Replace("{appDataPath}", appDataPath));
+
+            Services.AddDbContext<CSSPDBLocalContext>(options =>
+            {
+                options.UseSqlite($"Data Source={ fiAppDataPath.FullName }");
             });
 
             Services.AddSingleton<ICultureService, CultureService>();
@@ -141,6 +171,12 @@ namespace CSSPServices.Tests
             string Id = Config.GetValue<string>("Id");
             Assert.True(await LoggedInService.SetLoggedInContactInfo(Id));
 
+            //string IsLocalStr = Config.GetValue<string>("IsLocal");
+            //Assert.NotNull(IsLocalStr);
+
+            dbIM = Provider.GetService<InMemoryDBContext>();
+            Assert.NotNull(dbIM);
+
             ClimateDataValueService = Provider.GetService<IClimateDataValueService>();
             Assert.NotNull(ClimateDataValueService);
 
@@ -148,6 +184,8 @@ namespace CSSPServices.Tests
         }
         private ClimateDataValue GetFilledRandomClimateDataValue(string OmitPropName)
         {
+            dbIM.Database.EnsureDeleted();
+
             ClimateDataValue climateDataValue = new ClimateDataValue();
 
             if (OmitPropName != "ClimateSiteID") climateDataValue.ClimateSiteID = 1;
@@ -169,6 +207,16 @@ namespace CSSPServices.Tests
             if (OmitPropName != "HourlyValues") climateDataValue.HourlyValues = GetRandomString("", 20);
             if (OmitPropName != "LastUpdateDate_UTC") climateDataValue.LastUpdateDate_UTC = new DateTime(2005, 3, 6);
             if (OmitPropName != "LastUpdateContactTVItemID") climateDataValue.LastUpdateContactTVItemID = 2;
+
+            if (LoggedInService.IsLocal)
+            {
+                if (OmitPropName != "ClimateDataValueID") climateDataValue.ClimateDataValueID = 10000000;
+
+                dbIM.ClimateSites.Add(new ClimateSite() { ClimateSiteID = 1, ClimateSiteTVItemID = 7, ECDBID = 6918, ClimateSiteName = "BOUCTOUCHE CDA CS", Province = "NB", Elevation_m = 35.9, ClimateID = "8100593", WMOID = 71666, TCID = "ABT", IsQuebecSite = null, IsCoCoRaHS = null, TimeOffset_hour = -4, File_desc = null, HourlyStartDate_Local = new DateTime(2005, 7, 13, 0, 0, 0), HourlyEndDate_Local = new DateTime(2029, 12, 11, 0, 0, 0), HourlyNow = true, DailyStartDate_Local = new DateTime(1991, 8, 1, 0, 0, 0), DailyEndDate_Local = new DateTime(2029, 12, 11, 0, 0, 0), DailyNow = true, MonthlyStartDate_Local = new DateTime(1991, 1, 1, 0, 0, 0), MonthlyEndDate_Local = new DateTime(2007, 7, 1, 0, 0, 0), MonthlyNow = null, LastUpdateDate_UTC = new DateTime(2018, 9, 14, 13, 4, 35), LastUpdateContactTVItemID = 2 });
+                dbIM.SaveChanges();
+                dbIM.TVItems.Add(new TVItem() { TVItemID = 2, TVLevel = 1, TVPath = "p1p2", TVType = (TVTypeEnum)5, ParentID = 1, IsActive = true, LastUpdateDate_UTC = new DateTime(2014, 12, 2, 16, 58, 16), LastUpdateContactTVItemID = 2});
+                dbIM.SaveChanges();
+            }
 
             return climateDataValue;
         }

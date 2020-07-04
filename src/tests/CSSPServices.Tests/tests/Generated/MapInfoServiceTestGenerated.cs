@@ -36,6 +36,9 @@ namespace CSSPServices.Tests
         private ILoggedInService LoggedInService { get; set; }
         private IMapInfoService MapInfoService { get; set; }
         private CSSPDBContext db { get; set; }
+        private CSSPDBLocalContext dbLocal { get; set; }
+        private InMemoryDBContext dbIM { get; set; }
+        private MapInfo mapInfo { get; set; }
         #endregion Properties
 
         #region Constructors
@@ -47,9 +50,11 @@ namespace CSSPServices.Tests
 
         #region Tests Generated CRUD
         [Theory]
-        [InlineData("en-CA")]
-        [InlineData("fr-CA")]
-        public async Task MapInfo_CRUD_Good_Test(string culture)
+        [InlineData("en-CA", "true")]
+        [InlineData("fr-CA", "true")]
+        [InlineData("en-CA", "false")]
+        [InlineData("fr-CA", "false")]
+        public async Task MapInfo_CRUD_Good_Test(string culture, string IsLocalStr)
         {
             // -------------------------------
             // -------------------------------
@@ -59,44 +64,57 @@ namespace CSSPServices.Tests
 
             Assert.True(await Setup(culture));
 
-            using (TransactionScope ts = new TransactionScope())
+            LoggedInService.IsLocal = bool.Parse(IsLocalStr);
+
+            mapInfo = GetFilledRandomMapInfo("");
+
+            if (LoggedInService.IsLocal)
             {
-               MapInfo mapInfo = GetFilledRandomMapInfo(""); 
-
-               // List<MapInfo>
-               var actionMapInfoList = await MapInfoService.GetMapInfoList();
-               Assert.Equal(200, ((ObjectResult)actionMapInfoList.Result).StatusCode);
-               Assert.NotNull(((OkObjectResult)actionMapInfoList.Result).Value);
-               List<MapInfo> mapInfoList = (List<MapInfo>)((OkObjectResult)actionMapInfoList.Result).Value;
-
-               int count = ((List<MapInfo>)((OkObjectResult)actionMapInfoList.Result).Value).Count();
-                Assert.True(count > 0);
-
-               // Post MapInfo
-               var actionMapInfoAdded = await MapInfoService.Post(mapInfo);
-               Assert.Equal(200, ((ObjectResult)actionMapInfoAdded.Result).StatusCode);
-               Assert.NotNull(((OkObjectResult)actionMapInfoAdded.Result).Value);
-               MapInfo mapInfoAdded = (MapInfo)((OkObjectResult)actionMapInfoAdded.Result).Value;
-               Assert.NotNull(mapInfoAdded);
-
-               // Put MapInfo
-               var actionMapInfoUpdated = await MapInfoService.Put(mapInfo);
-               Assert.Equal(200, ((ObjectResult)actionMapInfoUpdated.Result).StatusCode);
-               Assert.NotNull(((OkObjectResult)actionMapInfoUpdated.Result).Value);
-               MapInfo mapInfoUpdated = (MapInfo)((OkObjectResult)actionMapInfoUpdated.Result).Value;
-               Assert.NotNull(mapInfoUpdated);
-
-               // Delete MapInfo
-               var actionMapInfoDeleted = await MapInfoService.Delete(mapInfo.MapInfoID);
-               Assert.Equal(200, ((ObjectResult)actionMapInfoDeleted.Result).StatusCode);
-               Assert.NotNull(((OkObjectResult)actionMapInfoDeleted.Result).Value);
-               bool retBool = (bool)((OkObjectResult)actionMapInfoDeleted.Result).Value;
-               Assert.True(retBool);
+                await DoCRUDTest();
+            }
+            else
+            {
+                using (TransactionScope ts = new TransactionScope())
+                {
+                    await DoCRUDTest();
+                }
             }
         }
         #endregion Tests Generated CRUD
 
         #region Functions private
+        private async Task DoCRUDTest()
+        {
+            // Post MapInfo
+            var actionMapInfoAdded = await MapInfoService.Post(mapInfo);
+            Assert.Equal(200, ((ObjectResult)actionMapInfoAdded.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionMapInfoAdded.Result).Value);
+            MapInfo mapInfoAdded = (MapInfo)((OkObjectResult)actionMapInfoAdded.Result).Value;
+            Assert.NotNull(mapInfoAdded);
+
+            // List<MapInfo>
+            var actionMapInfoList = await MapInfoService.GetMapInfoList();
+            Assert.Equal(200, ((ObjectResult)actionMapInfoList.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionMapInfoList.Result).Value);
+            List<MapInfo> mapInfoList = (List<MapInfo>)((OkObjectResult)actionMapInfoList.Result).Value;
+
+            int count = ((List<MapInfo>)((OkObjectResult)actionMapInfoList.Result).Value).Count();
+            Assert.True(count > 0);
+
+            // Put MapInfo
+            var actionMapInfoUpdated = await MapInfoService.Put(mapInfo);
+            Assert.Equal(200, ((ObjectResult)actionMapInfoUpdated.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionMapInfoUpdated.Result).Value);
+            MapInfo mapInfoUpdated = (MapInfo)((OkObjectResult)actionMapInfoUpdated.Result).Value;
+            Assert.NotNull(mapInfoUpdated);
+
+            // Delete MapInfo
+            var actionMapInfoDeleted = await MapInfoService.Delete(mapInfo.MapInfoID);
+            Assert.Equal(200, ((ObjectResult)actionMapInfoDeleted.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionMapInfoDeleted.Result).Value);
+            bool retBool = (bool)((OkObjectResult)actionMapInfoDeleted.Result).Value;
+            Assert.True(retBool);
+        }
         private async Task<bool> Setup(string culture)
         {
             Config = new ConfigurationBuilder()
@@ -109,6 +127,9 @@ namespace CSSPServices.Tests
 
             Services.AddSingleton<IConfiguration>(Config);
 
+            string CSSPDBLocalFileName = Config.GetValue<string>("CSSPDBLocal");
+            Assert.NotNull(CSSPDBLocalFileName);
+
             string TestDBConnString = Config.GetValue<string>("TestDBConnectionString");
             Assert.NotNull(TestDBConnString);
 
@@ -120,6 +141,15 @@ namespace CSSPServices.Tests
             Services.AddDbContext<InMemoryDBContext>(options =>
             {
                 options.UseInMemoryDatabase(TestDBConnString);
+            });
+
+            string appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+
+            FileInfo fiAppDataPath = new FileInfo(CSSPDBLocalFileName.Replace("{appDataPath}", appDataPath));
+
+            Services.AddDbContext<CSSPDBLocalContext>(options =>
+            {
+                options.UseSqlite($"Data Source={ fiAppDataPath.FullName }");
             });
 
             Services.AddSingleton<ICultureService, CultureService>();
@@ -141,6 +171,12 @@ namespace CSSPServices.Tests
             string Id = Config.GetValue<string>("Id");
             Assert.True(await LoggedInService.SetLoggedInContactInfo(Id));
 
+            //string IsLocalStr = Config.GetValue<string>("IsLocal");
+            //Assert.NotNull(IsLocalStr);
+
+            dbIM = Provider.GetService<InMemoryDBContext>();
+            Assert.NotNull(dbIM);
+
             MapInfoService = Provider.GetService<IMapInfoService>();
             Assert.NotNull(MapInfoService);
 
@@ -148,6 +184,8 @@ namespace CSSPServices.Tests
         }
         private MapInfo GetFilledRandomMapInfo(string OmitPropName)
         {
+            dbIM.Database.EnsureDeleted();
+
             MapInfo mapInfo = new MapInfo();
 
             if (OmitPropName != "TVItemID") mapInfo.TVItemID = 1;
@@ -159,6 +197,16 @@ namespace CSSPServices.Tests
             if (OmitPropName != "MapInfoDrawType") mapInfo.MapInfoDrawType = (MapInfoDrawTypeEnum)GetRandomEnumType(typeof(MapInfoDrawTypeEnum));
             if (OmitPropName != "LastUpdateDate_UTC") mapInfo.LastUpdateDate_UTC = new DateTime(2005, 3, 6);
             if (OmitPropName != "LastUpdateContactTVItemID") mapInfo.LastUpdateContactTVItemID = 2;
+
+            if (LoggedInService.IsLocal)
+            {
+                if (OmitPropName != "MapInfoID") mapInfo.MapInfoID = 10000000;
+
+                dbIM.TVItems.Add(new TVItem() { TVItemID = 1, TVLevel = 0, TVPath = "p1", TVType = (TVTypeEnum)1, ParentID = 1, IsActive = true, LastUpdateDate_UTC = new DateTime(2014, 12, 2, 16, 58, 16), LastUpdateContactTVItemID = 2});
+                dbIM.SaveChanges();
+                dbIM.TVItems.Add(new TVItem() { TVItemID = 2, TVLevel = 1, TVPath = "p1p2", TVType = (TVTypeEnum)5, ParentID = 1, IsActive = true, LastUpdateDate_UTC = new DateTime(2014, 12, 2, 16, 58, 16), LastUpdateContactTVItemID = 2});
+                dbIM.SaveChanges();
+            }
 
             return mapInfo;
         }

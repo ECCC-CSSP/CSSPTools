@@ -36,6 +36,8 @@ namespace CSSPServices
 
         #region Properties
         private CSSPDBContext db { get; }
+        private CSSPDBLocalContext dbLocal { get; }
+        private InMemoryDBContext dbIM { get; }
         private ICultureService CultureService { get; }
         private ILoggedInService LoggedInService { get; }
         private IEnums enums { get; }
@@ -43,12 +45,14 @@ namespace CSSPServices
         #endregion Properties
 
         #region Constructors
-        public AppTaskLanguageService(ICultureService CultureService, ILoggedInService LoggedInService, IEnums enums, CSSPDBContext db)
+        public AppTaskLanguageService(ICultureService CultureService, ILoggedInService LoggedInService, IEnums enums, CSSPDBContext db, CSSPDBLocalContext dbLocal, InMemoryDBContext dbIM)
         {
             this.CultureService = CultureService;
             this.LoggedInService = LoggedInService;
             this.enums = enums;
             this.db = db;
+            this.dbLocal = dbLocal;
+            this.dbIM = dbIM;
         }
         #endregion Constructors
 
@@ -60,16 +64,32 @@ namespace CSSPServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            AppTaskLanguage apptasklanguage = (from c in db.AppTaskLanguages.AsNoTracking()
-                    where c.AppTaskLanguageID == AppTaskLanguageID
-                    select c).FirstOrDefault();
-
-            if (apptasklanguage == null)
+            if (LoggedInService.IsLocal)
             {
-               return await Task.FromResult(NotFound());
-            }
+                AppTaskLanguage apptasklanguage = (from c in dbLocal.AppTaskLanguages.AsNoTracking()
+                        where c.AppTaskLanguageID == AppTaskLanguageID
+                        select c).FirstOrDefault();
 
-            return await Task.FromResult(Ok(apptasklanguage));
+                if (apptasklanguage == null)
+                {
+                   return await Task.FromResult(NotFound());
+                }
+
+                return await Task.FromResult(Ok(apptasklanguage));
+            }
+            else
+            {
+                AppTaskLanguage apptasklanguage = (from c in db.AppTaskLanguages.AsNoTracking()
+                        where c.AppTaskLanguageID == AppTaskLanguageID
+                        select c).FirstOrDefault();
+
+                if (apptasklanguage == null)
+                {
+                   return await Task.FromResult(NotFound());
+                }
+
+                return await Task.FromResult(Ok(apptasklanguage));
+            }
         }
         public async Task<ActionResult<List<AppTaskLanguage>>> GetAppTaskLanguageList()
         {
@@ -78,9 +98,18 @@ namespace CSSPServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            List<AppTaskLanguage> apptasklanguageList = (from c in db.AppTaskLanguages.AsNoTracking() select c).Take(100).ToList();
+            if (LoggedInService.IsLocal)
+            {
+                List<AppTaskLanguage> apptasklanguageList = (from c in dbLocal.AppTaskLanguages.AsNoTracking() select c).Take(100).ToList();
 
-            return await Task.FromResult(Ok(apptasklanguageList));
+                return await Task.FromResult(Ok(apptasklanguageList));
+            }
+            else
+            {
+                List<AppTaskLanguage> apptasklanguageList = (from c in db.AppTaskLanguages.AsNoTracking() select c).Take(100).ToList();
+
+                return await Task.FromResult(Ok(apptasklanguageList));
+            }
         }
         public async Task<ActionResult<bool>> Delete(int AppTaskLanguageID)
         {
@@ -89,26 +118,52 @@ namespace CSSPServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            AppTaskLanguage appTaskLanguage = (from c in db.AppTaskLanguages
-                               where c.AppTaskLanguageID == AppTaskLanguageID
-                               select c).FirstOrDefault();
-            
-            if (appTaskLanguage == null)
+            if (LoggedInService.IsLocal)
             {
-                return await Task.FromResult(BadRequest(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "AppTaskLanguage", "AppTaskLanguageID", AppTaskLanguageID.ToString())));
-            }
+                AppTaskLanguage appTaskLanguage = (from c in dbLocal.AppTaskLanguages
+                                   where c.AppTaskLanguageID == AppTaskLanguageID
+                                   select c).FirstOrDefault();
+                
+                if (appTaskLanguage == null)
+                {
+                    return await Task.FromResult(BadRequest(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "AppTaskLanguage", "AppTaskLanguageID", AppTaskLanguageID.ToString())));
+                }
 
-            try
-            {
-               db.AppTaskLanguages.Remove(appTaskLanguage);
-               db.SaveChanges();
-            }
-            catch (DbUpdateException ex)
-            {
-               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
-            }
+                try
+                {
+                   dbLocal.AppTaskLanguages.Remove(appTaskLanguage);
+                   dbLocal.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                   return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
 
-            return await Task.FromResult(Ok(true));
+                return await Task.FromResult(Ok(true));
+            }
+            else
+            {
+                AppTaskLanguage appTaskLanguage = (from c in db.AppTaskLanguages
+                                   where c.AppTaskLanguageID == AppTaskLanguageID
+                                   select c).FirstOrDefault();
+                
+                if (appTaskLanguage == null)
+                {
+                    return await Task.FromResult(BadRequest(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "AppTaskLanguage", "AppTaskLanguageID", AppTaskLanguageID.ToString())));
+                }
+
+                try
+                {
+                   db.AppTaskLanguages.Remove(appTaskLanguage);
+                   db.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                   return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
+
+                return await Task.FromResult(Ok(true));
+            }
         }
         public async Task<ActionResult<AppTaskLanguage>> Post(AppTaskLanguage appTaskLanguage)
         {
@@ -123,17 +178,34 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ValidationResults));
             }
 
-            try
+            if (LoggedInService.IsLocal)
             {
-               db.AppTaskLanguages.Add(appTaskLanguage);
-               db.SaveChanges();
-            }
-            catch (DbUpdateException ex)
-            {
-               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
-            }
+                try
+                {
+                   dbLocal.AppTaskLanguages.Add(appTaskLanguage);
+                   dbLocal.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                   return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
 
-            return await Task.FromResult(Ok(appTaskLanguage));
+                return await Task.FromResult(Ok(appTaskLanguage));
+            }
+            else
+            {
+                try
+                {
+                   db.AppTaskLanguages.Add(appTaskLanguage);
+                   db.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                   return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
+
+                return await Task.FromResult(Ok(appTaskLanguage));
+            }
         }
         public async Task<ActionResult<AppTaskLanguage>> Put(AppTaskLanguage appTaskLanguage)
         {
@@ -148,6 +220,22 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ValidationResults));
             }
 
+            if (LoggedInService.IsLocal)
+            {
+            try
+            {
+               dbLocal.AppTaskLanguages.Update(appTaskLanguage);
+               dbLocal.SaveChanges();
+            }
+            catch (DbUpdateException ex)
+            {
+               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+            }
+
+            return await Task.FromResult(Ok(appTaskLanguage));
+            }
+            else
+            {
             try
             {
                db.AppTaskLanguages.Update(appTaskLanguage);
@@ -159,6 +247,7 @@ namespace CSSPServices
             }
 
             return await Task.FromResult(Ok(appTaskLanguage));
+            }
         }
         #endregion Functions public
 
@@ -175,13 +264,35 @@ namespace CSSPServices
                     yield return new ValidationResult(string.Format(CultureServicesRes._IsRequired, "AppTaskLanguageID"), new[] { "AppTaskLanguageID" });
                 }
 
-                if (!(from c in db.AppTaskLanguages select c).Where(c => c.AppTaskLanguageID == appTaskLanguage.AppTaskLanguageID).Any())
+                if (LoggedInService.IsLocal)
                 {
-                    yield return new ValidationResult(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "AppTaskLanguage", "AppTaskLanguageID", appTaskLanguage.AppTaskLanguageID.ToString()), new[] { "AppTaskLanguageID" });
+                    if (!(from c in dbLocal.AppTaskLanguages select c).Where(c => c.AppTaskLanguageID == appTaskLanguage.AppTaskLanguageID).Any())
+                    {
+                        yield return new ValidationResult(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "AppTaskLanguage", "AppTaskLanguageID", appTaskLanguage.AppTaskLanguageID.ToString()), new[] { "AppTaskLanguageID" });
+                    }
+                }
+                else
+                {
+                    if (!(from c in db.AppTaskLanguages select c).Where(c => c.AppTaskLanguageID == appTaskLanguage.AppTaskLanguageID).Any())
+                    {
+                        yield return new ValidationResult(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "AppTaskLanguage", "AppTaskLanguageID", appTaskLanguage.AppTaskLanguageID.ToString()), new[] { "AppTaskLanguageID" });
+                    }
                 }
             }
 
-            AppTask AppTaskAppTaskID = (from c in db.AppTasks where c.AppTaskID == appTaskLanguage.AppTaskID select c).FirstOrDefault();
+            AppTask AppTaskAppTaskID = null;
+            if (LoggedInService.IsLocal)
+            {
+                AppTaskAppTaskID = (from c in dbLocal.AppTasks where c.AppTaskID == appTaskLanguage.AppTaskID select c).FirstOrDefault();
+                if (AppTaskAppTaskID == null)
+                {
+                    AppTaskAppTaskID = (from c in dbIM.AppTasks where c.AppTaskID == appTaskLanguage.AppTaskID select c).FirstOrDefault();
+                }
+            }
+            else
+            {
+                AppTaskAppTaskID = (from c in db.AppTasks where c.AppTaskID == appTaskLanguage.AppTaskID select c).FirstOrDefault();
+            }
 
             if (AppTaskAppTaskID == null)
             {
@@ -222,7 +333,19 @@ namespace CSSPServices
                 }
             }
 
-            TVItem TVItemLastUpdateContactTVItemID = (from c in db.TVItems where c.TVItemID == appTaskLanguage.LastUpdateContactTVItemID select c).FirstOrDefault();
+            TVItem TVItemLastUpdateContactTVItemID = null;
+            if (LoggedInService.IsLocal)
+            {
+                TVItemLastUpdateContactTVItemID = (from c in dbLocal.TVItems where c.TVItemID == appTaskLanguage.LastUpdateContactTVItemID select c).FirstOrDefault();
+                if (TVItemLastUpdateContactTVItemID == null)
+                {
+                    TVItemLastUpdateContactTVItemID = (from c in dbIM.TVItems where c.TVItemID == appTaskLanguage.LastUpdateContactTVItemID select c).FirstOrDefault();
+                }
+            }
+            else
+            {
+                TVItemLastUpdateContactTVItemID = (from c in db.TVItems where c.TVItemID == appTaskLanguage.LastUpdateContactTVItemID select c).FirstOrDefault();
+            }
 
             if (TVItemLastUpdateContactTVItemID == null)
             {

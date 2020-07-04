@@ -36,6 +36,9 @@ namespace CSSPServices.Tests
         private ILoggedInService LoggedInService { get; set; }
         private IRatingCurveValueService RatingCurveValueService { get; set; }
         private CSSPDBContext db { get; set; }
+        private CSSPDBLocalContext dbLocal { get; set; }
+        private InMemoryDBContext dbIM { get; set; }
+        private RatingCurveValue ratingCurveValue { get; set; }
         #endregion Properties
 
         #region Constructors
@@ -47,9 +50,11 @@ namespace CSSPServices.Tests
 
         #region Tests Generated CRUD
         [Theory]
-        [InlineData("en-CA")]
-        [InlineData("fr-CA")]
-        public async Task RatingCurveValue_CRUD_Good_Test(string culture)
+        [InlineData("en-CA", "true")]
+        [InlineData("fr-CA", "true")]
+        [InlineData("en-CA", "false")]
+        [InlineData("fr-CA", "false")]
+        public async Task RatingCurveValue_CRUD_Good_Test(string culture, string IsLocalStr)
         {
             // -------------------------------
             // -------------------------------
@@ -59,44 +64,57 @@ namespace CSSPServices.Tests
 
             Assert.True(await Setup(culture));
 
-            using (TransactionScope ts = new TransactionScope())
+            LoggedInService.IsLocal = bool.Parse(IsLocalStr);
+
+            ratingCurveValue = GetFilledRandomRatingCurveValue("");
+
+            if (LoggedInService.IsLocal)
             {
-               RatingCurveValue ratingCurveValue = GetFilledRandomRatingCurveValue(""); 
-
-               // List<RatingCurveValue>
-               var actionRatingCurveValueList = await RatingCurveValueService.GetRatingCurveValueList();
-               Assert.Equal(200, ((ObjectResult)actionRatingCurveValueList.Result).StatusCode);
-               Assert.NotNull(((OkObjectResult)actionRatingCurveValueList.Result).Value);
-               List<RatingCurveValue> ratingCurveValueList = (List<RatingCurveValue>)((OkObjectResult)actionRatingCurveValueList.Result).Value;
-
-               int count = ((List<RatingCurveValue>)((OkObjectResult)actionRatingCurveValueList.Result).Value).Count();
-                Assert.True(count > 0);
-
-               // Post RatingCurveValue
-               var actionRatingCurveValueAdded = await RatingCurveValueService.Post(ratingCurveValue);
-               Assert.Equal(200, ((ObjectResult)actionRatingCurveValueAdded.Result).StatusCode);
-               Assert.NotNull(((OkObjectResult)actionRatingCurveValueAdded.Result).Value);
-               RatingCurveValue ratingCurveValueAdded = (RatingCurveValue)((OkObjectResult)actionRatingCurveValueAdded.Result).Value;
-               Assert.NotNull(ratingCurveValueAdded);
-
-               // Put RatingCurveValue
-               var actionRatingCurveValueUpdated = await RatingCurveValueService.Put(ratingCurveValue);
-               Assert.Equal(200, ((ObjectResult)actionRatingCurveValueUpdated.Result).StatusCode);
-               Assert.NotNull(((OkObjectResult)actionRatingCurveValueUpdated.Result).Value);
-               RatingCurveValue ratingCurveValueUpdated = (RatingCurveValue)((OkObjectResult)actionRatingCurveValueUpdated.Result).Value;
-               Assert.NotNull(ratingCurveValueUpdated);
-
-               // Delete RatingCurveValue
-               var actionRatingCurveValueDeleted = await RatingCurveValueService.Delete(ratingCurveValue.RatingCurveValueID);
-               Assert.Equal(200, ((ObjectResult)actionRatingCurveValueDeleted.Result).StatusCode);
-               Assert.NotNull(((OkObjectResult)actionRatingCurveValueDeleted.Result).Value);
-               bool retBool = (bool)((OkObjectResult)actionRatingCurveValueDeleted.Result).Value;
-               Assert.True(retBool);
+                await DoCRUDTest();
+            }
+            else
+            {
+                using (TransactionScope ts = new TransactionScope())
+                {
+                    await DoCRUDTest();
+                }
             }
         }
         #endregion Tests Generated CRUD
 
         #region Functions private
+        private async Task DoCRUDTest()
+        {
+            // Post RatingCurveValue
+            var actionRatingCurveValueAdded = await RatingCurveValueService.Post(ratingCurveValue);
+            Assert.Equal(200, ((ObjectResult)actionRatingCurveValueAdded.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionRatingCurveValueAdded.Result).Value);
+            RatingCurveValue ratingCurveValueAdded = (RatingCurveValue)((OkObjectResult)actionRatingCurveValueAdded.Result).Value;
+            Assert.NotNull(ratingCurveValueAdded);
+
+            // List<RatingCurveValue>
+            var actionRatingCurveValueList = await RatingCurveValueService.GetRatingCurveValueList();
+            Assert.Equal(200, ((ObjectResult)actionRatingCurveValueList.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionRatingCurveValueList.Result).Value);
+            List<RatingCurveValue> ratingCurveValueList = (List<RatingCurveValue>)((OkObjectResult)actionRatingCurveValueList.Result).Value;
+
+            int count = ((List<RatingCurveValue>)((OkObjectResult)actionRatingCurveValueList.Result).Value).Count();
+            Assert.True(count > 0);
+
+            // Put RatingCurveValue
+            var actionRatingCurveValueUpdated = await RatingCurveValueService.Put(ratingCurveValue);
+            Assert.Equal(200, ((ObjectResult)actionRatingCurveValueUpdated.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionRatingCurveValueUpdated.Result).Value);
+            RatingCurveValue ratingCurveValueUpdated = (RatingCurveValue)((OkObjectResult)actionRatingCurveValueUpdated.Result).Value;
+            Assert.NotNull(ratingCurveValueUpdated);
+
+            // Delete RatingCurveValue
+            var actionRatingCurveValueDeleted = await RatingCurveValueService.Delete(ratingCurveValue.RatingCurveValueID);
+            Assert.Equal(200, ((ObjectResult)actionRatingCurveValueDeleted.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionRatingCurveValueDeleted.Result).Value);
+            bool retBool = (bool)((OkObjectResult)actionRatingCurveValueDeleted.Result).Value;
+            Assert.True(retBool);
+        }
         private async Task<bool> Setup(string culture)
         {
             Config = new ConfigurationBuilder()
@@ -109,6 +127,9 @@ namespace CSSPServices.Tests
 
             Services.AddSingleton<IConfiguration>(Config);
 
+            string CSSPDBLocalFileName = Config.GetValue<string>("CSSPDBLocal");
+            Assert.NotNull(CSSPDBLocalFileName);
+
             string TestDBConnString = Config.GetValue<string>("TestDBConnectionString");
             Assert.NotNull(TestDBConnString);
 
@@ -120,6 +141,15 @@ namespace CSSPServices.Tests
             Services.AddDbContext<InMemoryDBContext>(options =>
             {
                 options.UseInMemoryDatabase(TestDBConnString);
+            });
+
+            string appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+
+            FileInfo fiAppDataPath = new FileInfo(CSSPDBLocalFileName.Replace("{appDataPath}", appDataPath));
+
+            Services.AddDbContext<CSSPDBLocalContext>(options =>
+            {
+                options.UseSqlite($"Data Source={ fiAppDataPath.FullName }");
             });
 
             Services.AddSingleton<ICultureService, CultureService>();
@@ -141,6 +171,12 @@ namespace CSSPServices.Tests
             string Id = Config.GetValue<string>("Id");
             Assert.True(await LoggedInService.SetLoggedInContactInfo(Id));
 
+            //string IsLocalStr = Config.GetValue<string>("IsLocal");
+            //Assert.NotNull(IsLocalStr);
+
+            dbIM = Provider.GetService<InMemoryDBContext>();
+            Assert.NotNull(dbIM);
+
             RatingCurveValueService = Provider.GetService<IRatingCurveValueService>();
             Assert.NotNull(RatingCurveValueService);
 
@@ -148,6 +184,8 @@ namespace CSSPServices.Tests
         }
         private RatingCurveValue GetFilledRandomRatingCurveValue(string OmitPropName)
         {
+            dbIM.Database.EnsureDeleted();
+
             RatingCurveValue ratingCurveValue = new RatingCurveValue();
 
             if (OmitPropName != "RatingCurveID") ratingCurveValue.RatingCurveID = 1;
@@ -155,6 +193,16 @@ namespace CSSPServices.Tests
             if (OmitPropName != "DischargeValue_m3_s") ratingCurveValue.DischargeValue_m3_s = GetRandomDouble(0.0D, 1000000.0D);
             if (OmitPropName != "LastUpdateDate_UTC") ratingCurveValue.LastUpdateDate_UTC = new DateTime(2005, 3, 6);
             if (OmitPropName != "LastUpdateContactTVItemID") ratingCurveValue.LastUpdateContactTVItemID = 2;
+
+            if (LoggedInService.IsLocal)
+            {
+                if (OmitPropName != "RatingCurveValueID") ratingCurveValue.RatingCurveValueID = 10000000;
+
+                dbIM.RatingCurves.Add(new RatingCurve() { RatingCurveID = 1 });
+                dbIM.SaveChanges();
+                dbIM.TVItems.Add(new TVItem() { TVItemID = 2, TVLevel = 1, TVPath = "p1p2", TVType = (TVTypeEnum)5, ParentID = 1, IsActive = true, LastUpdateDate_UTC = new DateTime(2014, 12, 2, 16, 58, 16), LastUpdateContactTVItemID = 2});
+                dbIM.SaveChanges();
+            }
 
             return ratingCurveValue;
         }

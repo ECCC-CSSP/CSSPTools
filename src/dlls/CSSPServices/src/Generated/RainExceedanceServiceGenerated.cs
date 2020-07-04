@@ -36,6 +36,8 @@ namespace CSSPServices
 
         #region Properties
         private CSSPDBContext db { get; }
+        private CSSPDBLocalContext dbLocal { get; }
+        private InMemoryDBContext dbIM { get; }
         private ICultureService CultureService { get; }
         private ILoggedInService LoggedInService { get; }
         private IEnums enums { get; }
@@ -43,12 +45,14 @@ namespace CSSPServices
         #endregion Properties
 
         #region Constructors
-        public RainExceedanceService(ICultureService CultureService, ILoggedInService LoggedInService, IEnums enums, CSSPDBContext db)
+        public RainExceedanceService(ICultureService CultureService, ILoggedInService LoggedInService, IEnums enums, CSSPDBContext db, CSSPDBLocalContext dbLocal, InMemoryDBContext dbIM)
         {
             this.CultureService = CultureService;
             this.LoggedInService = LoggedInService;
             this.enums = enums;
             this.db = db;
+            this.dbLocal = dbLocal;
+            this.dbIM = dbIM;
         }
         #endregion Constructors
 
@@ -60,16 +64,32 @@ namespace CSSPServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            RainExceedance rainexceedance = (from c in db.RainExceedances.AsNoTracking()
-                    where c.RainExceedanceID == RainExceedanceID
-                    select c).FirstOrDefault();
-
-            if (rainexceedance == null)
+            if (LoggedInService.IsLocal)
             {
-               return await Task.FromResult(NotFound());
-            }
+                RainExceedance rainexceedance = (from c in dbLocal.RainExceedances.AsNoTracking()
+                        where c.RainExceedanceID == RainExceedanceID
+                        select c).FirstOrDefault();
 
-            return await Task.FromResult(Ok(rainexceedance));
+                if (rainexceedance == null)
+                {
+                   return await Task.FromResult(NotFound());
+                }
+
+                return await Task.FromResult(Ok(rainexceedance));
+            }
+            else
+            {
+                RainExceedance rainexceedance = (from c in db.RainExceedances.AsNoTracking()
+                        where c.RainExceedanceID == RainExceedanceID
+                        select c).FirstOrDefault();
+
+                if (rainexceedance == null)
+                {
+                   return await Task.FromResult(NotFound());
+                }
+
+                return await Task.FromResult(Ok(rainexceedance));
+            }
         }
         public async Task<ActionResult<List<RainExceedance>>> GetRainExceedanceList()
         {
@@ -78,9 +98,18 @@ namespace CSSPServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            List<RainExceedance> rainexceedanceList = (from c in db.RainExceedances.AsNoTracking() select c).Take(100).ToList();
+            if (LoggedInService.IsLocal)
+            {
+                List<RainExceedance> rainexceedanceList = (from c in dbLocal.RainExceedances.AsNoTracking() select c).Take(100).ToList();
 
-            return await Task.FromResult(Ok(rainexceedanceList));
+                return await Task.FromResult(Ok(rainexceedanceList));
+            }
+            else
+            {
+                List<RainExceedance> rainexceedanceList = (from c in db.RainExceedances.AsNoTracking() select c).Take(100).ToList();
+
+                return await Task.FromResult(Ok(rainexceedanceList));
+            }
         }
         public async Task<ActionResult<bool>> Delete(int RainExceedanceID)
         {
@@ -89,26 +118,52 @@ namespace CSSPServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            RainExceedance rainExceedance = (from c in db.RainExceedances
-                               where c.RainExceedanceID == RainExceedanceID
-                               select c).FirstOrDefault();
-            
-            if (rainExceedance == null)
+            if (LoggedInService.IsLocal)
             {
-                return await Task.FromResult(BadRequest(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "RainExceedance", "RainExceedanceID", RainExceedanceID.ToString())));
-            }
+                RainExceedance rainExceedance = (from c in dbLocal.RainExceedances
+                                   where c.RainExceedanceID == RainExceedanceID
+                                   select c).FirstOrDefault();
+                
+                if (rainExceedance == null)
+                {
+                    return await Task.FromResult(BadRequest(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "RainExceedance", "RainExceedanceID", RainExceedanceID.ToString())));
+                }
 
-            try
-            {
-               db.RainExceedances.Remove(rainExceedance);
-               db.SaveChanges();
-            }
-            catch (DbUpdateException ex)
-            {
-               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
-            }
+                try
+                {
+                   dbLocal.RainExceedances.Remove(rainExceedance);
+                   dbLocal.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                   return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
 
-            return await Task.FromResult(Ok(true));
+                return await Task.FromResult(Ok(true));
+            }
+            else
+            {
+                RainExceedance rainExceedance = (from c in db.RainExceedances
+                                   where c.RainExceedanceID == RainExceedanceID
+                                   select c).FirstOrDefault();
+                
+                if (rainExceedance == null)
+                {
+                    return await Task.FromResult(BadRequest(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "RainExceedance", "RainExceedanceID", RainExceedanceID.ToString())));
+                }
+
+                try
+                {
+                   db.RainExceedances.Remove(rainExceedance);
+                   db.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                   return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
+
+                return await Task.FromResult(Ok(true));
+            }
         }
         public async Task<ActionResult<RainExceedance>> Post(RainExceedance rainExceedance)
         {
@@ -123,17 +178,34 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ValidationResults));
             }
 
-            try
+            if (LoggedInService.IsLocal)
             {
-               db.RainExceedances.Add(rainExceedance);
-               db.SaveChanges();
-            }
-            catch (DbUpdateException ex)
-            {
-               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
-            }
+                try
+                {
+                   dbLocal.RainExceedances.Add(rainExceedance);
+                   dbLocal.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                   return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
 
-            return await Task.FromResult(Ok(rainExceedance));
+                return await Task.FromResult(Ok(rainExceedance));
+            }
+            else
+            {
+                try
+                {
+                   db.RainExceedances.Add(rainExceedance);
+                   db.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                   return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
+
+                return await Task.FromResult(Ok(rainExceedance));
+            }
         }
         public async Task<ActionResult<RainExceedance>> Put(RainExceedance rainExceedance)
         {
@@ -148,6 +220,22 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ValidationResults));
             }
 
+            if (LoggedInService.IsLocal)
+            {
+            try
+            {
+               dbLocal.RainExceedances.Update(rainExceedance);
+               dbLocal.SaveChanges();
+            }
+            catch (DbUpdateException ex)
+            {
+               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+            }
+
+            return await Task.FromResult(Ok(rainExceedance));
+            }
+            else
+            {
             try
             {
                db.RainExceedances.Update(rainExceedance);
@@ -159,6 +247,7 @@ namespace CSSPServices
             }
 
             return await Task.FromResult(Ok(rainExceedance));
+            }
         }
         #endregion Functions public
 
@@ -175,13 +264,35 @@ namespace CSSPServices
                     yield return new ValidationResult(string.Format(CultureServicesRes._IsRequired, "RainExceedanceID"), new[] { "RainExceedanceID" });
                 }
 
-                if (!(from c in db.RainExceedances select c).Where(c => c.RainExceedanceID == rainExceedance.RainExceedanceID).Any())
+                if (LoggedInService.IsLocal)
                 {
-                    yield return new ValidationResult(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "RainExceedance", "RainExceedanceID", rainExceedance.RainExceedanceID.ToString()), new[] { "RainExceedanceID" });
+                    if (!(from c in dbLocal.RainExceedances select c).Where(c => c.RainExceedanceID == rainExceedance.RainExceedanceID).Any())
+                    {
+                        yield return new ValidationResult(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "RainExceedance", "RainExceedanceID", rainExceedance.RainExceedanceID.ToString()), new[] { "RainExceedanceID" });
+                    }
+                }
+                else
+                {
+                    if (!(from c in db.RainExceedances select c).Where(c => c.RainExceedanceID == rainExceedance.RainExceedanceID).Any())
+                    {
+                        yield return new ValidationResult(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "RainExceedance", "RainExceedanceID", rainExceedance.RainExceedanceID.ToString()), new[] { "RainExceedanceID" });
+                    }
                 }
             }
 
-            TVItem TVItemRainExceedanceTVItemID = (from c in db.TVItems where c.TVItemID == rainExceedance.RainExceedanceTVItemID select c).FirstOrDefault();
+            TVItem TVItemRainExceedanceTVItemID = null;
+            if (LoggedInService.IsLocal)
+            {
+                TVItemRainExceedanceTVItemID = (from c in dbLocal.TVItems where c.TVItemID == rainExceedance.RainExceedanceTVItemID select c).FirstOrDefault();
+                if (TVItemRainExceedanceTVItemID == null)
+                {
+                    TVItemRainExceedanceTVItemID = (from c in dbIM.TVItems where c.TVItemID == rainExceedance.RainExceedanceTVItemID select c).FirstOrDefault();
+                }
+            }
+            else
+            {
+                TVItemRainExceedanceTVItemID = (from c in db.TVItems where c.TVItemID == rainExceedance.RainExceedanceTVItemID select c).FirstOrDefault();
+            }
 
             if (TVItemRainExceedanceTVItemID == null)
             {
@@ -226,7 +337,19 @@ namespace CSSPServices
 
             if (rainExceedance.StakeholdersEmailDistributionListID != null)
             {
-                EmailDistributionList EmailDistributionListStakeholdersEmailDistributionListID = (from c in db.EmailDistributionLists where c.EmailDistributionListID == rainExceedance.StakeholdersEmailDistributionListID select c).FirstOrDefault();
+                EmailDistributionList EmailDistributionListStakeholdersEmailDistributionListID = null;
+                if (LoggedInService.IsLocal)
+                {
+                    EmailDistributionListStakeholdersEmailDistributionListID = (from c in dbLocal.EmailDistributionLists where c.EmailDistributionListID == rainExceedance.StakeholdersEmailDistributionListID select c).FirstOrDefault();
+                    if (EmailDistributionListStakeholdersEmailDistributionListID == null)
+                    {
+                        EmailDistributionListStakeholdersEmailDistributionListID = (from c in dbIM.EmailDistributionLists where c.EmailDistributionListID == rainExceedance.StakeholdersEmailDistributionListID select c).FirstOrDefault();
+                    }
+                }
+                else
+                {
+                    EmailDistributionListStakeholdersEmailDistributionListID = (from c in db.EmailDistributionLists where c.EmailDistributionListID == rainExceedance.StakeholdersEmailDistributionListID select c).FirstOrDefault();
+                }
 
                 if (EmailDistributionListStakeholdersEmailDistributionListID == null)
                 {
@@ -236,7 +359,19 @@ namespace CSSPServices
 
             if (rainExceedance.OnlyStaffEmailDistributionListID != null)
             {
-                EmailDistributionList EmailDistributionListOnlyStaffEmailDistributionListID = (from c in db.EmailDistributionLists where c.EmailDistributionListID == rainExceedance.OnlyStaffEmailDistributionListID select c).FirstOrDefault();
+                EmailDistributionList EmailDistributionListOnlyStaffEmailDistributionListID = null;
+                if (LoggedInService.IsLocal)
+                {
+                    EmailDistributionListOnlyStaffEmailDistributionListID = (from c in dbLocal.EmailDistributionLists where c.EmailDistributionListID == rainExceedance.OnlyStaffEmailDistributionListID select c).FirstOrDefault();
+                    if (EmailDistributionListOnlyStaffEmailDistributionListID == null)
+                    {
+                        EmailDistributionListOnlyStaffEmailDistributionListID = (from c in dbIM.EmailDistributionLists where c.EmailDistributionListID == rainExceedance.OnlyStaffEmailDistributionListID select c).FirstOrDefault();
+                    }
+                }
+                else
+                {
+                    EmailDistributionListOnlyStaffEmailDistributionListID = (from c in db.EmailDistributionLists where c.EmailDistributionListID == rainExceedance.OnlyStaffEmailDistributionListID select c).FirstOrDefault();
+                }
 
                 if (EmailDistributionListOnlyStaffEmailDistributionListID == null)
                 {
@@ -256,7 +391,19 @@ namespace CSSPServices
                 }
             }
 
-            TVItem TVItemLastUpdateContactTVItemID = (from c in db.TVItems where c.TVItemID == rainExceedance.LastUpdateContactTVItemID select c).FirstOrDefault();
+            TVItem TVItemLastUpdateContactTVItemID = null;
+            if (LoggedInService.IsLocal)
+            {
+                TVItemLastUpdateContactTVItemID = (from c in dbLocal.TVItems where c.TVItemID == rainExceedance.LastUpdateContactTVItemID select c).FirstOrDefault();
+                if (TVItemLastUpdateContactTVItemID == null)
+                {
+                    TVItemLastUpdateContactTVItemID = (from c in dbIM.TVItems where c.TVItemID == rainExceedance.LastUpdateContactTVItemID select c).FirstOrDefault();
+                }
+            }
+            else
+            {
+                TVItemLastUpdateContactTVItemID = (from c in db.TVItems where c.TVItemID == rainExceedance.LastUpdateContactTVItemID select c).FirstOrDefault();
+            }
 
             if (TVItemLastUpdateContactTVItemID == null)
             {

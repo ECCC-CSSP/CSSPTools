@@ -36,6 +36,8 @@ namespace CSSPServices
 
         #region Properties
         private CSSPDBContext db { get; }
+        private CSSPDBLocalContext dbLocal { get; }
+        private InMemoryDBContext dbIM { get; }
         private ICultureService CultureService { get; }
         private ILoggedInService LoggedInService { get; }
         private IEnums enums { get; }
@@ -43,12 +45,14 @@ namespace CSSPServices
         #endregion Properties
 
         #region Constructors
-        public MikeBoundaryConditionService(ICultureService CultureService, ILoggedInService LoggedInService, IEnums enums, CSSPDBContext db)
+        public MikeBoundaryConditionService(ICultureService CultureService, ILoggedInService LoggedInService, IEnums enums, CSSPDBContext db, CSSPDBLocalContext dbLocal, InMemoryDBContext dbIM)
         {
             this.CultureService = CultureService;
             this.LoggedInService = LoggedInService;
             this.enums = enums;
             this.db = db;
+            this.dbLocal = dbLocal;
+            this.dbIM = dbIM;
         }
         #endregion Constructors
 
@@ -60,16 +64,32 @@ namespace CSSPServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            MikeBoundaryCondition mikeboundarycondition = (from c in db.MikeBoundaryConditions.AsNoTracking()
-                    where c.MikeBoundaryConditionID == MikeBoundaryConditionID
-                    select c).FirstOrDefault();
-
-            if (mikeboundarycondition == null)
+            if (LoggedInService.IsLocal)
             {
-               return await Task.FromResult(NotFound());
-            }
+                MikeBoundaryCondition mikeboundarycondition = (from c in dbLocal.MikeBoundaryConditions.AsNoTracking()
+                        where c.MikeBoundaryConditionID == MikeBoundaryConditionID
+                        select c).FirstOrDefault();
 
-            return await Task.FromResult(Ok(mikeboundarycondition));
+                if (mikeboundarycondition == null)
+                {
+                   return await Task.FromResult(NotFound());
+                }
+
+                return await Task.FromResult(Ok(mikeboundarycondition));
+            }
+            else
+            {
+                MikeBoundaryCondition mikeboundarycondition = (from c in db.MikeBoundaryConditions.AsNoTracking()
+                        where c.MikeBoundaryConditionID == MikeBoundaryConditionID
+                        select c).FirstOrDefault();
+
+                if (mikeboundarycondition == null)
+                {
+                   return await Task.FromResult(NotFound());
+                }
+
+                return await Task.FromResult(Ok(mikeboundarycondition));
+            }
         }
         public async Task<ActionResult<List<MikeBoundaryCondition>>> GetMikeBoundaryConditionList()
         {
@@ -78,9 +98,18 @@ namespace CSSPServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            List<MikeBoundaryCondition> mikeboundaryconditionList = (from c in db.MikeBoundaryConditions.AsNoTracking() select c).Take(100).ToList();
+            if (LoggedInService.IsLocal)
+            {
+                List<MikeBoundaryCondition> mikeboundaryconditionList = (from c in dbLocal.MikeBoundaryConditions.AsNoTracking() select c).Take(100).ToList();
 
-            return await Task.FromResult(Ok(mikeboundaryconditionList));
+                return await Task.FromResult(Ok(mikeboundaryconditionList));
+            }
+            else
+            {
+                List<MikeBoundaryCondition> mikeboundaryconditionList = (from c in db.MikeBoundaryConditions.AsNoTracking() select c).Take(100).ToList();
+
+                return await Task.FromResult(Ok(mikeboundaryconditionList));
+            }
         }
         public async Task<ActionResult<bool>> Delete(int MikeBoundaryConditionID)
         {
@@ -89,26 +118,52 @@ namespace CSSPServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            MikeBoundaryCondition mikeBoundaryCondition = (from c in db.MikeBoundaryConditions
-                               where c.MikeBoundaryConditionID == MikeBoundaryConditionID
-                               select c).FirstOrDefault();
-            
-            if (mikeBoundaryCondition == null)
+            if (LoggedInService.IsLocal)
             {
-                return await Task.FromResult(BadRequest(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "MikeBoundaryCondition", "MikeBoundaryConditionID", MikeBoundaryConditionID.ToString())));
-            }
+                MikeBoundaryCondition mikeBoundaryCondition = (from c in dbLocal.MikeBoundaryConditions
+                                   where c.MikeBoundaryConditionID == MikeBoundaryConditionID
+                                   select c).FirstOrDefault();
+                
+                if (mikeBoundaryCondition == null)
+                {
+                    return await Task.FromResult(BadRequest(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "MikeBoundaryCondition", "MikeBoundaryConditionID", MikeBoundaryConditionID.ToString())));
+                }
 
-            try
-            {
-               db.MikeBoundaryConditions.Remove(mikeBoundaryCondition);
-               db.SaveChanges();
-            }
-            catch (DbUpdateException ex)
-            {
-               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
-            }
+                try
+                {
+                   dbLocal.MikeBoundaryConditions.Remove(mikeBoundaryCondition);
+                   dbLocal.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                   return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
 
-            return await Task.FromResult(Ok(true));
+                return await Task.FromResult(Ok(true));
+            }
+            else
+            {
+                MikeBoundaryCondition mikeBoundaryCondition = (from c in db.MikeBoundaryConditions
+                                   where c.MikeBoundaryConditionID == MikeBoundaryConditionID
+                                   select c).FirstOrDefault();
+                
+                if (mikeBoundaryCondition == null)
+                {
+                    return await Task.FromResult(BadRequest(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "MikeBoundaryCondition", "MikeBoundaryConditionID", MikeBoundaryConditionID.ToString())));
+                }
+
+                try
+                {
+                   db.MikeBoundaryConditions.Remove(mikeBoundaryCondition);
+                   db.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                   return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
+
+                return await Task.FromResult(Ok(true));
+            }
         }
         public async Task<ActionResult<MikeBoundaryCondition>> Post(MikeBoundaryCondition mikeBoundaryCondition)
         {
@@ -123,17 +178,34 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ValidationResults));
             }
 
-            try
+            if (LoggedInService.IsLocal)
             {
-               db.MikeBoundaryConditions.Add(mikeBoundaryCondition);
-               db.SaveChanges();
-            }
-            catch (DbUpdateException ex)
-            {
-               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
-            }
+                try
+                {
+                   dbLocal.MikeBoundaryConditions.Add(mikeBoundaryCondition);
+                   dbLocal.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                   return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
 
-            return await Task.FromResult(Ok(mikeBoundaryCondition));
+                return await Task.FromResult(Ok(mikeBoundaryCondition));
+            }
+            else
+            {
+                try
+                {
+                   db.MikeBoundaryConditions.Add(mikeBoundaryCondition);
+                   db.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                   return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
+
+                return await Task.FromResult(Ok(mikeBoundaryCondition));
+            }
         }
         public async Task<ActionResult<MikeBoundaryCondition>> Put(MikeBoundaryCondition mikeBoundaryCondition)
         {
@@ -148,6 +220,22 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ValidationResults));
             }
 
+            if (LoggedInService.IsLocal)
+            {
+            try
+            {
+               dbLocal.MikeBoundaryConditions.Update(mikeBoundaryCondition);
+               dbLocal.SaveChanges();
+            }
+            catch (DbUpdateException ex)
+            {
+               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+            }
+
+            return await Task.FromResult(Ok(mikeBoundaryCondition));
+            }
+            else
+            {
             try
             {
                db.MikeBoundaryConditions.Update(mikeBoundaryCondition);
@@ -159,6 +247,7 @@ namespace CSSPServices
             }
 
             return await Task.FromResult(Ok(mikeBoundaryCondition));
+            }
         }
         #endregion Functions public
 
@@ -175,13 +264,35 @@ namespace CSSPServices
                     yield return new ValidationResult(string.Format(CultureServicesRes._IsRequired, "MikeBoundaryConditionID"), new[] { "MikeBoundaryConditionID" });
                 }
 
-                if (!(from c in db.MikeBoundaryConditions select c).Where(c => c.MikeBoundaryConditionID == mikeBoundaryCondition.MikeBoundaryConditionID).Any())
+                if (LoggedInService.IsLocal)
                 {
-                    yield return new ValidationResult(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "MikeBoundaryCondition", "MikeBoundaryConditionID", mikeBoundaryCondition.MikeBoundaryConditionID.ToString()), new[] { "MikeBoundaryConditionID" });
+                    if (!(from c in dbLocal.MikeBoundaryConditions select c).Where(c => c.MikeBoundaryConditionID == mikeBoundaryCondition.MikeBoundaryConditionID).Any())
+                    {
+                        yield return new ValidationResult(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "MikeBoundaryCondition", "MikeBoundaryConditionID", mikeBoundaryCondition.MikeBoundaryConditionID.ToString()), new[] { "MikeBoundaryConditionID" });
+                    }
+                }
+                else
+                {
+                    if (!(from c in db.MikeBoundaryConditions select c).Where(c => c.MikeBoundaryConditionID == mikeBoundaryCondition.MikeBoundaryConditionID).Any())
+                    {
+                        yield return new ValidationResult(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "MikeBoundaryCondition", "MikeBoundaryConditionID", mikeBoundaryCondition.MikeBoundaryConditionID.ToString()), new[] { "MikeBoundaryConditionID" });
+                    }
                 }
             }
 
-            TVItem TVItemMikeBoundaryConditionTVItemID = (from c in db.TVItems where c.TVItemID == mikeBoundaryCondition.MikeBoundaryConditionTVItemID select c).FirstOrDefault();
+            TVItem TVItemMikeBoundaryConditionTVItemID = null;
+            if (LoggedInService.IsLocal)
+            {
+                TVItemMikeBoundaryConditionTVItemID = (from c in dbLocal.TVItems where c.TVItemID == mikeBoundaryCondition.MikeBoundaryConditionTVItemID select c).FirstOrDefault();
+                if (TVItemMikeBoundaryConditionTVItemID == null)
+                {
+                    TVItemMikeBoundaryConditionTVItemID = (from c in dbIM.TVItems where c.TVItemID == mikeBoundaryCondition.MikeBoundaryConditionTVItemID select c).FirstOrDefault();
+                }
+            }
+            else
+            {
+                TVItemMikeBoundaryConditionTVItemID = (from c in db.TVItems where c.TVItemID == mikeBoundaryCondition.MikeBoundaryConditionTVItemID select c).FirstOrDefault();
+            }
 
             if (TVItemMikeBoundaryConditionTVItemID == null)
             {
@@ -277,7 +388,19 @@ namespace CSSPServices
                 }
             }
 
-            TVItem TVItemLastUpdateContactTVItemID = (from c in db.TVItems where c.TVItemID == mikeBoundaryCondition.LastUpdateContactTVItemID select c).FirstOrDefault();
+            TVItem TVItemLastUpdateContactTVItemID = null;
+            if (LoggedInService.IsLocal)
+            {
+                TVItemLastUpdateContactTVItemID = (from c in dbLocal.TVItems where c.TVItemID == mikeBoundaryCondition.LastUpdateContactTVItemID select c).FirstOrDefault();
+                if (TVItemLastUpdateContactTVItemID == null)
+                {
+                    TVItemLastUpdateContactTVItemID = (from c in dbIM.TVItems where c.TVItemID == mikeBoundaryCondition.LastUpdateContactTVItemID select c).FirstOrDefault();
+                }
+            }
+            else
+            {
+                TVItemLastUpdateContactTVItemID = (from c in db.TVItems where c.TVItemID == mikeBoundaryCondition.LastUpdateContactTVItemID select c).FirstOrDefault();
+            }
 
             if (TVItemLastUpdateContactTVItemID == null)
             {

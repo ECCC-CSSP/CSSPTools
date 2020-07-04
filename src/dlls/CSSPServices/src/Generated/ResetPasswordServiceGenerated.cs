@@ -36,6 +36,8 @@ namespace CSSPServices
 
         #region Properties
         private CSSPDBContext db { get; }
+        private CSSPDBLocalContext dbLocal { get; }
+        private InMemoryDBContext dbIM { get; }
         private ICultureService CultureService { get; }
         private ILoggedInService LoggedInService { get; }
         private IEnums enums { get; }
@@ -43,12 +45,14 @@ namespace CSSPServices
         #endregion Properties
 
         #region Constructors
-        public ResetPasswordService(ICultureService CultureService, ILoggedInService LoggedInService, IEnums enums, CSSPDBContext db)
+        public ResetPasswordService(ICultureService CultureService, ILoggedInService LoggedInService, IEnums enums, CSSPDBContext db, CSSPDBLocalContext dbLocal, InMemoryDBContext dbIM)
         {
             this.CultureService = CultureService;
             this.LoggedInService = LoggedInService;
             this.enums = enums;
             this.db = db;
+            this.dbLocal = dbLocal;
+            this.dbIM = dbIM;
         }
         #endregion Constructors
 
@@ -60,16 +64,32 @@ namespace CSSPServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            ResetPassword resetpassword = (from c in db.ResetPasswords.AsNoTracking()
-                    where c.ResetPasswordID == ResetPasswordID
-                    select c).FirstOrDefault();
-
-            if (resetpassword == null)
+            if (LoggedInService.IsLocal)
             {
-               return await Task.FromResult(NotFound());
-            }
+                ResetPassword resetpassword = (from c in dbLocal.ResetPasswords.AsNoTracking()
+                        where c.ResetPasswordID == ResetPasswordID
+                        select c).FirstOrDefault();
 
-            return await Task.FromResult(Ok(resetpassword));
+                if (resetpassword == null)
+                {
+                   return await Task.FromResult(NotFound());
+                }
+
+                return await Task.FromResult(Ok(resetpassword));
+            }
+            else
+            {
+                ResetPassword resetpassword = (from c in db.ResetPasswords.AsNoTracking()
+                        where c.ResetPasswordID == ResetPasswordID
+                        select c).FirstOrDefault();
+
+                if (resetpassword == null)
+                {
+                   return await Task.FromResult(NotFound());
+                }
+
+                return await Task.FromResult(Ok(resetpassword));
+            }
         }
         public async Task<ActionResult<List<ResetPassword>>> GetResetPasswordList()
         {
@@ -78,9 +98,18 @@ namespace CSSPServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            List<ResetPassword> resetpasswordList = (from c in db.ResetPasswords.AsNoTracking() select c).Take(100).ToList();
+            if (LoggedInService.IsLocal)
+            {
+                List<ResetPassword> resetpasswordList = (from c in dbLocal.ResetPasswords.AsNoTracking() select c).Take(100).ToList();
 
-            return await Task.FromResult(Ok(resetpasswordList));
+                return await Task.FromResult(Ok(resetpasswordList));
+            }
+            else
+            {
+                List<ResetPassword> resetpasswordList = (from c in db.ResetPasswords.AsNoTracking() select c).Take(100).ToList();
+
+                return await Task.FromResult(Ok(resetpasswordList));
+            }
         }
         public async Task<ActionResult<bool>> Delete(int ResetPasswordID)
         {
@@ -89,26 +118,52 @@ namespace CSSPServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            ResetPassword resetPassword = (from c in db.ResetPasswords
-                               where c.ResetPasswordID == ResetPasswordID
-                               select c).FirstOrDefault();
-            
-            if (resetPassword == null)
+            if (LoggedInService.IsLocal)
             {
-                return await Task.FromResult(BadRequest(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "ResetPassword", "ResetPasswordID", ResetPasswordID.ToString())));
-            }
+                ResetPassword resetPassword = (from c in dbLocal.ResetPasswords
+                                   where c.ResetPasswordID == ResetPasswordID
+                                   select c).FirstOrDefault();
+                
+                if (resetPassword == null)
+                {
+                    return await Task.FromResult(BadRequest(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "ResetPassword", "ResetPasswordID", ResetPasswordID.ToString())));
+                }
 
-            try
-            {
-               db.ResetPasswords.Remove(resetPassword);
-               db.SaveChanges();
-            }
-            catch (DbUpdateException ex)
-            {
-               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
-            }
+                try
+                {
+                   dbLocal.ResetPasswords.Remove(resetPassword);
+                   dbLocal.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                   return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
 
-            return await Task.FromResult(Ok(true));
+                return await Task.FromResult(Ok(true));
+            }
+            else
+            {
+                ResetPassword resetPassword = (from c in db.ResetPasswords
+                                   where c.ResetPasswordID == ResetPasswordID
+                                   select c).FirstOrDefault();
+                
+                if (resetPassword == null)
+                {
+                    return await Task.FromResult(BadRequest(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "ResetPassword", "ResetPasswordID", ResetPasswordID.ToString())));
+                }
+
+                try
+                {
+                   db.ResetPasswords.Remove(resetPassword);
+                   db.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                   return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
+
+                return await Task.FromResult(Ok(true));
+            }
         }
         public async Task<ActionResult<ResetPassword>> Post(ResetPassword resetPassword)
         {
@@ -123,17 +178,34 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ValidationResults));
             }
 
-            try
+            if (LoggedInService.IsLocal)
             {
-               db.ResetPasswords.Add(resetPassword);
-               db.SaveChanges();
-            }
-            catch (DbUpdateException ex)
-            {
-               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
-            }
+                try
+                {
+                   dbLocal.ResetPasswords.Add(resetPassword);
+                   dbLocal.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                   return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
 
-            return await Task.FromResult(Ok(resetPassword));
+                return await Task.FromResult(Ok(resetPassword));
+            }
+            else
+            {
+                try
+                {
+                   db.ResetPasswords.Add(resetPassword);
+                   db.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                   return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
+
+                return await Task.FromResult(Ok(resetPassword));
+            }
         }
         public async Task<ActionResult<ResetPassword>> Put(ResetPassword resetPassword)
         {
@@ -148,6 +220,22 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ValidationResults));
             }
 
+            if (LoggedInService.IsLocal)
+            {
+            try
+            {
+               dbLocal.ResetPasswords.Update(resetPassword);
+               dbLocal.SaveChanges();
+            }
+            catch (DbUpdateException ex)
+            {
+               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+            }
+
+            return await Task.FromResult(Ok(resetPassword));
+            }
+            else
+            {
             try
             {
                db.ResetPasswords.Update(resetPassword);
@@ -159,6 +247,7 @@ namespace CSSPServices
             }
 
             return await Task.FromResult(Ok(resetPassword));
+            }
         }
         #endregion Functions public
 
@@ -175,9 +264,19 @@ namespace CSSPServices
                     yield return new ValidationResult(string.Format(CultureServicesRes._IsRequired, "ResetPasswordID"), new[] { "ResetPasswordID" });
                 }
 
-                if (!(from c in db.ResetPasswords select c).Where(c => c.ResetPasswordID == resetPassword.ResetPasswordID).Any())
+                if (LoggedInService.IsLocal)
                 {
-                    yield return new ValidationResult(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "ResetPassword", "ResetPasswordID", resetPassword.ResetPasswordID.ToString()), new[] { "ResetPasswordID" });
+                    if (!(from c in dbLocal.ResetPasswords select c).Where(c => c.ResetPasswordID == resetPassword.ResetPasswordID).Any())
+                    {
+                        yield return new ValidationResult(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "ResetPassword", "ResetPasswordID", resetPassword.ResetPasswordID.ToString()), new[] { "ResetPasswordID" });
+                    }
+                }
+                else
+                {
+                    if (!(from c in db.ResetPasswords select c).Where(c => c.ResetPasswordID == resetPassword.ResetPasswordID).Any())
+                    {
+                        yield return new ValidationResult(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "ResetPassword", "ResetPasswordID", resetPassword.ResetPasswordID.ToString()), new[] { "ResetPasswordID" });
+                    }
                 }
             }
 
@@ -234,7 +333,19 @@ namespace CSSPServices
                 }
             }
 
-            TVItem TVItemLastUpdateContactTVItemID = (from c in db.TVItems where c.TVItemID == resetPassword.LastUpdateContactTVItemID select c).FirstOrDefault();
+            TVItem TVItemLastUpdateContactTVItemID = null;
+            if (LoggedInService.IsLocal)
+            {
+                TVItemLastUpdateContactTVItemID = (from c in dbLocal.TVItems where c.TVItemID == resetPassword.LastUpdateContactTVItemID select c).FirstOrDefault();
+                if (TVItemLastUpdateContactTVItemID == null)
+                {
+                    TVItemLastUpdateContactTVItemID = (from c in dbIM.TVItems where c.TVItemID == resetPassword.LastUpdateContactTVItemID select c).FirstOrDefault();
+                }
+            }
+            else
+            {
+                TVItemLastUpdateContactTVItemID = (from c in db.TVItems where c.TVItemID == resetPassword.LastUpdateContactTVItemID select c).FirstOrDefault();
+            }
 
             if (TVItemLastUpdateContactTVItemID == null)
             {

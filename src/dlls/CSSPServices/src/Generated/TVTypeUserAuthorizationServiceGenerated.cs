@@ -36,6 +36,8 @@ namespace CSSPServices
 
         #region Properties
         private CSSPDBContext db { get; }
+        private CSSPDBLocalContext dbLocal { get; }
+        private InMemoryDBContext dbIM { get; }
         private ICultureService CultureService { get; }
         private ILoggedInService LoggedInService { get; }
         private IEnums enums { get; }
@@ -43,12 +45,14 @@ namespace CSSPServices
         #endregion Properties
 
         #region Constructors
-        public TVTypeUserAuthorizationService(ICultureService CultureService, ILoggedInService LoggedInService, IEnums enums, CSSPDBContext db)
+        public TVTypeUserAuthorizationService(ICultureService CultureService, ILoggedInService LoggedInService, IEnums enums, CSSPDBContext db, CSSPDBLocalContext dbLocal, InMemoryDBContext dbIM)
         {
             this.CultureService = CultureService;
             this.LoggedInService = LoggedInService;
             this.enums = enums;
             this.db = db;
+            this.dbLocal = dbLocal;
+            this.dbIM = dbIM;
         }
         #endregion Constructors
 
@@ -60,16 +64,32 @@ namespace CSSPServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            TVTypeUserAuthorization tvtypeuserauthorization = (from c in db.TVTypeUserAuthorizations.AsNoTracking()
-                    where c.TVTypeUserAuthorizationID == TVTypeUserAuthorizationID
-                    select c).FirstOrDefault();
-
-            if (tvtypeuserauthorization == null)
+            if (LoggedInService.IsLocal)
             {
-               return await Task.FromResult(NotFound());
-            }
+                TVTypeUserAuthorization tvtypeuserauthorization = (from c in dbLocal.TVTypeUserAuthorizations.AsNoTracking()
+                        where c.TVTypeUserAuthorizationID == TVTypeUserAuthorizationID
+                        select c).FirstOrDefault();
 
-            return await Task.FromResult(Ok(tvtypeuserauthorization));
+                if (tvtypeuserauthorization == null)
+                {
+                   return await Task.FromResult(NotFound());
+                }
+
+                return await Task.FromResult(Ok(tvtypeuserauthorization));
+            }
+            else
+            {
+                TVTypeUserAuthorization tvtypeuserauthorization = (from c in db.TVTypeUserAuthorizations.AsNoTracking()
+                        where c.TVTypeUserAuthorizationID == TVTypeUserAuthorizationID
+                        select c).FirstOrDefault();
+
+                if (tvtypeuserauthorization == null)
+                {
+                   return await Task.FromResult(NotFound());
+                }
+
+                return await Task.FromResult(Ok(tvtypeuserauthorization));
+            }
         }
         public async Task<ActionResult<List<TVTypeUserAuthorization>>> GetTVTypeUserAuthorizationList()
         {
@@ -78,9 +98,18 @@ namespace CSSPServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            List<TVTypeUserAuthorization> tvtypeuserauthorizationList = (from c in db.TVTypeUserAuthorizations.AsNoTracking() select c).Take(100).ToList();
+            if (LoggedInService.IsLocal)
+            {
+                List<TVTypeUserAuthorization> tvtypeuserauthorizationList = (from c in dbLocal.TVTypeUserAuthorizations.AsNoTracking() select c).Take(100).ToList();
 
-            return await Task.FromResult(Ok(tvtypeuserauthorizationList));
+                return await Task.FromResult(Ok(tvtypeuserauthorizationList));
+            }
+            else
+            {
+                List<TVTypeUserAuthorization> tvtypeuserauthorizationList = (from c in db.TVTypeUserAuthorizations.AsNoTracking() select c).Take(100).ToList();
+
+                return await Task.FromResult(Ok(tvtypeuserauthorizationList));
+            }
         }
         public async Task<ActionResult<bool>> Delete(int TVTypeUserAuthorizationID)
         {
@@ -89,26 +118,52 @@ namespace CSSPServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            TVTypeUserAuthorization tvTypeUserAuthorization = (from c in db.TVTypeUserAuthorizations
-                               where c.TVTypeUserAuthorizationID == TVTypeUserAuthorizationID
-                               select c).FirstOrDefault();
-            
-            if (tvTypeUserAuthorization == null)
+            if (LoggedInService.IsLocal)
             {
-                return await Task.FromResult(BadRequest(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "TVTypeUserAuthorization", "TVTypeUserAuthorizationID", TVTypeUserAuthorizationID.ToString())));
-            }
+                TVTypeUserAuthorization tvTypeUserAuthorization = (from c in dbLocal.TVTypeUserAuthorizations
+                                   where c.TVTypeUserAuthorizationID == TVTypeUserAuthorizationID
+                                   select c).FirstOrDefault();
+                
+                if (tvTypeUserAuthorization == null)
+                {
+                    return await Task.FromResult(BadRequest(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "TVTypeUserAuthorization", "TVTypeUserAuthorizationID", TVTypeUserAuthorizationID.ToString())));
+                }
 
-            try
-            {
-               db.TVTypeUserAuthorizations.Remove(tvTypeUserAuthorization);
-               db.SaveChanges();
-            }
-            catch (DbUpdateException ex)
-            {
-               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
-            }
+                try
+                {
+                   dbLocal.TVTypeUserAuthorizations.Remove(tvTypeUserAuthorization);
+                   dbLocal.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                   return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
 
-            return await Task.FromResult(Ok(true));
+                return await Task.FromResult(Ok(true));
+            }
+            else
+            {
+                TVTypeUserAuthorization tvTypeUserAuthorization = (from c in db.TVTypeUserAuthorizations
+                                   where c.TVTypeUserAuthorizationID == TVTypeUserAuthorizationID
+                                   select c).FirstOrDefault();
+                
+                if (tvTypeUserAuthorization == null)
+                {
+                    return await Task.FromResult(BadRequest(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "TVTypeUserAuthorization", "TVTypeUserAuthorizationID", TVTypeUserAuthorizationID.ToString())));
+                }
+
+                try
+                {
+                   db.TVTypeUserAuthorizations.Remove(tvTypeUserAuthorization);
+                   db.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                   return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
+
+                return await Task.FromResult(Ok(true));
+            }
         }
         public async Task<ActionResult<TVTypeUserAuthorization>> Post(TVTypeUserAuthorization tvTypeUserAuthorization)
         {
@@ -123,17 +178,34 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ValidationResults));
             }
 
-            try
+            if (LoggedInService.IsLocal)
             {
-               db.TVTypeUserAuthorizations.Add(tvTypeUserAuthorization);
-               db.SaveChanges();
-            }
-            catch (DbUpdateException ex)
-            {
-               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
-            }
+                try
+                {
+                   dbLocal.TVTypeUserAuthorizations.Add(tvTypeUserAuthorization);
+                   dbLocal.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                   return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
 
-            return await Task.FromResult(Ok(tvTypeUserAuthorization));
+                return await Task.FromResult(Ok(tvTypeUserAuthorization));
+            }
+            else
+            {
+                try
+                {
+                   db.TVTypeUserAuthorizations.Add(tvTypeUserAuthorization);
+                   db.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                   return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
+
+                return await Task.FromResult(Ok(tvTypeUserAuthorization));
+            }
         }
         public async Task<ActionResult<TVTypeUserAuthorization>> Put(TVTypeUserAuthorization tvTypeUserAuthorization)
         {
@@ -148,6 +220,22 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ValidationResults));
             }
 
+            if (LoggedInService.IsLocal)
+            {
+            try
+            {
+               dbLocal.TVTypeUserAuthorizations.Update(tvTypeUserAuthorization);
+               dbLocal.SaveChanges();
+            }
+            catch (DbUpdateException ex)
+            {
+               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+            }
+
+            return await Task.FromResult(Ok(tvTypeUserAuthorization));
+            }
+            else
+            {
             try
             {
                db.TVTypeUserAuthorizations.Update(tvTypeUserAuthorization);
@@ -159,6 +247,7 @@ namespace CSSPServices
             }
 
             return await Task.FromResult(Ok(tvTypeUserAuthorization));
+            }
         }
         #endregion Functions public
 
@@ -175,13 +264,35 @@ namespace CSSPServices
                     yield return new ValidationResult(string.Format(CultureServicesRes._IsRequired, "TVTypeUserAuthorizationID"), new[] { "TVTypeUserAuthorizationID" });
                 }
 
-                if (!(from c in db.TVTypeUserAuthorizations select c).Where(c => c.TVTypeUserAuthorizationID == tvTypeUserAuthorization.TVTypeUserAuthorizationID).Any())
+                if (LoggedInService.IsLocal)
                 {
-                    yield return new ValidationResult(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "TVTypeUserAuthorization", "TVTypeUserAuthorizationID", tvTypeUserAuthorization.TVTypeUserAuthorizationID.ToString()), new[] { "TVTypeUserAuthorizationID" });
+                    if (!(from c in dbLocal.TVTypeUserAuthorizations select c).Where(c => c.TVTypeUserAuthorizationID == tvTypeUserAuthorization.TVTypeUserAuthorizationID).Any())
+                    {
+                        yield return new ValidationResult(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "TVTypeUserAuthorization", "TVTypeUserAuthorizationID", tvTypeUserAuthorization.TVTypeUserAuthorizationID.ToString()), new[] { "TVTypeUserAuthorizationID" });
+                    }
+                }
+                else
+                {
+                    if (!(from c in db.TVTypeUserAuthorizations select c).Where(c => c.TVTypeUserAuthorizationID == tvTypeUserAuthorization.TVTypeUserAuthorizationID).Any())
+                    {
+                        yield return new ValidationResult(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "TVTypeUserAuthorization", "TVTypeUserAuthorizationID", tvTypeUserAuthorization.TVTypeUserAuthorizationID.ToString()), new[] { "TVTypeUserAuthorizationID" });
+                    }
                 }
             }
 
-            TVItem TVItemContactTVItemID = (from c in db.TVItems where c.TVItemID == tvTypeUserAuthorization.ContactTVItemID select c).FirstOrDefault();
+            TVItem TVItemContactTVItemID = null;
+            if (LoggedInService.IsLocal)
+            {
+                TVItemContactTVItemID = (from c in dbLocal.TVItems where c.TVItemID == tvTypeUserAuthorization.ContactTVItemID select c).FirstOrDefault();
+                if (TVItemContactTVItemID == null)
+                {
+                    TVItemContactTVItemID = (from c in dbIM.TVItems where c.TVItemID == tvTypeUserAuthorization.ContactTVItemID select c).FirstOrDefault();
+                }
+            }
+            else
+            {
+                TVItemContactTVItemID = (from c in db.TVItems where c.TVItemID == tvTypeUserAuthorization.ContactTVItemID select c).FirstOrDefault();
+            }
 
             if (TVItemContactTVItemID == null)
             {
@@ -223,7 +334,19 @@ namespace CSSPServices
                 }
             }
 
-            TVItem TVItemLastUpdateContactTVItemID = (from c in db.TVItems where c.TVItemID == tvTypeUserAuthorization.LastUpdateContactTVItemID select c).FirstOrDefault();
+            TVItem TVItemLastUpdateContactTVItemID = null;
+            if (LoggedInService.IsLocal)
+            {
+                TVItemLastUpdateContactTVItemID = (from c in dbLocal.TVItems where c.TVItemID == tvTypeUserAuthorization.LastUpdateContactTVItemID select c).FirstOrDefault();
+                if (TVItemLastUpdateContactTVItemID == null)
+                {
+                    TVItemLastUpdateContactTVItemID = (from c in dbIM.TVItems where c.TVItemID == tvTypeUserAuthorization.LastUpdateContactTVItemID select c).FirstOrDefault();
+                }
+            }
+            else
+            {
+                TVItemLastUpdateContactTVItemID = (from c in db.TVItems where c.TVItemID == tvTypeUserAuthorization.LastUpdateContactTVItemID select c).FirstOrDefault();
+            }
 
             if (TVItemLastUpdateContactTVItemID == null)
             {

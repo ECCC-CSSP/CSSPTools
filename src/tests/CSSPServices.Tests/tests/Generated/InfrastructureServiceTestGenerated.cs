@@ -36,6 +36,9 @@ namespace CSSPServices.Tests
         private ILoggedInService LoggedInService { get; set; }
         private IInfrastructureService InfrastructureService { get; set; }
         private CSSPDBContext db { get; set; }
+        private CSSPDBLocalContext dbLocal { get; set; }
+        private InMemoryDBContext dbIM { get; set; }
+        private Infrastructure infrastructure { get; set; }
         #endregion Properties
 
         #region Constructors
@@ -47,9 +50,11 @@ namespace CSSPServices.Tests
 
         #region Tests Generated CRUD
         [Theory]
-        [InlineData("en-CA")]
-        [InlineData("fr-CA")]
-        public async Task Infrastructure_CRUD_Good_Test(string culture)
+        [InlineData("en-CA", "true")]
+        [InlineData("fr-CA", "true")]
+        [InlineData("en-CA", "false")]
+        [InlineData("fr-CA", "false")]
+        public async Task Infrastructure_CRUD_Good_Test(string culture, string IsLocalStr)
         {
             // -------------------------------
             // -------------------------------
@@ -59,44 +64,57 @@ namespace CSSPServices.Tests
 
             Assert.True(await Setup(culture));
 
-            using (TransactionScope ts = new TransactionScope())
+            LoggedInService.IsLocal = bool.Parse(IsLocalStr);
+
+            infrastructure = GetFilledRandomInfrastructure("");
+
+            if (LoggedInService.IsLocal)
             {
-               Infrastructure infrastructure = GetFilledRandomInfrastructure(""); 
-
-               // List<Infrastructure>
-               var actionInfrastructureList = await InfrastructureService.GetInfrastructureList();
-               Assert.Equal(200, ((ObjectResult)actionInfrastructureList.Result).StatusCode);
-               Assert.NotNull(((OkObjectResult)actionInfrastructureList.Result).Value);
-               List<Infrastructure> infrastructureList = (List<Infrastructure>)((OkObjectResult)actionInfrastructureList.Result).Value;
-
-               int count = ((List<Infrastructure>)((OkObjectResult)actionInfrastructureList.Result).Value).Count();
-                Assert.True(count > 0);
-
-               // Post Infrastructure
-               var actionInfrastructureAdded = await InfrastructureService.Post(infrastructure);
-               Assert.Equal(200, ((ObjectResult)actionInfrastructureAdded.Result).StatusCode);
-               Assert.NotNull(((OkObjectResult)actionInfrastructureAdded.Result).Value);
-               Infrastructure infrastructureAdded = (Infrastructure)((OkObjectResult)actionInfrastructureAdded.Result).Value;
-               Assert.NotNull(infrastructureAdded);
-
-               // Put Infrastructure
-               var actionInfrastructureUpdated = await InfrastructureService.Put(infrastructure);
-               Assert.Equal(200, ((ObjectResult)actionInfrastructureUpdated.Result).StatusCode);
-               Assert.NotNull(((OkObjectResult)actionInfrastructureUpdated.Result).Value);
-               Infrastructure infrastructureUpdated = (Infrastructure)((OkObjectResult)actionInfrastructureUpdated.Result).Value;
-               Assert.NotNull(infrastructureUpdated);
-
-               // Delete Infrastructure
-               var actionInfrastructureDeleted = await InfrastructureService.Delete(infrastructure.InfrastructureID);
-               Assert.Equal(200, ((ObjectResult)actionInfrastructureDeleted.Result).StatusCode);
-               Assert.NotNull(((OkObjectResult)actionInfrastructureDeleted.Result).Value);
-               bool retBool = (bool)((OkObjectResult)actionInfrastructureDeleted.Result).Value;
-               Assert.True(retBool);
+                await DoCRUDTest();
+            }
+            else
+            {
+                using (TransactionScope ts = new TransactionScope())
+                {
+                    await DoCRUDTest();
+                }
             }
         }
         #endregion Tests Generated CRUD
 
         #region Functions private
+        private async Task DoCRUDTest()
+        {
+            // Post Infrastructure
+            var actionInfrastructureAdded = await InfrastructureService.Post(infrastructure);
+            Assert.Equal(200, ((ObjectResult)actionInfrastructureAdded.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionInfrastructureAdded.Result).Value);
+            Infrastructure infrastructureAdded = (Infrastructure)((OkObjectResult)actionInfrastructureAdded.Result).Value;
+            Assert.NotNull(infrastructureAdded);
+
+            // List<Infrastructure>
+            var actionInfrastructureList = await InfrastructureService.GetInfrastructureList();
+            Assert.Equal(200, ((ObjectResult)actionInfrastructureList.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionInfrastructureList.Result).Value);
+            List<Infrastructure> infrastructureList = (List<Infrastructure>)((OkObjectResult)actionInfrastructureList.Result).Value;
+
+            int count = ((List<Infrastructure>)((OkObjectResult)actionInfrastructureList.Result).Value).Count();
+            Assert.True(count > 0);
+
+            // Put Infrastructure
+            var actionInfrastructureUpdated = await InfrastructureService.Put(infrastructure);
+            Assert.Equal(200, ((ObjectResult)actionInfrastructureUpdated.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionInfrastructureUpdated.Result).Value);
+            Infrastructure infrastructureUpdated = (Infrastructure)((OkObjectResult)actionInfrastructureUpdated.Result).Value;
+            Assert.NotNull(infrastructureUpdated);
+
+            // Delete Infrastructure
+            var actionInfrastructureDeleted = await InfrastructureService.Delete(infrastructure.InfrastructureID);
+            Assert.Equal(200, ((ObjectResult)actionInfrastructureDeleted.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionInfrastructureDeleted.Result).Value);
+            bool retBool = (bool)((OkObjectResult)actionInfrastructureDeleted.Result).Value;
+            Assert.True(retBool);
+        }
         private async Task<bool> Setup(string culture)
         {
             Config = new ConfigurationBuilder()
@@ -109,6 +127,9 @@ namespace CSSPServices.Tests
 
             Services.AddSingleton<IConfiguration>(Config);
 
+            string CSSPDBLocalFileName = Config.GetValue<string>("CSSPDBLocal");
+            Assert.NotNull(CSSPDBLocalFileName);
+
             string TestDBConnString = Config.GetValue<string>("TestDBConnectionString");
             Assert.NotNull(TestDBConnString);
 
@@ -120,6 +141,15 @@ namespace CSSPServices.Tests
             Services.AddDbContext<InMemoryDBContext>(options =>
             {
                 options.UseInMemoryDatabase(TestDBConnString);
+            });
+
+            string appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+
+            FileInfo fiAppDataPath = new FileInfo(CSSPDBLocalFileName.Replace("{appDataPath}", appDataPath));
+
+            Services.AddDbContext<CSSPDBLocalContext>(options =>
+            {
+                options.UseSqlite($"Data Source={ fiAppDataPath.FullName }");
             });
 
             Services.AddSingleton<ICultureService, CultureService>();
@@ -141,6 +171,12 @@ namespace CSSPServices.Tests
             string Id = Config.GetValue<string>("Id");
             Assert.True(await LoggedInService.SetLoggedInContactInfo(Id));
 
+            //string IsLocalStr = Config.GetValue<string>("IsLocal");
+            //Assert.NotNull(IsLocalStr);
+
+            dbIM = Provider.GetService<InMemoryDBContext>();
+            Assert.NotNull(dbIM);
+
             InfrastructureService = Provider.GetService<IInfrastructureService>();
             Assert.NotNull(InfrastructureService);
 
@@ -148,6 +184,8 @@ namespace CSSPServices.Tests
         }
         private Infrastructure GetFilledRandomInfrastructure(string OmitPropName)
         {
+            dbIM.Database.EnsureDeleted();
+
             Infrastructure infrastructure = new Infrastructure();
 
             if (OmitPropName != "InfrastructureTVItemID") infrastructure.InfrastructureTVItemID = 41;
@@ -199,6 +237,18 @@ namespace CSSPServices.Tests
             if (OmitPropName != "CivicAddressTVItemID") infrastructure.CivicAddressTVItemID = 46;
             if (OmitPropName != "LastUpdateDate_UTC") infrastructure.LastUpdateDate_UTC = new DateTime(2005, 3, 6);
             if (OmitPropName != "LastUpdateContactTVItemID") infrastructure.LastUpdateContactTVItemID = 2;
+
+            if (LoggedInService.IsLocal)
+            {
+                if (OmitPropName != "InfrastructureID") infrastructure.InfrastructureID = 10000000;
+
+                dbIM.TVItems.Add(new TVItem() { TVItemID = 41, TVLevel = 4, TVPath = "p1p5p6p39p41", TVType = (TVTypeEnum)10, ParentID = 39, IsActive = true, LastUpdateDate_UTC = new DateTime(2014, 12, 2, 21, 29, 23), LastUpdateContactTVItemID = 2});
+                dbIM.SaveChanges();
+                dbIM.TVItems.Add(new TVItem() { TVItemID = 46, TVLevel = 1, TVPath = "p1p46", TVType = (TVTypeEnum)2, ParentID = 1, IsActive = true, LastUpdateDate_UTC = new DateTime(2015, 9, 8, 17, 8, 14), LastUpdateContactTVItemID = 2});
+                dbIM.SaveChanges();
+                dbIM.TVItems.Add(new TVItem() { TVItemID = 2, TVLevel = 1, TVPath = "p1p2", TVType = (TVTypeEnum)5, ParentID = 1, IsActive = true, LastUpdateDate_UTC = new DateTime(2014, 12, 2, 16, 58, 16), LastUpdateContactTVItemID = 2});
+                dbIM.SaveChanges();
+            }
 
             return infrastructure;
         }

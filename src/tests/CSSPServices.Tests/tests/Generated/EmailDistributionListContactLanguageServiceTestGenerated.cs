@@ -36,6 +36,9 @@ namespace CSSPServices.Tests
         private ILoggedInService LoggedInService { get; set; }
         private IEmailDistributionListContactLanguageService EmailDistributionListContactLanguageService { get; set; }
         private CSSPDBContext db { get; set; }
+        private CSSPDBLocalContext dbLocal { get; set; }
+        private InMemoryDBContext dbIM { get; set; }
+        private EmailDistributionListContactLanguage emailDistributionListContactLanguage { get; set; }
         #endregion Properties
 
         #region Constructors
@@ -47,9 +50,11 @@ namespace CSSPServices.Tests
 
         #region Tests Generated CRUD
         [Theory]
-        [InlineData("en-CA")]
-        [InlineData("fr-CA")]
-        public async Task EmailDistributionListContactLanguage_CRUD_Good_Test(string culture)
+        [InlineData("en-CA", "true")]
+        [InlineData("fr-CA", "true")]
+        [InlineData("en-CA", "false")]
+        [InlineData("fr-CA", "false")]
+        public async Task EmailDistributionListContactLanguage_CRUD_Good_Test(string culture, string IsLocalStr)
         {
             // -------------------------------
             // -------------------------------
@@ -59,44 +64,57 @@ namespace CSSPServices.Tests
 
             Assert.True(await Setup(culture));
 
-            using (TransactionScope ts = new TransactionScope())
+            LoggedInService.IsLocal = bool.Parse(IsLocalStr);
+
+            emailDistributionListContactLanguage = GetFilledRandomEmailDistributionListContactLanguage("");
+
+            if (LoggedInService.IsLocal)
             {
-               EmailDistributionListContactLanguage emailDistributionListContactLanguage = GetFilledRandomEmailDistributionListContactLanguage(""); 
-
-               // List<EmailDistributionListContactLanguage>
-               var actionEmailDistributionListContactLanguageList = await EmailDistributionListContactLanguageService.GetEmailDistributionListContactLanguageList();
-               Assert.Equal(200, ((ObjectResult)actionEmailDistributionListContactLanguageList.Result).StatusCode);
-               Assert.NotNull(((OkObjectResult)actionEmailDistributionListContactLanguageList.Result).Value);
-               List<EmailDistributionListContactLanguage> emailDistributionListContactLanguageList = (List<EmailDistributionListContactLanguage>)((OkObjectResult)actionEmailDistributionListContactLanguageList.Result).Value;
-
-               int count = ((List<EmailDistributionListContactLanguage>)((OkObjectResult)actionEmailDistributionListContactLanguageList.Result).Value).Count();
-                Assert.True(count > 0);
-
-               // Post EmailDistributionListContactLanguage
-               var actionEmailDistributionListContactLanguageAdded = await EmailDistributionListContactLanguageService.Post(emailDistributionListContactLanguage);
-               Assert.Equal(200, ((ObjectResult)actionEmailDistributionListContactLanguageAdded.Result).StatusCode);
-               Assert.NotNull(((OkObjectResult)actionEmailDistributionListContactLanguageAdded.Result).Value);
-               EmailDistributionListContactLanguage emailDistributionListContactLanguageAdded = (EmailDistributionListContactLanguage)((OkObjectResult)actionEmailDistributionListContactLanguageAdded.Result).Value;
-               Assert.NotNull(emailDistributionListContactLanguageAdded);
-
-               // Put EmailDistributionListContactLanguage
-               var actionEmailDistributionListContactLanguageUpdated = await EmailDistributionListContactLanguageService.Put(emailDistributionListContactLanguage);
-               Assert.Equal(200, ((ObjectResult)actionEmailDistributionListContactLanguageUpdated.Result).StatusCode);
-               Assert.NotNull(((OkObjectResult)actionEmailDistributionListContactLanguageUpdated.Result).Value);
-               EmailDistributionListContactLanguage emailDistributionListContactLanguageUpdated = (EmailDistributionListContactLanguage)((OkObjectResult)actionEmailDistributionListContactLanguageUpdated.Result).Value;
-               Assert.NotNull(emailDistributionListContactLanguageUpdated);
-
-               // Delete EmailDistributionListContactLanguage
-               var actionEmailDistributionListContactLanguageDeleted = await EmailDistributionListContactLanguageService.Delete(emailDistributionListContactLanguage.EmailDistributionListContactLanguageID);
-               Assert.Equal(200, ((ObjectResult)actionEmailDistributionListContactLanguageDeleted.Result).StatusCode);
-               Assert.NotNull(((OkObjectResult)actionEmailDistributionListContactLanguageDeleted.Result).Value);
-               bool retBool = (bool)((OkObjectResult)actionEmailDistributionListContactLanguageDeleted.Result).Value;
-               Assert.True(retBool);
+                await DoCRUDTest();
+            }
+            else
+            {
+                using (TransactionScope ts = new TransactionScope())
+                {
+                    await DoCRUDTest();
+                }
             }
         }
         #endregion Tests Generated CRUD
 
         #region Functions private
+        private async Task DoCRUDTest()
+        {
+            // Post EmailDistributionListContactLanguage
+            var actionEmailDistributionListContactLanguageAdded = await EmailDistributionListContactLanguageService.Post(emailDistributionListContactLanguage);
+            Assert.Equal(200, ((ObjectResult)actionEmailDistributionListContactLanguageAdded.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionEmailDistributionListContactLanguageAdded.Result).Value);
+            EmailDistributionListContactLanguage emailDistributionListContactLanguageAdded = (EmailDistributionListContactLanguage)((OkObjectResult)actionEmailDistributionListContactLanguageAdded.Result).Value;
+            Assert.NotNull(emailDistributionListContactLanguageAdded);
+
+            // List<EmailDistributionListContactLanguage>
+            var actionEmailDistributionListContactLanguageList = await EmailDistributionListContactLanguageService.GetEmailDistributionListContactLanguageList();
+            Assert.Equal(200, ((ObjectResult)actionEmailDistributionListContactLanguageList.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionEmailDistributionListContactLanguageList.Result).Value);
+            List<EmailDistributionListContactLanguage> emailDistributionListContactLanguageList = (List<EmailDistributionListContactLanguage>)((OkObjectResult)actionEmailDistributionListContactLanguageList.Result).Value;
+
+            int count = ((List<EmailDistributionListContactLanguage>)((OkObjectResult)actionEmailDistributionListContactLanguageList.Result).Value).Count();
+            Assert.True(count > 0);
+
+            // Put EmailDistributionListContactLanguage
+            var actionEmailDistributionListContactLanguageUpdated = await EmailDistributionListContactLanguageService.Put(emailDistributionListContactLanguage);
+            Assert.Equal(200, ((ObjectResult)actionEmailDistributionListContactLanguageUpdated.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionEmailDistributionListContactLanguageUpdated.Result).Value);
+            EmailDistributionListContactLanguage emailDistributionListContactLanguageUpdated = (EmailDistributionListContactLanguage)((OkObjectResult)actionEmailDistributionListContactLanguageUpdated.Result).Value;
+            Assert.NotNull(emailDistributionListContactLanguageUpdated);
+
+            // Delete EmailDistributionListContactLanguage
+            var actionEmailDistributionListContactLanguageDeleted = await EmailDistributionListContactLanguageService.Delete(emailDistributionListContactLanguage.EmailDistributionListContactLanguageID);
+            Assert.Equal(200, ((ObjectResult)actionEmailDistributionListContactLanguageDeleted.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionEmailDistributionListContactLanguageDeleted.Result).Value);
+            bool retBool = (bool)((OkObjectResult)actionEmailDistributionListContactLanguageDeleted.Result).Value;
+            Assert.True(retBool);
+        }
         private async Task<bool> Setup(string culture)
         {
             Config = new ConfigurationBuilder()
@@ -109,6 +127,9 @@ namespace CSSPServices.Tests
 
             Services.AddSingleton<IConfiguration>(Config);
 
+            string CSSPDBLocalFileName = Config.GetValue<string>("CSSPDBLocal");
+            Assert.NotNull(CSSPDBLocalFileName);
+
             string TestDBConnString = Config.GetValue<string>("TestDBConnectionString");
             Assert.NotNull(TestDBConnString);
 
@@ -120,6 +141,15 @@ namespace CSSPServices.Tests
             Services.AddDbContext<InMemoryDBContext>(options =>
             {
                 options.UseInMemoryDatabase(TestDBConnString);
+            });
+
+            string appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+
+            FileInfo fiAppDataPath = new FileInfo(CSSPDBLocalFileName.Replace("{appDataPath}", appDataPath));
+
+            Services.AddDbContext<CSSPDBLocalContext>(options =>
+            {
+                options.UseSqlite($"Data Source={ fiAppDataPath.FullName }");
             });
 
             Services.AddSingleton<ICultureService, CultureService>();
@@ -141,6 +171,12 @@ namespace CSSPServices.Tests
             string Id = Config.GetValue<string>("Id");
             Assert.True(await LoggedInService.SetLoggedInContactInfo(Id));
 
+            //string IsLocalStr = Config.GetValue<string>("IsLocal");
+            //Assert.NotNull(IsLocalStr);
+
+            dbIM = Provider.GetService<InMemoryDBContext>();
+            Assert.NotNull(dbIM);
+
             EmailDistributionListContactLanguageService = Provider.GetService<IEmailDistributionListContactLanguageService>();
             Assert.NotNull(EmailDistributionListContactLanguageService);
 
@@ -148,6 +184,8 @@ namespace CSSPServices.Tests
         }
         private EmailDistributionListContactLanguage GetFilledRandomEmailDistributionListContactLanguage(string OmitPropName)
         {
+            dbIM.Database.EnsureDeleted();
+
             EmailDistributionListContactLanguage emailDistributionListContactLanguage = new EmailDistributionListContactLanguage();
 
             if (OmitPropName != "EmailDistributionListContactID") emailDistributionListContactLanguage.EmailDistributionListContactID = 1;
@@ -156,6 +194,16 @@ namespace CSSPServices.Tests
             if (OmitPropName != "TranslationStatus") emailDistributionListContactLanguage.TranslationStatus = (TranslationStatusEnum)GetRandomEnumType(typeof(TranslationStatusEnum));
             if (OmitPropName != "LastUpdateDate_UTC") emailDistributionListContactLanguage.LastUpdateDate_UTC = new DateTime(2005, 3, 6);
             if (OmitPropName != "LastUpdateContactTVItemID") emailDistributionListContactLanguage.LastUpdateContactTVItemID = 2;
+
+            if (LoggedInService.IsLocal)
+            {
+                if (OmitPropName != "EmailDistributionListContactLanguageID") emailDistributionListContactLanguage.EmailDistributionListContactLanguageID = 10000000;
+
+                dbIM.EmailDistributionListContacts.Add(new EmailDistributionListContact() { EmailDistributionListContactID = 1, EmailDistributionListID = 1, IsCC = true, Name = "Bernice Losier", Email = "bernice.losier@inspection.gc.ca", CMPRainfallSeasonal = true, CMPWastewater = true, EmergencyWeather = true, EmergencyWastewater = true, ReopeningAllTypes = true, LastUpdateDate_UTC = new DateTime(2017, 6, 16, 12, 58, 34), LastUpdateContactTVItemID = 2 });
+                dbIM.SaveChanges();
+                dbIM.TVItems.Add(new TVItem() { TVItemID = 2, TVLevel = 1, TVPath = "p1p2", TVType = (TVTypeEnum)5, ParentID = 1, IsActive = true, LastUpdateDate_UTC = new DateTime(2014, 12, 2, 16, 58, 16), LastUpdateContactTVItemID = 2});
+                dbIM.SaveChanges();
+            }
 
             return emailDistributionListContactLanguage;
         }

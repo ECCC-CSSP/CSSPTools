@@ -36,6 +36,8 @@ namespace CSSPServices
 
         #region Properties
         private CSSPDBContext db { get; }
+        private CSSPDBLocalContext dbLocal { get; }
+        private InMemoryDBContext dbIM { get; }
         private ICultureService CultureService { get; }
         private ILoggedInService LoggedInService { get; }
         private IEnums enums { get; }
@@ -43,12 +45,14 @@ namespace CSSPServices
         #endregion Properties
 
         #region Constructors
-        public TVItemService(ICultureService CultureService, ILoggedInService LoggedInService, IEnums enums, CSSPDBContext db)
+        public TVItemService(ICultureService CultureService, ILoggedInService LoggedInService, IEnums enums, CSSPDBContext db, CSSPDBLocalContext dbLocal, InMemoryDBContext dbIM)
         {
             this.CultureService = CultureService;
             this.LoggedInService = LoggedInService;
             this.enums = enums;
             this.db = db;
+            this.dbLocal = dbLocal;
+            this.dbIM = dbIM;
         }
         #endregion Constructors
 
@@ -60,16 +64,32 @@ namespace CSSPServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            TVItem tvitem = (from c in db.TVItems.AsNoTracking()
-                    where c.TVItemID == TVItemID
-                    select c).FirstOrDefault();
-
-            if (tvitem == null)
+            if (LoggedInService.IsLocal)
             {
-               return await Task.FromResult(NotFound());
-            }
+                TVItem tvitem = (from c in dbLocal.TVItems.AsNoTracking()
+                        where c.TVItemID == TVItemID
+                        select c).FirstOrDefault();
 
-            return await Task.FromResult(Ok(tvitem));
+                if (tvitem == null)
+                {
+                   return await Task.FromResult(NotFound());
+                }
+
+                return await Task.FromResult(Ok(tvitem));
+            }
+            else
+            {
+                TVItem tvitem = (from c in db.TVItems.AsNoTracking()
+                        where c.TVItemID == TVItemID
+                        select c).FirstOrDefault();
+
+                if (tvitem == null)
+                {
+                   return await Task.FromResult(NotFound());
+                }
+
+                return await Task.FromResult(Ok(tvitem));
+            }
         }
         public async Task<ActionResult<List<TVItem>>> GetTVItemList()
         {
@@ -78,9 +98,18 @@ namespace CSSPServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            List<TVItem> tvitemList = (from c in db.TVItems.AsNoTracking() select c).Take(100).ToList();
+            if (LoggedInService.IsLocal)
+            {
+                List<TVItem> tvitemList = (from c in dbLocal.TVItems.AsNoTracking() select c).Take(100).ToList();
 
-            return await Task.FromResult(Ok(tvitemList));
+                return await Task.FromResult(Ok(tvitemList));
+            }
+            else
+            {
+                List<TVItem> tvitemList = (from c in db.TVItems.AsNoTracking() select c).Take(100).ToList();
+
+                return await Task.FromResult(Ok(tvitemList));
+            }
         }
         public async Task<ActionResult<bool>> Delete(int TVItemID)
         {
@@ -89,26 +118,52 @@ namespace CSSPServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            TVItem tvItem = (from c in db.TVItems
-                               where c.TVItemID == TVItemID
-                               select c).FirstOrDefault();
-            
-            if (tvItem == null)
+            if (LoggedInService.IsLocal)
             {
-                return await Task.FromResult(BadRequest(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "TVItem", "TVItemID", TVItemID.ToString())));
-            }
+                TVItem tvItem = (from c in dbLocal.TVItems
+                                   where c.TVItemID == TVItemID
+                                   select c).FirstOrDefault();
+                
+                if (tvItem == null)
+                {
+                    return await Task.FromResult(BadRequest(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "TVItem", "TVItemID", TVItemID.ToString())));
+                }
 
-            try
-            {
-               db.TVItems.Remove(tvItem);
-               db.SaveChanges();
-            }
-            catch (DbUpdateException ex)
-            {
-               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
-            }
+                try
+                {
+                   dbLocal.TVItems.Remove(tvItem);
+                   dbLocal.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                   return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
 
-            return await Task.FromResult(Ok(true));
+                return await Task.FromResult(Ok(true));
+            }
+            else
+            {
+                TVItem tvItem = (from c in db.TVItems
+                                   where c.TVItemID == TVItemID
+                                   select c).FirstOrDefault();
+                
+                if (tvItem == null)
+                {
+                    return await Task.FromResult(BadRequest(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "TVItem", "TVItemID", TVItemID.ToString())));
+                }
+
+                try
+                {
+                   db.TVItems.Remove(tvItem);
+                   db.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                   return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
+
+                return await Task.FromResult(Ok(true));
+            }
         }
         public async Task<ActionResult<TVItem>> Post(TVItem tvItem)
         {
@@ -123,17 +178,34 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ValidationResults));
             }
 
-            try
+            if (LoggedInService.IsLocal)
             {
-               db.TVItems.Add(tvItem);
-               db.SaveChanges();
-            }
-            catch (DbUpdateException ex)
-            {
-               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
-            }
+                try
+                {
+                   dbLocal.TVItems.Add(tvItem);
+                   dbLocal.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                   return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
 
-            return await Task.FromResult(Ok(tvItem));
+                return await Task.FromResult(Ok(tvItem));
+            }
+            else
+            {
+                try
+                {
+                   db.TVItems.Add(tvItem);
+                   db.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                   return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
+
+                return await Task.FromResult(Ok(tvItem));
+            }
         }
         public async Task<ActionResult<TVItem>> Put(TVItem tvItem)
         {
@@ -148,6 +220,22 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ValidationResults));
             }
 
+            if (LoggedInService.IsLocal)
+            {
+            try
+            {
+               dbLocal.TVItems.Update(tvItem);
+               dbLocal.SaveChanges();
+            }
+            catch (DbUpdateException ex)
+            {
+               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+            }
+
+            return await Task.FromResult(Ok(tvItem));
+            }
+            else
+            {
             try
             {
                db.TVItems.Update(tvItem);
@@ -159,6 +247,7 @@ namespace CSSPServices
             }
 
             return await Task.FromResult(Ok(tvItem));
+            }
         }
         #endregion Functions public
 
@@ -175,17 +264,38 @@ namespace CSSPServices
                     yield return new ValidationResult(string.Format(CultureServicesRes._IsRequired, "TVItemID"), new[] { "TVItemID" });
                 }
 
-                if (!(from c in db.TVItems select c).Where(c => c.TVItemID == tvItem.TVItemID).Any())
+                if (LoggedInService.IsLocal)
                 {
-                    yield return new ValidationResult(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "TVItem", "TVItemID", tvItem.TVItemID.ToString()), new[] { "TVItemID" });
+                    if (!(from c in dbLocal.TVItems select c).Where(c => c.TVItemID == tvItem.TVItemID).Any())
+                    {
+                        yield return new ValidationResult(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "TVItem", "TVItemID", tvItem.TVItemID.ToString()), new[] { "TVItemID" });
+                    }
+                }
+                else
+                {
+                    if (!(from c in db.TVItems select c).Where(c => c.TVItemID == tvItem.TVItemID).Any())
+                    {
+                        yield return new ValidationResult(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "TVItem", "TVItemID", tvItem.TVItemID.ToString()), new[] { "TVItemID" });
+                    }
                 }
             }
 
             if (tvItem.TVType == TVTypeEnum.Root)
             {
-                if ((from c in db.TVItems select c).Count() > 0)
+
+                if (LoggedInService.IsLocal)
                 {
-                    yield return new ValidationResult(CultureServicesRes.TVItemRootShouldBeTheFirstOneAdded, new[] { "TVItemTVItemID" });
+                    if ((from c in dbLocal.TVItems select c).Count() > 0)
+                    {
+                        yield return new ValidationResult(CultureServicesRes.TVItemRootShouldBeTheFirstOneAdded, new[] { "TVItemTVItemID" });
+                    }
+                }
+                else
+                {
+                    if ((from c in db.TVItems select c).Count() > 0)
+                    {
+                        yield return new ValidationResult(CultureServicesRes.TVItemRootShouldBeTheFirstOneAdded, new[] { "TVItemTVItemID" });
+                    }
                 }
             }
 
@@ -212,7 +322,19 @@ namespace CSSPServices
 
             if (tvItem.TVType != TVTypeEnum.Root)
             {
-                TVItem TVItemParentID = (from c in db.TVItems where c.TVItemID == tvItem.ParentID select c).FirstOrDefault();
+                TVItem TVItemParentID = null;
+                if (LoggedInService.IsLocal)
+                {
+                    TVItemParentID = (from c in dbLocal.TVItems where c.TVItemID == tvItem.ParentID select c).FirstOrDefault();
+                    if (TVItemParentID == null)
+                    {
+                        TVItemParentID = (from c in dbIM.TVItems where c.TVItemID == tvItem.ParentID select c).FirstOrDefault();
+                    }
+                }
+                else
+                {
+                    TVItemParentID = (from c in db.TVItems where c.TVItemID == tvItem.ParentID select c).FirstOrDefault();
+                }
 
                 if (TVItemParentID == null)
                 {
@@ -267,7 +389,19 @@ namespace CSSPServices
 
             if (tvItem.TVType != TVTypeEnum.Root)
             {
-                TVItem TVItemLastUpdateContactTVItemID = (from c in db.TVItems where c.TVItemID == tvItem.LastUpdateContactTVItemID select c).FirstOrDefault();
+                TVItem TVItemLastUpdateContactTVItemID = null;
+                if (LoggedInService.IsLocal)
+                {
+                    TVItemLastUpdateContactTVItemID = (from c in dbLocal.TVItems where c.TVItemID == tvItem.LastUpdateContactTVItemID select c).FirstOrDefault();
+                    if (TVItemLastUpdateContactTVItemID == null)
+                    {
+                        TVItemLastUpdateContactTVItemID = (from c in dbIM.TVItems where c.TVItemID == tvItem.LastUpdateContactTVItemID select c).FirstOrDefault();
+                    }
+                }
+                else
+                {
+                    TVItemLastUpdateContactTVItemID = (from c in db.TVItems where c.TVItemID == tvItem.LastUpdateContactTVItemID select c).FirstOrDefault();
+                }
 
                 if (TVItemLastUpdateContactTVItemID == null)
                 {

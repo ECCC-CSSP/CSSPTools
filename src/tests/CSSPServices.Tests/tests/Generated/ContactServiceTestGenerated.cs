@@ -36,6 +36,9 @@ namespace CSSPServices.Tests
         private ILoggedInService LoggedInService { get; set; }
         private IContactService ContactService { get; set; }
         private CSSPDBContext db { get; set; }
+        private CSSPDBLocalContext dbLocal { get; set; }
+        private InMemoryDBContext dbIM { get; set; }
+        private Contact contact { get; set; }
         #endregion Properties
 
         #region Constructors
@@ -47,9 +50,11 @@ namespace CSSPServices.Tests
 
         #region Tests Generated CRUD
         [Theory]
-        [InlineData("en-CA")]
-        [InlineData("fr-CA")]
-        public async Task Contact_CRUD_Good_Test(string culture)
+        [InlineData("en-CA", "true")]
+        [InlineData("fr-CA", "true")]
+        [InlineData("en-CA", "false")]
+        [InlineData("fr-CA", "false")]
+        public async Task Contact_CRUD_Good_Test(string culture, string IsLocalStr)
         {
             // -------------------------------
             // -------------------------------
@@ -59,44 +64,57 @@ namespace CSSPServices.Tests
 
             Assert.True(await Setup(culture));
 
-            using (TransactionScope ts = new TransactionScope())
+            LoggedInService.IsLocal = bool.Parse(IsLocalStr);
+
+            contact = GetFilledRandomContact("");
+
+            if (LoggedInService.IsLocal)
             {
-               Contact contact = GetFilledRandomContact(""); 
-
-               // List<Contact>
-               var actionContactList = await ContactService.GetContactList();
-               Assert.Equal(200, ((ObjectResult)actionContactList.Result).StatusCode);
-               Assert.NotNull(((OkObjectResult)actionContactList.Result).Value);
-               List<Contact> contactList = (List<Contact>)((OkObjectResult)actionContactList.Result).Value;
-
-               int count = ((List<Contact>)((OkObjectResult)actionContactList.Result).Value).Count();
-                Assert.True(count > 0);
-
-               // Post Contact
-               var actionContactAdded = await ContactService.Post(contact, AddContactTypeEnum.Register);
-               Assert.Equal(200, ((ObjectResult)actionContactAdded.Result).StatusCode);
-               Assert.NotNull(((OkObjectResult)actionContactAdded.Result).Value);
-               Contact contactAdded = (Contact)((OkObjectResult)actionContactAdded.Result).Value;
-               Assert.NotNull(contactAdded);
-
-               // Put Contact
-               var actionContactUpdated = await ContactService.Put(contact);
-               Assert.Equal(200, ((ObjectResult)actionContactUpdated.Result).StatusCode);
-               Assert.NotNull(((OkObjectResult)actionContactUpdated.Result).Value);
-               Contact contactUpdated = (Contact)((OkObjectResult)actionContactUpdated.Result).Value;
-               Assert.NotNull(contactUpdated);
-
-               // Delete Contact
-               var actionContactDeleted = await ContactService.Delete(contact.ContactID);
-               Assert.Equal(200, ((ObjectResult)actionContactDeleted.Result).StatusCode);
-               Assert.NotNull(((OkObjectResult)actionContactDeleted.Result).Value);
-               bool retBool = (bool)((OkObjectResult)actionContactDeleted.Result).Value;
-               Assert.True(retBool);
+                await DoCRUDTest();
+            }
+            else
+            {
+                using (TransactionScope ts = new TransactionScope())
+                {
+                    await DoCRUDTest();
+                }
             }
         }
         #endregion Tests Generated CRUD
 
         #region Functions private
+        private async Task DoCRUDTest()
+        {
+            // Post Contact
+            var actionContactAdded = await ContactService.Post(contact, AddContactTypeEnum.Register);
+            Assert.Equal(200, ((ObjectResult)actionContactAdded.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionContactAdded.Result).Value);
+            Contact contactAdded = (Contact)((OkObjectResult)actionContactAdded.Result).Value;
+            Assert.NotNull(contactAdded);
+
+            // List<Contact>
+            var actionContactList = await ContactService.GetContactList();
+            Assert.Equal(200, ((ObjectResult)actionContactList.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionContactList.Result).Value);
+            List<Contact> contactList = (List<Contact>)((OkObjectResult)actionContactList.Result).Value;
+
+            int count = ((List<Contact>)((OkObjectResult)actionContactList.Result).Value).Count();
+            Assert.True(count > 0);
+
+            // Put Contact
+            var actionContactUpdated = await ContactService.Put(contact);
+            Assert.Equal(200, ((ObjectResult)actionContactUpdated.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionContactUpdated.Result).Value);
+            Contact contactUpdated = (Contact)((OkObjectResult)actionContactUpdated.Result).Value;
+            Assert.NotNull(contactUpdated);
+
+            // Delete Contact
+            var actionContactDeleted = await ContactService.Delete(contact.ContactID);
+            Assert.Equal(200, ((ObjectResult)actionContactDeleted.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionContactDeleted.Result).Value);
+            bool retBool = (bool)((OkObjectResult)actionContactDeleted.Result).Value;
+            Assert.True(retBool);
+        }
         private async Task<bool> Setup(string culture)
         {
             Config = new ConfigurationBuilder()
@@ -109,6 +127,9 @@ namespace CSSPServices.Tests
 
             Services.AddSingleton<IConfiguration>(Config);
 
+            string CSSPDBLocalFileName = Config.GetValue<string>("CSSPDBLocal");
+            Assert.NotNull(CSSPDBLocalFileName);
+
             string TestDBConnString = Config.GetValue<string>("TestDBConnectionString");
             Assert.NotNull(TestDBConnString);
 
@@ -120,6 +141,15 @@ namespace CSSPServices.Tests
             Services.AddDbContext<InMemoryDBContext>(options =>
             {
                 options.UseInMemoryDatabase(TestDBConnString);
+            });
+
+            string appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+
+            FileInfo fiAppDataPath = new FileInfo(CSSPDBLocalFileName.Replace("{appDataPath}", appDataPath));
+
+            Services.AddDbContext<CSSPDBLocalContext>(options =>
+            {
+                options.UseSqlite($"Data Source={ fiAppDataPath.FullName }");
             });
 
             Services.AddSingleton<ICultureService, CultureService>();
@@ -141,6 +171,12 @@ namespace CSSPServices.Tests
             string Id = Config.GetValue<string>("Id");
             Assert.True(await LoggedInService.SetLoggedInContactInfo(Id));
 
+            //string IsLocalStr = Config.GetValue<string>("IsLocal");
+            //Assert.NotNull(IsLocalStr);
+
+            dbIM = Provider.GetService<InMemoryDBContext>();
+            Assert.NotNull(dbIM);
+
             ContactService = Provider.GetService<IContactService>();
             Assert.NotNull(ContactService);
 
@@ -148,6 +184,8 @@ namespace CSSPServices.Tests
         }
         private Contact GetFilledRandomContact(string OmitPropName)
         {
+            dbIM.Database.EnsureDeleted();
+
             Contact contact = new Contact();
 
             if (OmitPropName != "Id") contact.Id = "023566a4-4a25-4484-88f5-584aa8e1da38";
@@ -166,6 +204,14 @@ namespace CSSPServices.Tests
             if (OmitPropName != "Token") contact.Token = GetRandomString("", 5);
             if (OmitPropName != "LastUpdateDate_UTC") contact.LastUpdateDate_UTC = new DateTime(2005, 3, 6);
             if (OmitPropName != "LastUpdateContactTVItemID") contact.LastUpdateContactTVItemID = 2;
+
+            if (LoggedInService.IsLocal)
+            {
+                if (OmitPropName != "ContactID") contact.ContactID = 10000000;
+
+                dbIM.TVItems.Add(new TVItem() { TVItemID = 2, TVLevel = 1, TVPath = "p1p2", TVType = (TVTypeEnum)5, ParentID = 1, IsActive = true, LastUpdateDate_UTC = new DateTime(2014, 12, 2, 16, 58, 16), LastUpdateContactTVItemID = 2});
+                dbIM.SaveChanges();
+            }
 
             return contact;
         }

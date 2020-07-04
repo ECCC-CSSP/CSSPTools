@@ -36,6 +36,8 @@ namespace CSSPServices
 
         #region Properties
         private CSSPDBContext db { get; }
+        private CSSPDBLocalContext dbLocal { get; }
+        private InMemoryDBContext dbIM { get; }
         private ICultureService CultureService { get; }
         private ILoggedInService LoggedInService { get; }
         private IEnums enums { get; }
@@ -43,12 +45,14 @@ namespace CSSPServices
         #endregion Properties
 
         #region Constructors
-        public RainExceedanceClimateSiteService(ICultureService CultureService, ILoggedInService LoggedInService, IEnums enums, CSSPDBContext db)
+        public RainExceedanceClimateSiteService(ICultureService CultureService, ILoggedInService LoggedInService, IEnums enums, CSSPDBContext db, CSSPDBLocalContext dbLocal, InMemoryDBContext dbIM)
         {
             this.CultureService = CultureService;
             this.LoggedInService = LoggedInService;
             this.enums = enums;
             this.db = db;
+            this.dbLocal = dbLocal;
+            this.dbIM = dbIM;
         }
         #endregion Constructors
 
@@ -60,16 +64,32 @@ namespace CSSPServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            RainExceedanceClimateSite rainexceedanceclimatesite = (from c in db.RainExceedanceClimateSites.AsNoTracking()
-                    where c.RainExceedanceClimateSiteID == RainExceedanceClimateSiteID
-                    select c).FirstOrDefault();
-
-            if (rainexceedanceclimatesite == null)
+            if (LoggedInService.IsLocal)
             {
-               return await Task.FromResult(NotFound());
-            }
+                RainExceedanceClimateSite rainexceedanceclimatesite = (from c in dbLocal.RainExceedanceClimateSites.AsNoTracking()
+                        where c.RainExceedanceClimateSiteID == RainExceedanceClimateSiteID
+                        select c).FirstOrDefault();
 
-            return await Task.FromResult(Ok(rainexceedanceclimatesite));
+                if (rainexceedanceclimatesite == null)
+                {
+                   return await Task.FromResult(NotFound());
+                }
+
+                return await Task.FromResult(Ok(rainexceedanceclimatesite));
+            }
+            else
+            {
+                RainExceedanceClimateSite rainexceedanceclimatesite = (from c in db.RainExceedanceClimateSites.AsNoTracking()
+                        where c.RainExceedanceClimateSiteID == RainExceedanceClimateSiteID
+                        select c).FirstOrDefault();
+
+                if (rainexceedanceclimatesite == null)
+                {
+                   return await Task.FromResult(NotFound());
+                }
+
+                return await Task.FromResult(Ok(rainexceedanceclimatesite));
+            }
         }
         public async Task<ActionResult<List<RainExceedanceClimateSite>>> GetRainExceedanceClimateSiteList()
         {
@@ -78,9 +98,18 @@ namespace CSSPServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            List<RainExceedanceClimateSite> rainexceedanceclimatesiteList = (from c in db.RainExceedanceClimateSites.AsNoTracking() select c).Take(100).ToList();
+            if (LoggedInService.IsLocal)
+            {
+                List<RainExceedanceClimateSite> rainexceedanceclimatesiteList = (from c in dbLocal.RainExceedanceClimateSites.AsNoTracking() select c).Take(100).ToList();
 
-            return await Task.FromResult(Ok(rainexceedanceclimatesiteList));
+                return await Task.FromResult(Ok(rainexceedanceclimatesiteList));
+            }
+            else
+            {
+                List<RainExceedanceClimateSite> rainexceedanceclimatesiteList = (from c in db.RainExceedanceClimateSites.AsNoTracking() select c).Take(100).ToList();
+
+                return await Task.FromResult(Ok(rainexceedanceclimatesiteList));
+            }
         }
         public async Task<ActionResult<bool>> Delete(int RainExceedanceClimateSiteID)
         {
@@ -89,26 +118,52 @@ namespace CSSPServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            RainExceedanceClimateSite rainExceedanceClimateSite = (from c in db.RainExceedanceClimateSites
-                               where c.RainExceedanceClimateSiteID == RainExceedanceClimateSiteID
-                               select c).FirstOrDefault();
-            
-            if (rainExceedanceClimateSite == null)
+            if (LoggedInService.IsLocal)
             {
-                return await Task.FromResult(BadRequest(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "RainExceedanceClimateSite", "RainExceedanceClimateSiteID", RainExceedanceClimateSiteID.ToString())));
-            }
+                RainExceedanceClimateSite rainExceedanceClimateSite = (from c in dbLocal.RainExceedanceClimateSites
+                                   where c.RainExceedanceClimateSiteID == RainExceedanceClimateSiteID
+                                   select c).FirstOrDefault();
+                
+                if (rainExceedanceClimateSite == null)
+                {
+                    return await Task.FromResult(BadRequest(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "RainExceedanceClimateSite", "RainExceedanceClimateSiteID", RainExceedanceClimateSiteID.ToString())));
+                }
 
-            try
-            {
-               db.RainExceedanceClimateSites.Remove(rainExceedanceClimateSite);
-               db.SaveChanges();
-            }
-            catch (DbUpdateException ex)
-            {
-               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
-            }
+                try
+                {
+                   dbLocal.RainExceedanceClimateSites.Remove(rainExceedanceClimateSite);
+                   dbLocal.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                   return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
 
-            return await Task.FromResult(Ok(true));
+                return await Task.FromResult(Ok(true));
+            }
+            else
+            {
+                RainExceedanceClimateSite rainExceedanceClimateSite = (from c in db.RainExceedanceClimateSites
+                                   where c.RainExceedanceClimateSiteID == RainExceedanceClimateSiteID
+                                   select c).FirstOrDefault();
+                
+                if (rainExceedanceClimateSite == null)
+                {
+                    return await Task.FromResult(BadRequest(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "RainExceedanceClimateSite", "RainExceedanceClimateSiteID", RainExceedanceClimateSiteID.ToString())));
+                }
+
+                try
+                {
+                   db.RainExceedanceClimateSites.Remove(rainExceedanceClimateSite);
+                   db.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                   return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
+
+                return await Task.FromResult(Ok(true));
+            }
         }
         public async Task<ActionResult<RainExceedanceClimateSite>> Post(RainExceedanceClimateSite rainExceedanceClimateSite)
         {
@@ -123,17 +178,34 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ValidationResults));
             }
 
-            try
+            if (LoggedInService.IsLocal)
             {
-               db.RainExceedanceClimateSites.Add(rainExceedanceClimateSite);
-               db.SaveChanges();
-            }
-            catch (DbUpdateException ex)
-            {
-               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
-            }
+                try
+                {
+                   dbLocal.RainExceedanceClimateSites.Add(rainExceedanceClimateSite);
+                   dbLocal.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                   return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
 
-            return await Task.FromResult(Ok(rainExceedanceClimateSite));
+                return await Task.FromResult(Ok(rainExceedanceClimateSite));
+            }
+            else
+            {
+                try
+                {
+                   db.RainExceedanceClimateSites.Add(rainExceedanceClimateSite);
+                   db.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                   return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
+
+                return await Task.FromResult(Ok(rainExceedanceClimateSite));
+            }
         }
         public async Task<ActionResult<RainExceedanceClimateSite>> Put(RainExceedanceClimateSite rainExceedanceClimateSite)
         {
@@ -148,6 +220,22 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ValidationResults));
             }
 
+            if (LoggedInService.IsLocal)
+            {
+            try
+            {
+               dbLocal.RainExceedanceClimateSites.Update(rainExceedanceClimateSite);
+               dbLocal.SaveChanges();
+            }
+            catch (DbUpdateException ex)
+            {
+               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+            }
+
+            return await Task.FromResult(Ok(rainExceedanceClimateSite));
+            }
+            else
+            {
             try
             {
                db.RainExceedanceClimateSites.Update(rainExceedanceClimateSite);
@@ -159,6 +247,7 @@ namespace CSSPServices
             }
 
             return await Task.FromResult(Ok(rainExceedanceClimateSite));
+            }
         }
         #endregion Functions public
 
@@ -175,13 +264,35 @@ namespace CSSPServices
                     yield return new ValidationResult(string.Format(CultureServicesRes._IsRequired, "RainExceedanceClimateSiteID"), new[] { "RainExceedanceClimateSiteID" });
                 }
 
-                if (!(from c in db.RainExceedanceClimateSites select c).Where(c => c.RainExceedanceClimateSiteID == rainExceedanceClimateSite.RainExceedanceClimateSiteID).Any())
+                if (LoggedInService.IsLocal)
                 {
-                    yield return new ValidationResult(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "RainExceedanceClimateSite", "RainExceedanceClimateSiteID", rainExceedanceClimateSite.RainExceedanceClimateSiteID.ToString()), new[] { "RainExceedanceClimateSiteID" });
+                    if (!(from c in dbLocal.RainExceedanceClimateSites select c).Where(c => c.RainExceedanceClimateSiteID == rainExceedanceClimateSite.RainExceedanceClimateSiteID).Any())
+                    {
+                        yield return new ValidationResult(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "RainExceedanceClimateSite", "RainExceedanceClimateSiteID", rainExceedanceClimateSite.RainExceedanceClimateSiteID.ToString()), new[] { "RainExceedanceClimateSiteID" });
+                    }
+                }
+                else
+                {
+                    if (!(from c in db.RainExceedanceClimateSites select c).Where(c => c.RainExceedanceClimateSiteID == rainExceedanceClimateSite.RainExceedanceClimateSiteID).Any())
+                    {
+                        yield return new ValidationResult(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "RainExceedanceClimateSite", "RainExceedanceClimateSiteID", rainExceedanceClimateSite.RainExceedanceClimateSiteID.ToString()), new[] { "RainExceedanceClimateSiteID" });
+                    }
                 }
             }
 
-            TVItem TVItemRainExceedanceTVItemID = (from c in db.TVItems where c.TVItemID == rainExceedanceClimateSite.RainExceedanceTVItemID select c).FirstOrDefault();
+            TVItem TVItemRainExceedanceTVItemID = null;
+            if (LoggedInService.IsLocal)
+            {
+                TVItemRainExceedanceTVItemID = (from c in dbLocal.TVItems where c.TVItemID == rainExceedanceClimateSite.RainExceedanceTVItemID select c).FirstOrDefault();
+                if (TVItemRainExceedanceTVItemID == null)
+                {
+                    TVItemRainExceedanceTVItemID = (from c in dbIM.TVItems where c.TVItemID == rainExceedanceClimateSite.RainExceedanceTVItemID select c).FirstOrDefault();
+                }
+            }
+            else
+            {
+                TVItemRainExceedanceTVItemID = (from c in db.TVItems where c.TVItemID == rainExceedanceClimateSite.RainExceedanceTVItemID select c).FirstOrDefault();
+            }
 
             if (TVItemRainExceedanceTVItemID == null)
             {
@@ -199,7 +310,19 @@ namespace CSSPServices
                 }
             }
 
-            TVItem TVItemClimateSiteTVItemID = (from c in db.TVItems where c.TVItemID == rainExceedanceClimateSite.ClimateSiteTVItemID select c).FirstOrDefault();
+            TVItem TVItemClimateSiteTVItemID = null;
+            if (LoggedInService.IsLocal)
+            {
+                TVItemClimateSiteTVItemID = (from c in dbLocal.TVItems where c.TVItemID == rainExceedanceClimateSite.ClimateSiteTVItemID select c).FirstOrDefault();
+                if (TVItemClimateSiteTVItemID == null)
+                {
+                    TVItemClimateSiteTVItemID = (from c in dbIM.TVItems where c.TVItemID == rainExceedanceClimateSite.ClimateSiteTVItemID select c).FirstOrDefault();
+                }
+            }
+            else
+            {
+                TVItemClimateSiteTVItemID = (from c in db.TVItems where c.TVItemID == rainExceedanceClimateSite.ClimateSiteTVItemID select c).FirstOrDefault();
+            }
 
             if (TVItemClimateSiteTVItemID == null)
             {
@@ -229,7 +352,19 @@ namespace CSSPServices
                 }
             }
 
-            TVItem TVItemLastUpdateContactTVItemID = (from c in db.TVItems where c.TVItemID == rainExceedanceClimateSite.LastUpdateContactTVItemID select c).FirstOrDefault();
+            TVItem TVItemLastUpdateContactTVItemID = null;
+            if (LoggedInService.IsLocal)
+            {
+                TVItemLastUpdateContactTVItemID = (from c in dbLocal.TVItems where c.TVItemID == rainExceedanceClimateSite.LastUpdateContactTVItemID select c).FirstOrDefault();
+                if (TVItemLastUpdateContactTVItemID == null)
+                {
+                    TVItemLastUpdateContactTVItemID = (from c in dbIM.TVItems where c.TVItemID == rainExceedanceClimateSite.LastUpdateContactTVItemID select c).FirstOrDefault();
+                }
+            }
+            else
+            {
+                TVItemLastUpdateContactTVItemID = (from c in db.TVItems where c.TVItemID == rainExceedanceClimateSite.LastUpdateContactTVItemID select c).FirstOrDefault();
+            }
 
             if (TVItemLastUpdateContactTVItemID == null)
             {

@@ -36,6 +36,8 @@ namespace CSSPServices
 
         #region Properties
         private CSSPDBContext db { get; }
+        private CSSPDBLocalContext dbLocal { get; }
+        private InMemoryDBContext dbIM { get; }
         private ICultureService CultureService { get; }
         private ILoggedInService LoggedInService { get; }
         private IEnums enums { get; }
@@ -43,12 +45,14 @@ namespace CSSPServices
         #endregion Properties
 
         #region Constructors
-        public DrogueRunService(ICultureService CultureService, ILoggedInService LoggedInService, IEnums enums, CSSPDBContext db)
+        public DrogueRunService(ICultureService CultureService, ILoggedInService LoggedInService, IEnums enums, CSSPDBContext db, CSSPDBLocalContext dbLocal, InMemoryDBContext dbIM)
         {
             this.CultureService = CultureService;
             this.LoggedInService = LoggedInService;
             this.enums = enums;
             this.db = db;
+            this.dbLocal = dbLocal;
+            this.dbIM = dbIM;
         }
         #endregion Constructors
 
@@ -60,16 +64,32 @@ namespace CSSPServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            DrogueRun droguerun = (from c in db.DrogueRuns.AsNoTracking()
-                    where c.DrogueRunID == DrogueRunID
-                    select c).FirstOrDefault();
-
-            if (droguerun == null)
+            if (LoggedInService.IsLocal)
             {
-               return await Task.FromResult(NotFound());
-            }
+                DrogueRun droguerun = (from c in dbLocal.DrogueRuns.AsNoTracking()
+                        where c.DrogueRunID == DrogueRunID
+                        select c).FirstOrDefault();
 
-            return await Task.FromResult(Ok(droguerun));
+                if (droguerun == null)
+                {
+                   return await Task.FromResult(NotFound());
+                }
+
+                return await Task.FromResult(Ok(droguerun));
+            }
+            else
+            {
+                DrogueRun droguerun = (from c in db.DrogueRuns.AsNoTracking()
+                        where c.DrogueRunID == DrogueRunID
+                        select c).FirstOrDefault();
+
+                if (droguerun == null)
+                {
+                   return await Task.FromResult(NotFound());
+                }
+
+                return await Task.FromResult(Ok(droguerun));
+            }
         }
         public async Task<ActionResult<List<DrogueRun>>> GetDrogueRunList()
         {
@@ -78,9 +98,18 @@ namespace CSSPServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            List<DrogueRun> droguerunList = (from c in db.DrogueRuns.AsNoTracking() select c).Take(100).ToList();
+            if (LoggedInService.IsLocal)
+            {
+                List<DrogueRun> droguerunList = (from c in dbLocal.DrogueRuns.AsNoTracking() select c).Take(100).ToList();
 
-            return await Task.FromResult(Ok(droguerunList));
+                return await Task.FromResult(Ok(droguerunList));
+            }
+            else
+            {
+                List<DrogueRun> droguerunList = (from c in db.DrogueRuns.AsNoTracking() select c).Take(100).ToList();
+
+                return await Task.FromResult(Ok(droguerunList));
+            }
         }
         public async Task<ActionResult<bool>> Delete(int DrogueRunID)
         {
@@ -89,26 +118,52 @@ namespace CSSPServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            DrogueRun drogueRun = (from c in db.DrogueRuns
-                               where c.DrogueRunID == DrogueRunID
-                               select c).FirstOrDefault();
-            
-            if (drogueRun == null)
+            if (LoggedInService.IsLocal)
             {
-                return await Task.FromResult(BadRequest(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "DrogueRun", "DrogueRunID", DrogueRunID.ToString())));
-            }
+                DrogueRun drogueRun = (from c in dbLocal.DrogueRuns
+                                   where c.DrogueRunID == DrogueRunID
+                                   select c).FirstOrDefault();
+                
+                if (drogueRun == null)
+                {
+                    return await Task.FromResult(BadRequest(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "DrogueRun", "DrogueRunID", DrogueRunID.ToString())));
+                }
 
-            try
-            {
-               db.DrogueRuns.Remove(drogueRun);
-               db.SaveChanges();
-            }
-            catch (DbUpdateException ex)
-            {
-               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
-            }
+                try
+                {
+                   dbLocal.DrogueRuns.Remove(drogueRun);
+                   dbLocal.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                   return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
 
-            return await Task.FromResult(Ok(true));
+                return await Task.FromResult(Ok(true));
+            }
+            else
+            {
+                DrogueRun drogueRun = (from c in db.DrogueRuns
+                                   where c.DrogueRunID == DrogueRunID
+                                   select c).FirstOrDefault();
+                
+                if (drogueRun == null)
+                {
+                    return await Task.FromResult(BadRequest(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "DrogueRun", "DrogueRunID", DrogueRunID.ToString())));
+                }
+
+                try
+                {
+                   db.DrogueRuns.Remove(drogueRun);
+                   db.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                   return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
+
+                return await Task.FromResult(Ok(true));
+            }
         }
         public async Task<ActionResult<DrogueRun>> Post(DrogueRun drogueRun)
         {
@@ -123,17 +178,34 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ValidationResults));
             }
 
-            try
+            if (LoggedInService.IsLocal)
             {
-               db.DrogueRuns.Add(drogueRun);
-               db.SaveChanges();
-            }
-            catch (DbUpdateException ex)
-            {
-               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
-            }
+                try
+                {
+                   dbLocal.DrogueRuns.Add(drogueRun);
+                   dbLocal.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                   return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
 
-            return await Task.FromResult(Ok(drogueRun));
+                return await Task.FromResult(Ok(drogueRun));
+            }
+            else
+            {
+                try
+                {
+                   db.DrogueRuns.Add(drogueRun);
+                   db.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                   return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
+
+                return await Task.FromResult(Ok(drogueRun));
+            }
         }
         public async Task<ActionResult<DrogueRun>> Put(DrogueRun drogueRun)
         {
@@ -148,6 +220,22 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ValidationResults));
             }
 
+            if (LoggedInService.IsLocal)
+            {
+            try
+            {
+               dbLocal.DrogueRuns.Update(drogueRun);
+               dbLocal.SaveChanges();
+            }
+            catch (DbUpdateException ex)
+            {
+               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+            }
+
+            return await Task.FromResult(Ok(drogueRun));
+            }
+            else
+            {
             try
             {
                db.DrogueRuns.Update(drogueRun);
@@ -159,6 +247,7 @@ namespace CSSPServices
             }
 
             return await Task.FromResult(Ok(drogueRun));
+            }
         }
         #endregion Functions public
 
@@ -175,13 +264,35 @@ namespace CSSPServices
                     yield return new ValidationResult(string.Format(CultureServicesRes._IsRequired, "DrogueRunID"), new[] { "DrogueRunID" });
                 }
 
-                if (!(from c in db.DrogueRuns select c).Where(c => c.DrogueRunID == drogueRun.DrogueRunID).Any())
+                if (LoggedInService.IsLocal)
                 {
-                    yield return new ValidationResult(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "DrogueRun", "DrogueRunID", drogueRun.DrogueRunID.ToString()), new[] { "DrogueRunID" });
+                    if (!(from c in dbLocal.DrogueRuns select c).Where(c => c.DrogueRunID == drogueRun.DrogueRunID).Any())
+                    {
+                        yield return new ValidationResult(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "DrogueRun", "DrogueRunID", drogueRun.DrogueRunID.ToString()), new[] { "DrogueRunID" });
+                    }
+                }
+                else
+                {
+                    if (!(from c in db.DrogueRuns select c).Where(c => c.DrogueRunID == drogueRun.DrogueRunID).Any())
+                    {
+                        yield return new ValidationResult(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "DrogueRun", "DrogueRunID", drogueRun.DrogueRunID.ToString()), new[] { "DrogueRunID" });
+                    }
                 }
             }
 
-            TVItem TVItemSubsectorTVItemID = (from c in db.TVItems where c.TVItemID == drogueRun.SubsectorTVItemID select c).FirstOrDefault();
+            TVItem TVItemSubsectorTVItemID = null;
+            if (LoggedInService.IsLocal)
+            {
+                TVItemSubsectorTVItemID = (from c in dbLocal.TVItems where c.TVItemID == drogueRun.SubsectorTVItemID select c).FirstOrDefault();
+                if (TVItemSubsectorTVItemID == null)
+                {
+                    TVItemSubsectorTVItemID = (from c in dbIM.TVItems where c.TVItemID == drogueRun.SubsectorTVItemID select c).FirstOrDefault();
+                }
+            }
+            else
+            {
+                TVItemSubsectorTVItemID = (from c in db.TVItems where c.TVItemID == drogueRun.SubsectorTVItemID select c).FirstOrDefault();
+            }
 
             if (TVItemSubsectorTVItemID == null)
             {
@@ -234,7 +345,19 @@ namespace CSSPServices
                 }
             }
 
-            TVItem TVItemLastUpdateContactTVItemID = (from c in db.TVItems where c.TVItemID == drogueRun.LastUpdateContactTVItemID select c).FirstOrDefault();
+            TVItem TVItemLastUpdateContactTVItemID = null;
+            if (LoggedInService.IsLocal)
+            {
+                TVItemLastUpdateContactTVItemID = (from c in dbLocal.TVItems where c.TVItemID == drogueRun.LastUpdateContactTVItemID select c).FirstOrDefault();
+                if (TVItemLastUpdateContactTVItemID == null)
+                {
+                    TVItemLastUpdateContactTVItemID = (from c in dbIM.TVItems where c.TVItemID == drogueRun.LastUpdateContactTVItemID select c).FirstOrDefault();
+                }
+            }
+            else
+            {
+                TVItemLastUpdateContactTVItemID = (from c in db.TVItems where c.TVItemID == drogueRun.LastUpdateContactTVItemID select c).FirstOrDefault();
+            }
 
             if (TVItemLastUpdateContactTVItemID == null)
             {

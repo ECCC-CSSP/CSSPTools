@@ -36,6 +36,9 @@ namespace CSSPServices.Tests
         private ILoggedInService LoggedInService { get; set; }
         private ITVItemService TVItemService { get; set; }
         private CSSPDBContext db { get; set; }
+        private CSSPDBLocalContext dbLocal { get; set; }
+        private InMemoryDBContext dbIM { get; set; }
+        private TVItem tvItem { get; set; }
         #endregion Properties
 
         #region Constructors
@@ -47,9 +50,11 @@ namespace CSSPServices.Tests
 
         #region Tests Generated CRUD
         [Theory]
-        [InlineData("en-CA")]
-        [InlineData("fr-CA")]
-        public async Task TVItem_CRUD_Good_Test(string culture)
+        [InlineData("en-CA", "true")]
+        [InlineData("fr-CA", "true")]
+        [InlineData("en-CA", "false")]
+        [InlineData("fr-CA", "false")]
+        public async Task TVItem_CRUD_Good_Test(string culture, string IsLocalStr)
         {
             // -------------------------------
             // -------------------------------
@@ -59,44 +64,57 @@ namespace CSSPServices.Tests
 
             Assert.True(await Setup(culture));
 
-            using (TransactionScope ts = new TransactionScope())
+            LoggedInService.IsLocal = bool.Parse(IsLocalStr);
+
+            tvItem = GetFilledRandomTVItem("");
+
+            if (LoggedInService.IsLocal)
             {
-               TVItem tvItem = GetFilledRandomTVItem(""); 
-
-               // List<TVItem>
-               var actionTVItemList = await TVItemService.GetTVItemList();
-               Assert.Equal(200, ((ObjectResult)actionTVItemList.Result).StatusCode);
-               Assert.NotNull(((OkObjectResult)actionTVItemList.Result).Value);
-               List<TVItem> tvItemList = (List<TVItem>)((OkObjectResult)actionTVItemList.Result).Value;
-
-               int count = ((List<TVItem>)((OkObjectResult)actionTVItemList.Result).Value).Count();
-                Assert.True(count > 0);
-
-               // Post TVItem
-               var actionTVItemAdded = await TVItemService.Post(tvItem);
-               Assert.Equal(200, ((ObjectResult)actionTVItemAdded.Result).StatusCode);
-               Assert.NotNull(((OkObjectResult)actionTVItemAdded.Result).Value);
-               TVItem tvItemAdded = (TVItem)((OkObjectResult)actionTVItemAdded.Result).Value;
-               Assert.NotNull(tvItemAdded);
-
-               // Put TVItem
-               var actionTVItemUpdated = await TVItemService.Put(tvItem);
-               Assert.Equal(200, ((ObjectResult)actionTVItemUpdated.Result).StatusCode);
-               Assert.NotNull(((OkObjectResult)actionTVItemUpdated.Result).Value);
-               TVItem tvItemUpdated = (TVItem)((OkObjectResult)actionTVItemUpdated.Result).Value;
-               Assert.NotNull(tvItemUpdated);
-
-               // Delete TVItem
-               var actionTVItemDeleted = await TVItemService.Delete(tvItem.TVItemID);
-               Assert.Equal(200, ((ObjectResult)actionTVItemDeleted.Result).StatusCode);
-               Assert.NotNull(((OkObjectResult)actionTVItemDeleted.Result).Value);
-               bool retBool = (bool)((OkObjectResult)actionTVItemDeleted.Result).Value;
-               Assert.True(retBool);
+                await DoCRUDTest();
+            }
+            else
+            {
+                using (TransactionScope ts = new TransactionScope())
+                {
+                    await DoCRUDTest();
+                }
             }
         }
         #endregion Tests Generated CRUD
 
         #region Functions private
+        private async Task DoCRUDTest()
+        {
+            // Post TVItem
+            var actionTVItemAdded = await TVItemService.Post(tvItem);
+            Assert.Equal(200, ((ObjectResult)actionTVItemAdded.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionTVItemAdded.Result).Value);
+            TVItem tvItemAdded = (TVItem)((OkObjectResult)actionTVItemAdded.Result).Value;
+            Assert.NotNull(tvItemAdded);
+
+            // List<TVItem>
+            var actionTVItemList = await TVItemService.GetTVItemList();
+            Assert.Equal(200, ((ObjectResult)actionTVItemList.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionTVItemList.Result).Value);
+            List<TVItem> tvItemList = (List<TVItem>)((OkObjectResult)actionTVItemList.Result).Value;
+
+            int count = ((List<TVItem>)((OkObjectResult)actionTVItemList.Result).Value).Count();
+            Assert.True(count > 0);
+
+            // Put TVItem
+            var actionTVItemUpdated = await TVItemService.Put(tvItem);
+            Assert.Equal(200, ((ObjectResult)actionTVItemUpdated.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionTVItemUpdated.Result).Value);
+            TVItem tvItemUpdated = (TVItem)((OkObjectResult)actionTVItemUpdated.Result).Value;
+            Assert.NotNull(tvItemUpdated);
+
+            // Delete TVItem
+            var actionTVItemDeleted = await TVItemService.Delete(tvItem.TVItemID);
+            Assert.Equal(200, ((ObjectResult)actionTVItemDeleted.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionTVItemDeleted.Result).Value);
+            bool retBool = (bool)((OkObjectResult)actionTVItemDeleted.Result).Value;
+            Assert.True(retBool);
+        }
         private async Task<bool> Setup(string culture)
         {
             Config = new ConfigurationBuilder()
@@ -109,6 +127,9 @@ namespace CSSPServices.Tests
 
             Services.AddSingleton<IConfiguration>(Config);
 
+            string CSSPDBLocalFileName = Config.GetValue<string>("CSSPDBLocal");
+            Assert.NotNull(CSSPDBLocalFileName);
+
             string TestDBConnString = Config.GetValue<string>("TestDBConnectionString");
             Assert.NotNull(TestDBConnString);
 
@@ -120,6 +141,15 @@ namespace CSSPServices.Tests
             Services.AddDbContext<InMemoryDBContext>(options =>
             {
                 options.UseInMemoryDatabase(TestDBConnString);
+            });
+
+            string appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+
+            FileInfo fiAppDataPath = new FileInfo(CSSPDBLocalFileName.Replace("{appDataPath}", appDataPath));
+
+            Services.AddDbContext<CSSPDBLocalContext>(options =>
+            {
+                options.UseSqlite($"Data Source={ fiAppDataPath.FullName }");
             });
 
             Services.AddSingleton<ICultureService, CultureService>();
@@ -141,6 +171,12 @@ namespace CSSPServices.Tests
             string Id = Config.GetValue<string>("Id");
             Assert.True(await LoggedInService.SetLoggedInContactInfo(Id));
 
+            //string IsLocalStr = Config.GetValue<string>("IsLocal");
+            //Assert.NotNull(IsLocalStr);
+
+            dbIM = Provider.GetService<InMemoryDBContext>();
+            Assert.NotNull(dbIM);
+
             TVItemService = Provider.GetService<ITVItemService>();
             Assert.NotNull(TVItemService);
 
@@ -148,6 +184,8 @@ namespace CSSPServices.Tests
         }
         private TVItem GetFilledRandomTVItem(string OmitPropName)
         {
+            dbIM.Database.EnsureDeleted();
+
             TVItem tvItem = new TVItem();
 
             if (OmitPropName != "TVLevel") tvItem.TVLevel = GetRandomInt(0, 100);
@@ -157,6 +195,16 @@ namespace CSSPServices.Tests
             if (OmitPropName != "IsActive") tvItem.IsActive = true;
             if (OmitPropName != "LastUpdateDate_UTC") tvItem.LastUpdateDate_UTC = new DateTime(2005, 3, 6);
             if (OmitPropName != "LastUpdateContactTVItemID") tvItem.LastUpdateContactTVItemID = 2;
+
+            if (LoggedInService.IsLocal)
+            {
+                if (OmitPropName != "TVItemID") tvItem.TVItemID = 10000000;
+
+                dbIM.TVItems.Add(new TVItem() { TVItemID = 1, TVLevel = 0, TVPath = "p1", TVType = (TVTypeEnum)1, ParentID = 1, IsActive = true, LastUpdateDate_UTC = new DateTime(2014, 12, 2, 16, 58, 16), LastUpdateContactTVItemID = 2});
+                dbIM.SaveChanges();
+                dbIM.TVItems.Add(new TVItem() { TVItemID = 2, TVLevel = 1, TVPath = "p1p2", TVType = (TVTypeEnum)5, ParentID = 1, IsActive = true, LastUpdateDate_UTC = new DateTime(2014, 12, 2, 16, 58, 16), LastUpdateContactTVItemID = 2});
+                dbIM.SaveChanges();
+            }
 
             return tvItem;
         }

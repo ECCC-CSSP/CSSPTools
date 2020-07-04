@@ -36,6 +36,9 @@ namespace CSSPServices.Tests
         private ILoggedInService LoggedInService { get; set; }
         private IMikeBoundaryConditionService MikeBoundaryConditionService { get; set; }
         private CSSPDBContext db { get; set; }
+        private CSSPDBLocalContext dbLocal { get; set; }
+        private InMemoryDBContext dbIM { get; set; }
+        private MikeBoundaryCondition mikeBoundaryCondition { get; set; }
         #endregion Properties
 
         #region Constructors
@@ -47,9 +50,11 @@ namespace CSSPServices.Tests
 
         #region Tests Generated CRUD
         [Theory]
-        [InlineData("en-CA")]
-        [InlineData("fr-CA")]
-        public async Task MikeBoundaryCondition_CRUD_Good_Test(string culture)
+        [InlineData("en-CA", "true")]
+        [InlineData("fr-CA", "true")]
+        [InlineData("en-CA", "false")]
+        [InlineData("fr-CA", "false")]
+        public async Task MikeBoundaryCondition_CRUD_Good_Test(string culture, string IsLocalStr)
         {
             // -------------------------------
             // -------------------------------
@@ -59,44 +64,57 @@ namespace CSSPServices.Tests
 
             Assert.True(await Setup(culture));
 
-            using (TransactionScope ts = new TransactionScope())
+            LoggedInService.IsLocal = bool.Parse(IsLocalStr);
+
+            mikeBoundaryCondition = GetFilledRandomMikeBoundaryCondition("");
+
+            if (LoggedInService.IsLocal)
             {
-               MikeBoundaryCondition mikeBoundaryCondition = GetFilledRandomMikeBoundaryCondition(""); 
-
-               // List<MikeBoundaryCondition>
-               var actionMikeBoundaryConditionList = await MikeBoundaryConditionService.GetMikeBoundaryConditionList();
-               Assert.Equal(200, ((ObjectResult)actionMikeBoundaryConditionList.Result).StatusCode);
-               Assert.NotNull(((OkObjectResult)actionMikeBoundaryConditionList.Result).Value);
-               List<MikeBoundaryCondition> mikeBoundaryConditionList = (List<MikeBoundaryCondition>)((OkObjectResult)actionMikeBoundaryConditionList.Result).Value;
-
-               int count = ((List<MikeBoundaryCondition>)((OkObjectResult)actionMikeBoundaryConditionList.Result).Value).Count();
-                Assert.True(count > 0);
-
-               // Post MikeBoundaryCondition
-               var actionMikeBoundaryConditionAdded = await MikeBoundaryConditionService.Post(mikeBoundaryCondition);
-               Assert.Equal(200, ((ObjectResult)actionMikeBoundaryConditionAdded.Result).StatusCode);
-               Assert.NotNull(((OkObjectResult)actionMikeBoundaryConditionAdded.Result).Value);
-               MikeBoundaryCondition mikeBoundaryConditionAdded = (MikeBoundaryCondition)((OkObjectResult)actionMikeBoundaryConditionAdded.Result).Value;
-               Assert.NotNull(mikeBoundaryConditionAdded);
-
-               // Put MikeBoundaryCondition
-               var actionMikeBoundaryConditionUpdated = await MikeBoundaryConditionService.Put(mikeBoundaryCondition);
-               Assert.Equal(200, ((ObjectResult)actionMikeBoundaryConditionUpdated.Result).StatusCode);
-               Assert.NotNull(((OkObjectResult)actionMikeBoundaryConditionUpdated.Result).Value);
-               MikeBoundaryCondition mikeBoundaryConditionUpdated = (MikeBoundaryCondition)((OkObjectResult)actionMikeBoundaryConditionUpdated.Result).Value;
-               Assert.NotNull(mikeBoundaryConditionUpdated);
-
-               // Delete MikeBoundaryCondition
-               var actionMikeBoundaryConditionDeleted = await MikeBoundaryConditionService.Delete(mikeBoundaryCondition.MikeBoundaryConditionID);
-               Assert.Equal(200, ((ObjectResult)actionMikeBoundaryConditionDeleted.Result).StatusCode);
-               Assert.NotNull(((OkObjectResult)actionMikeBoundaryConditionDeleted.Result).Value);
-               bool retBool = (bool)((OkObjectResult)actionMikeBoundaryConditionDeleted.Result).Value;
-               Assert.True(retBool);
+                await DoCRUDTest();
+            }
+            else
+            {
+                using (TransactionScope ts = new TransactionScope())
+                {
+                    await DoCRUDTest();
+                }
             }
         }
         #endregion Tests Generated CRUD
 
         #region Functions private
+        private async Task DoCRUDTest()
+        {
+            // Post MikeBoundaryCondition
+            var actionMikeBoundaryConditionAdded = await MikeBoundaryConditionService.Post(mikeBoundaryCondition);
+            Assert.Equal(200, ((ObjectResult)actionMikeBoundaryConditionAdded.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionMikeBoundaryConditionAdded.Result).Value);
+            MikeBoundaryCondition mikeBoundaryConditionAdded = (MikeBoundaryCondition)((OkObjectResult)actionMikeBoundaryConditionAdded.Result).Value;
+            Assert.NotNull(mikeBoundaryConditionAdded);
+
+            // List<MikeBoundaryCondition>
+            var actionMikeBoundaryConditionList = await MikeBoundaryConditionService.GetMikeBoundaryConditionList();
+            Assert.Equal(200, ((ObjectResult)actionMikeBoundaryConditionList.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionMikeBoundaryConditionList.Result).Value);
+            List<MikeBoundaryCondition> mikeBoundaryConditionList = (List<MikeBoundaryCondition>)((OkObjectResult)actionMikeBoundaryConditionList.Result).Value;
+
+            int count = ((List<MikeBoundaryCondition>)((OkObjectResult)actionMikeBoundaryConditionList.Result).Value).Count();
+            Assert.True(count > 0);
+
+            // Put MikeBoundaryCondition
+            var actionMikeBoundaryConditionUpdated = await MikeBoundaryConditionService.Put(mikeBoundaryCondition);
+            Assert.Equal(200, ((ObjectResult)actionMikeBoundaryConditionUpdated.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionMikeBoundaryConditionUpdated.Result).Value);
+            MikeBoundaryCondition mikeBoundaryConditionUpdated = (MikeBoundaryCondition)((OkObjectResult)actionMikeBoundaryConditionUpdated.Result).Value;
+            Assert.NotNull(mikeBoundaryConditionUpdated);
+
+            // Delete MikeBoundaryCondition
+            var actionMikeBoundaryConditionDeleted = await MikeBoundaryConditionService.Delete(mikeBoundaryCondition.MikeBoundaryConditionID);
+            Assert.Equal(200, ((ObjectResult)actionMikeBoundaryConditionDeleted.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionMikeBoundaryConditionDeleted.Result).Value);
+            bool retBool = (bool)((OkObjectResult)actionMikeBoundaryConditionDeleted.Result).Value;
+            Assert.True(retBool);
+        }
         private async Task<bool> Setup(string culture)
         {
             Config = new ConfigurationBuilder()
@@ -109,6 +127,9 @@ namespace CSSPServices.Tests
 
             Services.AddSingleton<IConfiguration>(Config);
 
+            string CSSPDBLocalFileName = Config.GetValue<string>("CSSPDBLocal");
+            Assert.NotNull(CSSPDBLocalFileName);
+
             string TestDBConnString = Config.GetValue<string>("TestDBConnectionString");
             Assert.NotNull(TestDBConnString);
 
@@ -120,6 +141,15 @@ namespace CSSPServices.Tests
             Services.AddDbContext<InMemoryDBContext>(options =>
             {
                 options.UseInMemoryDatabase(TestDBConnString);
+            });
+
+            string appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+
+            FileInfo fiAppDataPath = new FileInfo(CSSPDBLocalFileName.Replace("{appDataPath}", appDataPath));
+
+            Services.AddDbContext<CSSPDBLocalContext>(options =>
+            {
+                options.UseSqlite($"Data Source={ fiAppDataPath.FullName }");
             });
 
             Services.AddSingleton<ICultureService, CultureService>();
@@ -141,6 +171,12 @@ namespace CSSPServices.Tests
             string Id = Config.GetValue<string>("Id");
             Assert.True(await LoggedInService.SetLoggedInContactInfo(Id));
 
+            //string IsLocalStr = Config.GetValue<string>("IsLocal");
+            //Assert.NotNull(IsLocalStr);
+
+            dbIM = Provider.GetService<InMemoryDBContext>();
+            Assert.NotNull(dbIM);
+
             MikeBoundaryConditionService = Provider.GetService<IMikeBoundaryConditionService>();
             Assert.NotNull(MikeBoundaryConditionService);
 
@@ -148,6 +184,8 @@ namespace CSSPServices.Tests
         }
         private MikeBoundaryCondition GetFilledRandomMikeBoundaryCondition(string OmitPropName)
         {
+            dbIM.Database.EnsureDeleted();
+
             MikeBoundaryCondition mikeBoundaryCondition = new MikeBoundaryCondition();
 
             if (OmitPropName != "MikeBoundaryConditionTVItemID") mikeBoundaryCondition.MikeBoundaryConditionTVItemID = 52;
@@ -162,6 +200,16 @@ namespace CSSPServices.Tests
             if (OmitPropName != "TVType") mikeBoundaryCondition.TVType = (TVTypeEnum)GetRandomEnumType(typeof(TVTypeEnum));
             if (OmitPropName != "LastUpdateDate_UTC") mikeBoundaryCondition.LastUpdateDate_UTC = new DateTime(2005, 3, 6);
             if (OmitPropName != "LastUpdateContactTVItemID") mikeBoundaryCondition.LastUpdateContactTVItemID = 2;
+
+            if (LoggedInService.IsLocal)
+            {
+                if (OmitPropName != "MikeBoundaryConditionID") mikeBoundaryCondition.MikeBoundaryConditionID = 10000000;
+
+                dbIM.TVItems.Add(new TVItem() { TVItemID = 52, TVLevel = 5, TVPath = "p1p5p6p39p51p52", TVType = (TVTypeEnum)12, ParentID = 51, IsActive = true, LastUpdateDate_UTC = new DateTime(2014, 12, 11, 15, 58, 29), LastUpdateContactTVItemID = 2});
+                dbIM.SaveChanges();
+                dbIM.TVItems.Add(new TVItem() { TVItemID = 2, TVLevel = 1, TVPath = "p1p2", TVType = (TVTypeEnum)5, ParentID = 1, IsActive = true, LastUpdateDate_UTC = new DateTime(2014, 12, 2, 16, 58, 16), LastUpdateContactTVItemID = 2});
+                dbIM.SaveChanges();
+            }
 
             return mikeBoundaryCondition;
         }

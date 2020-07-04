@@ -36,6 +36,8 @@ namespace CSSPServices
 
         #region Properties
         private CSSPDBContext db { get; }
+        private CSSPDBLocalContext dbLocal { get; }
+        private InMemoryDBContext dbIM { get; }
         private ICultureService CultureService { get; }
         private ILoggedInService LoggedInService { get; }
         private IEnums enums { get; }
@@ -43,12 +45,14 @@ namespace CSSPServices
         #endregion Properties
 
         #region Constructors
-        public DocTemplateService(ICultureService CultureService, ILoggedInService LoggedInService, IEnums enums, CSSPDBContext db)
+        public DocTemplateService(ICultureService CultureService, ILoggedInService LoggedInService, IEnums enums, CSSPDBContext db, CSSPDBLocalContext dbLocal, InMemoryDBContext dbIM)
         {
             this.CultureService = CultureService;
             this.LoggedInService = LoggedInService;
             this.enums = enums;
             this.db = db;
+            this.dbLocal = dbLocal;
+            this.dbIM = dbIM;
         }
         #endregion Constructors
 
@@ -60,16 +64,32 @@ namespace CSSPServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            DocTemplate doctemplate = (from c in db.DocTemplates.AsNoTracking()
-                    where c.DocTemplateID == DocTemplateID
-                    select c).FirstOrDefault();
-
-            if (doctemplate == null)
+            if (LoggedInService.IsLocal)
             {
-               return await Task.FromResult(NotFound());
-            }
+                DocTemplate doctemplate = (from c in dbLocal.DocTemplates.AsNoTracking()
+                        where c.DocTemplateID == DocTemplateID
+                        select c).FirstOrDefault();
 
-            return await Task.FromResult(Ok(doctemplate));
+                if (doctemplate == null)
+                {
+                   return await Task.FromResult(NotFound());
+                }
+
+                return await Task.FromResult(Ok(doctemplate));
+            }
+            else
+            {
+                DocTemplate doctemplate = (from c in db.DocTemplates.AsNoTracking()
+                        where c.DocTemplateID == DocTemplateID
+                        select c).FirstOrDefault();
+
+                if (doctemplate == null)
+                {
+                   return await Task.FromResult(NotFound());
+                }
+
+                return await Task.FromResult(Ok(doctemplate));
+            }
         }
         public async Task<ActionResult<List<DocTemplate>>> GetDocTemplateList()
         {
@@ -78,9 +98,18 @@ namespace CSSPServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            List<DocTemplate> doctemplateList = (from c in db.DocTemplates.AsNoTracking() select c).Take(100).ToList();
+            if (LoggedInService.IsLocal)
+            {
+                List<DocTemplate> doctemplateList = (from c in dbLocal.DocTemplates.AsNoTracking() select c).Take(100).ToList();
 
-            return await Task.FromResult(Ok(doctemplateList));
+                return await Task.FromResult(Ok(doctemplateList));
+            }
+            else
+            {
+                List<DocTemplate> doctemplateList = (from c in db.DocTemplates.AsNoTracking() select c).Take(100).ToList();
+
+                return await Task.FromResult(Ok(doctemplateList));
+            }
         }
         public async Task<ActionResult<bool>> Delete(int DocTemplateID)
         {
@@ -89,26 +118,52 @@ namespace CSSPServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            DocTemplate docTemplate = (from c in db.DocTemplates
-                               where c.DocTemplateID == DocTemplateID
-                               select c).FirstOrDefault();
-            
-            if (docTemplate == null)
+            if (LoggedInService.IsLocal)
             {
-                return await Task.FromResult(BadRequest(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "DocTemplate", "DocTemplateID", DocTemplateID.ToString())));
-            }
+                DocTemplate docTemplate = (from c in dbLocal.DocTemplates
+                                   where c.DocTemplateID == DocTemplateID
+                                   select c).FirstOrDefault();
+                
+                if (docTemplate == null)
+                {
+                    return await Task.FromResult(BadRequest(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "DocTemplate", "DocTemplateID", DocTemplateID.ToString())));
+                }
 
-            try
-            {
-               db.DocTemplates.Remove(docTemplate);
-               db.SaveChanges();
-            }
-            catch (DbUpdateException ex)
-            {
-               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
-            }
+                try
+                {
+                   dbLocal.DocTemplates.Remove(docTemplate);
+                   dbLocal.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                   return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
 
-            return await Task.FromResult(Ok(true));
+                return await Task.FromResult(Ok(true));
+            }
+            else
+            {
+                DocTemplate docTemplate = (from c in db.DocTemplates
+                                   where c.DocTemplateID == DocTemplateID
+                                   select c).FirstOrDefault();
+                
+                if (docTemplate == null)
+                {
+                    return await Task.FromResult(BadRequest(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "DocTemplate", "DocTemplateID", DocTemplateID.ToString())));
+                }
+
+                try
+                {
+                   db.DocTemplates.Remove(docTemplate);
+                   db.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                   return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
+
+                return await Task.FromResult(Ok(true));
+            }
         }
         public async Task<ActionResult<DocTemplate>> Post(DocTemplate docTemplate)
         {
@@ -123,17 +178,34 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ValidationResults));
             }
 
-            try
+            if (LoggedInService.IsLocal)
             {
-               db.DocTemplates.Add(docTemplate);
-               db.SaveChanges();
-            }
-            catch (DbUpdateException ex)
-            {
-               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
-            }
+                try
+                {
+                   dbLocal.DocTemplates.Add(docTemplate);
+                   dbLocal.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                   return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
 
-            return await Task.FromResult(Ok(docTemplate));
+                return await Task.FromResult(Ok(docTemplate));
+            }
+            else
+            {
+                try
+                {
+                   db.DocTemplates.Add(docTemplate);
+                   db.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                   return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
+
+                return await Task.FromResult(Ok(docTemplate));
+            }
         }
         public async Task<ActionResult<DocTemplate>> Put(DocTemplate docTemplate)
         {
@@ -148,6 +220,22 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ValidationResults));
             }
 
+            if (LoggedInService.IsLocal)
+            {
+            try
+            {
+               dbLocal.DocTemplates.Update(docTemplate);
+               dbLocal.SaveChanges();
+            }
+            catch (DbUpdateException ex)
+            {
+               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+            }
+
+            return await Task.FromResult(Ok(docTemplate));
+            }
+            else
+            {
             try
             {
                db.DocTemplates.Update(docTemplate);
@@ -159,6 +247,7 @@ namespace CSSPServices
             }
 
             return await Task.FromResult(Ok(docTemplate));
+            }
         }
         #endregion Functions public
 
@@ -175,9 +264,19 @@ namespace CSSPServices
                     yield return new ValidationResult(string.Format(CultureServicesRes._IsRequired, "DocTemplateID"), new[] { "DocTemplateID" });
                 }
 
-                if (!(from c in db.DocTemplates select c).Where(c => c.DocTemplateID == docTemplate.DocTemplateID).Any())
+                if (LoggedInService.IsLocal)
                 {
-                    yield return new ValidationResult(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "DocTemplate", "DocTemplateID", docTemplate.DocTemplateID.ToString()), new[] { "DocTemplateID" });
+                    if (!(from c in dbLocal.DocTemplates select c).Where(c => c.DocTemplateID == docTemplate.DocTemplateID).Any())
+                    {
+                        yield return new ValidationResult(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "DocTemplate", "DocTemplateID", docTemplate.DocTemplateID.ToString()), new[] { "DocTemplateID" });
+                    }
+                }
+                else
+                {
+                    if (!(from c in db.DocTemplates select c).Where(c => c.DocTemplateID == docTemplate.DocTemplateID).Any())
+                    {
+                        yield return new ValidationResult(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "DocTemplate", "DocTemplateID", docTemplate.DocTemplateID.ToString()), new[] { "DocTemplateID" });
+                    }
                 }
             }
 
@@ -193,7 +292,19 @@ namespace CSSPServices
                 yield return new ValidationResult(string.Format(CultureServicesRes._IsRequired, "TVType"), new[] { "TVType" });
             }
 
-            TVItem TVItemTVFileTVItemID = (from c in db.TVItems where c.TVItemID == docTemplate.TVFileTVItemID select c).FirstOrDefault();
+            TVItem TVItemTVFileTVItemID = null;
+            if (LoggedInService.IsLocal)
+            {
+                TVItemTVFileTVItemID = (from c in dbLocal.TVItems where c.TVItemID == docTemplate.TVFileTVItemID select c).FirstOrDefault();
+                if (TVItemTVFileTVItemID == null)
+                {
+                    TVItemTVFileTVItemID = (from c in dbIM.TVItems where c.TVItemID == docTemplate.TVFileTVItemID select c).FirstOrDefault();
+                }
+            }
+            else
+            {
+                TVItemTVFileTVItemID = (from c in db.TVItems where c.TVItemID == docTemplate.TVFileTVItemID select c).FirstOrDefault();
+            }
 
             if (TVItemTVFileTVItemID == null)
             {
@@ -233,7 +344,19 @@ namespace CSSPServices
                 }
             }
 
-            TVItem TVItemLastUpdateContactTVItemID = (from c in db.TVItems where c.TVItemID == docTemplate.LastUpdateContactTVItemID select c).FirstOrDefault();
+            TVItem TVItemLastUpdateContactTVItemID = null;
+            if (LoggedInService.IsLocal)
+            {
+                TVItemLastUpdateContactTVItemID = (from c in dbLocal.TVItems where c.TVItemID == docTemplate.LastUpdateContactTVItemID select c).FirstOrDefault();
+                if (TVItemLastUpdateContactTVItemID == null)
+                {
+                    TVItemLastUpdateContactTVItemID = (from c in dbIM.TVItems where c.TVItemID == docTemplate.LastUpdateContactTVItemID select c).FirstOrDefault();
+                }
+            }
+            else
+            {
+                TVItemLastUpdateContactTVItemID = (from c in db.TVItems where c.TVItemID == docTemplate.LastUpdateContactTVItemID select c).FirstOrDefault();
+            }
 
             if (TVItemLastUpdateContactTVItemID == null)
             {

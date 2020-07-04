@@ -36,6 +36,8 @@ namespace CSSPServices
 
         #region Properties
         private CSSPDBContext db { get; }
+        private CSSPDBLocalContext dbLocal { get; }
+        private InMemoryDBContext dbIM { get; }
         private ICultureService CultureService { get; }
         private ILoggedInService LoggedInService { get; }
         private IEnums enums { get; }
@@ -43,12 +45,14 @@ namespace CSSPServices
         #endregion Properties
 
         #region Constructors
-        public ClimateSiteService(ICultureService CultureService, ILoggedInService LoggedInService, IEnums enums, CSSPDBContext db)
+        public ClimateSiteService(ICultureService CultureService, ILoggedInService LoggedInService, IEnums enums, CSSPDBContext db, CSSPDBLocalContext dbLocal, InMemoryDBContext dbIM)
         {
             this.CultureService = CultureService;
             this.LoggedInService = LoggedInService;
             this.enums = enums;
             this.db = db;
+            this.dbLocal = dbLocal;
+            this.dbIM = dbIM;
         }
         #endregion Constructors
 
@@ -60,16 +64,32 @@ namespace CSSPServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            ClimateSite climatesite = (from c in db.ClimateSites.AsNoTracking()
-                    where c.ClimateSiteID == ClimateSiteID
-                    select c).FirstOrDefault();
-
-            if (climatesite == null)
+            if (LoggedInService.IsLocal)
             {
-               return await Task.FromResult(NotFound());
-            }
+                ClimateSite climatesite = (from c in dbLocal.ClimateSites.AsNoTracking()
+                        where c.ClimateSiteID == ClimateSiteID
+                        select c).FirstOrDefault();
 
-            return await Task.FromResult(Ok(climatesite));
+                if (climatesite == null)
+                {
+                   return await Task.FromResult(NotFound());
+                }
+
+                return await Task.FromResult(Ok(climatesite));
+            }
+            else
+            {
+                ClimateSite climatesite = (from c in db.ClimateSites.AsNoTracking()
+                        where c.ClimateSiteID == ClimateSiteID
+                        select c).FirstOrDefault();
+
+                if (climatesite == null)
+                {
+                   return await Task.FromResult(NotFound());
+                }
+
+                return await Task.FromResult(Ok(climatesite));
+            }
         }
         public async Task<ActionResult<List<ClimateSite>>> GetClimateSiteList()
         {
@@ -78,9 +98,18 @@ namespace CSSPServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            List<ClimateSite> climatesiteList = (from c in db.ClimateSites.AsNoTracking() select c).Take(100).ToList();
+            if (LoggedInService.IsLocal)
+            {
+                List<ClimateSite> climatesiteList = (from c in dbLocal.ClimateSites.AsNoTracking() select c).Take(100).ToList();
 
-            return await Task.FromResult(Ok(climatesiteList));
+                return await Task.FromResult(Ok(climatesiteList));
+            }
+            else
+            {
+                List<ClimateSite> climatesiteList = (from c in db.ClimateSites.AsNoTracking() select c).Take(100).ToList();
+
+                return await Task.FromResult(Ok(climatesiteList));
+            }
         }
         public async Task<ActionResult<bool>> Delete(int ClimateSiteID)
         {
@@ -89,26 +118,52 @@ namespace CSSPServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            ClimateSite climateSite = (from c in db.ClimateSites
-                               where c.ClimateSiteID == ClimateSiteID
-                               select c).FirstOrDefault();
-            
-            if (climateSite == null)
+            if (LoggedInService.IsLocal)
             {
-                return await Task.FromResult(BadRequest(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "ClimateSite", "ClimateSiteID", ClimateSiteID.ToString())));
-            }
+                ClimateSite climateSite = (from c in dbLocal.ClimateSites
+                                   where c.ClimateSiteID == ClimateSiteID
+                                   select c).FirstOrDefault();
+                
+                if (climateSite == null)
+                {
+                    return await Task.FromResult(BadRequest(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "ClimateSite", "ClimateSiteID", ClimateSiteID.ToString())));
+                }
 
-            try
-            {
-               db.ClimateSites.Remove(climateSite);
-               db.SaveChanges();
-            }
-            catch (DbUpdateException ex)
-            {
-               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
-            }
+                try
+                {
+                   dbLocal.ClimateSites.Remove(climateSite);
+                   dbLocal.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                   return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
 
-            return await Task.FromResult(Ok(true));
+                return await Task.FromResult(Ok(true));
+            }
+            else
+            {
+                ClimateSite climateSite = (from c in db.ClimateSites
+                                   where c.ClimateSiteID == ClimateSiteID
+                                   select c).FirstOrDefault();
+                
+                if (climateSite == null)
+                {
+                    return await Task.FromResult(BadRequest(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "ClimateSite", "ClimateSiteID", ClimateSiteID.ToString())));
+                }
+
+                try
+                {
+                   db.ClimateSites.Remove(climateSite);
+                   db.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                   return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
+
+                return await Task.FromResult(Ok(true));
+            }
         }
         public async Task<ActionResult<ClimateSite>> Post(ClimateSite climateSite)
         {
@@ -123,17 +178,34 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ValidationResults));
             }
 
-            try
+            if (LoggedInService.IsLocal)
             {
-               db.ClimateSites.Add(climateSite);
-               db.SaveChanges();
-            }
-            catch (DbUpdateException ex)
-            {
-               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
-            }
+                try
+                {
+                   dbLocal.ClimateSites.Add(climateSite);
+                   dbLocal.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                   return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
 
-            return await Task.FromResult(Ok(climateSite));
+                return await Task.FromResult(Ok(climateSite));
+            }
+            else
+            {
+                try
+                {
+                   db.ClimateSites.Add(climateSite);
+                   db.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                   return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
+
+                return await Task.FromResult(Ok(climateSite));
+            }
         }
         public async Task<ActionResult<ClimateSite>> Put(ClimateSite climateSite)
         {
@@ -148,6 +220,22 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ValidationResults));
             }
 
+            if (LoggedInService.IsLocal)
+            {
+            try
+            {
+               dbLocal.ClimateSites.Update(climateSite);
+               dbLocal.SaveChanges();
+            }
+            catch (DbUpdateException ex)
+            {
+               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+            }
+
+            return await Task.FromResult(Ok(climateSite));
+            }
+            else
+            {
             try
             {
                db.ClimateSites.Update(climateSite);
@@ -159,6 +247,7 @@ namespace CSSPServices
             }
 
             return await Task.FromResult(Ok(climateSite));
+            }
         }
         #endregion Functions public
 
@@ -175,13 +264,35 @@ namespace CSSPServices
                     yield return new ValidationResult(string.Format(CultureServicesRes._IsRequired, "ClimateSiteID"), new[] { "ClimateSiteID" });
                 }
 
-                if (!(from c in db.ClimateSites select c).Where(c => c.ClimateSiteID == climateSite.ClimateSiteID).Any())
+                if (LoggedInService.IsLocal)
                 {
-                    yield return new ValidationResult(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "ClimateSite", "ClimateSiteID", climateSite.ClimateSiteID.ToString()), new[] { "ClimateSiteID" });
+                    if (!(from c in dbLocal.ClimateSites select c).Where(c => c.ClimateSiteID == climateSite.ClimateSiteID).Any())
+                    {
+                        yield return new ValidationResult(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "ClimateSite", "ClimateSiteID", climateSite.ClimateSiteID.ToString()), new[] { "ClimateSiteID" });
+                    }
+                }
+                else
+                {
+                    if (!(from c in db.ClimateSites select c).Where(c => c.ClimateSiteID == climateSite.ClimateSiteID).Any())
+                    {
+                        yield return new ValidationResult(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "ClimateSite", "ClimateSiteID", climateSite.ClimateSiteID.ToString()), new[] { "ClimateSiteID" });
+                    }
                 }
             }
 
-            TVItem TVItemClimateSiteTVItemID = (from c in db.TVItems where c.TVItemID == climateSite.ClimateSiteTVItemID select c).FirstOrDefault();
+            TVItem TVItemClimateSiteTVItemID = null;
+            if (LoggedInService.IsLocal)
+            {
+                TVItemClimateSiteTVItemID = (from c in dbLocal.TVItems where c.TVItemID == climateSite.ClimateSiteTVItemID select c).FirstOrDefault();
+                if (TVItemClimateSiteTVItemID == null)
+                {
+                    TVItemClimateSiteTVItemID = (from c in dbIM.TVItems where c.TVItemID == climateSite.ClimateSiteTVItemID select c).FirstOrDefault();
+                }
+            }
+            else
+            {
+                TVItemClimateSiteTVItemID = (from c in db.TVItems where c.TVItemID == climateSite.ClimateSiteTVItemID select c).FirstOrDefault();
+            }
 
             if (TVItemClimateSiteTVItemID == null)
             {
@@ -308,7 +419,19 @@ namespace CSSPServices
                 }
             }
 
-            TVItem TVItemLastUpdateContactTVItemID = (from c in db.TVItems where c.TVItemID == climateSite.LastUpdateContactTVItemID select c).FirstOrDefault();
+            TVItem TVItemLastUpdateContactTVItemID = null;
+            if (LoggedInService.IsLocal)
+            {
+                TVItemLastUpdateContactTVItemID = (from c in dbLocal.TVItems where c.TVItemID == climateSite.LastUpdateContactTVItemID select c).FirstOrDefault();
+                if (TVItemLastUpdateContactTVItemID == null)
+                {
+                    TVItemLastUpdateContactTVItemID = (from c in dbIM.TVItems where c.TVItemID == climateSite.LastUpdateContactTVItemID select c).FirstOrDefault();
+                }
+            }
+            else
+            {
+                TVItemLastUpdateContactTVItemID = (from c in db.TVItems where c.TVItemID == climateSite.LastUpdateContactTVItemID select c).FirstOrDefault();
+            }
 
             if (TVItemLastUpdateContactTVItemID == null)
             {

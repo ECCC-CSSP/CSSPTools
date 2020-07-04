@@ -36,6 +36,9 @@ namespace CSSPServices.Tests
         private ILoggedInService LoggedInService { get; set; }
         private IVPAmbientService VPAmbientService { get; set; }
         private CSSPDBContext db { get; set; }
+        private CSSPDBLocalContext dbLocal { get; set; }
+        private InMemoryDBContext dbIM { get; set; }
+        private VPAmbient vpAmbient { get; set; }
         #endregion Properties
 
         #region Constructors
@@ -47,9 +50,11 @@ namespace CSSPServices.Tests
 
         #region Tests Generated CRUD
         [Theory]
-        [InlineData("en-CA")]
-        [InlineData("fr-CA")]
-        public async Task VPAmbient_CRUD_Good_Test(string culture)
+        [InlineData("en-CA", "true")]
+        [InlineData("fr-CA", "true")]
+        [InlineData("en-CA", "false")]
+        [InlineData("fr-CA", "false")]
+        public async Task VPAmbient_CRUD_Good_Test(string culture, string IsLocalStr)
         {
             // -------------------------------
             // -------------------------------
@@ -59,44 +64,57 @@ namespace CSSPServices.Tests
 
             Assert.True(await Setup(culture));
 
-            using (TransactionScope ts = new TransactionScope())
+            LoggedInService.IsLocal = bool.Parse(IsLocalStr);
+
+            vpAmbient = GetFilledRandomVPAmbient("");
+
+            if (LoggedInService.IsLocal)
             {
-               VPAmbient vpAmbient = GetFilledRandomVPAmbient(""); 
-
-               // List<VPAmbient>
-               var actionVPAmbientList = await VPAmbientService.GetVPAmbientList();
-               Assert.Equal(200, ((ObjectResult)actionVPAmbientList.Result).StatusCode);
-               Assert.NotNull(((OkObjectResult)actionVPAmbientList.Result).Value);
-               List<VPAmbient> vpAmbientList = (List<VPAmbient>)((OkObjectResult)actionVPAmbientList.Result).Value;
-
-               int count = ((List<VPAmbient>)((OkObjectResult)actionVPAmbientList.Result).Value).Count();
-                Assert.True(count > 0);
-
-               // Post VPAmbient
-               var actionVPAmbientAdded = await VPAmbientService.Post(vpAmbient);
-               Assert.Equal(200, ((ObjectResult)actionVPAmbientAdded.Result).StatusCode);
-               Assert.NotNull(((OkObjectResult)actionVPAmbientAdded.Result).Value);
-               VPAmbient vpAmbientAdded = (VPAmbient)((OkObjectResult)actionVPAmbientAdded.Result).Value;
-               Assert.NotNull(vpAmbientAdded);
-
-               // Put VPAmbient
-               var actionVPAmbientUpdated = await VPAmbientService.Put(vpAmbient);
-               Assert.Equal(200, ((ObjectResult)actionVPAmbientUpdated.Result).StatusCode);
-               Assert.NotNull(((OkObjectResult)actionVPAmbientUpdated.Result).Value);
-               VPAmbient vpAmbientUpdated = (VPAmbient)((OkObjectResult)actionVPAmbientUpdated.Result).Value;
-               Assert.NotNull(vpAmbientUpdated);
-
-               // Delete VPAmbient
-               var actionVPAmbientDeleted = await VPAmbientService.Delete(vpAmbient.VPAmbientID);
-               Assert.Equal(200, ((ObjectResult)actionVPAmbientDeleted.Result).StatusCode);
-               Assert.NotNull(((OkObjectResult)actionVPAmbientDeleted.Result).Value);
-               bool retBool = (bool)((OkObjectResult)actionVPAmbientDeleted.Result).Value;
-               Assert.True(retBool);
+                await DoCRUDTest();
+            }
+            else
+            {
+                using (TransactionScope ts = new TransactionScope())
+                {
+                    await DoCRUDTest();
+                }
             }
         }
         #endregion Tests Generated CRUD
 
         #region Functions private
+        private async Task DoCRUDTest()
+        {
+            // Post VPAmbient
+            var actionVPAmbientAdded = await VPAmbientService.Post(vpAmbient);
+            Assert.Equal(200, ((ObjectResult)actionVPAmbientAdded.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionVPAmbientAdded.Result).Value);
+            VPAmbient vpAmbientAdded = (VPAmbient)((OkObjectResult)actionVPAmbientAdded.Result).Value;
+            Assert.NotNull(vpAmbientAdded);
+
+            // List<VPAmbient>
+            var actionVPAmbientList = await VPAmbientService.GetVPAmbientList();
+            Assert.Equal(200, ((ObjectResult)actionVPAmbientList.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionVPAmbientList.Result).Value);
+            List<VPAmbient> vpAmbientList = (List<VPAmbient>)((OkObjectResult)actionVPAmbientList.Result).Value;
+
+            int count = ((List<VPAmbient>)((OkObjectResult)actionVPAmbientList.Result).Value).Count();
+            Assert.True(count > 0);
+
+            // Put VPAmbient
+            var actionVPAmbientUpdated = await VPAmbientService.Put(vpAmbient);
+            Assert.Equal(200, ((ObjectResult)actionVPAmbientUpdated.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionVPAmbientUpdated.Result).Value);
+            VPAmbient vpAmbientUpdated = (VPAmbient)((OkObjectResult)actionVPAmbientUpdated.Result).Value;
+            Assert.NotNull(vpAmbientUpdated);
+
+            // Delete VPAmbient
+            var actionVPAmbientDeleted = await VPAmbientService.Delete(vpAmbient.VPAmbientID);
+            Assert.Equal(200, ((ObjectResult)actionVPAmbientDeleted.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionVPAmbientDeleted.Result).Value);
+            bool retBool = (bool)((OkObjectResult)actionVPAmbientDeleted.Result).Value;
+            Assert.True(retBool);
+        }
         private async Task<bool> Setup(string culture)
         {
             Config = new ConfigurationBuilder()
@@ -109,6 +127,9 @@ namespace CSSPServices.Tests
 
             Services.AddSingleton<IConfiguration>(Config);
 
+            string CSSPDBLocalFileName = Config.GetValue<string>("CSSPDBLocal");
+            Assert.NotNull(CSSPDBLocalFileName);
+
             string TestDBConnString = Config.GetValue<string>("TestDBConnectionString");
             Assert.NotNull(TestDBConnString);
 
@@ -120,6 +141,15 @@ namespace CSSPServices.Tests
             Services.AddDbContext<InMemoryDBContext>(options =>
             {
                 options.UseInMemoryDatabase(TestDBConnString);
+            });
+
+            string appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+
+            FileInfo fiAppDataPath = new FileInfo(CSSPDBLocalFileName.Replace("{appDataPath}", appDataPath));
+
+            Services.AddDbContext<CSSPDBLocalContext>(options =>
+            {
+                options.UseSqlite($"Data Source={ fiAppDataPath.FullName }");
             });
 
             Services.AddSingleton<ICultureService, CultureService>();
@@ -141,6 +171,12 @@ namespace CSSPServices.Tests
             string Id = Config.GetValue<string>("Id");
             Assert.True(await LoggedInService.SetLoggedInContactInfo(Id));
 
+            //string IsLocalStr = Config.GetValue<string>("IsLocal");
+            //Assert.NotNull(IsLocalStr);
+
+            dbIM = Provider.GetService<InMemoryDBContext>();
+            Assert.NotNull(dbIM);
+
             VPAmbientService = Provider.GetService<IVPAmbientService>();
             Assert.NotNull(VPAmbientService);
 
@@ -148,6 +184,8 @@ namespace CSSPServices.Tests
         }
         private VPAmbient GetFilledRandomVPAmbient(string OmitPropName)
         {
+            dbIM.Database.EnsureDeleted();
+
             VPAmbient vpAmbient = new VPAmbient();
 
             if (OmitPropName != "VPScenarioID") vpAmbient.VPScenarioID = 1;
@@ -164,6 +202,16 @@ namespace CSSPServices.Tests
             if (OmitPropName != "FarFieldDiffusionCoefficient") vpAmbient.FarFieldDiffusionCoefficient = GetRandomDouble(0.0D, 1.0D);
             if (OmitPropName != "LastUpdateDate_UTC") vpAmbient.LastUpdateDate_UTC = new DateTime(2005, 3, 6);
             if (OmitPropName != "LastUpdateContactTVItemID") vpAmbient.LastUpdateContactTVItemID = 2;
+
+            if (LoggedInService.IsLocal)
+            {
+                if (OmitPropName != "VPAmbientID") vpAmbient.VPAmbientID = 10000000;
+
+                dbIM.VPScenarios.Add(new VPScenario() { VPScenarioID = 1 });
+                dbIM.SaveChanges();
+                dbIM.TVItems.Add(new TVItem() { TVItemID = 2, TVLevel = 1, TVPath = "p1p2", TVType = (TVTypeEnum)5, ParentID = 1, IsActive = true, LastUpdateDate_UTC = new DateTime(2014, 12, 2, 16, 58, 16), LastUpdateContactTVItemID = 2});
+                dbIM.SaveChanges();
+            }
 
             return vpAmbient;
         }

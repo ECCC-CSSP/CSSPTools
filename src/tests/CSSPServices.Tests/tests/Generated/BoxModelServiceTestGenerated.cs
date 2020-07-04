@@ -36,6 +36,9 @@ namespace CSSPServices.Tests
         private ILoggedInService LoggedInService { get; set; }
         private IBoxModelService BoxModelService { get; set; }
         private CSSPDBContext db { get; set; }
+        private CSSPDBLocalContext dbLocal { get; set; }
+        private InMemoryDBContext dbIM { get; set; }
+        private BoxModel boxModel { get; set; }
         #endregion Properties
 
         #region Constructors
@@ -47,9 +50,11 @@ namespace CSSPServices.Tests
 
         #region Tests Generated CRUD
         [Theory]
-        [InlineData("en-CA")]
-        [InlineData("fr-CA")]
-        public async Task BoxModel_CRUD_Good_Test(string culture)
+        [InlineData("en-CA", "true")]
+        [InlineData("fr-CA", "true")]
+        [InlineData("en-CA", "false")]
+        [InlineData("fr-CA", "false")]
+        public async Task BoxModel_CRUD_Good_Test(string culture, string IsLocalStr)
         {
             // -------------------------------
             // -------------------------------
@@ -59,44 +64,57 @@ namespace CSSPServices.Tests
 
             Assert.True(await Setup(culture));
 
-            using (TransactionScope ts = new TransactionScope())
+            LoggedInService.IsLocal = bool.Parse(IsLocalStr);
+
+            boxModel = GetFilledRandomBoxModel("");
+
+            if (LoggedInService.IsLocal)
             {
-               BoxModel boxModel = GetFilledRandomBoxModel(""); 
-
-               // List<BoxModel>
-               var actionBoxModelList = await BoxModelService.GetBoxModelList();
-               Assert.Equal(200, ((ObjectResult)actionBoxModelList.Result).StatusCode);
-               Assert.NotNull(((OkObjectResult)actionBoxModelList.Result).Value);
-               List<BoxModel> boxModelList = (List<BoxModel>)((OkObjectResult)actionBoxModelList.Result).Value;
-
-               int count = ((List<BoxModel>)((OkObjectResult)actionBoxModelList.Result).Value).Count();
-                Assert.True(count > 0);
-
-               // Post BoxModel
-               var actionBoxModelAdded = await BoxModelService.Post(boxModel);
-               Assert.Equal(200, ((ObjectResult)actionBoxModelAdded.Result).StatusCode);
-               Assert.NotNull(((OkObjectResult)actionBoxModelAdded.Result).Value);
-               BoxModel boxModelAdded = (BoxModel)((OkObjectResult)actionBoxModelAdded.Result).Value;
-               Assert.NotNull(boxModelAdded);
-
-               // Put BoxModel
-               var actionBoxModelUpdated = await BoxModelService.Put(boxModel);
-               Assert.Equal(200, ((ObjectResult)actionBoxModelUpdated.Result).StatusCode);
-               Assert.NotNull(((OkObjectResult)actionBoxModelUpdated.Result).Value);
-               BoxModel boxModelUpdated = (BoxModel)((OkObjectResult)actionBoxModelUpdated.Result).Value;
-               Assert.NotNull(boxModelUpdated);
-
-               // Delete BoxModel
-               var actionBoxModelDeleted = await BoxModelService.Delete(boxModel.BoxModelID);
-               Assert.Equal(200, ((ObjectResult)actionBoxModelDeleted.Result).StatusCode);
-               Assert.NotNull(((OkObjectResult)actionBoxModelDeleted.Result).Value);
-               bool retBool = (bool)((OkObjectResult)actionBoxModelDeleted.Result).Value;
-               Assert.True(retBool);
+                await DoCRUDTest();
+            }
+            else
+            {
+                using (TransactionScope ts = new TransactionScope())
+                {
+                    await DoCRUDTest();
+                }
             }
         }
         #endregion Tests Generated CRUD
 
         #region Functions private
+        private async Task DoCRUDTest()
+        {
+            // Post BoxModel
+            var actionBoxModelAdded = await BoxModelService.Post(boxModel);
+            Assert.Equal(200, ((ObjectResult)actionBoxModelAdded.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionBoxModelAdded.Result).Value);
+            BoxModel boxModelAdded = (BoxModel)((OkObjectResult)actionBoxModelAdded.Result).Value;
+            Assert.NotNull(boxModelAdded);
+
+            // List<BoxModel>
+            var actionBoxModelList = await BoxModelService.GetBoxModelList();
+            Assert.Equal(200, ((ObjectResult)actionBoxModelList.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionBoxModelList.Result).Value);
+            List<BoxModel> boxModelList = (List<BoxModel>)((OkObjectResult)actionBoxModelList.Result).Value;
+
+            int count = ((List<BoxModel>)((OkObjectResult)actionBoxModelList.Result).Value).Count();
+            Assert.True(count > 0);
+
+            // Put BoxModel
+            var actionBoxModelUpdated = await BoxModelService.Put(boxModel);
+            Assert.Equal(200, ((ObjectResult)actionBoxModelUpdated.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionBoxModelUpdated.Result).Value);
+            BoxModel boxModelUpdated = (BoxModel)((OkObjectResult)actionBoxModelUpdated.Result).Value;
+            Assert.NotNull(boxModelUpdated);
+
+            // Delete BoxModel
+            var actionBoxModelDeleted = await BoxModelService.Delete(boxModel.BoxModelID);
+            Assert.Equal(200, ((ObjectResult)actionBoxModelDeleted.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionBoxModelDeleted.Result).Value);
+            bool retBool = (bool)((OkObjectResult)actionBoxModelDeleted.Result).Value;
+            Assert.True(retBool);
+        }
         private async Task<bool> Setup(string culture)
         {
             Config = new ConfigurationBuilder()
@@ -109,6 +127,9 @@ namespace CSSPServices.Tests
 
             Services.AddSingleton<IConfiguration>(Config);
 
+            string CSSPDBLocalFileName = Config.GetValue<string>("CSSPDBLocal");
+            Assert.NotNull(CSSPDBLocalFileName);
+
             string TestDBConnString = Config.GetValue<string>("TestDBConnectionString");
             Assert.NotNull(TestDBConnString);
 
@@ -120,6 +141,15 @@ namespace CSSPServices.Tests
             Services.AddDbContext<InMemoryDBContext>(options =>
             {
                 options.UseInMemoryDatabase(TestDBConnString);
+            });
+
+            string appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+
+            FileInfo fiAppDataPath = new FileInfo(CSSPDBLocalFileName.Replace("{appDataPath}", appDataPath));
+
+            Services.AddDbContext<CSSPDBLocalContext>(options =>
+            {
+                options.UseSqlite($"Data Source={ fiAppDataPath.FullName }");
             });
 
             Services.AddSingleton<ICultureService, CultureService>();
@@ -141,6 +171,12 @@ namespace CSSPServices.Tests
             string Id = Config.GetValue<string>("Id");
             Assert.True(await LoggedInService.SetLoggedInContactInfo(Id));
 
+            //string IsLocalStr = Config.GetValue<string>("IsLocal");
+            //Assert.NotNull(IsLocalStr);
+
+            dbIM = Provider.GetService<InMemoryDBContext>();
+            Assert.NotNull(dbIM);
+
             BoxModelService = Provider.GetService<IBoxModelService>();
             Assert.NotNull(BoxModelService);
 
@@ -148,6 +184,8 @@ namespace CSSPServices.Tests
         }
         private BoxModel GetFilledRandomBoxModel(string OmitPropName)
         {
+            dbIM.Database.EnsureDeleted();
+
             BoxModel boxModel = new BoxModel();
 
             if (OmitPropName != "InfrastructureTVItemID") boxModel.InfrastructureTVItemID = 41;
@@ -163,6 +201,16 @@ namespace CSSPServices.Tests
             if (OmitPropName != "DischargeDuration_hour") boxModel.DischargeDuration_hour = GetRandomDouble(0.0D, 24.0D);
             if (OmitPropName != "LastUpdateDate_UTC") boxModel.LastUpdateDate_UTC = new DateTime(2005, 3, 6);
             if (OmitPropName != "LastUpdateContactTVItemID") boxModel.LastUpdateContactTVItemID = 2;
+
+            if (LoggedInService.IsLocal)
+            {
+                if (OmitPropName != "BoxModelID") boxModel.BoxModelID = 10000000;
+
+                dbIM.TVItems.Add(new TVItem() { TVItemID = 41, TVLevel = 4, TVPath = "p1p5p6p39p41", TVType = (TVTypeEnum)10, ParentID = 39, IsActive = true, LastUpdateDate_UTC = new DateTime(2014, 12, 2, 21, 29, 23), LastUpdateContactTVItemID = 2});
+                dbIM.SaveChanges();
+                dbIM.TVItems.Add(new TVItem() { TVItemID = 2, TVLevel = 1, TVPath = "p1p2", TVType = (TVTypeEnum)5, ParentID = 1, IsActive = true, LastUpdateDate_UTC = new DateTime(2014, 12, 2, 16, 58, 16), LastUpdateContactTVItemID = 2});
+                dbIM.SaveChanges();
+            }
 
             return boxModel;
         }

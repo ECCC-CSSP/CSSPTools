@@ -36,6 +36,9 @@ namespace CSSPServices.Tests
         private ILoggedInService LoggedInService { get; set; }
         private IVPResultService VPResultService { get; set; }
         private CSSPDBContext db { get; set; }
+        private CSSPDBLocalContext dbLocal { get; set; }
+        private InMemoryDBContext dbIM { get; set; }
+        private VPResult vpResult { get; set; }
         #endregion Properties
 
         #region Constructors
@@ -47,9 +50,11 @@ namespace CSSPServices.Tests
 
         #region Tests Generated CRUD
         [Theory]
-        [InlineData("en-CA")]
-        [InlineData("fr-CA")]
-        public async Task VPResult_CRUD_Good_Test(string culture)
+        [InlineData("en-CA", "true")]
+        [InlineData("fr-CA", "true")]
+        [InlineData("en-CA", "false")]
+        [InlineData("fr-CA", "false")]
+        public async Task VPResult_CRUD_Good_Test(string culture, string IsLocalStr)
         {
             // -------------------------------
             // -------------------------------
@@ -59,44 +64,57 @@ namespace CSSPServices.Tests
 
             Assert.True(await Setup(culture));
 
-            using (TransactionScope ts = new TransactionScope())
+            LoggedInService.IsLocal = bool.Parse(IsLocalStr);
+
+            vpResult = GetFilledRandomVPResult("");
+
+            if (LoggedInService.IsLocal)
             {
-               VPResult vpResult = GetFilledRandomVPResult(""); 
-
-               // List<VPResult>
-               var actionVPResultList = await VPResultService.GetVPResultList();
-               Assert.Equal(200, ((ObjectResult)actionVPResultList.Result).StatusCode);
-               Assert.NotNull(((OkObjectResult)actionVPResultList.Result).Value);
-               List<VPResult> vpResultList = (List<VPResult>)((OkObjectResult)actionVPResultList.Result).Value;
-
-               int count = ((List<VPResult>)((OkObjectResult)actionVPResultList.Result).Value).Count();
-                Assert.True(count > 0);
-
-               // Post VPResult
-               var actionVPResultAdded = await VPResultService.Post(vpResult);
-               Assert.Equal(200, ((ObjectResult)actionVPResultAdded.Result).StatusCode);
-               Assert.NotNull(((OkObjectResult)actionVPResultAdded.Result).Value);
-               VPResult vpResultAdded = (VPResult)((OkObjectResult)actionVPResultAdded.Result).Value;
-               Assert.NotNull(vpResultAdded);
-
-               // Put VPResult
-               var actionVPResultUpdated = await VPResultService.Put(vpResult);
-               Assert.Equal(200, ((ObjectResult)actionVPResultUpdated.Result).StatusCode);
-               Assert.NotNull(((OkObjectResult)actionVPResultUpdated.Result).Value);
-               VPResult vpResultUpdated = (VPResult)((OkObjectResult)actionVPResultUpdated.Result).Value;
-               Assert.NotNull(vpResultUpdated);
-
-               // Delete VPResult
-               var actionVPResultDeleted = await VPResultService.Delete(vpResult.VPResultID);
-               Assert.Equal(200, ((ObjectResult)actionVPResultDeleted.Result).StatusCode);
-               Assert.NotNull(((OkObjectResult)actionVPResultDeleted.Result).Value);
-               bool retBool = (bool)((OkObjectResult)actionVPResultDeleted.Result).Value;
-               Assert.True(retBool);
+                await DoCRUDTest();
+            }
+            else
+            {
+                using (TransactionScope ts = new TransactionScope())
+                {
+                    await DoCRUDTest();
+                }
             }
         }
         #endregion Tests Generated CRUD
 
         #region Functions private
+        private async Task DoCRUDTest()
+        {
+            // Post VPResult
+            var actionVPResultAdded = await VPResultService.Post(vpResult);
+            Assert.Equal(200, ((ObjectResult)actionVPResultAdded.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionVPResultAdded.Result).Value);
+            VPResult vpResultAdded = (VPResult)((OkObjectResult)actionVPResultAdded.Result).Value;
+            Assert.NotNull(vpResultAdded);
+
+            // List<VPResult>
+            var actionVPResultList = await VPResultService.GetVPResultList();
+            Assert.Equal(200, ((ObjectResult)actionVPResultList.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionVPResultList.Result).Value);
+            List<VPResult> vpResultList = (List<VPResult>)((OkObjectResult)actionVPResultList.Result).Value;
+
+            int count = ((List<VPResult>)((OkObjectResult)actionVPResultList.Result).Value).Count();
+            Assert.True(count > 0);
+
+            // Put VPResult
+            var actionVPResultUpdated = await VPResultService.Put(vpResult);
+            Assert.Equal(200, ((ObjectResult)actionVPResultUpdated.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionVPResultUpdated.Result).Value);
+            VPResult vpResultUpdated = (VPResult)((OkObjectResult)actionVPResultUpdated.Result).Value;
+            Assert.NotNull(vpResultUpdated);
+
+            // Delete VPResult
+            var actionVPResultDeleted = await VPResultService.Delete(vpResult.VPResultID);
+            Assert.Equal(200, ((ObjectResult)actionVPResultDeleted.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionVPResultDeleted.Result).Value);
+            bool retBool = (bool)((OkObjectResult)actionVPResultDeleted.Result).Value;
+            Assert.True(retBool);
+        }
         private async Task<bool> Setup(string culture)
         {
             Config = new ConfigurationBuilder()
@@ -109,6 +127,9 @@ namespace CSSPServices.Tests
 
             Services.AddSingleton<IConfiguration>(Config);
 
+            string CSSPDBLocalFileName = Config.GetValue<string>("CSSPDBLocal");
+            Assert.NotNull(CSSPDBLocalFileName);
+
             string TestDBConnString = Config.GetValue<string>("TestDBConnectionString");
             Assert.NotNull(TestDBConnString);
 
@@ -120,6 +141,15 @@ namespace CSSPServices.Tests
             Services.AddDbContext<InMemoryDBContext>(options =>
             {
                 options.UseInMemoryDatabase(TestDBConnString);
+            });
+
+            string appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+
+            FileInfo fiAppDataPath = new FileInfo(CSSPDBLocalFileName.Replace("{appDataPath}", appDataPath));
+
+            Services.AddDbContext<CSSPDBLocalContext>(options =>
+            {
+                options.UseSqlite($"Data Source={ fiAppDataPath.FullName }");
             });
 
             Services.AddSingleton<ICultureService, CultureService>();
@@ -141,6 +171,12 @@ namespace CSSPServices.Tests
             string Id = Config.GetValue<string>("Id");
             Assert.True(await LoggedInService.SetLoggedInContactInfo(Id));
 
+            //string IsLocalStr = Config.GetValue<string>("IsLocal");
+            //Assert.NotNull(IsLocalStr);
+
+            dbIM = Provider.GetService<InMemoryDBContext>();
+            Assert.NotNull(dbIM);
+
             VPResultService = Provider.GetService<IVPResultService>();
             Assert.NotNull(VPResultService);
 
@@ -148,6 +184,8 @@ namespace CSSPServices.Tests
         }
         private VPResult GetFilledRandomVPResult(string OmitPropName)
         {
+            dbIM.Database.EnsureDeleted();
+
             VPResult vpResult = new VPResult();
 
             if (OmitPropName != "VPScenarioID") vpResult.VPScenarioID = 1;
@@ -159,6 +197,16 @@ namespace CSSPServices.Tests
             if (OmitPropName != "TravelTime_hour") vpResult.TravelTime_hour = GetRandomDouble(0.0D, 100.0D);
             if (OmitPropName != "LastUpdateDate_UTC") vpResult.LastUpdateDate_UTC = new DateTime(2005, 3, 6);
             if (OmitPropName != "LastUpdateContactTVItemID") vpResult.LastUpdateContactTVItemID = 2;
+
+            if (LoggedInService.IsLocal)
+            {
+                if (OmitPropName != "VPResultID") vpResult.VPResultID = 10000000;
+
+                dbIM.VPScenarios.Add(new VPScenario() { VPScenarioID = 1 });
+                dbIM.SaveChanges();
+                dbIM.TVItems.Add(new TVItem() { TVItemID = 2, TVLevel = 1, TVPath = "p1p2", TVType = (TVTypeEnum)5, ParentID = 1, IsActive = true, LastUpdateDate_UTC = new DateTime(2014, 12, 2, 16, 58, 16), LastUpdateContactTVItemID = 2});
+                dbIM.SaveChanges();
+            }
 
             return vpResult;
         }

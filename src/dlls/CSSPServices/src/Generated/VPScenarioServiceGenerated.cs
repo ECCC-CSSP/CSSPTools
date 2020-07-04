@@ -36,6 +36,8 @@ namespace CSSPServices
 
         #region Properties
         private CSSPDBContext db { get; }
+        private CSSPDBLocalContext dbLocal { get; }
+        private InMemoryDBContext dbIM { get; }
         private ICultureService CultureService { get; }
         private ILoggedInService LoggedInService { get; }
         private IEnums enums { get; }
@@ -43,12 +45,14 @@ namespace CSSPServices
         #endregion Properties
 
         #region Constructors
-        public VPScenarioService(ICultureService CultureService, ILoggedInService LoggedInService, IEnums enums, CSSPDBContext db)
+        public VPScenarioService(ICultureService CultureService, ILoggedInService LoggedInService, IEnums enums, CSSPDBContext db, CSSPDBLocalContext dbLocal, InMemoryDBContext dbIM)
         {
             this.CultureService = CultureService;
             this.LoggedInService = LoggedInService;
             this.enums = enums;
             this.db = db;
+            this.dbLocal = dbLocal;
+            this.dbIM = dbIM;
         }
         #endregion Constructors
 
@@ -60,16 +64,32 @@ namespace CSSPServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            VPScenario vpscenario = (from c in db.VPScenarios.AsNoTracking()
-                    where c.VPScenarioID == VPScenarioID
-                    select c).FirstOrDefault();
-
-            if (vpscenario == null)
+            if (LoggedInService.IsLocal)
             {
-               return await Task.FromResult(NotFound());
-            }
+                VPScenario vpscenario = (from c in dbLocal.VPScenarios.AsNoTracking()
+                        where c.VPScenarioID == VPScenarioID
+                        select c).FirstOrDefault();
 
-            return await Task.FromResult(Ok(vpscenario));
+                if (vpscenario == null)
+                {
+                   return await Task.FromResult(NotFound());
+                }
+
+                return await Task.FromResult(Ok(vpscenario));
+            }
+            else
+            {
+                VPScenario vpscenario = (from c in db.VPScenarios.AsNoTracking()
+                        where c.VPScenarioID == VPScenarioID
+                        select c).FirstOrDefault();
+
+                if (vpscenario == null)
+                {
+                   return await Task.FromResult(NotFound());
+                }
+
+                return await Task.FromResult(Ok(vpscenario));
+            }
         }
         public async Task<ActionResult<List<VPScenario>>> GetVPScenarioList()
         {
@@ -78,9 +98,18 @@ namespace CSSPServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            List<VPScenario> vpscenarioList = (from c in db.VPScenarios.AsNoTracking() select c).Take(100).ToList();
+            if (LoggedInService.IsLocal)
+            {
+                List<VPScenario> vpscenarioList = (from c in dbLocal.VPScenarios.AsNoTracking() select c).Take(100).ToList();
 
-            return await Task.FromResult(Ok(vpscenarioList));
+                return await Task.FromResult(Ok(vpscenarioList));
+            }
+            else
+            {
+                List<VPScenario> vpscenarioList = (from c in db.VPScenarios.AsNoTracking() select c).Take(100).ToList();
+
+                return await Task.FromResult(Ok(vpscenarioList));
+            }
         }
         public async Task<ActionResult<bool>> Delete(int VPScenarioID)
         {
@@ -89,26 +118,52 @@ namespace CSSPServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            VPScenario vpScenario = (from c in db.VPScenarios
-                               where c.VPScenarioID == VPScenarioID
-                               select c).FirstOrDefault();
-            
-            if (vpScenario == null)
+            if (LoggedInService.IsLocal)
             {
-                return await Task.FromResult(BadRequest(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "VPScenario", "VPScenarioID", VPScenarioID.ToString())));
-            }
+                VPScenario vpScenario = (from c in dbLocal.VPScenarios
+                                   where c.VPScenarioID == VPScenarioID
+                                   select c).FirstOrDefault();
+                
+                if (vpScenario == null)
+                {
+                    return await Task.FromResult(BadRequest(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "VPScenario", "VPScenarioID", VPScenarioID.ToString())));
+                }
 
-            try
-            {
-               db.VPScenarios.Remove(vpScenario);
-               db.SaveChanges();
-            }
-            catch (DbUpdateException ex)
-            {
-               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
-            }
+                try
+                {
+                   dbLocal.VPScenarios.Remove(vpScenario);
+                   dbLocal.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                   return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
 
-            return await Task.FromResult(Ok(true));
+                return await Task.FromResult(Ok(true));
+            }
+            else
+            {
+                VPScenario vpScenario = (from c in db.VPScenarios
+                                   where c.VPScenarioID == VPScenarioID
+                                   select c).FirstOrDefault();
+                
+                if (vpScenario == null)
+                {
+                    return await Task.FromResult(BadRequest(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "VPScenario", "VPScenarioID", VPScenarioID.ToString())));
+                }
+
+                try
+                {
+                   db.VPScenarios.Remove(vpScenario);
+                   db.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                   return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
+
+                return await Task.FromResult(Ok(true));
+            }
         }
         public async Task<ActionResult<VPScenario>> Post(VPScenario vpScenario)
         {
@@ -123,17 +178,34 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ValidationResults));
             }
 
-            try
+            if (LoggedInService.IsLocal)
             {
-               db.VPScenarios.Add(vpScenario);
-               db.SaveChanges();
-            }
-            catch (DbUpdateException ex)
-            {
-               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
-            }
+                try
+                {
+                   dbLocal.VPScenarios.Add(vpScenario);
+                   dbLocal.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                   return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
 
-            return await Task.FromResult(Ok(vpScenario));
+                return await Task.FromResult(Ok(vpScenario));
+            }
+            else
+            {
+                try
+                {
+                   db.VPScenarios.Add(vpScenario);
+                   db.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                   return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
+
+                return await Task.FromResult(Ok(vpScenario));
+            }
         }
         public async Task<ActionResult<VPScenario>> Put(VPScenario vpScenario)
         {
@@ -148,6 +220,22 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ValidationResults));
             }
 
+            if (LoggedInService.IsLocal)
+            {
+            try
+            {
+               dbLocal.VPScenarios.Update(vpScenario);
+               dbLocal.SaveChanges();
+            }
+            catch (DbUpdateException ex)
+            {
+               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+            }
+
+            return await Task.FromResult(Ok(vpScenario));
+            }
+            else
+            {
             try
             {
                db.VPScenarios.Update(vpScenario);
@@ -159,6 +247,7 @@ namespace CSSPServices
             }
 
             return await Task.FromResult(Ok(vpScenario));
+            }
         }
         #endregion Functions public
 
@@ -175,13 +264,35 @@ namespace CSSPServices
                     yield return new ValidationResult(string.Format(CultureServicesRes._IsRequired, "VPScenarioID"), new[] { "VPScenarioID" });
                 }
 
-                if (!(from c in db.VPScenarios select c).Where(c => c.VPScenarioID == vpScenario.VPScenarioID).Any())
+                if (LoggedInService.IsLocal)
                 {
-                    yield return new ValidationResult(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "VPScenario", "VPScenarioID", vpScenario.VPScenarioID.ToString()), new[] { "VPScenarioID" });
+                    if (!(from c in dbLocal.VPScenarios select c).Where(c => c.VPScenarioID == vpScenario.VPScenarioID).Any())
+                    {
+                        yield return new ValidationResult(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "VPScenario", "VPScenarioID", vpScenario.VPScenarioID.ToString()), new[] { "VPScenarioID" });
+                    }
+                }
+                else
+                {
+                    if (!(from c in db.VPScenarios select c).Where(c => c.VPScenarioID == vpScenario.VPScenarioID).Any())
+                    {
+                        yield return new ValidationResult(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "VPScenario", "VPScenarioID", vpScenario.VPScenarioID.ToString()), new[] { "VPScenarioID" });
+                    }
                 }
             }
 
-            TVItem TVItemInfrastructureTVItemID = (from c in db.TVItems where c.TVItemID == vpScenario.InfrastructureTVItemID select c).FirstOrDefault();
+            TVItem TVItemInfrastructureTVItemID = null;
+            if (LoggedInService.IsLocal)
+            {
+                TVItemInfrastructureTVItemID = (from c in dbLocal.TVItems where c.TVItemID == vpScenario.InfrastructureTVItemID select c).FirstOrDefault();
+                if (TVItemInfrastructureTVItemID == null)
+                {
+                    TVItemInfrastructureTVItemID = (from c in dbIM.TVItems where c.TVItemID == vpScenario.InfrastructureTVItemID select c).FirstOrDefault();
+                }
+            }
+            else
+            {
+                TVItemInfrastructureTVItemID = (from c in db.TVItems where c.TVItemID == vpScenario.InfrastructureTVItemID select c).FirstOrDefault();
+            }
 
             if (TVItemInfrastructureTVItemID == null)
             {
@@ -339,7 +450,19 @@ namespace CSSPServices
                 }
             }
 
-            TVItem TVItemLastUpdateContactTVItemID = (from c in db.TVItems where c.TVItemID == vpScenario.LastUpdateContactTVItemID select c).FirstOrDefault();
+            TVItem TVItemLastUpdateContactTVItemID = null;
+            if (LoggedInService.IsLocal)
+            {
+                TVItemLastUpdateContactTVItemID = (from c in dbLocal.TVItems where c.TVItemID == vpScenario.LastUpdateContactTVItemID select c).FirstOrDefault();
+                if (TVItemLastUpdateContactTVItemID == null)
+                {
+                    TVItemLastUpdateContactTVItemID = (from c in dbIM.TVItems where c.TVItemID == vpScenario.LastUpdateContactTVItemID select c).FirstOrDefault();
+                }
+            }
+            else
+            {
+                TVItemLastUpdateContactTVItemID = (from c in db.TVItems where c.TVItemID == vpScenario.LastUpdateContactTVItemID select c).FirstOrDefault();
+            }
 
             if (TVItemLastUpdateContactTVItemID == null)
             {

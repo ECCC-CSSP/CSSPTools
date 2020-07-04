@@ -7,5 +7,6 @@ namespace LoggedInServices.Services
     {
         Task<bool> SetLoggedInContactInfo(string Id);
         Task<LoggedInContactInfo> GetLoggedInContactInfo();
+        bool IsLocal { get; set; }
     }
 }

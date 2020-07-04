@@ -36,6 +36,8 @@ namespace CSSPServices
 
         #region Properties
         private CSSPDBContext db { get; }
+        private CSSPDBLocalContext dbLocal { get; }
+        private InMemoryDBContext dbIM { get; }
         private ICultureService CultureService { get; }
         private ILoggedInService LoggedInService { get; }
         private IEnums enums { get; }
@@ -43,12 +45,14 @@ namespace CSSPServices
         #endregion Properties
 
         #region Constructors
-        public SpillService(ICultureService CultureService, ILoggedInService LoggedInService, IEnums enums, CSSPDBContext db)
+        public SpillService(ICultureService CultureService, ILoggedInService LoggedInService, IEnums enums, CSSPDBContext db, CSSPDBLocalContext dbLocal, InMemoryDBContext dbIM)
         {
             this.CultureService = CultureService;
             this.LoggedInService = LoggedInService;
             this.enums = enums;
             this.db = db;
+            this.dbLocal = dbLocal;
+            this.dbIM = dbIM;
         }
         #endregion Constructors
 
@@ -60,16 +64,32 @@ namespace CSSPServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            Spill spill = (from c in db.Spills.AsNoTracking()
-                    where c.SpillID == SpillID
-                    select c).FirstOrDefault();
-
-            if (spill == null)
+            if (LoggedInService.IsLocal)
             {
-               return await Task.FromResult(NotFound());
-            }
+                Spill spill = (from c in dbLocal.Spills.AsNoTracking()
+                        where c.SpillID == SpillID
+                        select c).FirstOrDefault();
 
-            return await Task.FromResult(Ok(spill));
+                if (spill == null)
+                {
+                   return await Task.FromResult(NotFound());
+                }
+
+                return await Task.FromResult(Ok(spill));
+            }
+            else
+            {
+                Spill spill = (from c in db.Spills.AsNoTracking()
+                        where c.SpillID == SpillID
+                        select c).FirstOrDefault();
+
+                if (spill == null)
+                {
+                   return await Task.FromResult(NotFound());
+                }
+
+                return await Task.FromResult(Ok(spill));
+            }
         }
         public async Task<ActionResult<List<Spill>>> GetSpillList()
         {
@@ -78,9 +98,18 @@ namespace CSSPServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            List<Spill> spillList = (from c in db.Spills.AsNoTracking() select c).Take(100).ToList();
+            if (LoggedInService.IsLocal)
+            {
+                List<Spill> spillList = (from c in dbLocal.Spills.AsNoTracking() select c).Take(100).ToList();
 
-            return await Task.FromResult(Ok(spillList));
+                return await Task.FromResult(Ok(spillList));
+            }
+            else
+            {
+                List<Spill> spillList = (from c in db.Spills.AsNoTracking() select c).Take(100).ToList();
+
+                return await Task.FromResult(Ok(spillList));
+            }
         }
         public async Task<ActionResult<bool>> Delete(int SpillID)
         {
@@ -89,26 +118,52 @@ namespace CSSPServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            Spill spill = (from c in db.Spills
-                               where c.SpillID == SpillID
-                               select c).FirstOrDefault();
-            
-            if (spill == null)
+            if (LoggedInService.IsLocal)
             {
-                return await Task.FromResult(BadRequest(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "Spill", "SpillID", SpillID.ToString())));
-            }
+                Spill spill = (from c in dbLocal.Spills
+                                   where c.SpillID == SpillID
+                                   select c).FirstOrDefault();
+                
+                if (spill == null)
+                {
+                    return await Task.FromResult(BadRequest(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "Spill", "SpillID", SpillID.ToString())));
+                }
 
-            try
-            {
-               db.Spills.Remove(spill);
-               db.SaveChanges();
-            }
-            catch (DbUpdateException ex)
-            {
-               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
-            }
+                try
+                {
+                   dbLocal.Spills.Remove(spill);
+                   dbLocal.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                   return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
 
-            return await Task.FromResult(Ok(true));
+                return await Task.FromResult(Ok(true));
+            }
+            else
+            {
+                Spill spill = (from c in db.Spills
+                                   where c.SpillID == SpillID
+                                   select c).FirstOrDefault();
+                
+                if (spill == null)
+                {
+                    return await Task.FromResult(BadRequest(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "Spill", "SpillID", SpillID.ToString())));
+                }
+
+                try
+                {
+                   db.Spills.Remove(spill);
+                   db.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                   return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
+
+                return await Task.FromResult(Ok(true));
+            }
         }
         public async Task<ActionResult<Spill>> Post(Spill spill)
         {
@@ -123,17 +178,34 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ValidationResults));
             }
 
-            try
+            if (LoggedInService.IsLocal)
             {
-               db.Spills.Add(spill);
-               db.SaveChanges();
-            }
-            catch (DbUpdateException ex)
-            {
-               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
-            }
+                try
+                {
+                   dbLocal.Spills.Add(spill);
+                   dbLocal.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                   return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
 
-            return await Task.FromResult(Ok(spill));
+                return await Task.FromResult(Ok(spill));
+            }
+            else
+            {
+                try
+                {
+                   db.Spills.Add(spill);
+                   db.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                   return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
+
+                return await Task.FromResult(Ok(spill));
+            }
         }
         public async Task<ActionResult<Spill>> Put(Spill spill)
         {
@@ -148,6 +220,22 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ValidationResults));
             }
 
+            if (LoggedInService.IsLocal)
+            {
+            try
+            {
+               dbLocal.Spills.Update(spill);
+               dbLocal.SaveChanges();
+            }
+            catch (DbUpdateException ex)
+            {
+               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+            }
+
+            return await Task.FromResult(Ok(spill));
+            }
+            else
+            {
             try
             {
                db.Spills.Update(spill);
@@ -159,6 +247,7 @@ namespace CSSPServices
             }
 
             return await Task.FromResult(Ok(spill));
+            }
         }
         #endregion Functions public
 
@@ -175,13 +264,35 @@ namespace CSSPServices
                     yield return new ValidationResult(string.Format(CultureServicesRes._IsRequired, "SpillID"), new[] { "SpillID" });
                 }
 
-                if (!(from c in db.Spills select c).Where(c => c.SpillID == spill.SpillID).Any())
+                if (LoggedInService.IsLocal)
                 {
-                    yield return new ValidationResult(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "Spill", "SpillID", spill.SpillID.ToString()), new[] { "SpillID" });
+                    if (!(from c in dbLocal.Spills select c).Where(c => c.SpillID == spill.SpillID).Any())
+                    {
+                        yield return new ValidationResult(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "Spill", "SpillID", spill.SpillID.ToString()), new[] { "SpillID" });
+                    }
+                }
+                else
+                {
+                    if (!(from c in db.Spills select c).Where(c => c.SpillID == spill.SpillID).Any())
+                    {
+                        yield return new ValidationResult(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "Spill", "SpillID", spill.SpillID.ToString()), new[] { "SpillID" });
+                    }
                 }
             }
 
-            TVItem TVItemMunicipalityTVItemID = (from c in db.TVItems where c.TVItemID == spill.MunicipalityTVItemID select c).FirstOrDefault();
+            TVItem TVItemMunicipalityTVItemID = null;
+            if (LoggedInService.IsLocal)
+            {
+                TVItemMunicipalityTVItemID = (from c in dbLocal.TVItems where c.TVItemID == spill.MunicipalityTVItemID select c).FirstOrDefault();
+                if (TVItemMunicipalityTVItemID == null)
+                {
+                    TVItemMunicipalityTVItemID = (from c in dbIM.TVItems where c.TVItemID == spill.MunicipalityTVItemID select c).FirstOrDefault();
+                }
+            }
+            else
+            {
+                TVItemMunicipalityTVItemID = (from c in db.TVItems where c.TVItemID == spill.MunicipalityTVItemID select c).FirstOrDefault();
+            }
 
             if (TVItemMunicipalityTVItemID == null)
             {
@@ -201,7 +312,19 @@ namespace CSSPServices
 
             if (spill.InfrastructureTVItemID != null)
             {
-                TVItem TVItemInfrastructureTVItemID = (from c in db.TVItems where c.TVItemID == spill.InfrastructureTVItemID select c).FirstOrDefault();
+                TVItem TVItemInfrastructureTVItemID = null;
+                if (LoggedInService.IsLocal)
+                {
+                    TVItemInfrastructureTVItemID = (from c in dbLocal.TVItems where c.TVItemID == spill.InfrastructureTVItemID select c).FirstOrDefault();
+                    if (TVItemInfrastructureTVItemID == null)
+                    {
+                        TVItemInfrastructureTVItemID = (from c in dbIM.TVItems where c.TVItemID == spill.InfrastructureTVItemID select c).FirstOrDefault();
+                    }
+                }
+                else
+                {
+                    TVItemInfrastructureTVItemID = (from c in db.TVItems where c.TVItemID == spill.InfrastructureTVItemID select c).FirstOrDefault();
+                }
 
                 if (TVItemInfrastructureTVItemID == null)
                 {
@@ -259,7 +382,19 @@ namespace CSSPServices
                 }
             }
 
-            TVItem TVItemLastUpdateContactTVItemID = (from c in db.TVItems where c.TVItemID == spill.LastUpdateContactTVItemID select c).FirstOrDefault();
+            TVItem TVItemLastUpdateContactTVItemID = null;
+            if (LoggedInService.IsLocal)
+            {
+                TVItemLastUpdateContactTVItemID = (from c in dbLocal.TVItems where c.TVItemID == spill.LastUpdateContactTVItemID select c).FirstOrDefault();
+                if (TVItemLastUpdateContactTVItemID == null)
+                {
+                    TVItemLastUpdateContactTVItemID = (from c in dbIM.TVItems where c.TVItemID == spill.LastUpdateContactTVItemID select c).FirstOrDefault();
+                }
+            }
+            else
+            {
+                TVItemLastUpdateContactTVItemID = (from c in db.TVItems where c.TVItemID == spill.LastUpdateContactTVItemID select c).FirstOrDefault();
+            }
 
             if (TVItemLastUpdateContactTVItemID == null)
             {

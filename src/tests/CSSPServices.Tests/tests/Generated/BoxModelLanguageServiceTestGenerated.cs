@@ -36,6 +36,9 @@ namespace CSSPServices.Tests
         private ILoggedInService LoggedInService { get; set; }
         private IBoxModelLanguageService BoxModelLanguageService { get; set; }
         private CSSPDBContext db { get; set; }
+        private CSSPDBLocalContext dbLocal { get; set; }
+        private InMemoryDBContext dbIM { get; set; }
+        private BoxModelLanguage boxModelLanguage { get; set; }
         #endregion Properties
 
         #region Constructors
@@ -47,9 +50,11 @@ namespace CSSPServices.Tests
 
         #region Tests Generated CRUD
         [Theory]
-        [InlineData("en-CA")]
-        [InlineData("fr-CA")]
-        public async Task BoxModelLanguage_CRUD_Good_Test(string culture)
+        [InlineData("en-CA", "true")]
+        [InlineData("fr-CA", "true")]
+        [InlineData("en-CA", "false")]
+        [InlineData("fr-CA", "false")]
+        public async Task BoxModelLanguage_CRUD_Good_Test(string culture, string IsLocalStr)
         {
             // -------------------------------
             // -------------------------------
@@ -59,44 +64,57 @@ namespace CSSPServices.Tests
 
             Assert.True(await Setup(culture));
 
-            using (TransactionScope ts = new TransactionScope())
+            LoggedInService.IsLocal = bool.Parse(IsLocalStr);
+
+            boxModelLanguage = GetFilledRandomBoxModelLanguage("");
+
+            if (LoggedInService.IsLocal)
             {
-               BoxModelLanguage boxModelLanguage = GetFilledRandomBoxModelLanguage(""); 
-
-               // List<BoxModelLanguage>
-               var actionBoxModelLanguageList = await BoxModelLanguageService.GetBoxModelLanguageList();
-               Assert.Equal(200, ((ObjectResult)actionBoxModelLanguageList.Result).StatusCode);
-               Assert.NotNull(((OkObjectResult)actionBoxModelLanguageList.Result).Value);
-               List<BoxModelLanguage> boxModelLanguageList = (List<BoxModelLanguage>)((OkObjectResult)actionBoxModelLanguageList.Result).Value;
-
-               int count = ((List<BoxModelLanguage>)((OkObjectResult)actionBoxModelLanguageList.Result).Value).Count();
-                Assert.True(count > 0);
-
-               // Post BoxModelLanguage
-               var actionBoxModelLanguageAdded = await BoxModelLanguageService.Post(boxModelLanguage);
-               Assert.Equal(200, ((ObjectResult)actionBoxModelLanguageAdded.Result).StatusCode);
-               Assert.NotNull(((OkObjectResult)actionBoxModelLanguageAdded.Result).Value);
-               BoxModelLanguage boxModelLanguageAdded = (BoxModelLanguage)((OkObjectResult)actionBoxModelLanguageAdded.Result).Value;
-               Assert.NotNull(boxModelLanguageAdded);
-
-               // Put BoxModelLanguage
-               var actionBoxModelLanguageUpdated = await BoxModelLanguageService.Put(boxModelLanguage);
-               Assert.Equal(200, ((ObjectResult)actionBoxModelLanguageUpdated.Result).StatusCode);
-               Assert.NotNull(((OkObjectResult)actionBoxModelLanguageUpdated.Result).Value);
-               BoxModelLanguage boxModelLanguageUpdated = (BoxModelLanguage)((OkObjectResult)actionBoxModelLanguageUpdated.Result).Value;
-               Assert.NotNull(boxModelLanguageUpdated);
-
-               // Delete BoxModelLanguage
-               var actionBoxModelLanguageDeleted = await BoxModelLanguageService.Delete(boxModelLanguage.BoxModelLanguageID);
-               Assert.Equal(200, ((ObjectResult)actionBoxModelLanguageDeleted.Result).StatusCode);
-               Assert.NotNull(((OkObjectResult)actionBoxModelLanguageDeleted.Result).Value);
-               bool retBool = (bool)((OkObjectResult)actionBoxModelLanguageDeleted.Result).Value;
-               Assert.True(retBool);
+                await DoCRUDTest();
+            }
+            else
+            {
+                using (TransactionScope ts = new TransactionScope())
+                {
+                    await DoCRUDTest();
+                }
             }
         }
         #endregion Tests Generated CRUD
 
         #region Functions private
+        private async Task DoCRUDTest()
+        {
+            // Post BoxModelLanguage
+            var actionBoxModelLanguageAdded = await BoxModelLanguageService.Post(boxModelLanguage);
+            Assert.Equal(200, ((ObjectResult)actionBoxModelLanguageAdded.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionBoxModelLanguageAdded.Result).Value);
+            BoxModelLanguage boxModelLanguageAdded = (BoxModelLanguage)((OkObjectResult)actionBoxModelLanguageAdded.Result).Value;
+            Assert.NotNull(boxModelLanguageAdded);
+
+            // List<BoxModelLanguage>
+            var actionBoxModelLanguageList = await BoxModelLanguageService.GetBoxModelLanguageList();
+            Assert.Equal(200, ((ObjectResult)actionBoxModelLanguageList.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionBoxModelLanguageList.Result).Value);
+            List<BoxModelLanguage> boxModelLanguageList = (List<BoxModelLanguage>)((OkObjectResult)actionBoxModelLanguageList.Result).Value;
+
+            int count = ((List<BoxModelLanguage>)((OkObjectResult)actionBoxModelLanguageList.Result).Value).Count();
+            Assert.True(count > 0);
+
+            // Put BoxModelLanguage
+            var actionBoxModelLanguageUpdated = await BoxModelLanguageService.Put(boxModelLanguage);
+            Assert.Equal(200, ((ObjectResult)actionBoxModelLanguageUpdated.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionBoxModelLanguageUpdated.Result).Value);
+            BoxModelLanguage boxModelLanguageUpdated = (BoxModelLanguage)((OkObjectResult)actionBoxModelLanguageUpdated.Result).Value;
+            Assert.NotNull(boxModelLanguageUpdated);
+
+            // Delete BoxModelLanguage
+            var actionBoxModelLanguageDeleted = await BoxModelLanguageService.Delete(boxModelLanguage.BoxModelLanguageID);
+            Assert.Equal(200, ((ObjectResult)actionBoxModelLanguageDeleted.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionBoxModelLanguageDeleted.Result).Value);
+            bool retBool = (bool)((OkObjectResult)actionBoxModelLanguageDeleted.Result).Value;
+            Assert.True(retBool);
+        }
         private async Task<bool> Setup(string culture)
         {
             Config = new ConfigurationBuilder()
@@ -109,6 +127,9 @@ namespace CSSPServices.Tests
 
             Services.AddSingleton<IConfiguration>(Config);
 
+            string CSSPDBLocalFileName = Config.GetValue<string>("CSSPDBLocal");
+            Assert.NotNull(CSSPDBLocalFileName);
+
             string TestDBConnString = Config.GetValue<string>("TestDBConnectionString");
             Assert.NotNull(TestDBConnString);
 
@@ -120,6 +141,15 @@ namespace CSSPServices.Tests
             Services.AddDbContext<InMemoryDBContext>(options =>
             {
                 options.UseInMemoryDatabase(TestDBConnString);
+            });
+
+            string appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+
+            FileInfo fiAppDataPath = new FileInfo(CSSPDBLocalFileName.Replace("{appDataPath}", appDataPath));
+
+            Services.AddDbContext<CSSPDBLocalContext>(options =>
+            {
+                options.UseSqlite($"Data Source={ fiAppDataPath.FullName }");
             });
 
             Services.AddSingleton<ICultureService, CultureService>();
@@ -141,6 +171,12 @@ namespace CSSPServices.Tests
             string Id = Config.GetValue<string>("Id");
             Assert.True(await LoggedInService.SetLoggedInContactInfo(Id));
 
+            //string IsLocalStr = Config.GetValue<string>("IsLocal");
+            //Assert.NotNull(IsLocalStr);
+
+            dbIM = Provider.GetService<InMemoryDBContext>();
+            Assert.NotNull(dbIM);
+
             BoxModelLanguageService = Provider.GetService<IBoxModelLanguageService>();
             Assert.NotNull(BoxModelLanguageService);
 
@@ -148,6 +184,8 @@ namespace CSSPServices.Tests
         }
         private BoxModelLanguage GetFilledRandomBoxModelLanguage(string OmitPropName)
         {
+            dbIM.Database.EnsureDeleted();
+
             BoxModelLanguage boxModelLanguage = new BoxModelLanguage();
 
             if (OmitPropName != "BoxModelID") boxModelLanguage.BoxModelID = 1;
@@ -156,6 +194,16 @@ namespace CSSPServices.Tests
             if (OmitPropName != "TranslationStatus") boxModelLanguage.TranslationStatus = (TranslationStatusEnum)GetRandomEnumType(typeof(TranslationStatusEnum));
             if (OmitPropName != "LastUpdateDate_UTC") boxModelLanguage.LastUpdateDate_UTC = new DateTime(2005, 3, 6);
             if (OmitPropName != "LastUpdateContactTVItemID") boxModelLanguage.LastUpdateContactTVItemID = 2;
+
+            if (LoggedInService.IsLocal)
+            {
+                if (OmitPropName != "BoxModelLanguageID") boxModelLanguage.BoxModelLanguageID = 10000000;
+
+                dbIM.BoxModels.Add(new BoxModel() { BoxModelID = 1, InfrastructureTVItemID = 41, Discharge_m3_day = 1021, Depth_m = 1.2, Temperature_C = 10, Dilution = 1000, DecayRate_per_day = 4.6821, FCUntreated_MPN_100ml = 2500000, FCPreDisinfection_MPN_100ml = 357, Concentration_MPN_100ml = 14, T90_hour = 6, DischargeDuration_hour = 24, LastUpdateDate_UTC = new DateTime(2018, 10, 29, 12, 42, 9), LastUpdateContactTVItemID = 2 });
+                dbIM.SaveChanges();
+                dbIM.TVItems.Add(new TVItem() { TVItemID = 2, TVLevel = 1, TVPath = "p1p2", TVType = (TVTypeEnum)5, ParentID = 1, IsActive = true, LastUpdateDate_UTC = new DateTime(2014, 12, 2, 16, 58, 16), LastUpdateContactTVItemID = 2});
+                dbIM.SaveChanges();
+            }
 
             return boxModelLanguage;
         }

@@ -36,6 +36,8 @@ namespace CSSPServices
 
         #region Properties
         private CSSPDBContext db { get; }
+        private CSSPDBLocalContext dbLocal { get; }
+        private InMemoryDBContext dbIM { get; }
         private ICultureService CultureService { get; }
         private ILoggedInService LoggedInService { get; }
         private IEnums enums { get; }
@@ -43,12 +45,14 @@ namespace CSSPServices
         #endregion Properties
 
         #region Constructors
-        public MikeSourceService(ICultureService CultureService, ILoggedInService LoggedInService, IEnums enums, CSSPDBContext db)
+        public MikeSourceService(ICultureService CultureService, ILoggedInService LoggedInService, IEnums enums, CSSPDBContext db, CSSPDBLocalContext dbLocal, InMemoryDBContext dbIM)
         {
             this.CultureService = CultureService;
             this.LoggedInService = LoggedInService;
             this.enums = enums;
             this.db = db;
+            this.dbLocal = dbLocal;
+            this.dbIM = dbIM;
         }
         #endregion Constructors
 
@@ -60,16 +64,32 @@ namespace CSSPServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            MikeSource mikesource = (from c in db.MikeSources.AsNoTracking()
-                    where c.MikeSourceID == MikeSourceID
-                    select c).FirstOrDefault();
-
-            if (mikesource == null)
+            if (LoggedInService.IsLocal)
             {
-               return await Task.FromResult(NotFound());
-            }
+                MikeSource mikesource = (from c in dbLocal.MikeSources.AsNoTracking()
+                        where c.MikeSourceID == MikeSourceID
+                        select c).FirstOrDefault();
 
-            return await Task.FromResult(Ok(mikesource));
+                if (mikesource == null)
+                {
+                   return await Task.FromResult(NotFound());
+                }
+
+                return await Task.FromResult(Ok(mikesource));
+            }
+            else
+            {
+                MikeSource mikesource = (from c in db.MikeSources.AsNoTracking()
+                        where c.MikeSourceID == MikeSourceID
+                        select c).FirstOrDefault();
+
+                if (mikesource == null)
+                {
+                   return await Task.FromResult(NotFound());
+                }
+
+                return await Task.FromResult(Ok(mikesource));
+            }
         }
         public async Task<ActionResult<List<MikeSource>>> GetMikeSourceList()
         {
@@ -78,9 +98,18 @@ namespace CSSPServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            List<MikeSource> mikesourceList = (from c in db.MikeSources.AsNoTracking() select c).Take(100).ToList();
+            if (LoggedInService.IsLocal)
+            {
+                List<MikeSource> mikesourceList = (from c in dbLocal.MikeSources.AsNoTracking() select c).Take(100).ToList();
 
-            return await Task.FromResult(Ok(mikesourceList));
+                return await Task.FromResult(Ok(mikesourceList));
+            }
+            else
+            {
+                List<MikeSource> mikesourceList = (from c in db.MikeSources.AsNoTracking() select c).Take(100).ToList();
+
+                return await Task.FromResult(Ok(mikesourceList));
+            }
         }
         public async Task<ActionResult<bool>> Delete(int MikeSourceID)
         {
@@ -89,26 +118,52 @@ namespace CSSPServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            MikeSource mikeSource = (from c in db.MikeSources
-                               where c.MikeSourceID == MikeSourceID
-                               select c).FirstOrDefault();
-            
-            if (mikeSource == null)
+            if (LoggedInService.IsLocal)
             {
-                return await Task.FromResult(BadRequest(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "MikeSource", "MikeSourceID", MikeSourceID.ToString())));
-            }
+                MikeSource mikeSource = (from c in dbLocal.MikeSources
+                                   where c.MikeSourceID == MikeSourceID
+                                   select c).FirstOrDefault();
+                
+                if (mikeSource == null)
+                {
+                    return await Task.FromResult(BadRequest(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "MikeSource", "MikeSourceID", MikeSourceID.ToString())));
+                }
 
-            try
-            {
-               db.MikeSources.Remove(mikeSource);
-               db.SaveChanges();
-            }
-            catch (DbUpdateException ex)
-            {
-               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
-            }
+                try
+                {
+                   dbLocal.MikeSources.Remove(mikeSource);
+                   dbLocal.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                   return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
 
-            return await Task.FromResult(Ok(true));
+                return await Task.FromResult(Ok(true));
+            }
+            else
+            {
+                MikeSource mikeSource = (from c in db.MikeSources
+                                   where c.MikeSourceID == MikeSourceID
+                                   select c).FirstOrDefault();
+                
+                if (mikeSource == null)
+                {
+                    return await Task.FromResult(BadRequest(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "MikeSource", "MikeSourceID", MikeSourceID.ToString())));
+                }
+
+                try
+                {
+                   db.MikeSources.Remove(mikeSource);
+                   db.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                   return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
+
+                return await Task.FromResult(Ok(true));
+            }
         }
         public async Task<ActionResult<MikeSource>> Post(MikeSource mikeSource)
         {
@@ -123,17 +178,34 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ValidationResults));
             }
 
-            try
+            if (LoggedInService.IsLocal)
             {
-               db.MikeSources.Add(mikeSource);
-               db.SaveChanges();
-            }
-            catch (DbUpdateException ex)
-            {
-               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
-            }
+                try
+                {
+                   dbLocal.MikeSources.Add(mikeSource);
+                   dbLocal.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                   return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
 
-            return await Task.FromResult(Ok(mikeSource));
+                return await Task.FromResult(Ok(mikeSource));
+            }
+            else
+            {
+                try
+                {
+                   db.MikeSources.Add(mikeSource);
+                   db.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                   return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
+
+                return await Task.FromResult(Ok(mikeSource));
+            }
         }
         public async Task<ActionResult<MikeSource>> Put(MikeSource mikeSource)
         {
@@ -148,6 +220,22 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ValidationResults));
             }
 
+            if (LoggedInService.IsLocal)
+            {
+            try
+            {
+               dbLocal.MikeSources.Update(mikeSource);
+               dbLocal.SaveChanges();
+            }
+            catch (DbUpdateException ex)
+            {
+               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+            }
+
+            return await Task.FromResult(Ok(mikeSource));
+            }
+            else
+            {
             try
             {
                db.MikeSources.Update(mikeSource);
@@ -159,6 +247,7 @@ namespace CSSPServices
             }
 
             return await Task.FromResult(Ok(mikeSource));
+            }
         }
         #endregion Functions public
 
@@ -175,13 +264,35 @@ namespace CSSPServices
                     yield return new ValidationResult(string.Format(CultureServicesRes._IsRequired, "MikeSourceID"), new[] { "MikeSourceID" });
                 }
 
-                if (!(from c in db.MikeSources select c).Where(c => c.MikeSourceID == mikeSource.MikeSourceID).Any())
+                if (LoggedInService.IsLocal)
                 {
-                    yield return new ValidationResult(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "MikeSource", "MikeSourceID", mikeSource.MikeSourceID.ToString()), new[] { "MikeSourceID" });
+                    if (!(from c in dbLocal.MikeSources select c).Where(c => c.MikeSourceID == mikeSource.MikeSourceID).Any())
+                    {
+                        yield return new ValidationResult(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "MikeSource", "MikeSourceID", mikeSource.MikeSourceID.ToString()), new[] { "MikeSourceID" });
+                    }
+                }
+                else
+                {
+                    if (!(from c in db.MikeSources select c).Where(c => c.MikeSourceID == mikeSource.MikeSourceID).Any())
+                    {
+                        yield return new ValidationResult(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "MikeSource", "MikeSourceID", mikeSource.MikeSourceID.ToString()), new[] { "MikeSourceID" });
+                    }
                 }
             }
 
-            TVItem TVItemMikeSourceTVItemID = (from c in db.TVItems where c.TVItemID == mikeSource.MikeSourceTVItemID select c).FirstOrDefault();
+            TVItem TVItemMikeSourceTVItemID = null;
+            if (LoggedInService.IsLocal)
+            {
+                TVItemMikeSourceTVItemID = (from c in dbLocal.TVItems where c.TVItemID == mikeSource.MikeSourceTVItemID select c).FirstOrDefault();
+                if (TVItemMikeSourceTVItemID == null)
+                {
+                    TVItemMikeSourceTVItemID = (from c in dbIM.TVItems where c.TVItemID == mikeSource.MikeSourceTVItemID select c).FirstOrDefault();
+                }
+            }
+            else
+            {
+                TVItemMikeSourceTVItemID = (from c in db.TVItems where c.TVItemID == mikeSource.MikeSourceTVItemID select c).FirstOrDefault();
+            }
 
             if (TVItemMikeSourceTVItemID == null)
             {
@@ -201,7 +312,19 @@ namespace CSSPServices
 
             if (mikeSource.HydrometricTVItemID != null)
             {
-                TVItem TVItemHydrometricTVItemID = (from c in db.TVItems where c.TVItemID == mikeSource.HydrometricTVItemID select c).FirstOrDefault();
+                TVItem TVItemHydrometricTVItemID = null;
+                if (LoggedInService.IsLocal)
+                {
+                    TVItemHydrometricTVItemID = (from c in dbLocal.TVItems where c.TVItemID == mikeSource.HydrometricTVItemID select c).FirstOrDefault();
+                    if (TVItemHydrometricTVItemID == null)
+                    {
+                        TVItemHydrometricTVItemID = (from c in dbIM.TVItems where c.TVItemID == mikeSource.HydrometricTVItemID select c).FirstOrDefault();
+                    }
+                }
+                else
+                {
+                    TVItemHydrometricTVItemID = (from c in db.TVItems where c.TVItemID == mikeSource.HydrometricTVItemID select c).FirstOrDefault();
+                }
 
                 if (TVItemHydrometricTVItemID == null)
                 {
@@ -258,7 +381,19 @@ namespace CSSPServices
                 }
             }
 
-            TVItem TVItemLastUpdateContactTVItemID = (from c in db.TVItems where c.TVItemID == mikeSource.LastUpdateContactTVItemID select c).FirstOrDefault();
+            TVItem TVItemLastUpdateContactTVItemID = null;
+            if (LoggedInService.IsLocal)
+            {
+                TVItemLastUpdateContactTVItemID = (from c in dbLocal.TVItems where c.TVItemID == mikeSource.LastUpdateContactTVItemID select c).FirstOrDefault();
+                if (TVItemLastUpdateContactTVItemID == null)
+                {
+                    TVItemLastUpdateContactTVItemID = (from c in dbIM.TVItems where c.TVItemID == mikeSource.LastUpdateContactTVItemID select c).FirstOrDefault();
+                }
+            }
+            else
+            {
+                TVItemLastUpdateContactTVItemID = (from c in db.TVItems where c.TVItemID == mikeSource.LastUpdateContactTVItemID select c).FirstOrDefault();
+            }
 
             if (TVItemLastUpdateContactTVItemID == null)
             {

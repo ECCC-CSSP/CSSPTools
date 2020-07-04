@@ -36,6 +36,8 @@ namespace CSSPServices
 
         #region Properties
         private CSSPDBContext db { get; }
+        private CSSPDBLocalContext dbLocal { get; }
+        private InMemoryDBContext dbIM { get; }
         private ICultureService CultureService { get; }
         private ILoggedInService LoggedInService { get; }
         private IEnums enums { get; }
@@ -43,12 +45,14 @@ namespace CSSPServices
         #endregion Properties
 
         #region Constructors
-        public MWQMSubsectorService(ICultureService CultureService, ILoggedInService LoggedInService, IEnums enums, CSSPDBContext db)
+        public MWQMSubsectorService(ICultureService CultureService, ILoggedInService LoggedInService, IEnums enums, CSSPDBContext db, CSSPDBLocalContext dbLocal, InMemoryDBContext dbIM)
         {
             this.CultureService = CultureService;
             this.LoggedInService = LoggedInService;
             this.enums = enums;
             this.db = db;
+            this.dbLocal = dbLocal;
+            this.dbIM = dbIM;
         }
         #endregion Constructors
 
@@ -60,16 +64,32 @@ namespace CSSPServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            MWQMSubsector mwqmsubsector = (from c in db.MWQMSubsectors.AsNoTracking()
-                    where c.MWQMSubsectorID == MWQMSubsectorID
-                    select c).FirstOrDefault();
-
-            if (mwqmsubsector == null)
+            if (LoggedInService.IsLocal)
             {
-               return await Task.FromResult(NotFound());
-            }
+                MWQMSubsector mwqmsubsector = (from c in dbLocal.MWQMSubsectors.AsNoTracking()
+                        where c.MWQMSubsectorID == MWQMSubsectorID
+                        select c).FirstOrDefault();
 
-            return await Task.FromResult(Ok(mwqmsubsector));
+                if (mwqmsubsector == null)
+                {
+                   return await Task.FromResult(NotFound());
+                }
+
+                return await Task.FromResult(Ok(mwqmsubsector));
+            }
+            else
+            {
+                MWQMSubsector mwqmsubsector = (from c in db.MWQMSubsectors.AsNoTracking()
+                        where c.MWQMSubsectorID == MWQMSubsectorID
+                        select c).FirstOrDefault();
+
+                if (mwqmsubsector == null)
+                {
+                   return await Task.FromResult(NotFound());
+                }
+
+                return await Task.FromResult(Ok(mwqmsubsector));
+            }
         }
         public async Task<ActionResult<List<MWQMSubsector>>> GetMWQMSubsectorList()
         {
@@ -78,9 +98,18 @@ namespace CSSPServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            List<MWQMSubsector> mwqmsubsectorList = (from c in db.MWQMSubsectors.AsNoTracking() select c).Take(100).ToList();
+            if (LoggedInService.IsLocal)
+            {
+                List<MWQMSubsector> mwqmsubsectorList = (from c in dbLocal.MWQMSubsectors.AsNoTracking() select c).Take(100).ToList();
 
-            return await Task.FromResult(Ok(mwqmsubsectorList));
+                return await Task.FromResult(Ok(mwqmsubsectorList));
+            }
+            else
+            {
+                List<MWQMSubsector> mwqmsubsectorList = (from c in db.MWQMSubsectors.AsNoTracking() select c).Take(100).ToList();
+
+                return await Task.FromResult(Ok(mwqmsubsectorList));
+            }
         }
         public async Task<ActionResult<bool>> Delete(int MWQMSubsectorID)
         {
@@ -89,26 +118,52 @@ namespace CSSPServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            MWQMSubsector mwqmSubsector = (from c in db.MWQMSubsectors
-                               where c.MWQMSubsectorID == MWQMSubsectorID
-                               select c).FirstOrDefault();
-            
-            if (mwqmSubsector == null)
+            if (LoggedInService.IsLocal)
             {
-                return await Task.FromResult(BadRequest(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "MWQMSubsector", "MWQMSubsectorID", MWQMSubsectorID.ToString())));
-            }
+                MWQMSubsector mwqmSubsector = (from c in dbLocal.MWQMSubsectors
+                                   where c.MWQMSubsectorID == MWQMSubsectorID
+                                   select c).FirstOrDefault();
+                
+                if (mwqmSubsector == null)
+                {
+                    return await Task.FromResult(BadRequest(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "MWQMSubsector", "MWQMSubsectorID", MWQMSubsectorID.ToString())));
+                }
 
-            try
-            {
-               db.MWQMSubsectors.Remove(mwqmSubsector);
-               db.SaveChanges();
-            }
-            catch (DbUpdateException ex)
-            {
-               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
-            }
+                try
+                {
+                   dbLocal.MWQMSubsectors.Remove(mwqmSubsector);
+                   dbLocal.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                   return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
 
-            return await Task.FromResult(Ok(true));
+                return await Task.FromResult(Ok(true));
+            }
+            else
+            {
+                MWQMSubsector mwqmSubsector = (from c in db.MWQMSubsectors
+                                   where c.MWQMSubsectorID == MWQMSubsectorID
+                                   select c).FirstOrDefault();
+                
+                if (mwqmSubsector == null)
+                {
+                    return await Task.FromResult(BadRequest(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "MWQMSubsector", "MWQMSubsectorID", MWQMSubsectorID.ToString())));
+                }
+
+                try
+                {
+                   db.MWQMSubsectors.Remove(mwqmSubsector);
+                   db.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                   return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
+
+                return await Task.FromResult(Ok(true));
+            }
         }
         public async Task<ActionResult<MWQMSubsector>> Post(MWQMSubsector mwqmSubsector)
         {
@@ -123,17 +178,34 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ValidationResults));
             }
 
-            try
+            if (LoggedInService.IsLocal)
             {
-               db.MWQMSubsectors.Add(mwqmSubsector);
-               db.SaveChanges();
-            }
-            catch (DbUpdateException ex)
-            {
-               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
-            }
+                try
+                {
+                   dbLocal.MWQMSubsectors.Add(mwqmSubsector);
+                   dbLocal.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                   return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
 
-            return await Task.FromResult(Ok(mwqmSubsector));
+                return await Task.FromResult(Ok(mwqmSubsector));
+            }
+            else
+            {
+                try
+                {
+                   db.MWQMSubsectors.Add(mwqmSubsector);
+                   db.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                   return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
+
+                return await Task.FromResult(Ok(mwqmSubsector));
+            }
         }
         public async Task<ActionResult<MWQMSubsector>> Put(MWQMSubsector mwqmSubsector)
         {
@@ -148,6 +220,22 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ValidationResults));
             }
 
+            if (LoggedInService.IsLocal)
+            {
+            try
+            {
+               dbLocal.MWQMSubsectors.Update(mwqmSubsector);
+               dbLocal.SaveChanges();
+            }
+            catch (DbUpdateException ex)
+            {
+               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+            }
+
+            return await Task.FromResult(Ok(mwqmSubsector));
+            }
+            else
+            {
             try
             {
                db.MWQMSubsectors.Update(mwqmSubsector);
@@ -159,6 +247,7 @@ namespace CSSPServices
             }
 
             return await Task.FromResult(Ok(mwqmSubsector));
+            }
         }
         #endregion Functions public
 
@@ -175,13 +264,35 @@ namespace CSSPServices
                     yield return new ValidationResult(string.Format(CultureServicesRes._IsRequired, "MWQMSubsectorID"), new[] { "MWQMSubsectorID" });
                 }
 
-                if (!(from c in db.MWQMSubsectors select c).Where(c => c.MWQMSubsectorID == mwqmSubsector.MWQMSubsectorID).Any())
+                if (LoggedInService.IsLocal)
                 {
-                    yield return new ValidationResult(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "MWQMSubsector", "MWQMSubsectorID", mwqmSubsector.MWQMSubsectorID.ToString()), new[] { "MWQMSubsectorID" });
+                    if (!(from c in dbLocal.MWQMSubsectors select c).Where(c => c.MWQMSubsectorID == mwqmSubsector.MWQMSubsectorID).Any())
+                    {
+                        yield return new ValidationResult(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "MWQMSubsector", "MWQMSubsectorID", mwqmSubsector.MWQMSubsectorID.ToString()), new[] { "MWQMSubsectorID" });
+                    }
+                }
+                else
+                {
+                    if (!(from c in db.MWQMSubsectors select c).Where(c => c.MWQMSubsectorID == mwqmSubsector.MWQMSubsectorID).Any())
+                    {
+                        yield return new ValidationResult(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "MWQMSubsector", "MWQMSubsectorID", mwqmSubsector.MWQMSubsectorID.ToString()), new[] { "MWQMSubsectorID" });
+                    }
                 }
             }
 
-            TVItem TVItemMWQMSubsectorTVItemID = (from c in db.TVItems where c.TVItemID == mwqmSubsector.MWQMSubsectorTVItemID select c).FirstOrDefault();
+            TVItem TVItemMWQMSubsectorTVItemID = null;
+            if (LoggedInService.IsLocal)
+            {
+                TVItemMWQMSubsectorTVItemID = (from c in dbLocal.TVItems where c.TVItemID == mwqmSubsector.MWQMSubsectorTVItemID select c).FirstOrDefault();
+                if (TVItemMWQMSubsectorTVItemID == null)
+                {
+                    TVItemMWQMSubsectorTVItemID = (from c in dbIM.TVItems where c.TVItemID == mwqmSubsector.MWQMSubsectorTVItemID select c).FirstOrDefault();
+                }
+            }
+            else
+            {
+                TVItemMWQMSubsectorTVItemID = (from c in db.TVItems where c.TVItemID == mwqmSubsector.MWQMSubsectorTVItemID select c).FirstOrDefault();
+            }
 
             if (TVItemMWQMSubsectorTVItemID == null)
             {
@@ -226,7 +337,19 @@ namespace CSSPServices
                 }
             }
 
-            TVItem TVItemLastUpdateContactTVItemID = (from c in db.TVItems where c.TVItemID == mwqmSubsector.LastUpdateContactTVItemID select c).FirstOrDefault();
+            TVItem TVItemLastUpdateContactTVItemID = null;
+            if (LoggedInService.IsLocal)
+            {
+                TVItemLastUpdateContactTVItemID = (from c in dbLocal.TVItems where c.TVItemID == mwqmSubsector.LastUpdateContactTVItemID select c).FirstOrDefault();
+                if (TVItemLastUpdateContactTVItemID == null)
+                {
+                    TVItemLastUpdateContactTVItemID = (from c in dbIM.TVItems where c.TVItemID == mwqmSubsector.LastUpdateContactTVItemID select c).FirstOrDefault();
+                }
+            }
+            else
+            {
+                TVItemLastUpdateContactTVItemID = (from c in db.TVItems where c.TVItemID == mwqmSubsector.LastUpdateContactTVItemID select c).FirstOrDefault();
+            }
 
             if (TVItemLastUpdateContactTVItemID == null)
             {

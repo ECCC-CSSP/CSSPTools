@@ -36,6 +36,8 @@ namespace CSSPServices
 
         #region Properties
         private CSSPDBContext db { get; }
+        private CSSPDBLocalContext dbLocal { get; }
+        private InMemoryDBContext dbIM { get; }
         private ICultureService CultureService { get; }
         private ILoggedInService LoggedInService { get; }
         private IEnums enums { get; }
@@ -43,12 +45,14 @@ namespace CSSPServices
         #endregion Properties
 
         #region Constructors
-        public ReportSectionService(ICultureService CultureService, ILoggedInService LoggedInService, IEnums enums, CSSPDBContext db)
+        public ReportSectionService(ICultureService CultureService, ILoggedInService LoggedInService, IEnums enums, CSSPDBContext db, CSSPDBLocalContext dbLocal, InMemoryDBContext dbIM)
         {
             this.CultureService = CultureService;
             this.LoggedInService = LoggedInService;
             this.enums = enums;
             this.db = db;
+            this.dbLocal = dbLocal;
+            this.dbIM = dbIM;
         }
         #endregion Constructors
 
@@ -60,16 +64,32 @@ namespace CSSPServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            ReportSection reportsection = (from c in db.ReportSections.AsNoTracking()
-                    where c.ReportSectionID == ReportSectionID
-                    select c).FirstOrDefault();
-
-            if (reportsection == null)
+            if (LoggedInService.IsLocal)
             {
-               return await Task.FromResult(NotFound());
-            }
+                ReportSection reportsection = (from c in dbLocal.ReportSections.AsNoTracking()
+                        where c.ReportSectionID == ReportSectionID
+                        select c).FirstOrDefault();
 
-            return await Task.FromResult(Ok(reportsection));
+                if (reportsection == null)
+                {
+                   return await Task.FromResult(NotFound());
+                }
+
+                return await Task.FromResult(Ok(reportsection));
+            }
+            else
+            {
+                ReportSection reportsection = (from c in db.ReportSections.AsNoTracking()
+                        where c.ReportSectionID == ReportSectionID
+                        select c).FirstOrDefault();
+
+                if (reportsection == null)
+                {
+                   return await Task.FromResult(NotFound());
+                }
+
+                return await Task.FromResult(Ok(reportsection));
+            }
         }
         public async Task<ActionResult<List<ReportSection>>> GetReportSectionList()
         {
@@ -78,9 +98,18 @@ namespace CSSPServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            List<ReportSection> reportsectionList = (from c in db.ReportSections.AsNoTracking() select c).Take(100).ToList();
+            if (LoggedInService.IsLocal)
+            {
+                List<ReportSection> reportsectionList = (from c in dbLocal.ReportSections.AsNoTracking() select c).Take(100).ToList();
 
-            return await Task.FromResult(Ok(reportsectionList));
+                return await Task.FromResult(Ok(reportsectionList));
+            }
+            else
+            {
+                List<ReportSection> reportsectionList = (from c in db.ReportSections.AsNoTracking() select c).Take(100).ToList();
+
+                return await Task.FromResult(Ok(reportsectionList));
+            }
         }
         public async Task<ActionResult<bool>> Delete(int ReportSectionID)
         {
@@ -89,26 +118,52 @@ namespace CSSPServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            ReportSection reportSection = (from c in db.ReportSections
-                               where c.ReportSectionID == ReportSectionID
-                               select c).FirstOrDefault();
-            
-            if (reportSection == null)
+            if (LoggedInService.IsLocal)
             {
-                return await Task.FromResult(BadRequest(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "ReportSection", "ReportSectionID", ReportSectionID.ToString())));
-            }
+                ReportSection reportSection = (from c in dbLocal.ReportSections
+                                   where c.ReportSectionID == ReportSectionID
+                                   select c).FirstOrDefault();
+                
+                if (reportSection == null)
+                {
+                    return await Task.FromResult(BadRequest(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "ReportSection", "ReportSectionID", ReportSectionID.ToString())));
+                }
 
-            try
-            {
-               db.ReportSections.Remove(reportSection);
-               db.SaveChanges();
-            }
-            catch (DbUpdateException ex)
-            {
-               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
-            }
+                try
+                {
+                   dbLocal.ReportSections.Remove(reportSection);
+                   dbLocal.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                   return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
 
-            return await Task.FromResult(Ok(true));
+                return await Task.FromResult(Ok(true));
+            }
+            else
+            {
+                ReportSection reportSection = (from c in db.ReportSections
+                                   where c.ReportSectionID == ReportSectionID
+                                   select c).FirstOrDefault();
+                
+                if (reportSection == null)
+                {
+                    return await Task.FromResult(BadRequest(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "ReportSection", "ReportSectionID", ReportSectionID.ToString())));
+                }
+
+                try
+                {
+                   db.ReportSections.Remove(reportSection);
+                   db.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                   return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
+
+                return await Task.FromResult(Ok(true));
+            }
         }
         public async Task<ActionResult<ReportSection>> Post(ReportSection reportSection)
         {
@@ -123,17 +178,34 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ValidationResults));
             }
 
-            try
+            if (LoggedInService.IsLocal)
             {
-               db.ReportSections.Add(reportSection);
-               db.SaveChanges();
-            }
-            catch (DbUpdateException ex)
-            {
-               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
-            }
+                try
+                {
+                   dbLocal.ReportSections.Add(reportSection);
+                   dbLocal.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                   return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
 
-            return await Task.FromResult(Ok(reportSection));
+                return await Task.FromResult(Ok(reportSection));
+            }
+            else
+            {
+                try
+                {
+                   db.ReportSections.Add(reportSection);
+                   db.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                   return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
+
+                return await Task.FromResult(Ok(reportSection));
+            }
         }
         public async Task<ActionResult<ReportSection>> Put(ReportSection reportSection)
         {
@@ -148,6 +220,22 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ValidationResults));
             }
 
+            if (LoggedInService.IsLocal)
+            {
+            try
+            {
+               dbLocal.ReportSections.Update(reportSection);
+               dbLocal.SaveChanges();
+            }
+            catch (DbUpdateException ex)
+            {
+               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+            }
+
+            return await Task.FromResult(Ok(reportSection));
+            }
+            else
+            {
             try
             {
                db.ReportSections.Update(reportSection);
@@ -159,6 +247,7 @@ namespace CSSPServices
             }
 
             return await Task.FromResult(Ok(reportSection));
+            }
         }
         #endregion Functions public
 
@@ -175,13 +264,35 @@ namespace CSSPServices
                     yield return new ValidationResult(string.Format(CultureServicesRes._IsRequired, "ReportSectionID"), new[] { "ReportSectionID" });
                 }
 
-                if (!(from c in db.ReportSections select c).Where(c => c.ReportSectionID == reportSection.ReportSectionID).Any())
+                if (LoggedInService.IsLocal)
                 {
-                    yield return new ValidationResult(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "ReportSection", "ReportSectionID", reportSection.ReportSectionID.ToString()), new[] { "ReportSectionID" });
+                    if (!(from c in dbLocal.ReportSections select c).Where(c => c.ReportSectionID == reportSection.ReportSectionID).Any())
+                    {
+                        yield return new ValidationResult(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "ReportSection", "ReportSectionID", reportSection.ReportSectionID.ToString()), new[] { "ReportSectionID" });
+                    }
+                }
+                else
+                {
+                    if (!(from c in db.ReportSections select c).Where(c => c.ReportSectionID == reportSection.ReportSectionID).Any())
+                    {
+                        yield return new ValidationResult(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "ReportSection", "ReportSectionID", reportSection.ReportSectionID.ToString()), new[] { "ReportSectionID" });
+                    }
                 }
             }
 
-            ReportType ReportTypeReportTypeID = (from c in db.ReportTypes where c.ReportTypeID == reportSection.ReportTypeID select c).FirstOrDefault();
+            ReportType ReportTypeReportTypeID = null;
+            if (LoggedInService.IsLocal)
+            {
+                ReportTypeReportTypeID = (from c in dbLocal.ReportTypes where c.ReportTypeID == reportSection.ReportTypeID select c).FirstOrDefault();
+                if (ReportTypeReportTypeID == null)
+                {
+                    ReportTypeReportTypeID = (from c in dbIM.ReportTypes where c.ReportTypeID == reportSection.ReportTypeID select c).FirstOrDefault();
+                }
+            }
+            else
+            {
+                ReportTypeReportTypeID = (from c in db.ReportTypes where c.ReportTypeID == reportSection.ReportTypeID select c).FirstOrDefault();
+            }
 
             if (ReportTypeReportTypeID == null)
             {
@@ -190,7 +301,19 @@ namespace CSSPServices
 
             if (reportSection.TVItemID != null)
             {
-                TVItem TVItemTVItemID = (from c in db.TVItems where c.TVItemID == reportSection.TVItemID select c).FirstOrDefault();
+                TVItem TVItemTVItemID = null;
+                if (LoggedInService.IsLocal)
+                {
+                    TVItemTVItemID = (from c in dbLocal.TVItems where c.TVItemID == reportSection.TVItemID select c).FirstOrDefault();
+                    if (TVItemTVItemID == null)
+                    {
+                        TVItemTVItemID = (from c in dbIM.TVItems where c.TVItemID == reportSection.TVItemID select c).FirstOrDefault();
+                    }
+                }
+                else
+                {
+                    TVItemTVItemID = (from c in db.TVItems where c.TVItemID == reportSection.TVItemID select c).FirstOrDefault();
+                }
 
                 if (TVItemTVItemID == null)
                 {
@@ -224,7 +347,19 @@ namespace CSSPServices
 
             if (reportSection.ParentReportSectionID != null)
             {
-                ReportSection ReportSectionParentReportSectionID = (from c in db.ReportSections where c.ReportSectionID == reportSection.ParentReportSectionID select c).FirstOrDefault();
+                ReportSection ReportSectionParentReportSectionID = null;
+                if (LoggedInService.IsLocal)
+                {
+                    ReportSectionParentReportSectionID = (from c in dbLocal.ReportSections where c.ReportSectionID == reportSection.ParentReportSectionID select c).FirstOrDefault();
+                    if (ReportSectionParentReportSectionID == null)
+                    {
+                        ReportSectionParentReportSectionID = (from c in dbIM.ReportSections where c.ReportSectionID == reportSection.ParentReportSectionID select c).FirstOrDefault();
+                    }
+                }
+                else
+                {
+                    ReportSectionParentReportSectionID = (from c in db.ReportSections where c.ReportSectionID == reportSection.ParentReportSectionID select c).FirstOrDefault();
+                }
 
                 if (ReportSectionParentReportSectionID == null)
                 {
@@ -242,7 +377,19 @@ namespace CSSPServices
 
             if (reportSection.TemplateReportSectionID != null)
             {
-                ReportSection ReportSectionTemplateReportSectionID = (from c in db.ReportSections where c.ReportSectionID == reportSection.TemplateReportSectionID select c).FirstOrDefault();
+                ReportSection ReportSectionTemplateReportSectionID = null;
+                if (LoggedInService.IsLocal)
+                {
+                    ReportSectionTemplateReportSectionID = (from c in dbLocal.ReportSections where c.ReportSectionID == reportSection.TemplateReportSectionID select c).FirstOrDefault();
+                    if (ReportSectionTemplateReportSectionID == null)
+                    {
+                        ReportSectionTemplateReportSectionID = (from c in dbIM.ReportSections where c.ReportSectionID == reportSection.TemplateReportSectionID select c).FirstOrDefault();
+                    }
+                }
+                else
+                {
+                    ReportSectionTemplateReportSectionID = (from c in db.ReportSections where c.ReportSectionID == reportSection.TemplateReportSectionID select c).FirstOrDefault();
+                }
 
                 if (ReportSectionTemplateReportSectionID == null)
                 {
@@ -272,7 +419,19 @@ namespace CSSPServices
                 }
             }
 
-            TVItem TVItemLastUpdateContactTVItemID = (from c in db.TVItems where c.TVItemID == reportSection.LastUpdateContactTVItemID select c).FirstOrDefault();
+            TVItem TVItemLastUpdateContactTVItemID = null;
+            if (LoggedInService.IsLocal)
+            {
+                TVItemLastUpdateContactTVItemID = (from c in dbLocal.TVItems where c.TVItemID == reportSection.LastUpdateContactTVItemID select c).FirstOrDefault();
+                if (TVItemLastUpdateContactTVItemID == null)
+                {
+                    TVItemLastUpdateContactTVItemID = (from c in dbIM.TVItems where c.TVItemID == reportSection.LastUpdateContactTVItemID select c).FirstOrDefault();
+                }
+            }
+            else
+            {
+                TVItemLastUpdateContactTVItemID = (from c in db.TVItems where c.TVItemID == reportSection.LastUpdateContactTVItemID select c).FirstOrDefault();
+            }
 
             if (TVItemLastUpdateContactTVItemID == null)
             {

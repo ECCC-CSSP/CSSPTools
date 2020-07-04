@@ -36,6 +36,9 @@ namespace CSSPServices.Tests
         private ILoggedInService LoggedInService { get; set; }
         private ISpillService SpillService { get; set; }
         private CSSPDBContext db { get; set; }
+        private CSSPDBLocalContext dbLocal { get; set; }
+        private InMemoryDBContext dbIM { get; set; }
+        private Spill spill { get; set; }
         #endregion Properties
 
         #region Constructors
@@ -47,9 +50,11 @@ namespace CSSPServices.Tests
 
         #region Tests Generated CRUD
         [Theory]
-        [InlineData("en-CA")]
-        [InlineData("fr-CA")]
-        public async Task Spill_CRUD_Good_Test(string culture)
+        [InlineData("en-CA", "true")]
+        [InlineData("fr-CA", "true")]
+        [InlineData("en-CA", "false")]
+        [InlineData("fr-CA", "false")]
+        public async Task Spill_CRUD_Good_Test(string culture, string IsLocalStr)
         {
             // -------------------------------
             // -------------------------------
@@ -59,44 +64,57 @@ namespace CSSPServices.Tests
 
             Assert.True(await Setup(culture));
 
-            using (TransactionScope ts = new TransactionScope())
+            LoggedInService.IsLocal = bool.Parse(IsLocalStr);
+
+            spill = GetFilledRandomSpill("");
+
+            if (LoggedInService.IsLocal)
             {
-               Spill spill = GetFilledRandomSpill(""); 
-
-               // List<Spill>
-               var actionSpillList = await SpillService.GetSpillList();
-               Assert.Equal(200, ((ObjectResult)actionSpillList.Result).StatusCode);
-               Assert.NotNull(((OkObjectResult)actionSpillList.Result).Value);
-               List<Spill> spillList = (List<Spill>)((OkObjectResult)actionSpillList.Result).Value;
-
-               int count = ((List<Spill>)((OkObjectResult)actionSpillList.Result).Value).Count();
-                Assert.True(count > 0);
-
-               // Post Spill
-               var actionSpillAdded = await SpillService.Post(spill);
-               Assert.Equal(200, ((ObjectResult)actionSpillAdded.Result).StatusCode);
-               Assert.NotNull(((OkObjectResult)actionSpillAdded.Result).Value);
-               Spill spillAdded = (Spill)((OkObjectResult)actionSpillAdded.Result).Value;
-               Assert.NotNull(spillAdded);
-
-               // Put Spill
-               var actionSpillUpdated = await SpillService.Put(spill);
-               Assert.Equal(200, ((ObjectResult)actionSpillUpdated.Result).StatusCode);
-               Assert.NotNull(((OkObjectResult)actionSpillUpdated.Result).Value);
-               Spill spillUpdated = (Spill)((OkObjectResult)actionSpillUpdated.Result).Value;
-               Assert.NotNull(spillUpdated);
-
-               // Delete Spill
-               var actionSpillDeleted = await SpillService.Delete(spill.SpillID);
-               Assert.Equal(200, ((ObjectResult)actionSpillDeleted.Result).StatusCode);
-               Assert.NotNull(((OkObjectResult)actionSpillDeleted.Result).Value);
-               bool retBool = (bool)((OkObjectResult)actionSpillDeleted.Result).Value;
-               Assert.True(retBool);
+                await DoCRUDTest();
+            }
+            else
+            {
+                using (TransactionScope ts = new TransactionScope())
+                {
+                    await DoCRUDTest();
+                }
             }
         }
         #endregion Tests Generated CRUD
 
         #region Functions private
+        private async Task DoCRUDTest()
+        {
+            // Post Spill
+            var actionSpillAdded = await SpillService.Post(spill);
+            Assert.Equal(200, ((ObjectResult)actionSpillAdded.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionSpillAdded.Result).Value);
+            Spill spillAdded = (Spill)((OkObjectResult)actionSpillAdded.Result).Value;
+            Assert.NotNull(spillAdded);
+
+            // List<Spill>
+            var actionSpillList = await SpillService.GetSpillList();
+            Assert.Equal(200, ((ObjectResult)actionSpillList.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionSpillList.Result).Value);
+            List<Spill> spillList = (List<Spill>)((OkObjectResult)actionSpillList.Result).Value;
+
+            int count = ((List<Spill>)((OkObjectResult)actionSpillList.Result).Value).Count();
+            Assert.True(count > 0);
+
+            // Put Spill
+            var actionSpillUpdated = await SpillService.Put(spill);
+            Assert.Equal(200, ((ObjectResult)actionSpillUpdated.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionSpillUpdated.Result).Value);
+            Spill spillUpdated = (Spill)((OkObjectResult)actionSpillUpdated.Result).Value;
+            Assert.NotNull(spillUpdated);
+
+            // Delete Spill
+            var actionSpillDeleted = await SpillService.Delete(spill.SpillID);
+            Assert.Equal(200, ((ObjectResult)actionSpillDeleted.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionSpillDeleted.Result).Value);
+            bool retBool = (bool)((OkObjectResult)actionSpillDeleted.Result).Value;
+            Assert.True(retBool);
+        }
         private async Task<bool> Setup(string culture)
         {
             Config = new ConfigurationBuilder()
@@ -109,6 +127,9 @@ namespace CSSPServices.Tests
 
             Services.AddSingleton<IConfiguration>(Config);
 
+            string CSSPDBLocalFileName = Config.GetValue<string>("CSSPDBLocal");
+            Assert.NotNull(CSSPDBLocalFileName);
+
             string TestDBConnString = Config.GetValue<string>("TestDBConnectionString");
             Assert.NotNull(TestDBConnString);
 
@@ -120,6 +141,15 @@ namespace CSSPServices.Tests
             Services.AddDbContext<InMemoryDBContext>(options =>
             {
                 options.UseInMemoryDatabase(TestDBConnString);
+            });
+
+            string appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+
+            FileInfo fiAppDataPath = new FileInfo(CSSPDBLocalFileName.Replace("{appDataPath}", appDataPath));
+
+            Services.AddDbContext<CSSPDBLocalContext>(options =>
+            {
+                options.UseSqlite($"Data Source={ fiAppDataPath.FullName }");
             });
 
             Services.AddSingleton<ICultureService, CultureService>();
@@ -141,6 +171,12 @@ namespace CSSPServices.Tests
             string Id = Config.GetValue<string>("Id");
             Assert.True(await LoggedInService.SetLoggedInContactInfo(Id));
 
+            //string IsLocalStr = Config.GetValue<string>("IsLocal");
+            //Assert.NotNull(IsLocalStr);
+
+            dbIM = Provider.GetService<InMemoryDBContext>();
+            Assert.NotNull(dbIM);
+
             SpillService = Provider.GetService<ISpillService>();
             Assert.NotNull(SpillService);
 
@@ -148,6 +184,8 @@ namespace CSSPServices.Tests
         }
         private Spill GetFilledRandomSpill(string OmitPropName)
         {
+            dbIM.Database.EnsureDeleted();
+
             Spill spill = new Spill();
 
             if (OmitPropName != "MunicipalityTVItemID") spill.MunicipalityTVItemID = 39;
@@ -157,6 +195,18 @@ namespace CSSPServices.Tests
             if (OmitPropName != "AverageFlow_m3_day") spill.AverageFlow_m3_day = GetRandomDouble(0.0D, 1000000.0D);
             if (OmitPropName != "LastUpdateDate_UTC") spill.LastUpdateDate_UTC = new DateTime(2005, 3, 6);
             if (OmitPropName != "LastUpdateContactTVItemID") spill.LastUpdateContactTVItemID = 2;
+
+            if (LoggedInService.IsLocal)
+            {
+                if (OmitPropName != "SpillID") spill.SpillID = 10000000;
+
+                dbIM.TVItems.Add(new TVItem() { TVItemID = 39, TVLevel = 3, TVPath = "p1p5p6p39", TVType = (TVTypeEnum)15, ParentID = 6, IsActive = true, LastUpdateDate_UTC = new DateTime(2015, 2, 22, 14, 12, 19), LastUpdateContactTVItemID = 2});
+                dbIM.SaveChanges();
+                dbIM.TVItems.Add(new TVItem() { TVItemID = 41, TVLevel = 4, TVPath = "p1p5p6p39p41", TVType = (TVTypeEnum)10, ParentID = 39, IsActive = true, LastUpdateDate_UTC = new DateTime(2014, 12, 2, 21, 29, 23), LastUpdateContactTVItemID = 2});
+                dbIM.SaveChanges();
+                dbIM.TVItems.Add(new TVItem() { TVItemID = 2, TVLevel = 1, TVPath = "p1p2", TVType = (TVTypeEnum)5, ParentID = 1, IsActive = true, LastUpdateDate_UTC = new DateTime(2014, 12, 2, 16, 58, 16), LastUpdateContactTVItemID = 2});
+                dbIM.SaveChanges();
+            }
 
             return spill;
         }

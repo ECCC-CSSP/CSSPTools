@@ -36,6 +36,8 @@ namespace CSSPServices
 
         #region Properties
         private CSSPDBContext db { get; }
+        private CSSPDBLocalContext dbLocal { get; }
+        private InMemoryDBContext dbIM { get; }
         private ICultureService CultureService { get; }
         private ILoggedInService LoggedInService { get; }
         private IEnums enums { get; }
@@ -43,12 +45,14 @@ namespace CSSPServices
         #endregion Properties
 
         #region Constructors
-        public MikeSourceStartEndService(ICultureService CultureService, ILoggedInService LoggedInService, IEnums enums, CSSPDBContext db)
+        public MikeSourceStartEndService(ICultureService CultureService, ILoggedInService LoggedInService, IEnums enums, CSSPDBContext db, CSSPDBLocalContext dbLocal, InMemoryDBContext dbIM)
         {
             this.CultureService = CultureService;
             this.LoggedInService = LoggedInService;
             this.enums = enums;
             this.db = db;
+            this.dbLocal = dbLocal;
+            this.dbIM = dbIM;
         }
         #endregion Constructors
 
@@ -60,16 +64,32 @@ namespace CSSPServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            MikeSourceStartEnd mikesourcestartend = (from c in db.MikeSourceStartEnds.AsNoTracking()
-                    where c.MikeSourceStartEndID == MikeSourceStartEndID
-                    select c).FirstOrDefault();
-
-            if (mikesourcestartend == null)
+            if (LoggedInService.IsLocal)
             {
-               return await Task.FromResult(NotFound());
-            }
+                MikeSourceStartEnd mikesourcestartend = (from c in dbLocal.MikeSourceStartEnds.AsNoTracking()
+                        where c.MikeSourceStartEndID == MikeSourceStartEndID
+                        select c).FirstOrDefault();
 
-            return await Task.FromResult(Ok(mikesourcestartend));
+                if (mikesourcestartend == null)
+                {
+                   return await Task.FromResult(NotFound());
+                }
+
+                return await Task.FromResult(Ok(mikesourcestartend));
+            }
+            else
+            {
+                MikeSourceStartEnd mikesourcestartend = (from c in db.MikeSourceStartEnds.AsNoTracking()
+                        where c.MikeSourceStartEndID == MikeSourceStartEndID
+                        select c).FirstOrDefault();
+
+                if (mikesourcestartend == null)
+                {
+                   return await Task.FromResult(NotFound());
+                }
+
+                return await Task.FromResult(Ok(mikesourcestartend));
+            }
         }
         public async Task<ActionResult<List<MikeSourceStartEnd>>> GetMikeSourceStartEndList()
         {
@@ -78,9 +98,18 @@ namespace CSSPServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            List<MikeSourceStartEnd> mikesourcestartendList = (from c in db.MikeSourceStartEnds.AsNoTracking() select c).Take(100).ToList();
+            if (LoggedInService.IsLocal)
+            {
+                List<MikeSourceStartEnd> mikesourcestartendList = (from c in dbLocal.MikeSourceStartEnds.AsNoTracking() select c).Take(100).ToList();
 
-            return await Task.FromResult(Ok(mikesourcestartendList));
+                return await Task.FromResult(Ok(mikesourcestartendList));
+            }
+            else
+            {
+                List<MikeSourceStartEnd> mikesourcestartendList = (from c in db.MikeSourceStartEnds.AsNoTracking() select c).Take(100).ToList();
+
+                return await Task.FromResult(Ok(mikesourcestartendList));
+            }
         }
         public async Task<ActionResult<bool>> Delete(int MikeSourceStartEndID)
         {
@@ -89,26 +118,52 @@ namespace CSSPServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            MikeSourceStartEnd mikeSourceStartEnd = (from c in db.MikeSourceStartEnds
-                               where c.MikeSourceStartEndID == MikeSourceStartEndID
-                               select c).FirstOrDefault();
-            
-            if (mikeSourceStartEnd == null)
+            if (LoggedInService.IsLocal)
             {
-                return await Task.FromResult(BadRequest(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "MikeSourceStartEnd", "MikeSourceStartEndID", MikeSourceStartEndID.ToString())));
-            }
+                MikeSourceStartEnd mikeSourceStartEnd = (from c in dbLocal.MikeSourceStartEnds
+                                   where c.MikeSourceStartEndID == MikeSourceStartEndID
+                                   select c).FirstOrDefault();
+                
+                if (mikeSourceStartEnd == null)
+                {
+                    return await Task.FromResult(BadRequest(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "MikeSourceStartEnd", "MikeSourceStartEndID", MikeSourceStartEndID.ToString())));
+                }
 
-            try
-            {
-               db.MikeSourceStartEnds.Remove(mikeSourceStartEnd);
-               db.SaveChanges();
-            }
-            catch (DbUpdateException ex)
-            {
-               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
-            }
+                try
+                {
+                   dbLocal.MikeSourceStartEnds.Remove(mikeSourceStartEnd);
+                   dbLocal.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                   return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
 
-            return await Task.FromResult(Ok(true));
+                return await Task.FromResult(Ok(true));
+            }
+            else
+            {
+                MikeSourceStartEnd mikeSourceStartEnd = (from c in db.MikeSourceStartEnds
+                                   where c.MikeSourceStartEndID == MikeSourceStartEndID
+                                   select c).FirstOrDefault();
+                
+                if (mikeSourceStartEnd == null)
+                {
+                    return await Task.FromResult(BadRequest(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "MikeSourceStartEnd", "MikeSourceStartEndID", MikeSourceStartEndID.ToString())));
+                }
+
+                try
+                {
+                   db.MikeSourceStartEnds.Remove(mikeSourceStartEnd);
+                   db.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                   return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
+
+                return await Task.FromResult(Ok(true));
+            }
         }
         public async Task<ActionResult<MikeSourceStartEnd>> Post(MikeSourceStartEnd mikeSourceStartEnd)
         {
@@ -123,17 +178,34 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ValidationResults));
             }
 
-            try
+            if (LoggedInService.IsLocal)
             {
-               db.MikeSourceStartEnds.Add(mikeSourceStartEnd);
-               db.SaveChanges();
-            }
-            catch (DbUpdateException ex)
-            {
-               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
-            }
+                try
+                {
+                   dbLocal.MikeSourceStartEnds.Add(mikeSourceStartEnd);
+                   dbLocal.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                   return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
 
-            return await Task.FromResult(Ok(mikeSourceStartEnd));
+                return await Task.FromResult(Ok(mikeSourceStartEnd));
+            }
+            else
+            {
+                try
+                {
+                   db.MikeSourceStartEnds.Add(mikeSourceStartEnd);
+                   db.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                   return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
+
+                return await Task.FromResult(Ok(mikeSourceStartEnd));
+            }
         }
         public async Task<ActionResult<MikeSourceStartEnd>> Put(MikeSourceStartEnd mikeSourceStartEnd)
         {
@@ -148,6 +220,22 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ValidationResults));
             }
 
+            if (LoggedInService.IsLocal)
+            {
+            try
+            {
+               dbLocal.MikeSourceStartEnds.Update(mikeSourceStartEnd);
+               dbLocal.SaveChanges();
+            }
+            catch (DbUpdateException ex)
+            {
+               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+            }
+
+            return await Task.FromResult(Ok(mikeSourceStartEnd));
+            }
+            else
+            {
             try
             {
                db.MikeSourceStartEnds.Update(mikeSourceStartEnd);
@@ -159,6 +247,7 @@ namespace CSSPServices
             }
 
             return await Task.FromResult(Ok(mikeSourceStartEnd));
+            }
         }
         #endregion Functions public
 
@@ -175,13 +264,35 @@ namespace CSSPServices
                     yield return new ValidationResult(string.Format(CultureServicesRes._IsRequired, "MikeSourceStartEndID"), new[] { "MikeSourceStartEndID" });
                 }
 
-                if (!(from c in db.MikeSourceStartEnds select c).Where(c => c.MikeSourceStartEndID == mikeSourceStartEnd.MikeSourceStartEndID).Any())
+                if (LoggedInService.IsLocal)
                 {
-                    yield return new ValidationResult(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "MikeSourceStartEnd", "MikeSourceStartEndID", mikeSourceStartEnd.MikeSourceStartEndID.ToString()), new[] { "MikeSourceStartEndID" });
+                    if (!(from c in dbLocal.MikeSourceStartEnds select c).Where(c => c.MikeSourceStartEndID == mikeSourceStartEnd.MikeSourceStartEndID).Any())
+                    {
+                        yield return new ValidationResult(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "MikeSourceStartEnd", "MikeSourceStartEndID", mikeSourceStartEnd.MikeSourceStartEndID.ToString()), new[] { "MikeSourceStartEndID" });
+                    }
+                }
+                else
+                {
+                    if (!(from c in db.MikeSourceStartEnds select c).Where(c => c.MikeSourceStartEndID == mikeSourceStartEnd.MikeSourceStartEndID).Any())
+                    {
+                        yield return new ValidationResult(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "MikeSourceStartEnd", "MikeSourceStartEndID", mikeSourceStartEnd.MikeSourceStartEndID.ToString()), new[] { "MikeSourceStartEndID" });
+                    }
                 }
             }
 
-            MikeSource MikeSourceMikeSourceID = (from c in db.MikeSources where c.MikeSourceID == mikeSourceStartEnd.MikeSourceID select c).FirstOrDefault();
+            MikeSource MikeSourceMikeSourceID = null;
+            if (LoggedInService.IsLocal)
+            {
+                MikeSourceMikeSourceID = (from c in dbLocal.MikeSources where c.MikeSourceID == mikeSourceStartEnd.MikeSourceID select c).FirstOrDefault();
+                if (MikeSourceMikeSourceID == null)
+                {
+                    MikeSourceMikeSourceID = (from c in dbIM.MikeSources where c.MikeSourceID == mikeSourceStartEnd.MikeSourceID select c).FirstOrDefault();
+                }
+            }
+            else
+            {
+                MikeSourceMikeSourceID = (from c in db.MikeSources where c.MikeSourceID == mikeSourceStartEnd.MikeSourceID select c).FirstOrDefault();
+            }
 
             if (MikeSourceMikeSourceID == null)
             {
@@ -269,7 +380,19 @@ namespace CSSPServices
                 }
             }
 
-            TVItem TVItemLastUpdateContactTVItemID = (from c in db.TVItems where c.TVItemID == mikeSourceStartEnd.LastUpdateContactTVItemID select c).FirstOrDefault();
+            TVItem TVItemLastUpdateContactTVItemID = null;
+            if (LoggedInService.IsLocal)
+            {
+                TVItemLastUpdateContactTVItemID = (from c in dbLocal.TVItems where c.TVItemID == mikeSourceStartEnd.LastUpdateContactTVItemID select c).FirstOrDefault();
+                if (TVItemLastUpdateContactTVItemID == null)
+                {
+                    TVItemLastUpdateContactTVItemID = (from c in dbIM.TVItems where c.TVItemID == mikeSourceStartEnd.LastUpdateContactTVItemID select c).FirstOrDefault();
+                }
+            }
+            else
+            {
+                TVItemLastUpdateContactTVItemID = (from c in db.TVItems where c.TVItemID == mikeSourceStartEnd.LastUpdateContactTVItemID select c).FirstOrDefault();
+            }
 
             if (TVItemLastUpdateContactTVItemID == null)
             {

@@ -36,6 +36,8 @@ namespace CSSPServices
 
         #region Properties
         private CSSPDBContext db { get; }
+        private CSSPDBLocalContext dbLocal { get; }
+        private InMemoryDBContext dbIM { get; }
         private ICultureService CultureService { get; }
         private ILoggedInService LoggedInService { get; }
         private IEnums enums { get; }
@@ -43,12 +45,14 @@ namespace CSSPServices
         #endregion Properties
 
         #region Constructors
-        public MikeScenarioService(ICultureService CultureService, ILoggedInService LoggedInService, IEnums enums, CSSPDBContext db)
+        public MikeScenarioService(ICultureService CultureService, ILoggedInService LoggedInService, IEnums enums, CSSPDBContext db, CSSPDBLocalContext dbLocal, InMemoryDBContext dbIM)
         {
             this.CultureService = CultureService;
             this.LoggedInService = LoggedInService;
             this.enums = enums;
             this.db = db;
+            this.dbLocal = dbLocal;
+            this.dbIM = dbIM;
         }
         #endregion Constructors
 
@@ -60,16 +64,32 @@ namespace CSSPServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            MikeScenario mikescenario = (from c in db.MikeScenarios.AsNoTracking()
-                    where c.MikeScenarioID == MikeScenarioID
-                    select c).FirstOrDefault();
-
-            if (mikescenario == null)
+            if (LoggedInService.IsLocal)
             {
-               return await Task.FromResult(NotFound());
-            }
+                MikeScenario mikescenario = (from c in dbLocal.MikeScenarios.AsNoTracking()
+                        where c.MikeScenarioID == MikeScenarioID
+                        select c).FirstOrDefault();
 
-            return await Task.FromResult(Ok(mikescenario));
+                if (mikescenario == null)
+                {
+                   return await Task.FromResult(NotFound());
+                }
+
+                return await Task.FromResult(Ok(mikescenario));
+            }
+            else
+            {
+                MikeScenario mikescenario = (from c in db.MikeScenarios.AsNoTracking()
+                        where c.MikeScenarioID == MikeScenarioID
+                        select c).FirstOrDefault();
+
+                if (mikescenario == null)
+                {
+                   return await Task.FromResult(NotFound());
+                }
+
+                return await Task.FromResult(Ok(mikescenario));
+            }
         }
         public async Task<ActionResult<List<MikeScenario>>> GetMikeScenarioList()
         {
@@ -78,9 +98,18 @@ namespace CSSPServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            List<MikeScenario> mikescenarioList = (from c in db.MikeScenarios.AsNoTracking() select c).Take(100).ToList();
+            if (LoggedInService.IsLocal)
+            {
+                List<MikeScenario> mikescenarioList = (from c in dbLocal.MikeScenarios.AsNoTracking() select c).Take(100).ToList();
 
-            return await Task.FromResult(Ok(mikescenarioList));
+                return await Task.FromResult(Ok(mikescenarioList));
+            }
+            else
+            {
+                List<MikeScenario> mikescenarioList = (from c in db.MikeScenarios.AsNoTracking() select c).Take(100).ToList();
+
+                return await Task.FromResult(Ok(mikescenarioList));
+            }
         }
         public async Task<ActionResult<bool>> Delete(int MikeScenarioID)
         {
@@ -89,26 +118,52 @@ namespace CSSPServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            MikeScenario mikeScenario = (from c in db.MikeScenarios
-                               where c.MikeScenarioID == MikeScenarioID
-                               select c).FirstOrDefault();
-            
-            if (mikeScenario == null)
+            if (LoggedInService.IsLocal)
             {
-                return await Task.FromResult(BadRequest(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "MikeScenario", "MikeScenarioID", MikeScenarioID.ToString())));
-            }
+                MikeScenario mikeScenario = (from c in dbLocal.MikeScenarios
+                                   where c.MikeScenarioID == MikeScenarioID
+                                   select c).FirstOrDefault();
+                
+                if (mikeScenario == null)
+                {
+                    return await Task.FromResult(BadRequest(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "MikeScenario", "MikeScenarioID", MikeScenarioID.ToString())));
+                }
 
-            try
-            {
-               db.MikeScenarios.Remove(mikeScenario);
-               db.SaveChanges();
-            }
-            catch (DbUpdateException ex)
-            {
-               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
-            }
+                try
+                {
+                   dbLocal.MikeScenarios.Remove(mikeScenario);
+                   dbLocal.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                   return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
 
-            return await Task.FromResult(Ok(true));
+                return await Task.FromResult(Ok(true));
+            }
+            else
+            {
+                MikeScenario mikeScenario = (from c in db.MikeScenarios
+                                   where c.MikeScenarioID == MikeScenarioID
+                                   select c).FirstOrDefault();
+                
+                if (mikeScenario == null)
+                {
+                    return await Task.FromResult(BadRequest(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "MikeScenario", "MikeScenarioID", MikeScenarioID.ToString())));
+                }
+
+                try
+                {
+                   db.MikeScenarios.Remove(mikeScenario);
+                   db.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                   return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
+
+                return await Task.FromResult(Ok(true));
+            }
         }
         public async Task<ActionResult<MikeScenario>> Post(MikeScenario mikeScenario)
         {
@@ -123,17 +178,34 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ValidationResults));
             }
 
-            try
+            if (LoggedInService.IsLocal)
             {
-               db.MikeScenarios.Add(mikeScenario);
-               db.SaveChanges();
-            }
-            catch (DbUpdateException ex)
-            {
-               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
-            }
+                try
+                {
+                   dbLocal.MikeScenarios.Add(mikeScenario);
+                   dbLocal.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                   return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
 
-            return await Task.FromResult(Ok(mikeScenario));
+                return await Task.FromResult(Ok(mikeScenario));
+            }
+            else
+            {
+                try
+                {
+                   db.MikeScenarios.Add(mikeScenario);
+                   db.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                   return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
+
+                return await Task.FromResult(Ok(mikeScenario));
+            }
         }
         public async Task<ActionResult<MikeScenario>> Put(MikeScenario mikeScenario)
         {
@@ -148,6 +220,22 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ValidationResults));
             }
 
+            if (LoggedInService.IsLocal)
+            {
+            try
+            {
+               dbLocal.MikeScenarios.Update(mikeScenario);
+               dbLocal.SaveChanges();
+            }
+            catch (DbUpdateException ex)
+            {
+               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+            }
+
+            return await Task.FromResult(Ok(mikeScenario));
+            }
+            else
+            {
             try
             {
                db.MikeScenarios.Update(mikeScenario);
@@ -159,6 +247,7 @@ namespace CSSPServices
             }
 
             return await Task.FromResult(Ok(mikeScenario));
+            }
         }
         #endregion Functions public
 
@@ -175,13 +264,35 @@ namespace CSSPServices
                     yield return new ValidationResult(string.Format(CultureServicesRes._IsRequired, "MikeScenarioID"), new[] { "MikeScenarioID" });
                 }
 
-                if (!(from c in db.MikeScenarios select c).Where(c => c.MikeScenarioID == mikeScenario.MikeScenarioID).Any())
+                if (LoggedInService.IsLocal)
                 {
-                    yield return new ValidationResult(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "MikeScenario", "MikeScenarioID", mikeScenario.MikeScenarioID.ToString()), new[] { "MikeScenarioID" });
+                    if (!(from c in dbLocal.MikeScenarios select c).Where(c => c.MikeScenarioID == mikeScenario.MikeScenarioID).Any())
+                    {
+                        yield return new ValidationResult(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "MikeScenario", "MikeScenarioID", mikeScenario.MikeScenarioID.ToString()), new[] { "MikeScenarioID" });
+                    }
+                }
+                else
+                {
+                    if (!(from c in db.MikeScenarios select c).Where(c => c.MikeScenarioID == mikeScenario.MikeScenarioID).Any())
+                    {
+                        yield return new ValidationResult(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "MikeScenario", "MikeScenarioID", mikeScenario.MikeScenarioID.ToString()), new[] { "MikeScenarioID" });
+                    }
                 }
             }
 
-            TVItem TVItemMikeScenarioTVItemID = (from c in db.TVItems where c.TVItemID == mikeScenario.MikeScenarioTVItemID select c).FirstOrDefault();
+            TVItem TVItemMikeScenarioTVItemID = null;
+            if (LoggedInService.IsLocal)
+            {
+                TVItemMikeScenarioTVItemID = (from c in dbLocal.TVItems where c.TVItemID == mikeScenario.MikeScenarioTVItemID select c).FirstOrDefault();
+                if (TVItemMikeScenarioTVItemID == null)
+                {
+                    TVItemMikeScenarioTVItemID = (from c in dbIM.TVItems where c.TVItemID == mikeScenario.MikeScenarioTVItemID select c).FirstOrDefault();
+                }
+            }
+            else
+            {
+                TVItemMikeScenarioTVItemID = (from c in db.TVItems where c.TVItemID == mikeScenario.MikeScenarioTVItemID select c).FirstOrDefault();
+            }
 
             if (TVItemMikeScenarioTVItemID == null)
             {
@@ -201,7 +312,19 @@ namespace CSSPServices
 
             if (mikeScenario.ParentMikeScenarioID != null)
             {
-                MikeScenario MikeScenarioParentMikeScenarioID = (from c in db.MikeScenarios where c.MikeScenarioID == mikeScenario.ParentMikeScenarioID select c).FirstOrDefault();
+                MikeScenario MikeScenarioParentMikeScenarioID = null;
+                if (LoggedInService.IsLocal)
+                {
+                    MikeScenarioParentMikeScenarioID = (from c in dbLocal.MikeScenarios where c.MikeScenarioID == mikeScenario.ParentMikeScenarioID select c).FirstOrDefault();
+                    if (MikeScenarioParentMikeScenarioID == null)
+                    {
+                        MikeScenarioParentMikeScenarioID = (from c in dbIM.MikeScenarios where c.MikeScenarioID == mikeScenario.ParentMikeScenarioID select c).FirstOrDefault();
+                    }
+                }
+                else
+                {
+                    MikeScenarioParentMikeScenarioID = (from c in db.MikeScenarios where c.MikeScenarioID == mikeScenario.ParentMikeScenarioID select c).FirstOrDefault();
+                }
 
                 if (MikeScenarioParentMikeScenarioID == null)
                 {
@@ -291,7 +414,19 @@ namespace CSSPServices
 
             if (mikeScenario.UseSalinityAndTemperatureInitialConditionFromTVFileTVItemID != null)
             {
-                TVItem TVItemUseSalinityAndTemperatureInitialConditionFromTVFileTVItemID = (from c in db.TVItems where c.TVItemID == mikeScenario.UseSalinityAndTemperatureInitialConditionFromTVFileTVItemID select c).FirstOrDefault();
+                TVItem TVItemUseSalinityAndTemperatureInitialConditionFromTVFileTVItemID = null;
+                if (LoggedInService.IsLocal)
+                {
+                    TVItemUseSalinityAndTemperatureInitialConditionFromTVFileTVItemID = (from c in dbLocal.TVItems where c.TVItemID == mikeScenario.UseSalinityAndTemperatureInitialConditionFromTVFileTVItemID select c).FirstOrDefault();
+                    if (TVItemUseSalinityAndTemperatureInitialConditionFromTVFileTVItemID == null)
+                    {
+                        TVItemUseSalinityAndTemperatureInitialConditionFromTVFileTVItemID = (from c in dbIM.TVItems where c.TVItemID == mikeScenario.UseSalinityAndTemperatureInitialConditionFromTVFileTVItemID select c).FirstOrDefault();
+                    }
+                }
+                else
+                {
+                    TVItemUseSalinityAndTemperatureInitialConditionFromTVFileTVItemID = (from c in db.TVItems where c.TVItemID == mikeScenario.UseSalinityAndTemperatureInitialConditionFromTVFileTVItemID select c).FirstOrDefault();
+                }
 
                 if (TVItemUseSalinityAndTemperatureInitialConditionFromTVFileTVItemID == null)
                 {
@@ -312,7 +447,19 @@ namespace CSSPServices
 
             if (mikeScenario.ForSimulatingMWQMRunTVItemID != null)
             {
-                TVItem TVItemForSimulatingMWQMRunTVItemID = (from c in db.TVItems where c.TVItemID == mikeScenario.ForSimulatingMWQMRunTVItemID select c).FirstOrDefault();
+                TVItem TVItemForSimulatingMWQMRunTVItemID = null;
+                if (LoggedInService.IsLocal)
+                {
+                    TVItemForSimulatingMWQMRunTVItemID = (from c in dbLocal.TVItems where c.TVItemID == mikeScenario.ForSimulatingMWQMRunTVItemID select c).FirstOrDefault();
+                    if (TVItemForSimulatingMWQMRunTVItemID == null)
+                    {
+                        TVItemForSimulatingMWQMRunTVItemID = (from c in dbIM.TVItems where c.TVItemID == mikeScenario.ForSimulatingMWQMRunTVItemID select c).FirstOrDefault();
+                    }
+                }
+                else
+                {
+                    TVItemForSimulatingMWQMRunTVItemID = (from c in db.TVItems where c.TVItemID == mikeScenario.ForSimulatingMWQMRunTVItemID select c).FirstOrDefault();
+                }
 
                 if (TVItemForSimulatingMWQMRunTVItemID == null)
                 {
@@ -412,7 +559,19 @@ namespace CSSPServices
                 }
             }
 
-            TVItem TVItemLastUpdateContactTVItemID = (from c in db.TVItems where c.TVItemID == mikeScenario.LastUpdateContactTVItemID select c).FirstOrDefault();
+            TVItem TVItemLastUpdateContactTVItemID = null;
+            if (LoggedInService.IsLocal)
+            {
+                TVItemLastUpdateContactTVItemID = (from c in dbLocal.TVItems where c.TVItemID == mikeScenario.LastUpdateContactTVItemID select c).FirstOrDefault();
+                if (TVItemLastUpdateContactTVItemID == null)
+                {
+                    TVItemLastUpdateContactTVItemID = (from c in dbIM.TVItems where c.TVItemID == mikeScenario.LastUpdateContactTVItemID select c).FirstOrDefault();
+                }
+            }
+            else
+            {
+                TVItemLastUpdateContactTVItemID = (from c in db.TVItems where c.TVItemID == mikeScenario.LastUpdateContactTVItemID select c).FirstOrDefault();
+            }
 
             if (TVItemLastUpdateContactTVItemID == null)
             {

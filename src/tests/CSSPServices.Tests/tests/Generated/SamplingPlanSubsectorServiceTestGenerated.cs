@@ -36,6 +36,9 @@ namespace CSSPServices.Tests
         private ILoggedInService LoggedInService { get; set; }
         private ISamplingPlanSubsectorService SamplingPlanSubsectorService { get; set; }
         private CSSPDBContext db { get; set; }
+        private CSSPDBLocalContext dbLocal { get; set; }
+        private InMemoryDBContext dbIM { get; set; }
+        private SamplingPlanSubsector samplingPlanSubsector { get; set; }
         #endregion Properties
 
         #region Constructors
@@ -47,9 +50,11 @@ namespace CSSPServices.Tests
 
         #region Tests Generated CRUD
         [Theory]
-        [InlineData("en-CA")]
-        [InlineData("fr-CA")]
-        public async Task SamplingPlanSubsector_CRUD_Good_Test(string culture)
+        [InlineData("en-CA", "true")]
+        [InlineData("fr-CA", "true")]
+        [InlineData("en-CA", "false")]
+        [InlineData("fr-CA", "false")]
+        public async Task SamplingPlanSubsector_CRUD_Good_Test(string culture, string IsLocalStr)
         {
             // -------------------------------
             // -------------------------------
@@ -59,44 +64,57 @@ namespace CSSPServices.Tests
 
             Assert.True(await Setup(culture));
 
-            using (TransactionScope ts = new TransactionScope())
+            LoggedInService.IsLocal = bool.Parse(IsLocalStr);
+
+            samplingPlanSubsector = GetFilledRandomSamplingPlanSubsector("");
+
+            if (LoggedInService.IsLocal)
             {
-               SamplingPlanSubsector samplingPlanSubsector = GetFilledRandomSamplingPlanSubsector(""); 
-
-               // List<SamplingPlanSubsector>
-               var actionSamplingPlanSubsectorList = await SamplingPlanSubsectorService.GetSamplingPlanSubsectorList();
-               Assert.Equal(200, ((ObjectResult)actionSamplingPlanSubsectorList.Result).StatusCode);
-               Assert.NotNull(((OkObjectResult)actionSamplingPlanSubsectorList.Result).Value);
-               List<SamplingPlanSubsector> samplingPlanSubsectorList = (List<SamplingPlanSubsector>)((OkObjectResult)actionSamplingPlanSubsectorList.Result).Value;
-
-               int count = ((List<SamplingPlanSubsector>)((OkObjectResult)actionSamplingPlanSubsectorList.Result).Value).Count();
-                Assert.True(count > 0);
-
-               // Post SamplingPlanSubsector
-               var actionSamplingPlanSubsectorAdded = await SamplingPlanSubsectorService.Post(samplingPlanSubsector);
-               Assert.Equal(200, ((ObjectResult)actionSamplingPlanSubsectorAdded.Result).StatusCode);
-               Assert.NotNull(((OkObjectResult)actionSamplingPlanSubsectorAdded.Result).Value);
-               SamplingPlanSubsector samplingPlanSubsectorAdded = (SamplingPlanSubsector)((OkObjectResult)actionSamplingPlanSubsectorAdded.Result).Value;
-               Assert.NotNull(samplingPlanSubsectorAdded);
-
-               // Put SamplingPlanSubsector
-               var actionSamplingPlanSubsectorUpdated = await SamplingPlanSubsectorService.Put(samplingPlanSubsector);
-               Assert.Equal(200, ((ObjectResult)actionSamplingPlanSubsectorUpdated.Result).StatusCode);
-               Assert.NotNull(((OkObjectResult)actionSamplingPlanSubsectorUpdated.Result).Value);
-               SamplingPlanSubsector samplingPlanSubsectorUpdated = (SamplingPlanSubsector)((OkObjectResult)actionSamplingPlanSubsectorUpdated.Result).Value;
-               Assert.NotNull(samplingPlanSubsectorUpdated);
-
-               // Delete SamplingPlanSubsector
-               var actionSamplingPlanSubsectorDeleted = await SamplingPlanSubsectorService.Delete(samplingPlanSubsector.SamplingPlanSubsectorID);
-               Assert.Equal(200, ((ObjectResult)actionSamplingPlanSubsectorDeleted.Result).StatusCode);
-               Assert.NotNull(((OkObjectResult)actionSamplingPlanSubsectorDeleted.Result).Value);
-               bool retBool = (bool)((OkObjectResult)actionSamplingPlanSubsectorDeleted.Result).Value;
-               Assert.True(retBool);
+                await DoCRUDTest();
+            }
+            else
+            {
+                using (TransactionScope ts = new TransactionScope())
+                {
+                    await DoCRUDTest();
+                }
             }
         }
         #endregion Tests Generated CRUD
 
         #region Functions private
+        private async Task DoCRUDTest()
+        {
+            // Post SamplingPlanSubsector
+            var actionSamplingPlanSubsectorAdded = await SamplingPlanSubsectorService.Post(samplingPlanSubsector);
+            Assert.Equal(200, ((ObjectResult)actionSamplingPlanSubsectorAdded.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionSamplingPlanSubsectorAdded.Result).Value);
+            SamplingPlanSubsector samplingPlanSubsectorAdded = (SamplingPlanSubsector)((OkObjectResult)actionSamplingPlanSubsectorAdded.Result).Value;
+            Assert.NotNull(samplingPlanSubsectorAdded);
+
+            // List<SamplingPlanSubsector>
+            var actionSamplingPlanSubsectorList = await SamplingPlanSubsectorService.GetSamplingPlanSubsectorList();
+            Assert.Equal(200, ((ObjectResult)actionSamplingPlanSubsectorList.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionSamplingPlanSubsectorList.Result).Value);
+            List<SamplingPlanSubsector> samplingPlanSubsectorList = (List<SamplingPlanSubsector>)((OkObjectResult)actionSamplingPlanSubsectorList.Result).Value;
+
+            int count = ((List<SamplingPlanSubsector>)((OkObjectResult)actionSamplingPlanSubsectorList.Result).Value).Count();
+            Assert.True(count > 0);
+
+            // Put SamplingPlanSubsector
+            var actionSamplingPlanSubsectorUpdated = await SamplingPlanSubsectorService.Put(samplingPlanSubsector);
+            Assert.Equal(200, ((ObjectResult)actionSamplingPlanSubsectorUpdated.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionSamplingPlanSubsectorUpdated.Result).Value);
+            SamplingPlanSubsector samplingPlanSubsectorUpdated = (SamplingPlanSubsector)((OkObjectResult)actionSamplingPlanSubsectorUpdated.Result).Value;
+            Assert.NotNull(samplingPlanSubsectorUpdated);
+
+            // Delete SamplingPlanSubsector
+            var actionSamplingPlanSubsectorDeleted = await SamplingPlanSubsectorService.Delete(samplingPlanSubsector.SamplingPlanSubsectorID);
+            Assert.Equal(200, ((ObjectResult)actionSamplingPlanSubsectorDeleted.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionSamplingPlanSubsectorDeleted.Result).Value);
+            bool retBool = (bool)((OkObjectResult)actionSamplingPlanSubsectorDeleted.Result).Value;
+            Assert.True(retBool);
+        }
         private async Task<bool> Setup(string culture)
         {
             Config = new ConfigurationBuilder()
@@ -109,6 +127,9 @@ namespace CSSPServices.Tests
 
             Services.AddSingleton<IConfiguration>(Config);
 
+            string CSSPDBLocalFileName = Config.GetValue<string>("CSSPDBLocal");
+            Assert.NotNull(CSSPDBLocalFileName);
+
             string TestDBConnString = Config.GetValue<string>("TestDBConnectionString");
             Assert.NotNull(TestDBConnString);
 
@@ -120,6 +141,15 @@ namespace CSSPServices.Tests
             Services.AddDbContext<InMemoryDBContext>(options =>
             {
                 options.UseInMemoryDatabase(TestDBConnString);
+            });
+
+            string appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+
+            FileInfo fiAppDataPath = new FileInfo(CSSPDBLocalFileName.Replace("{appDataPath}", appDataPath));
+
+            Services.AddDbContext<CSSPDBLocalContext>(options =>
+            {
+                options.UseSqlite($"Data Source={ fiAppDataPath.FullName }");
             });
 
             Services.AddSingleton<ICultureService, CultureService>();
@@ -141,6 +171,12 @@ namespace CSSPServices.Tests
             string Id = Config.GetValue<string>("Id");
             Assert.True(await LoggedInService.SetLoggedInContactInfo(Id));
 
+            //string IsLocalStr = Config.GetValue<string>("IsLocal");
+            //Assert.NotNull(IsLocalStr);
+
+            dbIM = Provider.GetService<InMemoryDBContext>();
+            Assert.NotNull(dbIM);
+
             SamplingPlanSubsectorService = Provider.GetService<ISamplingPlanSubsectorService>();
             Assert.NotNull(SamplingPlanSubsectorService);
 
@@ -148,12 +184,26 @@ namespace CSSPServices.Tests
         }
         private SamplingPlanSubsector GetFilledRandomSamplingPlanSubsector(string OmitPropName)
         {
+            dbIM.Database.EnsureDeleted();
+
             SamplingPlanSubsector samplingPlanSubsector = new SamplingPlanSubsector();
 
             if (OmitPropName != "SamplingPlanID") samplingPlanSubsector.SamplingPlanID = 1;
             if (OmitPropName != "SubsectorTVItemID") samplingPlanSubsector.SubsectorTVItemID = 11;
             if (OmitPropName != "LastUpdateDate_UTC") samplingPlanSubsector.LastUpdateDate_UTC = new DateTime(2005, 3, 6);
             if (OmitPropName != "LastUpdateContactTVItemID") samplingPlanSubsector.LastUpdateContactTVItemID = 2;
+
+            if (LoggedInService.IsLocal)
+            {
+                if (OmitPropName != "SamplingPlanSubsectorID") samplingPlanSubsector.SamplingPlanSubsectorID = 10000000;
+
+                dbIM.SamplingPlans.Add(new SamplingPlan() { SamplingPlanID = 1 });
+                dbIM.SaveChanges();
+                dbIM.TVItems.Add(new TVItem() { TVItemID = 11, TVLevel = 5, TVPath = "p1p5p6p9p10p11", TVType = (TVTypeEnum)20, ParentID = 10, IsActive = true, LastUpdateDate_UTC = new DateTime(2014, 12, 2, 18, 53, 40), LastUpdateContactTVItemID = 2});
+                dbIM.SaveChanges();
+                dbIM.TVItems.Add(new TVItem() { TVItemID = 2, TVLevel = 1, TVPath = "p1p2", TVType = (TVTypeEnum)5, ParentID = 1, IsActive = true, LastUpdateDate_UTC = new DateTime(2014, 12, 2, 16, 58, 16), LastUpdateContactTVItemID = 2});
+                dbIM.SaveChanges();
+            }
 
             return samplingPlanSubsector;
         }

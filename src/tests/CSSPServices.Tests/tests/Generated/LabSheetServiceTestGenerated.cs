@@ -36,6 +36,9 @@ namespace CSSPServices.Tests
         private ILoggedInService LoggedInService { get; set; }
         private ILabSheetService LabSheetService { get; set; }
         private CSSPDBContext db { get; set; }
+        private CSSPDBLocalContext dbLocal { get; set; }
+        private InMemoryDBContext dbIM { get; set; }
+        private LabSheet labSheet { get; set; }
         #endregion Properties
 
         #region Constructors
@@ -47,9 +50,11 @@ namespace CSSPServices.Tests
 
         #region Tests Generated CRUD
         [Theory]
-        [InlineData("en-CA")]
-        [InlineData("fr-CA")]
-        public async Task LabSheet_CRUD_Good_Test(string culture)
+        [InlineData("en-CA", "true")]
+        [InlineData("fr-CA", "true")]
+        [InlineData("en-CA", "false")]
+        [InlineData("fr-CA", "false")]
+        public async Task LabSheet_CRUD_Good_Test(string culture, string IsLocalStr)
         {
             // -------------------------------
             // -------------------------------
@@ -59,44 +64,57 @@ namespace CSSPServices.Tests
 
             Assert.True(await Setup(culture));
 
-            using (TransactionScope ts = new TransactionScope())
+            LoggedInService.IsLocal = bool.Parse(IsLocalStr);
+
+            labSheet = GetFilledRandomLabSheet("");
+
+            if (LoggedInService.IsLocal)
             {
-               LabSheet labSheet = GetFilledRandomLabSheet(""); 
-
-               // List<LabSheet>
-               var actionLabSheetList = await LabSheetService.GetLabSheetList();
-               Assert.Equal(200, ((ObjectResult)actionLabSheetList.Result).StatusCode);
-               Assert.NotNull(((OkObjectResult)actionLabSheetList.Result).Value);
-               List<LabSheet> labSheetList = (List<LabSheet>)((OkObjectResult)actionLabSheetList.Result).Value;
-
-               int count = ((List<LabSheet>)((OkObjectResult)actionLabSheetList.Result).Value).Count();
-                Assert.True(count > 0);
-
-               // Post LabSheet
-               var actionLabSheetAdded = await LabSheetService.Post(labSheet);
-               Assert.Equal(200, ((ObjectResult)actionLabSheetAdded.Result).StatusCode);
-               Assert.NotNull(((OkObjectResult)actionLabSheetAdded.Result).Value);
-               LabSheet labSheetAdded = (LabSheet)((OkObjectResult)actionLabSheetAdded.Result).Value;
-               Assert.NotNull(labSheetAdded);
-
-               // Put LabSheet
-               var actionLabSheetUpdated = await LabSheetService.Put(labSheet);
-               Assert.Equal(200, ((ObjectResult)actionLabSheetUpdated.Result).StatusCode);
-               Assert.NotNull(((OkObjectResult)actionLabSheetUpdated.Result).Value);
-               LabSheet labSheetUpdated = (LabSheet)((OkObjectResult)actionLabSheetUpdated.Result).Value;
-               Assert.NotNull(labSheetUpdated);
-
-               // Delete LabSheet
-               var actionLabSheetDeleted = await LabSheetService.Delete(labSheet.LabSheetID);
-               Assert.Equal(200, ((ObjectResult)actionLabSheetDeleted.Result).StatusCode);
-               Assert.NotNull(((OkObjectResult)actionLabSheetDeleted.Result).Value);
-               bool retBool = (bool)((OkObjectResult)actionLabSheetDeleted.Result).Value;
-               Assert.True(retBool);
+                await DoCRUDTest();
+            }
+            else
+            {
+                using (TransactionScope ts = new TransactionScope())
+                {
+                    await DoCRUDTest();
+                }
             }
         }
         #endregion Tests Generated CRUD
 
         #region Functions private
+        private async Task DoCRUDTest()
+        {
+            // Post LabSheet
+            var actionLabSheetAdded = await LabSheetService.Post(labSheet);
+            Assert.Equal(200, ((ObjectResult)actionLabSheetAdded.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionLabSheetAdded.Result).Value);
+            LabSheet labSheetAdded = (LabSheet)((OkObjectResult)actionLabSheetAdded.Result).Value;
+            Assert.NotNull(labSheetAdded);
+
+            // List<LabSheet>
+            var actionLabSheetList = await LabSheetService.GetLabSheetList();
+            Assert.Equal(200, ((ObjectResult)actionLabSheetList.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionLabSheetList.Result).Value);
+            List<LabSheet> labSheetList = (List<LabSheet>)((OkObjectResult)actionLabSheetList.Result).Value;
+
+            int count = ((List<LabSheet>)((OkObjectResult)actionLabSheetList.Result).Value).Count();
+            Assert.True(count > 0);
+
+            // Put LabSheet
+            var actionLabSheetUpdated = await LabSheetService.Put(labSheet);
+            Assert.Equal(200, ((ObjectResult)actionLabSheetUpdated.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionLabSheetUpdated.Result).Value);
+            LabSheet labSheetUpdated = (LabSheet)((OkObjectResult)actionLabSheetUpdated.Result).Value;
+            Assert.NotNull(labSheetUpdated);
+
+            // Delete LabSheet
+            var actionLabSheetDeleted = await LabSheetService.Delete(labSheet.LabSheetID);
+            Assert.Equal(200, ((ObjectResult)actionLabSheetDeleted.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionLabSheetDeleted.Result).Value);
+            bool retBool = (bool)((OkObjectResult)actionLabSheetDeleted.Result).Value;
+            Assert.True(retBool);
+        }
         private async Task<bool> Setup(string culture)
         {
             Config = new ConfigurationBuilder()
@@ -109,6 +127,9 @@ namespace CSSPServices.Tests
 
             Services.AddSingleton<IConfiguration>(Config);
 
+            string CSSPDBLocalFileName = Config.GetValue<string>("CSSPDBLocal");
+            Assert.NotNull(CSSPDBLocalFileName);
+
             string TestDBConnString = Config.GetValue<string>("TestDBConnectionString");
             Assert.NotNull(TestDBConnString);
 
@@ -120,6 +141,15 @@ namespace CSSPServices.Tests
             Services.AddDbContext<InMemoryDBContext>(options =>
             {
                 options.UseInMemoryDatabase(TestDBConnString);
+            });
+
+            string appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+
+            FileInfo fiAppDataPath = new FileInfo(CSSPDBLocalFileName.Replace("{appDataPath}", appDataPath));
+
+            Services.AddDbContext<CSSPDBLocalContext>(options =>
+            {
+                options.UseSqlite($"Data Source={ fiAppDataPath.FullName }");
             });
 
             Services.AddSingleton<ICultureService, CultureService>();
@@ -141,6 +171,12 @@ namespace CSSPServices.Tests
             string Id = Config.GetValue<string>("Id");
             Assert.True(await LoggedInService.SetLoggedInContactInfo(Id));
 
+            //string IsLocalStr = Config.GetValue<string>("IsLocal");
+            //Assert.NotNull(IsLocalStr);
+
+            dbIM = Provider.GetService<InMemoryDBContext>();
+            Assert.NotNull(dbIM);
+
             LabSheetService = Provider.GetService<ILabSheetService>();
             Assert.NotNull(LabSheetService);
 
@@ -148,6 +184,8 @@ namespace CSSPServices.Tests
         }
         private LabSheet GetFilledRandomLabSheet(string OmitPropName)
         {
+            dbIM.Database.EnsureDeleted();
+
             LabSheet labSheet = new LabSheet();
 
             if (OmitPropName != "OtherServerLabSheetID") labSheet.OtherServerLabSheetID = GetRandomInt(1, 11);
@@ -171,6 +209,20 @@ namespace CSSPServices.Tests
             if (OmitPropName != "RejectReason") labSheet.RejectReason = GetRandomString("", 5);
             if (OmitPropName != "LastUpdateDate_UTC") labSheet.LastUpdateDate_UTC = new DateTime(2005, 3, 6);
             if (OmitPropName != "LastUpdateContactTVItemID") labSheet.LastUpdateContactTVItemID = 2;
+
+            if (LoggedInService.IsLocal)
+            {
+                if (OmitPropName != "LabSheetID") labSheet.LabSheetID = 10000000;
+
+                dbIM.SamplingPlans.Add(new SamplingPlan() { SamplingPlanID = 1 });
+                dbIM.SaveChanges();
+                dbIM.TVItems.Add(new TVItem() { TVItemID = 11, TVLevel = 5, TVPath = "p1p5p6p9p10p11", TVType = (TVTypeEnum)20, ParentID = 10, IsActive = true, LastUpdateDate_UTC = new DateTime(2014, 12, 2, 18, 53, 40), LastUpdateContactTVItemID = 2});
+                dbIM.SaveChanges();
+                dbIM.TVItems.Add(new TVItem() { TVItemID = 50, TVLevel = 6, TVPath = "p1p5p6p9p10p12p50", TVType = (TVTypeEnum)31, ParentID = 12, IsActive = true, LastUpdateDate_UTC = new DateTime(2017, 6, 28, 12, 41, 23), LastUpdateContactTVItemID = 2});
+                dbIM.SaveChanges();
+                dbIM.TVItems.Add(new TVItem() { TVItemID = 2, TVLevel = 1, TVPath = "p1p2", TVType = (TVTypeEnum)5, ParentID = 1, IsActive = true, LastUpdateDate_UTC = new DateTime(2014, 12, 2, 16, 58, 16), LastUpdateContactTVItemID = 2});
+                dbIM.SaveChanges();
+            }
 
             return labSheet;
         }

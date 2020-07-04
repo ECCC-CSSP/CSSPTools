@@ -36,6 +36,8 @@ namespace CSSPServices
 
         #region Properties
         private CSSPDBContext db { get; }
+        private CSSPDBLocalContext dbLocal { get; }
+        private InMemoryDBContext dbIM { get; }
         private ICultureService CultureService { get; }
         private ILoggedInService LoggedInService { get; }
         private IEnums enums { get; }
@@ -43,12 +45,14 @@ namespace CSSPServices
         #endregion Properties
 
         #region Constructors
-        public EmailDistributionListContactService(ICultureService CultureService, ILoggedInService LoggedInService, IEnums enums, CSSPDBContext db)
+        public EmailDistributionListContactService(ICultureService CultureService, ILoggedInService LoggedInService, IEnums enums, CSSPDBContext db, CSSPDBLocalContext dbLocal, InMemoryDBContext dbIM)
         {
             this.CultureService = CultureService;
             this.LoggedInService = LoggedInService;
             this.enums = enums;
             this.db = db;
+            this.dbLocal = dbLocal;
+            this.dbIM = dbIM;
         }
         #endregion Constructors
 
@@ -60,16 +64,32 @@ namespace CSSPServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            EmailDistributionListContact emaildistributionlistcontact = (from c in db.EmailDistributionListContacts.AsNoTracking()
-                    where c.EmailDistributionListContactID == EmailDistributionListContactID
-                    select c).FirstOrDefault();
-
-            if (emaildistributionlistcontact == null)
+            if (LoggedInService.IsLocal)
             {
-               return await Task.FromResult(NotFound());
-            }
+                EmailDistributionListContact emaildistributionlistcontact = (from c in dbLocal.EmailDistributionListContacts.AsNoTracking()
+                        where c.EmailDistributionListContactID == EmailDistributionListContactID
+                        select c).FirstOrDefault();
 
-            return await Task.FromResult(Ok(emaildistributionlistcontact));
+                if (emaildistributionlistcontact == null)
+                {
+                   return await Task.FromResult(NotFound());
+                }
+
+                return await Task.FromResult(Ok(emaildistributionlistcontact));
+            }
+            else
+            {
+                EmailDistributionListContact emaildistributionlistcontact = (from c in db.EmailDistributionListContacts.AsNoTracking()
+                        where c.EmailDistributionListContactID == EmailDistributionListContactID
+                        select c).FirstOrDefault();
+
+                if (emaildistributionlistcontact == null)
+                {
+                   return await Task.FromResult(NotFound());
+                }
+
+                return await Task.FromResult(Ok(emaildistributionlistcontact));
+            }
         }
         public async Task<ActionResult<List<EmailDistributionListContact>>> GetEmailDistributionListContactList()
         {
@@ -78,9 +98,18 @@ namespace CSSPServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            List<EmailDistributionListContact> emaildistributionlistcontactList = (from c in db.EmailDistributionListContacts.AsNoTracking() select c).Take(100).ToList();
+            if (LoggedInService.IsLocal)
+            {
+                List<EmailDistributionListContact> emaildistributionlistcontactList = (from c in dbLocal.EmailDistributionListContacts.AsNoTracking() select c).Take(100).ToList();
 
-            return await Task.FromResult(Ok(emaildistributionlistcontactList));
+                return await Task.FromResult(Ok(emaildistributionlistcontactList));
+            }
+            else
+            {
+                List<EmailDistributionListContact> emaildistributionlistcontactList = (from c in db.EmailDistributionListContacts.AsNoTracking() select c).Take(100).ToList();
+
+                return await Task.FromResult(Ok(emaildistributionlistcontactList));
+            }
         }
         public async Task<ActionResult<bool>> Delete(int EmailDistributionListContactID)
         {
@@ -89,26 +118,52 @@ namespace CSSPServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            EmailDistributionListContact emailDistributionListContact = (from c in db.EmailDistributionListContacts
-                               where c.EmailDistributionListContactID == EmailDistributionListContactID
-                               select c).FirstOrDefault();
-            
-            if (emailDistributionListContact == null)
+            if (LoggedInService.IsLocal)
             {
-                return await Task.FromResult(BadRequest(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "EmailDistributionListContact", "EmailDistributionListContactID", EmailDistributionListContactID.ToString())));
-            }
+                EmailDistributionListContact emailDistributionListContact = (from c in dbLocal.EmailDistributionListContacts
+                                   where c.EmailDistributionListContactID == EmailDistributionListContactID
+                                   select c).FirstOrDefault();
+                
+                if (emailDistributionListContact == null)
+                {
+                    return await Task.FromResult(BadRequest(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "EmailDistributionListContact", "EmailDistributionListContactID", EmailDistributionListContactID.ToString())));
+                }
 
-            try
-            {
-               db.EmailDistributionListContacts.Remove(emailDistributionListContact);
-               db.SaveChanges();
-            }
-            catch (DbUpdateException ex)
-            {
-               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
-            }
+                try
+                {
+                   dbLocal.EmailDistributionListContacts.Remove(emailDistributionListContact);
+                   dbLocal.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                   return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
 
-            return await Task.FromResult(Ok(true));
+                return await Task.FromResult(Ok(true));
+            }
+            else
+            {
+                EmailDistributionListContact emailDistributionListContact = (from c in db.EmailDistributionListContacts
+                                   where c.EmailDistributionListContactID == EmailDistributionListContactID
+                                   select c).FirstOrDefault();
+                
+                if (emailDistributionListContact == null)
+                {
+                    return await Task.FromResult(BadRequest(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "EmailDistributionListContact", "EmailDistributionListContactID", EmailDistributionListContactID.ToString())));
+                }
+
+                try
+                {
+                   db.EmailDistributionListContacts.Remove(emailDistributionListContact);
+                   db.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                   return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
+
+                return await Task.FromResult(Ok(true));
+            }
         }
         public async Task<ActionResult<EmailDistributionListContact>> Post(EmailDistributionListContact emailDistributionListContact)
         {
@@ -123,17 +178,34 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ValidationResults));
             }
 
-            try
+            if (LoggedInService.IsLocal)
             {
-               db.EmailDistributionListContacts.Add(emailDistributionListContact);
-               db.SaveChanges();
-            }
-            catch (DbUpdateException ex)
-            {
-               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
-            }
+                try
+                {
+                   dbLocal.EmailDistributionListContacts.Add(emailDistributionListContact);
+                   dbLocal.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                   return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
 
-            return await Task.FromResult(Ok(emailDistributionListContact));
+                return await Task.FromResult(Ok(emailDistributionListContact));
+            }
+            else
+            {
+                try
+                {
+                   db.EmailDistributionListContacts.Add(emailDistributionListContact);
+                   db.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                   return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
+
+                return await Task.FromResult(Ok(emailDistributionListContact));
+            }
         }
         public async Task<ActionResult<EmailDistributionListContact>> Put(EmailDistributionListContact emailDistributionListContact)
         {
@@ -148,6 +220,22 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ValidationResults));
             }
 
+            if (LoggedInService.IsLocal)
+            {
+            try
+            {
+               dbLocal.EmailDistributionListContacts.Update(emailDistributionListContact);
+               dbLocal.SaveChanges();
+            }
+            catch (DbUpdateException ex)
+            {
+               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+            }
+
+            return await Task.FromResult(Ok(emailDistributionListContact));
+            }
+            else
+            {
             try
             {
                db.EmailDistributionListContacts.Update(emailDistributionListContact);
@@ -159,6 +247,7 @@ namespace CSSPServices
             }
 
             return await Task.FromResult(Ok(emailDistributionListContact));
+            }
         }
         #endregion Functions public
 
@@ -175,13 +264,35 @@ namespace CSSPServices
                     yield return new ValidationResult(string.Format(CultureServicesRes._IsRequired, "EmailDistributionListContactID"), new[] { "EmailDistributionListContactID" });
                 }
 
-                if (!(from c in db.EmailDistributionListContacts select c).Where(c => c.EmailDistributionListContactID == emailDistributionListContact.EmailDistributionListContactID).Any())
+                if (LoggedInService.IsLocal)
                 {
-                    yield return new ValidationResult(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "EmailDistributionListContact", "EmailDistributionListContactID", emailDistributionListContact.EmailDistributionListContactID.ToString()), new[] { "EmailDistributionListContactID" });
+                    if (!(from c in dbLocal.EmailDistributionListContacts select c).Where(c => c.EmailDistributionListContactID == emailDistributionListContact.EmailDistributionListContactID).Any())
+                    {
+                        yield return new ValidationResult(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "EmailDistributionListContact", "EmailDistributionListContactID", emailDistributionListContact.EmailDistributionListContactID.ToString()), new[] { "EmailDistributionListContactID" });
+                    }
+                }
+                else
+                {
+                    if (!(from c in db.EmailDistributionListContacts select c).Where(c => c.EmailDistributionListContactID == emailDistributionListContact.EmailDistributionListContactID).Any())
+                    {
+                        yield return new ValidationResult(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "EmailDistributionListContact", "EmailDistributionListContactID", emailDistributionListContact.EmailDistributionListContactID.ToString()), new[] { "EmailDistributionListContactID" });
+                    }
                 }
             }
 
-            EmailDistributionList EmailDistributionListEmailDistributionListID = (from c in db.EmailDistributionLists where c.EmailDistributionListID == emailDistributionListContact.EmailDistributionListID select c).FirstOrDefault();
+            EmailDistributionList EmailDistributionListEmailDistributionListID = null;
+            if (LoggedInService.IsLocal)
+            {
+                EmailDistributionListEmailDistributionListID = (from c in dbLocal.EmailDistributionLists where c.EmailDistributionListID == emailDistributionListContact.EmailDistributionListID select c).FirstOrDefault();
+                if (EmailDistributionListEmailDistributionListID == null)
+                {
+                    EmailDistributionListEmailDistributionListID = (from c in dbIM.EmailDistributionLists where c.EmailDistributionListID == emailDistributionListContact.EmailDistributionListID select c).FirstOrDefault();
+                }
+            }
+            else
+            {
+                EmailDistributionListEmailDistributionListID = (from c in db.EmailDistributionLists where c.EmailDistributionListID == emailDistributionListContact.EmailDistributionListID select c).FirstOrDefault();
+            }
 
             if (EmailDistributionListEmailDistributionListID == null)
             {
@@ -229,7 +340,19 @@ namespace CSSPServices
                 }
             }
 
-            TVItem TVItemLastUpdateContactTVItemID = (from c in db.TVItems where c.TVItemID == emailDistributionListContact.LastUpdateContactTVItemID select c).FirstOrDefault();
+            TVItem TVItemLastUpdateContactTVItemID = null;
+            if (LoggedInService.IsLocal)
+            {
+                TVItemLastUpdateContactTVItemID = (from c in dbLocal.TVItems where c.TVItemID == emailDistributionListContact.LastUpdateContactTVItemID select c).FirstOrDefault();
+                if (TVItemLastUpdateContactTVItemID == null)
+                {
+                    TVItemLastUpdateContactTVItemID = (from c in dbIM.TVItems where c.TVItemID == emailDistributionListContact.LastUpdateContactTVItemID select c).FirstOrDefault();
+                }
+            }
+            else
+            {
+                TVItemLastUpdateContactTVItemID = (from c in db.TVItems where c.TVItemID == emailDistributionListContact.LastUpdateContactTVItemID select c).FirstOrDefault();
+            }
 
             if (TVItemLastUpdateContactTVItemID == null)
             {

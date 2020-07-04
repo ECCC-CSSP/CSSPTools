@@ -116,6 +116,9 @@ namespace ServicesClassNameServiceTestGeneratedServices.Services
                     sb.AppendLine(@"        private ILoggedInService LoggedInService { get; set; }");
                     sb.AppendLine($@"        private I{ TypeName }Service { TypeName }Service {{ get; set; }}");
                     sb.AppendLine(@"        private CSSPDBContext db { get; set; }");
+                    sb.AppendLine(@"        private CSSPDBLocalContext dbLocal { get; set; }");
+                    sb.AppendLine(@"        private InMemoryDBContext dbIM { get; set; }");
+                    sb.AppendLine($@"        private { TypeName } { TypeNameLower } {{ get; set; }}");
                 }
                 sb.AppendLine(@"        #endregion Properties");
                 sb.AppendLine(@"");
@@ -168,6 +171,7 @@ namespace ServicesClassNameServiceTestGeneratedServices.Services
                 sb.AppendLine(@"        #region Functions private");
                 if (!ClassNotMapped)
                 {
+                    if (!await GenerateDoCRUDTest(TypeName, TypeNameLower, sb)) return await Task.FromResult(false);
                     if (!await GenerateSetupTestCode(TypeName, TypeNameLower, sb)) return await Task.FromResult(false);
                     //if (!await GenerateCheckClassNameFieldsTestCode(type, types, TypeName, TypeNameLower, sb)) return await Task.FromResult(false);
                     if (!await GenerateGetFilledRandomClassnameTestCode(type, TypeName, TypeNameLower, sb)) return await Task.FromResult(false);

@@ -36,6 +36,8 @@ namespace CSSPServices
 
         #region Properties
         private CSSPDBContext db { get; }
+        private CSSPDBLocalContext dbLocal { get; }
+        private InMemoryDBContext dbIM { get; }
         private ICultureService CultureService { get; }
         private ILoggedInService LoggedInService { get; }
         private IEnums enums { get; }
@@ -43,12 +45,14 @@ namespace CSSPServices
         #endregion Properties
 
         #region Constructors
-        public UseOfSiteService(ICultureService CultureService, ILoggedInService LoggedInService, IEnums enums, CSSPDBContext db)
+        public UseOfSiteService(ICultureService CultureService, ILoggedInService LoggedInService, IEnums enums, CSSPDBContext db, CSSPDBLocalContext dbLocal, InMemoryDBContext dbIM)
         {
             this.CultureService = CultureService;
             this.LoggedInService = LoggedInService;
             this.enums = enums;
             this.db = db;
+            this.dbLocal = dbLocal;
+            this.dbIM = dbIM;
         }
         #endregion Constructors
 
@@ -60,16 +64,32 @@ namespace CSSPServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            UseOfSite useofsite = (from c in db.UseOfSites.AsNoTracking()
-                    where c.UseOfSiteID == UseOfSiteID
-                    select c).FirstOrDefault();
-
-            if (useofsite == null)
+            if (LoggedInService.IsLocal)
             {
-               return await Task.FromResult(NotFound());
-            }
+                UseOfSite useofsite = (from c in dbLocal.UseOfSites.AsNoTracking()
+                        where c.UseOfSiteID == UseOfSiteID
+                        select c).FirstOrDefault();
 
-            return await Task.FromResult(Ok(useofsite));
+                if (useofsite == null)
+                {
+                   return await Task.FromResult(NotFound());
+                }
+
+                return await Task.FromResult(Ok(useofsite));
+            }
+            else
+            {
+                UseOfSite useofsite = (from c in db.UseOfSites.AsNoTracking()
+                        where c.UseOfSiteID == UseOfSiteID
+                        select c).FirstOrDefault();
+
+                if (useofsite == null)
+                {
+                   return await Task.FromResult(NotFound());
+                }
+
+                return await Task.FromResult(Ok(useofsite));
+            }
         }
         public async Task<ActionResult<List<UseOfSite>>> GetUseOfSiteList()
         {
@@ -78,9 +98,18 @@ namespace CSSPServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            List<UseOfSite> useofsiteList = (from c in db.UseOfSites.AsNoTracking() select c).Take(100).ToList();
+            if (LoggedInService.IsLocal)
+            {
+                List<UseOfSite> useofsiteList = (from c in dbLocal.UseOfSites.AsNoTracking() select c).Take(100).ToList();
 
-            return await Task.FromResult(Ok(useofsiteList));
+                return await Task.FromResult(Ok(useofsiteList));
+            }
+            else
+            {
+                List<UseOfSite> useofsiteList = (from c in db.UseOfSites.AsNoTracking() select c).Take(100).ToList();
+
+                return await Task.FromResult(Ok(useofsiteList));
+            }
         }
         public async Task<ActionResult<bool>> Delete(int UseOfSiteID)
         {
@@ -89,26 +118,52 @@ namespace CSSPServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            UseOfSite useOfSite = (from c in db.UseOfSites
-                               where c.UseOfSiteID == UseOfSiteID
-                               select c).FirstOrDefault();
-            
-            if (useOfSite == null)
+            if (LoggedInService.IsLocal)
             {
-                return await Task.FromResult(BadRequest(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "UseOfSite", "UseOfSiteID", UseOfSiteID.ToString())));
-            }
+                UseOfSite useOfSite = (from c in dbLocal.UseOfSites
+                                   where c.UseOfSiteID == UseOfSiteID
+                                   select c).FirstOrDefault();
+                
+                if (useOfSite == null)
+                {
+                    return await Task.FromResult(BadRequest(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "UseOfSite", "UseOfSiteID", UseOfSiteID.ToString())));
+                }
 
-            try
-            {
-               db.UseOfSites.Remove(useOfSite);
-               db.SaveChanges();
-            }
-            catch (DbUpdateException ex)
-            {
-               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
-            }
+                try
+                {
+                   dbLocal.UseOfSites.Remove(useOfSite);
+                   dbLocal.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                   return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
 
-            return await Task.FromResult(Ok(true));
+                return await Task.FromResult(Ok(true));
+            }
+            else
+            {
+                UseOfSite useOfSite = (from c in db.UseOfSites
+                                   where c.UseOfSiteID == UseOfSiteID
+                                   select c).FirstOrDefault();
+                
+                if (useOfSite == null)
+                {
+                    return await Task.FromResult(BadRequest(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "UseOfSite", "UseOfSiteID", UseOfSiteID.ToString())));
+                }
+
+                try
+                {
+                   db.UseOfSites.Remove(useOfSite);
+                   db.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                   return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
+
+                return await Task.FromResult(Ok(true));
+            }
         }
         public async Task<ActionResult<UseOfSite>> Post(UseOfSite useOfSite)
         {
@@ -123,17 +178,34 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ValidationResults));
             }
 
-            try
+            if (LoggedInService.IsLocal)
             {
-               db.UseOfSites.Add(useOfSite);
-               db.SaveChanges();
-            }
-            catch (DbUpdateException ex)
-            {
-               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
-            }
+                try
+                {
+                   dbLocal.UseOfSites.Add(useOfSite);
+                   dbLocal.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                   return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
 
-            return await Task.FromResult(Ok(useOfSite));
+                return await Task.FromResult(Ok(useOfSite));
+            }
+            else
+            {
+                try
+                {
+                   db.UseOfSites.Add(useOfSite);
+                   db.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                   return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
+
+                return await Task.FromResult(Ok(useOfSite));
+            }
         }
         public async Task<ActionResult<UseOfSite>> Put(UseOfSite useOfSite)
         {
@@ -148,6 +220,22 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ValidationResults));
             }
 
+            if (LoggedInService.IsLocal)
+            {
+            try
+            {
+               dbLocal.UseOfSites.Update(useOfSite);
+               dbLocal.SaveChanges();
+            }
+            catch (DbUpdateException ex)
+            {
+               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+            }
+
+            return await Task.FromResult(Ok(useOfSite));
+            }
+            else
+            {
             try
             {
                db.UseOfSites.Update(useOfSite);
@@ -159,6 +247,7 @@ namespace CSSPServices
             }
 
             return await Task.FromResult(Ok(useOfSite));
+            }
         }
         #endregion Functions public
 
@@ -175,13 +264,35 @@ namespace CSSPServices
                     yield return new ValidationResult(string.Format(CultureServicesRes._IsRequired, "UseOfSiteID"), new[] { "UseOfSiteID" });
                 }
 
-                if (!(from c in db.UseOfSites select c).Where(c => c.UseOfSiteID == useOfSite.UseOfSiteID).Any())
+                if (LoggedInService.IsLocal)
                 {
-                    yield return new ValidationResult(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "UseOfSite", "UseOfSiteID", useOfSite.UseOfSiteID.ToString()), new[] { "UseOfSiteID" });
+                    if (!(from c in dbLocal.UseOfSites select c).Where(c => c.UseOfSiteID == useOfSite.UseOfSiteID).Any())
+                    {
+                        yield return new ValidationResult(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "UseOfSite", "UseOfSiteID", useOfSite.UseOfSiteID.ToString()), new[] { "UseOfSiteID" });
+                    }
+                }
+                else
+                {
+                    if (!(from c in db.UseOfSites select c).Where(c => c.UseOfSiteID == useOfSite.UseOfSiteID).Any())
+                    {
+                        yield return new ValidationResult(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "UseOfSite", "UseOfSiteID", useOfSite.UseOfSiteID.ToString()), new[] { "UseOfSiteID" });
+                    }
                 }
             }
 
-            TVItem TVItemSiteTVItemID = (from c in db.TVItems where c.TVItemID == useOfSite.SiteTVItemID select c).FirstOrDefault();
+            TVItem TVItemSiteTVItemID = null;
+            if (LoggedInService.IsLocal)
+            {
+                TVItemSiteTVItemID = (from c in dbLocal.TVItems where c.TVItemID == useOfSite.SiteTVItemID select c).FirstOrDefault();
+                if (TVItemSiteTVItemID == null)
+                {
+                    TVItemSiteTVItemID = (from c in dbIM.TVItems where c.TVItemID == useOfSite.SiteTVItemID select c).FirstOrDefault();
+                }
+            }
+            else
+            {
+                TVItemSiteTVItemID = (from c in db.TVItems where c.TVItemID == useOfSite.SiteTVItemID select c).FirstOrDefault();
+            }
 
             if (TVItemSiteTVItemID == null)
             {
@@ -201,7 +312,19 @@ namespace CSSPServices
                 }
             }
 
-            TVItem TVItemSubsectorTVItemID = (from c in db.TVItems where c.TVItemID == useOfSite.SubsectorTVItemID select c).FirstOrDefault();
+            TVItem TVItemSubsectorTVItemID = null;
+            if (LoggedInService.IsLocal)
+            {
+                TVItemSubsectorTVItemID = (from c in dbLocal.TVItems where c.TVItemID == useOfSite.SubsectorTVItemID select c).FirstOrDefault();
+                if (TVItemSubsectorTVItemID == null)
+                {
+                    TVItemSubsectorTVItemID = (from c in dbIM.TVItems where c.TVItemID == useOfSite.SubsectorTVItemID select c).FirstOrDefault();
+                }
+            }
+            else
+            {
+                TVItemSubsectorTVItemID = (from c in db.TVItems where c.TVItemID == useOfSite.SubsectorTVItemID select c).FirstOrDefault();
+            }
 
             if (TVItemSubsectorTVItemID == null)
             {
@@ -295,7 +418,19 @@ namespace CSSPServices
                 }
             }
 
-            TVItem TVItemLastUpdateContactTVItemID = (from c in db.TVItems where c.TVItemID == useOfSite.LastUpdateContactTVItemID select c).FirstOrDefault();
+            TVItem TVItemLastUpdateContactTVItemID = null;
+            if (LoggedInService.IsLocal)
+            {
+                TVItemLastUpdateContactTVItemID = (from c in dbLocal.TVItems where c.TVItemID == useOfSite.LastUpdateContactTVItemID select c).FirstOrDefault();
+                if (TVItemLastUpdateContactTVItemID == null)
+                {
+                    TVItemLastUpdateContactTVItemID = (from c in dbIM.TVItems where c.TVItemID == useOfSite.LastUpdateContactTVItemID select c).FirstOrDefault();
+                }
+            }
+            else
+            {
+                TVItemLastUpdateContactTVItemID = (from c in db.TVItems where c.TVItemID == useOfSite.LastUpdateContactTVItemID select c).FirstOrDefault();
+            }
 
             if (TVItemLastUpdateContactTVItemID == null)
             {

@@ -36,6 +36,9 @@ namespace CSSPServices.Tests
         private ILoggedInService LoggedInService { get; set; }
         private IClassificationService ClassificationService { get; set; }
         private CSSPDBContext db { get; set; }
+        private CSSPDBLocalContext dbLocal { get; set; }
+        private InMemoryDBContext dbIM { get; set; }
+        private Classification classification { get; set; }
         #endregion Properties
 
         #region Constructors
@@ -47,9 +50,11 @@ namespace CSSPServices.Tests
 
         #region Tests Generated CRUD
         [Theory]
-        [InlineData("en-CA")]
-        [InlineData("fr-CA")]
-        public async Task Classification_CRUD_Good_Test(string culture)
+        [InlineData("en-CA", "true")]
+        [InlineData("fr-CA", "true")]
+        [InlineData("en-CA", "false")]
+        [InlineData("fr-CA", "false")]
+        public async Task Classification_CRUD_Good_Test(string culture, string IsLocalStr)
         {
             // -------------------------------
             // -------------------------------
@@ -59,44 +64,57 @@ namespace CSSPServices.Tests
 
             Assert.True(await Setup(culture));
 
-            using (TransactionScope ts = new TransactionScope())
+            LoggedInService.IsLocal = bool.Parse(IsLocalStr);
+
+            classification = GetFilledRandomClassification("");
+
+            if (LoggedInService.IsLocal)
             {
-               Classification classification = GetFilledRandomClassification(""); 
-
-               // List<Classification>
-               var actionClassificationList = await ClassificationService.GetClassificationList();
-               Assert.Equal(200, ((ObjectResult)actionClassificationList.Result).StatusCode);
-               Assert.NotNull(((OkObjectResult)actionClassificationList.Result).Value);
-               List<Classification> classificationList = (List<Classification>)((OkObjectResult)actionClassificationList.Result).Value;
-
-               int count = ((List<Classification>)((OkObjectResult)actionClassificationList.Result).Value).Count();
-                Assert.True(count > 0);
-
-               // Post Classification
-               var actionClassificationAdded = await ClassificationService.Post(classification);
-               Assert.Equal(200, ((ObjectResult)actionClassificationAdded.Result).StatusCode);
-               Assert.NotNull(((OkObjectResult)actionClassificationAdded.Result).Value);
-               Classification classificationAdded = (Classification)((OkObjectResult)actionClassificationAdded.Result).Value;
-               Assert.NotNull(classificationAdded);
-
-               // Put Classification
-               var actionClassificationUpdated = await ClassificationService.Put(classification);
-               Assert.Equal(200, ((ObjectResult)actionClassificationUpdated.Result).StatusCode);
-               Assert.NotNull(((OkObjectResult)actionClassificationUpdated.Result).Value);
-               Classification classificationUpdated = (Classification)((OkObjectResult)actionClassificationUpdated.Result).Value;
-               Assert.NotNull(classificationUpdated);
-
-               // Delete Classification
-               var actionClassificationDeleted = await ClassificationService.Delete(classification.ClassificationID);
-               Assert.Equal(200, ((ObjectResult)actionClassificationDeleted.Result).StatusCode);
-               Assert.NotNull(((OkObjectResult)actionClassificationDeleted.Result).Value);
-               bool retBool = (bool)((OkObjectResult)actionClassificationDeleted.Result).Value;
-               Assert.True(retBool);
+                await DoCRUDTest();
+            }
+            else
+            {
+                using (TransactionScope ts = new TransactionScope())
+                {
+                    await DoCRUDTest();
+                }
             }
         }
         #endregion Tests Generated CRUD
 
         #region Functions private
+        private async Task DoCRUDTest()
+        {
+            // Post Classification
+            var actionClassificationAdded = await ClassificationService.Post(classification);
+            Assert.Equal(200, ((ObjectResult)actionClassificationAdded.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionClassificationAdded.Result).Value);
+            Classification classificationAdded = (Classification)((OkObjectResult)actionClassificationAdded.Result).Value;
+            Assert.NotNull(classificationAdded);
+
+            // List<Classification>
+            var actionClassificationList = await ClassificationService.GetClassificationList();
+            Assert.Equal(200, ((ObjectResult)actionClassificationList.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionClassificationList.Result).Value);
+            List<Classification> classificationList = (List<Classification>)((OkObjectResult)actionClassificationList.Result).Value;
+
+            int count = ((List<Classification>)((OkObjectResult)actionClassificationList.Result).Value).Count();
+            Assert.True(count > 0);
+
+            // Put Classification
+            var actionClassificationUpdated = await ClassificationService.Put(classification);
+            Assert.Equal(200, ((ObjectResult)actionClassificationUpdated.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionClassificationUpdated.Result).Value);
+            Classification classificationUpdated = (Classification)((OkObjectResult)actionClassificationUpdated.Result).Value;
+            Assert.NotNull(classificationUpdated);
+
+            // Delete Classification
+            var actionClassificationDeleted = await ClassificationService.Delete(classification.ClassificationID);
+            Assert.Equal(200, ((ObjectResult)actionClassificationDeleted.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionClassificationDeleted.Result).Value);
+            bool retBool = (bool)((OkObjectResult)actionClassificationDeleted.Result).Value;
+            Assert.True(retBool);
+        }
         private async Task<bool> Setup(string culture)
         {
             Config = new ConfigurationBuilder()
@@ -109,6 +127,9 @@ namespace CSSPServices.Tests
 
             Services.AddSingleton<IConfiguration>(Config);
 
+            string CSSPDBLocalFileName = Config.GetValue<string>("CSSPDBLocal");
+            Assert.NotNull(CSSPDBLocalFileName);
+
             string TestDBConnString = Config.GetValue<string>("TestDBConnectionString");
             Assert.NotNull(TestDBConnString);
 
@@ -120,6 +141,15 @@ namespace CSSPServices.Tests
             Services.AddDbContext<InMemoryDBContext>(options =>
             {
                 options.UseInMemoryDatabase(TestDBConnString);
+            });
+
+            string appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+
+            FileInfo fiAppDataPath = new FileInfo(CSSPDBLocalFileName.Replace("{appDataPath}", appDataPath));
+
+            Services.AddDbContext<CSSPDBLocalContext>(options =>
+            {
+                options.UseSqlite($"Data Source={ fiAppDataPath.FullName }");
             });
 
             Services.AddSingleton<ICultureService, CultureService>();
@@ -141,6 +171,12 @@ namespace CSSPServices.Tests
             string Id = Config.GetValue<string>("Id");
             Assert.True(await LoggedInService.SetLoggedInContactInfo(Id));
 
+            //string IsLocalStr = Config.GetValue<string>("IsLocal");
+            //Assert.NotNull(IsLocalStr);
+
+            dbIM = Provider.GetService<InMemoryDBContext>();
+            Assert.NotNull(dbIM);
+
             ClassificationService = Provider.GetService<IClassificationService>();
             Assert.NotNull(ClassificationService);
 
@@ -148,6 +184,8 @@ namespace CSSPServices.Tests
         }
         private Classification GetFilledRandomClassification(string OmitPropName)
         {
+            dbIM.Database.EnsureDeleted();
+
             Classification classification = new Classification();
 
             if (OmitPropName != "ClassificationTVItemID") classification.ClassificationTVItemID = 13;
@@ -155,6 +193,16 @@ namespace CSSPServices.Tests
             if (OmitPropName != "Ordinal") classification.Ordinal = GetRandomInt(0, 10000);
             if (OmitPropName != "LastUpdateDate_UTC") classification.LastUpdateDate_UTC = new DateTime(2005, 3, 6);
             if (OmitPropName != "LastUpdateContactTVItemID") classification.LastUpdateContactTVItemID = 2;
+
+            if (LoggedInService.IsLocal)
+            {
+                if (OmitPropName != "ClassificationID") classification.ClassificationID = 10000000;
+
+                dbIM.TVItems.Add(new TVItem() { TVItemID = 13, TVLevel = 6, TVPath = "p1p5p6p9p10p12p13", TVType = (TVTypeEnum)79, ParentID = 12, IsActive = true, LastUpdateDate_UTC = new DateTime(2018, 8, 23, 17, 33, 9), LastUpdateContactTVItemID = 2});
+                dbIM.SaveChanges();
+                dbIM.TVItems.Add(new TVItem() { TVItemID = 2, TVLevel = 1, TVPath = "p1p2", TVType = (TVTypeEnum)5, ParentID = 1, IsActive = true, LastUpdateDate_UTC = new DateTime(2014, 12, 2, 16, 58, 16), LastUpdateContactTVItemID = 2});
+                dbIM.SaveChanges();
+            }
 
             return classification;
         }

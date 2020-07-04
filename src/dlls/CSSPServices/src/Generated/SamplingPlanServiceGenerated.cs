@@ -36,6 +36,8 @@ namespace CSSPServices
 
         #region Properties
         private CSSPDBContext db { get; }
+        private CSSPDBLocalContext dbLocal { get; }
+        private InMemoryDBContext dbIM { get; }
         private ICultureService CultureService { get; }
         private ILoggedInService LoggedInService { get; }
         private IEnums enums { get; }
@@ -43,12 +45,14 @@ namespace CSSPServices
         #endregion Properties
 
         #region Constructors
-        public SamplingPlanService(ICultureService CultureService, ILoggedInService LoggedInService, IEnums enums, CSSPDBContext db)
+        public SamplingPlanService(ICultureService CultureService, ILoggedInService LoggedInService, IEnums enums, CSSPDBContext db, CSSPDBLocalContext dbLocal, InMemoryDBContext dbIM)
         {
             this.CultureService = CultureService;
             this.LoggedInService = LoggedInService;
             this.enums = enums;
             this.db = db;
+            this.dbLocal = dbLocal;
+            this.dbIM = dbIM;
         }
         #endregion Constructors
 
@@ -60,16 +64,32 @@ namespace CSSPServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            SamplingPlan samplingplan = (from c in db.SamplingPlans.AsNoTracking()
-                    where c.SamplingPlanID == SamplingPlanID
-                    select c).FirstOrDefault();
-
-            if (samplingplan == null)
+            if (LoggedInService.IsLocal)
             {
-               return await Task.FromResult(NotFound());
-            }
+                SamplingPlan samplingplan = (from c in dbLocal.SamplingPlans.AsNoTracking()
+                        where c.SamplingPlanID == SamplingPlanID
+                        select c).FirstOrDefault();
 
-            return await Task.FromResult(Ok(samplingplan));
+                if (samplingplan == null)
+                {
+                   return await Task.FromResult(NotFound());
+                }
+
+                return await Task.FromResult(Ok(samplingplan));
+            }
+            else
+            {
+                SamplingPlan samplingplan = (from c in db.SamplingPlans.AsNoTracking()
+                        where c.SamplingPlanID == SamplingPlanID
+                        select c).FirstOrDefault();
+
+                if (samplingplan == null)
+                {
+                   return await Task.FromResult(NotFound());
+                }
+
+                return await Task.FromResult(Ok(samplingplan));
+            }
         }
         public async Task<ActionResult<List<SamplingPlan>>> GetSamplingPlanList()
         {
@@ -78,9 +98,18 @@ namespace CSSPServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            List<SamplingPlan> samplingplanList = (from c in db.SamplingPlans.AsNoTracking() select c).Take(100).ToList();
+            if (LoggedInService.IsLocal)
+            {
+                List<SamplingPlan> samplingplanList = (from c in dbLocal.SamplingPlans.AsNoTracking() select c).Take(100).ToList();
 
-            return await Task.FromResult(Ok(samplingplanList));
+                return await Task.FromResult(Ok(samplingplanList));
+            }
+            else
+            {
+                List<SamplingPlan> samplingplanList = (from c in db.SamplingPlans.AsNoTracking() select c).Take(100).ToList();
+
+                return await Task.FromResult(Ok(samplingplanList));
+            }
         }
         public async Task<ActionResult<bool>> Delete(int SamplingPlanID)
         {
@@ -89,26 +118,52 @@ namespace CSSPServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            SamplingPlan samplingPlan = (from c in db.SamplingPlans
-                               where c.SamplingPlanID == SamplingPlanID
-                               select c).FirstOrDefault();
-            
-            if (samplingPlan == null)
+            if (LoggedInService.IsLocal)
             {
-                return await Task.FromResult(BadRequest(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "SamplingPlan", "SamplingPlanID", SamplingPlanID.ToString())));
-            }
+                SamplingPlan samplingPlan = (from c in dbLocal.SamplingPlans
+                                   where c.SamplingPlanID == SamplingPlanID
+                                   select c).FirstOrDefault();
+                
+                if (samplingPlan == null)
+                {
+                    return await Task.FromResult(BadRequest(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "SamplingPlan", "SamplingPlanID", SamplingPlanID.ToString())));
+                }
 
-            try
-            {
-               db.SamplingPlans.Remove(samplingPlan);
-               db.SaveChanges();
-            }
-            catch (DbUpdateException ex)
-            {
-               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
-            }
+                try
+                {
+                   dbLocal.SamplingPlans.Remove(samplingPlan);
+                   dbLocal.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                   return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
 
-            return await Task.FromResult(Ok(true));
+                return await Task.FromResult(Ok(true));
+            }
+            else
+            {
+                SamplingPlan samplingPlan = (from c in db.SamplingPlans
+                                   where c.SamplingPlanID == SamplingPlanID
+                                   select c).FirstOrDefault();
+                
+                if (samplingPlan == null)
+                {
+                    return await Task.FromResult(BadRequest(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "SamplingPlan", "SamplingPlanID", SamplingPlanID.ToString())));
+                }
+
+                try
+                {
+                   db.SamplingPlans.Remove(samplingPlan);
+                   db.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                   return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
+
+                return await Task.FromResult(Ok(true));
+            }
         }
         public async Task<ActionResult<SamplingPlan>> Post(SamplingPlan samplingPlan)
         {
@@ -123,17 +178,34 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ValidationResults));
             }
 
-            try
+            if (LoggedInService.IsLocal)
             {
-               db.SamplingPlans.Add(samplingPlan);
-               db.SaveChanges();
-            }
-            catch (DbUpdateException ex)
-            {
-               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
-            }
+                try
+                {
+                   dbLocal.SamplingPlans.Add(samplingPlan);
+                   dbLocal.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                   return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
 
-            return await Task.FromResult(Ok(samplingPlan));
+                return await Task.FromResult(Ok(samplingPlan));
+            }
+            else
+            {
+                try
+                {
+                   db.SamplingPlans.Add(samplingPlan);
+                   db.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                   return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
+
+                return await Task.FromResult(Ok(samplingPlan));
+            }
         }
         public async Task<ActionResult<SamplingPlan>> Put(SamplingPlan samplingPlan)
         {
@@ -148,6 +220,22 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ValidationResults));
             }
 
+            if (LoggedInService.IsLocal)
+            {
+            try
+            {
+               dbLocal.SamplingPlans.Update(samplingPlan);
+               dbLocal.SaveChanges();
+            }
+            catch (DbUpdateException ex)
+            {
+               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+            }
+
+            return await Task.FromResult(Ok(samplingPlan));
+            }
+            else
+            {
             try
             {
                db.SamplingPlans.Update(samplingPlan);
@@ -159,6 +247,7 @@ namespace CSSPServices
             }
 
             return await Task.FromResult(Ok(samplingPlan));
+            }
         }
         #endregion Functions public
 
@@ -175,9 +264,19 @@ namespace CSSPServices
                     yield return new ValidationResult(string.Format(CultureServicesRes._IsRequired, "SamplingPlanID"), new[] { "SamplingPlanID" });
                 }
 
-                if (!(from c in db.SamplingPlans select c).Where(c => c.SamplingPlanID == samplingPlan.SamplingPlanID).Any())
+                if (LoggedInService.IsLocal)
                 {
-                    yield return new ValidationResult(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "SamplingPlan", "SamplingPlanID", samplingPlan.SamplingPlanID.ToString()), new[] { "SamplingPlanID" });
+                    if (!(from c in dbLocal.SamplingPlans select c).Where(c => c.SamplingPlanID == samplingPlan.SamplingPlanID).Any())
+                    {
+                        yield return new ValidationResult(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "SamplingPlan", "SamplingPlanID", samplingPlan.SamplingPlanID.ToString()), new[] { "SamplingPlanID" });
+                    }
+                }
+                else
+                {
+                    if (!(from c in db.SamplingPlans select c).Where(c => c.SamplingPlanID == samplingPlan.SamplingPlanID).Any())
+                    {
+                        yield return new ValidationResult(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "SamplingPlan", "SamplingPlanID", samplingPlan.SamplingPlanID.ToString()), new[] { "SamplingPlanID" });
+                    }
                 }
             }
 
@@ -219,7 +318,19 @@ namespace CSSPServices
                 yield return new ValidationResult(string.Format(CultureServicesRes._IsRequired, "LabSheetType"), new[] { "LabSheetType" });
             }
 
-            TVItem TVItemProvinceTVItemID = (from c in db.TVItems where c.TVItemID == samplingPlan.ProvinceTVItemID select c).FirstOrDefault();
+            TVItem TVItemProvinceTVItemID = null;
+            if (LoggedInService.IsLocal)
+            {
+                TVItemProvinceTVItemID = (from c in dbLocal.TVItems where c.TVItemID == samplingPlan.ProvinceTVItemID select c).FirstOrDefault();
+                if (TVItemProvinceTVItemID == null)
+                {
+                    TVItemProvinceTVItemID = (from c in dbIM.TVItems where c.TVItemID == samplingPlan.ProvinceTVItemID select c).FirstOrDefault();
+                }
+            }
+            else
+            {
+                TVItemProvinceTVItemID = (from c in db.TVItems where c.TVItemID == samplingPlan.ProvinceTVItemID select c).FirstOrDefault();
+            }
 
             if (TVItemProvinceTVItemID == null)
             {
@@ -237,7 +348,19 @@ namespace CSSPServices
                 }
             }
 
-            TVItem TVItemCreatorTVItemID = (from c in db.TVItems where c.TVItemID == samplingPlan.CreatorTVItemID select c).FirstOrDefault();
+            TVItem TVItemCreatorTVItemID = null;
+            if (LoggedInService.IsLocal)
+            {
+                TVItemCreatorTVItemID = (from c in dbLocal.TVItems where c.TVItemID == samplingPlan.CreatorTVItemID select c).FirstOrDefault();
+                if (TVItemCreatorTVItemID == null)
+                {
+                    TVItemCreatorTVItemID = (from c in dbIM.TVItems where c.TVItemID == samplingPlan.CreatorTVItemID select c).FirstOrDefault();
+                }
+            }
+            else
+            {
+                TVItemCreatorTVItemID = (from c in db.TVItems where c.TVItemID == samplingPlan.CreatorTVItemID select c).FirstOrDefault();
+            }
 
             if (TVItemCreatorTVItemID == null)
             {
@@ -292,7 +415,19 @@ namespace CSSPServices
 
             if (samplingPlan.SamplingPlanFileTVItemID != null)
             {
-                TVItem TVItemSamplingPlanFileTVItemID = (from c in db.TVItems where c.TVItemID == samplingPlan.SamplingPlanFileTVItemID select c).FirstOrDefault();
+                TVItem TVItemSamplingPlanFileTVItemID = null;
+                if (LoggedInService.IsLocal)
+                {
+                    TVItemSamplingPlanFileTVItemID = (from c in dbLocal.TVItems where c.TVItemID == samplingPlan.SamplingPlanFileTVItemID select c).FirstOrDefault();
+                    if (TVItemSamplingPlanFileTVItemID == null)
+                    {
+                        TVItemSamplingPlanFileTVItemID = (from c in dbIM.TVItems where c.TVItemID == samplingPlan.SamplingPlanFileTVItemID select c).FirstOrDefault();
+                    }
+                }
+                else
+                {
+                    TVItemSamplingPlanFileTVItemID = (from c in db.TVItems where c.TVItemID == samplingPlan.SamplingPlanFileTVItemID select c).FirstOrDefault();
+                }
 
                 if (TVItemSamplingPlanFileTVItemID == null)
                 {
@@ -360,7 +495,19 @@ namespace CSSPServices
                 }
             }
 
-            TVItem TVItemLastUpdateContactTVItemID = (from c in db.TVItems where c.TVItemID == samplingPlan.LastUpdateContactTVItemID select c).FirstOrDefault();
+            TVItem TVItemLastUpdateContactTVItemID = null;
+            if (LoggedInService.IsLocal)
+            {
+                TVItemLastUpdateContactTVItemID = (from c in dbLocal.TVItems where c.TVItemID == samplingPlan.LastUpdateContactTVItemID select c).FirstOrDefault();
+                if (TVItemLastUpdateContactTVItemID == null)
+                {
+                    TVItemLastUpdateContactTVItemID = (from c in dbIM.TVItems where c.TVItemID == samplingPlan.LastUpdateContactTVItemID select c).FirstOrDefault();
+                }
+            }
+            else
+            {
+                TVItemLastUpdateContactTVItemID = (from c in db.TVItems where c.TVItemID == samplingPlan.LastUpdateContactTVItemID select c).FirstOrDefault();
+            }
 
             if (TVItemLastUpdateContactTVItemID == null)
             {

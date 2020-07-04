@@ -36,6 +36,9 @@ namespace CSSPServices.Tests
         private ILoggedInService LoggedInService { get; set; }
         private ITVFileService TVFileService { get; set; }
         private CSSPDBContext db { get; set; }
+        private CSSPDBLocalContext dbLocal { get; set; }
+        private InMemoryDBContext dbIM { get; set; }
+        private TVFile tvFile { get; set; }
         #endregion Properties
 
         #region Constructors
@@ -47,9 +50,11 @@ namespace CSSPServices.Tests
 
         #region Tests Generated CRUD
         [Theory]
-        [InlineData("en-CA")]
-        [InlineData("fr-CA")]
-        public async Task TVFile_CRUD_Good_Test(string culture)
+        [InlineData("en-CA", "true")]
+        [InlineData("fr-CA", "true")]
+        [InlineData("en-CA", "false")]
+        [InlineData("fr-CA", "false")]
+        public async Task TVFile_CRUD_Good_Test(string culture, string IsLocalStr)
         {
             // -------------------------------
             // -------------------------------
@@ -59,44 +64,57 @@ namespace CSSPServices.Tests
 
             Assert.True(await Setup(culture));
 
-            using (TransactionScope ts = new TransactionScope())
+            LoggedInService.IsLocal = bool.Parse(IsLocalStr);
+
+            tvFile = GetFilledRandomTVFile("");
+
+            if (LoggedInService.IsLocal)
             {
-               TVFile tvFile = GetFilledRandomTVFile(""); 
-
-               // List<TVFile>
-               var actionTVFileList = await TVFileService.GetTVFileList();
-               Assert.Equal(200, ((ObjectResult)actionTVFileList.Result).StatusCode);
-               Assert.NotNull(((OkObjectResult)actionTVFileList.Result).Value);
-               List<TVFile> tvFileList = (List<TVFile>)((OkObjectResult)actionTVFileList.Result).Value;
-
-               int count = ((List<TVFile>)((OkObjectResult)actionTVFileList.Result).Value).Count();
-                Assert.True(count > 0);
-
-               // Post TVFile
-               var actionTVFileAdded = await TVFileService.Post(tvFile);
-               Assert.Equal(200, ((ObjectResult)actionTVFileAdded.Result).StatusCode);
-               Assert.NotNull(((OkObjectResult)actionTVFileAdded.Result).Value);
-               TVFile tvFileAdded = (TVFile)((OkObjectResult)actionTVFileAdded.Result).Value;
-               Assert.NotNull(tvFileAdded);
-
-               // Put TVFile
-               var actionTVFileUpdated = await TVFileService.Put(tvFile);
-               Assert.Equal(200, ((ObjectResult)actionTVFileUpdated.Result).StatusCode);
-               Assert.NotNull(((OkObjectResult)actionTVFileUpdated.Result).Value);
-               TVFile tvFileUpdated = (TVFile)((OkObjectResult)actionTVFileUpdated.Result).Value;
-               Assert.NotNull(tvFileUpdated);
-
-               // Delete TVFile
-               var actionTVFileDeleted = await TVFileService.Delete(tvFile.TVFileID);
-               Assert.Equal(200, ((ObjectResult)actionTVFileDeleted.Result).StatusCode);
-               Assert.NotNull(((OkObjectResult)actionTVFileDeleted.Result).Value);
-               bool retBool = (bool)((OkObjectResult)actionTVFileDeleted.Result).Value;
-               Assert.True(retBool);
+                await DoCRUDTest();
+            }
+            else
+            {
+                using (TransactionScope ts = new TransactionScope())
+                {
+                    await DoCRUDTest();
+                }
             }
         }
         #endregion Tests Generated CRUD
 
         #region Functions private
+        private async Task DoCRUDTest()
+        {
+            // Post TVFile
+            var actionTVFileAdded = await TVFileService.Post(tvFile);
+            Assert.Equal(200, ((ObjectResult)actionTVFileAdded.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionTVFileAdded.Result).Value);
+            TVFile tvFileAdded = (TVFile)((OkObjectResult)actionTVFileAdded.Result).Value;
+            Assert.NotNull(tvFileAdded);
+
+            // List<TVFile>
+            var actionTVFileList = await TVFileService.GetTVFileList();
+            Assert.Equal(200, ((ObjectResult)actionTVFileList.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionTVFileList.Result).Value);
+            List<TVFile> tvFileList = (List<TVFile>)((OkObjectResult)actionTVFileList.Result).Value;
+
+            int count = ((List<TVFile>)((OkObjectResult)actionTVFileList.Result).Value).Count();
+            Assert.True(count > 0);
+
+            // Put TVFile
+            var actionTVFileUpdated = await TVFileService.Put(tvFile);
+            Assert.Equal(200, ((ObjectResult)actionTVFileUpdated.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionTVFileUpdated.Result).Value);
+            TVFile tvFileUpdated = (TVFile)((OkObjectResult)actionTVFileUpdated.Result).Value;
+            Assert.NotNull(tvFileUpdated);
+
+            // Delete TVFile
+            var actionTVFileDeleted = await TVFileService.Delete(tvFile.TVFileID);
+            Assert.Equal(200, ((ObjectResult)actionTVFileDeleted.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionTVFileDeleted.Result).Value);
+            bool retBool = (bool)((OkObjectResult)actionTVFileDeleted.Result).Value;
+            Assert.True(retBool);
+        }
         private async Task<bool> Setup(string culture)
         {
             Config = new ConfigurationBuilder()
@@ -109,6 +127,9 @@ namespace CSSPServices.Tests
 
             Services.AddSingleton<IConfiguration>(Config);
 
+            string CSSPDBLocalFileName = Config.GetValue<string>("CSSPDBLocal");
+            Assert.NotNull(CSSPDBLocalFileName);
+
             string TestDBConnString = Config.GetValue<string>("TestDBConnectionString");
             Assert.NotNull(TestDBConnString);
 
@@ -120,6 +141,15 @@ namespace CSSPServices.Tests
             Services.AddDbContext<InMemoryDBContext>(options =>
             {
                 options.UseInMemoryDatabase(TestDBConnString);
+            });
+
+            string appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+
+            FileInfo fiAppDataPath = new FileInfo(CSSPDBLocalFileName.Replace("{appDataPath}", appDataPath));
+
+            Services.AddDbContext<CSSPDBLocalContext>(options =>
+            {
+                options.UseSqlite($"Data Source={ fiAppDataPath.FullName }");
             });
 
             Services.AddSingleton<ICultureService, CultureService>();
@@ -141,6 +171,12 @@ namespace CSSPServices.Tests
             string Id = Config.GetValue<string>("Id");
             Assert.True(await LoggedInService.SetLoggedInContactInfo(Id));
 
+            //string IsLocalStr = Config.GetValue<string>("IsLocal");
+            //Assert.NotNull(IsLocalStr);
+
+            dbIM = Provider.GetService<InMemoryDBContext>();
+            Assert.NotNull(dbIM);
+
             TVFileService = Provider.GetService<ITVFileService>();
             Assert.NotNull(TVFileService);
 
@@ -148,6 +184,8 @@ namespace CSSPServices.Tests
         }
         private TVFile GetFilledRandomTVFile(string OmitPropName)
         {
+            dbIM.Database.EnsureDeleted();
+
             TVFile tvFile = new TVFile();
 
             if (OmitPropName != "TVFileTVItemID") tvFile.TVFileTVItemID = 42;
@@ -167,6 +205,18 @@ namespace CSSPServices.Tests
             if (OmitPropName != "ServerFilePath") tvFile.ServerFilePath = GetRandomString("", 5);
             if (OmitPropName != "LastUpdateDate_UTC") tvFile.LastUpdateDate_UTC = new DateTime(2005, 3, 6);
             if (OmitPropName != "LastUpdateContactTVItemID") tvFile.LastUpdateContactTVItemID = 2;
+
+            if (LoggedInService.IsLocal)
+            {
+                if (OmitPropName != "TVFileID") tvFile.TVFileID = 10000000;
+
+                dbIM.TVItems.Add(new TVItem() { TVItemID = 42, TVLevel = 5, TVPath = "p1p5p6p39p41p42", TVType = (TVTypeEnum)8, ParentID = 41, IsActive = true, LastUpdateDate_UTC = new DateTime(2016, 5, 5, 17, 18, 26), LastUpdateContactTVItemID = 2});
+                dbIM.SaveChanges();
+                dbIM.ReportTypes.Add(new ReportType() { ReportTypeID = 1 });
+                dbIM.SaveChanges();
+                dbIM.TVItems.Add(new TVItem() { TVItemID = 2, TVLevel = 1, TVPath = "p1p2", TVType = (TVTypeEnum)5, ParentID = 1, IsActive = true, LastUpdateDate_UTC = new DateTime(2014, 12, 2, 16, 58, 16), LastUpdateContactTVItemID = 2});
+                dbIM.SaveChanges();
+            }
 
             return tvFile;
         }

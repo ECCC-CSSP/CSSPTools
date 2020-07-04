@@ -36,6 +36,8 @@ namespace CSSPServices
 
         #region Properties
         private CSSPDBContext db { get; }
+        private CSSPDBLocalContext dbLocal { get; }
+        private InMemoryDBContext dbIM { get; }
         private ICultureService CultureService { get; }
         private ILoggedInService LoggedInService { get; }
         private IEnums enums { get; }
@@ -43,12 +45,14 @@ namespace CSSPServices
         #endregion Properties
 
         #region Constructors
-        public HelpDocService(ICultureService CultureService, ILoggedInService LoggedInService, IEnums enums, CSSPDBContext db)
+        public HelpDocService(ICultureService CultureService, ILoggedInService LoggedInService, IEnums enums, CSSPDBContext db, CSSPDBLocalContext dbLocal, InMemoryDBContext dbIM)
         {
             this.CultureService = CultureService;
             this.LoggedInService = LoggedInService;
             this.enums = enums;
             this.db = db;
+            this.dbLocal = dbLocal;
+            this.dbIM = dbIM;
         }
         #endregion Constructors
 
@@ -60,16 +64,32 @@ namespace CSSPServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            HelpDoc helpdoc = (from c in db.HelpDocs.AsNoTracking()
-                    where c.HelpDocID == HelpDocID
-                    select c).FirstOrDefault();
-
-            if (helpdoc == null)
+            if (LoggedInService.IsLocal)
             {
-               return await Task.FromResult(NotFound());
-            }
+                HelpDoc helpdoc = (from c in dbLocal.HelpDocs.AsNoTracking()
+                        where c.HelpDocID == HelpDocID
+                        select c).FirstOrDefault();
 
-            return await Task.FromResult(Ok(helpdoc));
+                if (helpdoc == null)
+                {
+                   return await Task.FromResult(NotFound());
+                }
+
+                return await Task.FromResult(Ok(helpdoc));
+            }
+            else
+            {
+                HelpDoc helpdoc = (from c in db.HelpDocs.AsNoTracking()
+                        where c.HelpDocID == HelpDocID
+                        select c).FirstOrDefault();
+
+                if (helpdoc == null)
+                {
+                   return await Task.FromResult(NotFound());
+                }
+
+                return await Task.FromResult(Ok(helpdoc));
+            }
         }
         public async Task<ActionResult<List<HelpDoc>>> GetHelpDocList()
         {
@@ -78,9 +98,18 @@ namespace CSSPServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            List<HelpDoc> helpdocList = (from c in db.HelpDocs.AsNoTracking() select c).Take(100).ToList();
+            if (LoggedInService.IsLocal)
+            {
+                List<HelpDoc> helpdocList = (from c in dbLocal.HelpDocs.AsNoTracking() select c).Take(100).ToList();
 
-            return await Task.FromResult(Ok(helpdocList));
+                return await Task.FromResult(Ok(helpdocList));
+            }
+            else
+            {
+                List<HelpDoc> helpdocList = (from c in db.HelpDocs.AsNoTracking() select c).Take(100).ToList();
+
+                return await Task.FromResult(Ok(helpdocList));
+            }
         }
         public async Task<ActionResult<bool>> Delete(int HelpDocID)
         {
@@ -89,26 +118,52 @@ namespace CSSPServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            HelpDoc helpDoc = (from c in db.HelpDocs
-                               where c.HelpDocID == HelpDocID
-                               select c).FirstOrDefault();
-            
-            if (helpDoc == null)
+            if (LoggedInService.IsLocal)
             {
-                return await Task.FromResult(BadRequest(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "HelpDoc", "HelpDocID", HelpDocID.ToString())));
-            }
+                HelpDoc helpDoc = (from c in dbLocal.HelpDocs
+                                   where c.HelpDocID == HelpDocID
+                                   select c).FirstOrDefault();
+                
+                if (helpDoc == null)
+                {
+                    return await Task.FromResult(BadRequest(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "HelpDoc", "HelpDocID", HelpDocID.ToString())));
+                }
 
-            try
-            {
-               db.HelpDocs.Remove(helpDoc);
-               db.SaveChanges();
-            }
-            catch (DbUpdateException ex)
-            {
-               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
-            }
+                try
+                {
+                   dbLocal.HelpDocs.Remove(helpDoc);
+                   dbLocal.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                   return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
 
-            return await Task.FromResult(Ok(true));
+                return await Task.FromResult(Ok(true));
+            }
+            else
+            {
+                HelpDoc helpDoc = (from c in db.HelpDocs
+                                   where c.HelpDocID == HelpDocID
+                                   select c).FirstOrDefault();
+                
+                if (helpDoc == null)
+                {
+                    return await Task.FromResult(BadRequest(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "HelpDoc", "HelpDocID", HelpDocID.ToString())));
+                }
+
+                try
+                {
+                   db.HelpDocs.Remove(helpDoc);
+                   db.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                   return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
+
+                return await Task.FromResult(Ok(true));
+            }
         }
         public async Task<ActionResult<HelpDoc>> Post(HelpDoc helpDoc)
         {
@@ -123,17 +178,34 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ValidationResults));
             }
 
-            try
+            if (LoggedInService.IsLocal)
             {
-               db.HelpDocs.Add(helpDoc);
-               db.SaveChanges();
-            }
-            catch (DbUpdateException ex)
-            {
-               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
-            }
+                try
+                {
+                   dbLocal.HelpDocs.Add(helpDoc);
+                   dbLocal.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                   return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
 
-            return await Task.FromResult(Ok(helpDoc));
+                return await Task.FromResult(Ok(helpDoc));
+            }
+            else
+            {
+                try
+                {
+                   db.HelpDocs.Add(helpDoc);
+                   db.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                   return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
+
+                return await Task.FromResult(Ok(helpDoc));
+            }
         }
         public async Task<ActionResult<HelpDoc>> Put(HelpDoc helpDoc)
         {
@@ -148,6 +220,22 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ValidationResults));
             }
 
+            if (LoggedInService.IsLocal)
+            {
+            try
+            {
+               dbLocal.HelpDocs.Update(helpDoc);
+               dbLocal.SaveChanges();
+            }
+            catch (DbUpdateException ex)
+            {
+               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+            }
+
+            return await Task.FromResult(Ok(helpDoc));
+            }
+            else
+            {
             try
             {
                db.HelpDocs.Update(helpDoc);
@@ -159,6 +247,7 @@ namespace CSSPServices
             }
 
             return await Task.FromResult(Ok(helpDoc));
+            }
         }
         #endregion Functions public
 
@@ -175,9 +264,19 @@ namespace CSSPServices
                     yield return new ValidationResult(string.Format(CultureServicesRes._IsRequired, "HelpDocID"), new[] { "HelpDocID" });
                 }
 
-                if (!(from c in db.HelpDocs select c).Where(c => c.HelpDocID == helpDoc.HelpDocID).Any())
+                if (LoggedInService.IsLocal)
                 {
-                    yield return new ValidationResult(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "HelpDoc", "HelpDocID", helpDoc.HelpDocID.ToString()), new[] { "HelpDocID" });
+                    if (!(from c in dbLocal.HelpDocs select c).Where(c => c.HelpDocID == helpDoc.HelpDocID).Any())
+                    {
+                        yield return new ValidationResult(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "HelpDoc", "HelpDocID", helpDoc.HelpDocID.ToString()), new[] { "HelpDocID" });
+                    }
+                }
+                else
+                {
+                    if (!(from c in db.HelpDocs select c).Where(c => c.HelpDocID == helpDoc.HelpDocID).Any())
+                    {
+                        yield return new ValidationResult(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "HelpDoc", "HelpDocID", helpDoc.HelpDocID.ToString()), new[] { "HelpDocID" });
+                    }
                 }
             }
 
@@ -219,7 +318,19 @@ namespace CSSPServices
                 }
             }
 
-            TVItem TVItemLastUpdateContactTVItemID = (from c in db.TVItems where c.TVItemID == helpDoc.LastUpdateContactTVItemID select c).FirstOrDefault();
+            TVItem TVItemLastUpdateContactTVItemID = null;
+            if (LoggedInService.IsLocal)
+            {
+                TVItemLastUpdateContactTVItemID = (from c in dbLocal.TVItems where c.TVItemID == helpDoc.LastUpdateContactTVItemID select c).FirstOrDefault();
+                if (TVItemLastUpdateContactTVItemID == null)
+                {
+                    TVItemLastUpdateContactTVItemID = (from c in dbIM.TVItems where c.TVItemID == helpDoc.LastUpdateContactTVItemID select c).FirstOrDefault();
+                }
+            }
+            else
+            {
+                TVItemLastUpdateContactTVItemID = (from c in db.TVItems where c.TVItemID == helpDoc.LastUpdateContactTVItemID select c).FirstOrDefault();
+            }
 
             if (TVItemLastUpdateContactTVItemID == null)
             {

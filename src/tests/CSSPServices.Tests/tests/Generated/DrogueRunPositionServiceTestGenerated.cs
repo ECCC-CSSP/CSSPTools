@@ -36,6 +36,9 @@ namespace CSSPServices.Tests
         private ILoggedInService LoggedInService { get; set; }
         private IDrogueRunPositionService DrogueRunPositionService { get; set; }
         private CSSPDBContext db { get; set; }
+        private CSSPDBLocalContext dbLocal { get; set; }
+        private InMemoryDBContext dbIM { get; set; }
+        private DrogueRunPosition drogueRunPosition { get; set; }
         #endregion Properties
 
         #region Constructors
@@ -47,9 +50,11 @@ namespace CSSPServices.Tests
 
         #region Tests Generated CRUD
         [Theory]
-        [InlineData("en-CA")]
-        [InlineData("fr-CA")]
-        public async Task DrogueRunPosition_CRUD_Good_Test(string culture)
+        [InlineData("en-CA", "true")]
+        [InlineData("fr-CA", "true")]
+        [InlineData("en-CA", "false")]
+        [InlineData("fr-CA", "false")]
+        public async Task DrogueRunPosition_CRUD_Good_Test(string culture, string IsLocalStr)
         {
             // -------------------------------
             // -------------------------------
@@ -59,44 +64,57 @@ namespace CSSPServices.Tests
 
             Assert.True(await Setup(culture));
 
-            using (TransactionScope ts = new TransactionScope())
+            LoggedInService.IsLocal = bool.Parse(IsLocalStr);
+
+            drogueRunPosition = GetFilledRandomDrogueRunPosition("");
+
+            if (LoggedInService.IsLocal)
             {
-               DrogueRunPosition drogueRunPosition = GetFilledRandomDrogueRunPosition(""); 
-
-               // List<DrogueRunPosition>
-               var actionDrogueRunPositionList = await DrogueRunPositionService.GetDrogueRunPositionList();
-               Assert.Equal(200, ((ObjectResult)actionDrogueRunPositionList.Result).StatusCode);
-               Assert.NotNull(((OkObjectResult)actionDrogueRunPositionList.Result).Value);
-               List<DrogueRunPosition> drogueRunPositionList = (List<DrogueRunPosition>)((OkObjectResult)actionDrogueRunPositionList.Result).Value;
-
-               int count = ((List<DrogueRunPosition>)((OkObjectResult)actionDrogueRunPositionList.Result).Value).Count();
-                Assert.True(count > 0);
-
-               // Post DrogueRunPosition
-               var actionDrogueRunPositionAdded = await DrogueRunPositionService.Post(drogueRunPosition);
-               Assert.Equal(200, ((ObjectResult)actionDrogueRunPositionAdded.Result).StatusCode);
-               Assert.NotNull(((OkObjectResult)actionDrogueRunPositionAdded.Result).Value);
-               DrogueRunPosition drogueRunPositionAdded = (DrogueRunPosition)((OkObjectResult)actionDrogueRunPositionAdded.Result).Value;
-               Assert.NotNull(drogueRunPositionAdded);
-
-               // Put DrogueRunPosition
-               var actionDrogueRunPositionUpdated = await DrogueRunPositionService.Put(drogueRunPosition);
-               Assert.Equal(200, ((ObjectResult)actionDrogueRunPositionUpdated.Result).StatusCode);
-               Assert.NotNull(((OkObjectResult)actionDrogueRunPositionUpdated.Result).Value);
-               DrogueRunPosition drogueRunPositionUpdated = (DrogueRunPosition)((OkObjectResult)actionDrogueRunPositionUpdated.Result).Value;
-               Assert.NotNull(drogueRunPositionUpdated);
-
-               // Delete DrogueRunPosition
-               var actionDrogueRunPositionDeleted = await DrogueRunPositionService.Delete(drogueRunPosition.DrogueRunPositionID);
-               Assert.Equal(200, ((ObjectResult)actionDrogueRunPositionDeleted.Result).StatusCode);
-               Assert.NotNull(((OkObjectResult)actionDrogueRunPositionDeleted.Result).Value);
-               bool retBool = (bool)((OkObjectResult)actionDrogueRunPositionDeleted.Result).Value;
-               Assert.True(retBool);
+                await DoCRUDTest();
+            }
+            else
+            {
+                using (TransactionScope ts = new TransactionScope())
+                {
+                    await DoCRUDTest();
+                }
             }
         }
         #endregion Tests Generated CRUD
 
         #region Functions private
+        private async Task DoCRUDTest()
+        {
+            // Post DrogueRunPosition
+            var actionDrogueRunPositionAdded = await DrogueRunPositionService.Post(drogueRunPosition);
+            Assert.Equal(200, ((ObjectResult)actionDrogueRunPositionAdded.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionDrogueRunPositionAdded.Result).Value);
+            DrogueRunPosition drogueRunPositionAdded = (DrogueRunPosition)((OkObjectResult)actionDrogueRunPositionAdded.Result).Value;
+            Assert.NotNull(drogueRunPositionAdded);
+
+            // List<DrogueRunPosition>
+            var actionDrogueRunPositionList = await DrogueRunPositionService.GetDrogueRunPositionList();
+            Assert.Equal(200, ((ObjectResult)actionDrogueRunPositionList.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionDrogueRunPositionList.Result).Value);
+            List<DrogueRunPosition> drogueRunPositionList = (List<DrogueRunPosition>)((OkObjectResult)actionDrogueRunPositionList.Result).Value;
+
+            int count = ((List<DrogueRunPosition>)((OkObjectResult)actionDrogueRunPositionList.Result).Value).Count();
+            Assert.True(count > 0);
+
+            // Put DrogueRunPosition
+            var actionDrogueRunPositionUpdated = await DrogueRunPositionService.Put(drogueRunPosition);
+            Assert.Equal(200, ((ObjectResult)actionDrogueRunPositionUpdated.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionDrogueRunPositionUpdated.Result).Value);
+            DrogueRunPosition drogueRunPositionUpdated = (DrogueRunPosition)((OkObjectResult)actionDrogueRunPositionUpdated.Result).Value;
+            Assert.NotNull(drogueRunPositionUpdated);
+
+            // Delete DrogueRunPosition
+            var actionDrogueRunPositionDeleted = await DrogueRunPositionService.Delete(drogueRunPosition.DrogueRunPositionID);
+            Assert.Equal(200, ((ObjectResult)actionDrogueRunPositionDeleted.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionDrogueRunPositionDeleted.Result).Value);
+            bool retBool = (bool)((OkObjectResult)actionDrogueRunPositionDeleted.Result).Value;
+            Assert.True(retBool);
+        }
         private async Task<bool> Setup(string culture)
         {
             Config = new ConfigurationBuilder()
@@ -109,6 +127,9 @@ namespace CSSPServices.Tests
 
             Services.AddSingleton<IConfiguration>(Config);
 
+            string CSSPDBLocalFileName = Config.GetValue<string>("CSSPDBLocal");
+            Assert.NotNull(CSSPDBLocalFileName);
+
             string TestDBConnString = Config.GetValue<string>("TestDBConnectionString");
             Assert.NotNull(TestDBConnString);
 
@@ -120,6 +141,15 @@ namespace CSSPServices.Tests
             Services.AddDbContext<InMemoryDBContext>(options =>
             {
                 options.UseInMemoryDatabase(TestDBConnString);
+            });
+
+            string appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+
+            FileInfo fiAppDataPath = new FileInfo(CSSPDBLocalFileName.Replace("{appDataPath}", appDataPath));
+
+            Services.AddDbContext<CSSPDBLocalContext>(options =>
+            {
+                options.UseSqlite($"Data Source={ fiAppDataPath.FullName }");
             });
 
             Services.AddSingleton<ICultureService, CultureService>();
@@ -141,6 +171,12 @@ namespace CSSPServices.Tests
             string Id = Config.GetValue<string>("Id");
             Assert.True(await LoggedInService.SetLoggedInContactInfo(Id));
 
+            //string IsLocalStr = Config.GetValue<string>("IsLocal");
+            //Assert.NotNull(IsLocalStr);
+
+            dbIM = Provider.GetService<InMemoryDBContext>();
+            Assert.NotNull(dbIM);
+
             DrogueRunPositionService = Provider.GetService<IDrogueRunPositionService>();
             Assert.NotNull(DrogueRunPositionService);
 
@@ -148,6 +184,8 @@ namespace CSSPServices.Tests
         }
         private DrogueRunPosition GetFilledRandomDrogueRunPosition(string OmitPropName)
         {
+            dbIM.Database.EnsureDeleted();
+
             DrogueRunPosition drogueRunPosition = new DrogueRunPosition();
 
             if (OmitPropName != "DrogueRunID") drogueRunPosition.DrogueRunID = 1;
@@ -159,6 +197,16 @@ namespace CSSPServices.Tests
             if (OmitPropName != "CalculatedDirection_deg") drogueRunPosition.CalculatedDirection_deg = GetRandomDouble(0.0D, 360.0D);
             if (OmitPropName != "LastUpdateDate_UTC") drogueRunPosition.LastUpdateDate_UTC = new DateTime(2005, 3, 6);
             if (OmitPropName != "LastUpdateContactTVItemID") drogueRunPosition.LastUpdateContactTVItemID = 2;
+
+            if (LoggedInService.IsLocal)
+            {
+                if (OmitPropName != "DrogueRunPositionID") drogueRunPosition.DrogueRunPositionID = 10000000;
+
+                dbIM.DrogueRuns.Add(new DrogueRun() { DrogueRunID = 1, SubsectorTVItemID = 12, DrogueNumber = 12, DrogueType = (DrogueTypeEnum)2, RunStartDateTime = new DateTime(2018, 10, 11, 12, 42, 7), IsRisingTide = true, LastUpdateDate_UTC = new DateTime(2019, 2, 11, 16, 27, 53), LastUpdateContactTVItemID = 2 });
+                dbIM.SaveChanges();
+                dbIM.TVItems.Add(new TVItem() { TVItemID = 2, TVLevel = 1, TVPath = "p1p2", TVType = (TVTypeEnum)5, ParentID = 1, IsActive = true, LastUpdateDate_UTC = new DateTime(2014, 12, 2, 16, 58, 16), LastUpdateContactTVItemID = 2});
+                dbIM.SaveChanges();
+            }
 
             return drogueRunPosition;
         }

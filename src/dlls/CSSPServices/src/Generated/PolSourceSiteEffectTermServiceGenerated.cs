@@ -36,6 +36,8 @@ namespace CSSPServices
 
         #region Properties
         private CSSPDBContext db { get; }
+        private CSSPDBLocalContext dbLocal { get; }
+        private InMemoryDBContext dbIM { get; }
         private ICultureService CultureService { get; }
         private ILoggedInService LoggedInService { get; }
         private IEnums enums { get; }
@@ -43,12 +45,14 @@ namespace CSSPServices
         #endregion Properties
 
         #region Constructors
-        public PolSourceSiteEffectTermService(ICultureService CultureService, ILoggedInService LoggedInService, IEnums enums, CSSPDBContext db)
+        public PolSourceSiteEffectTermService(ICultureService CultureService, ILoggedInService LoggedInService, IEnums enums, CSSPDBContext db, CSSPDBLocalContext dbLocal, InMemoryDBContext dbIM)
         {
             this.CultureService = CultureService;
             this.LoggedInService = LoggedInService;
             this.enums = enums;
             this.db = db;
+            this.dbLocal = dbLocal;
+            this.dbIM = dbIM;
         }
         #endregion Constructors
 
@@ -60,16 +64,32 @@ namespace CSSPServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            PolSourceSiteEffectTerm polsourcesiteeffectterm = (from c in db.PolSourceSiteEffectTerms.AsNoTracking()
-                    where c.PolSourceSiteEffectTermID == PolSourceSiteEffectTermID
-                    select c).FirstOrDefault();
-
-            if (polsourcesiteeffectterm == null)
+            if (LoggedInService.IsLocal)
             {
-               return await Task.FromResult(NotFound());
-            }
+                PolSourceSiteEffectTerm polsourcesiteeffectterm = (from c in dbLocal.PolSourceSiteEffectTerms.AsNoTracking()
+                        where c.PolSourceSiteEffectTermID == PolSourceSiteEffectTermID
+                        select c).FirstOrDefault();
 
-            return await Task.FromResult(Ok(polsourcesiteeffectterm));
+                if (polsourcesiteeffectterm == null)
+                {
+                   return await Task.FromResult(NotFound());
+                }
+
+                return await Task.FromResult(Ok(polsourcesiteeffectterm));
+            }
+            else
+            {
+                PolSourceSiteEffectTerm polsourcesiteeffectterm = (from c in db.PolSourceSiteEffectTerms.AsNoTracking()
+                        where c.PolSourceSiteEffectTermID == PolSourceSiteEffectTermID
+                        select c).FirstOrDefault();
+
+                if (polsourcesiteeffectterm == null)
+                {
+                   return await Task.FromResult(NotFound());
+                }
+
+                return await Task.FromResult(Ok(polsourcesiteeffectterm));
+            }
         }
         public async Task<ActionResult<List<PolSourceSiteEffectTerm>>> GetPolSourceSiteEffectTermList()
         {
@@ -78,9 +98,18 @@ namespace CSSPServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            List<PolSourceSiteEffectTerm> polsourcesiteeffecttermList = (from c in db.PolSourceSiteEffectTerms.AsNoTracking() select c).Take(100).ToList();
+            if (LoggedInService.IsLocal)
+            {
+                List<PolSourceSiteEffectTerm> polsourcesiteeffecttermList = (from c in dbLocal.PolSourceSiteEffectTerms.AsNoTracking() select c).Take(100).ToList();
 
-            return await Task.FromResult(Ok(polsourcesiteeffecttermList));
+                return await Task.FromResult(Ok(polsourcesiteeffecttermList));
+            }
+            else
+            {
+                List<PolSourceSiteEffectTerm> polsourcesiteeffecttermList = (from c in db.PolSourceSiteEffectTerms.AsNoTracking() select c).Take(100).ToList();
+
+                return await Task.FromResult(Ok(polsourcesiteeffecttermList));
+            }
         }
         public async Task<ActionResult<bool>> Delete(int PolSourceSiteEffectTermID)
         {
@@ -89,26 +118,52 @@ namespace CSSPServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            PolSourceSiteEffectTerm polSourceSiteEffectTerm = (from c in db.PolSourceSiteEffectTerms
-                               where c.PolSourceSiteEffectTermID == PolSourceSiteEffectTermID
-                               select c).FirstOrDefault();
-            
-            if (polSourceSiteEffectTerm == null)
+            if (LoggedInService.IsLocal)
             {
-                return await Task.FromResult(BadRequest(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "PolSourceSiteEffectTerm", "PolSourceSiteEffectTermID", PolSourceSiteEffectTermID.ToString())));
-            }
+                PolSourceSiteEffectTerm polSourceSiteEffectTerm = (from c in dbLocal.PolSourceSiteEffectTerms
+                                   where c.PolSourceSiteEffectTermID == PolSourceSiteEffectTermID
+                                   select c).FirstOrDefault();
+                
+                if (polSourceSiteEffectTerm == null)
+                {
+                    return await Task.FromResult(BadRequest(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "PolSourceSiteEffectTerm", "PolSourceSiteEffectTermID", PolSourceSiteEffectTermID.ToString())));
+                }
 
-            try
-            {
-               db.PolSourceSiteEffectTerms.Remove(polSourceSiteEffectTerm);
-               db.SaveChanges();
-            }
-            catch (DbUpdateException ex)
-            {
-               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
-            }
+                try
+                {
+                   dbLocal.PolSourceSiteEffectTerms.Remove(polSourceSiteEffectTerm);
+                   dbLocal.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                   return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
 
-            return await Task.FromResult(Ok(true));
+                return await Task.FromResult(Ok(true));
+            }
+            else
+            {
+                PolSourceSiteEffectTerm polSourceSiteEffectTerm = (from c in db.PolSourceSiteEffectTerms
+                                   where c.PolSourceSiteEffectTermID == PolSourceSiteEffectTermID
+                                   select c).FirstOrDefault();
+                
+                if (polSourceSiteEffectTerm == null)
+                {
+                    return await Task.FromResult(BadRequest(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "PolSourceSiteEffectTerm", "PolSourceSiteEffectTermID", PolSourceSiteEffectTermID.ToString())));
+                }
+
+                try
+                {
+                   db.PolSourceSiteEffectTerms.Remove(polSourceSiteEffectTerm);
+                   db.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                   return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
+
+                return await Task.FromResult(Ok(true));
+            }
         }
         public async Task<ActionResult<PolSourceSiteEffectTerm>> Post(PolSourceSiteEffectTerm polSourceSiteEffectTerm)
         {
@@ -123,17 +178,34 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ValidationResults));
             }
 
-            try
+            if (LoggedInService.IsLocal)
             {
-               db.PolSourceSiteEffectTerms.Add(polSourceSiteEffectTerm);
-               db.SaveChanges();
-            }
-            catch (DbUpdateException ex)
-            {
-               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
-            }
+                try
+                {
+                   dbLocal.PolSourceSiteEffectTerms.Add(polSourceSiteEffectTerm);
+                   dbLocal.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                   return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
 
-            return await Task.FromResult(Ok(polSourceSiteEffectTerm));
+                return await Task.FromResult(Ok(polSourceSiteEffectTerm));
+            }
+            else
+            {
+                try
+                {
+                   db.PolSourceSiteEffectTerms.Add(polSourceSiteEffectTerm);
+                   db.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                   return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
+
+                return await Task.FromResult(Ok(polSourceSiteEffectTerm));
+            }
         }
         public async Task<ActionResult<PolSourceSiteEffectTerm>> Put(PolSourceSiteEffectTerm polSourceSiteEffectTerm)
         {
@@ -148,6 +220,22 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ValidationResults));
             }
 
+            if (LoggedInService.IsLocal)
+            {
+            try
+            {
+               dbLocal.PolSourceSiteEffectTerms.Update(polSourceSiteEffectTerm);
+               dbLocal.SaveChanges();
+            }
+            catch (DbUpdateException ex)
+            {
+               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+            }
+
+            return await Task.FromResult(Ok(polSourceSiteEffectTerm));
+            }
+            else
+            {
             try
             {
                db.PolSourceSiteEffectTerms.Update(polSourceSiteEffectTerm);
@@ -159,6 +247,7 @@ namespace CSSPServices
             }
 
             return await Task.FromResult(Ok(polSourceSiteEffectTerm));
+            }
         }
         #endregion Functions public
 
@@ -175,15 +264,37 @@ namespace CSSPServices
                     yield return new ValidationResult(string.Format(CultureServicesRes._IsRequired, "PolSourceSiteEffectTermID"), new[] { "PolSourceSiteEffectTermID" });
                 }
 
-                if (!(from c in db.PolSourceSiteEffectTerms select c).Where(c => c.PolSourceSiteEffectTermID == polSourceSiteEffectTerm.PolSourceSiteEffectTermID).Any())
+                if (LoggedInService.IsLocal)
                 {
-                    yield return new ValidationResult(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "PolSourceSiteEffectTerm", "PolSourceSiteEffectTermID", polSourceSiteEffectTerm.PolSourceSiteEffectTermID.ToString()), new[] { "PolSourceSiteEffectTermID" });
+                    if (!(from c in dbLocal.PolSourceSiteEffectTerms select c).Where(c => c.PolSourceSiteEffectTermID == polSourceSiteEffectTerm.PolSourceSiteEffectTermID).Any())
+                    {
+                        yield return new ValidationResult(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "PolSourceSiteEffectTerm", "PolSourceSiteEffectTermID", polSourceSiteEffectTerm.PolSourceSiteEffectTermID.ToString()), new[] { "PolSourceSiteEffectTermID" });
+                    }
+                }
+                else
+                {
+                    if (!(from c in db.PolSourceSiteEffectTerms select c).Where(c => c.PolSourceSiteEffectTermID == polSourceSiteEffectTerm.PolSourceSiteEffectTermID).Any())
+                    {
+                        yield return new ValidationResult(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "PolSourceSiteEffectTerm", "PolSourceSiteEffectTermID", polSourceSiteEffectTerm.PolSourceSiteEffectTermID.ToString()), new[] { "PolSourceSiteEffectTermID" });
+                    }
                 }
             }
 
             if (polSourceSiteEffectTerm.UnderGroupID != null)
             {
-                PolSourceSiteEffectTerm PolSourceSiteEffectTermUnderGroupID = (from c in db.PolSourceSiteEffectTerms where c.PolSourceSiteEffectTermID == polSourceSiteEffectTerm.UnderGroupID select c).FirstOrDefault();
+                PolSourceSiteEffectTerm PolSourceSiteEffectTermUnderGroupID = null;
+                if (LoggedInService.IsLocal)
+                {
+                    PolSourceSiteEffectTermUnderGroupID = (from c in dbLocal.PolSourceSiteEffectTerms where c.PolSourceSiteEffectTermID == polSourceSiteEffectTerm.UnderGroupID select c).FirstOrDefault();
+                    if (PolSourceSiteEffectTermUnderGroupID == null)
+                    {
+                        PolSourceSiteEffectTermUnderGroupID = (from c in dbIM.PolSourceSiteEffectTerms where c.PolSourceSiteEffectTermID == polSourceSiteEffectTerm.UnderGroupID select c).FirstOrDefault();
+                    }
+                }
+                else
+                {
+                    PolSourceSiteEffectTermUnderGroupID = (from c in db.PolSourceSiteEffectTerms where c.PolSourceSiteEffectTermID == polSourceSiteEffectTerm.UnderGroupID select c).FirstOrDefault();
+                }
 
                 if (PolSourceSiteEffectTermUnderGroupID == null)
                 {
@@ -223,7 +334,19 @@ namespace CSSPServices
                 }
             }
 
-            TVItem TVItemLastUpdateContactTVItemID = (from c in db.TVItems where c.TVItemID == polSourceSiteEffectTerm.LastUpdateContactTVItemID select c).FirstOrDefault();
+            TVItem TVItemLastUpdateContactTVItemID = null;
+            if (LoggedInService.IsLocal)
+            {
+                TVItemLastUpdateContactTVItemID = (from c in dbLocal.TVItems where c.TVItemID == polSourceSiteEffectTerm.LastUpdateContactTVItemID select c).FirstOrDefault();
+                if (TVItemLastUpdateContactTVItemID == null)
+                {
+                    TVItemLastUpdateContactTVItemID = (from c in dbIM.TVItems where c.TVItemID == polSourceSiteEffectTerm.LastUpdateContactTVItemID select c).FirstOrDefault();
+                }
+            }
+            else
+            {
+                TVItemLastUpdateContactTVItemID = (from c in db.TVItems where c.TVItemID == polSourceSiteEffectTerm.LastUpdateContactTVItemID select c).FirstOrDefault();
+            }
 
             if (TVItemLastUpdateContactTVItemID == null)
             {

@@ -36,6 +36,9 @@ namespace CSSPServices.Tests
         private ILoggedInService LoggedInService { get; set; }
         private IResetPasswordService ResetPasswordService { get; set; }
         private CSSPDBContext db { get; set; }
+        private CSSPDBLocalContext dbLocal { get; set; }
+        private InMemoryDBContext dbIM { get; set; }
+        private ResetPassword resetPassword { get; set; }
         #endregion Properties
 
         #region Constructors
@@ -47,9 +50,11 @@ namespace CSSPServices.Tests
 
         #region Tests Generated CRUD
         [Theory]
-        [InlineData("en-CA")]
-        [InlineData("fr-CA")]
-        public async Task ResetPassword_CRUD_Good_Test(string culture)
+        [InlineData("en-CA", "true")]
+        [InlineData("fr-CA", "true")]
+        [InlineData("en-CA", "false")]
+        [InlineData("fr-CA", "false")]
+        public async Task ResetPassword_CRUD_Good_Test(string culture, string IsLocalStr)
         {
             // -------------------------------
             // -------------------------------
@@ -59,44 +64,57 @@ namespace CSSPServices.Tests
 
             Assert.True(await Setup(culture));
 
-            using (TransactionScope ts = new TransactionScope())
+            LoggedInService.IsLocal = bool.Parse(IsLocalStr);
+
+            resetPassword = GetFilledRandomResetPassword("");
+
+            if (LoggedInService.IsLocal)
             {
-               ResetPassword resetPassword = GetFilledRandomResetPassword(""); 
-
-               // List<ResetPassword>
-               var actionResetPasswordList = await ResetPasswordService.GetResetPasswordList();
-               Assert.Equal(200, ((ObjectResult)actionResetPasswordList.Result).StatusCode);
-               Assert.NotNull(((OkObjectResult)actionResetPasswordList.Result).Value);
-               List<ResetPassword> resetPasswordList = (List<ResetPassword>)((OkObjectResult)actionResetPasswordList.Result).Value;
-
-               int count = ((List<ResetPassword>)((OkObjectResult)actionResetPasswordList.Result).Value).Count();
-                Assert.True(count > 0);
-
-               // Post ResetPassword
-               var actionResetPasswordAdded = await ResetPasswordService.Post(resetPassword);
-               Assert.Equal(200, ((ObjectResult)actionResetPasswordAdded.Result).StatusCode);
-               Assert.NotNull(((OkObjectResult)actionResetPasswordAdded.Result).Value);
-               ResetPassword resetPasswordAdded = (ResetPassword)((OkObjectResult)actionResetPasswordAdded.Result).Value;
-               Assert.NotNull(resetPasswordAdded);
-
-               // Put ResetPassword
-               var actionResetPasswordUpdated = await ResetPasswordService.Put(resetPassword);
-               Assert.Equal(200, ((ObjectResult)actionResetPasswordUpdated.Result).StatusCode);
-               Assert.NotNull(((OkObjectResult)actionResetPasswordUpdated.Result).Value);
-               ResetPassword resetPasswordUpdated = (ResetPassword)((OkObjectResult)actionResetPasswordUpdated.Result).Value;
-               Assert.NotNull(resetPasswordUpdated);
-
-               // Delete ResetPassword
-               var actionResetPasswordDeleted = await ResetPasswordService.Delete(resetPassword.ResetPasswordID);
-               Assert.Equal(200, ((ObjectResult)actionResetPasswordDeleted.Result).StatusCode);
-               Assert.NotNull(((OkObjectResult)actionResetPasswordDeleted.Result).Value);
-               bool retBool = (bool)((OkObjectResult)actionResetPasswordDeleted.Result).Value;
-               Assert.True(retBool);
+                await DoCRUDTest();
+            }
+            else
+            {
+                using (TransactionScope ts = new TransactionScope())
+                {
+                    await DoCRUDTest();
+                }
             }
         }
         #endregion Tests Generated CRUD
 
         #region Functions private
+        private async Task DoCRUDTest()
+        {
+            // Post ResetPassword
+            var actionResetPasswordAdded = await ResetPasswordService.Post(resetPassword);
+            Assert.Equal(200, ((ObjectResult)actionResetPasswordAdded.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionResetPasswordAdded.Result).Value);
+            ResetPassword resetPasswordAdded = (ResetPassword)((OkObjectResult)actionResetPasswordAdded.Result).Value;
+            Assert.NotNull(resetPasswordAdded);
+
+            // List<ResetPassword>
+            var actionResetPasswordList = await ResetPasswordService.GetResetPasswordList();
+            Assert.Equal(200, ((ObjectResult)actionResetPasswordList.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionResetPasswordList.Result).Value);
+            List<ResetPassword> resetPasswordList = (List<ResetPassword>)((OkObjectResult)actionResetPasswordList.Result).Value;
+
+            int count = ((List<ResetPassword>)((OkObjectResult)actionResetPasswordList.Result).Value).Count();
+            Assert.True(count > 0);
+
+            // Put ResetPassword
+            var actionResetPasswordUpdated = await ResetPasswordService.Put(resetPassword);
+            Assert.Equal(200, ((ObjectResult)actionResetPasswordUpdated.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionResetPasswordUpdated.Result).Value);
+            ResetPassword resetPasswordUpdated = (ResetPassword)((OkObjectResult)actionResetPasswordUpdated.Result).Value;
+            Assert.NotNull(resetPasswordUpdated);
+
+            // Delete ResetPassword
+            var actionResetPasswordDeleted = await ResetPasswordService.Delete(resetPassword.ResetPasswordID);
+            Assert.Equal(200, ((ObjectResult)actionResetPasswordDeleted.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionResetPasswordDeleted.Result).Value);
+            bool retBool = (bool)((OkObjectResult)actionResetPasswordDeleted.Result).Value;
+            Assert.True(retBool);
+        }
         private async Task<bool> Setup(string culture)
         {
             Config = new ConfigurationBuilder()
@@ -109,6 +127,9 @@ namespace CSSPServices.Tests
 
             Services.AddSingleton<IConfiguration>(Config);
 
+            string CSSPDBLocalFileName = Config.GetValue<string>("CSSPDBLocal");
+            Assert.NotNull(CSSPDBLocalFileName);
+
             string TestDBConnString = Config.GetValue<string>("TestDBConnectionString");
             Assert.NotNull(TestDBConnString);
 
@@ -120,6 +141,15 @@ namespace CSSPServices.Tests
             Services.AddDbContext<InMemoryDBContext>(options =>
             {
                 options.UseInMemoryDatabase(TestDBConnString);
+            });
+
+            string appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+
+            FileInfo fiAppDataPath = new FileInfo(CSSPDBLocalFileName.Replace("{appDataPath}", appDataPath));
+
+            Services.AddDbContext<CSSPDBLocalContext>(options =>
+            {
+                options.UseSqlite($"Data Source={ fiAppDataPath.FullName }");
             });
 
             Services.AddSingleton<ICultureService, CultureService>();
@@ -141,6 +171,12 @@ namespace CSSPServices.Tests
             string Id = Config.GetValue<string>("Id");
             Assert.True(await LoggedInService.SetLoggedInContactInfo(Id));
 
+            //string IsLocalStr = Config.GetValue<string>("IsLocal");
+            //Assert.NotNull(IsLocalStr);
+
+            dbIM = Provider.GetService<InMemoryDBContext>();
+            Assert.NotNull(dbIM);
+
             ResetPasswordService = Provider.GetService<IResetPasswordService>();
             Assert.NotNull(ResetPasswordService);
 
@@ -148,6 +184,8 @@ namespace CSSPServices.Tests
         }
         private ResetPassword GetFilledRandomResetPassword(string OmitPropName)
         {
+            dbIM.Database.EnsureDeleted();
+
             ResetPassword resetPassword = new ResetPassword();
 
             if (OmitPropName != "Email") resetPassword.Email = GetRandomEmail();
@@ -155,6 +193,14 @@ namespace CSSPServices.Tests
             if (OmitPropName != "Code") resetPassword.Code = GetRandomString("", 5);
             if (OmitPropName != "LastUpdateDate_UTC") resetPassword.LastUpdateDate_UTC = new DateTime(2005, 3, 6);
             if (OmitPropName != "LastUpdateContactTVItemID") resetPassword.LastUpdateContactTVItemID = 2;
+
+            if (LoggedInService.IsLocal)
+            {
+                if (OmitPropName != "ResetPasswordID") resetPassword.ResetPasswordID = 10000000;
+
+                dbIM.TVItems.Add(new TVItem() { TVItemID = 2, TVLevel = 1, TVPath = "p1p2", TVType = (TVTypeEnum)5, ParentID = 1, IsActive = true, LastUpdateDate_UTC = new DateTime(2014, 12, 2, 16, 58, 16), LastUpdateContactTVItemID = 2});
+                dbIM.SaveChanges();
+            }
 
             return resetPassword;
         }

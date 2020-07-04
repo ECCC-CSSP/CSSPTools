@@ -28,31 +28,67 @@ namespace ServicesClassNameServiceGeneratedServices.Services
                 sb.AppendLine($@"                    yield return new ValidationResult(string.Format(CultureServicesRes._IsRequired, ""{ prop.Name }""), new[] {{ ""{ csspProp.PropName }"" }});");
                 sb.AppendLine(@"                }");
                 sb.AppendLine(@"");
+                sb.AppendLine(@"                if (LoggedInService.IsLocal)");
+                sb.AppendLine(@"                {");
+
                 if (TypeName == "AspNetUser")
                 {
-                    sb.AppendLine($@"                if (!(from c in db.{ TypeName }s select c).Where(c => c.Id == { TypeNameLower }.Id).Any())");
+                    sb.AppendLine($@"                    if (!(from c in dbLocal.{ TypeName }s select c).Where(c => c.Id == { TypeNameLower }.Id).Any())");
                 }
                 else
                 {
                     if (TypeName == "Address")
                     {
-                        sb.AppendLine($@"                if (!(from c in db.{ TypeName }es select c).Where(c => c.{ TypeName }ID == { TypeNameLower }.{ TypeName }ID).Any())");
+                        sb.AppendLine($@"                    if (!(from c in dbLocal.{ TypeName }es select c).Where(c => c.{ TypeName }ID == { TypeNameLower }.{ TypeName }ID).Any())");
                     }
                     else
                     {
-                        sb.AppendLine($@"                if (!(from c in db.{ TypeName }s select c).Where(c => c.{ TypeName }ID == { TypeNameLower }.{ TypeName }ID).Any())");
+                        sb.AppendLine($@"                    if (!(from c in dbLocal.{ TypeName }s select c).Where(c => c.{ TypeName }ID == { TypeNameLower }.{ TypeName }ID).Any())");
                     }
                 }
-                sb.AppendLine(@"                {");
+                sb.AppendLine(@"                    {");
                 //sb.AppendLine($@"                    { TypeNameLower }.HasErrors = true;");
                 if (TypeName == "AspNetUser")
                 {
-                    sb.AppendLine($@"                    yield return new ValidationResult(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, ""{ TypeName }"", ""{ TypeName }Id"", ({ TypeNameLower }.Id == null ? """" : { TypeNameLower }.Id.ToString())), new[] {{ ""{ csspProp.PropName }"" }});");
+                    sb.AppendLine($@"                        yield return new ValidationResult(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, ""{ TypeName }"", ""{ TypeName }Id"", ({ TypeNameLower }.Id == null ? """" : { TypeNameLower }.Id.ToString())), new[] {{ ""{ csspProp.PropName }"" }});");
                 }
                 else
                 {
-                    sb.AppendLine($@"                    yield return new ValidationResult(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, ""{ TypeName }"", ""{ TypeName }ID"", { TypeNameLower }.{ TypeName }ID.ToString()), new[] {{ ""{ csspProp.PropName }"" }});");
+                    sb.AppendLine($@"                        yield return new ValidationResult(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, ""{ TypeName }"", ""{ TypeName }ID"", { TypeNameLower }.{ TypeName }ID.ToString()), new[] {{ ""{ csspProp.PropName }"" }});");
                 }
+                sb.AppendLine(@"                    }");
+
+                sb.AppendLine(@"                }");
+                sb.AppendLine(@"                else");
+                sb.AppendLine(@"                {");
+
+                if (TypeName == "AspNetUser")
+                {
+                    sb.AppendLine($@"                    if (!(from c in db.{ TypeName }s select c).Where(c => c.Id == { TypeNameLower }.Id).Any())");
+                }
+                else
+                {
+                    if (TypeName == "Address")
+                    {
+                        sb.AppendLine($@"                    if (!(from c in db.{ TypeName }es select c).Where(c => c.{ TypeName }ID == { TypeNameLower }.{ TypeName }ID).Any())");
+                    }
+                    else
+                    {
+                        sb.AppendLine($@"                    if (!(from c in db.{ TypeName }s select c).Where(c => c.{ TypeName }ID == { TypeNameLower }.{ TypeName }ID).Any())");
+                    }
+                }
+                sb.AppendLine(@"                    {");
+                //sb.AppendLine($@"                    { TypeNameLower }.HasErrors = true;");
+                if (TypeName == "AspNetUser")
+                {
+                    sb.AppendLine($@"                        yield return new ValidationResult(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, ""{ TypeName }"", ""{ TypeName }Id"", ({ TypeNameLower }.Id == null ? """" : { TypeNameLower }.Id.ToString())), new[] {{ ""{ csspProp.PropName }"" }});");
+                }
+                else
+                {
+                    sb.AppendLine($@"                        yield return new ValidationResult(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, ""{ TypeName }"", ""{ TypeName }ID"", { TypeNameLower }.{ TypeName }ID.ToString()), new[] {{ ""{ csspProp.PropName }"" }});");
+                }
+                sb.AppendLine(@"                    }");
+
                 sb.AppendLine(@"                }");
                 sb.AppendLine(@"            }");
                 sb.AppendLine(@"");
@@ -61,17 +97,40 @@ namespace ServicesClassNameServiceGeneratedServices.Services
                 {
                     sb.AppendLine(@"            if (tvItem.TVType == TVTypeEnum.Root)");
                     sb.AppendLine(@"            {");
-                    if (TypeName == "Address")
-                    {
-                        sb.AppendLine($@"                if ((from c in db.{ TypeName }es select c).Count() > 0)");
-                    }
-                    else
-                    {
-                        sb.AppendLine($@"                if ((from c in db.{ TypeName }s select c).Count() > 0)");
-                    }
+                    sb.AppendLine(@"");
+                    sb.AppendLine(@"                if (LoggedInService.IsLocal)");
                     sb.AppendLine(@"                {");
+                                                    
+                    if (TypeName == "Address")      
+                    {                               
+                        sb.AppendLine($@"                    if ((from c in dbLocal.{ TypeName }es select c).Count() > 0)");
+                    }                               
+                    else                            
+                    {                               
+                        sb.AppendLine($@"                    if ((from c in dbLocal.{ TypeName }s select c).Count() > 0)");
+                    }                               
+                    sb.AppendLine(@"                    {");
                     //sb.AppendLine($@"                    { TypeNameLower }.HasErrors = true;");
-                    sb.AppendLine(@"                    yield return new ValidationResult(CultureServicesRes.TVItemRootShouldBeTheFirstOneAdded, new[] { ""TVItemTVItemID"" });");
+                    sb.AppendLine(@"                        yield return new ValidationResult(CultureServicesRes.TVItemRootShouldBeTheFirstOneAdded, new[] { ""TVItemTVItemID"" });");
+                    sb.AppendLine(@"                    }");
+                                                    
+                    sb.AppendLine(@"                }");
+                    sb.AppendLine(@"                else");
+                    sb.AppendLine(@"                {");
+                                                    
+                    if (TypeName == "Address")      
+                    {                               
+                        sb.AppendLine($@"                    if ((from c in db.{ TypeName }es select c).Count() > 0)");
+                    }                               
+                    else                            
+                    {                               
+                        sb.AppendLine($@"                    if ((from c in db.{ TypeName }s select c).Count() > 0)");
+                    }                               
+                    sb.AppendLine(@"                    {");
+                    //sb.AppendLine($@"                    { TypeNameLower }.HasErrors = true;");
+                    sb.AppendLine(@"                        yield return new ValidationResult(CultureServicesRes.TVItemRootShouldBeTheFirstOneAdded, new[] { ""TVItemTVItemID"" });");
+                    sb.AppendLine(@"                    }");
+                                                    
                     sb.AppendLine(@"                }");
                     sb.AppendLine(@"            }");
                     sb.AppendLine(@"");

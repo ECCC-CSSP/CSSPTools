@@ -36,6 +36,9 @@ namespace CSSPServices.Tests
         private ILoggedInService LoggedInService { get; set; }
         private IUseOfSiteService UseOfSiteService { get; set; }
         private CSSPDBContext db { get; set; }
+        private CSSPDBLocalContext dbLocal { get; set; }
+        private InMemoryDBContext dbIM { get; set; }
+        private UseOfSite useOfSite { get; set; }
         #endregion Properties
 
         #region Constructors
@@ -47,9 +50,11 @@ namespace CSSPServices.Tests
 
         #region Tests Generated CRUD
         [Theory]
-        [InlineData("en-CA")]
-        [InlineData("fr-CA")]
-        public async Task UseOfSite_CRUD_Good_Test(string culture)
+        [InlineData("en-CA", "true")]
+        [InlineData("fr-CA", "true")]
+        [InlineData("en-CA", "false")]
+        [InlineData("fr-CA", "false")]
+        public async Task UseOfSite_CRUD_Good_Test(string culture, string IsLocalStr)
         {
             // -------------------------------
             // -------------------------------
@@ -59,44 +64,57 @@ namespace CSSPServices.Tests
 
             Assert.True(await Setup(culture));
 
-            using (TransactionScope ts = new TransactionScope())
+            LoggedInService.IsLocal = bool.Parse(IsLocalStr);
+
+            useOfSite = GetFilledRandomUseOfSite("");
+
+            if (LoggedInService.IsLocal)
             {
-               UseOfSite useOfSite = GetFilledRandomUseOfSite(""); 
-
-               // List<UseOfSite>
-               var actionUseOfSiteList = await UseOfSiteService.GetUseOfSiteList();
-               Assert.Equal(200, ((ObjectResult)actionUseOfSiteList.Result).StatusCode);
-               Assert.NotNull(((OkObjectResult)actionUseOfSiteList.Result).Value);
-               List<UseOfSite> useOfSiteList = (List<UseOfSite>)((OkObjectResult)actionUseOfSiteList.Result).Value;
-
-               int count = ((List<UseOfSite>)((OkObjectResult)actionUseOfSiteList.Result).Value).Count();
-                Assert.True(count > 0);
-
-               // Post UseOfSite
-               var actionUseOfSiteAdded = await UseOfSiteService.Post(useOfSite);
-               Assert.Equal(200, ((ObjectResult)actionUseOfSiteAdded.Result).StatusCode);
-               Assert.NotNull(((OkObjectResult)actionUseOfSiteAdded.Result).Value);
-               UseOfSite useOfSiteAdded = (UseOfSite)((OkObjectResult)actionUseOfSiteAdded.Result).Value;
-               Assert.NotNull(useOfSiteAdded);
-
-               // Put UseOfSite
-               var actionUseOfSiteUpdated = await UseOfSiteService.Put(useOfSite);
-               Assert.Equal(200, ((ObjectResult)actionUseOfSiteUpdated.Result).StatusCode);
-               Assert.NotNull(((OkObjectResult)actionUseOfSiteUpdated.Result).Value);
-               UseOfSite useOfSiteUpdated = (UseOfSite)((OkObjectResult)actionUseOfSiteUpdated.Result).Value;
-               Assert.NotNull(useOfSiteUpdated);
-
-               // Delete UseOfSite
-               var actionUseOfSiteDeleted = await UseOfSiteService.Delete(useOfSite.UseOfSiteID);
-               Assert.Equal(200, ((ObjectResult)actionUseOfSiteDeleted.Result).StatusCode);
-               Assert.NotNull(((OkObjectResult)actionUseOfSiteDeleted.Result).Value);
-               bool retBool = (bool)((OkObjectResult)actionUseOfSiteDeleted.Result).Value;
-               Assert.True(retBool);
+                await DoCRUDTest();
+            }
+            else
+            {
+                using (TransactionScope ts = new TransactionScope())
+                {
+                    await DoCRUDTest();
+                }
             }
         }
         #endregion Tests Generated CRUD
 
         #region Functions private
+        private async Task DoCRUDTest()
+        {
+            // Post UseOfSite
+            var actionUseOfSiteAdded = await UseOfSiteService.Post(useOfSite);
+            Assert.Equal(200, ((ObjectResult)actionUseOfSiteAdded.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionUseOfSiteAdded.Result).Value);
+            UseOfSite useOfSiteAdded = (UseOfSite)((OkObjectResult)actionUseOfSiteAdded.Result).Value;
+            Assert.NotNull(useOfSiteAdded);
+
+            // List<UseOfSite>
+            var actionUseOfSiteList = await UseOfSiteService.GetUseOfSiteList();
+            Assert.Equal(200, ((ObjectResult)actionUseOfSiteList.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionUseOfSiteList.Result).Value);
+            List<UseOfSite> useOfSiteList = (List<UseOfSite>)((OkObjectResult)actionUseOfSiteList.Result).Value;
+
+            int count = ((List<UseOfSite>)((OkObjectResult)actionUseOfSiteList.Result).Value).Count();
+            Assert.True(count > 0);
+
+            // Put UseOfSite
+            var actionUseOfSiteUpdated = await UseOfSiteService.Put(useOfSite);
+            Assert.Equal(200, ((ObjectResult)actionUseOfSiteUpdated.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionUseOfSiteUpdated.Result).Value);
+            UseOfSite useOfSiteUpdated = (UseOfSite)((OkObjectResult)actionUseOfSiteUpdated.Result).Value;
+            Assert.NotNull(useOfSiteUpdated);
+
+            // Delete UseOfSite
+            var actionUseOfSiteDeleted = await UseOfSiteService.Delete(useOfSite.UseOfSiteID);
+            Assert.Equal(200, ((ObjectResult)actionUseOfSiteDeleted.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionUseOfSiteDeleted.Result).Value);
+            bool retBool = (bool)((OkObjectResult)actionUseOfSiteDeleted.Result).Value;
+            Assert.True(retBool);
+        }
         private async Task<bool> Setup(string culture)
         {
             Config = new ConfigurationBuilder()
@@ -109,6 +127,9 @@ namespace CSSPServices.Tests
 
             Services.AddSingleton<IConfiguration>(Config);
 
+            string CSSPDBLocalFileName = Config.GetValue<string>("CSSPDBLocal");
+            Assert.NotNull(CSSPDBLocalFileName);
+
             string TestDBConnString = Config.GetValue<string>("TestDBConnectionString");
             Assert.NotNull(TestDBConnString);
 
@@ -120,6 +141,15 @@ namespace CSSPServices.Tests
             Services.AddDbContext<InMemoryDBContext>(options =>
             {
                 options.UseInMemoryDatabase(TestDBConnString);
+            });
+
+            string appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+
+            FileInfo fiAppDataPath = new FileInfo(CSSPDBLocalFileName.Replace("{appDataPath}", appDataPath));
+
+            Services.AddDbContext<CSSPDBLocalContext>(options =>
+            {
+                options.UseSqlite($"Data Source={ fiAppDataPath.FullName }");
             });
 
             Services.AddSingleton<ICultureService, CultureService>();
@@ -141,6 +171,12 @@ namespace CSSPServices.Tests
             string Id = Config.GetValue<string>("Id");
             Assert.True(await LoggedInService.SetLoggedInContactInfo(Id));
 
+            //string IsLocalStr = Config.GetValue<string>("IsLocal");
+            //Assert.NotNull(IsLocalStr);
+
+            dbIM = Provider.GetService<InMemoryDBContext>();
+            Assert.NotNull(dbIM);
+
             UseOfSiteService = Provider.GetService<IUseOfSiteService>();
             Assert.NotNull(UseOfSiteService);
 
@@ -148,6 +184,8 @@ namespace CSSPServices.Tests
         }
         private UseOfSite GetFilledRandomUseOfSite(string OmitPropName)
         {
+            dbIM.Database.EnsureDeleted();
+
             UseOfSite useOfSite = new UseOfSite();
 
             if (OmitPropName != "SiteTVItemID") useOfSite.SiteTVItemID = 7;
@@ -165,6 +203,18 @@ namespace CSSPServices.Tests
             if (OmitPropName != "Param4") useOfSite.Param4 = GetRandomDouble(0.0D, 100.0D);
             if (OmitPropName != "LastUpdateDate_UTC") useOfSite.LastUpdateDate_UTC = new DateTime(2005, 3, 6);
             if (OmitPropName != "LastUpdateContactTVItemID") useOfSite.LastUpdateContactTVItemID = 2;
+
+            if (LoggedInService.IsLocal)
+            {
+                if (OmitPropName != "UseOfSiteID") useOfSite.UseOfSiteID = 10000000;
+
+                dbIM.TVItems.Add(new TVItem() { TVItemID = 7, TVLevel = 3, TVPath = "p1p5p6p7", TVType = (TVTypeEnum)4, ParentID = 6, IsActive = true, LastUpdateDate_UTC = new DateTime(2015, 6, 18, 14, 40, 7), LastUpdateContactTVItemID = 2});
+                dbIM.SaveChanges();
+                dbIM.TVItems.Add(new TVItem() { TVItemID = 11, TVLevel = 5, TVPath = "p1p5p6p9p10p11", TVType = (TVTypeEnum)20, ParentID = 10, IsActive = true, LastUpdateDate_UTC = new DateTime(2014, 12, 2, 18, 53, 40), LastUpdateContactTVItemID = 2});
+                dbIM.SaveChanges();
+                dbIM.TVItems.Add(new TVItem() { TVItemID = 2, TVLevel = 1, TVPath = "p1p2", TVType = (TVTypeEnum)5, ParentID = 1, IsActive = true, LastUpdateDate_UTC = new DateTime(2014, 12, 2, 16, 58, 16), LastUpdateContactTVItemID = 2});
+                dbIM.SaveChanges();
+            }
 
             return useOfSite;
         }

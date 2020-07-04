@@ -36,6 +36,8 @@ namespace CSSPServices
 
         #region Properties
         private CSSPDBContext db { get; }
+        private CSSPDBLocalContext dbLocal { get; }
+        private InMemoryDBContext dbIM { get; }
         private ICultureService CultureService { get; }
         private ILoggedInService LoggedInService { get; }
         private IEnums enums { get; }
@@ -43,12 +45,14 @@ namespace CSSPServices
         #endregion Properties
 
         #region Constructors
-        public TelService(ICultureService CultureService, ILoggedInService LoggedInService, IEnums enums, CSSPDBContext db)
+        public TelService(ICultureService CultureService, ILoggedInService LoggedInService, IEnums enums, CSSPDBContext db, CSSPDBLocalContext dbLocal, InMemoryDBContext dbIM)
         {
             this.CultureService = CultureService;
             this.LoggedInService = LoggedInService;
             this.enums = enums;
             this.db = db;
+            this.dbLocal = dbLocal;
+            this.dbIM = dbIM;
         }
         #endregion Constructors
 
@@ -60,16 +64,32 @@ namespace CSSPServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            Tel tel = (from c in db.Tels.AsNoTracking()
-                    where c.TelID == TelID
-                    select c).FirstOrDefault();
-
-            if (tel == null)
+            if (LoggedInService.IsLocal)
             {
-               return await Task.FromResult(NotFound());
-            }
+                Tel tel = (from c in dbLocal.Tels.AsNoTracking()
+                        where c.TelID == TelID
+                        select c).FirstOrDefault();
 
-            return await Task.FromResult(Ok(tel));
+                if (tel == null)
+                {
+                   return await Task.FromResult(NotFound());
+                }
+
+                return await Task.FromResult(Ok(tel));
+            }
+            else
+            {
+                Tel tel = (from c in db.Tels.AsNoTracking()
+                        where c.TelID == TelID
+                        select c).FirstOrDefault();
+
+                if (tel == null)
+                {
+                   return await Task.FromResult(NotFound());
+                }
+
+                return await Task.FromResult(Ok(tel));
+            }
         }
         public async Task<ActionResult<List<Tel>>> GetTelList()
         {
@@ -78,9 +98,18 @@ namespace CSSPServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            List<Tel> telList = (from c in db.Tels.AsNoTracking() select c).Take(100).ToList();
+            if (LoggedInService.IsLocal)
+            {
+                List<Tel> telList = (from c in dbLocal.Tels.AsNoTracking() select c).Take(100).ToList();
 
-            return await Task.FromResult(Ok(telList));
+                return await Task.FromResult(Ok(telList));
+            }
+            else
+            {
+                List<Tel> telList = (from c in db.Tels.AsNoTracking() select c).Take(100).ToList();
+
+                return await Task.FromResult(Ok(telList));
+            }
         }
         public async Task<ActionResult<bool>> Delete(int TelID)
         {
@@ -89,26 +118,52 @@ namespace CSSPServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            Tel tel = (from c in db.Tels
-                               where c.TelID == TelID
-                               select c).FirstOrDefault();
-            
-            if (tel == null)
+            if (LoggedInService.IsLocal)
             {
-                return await Task.FromResult(BadRequest(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "Tel", "TelID", TelID.ToString())));
-            }
+                Tel tel = (from c in dbLocal.Tels
+                                   where c.TelID == TelID
+                                   select c).FirstOrDefault();
+                
+                if (tel == null)
+                {
+                    return await Task.FromResult(BadRequest(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "Tel", "TelID", TelID.ToString())));
+                }
 
-            try
-            {
-               db.Tels.Remove(tel);
-               db.SaveChanges();
-            }
-            catch (DbUpdateException ex)
-            {
-               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
-            }
+                try
+                {
+                   dbLocal.Tels.Remove(tel);
+                   dbLocal.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                   return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
 
-            return await Task.FromResult(Ok(true));
+                return await Task.FromResult(Ok(true));
+            }
+            else
+            {
+                Tel tel = (from c in db.Tels
+                                   where c.TelID == TelID
+                                   select c).FirstOrDefault();
+                
+                if (tel == null)
+                {
+                    return await Task.FromResult(BadRequest(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "Tel", "TelID", TelID.ToString())));
+                }
+
+                try
+                {
+                   db.Tels.Remove(tel);
+                   db.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                   return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
+
+                return await Task.FromResult(Ok(true));
+            }
         }
         public async Task<ActionResult<Tel>> Post(Tel tel)
         {
@@ -123,17 +178,34 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ValidationResults));
             }
 
-            try
+            if (LoggedInService.IsLocal)
             {
-               db.Tels.Add(tel);
-               db.SaveChanges();
-            }
-            catch (DbUpdateException ex)
-            {
-               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
-            }
+                try
+                {
+                   dbLocal.Tels.Add(tel);
+                   dbLocal.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                   return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
 
-            return await Task.FromResult(Ok(tel));
+                return await Task.FromResult(Ok(tel));
+            }
+            else
+            {
+                try
+                {
+                   db.Tels.Add(tel);
+                   db.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                   return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
+
+                return await Task.FromResult(Ok(tel));
+            }
         }
         public async Task<ActionResult<Tel>> Put(Tel tel)
         {
@@ -148,6 +220,22 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ValidationResults));
             }
 
+            if (LoggedInService.IsLocal)
+            {
+            try
+            {
+               dbLocal.Tels.Update(tel);
+               dbLocal.SaveChanges();
+            }
+            catch (DbUpdateException ex)
+            {
+               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+            }
+
+            return await Task.FromResult(Ok(tel));
+            }
+            else
+            {
             try
             {
                db.Tels.Update(tel);
@@ -159,6 +247,7 @@ namespace CSSPServices
             }
 
             return await Task.FromResult(Ok(tel));
+            }
         }
         #endregion Functions public
 
@@ -175,13 +264,35 @@ namespace CSSPServices
                     yield return new ValidationResult(string.Format(CultureServicesRes._IsRequired, "TelID"), new[] { "TelID" });
                 }
 
-                if (!(from c in db.Tels select c).Where(c => c.TelID == tel.TelID).Any())
+                if (LoggedInService.IsLocal)
                 {
-                    yield return new ValidationResult(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "Tel", "TelID", tel.TelID.ToString()), new[] { "TelID" });
+                    if (!(from c in dbLocal.Tels select c).Where(c => c.TelID == tel.TelID).Any())
+                    {
+                        yield return new ValidationResult(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "Tel", "TelID", tel.TelID.ToString()), new[] { "TelID" });
+                    }
+                }
+                else
+                {
+                    if (!(from c in db.Tels select c).Where(c => c.TelID == tel.TelID).Any())
+                    {
+                        yield return new ValidationResult(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "Tel", "TelID", tel.TelID.ToString()), new[] { "TelID" });
+                    }
                 }
             }
 
-            TVItem TVItemTelTVItemID = (from c in db.TVItems where c.TVItemID == tel.TelTVItemID select c).FirstOrDefault();
+            TVItem TVItemTelTVItemID = null;
+            if (LoggedInService.IsLocal)
+            {
+                TVItemTelTVItemID = (from c in dbLocal.TVItems where c.TVItemID == tel.TelTVItemID select c).FirstOrDefault();
+                if (TVItemTelTVItemID == null)
+                {
+                    TVItemTelTVItemID = (from c in dbIM.TVItems where c.TVItemID == tel.TelTVItemID select c).FirstOrDefault();
+                }
+            }
+            else
+            {
+                TVItemTelTVItemID = (from c in db.TVItems where c.TVItemID == tel.TelTVItemID select c).FirstOrDefault();
+            }
 
             if (TVItemTelTVItemID == null)
             {
@@ -227,7 +338,19 @@ namespace CSSPServices
                 }
             }
 
-            TVItem TVItemLastUpdateContactTVItemID = (from c in db.TVItems where c.TVItemID == tel.LastUpdateContactTVItemID select c).FirstOrDefault();
+            TVItem TVItemLastUpdateContactTVItemID = null;
+            if (LoggedInService.IsLocal)
+            {
+                TVItemLastUpdateContactTVItemID = (from c in dbLocal.TVItems where c.TVItemID == tel.LastUpdateContactTVItemID select c).FirstOrDefault();
+                if (TVItemLastUpdateContactTVItemID == null)
+                {
+                    TVItemLastUpdateContactTVItemID = (from c in dbIM.TVItems where c.TVItemID == tel.LastUpdateContactTVItemID select c).FirstOrDefault();
+                }
+            }
+            else
+            {
+                TVItemLastUpdateContactTVItemID = (from c in db.TVItems where c.TVItemID == tel.LastUpdateContactTVItemID select c).FirstOrDefault();
+            }
 
             if (TVItemLastUpdateContactTVItemID == null)
             {

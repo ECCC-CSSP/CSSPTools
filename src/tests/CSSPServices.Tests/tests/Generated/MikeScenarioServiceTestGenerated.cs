@@ -36,6 +36,9 @@ namespace CSSPServices.Tests
         private ILoggedInService LoggedInService { get; set; }
         private IMikeScenarioService MikeScenarioService { get; set; }
         private CSSPDBContext db { get; set; }
+        private CSSPDBLocalContext dbLocal { get; set; }
+        private InMemoryDBContext dbIM { get; set; }
+        private MikeScenario mikeScenario { get; set; }
         #endregion Properties
 
         #region Constructors
@@ -47,9 +50,11 @@ namespace CSSPServices.Tests
 
         #region Tests Generated CRUD
         [Theory]
-        [InlineData("en-CA")]
-        [InlineData("fr-CA")]
-        public async Task MikeScenario_CRUD_Good_Test(string culture)
+        [InlineData("en-CA", "true")]
+        [InlineData("fr-CA", "true")]
+        [InlineData("en-CA", "false")]
+        [InlineData("fr-CA", "false")]
+        public async Task MikeScenario_CRUD_Good_Test(string culture, string IsLocalStr)
         {
             // -------------------------------
             // -------------------------------
@@ -59,44 +64,57 @@ namespace CSSPServices.Tests
 
             Assert.True(await Setup(culture));
 
-            using (TransactionScope ts = new TransactionScope())
+            LoggedInService.IsLocal = bool.Parse(IsLocalStr);
+
+            mikeScenario = GetFilledRandomMikeScenario("");
+
+            if (LoggedInService.IsLocal)
             {
-               MikeScenario mikeScenario = GetFilledRandomMikeScenario(""); 
-
-               // List<MikeScenario>
-               var actionMikeScenarioList = await MikeScenarioService.GetMikeScenarioList();
-               Assert.Equal(200, ((ObjectResult)actionMikeScenarioList.Result).StatusCode);
-               Assert.NotNull(((OkObjectResult)actionMikeScenarioList.Result).Value);
-               List<MikeScenario> mikeScenarioList = (List<MikeScenario>)((OkObjectResult)actionMikeScenarioList.Result).Value;
-
-               int count = ((List<MikeScenario>)((OkObjectResult)actionMikeScenarioList.Result).Value).Count();
-                Assert.True(count > 0);
-
-               // Post MikeScenario
-               var actionMikeScenarioAdded = await MikeScenarioService.Post(mikeScenario);
-               Assert.Equal(200, ((ObjectResult)actionMikeScenarioAdded.Result).StatusCode);
-               Assert.NotNull(((OkObjectResult)actionMikeScenarioAdded.Result).Value);
-               MikeScenario mikeScenarioAdded = (MikeScenario)((OkObjectResult)actionMikeScenarioAdded.Result).Value;
-               Assert.NotNull(mikeScenarioAdded);
-
-               // Put MikeScenario
-               var actionMikeScenarioUpdated = await MikeScenarioService.Put(mikeScenario);
-               Assert.Equal(200, ((ObjectResult)actionMikeScenarioUpdated.Result).StatusCode);
-               Assert.NotNull(((OkObjectResult)actionMikeScenarioUpdated.Result).Value);
-               MikeScenario mikeScenarioUpdated = (MikeScenario)((OkObjectResult)actionMikeScenarioUpdated.Result).Value;
-               Assert.NotNull(mikeScenarioUpdated);
-
-               // Delete MikeScenario
-               var actionMikeScenarioDeleted = await MikeScenarioService.Delete(mikeScenario.MikeScenarioID);
-               Assert.Equal(200, ((ObjectResult)actionMikeScenarioDeleted.Result).StatusCode);
-               Assert.NotNull(((OkObjectResult)actionMikeScenarioDeleted.Result).Value);
-               bool retBool = (bool)((OkObjectResult)actionMikeScenarioDeleted.Result).Value;
-               Assert.True(retBool);
+                await DoCRUDTest();
+            }
+            else
+            {
+                using (TransactionScope ts = new TransactionScope())
+                {
+                    await DoCRUDTest();
+                }
             }
         }
         #endregion Tests Generated CRUD
 
         #region Functions private
+        private async Task DoCRUDTest()
+        {
+            // Post MikeScenario
+            var actionMikeScenarioAdded = await MikeScenarioService.Post(mikeScenario);
+            Assert.Equal(200, ((ObjectResult)actionMikeScenarioAdded.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionMikeScenarioAdded.Result).Value);
+            MikeScenario mikeScenarioAdded = (MikeScenario)((OkObjectResult)actionMikeScenarioAdded.Result).Value;
+            Assert.NotNull(mikeScenarioAdded);
+
+            // List<MikeScenario>
+            var actionMikeScenarioList = await MikeScenarioService.GetMikeScenarioList();
+            Assert.Equal(200, ((ObjectResult)actionMikeScenarioList.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionMikeScenarioList.Result).Value);
+            List<MikeScenario> mikeScenarioList = (List<MikeScenario>)((OkObjectResult)actionMikeScenarioList.Result).Value;
+
+            int count = ((List<MikeScenario>)((OkObjectResult)actionMikeScenarioList.Result).Value).Count();
+            Assert.True(count > 0);
+
+            // Put MikeScenario
+            var actionMikeScenarioUpdated = await MikeScenarioService.Put(mikeScenario);
+            Assert.Equal(200, ((ObjectResult)actionMikeScenarioUpdated.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionMikeScenarioUpdated.Result).Value);
+            MikeScenario mikeScenarioUpdated = (MikeScenario)((OkObjectResult)actionMikeScenarioUpdated.Result).Value;
+            Assert.NotNull(mikeScenarioUpdated);
+
+            // Delete MikeScenario
+            var actionMikeScenarioDeleted = await MikeScenarioService.Delete(mikeScenario.MikeScenarioID);
+            Assert.Equal(200, ((ObjectResult)actionMikeScenarioDeleted.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionMikeScenarioDeleted.Result).Value);
+            bool retBool = (bool)((OkObjectResult)actionMikeScenarioDeleted.Result).Value;
+            Assert.True(retBool);
+        }
         private async Task<bool> Setup(string culture)
         {
             Config = new ConfigurationBuilder()
@@ -109,6 +127,9 @@ namespace CSSPServices.Tests
 
             Services.AddSingleton<IConfiguration>(Config);
 
+            string CSSPDBLocalFileName = Config.GetValue<string>("CSSPDBLocal");
+            Assert.NotNull(CSSPDBLocalFileName);
+
             string TestDBConnString = Config.GetValue<string>("TestDBConnectionString");
             Assert.NotNull(TestDBConnString);
 
@@ -120,6 +141,15 @@ namespace CSSPServices.Tests
             Services.AddDbContext<InMemoryDBContext>(options =>
             {
                 options.UseInMemoryDatabase(TestDBConnString);
+            });
+
+            string appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+
+            FileInfo fiAppDataPath = new FileInfo(CSSPDBLocalFileName.Replace("{appDataPath}", appDataPath));
+
+            Services.AddDbContext<CSSPDBLocalContext>(options =>
+            {
+                options.UseSqlite($"Data Source={ fiAppDataPath.FullName }");
             });
 
             Services.AddSingleton<ICultureService, CultureService>();
@@ -141,6 +171,12 @@ namespace CSSPServices.Tests
             string Id = Config.GetValue<string>("Id");
             Assert.True(await LoggedInService.SetLoggedInContactInfo(Id));
 
+            //string IsLocalStr = Config.GetValue<string>("IsLocal");
+            //Assert.NotNull(IsLocalStr);
+
+            dbIM = Provider.GetService<InMemoryDBContext>();
+            Assert.NotNull(dbIM);
+
             MikeScenarioService = Provider.GetService<IMikeScenarioService>();
             Assert.NotNull(MikeScenarioService);
 
@@ -148,6 +184,8 @@ namespace CSSPServices.Tests
         }
         private MikeScenario GetFilledRandomMikeScenario(string OmitPropName)
         {
+            dbIM.Database.EnsureDeleted();
+
             MikeScenario mikeScenario = new MikeScenario();
 
             if (OmitPropName != "MikeScenarioTVItemID") mikeScenario.MikeScenarioTVItemID = 51;
@@ -181,6 +219,20 @@ namespace CSSPServices.Tests
             if (OmitPropName != "EstimatedTransFileSize") mikeScenario.EstimatedTransFileSize = GetRandomInt(0, 100000000);
             if (OmitPropName != "LastUpdateDate_UTC") mikeScenario.LastUpdateDate_UTC = new DateTime(2005, 3, 6);
             if (OmitPropName != "LastUpdateContactTVItemID") mikeScenario.LastUpdateContactTVItemID = 2;
+
+            if (LoggedInService.IsLocal)
+            {
+                if (OmitPropName != "MikeScenarioID") mikeScenario.MikeScenarioID = 10000000;
+
+                dbIM.TVItems.Add(new TVItem() { TVItemID = 51, TVLevel = 4, TVPath = "p1p5p6p39p51", TVType = (TVTypeEnum)13, ParentID = 39, IsActive = true, LastUpdateDate_UTC = new DateTime(2014, 12, 2, 21, 28, 56), LastUpdateContactTVItemID = 2});
+                dbIM.SaveChanges();
+                dbIM.TVItems.Add(new TVItem() { TVItemID = 42, TVLevel = 5, TVPath = "p1p5p6p39p41p42", TVType = (TVTypeEnum)8, ParentID = 41, IsActive = true, LastUpdateDate_UTC = new DateTime(2016, 5, 5, 17, 18, 26), LastUpdateContactTVItemID = 2});
+                dbIM.SaveChanges();
+                dbIM.TVItems.Add(new TVItem() { TVItemID = 50, TVLevel = 6, TVPath = "p1p5p6p9p10p12p50", TVType = (TVTypeEnum)31, ParentID = 12, IsActive = true, LastUpdateDate_UTC = new DateTime(2017, 6, 28, 12, 41, 23), LastUpdateContactTVItemID = 2});
+                dbIM.SaveChanges();
+                dbIM.TVItems.Add(new TVItem() { TVItemID = 2, TVLevel = 1, TVPath = "p1p2", TVType = (TVTypeEnum)5, ParentID = 1, IsActive = true, LastUpdateDate_UTC = new DateTime(2014, 12, 2, 16, 58, 16), LastUpdateContactTVItemID = 2});
+                dbIM.SaveChanges();
+            }
 
             return mikeScenario;
         }

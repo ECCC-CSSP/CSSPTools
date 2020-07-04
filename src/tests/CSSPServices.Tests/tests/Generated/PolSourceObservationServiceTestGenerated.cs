@@ -36,6 +36,9 @@ namespace CSSPServices.Tests
         private ILoggedInService LoggedInService { get; set; }
         private IPolSourceObservationService PolSourceObservationService { get; set; }
         private CSSPDBContext db { get; set; }
+        private CSSPDBLocalContext dbLocal { get; set; }
+        private InMemoryDBContext dbIM { get; set; }
+        private PolSourceObservation polSourceObservation { get; set; }
         #endregion Properties
 
         #region Constructors
@@ -47,9 +50,11 @@ namespace CSSPServices.Tests
 
         #region Tests Generated CRUD
         [Theory]
-        [InlineData("en-CA")]
-        [InlineData("fr-CA")]
-        public async Task PolSourceObservation_CRUD_Good_Test(string culture)
+        [InlineData("en-CA", "true")]
+        [InlineData("fr-CA", "true")]
+        [InlineData("en-CA", "false")]
+        [InlineData("fr-CA", "false")]
+        public async Task PolSourceObservation_CRUD_Good_Test(string culture, string IsLocalStr)
         {
             // -------------------------------
             // -------------------------------
@@ -59,44 +64,57 @@ namespace CSSPServices.Tests
 
             Assert.True(await Setup(culture));
 
-            using (TransactionScope ts = new TransactionScope())
+            LoggedInService.IsLocal = bool.Parse(IsLocalStr);
+
+            polSourceObservation = GetFilledRandomPolSourceObservation("");
+
+            if (LoggedInService.IsLocal)
             {
-               PolSourceObservation polSourceObservation = GetFilledRandomPolSourceObservation(""); 
-
-               // List<PolSourceObservation>
-               var actionPolSourceObservationList = await PolSourceObservationService.GetPolSourceObservationList();
-               Assert.Equal(200, ((ObjectResult)actionPolSourceObservationList.Result).StatusCode);
-               Assert.NotNull(((OkObjectResult)actionPolSourceObservationList.Result).Value);
-               List<PolSourceObservation> polSourceObservationList = (List<PolSourceObservation>)((OkObjectResult)actionPolSourceObservationList.Result).Value;
-
-               int count = ((List<PolSourceObservation>)((OkObjectResult)actionPolSourceObservationList.Result).Value).Count();
-                Assert.True(count > 0);
-
-               // Post PolSourceObservation
-               var actionPolSourceObservationAdded = await PolSourceObservationService.Post(polSourceObservation);
-               Assert.Equal(200, ((ObjectResult)actionPolSourceObservationAdded.Result).StatusCode);
-               Assert.NotNull(((OkObjectResult)actionPolSourceObservationAdded.Result).Value);
-               PolSourceObservation polSourceObservationAdded = (PolSourceObservation)((OkObjectResult)actionPolSourceObservationAdded.Result).Value;
-               Assert.NotNull(polSourceObservationAdded);
-
-               // Put PolSourceObservation
-               var actionPolSourceObservationUpdated = await PolSourceObservationService.Put(polSourceObservation);
-               Assert.Equal(200, ((ObjectResult)actionPolSourceObservationUpdated.Result).StatusCode);
-               Assert.NotNull(((OkObjectResult)actionPolSourceObservationUpdated.Result).Value);
-               PolSourceObservation polSourceObservationUpdated = (PolSourceObservation)((OkObjectResult)actionPolSourceObservationUpdated.Result).Value;
-               Assert.NotNull(polSourceObservationUpdated);
-
-               // Delete PolSourceObservation
-               var actionPolSourceObservationDeleted = await PolSourceObservationService.Delete(polSourceObservation.PolSourceObservationID);
-               Assert.Equal(200, ((ObjectResult)actionPolSourceObservationDeleted.Result).StatusCode);
-               Assert.NotNull(((OkObjectResult)actionPolSourceObservationDeleted.Result).Value);
-               bool retBool = (bool)((OkObjectResult)actionPolSourceObservationDeleted.Result).Value;
-               Assert.True(retBool);
+                await DoCRUDTest();
+            }
+            else
+            {
+                using (TransactionScope ts = new TransactionScope())
+                {
+                    await DoCRUDTest();
+                }
             }
         }
         #endregion Tests Generated CRUD
 
         #region Functions private
+        private async Task DoCRUDTest()
+        {
+            // Post PolSourceObservation
+            var actionPolSourceObservationAdded = await PolSourceObservationService.Post(polSourceObservation);
+            Assert.Equal(200, ((ObjectResult)actionPolSourceObservationAdded.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionPolSourceObservationAdded.Result).Value);
+            PolSourceObservation polSourceObservationAdded = (PolSourceObservation)((OkObjectResult)actionPolSourceObservationAdded.Result).Value;
+            Assert.NotNull(polSourceObservationAdded);
+
+            // List<PolSourceObservation>
+            var actionPolSourceObservationList = await PolSourceObservationService.GetPolSourceObservationList();
+            Assert.Equal(200, ((ObjectResult)actionPolSourceObservationList.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionPolSourceObservationList.Result).Value);
+            List<PolSourceObservation> polSourceObservationList = (List<PolSourceObservation>)((OkObjectResult)actionPolSourceObservationList.Result).Value;
+
+            int count = ((List<PolSourceObservation>)((OkObjectResult)actionPolSourceObservationList.Result).Value).Count();
+            Assert.True(count > 0);
+
+            // Put PolSourceObservation
+            var actionPolSourceObservationUpdated = await PolSourceObservationService.Put(polSourceObservation);
+            Assert.Equal(200, ((ObjectResult)actionPolSourceObservationUpdated.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionPolSourceObservationUpdated.Result).Value);
+            PolSourceObservation polSourceObservationUpdated = (PolSourceObservation)((OkObjectResult)actionPolSourceObservationUpdated.Result).Value;
+            Assert.NotNull(polSourceObservationUpdated);
+
+            // Delete PolSourceObservation
+            var actionPolSourceObservationDeleted = await PolSourceObservationService.Delete(polSourceObservation.PolSourceObservationID);
+            Assert.Equal(200, ((ObjectResult)actionPolSourceObservationDeleted.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionPolSourceObservationDeleted.Result).Value);
+            bool retBool = (bool)((OkObjectResult)actionPolSourceObservationDeleted.Result).Value;
+            Assert.True(retBool);
+        }
         private async Task<bool> Setup(string culture)
         {
             Config = new ConfigurationBuilder()
@@ -109,6 +127,9 @@ namespace CSSPServices.Tests
 
             Services.AddSingleton<IConfiguration>(Config);
 
+            string CSSPDBLocalFileName = Config.GetValue<string>("CSSPDBLocal");
+            Assert.NotNull(CSSPDBLocalFileName);
+
             string TestDBConnString = Config.GetValue<string>("TestDBConnectionString");
             Assert.NotNull(TestDBConnString);
 
@@ -120,6 +141,15 @@ namespace CSSPServices.Tests
             Services.AddDbContext<InMemoryDBContext>(options =>
             {
                 options.UseInMemoryDatabase(TestDBConnString);
+            });
+
+            string appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+
+            FileInfo fiAppDataPath = new FileInfo(CSSPDBLocalFileName.Replace("{appDataPath}", appDataPath));
+
+            Services.AddDbContext<CSSPDBLocalContext>(options =>
+            {
+                options.UseSqlite($"Data Source={ fiAppDataPath.FullName }");
             });
 
             Services.AddSingleton<ICultureService, CultureService>();
@@ -141,6 +171,12 @@ namespace CSSPServices.Tests
             string Id = Config.GetValue<string>("Id");
             Assert.True(await LoggedInService.SetLoggedInContactInfo(Id));
 
+            //string IsLocalStr = Config.GetValue<string>("IsLocal");
+            //Assert.NotNull(IsLocalStr);
+
+            dbIM = Provider.GetService<InMemoryDBContext>();
+            Assert.NotNull(dbIM);
+
             PolSourceObservationService = Provider.GetService<IPolSourceObservationService>();
             Assert.NotNull(PolSourceObservationService);
 
@@ -148,6 +184,8 @@ namespace CSSPServices.Tests
         }
         private PolSourceObservation GetFilledRandomPolSourceObservation(string OmitPropName)
         {
+            dbIM.Database.EnsureDeleted();
+
             PolSourceObservation polSourceObservation = new PolSourceObservation();
 
             if (OmitPropName != "PolSourceSiteID") polSourceObservation.PolSourceSiteID = 1;
@@ -157,6 +195,16 @@ namespace CSSPServices.Tests
             if (OmitPropName != "Observation_ToBeDeleted") polSourceObservation.Observation_ToBeDeleted = GetRandomString("", 20);
             if (OmitPropName != "LastUpdateDate_UTC") polSourceObservation.LastUpdateDate_UTC = new DateTime(2005, 3, 6);
             if (OmitPropName != "LastUpdateContactTVItemID") polSourceObservation.LastUpdateContactTVItemID = 2;
+
+            if (LoggedInService.IsLocal)
+            {
+                if (OmitPropName != "PolSourceObservationID") polSourceObservation.PolSourceObservationID = 10000000;
+
+                dbIM.PolSourceSites.Add(new PolSourceSite() { PolSourceSiteID = 1 });
+                dbIM.SaveChanges();
+                dbIM.TVItems.Add(new TVItem() { TVItemID = 2, TVLevel = 1, TVPath = "p1p2", TVType = (TVTypeEnum)5, ParentID = 1, IsActive = true, LastUpdateDate_UTC = new DateTime(2014, 12, 2, 16, 58, 16), LastUpdateContactTVItemID = 2});
+                dbIM.SaveChanges();
+            }
 
             return polSourceObservation;
         }

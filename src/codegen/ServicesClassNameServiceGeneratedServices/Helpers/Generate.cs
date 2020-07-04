@@ -152,6 +152,8 @@ namespace ServicesClassNameServiceGeneratedServices.Services
                     sb.AppendLine(@"");
                     sb.AppendLine(@"        #region Properties");
                     sb.AppendLine(@"        private CSSPDBContext db { get; }");
+                    sb.AppendLine(@"        private CSSPDBLocalContext dbLocal { get; }");
+                    sb.AppendLine(@"        private InMemoryDBContext dbIM { get; }");
                     sb.AppendLine(@"        private ICultureService CultureService { get; }");
                     sb.AppendLine(@"        private ILoggedInService LoggedInService { get; }");
                     sb.AppendLine(@"        private IEnums enums { get; }");
@@ -159,12 +161,14 @@ namespace ServicesClassNameServiceGeneratedServices.Services
                     sb.AppendLine(@"        #endregion Properties");
                     sb.AppendLine(@"");
                     sb.AppendLine(@"        #region Constructors");
-                    sb.AppendLine($@"        public { dllTypeInfoModels.Type.Name }Service(ICultureService CultureService, ILoggedInService LoggedInService, IEnums enums, CSSPDBContext db)");
+                    sb.AppendLine($@"        public { dllTypeInfoModels.Type.Name }Service(ICultureService CultureService, ILoggedInService LoggedInService, IEnums enums, CSSPDBContext db, CSSPDBLocalContext dbLocal, InMemoryDBContext dbIM)");
                     sb.AppendLine(@"        {");
                     sb.AppendLine(@"            this.CultureService = CultureService;");
                     sb.AppendLine(@"            this.LoggedInService = LoggedInService;");
                     sb.AppendLine(@"            this.enums = enums;");
                     sb.AppendLine(@"            this.db = db;");
+                    sb.AppendLine(@"            this.dbLocal = dbLocal;");
+                    sb.AppendLine(@"            this.dbIM = dbIM;");
                     sb.AppendLine(@"        }");
                     sb.AppendLine(@"        #endregion Constructors");
                     sb.AppendLine(@"");

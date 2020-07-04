@@ -18,6 +18,7 @@ namespace LoggedInServices.Services
         private CSSPDBContext db { get; }
         private InMemoryDBContext dbIM { get; }
         private LoggedInContactInfo LoggedInContactInfo { get; set; }
+        public bool IsLocal { get; set; }
         #endregion Properties
 
         #region Constructors

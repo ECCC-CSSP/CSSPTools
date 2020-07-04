@@ -36,6 +36,8 @@ namespace CSSPServices
 
         #region Properties
         private CSSPDBContext db { get; }
+        private CSSPDBLocalContext dbLocal { get; }
+        private InMemoryDBContext dbIM { get; }
         private ICultureService CultureService { get; }
         private ILoggedInService LoggedInService { get; }
         private IEnums enums { get; }
@@ -43,12 +45,14 @@ namespace CSSPServices
         #endregion Properties
 
         #region Constructors
-        public HydrometricSiteService(ICultureService CultureService, ILoggedInService LoggedInService, IEnums enums, CSSPDBContext db)
+        public HydrometricSiteService(ICultureService CultureService, ILoggedInService LoggedInService, IEnums enums, CSSPDBContext db, CSSPDBLocalContext dbLocal, InMemoryDBContext dbIM)
         {
             this.CultureService = CultureService;
             this.LoggedInService = LoggedInService;
             this.enums = enums;
             this.db = db;
+            this.dbLocal = dbLocal;
+            this.dbIM = dbIM;
         }
         #endregion Constructors
 
@@ -60,16 +64,32 @@ namespace CSSPServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            HydrometricSite hydrometricsite = (from c in db.HydrometricSites.AsNoTracking()
-                    where c.HydrometricSiteID == HydrometricSiteID
-                    select c).FirstOrDefault();
-
-            if (hydrometricsite == null)
+            if (LoggedInService.IsLocal)
             {
-               return await Task.FromResult(NotFound());
-            }
+                HydrometricSite hydrometricsite = (from c in dbLocal.HydrometricSites.AsNoTracking()
+                        where c.HydrometricSiteID == HydrometricSiteID
+                        select c).FirstOrDefault();
 
-            return await Task.FromResult(Ok(hydrometricsite));
+                if (hydrometricsite == null)
+                {
+                   return await Task.FromResult(NotFound());
+                }
+
+                return await Task.FromResult(Ok(hydrometricsite));
+            }
+            else
+            {
+                HydrometricSite hydrometricsite = (from c in db.HydrometricSites.AsNoTracking()
+                        where c.HydrometricSiteID == HydrometricSiteID
+                        select c).FirstOrDefault();
+
+                if (hydrometricsite == null)
+                {
+                   return await Task.FromResult(NotFound());
+                }
+
+                return await Task.FromResult(Ok(hydrometricsite));
+            }
         }
         public async Task<ActionResult<List<HydrometricSite>>> GetHydrometricSiteList()
         {
@@ -78,9 +98,18 @@ namespace CSSPServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            List<HydrometricSite> hydrometricsiteList = (from c in db.HydrometricSites.AsNoTracking() select c).Take(100).ToList();
+            if (LoggedInService.IsLocal)
+            {
+                List<HydrometricSite> hydrometricsiteList = (from c in dbLocal.HydrometricSites.AsNoTracking() select c).Take(100).ToList();
 
-            return await Task.FromResult(Ok(hydrometricsiteList));
+                return await Task.FromResult(Ok(hydrometricsiteList));
+            }
+            else
+            {
+                List<HydrometricSite> hydrometricsiteList = (from c in db.HydrometricSites.AsNoTracking() select c).Take(100).ToList();
+
+                return await Task.FromResult(Ok(hydrometricsiteList));
+            }
         }
         public async Task<ActionResult<bool>> Delete(int HydrometricSiteID)
         {
@@ -89,26 +118,52 @@ namespace CSSPServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            HydrometricSite hydrometricSite = (from c in db.HydrometricSites
-                               where c.HydrometricSiteID == HydrometricSiteID
-                               select c).FirstOrDefault();
-            
-            if (hydrometricSite == null)
+            if (LoggedInService.IsLocal)
             {
-                return await Task.FromResult(BadRequest(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "HydrometricSite", "HydrometricSiteID", HydrometricSiteID.ToString())));
-            }
+                HydrometricSite hydrometricSite = (from c in dbLocal.HydrometricSites
+                                   where c.HydrometricSiteID == HydrometricSiteID
+                                   select c).FirstOrDefault();
+                
+                if (hydrometricSite == null)
+                {
+                    return await Task.FromResult(BadRequest(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "HydrometricSite", "HydrometricSiteID", HydrometricSiteID.ToString())));
+                }
 
-            try
-            {
-               db.HydrometricSites.Remove(hydrometricSite);
-               db.SaveChanges();
-            }
-            catch (DbUpdateException ex)
-            {
-               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
-            }
+                try
+                {
+                   dbLocal.HydrometricSites.Remove(hydrometricSite);
+                   dbLocal.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                   return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
 
-            return await Task.FromResult(Ok(true));
+                return await Task.FromResult(Ok(true));
+            }
+            else
+            {
+                HydrometricSite hydrometricSite = (from c in db.HydrometricSites
+                                   where c.HydrometricSiteID == HydrometricSiteID
+                                   select c).FirstOrDefault();
+                
+                if (hydrometricSite == null)
+                {
+                    return await Task.FromResult(BadRequest(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "HydrometricSite", "HydrometricSiteID", HydrometricSiteID.ToString())));
+                }
+
+                try
+                {
+                   db.HydrometricSites.Remove(hydrometricSite);
+                   db.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                   return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
+
+                return await Task.FromResult(Ok(true));
+            }
         }
         public async Task<ActionResult<HydrometricSite>> Post(HydrometricSite hydrometricSite)
         {
@@ -123,17 +178,34 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ValidationResults));
             }
 
-            try
+            if (LoggedInService.IsLocal)
             {
-               db.HydrometricSites.Add(hydrometricSite);
-               db.SaveChanges();
-            }
-            catch (DbUpdateException ex)
-            {
-               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
-            }
+                try
+                {
+                   dbLocal.HydrometricSites.Add(hydrometricSite);
+                   dbLocal.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                   return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
 
-            return await Task.FromResult(Ok(hydrometricSite));
+                return await Task.FromResult(Ok(hydrometricSite));
+            }
+            else
+            {
+                try
+                {
+                   db.HydrometricSites.Add(hydrometricSite);
+                   db.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                   return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
+
+                return await Task.FromResult(Ok(hydrometricSite));
+            }
         }
         public async Task<ActionResult<HydrometricSite>> Put(HydrometricSite hydrometricSite)
         {
@@ -148,6 +220,22 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ValidationResults));
             }
 
+            if (LoggedInService.IsLocal)
+            {
+            try
+            {
+               dbLocal.HydrometricSites.Update(hydrometricSite);
+               dbLocal.SaveChanges();
+            }
+            catch (DbUpdateException ex)
+            {
+               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+            }
+
+            return await Task.FromResult(Ok(hydrometricSite));
+            }
+            else
+            {
             try
             {
                db.HydrometricSites.Update(hydrometricSite);
@@ -159,6 +247,7 @@ namespace CSSPServices
             }
 
             return await Task.FromResult(Ok(hydrometricSite));
+            }
         }
         #endregion Functions public
 
@@ -175,13 +264,35 @@ namespace CSSPServices
                     yield return new ValidationResult(string.Format(CultureServicesRes._IsRequired, "HydrometricSiteID"), new[] { "HydrometricSiteID" });
                 }
 
-                if (!(from c in db.HydrometricSites select c).Where(c => c.HydrometricSiteID == hydrometricSite.HydrometricSiteID).Any())
+                if (LoggedInService.IsLocal)
                 {
-                    yield return new ValidationResult(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "HydrometricSite", "HydrometricSiteID", hydrometricSite.HydrometricSiteID.ToString()), new[] { "HydrometricSiteID" });
+                    if (!(from c in dbLocal.HydrometricSites select c).Where(c => c.HydrometricSiteID == hydrometricSite.HydrometricSiteID).Any())
+                    {
+                        yield return new ValidationResult(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "HydrometricSite", "HydrometricSiteID", hydrometricSite.HydrometricSiteID.ToString()), new[] { "HydrometricSiteID" });
+                    }
+                }
+                else
+                {
+                    if (!(from c in db.HydrometricSites select c).Where(c => c.HydrometricSiteID == hydrometricSite.HydrometricSiteID).Any())
+                    {
+                        yield return new ValidationResult(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "HydrometricSite", "HydrometricSiteID", hydrometricSite.HydrometricSiteID.ToString()), new[] { "HydrometricSiteID" });
+                    }
                 }
             }
 
-            TVItem TVItemHydrometricSiteTVItemID = (from c in db.TVItems where c.TVItemID == hydrometricSite.HydrometricSiteTVItemID select c).FirstOrDefault();
+            TVItem TVItemHydrometricSiteTVItemID = null;
+            if (LoggedInService.IsLocal)
+            {
+                TVItemHydrometricSiteTVItemID = (from c in dbLocal.TVItems where c.TVItemID == hydrometricSite.HydrometricSiteTVItemID select c).FirstOrDefault();
+                if (TVItemHydrometricSiteTVItemID == null)
+                {
+                    TVItemHydrometricSiteTVItemID = (from c in dbIM.TVItems where c.TVItemID == hydrometricSite.HydrometricSiteTVItemID select c).FirstOrDefault();
+                }
+            }
+            else
+            {
+                TVItemHydrometricSiteTVItemID = (from c in db.TVItems where c.TVItemID == hydrometricSite.HydrometricSiteTVItemID select c).FirstOrDefault();
+            }
 
             if (TVItemHydrometricSiteTVItemID == null)
             {
@@ -285,7 +396,19 @@ namespace CSSPServices
                 }
             }
 
-            TVItem TVItemLastUpdateContactTVItemID = (from c in db.TVItems where c.TVItemID == hydrometricSite.LastUpdateContactTVItemID select c).FirstOrDefault();
+            TVItem TVItemLastUpdateContactTVItemID = null;
+            if (LoggedInService.IsLocal)
+            {
+                TVItemLastUpdateContactTVItemID = (from c in dbLocal.TVItems where c.TVItemID == hydrometricSite.LastUpdateContactTVItemID select c).FirstOrDefault();
+                if (TVItemLastUpdateContactTVItemID == null)
+                {
+                    TVItemLastUpdateContactTVItemID = (from c in dbIM.TVItems where c.TVItemID == hydrometricSite.LastUpdateContactTVItemID select c).FirstOrDefault();
+                }
+            }
+            else
+            {
+                TVItemLastUpdateContactTVItemID = (from c in db.TVItems where c.TVItemID == hydrometricSite.LastUpdateContactTVItemID select c).FirstOrDefault();
+            }
 
             if (TVItemLastUpdateContactTVItemID == null)
             {

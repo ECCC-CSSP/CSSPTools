@@ -36,6 +36,9 @@ namespace CSSPServices.Tests
         private ILoggedInService LoggedInService { get; set; }
         private IMikeSourceStartEndService MikeSourceStartEndService { get; set; }
         private CSSPDBContext db { get; set; }
+        private CSSPDBLocalContext dbLocal { get; set; }
+        private InMemoryDBContext dbIM { get; set; }
+        private MikeSourceStartEnd mikeSourceStartEnd { get; set; }
         #endregion Properties
 
         #region Constructors
@@ -47,9 +50,11 @@ namespace CSSPServices.Tests
 
         #region Tests Generated CRUD
         [Theory]
-        [InlineData("en-CA")]
-        [InlineData("fr-CA")]
-        public async Task MikeSourceStartEnd_CRUD_Good_Test(string culture)
+        [InlineData("en-CA", "true")]
+        [InlineData("fr-CA", "true")]
+        [InlineData("en-CA", "false")]
+        [InlineData("fr-CA", "false")]
+        public async Task MikeSourceStartEnd_CRUD_Good_Test(string culture, string IsLocalStr)
         {
             // -------------------------------
             // -------------------------------
@@ -59,44 +64,57 @@ namespace CSSPServices.Tests
 
             Assert.True(await Setup(culture));
 
-            using (TransactionScope ts = new TransactionScope())
+            LoggedInService.IsLocal = bool.Parse(IsLocalStr);
+
+            mikeSourceStartEnd = GetFilledRandomMikeSourceStartEnd("");
+
+            if (LoggedInService.IsLocal)
             {
-               MikeSourceStartEnd mikeSourceStartEnd = GetFilledRandomMikeSourceStartEnd(""); 
-
-               // List<MikeSourceStartEnd>
-               var actionMikeSourceStartEndList = await MikeSourceStartEndService.GetMikeSourceStartEndList();
-               Assert.Equal(200, ((ObjectResult)actionMikeSourceStartEndList.Result).StatusCode);
-               Assert.NotNull(((OkObjectResult)actionMikeSourceStartEndList.Result).Value);
-               List<MikeSourceStartEnd> mikeSourceStartEndList = (List<MikeSourceStartEnd>)((OkObjectResult)actionMikeSourceStartEndList.Result).Value;
-
-               int count = ((List<MikeSourceStartEnd>)((OkObjectResult)actionMikeSourceStartEndList.Result).Value).Count();
-                Assert.True(count > 0);
-
-               // Post MikeSourceStartEnd
-               var actionMikeSourceStartEndAdded = await MikeSourceStartEndService.Post(mikeSourceStartEnd);
-               Assert.Equal(200, ((ObjectResult)actionMikeSourceStartEndAdded.Result).StatusCode);
-               Assert.NotNull(((OkObjectResult)actionMikeSourceStartEndAdded.Result).Value);
-               MikeSourceStartEnd mikeSourceStartEndAdded = (MikeSourceStartEnd)((OkObjectResult)actionMikeSourceStartEndAdded.Result).Value;
-               Assert.NotNull(mikeSourceStartEndAdded);
-
-               // Put MikeSourceStartEnd
-               var actionMikeSourceStartEndUpdated = await MikeSourceStartEndService.Put(mikeSourceStartEnd);
-               Assert.Equal(200, ((ObjectResult)actionMikeSourceStartEndUpdated.Result).StatusCode);
-               Assert.NotNull(((OkObjectResult)actionMikeSourceStartEndUpdated.Result).Value);
-               MikeSourceStartEnd mikeSourceStartEndUpdated = (MikeSourceStartEnd)((OkObjectResult)actionMikeSourceStartEndUpdated.Result).Value;
-               Assert.NotNull(mikeSourceStartEndUpdated);
-
-               // Delete MikeSourceStartEnd
-               var actionMikeSourceStartEndDeleted = await MikeSourceStartEndService.Delete(mikeSourceStartEnd.MikeSourceStartEndID);
-               Assert.Equal(200, ((ObjectResult)actionMikeSourceStartEndDeleted.Result).StatusCode);
-               Assert.NotNull(((OkObjectResult)actionMikeSourceStartEndDeleted.Result).Value);
-               bool retBool = (bool)((OkObjectResult)actionMikeSourceStartEndDeleted.Result).Value;
-               Assert.True(retBool);
+                await DoCRUDTest();
+            }
+            else
+            {
+                using (TransactionScope ts = new TransactionScope())
+                {
+                    await DoCRUDTest();
+                }
             }
         }
         #endregion Tests Generated CRUD
 
         #region Functions private
+        private async Task DoCRUDTest()
+        {
+            // Post MikeSourceStartEnd
+            var actionMikeSourceStartEndAdded = await MikeSourceStartEndService.Post(mikeSourceStartEnd);
+            Assert.Equal(200, ((ObjectResult)actionMikeSourceStartEndAdded.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionMikeSourceStartEndAdded.Result).Value);
+            MikeSourceStartEnd mikeSourceStartEndAdded = (MikeSourceStartEnd)((OkObjectResult)actionMikeSourceStartEndAdded.Result).Value;
+            Assert.NotNull(mikeSourceStartEndAdded);
+
+            // List<MikeSourceStartEnd>
+            var actionMikeSourceStartEndList = await MikeSourceStartEndService.GetMikeSourceStartEndList();
+            Assert.Equal(200, ((ObjectResult)actionMikeSourceStartEndList.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionMikeSourceStartEndList.Result).Value);
+            List<MikeSourceStartEnd> mikeSourceStartEndList = (List<MikeSourceStartEnd>)((OkObjectResult)actionMikeSourceStartEndList.Result).Value;
+
+            int count = ((List<MikeSourceStartEnd>)((OkObjectResult)actionMikeSourceStartEndList.Result).Value).Count();
+            Assert.True(count > 0);
+
+            // Put MikeSourceStartEnd
+            var actionMikeSourceStartEndUpdated = await MikeSourceStartEndService.Put(mikeSourceStartEnd);
+            Assert.Equal(200, ((ObjectResult)actionMikeSourceStartEndUpdated.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionMikeSourceStartEndUpdated.Result).Value);
+            MikeSourceStartEnd mikeSourceStartEndUpdated = (MikeSourceStartEnd)((OkObjectResult)actionMikeSourceStartEndUpdated.Result).Value;
+            Assert.NotNull(mikeSourceStartEndUpdated);
+
+            // Delete MikeSourceStartEnd
+            var actionMikeSourceStartEndDeleted = await MikeSourceStartEndService.Delete(mikeSourceStartEnd.MikeSourceStartEndID);
+            Assert.Equal(200, ((ObjectResult)actionMikeSourceStartEndDeleted.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionMikeSourceStartEndDeleted.Result).Value);
+            bool retBool = (bool)((OkObjectResult)actionMikeSourceStartEndDeleted.Result).Value;
+            Assert.True(retBool);
+        }
         private async Task<bool> Setup(string culture)
         {
             Config = new ConfigurationBuilder()
@@ -109,6 +127,9 @@ namespace CSSPServices.Tests
 
             Services.AddSingleton<IConfiguration>(Config);
 
+            string CSSPDBLocalFileName = Config.GetValue<string>("CSSPDBLocal");
+            Assert.NotNull(CSSPDBLocalFileName);
+
             string TestDBConnString = Config.GetValue<string>("TestDBConnectionString");
             Assert.NotNull(TestDBConnString);
 
@@ -120,6 +141,15 @@ namespace CSSPServices.Tests
             Services.AddDbContext<InMemoryDBContext>(options =>
             {
                 options.UseInMemoryDatabase(TestDBConnString);
+            });
+
+            string appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+
+            FileInfo fiAppDataPath = new FileInfo(CSSPDBLocalFileName.Replace("{appDataPath}", appDataPath));
+
+            Services.AddDbContext<CSSPDBLocalContext>(options =>
+            {
+                options.UseSqlite($"Data Source={ fiAppDataPath.FullName }");
             });
 
             Services.AddSingleton<ICultureService, CultureService>();
@@ -141,6 +171,12 @@ namespace CSSPServices.Tests
             string Id = Config.GetValue<string>("Id");
             Assert.True(await LoggedInService.SetLoggedInContactInfo(Id));
 
+            //string IsLocalStr = Config.GetValue<string>("IsLocal");
+            //Assert.NotNull(IsLocalStr);
+
+            dbIM = Provider.GetService<InMemoryDBContext>();
+            Assert.NotNull(dbIM);
+
             MikeSourceStartEndService = Provider.GetService<IMikeSourceStartEndService>();
             Assert.NotNull(MikeSourceStartEndService);
 
@@ -148,6 +184,8 @@ namespace CSSPServices.Tests
         }
         private MikeSourceStartEnd GetFilledRandomMikeSourceStartEnd(string OmitPropName)
         {
+            dbIM.Database.EnsureDeleted();
+
             MikeSourceStartEnd mikeSourceStartEnd = new MikeSourceStartEnd();
 
             if (OmitPropName != "MikeSourceID") mikeSourceStartEnd.MikeSourceID = 1;
@@ -163,6 +201,16 @@ namespace CSSPServices.Tests
             if (OmitPropName != "SourceSalinityEnd_PSU") mikeSourceStartEnd.SourceSalinityEnd_PSU = GetRandomDouble(0.0D, 40.0D);
             if (OmitPropName != "LastUpdateDate_UTC") mikeSourceStartEnd.LastUpdateDate_UTC = new DateTime(2005, 3, 6);
             if (OmitPropName != "LastUpdateContactTVItemID") mikeSourceStartEnd.LastUpdateContactTVItemID = 2;
+
+            if (LoggedInService.IsLocal)
+            {
+                if (OmitPropName != "MikeSourceStartEndID") mikeSourceStartEnd.MikeSourceStartEndID = 10000000;
+
+                dbIM.MikeSources.Add(new MikeSource() { MikeSourceID = 1, MikeSourceTVItemID = 53, IsContinuous = true, Include = false, IsRiver = false, UseHydrometric = false, HydrometricTVItemID = null, DrainageArea_km2 = null, Factor = null, SourceNumberString = "SOURCE_1", LastUpdateDate_UTC = new DateTime(2014, 12, 2, 21, 28, 56), LastUpdateContactTVItemID = 2 });
+                dbIM.SaveChanges();
+                dbIM.TVItems.Add(new TVItem() { TVItemID = 2, TVLevel = 1, TVPath = "p1p2", TVType = (TVTypeEnum)5, ParentID = 1, IsActive = true, LastUpdateDate_UTC = new DateTime(2014, 12, 2, 16, 58, 16), LastUpdateContactTVItemID = 2});
+                dbIM.SaveChanges();
+            }
 
             return mikeSourceStartEnd;
         }

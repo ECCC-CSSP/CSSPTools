@@ -36,6 +36,8 @@ namespace CSSPServices
 
         #region Properties
         private CSSPDBContext db { get; }
+        private CSSPDBLocalContext dbLocal { get; }
+        private InMemoryDBContext dbIM { get; }
         private ICultureService CultureService { get; }
         private ILoggedInService LoggedInService { get; }
         private IEnums enums { get; }
@@ -43,12 +45,14 @@ namespace CSSPServices
         #endregion Properties
 
         #region Constructors
-        public LabSheetTubeMPNDetailService(ICultureService CultureService, ILoggedInService LoggedInService, IEnums enums, CSSPDBContext db)
+        public LabSheetTubeMPNDetailService(ICultureService CultureService, ILoggedInService LoggedInService, IEnums enums, CSSPDBContext db, CSSPDBLocalContext dbLocal, InMemoryDBContext dbIM)
         {
             this.CultureService = CultureService;
             this.LoggedInService = LoggedInService;
             this.enums = enums;
             this.db = db;
+            this.dbLocal = dbLocal;
+            this.dbIM = dbIM;
         }
         #endregion Constructors
 
@@ -60,16 +64,32 @@ namespace CSSPServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            LabSheetTubeMPNDetail labsheettubempndetail = (from c in db.LabSheetTubeMPNDetails.AsNoTracking()
-                    where c.LabSheetTubeMPNDetailID == LabSheetTubeMPNDetailID
-                    select c).FirstOrDefault();
-
-            if (labsheettubempndetail == null)
+            if (LoggedInService.IsLocal)
             {
-               return await Task.FromResult(NotFound());
-            }
+                LabSheetTubeMPNDetail labsheettubempndetail = (from c in dbLocal.LabSheetTubeMPNDetails.AsNoTracking()
+                        where c.LabSheetTubeMPNDetailID == LabSheetTubeMPNDetailID
+                        select c).FirstOrDefault();
 
-            return await Task.FromResult(Ok(labsheettubempndetail));
+                if (labsheettubempndetail == null)
+                {
+                   return await Task.FromResult(NotFound());
+                }
+
+                return await Task.FromResult(Ok(labsheettubempndetail));
+            }
+            else
+            {
+                LabSheetTubeMPNDetail labsheettubempndetail = (from c in db.LabSheetTubeMPNDetails.AsNoTracking()
+                        where c.LabSheetTubeMPNDetailID == LabSheetTubeMPNDetailID
+                        select c).FirstOrDefault();
+
+                if (labsheettubempndetail == null)
+                {
+                   return await Task.FromResult(NotFound());
+                }
+
+                return await Task.FromResult(Ok(labsheettubempndetail));
+            }
         }
         public async Task<ActionResult<List<LabSheetTubeMPNDetail>>> GetLabSheetTubeMPNDetailList()
         {
@@ -78,9 +98,18 @@ namespace CSSPServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            List<LabSheetTubeMPNDetail> labsheettubempndetailList = (from c in db.LabSheetTubeMPNDetails.AsNoTracking() select c).Take(100).ToList();
+            if (LoggedInService.IsLocal)
+            {
+                List<LabSheetTubeMPNDetail> labsheettubempndetailList = (from c in dbLocal.LabSheetTubeMPNDetails.AsNoTracking() select c).Take(100).ToList();
 
-            return await Task.FromResult(Ok(labsheettubempndetailList));
+                return await Task.FromResult(Ok(labsheettubempndetailList));
+            }
+            else
+            {
+                List<LabSheetTubeMPNDetail> labsheettubempndetailList = (from c in db.LabSheetTubeMPNDetails.AsNoTracking() select c).Take(100).ToList();
+
+                return await Task.FromResult(Ok(labsheettubempndetailList));
+            }
         }
         public async Task<ActionResult<bool>> Delete(int LabSheetTubeMPNDetailID)
         {
@@ -89,26 +118,52 @@ namespace CSSPServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            LabSheetTubeMPNDetail labSheetTubeMPNDetail = (from c in db.LabSheetTubeMPNDetails
-                               where c.LabSheetTubeMPNDetailID == LabSheetTubeMPNDetailID
-                               select c).FirstOrDefault();
-            
-            if (labSheetTubeMPNDetail == null)
+            if (LoggedInService.IsLocal)
             {
-                return await Task.FromResult(BadRequest(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "LabSheetTubeMPNDetail", "LabSheetTubeMPNDetailID", LabSheetTubeMPNDetailID.ToString())));
-            }
+                LabSheetTubeMPNDetail labSheetTubeMPNDetail = (from c in dbLocal.LabSheetTubeMPNDetails
+                                   where c.LabSheetTubeMPNDetailID == LabSheetTubeMPNDetailID
+                                   select c).FirstOrDefault();
+                
+                if (labSheetTubeMPNDetail == null)
+                {
+                    return await Task.FromResult(BadRequest(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "LabSheetTubeMPNDetail", "LabSheetTubeMPNDetailID", LabSheetTubeMPNDetailID.ToString())));
+                }
 
-            try
-            {
-               db.LabSheetTubeMPNDetails.Remove(labSheetTubeMPNDetail);
-               db.SaveChanges();
-            }
-            catch (DbUpdateException ex)
-            {
-               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
-            }
+                try
+                {
+                   dbLocal.LabSheetTubeMPNDetails.Remove(labSheetTubeMPNDetail);
+                   dbLocal.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                   return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
 
-            return await Task.FromResult(Ok(true));
+                return await Task.FromResult(Ok(true));
+            }
+            else
+            {
+                LabSheetTubeMPNDetail labSheetTubeMPNDetail = (from c in db.LabSheetTubeMPNDetails
+                                   where c.LabSheetTubeMPNDetailID == LabSheetTubeMPNDetailID
+                                   select c).FirstOrDefault();
+                
+                if (labSheetTubeMPNDetail == null)
+                {
+                    return await Task.FromResult(BadRequest(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "LabSheetTubeMPNDetail", "LabSheetTubeMPNDetailID", LabSheetTubeMPNDetailID.ToString())));
+                }
+
+                try
+                {
+                   db.LabSheetTubeMPNDetails.Remove(labSheetTubeMPNDetail);
+                   db.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                   return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
+
+                return await Task.FromResult(Ok(true));
+            }
         }
         public async Task<ActionResult<LabSheetTubeMPNDetail>> Post(LabSheetTubeMPNDetail labSheetTubeMPNDetail)
         {
@@ -123,17 +178,34 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ValidationResults));
             }
 
-            try
+            if (LoggedInService.IsLocal)
             {
-               db.LabSheetTubeMPNDetails.Add(labSheetTubeMPNDetail);
-               db.SaveChanges();
-            }
-            catch (DbUpdateException ex)
-            {
-               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
-            }
+                try
+                {
+                   dbLocal.LabSheetTubeMPNDetails.Add(labSheetTubeMPNDetail);
+                   dbLocal.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                   return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
 
-            return await Task.FromResult(Ok(labSheetTubeMPNDetail));
+                return await Task.FromResult(Ok(labSheetTubeMPNDetail));
+            }
+            else
+            {
+                try
+                {
+                   db.LabSheetTubeMPNDetails.Add(labSheetTubeMPNDetail);
+                   db.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                   return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
+
+                return await Task.FromResult(Ok(labSheetTubeMPNDetail));
+            }
         }
         public async Task<ActionResult<LabSheetTubeMPNDetail>> Put(LabSheetTubeMPNDetail labSheetTubeMPNDetail)
         {
@@ -148,6 +220,22 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ValidationResults));
             }
 
+            if (LoggedInService.IsLocal)
+            {
+            try
+            {
+               dbLocal.LabSheetTubeMPNDetails.Update(labSheetTubeMPNDetail);
+               dbLocal.SaveChanges();
+            }
+            catch (DbUpdateException ex)
+            {
+               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+            }
+
+            return await Task.FromResult(Ok(labSheetTubeMPNDetail));
+            }
+            else
+            {
             try
             {
                db.LabSheetTubeMPNDetails.Update(labSheetTubeMPNDetail);
@@ -159,6 +247,7 @@ namespace CSSPServices
             }
 
             return await Task.FromResult(Ok(labSheetTubeMPNDetail));
+            }
         }
         #endregion Functions public
 
@@ -175,13 +264,35 @@ namespace CSSPServices
                     yield return new ValidationResult(string.Format(CultureServicesRes._IsRequired, "LabSheetTubeMPNDetailID"), new[] { "LabSheetTubeMPNDetailID" });
                 }
 
-                if (!(from c in db.LabSheetTubeMPNDetails select c).Where(c => c.LabSheetTubeMPNDetailID == labSheetTubeMPNDetail.LabSheetTubeMPNDetailID).Any())
+                if (LoggedInService.IsLocal)
                 {
-                    yield return new ValidationResult(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "LabSheetTubeMPNDetail", "LabSheetTubeMPNDetailID", labSheetTubeMPNDetail.LabSheetTubeMPNDetailID.ToString()), new[] { "LabSheetTubeMPNDetailID" });
+                    if (!(from c in dbLocal.LabSheetTubeMPNDetails select c).Where(c => c.LabSheetTubeMPNDetailID == labSheetTubeMPNDetail.LabSheetTubeMPNDetailID).Any())
+                    {
+                        yield return new ValidationResult(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "LabSheetTubeMPNDetail", "LabSheetTubeMPNDetailID", labSheetTubeMPNDetail.LabSheetTubeMPNDetailID.ToString()), new[] { "LabSheetTubeMPNDetailID" });
+                    }
+                }
+                else
+                {
+                    if (!(from c in db.LabSheetTubeMPNDetails select c).Where(c => c.LabSheetTubeMPNDetailID == labSheetTubeMPNDetail.LabSheetTubeMPNDetailID).Any())
+                    {
+                        yield return new ValidationResult(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "LabSheetTubeMPNDetail", "LabSheetTubeMPNDetailID", labSheetTubeMPNDetail.LabSheetTubeMPNDetailID.ToString()), new[] { "LabSheetTubeMPNDetailID" });
+                    }
                 }
             }
 
-            LabSheetDetail LabSheetDetailLabSheetDetailID = (from c in db.LabSheetDetails where c.LabSheetDetailID == labSheetTubeMPNDetail.LabSheetDetailID select c).FirstOrDefault();
+            LabSheetDetail LabSheetDetailLabSheetDetailID = null;
+            if (LoggedInService.IsLocal)
+            {
+                LabSheetDetailLabSheetDetailID = (from c in dbLocal.LabSheetDetails where c.LabSheetDetailID == labSheetTubeMPNDetail.LabSheetDetailID select c).FirstOrDefault();
+                if (LabSheetDetailLabSheetDetailID == null)
+                {
+                    LabSheetDetailLabSheetDetailID = (from c in dbIM.LabSheetDetails where c.LabSheetDetailID == labSheetTubeMPNDetail.LabSheetDetailID select c).FirstOrDefault();
+                }
+            }
+            else
+            {
+                LabSheetDetailLabSheetDetailID = (from c in db.LabSheetDetails where c.LabSheetDetailID == labSheetTubeMPNDetail.LabSheetDetailID select c).FirstOrDefault();
+            }
 
             if (LabSheetDetailLabSheetDetailID == null)
             {
@@ -193,7 +304,19 @@ namespace CSSPServices
                 yield return new ValidationResult(string.Format(CultureServicesRes._ValueShouldBeBetween_And_, "Ordinal", "0", "1000"), new[] { "Ordinal" });
             }
 
-            TVItem TVItemMWQMSiteTVItemID = (from c in db.TVItems where c.TVItemID == labSheetTubeMPNDetail.MWQMSiteTVItemID select c).FirstOrDefault();
+            TVItem TVItemMWQMSiteTVItemID = null;
+            if (LoggedInService.IsLocal)
+            {
+                TVItemMWQMSiteTVItemID = (from c in dbLocal.TVItems where c.TVItemID == labSheetTubeMPNDetail.MWQMSiteTVItemID select c).FirstOrDefault();
+                if (TVItemMWQMSiteTVItemID == null)
+                {
+                    TVItemMWQMSiteTVItemID = (from c in dbIM.TVItems where c.TVItemID == labSheetTubeMPNDetail.MWQMSiteTVItemID select c).FirstOrDefault();
+                }
+            }
+            else
+            {
+                TVItemMWQMSiteTVItemID = (from c in db.TVItems where c.TVItemID == labSheetTubeMPNDetail.MWQMSiteTVItemID select c).FirstOrDefault();
+            }
 
             if (TVItemMWQMSiteTVItemID == null)
             {
@@ -292,7 +415,19 @@ namespace CSSPServices
                 }
             }
 
-            TVItem TVItemLastUpdateContactTVItemID = (from c in db.TVItems where c.TVItemID == labSheetTubeMPNDetail.LastUpdateContactTVItemID select c).FirstOrDefault();
+            TVItem TVItemLastUpdateContactTVItemID = null;
+            if (LoggedInService.IsLocal)
+            {
+                TVItemLastUpdateContactTVItemID = (from c in dbLocal.TVItems where c.TVItemID == labSheetTubeMPNDetail.LastUpdateContactTVItemID select c).FirstOrDefault();
+                if (TVItemLastUpdateContactTVItemID == null)
+                {
+                    TVItemLastUpdateContactTVItemID = (from c in dbIM.TVItems where c.TVItemID == labSheetTubeMPNDetail.LastUpdateContactTVItemID select c).FirstOrDefault();
+                }
+            }
+            else
+            {
+                TVItemLastUpdateContactTVItemID = (from c in db.TVItems where c.TVItemID == labSheetTubeMPNDetail.LastUpdateContactTVItemID select c).FirstOrDefault();
+            }
 
             if (TVItemLastUpdateContactTVItemID == null)
             {

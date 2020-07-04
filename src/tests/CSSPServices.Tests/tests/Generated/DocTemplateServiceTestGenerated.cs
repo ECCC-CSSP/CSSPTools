@@ -36,6 +36,9 @@ namespace CSSPServices.Tests
         private ILoggedInService LoggedInService { get; set; }
         private IDocTemplateService DocTemplateService { get; set; }
         private CSSPDBContext db { get; set; }
+        private CSSPDBLocalContext dbLocal { get; set; }
+        private InMemoryDBContext dbIM { get; set; }
+        private DocTemplate docTemplate { get; set; }
         #endregion Properties
 
         #region Constructors
@@ -47,9 +50,11 @@ namespace CSSPServices.Tests
 
         #region Tests Generated CRUD
         [Theory]
-        [InlineData("en-CA")]
-        [InlineData("fr-CA")]
-        public async Task DocTemplate_CRUD_Good_Test(string culture)
+        [InlineData("en-CA", "true")]
+        [InlineData("fr-CA", "true")]
+        [InlineData("en-CA", "false")]
+        [InlineData("fr-CA", "false")]
+        public async Task DocTemplate_CRUD_Good_Test(string culture, string IsLocalStr)
         {
             // -------------------------------
             // -------------------------------
@@ -59,44 +64,57 @@ namespace CSSPServices.Tests
 
             Assert.True(await Setup(culture));
 
-            using (TransactionScope ts = new TransactionScope())
+            LoggedInService.IsLocal = bool.Parse(IsLocalStr);
+
+            docTemplate = GetFilledRandomDocTemplate("");
+
+            if (LoggedInService.IsLocal)
             {
-               DocTemplate docTemplate = GetFilledRandomDocTemplate(""); 
-
-               // List<DocTemplate>
-               var actionDocTemplateList = await DocTemplateService.GetDocTemplateList();
-               Assert.Equal(200, ((ObjectResult)actionDocTemplateList.Result).StatusCode);
-               Assert.NotNull(((OkObjectResult)actionDocTemplateList.Result).Value);
-               List<DocTemplate> docTemplateList = (List<DocTemplate>)((OkObjectResult)actionDocTemplateList.Result).Value;
-
-               int count = ((List<DocTemplate>)((OkObjectResult)actionDocTemplateList.Result).Value).Count();
-                Assert.True(count > 0);
-
-               // Post DocTemplate
-               var actionDocTemplateAdded = await DocTemplateService.Post(docTemplate);
-               Assert.Equal(200, ((ObjectResult)actionDocTemplateAdded.Result).StatusCode);
-               Assert.NotNull(((OkObjectResult)actionDocTemplateAdded.Result).Value);
-               DocTemplate docTemplateAdded = (DocTemplate)((OkObjectResult)actionDocTemplateAdded.Result).Value;
-               Assert.NotNull(docTemplateAdded);
-
-               // Put DocTemplate
-               var actionDocTemplateUpdated = await DocTemplateService.Put(docTemplate);
-               Assert.Equal(200, ((ObjectResult)actionDocTemplateUpdated.Result).StatusCode);
-               Assert.NotNull(((OkObjectResult)actionDocTemplateUpdated.Result).Value);
-               DocTemplate docTemplateUpdated = (DocTemplate)((OkObjectResult)actionDocTemplateUpdated.Result).Value;
-               Assert.NotNull(docTemplateUpdated);
-
-               // Delete DocTemplate
-               var actionDocTemplateDeleted = await DocTemplateService.Delete(docTemplate.DocTemplateID);
-               Assert.Equal(200, ((ObjectResult)actionDocTemplateDeleted.Result).StatusCode);
-               Assert.NotNull(((OkObjectResult)actionDocTemplateDeleted.Result).Value);
-               bool retBool = (bool)((OkObjectResult)actionDocTemplateDeleted.Result).Value;
-               Assert.True(retBool);
+                await DoCRUDTest();
+            }
+            else
+            {
+                using (TransactionScope ts = new TransactionScope())
+                {
+                    await DoCRUDTest();
+                }
             }
         }
         #endregion Tests Generated CRUD
 
         #region Functions private
+        private async Task DoCRUDTest()
+        {
+            // Post DocTemplate
+            var actionDocTemplateAdded = await DocTemplateService.Post(docTemplate);
+            Assert.Equal(200, ((ObjectResult)actionDocTemplateAdded.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionDocTemplateAdded.Result).Value);
+            DocTemplate docTemplateAdded = (DocTemplate)((OkObjectResult)actionDocTemplateAdded.Result).Value;
+            Assert.NotNull(docTemplateAdded);
+
+            // List<DocTemplate>
+            var actionDocTemplateList = await DocTemplateService.GetDocTemplateList();
+            Assert.Equal(200, ((ObjectResult)actionDocTemplateList.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionDocTemplateList.Result).Value);
+            List<DocTemplate> docTemplateList = (List<DocTemplate>)((OkObjectResult)actionDocTemplateList.Result).Value;
+
+            int count = ((List<DocTemplate>)((OkObjectResult)actionDocTemplateList.Result).Value).Count();
+            Assert.True(count > 0);
+
+            // Put DocTemplate
+            var actionDocTemplateUpdated = await DocTemplateService.Put(docTemplate);
+            Assert.Equal(200, ((ObjectResult)actionDocTemplateUpdated.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionDocTemplateUpdated.Result).Value);
+            DocTemplate docTemplateUpdated = (DocTemplate)((OkObjectResult)actionDocTemplateUpdated.Result).Value;
+            Assert.NotNull(docTemplateUpdated);
+
+            // Delete DocTemplate
+            var actionDocTemplateDeleted = await DocTemplateService.Delete(docTemplate.DocTemplateID);
+            Assert.Equal(200, ((ObjectResult)actionDocTemplateDeleted.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionDocTemplateDeleted.Result).Value);
+            bool retBool = (bool)((OkObjectResult)actionDocTemplateDeleted.Result).Value;
+            Assert.True(retBool);
+        }
         private async Task<bool> Setup(string culture)
         {
             Config = new ConfigurationBuilder()
@@ -109,6 +127,9 @@ namespace CSSPServices.Tests
 
             Services.AddSingleton<IConfiguration>(Config);
 
+            string CSSPDBLocalFileName = Config.GetValue<string>("CSSPDBLocal");
+            Assert.NotNull(CSSPDBLocalFileName);
+
             string TestDBConnString = Config.GetValue<string>("TestDBConnectionString");
             Assert.NotNull(TestDBConnString);
 
@@ -120,6 +141,15 @@ namespace CSSPServices.Tests
             Services.AddDbContext<InMemoryDBContext>(options =>
             {
                 options.UseInMemoryDatabase(TestDBConnString);
+            });
+
+            string appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+
+            FileInfo fiAppDataPath = new FileInfo(CSSPDBLocalFileName.Replace("{appDataPath}", appDataPath));
+
+            Services.AddDbContext<CSSPDBLocalContext>(options =>
+            {
+                options.UseSqlite($"Data Source={ fiAppDataPath.FullName }");
             });
 
             Services.AddSingleton<ICultureService, CultureService>();
@@ -141,6 +171,12 @@ namespace CSSPServices.Tests
             string Id = Config.GetValue<string>("Id");
             Assert.True(await LoggedInService.SetLoggedInContactInfo(Id));
 
+            //string IsLocalStr = Config.GetValue<string>("IsLocal");
+            //Assert.NotNull(IsLocalStr);
+
+            dbIM = Provider.GetService<InMemoryDBContext>();
+            Assert.NotNull(dbIM);
+
             DocTemplateService = Provider.GetService<IDocTemplateService>();
             Assert.NotNull(DocTemplateService);
 
@@ -148,6 +184,8 @@ namespace CSSPServices.Tests
         }
         private DocTemplate GetFilledRandomDocTemplate(string OmitPropName)
         {
+            dbIM.Database.EnsureDeleted();
+
             DocTemplate docTemplate = new DocTemplate();
 
             if (OmitPropName != "Language") docTemplate.Language = LanguageRequest;
@@ -156,6 +194,16 @@ namespace CSSPServices.Tests
             if (OmitPropName != "FileName") docTemplate.FileName = GetRandomString("", 5);
             if (OmitPropName != "LastUpdateDate_UTC") docTemplate.LastUpdateDate_UTC = new DateTime(2005, 3, 6);
             if (OmitPropName != "LastUpdateContactTVItemID") docTemplate.LastUpdateContactTVItemID = 2;
+
+            if (LoggedInService.IsLocal)
+            {
+                if (OmitPropName != "DocTemplateID") docTemplate.DocTemplateID = 10000000;
+
+                dbIM.TVItems.Add(new TVItem() { TVItemID = 42, TVLevel = 5, TVPath = "p1p5p6p39p41p42", TVType = (TVTypeEnum)8, ParentID = 41, IsActive = true, LastUpdateDate_UTC = new DateTime(2016, 5, 5, 17, 18, 26), LastUpdateContactTVItemID = 2});
+                dbIM.SaveChanges();
+                dbIM.TVItems.Add(new TVItem() { TVItemID = 2, TVLevel = 1, TVPath = "p1p2", TVType = (TVTypeEnum)5, ParentID = 1, IsActive = true, LastUpdateDate_UTC = new DateTime(2014, 12, 2, 16, 58, 16), LastUpdateContactTVItemID = 2});
+                dbIM.SaveChanges();
+            }
 
             return docTemplate;
         }

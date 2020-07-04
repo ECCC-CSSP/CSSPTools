@@ -36,6 +36,8 @@ namespace CSSPServices
 
         #region Properties
         private CSSPDBContext db { get; }
+        private CSSPDBLocalContext dbLocal { get; }
+        private InMemoryDBContext dbIM { get; }
         private ICultureService CultureService { get; }
         private ILoggedInService LoggedInService { get; }
         private IEnums enums { get; }
@@ -43,12 +45,14 @@ namespace CSSPServices
         #endregion Properties
 
         #region Constructors
-        public ContactService(ICultureService CultureService, ILoggedInService LoggedInService, IEnums enums, CSSPDBContext db)
+        public ContactService(ICultureService CultureService, ILoggedInService LoggedInService, IEnums enums, CSSPDBContext db, CSSPDBLocalContext dbLocal, InMemoryDBContext dbIM)
         {
             this.CultureService = CultureService;
             this.LoggedInService = LoggedInService;
             this.enums = enums;
             this.db = db;
+            this.dbLocal = dbLocal;
+            this.dbIM = dbIM;
         }
         #endregion Constructors
 
@@ -60,16 +64,32 @@ namespace CSSPServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            Contact contact = (from c in db.Contacts.AsNoTracking()
-                    where c.ContactID == ContactID
-                    select c).FirstOrDefault();
-
-            if (contact == null)
+            if (LoggedInService.IsLocal)
             {
-               return await Task.FromResult(NotFound());
-            }
+                Contact contact = (from c in dbLocal.Contacts.AsNoTracking()
+                        where c.ContactID == ContactID
+                        select c).FirstOrDefault();
 
-            return await Task.FromResult(Ok(contact));
+                if (contact == null)
+                {
+                   return await Task.FromResult(NotFound());
+                }
+
+                return await Task.FromResult(Ok(contact));
+            }
+            else
+            {
+                Contact contact = (from c in db.Contacts.AsNoTracking()
+                        where c.ContactID == ContactID
+                        select c).FirstOrDefault();
+
+                if (contact == null)
+                {
+                   return await Task.FromResult(NotFound());
+                }
+
+                return await Task.FromResult(Ok(contact));
+            }
         }
         public async Task<ActionResult<List<Contact>>> GetContactList()
         {
@@ -78,9 +98,18 @@ namespace CSSPServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            List<Contact> contactList = (from c in db.Contacts.AsNoTracking() select c).Take(100).ToList();
+            if (LoggedInService.IsLocal)
+            {
+                List<Contact> contactList = (from c in dbLocal.Contacts.AsNoTracking() select c).Take(100).ToList();
 
-            return await Task.FromResult(Ok(contactList));
+                return await Task.FromResult(Ok(contactList));
+            }
+            else
+            {
+                List<Contact> contactList = (from c in db.Contacts.AsNoTracking() select c).Take(100).ToList();
+
+                return await Task.FromResult(Ok(contactList));
+            }
         }
         public async Task<ActionResult<bool>> Delete(int ContactID)
         {
@@ -89,26 +118,52 @@ namespace CSSPServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            Contact contact = (from c in db.Contacts
-                               where c.ContactID == ContactID
-                               select c).FirstOrDefault();
-            
-            if (contact == null)
+            if (LoggedInService.IsLocal)
             {
-                return await Task.FromResult(BadRequest(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "Contact", "ContactID", ContactID.ToString())));
-            }
+                Contact contact = (from c in dbLocal.Contacts
+                                   where c.ContactID == ContactID
+                                   select c).FirstOrDefault();
+                
+                if (contact == null)
+                {
+                    return await Task.FromResult(BadRequest(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "Contact", "ContactID", ContactID.ToString())));
+                }
 
-            try
-            {
-               db.Contacts.Remove(contact);
-               db.SaveChanges();
-            }
-            catch (DbUpdateException ex)
-            {
-               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
-            }
+                try
+                {
+                   dbLocal.Contacts.Remove(contact);
+                   dbLocal.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                   return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
 
-            return await Task.FromResult(Ok(true));
+                return await Task.FromResult(Ok(true));
+            }
+            else
+            {
+                Contact contact = (from c in db.Contacts
+                                   where c.ContactID == ContactID
+                                   select c).FirstOrDefault();
+                
+                if (contact == null)
+                {
+                    return await Task.FromResult(BadRequest(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "Contact", "ContactID", ContactID.ToString())));
+                }
+
+                try
+                {
+                   db.Contacts.Remove(contact);
+                   db.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                   return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
+
+                return await Task.FromResult(Ok(true));
+            }
         }
         public async Task<ActionResult<Contact>> Post(Contact contact, AddContactTypeEnum addContactType)
         {
@@ -123,17 +178,34 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ValidationResults));
             }
 
-            try
+            if (LoggedInService.IsLocal)
             {
-               db.Contacts.Add(contact);
-               db.SaveChanges();
-            }
-            catch (DbUpdateException ex)
-            {
-               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
-            }
+                try
+                {
+                   dbLocal.Contacts.Add(contact);
+                   dbLocal.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                   return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
 
-            return await Task.FromResult(Ok(contact));
+                return await Task.FromResult(Ok(contact));
+            }
+            else
+            {
+                try
+                {
+                   db.Contacts.Add(contact);
+                   db.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                   return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
+
+                return await Task.FromResult(Ok(contact));
+            }
         }
         public async Task<ActionResult<Contact>> Put(Contact contact)
         {
@@ -148,6 +220,22 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ValidationResults));
             }
 
+            if (LoggedInService.IsLocal)
+            {
+            try
+            {
+               dbLocal.Contacts.Update(contact);
+               dbLocal.SaveChanges();
+            }
+            catch (DbUpdateException ex)
+            {
+               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+            }
+
+            return await Task.FromResult(Ok(contact));
+            }
+            else
+            {
             try
             {
                db.Contacts.Update(contact);
@@ -159,6 +247,7 @@ namespace CSSPServices
             }
 
             return await Task.FromResult(Ok(contact));
+            }
         }
         #endregion Functions public
 
@@ -175,9 +264,19 @@ namespace CSSPServices
                     yield return new ValidationResult(string.Format(CultureServicesRes._IsRequired, "ContactID"), new[] { "ContactID" });
                 }
 
-                if (!(from c in db.Contacts select c).Where(c => c.ContactID == contact.ContactID).Any())
+                if (LoggedInService.IsLocal)
                 {
-                    yield return new ValidationResult(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "Contact", "ContactID", contact.ContactID.ToString()), new[] { "ContactID" });
+                    if (!(from c in dbLocal.Contacts select c).Where(c => c.ContactID == contact.ContactID).Any())
+                    {
+                        yield return new ValidationResult(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "Contact", "ContactID", contact.ContactID.ToString()), new[] { "ContactID" });
+                    }
+                }
+                else
+                {
+                    if (!(from c in db.Contacts select c).Where(c => c.ContactID == contact.ContactID).Any())
+                    {
+                        yield return new ValidationResult(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "Contact", "ContactID", contact.ContactID.ToString()), new[] { "ContactID" });
+                    }
                 }
             }
 
@@ -191,14 +290,38 @@ namespace CSSPServices
                 yield return new ValidationResult(string.Format(CultureServicesRes._MaxLengthIs_, "Id", "450"), new[] { "Id" });
             }
 
-            AspNetUser AspNetUserId = (from c in db.AspNetUsers where c.Id == contact.Id select c).FirstOrDefault();
+            AspNetUser AspNetUserId = null;
+            if (LoggedInService.IsLocal)
+            {
+                AspNetUserId = (from c in dbLocal.AspNetUsers where c.Id == contact.Id select c).FirstOrDefault();
+                if (AspNetUserId == null)
+                {
+                    AspNetUserId = (from c in dbIM.AspNetUsers where c.Id == contact.Id select c).FirstOrDefault();
+                }
+            }
+            else
+            {
+                AspNetUserId = (from c in db.AspNetUsers where c.Id == contact.Id select c).FirstOrDefault();
+            }
 
             if (AspNetUserId == null)
             {
                 yield return new ValidationResult(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "AspNetUser", "Id", (contact.Id == null ? "" : contact.Id.ToString())), new[] { "Id" });
             }
 
-            TVItem TVItemContactTVItemID = (from c in db.TVItems where c.TVItemID == contact.ContactTVItemID select c).FirstOrDefault();
+            TVItem TVItemContactTVItemID = null;
+            if (LoggedInService.IsLocal)
+            {
+                TVItemContactTVItemID = (from c in dbLocal.TVItems where c.TVItemID == contact.ContactTVItemID select c).FirstOrDefault();
+                if (TVItemContactTVItemID == null)
+                {
+                    TVItemContactTVItemID = (from c in dbIM.TVItems where c.TVItemID == contact.ContactTVItemID select c).FirstOrDefault();
+                }
+            }
+            else
+            {
+                TVItemContactTVItemID = (from c in db.TVItems where c.TVItemID == contact.ContactTVItemID select c).FirstOrDefault();
+            }
 
             if (TVItemContactTVItemID == null)
             {
@@ -301,7 +424,19 @@ namespace CSSPServices
                 }
             }
 
-            TVItem TVItemLastUpdateContactTVItemID = (from c in db.TVItems where c.TVItemID == contact.LastUpdateContactTVItemID select c).FirstOrDefault();
+            TVItem TVItemLastUpdateContactTVItemID = null;
+            if (LoggedInService.IsLocal)
+            {
+                TVItemLastUpdateContactTVItemID = (from c in dbLocal.TVItems where c.TVItemID == contact.LastUpdateContactTVItemID select c).FirstOrDefault();
+                if (TVItemLastUpdateContactTVItemID == null)
+                {
+                    TVItemLastUpdateContactTVItemID = (from c in dbIM.TVItems where c.TVItemID == contact.LastUpdateContactTVItemID select c).FirstOrDefault();
+                }
+            }
+            else
+            {
+                TVItemLastUpdateContactTVItemID = (from c in db.TVItems where c.TVItemID == contact.LastUpdateContactTVItemID select c).FirstOrDefault();
+            }
 
             if (TVItemLastUpdateContactTVItemID == null)
             {

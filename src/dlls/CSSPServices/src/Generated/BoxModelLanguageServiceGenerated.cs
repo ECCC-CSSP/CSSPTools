@@ -36,6 +36,8 @@ namespace CSSPServices
 
         #region Properties
         private CSSPDBContext db { get; }
+        private CSSPDBLocalContext dbLocal { get; }
+        private InMemoryDBContext dbIM { get; }
         private ICultureService CultureService { get; }
         private ILoggedInService LoggedInService { get; }
         private IEnums enums { get; }
@@ -43,12 +45,14 @@ namespace CSSPServices
         #endregion Properties
 
         #region Constructors
-        public BoxModelLanguageService(ICultureService CultureService, ILoggedInService LoggedInService, IEnums enums, CSSPDBContext db)
+        public BoxModelLanguageService(ICultureService CultureService, ILoggedInService LoggedInService, IEnums enums, CSSPDBContext db, CSSPDBLocalContext dbLocal, InMemoryDBContext dbIM)
         {
             this.CultureService = CultureService;
             this.LoggedInService = LoggedInService;
             this.enums = enums;
             this.db = db;
+            this.dbLocal = dbLocal;
+            this.dbIM = dbIM;
         }
         #endregion Constructors
 
@@ -60,16 +64,32 @@ namespace CSSPServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            BoxModelLanguage boxmodellanguage = (from c in db.BoxModelLanguages.AsNoTracking()
-                    where c.BoxModelLanguageID == BoxModelLanguageID
-                    select c).FirstOrDefault();
-
-            if (boxmodellanguage == null)
+            if (LoggedInService.IsLocal)
             {
-               return await Task.FromResult(NotFound());
-            }
+                BoxModelLanguage boxmodellanguage = (from c in dbLocal.BoxModelLanguages.AsNoTracking()
+                        where c.BoxModelLanguageID == BoxModelLanguageID
+                        select c).FirstOrDefault();
 
-            return await Task.FromResult(Ok(boxmodellanguage));
+                if (boxmodellanguage == null)
+                {
+                   return await Task.FromResult(NotFound());
+                }
+
+                return await Task.FromResult(Ok(boxmodellanguage));
+            }
+            else
+            {
+                BoxModelLanguage boxmodellanguage = (from c in db.BoxModelLanguages.AsNoTracking()
+                        where c.BoxModelLanguageID == BoxModelLanguageID
+                        select c).FirstOrDefault();
+
+                if (boxmodellanguage == null)
+                {
+                   return await Task.FromResult(NotFound());
+                }
+
+                return await Task.FromResult(Ok(boxmodellanguage));
+            }
         }
         public async Task<ActionResult<List<BoxModelLanguage>>> GetBoxModelLanguageList()
         {
@@ -78,9 +98,18 @@ namespace CSSPServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            List<BoxModelLanguage> boxmodellanguageList = (from c in db.BoxModelLanguages.AsNoTracking() select c).Take(100).ToList();
+            if (LoggedInService.IsLocal)
+            {
+                List<BoxModelLanguage> boxmodellanguageList = (from c in dbLocal.BoxModelLanguages.AsNoTracking() select c).Take(100).ToList();
 
-            return await Task.FromResult(Ok(boxmodellanguageList));
+                return await Task.FromResult(Ok(boxmodellanguageList));
+            }
+            else
+            {
+                List<BoxModelLanguage> boxmodellanguageList = (from c in db.BoxModelLanguages.AsNoTracking() select c).Take(100).ToList();
+
+                return await Task.FromResult(Ok(boxmodellanguageList));
+            }
         }
         public async Task<ActionResult<bool>> Delete(int BoxModelLanguageID)
         {
@@ -89,26 +118,52 @@ namespace CSSPServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            BoxModelLanguage boxModelLanguage = (from c in db.BoxModelLanguages
-                               where c.BoxModelLanguageID == BoxModelLanguageID
-                               select c).FirstOrDefault();
-            
-            if (boxModelLanguage == null)
+            if (LoggedInService.IsLocal)
             {
-                return await Task.FromResult(BadRequest(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "BoxModelLanguage", "BoxModelLanguageID", BoxModelLanguageID.ToString())));
-            }
+                BoxModelLanguage boxModelLanguage = (from c in dbLocal.BoxModelLanguages
+                                   where c.BoxModelLanguageID == BoxModelLanguageID
+                                   select c).FirstOrDefault();
+                
+                if (boxModelLanguage == null)
+                {
+                    return await Task.FromResult(BadRequest(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "BoxModelLanguage", "BoxModelLanguageID", BoxModelLanguageID.ToString())));
+                }
 
-            try
-            {
-               db.BoxModelLanguages.Remove(boxModelLanguage);
-               db.SaveChanges();
-            }
-            catch (DbUpdateException ex)
-            {
-               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
-            }
+                try
+                {
+                   dbLocal.BoxModelLanguages.Remove(boxModelLanguage);
+                   dbLocal.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                   return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
 
-            return await Task.FromResult(Ok(true));
+                return await Task.FromResult(Ok(true));
+            }
+            else
+            {
+                BoxModelLanguage boxModelLanguage = (from c in db.BoxModelLanguages
+                                   where c.BoxModelLanguageID == BoxModelLanguageID
+                                   select c).FirstOrDefault();
+                
+                if (boxModelLanguage == null)
+                {
+                    return await Task.FromResult(BadRequest(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "BoxModelLanguage", "BoxModelLanguageID", BoxModelLanguageID.ToString())));
+                }
+
+                try
+                {
+                   db.BoxModelLanguages.Remove(boxModelLanguage);
+                   db.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                   return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
+
+                return await Task.FromResult(Ok(true));
+            }
         }
         public async Task<ActionResult<BoxModelLanguage>> Post(BoxModelLanguage boxModelLanguage)
         {
@@ -123,17 +178,34 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ValidationResults));
             }
 
-            try
+            if (LoggedInService.IsLocal)
             {
-               db.BoxModelLanguages.Add(boxModelLanguage);
-               db.SaveChanges();
-            }
-            catch (DbUpdateException ex)
-            {
-               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
-            }
+                try
+                {
+                   dbLocal.BoxModelLanguages.Add(boxModelLanguage);
+                   dbLocal.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                   return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
 
-            return await Task.FromResult(Ok(boxModelLanguage));
+                return await Task.FromResult(Ok(boxModelLanguage));
+            }
+            else
+            {
+                try
+                {
+                   db.BoxModelLanguages.Add(boxModelLanguage);
+                   db.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                   return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
+
+                return await Task.FromResult(Ok(boxModelLanguage));
+            }
         }
         public async Task<ActionResult<BoxModelLanguage>> Put(BoxModelLanguage boxModelLanguage)
         {
@@ -148,6 +220,22 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ValidationResults));
             }
 
+            if (LoggedInService.IsLocal)
+            {
+            try
+            {
+               dbLocal.BoxModelLanguages.Update(boxModelLanguage);
+               dbLocal.SaveChanges();
+            }
+            catch (DbUpdateException ex)
+            {
+               return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+            }
+
+            return await Task.FromResult(Ok(boxModelLanguage));
+            }
+            else
+            {
             try
             {
                db.BoxModelLanguages.Update(boxModelLanguage);
@@ -159,6 +247,7 @@ namespace CSSPServices
             }
 
             return await Task.FromResult(Ok(boxModelLanguage));
+            }
         }
         #endregion Functions public
 
@@ -175,13 +264,35 @@ namespace CSSPServices
                     yield return new ValidationResult(string.Format(CultureServicesRes._IsRequired, "BoxModelLanguageID"), new[] { "BoxModelLanguageID" });
                 }
 
-                if (!(from c in db.BoxModelLanguages select c).Where(c => c.BoxModelLanguageID == boxModelLanguage.BoxModelLanguageID).Any())
+                if (LoggedInService.IsLocal)
                 {
-                    yield return new ValidationResult(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "BoxModelLanguage", "BoxModelLanguageID", boxModelLanguage.BoxModelLanguageID.ToString()), new[] { "BoxModelLanguageID" });
+                    if (!(from c in dbLocal.BoxModelLanguages select c).Where(c => c.BoxModelLanguageID == boxModelLanguage.BoxModelLanguageID).Any())
+                    {
+                        yield return new ValidationResult(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "BoxModelLanguage", "BoxModelLanguageID", boxModelLanguage.BoxModelLanguageID.ToString()), new[] { "BoxModelLanguageID" });
+                    }
+                }
+                else
+                {
+                    if (!(from c in db.BoxModelLanguages select c).Where(c => c.BoxModelLanguageID == boxModelLanguage.BoxModelLanguageID).Any())
+                    {
+                        yield return new ValidationResult(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "BoxModelLanguage", "BoxModelLanguageID", boxModelLanguage.BoxModelLanguageID.ToString()), new[] { "BoxModelLanguageID" });
+                    }
                 }
             }
 
-            BoxModel BoxModelBoxModelID = (from c in db.BoxModels where c.BoxModelID == boxModelLanguage.BoxModelID select c).FirstOrDefault();
+            BoxModel BoxModelBoxModelID = null;
+            if (LoggedInService.IsLocal)
+            {
+                BoxModelBoxModelID = (from c in dbLocal.BoxModels where c.BoxModelID == boxModelLanguage.BoxModelID select c).FirstOrDefault();
+                if (BoxModelBoxModelID == null)
+                {
+                    BoxModelBoxModelID = (from c in dbIM.BoxModels where c.BoxModelID == boxModelLanguage.BoxModelID select c).FirstOrDefault();
+                }
+            }
+            else
+            {
+                BoxModelBoxModelID = (from c in db.BoxModels where c.BoxModelID == boxModelLanguage.BoxModelID select c).FirstOrDefault();
+            }
 
             if (BoxModelBoxModelID == null)
             {
@@ -222,7 +333,19 @@ namespace CSSPServices
                 }
             }
 
-            TVItem TVItemLastUpdateContactTVItemID = (from c in db.TVItems where c.TVItemID == boxModelLanguage.LastUpdateContactTVItemID select c).FirstOrDefault();
+            TVItem TVItemLastUpdateContactTVItemID = null;
+            if (LoggedInService.IsLocal)
+            {
+                TVItemLastUpdateContactTVItemID = (from c in dbLocal.TVItems where c.TVItemID == boxModelLanguage.LastUpdateContactTVItemID select c).FirstOrDefault();
+                if (TVItemLastUpdateContactTVItemID == null)
+                {
+                    TVItemLastUpdateContactTVItemID = (from c in dbIM.TVItems where c.TVItemID == boxModelLanguage.LastUpdateContactTVItemID select c).FirstOrDefault();
+                }
+            }
+            else
+            {
+                TVItemLastUpdateContactTVItemID = (from c in db.TVItems where c.TVItemID == boxModelLanguage.LastUpdateContactTVItemID select c).FirstOrDefault();
+            }
 
             if (TVItemLastUpdateContactTVItemID == null)
             {

@@ -36,6 +36,9 @@ namespace CSSPServices.Tests
         private ILoggedInService LoggedInService { get; set; }
         private IMWQMSampleService MWQMSampleService { get; set; }
         private CSSPDBContext db { get; set; }
+        private CSSPDBLocalContext dbLocal { get; set; }
+        private InMemoryDBContext dbIM { get; set; }
+        private MWQMSample mwqmSample { get; set; }
         #endregion Properties
 
         #region Constructors
@@ -47,9 +50,11 @@ namespace CSSPServices.Tests
 
         #region Tests Generated CRUD
         [Theory]
-        [InlineData("en-CA")]
-        [InlineData("fr-CA")]
-        public async Task MWQMSample_CRUD_Good_Test(string culture)
+        [InlineData("en-CA", "true")]
+        [InlineData("fr-CA", "true")]
+        [InlineData("en-CA", "false")]
+        [InlineData("fr-CA", "false")]
+        public async Task MWQMSample_CRUD_Good_Test(string culture, string IsLocalStr)
         {
             // -------------------------------
             // -------------------------------
@@ -59,44 +64,57 @@ namespace CSSPServices.Tests
 
             Assert.True(await Setup(culture));
 
-            using (TransactionScope ts = new TransactionScope())
+            LoggedInService.IsLocal = bool.Parse(IsLocalStr);
+
+            mwqmSample = GetFilledRandomMWQMSample("");
+
+            if (LoggedInService.IsLocal)
             {
-               MWQMSample mwqmSample = GetFilledRandomMWQMSample(""); 
-
-               // List<MWQMSample>
-               var actionMWQMSampleList = await MWQMSampleService.GetMWQMSampleList();
-               Assert.Equal(200, ((ObjectResult)actionMWQMSampleList.Result).StatusCode);
-               Assert.NotNull(((OkObjectResult)actionMWQMSampleList.Result).Value);
-               List<MWQMSample> mwqmSampleList = (List<MWQMSample>)((OkObjectResult)actionMWQMSampleList.Result).Value;
-
-               int count = ((List<MWQMSample>)((OkObjectResult)actionMWQMSampleList.Result).Value).Count();
-                Assert.True(count > 0);
-
-               // Post MWQMSample
-               var actionMWQMSampleAdded = await MWQMSampleService.Post(mwqmSample);
-               Assert.Equal(200, ((ObjectResult)actionMWQMSampleAdded.Result).StatusCode);
-               Assert.NotNull(((OkObjectResult)actionMWQMSampleAdded.Result).Value);
-               MWQMSample mwqmSampleAdded = (MWQMSample)((OkObjectResult)actionMWQMSampleAdded.Result).Value;
-               Assert.NotNull(mwqmSampleAdded);
-
-               // Put MWQMSample
-               var actionMWQMSampleUpdated = await MWQMSampleService.Put(mwqmSample);
-               Assert.Equal(200, ((ObjectResult)actionMWQMSampleUpdated.Result).StatusCode);
-               Assert.NotNull(((OkObjectResult)actionMWQMSampleUpdated.Result).Value);
-               MWQMSample mwqmSampleUpdated = (MWQMSample)((OkObjectResult)actionMWQMSampleUpdated.Result).Value;
-               Assert.NotNull(mwqmSampleUpdated);
-
-               // Delete MWQMSample
-               var actionMWQMSampleDeleted = await MWQMSampleService.Delete(mwqmSample.MWQMSampleID);
-               Assert.Equal(200, ((ObjectResult)actionMWQMSampleDeleted.Result).StatusCode);
-               Assert.NotNull(((OkObjectResult)actionMWQMSampleDeleted.Result).Value);
-               bool retBool = (bool)((OkObjectResult)actionMWQMSampleDeleted.Result).Value;
-               Assert.True(retBool);
+                await DoCRUDTest();
+            }
+            else
+            {
+                using (TransactionScope ts = new TransactionScope())
+                {
+                    await DoCRUDTest();
+                }
             }
         }
         #endregion Tests Generated CRUD
 
         #region Functions private
+        private async Task DoCRUDTest()
+        {
+            // Post MWQMSample
+            var actionMWQMSampleAdded = await MWQMSampleService.Post(mwqmSample);
+            Assert.Equal(200, ((ObjectResult)actionMWQMSampleAdded.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionMWQMSampleAdded.Result).Value);
+            MWQMSample mwqmSampleAdded = (MWQMSample)((OkObjectResult)actionMWQMSampleAdded.Result).Value;
+            Assert.NotNull(mwqmSampleAdded);
+
+            // List<MWQMSample>
+            var actionMWQMSampleList = await MWQMSampleService.GetMWQMSampleList();
+            Assert.Equal(200, ((ObjectResult)actionMWQMSampleList.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionMWQMSampleList.Result).Value);
+            List<MWQMSample> mwqmSampleList = (List<MWQMSample>)((OkObjectResult)actionMWQMSampleList.Result).Value;
+
+            int count = ((List<MWQMSample>)((OkObjectResult)actionMWQMSampleList.Result).Value).Count();
+            Assert.True(count > 0);
+
+            // Put MWQMSample
+            var actionMWQMSampleUpdated = await MWQMSampleService.Put(mwqmSample);
+            Assert.Equal(200, ((ObjectResult)actionMWQMSampleUpdated.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionMWQMSampleUpdated.Result).Value);
+            MWQMSample mwqmSampleUpdated = (MWQMSample)((OkObjectResult)actionMWQMSampleUpdated.Result).Value;
+            Assert.NotNull(mwqmSampleUpdated);
+
+            // Delete MWQMSample
+            var actionMWQMSampleDeleted = await MWQMSampleService.Delete(mwqmSample.MWQMSampleID);
+            Assert.Equal(200, ((ObjectResult)actionMWQMSampleDeleted.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionMWQMSampleDeleted.Result).Value);
+            bool retBool = (bool)((OkObjectResult)actionMWQMSampleDeleted.Result).Value;
+            Assert.True(retBool);
+        }
         private async Task<bool> Setup(string culture)
         {
             Config = new ConfigurationBuilder()
@@ -109,6 +127,9 @@ namespace CSSPServices.Tests
 
             Services.AddSingleton<IConfiguration>(Config);
 
+            string CSSPDBLocalFileName = Config.GetValue<string>("CSSPDBLocal");
+            Assert.NotNull(CSSPDBLocalFileName);
+
             string TestDBConnString = Config.GetValue<string>("TestDBConnectionString");
             Assert.NotNull(TestDBConnString);
 
@@ -120,6 +141,15 @@ namespace CSSPServices.Tests
             Services.AddDbContext<InMemoryDBContext>(options =>
             {
                 options.UseInMemoryDatabase(TestDBConnString);
+            });
+
+            string appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+
+            FileInfo fiAppDataPath = new FileInfo(CSSPDBLocalFileName.Replace("{appDataPath}", appDataPath));
+
+            Services.AddDbContext<CSSPDBLocalContext>(options =>
+            {
+                options.UseSqlite($"Data Source={ fiAppDataPath.FullName }");
             });
 
             Services.AddSingleton<ICultureService, CultureService>();
@@ -141,6 +171,12 @@ namespace CSSPServices.Tests
             string Id = Config.GetValue<string>("Id");
             Assert.True(await LoggedInService.SetLoggedInContactInfo(Id));
 
+            //string IsLocalStr = Config.GetValue<string>("IsLocal");
+            //Assert.NotNull(IsLocalStr);
+
+            dbIM = Provider.GetService<InMemoryDBContext>();
+            Assert.NotNull(dbIM);
+
             MWQMSampleService = Provider.GetService<IMWQMSampleService>();
             Assert.NotNull(MWQMSampleService);
 
@@ -148,6 +184,8 @@ namespace CSSPServices.Tests
         }
         private MWQMSample GetFilledRandomMWQMSample(string OmitPropName)
         {
+            dbIM.Database.EnsureDeleted();
+
             MWQMSample mwqmSample = new MWQMSample();
 
             if (OmitPropName != "MWQMSiteTVItemID") mwqmSample.MWQMSiteTVItemID = 44;
@@ -168,6 +206,18 @@ namespace CSSPServices.Tests
             if (OmitPropName != "UseForOpenData") mwqmSample.UseForOpenData = true;
             if (OmitPropName != "LastUpdateDate_UTC") mwqmSample.LastUpdateDate_UTC = new DateTime(2005, 3, 6);
             if (OmitPropName != "LastUpdateContactTVItemID") mwqmSample.LastUpdateContactTVItemID = 2;
+
+            if (LoggedInService.IsLocal)
+            {
+                if (OmitPropName != "MWQMSampleID") mwqmSample.MWQMSampleID = 10000000;
+
+                dbIM.TVItems.Add(new TVItem() { TVItemID = 44, TVLevel = 6, TVPath = "p1p5p6p9p10p12p44", TVType = (TVTypeEnum)16, ParentID = 12, IsActive = true, LastUpdateDate_UTC = new DateTime(2017, 10, 12, 17, 39, 34), LastUpdateContactTVItemID = 2});
+                dbIM.SaveChanges();
+                dbIM.TVItems.Add(new TVItem() { TVItemID = 50, TVLevel = 6, TVPath = "p1p5p6p9p10p12p50", TVType = (TVTypeEnum)31, ParentID = 12, IsActive = true, LastUpdateDate_UTC = new DateTime(2017, 6, 28, 12, 41, 23), LastUpdateContactTVItemID = 2});
+                dbIM.SaveChanges();
+                dbIM.TVItems.Add(new TVItem() { TVItemID = 2, TVLevel = 1, TVPath = "p1p2", TVType = (TVTypeEnum)5, ParentID = 1, IsActive = true, LastUpdateDate_UTC = new DateTime(2014, 12, 2, 16, 58, 16), LastUpdateContactTVItemID = 2});
+                dbIM.SaveChanges();
+            }
 
             return mwqmSample;
         }
