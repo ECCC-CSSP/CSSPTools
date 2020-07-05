@@ -11,7 +11,7 @@ namespace CultureServices.Services
         public CultureService()
         {
             AllowableCultures = new List<string>() { "en-CA", "fr-CA" };
-            SetCulture("en-CA");
+            SetCulture("en-CA"); 
         }
 
         public void SetCulture(string culture)

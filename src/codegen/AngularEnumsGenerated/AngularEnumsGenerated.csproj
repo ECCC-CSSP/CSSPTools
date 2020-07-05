@@ -22,7 +22,7 @@
     <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="3.1.5" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="3.1.5" />
   </ItemGroup>
-
+  
   <ItemGroup>
     <Reference Include="ConfigServices">
       <HintPath>..\_package\netcoreapp5.0\ConfigServices.dll</HintPath>

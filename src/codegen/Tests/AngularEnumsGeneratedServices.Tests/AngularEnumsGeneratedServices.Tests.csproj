@@ -32,7 +32,7 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
   </ItemGroup>
-
+  
   <ItemGroup>
     <Reference Include="ConfigServices">
       <HintPath>..\..\_package\netcoreapp5.0\ConfigServices.dll</HintPath>
