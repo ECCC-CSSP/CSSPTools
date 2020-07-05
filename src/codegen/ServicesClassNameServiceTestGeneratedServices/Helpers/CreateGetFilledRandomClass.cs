@@ -68,7 +68,7 @@ namespace ServicesClassNameServiceTestGeneratedServices.Services
                                                 string LastUpdateDateStr = $@"new DateTime({ appTask.LastUpdateDate_UTC.Year }, { appTask.LastUpdateDate_UTC.Month }, { appTask.LastUpdateDate_UTC.Day }, { appTask.LastUpdateDate_UTC.Hour }, { appTask.LastUpdateDate_UTC.Minute }, { appTask.LastUpdateDate_UTC.Second })";
                                                 string EstimatedLength_secondStr = appTask.EstimatedLength_second == null ? "null" : $"{ (int)appTask.EstimatedLength_second }";
                                                 string RemainingTime_secondStr = appTask.RemainingTime_second == null ? "null" : $"{ (int)appTask.RemainingTime_second }";
-                                                string TempStr = $@"                dbIM.{ csspProp.ExistTypeName }s.Add(new { csspProp.ExistTypeName }() {{ " +
+                                                string TempStr = $@"                    dbIM.{ csspProp.ExistTypeName }s.Add(new { csspProp.ExistTypeName }() {{ " +
                                                     $@"AppTaskID = { appTask.AppTaskID }, " +
                                                     $@"TVItemID = { appTask.TVItemID }, " +
                                                     $@"TVItemID2 = { appTask.TVItemID2 }, " +
@@ -110,7 +110,7 @@ namespace ServicesClassNameServiceTestGeneratedServices.Services
                                             {
                                                 sb.AppendLine($@"            if (OmitPropName != ""{ prop.Name }"") { TypeNameLower }.{ prop.Name } = { boxModel.BoxModelID };");
                                                 string LastUpdateDateStr = $@"new DateTime({ boxModel.LastUpdateDate_UTC.Year }, { boxModel.LastUpdateDate_UTC.Month }, { boxModel.LastUpdateDate_UTC.Day }, { boxModel.LastUpdateDate_UTC.Hour }, { boxModel.LastUpdateDate_UTC.Minute }, { boxModel.LastUpdateDate_UTC.Second })";
-                                                string TempStr = $@"                dbIM.{ csspProp.ExistTypeName }s.Add(new { csspProp.ExistTypeName }() {{ " +
+                                                string TempStr = $@"                    dbIM.{ csspProp.ExistTypeName }s.Add(new { csspProp.ExistTypeName }() {{ " +
                                                     $@"BoxModelID = { boxModel.BoxModelID }, " +
                                                     $@"InfrastructureTVItemID = { boxModel.InfrastructureTVItemID }, " +
                                                     $@"Discharge_m3_day = { boxModel.Discharge_m3_day }, " +
@@ -170,7 +170,7 @@ namespace ServicesClassNameServiceTestGeneratedServices.Services
                                                 string MonthlyEndDate_Local = climateSite.MonthlyEndDate_Local == null ? "null" : $@"new DateTime({ ((DateTime)climateSite.MonthlyEndDate_Local).Year }, { ((DateTime)climateSite.MonthlyEndDate_Local).Month }, { ((DateTime)climateSite.MonthlyEndDate_Local).Day }, { ((DateTime)climateSite.MonthlyEndDate_Local).Hour }, { ((DateTime)climateSite.MonthlyEndDate_Local).Minute }, { ((DateTime)climateSite.MonthlyEndDate_Local).Second })";
                                                 string MonthlyNow = climateSite.MonthlyNow == null ? "null" : climateSite.MonthlyNow.ToString().ToLower();
                                                 string LastUpdateDate_UTC = $@"new DateTime({ climateSite.LastUpdateDate_UTC.Year }, { climateSite.LastUpdateDate_UTC.Month }, { climateSite.LastUpdateDate_UTC.Day }, { climateSite.LastUpdateDate_UTC.Hour }, { climateSite.LastUpdateDate_UTC.Minute }, { climateSite.LastUpdateDate_UTC.Second })";
-                                                string TempStr = $@"                dbIM.{ csspProp.ExistTypeName }s.Add(new { csspProp.ExistTypeName }() {{ " +
+                                                string TempStr = $@"                    dbIM.{ csspProp.ExistTypeName }s.Add(new { csspProp.ExistTypeName }() {{ " +
                                                     $@"ClimateSiteID = { climateSite.ClimateSiteID }, " +
                                                     $@"ClimateSiteTVItemID = { climateSite.ClimateSiteTVItemID }, " +
                                                     $@"ECDBID = { ECDBID }, " +
@@ -277,7 +277,7 @@ namespace ServicesClassNameServiceTestGeneratedServices.Services
                                                 sb.AppendLine($@"            if (OmitPropName != ""{ prop.Name }"") { TypeNameLower }.{ prop.Name } = { drogueRun.DrogueRunID };");
                                                 string RunStartDateTime = $@"new DateTime({ drogueRun.RunStartDateTime.Year }, { drogueRun.RunStartDateTime.Month }, { drogueRun.RunStartDateTime.Day }, { drogueRun.RunStartDateTime.Hour }, { drogueRun.RunStartDateTime.Minute }, { drogueRun.RunStartDateTime.Second })";
                                                 string LastUpdateDate_UTC = $@"new DateTime({ drogueRun.LastUpdateDate_UTC.Year }, { drogueRun.LastUpdateDate_UTC.Month }, { drogueRun.LastUpdateDate_UTC.Day }, { drogueRun.LastUpdateDate_UTC.Hour }, { drogueRun.LastUpdateDate_UTC.Minute }, { drogueRun.LastUpdateDate_UTC.Second })";
-                                                string TempStr = $@"                dbIM.{ csspProp.ExistTypeName }s.Add(new { csspProp.ExistTypeName }() {{ " +
+                                                string TempStr = $@"                    dbIM.{ csspProp.ExistTypeName }s.Add(new { csspProp.ExistTypeName }() {{ " +
                                                     $@"DrogueRunID = { drogueRun.DrogueRunID }, " +
                                                     $@"SubsectorTVItemID = { drogueRun.SubsectorTVItemID }, " +
                                                     $@"DrogueNumber = { drogueRun.DrogueNumber }, " +
@@ -313,7 +313,7 @@ namespace ServicesClassNameServiceTestGeneratedServices.Services
                                             {
                                                 sb.AppendLine($@"            if (OmitPropName != ""{ prop.Name }"") { TypeNameLower }.{ prop.Name } = { emailDistributionList.EmailDistributionListID };");
                                                 string LastUpdateDate_UTC = $@"new DateTime({ emailDistributionList.LastUpdateDate_UTC.Year }, { emailDistributionList.LastUpdateDate_UTC.Month }, { emailDistributionList.LastUpdateDate_UTC.Day }, { emailDistributionList.LastUpdateDate_UTC.Hour }, { emailDistributionList.LastUpdateDate_UTC.Minute }, { emailDistributionList.LastUpdateDate_UTC.Second })";
-                                                string TempStr = $@"                dbIM.{ csspProp.ExistTypeName }s.Add(new { csspProp.ExistTypeName }() {{ " +
+                                                string TempStr = $@"                    dbIM.{ csspProp.ExistTypeName }s.Add(new { csspProp.ExistTypeName }() {{ " +
                                                     $@"EmailDistributionListID = { emailDistributionList.EmailDistributionListID }, " +
                                                     $@"ParentTVItemID = { emailDistributionList.ParentTVItemID }, " +
                                                     $@"Ordinal = { emailDistributionList.Ordinal }, " +
@@ -346,7 +346,7 @@ namespace ServicesClassNameServiceTestGeneratedServices.Services
                                             {
                                                 sb.AppendLine($@"            if (OmitPropName != ""{ prop.Name }"") { TypeNameLower }.{ prop.Name } = { emailDistributionListContact.EmailDistributionListContactID };");
                                                 string LastUpdateDate_UTC = $@"new DateTime({ emailDistributionListContact.LastUpdateDate_UTC.Year }, { emailDistributionListContact.LastUpdateDate_UTC.Month }, { emailDistributionListContact.LastUpdateDate_UTC.Day }, { emailDistributionListContact.LastUpdateDate_UTC.Hour }, { emailDistributionListContact.LastUpdateDate_UTC.Minute }, { emailDistributionListContact.LastUpdateDate_UTC.Second })";
-                                                string TempStr = $@"                dbIM.{ csspProp.ExistTypeName }s.Add(new { csspProp.ExistTypeName }() {{ " +
+                                                string TempStr = $@"                    dbIM.{ csspProp.ExistTypeName }s.Add(new { csspProp.ExistTypeName }() {{ " +
                                                     $@"EmailDistributionListContactID = { emailDistributionListContact.EmailDistributionListContactID }, " +
                                                     $@"EmailDistributionListID = { emailDistributionListContact.EmailDistributionListID }, " +
                                                     $@"IsCC = { emailDistributionListContact.IsCC.ToString().ToLower() }, " +
@@ -402,7 +402,7 @@ namespace ServicesClassNameServiceTestGeneratedServices.Services
                                                 string HasLevel = hydrometricSite.HasLevel == null ? "null" : hydrometricSite.HasLevel.ToString().ToLower();
                                                 string HasRatingCurve = hydrometricSite.HasRatingCurve == null ? "null" : hydrometricSite.HasRatingCurve.ToString().ToLower();
                                                 string LastUpdateDate_UTC = $@"new DateTime({ hydrometricSite.LastUpdateDate_UTC.Year }, { hydrometricSite.LastUpdateDate_UTC.Month }, { hydrometricSite.LastUpdateDate_UTC.Day }, { hydrometricSite.LastUpdateDate_UTC.Hour }, { hydrometricSite.LastUpdateDate_UTC.Minute }, { hydrometricSite.LastUpdateDate_UTC.Second })";
-                                                string TempStr = $@"                dbIM.{ csspProp.ExistTypeName }s.Add(new { csspProp.ExistTypeName }() {{ " +
+                                                string TempStr = $@"                    dbIM.{ csspProp.ExistTypeName }s.Add(new { csspProp.ExistTypeName }() {{ " +
                                                     $@"HydrometricSiteID = { hydrometricSite.HydrometricSiteID }, " +
                                                     $@"HydrometricSiteTVItemID = { hydrometricSite.HydrometricSiteTVItemID }, " +
                                                     $@"FedSiteNumber = ""{ FedSiteNumber }"", " +
@@ -498,7 +498,7 @@ namespace ServicesClassNameServiceTestGeneratedServices.Services
                                                 string SeeOtherMunicipalityTVItemID = infrastructure.SeeOtherMunicipalityTVItemID == null ? "null" : infrastructure.SeeOtherMunicipalityTVItemID.ToString();
                                                 string CivicAddressTVItemID = infrastructure.CivicAddressTVItemID == null ? "null" : infrastructure.CivicAddressTVItemID.ToString();
                                                 string LastUpdateDate_UTC = $@"new DateTime({ infrastructure.LastUpdateDate_UTC.Year }, { infrastructure.LastUpdateDate_UTC.Month }, { infrastructure.LastUpdateDate_UTC.Day }, { infrastructure.LastUpdateDate_UTC.Hour }, { infrastructure.LastUpdateDate_UTC.Minute }, { infrastructure.LastUpdateDate_UTC.Second })";
-                                                string TempStr = $@"                dbIM.{ csspProp.ExistTypeName }s.Add(new { csspProp.ExistTypeName }() {{ " +
+                                                string TempStr = $@"                    dbIM.{ csspProp.ExistTypeName }s.Add(new { csspProp.ExistTypeName }() {{ " +
                                                     $@"InfrastructureID = { infrastructure.InfrastructureID }, " +
                                                     $@"InfrastructureTVItemID = { infrastructure.InfrastructureTVItemID }, " +
                                                     $@"PrismID = { PrismID }, " +
@@ -580,7 +580,7 @@ namespace ServicesClassNameServiceTestGeneratedServices.Services
                                                 string AcceptedOrRejectedByContactTVItemID = labSheet.AcceptedOrRejectedByContactTVItemID == null ? "null" : labSheet.AcceptedOrRejectedByContactTVItemID.ToString();
                                                 string AcceptedOrRejectedDateTime = labSheet.AcceptedOrRejectedDateTime == null ? "null" : $@"new DateTime({ ((DateTime)labSheet.AcceptedOrRejectedDateTime).Year }, { ((DateTime)labSheet.AcceptedOrRejectedDateTime).Month }, { ((DateTime)labSheet.AcceptedOrRejectedDateTime).Day }, { ((DateTime)labSheet.AcceptedOrRejectedDateTime).Hour }, { ((DateTime)labSheet.AcceptedOrRejectedDateTime).Minute }, { ((DateTime)labSheet.AcceptedOrRejectedDateTime).Second })";
                                                 string LastUpdateDate_UTC = $@"new DateTime({ labSheet.LastUpdateDate_UTC.Year }, { labSheet.LastUpdateDate_UTC.Month }, { labSheet.LastUpdateDate_UTC.Day }, { labSheet.LastUpdateDate_UTC.Hour }, { labSheet.LastUpdateDate_UTC.Minute }, { labSheet.LastUpdateDate_UTC.Second })";
-                                                string TempStr = $@"                dbIM.{ csspProp.ExistTypeName }s.Add(new { csspProp.ExistTypeName }() {{ " +
+                                                string TempStr = $@"                    dbIM.{ csspProp.ExistTypeName }s.Add(new { csspProp.ExistTypeName }() {{ " +
                                                     $@"LabSheetID = { labSheet.LabSheetID }, " +
                                                     $@"OtherServerLabSheetID = { labSheet.OtherServerLabSheetID }, " +
                                                     $@"SamplingPlanID = { labSheet.SamplingPlanID }, " +
@@ -683,7 +683,7 @@ namespace ServicesClassNameServiceTestGeneratedServices.Services
                                                 string IntertechDuplicateAcceptable = labSheetDetail.IntertechDuplicateAcceptable == null ? "null" : labSheetDetail.IntertechDuplicateAcceptable.ToString().ToLower();
                                                 string IntertechReadAcceptable = labSheetDetail.IntertechReadAcceptable == null ? "null" : labSheetDetail.IntertechReadAcceptable.ToString().ToLower();
                                                 string LastUpdateDate_UTC = $@"new DateTime({ labSheetDetail.LastUpdateDate_UTC.Year }, { labSheetDetail.LastUpdateDate_UTC.Month }, { labSheetDetail.LastUpdateDate_UTC.Day }, { labSheetDetail.LastUpdateDate_UTC.Hour }, { labSheetDetail.LastUpdateDate_UTC.Minute }, { labSheetDetail.LastUpdateDate_UTC.Second })";
-                                                string TempStr = $@"                dbIM.{ csspProp.ExistTypeName }s.Add(new { csspProp.ExistTypeName }() {{ " +
+                                                string TempStr = $@"                    dbIM.{ csspProp.ExistTypeName }s.Add(new { csspProp.ExistTypeName }() {{ " +
                                                     $@"LabSheetDetailID = { labSheetDetail.LabSheetDetailID }, " +
                                                     $@"LabSheetID = { labSheetDetail.LabSheetID }, " +
                                                     $@"SamplingPlanID = { labSheetDetail.SamplingPlanID }, " +
@@ -776,7 +776,7 @@ namespace ServicesClassNameServiceTestGeneratedServices.Services
                                             {
                                                 sb.AppendLine($@"            if (OmitPropName != ""{ prop.Name }"") { TypeNameLower }.{ prop.Name } = { mapInfo.MapInfoID };");
                                                 string LastUpdateDate_UTC = $@"new DateTime({ mapInfo.LastUpdateDate_UTC.Year }, { mapInfo.LastUpdateDate_UTC.Month }, { mapInfo.LastUpdateDate_UTC.Day }, { mapInfo.LastUpdateDate_UTC.Hour }, { mapInfo.LastUpdateDate_UTC.Minute }, { mapInfo.LastUpdateDate_UTC.Second })";
-                                                string TempStr = $@"                dbIM.{ csspProp.ExistTypeName }s.Add(new { csspProp.ExistTypeName }() {{ " +
+                                                string TempStr = $@"                    dbIM.{ csspProp.ExistTypeName }s.Add(new { csspProp.ExistTypeName }() {{ " +
                                                     $@"MapInfoID = { mapInfo.MapInfoID }, " +
                                                     $@"TVItemID = { mapInfo.TVItemID }, " +
                                                     $@"TVType = (TVTypeEnum){ (int)mapInfo.TVType }, " +
@@ -816,7 +816,7 @@ namespace ServicesClassNameServiceTestGeneratedServices.Services
                                                 string DrainageArea_km2 = mikeSource.DrainageArea_km2 == null ? "null" : ((float)mikeSource.DrainageArea_km2).ToString();
                                                 string Factor = mikeSource.Factor == null ? "null" : ((float)mikeSource.Factor).ToString();
                                                 string LastUpdateDate_UTC = $@"new DateTime({ mikeSource.LastUpdateDate_UTC.Year }, { mikeSource.LastUpdateDate_UTC.Month }, { mikeSource.LastUpdateDate_UTC.Day }, { mikeSource.LastUpdateDate_UTC.Hour }, { mikeSource.LastUpdateDate_UTC.Minute }, { mikeSource.LastUpdateDate_UTC.Second })";
-                                                string TempStr = $@"                dbIM.{ csspProp.ExistTypeName }s.Add(new { csspProp.ExistTypeName }() {{ " +
+                                                string TempStr = $@"                    dbIM.{ csspProp.ExistTypeName }s.Add(new { csspProp.ExistTypeName }() {{ " +
                                                     $@"MikeSourceID = { mikeSource.MikeSourceID }, " +
                                                     $@"MikeSourceTVItemID = { mikeSource.MikeSourceTVItemID }, " +
                                                     $@"IsContinuous = { mikeSource.IsContinuous.ToString().ToLower() }, " +
@@ -861,7 +861,7 @@ namespace ServicesClassNameServiceTestGeneratedServices.Services
                                                 string StartDate = $@"new DateTime({ mwqmAnalysisReportParameter.StartDate.Year }, { mwqmAnalysisReportParameter.StartDate.Month }, { mwqmAnalysisReportParameter.StartDate.Day }, { mwqmAnalysisReportParameter.StartDate.Hour }, { mwqmAnalysisReportParameter.StartDate.Minute }, { mwqmAnalysisReportParameter.StartDate.Second })";
                                                 string EndDate = $@"new DateTime({ mwqmAnalysisReportParameter.EndDate.Year }, { mwqmAnalysisReportParameter.EndDate.Month }, { mwqmAnalysisReportParameter.EndDate.Day }, { mwqmAnalysisReportParameter.EndDate.Hour }, { mwqmAnalysisReportParameter.EndDate.Minute }, { mwqmAnalysisReportParameter.EndDate.Second })";
                                                 string LastUpdateDate_UTC = $@"new DateTime({ mwqmAnalysisReportParameter.LastUpdateDate_UTC.Year }, { mwqmAnalysisReportParameter.LastUpdateDate_UTC.Month }, { mwqmAnalysisReportParameter.LastUpdateDate_UTC.Day }, { mwqmAnalysisReportParameter.LastUpdateDate_UTC.Hour }, { mwqmAnalysisReportParameter.LastUpdateDate_UTC.Minute }, { mwqmAnalysisReportParameter.LastUpdateDate_UTC.Second })";
-                                                string TempStr = $@"                dbIM.{ csspProp.ExistTypeName }s.Add(new { csspProp.ExistTypeName }() {{ " +
+                                                string TempStr = $@"                    dbIM.{ csspProp.ExistTypeName }s.Add(new { csspProp.ExistTypeName }() {{ " +
                                                     $@"MWQMAnalysisReportParameterID = { mwqmAnalysisReportParameter.MWQMAnalysisReportParameterID }, " +
                                                     $@"SubsectorTVItemID = { mwqmAnalysisReportParameter.SubsectorTVItemID }, " +
                                                     $@"AnalysisName = ""{ mwqmAnalysisReportParameter.AnalysisName }"", " +
@@ -950,7 +950,7 @@ namespace ServicesClassNameServiceTestGeneratedServices.Services
                                                 string RainDay10_mm = mwqmRun.RainDay10_mm == null ? "null" : ((float)mwqmRun.RainDay10_mm).ToString();
                                                 string RemoveFromStat = mwqmRun.RemoveFromStat == null ? "null" : ((bool)mwqmRun.RemoveFromStat).ToString().ToLower();
                                                 string LastUpdateDate_UTC = $@"new DateTime({ mwqmRun.LastUpdateDate_UTC.Year }, { mwqmRun.LastUpdateDate_UTC.Month }, { mwqmRun.LastUpdateDate_UTC.Day }, { mwqmRun.LastUpdateDate_UTC.Hour }, { mwqmRun.LastUpdateDate_UTC.Minute }, { mwqmRun.LastUpdateDate_UTC.Second })";
-                                                string TempStr = $@"                dbIM.{ csspProp.ExistTypeName }s.Add(new { csspProp.ExistTypeName }() {{ " +
+                                                string TempStr = $@"                    dbIM.{ csspProp.ExistTypeName }s.Add(new { csspProp.ExistTypeName }() {{ " +
                                                     $@"MWQMRunID = { mwqmRun.MWQMRunID }, " +
                                                     $@"SubsectorTVItemID = { mwqmRun.SubsectorTVItemID }, " +
                                                     $@"MWQMRunTVItemID = { mwqmRun.MWQMRunTVItemID }, " +
@@ -1031,7 +1031,7 @@ namespace ServicesClassNameServiceTestGeneratedServices.Services
                                                 string Tube_0_1 = mwqmSample.Tube_0_1 == null ? "null" : ((float)mwqmSample.Tube_0_1).ToString();
                                                 string ProcessedBy = mwqmSample.ProcessedBy == null ? "null" : mwqmSample.ProcessedBy;
                                                 string LastUpdateDate_UTC = $@"new DateTime({ mwqmSample.LastUpdateDate_UTC.Year }, { mwqmSample.LastUpdateDate_UTC.Month }, { mwqmSample.LastUpdateDate_UTC.Day }, { mwqmSample.LastUpdateDate_UTC.Hour }, { mwqmSample.LastUpdateDate_UTC.Minute }, { mwqmSample.LastUpdateDate_UTC.Second })";
-                                                string TempStr = $@"                dbIM.{ csspProp.ExistTypeName }s.Add(new { csspProp.ExistTypeName }() {{ " +
+                                                string TempStr = $@"                    dbIM.{ csspProp.ExistTypeName }s.Add(new { csspProp.ExistTypeName }() {{ " +
                                                     $@"MWQMSampleID = { mwqmSample.MWQMSampleID }, " +
                                                     $@"MWQMSiteTVItemID = { mwqmSample.MWQMSiteTVItemID }, " +
                                                     $@"MWQMRunTVItemID = { mwqmSample.MWQMRunTVItemID }, " +
@@ -1079,7 +1079,7 @@ namespace ServicesClassNameServiceTestGeneratedServices.Services
                                                 sb.AppendLine($@"            if (OmitPropName != ""{ prop.Name }"") { TypeNameLower }.{ prop.Name } = { mwqmSubsector.MWQMSubsectorID };");
                                                 string TideLocationSIDText = mwqmSubsector.TideLocationSIDText == null ? "null" : mwqmSubsector.TideLocationSIDText.ToString();
                                                 string LastUpdateDate_UTC = $@"new DateTime({ mwqmSubsector.LastUpdateDate_UTC.Year }, { mwqmSubsector.LastUpdateDate_UTC.Month }, { mwqmSubsector.LastUpdateDate_UTC.Day }, { mwqmSubsector.LastUpdateDate_UTC.Hour }, { mwqmSubsector.LastUpdateDate_UTC.Minute }, { mwqmSubsector.LastUpdateDate_UTC.Second })";
-                                                string TempStr = $@"                dbIM.{ csspProp.ExistTypeName }s.Add(new { csspProp.ExistTypeName }() {{ " +
+                                                string TempStr = $@"                    dbIM.{ csspProp.ExistTypeName }s.Add(new { csspProp.ExistTypeName }() {{ " +
                                                     $@"MWQMSubsectorID = { mwqmSubsector.MWQMSubsectorID }, " +
                                                     $@"MWQMSubsectorTVItemID = { mwqmSubsector.MWQMSubsectorTVItemID }, " +
                                                     $@"SubsectorHistoricKey = ""{ mwqmSubsector.SubsectorHistoricKey }"", " +
@@ -1113,7 +1113,7 @@ namespace ServicesClassNameServiceTestGeneratedServices.Services
                                             {
                                                 sb.AppendLine($@"            if (OmitPropName != ""{ prop.Name }"") { TypeNameLower }.{ prop.Name } = { polSourceGrouping.PolSourceGroupingID };");
                                                 string LastUpdateDate_UTC = $@"new DateTime({ polSourceGrouping.LastUpdateDate_UTC.Year }, { polSourceGrouping.LastUpdateDate_UTC.Month }, { polSourceGrouping.LastUpdateDate_UTC.Day }, { polSourceGrouping.LastUpdateDate_UTC.Hour }, { polSourceGrouping.LastUpdateDate_UTC.Minute }, { polSourceGrouping.LastUpdateDate_UTC.Second })";
-                                                string TempStr = $@"                dbIM.{ csspProp.ExistTypeName }s.Add(new { csspProp.ExistTypeName }() {{ " +
+                                                string TempStr = $@"                    dbIM.{ csspProp.ExistTypeName }s.Add(new { csspProp.ExistTypeName }() {{ " +
                                                     $@"PolSourceGroupingID = { polSourceGrouping.PolSourceGroupingID }, " +
                                                     $@"CSSPID = { polSourceGrouping.CSSPID }, " +
                                                     $@"GroupName = ""{ polSourceGrouping.GroupName }"", " +
@@ -1149,7 +1149,7 @@ namespace ServicesClassNameServiceTestGeneratedServices.Services
                                                 sb.AppendLine($@"            if (OmitPropName != ""{ prop.Name }"") { TypeNameLower }.{ prop.Name } = { polSourceObservation.PolSourceObservationID };");
                                                 string ObservationDate_Local = $@"new DateTime({ polSourceObservation.ObservationDate_Local.Year }, { polSourceObservation.ObservationDate_Local.Month }, { polSourceObservation.ObservationDate_Local.Day }, { polSourceObservation.ObservationDate_Local.Hour }, { polSourceObservation.ObservationDate_Local.Minute }, { polSourceObservation.ObservationDate_Local.Second })";
                                                 string LastUpdateDate_UTC = $@"new DateTime({ polSourceObservation.LastUpdateDate_UTC.Year }, { polSourceObservation.LastUpdateDate_UTC.Month }, { polSourceObservation.LastUpdateDate_UTC.Day }, { polSourceObservation.LastUpdateDate_UTC.Hour }, { polSourceObservation.LastUpdateDate_UTC.Minute }, { polSourceObservation.LastUpdateDate_UTC.Second })";
-                                                string TempStr = $@"                dbIM.{ csspProp.ExistTypeName }s.Add(new { csspProp.ExistTypeName }() {{ " +
+                                                string TempStr = $@"                    dbIM.{ csspProp.ExistTypeName }s.Add(new { csspProp.ExistTypeName }() {{ " +
                                                     $@"PolSourceObservationID = { polSourceObservation.PolSourceObservationID }, " +
                                                     $@"PolSourceSiteID = { polSourceObservation.PolSourceSiteID }, " +
                                                     $@"ObservationDate_Local = { ObservationDate_Local }, " +
@@ -1191,7 +1191,7 @@ namespace ServicesClassNameServiceTestGeneratedServices.Services
                                                 string InactiveReason = polSourceSite.InactiveReason == null ? "null" : polSourceSite.InactiveReason.ToString();
                                                 string CivicAddressTVItemID = polSourceSite.CivicAddressTVItemID == null ? "null" : polSourceSite.CivicAddressTVItemID.ToString();
                                                 string LastUpdateDate_UTC = $@"new DateTime({ polSourceSite.LastUpdateDate_UTC.Year }, { polSourceSite.LastUpdateDate_UTC.Month }, { polSourceSite.LastUpdateDate_UTC.Day }, { polSourceSite.LastUpdateDate_UTC.Hour }, { polSourceSite.LastUpdateDate_UTC.Minute }, { polSourceSite.LastUpdateDate_UTC.Second })";
-                                                string TempStr = $@"                dbIM.{ csspProp.ExistTypeName }s.Add(new { csspProp.ExistTypeName }() {{ " +
+                                                string TempStr = $@"                    dbIM.{ csspProp.ExistTypeName }s.Add(new { csspProp.ExistTypeName }() {{ " +
                                                     $@"PolSourceSiteID = { polSourceSite.PolSourceSiteID }, " +
                                                     $@"PolSourceSiteTVItemID = { polSourceSite.PolSourceSiteTVItemID }, " +
                                                     $@"Temp_Locator_CanDelete = ""{ Temp_Locator_CanDelete }"", " +
@@ -1230,12 +1230,54 @@ namespace ServicesClassNameServiceTestGeneratedServices.Services
                                             {
                                                 sb.AppendLine($@"            if (OmitPropName != ""{ prop.Name }"") { TypeNameLower }.{ prop.Name } = { ratingCurve.RatingCurveID };");
                                                 string LastUpdateDate_UTC = $@"new DateTime({ ratingCurve.LastUpdateDate_UTC.Year }, { ratingCurve.LastUpdateDate_UTC.Month }, { ratingCurve.LastUpdateDate_UTC.Day }, { ratingCurve.LastUpdateDate_UTC.Hour }, { ratingCurve.LastUpdateDate_UTC.Minute }, { ratingCurve.LastUpdateDate_UTC.Second })";
-                                                string TempStr = $@"                dbIM.{ csspProp.ExistTypeName }s.Add(new { csspProp.ExistTypeName }() {{ " +
+                                                string TempStr = $@"                    dbIM.{ csspProp.ExistTypeName }s.Add(new { csspProp.ExistTypeName }() {{ " +
                                                     $@"RatingCurveID = { ratingCurve.RatingCurveID }, " +
                                                     $@"HydrometricSiteID = { ratingCurve.HydrometricSiteID }, " +
                                                     $@"RatingCurveNumber = ""{ ratingCurve.RatingCurveNumber }"", " +
                                                     $@"LastUpdateDate_UTC = { LastUpdateDate_UTC }, " +
                                                     $@"LastUpdateContactTVItemID = { ratingCurve.LastUpdateContactTVItemID } " +
+                                                    $@"}});";
+                                                if (!sbInMemory.ToString().Contains(TempStr))
+                                                {
+                                                    sbInMemory.AppendLine($@"                try");
+                                                    sbInMemory.AppendLine($@"                {{");
+                                                    sbInMemory.AppendLine(TempStr);
+                                                    sbInMemory.AppendLine($@"                    dbIM.SaveChanges();");
+                                                    sbInMemory.AppendLine($@"                }}");
+                                                    sbInMemory.AppendLine($@"                catch (Exception)");
+                                                    sbInMemory.AppendLine($@"                {{");
+                                                    sbInMemory.AppendLine($@"                   // nothing for now");
+                                                    sbInMemory.AppendLine($@"                }}");
+                                                }
+                                            }
+                                        }
+                                        break;
+                                    case "ReportType":
+                                        {
+                                            ReportType reportType = dbTestDB.ReportTypes.AsNoTracking().FirstOrDefault();
+                                            if (reportType == null)
+                                            {
+                                                sb.AppendLine($@"            // Need to implement (no items found, would need to add at least one in the TestDB) [{ TypeName } { csspProp.PropName } { csspProp.ExistTypeName } { csspProp.ExistFieldID }]");
+                                            }
+                                            else
+                                            {
+                                                sb.AppendLine($@"            if (OmitPropName != ""{ prop.Name }"") { TypeNameLower }.{ prop.Name } = { reportType.ReportTypeID };");
+                                                string Language = reportType.Language == null ? "null" : "(LanguageEnum)" + ((int)reportType.Language).ToString();
+                                                string Name = reportType.Name == null ? "null" : reportType.Name;
+                                                string Description = reportType.Description == null ? "null" : reportType.Description;
+                                                string StartOfFileName = reportType.StartOfFileName == null ? "null" : reportType.StartOfFileName;
+                                                string LastUpdateDate_UTC = $@"new DateTime({ reportType.LastUpdateDate_UTC.Year }, { reportType.LastUpdateDate_UTC.Month }, { reportType.LastUpdateDate_UTC.Day }, { reportType.LastUpdateDate_UTC.Hour }, { reportType.LastUpdateDate_UTC.Minute }, { reportType.LastUpdateDate_UTC.Second })";
+                                                string TempStr = $@"                    dbIM.{ csspProp.ExistTypeName }s.Add(new { csspProp.ExistTypeName }() {{ " +
+                                                    $@"ReportTypeID = { reportType.ReportTypeID }, " +
+                                                    $@"TVType = (TVTypeEnum){ (int)reportType.TVType }, " +
+                                                    $@"FileType = (FileTypeEnum){ (int)reportType.FileType }, " +
+                                                    $@"UniqueCode = ""{ reportType.UniqueCode }"", " +
+                                                    $@"Language = { Language }, " +
+                                                    $@"Name = ""{ Name }"", " +
+                                                    $@"Description = ""{ Description }"", " +
+                                                    $@"StartOfFileName = ""{ StartOfFileName }"", " +
+                                                    $@"LastUpdateDate_UTC = { LastUpdateDate_UTC }, " +
+                                                    $@"LastUpdateContactTVItemID = { reportType.LastUpdateContactTVItemID } " +
                                                     $@"}});";
                                                 if (!sbInMemory.ToString().Contains(TempStr))
                                                 {
@@ -1263,7 +1305,7 @@ namespace ServicesClassNameServiceTestGeneratedServices.Services
                                             {
                                                 sb.AppendLine($@"            if (OmitPropName != ""{ prop.Name }"") { TypeNameLower }.{ prop.Name } = { samplingPlanSubsector.SamplingPlanSubsectorID };");
                                                 string LastUpdateDate_UTC = $@"new DateTime({ samplingPlanSubsector.LastUpdateDate_UTC.Year }, { samplingPlanSubsector.LastUpdateDate_UTC.Month }, { samplingPlanSubsector.LastUpdateDate_UTC.Day }, { samplingPlanSubsector.LastUpdateDate_UTC.Hour }, { samplingPlanSubsector.LastUpdateDate_UTC.Minute }, { samplingPlanSubsector.LastUpdateDate_UTC.Second })";
-                                                string TempStr = $@"                dbIM.{ csspProp.ExistTypeName }s.Add(new { csspProp.ExistTypeName }() {{ " +
+                                                string TempStr = $@"                    dbIM.{ csspProp.ExistTypeName }s.Add(new { csspProp.ExistTypeName }() {{ " +
                                                     $@"SamplingPlanSubsectorID = { samplingPlanSubsector.SamplingPlanSubsectorID }, " +
                                                     $@"SamplingPlanID = { samplingPlanSubsector.SamplingPlanID }, " +
                                                     $@"SubsectorTVItemID = { samplingPlanSubsector.SubsectorTVItemID }, " +
@@ -1300,7 +1342,7 @@ namespace ServicesClassNameServiceTestGeneratedServices.Services
                                                 string SampleMatrixDefault = samplingPlan.SampleMatrixDefault == null ? "null" : "(SampleMatrixEnum)" + ((int)samplingPlan.SampleMatrixDefault).ToString();
                                                 string LaboratoryDefault = samplingPlan.LaboratoryDefault == null ? "null" : "(LaboratoryEnum)" + ((int)samplingPlan.LaboratoryDefault).ToString();
                                                 string LastUpdateDate_UTC = $@"new DateTime({ samplingPlan.LastUpdateDate_UTC.Year }, { samplingPlan.LastUpdateDate_UTC.Month }, { samplingPlan.LastUpdateDate_UTC.Day }, { samplingPlan.LastUpdateDate_UTC.Hour }, { samplingPlan.LastUpdateDate_UTC.Minute }, { samplingPlan.LastUpdateDate_UTC.Second })";
-                                                string TempStr = $@"                dbIM.{ csspProp.ExistTypeName }s.Add(new { csspProp.ExistTypeName }() {{ " +
+                                                string TempStr = $@"                    dbIM.{ csspProp.ExistTypeName }s.Add(new { csspProp.ExistTypeName }() {{ " +
                                                     $@"SamplingPlanID = { samplingPlan.SamplingPlanID }, " +
                                                     $@"IsActive = { samplingPlan.IsActive.ToString().ToLower() }, " +
                                                     $@"SamplingPlanName = @""{ samplingPlan.SamplingPlanName }"", " +
@@ -1353,7 +1395,7 @@ namespace ServicesClassNameServiceTestGeneratedServices.Services
                                                 string StartDateTime_Local = $@"new DateTime({ spill.StartDateTime_Local.Year }, { spill.StartDateTime_Local.Month }, { spill.StartDateTime_Local.Day }, { spill.StartDateTime_Local.Hour }, { spill.StartDateTime_Local.Minute }, { spill.StartDateTime_Local.Second })";
                                                 string EndDateTime_Local = spill.EndDateTime_Local == null ? "null" : $@"new DateTime({ ((DateTime)spill.EndDateTime_Local).Year }, { ((DateTime)spill.EndDateTime_Local).Month }, { ((DateTime)spill.EndDateTime_Local).Day }, { ((DateTime)spill.EndDateTime_Local).Hour }, { ((DateTime)spill.EndDateTime_Local).Minute }, { ((DateTime)spill.EndDateTime_Local).Second })";
                                                 string LastUpdateDate_UTC = $@"new DateTime({ spill.LastUpdateDate_UTC.Year }, { spill.LastUpdateDate_UTC.Month }, { spill.LastUpdateDate_UTC.Day }, { spill.LastUpdateDate_UTC.Hour }, { spill.LastUpdateDate_UTC.Minute }, { spill.LastUpdateDate_UTC.Second })";
-                                                string TempStr = $@"                dbIM.{ csspProp.ExistTypeName }s.Add(new { csspProp.ExistTypeName }() {{ " +
+                                                string TempStr = $@"                    dbIM.{ csspProp.ExistTypeName }s.Add(new { csspProp.ExistTypeName }() {{ " +
                                                     $@"SpillID = { spill.SpillID }, " +
                                                     $@"MunicipalityTVItemID = { spill.MunicipalityTVItemID }, " +
                                                     $@"InfrastructureTVItemID = { InfrastructureTVItemID }, " +
@@ -1397,7 +1439,7 @@ namespace ServicesClassNameServiceTestGeneratedServices.Services
                                                 string FromWater = tvFile.FromWater == null ? "null" : tvFile.FromWater.ToString().ToLower();
                                                 string ClientFilePath = tvFile.ClientFilePath == null ? "null" : tvFile.ClientFilePath.ToString();
                                                 string LastUpdateDate_UTC = $@"new DateTime({ tvFile.LastUpdateDate_UTC.Year }, { tvFile.LastUpdateDate_UTC.Month }, { tvFile.LastUpdateDate_UTC.Day }, { tvFile.LastUpdateDate_UTC.Hour }, { tvFile.LastUpdateDate_UTC.Minute }, { tvFile.LastUpdateDate_UTC.Second })";
-                                                string TempStr = $@"                dbIM.{ csspProp.ExistTypeName }s.Add(new { csspProp.ExistTypeName }() {{ " +
+                                                string TempStr = $@"                    dbIM.{ csspProp.ExistTypeName }s.Add(new { csspProp.ExistTypeName }() {{ " +
                                                     $@"TVFileID = { tvFile.TVFileID }, " +
                                                     $@"TVFileTVItemID = { tvFile.TVFileTVItemID }, " +
                                                     $@"TemplateTVType = { TemplateTVType }, " +
@@ -1459,7 +1501,7 @@ namespace ServicesClassNameServiceTestGeneratedServices.Services
                                                 string EffluentVelocity_m_s = vpScenario.EffluentVelocity_m_s == null ? "null" : vpScenario.EffluentVelocity_m_s.ToString();
                                                 string RawResults = vpScenario.RawResults == null ? "null" : vpScenario.RawResults.ToString();
                                                 string LastUpdateDate_UTC = $@"new DateTime({ vpScenario.LastUpdateDate_UTC.Year }, { vpScenario.LastUpdateDate_UTC.Month }, { vpScenario.LastUpdateDate_UTC.Day }, { vpScenario.LastUpdateDate_UTC.Hour }, { vpScenario.LastUpdateDate_UTC.Minute }, { vpScenario.LastUpdateDate_UTC.Second })";
-                                                string TempStr = $@"                dbIM.{ csspProp.ExistTypeName }s.Add(new { csspProp.ExistTypeName }() {{ " +
+                                                string TempStr = $@"                    dbIM.{ csspProp.ExistTypeName }s.Add(new { csspProp.ExistTypeName }() {{ " +
                                                     $@"VPScenarioID = { vpScenario.VPScenarioID }, " +
                                                     $@"InfrastructureTVItemID = { vpScenario.InfrastructureTVItemID }, " +
                                                     $@"VPScenarioStatus = (ScenarioStatusEnum){ (int)vpScenario.VPScenarioStatus }, " +
@@ -1521,7 +1563,7 @@ namespace ServicesClassNameServiceTestGeneratedServices.Services
                                                     {
                                                         sb.AppendLine($@"            if (OmitPropName != ""{ prop.Name }"") { TypeNameLower }.{ prop.Name } = { tvItem.TVItemID };");
                                                         string DateStr = $@"new DateTime({ tvItem.LastUpdateDate_UTC.Year }, { tvItem.LastUpdateDate_UTC.Month }, { tvItem.LastUpdateDate_UTC.Day }, { tvItem.LastUpdateDate_UTC.Hour }, { tvItem.LastUpdateDate_UTC.Minute }, { tvItem.LastUpdateDate_UTC.Second })";
-                                                        string TempStr = $@"                dbIM.{ csspProp.ExistTypeName }s.Add(new { csspProp.ExistTypeName }() {{ " +
+                                                        string TempStr = $@"                    dbIM.{ csspProp.ExistTypeName }s.Add(new { csspProp.ExistTypeName }() {{ " +
                                                             $@"TVItemID = { tvItem.TVItemID }, " +
                                                             $@"TVLevel = { tvItem.TVLevel }, " +
                                                             $@"TVPath = ""{ tvItem.TVPath }"", " +
@@ -1653,7 +1695,48 @@ namespace ServicesClassNameServiceTestGeneratedServices.Services
                     break;
                 case "String":
                     {
-                        if (csspProp.HasDataTypeAttribute) // will have to do this better ... works because it's only use when email
+                        if (csspProp.HasCSSPExistAttribute)
+                        {
+                            switch (csspProp.ExistTypeName)
+                            {
+                                case "AspNetUser":
+                                    {
+                                        AspNetUser appTask = dbTestDB.AspNetUsers.AsNoTracking().FirstOrDefault();
+                                        if (appTask == null)
+                                        {
+                                            sb.AppendLine($@"            // Need to implement (no items found, would need to add at least one in the TestDB) [{ TypeName } { csspProp.PropName } { csspProp.ExistTypeName } { csspProp.ExistFieldID }]");
+                                        }
+                                        else
+                                        {
+                                            sb.AppendLine($@"            if (OmitPropName != ""{ prop.Name }"") { TypeNameLower }.{ prop.Name } = ""{ appTask.Id }"";");
+                                            string TempStr = $@"                    dbIM.{ csspProp.ExistTypeName }s.Add(new { csspProp.ExistTypeName }() {{ " +
+                                                $@"Id = ""{ appTask.Id }"", " +
+                                                $@"Email = ""{ appTask.Email }"", " +
+                                                $@"UserName = ""{ appTask.UserName }"", " +
+                                                $@"}});";
+                                            if (!sbInMemory.ToString().Contains(TempStr))
+                                            {
+                                                sbInMemory.AppendLine($@"                try");
+                                                sbInMemory.AppendLine($@"                {{");
+                                                sbInMemory.AppendLine(TempStr);
+                                                sbInMemory.AppendLine($@"                    dbIM.SaveChanges();");
+                                                sbInMemory.AppendLine($@"                }}");
+                                                sbInMemory.AppendLine($@"                catch (Exception)");
+                                                sbInMemory.AppendLine($@"                {{");
+                                                sbInMemory.AppendLine($@"                   // nothing for now");
+                                                sbInMemory.AppendLine($@"                }}");
+                                            }
+                                        }
+                                    }
+                                    break;
+                                default:
+                                    {
+                                        sb.AppendLine($@"            // Need to implement [{ TypeName } { csspProp.PropName } { csspProp.ExistTypeName } { csspProp.ExistFieldID }]");
+                                    }
+                                    break;
+                            }
+                        }
+                        else if (csspProp.HasDataTypeAttribute) // will have to do this better ... works because it's only use when email
                         {
                             sb.AppendLine($@"            if (OmitPropName != ""{ prop.Name }"") { TypeNameLower }.{ prop.Name } = GetRandomEmail();");
                         }

@@ -72,9 +72,9 @@ namespace CSSPModels
         [CSSPRange(0, 100)]
         public int? NumberOfTransOutputParameters { get; set; }
         [CSSPRange(0, 100000000)]
-        public int? EstimatedHydroFileSize { get; set; }
+        public long? EstimatedHydroFileSize { get; set; }
         [CSSPRange(0, 100000000)]
-        public int? EstimatedTransFileSize { get; set; }
+        public long? EstimatedTransFileSize { get; set; }
         #endregion Properties in DB
 
         #region Constructors
