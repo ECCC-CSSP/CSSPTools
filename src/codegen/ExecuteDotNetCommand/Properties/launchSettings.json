@@ -2,7 +2,7 @@
   "profiles": {
     "ExecuteDotNetCommand": {
       "commandName": "Project",
-      "commandLineArgs": "en-CA test ValidateAppSettingsServices.Tests"
+      "commandLineArgs": "en-CA run AngularEnumsGenerated"
     }
   }
 }

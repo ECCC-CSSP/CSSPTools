@@ -48,7 +48,7 @@ namespace ConfigServices.Services
         #region Constructors
         public ConfigService()
         {
-            
+
         }
         public ConfigService(IConfiguration configuration)
         {

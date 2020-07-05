@@ -30,8 +30,7 @@
           "CultureServices": "1.0.0.0",
           "GenerateCodeBaseServices": "1.0.0.0",
           "SQLiteGeneratedServices": "1.0.0.0",
-          "ValidateAppSettingsServices": "1.0.0.0",
-          "WebAPIClassNameControllerGeneratedServices": "1.0.0.0"
+          "ValidateAppSettingsServices": "1.0.0.0"
         },
         "runtime": {
           "SQLiteGeneratedServices.Tests.dll": {}
@@ -1885,14 +1884,6 @@
           }
         }
       },
-      "WebAPIClassNameControllerGeneratedServices/1.0.0.0": {
-        "runtime": {
-          "WebAPIClassNameControllerGeneratedServices.dll": {
-            "assemblyVersion": "1.0.0.0",
-            "fileVersion": "1.0.0.0"
-          }
-        }
-      },
       "LoggedInServices/1.0.0.0": {
         "runtime": {
           "LoggedInServices.dll": {
@@ -3112,11 +3103,6 @@
       "sha512": ""
     },
     "ValidateAppSettingsServices/1.0.0.0": {
-      "type": "reference",
-      "serviceable": false,
-      "sha512": ""
-    },
-    "WebAPIClassNameControllerGeneratedServices/1.0.0.0": {
       "type": "reference",
       "serviceable": false,
       "sha512": ""

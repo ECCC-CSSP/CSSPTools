@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-namespace ModelsCSSPModelsResServices.Services
+namespace ModelsModelClassNameTestServices.Services
 {
     public interface IModelsModelClassNameTestService
     {

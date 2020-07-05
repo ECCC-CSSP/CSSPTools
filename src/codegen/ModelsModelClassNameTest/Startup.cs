@@ -1,11 +1,11 @@
 ﻿using ConfigServices.Services;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using ModelsCSSPModelsResServices.Services;
+using ModelsModelClassNameTestServices.Services;
 using System;
 using System.Threading.Tasks;
 
-namespace ModelsCSSPModelsRes
+namespace ModelsModelClassNameTest
 {
     public class Startup : ConfigService
     {

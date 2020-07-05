@@ -20,7 +20,6 @@
           "Microsoft.Extensions.DependencyInjection": "3.1.5",
           "System.IdentityModel.Tokens.Jwt": "6.7.1",
           "ActionCommandDBServices": "1.0.0.0",
-          "AngularEnumsGeneratedServices": "1.0.0.0",
           "ConfigServices": "1.0.0.0",
           "CSSPEnums": "1.0.0.0",
           "CSSPModels": "1.0.0.0",
@@ -1194,14 +1193,6 @@
           }
         }
       },
-      "AngularEnumsGeneratedServices/1.0.0.0": {
-        "runtime": {
-          "AngularEnumsGeneratedServices.dll": {
-            "assemblyVersion": "1.0.0.0",
-            "fileVersion": "1.0.0.0"
-          }
-        }
-      },
       "ConfigServices/1.0.0.0": {
         "runtime": {
           "ConfigServices.dll": {
@@ -2120,11 +2111,6 @@
       "hashPath": "system.xml.xmlserializer.4.3.0.nupkg.sha512"
     },
     "ActionCommandDBServices/1.0.0.0": {
-      "type": "reference",
-      "serviceable": false,
-      "sha512": ""
-    },
-    "AngularEnumsGeneratedServices/1.0.0.0": {
       "type": "reference",
       "serviceable": false,
       "sha512": ""

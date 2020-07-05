@@ -32,7 +32,7 @@ namespace SQLiteGeneratedServices.Tests
         [InlineData("en-CA")] // good
         //[InlineData("fr-CA")] // good
         //[InlineData("en-GB")] // good will default to en-CA
-        public async Task IWebAPIClassNameControllerGeneratedService_Run_Good_Test(string culture)
+        public async Task SQLiteGeneratedService_Run_Good_Test(string culture)
         {
             Assert.True(await Setup(new CultureInfo(culture), "appsettings.json"));
 
@@ -48,7 +48,7 @@ namespace SQLiteGeneratedServices.Tests
         [Theory]
         [InlineData("en-CA")] // good
         //[InlineData("fr-CA")] // good
-        public async Task WebAPIClassNameControllerGeneratedService_Run_SomeFileMissing_Test(string culture)
+        public async Task SQLiteGeneratedService_Run_SomeFileMissing_Test(string culture)
         {
             Assert.True(await Setup(new CultureInfo(culture), "appsettings_bad1.json"));
 
@@ -74,7 +74,7 @@ namespace SQLiteGeneratedServices.Tests
             Services = new ServiceCollection();
             Assert.True(await ConfigureBaseServices());
 
-            Services.AddSingleton<ISQLiteGeneratedService, ISQLiteGeneratedService>();
+            Services.AddSingleton<ISQLiteGeneratedService, SQLiteGeneratedService>();
 
             Assert.True(await BuildServiceProvider());
 

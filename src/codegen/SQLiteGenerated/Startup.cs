@@ -38,26 +38,6 @@ namespace SQLiteGenerated
                 return await Task.FromResult(false);
             }
 
-            string CSSPDBConnString = Config.GetValue<string>("CSSPDBConnectionString");
-            if (CSSPDBConnString == null)
-            {
-                await ActionCommandDBService.ConsoleWriteError($"{ String.Format(CultureServicesRes.CouldNotFindParameter_InAppSettingsJSON, "CSSPDBConnectionString") }");
-                return await Task.FromResult(false);
-            }
-
-            try
-            {
-                Services.AddDbContext<CSSPDBContext>(options =>
-                {
-                    options.UseSqlServer(CSSPDBConnString);
-                });
-            }
-            catch (Exception ex)
-            {
-                await ActionCommandDBService.ConsoleWriteError(ex.Message);
-                return await Task.FromResult(false);
-            }
-
             SQLiteGeneratedService = Provider.GetService<ISQLiteGeneratedService>();
             if (SQLiteGeneratedService == null)
             {

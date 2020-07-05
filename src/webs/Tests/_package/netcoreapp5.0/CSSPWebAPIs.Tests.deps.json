@@ -1766,11 +1766,11 @@
           }
         }
       },
-      "Microsoft.EntityFrameworkCore.Sqlite/3.1.4.0": {
+      "Microsoft.EntityFrameworkCore.Sqlite/3.1.5.0": {
         "runtime": {
           "Microsoft.EntityFrameworkCore.Sqlite.dll": {
-            "assemblyVersion": "3.1.4.0",
-            "fileVersion": "3.100.420.21503"
+            "assemblyVersion": "3.1.5.0",
+            "fileVersion": "3.100.520.27007"
           }
         }
       },
@@ -1782,27 +1782,27 @@
           }
         }
       },
-      "Microsoft.DotNet.PlatformAbstractions/3.1.4.0": {
+      "Microsoft.DotNet.PlatformAbstractions/3.1.5.0": {
         "runtime": {
           "Microsoft.DotNet.PlatformAbstractions.dll": {
-            "assemblyVersion": "3.1.4.0",
-            "fileVersion": "3.100.420.21405"
+            "assemblyVersion": "3.1.5.0",
+            "fileVersion": "3.100.520.27005"
           }
         }
       },
-      "Microsoft.Data.Sqlite/3.1.4.0": {
+      "Microsoft.Data.Sqlite/3.1.5.0": {
         "runtime": {
           "Microsoft.Data.Sqlite.dll": {
-            "assemblyVersion": "3.1.4.0",
-            "fileVersion": "3.100.420.21503"
+            "assemblyVersion": "3.1.5.0",
+            "fileVersion": "3.100.520.27007"
           }
         }
       },
-      "Microsoft.Extensions.DependencyModel/3.1.4.0": {
+      "Microsoft.Extensions.DependencyModel/3.1.5.0": {
         "runtime": {
           "Microsoft.Extensions.DependencyModel.dll": {
-            "assemblyVersion": "3.1.4.0",
-            "fileVersion": "3.100.420.21405"
+            "assemblyVersion": "3.1.5.0",
+            "fileVersion": "3.100.520.27005"
           }
         }
       },
@@ -2982,7 +2982,7 @@
       "serviceable": false,
       "sha512": ""
     },
-    "Microsoft.EntityFrameworkCore.Sqlite/3.1.4.0": {
+    "Microsoft.EntityFrameworkCore.Sqlite/3.1.5.0": {
       "type": "reference",
       "serviceable": false,
       "sha512": ""
@@ -2992,17 +2992,17 @@
       "serviceable": false,
       "sha512": ""
     },
-    "Microsoft.DotNet.PlatformAbstractions/3.1.4.0": {
+    "Microsoft.DotNet.PlatformAbstractions/3.1.5.0": {
       "type": "reference",
       "serviceable": false,
       "sha512": ""
     },
-    "Microsoft.Data.Sqlite/3.1.4.0": {
+    "Microsoft.Data.Sqlite/3.1.5.0": {
       "type": "reference",
       "serviceable": false,
       "sha512": ""
     },
-    "Microsoft.Extensions.DependencyModel/3.1.4.0": {
+    "Microsoft.Extensions.DependencyModel/3.1.5.0": {
       "type": "reference",
       "serviceable": false,
       "sha512": ""

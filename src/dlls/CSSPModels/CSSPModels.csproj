@@ -25,10 +25,10 @@
 
   <ItemGroup>
     <Reference Include="CSSPEnums">
-      <HintPath>..\_package\netcoreapp3.1\CSSPEnums.dll</HintPath>
+      <HintPath>..\_package\netcoreapp5.0\CSSPEnums.dll</HintPath>
     </Reference>
     <Reference Include="CultureServices">
-      <HintPath>..\_package\netcoreapp3.1\CultureServices.dll</HintPath>
+      <HintPath>..\_package\netcoreapp5.0\CultureServices.dll</HintPath>
     </Reference>
   </ItemGroup>
 

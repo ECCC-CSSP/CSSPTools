@@ -1,5 +1,5 @@
 ﻿Requirements: 
-C:\\CSSPTools\\src\\dlls\\_package\\netcoreapp3.1\CSSPModels.dll
+C:\\CSSPTools\\src\\dlls\\_package\\netcoreapp5.0\CSSPModels.dll
 
 Files created:
 C:\CSSPTools\src\tests\CSSPModels.Tests\tests\{TypeName}Test.cs

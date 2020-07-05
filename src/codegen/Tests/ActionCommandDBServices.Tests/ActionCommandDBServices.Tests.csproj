@@ -35,10 +35,10 @@
 
   <ItemGroup>
     <Reference Include="ActionCommandDBServices">
-      <HintPath>..\..\_package\netcoreapp3.1\ActionCommandDBServices.dll</HintPath>
+      <HintPath>..\..\_package\netcoreapp5.0\ActionCommandDBServices.dll</HintPath>
     </Reference>
     <Reference Include="CultureServices">
-      <HintPath>..\..\_package\netcoreapp3.1\CultureServices.dll</HintPath>
+      <HintPath>..\..\_package\netcoreapp5.0\CultureServices.dll</HintPath>
     </Reference>
   </ItemGroup>
 

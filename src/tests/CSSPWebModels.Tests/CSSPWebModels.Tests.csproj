@@ -25,7 +25,7 @@
 
   <ItemGroup>
     <Reference Include="CSSPWebModels">
-      <HintPath>..\..\dlls\_package\netcoreapp3.1\CSSPWebModels.dll</HintPath>
+      <HintPath>..\..\dlls\_package\netcoreapp5.0\CSSPWebModels.dll</HintPath>
     </Reference>
   </ItemGroup>
 

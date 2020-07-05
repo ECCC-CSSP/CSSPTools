@@ -2,7 +2,7 @@
 using CultureServices.Resources;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using ModelsCSSPModelsResServices.Services;
+using ModelsModelClassNameTestServices.Services;
 using System;
 using System.Collections.Generic;
 using System.Globalization;

@@ -22,10 +22,10 @@
 
   <ItemGroup>
     <Reference Include="CSSPModels">
-      <HintPath>..\_package\netcoreapp3.1\CSSPModels.dll</HintPath>
+      <HintPath>..\_package\netcoreapp5.0\CSSPModels.dll</HintPath>
     </Reference>
     <Reference Include="CultureServices">
-      <HintPath>..\_package\netcoreapp3.1\CultureServices.dll</HintPath>
+      <HintPath>..\_package\netcoreapp5.0\CultureServices.dll</HintPath>
     </Reference>
   </ItemGroup>
 

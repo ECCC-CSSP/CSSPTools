@@ -71,7 +71,7 @@ namespace ModelsCompareDBFieldsAndCSSPModelsDLLPropServices.Services
                 new AppSettingParameter() { Parameter = "Command", ExpectedValue = "ModelsCompareDBFieldsAndCSSPModelsDLLProp" },
                 new AppSettingParameter() { Parameter = "Culture", ExpectedValue = "", IsCulture = true },
                 new AppSettingParameter() { Parameter = "DBFileName", ExpectedValue = "{AppDataPath}\\CSSP\\ActionCommandDB.db", IsFile = true, CheckExist = true },
-                new AppSettingParameter() { Parameter = "CSSPModels", ExpectedValue = "C:\\CSSPTools\\src\\dlls\\_package\\netcoreapp3.1\\CSSPModels.dll", IsFile = true, CheckExist = true },
+                new AppSettingParameter() { Parameter = "CSSPModels", ExpectedValue = "C:\\CSSPTools\\src\\dlls\\_package\\netcoreapp5.0\\CSSPModels.dll", IsFile = true, CheckExist = true },
                 new AppSettingParameter() { Parameter = "CSSPDBConnectionString", ExpectedValue = "Server=.\\sqlexpress;Database=CSSPDB;Trusted_Connection=True;MultipleActiveResultSets=true" },
             };
 

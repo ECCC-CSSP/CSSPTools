@@ -4,7 +4,7 @@ using System;
 using System.IO;
 using System.Threading.Tasks;
 
-namespace ModelsCSSPModelsRes
+namespace ModelsModelClassNameTest
 {
     partial class Program
     {

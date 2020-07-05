@@ -1,5 +1,5 @@
 ﻿Requirements: 
-C:\\CSSPTools\\src\\dlls\\_package\\netcoreapp3.1\CSSPModels.dll
+C:\\CSSPTools\\src\\dlls\\_package\\netcoreapp5.0\CSSPModels.dll
 
 Will compare all the properties between the SQL Database and the CSSPModels
 

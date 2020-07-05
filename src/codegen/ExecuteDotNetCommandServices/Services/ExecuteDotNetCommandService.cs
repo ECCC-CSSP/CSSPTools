@@ -32,12 +32,10 @@ namespace ExecuteDotNetCommandServices.Services
             "EnumsTestGenerated_cs",
             "ModelsCompare",
             "ModelsCompareDBFieldsAndCSSPModelsDLLProp",
-            "ModelsCSSPModelsRes",
             "ModelsModelClassNameTest",
             "ModelsModelClassNameTestGenerated_cs",
             "ServicesClassNameServiceGenerated",
             "ServicesClassNameServiceTestGenerated",
-            "ServicesExtensionEnumCastingGenerated",
             "ServicesRepopulateTestDB",
             "WebAPIClassNameControllerGenerated",
             "WebAPIClassNameControllerTestGenerated"
@@ -56,13 +54,11 @@ namespace ExecuteDotNetCommandServices.Services
             "GenerateCodeBaseServices.Tests",
             "ModelsCompareDBFieldsAndCSSPModelsDLLPropServices.Tests",
             "ModelsCompareServices.Tests",
-            "ModelsCSSPModelsResServices.Tests",
             "ModelsModelClassNameTestGenerated_csServices.Tests",
             "ModelsModelClassNameTestServices.Tests",
             "PolSourceGroupingExcelFileReadServices.Tests",
             "ServicesClassNameServiceGeneratedServices.Tests",
             "ServicesClassNameServiceTestGeneratedServices.Tests",
-            "ServicesExtensionEnumCastingGeneratedServices.Tests",
             "ServicesRepopulateTestDBServices.Tests",
             "ValidateAppSettingsServices.Tests",
             "WebAPIClassNameControllerGeneratedServices.Tests",
@@ -119,10 +115,6 @@ namespace ExecuteDotNetCommandServices.Services
             "ModelsCompareDBFieldsAndCSSPModelsDLLPropServices",
             "ModelsCompareDBFieldsAndCSSPModelsDLLPropServices.Tests",
 
-            "ModelsCSSPModelsRes",
-            "ModelsCSSPModelsResServices",
-            "ModelsCSSPModelsResServices.Tests",
-
             "ModelsModelClassNameTest",
             "ModelsModelClassNameTestServices",
             "ModelsModelClassNameTestServices.Tests",
@@ -141,10 +133,6 @@ namespace ExecuteDotNetCommandServices.Services
             "ServicesClassNameServiceTestGenerated",
             "ServicesClassNameServiceTestGeneratedServices",
             "ServicesClassNameServiceTestGeneratedServices.Tests",
-
-            "ServicesExtensionEnumCastingGenerated",
-            "ServicesExtensionEnumCastingGeneratedServices",
-            "ServicesExtensionEnumCastingGeneratedServices.Tests",
 
             "ServicesRepopulateTestDB",
             "ServicesRepopulateTestDBServices",

@@ -56,7 +56,7 @@ namespace ExecuteDotNetCommandServices.Services
 
             if (dotNetCommand.Action == "build" || dotNetCommand.Action == "test")
             {
-                string dllOrExeFileName = di.FullName.Substring(0, di.FullName.LastIndexOf("\\")) + @"\_package\netcoreapp3.1\" + dotNetCommand.Command + ".dll";
+                string dllOrExeFileName = di.FullName.Substring(0, di.FullName.LastIndexOf("\\")) + @"\_package\netcoreapp5.0\" + dotNetCommand.Command + ".dll";
                 if (dotNetCommand.Command.EndsWith("Services"))
                 {
                     dllOrExeFileName.Replace(".dll", ".exe");

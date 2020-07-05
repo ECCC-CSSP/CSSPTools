@@ -8,7 +8,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ModelsCSSPModelsResServices.Services
+namespace ModelsModelClassNameTestServices.Services
 {
     public partial class ModelsModelClassNameTestService : IModelsModelClassNameTestService
     {

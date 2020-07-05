@@ -36,19 +36,19 @@
 
   <ItemGroup>
     <Reference Include="ConfigServices">
-      <HintPath>..\..\_package\netcoreapp3.1\ConfigServices.dll</HintPath>
+      <HintPath>..\..\_package\netcoreapp5.0\ConfigServices.dll</HintPath>
     </Reference>
     <Reference Include="CultureServices">
-      <HintPath>..\..\_package\netcoreapp3.1\CultureServices.dll</HintPath>
+      <HintPath>..\..\_package\netcoreapp5.0\CultureServices.dll</HintPath>
     </Reference>
     <Reference Include="ActionCommandDBServices">
-      <HintPath>..\..\_package\netcoreapp3.1\ActionCommandDBServices.dll</HintPath>
+      <HintPath>..\..\_package\netcoreapp5.0\ActionCommandDBServices.dll</HintPath>
     </Reference>
     <Reference Include="ValidateAppSettingsServices">
-      <HintPath>..\..\_package\netcoreapp3.1\ValidateAppSettingsServices.dll</HintPath>
+      <HintPath>..\..\_package\netcoreapp5.0\ValidateAppSettingsServices.dll</HintPath>
     </Reference>
     <Reference Include="GenerateCodeBaseServices">
-      <HintPath>..\..\_package\netcoreapp3.1\GenerateCodeBaseServices.dll</HintPath>
+      <HintPath>..\..\_package\netcoreapp5.0\GenerateCodeBaseServices.dll</HintPath>
     </Reference>
   </ItemGroup>
 

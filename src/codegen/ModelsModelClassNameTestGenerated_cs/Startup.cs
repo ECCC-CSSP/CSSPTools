@@ -38,7 +38,7 @@ namespace ModelClassNameTestGenerated_cs
             ModelsModelClassNameTestGenerated_csService = Provider.GetService<IModelsModelClassNameTestGenerated_csService>();
             if (ModelsModelClassNameTestGenerated_csService == null)
             {
-                await ActionCommandDBService.ConsoleWriteError($"{ AppDomain.CurrentDomain.FriendlyName } IModelsCSSPModelsResService  == null");
+                await ActionCommandDBService.ConsoleWriteError($"{ AppDomain.CurrentDomain.FriendlyName } IModelsModelClassNameTestGenerated_csService  == null");
                 return await Task.FromResult(false);
             }
 

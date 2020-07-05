@@ -1,9 +1,0 @@
-﻿Requirements: 
-C:\\CSSPTools\\src\\dlls\\_package\\netcoreapp3.1\CSSPEnums.dll
-
-Files created:
-C:\CSSPCode\CSSPServices\CSSPServices\_ExtensionEnumCastingGenerated.cs
-
-Recompilation of project required
-
-C:\CSSPTools\src\dlls\CSSPServices\CSSPServices.csproj

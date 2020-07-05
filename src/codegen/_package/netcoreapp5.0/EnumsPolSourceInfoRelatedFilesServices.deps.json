@@ -899,11 +899,11 @@
           }
         }
       },
-      "Microsoft.EntityFrameworkCore.SqlServer/3.1.4.0": {
+      "Microsoft.EntityFrameworkCore.SqlServer/3.1.5.0": {
         "runtime": {
           "Microsoft.EntityFrameworkCore.SqlServer.dll": {
-            "assemblyVersion": "3.1.4.0",
-            "fileVersion": "3.100.420.21503"
+            "assemblyVersion": "3.1.5.0",
+            "fileVersion": "3.100.520.27007"
           }
         }
       },
@@ -920,22 +920,6 @@
           "CSSPEnums.dll": {
             "assemblyVersion": "1.0.0.0",
             "fileVersion": "1.0.0.0"
-          }
-        }
-      },
-      "DocumentFormat.OpenXml/2.11.0.0": {
-        "runtime": {
-          "DocumentFormat.OpenXml.dll": {
-            "assemblyVersion": "2.11.0.0",
-            "fileVersion": "2.11.0.0"
-          }
-        }
-      },
-      "System.IO.Packaging/4.0.5.0": {
-        "runtime": {
-          "System.IO.Packaging.dll": {
-            "assemblyVersion": "4.0.5.0",
-            "fileVersion": "4.700.19.56404"
           }
         }
       }
@@ -1635,7 +1619,7 @@
       "serviceable": false,
       "sha512": ""
     },
-    "Microsoft.EntityFrameworkCore.SqlServer/3.1.4.0": {
+    "Microsoft.EntityFrameworkCore.SqlServer/3.1.5.0": {
       "type": "reference",
       "serviceable": false,
       "sha512": ""
@@ -1646,16 +1630,6 @@
       "sha512": ""
     },
     "CSSPEnums/1.0.0.0": {
-      "type": "reference",
-      "serviceable": false,
-      "sha512": ""
-    },
-    "DocumentFormat.OpenXml/2.11.0.0": {
-      "type": "reference",
-      "serviceable": false,
-      "sha512": ""
-    },
-    "System.IO.Packaging/4.0.5.0": {
       "type": "reference",
       "serviceable": false,
       "sha512": ""

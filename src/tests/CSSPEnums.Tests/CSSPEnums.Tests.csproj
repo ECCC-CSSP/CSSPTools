@@ -33,10 +33,10 @@
 
   <ItemGroup>
     <Reference Include="CSSPEnums">
-      <HintPath>..\..\dlls\_package\netcoreapp3.1\CSSPEnums.dll</HintPath>
+      <HintPath>..\..\dlls\_package\netcoreapp5.0\CSSPEnums.dll</HintPath>
     </Reference>
     <Reference Include="CultureServices">
-      <HintPath>..\..\dlls\_package\netcoreapp3.1\CultureServices.dll</HintPath>
+      <HintPath>..\..\dlls\_package\netcoreapp5.0\CultureServices.dll</HintPath>
     </Reference>
   </ItemGroup>
 
