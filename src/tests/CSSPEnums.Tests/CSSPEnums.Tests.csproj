@@ -28,10 +28,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="tests\Generated\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\..\dlls\CSSPEnums\CSSPEnums.csproj" />
   </ItemGroup>
 

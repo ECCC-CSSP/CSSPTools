@@ -93,9 +93,13 @@ namespace WebAPIClassNameControllerTestGeneratedServices.Services
                     sb.AppendLine(@"using System.Globalization;");
                     sb.AppendLine(@"using System.IO;");
                     sb.AppendLine(@"using System.Linq;");
+                    sb.AppendLine(@"using System.Net.Http;");
+                    sb.AppendLine(@"using System.Net.Http.Headers;");
+                    sb.AppendLine(@"using System.Text.Json;");
                     sb.AppendLine(@"using System.Threading.Tasks;");
                     sb.AppendLine(@"using System.Transactions;");
                     sb.AppendLine(@"using UserServices.Models;");
+                    sb.AppendLine(@"using UserServices.Services;");
                     sb.AppendLine(@"using Xunit;");
                     sb.AppendLine(@"");
                     sb.AppendLine(@"namespace CSSPWebAPIs.Tests.Controllers");
@@ -110,10 +114,12 @@ namespace WebAPIClassNameControllerTestGeneratedServices.Services
                     sb.AppendLine(@"        private IServiceProvider Provider { get; set; }");
                     sb.AppendLine(@"        private IServiceCollection Services { get; set; }");
                     sb.AppendLine(@"        private CSSPDBContext db { get; set; }");
+                    sb.AppendLine(@"        private IUserService userService { get; set; }");
                     sb.AppendLine(@"        private ILoggedInService loggedInService { get; set; }");
                     sb.AppendLine(@"        private ICultureService CultureService { get; set; }");
                     sb.AppendLine($@"        private I{ TypeName }Service { TypeNameLower }Service {{ get; set; }}");
                     sb.AppendLine($@"        private I{ TypeName }Controller { TypeNameLower }Controller {{ get; set; }}");
+                    sb.AppendLine(@"        private UserModel userModel { get; set; }");
                     sb.AppendLine(@"        #endregion Properties");
                     sb.AppendLine(@"");
                     sb.AppendLine(@"        #region Constructors");

@@ -117,6 +117,17 @@ namespace CSSPCodeGenWebAPI
             services.AddDbContext<InMemoryDBContext>(options =>
                     options.UseInMemoryDatabase(connectionStrings.CSSPDB2));
 
+            string appDataPath2 = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+
+            string CSSPDBLocalFileName = Configuration.GetValue<string>("CSSPDBLocal");
+
+            FileInfo fiAppDataPath = new FileInfo(CSSPDBLocalFileName.Replace("{appDataPath}", appDataPath2));
+
+            services.AddDbContext<CSSPDBLocalContext>(options =>
+            {
+                options.UseSqlite($"Data Source={ fiAppDataPath.FullName }");
+            });
+
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(connectionStrings.CSSPDB2));
 
