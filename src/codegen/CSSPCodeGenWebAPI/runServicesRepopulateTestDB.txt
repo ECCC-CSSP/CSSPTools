@@ -1,7 +1,7 @@
 ﻿Requirements: 
-C:\\CSSPTools\\src\\dlls\\_package\\netcoreapp5.0\CSSPEnums.dll
-C:\\CSSPTools\\src\\dlls\\_package\\netcoreapp5.0\CSSPModels.dll
-C:\\CSSPTools\\src\\dlls\\_package\\netcoreapp5.0\CSSPServices.dll
+C:\\CSSPTools\\src\\dlls\\_package\\netcoreapp3.1\CSSPEnums.dll
+C:\\CSSPTools\\src\\dlls\\_package\\netcoreapp3.1\CSSPModels.dll
+C:\\CSSPTools\\src\\dlls\\_package\\netcoreapp3.1\CSSPServices.dll
 
 Files created:
 C:\CSSPTools\src\dlls\CSSPEnums\Generated\EnumsGenerated.cs

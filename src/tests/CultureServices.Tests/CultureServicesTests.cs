@@ -36,6 +36,7 @@ namespace CultureServices.Tests
         public async Task SetCulture_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
+
              
             CultureService.SetCulture(culture);
 

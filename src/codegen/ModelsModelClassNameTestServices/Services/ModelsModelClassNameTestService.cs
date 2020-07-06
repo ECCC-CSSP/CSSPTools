@@ -66,7 +66,7 @@ namespace ModelsModelClassNameTestServices.Services
                 new AppSettingParameter() { Parameter = "Command", ExpectedValue = "ModelsModelClassNameTest" },
                 new AppSettingParameter() { Parameter = "Culture", ExpectedValue = "", IsCulture = true },
                 new AppSettingParameter() { Parameter = "DBFileName", ExpectedValue = "{AppDataPath}\\CSSP\\ActionCommandDB.db", IsFile = true, CheckExist = true },
-                new AppSettingParameter() { Parameter = "CSSPModels", ExpectedValue = "C:\\CSSPTools\\src\\dlls\\_package\\netcoreapp5.0\\CSSPModels.dll", IsFile = true, CheckExist = true },
+                new AppSettingParameter() { Parameter = "CSSPModels", ExpectedValue = "C:\\CSSPTools\\src\\dlls\\_package\\netcoreapp3.1\\CSSPModels.dll", IsFile = true, CheckExist = true },
                 new AppSettingParameter() { Parameter = "TypeNameTest", ExpectedValue = "C:\\CSSPTools\\src\\tests\\CSSPModels.Tests\\tests\\{TypeName}Test.cs" },
             };
 

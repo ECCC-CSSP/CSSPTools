@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp5.0</TargetFramework>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -23,27 +23,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Reference Include="CultureServices">
-      <HintPath>..\..\dlls\_package\netcoreapp5.0\CultureServices.dll</HintPath>
-    </Reference>
-    <Reference Include="ActionCommandDBServices">
-      <HintPath>..\..\codegen\_package\netcoreapp5.0\ActionCommandDBServices.dll</HintPath>
-    </Reference>
-    <Reference Include="CSSPEnums">
-      <HintPath>..\..\dlls\_package\netcoreapp5.0\CSSPEnums.dll</HintPath>
-    </Reference>
-    <Reference Include="CSSPModels">
-      <HintPath>..\..\dlls\_package\netcoreapp5.0\CSSPModels.dll</HintPath>
-    </Reference>
-    <Reference Include="CSSPServices">
-      <HintPath>..\..\dlls\_package\netcoreapp5.0\CSSPServices.dll</HintPath>
-    </Reference>
-    <Reference Include="ValidateAppSettingsServices">
-      <HintPath>..\..\codegen\_package\netcoreapp5.0\ValidateAppSettingsServices.dll</HintPath>
-    </Reference>
-    <Reference Include="GenerateCodeBaseServices">
-      <HintPath>..\..\codegen\_package\netcoreapp5.0\GenerateCodeBaseServices.dll</HintPath>
-    </Reference>
+    <ProjectReference Include="..\..\dlls\CSSPEnums\CSSPEnums.csproj" />
+    <ProjectReference Include="..\..\dlls\CSSPModels\CSSPModels.csproj" />
+    <ProjectReference Include="..\GenerateCodeBaseServices\GenerateCodeBaseServices.csproj" />
+    <ProjectReference Include="..\ValidateAppSettingsServices\ValidateAppSettingsServices.csproj" />
   </ItemGroup>
 
 </Project>

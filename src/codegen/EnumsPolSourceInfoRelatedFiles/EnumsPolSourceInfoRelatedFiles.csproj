@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>netcoreapp5.0</TargetFramework>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -25,27 +25,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Reference Include="ConfigServices">
-      <HintPath>..\_package\netcoreapp5.0\ConfigServices.dll</HintPath>
-    </Reference>
-    <Reference Include="CultureServices">
-      <HintPath>..\..\dlls\_package\netcoreapp5.0\CultureServices.dll</HintPath>
-    </Reference>
-    <Reference Include="EnumsPolSourceInfoRelatedFilesServices">
-      <HintPath>..\_package\netcoreapp5.0\EnumsPolSourceInfoRelatedFilesServices.dll</HintPath>
-    </Reference>
-    <Reference Include="GenerateCodeBaseServices">
-      <HintPath>..\_package\netcoreapp5.0\GenerateCodeBaseServices.dll</HintPath>
-    </Reference>
-    <Reference Include="ActionCommandDBServices">
-      <HintPath>..\_package\netcoreapp5.0\ActionCommandDBServices.dll</HintPath>
-    </Reference>
-    <Reference Include="PolSourceGroupingExcelFileReadServices">
-      <HintPath>..\_package\netcoreapp5.0\PolSourceGroupingExcelFileReadServices.dll</HintPath>
-    </Reference>
-    <Reference Include="ValidateAppSettingsServices">
-      <HintPath>..\_package\netcoreapp5.0\ValidateAppSettingsServices.dll</HintPath>
-    </Reference>
+    <ProjectReference Include="..\EnumsPolSourceInfoRelatedFilesServices\EnumsPolSourceInfoRelatedFilesServices.csproj" />
   </ItemGroup>
 
   <ItemGroup>

@@ -1,0 +1,41 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v3.1",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v3.1": {
+      "CSSPEnums/1.0.0": {
+        "dependencies": {
+          "CultureServices": "1.0.0"
+        },
+        "runtime": {
+          "CSSPEnums.dll": {}
+        }
+      },
+      "CultureServices/1.0.0": {
+        "runtime": {
+          "CultureServices.dll": {}
+        },
+        "resources": {
+          "fr/CultureServices.resources.dll": {
+            "locale": "fr"
+          }
+        }
+      }
+    }
+  },
+  "libraries": {
+    "CSSPEnums/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "CultureServices/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}

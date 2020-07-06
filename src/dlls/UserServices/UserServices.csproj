@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp5.0</TargetFramework>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -21,12 +21,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Reference Include="CSSPModels">
-      <HintPath>..\_package\netcoreapp5.0\CSSPModels.dll</HintPath>
-    </Reference>
-    <Reference Include="CultureServices">
-      <HintPath>..\_package\netcoreapp5.0\CultureServices.dll</HintPath>
-    </Reference>
+    <ProjectReference Include="..\CSSPModels\CSSPModels.csproj" />
   </ItemGroup>
 
 </Project>

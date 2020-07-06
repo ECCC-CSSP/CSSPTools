@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp5.0</TargetFramework>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -21,15 +21,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Reference Include="ActionCommandDBServices">
-      <HintPath>..\_package\netcoreapp5.0\ActionCommandDBServices.dll</HintPath>
-    </Reference>
-    <Reference Include="CultureServices">
-      <HintPath>..\..\dlls\_package\netcoreapp5.0\CultureServices.dll</HintPath>
-    </Reference>
-    <Reference Include="CSSPEnums">
-      <HintPath>..\..\dlls\_package\netcoreapp5.0\CSSPEnums.dll</HintPath>
-    </Reference>
+    <ProjectReference Include="..\..\dlls\CSSPEnums\CSSPEnums.csproj" />
+    <ProjectReference Include="..\ActionCommandDBServices\ActionCommandDBServices.csproj" />
   </ItemGroup>
 
 </Project>

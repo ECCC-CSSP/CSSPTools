@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp5.0</TargetFramework>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -23,27 +23,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Reference Include="ConfigServices">
-      <HintPath>..\_package\netcoreapp5.0\ConfigServices.dll</HintPath>
-    </Reference>
-    <Reference Include="CultureServices">
-      <HintPath>..\..\dlls\_package\netcoreapp5.0\CultureServices.dll</HintPath>
-    </Reference>
-    <Reference Include="CSSPEnums">
-      <HintPath>..\..\dlls\_package\netcoreapp5.0\CSSPEnums.dll</HintPath>
-    </Reference>
-    <Reference Include="CSSPModels">
-      <HintPath>..\..\dlls\_package\netcoreapp5.0\CSSPModels.dll</HintPath>
-    </Reference>
-    <Reference Include="GenerateCodeBaseServices">
-      <HintPath>..\_package\netcoreapp5.0\GenerateCodeBaseServices.dll</HintPath>
-    </Reference>
-    <Reference Include="ActionCommandDBServices">
-      <HintPath>..\_package\netcoreapp5.0\ActionCommandDBServices.dll</HintPath>
-    </Reference>
-    <Reference Include="ValidateAppSettingsServices">
-      <HintPath>..\_package\netcoreapp5.0\ValidateAppSettingsServices.dll</HintPath>
-    </Reference>
+    <ProjectReference Include="..\..\dlls\CSSPModels\CSSPModels.csproj" />
+    <ProjectReference Include="..\ConfigServices\ConfigServices.csproj" />
   </ItemGroup>
 
 </Project>

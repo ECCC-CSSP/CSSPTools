@@ -71,7 +71,7 @@ namespace AngularEnumsGeneratedServices.Services
                 new AppSettingParameter() { Parameter = "Command", ExpectedValue = "AngularEnumsGenerated" },
                 new AppSettingParameter() { Parameter = "Culture", ExpectedValue = "", IsCulture = true },
                 new AppSettingParameter() { Parameter = "DBFileName", ExpectedValue = "{AppDataPath}\\CSSP\\ActionCommandDB.db", IsFile = true, CheckExist = true },
-                new AppSettingParameter() { Parameter = "CSSPEnums", ExpectedValue = "C:\\CSSPTools\\src\\dlls\\_package\\netcoreapp5.0\\CSSPEnums.dll", IsFile = true, CheckExist = true },
+                new AppSettingParameter() { Parameter = "CSSPEnums", ExpectedValue = "C:\\CSSPTools\\src\\dlls\\_package\\netcoreapp3.1\\CSSPEnums.dll", IsFile = true, CheckExist = true },
                 new AppSettingParameter() { Parameter = "OutputDir", ExpectedValue = "C:\\CSSPTools\\src\\webs\\CSSPWebToolsAng\\client-apps\\src\\app\\enums\\generated\\" },
                 new AppSettingParameter() { Parameter = "EnumNameFile", ExpectedValue = "C:\\CSSPTools\\src\\webs\\CSSPWebToolsAng\\client-apps\\src\\app\\enums\\generated\\{EnumName}.ts" },
             };

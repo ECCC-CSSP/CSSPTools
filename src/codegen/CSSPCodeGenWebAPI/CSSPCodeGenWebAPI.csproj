@@ -1,23 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp5.0</TargetFramework>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
-
-  <ItemGroup>
-    <Compile Remove="Models\ApiSettingsModel.cs" />
-    <Compile Remove="Models\ApplicationDBContext.cs" />
-    <Compile Remove="Models\ApplicationUser.cs" />
-    <Compile Remove="Models\ConnectionStringsModel.cs" />
-    <Compile Remove="Models\DotNetActionOnFile.cs" />
-    <Compile Remove="Models\DotNetCommand.cs" />
-    <Compile Remove="Models\LoginModel.cs" />
-    <Compile Remove="Models\UserModel.cs" />
-    <Compile Remove="Services\DotNetService.cs" />
-    <Compile Remove="Services\IDotNetService.cs" />
-    <Compile Remove="Services\IUserService.cs" />
-    <Compile Remove="Services\UserService.cs" />
-  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.1.5" />
@@ -32,21 +17,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Reference Include="ActionCommandDBServices">
-      <HintPath>..\_package\netcoreapp5.0\ActionCommandDBServices.dll</HintPath>
-    </Reference>
-    <Reference Include="CSSPModels">
-      <HintPath>..\..\dlls\_package\netcoreapp5.0\CSSPModels.dll</HintPath>
-    </Reference>
-    <Reference Include="CultureServices">
-      <HintPath>..\..\dlls\_package\netcoreapp5.0\CultureServices.dll</HintPath>
-    </Reference>
-    <Reference Include="GenerateCodeBaseServices">
-      <HintPath>..\_package\netcoreapp5.0\GenerateCodeBaseServices.dll</HintPath>
-    </Reference>
-    <Reference Include="UserServices">
-      <HintPath>..\..\dlls\_package\netcoreapp5.0\UserServices.dll</HintPath>
-    </Reference>
+    <ProjectReference Include="..\..\dlls\CSSPModels\CSSPModels.csproj" />
+    <ProjectReference Include="..\..\dlls\UserServices\UserServices.csproj" />
+    <ProjectReference Include="..\ActionCommandDBServices\ActionCommandDBServices.csproj" />
   </ItemGroup>
 
   <ItemGroup>
