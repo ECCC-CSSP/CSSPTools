@@ -7,7 +7,7 @@
 using CSSPServices;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace CSSPWebAPIs
+namespace CSSPWebLocalAPIs
 {
     public partial class Startup
     {

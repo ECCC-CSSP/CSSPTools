@@ -23,7 +23,7 @@ using UserServices.Models;
 using UserServices.Services;
 using ValidateAppSettingsServices.Services;
 
-namespace CSSPCodeGenWebAPI
+namespace CSSPWebAPIs
 {
     public partial class Startup
     {
