@@ -51,6 +51,11 @@ namespace CSSPWebServices.Services
         #endregion Constructors
 
         #region Functions public
+        public async Task<bool> CreateAllGzFiles()
+        {
+            return await DoCreateAllGzFiles();
+        }
+
         public async Task<ActionResult<WebRoot>> GetWebRoot()
         {
             return await DoGetWebRoot();

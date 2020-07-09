@@ -43,6 +43,8 @@ namespace CSSPWebServices.Services
         Task<ActionResult<WebPolSourceSite>> GetWebPolSourceSite(int TVItemID);
         Task<ActionResult<WebPolSourceGrouping>> GetWebPolSourceGrouping();
         Task<ActionResult<WebReportType>> GetWebReportType();
+
+        Task<bool> CreateAllGzFiles();
     }
 
 }

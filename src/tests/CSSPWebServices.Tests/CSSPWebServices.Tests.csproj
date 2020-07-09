@@ -13,11 +13,11 @@
   </PropertyGroup>
   
   <ItemGroup>
-    <None Remove="appsettings.json" />
+    <None Remove="appsettings_csspwebservicestest.json" />
   </ItemGroup>
   
   <ItemGroup>
-    <Content Include="appsettings.json">
+    <Content Include="appsettings_csspwebservicestest.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
