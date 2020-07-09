@@ -21,7 +21,6 @@ namespace CSSPWebServices.Services
 {
     public partial class WebService : ControllerBase, IWebService
     {
-        #region Functions public 
         private async Task<ActionResult<WebDrogueRun>> DoGetWebDrogueRun(int TVItemID)
         {
             var LoggedInContactInfo = await LoggedInService.GetLoggedInContactInfo();
@@ -54,10 +53,5 @@ namespace CSSPWebServices.Services
 
             return await Task.FromResult(Ok(webDrogueRun));
         }
-        #endregion Functions public
-
-        #region Functions private
-        #endregion Functions private
-
     }
 }

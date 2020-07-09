@@ -11,7 +11,7 @@ namespace WebAPIClassNameControllerTestGeneratedServices.Services
             sb.AppendLine(@"        {");
             sb.AppendLine(@"            Config = new ConfigurationBuilder()");
             sb.AppendLine(@"               .SetBasePath(Directory.GetParent(AppContext.BaseDirectory).FullName)");
-            sb.AppendLine(@"               .AddJsonFile(""appsettings.json"")");
+            sb.AppendLine(@"               .AddJsonFile(""appsettings_csspwebapistests.json"")");
             sb.AppendLine(@"               .AddUserSecrets(""f2c8c313-6393-4a24-8eff-c7218ab66ab5"")");
             sb.AppendLine(@"               .Build();");
             sb.AppendLine(@"");

@@ -13,7 +13,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Include="appsettings.json">
+    <Content Include="appsettings_csspsqliteservices.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>

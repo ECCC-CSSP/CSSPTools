@@ -26,30 +26,6 @@ namespace CSSPWebServices.Services
 {
     public partial class WebService : ControllerBase, IWebService
     {
-        public Stream Compress(Stream decompressed, CompressionLevel compressionLevel = CompressionLevel.Fastest)
-        {
-            var compressed = new MemoryStream();
-            using (var zip = new GZipStream(compressed, compressionLevel, true))
-            {
-                decompressed.CopyTo(zip);
-            }
-
-            compressed.Seek(0, SeekOrigin.Begin);
-            return compressed;
-        }
-
-        public Stream Decompress(Stream compressed)
-        {
-            var decompressed = new MemoryStream();
-            using (var zip = new GZipStream(compressed, CompressionMode.Decompress, true))
-            {
-                zip.CopyTo(decompressed);
-            }
-
-            decompressed.Seek(0, SeekOrigin.Begin);
-            return decompressed;
-        }
-        #region Functions public 
         private async Task DoStore<T>(T webJson, string fileName)
         {
             if (StoreLocal)
@@ -75,10 +51,5 @@ namespace CSSPWebServices.Services
                 await blobClient.UploadAsync(Compress(new MemoryStream(Encoding.UTF8.GetBytes(JsonSerializer.Serialize<T>(webJson)))), true);
             }
         }
-        #endregion Functions public
-
-        #region Functions private
-        #endregion Functions private
-
     }
 }

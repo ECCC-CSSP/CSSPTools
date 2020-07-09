@@ -21,7 +21,6 @@ namespace CSSPWebServices.Services
 {
     public partial class WebService : ControllerBase, IWebService
     {
-        #region Functions public 
         private async Task<ActionResult<WebClimateDataValue>> DoGetWebClimateDataValue(int TVItemID)
         {
             var LoggedInContactInfo = await LoggedInService.GetLoggedInContactInfo();
@@ -53,10 +52,5 @@ namespace CSSPWebServices.Services
 
             return await Task.FromResult(Ok(webClimateDataValue));
         }
-        #endregion Functions public
-
-        #region Functions private
-        #endregion Functions private
-
     }
 }

@@ -21,7 +21,6 @@ namespace CSSPWebServices.Services
 {
     public partial class WebService : ControllerBase, IWebService
     {
-        #region Functions public 
         private async Task<ActionResult<WebHydrometricSite>> DoGetWebHydrometricSite(int TVItemID)
         {
             var LoggedInContactInfo = await LoggedInService.GetLoggedInContactInfo();
@@ -59,10 +58,5 @@ namespace CSSPWebServices.Services
 
             return await Task.FromResult(Ok(webHydrometricSite));
         }
-        #endregion Functions public
-
-        #region Functions private
-        #endregion Functions private
-
     }
 }

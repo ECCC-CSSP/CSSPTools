@@ -22,10 +22,11 @@ namespace CSSPCodeGenWebAPI
                 {
                     webBuilder.ConfigureAppConfiguration(config =>
                     {
-                        //config.AddJsonFile("appsettings.json");
+                        config.AddJsonFile("appsettings_csspwebapis.json");
                         config.AddUserSecrets("dd0c74e5-2064-419f-9779-c12942e685ee");
-                    }).UseStartup<Startup>()
-                    .UseUrls("http://localhost:2345");
+                    });
+                    webBuilder.UseStartup<Startup>();
+                    webBuilder.UseUrls("http://localhost:4444", "https://localhost:4445");
                 });
 
     }

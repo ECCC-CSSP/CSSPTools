@@ -29,9 +29,9 @@ namespace SQLiteGeneratedServices.Services
             sb.AppendLine(@"using System.Collections.Generic;");
             sb.AppendLine(@"using System.Threading.Tasks;");
             sb.AppendLine(@"");
-            sb.AppendLine(@"namespace CSSPSQLiteServices");
+            sb.AppendLine(@"namespace CSSPSQLiteServices.Services");
             sb.AppendLine(@"{");
-            sb.AppendLine(@"    public partial class SQLiteCreateCSSPDBLocal");
+            sb.AppendLine(@"    public partial class CSSPSQLiteService : ICSSPSQLiteService");
             sb.AppendLine(@"    {");
             sb.AppendLine(@"        private async Task<bool> FillListTableToDelete(List<string> ListTableToDelete)");
             sb.AppendLine(@"        {");

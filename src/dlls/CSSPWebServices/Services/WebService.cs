@@ -46,21 +46,7 @@ namespace CSSPWebServices.Services
             this.enums = enums;
             this.db = db;
 
-            string StoreLocalStr = Configuration.GetValue<string>("StoreLocal");
-            StoreLocal = bool.Parse(StoreLocalStr);
-
-            string StoreInAzureStr = Configuration.GetValue<string>("StoreInAzure");
-            StoreInAzure = bool.Parse(StoreInAzureStr);
-
-            AzureCSSPStorageConnectionString = Configuration.GetValue<string>("AzureCSSPStorageConnectionString");
-            AzureCSSPStorageCustomerProvidedKey = Configuration.GetValue<string>("AzureCSSPStorageCustomerProvidedKey");
-            AzureCSSPStorageCSSPFiles = Configuration.GetValue<string>("AzureCSSPStorageCSSPFiles");
-            AzureCSSPStorageCSSPJSON = Configuration.GetValue<string>("AzureCSSPStorageCSSPJSON");
-
-            if (StoreLocal)
-            {
-                CheckAndCreateStorageDirectory(Configuration);
-            }
+            Setup();
         }
         #endregion Constructors
 

@@ -20,7 +20,13 @@ namespace CSSPWebLocal
             Host.CreateDefaultBuilder(args)
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
+                    webBuilder.ConfigureAppConfiguration(config =>
+                    {
+                        config.AddJsonFile("appsettings_csspwebangserve.json");
+                        config.AddUserSecrets("bd539f8b-d747-4f2e-80f6-6e284971fa88");
+                    });
                     webBuilder.UseStartup<Startup>();
+                    webBuilder.UseUrls("http://localhost:4442", "https://localhost:4443");
                 });
     }
 }
