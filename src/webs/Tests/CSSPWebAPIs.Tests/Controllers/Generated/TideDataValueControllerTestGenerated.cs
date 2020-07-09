@@ -72,61 +72,58 @@ namespace CSSPWebAPIs.Tests.Controllers
         {
             Assert.True(await Setup(culture));
 
-            using (TransactionScope ts = new TransactionScope())
-            {
-                HttpClient httpClient = new HttpClient();
-                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", userModel.Token);
+            HttpClient httpClient = new HttpClient();
+            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", userModel.Token);
 
-                // testing Get
-                string url = "http://localhost:4444/api/" + culture + "/TideDataValue";
-                var response = await httpClient.GetAsync(url);
-                Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
-                string responseContent = await response.Content.ReadAsStringAsync();
-                Assert.NotEmpty(responseContent);
-                List<TideDataValue> tideDataValueList = JsonSerializer.Deserialize<List<TideDataValue>>(responseContent);
-                Assert.True(tideDataValueList.Count > 0);
+            // testing Get
+            string url = "http://localhost:4444/api/" + culture + "/TideDataValue";
+            var response = await httpClient.GetAsync(url);
+            Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
+            string responseContent = await response.Content.ReadAsStringAsync();
+            Assert.NotEmpty(responseContent);
+            List<TideDataValue> tideDataValueList = JsonSerializer.Deserialize<List<TideDataValue>>(responseContent);
+            Assert.True(tideDataValueList.Count > 0);
 
-                // testing Get(TideDataValueID)
-                string urlID = url + "/" + tideDataValueList[0].TideDataValueID;
-                response = await httpClient.GetAsync(urlID);
-                Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
-                responseContent = await response.Content.ReadAsStringAsync();
-                Assert.NotEmpty(responseContent);
-                TideDataValue tideDataValue = JsonSerializer.Deserialize<TideDataValue>(responseContent);
-                Assert.Equal(tideDataValueList[0].TideDataValueID, tideDataValue.TideDataValueID);
+            // testing Get(TideDataValueID)
+            string urlID = url + "/" + tideDataValueList[0].TideDataValueID;
+            response = await httpClient.GetAsync(urlID);
+            Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
+            responseContent = await response.Content.ReadAsStringAsync();
+            Assert.NotEmpty(responseContent);
+            TideDataValue tideDataValue = JsonSerializer.Deserialize<TideDataValue>(responseContent);
+            Assert.Equal(tideDataValueList[0].TideDataValueID, tideDataValue.TideDataValueID);
 
                 // testing Post(TideDataValue)
                 tideDataValue.TideDataValueID = 0;
-                string content = JsonSerializer.Serialize<TideDataValue>(tideDataValue);
-                HttpContent httpContent = new StringContent(content);
-                httpContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
-                response = await httpClient.PostAsync(url, httpContent);
-                Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
-                responseContent = await response.Content.ReadAsStringAsync();
-                Assert.NotEmpty(responseContent);
-                tideDataValue = JsonSerializer.Deserialize<TideDataValue>(responseContent);
-                Assert.NotNull(tideDataValue);
+            string content = JsonSerializer.Serialize<TideDataValue>(tideDataValue);
+            HttpContent httpContent = new StringContent(content);
+            httpContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+            response = await httpClient.PostAsync(url, httpContent);
+            Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
+            responseContent = await response.Content.ReadAsStringAsync();
+            Assert.NotEmpty(responseContent);
+            tideDataValue = JsonSerializer.Deserialize<TideDataValue>(responseContent);
+            Assert.NotNull(tideDataValue);
 
-                // testing Put(TideDataValue)
-                content = JsonSerializer.Serialize<TideDataValue>(tideDataValue);
-                httpContent = new StringContent(content);
-                httpContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
-                response = await httpClient.PutAsync(url, httpContent);
-                Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
-                responseContent = await response.Content.ReadAsStringAsync();
-                Assert.NotEmpty(responseContent);
-                tideDataValue = JsonSerializer.Deserialize<TideDataValue>(responseContent);
-                Assert.NotNull(tideDataValue);
+            // testing Put(TideDataValue)
+            content = JsonSerializer.Serialize<TideDataValue>(tideDataValue);
+            httpContent = new StringContent(content);
+            httpContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+            response = await httpClient.PutAsync(url, httpContent);
+            Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
+            responseContent = await response.Content.ReadAsStringAsync();
+            Assert.NotEmpty(responseContent);
+            tideDataValue = JsonSerializer.Deserialize<TideDataValue>(responseContent);
+            Assert.NotNull(tideDataValue);
 
-                // testing Delete(TideDataValueID)
-                urlID = url + "/" + tideDataValue.TideDataValueID;
-                response = await httpClient.DeleteAsync(urlID);
-                Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
-                responseContent = await response.Content.ReadAsStringAsync();
-                Assert.NotEmpty(responseContent);
-                bool retBool = JsonSerializer.Deserialize<bool>(responseContent);
-                Assert.True(retBool);
-            }
+            // testing Delete(TideDataValueID)
+            urlID = url + "/" + tideDataValue.TideDataValueID;
+            response = await httpClient.DeleteAsync(urlID);
+            Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
+            responseContent = await response.Content.ReadAsStringAsync();
+            Assert.NotEmpty(responseContent);
+            bool retBool = JsonSerializer.Deserialize<bool>(responseContent);
+            Assert.True(retBool);
         }
         #endregion Functions public
 

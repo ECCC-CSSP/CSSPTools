@@ -72,61 +72,58 @@ namespace CSSPWebAPIs.Tests.Controllers
         {
             Assert.True(await Setup(culture));
 
-            using (TransactionScope ts = new TransactionScope())
-            {
-                HttpClient httpClient = new HttpClient();
-                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", userModel.Token);
+            HttpClient httpClient = new HttpClient();
+            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", userModel.Token);
 
-                // testing Get
-                string url = "http://localhost:4444/api/" + culture + "/Log";
-                var response = await httpClient.GetAsync(url);
-                Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
-                string responseContent = await response.Content.ReadAsStringAsync();
-                Assert.NotEmpty(responseContent);
-                List<Log> logList = JsonSerializer.Deserialize<List<Log>>(responseContent);
-                Assert.True(logList.Count > 0);
+            // testing Get
+            string url = "http://localhost:4444/api/" + culture + "/Log";
+            var response = await httpClient.GetAsync(url);
+            Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
+            string responseContent = await response.Content.ReadAsStringAsync();
+            Assert.NotEmpty(responseContent);
+            List<Log> logList = JsonSerializer.Deserialize<List<Log>>(responseContent);
+            Assert.True(logList.Count > 0);
 
-                // testing Get(LogID)
-                string urlID = url + "/" + logList[0].LogID;
-                response = await httpClient.GetAsync(urlID);
-                Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
-                responseContent = await response.Content.ReadAsStringAsync();
-                Assert.NotEmpty(responseContent);
-                Log log = JsonSerializer.Deserialize<Log>(responseContent);
-                Assert.Equal(logList[0].LogID, log.LogID);
+            // testing Get(LogID)
+            string urlID = url + "/" + logList[0].LogID;
+            response = await httpClient.GetAsync(urlID);
+            Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
+            responseContent = await response.Content.ReadAsStringAsync();
+            Assert.NotEmpty(responseContent);
+            Log log = JsonSerializer.Deserialize<Log>(responseContent);
+            Assert.Equal(logList[0].LogID, log.LogID);
 
                 // testing Post(Log)
                 log.LogID = 0;
-                string content = JsonSerializer.Serialize<Log>(log);
-                HttpContent httpContent = new StringContent(content);
-                httpContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
-                response = await httpClient.PostAsync(url, httpContent);
-                Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
-                responseContent = await response.Content.ReadAsStringAsync();
-                Assert.NotEmpty(responseContent);
-                log = JsonSerializer.Deserialize<Log>(responseContent);
-                Assert.NotNull(log);
+            string content = JsonSerializer.Serialize<Log>(log);
+            HttpContent httpContent = new StringContent(content);
+            httpContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+            response = await httpClient.PostAsync(url, httpContent);
+            Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
+            responseContent = await response.Content.ReadAsStringAsync();
+            Assert.NotEmpty(responseContent);
+            log = JsonSerializer.Deserialize<Log>(responseContent);
+            Assert.NotNull(log);
 
-                // testing Put(Log)
-                content = JsonSerializer.Serialize<Log>(log);
-                httpContent = new StringContent(content);
-                httpContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
-                response = await httpClient.PutAsync(url, httpContent);
-                Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
-                responseContent = await response.Content.ReadAsStringAsync();
-                Assert.NotEmpty(responseContent);
-                log = JsonSerializer.Deserialize<Log>(responseContent);
-                Assert.NotNull(log);
+            // testing Put(Log)
+            content = JsonSerializer.Serialize<Log>(log);
+            httpContent = new StringContent(content);
+            httpContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+            response = await httpClient.PutAsync(url, httpContent);
+            Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
+            responseContent = await response.Content.ReadAsStringAsync();
+            Assert.NotEmpty(responseContent);
+            log = JsonSerializer.Deserialize<Log>(responseContent);
+            Assert.NotNull(log);
 
-                // testing Delete(LogID)
-                urlID = url + "/" + log.LogID;
-                response = await httpClient.DeleteAsync(urlID);
-                Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
-                responseContent = await response.Content.ReadAsStringAsync();
-                Assert.NotEmpty(responseContent);
-                bool retBool = JsonSerializer.Deserialize<bool>(responseContent);
-                Assert.True(retBool);
-            }
+            // testing Delete(LogID)
+            urlID = url + "/" + log.LogID;
+            response = await httpClient.DeleteAsync(urlID);
+            Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
+            responseContent = await response.Content.ReadAsStringAsync();
+            Assert.NotEmpty(responseContent);
+            bool retBool = JsonSerializer.Deserialize<bool>(responseContent);
+            Assert.True(retBool);
         }
         #endregion Functions public
 

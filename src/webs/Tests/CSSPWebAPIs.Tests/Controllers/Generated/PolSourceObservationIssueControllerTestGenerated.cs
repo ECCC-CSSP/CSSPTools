@@ -72,61 +72,58 @@ namespace CSSPWebAPIs.Tests.Controllers
         {
             Assert.True(await Setup(culture));
 
-            using (TransactionScope ts = new TransactionScope())
-            {
-                HttpClient httpClient = new HttpClient();
-                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", userModel.Token);
+            HttpClient httpClient = new HttpClient();
+            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", userModel.Token);
 
-                // testing Get
-                string url = "http://localhost:4444/api/" + culture + "/PolSourceObservationIssue";
-                var response = await httpClient.GetAsync(url);
-                Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
-                string responseContent = await response.Content.ReadAsStringAsync();
-                Assert.NotEmpty(responseContent);
-                List<PolSourceObservationIssue> polSourceObservationIssueList = JsonSerializer.Deserialize<List<PolSourceObservationIssue>>(responseContent);
-                Assert.True(polSourceObservationIssueList.Count > 0);
+            // testing Get
+            string url = "http://localhost:4444/api/" + culture + "/PolSourceObservationIssue";
+            var response = await httpClient.GetAsync(url);
+            Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
+            string responseContent = await response.Content.ReadAsStringAsync();
+            Assert.NotEmpty(responseContent);
+            List<PolSourceObservationIssue> polSourceObservationIssueList = JsonSerializer.Deserialize<List<PolSourceObservationIssue>>(responseContent);
+            Assert.True(polSourceObservationIssueList.Count > 0);
 
-                // testing Get(PolSourceObservationIssueID)
-                string urlID = url + "/" + polSourceObservationIssueList[0].PolSourceObservationIssueID;
-                response = await httpClient.GetAsync(urlID);
-                Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
-                responseContent = await response.Content.ReadAsStringAsync();
-                Assert.NotEmpty(responseContent);
-                PolSourceObservationIssue polSourceObservationIssue = JsonSerializer.Deserialize<PolSourceObservationIssue>(responseContent);
-                Assert.Equal(polSourceObservationIssueList[0].PolSourceObservationIssueID, polSourceObservationIssue.PolSourceObservationIssueID);
+            // testing Get(PolSourceObservationIssueID)
+            string urlID = url + "/" + polSourceObservationIssueList[0].PolSourceObservationIssueID;
+            response = await httpClient.GetAsync(urlID);
+            Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
+            responseContent = await response.Content.ReadAsStringAsync();
+            Assert.NotEmpty(responseContent);
+            PolSourceObservationIssue polSourceObservationIssue = JsonSerializer.Deserialize<PolSourceObservationIssue>(responseContent);
+            Assert.Equal(polSourceObservationIssueList[0].PolSourceObservationIssueID, polSourceObservationIssue.PolSourceObservationIssueID);
 
                 // testing Post(PolSourceObservationIssue)
                 polSourceObservationIssue.PolSourceObservationIssueID = 0;
-                string content = JsonSerializer.Serialize<PolSourceObservationIssue>(polSourceObservationIssue);
-                HttpContent httpContent = new StringContent(content);
-                httpContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
-                response = await httpClient.PostAsync(url, httpContent);
-                Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
-                responseContent = await response.Content.ReadAsStringAsync();
-                Assert.NotEmpty(responseContent);
-                polSourceObservationIssue = JsonSerializer.Deserialize<PolSourceObservationIssue>(responseContent);
-                Assert.NotNull(polSourceObservationIssue);
+            string content = JsonSerializer.Serialize<PolSourceObservationIssue>(polSourceObservationIssue);
+            HttpContent httpContent = new StringContent(content);
+            httpContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+            response = await httpClient.PostAsync(url, httpContent);
+            Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
+            responseContent = await response.Content.ReadAsStringAsync();
+            Assert.NotEmpty(responseContent);
+            polSourceObservationIssue = JsonSerializer.Deserialize<PolSourceObservationIssue>(responseContent);
+            Assert.NotNull(polSourceObservationIssue);
 
-                // testing Put(PolSourceObservationIssue)
-                content = JsonSerializer.Serialize<PolSourceObservationIssue>(polSourceObservationIssue);
-                httpContent = new StringContent(content);
-                httpContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
-                response = await httpClient.PutAsync(url, httpContent);
-                Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
-                responseContent = await response.Content.ReadAsStringAsync();
-                Assert.NotEmpty(responseContent);
-                polSourceObservationIssue = JsonSerializer.Deserialize<PolSourceObservationIssue>(responseContent);
-                Assert.NotNull(polSourceObservationIssue);
+            // testing Put(PolSourceObservationIssue)
+            content = JsonSerializer.Serialize<PolSourceObservationIssue>(polSourceObservationIssue);
+            httpContent = new StringContent(content);
+            httpContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+            response = await httpClient.PutAsync(url, httpContent);
+            Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
+            responseContent = await response.Content.ReadAsStringAsync();
+            Assert.NotEmpty(responseContent);
+            polSourceObservationIssue = JsonSerializer.Deserialize<PolSourceObservationIssue>(responseContent);
+            Assert.NotNull(polSourceObservationIssue);
 
-                // testing Delete(PolSourceObservationIssueID)
-                urlID = url + "/" + polSourceObservationIssue.PolSourceObservationIssueID;
-                response = await httpClient.DeleteAsync(urlID);
-                Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
-                responseContent = await response.Content.ReadAsStringAsync();
-                Assert.NotEmpty(responseContent);
-                bool retBool = JsonSerializer.Deserialize<bool>(responseContent);
-                Assert.True(retBool);
-            }
+            // testing Delete(PolSourceObservationIssueID)
+            urlID = url + "/" + polSourceObservationIssue.PolSourceObservationIssueID;
+            response = await httpClient.DeleteAsync(urlID);
+            Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
+            responseContent = await response.Content.ReadAsStringAsync();
+            Assert.NotEmpty(responseContent);
+            bool retBool = JsonSerializer.Deserialize<bool>(responseContent);
+            Assert.True(retBool);
         }
         #endregion Functions public
 

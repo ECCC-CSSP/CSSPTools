@@ -72,61 +72,58 @@ namespace CSSPWebAPIs.Tests.Controllers
         {
             Assert.True(await Setup(culture));
 
-            using (TransactionScope ts = new TransactionScope())
-            {
-                HttpClient httpClient = new HttpClient();
-                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", userModel.Token);
+            HttpClient httpClient = new HttpClient();
+            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", userModel.Token);
 
-                // testing Get
-                string url = "http://localhost:4444/api/" + culture + "/MikeBoundaryCondition";
-                var response = await httpClient.GetAsync(url);
-                Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
-                string responseContent = await response.Content.ReadAsStringAsync();
-                Assert.NotEmpty(responseContent);
-                List<MikeBoundaryCondition> mikeBoundaryConditionList = JsonSerializer.Deserialize<List<MikeBoundaryCondition>>(responseContent);
-                Assert.True(mikeBoundaryConditionList.Count > 0);
+            // testing Get
+            string url = "http://localhost:4444/api/" + culture + "/MikeBoundaryCondition";
+            var response = await httpClient.GetAsync(url);
+            Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
+            string responseContent = await response.Content.ReadAsStringAsync();
+            Assert.NotEmpty(responseContent);
+            List<MikeBoundaryCondition> mikeBoundaryConditionList = JsonSerializer.Deserialize<List<MikeBoundaryCondition>>(responseContent);
+            Assert.True(mikeBoundaryConditionList.Count > 0);
 
-                // testing Get(MikeBoundaryConditionID)
-                string urlID = url + "/" + mikeBoundaryConditionList[0].MikeBoundaryConditionID;
-                response = await httpClient.GetAsync(urlID);
-                Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
-                responseContent = await response.Content.ReadAsStringAsync();
-                Assert.NotEmpty(responseContent);
-                MikeBoundaryCondition mikeBoundaryCondition = JsonSerializer.Deserialize<MikeBoundaryCondition>(responseContent);
-                Assert.Equal(mikeBoundaryConditionList[0].MikeBoundaryConditionID, mikeBoundaryCondition.MikeBoundaryConditionID);
+            // testing Get(MikeBoundaryConditionID)
+            string urlID = url + "/" + mikeBoundaryConditionList[0].MikeBoundaryConditionID;
+            response = await httpClient.GetAsync(urlID);
+            Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
+            responseContent = await response.Content.ReadAsStringAsync();
+            Assert.NotEmpty(responseContent);
+            MikeBoundaryCondition mikeBoundaryCondition = JsonSerializer.Deserialize<MikeBoundaryCondition>(responseContent);
+            Assert.Equal(mikeBoundaryConditionList[0].MikeBoundaryConditionID, mikeBoundaryCondition.MikeBoundaryConditionID);
 
                 // testing Post(MikeBoundaryCondition)
                 mikeBoundaryCondition.MikeBoundaryConditionID = 0;
-                string content = JsonSerializer.Serialize<MikeBoundaryCondition>(mikeBoundaryCondition);
-                HttpContent httpContent = new StringContent(content);
-                httpContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
-                response = await httpClient.PostAsync(url, httpContent);
-                Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
-                responseContent = await response.Content.ReadAsStringAsync();
-                Assert.NotEmpty(responseContent);
-                mikeBoundaryCondition = JsonSerializer.Deserialize<MikeBoundaryCondition>(responseContent);
-                Assert.NotNull(mikeBoundaryCondition);
+            string content = JsonSerializer.Serialize<MikeBoundaryCondition>(mikeBoundaryCondition);
+            HttpContent httpContent = new StringContent(content);
+            httpContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+            response = await httpClient.PostAsync(url, httpContent);
+            Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
+            responseContent = await response.Content.ReadAsStringAsync();
+            Assert.NotEmpty(responseContent);
+            mikeBoundaryCondition = JsonSerializer.Deserialize<MikeBoundaryCondition>(responseContent);
+            Assert.NotNull(mikeBoundaryCondition);
 
-                // testing Put(MikeBoundaryCondition)
-                content = JsonSerializer.Serialize<MikeBoundaryCondition>(mikeBoundaryCondition);
-                httpContent = new StringContent(content);
-                httpContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
-                response = await httpClient.PutAsync(url, httpContent);
-                Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
-                responseContent = await response.Content.ReadAsStringAsync();
-                Assert.NotEmpty(responseContent);
-                mikeBoundaryCondition = JsonSerializer.Deserialize<MikeBoundaryCondition>(responseContent);
-                Assert.NotNull(mikeBoundaryCondition);
+            // testing Put(MikeBoundaryCondition)
+            content = JsonSerializer.Serialize<MikeBoundaryCondition>(mikeBoundaryCondition);
+            httpContent = new StringContent(content);
+            httpContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+            response = await httpClient.PutAsync(url, httpContent);
+            Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
+            responseContent = await response.Content.ReadAsStringAsync();
+            Assert.NotEmpty(responseContent);
+            mikeBoundaryCondition = JsonSerializer.Deserialize<MikeBoundaryCondition>(responseContent);
+            Assert.NotNull(mikeBoundaryCondition);
 
-                // testing Delete(MikeBoundaryConditionID)
-                urlID = url + "/" + mikeBoundaryCondition.MikeBoundaryConditionID;
-                response = await httpClient.DeleteAsync(urlID);
-                Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
-                responseContent = await response.Content.ReadAsStringAsync();
-                Assert.NotEmpty(responseContent);
-                bool retBool = JsonSerializer.Deserialize<bool>(responseContent);
-                Assert.True(retBool);
-            }
+            // testing Delete(MikeBoundaryConditionID)
+            urlID = url + "/" + mikeBoundaryCondition.MikeBoundaryConditionID;
+            response = await httpClient.DeleteAsync(urlID);
+            Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
+            responseContent = await response.Content.ReadAsStringAsync();
+            Assert.NotEmpty(responseContent);
+            bool retBool = JsonSerializer.Deserialize<bool>(responseContent);
+            Assert.True(retBool);
         }
         #endregion Functions public
 

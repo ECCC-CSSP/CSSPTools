@@ -473,10 +473,8 @@ namespace CSSPWebServices.Services
             DateTime EndDate = new DateTime(Year + 9, 12, 31);
 
             return await (from c in db.TVItems
-                          from s in db.MWQMSites
                           from sa in db.MWQMSamples
-                          where c.TVItemID == s.MWQMSiteTVItemID
-                          && c.TVItemID == sa.MWQMSiteTVItemID
+                          where c.TVItemID == sa.MWQMSiteTVItemID
                           && c.TVPath.Contains(tvItemSubsector.TVPath + "p")
                           && c.ParentID == tvItemSubsector.TVItemID
                           && c.TVType == TVTypeEnum.MWQMSite
@@ -490,11 +488,9 @@ namespace CSSPWebServices.Services
             DateTime EndDate = new DateTime(Year + 9, 12, 31);
 
             return await (from c in db.TVItems
-                          from s in db.MWQMSites
                           from sa in db.MWQMSamples
                           from sal in db.MWQMSampleLanguages
-                          where c.TVItemID == s.MWQMSiteTVItemID
-                          && c.TVItemID == sa.MWQMSiteTVItemID
+                          where c.TVItemID == sa.MWQMSiteTVItemID
                           && sa.MWQMSampleID == sal.MWQMSampleID
                           && c.TVPath.Contains(tvItemSubsector.TVPath + "p")
                           && c.ParentID == tvItemSubsector.TVItemID

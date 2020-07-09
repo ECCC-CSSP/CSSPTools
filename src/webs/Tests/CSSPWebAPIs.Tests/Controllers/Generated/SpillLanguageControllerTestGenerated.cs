@@ -72,61 +72,58 @@ namespace CSSPWebAPIs.Tests.Controllers
         {
             Assert.True(await Setup(culture));
 
-            using (TransactionScope ts = new TransactionScope())
-            {
-                HttpClient httpClient = new HttpClient();
-                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", userModel.Token);
+            HttpClient httpClient = new HttpClient();
+            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", userModel.Token);
 
-                // testing Get
-                string url = "http://localhost:4444/api/" + culture + "/SpillLanguage";
-                var response = await httpClient.GetAsync(url);
-                Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
-                string responseContent = await response.Content.ReadAsStringAsync();
-                Assert.NotEmpty(responseContent);
-                List<SpillLanguage> spillLanguageList = JsonSerializer.Deserialize<List<SpillLanguage>>(responseContent);
-                Assert.True(spillLanguageList.Count > 0);
+            // testing Get
+            string url = "http://localhost:4444/api/" + culture + "/SpillLanguage";
+            var response = await httpClient.GetAsync(url);
+            Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
+            string responseContent = await response.Content.ReadAsStringAsync();
+            Assert.NotEmpty(responseContent);
+            List<SpillLanguage> spillLanguageList = JsonSerializer.Deserialize<List<SpillLanguage>>(responseContent);
+            Assert.True(spillLanguageList.Count > 0);
 
-                // testing Get(SpillLanguageID)
-                string urlID = url + "/" + spillLanguageList[0].SpillLanguageID;
-                response = await httpClient.GetAsync(urlID);
-                Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
-                responseContent = await response.Content.ReadAsStringAsync();
-                Assert.NotEmpty(responseContent);
-                SpillLanguage spillLanguage = JsonSerializer.Deserialize<SpillLanguage>(responseContent);
-                Assert.Equal(spillLanguageList[0].SpillLanguageID, spillLanguage.SpillLanguageID);
+            // testing Get(SpillLanguageID)
+            string urlID = url + "/" + spillLanguageList[0].SpillLanguageID;
+            response = await httpClient.GetAsync(urlID);
+            Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
+            responseContent = await response.Content.ReadAsStringAsync();
+            Assert.NotEmpty(responseContent);
+            SpillLanguage spillLanguage = JsonSerializer.Deserialize<SpillLanguage>(responseContent);
+            Assert.Equal(spillLanguageList[0].SpillLanguageID, spillLanguage.SpillLanguageID);
 
                 // testing Post(SpillLanguage)
                 spillLanguage.SpillLanguageID = 0;
-                string content = JsonSerializer.Serialize<SpillLanguage>(spillLanguage);
-                HttpContent httpContent = new StringContent(content);
-                httpContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
-                response = await httpClient.PostAsync(url, httpContent);
-                Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
-                responseContent = await response.Content.ReadAsStringAsync();
-                Assert.NotEmpty(responseContent);
-                spillLanguage = JsonSerializer.Deserialize<SpillLanguage>(responseContent);
-                Assert.NotNull(spillLanguage);
+            string content = JsonSerializer.Serialize<SpillLanguage>(spillLanguage);
+            HttpContent httpContent = new StringContent(content);
+            httpContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+            response = await httpClient.PostAsync(url, httpContent);
+            Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
+            responseContent = await response.Content.ReadAsStringAsync();
+            Assert.NotEmpty(responseContent);
+            spillLanguage = JsonSerializer.Deserialize<SpillLanguage>(responseContent);
+            Assert.NotNull(spillLanguage);
 
-                // testing Put(SpillLanguage)
-                content = JsonSerializer.Serialize<SpillLanguage>(spillLanguage);
-                httpContent = new StringContent(content);
-                httpContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
-                response = await httpClient.PutAsync(url, httpContent);
-                Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
-                responseContent = await response.Content.ReadAsStringAsync();
-                Assert.NotEmpty(responseContent);
-                spillLanguage = JsonSerializer.Deserialize<SpillLanguage>(responseContent);
-                Assert.NotNull(spillLanguage);
+            // testing Put(SpillLanguage)
+            content = JsonSerializer.Serialize<SpillLanguage>(spillLanguage);
+            httpContent = new StringContent(content);
+            httpContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+            response = await httpClient.PutAsync(url, httpContent);
+            Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
+            responseContent = await response.Content.ReadAsStringAsync();
+            Assert.NotEmpty(responseContent);
+            spillLanguage = JsonSerializer.Deserialize<SpillLanguage>(responseContent);
+            Assert.NotNull(spillLanguage);
 
-                // testing Delete(SpillLanguageID)
-                urlID = url + "/" + spillLanguage.SpillLanguageID;
-                response = await httpClient.DeleteAsync(urlID);
-                Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
-                responseContent = await response.Content.ReadAsStringAsync();
-                Assert.NotEmpty(responseContent);
-                bool retBool = JsonSerializer.Deserialize<bool>(responseContent);
-                Assert.True(retBool);
-            }
+            // testing Delete(SpillLanguageID)
+            urlID = url + "/" + spillLanguage.SpillLanguageID;
+            response = await httpClient.DeleteAsync(urlID);
+            Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
+            responseContent = await response.Content.ReadAsStringAsync();
+            Assert.NotEmpty(responseContent);
+            bool retBool = JsonSerializer.Deserialize<bool>(responseContent);
+            Assert.True(retBool);
         }
         #endregion Functions public
 

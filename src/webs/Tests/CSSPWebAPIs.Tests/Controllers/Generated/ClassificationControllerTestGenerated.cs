@@ -72,61 +72,58 @@ namespace CSSPWebAPIs.Tests.Controllers
         {
             Assert.True(await Setup(culture));
 
-            using (TransactionScope ts = new TransactionScope())
-            {
-                HttpClient httpClient = new HttpClient();
-                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", userModel.Token);
+            HttpClient httpClient = new HttpClient();
+            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", userModel.Token);
 
-                // testing Get
-                string url = "http://localhost:4444/api/" + culture + "/Classification";
-                var response = await httpClient.GetAsync(url);
-                Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
-                string responseContent = await response.Content.ReadAsStringAsync();
-                Assert.NotEmpty(responseContent);
-                List<Classification> classificationList = JsonSerializer.Deserialize<List<Classification>>(responseContent);
-                Assert.True(classificationList.Count > 0);
+            // testing Get
+            string url = "http://localhost:4444/api/" + culture + "/Classification";
+            var response = await httpClient.GetAsync(url);
+            Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
+            string responseContent = await response.Content.ReadAsStringAsync();
+            Assert.NotEmpty(responseContent);
+            List<Classification> classificationList = JsonSerializer.Deserialize<List<Classification>>(responseContent);
+            Assert.True(classificationList.Count > 0);
 
-                // testing Get(ClassificationID)
-                string urlID = url + "/" + classificationList[0].ClassificationID;
-                response = await httpClient.GetAsync(urlID);
-                Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
-                responseContent = await response.Content.ReadAsStringAsync();
-                Assert.NotEmpty(responseContent);
-                Classification classification = JsonSerializer.Deserialize<Classification>(responseContent);
-                Assert.Equal(classificationList[0].ClassificationID, classification.ClassificationID);
+            // testing Get(ClassificationID)
+            string urlID = url + "/" + classificationList[0].ClassificationID;
+            response = await httpClient.GetAsync(urlID);
+            Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
+            responseContent = await response.Content.ReadAsStringAsync();
+            Assert.NotEmpty(responseContent);
+            Classification classification = JsonSerializer.Deserialize<Classification>(responseContent);
+            Assert.Equal(classificationList[0].ClassificationID, classification.ClassificationID);
 
                 // testing Post(Classification)
                 classification.ClassificationID = 0;
-                string content = JsonSerializer.Serialize<Classification>(classification);
-                HttpContent httpContent = new StringContent(content);
-                httpContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
-                response = await httpClient.PostAsync(url, httpContent);
-                Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
-                responseContent = await response.Content.ReadAsStringAsync();
-                Assert.NotEmpty(responseContent);
-                classification = JsonSerializer.Deserialize<Classification>(responseContent);
-                Assert.NotNull(classification);
+            string content = JsonSerializer.Serialize<Classification>(classification);
+            HttpContent httpContent = new StringContent(content);
+            httpContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+            response = await httpClient.PostAsync(url, httpContent);
+            Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
+            responseContent = await response.Content.ReadAsStringAsync();
+            Assert.NotEmpty(responseContent);
+            classification = JsonSerializer.Deserialize<Classification>(responseContent);
+            Assert.NotNull(classification);
 
-                // testing Put(Classification)
-                content = JsonSerializer.Serialize<Classification>(classification);
-                httpContent = new StringContent(content);
-                httpContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
-                response = await httpClient.PutAsync(url, httpContent);
-                Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
-                responseContent = await response.Content.ReadAsStringAsync();
-                Assert.NotEmpty(responseContent);
-                classification = JsonSerializer.Deserialize<Classification>(responseContent);
-                Assert.NotNull(classification);
+            // testing Put(Classification)
+            content = JsonSerializer.Serialize<Classification>(classification);
+            httpContent = new StringContent(content);
+            httpContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+            response = await httpClient.PutAsync(url, httpContent);
+            Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
+            responseContent = await response.Content.ReadAsStringAsync();
+            Assert.NotEmpty(responseContent);
+            classification = JsonSerializer.Deserialize<Classification>(responseContent);
+            Assert.NotNull(classification);
 
-                // testing Delete(ClassificationID)
-                urlID = url + "/" + classification.ClassificationID;
-                response = await httpClient.DeleteAsync(urlID);
-                Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
-                responseContent = await response.Content.ReadAsStringAsync();
-                Assert.NotEmpty(responseContent);
-                bool retBool = JsonSerializer.Deserialize<bool>(responseContent);
-                Assert.True(retBool);
-            }
+            // testing Delete(ClassificationID)
+            urlID = url + "/" + classification.ClassificationID;
+            response = await httpClient.DeleteAsync(urlID);
+            Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
+            responseContent = await response.Content.ReadAsStringAsync();
+            Assert.NotEmpty(responseContent);
+            bool retBool = JsonSerializer.Deserialize<bool>(responseContent);
+            Assert.True(retBool);
         }
         #endregion Functions public
 

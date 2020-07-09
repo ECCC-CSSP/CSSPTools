@@ -42,8 +42,14 @@ namespace CSSPWebServices.Services
             try
             {
                 webHydrometricSite.HydrometricSiteList = await GetHydrometricSiteListUnderProvince(tvItem);
+                webHydrometricSite.TVItemList = await GetTVItemChildrenListWithTVItemID(tvItem, TVTypeEnum.HydrometricSite);
+                webHydrometricSite.TVItemLanguageList = await GetTVItemLanguageChildrenListWithTVItemID(tvItem, TVTypeEnum.HydrometricSite);
+                webHydrometricSite.MapInfoList = await GetMapInfoChildrenListWithTVItemID(tvItem, TVTypeEnum.HydrometricSite);
+                webHydrometricSite.MapInfoPointList = await GetMapInfoPointChildrenListWithTVItemID(tvItem, TVTypeEnum.HydrometricSite);
                 webHydrometricSite.RatingCurveList = await GetRatingCurveListUnderProvince(tvItem);
                 webHydrometricSite.RatingCurveValueList = await GetRatingCurveValueListUnderProvince(tvItem);
+
+                await DoStore<WebHydrometricSite>(webHydrometricSite, $"WebHydrometricSite_{TVItemID}.gz");
             }
             catch (Exception ex)
             {

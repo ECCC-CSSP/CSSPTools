@@ -72,61 +72,58 @@ namespace CSSPWebAPIs.Tests.Controllers
         {
             Assert.True(await Setup(culture));
 
-            using (TransactionScope ts = new TransactionScope())
-            {
-                HttpClient httpClient = new HttpClient();
-                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", userModel.Token);
+            HttpClient httpClient = new HttpClient();
+            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", userModel.Token);
 
-                // testing Get
-                string url = "http://localhost:4444/api/" + culture + "/AppTaskLanguage";
-                var response = await httpClient.GetAsync(url);
-                Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
-                string responseContent = await response.Content.ReadAsStringAsync();
-                Assert.NotEmpty(responseContent);
-                List<AppTaskLanguage> appTaskLanguageList = JsonSerializer.Deserialize<List<AppTaskLanguage>>(responseContent);
-                Assert.True(appTaskLanguageList.Count > 0);
+            // testing Get
+            string url = "http://localhost:4444/api/" + culture + "/AppTaskLanguage";
+            var response = await httpClient.GetAsync(url);
+            Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
+            string responseContent = await response.Content.ReadAsStringAsync();
+            Assert.NotEmpty(responseContent);
+            List<AppTaskLanguage> appTaskLanguageList = JsonSerializer.Deserialize<List<AppTaskLanguage>>(responseContent);
+            Assert.True(appTaskLanguageList.Count > 0);
 
-                // testing Get(AppTaskLanguageID)
-                string urlID = url + "/" + appTaskLanguageList[0].AppTaskLanguageID;
-                response = await httpClient.GetAsync(urlID);
-                Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
-                responseContent = await response.Content.ReadAsStringAsync();
-                Assert.NotEmpty(responseContent);
-                AppTaskLanguage appTaskLanguage = JsonSerializer.Deserialize<AppTaskLanguage>(responseContent);
-                Assert.Equal(appTaskLanguageList[0].AppTaskLanguageID, appTaskLanguage.AppTaskLanguageID);
+            // testing Get(AppTaskLanguageID)
+            string urlID = url + "/" + appTaskLanguageList[0].AppTaskLanguageID;
+            response = await httpClient.GetAsync(urlID);
+            Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
+            responseContent = await response.Content.ReadAsStringAsync();
+            Assert.NotEmpty(responseContent);
+            AppTaskLanguage appTaskLanguage = JsonSerializer.Deserialize<AppTaskLanguage>(responseContent);
+            Assert.Equal(appTaskLanguageList[0].AppTaskLanguageID, appTaskLanguage.AppTaskLanguageID);
 
                 // testing Post(AppTaskLanguage)
                 appTaskLanguage.AppTaskLanguageID = 0;
-                string content = JsonSerializer.Serialize<AppTaskLanguage>(appTaskLanguage);
-                HttpContent httpContent = new StringContent(content);
-                httpContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
-                response = await httpClient.PostAsync(url, httpContent);
-                Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
-                responseContent = await response.Content.ReadAsStringAsync();
-                Assert.NotEmpty(responseContent);
-                appTaskLanguage = JsonSerializer.Deserialize<AppTaskLanguage>(responseContent);
-                Assert.NotNull(appTaskLanguage);
+            string content = JsonSerializer.Serialize<AppTaskLanguage>(appTaskLanguage);
+            HttpContent httpContent = new StringContent(content);
+            httpContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+            response = await httpClient.PostAsync(url, httpContent);
+            Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
+            responseContent = await response.Content.ReadAsStringAsync();
+            Assert.NotEmpty(responseContent);
+            appTaskLanguage = JsonSerializer.Deserialize<AppTaskLanguage>(responseContent);
+            Assert.NotNull(appTaskLanguage);
 
-                // testing Put(AppTaskLanguage)
-                content = JsonSerializer.Serialize<AppTaskLanguage>(appTaskLanguage);
-                httpContent = new StringContent(content);
-                httpContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
-                response = await httpClient.PutAsync(url, httpContent);
-                Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
-                responseContent = await response.Content.ReadAsStringAsync();
-                Assert.NotEmpty(responseContent);
-                appTaskLanguage = JsonSerializer.Deserialize<AppTaskLanguage>(responseContent);
-                Assert.NotNull(appTaskLanguage);
+            // testing Put(AppTaskLanguage)
+            content = JsonSerializer.Serialize<AppTaskLanguage>(appTaskLanguage);
+            httpContent = new StringContent(content);
+            httpContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+            response = await httpClient.PutAsync(url, httpContent);
+            Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
+            responseContent = await response.Content.ReadAsStringAsync();
+            Assert.NotEmpty(responseContent);
+            appTaskLanguage = JsonSerializer.Deserialize<AppTaskLanguage>(responseContent);
+            Assert.NotNull(appTaskLanguage);
 
-                // testing Delete(AppTaskLanguageID)
-                urlID = url + "/" + appTaskLanguage.AppTaskLanguageID;
-                response = await httpClient.DeleteAsync(urlID);
-                Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
-                responseContent = await response.Content.ReadAsStringAsync();
-                Assert.NotEmpty(responseContent);
-                bool retBool = JsonSerializer.Deserialize<bool>(responseContent);
-                Assert.True(retBool);
-            }
+            // testing Delete(AppTaskLanguageID)
+            urlID = url + "/" + appTaskLanguage.AppTaskLanguageID;
+            response = await httpClient.DeleteAsync(urlID);
+            Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
+            responseContent = await response.Content.ReadAsStringAsync();
+            Assert.NotEmpty(responseContent);
+            bool retBool = JsonSerializer.Deserialize<bool>(responseContent);
+            Assert.True(retBool);
         }
         #endregion Functions public
 

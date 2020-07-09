@@ -15,6 +15,7 @@ namespace CSSPWebServices.Services
         Task<ActionResult<WebCountry>> GetWebCountry(int TVItemID);
         Task<ActionResult<WebProvince>> GetWebProvince(int TVItemID);
         Task<ActionResult<WebArea>> GetWebArea(int TVItemID);
+        Task<ActionResult<WebMunicipalities>> GetWebMunicipalities(int TVItemID);
         Task<ActionResult<WebSector>> GetWebSector(int TVItemID);
         Task<ActionResult<WebSubsector>> GetWebSubsector(int TVItemID);
         Task<ActionResult<WebMWQMSample>> GetWeb10YearOfSample1980_1989FromSubsector(int TVItemID);

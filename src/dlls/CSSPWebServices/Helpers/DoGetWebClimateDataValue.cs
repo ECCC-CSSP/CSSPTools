@@ -42,6 +42,8 @@ namespace CSSPWebServices.Services
             try
             {
                 webClimateDataValue.ClimateDataValueList = await GetClimateDataValueListForClimateSite(tvItem.TVItemID);
+
+                await DoStore<WebClimateDataValue>(webClimateDataValue, $"WebClimateDataValue_{TVItemID}.gz");
             }
             catch (Exception ex)
             {

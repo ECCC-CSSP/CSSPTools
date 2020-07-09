@@ -5,9 +5,13 @@
 using CSSPEnums;
 using CSSPModels;
 using CSSPWebModels;
+using CultureServices.Resources;
 using CultureServices.Services;
 using LoggedInServices.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
+using System;
+using System.IO;
 using System.Threading.Tasks;
 
 namespace CSSPWebServices.Services
@@ -19,18 +23,44 @@ namespace CSSPWebServices.Services
 
         #region Properties
         private CSSPDBContext db { get; }
+        private IConfiguration Configuration { get; }
         private ICultureService CultureService { get; }
         private ILoggedInService LoggedInService { get; }
         private IEnums enums { get; }
+        private bool StoreLocal { get; set; }
+        private bool StoreInAzure { get; set; }
+        private string AzureCSSPStorageConnectionString { get; set; }
+        private string AzureCSSPStorageCustomerProvidedKey { get; set; }
+        private string AzureCSSPStorageCSSPFiles { get; set; }
+        private string AzureCSSPStorageCSSPJSON { get; set; }
+        private string LocalJSONPath { get; set; }
+        private string LocalFilesPath { get; set; }
         #endregion Properties
 
         #region Constructors
-        public WebService(ICultureService CultureService, ILoggedInService LoggedInService, IEnums enums, CSSPDBContext db)
+        public WebService(IConfiguration Configuration, ICultureService CultureService, ILoggedInService LoggedInService, IEnums enums, CSSPDBContext db)
         {
+            this.Configuration = Configuration;
             this.CultureService = CultureService;
             this.LoggedInService = LoggedInService;
             this.enums = enums;
             this.db = db;
+
+            string StoreLocalStr = Configuration.GetValue<string>("StoreLocal");
+            StoreLocal = bool.Parse(StoreLocalStr);
+
+            string StoreInAzureStr = Configuration.GetValue<string>("StoreInAzure");
+            StoreInAzure = bool.Parse(StoreInAzureStr);
+
+            AzureCSSPStorageConnectionString = Configuration.GetValue<string>("AzureCSSPStorageConnectionString");
+            AzureCSSPStorageCustomerProvidedKey = Configuration.GetValue<string>("AzureCSSPStorageCustomerProvidedKey");
+            AzureCSSPStorageCSSPFiles = Configuration.GetValue<string>("AzureCSSPStorageCSSPFiles");
+            AzureCSSPStorageCSSPJSON = Configuration.GetValue<string>("AzureCSSPStorageCSSPJSON");
+
+            if (StoreLocal)
+            {
+                CheckAndCreateStorageDirectory(Configuration);
+            }
         }
         #endregion Constructors
 
@@ -46,6 +76,10 @@ namespace CSSPWebServices.Services
         public async Task<ActionResult<WebProvince>> GetWebProvince(int TVItemID)
         {
             return await DoGetWebProvince(TVItemID);
+        }
+        public async Task<ActionResult<WebMunicipalities>> GetWebMunicipalities(int TVItemID)
+        {
+            return await DoGetWebMunicipalities(TVItemID);
         }
         public async Task<ActionResult<WebArea>> GetWebArea(int TVItemID)
         {

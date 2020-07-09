@@ -72,61 +72,58 @@ namespace CSSPWebAPIs.Tests.Controllers
         {
             Assert.True(await Setup(culture));
 
-            using (TransactionScope ts = new TransactionScope())
-            {
-                HttpClient httpClient = new HttpClient();
-                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", userModel.Token);
+            HttpClient httpClient = new HttpClient();
+            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", userModel.Token);
 
-                // testing Get
-                string url = "http://localhost:4444/api/" + culture + "/DrogueRun";
-                var response = await httpClient.GetAsync(url);
-                Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
-                string responseContent = await response.Content.ReadAsStringAsync();
-                Assert.NotEmpty(responseContent);
-                List<DrogueRun> drogueRunList = JsonSerializer.Deserialize<List<DrogueRun>>(responseContent);
-                Assert.True(drogueRunList.Count > 0);
+            // testing Get
+            string url = "http://localhost:4444/api/" + culture + "/DrogueRun";
+            var response = await httpClient.GetAsync(url);
+            Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
+            string responseContent = await response.Content.ReadAsStringAsync();
+            Assert.NotEmpty(responseContent);
+            List<DrogueRun> drogueRunList = JsonSerializer.Deserialize<List<DrogueRun>>(responseContent);
+            Assert.True(drogueRunList.Count > 0);
 
-                // testing Get(DrogueRunID)
-                string urlID = url + "/" + drogueRunList[0].DrogueRunID;
-                response = await httpClient.GetAsync(urlID);
-                Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
-                responseContent = await response.Content.ReadAsStringAsync();
-                Assert.NotEmpty(responseContent);
-                DrogueRun drogueRun = JsonSerializer.Deserialize<DrogueRun>(responseContent);
-                Assert.Equal(drogueRunList[0].DrogueRunID, drogueRun.DrogueRunID);
+            // testing Get(DrogueRunID)
+            string urlID = url + "/" + drogueRunList[0].DrogueRunID;
+            response = await httpClient.GetAsync(urlID);
+            Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
+            responseContent = await response.Content.ReadAsStringAsync();
+            Assert.NotEmpty(responseContent);
+            DrogueRun drogueRun = JsonSerializer.Deserialize<DrogueRun>(responseContent);
+            Assert.Equal(drogueRunList[0].DrogueRunID, drogueRun.DrogueRunID);
 
                 // testing Post(DrogueRun)
                 drogueRun.DrogueRunID = 0;
-                string content = JsonSerializer.Serialize<DrogueRun>(drogueRun);
-                HttpContent httpContent = new StringContent(content);
-                httpContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
-                response = await httpClient.PostAsync(url, httpContent);
-                Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
-                responseContent = await response.Content.ReadAsStringAsync();
-                Assert.NotEmpty(responseContent);
-                drogueRun = JsonSerializer.Deserialize<DrogueRun>(responseContent);
-                Assert.NotNull(drogueRun);
+            string content = JsonSerializer.Serialize<DrogueRun>(drogueRun);
+            HttpContent httpContent = new StringContent(content);
+            httpContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+            response = await httpClient.PostAsync(url, httpContent);
+            Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
+            responseContent = await response.Content.ReadAsStringAsync();
+            Assert.NotEmpty(responseContent);
+            drogueRun = JsonSerializer.Deserialize<DrogueRun>(responseContent);
+            Assert.NotNull(drogueRun);
 
-                // testing Put(DrogueRun)
-                content = JsonSerializer.Serialize<DrogueRun>(drogueRun);
-                httpContent = new StringContent(content);
-                httpContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
-                response = await httpClient.PutAsync(url, httpContent);
-                Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
-                responseContent = await response.Content.ReadAsStringAsync();
-                Assert.NotEmpty(responseContent);
-                drogueRun = JsonSerializer.Deserialize<DrogueRun>(responseContent);
-                Assert.NotNull(drogueRun);
+            // testing Put(DrogueRun)
+            content = JsonSerializer.Serialize<DrogueRun>(drogueRun);
+            httpContent = new StringContent(content);
+            httpContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+            response = await httpClient.PutAsync(url, httpContent);
+            Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
+            responseContent = await response.Content.ReadAsStringAsync();
+            Assert.NotEmpty(responseContent);
+            drogueRun = JsonSerializer.Deserialize<DrogueRun>(responseContent);
+            Assert.NotNull(drogueRun);
 
-                // testing Delete(DrogueRunID)
-                urlID = url + "/" + drogueRun.DrogueRunID;
-                response = await httpClient.DeleteAsync(urlID);
-                Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
-                responseContent = await response.Content.ReadAsStringAsync();
-                Assert.NotEmpty(responseContent);
-                bool retBool = JsonSerializer.Deserialize<bool>(responseContent);
-                Assert.True(retBool);
-            }
+            // testing Delete(DrogueRunID)
+            urlID = url + "/" + drogueRun.DrogueRunID;
+            response = await httpClient.DeleteAsync(urlID);
+            Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
+            responseContent = await response.Content.ReadAsStringAsync();
+            Assert.NotEmpty(responseContent);
+            bool retBool = JsonSerializer.Deserialize<bool>(responseContent);
+            Assert.True(retBool);
         }
         #endregion Functions public
 

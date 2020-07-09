@@ -72,61 +72,58 @@ namespace CSSPWebAPIs.Tests.Controllers
         {
             Assert.True(await Setup(culture));
 
-            using (TransactionScope ts = new TransactionScope())
-            {
-                HttpClient httpClient = new HttpClient();
-                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", userModel.Token);
+            HttpClient httpClient = new HttpClient();
+            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", userModel.Token);
 
-                // testing Get
-                string url = "http://localhost:4444/api/" + culture + "/PolSourceGroupingLanguage";
-                var response = await httpClient.GetAsync(url);
-                Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
-                string responseContent = await response.Content.ReadAsStringAsync();
-                Assert.NotEmpty(responseContent);
-                List<PolSourceGroupingLanguage> polSourceGroupingLanguageList = JsonSerializer.Deserialize<List<PolSourceGroupingLanguage>>(responseContent);
-                Assert.True(polSourceGroupingLanguageList.Count > 0);
+            // testing Get
+            string url = "http://localhost:4444/api/" + culture + "/PolSourceGroupingLanguage";
+            var response = await httpClient.GetAsync(url);
+            Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
+            string responseContent = await response.Content.ReadAsStringAsync();
+            Assert.NotEmpty(responseContent);
+            List<PolSourceGroupingLanguage> polSourceGroupingLanguageList = JsonSerializer.Deserialize<List<PolSourceGroupingLanguage>>(responseContent);
+            Assert.True(polSourceGroupingLanguageList.Count > 0);
 
-                // testing Get(PolSourceGroupingLanguageID)
-                string urlID = url + "/" + polSourceGroupingLanguageList[0].PolSourceGroupingLanguageID;
-                response = await httpClient.GetAsync(urlID);
-                Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
-                responseContent = await response.Content.ReadAsStringAsync();
-                Assert.NotEmpty(responseContent);
-                PolSourceGroupingLanguage polSourceGroupingLanguage = JsonSerializer.Deserialize<PolSourceGroupingLanguage>(responseContent);
-                Assert.Equal(polSourceGroupingLanguageList[0].PolSourceGroupingLanguageID, polSourceGroupingLanguage.PolSourceGroupingLanguageID);
+            // testing Get(PolSourceGroupingLanguageID)
+            string urlID = url + "/" + polSourceGroupingLanguageList[0].PolSourceGroupingLanguageID;
+            response = await httpClient.GetAsync(urlID);
+            Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
+            responseContent = await response.Content.ReadAsStringAsync();
+            Assert.NotEmpty(responseContent);
+            PolSourceGroupingLanguage polSourceGroupingLanguage = JsonSerializer.Deserialize<PolSourceGroupingLanguage>(responseContent);
+            Assert.Equal(polSourceGroupingLanguageList[0].PolSourceGroupingLanguageID, polSourceGroupingLanguage.PolSourceGroupingLanguageID);
 
                 // testing Post(PolSourceGroupingLanguage)
                 polSourceGroupingLanguage.PolSourceGroupingLanguageID = 0;
-                string content = JsonSerializer.Serialize<PolSourceGroupingLanguage>(polSourceGroupingLanguage);
-                HttpContent httpContent = new StringContent(content);
-                httpContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
-                response = await httpClient.PostAsync(url, httpContent);
-                Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
-                responseContent = await response.Content.ReadAsStringAsync();
-                Assert.NotEmpty(responseContent);
-                polSourceGroupingLanguage = JsonSerializer.Deserialize<PolSourceGroupingLanguage>(responseContent);
-                Assert.NotNull(polSourceGroupingLanguage);
+            string content = JsonSerializer.Serialize<PolSourceGroupingLanguage>(polSourceGroupingLanguage);
+            HttpContent httpContent = new StringContent(content);
+            httpContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+            response = await httpClient.PostAsync(url, httpContent);
+            Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
+            responseContent = await response.Content.ReadAsStringAsync();
+            Assert.NotEmpty(responseContent);
+            polSourceGroupingLanguage = JsonSerializer.Deserialize<PolSourceGroupingLanguage>(responseContent);
+            Assert.NotNull(polSourceGroupingLanguage);
 
-                // testing Put(PolSourceGroupingLanguage)
-                content = JsonSerializer.Serialize<PolSourceGroupingLanguage>(polSourceGroupingLanguage);
-                httpContent = new StringContent(content);
-                httpContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
-                response = await httpClient.PutAsync(url, httpContent);
-                Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
-                responseContent = await response.Content.ReadAsStringAsync();
-                Assert.NotEmpty(responseContent);
-                polSourceGroupingLanguage = JsonSerializer.Deserialize<PolSourceGroupingLanguage>(responseContent);
-                Assert.NotNull(polSourceGroupingLanguage);
+            // testing Put(PolSourceGroupingLanguage)
+            content = JsonSerializer.Serialize<PolSourceGroupingLanguage>(polSourceGroupingLanguage);
+            httpContent = new StringContent(content);
+            httpContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+            response = await httpClient.PutAsync(url, httpContent);
+            Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
+            responseContent = await response.Content.ReadAsStringAsync();
+            Assert.NotEmpty(responseContent);
+            polSourceGroupingLanguage = JsonSerializer.Deserialize<PolSourceGroupingLanguage>(responseContent);
+            Assert.NotNull(polSourceGroupingLanguage);
 
-                // testing Delete(PolSourceGroupingLanguageID)
-                urlID = url + "/" + polSourceGroupingLanguage.PolSourceGroupingLanguageID;
-                response = await httpClient.DeleteAsync(urlID);
-                Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
-                responseContent = await response.Content.ReadAsStringAsync();
-                Assert.NotEmpty(responseContent);
-                bool retBool = JsonSerializer.Deserialize<bool>(responseContent);
-                Assert.True(retBool);
-            }
+            // testing Delete(PolSourceGroupingLanguageID)
+            urlID = url + "/" + polSourceGroupingLanguage.PolSourceGroupingLanguageID;
+            response = await httpClient.DeleteAsync(urlID);
+            Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
+            responseContent = await response.Content.ReadAsStringAsync();
+            Assert.NotEmpty(responseContent);
+            bool retBool = JsonSerializer.Deserialize<bool>(responseContent);
+            Assert.True(retBool);
         }
         #endregion Functions public
 

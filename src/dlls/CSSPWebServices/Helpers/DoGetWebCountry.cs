@@ -56,6 +56,8 @@ namespace CSSPWebServices.Services
                 webCountry.EmailDistributionListLanguageList = await GetEmailDistributionListLanguageListUnderCountry(tvItem.TVItemID);
                 webCountry.EmailDistributionListContactList = await GetEmailDistributionListContactListUnderCountry(tvItem.TVItemID);
                 webCountry.EmailDistributionListContactLanguageList = await GetEmailDistributionListContactLanguageListUnderCountry(tvItem.TVItemID);
+
+                await DoStore<WebCountry>(webCountry, $"WebCountry_{TVItemID}.gz");
             }
             catch (Exception ex)
             {

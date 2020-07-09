@@ -72,61 +72,58 @@ namespace CSSPWebAPIs.Tests.Controllers
         {
             Assert.True(await Setup(culture));
 
-            using (TransactionScope ts = new TransactionScope())
-            {
-                HttpClient httpClient = new HttpClient();
-                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", userModel.Token);
+            HttpClient httpClient = new HttpClient();
+            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", userModel.Token);
 
-                // testing Get
-                string url = "http://localhost:4444/api/" + culture + "/TVItemLink";
-                var response = await httpClient.GetAsync(url);
-                Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
-                string responseContent = await response.Content.ReadAsStringAsync();
-                Assert.NotEmpty(responseContent);
-                List<TVItemLink> tvItemLinkList = JsonSerializer.Deserialize<List<TVItemLink>>(responseContent);
-                Assert.True(tvItemLinkList.Count > 0);
+            // testing Get
+            string url = "http://localhost:4444/api/" + culture + "/TVItemLink";
+            var response = await httpClient.GetAsync(url);
+            Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
+            string responseContent = await response.Content.ReadAsStringAsync();
+            Assert.NotEmpty(responseContent);
+            List<TVItemLink> tvItemLinkList = JsonSerializer.Deserialize<List<TVItemLink>>(responseContent);
+            Assert.True(tvItemLinkList.Count > 0);
 
-                // testing Get(TVItemLinkID)
-                string urlID = url + "/" + tvItemLinkList[0].TVItemLinkID;
-                response = await httpClient.GetAsync(urlID);
-                Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
-                responseContent = await response.Content.ReadAsStringAsync();
-                Assert.NotEmpty(responseContent);
-                TVItemLink tvItemLink = JsonSerializer.Deserialize<TVItemLink>(responseContent);
-                Assert.Equal(tvItemLinkList[0].TVItemLinkID, tvItemLink.TVItemLinkID);
+            // testing Get(TVItemLinkID)
+            string urlID = url + "/" + tvItemLinkList[0].TVItemLinkID;
+            response = await httpClient.GetAsync(urlID);
+            Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
+            responseContent = await response.Content.ReadAsStringAsync();
+            Assert.NotEmpty(responseContent);
+            TVItemLink tvItemLink = JsonSerializer.Deserialize<TVItemLink>(responseContent);
+            Assert.Equal(tvItemLinkList[0].TVItemLinkID, tvItemLink.TVItemLinkID);
 
                 // testing Post(TVItemLink)
                 tvItemLink.TVItemLinkID = 0;
-                string content = JsonSerializer.Serialize<TVItemLink>(tvItemLink);
-                HttpContent httpContent = new StringContent(content);
-                httpContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
-                response = await httpClient.PostAsync(url, httpContent);
-                Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
-                responseContent = await response.Content.ReadAsStringAsync();
-                Assert.NotEmpty(responseContent);
-                tvItemLink = JsonSerializer.Deserialize<TVItemLink>(responseContent);
-                Assert.NotNull(tvItemLink);
+            string content = JsonSerializer.Serialize<TVItemLink>(tvItemLink);
+            HttpContent httpContent = new StringContent(content);
+            httpContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+            response = await httpClient.PostAsync(url, httpContent);
+            Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
+            responseContent = await response.Content.ReadAsStringAsync();
+            Assert.NotEmpty(responseContent);
+            tvItemLink = JsonSerializer.Deserialize<TVItemLink>(responseContent);
+            Assert.NotNull(tvItemLink);
 
-                // testing Put(TVItemLink)
-                content = JsonSerializer.Serialize<TVItemLink>(tvItemLink);
-                httpContent = new StringContent(content);
-                httpContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
-                response = await httpClient.PutAsync(url, httpContent);
-                Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
-                responseContent = await response.Content.ReadAsStringAsync();
-                Assert.NotEmpty(responseContent);
-                tvItemLink = JsonSerializer.Deserialize<TVItemLink>(responseContent);
-                Assert.NotNull(tvItemLink);
+            // testing Put(TVItemLink)
+            content = JsonSerializer.Serialize<TVItemLink>(tvItemLink);
+            httpContent = new StringContent(content);
+            httpContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+            response = await httpClient.PutAsync(url, httpContent);
+            Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
+            responseContent = await response.Content.ReadAsStringAsync();
+            Assert.NotEmpty(responseContent);
+            tvItemLink = JsonSerializer.Deserialize<TVItemLink>(responseContent);
+            Assert.NotNull(tvItemLink);
 
-                // testing Delete(TVItemLinkID)
-                urlID = url + "/" + tvItemLink.TVItemLinkID;
-                response = await httpClient.DeleteAsync(urlID);
-                Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
-                responseContent = await response.Content.ReadAsStringAsync();
-                Assert.NotEmpty(responseContent);
-                bool retBool = JsonSerializer.Deserialize<bool>(responseContent);
-                Assert.True(retBool);
-            }
+            // testing Delete(TVItemLinkID)
+            urlID = url + "/" + tvItemLink.TVItemLinkID;
+            response = await httpClient.DeleteAsync(urlID);
+            Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
+            responseContent = await response.Content.ReadAsStringAsync();
+            Assert.NotEmpty(responseContent);
+            bool retBool = JsonSerializer.Deserialize<bool>(responseContent);
+            Assert.True(retBool);
         }
         #endregion Functions public
 

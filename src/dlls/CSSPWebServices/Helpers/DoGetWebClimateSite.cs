@@ -42,6 +42,12 @@ namespace CSSPWebServices.Services
             try
             {
                 webClimateSite.ClimateSiteList = await GetClimateSiteListUnderProvince(tvItem);
+                webClimateSite.TVItemList = await GetTVItemChildrenListWithTVItemID(tvItem, TVTypeEnum.ClimateSite);
+                webClimateSite.TVItemLanguageList = await GetTVItemLanguageChildrenListWithTVItemID(tvItem, TVTypeEnum.ClimateSite);
+                webClimateSite.MapInfoList = await GetMapInfoChildrenListWithTVItemID(tvItem, TVTypeEnum.ClimateSite);
+                webClimateSite.MapInfoPointList = await GetMapInfoPointChildrenListWithTVItemID(tvItem, TVTypeEnum.ClimateSite);
+
+                await DoStore<WebClimateSite>(webClimateSite, $"WebClimateSite_{TVItemID}.gz");
             }
             catch (Exception ex)
             {

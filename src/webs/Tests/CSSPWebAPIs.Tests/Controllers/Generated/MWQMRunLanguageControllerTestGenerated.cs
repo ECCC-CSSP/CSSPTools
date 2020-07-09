@@ -72,61 +72,58 @@ namespace CSSPWebAPIs.Tests.Controllers
         {
             Assert.True(await Setup(culture));
 
-            using (TransactionScope ts = new TransactionScope())
-            {
-                HttpClient httpClient = new HttpClient();
-                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", userModel.Token);
+            HttpClient httpClient = new HttpClient();
+            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", userModel.Token);
 
-                // testing Get
-                string url = "http://localhost:4444/api/" + culture + "/MWQMRunLanguage";
-                var response = await httpClient.GetAsync(url);
-                Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
-                string responseContent = await response.Content.ReadAsStringAsync();
-                Assert.NotEmpty(responseContent);
-                List<MWQMRunLanguage> mwqmRunLanguageList = JsonSerializer.Deserialize<List<MWQMRunLanguage>>(responseContent);
-                Assert.True(mwqmRunLanguageList.Count > 0);
+            // testing Get
+            string url = "http://localhost:4444/api/" + culture + "/MWQMRunLanguage";
+            var response = await httpClient.GetAsync(url);
+            Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
+            string responseContent = await response.Content.ReadAsStringAsync();
+            Assert.NotEmpty(responseContent);
+            List<MWQMRunLanguage> mwqmRunLanguageList = JsonSerializer.Deserialize<List<MWQMRunLanguage>>(responseContent);
+            Assert.True(mwqmRunLanguageList.Count > 0);
 
-                // testing Get(MWQMRunLanguageID)
-                string urlID = url + "/" + mwqmRunLanguageList[0].MWQMRunLanguageID;
-                response = await httpClient.GetAsync(urlID);
-                Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
-                responseContent = await response.Content.ReadAsStringAsync();
-                Assert.NotEmpty(responseContent);
-                MWQMRunLanguage mwqmRunLanguage = JsonSerializer.Deserialize<MWQMRunLanguage>(responseContent);
-                Assert.Equal(mwqmRunLanguageList[0].MWQMRunLanguageID, mwqmRunLanguage.MWQMRunLanguageID);
+            // testing Get(MWQMRunLanguageID)
+            string urlID = url + "/" + mwqmRunLanguageList[0].MWQMRunLanguageID;
+            response = await httpClient.GetAsync(urlID);
+            Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
+            responseContent = await response.Content.ReadAsStringAsync();
+            Assert.NotEmpty(responseContent);
+            MWQMRunLanguage mwqmRunLanguage = JsonSerializer.Deserialize<MWQMRunLanguage>(responseContent);
+            Assert.Equal(mwqmRunLanguageList[0].MWQMRunLanguageID, mwqmRunLanguage.MWQMRunLanguageID);
 
                 // testing Post(MWQMRunLanguage)
                 mwqmRunLanguage.MWQMRunLanguageID = 0;
-                string content = JsonSerializer.Serialize<MWQMRunLanguage>(mwqmRunLanguage);
-                HttpContent httpContent = new StringContent(content);
-                httpContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
-                response = await httpClient.PostAsync(url, httpContent);
-                Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
-                responseContent = await response.Content.ReadAsStringAsync();
-                Assert.NotEmpty(responseContent);
-                mwqmRunLanguage = JsonSerializer.Deserialize<MWQMRunLanguage>(responseContent);
-                Assert.NotNull(mwqmRunLanguage);
+            string content = JsonSerializer.Serialize<MWQMRunLanguage>(mwqmRunLanguage);
+            HttpContent httpContent = new StringContent(content);
+            httpContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+            response = await httpClient.PostAsync(url, httpContent);
+            Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
+            responseContent = await response.Content.ReadAsStringAsync();
+            Assert.NotEmpty(responseContent);
+            mwqmRunLanguage = JsonSerializer.Deserialize<MWQMRunLanguage>(responseContent);
+            Assert.NotNull(mwqmRunLanguage);
 
-                // testing Put(MWQMRunLanguage)
-                content = JsonSerializer.Serialize<MWQMRunLanguage>(mwqmRunLanguage);
-                httpContent = new StringContent(content);
-                httpContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
-                response = await httpClient.PutAsync(url, httpContent);
-                Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
-                responseContent = await response.Content.ReadAsStringAsync();
-                Assert.NotEmpty(responseContent);
-                mwqmRunLanguage = JsonSerializer.Deserialize<MWQMRunLanguage>(responseContent);
-                Assert.NotNull(mwqmRunLanguage);
+            // testing Put(MWQMRunLanguage)
+            content = JsonSerializer.Serialize<MWQMRunLanguage>(mwqmRunLanguage);
+            httpContent = new StringContent(content);
+            httpContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+            response = await httpClient.PutAsync(url, httpContent);
+            Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
+            responseContent = await response.Content.ReadAsStringAsync();
+            Assert.NotEmpty(responseContent);
+            mwqmRunLanguage = JsonSerializer.Deserialize<MWQMRunLanguage>(responseContent);
+            Assert.NotNull(mwqmRunLanguage);
 
-                // testing Delete(MWQMRunLanguageID)
-                urlID = url + "/" + mwqmRunLanguage.MWQMRunLanguageID;
-                response = await httpClient.DeleteAsync(urlID);
-                Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
-                responseContent = await response.Content.ReadAsStringAsync();
-                Assert.NotEmpty(responseContent);
-                bool retBool = JsonSerializer.Deserialize<bool>(responseContent);
-                Assert.True(retBool);
-            }
+            // testing Delete(MWQMRunLanguageID)
+            urlID = url + "/" + mwqmRunLanguage.MWQMRunLanguageID;
+            response = await httpClient.DeleteAsync(urlID);
+            Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
+            responseContent = await response.Content.ReadAsStringAsync();
+            Assert.NotEmpty(responseContent);
+            bool retBool = JsonSerializer.Deserialize<bool>(responseContent);
+            Assert.True(retBool);
         }
         #endregion Functions public
 

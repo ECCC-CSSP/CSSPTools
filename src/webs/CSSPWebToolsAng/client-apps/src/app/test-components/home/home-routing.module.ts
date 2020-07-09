@@ -13,19 +13,10 @@ import { AuthGuard } from '../../guards';
 const routes: Routes = [
   {
     path: '', component: HomeComponent, canActivate: [AuthGuard], children: [
-      { path: 'basecontext', loadChildren: () => import('../../test-components/generated/basecontext/basecontext.module').then(mod => mod.BaseContextModule) },
-      { path: 'csspdblocalcontext', loadChildren: () => import('../../test-components/generated/csspdblocalcontext/csspdblocalcontext.module').then(mod => mod.CSSPDBLocalContextModule) },
-      { path: 'basemodelservice', loadChildren: () => import('../../test-components/generated/basemodelservice/basemodelservice.module').then(mod => mod.BaseModelServiceModule) },
       { path: 'address', loadChildren: () => import('../../test-components/generated/address/address.module').then(mod => mod.AddressModule) },
       { path: 'apperrlog', loadChildren: () => import('../../test-components/generated/apperrlog/apperrlog.module').then(mod => mod.AppErrLogModule) },
       { path: 'apptask', loadChildren: () => import('../../test-components/generated/apptask/apptask.module').then(mod => mod.AppTaskModule) },
       { path: 'apptasklanguage', loadChildren: () => import('../../test-components/generated/apptasklanguage/apptasklanguage.module').then(mod => mod.AppTaskLanguageModule) },
-      { path: 'aspnetrole', loadChildren: () => import('../../test-components/generated/aspnetrole/aspnetrole.module').then(mod => mod.AspNetRoleModule) },
-      { path: 'aspnetroleclaim', loadChildren: () => import('../../test-components/generated/aspnetroleclaim/aspnetroleclaim.module').then(mod => mod.AspNetRoleClaimModule) },
-      { path: 'aspnetuserclaim', loadChildren: () => import('../../test-components/generated/aspnetuserclaim/aspnetuserclaim.module').then(mod => mod.AspNetUserClaimModule) },
-      { path: 'aspnetuserlogin', loadChildren: () => import('../../test-components/generated/aspnetuserlogin/aspnetuserlogin.module').then(mod => mod.AspNetUserLoginModule) },
-      { path: 'aspnetuserrole', loadChildren: () => import('../../test-components/generated/aspnetuserrole/aspnetuserrole.module').then(mod => mod.AspNetUserRoleModule) },
-      { path: 'aspnetusertoken', loadChildren: () => import('../../test-components/generated/aspnetusertoken/aspnetusertoken.module').then(mod => mod.AspNetUserTokenModule) },
       { path: 'boxmodel', loadChildren: () => import('../../test-components/generated/boxmodel/boxmodel.module').then(mod => mod.BoxModelModule) },
       { path: 'boxmodellanguage', loadChildren: () => import('../../test-components/generated/boxmodellanguage/boxmodellanguage.module').then(mod => mod.BoxModelLanguageModule) },
       { path: 'boxmodelresult', loadChildren: () => import('../../test-components/generated/boxmodelresult/boxmodelresult.module').then(mod => mod.BoxModelResultModule) },
@@ -35,7 +26,6 @@ const routes: Routes = [
       { path: 'contact', loadChildren: () => import('../../test-components/generated/contact/contact.module').then(mod => mod.ContactModule) },
       { path: 'contactpreference', loadChildren: () => import('../../test-components/generated/contactpreference/contactpreference.module').then(mod => mod.ContactPreferenceModule) },
       { path: 'contactshortcut', loadChildren: () => import('../../test-components/generated/contactshortcut/contactshortcut.module').then(mod => mod.ContactShortcutModule) },
-      { path: 'devicecode', loadChildren: () => import('../../test-components/generated/devicecode/devicecode.module').then(mod => mod.DeviceCodeModule) },
       { path: 'doctemplate', loadChildren: () => import('../../test-components/generated/doctemplate/doctemplate.module').then(mod => mod.DocTemplateModule) },
       { path: 'droguerun', loadChildren: () => import('../../test-components/generated/droguerun/droguerun.module').then(mod => mod.DrogueRunModule) },
       { path: 'droguerunposition', loadChildren: () => import('../../test-components/generated/droguerunposition/droguerunposition.module').then(mod => mod.DrogueRunPositionModule) },
@@ -70,7 +60,6 @@ const routes: Routes = [
       { path: 'mwqmsitestartenddate', loadChildren: () => import('../../test-components/generated/mwqmsitestartenddate/mwqmsitestartenddate.module').then(mod => mod.MWQMSiteStartEndDateModule) },
       { path: 'mwqmsubsector', loadChildren: () => import('../../test-components/generated/mwqmsubsector/mwqmsubsector.module').then(mod => mod.MWQMSubsectorModule) },
       { path: 'mwqmsubsectorlanguage', loadChildren: () => import('../../test-components/generated/mwqmsubsectorlanguage/mwqmsubsectorlanguage.module').then(mod => mod.MWQMSubsectorLanguageModule) },
-      { path: 'persistedgrant', loadChildren: () => import('../../test-components/generated/persistedgrant/persistedgrant.module').then(mod => mod.PersistedGrantModule) },
       { path: 'polsourcegrouping', loadChildren: () => import('../../test-components/generated/polsourcegrouping/polsourcegrouping.module').then(mod => mod.PolSourceGroupingModule) },
       { path: 'polsourcegroupinglanguage', loadChildren: () => import('../../test-components/generated/polsourcegroupinglanguage/polsourcegroupinglanguage.module').then(mod => mod.PolSourceGroupingLanguageModule) },
       { path: 'polsourceobservation', loadChildren: () => import('../../test-components/generated/polsourceobservation/polsourceobservation.module').then(mod => mod.PolSourceObservationModule) },
@@ -108,7 +97,6 @@ const routes: Routes = [
       { path: 'vpresult', loadChildren: () => import('../../test-components/generated/vpresult/vpresult.module').then(mod => mod.VPResultModule) },
       { path: 'vpscenario', loadChildren: () => import('../../test-components/generated/vpscenario/vpscenario.module').then(mod => mod.VPScenarioModule) },
       { path: 'vpscenariolanguage', loadChildren: () => import('../../test-components/generated/vpscenariolanguage/vpscenariolanguage.module').then(mod => mod.VPScenarioLanguageModule) },
-      { path: 'csspforeignkeyattribute', loadChildren: () => import('../../test-components/generated/csspforeignkeyattribute/csspforeignkeyattribute.module').then(mod => mod.CSSPForeignKeyAttributeModule) },
     ]
   }
 ];

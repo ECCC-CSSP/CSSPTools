@@ -72,61 +72,58 @@ namespace CSSPWebAPIs.Tests.Controllers
         {
             Assert.True(await Setup(culture));
 
-            using (TransactionScope ts = new TransactionScope())
-            {
-                HttpClient httpClient = new HttpClient();
-                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", userModel.Token);
+            HttpClient httpClient = new HttpClient();
+            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", userModel.Token);
 
-                // testing Get
-                string url = "http://localhost:4444/api/" + culture + "/EmailDistributionListContactLanguage";
-                var response = await httpClient.GetAsync(url);
-                Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
-                string responseContent = await response.Content.ReadAsStringAsync();
-                Assert.NotEmpty(responseContent);
-                List<EmailDistributionListContactLanguage> emailDistributionListContactLanguageList = JsonSerializer.Deserialize<List<EmailDistributionListContactLanguage>>(responseContent);
-                Assert.True(emailDistributionListContactLanguageList.Count > 0);
+            // testing Get
+            string url = "http://localhost:4444/api/" + culture + "/EmailDistributionListContactLanguage";
+            var response = await httpClient.GetAsync(url);
+            Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
+            string responseContent = await response.Content.ReadAsStringAsync();
+            Assert.NotEmpty(responseContent);
+            List<EmailDistributionListContactLanguage> emailDistributionListContactLanguageList = JsonSerializer.Deserialize<List<EmailDistributionListContactLanguage>>(responseContent);
+            Assert.True(emailDistributionListContactLanguageList.Count > 0);
 
-                // testing Get(EmailDistributionListContactLanguageID)
-                string urlID = url + "/" + emailDistributionListContactLanguageList[0].EmailDistributionListContactLanguageID;
-                response = await httpClient.GetAsync(urlID);
-                Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
-                responseContent = await response.Content.ReadAsStringAsync();
-                Assert.NotEmpty(responseContent);
-                EmailDistributionListContactLanguage emailDistributionListContactLanguage = JsonSerializer.Deserialize<EmailDistributionListContactLanguage>(responseContent);
-                Assert.Equal(emailDistributionListContactLanguageList[0].EmailDistributionListContactLanguageID, emailDistributionListContactLanguage.EmailDistributionListContactLanguageID);
+            // testing Get(EmailDistributionListContactLanguageID)
+            string urlID = url + "/" + emailDistributionListContactLanguageList[0].EmailDistributionListContactLanguageID;
+            response = await httpClient.GetAsync(urlID);
+            Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
+            responseContent = await response.Content.ReadAsStringAsync();
+            Assert.NotEmpty(responseContent);
+            EmailDistributionListContactLanguage emailDistributionListContactLanguage = JsonSerializer.Deserialize<EmailDistributionListContactLanguage>(responseContent);
+            Assert.Equal(emailDistributionListContactLanguageList[0].EmailDistributionListContactLanguageID, emailDistributionListContactLanguage.EmailDistributionListContactLanguageID);
 
                 // testing Post(EmailDistributionListContactLanguage)
                 emailDistributionListContactLanguage.EmailDistributionListContactLanguageID = 0;
-                string content = JsonSerializer.Serialize<EmailDistributionListContactLanguage>(emailDistributionListContactLanguage);
-                HttpContent httpContent = new StringContent(content);
-                httpContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
-                response = await httpClient.PostAsync(url, httpContent);
-                Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
-                responseContent = await response.Content.ReadAsStringAsync();
-                Assert.NotEmpty(responseContent);
-                emailDistributionListContactLanguage = JsonSerializer.Deserialize<EmailDistributionListContactLanguage>(responseContent);
-                Assert.NotNull(emailDistributionListContactLanguage);
+            string content = JsonSerializer.Serialize<EmailDistributionListContactLanguage>(emailDistributionListContactLanguage);
+            HttpContent httpContent = new StringContent(content);
+            httpContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+            response = await httpClient.PostAsync(url, httpContent);
+            Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
+            responseContent = await response.Content.ReadAsStringAsync();
+            Assert.NotEmpty(responseContent);
+            emailDistributionListContactLanguage = JsonSerializer.Deserialize<EmailDistributionListContactLanguage>(responseContent);
+            Assert.NotNull(emailDistributionListContactLanguage);
 
-                // testing Put(EmailDistributionListContactLanguage)
-                content = JsonSerializer.Serialize<EmailDistributionListContactLanguage>(emailDistributionListContactLanguage);
-                httpContent = new StringContent(content);
-                httpContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
-                response = await httpClient.PutAsync(url, httpContent);
-                Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
-                responseContent = await response.Content.ReadAsStringAsync();
-                Assert.NotEmpty(responseContent);
-                emailDistributionListContactLanguage = JsonSerializer.Deserialize<EmailDistributionListContactLanguage>(responseContent);
-                Assert.NotNull(emailDistributionListContactLanguage);
+            // testing Put(EmailDistributionListContactLanguage)
+            content = JsonSerializer.Serialize<EmailDistributionListContactLanguage>(emailDistributionListContactLanguage);
+            httpContent = new StringContent(content);
+            httpContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+            response = await httpClient.PutAsync(url, httpContent);
+            Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
+            responseContent = await response.Content.ReadAsStringAsync();
+            Assert.NotEmpty(responseContent);
+            emailDistributionListContactLanguage = JsonSerializer.Deserialize<EmailDistributionListContactLanguage>(responseContent);
+            Assert.NotNull(emailDistributionListContactLanguage);
 
-                // testing Delete(EmailDistributionListContactLanguageID)
-                urlID = url + "/" + emailDistributionListContactLanguage.EmailDistributionListContactLanguageID;
-                response = await httpClient.DeleteAsync(urlID);
-                Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
-                responseContent = await response.Content.ReadAsStringAsync();
-                Assert.NotEmpty(responseContent);
-                bool retBool = JsonSerializer.Deserialize<bool>(responseContent);
-                Assert.True(retBool);
-            }
+            // testing Delete(EmailDistributionListContactLanguageID)
+            urlID = url + "/" + emailDistributionListContactLanguage.EmailDistributionListContactLanguageID;
+            response = await httpClient.DeleteAsync(urlID);
+            Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
+            responseContent = await response.Content.ReadAsStringAsync();
+            Assert.NotEmpty(responseContent);
+            bool retBool = JsonSerializer.Deserialize<bool>(responseContent);
+            Assert.True(retBool);
         }
         #endregion Functions public
 

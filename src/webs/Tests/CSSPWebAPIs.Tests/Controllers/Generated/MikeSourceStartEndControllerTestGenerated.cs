@@ -72,61 +72,58 @@ namespace CSSPWebAPIs.Tests.Controllers
         {
             Assert.True(await Setup(culture));
 
-            using (TransactionScope ts = new TransactionScope())
-            {
-                HttpClient httpClient = new HttpClient();
-                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", userModel.Token);
+            HttpClient httpClient = new HttpClient();
+            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", userModel.Token);
 
-                // testing Get
-                string url = "http://localhost:4444/api/" + culture + "/MikeSourceStartEnd";
-                var response = await httpClient.GetAsync(url);
-                Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
-                string responseContent = await response.Content.ReadAsStringAsync();
-                Assert.NotEmpty(responseContent);
-                List<MikeSourceStartEnd> mikeSourceStartEndList = JsonSerializer.Deserialize<List<MikeSourceStartEnd>>(responseContent);
-                Assert.True(mikeSourceStartEndList.Count > 0);
+            // testing Get
+            string url = "http://localhost:4444/api/" + culture + "/MikeSourceStartEnd";
+            var response = await httpClient.GetAsync(url);
+            Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
+            string responseContent = await response.Content.ReadAsStringAsync();
+            Assert.NotEmpty(responseContent);
+            List<MikeSourceStartEnd> mikeSourceStartEndList = JsonSerializer.Deserialize<List<MikeSourceStartEnd>>(responseContent);
+            Assert.True(mikeSourceStartEndList.Count > 0);
 
-                // testing Get(MikeSourceStartEndID)
-                string urlID = url + "/" + mikeSourceStartEndList[0].MikeSourceStartEndID;
-                response = await httpClient.GetAsync(urlID);
-                Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
-                responseContent = await response.Content.ReadAsStringAsync();
-                Assert.NotEmpty(responseContent);
-                MikeSourceStartEnd mikeSourceStartEnd = JsonSerializer.Deserialize<MikeSourceStartEnd>(responseContent);
-                Assert.Equal(mikeSourceStartEndList[0].MikeSourceStartEndID, mikeSourceStartEnd.MikeSourceStartEndID);
+            // testing Get(MikeSourceStartEndID)
+            string urlID = url + "/" + mikeSourceStartEndList[0].MikeSourceStartEndID;
+            response = await httpClient.GetAsync(urlID);
+            Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
+            responseContent = await response.Content.ReadAsStringAsync();
+            Assert.NotEmpty(responseContent);
+            MikeSourceStartEnd mikeSourceStartEnd = JsonSerializer.Deserialize<MikeSourceStartEnd>(responseContent);
+            Assert.Equal(mikeSourceStartEndList[0].MikeSourceStartEndID, mikeSourceStartEnd.MikeSourceStartEndID);
 
                 // testing Post(MikeSourceStartEnd)
                 mikeSourceStartEnd.MikeSourceStartEndID = 0;
-                string content = JsonSerializer.Serialize<MikeSourceStartEnd>(mikeSourceStartEnd);
-                HttpContent httpContent = new StringContent(content);
-                httpContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
-                response = await httpClient.PostAsync(url, httpContent);
-                Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
-                responseContent = await response.Content.ReadAsStringAsync();
-                Assert.NotEmpty(responseContent);
-                mikeSourceStartEnd = JsonSerializer.Deserialize<MikeSourceStartEnd>(responseContent);
-                Assert.NotNull(mikeSourceStartEnd);
+            string content = JsonSerializer.Serialize<MikeSourceStartEnd>(mikeSourceStartEnd);
+            HttpContent httpContent = new StringContent(content);
+            httpContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+            response = await httpClient.PostAsync(url, httpContent);
+            Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
+            responseContent = await response.Content.ReadAsStringAsync();
+            Assert.NotEmpty(responseContent);
+            mikeSourceStartEnd = JsonSerializer.Deserialize<MikeSourceStartEnd>(responseContent);
+            Assert.NotNull(mikeSourceStartEnd);
 
-                // testing Put(MikeSourceStartEnd)
-                content = JsonSerializer.Serialize<MikeSourceStartEnd>(mikeSourceStartEnd);
-                httpContent = new StringContent(content);
-                httpContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
-                response = await httpClient.PutAsync(url, httpContent);
-                Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
-                responseContent = await response.Content.ReadAsStringAsync();
-                Assert.NotEmpty(responseContent);
-                mikeSourceStartEnd = JsonSerializer.Deserialize<MikeSourceStartEnd>(responseContent);
-                Assert.NotNull(mikeSourceStartEnd);
+            // testing Put(MikeSourceStartEnd)
+            content = JsonSerializer.Serialize<MikeSourceStartEnd>(mikeSourceStartEnd);
+            httpContent = new StringContent(content);
+            httpContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+            response = await httpClient.PutAsync(url, httpContent);
+            Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
+            responseContent = await response.Content.ReadAsStringAsync();
+            Assert.NotEmpty(responseContent);
+            mikeSourceStartEnd = JsonSerializer.Deserialize<MikeSourceStartEnd>(responseContent);
+            Assert.NotNull(mikeSourceStartEnd);
 
-                // testing Delete(MikeSourceStartEndID)
-                urlID = url + "/" + mikeSourceStartEnd.MikeSourceStartEndID;
-                response = await httpClient.DeleteAsync(urlID);
-                Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
-                responseContent = await response.Content.ReadAsStringAsync();
-                Assert.NotEmpty(responseContent);
-                bool retBool = JsonSerializer.Deserialize<bool>(responseContent);
-                Assert.True(retBool);
-            }
+            // testing Delete(MikeSourceStartEndID)
+            urlID = url + "/" + mikeSourceStartEnd.MikeSourceStartEndID;
+            response = await httpClient.DeleteAsync(urlID);
+            Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
+            responseContent = await response.Content.ReadAsStringAsync();
+            Assert.NotEmpty(responseContent);
+            bool retBool = JsonSerializer.Deserialize<bool>(responseContent);
+            Assert.True(retBool);
         }
         #endregion Functions public
 

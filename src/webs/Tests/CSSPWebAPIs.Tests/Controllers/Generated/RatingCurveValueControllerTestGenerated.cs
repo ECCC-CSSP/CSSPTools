@@ -72,61 +72,58 @@ namespace CSSPWebAPIs.Tests.Controllers
         {
             Assert.True(await Setup(culture));
 
-            using (TransactionScope ts = new TransactionScope())
-            {
-                HttpClient httpClient = new HttpClient();
-                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", userModel.Token);
+            HttpClient httpClient = new HttpClient();
+            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", userModel.Token);
 
-                // testing Get
-                string url = "http://localhost:4444/api/" + culture + "/RatingCurveValue";
-                var response = await httpClient.GetAsync(url);
-                Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
-                string responseContent = await response.Content.ReadAsStringAsync();
-                Assert.NotEmpty(responseContent);
-                List<RatingCurveValue> ratingCurveValueList = JsonSerializer.Deserialize<List<RatingCurveValue>>(responseContent);
-                Assert.True(ratingCurveValueList.Count > 0);
+            // testing Get
+            string url = "http://localhost:4444/api/" + culture + "/RatingCurveValue";
+            var response = await httpClient.GetAsync(url);
+            Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
+            string responseContent = await response.Content.ReadAsStringAsync();
+            Assert.NotEmpty(responseContent);
+            List<RatingCurveValue> ratingCurveValueList = JsonSerializer.Deserialize<List<RatingCurveValue>>(responseContent);
+            Assert.True(ratingCurveValueList.Count > 0);
 
-                // testing Get(RatingCurveValueID)
-                string urlID = url + "/" + ratingCurveValueList[0].RatingCurveValueID;
-                response = await httpClient.GetAsync(urlID);
-                Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
-                responseContent = await response.Content.ReadAsStringAsync();
-                Assert.NotEmpty(responseContent);
-                RatingCurveValue ratingCurveValue = JsonSerializer.Deserialize<RatingCurveValue>(responseContent);
-                Assert.Equal(ratingCurveValueList[0].RatingCurveValueID, ratingCurveValue.RatingCurveValueID);
+            // testing Get(RatingCurveValueID)
+            string urlID = url + "/" + ratingCurveValueList[0].RatingCurveValueID;
+            response = await httpClient.GetAsync(urlID);
+            Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
+            responseContent = await response.Content.ReadAsStringAsync();
+            Assert.NotEmpty(responseContent);
+            RatingCurveValue ratingCurveValue = JsonSerializer.Deserialize<RatingCurveValue>(responseContent);
+            Assert.Equal(ratingCurveValueList[0].RatingCurveValueID, ratingCurveValue.RatingCurveValueID);
 
                 // testing Post(RatingCurveValue)
                 ratingCurveValue.RatingCurveValueID = 0;
-                string content = JsonSerializer.Serialize<RatingCurveValue>(ratingCurveValue);
-                HttpContent httpContent = new StringContent(content);
-                httpContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
-                response = await httpClient.PostAsync(url, httpContent);
-                Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
-                responseContent = await response.Content.ReadAsStringAsync();
-                Assert.NotEmpty(responseContent);
-                ratingCurveValue = JsonSerializer.Deserialize<RatingCurveValue>(responseContent);
-                Assert.NotNull(ratingCurveValue);
+            string content = JsonSerializer.Serialize<RatingCurveValue>(ratingCurveValue);
+            HttpContent httpContent = new StringContent(content);
+            httpContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+            response = await httpClient.PostAsync(url, httpContent);
+            Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
+            responseContent = await response.Content.ReadAsStringAsync();
+            Assert.NotEmpty(responseContent);
+            ratingCurveValue = JsonSerializer.Deserialize<RatingCurveValue>(responseContent);
+            Assert.NotNull(ratingCurveValue);
 
-                // testing Put(RatingCurveValue)
-                content = JsonSerializer.Serialize<RatingCurveValue>(ratingCurveValue);
-                httpContent = new StringContent(content);
-                httpContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
-                response = await httpClient.PutAsync(url, httpContent);
-                Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
-                responseContent = await response.Content.ReadAsStringAsync();
-                Assert.NotEmpty(responseContent);
-                ratingCurveValue = JsonSerializer.Deserialize<RatingCurveValue>(responseContent);
-                Assert.NotNull(ratingCurveValue);
+            // testing Put(RatingCurveValue)
+            content = JsonSerializer.Serialize<RatingCurveValue>(ratingCurveValue);
+            httpContent = new StringContent(content);
+            httpContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+            response = await httpClient.PutAsync(url, httpContent);
+            Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
+            responseContent = await response.Content.ReadAsStringAsync();
+            Assert.NotEmpty(responseContent);
+            ratingCurveValue = JsonSerializer.Deserialize<RatingCurveValue>(responseContent);
+            Assert.NotNull(ratingCurveValue);
 
-                // testing Delete(RatingCurveValueID)
-                urlID = url + "/" + ratingCurveValue.RatingCurveValueID;
-                response = await httpClient.DeleteAsync(urlID);
-                Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
-                responseContent = await response.Content.ReadAsStringAsync();
-                Assert.NotEmpty(responseContent);
-                bool retBool = JsonSerializer.Deserialize<bool>(responseContent);
-                Assert.True(retBool);
-            }
+            // testing Delete(RatingCurveValueID)
+            urlID = url + "/" + ratingCurveValue.RatingCurveValueID;
+            response = await httpClient.DeleteAsync(urlID);
+            Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
+            responseContent = await response.Content.ReadAsStringAsync();
+            Assert.NotEmpty(responseContent);
+            bool retBool = JsonSerializer.Deserialize<bool>(responseContent);
+            Assert.True(retBool);
         }
         #endregion Functions public
 

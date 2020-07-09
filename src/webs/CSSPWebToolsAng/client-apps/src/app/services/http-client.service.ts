@@ -26,6 +26,12 @@ export class HttpClientService {
     this.DoReload();
   }
 
+  DoCatchErrorSingle<T>(listModel$: BehaviorSubject<T>, httpRequestModel$: BehaviorSubject<HttpRequestModel>, e: any) {
+    listModel$.next(null);
+    httpRequestModel$.next(<HttpRequestModel>{ Working: false, Error: <HttpErrorResponse>e, Status: 'Error' });
+    this.DoReload();
+  }
+
   DoReload() {
     this.router.navigateByUrl('', { skipLocationChange: true }).then(() => {
       this.router.navigate([`/${this.oldURL}`]);
@@ -45,6 +51,16 @@ export class HttpClientService {
     if (command === HttpClientCommand.Delete) {
       const index = listModel$.getValue().indexOf(t);
       listModel$.getValue().splice(index, 1);
+    }
+
+    listModel$.next(listModel$.getValue());
+    httpRequestModel$.next(<HttpRequestModel>{ Working: false, Error: null, Status: 'ok' });
+    this.DoReload();
+  }
+
+  DoSuccessSingle<T>(listModel$: BehaviorSubject<T>, httpRequestModel$: BehaviorSubject<HttpRequestModel>, x: any, command: HttpClientCommand, t?: T) {
+    if (command === HttpClientCommand.Get) {
+      listModel$.next(<T>x);
     }
 
     listModel$.next(listModel$.getValue());

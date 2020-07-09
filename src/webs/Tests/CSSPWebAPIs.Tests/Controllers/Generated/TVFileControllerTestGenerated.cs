@@ -72,61 +72,58 @@ namespace CSSPWebAPIs.Tests.Controllers
         {
             Assert.True(await Setup(culture));
 
-            using (TransactionScope ts = new TransactionScope())
-            {
-                HttpClient httpClient = new HttpClient();
-                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", userModel.Token);
+            HttpClient httpClient = new HttpClient();
+            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", userModel.Token);
 
-                // testing Get
-                string url = "http://localhost:4444/api/" + culture + "/TVFile";
-                var response = await httpClient.GetAsync(url);
-                Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
-                string responseContent = await response.Content.ReadAsStringAsync();
-                Assert.NotEmpty(responseContent);
-                List<TVFile> tvFileList = JsonSerializer.Deserialize<List<TVFile>>(responseContent);
-                Assert.True(tvFileList.Count > 0);
+            // testing Get
+            string url = "http://localhost:4444/api/" + culture + "/TVFile";
+            var response = await httpClient.GetAsync(url);
+            Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
+            string responseContent = await response.Content.ReadAsStringAsync();
+            Assert.NotEmpty(responseContent);
+            List<TVFile> tvFileList = JsonSerializer.Deserialize<List<TVFile>>(responseContent);
+            Assert.True(tvFileList.Count > 0);
 
-                // testing Get(TVFileID)
-                string urlID = url + "/" + tvFileList[0].TVFileID;
-                response = await httpClient.GetAsync(urlID);
-                Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
-                responseContent = await response.Content.ReadAsStringAsync();
-                Assert.NotEmpty(responseContent);
-                TVFile tvFile = JsonSerializer.Deserialize<TVFile>(responseContent);
-                Assert.Equal(tvFileList[0].TVFileID, tvFile.TVFileID);
+            // testing Get(TVFileID)
+            string urlID = url + "/" + tvFileList[0].TVFileID;
+            response = await httpClient.GetAsync(urlID);
+            Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
+            responseContent = await response.Content.ReadAsStringAsync();
+            Assert.NotEmpty(responseContent);
+            TVFile tvFile = JsonSerializer.Deserialize<TVFile>(responseContent);
+            Assert.Equal(tvFileList[0].TVFileID, tvFile.TVFileID);
 
                 // testing Post(TVFile)
                 tvFile.TVFileID = 0;
-                string content = JsonSerializer.Serialize<TVFile>(tvFile);
-                HttpContent httpContent = new StringContent(content);
-                httpContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
-                response = await httpClient.PostAsync(url, httpContent);
-                Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
-                responseContent = await response.Content.ReadAsStringAsync();
-                Assert.NotEmpty(responseContent);
-                tvFile = JsonSerializer.Deserialize<TVFile>(responseContent);
-                Assert.NotNull(tvFile);
+            string content = JsonSerializer.Serialize<TVFile>(tvFile);
+            HttpContent httpContent = new StringContent(content);
+            httpContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+            response = await httpClient.PostAsync(url, httpContent);
+            Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
+            responseContent = await response.Content.ReadAsStringAsync();
+            Assert.NotEmpty(responseContent);
+            tvFile = JsonSerializer.Deserialize<TVFile>(responseContent);
+            Assert.NotNull(tvFile);
 
-                // testing Put(TVFile)
-                content = JsonSerializer.Serialize<TVFile>(tvFile);
-                httpContent = new StringContent(content);
-                httpContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
-                response = await httpClient.PutAsync(url, httpContent);
-                Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
-                responseContent = await response.Content.ReadAsStringAsync();
-                Assert.NotEmpty(responseContent);
-                tvFile = JsonSerializer.Deserialize<TVFile>(responseContent);
-                Assert.NotNull(tvFile);
+            // testing Put(TVFile)
+            content = JsonSerializer.Serialize<TVFile>(tvFile);
+            httpContent = new StringContent(content);
+            httpContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+            response = await httpClient.PutAsync(url, httpContent);
+            Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
+            responseContent = await response.Content.ReadAsStringAsync();
+            Assert.NotEmpty(responseContent);
+            tvFile = JsonSerializer.Deserialize<TVFile>(responseContent);
+            Assert.NotNull(tvFile);
 
-                // testing Delete(TVFileID)
-                urlID = url + "/" + tvFile.TVFileID;
-                response = await httpClient.DeleteAsync(urlID);
-                Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
-                responseContent = await response.Content.ReadAsStringAsync();
-                Assert.NotEmpty(responseContent);
-                bool retBool = JsonSerializer.Deserialize<bool>(responseContent);
-                Assert.True(retBool);
-            }
+            // testing Delete(TVFileID)
+            urlID = url + "/" + tvFile.TVFileID;
+            response = await httpClient.DeleteAsync(urlID);
+            Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
+            responseContent = await response.Content.ReadAsStringAsync();
+            Assert.NotEmpty(responseContent);
+            bool retBool = JsonSerializer.Deserialize<bool>(responseContent);
+            Assert.True(retBool);
         }
         #endregion Functions public
 

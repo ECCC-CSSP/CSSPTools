@@ -72,61 +72,58 @@ namespace CSSPWebAPIs.Tests.Controllers
         {
             Assert.True(await Setup(culture));
 
-            using (TransactionScope ts = new TransactionScope())
-            {
-                HttpClient httpClient = new HttpClient();
-                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", userModel.Token);
+            HttpClient httpClient = new HttpClient();
+            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", userModel.Token);
 
-                // testing Get
-                string url = "http://localhost:4444/api/" + culture + "/ContactPreference";
-                var response = await httpClient.GetAsync(url);
-                Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
-                string responseContent = await response.Content.ReadAsStringAsync();
-                Assert.NotEmpty(responseContent);
-                List<ContactPreference> contactPreferenceList = JsonSerializer.Deserialize<List<ContactPreference>>(responseContent);
-                Assert.True(contactPreferenceList.Count > 0);
+            // testing Get
+            string url = "http://localhost:4444/api/" + culture + "/ContactPreference";
+            var response = await httpClient.GetAsync(url);
+            Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
+            string responseContent = await response.Content.ReadAsStringAsync();
+            Assert.NotEmpty(responseContent);
+            List<ContactPreference> contactPreferenceList = JsonSerializer.Deserialize<List<ContactPreference>>(responseContent);
+            Assert.True(contactPreferenceList.Count > 0);
 
-                // testing Get(ContactPreferenceID)
-                string urlID = url + "/" + contactPreferenceList[0].ContactPreferenceID;
-                response = await httpClient.GetAsync(urlID);
-                Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
-                responseContent = await response.Content.ReadAsStringAsync();
-                Assert.NotEmpty(responseContent);
-                ContactPreference contactPreference = JsonSerializer.Deserialize<ContactPreference>(responseContent);
-                Assert.Equal(contactPreferenceList[0].ContactPreferenceID, contactPreference.ContactPreferenceID);
+            // testing Get(ContactPreferenceID)
+            string urlID = url + "/" + contactPreferenceList[0].ContactPreferenceID;
+            response = await httpClient.GetAsync(urlID);
+            Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
+            responseContent = await response.Content.ReadAsStringAsync();
+            Assert.NotEmpty(responseContent);
+            ContactPreference contactPreference = JsonSerializer.Deserialize<ContactPreference>(responseContent);
+            Assert.Equal(contactPreferenceList[0].ContactPreferenceID, contactPreference.ContactPreferenceID);
 
                 // testing Post(ContactPreference)
                 contactPreference.ContactPreferenceID = 0;
-                string content = JsonSerializer.Serialize<ContactPreference>(contactPreference);
-                HttpContent httpContent = new StringContent(content);
-                httpContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
-                response = await httpClient.PostAsync(url, httpContent);
-                Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
-                responseContent = await response.Content.ReadAsStringAsync();
-                Assert.NotEmpty(responseContent);
-                contactPreference = JsonSerializer.Deserialize<ContactPreference>(responseContent);
-                Assert.NotNull(contactPreference);
+            string content = JsonSerializer.Serialize<ContactPreference>(contactPreference);
+            HttpContent httpContent = new StringContent(content);
+            httpContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+            response = await httpClient.PostAsync(url, httpContent);
+            Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
+            responseContent = await response.Content.ReadAsStringAsync();
+            Assert.NotEmpty(responseContent);
+            contactPreference = JsonSerializer.Deserialize<ContactPreference>(responseContent);
+            Assert.NotNull(contactPreference);
 
-                // testing Put(ContactPreference)
-                content = JsonSerializer.Serialize<ContactPreference>(contactPreference);
-                httpContent = new StringContent(content);
-                httpContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
-                response = await httpClient.PutAsync(url, httpContent);
-                Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
-                responseContent = await response.Content.ReadAsStringAsync();
-                Assert.NotEmpty(responseContent);
-                contactPreference = JsonSerializer.Deserialize<ContactPreference>(responseContent);
-                Assert.NotNull(contactPreference);
+            // testing Put(ContactPreference)
+            content = JsonSerializer.Serialize<ContactPreference>(contactPreference);
+            httpContent = new StringContent(content);
+            httpContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+            response = await httpClient.PutAsync(url, httpContent);
+            Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
+            responseContent = await response.Content.ReadAsStringAsync();
+            Assert.NotEmpty(responseContent);
+            contactPreference = JsonSerializer.Deserialize<ContactPreference>(responseContent);
+            Assert.NotNull(contactPreference);
 
-                // testing Delete(ContactPreferenceID)
-                urlID = url + "/" + contactPreference.ContactPreferenceID;
-                response = await httpClient.DeleteAsync(urlID);
-                Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
-                responseContent = await response.Content.ReadAsStringAsync();
-                Assert.NotEmpty(responseContent);
-                bool retBool = JsonSerializer.Deserialize<bool>(responseContent);
-                Assert.True(retBool);
-            }
+            // testing Delete(ContactPreferenceID)
+            urlID = url + "/" + contactPreference.ContactPreferenceID;
+            response = await httpClient.DeleteAsync(urlID);
+            Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
+            responseContent = await response.Content.ReadAsStringAsync();
+            Assert.NotEmpty(responseContent);
+            bool retBool = JsonSerializer.Deserialize<bool>(responseContent);
+            Assert.True(retBool);
         }
         #endregion Functions public
 

@@ -42,6 +42,8 @@ namespace CSSPWebServices.Services
             try
             {
                 webHydrometricDataValue.HydrometricDataValueList = await GetHydrometricDataValueListForHydrometricSite(tvItem.TVItemID);
+
+                await DoStore<WebHydrometricDataValue>(webHydrometricDataValue, $"WebHydrometricDataValue_{TVItemID}.gz");
             }
             catch (Exception ex)
             {

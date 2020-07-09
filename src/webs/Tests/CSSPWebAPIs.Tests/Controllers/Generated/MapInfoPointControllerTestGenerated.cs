@@ -72,61 +72,58 @@ namespace CSSPWebAPIs.Tests.Controllers
         {
             Assert.True(await Setup(culture));
 
-            using (TransactionScope ts = new TransactionScope())
-            {
-                HttpClient httpClient = new HttpClient();
-                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", userModel.Token);
+            HttpClient httpClient = new HttpClient();
+            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", userModel.Token);
 
-                // testing Get
-                string url = "http://localhost:4444/api/" + culture + "/MapInfoPoint";
-                var response = await httpClient.GetAsync(url);
-                Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
-                string responseContent = await response.Content.ReadAsStringAsync();
-                Assert.NotEmpty(responseContent);
-                List<MapInfoPoint> mapInfoPointList = JsonSerializer.Deserialize<List<MapInfoPoint>>(responseContent);
-                Assert.True(mapInfoPointList.Count > 0);
+            // testing Get
+            string url = "http://localhost:4444/api/" + culture + "/MapInfoPoint";
+            var response = await httpClient.GetAsync(url);
+            Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
+            string responseContent = await response.Content.ReadAsStringAsync();
+            Assert.NotEmpty(responseContent);
+            List<MapInfoPoint> mapInfoPointList = JsonSerializer.Deserialize<List<MapInfoPoint>>(responseContent);
+            Assert.True(mapInfoPointList.Count > 0);
 
-                // testing Get(MapInfoPointID)
-                string urlID = url + "/" + mapInfoPointList[0].MapInfoPointID;
-                response = await httpClient.GetAsync(urlID);
-                Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
-                responseContent = await response.Content.ReadAsStringAsync();
-                Assert.NotEmpty(responseContent);
-                MapInfoPoint mapInfoPoint = JsonSerializer.Deserialize<MapInfoPoint>(responseContent);
-                Assert.Equal(mapInfoPointList[0].MapInfoPointID, mapInfoPoint.MapInfoPointID);
+            // testing Get(MapInfoPointID)
+            string urlID = url + "/" + mapInfoPointList[0].MapInfoPointID;
+            response = await httpClient.GetAsync(urlID);
+            Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
+            responseContent = await response.Content.ReadAsStringAsync();
+            Assert.NotEmpty(responseContent);
+            MapInfoPoint mapInfoPoint = JsonSerializer.Deserialize<MapInfoPoint>(responseContent);
+            Assert.Equal(mapInfoPointList[0].MapInfoPointID, mapInfoPoint.MapInfoPointID);
 
                 // testing Post(MapInfoPoint)
                 mapInfoPoint.MapInfoPointID = 0;
-                string content = JsonSerializer.Serialize<MapInfoPoint>(mapInfoPoint);
-                HttpContent httpContent = new StringContent(content);
-                httpContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
-                response = await httpClient.PostAsync(url, httpContent);
-                Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
-                responseContent = await response.Content.ReadAsStringAsync();
-                Assert.NotEmpty(responseContent);
-                mapInfoPoint = JsonSerializer.Deserialize<MapInfoPoint>(responseContent);
-                Assert.NotNull(mapInfoPoint);
+            string content = JsonSerializer.Serialize<MapInfoPoint>(mapInfoPoint);
+            HttpContent httpContent = new StringContent(content);
+            httpContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+            response = await httpClient.PostAsync(url, httpContent);
+            Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
+            responseContent = await response.Content.ReadAsStringAsync();
+            Assert.NotEmpty(responseContent);
+            mapInfoPoint = JsonSerializer.Deserialize<MapInfoPoint>(responseContent);
+            Assert.NotNull(mapInfoPoint);
 
-                // testing Put(MapInfoPoint)
-                content = JsonSerializer.Serialize<MapInfoPoint>(mapInfoPoint);
-                httpContent = new StringContent(content);
-                httpContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
-                response = await httpClient.PutAsync(url, httpContent);
-                Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
-                responseContent = await response.Content.ReadAsStringAsync();
-                Assert.NotEmpty(responseContent);
-                mapInfoPoint = JsonSerializer.Deserialize<MapInfoPoint>(responseContent);
-                Assert.NotNull(mapInfoPoint);
+            // testing Put(MapInfoPoint)
+            content = JsonSerializer.Serialize<MapInfoPoint>(mapInfoPoint);
+            httpContent = new StringContent(content);
+            httpContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+            response = await httpClient.PutAsync(url, httpContent);
+            Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
+            responseContent = await response.Content.ReadAsStringAsync();
+            Assert.NotEmpty(responseContent);
+            mapInfoPoint = JsonSerializer.Deserialize<MapInfoPoint>(responseContent);
+            Assert.NotNull(mapInfoPoint);
 
-                // testing Delete(MapInfoPointID)
-                urlID = url + "/" + mapInfoPoint.MapInfoPointID;
-                response = await httpClient.DeleteAsync(urlID);
-                Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
-                responseContent = await response.Content.ReadAsStringAsync();
-                Assert.NotEmpty(responseContent);
-                bool retBool = JsonSerializer.Deserialize<bool>(responseContent);
-                Assert.True(retBool);
-            }
+            // testing Delete(MapInfoPointID)
+            urlID = url + "/" + mapInfoPoint.MapInfoPointID;
+            response = await httpClient.DeleteAsync(urlID);
+            Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
+            responseContent = await response.Content.ReadAsStringAsync();
+            Assert.NotEmpty(responseContent);
+            bool retBool = JsonSerializer.Deserialize<bool>(responseContent);
+            Assert.True(retBool);
         }
         #endregion Functions public
 

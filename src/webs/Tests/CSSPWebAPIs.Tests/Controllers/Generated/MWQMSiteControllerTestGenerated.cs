@@ -72,61 +72,58 @@ namespace CSSPWebAPIs.Tests.Controllers
         {
             Assert.True(await Setup(culture));
 
-            using (TransactionScope ts = new TransactionScope())
-            {
-                HttpClient httpClient = new HttpClient();
-                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", userModel.Token);
+            HttpClient httpClient = new HttpClient();
+            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", userModel.Token);
 
-                // testing Get
-                string url = "http://localhost:4444/api/" + culture + "/MWQMSite";
-                var response = await httpClient.GetAsync(url);
-                Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
-                string responseContent = await response.Content.ReadAsStringAsync();
-                Assert.NotEmpty(responseContent);
-                List<MWQMSite> mwqmSiteList = JsonSerializer.Deserialize<List<MWQMSite>>(responseContent);
-                Assert.True(mwqmSiteList.Count > 0);
+            // testing Get
+            string url = "http://localhost:4444/api/" + culture + "/MWQMSite";
+            var response = await httpClient.GetAsync(url);
+            Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
+            string responseContent = await response.Content.ReadAsStringAsync();
+            Assert.NotEmpty(responseContent);
+            List<MWQMSite> mwqmSiteList = JsonSerializer.Deserialize<List<MWQMSite>>(responseContent);
+            Assert.True(mwqmSiteList.Count > 0);
 
-                // testing Get(MWQMSiteID)
-                string urlID = url + "/" + mwqmSiteList[0].MWQMSiteID;
-                response = await httpClient.GetAsync(urlID);
-                Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
-                responseContent = await response.Content.ReadAsStringAsync();
-                Assert.NotEmpty(responseContent);
-                MWQMSite mwqmSite = JsonSerializer.Deserialize<MWQMSite>(responseContent);
-                Assert.Equal(mwqmSiteList[0].MWQMSiteID, mwqmSite.MWQMSiteID);
+            // testing Get(MWQMSiteID)
+            string urlID = url + "/" + mwqmSiteList[0].MWQMSiteID;
+            response = await httpClient.GetAsync(urlID);
+            Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
+            responseContent = await response.Content.ReadAsStringAsync();
+            Assert.NotEmpty(responseContent);
+            MWQMSite mwqmSite = JsonSerializer.Deserialize<MWQMSite>(responseContent);
+            Assert.Equal(mwqmSiteList[0].MWQMSiteID, mwqmSite.MWQMSiteID);
 
                 // testing Post(MWQMSite)
                 mwqmSite.MWQMSiteID = 0;
-                string content = JsonSerializer.Serialize<MWQMSite>(mwqmSite);
-                HttpContent httpContent = new StringContent(content);
-                httpContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
-                response = await httpClient.PostAsync(url, httpContent);
-                Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
-                responseContent = await response.Content.ReadAsStringAsync();
-                Assert.NotEmpty(responseContent);
-                mwqmSite = JsonSerializer.Deserialize<MWQMSite>(responseContent);
-                Assert.NotNull(mwqmSite);
+            string content = JsonSerializer.Serialize<MWQMSite>(mwqmSite);
+            HttpContent httpContent = new StringContent(content);
+            httpContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+            response = await httpClient.PostAsync(url, httpContent);
+            Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
+            responseContent = await response.Content.ReadAsStringAsync();
+            Assert.NotEmpty(responseContent);
+            mwqmSite = JsonSerializer.Deserialize<MWQMSite>(responseContent);
+            Assert.NotNull(mwqmSite);
 
-                // testing Put(MWQMSite)
-                content = JsonSerializer.Serialize<MWQMSite>(mwqmSite);
-                httpContent = new StringContent(content);
-                httpContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
-                response = await httpClient.PutAsync(url, httpContent);
-                Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
-                responseContent = await response.Content.ReadAsStringAsync();
-                Assert.NotEmpty(responseContent);
-                mwqmSite = JsonSerializer.Deserialize<MWQMSite>(responseContent);
-                Assert.NotNull(mwqmSite);
+            // testing Put(MWQMSite)
+            content = JsonSerializer.Serialize<MWQMSite>(mwqmSite);
+            httpContent = new StringContent(content);
+            httpContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+            response = await httpClient.PutAsync(url, httpContent);
+            Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
+            responseContent = await response.Content.ReadAsStringAsync();
+            Assert.NotEmpty(responseContent);
+            mwqmSite = JsonSerializer.Deserialize<MWQMSite>(responseContent);
+            Assert.NotNull(mwqmSite);
 
-                // testing Delete(MWQMSiteID)
-                urlID = url + "/" + mwqmSite.MWQMSiteID;
-                response = await httpClient.DeleteAsync(urlID);
-                Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
-                responseContent = await response.Content.ReadAsStringAsync();
-                Assert.NotEmpty(responseContent);
-                bool retBool = JsonSerializer.Deserialize<bool>(responseContent);
-                Assert.True(retBool);
-            }
+            // testing Delete(MWQMSiteID)
+            urlID = url + "/" + mwqmSite.MWQMSiteID;
+            response = await httpClient.DeleteAsync(urlID);
+            Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
+            responseContent = await response.Content.ReadAsStringAsync();
+            Assert.NotEmpty(responseContent);
+            bool retBool = JsonSerializer.Deserialize<bool>(responseContent);
+            Assert.True(retBool);
         }
         #endregion Functions public
 

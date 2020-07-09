@@ -72,61 +72,58 @@ namespace CSSPWebAPIs.Tests.Controllers
         {
             Assert.True(await Setup(culture));
 
-            using (TransactionScope ts = new TransactionScope())
-            {
-                HttpClient httpClient = new HttpClient();
-                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", userModel.Token);
+            HttpClient httpClient = new HttpClient();
+            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", userModel.Token);
 
-                // testing Get
-                string url = "http://localhost:4444/api/" + culture + "/PolSourceSiteEffect";
-                var response = await httpClient.GetAsync(url);
-                Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
-                string responseContent = await response.Content.ReadAsStringAsync();
-                Assert.NotEmpty(responseContent);
-                List<PolSourceSiteEffect> polSourceSiteEffectList = JsonSerializer.Deserialize<List<PolSourceSiteEffect>>(responseContent);
-                Assert.True(polSourceSiteEffectList.Count > 0);
+            // testing Get
+            string url = "http://localhost:4444/api/" + culture + "/PolSourceSiteEffect";
+            var response = await httpClient.GetAsync(url);
+            Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
+            string responseContent = await response.Content.ReadAsStringAsync();
+            Assert.NotEmpty(responseContent);
+            List<PolSourceSiteEffect> polSourceSiteEffectList = JsonSerializer.Deserialize<List<PolSourceSiteEffect>>(responseContent);
+            Assert.True(polSourceSiteEffectList.Count > 0);
 
-                // testing Get(PolSourceSiteEffectID)
-                string urlID = url + "/" + polSourceSiteEffectList[0].PolSourceSiteEffectID;
-                response = await httpClient.GetAsync(urlID);
-                Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
-                responseContent = await response.Content.ReadAsStringAsync();
-                Assert.NotEmpty(responseContent);
-                PolSourceSiteEffect polSourceSiteEffect = JsonSerializer.Deserialize<PolSourceSiteEffect>(responseContent);
-                Assert.Equal(polSourceSiteEffectList[0].PolSourceSiteEffectID, polSourceSiteEffect.PolSourceSiteEffectID);
+            // testing Get(PolSourceSiteEffectID)
+            string urlID = url + "/" + polSourceSiteEffectList[0].PolSourceSiteEffectID;
+            response = await httpClient.GetAsync(urlID);
+            Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
+            responseContent = await response.Content.ReadAsStringAsync();
+            Assert.NotEmpty(responseContent);
+            PolSourceSiteEffect polSourceSiteEffect = JsonSerializer.Deserialize<PolSourceSiteEffect>(responseContent);
+            Assert.Equal(polSourceSiteEffectList[0].PolSourceSiteEffectID, polSourceSiteEffect.PolSourceSiteEffectID);
 
                 // testing Post(PolSourceSiteEffect)
                 polSourceSiteEffect.PolSourceSiteEffectID = 0;
-                string content = JsonSerializer.Serialize<PolSourceSiteEffect>(polSourceSiteEffect);
-                HttpContent httpContent = new StringContent(content);
-                httpContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
-                response = await httpClient.PostAsync(url, httpContent);
-                Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
-                responseContent = await response.Content.ReadAsStringAsync();
-                Assert.NotEmpty(responseContent);
-                polSourceSiteEffect = JsonSerializer.Deserialize<PolSourceSiteEffect>(responseContent);
-                Assert.NotNull(polSourceSiteEffect);
+            string content = JsonSerializer.Serialize<PolSourceSiteEffect>(polSourceSiteEffect);
+            HttpContent httpContent = new StringContent(content);
+            httpContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+            response = await httpClient.PostAsync(url, httpContent);
+            Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
+            responseContent = await response.Content.ReadAsStringAsync();
+            Assert.NotEmpty(responseContent);
+            polSourceSiteEffect = JsonSerializer.Deserialize<PolSourceSiteEffect>(responseContent);
+            Assert.NotNull(polSourceSiteEffect);
 
-                // testing Put(PolSourceSiteEffect)
-                content = JsonSerializer.Serialize<PolSourceSiteEffect>(polSourceSiteEffect);
-                httpContent = new StringContent(content);
-                httpContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
-                response = await httpClient.PutAsync(url, httpContent);
-                Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
-                responseContent = await response.Content.ReadAsStringAsync();
-                Assert.NotEmpty(responseContent);
-                polSourceSiteEffect = JsonSerializer.Deserialize<PolSourceSiteEffect>(responseContent);
-                Assert.NotNull(polSourceSiteEffect);
+            // testing Put(PolSourceSiteEffect)
+            content = JsonSerializer.Serialize<PolSourceSiteEffect>(polSourceSiteEffect);
+            httpContent = new StringContent(content);
+            httpContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+            response = await httpClient.PutAsync(url, httpContent);
+            Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
+            responseContent = await response.Content.ReadAsStringAsync();
+            Assert.NotEmpty(responseContent);
+            polSourceSiteEffect = JsonSerializer.Deserialize<PolSourceSiteEffect>(responseContent);
+            Assert.NotNull(polSourceSiteEffect);
 
-                // testing Delete(PolSourceSiteEffectID)
-                urlID = url + "/" + polSourceSiteEffect.PolSourceSiteEffectID;
-                response = await httpClient.DeleteAsync(urlID);
-                Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
-                responseContent = await response.Content.ReadAsStringAsync();
-                Assert.NotEmpty(responseContent);
-                bool retBool = JsonSerializer.Deserialize<bool>(responseContent);
-                Assert.True(retBool);
-            }
+            // testing Delete(PolSourceSiteEffectID)
+            urlID = url + "/" + polSourceSiteEffect.PolSourceSiteEffectID;
+            response = await httpClient.DeleteAsync(urlID);
+            Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
+            responseContent = await response.Content.ReadAsStringAsync();
+            Assert.NotEmpty(responseContent);
+            bool retBool = JsonSerializer.Deserialize<bool>(responseContent);
+            Assert.True(retBool);
         }
         #endregion Functions public
 

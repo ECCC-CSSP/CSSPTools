@@ -72,61 +72,58 @@ namespace CSSPWebAPIs.Tests.Controllers
         {
             Assert.True(await Setup(culture));
 
-            using (TransactionScope ts = new TransactionScope())
-            {
-                HttpClient httpClient = new HttpClient();
-                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", userModel.Token);
+            HttpClient httpClient = new HttpClient();
+            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", userModel.Token);
 
-                // testing Get
-                string url = "http://localhost:4444/api/" + culture + "/RainExceedance";
-                var response = await httpClient.GetAsync(url);
-                Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
-                string responseContent = await response.Content.ReadAsStringAsync();
-                Assert.NotEmpty(responseContent);
-                List<RainExceedance> rainExceedanceList = JsonSerializer.Deserialize<List<RainExceedance>>(responseContent);
-                Assert.True(rainExceedanceList.Count > 0);
+            // testing Get
+            string url = "http://localhost:4444/api/" + culture + "/RainExceedance";
+            var response = await httpClient.GetAsync(url);
+            Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
+            string responseContent = await response.Content.ReadAsStringAsync();
+            Assert.NotEmpty(responseContent);
+            List<RainExceedance> rainExceedanceList = JsonSerializer.Deserialize<List<RainExceedance>>(responseContent);
+            Assert.True(rainExceedanceList.Count > 0);
 
-                // testing Get(RainExceedanceID)
-                string urlID = url + "/" + rainExceedanceList[0].RainExceedanceID;
-                response = await httpClient.GetAsync(urlID);
-                Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
-                responseContent = await response.Content.ReadAsStringAsync();
-                Assert.NotEmpty(responseContent);
-                RainExceedance rainExceedance = JsonSerializer.Deserialize<RainExceedance>(responseContent);
-                Assert.Equal(rainExceedanceList[0].RainExceedanceID, rainExceedance.RainExceedanceID);
+            // testing Get(RainExceedanceID)
+            string urlID = url + "/" + rainExceedanceList[0].RainExceedanceID;
+            response = await httpClient.GetAsync(urlID);
+            Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
+            responseContent = await response.Content.ReadAsStringAsync();
+            Assert.NotEmpty(responseContent);
+            RainExceedance rainExceedance = JsonSerializer.Deserialize<RainExceedance>(responseContent);
+            Assert.Equal(rainExceedanceList[0].RainExceedanceID, rainExceedance.RainExceedanceID);
 
                 // testing Post(RainExceedance)
                 rainExceedance.RainExceedanceID = 0;
-                string content = JsonSerializer.Serialize<RainExceedance>(rainExceedance);
-                HttpContent httpContent = new StringContent(content);
-                httpContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
-                response = await httpClient.PostAsync(url, httpContent);
-                Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
-                responseContent = await response.Content.ReadAsStringAsync();
-                Assert.NotEmpty(responseContent);
-                rainExceedance = JsonSerializer.Deserialize<RainExceedance>(responseContent);
-                Assert.NotNull(rainExceedance);
+            string content = JsonSerializer.Serialize<RainExceedance>(rainExceedance);
+            HttpContent httpContent = new StringContent(content);
+            httpContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+            response = await httpClient.PostAsync(url, httpContent);
+            Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
+            responseContent = await response.Content.ReadAsStringAsync();
+            Assert.NotEmpty(responseContent);
+            rainExceedance = JsonSerializer.Deserialize<RainExceedance>(responseContent);
+            Assert.NotNull(rainExceedance);
 
-                // testing Put(RainExceedance)
-                content = JsonSerializer.Serialize<RainExceedance>(rainExceedance);
-                httpContent = new StringContent(content);
-                httpContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
-                response = await httpClient.PutAsync(url, httpContent);
-                Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
-                responseContent = await response.Content.ReadAsStringAsync();
-                Assert.NotEmpty(responseContent);
-                rainExceedance = JsonSerializer.Deserialize<RainExceedance>(responseContent);
-                Assert.NotNull(rainExceedance);
+            // testing Put(RainExceedance)
+            content = JsonSerializer.Serialize<RainExceedance>(rainExceedance);
+            httpContent = new StringContent(content);
+            httpContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+            response = await httpClient.PutAsync(url, httpContent);
+            Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
+            responseContent = await response.Content.ReadAsStringAsync();
+            Assert.NotEmpty(responseContent);
+            rainExceedance = JsonSerializer.Deserialize<RainExceedance>(responseContent);
+            Assert.NotNull(rainExceedance);
 
-                // testing Delete(RainExceedanceID)
-                urlID = url + "/" + rainExceedance.RainExceedanceID;
-                response = await httpClient.DeleteAsync(urlID);
-                Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
-                responseContent = await response.Content.ReadAsStringAsync();
-                Assert.NotEmpty(responseContent);
-                bool retBool = JsonSerializer.Deserialize<bool>(responseContent);
-                Assert.True(retBool);
-            }
+            // testing Delete(RainExceedanceID)
+            urlID = url + "/" + rainExceedance.RainExceedanceID;
+            response = await httpClient.DeleteAsync(urlID);
+            Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
+            responseContent = await response.Content.ReadAsStringAsync();
+            Assert.NotEmpty(responseContent);
+            bool retBool = JsonSerializer.Deserialize<bool>(responseContent);
+            Assert.True(retBool);
         }
         #endregion Functions public
 

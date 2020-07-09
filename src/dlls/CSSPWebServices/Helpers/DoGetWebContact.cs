@@ -35,6 +35,8 @@ namespace CSSPWebServices.Services
             try
             {
                 webContact.ContactList = await GetAllContact();
+
+                await DoStore<WebContact>(webContact, $"WebContact.gz");
             }
             catch (Exception ex)
             {

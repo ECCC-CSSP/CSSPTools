@@ -5,6 +5,31 @@
  *
  */
 
+import { TVItem } from 'src/app/models/generated/TVItem.model';
+import { TVItemLanguage } from 'src/app/models/generated/TVItemLanguage.model';
+import { TVItemStat } from 'src/app/models/generated/TVItemStat.model';
+import { MapInfo } from 'src/app/models/generated/MapInfo.model';
+import { MapInfoPoint } from 'src/app/models/generated/MapInfoPoint.model';
+import { TVFile } from 'src/app/models/generated/TVFile.model';
+import { TVItemLink } from 'src/app/models/generated/TVItemLink.model';
+import { TVFileLanguage } from 'src/app/models/generated/TVFileLanguage.model';
+
 export interface AddressTextModel {
     Title?: string
+}
+
+export interface WebRoot {
+    TVItem: TVItem;
+    TVItemLinkList: TVItemLink[];
+    TVItemLanguageList: TVItemLanguage[];
+    TVItemStatList: TVItemStat[];
+    MapInfoList: MapInfo[];
+    MapInfoPointList: MapInfoPoint[];
+    TVFileList: TVFile[];
+    TVFileLanguageList: TVFileLanguage[];
+    TVItemCountryList: TVItem[];
+    TVItemLanguageCountryList: TVItemLanguage[];
+    TVItemStatCountryList: TVItemStat[];
+    MapInfoCountryList: MapInfo[];
+    MapInfoPointCountryList: MapInfoPoint[];
 }

@@ -36,12 +36,14 @@ namespace CSSPWebServices.Services
                 return BadRequest($"TVItem could not be found for TVItemID = [{ TVItemID }] and TVType = [{ TVTypeEnum.Subsector }]");
             }
 
-            WebMWQMRun webRun = new WebMWQMRun();
+            WebMWQMRun webMWQMRun = new WebMWQMRun();
 
             try
             {
-                webRun.MWQMRunList = await GetMWQMRunListFromSubsector(tvItem);
-                webRun.MWQMRunLanguageList = await GetMWQMRunLanguageListFromSubsector(tvItem);
+                webMWQMRun.MWQMRunList = await GetMWQMRunListFromSubsector(tvItem);
+                webMWQMRun.MWQMRunLanguageList = await GetMWQMRunLanguageListFromSubsector(tvItem);
+
+                await DoStore<WebMWQMRun>(webMWQMRun, $"WebMWQMRun_{TVItemID}.gz");
             }
             catch (Exception ex)
             {
@@ -49,7 +51,7 @@ namespace CSSPWebServices.Services
                 return BadRequest($"{ ex.Message } { inner }");
             }
 
-            return await Task.FromResult(Ok(webRun));
+            return await Task.FromResult(Ok(webMWQMRun));
         }
     }
 }

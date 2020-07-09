@@ -72,61 +72,58 @@ namespace CSSPWebAPIs.Tests.Controllers
         {
             Assert.True(await Setup(culture));
 
-            using (TransactionScope ts = new TransactionScope())
-            {
-                HttpClient httpClient = new HttpClient();
-                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", userModel.Token);
+            HttpClient httpClient = new HttpClient();
+            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", userModel.Token);
 
-                // testing Get
-                string url = "http://localhost:4444/api/" + culture + "/Infrastructure";
-                var response = await httpClient.GetAsync(url);
-                Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
-                string responseContent = await response.Content.ReadAsStringAsync();
-                Assert.NotEmpty(responseContent);
-                List<Infrastructure> infrastructureList = JsonSerializer.Deserialize<List<Infrastructure>>(responseContent);
-                Assert.True(infrastructureList.Count > 0);
+            // testing Get
+            string url = "http://localhost:4444/api/" + culture + "/Infrastructure";
+            var response = await httpClient.GetAsync(url);
+            Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
+            string responseContent = await response.Content.ReadAsStringAsync();
+            Assert.NotEmpty(responseContent);
+            List<Infrastructure> infrastructureList = JsonSerializer.Deserialize<List<Infrastructure>>(responseContent);
+            Assert.True(infrastructureList.Count > 0);
 
-                // testing Get(InfrastructureID)
-                string urlID = url + "/" + infrastructureList[0].InfrastructureID;
-                response = await httpClient.GetAsync(urlID);
-                Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
-                responseContent = await response.Content.ReadAsStringAsync();
-                Assert.NotEmpty(responseContent);
-                Infrastructure infrastructure = JsonSerializer.Deserialize<Infrastructure>(responseContent);
-                Assert.Equal(infrastructureList[0].InfrastructureID, infrastructure.InfrastructureID);
+            // testing Get(InfrastructureID)
+            string urlID = url + "/" + infrastructureList[0].InfrastructureID;
+            response = await httpClient.GetAsync(urlID);
+            Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
+            responseContent = await response.Content.ReadAsStringAsync();
+            Assert.NotEmpty(responseContent);
+            Infrastructure infrastructure = JsonSerializer.Deserialize<Infrastructure>(responseContent);
+            Assert.Equal(infrastructureList[0].InfrastructureID, infrastructure.InfrastructureID);
 
                 // testing Post(Infrastructure)
                 infrastructure.InfrastructureID = 0;
-                string content = JsonSerializer.Serialize<Infrastructure>(infrastructure);
-                HttpContent httpContent = new StringContent(content);
-                httpContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
-                response = await httpClient.PostAsync(url, httpContent);
-                Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
-                responseContent = await response.Content.ReadAsStringAsync();
-                Assert.NotEmpty(responseContent);
-                infrastructure = JsonSerializer.Deserialize<Infrastructure>(responseContent);
-                Assert.NotNull(infrastructure);
+            string content = JsonSerializer.Serialize<Infrastructure>(infrastructure);
+            HttpContent httpContent = new StringContent(content);
+            httpContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+            response = await httpClient.PostAsync(url, httpContent);
+            Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
+            responseContent = await response.Content.ReadAsStringAsync();
+            Assert.NotEmpty(responseContent);
+            infrastructure = JsonSerializer.Deserialize<Infrastructure>(responseContent);
+            Assert.NotNull(infrastructure);
 
-                // testing Put(Infrastructure)
-                content = JsonSerializer.Serialize<Infrastructure>(infrastructure);
-                httpContent = new StringContent(content);
-                httpContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
-                response = await httpClient.PutAsync(url, httpContent);
-                Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
-                responseContent = await response.Content.ReadAsStringAsync();
-                Assert.NotEmpty(responseContent);
-                infrastructure = JsonSerializer.Deserialize<Infrastructure>(responseContent);
-                Assert.NotNull(infrastructure);
+            // testing Put(Infrastructure)
+            content = JsonSerializer.Serialize<Infrastructure>(infrastructure);
+            httpContent = new StringContent(content);
+            httpContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+            response = await httpClient.PutAsync(url, httpContent);
+            Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
+            responseContent = await response.Content.ReadAsStringAsync();
+            Assert.NotEmpty(responseContent);
+            infrastructure = JsonSerializer.Deserialize<Infrastructure>(responseContent);
+            Assert.NotNull(infrastructure);
 
-                // testing Delete(InfrastructureID)
-                urlID = url + "/" + infrastructure.InfrastructureID;
-                response = await httpClient.DeleteAsync(urlID);
-                Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
-                responseContent = await response.Content.ReadAsStringAsync();
-                Assert.NotEmpty(responseContent);
-                bool retBool = JsonSerializer.Deserialize<bool>(responseContent);
-                Assert.True(retBool);
-            }
+            // testing Delete(InfrastructureID)
+            urlID = url + "/" + infrastructure.InfrastructureID;
+            response = await httpClient.DeleteAsync(urlID);
+            Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
+            responseContent = await response.Content.ReadAsStringAsync();
+            Assert.NotEmpty(responseContent);
+            bool retBool = JsonSerializer.Deserialize<bool>(responseContent);
+            Assert.True(retBool);
         }
         #endregion Functions public
 

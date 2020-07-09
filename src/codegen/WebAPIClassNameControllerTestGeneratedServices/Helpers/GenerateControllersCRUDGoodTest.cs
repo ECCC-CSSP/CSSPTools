@@ -14,86 +14,86 @@ namespace WebAPIClassNameControllerTestGeneratedServices.Services
             sb.AppendLine(@"        {");
             sb.AppendLine(@"            Assert.True(await Setup(culture));");
             sb.AppendLine(@"");
-            sb.AppendLine(@"            using (TransactionScope ts = new TransactionScope())");
-            sb.AppendLine(@"            {");
-            sb.AppendLine(@"                HttpClient httpClient = new HttpClient();");
-            sb.AppendLine(@"                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(""Bearer"", userModel.Token);");
+            //sb.AppendLine(@"            using (TransactionScope ts = new TransactionScope())");
+            //sb.AppendLine(@"            {");
+            sb.AppendLine(@"            HttpClient httpClient = new HttpClient();");
+            sb.AppendLine(@"            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(""Bearer"", userModel.Token);");
             sb.AppendLine(@"");
-            sb.AppendLine(@"                // testing Get");
-            sb.AppendLine($@"                string url = ""http://localhost:4444/api/"" + culture + ""/{ TypeName }"";");
-            sb.AppendLine($@"                var response = await httpClient.GetAsync(url);");
-            sb.AppendLine($@"                Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);");
-            sb.AppendLine($@"                string responseContent = await response.Content.ReadAsStringAsync();");
-            sb.AppendLine($@"                Assert.NotEmpty(responseContent);");
-            sb.AppendLine($@"                List<{ TypeName }> { TypeNameLower }List = JsonSerializer.Deserialize<List<{ TypeName }>>(responseContent);");
-            sb.AppendLine($@"                Assert.True({ TypeNameLower }List.Count > 0);");
+            sb.AppendLine(@"            // testing Get");
+            sb.AppendLine($@"            string url = ""http://localhost:4444/api/"" + culture + ""/{ TypeName }"";");
+            sb.AppendLine($@"            var response = await httpClient.GetAsync(url);");
+            sb.AppendLine($@"            Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);");
+            sb.AppendLine($@"            string responseContent = await response.Content.ReadAsStringAsync();");
+            sb.AppendLine($@"            Assert.NotEmpty(responseContent);");
+            sb.AppendLine($@"            List<{ TypeName }> { TypeNameLower }List = JsonSerializer.Deserialize<List<{ TypeName }>>(responseContent);");
+            sb.AppendLine($@"            Assert.True({ TypeNameLower }List.Count > 0);");
             sb.AppendLine($@"");
-            sb.AppendLine($@"                // testing Get({ TypeName }ID)");
-            sb.AppendLine($@"                string urlID = url + ""/"" + { TypeNameLower }List[0].{ TypeName }ID;");
-            sb.AppendLine($@"                response = await httpClient.GetAsync(urlID);");
-            sb.AppendLine($@"                Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);");
-            sb.AppendLine($@"                responseContent = await response.Content.ReadAsStringAsync();");
-            sb.AppendLine($@"                Assert.NotEmpty(responseContent);");
-            sb.AppendLine($@"                { TypeName } { TypeNameLower } = JsonSerializer.Deserialize<{ TypeName }>(responseContent);");
-            sb.AppendLine($@"                Assert.Equal({ TypeNameLower }List[0].{ TypeName }ID, { TypeNameLower }.{ TypeName }ID);");
+            sb.AppendLine($@"            // testing Get({ TypeName }ID)");
+            sb.AppendLine($@"            string urlID = url + ""/"" + { TypeNameLower }List[0].{ TypeName }ID;");
+            sb.AppendLine($@"            response = await httpClient.GetAsync(urlID);");
+            sb.AppendLine($@"            Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);");
+            sb.AppendLine($@"            responseContent = await response.Content.ReadAsStringAsync();");
+            sb.AppendLine($@"            Assert.NotEmpty(responseContent);");
+            sb.AppendLine($@"            { TypeName } { TypeNameLower } = JsonSerializer.Deserialize<{ TypeName }>(responseContent);");
+            sb.AppendLine($@"            Assert.Equal({ TypeNameLower }List[0].{ TypeName }ID, { TypeNameLower }.{ TypeName }ID);");
             sb.AppendLine($@"");
             if (TypeName == "MWQMLookupMPN")
             {
-                sb.AppendLine($@"                // testing Delete({ TypeName }ID)");
-                sb.AppendLine($@"                urlID = url + ""/"" + { TypeNameLower }.{ TypeName }ID;");
-                sb.AppendLine($@"                response = await httpClient.DeleteAsync(urlID);");
-                sb.AppendLine($@"                Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);");
-                sb.AppendLine($@"                responseContent = await response.Content.ReadAsStringAsync();");
-                sb.AppendLine($@"                Assert.NotEmpty(responseContent);");
-                sb.AppendLine($@"                bool retBool = JsonSerializer.Deserialize<bool>(responseContent);");
-                sb.AppendLine($@"                Assert.True(retBool);");
+                sb.AppendLine($@"            // testing Delete({ TypeName }ID)");
+                sb.AppendLine($@"            urlID = url + ""/"" + { TypeNameLower }.{ TypeName }ID;");
+                sb.AppendLine($@"            response = await httpClient.DeleteAsync(urlID);");
+                sb.AppendLine($@"            Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);");
+                sb.AppendLine($@"            responseContent = await response.Content.ReadAsStringAsync();");
+                sb.AppendLine($@"            Assert.NotEmpty(responseContent);");
+                sb.AppendLine($@"            bool retBool = JsonSerializer.Deserialize<bool>(responseContent);");
+                sb.AppendLine($@"            Assert.True(retBool);");
             }
             sb.AppendLine($@"                // testing Post({ TypeName })");
             sb.AppendLine($@"                { TypeNameLower }.{ TypeName }ID = 0;");
             if (TypeName == "SamplingPlan")
             {
-                sb.AppendLine($@"               samplingPlan.SamplingPlanName = samplingPlan.SamplingPlanName.Replace(samplingPlan.Year.ToString(), (samplingPlan.Year + 20).ToString());");
+                sb.AppendLine($@"           samplingPlan.SamplingPlanName = samplingPlan.SamplingPlanName.Replace(samplingPlan.Year.ToString(), (samplingPlan.Year + 20).ToString());");
             }
             if (TypeName == "TVItem")
             {
-                sb.AppendLine($@"                tvItem.ParentID = tvItemList[1].ParentID;");
-                sb.AppendLine($@"                tvItem.TVLevel = 1; ");
-                sb.AppendLine($@"                tvItem.TVPath = ""Timbucto"";");
-                sb.AppendLine($@"                tvItem.TVType = TVTypeEnum.Country;");
+                sb.AppendLine($@"            tvItem.ParentID = tvItemList[1].ParentID;");
+                sb.AppendLine($@"            tvItem.TVLevel = 1; ");
+                sb.AppendLine($@"            tvItem.TVPath = ""Timbucto"";");
+                sb.AppendLine($@"            tvItem.TVType = TVTypeEnum.Country;");
             }
-            sb.AppendLine($@"                string content = JsonSerializer.Serialize<{ TypeName }>({ TypeNameLower });");
-            sb.AppendLine($@"                HttpContent httpContent = new StringContent(content);");
-            sb.AppendLine($@"                httpContent.Headers.ContentType = new MediaTypeHeaderValue(""application/json"");");
-            sb.AppendLine($@"                response = await httpClient.PostAsync(url, httpContent);");
-            sb.AppendLine($@"                Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);");
-            sb.AppendLine($@"                responseContent = await response.Content.ReadAsStringAsync();");
-            sb.AppendLine($@"                Assert.NotEmpty(responseContent);");
-            sb.AppendLine($@"                { TypeNameLower } = JsonSerializer.Deserialize<{ TypeName }>(responseContent);");
-            sb.AppendLine($@"                Assert.NotNull({ TypeNameLower });");
+            sb.AppendLine($@"            string content = JsonSerializer.Serialize<{ TypeName }>({ TypeNameLower });");
+            sb.AppendLine($@"            HttpContent httpContent = new StringContent(content);");
+            sb.AppendLine($@"            httpContent.Headers.ContentType = new MediaTypeHeaderValue(""application/json"");");
+            sb.AppendLine($@"            response = await httpClient.PostAsync(url, httpContent);");
+            sb.AppendLine($@"            Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);");
+            sb.AppendLine($@"            responseContent = await response.Content.ReadAsStringAsync();");
+            sb.AppendLine($@"            Assert.NotEmpty(responseContent);");
+            sb.AppendLine($@"            { TypeNameLower } = JsonSerializer.Deserialize<{ TypeName }>(responseContent);");
+            sb.AppendLine($@"            Assert.NotNull({ TypeNameLower });");
             sb.AppendLine($@"");
-            sb.AppendLine($@"                // testing Put({ TypeName })");
-            sb.AppendLine($@"                content = JsonSerializer.Serialize<{ TypeName }>({ TypeNameLower });");
-            sb.AppendLine($@"                httpContent = new StringContent(content);");
-            sb.AppendLine($@"                httpContent.Headers.ContentType = new MediaTypeHeaderValue(""application/json"");");
-            sb.AppendLine($@"                response = await httpClient.PutAsync(url, httpContent);");
-            sb.AppendLine($@"                Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);");
-            sb.AppendLine($@"                responseContent = await response.Content.ReadAsStringAsync();");
-            sb.AppendLine($@"                Assert.NotEmpty(responseContent);");
-            sb.AppendLine($@"                { TypeNameLower } = JsonSerializer.Deserialize<{ TypeName }>(responseContent);");
-            sb.AppendLine($@"                Assert.NotNull({ TypeNameLower });");
+            sb.AppendLine($@"            // testing Put({ TypeName })");
+            sb.AppendLine($@"            content = JsonSerializer.Serialize<{ TypeName }>({ TypeNameLower });");
+            sb.AppendLine($@"            httpContent = new StringContent(content);");
+            sb.AppendLine($@"            httpContent.Headers.ContentType = new MediaTypeHeaderValue(""application/json"");");
+            sb.AppendLine($@"            response = await httpClient.PutAsync(url, httpContent);");
+            sb.AppendLine($@"            Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);");
+            sb.AppendLine($@"            responseContent = await response.Content.ReadAsStringAsync();");
+            sb.AppendLine($@"            Assert.NotEmpty(responseContent);");
+            sb.AppendLine($@"            { TypeNameLower } = JsonSerializer.Deserialize<{ TypeName }>(responseContent);");
+            sb.AppendLine($@"            Assert.NotNull({ TypeNameLower });");
             sb.AppendLine($@"");
             if (!(TypeName == "MWQMLookupMPN"))
             {
-                sb.AppendLine($@"                // testing Delete({ TypeName }ID)");
-                sb.AppendLine($@"                urlID = url + ""/"" + { TypeNameLower }.{ TypeName }ID;");
-                sb.AppendLine($@"                response = await httpClient.DeleteAsync(urlID);");
-                sb.AppendLine($@"                Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);");
-                sb.AppendLine($@"                responseContent = await response.Content.ReadAsStringAsync();");
-                sb.AppendLine($@"                Assert.NotEmpty(responseContent);");
-                sb.AppendLine($@"                bool retBool = JsonSerializer.Deserialize<bool>(responseContent);");
-                sb.AppendLine($@"                Assert.True(retBool);");
+                sb.AppendLine($@"            // testing Delete({ TypeName }ID)");
+                sb.AppendLine($@"            urlID = url + ""/"" + { TypeNameLower }.{ TypeName }ID;");
+                sb.AppendLine($@"            response = await httpClient.DeleteAsync(urlID);");
+                sb.AppendLine($@"            Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);");
+                sb.AppendLine($@"            responseContent = await response.Content.ReadAsStringAsync();");
+                sb.AppendLine($@"            Assert.NotEmpty(responseContent);");
+                sb.AppendLine($@"            bool retBool = JsonSerializer.Deserialize<bool>(responseContent);");
+                sb.AppendLine($@"            Assert.True(retBool);");
             }
-            sb.AppendLine(@"            }");
+            //sb.AppendLine(@"            }");
             sb.AppendLine(@"        }");
 
             return await Task.FromResult(true);

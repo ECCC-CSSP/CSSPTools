@@ -53,7 +53,9 @@ namespace CSSPWebServices.Services
                 webArea.TVItemStatSectorList = await GetTVItemStatChildrenListWithTVItemID(tvItem, TVTypeEnum.Sector);
                 webArea.MapInfoSectorList = await GetMapInfoChildrenListWithTVItemID(tvItem, TVTypeEnum.Sector);
                 webArea.MapInfoPointSectorList = await GetMapInfoPointChildrenListWithTVItemID(tvItem, TVTypeEnum.Sector);
-           }
+
+                await DoStore<WebArea>(webArea, $"WebArea_{TVItemID}.gz");
+            }
             catch (Exception ex)
             {
                 string inner = ex.InnerException != null ? $"Inner: { ex.InnerException.Message }" : "";

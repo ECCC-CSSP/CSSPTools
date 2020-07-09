@@ -68,6 +68,8 @@ namespace CSSPWebServices.Services
                 webSubsector.MWQMSubsector = await GetMWQMSubsector(TVItemID);
                 webSubsector.MWQMSubsectorLanguageList = await GetMWQMSubsectorLanguageList(TVItemID);
                 webSubsector.UseOfSiteList = await GetUseOfSiteList(TVItemID);
+
+                await DoStore<WebSubsector>(webSubsector, $"WebSubsector_{TVItemID}.gz");
             }
             catch (Exception ex)
             {

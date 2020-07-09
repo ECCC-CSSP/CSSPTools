@@ -72,6 +72,8 @@ namespace CSSPWebServices.Services
                 webMunicipality.MunicipalityContactEmailList = await GetMunicipalityContactEmailListUnderMunicipality(tvItem);
                 webMunicipality.MunicipalityContactTelList = await GetMunicipalityContactTelListUnderMunicipality(tvItem);
                 webMunicipality.MunicipalityContactAddressList = await GetMunicipalityContactAddressListUnderMunicipality(tvItem);
+
+                await DoStore<WebMunicipality>(webMunicipality, $"WebMunicipality_{TVItemID}.gz");
             }
             catch (Exception ex)
             {

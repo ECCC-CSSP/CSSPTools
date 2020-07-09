@@ -79,6 +79,10 @@ export class AddressComponent implements OnInit, OnDestroy {
     return <number>HttpClientCommand.Post;
   }
 
+  GetWebRoot() {
+    this.sub = this.addressService.GetWebRoot().subscribe();
+  }
+
   GetAddressList() {
     this.sub = this.addressService.GetAddressList().subscribe();
   }

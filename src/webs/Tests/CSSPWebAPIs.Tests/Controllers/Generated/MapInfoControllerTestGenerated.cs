@@ -72,61 +72,58 @@ namespace CSSPWebAPIs.Tests.Controllers
         {
             Assert.True(await Setup(culture));
 
-            using (TransactionScope ts = new TransactionScope())
-            {
-                HttpClient httpClient = new HttpClient();
-                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", userModel.Token);
+            HttpClient httpClient = new HttpClient();
+            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", userModel.Token);
 
-                // testing Get
-                string url = "http://localhost:4444/api/" + culture + "/MapInfo";
-                var response = await httpClient.GetAsync(url);
-                Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
-                string responseContent = await response.Content.ReadAsStringAsync();
-                Assert.NotEmpty(responseContent);
-                List<MapInfo> mapInfoList = JsonSerializer.Deserialize<List<MapInfo>>(responseContent);
-                Assert.True(mapInfoList.Count > 0);
+            // testing Get
+            string url = "http://localhost:4444/api/" + culture + "/MapInfo";
+            var response = await httpClient.GetAsync(url);
+            Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
+            string responseContent = await response.Content.ReadAsStringAsync();
+            Assert.NotEmpty(responseContent);
+            List<MapInfo> mapInfoList = JsonSerializer.Deserialize<List<MapInfo>>(responseContent);
+            Assert.True(mapInfoList.Count > 0);
 
-                // testing Get(MapInfoID)
-                string urlID = url + "/" + mapInfoList[0].MapInfoID;
-                response = await httpClient.GetAsync(urlID);
-                Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
-                responseContent = await response.Content.ReadAsStringAsync();
-                Assert.NotEmpty(responseContent);
-                MapInfo mapInfo = JsonSerializer.Deserialize<MapInfo>(responseContent);
-                Assert.Equal(mapInfoList[0].MapInfoID, mapInfo.MapInfoID);
+            // testing Get(MapInfoID)
+            string urlID = url + "/" + mapInfoList[0].MapInfoID;
+            response = await httpClient.GetAsync(urlID);
+            Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
+            responseContent = await response.Content.ReadAsStringAsync();
+            Assert.NotEmpty(responseContent);
+            MapInfo mapInfo = JsonSerializer.Deserialize<MapInfo>(responseContent);
+            Assert.Equal(mapInfoList[0].MapInfoID, mapInfo.MapInfoID);
 
                 // testing Post(MapInfo)
                 mapInfo.MapInfoID = 0;
-                string content = JsonSerializer.Serialize<MapInfo>(mapInfo);
-                HttpContent httpContent = new StringContent(content);
-                httpContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
-                response = await httpClient.PostAsync(url, httpContent);
-                Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
-                responseContent = await response.Content.ReadAsStringAsync();
-                Assert.NotEmpty(responseContent);
-                mapInfo = JsonSerializer.Deserialize<MapInfo>(responseContent);
-                Assert.NotNull(mapInfo);
+            string content = JsonSerializer.Serialize<MapInfo>(mapInfo);
+            HttpContent httpContent = new StringContent(content);
+            httpContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+            response = await httpClient.PostAsync(url, httpContent);
+            Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
+            responseContent = await response.Content.ReadAsStringAsync();
+            Assert.NotEmpty(responseContent);
+            mapInfo = JsonSerializer.Deserialize<MapInfo>(responseContent);
+            Assert.NotNull(mapInfo);
 
-                // testing Put(MapInfo)
-                content = JsonSerializer.Serialize<MapInfo>(mapInfo);
-                httpContent = new StringContent(content);
-                httpContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
-                response = await httpClient.PutAsync(url, httpContent);
-                Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
-                responseContent = await response.Content.ReadAsStringAsync();
-                Assert.NotEmpty(responseContent);
-                mapInfo = JsonSerializer.Deserialize<MapInfo>(responseContent);
-                Assert.NotNull(mapInfo);
+            // testing Put(MapInfo)
+            content = JsonSerializer.Serialize<MapInfo>(mapInfo);
+            httpContent = new StringContent(content);
+            httpContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+            response = await httpClient.PutAsync(url, httpContent);
+            Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
+            responseContent = await response.Content.ReadAsStringAsync();
+            Assert.NotEmpty(responseContent);
+            mapInfo = JsonSerializer.Deserialize<MapInfo>(responseContent);
+            Assert.NotNull(mapInfo);
 
-                // testing Delete(MapInfoID)
-                urlID = url + "/" + mapInfo.MapInfoID;
-                response = await httpClient.DeleteAsync(urlID);
-                Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
-                responseContent = await response.Content.ReadAsStringAsync();
-                Assert.NotEmpty(responseContent);
-                bool retBool = JsonSerializer.Deserialize<bool>(responseContent);
-                Assert.True(retBool);
-            }
+            // testing Delete(MapInfoID)
+            urlID = url + "/" + mapInfo.MapInfoID;
+            response = await httpClient.DeleteAsync(urlID);
+            Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
+            responseContent = await response.Content.ReadAsStringAsync();
+            Assert.NotEmpty(responseContent);
+            bool retBool = JsonSerializer.Deserialize<bool>(responseContent);
+            Assert.True(retBool);
         }
         #endregion Functions public
 

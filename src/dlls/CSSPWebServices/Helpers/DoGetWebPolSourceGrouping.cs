@@ -36,6 +36,8 @@ namespace CSSPWebServices.Services
             {
                 webPolSourceGrouping.PolSourceGroupingList = await GetPolSourceGroupingList();
                 webPolSourceGrouping.PolSourceGroupingLanguageList = await GetPolSourceGroupingLanguageList();
+
+                await DoStore<WebPolSourceGrouping>(webPolSourceGrouping, $"WebPolSourceGrouping.gz");
             }
             catch (Exception ex)
             {

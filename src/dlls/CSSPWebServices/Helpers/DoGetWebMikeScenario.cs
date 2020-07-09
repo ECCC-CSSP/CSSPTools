@@ -62,6 +62,8 @@ namespace CSSPWebServices.Services
                 webMikeScenario.MapInfoMikeSourceList = await GetMapInfoChildrenListWithTVItemID(tvItem, TVTypeEnum.MikeSource);
                 webMikeScenario.MapInfoPointMikeSourceList = await GetMapInfoPointChildrenListWithTVItemID(tvItem, TVTypeEnum.MikeSource);
                 webMikeScenario.MikeSourceStartEndList = await GetMikeSourceStartEndListUnderMikeScenario(tvItem);
+
+                await DoStore<WebMikeScenario>(webMikeScenario, $"WebMikeScenario_{TVItemID}.gz");
             }
             catch (Exception ex)
             {

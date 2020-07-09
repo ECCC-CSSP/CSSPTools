@@ -72,61 +72,58 @@ namespace CSSPWebAPIs.Tests.Controllers
         {
             Assert.True(await Setup(culture));
 
-            using (TransactionScope ts = new TransactionScope())
-            {
-                HttpClient httpClient = new HttpClient();
-                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", userModel.Token);
+            HttpClient httpClient = new HttpClient();
+            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", userModel.Token);
 
-                // testing Get
-                string url = "http://localhost:4444/api/" + culture + "/VPResult";
-                var response = await httpClient.GetAsync(url);
-                Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
-                string responseContent = await response.Content.ReadAsStringAsync();
-                Assert.NotEmpty(responseContent);
-                List<VPResult> vpResultList = JsonSerializer.Deserialize<List<VPResult>>(responseContent);
-                Assert.True(vpResultList.Count > 0);
+            // testing Get
+            string url = "http://localhost:4444/api/" + culture + "/VPResult";
+            var response = await httpClient.GetAsync(url);
+            Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
+            string responseContent = await response.Content.ReadAsStringAsync();
+            Assert.NotEmpty(responseContent);
+            List<VPResult> vpResultList = JsonSerializer.Deserialize<List<VPResult>>(responseContent);
+            Assert.True(vpResultList.Count > 0);
 
-                // testing Get(VPResultID)
-                string urlID = url + "/" + vpResultList[0].VPResultID;
-                response = await httpClient.GetAsync(urlID);
-                Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
-                responseContent = await response.Content.ReadAsStringAsync();
-                Assert.NotEmpty(responseContent);
-                VPResult vpResult = JsonSerializer.Deserialize<VPResult>(responseContent);
-                Assert.Equal(vpResultList[0].VPResultID, vpResult.VPResultID);
+            // testing Get(VPResultID)
+            string urlID = url + "/" + vpResultList[0].VPResultID;
+            response = await httpClient.GetAsync(urlID);
+            Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
+            responseContent = await response.Content.ReadAsStringAsync();
+            Assert.NotEmpty(responseContent);
+            VPResult vpResult = JsonSerializer.Deserialize<VPResult>(responseContent);
+            Assert.Equal(vpResultList[0].VPResultID, vpResult.VPResultID);
 
                 // testing Post(VPResult)
                 vpResult.VPResultID = 0;
-                string content = JsonSerializer.Serialize<VPResult>(vpResult);
-                HttpContent httpContent = new StringContent(content);
-                httpContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
-                response = await httpClient.PostAsync(url, httpContent);
-                Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
-                responseContent = await response.Content.ReadAsStringAsync();
-                Assert.NotEmpty(responseContent);
-                vpResult = JsonSerializer.Deserialize<VPResult>(responseContent);
-                Assert.NotNull(vpResult);
+            string content = JsonSerializer.Serialize<VPResult>(vpResult);
+            HttpContent httpContent = new StringContent(content);
+            httpContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+            response = await httpClient.PostAsync(url, httpContent);
+            Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
+            responseContent = await response.Content.ReadAsStringAsync();
+            Assert.NotEmpty(responseContent);
+            vpResult = JsonSerializer.Deserialize<VPResult>(responseContent);
+            Assert.NotNull(vpResult);
 
-                // testing Put(VPResult)
-                content = JsonSerializer.Serialize<VPResult>(vpResult);
-                httpContent = new StringContent(content);
-                httpContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
-                response = await httpClient.PutAsync(url, httpContent);
-                Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
-                responseContent = await response.Content.ReadAsStringAsync();
-                Assert.NotEmpty(responseContent);
-                vpResult = JsonSerializer.Deserialize<VPResult>(responseContent);
-                Assert.NotNull(vpResult);
+            // testing Put(VPResult)
+            content = JsonSerializer.Serialize<VPResult>(vpResult);
+            httpContent = new StringContent(content);
+            httpContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+            response = await httpClient.PutAsync(url, httpContent);
+            Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
+            responseContent = await response.Content.ReadAsStringAsync();
+            Assert.NotEmpty(responseContent);
+            vpResult = JsonSerializer.Deserialize<VPResult>(responseContent);
+            Assert.NotNull(vpResult);
 
-                // testing Delete(VPResultID)
-                urlID = url + "/" + vpResult.VPResultID;
-                response = await httpClient.DeleteAsync(urlID);
-                Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
-                responseContent = await response.Content.ReadAsStringAsync();
-                Assert.NotEmpty(responseContent);
-                bool retBool = JsonSerializer.Deserialize<bool>(responseContent);
-                Assert.True(retBool);
-            }
+            // testing Delete(VPResultID)
+            urlID = url + "/" + vpResult.VPResultID;
+            response = await httpClient.DeleteAsync(urlID);
+            Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
+            responseContent = await response.Content.ReadAsStringAsync();
+            Assert.NotEmpty(responseContent);
+            bool retBool = JsonSerializer.Deserialize<bool>(responseContent);
+            Assert.True(retBool);
         }
         #endregion Functions public
 

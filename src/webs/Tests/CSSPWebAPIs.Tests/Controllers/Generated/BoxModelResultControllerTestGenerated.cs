@@ -72,61 +72,58 @@ namespace CSSPWebAPIs.Tests.Controllers
         {
             Assert.True(await Setup(culture));
 
-            using (TransactionScope ts = new TransactionScope())
-            {
-                HttpClient httpClient = new HttpClient();
-                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", userModel.Token);
+            HttpClient httpClient = new HttpClient();
+            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", userModel.Token);
 
-                // testing Get
-                string url = "http://localhost:4444/api/" + culture + "/BoxModelResult";
-                var response = await httpClient.GetAsync(url);
-                Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
-                string responseContent = await response.Content.ReadAsStringAsync();
-                Assert.NotEmpty(responseContent);
-                List<BoxModelResult> boxModelResultList = JsonSerializer.Deserialize<List<BoxModelResult>>(responseContent);
-                Assert.True(boxModelResultList.Count > 0);
+            // testing Get
+            string url = "http://localhost:4444/api/" + culture + "/BoxModelResult";
+            var response = await httpClient.GetAsync(url);
+            Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
+            string responseContent = await response.Content.ReadAsStringAsync();
+            Assert.NotEmpty(responseContent);
+            List<BoxModelResult> boxModelResultList = JsonSerializer.Deserialize<List<BoxModelResult>>(responseContent);
+            Assert.True(boxModelResultList.Count > 0);
 
-                // testing Get(BoxModelResultID)
-                string urlID = url + "/" + boxModelResultList[0].BoxModelResultID;
-                response = await httpClient.GetAsync(urlID);
-                Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
-                responseContent = await response.Content.ReadAsStringAsync();
-                Assert.NotEmpty(responseContent);
-                BoxModelResult boxModelResult = JsonSerializer.Deserialize<BoxModelResult>(responseContent);
-                Assert.Equal(boxModelResultList[0].BoxModelResultID, boxModelResult.BoxModelResultID);
+            // testing Get(BoxModelResultID)
+            string urlID = url + "/" + boxModelResultList[0].BoxModelResultID;
+            response = await httpClient.GetAsync(urlID);
+            Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
+            responseContent = await response.Content.ReadAsStringAsync();
+            Assert.NotEmpty(responseContent);
+            BoxModelResult boxModelResult = JsonSerializer.Deserialize<BoxModelResult>(responseContent);
+            Assert.Equal(boxModelResultList[0].BoxModelResultID, boxModelResult.BoxModelResultID);
 
                 // testing Post(BoxModelResult)
                 boxModelResult.BoxModelResultID = 0;
-                string content = JsonSerializer.Serialize<BoxModelResult>(boxModelResult);
-                HttpContent httpContent = new StringContent(content);
-                httpContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
-                response = await httpClient.PostAsync(url, httpContent);
-                Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
-                responseContent = await response.Content.ReadAsStringAsync();
-                Assert.NotEmpty(responseContent);
-                boxModelResult = JsonSerializer.Deserialize<BoxModelResult>(responseContent);
-                Assert.NotNull(boxModelResult);
+            string content = JsonSerializer.Serialize<BoxModelResult>(boxModelResult);
+            HttpContent httpContent = new StringContent(content);
+            httpContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+            response = await httpClient.PostAsync(url, httpContent);
+            Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
+            responseContent = await response.Content.ReadAsStringAsync();
+            Assert.NotEmpty(responseContent);
+            boxModelResult = JsonSerializer.Deserialize<BoxModelResult>(responseContent);
+            Assert.NotNull(boxModelResult);
 
-                // testing Put(BoxModelResult)
-                content = JsonSerializer.Serialize<BoxModelResult>(boxModelResult);
-                httpContent = new StringContent(content);
-                httpContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
-                response = await httpClient.PutAsync(url, httpContent);
-                Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
-                responseContent = await response.Content.ReadAsStringAsync();
-                Assert.NotEmpty(responseContent);
-                boxModelResult = JsonSerializer.Deserialize<BoxModelResult>(responseContent);
-                Assert.NotNull(boxModelResult);
+            // testing Put(BoxModelResult)
+            content = JsonSerializer.Serialize<BoxModelResult>(boxModelResult);
+            httpContent = new StringContent(content);
+            httpContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+            response = await httpClient.PutAsync(url, httpContent);
+            Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
+            responseContent = await response.Content.ReadAsStringAsync();
+            Assert.NotEmpty(responseContent);
+            boxModelResult = JsonSerializer.Deserialize<BoxModelResult>(responseContent);
+            Assert.NotNull(boxModelResult);
 
-                // testing Delete(BoxModelResultID)
-                urlID = url + "/" + boxModelResult.BoxModelResultID;
-                response = await httpClient.DeleteAsync(urlID);
-                Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
-                responseContent = await response.Content.ReadAsStringAsync();
-                Assert.NotEmpty(responseContent);
-                bool retBool = JsonSerializer.Deserialize<bool>(responseContent);
-                Assert.True(retBool);
-            }
+            // testing Delete(BoxModelResultID)
+            urlID = url + "/" + boxModelResult.BoxModelResultID;
+            response = await httpClient.DeleteAsync(urlID);
+            Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
+            responseContent = await response.Content.ReadAsStringAsync();
+            Assert.NotEmpty(responseContent);
+            bool retBool = JsonSerializer.Deserialize<bool>(responseContent);
+            Assert.True(retBool);
         }
         #endregion Functions public
 

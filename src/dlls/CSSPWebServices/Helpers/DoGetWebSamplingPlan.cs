@@ -45,6 +45,8 @@ namespace CSSPWebServices.Services
                 webSamplingPlan.SamplingPlanEmailList = await GetSamplingPlanEmailListWithSamplingPlanID(samplingPlanID);
                 webSamplingPlan.SamplingPlanSubsectorList = await GetSamplingPlanSubsectorListWithSamplingPlanID(samplingPlanID);
                 webSamplingPlan.SamplingPlanSubsectorSiteList = await GetSamplingPlanSubsectorSiteListWithSamplingPlanID(samplingPlanID);
+
+                await DoStore<WebSamplingPlan>(webSamplingPlan, $"WebSamplingPlan_{samplingPlanID}.gz");
             }
             catch (Exception ex)
             {

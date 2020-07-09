@@ -58,6 +58,8 @@ namespace CSSPWebServices.Services
                 webSector.TVItemStatMikeScenarioList = await GetTVItemStatChildrenListWithTVItemID(tvItem, TVTypeEnum.MikeScenario);
                 webSector.MapInfoMikeScenarioList = await GetMapInfoChildrenListWithTVItemID(tvItem, TVTypeEnum.MikeScenario);
                 webSector.MapInfoPointMikeScenarioList = await GetMapInfoPointChildrenListWithTVItemID(tvItem, TVTypeEnum.MikeScenario);
+
+                await DoStore<WebSector>(webSector, $"WebSector_{TVItemID}.gz");
             }
             catch (Exception ex)
             {

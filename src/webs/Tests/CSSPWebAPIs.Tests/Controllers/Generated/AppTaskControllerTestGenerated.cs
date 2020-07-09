@@ -72,61 +72,58 @@ namespace CSSPWebAPIs.Tests.Controllers
         {
             Assert.True(await Setup(culture));
 
-            using (TransactionScope ts = new TransactionScope())
-            {
-                HttpClient httpClient = new HttpClient();
-                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", userModel.Token);
+            HttpClient httpClient = new HttpClient();
+            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", userModel.Token);
 
-                // testing Get
-                string url = "http://localhost:4444/api/" + culture + "/AppTask";
-                var response = await httpClient.GetAsync(url);
-                Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
-                string responseContent = await response.Content.ReadAsStringAsync();
-                Assert.NotEmpty(responseContent);
-                List<AppTask> appTaskList = JsonSerializer.Deserialize<List<AppTask>>(responseContent);
-                Assert.True(appTaskList.Count > 0);
+            // testing Get
+            string url = "http://localhost:4444/api/" + culture + "/AppTask";
+            var response = await httpClient.GetAsync(url);
+            Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
+            string responseContent = await response.Content.ReadAsStringAsync();
+            Assert.NotEmpty(responseContent);
+            List<AppTask> appTaskList = JsonSerializer.Deserialize<List<AppTask>>(responseContent);
+            Assert.True(appTaskList.Count > 0);
 
-                // testing Get(AppTaskID)
-                string urlID = url + "/" + appTaskList[0].AppTaskID;
-                response = await httpClient.GetAsync(urlID);
-                Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
-                responseContent = await response.Content.ReadAsStringAsync();
-                Assert.NotEmpty(responseContent);
-                AppTask appTask = JsonSerializer.Deserialize<AppTask>(responseContent);
-                Assert.Equal(appTaskList[0].AppTaskID, appTask.AppTaskID);
+            // testing Get(AppTaskID)
+            string urlID = url + "/" + appTaskList[0].AppTaskID;
+            response = await httpClient.GetAsync(urlID);
+            Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
+            responseContent = await response.Content.ReadAsStringAsync();
+            Assert.NotEmpty(responseContent);
+            AppTask appTask = JsonSerializer.Deserialize<AppTask>(responseContent);
+            Assert.Equal(appTaskList[0].AppTaskID, appTask.AppTaskID);
 
                 // testing Post(AppTask)
                 appTask.AppTaskID = 0;
-                string content = JsonSerializer.Serialize<AppTask>(appTask);
-                HttpContent httpContent = new StringContent(content);
-                httpContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
-                response = await httpClient.PostAsync(url, httpContent);
-                Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
-                responseContent = await response.Content.ReadAsStringAsync();
-                Assert.NotEmpty(responseContent);
-                appTask = JsonSerializer.Deserialize<AppTask>(responseContent);
-                Assert.NotNull(appTask);
+            string content = JsonSerializer.Serialize<AppTask>(appTask);
+            HttpContent httpContent = new StringContent(content);
+            httpContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+            response = await httpClient.PostAsync(url, httpContent);
+            Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
+            responseContent = await response.Content.ReadAsStringAsync();
+            Assert.NotEmpty(responseContent);
+            appTask = JsonSerializer.Deserialize<AppTask>(responseContent);
+            Assert.NotNull(appTask);
 
-                // testing Put(AppTask)
-                content = JsonSerializer.Serialize<AppTask>(appTask);
-                httpContent = new StringContent(content);
-                httpContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
-                response = await httpClient.PutAsync(url, httpContent);
-                Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
-                responseContent = await response.Content.ReadAsStringAsync();
-                Assert.NotEmpty(responseContent);
-                appTask = JsonSerializer.Deserialize<AppTask>(responseContent);
-                Assert.NotNull(appTask);
+            // testing Put(AppTask)
+            content = JsonSerializer.Serialize<AppTask>(appTask);
+            httpContent = new StringContent(content);
+            httpContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+            response = await httpClient.PutAsync(url, httpContent);
+            Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
+            responseContent = await response.Content.ReadAsStringAsync();
+            Assert.NotEmpty(responseContent);
+            appTask = JsonSerializer.Deserialize<AppTask>(responseContent);
+            Assert.NotNull(appTask);
 
-                // testing Delete(AppTaskID)
-                urlID = url + "/" + appTask.AppTaskID;
-                response = await httpClient.DeleteAsync(urlID);
-                Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
-                responseContent = await response.Content.ReadAsStringAsync();
-                Assert.NotEmpty(responseContent);
-                bool retBool = JsonSerializer.Deserialize<bool>(responseContent);
-                Assert.True(retBool);
-            }
+            // testing Delete(AppTaskID)
+            urlID = url + "/" + appTask.AppTaskID;
+            response = await httpClient.DeleteAsync(urlID);
+            Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
+            responseContent = await response.Content.ReadAsStringAsync();
+            Assert.NotEmpty(responseContent);
+            bool retBool = JsonSerializer.Deserialize<bool>(responseContent);
+            Assert.True(retBool);
         }
         #endregion Functions public
 

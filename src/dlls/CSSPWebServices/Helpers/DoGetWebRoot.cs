@@ -2,6 +2,7 @@
  * Manually edited
  * 
  */
+using Azure.Storage.Blobs;
 using CSSPEnums;
 using CSSPModels;
 using CSSPWebModels;
@@ -13,7 +14,10 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.IO;
 using System.Linq;
+using System.Text;
+using System.Text.Json;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
@@ -54,6 +58,8 @@ namespace CSSPWebServices.Services
                 webRoot.TVItemStatCountryList = await GetTVItemStatChildrenListWithTVItemID(tvItemRoot, TVTypeEnum.Country);
                 webRoot.MapInfoCountryList = await GetMapInfoChildrenListWithTVItemID(tvItemRoot, TVTypeEnum.Country);
                 webRoot.MapInfoPointCountryList = await GetMapInfoPointChildrenListWithTVItemID(tvItemRoot, TVTypeEnum.Country);
+
+                await DoStore<WebRoot>(webRoot, "WebRoot.gz");
             }
             catch (Exception ex)
             {

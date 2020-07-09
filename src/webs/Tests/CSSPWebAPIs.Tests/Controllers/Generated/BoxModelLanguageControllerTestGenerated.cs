@@ -72,61 +72,58 @@ namespace CSSPWebAPIs.Tests.Controllers
         {
             Assert.True(await Setup(culture));
 
-            using (TransactionScope ts = new TransactionScope())
-            {
-                HttpClient httpClient = new HttpClient();
-                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", userModel.Token);
+            HttpClient httpClient = new HttpClient();
+            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", userModel.Token);
 
-                // testing Get
-                string url = "http://localhost:4444/api/" + culture + "/BoxModelLanguage";
-                var response = await httpClient.GetAsync(url);
-                Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
-                string responseContent = await response.Content.ReadAsStringAsync();
-                Assert.NotEmpty(responseContent);
-                List<BoxModelLanguage> boxModelLanguageList = JsonSerializer.Deserialize<List<BoxModelLanguage>>(responseContent);
-                Assert.True(boxModelLanguageList.Count > 0);
+            // testing Get
+            string url = "http://localhost:4444/api/" + culture + "/BoxModelLanguage";
+            var response = await httpClient.GetAsync(url);
+            Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
+            string responseContent = await response.Content.ReadAsStringAsync();
+            Assert.NotEmpty(responseContent);
+            List<BoxModelLanguage> boxModelLanguageList = JsonSerializer.Deserialize<List<BoxModelLanguage>>(responseContent);
+            Assert.True(boxModelLanguageList.Count > 0);
 
-                // testing Get(BoxModelLanguageID)
-                string urlID = url + "/" + boxModelLanguageList[0].BoxModelLanguageID;
-                response = await httpClient.GetAsync(urlID);
-                Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
-                responseContent = await response.Content.ReadAsStringAsync();
-                Assert.NotEmpty(responseContent);
-                BoxModelLanguage boxModelLanguage = JsonSerializer.Deserialize<BoxModelLanguage>(responseContent);
-                Assert.Equal(boxModelLanguageList[0].BoxModelLanguageID, boxModelLanguage.BoxModelLanguageID);
+            // testing Get(BoxModelLanguageID)
+            string urlID = url + "/" + boxModelLanguageList[0].BoxModelLanguageID;
+            response = await httpClient.GetAsync(urlID);
+            Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
+            responseContent = await response.Content.ReadAsStringAsync();
+            Assert.NotEmpty(responseContent);
+            BoxModelLanguage boxModelLanguage = JsonSerializer.Deserialize<BoxModelLanguage>(responseContent);
+            Assert.Equal(boxModelLanguageList[0].BoxModelLanguageID, boxModelLanguage.BoxModelLanguageID);
 
                 // testing Post(BoxModelLanguage)
                 boxModelLanguage.BoxModelLanguageID = 0;
-                string content = JsonSerializer.Serialize<BoxModelLanguage>(boxModelLanguage);
-                HttpContent httpContent = new StringContent(content);
-                httpContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
-                response = await httpClient.PostAsync(url, httpContent);
-                Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
-                responseContent = await response.Content.ReadAsStringAsync();
-                Assert.NotEmpty(responseContent);
-                boxModelLanguage = JsonSerializer.Deserialize<BoxModelLanguage>(responseContent);
-                Assert.NotNull(boxModelLanguage);
+            string content = JsonSerializer.Serialize<BoxModelLanguage>(boxModelLanguage);
+            HttpContent httpContent = new StringContent(content);
+            httpContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+            response = await httpClient.PostAsync(url, httpContent);
+            Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
+            responseContent = await response.Content.ReadAsStringAsync();
+            Assert.NotEmpty(responseContent);
+            boxModelLanguage = JsonSerializer.Deserialize<BoxModelLanguage>(responseContent);
+            Assert.NotNull(boxModelLanguage);
 
-                // testing Put(BoxModelLanguage)
-                content = JsonSerializer.Serialize<BoxModelLanguage>(boxModelLanguage);
-                httpContent = new StringContent(content);
-                httpContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
-                response = await httpClient.PutAsync(url, httpContent);
-                Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
-                responseContent = await response.Content.ReadAsStringAsync();
-                Assert.NotEmpty(responseContent);
-                boxModelLanguage = JsonSerializer.Deserialize<BoxModelLanguage>(responseContent);
-                Assert.NotNull(boxModelLanguage);
+            // testing Put(BoxModelLanguage)
+            content = JsonSerializer.Serialize<BoxModelLanguage>(boxModelLanguage);
+            httpContent = new StringContent(content);
+            httpContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+            response = await httpClient.PutAsync(url, httpContent);
+            Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
+            responseContent = await response.Content.ReadAsStringAsync();
+            Assert.NotEmpty(responseContent);
+            boxModelLanguage = JsonSerializer.Deserialize<BoxModelLanguage>(responseContent);
+            Assert.NotNull(boxModelLanguage);
 
-                // testing Delete(BoxModelLanguageID)
-                urlID = url + "/" + boxModelLanguage.BoxModelLanguageID;
-                response = await httpClient.DeleteAsync(urlID);
-                Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
-                responseContent = await response.Content.ReadAsStringAsync();
-                Assert.NotEmpty(responseContent);
-                bool retBool = JsonSerializer.Deserialize<bool>(responseContent);
-                Assert.True(retBool);
-            }
+            // testing Delete(BoxModelLanguageID)
+            urlID = url + "/" + boxModelLanguage.BoxModelLanguageID;
+            response = await httpClient.DeleteAsync(urlID);
+            Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
+            responseContent = await response.Content.ReadAsStringAsync();
+            Assert.NotEmpty(responseContent);
+            bool retBool = JsonSerializer.Deserialize<bool>(responseContent);
+            Assert.True(retBool);
         }
         #endregion Functions public
 

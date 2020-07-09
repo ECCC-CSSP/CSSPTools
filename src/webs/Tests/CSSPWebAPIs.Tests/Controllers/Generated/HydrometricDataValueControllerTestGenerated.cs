@@ -72,61 +72,58 @@ namespace CSSPWebAPIs.Tests.Controllers
         {
             Assert.True(await Setup(culture));
 
-            using (TransactionScope ts = new TransactionScope())
-            {
-                HttpClient httpClient = new HttpClient();
-                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", userModel.Token);
+            HttpClient httpClient = new HttpClient();
+            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", userModel.Token);
 
-                // testing Get
-                string url = "http://localhost:4444/api/" + culture + "/HydrometricDataValue";
-                var response = await httpClient.GetAsync(url);
-                Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
-                string responseContent = await response.Content.ReadAsStringAsync();
-                Assert.NotEmpty(responseContent);
-                List<HydrometricDataValue> hydrometricDataValueList = JsonSerializer.Deserialize<List<HydrometricDataValue>>(responseContent);
-                Assert.True(hydrometricDataValueList.Count > 0);
+            // testing Get
+            string url = "http://localhost:4444/api/" + culture + "/HydrometricDataValue";
+            var response = await httpClient.GetAsync(url);
+            Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
+            string responseContent = await response.Content.ReadAsStringAsync();
+            Assert.NotEmpty(responseContent);
+            List<HydrometricDataValue> hydrometricDataValueList = JsonSerializer.Deserialize<List<HydrometricDataValue>>(responseContent);
+            Assert.True(hydrometricDataValueList.Count > 0);
 
-                // testing Get(HydrometricDataValueID)
-                string urlID = url + "/" + hydrometricDataValueList[0].HydrometricDataValueID;
-                response = await httpClient.GetAsync(urlID);
-                Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
-                responseContent = await response.Content.ReadAsStringAsync();
-                Assert.NotEmpty(responseContent);
-                HydrometricDataValue hydrometricDataValue = JsonSerializer.Deserialize<HydrometricDataValue>(responseContent);
-                Assert.Equal(hydrometricDataValueList[0].HydrometricDataValueID, hydrometricDataValue.HydrometricDataValueID);
+            // testing Get(HydrometricDataValueID)
+            string urlID = url + "/" + hydrometricDataValueList[0].HydrometricDataValueID;
+            response = await httpClient.GetAsync(urlID);
+            Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
+            responseContent = await response.Content.ReadAsStringAsync();
+            Assert.NotEmpty(responseContent);
+            HydrometricDataValue hydrometricDataValue = JsonSerializer.Deserialize<HydrometricDataValue>(responseContent);
+            Assert.Equal(hydrometricDataValueList[0].HydrometricDataValueID, hydrometricDataValue.HydrometricDataValueID);
 
                 // testing Post(HydrometricDataValue)
                 hydrometricDataValue.HydrometricDataValueID = 0;
-                string content = JsonSerializer.Serialize<HydrometricDataValue>(hydrometricDataValue);
-                HttpContent httpContent = new StringContent(content);
-                httpContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
-                response = await httpClient.PostAsync(url, httpContent);
-                Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
-                responseContent = await response.Content.ReadAsStringAsync();
-                Assert.NotEmpty(responseContent);
-                hydrometricDataValue = JsonSerializer.Deserialize<HydrometricDataValue>(responseContent);
-                Assert.NotNull(hydrometricDataValue);
+            string content = JsonSerializer.Serialize<HydrometricDataValue>(hydrometricDataValue);
+            HttpContent httpContent = new StringContent(content);
+            httpContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+            response = await httpClient.PostAsync(url, httpContent);
+            Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
+            responseContent = await response.Content.ReadAsStringAsync();
+            Assert.NotEmpty(responseContent);
+            hydrometricDataValue = JsonSerializer.Deserialize<HydrometricDataValue>(responseContent);
+            Assert.NotNull(hydrometricDataValue);
 
-                // testing Put(HydrometricDataValue)
-                content = JsonSerializer.Serialize<HydrometricDataValue>(hydrometricDataValue);
-                httpContent = new StringContent(content);
-                httpContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
-                response = await httpClient.PutAsync(url, httpContent);
-                Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
-                responseContent = await response.Content.ReadAsStringAsync();
-                Assert.NotEmpty(responseContent);
-                hydrometricDataValue = JsonSerializer.Deserialize<HydrometricDataValue>(responseContent);
-                Assert.NotNull(hydrometricDataValue);
+            // testing Put(HydrometricDataValue)
+            content = JsonSerializer.Serialize<HydrometricDataValue>(hydrometricDataValue);
+            httpContent = new StringContent(content);
+            httpContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+            response = await httpClient.PutAsync(url, httpContent);
+            Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
+            responseContent = await response.Content.ReadAsStringAsync();
+            Assert.NotEmpty(responseContent);
+            hydrometricDataValue = JsonSerializer.Deserialize<HydrometricDataValue>(responseContent);
+            Assert.NotNull(hydrometricDataValue);
 
-                // testing Delete(HydrometricDataValueID)
-                urlID = url + "/" + hydrometricDataValue.HydrometricDataValueID;
-                response = await httpClient.DeleteAsync(urlID);
-                Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
-                responseContent = await response.Content.ReadAsStringAsync();
-                Assert.NotEmpty(responseContent);
-                bool retBool = JsonSerializer.Deserialize<bool>(responseContent);
-                Assert.True(retBool);
-            }
+            // testing Delete(HydrometricDataValueID)
+            urlID = url + "/" + hydrometricDataValue.HydrometricDataValueID;
+            response = await httpClient.DeleteAsync(urlID);
+            Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
+            responseContent = await response.Content.ReadAsStringAsync();
+            Assert.NotEmpty(responseContent);
+            bool retBool = JsonSerializer.Deserialize<bool>(responseContent);
+            Assert.True(retBool);
         }
         #endregion Functions public
 

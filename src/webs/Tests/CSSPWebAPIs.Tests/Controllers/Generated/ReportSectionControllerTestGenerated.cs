@@ -72,61 +72,58 @@ namespace CSSPWebAPIs.Tests.Controllers
         {
             Assert.True(await Setup(culture));
 
-            using (TransactionScope ts = new TransactionScope())
-            {
-                HttpClient httpClient = new HttpClient();
-                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", userModel.Token);
+            HttpClient httpClient = new HttpClient();
+            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", userModel.Token);
 
-                // testing Get
-                string url = "http://localhost:4444/api/" + culture + "/ReportSection";
-                var response = await httpClient.GetAsync(url);
-                Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
-                string responseContent = await response.Content.ReadAsStringAsync();
-                Assert.NotEmpty(responseContent);
-                List<ReportSection> reportSectionList = JsonSerializer.Deserialize<List<ReportSection>>(responseContent);
-                Assert.True(reportSectionList.Count > 0);
+            // testing Get
+            string url = "http://localhost:4444/api/" + culture + "/ReportSection";
+            var response = await httpClient.GetAsync(url);
+            Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
+            string responseContent = await response.Content.ReadAsStringAsync();
+            Assert.NotEmpty(responseContent);
+            List<ReportSection> reportSectionList = JsonSerializer.Deserialize<List<ReportSection>>(responseContent);
+            Assert.True(reportSectionList.Count > 0);
 
-                // testing Get(ReportSectionID)
-                string urlID = url + "/" + reportSectionList[0].ReportSectionID;
-                response = await httpClient.GetAsync(urlID);
-                Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
-                responseContent = await response.Content.ReadAsStringAsync();
-                Assert.NotEmpty(responseContent);
-                ReportSection reportSection = JsonSerializer.Deserialize<ReportSection>(responseContent);
-                Assert.Equal(reportSectionList[0].ReportSectionID, reportSection.ReportSectionID);
+            // testing Get(ReportSectionID)
+            string urlID = url + "/" + reportSectionList[0].ReportSectionID;
+            response = await httpClient.GetAsync(urlID);
+            Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
+            responseContent = await response.Content.ReadAsStringAsync();
+            Assert.NotEmpty(responseContent);
+            ReportSection reportSection = JsonSerializer.Deserialize<ReportSection>(responseContent);
+            Assert.Equal(reportSectionList[0].ReportSectionID, reportSection.ReportSectionID);
 
                 // testing Post(ReportSection)
                 reportSection.ReportSectionID = 0;
-                string content = JsonSerializer.Serialize<ReportSection>(reportSection);
-                HttpContent httpContent = new StringContent(content);
-                httpContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
-                response = await httpClient.PostAsync(url, httpContent);
-                Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
-                responseContent = await response.Content.ReadAsStringAsync();
-                Assert.NotEmpty(responseContent);
-                reportSection = JsonSerializer.Deserialize<ReportSection>(responseContent);
-                Assert.NotNull(reportSection);
+            string content = JsonSerializer.Serialize<ReportSection>(reportSection);
+            HttpContent httpContent = new StringContent(content);
+            httpContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+            response = await httpClient.PostAsync(url, httpContent);
+            Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
+            responseContent = await response.Content.ReadAsStringAsync();
+            Assert.NotEmpty(responseContent);
+            reportSection = JsonSerializer.Deserialize<ReportSection>(responseContent);
+            Assert.NotNull(reportSection);
 
-                // testing Put(ReportSection)
-                content = JsonSerializer.Serialize<ReportSection>(reportSection);
-                httpContent = new StringContent(content);
-                httpContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
-                response = await httpClient.PutAsync(url, httpContent);
-                Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
-                responseContent = await response.Content.ReadAsStringAsync();
-                Assert.NotEmpty(responseContent);
-                reportSection = JsonSerializer.Deserialize<ReportSection>(responseContent);
-                Assert.NotNull(reportSection);
+            // testing Put(ReportSection)
+            content = JsonSerializer.Serialize<ReportSection>(reportSection);
+            httpContent = new StringContent(content);
+            httpContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+            response = await httpClient.PutAsync(url, httpContent);
+            Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
+            responseContent = await response.Content.ReadAsStringAsync();
+            Assert.NotEmpty(responseContent);
+            reportSection = JsonSerializer.Deserialize<ReportSection>(responseContent);
+            Assert.NotNull(reportSection);
 
-                // testing Delete(ReportSectionID)
-                urlID = url + "/" + reportSection.ReportSectionID;
-                response = await httpClient.DeleteAsync(urlID);
-                Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
-                responseContent = await response.Content.ReadAsStringAsync();
-                Assert.NotEmpty(responseContent);
-                bool retBool = JsonSerializer.Deserialize<bool>(responseContent);
-                Assert.True(retBool);
-            }
+            // testing Delete(ReportSectionID)
+            urlID = url + "/" + reportSection.ReportSectionID;
+            response = await httpClient.DeleteAsync(urlID);
+            Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
+            responseContent = await response.Content.ReadAsStringAsync();
+            Assert.NotEmpty(responseContent);
+            bool retBool = JsonSerializer.Deserialize<bool>(responseContent);
+            Assert.True(retBool);
         }
         #endregion Functions public
 

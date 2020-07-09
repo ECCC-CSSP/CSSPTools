@@ -72,61 +72,58 @@ namespace CSSPWebAPIs.Tests.Controllers
         {
             Assert.True(await Setup(culture));
 
-            using (TransactionScope ts = new TransactionScope())
-            {
-                HttpClient httpClient = new HttpClient();
-                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", userModel.Token);
+            HttpClient httpClient = new HttpClient();
+            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", userModel.Token);
 
-                // testing Get
-                string url = "http://localhost:4444/api/" + culture + "/PolSourceSite";
-                var response = await httpClient.GetAsync(url);
-                Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
-                string responseContent = await response.Content.ReadAsStringAsync();
-                Assert.NotEmpty(responseContent);
-                List<PolSourceSite> polSourceSiteList = JsonSerializer.Deserialize<List<PolSourceSite>>(responseContent);
-                Assert.True(polSourceSiteList.Count > 0);
+            // testing Get
+            string url = "http://localhost:4444/api/" + culture + "/PolSourceSite";
+            var response = await httpClient.GetAsync(url);
+            Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
+            string responseContent = await response.Content.ReadAsStringAsync();
+            Assert.NotEmpty(responseContent);
+            List<PolSourceSite> polSourceSiteList = JsonSerializer.Deserialize<List<PolSourceSite>>(responseContent);
+            Assert.True(polSourceSiteList.Count > 0);
 
-                // testing Get(PolSourceSiteID)
-                string urlID = url + "/" + polSourceSiteList[0].PolSourceSiteID;
-                response = await httpClient.GetAsync(urlID);
-                Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
-                responseContent = await response.Content.ReadAsStringAsync();
-                Assert.NotEmpty(responseContent);
-                PolSourceSite polSourceSite = JsonSerializer.Deserialize<PolSourceSite>(responseContent);
-                Assert.Equal(polSourceSiteList[0].PolSourceSiteID, polSourceSite.PolSourceSiteID);
+            // testing Get(PolSourceSiteID)
+            string urlID = url + "/" + polSourceSiteList[0].PolSourceSiteID;
+            response = await httpClient.GetAsync(urlID);
+            Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
+            responseContent = await response.Content.ReadAsStringAsync();
+            Assert.NotEmpty(responseContent);
+            PolSourceSite polSourceSite = JsonSerializer.Deserialize<PolSourceSite>(responseContent);
+            Assert.Equal(polSourceSiteList[0].PolSourceSiteID, polSourceSite.PolSourceSiteID);
 
                 // testing Post(PolSourceSite)
                 polSourceSite.PolSourceSiteID = 0;
-                string content = JsonSerializer.Serialize<PolSourceSite>(polSourceSite);
-                HttpContent httpContent = new StringContent(content);
-                httpContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
-                response = await httpClient.PostAsync(url, httpContent);
-                Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
-                responseContent = await response.Content.ReadAsStringAsync();
-                Assert.NotEmpty(responseContent);
-                polSourceSite = JsonSerializer.Deserialize<PolSourceSite>(responseContent);
-                Assert.NotNull(polSourceSite);
+            string content = JsonSerializer.Serialize<PolSourceSite>(polSourceSite);
+            HttpContent httpContent = new StringContent(content);
+            httpContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+            response = await httpClient.PostAsync(url, httpContent);
+            Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
+            responseContent = await response.Content.ReadAsStringAsync();
+            Assert.NotEmpty(responseContent);
+            polSourceSite = JsonSerializer.Deserialize<PolSourceSite>(responseContent);
+            Assert.NotNull(polSourceSite);
 
-                // testing Put(PolSourceSite)
-                content = JsonSerializer.Serialize<PolSourceSite>(polSourceSite);
-                httpContent = new StringContent(content);
-                httpContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
-                response = await httpClient.PutAsync(url, httpContent);
-                Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
-                responseContent = await response.Content.ReadAsStringAsync();
-                Assert.NotEmpty(responseContent);
-                polSourceSite = JsonSerializer.Deserialize<PolSourceSite>(responseContent);
-                Assert.NotNull(polSourceSite);
+            // testing Put(PolSourceSite)
+            content = JsonSerializer.Serialize<PolSourceSite>(polSourceSite);
+            httpContent = new StringContent(content);
+            httpContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+            response = await httpClient.PutAsync(url, httpContent);
+            Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
+            responseContent = await response.Content.ReadAsStringAsync();
+            Assert.NotEmpty(responseContent);
+            polSourceSite = JsonSerializer.Deserialize<PolSourceSite>(responseContent);
+            Assert.NotNull(polSourceSite);
 
-                // testing Delete(PolSourceSiteID)
-                urlID = url + "/" + polSourceSite.PolSourceSiteID;
-                response = await httpClient.DeleteAsync(urlID);
-                Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
-                responseContent = await response.Content.ReadAsStringAsync();
-                Assert.NotEmpty(responseContent);
-                bool retBool = JsonSerializer.Deserialize<bool>(responseContent);
-                Assert.True(retBool);
-            }
+            // testing Delete(PolSourceSiteID)
+            urlID = url + "/" + polSourceSite.PolSourceSiteID;
+            response = await httpClient.DeleteAsync(urlID);
+            Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
+            responseContent = await response.Content.ReadAsStringAsync();
+            Assert.NotEmpty(responseContent);
+            bool retBool = JsonSerializer.Deserialize<bool>(responseContent);
+            Assert.True(retBool);
         }
         #endregion Functions public
 

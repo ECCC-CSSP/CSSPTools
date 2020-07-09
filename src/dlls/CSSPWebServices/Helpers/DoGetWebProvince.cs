@@ -52,12 +52,9 @@ namespace CSSPWebServices.Services
                 webProvince.TVItemStatAreaList = await GetTVItemStatChildrenListWithTVItemID(tvItem, TVTypeEnum.Area);
                 webProvince.MapInfoAreaList = await GetMapInfoChildrenListWithTVItemID(tvItem, TVTypeEnum.Area);
                 webProvince.MapInfoPointAreaList = await GetMapInfoPointChildrenListWithTVItemID(tvItem, TVTypeEnum.Area);
-                webProvince.TVItemMunicipalityList = await GetTVItemChildrenListWithTVItemID(tvItem, TVTypeEnum.Municipality);
-                webProvince.TVItemLanguageMunicipalityList = await GetTVItemLanguageChildrenListWithTVItemID(tvItem, TVTypeEnum.Municipality);
-                webProvince.TVItemStatMunicipalityList = await GetTVItemStatChildrenListWithTVItemID(tvItem, TVTypeEnum.Municipality);
-                webProvince.MapInfoMunicipalityList = await GetMapInfoChildrenListWithTVItemID(tvItem, TVTypeEnum.Municipality);
-                webProvince.MapInfoPointMunicipalityList = await GetMapInfoPointChildrenListWithTVItemID(tvItem, TVTypeEnum.Municipality);
                 webProvince.SamplingPlanList = await GetSamplingPlanListWithProvinceTVItemID(tvItem.TVItemID);
+
+                await DoStore<WebProvince>(webProvince, $"WebProvince_{TVItemID}.gz");
             }
             catch (Exception ex)
             {

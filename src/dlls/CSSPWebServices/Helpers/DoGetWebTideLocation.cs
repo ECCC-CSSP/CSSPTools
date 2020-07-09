@@ -35,6 +35,8 @@ namespace CSSPWebServices.Services
             try
             {
                 webTideLocation.TideLocationList = await GetTideLocation();
+
+                await DoStore<WebTideLocation>(webTideLocation, $"WebTideLocation.gz");
             }
             catch (Exception ex)
             {

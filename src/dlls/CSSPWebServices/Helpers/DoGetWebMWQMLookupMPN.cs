@@ -35,6 +35,8 @@ namespace CSSPWebServices.Services
             try
             {
                 webMWQMLookupMPN.MWQMLookupMPNList = await GetMWQMLookupMPN();
+
+                await DoStore<WebMWQMLookupMPN>(webMWQMLookupMPN, $"WebMWQMLookupMPN.gz");
             }
             catch (Exception ex)
             {

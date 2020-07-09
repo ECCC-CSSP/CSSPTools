@@ -288,6 +288,14 @@ namespace CSSPWebAPI.Controllers
 
             return await WebService.GetWebReportType();
         }
+        [HttpGet("GetWebMunicipalities/{TVItemID:int}")]
+        public async Task<ActionResult<WebMunicipalities>> GetWebMunicipalities(int TVItemID)
+        {
+            CultureService.SetCulture((string)RouteData.Values["culture"]);
+            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+
+            return await WebService.GetWebMunicipalities(TVItemID);
+        }
         #endregion Functions public
 
         #region Functions private

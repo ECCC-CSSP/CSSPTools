@@ -72,61 +72,58 @@ namespace CSSPWebAPIs.Tests.Controllers
         {
             Assert.True(await Setup(culture));
 
-            using (TransactionScope ts = new TransactionScope())
-            {
-                HttpClient httpClient = new HttpClient();
-                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", userModel.Token);
+            HttpClient httpClient = new HttpClient();
+            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", userModel.Token);
 
-                // testing Get
-                string url = "http://localhost:4444/api/" + culture + "/MWQMSiteStartEndDate";
-                var response = await httpClient.GetAsync(url);
-                Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
-                string responseContent = await response.Content.ReadAsStringAsync();
-                Assert.NotEmpty(responseContent);
-                List<MWQMSiteStartEndDate> mwqmSiteStartEndDateList = JsonSerializer.Deserialize<List<MWQMSiteStartEndDate>>(responseContent);
-                Assert.True(mwqmSiteStartEndDateList.Count > 0);
+            // testing Get
+            string url = "http://localhost:4444/api/" + culture + "/MWQMSiteStartEndDate";
+            var response = await httpClient.GetAsync(url);
+            Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
+            string responseContent = await response.Content.ReadAsStringAsync();
+            Assert.NotEmpty(responseContent);
+            List<MWQMSiteStartEndDate> mwqmSiteStartEndDateList = JsonSerializer.Deserialize<List<MWQMSiteStartEndDate>>(responseContent);
+            Assert.True(mwqmSiteStartEndDateList.Count > 0);
 
-                // testing Get(MWQMSiteStartEndDateID)
-                string urlID = url + "/" + mwqmSiteStartEndDateList[0].MWQMSiteStartEndDateID;
-                response = await httpClient.GetAsync(urlID);
-                Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
-                responseContent = await response.Content.ReadAsStringAsync();
-                Assert.NotEmpty(responseContent);
-                MWQMSiteStartEndDate mwqmSiteStartEndDate = JsonSerializer.Deserialize<MWQMSiteStartEndDate>(responseContent);
-                Assert.Equal(mwqmSiteStartEndDateList[0].MWQMSiteStartEndDateID, mwqmSiteStartEndDate.MWQMSiteStartEndDateID);
+            // testing Get(MWQMSiteStartEndDateID)
+            string urlID = url + "/" + mwqmSiteStartEndDateList[0].MWQMSiteStartEndDateID;
+            response = await httpClient.GetAsync(urlID);
+            Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
+            responseContent = await response.Content.ReadAsStringAsync();
+            Assert.NotEmpty(responseContent);
+            MWQMSiteStartEndDate mwqmSiteStartEndDate = JsonSerializer.Deserialize<MWQMSiteStartEndDate>(responseContent);
+            Assert.Equal(mwqmSiteStartEndDateList[0].MWQMSiteStartEndDateID, mwqmSiteStartEndDate.MWQMSiteStartEndDateID);
 
                 // testing Post(MWQMSiteStartEndDate)
                 mwqmSiteStartEndDate.MWQMSiteStartEndDateID = 0;
-                string content = JsonSerializer.Serialize<MWQMSiteStartEndDate>(mwqmSiteStartEndDate);
-                HttpContent httpContent = new StringContent(content);
-                httpContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
-                response = await httpClient.PostAsync(url, httpContent);
-                Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
-                responseContent = await response.Content.ReadAsStringAsync();
-                Assert.NotEmpty(responseContent);
-                mwqmSiteStartEndDate = JsonSerializer.Deserialize<MWQMSiteStartEndDate>(responseContent);
-                Assert.NotNull(mwqmSiteStartEndDate);
+            string content = JsonSerializer.Serialize<MWQMSiteStartEndDate>(mwqmSiteStartEndDate);
+            HttpContent httpContent = new StringContent(content);
+            httpContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+            response = await httpClient.PostAsync(url, httpContent);
+            Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
+            responseContent = await response.Content.ReadAsStringAsync();
+            Assert.NotEmpty(responseContent);
+            mwqmSiteStartEndDate = JsonSerializer.Deserialize<MWQMSiteStartEndDate>(responseContent);
+            Assert.NotNull(mwqmSiteStartEndDate);
 
-                // testing Put(MWQMSiteStartEndDate)
-                content = JsonSerializer.Serialize<MWQMSiteStartEndDate>(mwqmSiteStartEndDate);
-                httpContent = new StringContent(content);
-                httpContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
-                response = await httpClient.PutAsync(url, httpContent);
-                Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
-                responseContent = await response.Content.ReadAsStringAsync();
-                Assert.NotEmpty(responseContent);
-                mwqmSiteStartEndDate = JsonSerializer.Deserialize<MWQMSiteStartEndDate>(responseContent);
-                Assert.NotNull(mwqmSiteStartEndDate);
+            // testing Put(MWQMSiteStartEndDate)
+            content = JsonSerializer.Serialize<MWQMSiteStartEndDate>(mwqmSiteStartEndDate);
+            httpContent = new StringContent(content);
+            httpContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+            response = await httpClient.PutAsync(url, httpContent);
+            Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
+            responseContent = await response.Content.ReadAsStringAsync();
+            Assert.NotEmpty(responseContent);
+            mwqmSiteStartEndDate = JsonSerializer.Deserialize<MWQMSiteStartEndDate>(responseContent);
+            Assert.NotNull(mwqmSiteStartEndDate);
 
-                // testing Delete(MWQMSiteStartEndDateID)
-                urlID = url + "/" + mwqmSiteStartEndDate.MWQMSiteStartEndDateID;
-                response = await httpClient.DeleteAsync(urlID);
-                Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
-                responseContent = await response.Content.ReadAsStringAsync();
-                Assert.NotEmpty(responseContent);
-                bool retBool = JsonSerializer.Deserialize<bool>(responseContent);
-                Assert.True(retBool);
-            }
+            // testing Delete(MWQMSiteStartEndDateID)
+            urlID = url + "/" + mwqmSiteStartEndDate.MWQMSiteStartEndDateID;
+            response = await httpClient.DeleteAsync(urlID);
+            Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
+            responseContent = await response.Content.ReadAsStringAsync();
+            Assert.NotEmpty(responseContent);
+            bool retBool = JsonSerializer.Deserialize<bool>(responseContent);
+            Assert.True(retBool);
         }
         #endregion Functions public
 

@@ -35,6 +35,8 @@ namespace CSSPWebServices.Services
             try
             {
                 webHelpDoc.HelpDocList = await GetHelpDoc();
+
+                await DoStore<WebHelpDoc>(webHelpDoc, $"WebHelpDoc.gz");
             }
             catch (Exception ex)
             {

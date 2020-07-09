@@ -36,6 +36,8 @@ namespace CSSPWebServices.Services
             {
                 webReportType.ReportTypeList = await GetReportTypeList();
                 webReportType.ReportSectionList = await GetReportSectionList();
+
+                await DoStore<WebReportType>(webReportType, $"WebReportType.gz");
             }
             catch (Exception ex)
             {

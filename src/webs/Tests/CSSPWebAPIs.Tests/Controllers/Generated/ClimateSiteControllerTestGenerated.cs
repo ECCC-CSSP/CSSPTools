@@ -72,61 +72,58 @@ namespace CSSPWebAPIs.Tests.Controllers
         {
             Assert.True(await Setup(culture));
 
-            using (TransactionScope ts = new TransactionScope())
-            {
-                HttpClient httpClient = new HttpClient();
-                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", userModel.Token);
+            HttpClient httpClient = new HttpClient();
+            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", userModel.Token);
 
-                // testing Get
-                string url = "http://localhost:4444/api/" + culture + "/ClimateSite";
-                var response = await httpClient.GetAsync(url);
-                Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
-                string responseContent = await response.Content.ReadAsStringAsync();
-                Assert.NotEmpty(responseContent);
-                List<ClimateSite> climateSiteList = JsonSerializer.Deserialize<List<ClimateSite>>(responseContent);
-                Assert.True(climateSiteList.Count > 0);
+            // testing Get
+            string url = "http://localhost:4444/api/" + culture + "/ClimateSite";
+            var response = await httpClient.GetAsync(url);
+            Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
+            string responseContent = await response.Content.ReadAsStringAsync();
+            Assert.NotEmpty(responseContent);
+            List<ClimateSite> climateSiteList = JsonSerializer.Deserialize<List<ClimateSite>>(responseContent);
+            Assert.True(climateSiteList.Count > 0);
 
-                // testing Get(ClimateSiteID)
-                string urlID = url + "/" + climateSiteList[0].ClimateSiteID;
-                response = await httpClient.GetAsync(urlID);
-                Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
-                responseContent = await response.Content.ReadAsStringAsync();
-                Assert.NotEmpty(responseContent);
-                ClimateSite climateSite = JsonSerializer.Deserialize<ClimateSite>(responseContent);
-                Assert.Equal(climateSiteList[0].ClimateSiteID, climateSite.ClimateSiteID);
+            // testing Get(ClimateSiteID)
+            string urlID = url + "/" + climateSiteList[0].ClimateSiteID;
+            response = await httpClient.GetAsync(urlID);
+            Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
+            responseContent = await response.Content.ReadAsStringAsync();
+            Assert.NotEmpty(responseContent);
+            ClimateSite climateSite = JsonSerializer.Deserialize<ClimateSite>(responseContent);
+            Assert.Equal(climateSiteList[0].ClimateSiteID, climateSite.ClimateSiteID);
 
                 // testing Post(ClimateSite)
                 climateSite.ClimateSiteID = 0;
-                string content = JsonSerializer.Serialize<ClimateSite>(climateSite);
-                HttpContent httpContent = new StringContent(content);
-                httpContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
-                response = await httpClient.PostAsync(url, httpContent);
-                Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
-                responseContent = await response.Content.ReadAsStringAsync();
-                Assert.NotEmpty(responseContent);
-                climateSite = JsonSerializer.Deserialize<ClimateSite>(responseContent);
-                Assert.NotNull(climateSite);
+            string content = JsonSerializer.Serialize<ClimateSite>(climateSite);
+            HttpContent httpContent = new StringContent(content);
+            httpContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+            response = await httpClient.PostAsync(url, httpContent);
+            Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
+            responseContent = await response.Content.ReadAsStringAsync();
+            Assert.NotEmpty(responseContent);
+            climateSite = JsonSerializer.Deserialize<ClimateSite>(responseContent);
+            Assert.NotNull(climateSite);
 
-                // testing Put(ClimateSite)
-                content = JsonSerializer.Serialize<ClimateSite>(climateSite);
-                httpContent = new StringContent(content);
-                httpContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
-                response = await httpClient.PutAsync(url, httpContent);
-                Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
-                responseContent = await response.Content.ReadAsStringAsync();
-                Assert.NotEmpty(responseContent);
-                climateSite = JsonSerializer.Deserialize<ClimateSite>(responseContent);
-                Assert.NotNull(climateSite);
+            // testing Put(ClimateSite)
+            content = JsonSerializer.Serialize<ClimateSite>(climateSite);
+            httpContent = new StringContent(content);
+            httpContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+            response = await httpClient.PutAsync(url, httpContent);
+            Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
+            responseContent = await response.Content.ReadAsStringAsync();
+            Assert.NotEmpty(responseContent);
+            climateSite = JsonSerializer.Deserialize<ClimateSite>(responseContent);
+            Assert.NotNull(climateSite);
 
-                // testing Delete(ClimateSiteID)
-                urlID = url + "/" + climateSite.ClimateSiteID;
-                response = await httpClient.DeleteAsync(urlID);
-                Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
-                responseContent = await response.Content.ReadAsStringAsync();
-                Assert.NotEmpty(responseContent);
-                bool retBool = JsonSerializer.Deserialize<bool>(responseContent);
-                Assert.True(retBool);
-            }
+            // testing Delete(ClimateSiteID)
+            urlID = url + "/" + climateSite.ClimateSiteID;
+            response = await httpClient.DeleteAsync(urlID);
+            Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
+            responseContent = await response.Content.ReadAsStringAsync();
+            Assert.NotEmpty(responseContent);
+            bool retBool = JsonSerializer.Deserialize<bool>(responseContent);
+            Assert.True(retBool);
         }
         #endregion Functions public
 

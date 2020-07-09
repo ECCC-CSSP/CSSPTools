@@ -46,6 +46,8 @@ namespace CSSPWebServices.Services
                 webPolSourceSite.PolSourceSiteEffectList = await GetPolSourceSiteEffectListFromSubsector(tvItem);
                 webPolSourceSite.PolSourceSiteEffectTermList = await GetPolSourceSiteEffectTermListFromSubsector(tvItem);
                 webPolSourceSite.PolSourceSiteCivicAddressList = await GetPolSourceSiteAddressListFromSubsector(tvItem);
+
+                await DoStore<WebPolSourceSite>(webPolSourceSite, $"WebPolSourceSite_{TVItemID}.gz");
             }
             catch (Exception ex)
             {

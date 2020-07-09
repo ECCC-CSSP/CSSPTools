@@ -72,61 +72,58 @@ namespace CSSPWebAPIs.Tests.Controllers
         {
             Assert.True(await Setup(culture));
 
-            using (TransactionScope ts = new TransactionScope())
-            {
-                HttpClient httpClient = new HttpClient();
-                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", userModel.Token);
+            HttpClient httpClient = new HttpClient();
+            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", userModel.Token);
 
-                // testing Get
-                string url = "http://localhost:4444/api/" + culture + "/TVItemUserAuthorization";
-                var response = await httpClient.GetAsync(url);
-                Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
-                string responseContent = await response.Content.ReadAsStringAsync();
-                Assert.NotEmpty(responseContent);
-                List<TVItemUserAuthorization> tvItemUserAuthorizationList = JsonSerializer.Deserialize<List<TVItemUserAuthorization>>(responseContent);
-                Assert.True(tvItemUserAuthorizationList.Count > 0);
+            // testing Get
+            string url = "http://localhost:4444/api/" + culture + "/TVItemUserAuthorization";
+            var response = await httpClient.GetAsync(url);
+            Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
+            string responseContent = await response.Content.ReadAsStringAsync();
+            Assert.NotEmpty(responseContent);
+            List<TVItemUserAuthorization> tvItemUserAuthorizationList = JsonSerializer.Deserialize<List<TVItemUserAuthorization>>(responseContent);
+            Assert.True(tvItemUserAuthorizationList.Count > 0);
 
-                // testing Get(TVItemUserAuthorizationID)
-                string urlID = url + "/" + tvItemUserAuthorizationList[0].TVItemUserAuthorizationID;
-                response = await httpClient.GetAsync(urlID);
-                Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
-                responseContent = await response.Content.ReadAsStringAsync();
-                Assert.NotEmpty(responseContent);
-                TVItemUserAuthorization tvItemUserAuthorization = JsonSerializer.Deserialize<TVItemUserAuthorization>(responseContent);
-                Assert.Equal(tvItemUserAuthorizationList[0].TVItemUserAuthorizationID, tvItemUserAuthorization.TVItemUserAuthorizationID);
+            // testing Get(TVItemUserAuthorizationID)
+            string urlID = url + "/" + tvItemUserAuthorizationList[0].TVItemUserAuthorizationID;
+            response = await httpClient.GetAsync(urlID);
+            Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
+            responseContent = await response.Content.ReadAsStringAsync();
+            Assert.NotEmpty(responseContent);
+            TVItemUserAuthorization tvItemUserAuthorization = JsonSerializer.Deserialize<TVItemUserAuthorization>(responseContent);
+            Assert.Equal(tvItemUserAuthorizationList[0].TVItemUserAuthorizationID, tvItemUserAuthorization.TVItemUserAuthorizationID);
 
                 // testing Post(TVItemUserAuthorization)
                 tvItemUserAuthorization.TVItemUserAuthorizationID = 0;
-                string content = JsonSerializer.Serialize<TVItemUserAuthorization>(tvItemUserAuthorization);
-                HttpContent httpContent = new StringContent(content);
-                httpContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
-                response = await httpClient.PostAsync(url, httpContent);
-                Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
-                responseContent = await response.Content.ReadAsStringAsync();
-                Assert.NotEmpty(responseContent);
-                tvItemUserAuthorization = JsonSerializer.Deserialize<TVItemUserAuthorization>(responseContent);
-                Assert.NotNull(tvItemUserAuthorization);
+            string content = JsonSerializer.Serialize<TVItemUserAuthorization>(tvItemUserAuthorization);
+            HttpContent httpContent = new StringContent(content);
+            httpContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+            response = await httpClient.PostAsync(url, httpContent);
+            Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
+            responseContent = await response.Content.ReadAsStringAsync();
+            Assert.NotEmpty(responseContent);
+            tvItemUserAuthorization = JsonSerializer.Deserialize<TVItemUserAuthorization>(responseContent);
+            Assert.NotNull(tvItemUserAuthorization);
 
-                // testing Put(TVItemUserAuthorization)
-                content = JsonSerializer.Serialize<TVItemUserAuthorization>(tvItemUserAuthorization);
-                httpContent = new StringContent(content);
-                httpContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
-                response = await httpClient.PutAsync(url, httpContent);
-                Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
-                responseContent = await response.Content.ReadAsStringAsync();
-                Assert.NotEmpty(responseContent);
-                tvItemUserAuthorization = JsonSerializer.Deserialize<TVItemUserAuthorization>(responseContent);
-                Assert.NotNull(tvItemUserAuthorization);
+            // testing Put(TVItemUserAuthorization)
+            content = JsonSerializer.Serialize<TVItemUserAuthorization>(tvItemUserAuthorization);
+            httpContent = new StringContent(content);
+            httpContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+            response = await httpClient.PutAsync(url, httpContent);
+            Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
+            responseContent = await response.Content.ReadAsStringAsync();
+            Assert.NotEmpty(responseContent);
+            tvItemUserAuthorization = JsonSerializer.Deserialize<TVItemUserAuthorization>(responseContent);
+            Assert.NotNull(tvItemUserAuthorization);
 
-                // testing Delete(TVItemUserAuthorizationID)
-                urlID = url + "/" + tvItemUserAuthorization.TVItemUserAuthorizationID;
-                response = await httpClient.DeleteAsync(urlID);
-                Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
-                responseContent = await response.Content.ReadAsStringAsync();
-                Assert.NotEmpty(responseContent);
-                bool retBool = JsonSerializer.Deserialize<bool>(responseContent);
-                Assert.True(retBool);
-            }
+            // testing Delete(TVItemUserAuthorizationID)
+            urlID = url + "/" + tvItemUserAuthorization.TVItemUserAuthorizationID;
+            response = await httpClient.DeleteAsync(urlID);
+            Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
+            responseContent = await response.Content.ReadAsStringAsync();
+            Assert.NotEmpty(responseContent);
+            bool retBool = JsonSerializer.Deserialize<bool>(responseContent);
+            Assert.True(retBool);
         }
         #endregion Functions public
 

@@ -72,62 +72,59 @@ namespace CSSPWebAPIs.Tests.Controllers
         {
             Assert.True(await Setup(culture));
 
-            using (TransactionScope ts = new TransactionScope())
-            {
-                HttpClient httpClient = new HttpClient();
-                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", userModel.Token);
+            HttpClient httpClient = new HttpClient();
+            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", userModel.Token);
 
-                // testing Get
-                string url = "http://localhost:4444/api/" + culture + "/SamplingPlan";
-                var response = await httpClient.GetAsync(url);
-                Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
-                string responseContent = await response.Content.ReadAsStringAsync();
-                Assert.NotEmpty(responseContent);
-                List<SamplingPlan> samplingPlanList = JsonSerializer.Deserialize<List<SamplingPlan>>(responseContent);
-                Assert.True(samplingPlanList.Count > 0);
+            // testing Get
+            string url = "http://localhost:4444/api/" + culture + "/SamplingPlan";
+            var response = await httpClient.GetAsync(url);
+            Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
+            string responseContent = await response.Content.ReadAsStringAsync();
+            Assert.NotEmpty(responseContent);
+            List<SamplingPlan> samplingPlanList = JsonSerializer.Deserialize<List<SamplingPlan>>(responseContent);
+            Assert.True(samplingPlanList.Count > 0);
 
-                // testing Get(SamplingPlanID)
-                string urlID = url + "/" + samplingPlanList[0].SamplingPlanID;
-                response = await httpClient.GetAsync(urlID);
-                Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
-                responseContent = await response.Content.ReadAsStringAsync();
-                Assert.NotEmpty(responseContent);
-                SamplingPlan samplingPlan = JsonSerializer.Deserialize<SamplingPlan>(responseContent);
-                Assert.Equal(samplingPlanList[0].SamplingPlanID, samplingPlan.SamplingPlanID);
+            // testing Get(SamplingPlanID)
+            string urlID = url + "/" + samplingPlanList[0].SamplingPlanID;
+            response = await httpClient.GetAsync(urlID);
+            Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
+            responseContent = await response.Content.ReadAsStringAsync();
+            Assert.NotEmpty(responseContent);
+            SamplingPlan samplingPlan = JsonSerializer.Deserialize<SamplingPlan>(responseContent);
+            Assert.Equal(samplingPlanList[0].SamplingPlanID, samplingPlan.SamplingPlanID);
 
                 // testing Post(SamplingPlan)
                 samplingPlan.SamplingPlanID = 0;
-               samplingPlan.SamplingPlanName = samplingPlan.SamplingPlanName.Replace(samplingPlan.Year.ToString(), (samplingPlan.Year + 20).ToString());
-                string content = JsonSerializer.Serialize<SamplingPlan>(samplingPlan);
-                HttpContent httpContent = new StringContent(content);
-                httpContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
-                response = await httpClient.PostAsync(url, httpContent);
-                Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
-                responseContent = await response.Content.ReadAsStringAsync();
-                Assert.NotEmpty(responseContent);
-                samplingPlan = JsonSerializer.Deserialize<SamplingPlan>(responseContent);
-                Assert.NotNull(samplingPlan);
+           samplingPlan.SamplingPlanName = samplingPlan.SamplingPlanName.Replace(samplingPlan.Year.ToString(), (samplingPlan.Year + 20).ToString());
+            string content = JsonSerializer.Serialize<SamplingPlan>(samplingPlan);
+            HttpContent httpContent = new StringContent(content);
+            httpContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+            response = await httpClient.PostAsync(url, httpContent);
+            Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
+            responseContent = await response.Content.ReadAsStringAsync();
+            Assert.NotEmpty(responseContent);
+            samplingPlan = JsonSerializer.Deserialize<SamplingPlan>(responseContent);
+            Assert.NotNull(samplingPlan);
 
-                // testing Put(SamplingPlan)
-                content = JsonSerializer.Serialize<SamplingPlan>(samplingPlan);
-                httpContent = new StringContent(content);
-                httpContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
-                response = await httpClient.PutAsync(url, httpContent);
-                Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
-                responseContent = await response.Content.ReadAsStringAsync();
-                Assert.NotEmpty(responseContent);
-                samplingPlan = JsonSerializer.Deserialize<SamplingPlan>(responseContent);
-                Assert.NotNull(samplingPlan);
+            // testing Put(SamplingPlan)
+            content = JsonSerializer.Serialize<SamplingPlan>(samplingPlan);
+            httpContent = new StringContent(content);
+            httpContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+            response = await httpClient.PutAsync(url, httpContent);
+            Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
+            responseContent = await response.Content.ReadAsStringAsync();
+            Assert.NotEmpty(responseContent);
+            samplingPlan = JsonSerializer.Deserialize<SamplingPlan>(responseContent);
+            Assert.NotNull(samplingPlan);
 
-                // testing Delete(SamplingPlanID)
-                urlID = url + "/" + samplingPlan.SamplingPlanID;
-                response = await httpClient.DeleteAsync(urlID);
-                Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
-                responseContent = await response.Content.ReadAsStringAsync();
-                Assert.NotEmpty(responseContent);
-                bool retBool = JsonSerializer.Deserialize<bool>(responseContent);
-                Assert.True(retBool);
-            }
+            // testing Delete(SamplingPlanID)
+            urlID = url + "/" + samplingPlan.SamplingPlanID;
+            response = await httpClient.DeleteAsync(urlID);
+            Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
+            responseContent = await response.Content.ReadAsStringAsync();
+            Assert.NotEmpty(responseContent);
+            bool retBool = JsonSerializer.Deserialize<bool>(responseContent);
+            Assert.True(retBool);
         }
         #endregion Functions public
 

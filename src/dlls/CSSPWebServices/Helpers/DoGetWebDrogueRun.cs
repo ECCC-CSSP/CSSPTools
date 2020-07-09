@@ -43,6 +43,8 @@ namespace CSSPWebServices.Services
             {
                 webDrogueRun.DrogueRunList = await GetDrogueRunListUnderProvince(tvItem.TVItemID);
                 webDrogueRun.DrogueRunPositionList = await GetDrogueRunPositionListUnderProvince(tvItem.TVItemID);
+
+                await DoStore<WebDrogueRun>(webDrogueRun, $"WebDrogueRun_{TVItemID}.gz");
             }
             catch (Exception ex)
             {

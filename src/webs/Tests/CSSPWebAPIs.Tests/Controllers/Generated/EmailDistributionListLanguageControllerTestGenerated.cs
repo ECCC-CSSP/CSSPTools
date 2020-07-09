@@ -72,61 +72,58 @@ namespace CSSPWebAPIs.Tests.Controllers
         {
             Assert.True(await Setup(culture));
 
-            using (TransactionScope ts = new TransactionScope())
-            {
-                HttpClient httpClient = new HttpClient();
-                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", userModel.Token);
+            HttpClient httpClient = new HttpClient();
+            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", userModel.Token);
 
-                // testing Get
-                string url = "http://localhost:4444/api/" + culture + "/EmailDistributionListLanguage";
-                var response = await httpClient.GetAsync(url);
-                Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
-                string responseContent = await response.Content.ReadAsStringAsync();
-                Assert.NotEmpty(responseContent);
-                List<EmailDistributionListLanguage> emailDistributionListLanguageList = JsonSerializer.Deserialize<List<EmailDistributionListLanguage>>(responseContent);
-                Assert.True(emailDistributionListLanguageList.Count > 0);
+            // testing Get
+            string url = "http://localhost:4444/api/" + culture + "/EmailDistributionListLanguage";
+            var response = await httpClient.GetAsync(url);
+            Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
+            string responseContent = await response.Content.ReadAsStringAsync();
+            Assert.NotEmpty(responseContent);
+            List<EmailDistributionListLanguage> emailDistributionListLanguageList = JsonSerializer.Deserialize<List<EmailDistributionListLanguage>>(responseContent);
+            Assert.True(emailDistributionListLanguageList.Count > 0);
 
-                // testing Get(EmailDistributionListLanguageID)
-                string urlID = url + "/" + emailDistributionListLanguageList[0].EmailDistributionListLanguageID;
-                response = await httpClient.GetAsync(urlID);
-                Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
-                responseContent = await response.Content.ReadAsStringAsync();
-                Assert.NotEmpty(responseContent);
-                EmailDistributionListLanguage emailDistributionListLanguage = JsonSerializer.Deserialize<EmailDistributionListLanguage>(responseContent);
-                Assert.Equal(emailDistributionListLanguageList[0].EmailDistributionListLanguageID, emailDistributionListLanguage.EmailDistributionListLanguageID);
+            // testing Get(EmailDistributionListLanguageID)
+            string urlID = url + "/" + emailDistributionListLanguageList[0].EmailDistributionListLanguageID;
+            response = await httpClient.GetAsync(urlID);
+            Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
+            responseContent = await response.Content.ReadAsStringAsync();
+            Assert.NotEmpty(responseContent);
+            EmailDistributionListLanguage emailDistributionListLanguage = JsonSerializer.Deserialize<EmailDistributionListLanguage>(responseContent);
+            Assert.Equal(emailDistributionListLanguageList[0].EmailDistributionListLanguageID, emailDistributionListLanguage.EmailDistributionListLanguageID);
 
                 // testing Post(EmailDistributionListLanguage)
                 emailDistributionListLanguage.EmailDistributionListLanguageID = 0;
-                string content = JsonSerializer.Serialize<EmailDistributionListLanguage>(emailDistributionListLanguage);
-                HttpContent httpContent = new StringContent(content);
-                httpContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
-                response = await httpClient.PostAsync(url, httpContent);
-                Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
-                responseContent = await response.Content.ReadAsStringAsync();
-                Assert.NotEmpty(responseContent);
-                emailDistributionListLanguage = JsonSerializer.Deserialize<EmailDistributionListLanguage>(responseContent);
-                Assert.NotNull(emailDistributionListLanguage);
+            string content = JsonSerializer.Serialize<EmailDistributionListLanguage>(emailDistributionListLanguage);
+            HttpContent httpContent = new StringContent(content);
+            httpContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+            response = await httpClient.PostAsync(url, httpContent);
+            Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
+            responseContent = await response.Content.ReadAsStringAsync();
+            Assert.NotEmpty(responseContent);
+            emailDistributionListLanguage = JsonSerializer.Deserialize<EmailDistributionListLanguage>(responseContent);
+            Assert.NotNull(emailDistributionListLanguage);
 
-                // testing Put(EmailDistributionListLanguage)
-                content = JsonSerializer.Serialize<EmailDistributionListLanguage>(emailDistributionListLanguage);
-                httpContent = new StringContent(content);
-                httpContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
-                response = await httpClient.PutAsync(url, httpContent);
-                Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
-                responseContent = await response.Content.ReadAsStringAsync();
-                Assert.NotEmpty(responseContent);
-                emailDistributionListLanguage = JsonSerializer.Deserialize<EmailDistributionListLanguage>(responseContent);
-                Assert.NotNull(emailDistributionListLanguage);
+            // testing Put(EmailDistributionListLanguage)
+            content = JsonSerializer.Serialize<EmailDistributionListLanguage>(emailDistributionListLanguage);
+            httpContent = new StringContent(content);
+            httpContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+            response = await httpClient.PutAsync(url, httpContent);
+            Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
+            responseContent = await response.Content.ReadAsStringAsync();
+            Assert.NotEmpty(responseContent);
+            emailDistributionListLanguage = JsonSerializer.Deserialize<EmailDistributionListLanguage>(responseContent);
+            Assert.NotNull(emailDistributionListLanguage);
 
-                // testing Delete(EmailDistributionListLanguageID)
-                urlID = url + "/" + emailDistributionListLanguage.EmailDistributionListLanguageID;
-                response = await httpClient.DeleteAsync(urlID);
-                Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
-                responseContent = await response.Content.ReadAsStringAsync();
-                Assert.NotEmpty(responseContent);
-                bool retBool = JsonSerializer.Deserialize<bool>(responseContent);
-                Assert.True(retBool);
-            }
+            // testing Delete(EmailDistributionListLanguageID)
+            urlID = url + "/" + emailDistributionListLanguage.EmailDistributionListLanguageID;
+            response = await httpClient.DeleteAsync(urlID);
+            Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
+            responseContent = await response.Content.ReadAsStringAsync();
+            Assert.NotEmpty(responseContent);
+            bool retBool = JsonSerializer.Deserialize<bool>(responseContent);
+            Assert.True(retBool);
         }
         #endregion Functions public
 
