@@ -11,7 +11,7 @@ namespace ServicesClassNameServiceTestGeneratedServices.Services
             sb.AppendLine(@"        {");
             sb.AppendLine(@"            Config = new ConfigurationBuilder()");
             sb.AppendLine(@"               .SetBasePath(Directory.GetParent(AppContext.BaseDirectory).FullName)");
-            sb.AppendLine(@"               .AddJsonFile(""appsettings.json"")");
+            sb.AppendLine(@"               .AddJsonFile(""appsettings_csspservices.json"")");
             sb.AppendLine(@"               .AddUserSecrets(""6f27cbbe-6ffb-4154-b49b-d739597c4f60"")");
             sb.AppendLine(@"               .Build();");
             sb.AppendLine(@"");
@@ -37,7 +37,7 @@ namespace ServicesClassNameServiceTestGeneratedServices.Services
             sb.AppendLine(@"");
             sb.AppendLine(@"            string appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);");
             sb.AppendLine(@"");
-            sb.AppendLine(@"            FileInfo fiAppDataPath = new FileInfo(CSSPDBLocalFileName.Replace(""{appDataPath}"", appDataPath));");
+            sb.AppendLine(@"            FileInfo fiAppDataPath = new FileInfo(CSSPDBLocalFileName.Replace(""{AppDataPath}"", appDataPath));");
             sb.AppendLine(@"");
             sb.AppendLine(@"            Services.AddDbContext<CSSPDBLocalContext>(options =>");
             sb.AppendLine(@"            {");

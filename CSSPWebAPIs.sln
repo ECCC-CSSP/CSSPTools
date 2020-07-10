@@ -3,10 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29519.161
 MinimumVisualStudioVersion = 15.0.26124.0
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CSSPWebAPIs", "src\webs\CSSPWebAPIs\CSSPWebAPIs.csproj", "{A74629ED-D55A-46FA-BD85-F93F0A596FF4}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CSSPWebAPIs.Tests", "src\webs\Tests\CSSPWebAPIs.Tests\CSSPWebAPIs.Tests.csproj", "{BE79802F-3BA2-4EDD-AA06-E4137DB95755}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UserServices", "src\dlls\UserServices\UserServices.csproj", "{F88C8452-1791-4BBF-94A5-9BE9EA44038C}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CultureServices", "src\dlls\CultureServices\CultureServices.csproj", "{14B9F5D9-9C9F-4C05-BB9E-CB2D1BEB4579}"
@@ -39,14 +35,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CSSPWebServices", "src\dlls
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CSSPWebServices.Tests", "src\tests\CSSPWebServices.Tests\CSSPWebServices.Tests.csproj", "{70226171-039B-4C51-88E8-6AE7C3A54ED3}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CSSPWebAngServe", "src\webs\CSSPWebAngServe\CSSPWebAngServe.csproj", "{9D019CD3-8BEF-4B43-9B2F-1B766C374132}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CSSPWebAngServe.Tests", "src\webs\Tests\CSSPWebAngServe.Tests\CSSPWebAngServe.Tests.csproj", "{895819C3-10AA-4718-9A23-6F9767A2CC83}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CSSPWebLocalAPIs", "src\webs\CSSPWebLocalAPIs\CSSPWebLocalAPIs.csproj", "{987971F4-5314-4D5A-825A-6A926F728FCC}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CSSPWebLocalAPIs.Tests", "src\webs\Tests\CSSPWebLocalAPIs.Tests\CSSPWebLocalAPIs.Tests.csproj", "{8A602E47-AE79-4A51-8112-0B43C4197650}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CSSPSQLiteServices", "src\dlls\CSSPSQLiteServices\CSSPSQLiteServices.csproj", "{D48CBB44-929D-439B-ABAD-E8D59703A76D}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CSSPSQLiteServices.Tests", "src\tests\CSSPSQLiteServices.Tests\CSSPSQLiteServices.Tests.csproj", "{87C19C1E-008B-44BD-BF93-6C2EE118B141}"
@@ -55,7 +43,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PolSourceGroupingExcelFileR
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PolSourceGroupingExcelFileReadServices.Tests", "src\codegen\Tests\PolSourceGroupingExcelFileReadServices.Tests\PolSourceGroupingExcelFileReadServices.Tests.csproj", "{78FA8251-2EE2-4863-9659-7CB88EF6A50D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GenerateAllGzFiles", "src\webs\GenerateAllGzFiles\GenerateAllGzFiles.csproj", "{13514F3C-1F36-419F-944D-E755F70AC886}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GenerateAllGzFiles", "src\webs\GenerateAllGzFiles\GenerateAllGzFiles.csproj", "{13514F3C-1F36-419F-944D-E755F70AC886}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CSSPWebAPIs.Tests", "src\webs\Tests\CSSPWebAPIs.Tests\CSSPWebAPIs.Tests.csproj", "{94D2B0DB-F344-4BD8-9AB1-BA75D7ED5216}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CSSPWebAPIs", "src\webs\CSSPWebAPIs\CSSPWebAPIs.csproj", "{76C379DD-47B1-4514-ACBE-021176536B0A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -63,14 +55,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{A74629ED-D55A-46FA-BD85-F93F0A596FF4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A74629ED-D55A-46FA-BD85-F93F0A596FF4}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{A74629ED-D55A-46FA-BD85-F93F0A596FF4}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A74629ED-D55A-46FA-BD85-F93F0A596FF4}.Release|Any CPU.Build.0 = Release|Any CPU
-		{BE79802F-3BA2-4EDD-AA06-E4137DB95755}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{BE79802F-3BA2-4EDD-AA06-E4137DB95755}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{BE79802F-3BA2-4EDD-AA06-E4137DB95755}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{BE79802F-3BA2-4EDD-AA06-E4137DB95755}.Release|Any CPU.Build.0 = Release|Any CPU
 		{F88C8452-1791-4BBF-94A5-9BE9EA44038C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{F88C8452-1791-4BBF-94A5-9BE9EA44038C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F88C8452-1791-4BBF-94A5-9BE9EA44038C}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -135,22 +119,6 @@ Global
 		{70226171-039B-4C51-88E8-6AE7C3A54ED3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{70226171-039B-4C51-88E8-6AE7C3A54ED3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{70226171-039B-4C51-88E8-6AE7C3A54ED3}.Release|Any CPU.Build.0 = Release|Any CPU
-		{9D019CD3-8BEF-4B43-9B2F-1B766C374132}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{9D019CD3-8BEF-4B43-9B2F-1B766C374132}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{9D019CD3-8BEF-4B43-9B2F-1B766C374132}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{9D019CD3-8BEF-4B43-9B2F-1B766C374132}.Release|Any CPU.Build.0 = Release|Any CPU
-		{895819C3-10AA-4718-9A23-6F9767A2CC83}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{895819C3-10AA-4718-9A23-6F9767A2CC83}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{895819C3-10AA-4718-9A23-6F9767A2CC83}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{895819C3-10AA-4718-9A23-6F9767A2CC83}.Release|Any CPU.Build.0 = Release|Any CPU
-		{987971F4-5314-4D5A-825A-6A926F728FCC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{987971F4-5314-4D5A-825A-6A926F728FCC}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{987971F4-5314-4D5A-825A-6A926F728FCC}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{987971F4-5314-4D5A-825A-6A926F728FCC}.Release|Any CPU.Build.0 = Release|Any CPU
-		{8A602E47-AE79-4A51-8112-0B43C4197650}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{8A602E47-AE79-4A51-8112-0B43C4197650}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{8A602E47-AE79-4A51-8112-0B43C4197650}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{8A602E47-AE79-4A51-8112-0B43C4197650}.Release|Any CPU.Build.0 = Release|Any CPU
 		{D48CBB44-929D-439B-ABAD-E8D59703A76D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{D48CBB44-929D-439B-ABAD-E8D59703A76D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D48CBB44-929D-439B-ABAD-E8D59703A76D}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -171,6 +139,14 @@ Global
 		{13514F3C-1F36-419F-944D-E755F70AC886}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{13514F3C-1F36-419F-944D-E755F70AC886}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{13514F3C-1F36-419F-944D-E755F70AC886}.Release|Any CPU.Build.0 = Release|Any CPU
+		{94D2B0DB-F344-4BD8-9AB1-BA75D7ED5216}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{94D2B0DB-F344-4BD8-9AB1-BA75D7ED5216}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{94D2B0DB-F344-4BD8-9AB1-BA75D7ED5216}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{94D2B0DB-F344-4BD8-9AB1-BA75D7ED5216}.Release|Any CPU.Build.0 = Release|Any CPU
+		{76C379DD-47B1-4514-ACBE-021176536B0A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{76C379DD-47B1-4514-ACBE-021176536B0A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{76C379DD-47B1-4514-ACBE-021176536B0A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{76C379DD-47B1-4514-ACBE-021176536B0A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

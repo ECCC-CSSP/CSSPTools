@@ -11,12 +11,13 @@
   "profiles": {
     "IIS Express": {
       "commandName": "IISExpress",
+      "commandLineArgs": "AzureDB",
       "launchBrowser": true,
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
-    "CSSPWebLocalAPIs": {
+    "CSSPWebAPIs": {
       "commandName": "Project",
       "launchBrowser": true,
       "launchUrl": "weatherforecast",

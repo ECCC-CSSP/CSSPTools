@@ -39,7 +39,7 @@ namespace WebAPIClassNameControllerTestGeneratedServices.Services
             sb.AppendLine(@"");
             sb.AppendLine(@"            string appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);");
             sb.AppendLine(@"");
-            sb.AppendLine(@"            FileInfo fiAppDataPath = new FileInfo(CSSPDBLocalFileName.Replace(""{appDataPath}"", appDataPath));");
+            sb.AppendLine(@"            FileInfo fiAppDataPath = new FileInfo(CSSPDBLocalFileName.Replace(""{AppDataPath}"", appDataPath));");
             sb.AppendLine(@"");
             sb.AppendLine(@"            Services.AddDbContext<CSSPDBLocalContext>(options =>");
             sb.AppendLine(@"            {");

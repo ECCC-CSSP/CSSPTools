@@ -81,7 +81,7 @@ namespace WebAPIClassNameControllerTestGeneratedServices.Services
                     sb.AppendLine(@"using CSSPEnums;");
                     sb.AppendLine(@"using CSSPModels;");
                     sb.AppendLine(@"using CSSPServices;");
-                    sb.AppendLine(@"using CSSPWebAPI.Controllers;");
+                    sb.AppendLine(@"using CSSPWebAPIs.Controllers;");
                     sb.AppendLine(@"using CultureServices.Services;");
                     sb.AppendLine(@"using LoggedInServices.Services;");
                     sb.AppendLine(@"using Microsoft.AspNetCore.Mvc;");

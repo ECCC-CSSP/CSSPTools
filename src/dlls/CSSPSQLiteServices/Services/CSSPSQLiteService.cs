@@ -30,16 +30,21 @@ namespace CSSPSQLiteServices.Services
             string appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
 
             string CSSPDBLocal = Configuration.GetValue<string>("CSSPDBLocal");
-            FileInfo fiCSSPDBLocal = new FileInfo(CSSPDBLocal.Replace("{appDataPath}", appDataPath));
+            FileInfo fiCSSPDBLocal = new FileInfo(CSSPDBLocal.Replace("{AppDataPath}", appDataPath));
 
             string CSSPFilesManagementDB = Configuration.GetValue<string>("CSSPFilesManagementDB");
-            FileInfo fiCSSPFilesManagementDB = new FileInfo(CSSPFilesManagementDB.Replace("{appDataPath}", appDataPath));
+            FileInfo fiCSSPFilesManagementDB = new FileInfo(CSSPFilesManagementDB.Replace("{AppDataPath}", appDataPath));
 
-            if (!await CheckAndCreateMissingDirectoriesAndFiles(new List<FileInfo>() { fiCSSPDBLocal, fiCSSPFilesManagementDB })) return await Task.FromResult(false);
+            string CSSPLoginDB = Configuration.GetValue<string>("CSSPLoginDB");
+            FileInfo fiCSSPLoginDB = new FileInfo(CSSPLoginDB.Replace("{AppDataPath}", appDataPath));
+
+            if (!await CheckAndCreateMissingDirectoriesAndFiles(new List<FileInfo>() { fiCSSPDBLocal, fiCSSPFilesManagementDB, fiCSSPLoginDB })) return await Task.FromResult(false);
 
             if (!await CreateCSSPDBLocal(fiCSSPDBLocal)) return await Task.FromResult(false);
 
             if (!await CreateCSSPFilesManagementDB(fiCSSPFilesManagementDB)) return await Task.FromResult(false);
+
+            if (!await CreateCSSPLoginDB(fiCSSPLoginDB)) return await Task.FromResult(false);
 
             return true;
         }

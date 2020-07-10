@@ -7,7 +7,7 @@
 using CSSPEnums;
 using CSSPModels;
 using CSSPServices;
-using CSSPWebAPI.Controllers;
+using CSSPWebAPIs.Controllers;
 using CultureServices.Services;
 using LoggedInServices.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -76,7 +76,7 @@ namespace CSSPWebAPIs.Tests.Controllers
             httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", userModel.Token);
 
             // testing Get
-            string url = "http://localhost:4444/api/" + culture + "/RatingCurveValue";
+            string url = "https://localhost:4447/api/" + culture + "/RatingCurveValue";
             var response = await httpClient.GetAsync(url);
             Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
             string responseContent = await response.Content.ReadAsStringAsync();
@@ -160,7 +160,7 @@ namespace CSSPWebAPIs.Tests.Controllers
 
             string appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
 
-            FileInfo fiAppDataPath = new FileInfo(CSSPDBLocalFileName.Replace("{appDataPath}", appDataPath));
+            FileInfo fiAppDataPath = new FileInfo(CSSPDBLocalFileName.Replace("{AppDataPath}", appDataPath));
 
             Services.AddDbContext<CSSPDBLocalContext>(options =>
             {

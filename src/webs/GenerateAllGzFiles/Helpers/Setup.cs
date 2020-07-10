@@ -54,7 +54,7 @@ namespace GenerateAllGzFiles
 
             string appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
 
-            FileInfo fiAppDataPath = new FileInfo(CSSPDBLocalFileName.Replace("{appDataPath}", appDataPath));
+            FileInfo fiAppDataPath = new FileInfo(CSSPDBLocalFileName.Replace("{AppDataPath}", appDataPath));
 
             Services.AddDbContext<CSSPDBLocalContext>(options =>
             {

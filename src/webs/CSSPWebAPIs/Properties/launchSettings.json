@@ -3,24 +3,24 @@
     "windowsAuthentication": false,
     "anonymousAuthentication": true,
     "iisExpress": {
-      "applicationUrl": "http://localhost:54444",
-      "sslPort": 44352
+      "applicationUrl": "http://localhost:54446",
+      "sslPort": 44342
     }
   },
   "$schema": "http://json.schemastore.org/launchsettings.json",
   "profiles": {
     "IIS Express": {
       "commandName": "IISExpress",
+      "commandLineArgs": "AzureDB",
       "launchBrowser": true,
-      "launchUrl": "api/en-CA/weatherforecast",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
-    "CSSPCodeGenWebAPI": {
+    "CSSPWebAPIs": {
       "commandName": "Project",
       "launchBrowser": true,
-      "launchUrl": "api/en-CA/weatherforecast",
+      "launchUrl": "weatherforecast",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },

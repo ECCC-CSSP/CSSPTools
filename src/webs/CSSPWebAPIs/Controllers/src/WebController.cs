@@ -14,7 +14,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace CSSPWebAPI.Controllers
+namespace CSSPWebAPIs.Controllers
 {
     [Route("api/{culture}/[controller]")]
     [ApiController]

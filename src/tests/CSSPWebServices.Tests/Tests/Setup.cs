@@ -55,7 +55,7 @@ namespace CSSPWebServices.Tests
 
             Services.AddSingleton<IConfiguration>(Config);
 
-            string CSSPDBConnString = Config.GetValue<string>("TestDB");
+            string CSSPDBConnString = Config.GetValue<string>("CSSPDB2");
             Assert.NotNull(CSSPDBConnString);
 
             Services.AddDbContext<CSSPDBContext>(options =>

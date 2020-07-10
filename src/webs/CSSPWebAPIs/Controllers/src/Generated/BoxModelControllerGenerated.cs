@@ -13,7 +13,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace CSSPWebAPI.Controllers
+namespace CSSPWebAPIs.Controllers
 {
     public partial interface IBoxModelController
     {

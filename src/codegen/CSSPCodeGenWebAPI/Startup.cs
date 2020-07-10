@@ -92,7 +92,7 @@ namespace CSSPCodeGenWebAPI
 
             string appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
 
-            FileInfo fiDB = new FileInfo(connectionStrings.ActionCommandDB.Replace("{appDataPath}", appDataPath));
+            FileInfo fiDB = new FileInfo(connectionStrings.ActionCommandDB.Replace("{AppDataPath}", appDataPath));
 
             services.AddDbContext<ActionCommandContext>(options =>
             {

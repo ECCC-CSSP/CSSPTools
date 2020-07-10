@@ -20,7 +20,7 @@ namespace WebAPIClassNameControllerTestGeneratedServices.Services
             sb.AppendLine(@"            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(""Bearer"", userModel.Token);");
             sb.AppendLine(@"");
             sb.AppendLine(@"            // testing Get");
-            sb.AppendLine($@"            string url = ""http://localhost:4444/api/"" + culture + ""/{ TypeName }"";");
+            sb.AppendLine($@"            string url = ""https://localhost:4447/api/"" + culture + ""/{ TypeName }"";");
             sb.AppendLine($@"            var response = await httpClient.GetAsync(url);");
             sb.AppendLine($@"            Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);");
             sb.AppendLine($@"            string responseContent = await response.Content.ReadAsStringAsync();");

@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "CSSPWebAPIs.Tests": {
+      "commandName": "Project",
+      "commandLineArgs": "TestDB"
+    }
+  }
+}

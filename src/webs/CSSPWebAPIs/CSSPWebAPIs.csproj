@@ -1,8 +1,8 @@
-﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
-    <UserSecretsId>dd0c74e5-2064-419f-9779-c12942e685ee</UserSecretsId>
+    <UserSecretsId>41c4156a-4b42-42e9-923a-e9c8360dba12</UserSecretsId>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -10,6 +10,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.SpaServices.Extensions" Version="3.1.5" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.Certificate" Version="3.1.5" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.1.5" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.Negotiate" Version="3.1.5" />
@@ -25,95 +26,11 @@
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.7.1" />
   </ItemGroup>
 
-
   <ItemGroup>
     <ProjectReference Include="..\..\codegen\PolSourceGroupingExcelFileReadServices\PolSourceGroupingExcelFileReadServices.csproj" />
     <ProjectReference Include="..\..\dlls\CSSPServices\CSSPServices.csproj" />
     <ProjectReference Include="..\..\dlls\CSSPWebServices\CSSPWebServices.csproj" />
     <ProjectReference Include="..\..\dlls\UserServices\UserServices.csproj" />
   </ItemGroup>
-
-  <ItemGroup>
-    <Compile Update="Controllers\Resources\ControllersRes.Designer.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>ControllersRes.resx</DependentUpon>
-    </Compile>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Content Update="appsettings_csspwebapis.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
-
-  <ItemGroup>
-    <EmbeddedResource Update="Controllers\Resources\ControllersRes.fr.resx">
-      <LastGenOutput>ControllersRes.Designer.cs</LastGenOutput>
-      <Generator>PublicResXFileCodeGenerator</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Controllers\Resources\ControllersRes.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>ControllersRes.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Update="ActionCommandList.csv">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="runAngularEnumsGenerated.txt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="runAngularInterfacesGenerated.txt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="runEnumsCompareWithOldEnums.txt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="runEnumsPolSourceInfoRelatedFiles.txt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="runEnumsTestGenerated_cs.txt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="runModelsCompare.txt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="runModelsCompareDBFieldsAndCSSPModelsDLLProp.txt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="runModelsCSSPModelsRes.txt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="runServicesClassNameServiceGenerated.txt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="runWebAPIClassNameControllerTestGenerated.txt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="runWebAPIClassNameControllerGenerated.txt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="runServicesRepopulateTestDB.txt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="runServicesExtensionEnumCastingGenerated.txt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="runServicesClassNameServiceTestGenerated.txt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="runModelsModelClassNameTest.txt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="runModelsModelClassNameTestGenerated_cs.txt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="runEnumsGenerated_cs.txt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-
 
 </Project>

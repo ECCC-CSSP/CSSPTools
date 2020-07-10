@@ -45,6 +45,7 @@ namespace CSSPWebServices.Services
         Task<ActionResult<WebReportType>> GetWebReportType();
 
         Task<bool> CreateAllGzFiles();
+        Task<bool> StoreFilesUndercsspfilesForSubsector(int TVItemID);
     }
 
 }

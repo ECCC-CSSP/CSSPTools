@@ -21,6 +21,15 @@ namespace CSSPWebServices.Tests
         #region Tests Generated CRUD
         [Theory]
         [InlineData("en-CA")]
+        public async Task DoStoreFilesUndercsspfilesForSubsector_Good_Test(string culture)
+        {
+            //Assert.True(await Setup(culture));
+
+            //bool retBool = await WebService.StoreFilesUndercsspfilesForSubsector(635); // Bouctouche River and Harbour Subsector
+            //Assert.True(retBool);
+        }
+        [Theory]
+        [InlineData("en-CA")]
         [InlineData("fr-CA")]
         public async Task GetWebRoot_Good_Test(string culture)
         {

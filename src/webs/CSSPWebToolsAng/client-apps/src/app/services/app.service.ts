@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import { AppModel, HttpRequestModel } from 'src/app/models';
-import { Router } from '@angular/router';
+import { AppModel } from 'src/app/models';
 
 @Injectable({
   providedIn: 'root'
@@ -10,7 +9,7 @@ export class AppService {
   appModel$: BehaviorSubject<AppModel> = new BehaviorSubject<AppModel>(<AppModel>{});
 
   constructor() {
-    this.Update(<AppModel>{ BaseApiUrl: 'https://localhost:4445/api/'});
+    this.Update(<AppModel>{ BaseApiUrl: 'https://localhost:4447/api/'});
    }
 
   Update(appModel: AppModel)
