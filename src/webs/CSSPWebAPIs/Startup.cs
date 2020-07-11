@@ -50,7 +50,7 @@ namespace CSSPWebAPIs
         public void ConfigureServices(IServiceCollection services)
         {
             string appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
-            string DBFromArgs = "";
+            string DBFromArgs = "TestDB";
 
             List<string> ArgsOptionsList = new List<string>()
             {
@@ -59,16 +59,6 @@ namespace CSSPWebAPIs
 
             string[] args = Environment.GetCommandLineArgs();
 
-            if (args.Count() < 1)
-            {
-                Console.WriteLine();
-                Console.WriteLine();
-                Console.WriteLine($"args should have one parameter. Choice of [{ string.Join(", ", ArgsOptionsList) }]");
-                Console.WriteLine();
-                Console.WriteLine();
-                return;
-            }
-
             foreach (string arg in args)
             {
                 if (ArgsOptionsList.Contains(arg))
@@ -76,16 +66,6 @@ namespace CSSPWebAPIs
                     DBFromArgs = arg;
                     break;
                 }
-            }
-
-            if (string.IsNullOrWhiteSpace(DBFromArgs))
-            {
-                Console.WriteLine();
-                Console.WriteLine();
-                Console.WriteLine($"args should have one parameter. Choice of [{ string.Join(", ", ArgsOptionsList) }]");
-                Console.WriteLine();
-                Console.WriteLine();
-                return;
             }
 
             services.AddCors();

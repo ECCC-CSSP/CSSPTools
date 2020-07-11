@@ -12,6 +12,5 @@ namespace UserServices.Services
     {
         //Task<ActionResult<bool>> RegisterUser(RegisterModel registerModel);
         Task<ActionResult<UserModel>> Login(LoginModel loginModel);
-        Task SetCulture(CultureInfo culture);
     }
 }

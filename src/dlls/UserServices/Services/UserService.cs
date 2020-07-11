@@ -23,7 +23,7 @@ namespace UserServices.Services
         #endregion Variables
 
         #region Properties
-        private IConfiguration configuration { get; }
+        private IConfiguration Configuration { get; }
         private UserManager<ApplicationUser> userManager { get; }
         private CSSPDBContext csspDBContext { get; }
         private ApiSettingsModel appSettings { get; }
@@ -32,7 +32,7 @@ namespace UserServices.Services
         #region Constructors
         public UserService(IConfiguration configuration, IOptions<ApiSettingsModel> appSettings, UserManager<ApplicationUser> userManager, CSSPDBContext csspDBContext)
         {
-            this.configuration = configuration;
+            this.Configuration = configuration;
             this.appSettings = appSettings.Value;
             this.userManager = userManager;
             this.csspDBContext = csspDBContext;
@@ -215,7 +215,7 @@ namespace UserServices.Services
                         LastName = contact.LastName
                     };
 
-                    byte[] key = Encoding.ASCII.GetBytes(configuration.GetValue<string>("ApiSettings:APISecret"));
+                    byte[] key = Encoding.ASCII.GetBytes(Configuration.GetValue<string>("ApiSettings:APISecret"));
 
                     JwtSecurityTokenHandler tokenHandler = new JwtSecurityTokenHandler();
                     SecurityTokenDescriptor tokenDescriptor = new SecurityTokenDescriptor
@@ -239,10 +239,6 @@ namespace UserServices.Services
             }
 
             return BadRequest(String.Format(CultureServicesRes.UnableToLoginAs_WithProvidedPassword, loginModel.LoginEmail));
-        }
-        public async Task SetCulture(CultureInfo culture)
-        {
-            CultureServicesRes.Culture = culture;
         }
         #endregion Functions public
 

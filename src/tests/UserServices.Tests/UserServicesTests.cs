@@ -115,7 +115,7 @@ namespace UserServices.Tests
         {
             Configuration = new ConfigurationBuilder()
                .SetBasePath(Directory.GetParent(AppContext.BaseDirectory).FullName)
-               .AddJsonFile("appsettings.json")
+               .AddJsonFile("appsettings_userservices.json")
                .AddUserSecrets("ec761e00-6d1e-461d-8ba9-0247177a97be")
                .Build();
 
