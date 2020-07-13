@@ -33,4 +33,10 @@
     <ProjectReference Include="..\..\dlls\UserServices\UserServices.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Content Update="appsettings_csspwebapis.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
 </Project>

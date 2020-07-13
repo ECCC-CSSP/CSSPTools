@@ -49,6 +49,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CSSPWebAPIs.Tests", "src\we
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CSSPWebAPIs", "src\webs\CSSPWebAPIs\CSSPWebAPIs.csproj", "{76C379DD-47B1-4514-ACBE-021176536B0A}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CSSPDesktop", "src\webs\CSSPDesktop\CSSPDesktop.csproj", "{B16AA158-28E6-4589-B033-8C11CFA81124}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CSSPDesktopServices", "src\webs\CSSPDesktopServices\CSSPDesktopServices.csproj", "{0D1B8CE6-0C44-4B61-9C37-0337728CE897}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CSSPDesktopServices.Tests", "src\webs\Tests\CSSPDesktopServices.Tests\CSSPDesktopServices.Tests.csproj", "{7443DAAB-4201-48F9-8F2B-F7E66FBD2EC6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -147,6 +153,18 @@ Global
 		{76C379DD-47B1-4514-ACBE-021176536B0A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{76C379DD-47B1-4514-ACBE-021176536B0A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{76C379DD-47B1-4514-ACBE-021176536B0A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B16AA158-28E6-4589-B033-8C11CFA81124}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B16AA158-28E6-4589-B033-8C11CFA81124}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B16AA158-28E6-4589-B033-8C11CFA81124}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B16AA158-28E6-4589-B033-8C11CFA81124}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0D1B8CE6-0C44-4B61-9C37-0337728CE897}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0D1B8CE6-0C44-4B61-9C37-0337728CE897}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0D1B8CE6-0C44-4B61-9C37-0337728CE897}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0D1B8CE6-0C44-4B61-9C37-0337728CE897}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7443DAAB-4201-48F9-8F2B-F7E66FBD2EC6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7443DAAB-4201-48F9-8F2B-F7E66FBD2EC6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7443DAAB-4201-48F9-8F2B-F7E66FBD2EC6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7443DAAB-4201-48F9-8F2B-F7E66FBD2EC6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

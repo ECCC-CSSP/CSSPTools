@@ -42,8 +42,6 @@ namespace CSSPCodeGenWebAPI.Controllers
         {
             //Thread.Sleep(1000);
 
-            await userService.SetCulture(new CultureInfo(Request.RouteValues["culture"].ToString()));
-
             return await userService.Login(loginModel);
         }
         //[Route("Register")]
