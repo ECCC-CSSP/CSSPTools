@@ -13,11 +13,10 @@ namespace CSSPDesktopServices.Services
         #endregion Variables
 
         #region Properties
-        public string StartUrl { get; set; }
         public string AppDataPath { get; set; }
+        public string StartUrl { get; set; }
         public string CSSPWebAPIsExeFullPath { get; set; }
         public string HelpPath { get; set; }
-        public List<string> InternetConnectionTestingURLs { get; set; }
         public bool IsEnglish { get; set; }
         public Process processCSSPWebAPIs { get; set; }
         public Process processBrowser { get; set; }

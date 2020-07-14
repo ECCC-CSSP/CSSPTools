@@ -20,14 +20,10 @@ namespace CSSPDesktopServices.Services
             }
             processStartInfo.Arguments = "";
             processStartInfo.UseShellExecute = true;
-            //processStartInfo.CreateNoWindow = true;
-            //processStartInfo.WindowStyle = ProcessWindowStyle.Hidden;
 
             if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
             {
-                AppendStatus(new AppendEventArgs(appTextModel.StartingCSSPWebTools + "\r\n\r\n"));
                 processBrowser = Process.Start(processStartInfo);
-                AppendStatus(new AppendEventArgs(appTextModel.StartedCSSPWebTools + "\r\n\r\n"));
             }
             else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
             {

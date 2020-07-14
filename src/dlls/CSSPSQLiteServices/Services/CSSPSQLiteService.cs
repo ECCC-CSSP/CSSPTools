@@ -1,4 +1,5 @@
-﻿using Microsoft.Data.Sqlite;
+﻿using CSSPModels;
+using Microsoft.Data.Sqlite;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
@@ -14,37 +15,76 @@ namespace CSSPSQLiteServices.Services
         #endregion Variables
 
         #region Properties
-        IConfiguration Configuration { get; }
+        public string Error { get; set; }
+        private CSSPDBLocalContext dbLocal { get; set; }
         #endregion Properties
 
         #region Constructors
-        public CSSPSQLiteService(IConfiguration Configuration)
+        public CSSPSQLiteService(CSSPDBLocalContext dbLocal)
         {
-            this.Configuration = Configuration;
+            this.dbLocal = dbLocal;
         }
         #endregion Constructors
 
         #region Functions public
-        public async Task<bool> CreateSQLiteCSSPDBLocal()
+        public async Task<bool> CreateSQLiteCSSPLocalDatabase()
         {
             string appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
 
-            string CSSPDBLocal = Configuration.GetValue<string>("CSSPDBLocal");
-            FileInfo fiCSSPDBLocal = new FileInfo(CSSPDBLocal.Replace("{AppDataPath}", appDataPath));
+            FileInfo fiCSSPDBLocal = new FileInfo(appDataPath + "\\cssp\\cssplocaldatabases\\CSSPDBLocal.db");
 
-            string CSSPFilesManagementDB = Configuration.GetValue<string>("CSSPFilesManagementDB");
-            FileInfo fiCSSPFilesManagementDB = new FileInfo(CSSPFilesManagementDB.Replace("{AppDataPath}", appDataPath));
+            if (! await DBContainsInfo(fiCSSPDBLocal))
+            {
+                Error = $"Database [{ fiCSSPDBLocal.FullName }] contains info. You will need to send it to the server before creating or recreating the DB.";
+                return await Task.FromResult(false);
+            }
 
-            string CSSPLoginDB = Configuration.GetValue<string>("CSSPLoginDB");
-            FileInfo fiCSSPLoginDB = new FileInfo(CSSPLoginDB.Replace("{AppDataPath}", appDataPath));
-
-            if (!await CheckAndCreateMissingDirectoriesAndFiles(new List<FileInfo>() { fiCSSPDBLocal, fiCSSPFilesManagementDB, fiCSSPLoginDB })) return await Task.FromResult(false);
+            if (!await CheckAndCreateMissingDirectoriesAndFiles(new List<FileInfo>() { fiCSSPDBLocal })) return await Task.FromResult(false);
 
             if (!await CreateCSSPDBLocal(fiCSSPDBLocal)) return await Task.FromResult(false);
 
+            return true;
+        }
+        public async Task<bool> CreateSQLiteCSSPFileManagementDatabase()
+        {
+            string appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+
+            FileInfo fiCSSPFilesManagementDB = new FileInfo(appDataPath + "\\cssp\\cssplocaldatabases\\CSSPFilesManagementDB.db");
+
+
+            if (!await DBContainsInfo(fiCSSPFilesManagementDB))
+            {
+                Error = $"Database [{ fiCSSPFilesManagementDB.FullName }] contains info. You will need to send it to the server before creating or recreating the DB.";
+                return await Task.FromResult(false);
+            }
+
+            if (!await CheckAndCreateMissingDirectoriesAndFiles(new List<FileInfo>() { fiCSSPFilesManagementDB })) return await Task.FromResult(false);
+
             if (!await CreateCSSPFilesManagementDB(fiCSSPFilesManagementDB)) return await Task.FromResult(false);
 
+            return true;
+        }
+        public async Task<bool> CreateSQLiteCSSPLoginDatabase()
+        {
+            string appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+
+            FileInfo fiCSSPLoginDB = new FileInfo(appDataPath + "\\cssp\\cssplocaldatabases\\CSSPLoginDB.db");
+
+            if (!await DBContainsInfo(fiCSSPLoginDB))
+            {
+                Error = $"Database [{ fiCSSPLoginDB.FullName }] contains info. You will need to send it to the server before creating or recreating the DB.";
+                return await Task.FromResult(false);
+            }
+
+            if (!await CheckAndCreateMissingDirectoriesAndFiles(new List<FileInfo>() { fiCSSPLoginDB })) return await Task.FromResult(false);
+
             if (!await CreateCSSPLoginDB(fiCSSPLoginDB)) return await Task.FromResult(false);
+
+            return true;
+        }
+        public async Task<bool> DBContainsInfo(FileInfo fi)
+        {
+            if (!await DoDBContainsInfo(fi)) return await Task.FromResult(false);
 
             return true;
         }

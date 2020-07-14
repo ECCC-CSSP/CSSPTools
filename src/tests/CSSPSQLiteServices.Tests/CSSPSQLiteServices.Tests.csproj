@@ -13,6 +13,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="appsettings_csspsqliteservices.json" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Content Include="appsettings_csspsqliteservices.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <ExcludeFromSingleFile>true</ExcludeFromSingleFile>

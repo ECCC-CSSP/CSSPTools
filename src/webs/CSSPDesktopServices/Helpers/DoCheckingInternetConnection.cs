@@ -13,7 +13,7 @@ namespace CSSPDesktopServices.Services
             try
             {
                 HttpClient httpClient = new HttpClient();
-                foreach (string url in InternetConnectionTestingURLs)
+                foreach (string url in new List<string>() { "https://www.google.com/", "https://www.bing.com/" })
                 {
                     string ret = await httpClient.GetStringAsync(url);
                     if (!string.IsNullOrWhiteSpace(ret))

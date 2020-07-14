@@ -16,14 +16,12 @@ namespace CSSPDesktopServices.Services
             processStartInfo.FileName = CSSPWebAPIsExeFullPath;
             processStartInfo.Arguments = "";
             processStartInfo.UseShellExecute = true;
-            //processStartInfo.CreateNoWindow = true;
-            //processStartInfo.WindowStyle = ProcessWindowStyle.Hidden;
+            processStartInfo.CreateNoWindow = true;
+            processStartInfo.WindowStyle = ProcessWindowStyle.Hidden;
 
             if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
             {
-                AppendStatus(new AppendEventArgs(appTextModel.StartingCSSPWebAPIs + "\r\n\r\n"));
                 processCSSPWebAPIs = Process.Start(processStartInfo);
-                AppendStatus(new AppendEventArgs(appTextModel.StartedCSSPWebAPIs + "\r\n\r\n"));
             }
             else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
             {

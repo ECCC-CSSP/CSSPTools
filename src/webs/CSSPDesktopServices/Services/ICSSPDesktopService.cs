@@ -14,7 +14,6 @@ namespace CSSPDesktopServices.Services
         string AppDataPath { get; set; }
         string CSSPWebAPIsExeFullPath { get; set; }
         string HelpPath { get; set; }
-        List<string> InternetConnectionTestingURLs { get; set; }
         bool IsEnglish { get; set; }
         Process processCSSPWebAPIs { get; set; }
         Process processBrowser { get; set; }

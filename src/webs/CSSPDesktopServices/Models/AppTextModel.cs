@@ -9,7 +9,7 @@ namespace CSSPDesktopServices.Models
         public AppTextModelEN()
         {
             CSSPDesktopFormText = "CSSP Desktop Application";
-            lblLanguageText = "Language:";
+            linkLabelLanguageText = "Language";
             linkLabelHelpText = "Help";
             butStartCSSPWebToolsText = "Start CSSP Web Tools";
             butStopCSSPWebToolsText = "Stop CSSP Web Tools";
@@ -27,7 +27,7 @@ namespace CSSPDesktopServices.Models
         public AppTextModelFR()
         {
             CSSPDesktopFormText = "Application de bureau PCCSM";
-            lblLanguageText = "Langage:";
+            linkLabelLanguageText = "Langage";
             linkLabelHelpText = "Aide";
             butStartCSSPWebToolsText = "Ouvrir Outils Web PCCSM";
             butStopCSSPWebToolsText = "Annuler Outils Web Tools";
@@ -43,7 +43,7 @@ namespace CSSPDesktopServices.Models
     public class AppTextModel
     {
         public string CSSPDesktopFormText { get; set; }
-        public string lblLanguageText { get; set; }
+        public string linkLabelLanguageText { get; set; }
         public string linkLabelHelpText { get; set; }
         public string butStartCSSPWebToolsText { get; set; }
         public string butStopCSSPWebToolsText { get; set; }

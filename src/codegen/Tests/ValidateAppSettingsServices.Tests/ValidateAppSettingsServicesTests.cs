@@ -121,7 +121,7 @@ namespace ValidateAppSettingsServices.Tests
             validateAppSettingsService.AppSettingParameterList = new List<AppSettingParameter>()
             {
                 new AppSettingParameter() { Parameter = "Culture", ExpectedValue = "", IsCulture = true },
-                new AppSettingParameter() { Parameter = "DBFileName", ExpectedValue = "{AppDataPath}\\cssp\\db\\ActionCommandDB.db", IsFile = true, CheckExist = true },
+                new AppSettingParameter() { Parameter = "DBFileName", ExpectedValue = "{AppDataPath}\\cssp\\cssplocaldatabases\\ActionCommandDB.db", IsFile = true, CheckExist = true },
             };
 
             return await Task.FromResult(true);

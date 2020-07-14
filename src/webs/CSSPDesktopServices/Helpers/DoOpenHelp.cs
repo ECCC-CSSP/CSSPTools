@@ -12,11 +12,7 @@ namespace CSSPDesktopServices.Services
         private async Task<bool> DoOpenHelp()
         {
             ProcessStartInfo processStartInfo = new ProcessStartInfo();
-            processStartInfo.FileName = HelpPath;
-            if (!IsEnglish)
-            {
-                processStartInfo.FileName = HelpPath.Replace("EN.html", "FR.html");
-            }
+            processStartInfo.FileName = HelpPath + (IsEnglish ? "HelpDocEN.html" : "HelpDocFR.html");
             processStartInfo.Arguments = "";
             processStartInfo.UseShellExecute = true;
             //processStartInfo.CreateNoWindow = true;

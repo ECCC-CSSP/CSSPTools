@@ -35,7 +35,6 @@ namespace CSSPWebAPIs
 
         #region Properties
         private IConfiguration Configuration { get; }
-        private string RootPath { get; set; }
         #endregion Properties
 
         #region Constructors
@@ -49,7 +48,10 @@ namespace CSSPWebAPIs
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            FileInfo fiw = new FileInfo(@"C:\Users\charl\AppData\Roaming\cssp\rootpath.txt");
+
             string appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+
             string DBFromArgs = "TestDB";
 
             List<string> ArgsOptionsList = new List<string>()
@@ -228,13 +230,18 @@ namespace CSSPWebAPIs
             LoadAllDBServices(services);
             services.AddScoped<IWebService, WebService>();
 
-            FileInfo fiClient = new FileInfo(Configuration.GetValue<string>("LocalClientPath").Replace("{AppDataPath}", appDataPath));
+            //FileInfo fiClient = new FileInfo(Configuration.GetValue<string>("LocalClientPath").Replace("{AppDataPath}", appDataPath));
 
-            RootPath = fiClient.Directory.FullName;
+            //RootPath = fiClient.Directory.FullName;
+
+            //using (TextWriter tw = fiw.CreateText())
+            //{
+            //    tw.WriteLine("bonjour --- " + RootPath);
+            //}
 
             services.AddSpaStaticFiles(configuration =>
             {
-                configuration.RootPath = RootPath;
+                configuration.RootPath = "client-app";
             });
 
 
@@ -277,7 +284,7 @@ namespace CSSPWebAPIs
 
             app.UseSpa(spa =>
             {
-                spa.Options.SourcePath = RootPath;
+                spa.Options.SourcePath = "client-app";
             });
         }
         #endregion Functions public

@@ -17,7 +17,7 @@ namespace CSSPSQLiteServices.Services
                 db.Open();
 
                 if (!await FillExistingTableList(ExistingTableList, db)) return await Task.FromResult(false);
-                ListTableToDelete.Add("CSSPFiles");
+                ListTableToDelete.AddRange(new List<string>() { "AspNetUsers", "Contacts", "Preferences" });
                 if (!await DeleteTables(ListTableToDelete, ExistingTableList, db)) return await Task.FromResult(false);
 
                 string CreateAspNetUsersTable = "CREATE TABLE AspNetUsers (" +
@@ -64,6 +64,14 @@ namespace CSSPSQLiteServices.Services
                 SqliteCommand createContactsTableCmd = new SqliteCommand(CreateContactsTable, db);
 
                 createContactsTableCmd.ExecuteReader();
+
+                string CreatePreferencesTable = "CREATE TABLE Preferences ( " +
+                    "PreferenceID INTEGER NOT NULL UNIQUE, " +
+                    "PreferenceText TEXT NOT NULL)";
+
+                SqliteCommand createPreferencesTableCmd = new SqliteCommand(CreatePreferencesTable, db);
+
+                createPreferencesTableCmd.ExecuteReader();
             }
 
             return await Task.FromResult(true);
