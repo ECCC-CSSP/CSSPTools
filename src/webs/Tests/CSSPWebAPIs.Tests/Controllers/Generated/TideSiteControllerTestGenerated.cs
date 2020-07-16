@@ -133,7 +133,7 @@ namespace CSSPWebAPIs.Tests.Controllers
             Config = new ConfigurationBuilder()
                .SetBasePath(Directory.GetParent(AppContext.BaseDirectory).FullName)
                .AddJsonFile("appsettings_csspwebapistests.json")
-               .AddUserSecrets("f2c8c313-6393-4a24-8eff-c7218ab66ab5")
+               .AddUserSecrets("9d65c001-b7bc-4922-a0fc-1558b9ef927e")
                .Build();
 
             Services = new ServiceCollection();

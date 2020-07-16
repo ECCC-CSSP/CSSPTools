@@ -208,7 +208,7 @@ namespace CSSPWebAPIs
             services.AddIdentityCore<ApplicationUser>()
             .AddEntityFrameworkStores<ApplicationDbContext>();
 
-            FileInfo fiDB = new FileInfo(Configuration.GetValue<string>("DBFileName").Replace("{AppDataPath}", appDataPath));
+            FileInfo fiDB = new FileInfo(Configuration.GetValue<string>("CSSPDBLocal").Replace("{AppDataPath}", appDataPath));
 
             services.AddDbContext<ActionCommandContext>(options =>
             {
