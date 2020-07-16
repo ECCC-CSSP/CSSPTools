@@ -24,7 +24,7 @@ namespace CSSPServices
    public interface IAddressService
     {
        Task<ActionResult<bool>> Delete(int AddressID);
-       Task<ActionResult<List<Address>>> GetAddressList();
+       Task<ActionResult<List<Address>>> GetAddressList(int skip = 0, int take = 100);
        Task<ActionResult<Address>> GetAddressWithAddressID(int AddressID);
        Task<ActionResult<Address>> Post(Address address);
        Task<ActionResult<Address>> Put(Address address);
@@ -64,7 +64,20 @@ namespace CSSPServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.IsMemory)
+            {
+                Address address = (from c in dbIM.Addresses.AsNoTracking()
+                                   where c.AddressID == AddressID
+                                   select c).FirstOrDefault();
+
+                if (address == null)
+                {
+                    return await Task.FromResult(NotFound());
+                }
+
+                return await Task.FromResult(Ok(address));
+            }
+            else if (LoggedInService.IsLocal)
             {
                 Address address = (from c in dbLocal.Addresses.AsNoTracking()
                         where c.AddressID == AddressID
@@ -91,22 +104,28 @@ namespace CSSPServices
                 return await Task.FromResult(Ok(address));
             }
         }
-        public async Task<ActionResult<List<Address>>> GetAddressList()
+        public async Task<ActionResult<List<Address>>> GetAddressList(int skip = 0, int take = 100)
         {
             if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
             {
                 return await Task.FromResult(Unauthorized());
             }
 
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.IsMemory)
             {
-                List<Address> addressList = (from c in dbLocal.Addresses.AsNoTracking() select c).Take(100).ToList();
+                List<Address> addressList = (from c in dbIM.Addresses.AsNoTracking() orderby c.AddressID select c).Skip(skip).Take(take).ToList();
+            
+                return await Task.FromResult(Ok(addressList));
+            }
+            else if (LoggedInService.IsLocal)
+            {
+                List<Address> addressList = (from c in dbLocal.Addresses.AsNoTracking() orderby c.AddressID select c).Skip(skip).Take(take).ToList();
 
                 return await Task.FromResult(Ok(addressList));
             }
             else
             {
-                List<Address> addressList = (from c in db.Addresses.AsNoTracking() select c).Take(100).ToList();
+                List<Address> addressList = (from c in db.Addresses.AsNoTracking() orderby c.AddressID select c).Skip(skip).Take(take).ToList();
 
                 return await Task.FromResult(Ok(addressList));
             }
@@ -118,7 +137,30 @@ namespace CSSPServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.IsMemory)
+            {
+                Address address = (from c in dbIM.Addresses
+                                   where c.AddressID == AddressID
+                                   select c).FirstOrDefault();
+            
+                if (address == null)
+                {
+                    return await Task.FromResult(BadRequest(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "Address", "AddressID", AddressID.ToString())));
+                }
+            
+                try
+                {
+                    dbIM.Addresses.Remove(address);
+                    dbIM.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                    return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
+            
+                return await Task.FromResult(Ok(true));
+            }
+            else if (LoggedInService.IsLocal)
             {
                 Address address = (from c in dbLocal.Addresses
                                    where c.AddressID == AddressID
@@ -178,7 +220,21 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ValidationResults));
             }
 
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.IsMemory)
+            {
+                try
+                {
+                    dbIM.Addresses.Add(address);
+                    dbIM.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                    return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
+
+                return await Task.FromResult(Ok(address));
+            }
+            else if (LoggedInService.IsLocal)
             {
                 try
                 {
@@ -220,7 +276,21 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ValidationResults));
             }
 
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.IsMemory)
+            {
+                try
+                {
+                    dbIM.Addresses.Update(address);
+                    dbIM.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                    return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
+
+                return await Task.FromResult(Ok(address));
+            }
+            else if (LoggedInService.IsLocal)
             {
             try
             {

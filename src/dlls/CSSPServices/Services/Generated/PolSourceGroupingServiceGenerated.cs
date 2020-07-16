@@ -24,7 +24,7 @@ namespace CSSPServices
    public interface IPolSourceGroupingService
     {
        Task<ActionResult<bool>> Delete(int PolSourceGroupingID);
-       Task<ActionResult<List<PolSourceGrouping>>> GetPolSourceGroupingList();
+       Task<ActionResult<List<PolSourceGrouping>>> GetPolSourceGroupingList(int skip = 0, int take = 100);
        Task<ActionResult<PolSourceGrouping>> GetPolSourceGroupingWithPolSourceGroupingID(int PolSourceGroupingID);
        Task<ActionResult<PolSourceGrouping>> Post(PolSourceGrouping polsourcegrouping);
        Task<ActionResult<PolSourceGrouping>> Put(PolSourceGrouping polsourcegrouping);
@@ -64,51 +64,70 @@ namespace CSSPServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.IsMemory)
             {
-                PolSourceGrouping polsourcegrouping = (from c in dbLocal.PolSourceGroupings.AsNoTracking()
+                PolSourceGrouping polSourceGrouping = (from c in dbIM.PolSourceGroupings.AsNoTracking()
+                                   where c.PolSourceGroupingID == PolSourceGroupingID
+                                   select c).FirstOrDefault();
+
+                if (polSourceGrouping == null)
+                {
+                    return await Task.FromResult(NotFound());
+                }
+
+                return await Task.FromResult(Ok(polSourceGrouping));
+            }
+            else if (LoggedInService.IsLocal)
+            {
+                PolSourceGrouping polSourceGrouping = (from c in dbLocal.PolSourceGroupings.AsNoTracking()
                         where c.PolSourceGroupingID == PolSourceGroupingID
                         select c).FirstOrDefault();
 
-                if (polsourcegrouping == null)
+                if (polSourceGrouping == null)
                 {
                    return await Task.FromResult(NotFound());
                 }
 
-                return await Task.FromResult(Ok(polsourcegrouping));
+                return await Task.FromResult(Ok(polSourceGrouping));
             }
             else
             {
-                PolSourceGrouping polsourcegrouping = (from c in db.PolSourceGroupings.AsNoTracking()
+                PolSourceGrouping polSourceGrouping = (from c in db.PolSourceGroupings.AsNoTracking()
                         where c.PolSourceGroupingID == PolSourceGroupingID
                         select c).FirstOrDefault();
 
-                if (polsourcegrouping == null)
+                if (polSourceGrouping == null)
                 {
                    return await Task.FromResult(NotFound());
                 }
 
-                return await Task.FromResult(Ok(polsourcegrouping));
+                return await Task.FromResult(Ok(polSourceGrouping));
             }
         }
-        public async Task<ActionResult<List<PolSourceGrouping>>> GetPolSourceGroupingList()
+        public async Task<ActionResult<List<PolSourceGrouping>>> GetPolSourceGroupingList(int skip = 0, int take = 100)
         {
             if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
             {
                 return await Task.FromResult(Unauthorized());
             }
 
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.IsMemory)
             {
-                List<PolSourceGrouping> polsourcegroupingList = (from c in dbLocal.PolSourceGroupings.AsNoTracking() select c).Take(100).ToList();
+                List<PolSourceGrouping> polSourceGroupingList = (from c in dbIM.PolSourceGroupings.AsNoTracking() orderby c.PolSourceGroupingID select c).Skip(skip).Take(take).ToList();
+            
+                return await Task.FromResult(Ok(polSourceGroupingList));
+            }
+            else if (LoggedInService.IsLocal)
+            {
+                List<PolSourceGrouping> polSourceGroupingList = (from c in dbLocal.PolSourceGroupings.AsNoTracking() orderby c.PolSourceGroupingID select c).Skip(skip).Take(take).ToList();
 
-                return await Task.FromResult(Ok(polsourcegroupingList));
+                return await Task.FromResult(Ok(polSourceGroupingList));
             }
             else
             {
-                List<PolSourceGrouping> polsourcegroupingList = (from c in db.PolSourceGroupings.AsNoTracking() select c).Take(100).ToList();
+                List<PolSourceGrouping> polSourceGroupingList = (from c in db.PolSourceGroupings.AsNoTracking() orderby c.PolSourceGroupingID select c).Skip(skip).Take(take).ToList();
 
-                return await Task.FromResult(Ok(polsourcegroupingList));
+                return await Task.FromResult(Ok(polSourceGroupingList));
             }
         }
         public async Task<ActionResult<bool>> Delete(int PolSourceGroupingID)
@@ -118,7 +137,30 @@ namespace CSSPServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.IsMemory)
+            {
+                PolSourceGrouping polSourceGrouping = (from c in dbIM.PolSourceGroupings
+                                   where c.PolSourceGroupingID == PolSourceGroupingID
+                                   select c).FirstOrDefault();
+            
+                if (polSourceGrouping == null)
+                {
+                    return await Task.FromResult(BadRequest(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "PolSourceGrouping", "PolSourceGroupingID", PolSourceGroupingID.ToString())));
+                }
+            
+                try
+                {
+                    dbIM.PolSourceGroupings.Remove(polSourceGrouping);
+                    dbIM.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                    return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
+            
+                return await Task.FromResult(Ok(true));
+            }
+            else if (LoggedInService.IsLocal)
             {
                 PolSourceGrouping polSourceGrouping = (from c in dbLocal.PolSourceGroupings
                                    where c.PolSourceGroupingID == PolSourceGroupingID
@@ -178,7 +220,21 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ValidationResults));
             }
 
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.IsMemory)
+            {
+                try
+                {
+                    dbIM.PolSourceGroupings.Add(polSourceGrouping);
+                    dbIM.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                    return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
+
+                return await Task.FromResult(Ok(polSourceGrouping));
+            }
+            else if (LoggedInService.IsLocal)
             {
                 try
                 {
@@ -220,7 +276,21 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ValidationResults));
             }
 
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.IsMemory)
+            {
+                try
+                {
+                    dbIM.PolSourceGroupings.Update(polSourceGrouping);
+                    dbIM.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                    return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
+
+                return await Task.FromResult(Ok(polSourceGrouping));
+            }
+            else if (LoggedInService.IsLocal)
             {
             try
             {

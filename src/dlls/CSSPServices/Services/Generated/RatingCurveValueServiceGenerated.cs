@@ -24,7 +24,7 @@ namespace CSSPServices
    public interface IRatingCurveValueService
     {
        Task<ActionResult<bool>> Delete(int RatingCurveValueID);
-       Task<ActionResult<List<RatingCurveValue>>> GetRatingCurveValueList();
+       Task<ActionResult<List<RatingCurveValue>>> GetRatingCurveValueList(int skip = 0, int take = 100);
        Task<ActionResult<RatingCurveValue>> GetRatingCurveValueWithRatingCurveValueID(int RatingCurveValueID);
        Task<ActionResult<RatingCurveValue>> Post(RatingCurveValue ratingcurvevalue);
        Task<ActionResult<RatingCurveValue>> Put(RatingCurveValue ratingcurvevalue);
@@ -64,51 +64,70 @@ namespace CSSPServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.IsMemory)
             {
-                RatingCurveValue ratingcurvevalue = (from c in dbLocal.RatingCurveValues.AsNoTracking()
+                RatingCurveValue ratingCurveValue = (from c in dbIM.RatingCurveValues.AsNoTracking()
+                                   where c.RatingCurveValueID == RatingCurveValueID
+                                   select c).FirstOrDefault();
+
+                if (ratingCurveValue == null)
+                {
+                    return await Task.FromResult(NotFound());
+                }
+
+                return await Task.FromResult(Ok(ratingCurveValue));
+            }
+            else if (LoggedInService.IsLocal)
+            {
+                RatingCurveValue ratingCurveValue = (from c in dbLocal.RatingCurveValues.AsNoTracking()
                         where c.RatingCurveValueID == RatingCurveValueID
                         select c).FirstOrDefault();
 
-                if (ratingcurvevalue == null)
+                if (ratingCurveValue == null)
                 {
                    return await Task.FromResult(NotFound());
                 }
 
-                return await Task.FromResult(Ok(ratingcurvevalue));
+                return await Task.FromResult(Ok(ratingCurveValue));
             }
             else
             {
-                RatingCurveValue ratingcurvevalue = (from c in db.RatingCurveValues.AsNoTracking()
+                RatingCurveValue ratingCurveValue = (from c in db.RatingCurveValues.AsNoTracking()
                         where c.RatingCurveValueID == RatingCurveValueID
                         select c).FirstOrDefault();
 
-                if (ratingcurvevalue == null)
+                if (ratingCurveValue == null)
                 {
                    return await Task.FromResult(NotFound());
                 }
 
-                return await Task.FromResult(Ok(ratingcurvevalue));
+                return await Task.FromResult(Ok(ratingCurveValue));
             }
         }
-        public async Task<ActionResult<List<RatingCurveValue>>> GetRatingCurveValueList()
+        public async Task<ActionResult<List<RatingCurveValue>>> GetRatingCurveValueList(int skip = 0, int take = 100)
         {
             if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
             {
                 return await Task.FromResult(Unauthorized());
             }
 
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.IsMemory)
             {
-                List<RatingCurveValue> ratingcurvevalueList = (from c in dbLocal.RatingCurveValues.AsNoTracking() select c).Take(100).ToList();
+                List<RatingCurveValue> ratingCurveValueList = (from c in dbIM.RatingCurveValues.AsNoTracking() orderby c.RatingCurveValueID select c).Skip(skip).Take(take).ToList();
+            
+                return await Task.FromResult(Ok(ratingCurveValueList));
+            }
+            else if (LoggedInService.IsLocal)
+            {
+                List<RatingCurveValue> ratingCurveValueList = (from c in dbLocal.RatingCurveValues.AsNoTracking() orderby c.RatingCurveValueID select c).Skip(skip).Take(take).ToList();
 
-                return await Task.FromResult(Ok(ratingcurvevalueList));
+                return await Task.FromResult(Ok(ratingCurveValueList));
             }
             else
             {
-                List<RatingCurveValue> ratingcurvevalueList = (from c in db.RatingCurveValues.AsNoTracking() select c).Take(100).ToList();
+                List<RatingCurveValue> ratingCurveValueList = (from c in db.RatingCurveValues.AsNoTracking() orderby c.RatingCurveValueID select c).Skip(skip).Take(take).ToList();
 
-                return await Task.FromResult(Ok(ratingcurvevalueList));
+                return await Task.FromResult(Ok(ratingCurveValueList));
             }
         }
         public async Task<ActionResult<bool>> Delete(int RatingCurveValueID)
@@ -118,7 +137,30 @@ namespace CSSPServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.IsMemory)
+            {
+                RatingCurveValue ratingCurveValue = (from c in dbIM.RatingCurveValues
+                                   where c.RatingCurveValueID == RatingCurveValueID
+                                   select c).FirstOrDefault();
+            
+                if (ratingCurveValue == null)
+                {
+                    return await Task.FromResult(BadRequest(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "RatingCurveValue", "RatingCurveValueID", RatingCurveValueID.ToString())));
+                }
+            
+                try
+                {
+                    dbIM.RatingCurveValues.Remove(ratingCurveValue);
+                    dbIM.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                    return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
+            
+                return await Task.FromResult(Ok(true));
+            }
+            else if (LoggedInService.IsLocal)
             {
                 RatingCurveValue ratingCurveValue = (from c in dbLocal.RatingCurveValues
                                    where c.RatingCurveValueID == RatingCurveValueID
@@ -178,7 +220,21 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ValidationResults));
             }
 
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.IsMemory)
+            {
+                try
+                {
+                    dbIM.RatingCurveValues.Add(ratingCurveValue);
+                    dbIM.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                    return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
+
+                return await Task.FromResult(Ok(ratingCurveValue));
+            }
+            else if (LoggedInService.IsLocal)
             {
                 try
                 {
@@ -220,7 +276,21 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ValidationResults));
             }
 
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.IsMemory)
+            {
+                try
+                {
+                    dbIM.RatingCurveValues.Update(ratingCurveValue);
+                    dbIM.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                    return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
+
+                return await Task.FromResult(Ok(ratingCurveValue));
+            }
+            else if (LoggedInService.IsLocal)
             {
             try
             {

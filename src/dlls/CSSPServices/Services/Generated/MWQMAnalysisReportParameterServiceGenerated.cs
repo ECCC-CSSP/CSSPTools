@@ -24,7 +24,7 @@ namespace CSSPServices
    public interface IMWQMAnalysisReportParameterService
     {
        Task<ActionResult<bool>> Delete(int MWQMAnalysisReportParameterID);
-       Task<ActionResult<List<MWQMAnalysisReportParameter>>> GetMWQMAnalysisReportParameterList();
+       Task<ActionResult<List<MWQMAnalysisReportParameter>>> GetMWQMAnalysisReportParameterList(int skip = 0, int take = 100);
        Task<ActionResult<MWQMAnalysisReportParameter>> GetMWQMAnalysisReportParameterWithMWQMAnalysisReportParameterID(int MWQMAnalysisReportParameterID);
        Task<ActionResult<MWQMAnalysisReportParameter>> Post(MWQMAnalysisReportParameter mwqmanalysisreportparameter);
        Task<ActionResult<MWQMAnalysisReportParameter>> Put(MWQMAnalysisReportParameter mwqmanalysisreportparameter);
@@ -64,51 +64,70 @@ namespace CSSPServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.IsMemory)
             {
-                MWQMAnalysisReportParameter mwqmanalysisreportparameter = (from c in dbLocal.MWQMAnalysisReportParameters.AsNoTracking()
+                MWQMAnalysisReportParameter mwqmAnalysisReportParameter = (from c in dbIM.MWQMAnalysisReportParameters.AsNoTracking()
+                                   where c.MWQMAnalysisReportParameterID == MWQMAnalysisReportParameterID
+                                   select c).FirstOrDefault();
+
+                if (mwqmAnalysisReportParameter == null)
+                {
+                    return await Task.FromResult(NotFound());
+                }
+
+                return await Task.FromResult(Ok(mwqmAnalysisReportParameter));
+            }
+            else if (LoggedInService.IsLocal)
+            {
+                MWQMAnalysisReportParameter mwqmAnalysisReportParameter = (from c in dbLocal.MWQMAnalysisReportParameters.AsNoTracking()
                         where c.MWQMAnalysisReportParameterID == MWQMAnalysisReportParameterID
                         select c).FirstOrDefault();
 
-                if (mwqmanalysisreportparameter == null)
+                if (mwqmAnalysisReportParameter == null)
                 {
                    return await Task.FromResult(NotFound());
                 }
 
-                return await Task.FromResult(Ok(mwqmanalysisreportparameter));
+                return await Task.FromResult(Ok(mwqmAnalysisReportParameter));
             }
             else
             {
-                MWQMAnalysisReportParameter mwqmanalysisreportparameter = (from c in db.MWQMAnalysisReportParameters.AsNoTracking()
+                MWQMAnalysisReportParameter mwqmAnalysisReportParameter = (from c in db.MWQMAnalysisReportParameters.AsNoTracking()
                         where c.MWQMAnalysisReportParameterID == MWQMAnalysisReportParameterID
                         select c).FirstOrDefault();
 
-                if (mwqmanalysisreportparameter == null)
+                if (mwqmAnalysisReportParameter == null)
                 {
                    return await Task.FromResult(NotFound());
                 }
 
-                return await Task.FromResult(Ok(mwqmanalysisreportparameter));
+                return await Task.FromResult(Ok(mwqmAnalysisReportParameter));
             }
         }
-        public async Task<ActionResult<List<MWQMAnalysisReportParameter>>> GetMWQMAnalysisReportParameterList()
+        public async Task<ActionResult<List<MWQMAnalysisReportParameter>>> GetMWQMAnalysisReportParameterList(int skip = 0, int take = 100)
         {
             if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
             {
                 return await Task.FromResult(Unauthorized());
             }
 
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.IsMemory)
             {
-                List<MWQMAnalysisReportParameter> mwqmanalysisreportparameterList = (from c in dbLocal.MWQMAnalysisReportParameters.AsNoTracking() select c).Take(100).ToList();
+                List<MWQMAnalysisReportParameter> mwqmAnalysisReportParameterList = (from c in dbIM.MWQMAnalysisReportParameters.AsNoTracking() orderby c.MWQMAnalysisReportParameterID select c).Skip(skip).Take(take).ToList();
+            
+                return await Task.FromResult(Ok(mwqmAnalysisReportParameterList));
+            }
+            else if (LoggedInService.IsLocal)
+            {
+                List<MWQMAnalysisReportParameter> mwqmAnalysisReportParameterList = (from c in dbLocal.MWQMAnalysisReportParameters.AsNoTracking() orderby c.MWQMAnalysisReportParameterID select c).Skip(skip).Take(take).ToList();
 
-                return await Task.FromResult(Ok(mwqmanalysisreportparameterList));
+                return await Task.FromResult(Ok(mwqmAnalysisReportParameterList));
             }
             else
             {
-                List<MWQMAnalysisReportParameter> mwqmanalysisreportparameterList = (from c in db.MWQMAnalysisReportParameters.AsNoTracking() select c).Take(100).ToList();
+                List<MWQMAnalysisReportParameter> mwqmAnalysisReportParameterList = (from c in db.MWQMAnalysisReportParameters.AsNoTracking() orderby c.MWQMAnalysisReportParameterID select c).Skip(skip).Take(take).ToList();
 
-                return await Task.FromResult(Ok(mwqmanalysisreportparameterList));
+                return await Task.FromResult(Ok(mwqmAnalysisReportParameterList));
             }
         }
         public async Task<ActionResult<bool>> Delete(int MWQMAnalysisReportParameterID)
@@ -118,7 +137,30 @@ namespace CSSPServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.IsMemory)
+            {
+                MWQMAnalysisReportParameter mwqmAnalysisReportParameter = (from c in dbIM.MWQMAnalysisReportParameters
+                                   where c.MWQMAnalysisReportParameterID == MWQMAnalysisReportParameterID
+                                   select c).FirstOrDefault();
+            
+                if (mwqmAnalysisReportParameter == null)
+                {
+                    return await Task.FromResult(BadRequest(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "MWQMAnalysisReportParameter", "MWQMAnalysisReportParameterID", MWQMAnalysisReportParameterID.ToString())));
+                }
+            
+                try
+                {
+                    dbIM.MWQMAnalysisReportParameters.Remove(mwqmAnalysisReportParameter);
+                    dbIM.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                    return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
+            
+                return await Task.FromResult(Ok(true));
+            }
+            else if (LoggedInService.IsLocal)
             {
                 MWQMAnalysisReportParameter mwqmAnalysisReportParameter = (from c in dbLocal.MWQMAnalysisReportParameters
                                    where c.MWQMAnalysisReportParameterID == MWQMAnalysisReportParameterID
@@ -178,7 +220,21 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ValidationResults));
             }
 
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.IsMemory)
+            {
+                try
+                {
+                    dbIM.MWQMAnalysisReportParameters.Add(mwqmAnalysisReportParameter);
+                    dbIM.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                    return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
+
+                return await Task.FromResult(Ok(mwqmAnalysisReportParameter));
+            }
+            else if (LoggedInService.IsLocal)
             {
                 try
                 {
@@ -220,7 +276,21 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ValidationResults));
             }
 
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.IsMemory)
+            {
+                try
+                {
+                    dbIM.MWQMAnalysisReportParameters.Update(mwqmAnalysisReportParameter);
+                    dbIM.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                    return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
+
+                return await Task.FromResult(Ok(mwqmAnalysisReportParameter));
+            }
+            else if (LoggedInService.IsLocal)
             {
             try
             {

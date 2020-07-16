@@ -24,7 +24,7 @@ namespace CSSPServices
    public interface ITVItemLanguageService
     {
        Task<ActionResult<bool>> Delete(int TVItemLanguageID);
-       Task<ActionResult<List<TVItemLanguage>>> GetTVItemLanguageList();
+       Task<ActionResult<List<TVItemLanguage>>> GetTVItemLanguageList(int skip = 0, int take = 100);
        Task<ActionResult<TVItemLanguage>> GetTVItemLanguageWithTVItemLanguageID(int TVItemLanguageID);
        Task<ActionResult<TVItemLanguage>> Post(TVItemLanguage tvitemlanguage);
        Task<ActionResult<TVItemLanguage>> Put(TVItemLanguage tvitemlanguage);
@@ -64,51 +64,70 @@ namespace CSSPServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.IsMemory)
             {
-                TVItemLanguage tvitemlanguage = (from c in dbLocal.TVItemLanguages.AsNoTracking()
+                TVItemLanguage tvItemLanguage = (from c in dbIM.TVItemLanguages.AsNoTracking()
+                                   where c.TVItemLanguageID == TVItemLanguageID
+                                   select c).FirstOrDefault();
+
+                if (tvItemLanguage == null)
+                {
+                    return await Task.FromResult(NotFound());
+                }
+
+                return await Task.FromResult(Ok(tvItemLanguage));
+            }
+            else if (LoggedInService.IsLocal)
+            {
+                TVItemLanguage tvItemLanguage = (from c in dbLocal.TVItemLanguages.AsNoTracking()
                         where c.TVItemLanguageID == TVItemLanguageID
                         select c).FirstOrDefault();
 
-                if (tvitemlanguage == null)
+                if (tvItemLanguage == null)
                 {
                    return await Task.FromResult(NotFound());
                 }
 
-                return await Task.FromResult(Ok(tvitemlanguage));
+                return await Task.FromResult(Ok(tvItemLanguage));
             }
             else
             {
-                TVItemLanguage tvitemlanguage = (from c in db.TVItemLanguages.AsNoTracking()
+                TVItemLanguage tvItemLanguage = (from c in db.TVItemLanguages.AsNoTracking()
                         where c.TVItemLanguageID == TVItemLanguageID
                         select c).FirstOrDefault();
 
-                if (tvitemlanguage == null)
+                if (tvItemLanguage == null)
                 {
                    return await Task.FromResult(NotFound());
                 }
 
-                return await Task.FromResult(Ok(tvitemlanguage));
+                return await Task.FromResult(Ok(tvItemLanguage));
             }
         }
-        public async Task<ActionResult<List<TVItemLanguage>>> GetTVItemLanguageList()
+        public async Task<ActionResult<List<TVItemLanguage>>> GetTVItemLanguageList(int skip = 0, int take = 100)
         {
             if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
             {
                 return await Task.FromResult(Unauthorized());
             }
 
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.IsMemory)
             {
-                List<TVItemLanguage> tvitemlanguageList = (from c in dbLocal.TVItemLanguages.AsNoTracking() select c).Take(100).ToList();
+                List<TVItemLanguage> tvItemLanguageList = (from c in dbIM.TVItemLanguages.AsNoTracking() orderby c.TVItemLanguageID select c).Skip(skip).Take(take).ToList();
+            
+                return await Task.FromResult(Ok(tvItemLanguageList));
+            }
+            else if (LoggedInService.IsLocal)
+            {
+                List<TVItemLanguage> tvItemLanguageList = (from c in dbLocal.TVItemLanguages.AsNoTracking() orderby c.TVItemLanguageID select c).Skip(skip).Take(take).ToList();
 
-                return await Task.FromResult(Ok(tvitemlanguageList));
+                return await Task.FromResult(Ok(tvItemLanguageList));
             }
             else
             {
-                List<TVItemLanguage> tvitemlanguageList = (from c in db.TVItemLanguages.AsNoTracking() select c).Take(100).ToList();
+                List<TVItemLanguage> tvItemLanguageList = (from c in db.TVItemLanguages.AsNoTracking() orderby c.TVItemLanguageID select c).Skip(skip).Take(take).ToList();
 
-                return await Task.FromResult(Ok(tvitemlanguageList));
+                return await Task.FromResult(Ok(tvItemLanguageList));
             }
         }
         public async Task<ActionResult<bool>> Delete(int TVItemLanguageID)
@@ -118,7 +137,30 @@ namespace CSSPServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.IsMemory)
+            {
+                TVItemLanguage tvItemLanguage = (from c in dbIM.TVItemLanguages
+                                   where c.TVItemLanguageID == TVItemLanguageID
+                                   select c).FirstOrDefault();
+            
+                if (tvItemLanguage == null)
+                {
+                    return await Task.FromResult(BadRequest(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "TVItemLanguage", "TVItemLanguageID", TVItemLanguageID.ToString())));
+                }
+            
+                try
+                {
+                    dbIM.TVItemLanguages.Remove(tvItemLanguage);
+                    dbIM.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                    return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
+            
+                return await Task.FromResult(Ok(true));
+            }
+            else if (LoggedInService.IsLocal)
             {
                 TVItemLanguage tvItemLanguage = (from c in dbLocal.TVItemLanguages
                                    where c.TVItemLanguageID == TVItemLanguageID
@@ -178,7 +220,21 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ValidationResults));
             }
 
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.IsMemory)
+            {
+                try
+                {
+                    dbIM.TVItemLanguages.Add(tvItemLanguage);
+                    dbIM.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                    return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
+
+                return await Task.FromResult(Ok(tvItemLanguage));
+            }
+            else if (LoggedInService.IsLocal)
             {
                 try
                 {
@@ -220,7 +276,21 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ValidationResults));
             }
 
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.IsMemory)
+            {
+                try
+                {
+                    dbIM.TVItemLanguages.Update(tvItemLanguage);
+                    dbIM.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                    return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
+
+                return await Task.FromResult(Ok(tvItemLanguage));
+            }
+            else if (LoggedInService.IsLocal)
             {
             try
             {

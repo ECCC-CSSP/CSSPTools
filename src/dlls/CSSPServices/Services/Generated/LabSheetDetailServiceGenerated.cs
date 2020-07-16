@@ -24,7 +24,7 @@ namespace CSSPServices
    public interface ILabSheetDetailService
     {
        Task<ActionResult<bool>> Delete(int LabSheetDetailID);
-       Task<ActionResult<List<LabSheetDetail>>> GetLabSheetDetailList();
+       Task<ActionResult<List<LabSheetDetail>>> GetLabSheetDetailList(int skip = 0, int take = 100);
        Task<ActionResult<LabSheetDetail>> GetLabSheetDetailWithLabSheetDetailID(int LabSheetDetailID);
        Task<ActionResult<LabSheetDetail>> Post(LabSheetDetail labsheetdetail);
        Task<ActionResult<LabSheetDetail>> Put(LabSheetDetail labsheetdetail);
@@ -64,51 +64,70 @@ namespace CSSPServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.IsMemory)
             {
-                LabSheetDetail labsheetdetail = (from c in dbLocal.LabSheetDetails.AsNoTracking()
+                LabSheetDetail labSheetDetail = (from c in dbIM.LabSheetDetails.AsNoTracking()
+                                   where c.LabSheetDetailID == LabSheetDetailID
+                                   select c).FirstOrDefault();
+
+                if (labSheetDetail == null)
+                {
+                    return await Task.FromResult(NotFound());
+                }
+
+                return await Task.FromResult(Ok(labSheetDetail));
+            }
+            else if (LoggedInService.IsLocal)
+            {
+                LabSheetDetail labSheetDetail = (from c in dbLocal.LabSheetDetails.AsNoTracking()
                         where c.LabSheetDetailID == LabSheetDetailID
                         select c).FirstOrDefault();
 
-                if (labsheetdetail == null)
+                if (labSheetDetail == null)
                 {
                    return await Task.FromResult(NotFound());
                 }
 
-                return await Task.FromResult(Ok(labsheetdetail));
+                return await Task.FromResult(Ok(labSheetDetail));
             }
             else
             {
-                LabSheetDetail labsheetdetail = (from c in db.LabSheetDetails.AsNoTracking()
+                LabSheetDetail labSheetDetail = (from c in db.LabSheetDetails.AsNoTracking()
                         where c.LabSheetDetailID == LabSheetDetailID
                         select c).FirstOrDefault();
 
-                if (labsheetdetail == null)
+                if (labSheetDetail == null)
                 {
                    return await Task.FromResult(NotFound());
                 }
 
-                return await Task.FromResult(Ok(labsheetdetail));
+                return await Task.FromResult(Ok(labSheetDetail));
             }
         }
-        public async Task<ActionResult<List<LabSheetDetail>>> GetLabSheetDetailList()
+        public async Task<ActionResult<List<LabSheetDetail>>> GetLabSheetDetailList(int skip = 0, int take = 100)
         {
             if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
             {
                 return await Task.FromResult(Unauthorized());
             }
 
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.IsMemory)
             {
-                List<LabSheetDetail> labsheetdetailList = (from c in dbLocal.LabSheetDetails.AsNoTracking() select c).Take(100).ToList();
+                List<LabSheetDetail> labSheetDetailList = (from c in dbIM.LabSheetDetails.AsNoTracking() orderby c.LabSheetDetailID select c).Skip(skip).Take(take).ToList();
+            
+                return await Task.FromResult(Ok(labSheetDetailList));
+            }
+            else if (LoggedInService.IsLocal)
+            {
+                List<LabSheetDetail> labSheetDetailList = (from c in dbLocal.LabSheetDetails.AsNoTracking() orderby c.LabSheetDetailID select c).Skip(skip).Take(take).ToList();
 
-                return await Task.FromResult(Ok(labsheetdetailList));
+                return await Task.FromResult(Ok(labSheetDetailList));
             }
             else
             {
-                List<LabSheetDetail> labsheetdetailList = (from c in db.LabSheetDetails.AsNoTracking() select c).Take(100).ToList();
+                List<LabSheetDetail> labSheetDetailList = (from c in db.LabSheetDetails.AsNoTracking() orderby c.LabSheetDetailID select c).Skip(skip).Take(take).ToList();
 
-                return await Task.FromResult(Ok(labsheetdetailList));
+                return await Task.FromResult(Ok(labSheetDetailList));
             }
         }
         public async Task<ActionResult<bool>> Delete(int LabSheetDetailID)
@@ -118,7 +137,30 @@ namespace CSSPServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.IsMemory)
+            {
+                LabSheetDetail labSheetDetail = (from c in dbIM.LabSheetDetails
+                                   where c.LabSheetDetailID == LabSheetDetailID
+                                   select c).FirstOrDefault();
+            
+                if (labSheetDetail == null)
+                {
+                    return await Task.FromResult(BadRequest(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "LabSheetDetail", "LabSheetDetailID", LabSheetDetailID.ToString())));
+                }
+            
+                try
+                {
+                    dbIM.LabSheetDetails.Remove(labSheetDetail);
+                    dbIM.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                    return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
+            
+                return await Task.FromResult(Ok(true));
+            }
+            else if (LoggedInService.IsLocal)
             {
                 LabSheetDetail labSheetDetail = (from c in dbLocal.LabSheetDetails
                                    where c.LabSheetDetailID == LabSheetDetailID
@@ -178,7 +220,21 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ValidationResults));
             }
 
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.IsMemory)
+            {
+                try
+                {
+                    dbIM.LabSheetDetails.Add(labSheetDetail);
+                    dbIM.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                    return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
+
+                return await Task.FromResult(Ok(labSheetDetail));
+            }
+            else if (LoggedInService.IsLocal)
             {
                 try
                 {
@@ -220,7 +276,21 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ValidationResults));
             }
 
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.IsMemory)
+            {
+                try
+                {
+                    dbIM.LabSheetDetails.Update(labSheetDetail);
+                    dbIM.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                    return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
+
+                return await Task.FromResult(Ok(labSheetDetail));
+            }
+            else if (LoggedInService.IsLocal)
             {
             try
             {

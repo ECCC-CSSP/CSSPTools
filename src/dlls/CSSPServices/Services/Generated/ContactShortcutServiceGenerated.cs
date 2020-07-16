@@ -24,7 +24,7 @@ namespace CSSPServices
    public interface IContactShortcutService
     {
        Task<ActionResult<bool>> Delete(int ContactShortcutID);
-       Task<ActionResult<List<ContactShortcut>>> GetContactShortcutList();
+       Task<ActionResult<List<ContactShortcut>>> GetContactShortcutList(int skip = 0, int take = 100);
        Task<ActionResult<ContactShortcut>> GetContactShortcutWithContactShortcutID(int ContactShortcutID);
        Task<ActionResult<ContactShortcut>> Post(ContactShortcut contactshortcut);
        Task<ActionResult<ContactShortcut>> Put(ContactShortcut contactshortcut);
@@ -64,51 +64,70 @@ namespace CSSPServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.IsMemory)
             {
-                ContactShortcut contactshortcut = (from c in dbLocal.ContactShortcuts.AsNoTracking()
+                ContactShortcut contactShortcut = (from c in dbIM.ContactShortcuts.AsNoTracking()
+                                   where c.ContactShortcutID == ContactShortcutID
+                                   select c).FirstOrDefault();
+
+                if (contactShortcut == null)
+                {
+                    return await Task.FromResult(NotFound());
+                }
+
+                return await Task.FromResult(Ok(contactShortcut));
+            }
+            else if (LoggedInService.IsLocal)
+            {
+                ContactShortcut contactShortcut = (from c in dbLocal.ContactShortcuts.AsNoTracking()
                         where c.ContactShortcutID == ContactShortcutID
                         select c).FirstOrDefault();
 
-                if (contactshortcut == null)
+                if (contactShortcut == null)
                 {
                    return await Task.FromResult(NotFound());
                 }
 
-                return await Task.FromResult(Ok(contactshortcut));
+                return await Task.FromResult(Ok(contactShortcut));
             }
             else
             {
-                ContactShortcut contactshortcut = (from c in db.ContactShortcuts.AsNoTracking()
+                ContactShortcut contactShortcut = (from c in db.ContactShortcuts.AsNoTracking()
                         where c.ContactShortcutID == ContactShortcutID
                         select c).FirstOrDefault();
 
-                if (contactshortcut == null)
+                if (contactShortcut == null)
                 {
                    return await Task.FromResult(NotFound());
                 }
 
-                return await Task.FromResult(Ok(contactshortcut));
+                return await Task.FromResult(Ok(contactShortcut));
             }
         }
-        public async Task<ActionResult<List<ContactShortcut>>> GetContactShortcutList()
+        public async Task<ActionResult<List<ContactShortcut>>> GetContactShortcutList(int skip = 0, int take = 100)
         {
             if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
             {
                 return await Task.FromResult(Unauthorized());
             }
 
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.IsMemory)
             {
-                List<ContactShortcut> contactshortcutList = (from c in dbLocal.ContactShortcuts.AsNoTracking() select c).Take(100).ToList();
+                List<ContactShortcut> contactShortcutList = (from c in dbIM.ContactShortcuts.AsNoTracking() orderby c.ContactShortcutID select c).Skip(skip).Take(take).ToList();
+            
+                return await Task.FromResult(Ok(contactShortcutList));
+            }
+            else if (LoggedInService.IsLocal)
+            {
+                List<ContactShortcut> contactShortcutList = (from c in dbLocal.ContactShortcuts.AsNoTracking() orderby c.ContactShortcutID select c).Skip(skip).Take(take).ToList();
 
-                return await Task.FromResult(Ok(contactshortcutList));
+                return await Task.FromResult(Ok(contactShortcutList));
             }
             else
             {
-                List<ContactShortcut> contactshortcutList = (from c in db.ContactShortcuts.AsNoTracking() select c).Take(100).ToList();
+                List<ContactShortcut> contactShortcutList = (from c in db.ContactShortcuts.AsNoTracking() orderby c.ContactShortcutID select c).Skip(skip).Take(take).ToList();
 
-                return await Task.FromResult(Ok(contactshortcutList));
+                return await Task.FromResult(Ok(contactShortcutList));
             }
         }
         public async Task<ActionResult<bool>> Delete(int ContactShortcutID)
@@ -118,7 +137,30 @@ namespace CSSPServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.IsMemory)
+            {
+                ContactShortcut contactShortcut = (from c in dbIM.ContactShortcuts
+                                   where c.ContactShortcutID == ContactShortcutID
+                                   select c).FirstOrDefault();
+            
+                if (contactShortcut == null)
+                {
+                    return await Task.FromResult(BadRequest(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "ContactShortcut", "ContactShortcutID", ContactShortcutID.ToString())));
+                }
+            
+                try
+                {
+                    dbIM.ContactShortcuts.Remove(contactShortcut);
+                    dbIM.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                    return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
+            
+                return await Task.FromResult(Ok(true));
+            }
+            else if (LoggedInService.IsLocal)
             {
                 ContactShortcut contactShortcut = (from c in dbLocal.ContactShortcuts
                                    where c.ContactShortcutID == ContactShortcutID
@@ -178,7 +220,21 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ValidationResults));
             }
 
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.IsMemory)
+            {
+                try
+                {
+                    dbIM.ContactShortcuts.Add(contactShortcut);
+                    dbIM.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                    return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
+
+                return await Task.FromResult(Ok(contactShortcut));
+            }
+            else if (LoggedInService.IsLocal)
             {
                 try
                 {
@@ -220,7 +276,21 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ValidationResults));
             }
 
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.IsMemory)
+            {
+                try
+                {
+                    dbIM.ContactShortcuts.Update(contactShortcut);
+                    dbIM.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                    return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
+
+                return await Task.FromResult(Ok(contactShortcut));
+            }
+            else if (LoggedInService.IsLocal)
             {
             try
             {

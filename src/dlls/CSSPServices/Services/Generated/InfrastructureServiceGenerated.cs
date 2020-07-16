@@ -24,7 +24,7 @@ namespace CSSPServices
    public interface IInfrastructureService
     {
        Task<ActionResult<bool>> Delete(int InfrastructureID);
-       Task<ActionResult<List<Infrastructure>>> GetInfrastructureList();
+       Task<ActionResult<List<Infrastructure>>> GetInfrastructureList(int skip = 0, int take = 100);
        Task<ActionResult<Infrastructure>> GetInfrastructureWithInfrastructureID(int InfrastructureID);
        Task<ActionResult<Infrastructure>> Post(Infrastructure infrastructure);
        Task<ActionResult<Infrastructure>> Put(Infrastructure infrastructure);
@@ -64,7 +64,20 @@ namespace CSSPServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.IsMemory)
+            {
+                Infrastructure infrastructure = (from c in dbIM.Infrastructures.AsNoTracking()
+                                   where c.InfrastructureID == InfrastructureID
+                                   select c).FirstOrDefault();
+
+                if (infrastructure == null)
+                {
+                    return await Task.FromResult(NotFound());
+                }
+
+                return await Task.FromResult(Ok(infrastructure));
+            }
+            else if (LoggedInService.IsLocal)
             {
                 Infrastructure infrastructure = (from c in dbLocal.Infrastructures.AsNoTracking()
                         where c.InfrastructureID == InfrastructureID
@@ -91,22 +104,28 @@ namespace CSSPServices
                 return await Task.FromResult(Ok(infrastructure));
             }
         }
-        public async Task<ActionResult<List<Infrastructure>>> GetInfrastructureList()
+        public async Task<ActionResult<List<Infrastructure>>> GetInfrastructureList(int skip = 0, int take = 100)
         {
             if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
             {
                 return await Task.FromResult(Unauthorized());
             }
 
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.IsMemory)
             {
-                List<Infrastructure> infrastructureList = (from c in dbLocal.Infrastructures.AsNoTracking() select c).Take(100).ToList();
+                List<Infrastructure> infrastructureList = (from c in dbIM.Infrastructures.AsNoTracking() orderby c.InfrastructureID select c).Skip(skip).Take(take).ToList();
+            
+                return await Task.FromResult(Ok(infrastructureList));
+            }
+            else if (LoggedInService.IsLocal)
+            {
+                List<Infrastructure> infrastructureList = (from c in dbLocal.Infrastructures.AsNoTracking() orderby c.InfrastructureID select c).Skip(skip).Take(take).ToList();
 
                 return await Task.FromResult(Ok(infrastructureList));
             }
             else
             {
-                List<Infrastructure> infrastructureList = (from c in db.Infrastructures.AsNoTracking() select c).Take(100).ToList();
+                List<Infrastructure> infrastructureList = (from c in db.Infrastructures.AsNoTracking() orderby c.InfrastructureID select c).Skip(skip).Take(take).ToList();
 
                 return await Task.FromResult(Ok(infrastructureList));
             }
@@ -118,7 +137,30 @@ namespace CSSPServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.IsMemory)
+            {
+                Infrastructure infrastructure = (from c in dbIM.Infrastructures
+                                   where c.InfrastructureID == InfrastructureID
+                                   select c).FirstOrDefault();
+            
+                if (infrastructure == null)
+                {
+                    return await Task.FromResult(BadRequest(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "Infrastructure", "InfrastructureID", InfrastructureID.ToString())));
+                }
+            
+                try
+                {
+                    dbIM.Infrastructures.Remove(infrastructure);
+                    dbIM.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                    return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
+            
+                return await Task.FromResult(Ok(true));
+            }
+            else if (LoggedInService.IsLocal)
             {
                 Infrastructure infrastructure = (from c in dbLocal.Infrastructures
                                    where c.InfrastructureID == InfrastructureID
@@ -178,7 +220,21 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ValidationResults));
             }
 
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.IsMemory)
+            {
+                try
+                {
+                    dbIM.Infrastructures.Add(infrastructure);
+                    dbIM.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                    return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
+
+                return await Task.FromResult(Ok(infrastructure));
+            }
+            else if (LoggedInService.IsLocal)
             {
                 try
                 {
@@ -220,7 +276,21 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ValidationResults));
             }
 
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.IsMemory)
+            {
+                try
+                {
+                    dbIM.Infrastructures.Update(infrastructure);
+                    dbIM.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                    return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
+
+                return await Task.FromResult(Ok(infrastructure));
+            }
+            else if (LoggedInService.IsLocal)
             {
             try
             {

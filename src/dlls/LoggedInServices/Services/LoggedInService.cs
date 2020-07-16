@@ -19,6 +19,7 @@ namespace LoggedInServices.Services
         private InMemoryDBContext dbIM { get; }
         private LoggedInContactInfo LoggedInContactInfo { get; set; }
         public bool IsLocal { get; set; }
+        public bool IsMemory { get; set; }
         #endregion Properties
 
         #region Constructors

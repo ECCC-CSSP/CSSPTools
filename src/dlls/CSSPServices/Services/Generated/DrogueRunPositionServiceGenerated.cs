@@ -24,7 +24,7 @@ namespace CSSPServices
    public interface IDrogueRunPositionService
     {
        Task<ActionResult<bool>> Delete(int DrogueRunPositionID);
-       Task<ActionResult<List<DrogueRunPosition>>> GetDrogueRunPositionList();
+       Task<ActionResult<List<DrogueRunPosition>>> GetDrogueRunPositionList(int skip = 0, int take = 100);
        Task<ActionResult<DrogueRunPosition>> GetDrogueRunPositionWithDrogueRunPositionID(int DrogueRunPositionID);
        Task<ActionResult<DrogueRunPosition>> Post(DrogueRunPosition droguerunposition);
        Task<ActionResult<DrogueRunPosition>> Put(DrogueRunPosition droguerunposition);
@@ -64,51 +64,70 @@ namespace CSSPServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.IsMemory)
             {
-                DrogueRunPosition droguerunposition = (from c in dbLocal.DrogueRunPositions.AsNoTracking()
+                DrogueRunPosition drogueRunPosition = (from c in dbIM.DrogueRunPositions.AsNoTracking()
+                                   where c.DrogueRunPositionID == DrogueRunPositionID
+                                   select c).FirstOrDefault();
+
+                if (drogueRunPosition == null)
+                {
+                    return await Task.FromResult(NotFound());
+                }
+
+                return await Task.FromResult(Ok(drogueRunPosition));
+            }
+            else if (LoggedInService.IsLocal)
+            {
+                DrogueRunPosition drogueRunPosition = (from c in dbLocal.DrogueRunPositions.AsNoTracking()
                         where c.DrogueRunPositionID == DrogueRunPositionID
                         select c).FirstOrDefault();
 
-                if (droguerunposition == null)
+                if (drogueRunPosition == null)
                 {
                    return await Task.FromResult(NotFound());
                 }
 
-                return await Task.FromResult(Ok(droguerunposition));
+                return await Task.FromResult(Ok(drogueRunPosition));
             }
             else
             {
-                DrogueRunPosition droguerunposition = (from c in db.DrogueRunPositions.AsNoTracking()
+                DrogueRunPosition drogueRunPosition = (from c in db.DrogueRunPositions.AsNoTracking()
                         where c.DrogueRunPositionID == DrogueRunPositionID
                         select c).FirstOrDefault();
 
-                if (droguerunposition == null)
+                if (drogueRunPosition == null)
                 {
                    return await Task.FromResult(NotFound());
                 }
 
-                return await Task.FromResult(Ok(droguerunposition));
+                return await Task.FromResult(Ok(drogueRunPosition));
             }
         }
-        public async Task<ActionResult<List<DrogueRunPosition>>> GetDrogueRunPositionList()
+        public async Task<ActionResult<List<DrogueRunPosition>>> GetDrogueRunPositionList(int skip = 0, int take = 100)
         {
             if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
             {
                 return await Task.FromResult(Unauthorized());
             }
 
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.IsMemory)
             {
-                List<DrogueRunPosition> droguerunpositionList = (from c in dbLocal.DrogueRunPositions.AsNoTracking() select c).Take(100).ToList();
+                List<DrogueRunPosition> drogueRunPositionList = (from c in dbIM.DrogueRunPositions.AsNoTracking() orderby c.DrogueRunPositionID select c).Skip(skip).Take(take).ToList();
+            
+                return await Task.FromResult(Ok(drogueRunPositionList));
+            }
+            else if (LoggedInService.IsLocal)
+            {
+                List<DrogueRunPosition> drogueRunPositionList = (from c in dbLocal.DrogueRunPositions.AsNoTracking() orderby c.DrogueRunPositionID select c).Skip(skip).Take(take).ToList();
 
-                return await Task.FromResult(Ok(droguerunpositionList));
+                return await Task.FromResult(Ok(drogueRunPositionList));
             }
             else
             {
-                List<DrogueRunPosition> droguerunpositionList = (from c in db.DrogueRunPositions.AsNoTracking() select c).Take(100).ToList();
+                List<DrogueRunPosition> drogueRunPositionList = (from c in db.DrogueRunPositions.AsNoTracking() orderby c.DrogueRunPositionID select c).Skip(skip).Take(take).ToList();
 
-                return await Task.FromResult(Ok(droguerunpositionList));
+                return await Task.FromResult(Ok(drogueRunPositionList));
             }
         }
         public async Task<ActionResult<bool>> Delete(int DrogueRunPositionID)
@@ -118,7 +137,30 @@ namespace CSSPServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.IsMemory)
+            {
+                DrogueRunPosition drogueRunPosition = (from c in dbIM.DrogueRunPositions
+                                   where c.DrogueRunPositionID == DrogueRunPositionID
+                                   select c).FirstOrDefault();
+            
+                if (drogueRunPosition == null)
+                {
+                    return await Task.FromResult(BadRequest(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "DrogueRunPosition", "DrogueRunPositionID", DrogueRunPositionID.ToString())));
+                }
+            
+                try
+                {
+                    dbIM.DrogueRunPositions.Remove(drogueRunPosition);
+                    dbIM.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                    return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
+            
+                return await Task.FromResult(Ok(true));
+            }
+            else if (LoggedInService.IsLocal)
             {
                 DrogueRunPosition drogueRunPosition = (from c in dbLocal.DrogueRunPositions
                                    where c.DrogueRunPositionID == DrogueRunPositionID
@@ -178,7 +220,21 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ValidationResults));
             }
 
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.IsMemory)
+            {
+                try
+                {
+                    dbIM.DrogueRunPositions.Add(drogueRunPosition);
+                    dbIM.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                    return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
+
+                return await Task.FromResult(Ok(drogueRunPosition));
+            }
+            else if (LoggedInService.IsLocal)
             {
                 try
                 {
@@ -220,7 +276,21 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ValidationResults));
             }
 
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.IsMemory)
+            {
+                try
+                {
+                    dbIM.DrogueRunPositions.Update(drogueRunPosition);
+                    dbIM.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                    return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
+
+                return await Task.FromResult(Ok(drogueRunPosition));
+            }
+            else if (LoggedInService.IsLocal)
             {
             try
             {

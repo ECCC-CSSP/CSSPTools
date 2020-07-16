@@ -24,7 +24,7 @@ namespace CSSPServices
    public interface IReportSectionService
     {
        Task<ActionResult<bool>> Delete(int ReportSectionID);
-       Task<ActionResult<List<ReportSection>>> GetReportSectionList();
+       Task<ActionResult<List<ReportSection>>> GetReportSectionList(int skip = 0, int take = 100);
        Task<ActionResult<ReportSection>> GetReportSectionWithReportSectionID(int ReportSectionID);
        Task<ActionResult<ReportSection>> Post(ReportSection reportsection);
        Task<ActionResult<ReportSection>> Put(ReportSection reportsection);
@@ -64,51 +64,70 @@ namespace CSSPServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.IsMemory)
             {
-                ReportSection reportsection = (from c in dbLocal.ReportSections.AsNoTracking()
+                ReportSection reportSection = (from c in dbIM.ReportSections.AsNoTracking()
+                                   where c.ReportSectionID == ReportSectionID
+                                   select c).FirstOrDefault();
+
+                if (reportSection == null)
+                {
+                    return await Task.FromResult(NotFound());
+                }
+
+                return await Task.FromResult(Ok(reportSection));
+            }
+            else if (LoggedInService.IsLocal)
+            {
+                ReportSection reportSection = (from c in dbLocal.ReportSections.AsNoTracking()
                         where c.ReportSectionID == ReportSectionID
                         select c).FirstOrDefault();
 
-                if (reportsection == null)
+                if (reportSection == null)
                 {
                    return await Task.FromResult(NotFound());
                 }
 
-                return await Task.FromResult(Ok(reportsection));
+                return await Task.FromResult(Ok(reportSection));
             }
             else
             {
-                ReportSection reportsection = (from c in db.ReportSections.AsNoTracking()
+                ReportSection reportSection = (from c in db.ReportSections.AsNoTracking()
                         where c.ReportSectionID == ReportSectionID
                         select c).FirstOrDefault();
 
-                if (reportsection == null)
+                if (reportSection == null)
                 {
                    return await Task.FromResult(NotFound());
                 }
 
-                return await Task.FromResult(Ok(reportsection));
+                return await Task.FromResult(Ok(reportSection));
             }
         }
-        public async Task<ActionResult<List<ReportSection>>> GetReportSectionList()
+        public async Task<ActionResult<List<ReportSection>>> GetReportSectionList(int skip = 0, int take = 100)
         {
             if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
             {
                 return await Task.FromResult(Unauthorized());
             }
 
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.IsMemory)
             {
-                List<ReportSection> reportsectionList = (from c in dbLocal.ReportSections.AsNoTracking() select c).Take(100).ToList();
+                List<ReportSection> reportSectionList = (from c in dbIM.ReportSections.AsNoTracking() orderby c.ReportSectionID select c).Skip(skip).Take(take).ToList();
+            
+                return await Task.FromResult(Ok(reportSectionList));
+            }
+            else if (LoggedInService.IsLocal)
+            {
+                List<ReportSection> reportSectionList = (from c in dbLocal.ReportSections.AsNoTracking() orderby c.ReportSectionID select c).Skip(skip).Take(take).ToList();
 
-                return await Task.FromResult(Ok(reportsectionList));
+                return await Task.FromResult(Ok(reportSectionList));
             }
             else
             {
-                List<ReportSection> reportsectionList = (from c in db.ReportSections.AsNoTracking() select c).Take(100).ToList();
+                List<ReportSection> reportSectionList = (from c in db.ReportSections.AsNoTracking() orderby c.ReportSectionID select c).Skip(skip).Take(take).ToList();
 
-                return await Task.FromResult(Ok(reportsectionList));
+                return await Task.FromResult(Ok(reportSectionList));
             }
         }
         public async Task<ActionResult<bool>> Delete(int ReportSectionID)
@@ -118,7 +137,30 @@ namespace CSSPServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.IsMemory)
+            {
+                ReportSection reportSection = (from c in dbIM.ReportSections
+                                   where c.ReportSectionID == ReportSectionID
+                                   select c).FirstOrDefault();
+            
+                if (reportSection == null)
+                {
+                    return await Task.FromResult(BadRequest(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "ReportSection", "ReportSectionID", ReportSectionID.ToString())));
+                }
+            
+                try
+                {
+                    dbIM.ReportSections.Remove(reportSection);
+                    dbIM.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                    return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
+            
+                return await Task.FromResult(Ok(true));
+            }
+            else if (LoggedInService.IsLocal)
             {
                 ReportSection reportSection = (from c in dbLocal.ReportSections
                                    where c.ReportSectionID == ReportSectionID
@@ -178,7 +220,21 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ValidationResults));
             }
 
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.IsMemory)
+            {
+                try
+                {
+                    dbIM.ReportSections.Add(reportSection);
+                    dbIM.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                    return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
+
+                return await Task.FromResult(Ok(reportSection));
+            }
+            else if (LoggedInService.IsLocal)
             {
                 try
                 {
@@ -220,7 +276,21 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ValidationResults));
             }
 
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.IsMemory)
+            {
+                try
+                {
+                    dbIM.ReportSections.Update(reportSection);
+                    dbIM.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                    return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
+
+                return await Task.FromResult(Ok(reportSection));
+            }
+            else if (LoggedInService.IsLocal)
             {
             try
             {

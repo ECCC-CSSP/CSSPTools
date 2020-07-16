@@ -17,6 +17,7 @@ using Xunit;
 
 namespace CSSPServices.Tests
 {
+    [Collection("Sequential")]
     public partial class CSSPSQLiteServiceTests : TestHelper
     {
         #region Variables
@@ -29,62 +30,64 @@ namespace CSSPServices.Tests
         private ICultureService CultureService { get; set; }
         private ILoggedInService LoggedInService { get; set; }
         private IAddressService AddressService { get; set; }
+        private ITVItemService TVItemService { get; set; }
         private CSSPDBContext db { get; set; }
         private CSSPDBLocalContext dbLocal { get; set; }
         private InMemoryDBContext dbIM { get; set; }
-        private Address address { get; set; }
         private ICSSPSQLiteService CSSPSQLiteService { get; set; }
         private FileInfo fiCSSPDBLocal { get; set; }
+        private FileInfo fiCSSPLoginDB { get; set; }
+        private FileInfo fiCSSPFilesManagementDB { get; set; }
         #endregion Properties
 
         #region Constructors
         #endregion Constructors
 
         #region Tests
-        [Fact]
-        public async Task CreateSQLiteCSSPLocalDatabase_Good_Test()
+        [Theory]
+        [InlineData("en-CA")]
+        [InlineData("fr-CA")]
+        public async Task CreateSQLiteCSSPLocalDatabase_Good_Test(string culture)
         {
-            Assert.True(await Setup());
+            Assert.True(await Setup(culture));
 
             bool retBool = await CSSPSQLiteService.CreateSQLiteCSSPLocalDatabase();
             Assert.True(retBool);
         }
-        [Fact]
-        public async Task CreateSQLiteCSSPFileManagementDatabase_Good_Test()
+        [Theory]
+        [InlineData("en-CA")]
+        [InlineData("fr-CA")]
+        public async Task CreateSQLiteCSSPFileManagementDatabase_Good_Test(string culture)
         {
-            Assert.True(await Setup());
+            Assert.True(await Setup(culture));
 
             bool retBool = await CSSPSQLiteService.CreateSQLiteCSSPFileManagementDatabase();
             Assert.True(retBool);
         }
-        [Fact]
-        public async Task CreateSQLiteCSSPLoginDatabase_Good_Test()
+        [Theory]
+        [InlineData("en-CA")]
+        [InlineData("fr-CA")]
+        public async Task CreateSQLiteCSSPLoginDatabase_Good_Test(string culture)
         {
-            Assert.True(await Setup());
+            Assert.True(await Setup(culture));
 
             bool retBool = await CSSPSQLiteService.CreateSQLiteCSSPLoginDatabase();
             Assert.True(retBool);
         }
-        [Fact]
-        public async Task DBContainsInfo_Good_Test()
+        [Theory]
+        [InlineData("en-CA")]
+        [InlineData("fr-CA")]
+        public async Task DBLocalIsEmpty_Good_Test(string culture)
         {
-            Assert.True(await Setup());
+            Assert.True(await Setup(culture));
 
-            List<Address> addressList2 = (from c in dbLocal.Addresses
-                                         select c).ToList();
-
-            try
-            {
-                dbLocal.RemoveRange(addressList2);
-                dbLocal.SaveChanges();
-            }
-            catch (Exception ex)
-            {
-                Assert.True(false);
-            }
-
-            bool retBool = await CSSPSQLiteService.DBContainsInfo(fiCSSPDBLocal);
+            bool retBool = await CSSPSQLiteService.CreateSQLiteCSSPLocalDatabase();
             Assert.True(retBool);
+
+            retBool = await CSSPSQLiteService.DBLocalIsEmpty();
+            Assert.True(retBool);
+
+            LoggedInService.IsLocal = false;
 
             var actionAddressList = await AddressService.GetAddressList();
             Assert.Equal(200, ((ObjectResult)actionAddressList.Result).StatusCode);
@@ -93,27 +96,52 @@ namespace CSSPServices.Tests
 
             if (addressList.Count > 0)
             {
+                LoggedInService.IsLocal = false;
+
+                // need to add some informtion in the dbIM so we don't get errors while trying to add an Address
                 try
                 {
-                    dbLocal.Addresses.Add(addressList[0]);
-                    dbLocal.SaveChanges();
+                    List<int> TVItemIDList = new List<int>() { addressList[0].AddressTVItemID, addressList[0].CountryTVItemID, addressList[0].ProvinceTVItemID, addressList[0].MunicipalityTVItemID, addressList[0].LastUpdateContactTVItemID };
+                    foreach (int TVItemID in TVItemIDList)
+                    {
+                        var actionTVItem = await TVItemService.GetTVItemWithTVItemID(TVItemID);
+                        Assert.Equal(200, ((ObjectResult)actionTVItem.Result).StatusCode);
+                        Assert.NotNull(((OkObjectResult)actionTVItem.Result).Value);
+                        TVItem tvItem = (TVItem)((OkObjectResult)actionTVItem.Result).Value;
+                        Assert.NotNull(tvItem);
+
+                        LoggedInService.IsLocal = false;
+
+                        var actionTVItem2 = await TVItemService.Post(tvItem);
+                        Assert.Equal(200, ((ObjectResult)actionTVItem2.Result).StatusCode);
+                        Assert.NotNull(((OkObjectResult)actionTVItem2.Result).Value);
+                        TVItem tvItem2 = (TVItem)((OkObjectResult)actionTVItem2.Result).Value;
+                    }
                 }
                 catch (Exception ex)
                 {
 
                     throw;
                 }
+
+                LoggedInService.IsLocal = true;
+
+                var actionAddress = await AddressService.Post(addressList[0]);
+                Assert.Equal(200, ((ObjectResult)actionAddress.Result).StatusCode);
+                Assert.NotNull(((OkObjectResult)actionAddress.Result).Value);
+                Address address = (Address)((OkObjectResult)actionAddress.Result).Value;
             }
 
-            retBool = await CSSPSQLiteService.DBContainsInfo(fiCSSPDBLocal);
+            retBool = await CSSPSQLiteService.DBLocalIsEmpty();
             Assert.False(retBool);
-
         }
         #endregion Tests
 
         #region Functions private
-        private async Task<bool> Setup()
+        private async Task<bool> Setup(string culture)
         {
+            string appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+
             Config = new ConfigurationBuilder()
                .SetBasePath(Directory.GetParent(AppContext.BaseDirectory).FullName)
                .AddJsonFile("appsettings_csspservices.json")
@@ -123,9 +151,6 @@ namespace CSSPServices.Tests
             Services = new ServiceCollection();
 
             Services.AddSingleton<IConfiguration>(Config);
-
-            string CSSPDBLocalFileName = Config.GetValue<string>("CSSPDBLocal");
-            Assert.NotNull(CSSPDBLocalFileName);
 
             string TestDBConnString = Config.GetValue<string>("TestDBConnectionString");
             Assert.NotNull(TestDBConnString);
@@ -140,19 +165,44 @@ namespace CSSPServices.Tests
                 options.UseInMemoryDatabase(TestDBConnString);
             });
 
-            string appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+            // doing CSSPDBLocal
+            string CSSPDBLocal = Config.GetValue<string>("CSSPDBLocal");
+            Assert.NotNull(CSSPDBLocal);
 
-            fiCSSPDBLocal = new FileInfo(CSSPDBLocalFileName.Replace("{AppDataPath}", appDataPath));
+            fiCSSPDBLocal = new FileInfo(CSSPDBLocal.Replace("{AppDataPath}", appDataPath));
 
             Services.AddDbContext<CSSPDBLocalContext>(options =>
             {
                 options.UseSqlite($"Data Source={ fiCSSPDBLocal.FullName }");
             });
 
+            // doing CSSPLoginDB
+            string CSSPLoginDB = Config.GetValue<string>("CSSPLoginDB");
+            Assert.NotNull(CSSPLoginDB);
+
+            fiCSSPLoginDB = new FileInfo(CSSPLoginDB.Replace("{AppDataPath}", appDataPath));
+
+            Services.AddDbContext<CSSPLoginDBContext>(options =>
+            {
+                options.UseSqlite($"Data Source={ fiCSSPLoginDB.FullName }");
+            });
+
+            // doing CSSPFilesManagementDB
+            string CSSPFilesManagementDB = Config.GetValue<string>("CSSPFilesManagementDB");
+            Assert.NotNull(CSSPFilesManagementDB);
+
+            fiCSSPFilesManagementDB = new FileInfo(CSSPFilesManagementDB.Replace("{AppDataPath}", appDataPath));
+
+            Services.AddDbContext<CSSPFilesManagementDBContext>(options =>
+            {
+                options.UseSqlite($"Data Source={ fiCSSPFilesManagementDB.FullName }");
+            });
+
             Services.AddSingleton<ICultureService, CultureService>();
             Services.AddSingleton<ILoggedInService, LoggedInService>();
             Services.AddSingleton<IEnums, Enums>();
             Services.AddSingleton<IAddressService, AddressService>();
+            Services.AddSingleton<ITVItemService, TVItemService>();
             Services.AddSingleton<ICSSPSQLiteService, CSSPSQLiteService>();
 
             Provider = Services.BuildServiceProvider();
@@ -161,7 +211,7 @@ namespace CSSPServices.Tests
             CultureService = Provider.GetService<ICultureService>();
             Assert.NotNull(CultureService);
 
-            CultureService.SetCulture("en-CA");
+            CultureService.SetCulture(culture);
 
             LoggedInService = Provider.GetService<ILoggedInService>();
             Assert.NotNull(LoggedInService);
@@ -169,17 +219,19 @@ namespace CSSPServices.Tests
             string Id = Config.GetValue<string>("Id");
             Assert.True(await LoggedInService.SetLoggedInContactInfo(Id));
 
-            //string IsLocalStr = Config.GetValue<string>("IsLocal");
-            //Assert.NotNull(IsLocalStr);
+            LoggedInService.IsLocal = true;
 
-            dbIM = Provider.GetService<InMemoryDBContext>();
-            Assert.NotNull(dbIM);
+            //dbIM = Provider.GetService<InMemoryDBContext>();
+            //Assert.NotNull(dbIM);
 
-            dbLocal = Provider.GetService<CSSPDBLocalContext>();
-            Assert.NotNull(dbLocal);
+            //dbLocal = Provider.GetService<CSSPDBLocalContext>();
+            //Assert.NotNull(dbLocal);
 
             AddressService = Provider.GetService<IAddressService>();
             Assert.NotNull(AddressService);
+
+            TVItemService = Provider.GetService<ITVItemService>();
+            Assert.NotNull(TVItemService);
 
             CSSPSQLiteService = Provider.GetService<ICSSPSQLiteService>();
             Assert.NotNull(CSSPSQLiteService);

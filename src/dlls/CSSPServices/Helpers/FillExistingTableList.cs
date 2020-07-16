@@ -1,4 +1,6 @@
-﻿using Microsoft.Data.Sqlite;
+﻿using CSSPModels;
+using Microsoft.Data.Sqlite;
+using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -6,15 +8,18 @@ namespace CSSPServices
 {
     public partial class CSSPSQLiteService : ICSSPSQLiteService
     {
-        private async Task<bool> FillExistingTableList(List<string> ExistingTableList, SqliteConnection db)
+        private async Task<bool> FillExistingTableList(List<string> ExistingTableList)
         {
-            SqliteCommand ExistingTableCommand = new SqliteCommand("SELECT name FROM sqlite_master WHERE type = 'table' AND name NOT LIKE 'sqlite_%'", db);
-
-            using (SqliteDataReader TableList = ExistingTableCommand.ExecuteReader())
+            using (var command = dbLocal.Database.GetDbConnection().CreateCommand())
             {
-                while (TableList.Read())
+                command.CommandText = "SELECT name FROM sqlite_master WHERE type = 'table' AND name NOT LIKE 'sqlite_%'";
+                dbLocal.Database.OpenConnection();
+                using (var result = command.ExecuteReader())
                 {
-                    ExistingTableList.Add(TableList.GetString(0));
+                    while (result.Read())
+                    {
+                        ExistingTableList.Add(result.GetString(0));
+                    }
                 }
             }
 

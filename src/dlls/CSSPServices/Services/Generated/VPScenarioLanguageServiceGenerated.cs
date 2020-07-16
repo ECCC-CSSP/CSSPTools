@@ -24,7 +24,7 @@ namespace CSSPServices
    public interface IVPScenarioLanguageService
     {
        Task<ActionResult<bool>> Delete(int VPScenarioLanguageID);
-       Task<ActionResult<List<VPScenarioLanguage>>> GetVPScenarioLanguageList();
+       Task<ActionResult<List<VPScenarioLanguage>>> GetVPScenarioLanguageList(int skip = 0, int take = 100);
        Task<ActionResult<VPScenarioLanguage>> GetVPScenarioLanguageWithVPScenarioLanguageID(int VPScenarioLanguageID);
        Task<ActionResult<VPScenarioLanguage>> Post(VPScenarioLanguage vpscenariolanguage);
        Task<ActionResult<VPScenarioLanguage>> Put(VPScenarioLanguage vpscenariolanguage);
@@ -64,51 +64,70 @@ namespace CSSPServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.IsMemory)
             {
-                VPScenarioLanguage vpscenariolanguage = (from c in dbLocal.VPScenarioLanguages.AsNoTracking()
+                VPScenarioLanguage vpScenarioLanguage = (from c in dbIM.VPScenarioLanguages.AsNoTracking()
+                                   where c.VPScenarioLanguageID == VPScenarioLanguageID
+                                   select c).FirstOrDefault();
+
+                if (vpScenarioLanguage == null)
+                {
+                    return await Task.FromResult(NotFound());
+                }
+
+                return await Task.FromResult(Ok(vpScenarioLanguage));
+            }
+            else if (LoggedInService.IsLocal)
+            {
+                VPScenarioLanguage vpScenarioLanguage = (from c in dbLocal.VPScenarioLanguages.AsNoTracking()
                         where c.VPScenarioLanguageID == VPScenarioLanguageID
                         select c).FirstOrDefault();
 
-                if (vpscenariolanguage == null)
+                if (vpScenarioLanguage == null)
                 {
                    return await Task.FromResult(NotFound());
                 }
 
-                return await Task.FromResult(Ok(vpscenariolanguage));
+                return await Task.FromResult(Ok(vpScenarioLanguage));
             }
             else
             {
-                VPScenarioLanguage vpscenariolanguage = (from c in db.VPScenarioLanguages.AsNoTracking()
+                VPScenarioLanguage vpScenarioLanguage = (from c in db.VPScenarioLanguages.AsNoTracking()
                         where c.VPScenarioLanguageID == VPScenarioLanguageID
                         select c).FirstOrDefault();
 
-                if (vpscenariolanguage == null)
+                if (vpScenarioLanguage == null)
                 {
                    return await Task.FromResult(NotFound());
                 }
 
-                return await Task.FromResult(Ok(vpscenariolanguage));
+                return await Task.FromResult(Ok(vpScenarioLanguage));
             }
         }
-        public async Task<ActionResult<List<VPScenarioLanguage>>> GetVPScenarioLanguageList()
+        public async Task<ActionResult<List<VPScenarioLanguage>>> GetVPScenarioLanguageList(int skip = 0, int take = 100)
         {
             if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
             {
                 return await Task.FromResult(Unauthorized());
             }
 
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.IsMemory)
             {
-                List<VPScenarioLanguage> vpscenariolanguageList = (from c in dbLocal.VPScenarioLanguages.AsNoTracking() select c).Take(100).ToList();
+                List<VPScenarioLanguage> vpScenarioLanguageList = (from c in dbIM.VPScenarioLanguages.AsNoTracking() orderby c.VPScenarioLanguageID select c).Skip(skip).Take(take).ToList();
+            
+                return await Task.FromResult(Ok(vpScenarioLanguageList));
+            }
+            else if (LoggedInService.IsLocal)
+            {
+                List<VPScenarioLanguage> vpScenarioLanguageList = (from c in dbLocal.VPScenarioLanguages.AsNoTracking() orderby c.VPScenarioLanguageID select c).Skip(skip).Take(take).ToList();
 
-                return await Task.FromResult(Ok(vpscenariolanguageList));
+                return await Task.FromResult(Ok(vpScenarioLanguageList));
             }
             else
             {
-                List<VPScenarioLanguage> vpscenariolanguageList = (from c in db.VPScenarioLanguages.AsNoTracking() select c).Take(100).ToList();
+                List<VPScenarioLanguage> vpScenarioLanguageList = (from c in db.VPScenarioLanguages.AsNoTracking() orderby c.VPScenarioLanguageID select c).Skip(skip).Take(take).ToList();
 
-                return await Task.FromResult(Ok(vpscenariolanguageList));
+                return await Task.FromResult(Ok(vpScenarioLanguageList));
             }
         }
         public async Task<ActionResult<bool>> Delete(int VPScenarioLanguageID)
@@ -118,7 +137,30 @@ namespace CSSPServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.IsMemory)
+            {
+                VPScenarioLanguage vpScenarioLanguage = (from c in dbIM.VPScenarioLanguages
+                                   where c.VPScenarioLanguageID == VPScenarioLanguageID
+                                   select c).FirstOrDefault();
+            
+                if (vpScenarioLanguage == null)
+                {
+                    return await Task.FromResult(BadRequest(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "VPScenarioLanguage", "VPScenarioLanguageID", VPScenarioLanguageID.ToString())));
+                }
+            
+                try
+                {
+                    dbIM.VPScenarioLanguages.Remove(vpScenarioLanguage);
+                    dbIM.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                    return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
+            
+                return await Task.FromResult(Ok(true));
+            }
+            else if (LoggedInService.IsLocal)
             {
                 VPScenarioLanguage vpScenarioLanguage = (from c in dbLocal.VPScenarioLanguages
                                    where c.VPScenarioLanguageID == VPScenarioLanguageID
@@ -178,7 +220,21 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ValidationResults));
             }
 
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.IsMemory)
+            {
+                try
+                {
+                    dbIM.VPScenarioLanguages.Add(vpScenarioLanguage);
+                    dbIM.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                    return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
+
+                return await Task.FromResult(Ok(vpScenarioLanguage));
+            }
+            else if (LoggedInService.IsLocal)
             {
                 try
                 {
@@ -220,7 +276,21 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ValidationResults));
             }
 
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.IsMemory)
+            {
+                try
+                {
+                    dbIM.VPScenarioLanguages.Update(vpScenarioLanguage);
+                    dbIM.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                    return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
+
+                return await Task.FromResult(Ok(vpScenarioLanguage));
+            }
+            else if (LoggedInService.IsLocal)
             {
             try
             {

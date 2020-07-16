@@ -13,8 +13,10 @@ namespace GenerateCodeBaseServices.Services
                 || type.Name.StartsWith("BaseContext")
                 || type.Name.StartsWith("CSSPDBContext")
                 || type.Name.StartsWith("CSSPDBLocalContext")
-                || type.Name.StartsWith("TestDBContext")
+                || type.Name.StartsWith("CSSPFilesManagementDBContext")
+                || type.Name.StartsWith("CSSPLoginDBContext")
                 || type.Name.StartsWith("InMemoryDBContext")
+                || type.Name.StartsWith("TestDBContext")
                 || type.Name.StartsWith("CSSPAfter")
                 || type.Name.StartsWith("CSSPAllowNull")
                 || type.Name.StartsWith("CSSPBigger")
@@ -33,6 +35,8 @@ namespace GenerateCodeBaseServices.Services
                 || type.Name.StartsWith("AspNet")
                 || type.Name.StartsWith("Persisted")
                 || type.Name.StartsWith("Device")
+                || type.Name.StartsWith("Preference")
+                || type.Name.StartsWith("CSSPFile")
                 )
             {
                 return true;

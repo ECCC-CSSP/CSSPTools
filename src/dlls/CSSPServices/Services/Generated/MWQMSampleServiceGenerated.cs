@@ -24,7 +24,7 @@ namespace CSSPServices
    public interface IMWQMSampleService
     {
        Task<ActionResult<bool>> Delete(int MWQMSampleID);
-       Task<ActionResult<List<MWQMSample>>> GetMWQMSampleList();
+       Task<ActionResult<List<MWQMSample>>> GetMWQMSampleList(int skip = 0, int take = 100);
        Task<ActionResult<MWQMSample>> GetMWQMSampleWithMWQMSampleID(int MWQMSampleID);
        Task<ActionResult<MWQMSample>> Post(MWQMSample mwqmsample);
        Task<ActionResult<MWQMSample>> Put(MWQMSample mwqmsample);
@@ -64,51 +64,70 @@ namespace CSSPServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.IsMemory)
             {
-                MWQMSample mwqmsample = (from c in dbLocal.MWQMSamples.AsNoTracking()
+                MWQMSample mwqmSample = (from c in dbIM.MWQMSamples.AsNoTracking()
+                                   where c.MWQMSampleID == MWQMSampleID
+                                   select c).FirstOrDefault();
+
+                if (mwqmSample == null)
+                {
+                    return await Task.FromResult(NotFound());
+                }
+
+                return await Task.FromResult(Ok(mwqmSample));
+            }
+            else if (LoggedInService.IsLocal)
+            {
+                MWQMSample mwqmSample = (from c in dbLocal.MWQMSamples.AsNoTracking()
                         where c.MWQMSampleID == MWQMSampleID
                         select c).FirstOrDefault();
 
-                if (mwqmsample == null)
+                if (mwqmSample == null)
                 {
                    return await Task.FromResult(NotFound());
                 }
 
-                return await Task.FromResult(Ok(mwqmsample));
+                return await Task.FromResult(Ok(mwqmSample));
             }
             else
             {
-                MWQMSample mwqmsample = (from c in db.MWQMSamples.AsNoTracking()
+                MWQMSample mwqmSample = (from c in db.MWQMSamples.AsNoTracking()
                         where c.MWQMSampleID == MWQMSampleID
                         select c).FirstOrDefault();
 
-                if (mwqmsample == null)
+                if (mwqmSample == null)
                 {
                    return await Task.FromResult(NotFound());
                 }
 
-                return await Task.FromResult(Ok(mwqmsample));
+                return await Task.FromResult(Ok(mwqmSample));
             }
         }
-        public async Task<ActionResult<List<MWQMSample>>> GetMWQMSampleList()
+        public async Task<ActionResult<List<MWQMSample>>> GetMWQMSampleList(int skip = 0, int take = 100)
         {
             if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
             {
                 return await Task.FromResult(Unauthorized());
             }
 
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.IsMemory)
             {
-                List<MWQMSample> mwqmsampleList = (from c in dbLocal.MWQMSamples.AsNoTracking() select c).Take(100).ToList();
+                List<MWQMSample> mwqmSampleList = (from c in dbIM.MWQMSamples.AsNoTracking() orderby c.MWQMSampleID select c).Skip(skip).Take(take).ToList();
+            
+                return await Task.FromResult(Ok(mwqmSampleList));
+            }
+            else if (LoggedInService.IsLocal)
+            {
+                List<MWQMSample> mwqmSampleList = (from c in dbLocal.MWQMSamples.AsNoTracking() orderby c.MWQMSampleID select c).Skip(skip).Take(take).ToList();
 
-                return await Task.FromResult(Ok(mwqmsampleList));
+                return await Task.FromResult(Ok(mwqmSampleList));
             }
             else
             {
-                List<MWQMSample> mwqmsampleList = (from c in db.MWQMSamples.AsNoTracking() select c).Take(100).ToList();
+                List<MWQMSample> mwqmSampleList = (from c in db.MWQMSamples.AsNoTracking() orderby c.MWQMSampleID select c).Skip(skip).Take(take).ToList();
 
-                return await Task.FromResult(Ok(mwqmsampleList));
+                return await Task.FromResult(Ok(mwqmSampleList));
             }
         }
         public async Task<ActionResult<bool>> Delete(int MWQMSampleID)
@@ -118,7 +137,30 @@ namespace CSSPServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.IsMemory)
+            {
+                MWQMSample mwqmSample = (from c in dbIM.MWQMSamples
+                                   where c.MWQMSampleID == MWQMSampleID
+                                   select c).FirstOrDefault();
+            
+                if (mwqmSample == null)
+                {
+                    return await Task.FromResult(BadRequest(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "MWQMSample", "MWQMSampleID", MWQMSampleID.ToString())));
+                }
+            
+                try
+                {
+                    dbIM.MWQMSamples.Remove(mwqmSample);
+                    dbIM.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                    return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
+            
+                return await Task.FromResult(Ok(true));
+            }
+            else if (LoggedInService.IsLocal)
             {
                 MWQMSample mwqmSample = (from c in dbLocal.MWQMSamples
                                    where c.MWQMSampleID == MWQMSampleID
@@ -178,7 +220,21 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ValidationResults));
             }
 
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.IsMemory)
+            {
+                try
+                {
+                    dbIM.MWQMSamples.Add(mwqmSample);
+                    dbIM.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                    return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
+
+                return await Task.FromResult(Ok(mwqmSample));
+            }
+            else if (LoggedInService.IsLocal)
             {
                 try
                 {
@@ -220,7 +276,21 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ValidationResults));
             }
 
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.IsMemory)
+            {
+                try
+                {
+                    dbIM.MWQMSamples.Update(mwqmSample);
+                    dbIM.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                    return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
+
+                return await Task.FromResult(Ok(mwqmSample));
+            }
+            else if (LoggedInService.IsLocal)
             {
             try
             {

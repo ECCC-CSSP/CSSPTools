@@ -24,7 +24,7 @@ namespace CSSPServices
    public interface ILabSheetTubeMPNDetailService
     {
        Task<ActionResult<bool>> Delete(int LabSheetTubeMPNDetailID);
-       Task<ActionResult<List<LabSheetTubeMPNDetail>>> GetLabSheetTubeMPNDetailList();
+       Task<ActionResult<List<LabSheetTubeMPNDetail>>> GetLabSheetTubeMPNDetailList(int skip = 0, int take = 100);
        Task<ActionResult<LabSheetTubeMPNDetail>> GetLabSheetTubeMPNDetailWithLabSheetTubeMPNDetailID(int LabSheetTubeMPNDetailID);
        Task<ActionResult<LabSheetTubeMPNDetail>> Post(LabSheetTubeMPNDetail labsheettubempndetail);
        Task<ActionResult<LabSheetTubeMPNDetail>> Put(LabSheetTubeMPNDetail labsheettubempndetail);
@@ -64,51 +64,70 @@ namespace CSSPServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.IsMemory)
             {
-                LabSheetTubeMPNDetail labsheettubempndetail = (from c in dbLocal.LabSheetTubeMPNDetails.AsNoTracking()
+                LabSheetTubeMPNDetail labSheetTubeMPNDetail = (from c in dbIM.LabSheetTubeMPNDetails.AsNoTracking()
+                                   where c.LabSheetTubeMPNDetailID == LabSheetTubeMPNDetailID
+                                   select c).FirstOrDefault();
+
+                if (labSheetTubeMPNDetail == null)
+                {
+                    return await Task.FromResult(NotFound());
+                }
+
+                return await Task.FromResult(Ok(labSheetTubeMPNDetail));
+            }
+            else if (LoggedInService.IsLocal)
+            {
+                LabSheetTubeMPNDetail labSheetTubeMPNDetail = (from c in dbLocal.LabSheetTubeMPNDetails.AsNoTracking()
                         where c.LabSheetTubeMPNDetailID == LabSheetTubeMPNDetailID
                         select c).FirstOrDefault();
 
-                if (labsheettubempndetail == null)
+                if (labSheetTubeMPNDetail == null)
                 {
                    return await Task.FromResult(NotFound());
                 }
 
-                return await Task.FromResult(Ok(labsheettubempndetail));
+                return await Task.FromResult(Ok(labSheetTubeMPNDetail));
             }
             else
             {
-                LabSheetTubeMPNDetail labsheettubempndetail = (from c in db.LabSheetTubeMPNDetails.AsNoTracking()
+                LabSheetTubeMPNDetail labSheetTubeMPNDetail = (from c in db.LabSheetTubeMPNDetails.AsNoTracking()
                         where c.LabSheetTubeMPNDetailID == LabSheetTubeMPNDetailID
                         select c).FirstOrDefault();
 
-                if (labsheettubempndetail == null)
+                if (labSheetTubeMPNDetail == null)
                 {
                    return await Task.FromResult(NotFound());
                 }
 
-                return await Task.FromResult(Ok(labsheettubempndetail));
+                return await Task.FromResult(Ok(labSheetTubeMPNDetail));
             }
         }
-        public async Task<ActionResult<List<LabSheetTubeMPNDetail>>> GetLabSheetTubeMPNDetailList()
+        public async Task<ActionResult<List<LabSheetTubeMPNDetail>>> GetLabSheetTubeMPNDetailList(int skip = 0, int take = 100)
         {
             if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
             {
                 return await Task.FromResult(Unauthorized());
             }
 
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.IsMemory)
             {
-                List<LabSheetTubeMPNDetail> labsheettubempndetailList = (from c in dbLocal.LabSheetTubeMPNDetails.AsNoTracking() select c).Take(100).ToList();
+                List<LabSheetTubeMPNDetail> labSheetTubeMPNDetailList = (from c in dbIM.LabSheetTubeMPNDetails.AsNoTracking() orderby c.LabSheetTubeMPNDetailID select c).Skip(skip).Take(take).ToList();
+            
+                return await Task.FromResult(Ok(labSheetTubeMPNDetailList));
+            }
+            else if (LoggedInService.IsLocal)
+            {
+                List<LabSheetTubeMPNDetail> labSheetTubeMPNDetailList = (from c in dbLocal.LabSheetTubeMPNDetails.AsNoTracking() orderby c.LabSheetTubeMPNDetailID select c).Skip(skip).Take(take).ToList();
 
-                return await Task.FromResult(Ok(labsheettubempndetailList));
+                return await Task.FromResult(Ok(labSheetTubeMPNDetailList));
             }
             else
             {
-                List<LabSheetTubeMPNDetail> labsheettubempndetailList = (from c in db.LabSheetTubeMPNDetails.AsNoTracking() select c).Take(100).ToList();
+                List<LabSheetTubeMPNDetail> labSheetTubeMPNDetailList = (from c in db.LabSheetTubeMPNDetails.AsNoTracking() orderby c.LabSheetTubeMPNDetailID select c).Skip(skip).Take(take).ToList();
 
-                return await Task.FromResult(Ok(labsheettubempndetailList));
+                return await Task.FromResult(Ok(labSheetTubeMPNDetailList));
             }
         }
         public async Task<ActionResult<bool>> Delete(int LabSheetTubeMPNDetailID)
@@ -118,7 +137,30 @@ namespace CSSPServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.IsMemory)
+            {
+                LabSheetTubeMPNDetail labSheetTubeMPNDetail = (from c in dbIM.LabSheetTubeMPNDetails
+                                   where c.LabSheetTubeMPNDetailID == LabSheetTubeMPNDetailID
+                                   select c).FirstOrDefault();
+            
+                if (labSheetTubeMPNDetail == null)
+                {
+                    return await Task.FromResult(BadRequest(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "LabSheetTubeMPNDetail", "LabSheetTubeMPNDetailID", LabSheetTubeMPNDetailID.ToString())));
+                }
+            
+                try
+                {
+                    dbIM.LabSheetTubeMPNDetails.Remove(labSheetTubeMPNDetail);
+                    dbIM.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                    return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
+            
+                return await Task.FromResult(Ok(true));
+            }
+            else if (LoggedInService.IsLocal)
             {
                 LabSheetTubeMPNDetail labSheetTubeMPNDetail = (from c in dbLocal.LabSheetTubeMPNDetails
                                    where c.LabSheetTubeMPNDetailID == LabSheetTubeMPNDetailID
@@ -178,7 +220,21 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ValidationResults));
             }
 
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.IsMemory)
+            {
+                try
+                {
+                    dbIM.LabSheetTubeMPNDetails.Add(labSheetTubeMPNDetail);
+                    dbIM.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                    return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
+
+                return await Task.FromResult(Ok(labSheetTubeMPNDetail));
+            }
+            else if (LoggedInService.IsLocal)
             {
                 try
                 {
@@ -220,7 +276,21 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ValidationResults));
             }
 
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.IsMemory)
+            {
+                try
+                {
+                    dbIM.LabSheetTubeMPNDetails.Update(labSheetTubeMPNDetail);
+                    dbIM.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                    return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
+
+                return await Task.FromResult(Ok(labSheetTubeMPNDetail));
+            }
+            else if (LoggedInService.IsLocal)
             {
             try
             {

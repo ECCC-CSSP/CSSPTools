@@ -24,7 +24,7 @@ namespace CSSPServices
    public interface IMikeBoundaryConditionService
     {
        Task<ActionResult<bool>> Delete(int MikeBoundaryConditionID);
-       Task<ActionResult<List<MikeBoundaryCondition>>> GetMikeBoundaryConditionList();
+       Task<ActionResult<List<MikeBoundaryCondition>>> GetMikeBoundaryConditionList(int skip = 0, int take = 100);
        Task<ActionResult<MikeBoundaryCondition>> GetMikeBoundaryConditionWithMikeBoundaryConditionID(int MikeBoundaryConditionID);
        Task<ActionResult<MikeBoundaryCondition>> Post(MikeBoundaryCondition mikeboundarycondition);
        Task<ActionResult<MikeBoundaryCondition>> Put(MikeBoundaryCondition mikeboundarycondition);
@@ -64,51 +64,70 @@ namespace CSSPServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.IsMemory)
             {
-                MikeBoundaryCondition mikeboundarycondition = (from c in dbLocal.MikeBoundaryConditions.AsNoTracking()
+                MikeBoundaryCondition mikeBoundaryCondition = (from c in dbIM.MikeBoundaryConditions.AsNoTracking()
+                                   where c.MikeBoundaryConditionID == MikeBoundaryConditionID
+                                   select c).FirstOrDefault();
+
+                if (mikeBoundaryCondition == null)
+                {
+                    return await Task.FromResult(NotFound());
+                }
+
+                return await Task.FromResult(Ok(mikeBoundaryCondition));
+            }
+            else if (LoggedInService.IsLocal)
+            {
+                MikeBoundaryCondition mikeBoundaryCondition = (from c in dbLocal.MikeBoundaryConditions.AsNoTracking()
                         where c.MikeBoundaryConditionID == MikeBoundaryConditionID
                         select c).FirstOrDefault();
 
-                if (mikeboundarycondition == null)
+                if (mikeBoundaryCondition == null)
                 {
                    return await Task.FromResult(NotFound());
                 }
 
-                return await Task.FromResult(Ok(mikeboundarycondition));
+                return await Task.FromResult(Ok(mikeBoundaryCondition));
             }
             else
             {
-                MikeBoundaryCondition mikeboundarycondition = (from c in db.MikeBoundaryConditions.AsNoTracking()
+                MikeBoundaryCondition mikeBoundaryCondition = (from c in db.MikeBoundaryConditions.AsNoTracking()
                         where c.MikeBoundaryConditionID == MikeBoundaryConditionID
                         select c).FirstOrDefault();
 
-                if (mikeboundarycondition == null)
+                if (mikeBoundaryCondition == null)
                 {
                    return await Task.FromResult(NotFound());
                 }
 
-                return await Task.FromResult(Ok(mikeboundarycondition));
+                return await Task.FromResult(Ok(mikeBoundaryCondition));
             }
         }
-        public async Task<ActionResult<List<MikeBoundaryCondition>>> GetMikeBoundaryConditionList()
+        public async Task<ActionResult<List<MikeBoundaryCondition>>> GetMikeBoundaryConditionList(int skip = 0, int take = 100)
         {
             if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
             {
                 return await Task.FromResult(Unauthorized());
             }
 
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.IsMemory)
             {
-                List<MikeBoundaryCondition> mikeboundaryconditionList = (from c in dbLocal.MikeBoundaryConditions.AsNoTracking() select c).Take(100).ToList();
+                List<MikeBoundaryCondition> mikeBoundaryConditionList = (from c in dbIM.MikeBoundaryConditions.AsNoTracking() orderby c.MikeBoundaryConditionID select c).Skip(skip).Take(take).ToList();
+            
+                return await Task.FromResult(Ok(mikeBoundaryConditionList));
+            }
+            else if (LoggedInService.IsLocal)
+            {
+                List<MikeBoundaryCondition> mikeBoundaryConditionList = (from c in dbLocal.MikeBoundaryConditions.AsNoTracking() orderby c.MikeBoundaryConditionID select c).Skip(skip).Take(take).ToList();
 
-                return await Task.FromResult(Ok(mikeboundaryconditionList));
+                return await Task.FromResult(Ok(mikeBoundaryConditionList));
             }
             else
             {
-                List<MikeBoundaryCondition> mikeboundaryconditionList = (from c in db.MikeBoundaryConditions.AsNoTracking() select c).Take(100).ToList();
+                List<MikeBoundaryCondition> mikeBoundaryConditionList = (from c in db.MikeBoundaryConditions.AsNoTracking() orderby c.MikeBoundaryConditionID select c).Skip(skip).Take(take).ToList();
 
-                return await Task.FromResult(Ok(mikeboundaryconditionList));
+                return await Task.FromResult(Ok(mikeBoundaryConditionList));
             }
         }
         public async Task<ActionResult<bool>> Delete(int MikeBoundaryConditionID)
@@ -118,7 +137,30 @@ namespace CSSPServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.IsMemory)
+            {
+                MikeBoundaryCondition mikeBoundaryCondition = (from c in dbIM.MikeBoundaryConditions
+                                   where c.MikeBoundaryConditionID == MikeBoundaryConditionID
+                                   select c).FirstOrDefault();
+            
+                if (mikeBoundaryCondition == null)
+                {
+                    return await Task.FromResult(BadRequest(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "MikeBoundaryCondition", "MikeBoundaryConditionID", MikeBoundaryConditionID.ToString())));
+                }
+            
+                try
+                {
+                    dbIM.MikeBoundaryConditions.Remove(mikeBoundaryCondition);
+                    dbIM.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                    return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
+            
+                return await Task.FromResult(Ok(true));
+            }
+            else if (LoggedInService.IsLocal)
             {
                 MikeBoundaryCondition mikeBoundaryCondition = (from c in dbLocal.MikeBoundaryConditions
                                    where c.MikeBoundaryConditionID == MikeBoundaryConditionID
@@ -178,7 +220,21 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ValidationResults));
             }
 
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.IsMemory)
+            {
+                try
+                {
+                    dbIM.MikeBoundaryConditions.Add(mikeBoundaryCondition);
+                    dbIM.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                    return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
+
+                return await Task.FromResult(Ok(mikeBoundaryCondition));
+            }
+            else if (LoggedInService.IsLocal)
             {
                 try
                 {
@@ -220,7 +276,21 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ValidationResults));
             }
 
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.IsMemory)
+            {
+                try
+                {
+                    dbIM.MikeBoundaryConditions.Update(mikeBoundaryCondition);
+                    dbIM.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                    return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
+
+                return await Task.FromResult(Ok(mikeBoundaryCondition));
+            }
+            else if (LoggedInService.IsLocal)
             {
             try
             {

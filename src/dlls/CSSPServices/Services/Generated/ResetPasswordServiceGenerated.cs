@@ -24,7 +24,7 @@ namespace CSSPServices
    public interface IResetPasswordService
     {
        Task<ActionResult<bool>> Delete(int ResetPasswordID);
-       Task<ActionResult<List<ResetPassword>>> GetResetPasswordList();
+       Task<ActionResult<List<ResetPassword>>> GetResetPasswordList(int skip = 0, int take = 100);
        Task<ActionResult<ResetPassword>> GetResetPasswordWithResetPasswordID(int ResetPasswordID);
        Task<ActionResult<ResetPassword>> Post(ResetPassword resetpassword);
        Task<ActionResult<ResetPassword>> Put(ResetPassword resetpassword);
@@ -64,51 +64,70 @@ namespace CSSPServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.IsMemory)
             {
-                ResetPassword resetpassword = (from c in dbLocal.ResetPasswords.AsNoTracking()
+                ResetPassword resetPassword = (from c in dbIM.ResetPasswords.AsNoTracking()
+                                   where c.ResetPasswordID == ResetPasswordID
+                                   select c).FirstOrDefault();
+
+                if (resetPassword == null)
+                {
+                    return await Task.FromResult(NotFound());
+                }
+
+                return await Task.FromResult(Ok(resetPassword));
+            }
+            else if (LoggedInService.IsLocal)
+            {
+                ResetPassword resetPassword = (from c in dbLocal.ResetPasswords.AsNoTracking()
                         where c.ResetPasswordID == ResetPasswordID
                         select c).FirstOrDefault();
 
-                if (resetpassword == null)
+                if (resetPassword == null)
                 {
                    return await Task.FromResult(NotFound());
                 }
 
-                return await Task.FromResult(Ok(resetpassword));
+                return await Task.FromResult(Ok(resetPassword));
             }
             else
             {
-                ResetPassword resetpassword = (from c in db.ResetPasswords.AsNoTracking()
+                ResetPassword resetPassword = (from c in db.ResetPasswords.AsNoTracking()
                         where c.ResetPasswordID == ResetPasswordID
                         select c).FirstOrDefault();
 
-                if (resetpassword == null)
+                if (resetPassword == null)
                 {
                    return await Task.FromResult(NotFound());
                 }
 
-                return await Task.FromResult(Ok(resetpassword));
+                return await Task.FromResult(Ok(resetPassword));
             }
         }
-        public async Task<ActionResult<List<ResetPassword>>> GetResetPasswordList()
+        public async Task<ActionResult<List<ResetPassword>>> GetResetPasswordList(int skip = 0, int take = 100)
         {
             if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
             {
                 return await Task.FromResult(Unauthorized());
             }
 
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.IsMemory)
             {
-                List<ResetPassword> resetpasswordList = (from c in dbLocal.ResetPasswords.AsNoTracking() select c).Take(100).ToList();
+                List<ResetPassword> resetPasswordList = (from c in dbIM.ResetPasswords.AsNoTracking() orderby c.ResetPasswordID select c).Skip(skip).Take(take).ToList();
+            
+                return await Task.FromResult(Ok(resetPasswordList));
+            }
+            else if (LoggedInService.IsLocal)
+            {
+                List<ResetPassword> resetPasswordList = (from c in dbLocal.ResetPasswords.AsNoTracking() orderby c.ResetPasswordID select c).Skip(skip).Take(take).ToList();
 
-                return await Task.FromResult(Ok(resetpasswordList));
+                return await Task.FromResult(Ok(resetPasswordList));
             }
             else
             {
-                List<ResetPassword> resetpasswordList = (from c in db.ResetPasswords.AsNoTracking() select c).Take(100).ToList();
+                List<ResetPassword> resetPasswordList = (from c in db.ResetPasswords.AsNoTracking() orderby c.ResetPasswordID select c).Skip(skip).Take(take).ToList();
 
-                return await Task.FromResult(Ok(resetpasswordList));
+                return await Task.FromResult(Ok(resetPasswordList));
             }
         }
         public async Task<ActionResult<bool>> Delete(int ResetPasswordID)
@@ -118,7 +137,30 @@ namespace CSSPServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.IsMemory)
+            {
+                ResetPassword resetPassword = (from c in dbIM.ResetPasswords
+                                   where c.ResetPasswordID == ResetPasswordID
+                                   select c).FirstOrDefault();
+            
+                if (resetPassword == null)
+                {
+                    return await Task.FromResult(BadRequest(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "ResetPassword", "ResetPasswordID", ResetPasswordID.ToString())));
+                }
+            
+                try
+                {
+                    dbIM.ResetPasswords.Remove(resetPassword);
+                    dbIM.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                    return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
+            
+                return await Task.FromResult(Ok(true));
+            }
+            else if (LoggedInService.IsLocal)
             {
                 ResetPassword resetPassword = (from c in dbLocal.ResetPasswords
                                    where c.ResetPasswordID == ResetPasswordID
@@ -178,7 +220,21 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ValidationResults));
             }
 
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.IsMemory)
+            {
+                try
+                {
+                    dbIM.ResetPasswords.Add(resetPassword);
+                    dbIM.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                    return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
+
+                return await Task.FromResult(Ok(resetPassword));
+            }
+            else if (LoggedInService.IsLocal)
             {
                 try
                 {
@@ -220,7 +276,21 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ValidationResults));
             }
 
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.IsMemory)
+            {
+                try
+                {
+                    dbIM.ResetPasswords.Update(resetPassword);
+                    dbIM.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                    return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
+
+                return await Task.FromResult(Ok(resetPassword));
+            }
+            else if (LoggedInService.IsLocal)
             {
             try
             {

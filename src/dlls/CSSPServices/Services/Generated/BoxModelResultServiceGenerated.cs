@@ -24,7 +24,7 @@ namespace CSSPServices
    public interface IBoxModelResultService
     {
        Task<ActionResult<bool>> Delete(int BoxModelResultID);
-       Task<ActionResult<List<BoxModelResult>>> GetBoxModelResultList();
+       Task<ActionResult<List<BoxModelResult>>> GetBoxModelResultList(int skip = 0, int take = 100);
        Task<ActionResult<BoxModelResult>> GetBoxModelResultWithBoxModelResultID(int BoxModelResultID);
        Task<ActionResult<BoxModelResult>> Post(BoxModelResult boxmodelresult);
        Task<ActionResult<BoxModelResult>> Put(BoxModelResult boxmodelresult);
@@ -64,51 +64,70 @@ namespace CSSPServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.IsMemory)
             {
-                BoxModelResult boxmodelresult = (from c in dbLocal.BoxModelResults.AsNoTracking()
+                BoxModelResult boxModelResult = (from c in dbIM.BoxModelResults.AsNoTracking()
+                                   where c.BoxModelResultID == BoxModelResultID
+                                   select c).FirstOrDefault();
+
+                if (boxModelResult == null)
+                {
+                    return await Task.FromResult(NotFound());
+                }
+
+                return await Task.FromResult(Ok(boxModelResult));
+            }
+            else if (LoggedInService.IsLocal)
+            {
+                BoxModelResult boxModelResult = (from c in dbLocal.BoxModelResults.AsNoTracking()
                         where c.BoxModelResultID == BoxModelResultID
                         select c).FirstOrDefault();
 
-                if (boxmodelresult == null)
+                if (boxModelResult == null)
                 {
                    return await Task.FromResult(NotFound());
                 }
 
-                return await Task.FromResult(Ok(boxmodelresult));
+                return await Task.FromResult(Ok(boxModelResult));
             }
             else
             {
-                BoxModelResult boxmodelresult = (from c in db.BoxModelResults.AsNoTracking()
+                BoxModelResult boxModelResult = (from c in db.BoxModelResults.AsNoTracking()
                         where c.BoxModelResultID == BoxModelResultID
                         select c).FirstOrDefault();
 
-                if (boxmodelresult == null)
+                if (boxModelResult == null)
                 {
                    return await Task.FromResult(NotFound());
                 }
 
-                return await Task.FromResult(Ok(boxmodelresult));
+                return await Task.FromResult(Ok(boxModelResult));
             }
         }
-        public async Task<ActionResult<List<BoxModelResult>>> GetBoxModelResultList()
+        public async Task<ActionResult<List<BoxModelResult>>> GetBoxModelResultList(int skip = 0, int take = 100)
         {
             if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
             {
                 return await Task.FromResult(Unauthorized());
             }
 
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.IsMemory)
             {
-                List<BoxModelResult> boxmodelresultList = (from c in dbLocal.BoxModelResults.AsNoTracking() select c).Take(100).ToList();
+                List<BoxModelResult> boxModelResultList = (from c in dbIM.BoxModelResults.AsNoTracking() orderby c.BoxModelResultID select c).Skip(skip).Take(take).ToList();
+            
+                return await Task.FromResult(Ok(boxModelResultList));
+            }
+            else if (LoggedInService.IsLocal)
+            {
+                List<BoxModelResult> boxModelResultList = (from c in dbLocal.BoxModelResults.AsNoTracking() orderby c.BoxModelResultID select c).Skip(skip).Take(take).ToList();
 
-                return await Task.FromResult(Ok(boxmodelresultList));
+                return await Task.FromResult(Ok(boxModelResultList));
             }
             else
             {
-                List<BoxModelResult> boxmodelresultList = (from c in db.BoxModelResults.AsNoTracking() select c).Take(100).ToList();
+                List<BoxModelResult> boxModelResultList = (from c in db.BoxModelResults.AsNoTracking() orderby c.BoxModelResultID select c).Skip(skip).Take(take).ToList();
 
-                return await Task.FromResult(Ok(boxmodelresultList));
+                return await Task.FromResult(Ok(boxModelResultList));
             }
         }
         public async Task<ActionResult<bool>> Delete(int BoxModelResultID)
@@ -118,7 +137,30 @@ namespace CSSPServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.IsMemory)
+            {
+                BoxModelResult boxModelResult = (from c in dbIM.BoxModelResults
+                                   where c.BoxModelResultID == BoxModelResultID
+                                   select c).FirstOrDefault();
+            
+                if (boxModelResult == null)
+                {
+                    return await Task.FromResult(BadRequest(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "BoxModelResult", "BoxModelResultID", BoxModelResultID.ToString())));
+                }
+            
+                try
+                {
+                    dbIM.BoxModelResults.Remove(boxModelResult);
+                    dbIM.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                    return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
+            
+                return await Task.FromResult(Ok(true));
+            }
+            else if (LoggedInService.IsLocal)
             {
                 BoxModelResult boxModelResult = (from c in dbLocal.BoxModelResults
                                    where c.BoxModelResultID == BoxModelResultID
@@ -178,7 +220,21 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ValidationResults));
             }
 
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.IsMemory)
+            {
+                try
+                {
+                    dbIM.BoxModelResults.Add(boxModelResult);
+                    dbIM.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                    return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
+
+                return await Task.FromResult(Ok(boxModelResult));
+            }
+            else if (LoggedInService.IsLocal)
             {
                 try
                 {
@@ -220,7 +276,21 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ValidationResults));
             }
 
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.IsMemory)
+            {
+                try
+                {
+                    dbIM.BoxModelResults.Update(boxModelResult);
+                    dbIM.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                    return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
+
+                return await Task.FromResult(Ok(boxModelResult));
+            }
+            else if (LoggedInService.IsLocal)
             {
             try
             {

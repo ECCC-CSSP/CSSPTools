@@ -24,7 +24,7 @@ namespace CSSPServices
    public interface IContactPreferenceService
     {
        Task<ActionResult<bool>> Delete(int ContactPreferenceID);
-       Task<ActionResult<List<ContactPreference>>> GetContactPreferenceList();
+       Task<ActionResult<List<ContactPreference>>> GetContactPreferenceList(int skip = 0, int take = 100);
        Task<ActionResult<ContactPreference>> GetContactPreferenceWithContactPreferenceID(int ContactPreferenceID);
        Task<ActionResult<ContactPreference>> Post(ContactPreference contactpreference);
        Task<ActionResult<ContactPreference>> Put(ContactPreference contactpreference);
@@ -64,51 +64,70 @@ namespace CSSPServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.IsMemory)
             {
-                ContactPreference contactpreference = (from c in dbLocal.ContactPreferences.AsNoTracking()
+                ContactPreference contactPreference = (from c in dbIM.ContactPreferences.AsNoTracking()
+                                   where c.ContactPreferenceID == ContactPreferenceID
+                                   select c).FirstOrDefault();
+
+                if (contactPreference == null)
+                {
+                    return await Task.FromResult(NotFound());
+                }
+
+                return await Task.FromResult(Ok(contactPreference));
+            }
+            else if (LoggedInService.IsLocal)
+            {
+                ContactPreference contactPreference = (from c in dbLocal.ContactPreferences.AsNoTracking()
                         where c.ContactPreferenceID == ContactPreferenceID
                         select c).FirstOrDefault();
 
-                if (contactpreference == null)
+                if (contactPreference == null)
                 {
                    return await Task.FromResult(NotFound());
                 }
 
-                return await Task.FromResult(Ok(contactpreference));
+                return await Task.FromResult(Ok(contactPreference));
             }
             else
             {
-                ContactPreference contactpreference = (from c in db.ContactPreferences.AsNoTracking()
+                ContactPreference contactPreference = (from c in db.ContactPreferences.AsNoTracking()
                         where c.ContactPreferenceID == ContactPreferenceID
                         select c).FirstOrDefault();
 
-                if (contactpreference == null)
+                if (contactPreference == null)
                 {
                    return await Task.FromResult(NotFound());
                 }
 
-                return await Task.FromResult(Ok(contactpreference));
+                return await Task.FromResult(Ok(contactPreference));
             }
         }
-        public async Task<ActionResult<List<ContactPreference>>> GetContactPreferenceList()
+        public async Task<ActionResult<List<ContactPreference>>> GetContactPreferenceList(int skip = 0, int take = 100)
         {
             if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
             {
                 return await Task.FromResult(Unauthorized());
             }
 
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.IsMemory)
             {
-                List<ContactPreference> contactpreferenceList = (from c in dbLocal.ContactPreferences.AsNoTracking() select c).Take(100).ToList();
+                List<ContactPreference> contactPreferenceList = (from c in dbIM.ContactPreferences.AsNoTracking() orderby c.ContactPreferenceID select c).Skip(skip).Take(take).ToList();
+            
+                return await Task.FromResult(Ok(contactPreferenceList));
+            }
+            else if (LoggedInService.IsLocal)
+            {
+                List<ContactPreference> contactPreferenceList = (from c in dbLocal.ContactPreferences.AsNoTracking() orderby c.ContactPreferenceID select c).Skip(skip).Take(take).ToList();
 
-                return await Task.FromResult(Ok(contactpreferenceList));
+                return await Task.FromResult(Ok(contactPreferenceList));
             }
             else
             {
-                List<ContactPreference> contactpreferenceList = (from c in db.ContactPreferences.AsNoTracking() select c).Take(100).ToList();
+                List<ContactPreference> contactPreferenceList = (from c in db.ContactPreferences.AsNoTracking() orderby c.ContactPreferenceID select c).Skip(skip).Take(take).ToList();
 
-                return await Task.FromResult(Ok(contactpreferenceList));
+                return await Task.FromResult(Ok(contactPreferenceList));
             }
         }
         public async Task<ActionResult<bool>> Delete(int ContactPreferenceID)
@@ -118,7 +137,30 @@ namespace CSSPServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.IsMemory)
+            {
+                ContactPreference contactPreference = (from c in dbIM.ContactPreferences
+                                   where c.ContactPreferenceID == ContactPreferenceID
+                                   select c).FirstOrDefault();
+            
+                if (contactPreference == null)
+                {
+                    return await Task.FromResult(BadRequest(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "ContactPreference", "ContactPreferenceID", ContactPreferenceID.ToString())));
+                }
+            
+                try
+                {
+                    dbIM.ContactPreferences.Remove(contactPreference);
+                    dbIM.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                    return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
+            
+                return await Task.FromResult(Ok(true));
+            }
+            else if (LoggedInService.IsLocal)
             {
                 ContactPreference contactPreference = (from c in dbLocal.ContactPreferences
                                    where c.ContactPreferenceID == ContactPreferenceID
@@ -178,7 +220,21 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ValidationResults));
             }
 
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.IsMemory)
+            {
+                try
+                {
+                    dbIM.ContactPreferences.Add(contactPreference);
+                    dbIM.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                    return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
+
+                return await Task.FromResult(Ok(contactPreference));
+            }
+            else if (LoggedInService.IsLocal)
             {
                 try
                 {
@@ -220,7 +276,21 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ValidationResults));
             }
 
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.IsMemory)
+            {
+                try
+                {
+                    dbIM.ContactPreferences.Update(contactPreference);
+                    dbIM.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                    return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
+
+                return await Task.FromResult(Ok(contactPreference));
+            }
+            else if (LoggedInService.IsLocal)
             {
             try
             {

@@ -24,7 +24,7 @@ namespace CSSPServices
    public interface IMapInfoService
     {
        Task<ActionResult<bool>> Delete(int MapInfoID);
-       Task<ActionResult<List<MapInfo>>> GetMapInfoList();
+       Task<ActionResult<List<MapInfo>>> GetMapInfoList(int skip = 0, int take = 100);
        Task<ActionResult<MapInfo>> GetMapInfoWithMapInfoID(int MapInfoID);
        Task<ActionResult<MapInfo>> Post(MapInfo mapinfo);
        Task<ActionResult<MapInfo>> Put(MapInfo mapinfo);
@@ -64,51 +64,70 @@ namespace CSSPServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.IsMemory)
             {
-                MapInfo mapinfo = (from c in dbLocal.MapInfos.AsNoTracking()
+                MapInfo mapInfo = (from c in dbIM.MapInfos.AsNoTracking()
+                                   where c.MapInfoID == MapInfoID
+                                   select c).FirstOrDefault();
+
+                if (mapInfo == null)
+                {
+                    return await Task.FromResult(NotFound());
+                }
+
+                return await Task.FromResult(Ok(mapInfo));
+            }
+            else if (LoggedInService.IsLocal)
+            {
+                MapInfo mapInfo = (from c in dbLocal.MapInfos.AsNoTracking()
                         where c.MapInfoID == MapInfoID
                         select c).FirstOrDefault();
 
-                if (mapinfo == null)
+                if (mapInfo == null)
                 {
                    return await Task.FromResult(NotFound());
                 }
 
-                return await Task.FromResult(Ok(mapinfo));
+                return await Task.FromResult(Ok(mapInfo));
             }
             else
             {
-                MapInfo mapinfo = (from c in db.MapInfos.AsNoTracking()
+                MapInfo mapInfo = (from c in db.MapInfos.AsNoTracking()
                         where c.MapInfoID == MapInfoID
                         select c).FirstOrDefault();
 
-                if (mapinfo == null)
+                if (mapInfo == null)
                 {
                    return await Task.FromResult(NotFound());
                 }
 
-                return await Task.FromResult(Ok(mapinfo));
+                return await Task.FromResult(Ok(mapInfo));
             }
         }
-        public async Task<ActionResult<List<MapInfo>>> GetMapInfoList()
+        public async Task<ActionResult<List<MapInfo>>> GetMapInfoList(int skip = 0, int take = 100)
         {
             if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
             {
                 return await Task.FromResult(Unauthorized());
             }
 
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.IsMemory)
             {
-                List<MapInfo> mapinfoList = (from c in dbLocal.MapInfos.AsNoTracking() select c).Take(100).ToList();
+                List<MapInfo> mapInfoList = (from c in dbIM.MapInfos.AsNoTracking() orderby c.MapInfoID select c).Skip(skip).Take(take).ToList();
+            
+                return await Task.FromResult(Ok(mapInfoList));
+            }
+            else if (LoggedInService.IsLocal)
+            {
+                List<MapInfo> mapInfoList = (from c in dbLocal.MapInfos.AsNoTracking() orderby c.MapInfoID select c).Skip(skip).Take(take).ToList();
 
-                return await Task.FromResult(Ok(mapinfoList));
+                return await Task.FromResult(Ok(mapInfoList));
             }
             else
             {
-                List<MapInfo> mapinfoList = (from c in db.MapInfos.AsNoTracking() select c).Take(100).ToList();
+                List<MapInfo> mapInfoList = (from c in db.MapInfos.AsNoTracking() orderby c.MapInfoID select c).Skip(skip).Take(take).ToList();
 
-                return await Task.FromResult(Ok(mapinfoList));
+                return await Task.FromResult(Ok(mapInfoList));
             }
         }
         public async Task<ActionResult<bool>> Delete(int MapInfoID)
@@ -118,7 +137,30 @@ namespace CSSPServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.IsMemory)
+            {
+                MapInfo mapInfo = (from c in dbIM.MapInfos
+                                   where c.MapInfoID == MapInfoID
+                                   select c).FirstOrDefault();
+            
+                if (mapInfo == null)
+                {
+                    return await Task.FromResult(BadRequest(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "MapInfo", "MapInfoID", MapInfoID.ToString())));
+                }
+            
+                try
+                {
+                    dbIM.MapInfos.Remove(mapInfo);
+                    dbIM.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                    return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
+            
+                return await Task.FromResult(Ok(true));
+            }
+            else if (LoggedInService.IsLocal)
             {
                 MapInfo mapInfo = (from c in dbLocal.MapInfos
                                    where c.MapInfoID == MapInfoID
@@ -178,7 +220,21 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ValidationResults));
             }
 
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.IsMemory)
+            {
+                try
+                {
+                    dbIM.MapInfos.Add(mapInfo);
+                    dbIM.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                    return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
+
+                return await Task.FromResult(Ok(mapInfo));
+            }
+            else if (LoggedInService.IsLocal)
             {
                 try
                 {
@@ -220,7 +276,21 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ValidationResults));
             }
 
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.IsMemory)
+            {
+                try
+                {
+                    dbIM.MapInfos.Update(mapInfo);
+                    dbIM.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                    return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
+
+                return await Task.FromResult(Ok(mapInfo));
+            }
+            else if (LoggedInService.IsLocal)
             {
             try
             {

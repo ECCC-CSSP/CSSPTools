@@ -24,7 +24,7 @@ namespace CSSPServices
    public interface ITVFileLanguageService
     {
        Task<ActionResult<bool>> Delete(int TVFileLanguageID);
-       Task<ActionResult<List<TVFileLanguage>>> GetTVFileLanguageList();
+       Task<ActionResult<List<TVFileLanguage>>> GetTVFileLanguageList(int skip = 0, int take = 100);
        Task<ActionResult<TVFileLanguage>> GetTVFileLanguageWithTVFileLanguageID(int TVFileLanguageID);
        Task<ActionResult<TVFileLanguage>> Post(TVFileLanguage tvfilelanguage);
        Task<ActionResult<TVFileLanguage>> Put(TVFileLanguage tvfilelanguage);
@@ -64,51 +64,70 @@ namespace CSSPServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.IsMemory)
             {
-                TVFileLanguage tvfilelanguage = (from c in dbLocal.TVFileLanguages.AsNoTracking()
+                TVFileLanguage tvFileLanguage = (from c in dbIM.TVFileLanguages.AsNoTracking()
+                                   where c.TVFileLanguageID == TVFileLanguageID
+                                   select c).FirstOrDefault();
+
+                if (tvFileLanguage == null)
+                {
+                    return await Task.FromResult(NotFound());
+                }
+
+                return await Task.FromResult(Ok(tvFileLanguage));
+            }
+            else if (LoggedInService.IsLocal)
+            {
+                TVFileLanguage tvFileLanguage = (from c in dbLocal.TVFileLanguages.AsNoTracking()
                         where c.TVFileLanguageID == TVFileLanguageID
                         select c).FirstOrDefault();
 
-                if (tvfilelanguage == null)
+                if (tvFileLanguage == null)
                 {
                    return await Task.FromResult(NotFound());
                 }
 
-                return await Task.FromResult(Ok(tvfilelanguage));
+                return await Task.FromResult(Ok(tvFileLanguage));
             }
             else
             {
-                TVFileLanguage tvfilelanguage = (from c in db.TVFileLanguages.AsNoTracking()
+                TVFileLanguage tvFileLanguage = (from c in db.TVFileLanguages.AsNoTracking()
                         where c.TVFileLanguageID == TVFileLanguageID
                         select c).FirstOrDefault();
 
-                if (tvfilelanguage == null)
+                if (tvFileLanguage == null)
                 {
                    return await Task.FromResult(NotFound());
                 }
 
-                return await Task.FromResult(Ok(tvfilelanguage));
+                return await Task.FromResult(Ok(tvFileLanguage));
             }
         }
-        public async Task<ActionResult<List<TVFileLanguage>>> GetTVFileLanguageList()
+        public async Task<ActionResult<List<TVFileLanguage>>> GetTVFileLanguageList(int skip = 0, int take = 100)
         {
             if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
             {
                 return await Task.FromResult(Unauthorized());
             }
 
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.IsMemory)
             {
-                List<TVFileLanguage> tvfilelanguageList = (from c in dbLocal.TVFileLanguages.AsNoTracking() select c).Take(100).ToList();
+                List<TVFileLanguage> tvFileLanguageList = (from c in dbIM.TVFileLanguages.AsNoTracking() orderby c.TVFileLanguageID select c).Skip(skip).Take(take).ToList();
+            
+                return await Task.FromResult(Ok(tvFileLanguageList));
+            }
+            else if (LoggedInService.IsLocal)
+            {
+                List<TVFileLanguage> tvFileLanguageList = (from c in dbLocal.TVFileLanguages.AsNoTracking() orderby c.TVFileLanguageID select c).Skip(skip).Take(take).ToList();
 
-                return await Task.FromResult(Ok(tvfilelanguageList));
+                return await Task.FromResult(Ok(tvFileLanguageList));
             }
             else
             {
-                List<TVFileLanguage> tvfilelanguageList = (from c in db.TVFileLanguages.AsNoTracking() select c).Take(100).ToList();
+                List<TVFileLanguage> tvFileLanguageList = (from c in db.TVFileLanguages.AsNoTracking() orderby c.TVFileLanguageID select c).Skip(skip).Take(take).ToList();
 
-                return await Task.FromResult(Ok(tvfilelanguageList));
+                return await Task.FromResult(Ok(tvFileLanguageList));
             }
         }
         public async Task<ActionResult<bool>> Delete(int TVFileLanguageID)
@@ -118,7 +137,30 @@ namespace CSSPServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.IsMemory)
+            {
+                TVFileLanguage tvFileLanguage = (from c in dbIM.TVFileLanguages
+                                   where c.TVFileLanguageID == TVFileLanguageID
+                                   select c).FirstOrDefault();
+            
+                if (tvFileLanguage == null)
+                {
+                    return await Task.FromResult(BadRequest(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "TVFileLanguage", "TVFileLanguageID", TVFileLanguageID.ToString())));
+                }
+            
+                try
+                {
+                    dbIM.TVFileLanguages.Remove(tvFileLanguage);
+                    dbIM.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                    return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
+            
+                return await Task.FromResult(Ok(true));
+            }
+            else if (LoggedInService.IsLocal)
             {
                 TVFileLanguage tvFileLanguage = (from c in dbLocal.TVFileLanguages
                                    where c.TVFileLanguageID == TVFileLanguageID
@@ -178,7 +220,21 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ValidationResults));
             }
 
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.IsMemory)
+            {
+                try
+                {
+                    dbIM.TVFileLanguages.Add(tvFileLanguage);
+                    dbIM.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                    return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
+
+                return await Task.FromResult(Ok(tvFileLanguage));
+            }
+            else if (LoggedInService.IsLocal)
             {
                 try
                 {
@@ -220,7 +276,21 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ValidationResults));
             }
 
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.IsMemory)
+            {
+                try
+                {
+                    dbIM.TVFileLanguages.Update(tvFileLanguage);
+                    dbIM.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                    return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
+
+                return await Task.FromResult(Ok(tvFileLanguage));
+            }
+            else if (LoggedInService.IsLocal)
             {
             try
             {

@@ -24,7 +24,7 @@ namespace CSSPServices
    public interface IDocTemplateService
     {
        Task<ActionResult<bool>> Delete(int DocTemplateID);
-       Task<ActionResult<List<DocTemplate>>> GetDocTemplateList();
+       Task<ActionResult<List<DocTemplate>>> GetDocTemplateList(int skip = 0, int take = 100);
        Task<ActionResult<DocTemplate>> GetDocTemplateWithDocTemplateID(int DocTemplateID);
        Task<ActionResult<DocTemplate>> Post(DocTemplate doctemplate);
        Task<ActionResult<DocTemplate>> Put(DocTemplate doctemplate);
@@ -64,51 +64,70 @@ namespace CSSPServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.IsMemory)
             {
-                DocTemplate doctemplate = (from c in dbLocal.DocTemplates.AsNoTracking()
+                DocTemplate docTemplate = (from c in dbIM.DocTemplates.AsNoTracking()
+                                   where c.DocTemplateID == DocTemplateID
+                                   select c).FirstOrDefault();
+
+                if (docTemplate == null)
+                {
+                    return await Task.FromResult(NotFound());
+                }
+
+                return await Task.FromResult(Ok(docTemplate));
+            }
+            else if (LoggedInService.IsLocal)
+            {
+                DocTemplate docTemplate = (from c in dbLocal.DocTemplates.AsNoTracking()
                         where c.DocTemplateID == DocTemplateID
                         select c).FirstOrDefault();
 
-                if (doctemplate == null)
+                if (docTemplate == null)
                 {
                    return await Task.FromResult(NotFound());
                 }
 
-                return await Task.FromResult(Ok(doctemplate));
+                return await Task.FromResult(Ok(docTemplate));
             }
             else
             {
-                DocTemplate doctemplate = (from c in db.DocTemplates.AsNoTracking()
+                DocTemplate docTemplate = (from c in db.DocTemplates.AsNoTracking()
                         where c.DocTemplateID == DocTemplateID
                         select c).FirstOrDefault();
 
-                if (doctemplate == null)
+                if (docTemplate == null)
                 {
                    return await Task.FromResult(NotFound());
                 }
 
-                return await Task.FromResult(Ok(doctemplate));
+                return await Task.FromResult(Ok(docTemplate));
             }
         }
-        public async Task<ActionResult<List<DocTemplate>>> GetDocTemplateList()
+        public async Task<ActionResult<List<DocTemplate>>> GetDocTemplateList(int skip = 0, int take = 100)
         {
             if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
             {
                 return await Task.FromResult(Unauthorized());
             }
 
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.IsMemory)
             {
-                List<DocTemplate> doctemplateList = (from c in dbLocal.DocTemplates.AsNoTracking() select c).Take(100).ToList();
+                List<DocTemplate> docTemplateList = (from c in dbIM.DocTemplates.AsNoTracking() orderby c.DocTemplateID select c).Skip(skip).Take(take).ToList();
+            
+                return await Task.FromResult(Ok(docTemplateList));
+            }
+            else if (LoggedInService.IsLocal)
+            {
+                List<DocTemplate> docTemplateList = (from c in dbLocal.DocTemplates.AsNoTracking() orderby c.DocTemplateID select c).Skip(skip).Take(take).ToList();
 
-                return await Task.FromResult(Ok(doctemplateList));
+                return await Task.FromResult(Ok(docTemplateList));
             }
             else
             {
-                List<DocTemplate> doctemplateList = (from c in db.DocTemplates.AsNoTracking() select c).Take(100).ToList();
+                List<DocTemplate> docTemplateList = (from c in db.DocTemplates.AsNoTracking() orderby c.DocTemplateID select c).Skip(skip).Take(take).ToList();
 
-                return await Task.FromResult(Ok(doctemplateList));
+                return await Task.FromResult(Ok(docTemplateList));
             }
         }
         public async Task<ActionResult<bool>> Delete(int DocTemplateID)
@@ -118,7 +137,30 @@ namespace CSSPServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.IsMemory)
+            {
+                DocTemplate docTemplate = (from c in dbIM.DocTemplates
+                                   where c.DocTemplateID == DocTemplateID
+                                   select c).FirstOrDefault();
+            
+                if (docTemplate == null)
+                {
+                    return await Task.FromResult(BadRequest(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "DocTemplate", "DocTemplateID", DocTemplateID.ToString())));
+                }
+            
+                try
+                {
+                    dbIM.DocTemplates.Remove(docTemplate);
+                    dbIM.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                    return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
+            
+                return await Task.FromResult(Ok(true));
+            }
+            else if (LoggedInService.IsLocal)
             {
                 DocTemplate docTemplate = (from c in dbLocal.DocTemplates
                                    where c.DocTemplateID == DocTemplateID
@@ -178,7 +220,21 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ValidationResults));
             }
 
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.IsMemory)
+            {
+                try
+                {
+                    dbIM.DocTemplates.Add(docTemplate);
+                    dbIM.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                    return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
+
+                return await Task.FromResult(Ok(docTemplate));
+            }
+            else if (LoggedInService.IsLocal)
             {
                 try
                 {
@@ -220,7 +276,21 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ValidationResults));
             }
 
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.IsMemory)
+            {
+                try
+                {
+                    dbIM.DocTemplates.Update(docTemplate);
+                    dbIM.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                    return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
+
+                return await Task.FromResult(Ok(docTemplate));
+            }
+            else if (LoggedInService.IsLocal)
             {
             try
             {

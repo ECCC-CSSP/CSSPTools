@@ -24,7 +24,7 @@ namespace CSSPServices
    public interface ISpillService
     {
        Task<ActionResult<bool>> Delete(int SpillID);
-       Task<ActionResult<List<Spill>>> GetSpillList();
+       Task<ActionResult<List<Spill>>> GetSpillList(int skip = 0, int take = 100);
        Task<ActionResult<Spill>> GetSpillWithSpillID(int SpillID);
        Task<ActionResult<Spill>> Post(Spill spill);
        Task<ActionResult<Spill>> Put(Spill spill);
@@ -64,7 +64,20 @@ namespace CSSPServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.IsMemory)
+            {
+                Spill spill = (from c in dbIM.Spills.AsNoTracking()
+                                   where c.SpillID == SpillID
+                                   select c).FirstOrDefault();
+
+                if (spill == null)
+                {
+                    return await Task.FromResult(NotFound());
+                }
+
+                return await Task.FromResult(Ok(spill));
+            }
+            else if (LoggedInService.IsLocal)
             {
                 Spill spill = (from c in dbLocal.Spills.AsNoTracking()
                         where c.SpillID == SpillID
@@ -91,22 +104,28 @@ namespace CSSPServices
                 return await Task.FromResult(Ok(spill));
             }
         }
-        public async Task<ActionResult<List<Spill>>> GetSpillList()
+        public async Task<ActionResult<List<Spill>>> GetSpillList(int skip = 0, int take = 100)
         {
             if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
             {
                 return await Task.FromResult(Unauthorized());
             }
 
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.IsMemory)
             {
-                List<Spill> spillList = (from c in dbLocal.Spills.AsNoTracking() select c).Take(100).ToList();
+                List<Spill> spillList = (from c in dbIM.Spills.AsNoTracking() orderby c.SpillID select c).Skip(skip).Take(take).ToList();
+            
+                return await Task.FromResult(Ok(spillList));
+            }
+            else if (LoggedInService.IsLocal)
+            {
+                List<Spill> spillList = (from c in dbLocal.Spills.AsNoTracking() orderby c.SpillID select c).Skip(skip).Take(take).ToList();
 
                 return await Task.FromResult(Ok(spillList));
             }
             else
             {
-                List<Spill> spillList = (from c in db.Spills.AsNoTracking() select c).Take(100).ToList();
+                List<Spill> spillList = (from c in db.Spills.AsNoTracking() orderby c.SpillID select c).Skip(skip).Take(take).ToList();
 
                 return await Task.FromResult(Ok(spillList));
             }
@@ -118,7 +137,30 @@ namespace CSSPServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.IsMemory)
+            {
+                Spill spill = (from c in dbIM.Spills
+                                   where c.SpillID == SpillID
+                                   select c).FirstOrDefault();
+            
+                if (spill == null)
+                {
+                    return await Task.FromResult(BadRequest(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "Spill", "SpillID", SpillID.ToString())));
+                }
+            
+                try
+                {
+                    dbIM.Spills.Remove(spill);
+                    dbIM.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                    return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
+            
+                return await Task.FromResult(Ok(true));
+            }
+            else if (LoggedInService.IsLocal)
             {
                 Spill spill = (from c in dbLocal.Spills
                                    where c.SpillID == SpillID
@@ -178,7 +220,21 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ValidationResults));
             }
 
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.IsMemory)
+            {
+                try
+                {
+                    dbIM.Spills.Add(spill);
+                    dbIM.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                    return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
+
+                return await Task.FromResult(Ok(spill));
+            }
+            else if (LoggedInService.IsLocal)
             {
                 try
                 {
@@ -220,7 +276,21 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ValidationResults));
             }
 
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.IsMemory)
+            {
+                try
+                {
+                    dbIM.Spills.Update(spill);
+                    dbIM.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                    return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
+
+                return await Task.FromResult(Ok(spill));
+            }
+            else if (LoggedInService.IsLocal)
             {
             try
             {

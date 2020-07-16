@@ -24,7 +24,7 @@ namespace CSSPServices
    public interface IEmailDistributionListLanguageService
     {
        Task<ActionResult<bool>> Delete(int EmailDistributionListLanguageID);
-       Task<ActionResult<List<EmailDistributionListLanguage>>> GetEmailDistributionListLanguageList();
+       Task<ActionResult<List<EmailDistributionListLanguage>>> GetEmailDistributionListLanguageList(int skip = 0, int take = 100);
        Task<ActionResult<EmailDistributionListLanguage>> GetEmailDistributionListLanguageWithEmailDistributionListLanguageID(int EmailDistributionListLanguageID);
        Task<ActionResult<EmailDistributionListLanguage>> Post(EmailDistributionListLanguage emaildistributionlistlanguage);
        Task<ActionResult<EmailDistributionListLanguage>> Put(EmailDistributionListLanguage emaildistributionlistlanguage);
@@ -64,51 +64,70 @@ namespace CSSPServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.IsMemory)
             {
-                EmailDistributionListLanguage emaildistributionlistlanguage = (from c in dbLocal.EmailDistributionListLanguages.AsNoTracking()
+                EmailDistributionListLanguage emailDistributionListLanguage = (from c in dbIM.EmailDistributionListLanguages.AsNoTracking()
+                                   where c.EmailDistributionListLanguageID == EmailDistributionListLanguageID
+                                   select c).FirstOrDefault();
+
+                if (emailDistributionListLanguage == null)
+                {
+                    return await Task.FromResult(NotFound());
+                }
+
+                return await Task.FromResult(Ok(emailDistributionListLanguage));
+            }
+            else if (LoggedInService.IsLocal)
+            {
+                EmailDistributionListLanguage emailDistributionListLanguage = (from c in dbLocal.EmailDistributionListLanguages.AsNoTracking()
                         where c.EmailDistributionListLanguageID == EmailDistributionListLanguageID
                         select c).FirstOrDefault();
 
-                if (emaildistributionlistlanguage == null)
+                if (emailDistributionListLanguage == null)
                 {
                    return await Task.FromResult(NotFound());
                 }
 
-                return await Task.FromResult(Ok(emaildistributionlistlanguage));
+                return await Task.FromResult(Ok(emailDistributionListLanguage));
             }
             else
             {
-                EmailDistributionListLanguage emaildistributionlistlanguage = (from c in db.EmailDistributionListLanguages.AsNoTracking()
+                EmailDistributionListLanguage emailDistributionListLanguage = (from c in db.EmailDistributionListLanguages.AsNoTracking()
                         where c.EmailDistributionListLanguageID == EmailDistributionListLanguageID
                         select c).FirstOrDefault();
 
-                if (emaildistributionlistlanguage == null)
+                if (emailDistributionListLanguage == null)
                 {
                    return await Task.FromResult(NotFound());
                 }
 
-                return await Task.FromResult(Ok(emaildistributionlistlanguage));
+                return await Task.FromResult(Ok(emailDistributionListLanguage));
             }
         }
-        public async Task<ActionResult<List<EmailDistributionListLanguage>>> GetEmailDistributionListLanguageList()
+        public async Task<ActionResult<List<EmailDistributionListLanguage>>> GetEmailDistributionListLanguageList(int skip = 0, int take = 100)
         {
             if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
             {
                 return await Task.FromResult(Unauthorized());
             }
 
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.IsMemory)
             {
-                List<EmailDistributionListLanguage> emaildistributionlistlanguageList = (from c in dbLocal.EmailDistributionListLanguages.AsNoTracking() select c).Take(100).ToList();
+                List<EmailDistributionListLanguage> emailDistributionListLanguageList = (from c in dbIM.EmailDistributionListLanguages.AsNoTracking() orderby c.EmailDistributionListLanguageID select c).Skip(skip).Take(take).ToList();
+            
+                return await Task.FromResult(Ok(emailDistributionListLanguageList));
+            }
+            else if (LoggedInService.IsLocal)
+            {
+                List<EmailDistributionListLanguage> emailDistributionListLanguageList = (from c in dbLocal.EmailDistributionListLanguages.AsNoTracking() orderby c.EmailDistributionListLanguageID select c).Skip(skip).Take(take).ToList();
 
-                return await Task.FromResult(Ok(emaildistributionlistlanguageList));
+                return await Task.FromResult(Ok(emailDistributionListLanguageList));
             }
             else
             {
-                List<EmailDistributionListLanguage> emaildistributionlistlanguageList = (from c in db.EmailDistributionListLanguages.AsNoTracking() select c).Take(100).ToList();
+                List<EmailDistributionListLanguage> emailDistributionListLanguageList = (from c in db.EmailDistributionListLanguages.AsNoTracking() orderby c.EmailDistributionListLanguageID select c).Skip(skip).Take(take).ToList();
 
-                return await Task.FromResult(Ok(emaildistributionlistlanguageList));
+                return await Task.FromResult(Ok(emailDistributionListLanguageList));
             }
         }
         public async Task<ActionResult<bool>> Delete(int EmailDistributionListLanguageID)
@@ -118,7 +137,30 @@ namespace CSSPServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.IsMemory)
+            {
+                EmailDistributionListLanguage emailDistributionListLanguage = (from c in dbIM.EmailDistributionListLanguages
+                                   where c.EmailDistributionListLanguageID == EmailDistributionListLanguageID
+                                   select c).FirstOrDefault();
+            
+                if (emailDistributionListLanguage == null)
+                {
+                    return await Task.FromResult(BadRequest(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "EmailDistributionListLanguage", "EmailDistributionListLanguageID", EmailDistributionListLanguageID.ToString())));
+                }
+            
+                try
+                {
+                    dbIM.EmailDistributionListLanguages.Remove(emailDistributionListLanguage);
+                    dbIM.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                    return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
+            
+                return await Task.FromResult(Ok(true));
+            }
+            else if (LoggedInService.IsLocal)
             {
                 EmailDistributionListLanguage emailDistributionListLanguage = (from c in dbLocal.EmailDistributionListLanguages
                                    where c.EmailDistributionListLanguageID == EmailDistributionListLanguageID
@@ -178,7 +220,21 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ValidationResults));
             }
 
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.IsMemory)
+            {
+                try
+                {
+                    dbIM.EmailDistributionListLanguages.Add(emailDistributionListLanguage);
+                    dbIM.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                    return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
+
+                return await Task.FromResult(Ok(emailDistributionListLanguage));
+            }
+            else if (LoggedInService.IsLocal)
             {
                 try
                 {
@@ -220,7 +276,21 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ValidationResults));
             }
 
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.IsMemory)
+            {
+                try
+                {
+                    dbIM.EmailDistributionListLanguages.Update(emailDistributionListLanguage);
+                    dbIM.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                    return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
+
+                return await Task.FromResult(Ok(emailDistributionListLanguage));
+            }
+            else if (LoggedInService.IsLocal)
             {
             try
             {

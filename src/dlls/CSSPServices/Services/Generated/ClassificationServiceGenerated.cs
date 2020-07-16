@@ -24,7 +24,7 @@ namespace CSSPServices
    public interface IClassificationService
     {
        Task<ActionResult<bool>> Delete(int ClassificationID);
-       Task<ActionResult<List<Classification>>> GetClassificationList();
+       Task<ActionResult<List<Classification>>> GetClassificationList(int skip = 0, int take = 100);
        Task<ActionResult<Classification>> GetClassificationWithClassificationID(int ClassificationID);
        Task<ActionResult<Classification>> Post(Classification classification);
        Task<ActionResult<Classification>> Put(Classification classification);
@@ -64,7 +64,20 @@ namespace CSSPServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.IsMemory)
+            {
+                Classification classification = (from c in dbIM.Classifications.AsNoTracking()
+                                   where c.ClassificationID == ClassificationID
+                                   select c).FirstOrDefault();
+
+                if (classification == null)
+                {
+                    return await Task.FromResult(NotFound());
+                }
+
+                return await Task.FromResult(Ok(classification));
+            }
+            else if (LoggedInService.IsLocal)
             {
                 Classification classification = (from c in dbLocal.Classifications.AsNoTracking()
                         where c.ClassificationID == ClassificationID
@@ -91,22 +104,28 @@ namespace CSSPServices
                 return await Task.FromResult(Ok(classification));
             }
         }
-        public async Task<ActionResult<List<Classification>>> GetClassificationList()
+        public async Task<ActionResult<List<Classification>>> GetClassificationList(int skip = 0, int take = 100)
         {
             if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
             {
                 return await Task.FromResult(Unauthorized());
             }
 
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.IsMemory)
             {
-                List<Classification> classificationList = (from c in dbLocal.Classifications.AsNoTracking() select c).Take(100).ToList();
+                List<Classification> classificationList = (from c in dbIM.Classifications.AsNoTracking() orderby c.ClassificationID select c).Skip(skip).Take(take).ToList();
+            
+                return await Task.FromResult(Ok(classificationList));
+            }
+            else if (LoggedInService.IsLocal)
+            {
+                List<Classification> classificationList = (from c in dbLocal.Classifications.AsNoTracking() orderby c.ClassificationID select c).Skip(skip).Take(take).ToList();
 
                 return await Task.FromResult(Ok(classificationList));
             }
             else
             {
-                List<Classification> classificationList = (from c in db.Classifications.AsNoTracking() select c).Take(100).ToList();
+                List<Classification> classificationList = (from c in db.Classifications.AsNoTracking() orderby c.ClassificationID select c).Skip(skip).Take(take).ToList();
 
                 return await Task.FromResult(Ok(classificationList));
             }
@@ -118,7 +137,30 @@ namespace CSSPServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.IsMemory)
+            {
+                Classification classification = (from c in dbIM.Classifications
+                                   where c.ClassificationID == ClassificationID
+                                   select c).FirstOrDefault();
+            
+                if (classification == null)
+                {
+                    return await Task.FromResult(BadRequest(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "Classification", "ClassificationID", ClassificationID.ToString())));
+                }
+            
+                try
+                {
+                    dbIM.Classifications.Remove(classification);
+                    dbIM.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                    return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
+            
+                return await Task.FromResult(Ok(true));
+            }
+            else if (LoggedInService.IsLocal)
             {
                 Classification classification = (from c in dbLocal.Classifications
                                    where c.ClassificationID == ClassificationID
@@ -178,7 +220,21 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ValidationResults));
             }
 
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.IsMemory)
+            {
+                try
+                {
+                    dbIM.Classifications.Add(classification);
+                    dbIM.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                    return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
+
+                return await Task.FromResult(Ok(classification));
+            }
+            else if (LoggedInService.IsLocal)
             {
                 try
                 {
@@ -220,7 +276,21 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ValidationResults));
             }
 
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.IsMemory)
+            {
+                try
+                {
+                    dbIM.Classifications.Update(classification);
+                    dbIM.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                    return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
+
+                return await Task.FromResult(Ok(classification));
+            }
+            else if (LoggedInService.IsLocal)
             {
             try
             {

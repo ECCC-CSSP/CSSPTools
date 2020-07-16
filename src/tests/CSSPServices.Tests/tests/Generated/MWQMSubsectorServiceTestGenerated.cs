@@ -172,8 +172,7 @@ namespace CSSPServices.Tests
             string Id = Config.GetValue<string>("Id");
             Assert.True(await LoggedInService.SetLoggedInContactInfo(Id));
 
-            //string IsLocalStr = Config.GetValue<string>("IsLocal");
-            //Assert.NotNull(IsLocalStr);
+            LoggedInService.IsLocal = true;
 
             dbIM = Provider.GetService<InMemoryDBContext>();
             Assert.NotNull(dbIM);

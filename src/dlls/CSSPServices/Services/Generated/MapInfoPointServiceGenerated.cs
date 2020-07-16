@@ -24,7 +24,7 @@ namespace CSSPServices
    public interface IMapInfoPointService
     {
        Task<ActionResult<bool>> Delete(int MapInfoPointID);
-       Task<ActionResult<List<MapInfoPoint>>> GetMapInfoPointList();
+       Task<ActionResult<List<MapInfoPoint>>> GetMapInfoPointList(int skip = 0, int take = 100);
        Task<ActionResult<MapInfoPoint>> GetMapInfoPointWithMapInfoPointID(int MapInfoPointID);
        Task<ActionResult<MapInfoPoint>> Post(MapInfoPoint mapinfopoint);
        Task<ActionResult<MapInfoPoint>> Put(MapInfoPoint mapinfopoint);
@@ -64,51 +64,70 @@ namespace CSSPServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.IsMemory)
             {
-                MapInfoPoint mapinfopoint = (from c in dbLocal.MapInfoPoints.AsNoTracking()
+                MapInfoPoint mapInfoPoint = (from c in dbIM.MapInfoPoints.AsNoTracking()
+                                   where c.MapInfoPointID == MapInfoPointID
+                                   select c).FirstOrDefault();
+
+                if (mapInfoPoint == null)
+                {
+                    return await Task.FromResult(NotFound());
+                }
+
+                return await Task.FromResult(Ok(mapInfoPoint));
+            }
+            else if (LoggedInService.IsLocal)
+            {
+                MapInfoPoint mapInfoPoint = (from c in dbLocal.MapInfoPoints.AsNoTracking()
                         where c.MapInfoPointID == MapInfoPointID
                         select c).FirstOrDefault();
 
-                if (mapinfopoint == null)
+                if (mapInfoPoint == null)
                 {
                    return await Task.FromResult(NotFound());
                 }
 
-                return await Task.FromResult(Ok(mapinfopoint));
+                return await Task.FromResult(Ok(mapInfoPoint));
             }
             else
             {
-                MapInfoPoint mapinfopoint = (from c in db.MapInfoPoints.AsNoTracking()
+                MapInfoPoint mapInfoPoint = (from c in db.MapInfoPoints.AsNoTracking()
                         where c.MapInfoPointID == MapInfoPointID
                         select c).FirstOrDefault();
 
-                if (mapinfopoint == null)
+                if (mapInfoPoint == null)
                 {
                    return await Task.FromResult(NotFound());
                 }
 
-                return await Task.FromResult(Ok(mapinfopoint));
+                return await Task.FromResult(Ok(mapInfoPoint));
             }
         }
-        public async Task<ActionResult<List<MapInfoPoint>>> GetMapInfoPointList()
+        public async Task<ActionResult<List<MapInfoPoint>>> GetMapInfoPointList(int skip = 0, int take = 100)
         {
             if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
             {
                 return await Task.FromResult(Unauthorized());
             }
 
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.IsMemory)
             {
-                List<MapInfoPoint> mapinfopointList = (from c in dbLocal.MapInfoPoints.AsNoTracking() select c).Take(100).ToList();
+                List<MapInfoPoint> mapInfoPointList = (from c in dbIM.MapInfoPoints.AsNoTracking() orderby c.MapInfoPointID select c).Skip(skip).Take(take).ToList();
+            
+                return await Task.FromResult(Ok(mapInfoPointList));
+            }
+            else if (LoggedInService.IsLocal)
+            {
+                List<MapInfoPoint> mapInfoPointList = (from c in dbLocal.MapInfoPoints.AsNoTracking() orderby c.MapInfoPointID select c).Skip(skip).Take(take).ToList();
 
-                return await Task.FromResult(Ok(mapinfopointList));
+                return await Task.FromResult(Ok(mapInfoPointList));
             }
             else
             {
-                List<MapInfoPoint> mapinfopointList = (from c in db.MapInfoPoints.AsNoTracking() select c).Take(100).ToList();
+                List<MapInfoPoint> mapInfoPointList = (from c in db.MapInfoPoints.AsNoTracking() orderby c.MapInfoPointID select c).Skip(skip).Take(take).ToList();
 
-                return await Task.FromResult(Ok(mapinfopointList));
+                return await Task.FromResult(Ok(mapInfoPointList));
             }
         }
         public async Task<ActionResult<bool>> Delete(int MapInfoPointID)
@@ -118,7 +137,30 @@ namespace CSSPServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.IsMemory)
+            {
+                MapInfoPoint mapInfoPoint = (from c in dbIM.MapInfoPoints
+                                   where c.MapInfoPointID == MapInfoPointID
+                                   select c).FirstOrDefault();
+            
+                if (mapInfoPoint == null)
+                {
+                    return await Task.FromResult(BadRequest(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "MapInfoPoint", "MapInfoPointID", MapInfoPointID.ToString())));
+                }
+            
+                try
+                {
+                    dbIM.MapInfoPoints.Remove(mapInfoPoint);
+                    dbIM.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                    return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
+            
+                return await Task.FromResult(Ok(true));
+            }
+            else if (LoggedInService.IsLocal)
             {
                 MapInfoPoint mapInfoPoint = (from c in dbLocal.MapInfoPoints
                                    where c.MapInfoPointID == MapInfoPointID
@@ -178,7 +220,21 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ValidationResults));
             }
 
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.IsMemory)
+            {
+                try
+                {
+                    dbIM.MapInfoPoints.Add(mapInfoPoint);
+                    dbIM.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                    return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
+
+                return await Task.FromResult(Ok(mapInfoPoint));
+            }
+            else if (LoggedInService.IsLocal)
             {
                 try
                 {
@@ -220,7 +276,21 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ValidationResults));
             }
 
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.IsMemory)
+            {
+                try
+                {
+                    dbIM.MapInfoPoints.Update(mapInfoPoint);
+                    dbIM.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                    return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
+
+                return await Task.FromResult(Ok(mapInfoPoint));
+            }
+            else if (LoggedInService.IsLocal)
             {
             try
             {

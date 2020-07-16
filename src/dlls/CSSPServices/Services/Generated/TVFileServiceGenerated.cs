@@ -24,7 +24,7 @@ namespace CSSPServices
    public interface ITVFileService
     {
        Task<ActionResult<bool>> Delete(int TVFileID);
-       Task<ActionResult<List<TVFile>>> GetTVFileList();
+       Task<ActionResult<List<TVFile>>> GetTVFileList(int skip = 0, int take = 100);
        Task<ActionResult<TVFile>> GetTVFileWithTVFileID(int TVFileID);
        Task<ActionResult<TVFile>> Post(TVFile tvfile);
        Task<ActionResult<TVFile>> Put(TVFile tvfile);
@@ -64,51 +64,70 @@ namespace CSSPServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.IsMemory)
             {
-                TVFile tvfile = (from c in dbLocal.TVFiles.AsNoTracking()
+                TVFile tvFile = (from c in dbIM.TVFiles.AsNoTracking()
+                                   where c.TVFileID == TVFileID
+                                   select c).FirstOrDefault();
+
+                if (tvFile == null)
+                {
+                    return await Task.FromResult(NotFound());
+                }
+
+                return await Task.FromResult(Ok(tvFile));
+            }
+            else if (LoggedInService.IsLocal)
+            {
+                TVFile tvFile = (from c in dbLocal.TVFiles.AsNoTracking()
                         where c.TVFileID == TVFileID
                         select c).FirstOrDefault();
 
-                if (tvfile == null)
+                if (tvFile == null)
                 {
                    return await Task.FromResult(NotFound());
                 }
 
-                return await Task.FromResult(Ok(tvfile));
+                return await Task.FromResult(Ok(tvFile));
             }
             else
             {
-                TVFile tvfile = (from c in db.TVFiles.AsNoTracking()
+                TVFile tvFile = (from c in db.TVFiles.AsNoTracking()
                         where c.TVFileID == TVFileID
                         select c).FirstOrDefault();
 
-                if (tvfile == null)
+                if (tvFile == null)
                 {
                    return await Task.FromResult(NotFound());
                 }
 
-                return await Task.FromResult(Ok(tvfile));
+                return await Task.FromResult(Ok(tvFile));
             }
         }
-        public async Task<ActionResult<List<TVFile>>> GetTVFileList()
+        public async Task<ActionResult<List<TVFile>>> GetTVFileList(int skip = 0, int take = 100)
         {
             if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
             {
                 return await Task.FromResult(Unauthorized());
             }
 
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.IsMemory)
             {
-                List<TVFile> tvfileList = (from c in dbLocal.TVFiles.AsNoTracking() select c).Take(100).ToList();
+                List<TVFile> tvFileList = (from c in dbIM.TVFiles.AsNoTracking() orderby c.TVFileID select c).Skip(skip).Take(take).ToList();
+            
+                return await Task.FromResult(Ok(tvFileList));
+            }
+            else if (LoggedInService.IsLocal)
+            {
+                List<TVFile> tvFileList = (from c in dbLocal.TVFiles.AsNoTracking() orderby c.TVFileID select c).Skip(skip).Take(take).ToList();
 
-                return await Task.FromResult(Ok(tvfileList));
+                return await Task.FromResult(Ok(tvFileList));
             }
             else
             {
-                List<TVFile> tvfileList = (from c in db.TVFiles.AsNoTracking() select c).Take(100).ToList();
+                List<TVFile> tvFileList = (from c in db.TVFiles.AsNoTracking() orderby c.TVFileID select c).Skip(skip).Take(take).ToList();
 
-                return await Task.FromResult(Ok(tvfileList));
+                return await Task.FromResult(Ok(tvFileList));
             }
         }
         public async Task<ActionResult<bool>> Delete(int TVFileID)
@@ -118,7 +137,30 @@ namespace CSSPServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.IsMemory)
+            {
+                TVFile tvFile = (from c in dbIM.TVFiles
+                                   where c.TVFileID == TVFileID
+                                   select c).FirstOrDefault();
+            
+                if (tvFile == null)
+                {
+                    return await Task.FromResult(BadRequest(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "TVFile", "TVFileID", TVFileID.ToString())));
+                }
+            
+                try
+                {
+                    dbIM.TVFiles.Remove(tvFile);
+                    dbIM.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                    return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
+            
+                return await Task.FromResult(Ok(true));
+            }
+            else if (LoggedInService.IsLocal)
             {
                 TVFile tvFile = (from c in dbLocal.TVFiles
                                    where c.TVFileID == TVFileID
@@ -178,7 +220,21 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ValidationResults));
             }
 
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.IsMemory)
+            {
+                try
+                {
+                    dbIM.TVFiles.Add(tvFile);
+                    dbIM.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                    return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
+
+                return await Task.FromResult(Ok(tvFile));
+            }
+            else if (LoggedInService.IsLocal)
             {
                 try
                 {
@@ -220,7 +276,21 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ValidationResults));
             }
 
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.IsMemory)
+            {
+                try
+                {
+                    dbIM.TVFiles.Update(tvFile);
+                    dbIM.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                    return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
+
+                return await Task.FromResult(Ok(tvFile));
+            }
+            else if (LoggedInService.IsLocal)
             {
             try
             {

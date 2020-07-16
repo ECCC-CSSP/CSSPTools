@@ -24,7 +24,7 @@ namespace CSSPServices
    public interface IInfrastructureLanguageService
     {
        Task<ActionResult<bool>> Delete(int InfrastructureLanguageID);
-       Task<ActionResult<List<InfrastructureLanguage>>> GetInfrastructureLanguageList();
+       Task<ActionResult<List<InfrastructureLanguage>>> GetInfrastructureLanguageList(int skip = 0, int take = 100);
        Task<ActionResult<InfrastructureLanguage>> GetInfrastructureLanguageWithInfrastructureLanguageID(int InfrastructureLanguageID);
        Task<ActionResult<InfrastructureLanguage>> Post(InfrastructureLanguage infrastructurelanguage);
        Task<ActionResult<InfrastructureLanguage>> Put(InfrastructureLanguage infrastructurelanguage);
@@ -64,51 +64,70 @@ namespace CSSPServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.IsMemory)
             {
-                InfrastructureLanguage infrastructurelanguage = (from c in dbLocal.InfrastructureLanguages.AsNoTracking()
+                InfrastructureLanguage infrastructureLanguage = (from c in dbIM.InfrastructureLanguages.AsNoTracking()
+                                   where c.InfrastructureLanguageID == InfrastructureLanguageID
+                                   select c).FirstOrDefault();
+
+                if (infrastructureLanguage == null)
+                {
+                    return await Task.FromResult(NotFound());
+                }
+
+                return await Task.FromResult(Ok(infrastructureLanguage));
+            }
+            else if (LoggedInService.IsLocal)
+            {
+                InfrastructureLanguage infrastructureLanguage = (from c in dbLocal.InfrastructureLanguages.AsNoTracking()
                         where c.InfrastructureLanguageID == InfrastructureLanguageID
                         select c).FirstOrDefault();
 
-                if (infrastructurelanguage == null)
+                if (infrastructureLanguage == null)
                 {
                    return await Task.FromResult(NotFound());
                 }
 
-                return await Task.FromResult(Ok(infrastructurelanguage));
+                return await Task.FromResult(Ok(infrastructureLanguage));
             }
             else
             {
-                InfrastructureLanguage infrastructurelanguage = (from c in db.InfrastructureLanguages.AsNoTracking()
+                InfrastructureLanguage infrastructureLanguage = (from c in db.InfrastructureLanguages.AsNoTracking()
                         where c.InfrastructureLanguageID == InfrastructureLanguageID
                         select c).FirstOrDefault();
 
-                if (infrastructurelanguage == null)
+                if (infrastructureLanguage == null)
                 {
                    return await Task.FromResult(NotFound());
                 }
 
-                return await Task.FromResult(Ok(infrastructurelanguage));
+                return await Task.FromResult(Ok(infrastructureLanguage));
             }
         }
-        public async Task<ActionResult<List<InfrastructureLanguage>>> GetInfrastructureLanguageList()
+        public async Task<ActionResult<List<InfrastructureLanguage>>> GetInfrastructureLanguageList(int skip = 0, int take = 100)
         {
             if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
             {
                 return await Task.FromResult(Unauthorized());
             }
 
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.IsMemory)
             {
-                List<InfrastructureLanguage> infrastructurelanguageList = (from c in dbLocal.InfrastructureLanguages.AsNoTracking() select c).Take(100).ToList();
+                List<InfrastructureLanguage> infrastructureLanguageList = (from c in dbIM.InfrastructureLanguages.AsNoTracking() orderby c.InfrastructureLanguageID select c).Skip(skip).Take(take).ToList();
+            
+                return await Task.FromResult(Ok(infrastructureLanguageList));
+            }
+            else if (LoggedInService.IsLocal)
+            {
+                List<InfrastructureLanguage> infrastructureLanguageList = (from c in dbLocal.InfrastructureLanguages.AsNoTracking() orderby c.InfrastructureLanguageID select c).Skip(skip).Take(take).ToList();
 
-                return await Task.FromResult(Ok(infrastructurelanguageList));
+                return await Task.FromResult(Ok(infrastructureLanguageList));
             }
             else
             {
-                List<InfrastructureLanguage> infrastructurelanguageList = (from c in db.InfrastructureLanguages.AsNoTracking() select c).Take(100).ToList();
+                List<InfrastructureLanguage> infrastructureLanguageList = (from c in db.InfrastructureLanguages.AsNoTracking() orderby c.InfrastructureLanguageID select c).Skip(skip).Take(take).ToList();
 
-                return await Task.FromResult(Ok(infrastructurelanguageList));
+                return await Task.FromResult(Ok(infrastructureLanguageList));
             }
         }
         public async Task<ActionResult<bool>> Delete(int InfrastructureLanguageID)
@@ -118,7 +137,30 @@ namespace CSSPServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.IsMemory)
+            {
+                InfrastructureLanguage infrastructureLanguage = (from c in dbIM.InfrastructureLanguages
+                                   where c.InfrastructureLanguageID == InfrastructureLanguageID
+                                   select c).FirstOrDefault();
+            
+                if (infrastructureLanguage == null)
+                {
+                    return await Task.FromResult(BadRequest(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "InfrastructureLanguage", "InfrastructureLanguageID", InfrastructureLanguageID.ToString())));
+                }
+            
+                try
+                {
+                    dbIM.InfrastructureLanguages.Remove(infrastructureLanguage);
+                    dbIM.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                    return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
+            
+                return await Task.FromResult(Ok(true));
+            }
+            else if (LoggedInService.IsLocal)
             {
                 InfrastructureLanguage infrastructureLanguage = (from c in dbLocal.InfrastructureLanguages
                                    where c.InfrastructureLanguageID == InfrastructureLanguageID
@@ -178,7 +220,21 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ValidationResults));
             }
 
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.IsMemory)
+            {
+                try
+                {
+                    dbIM.InfrastructureLanguages.Add(infrastructureLanguage);
+                    dbIM.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                    return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
+
+                return await Task.FromResult(Ok(infrastructureLanguage));
+            }
+            else if (LoggedInService.IsLocal)
             {
                 try
                 {
@@ -220,7 +276,21 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ValidationResults));
             }
 
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.IsMemory)
+            {
+                try
+                {
+                    dbIM.InfrastructureLanguages.Update(infrastructureLanguage);
+                    dbIM.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                    return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
+
+                return await Task.FromResult(Ok(infrastructureLanguage));
+            }
+            else if (LoggedInService.IsLocal)
             {
             try
             {

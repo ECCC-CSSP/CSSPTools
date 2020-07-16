@@ -24,7 +24,7 @@ namespace CSSPServices
    public interface IUseOfSiteService
     {
        Task<ActionResult<bool>> Delete(int UseOfSiteID);
-       Task<ActionResult<List<UseOfSite>>> GetUseOfSiteList();
+       Task<ActionResult<List<UseOfSite>>> GetUseOfSiteList(int skip = 0, int take = 100);
        Task<ActionResult<UseOfSite>> GetUseOfSiteWithUseOfSiteID(int UseOfSiteID);
        Task<ActionResult<UseOfSite>> Post(UseOfSite useofsite);
        Task<ActionResult<UseOfSite>> Put(UseOfSite useofsite);
@@ -64,51 +64,70 @@ namespace CSSPServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.IsMemory)
             {
-                UseOfSite useofsite = (from c in dbLocal.UseOfSites.AsNoTracking()
+                UseOfSite useOfSite = (from c in dbIM.UseOfSites.AsNoTracking()
+                                   where c.UseOfSiteID == UseOfSiteID
+                                   select c).FirstOrDefault();
+
+                if (useOfSite == null)
+                {
+                    return await Task.FromResult(NotFound());
+                }
+
+                return await Task.FromResult(Ok(useOfSite));
+            }
+            else if (LoggedInService.IsLocal)
+            {
+                UseOfSite useOfSite = (from c in dbLocal.UseOfSites.AsNoTracking()
                         where c.UseOfSiteID == UseOfSiteID
                         select c).FirstOrDefault();
 
-                if (useofsite == null)
+                if (useOfSite == null)
                 {
                    return await Task.FromResult(NotFound());
                 }
 
-                return await Task.FromResult(Ok(useofsite));
+                return await Task.FromResult(Ok(useOfSite));
             }
             else
             {
-                UseOfSite useofsite = (from c in db.UseOfSites.AsNoTracking()
+                UseOfSite useOfSite = (from c in db.UseOfSites.AsNoTracking()
                         where c.UseOfSiteID == UseOfSiteID
                         select c).FirstOrDefault();
 
-                if (useofsite == null)
+                if (useOfSite == null)
                 {
                    return await Task.FromResult(NotFound());
                 }
 
-                return await Task.FromResult(Ok(useofsite));
+                return await Task.FromResult(Ok(useOfSite));
             }
         }
-        public async Task<ActionResult<List<UseOfSite>>> GetUseOfSiteList()
+        public async Task<ActionResult<List<UseOfSite>>> GetUseOfSiteList(int skip = 0, int take = 100)
         {
             if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
             {
                 return await Task.FromResult(Unauthorized());
             }
 
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.IsMemory)
             {
-                List<UseOfSite> useofsiteList = (from c in dbLocal.UseOfSites.AsNoTracking() select c).Take(100).ToList();
+                List<UseOfSite> useOfSiteList = (from c in dbIM.UseOfSites.AsNoTracking() orderby c.UseOfSiteID select c).Skip(skip).Take(take).ToList();
+            
+                return await Task.FromResult(Ok(useOfSiteList));
+            }
+            else if (LoggedInService.IsLocal)
+            {
+                List<UseOfSite> useOfSiteList = (from c in dbLocal.UseOfSites.AsNoTracking() orderby c.UseOfSiteID select c).Skip(skip).Take(take).ToList();
 
-                return await Task.FromResult(Ok(useofsiteList));
+                return await Task.FromResult(Ok(useOfSiteList));
             }
             else
             {
-                List<UseOfSite> useofsiteList = (from c in db.UseOfSites.AsNoTracking() select c).Take(100).ToList();
+                List<UseOfSite> useOfSiteList = (from c in db.UseOfSites.AsNoTracking() orderby c.UseOfSiteID select c).Skip(skip).Take(take).ToList();
 
-                return await Task.FromResult(Ok(useofsiteList));
+                return await Task.FromResult(Ok(useOfSiteList));
             }
         }
         public async Task<ActionResult<bool>> Delete(int UseOfSiteID)
@@ -118,7 +137,30 @@ namespace CSSPServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.IsMemory)
+            {
+                UseOfSite useOfSite = (from c in dbIM.UseOfSites
+                                   where c.UseOfSiteID == UseOfSiteID
+                                   select c).FirstOrDefault();
+            
+                if (useOfSite == null)
+                {
+                    return await Task.FromResult(BadRequest(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "UseOfSite", "UseOfSiteID", UseOfSiteID.ToString())));
+                }
+            
+                try
+                {
+                    dbIM.UseOfSites.Remove(useOfSite);
+                    dbIM.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                    return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
+            
+                return await Task.FromResult(Ok(true));
+            }
+            else if (LoggedInService.IsLocal)
             {
                 UseOfSite useOfSite = (from c in dbLocal.UseOfSites
                                    where c.UseOfSiteID == UseOfSiteID
@@ -178,7 +220,21 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ValidationResults));
             }
 
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.IsMemory)
+            {
+                try
+                {
+                    dbIM.UseOfSites.Add(useOfSite);
+                    dbIM.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                    return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
+
+                return await Task.FromResult(Ok(useOfSite));
+            }
+            else if (LoggedInService.IsLocal)
             {
                 try
                 {
@@ -220,7 +276,21 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ValidationResults));
             }
 
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.IsMemory)
+            {
+                try
+                {
+                    dbIM.UseOfSites.Update(useOfSite);
+                    dbIM.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                    return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
+
+                return await Task.FromResult(Ok(useOfSite));
+            }
+            else if (LoggedInService.IsLocal)
             {
             try
             {

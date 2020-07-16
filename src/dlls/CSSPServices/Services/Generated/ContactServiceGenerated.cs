@@ -24,7 +24,7 @@ namespace CSSPServices
    public interface IContactService
     {
        Task<ActionResult<bool>> Delete(int ContactID);
-       Task<ActionResult<List<Contact>>> GetContactList();
+       Task<ActionResult<List<Contact>>> GetContactList(int skip = 0, int take = 100);
        Task<ActionResult<Contact>> GetContactWithContactID(int ContactID);
        Task<ActionResult<Contact>> Post(Contact contact, AddContactTypeEnum addContactType);
        Task<ActionResult<Contact>> Put(Contact contact);
@@ -64,7 +64,20 @@ namespace CSSPServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.IsMemory)
+            {
+                Contact contact = (from c in dbIM.Contacts.AsNoTracking()
+                                   where c.ContactID == ContactID
+                                   select c).FirstOrDefault();
+
+                if (contact == null)
+                {
+                    return await Task.FromResult(NotFound());
+                }
+
+                return await Task.FromResult(Ok(contact));
+            }
+            else if (LoggedInService.IsLocal)
             {
                 Contact contact = (from c in dbLocal.Contacts.AsNoTracking()
                         where c.ContactID == ContactID
@@ -91,22 +104,28 @@ namespace CSSPServices
                 return await Task.FromResult(Ok(contact));
             }
         }
-        public async Task<ActionResult<List<Contact>>> GetContactList()
+        public async Task<ActionResult<List<Contact>>> GetContactList(int skip = 0, int take = 100)
         {
             if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
             {
                 return await Task.FromResult(Unauthorized());
             }
 
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.IsMemory)
             {
-                List<Contact> contactList = (from c in dbLocal.Contacts.AsNoTracking() select c).Take(100).ToList();
+                List<Contact> contactList = (from c in dbIM.Contacts.AsNoTracking() orderby c.ContactID select c).Skip(skip).Take(take).ToList();
+            
+                return await Task.FromResult(Ok(contactList));
+            }
+            else if (LoggedInService.IsLocal)
+            {
+                List<Contact> contactList = (from c in dbLocal.Contacts.AsNoTracking() orderby c.ContactID select c).Skip(skip).Take(take).ToList();
 
                 return await Task.FromResult(Ok(contactList));
             }
             else
             {
-                List<Contact> contactList = (from c in db.Contacts.AsNoTracking() select c).Take(100).ToList();
+                List<Contact> contactList = (from c in db.Contacts.AsNoTracking() orderby c.ContactID select c).Skip(skip).Take(take).ToList();
 
                 return await Task.FromResult(Ok(contactList));
             }
@@ -118,7 +137,30 @@ namespace CSSPServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.IsMemory)
+            {
+                Contact contact = (from c in dbIM.Contacts
+                                   where c.ContactID == ContactID
+                                   select c).FirstOrDefault();
+            
+                if (contact == null)
+                {
+                    return await Task.FromResult(BadRequest(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "Contact", "ContactID", ContactID.ToString())));
+                }
+            
+                try
+                {
+                    dbIM.Contacts.Remove(contact);
+                    dbIM.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                    return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
+            
+                return await Task.FromResult(Ok(true));
+            }
+            else if (LoggedInService.IsLocal)
             {
                 Contact contact = (from c in dbLocal.Contacts
                                    where c.ContactID == ContactID
@@ -178,7 +220,21 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ValidationResults));
             }
 
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.IsMemory)
+            {
+                try
+                {
+                    dbIM.Contacts.Add(contact);
+                    dbIM.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                    return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
+
+                return await Task.FromResult(Ok(contact));
+            }
+            else if (LoggedInService.IsLocal)
             {
                 try
                 {
@@ -220,7 +276,21 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ValidationResults));
             }
 
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.IsMemory)
+            {
+                try
+                {
+                    dbIM.Contacts.Update(contact);
+                    dbIM.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                    return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
+
+                return await Task.FromResult(Ok(contact));
+            }
+            else if (LoggedInService.IsLocal)
             {
             try
             {

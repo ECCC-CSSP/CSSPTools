@@ -24,7 +24,7 @@ namespace CSSPServices
    public interface IVPScenarioService
     {
        Task<ActionResult<bool>> Delete(int VPScenarioID);
-       Task<ActionResult<List<VPScenario>>> GetVPScenarioList();
+       Task<ActionResult<List<VPScenario>>> GetVPScenarioList(int skip = 0, int take = 100);
        Task<ActionResult<VPScenario>> GetVPScenarioWithVPScenarioID(int VPScenarioID);
        Task<ActionResult<VPScenario>> Post(VPScenario vpscenario);
        Task<ActionResult<VPScenario>> Put(VPScenario vpscenario);
@@ -64,51 +64,70 @@ namespace CSSPServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.IsMemory)
             {
-                VPScenario vpscenario = (from c in dbLocal.VPScenarios.AsNoTracking()
+                VPScenario vpScenario = (from c in dbIM.VPScenarios.AsNoTracking()
+                                   where c.VPScenarioID == VPScenarioID
+                                   select c).FirstOrDefault();
+
+                if (vpScenario == null)
+                {
+                    return await Task.FromResult(NotFound());
+                }
+
+                return await Task.FromResult(Ok(vpScenario));
+            }
+            else if (LoggedInService.IsLocal)
+            {
+                VPScenario vpScenario = (from c in dbLocal.VPScenarios.AsNoTracking()
                         where c.VPScenarioID == VPScenarioID
                         select c).FirstOrDefault();
 
-                if (vpscenario == null)
+                if (vpScenario == null)
                 {
                    return await Task.FromResult(NotFound());
                 }
 
-                return await Task.FromResult(Ok(vpscenario));
+                return await Task.FromResult(Ok(vpScenario));
             }
             else
             {
-                VPScenario vpscenario = (from c in db.VPScenarios.AsNoTracking()
+                VPScenario vpScenario = (from c in db.VPScenarios.AsNoTracking()
                         where c.VPScenarioID == VPScenarioID
                         select c).FirstOrDefault();
 
-                if (vpscenario == null)
+                if (vpScenario == null)
                 {
                    return await Task.FromResult(NotFound());
                 }
 
-                return await Task.FromResult(Ok(vpscenario));
+                return await Task.FromResult(Ok(vpScenario));
             }
         }
-        public async Task<ActionResult<List<VPScenario>>> GetVPScenarioList()
+        public async Task<ActionResult<List<VPScenario>>> GetVPScenarioList(int skip = 0, int take = 100)
         {
             if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
             {
                 return await Task.FromResult(Unauthorized());
             }
 
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.IsMemory)
             {
-                List<VPScenario> vpscenarioList = (from c in dbLocal.VPScenarios.AsNoTracking() select c).Take(100).ToList();
+                List<VPScenario> vpScenarioList = (from c in dbIM.VPScenarios.AsNoTracking() orderby c.VPScenarioID select c).Skip(skip).Take(take).ToList();
+            
+                return await Task.FromResult(Ok(vpScenarioList));
+            }
+            else if (LoggedInService.IsLocal)
+            {
+                List<VPScenario> vpScenarioList = (from c in dbLocal.VPScenarios.AsNoTracking() orderby c.VPScenarioID select c).Skip(skip).Take(take).ToList();
 
-                return await Task.FromResult(Ok(vpscenarioList));
+                return await Task.FromResult(Ok(vpScenarioList));
             }
             else
             {
-                List<VPScenario> vpscenarioList = (from c in db.VPScenarios.AsNoTracking() select c).Take(100).ToList();
+                List<VPScenario> vpScenarioList = (from c in db.VPScenarios.AsNoTracking() orderby c.VPScenarioID select c).Skip(skip).Take(take).ToList();
 
-                return await Task.FromResult(Ok(vpscenarioList));
+                return await Task.FromResult(Ok(vpScenarioList));
             }
         }
         public async Task<ActionResult<bool>> Delete(int VPScenarioID)
@@ -118,7 +137,30 @@ namespace CSSPServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.IsMemory)
+            {
+                VPScenario vpScenario = (from c in dbIM.VPScenarios
+                                   where c.VPScenarioID == VPScenarioID
+                                   select c).FirstOrDefault();
+            
+                if (vpScenario == null)
+                {
+                    return await Task.FromResult(BadRequest(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "VPScenario", "VPScenarioID", VPScenarioID.ToString())));
+                }
+            
+                try
+                {
+                    dbIM.VPScenarios.Remove(vpScenario);
+                    dbIM.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                    return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
+            
+                return await Task.FromResult(Ok(true));
+            }
+            else if (LoggedInService.IsLocal)
             {
                 VPScenario vpScenario = (from c in dbLocal.VPScenarios
                                    where c.VPScenarioID == VPScenarioID
@@ -178,7 +220,21 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ValidationResults));
             }
 
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.IsMemory)
+            {
+                try
+                {
+                    dbIM.VPScenarios.Add(vpScenario);
+                    dbIM.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                    return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
+
+                return await Task.FromResult(Ok(vpScenario));
+            }
+            else if (LoggedInService.IsLocal)
             {
                 try
                 {
@@ -220,7 +276,21 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ValidationResults));
             }
 
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.IsMemory)
+            {
+                try
+                {
+                    dbIM.VPScenarios.Update(vpScenario);
+                    dbIM.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                    return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
+
+                return await Task.FromResult(Ok(vpScenario));
+            }
+            else if (LoggedInService.IsLocal)
             {
             try
             {

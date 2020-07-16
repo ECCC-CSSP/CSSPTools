@@ -24,7 +24,7 @@ namespace CSSPServices
    public interface IMikeSourceService
     {
        Task<ActionResult<bool>> Delete(int MikeSourceID);
-       Task<ActionResult<List<MikeSource>>> GetMikeSourceList();
+       Task<ActionResult<List<MikeSource>>> GetMikeSourceList(int skip = 0, int take = 100);
        Task<ActionResult<MikeSource>> GetMikeSourceWithMikeSourceID(int MikeSourceID);
        Task<ActionResult<MikeSource>> Post(MikeSource mikesource);
        Task<ActionResult<MikeSource>> Put(MikeSource mikesource);
@@ -64,51 +64,70 @@ namespace CSSPServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.IsMemory)
             {
-                MikeSource mikesource = (from c in dbLocal.MikeSources.AsNoTracking()
+                MikeSource mikeSource = (from c in dbIM.MikeSources.AsNoTracking()
+                                   where c.MikeSourceID == MikeSourceID
+                                   select c).FirstOrDefault();
+
+                if (mikeSource == null)
+                {
+                    return await Task.FromResult(NotFound());
+                }
+
+                return await Task.FromResult(Ok(mikeSource));
+            }
+            else if (LoggedInService.IsLocal)
+            {
+                MikeSource mikeSource = (from c in dbLocal.MikeSources.AsNoTracking()
                         where c.MikeSourceID == MikeSourceID
                         select c).FirstOrDefault();
 
-                if (mikesource == null)
+                if (mikeSource == null)
                 {
                    return await Task.FromResult(NotFound());
                 }
 
-                return await Task.FromResult(Ok(mikesource));
+                return await Task.FromResult(Ok(mikeSource));
             }
             else
             {
-                MikeSource mikesource = (from c in db.MikeSources.AsNoTracking()
+                MikeSource mikeSource = (from c in db.MikeSources.AsNoTracking()
                         where c.MikeSourceID == MikeSourceID
                         select c).FirstOrDefault();
 
-                if (mikesource == null)
+                if (mikeSource == null)
                 {
                    return await Task.FromResult(NotFound());
                 }
 
-                return await Task.FromResult(Ok(mikesource));
+                return await Task.FromResult(Ok(mikeSource));
             }
         }
-        public async Task<ActionResult<List<MikeSource>>> GetMikeSourceList()
+        public async Task<ActionResult<List<MikeSource>>> GetMikeSourceList(int skip = 0, int take = 100)
         {
             if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
             {
                 return await Task.FromResult(Unauthorized());
             }
 
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.IsMemory)
             {
-                List<MikeSource> mikesourceList = (from c in dbLocal.MikeSources.AsNoTracking() select c).Take(100).ToList();
+                List<MikeSource> mikeSourceList = (from c in dbIM.MikeSources.AsNoTracking() orderby c.MikeSourceID select c).Skip(skip).Take(take).ToList();
+            
+                return await Task.FromResult(Ok(mikeSourceList));
+            }
+            else if (LoggedInService.IsLocal)
+            {
+                List<MikeSource> mikeSourceList = (from c in dbLocal.MikeSources.AsNoTracking() orderby c.MikeSourceID select c).Skip(skip).Take(take).ToList();
 
-                return await Task.FromResult(Ok(mikesourceList));
+                return await Task.FromResult(Ok(mikeSourceList));
             }
             else
             {
-                List<MikeSource> mikesourceList = (from c in db.MikeSources.AsNoTracking() select c).Take(100).ToList();
+                List<MikeSource> mikeSourceList = (from c in db.MikeSources.AsNoTracking() orderby c.MikeSourceID select c).Skip(skip).Take(take).ToList();
 
-                return await Task.FromResult(Ok(mikesourceList));
+                return await Task.FromResult(Ok(mikeSourceList));
             }
         }
         public async Task<ActionResult<bool>> Delete(int MikeSourceID)
@@ -118,7 +137,30 @@ namespace CSSPServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.IsMemory)
+            {
+                MikeSource mikeSource = (from c in dbIM.MikeSources
+                                   where c.MikeSourceID == MikeSourceID
+                                   select c).FirstOrDefault();
+            
+                if (mikeSource == null)
+                {
+                    return await Task.FromResult(BadRequest(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "MikeSource", "MikeSourceID", MikeSourceID.ToString())));
+                }
+            
+                try
+                {
+                    dbIM.MikeSources.Remove(mikeSource);
+                    dbIM.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                    return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
+            
+                return await Task.FromResult(Ok(true));
+            }
+            else if (LoggedInService.IsLocal)
             {
                 MikeSource mikeSource = (from c in dbLocal.MikeSources
                                    where c.MikeSourceID == MikeSourceID
@@ -178,7 +220,21 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ValidationResults));
             }
 
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.IsMemory)
+            {
+                try
+                {
+                    dbIM.MikeSources.Add(mikeSource);
+                    dbIM.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                    return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
+
+                return await Task.FromResult(Ok(mikeSource));
+            }
+            else if (LoggedInService.IsLocal)
             {
                 try
                 {
@@ -220,7 +276,21 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ValidationResults));
             }
 
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.IsMemory)
+            {
+                try
+                {
+                    dbIM.MikeSources.Update(mikeSource);
+                    dbIM.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                    return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
+
+                return await Task.FromResult(Ok(mikeSource));
+            }
+            else if (LoggedInService.IsLocal)
             {
             try
             {

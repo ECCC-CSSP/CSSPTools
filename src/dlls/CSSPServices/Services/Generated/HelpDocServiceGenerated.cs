@@ -24,7 +24,7 @@ namespace CSSPServices
    public interface IHelpDocService
     {
        Task<ActionResult<bool>> Delete(int HelpDocID);
-       Task<ActionResult<List<HelpDoc>>> GetHelpDocList();
+       Task<ActionResult<List<HelpDoc>>> GetHelpDocList(int skip = 0, int take = 100);
        Task<ActionResult<HelpDoc>> GetHelpDocWithHelpDocID(int HelpDocID);
        Task<ActionResult<HelpDoc>> Post(HelpDoc helpdoc);
        Task<ActionResult<HelpDoc>> Put(HelpDoc helpdoc);
@@ -64,51 +64,70 @@ namespace CSSPServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.IsMemory)
             {
-                HelpDoc helpdoc = (from c in dbLocal.HelpDocs.AsNoTracking()
+                HelpDoc helpDoc = (from c in dbIM.HelpDocs.AsNoTracking()
+                                   where c.HelpDocID == HelpDocID
+                                   select c).FirstOrDefault();
+
+                if (helpDoc == null)
+                {
+                    return await Task.FromResult(NotFound());
+                }
+
+                return await Task.FromResult(Ok(helpDoc));
+            }
+            else if (LoggedInService.IsLocal)
+            {
+                HelpDoc helpDoc = (from c in dbLocal.HelpDocs.AsNoTracking()
                         where c.HelpDocID == HelpDocID
                         select c).FirstOrDefault();
 
-                if (helpdoc == null)
+                if (helpDoc == null)
                 {
                    return await Task.FromResult(NotFound());
                 }
 
-                return await Task.FromResult(Ok(helpdoc));
+                return await Task.FromResult(Ok(helpDoc));
             }
             else
             {
-                HelpDoc helpdoc = (from c in db.HelpDocs.AsNoTracking()
+                HelpDoc helpDoc = (from c in db.HelpDocs.AsNoTracking()
                         where c.HelpDocID == HelpDocID
                         select c).FirstOrDefault();
 
-                if (helpdoc == null)
+                if (helpDoc == null)
                 {
                    return await Task.FromResult(NotFound());
                 }
 
-                return await Task.FromResult(Ok(helpdoc));
+                return await Task.FromResult(Ok(helpDoc));
             }
         }
-        public async Task<ActionResult<List<HelpDoc>>> GetHelpDocList()
+        public async Task<ActionResult<List<HelpDoc>>> GetHelpDocList(int skip = 0, int take = 100)
         {
             if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
             {
                 return await Task.FromResult(Unauthorized());
             }
 
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.IsMemory)
             {
-                List<HelpDoc> helpdocList = (from c in dbLocal.HelpDocs.AsNoTracking() select c).Take(100).ToList();
+                List<HelpDoc> helpDocList = (from c in dbIM.HelpDocs.AsNoTracking() orderby c.HelpDocID select c).Skip(skip).Take(take).ToList();
+            
+                return await Task.FromResult(Ok(helpDocList));
+            }
+            else if (LoggedInService.IsLocal)
+            {
+                List<HelpDoc> helpDocList = (from c in dbLocal.HelpDocs.AsNoTracking() orderby c.HelpDocID select c).Skip(skip).Take(take).ToList();
 
-                return await Task.FromResult(Ok(helpdocList));
+                return await Task.FromResult(Ok(helpDocList));
             }
             else
             {
-                List<HelpDoc> helpdocList = (from c in db.HelpDocs.AsNoTracking() select c).Take(100).ToList();
+                List<HelpDoc> helpDocList = (from c in db.HelpDocs.AsNoTracking() orderby c.HelpDocID select c).Skip(skip).Take(take).ToList();
 
-                return await Task.FromResult(Ok(helpdocList));
+                return await Task.FromResult(Ok(helpDocList));
             }
         }
         public async Task<ActionResult<bool>> Delete(int HelpDocID)
@@ -118,7 +137,30 @@ namespace CSSPServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.IsMemory)
+            {
+                HelpDoc helpDoc = (from c in dbIM.HelpDocs
+                                   where c.HelpDocID == HelpDocID
+                                   select c).FirstOrDefault();
+            
+                if (helpDoc == null)
+                {
+                    return await Task.FromResult(BadRequest(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "HelpDoc", "HelpDocID", HelpDocID.ToString())));
+                }
+            
+                try
+                {
+                    dbIM.HelpDocs.Remove(helpDoc);
+                    dbIM.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                    return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
+            
+                return await Task.FromResult(Ok(true));
+            }
+            else if (LoggedInService.IsLocal)
             {
                 HelpDoc helpDoc = (from c in dbLocal.HelpDocs
                                    where c.HelpDocID == HelpDocID
@@ -178,7 +220,21 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ValidationResults));
             }
 
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.IsMemory)
+            {
+                try
+                {
+                    dbIM.HelpDocs.Add(helpDoc);
+                    dbIM.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                    return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
+
+                return await Task.FromResult(Ok(helpDoc));
+            }
+            else if (LoggedInService.IsLocal)
             {
                 try
                 {
@@ -220,7 +276,21 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ValidationResults));
             }
 
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.IsMemory)
+            {
+                try
+                {
+                    dbIM.HelpDocs.Update(helpDoc);
+                    dbIM.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                    return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
+
+                return await Task.FromResult(Ok(helpDoc));
+            }
+            else if (LoggedInService.IsLocal)
             {
             try
             {

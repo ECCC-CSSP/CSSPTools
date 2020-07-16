@@ -3,8 +3,8 @@ C:\\CSSPTools\\src\\dlls\\_package\\netcoreapp3.1\CSSPEnums.dll
 C:\\CSSPTools\\src\\dlls\\_package\\netcoreapp3.1\CSSPModels.dll
 
 Files created:
-C:\CSSPCode\CSSPWebAPI\CSSPWebAPI\Controllers\src\{TypeName}ControllerGenerated.cs
+C:\CSSPCode\CSSPWebAPIs\CSSPWebAPIs\Controllers\src\{TypeName}ControllerGenerated.cs
 
 Recompilation of project required
 
-C:\CSSPCode\CSSPWebAPI\CSSPWebAPI\CSSPWebAPI.csproj
+C:\CSSPCode\CSSPWebAPIs\CSSPWebAPIs\CSSPWebAPIs.csproj

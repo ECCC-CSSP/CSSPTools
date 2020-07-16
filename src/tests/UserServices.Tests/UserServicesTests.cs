@@ -32,6 +32,8 @@ namespace UserServices.Tests
         private IServiceProvider ServiceProvider { get; set; }
         private ICultureService CultureService { get; set; }
         private IUserService UserService { get; set; }
+        private string LoginEmail { get; set; }
+        private string Password { get; set; }
         #endregion Properties
 
         #region Constructors
@@ -59,17 +61,12 @@ namespace UserServices.Tests
         {
             Assert.True(await Setup(culture));
 
-            string LoginEmail = "Charles.LeBlanc2@canada.ca";
-            string Password = "Charles2!";
-
             var retValue = await UserService.Login(new LoginModel() { LoginEmail = LoginEmail, Password = Password });
             Assert.IsType<UserModel>(retValue.Value);
             Assert.Null(retValue.Result);
             UserModel userModel = retValue.Value;
             Assert.Equal(2, userModel.ContactTVItemID);
-            Assert.Equal("Charles.LeBlanc2@canada.ca".ToLower(), userModel.LoginEmail.ToLower());
             Assert.Equal("Charles".ToLower(), userModel.FirstName.ToLower());
-            Assert.Equal("LeBlanc".ToLower(), userModel.LastName.ToLower());
             Assert.False(string.IsNullOrWhiteSpace(userModel.Token));
         }
         [Theory]
@@ -79,8 +76,7 @@ namespace UserServices.Tests
         {
             Assert.True(await Setup(culture));
 
-            string LoginEmail = "NotFound_Charles.LeBlanc2@canada.ca";
-            string Password = "Charles2!";
+            string LoginEmail = "NotFound@email.ca";
 
             var retValue = await UserService.Login(new LoginModel() { LoginEmail = LoginEmail, Password = Password });
             Assert.Null(retValue.Value);
@@ -97,8 +93,7 @@ namespace UserServices.Tests
         {
             Assert.True(await Setup(culture));
 
-            string LoginEmail = "Charles.LeBlanc2@canada.ca";
-            string Password = "Not_Charles2!";
+            string Password = "NotAPassword!";
 
             var retValue = await UserService.Login(new LoginModel() { LoginEmail = LoginEmail, Password = Password });
             Assert.Null(retValue.Value);
@@ -127,17 +122,20 @@ namespace UserServices.Tests
             ServiceCollection.AddSingleton<ICultureService, CultureService>();
             ServiceCollection.AddSingleton<IUserService, UserService>();
 
-            IConfigurationSection connectionStringsSection = Configuration.GetSection("ConnectionStrings");
-            ServiceCollection.Configure<ConnectionStringsModel>(connectionStringsSection);
+            string CSSPDB2 = Configuration.GetValue<string>("CSSPDB2");
+            Assert.NotNull(CSSPDB2);
 
-            ConnectionStringsModel connectionStrings = connectionStringsSection.Get<ConnectionStringsModel>();
-            Assert.NotNull(connectionStrings);
+            string LoginEmail = Configuration.GetValue<string>("LoginEmail");
+            Assert.NotNull(LoginEmail);
+
+            string Password = Configuration.GetValue<string>("Password");
+            Assert.NotNull(Password);
 
             ServiceCollection.AddDbContext<CSSPDBContext>(options =>
-                options.UseSqlServer(connectionStrings.CSSPDB2));
+                options.UseSqlServer(CSSPDB2));
 
             ServiceCollection.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlServer(connectionStrings.CSSPDB2));
+                options.UseSqlServer(CSSPDB2));
 
             ServiceCollection.AddIdentityCore<ApplicationUser>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();

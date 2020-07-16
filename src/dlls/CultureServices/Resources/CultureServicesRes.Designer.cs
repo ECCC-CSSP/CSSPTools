@@ -898,6 +898,15 @@ namespace CultureServices.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Database [{0}] contains info. You will need to send it to the server before creating or recreating the DB..
+        /// </summary>
+        public static string Database_ContainsInfo {
+            get {
+                return ResourceManager.GetString("Database_ContainsInfo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to DataType.
         /// </summary>
         public static string DataType {

@@ -24,7 +24,7 @@ namespace CSSPServices
    public interface IReportTypeService
     {
        Task<ActionResult<bool>> Delete(int ReportTypeID);
-       Task<ActionResult<List<ReportType>>> GetReportTypeList();
+       Task<ActionResult<List<ReportType>>> GetReportTypeList(int skip = 0, int take = 100);
        Task<ActionResult<ReportType>> GetReportTypeWithReportTypeID(int ReportTypeID);
        Task<ActionResult<ReportType>> Post(ReportType reporttype);
        Task<ActionResult<ReportType>> Put(ReportType reporttype);
@@ -64,51 +64,70 @@ namespace CSSPServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.IsMemory)
             {
-                ReportType reporttype = (from c in dbLocal.ReportTypes.AsNoTracking()
+                ReportType reportType = (from c in dbIM.ReportTypes.AsNoTracking()
+                                   where c.ReportTypeID == ReportTypeID
+                                   select c).FirstOrDefault();
+
+                if (reportType == null)
+                {
+                    return await Task.FromResult(NotFound());
+                }
+
+                return await Task.FromResult(Ok(reportType));
+            }
+            else if (LoggedInService.IsLocal)
+            {
+                ReportType reportType = (from c in dbLocal.ReportTypes.AsNoTracking()
                         where c.ReportTypeID == ReportTypeID
                         select c).FirstOrDefault();
 
-                if (reporttype == null)
+                if (reportType == null)
                 {
                    return await Task.FromResult(NotFound());
                 }
 
-                return await Task.FromResult(Ok(reporttype));
+                return await Task.FromResult(Ok(reportType));
             }
             else
             {
-                ReportType reporttype = (from c in db.ReportTypes.AsNoTracking()
+                ReportType reportType = (from c in db.ReportTypes.AsNoTracking()
                         where c.ReportTypeID == ReportTypeID
                         select c).FirstOrDefault();
 
-                if (reporttype == null)
+                if (reportType == null)
                 {
                    return await Task.FromResult(NotFound());
                 }
 
-                return await Task.FromResult(Ok(reporttype));
+                return await Task.FromResult(Ok(reportType));
             }
         }
-        public async Task<ActionResult<List<ReportType>>> GetReportTypeList()
+        public async Task<ActionResult<List<ReportType>>> GetReportTypeList(int skip = 0, int take = 100)
         {
             if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
             {
                 return await Task.FromResult(Unauthorized());
             }
 
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.IsMemory)
             {
-                List<ReportType> reporttypeList = (from c in dbLocal.ReportTypes.AsNoTracking() select c).Take(100).ToList();
+                List<ReportType> reportTypeList = (from c in dbIM.ReportTypes.AsNoTracking() orderby c.ReportTypeID select c).Skip(skip).Take(take).ToList();
+            
+                return await Task.FromResult(Ok(reportTypeList));
+            }
+            else if (LoggedInService.IsLocal)
+            {
+                List<ReportType> reportTypeList = (from c in dbLocal.ReportTypes.AsNoTracking() orderby c.ReportTypeID select c).Skip(skip).Take(take).ToList();
 
-                return await Task.FromResult(Ok(reporttypeList));
+                return await Task.FromResult(Ok(reportTypeList));
             }
             else
             {
-                List<ReportType> reporttypeList = (from c in db.ReportTypes.AsNoTracking() select c).Take(100).ToList();
+                List<ReportType> reportTypeList = (from c in db.ReportTypes.AsNoTracking() orderby c.ReportTypeID select c).Skip(skip).Take(take).ToList();
 
-                return await Task.FromResult(Ok(reporttypeList));
+                return await Task.FromResult(Ok(reportTypeList));
             }
         }
         public async Task<ActionResult<bool>> Delete(int ReportTypeID)
@@ -118,7 +137,30 @@ namespace CSSPServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.IsMemory)
+            {
+                ReportType reportType = (from c in dbIM.ReportTypes
+                                   where c.ReportTypeID == ReportTypeID
+                                   select c).FirstOrDefault();
+            
+                if (reportType == null)
+                {
+                    return await Task.FromResult(BadRequest(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "ReportType", "ReportTypeID", ReportTypeID.ToString())));
+                }
+            
+                try
+                {
+                    dbIM.ReportTypes.Remove(reportType);
+                    dbIM.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                    return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
+            
+                return await Task.FromResult(Ok(true));
+            }
+            else if (LoggedInService.IsLocal)
             {
                 ReportType reportType = (from c in dbLocal.ReportTypes
                                    where c.ReportTypeID == ReportTypeID
@@ -178,7 +220,21 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ValidationResults));
             }
 
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.IsMemory)
+            {
+                try
+                {
+                    dbIM.ReportTypes.Add(reportType);
+                    dbIM.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                    return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
+
+                return await Task.FromResult(Ok(reportType));
+            }
+            else if (LoggedInService.IsLocal)
             {
                 try
                 {
@@ -220,7 +276,21 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ValidationResults));
             }
 
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.IsMemory)
+            {
+                try
+                {
+                    dbIM.ReportTypes.Update(reportType);
+                    dbIM.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                    return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
+
+                return await Task.FromResult(Ok(reportType));
+            }
+            else if (LoggedInService.IsLocal)
             {
             try
             {

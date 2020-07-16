@@ -24,7 +24,7 @@ namespace CSSPServices
    public interface IPolSourceSiteService
     {
        Task<ActionResult<bool>> Delete(int PolSourceSiteID);
-       Task<ActionResult<List<PolSourceSite>>> GetPolSourceSiteList();
+       Task<ActionResult<List<PolSourceSite>>> GetPolSourceSiteList(int skip = 0, int take = 100);
        Task<ActionResult<PolSourceSite>> GetPolSourceSiteWithPolSourceSiteID(int PolSourceSiteID);
        Task<ActionResult<PolSourceSite>> Post(PolSourceSite polsourcesite);
        Task<ActionResult<PolSourceSite>> Put(PolSourceSite polsourcesite);
@@ -64,51 +64,70 @@ namespace CSSPServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.IsMemory)
             {
-                PolSourceSite polsourcesite = (from c in dbLocal.PolSourceSites.AsNoTracking()
+                PolSourceSite polSourceSite = (from c in dbIM.PolSourceSites.AsNoTracking()
+                                   where c.PolSourceSiteID == PolSourceSiteID
+                                   select c).FirstOrDefault();
+
+                if (polSourceSite == null)
+                {
+                    return await Task.FromResult(NotFound());
+                }
+
+                return await Task.FromResult(Ok(polSourceSite));
+            }
+            else if (LoggedInService.IsLocal)
+            {
+                PolSourceSite polSourceSite = (from c in dbLocal.PolSourceSites.AsNoTracking()
                         where c.PolSourceSiteID == PolSourceSiteID
                         select c).FirstOrDefault();
 
-                if (polsourcesite == null)
+                if (polSourceSite == null)
                 {
                    return await Task.FromResult(NotFound());
                 }
 
-                return await Task.FromResult(Ok(polsourcesite));
+                return await Task.FromResult(Ok(polSourceSite));
             }
             else
             {
-                PolSourceSite polsourcesite = (from c in db.PolSourceSites.AsNoTracking()
+                PolSourceSite polSourceSite = (from c in db.PolSourceSites.AsNoTracking()
                         where c.PolSourceSiteID == PolSourceSiteID
                         select c).FirstOrDefault();
 
-                if (polsourcesite == null)
+                if (polSourceSite == null)
                 {
                    return await Task.FromResult(NotFound());
                 }
 
-                return await Task.FromResult(Ok(polsourcesite));
+                return await Task.FromResult(Ok(polSourceSite));
             }
         }
-        public async Task<ActionResult<List<PolSourceSite>>> GetPolSourceSiteList()
+        public async Task<ActionResult<List<PolSourceSite>>> GetPolSourceSiteList(int skip = 0, int take = 100)
         {
             if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
             {
                 return await Task.FromResult(Unauthorized());
             }
 
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.IsMemory)
             {
-                List<PolSourceSite> polsourcesiteList = (from c in dbLocal.PolSourceSites.AsNoTracking() select c).Take(100).ToList();
+                List<PolSourceSite> polSourceSiteList = (from c in dbIM.PolSourceSites.AsNoTracking() orderby c.PolSourceSiteID select c).Skip(skip).Take(take).ToList();
+            
+                return await Task.FromResult(Ok(polSourceSiteList));
+            }
+            else if (LoggedInService.IsLocal)
+            {
+                List<PolSourceSite> polSourceSiteList = (from c in dbLocal.PolSourceSites.AsNoTracking() orderby c.PolSourceSiteID select c).Skip(skip).Take(take).ToList();
 
-                return await Task.FromResult(Ok(polsourcesiteList));
+                return await Task.FromResult(Ok(polSourceSiteList));
             }
             else
             {
-                List<PolSourceSite> polsourcesiteList = (from c in db.PolSourceSites.AsNoTracking() select c).Take(100).ToList();
+                List<PolSourceSite> polSourceSiteList = (from c in db.PolSourceSites.AsNoTracking() orderby c.PolSourceSiteID select c).Skip(skip).Take(take).ToList();
 
-                return await Task.FromResult(Ok(polsourcesiteList));
+                return await Task.FromResult(Ok(polSourceSiteList));
             }
         }
         public async Task<ActionResult<bool>> Delete(int PolSourceSiteID)
@@ -118,7 +137,30 @@ namespace CSSPServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.IsMemory)
+            {
+                PolSourceSite polSourceSite = (from c in dbIM.PolSourceSites
+                                   where c.PolSourceSiteID == PolSourceSiteID
+                                   select c).FirstOrDefault();
+            
+                if (polSourceSite == null)
+                {
+                    return await Task.FromResult(BadRequest(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "PolSourceSite", "PolSourceSiteID", PolSourceSiteID.ToString())));
+                }
+            
+                try
+                {
+                    dbIM.PolSourceSites.Remove(polSourceSite);
+                    dbIM.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                    return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
+            
+                return await Task.FromResult(Ok(true));
+            }
+            else if (LoggedInService.IsLocal)
             {
                 PolSourceSite polSourceSite = (from c in dbLocal.PolSourceSites
                                    where c.PolSourceSiteID == PolSourceSiteID
@@ -178,7 +220,21 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ValidationResults));
             }
 
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.IsMemory)
+            {
+                try
+                {
+                    dbIM.PolSourceSites.Add(polSourceSite);
+                    dbIM.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                    return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
+
+                return await Task.FromResult(Ok(polSourceSite));
+            }
+            else if (LoggedInService.IsLocal)
             {
                 try
                 {
@@ -220,7 +276,21 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ValidationResults));
             }
 
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.IsMemory)
+            {
+                try
+                {
+                    dbIM.PolSourceSites.Update(polSourceSite);
+                    dbIM.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                    return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
+
+                return await Task.FromResult(Ok(polSourceSite));
+            }
+            else if (LoggedInService.IsLocal)
             {
             try
             {

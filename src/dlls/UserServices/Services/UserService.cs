@@ -26,14 +26,12 @@ namespace UserServices.Services
         private IConfiguration Configuration { get; }
         private UserManager<ApplicationUser> userManager { get; }
         private CSSPDBContext csspDBContext { get; }
-        private ApiSettingsModel appSettings { get; }
         #endregion Properties
 
         #region Constructors
-        public UserService(IConfiguration configuration, IOptions<ApiSettingsModel> appSettings, UserManager<ApplicationUser> userManager, CSSPDBContext csspDBContext)
+        public UserService(IConfiguration configuration, UserManager<ApplicationUser> userManager, CSSPDBContext csspDBContext)
         {
             this.Configuration = configuration;
-            this.appSettings = appSettings.Value;
             this.userManager = userManager;
             this.csspDBContext = csspDBContext;
         }

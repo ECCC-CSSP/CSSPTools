@@ -24,7 +24,7 @@ namespace CSSPServices
    public interface IAppErrLogService
     {
        Task<ActionResult<bool>> Delete(int AppErrLogID);
-       Task<ActionResult<List<AppErrLog>>> GetAppErrLogList();
+       Task<ActionResult<List<AppErrLog>>> GetAppErrLogList(int skip = 0, int take = 100);
        Task<ActionResult<AppErrLog>> GetAppErrLogWithAppErrLogID(int AppErrLogID);
        Task<ActionResult<AppErrLog>> Post(AppErrLog apperrlog);
        Task<ActionResult<AppErrLog>> Put(AppErrLog apperrlog);
@@ -64,51 +64,70 @@ namespace CSSPServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.IsMemory)
             {
-                AppErrLog apperrlog = (from c in dbLocal.AppErrLogs.AsNoTracking()
+                AppErrLog appErrLog = (from c in dbIM.AppErrLogs.AsNoTracking()
+                                   where c.AppErrLogID == AppErrLogID
+                                   select c).FirstOrDefault();
+
+                if (appErrLog == null)
+                {
+                    return await Task.FromResult(NotFound());
+                }
+
+                return await Task.FromResult(Ok(appErrLog));
+            }
+            else if (LoggedInService.IsLocal)
+            {
+                AppErrLog appErrLog = (from c in dbLocal.AppErrLogs.AsNoTracking()
                         where c.AppErrLogID == AppErrLogID
                         select c).FirstOrDefault();
 
-                if (apperrlog == null)
+                if (appErrLog == null)
                 {
                    return await Task.FromResult(NotFound());
                 }
 
-                return await Task.FromResult(Ok(apperrlog));
+                return await Task.FromResult(Ok(appErrLog));
             }
             else
             {
-                AppErrLog apperrlog = (from c in db.AppErrLogs.AsNoTracking()
+                AppErrLog appErrLog = (from c in db.AppErrLogs.AsNoTracking()
                         where c.AppErrLogID == AppErrLogID
                         select c).FirstOrDefault();
 
-                if (apperrlog == null)
+                if (appErrLog == null)
                 {
                    return await Task.FromResult(NotFound());
                 }
 
-                return await Task.FromResult(Ok(apperrlog));
+                return await Task.FromResult(Ok(appErrLog));
             }
         }
-        public async Task<ActionResult<List<AppErrLog>>> GetAppErrLogList()
+        public async Task<ActionResult<List<AppErrLog>>> GetAppErrLogList(int skip = 0, int take = 100)
         {
             if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
             {
                 return await Task.FromResult(Unauthorized());
             }
 
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.IsMemory)
             {
-                List<AppErrLog> apperrlogList = (from c in dbLocal.AppErrLogs.AsNoTracking() select c).Take(100).ToList();
+                List<AppErrLog> appErrLogList = (from c in dbIM.AppErrLogs.AsNoTracking() orderby c.AppErrLogID select c).Skip(skip).Take(take).ToList();
+            
+                return await Task.FromResult(Ok(appErrLogList));
+            }
+            else if (LoggedInService.IsLocal)
+            {
+                List<AppErrLog> appErrLogList = (from c in dbLocal.AppErrLogs.AsNoTracking() orderby c.AppErrLogID select c).Skip(skip).Take(take).ToList();
 
-                return await Task.FromResult(Ok(apperrlogList));
+                return await Task.FromResult(Ok(appErrLogList));
             }
             else
             {
-                List<AppErrLog> apperrlogList = (from c in db.AppErrLogs.AsNoTracking() select c).Take(100).ToList();
+                List<AppErrLog> appErrLogList = (from c in db.AppErrLogs.AsNoTracking() orderby c.AppErrLogID select c).Skip(skip).Take(take).ToList();
 
-                return await Task.FromResult(Ok(apperrlogList));
+                return await Task.FromResult(Ok(appErrLogList));
             }
         }
         public async Task<ActionResult<bool>> Delete(int AppErrLogID)
@@ -118,7 +137,30 @@ namespace CSSPServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.IsMemory)
+            {
+                AppErrLog appErrLog = (from c in dbIM.AppErrLogs
+                                   where c.AppErrLogID == AppErrLogID
+                                   select c).FirstOrDefault();
+            
+                if (appErrLog == null)
+                {
+                    return await Task.FromResult(BadRequest(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "AppErrLog", "AppErrLogID", AppErrLogID.ToString())));
+                }
+            
+                try
+                {
+                    dbIM.AppErrLogs.Remove(appErrLog);
+                    dbIM.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                    return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
+            
+                return await Task.FromResult(Ok(true));
+            }
+            else if (LoggedInService.IsLocal)
             {
                 AppErrLog appErrLog = (from c in dbLocal.AppErrLogs
                                    where c.AppErrLogID == AppErrLogID
@@ -178,7 +220,21 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ValidationResults));
             }
 
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.IsMemory)
+            {
+                try
+                {
+                    dbIM.AppErrLogs.Add(appErrLog);
+                    dbIM.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                    return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
+
+                return await Task.FromResult(Ok(appErrLog));
+            }
+            else if (LoggedInService.IsLocal)
             {
                 try
                 {
@@ -220,7 +276,21 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ValidationResults));
             }
 
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.IsMemory)
+            {
+                try
+                {
+                    dbIM.AppErrLogs.Update(appErrLog);
+                    dbIM.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                    return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
+
+                return await Task.FromResult(Ok(appErrLog));
+            }
+            else if (LoggedInService.IsLocal)
             {
             try
             {

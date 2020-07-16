@@ -24,7 +24,7 @@ namespace CSSPServices
    public interface ITVItemLinkService
     {
        Task<ActionResult<bool>> Delete(int TVItemLinkID);
-       Task<ActionResult<List<TVItemLink>>> GetTVItemLinkList();
+       Task<ActionResult<List<TVItemLink>>> GetTVItemLinkList(int skip = 0, int take = 100);
        Task<ActionResult<TVItemLink>> GetTVItemLinkWithTVItemLinkID(int TVItemLinkID);
        Task<ActionResult<TVItemLink>> Post(TVItemLink tvitemlink);
        Task<ActionResult<TVItemLink>> Put(TVItemLink tvitemlink);
@@ -64,51 +64,70 @@ namespace CSSPServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.IsMemory)
             {
-                TVItemLink tvitemlink = (from c in dbLocal.TVItemLinks.AsNoTracking()
+                TVItemLink tvItemLink = (from c in dbIM.TVItemLinks.AsNoTracking()
+                                   where c.TVItemLinkID == TVItemLinkID
+                                   select c).FirstOrDefault();
+
+                if (tvItemLink == null)
+                {
+                    return await Task.FromResult(NotFound());
+                }
+
+                return await Task.FromResult(Ok(tvItemLink));
+            }
+            else if (LoggedInService.IsLocal)
+            {
+                TVItemLink tvItemLink = (from c in dbLocal.TVItemLinks.AsNoTracking()
                         where c.TVItemLinkID == TVItemLinkID
                         select c).FirstOrDefault();
 
-                if (tvitemlink == null)
+                if (tvItemLink == null)
                 {
                    return await Task.FromResult(NotFound());
                 }
 
-                return await Task.FromResult(Ok(tvitemlink));
+                return await Task.FromResult(Ok(tvItemLink));
             }
             else
             {
-                TVItemLink tvitemlink = (from c in db.TVItemLinks.AsNoTracking()
+                TVItemLink tvItemLink = (from c in db.TVItemLinks.AsNoTracking()
                         where c.TVItemLinkID == TVItemLinkID
                         select c).FirstOrDefault();
 
-                if (tvitemlink == null)
+                if (tvItemLink == null)
                 {
                    return await Task.FromResult(NotFound());
                 }
 
-                return await Task.FromResult(Ok(tvitemlink));
+                return await Task.FromResult(Ok(tvItemLink));
             }
         }
-        public async Task<ActionResult<List<TVItemLink>>> GetTVItemLinkList()
+        public async Task<ActionResult<List<TVItemLink>>> GetTVItemLinkList(int skip = 0, int take = 100)
         {
             if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
             {
                 return await Task.FromResult(Unauthorized());
             }
 
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.IsMemory)
             {
-                List<TVItemLink> tvitemlinkList = (from c in dbLocal.TVItemLinks.AsNoTracking() select c).Take(100).ToList();
+                List<TVItemLink> tvItemLinkList = (from c in dbIM.TVItemLinks.AsNoTracking() orderby c.TVItemLinkID select c).Skip(skip).Take(take).ToList();
+            
+                return await Task.FromResult(Ok(tvItemLinkList));
+            }
+            else if (LoggedInService.IsLocal)
+            {
+                List<TVItemLink> tvItemLinkList = (from c in dbLocal.TVItemLinks.AsNoTracking() orderby c.TVItemLinkID select c).Skip(skip).Take(take).ToList();
 
-                return await Task.FromResult(Ok(tvitemlinkList));
+                return await Task.FromResult(Ok(tvItemLinkList));
             }
             else
             {
-                List<TVItemLink> tvitemlinkList = (from c in db.TVItemLinks.AsNoTracking() select c).Take(100).ToList();
+                List<TVItemLink> tvItemLinkList = (from c in db.TVItemLinks.AsNoTracking() orderby c.TVItemLinkID select c).Skip(skip).Take(take).ToList();
 
-                return await Task.FromResult(Ok(tvitemlinkList));
+                return await Task.FromResult(Ok(tvItemLinkList));
             }
         }
         public async Task<ActionResult<bool>> Delete(int TVItemLinkID)
@@ -118,7 +137,30 @@ namespace CSSPServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.IsMemory)
+            {
+                TVItemLink tvItemLink = (from c in dbIM.TVItemLinks
+                                   where c.TVItemLinkID == TVItemLinkID
+                                   select c).FirstOrDefault();
+            
+                if (tvItemLink == null)
+                {
+                    return await Task.FromResult(BadRequest(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "TVItemLink", "TVItemLinkID", TVItemLinkID.ToString())));
+                }
+            
+                try
+                {
+                    dbIM.TVItemLinks.Remove(tvItemLink);
+                    dbIM.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                    return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
+            
+                return await Task.FromResult(Ok(true));
+            }
+            else if (LoggedInService.IsLocal)
             {
                 TVItemLink tvItemLink = (from c in dbLocal.TVItemLinks
                                    where c.TVItemLinkID == TVItemLinkID
@@ -178,7 +220,21 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ValidationResults));
             }
 
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.IsMemory)
+            {
+                try
+                {
+                    dbIM.TVItemLinks.Add(tvItemLink);
+                    dbIM.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                    return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
+
+                return await Task.FromResult(Ok(tvItemLink));
+            }
+            else if (LoggedInService.IsLocal)
             {
                 try
                 {
@@ -220,7 +276,21 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ValidationResults));
             }
 
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.IsMemory)
+            {
+                try
+                {
+                    dbIM.TVItemLinks.Update(tvItemLink);
+                    dbIM.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                    return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
+
+                return await Task.FromResult(Ok(tvItemLink));
+            }
+            else if (LoggedInService.IsLocal)
             {
             try
             {

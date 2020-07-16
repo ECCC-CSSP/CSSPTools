@@ -36,11 +36,12 @@ namespace CSSPCodeGenWebAPI
                 options.JsonSerializerOptions.PropertyNamingPolicy = null;
             });
 
-            IConfigurationSection apiSettingsSection = Configuration.GetSection("ApiSettings");
-            services.Configure<ApiSettingsModel>(apiSettingsSection);
-
-            ApiSettingsModel apiSettings = apiSettingsSection.Get<ApiSettingsModel>();
-            byte[] key = Encoding.ASCII.GetBytes(apiSettings.APISecret);
+            string APISecret = Configuration.GetValue<string>("APISecret");
+            if (string.IsNullOrWhiteSpace(APISecret))
+            {
+                Console.WriteLine("Could not find APISecret under User Secrets");
+            }
+            byte[] key = Encoding.ASCII.GetBytes(APISecret);
 
             services.AddAuthentication(x =>
             {
@@ -60,29 +61,36 @@ namespace CSSPCodeGenWebAPI
                 };
             });
 
-            IConfigurationSection connectionStringsSection = Configuration.GetSection("ConnectionStrings");
-            services.Configure<ConnectionStringsModel>(connectionStringsSection);
+            string CSSPDB2 = Configuration.GetValue<string>("CSSPDB2");
+            if (string.IsNullOrWhiteSpace(CSSPDB2))
+            {
+                Console.WriteLine("Could not find CSSPDB2 in appsettings.json");
+            }
 
-            ConnectionStringsModel connectionStrings = connectionStringsSection.Get<ConnectionStringsModel>();
+            string ActionCommandDB = Configuration.GetValue<string>("ActionCommandDB");
+            if (string.IsNullOrWhiteSpace(ActionCommandDB))
+            {
+                Console.WriteLine("Could not find CSSPDB2 in appsettings.json");
+            }
 
             //// using CSSPDB
             //services.AddDbContext<CSSPDBContext>(options =>
-            //        options.UseSqlServer(connectionStrings.CSSPDB));
+            //        options.UseSqlServer(CSSPDB));
 
             // using CSSPDB2
             services.AddDbContext<CSSPDBContext>(options =>
-                    options.UseSqlServer(connectionStrings.CSSPDB2));
+                    options.UseSqlServer(CSSPDB2));
 
             //// using In Memory CSSPDB2
             //services.AddDbContext<CSSPDBContext>(options =>
-            //        options.UseInMemoryDatabase(connectionStrings.CSSPDB2));
+            //        options.UseInMemoryDatabase(CSSPDB2));
 
             //// using TestDB
             //services.AddDbContext<CSSPDBContext>(options =>
-            //        options.UseSqlServer(connectionStrings.TestDB));
+            //        options.UseSqlServer(TestDB));
 
             services.AddDbContext<ApplicationDbContext>(options =>
-                    options.UseSqlServer(connectionStrings.CSSPDB2));
+                    options.UseSqlServer(CSSPDB2));
 
             //services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
             //    .AddEntityFrameworkStores<ApplicationDbContext>();
@@ -92,7 +100,7 @@ namespace CSSPCodeGenWebAPI
 
             string appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
 
-            FileInfo fiDB = new FileInfo(connectionStrings.ActionCommandDB.Replace("{AppDataPath}", appDataPath));
+            FileInfo fiDB = new FileInfo(ActionCommandDB.Replace("{AppDataPath}", appDataPath));
 
             services.AddDbContext<ActionCommandContext>(options =>
             {

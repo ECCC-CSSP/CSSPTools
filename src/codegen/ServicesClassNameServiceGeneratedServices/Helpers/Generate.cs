@@ -131,7 +131,7 @@ namespace ServicesClassNameServiceGeneratedServices.Services
                     sb.AppendLine($@"   public interface I{ dllTypeInfoModels.Type.Name }Service");
                     sb.AppendLine(@"    {");
                     sb.AppendLine($@"       Task<ActionResult<bool>> Delete(int { dllTypeInfoModels.Type.Name }ID);");
-                    sb.AppendLine($@"       Task<ActionResult<List<{ dllTypeInfoModels.Type.Name }>>> Get{ dllTypeInfoModels.Type.Name }List();");
+                    sb.AppendLine($@"       Task<ActionResult<List<{ dllTypeInfoModels.Type.Name }>>> Get{ dllTypeInfoModels.Type.Name }List(int skip = 0, int take = 100);");
                     sb.AppendLine($@"       Task<ActionResult<{ dllTypeInfoModels.Type.Name }>> Get{ dllTypeInfoModels.Type.Name }With{ dllTypeInfoModels.Type.Name }ID(int { dllTypeInfoModels.Type.Name }ID);");
                     if (dllTypeInfoModels.Type.Name == "Contact")
                     {

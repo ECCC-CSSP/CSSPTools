@@ -97,7 +97,7 @@ namespace WebAPIClassNameControllerGeneratedServices.Services
                     sb.AppendLine(@"using System.Collections.Generic;");
                     sb.AppendLine(@"using System.Threading.Tasks;");
                     sb.AppendLine(@"");
-                    sb.AppendLine(@"namespace CSSPWebAPI.Controllers");
+                    sb.AppendLine(@"namespace CSSPWebAPIs.Controllers");
                     sb.AppendLine(@"{");
                     sb.AppendLine($@"    public partial interface I{ TypeName }Controller");
                     sb.AppendLine(@"    {");
@@ -227,7 +227,7 @@ namespace WebAPIClassNameControllerGeneratedServices.Services
             sb2.AppendLine(@"using CSSPServices;");
             sb2.AppendLine(@"using Microsoft.Extensions.DependencyInjection;");
             sb2.AppendLine(@"");
-            sb2.AppendLine(@"namespace CSSPCodeGenWebAPI");
+            sb2.AppendLine(@"namespace CSSPWebAPIs");
             sb2.AppendLine(@"{");
             sb2.AppendLine(@"    public partial class Startup");
             sb2.AppendLine(@"    {");

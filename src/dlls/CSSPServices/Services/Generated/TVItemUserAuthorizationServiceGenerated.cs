@@ -24,7 +24,7 @@ namespace CSSPServices
    public interface ITVItemUserAuthorizationService
     {
        Task<ActionResult<bool>> Delete(int TVItemUserAuthorizationID);
-       Task<ActionResult<List<TVItemUserAuthorization>>> GetTVItemUserAuthorizationList();
+       Task<ActionResult<List<TVItemUserAuthorization>>> GetTVItemUserAuthorizationList(int skip = 0, int take = 100);
        Task<ActionResult<TVItemUserAuthorization>> GetTVItemUserAuthorizationWithTVItemUserAuthorizationID(int TVItemUserAuthorizationID);
        Task<ActionResult<TVItemUserAuthorization>> Post(TVItemUserAuthorization tvitemuserauthorization);
        Task<ActionResult<TVItemUserAuthorization>> Put(TVItemUserAuthorization tvitemuserauthorization);
@@ -64,51 +64,70 @@ namespace CSSPServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.IsMemory)
             {
-                TVItemUserAuthorization tvitemuserauthorization = (from c in dbLocal.TVItemUserAuthorizations.AsNoTracking()
+                TVItemUserAuthorization tvItemUserAuthorization = (from c in dbIM.TVItemUserAuthorizations.AsNoTracking()
+                                   where c.TVItemUserAuthorizationID == TVItemUserAuthorizationID
+                                   select c).FirstOrDefault();
+
+                if (tvItemUserAuthorization == null)
+                {
+                    return await Task.FromResult(NotFound());
+                }
+
+                return await Task.FromResult(Ok(tvItemUserAuthorization));
+            }
+            else if (LoggedInService.IsLocal)
+            {
+                TVItemUserAuthorization tvItemUserAuthorization = (from c in dbLocal.TVItemUserAuthorizations.AsNoTracking()
                         where c.TVItemUserAuthorizationID == TVItemUserAuthorizationID
                         select c).FirstOrDefault();
 
-                if (tvitemuserauthorization == null)
+                if (tvItemUserAuthorization == null)
                 {
                    return await Task.FromResult(NotFound());
                 }
 
-                return await Task.FromResult(Ok(tvitemuserauthorization));
+                return await Task.FromResult(Ok(tvItemUserAuthorization));
             }
             else
             {
-                TVItemUserAuthorization tvitemuserauthorization = (from c in db.TVItemUserAuthorizations.AsNoTracking()
+                TVItemUserAuthorization tvItemUserAuthorization = (from c in db.TVItemUserAuthorizations.AsNoTracking()
                         where c.TVItemUserAuthorizationID == TVItemUserAuthorizationID
                         select c).FirstOrDefault();
 
-                if (tvitemuserauthorization == null)
+                if (tvItemUserAuthorization == null)
                 {
                    return await Task.FromResult(NotFound());
                 }
 
-                return await Task.FromResult(Ok(tvitemuserauthorization));
+                return await Task.FromResult(Ok(tvItemUserAuthorization));
             }
         }
-        public async Task<ActionResult<List<TVItemUserAuthorization>>> GetTVItemUserAuthorizationList()
+        public async Task<ActionResult<List<TVItemUserAuthorization>>> GetTVItemUserAuthorizationList(int skip = 0, int take = 100)
         {
             if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
             {
                 return await Task.FromResult(Unauthorized());
             }
 
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.IsMemory)
             {
-                List<TVItemUserAuthorization> tvitemuserauthorizationList = (from c in dbLocal.TVItemUserAuthorizations.AsNoTracking() select c).Take(100).ToList();
+                List<TVItemUserAuthorization> tvItemUserAuthorizationList = (from c in dbIM.TVItemUserAuthorizations.AsNoTracking() orderby c.TVItemUserAuthorizationID select c).Skip(skip).Take(take).ToList();
+            
+                return await Task.FromResult(Ok(tvItemUserAuthorizationList));
+            }
+            else if (LoggedInService.IsLocal)
+            {
+                List<TVItemUserAuthorization> tvItemUserAuthorizationList = (from c in dbLocal.TVItemUserAuthorizations.AsNoTracking() orderby c.TVItemUserAuthorizationID select c).Skip(skip).Take(take).ToList();
 
-                return await Task.FromResult(Ok(tvitemuserauthorizationList));
+                return await Task.FromResult(Ok(tvItemUserAuthorizationList));
             }
             else
             {
-                List<TVItemUserAuthorization> tvitemuserauthorizationList = (from c in db.TVItemUserAuthorizations.AsNoTracking() select c).Take(100).ToList();
+                List<TVItemUserAuthorization> tvItemUserAuthorizationList = (from c in db.TVItemUserAuthorizations.AsNoTracking() orderby c.TVItemUserAuthorizationID select c).Skip(skip).Take(take).ToList();
 
-                return await Task.FromResult(Ok(tvitemuserauthorizationList));
+                return await Task.FromResult(Ok(tvItemUserAuthorizationList));
             }
         }
         public async Task<ActionResult<bool>> Delete(int TVItemUserAuthorizationID)
@@ -118,7 +137,30 @@ namespace CSSPServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.IsMemory)
+            {
+                TVItemUserAuthorization tvItemUserAuthorization = (from c in dbIM.TVItemUserAuthorizations
+                                   where c.TVItemUserAuthorizationID == TVItemUserAuthorizationID
+                                   select c).FirstOrDefault();
+            
+                if (tvItemUserAuthorization == null)
+                {
+                    return await Task.FromResult(BadRequest(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "TVItemUserAuthorization", "TVItemUserAuthorizationID", TVItemUserAuthorizationID.ToString())));
+                }
+            
+                try
+                {
+                    dbIM.TVItemUserAuthorizations.Remove(tvItemUserAuthorization);
+                    dbIM.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                    return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
+            
+                return await Task.FromResult(Ok(true));
+            }
+            else if (LoggedInService.IsLocal)
             {
                 TVItemUserAuthorization tvItemUserAuthorization = (from c in dbLocal.TVItemUserAuthorizations
                                    where c.TVItemUserAuthorizationID == TVItemUserAuthorizationID
@@ -178,7 +220,21 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ValidationResults));
             }
 
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.IsMemory)
+            {
+                try
+                {
+                    dbIM.TVItemUserAuthorizations.Add(tvItemUserAuthorization);
+                    dbIM.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                    return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
+
+                return await Task.FromResult(Ok(tvItemUserAuthorization));
+            }
+            else if (LoggedInService.IsLocal)
             {
                 try
                 {
@@ -220,7 +276,21 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ValidationResults));
             }
 
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.IsMemory)
+            {
+                try
+                {
+                    dbIM.TVItemUserAuthorizations.Update(tvItemUserAuthorization);
+                    dbIM.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                    return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
+
+                return await Task.FromResult(Ok(tvItemUserAuthorization));
+            }
+            else if (LoggedInService.IsLocal)
             {
             try
             {

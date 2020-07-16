@@ -24,7 +24,7 @@ namespace CSSPServices
    public interface IHydrometricSiteService
     {
        Task<ActionResult<bool>> Delete(int HydrometricSiteID);
-       Task<ActionResult<List<HydrometricSite>>> GetHydrometricSiteList();
+       Task<ActionResult<List<HydrometricSite>>> GetHydrometricSiteList(int skip = 0, int take = 100);
        Task<ActionResult<HydrometricSite>> GetHydrometricSiteWithHydrometricSiteID(int HydrometricSiteID);
        Task<ActionResult<HydrometricSite>> Post(HydrometricSite hydrometricsite);
        Task<ActionResult<HydrometricSite>> Put(HydrometricSite hydrometricsite);
@@ -64,51 +64,70 @@ namespace CSSPServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.IsMemory)
             {
-                HydrometricSite hydrometricsite = (from c in dbLocal.HydrometricSites.AsNoTracking()
+                HydrometricSite hydrometricSite = (from c in dbIM.HydrometricSites.AsNoTracking()
+                                   where c.HydrometricSiteID == HydrometricSiteID
+                                   select c).FirstOrDefault();
+
+                if (hydrometricSite == null)
+                {
+                    return await Task.FromResult(NotFound());
+                }
+
+                return await Task.FromResult(Ok(hydrometricSite));
+            }
+            else if (LoggedInService.IsLocal)
+            {
+                HydrometricSite hydrometricSite = (from c in dbLocal.HydrometricSites.AsNoTracking()
                         where c.HydrometricSiteID == HydrometricSiteID
                         select c).FirstOrDefault();
 
-                if (hydrometricsite == null)
+                if (hydrometricSite == null)
                 {
                    return await Task.FromResult(NotFound());
                 }
 
-                return await Task.FromResult(Ok(hydrometricsite));
+                return await Task.FromResult(Ok(hydrometricSite));
             }
             else
             {
-                HydrometricSite hydrometricsite = (from c in db.HydrometricSites.AsNoTracking()
+                HydrometricSite hydrometricSite = (from c in db.HydrometricSites.AsNoTracking()
                         where c.HydrometricSiteID == HydrometricSiteID
                         select c).FirstOrDefault();
 
-                if (hydrometricsite == null)
+                if (hydrometricSite == null)
                 {
                    return await Task.FromResult(NotFound());
                 }
 
-                return await Task.FromResult(Ok(hydrometricsite));
+                return await Task.FromResult(Ok(hydrometricSite));
             }
         }
-        public async Task<ActionResult<List<HydrometricSite>>> GetHydrometricSiteList()
+        public async Task<ActionResult<List<HydrometricSite>>> GetHydrometricSiteList(int skip = 0, int take = 100)
         {
             if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
             {
                 return await Task.FromResult(Unauthorized());
             }
 
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.IsMemory)
             {
-                List<HydrometricSite> hydrometricsiteList = (from c in dbLocal.HydrometricSites.AsNoTracking() select c).Take(100).ToList();
+                List<HydrometricSite> hydrometricSiteList = (from c in dbIM.HydrometricSites.AsNoTracking() orderby c.HydrometricSiteID select c).Skip(skip).Take(take).ToList();
+            
+                return await Task.FromResult(Ok(hydrometricSiteList));
+            }
+            else if (LoggedInService.IsLocal)
+            {
+                List<HydrometricSite> hydrometricSiteList = (from c in dbLocal.HydrometricSites.AsNoTracking() orderby c.HydrometricSiteID select c).Skip(skip).Take(take).ToList();
 
-                return await Task.FromResult(Ok(hydrometricsiteList));
+                return await Task.FromResult(Ok(hydrometricSiteList));
             }
             else
             {
-                List<HydrometricSite> hydrometricsiteList = (from c in db.HydrometricSites.AsNoTracking() select c).Take(100).ToList();
+                List<HydrometricSite> hydrometricSiteList = (from c in db.HydrometricSites.AsNoTracking() orderby c.HydrometricSiteID select c).Skip(skip).Take(take).ToList();
 
-                return await Task.FromResult(Ok(hydrometricsiteList));
+                return await Task.FromResult(Ok(hydrometricSiteList));
             }
         }
         public async Task<ActionResult<bool>> Delete(int HydrometricSiteID)
@@ -118,7 +137,30 @@ namespace CSSPServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.IsMemory)
+            {
+                HydrometricSite hydrometricSite = (from c in dbIM.HydrometricSites
+                                   where c.HydrometricSiteID == HydrometricSiteID
+                                   select c).FirstOrDefault();
+            
+                if (hydrometricSite == null)
+                {
+                    return await Task.FromResult(BadRequest(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "HydrometricSite", "HydrometricSiteID", HydrometricSiteID.ToString())));
+                }
+            
+                try
+                {
+                    dbIM.HydrometricSites.Remove(hydrometricSite);
+                    dbIM.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                    return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
+            
+                return await Task.FromResult(Ok(true));
+            }
+            else if (LoggedInService.IsLocal)
             {
                 HydrometricSite hydrometricSite = (from c in dbLocal.HydrometricSites
                                    where c.HydrometricSiteID == HydrometricSiteID
@@ -178,7 +220,21 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ValidationResults));
             }
 
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.IsMemory)
+            {
+                try
+                {
+                    dbIM.HydrometricSites.Add(hydrometricSite);
+                    dbIM.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                    return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
+
+                return await Task.FromResult(Ok(hydrometricSite));
+            }
+            else if (LoggedInService.IsLocal)
             {
                 try
                 {
@@ -220,7 +276,21 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ValidationResults));
             }
 
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.IsMemory)
+            {
+                try
+                {
+                    dbIM.HydrometricSites.Update(hydrometricSite);
+                    dbIM.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                    return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
+
+                return await Task.FromResult(Ok(hydrometricSite));
+            }
+            else if (LoggedInService.IsLocal)
             {
             try
             {

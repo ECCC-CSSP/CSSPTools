@@ -61,21 +61,19 @@ namespace CSSPWebAPIs.Tests
             string CSSPDBLocalFileName = Config.GetValue<string>("CSSPDBLocal");
             Assert.NotNull(CSSPDBLocalFileName);
 
-            IConfigurationSection connectionStringsSection = Config.GetSection("ConnectionStrings");
-            Services.Configure<ConnectionStringsModel>(connectionStringsSection);
-
-            ConnectionStringsModel connectionStrings = connectionStringsSection.Get<ConnectionStringsModel>();
+            string TestDB = Config.GetValue<string>("TestDB");
+            Assert.NotNull(TestDB);
 
             Services.AddSingleton<IConfiguration>(Config);
 
             Services.AddDbContext<CSSPDBContext>(options =>
             {
-                options.UseSqlServer(connectionStrings.TestDB);
+                options.UseSqlServer(TestDB);
             });
 
             Services.AddDbContext<InMemoryDBContext>(options =>
             {
-                options.UseInMemoryDatabase(connectionStrings.TestDB);
+                options.UseInMemoryDatabase(TestDB);
             });
 
             string appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
@@ -88,7 +86,7 @@ namespace CSSPWebAPIs.Tests
             });
 
             Services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlServer(connectionStrings.TestDB));
+                options.UseSqlServer(TestDB));
 
             Services.AddIdentityCore<ApplicationUser>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();

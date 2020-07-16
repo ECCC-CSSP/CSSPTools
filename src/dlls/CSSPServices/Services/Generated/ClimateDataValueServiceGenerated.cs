@@ -24,7 +24,7 @@ namespace CSSPServices
    public interface IClimateDataValueService
     {
        Task<ActionResult<bool>> Delete(int ClimateDataValueID);
-       Task<ActionResult<List<ClimateDataValue>>> GetClimateDataValueList();
+       Task<ActionResult<List<ClimateDataValue>>> GetClimateDataValueList(int skip = 0, int take = 100);
        Task<ActionResult<ClimateDataValue>> GetClimateDataValueWithClimateDataValueID(int ClimateDataValueID);
        Task<ActionResult<ClimateDataValue>> Post(ClimateDataValue climatedatavalue);
        Task<ActionResult<ClimateDataValue>> Put(ClimateDataValue climatedatavalue);
@@ -64,51 +64,70 @@ namespace CSSPServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.IsMemory)
             {
-                ClimateDataValue climatedatavalue = (from c in dbLocal.ClimateDataValues.AsNoTracking()
+                ClimateDataValue climateDataValue = (from c in dbIM.ClimateDataValues.AsNoTracking()
+                                   where c.ClimateDataValueID == ClimateDataValueID
+                                   select c).FirstOrDefault();
+
+                if (climateDataValue == null)
+                {
+                    return await Task.FromResult(NotFound());
+                }
+
+                return await Task.FromResult(Ok(climateDataValue));
+            }
+            else if (LoggedInService.IsLocal)
+            {
+                ClimateDataValue climateDataValue = (from c in dbLocal.ClimateDataValues.AsNoTracking()
                         where c.ClimateDataValueID == ClimateDataValueID
                         select c).FirstOrDefault();
 
-                if (climatedatavalue == null)
+                if (climateDataValue == null)
                 {
                    return await Task.FromResult(NotFound());
                 }
 
-                return await Task.FromResult(Ok(climatedatavalue));
+                return await Task.FromResult(Ok(climateDataValue));
             }
             else
             {
-                ClimateDataValue climatedatavalue = (from c in db.ClimateDataValues.AsNoTracking()
+                ClimateDataValue climateDataValue = (from c in db.ClimateDataValues.AsNoTracking()
                         where c.ClimateDataValueID == ClimateDataValueID
                         select c).FirstOrDefault();
 
-                if (climatedatavalue == null)
+                if (climateDataValue == null)
                 {
                    return await Task.FromResult(NotFound());
                 }
 
-                return await Task.FromResult(Ok(climatedatavalue));
+                return await Task.FromResult(Ok(climateDataValue));
             }
         }
-        public async Task<ActionResult<List<ClimateDataValue>>> GetClimateDataValueList()
+        public async Task<ActionResult<List<ClimateDataValue>>> GetClimateDataValueList(int skip = 0, int take = 100)
         {
             if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
             {
                 return await Task.FromResult(Unauthorized());
             }
 
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.IsMemory)
             {
-                List<ClimateDataValue> climatedatavalueList = (from c in dbLocal.ClimateDataValues.AsNoTracking() select c).Take(100).ToList();
+                List<ClimateDataValue> climateDataValueList = (from c in dbIM.ClimateDataValues.AsNoTracking() orderby c.ClimateDataValueID select c).Skip(skip).Take(take).ToList();
+            
+                return await Task.FromResult(Ok(climateDataValueList));
+            }
+            else if (LoggedInService.IsLocal)
+            {
+                List<ClimateDataValue> climateDataValueList = (from c in dbLocal.ClimateDataValues.AsNoTracking() orderby c.ClimateDataValueID select c).Skip(skip).Take(take).ToList();
 
-                return await Task.FromResult(Ok(climatedatavalueList));
+                return await Task.FromResult(Ok(climateDataValueList));
             }
             else
             {
-                List<ClimateDataValue> climatedatavalueList = (from c in db.ClimateDataValues.AsNoTracking() select c).Take(100).ToList();
+                List<ClimateDataValue> climateDataValueList = (from c in db.ClimateDataValues.AsNoTracking() orderby c.ClimateDataValueID select c).Skip(skip).Take(take).ToList();
 
-                return await Task.FromResult(Ok(climatedatavalueList));
+                return await Task.FromResult(Ok(climateDataValueList));
             }
         }
         public async Task<ActionResult<bool>> Delete(int ClimateDataValueID)
@@ -118,7 +137,30 @@ namespace CSSPServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.IsMemory)
+            {
+                ClimateDataValue climateDataValue = (from c in dbIM.ClimateDataValues
+                                   where c.ClimateDataValueID == ClimateDataValueID
+                                   select c).FirstOrDefault();
+            
+                if (climateDataValue == null)
+                {
+                    return await Task.FromResult(BadRequest(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "ClimateDataValue", "ClimateDataValueID", ClimateDataValueID.ToString())));
+                }
+            
+                try
+                {
+                    dbIM.ClimateDataValues.Remove(climateDataValue);
+                    dbIM.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                    return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
+            
+                return await Task.FromResult(Ok(true));
+            }
+            else if (LoggedInService.IsLocal)
             {
                 ClimateDataValue climateDataValue = (from c in dbLocal.ClimateDataValues
                                    where c.ClimateDataValueID == ClimateDataValueID
@@ -178,7 +220,21 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ValidationResults));
             }
 
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.IsMemory)
+            {
+                try
+                {
+                    dbIM.ClimateDataValues.Add(climateDataValue);
+                    dbIM.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                    return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
+
+                return await Task.FromResult(Ok(climateDataValue));
+            }
+            else if (LoggedInService.IsLocal)
             {
                 try
                 {
@@ -220,7 +276,21 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ValidationResults));
             }
 
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.IsMemory)
+            {
+                try
+                {
+                    dbIM.ClimateDataValues.Update(climateDataValue);
+                    dbIM.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                    return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
+
+                return await Task.FromResult(Ok(climateDataValue));
+            }
+            else if (LoggedInService.IsLocal)
             {
             try
             {

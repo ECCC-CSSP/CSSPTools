@@ -63,8 +63,7 @@ namespace ServicesClassNameServiceTestGeneratedServices.Services
             sb.AppendLine(@"            string Id = Config.GetValue<string>(""Id"");");
             sb.AppendLine(@"            Assert.True(await LoggedInService.SetLoggedInContactInfo(Id));");
             sb.AppendLine(@"");
-            sb.AppendLine(@"            //string IsLocalStr = Config.GetValue<string>(""IsLocal"");");
-            sb.AppendLine(@"            //Assert.NotNull(IsLocalStr);");
+            sb.AppendLine(@"            LoggedInService.IsLocal = true;");
             sb.AppendLine(@"");
             sb.AppendLine(@"            dbIM = Provider.GetService<InMemoryDBContext>();");
             sb.AppendLine(@"            Assert.NotNull(dbIM);");

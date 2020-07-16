@@ -285,6 +285,9 @@
   <data name="CultureOptionsEnCAFrCA" xml:space="preserve">
     <value>Culture - Options:  en-CA || fr-CA</value>
   </data>
+  <data name="Database_ContainsInfo" xml:space="preserve">
+    <value>Database [{0}] contains info. You will need to send it to the server before creating or recreating the DB.</value>
+  </data>
   <data name="DataType" xml:space="preserve">
     <value>DataType</value>
   </data>

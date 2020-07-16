@@ -24,7 +24,7 @@ namespace CSSPServices
    public interface IVPResultService
     {
        Task<ActionResult<bool>> Delete(int VPResultID);
-       Task<ActionResult<List<VPResult>>> GetVPResultList();
+       Task<ActionResult<List<VPResult>>> GetVPResultList(int skip = 0, int take = 100);
        Task<ActionResult<VPResult>> GetVPResultWithVPResultID(int VPResultID);
        Task<ActionResult<VPResult>> Post(VPResult vpresult);
        Task<ActionResult<VPResult>> Put(VPResult vpresult);
@@ -64,51 +64,70 @@ namespace CSSPServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.IsMemory)
             {
-                VPResult vpresult = (from c in dbLocal.VPResults.AsNoTracking()
+                VPResult vpResult = (from c in dbIM.VPResults.AsNoTracking()
+                                   where c.VPResultID == VPResultID
+                                   select c).FirstOrDefault();
+
+                if (vpResult == null)
+                {
+                    return await Task.FromResult(NotFound());
+                }
+
+                return await Task.FromResult(Ok(vpResult));
+            }
+            else if (LoggedInService.IsLocal)
+            {
+                VPResult vpResult = (from c in dbLocal.VPResults.AsNoTracking()
                         where c.VPResultID == VPResultID
                         select c).FirstOrDefault();
 
-                if (vpresult == null)
+                if (vpResult == null)
                 {
                    return await Task.FromResult(NotFound());
                 }
 
-                return await Task.FromResult(Ok(vpresult));
+                return await Task.FromResult(Ok(vpResult));
             }
             else
             {
-                VPResult vpresult = (from c in db.VPResults.AsNoTracking()
+                VPResult vpResult = (from c in db.VPResults.AsNoTracking()
                         where c.VPResultID == VPResultID
                         select c).FirstOrDefault();
 
-                if (vpresult == null)
+                if (vpResult == null)
                 {
                    return await Task.FromResult(NotFound());
                 }
 
-                return await Task.FromResult(Ok(vpresult));
+                return await Task.FromResult(Ok(vpResult));
             }
         }
-        public async Task<ActionResult<List<VPResult>>> GetVPResultList()
+        public async Task<ActionResult<List<VPResult>>> GetVPResultList(int skip = 0, int take = 100)
         {
             if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
             {
                 return await Task.FromResult(Unauthorized());
             }
 
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.IsMemory)
             {
-                List<VPResult> vpresultList = (from c in dbLocal.VPResults.AsNoTracking() select c).Take(100).ToList();
+                List<VPResult> vpResultList = (from c in dbIM.VPResults.AsNoTracking() orderby c.VPResultID select c).Skip(skip).Take(take).ToList();
+            
+                return await Task.FromResult(Ok(vpResultList));
+            }
+            else if (LoggedInService.IsLocal)
+            {
+                List<VPResult> vpResultList = (from c in dbLocal.VPResults.AsNoTracking() orderby c.VPResultID select c).Skip(skip).Take(take).ToList();
 
-                return await Task.FromResult(Ok(vpresultList));
+                return await Task.FromResult(Ok(vpResultList));
             }
             else
             {
-                List<VPResult> vpresultList = (from c in db.VPResults.AsNoTracking() select c).Take(100).ToList();
+                List<VPResult> vpResultList = (from c in db.VPResults.AsNoTracking() orderby c.VPResultID select c).Skip(skip).Take(take).ToList();
 
-                return await Task.FromResult(Ok(vpresultList));
+                return await Task.FromResult(Ok(vpResultList));
             }
         }
         public async Task<ActionResult<bool>> Delete(int VPResultID)
@@ -118,7 +137,30 @@ namespace CSSPServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.IsMemory)
+            {
+                VPResult vpResult = (from c in dbIM.VPResults
+                                   where c.VPResultID == VPResultID
+                                   select c).FirstOrDefault();
+            
+                if (vpResult == null)
+                {
+                    return await Task.FromResult(BadRequest(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "VPResult", "VPResultID", VPResultID.ToString())));
+                }
+            
+                try
+                {
+                    dbIM.VPResults.Remove(vpResult);
+                    dbIM.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                    return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
+            
+                return await Task.FromResult(Ok(true));
+            }
+            else if (LoggedInService.IsLocal)
             {
                 VPResult vpResult = (from c in dbLocal.VPResults
                                    where c.VPResultID == VPResultID
@@ -178,7 +220,21 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ValidationResults));
             }
 
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.IsMemory)
+            {
+                try
+                {
+                    dbIM.VPResults.Add(vpResult);
+                    dbIM.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                    return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
+
+                return await Task.FromResult(Ok(vpResult));
+            }
+            else if (LoggedInService.IsLocal)
             {
                 try
                 {
@@ -220,7 +276,21 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ValidationResults));
             }
 
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.IsMemory)
+            {
+                try
+                {
+                    dbIM.VPResults.Update(vpResult);
+                    dbIM.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                    return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
+
+                return await Task.FromResult(Ok(vpResult));
+            }
+            else if (LoggedInService.IsLocal)
             {
             try
             {

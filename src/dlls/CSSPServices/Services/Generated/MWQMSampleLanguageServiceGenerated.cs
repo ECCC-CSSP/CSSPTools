@@ -24,7 +24,7 @@ namespace CSSPServices
    public interface IMWQMSampleLanguageService
     {
        Task<ActionResult<bool>> Delete(int MWQMSampleLanguageID);
-       Task<ActionResult<List<MWQMSampleLanguage>>> GetMWQMSampleLanguageList();
+       Task<ActionResult<List<MWQMSampleLanguage>>> GetMWQMSampleLanguageList(int skip = 0, int take = 100);
        Task<ActionResult<MWQMSampleLanguage>> GetMWQMSampleLanguageWithMWQMSampleLanguageID(int MWQMSampleLanguageID);
        Task<ActionResult<MWQMSampleLanguage>> Post(MWQMSampleLanguage mwqmsamplelanguage);
        Task<ActionResult<MWQMSampleLanguage>> Put(MWQMSampleLanguage mwqmsamplelanguage);
@@ -64,51 +64,70 @@ namespace CSSPServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.IsMemory)
             {
-                MWQMSampleLanguage mwqmsamplelanguage = (from c in dbLocal.MWQMSampleLanguages.AsNoTracking()
+                MWQMSampleLanguage mwqmSampleLanguage = (from c in dbIM.MWQMSampleLanguages.AsNoTracking()
+                                   where c.MWQMSampleLanguageID == MWQMSampleLanguageID
+                                   select c).FirstOrDefault();
+
+                if (mwqmSampleLanguage == null)
+                {
+                    return await Task.FromResult(NotFound());
+                }
+
+                return await Task.FromResult(Ok(mwqmSampleLanguage));
+            }
+            else if (LoggedInService.IsLocal)
+            {
+                MWQMSampleLanguage mwqmSampleLanguage = (from c in dbLocal.MWQMSampleLanguages.AsNoTracking()
                         where c.MWQMSampleLanguageID == MWQMSampleLanguageID
                         select c).FirstOrDefault();
 
-                if (mwqmsamplelanguage == null)
+                if (mwqmSampleLanguage == null)
                 {
                    return await Task.FromResult(NotFound());
                 }
 
-                return await Task.FromResult(Ok(mwqmsamplelanguage));
+                return await Task.FromResult(Ok(mwqmSampleLanguage));
             }
             else
             {
-                MWQMSampleLanguage mwqmsamplelanguage = (from c in db.MWQMSampleLanguages.AsNoTracking()
+                MWQMSampleLanguage mwqmSampleLanguage = (from c in db.MWQMSampleLanguages.AsNoTracking()
                         where c.MWQMSampleLanguageID == MWQMSampleLanguageID
                         select c).FirstOrDefault();
 
-                if (mwqmsamplelanguage == null)
+                if (mwqmSampleLanguage == null)
                 {
                    return await Task.FromResult(NotFound());
                 }
 
-                return await Task.FromResult(Ok(mwqmsamplelanguage));
+                return await Task.FromResult(Ok(mwqmSampleLanguage));
             }
         }
-        public async Task<ActionResult<List<MWQMSampleLanguage>>> GetMWQMSampleLanguageList()
+        public async Task<ActionResult<List<MWQMSampleLanguage>>> GetMWQMSampleLanguageList(int skip = 0, int take = 100)
         {
             if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
             {
                 return await Task.FromResult(Unauthorized());
             }
 
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.IsMemory)
             {
-                List<MWQMSampleLanguage> mwqmsamplelanguageList = (from c in dbLocal.MWQMSampleLanguages.AsNoTracking() select c).Take(100).ToList();
+                List<MWQMSampleLanguage> mwqmSampleLanguageList = (from c in dbIM.MWQMSampleLanguages.AsNoTracking() orderby c.MWQMSampleLanguageID select c).Skip(skip).Take(take).ToList();
+            
+                return await Task.FromResult(Ok(mwqmSampleLanguageList));
+            }
+            else if (LoggedInService.IsLocal)
+            {
+                List<MWQMSampleLanguage> mwqmSampleLanguageList = (from c in dbLocal.MWQMSampleLanguages.AsNoTracking() orderby c.MWQMSampleLanguageID select c).Skip(skip).Take(take).ToList();
 
-                return await Task.FromResult(Ok(mwqmsamplelanguageList));
+                return await Task.FromResult(Ok(mwqmSampleLanguageList));
             }
             else
             {
-                List<MWQMSampleLanguage> mwqmsamplelanguageList = (from c in db.MWQMSampleLanguages.AsNoTracking() select c).Take(100).ToList();
+                List<MWQMSampleLanguage> mwqmSampleLanguageList = (from c in db.MWQMSampleLanguages.AsNoTracking() orderby c.MWQMSampleLanguageID select c).Skip(skip).Take(take).ToList();
 
-                return await Task.FromResult(Ok(mwqmsamplelanguageList));
+                return await Task.FromResult(Ok(mwqmSampleLanguageList));
             }
         }
         public async Task<ActionResult<bool>> Delete(int MWQMSampleLanguageID)
@@ -118,7 +137,30 @@ namespace CSSPServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.IsMemory)
+            {
+                MWQMSampleLanguage mwqmSampleLanguage = (from c in dbIM.MWQMSampleLanguages
+                                   where c.MWQMSampleLanguageID == MWQMSampleLanguageID
+                                   select c).FirstOrDefault();
+            
+                if (mwqmSampleLanguage == null)
+                {
+                    return await Task.FromResult(BadRequest(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "MWQMSampleLanguage", "MWQMSampleLanguageID", MWQMSampleLanguageID.ToString())));
+                }
+            
+                try
+                {
+                    dbIM.MWQMSampleLanguages.Remove(mwqmSampleLanguage);
+                    dbIM.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                    return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
+            
+                return await Task.FromResult(Ok(true));
+            }
+            else if (LoggedInService.IsLocal)
             {
                 MWQMSampleLanguage mwqmSampleLanguage = (from c in dbLocal.MWQMSampleLanguages
                                    where c.MWQMSampleLanguageID == MWQMSampleLanguageID
@@ -178,7 +220,21 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ValidationResults));
             }
 
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.IsMemory)
+            {
+                try
+                {
+                    dbIM.MWQMSampleLanguages.Add(mwqmSampleLanguage);
+                    dbIM.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                    return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
+
+                return await Task.FromResult(Ok(mwqmSampleLanguage));
+            }
+            else if (LoggedInService.IsLocal)
             {
                 try
                 {
@@ -220,7 +276,21 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ValidationResults));
             }
 
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.IsMemory)
+            {
+                try
+                {
+                    dbIM.MWQMSampleLanguages.Update(mwqmSampleLanguage);
+                    dbIM.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                    return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
+
+                return await Task.FromResult(Ok(mwqmSampleLanguage));
+            }
+            else if (LoggedInService.IsLocal)
             {
             try
             {

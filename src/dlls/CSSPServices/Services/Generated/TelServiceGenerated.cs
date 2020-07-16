@@ -24,7 +24,7 @@ namespace CSSPServices
    public interface ITelService
     {
        Task<ActionResult<bool>> Delete(int TelID);
-       Task<ActionResult<List<Tel>>> GetTelList();
+       Task<ActionResult<List<Tel>>> GetTelList(int skip = 0, int take = 100);
        Task<ActionResult<Tel>> GetTelWithTelID(int TelID);
        Task<ActionResult<Tel>> Post(Tel tel);
        Task<ActionResult<Tel>> Put(Tel tel);
@@ -64,7 +64,20 @@ namespace CSSPServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.IsMemory)
+            {
+                Tel tel = (from c in dbIM.Tels.AsNoTracking()
+                                   where c.TelID == TelID
+                                   select c).FirstOrDefault();
+
+                if (tel == null)
+                {
+                    return await Task.FromResult(NotFound());
+                }
+
+                return await Task.FromResult(Ok(tel));
+            }
+            else if (LoggedInService.IsLocal)
             {
                 Tel tel = (from c in dbLocal.Tels.AsNoTracking()
                         where c.TelID == TelID
@@ -91,22 +104,28 @@ namespace CSSPServices
                 return await Task.FromResult(Ok(tel));
             }
         }
-        public async Task<ActionResult<List<Tel>>> GetTelList()
+        public async Task<ActionResult<List<Tel>>> GetTelList(int skip = 0, int take = 100)
         {
             if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
             {
                 return await Task.FromResult(Unauthorized());
             }
 
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.IsMemory)
             {
-                List<Tel> telList = (from c in dbLocal.Tels.AsNoTracking() select c).Take(100).ToList();
+                List<Tel> telList = (from c in dbIM.Tels.AsNoTracking() orderby c.TelID select c).Skip(skip).Take(take).ToList();
+            
+                return await Task.FromResult(Ok(telList));
+            }
+            else if (LoggedInService.IsLocal)
+            {
+                List<Tel> telList = (from c in dbLocal.Tels.AsNoTracking() orderby c.TelID select c).Skip(skip).Take(take).ToList();
 
                 return await Task.FromResult(Ok(telList));
             }
             else
             {
-                List<Tel> telList = (from c in db.Tels.AsNoTracking() select c).Take(100).ToList();
+                List<Tel> telList = (from c in db.Tels.AsNoTracking() orderby c.TelID select c).Skip(skip).Take(take).ToList();
 
                 return await Task.FromResult(Ok(telList));
             }
@@ -118,7 +137,30 @@ namespace CSSPServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.IsMemory)
+            {
+                Tel tel = (from c in dbIM.Tels
+                                   where c.TelID == TelID
+                                   select c).FirstOrDefault();
+            
+                if (tel == null)
+                {
+                    return await Task.FromResult(BadRequest(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "Tel", "TelID", TelID.ToString())));
+                }
+            
+                try
+                {
+                    dbIM.Tels.Remove(tel);
+                    dbIM.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                    return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
+            
+                return await Task.FromResult(Ok(true));
+            }
+            else if (LoggedInService.IsLocal)
             {
                 Tel tel = (from c in dbLocal.Tels
                                    where c.TelID == TelID
@@ -178,7 +220,21 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ValidationResults));
             }
 
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.IsMemory)
+            {
+                try
+                {
+                    dbIM.Tels.Add(tel);
+                    dbIM.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                    return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
+
+                return await Task.FromResult(Ok(tel));
+            }
+            else if (LoggedInService.IsLocal)
             {
                 try
                 {
@@ -220,7 +276,21 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ValidationResults));
             }
 
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.IsMemory)
+            {
+                try
+                {
+                    dbIM.Tels.Update(tel);
+                    dbIM.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                    return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
+
+                return await Task.FromResult(Ok(tel));
+            }
+            else if (LoggedInService.IsLocal)
             {
             try
             {

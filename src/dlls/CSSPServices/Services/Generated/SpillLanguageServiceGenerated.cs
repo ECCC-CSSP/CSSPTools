@@ -24,7 +24,7 @@ namespace CSSPServices
    public interface ISpillLanguageService
     {
        Task<ActionResult<bool>> Delete(int SpillLanguageID);
-       Task<ActionResult<List<SpillLanguage>>> GetSpillLanguageList();
+       Task<ActionResult<List<SpillLanguage>>> GetSpillLanguageList(int skip = 0, int take = 100);
        Task<ActionResult<SpillLanguage>> GetSpillLanguageWithSpillLanguageID(int SpillLanguageID);
        Task<ActionResult<SpillLanguage>> Post(SpillLanguage spilllanguage);
        Task<ActionResult<SpillLanguage>> Put(SpillLanguage spilllanguage);
@@ -64,51 +64,70 @@ namespace CSSPServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.IsMemory)
             {
-                SpillLanguage spilllanguage = (from c in dbLocal.SpillLanguages.AsNoTracking()
+                SpillLanguage spillLanguage = (from c in dbIM.SpillLanguages.AsNoTracking()
+                                   where c.SpillLanguageID == SpillLanguageID
+                                   select c).FirstOrDefault();
+
+                if (spillLanguage == null)
+                {
+                    return await Task.FromResult(NotFound());
+                }
+
+                return await Task.FromResult(Ok(spillLanguage));
+            }
+            else if (LoggedInService.IsLocal)
+            {
+                SpillLanguage spillLanguage = (from c in dbLocal.SpillLanguages.AsNoTracking()
                         where c.SpillLanguageID == SpillLanguageID
                         select c).FirstOrDefault();
 
-                if (spilllanguage == null)
+                if (spillLanguage == null)
                 {
                    return await Task.FromResult(NotFound());
                 }
 
-                return await Task.FromResult(Ok(spilllanguage));
+                return await Task.FromResult(Ok(spillLanguage));
             }
             else
             {
-                SpillLanguage spilllanguage = (from c in db.SpillLanguages.AsNoTracking()
+                SpillLanguage spillLanguage = (from c in db.SpillLanguages.AsNoTracking()
                         where c.SpillLanguageID == SpillLanguageID
                         select c).FirstOrDefault();
 
-                if (spilllanguage == null)
+                if (spillLanguage == null)
                 {
                    return await Task.FromResult(NotFound());
                 }
 
-                return await Task.FromResult(Ok(spilllanguage));
+                return await Task.FromResult(Ok(spillLanguage));
             }
         }
-        public async Task<ActionResult<List<SpillLanguage>>> GetSpillLanguageList()
+        public async Task<ActionResult<List<SpillLanguage>>> GetSpillLanguageList(int skip = 0, int take = 100)
         {
             if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
             {
                 return await Task.FromResult(Unauthorized());
             }
 
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.IsMemory)
             {
-                List<SpillLanguage> spilllanguageList = (from c in dbLocal.SpillLanguages.AsNoTracking() select c).Take(100).ToList();
+                List<SpillLanguage> spillLanguageList = (from c in dbIM.SpillLanguages.AsNoTracking() orderby c.SpillLanguageID select c).Skip(skip).Take(take).ToList();
+            
+                return await Task.FromResult(Ok(spillLanguageList));
+            }
+            else if (LoggedInService.IsLocal)
+            {
+                List<SpillLanguage> spillLanguageList = (from c in dbLocal.SpillLanguages.AsNoTracking() orderby c.SpillLanguageID select c).Skip(skip).Take(take).ToList();
 
-                return await Task.FromResult(Ok(spilllanguageList));
+                return await Task.FromResult(Ok(spillLanguageList));
             }
             else
             {
-                List<SpillLanguage> spilllanguageList = (from c in db.SpillLanguages.AsNoTracking() select c).Take(100).ToList();
+                List<SpillLanguage> spillLanguageList = (from c in db.SpillLanguages.AsNoTracking() orderby c.SpillLanguageID select c).Skip(skip).Take(take).ToList();
 
-                return await Task.FromResult(Ok(spilllanguageList));
+                return await Task.FromResult(Ok(spillLanguageList));
             }
         }
         public async Task<ActionResult<bool>> Delete(int SpillLanguageID)
@@ -118,7 +137,30 @@ namespace CSSPServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.IsMemory)
+            {
+                SpillLanguage spillLanguage = (from c in dbIM.SpillLanguages
+                                   where c.SpillLanguageID == SpillLanguageID
+                                   select c).FirstOrDefault();
+            
+                if (spillLanguage == null)
+                {
+                    return await Task.FromResult(BadRequest(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "SpillLanguage", "SpillLanguageID", SpillLanguageID.ToString())));
+                }
+            
+                try
+                {
+                    dbIM.SpillLanguages.Remove(spillLanguage);
+                    dbIM.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                    return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
+            
+                return await Task.FromResult(Ok(true));
+            }
+            else if (LoggedInService.IsLocal)
             {
                 SpillLanguage spillLanguage = (from c in dbLocal.SpillLanguages
                                    where c.SpillLanguageID == SpillLanguageID
@@ -178,7 +220,21 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ValidationResults));
             }
 
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.IsMemory)
+            {
+                try
+                {
+                    dbIM.SpillLanguages.Add(spillLanguage);
+                    dbIM.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                    return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
+
+                return await Task.FromResult(Ok(spillLanguage));
+            }
+            else if (LoggedInService.IsLocal)
             {
                 try
                 {
@@ -220,7 +276,21 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ValidationResults));
             }
 
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.IsMemory)
+            {
+                try
+                {
+                    dbIM.SpillLanguages.Update(spillLanguage);
+                    dbIM.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                    return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
+
+                return await Task.FromResult(Ok(spillLanguage));
+            }
+            else if (LoggedInService.IsLocal)
             {
             try
             {

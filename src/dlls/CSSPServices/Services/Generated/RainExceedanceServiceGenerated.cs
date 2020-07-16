@@ -24,7 +24,7 @@ namespace CSSPServices
    public interface IRainExceedanceService
     {
        Task<ActionResult<bool>> Delete(int RainExceedanceID);
-       Task<ActionResult<List<RainExceedance>>> GetRainExceedanceList();
+       Task<ActionResult<List<RainExceedance>>> GetRainExceedanceList(int skip = 0, int take = 100);
        Task<ActionResult<RainExceedance>> GetRainExceedanceWithRainExceedanceID(int RainExceedanceID);
        Task<ActionResult<RainExceedance>> Post(RainExceedance rainexceedance);
        Task<ActionResult<RainExceedance>> Put(RainExceedance rainexceedance);
@@ -64,51 +64,70 @@ namespace CSSPServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.IsMemory)
             {
-                RainExceedance rainexceedance = (from c in dbLocal.RainExceedances.AsNoTracking()
+                RainExceedance rainExceedance = (from c in dbIM.RainExceedances.AsNoTracking()
+                                   where c.RainExceedanceID == RainExceedanceID
+                                   select c).FirstOrDefault();
+
+                if (rainExceedance == null)
+                {
+                    return await Task.FromResult(NotFound());
+                }
+
+                return await Task.FromResult(Ok(rainExceedance));
+            }
+            else if (LoggedInService.IsLocal)
+            {
+                RainExceedance rainExceedance = (from c in dbLocal.RainExceedances.AsNoTracking()
                         where c.RainExceedanceID == RainExceedanceID
                         select c).FirstOrDefault();
 
-                if (rainexceedance == null)
+                if (rainExceedance == null)
                 {
                    return await Task.FromResult(NotFound());
                 }
 
-                return await Task.FromResult(Ok(rainexceedance));
+                return await Task.FromResult(Ok(rainExceedance));
             }
             else
             {
-                RainExceedance rainexceedance = (from c in db.RainExceedances.AsNoTracking()
+                RainExceedance rainExceedance = (from c in db.RainExceedances.AsNoTracking()
                         where c.RainExceedanceID == RainExceedanceID
                         select c).FirstOrDefault();
 
-                if (rainexceedance == null)
+                if (rainExceedance == null)
                 {
                    return await Task.FromResult(NotFound());
                 }
 
-                return await Task.FromResult(Ok(rainexceedance));
+                return await Task.FromResult(Ok(rainExceedance));
             }
         }
-        public async Task<ActionResult<List<RainExceedance>>> GetRainExceedanceList()
+        public async Task<ActionResult<List<RainExceedance>>> GetRainExceedanceList(int skip = 0, int take = 100)
         {
             if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
             {
                 return await Task.FromResult(Unauthorized());
             }
 
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.IsMemory)
             {
-                List<RainExceedance> rainexceedanceList = (from c in dbLocal.RainExceedances.AsNoTracking() select c).Take(100).ToList();
+                List<RainExceedance> rainExceedanceList = (from c in dbIM.RainExceedances.AsNoTracking() orderby c.RainExceedanceID select c).Skip(skip).Take(take).ToList();
+            
+                return await Task.FromResult(Ok(rainExceedanceList));
+            }
+            else if (LoggedInService.IsLocal)
+            {
+                List<RainExceedance> rainExceedanceList = (from c in dbLocal.RainExceedances.AsNoTracking() orderby c.RainExceedanceID select c).Skip(skip).Take(take).ToList();
 
-                return await Task.FromResult(Ok(rainexceedanceList));
+                return await Task.FromResult(Ok(rainExceedanceList));
             }
             else
             {
-                List<RainExceedance> rainexceedanceList = (from c in db.RainExceedances.AsNoTracking() select c).Take(100).ToList();
+                List<RainExceedance> rainExceedanceList = (from c in db.RainExceedances.AsNoTracking() orderby c.RainExceedanceID select c).Skip(skip).Take(take).ToList();
 
-                return await Task.FromResult(Ok(rainexceedanceList));
+                return await Task.FromResult(Ok(rainExceedanceList));
             }
         }
         public async Task<ActionResult<bool>> Delete(int RainExceedanceID)
@@ -118,7 +137,30 @@ namespace CSSPServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.IsMemory)
+            {
+                RainExceedance rainExceedance = (from c in dbIM.RainExceedances
+                                   where c.RainExceedanceID == RainExceedanceID
+                                   select c).FirstOrDefault();
+            
+                if (rainExceedance == null)
+                {
+                    return await Task.FromResult(BadRequest(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "RainExceedance", "RainExceedanceID", RainExceedanceID.ToString())));
+                }
+            
+                try
+                {
+                    dbIM.RainExceedances.Remove(rainExceedance);
+                    dbIM.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                    return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
+            
+                return await Task.FromResult(Ok(true));
+            }
+            else if (LoggedInService.IsLocal)
             {
                 RainExceedance rainExceedance = (from c in dbLocal.RainExceedances
                                    where c.RainExceedanceID == RainExceedanceID
@@ -178,7 +220,21 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ValidationResults));
             }
 
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.IsMemory)
+            {
+                try
+                {
+                    dbIM.RainExceedances.Add(rainExceedance);
+                    dbIM.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                    return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
+
+                return await Task.FromResult(Ok(rainExceedance));
+            }
+            else if (LoggedInService.IsLocal)
             {
                 try
                 {
@@ -220,7 +276,21 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ValidationResults));
             }
 
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.IsMemory)
+            {
+                try
+                {
+                    dbIM.RainExceedances.Update(rainExceedance);
+                    dbIM.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                    return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
+
+                return await Task.FromResult(Ok(rainExceedance));
+            }
+            else if (LoggedInService.IsLocal)
             {
             try
             {

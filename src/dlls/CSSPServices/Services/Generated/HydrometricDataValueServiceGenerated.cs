@@ -24,7 +24,7 @@ namespace CSSPServices
    public interface IHydrometricDataValueService
     {
        Task<ActionResult<bool>> Delete(int HydrometricDataValueID);
-       Task<ActionResult<List<HydrometricDataValue>>> GetHydrometricDataValueList();
+       Task<ActionResult<List<HydrometricDataValue>>> GetHydrometricDataValueList(int skip = 0, int take = 100);
        Task<ActionResult<HydrometricDataValue>> GetHydrometricDataValueWithHydrometricDataValueID(int HydrometricDataValueID);
        Task<ActionResult<HydrometricDataValue>> Post(HydrometricDataValue hydrometricdatavalue);
        Task<ActionResult<HydrometricDataValue>> Put(HydrometricDataValue hydrometricdatavalue);
@@ -64,51 +64,70 @@ namespace CSSPServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.IsMemory)
             {
-                HydrometricDataValue hydrometricdatavalue = (from c in dbLocal.HydrometricDataValues.AsNoTracking()
+                HydrometricDataValue hydrometricDataValue = (from c in dbIM.HydrometricDataValues.AsNoTracking()
+                                   where c.HydrometricDataValueID == HydrometricDataValueID
+                                   select c).FirstOrDefault();
+
+                if (hydrometricDataValue == null)
+                {
+                    return await Task.FromResult(NotFound());
+                }
+
+                return await Task.FromResult(Ok(hydrometricDataValue));
+            }
+            else if (LoggedInService.IsLocal)
+            {
+                HydrometricDataValue hydrometricDataValue = (from c in dbLocal.HydrometricDataValues.AsNoTracking()
                         where c.HydrometricDataValueID == HydrometricDataValueID
                         select c).FirstOrDefault();
 
-                if (hydrometricdatavalue == null)
+                if (hydrometricDataValue == null)
                 {
                    return await Task.FromResult(NotFound());
                 }
 
-                return await Task.FromResult(Ok(hydrometricdatavalue));
+                return await Task.FromResult(Ok(hydrometricDataValue));
             }
             else
             {
-                HydrometricDataValue hydrometricdatavalue = (from c in db.HydrometricDataValues.AsNoTracking()
+                HydrometricDataValue hydrometricDataValue = (from c in db.HydrometricDataValues.AsNoTracking()
                         where c.HydrometricDataValueID == HydrometricDataValueID
                         select c).FirstOrDefault();
 
-                if (hydrometricdatavalue == null)
+                if (hydrometricDataValue == null)
                 {
                    return await Task.FromResult(NotFound());
                 }
 
-                return await Task.FromResult(Ok(hydrometricdatavalue));
+                return await Task.FromResult(Ok(hydrometricDataValue));
             }
         }
-        public async Task<ActionResult<List<HydrometricDataValue>>> GetHydrometricDataValueList()
+        public async Task<ActionResult<List<HydrometricDataValue>>> GetHydrometricDataValueList(int skip = 0, int take = 100)
         {
             if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
             {
                 return await Task.FromResult(Unauthorized());
             }
 
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.IsMemory)
             {
-                List<HydrometricDataValue> hydrometricdatavalueList = (from c in dbLocal.HydrometricDataValues.AsNoTracking() select c).Take(100).ToList();
+                List<HydrometricDataValue> hydrometricDataValueList = (from c in dbIM.HydrometricDataValues.AsNoTracking() orderby c.HydrometricDataValueID select c).Skip(skip).Take(take).ToList();
+            
+                return await Task.FromResult(Ok(hydrometricDataValueList));
+            }
+            else if (LoggedInService.IsLocal)
+            {
+                List<HydrometricDataValue> hydrometricDataValueList = (from c in dbLocal.HydrometricDataValues.AsNoTracking() orderby c.HydrometricDataValueID select c).Skip(skip).Take(take).ToList();
 
-                return await Task.FromResult(Ok(hydrometricdatavalueList));
+                return await Task.FromResult(Ok(hydrometricDataValueList));
             }
             else
             {
-                List<HydrometricDataValue> hydrometricdatavalueList = (from c in db.HydrometricDataValues.AsNoTracking() select c).Take(100).ToList();
+                List<HydrometricDataValue> hydrometricDataValueList = (from c in db.HydrometricDataValues.AsNoTracking() orderby c.HydrometricDataValueID select c).Skip(skip).Take(take).ToList();
 
-                return await Task.FromResult(Ok(hydrometricdatavalueList));
+                return await Task.FromResult(Ok(hydrometricDataValueList));
             }
         }
         public async Task<ActionResult<bool>> Delete(int HydrometricDataValueID)
@@ -118,7 +137,30 @@ namespace CSSPServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.IsMemory)
+            {
+                HydrometricDataValue hydrometricDataValue = (from c in dbIM.HydrometricDataValues
+                                   where c.HydrometricDataValueID == HydrometricDataValueID
+                                   select c).FirstOrDefault();
+            
+                if (hydrometricDataValue == null)
+                {
+                    return await Task.FromResult(BadRequest(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "HydrometricDataValue", "HydrometricDataValueID", HydrometricDataValueID.ToString())));
+                }
+            
+                try
+                {
+                    dbIM.HydrometricDataValues.Remove(hydrometricDataValue);
+                    dbIM.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                    return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
+            
+                return await Task.FromResult(Ok(true));
+            }
+            else if (LoggedInService.IsLocal)
             {
                 HydrometricDataValue hydrometricDataValue = (from c in dbLocal.HydrometricDataValues
                                    where c.HydrometricDataValueID == HydrometricDataValueID
@@ -178,7 +220,21 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ValidationResults));
             }
 
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.IsMemory)
+            {
+                try
+                {
+                    dbIM.HydrometricDataValues.Add(hydrometricDataValue);
+                    dbIM.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                    return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
+
+                return await Task.FromResult(Ok(hydrometricDataValue));
+            }
+            else if (LoggedInService.IsLocal)
             {
                 try
                 {
@@ -220,7 +276,21 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ValidationResults));
             }
 
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.IsMemory)
+            {
+                try
+                {
+                    dbIM.HydrometricDataValues.Update(hydrometricDataValue);
+                    dbIM.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                    return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
+
+                return await Task.FromResult(Ok(hydrometricDataValue));
+            }
+            else if (LoggedInService.IsLocal)
             {
             try
             {

@@ -17,7 +17,7 @@ namespace GenerateCodeBaseServices.Services
             int count = 0;
             foreach (Type type in typeList)
             {
-                if (type.Name.StartsWith("<") || type.FullName.StartsWith("CSSPWebAPI.Models"))
+                if (type.Name.StartsWith("<") || type.FullName.StartsWith("CSSPWebAPIs.Models"))
                 {
                     continue;
                 }

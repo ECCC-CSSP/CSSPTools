@@ -24,7 +24,7 @@ namespace CSSPServices
    public interface IMWQMSiteService
     {
        Task<ActionResult<bool>> Delete(int MWQMSiteID);
-       Task<ActionResult<List<MWQMSite>>> GetMWQMSiteList();
+       Task<ActionResult<List<MWQMSite>>> GetMWQMSiteList(int skip = 0, int take = 100);
        Task<ActionResult<MWQMSite>> GetMWQMSiteWithMWQMSiteID(int MWQMSiteID);
        Task<ActionResult<MWQMSite>> Post(MWQMSite mwqmsite);
        Task<ActionResult<MWQMSite>> Put(MWQMSite mwqmsite);
@@ -64,51 +64,70 @@ namespace CSSPServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.IsMemory)
             {
-                MWQMSite mwqmsite = (from c in dbLocal.MWQMSites.AsNoTracking()
+                MWQMSite mwqmSite = (from c in dbIM.MWQMSites.AsNoTracking()
+                                   where c.MWQMSiteID == MWQMSiteID
+                                   select c).FirstOrDefault();
+
+                if (mwqmSite == null)
+                {
+                    return await Task.FromResult(NotFound());
+                }
+
+                return await Task.FromResult(Ok(mwqmSite));
+            }
+            else if (LoggedInService.IsLocal)
+            {
+                MWQMSite mwqmSite = (from c in dbLocal.MWQMSites.AsNoTracking()
                         where c.MWQMSiteID == MWQMSiteID
                         select c).FirstOrDefault();
 
-                if (mwqmsite == null)
+                if (mwqmSite == null)
                 {
                    return await Task.FromResult(NotFound());
                 }
 
-                return await Task.FromResult(Ok(mwqmsite));
+                return await Task.FromResult(Ok(mwqmSite));
             }
             else
             {
-                MWQMSite mwqmsite = (from c in db.MWQMSites.AsNoTracking()
+                MWQMSite mwqmSite = (from c in db.MWQMSites.AsNoTracking()
                         where c.MWQMSiteID == MWQMSiteID
                         select c).FirstOrDefault();
 
-                if (mwqmsite == null)
+                if (mwqmSite == null)
                 {
                    return await Task.FromResult(NotFound());
                 }
 
-                return await Task.FromResult(Ok(mwqmsite));
+                return await Task.FromResult(Ok(mwqmSite));
             }
         }
-        public async Task<ActionResult<List<MWQMSite>>> GetMWQMSiteList()
+        public async Task<ActionResult<List<MWQMSite>>> GetMWQMSiteList(int skip = 0, int take = 100)
         {
             if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
             {
                 return await Task.FromResult(Unauthorized());
             }
 
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.IsMemory)
             {
-                List<MWQMSite> mwqmsiteList = (from c in dbLocal.MWQMSites.AsNoTracking() select c).Take(100).ToList();
+                List<MWQMSite> mwqmSiteList = (from c in dbIM.MWQMSites.AsNoTracking() orderby c.MWQMSiteID select c).Skip(skip).Take(take).ToList();
+            
+                return await Task.FromResult(Ok(mwqmSiteList));
+            }
+            else if (LoggedInService.IsLocal)
+            {
+                List<MWQMSite> mwqmSiteList = (from c in dbLocal.MWQMSites.AsNoTracking() orderby c.MWQMSiteID select c).Skip(skip).Take(take).ToList();
 
-                return await Task.FromResult(Ok(mwqmsiteList));
+                return await Task.FromResult(Ok(mwqmSiteList));
             }
             else
             {
-                List<MWQMSite> mwqmsiteList = (from c in db.MWQMSites.AsNoTracking() select c).Take(100).ToList();
+                List<MWQMSite> mwqmSiteList = (from c in db.MWQMSites.AsNoTracking() orderby c.MWQMSiteID select c).Skip(skip).Take(take).ToList();
 
-                return await Task.FromResult(Ok(mwqmsiteList));
+                return await Task.FromResult(Ok(mwqmSiteList));
             }
         }
         public async Task<ActionResult<bool>> Delete(int MWQMSiteID)
@@ -118,7 +137,30 @@ namespace CSSPServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.IsMemory)
+            {
+                MWQMSite mwqmSite = (from c in dbIM.MWQMSites
+                                   where c.MWQMSiteID == MWQMSiteID
+                                   select c).FirstOrDefault();
+            
+                if (mwqmSite == null)
+                {
+                    return await Task.FromResult(BadRequest(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "MWQMSite", "MWQMSiteID", MWQMSiteID.ToString())));
+                }
+            
+                try
+                {
+                    dbIM.MWQMSites.Remove(mwqmSite);
+                    dbIM.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                    return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
+            
+                return await Task.FromResult(Ok(true));
+            }
+            else if (LoggedInService.IsLocal)
             {
                 MWQMSite mwqmSite = (from c in dbLocal.MWQMSites
                                    where c.MWQMSiteID == MWQMSiteID
@@ -178,7 +220,21 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ValidationResults));
             }
 
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.IsMemory)
+            {
+                try
+                {
+                    dbIM.MWQMSites.Add(mwqmSite);
+                    dbIM.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                    return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
+
+                return await Task.FromResult(Ok(mwqmSite));
+            }
+            else if (LoggedInService.IsLocal)
             {
                 try
                 {
@@ -220,7 +276,21 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ValidationResults));
             }
 
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.IsMemory)
+            {
+                try
+                {
+                    dbIM.MWQMSites.Update(mwqmSite);
+                    dbIM.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                    return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
+
+                return await Task.FromResult(Ok(mwqmSite));
+            }
+            else if (LoggedInService.IsLocal)
             {
             try
             {

@@ -21,6 +21,14 @@ namespace ServicesClassNameServiceGeneratedServices.Services
                     continue;
                 }
 
+                List<string> TypeNameWithPlurial_es = new List<string>() { "Address", };
+
+                string Plurial = "s";
+                if (TypeNameWithPlurial_es.Contains(TypeName))
+                {
+                    Plurial = "es";
+                }
+
                 CSSPProp csspProp = new CSSPProp();
                 if (!GenerateCodeBaseService.FillCSSPProp(dllPropertyInfo.PropertyInfo, csspProp, dllTypeInfo.Type))
                 {
@@ -45,11 +53,11 @@ namespace ServicesClassNameServiceGeneratedServices.Services
 
                     if (currentDLLTypeInfo.Name == "AspNetUser")
                     {
-                        sb.AppendLine($@"        public async Task<ActionResult<{ currentDLLTypeInfo.Name }>> Get{ currentDLLTypeInfo.Name }With{ TypeName }ID(string Id,");
+                        sb.AppendLine($@"        public async Task<ActionResult<{ TypeName }>> Get{ TypeName }With{ TypeName }Id(string Id,");
                     }
                     else
                     {
-                        sb.AppendLine($@"        public async Task<ActionResult<{ currentDLLTypeInfo.Name }>> Get{ currentDLLTypeInfo.Name }With{ currentDLLTypeInfo.Name }ID(int { currentDLLTypeInfo.Name }ID)");
+                        sb.AppendLine($@"        public async Task<ActionResult<{ TypeName }>> Get{ TypeName }With{ TypeName }ID(int { TypeName }ID)");
                     }
                     sb.AppendLine(@"        {");
                     sb.AppendLine(@"            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)");
@@ -57,105 +65,94 @@ namespace ServicesClassNameServiceGeneratedServices.Services
                     sb.AppendLine(@"                return await Task.FromResult(Unauthorized());");
                     sb.AppendLine(@"            }");
                     sb.AppendLine(@"");
-                    sb.AppendLine(@"            if (LoggedInService.IsLocal)");
+                    sb.AppendLine(@"            if (LoggedInService.IsMemory)");
+                    sb.AppendLine(@"            {");
+                    sb.AppendLine($@"                { TypeName } { TypeNameLower } = (from c in dbIM.{ TypeName }{ Plurial }.AsNoTracking()");
+                    sb.AppendLine($@"                                   where c.{ TypeName }ID == { TypeName }ID");
+                    sb.AppendLine(@"                                   select c).FirstOrDefault();");
+                    sb.AppendLine(@"");
+                    sb.AppendLine($@"                if ({ TypeNameLower } == null)");
+                    sb.AppendLine(@"                {");
+                    sb.AppendLine(@"                    return await Task.FromResult(NotFound());");
+                    sb.AppendLine(@"                }");
+                    sb.AppendLine(@"");
+                    sb.AppendLine($@"                return await Task.FromResult(Ok({ TypeNameLower }));");
+                    sb.AppendLine(@"            }");
+
+                    sb.AppendLine(@"            else if (LoggedInService.IsLocal)");
                     sb.AppendLine(@"            {");
 
+                    sb.AppendLine($@"                { TypeName } { TypeNameLower } = (from c in dbLocal.{ TypeName }{ Plurial }.AsNoTracking()");
                     if (currentDLLTypeInfo.Name == "AspNetUser")
                     {
-                        sb.AppendLine($@"                { currentDLLTypeInfo.Name } { currentDLLTypeInfo.Name.ToLower() } = (from c in dbLocal.{ TypeName }s.AsNoTracking()");
                         sb.AppendLine(@"                        where c.Id == Id");
-                        sb.AppendLine(@"                        select c).FirstOrDefault();");
                     }
                     else
                     {
-                        if (currentDLLTypeInfo.Name.StartsWith("Address"))
-                        {
-                            sb.AppendLine($@"                { currentDLLTypeInfo.Name } { currentDLLTypeInfo.Name.ToLower() } = (from c in dbLocal.{ TypeName }es.AsNoTracking()");
-                        }
-                        else
-                        {
-                            sb.AppendLine($@"                { currentDLLTypeInfo.Name } { currentDLLTypeInfo.Name.ToLower() } = (from c in dbLocal.{ TypeName }s.AsNoTracking()");
-                        }
                         sb.AppendLine($@"                        where c.{ TypeName }ID == { TypeName }ID");
-                        sb.AppendLine(@"                        select c).FirstOrDefault();");
                     }
+                    sb.AppendLine(@"                        select c).FirstOrDefault();");
                     sb.AppendLine(@"");
-                    sb.AppendLine($@"                if ({ currentDLLTypeInfo.Name.ToLower() } == null)");
+                    sb.AppendLine($@"                if ({ TypeNameLower } == null)");
                     sb.AppendLine(@"                {");
                     sb.AppendLine($@"                   return await Task.FromResult(NotFound());");
                     sb.AppendLine(@"                }");
                     sb.AppendLine(@"");
-                    sb.AppendLine($@"                return await Task.FromResult(Ok({ currentDLLTypeInfo.Name.ToLower() }));");
+                    sb.AppendLine($@"                return await Task.FromResult(Ok({ TypeNameLower }));");
 
                     sb.AppendLine(@"            }");
                     sb.AppendLine(@"            else");
                     sb.AppendLine(@"            {");
 
+                    sb.AppendLine($@"                { TypeName } { TypeNameLower } = (from c in db.{ TypeName }{ Plurial }.AsNoTracking()");
                     if (currentDLLTypeInfo.Name == "AspNetUser")
                     {
-                        sb.AppendLine($@"                { currentDLLTypeInfo.Name } { currentDLLTypeInfo.Name.ToLower() } = (from c in db.{ TypeName }s.AsNoTracking()");
                         sb.AppendLine(@"                        where c.Id == Id");
-                        sb.AppendLine(@"                        select c).FirstOrDefault();");
                     }
                     else
                     {
-                        if (currentDLLTypeInfo.Name.StartsWith("Address"))
-                        {
-                            sb.AppendLine($@"                { currentDLLTypeInfo.Name } { currentDLLTypeInfo.Name.ToLower() } = (from c in db.{ TypeName }es.AsNoTracking()");
-                        }
-                        else
-                        {
-                            sb.AppendLine($@"                { currentDLLTypeInfo.Name } { currentDLLTypeInfo.Name.ToLower() } = (from c in db.{ TypeName }s.AsNoTracking()");
-                        }
                         sb.AppendLine($@"                        where c.{ TypeName }ID == { TypeName }ID");
-                        sb.AppendLine(@"                        select c).FirstOrDefault();");
                     }
+                    sb.AppendLine(@"                        select c).FirstOrDefault();");
                     sb.AppendLine(@"");
-                    sb.AppendLine($@"                if ({ currentDLLTypeInfo.Name.ToLower() } == null)");
+                    sb.AppendLine($@"                if ({ TypeNameLower } == null)");
                     sb.AppendLine(@"                {");
                     sb.AppendLine($@"                   return await Task.FromResult(NotFound());");
                     sb.AppendLine(@"                }");
                     sb.AppendLine(@"");
-                    sb.AppendLine($@"                return await Task.FromResult(Ok({ currentDLLTypeInfo.Name.ToLower() }));");
+                    sb.AppendLine($@"                return await Task.FromResult(Ok({ TypeNameLower }));");
 
                     sb.AppendLine(@"            }");
                     sb.AppendLine(@"        }");
 
-                    sb.AppendLine($@"        public async Task<ActionResult<List<{ currentDLLTypeInfo.Name }>>> Get{ currentDLLTypeInfo.Name }List()");
+                    sb.AppendLine($@"        public async Task<ActionResult<List<{ TypeName }>>> Get{ TypeName }List(int skip = 0, int take = 100)");
                     sb.AppendLine(@"        {");
                     sb.AppendLine(@"            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)");
                     sb.AppendLine(@"            {");
                     sb.AppendLine(@"                return await Task.FromResult(Unauthorized());");
                     sb.AppendLine(@"            }");
                     sb.AppendLine(@"");
-                    sb.AppendLine(@"            if (LoggedInService.IsLocal)");
+                    sb.AppendLine(@"            if (LoggedInService.IsMemory)");
+                    sb.AppendLine(@"            {");
+                    sb.AppendLine($@"                List<{ TypeName }> { TypeNameLower }List = (from c in dbIM.{ TypeName }{ Plurial }.AsNoTracking() orderby c.{ TypeName }ID select c).Skip(skip).Take(take).ToList();");
+                    sb.AppendLine(@"            ");
+                    sb.AppendLine($@"                return await Task.FromResult(Ok({ TypeNameLower }List));");
+                    sb.AppendLine(@"            }");
+
+                    sb.AppendLine(@"            else if (LoggedInService.IsLocal)");
                     sb.AppendLine(@"            {");
 
-                    if (currentDLLTypeInfo.Name.StartsWith("Address"))
-                    {
-                        sb.AppendLine($@"                List<{ currentDLLTypeInfo.Name }> { currentDLLTypeInfo.Name.ToLower() }List = (from c in dbLocal.{ currentDLLTypeInfo.Name }es.AsNoTracking() select c).Take(100).ToList();");
-                    }
-                    else
-                    {
-                        sb.AppendLine($@"                List<{ currentDLLTypeInfo.Name }> { currentDLLTypeInfo.Name.ToLower() }List = (from c in dbLocal.{ currentDLLTypeInfo.Name }s.AsNoTracking() select c).Take(100).ToList();");
-                    }
+                    sb.AppendLine($@"                List<{ TypeName }> { TypeNameLower }List = (from c in dbLocal.{ TypeName }{ Plurial }.AsNoTracking() orderby c.{ TypeName }ID select c).Skip(skip).Take(take).ToList();");
                     sb.AppendLine(@"");
-                    sb.AppendLine($@"                return await Task.FromResult(Ok({ currentDLLTypeInfo.Name.ToLower() }List));");
+                    sb.AppendLine($@"                return await Task.FromResult(Ok({ TypeNameLower }List));");
 
                     sb.AppendLine(@"            }");
                     sb.AppendLine(@"            else");
                     sb.AppendLine(@"            {");
 
-                    if (currentDLLTypeInfo.Name.StartsWith("Address"))
-                    {
-                        sb.AppendLine($@"                List<{ currentDLLTypeInfo.Name }> { currentDLLTypeInfo.Name.ToLower() }List = (from c in db.{ currentDLLTypeInfo.Name }es.AsNoTracking() select c).Take(100).ToList();");
-                    }
-                    else
-                    {
-                        sb.AppendLine($@"                List<{ currentDLLTypeInfo.Name }> { currentDLLTypeInfo.Name.ToLower() }List = (from c in db.{ currentDLLTypeInfo.Name }s.AsNoTracking() select c).Take(100).ToList();");
-                    }
+                    sb.AppendLine($@"                List<{ TypeName }> { TypeNameLower }List = (from c in db.{ TypeName }{ Plurial }.AsNoTracking() orderby c.{ TypeName }ID select c).Skip(skip).Take(take).ToList();");
                     sb.AppendLine(@"");
-                    sb.AppendLine($@"                return await Task.FromResult(Ok({ currentDLLTypeInfo.Name.ToLower() }List));");
+                    sb.AppendLine($@"                return await Task.FromResult(Ok({ TypeNameLower }List));");
 
                     sb.AppendLine(@"            }");
                     sb.AppendLine(@"        }");

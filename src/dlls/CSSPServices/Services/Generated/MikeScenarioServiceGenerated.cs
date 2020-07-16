@@ -24,7 +24,7 @@ namespace CSSPServices
    public interface IMikeScenarioService
     {
        Task<ActionResult<bool>> Delete(int MikeScenarioID);
-       Task<ActionResult<List<MikeScenario>>> GetMikeScenarioList();
+       Task<ActionResult<List<MikeScenario>>> GetMikeScenarioList(int skip = 0, int take = 100);
        Task<ActionResult<MikeScenario>> GetMikeScenarioWithMikeScenarioID(int MikeScenarioID);
        Task<ActionResult<MikeScenario>> Post(MikeScenario mikescenario);
        Task<ActionResult<MikeScenario>> Put(MikeScenario mikescenario);
@@ -64,51 +64,70 @@ namespace CSSPServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.IsMemory)
             {
-                MikeScenario mikescenario = (from c in dbLocal.MikeScenarios.AsNoTracking()
+                MikeScenario mikeScenario = (from c in dbIM.MikeScenarios.AsNoTracking()
+                                   where c.MikeScenarioID == MikeScenarioID
+                                   select c).FirstOrDefault();
+
+                if (mikeScenario == null)
+                {
+                    return await Task.FromResult(NotFound());
+                }
+
+                return await Task.FromResult(Ok(mikeScenario));
+            }
+            else if (LoggedInService.IsLocal)
+            {
+                MikeScenario mikeScenario = (from c in dbLocal.MikeScenarios.AsNoTracking()
                         where c.MikeScenarioID == MikeScenarioID
                         select c).FirstOrDefault();
 
-                if (mikescenario == null)
+                if (mikeScenario == null)
                 {
                    return await Task.FromResult(NotFound());
                 }
 
-                return await Task.FromResult(Ok(mikescenario));
+                return await Task.FromResult(Ok(mikeScenario));
             }
             else
             {
-                MikeScenario mikescenario = (from c in db.MikeScenarios.AsNoTracking()
+                MikeScenario mikeScenario = (from c in db.MikeScenarios.AsNoTracking()
                         where c.MikeScenarioID == MikeScenarioID
                         select c).FirstOrDefault();
 
-                if (mikescenario == null)
+                if (mikeScenario == null)
                 {
                    return await Task.FromResult(NotFound());
                 }
 
-                return await Task.FromResult(Ok(mikescenario));
+                return await Task.FromResult(Ok(mikeScenario));
             }
         }
-        public async Task<ActionResult<List<MikeScenario>>> GetMikeScenarioList()
+        public async Task<ActionResult<List<MikeScenario>>> GetMikeScenarioList(int skip = 0, int take = 100)
         {
             if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
             {
                 return await Task.FromResult(Unauthorized());
             }
 
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.IsMemory)
             {
-                List<MikeScenario> mikescenarioList = (from c in dbLocal.MikeScenarios.AsNoTracking() select c).Take(100).ToList();
+                List<MikeScenario> mikeScenarioList = (from c in dbIM.MikeScenarios.AsNoTracking() orderby c.MikeScenarioID select c).Skip(skip).Take(take).ToList();
+            
+                return await Task.FromResult(Ok(mikeScenarioList));
+            }
+            else if (LoggedInService.IsLocal)
+            {
+                List<MikeScenario> mikeScenarioList = (from c in dbLocal.MikeScenarios.AsNoTracking() orderby c.MikeScenarioID select c).Skip(skip).Take(take).ToList();
 
-                return await Task.FromResult(Ok(mikescenarioList));
+                return await Task.FromResult(Ok(mikeScenarioList));
             }
             else
             {
-                List<MikeScenario> mikescenarioList = (from c in db.MikeScenarios.AsNoTracking() select c).Take(100).ToList();
+                List<MikeScenario> mikeScenarioList = (from c in db.MikeScenarios.AsNoTracking() orderby c.MikeScenarioID select c).Skip(skip).Take(take).ToList();
 
-                return await Task.FromResult(Ok(mikescenarioList));
+                return await Task.FromResult(Ok(mikeScenarioList));
             }
         }
         public async Task<ActionResult<bool>> Delete(int MikeScenarioID)
@@ -118,7 +137,30 @@ namespace CSSPServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.IsMemory)
+            {
+                MikeScenario mikeScenario = (from c in dbIM.MikeScenarios
+                                   where c.MikeScenarioID == MikeScenarioID
+                                   select c).FirstOrDefault();
+            
+                if (mikeScenario == null)
+                {
+                    return await Task.FromResult(BadRequest(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "MikeScenario", "MikeScenarioID", MikeScenarioID.ToString())));
+                }
+            
+                try
+                {
+                    dbIM.MikeScenarios.Remove(mikeScenario);
+                    dbIM.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                    return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
+            
+                return await Task.FromResult(Ok(true));
+            }
+            else if (LoggedInService.IsLocal)
             {
                 MikeScenario mikeScenario = (from c in dbLocal.MikeScenarios
                                    where c.MikeScenarioID == MikeScenarioID
@@ -178,7 +220,21 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ValidationResults));
             }
 
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.IsMemory)
+            {
+                try
+                {
+                    dbIM.MikeScenarios.Add(mikeScenario);
+                    dbIM.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                    return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
+
+                return await Task.FromResult(Ok(mikeScenario));
+            }
+            else if (LoggedInService.IsLocal)
             {
                 try
                 {
@@ -220,7 +276,21 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ValidationResults));
             }
 
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.IsMemory)
+            {
+                try
+                {
+                    dbIM.MikeScenarios.Update(mikeScenario);
+                    dbIM.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                    return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
+
+                return await Task.FromResult(Ok(mikeScenario));
+            }
+            else if (LoggedInService.IsLocal)
             {
             try
             {

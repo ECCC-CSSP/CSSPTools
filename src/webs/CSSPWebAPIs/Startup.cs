@@ -48,8 +48,6 @@ namespace CSSPWebAPIs
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            FileInfo fiw = new FileInfo(@"C:\Users\charl\AppData\Roaming\cssp\rootpath.txt");
-
             string appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
 
             string DBFromArgs = "TestDB";
@@ -77,11 +75,8 @@ namespace CSSPWebAPIs
                     options.JsonSerializerOptions.PropertyNamingPolicy = null;
                 });
 
-            IConfigurationSection apiSettingsSection = Configuration.GetSection("ApiSettings");
-            services.Configure<ApiSettingsModel>(apiSettingsSection);
-
-            ApiSettingsModel apiSettings = apiSettingsSection.Get<ApiSettingsModel>();
-            byte[] key = Encoding.ASCII.GetBytes(apiSettings.APISecret);
+            string APISecret = Configuration.GetValue<string>("APISecret");
+            byte[] key = Encoding.ASCII.GetBytes(APISecret);
 
             services.AddAuthentication(x =>
             {
@@ -101,11 +96,6 @@ namespace CSSPWebAPIs
                 };
             });
 
-
-            IConfigurationSection connectionStringsSection = Configuration.GetSection("ConnectionStrings");
-            services.Configure<ConnectionStringsModel>(connectionStringsSection);
-
-            ConnectionStringsModel connectionStrings = connectionStringsSection.Get<ConnectionStringsModel>();
 
             /* ---------------------------------------------------------------------------------
              * using AzureCSSPDB 
@@ -134,11 +124,13 @@ namespace CSSPWebAPIs
 
             if (DBFromArgs == "CSSPDB")
             {
+                string CSSPDB = Configuration.GetValue<string>("CSSPDB");
+
                 services.AddDbContext<CSSPDBContext>(options =>
-                        options.UseSqlServer(connectionStrings.CSSPDB));
+                        options.UseSqlServer(CSSPDB));
 
                 services.AddDbContext<InMemoryDBContext>(options =>
-                        options.UseInMemoryDatabase(connectionStrings.CSSPDB));
+                        options.UseInMemoryDatabase(CSSPDB));
 
                 string CSSPDBLocalFileName = Configuration.GetValue<string>("CSSPDBLocal");
 
@@ -150,7 +142,7 @@ namespace CSSPWebAPIs
                 });
 
                 services.AddDbContext<ApplicationDbContext>(options =>
-                    options.UseSqlServer(connectionStrings.CSSPDB));
+                    options.UseSqlServer(CSSPDB));
             }
 
             /* ---------------------------------------------------------------------------------
@@ -160,11 +152,13 @@ namespace CSSPWebAPIs
 
             if (DBFromArgs == "CSSPDB2")
             {
+                string CSSPDB2 = Configuration.GetValue<string>("CSSPDB2");
+
                 services.AddDbContext<CSSPDBContext>(options =>
-                options.UseSqlServer(connectionStrings.CSSPDB2));
+                options.UseSqlServer(CSSPDB2));
 
                 services.AddDbContext<InMemoryDBContext>(options =>
-                        options.UseInMemoryDatabase(connectionStrings.CSSPDB2));
+                        options.UseInMemoryDatabase(CSSPDB2));
 
                 string CSSPDBLocalFileName = Configuration.GetValue<string>("CSSPDBLocal");
 
@@ -176,7 +170,7 @@ namespace CSSPWebAPIs
                 });
 
                 services.AddDbContext<ApplicationDbContext>(options =>
-                    options.UseSqlServer(connectionStrings.CSSPDB2));
+                    options.UseSqlServer(CSSPDB2));
             }
 
             /* ---------------------------------------------------------------------------------
@@ -185,11 +179,13 @@ namespace CSSPWebAPIs
              */
             if (DBFromArgs == "TestDB")
             {
+                string TestDB = Configuration.GetValue<string>("TestDB");
+
                 services.AddDbContext<CSSPDBContext>(options =>
-                        options.UseSqlServer(connectionStrings.TestDB));
+                        options.UseSqlServer(TestDB));
 
                 services.AddDbContext<InMemoryDBContext>(options =>
-                        options.UseInMemoryDatabase(connectionStrings.TestDB));
+                        options.UseInMemoryDatabase(TestDB));
 
                 string CSSPDBLocalFileName = Configuration.GetValue<string>("CSSPDBLocal");
 
@@ -201,7 +197,7 @@ namespace CSSPWebAPIs
                 });
 
                 services.AddDbContext<ApplicationDbContext>(options =>
-                    options.UseSqlServer(connectionStrings.TestDB));
+                    options.UseSqlServer(TestDB));
             }
 
             /* ---------------------------------------------------------------------------------

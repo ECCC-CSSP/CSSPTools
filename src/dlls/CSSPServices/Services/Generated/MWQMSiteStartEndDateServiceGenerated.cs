@@ -24,7 +24,7 @@ namespace CSSPServices
    public interface IMWQMSiteStartEndDateService
     {
        Task<ActionResult<bool>> Delete(int MWQMSiteStartEndDateID);
-       Task<ActionResult<List<MWQMSiteStartEndDate>>> GetMWQMSiteStartEndDateList();
+       Task<ActionResult<List<MWQMSiteStartEndDate>>> GetMWQMSiteStartEndDateList(int skip = 0, int take = 100);
        Task<ActionResult<MWQMSiteStartEndDate>> GetMWQMSiteStartEndDateWithMWQMSiteStartEndDateID(int MWQMSiteStartEndDateID);
        Task<ActionResult<MWQMSiteStartEndDate>> Post(MWQMSiteStartEndDate mwqmsitestartenddate);
        Task<ActionResult<MWQMSiteStartEndDate>> Put(MWQMSiteStartEndDate mwqmsitestartenddate);
@@ -64,51 +64,70 @@ namespace CSSPServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.IsMemory)
             {
-                MWQMSiteStartEndDate mwqmsitestartenddate = (from c in dbLocal.MWQMSiteStartEndDates.AsNoTracking()
+                MWQMSiteStartEndDate mwqmSiteStartEndDate = (from c in dbIM.MWQMSiteStartEndDates.AsNoTracking()
+                                   where c.MWQMSiteStartEndDateID == MWQMSiteStartEndDateID
+                                   select c).FirstOrDefault();
+
+                if (mwqmSiteStartEndDate == null)
+                {
+                    return await Task.FromResult(NotFound());
+                }
+
+                return await Task.FromResult(Ok(mwqmSiteStartEndDate));
+            }
+            else if (LoggedInService.IsLocal)
+            {
+                MWQMSiteStartEndDate mwqmSiteStartEndDate = (from c in dbLocal.MWQMSiteStartEndDates.AsNoTracking()
                         where c.MWQMSiteStartEndDateID == MWQMSiteStartEndDateID
                         select c).FirstOrDefault();
 
-                if (mwqmsitestartenddate == null)
+                if (mwqmSiteStartEndDate == null)
                 {
                    return await Task.FromResult(NotFound());
                 }
 
-                return await Task.FromResult(Ok(mwqmsitestartenddate));
+                return await Task.FromResult(Ok(mwqmSiteStartEndDate));
             }
             else
             {
-                MWQMSiteStartEndDate mwqmsitestartenddate = (from c in db.MWQMSiteStartEndDates.AsNoTracking()
+                MWQMSiteStartEndDate mwqmSiteStartEndDate = (from c in db.MWQMSiteStartEndDates.AsNoTracking()
                         where c.MWQMSiteStartEndDateID == MWQMSiteStartEndDateID
                         select c).FirstOrDefault();
 
-                if (mwqmsitestartenddate == null)
+                if (mwqmSiteStartEndDate == null)
                 {
                    return await Task.FromResult(NotFound());
                 }
 
-                return await Task.FromResult(Ok(mwqmsitestartenddate));
+                return await Task.FromResult(Ok(mwqmSiteStartEndDate));
             }
         }
-        public async Task<ActionResult<List<MWQMSiteStartEndDate>>> GetMWQMSiteStartEndDateList()
+        public async Task<ActionResult<List<MWQMSiteStartEndDate>>> GetMWQMSiteStartEndDateList(int skip = 0, int take = 100)
         {
             if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
             {
                 return await Task.FromResult(Unauthorized());
             }
 
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.IsMemory)
             {
-                List<MWQMSiteStartEndDate> mwqmsitestartenddateList = (from c in dbLocal.MWQMSiteStartEndDates.AsNoTracking() select c).Take(100).ToList();
+                List<MWQMSiteStartEndDate> mwqmSiteStartEndDateList = (from c in dbIM.MWQMSiteStartEndDates.AsNoTracking() orderby c.MWQMSiteStartEndDateID select c).Skip(skip).Take(take).ToList();
+            
+                return await Task.FromResult(Ok(mwqmSiteStartEndDateList));
+            }
+            else if (LoggedInService.IsLocal)
+            {
+                List<MWQMSiteStartEndDate> mwqmSiteStartEndDateList = (from c in dbLocal.MWQMSiteStartEndDates.AsNoTracking() orderby c.MWQMSiteStartEndDateID select c).Skip(skip).Take(take).ToList();
 
-                return await Task.FromResult(Ok(mwqmsitestartenddateList));
+                return await Task.FromResult(Ok(mwqmSiteStartEndDateList));
             }
             else
             {
-                List<MWQMSiteStartEndDate> mwqmsitestartenddateList = (from c in db.MWQMSiteStartEndDates.AsNoTracking() select c).Take(100).ToList();
+                List<MWQMSiteStartEndDate> mwqmSiteStartEndDateList = (from c in db.MWQMSiteStartEndDates.AsNoTracking() orderby c.MWQMSiteStartEndDateID select c).Skip(skip).Take(take).ToList();
 
-                return await Task.FromResult(Ok(mwqmsitestartenddateList));
+                return await Task.FromResult(Ok(mwqmSiteStartEndDateList));
             }
         }
         public async Task<ActionResult<bool>> Delete(int MWQMSiteStartEndDateID)
@@ -118,7 +137,30 @@ namespace CSSPServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.IsMemory)
+            {
+                MWQMSiteStartEndDate mwqmSiteStartEndDate = (from c in dbIM.MWQMSiteStartEndDates
+                                   where c.MWQMSiteStartEndDateID == MWQMSiteStartEndDateID
+                                   select c).FirstOrDefault();
+            
+                if (mwqmSiteStartEndDate == null)
+                {
+                    return await Task.FromResult(BadRequest(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "MWQMSiteStartEndDate", "MWQMSiteStartEndDateID", MWQMSiteStartEndDateID.ToString())));
+                }
+            
+                try
+                {
+                    dbIM.MWQMSiteStartEndDates.Remove(mwqmSiteStartEndDate);
+                    dbIM.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                    return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
+            
+                return await Task.FromResult(Ok(true));
+            }
+            else if (LoggedInService.IsLocal)
             {
                 MWQMSiteStartEndDate mwqmSiteStartEndDate = (from c in dbLocal.MWQMSiteStartEndDates
                                    where c.MWQMSiteStartEndDateID == MWQMSiteStartEndDateID
@@ -178,7 +220,21 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ValidationResults));
             }
 
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.IsMemory)
+            {
+                try
+                {
+                    dbIM.MWQMSiteStartEndDates.Add(mwqmSiteStartEndDate);
+                    dbIM.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                    return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
+
+                return await Task.FromResult(Ok(mwqmSiteStartEndDate));
+            }
+            else if (LoggedInService.IsLocal)
             {
                 try
                 {
@@ -220,7 +276,21 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ValidationResults));
             }
 
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.IsMemory)
+            {
+                try
+                {
+                    dbIM.MWQMSiteStartEndDates.Update(mwqmSiteStartEndDate);
+                    dbIM.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                    return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
+
+                return await Task.FromResult(Ok(mwqmSiteStartEndDate));
+            }
+            else if (LoggedInService.IsLocal)
             {
             try
             {

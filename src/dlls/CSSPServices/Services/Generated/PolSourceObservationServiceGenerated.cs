@@ -24,7 +24,7 @@ namespace CSSPServices
    public interface IPolSourceObservationService
     {
        Task<ActionResult<bool>> Delete(int PolSourceObservationID);
-       Task<ActionResult<List<PolSourceObservation>>> GetPolSourceObservationList();
+       Task<ActionResult<List<PolSourceObservation>>> GetPolSourceObservationList(int skip = 0, int take = 100);
        Task<ActionResult<PolSourceObservation>> GetPolSourceObservationWithPolSourceObservationID(int PolSourceObservationID);
        Task<ActionResult<PolSourceObservation>> Post(PolSourceObservation polsourceobservation);
        Task<ActionResult<PolSourceObservation>> Put(PolSourceObservation polsourceobservation);
@@ -64,51 +64,70 @@ namespace CSSPServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.IsMemory)
             {
-                PolSourceObservation polsourceobservation = (from c in dbLocal.PolSourceObservations.AsNoTracking()
+                PolSourceObservation polSourceObservation = (from c in dbIM.PolSourceObservations.AsNoTracking()
+                                   where c.PolSourceObservationID == PolSourceObservationID
+                                   select c).FirstOrDefault();
+
+                if (polSourceObservation == null)
+                {
+                    return await Task.FromResult(NotFound());
+                }
+
+                return await Task.FromResult(Ok(polSourceObservation));
+            }
+            else if (LoggedInService.IsLocal)
+            {
+                PolSourceObservation polSourceObservation = (from c in dbLocal.PolSourceObservations.AsNoTracking()
                         where c.PolSourceObservationID == PolSourceObservationID
                         select c).FirstOrDefault();
 
-                if (polsourceobservation == null)
+                if (polSourceObservation == null)
                 {
                    return await Task.FromResult(NotFound());
                 }
 
-                return await Task.FromResult(Ok(polsourceobservation));
+                return await Task.FromResult(Ok(polSourceObservation));
             }
             else
             {
-                PolSourceObservation polsourceobservation = (from c in db.PolSourceObservations.AsNoTracking()
+                PolSourceObservation polSourceObservation = (from c in db.PolSourceObservations.AsNoTracking()
                         where c.PolSourceObservationID == PolSourceObservationID
                         select c).FirstOrDefault();
 
-                if (polsourceobservation == null)
+                if (polSourceObservation == null)
                 {
                    return await Task.FromResult(NotFound());
                 }
 
-                return await Task.FromResult(Ok(polsourceobservation));
+                return await Task.FromResult(Ok(polSourceObservation));
             }
         }
-        public async Task<ActionResult<List<PolSourceObservation>>> GetPolSourceObservationList()
+        public async Task<ActionResult<List<PolSourceObservation>>> GetPolSourceObservationList(int skip = 0, int take = 100)
         {
             if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
             {
                 return await Task.FromResult(Unauthorized());
             }
 
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.IsMemory)
             {
-                List<PolSourceObservation> polsourceobservationList = (from c in dbLocal.PolSourceObservations.AsNoTracking() select c).Take(100).ToList();
+                List<PolSourceObservation> polSourceObservationList = (from c in dbIM.PolSourceObservations.AsNoTracking() orderby c.PolSourceObservationID select c).Skip(skip).Take(take).ToList();
+            
+                return await Task.FromResult(Ok(polSourceObservationList));
+            }
+            else if (LoggedInService.IsLocal)
+            {
+                List<PolSourceObservation> polSourceObservationList = (from c in dbLocal.PolSourceObservations.AsNoTracking() orderby c.PolSourceObservationID select c).Skip(skip).Take(take).ToList();
 
-                return await Task.FromResult(Ok(polsourceobservationList));
+                return await Task.FromResult(Ok(polSourceObservationList));
             }
             else
             {
-                List<PolSourceObservation> polsourceobservationList = (from c in db.PolSourceObservations.AsNoTracking() select c).Take(100).ToList();
+                List<PolSourceObservation> polSourceObservationList = (from c in db.PolSourceObservations.AsNoTracking() orderby c.PolSourceObservationID select c).Skip(skip).Take(take).ToList();
 
-                return await Task.FromResult(Ok(polsourceobservationList));
+                return await Task.FromResult(Ok(polSourceObservationList));
             }
         }
         public async Task<ActionResult<bool>> Delete(int PolSourceObservationID)
@@ -118,7 +137,30 @@ namespace CSSPServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.IsMemory)
+            {
+                PolSourceObservation polSourceObservation = (from c in dbIM.PolSourceObservations
+                                   where c.PolSourceObservationID == PolSourceObservationID
+                                   select c).FirstOrDefault();
+            
+                if (polSourceObservation == null)
+                {
+                    return await Task.FromResult(BadRequest(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "PolSourceObservation", "PolSourceObservationID", PolSourceObservationID.ToString())));
+                }
+            
+                try
+                {
+                    dbIM.PolSourceObservations.Remove(polSourceObservation);
+                    dbIM.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                    return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
+            
+                return await Task.FromResult(Ok(true));
+            }
+            else if (LoggedInService.IsLocal)
             {
                 PolSourceObservation polSourceObservation = (from c in dbLocal.PolSourceObservations
                                    where c.PolSourceObservationID == PolSourceObservationID
@@ -178,7 +220,21 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ValidationResults));
             }
 
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.IsMemory)
+            {
+                try
+                {
+                    dbIM.PolSourceObservations.Add(polSourceObservation);
+                    dbIM.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                    return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
+
+                return await Task.FromResult(Ok(polSourceObservation));
+            }
+            else if (LoggedInService.IsLocal)
             {
                 try
                 {
@@ -220,7 +276,21 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ValidationResults));
             }
 
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.IsMemory)
+            {
+                try
+                {
+                    dbIM.PolSourceObservations.Update(polSourceObservation);
+                    dbIM.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                    return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
+
+                return await Task.FromResult(Ok(polSourceObservation));
+            }
+            else if (LoggedInService.IsLocal)
             {
             try
             {

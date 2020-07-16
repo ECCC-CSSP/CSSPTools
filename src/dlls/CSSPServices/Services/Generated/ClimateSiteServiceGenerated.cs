@@ -24,7 +24,7 @@ namespace CSSPServices
    public interface IClimateSiteService
     {
        Task<ActionResult<bool>> Delete(int ClimateSiteID);
-       Task<ActionResult<List<ClimateSite>>> GetClimateSiteList();
+       Task<ActionResult<List<ClimateSite>>> GetClimateSiteList(int skip = 0, int take = 100);
        Task<ActionResult<ClimateSite>> GetClimateSiteWithClimateSiteID(int ClimateSiteID);
        Task<ActionResult<ClimateSite>> Post(ClimateSite climatesite);
        Task<ActionResult<ClimateSite>> Put(ClimateSite climatesite);
@@ -64,51 +64,70 @@ namespace CSSPServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.IsMemory)
             {
-                ClimateSite climatesite = (from c in dbLocal.ClimateSites.AsNoTracking()
+                ClimateSite climateSite = (from c in dbIM.ClimateSites.AsNoTracking()
+                                   where c.ClimateSiteID == ClimateSiteID
+                                   select c).FirstOrDefault();
+
+                if (climateSite == null)
+                {
+                    return await Task.FromResult(NotFound());
+                }
+
+                return await Task.FromResult(Ok(climateSite));
+            }
+            else if (LoggedInService.IsLocal)
+            {
+                ClimateSite climateSite = (from c in dbLocal.ClimateSites.AsNoTracking()
                         where c.ClimateSiteID == ClimateSiteID
                         select c).FirstOrDefault();
 
-                if (climatesite == null)
+                if (climateSite == null)
                 {
                    return await Task.FromResult(NotFound());
                 }
 
-                return await Task.FromResult(Ok(climatesite));
+                return await Task.FromResult(Ok(climateSite));
             }
             else
             {
-                ClimateSite climatesite = (from c in db.ClimateSites.AsNoTracking()
+                ClimateSite climateSite = (from c in db.ClimateSites.AsNoTracking()
                         where c.ClimateSiteID == ClimateSiteID
                         select c).FirstOrDefault();
 
-                if (climatesite == null)
+                if (climateSite == null)
                 {
                    return await Task.FromResult(NotFound());
                 }
 
-                return await Task.FromResult(Ok(climatesite));
+                return await Task.FromResult(Ok(climateSite));
             }
         }
-        public async Task<ActionResult<List<ClimateSite>>> GetClimateSiteList()
+        public async Task<ActionResult<List<ClimateSite>>> GetClimateSiteList(int skip = 0, int take = 100)
         {
             if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
             {
                 return await Task.FromResult(Unauthorized());
             }
 
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.IsMemory)
             {
-                List<ClimateSite> climatesiteList = (from c in dbLocal.ClimateSites.AsNoTracking() select c).Take(100).ToList();
+                List<ClimateSite> climateSiteList = (from c in dbIM.ClimateSites.AsNoTracking() orderby c.ClimateSiteID select c).Skip(skip).Take(take).ToList();
+            
+                return await Task.FromResult(Ok(climateSiteList));
+            }
+            else if (LoggedInService.IsLocal)
+            {
+                List<ClimateSite> climateSiteList = (from c in dbLocal.ClimateSites.AsNoTracking() orderby c.ClimateSiteID select c).Skip(skip).Take(take).ToList();
 
-                return await Task.FromResult(Ok(climatesiteList));
+                return await Task.FromResult(Ok(climateSiteList));
             }
             else
             {
-                List<ClimateSite> climatesiteList = (from c in db.ClimateSites.AsNoTracking() select c).Take(100).ToList();
+                List<ClimateSite> climateSiteList = (from c in db.ClimateSites.AsNoTracking() orderby c.ClimateSiteID select c).Skip(skip).Take(take).ToList();
 
-                return await Task.FromResult(Ok(climatesiteList));
+                return await Task.FromResult(Ok(climateSiteList));
             }
         }
         public async Task<ActionResult<bool>> Delete(int ClimateSiteID)
@@ -118,7 +137,30 @@ namespace CSSPServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.IsMemory)
+            {
+                ClimateSite climateSite = (from c in dbIM.ClimateSites
+                                   where c.ClimateSiteID == ClimateSiteID
+                                   select c).FirstOrDefault();
+            
+                if (climateSite == null)
+                {
+                    return await Task.FromResult(BadRequest(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "ClimateSite", "ClimateSiteID", ClimateSiteID.ToString())));
+                }
+            
+                try
+                {
+                    dbIM.ClimateSites.Remove(climateSite);
+                    dbIM.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                    return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
+            
+                return await Task.FromResult(Ok(true));
+            }
+            else if (LoggedInService.IsLocal)
             {
                 ClimateSite climateSite = (from c in dbLocal.ClimateSites
                                    where c.ClimateSiteID == ClimateSiteID
@@ -178,7 +220,21 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ValidationResults));
             }
 
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.IsMemory)
+            {
+                try
+                {
+                    dbIM.ClimateSites.Add(climateSite);
+                    dbIM.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                    return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
+
+                return await Task.FromResult(Ok(climateSite));
+            }
+            else if (LoggedInService.IsLocal)
             {
                 try
                 {
@@ -220,7 +276,21 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ValidationResults));
             }
 
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.IsMemory)
+            {
+                try
+                {
+                    dbIM.ClimateSites.Update(climateSite);
+                    dbIM.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                    return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                }
+
+                return await Task.FromResult(Ok(climateSite));
+            }
+            else if (LoggedInService.IsLocal)
             {
             try
             {

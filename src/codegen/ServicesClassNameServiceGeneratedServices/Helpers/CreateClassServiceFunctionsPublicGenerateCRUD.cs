@@ -25,7 +25,31 @@ namespace ServicesClassNameServiceGeneratedServices.Services
             sb.AppendLine(@"                return await Task.FromResult(Unauthorized());");
             sb.AppendLine(@"            }");
             sb.AppendLine(@"");
-            sb.AppendLine(@"            if (LoggedInService.IsLocal)");
+            sb.AppendLine(@"            if (LoggedInService.IsMemory)");
+            sb.AppendLine(@"            {");
+            sb.AppendLine($@"                { TypeName } { TypeNameLower } = (from c in dbIM.{ TypeName }{ Plurial }");
+            sb.AppendLine($@"                                   where c.{ TypeName }ID == { TypeName }ID");
+            sb.AppendLine(@"                                   select c).FirstOrDefault();");
+            sb.AppendLine(@"            ");
+            sb.AppendLine($@"                if ({ TypeNameLower } == null)");
+            sb.AppendLine(@"                {");
+            sb.AppendLine($@"                    return await Task.FromResult(BadRequest(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, ""{ TypeName }"", ""{ TypeName }ID"", { TypeName }ID.ToString())));");
+            sb.AppendLine(@"                }");
+            sb.AppendLine(@"            ");
+            sb.AppendLine(@"                try");
+            sb.AppendLine(@"                {");
+            sb.AppendLine($@"                    dbIM.{ TypeName }{ Plurial }.Remove({ TypeNameLower });");
+            sb.AppendLine(@"                    dbIM.SaveChanges();");
+            sb.AppendLine(@"                }");
+            sb.AppendLine(@"                catch (DbUpdateException ex)");
+            sb.AppendLine(@"                {");
+            sb.AppendLine(@"                    return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? "" Inner: "" + ex.InnerException.Message : """")));");
+            sb.AppendLine(@"                }");
+            sb.AppendLine(@"            ");
+            sb.AppendLine(@"                return await Task.FromResult(Ok(true));");
+            sb.AppendLine(@"            }");
+
+            sb.AppendLine(@"            else if (LoggedInService.IsLocal)");
 
             sb.AppendLine(@"            {");
             sb.AppendLine($@"                { TypeName } { TypeNameLower } = (from c in dbLocal.{ TypeName }{ Plurial }");
@@ -105,7 +129,22 @@ namespace ServicesClassNameServiceGeneratedServices.Services
             sb.AppendLine($@"               return await Task.FromResult(BadRequest(ValidationResults));");
             sb.AppendLine(@"            }");
             sb.AppendLine(@"");
-            sb.AppendLine(@"            if (LoggedInService.IsLocal)");
+            sb.AppendLine(@"            if (LoggedInService.IsMemory)");
+            sb.AppendLine(@"            {");
+            sb.AppendLine(@"                try");
+            sb.AppendLine(@"                {");
+            sb.AppendLine($@"                    dbIM.{ TypeName }{ Plurial }.Add({ TypeNameLower });");
+            sb.AppendLine(@"                    dbIM.SaveChanges();");
+            sb.AppendLine(@"                }");
+            sb.AppendLine(@"                catch (DbUpdateException ex)");
+            sb.AppendLine(@"                {");
+            sb.AppendLine(@"                    return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? "" Inner: "" + ex.InnerException.Message : """")));");
+            sb.AppendLine(@"                }");
+            sb.AppendLine(@"");
+            sb.AppendLine($@"                return await Task.FromResult(Ok({ TypeNameLower }));");
+            sb.AppendLine(@"            }");
+
+            sb.AppendLine(@"            else if (LoggedInService.IsLocal)");
             sb.AppendLine(@"            {");
 
             sb.AppendLine($@"                try");
@@ -160,7 +199,22 @@ namespace ServicesClassNameServiceGeneratedServices.Services
             sb.AppendLine($@"               return await Task.FromResult(BadRequest(ValidationResults));");
             sb.AppendLine(@"            }");
             sb.AppendLine(@"");
-            sb.AppendLine(@"            if (LoggedInService.IsLocal)");
+            sb.AppendLine(@"            if (LoggedInService.IsMemory)");
+            sb.AppendLine(@"            {");
+            sb.AppendLine(@"                try");
+            sb.AppendLine(@"                {");
+            sb.AppendLine($@"                    dbIM.{ TypeName }{ Plurial }.Update({ TypeNameLower });");
+            sb.AppendLine(@"                    dbIM.SaveChanges();");
+            sb.AppendLine(@"                }");
+            sb.AppendLine(@"                catch (DbUpdateException ex)");
+            sb.AppendLine(@"                {");
+            sb.AppendLine(@"                    return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? "" Inner: "" + ex.InnerException.Message : """")));");
+            sb.AppendLine(@"                }");
+            sb.AppendLine(@"");
+            sb.AppendLine($@"                return await Task.FromResult(Ok({ TypeNameLower }));");
+            sb.AppendLine(@"            }");
+
+            sb.AppendLine(@"            else if (LoggedInService.IsLocal)");
             sb.AppendLine(@"            {");
 
             sb.AppendLine($@"            try");

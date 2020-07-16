@@ -35,21 +35,23 @@ namespace GenerateAllGzFiles
                 return await Task.FromResult(false);
             }
 
-            IConfigurationSection connectionStringsSection = Configuration.GetSection("ConnectionStrings");
-            Services.Configure<ConnectionStringsModel>(connectionStringsSection);
-
-            ConnectionStringsModel connectionStrings = connectionStringsSection.Get<ConnectionStringsModel>();
-
             Services.AddSingleton<IConfiguration>(Configuration);
+
+            string CSSPDB2 = Configuration.GetValue<string>("CSSPDB2");
+            if (string.IsNullOrWhiteSpace(CSSPDB2))
+            {
+                Console.WriteLine("CSSPDB2 is empty");
+                return await Task.FromResult(false);
+            }
 
             Services.AddDbContext<CSSPDBContext>(options =>
             {
-                options.UseSqlServer(connectionStrings.CSSPDB2);
+                options.UseSqlServer(CSSPDB2);
             });
 
             Services.AddDbContext<InMemoryDBContext>(options =>
             {
-                options.UseInMemoryDatabase(connectionStrings.CSSPDB2);
+                options.UseInMemoryDatabase(CSSPDB2);
             });
 
             string appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
@@ -62,7 +64,7 @@ namespace GenerateAllGzFiles
             });
 
             Services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlServer(connectionStrings.CSSPDB2));
+                options.UseSqlServer(CSSPDB2));
 
             Services.AddIdentityCore<ApplicationUser>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
