@@ -64,7 +64,7 @@ namespace CSSPServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            if (LoggedInService.IsMemory)
+            if (LoggedInService.DBLocation == DBLocationEnum.InMemory)
             {
                 ReportSection reportSection = (from c in dbIM.ReportSections.AsNoTracking()
                                    where c.ReportSectionID == ReportSectionID
@@ -77,7 +77,7 @@ namespace CSSPServices
 
                 return await Task.FromResult(Ok(reportSection));
             }
-            else if (LoggedInService.IsLocal)
+            else if (LoggedInService.DBLocation == DBLocationEnum.Local)
             {
                 ReportSection reportSection = (from c in dbLocal.ReportSections.AsNoTracking()
                         where c.ReportSectionID == ReportSectionID
@@ -111,13 +111,13 @@ namespace CSSPServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            if (LoggedInService.IsMemory)
+            if (LoggedInService.DBLocation == DBLocationEnum.InMemory)
             {
                 List<ReportSection> reportSectionList = (from c in dbIM.ReportSections.AsNoTracking() orderby c.ReportSectionID select c).Skip(skip).Take(take).ToList();
             
                 return await Task.FromResult(Ok(reportSectionList));
             }
-            else if (LoggedInService.IsLocal)
+            else if (LoggedInService.DBLocation == DBLocationEnum.Local)
             {
                 List<ReportSection> reportSectionList = (from c in dbLocal.ReportSections.AsNoTracking() orderby c.ReportSectionID select c).Skip(skip).Take(take).ToList();
 
@@ -137,7 +137,7 @@ namespace CSSPServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            if (LoggedInService.IsMemory)
+            if (LoggedInService.DBLocation == DBLocationEnum.InMemory)
             {
                 ReportSection reportSection = (from c in dbIM.ReportSections
                                    where c.ReportSectionID == ReportSectionID
@@ -160,7 +160,7 @@ namespace CSSPServices
             
                 return await Task.FromResult(Ok(true));
             }
-            else if (LoggedInService.IsLocal)
+            else if (LoggedInService.DBLocation == DBLocationEnum.Local)
             {
                 ReportSection reportSection = (from c in dbLocal.ReportSections
                                    where c.ReportSectionID == ReportSectionID
@@ -220,7 +220,7 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ValidationResults));
             }
 
-            if (LoggedInService.IsMemory)
+            if (LoggedInService.DBLocation == DBLocationEnum.InMemory)
             {
                 try
                 {
@@ -234,7 +234,7 @@ namespace CSSPServices
 
                 return await Task.FromResult(Ok(reportSection));
             }
-            else if (LoggedInService.IsLocal)
+            else if (LoggedInService.DBLocation == DBLocationEnum.Local)
             {
                 try
                 {
@@ -276,7 +276,7 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ValidationResults));
             }
 
-            if (LoggedInService.IsMemory)
+            if (LoggedInService.DBLocation == DBLocationEnum.InMemory)
             {
                 try
                 {
@@ -290,7 +290,7 @@ namespace CSSPServices
 
                 return await Task.FromResult(Ok(reportSection));
             }
-            else if (LoggedInService.IsLocal)
+            else if (LoggedInService.DBLocation == DBLocationEnum.Local)
             {
             try
             {
@@ -334,7 +334,7 @@ namespace CSSPServices
                     yield return new ValidationResult(string.Format(CultureServicesRes._IsRequired, "ReportSectionID"), new[] { "ReportSectionID" });
                 }
 
-                if (LoggedInService.IsLocal)
+                if (LoggedInService.DBLocation == DBLocationEnum.Local)
                 {
                     if (!(from c in dbLocal.ReportSections select c).Where(c => c.ReportSectionID == reportSection.ReportSectionID).Any())
                     {
@@ -351,7 +351,7 @@ namespace CSSPServices
             }
 
             ReportType ReportTypeReportTypeID = null;
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.DBLocation == DBLocationEnum.Local)
             {
                 ReportTypeReportTypeID = (from c in dbLocal.ReportTypes where c.ReportTypeID == reportSection.ReportTypeID select c).FirstOrDefault();
                 if (ReportTypeReportTypeID == null)
@@ -372,7 +372,7 @@ namespace CSSPServices
             if (reportSection.TVItemID != null)
             {
                 TVItem TVItemTVItemID = null;
-                if (LoggedInService.IsLocal)
+                if (LoggedInService.DBLocation == DBLocationEnum.Local)
                 {
                     TVItemTVItemID = (from c in dbLocal.TVItems where c.TVItemID == reportSection.TVItemID select c).FirstOrDefault();
                     if (TVItemTVItemID == null)
@@ -418,7 +418,7 @@ namespace CSSPServices
             if (reportSection.ParentReportSectionID != null)
             {
                 ReportSection ReportSectionParentReportSectionID = null;
-                if (LoggedInService.IsLocal)
+                if (LoggedInService.DBLocation == DBLocationEnum.Local)
                 {
                     ReportSectionParentReportSectionID = (from c in dbLocal.ReportSections where c.ReportSectionID == reportSection.ParentReportSectionID select c).FirstOrDefault();
                     if (ReportSectionParentReportSectionID == null)
@@ -448,7 +448,7 @@ namespace CSSPServices
             if (reportSection.TemplateReportSectionID != null)
             {
                 ReportSection ReportSectionTemplateReportSectionID = null;
-                if (LoggedInService.IsLocal)
+                if (LoggedInService.DBLocation == DBLocationEnum.Local)
                 {
                     ReportSectionTemplateReportSectionID = (from c in dbLocal.ReportSections where c.ReportSectionID == reportSection.TemplateReportSectionID select c).FirstOrDefault();
                     if (ReportSectionTemplateReportSectionID == null)
@@ -490,7 +490,7 @@ namespace CSSPServices
             }
 
             TVItem TVItemLastUpdateContactTVItemID = null;
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.DBLocation == DBLocationEnum.Local)
             {
                 TVItemLastUpdateContactTVItemID = (from c in dbLocal.TVItems where c.TVItemID == reportSection.LastUpdateContactTVItemID select c).FirstOrDefault();
                 if (TVItemLastUpdateContactTVItemID == null)

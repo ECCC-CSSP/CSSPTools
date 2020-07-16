@@ -64,7 +64,7 @@ namespace CSSPServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            if (LoggedInService.IsMemory)
+            if (LoggedInService.DBLocation == DBLocationEnum.InMemory)
             {
                 Email email = (from c in dbIM.Emails.AsNoTracking()
                                    where c.EmailID == EmailID
@@ -77,7 +77,7 @@ namespace CSSPServices
 
                 return await Task.FromResult(Ok(email));
             }
-            else if (LoggedInService.IsLocal)
+            else if (LoggedInService.DBLocation == DBLocationEnum.Local)
             {
                 Email email = (from c in dbLocal.Emails.AsNoTracking()
                         where c.EmailID == EmailID
@@ -111,13 +111,13 @@ namespace CSSPServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            if (LoggedInService.IsMemory)
+            if (LoggedInService.DBLocation == DBLocationEnum.InMemory)
             {
                 List<Email> emailList = (from c in dbIM.Emails.AsNoTracking() orderby c.EmailID select c).Skip(skip).Take(take).ToList();
             
                 return await Task.FromResult(Ok(emailList));
             }
-            else if (LoggedInService.IsLocal)
+            else if (LoggedInService.DBLocation == DBLocationEnum.Local)
             {
                 List<Email> emailList = (from c in dbLocal.Emails.AsNoTracking() orderby c.EmailID select c).Skip(skip).Take(take).ToList();
 
@@ -137,7 +137,7 @@ namespace CSSPServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            if (LoggedInService.IsMemory)
+            if (LoggedInService.DBLocation == DBLocationEnum.InMemory)
             {
                 Email email = (from c in dbIM.Emails
                                    where c.EmailID == EmailID
@@ -160,7 +160,7 @@ namespace CSSPServices
             
                 return await Task.FromResult(Ok(true));
             }
-            else if (LoggedInService.IsLocal)
+            else if (LoggedInService.DBLocation == DBLocationEnum.Local)
             {
                 Email email = (from c in dbLocal.Emails
                                    where c.EmailID == EmailID
@@ -220,7 +220,7 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ValidationResults));
             }
 
-            if (LoggedInService.IsMemory)
+            if (LoggedInService.DBLocation == DBLocationEnum.InMemory)
             {
                 try
                 {
@@ -234,7 +234,7 @@ namespace CSSPServices
 
                 return await Task.FromResult(Ok(email));
             }
-            else if (LoggedInService.IsLocal)
+            else if (LoggedInService.DBLocation == DBLocationEnum.Local)
             {
                 try
                 {
@@ -276,7 +276,7 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ValidationResults));
             }
 
-            if (LoggedInService.IsMemory)
+            if (LoggedInService.DBLocation == DBLocationEnum.InMemory)
             {
                 try
                 {
@@ -290,7 +290,7 @@ namespace CSSPServices
 
                 return await Task.FromResult(Ok(email));
             }
-            else if (LoggedInService.IsLocal)
+            else if (LoggedInService.DBLocation == DBLocationEnum.Local)
             {
             try
             {
@@ -334,7 +334,7 @@ namespace CSSPServices
                     yield return new ValidationResult(string.Format(CultureServicesRes._IsRequired, "EmailID"), new[] { "EmailID" });
                 }
 
-                if (LoggedInService.IsLocal)
+                if (LoggedInService.DBLocation == DBLocationEnum.Local)
                 {
                     if (!(from c in dbLocal.Emails select c).Where(c => c.EmailID == email.EmailID).Any())
                     {
@@ -351,7 +351,7 @@ namespace CSSPServices
             }
 
             TVItem TVItemEmailTVItemID = null;
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.DBLocation == DBLocationEnum.Local)
             {
                 TVItemEmailTVItemID = (from c in dbLocal.TVItems where c.TVItemID == email.EmailTVItemID select c).FirstOrDefault();
                 if (TVItemEmailTVItemID == null)
@@ -418,7 +418,7 @@ namespace CSSPServices
             }
 
             TVItem TVItemLastUpdateContactTVItemID = null;
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.DBLocation == DBLocationEnum.Local)
             {
                 TVItemLastUpdateContactTVItemID = (from c in dbLocal.TVItems where c.TVItemID == email.LastUpdateContactTVItemID select c).FirstOrDefault();
                 if (TVItemLastUpdateContactTVItemID == null)

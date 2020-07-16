@@ -64,7 +64,7 @@ namespace CSSPServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            if (LoggedInService.IsMemory)
+            if (LoggedInService.DBLocation == DBLocationEnum.InMemory)
             {
                 MikeScenarioResult mikeScenarioResult = (from c in dbIM.MikeScenarioResults.AsNoTracking()
                                    where c.MikeScenarioResultID == MikeScenarioResultID
@@ -77,7 +77,7 @@ namespace CSSPServices
 
                 return await Task.FromResult(Ok(mikeScenarioResult));
             }
-            else if (LoggedInService.IsLocal)
+            else if (LoggedInService.DBLocation == DBLocationEnum.Local)
             {
                 MikeScenarioResult mikeScenarioResult = (from c in dbLocal.MikeScenarioResults.AsNoTracking()
                         where c.MikeScenarioResultID == MikeScenarioResultID
@@ -111,13 +111,13 @@ namespace CSSPServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            if (LoggedInService.IsMemory)
+            if (LoggedInService.DBLocation == DBLocationEnum.InMemory)
             {
                 List<MikeScenarioResult> mikeScenarioResultList = (from c in dbIM.MikeScenarioResults.AsNoTracking() orderby c.MikeScenarioResultID select c).Skip(skip).Take(take).ToList();
             
                 return await Task.FromResult(Ok(mikeScenarioResultList));
             }
-            else if (LoggedInService.IsLocal)
+            else if (LoggedInService.DBLocation == DBLocationEnum.Local)
             {
                 List<MikeScenarioResult> mikeScenarioResultList = (from c in dbLocal.MikeScenarioResults.AsNoTracking() orderby c.MikeScenarioResultID select c).Skip(skip).Take(take).ToList();
 
@@ -137,7 +137,7 @@ namespace CSSPServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            if (LoggedInService.IsMemory)
+            if (LoggedInService.DBLocation == DBLocationEnum.InMemory)
             {
                 MikeScenarioResult mikeScenarioResult = (from c in dbIM.MikeScenarioResults
                                    where c.MikeScenarioResultID == MikeScenarioResultID
@@ -160,7 +160,7 @@ namespace CSSPServices
             
                 return await Task.FromResult(Ok(true));
             }
-            else if (LoggedInService.IsLocal)
+            else if (LoggedInService.DBLocation == DBLocationEnum.Local)
             {
                 MikeScenarioResult mikeScenarioResult = (from c in dbLocal.MikeScenarioResults
                                    where c.MikeScenarioResultID == MikeScenarioResultID
@@ -220,7 +220,7 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ValidationResults));
             }
 
-            if (LoggedInService.IsMemory)
+            if (LoggedInService.DBLocation == DBLocationEnum.InMemory)
             {
                 try
                 {
@@ -234,7 +234,7 @@ namespace CSSPServices
 
                 return await Task.FromResult(Ok(mikeScenarioResult));
             }
-            else if (LoggedInService.IsLocal)
+            else if (LoggedInService.DBLocation == DBLocationEnum.Local)
             {
                 try
                 {
@@ -276,7 +276,7 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ValidationResults));
             }
 
-            if (LoggedInService.IsMemory)
+            if (LoggedInService.DBLocation == DBLocationEnum.InMemory)
             {
                 try
                 {
@@ -290,7 +290,7 @@ namespace CSSPServices
 
                 return await Task.FromResult(Ok(mikeScenarioResult));
             }
-            else if (LoggedInService.IsLocal)
+            else if (LoggedInService.DBLocation == DBLocationEnum.Local)
             {
             try
             {
@@ -334,7 +334,7 @@ namespace CSSPServices
                     yield return new ValidationResult(string.Format(CultureServicesRes._IsRequired, "MikeScenarioResultID"), new[] { "MikeScenarioResultID" });
                 }
 
-                if (LoggedInService.IsLocal)
+                if (LoggedInService.DBLocation == DBLocationEnum.Local)
                 {
                     if (!(from c in dbLocal.MikeScenarioResults select c).Where(c => c.MikeScenarioResultID == mikeScenarioResult.MikeScenarioResultID).Any())
                     {
@@ -351,7 +351,7 @@ namespace CSSPServices
             }
 
             TVItem TVItemMikeScenarioTVItemID = null;
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.DBLocation == DBLocationEnum.Local)
             {
                 TVItemMikeScenarioTVItemID = (from c in dbLocal.TVItems where c.TVItemID == mikeScenarioResult.MikeScenarioTVItemID select c).FirstOrDefault();
                 if (TVItemMikeScenarioTVItemID == null)
@@ -395,7 +395,7 @@ namespace CSSPServices
             }
 
             TVItem TVItemLastUpdateContactTVItemID = null;
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.DBLocation == DBLocationEnum.Local)
             {
                 TVItemLastUpdateContactTVItemID = (from c in dbLocal.TVItems where c.TVItemID == mikeScenarioResult.LastUpdateContactTVItemID select c).FirstOrDefault();
                 if (TVItemLastUpdateContactTVItemID == null)

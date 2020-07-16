@@ -15,6 +15,11 @@ using CultureServices.Services;
 
 namespace ValidateAppSettingsServices.Services
 {
+    public interface IValidateAppSettingsService
+    {
+        List<AppSettingParameter> AppSettingParameterList { get; set; }
+        Task<bool> VerifyAppSettings();
+    }
     public partial class ValidateAppSettingsService : IValidateAppSettingsService
     {
         #region Variables

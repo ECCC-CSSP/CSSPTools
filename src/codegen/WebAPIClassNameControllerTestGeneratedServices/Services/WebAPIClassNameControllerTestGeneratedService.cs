@@ -10,6 +10,10 @@ using ValidateAppSettingsServices.Services;
 
 namespace WebAPIClassNameControllerTestGeneratedServices.Services
 {
+    public interface IWebAPIClassNameControllerTestGeneratedService
+    {
+        Task<bool> Run(string[] args);
+    }
     public partial class WebAPIClassNameControllerTestGeneratedService : ConfigService, IWebAPIClassNameControllerTestGeneratedService
     {
         #region Variables

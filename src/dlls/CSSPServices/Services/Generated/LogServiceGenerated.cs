@@ -64,7 +64,7 @@ namespace CSSPServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            if (LoggedInService.IsMemory)
+            if (LoggedInService.DBLocation == DBLocationEnum.InMemory)
             {
                 Log log = (from c in dbIM.Logs.AsNoTracking()
                                    where c.LogID == LogID
@@ -77,7 +77,7 @@ namespace CSSPServices
 
                 return await Task.FromResult(Ok(log));
             }
-            else if (LoggedInService.IsLocal)
+            else if (LoggedInService.DBLocation == DBLocationEnum.Local)
             {
                 Log log = (from c in dbLocal.Logs.AsNoTracking()
                         where c.LogID == LogID
@@ -111,13 +111,13 @@ namespace CSSPServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            if (LoggedInService.IsMemory)
+            if (LoggedInService.DBLocation == DBLocationEnum.InMemory)
             {
                 List<Log> logList = (from c in dbIM.Logs.AsNoTracking() orderby c.LogID select c).Skip(skip).Take(take).ToList();
             
                 return await Task.FromResult(Ok(logList));
             }
-            else if (LoggedInService.IsLocal)
+            else if (LoggedInService.DBLocation == DBLocationEnum.Local)
             {
                 List<Log> logList = (from c in dbLocal.Logs.AsNoTracking() orderby c.LogID select c).Skip(skip).Take(take).ToList();
 
@@ -137,7 +137,7 @@ namespace CSSPServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            if (LoggedInService.IsMemory)
+            if (LoggedInService.DBLocation == DBLocationEnum.InMemory)
             {
                 Log log = (from c in dbIM.Logs
                                    where c.LogID == LogID
@@ -160,7 +160,7 @@ namespace CSSPServices
             
                 return await Task.FromResult(Ok(true));
             }
-            else if (LoggedInService.IsLocal)
+            else if (LoggedInService.DBLocation == DBLocationEnum.Local)
             {
                 Log log = (from c in dbLocal.Logs
                                    where c.LogID == LogID
@@ -220,7 +220,7 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ValidationResults));
             }
 
-            if (LoggedInService.IsMemory)
+            if (LoggedInService.DBLocation == DBLocationEnum.InMemory)
             {
                 try
                 {
@@ -234,7 +234,7 @@ namespace CSSPServices
 
                 return await Task.FromResult(Ok(log));
             }
-            else if (LoggedInService.IsLocal)
+            else if (LoggedInService.DBLocation == DBLocationEnum.Local)
             {
                 try
                 {
@@ -276,7 +276,7 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ValidationResults));
             }
 
-            if (LoggedInService.IsMemory)
+            if (LoggedInService.DBLocation == DBLocationEnum.InMemory)
             {
                 try
                 {
@@ -290,7 +290,7 @@ namespace CSSPServices
 
                 return await Task.FromResult(Ok(log));
             }
-            else if (LoggedInService.IsLocal)
+            else if (LoggedInService.DBLocation == DBLocationEnum.Local)
             {
             try
             {
@@ -334,7 +334,7 @@ namespace CSSPServices
                     yield return new ValidationResult(string.Format(CultureServicesRes._IsRequired, "LogID"), new[] { "LogID" });
                 }
 
-                if (LoggedInService.IsLocal)
+                if (LoggedInService.DBLocation == DBLocationEnum.Local)
                 {
                     if (!(from c in dbLocal.Logs select c).Where(c => c.LogID == log.LogID).Any())
                     {
@@ -391,7 +391,7 @@ namespace CSSPServices
             }
 
             TVItem TVItemLastUpdateContactTVItemID = null;
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.DBLocation == DBLocationEnum.Local)
             {
                 TVItemLastUpdateContactTVItemID = (from c in dbLocal.TVItems where c.TVItemID == log.LastUpdateContactTVItemID select c).FirstOrDefault();
                 if (TVItemLastUpdateContactTVItemID == null)

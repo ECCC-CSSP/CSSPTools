@@ -12,6 +12,10 @@ using ConfigServices.Services;
 
 namespace AngularEnumsGeneratedServices.Services
 {
+    public interface IAngularEnumsGeneratedService
+    {
+        Task<bool> Run(string[] args);
+    }
     public partial class AngularEnumsGeneratedService : ConfigService, IAngularEnumsGeneratedService
     {
         #region Variables

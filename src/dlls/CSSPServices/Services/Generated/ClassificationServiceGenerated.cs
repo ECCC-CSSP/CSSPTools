@@ -64,7 +64,7 @@ namespace CSSPServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            if (LoggedInService.IsMemory)
+            if (LoggedInService.DBLocation == DBLocationEnum.InMemory)
             {
                 Classification classification = (from c in dbIM.Classifications.AsNoTracking()
                                    where c.ClassificationID == ClassificationID
@@ -77,7 +77,7 @@ namespace CSSPServices
 
                 return await Task.FromResult(Ok(classification));
             }
-            else if (LoggedInService.IsLocal)
+            else if (LoggedInService.DBLocation == DBLocationEnum.Local)
             {
                 Classification classification = (from c in dbLocal.Classifications.AsNoTracking()
                         where c.ClassificationID == ClassificationID
@@ -111,13 +111,13 @@ namespace CSSPServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            if (LoggedInService.IsMemory)
+            if (LoggedInService.DBLocation == DBLocationEnum.InMemory)
             {
                 List<Classification> classificationList = (from c in dbIM.Classifications.AsNoTracking() orderby c.ClassificationID select c).Skip(skip).Take(take).ToList();
             
                 return await Task.FromResult(Ok(classificationList));
             }
-            else if (LoggedInService.IsLocal)
+            else if (LoggedInService.DBLocation == DBLocationEnum.Local)
             {
                 List<Classification> classificationList = (from c in dbLocal.Classifications.AsNoTracking() orderby c.ClassificationID select c).Skip(skip).Take(take).ToList();
 
@@ -137,7 +137,7 @@ namespace CSSPServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            if (LoggedInService.IsMemory)
+            if (LoggedInService.DBLocation == DBLocationEnum.InMemory)
             {
                 Classification classification = (from c in dbIM.Classifications
                                    where c.ClassificationID == ClassificationID
@@ -160,7 +160,7 @@ namespace CSSPServices
             
                 return await Task.FromResult(Ok(true));
             }
-            else if (LoggedInService.IsLocal)
+            else if (LoggedInService.DBLocation == DBLocationEnum.Local)
             {
                 Classification classification = (from c in dbLocal.Classifications
                                    where c.ClassificationID == ClassificationID
@@ -220,7 +220,7 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ValidationResults));
             }
 
-            if (LoggedInService.IsMemory)
+            if (LoggedInService.DBLocation == DBLocationEnum.InMemory)
             {
                 try
                 {
@@ -234,7 +234,7 @@ namespace CSSPServices
 
                 return await Task.FromResult(Ok(classification));
             }
-            else if (LoggedInService.IsLocal)
+            else if (LoggedInService.DBLocation == DBLocationEnum.Local)
             {
                 try
                 {
@@ -276,7 +276,7 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ValidationResults));
             }
 
-            if (LoggedInService.IsMemory)
+            if (LoggedInService.DBLocation == DBLocationEnum.InMemory)
             {
                 try
                 {
@@ -290,7 +290,7 @@ namespace CSSPServices
 
                 return await Task.FromResult(Ok(classification));
             }
-            else if (LoggedInService.IsLocal)
+            else if (LoggedInService.DBLocation == DBLocationEnum.Local)
             {
             try
             {
@@ -334,7 +334,7 @@ namespace CSSPServices
                     yield return new ValidationResult(string.Format(CultureServicesRes._IsRequired, "ClassificationID"), new[] { "ClassificationID" });
                 }
 
-                if (LoggedInService.IsLocal)
+                if (LoggedInService.DBLocation == DBLocationEnum.Local)
                 {
                     if (!(from c in dbLocal.Classifications select c).Where(c => c.ClassificationID == classification.ClassificationID).Any())
                     {
@@ -351,7 +351,7 @@ namespace CSSPServices
             }
 
             TVItem TVItemClassificationTVItemID = null;
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.DBLocation == DBLocationEnum.Local)
             {
                 TVItemClassificationTVItemID = (from c in dbLocal.TVItems where c.TVItemID == classification.ClassificationTVItemID select c).FirstOrDefault();
                 if (TVItemClassificationTVItemID == null)
@@ -404,7 +404,7 @@ namespace CSSPServices
             }
 
             TVItem TVItemLastUpdateContactTVItemID = null;
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.DBLocation == DBLocationEnum.Local)
             {
                 TVItemLastUpdateContactTVItemID = (from c in dbLocal.TVItems where c.TVItemID == classification.LastUpdateContactTVItemID select c).FirstOrDefault();
                 if (TVItemLastUpdateContactTVItemID == null)

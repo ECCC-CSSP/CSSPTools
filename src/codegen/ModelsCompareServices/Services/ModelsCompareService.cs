@@ -10,6 +10,10 @@ using ValidateAppSettingsServices.Services;
 
 namespace ModelsCompareServices.Services
 {
+    public interface IModelsCompareService
+    {
+        Task<bool> Run(string[] args);
+    }
     public partial class ModelsCompareService : ConfigService, IModelsCompareService
     {
         #region Variables

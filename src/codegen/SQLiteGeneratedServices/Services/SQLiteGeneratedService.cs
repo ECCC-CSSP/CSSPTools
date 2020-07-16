@@ -10,6 +10,10 @@ using ValidateAppSettingsServices.Services;
 
 namespace SQLiteGeneratedServices.Services
 {
+    public interface ISQLiteGeneratedService
+    {
+        Task<bool> Run(string[] args);
+    }
     public partial class SQLiteGeneratedService : ConfigService, ISQLiteGeneratedService
     {
         #region Variables

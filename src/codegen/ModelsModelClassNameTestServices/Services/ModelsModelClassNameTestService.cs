@@ -10,6 +10,10 @@ using ValidateAppSettingsServices.Services;
 
 namespace ModelsModelClassNameTestServices.Services
 {
+    public interface IModelsModelClassNameTestService
+    {
+        Task<bool> Run(string[] args);
+    }
     public partial class ModelsModelClassNameTestService : ConfigService, IModelsModelClassNameTestService
     {
         #region Variables

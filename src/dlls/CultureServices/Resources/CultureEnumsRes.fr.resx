@@ -2442,4 +2442,13 @@
   <data name="ReportGenerateObjectsKeywordEnumSUBSECTOR_MUNICIPALITIES_FULL" xml:space="preserve">
     <value>SUBSECTOR_MUNICIPALITIES_FULL</value>
   </data>
+  <data name="DBLocationEnumInMemory" xml:space="preserve">
+    <value>En mémoire</value>
+  </data>
+  <data name="DBLocationEnumLocal" xml:space="preserve">
+    <value>Locale</value>
+  </data>
+  <data name="DBLocationEnumServer" xml:space="preserve">
+    <value>Serveur</value>
+  </data>
 </root>

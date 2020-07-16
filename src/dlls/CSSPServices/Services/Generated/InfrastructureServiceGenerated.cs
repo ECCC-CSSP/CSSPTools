@@ -64,7 +64,7 @@ namespace CSSPServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            if (LoggedInService.IsMemory)
+            if (LoggedInService.DBLocation == DBLocationEnum.InMemory)
             {
                 Infrastructure infrastructure = (from c in dbIM.Infrastructures.AsNoTracking()
                                    where c.InfrastructureID == InfrastructureID
@@ -77,7 +77,7 @@ namespace CSSPServices
 
                 return await Task.FromResult(Ok(infrastructure));
             }
-            else if (LoggedInService.IsLocal)
+            else if (LoggedInService.DBLocation == DBLocationEnum.Local)
             {
                 Infrastructure infrastructure = (from c in dbLocal.Infrastructures.AsNoTracking()
                         where c.InfrastructureID == InfrastructureID
@@ -111,13 +111,13 @@ namespace CSSPServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            if (LoggedInService.IsMemory)
+            if (LoggedInService.DBLocation == DBLocationEnum.InMemory)
             {
                 List<Infrastructure> infrastructureList = (from c in dbIM.Infrastructures.AsNoTracking() orderby c.InfrastructureID select c).Skip(skip).Take(take).ToList();
             
                 return await Task.FromResult(Ok(infrastructureList));
             }
-            else if (LoggedInService.IsLocal)
+            else if (LoggedInService.DBLocation == DBLocationEnum.Local)
             {
                 List<Infrastructure> infrastructureList = (from c in dbLocal.Infrastructures.AsNoTracking() orderby c.InfrastructureID select c).Skip(skip).Take(take).ToList();
 
@@ -137,7 +137,7 @@ namespace CSSPServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            if (LoggedInService.IsMemory)
+            if (LoggedInService.DBLocation == DBLocationEnum.InMemory)
             {
                 Infrastructure infrastructure = (from c in dbIM.Infrastructures
                                    where c.InfrastructureID == InfrastructureID
@@ -160,7 +160,7 @@ namespace CSSPServices
             
                 return await Task.FromResult(Ok(true));
             }
-            else if (LoggedInService.IsLocal)
+            else if (LoggedInService.DBLocation == DBLocationEnum.Local)
             {
                 Infrastructure infrastructure = (from c in dbLocal.Infrastructures
                                    where c.InfrastructureID == InfrastructureID
@@ -220,7 +220,7 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ValidationResults));
             }
 
-            if (LoggedInService.IsMemory)
+            if (LoggedInService.DBLocation == DBLocationEnum.InMemory)
             {
                 try
                 {
@@ -234,7 +234,7 @@ namespace CSSPServices
 
                 return await Task.FromResult(Ok(infrastructure));
             }
-            else if (LoggedInService.IsLocal)
+            else if (LoggedInService.DBLocation == DBLocationEnum.Local)
             {
                 try
                 {
@@ -276,7 +276,7 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ValidationResults));
             }
 
-            if (LoggedInService.IsMemory)
+            if (LoggedInService.DBLocation == DBLocationEnum.InMemory)
             {
                 try
                 {
@@ -290,7 +290,7 @@ namespace CSSPServices
 
                 return await Task.FromResult(Ok(infrastructure));
             }
-            else if (LoggedInService.IsLocal)
+            else if (LoggedInService.DBLocation == DBLocationEnum.Local)
             {
             try
             {
@@ -334,7 +334,7 @@ namespace CSSPServices
                     yield return new ValidationResult(string.Format(CultureServicesRes._IsRequired, "InfrastructureID"), new[] { "InfrastructureID" });
                 }
 
-                if (LoggedInService.IsLocal)
+                if (LoggedInService.DBLocation == DBLocationEnum.Local)
                 {
                     if (!(from c in dbLocal.Infrastructures select c).Where(c => c.InfrastructureID == infrastructure.InfrastructureID).Any())
                     {
@@ -351,7 +351,7 @@ namespace CSSPServices
             }
 
             TVItem TVItemInfrastructureTVItemID = null;
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.DBLocation == DBLocationEnum.Local)
             {
                 TVItemInfrastructureTVItemID = (from c in dbLocal.TVItems where c.TVItemID == infrastructure.InfrastructureTVItemID select c).FirstOrDefault();
                 if (TVItemInfrastructureTVItemID == null)
@@ -714,7 +714,7 @@ namespace CSSPServices
             if (infrastructure.SeeOtherMunicipalityTVItemID != null)
             {
                 TVItem TVItemSeeOtherMunicipalityTVItemID = null;
-                if (LoggedInService.IsLocal)
+                if (LoggedInService.DBLocation == DBLocationEnum.Local)
                 {
                     TVItemSeeOtherMunicipalityTVItemID = (from c in dbLocal.TVItems where c.TVItemID == infrastructure.SeeOtherMunicipalityTVItemID select c).FirstOrDefault();
                     if (TVItemSeeOtherMunicipalityTVItemID == null)
@@ -747,7 +747,7 @@ namespace CSSPServices
             if (infrastructure.CivicAddressTVItemID != null)
             {
                 TVItem TVItemCivicAddressTVItemID = null;
-                if (LoggedInService.IsLocal)
+                if (LoggedInService.DBLocation == DBLocationEnum.Local)
                 {
                     TVItemCivicAddressTVItemID = (from c in dbLocal.TVItems where c.TVItemID == infrastructure.CivicAddressTVItemID select c).FirstOrDefault();
                     if (TVItemCivicAddressTVItemID == null)
@@ -790,7 +790,7 @@ namespace CSSPServices
             }
 
             TVItem TVItemLastUpdateContactTVItemID = null;
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.DBLocation == DBLocationEnum.Local)
             {
                 TVItemLastUpdateContactTVItemID = (from c in dbLocal.TVItems where c.TVItemID == infrastructure.LastUpdateContactTVItemID select c).FirstOrDefault();
                 if (TVItemLastUpdateContactTVItemID == null)

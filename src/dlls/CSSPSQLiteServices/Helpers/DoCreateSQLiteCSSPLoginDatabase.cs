@@ -8,7 +8,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 
-namespace CSSPServices
+namespace CSSPSQLiteServices.Services
 {
     public partial class CSSPSQLiteService : ICSSPSQLiteService
     {

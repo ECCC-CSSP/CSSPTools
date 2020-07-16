@@ -1,4 +1,6 @@
-﻿using Microsoft.Data.Sqlite;
+﻿using CSSPModels;
+using Microsoft.Data.Sqlite;
+using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -6,15 +8,18 @@ namespace CSSPSQLiteServices.Services
 {
     public partial class CSSPSQLiteService : ICSSPSQLiteService
     {
-        private async Task<bool> DeleteTables(List<string> ListTableToDelete, List<string> ExistingTableList, SqliteConnection db)
+        private async Task<bool> DeleteTables(List<string> ListTableToDelete, List<string> ExistingTableList)
         {
             foreach (string TableName in ListTableToDelete)
             {
                 if (ExistingTableList.Contains(TableName))
                 {
-                    string DeleteTableCommand = $"DROP TABLE { TableName }";
-                    SqliteCommand DeleteTable = new SqliteCommand(DeleteTableCommand, db);
-                    SqliteDataReader ResDeleteTable = DeleteTable.ExecuteReader();
+                    using (var command = dbLocal.Database.GetDbConnection().CreateCommand())
+                    {
+                        command.CommandText = $"DROP TABLE { TableName }";
+                        dbLocal.Database.OpenConnection();
+                        command.ExecuteNonQuery();
+                    }
                 }
             }
 

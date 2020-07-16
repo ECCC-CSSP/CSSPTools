@@ -64,7 +64,7 @@ namespace CSSPServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            if (LoggedInService.IsMemory)
+            if (LoggedInService.DBLocation == DBLocationEnum.InMemory)
             {
                 Address address = (from c in dbIM.Addresses.AsNoTracking()
                                    where c.AddressID == AddressID
@@ -77,7 +77,7 @@ namespace CSSPServices
 
                 return await Task.FromResult(Ok(address));
             }
-            else if (LoggedInService.IsLocal)
+            else if (LoggedInService.DBLocation == DBLocationEnum.Local)
             {
                 Address address = (from c in dbLocal.Addresses.AsNoTracking()
                         where c.AddressID == AddressID
@@ -111,13 +111,13 @@ namespace CSSPServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            if (LoggedInService.IsMemory)
+            if (LoggedInService.DBLocation == DBLocationEnum.InMemory)
             {
                 List<Address> addressList = (from c in dbIM.Addresses.AsNoTracking() orderby c.AddressID select c).Skip(skip).Take(take).ToList();
             
                 return await Task.FromResult(Ok(addressList));
             }
-            else if (LoggedInService.IsLocal)
+            else if (LoggedInService.DBLocation == DBLocationEnum.Local)
             {
                 List<Address> addressList = (from c in dbLocal.Addresses.AsNoTracking() orderby c.AddressID select c).Skip(skip).Take(take).ToList();
 
@@ -137,7 +137,7 @@ namespace CSSPServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            if (LoggedInService.IsMemory)
+            if (LoggedInService.DBLocation == DBLocationEnum.InMemory)
             {
                 Address address = (from c in dbIM.Addresses
                                    where c.AddressID == AddressID
@@ -160,7 +160,7 @@ namespace CSSPServices
             
                 return await Task.FromResult(Ok(true));
             }
-            else if (LoggedInService.IsLocal)
+            else if (LoggedInService.DBLocation == DBLocationEnum.Local)
             {
                 Address address = (from c in dbLocal.Addresses
                                    where c.AddressID == AddressID
@@ -220,7 +220,7 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ValidationResults));
             }
 
-            if (LoggedInService.IsMemory)
+            if (LoggedInService.DBLocation == DBLocationEnum.InMemory)
             {
                 try
                 {
@@ -234,7 +234,7 @@ namespace CSSPServices
 
                 return await Task.FromResult(Ok(address));
             }
-            else if (LoggedInService.IsLocal)
+            else if (LoggedInService.DBLocation == DBLocationEnum.Local)
             {
                 try
                 {
@@ -276,7 +276,7 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ValidationResults));
             }
 
-            if (LoggedInService.IsMemory)
+            if (LoggedInService.DBLocation == DBLocationEnum.InMemory)
             {
                 try
                 {
@@ -290,7 +290,7 @@ namespace CSSPServices
 
                 return await Task.FromResult(Ok(address));
             }
-            else if (LoggedInService.IsLocal)
+            else if (LoggedInService.DBLocation == DBLocationEnum.Local)
             {
             try
             {
@@ -334,7 +334,7 @@ namespace CSSPServices
                     yield return new ValidationResult(string.Format(CultureServicesRes._IsRequired, "AddressID"), new[] { "AddressID" });
                 }
 
-                if (LoggedInService.IsLocal)
+                if (LoggedInService.DBLocation == DBLocationEnum.Local)
                 {
                     if (!(from c in dbLocal.Addresses select c).Where(c => c.AddressID == address.AddressID).Any())
                     {
@@ -351,7 +351,7 @@ namespace CSSPServices
             }
 
             TVItem TVItemAddressTVItemID = null;
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.DBLocation == DBLocationEnum.Local)
             {
                 TVItemAddressTVItemID = (from c in dbLocal.TVItems where c.TVItemID == address.AddressTVItemID select c).FirstOrDefault();
                 if (TVItemAddressTVItemID == null)
@@ -387,7 +387,7 @@ namespace CSSPServices
             }
 
             TVItem TVItemCountryTVItemID = null;
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.DBLocation == DBLocationEnum.Local)
             {
                 TVItemCountryTVItemID = (from c in dbLocal.TVItems where c.TVItemID == address.CountryTVItemID select c).FirstOrDefault();
                 if (TVItemCountryTVItemID == null)
@@ -417,7 +417,7 @@ namespace CSSPServices
             }
 
             TVItem TVItemProvinceTVItemID = null;
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.DBLocation == DBLocationEnum.Local)
             {
                 TVItemProvinceTVItemID = (from c in dbLocal.TVItems where c.TVItemID == address.ProvinceTVItemID select c).FirstOrDefault();
                 if (TVItemProvinceTVItemID == null)
@@ -447,7 +447,7 @@ namespace CSSPServices
             }
 
             TVItem TVItemMunicipalityTVItemID = null;
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.DBLocation == DBLocationEnum.Local)
             {
                 TVItemMunicipalityTVItemID = (from c in dbLocal.TVItems where c.TVItemID == address.MunicipalityTVItemID select c).FirstOrDefault();
                 if (TVItemMunicipalityTVItemID == null)
@@ -518,7 +518,7 @@ namespace CSSPServices
             }
 
             TVItem TVItemLastUpdateContactTVItemID = null;
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.DBLocation == DBLocationEnum.Local)
             {
                 TVItemLastUpdateContactTVItemID = (from c in dbLocal.TVItems where c.TVItemID == address.LastUpdateContactTVItemID select c).FirstOrDefault();
                 if (TVItemLastUpdateContactTVItemID == null)

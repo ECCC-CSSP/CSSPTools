@@ -64,7 +64,7 @@ namespace CSSPServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            if (LoggedInService.IsMemory)
+            if (LoggedInService.DBLocation == DBLocationEnum.InMemory)
             {
                 LabSheet labSheet = (from c in dbIM.LabSheets.AsNoTracking()
                                    where c.LabSheetID == LabSheetID
@@ -77,7 +77,7 @@ namespace CSSPServices
 
                 return await Task.FromResult(Ok(labSheet));
             }
-            else if (LoggedInService.IsLocal)
+            else if (LoggedInService.DBLocation == DBLocationEnum.Local)
             {
                 LabSheet labSheet = (from c in dbLocal.LabSheets.AsNoTracking()
                         where c.LabSheetID == LabSheetID
@@ -111,13 +111,13 @@ namespace CSSPServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            if (LoggedInService.IsMemory)
+            if (LoggedInService.DBLocation == DBLocationEnum.InMemory)
             {
                 List<LabSheet> labSheetList = (from c in dbIM.LabSheets.AsNoTracking() orderby c.LabSheetID select c).Skip(skip).Take(take).ToList();
             
                 return await Task.FromResult(Ok(labSheetList));
             }
-            else if (LoggedInService.IsLocal)
+            else if (LoggedInService.DBLocation == DBLocationEnum.Local)
             {
                 List<LabSheet> labSheetList = (from c in dbLocal.LabSheets.AsNoTracking() orderby c.LabSheetID select c).Skip(skip).Take(take).ToList();
 
@@ -137,7 +137,7 @@ namespace CSSPServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            if (LoggedInService.IsMemory)
+            if (LoggedInService.DBLocation == DBLocationEnum.InMemory)
             {
                 LabSheet labSheet = (from c in dbIM.LabSheets
                                    where c.LabSheetID == LabSheetID
@@ -160,7 +160,7 @@ namespace CSSPServices
             
                 return await Task.FromResult(Ok(true));
             }
-            else if (LoggedInService.IsLocal)
+            else if (LoggedInService.DBLocation == DBLocationEnum.Local)
             {
                 LabSheet labSheet = (from c in dbLocal.LabSheets
                                    where c.LabSheetID == LabSheetID
@@ -220,7 +220,7 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ValidationResults));
             }
 
-            if (LoggedInService.IsMemory)
+            if (LoggedInService.DBLocation == DBLocationEnum.InMemory)
             {
                 try
                 {
@@ -234,7 +234,7 @@ namespace CSSPServices
 
                 return await Task.FromResult(Ok(labSheet));
             }
-            else if (LoggedInService.IsLocal)
+            else if (LoggedInService.DBLocation == DBLocationEnum.Local)
             {
                 try
                 {
@@ -276,7 +276,7 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ValidationResults));
             }
 
-            if (LoggedInService.IsMemory)
+            if (LoggedInService.DBLocation == DBLocationEnum.InMemory)
             {
                 try
                 {
@@ -290,7 +290,7 @@ namespace CSSPServices
 
                 return await Task.FromResult(Ok(labSheet));
             }
-            else if (LoggedInService.IsLocal)
+            else if (LoggedInService.DBLocation == DBLocationEnum.Local)
             {
             try
             {
@@ -334,7 +334,7 @@ namespace CSSPServices
                     yield return new ValidationResult(string.Format(CultureServicesRes._IsRequired, "LabSheetID"), new[] { "LabSheetID" });
                 }
 
-                if (LoggedInService.IsLocal)
+                if (LoggedInService.DBLocation == DBLocationEnum.Local)
                 {
                     if (!(from c in dbLocal.LabSheets select c).Where(c => c.LabSheetID == labSheet.LabSheetID).Any())
                     {
@@ -356,7 +356,7 @@ namespace CSSPServices
             }
 
             SamplingPlan SamplingPlanSamplingPlanID = null;
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.DBLocation == DBLocationEnum.Local)
             {
                 SamplingPlanSamplingPlanID = (from c in dbLocal.SamplingPlans where c.SamplingPlanID == labSheet.SamplingPlanID select c).FirstOrDefault();
                 if (SamplingPlanSamplingPlanID == null)
@@ -405,7 +405,7 @@ namespace CSSPServices
             }
 
             TVItem TVItemSubsectorTVItemID = null;
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.DBLocation == DBLocationEnum.Local)
             {
                 TVItemSubsectorTVItemID = (from c in dbLocal.TVItems where c.TVItemID == labSheet.SubsectorTVItemID select c).FirstOrDefault();
                 if (TVItemSubsectorTVItemID == null)
@@ -437,7 +437,7 @@ namespace CSSPServices
             if (labSheet.MWQMRunTVItemID != null)
             {
                 TVItem TVItemMWQMRunTVItemID = null;
-                if (LoggedInService.IsLocal)
+                if (LoggedInService.DBLocation == DBLocationEnum.Local)
                 {
                     TVItemMWQMRunTVItemID = (from c in dbLocal.TVItems where c.TVItemID == labSheet.MWQMRunTVItemID select c).FirstOrDefault();
                     if (TVItemMWQMRunTVItemID == null)
@@ -523,7 +523,7 @@ namespace CSSPServices
             if (labSheet.AcceptedOrRejectedByContactTVItemID != null)
             {
                 TVItem TVItemAcceptedOrRejectedByContactTVItemID = null;
-                if (LoggedInService.IsLocal)
+                if (LoggedInService.DBLocation == DBLocationEnum.Local)
                 {
                     TVItemAcceptedOrRejectedByContactTVItemID = (from c in dbLocal.TVItems where c.TVItemID == labSheet.AcceptedOrRejectedByContactTVItemID select c).FirstOrDefault();
                     if (TVItemAcceptedOrRejectedByContactTVItemID == null)
@@ -576,7 +576,7 @@ namespace CSSPServices
             }
 
             TVItem TVItemLastUpdateContactTVItemID = null;
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.DBLocation == DBLocationEnum.Local)
             {
                 TVItemLastUpdateContactTVItemID = (from c in dbLocal.TVItems where c.TVItemID == labSheet.LastUpdateContactTVItemID select c).FirstOrDefault();
                 if (TVItemLastUpdateContactTVItemID == null)

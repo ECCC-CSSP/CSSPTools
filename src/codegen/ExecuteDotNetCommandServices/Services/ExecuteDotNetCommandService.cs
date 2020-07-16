@@ -13,6 +13,10 @@ using ValidateAppSettingsServices.Services;
 
 namespace ExecuteDotNetCommandServices.Services
 {
+    public interface IExecuteDotNetCommandService
+    {
+        Task<bool> Run(string[] args);
+    }
     public partial class ExecuteDotNetCommandService : ConfigService, IExecuteDotNetCommandService
     {
         #region Variables

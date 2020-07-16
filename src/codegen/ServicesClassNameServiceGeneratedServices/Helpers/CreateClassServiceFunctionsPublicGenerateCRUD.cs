@@ -25,7 +25,7 @@ namespace ServicesClassNameServiceGeneratedServices.Services
             sb.AppendLine(@"                return await Task.FromResult(Unauthorized());");
             sb.AppendLine(@"            }");
             sb.AppendLine(@"");
-            sb.AppendLine(@"            if (LoggedInService.IsMemory)");
+            sb.AppendLine(@"            if (LoggedInService.DBLocation == DBLocationEnum.InMemory)");
             sb.AppendLine(@"            {");
             sb.AppendLine($@"                { TypeName } { TypeNameLower } = (from c in dbIM.{ TypeName }{ Plurial }");
             sb.AppendLine($@"                                   where c.{ TypeName }ID == { TypeName }ID");
@@ -49,7 +49,7 @@ namespace ServicesClassNameServiceGeneratedServices.Services
             sb.AppendLine(@"                return await Task.FromResult(Ok(true));");
             sb.AppendLine(@"            }");
 
-            sb.AppendLine(@"            else if (LoggedInService.IsLocal)");
+            sb.AppendLine(@"            else if (LoggedInService.DBLocation == DBLocationEnum.Local)");
 
             sb.AppendLine(@"            {");
             sb.AppendLine($@"                { TypeName } { TypeNameLower } = (from c in dbLocal.{ TypeName }{ Plurial }");
@@ -129,7 +129,7 @@ namespace ServicesClassNameServiceGeneratedServices.Services
             sb.AppendLine($@"               return await Task.FromResult(BadRequest(ValidationResults));");
             sb.AppendLine(@"            }");
             sb.AppendLine(@"");
-            sb.AppendLine(@"            if (LoggedInService.IsMemory)");
+            sb.AppendLine(@"            if (LoggedInService.DBLocation == DBLocationEnum.InMemory)");
             sb.AppendLine(@"            {");
             sb.AppendLine(@"                try");
             sb.AppendLine(@"                {");
@@ -144,7 +144,7 @@ namespace ServicesClassNameServiceGeneratedServices.Services
             sb.AppendLine($@"                return await Task.FromResult(Ok({ TypeNameLower }));");
             sb.AppendLine(@"            }");
 
-            sb.AppendLine(@"            else if (LoggedInService.IsLocal)");
+            sb.AppendLine(@"            else if (LoggedInService.DBLocation == DBLocationEnum.Local)");
             sb.AppendLine(@"            {");
 
             sb.AppendLine($@"                try");
@@ -199,7 +199,7 @@ namespace ServicesClassNameServiceGeneratedServices.Services
             sb.AppendLine($@"               return await Task.FromResult(BadRequest(ValidationResults));");
             sb.AppendLine(@"            }");
             sb.AppendLine(@"");
-            sb.AppendLine(@"            if (LoggedInService.IsMemory)");
+            sb.AppendLine(@"            if (LoggedInService.DBLocation == DBLocationEnum.InMemory)");
             sb.AppendLine(@"            {");
             sb.AppendLine(@"                try");
             sb.AppendLine(@"                {");
@@ -214,7 +214,7 @@ namespace ServicesClassNameServiceGeneratedServices.Services
             sb.AppendLine($@"                return await Task.FromResult(Ok({ TypeNameLower }));");
             sb.AppendLine(@"            }");
 
-            sb.AppendLine(@"            else if (LoggedInService.IsLocal)");
+            sb.AppendLine(@"            else if (LoggedInService.DBLocation == DBLocationEnum.Local)");
             sb.AppendLine(@"            {");
 
             sb.AppendLine($@"            try");

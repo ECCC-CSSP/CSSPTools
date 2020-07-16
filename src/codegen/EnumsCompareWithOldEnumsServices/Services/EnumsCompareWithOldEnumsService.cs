@@ -10,6 +10,10 @@ using ValidateAppSettingsServices.Services;
 
 namespace EnumsCompareWithOldEnumsServices.Services
 {
+    public interface IEnumsCompareWithOldEnumsService
+    {
+        Task<bool> Run(string[] args);
+    }
     public partial class EnumsCompareWithOldEnumsService : ConfigService, IEnumsCompareWithOldEnumsService
     {
         #region Variables

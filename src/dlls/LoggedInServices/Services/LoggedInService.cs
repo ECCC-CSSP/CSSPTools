@@ -1,4 +1,5 @@
-﻿using CSSPModels;
+﻿using CSSPEnums;
+using CSSPModels;
 using CultureServices.Services;
 using System;
 using System.Collections.Generic;
@@ -8,6 +9,12 @@ using System.Threading.Tasks;
 
 namespace LoggedInServices.Services
 {
+    public interface ILoggedInService
+    {
+        Task<bool> SetLoggedInContactInfo(string Id);
+        Task<LoggedInContactInfo> GetLoggedInContactInfo();
+        DBLocationEnum DBLocation { get; set; }
+    }
     public class LoggedInService : ILoggedInService
     {
         #region Variables
@@ -18,8 +25,7 @@ namespace LoggedInServices.Services
         private CSSPDBContext db { get; }
         private InMemoryDBContext dbIM { get; }
         private LoggedInContactInfo LoggedInContactInfo { get; set; }
-        public bool IsLocal { get; set; }
-        public bool IsMemory { get; set; }
+        public DBLocationEnum DBLocation { get; set; }
         #endregion Properties
 
         #region Constructors

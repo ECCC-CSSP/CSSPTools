@@ -5,20 +5,20 @@ using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 
-namespace CSSPServices
+namespace CSSPSQLiteServices.Services
 {
     public partial class CSSPSQLiteService : ICSSPSQLiteService
     {
-        private async Task<bool> DoCSSPFilesManagementDBIsEmpty()
+        private async Task<bool> DoCSSPLoginDBIsEmpty()
         {
-            List<string> ExistingTableList = new List<string>() { "CSSPFiles" };
+            List<string> ExistingTableList = new List<string>() { "AspNetUsers", "Contacts", "Preferences" };
 
-            using (var command = dbFM.Database.GetDbConnection().CreateCommand())
+            using (var command = dbLogin.Database.GetDbConnection().CreateCommand())
             {
                 foreach (string tableName in ExistingTableList)
                 {
                     command.CommandText = $"SELECT * FROM { tableName }";
-                    dbFM.Database.OpenConnection();
+                    dbLogin.Database.OpenConnection();
                     using (var result = command.ExecuteReader())
                     {
                         while (result.Read())

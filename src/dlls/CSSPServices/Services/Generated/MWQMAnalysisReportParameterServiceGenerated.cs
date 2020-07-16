@@ -64,7 +64,7 @@ namespace CSSPServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            if (LoggedInService.IsMemory)
+            if (LoggedInService.DBLocation == DBLocationEnum.InMemory)
             {
                 MWQMAnalysisReportParameter mwqmAnalysisReportParameter = (from c in dbIM.MWQMAnalysisReportParameters.AsNoTracking()
                                    where c.MWQMAnalysisReportParameterID == MWQMAnalysisReportParameterID
@@ -77,7 +77,7 @@ namespace CSSPServices
 
                 return await Task.FromResult(Ok(mwqmAnalysisReportParameter));
             }
-            else if (LoggedInService.IsLocal)
+            else if (LoggedInService.DBLocation == DBLocationEnum.Local)
             {
                 MWQMAnalysisReportParameter mwqmAnalysisReportParameter = (from c in dbLocal.MWQMAnalysisReportParameters.AsNoTracking()
                         where c.MWQMAnalysisReportParameterID == MWQMAnalysisReportParameterID
@@ -111,13 +111,13 @@ namespace CSSPServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            if (LoggedInService.IsMemory)
+            if (LoggedInService.DBLocation == DBLocationEnum.InMemory)
             {
                 List<MWQMAnalysisReportParameter> mwqmAnalysisReportParameterList = (from c in dbIM.MWQMAnalysisReportParameters.AsNoTracking() orderby c.MWQMAnalysisReportParameterID select c).Skip(skip).Take(take).ToList();
             
                 return await Task.FromResult(Ok(mwqmAnalysisReportParameterList));
             }
-            else if (LoggedInService.IsLocal)
+            else if (LoggedInService.DBLocation == DBLocationEnum.Local)
             {
                 List<MWQMAnalysisReportParameter> mwqmAnalysisReportParameterList = (from c in dbLocal.MWQMAnalysisReportParameters.AsNoTracking() orderby c.MWQMAnalysisReportParameterID select c).Skip(skip).Take(take).ToList();
 
@@ -137,7 +137,7 @@ namespace CSSPServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            if (LoggedInService.IsMemory)
+            if (LoggedInService.DBLocation == DBLocationEnum.InMemory)
             {
                 MWQMAnalysisReportParameter mwqmAnalysisReportParameter = (from c in dbIM.MWQMAnalysisReportParameters
                                    where c.MWQMAnalysisReportParameterID == MWQMAnalysisReportParameterID
@@ -160,7 +160,7 @@ namespace CSSPServices
             
                 return await Task.FromResult(Ok(true));
             }
-            else if (LoggedInService.IsLocal)
+            else if (LoggedInService.DBLocation == DBLocationEnum.Local)
             {
                 MWQMAnalysisReportParameter mwqmAnalysisReportParameter = (from c in dbLocal.MWQMAnalysisReportParameters
                                    where c.MWQMAnalysisReportParameterID == MWQMAnalysisReportParameterID
@@ -220,7 +220,7 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ValidationResults));
             }
 
-            if (LoggedInService.IsMemory)
+            if (LoggedInService.DBLocation == DBLocationEnum.InMemory)
             {
                 try
                 {
@@ -234,7 +234,7 @@ namespace CSSPServices
 
                 return await Task.FromResult(Ok(mwqmAnalysisReportParameter));
             }
-            else if (LoggedInService.IsLocal)
+            else if (LoggedInService.DBLocation == DBLocationEnum.Local)
             {
                 try
                 {
@@ -276,7 +276,7 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ValidationResults));
             }
 
-            if (LoggedInService.IsMemory)
+            if (LoggedInService.DBLocation == DBLocationEnum.InMemory)
             {
                 try
                 {
@@ -290,7 +290,7 @@ namespace CSSPServices
 
                 return await Task.FromResult(Ok(mwqmAnalysisReportParameter));
             }
-            else if (LoggedInService.IsLocal)
+            else if (LoggedInService.DBLocation == DBLocationEnum.Local)
             {
             try
             {
@@ -334,7 +334,7 @@ namespace CSSPServices
                     yield return new ValidationResult(string.Format(CultureServicesRes._IsRequired, "MWQMAnalysisReportParameterID"), new[] { "MWQMAnalysisReportParameterID" });
                 }
 
-                if (LoggedInService.IsLocal)
+                if (LoggedInService.DBLocation == DBLocationEnum.Local)
                 {
                     if (!(from c in dbLocal.MWQMAnalysisReportParameters select c).Where(c => c.MWQMAnalysisReportParameterID == mwqmAnalysisReportParameter.MWQMAnalysisReportParameterID).Any())
                     {
@@ -351,7 +351,7 @@ namespace CSSPServices
             }
 
             TVItem TVItemSubsectorTVItemID = null;
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.DBLocation == DBLocationEnum.Local)
             {
                 TVItemSubsectorTVItemID = (from c in dbLocal.TVItems where c.TVItemID == mwqmAnalysisReportParameter.SubsectorTVItemID select c).FirstOrDefault();
                 if (TVItemSubsectorTVItemID == null)
@@ -511,7 +511,7 @@ namespace CSSPServices
             if (mwqmAnalysisReportParameter.ExcelTVFileTVItemID != null)
             {
                 TVItem TVItemExcelTVFileTVItemID = null;
-                if (LoggedInService.IsLocal)
+                if (LoggedInService.DBLocation == DBLocationEnum.Local)
                 {
                     TVItemExcelTVFileTVItemID = (from c in dbLocal.TVItems where c.TVItemID == mwqmAnalysisReportParameter.ExcelTVFileTVItemID select c).FirstOrDefault();
                     if (TVItemExcelTVFileTVItemID == null)
@@ -560,7 +560,7 @@ namespace CSSPServices
             }
 
             TVItem TVItemLastUpdateContactTVItemID = null;
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.DBLocation == DBLocationEnum.Local)
             {
                 TVItemLastUpdateContactTVItemID = (from c in dbLocal.TVItems where c.TVItemID == mwqmAnalysisReportParameter.LastUpdateContactTVItemID select c).FirstOrDefault();
                 if (TVItemLastUpdateContactTVItemID == null)

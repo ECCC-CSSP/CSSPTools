@@ -5,20 +5,22 @@ using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 
-namespace CSSPServices
+namespace CSSPSQLiteServices.Services
 {
     public partial class CSSPSQLiteService : ICSSPSQLiteService
     {
-        private async Task<bool> DoCSSPLoginDBIsEmpty()
+        private async Task<bool> DoDBLocalIsEmpty()
         {
-            List<string> ExistingTableList = new List<string>() { "AspNetUsers", "Contacts", "Preferences" };
+            List<string> ExistingTableList = new List<string>();
 
-            using (var command = dbLogin.Database.GetDbConnection().CreateCommand())
+            if (!await FillExistingTableList(ExistingTableList)) return await Task.FromResult(false);
+
+            using (var command = dbLocal.Database.GetDbConnection().CreateCommand())
             {
                 foreach (string tableName in ExistingTableList)
                 {
                     command.CommandText = $"SELECT * FROM { tableName }";
-                    dbLogin.Database.OpenConnection();
+                    dbLocal.Database.OpenConnection();
                     using (var result = command.ExecuteReader())
                     {
                         while (result.Read())

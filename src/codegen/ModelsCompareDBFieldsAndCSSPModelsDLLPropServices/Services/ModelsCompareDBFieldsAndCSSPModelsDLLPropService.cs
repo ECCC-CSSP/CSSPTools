@@ -11,6 +11,10 @@ using ValidateAppSettingsServices.Services;
 
 namespace ModelsCompareDBFieldsAndCSSPModelsDLLPropServices.Services
 {
+    public interface IModelsCompareDBFieldsAndCSSPModelsDLLPropService
+    {
+        Task<bool> Run(string[] args);
+    }
     public partial class ModelsCompareDBFieldsAndCSSPModelsDLLPropService : ConfigService, IModelsCompareDBFieldsAndCSSPModelsDLLPropService
     {
         #region Variables

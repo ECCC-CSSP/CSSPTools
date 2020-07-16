@@ -10,6 +10,10 @@ using ValidateAppSettingsServices.Services;
 
 namespace EnumsTestGenerated_cs.Services
 {
+    public interface IEnumsTestGenerated_csService
+    {
+        Task<bool> Run(string[] args);
+    }
     public partial class EnumsTestGenerated_csService : ConfigService, IEnumsTestGenerated_csService
     {
         #region Variables

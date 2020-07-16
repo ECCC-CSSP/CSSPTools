@@ -64,7 +64,7 @@ namespace CSSPServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            if (LoggedInService.IsMemory)
+            if (LoggedInService.DBLocation == DBLocationEnum.InMemory)
             {
                 TVItem tvItem = (from c in dbIM.TVItems.AsNoTracking()
                                    where c.TVItemID == TVItemID
@@ -77,7 +77,7 @@ namespace CSSPServices
 
                 return await Task.FromResult(Ok(tvItem));
             }
-            else if (LoggedInService.IsLocal)
+            else if (LoggedInService.DBLocation == DBLocationEnum.Local)
             {
                 TVItem tvItem = (from c in dbLocal.TVItems.AsNoTracking()
                         where c.TVItemID == TVItemID
@@ -111,13 +111,13 @@ namespace CSSPServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            if (LoggedInService.IsMemory)
+            if (LoggedInService.DBLocation == DBLocationEnum.InMemory)
             {
                 List<TVItem> tvItemList = (from c in dbIM.TVItems.AsNoTracking() orderby c.TVItemID select c).Skip(skip).Take(take).ToList();
             
                 return await Task.FromResult(Ok(tvItemList));
             }
-            else if (LoggedInService.IsLocal)
+            else if (LoggedInService.DBLocation == DBLocationEnum.Local)
             {
                 List<TVItem> tvItemList = (from c in dbLocal.TVItems.AsNoTracking() orderby c.TVItemID select c).Skip(skip).Take(take).ToList();
 
@@ -137,7 +137,7 @@ namespace CSSPServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            if (LoggedInService.IsMemory)
+            if (LoggedInService.DBLocation == DBLocationEnum.InMemory)
             {
                 TVItem tvItem = (from c in dbIM.TVItems
                                    where c.TVItemID == TVItemID
@@ -160,7 +160,7 @@ namespace CSSPServices
             
                 return await Task.FromResult(Ok(true));
             }
-            else if (LoggedInService.IsLocal)
+            else if (LoggedInService.DBLocation == DBLocationEnum.Local)
             {
                 TVItem tvItem = (from c in dbLocal.TVItems
                                    where c.TVItemID == TVItemID
@@ -220,7 +220,7 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ValidationResults));
             }
 
-            if (LoggedInService.IsMemory)
+            if (LoggedInService.DBLocation == DBLocationEnum.InMemory)
             {
                 try
                 {
@@ -234,7 +234,7 @@ namespace CSSPServices
 
                 return await Task.FromResult(Ok(tvItem));
             }
-            else if (LoggedInService.IsLocal)
+            else if (LoggedInService.DBLocation == DBLocationEnum.Local)
             {
                 try
                 {
@@ -276,7 +276,7 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ValidationResults));
             }
 
-            if (LoggedInService.IsMemory)
+            if (LoggedInService.DBLocation == DBLocationEnum.InMemory)
             {
                 try
                 {
@@ -290,7 +290,7 @@ namespace CSSPServices
 
                 return await Task.FromResult(Ok(tvItem));
             }
-            else if (LoggedInService.IsLocal)
+            else if (LoggedInService.DBLocation == DBLocationEnum.Local)
             {
             try
             {
@@ -334,7 +334,7 @@ namespace CSSPServices
                     yield return new ValidationResult(string.Format(CultureServicesRes._IsRequired, "TVItemID"), new[] { "TVItemID" });
                 }
 
-                if (LoggedInService.IsLocal)
+                if (LoggedInService.DBLocation == DBLocationEnum.Local)
                 {
                     if (!(from c in dbLocal.TVItems select c).Where(c => c.TVItemID == tvItem.TVItemID).Any())
                     {
@@ -353,7 +353,7 @@ namespace CSSPServices
             if (tvItem.TVType == TVTypeEnum.Root)
             {
 
-                if (LoggedInService.IsLocal)
+                if (LoggedInService.DBLocation == DBLocationEnum.Local)
                 {
                     if ((from c in dbLocal.TVItems select c).Count() > 0)
                     {
@@ -393,7 +393,7 @@ namespace CSSPServices
             if (tvItem.TVType != TVTypeEnum.Root)
             {
                 TVItem TVItemParentID = null;
-                if (LoggedInService.IsLocal)
+                if (LoggedInService.DBLocation == DBLocationEnum.Local)
                 {
                     TVItemParentID = (from c in dbLocal.TVItems where c.TVItemID == tvItem.ParentID select c).FirstOrDefault();
                     if (TVItemParentID == null)
@@ -460,7 +460,7 @@ namespace CSSPServices
             if (tvItem.TVType != TVTypeEnum.Root)
             {
                 TVItem TVItemLastUpdateContactTVItemID = null;
-                if (LoggedInService.IsLocal)
+                if (LoggedInService.DBLocation == DBLocationEnum.Local)
                 {
                     TVItemLastUpdateContactTVItemID = (from c in dbLocal.TVItems where c.TVItemID == tvItem.LastUpdateContactTVItemID select c).FirstOrDefault();
                     if (TVItemLastUpdateContactTVItemID == null)

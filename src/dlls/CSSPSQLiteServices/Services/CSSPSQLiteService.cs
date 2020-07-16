@@ -1,14 +1,30 @@
-﻿using CSSPModels;
+﻿using CSSPEnums;
+using CSSPModels;
+using CultureServices.Resources;
+using CultureServices.Services;
+using LoggedInServices.Services;
 using Microsoft.Data.Sqlite;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.IO;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace CSSPSQLiteServices.Services
 {
+    public interface ICSSPSQLiteService
+    {
+        string Error { get; set; }
+        Task<bool> CreateSQLiteCSSPLocalDatabase();
+        Task<bool> CreateSQLiteCSSPFileManagementDatabase();
+        Task<bool> CreateSQLiteCSSPLoginDatabase();
+        Task<bool> DBLocalIsEmpty();
+        Task<bool> CSSPLoginDBIsEmpty();
+        Task<bool> CSSPFilesManagementDBIsEmpty();
+    }
+
     public partial class CSSPSQLiteService : ICSSPSQLiteService
     {
         #region Variables
@@ -16,77 +32,71 @@ namespace CSSPSQLiteServices.Services
 
         #region Properties
         public string Error { get; set; }
-        private CSSPDBLocalContext dbLocal { get; set; }
+        private CSSPDBContext db { get; }
+        private CSSPDBLocalContext dbLocal { get; }
+        private InMemoryDBContext dbIM { get; }
+        private CSSPLoginDBContext dbLogin { get; }
+        private CSSPFilesManagementDBContext dbFM { get; }
+        private IConfiguration Configuration { get; }
+        private ICultureService CultureService { get; }
+        private ILoggedInService LoggedInService { get; }
+        private IEnums enums { get; }
+        private IEnumerable<ValidationResult> ValidationResults { get; set; }
         #endregion Properties
 
         #region Constructors
-        public CSSPSQLiteService(CSSPDBLocalContext dbLocal)
+        public CSSPSQLiteService(IConfiguration Configuration, ICultureService CultureService, ILoggedInService LoggedInService, 
+            IEnums enums, CSSPDBContext db, CSSPDBLocalContext dbLocal, InMemoryDBContext dbIM, 
+            CSSPLoginDBContext dbLogin, CSSPFilesManagementDBContext dbFM)
         {
+            this.Configuration = Configuration;
+            this.CultureService = CultureService;
+            this.LoggedInService = LoggedInService;
+            this.enums = enums;
+            this.db = db;
             this.dbLocal = dbLocal;
+            this.dbIM = dbIM;
+            this.dbLogin = dbLogin;
+            this.dbFM = dbFM;
         }
         #endregion Constructors
 
         #region Functions public
         public async Task<bool> CreateSQLiteCSSPLocalDatabase()
         {
-            string appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+            if (!await DoCreateSQLiteCSSPLocalDatabase()) return await Task.FromResult(false);
 
-            FileInfo fiCSSPDBLocal = new FileInfo(appDataPath + "\\cssp\\cssplocaldatabases\\CSSPDBLocal.db");
-
-            if (! await DBContainsInfo(fiCSSPDBLocal))
-            {
-                Error = $"Database [{ fiCSSPDBLocal.FullName }] contains info. You will need to send it to the server before creating or recreating the DB.";
-                return await Task.FromResult(false);
-            }
-
-            if (!await CheckAndCreateMissingDirectoriesAndFiles(new List<FileInfo>() { fiCSSPDBLocal })) return await Task.FromResult(false);
-
-            if (!await CreateCSSPDBLocal(fiCSSPDBLocal)) return await Task.FromResult(false);
-
-            return true;
+            return await Task.FromResult(true);
         }
         public async Task<bool> CreateSQLiteCSSPFileManagementDatabase()
         {
-            string appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+            if (!await DoCreateSQLiteCSSPFileManagementDatabase()) return await Task.FromResult(false);
 
-            FileInfo fiCSSPFilesManagementDB = new FileInfo(appDataPath + "\\cssp\\cssplocaldatabases\\CSSPFilesManagementDB.db");
-
-
-            if (!await DBContainsInfo(fiCSSPFilesManagementDB))
-            {
-                Error = $"Database [{ fiCSSPFilesManagementDB.FullName }] contains info. You will need to send it to the server before creating or recreating the DB.";
-                return await Task.FromResult(false);
-            }
-
-            if (!await CheckAndCreateMissingDirectoriesAndFiles(new List<FileInfo>() { fiCSSPFilesManagementDB })) return await Task.FromResult(false);
-
-            if (!await CreateCSSPFilesManagementDB(fiCSSPFilesManagementDB)) return await Task.FromResult(false);
-
-            return true;
+            return await Task.FromResult(true);
         }
         public async Task<bool> CreateSQLiteCSSPLoginDatabase()
         {
-            string appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+            if (!await DoCreateSQLiteCSSPLoginDatabase()) return await Task.FromResult(false);
 
-            FileInfo fiCSSPLoginDB = new FileInfo(appDataPath + "\\cssp\\cssplocaldatabases\\CSSPLoginDB.db");
-
-            if (!await DBContainsInfo(fiCSSPLoginDB))
-            {
-                Error = $"Database [{ fiCSSPLoginDB.FullName }] contains info. You will need to send it to the server before creating or recreating the DB.";
-                return await Task.FromResult(false);
-            }
-
-            if (!await CheckAndCreateMissingDirectoriesAndFiles(new List<FileInfo>() { fiCSSPLoginDB })) return await Task.FromResult(false);
-
-            if (!await CreateCSSPLoginDB(fiCSSPLoginDB)) return await Task.FromResult(false);
-
-            return true;
+            return await Task.FromResult(true);
         }
-        public async Task<bool> DBContainsInfo(FileInfo fi)
+        public async Task<bool> CSSPFilesManagementDBIsEmpty()
         {
-            if (!await DoDBContainsInfo(fi)) return await Task.FromResult(false);
+            if (!await DoCSSPFilesManagementDBIsEmpty()) return await Task.FromResult(false);
 
-            return true;
+            return await Task.FromResult(true);
+        }
+        public async Task<bool> CSSPLoginDBIsEmpty()
+        {
+            if (!await DoCSSPLoginDBIsEmpty()) return await Task.FromResult(false);
+
+            return await Task.FromResult(true);
+        }
+        public async Task<bool> DBLocalIsEmpty()
+        {
+            if (!await DoDBLocalIsEmpty()) return await Task.FromResult(false);
+
+            return await Task.FromResult(true);
         }
         #endregion Functions public
     }

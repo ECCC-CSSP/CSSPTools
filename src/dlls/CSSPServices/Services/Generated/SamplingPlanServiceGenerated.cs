@@ -64,7 +64,7 @@ namespace CSSPServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            if (LoggedInService.IsMemory)
+            if (LoggedInService.DBLocation == DBLocationEnum.InMemory)
             {
                 SamplingPlan samplingPlan = (from c in dbIM.SamplingPlans.AsNoTracking()
                                    where c.SamplingPlanID == SamplingPlanID
@@ -77,7 +77,7 @@ namespace CSSPServices
 
                 return await Task.FromResult(Ok(samplingPlan));
             }
-            else if (LoggedInService.IsLocal)
+            else if (LoggedInService.DBLocation == DBLocationEnum.Local)
             {
                 SamplingPlan samplingPlan = (from c in dbLocal.SamplingPlans.AsNoTracking()
                         where c.SamplingPlanID == SamplingPlanID
@@ -111,13 +111,13 @@ namespace CSSPServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            if (LoggedInService.IsMemory)
+            if (LoggedInService.DBLocation == DBLocationEnum.InMemory)
             {
                 List<SamplingPlan> samplingPlanList = (from c in dbIM.SamplingPlans.AsNoTracking() orderby c.SamplingPlanID select c).Skip(skip).Take(take).ToList();
             
                 return await Task.FromResult(Ok(samplingPlanList));
             }
-            else if (LoggedInService.IsLocal)
+            else if (LoggedInService.DBLocation == DBLocationEnum.Local)
             {
                 List<SamplingPlan> samplingPlanList = (from c in dbLocal.SamplingPlans.AsNoTracking() orderby c.SamplingPlanID select c).Skip(skip).Take(take).ToList();
 
@@ -137,7 +137,7 @@ namespace CSSPServices
                 return await Task.FromResult(Unauthorized());
             }
 
-            if (LoggedInService.IsMemory)
+            if (LoggedInService.DBLocation == DBLocationEnum.InMemory)
             {
                 SamplingPlan samplingPlan = (from c in dbIM.SamplingPlans
                                    where c.SamplingPlanID == SamplingPlanID
@@ -160,7 +160,7 @@ namespace CSSPServices
             
                 return await Task.FromResult(Ok(true));
             }
-            else if (LoggedInService.IsLocal)
+            else if (LoggedInService.DBLocation == DBLocationEnum.Local)
             {
                 SamplingPlan samplingPlan = (from c in dbLocal.SamplingPlans
                                    where c.SamplingPlanID == SamplingPlanID
@@ -220,7 +220,7 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ValidationResults));
             }
 
-            if (LoggedInService.IsMemory)
+            if (LoggedInService.DBLocation == DBLocationEnum.InMemory)
             {
                 try
                 {
@@ -234,7 +234,7 @@ namespace CSSPServices
 
                 return await Task.FromResult(Ok(samplingPlan));
             }
-            else if (LoggedInService.IsLocal)
+            else if (LoggedInService.DBLocation == DBLocationEnum.Local)
             {
                 try
                 {
@@ -276,7 +276,7 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ValidationResults));
             }
 
-            if (LoggedInService.IsMemory)
+            if (LoggedInService.DBLocation == DBLocationEnum.InMemory)
             {
                 try
                 {
@@ -290,7 +290,7 @@ namespace CSSPServices
 
                 return await Task.FromResult(Ok(samplingPlan));
             }
-            else if (LoggedInService.IsLocal)
+            else if (LoggedInService.DBLocation == DBLocationEnum.Local)
             {
             try
             {
@@ -334,7 +334,7 @@ namespace CSSPServices
                     yield return new ValidationResult(string.Format(CultureServicesRes._IsRequired, "SamplingPlanID"), new[] { "SamplingPlanID" });
                 }
 
-                if (LoggedInService.IsLocal)
+                if (LoggedInService.DBLocation == DBLocationEnum.Local)
                 {
                     if (!(from c in dbLocal.SamplingPlans select c).Where(c => c.SamplingPlanID == samplingPlan.SamplingPlanID).Any())
                     {
@@ -389,7 +389,7 @@ namespace CSSPServices
             }
 
             TVItem TVItemProvinceTVItemID = null;
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.DBLocation == DBLocationEnum.Local)
             {
                 TVItemProvinceTVItemID = (from c in dbLocal.TVItems where c.TVItemID == samplingPlan.ProvinceTVItemID select c).FirstOrDefault();
                 if (TVItemProvinceTVItemID == null)
@@ -419,7 +419,7 @@ namespace CSSPServices
             }
 
             TVItem TVItemCreatorTVItemID = null;
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.DBLocation == DBLocationEnum.Local)
             {
                 TVItemCreatorTVItemID = (from c in dbLocal.TVItems where c.TVItemID == samplingPlan.CreatorTVItemID select c).FirstOrDefault();
                 if (TVItemCreatorTVItemID == null)
@@ -486,7 +486,7 @@ namespace CSSPServices
             if (samplingPlan.SamplingPlanFileTVItemID != null)
             {
                 TVItem TVItemSamplingPlanFileTVItemID = null;
-                if (LoggedInService.IsLocal)
+                if (LoggedInService.DBLocation == DBLocationEnum.Local)
                 {
                     TVItemSamplingPlanFileTVItemID = (from c in dbLocal.TVItems where c.TVItemID == samplingPlan.SamplingPlanFileTVItemID select c).FirstOrDefault();
                     if (TVItemSamplingPlanFileTVItemID == null)
@@ -566,7 +566,7 @@ namespace CSSPServices
             }
 
             TVItem TVItemLastUpdateContactTVItemID = null;
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.DBLocation == DBLocationEnum.Local)
             {
                 TVItemLastUpdateContactTVItemID = (from c in dbLocal.TVItems where c.TVItemID == samplingPlan.LastUpdateContactTVItemID select c).FirstOrDefault();
                 if (TVItemLastUpdateContactTVItemID == null)

@@ -51,11 +51,11 @@ namespace CSSPServices.Tests
 
         #region Tests Generated CRUD
         [Theory]
-        [InlineData("en-CA", "true")]
-        [InlineData("fr-CA", "true")]
-        [InlineData("en-CA", "false")]
-        [InlineData("fr-CA", "false")]
-        public async Task MWQMSubsectorLanguage_CRUD_Good_Test(string culture, string IsLocalStr)
+        [InlineData("en-CA", DBLocationEnum.Local)]
+        [InlineData("fr-CA", DBLocationEnum.Local)]
+        [InlineData("en-CA", DBLocationEnum.Server)]
+        [InlineData("fr-CA", DBLocationEnum.Server)]
+        public async Task MWQMSubsectorLanguage_CRUD_Good_Test(string culture, DBLocationEnum DBLocation)
         {
             // -------------------------------
             // -------------------------------
@@ -65,11 +65,11 @@ namespace CSSPServices.Tests
 
             Assert.True(await Setup(culture));
 
-            LoggedInService.IsLocal = bool.Parse(IsLocalStr);
+            LoggedInService.DBLocation = DBLocation;
 
             mwqmSubsectorLanguage = GetFilledRandomMWQMSubsectorLanguage("");
 
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.DBLocation == DBLocationEnum.Local)
             {
                 await DoCRUDTest();
             }
@@ -172,7 +172,7 @@ namespace CSSPServices.Tests
             string Id = Config.GetValue<string>("Id");
             Assert.True(await LoggedInService.SetLoggedInContactInfo(Id));
 
-            LoggedInService.IsLocal = true;
+            LoggedInService.DBLocation = DBLocationEnum.Local;
 
             dbIM = Provider.GetService<InMemoryDBContext>();
             Assert.NotNull(dbIM);
@@ -213,7 +213,7 @@ namespace CSSPServices.Tests
             if (OmitPropName != "LastUpdateDate_UTC") mwqmSubsectorLanguage.LastUpdateDate_UTC = new DateTime(2005, 3, 6);
             if (OmitPropName != "LastUpdateContactTVItemID") mwqmSubsectorLanguage.LastUpdateContactTVItemID = 2;
 
-            if (LoggedInService.IsLocal)
+            if (LoggedInService.DBLocation == DBLocationEnum.Local)
             {
                 if (OmitPropName != "MWQMSubsectorLanguageID") mwqmSubsectorLanguage.MWQMSubsectorLanguageID = 10000000;
 

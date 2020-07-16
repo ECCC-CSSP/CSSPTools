@@ -15,6 +15,12 @@ using CultureServices.Services;
 
 namespace PolSourceGroupingExcelFileReadServices.Services
 {
+    public interface IPolSourceGroupingExcelFileReadService
+    {
+        List<GroupChoiceChildLevel> GroupChoiceChildLevelList { get; set; }
+
+        Task<bool> ReadExcelSheet(string FullFileName, bool DoCheck);
+    }
     public partial class PolSourceGroupingExcelFileReadService : IPolSourceGroupingExcelFileReadService
     {
         #region Variables

@@ -11,6 +11,10 @@ using ValidateAppSettingsServices.Services;
 
 namespace ServicesRepopulateTestDBServices.Services
 {
+    public interface IServicesRepopulateTestDBService
+    {
+        Task<bool> Run(string[] args);
+    }
     public partial class ServicesRepopulateTestDBService : ConfigService, IServicesRepopulateTestDBService
     {
         #region Variables

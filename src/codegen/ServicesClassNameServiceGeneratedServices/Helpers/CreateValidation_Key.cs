@@ -28,7 +28,7 @@ namespace ServicesClassNameServiceGeneratedServices.Services
                 sb.AppendLine($@"                    yield return new ValidationResult(string.Format(CultureServicesRes._IsRequired, ""{ prop.Name }""), new[] {{ ""{ csspProp.PropName }"" }});");
                 sb.AppendLine(@"                }");
                 sb.AppendLine(@"");
-                sb.AppendLine(@"                if (LoggedInService.IsLocal)");
+                sb.AppendLine(@"                if (LoggedInService.DBLocation == DBLocationEnum.Local)");
                 sb.AppendLine(@"                {");
 
                 if (TypeName == "AspNetUser")
@@ -98,7 +98,7 @@ namespace ServicesClassNameServiceGeneratedServices.Services
                     sb.AppendLine(@"            if (tvItem.TVType == TVTypeEnum.Root)");
                     sb.AppendLine(@"            {");
                     sb.AppendLine(@"");
-                    sb.AppendLine(@"                if (LoggedInService.IsLocal)");
+                    sb.AppendLine(@"                if (LoggedInService.DBLocation == DBLocationEnum.Local)");
                     sb.AppendLine(@"                {");
                                                     
                     if (TypeName == "Address")      

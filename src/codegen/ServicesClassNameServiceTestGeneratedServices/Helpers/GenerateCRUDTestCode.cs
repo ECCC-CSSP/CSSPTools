@@ -9,11 +9,11 @@ namespace ServicesClassNameServiceTestGeneratedServices.Services
         {
             sb.AppendLine(@"        #region Tests Generated CRUD");
             sb.AppendLine(@"        [Theory]");
-            sb.AppendLine(@"        [InlineData(""en-CA"", ""true"")]");
-            sb.AppendLine(@"        [InlineData(""fr-CA"", ""true"")]");
-            sb.AppendLine(@"        [InlineData(""en-CA"", ""false"")]");
-            sb.AppendLine(@"        [InlineData(""fr-CA"", ""false"")]");
-            sb.AppendLine($@"        public async Task { TypeName }_CRUD_Good_Test(string culture, string IsLocalStr)");
+            sb.AppendLine(@"        [InlineData(""en-CA"", DBLocationEnum.Local)]");
+            sb.AppendLine(@"        [InlineData(""fr-CA"", DBLocationEnum.Local)]");
+            sb.AppendLine(@"        [InlineData(""en-CA"", DBLocationEnum.Server)]");
+            sb.AppendLine(@"        [InlineData(""fr-CA"", DBLocationEnum.Server)]");
+            sb.AppendLine($@"        public async Task { TypeName }_CRUD_Good_Test(string culture, DBLocationEnum DBLocation)");
             sb.AppendLine(@"        {");
             sb.AppendLine(@"            // -------------------------------");
             sb.AppendLine(@"            // -------------------------------");
@@ -23,11 +23,11 @@ namespace ServicesClassNameServiceTestGeneratedServices.Services
             sb.AppendLine(@"");
             sb.AppendLine(@"            Assert.True(await Setup(culture));");
             sb.AppendLine(@"");
-            sb.AppendLine(@"            LoggedInService.IsLocal = bool.Parse(IsLocalStr);");
+            sb.AppendLine(@"            LoggedInService.DBLocation = DBLocation;");
             sb.AppendLine(@"");
             sb.AppendLine($@"            { TypeNameLower } = GetFilledRandom{ TypeName }("""");");
             sb.AppendLine(@"");
-            sb.AppendLine($@"            if (LoggedInService.IsLocal)");
+            sb.AppendLine($@"            if (LoggedInService.DBLocation == DBLocationEnum.Local)");
             sb.AppendLine(@"            {");
             sb.AppendLine(@"                await DoCRUDTest();");
             sb.AppendLine(@"            }");

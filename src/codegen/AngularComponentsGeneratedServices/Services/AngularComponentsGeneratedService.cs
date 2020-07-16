@@ -10,6 +10,10 @@ using ValidateAppSettingsServices.Services;
 
 namespace AngularComponentsGeneratedServices.Services
 {
+    public interface IAngularComponentsGeneratedService
+    {
+        Task<bool> Run(string[] args);
+    }
     public partial class AngularComponentsGeneratedService : ConfigService, IAngularComponentsGeneratedService
     {
         #region Variables

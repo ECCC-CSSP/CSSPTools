@@ -24,6 +24,27 @@ namespace ConfigServices.Services
         Success = 0,
         Error = 1,
     }
+    public interface IConfigService
+    {
+        IConfiguration Config { get; set; }
+        IServiceProvider Provider { get; set; }
+        IServiceCollection Services { get; set; }
+        ICultureService CultureService { get; set; }
+        IActionCommandDBService ActionCommandDBService { get; set; }
+        IGenerateCodeBaseService GenerateCodeBaseService { get; set; }
+        IValidateAppSettingsService ValidateAppSettingsService { get; set; }
+        List<string> AllowableCultures { get; set; }
+        string DBFileName { get; set; }
+
+
+        Task<bool> BuildServiceProvider();
+        Task<bool> CheckAppSettingsParameters();
+        Task<bool> ConfigureBaseServices();
+        Task<bool> ConfigureCSSPDBContext();
+        Task<bool> ConfigureTestDBContext();
+        Task<bool> FillActionAndCommand();
+        Task<bool> SetCultureWithArgs(string[] args);
+    }
     public class ConfigService : IConfigService
     {
         #region Variables

@@ -1640,6 +1640,33 @@ namespace CultureServices.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to In Memory.
+        /// </summary>
+        public static string DBLocationEnumInMemory {
+            get {
+                return ResourceManager.GetString("DBLocationEnumInMemory", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Local.
+        /// </summary>
+        public static string DBLocationEnumLocal {
+            get {
+                return ResourceManager.GetString("DBLocationEnumLocal", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Server.
+        /// </summary>
+        public static string DBLocationEnumServer {
+            get {
+                return ResourceManager.GetString("DBLocationEnumServer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to DisinfectionType.
         /// </summary>
         public static string DisinfectionType {

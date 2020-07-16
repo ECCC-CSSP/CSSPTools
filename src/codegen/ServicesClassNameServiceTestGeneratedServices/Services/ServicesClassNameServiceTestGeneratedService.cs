@@ -11,6 +11,10 @@ using ValidateAppSettingsServices.Services;
 
 namespace ServicesClassNameServiceTestGeneratedServices.Services
 {
+    public interface IServicesClassNameServiceTestGeneratedService
+    {
+        Task<bool> Run(string[] args);
+    }
     public partial class ServicesClassNameServiceTestGeneratedService : ConfigService, IServicesClassNameServiceTestGeneratedService
     {
         #region Variables

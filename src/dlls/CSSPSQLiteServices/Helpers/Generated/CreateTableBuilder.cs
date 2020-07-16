@@ -4,14 +4,16 @@
  *
  */
 
+using CSSPModels;
 using Microsoft.Data.Sqlite;
+using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
 
 namespace CSSPSQLiteServices.Services
 {
     public partial class CSSPSQLiteService : ICSSPSQLiteService
     {
-        private async Task<bool> CreateTableBuilder(string tableName, SqliteConnection db)
+        private async Task<bool> CreateTableBuilder(string tableName)
         {
             string CreateTable = "";
             switch (tableName)
@@ -1373,9 +1375,12 @@ namespace CSSPSQLiteServices.Services
                     break;
             }
 
-            SqliteCommand createUsersTableCmd = new SqliteCommand(CreateTable, db);
-
-            createUsersTableCmd.ExecuteReader();
+            using (var command = dbLocal.Database.GetDbConnection().CreateCommand())
+            {
+                command.CommandText = CreateTable;
+                dbLocal.Database.OpenConnection();
+                command.ExecuteNonQuery();
+            }
 
             return await Task.FromResult(true);
         }

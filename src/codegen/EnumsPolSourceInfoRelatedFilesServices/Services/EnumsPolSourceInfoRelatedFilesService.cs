@@ -11,6 +11,10 @@ using ValidateAppSettingsServices.Services;
 
 namespace EnumsPolSourceInfoRelatedFilesServices.Services
 {
+    public interface IEnumsPolSourceInfoRelatedFilesService
+    {
+        Task<bool> Run(string[] args);
+    }
     public partial class EnumsPolSourceInfoRelatedFilesService : ConfigService, IEnumsPolSourceInfoRelatedFilesService
     {
         #region Variables

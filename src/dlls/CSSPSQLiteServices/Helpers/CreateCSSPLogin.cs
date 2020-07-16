@@ -1,4 +1,6 @@
-﻿using Microsoft.Data.Sqlite;
+﻿using CSSPModels;
+using Microsoft.Data.Sqlite;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -10,68 +12,81 @@ namespace CSSPSQLiteServices.Services
     {
         private async Task<bool> CreateCSSPLoginDB(FileInfo fiCSSPLoginDB)
         {
-            List<string> ListTableToDelete = new List<string>();
-            List<string> ExistingTableList = new List<string>();
-            using (SqliteConnection db = new SqliteConnection($"Data Source={fiCSSPLoginDB.FullName}"))
+            using (var command = dbLogin.Database.GetDbConnection().CreateCommand())
             {
-                db.Open();
+                command.CommandText = $"DROP TABLE AspNetUsers";
+                dbLogin.Database.OpenConnection();
+                command.ExecuteNonQuery();
 
-                if (!await FillExistingTableList(ExistingTableList, db)) return await Task.FromResult(false);
-                ListTableToDelete.AddRange(new List<string>() { "AspNetUsers", "Contacts", "Preferences" });
-                if (!await DeleteTables(ListTableToDelete, ExistingTableList, db)) return await Task.FromResult(false);
+                command.CommandText = $"DROP TABLE Contacts";
+                dbLogin.Database.OpenConnection();
+                command.ExecuteNonQuery();
 
-                string CreateAspNetUsersTable = "CREATE TABLE AspNetUsers (" +
-                    "Id TEXT NOT NULL UNIQUE, " +
-                    "Email TEXT, " +
-                    "EmailConfirmed INTEGER NOT NULL, " +
-                    "PasswordHash TEXT, " +
-                    "SecurityStamp TEXT, " +
-                    "PhoneNumber TEXT, " +
-                    "PhoneNumberConfirmed INTEGER NOT NULL, " +
-                    "TwoFactorEnabled INTEGER NOT NULL, " +
-                    "LockoutEndDateUtc TEXT, " +
-                    "LockoutEnabled INTEGER NOT NULL, " +
-                    "AccessFailedCount INTEGER NOT NULL, " +
-                    "UserName TEXT NOT NULL, " +
-                    "NormalizedUserName TEXT, " +
-                    "NormalizedEmail TEXT, " +
-                    "ConcurrencyStamp TEXT, " +
-                    "LockoutEnd TEXT)";
+                command.CommandText = $"DROP TABLE Preferences";
+                dbLogin.Database.OpenConnection();
+                command.ExecuteNonQuery();
+            }
 
-                SqliteCommand createAspNetUsersTableCmd = new SqliteCommand(CreateAspNetUsersTable, db);
+            string CreateAspNetUsersTable = "CREATE TABLE AspNetUsers (" +
+                "Id TEXT NOT NULL UNIQUE, " +
+                "Email TEXT, " +
+                "EmailConfirmed INTEGER NOT NULL, " +
+                "PasswordHash TEXT, " +
+                "SecurityStamp TEXT, " +
+                "PhoneNumber TEXT, " +
+                "PhoneNumberConfirmed INTEGER NOT NULL, " +
+                "TwoFactorEnabled INTEGER NOT NULL, " +
+                "LockoutEndDateUtc TEXT, " +
+                "LockoutEnabled INTEGER NOT NULL, " +
+                "AccessFailedCount INTEGER NOT NULL, " +
+                "UserName TEXT NOT NULL, " +
+                "NormalizedUserName TEXT, " +
+                "NormalizedEmail TEXT, " +
+                "ConcurrencyStamp TEXT, " +
+                "LockoutEnd TEXT)";
 
-                createAspNetUsersTableCmd.ExecuteReader();
+            using (var command = dbLogin.Database.GetDbConnection().CreateCommand())
+            {
+                command.CommandText = CreateAspNetUsersTable;
+                dbLogin.Database.OpenConnection();
+                command.ExecuteNonQuery();
+            }
 
-                string CreateContactsTable = "CREATE TABLE Contacts ( " +
-                    "ContactID INTEGER NOT NULL UNIQUE, " +
-                    "Id TEXT NOT NULL, " +
-                    "ContactTVItemID INTEGER NOT NULL, " +
-                    "LoginEmail TEXT NOT NULL, " +
-                    "FirstName TEXT NOT NULL, " +
-                    "LastName TEXT NOT NULL, " +
-                    "Initial TEXT, " +
-                    "WebName TEXT NOT NULL, " +
-                    "ContactTitle INTEGER, " +
-                    "IsAdmin INTEGER NOT NULL, " +
-                    "EmailValidated INTEGER NOT NULL, " +
-                    "Disabled INTEGER NOT NULL, " +
-                    "IsNew INTEGER NOT NULL, " +
-                    "SamplingPlanner_ProvincesTVItemID TEXT, " +
-                    "Token TEXT, " +
-                    "LastUpdateDate_UTC TEXT NOT NULL, " +
-                    "LastUpdateContactTVItemID INTEGER NOT NULL)";
+            string CreateContactsTable = "CREATE TABLE Contacts ( " +
+                "ContactID INTEGER NOT NULL UNIQUE, " +
+                "Id TEXT NOT NULL, " +
+                "ContactTVItemID INTEGER NOT NULL, " +
+                "LoginEmail TEXT NOT NULL, " +
+                "FirstName TEXT NOT NULL, " +
+                "LastName TEXT NOT NULL, " +
+                "Initial TEXT, " +
+                "WebName TEXT NOT NULL, " +
+                "ContactTitle INTEGER, " +
+                "IsAdmin INTEGER NOT NULL, " +
+                "EmailValidated INTEGER NOT NULL, " +
+                "Disabled INTEGER NOT NULL, " +
+                "IsNew INTEGER NOT NULL, " +
+                "SamplingPlanner_ProvincesTVItemID TEXT, " +
+                "Token TEXT, " +
+                "LastUpdateDate_UTC TEXT NOT NULL, " +
+                "LastUpdateContactTVItemID INTEGER NOT NULL)";
 
-                SqliteCommand createContactsTableCmd = new SqliteCommand(CreateContactsTable, db);
+            using (var command = dbLogin.Database.GetDbConnection().CreateCommand())
+            {
+                command.CommandText = CreateContactsTable;
+                dbLogin.Database.OpenConnection();
+                command.ExecuteNonQuery();
+            }
 
-                createContactsTableCmd.ExecuteReader();
+            string CreatePreferencesTable = "CREATE TABLE Preferences ( " +
+                "PreferenceID INTEGER NOT NULL UNIQUE, " +
+                "PreferenceText TEXT NOT NULL)";
 
-                string CreatePreferencesTable = "CREATE TABLE Preferences ( " +
-                    "PreferenceID INTEGER NOT NULL UNIQUE, " +
-                    "PreferenceText TEXT NOT NULL)";
-
-                SqliteCommand createPreferencesTableCmd = new SqliteCommand(CreatePreferencesTable, db);
-
-                createPreferencesTableCmd.ExecuteReader();
+            using (var command = dbLogin.Database.GetDbConnection().CreateCommand())
+            {
+                command.CommandText = CreatePreferencesTable;
+                dbLogin.Database.OpenConnection();
+                command.ExecuteNonQuery();
             }
 
             return await Task.FromResult(true);
