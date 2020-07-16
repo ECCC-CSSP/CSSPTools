@@ -21,7 +21,7 @@ using System.Threading.Tasks;
 
 namespace CSSPServices
 {
-   public interface IRainExceedanceService
+   public partial interface IRainExceedanceService
     {
        Task<ActionResult<bool>> Delete(int RainExceedanceID);
        Task<ActionResult<List<RainExceedance>>> GetRainExceedanceList(int skip = 0, int take = 100);

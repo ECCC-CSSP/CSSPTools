@@ -21,7 +21,7 @@ using System.Threading.Tasks;
 
 namespace CSSPServices
 {
-   public interface IVPAmbientService
+   public partial interface IVPAmbientService
     {
        Task<ActionResult<bool>> Delete(int VPAmbientID);
        Task<ActionResult<List<VPAmbient>>> GetVPAmbientList(int skip = 0, int take = 100);

@@ -21,7 +21,7 @@ using System.Threading.Tasks;
 
 namespace CSSPServices
 {
-   public interface ITVFileLanguageService
+   public partial interface ITVFileLanguageService
     {
        Task<ActionResult<bool>> Delete(int TVFileLanguageID);
        Task<ActionResult<List<TVFileLanguage>>> GetTVFileLanguageList(int skip = 0, int take = 100);

@@ -21,7 +21,7 @@ using System.Threading.Tasks;
 
 namespace CSSPServices
 {
-   public interface IBoxModelLanguageService
+   public partial interface IBoxModelLanguageService
     {
        Task<ActionResult<bool>> Delete(int BoxModelLanguageID);
        Task<ActionResult<List<BoxModelLanguage>>> GetBoxModelLanguageList(int skip = 0, int take = 100);

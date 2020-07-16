@@ -21,7 +21,7 @@ using System.Threading.Tasks;
 
 namespace CSSPServices
 {
-   public interface IAppTaskService
+   public partial interface IAppTaskService
     {
        Task<ActionResult<bool>> Delete(int AppTaskID);
        Task<ActionResult<List<AppTask>>> GetAppTaskList(int skip = 0, int take = 100);

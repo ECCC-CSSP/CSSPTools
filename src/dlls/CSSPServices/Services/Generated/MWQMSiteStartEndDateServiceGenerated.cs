@@ -21,7 +21,7 @@ using System.Threading.Tasks;
 
 namespace CSSPServices
 {
-   public interface IMWQMSiteStartEndDateService
+   public partial interface IMWQMSiteStartEndDateService
     {
        Task<ActionResult<bool>> Delete(int MWQMSiteStartEndDateID);
        Task<ActionResult<List<MWQMSiteStartEndDate>>> GetMWQMSiteStartEndDateList(int skip = 0, int take = 100);

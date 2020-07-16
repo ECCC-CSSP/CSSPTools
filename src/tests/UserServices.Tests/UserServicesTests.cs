@@ -1,6 +1,9 @@
-﻿using CSSPModels;
+﻿using CSSPEnums;
+using CSSPModels;
+using CSSPServices;
 using CultureServices.Resources;
 using CultureServices.Services;
+using LoggedInServices.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -120,10 +123,14 @@ namespace UserServices.Tests
 
             ServiceCollection.AddSingleton<IConfiguration>(Configuration);
             ServiceCollection.AddSingleton<ICultureService, CultureService>();
+            ServiceCollection.AddSingleton<IEnums, Enums>();
+            ServiceCollection.AddSingleton<ILoggedInService, LoggedInService>();
+            ServiceCollection.AddSingleton<IAspNetUserService, AspNetUserService>();
+            ServiceCollection.AddSingleton<IContactService, ContactService>();
             ServiceCollection.AddSingleton<IUserService, UserService>();
 
-            string CSSPDB2 = Configuration.GetValue<string>("CSSPDB2");
-            Assert.NotNull(CSSPDB2);
+            string TestDB = Configuration.GetValue<string>("TestDB");
+            Assert.NotNull(TestDB);
 
             LoginEmail = Configuration.GetValue<string>("LoginEmail");
             Assert.NotNull(LoginEmail);
@@ -132,13 +139,28 @@ namespace UserServices.Tests
             Assert.NotNull(Password);
 
             ServiceCollection.AddDbContext<CSSPDBContext>(options =>
-                options.UseSqlServer(CSSPDB2));
+                    options.UseSqlServer(TestDB));
+
+            ServiceCollection.AddDbContext<InMemoryDBContext>(options =>
+                    options.UseInMemoryDatabase(TestDB));
+
+            string CSSPDBLocalFileName = Configuration.GetValue<string>("CSSPDBLocal");
+
+            string appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+
+            FileInfo fiAppDataPath = new FileInfo(CSSPDBLocalFileName.Replace("{AppDataPath}", appDataPath));
+
+            ServiceCollection.AddDbContext<CSSPDBLocalContext>(options =>
+            {
+                options.UseSqlite($"Data Source={ fiAppDataPath.FullName }");
+            });
 
             ServiceCollection.AddIdentityCore<ApplicationUser>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
 
             ServiceCollection.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlServer(CSSPDB2));
+                options.UseSqlServer(TestDB));
+
 
             ServiceProvider = ServiceCollection.BuildServiceProvider();
             Assert.NotNull(ServiceProvider);

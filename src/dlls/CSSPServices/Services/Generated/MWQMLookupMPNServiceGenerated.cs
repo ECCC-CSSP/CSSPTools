@@ -21,7 +21,7 @@ using System.Threading.Tasks;
 
 namespace CSSPServices
 {
-   public interface IMWQMLookupMPNService
+   public partial interface IMWQMLookupMPNService
     {
        Task<ActionResult<bool>> Delete(int MWQMLookupMPNID);
        Task<ActionResult<List<MWQMLookupMPN>>> GetMWQMLookupMPNList(int skip = 0, int take = 100);

@@ -21,7 +21,7 @@ using System.Threading.Tasks;
 
 namespace CSSPServices
 {
-   public interface IContactService
+   public partial interface IContactService
     {
        Task<ActionResult<bool>> Delete(int ContactID);
        Task<ActionResult<List<Contact>>> GetContactList(int skip = 0, int take = 100);
@@ -57,12 +57,12 @@ namespace CSSPServices
         #endregion Constructors
 
         #region Functions public 
-        public async Task<ActionResult<Contact>> GetContactWithContactID(int ContactID)
+        private async Task<ActionResult<Contact>> GetContactWithContactID(int ContactID)
         {
-            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
-            {
-                return await Task.FromResult(Unauthorized());
-            }
+            //if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            //{
+            //    return await Task.FromResult(Unauthorized());
+            //}
 
             if (LoggedInService.DBLocation == DBLocationEnum.InMemory)
             {

@@ -21,7 +21,7 @@ using System.Threading.Tasks;
 
 namespace CSSPServices
 {
-   public interface IAppTaskLanguageService
+   public partial interface IAppTaskLanguageService
     {
        Task<ActionResult<bool>> Delete(int AppTaskLanguageID);
        Task<ActionResult<List<AppTaskLanguage>>> GetAppTaskLanguageList(int skip = 0, int take = 100);

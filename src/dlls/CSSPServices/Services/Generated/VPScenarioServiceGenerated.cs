@@ -21,7 +21,7 @@ using System.Threading.Tasks;
 
 namespace CSSPServices
 {
-   public interface IVPScenarioService
+   public partial interface IVPScenarioService
     {
        Task<ActionResult<bool>> Delete(int VPScenarioID);
        Task<ActionResult<List<VPScenario>>> GetVPScenarioList(int skip = 0, int take = 100);

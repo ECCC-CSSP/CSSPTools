@@ -128,11 +128,25 @@ namespace ServicesClassNameServiceGeneratedServices.Services
                 {
 
                     #region Interface
-                    sb.AppendLine($@"   public interface I{ dllTypeInfoModels.Type.Name }Service");
+                    sb.AppendLine($@"   public partial interface I{ dllTypeInfoModels.Type.Name }Service");
                     sb.AppendLine(@"    {");
-                    sb.AppendLine($@"       Task<ActionResult<bool>> Delete(int { dllTypeInfoModels.Type.Name }ID);");
+                    if (dllTypeInfoModels.Type.Name == "AspNetUser")
+                    {
+                        sb.AppendLine($@"       Task<ActionResult<bool>> Delete(string Id);");
+                    }
+                    else
+                    {
+                        sb.AppendLine($@"       Task<ActionResult<bool>> Delete(int { dllTypeInfoModels.Type.Name }ID);");
+                    }
                     sb.AppendLine($@"       Task<ActionResult<List<{ dllTypeInfoModels.Type.Name }>>> Get{ dllTypeInfoModels.Type.Name }List(int skip = 0, int take = 100);");
-                    sb.AppendLine($@"       Task<ActionResult<{ dllTypeInfoModels.Type.Name }>> Get{ dllTypeInfoModels.Type.Name }With{ dllTypeInfoModels.Type.Name }ID(int { dllTypeInfoModels.Type.Name }ID);");
+                    if (dllTypeInfoModels.Type.Name == "AspNetUser")
+                    {
+                        sb.AppendLine($@"       Task<ActionResult<{ dllTypeInfoModels.Type.Name }>> Get{ dllTypeInfoModels.Type.Name }WithId(string Id);");
+                    }
+                    else
+                    {
+                        sb.AppendLine($@"       Task<ActionResult<{ dllTypeInfoModels.Type.Name }>> Get{ dllTypeInfoModels.Type.Name }With{ dllTypeInfoModels.Type.Name }ID(int { dllTypeInfoModels.Type.Name }ID);");
+                    }
                     if (dllTypeInfoModels.Type.Name == "Contact")
                     {
                         sb.AppendLine($@"       Task<ActionResult<{ dllTypeInfoModels.Type.Name }>> Post({ dllTypeInfoModels.Type.Name } { dllTypeInfoModels.Type.Name.ToLower() }, AddContactTypeEnum addContactType);");

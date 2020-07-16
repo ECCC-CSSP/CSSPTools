@@ -21,7 +21,7 @@ using System.Threading.Tasks;
 
 namespace CSSPServices
 {
-   public interface IPolSourceSiteEffectTermService
+   public partial interface IPolSourceSiteEffectTermService
     {
        Task<ActionResult<bool>> Delete(int PolSourceSiteEffectTermID);
        Task<ActionResult<List<PolSourceSiteEffectTerm>>> GetPolSourceSiteEffectTermList(int skip = 0, int take = 100);

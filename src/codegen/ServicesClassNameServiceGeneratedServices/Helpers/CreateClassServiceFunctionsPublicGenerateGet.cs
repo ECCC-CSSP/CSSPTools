@@ -51,9 +51,9 @@ namespace ServicesClassNameServiceGeneratedServices.Services
                         continue;
                     }
 
-                    if (currentDLLTypeInfo.Name == "AspNetUser")
+                    if (TypeName == "AspNetUser")
                     {
-                        sb.AppendLine($@"        public async Task<ActionResult<{ TypeName }>> Get{ TypeName }With{ TypeName }Id(string Id,");
+                        sb.AppendLine($@"        public async Task<ActionResult<{ TypeName }>> Get{ TypeName }WithId(string Id)");
                     }
                     else
                     {
@@ -68,7 +68,14 @@ namespace ServicesClassNameServiceGeneratedServices.Services
                     sb.AppendLine(@"            if (LoggedInService.DBLocation == DBLocationEnum.InMemory)");
                     sb.AppendLine(@"            {");
                     sb.AppendLine($@"                { TypeName } { TypeNameLower } = (from c in dbIM.{ TypeName }{ Plurial }.AsNoTracking()");
-                    sb.AppendLine($@"                                   where c.{ TypeName }ID == { TypeName }ID");
+                    if (TypeName == "AspNetUser")
+                    {
+                        sb.AppendLine($@"                                   where c.Id == Id");
+                    }
+                    else
+                    {
+                        sb.AppendLine($@"                                   where c.{ TypeName }ID == { TypeName }ID");
+                    }
                     sb.AppendLine(@"                                   select c).FirstOrDefault();");
                     sb.AppendLine(@"");
                     sb.AppendLine($@"                if ({ TypeNameLower } == null)");
@@ -134,7 +141,14 @@ namespace ServicesClassNameServiceGeneratedServices.Services
                     sb.AppendLine(@"");
                     sb.AppendLine(@"            if (LoggedInService.DBLocation == DBLocationEnum.InMemory)");
                     sb.AppendLine(@"            {");
-                    sb.AppendLine($@"                List<{ TypeName }> { TypeNameLower }List = (from c in dbIM.{ TypeName }{ Plurial }.AsNoTracking() orderby c.{ TypeName }ID select c).Skip(skip).Take(take).ToList();");
+                    if (TypeName == "AspNetUser")
+                    {
+                        sb.AppendLine($@"                List<{ TypeName }> { TypeNameLower }List = (from c in dbIM.{ TypeName }{ Plurial }.AsNoTracking() orderby c.Id select c).Skip(skip).Take(take).ToList();");
+                    }
+                    else
+                    {
+                        sb.AppendLine($@"                List<{ TypeName }> { TypeNameLower }List = (from c in dbIM.{ TypeName }{ Plurial }.AsNoTracking() orderby c.{ TypeName }ID select c).Skip(skip).Take(take).ToList();");
+                    }
                     sb.AppendLine(@"            ");
                     sb.AppendLine($@"                return await Task.FromResult(Ok({ TypeNameLower }List));");
                     sb.AppendLine(@"            }");
@@ -142,7 +156,14 @@ namespace ServicesClassNameServiceGeneratedServices.Services
                     sb.AppendLine(@"            else if (LoggedInService.DBLocation == DBLocationEnum.Local)");
                     sb.AppendLine(@"            {");
 
-                    sb.AppendLine($@"                List<{ TypeName }> { TypeNameLower }List = (from c in dbLocal.{ TypeName }{ Plurial }.AsNoTracking() orderby c.{ TypeName }ID select c).Skip(skip).Take(take).ToList();");
+                    if (TypeName == "AspNetUser")
+                    {
+                        sb.AppendLine($@"                List<{ TypeName }> { TypeNameLower }List = (from c in dbLocal.{ TypeName }{ Plurial }.AsNoTracking() orderby c.Id select c).Skip(skip).Take(take).ToList();");
+                    }
+                    else
+                    {
+                        sb.AppendLine($@"                List<{ TypeName }> { TypeNameLower }List = (from c in dbLocal.{ TypeName }{ Plurial }.AsNoTracking() orderby c.{ TypeName }ID select c).Skip(skip).Take(take).ToList();");
+                    }
                     sb.AppendLine(@"");
                     sb.AppendLine($@"                return await Task.FromResult(Ok({ TypeNameLower }List));");
 
@@ -150,7 +171,14 @@ namespace ServicesClassNameServiceGeneratedServices.Services
                     sb.AppendLine(@"            else");
                     sb.AppendLine(@"            {");
 
-                    sb.AppendLine($@"                List<{ TypeName }> { TypeNameLower }List = (from c in db.{ TypeName }{ Plurial }.AsNoTracking() orderby c.{ TypeName }ID select c).Skip(skip).Take(take).ToList();");
+                    if (TypeName == "AspNetUser")
+                    {
+                        sb.AppendLine($@"                List<{ TypeName }> { TypeNameLower }List = (from c in db.{ TypeName }{ Plurial }.AsNoTracking() orderby c.Id select c).Skip(skip).Take(take).ToList();");
+                    }
+                    else
+                    {
+                        sb.AppendLine($@"                List<{ TypeName }> { TypeNameLower }List = (from c in db.{ TypeName }{ Plurial }.AsNoTracking() orderby c.{ TypeName }ID select c).Skip(skip).Take(take).ToList();");
+                    }
                     sb.AppendLine(@"");
                     sb.AppendLine($@"                return await Task.FromResult(Ok({ TypeNameLower }List));");
 

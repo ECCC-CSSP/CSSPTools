@@ -21,7 +21,7 @@ using System.Threading.Tasks;
 
 namespace CSSPServices
 {
-   public interface ISpillService
+   public partial interface ISpillService
     {
        Task<ActionResult<bool>> Delete(int SpillID);
        Task<ActionResult<List<Spill>>> GetSpillList(int skip = 0, int take = 100);

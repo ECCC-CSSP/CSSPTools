@@ -2010,6 +2010,22 @@
           "CSSPModels.dll": {}
         }
       },
+      "CSSPServices/1.0.0": {
+        "dependencies": {
+          "LoggedInServices": "1.0.0",
+          "Microsoft.AspNetCore.Authentication.JwtBearer": "3.1.5",
+          "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "3.1.5",
+          "Microsoft.EntityFrameworkCore": "3.1.5",
+          "Microsoft.EntityFrameworkCore.InMemory": "3.1.5",
+          "Microsoft.EntityFrameworkCore.SqlServer": "3.1.5",
+          "Microsoft.EntityFrameworkCore.Sqlite": "3.1.5",
+          "Microsoft.Extensions.Configuration": "3.1.5",
+          "Microsoft.Extensions.Configuration.Json": "3.1.5"
+        },
+        "runtime": {
+          "CSSPServices.dll": {}
+        }
+      },
       "CSSPWebModels/1.0.0": {
         "dependencies": {
           "CSSPModels": "1.0.0"
@@ -2058,7 +2074,7 @@
       },
       "UserServices/1.0.0": {
         "dependencies": {
-          "CSSPModels": "1.0.0",
+          "CSSPServices": "1.0.0",
           "Microsoft.AspNetCore.Authentication.JwtBearer": "3.1.5",
           "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "3.1.5",
           "Microsoft.EntityFrameworkCore": "3.1.5",
@@ -3291,6 +3307,11 @@
       "sha512": ""
     },
     "CSSPModels/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "CSSPServices/1.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""

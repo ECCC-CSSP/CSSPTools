@@ -21,7 +21,7 @@ using System.Threading.Tasks;
 
 namespace CSSPServices
 {
-   public interface IClimateSiteService
+   public partial interface IClimateSiteService
     {
        Task<ActionResult<bool>> Delete(int ClimateSiteID);
        Task<ActionResult<List<ClimateSite>>> GetClimateSiteList(int skip = 0, int take = 100);

@@ -21,7 +21,7 @@ using System.Threading.Tasks;
 
 namespace CSSPServices
 {
-   public interface ISamplingPlanSubsectorService
+   public partial interface ISamplingPlanSubsectorService
     {
        Task<ActionResult<bool>> Delete(int SamplingPlanSubsectorID);
        Task<ActionResult<List<SamplingPlanSubsector>>> GetSamplingPlanSubsectorList(int skip = 0, int take = 100);

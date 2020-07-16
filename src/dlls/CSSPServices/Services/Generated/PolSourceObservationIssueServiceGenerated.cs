@@ -21,7 +21,7 @@ using System.Threading.Tasks;
 
 namespace CSSPServices
 {
-   public interface IPolSourceObservationIssueService
+   public partial interface IPolSourceObservationIssueService
     {
        Task<ActionResult<bool>> Delete(int PolSourceObservationIssueID);
        Task<ActionResult<List<PolSourceObservationIssue>>> GetPolSourceObservationIssueList(int skip = 0, int take = 100);

@@ -21,7 +21,7 @@ using System.Threading.Tasks;
 
 namespace CSSPServices
 {
-   public interface IDocTemplateService
+   public partial interface IDocTemplateService
     {
        Task<ActionResult<bool>> Delete(int DocTemplateID);
        Task<ActionResult<List<DocTemplate>>> GetDocTemplateList(int skip = 0, int take = 100);

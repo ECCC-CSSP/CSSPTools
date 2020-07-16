@@ -21,7 +21,7 @@ using System.Threading.Tasks;
 
 namespace CSSPServices
 {
-   public interface IVPResultService
+   public partial interface IVPResultService
     {
        Task<ActionResult<bool>> Delete(int VPResultID);
        Task<ActionResult<List<VPResult>>> GetVPResultList(int skip = 0, int take = 100);

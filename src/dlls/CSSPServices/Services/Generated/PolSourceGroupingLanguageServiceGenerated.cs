@@ -21,7 +21,7 @@ using System.Threading.Tasks;
 
 namespace CSSPServices
 {
-   public interface IPolSourceGroupingLanguageService
+   public partial interface IPolSourceGroupingLanguageService
     {
        Task<ActionResult<bool>> Delete(int PolSourceGroupingLanguageID);
        Task<ActionResult<List<PolSourceGroupingLanguage>>> GetPolSourceGroupingLanguageList(int skip = 0, int take = 100);

@@ -21,7 +21,7 @@ using System.Threading.Tasks;
 
 namespace CSSPServices
 {
-   public interface IReportTypeService
+   public partial interface IReportTypeService
     {
        Task<ActionResult<bool>> Delete(int ReportTypeID);
        Task<ActionResult<List<ReportType>>> GetReportTypeList(int skip = 0, int take = 100);

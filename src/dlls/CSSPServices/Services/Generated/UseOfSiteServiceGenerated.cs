@@ -21,7 +21,7 @@ using System.Threading.Tasks;
 
 namespace CSSPServices
 {
-   public interface IUseOfSiteService
+   public partial interface IUseOfSiteService
     {
        Task<ActionResult<bool>> Delete(int UseOfSiteID);
        Task<ActionResult<List<UseOfSite>>> GetUseOfSiteList(int skip = 0, int take = 100);

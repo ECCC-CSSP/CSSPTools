@@ -21,7 +21,7 @@ using System.Threading.Tasks;
 
 namespace CSSPServices
 {
-   public interface IContactShortcutService
+   public partial interface IContactShortcutService
     {
        Task<ActionResult<bool>> Delete(int ContactShortcutID);
        Task<ActionResult<List<ContactShortcut>>> GetContactShortcutList(int skip = 0, int take = 100);

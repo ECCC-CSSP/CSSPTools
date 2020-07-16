@@ -21,7 +21,7 @@ using System.Threading.Tasks;
 
 namespace CSSPServices
 {
-   public interface ITVTypeUserAuthorizationService
+   public partial interface ITVTypeUserAuthorizationService
     {
        Task<ActionResult<bool>> Delete(int TVTypeUserAuthorizationID);
        Task<ActionResult<List<TVTypeUserAuthorization>>> GetTVTypeUserAuthorizationList(int skip = 0, int take = 100);

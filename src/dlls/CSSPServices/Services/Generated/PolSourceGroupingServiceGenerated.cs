@@ -21,7 +21,7 @@ using System.Threading.Tasks;
 
 namespace CSSPServices
 {
-   public interface IPolSourceGroupingService
+   public partial interface IPolSourceGroupingService
     {
        Task<ActionResult<bool>> Delete(int PolSourceGroupingID);
        Task<ActionResult<List<PolSourceGrouping>>> GetPolSourceGroupingList(int skip = 0, int take = 100);

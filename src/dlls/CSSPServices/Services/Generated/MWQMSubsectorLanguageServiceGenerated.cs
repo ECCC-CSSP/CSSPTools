@@ -21,7 +21,7 @@ using System.Threading.Tasks;
 
 namespace CSSPServices
 {
-   public interface IMWQMSubsectorLanguageService
+   public partial interface IMWQMSubsectorLanguageService
     {
        Task<ActionResult<bool>> Delete(int MWQMSubsectorLanguageID);
        Task<ActionResult<List<MWQMSubsectorLanguage>>> GetMWQMSubsectorLanguageList(int skip = 0, int take = 100);

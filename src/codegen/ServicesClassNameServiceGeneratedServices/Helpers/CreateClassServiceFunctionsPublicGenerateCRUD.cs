@@ -18,7 +18,14 @@ namespace ServicesClassNameServiceGeneratedServices.Services
             }
 
             // Doing Delete
-            sb.AppendLine($@"        public async Task<ActionResult<bool>> Delete(int { TypeName }ID)");
+            if (TypeName == "AspNetUser")
+            {
+                sb.AppendLine($@"        public async Task<ActionResult<bool>> Delete(string Id)");
+            }
+            else
+            {
+                sb.AppendLine($@"        public async Task<ActionResult<bool>> Delete(int { TypeName }ID)");
+            }
             sb.AppendLine(@"        {");
             sb.AppendLine(@"            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)");
             sb.AppendLine(@"            {");
@@ -28,12 +35,26 @@ namespace ServicesClassNameServiceGeneratedServices.Services
             sb.AppendLine(@"            if (LoggedInService.DBLocation == DBLocationEnum.InMemory)");
             sb.AppendLine(@"            {");
             sb.AppendLine($@"                { TypeName } { TypeNameLower } = (from c in dbIM.{ TypeName }{ Plurial }");
-            sb.AppendLine($@"                                   where c.{ TypeName }ID == { TypeName }ID");
+            if (TypeName == "AspNetUser")
+            {
+                sb.AppendLine($@"                                   where c.Id == Id");
+            }
+            else
+            {
+                sb.AppendLine($@"                                   where c.{ TypeName }ID == { TypeName }ID");
+            }
             sb.AppendLine(@"                                   select c).FirstOrDefault();");
             sb.AppendLine(@"            ");
             sb.AppendLine($@"                if ({ TypeNameLower } == null)");
             sb.AppendLine(@"                {");
-            sb.AppendLine($@"                    return await Task.FromResult(BadRequest(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, ""{ TypeName }"", ""{ TypeName }ID"", { TypeName }ID.ToString())));");
+            if (TypeName == "AspNetUser")
+            {
+                sb.AppendLine($@"                    return await Task.FromResult(BadRequest(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, ""{ TypeName }"", ""Id"", Id)));");
+            }
+            else
+            {
+                sb.AppendLine($@"                    return await Task.FromResult(BadRequest(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, ""{ TypeName }"", ""{ TypeName }ID"", { TypeName }ID.ToString())));");
+            }
             sb.AppendLine(@"                }");
             sb.AppendLine(@"            ");
             sb.AppendLine(@"                try");
@@ -53,12 +74,26 @@ namespace ServicesClassNameServiceGeneratedServices.Services
 
             sb.AppendLine(@"            {");
             sb.AppendLine($@"                { TypeName } { TypeNameLower } = (from c in dbLocal.{ TypeName }{ Plurial }");
-            sb.AppendLine($@"                                   where c.{ TypeName }ID == { TypeName }ID");
+            if (TypeName == "AspNetUser")
+            {
+                sb.AppendLine($@"                                   where c.Id == Id");
+            }
+            else
+            {
+                sb.AppendLine($@"                                   where c.{ TypeName }ID == { TypeName }ID");
+            }
             sb.AppendLine(@"                                   select c).FirstOrDefault();");
             sb.AppendLine(@"                ");
             sb.AppendLine($@"                if ({ TypeNameLower } == null)");
             sb.AppendLine(@"                {");
-            sb.AppendLine($@"                    return await Task.FromResult(BadRequest(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, ""{ TypeName }"", ""{ TypeName }ID"", { TypeName }ID.ToString())));");
+            if (TypeName == "AspNetUser")
+            {
+                sb.AppendLine($@"                    return await Task.FromResult(BadRequest(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, ""{ TypeName }"", ""Id"", Id)));");
+            }
+            else
+            {
+                sb.AppendLine($@"                    return await Task.FromResult(BadRequest(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, ""{ TypeName }"", ""{ TypeName }ID"", { TypeName }ID.ToString())));");
+            }
             sb.AppendLine(@"                }");
             sb.AppendLine(@"");    
             sb.AppendLine($@"                try");
@@ -78,12 +113,26 @@ namespace ServicesClassNameServiceGeneratedServices.Services
             sb.AppendLine(@"            {");
 
             sb.AppendLine($@"                { TypeName } { TypeNameLower } = (from c in db.{ TypeName }{ Plurial }");
-            sb.AppendLine($@"                                   where c.{ TypeName }ID == { TypeName }ID");
+            if (TypeName == "AspNetUser")
+            {
+                sb.AppendLine($@"                                   where c.Id == Id");
+            }
+            else
+            {
+                sb.AppendLine($@"                                   where c.{ TypeName }ID == { TypeName }ID");
+            }
             sb.AppendLine(@"                                   select c).FirstOrDefault();");
             sb.AppendLine(@"                ");
             sb.AppendLine($@"                if ({ TypeNameLower } == null)");
             sb.AppendLine(@"                {");
-            sb.AppendLine($@"                    return await Task.FromResult(BadRequest(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, ""{ TypeName }"", ""{ TypeName }ID"", { TypeName }ID.ToString())));");
+            if (TypeName == "AspNetUser")
+            {
+                sb.AppendLine($@"                    return await Task.FromResult(BadRequest(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, ""{ TypeName }"", ""Id"", Id)));");
+            }
+            else
+            {
+                sb.AppendLine($@"                    return await Task.FromResult(BadRequest(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, ""{ TypeName }"", ""{ TypeName }ID"", { TypeName }ID.ToString())));");
+            }
             sb.AppendLine(@"                }");
             sb.AppendLine(@"");
             sb.AppendLine($@"                try");

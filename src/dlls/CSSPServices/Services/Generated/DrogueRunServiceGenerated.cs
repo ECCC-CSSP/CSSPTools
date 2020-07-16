@@ -21,7 +21,7 @@ using System.Threading.Tasks;
 
 namespace CSSPServices
 {
-   public interface IDrogueRunService
+   public partial interface IDrogueRunService
     {
        Task<ActionResult<bool>> Delete(int DrogueRunID);
        Task<ActionResult<List<DrogueRun>>> GetDrogueRunList(int skip = 0, int take = 100);

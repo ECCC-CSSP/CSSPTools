@@ -21,7 +21,7 @@ using System.Threading.Tasks;
 
 namespace CSSPServices
 {
-   public interface IHelpDocService
+   public partial interface IHelpDocService
     {
        Task<ActionResult<bool>> Delete(int HelpDocID);
        Task<ActionResult<List<HelpDoc>>> GetHelpDocList(int skip = 0, int take = 100);

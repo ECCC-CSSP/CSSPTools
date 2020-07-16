@@ -21,7 +21,7 @@ using System.Threading.Tasks;
 
 namespace CSSPServices
 {
-   public interface ISamplingPlanEmailService
+   public partial interface ISamplingPlanEmailService
     {
        Task<ActionResult<bool>> Delete(int SamplingPlanEmailID);
        Task<ActionResult<List<SamplingPlanEmail>>> GetSamplingPlanEmailList(int skip = 0, int take = 100);

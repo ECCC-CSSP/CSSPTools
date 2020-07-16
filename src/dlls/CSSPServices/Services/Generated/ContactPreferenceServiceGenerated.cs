@@ -21,7 +21,7 @@ using System.Threading.Tasks;
 
 namespace CSSPServices
 {
-   public interface IContactPreferenceService
+   public partial interface IContactPreferenceService
     {
        Task<ActionResult<bool>> Delete(int ContactPreferenceID);
        Task<ActionResult<List<ContactPreference>>> GetContactPreferenceList(int skip = 0, int take = 100);

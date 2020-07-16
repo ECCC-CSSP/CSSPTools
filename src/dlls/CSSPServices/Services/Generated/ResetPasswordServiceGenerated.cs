@@ -21,7 +21,7 @@ using System.Threading.Tasks;
 
 namespace CSSPServices
 {
-   public interface IResetPasswordService
+   public partial interface IResetPasswordService
     {
        Task<ActionResult<bool>> Delete(int ResetPasswordID);
        Task<ActionResult<List<ResetPassword>>> GetResetPasswordList(int skip = 0, int take = 100);

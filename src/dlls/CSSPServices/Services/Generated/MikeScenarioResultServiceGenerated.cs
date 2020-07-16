@@ -21,7 +21,7 @@ using System.Threading.Tasks;
 
 namespace CSSPServices
 {
-   public interface IMikeScenarioResultService
+   public partial interface IMikeScenarioResultService
     {
        Task<ActionResult<bool>> Delete(int MikeScenarioResultID);
        Task<ActionResult<List<MikeScenarioResult>>> GetMikeScenarioResultList(int skip = 0, int take = 100);

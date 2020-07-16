@@ -21,7 +21,7 @@ using System.Threading.Tasks;
 
 namespace CSSPServices
 {
-   public interface ITVFileService
+   public partial interface ITVFileService
     {
        Task<ActionResult<bool>> Delete(int TVFileID);
        Task<ActionResult<List<TVFile>>> GetTVFileList(int skip = 0, int take = 100);

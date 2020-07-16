@@ -21,7 +21,7 @@ using System.Threading.Tasks;
 
 namespace CSSPServices
 {
-   public interface IMWQMSubsectorService
+   public partial interface IMWQMSubsectorService
     {
        Task<ActionResult<bool>> Delete(int MWQMSubsectorID);
        Task<ActionResult<List<MWQMSubsector>>> GetMWQMSubsectorList(int skip = 0, int take = 100);

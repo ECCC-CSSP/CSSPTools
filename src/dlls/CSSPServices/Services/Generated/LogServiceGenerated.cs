@@ -21,7 +21,7 @@ using System.Threading.Tasks;
 
 namespace CSSPServices
 {
-   public interface ILogService
+   public partial interface ILogService
     {
        Task<ActionResult<bool>> Delete(int LogID);
        Task<ActionResult<List<Log>>> GetLogList(int skip = 0, int take = 100);

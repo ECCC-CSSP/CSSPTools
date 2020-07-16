@@ -21,7 +21,7 @@ using System.Threading.Tasks;
 
 namespace CSSPServices
 {
-   public interface IAppErrLogService
+   public partial interface IAppErrLogService
     {
        Task<ActionResult<bool>> Delete(int AppErrLogID);
        Task<ActionResult<List<AppErrLog>>> GetAppErrLogList(int skip = 0, int take = 100);

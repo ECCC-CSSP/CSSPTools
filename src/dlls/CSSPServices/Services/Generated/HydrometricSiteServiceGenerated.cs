@@ -21,7 +21,7 @@ using System.Threading.Tasks;
 
 namespace CSSPServices
 {
-   public interface IHydrometricSiteService
+   public partial interface IHydrometricSiteService
     {
        Task<ActionResult<bool>> Delete(int HydrometricSiteID);
        Task<ActionResult<List<HydrometricSite>>> GetHydrometricSiteList(int skip = 0, int take = 100);

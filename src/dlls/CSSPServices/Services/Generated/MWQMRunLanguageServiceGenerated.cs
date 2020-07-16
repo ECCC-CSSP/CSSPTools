@@ -21,7 +21,7 @@ using System.Threading.Tasks;
 
 namespace CSSPServices
 {
-   public interface IMWQMRunLanguageService
+   public partial interface IMWQMRunLanguageService
     {
        Task<ActionResult<bool>> Delete(int MWQMRunLanguageID);
        Task<ActionResult<List<MWQMRunLanguage>>> GetMWQMRunLanguageList(int skip = 0, int take = 100);

@@ -21,7 +21,7 @@ using System.Threading.Tasks;
 
 namespace CSSPServices
 {
-   public interface IVPScenarioLanguageService
+   public partial interface IVPScenarioLanguageService
     {
        Task<ActionResult<bool>> Delete(int VPScenarioLanguageID);
        Task<ActionResult<List<VPScenarioLanguage>>> GetVPScenarioLanguageList(int skip = 0, int take = 100);

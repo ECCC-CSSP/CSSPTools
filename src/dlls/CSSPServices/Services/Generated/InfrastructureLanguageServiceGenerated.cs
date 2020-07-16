@@ -21,7 +21,7 @@ using System.Threading.Tasks;
 
 namespace CSSPServices
 {
-   public interface IInfrastructureLanguageService
+   public partial interface IInfrastructureLanguageService
     {
        Task<ActionResult<bool>> Delete(int InfrastructureLanguageID);
        Task<ActionResult<List<InfrastructureLanguage>>> GetInfrastructureLanguageList(int skip = 0, int take = 100);

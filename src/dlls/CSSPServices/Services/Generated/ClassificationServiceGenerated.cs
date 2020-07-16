@@ -21,7 +21,7 @@ using System.Threading.Tasks;
 
 namespace CSSPServices
 {
-   public interface IClassificationService
+   public partial interface IClassificationService
     {
        Task<ActionResult<bool>> Delete(int ClassificationID);
        Task<ActionResult<List<Classification>>> GetClassificationList(int skip = 0, int take = 100);

@@ -21,7 +21,7 @@ using System.Threading.Tasks;
 
 namespace CSSPServices
 {
-   public interface IEmailDistributionListLanguageService
+   public partial interface IEmailDistributionListLanguageService
     {
        Task<ActionResult<bool>> Delete(int EmailDistributionListLanguageID);
        Task<ActionResult<List<EmailDistributionListLanguage>>> GetEmailDistributionListLanguageList(int skip = 0, int take = 100);

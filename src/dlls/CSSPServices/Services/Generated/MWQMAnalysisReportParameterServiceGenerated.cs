@@ -21,7 +21,7 @@ using System.Threading.Tasks;
 
 namespace CSSPServices
 {
-   public interface IMWQMAnalysisReportParameterService
+   public partial interface IMWQMAnalysisReportParameterService
     {
        Task<ActionResult<bool>> Delete(int MWQMAnalysisReportParameterID);
        Task<ActionResult<List<MWQMAnalysisReportParameter>>> GetMWQMAnalysisReportParameterList(int skip = 0, int take = 100);

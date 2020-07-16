@@ -21,7 +21,7 @@ using System.Threading.Tasks;
 
 namespace CSSPServices
 {
-   public interface ITVItemLinkService
+   public partial interface ITVItemLinkService
     {
        Task<ActionResult<bool>> Delete(int TVItemLinkID);
        Task<ActionResult<List<TVItemLink>>> GetTVItemLinkList(int skip = 0, int take = 100);

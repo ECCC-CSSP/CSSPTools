@@ -21,7 +21,7 @@ using System.Threading.Tasks;
 
 namespace CSSPServices
 {
-   public interface IMikeSourceService
+   public partial interface IMikeSourceService
     {
        Task<ActionResult<bool>> Delete(int MikeSourceID);
        Task<ActionResult<List<MikeSource>>> GetMikeSourceList(int skip = 0, int take = 100);

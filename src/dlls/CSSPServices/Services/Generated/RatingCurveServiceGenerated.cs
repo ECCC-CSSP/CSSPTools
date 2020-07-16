@@ -21,7 +21,7 @@ using System.Threading.Tasks;
 
 namespace CSSPServices
 {
-   public interface IRatingCurveService
+   public partial interface IRatingCurveService
     {
        Task<ActionResult<bool>> Delete(int RatingCurveID);
        Task<ActionResult<List<RatingCurve>>> GetRatingCurveList(int skip = 0, int take = 100);

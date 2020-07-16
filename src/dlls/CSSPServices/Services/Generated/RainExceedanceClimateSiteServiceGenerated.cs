@@ -21,7 +21,7 @@ using System.Threading.Tasks;
 
 namespace CSSPServices
 {
-   public interface IRainExceedanceClimateSiteService
+   public partial interface IRainExceedanceClimateSiteService
     {
        Task<ActionResult<bool>> Delete(int RainExceedanceClimateSiteID);
        Task<ActionResult<List<RainExceedanceClimateSite>>> GetRainExceedanceClimateSiteList(int skip = 0, int take = 100);

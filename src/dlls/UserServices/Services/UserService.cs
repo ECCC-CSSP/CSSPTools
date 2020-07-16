@@ -1,4 +1,5 @@
 ﻿using CSSPModels;
+using CSSPServices;
 using CultureServices.Resources;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -30,15 +31,17 @@ namespace UserServices.Services
         #region Properties
         private IConfiguration Configuration { get; }
         private UserManager<ApplicationUser> userManager { get; }
-        private CSSPDBContext csspDBContext { get; }
+        private IAspNetUserService AspNetUserService { get; }
+        private IContactService ContactService { get; }
         #endregion Properties
 
         #region Constructors
-        public UserService(IConfiguration configuration, UserManager<ApplicationUser> userManager, CSSPDBContext csspDBContext)
+        public UserService(IConfiguration configuration, UserManager<ApplicationUser> userManager, IAspNetUserService AspNetUserService, IContactService ContactService)
         {
             this.Configuration = configuration;
             this.userManager = userManager;
-            this.csspDBContext = csspDBContext;
+            this.AspNetUserService = AspNetUserService;
+            this.ContactService = ContactService;
         }
         #endregion Constructors
 
@@ -199,13 +202,17 @@ namespace UserServices.Services
 
                 if (HasPassword == true)
                 {
-                    Contact contact = (from c in csspDBContext.Contacts
-                                       where c.Id == appUser.Id
-                                       select c).AsNoTracking().FirstOrDefault();
+                    var actionContact = ContactService.GetContactWithId(appUser.Id);
+                    //if (((ObjectResult)actionContact.Result).StatusCode != 200)
+                    //{
+                    //    return BadRequest(String.Format(CultureServicesRes.UnableToLoginAs_WithProvidedPassword, loginModel.LoginEmail));
+                    //}
+
+                    Contact contact = null; // (Contact)((OkObjectResult)actionContact.Result).Value;
+
                     if (contact == null)
                     {
-                        return BadRequest(String.Format(CultureServicesRes.UnableToLoginAs_WithProvidedPassword, loginModel.LoginEmail));
-                    }
+                     }
 
                     UserModel userModel = new UserModel()
                     {
@@ -232,6 +239,9 @@ namespace UserServices.Services
                     };
                     SecurityToken token = tokenHandler.CreateToken(tokenDescriptor);
                     userModel.Token = tokenHandler.WriteToken(token);
+
+
+
 
                     return userModel;
                 }

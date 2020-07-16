@@ -21,7 +21,7 @@ using System.Threading.Tasks;
 
 namespace CSSPServices
 {
-   public interface IMapInfoPointService
+   public partial interface IMapInfoPointService
     {
        Task<ActionResult<bool>> Delete(int MapInfoPointID);
        Task<ActionResult<List<MapInfoPoint>>> GetMapInfoPointList(int skip = 0, int take = 100);

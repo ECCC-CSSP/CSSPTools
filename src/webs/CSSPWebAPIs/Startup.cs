@@ -226,15 +226,6 @@ namespace CSSPWebAPIs
             LoadAllDBServices(services);
             services.AddScoped<IWebService, WebService>();
 
-            //FileInfo fiClient = new FileInfo(Configuration.GetValue<string>("LocalClientPath").Replace("{AppDataPath}", appDataPath));
-
-            //RootPath = fiClient.Directory.FullName;
-
-            //using (TextWriter tw = fiw.CreateText())
-            //{
-            //    tw.WriteLine("bonjour --- " + RootPath);
-            //}
-
             services.AddSpaStaticFiles(configuration =>
             {
                 configuration.RootPath = "client-app";

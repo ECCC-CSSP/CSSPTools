@@ -21,15 +21,15 @@ using System.Threading.Tasks;
 
 namespace CSSPServices
 {
-   public partial interface ITelService
+   public partial interface IAspNetUserService
     {
-       Task<ActionResult<bool>> Delete(int TelID);
-       Task<ActionResult<List<Tel>>> GetTelList(int skip = 0, int take = 100);
-       Task<ActionResult<Tel>> GetTelWithTelID(int TelID);
-       Task<ActionResult<Tel>> Post(Tel tel);
-       Task<ActionResult<Tel>> Put(Tel tel);
+       Task<ActionResult<bool>> Delete(string Id);
+       Task<ActionResult<List<AspNetUser>>> GetAspNetUserList(int skip = 0, int take = 100);
+       Task<ActionResult<AspNetUser>> GetAspNetUserWithId(string Id);
+       Task<ActionResult<AspNetUser>> Post(AspNetUser aspnetuser);
+       Task<ActionResult<AspNetUser>> Put(AspNetUser aspnetuser);
     }
-    public partial class TelService : ControllerBase, ITelService
+    public partial class AspNetUserService : ControllerBase, IAspNetUserService
     {
         #region Variables
         #endregion Variables
@@ -45,7 +45,7 @@ namespace CSSPServices
         #endregion Properties
 
         #region Constructors
-        public TelService(ICultureService CultureService, ILoggedInService LoggedInService, IEnums enums, CSSPDBContext db, CSSPDBLocalContext dbLocal, InMemoryDBContext dbIM)
+        public AspNetUserService(ICultureService CultureService, ILoggedInService LoggedInService, IEnums enums, CSSPDBContext db, CSSPDBLocalContext dbLocal, InMemoryDBContext dbIM)
         {
             this.CultureService = CultureService;
             this.LoggedInService = LoggedInService;
@@ -57,7 +57,7 @@ namespace CSSPServices
         #endregion Constructors
 
         #region Functions public 
-        public async Task<ActionResult<Tel>> GetTelWithTelID(int TelID)
+        public async Task<ActionResult<AspNetUser>> GetAspNetUserWithId(string Id)
         {
             if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
             {
@@ -66,45 +66,45 @@ namespace CSSPServices
 
             if (LoggedInService.DBLocation == DBLocationEnum.InMemory)
             {
-                Tel tel = (from c in dbIM.Tels.AsNoTracking()
-                                   where c.TelID == TelID
+                AspNetUser aspNetUser = (from c in dbIM.AspNetUsers.AsNoTracking()
+                                   where c.Id == Id
                                    select c).FirstOrDefault();
 
-                if (tel == null)
+                if (aspNetUser == null)
                 {
                     return await Task.FromResult(NotFound());
                 }
 
-                return await Task.FromResult(Ok(tel));
+                return await Task.FromResult(Ok(aspNetUser));
             }
             else if (LoggedInService.DBLocation == DBLocationEnum.Local)
             {
-                Tel tel = (from c in dbLocal.Tels.AsNoTracking()
-                        where c.TelID == TelID
+                AspNetUser aspNetUser = (from c in dbLocal.AspNetUsers.AsNoTracking()
+                        where c.Id == Id
                         select c).FirstOrDefault();
 
-                if (tel == null)
+                if (aspNetUser == null)
                 {
                    return await Task.FromResult(NotFound());
                 }
 
-                return await Task.FromResult(Ok(tel));
+                return await Task.FromResult(Ok(aspNetUser));
             }
             else
             {
-                Tel tel = (from c in db.Tels.AsNoTracking()
-                        where c.TelID == TelID
+                AspNetUser aspNetUser = (from c in db.AspNetUsers.AsNoTracking()
+                        where c.Id == Id
                         select c).FirstOrDefault();
 
-                if (tel == null)
+                if (aspNetUser == null)
                 {
                    return await Task.FromResult(NotFound());
                 }
 
-                return await Task.FromResult(Ok(tel));
+                return await Task.FromResult(Ok(aspNetUser));
             }
         }
-        public async Task<ActionResult<List<Tel>>> GetTelList(int skip = 0, int take = 100)
+        public async Task<ActionResult<List<AspNetUser>>> GetAspNetUserList(int skip = 0, int take = 100)
         {
             if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
             {
@@ -113,24 +113,24 @@ namespace CSSPServices
 
             if (LoggedInService.DBLocation == DBLocationEnum.InMemory)
             {
-                List<Tel> telList = (from c in dbIM.Tels.AsNoTracking() orderby c.TelID select c).Skip(skip).Take(take).ToList();
+                List<AspNetUser> aspNetUserList = (from c in dbIM.AspNetUsers.AsNoTracking() orderby c.Id select c).Skip(skip).Take(take).ToList();
             
-                return await Task.FromResult(Ok(telList));
+                return await Task.FromResult(Ok(aspNetUserList));
             }
             else if (LoggedInService.DBLocation == DBLocationEnum.Local)
             {
-                List<Tel> telList = (from c in dbLocal.Tels.AsNoTracking() orderby c.TelID select c).Skip(skip).Take(take).ToList();
+                List<AspNetUser> aspNetUserList = (from c in dbLocal.AspNetUsers.AsNoTracking() orderby c.Id select c).Skip(skip).Take(take).ToList();
 
-                return await Task.FromResult(Ok(telList));
+                return await Task.FromResult(Ok(aspNetUserList));
             }
             else
             {
-                List<Tel> telList = (from c in db.Tels.AsNoTracking() orderby c.TelID select c).Skip(skip).Take(take).ToList();
+                List<AspNetUser> aspNetUserList = (from c in db.AspNetUsers.AsNoTracking() orderby c.Id select c).Skip(skip).Take(take).ToList();
 
-                return await Task.FromResult(Ok(telList));
+                return await Task.FromResult(Ok(aspNetUserList));
             }
         }
-        public async Task<ActionResult<bool>> Delete(int TelID)
+        public async Task<ActionResult<bool>> Delete(string Id)
         {
             if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
             {
@@ -139,18 +139,18 @@ namespace CSSPServices
 
             if (LoggedInService.DBLocation == DBLocationEnum.InMemory)
             {
-                Tel tel = (from c in dbIM.Tels
-                                   where c.TelID == TelID
+                AspNetUser aspNetUser = (from c in dbIM.AspNetUsers
+                                   where c.Id == Id
                                    select c).FirstOrDefault();
             
-                if (tel == null)
+                if (aspNetUser == null)
                 {
-                    return await Task.FromResult(BadRequest(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "Tel", "TelID", TelID.ToString())));
+                    return await Task.FromResult(BadRequest(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "AspNetUser", "Id", Id)));
                 }
             
                 try
                 {
-                    dbIM.Tels.Remove(tel);
+                    dbIM.AspNetUsers.Remove(aspNetUser);
                     dbIM.SaveChanges();
                 }
                 catch (DbUpdateException ex)
@@ -162,18 +162,18 @@ namespace CSSPServices
             }
             else if (LoggedInService.DBLocation == DBLocationEnum.Local)
             {
-                Tel tel = (from c in dbLocal.Tels
-                                   where c.TelID == TelID
+                AspNetUser aspNetUser = (from c in dbLocal.AspNetUsers
+                                   where c.Id == Id
                                    select c).FirstOrDefault();
                 
-                if (tel == null)
+                if (aspNetUser == null)
                 {
-                    return await Task.FromResult(BadRequest(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "Tel", "TelID", TelID.ToString())));
+                    return await Task.FromResult(BadRequest(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "AspNetUser", "Id", Id)));
                 }
 
                 try
                 {
-                   dbLocal.Tels.Remove(tel);
+                   dbLocal.AspNetUsers.Remove(aspNetUser);
                    dbLocal.SaveChanges();
                 }
                 catch (DbUpdateException ex)
@@ -185,18 +185,18 @@ namespace CSSPServices
             }
             else
             {
-                Tel tel = (from c in db.Tels
-                                   where c.TelID == TelID
+                AspNetUser aspNetUser = (from c in db.AspNetUsers
+                                   where c.Id == Id
                                    select c).FirstOrDefault();
                 
-                if (tel == null)
+                if (aspNetUser == null)
                 {
-                    return await Task.FromResult(BadRequest(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "Tel", "TelID", TelID.ToString())));
+                    return await Task.FromResult(BadRequest(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "AspNetUser", "Id", Id)));
                 }
 
                 try
                 {
-                   db.Tels.Remove(tel);
+                   db.AspNetUsers.Remove(aspNetUser);
                    db.SaveChanges();
                 }
                 catch (DbUpdateException ex)
@@ -207,14 +207,14 @@ namespace CSSPServices
                 return await Task.FromResult(Ok(true));
             }
         }
-        public async Task<ActionResult<Tel>> Post(Tel tel)
+        public async Task<ActionResult<AspNetUser>> Post(AspNetUser aspNetUser)
         {
             if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
             {
                 return await Task.FromResult(Unauthorized());
             }
 
-            ValidationResults = Validate(new ValidationContext(tel), ActionDBTypeEnum.Create);
+            ValidationResults = Validate(new ValidationContext(aspNetUser), ActionDBTypeEnum.Create);
             if (ValidationResults.Count() > 0)
             {
                return await Task.FromResult(BadRequest(ValidationResults));
@@ -224,7 +224,7 @@ namespace CSSPServices
             {
                 try
                 {
-                    dbIM.Tels.Add(tel);
+                    dbIM.AspNetUsers.Add(aspNetUser);
                     dbIM.SaveChanges();
                 }
                 catch (DbUpdateException ex)
@@ -232,13 +232,13 @@ namespace CSSPServices
                     return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
                 }
 
-                return await Task.FromResult(Ok(tel));
+                return await Task.FromResult(Ok(aspNetUser));
             }
             else if (LoggedInService.DBLocation == DBLocationEnum.Local)
             {
                 try
                 {
-                   dbLocal.Tels.Add(tel);
+                   dbLocal.AspNetUsers.Add(aspNetUser);
                    dbLocal.SaveChanges();
                 }
                 catch (DbUpdateException ex)
@@ -246,13 +246,13 @@ namespace CSSPServices
                    return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
                 }
 
-                return await Task.FromResult(Ok(tel));
+                return await Task.FromResult(Ok(aspNetUser));
             }
             else
             {
                 try
                 {
-                   db.Tels.Add(tel);
+                   db.AspNetUsers.Add(aspNetUser);
                    db.SaveChanges();
                 }
                 catch (DbUpdateException ex)
@@ -260,17 +260,17 @@ namespace CSSPServices
                    return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
                 }
 
-                return await Task.FromResult(Ok(tel));
+                return await Task.FromResult(Ok(aspNetUser));
             }
         }
-        public async Task<ActionResult<Tel>> Put(Tel tel)
+        public async Task<ActionResult<AspNetUser>> Put(AspNetUser aspNetUser)
         {
             if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
             {
                 return await Task.FromResult(Unauthorized());
             }
 
-            ValidationResults = Validate(new ValidationContext(tel), ActionDBTypeEnum.Update);
+            ValidationResults = Validate(new ValidationContext(aspNetUser), ActionDBTypeEnum.Update);
             if (ValidationResults.Count() > 0)
             {
                return await Task.FromResult(BadRequest(ValidationResults));
@@ -280,7 +280,7 @@ namespace CSSPServices
             {
                 try
                 {
-                    dbIM.Tels.Update(tel);
+                    dbIM.AspNetUsers.Update(aspNetUser);
                     dbIM.SaveChanges();
                 }
                 catch (DbUpdateException ex)
@@ -288,13 +288,13 @@ namespace CSSPServices
                     return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
                 }
 
-                return await Task.FromResult(Ok(tel));
+                return await Task.FromResult(Ok(aspNetUser));
             }
             else if (LoggedInService.DBLocation == DBLocationEnum.Local)
             {
             try
             {
-               dbLocal.Tels.Update(tel);
+               dbLocal.AspNetUsers.Update(aspNetUser);
                dbLocal.SaveChanges();
             }
             catch (DbUpdateException ex)
@@ -302,13 +302,13 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
 
-            return await Task.FromResult(Ok(tel));
+            return await Task.FromResult(Ok(aspNetUser));
             }
             else
             {
             try
             {
-               db.Tels.Update(tel);
+               db.AspNetUsers.Update(aspNetUser);
                db.SaveChanges();
             }
             catch (DbUpdateException ex)
@@ -316,7 +316,7 @@ namespace CSSPServices
                return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
             }
 
-            return await Task.FromResult(Ok(tel));
+            return await Task.FromResult(Ok(aspNetUser));
             }
         }
         #endregion Functions public
@@ -325,117 +325,80 @@ namespace CSSPServices
         private IEnumerable<ValidationResult> Validate(ValidationContext validationContext, ActionDBTypeEnum actionDBType)
         {
             string retStr = "";
-            Tel tel = validationContext.ObjectInstance as Tel;
+            AspNetUser aspNetUser = validationContext.ObjectInstance as AspNetUser;
 
             if (actionDBType == ActionDBTypeEnum.Update || actionDBType == ActionDBTypeEnum.Delete)
             {
-                if (tel.TelID == 0)
+                if (aspNetUser.Id == "")
                 {
-                    yield return new ValidationResult(string.Format(CultureServicesRes._IsRequired, "TelID"), new[] { "TelID" });
+                    yield return new ValidationResult(string.Format(CultureServicesRes._IsRequired, "Id"), new[] { "Id" });
                 }
 
                 if (LoggedInService.DBLocation == DBLocationEnum.Local)
                 {
-                    if (!(from c in dbLocal.Tels select c).Where(c => c.TelID == tel.TelID).Any())
+                    if (!(from c in dbLocal.AspNetUsers select c).Where(c => c.Id == aspNetUser.Id).Any())
                     {
-                        yield return new ValidationResult(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "Tel", "TelID", tel.TelID.ToString()), new[] { "TelID" });
+                        yield return new ValidationResult(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "AspNetUser", "AspNetUserId", (aspNetUser.Id == null ? "" : aspNetUser.Id.ToString())), new[] { "Id" });
                     }
                 }
                 else
                 {
-                    if (!(from c in db.Tels select c).Where(c => c.TelID == tel.TelID).Any())
+                    if (!(from c in db.AspNetUsers select c).Where(c => c.Id == aspNetUser.Id).Any())
                     {
-                        yield return new ValidationResult(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "Tel", "TelID", tel.TelID.ToString()), new[] { "TelID" });
+                        yield return new ValidationResult(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "AspNetUser", "AspNetUserId", (aspNetUser.Id == null ? "" : aspNetUser.Id.ToString())), new[] { "Id" });
                     }
                 }
             }
 
-            TVItem TVItemTelTVItemID = null;
-            if (LoggedInService.DBLocation == DBLocationEnum.Local)
+            if (!string.IsNullOrWhiteSpace(aspNetUser.Email) && aspNetUser.Email.Length > 256)
             {
-                TVItemTelTVItemID = (from c in dbLocal.TVItems where c.TVItemID == tel.TelTVItemID select c).FirstOrDefault();
-                if (TVItemTelTVItemID == null)
-                {
-                    TVItemTelTVItemID = (from c in dbIM.TVItems where c.TVItemID == tel.TelTVItemID select c).FirstOrDefault();
-                }
-            }
-            else
-            {
-                TVItemTelTVItemID = (from c in db.TVItems where c.TVItemID == tel.TelTVItemID select c).FirstOrDefault();
+                yield return new ValidationResult(string.Format(CultureServicesRes._MaxLengthIs_, "Email", "256"), new[] { "Email" });
             }
 
-            if (TVItemTelTVItemID == null)
+            //PasswordHash has no StringLength Attribute
+
+            //SecurityStamp has no StringLength Attribute
+
+            //PhoneNumber has no StringLength Attribute
+
+            if (aspNetUser.LockoutEndDateUtc != null && ((DateTime)aspNetUser.LockoutEndDateUtc).Year < 1980)
             {
-                yield return new ValidationResult(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "TVItem", "TelTVItemID", tel.TelTVItemID.ToString()), new[] { "TelTVItemID" });
-            }
-            else
-            {
-                List<TVTypeEnum> AllowableTVTypes = new List<TVTypeEnum>()
-                {
-                    TVTypeEnum.Tel,
-                };
-                if (!AllowableTVTypes.Contains(TVItemTelTVItemID.TVType))
-                {
-                    yield return new ValidationResult(string.Format(CultureServicesRes._IsNotOfType_, "TelTVItemID", "Tel"), new[] { "TelTVItemID" });
-                }
+                yield return new ValidationResult(string.Format(CultureServicesRes._YearShouldBeBiggerThan_, "LockoutEndDateUtc", "1980"), new[] { "LockoutEndDateUtc" });
             }
 
-            if (string.IsNullOrWhiteSpace(tel.TelNumber))
+            if (aspNetUser.AccessFailedCount < 0 || aspNetUser.AccessFailedCount > 10000)
             {
-                yield return new ValidationResult(string.Format(CultureServicesRes._IsRequired, "TelNumber"), new[] { "TelNumber" });
+                yield return new ValidationResult(string.Format(CultureServicesRes._ValueShouldBeBetween_And_, "AccessFailedCount", "0", "10000"), new[] { "AccessFailedCount" });
             }
 
-            if (!string.IsNullOrWhiteSpace(tel.TelNumber) && tel.TelNumber.Length > 50)
+            if (string.IsNullOrWhiteSpace(aspNetUser.UserName))
             {
-                yield return new ValidationResult(string.Format(CultureServicesRes._MaxLengthIs_, "TelNumber", "50"), new[] { "TelNumber" });
+                yield return new ValidationResult(string.Format(CultureServicesRes._IsRequired, "UserName"), new[] { "UserName" });
             }
 
-            retStr = enums.EnumTypeOK(typeof(TelTypeEnum), (int?)tel.TelType);
-            if (!string.IsNullOrWhiteSpace(retStr))
+            if (!string.IsNullOrWhiteSpace(aspNetUser.UserName) && aspNetUser.UserName.Length > 256)
             {
-                yield return new ValidationResult(string.Format(CultureServicesRes._IsRequired, "TelType"), new[] { "TelType" });
+                yield return new ValidationResult(string.Format(CultureServicesRes._MaxLengthIs_, "UserName", "256"), new[] { "UserName" });
             }
 
-            if (tel.LastUpdateDate_UTC.Year == 1)
+            if (!string.IsNullOrWhiteSpace(aspNetUser.NormalizedUserName) && aspNetUser.NormalizedUserName.Length > 256)
             {
-                yield return new ValidationResult(string.Format(CultureServicesRes._IsRequired, "LastUpdateDate_UTC"), new[] { "LastUpdateDate_UTC" });
-            }
-            else
-            {
-                if (tel.LastUpdateDate_UTC.Year < 1980)
-                {
-                    yield return new ValidationResult(string.Format(CultureServicesRes._YearShouldBeBiggerThan_, "LastUpdateDate_UTC", "1980"), new[] { "LastUpdateDate_UTC" });
-                }
+                yield return new ValidationResult(string.Format(CultureServicesRes._MaxLengthIs_, "NormalizedUserName", "256"), new[] { "NormalizedUserName" });
             }
 
-            TVItem TVItemLastUpdateContactTVItemID = null;
-            if (LoggedInService.DBLocation == DBLocationEnum.Local)
+            if (!string.IsNullOrWhiteSpace(aspNetUser.NormalizedEmail) && aspNetUser.NormalizedEmail.Length > 256)
             {
-                TVItemLastUpdateContactTVItemID = (from c in dbLocal.TVItems where c.TVItemID == tel.LastUpdateContactTVItemID select c).FirstOrDefault();
-                if (TVItemLastUpdateContactTVItemID == null)
-                {
-                    TVItemLastUpdateContactTVItemID = (from c in dbIM.TVItems where c.TVItemID == tel.LastUpdateContactTVItemID select c).FirstOrDefault();
-                }
-            }
-            else
-            {
-                TVItemLastUpdateContactTVItemID = (from c in db.TVItems where c.TVItemID == tel.LastUpdateContactTVItemID select c).FirstOrDefault();
+                yield return new ValidationResult(string.Format(CultureServicesRes._MaxLengthIs_, "NormalizedEmail", "256"), new[] { "NormalizedEmail" });
             }
 
-            if (TVItemLastUpdateContactTVItemID == null)
+            if (!string.IsNullOrWhiteSpace(aspNetUser.ConcurrencyStamp) && aspNetUser.ConcurrencyStamp.Length > 256)
             {
-                yield return new ValidationResult(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "TVItem", "LastUpdateContactTVItemID", tel.LastUpdateContactTVItemID.ToString()), new[] { "LastUpdateContactTVItemID" });
+                yield return new ValidationResult(string.Format(CultureServicesRes._MaxLengthIs_, "ConcurrencyStamp", "256"), new[] { "ConcurrencyStamp" });
             }
-            else
+
+            if (aspNetUser.LockoutEnd != null && ((DateTime)aspNetUser.LockoutEnd).Year < 1980)
             {
-                List<TVTypeEnum> AllowableTVTypes = new List<TVTypeEnum>()
-                {
-                    TVTypeEnum.Contact,
-                };
-                if (!AllowableTVTypes.Contains(TVItemLastUpdateContactTVItemID.TVType))
-                {
-                    yield return new ValidationResult(string.Format(CultureServicesRes._IsNotOfType_, "LastUpdateContactTVItemID", "Contact"), new[] { "LastUpdateContactTVItemID" });
-                }
+                yield return new ValidationResult(string.Format(CultureServicesRes._YearShouldBeBiggerThan_, "LockoutEnd", "1980"), new[] { "LockoutEnd" });
             }
 
             retStr = ""; // added to stop compiling CSSPError

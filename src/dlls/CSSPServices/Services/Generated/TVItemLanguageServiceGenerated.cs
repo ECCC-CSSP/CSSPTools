@@ -21,7 +21,7 @@ using System.Threading.Tasks;
 
 namespace CSSPServices
 {
-   public interface ITVItemLanguageService
+   public partial interface ITVItemLanguageService
     {
        Task<ActionResult<bool>> Delete(int TVItemLanguageID);
        Task<ActionResult<List<TVItemLanguage>>> GetTVItemLanguageList(int skip = 0, int take = 100);

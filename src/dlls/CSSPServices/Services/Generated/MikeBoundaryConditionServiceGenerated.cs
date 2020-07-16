@@ -21,7 +21,7 @@ using System.Threading.Tasks;
 
 namespace CSSPServices
 {
-   public interface IMikeBoundaryConditionService
+   public partial interface IMikeBoundaryConditionService
     {
        Task<ActionResult<bool>> Delete(int MikeBoundaryConditionID);
        Task<ActionResult<List<MikeBoundaryCondition>>> GetMikeBoundaryConditionList(int skip = 0, int take = 100);

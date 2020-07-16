@@ -21,7 +21,7 @@ using System.Threading.Tasks;
 
 namespace CSSPServices
 {
-   public interface ILabSheetTubeMPNDetailService
+   public partial interface ILabSheetTubeMPNDetailService
     {
        Task<ActionResult<bool>> Delete(int LabSheetTubeMPNDetailID);
        Task<ActionResult<List<LabSheetTubeMPNDetail>>> GetLabSheetTubeMPNDetailList(int skip = 0, int take = 100);

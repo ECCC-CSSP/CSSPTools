@@ -21,7 +21,7 @@ using System.Threading.Tasks;
 
 namespace CSSPServices
 {
-   public interface IInfrastructureService
+   public partial interface IInfrastructureService
     {
        Task<ActionResult<bool>> Delete(int InfrastructureID);
        Task<ActionResult<List<Infrastructure>>> GetInfrastructureList(int skip = 0, int take = 100);

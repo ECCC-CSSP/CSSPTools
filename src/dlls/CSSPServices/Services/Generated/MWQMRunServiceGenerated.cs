@@ -21,7 +21,7 @@ using System.Threading.Tasks;
 
 namespace CSSPServices
 {
-   public interface IMWQMRunService
+   public partial interface IMWQMRunService
     {
        Task<ActionResult<bool>> Delete(int MWQMRunID);
        Task<ActionResult<List<MWQMRun>>> GetMWQMRunList(int skip = 0, int take = 100);

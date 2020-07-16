@@ -21,7 +21,7 @@ using System.Threading.Tasks;
 
 namespace CSSPServices
 {
-   public interface IMikeSourceStartEndService
+   public partial interface IMikeSourceStartEndService
     {
        Task<ActionResult<bool>> Delete(int MikeSourceStartEndID);
        Task<ActionResult<List<MikeSourceStartEnd>>> GetMikeSourceStartEndList(int skip = 0, int take = 100);

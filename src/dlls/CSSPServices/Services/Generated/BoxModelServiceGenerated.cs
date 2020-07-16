@@ -21,7 +21,7 @@ using System.Threading.Tasks;
 
 namespace CSSPServices
 {
-   public interface IBoxModelService
+   public partial interface IBoxModelService
     {
        Task<ActionResult<bool>> Delete(int BoxModelID);
        Task<ActionResult<List<BoxModel>>> GetBoxModelList(int skip = 0, int take = 100);

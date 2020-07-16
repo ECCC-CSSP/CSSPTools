@@ -21,7 +21,7 @@ using System.Threading.Tasks;
 
 namespace CSSPServices
 {
-   public interface IPolSourceSiteService
+   public partial interface IPolSourceSiteService
     {
        Task<ActionResult<bool>> Delete(int PolSourceSiteID);
        Task<ActionResult<List<PolSourceSite>>> GetPolSourceSiteList(int skip = 0, int take = 100);
