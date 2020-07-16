@@ -76,7 +76,7 @@ namespace UserServices.Tests
         {
             Assert.True(await Setup(culture));
 
-            string LoginEmail = "NotFound@email.ca";
+            LoginEmail = "NotFound@email.ca";
 
             var retValue = await UserService.Login(new LoginModel() { LoginEmail = LoginEmail, Password = Password });
             Assert.Null(retValue.Value);
@@ -89,11 +89,11 @@ namespace UserServices.Tests
         [Theory]
         [InlineData("en-CA")]
         [InlineData("fr-CA")]
-        public async Task UserService_Login_Good_Return_Error_UnableToLoginAs_WithProvidedPassword_Test(string culture)
+        public async Task UserService_Login_Good_Return_Error_UnableToLoginAs_WithProvidedPassword_Test2(string culture)
         {
             Assert.True(await Setup(culture));
 
-            string Password = "NotAPassword!";
+            Password = "NotAPassword!";
 
             var retValue = await UserService.Login(new LoginModel() { LoginEmail = LoginEmail, Password = Password });
             Assert.Null(retValue.Value);
@@ -125,20 +125,20 @@ namespace UserServices.Tests
             string CSSPDB2 = Configuration.GetValue<string>("CSSPDB2");
             Assert.NotNull(CSSPDB2);
 
-            string LoginEmail = Configuration.GetValue<string>("LoginEmail");
+            LoginEmail = Configuration.GetValue<string>("LoginEmail");
             Assert.NotNull(LoginEmail);
 
-            string Password = Configuration.GetValue<string>("Password");
+            Password = Configuration.GetValue<string>("Password");
             Assert.NotNull(Password);
 
             ServiceCollection.AddDbContext<CSSPDBContext>(options =>
                 options.UseSqlServer(CSSPDB2));
 
-            ServiceCollection.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlServer(CSSPDB2));
-
             ServiceCollection.AddIdentityCore<ApplicationUser>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
+
+            ServiceCollection.AddDbContext<ApplicationDbContext>(options =>
+                options.UseSqlServer(CSSPDB2));
 
             ServiceProvider = ServiceCollection.BuildServiceProvider();
             Assert.NotNull(ServiceProvider);

@@ -218,7 +218,7 @@ namespace UserServices.Services
                         LastName = contact.LastName
                     };
 
-                    byte[] key = Encoding.ASCII.GetBytes(Configuration.GetValue<string>("ApiSettings:APISecret"));
+                    byte[] key = Encoding.ASCII.GetBytes(Configuration.GetValue<string>("APISecret"));
 
                     JwtSecurityTokenHandler tokenHandler = new JwtSecurityTokenHandler();
                     SecurityTokenDescriptor tokenDescriptor = new SecurityTokenDescriptor

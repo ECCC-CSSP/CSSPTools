@@ -85,11 +85,11 @@ namespace CSSPWebAPIs.Tests
                 options.UseSqlite($"Data Source={ fiAppDataPath.FullName }");
             });
 
-            Services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlServer(TestDB));
-
             Services.AddIdentityCore<ApplicationUser>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
+
+            Services.AddDbContext<ApplicationDbContext>(options =>
+                options.UseSqlServer(TestDB));
 
             Services.AddSingleton<ICultureService, CultureService>();
             Services.AddSingleton<IEnums, Enums>();
