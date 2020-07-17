@@ -59,7 +59,14 @@ namespace ServicesClassNameServiceTestGeneratedServices.Services
             sb.AppendLine(@"");
             sb.AppendLine($@"            if (LoggedInService.DBLocation == DBLocationEnum.Local)");
             sb.AppendLine(@"            {");
-            sb.AppendLine($@"                if (OmitPropName != ""{ TypeName }ID"") { TypeNameLower }.{ TypeName }ID = 10000000;");
+            if (TypeName == "AspNetUser")
+            {
+                sb.AppendLine($@"                if (OmitPropName != ""{ TypeName }ID"") { TypeNameLower }.Id = ""lsiejflisjflsjefilsjlijefljsf"";");
+            }
+            else
+            {
+                sb.AppendLine($@"                if (OmitPropName != ""{ TypeName }ID"") { TypeNameLower }.{ TypeName }ID = 10000000;");
+            }
             sb.AppendLine(@"");
             sb.Append(sbInMemory.ToString());
             sb.AppendLine(@"            }");

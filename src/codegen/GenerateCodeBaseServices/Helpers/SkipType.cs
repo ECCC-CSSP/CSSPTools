@@ -7,10 +7,11 @@ namespace GenerateCodeBaseServices.Services
         public bool SkipType(Type type)
         {
             if (type.Name.StartsWith("<")
-                || type.Name.StartsWith("CSSPModelsRes")
                 || type.Name.StartsWith("Application")
                 || type.Name.StartsWith("BaseModel")
                 || type.Name.StartsWith("BaseContext")
+                || type.Name.StartsWith("ApplicationUser")
+                || type.Name.StartsWith("ApplicationDBContext")
                 || type.Name.StartsWith("CSSPDBContext")
                 || type.Name.StartsWith("CSSPDBLocalContext")
                 || type.Name.StartsWith("CSSPFilesManagementDBContext")

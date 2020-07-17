@@ -1,5 +1,6 @@
 ﻿using CSSPEnums;
 using CSSPModels;
+using CSSPServices;
 using CSSPWebServices.Services;
 using CultureServices.Services;
 using LoggedInServices.Services;
@@ -9,8 +10,6 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
-using UserServices.Models;
-using UserServices.Services;
 
 namespace GenerateAllGzFiles
 {
@@ -27,7 +26,7 @@ namespace GenerateAllGzFiles
         private ICultureService CultureService { get; set; }
         private ILoggedInService LoggedInService { get; set; }
         private IEnums enums { get; set; }
-        private IUserService userService { get; set; }
+        private IContactService ContactService { get; set; }
         private IWebService WebService { get; set; }
         private bool StoreLocal { get; set; }
         private bool StoreInAzure { get; set; }
@@ -37,7 +36,6 @@ namespace GenerateAllGzFiles
         private string AzureCSSPStorageCSSPJSON { get; set; }
         private string LocalJSONPath { get; set; }
         private string LocalFilesPath { get; set; }
-        private UserModel userModel { get; set; }
         #endregion Properties
 
         #region Constructors

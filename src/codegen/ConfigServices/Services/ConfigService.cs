@@ -62,8 +62,8 @@ namespace ConfigServices.Services
         public string DBFileName { get; set; } = "DBFileName";
         private string ActionText = "Action";
         private string CommandText = "Command";
-        private string CSSPDBConnectionString = "CSSPDBConnectionString";
-        private string TestDBConnectionString = "TestDBConnectionString";
+        private string CSSPDB2 = "CSSPDB2";
+        private string TestDB = "TestDB";
         #endregion Properties
 
         #region Constructors
@@ -180,10 +180,10 @@ namespace ConfigServices.Services
         }
         public async Task<bool> ConfigureCSSPDBContext()
         {
-            string CSSPDBConnString = Config.GetValue<string>(CSSPDBConnectionString);
+            string CSSPDBConnString = Config.GetValue<string>(CSSPDB2);
             if (CSSPDBConnString == null)
             {
-                await ActionCommandDBService.ConsoleWriteError($"{ String.Format(CultureServicesRes.CouldNotFindParameter_InAppSettingsJSON, CSSPDBConnectionString) }");
+                await ActionCommandDBService.ConsoleWriteError($"{ String.Format(CultureServicesRes.CouldNotFindParameter_InAppSettingsJSON, CSSPDB2) }");
                 return await Task.FromResult(false);
             }
 
@@ -204,10 +204,10 @@ namespace ConfigServices.Services
         }
         public async Task<bool> ConfigureTestDBContext()
         {
-            string TestDBConnString = Config.GetValue<string>(TestDBConnectionString);
+            string TestDBConnString = Config.GetValue<string>(TestDB);
             if (TestDBConnString == null)
             {
-                await ActionCommandDBService.ConsoleWriteError($"{ String.Format(CultureServicesRes.CouldNotFindParameter_InAppSettingsJSON, TestDBConnectionString) }");
+                await ActionCommandDBService.ConsoleWriteError($"{ String.Format(CultureServicesRes.CouldNotFindParameter_InAppSettingsJSON, TestDB) }");
                 return await Task.FromResult(false);
             }
 

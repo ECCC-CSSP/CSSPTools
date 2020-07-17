@@ -20,11 +20,11 @@ namespace ModelsCompareDBFieldsAndCSSPModelsDLLPropServices.Services
                 return await Task.FromResult(false);
             }
 
-            CSSPDBConnectionString = Config.GetValue<string>("CSSPDBConnectionString");
+            CSSPDB2 = Config.GetValue<string>("CSSPDB2");
 
-            if (CSSPDBConnectionString == null)
+            if (CSSPDB2 == null)
             {
-                await ActionCommandDBService.ConsoleWriteError("CSSPDBConnectionString == null");
+                await ActionCommandDBService.ConsoleWriteError("CSSPDB2 == null");
                 return await Task.FromResult(false);
             }
 
@@ -38,7 +38,7 @@ namespace ModelsCompareDBFieldsAndCSSPModelsDLLPropServices.Services
             List<TypeProp> typePropList = new List<TypeProp>();
 
             // loading what currently exist in the DB
-            if (!await LoadDBInfo(tableCSSPWebList, CSSPDBConnectionString)) return await Task.FromResult(false);
+            if (!await LoadDBInfo(tableCSSPWebList, CSSPDB2)) return await Task.FromResult(false);
 
             // Loading what exist in the compiled CSSPModels.dll
             if (!await LoadCSSPModelsDLLInfo(typePropList)) return await Task.FromResult(false);

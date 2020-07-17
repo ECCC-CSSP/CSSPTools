@@ -10,8 +10,10 @@ using CSSPModels;
 using CultureServices.Resources;
 using CultureServices.Services;
 using LoggedInServices.Services;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -38,6 +40,9 @@ namespace CSSPServices
         private CSSPDBContext db { get; }
         private CSSPDBLocalContext dbLocal { get; }
         private InMemoryDBContext dbIM { get; }
+        private UserManager<ApplicationUser> UserManager { get; }
+        private IAspNetUserService AspNetUserService { get; }
+        private IConfiguration Configuration { get; }
         private ICultureService CultureService { get; }
         private ILoggedInService LoggedInService { get; }
         private IEnums enums { get; }
@@ -45,8 +50,12 @@ namespace CSSPServices
         #endregion Properties
 
         #region Constructors
-        public ContactService(ICultureService CultureService, ILoggedInService LoggedInService, IEnums enums, CSSPDBContext db, CSSPDBLocalContext dbLocal, InMemoryDBContext dbIM)
+        public ContactService(IConfiguration Configuration, UserManager<ApplicationUser> UserManager, ICultureService CultureService, 
+           ILoggedInService LoggedInService, IEnums enums, IAspNetUserService AspNetUserService, CSSPDBContext db, CSSPDBLocalContext dbLocal, InMemoryDBContext dbIM)
         {
+            this.Configuration = Configuration;
+            this.UserManager = UserManager;
+            this.AspNetUserService = AspNetUserService;
             this.CultureService = CultureService;
             this.LoggedInService = LoggedInService;
             this.enums = enums;
@@ -57,12 +66,12 @@ namespace CSSPServices
         #endregion Constructors
 
         #region Functions public 
-        private async Task<ActionResult<Contact>> GetContactWithContactID(int ContactID)
+        public async Task<ActionResult<Contact>> GetContactWithContactID(int ContactID)
         {
-            //if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
-            //{
-            //    return await Task.FromResult(Unauthorized());
-            //}
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
 
             if (LoggedInService.DBLocation == DBLocationEnum.InMemory)
             {

@@ -131,7 +131,7 @@ namespace CSSPServices.Tests
             string CSSPDBLocalFileName = Config.GetValue<string>("CSSPDBLocal");
             Assert.NotNull(CSSPDBLocalFileName);
 
-            string TestDBConnString = Config.GetValue<string>("TestDBConnectionString");
+            string TestDBConnString = Config.GetValue<string>("TestDB");
             Assert.NotNull(TestDBConnString);
 
             Services.AddDbContext<CSSPDBContext>(options =>
@@ -217,7 +217,7 @@ namespace CSSPServices.Tests
 
                 try
                 {
-                    dbIM.Spills.Add(new Spill() { SpillID = 1, MunicipalityTVItemID = 39, InfrastructureTVItemID = 41, StartDateTime_Local = new DateTime(2015, 7, 6, 10, 38, 3), EndDateTime_Local = new DateTime(2015, 7, 6, 16, 38, 3), AverageFlow_m3_day = 34.5, LastUpdateDate_UTC = new DateTime(2020, 7, 6, 10, 38, 3), LastUpdateContactTVItemID = 2 });
+                    dbIM.Spills.Add(new Spill() { SpillID = 1, MunicipalityTVItemID = 39, InfrastructureTVItemID = 41, StartDateTime_Local = new DateTime(2015, 7, 16, 13, 1, 44), EndDateTime_Local = new DateTime(2015, 7, 16, 19, 1, 44), AverageFlow_m3_day = 34.5, LastUpdateDate_UTC = new DateTime(2020, 7, 16, 13, 1, 44), LastUpdateContactTVItemID = 2 });
                     dbIM.SaveChanges();
                 }
                 catch (Exception)

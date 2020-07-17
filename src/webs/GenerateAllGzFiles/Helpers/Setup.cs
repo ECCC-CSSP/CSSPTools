@@ -4,6 +4,7 @@
  */
 using CSSPEnums;
 using CSSPModels;
+using CSSPServices;
 using CSSPWebModels;
 using CSSPWebServices.Services;
 using CultureServices.Resources;
@@ -16,8 +17,6 @@ using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.IO;
 using System.Threading.Tasks;
-using UserServices.Models;
-using UserServices.Services;
 
 namespace GenerateAllGzFiles
 {
@@ -72,7 +71,7 @@ namespace GenerateAllGzFiles
             Services.AddSingleton<ICultureService, CultureService>();
             Services.AddSingleton<IEnums, Enums>();
             Services.AddSingleton<ILoggedInService, LoggedInService>();
-            Services.AddSingleton<IUserService, UserService>();
+            Services.AddSingleton<IContactService, ContactService>();
             Services.AddSingleton<IWebService, WebService>();
 
             Provider = Services.BuildServiceProvider();
@@ -91,8 +90,8 @@ namespace GenerateAllGzFiles
 
             CultureService.SetCulture("en-CA");
 
-            userService = Provider.GetService<IUserService>();
-            if (userService == null)
+            ContactService = Provider.GetService<IContactService>();
+            if (ContactService == null)
             {
                 Console.WriteLine("userService is null");
                 return await Task.FromResult(false);
@@ -118,15 +117,15 @@ namespace GenerateAllGzFiles
                 Password = Password
             };
 
-            var actionUserModel = await userService.Login(loginModel);
-            if (actionUserModel.Value == null)
+            var actionContact = await ContactService.Login(loginModel);
+            if (actionContact.Value == null)
             {
                 Console.WriteLine("actionUserModel == null");
                 return await Task.FromResult(false);
             }
 
-            userModel = (UserModel)actionUserModel.Value;
-            if (userModel == null)
+            Contact contact = (Contact)actionContact.Value;
+            if (contact == null)
             {
                 Console.WriteLine("userModel == null");
                 return await Task.FromResult(false);
@@ -139,7 +138,7 @@ namespace GenerateAllGzFiles
                 return await Task.FromResult(false);
             }
 
-            await LoggedInService.SetLoggedInContactInfo(userModel.Id);
+            await LoggedInService.SetLoggedInContactInfo(contact.Id);
             if (LoggedInService.GetLoggedInContactInfo() == null)
             {
                 Console.WriteLine("GetLoggedInContactInfo() is null");

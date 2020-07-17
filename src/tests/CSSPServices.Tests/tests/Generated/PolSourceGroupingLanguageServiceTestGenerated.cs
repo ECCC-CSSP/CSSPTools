@@ -131,7 +131,7 @@ namespace CSSPServices.Tests
             string CSSPDBLocalFileName = Config.GetValue<string>("CSSPDBLocal");
             Assert.NotNull(CSSPDBLocalFileName);
 
-            string TestDBConnString = Config.GetValue<string>("TestDBConnectionString");
+            string TestDBConnString = Config.GetValue<string>("TestDB");
             Assert.NotNull(TestDBConnString);
 
             Services.AddDbContext<CSSPDBContext>(options =>
@@ -226,7 +226,7 @@ namespace CSSPServices.Tests
 
                 try
                 {
-                    dbIM.PolSourceGroupings.Add(new PolSourceGrouping() { PolSourceGroupingID = 1, CSSPID = 10003, GroupName = "FirstGroupName", Child = "FirstChild", Hide = "FirstHide", LastUpdateDate_UTC = new DateTime(2020, 7, 6, 10, 38, 3), LastUpdateContactTVItemID = 2 });
+                    dbIM.PolSourceGroupings.Add(new PolSourceGrouping() { PolSourceGroupingID = 1, CSSPID = 10003, GroupName = "FirstGroupName", Child = "FirstChild", Hide = "FirstHide", LastUpdateDate_UTC = new DateTime(2020, 7, 16, 13, 1, 44), LastUpdateContactTVItemID = 2 });
                     dbIM.SaveChanges();
                 }
                 catch (Exception)

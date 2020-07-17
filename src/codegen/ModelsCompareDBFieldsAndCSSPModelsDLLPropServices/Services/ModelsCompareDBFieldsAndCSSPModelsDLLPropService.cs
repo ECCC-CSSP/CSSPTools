@@ -21,7 +21,7 @@ namespace ModelsCompareDBFieldsAndCSSPModelsDLLPropServices.Services
         #endregion Variables
 
         #region Properties
-        private string CSSPDBConnectionString;
+        private string CSSPDB2;
         private List<TableFieldEnumException> TableFieldEnumExceptionList { get; set; }
         private List<TableFieldEmail> TableFieldEmailList { get; set; }
         private List<TableFieldIDException> TableFieldIDExceptionList { get; set; }
@@ -76,7 +76,7 @@ namespace ModelsCompareDBFieldsAndCSSPModelsDLLPropServices.Services
                 new AppSettingParameter() { Parameter = "Culture", ExpectedValue = "", IsCulture = true },
                 new AppSettingParameter() { Parameter = "DBFileName", ExpectedValue = "{AppDataPath}\\cssp\\cssplocaldatabases\\ActionCommandDB.db", IsFile = true, CheckExist = true },
                 new AppSettingParameter() { Parameter = "CSSPModels", ExpectedValue = "C:\\CSSPTools\\src\\dlls\\_package\\netcoreapp3.1\\CSSPModels.dll", IsFile = true, CheckExist = true },
-                new AppSettingParameter() { Parameter = "CSSPDBConnectionString", ExpectedValue = "Server=.\\sqlexpress;Database=CSSPDB;Trusted_Connection=True;MultipleActiveResultSets=true" },
+                new AppSettingParameter() { Parameter = "CSSPDB2", ExpectedValue = "Server=.\\sqlexpress;Database=CSSPDB2;Trusted_Connection=True;MultipleActiveResultSets=true" },
             };
 
             return await Task.FromResult(true);

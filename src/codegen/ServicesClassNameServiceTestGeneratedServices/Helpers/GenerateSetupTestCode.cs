@@ -22,7 +22,7 @@ namespace ServicesClassNameServiceTestGeneratedServices.Services
             sb.AppendLine(@"            string CSSPDBLocalFileName = Config.GetValue<string>(""CSSPDBLocal"");");
             sb.AppendLine(@"            Assert.NotNull(CSSPDBLocalFileName);");
             sb.AppendLine(@"");
-            sb.AppendLine(@"            string TestDBConnString = Config.GetValue<string>(""TestDBConnectionString"");");
+            sb.AppendLine(@"            string TestDBConnString = Config.GetValue<string>(""TestDB"");");
             sb.AppendLine(@"            Assert.NotNull(TestDBConnString);");
             sb.AppendLine(@"");
             sb.AppendLine(@"            Services.AddDbContext<CSSPDBContext>(options =>");

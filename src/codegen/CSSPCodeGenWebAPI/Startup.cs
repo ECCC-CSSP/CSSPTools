@@ -1,6 +1,7 @@
 using ActionCommandDBServices.Models;
 using ActionCommandDBServices.Services;
 using CSSPModels;
+using CSSPServices;
 using CultureServices.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
@@ -13,8 +14,6 @@ using Microsoft.IdentityModel.Tokens;
 using System;
 using System.IO;
 using System.Text;
-using UserServices.Models;
-using UserServices.Services;
 
 namespace CSSPCodeGenWebAPI
 {
@@ -108,7 +107,7 @@ namespace CSSPCodeGenWebAPI
             });
 
             services.AddScoped<ICultureService, CultureService>();
-            services.AddScoped<IUserService, UserService>();
+            services.AddScoped<IContactService, ContactService>();
             services.AddScoped<IActionCommandDBService, ActionCommandDBService>();
         }
 

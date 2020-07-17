@@ -102,10 +102,24 @@ namespace WebAPIClassNameControllerGeneratedServices.Services
                     sb.AppendLine($@"    public partial interface I{ TypeName }Controller");
                     sb.AppendLine(@"    {");
                     sb.AppendLine($@"        Task<ActionResult<List<{ TypeName }>>> Get();");
-                    sb.AppendLine($@"        Task<ActionResult<{ TypeName }>> Get(int { TypeName }ID);");
+                    if (TypeName == "AspNetUser")
+                    {
+                        sb.AppendLine($@"        Task<ActionResult<{ TypeName }>> Get(string Id);");
+                    }
+                    else
+                    {
+                        sb.AppendLine($@"        Task<ActionResult<{ TypeName }>> Get(int { TypeName }ID);");
+                    }
                     sb.AppendLine($@"        Task<ActionResult<{ TypeName }>> Post({ TypeName } { TypeName });");
                     sb.AppendLine($@"        Task<ActionResult<{ TypeName }>> Put({ TypeName } { TypeName });");
-                    sb.AppendLine($@"        Task<ActionResult<bool>> Delete(int { TypeName }ID);");
+                    if (TypeName == "AspNetUser")
+                    {
+                        sb.AppendLine($@"        Task<ActionResult<bool>> Delete(string Id);");
+                    }
+                    else
+                    {
+                        sb.AppendLine($@"        Task<ActionResult<bool>> Delete(int { TypeName }ID);");
+                    }
                     sb.AppendLine(@"    }");
                     sb.AppendLine(@"");
                     sb.AppendLine(@"    [Route(""api/{culture}/[controller]"")]");
@@ -142,13 +156,28 @@ namespace WebAPIClassNameControllerGeneratedServices.Services
                     sb.AppendLine($@"            return await { TypeName }Service.Get{ TypeName }List();");
                     sb.AppendLine(@"        }");
 
-                    sb.AppendLine($@"        [HttpGet(""{{{ TypeName }ID}}"")]");
-                    sb.AppendLine($@"        public async Task<ActionResult<{ TypeName }>> Get(int { TypeName }ID)");
+                    if (TypeName == "AspNetUser")
+                    {
+                        sb.AppendLine($@"        [HttpGet(""{{Id}}"")]");
+                        sb.AppendLine($@"        public async Task<ActionResult<{ TypeName }>> Get(string Id)");
+                    }
+                    else
+                    {
+                        sb.AppendLine($@"        [HttpGet(""{{{ TypeName }ID}}"")]");
+                        sb.AppendLine($@"        public async Task<ActionResult<{ TypeName }>> Get(int { TypeName }ID)");
+                    }
                     sb.AppendLine(@"        {");
                     sb.AppendLine($@"            CultureService.SetCulture((string)RouteData.Values[""culture""]);");
                     sb.AppendLine($@"            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);");
                     sb.AppendLine(@"");
-                    sb.AppendLine($@"            return await { TypeName }Service.Get{ TypeName }With{ TypeName }ID({ TypeName }ID);");
+                    if (TypeName == "AspNetUser")
+                    {
+                        sb.AppendLine($@"            return await { TypeName }Service.Get{ TypeName }WithId(Id);");
+                    }
+                    else
+                    {
+                        sb.AppendLine($@"            return await { TypeName }Service.Get{ TypeName }With{ TypeName }ID({ TypeName }ID);");
+                    }
                     sb.AppendLine(@"        }");
 
                     sb.AppendLine(@"        [HttpPost]");
@@ -176,13 +205,28 @@ namespace WebAPIClassNameControllerGeneratedServices.Services
                     sb.AppendLine($@"            return await { TypeName }Service.Put({ TypeName });");
                     sb.AppendLine(@"        }");
 
-                    sb.AppendLine($@"        [HttpDelete(""{{{ TypeName }ID}}"")]");
-                    sb.AppendLine($@"        public async Task<ActionResult<bool>> Delete(int { TypeName }ID)");
+                    if (TypeName == "AspNetUser")
+                    {
+                        sb.AppendLine($@"        [HttpDelete(""{{Id}}"")]");
+                        sb.AppendLine($@"        public async Task<ActionResult<bool>> Delete(string Id)");
+                    }
+                    else
+                    {
+                        sb.AppendLine($@"        [HttpDelete(""{{{ TypeName }ID}}"")]");
+                        sb.AppendLine($@"        public async Task<ActionResult<bool>> Delete(int { TypeName }ID)");
+                    }
                     sb.AppendLine(@"        {");
                     sb.AppendLine($@"            CultureService.SetCulture((string)RouteData.Values[""culture""]);");
                     sb.AppendLine($@"            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);");
                     sb.AppendLine(@"");
-                    sb.AppendLine($@"            return await { TypeName }Service.Delete({ TypeName }ID);");
+                    if (TypeName == "AspNetUser")
+                    {
+                        sb.AppendLine($@"            return await { TypeName }Service.Delete(Id);");
+                    }
+                    else
+                    {
+                        sb.AppendLine($@"            return await { TypeName }Service.Delete({ TypeName }ID);");
+                    }
                     sb.AppendLine(@"        }");
 
                     sb.AppendLine(@"        #endregion Functions public");

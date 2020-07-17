@@ -40,7 +40,14 @@ namespace ServicesClassNameServiceTestGeneratedServices.Services
             sb.AppendLine($@"            Assert.NotNull({ TypeNameLower }Updated);");
             sb.AppendLine(@"");        
             sb.AppendLine($@"            // Delete { TypeName }");
-            sb.AppendLine($@"            var action{ TypeName }Deleted = await { TypeName }Service.Delete({ TypeNameLower }.{ TypeName }ID);");
+            if (TypeName == "AspNetUser")
+            {
+                sb.AppendLine($@"            var action{ TypeName }Deleted = await { TypeName }Service.Delete({ TypeNameLower }.Id);");
+            }
+            else
+            {
+                sb.AppendLine($@"            var action{ TypeName }Deleted = await { TypeName }Service.Delete({ TypeNameLower }.{ TypeName }ID);");
+            }
             sb.AppendLine($@"            Assert.Equal(200, ((ObjectResult)action{ TypeName }Deleted.Result).StatusCode);");
             sb.AppendLine($@"            Assert.NotNull(((OkObjectResult)action{ TypeName }Deleted.Result).Value);");
             sb.AppendLine($@"            bool retBool = (bool)((OkObjectResult)action{ TypeName }Deleted.Result).Value;");

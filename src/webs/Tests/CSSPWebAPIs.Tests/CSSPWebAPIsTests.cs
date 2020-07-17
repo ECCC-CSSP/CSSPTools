@@ -5,6 +5,7 @@
 
 using CSSPEnums;
 using CSSPModels;
+using CSSPServices;
 using CultureServices.Services;
 using LoggedInServices.Services;
 using Microsoft.EntityFrameworkCore;
@@ -13,8 +14,6 @@ using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.IO;
 using System.Threading.Tasks;
-using UserServices.Models;
-using UserServices.Services;
 using Xunit;
 
 namespace CSSPWebAPIs.Tests
@@ -29,10 +28,10 @@ namespace CSSPWebAPIs.Tests
         private IServiceProvider Provider { get; set; }
         private IServiceCollection Services { get; set; }
         private CSSPDBContext db { get; set; }
-        private IUserService userService { get; set; }
-        private ILoggedInService loggedInService { get; set; }
+        private IContactService ContactService { get; set; }
+        private ILoggedInService LoggedInService { get; set; }
         private ICultureService CultureService { get; set; }
-        private UserModel userModel { get; set; }
+        private Contact contact { get; set; }
         #endregion Properties
 
         #region Constructors
@@ -48,7 +47,7 @@ namespace CSSPWebAPIs.Tests
         public async Task AuthController_Constructor_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
-            Assert.NotNull(loggedInService);
+            Assert.NotNull(LoggedInService);
         }
         #endregion Functions public
 
@@ -99,7 +98,7 @@ namespace CSSPWebAPIs.Tests
             Services.AddSingleton<ICultureService, CultureService>();
             Services.AddSingleton<IEnums, Enums>();
             Services.AddSingleton<ILoggedInService, LoggedInService>();
-            Services.AddSingleton<IUserService, UserService>();
+            Services.AddSingleton<IContactService, ContactService>();
 
             Provider = Services.BuildServiceProvider();
             Assert.NotNull(Provider);
@@ -109,8 +108,8 @@ namespace CSSPWebAPIs.Tests
 
             CultureService.SetCulture(culture);
 
-            userService = Provider.GetService<IUserService>();
-            Assert.NotNull(userService);
+            ContactService = Provider.GetService<IContactService>();
+            Assert.NotNull(ContactService);
 
             string LoginEmail = Config.GetValue<string>("LoginEmail");
             Assert.NotNull(LoginEmail);
@@ -124,15 +123,15 @@ namespace CSSPWebAPIs.Tests
                 Password = Password
             };
 
-            var actionUserModel = await userService.Login(loginModel);
+            var actionUserModel = await ContactService.Login(loginModel);
             Assert.NotNull(actionUserModel.Value);
-            userModel = actionUserModel.Value;
+            contact = actionUserModel.Value;
 
-            loggedInService = Provider.GetService<ILoggedInService>();
-            Assert.NotNull(loggedInService);
+            LoggedInService = Provider.GetService<ILoggedInService>();
+            Assert.NotNull(LoggedInService);
 
-            await loggedInService.SetLoggedInContactInfo(userModel.Id);
-            Assert.NotNull(loggedInService.GetLoggedInContactInfo());
+            await LoggedInService.SetLoggedInContactInfo(contact.Id);
+            Assert.NotNull(LoggedInService.GetLoggedInContactInfo());
 
             return await Task.FromResult(true);
         }

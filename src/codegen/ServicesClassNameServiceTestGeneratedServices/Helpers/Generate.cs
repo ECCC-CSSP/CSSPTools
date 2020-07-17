@@ -29,8 +29,8 @@ namespace ServicesClassNameServiceTestGeneratedServices.Services
             ActionCommandDBService.PercentCompleted = 10;
             await ActionCommandDBService.Update();
 
-            string CSSPDBConnectionString = Config.GetValue<string>("CSSPDBConnectionString");
-            string TestDBConnectionString = Config.GetValue<string>("TestDBConnectionString");
+            string CSSPDB2 = Config.GetValue<string>("CSSPDB2");
+            string TestDB = Config.GetValue<string>("TestDB");
 
             FileInfo fiDLL = new FileInfo(Config.GetValue<string>("CSSPModels"));
 

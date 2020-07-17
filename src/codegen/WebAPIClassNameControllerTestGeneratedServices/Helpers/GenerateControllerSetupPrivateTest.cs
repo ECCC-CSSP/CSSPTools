@@ -53,7 +53,7 @@ namespace WebAPIClassNameControllerTestGeneratedServices.Services
             sb.AppendLine(@"            Services.AddSingleton<ICultureService, CultureService>();");
             sb.AppendLine(@"            Services.AddSingleton<IEnums, Enums>();");
             sb.AppendLine(@"            Services.AddSingleton<ILoggedInService, LoggedInService>();");
-            sb.AppendLine(@"            Services.AddSingleton<IUserService, UserService>();");
+            sb.AppendLine(@"            Services.AddSingleton<IContactService, ContactService>();");
             sb.AppendLine($@"            Services.AddSingleton<I{ TypeName }Service, { TypeName }Service>();");
             sb.AppendLine($@"            Services.AddSingleton<I{ TypeName }Controller, { TypeName }Controller>();");
             sb.AppendLine(@"");
@@ -65,8 +65,8 @@ namespace WebAPIClassNameControllerTestGeneratedServices.Services
             sb.AppendLine(@"");
             sb.AppendLine(@"            CultureService.SetCulture(culture);");
             sb.AppendLine(@"");
-            sb.AppendLine(@"            userService = Provider.GetService<IUserService>();");
-            sb.AppendLine(@"            Assert.NotNull(userService);");
+            sb.AppendLine(@"            ContactService = Provider.GetService<IContactService>();");
+            sb.AppendLine(@"            Assert.NotNull(ContactService);");
             sb.AppendLine(@"");
             sb.AppendLine(@"            string LoginEmail = Config.GetValue<string>(""LoginEmail"");");
             sb.AppendLine(@"            Assert.NotNull(LoginEmail);");
@@ -80,14 +80,28 @@ namespace WebAPIClassNameControllerTestGeneratedServices.Services
             sb.AppendLine(@"                Password = Password");
             sb.AppendLine(@"            };");
             sb.AppendLine(@"");
-            sb.AppendLine(@"            var actionUserModel = await userService.Login(loginModel);");
-            sb.AppendLine(@"            Assert.NotNull(actionUserModel.Value);");
-            sb.AppendLine(@"            userModel = actionUserModel.Value;");
+            sb.AppendLine(@"            var actionContact = await ContactService.Login(loginModel);");
+            sb.AppendLine(@"            Assert.NotNull(actionContact.Value);");
+            if (TypeName == "Contact")
+            {
+                sb.AppendLine(@"            contact2 = actionContact.Value;");
+            }
+            else
+            {
+                sb.AppendLine(@"            contact = actionContact.Value;");
+            }
             sb.AppendLine(@"");
             sb.AppendLine(@"            loggedInService = Provider.GetService<ILoggedInService>();");
             sb.AppendLine(@"            Assert.NotNull(loggedInService);");
             sb.AppendLine(@"");
-            sb.AppendLine(@"            await loggedInService.SetLoggedInContactInfo(userModel.Id);");
+            if (TypeName == "Contact")
+            {
+                sb.AppendLine(@"            await loggedInService.SetLoggedInContactInfo(contact2.Id);");
+            }
+            else
+            {
+                sb.AppendLine(@"            await loggedInService.SetLoggedInContactInfo(contact.Id);");
+            }
             sb.AppendLine(@"            Assert.NotNull(loggedInService.GetLoggedInContactInfo());");
             sb.AppendLine(@"");
             sb.AppendLine($@"            { TypeNameLower }Service = Provider.GetService<I{ TypeName }Service>();");

@@ -8,12 +8,12 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using CSSPCodeGenWebAPI.Models;
+using CSSPModels;
+using CSSPServices;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
-using UserServices.Models;
-using UserServices.Services;
 
 namespace CSSPCodeGenWebAPI.Controllers
 {
@@ -25,24 +25,24 @@ namespace CSSPCodeGenWebAPI.Controllers
         #endregion Variables
 
         #region Properties
-        private IUserService userService { get; }
+        private IContactService ContactService { get; }
         #endregion Properties
 
         #region Constructors
-        public AuthController(IUserService userService)
+        public AuthController(IContactService ContactService)
         {
-            this.userService = userService;
+            this.ContactService = ContactService;
         }
         #endregion Constructors
 
         #region Functions public
         [Route("Token")]
         [HttpPost]
-        public async Task<ActionResult<UserModel>> Token(LoginModel loginModel)
+        public async Task<ActionResult<Contact>> Token(LoginModel loginModel)
         {
             //Thread.Sleep(1000);
 
-            return await userService.Login(loginModel);
+            return await ContactService.Login(loginModel);
         }
         //[Route("Register")]
         //[HttpPost]
@@ -50,9 +50,9 @@ namespace CSSPCodeGenWebAPI.Controllers
         //{
         //    //Thread.Sleep(1000);
 
-        //    await userService.SetCulture(new CultureInfo(Request.RouteValues["culture"].ToString()));
+        //    await ContactService.SetCulture(new CultureInfo(Request.RouteValues["culture"].ToString()));
 
-        //    return await userService.Register(registerModel);
+        //    return await ContactService.Register(registerModel);
         //}
         #endregion Functions public
 

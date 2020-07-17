@@ -1,5 +1,6 @@
 using CSSPEnums;
 using CSSPModels;
+using CSSPServices;
 using CSSPWebServices.Services;
 using CultureServices.Services;
 using LoggedInServices.Services;
@@ -9,8 +10,6 @@ using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.IO;
 using System.Threading.Tasks;
-using UserServices.Models;
-using UserServices.Services;
 using Xunit;
 
 namespace CSSPWebServices.Tests
@@ -26,10 +25,9 @@ namespace CSSPWebServices.Tests
         private IServiceCollection Services { get; set; }
         private ICultureService CultureService { get; set; }
         private IWebService WebService { get; set; }
-        private IUserService UserService { get; set; }
+        private IContactService ContactService { get; set; }
         private ILoggedInService LoggedInService { get; set; }
         private CSSPDBContext db { get; set; }
-        private UserModel userModel { get; set; }
         #endregion Properties
 
         #region Constructors
@@ -75,7 +73,7 @@ namespace CSSPWebServices.Tests
                 .AddEntityFrameworkStores<ApplicationDbContext>();
 
             Services.AddSingleton<ICultureService, CultureService>();
-            Services.AddSingleton<IUserService, UserService>();
+            Services.AddSingleton<IContactService, ContactService>();
             Services.AddSingleton<ILoggedInService, LoggedInService>();
             Services.AddSingleton<IEnums, Enums>();
             Services.AddSingleton<IWebService, WebService>();
@@ -88,8 +86,8 @@ namespace CSSPWebServices.Tests
 
             CultureService.SetCulture(culture);
 
-            UserService = Provider.GetService<IUserService>();
-            Assert.NotNull(UserService);
+            ContactService = Provider.GetService<IContactService>();
+            Assert.NotNull(ContactService);
 
             string LoginEmail = Config.GetValue<string>("LoginEmail");
             Assert.NotNull(LoginEmail);
@@ -103,14 +101,14 @@ namespace CSSPWebServices.Tests
                 Password = Password
             };
 
-            var actionUserModel = await UserService.Login(loginModel);
+            var actionUserModel = await ContactService.Login(loginModel);
             Assert.NotNull(actionUserModel.Value);
-            userModel = actionUserModel.Value;
+            Contact contact = actionUserModel.Value;
 
             LoggedInService = Provider.GetService<ILoggedInService>();
             Assert.NotNull(LoggedInService);
 
-            await LoggedInService.SetLoggedInContactInfo(userModel.Id);
+            await LoggedInService.SetLoggedInContactInfo(contact.Id);
             Assert.NotNull(LoggedInService.GetLoggedInContactInfo());
 
             WebService = Provider.GetService<IWebService>();

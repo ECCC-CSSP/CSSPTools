@@ -131,7 +131,7 @@ namespace CSSPServices.Tests
             string CSSPDBLocalFileName = Config.GetValue<string>("CSSPDBLocal");
             Assert.NotNull(CSSPDBLocalFileName);
 
-            string TestDBConnString = Config.GetValue<string>("TestDBConnectionString");
+            string TestDBConnString = Config.GetValue<string>("TestDB");
             Assert.NotNull(TestDBConnString);
 
             Services.AddDbContext<CSSPDBContext>(options =>

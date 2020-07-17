@@ -17,7 +17,14 @@ namespace WebAPIClassNameControllerTestGeneratedServices.Services
             //sb.AppendLine(@"            using (TransactionScope ts = new TransactionScope())");
             //sb.AppendLine(@"            {");
             sb.AppendLine(@"            HttpClient httpClient = new HttpClient();");
-            sb.AppendLine(@"            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(""Bearer"", userModel.Token);");
+            if (TypeName == "Contact")
+            {
+                sb.AppendLine(@"            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(""Bearer"", contact2.Token);");
+            }
+            else
+            {
+                sb.AppendLine(@"            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(""Bearer"", contact.Token);");
+            }
             sb.AppendLine(@"");
             sb.AppendLine(@"            // testing Get");
             sb.AppendLine($@"            string url = ""https://localhost:4447/api/"" + culture + ""/{ TypeName }"";");
@@ -28,14 +35,29 @@ namespace WebAPIClassNameControllerTestGeneratedServices.Services
             sb.AppendLine($@"            List<{ TypeName }> { TypeNameLower }List = JsonSerializer.Deserialize<List<{ TypeName }>>(responseContent);");
             sb.AppendLine($@"            Assert.True({ TypeNameLower }List.Count > 0);");
             sb.AppendLine($@"");
-            sb.AppendLine($@"            // testing Get({ TypeName }ID)");
-            sb.AppendLine($@"            string urlID = url + ""/"" + { TypeNameLower }List[0].{ TypeName }ID;");
+            if (TypeName == "AspNetUser")
+            {
+                sb.AppendLine($@"            // testing Get(Id)");
+                sb.AppendLine($@"            string urlID = url + ""/"" + { TypeNameLower }List[0].Id;");
+            }
+            else
+            {
+                sb.AppendLine($@"            // testing Get({ TypeName }ID)");
+                sb.AppendLine($@"            string urlID = url + ""/"" + { TypeNameLower }List[0].{ TypeName }ID;");
+            }
             sb.AppendLine($@"            response = await httpClient.GetAsync(urlID);");
             sb.AppendLine($@"            Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);");
             sb.AppendLine($@"            responseContent = await response.Content.ReadAsStringAsync();");
             sb.AppendLine($@"            Assert.NotEmpty(responseContent);");
             sb.AppendLine($@"            { TypeName } { TypeNameLower } = JsonSerializer.Deserialize<{ TypeName }>(responseContent);");
-            sb.AppendLine($@"            Assert.Equal({ TypeNameLower }List[0].{ TypeName }ID, { TypeNameLower }.{ TypeName }ID);");
+            if (TypeName == "AspNetUser")
+            {
+                sb.AppendLine($@"            Assert.Equal({ TypeNameLower }List[0].Id, { TypeNameLower }.Id);");
+            }
+            else
+            {
+                sb.AppendLine($@"            Assert.Equal({ TypeNameLower }List[0].{ TypeName }ID, { TypeNameLower }.{ TypeName }ID);");
+            }
             sb.AppendLine($@"");
             if (TypeName == "MWQMLookupMPN")
             {
@@ -48,8 +70,16 @@ namespace WebAPIClassNameControllerTestGeneratedServices.Services
                 sb.AppendLine($@"            bool retBool = JsonSerializer.Deserialize<bool>(responseContent);");
                 sb.AppendLine($@"            Assert.True(retBool);");
             }
-            sb.AppendLine($@"                // testing Post({ TypeName })");
-            sb.AppendLine($@"                { TypeNameLower }.{ TypeName }ID = 0;");
+            if (TypeName == "AspNetUser")
+            {
+                sb.AppendLine($@"            // testing Post({ TypeName })");
+                sb.AppendLine($@"            { TypeNameLower }.Id = """";");
+            }
+            else
+            {
+                sb.AppendLine($@"            // testing Post({ TypeName })");
+                sb.AppendLine($@"            { TypeNameLower }.{ TypeName }ID = 0;");
+            }
             if (TypeName == "SamplingPlan")
             {
                 sb.AppendLine($@"           samplingPlan.SamplingPlanName = samplingPlan.SamplingPlanName.Replace(samplingPlan.Year.ToString(), (samplingPlan.Year + 20).ToString());");
@@ -84,8 +114,16 @@ namespace WebAPIClassNameControllerTestGeneratedServices.Services
             sb.AppendLine($@"");
             if (!(TypeName == "MWQMLookupMPN"))
             {
-                sb.AppendLine($@"            // testing Delete({ TypeName }ID)");
-                sb.AppendLine($@"            urlID = url + ""/"" + { TypeNameLower }.{ TypeName }ID;");
+                if (TypeName == "AspNetUser")
+                {
+                    sb.AppendLine($@"            // testing Delete(Id)");
+                    sb.AppendLine($@"            urlID = url + ""/"" + { TypeNameLower }.Id;");
+                }
+                else
+                {
+                    sb.AppendLine($@"            // testing Delete({ TypeName }ID)");
+                    sb.AppendLine($@"            urlID = url + ""/"" + { TypeNameLower }.{ TypeName }ID;");
+                }
                 sb.AppendLine($@"            response = await httpClient.DeleteAsync(urlID);");
                 sb.AppendLine($@"            Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);");
                 sb.AppendLine($@"            responseContent = await response.Content.ReadAsStringAsync();");

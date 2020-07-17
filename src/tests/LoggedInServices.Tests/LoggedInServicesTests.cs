@@ -129,7 +129,7 @@ namespace LoggedInServices.Tests
             ServiceCollection.AddSingleton<ICultureService, CultureService>();
             ServiceCollection.AddSingleton<ILoggedInService, LoggedInService>();
 
-            string CSSPDBConnString = Configuration.GetValue<string>("CSSPDBConnectionString");
+            string CSSPDBConnString = Configuration.GetValue<string>("TestDB");
             Assert.NotNull(CSSPDBConnString);
 
             ServiceCollection.AddDbContext<CSSPDBContext>(options =>

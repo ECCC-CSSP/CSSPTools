@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29519.161
 MinimumVisualStudioVersion = 15.0.26124.0
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UserServices", "src\dlls\UserServices\UserServices.csproj", "{F88C8452-1791-4BBF-94A5-9BE9EA44038C}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CultureServices", "src\dlls\CultureServices\CultureServices.csproj", "{14B9F5D9-9C9F-4C05-BB9E-CB2D1BEB4579}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CSSPEnums", "src\dlls\CSSPEnums\CSSPEnums.csproj", "{95CAA5ED-5ECC-461A-AE98-DC441E395EC6}"
@@ -24,8 +22,6 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LoggedInServices.Tests", "src\tests\LoggedInServices.Tests\LoggedInServices.Tests.csproj", "{EE97C53F-2F79-41D5-A23C-0DC37812B811}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CultureServices.Tests", "src\tests\CultureServices.Tests\CultureServices.Tests.csproj", "{05810E5C-1B72-42E6-BADE-132751A73DF4}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UserServices.Tests", "src\tests\UserServices.Tests\UserServices.Tests.csproj", "{4BFC8ABF-8BEC-43C7-9D90-43E1DF7D88B5}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CSSPWebModels", "src\dlls\CSSPWebModels\CSSPWebModels.csproj", "{A0737011-3A5D-4725-A8E6-E08B6D332085}"
 EndProject
@@ -61,10 +57,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{F88C8452-1791-4BBF-94A5-9BE9EA44038C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F88C8452-1791-4BBF-94A5-9BE9EA44038C}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F88C8452-1791-4BBF-94A5-9BE9EA44038C}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F88C8452-1791-4BBF-94A5-9BE9EA44038C}.Release|Any CPU.Build.0 = Release|Any CPU
 		{14B9F5D9-9C9F-4C05-BB9E-CB2D1BEB4579}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{14B9F5D9-9C9F-4C05-BB9E-CB2D1BEB4579}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{14B9F5D9-9C9F-4C05-BB9E-CB2D1BEB4579}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -105,10 +97,6 @@ Global
 		{05810E5C-1B72-42E6-BADE-132751A73DF4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{05810E5C-1B72-42E6-BADE-132751A73DF4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{05810E5C-1B72-42E6-BADE-132751A73DF4}.Release|Any CPU.Build.0 = Release|Any CPU
-		{4BFC8ABF-8BEC-43C7-9D90-43E1DF7D88B5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{4BFC8ABF-8BEC-43C7-9D90-43E1DF7D88B5}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{4BFC8ABF-8BEC-43C7-9D90-43E1DF7D88B5}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{4BFC8ABF-8BEC-43C7-9D90-43E1DF7D88B5}.Release|Any CPU.Build.0 = Release|Any CPU
 		{A0737011-3A5D-4725-A8E6-E08B6D332085}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{A0737011-3A5D-4725-A8E6-E08B6D332085}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A0737011-3A5D-4725-A8E6-E08B6D332085}.Release|Any CPU.ActiveCfg = Release|Any CPU

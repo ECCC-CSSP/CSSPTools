@@ -1,0 +1,178 @@
+﻿using CSSPEnums;
+using CSSPModels;
+using CSSPServices;
+using CultureServices.Resources;
+using CultureServices.Services;
+using LoggedInServices.Services;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.IdentityModel.Tokens;
+using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.IO;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using Xunit;
+
+namespace ContactServices.Tests
+{
+    public partial class ContactServicesTests
+    {
+        #region Variables
+        #endregion Variables
+
+        #region Properties
+        private IConfiguration Configuration { get; set; }
+        private IServiceCollection ServiceCollection { get; set; }
+        private IServiceProvider ServiceProvider { get; set; }
+        private ICultureService CultureService { get; set; }
+        private IContactService ContactService { get; set; }
+        private string LoginEmail { get; set; }
+        private string Password { get; set; }
+        #endregion Properties
+
+        #region Constructors
+        public ContactServicesTests()
+        {
+        }
+        #endregion Constructors
+
+        #region Functions public
+        [Theory]
+        [InlineData("en-CA")]
+        [InlineData("fr-CA")]
+        public async Task ContactService_Constructors_Good_Test(string culture)
+        {
+            Assert.True(await Setup(culture));
+
+            Assert.NotNull(Configuration);
+            Assert.NotNull(ServiceCollection);
+            Assert.NotNull(ContactService);
+        }
+        [Theory]
+        [InlineData("en-CA")]
+        [InlineData("fr-CA")]
+        public async Task ContactService_Login_Good_Test(string culture)
+        {
+            Assert.True(await Setup(culture));
+
+            var retValue = await ContactService.Login(new LoginModel() { LoginEmail = LoginEmail, Password = Password });
+            Assert.IsType<Contact>(retValue.Value);
+            Assert.Null(retValue.Result);
+            Contact contact = retValue.Value;
+            Assert.Equal(2, contact.ContactTVItemID);
+            Assert.Equal("Charles".ToLower(), contact.FirstName.ToLower());
+            Assert.False(string.IsNullOrWhiteSpace(contact.Token));
+        }
+        [Theory]
+        [InlineData("en-CA")]
+        [InlineData("fr-CA")]
+        public async Task ContactService_Login_Good_Return_EmailCouldNotBeFound_Test(string culture)
+        {
+            Assert.True(await Setup(culture));
+
+            LoginEmail = "NotFound@email.ca";
+
+            var retValue = await ContactService.Login(new LoginModel() { LoginEmail = LoginEmail, Password = Password });
+            Assert.Null(retValue.Value);
+            Assert.Equal(400, ((BadRequestObjectResult)retValue.Result).StatusCode);
+            string expected = String.Format(CultureServicesRes.__CouldNotBeFound, CultureServicesRes.Email, LoginEmail);
+            var value = ((BadRequestObjectResult)retValue.Result).Value;
+            Assert.Equal(expected, value);
+
+        }
+        [Theory]
+        [InlineData("en-CA")]
+        [InlineData("fr-CA")]
+        public async Task ContactService_Login_Good_Return_Error_UnableToLoginAs_WithProvidedPassword_Test2(string culture)
+        {
+            Assert.True(await Setup(culture));
+
+            Password = "NotAPassword!";
+
+            var retValue = await ContactService.Login(new LoginModel() { LoginEmail = LoginEmail, Password = Password });
+            Assert.Null(retValue.Value);
+            Assert.Equal(400, ((BadRequestObjectResult)retValue.Result).StatusCode);
+            string expected = String.Format(CultureServicesRes.UnableToLoginAs_WithProvidedPassword, LoginEmail);
+            var value = ((BadRequestObjectResult)retValue.Result).Value;
+            Assert.Equal(expected, value);
+
+        }
+        #endregion Functions public
+
+        #region Functions private
+        private async Task<bool> Setup(string culture)
+        {
+            Configuration = new ConfigurationBuilder()
+               .SetBasePath(Directory.GetParent(AppContext.BaseDirectory).FullName)
+               .AddJsonFile("appsettings_csspservices.json")
+               .AddUserSecrets("ec761e00-6d1e-461d-8ba9-0247177a97be")
+               .Build();
+
+            Assert.NotNull(Configuration);
+
+            ServiceCollection = new ServiceCollection();
+
+            ServiceCollection.AddSingleton<IConfiguration>(Configuration);
+            ServiceCollection.AddSingleton<ICultureService, CultureService>();
+            ServiceCollection.AddSingleton<IEnums, Enums>();
+            ServiceCollection.AddSingleton<ILoggedInService, LoggedInService>();
+            ServiceCollection.AddSingleton<IAspNetUserService, AspNetUserService>();
+            ServiceCollection.AddSingleton<IContactService, ContactService>();
+
+            string TestDB = Configuration.GetValue<string>("TestDB");
+            Assert.NotNull(TestDB);
+
+            LoginEmail = Configuration.GetValue<string>("LoginEmail");
+            Assert.NotNull(LoginEmail);
+
+            Password = Configuration.GetValue<string>("Password");
+            Assert.NotNull(Password);
+
+            ServiceCollection.AddDbContext<CSSPDBContext>(options =>
+                    options.UseSqlServer(TestDB));
+
+            ServiceCollection.AddDbContext<InMemoryDBContext>(options =>
+                    options.UseInMemoryDatabase(TestDB));
+
+            string CSSPDBLocalFileName = Configuration.GetValue<string>("CSSPDBLocal");
+
+            string appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+
+            FileInfo fiAppDataPath = new FileInfo(CSSPDBLocalFileName.Replace("{AppDataPath}", appDataPath));
+
+            ServiceCollection.AddDbContext<CSSPDBLocalContext>(options =>
+            {
+                options.UseSqlite($"Data Source={ fiAppDataPath.FullName }");
+            });
+
+            ServiceCollection.AddIdentityCore<ApplicationUser>()
+                .AddEntityFrameworkStores<ApplicationDbContext>();
+
+            ServiceCollection.AddDbContext<ApplicationDbContext>(options =>
+                options.UseSqlServer(TestDB));
+
+
+            ServiceProvider = ServiceCollection.BuildServiceProvider();
+            Assert.NotNull(ServiceProvider);
+
+            CultureService = ServiceProvider.GetService<ICultureService>();
+            Assert.NotNull(CultureService);
+
+            CultureService.SetCulture(culture);
+
+            ContactService = ServiceProvider.GetService<IContactService>();
+            Assert.NotNull(ContactService);
+
+            return await Task.FromResult(true);
+        }
+        #endregion Functions private
+    }
+
+}

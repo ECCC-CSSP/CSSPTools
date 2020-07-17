@@ -10,13 +10,13 @@ namespace ServicesRepopulateTestDBServices.Services
 {
     public partial class ServicesRepopulateTestDBService : IServicesRepopulateTestDBService
     {
-        private async Task<bool> CleanTestDB(List<Table> tableTestDBList, string TestDBConnectionString)
+        private async Task<bool> CleanTestDB(List<Table> tableTestDBList, string TestDB)
         {
             if (!await SetTestDBDeleteOrderedList(tableTestDBList)) return await Task.FromResult(false);
 
             try
             {
-                using (SqlConnection cnn = new SqlConnection(TestDBConnectionString))
+                using (SqlConnection cnn = new SqlConnection(TestDB))
                 {
                     if (!cnn.ConnectionString.Contains("TestDB"))
                     {

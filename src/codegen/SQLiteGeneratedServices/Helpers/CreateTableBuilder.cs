@@ -20,8 +20,8 @@ namespace SQLiteGeneratedServices.Services
             if (!await FillCSSPDBTableList(ListCSSPDBTableList)) return false;
 
             List<Table> tableCSSPDBList = new List<Table>();
-            string CSSPDBConnectionString = Config.GetValue<string>("CSSPDBConnectionString");
-            if (!await LoadDBInfo(tableCSSPDBList, CSSPDBConnectionString)) return await Task.FromResult(false);
+            string CSSPDB2 = Config.GetValue<string>("CSSPDB2");
+            if (!await LoadDBInfo(tableCSSPDBList, CSSPDB2)) return await Task.FromResult(false);
 
             StringBuilder sb = new StringBuilder();
 
@@ -32,13 +32,14 @@ namespace SQLiteGeneratedServices.Services
             sb.AppendLine(@" */");
             sb.AppendLine(@"");
             sb.AppendLine(@"using Microsoft.Data.Sqlite;");
+            sb.AppendLine(@"using Microsoft.EntityFrameworkCore;");
             sb.AppendLine(@"using System.Threading.Tasks;");
             sb.AppendLine(@"");
             sb.AppendLine(@"namespace CSSPSQLiteServices.Services");
             sb.AppendLine(@"{");
             sb.AppendLine(@"    public partial class CSSPSQLiteService : ICSSPSQLiteService");
             sb.AppendLine(@"    {");
-            sb.AppendLine(@"        private async Task<bool> CreateTableBuilder(string tableName, SqliteConnection db)");
+            sb.AppendLine(@"        private async Task<bool> CreateTableBuilder(string tableName)");
             sb.AppendLine(@"        {");
             sb.AppendLine(@"            string CreateTable = """";");
             sb.AppendLine(@"            switch (tableName)");
@@ -192,9 +193,12 @@ namespace SQLiteGeneratedServices.Services
             sb.AppendLine(@"                    break;");
             sb.AppendLine(@"            }");
             sb.AppendLine(@"");
-            sb.AppendLine(@"            SqliteCommand createUsersTableCmd = new SqliteCommand(CreateTable, db);");
-            sb.AppendLine(@"");
-            sb.AppendLine(@"            createUsersTableCmd.ExecuteReader();");
+            sb.AppendLine(@"            using (var command = dbLocal.Database.GetDbConnection().CreateCommand())");
+            sb.AppendLine(@"            {");
+            sb.AppendLine(@"                command.CommandText = CreateTable;");
+            sb.AppendLine(@"                dbLocal.Database.OpenConnection();");
+            sb.AppendLine(@"                command.ExecuteNonQuery();");
+            sb.AppendLine(@"            }");
             sb.AppendLine(@"");
             sb.AppendLine(@"            return await Task.FromResult(true);");
             sb.AppendLine(@"        }");

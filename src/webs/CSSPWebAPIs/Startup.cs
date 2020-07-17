@@ -1,5 +1,3 @@
-using ActionCommandDBServices.Models;
-using ActionCommandDBServices.Services;
 using CSSPEnums;
 using CSSPModels;
 using CSSPServices;
@@ -16,15 +14,11 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
-using PolSourceGroupingExcelFileReadServices.Services;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
-using UserServices.Models;
-using UserServices.Services;
-using ValidateAppSettingsServices.Services;
 
 namespace CSSPWebAPIs
 {
@@ -210,18 +204,10 @@ namespace CSSPWebAPIs
 
             FileInfo fiDB = new FileInfo(Configuration.GetValue<string>("CSSPDBLocal").Replace("{AppDataPath}", appDataPath));
 
-            services.AddDbContext<ActionCommandContext>(options =>
-            {
-                options.UseSqlite($"DataSource={fiDB.FullName}");
-            });
-
             services.AddScoped<ICultureService, CultureService>();
             services.AddScoped<IEnums, Enums>();
-            services.AddScoped<IUserService, UserService>();
+            services.AddScoped<IContactService, ContactService>();
             services.AddScoped<ILoggedInService, LoggedInService>();
-            services.AddScoped<IActionCommandDBService, ActionCommandDBService>();
-            services.AddScoped<IValidateAppSettingsService, ValidateAppSettingsService>();
-            services.AddScoped<IPolSourceGroupingExcelFileReadService, PolSourceGroupingExcelFileReadService>();
 
             LoadAllDBServices(services);
             services.AddScoped<IWebService, WebService>();

@@ -98,8 +98,6 @@ namespace WebAPIClassNameControllerTestGeneratedServices.Services
                     sb.AppendLine(@"using System.Text.Json;");
                     sb.AppendLine(@"using System.Threading.Tasks;");
                     sb.AppendLine(@"using System.Transactions;");
-                    sb.AppendLine(@"using UserServices.Models;");
-                    sb.AppendLine(@"using UserServices.Services;");
                     sb.AppendLine(@"using Xunit;");
                     sb.AppendLine(@"");
                     sb.AppendLine(@"namespace CSSPWebAPIs.Tests.Controllers");
@@ -114,12 +112,19 @@ namespace WebAPIClassNameControllerTestGeneratedServices.Services
                     sb.AppendLine(@"        private IServiceProvider Provider { get; set; }");
                     sb.AppendLine(@"        private IServiceCollection Services { get; set; }");
                     sb.AppendLine(@"        private CSSPDBContext db { get; set; }");
-                    sb.AppendLine(@"        private IUserService userService { get; set; }");
+                    sb.AppendLine(@"        private IContactService ContactService { get; set; }");
                     sb.AppendLine(@"        private ILoggedInService loggedInService { get; set; }");
                     sb.AppendLine(@"        private ICultureService CultureService { get; set; }");
                     sb.AppendLine($@"        private I{ TypeName }Service { TypeNameLower }Service {{ get; set; }}");
                     sb.AppendLine($@"        private I{ TypeName }Controller { TypeNameLower }Controller {{ get; set; }}");
-                    sb.AppendLine(@"        private UserModel userModel { get; set; }");
+                    sb.AppendLine(@"        private Contact contact { get; set; }");
+                    if (TypeName == "Contact")
+                    {
+                        sb.AppendLine(@"        private Contact contact2 { get; set; }");
+                    }
+                    else
+                    {
+                    }
                     sb.AppendLine(@"        #endregion Properties");
                     sb.AppendLine(@"");
                     sb.AppendLine(@"        #region Constructors");

@@ -17,9 +17,9 @@ namespace SQLiteGeneratedServices.Services
             List<Table> tableCSSPDBList = new List<Table>();
             List<string> ListCSSPDBTableList = new List<string>();
 
-            string CSSPDBConnectionString = Config.GetValue<string>("CSSPDBConnectionString");
+            string CSSPDB2 = Config.GetValue<string>("CSSPDB2");
 
-            if (!await LoadDBInfo(tableCSSPDBList, CSSPDBConnectionString)) return await Task.FromResult(false);
+            if (!await LoadDBInfo(tableCSSPDBList, CSSPDB2)) return await Task.FromResult(false);
             if (! await FillCSSPDBTableList(ListCSSPDBTableList)) return await Task.FromResult(false);
 
 

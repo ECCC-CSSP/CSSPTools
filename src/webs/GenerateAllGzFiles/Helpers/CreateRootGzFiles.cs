@@ -15,8 +15,6 @@ using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.IO;
 using System.Threading.Tasks;
-using UserServices.Models;
-using UserServices.Services;
 
 namespace GenerateAllGzFiles
 {

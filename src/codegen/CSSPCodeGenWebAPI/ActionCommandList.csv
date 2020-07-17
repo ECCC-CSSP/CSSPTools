@@ -71,8 +71,6 @@ build,ServicesRepopulateTestDBServices.Tests,C:\CSSPTools\src\codegen\Tests\Serv
 build,SQLiteGenerated,C:\CSSPTools\src\codegen\SQLiteGenerated\SQLiteGenerated.csproj
 build,SQLiteGeneratedServices,C:\CSSPTools\src\codegen\SQLiteGeneratedServices\SQLiteGeneratedServices.csproj
 build,SQLiteGeneratedServices.Tests,C:\CSSPTools\src\codegen\Tests\SQLiteGeneratedServices.Tests\SQLiteGeneratedServices.Tests.csproj
-build,UserServices,C:\CSSPTools\src\codegen\UserServices\UserServices.csproj
-build,UserServices.Tests,C:\CSSPTools\src\codegen\Tests\UserServices.Tests\UserServices.Tests.csproj
 build,ValidateAppSettingsServices,C:\CSSPTools\src\codegen\ValidateAppSettingsServices\ValidateAppSettingsServices.csproj
 build,ValidateAppSettingsServices.Tests,C:\CSSPTools\src\codegen\Tests\ValidateAppSettingsServices.Tests\ValidateAppSettingsServices.Tests.csproj
 build,WebAPIClassNameControllerGenerated,C:\CSSPTools\src\codegen\WebAPIClassNameControllerGenerated\WebAPIClassNameControllerGenerated.csproj

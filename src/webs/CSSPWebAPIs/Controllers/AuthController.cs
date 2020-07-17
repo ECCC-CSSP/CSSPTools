@@ -7,14 +7,14 @@ using System.Security.Claims;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using CSSPModels;
+using CSSPServices;
 using CultureServices.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
-using UserServices.Models;
-using UserServices.Services;
 
 namespace CSSPWebAPIs.Controllers
 {
@@ -28,14 +28,14 @@ namespace CSSPWebAPIs.Controllers
 
         #region Properties
         private ICultureService CultureService { get; }
-        private IUserService UserService { get; }
+        private IContactService ContactService { get; }
         #endregion Properties
 
         #region Constructors
-        public AuthController(ICultureService CultureService, IUserService UserService)
+        public AuthController(ICultureService CultureService, IContactService ContactService)
         {
             this.CultureService = CultureService;
-            this.UserService = UserService;
+            this.ContactService = ContactService;
         }
         #endregion Constructors
 
@@ -43,10 +43,10 @@ namespace CSSPWebAPIs.Controllers
         [Route("token")]
         [HttpPost]
         [AllowAnonymous]
-        public async Task<ActionResult<UserModel>> Token(LoginModel loginModel)
+        public async Task<ActionResult<Contact>> Token(LoginModel loginModel)
         {
             CultureService.SetCulture((string)RouteData.Values["culture"]);
-            return await UserService.Login(loginModel);
+            return await ContactService.Login(loginModel);
         }
         //[Route("Register")]
         //[HttpPost]

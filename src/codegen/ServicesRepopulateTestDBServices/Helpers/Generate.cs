@@ -23,18 +23,18 @@ namespace ServicesRepopulateTestDBServices.Services
             ActionCommandDBService.ExecutionStatusText.AppendLine("Generate Starting ...");
             ActionCommandDBService.PercentCompleted = 10;
             await ActionCommandDBService.Update();
-
-            string CSSPDBConnectionString = Config.GetValue<string>("CSSPDBConnectionString");
-            string TestDBConnectionString = Config.GetValue<string>("TestDBConnectionString");
+            
+            string CSSPDB2 = Config.GetValue<string>("CSSPDB2");
+            string TestDB = Config.GetValue<string>("TestDB");
 
             List<Table> tableCSSPDBList = new List<Table>();
             List<Table> tableTestDBList = new List<Table>();
 
-            ActionCommandDBService.ExecutionStatusText.AppendLine("Loading CSSPDB table information ...");
-            if (!await LoadDBInfo(tableCSSPDBList, CSSPDBConnectionString)) return await Task.FromResult(false);
+            ActionCommandDBService.ExecutionStatusText.AppendLine("Loading CSSPDB2 table information ...");
+            if (!await LoadDBInfo(tableCSSPDBList, CSSPDB2)) return await Task.FromResult(false);
 
             ActionCommandDBService.ExecutionStatusText.AppendLine("Loading TestWeb table information ...");
-            if (!await LoadDBInfo(tableTestDBList, TestDBConnectionString)) return await Task.FromResult(false);
+            if (!await LoadDBInfo(tableTestDBList, TestDB)) return await Task.FromResult(false);
 
             ActionCommandDBService.ExecutionStatusText.AppendLine("Comparing tables ...");
             if (!await CompareDBs(tableCSSPDBList, tableTestDBList)) return await Task.FromResult(false);
@@ -42,7 +42,7 @@ namespace ServicesRepopulateTestDBServices.Services
             ActionCommandDBService.ExecutionStatusText.AppendLine("Done comparing ... everything ok");
 
             ActionCommandDBService.ExecutionStatusText.AppendLine("Cleaning TestDB ...");
-            if (!await CleanTestDB(tableTestDBList, TestDBConnectionString)) return await Task.FromResult(false);
+            if (!await CleanTestDB(tableTestDBList, TestDB)) return await Task.FromResult(false);
 
             ActionCommandDBService.ExecutionStatusText.AppendLine("Done Cleaning TestDB ... everything ok");
 

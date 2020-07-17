@@ -17,6 +17,7 @@ namespace CSSPWebAPIs
             services.AddScoped<IAppErrLogService, AppErrLogService>();
             services.AddScoped<IAppTaskService, AppTaskService>();
             services.AddScoped<IAppTaskLanguageService, AppTaskLanguageService>();
+            services.AddScoped<IAspNetUserService, AspNetUserService>();
             services.AddScoped<IBoxModelService, BoxModelService>();
             services.AddScoped<IBoxModelLanguageService, BoxModelLanguageService>();
             services.AddScoped<IBoxModelResultService, BoxModelResultService>();
