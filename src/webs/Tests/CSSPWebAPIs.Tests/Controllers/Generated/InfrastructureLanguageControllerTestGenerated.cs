@@ -172,6 +172,7 @@ namespace CSSPWebAPIs.Tests.Controllers
             Services.AddSingleton<ICultureService, CultureService>();
             Services.AddSingleton<IEnums, Enums>();
             Services.AddSingleton<ILoggedInService, LoggedInService>();
+            Services.AddSingleton<IAspNetUserService, AspNetUserService>();
             Services.AddSingleton<IContactService, ContactService>();
             Services.AddSingleton<IInfrastructureLanguageService, InfrastructureLanguageService>();
             Services.AddSingleton<IInfrastructureLanguageController, InfrastructureLanguageController>();

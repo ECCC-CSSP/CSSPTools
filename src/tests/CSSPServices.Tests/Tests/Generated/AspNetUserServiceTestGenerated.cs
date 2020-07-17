@@ -77,7 +77,7 @@ namespace CSSPServices.Tests
             {
                 using (TransactionScope ts = new TransactionScope())
                 {
-                    await DoCRUDTest();
+                    // await DoCRUDTest();
                 }
             }
         }

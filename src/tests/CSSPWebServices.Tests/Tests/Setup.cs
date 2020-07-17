@@ -25,6 +25,7 @@ namespace CSSPWebServices.Tests
         private IServiceCollection Services { get; set; }
         private ICultureService CultureService { get; set; }
         private IWebService WebService { get; set; }
+        private IAspNetUserService AspNetUserService { get; set; }
         private IContactService ContactService { get; set; }
         private ILoggedInService LoggedInService { get; set; }
         private CSSPDBContext db { get; set; }
@@ -66,6 +67,18 @@ namespace CSSPWebServices.Tests
                 options.UseInMemoryDatabase(CSSPDBConnString);
             });
 
+            string CSSPDBLocalFileName = Config.GetValue<string>("CSSPDBLocal");
+            Assert.NotNull(CSSPDBLocalFileName);
+
+            string appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+
+            FileInfo fiAppDataPath = new FileInfo(CSSPDBLocalFileName.Replace("{AppDataPath}", appDataPath));
+
+            Services.AddDbContext<CSSPDBLocalContext>(options =>
+            {
+                options.UseSqlite($"Data Source={ fiAppDataPath.FullName }");
+            });
+
             Services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(CSSPDBConnString));
 
@@ -73,6 +86,7 @@ namespace CSSPWebServices.Tests
                 .AddEntityFrameworkStores<ApplicationDbContext>();
 
             Services.AddSingleton<ICultureService, CultureService>();
+            Services.AddSingleton<IAspNetUserService, AspNetUserService>();
             Services.AddSingleton<IContactService, ContactService>();
             Services.AddSingleton<ILoggedInService, LoggedInService>();
             Services.AddSingleton<IEnums, Enums>();

@@ -58,7 +58,7 @@ namespace CSSPSQLiteServices.Tests
 
             Services.AddSingleton<IConfiguration>(Config);
 
-            string TestDBConnString = Config.GetValue<string>("TestDBConnectionString");
+            string TestDBConnString = Config.GetValue<string>("TestDB");
             Assert.NotNull(TestDBConnString);
 
             Services.AddDbContext<CSSPDBContext>(options =>

@@ -35,6 +35,7 @@ namespace CSSPServices.Tests
         private IServiceCollection Services { get; set; }
         private ICultureService CultureService { get; set; }
         private ILoggedInService LoggedInService { get; set; }
+        private IAspNetUserService AspNetUserService { get; set; }
         private IContactService ContactService { get; set; }
         private CSSPDBContext db { get; set; }
         private CSSPDBLocalContext dbLocal { get; set; }
@@ -153,9 +154,18 @@ namespace CSSPServices.Tests
                 options.UseSqlite($"Data Source={ fiAppDataPath.FullName }");
             });
 
+            Services.AddDbContext<ApplicationDbContext>(options =>
+            {
+                options.UseSqlServer(TestDBConnString);
+            });
+
+            Services.AddIdentityCore<ApplicationUser>()
+                .AddEntityFrameworkStores<ApplicationDbContext>();
+
             Services.AddSingleton<ICultureService, CultureService>();
             Services.AddSingleton<ILoggedInService, LoggedInService>();
             Services.AddSingleton<IEnums, Enums>();
+            Services.AddSingleton<IAspNetUserService, AspNetUserService>();
             Services.AddSingleton<IContactService, ContactService>();
 
             Provider = Services.BuildServiceProvider();

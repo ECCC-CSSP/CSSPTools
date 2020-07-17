@@ -44,9 +44,30 @@ namespace ServicesClassNameServiceTestGeneratedServices.Services
             sb.AppendLine(@"                options.UseSqlite($""Data Source={ fiAppDataPath.FullName }"");");
             sb.AppendLine(@"            });");
             sb.AppendLine(@"");
+            if (TypeName == "Contact")
+            {
+                sb.AppendLine(@"            Services.AddDbContext<ApplicationDbContext>(options =>");
+                sb.AppendLine(@"            {");
+                sb.AppendLine(@"                options.UseSqlServer(TestDBConnString);");
+                sb.AppendLine(@"            });");
+                sb.AppendLine(@"");
+                sb.AppendLine(@"            Services.AddIdentityCore<ApplicationUser>()");
+                sb.AppendLine(@"                .AddEntityFrameworkStores<ApplicationDbContext>();");
+                sb.AppendLine(@"");
+            }
+            else
+            {
+            }
             sb.AppendLine(@"            Services.AddSingleton<ICultureService, CultureService>();");
             sb.AppendLine(@"            Services.AddSingleton<ILoggedInService, LoggedInService>();");
             sb.AppendLine(@"            Services.AddSingleton<IEnums, Enums>();");
+            if (TypeName == "Contact")
+            {
+                sb.AppendLine(@"            Services.AddSingleton<IAspNetUserService, AspNetUserService>();");
+            }
+            else
+            {
+            }
             sb.AppendLine($@"            Services.AddSingleton<I{ TypeName }Service, { TypeName }Service>();");
             sb.AppendLine(@"");
             sb.AppendLine(@"            Provider = Services.BuildServiceProvider();");

@@ -115,6 +115,13 @@ namespace ServicesClassNameServiceTestGeneratedServices.Services
                     sb.AppendLine(@"        private IServiceCollection Services { get; set; }");
                     sb.AppendLine(@"        private ICultureService CultureService { get; set; }");
                     sb.AppendLine(@"        private ILoggedInService LoggedInService { get; set; }");
+                    if (TypeName == "Contact")
+                    {
+                        sb.AppendLine(@"        private IAspNetUserService AspNetUserService { get; set; }");
+                    }
+                    else
+                    {
+                    }
                     sb.AppendLine($@"        private I{ TypeName }Service { TypeName }Service {{ get; set; }}");
                     sb.AppendLine(@"        private CSSPDBContext db { get; set; }");
                     sb.AppendLine(@"        private CSSPDBLocalContext dbLocal { get; set; }");

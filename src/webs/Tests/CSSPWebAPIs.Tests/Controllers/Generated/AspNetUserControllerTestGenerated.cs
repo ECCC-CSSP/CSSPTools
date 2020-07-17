@@ -63,66 +63,6 @@ namespace CSSPWebAPIs.Tests.Controllers
             Assert.NotNull(aspNetUserService);
             Assert.NotNull(aspNetUserController);
         }
-        [Theory]
-        [InlineData("en-CA")]
-        [InlineData("fr-CA")]
-        public async Task AspNetUserController_CRUD_Good_Test(string culture)
-        {
-            Assert.True(await Setup(culture));
-
-            HttpClient httpClient = new HttpClient();
-            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", contact.Token);
-
-            // testing Get
-            string url = "https://localhost:4447/api/" + culture + "/AspNetUser";
-            var response = await httpClient.GetAsync(url);
-            Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
-            string responseContent = await response.Content.ReadAsStringAsync();
-            Assert.NotEmpty(responseContent);
-            List<AspNetUser> aspNetUserList = JsonSerializer.Deserialize<List<AspNetUser>>(responseContent);
-            Assert.True(aspNetUserList.Count > 0);
-
-            // testing Get(Id)
-            string urlID = url + "/" + aspNetUserList[0].Id;
-            response = await httpClient.GetAsync(urlID);
-            Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
-            responseContent = await response.Content.ReadAsStringAsync();
-            Assert.NotEmpty(responseContent);
-            AspNetUser aspNetUser = JsonSerializer.Deserialize<AspNetUser>(responseContent);
-            Assert.Equal(aspNetUserList[0].Id, aspNetUser.Id);
-
-            // testing Post(AspNetUser)
-            aspNetUser.Id = "";
-            string content = JsonSerializer.Serialize<AspNetUser>(aspNetUser);
-            HttpContent httpContent = new StringContent(content);
-            httpContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
-            response = await httpClient.PostAsync(url, httpContent);
-            Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
-            responseContent = await response.Content.ReadAsStringAsync();
-            Assert.NotEmpty(responseContent);
-            aspNetUser = JsonSerializer.Deserialize<AspNetUser>(responseContent);
-            Assert.NotNull(aspNetUser);
-
-            // testing Put(AspNetUser)
-            content = JsonSerializer.Serialize<AspNetUser>(aspNetUser);
-            httpContent = new StringContent(content);
-            httpContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
-            response = await httpClient.PutAsync(url, httpContent);
-            Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
-            responseContent = await response.Content.ReadAsStringAsync();
-            Assert.NotEmpty(responseContent);
-            aspNetUser = JsonSerializer.Deserialize<AspNetUser>(responseContent);
-            Assert.NotNull(aspNetUser);
-
-            // testing Delete(Id)
-            urlID = url + "/" + aspNetUser.Id;
-            response = await httpClient.DeleteAsync(urlID);
-            Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
-            responseContent = await response.Content.ReadAsStringAsync();
-            Assert.NotEmpty(responseContent);
-            bool retBool = JsonSerializer.Deserialize<bool>(responseContent);
-            Assert.True(retBool);
-        }
         #endregion Functions public
 
         #region Functions private
@@ -172,6 +112,7 @@ namespace CSSPWebAPIs.Tests.Controllers
             Services.AddSingleton<ICultureService, CultureService>();
             Services.AddSingleton<IEnums, Enums>();
             Services.AddSingleton<ILoggedInService, LoggedInService>();
+            Services.AddSingleton<IAspNetUserService, AspNetUserService>();
             Services.AddSingleton<IContactService, ContactService>();
             Services.AddSingleton<IAspNetUserService, AspNetUserService>();
             Services.AddSingleton<IAspNetUserController, AspNetUserController>();

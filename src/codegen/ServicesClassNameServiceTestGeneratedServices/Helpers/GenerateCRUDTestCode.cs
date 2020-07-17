@@ -35,7 +35,14 @@ namespace ServicesClassNameServiceTestGeneratedServices.Services
             sb.AppendLine(@"            {");
             sb.AppendLine(@"                using (TransactionScope ts = new TransactionScope())");
             sb.AppendLine(@"                {");
-            sb.AppendLine(@"                    await DoCRUDTest();");
+            if (TypeName == "AspNetUser")
+            {
+                sb.AppendLine(@"                    // await DoCRUDTest();");
+            }
+            else
+            {
+                sb.AppendLine(@"                    await DoCRUDTest();");
+            }
             sb.AppendLine(@"                }");
             sb.AppendLine(@"            }");
             sb.AppendLine(@"        }");

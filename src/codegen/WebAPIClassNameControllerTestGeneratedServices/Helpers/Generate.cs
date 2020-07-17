@@ -136,7 +136,14 @@ namespace WebAPIClassNameControllerTestGeneratedServices.Services
                     sb.AppendLine(@"        #region Functions public");
 
                     if (!await GenerateControllersContructorGoodTest(TypeName, TypeNameLower, sb)) return await Task.FromResult(false);
-                    if (!await GenerateControllersCRUDGoodTest(TypeName, TypeNameLower, sb)) return await Task.FromResult(false);
+                    if (TypeName == "AspNetUser")
+                    {
+
+                    }
+                    else
+                    {
+                        if (!await GenerateControllersCRUDGoodTest(TypeName, TypeNameLower, sb)) return await Task.FromResult(false);
+                    }
                     sb.AppendLine(@"        #endregion Functions public");
 
                     sb.AppendLine(@"");

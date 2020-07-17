@@ -28,6 +28,7 @@ namespace CSSPWebAPIs.Tests
         private IServiceProvider Provider { get; set; }
         private IServiceCollection Services { get; set; }
         private CSSPDBContext db { get; set; }
+        private IAspNetUserService AspNetUserService { get; set; }
         private IContactService ContactService { get; set; }
         private ILoggedInService LoggedInService { get; set; }
         private ICultureService CultureService { get; set; }
@@ -98,6 +99,7 @@ namespace CSSPWebAPIs.Tests
             Services.AddSingleton<ICultureService, CultureService>();
             Services.AddSingleton<IEnums, Enums>();
             Services.AddSingleton<ILoggedInService, LoggedInService>();
+            Services.AddSingleton<IAspNetUserService, AspNetUserService>();
             Services.AddSingleton<IContactService, ContactService>();
 
             Provider = Services.BuildServiceProvider();
