@@ -24,7 +24,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\dlls\CSSPWebModels\CSSPWebModels.csproj" />
+    <Folder Include="tests\" />
   </ItemGroup>
 
 </Project>

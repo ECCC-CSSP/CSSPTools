@@ -38,7 +38,6 @@
   <ItemGroup>
     <ProjectReference Include="..\..\codegen\PolSourceGroupingExcelFileReadServices\PolSourceGroupingExcelFileReadServices.csproj" />
     <ProjectReference Include="..\..\dlls\CSSPServices\CSSPServices.csproj" />
-    <ProjectReference Include="..\..\dlls\CSSPWebServices\CSSPWebServices.csproj" />
   </ItemGroup>
 
 </Project>

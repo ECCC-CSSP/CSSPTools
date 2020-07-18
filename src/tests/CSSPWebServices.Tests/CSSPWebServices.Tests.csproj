@@ -48,7 +48,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\dlls\CSSPWebServices\CSSPWebServices.csproj" />
+    <Folder Include="Tests\" />
   </ItemGroup>
 
 </Project>
