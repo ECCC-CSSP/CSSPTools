@@ -7,9 +7,8 @@
 
 using CSSPEnums;
 using CSSPModels;
-using CultureServices.Resources;
-using CultureServices.Services;
-using LoggedInServices.Services;
+using CSSPCultureServices.Resources;
+using CSSPCultureServices.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -43,20 +42,20 @@ namespace CSSPServices
         private UserManager<ApplicationUser> UserManager { get; }
         private IAspNetUserService AspNetUserService { get; }
         private IConfiguration Configuration { get; }
-        private ICultureService CultureService { get; }
+        private ICSSPCultureService CSSPCultureService { get; }
         private ILoggedInService LoggedInService { get; }
         private IEnums enums { get; }
         private IEnumerable<ValidationResult> ValidationResults { get; set; }
         #endregion Properties
 
         #region Constructors
-        public ContactService(IConfiguration Configuration, UserManager<ApplicationUser> UserManager, ICultureService CultureService, 
+        public ContactService(IConfiguration Configuration, UserManager<ApplicationUser> UserManager, ICSSPCultureService CSSPCultureService, 
            ILoggedInService LoggedInService, IEnums enums, IAspNetUserService AspNetUserService, CSSPDBContext db, CSSPDBLocalContext dbLocal, InMemoryDBContext dbIM)
         {
             this.Configuration = Configuration;
             this.UserManager = UserManager;
             this.AspNetUserService = AspNetUserService;
-            this.CultureService = CultureService;
+            this.CSSPCultureService = CSSPCultureService;
             this.LoggedInService = LoggedInService;
             this.enums = enums;
             this.db = db;
@@ -154,7 +153,7 @@ namespace CSSPServices
             
                 if (contact == null)
                 {
-                    return await Task.FromResult(BadRequest(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "Contact", "ContactID", ContactID.ToString())));
+                    return await Task.FromResult(BadRequest(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "Contact", "ContactID", ContactID.ToString())));
                 }
             
                 try
@@ -177,7 +176,7 @@ namespace CSSPServices
                 
                 if (contact == null)
                 {
-                    return await Task.FromResult(BadRequest(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "Contact", "ContactID", ContactID.ToString())));
+                    return await Task.FromResult(BadRequest(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "Contact", "ContactID", ContactID.ToString())));
                 }
 
                 try
@@ -200,7 +199,7 @@ namespace CSSPServices
                 
                 if (contact == null)
                 {
-                    return await Task.FromResult(BadRequest(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "Contact", "ContactID", ContactID.ToString())));
+                    return await Task.FromResult(BadRequest(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "Contact", "ContactID", ContactID.ToString())));
                 }
 
                 try
@@ -340,33 +339,33 @@ namespace CSSPServices
             {
                 if (contact.ContactID == 0)
                 {
-                    yield return new ValidationResult(string.Format(CultureServicesRes._IsRequired, "ContactID"), new[] { "ContactID" });
+                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "ContactID"), new[] { "ContactID" });
                 }
 
                 if (LoggedInService.DBLocation == DBLocationEnum.Local)
                 {
                     if (!(from c in dbLocal.Contacts select c).Where(c => c.ContactID == contact.ContactID).Any())
                     {
-                        yield return new ValidationResult(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "Contact", "ContactID", contact.ContactID.ToString()), new[] { "ContactID" });
+                        yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "Contact", "ContactID", contact.ContactID.ToString()), new[] { "ContactID" });
                     }
                 }
                 else
                 {
                     if (!(from c in db.Contacts select c).Where(c => c.ContactID == contact.ContactID).Any())
                     {
-                        yield return new ValidationResult(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "Contact", "ContactID", contact.ContactID.ToString()), new[] { "ContactID" });
+                        yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "Contact", "ContactID", contact.ContactID.ToString()), new[] { "ContactID" });
                     }
                 }
             }
 
             if (string.IsNullOrWhiteSpace(contact.Id))
             {
-                yield return new ValidationResult(string.Format(CultureServicesRes._IsRequired, "Id"), new[] { "Id" });
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "Id"), new[] { "Id" });
             }
 
             if (!string.IsNullOrWhiteSpace(contact.Id) && contact.Id.Length > 450)
             {
-                yield return new ValidationResult(string.Format(CultureServicesRes._MaxLengthIs_, "Id", "450"), new[] { "Id" });
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "Id", "450"), new[] { "Id" });
             }
 
             AspNetUser AspNetUserId = null;
@@ -385,7 +384,7 @@ namespace CSSPServices
 
             if (AspNetUserId == null)
             {
-                yield return new ValidationResult(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "AspNetUser", "Id", (contact.Id == null ? "" : contact.Id.ToString())), new[] { "Id" });
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "AspNetUser", "Id", (contact.Id == null ? "" : contact.Id.ToString())), new[] { "Id" });
             }
 
             TVItem TVItemContactTVItemID = null;
@@ -404,7 +403,7 @@ namespace CSSPServices
 
             if (TVItemContactTVItemID == null)
             {
-                yield return new ValidationResult(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "TVItem", "ContactTVItemID", contact.ContactTVItemID.ToString()), new[] { "ContactTVItemID" });
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "TVItem", "ContactTVItemID", contact.ContactTVItemID.ToString()), new[] { "ContactTVItemID" });
             }
             else
             {
@@ -414,18 +413,18 @@ namespace CSSPServices
                 };
                 if (!AllowableTVTypes.Contains(TVItemContactTVItemID.TVType))
                 {
-                    yield return new ValidationResult(string.Format(CultureServicesRes._IsNotOfType_, "ContactTVItemID", "Contact"), new[] { "ContactTVItemID" });
+                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsNotOfType_, "ContactTVItemID", "Contact"), new[] { "ContactTVItemID" });
                 }
             }
 
             if (string.IsNullOrWhiteSpace(contact.LoginEmail))
             {
-                yield return new ValidationResult(string.Format(CultureServicesRes._IsRequired, "LoginEmail"), new[] { "LoginEmail" });
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "LoginEmail"), new[] { "LoginEmail" });
             }
 
             if (!string.IsNullOrWhiteSpace(contact.LoginEmail) && (contact.LoginEmail.Length < 6 || contact.LoginEmail.Length > 255))
             {
-                yield return new ValidationResult(string.Format(CultureServicesRes._LengthShouldBeBetween_And_, "LoginEmail", "6", "255"), new[] { "LoginEmail" });
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._LengthShouldBeBetween_And_, "LoginEmail", "6", "255"), new[] { "LoginEmail" });
             }
 
             if (!string.IsNullOrWhiteSpace(contact.LoginEmail))
@@ -433,43 +432,43 @@ namespace CSSPServices
                 Regex regex = new Regex(@"^([\w\!\#$\%\&\'*\+\-\/\=\?\^`{\|\}\~]+\.)*[\w\!\#$\%\&\'‌​*\+\-\/\=\?\^`{\|\}\~]+@((((([a-zA-Z0-9]{1}[a-zA-Z0-9\-]{0,62}[a-zA-Z0-9]{1})|[‌​a-zA-Z])\.)+[a-zA-Z]{2,6})|(\d{1,3}\.){3}\d{1,3}(\:\d{1,5})?)$");
                 if (!regex.IsMatch(contact.LoginEmail))
                 {
-                    yield return new ValidationResult(string.Format(CultureServicesRes._IsNotAValidEmail, "LoginEmail"), new[] { "LoginEmail" });
+                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsNotAValidEmail, "LoginEmail"), new[] { "LoginEmail" });
                 }
             }
 
             if (string.IsNullOrWhiteSpace(contact.FirstName))
             {
-                yield return new ValidationResult(string.Format(CultureServicesRes._IsRequired, "FirstName"), new[] { "FirstName" });
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "FirstName"), new[] { "FirstName" });
             }
 
             if (!string.IsNullOrWhiteSpace(contact.FirstName) && contact.FirstName.Length > 100)
             {
-                yield return new ValidationResult(string.Format(CultureServicesRes._MaxLengthIs_, "FirstName", "100"), new[] { "FirstName" });
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "FirstName", "100"), new[] { "FirstName" });
             }
 
             if (string.IsNullOrWhiteSpace(contact.LastName))
             {
-                yield return new ValidationResult(string.Format(CultureServicesRes._IsRequired, "LastName"), new[] { "LastName" });
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "LastName"), new[] { "LastName" });
             }
 
             if (!string.IsNullOrWhiteSpace(contact.LastName) && contact.LastName.Length > 100)
             {
-                yield return new ValidationResult(string.Format(CultureServicesRes._MaxLengthIs_, "LastName", "100"), new[] { "LastName" });
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "LastName", "100"), new[] { "LastName" });
             }
 
             if (!string.IsNullOrWhiteSpace(contact.Initial) && contact.Initial.Length > 50)
             {
-                yield return new ValidationResult(string.Format(CultureServicesRes._MaxLengthIs_, "Initial", "50"), new[] { "Initial" });
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "Initial", "50"), new[] { "Initial" });
             }
 
             if (string.IsNullOrWhiteSpace(contact.WebName))
             {
-                yield return new ValidationResult(string.Format(CultureServicesRes._IsRequired, "WebName"), new[] { "WebName" });
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "WebName"), new[] { "WebName" });
             }
 
             if (!string.IsNullOrWhiteSpace(contact.WebName) && contact.WebName.Length > 100)
             {
-                yield return new ValidationResult(string.Format(CultureServicesRes._MaxLengthIs_, "WebName", "100"), new[] { "WebName" });
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "WebName", "100"), new[] { "WebName" });
             }
 
             if (contact.ContactTitle != null)
@@ -477,29 +476,29 @@ namespace CSSPServices
                 retStr = enums.EnumTypeOK(typeof(ContactTitleEnum), (int?)contact.ContactTitle);
                 if (contact.ContactTitle == null || !string.IsNullOrWhiteSpace(retStr))
                 {
-                    yield return new ValidationResult(string.Format(CultureServicesRes._IsRequired, "ContactTitle"), new[] { "ContactTitle" });
+                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "ContactTitle"), new[] { "ContactTitle" });
                 }
             }
 
             if (!string.IsNullOrWhiteSpace(contact.SamplingPlanner_ProvincesTVItemID) && contact.SamplingPlanner_ProvincesTVItemID.Length > 200)
             {
-                yield return new ValidationResult(string.Format(CultureServicesRes._MaxLengthIs_, "SamplingPlanner_ProvincesTVItemID", "200"), new[] { "SamplingPlanner_ProvincesTVItemID" });
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "SamplingPlanner_ProvincesTVItemID", "200"), new[] { "SamplingPlanner_ProvincesTVItemID" });
             }
 
             if (!string.IsNullOrWhiteSpace(contact.Token) && contact.Token.Length > 255)
             {
-                yield return new ValidationResult(string.Format(CultureServicesRes._MaxLengthIs_, "Token", "255"), new[] { "Token" });
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "Token", "255"), new[] { "Token" });
             }
 
             if (contact.LastUpdateDate_UTC.Year == 1)
             {
-                yield return new ValidationResult(string.Format(CultureServicesRes._IsRequired, "LastUpdateDate_UTC"), new[] { "LastUpdateDate_UTC" });
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "LastUpdateDate_UTC"), new[] { "LastUpdateDate_UTC" });
             }
             else
             {
                 if (contact.LastUpdateDate_UTC.Year < 1980)
                 {
-                    yield return new ValidationResult(string.Format(CultureServicesRes._YearShouldBeBiggerThan_, "LastUpdateDate_UTC", "1980"), new[] { "LastUpdateDate_UTC" });
+                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes._YearShouldBeBiggerThan_, "LastUpdateDate_UTC", "1980"), new[] { "LastUpdateDate_UTC" });
                 }
             }
 
@@ -519,7 +518,7 @@ namespace CSSPServices
 
             if (TVItemLastUpdateContactTVItemID == null)
             {
-                yield return new ValidationResult(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "TVItem", "LastUpdateContactTVItemID", contact.LastUpdateContactTVItemID.ToString()), new[] { "LastUpdateContactTVItemID" });
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "TVItem", "LastUpdateContactTVItemID", contact.LastUpdateContactTVItemID.ToString()), new[] { "LastUpdateContactTVItemID" });
             }
             else
             {
@@ -529,7 +528,7 @@ namespace CSSPServices
                 };
                 if (!AllowableTVTypes.Contains(TVItemLastUpdateContactTVItemID.TVType))
                 {
-                    yield return new ValidationResult(string.Format(CultureServicesRes._IsNotOfType_, "LastUpdateContactTVItemID", "Contact"), new[] { "LastUpdateContactTVItemID" });
+                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsNotOfType_, "LastUpdateContactTVItemID", "Contact"), new[] { "LastUpdateContactTVItemID" });
                 }
             }
 

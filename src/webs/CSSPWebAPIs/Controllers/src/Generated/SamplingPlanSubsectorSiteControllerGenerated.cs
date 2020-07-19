@@ -6,8 +6,7 @@
 
 using CSSPModels;
 using CSSPServices;
-using CultureServices.Services;
-using LoggedInServices.Services;
+using CSSPCultureServices.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
@@ -33,15 +32,15 @@ namespace CSSPWebAPIs.Controllers
         #endregion Variables
 
         #region Properties
-        private ICultureService CultureService { get; }
+        private ICSSPCultureService CSSPCultureService { get; }
         private ILoggedInService LoggedInService { get; }
         private ISamplingPlanSubsectorSiteService SamplingPlanSubsectorSiteService { get; }
         #endregion Properties
 
         #region Constructors
-        public SamplingPlanSubsectorSiteController(ICultureService CultureService, ILoggedInService LoggedInService, ISamplingPlanSubsectorSiteService SamplingPlanSubsectorSiteService)
+        public SamplingPlanSubsectorSiteController(ICSSPCultureService CSSPCultureService, ILoggedInService LoggedInService, ISamplingPlanSubsectorSiteService SamplingPlanSubsectorSiteService)
         {
-            this.CultureService = CultureService;
+            this.CSSPCultureService = CSSPCultureService;
             this.LoggedInService = LoggedInService;
             this.SamplingPlanSubsectorSiteService = SamplingPlanSubsectorSiteService;
         }
@@ -51,7 +50,7 @@ namespace CSSPWebAPIs.Controllers
         [HttpGet]
         public async Task<ActionResult<List<SamplingPlanSubsectorSite>>> Get()
         {
-            CultureService.SetCulture((string)RouteData.Values["culture"]);
+            CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
             return await SamplingPlanSubsectorSiteService.GetSamplingPlanSubsectorSiteList();
@@ -59,7 +58,7 @@ namespace CSSPWebAPIs.Controllers
         [HttpGet("{SamplingPlanSubsectorSiteID}")]
         public async Task<ActionResult<SamplingPlanSubsectorSite>> Get(int SamplingPlanSubsectorSiteID)
         {
-            CultureService.SetCulture((string)RouteData.Values["culture"]);
+            CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
             return await SamplingPlanSubsectorSiteService.GetSamplingPlanSubsectorSiteWithSamplingPlanSubsectorSiteID(SamplingPlanSubsectorSiteID);
@@ -67,7 +66,7 @@ namespace CSSPWebAPIs.Controllers
         [HttpPost]
         public async Task<ActionResult<SamplingPlanSubsectorSite>> Post(SamplingPlanSubsectorSite SamplingPlanSubsectorSite)
         {
-            CultureService.SetCulture((string)RouteData.Values["culture"]);
+            CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
             return await SamplingPlanSubsectorSiteService.Post(SamplingPlanSubsectorSite);
@@ -75,7 +74,7 @@ namespace CSSPWebAPIs.Controllers
         [HttpPut]
         public async Task<ActionResult<SamplingPlanSubsectorSite>> Put(SamplingPlanSubsectorSite SamplingPlanSubsectorSite)
         {
-            CultureService.SetCulture((string)RouteData.Values["culture"]);
+            CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
             return await SamplingPlanSubsectorSiteService.Put(SamplingPlanSubsectorSite);
@@ -83,7 +82,7 @@ namespace CSSPWebAPIs.Controllers
         [HttpDelete("{SamplingPlanSubsectorSiteID}")]
         public async Task<ActionResult<bool>> Delete(int SamplingPlanSubsectorSiteID)
         {
-            CultureService.SetCulture((string)RouteData.Values["culture"]);
+            CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
             return await SamplingPlanSubsectorSiteService.Delete(SamplingPlanSubsectorSiteID);

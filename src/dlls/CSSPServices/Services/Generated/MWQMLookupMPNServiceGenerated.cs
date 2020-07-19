@@ -7,9 +7,8 @@
 
 using CSSPEnums;
 using CSSPModels;
-using CultureServices.Resources;
-using CultureServices.Services;
-using LoggedInServices.Services;
+using CSSPCultureServices.Resources;
+using CSSPCultureServices.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -38,16 +37,16 @@ namespace CSSPServices
         private CSSPDBContext db { get; }
         private CSSPDBLocalContext dbLocal { get; }
         private InMemoryDBContext dbIM { get; }
-        private ICultureService CultureService { get; }
+        private ICSSPCultureService CSSPCultureService { get; }
         private ILoggedInService LoggedInService { get; }
         private IEnums enums { get; }
         private IEnumerable<ValidationResult> ValidationResults { get; set; }
         #endregion Properties
 
         #region Constructors
-        public MWQMLookupMPNService(ICultureService CultureService, ILoggedInService LoggedInService, IEnums enums, CSSPDBContext db, CSSPDBLocalContext dbLocal, InMemoryDBContext dbIM)
+        public MWQMLookupMPNService(ICSSPCultureService CSSPCultureService, ILoggedInService LoggedInService, IEnums enums, CSSPDBContext db, CSSPDBLocalContext dbLocal, InMemoryDBContext dbIM)
         {
-            this.CultureService = CultureService;
+            this.CSSPCultureService = CSSPCultureService;
             this.LoggedInService = LoggedInService;
             this.enums = enums;
             this.db = db;
@@ -145,7 +144,7 @@ namespace CSSPServices
             
                 if (mwqmLookupMPN == null)
                 {
-                    return await Task.FromResult(BadRequest(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "MWQMLookupMPN", "MWQMLookupMPNID", MWQMLookupMPNID.ToString())));
+                    return await Task.FromResult(BadRequest(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "MWQMLookupMPN", "MWQMLookupMPNID", MWQMLookupMPNID.ToString())));
                 }
             
                 try
@@ -168,7 +167,7 @@ namespace CSSPServices
                 
                 if (mwqmLookupMPN == null)
                 {
-                    return await Task.FromResult(BadRequest(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "MWQMLookupMPN", "MWQMLookupMPNID", MWQMLookupMPNID.ToString())));
+                    return await Task.FromResult(BadRequest(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "MWQMLookupMPN", "MWQMLookupMPNID", MWQMLookupMPNID.ToString())));
                 }
 
                 try
@@ -191,7 +190,7 @@ namespace CSSPServices
                 
                 if (mwqmLookupMPN == null)
                 {
-                    return await Task.FromResult(BadRequest(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "MWQMLookupMPN", "MWQMLookupMPNID", MWQMLookupMPNID.ToString())));
+                    return await Task.FromResult(BadRequest(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "MWQMLookupMPN", "MWQMLookupMPNID", MWQMLookupMPNID.ToString())));
                 }
 
                 try
@@ -331,54 +330,54 @@ namespace CSSPServices
             {
                 if (mwqmLookupMPN.MWQMLookupMPNID == 0)
                 {
-                    yield return new ValidationResult(string.Format(CultureServicesRes._IsRequired, "MWQMLookupMPNID"), new[] { "MWQMLookupMPNID" });
+                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "MWQMLookupMPNID"), new[] { "MWQMLookupMPNID" });
                 }
 
                 if (LoggedInService.DBLocation == DBLocationEnum.Local)
                 {
                     if (!(from c in dbLocal.MWQMLookupMPNs select c).Where(c => c.MWQMLookupMPNID == mwqmLookupMPN.MWQMLookupMPNID).Any())
                     {
-                        yield return new ValidationResult(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "MWQMLookupMPN", "MWQMLookupMPNID", mwqmLookupMPN.MWQMLookupMPNID.ToString()), new[] { "MWQMLookupMPNID" });
+                        yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "MWQMLookupMPN", "MWQMLookupMPNID", mwqmLookupMPN.MWQMLookupMPNID.ToString()), new[] { "MWQMLookupMPNID" });
                     }
                 }
                 else
                 {
                     if (!(from c in db.MWQMLookupMPNs select c).Where(c => c.MWQMLookupMPNID == mwqmLookupMPN.MWQMLookupMPNID).Any())
                     {
-                        yield return new ValidationResult(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "MWQMLookupMPN", "MWQMLookupMPNID", mwqmLookupMPN.MWQMLookupMPNID.ToString()), new[] { "MWQMLookupMPNID" });
+                        yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "MWQMLookupMPN", "MWQMLookupMPNID", mwqmLookupMPN.MWQMLookupMPNID.ToString()), new[] { "MWQMLookupMPNID" });
                     }
                 }
             }
 
             if (mwqmLookupMPN.Tubes10 < 0 || mwqmLookupMPN.Tubes10 > 5)
             {
-                yield return new ValidationResult(string.Format(CultureServicesRes._ValueShouldBeBetween_And_, "Tubes10", "0", "5"), new[] { "Tubes10" });
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "Tubes10", "0", "5"), new[] { "Tubes10" });
             }
 
             if (mwqmLookupMPN.Tubes1 < 0 || mwqmLookupMPN.Tubes1 > 5)
             {
-                yield return new ValidationResult(string.Format(CultureServicesRes._ValueShouldBeBetween_And_, "Tubes1", "0", "5"), new[] { "Tubes1" });
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "Tubes1", "0", "5"), new[] { "Tubes1" });
             }
 
             if (mwqmLookupMPN.Tubes01 < 0 || mwqmLookupMPN.Tubes01 > 5)
             {
-                yield return new ValidationResult(string.Format(CultureServicesRes._ValueShouldBeBetween_And_, "Tubes01", "0", "5"), new[] { "Tubes01" });
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "Tubes01", "0", "5"), new[] { "Tubes01" });
             }
 
             if (mwqmLookupMPN.MPN_100ml < 1 || mwqmLookupMPN.MPN_100ml > 10000)
             {
-                yield return new ValidationResult(string.Format(CultureServicesRes._ValueShouldBeBetween_And_, "MPN_100ml", "1", "10000"), new[] { "MPN_100ml" });
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "MPN_100ml", "1", "10000"), new[] { "MPN_100ml" });
             }
 
             if (mwqmLookupMPN.LastUpdateDate_UTC.Year == 1)
             {
-                yield return new ValidationResult(string.Format(CultureServicesRes._IsRequired, "LastUpdateDate_UTC"), new[] { "LastUpdateDate_UTC" });
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "LastUpdateDate_UTC"), new[] { "LastUpdateDate_UTC" });
             }
             else
             {
                 if (mwqmLookupMPN.LastUpdateDate_UTC.Year < 1980)
                 {
-                    yield return new ValidationResult(string.Format(CultureServicesRes._YearShouldBeBiggerThan_, "LastUpdateDate_UTC", "1980"), new[] { "LastUpdateDate_UTC" });
+                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes._YearShouldBeBiggerThan_, "LastUpdateDate_UTC", "1980"), new[] { "LastUpdateDate_UTC" });
                 }
             }
 
@@ -398,7 +397,7 @@ namespace CSSPServices
 
             if (TVItemLastUpdateContactTVItemID == null)
             {
-                yield return new ValidationResult(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "TVItem", "LastUpdateContactTVItemID", mwqmLookupMPN.LastUpdateContactTVItemID.ToString()), new[] { "LastUpdateContactTVItemID" });
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "TVItem", "LastUpdateContactTVItemID", mwqmLookupMPN.LastUpdateContactTVItemID.ToString()), new[] { "LastUpdateContactTVItemID" });
             }
             else
             {
@@ -408,7 +407,7 @@ namespace CSSPServices
                 };
                 if (!AllowableTVTypes.Contains(TVItemLastUpdateContactTVItemID.TVType))
                 {
-                    yield return new ValidationResult(string.Format(CultureServicesRes._IsNotOfType_, "LastUpdateContactTVItemID", "Contact"), new[] { "LastUpdateContactTVItemID" });
+                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsNotOfType_, "LastUpdateContactTVItemID", "Contact"), new[] { "LastUpdateContactTVItemID" });
                 }
             }
 

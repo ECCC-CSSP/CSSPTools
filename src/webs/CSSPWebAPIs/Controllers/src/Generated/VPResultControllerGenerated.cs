@@ -6,8 +6,7 @@
 
 using CSSPModels;
 using CSSPServices;
-using CultureServices.Services;
-using LoggedInServices.Services;
+using CSSPCultureServices.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
@@ -33,15 +32,15 @@ namespace CSSPWebAPIs.Controllers
         #endregion Variables
 
         #region Properties
-        private ICultureService CultureService { get; }
+        private ICSSPCultureService CSSPCultureService { get; }
         private ILoggedInService LoggedInService { get; }
         private IVPResultService VPResultService { get; }
         #endregion Properties
 
         #region Constructors
-        public VPResultController(ICultureService CultureService, ILoggedInService LoggedInService, IVPResultService VPResultService)
+        public VPResultController(ICSSPCultureService CSSPCultureService, ILoggedInService LoggedInService, IVPResultService VPResultService)
         {
-            this.CultureService = CultureService;
+            this.CSSPCultureService = CSSPCultureService;
             this.LoggedInService = LoggedInService;
             this.VPResultService = VPResultService;
         }
@@ -51,7 +50,7 @@ namespace CSSPWebAPIs.Controllers
         [HttpGet]
         public async Task<ActionResult<List<VPResult>>> Get()
         {
-            CultureService.SetCulture((string)RouteData.Values["culture"]);
+            CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
             return await VPResultService.GetVPResultList();
@@ -59,7 +58,7 @@ namespace CSSPWebAPIs.Controllers
         [HttpGet("{VPResultID}")]
         public async Task<ActionResult<VPResult>> Get(int VPResultID)
         {
-            CultureService.SetCulture((string)RouteData.Values["culture"]);
+            CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
             return await VPResultService.GetVPResultWithVPResultID(VPResultID);
@@ -67,7 +66,7 @@ namespace CSSPWebAPIs.Controllers
         [HttpPost]
         public async Task<ActionResult<VPResult>> Post(VPResult VPResult)
         {
-            CultureService.SetCulture((string)RouteData.Values["culture"]);
+            CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
             return await VPResultService.Post(VPResult);
@@ -75,7 +74,7 @@ namespace CSSPWebAPIs.Controllers
         [HttpPut]
         public async Task<ActionResult<VPResult>> Put(VPResult VPResult)
         {
-            CultureService.SetCulture((string)RouteData.Values["culture"]);
+            CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
             return await VPResultService.Put(VPResult);
@@ -83,7 +82,7 @@ namespace CSSPWebAPIs.Controllers
         [HttpDelete("{VPResultID}")]
         public async Task<ActionResult<bool>> Delete(int VPResultID)
         {
-            CultureService.SetCulture((string)RouteData.Values["culture"]);
+            CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
             return await VPResultService.Delete(VPResultID);

@@ -7,9 +7,8 @@
 
 using CSSPEnums;
 using CSSPModels;
-using CultureServices.Resources;
-using CultureServices.Services;
-using LoggedInServices.Services;
+using CSSPCultureServices.Resources;
+using CSSPCultureServices.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -38,16 +37,16 @@ namespace CSSPServices
         private CSSPDBContext db { get; }
         private CSSPDBLocalContext dbLocal { get; }
         private InMemoryDBContext dbIM { get; }
-        private ICultureService CultureService { get; }
+        private ICSSPCultureService CSSPCultureService { get; }
         private ILoggedInService LoggedInService { get; }
         private IEnums enums { get; }
         private IEnumerable<ValidationResult> ValidationResults { get; set; }
         #endregion Properties
 
         #region Constructors
-        public DrogueRunService(ICultureService CultureService, ILoggedInService LoggedInService, IEnums enums, CSSPDBContext db, CSSPDBLocalContext dbLocal, InMemoryDBContext dbIM)
+        public DrogueRunService(ICSSPCultureService CSSPCultureService, ILoggedInService LoggedInService, IEnums enums, CSSPDBContext db, CSSPDBLocalContext dbLocal, InMemoryDBContext dbIM)
         {
-            this.CultureService = CultureService;
+            this.CSSPCultureService = CSSPCultureService;
             this.LoggedInService = LoggedInService;
             this.enums = enums;
             this.db = db;
@@ -145,7 +144,7 @@ namespace CSSPServices
             
                 if (drogueRun == null)
                 {
-                    return await Task.FromResult(BadRequest(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "DrogueRun", "DrogueRunID", DrogueRunID.ToString())));
+                    return await Task.FromResult(BadRequest(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "DrogueRun", "DrogueRunID", DrogueRunID.ToString())));
                 }
             
                 try
@@ -168,7 +167,7 @@ namespace CSSPServices
                 
                 if (drogueRun == null)
                 {
-                    return await Task.FromResult(BadRequest(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "DrogueRun", "DrogueRunID", DrogueRunID.ToString())));
+                    return await Task.FromResult(BadRequest(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "DrogueRun", "DrogueRunID", DrogueRunID.ToString())));
                 }
 
                 try
@@ -191,7 +190,7 @@ namespace CSSPServices
                 
                 if (drogueRun == null)
                 {
-                    return await Task.FromResult(BadRequest(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "DrogueRun", "DrogueRunID", DrogueRunID.ToString())));
+                    return await Task.FromResult(BadRequest(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "DrogueRun", "DrogueRunID", DrogueRunID.ToString())));
                 }
 
                 try
@@ -331,21 +330,21 @@ namespace CSSPServices
             {
                 if (drogueRun.DrogueRunID == 0)
                 {
-                    yield return new ValidationResult(string.Format(CultureServicesRes._IsRequired, "DrogueRunID"), new[] { "DrogueRunID" });
+                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "DrogueRunID"), new[] { "DrogueRunID" });
                 }
 
                 if (LoggedInService.DBLocation == DBLocationEnum.Local)
                 {
                     if (!(from c in dbLocal.DrogueRuns select c).Where(c => c.DrogueRunID == drogueRun.DrogueRunID).Any())
                     {
-                        yield return new ValidationResult(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "DrogueRun", "DrogueRunID", drogueRun.DrogueRunID.ToString()), new[] { "DrogueRunID" });
+                        yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "DrogueRun", "DrogueRunID", drogueRun.DrogueRunID.ToString()), new[] { "DrogueRunID" });
                     }
                 }
                 else
                 {
                     if (!(from c in db.DrogueRuns select c).Where(c => c.DrogueRunID == drogueRun.DrogueRunID).Any())
                     {
-                        yield return new ValidationResult(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "DrogueRun", "DrogueRunID", drogueRun.DrogueRunID.ToString()), new[] { "DrogueRunID" });
+                        yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "DrogueRun", "DrogueRunID", drogueRun.DrogueRunID.ToString()), new[] { "DrogueRunID" });
                     }
                 }
             }
@@ -366,7 +365,7 @@ namespace CSSPServices
 
             if (TVItemSubsectorTVItemID == null)
             {
-                yield return new ValidationResult(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "TVItem", "SubsectorTVItemID", drogueRun.SubsectorTVItemID.ToString()), new[] { "SubsectorTVItemID" });
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "TVItem", "SubsectorTVItemID", drogueRun.SubsectorTVItemID.ToString()), new[] { "SubsectorTVItemID" });
             }
             else
             {
@@ -376,42 +375,42 @@ namespace CSSPServices
                 };
                 if (!AllowableTVTypes.Contains(TVItemSubsectorTVItemID.TVType))
                 {
-                    yield return new ValidationResult(string.Format(CultureServicesRes._IsNotOfType_, "SubsectorTVItemID", "Subsector"), new[] { "SubsectorTVItemID" });
+                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsNotOfType_, "SubsectorTVItemID", "Subsector"), new[] { "SubsectorTVItemID" });
                 }
             }
 
             if (drogueRun.DrogueNumber < 0 || drogueRun.DrogueNumber > 100)
             {
-                yield return new ValidationResult(string.Format(CultureServicesRes._ValueShouldBeBetween_And_, "DrogueNumber", "0", "100"), new[] { "DrogueNumber" });
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "DrogueNumber", "0", "100"), new[] { "DrogueNumber" });
             }
 
             retStr = enums.EnumTypeOK(typeof(DrogueTypeEnum), (int?)drogueRun.DrogueType);
             if (!string.IsNullOrWhiteSpace(retStr))
             {
-                yield return new ValidationResult(string.Format(CultureServicesRes._IsRequired, "DrogueType"), new[] { "DrogueType" });
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "DrogueType"), new[] { "DrogueType" });
             }
 
             if (drogueRun.RunStartDateTime.Year == 1)
             {
-                yield return new ValidationResult(string.Format(CultureServicesRes._IsRequired, "RunStartDateTime"), new[] { "RunStartDateTime" });
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "RunStartDateTime"), new[] { "RunStartDateTime" });
             }
             else
             {
                 if (drogueRun.RunStartDateTime.Year < 1980)
                 {
-                    yield return new ValidationResult(string.Format(CultureServicesRes._YearShouldBeBiggerThan_, "RunStartDateTime", "1980"), new[] { "RunStartDateTime" });
+                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes._YearShouldBeBiggerThan_, "RunStartDateTime", "1980"), new[] { "RunStartDateTime" });
                 }
             }
 
             if (drogueRun.LastUpdateDate_UTC.Year == 1)
             {
-                yield return new ValidationResult(string.Format(CultureServicesRes._IsRequired, "LastUpdateDate_UTC"), new[] { "LastUpdateDate_UTC" });
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "LastUpdateDate_UTC"), new[] { "LastUpdateDate_UTC" });
             }
             else
             {
                 if (drogueRun.LastUpdateDate_UTC.Year < 1980)
                 {
-                    yield return new ValidationResult(string.Format(CultureServicesRes._YearShouldBeBiggerThan_, "LastUpdateDate_UTC", "1980"), new[] { "LastUpdateDate_UTC" });
+                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes._YearShouldBeBiggerThan_, "LastUpdateDate_UTC", "1980"), new[] { "LastUpdateDate_UTC" });
                 }
             }
 
@@ -431,7 +430,7 @@ namespace CSSPServices
 
             if (TVItemLastUpdateContactTVItemID == null)
             {
-                yield return new ValidationResult(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "TVItem", "LastUpdateContactTVItemID", drogueRun.LastUpdateContactTVItemID.ToString()), new[] { "LastUpdateContactTVItemID" });
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "TVItem", "LastUpdateContactTVItemID", drogueRun.LastUpdateContactTVItemID.ToString()), new[] { "LastUpdateContactTVItemID" });
             }
             else
             {
@@ -441,7 +440,7 @@ namespace CSSPServices
                 };
                 if (!AllowableTVTypes.Contains(TVItemLastUpdateContactTVItemID.TVType))
                 {
-                    yield return new ValidationResult(string.Format(CultureServicesRes._IsNotOfType_, "LastUpdateContactTVItemID", "Contact"), new[] { "LastUpdateContactTVItemID" });
+                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsNotOfType_, "LastUpdateContactTVItemID", "Contact"), new[] { "LastUpdateContactTVItemID" });
                 }
             }
 

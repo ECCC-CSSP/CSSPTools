@@ -6,8 +6,7 @@
 
 using CSSPModels;
 using CSSPServices;
-using CultureServices.Services;
-using LoggedInServices.Services;
+using CSSPCultureServices.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
@@ -33,15 +32,15 @@ namespace CSSPWebAPIs.Controllers
         #endregion Variables
 
         #region Properties
-        private ICultureService CultureService { get; }
+        private ICSSPCultureService CSSPCultureService { get; }
         private ILoggedInService LoggedInService { get; }
         private IContactShortcutService ContactShortcutService { get; }
         #endregion Properties
 
         #region Constructors
-        public ContactShortcutController(ICultureService CultureService, ILoggedInService LoggedInService, IContactShortcutService ContactShortcutService)
+        public ContactShortcutController(ICSSPCultureService CSSPCultureService, ILoggedInService LoggedInService, IContactShortcutService ContactShortcutService)
         {
-            this.CultureService = CultureService;
+            this.CSSPCultureService = CSSPCultureService;
             this.LoggedInService = LoggedInService;
             this.ContactShortcutService = ContactShortcutService;
         }
@@ -51,7 +50,7 @@ namespace CSSPWebAPIs.Controllers
         [HttpGet]
         public async Task<ActionResult<List<ContactShortcut>>> Get()
         {
-            CultureService.SetCulture((string)RouteData.Values["culture"]);
+            CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
             return await ContactShortcutService.GetContactShortcutList();
@@ -59,7 +58,7 @@ namespace CSSPWebAPIs.Controllers
         [HttpGet("{ContactShortcutID}")]
         public async Task<ActionResult<ContactShortcut>> Get(int ContactShortcutID)
         {
-            CultureService.SetCulture((string)RouteData.Values["culture"]);
+            CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
             return await ContactShortcutService.GetContactShortcutWithContactShortcutID(ContactShortcutID);
@@ -67,7 +66,7 @@ namespace CSSPWebAPIs.Controllers
         [HttpPost]
         public async Task<ActionResult<ContactShortcut>> Post(ContactShortcut ContactShortcut)
         {
-            CultureService.SetCulture((string)RouteData.Values["culture"]);
+            CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
             return await ContactShortcutService.Post(ContactShortcut);
@@ -75,7 +74,7 @@ namespace CSSPWebAPIs.Controllers
         [HttpPut]
         public async Task<ActionResult<ContactShortcut>> Put(ContactShortcut ContactShortcut)
         {
-            CultureService.SetCulture((string)RouteData.Values["culture"]);
+            CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
             return await ContactShortcutService.Put(ContactShortcut);
@@ -83,7 +82,7 @@ namespace CSSPWebAPIs.Controllers
         [HttpDelete("{ContactShortcutID}")]
         public async Task<ActionResult<bool>> Delete(int ContactShortcutID)
         {
-            CultureService.SetCulture((string)RouteData.Values["culture"]);
+            CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
             return await ContactShortcutService.Delete(ContactShortcutID);

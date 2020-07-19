@@ -1,4 +1,4 @@
-﻿using CultureServices.Resources;
+﻿using CSSPCultureServices.Resources;
 using Microsoft.Extensions.Configuration;
 using PolSourceGroupingExcelFileReadServices.Models;
 using System;
@@ -94,9 +94,9 @@ namespace EnumsPolSourceInfoRelatedFilesServices.Services
             }
             catch (Exception ex)
             {
-                ActionCommandDBService.ErrorText.AppendLine($"{ CultureServicesRes.Creating } [{ fi.FullName }] ...");
+                ActionCommandDBService.ErrorText.AppendLine($"{ CSSPCultureServicesRes.Creating } [{ fi.FullName }] ...");
                 string InnerException = (ex.InnerException != null ? $"Inner: { ex.InnerException.Message }" : "");
-                ActionCommandDBService.ErrorText.AppendLine($"{ CultureServicesRes.Error }: { ex.Message }{ InnerException  }");
+                ActionCommandDBService.ErrorText.AppendLine($"{ CSSPCultureServicesRes.Error }: { ex.Message }{ InnerException  }");
 
                 return await Task.FromResult(false);
             }
@@ -113,7 +113,7 @@ namespace EnumsPolSourceInfoRelatedFilesServices.Services
                 ActionCommandDBService.FilesStatusText.AppendLine(fileLine);
             }
 
-            ActionCommandDBService.ExecutionStatusText.AppendLine($"{ CultureServicesRes.Created }: { fi.FullName }");
+            ActionCommandDBService.ExecutionStatusText.AppendLine($"{ CSSPCultureServicesRes.Created }: { fi.FullName }");
             ActionCommandDBService.PercentCompleted = 10;
             await ActionCommandDBService.Update();
 

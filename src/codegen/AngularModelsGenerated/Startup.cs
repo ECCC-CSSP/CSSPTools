@@ -17,7 +17,7 @@ namespace AngularModelsGenerated
         #endregion Properties
 
         #region Constructors
-        public Startup(IConfiguration configuration) : base(configuration)
+        public Startup(IConfiguration Configuration) : base(Configuration)
         {
         }
         #endregion Constructors

@@ -10,8 +10,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Globalization;
 using ActionCommandDBServices.Services;
-using CultureServices.Resources;
-using CultureServices.Services;
+using CSSPCultureServices.Resources;
+using CSSPCultureServices.Services;
 
 namespace ValidateAppSettingsServices.Services
 {
@@ -26,16 +26,16 @@ namespace ValidateAppSettingsServices.Services
         #endregion Variables
 
         #region Properties
-        private IConfiguration configuration { get; }
+        private IConfiguration Configuration { get; }
         public List<AppSettingParameter> AppSettingParameterList { get; set; }
-        private ICultureService CultureService { get; }
+        private ICSSPCultureService CSSPCultureService { get; }
         private IActionCommandDBService actionCommandDBService { get; }
         #endregion Properties
 
         #region Constructors
-        public ValidateAppSettingsService(IConfiguration configuration, IActionCommandDBService actionCommandDBService)
+        public ValidateAppSettingsService(IConfiguration Configuration, IActionCommandDBService actionCommandDBService)
         {
-            this.configuration = configuration;
+            this.Configuration = Configuration;
             this.actionCommandDBService = actionCommandDBService;
             AppSettingParameterList = new List<AppSettingParameter>();
         }

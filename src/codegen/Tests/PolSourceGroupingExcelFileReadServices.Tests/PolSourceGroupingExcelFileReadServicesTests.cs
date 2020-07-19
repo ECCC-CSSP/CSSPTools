@@ -13,8 +13,8 @@ using System.Threading.Tasks;
 using Xunit;
 using ValidateAppSettingsServices.Services;
 using PolSourceGroupingExcelFileReadServices.Services;
-using CultureServices.Resources;
-using CultureServices.Services;
+using CSSPCultureServices.Resources;
+using CSSPCultureServices.Services;
 
 namespace PolSourceGroupingExcelFileReadServices.Tests
 {
@@ -28,7 +28,7 @@ namespace PolSourceGroupingExcelFileReadServices.Tests
         private IServiceCollection ServiceCollection { get; set; }
         private IServiceProvider ServiceProvider { get; set; }
         private IPolSourceGroupingExcelFileReadService PolSourceGroupingExcelFileReadService { get; set; }
-        private ICultureService CultureService { get; set; }
+        private ICSSPCultureService CSSPCultureService { get; set; }
         private IActionCommandDBService ActionCommandDBService { get; set; }
         private string DBFileName { get; set; } = "DBFileName";
         private string ExcelFileName { get; set; }
@@ -52,7 +52,7 @@ namespace PolSourceGroupingExcelFileReadServices.Tests
             Assert.NotNull(ServiceCollection);
             Assert.NotNull(ServiceProvider);
             Assert.NotNull(PolSourceGroupingExcelFileReadService);
-            Assert.NotNull(CultureService);
+            Assert.NotNull(CSSPCultureService);
             Assert.NotNull(ActionCommandDBService);
 
             bool retBool = await PolSourceGroupingExcelFileReadService.ReadExcelSheet(ExcelFileName, false);
@@ -73,7 +73,7 @@ namespace PolSourceGroupingExcelFileReadServices.Tests
             ServiceCollection.AddSingleton<IConfiguration>(Configuration);
             Assert.NotNull(Configuration);
 
-            ServiceCollection.AddSingleton<ICultureService, CultureService>();
+            ServiceCollection.AddSingleton<ICSSPCultureService, CSSPCultureService>();
             ServiceCollection.AddSingleton<IActionCommandDBService, ActionCommandDBService>();
             ServiceCollection.AddSingleton<IValidateAppSettingsService, ValidateAppSettingsService>();
             ServiceCollection.AddSingleton<IPolSourceGroupingExcelFileReadService, PolSourceGroupingExcelFileReadService>();
@@ -92,10 +92,10 @@ namespace PolSourceGroupingExcelFileReadServices.Tests
             ServiceProvider = ServiceCollection.BuildServiceProvider();
             Assert.NotNull(ServiceProvider);
 
-            CultureService = ServiceProvider.GetService<ICultureService>();
-            Assert.NotNull(CultureService);
+            CSSPCultureService = ServiceProvider.GetService<ICSSPCultureService>();
+            Assert.NotNull(CSSPCultureService);
 
-            CultureService.SetCulture(culture);
+            CSSPCultureService.SetCulture(culture);
 
             ActionCommandDBService = ServiceProvider.GetService<IActionCommandDBService>();
             Assert.NotNull(ActionCommandDBService);

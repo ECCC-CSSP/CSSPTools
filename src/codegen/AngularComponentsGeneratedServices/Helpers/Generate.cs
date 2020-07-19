@@ -1,7 +1,7 @@
 ﻿using ActionCommandDBServices.Models;
 using ConfigServices.Services;
 using CSSPModels;
-using CultureServices.Resources;
+using CSSPCultureServices.Resources;
 using GenerateCodeBaseServices.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
@@ -35,7 +35,7 @@ namespace AngularComponentsGeneratedServices.Services
             List<DLLTypeInfo> DLLTypeInfoCSSPEnumsList = new List<DLLTypeInfo>();
             if (GenerateCodeBaseService.FillDLLTypeInfoList(fiCSSPEnumsDLL, DLLTypeInfoCSSPEnumsList))
             {
-                ActionCommandDBService.ErrorText.AppendLine($"{ string.Format(CultureServicesRes.CouldNotReadFile_, fiCSSPEnumsDLL.FullName) }");
+                ActionCommandDBService.ErrorText.AppendLine($"{ string.Format(CSSPCultureServicesRes.CouldNotReadFile_, fiCSSPEnumsDLL.FullName) }");
                 return false;
             }
             ActionCommandDBService.ExecutionStatusText.AppendLine($"Loaded [{ fiCSSPEnumsDLL.FullName }] ...");
@@ -45,7 +45,7 @@ namespace AngularComponentsGeneratedServices.Services
             List<DLLTypeInfo> DLLTypeInfoCSSPModelsList = new List<DLLTypeInfo>();
             if (GenerateCodeBaseService.FillDLLTypeInfoList(fiCSSPModelsDLL, DLLTypeInfoCSSPModelsList))
             {
-                ActionCommandDBService.ErrorText.AppendLine($"{ string.Format(CultureServicesRes.CouldNotReadFile_, fiCSSPModelsDLL.FullName) }");
+                ActionCommandDBService.ErrorText.AppendLine($"{ string.Format(CSSPCultureServicesRes.CouldNotReadFile_, fiCSSPModelsDLL.FullName) }");
                 return false;
             }
             ActionCommandDBService.ExecutionStatusText.AppendLine($"Loaded [{ fiCSSPModelsDLL.FullName }] ...");
@@ -94,7 +94,7 @@ namespace AngularComponentsGeneratedServices.Services
             CreateHomeComponentHTMLFile(max, DLLTypeInfoCSSPModelsList, removeClass);
 
             ActionCommandDBService.ExecutionStatusText.AppendLine("");
-            ActionCommandDBService.ExecutionStatusText.AppendLine($"{ CultureServicesRes.Done } ...");
+            ActionCommandDBService.ExecutionStatusText.AppendLine($"{ CSSPCultureServicesRes.Done } ...");
             ActionCommandDBService.ExecutionStatusText.AppendLine("");
             ActionCommandDBService.ExecutionStatusText.AppendLine("Generate Finished ...");
             ActionCommandDBService.PercentCompleted = 100;

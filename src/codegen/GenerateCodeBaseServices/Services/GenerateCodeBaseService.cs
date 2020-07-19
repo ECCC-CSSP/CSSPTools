@@ -1,5 +1,5 @@
 ﻿using ActionCommandDBServices.Services;
-using CultureServices.Services;
+using CSSPCultureServices.Services;
 using GenerateCodeBaseServices.Models;
 using Microsoft.Extensions.Configuration;
 using System;
@@ -22,16 +22,16 @@ namespace GenerateCodeBaseServices.Services
 
         #region Properties
         private IConfiguration Configuration { get; }
-        private ICultureService CultureService { get; }
+        private ICSSPCultureService CSSPCultureService { get; }
         private IActionCommandDBService ActionCommandDBService { get; }
         #endregion Properties
 
         #region Constructors
-        public GenerateCodeBaseService(IConfiguration configuration, ICultureService cultureService, IActionCommandDBService actionCommandDBService)
+        public GenerateCodeBaseService(IConfiguration Configuration, ICSSPCultureService CSSPCultureService, IActionCommandDBService actionCommandDBService)
         {
-            Configuration = configuration;
-            CultureService = cultureService;
-            ActionCommandDBService = actionCommandDBService;
+            this.Configuration = Configuration;
+            this.CSSPCultureService = CSSPCultureService;
+            this.ActionCommandDBService = ActionCommandDBService;
         }
         #endregion Constructors
 

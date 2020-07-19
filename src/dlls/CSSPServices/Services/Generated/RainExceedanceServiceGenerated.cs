@@ -7,9 +7,8 @@
 
 using CSSPEnums;
 using CSSPModels;
-using CultureServices.Resources;
-using CultureServices.Services;
-using LoggedInServices.Services;
+using CSSPCultureServices.Resources;
+using CSSPCultureServices.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -38,16 +37,16 @@ namespace CSSPServices
         private CSSPDBContext db { get; }
         private CSSPDBLocalContext dbLocal { get; }
         private InMemoryDBContext dbIM { get; }
-        private ICultureService CultureService { get; }
+        private ICSSPCultureService CSSPCultureService { get; }
         private ILoggedInService LoggedInService { get; }
         private IEnums enums { get; }
         private IEnumerable<ValidationResult> ValidationResults { get; set; }
         #endregion Properties
 
         #region Constructors
-        public RainExceedanceService(ICultureService CultureService, ILoggedInService LoggedInService, IEnums enums, CSSPDBContext db, CSSPDBLocalContext dbLocal, InMemoryDBContext dbIM)
+        public RainExceedanceService(ICSSPCultureService CSSPCultureService, ILoggedInService LoggedInService, IEnums enums, CSSPDBContext db, CSSPDBLocalContext dbLocal, InMemoryDBContext dbIM)
         {
-            this.CultureService = CultureService;
+            this.CSSPCultureService = CSSPCultureService;
             this.LoggedInService = LoggedInService;
             this.enums = enums;
             this.db = db;
@@ -145,7 +144,7 @@ namespace CSSPServices
             
                 if (rainExceedance == null)
                 {
-                    return await Task.FromResult(BadRequest(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "RainExceedance", "RainExceedanceID", RainExceedanceID.ToString())));
+                    return await Task.FromResult(BadRequest(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "RainExceedance", "RainExceedanceID", RainExceedanceID.ToString())));
                 }
             
                 try
@@ -168,7 +167,7 @@ namespace CSSPServices
                 
                 if (rainExceedance == null)
                 {
-                    return await Task.FromResult(BadRequest(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "RainExceedance", "RainExceedanceID", RainExceedanceID.ToString())));
+                    return await Task.FromResult(BadRequest(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "RainExceedance", "RainExceedanceID", RainExceedanceID.ToString())));
                 }
 
                 try
@@ -191,7 +190,7 @@ namespace CSSPServices
                 
                 if (rainExceedance == null)
                 {
-                    return await Task.FromResult(BadRequest(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "RainExceedance", "RainExceedanceID", RainExceedanceID.ToString())));
+                    return await Task.FromResult(BadRequest(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "RainExceedance", "RainExceedanceID", RainExceedanceID.ToString())));
                 }
 
                 try
@@ -331,21 +330,21 @@ namespace CSSPServices
             {
                 if (rainExceedance.RainExceedanceID == 0)
                 {
-                    yield return new ValidationResult(string.Format(CultureServicesRes._IsRequired, "RainExceedanceID"), new[] { "RainExceedanceID" });
+                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "RainExceedanceID"), new[] { "RainExceedanceID" });
                 }
 
                 if (LoggedInService.DBLocation == DBLocationEnum.Local)
                 {
                     if (!(from c in dbLocal.RainExceedances select c).Where(c => c.RainExceedanceID == rainExceedance.RainExceedanceID).Any())
                     {
-                        yield return new ValidationResult(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "RainExceedance", "RainExceedanceID", rainExceedance.RainExceedanceID.ToString()), new[] { "RainExceedanceID" });
+                        yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "RainExceedance", "RainExceedanceID", rainExceedance.RainExceedanceID.ToString()), new[] { "RainExceedanceID" });
                     }
                 }
                 else
                 {
                     if (!(from c in db.RainExceedances select c).Where(c => c.RainExceedanceID == rainExceedance.RainExceedanceID).Any())
                     {
-                        yield return new ValidationResult(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "RainExceedance", "RainExceedanceID", rainExceedance.RainExceedanceID.ToString()), new[] { "RainExceedanceID" });
+                        yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "RainExceedance", "RainExceedanceID", rainExceedance.RainExceedanceID.ToString()), new[] { "RainExceedanceID" });
                     }
                 }
             }
@@ -366,7 +365,7 @@ namespace CSSPServices
 
             if (TVItemRainExceedanceTVItemID == null)
             {
-                yield return new ValidationResult(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "TVItem", "RainExceedanceTVItemID", rainExceedance.RainExceedanceTVItemID.ToString()), new[] { "RainExceedanceTVItemID" });
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "TVItem", "RainExceedanceTVItemID", rainExceedance.RainExceedanceTVItemID.ToString()), new[] { "RainExceedanceTVItemID" });
             }
             else
             {
@@ -376,33 +375,33 @@ namespace CSSPServices
                 };
                 if (!AllowableTVTypes.Contains(TVItemRainExceedanceTVItemID.TVType))
                 {
-                    yield return new ValidationResult(string.Format(CultureServicesRes._IsNotOfType_, "RainExceedanceTVItemID", "RainExceedance"), new[] { "RainExceedanceTVItemID" });
+                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsNotOfType_, "RainExceedanceTVItemID", "RainExceedance"), new[] { "RainExceedanceTVItemID" });
                 }
             }
 
             if (rainExceedance.StartMonth < 1 || rainExceedance.StartMonth > 12)
             {
-                yield return new ValidationResult(string.Format(CultureServicesRes._ValueShouldBeBetween_And_, "StartMonth", "1", "12"), new[] { "StartMonth" });
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "StartMonth", "1", "12"), new[] { "StartMonth" });
             }
 
             if (rainExceedance.StartDay < 1 || rainExceedance.StartDay > 31)
             {
-                yield return new ValidationResult(string.Format(CultureServicesRes._ValueShouldBeBetween_And_, "StartDay", "1", "31"), new[] { "StartDay" });
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "StartDay", "1", "31"), new[] { "StartDay" });
             }
 
             if (rainExceedance.EndMonth < 1 || rainExceedance.EndMonth > 12)
             {
-                yield return new ValidationResult(string.Format(CultureServicesRes._ValueShouldBeBetween_And_, "EndMonth", "1", "12"), new[] { "EndMonth" });
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "EndMonth", "1", "12"), new[] { "EndMonth" });
             }
 
             if (rainExceedance.EndDay < 1 || rainExceedance.EndDay > 31)
             {
-                yield return new ValidationResult(string.Format(CultureServicesRes._ValueShouldBeBetween_And_, "EndDay", "1", "31"), new[] { "EndDay" });
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "EndDay", "1", "31"), new[] { "EndDay" });
             }
 
             if (rainExceedance.RainMaximum_mm < 0 || rainExceedance.RainMaximum_mm > 300)
             {
-                yield return new ValidationResult(string.Format(CultureServicesRes._ValueShouldBeBetween_And_, "RainMaximum_mm", "0", "300"), new[] { "RainMaximum_mm" });
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "RainMaximum_mm", "0", "300"), new[] { "RainMaximum_mm" });
             }
 
             if (rainExceedance.StakeholdersEmailDistributionListID != null)
@@ -423,7 +422,7 @@ namespace CSSPServices
 
                 if (EmailDistributionListStakeholdersEmailDistributionListID == null)
                 {
-                    yield return new ValidationResult(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "EmailDistributionList", "StakeholdersEmailDistributionListID", (rainExceedance.StakeholdersEmailDistributionListID == null ? "" : rainExceedance.StakeholdersEmailDistributionListID.ToString())), new[] { "StakeholdersEmailDistributionListID" });
+                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "EmailDistributionList", "StakeholdersEmailDistributionListID", (rainExceedance.StakeholdersEmailDistributionListID == null ? "" : rainExceedance.StakeholdersEmailDistributionListID.ToString())), new[] { "StakeholdersEmailDistributionListID" });
                 }
             }
 
@@ -445,19 +444,19 @@ namespace CSSPServices
 
                 if (EmailDistributionListOnlyStaffEmailDistributionListID == null)
                 {
-                    yield return new ValidationResult(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "EmailDistributionList", "OnlyStaffEmailDistributionListID", (rainExceedance.OnlyStaffEmailDistributionListID == null ? "" : rainExceedance.OnlyStaffEmailDistributionListID.ToString())), new[] { "OnlyStaffEmailDistributionListID" });
+                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "EmailDistributionList", "OnlyStaffEmailDistributionListID", (rainExceedance.OnlyStaffEmailDistributionListID == null ? "" : rainExceedance.OnlyStaffEmailDistributionListID.ToString())), new[] { "OnlyStaffEmailDistributionListID" });
                 }
             }
 
             if (rainExceedance.LastUpdateDate_UTC.Year == 1)
             {
-                yield return new ValidationResult(string.Format(CultureServicesRes._IsRequired, "LastUpdateDate_UTC"), new[] { "LastUpdateDate_UTC" });
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "LastUpdateDate_UTC"), new[] { "LastUpdateDate_UTC" });
             }
             else
             {
                 if (rainExceedance.LastUpdateDate_UTC.Year < 1980)
                 {
-                    yield return new ValidationResult(string.Format(CultureServicesRes._YearShouldBeBiggerThan_, "LastUpdateDate_UTC", "1980"), new[] { "LastUpdateDate_UTC" });
+                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes._YearShouldBeBiggerThan_, "LastUpdateDate_UTC", "1980"), new[] { "LastUpdateDate_UTC" });
                 }
             }
 
@@ -477,7 +476,7 @@ namespace CSSPServices
 
             if (TVItemLastUpdateContactTVItemID == null)
             {
-                yield return new ValidationResult(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "TVItem", "LastUpdateContactTVItemID", rainExceedance.LastUpdateContactTVItemID.ToString()), new[] { "LastUpdateContactTVItemID" });
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "TVItem", "LastUpdateContactTVItemID", rainExceedance.LastUpdateContactTVItemID.ToString()), new[] { "LastUpdateContactTVItemID" });
             }
             else
             {
@@ -487,7 +486,7 @@ namespace CSSPServices
                 };
                 if (!AllowableTVTypes.Contains(TVItemLastUpdateContactTVItemID.TVType))
                 {
-                    yield return new ValidationResult(string.Format(CultureServicesRes._IsNotOfType_, "LastUpdateContactTVItemID", "Contact"), new[] { "LastUpdateContactTVItemID" });
+                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsNotOfType_, "LastUpdateContactTVItemID", "Contact"), new[] { "LastUpdateContactTVItemID" });
                 }
             }
 

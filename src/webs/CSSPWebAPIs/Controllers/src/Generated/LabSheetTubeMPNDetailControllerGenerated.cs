@@ -6,8 +6,7 @@
 
 using CSSPModels;
 using CSSPServices;
-using CultureServices.Services;
-using LoggedInServices.Services;
+using CSSPCultureServices.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
@@ -33,15 +32,15 @@ namespace CSSPWebAPIs.Controllers
         #endregion Variables
 
         #region Properties
-        private ICultureService CultureService { get; }
+        private ICSSPCultureService CSSPCultureService { get; }
         private ILoggedInService LoggedInService { get; }
         private ILabSheetTubeMPNDetailService LabSheetTubeMPNDetailService { get; }
         #endregion Properties
 
         #region Constructors
-        public LabSheetTubeMPNDetailController(ICultureService CultureService, ILoggedInService LoggedInService, ILabSheetTubeMPNDetailService LabSheetTubeMPNDetailService)
+        public LabSheetTubeMPNDetailController(ICSSPCultureService CSSPCultureService, ILoggedInService LoggedInService, ILabSheetTubeMPNDetailService LabSheetTubeMPNDetailService)
         {
-            this.CultureService = CultureService;
+            this.CSSPCultureService = CSSPCultureService;
             this.LoggedInService = LoggedInService;
             this.LabSheetTubeMPNDetailService = LabSheetTubeMPNDetailService;
         }
@@ -51,7 +50,7 @@ namespace CSSPWebAPIs.Controllers
         [HttpGet]
         public async Task<ActionResult<List<LabSheetTubeMPNDetail>>> Get()
         {
-            CultureService.SetCulture((string)RouteData.Values["culture"]);
+            CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
             return await LabSheetTubeMPNDetailService.GetLabSheetTubeMPNDetailList();
@@ -59,7 +58,7 @@ namespace CSSPWebAPIs.Controllers
         [HttpGet("{LabSheetTubeMPNDetailID}")]
         public async Task<ActionResult<LabSheetTubeMPNDetail>> Get(int LabSheetTubeMPNDetailID)
         {
-            CultureService.SetCulture((string)RouteData.Values["culture"]);
+            CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
             return await LabSheetTubeMPNDetailService.GetLabSheetTubeMPNDetailWithLabSheetTubeMPNDetailID(LabSheetTubeMPNDetailID);
@@ -67,7 +66,7 @@ namespace CSSPWebAPIs.Controllers
         [HttpPost]
         public async Task<ActionResult<LabSheetTubeMPNDetail>> Post(LabSheetTubeMPNDetail LabSheetTubeMPNDetail)
         {
-            CultureService.SetCulture((string)RouteData.Values["culture"]);
+            CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
             return await LabSheetTubeMPNDetailService.Post(LabSheetTubeMPNDetail);
@@ -75,7 +74,7 @@ namespace CSSPWebAPIs.Controllers
         [HttpPut]
         public async Task<ActionResult<LabSheetTubeMPNDetail>> Put(LabSheetTubeMPNDetail LabSheetTubeMPNDetail)
         {
-            CultureService.SetCulture((string)RouteData.Values["culture"]);
+            CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
             return await LabSheetTubeMPNDetailService.Put(LabSheetTubeMPNDetail);
@@ -83,7 +82,7 @@ namespace CSSPWebAPIs.Controllers
         [HttpDelete("{LabSheetTubeMPNDetailID}")]
         public async Task<ActionResult<bool>> Delete(int LabSheetTubeMPNDetailID)
         {
-            CultureService.SetCulture((string)RouteData.Values["culture"]);
+            CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
             return await LabSheetTubeMPNDetailService.Delete(LabSheetTubeMPNDetailID);

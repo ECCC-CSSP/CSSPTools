@@ -1313,7 +1313,7 @@
       },
       "ActionCommandDBServices/1.0.0": {
         "dependencies": {
-          "CultureServices": "1.0.0",
+          "CSSPCultureServices": "1.0.0",
           "Microsoft.AspNetCore.Authentication.JwtBearer": "3.1.6",
           "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "3.1.6",
           "Microsoft.EntityFrameworkCore": "3.1.6",
@@ -1326,12 +1326,12 @@
           "ActionCommandDBServices.dll": {}
         }
       },
-      "CultureServices/1.0.0": {
+      "CSSPCultureServices/1.0.0": {
         "runtime": {
-          "CultureServices.dll": {}
+          "CSSPCultureServices.dll": {}
         },
         "resources": {
-          "fr/CultureServices.resources.dll": {
+          "fr/CSSPCultureServices.resources.dll": {
             "locale": "fr"
           }
         }
@@ -2196,7 +2196,7 @@
       "serviceable": false,
       "sha512": ""
     },
-    "CultureServices/1.0.0": {
+    "CSSPCultureServices/1.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""

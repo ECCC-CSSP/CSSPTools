@@ -1,6 +1,6 @@
 ﻿using ConfigServices.Services;
 using CSSPEnums;
-using CultureServices.Resources;
+using CSSPCultureServices.Resources;
 using EnumsGenerated_csServices.Services;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;

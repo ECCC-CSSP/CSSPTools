@@ -1,4 +1,4 @@
-﻿using CultureServices.Resources;
+﻿using CSSPCultureServices.Resources;
 using Microsoft.Data.SqlClient;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
@@ -19,7 +19,7 @@ namespace CSSPSQLiteServices.Services
             string CSSPFilesManagementDB = Configuration.GetValue<string>("CSSPFilesManagementDB");
             if (string.IsNullOrWhiteSpace(CSSPFilesManagementDB))
             {
-                Error = string.Format(CultureServicesRes.CouldNotFindParameter_InAppSettingsJSON, "CSSPFilesManagementDB");
+                Error = string.Format(CSSPCultureServicesRes.CouldNotFindParameter_InAppSettingsJSON, "CSSPFilesManagementDB");
                 return await Task.FromResult(false);
             }
 
@@ -27,7 +27,7 @@ namespace CSSPSQLiteServices.Services
 
             if (!await CSSPFilesManagementDBIsEmpty())
             {
-                Error = string.Format(CultureServicesRes.Database_ContainsInfo, fiCSSPFilesManagementDB.FullName);
+                Error = string.Format(CSSPCultureServicesRes.Database_ContainsInfo, fiCSSPFilesManagementDB.FullName);
                 return await Task.FromResult(false);
             }
 

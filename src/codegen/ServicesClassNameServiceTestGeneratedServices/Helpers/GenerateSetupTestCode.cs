@@ -58,7 +58,7 @@ namespace ServicesClassNameServiceTestGeneratedServices.Services
             else
             {
             }
-            sb.AppendLine(@"            Services.AddSingleton<ICultureService, CultureService>();");
+            sb.AppendLine(@"            Services.AddSingleton<ICSSPCultureService, CSSPCultureService>();");
             sb.AppendLine(@"            Services.AddSingleton<ILoggedInService, LoggedInService>();");
             sb.AppendLine(@"            Services.AddSingleton<IEnums, Enums>();");
             if (TypeName == "Contact")
@@ -73,10 +73,10 @@ namespace ServicesClassNameServiceTestGeneratedServices.Services
             sb.AppendLine(@"            Provider = Services.BuildServiceProvider();");
             sb.AppendLine(@"            Assert.NotNull(Provider);");
             sb.AppendLine(@"");
-            sb.AppendLine(@"            CultureService = Provider.GetService<ICultureService>();");
-            sb.AppendLine(@"            Assert.NotNull(CultureService);");
+            sb.AppendLine(@"            CSSPCultureService = Provider.GetService<ICSSPCultureService>();");
+            sb.AppendLine(@"            Assert.NotNull(CSSPCultureService);");
             sb.AppendLine(@"");
-            sb.AppendLine(@"            CultureService.SetCulture(culture);");
+            sb.AppendLine(@"            CSSPCultureService.SetCulture(culture);");
             sb.AppendLine(@"");
             sb.AppendLine(@"            LoggedInService = Provider.GetService<ILoggedInService>();");
             sb.AppendLine(@"            Assert.NotNull(LoggedInService);");

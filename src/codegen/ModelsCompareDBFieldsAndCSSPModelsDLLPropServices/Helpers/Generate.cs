@@ -1,5 +1,5 @@
 ﻿using ActionCommandDBServices.Models;
-using CultureServices.Resources;
+using CSSPCultureServices.Resources;
 using GenerateCodeBaseServices.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
@@ -47,7 +47,7 @@ namespace ModelsCompareDBFieldsAndCSSPModelsDLLPropServices.Services
             if (!await CompareDBAndCSSPModelsDLL(tableCSSPWebList, typePropList)) return await Task.FromResult(false);
 
             ActionCommandDBService.ExecutionStatusText.AppendLine("");
-            ActionCommandDBService.ExecutionStatusText.AppendLine($"{ CultureServicesRes.Done } ...");
+            ActionCommandDBService.ExecutionStatusText.AppendLine($"{ CSSPCultureServicesRes.Done } ...");
             ActionCommandDBService.ExecutionStatusText.AppendLine("");
             ActionCommandDBService.ExecutionStatusText.AppendLine("Generate Finished ...");
             ActionCommandDBService.PercentCompleted = 100;

@@ -49,11 +49,11 @@ namespace ServicesClassNameServiceGeneratedServices.Services
             sb.AppendLine(@"                {");
             if (TypeName == "AspNetUser")
             {
-                sb.AppendLine($@"                    return await Task.FromResult(BadRequest(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, ""{ TypeName }"", ""Id"", Id)));");
+                sb.AppendLine($@"                    return await Task.FromResult(BadRequest(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, ""{ TypeName }"", ""Id"", Id)));");
             }
             else
             {
-                sb.AppendLine($@"                    return await Task.FromResult(BadRequest(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, ""{ TypeName }"", ""{ TypeName }ID"", { TypeName }ID.ToString())));");
+                sb.AppendLine($@"                    return await Task.FromResult(BadRequest(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, ""{ TypeName }"", ""{ TypeName }ID"", { TypeName }ID.ToString())));");
             }
             sb.AppendLine(@"                }");
             sb.AppendLine(@"            ");
@@ -88,11 +88,11 @@ namespace ServicesClassNameServiceGeneratedServices.Services
             sb.AppendLine(@"                {");
             if (TypeName == "AspNetUser")
             {
-                sb.AppendLine($@"                    return await Task.FromResult(BadRequest(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, ""{ TypeName }"", ""Id"", Id)));");
+                sb.AppendLine($@"                    return await Task.FromResult(BadRequest(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, ""{ TypeName }"", ""Id"", Id)));");
             }
             else
             {
-                sb.AppendLine($@"                    return await Task.FromResult(BadRequest(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, ""{ TypeName }"", ""{ TypeName }ID"", { TypeName }ID.ToString())));");
+                sb.AppendLine($@"                    return await Task.FromResult(BadRequest(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, ""{ TypeName }"", ""{ TypeName }ID"", { TypeName }ID.ToString())));");
             }
             sb.AppendLine(@"                }");
             sb.AppendLine(@"");    
@@ -127,11 +127,11 @@ namespace ServicesClassNameServiceGeneratedServices.Services
             sb.AppendLine(@"                {");
             if (TypeName == "AspNetUser")
             {
-                sb.AppendLine($@"                    return await Task.FromResult(BadRequest(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, ""{ TypeName }"", ""Id"", Id)));");
+                sb.AppendLine($@"                    return await Task.FromResult(BadRequest(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, ""{ TypeName }"", ""Id"", Id)));");
             }
             else
             {
-                sb.AppendLine($@"                    return await Task.FromResult(BadRequest(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, ""{ TypeName }"", ""{ TypeName }ID"", { TypeName }ID.ToString())));");
+                sb.AppendLine($@"                    return await Task.FromResult(BadRequest(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, ""{ TypeName }"", ""{ TypeName }ID"", { TypeName }ID.ToString())));");
             }
             sb.AppendLine(@"                }");
             sb.AppendLine(@"");

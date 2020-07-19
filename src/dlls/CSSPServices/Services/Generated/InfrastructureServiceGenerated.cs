@@ -7,9 +7,8 @@
 
 using CSSPEnums;
 using CSSPModels;
-using CultureServices.Resources;
-using CultureServices.Services;
-using LoggedInServices.Services;
+using CSSPCultureServices.Resources;
+using CSSPCultureServices.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -38,16 +37,16 @@ namespace CSSPServices
         private CSSPDBContext db { get; }
         private CSSPDBLocalContext dbLocal { get; }
         private InMemoryDBContext dbIM { get; }
-        private ICultureService CultureService { get; }
+        private ICSSPCultureService CSSPCultureService { get; }
         private ILoggedInService LoggedInService { get; }
         private IEnums enums { get; }
         private IEnumerable<ValidationResult> ValidationResults { get; set; }
         #endregion Properties
 
         #region Constructors
-        public InfrastructureService(ICultureService CultureService, ILoggedInService LoggedInService, IEnums enums, CSSPDBContext db, CSSPDBLocalContext dbLocal, InMemoryDBContext dbIM)
+        public InfrastructureService(ICSSPCultureService CSSPCultureService, ILoggedInService LoggedInService, IEnums enums, CSSPDBContext db, CSSPDBLocalContext dbLocal, InMemoryDBContext dbIM)
         {
-            this.CultureService = CultureService;
+            this.CSSPCultureService = CSSPCultureService;
             this.LoggedInService = LoggedInService;
             this.enums = enums;
             this.db = db;
@@ -145,7 +144,7 @@ namespace CSSPServices
             
                 if (infrastructure == null)
                 {
-                    return await Task.FromResult(BadRequest(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "Infrastructure", "InfrastructureID", InfrastructureID.ToString())));
+                    return await Task.FromResult(BadRequest(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "Infrastructure", "InfrastructureID", InfrastructureID.ToString())));
                 }
             
                 try
@@ -168,7 +167,7 @@ namespace CSSPServices
                 
                 if (infrastructure == null)
                 {
-                    return await Task.FromResult(BadRequest(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "Infrastructure", "InfrastructureID", InfrastructureID.ToString())));
+                    return await Task.FromResult(BadRequest(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "Infrastructure", "InfrastructureID", InfrastructureID.ToString())));
                 }
 
                 try
@@ -191,7 +190,7 @@ namespace CSSPServices
                 
                 if (infrastructure == null)
                 {
-                    return await Task.FromResult(BadRequest(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "Infrastructure", "InfrastructureID", InfrastructureID.ToString())));
+                    return await Task.FromResult(BadRequest(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "Infrastructure", "InfrastructureID", InfrastructureID.ToString())));
                 }
 
                 try
@@ -331,21 +330,21 @@ namespace CSSPServices
             {
                 if (infrastructure.InfrastructureID == 0)
                 {
-                    yield return new ValidationResult(string.Format(CultureServicesRes._IsRequired, "InfrastructureID"), new[] { "InfrastructureID" });
+                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "InfrastructureID"), new[] { "InfrastructureID" });
                 }
 
                 if (LoggedInService.DBLocation == DBLocationEnum.Local)
                 {
                     if (!(from c in dbLocal.Infrastructures select c).Where(c => c.InfrastructureID == infrastructure.InfrastructureID).Any())
                     {
-                        yield return new ValidationResult(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "Infrastructure", "InfrastructureID", infrastructure.InfrastructureID.ToString()), new[] { "InfrastructureID" });
+                        yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "Infrastructure", "InfrastructureID", infrastructure.InfrastructureID.ToString()), new[] { "InfrastructureID" });
                     }
                 }
                 else
                 {
                     if (!(from c in db.Infrastructures select c).Where(c => c.InfrastructureID == infrastructure.InfrastructureID).Any())
                     {
-                        yield return new ValidationResult(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "Infrastructure", "InfrastructureID", infrastructure.InfrastructureID.ToString()), new[] { "InfrastructureID" });
+                        yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "Infrastructure", "InfrastructureID", infrastructure.InfrastructureID.ToString()), new[] { "InfrastructureID" });
                     }
                 }
             }
@@ -366,7 +365,7 @@ namespace CSSPServices
 
             if (TVItemInfrastructureTVItemID == null)
             {
-                yield return new ValidationResult(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "TVItem", "InfrastructureTVItemID", infrastructure.InfrastructureTVItemID.ToString()), new[] { "InfrastructureTVItemID" });
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "TVItem", "InfrastructureTVItemID", infrastructure.InfrastructureTVItemID.ToString()), new[] { "InfrastructureTVItemID" });
             }
             else
             {
@@ -376,7 +375,7 @@ namespace CSSPServices
                 };
                 if (!AllowableTVTypes.Contains(TVItemInfrastructureTVItemID.TVType))
                 {
-                    yield return new ValidationResult(string.Format(CultureServicesRes._IsNotOfType_, "InfrastructureTVItemID", "Infrastructure"), new[] { "InfrastructureTVItemID" });
+                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsNotOfType_, "InfrastructureTVItemID", "Infrastructure"), new[] { "InfrastructureTVItemID" });
                 }
             }
 
@@ -384,7 +383,7 @@ namespace CSSPServices
             {
                 if (infrastructure.PrismID < 0 || infrastructure.PrismID > 100000)
                 {
-                    yield return new ValidationResult(string.Format(CultureServicesRes._ValueShouldBeBetween_And_, "PrismID", "0", "100000"), new[] { "PrismID" });
+                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "PrismID", "0", "100000"), new[] { "PrismID" });
                 }
             }
 
@@ -392,7 +391,7 @@ namespace CSSPServices
             {
                 if (infrastructure.TPID < 0 || infrastructure.TPID > 100000)
                 {
-                    yield return new ValidationResult(string.Format(CultureServicesRes._ValueShouldBeBetween_And_, "TPID", "0", "100000"), new[] { "TPID" });
+                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "TPID", "0", "100000"), new[] { "TPID" });
                 }
             }
 
@@ -400,7 +399,7 @@ namespace CSSPServices
             {
                 if (infrastructure.LSID < 0 || infrastructure.LSID > 100000)
                 {
-                    yield return new ValidationResult(string.Format(CultureServicesRes._ValueShouldBeBetween_And_, "LSID", "0", "100000"), new[] { "LSID" });
+                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "LSID", "0", "100000"), new[] { "LSID" });
                 }
             }
 
@@ -408,7 +407,7 @@ namespace CSSPServices
             {
                 if (infrastructure.SiteID < 0 || infrastructure.SiteID > 100000)
                 {
-                    yield return new ValidationResult(string.Format(CultureServicesRes._ValueShouldBeBetween_And_, "SiteID", "0", "100000"), new[] { "SiteID" });
+                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "SiteID", "0", "100000"), new[] { "SiteID" });
                 }
             }
 
@@ -416,13 +415,13 @@ namespace CSSPServices
             {
                 if (infrastructure.Site < 0 || infrastructure.Site > 100000)
                 {
-                    yield return new ValidationResult(string.Format(CultureServicesRes._ValueShouldBeBetween_And_, "Site", "0", "100000"), new[] { "Site" });
+                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "Site", "0", "100000"), new[] { "Site" });
                 }
             }
 
             if (!string.IsNullOrWhiteSpace(infrastructure.InfrastructureCategory) && (infrastructure.InfrastructureCategory.Length < 1 || infrastructure.InfrastructureCategory.Length > 1))
             {
-                yield return new ValidationResult(string.Format(CultureServicesRes._LengthShouldBeBetween_And_, "InfrastructureCategory", "1", "1"), new[] { "InfrastructureCategory" });
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._LengthShouldBeBetween_And_, "InfrastructureCategory", "1", "1"), new[] { "InfrastructureCategory" });
             }
 
             if (infrastructure.InfrastructureType != null)
@@ -430,7 +429,7 @@ namespace CSSPServices
                 retStr = enums.EnumTypeOK(typeof(InfrastructureTypeEnum), (int?)infrastructure.InfrastructureType);
                 if (infrastructure.InfrastructureType == null || !string.IsNullOrWhiteSpace(retStr))
                 {
-                    yield return new ValidationResult(string.Format(CultureServicesRes._IsRequired, "InfrastructureType"), new[] { "InfrastructureType" });
+                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "InfrastructureType"), new[] { "InfrastructureType" });
                 }
             }
 
@@ -439,7 +438,7 @@ namespace CSSPServices
                 retStr = enums.EnumTypeOK(typeof(FacilityTypeEnum), (int?)infrastructure.FacilityType);
                 if (infrastructure.FacilityType == null || !string.IsNullOrWhiteSpace(retStr))
                 {
-                    yield return new ValidationResult(string.Format(CultureServicesRes._IsRequired, "FacilityType"), new[] { "FacilityType" });
+                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "FacilityType"), new[] { "FacilityType" });
                 }
             }
 
@@ -447,7 +446,7 @@ namespace CSSPServices
             {
                 if (infrastructure.NumberOfCells < 0 || infrastructure.NumberOfCells > 10)
                 {
-                    yield return new ValidationResult(string.Format(CultureServicesRes._ValueShouldBeBetween_And_, "NumberOfCells", "0", "10"), new[] { "NumberOfCells" });
+                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "NumberOfCells", "0", "10"), new[] { "NumberOfCells" });
                 }
             }
 
@@ -455,7 +454,7 @@ namespace CSSPServices
             {
                 if (infrastructure.NumberOfAeratedCells < 0 || infrastructure.NumberOfAeratedCells > 10)
                 {
-                    yield return new ValidationResult(string.Format(CultureServicesRes._ValueShouldBeBetween_And_, "NumberOfAeratedCells", "0", "10"), new[] { "NumberOfAeratedCells" });
+                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "NumberOfAeratedCells", "0", "10"), new[] { "NumberOfAeratedCells" });
                 }
             }
 
@@ -464,7 +463,7 @@ namespace CSSPServices
                 retStr = enums.EnumTypeOK(typeof(AerationTypeEnum), (int?)infrastructure.AerationType);
                 if (infrastructure.AerationType == null || !string.IsNullOrWhiteSpace(retStr))
                 {
-                    yield return new ValidationResult(string.Format(CultureServicesRes._IsRequired, "AerationType"), new[] { "AerationType" });
+                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "AerationType"), new[] { "AerationType" });
                 }
             }
 
@@ -473,7 +472,7 @@ namespace CSSPServices
                 retStr = enums.EnumTypeOK(typeof(PreliminaryTreatmentTypeEnum), (int?)infrastructure.PreliminaryTreatmentType);
                 if (infrastructure.PreliminaryTreatmentType == null || !string.IsNullOrWhiteSpace(retStr))
                 {
-                    yield return new ValidationResult(string.Format(CultureServicesRes._IsRequired, "PreliminaryTreatmentType"), new[] { "PreliminaryTreatmentType" });
+                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "PreliminaryTreatmentType"), new[] { "PreliminaryTreatmentType" });
                 }
             }
 
@@ -482,7 +481,7 @@ namespace CSSPServices
                 retStr = enums.EnumTypeOK(typeof(PrimaryTreatmentTypeEnum), (int?)infrastructure.PrimaryTreatmentType);
                 if (infrastructure.PrimaryTreatmentType == null || !string.IsNullOrWhiteSpace(retStr))
                 {
-                    yield return new ValidationResult(string.Format(CultureServicesRes._IsRequired, "PrimaryTreatmentType"), new[] { "PrimaryTreatmentType" });
+                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "PrimaryTreatmentType"), new[] { "PrimaryTreatmentType" });
                 }
             }
 
@@ -491,7 +490,7 @@ namespace CSSPServices
                 retStr = enums.EnumTypeOK(typeof(SecondaryTreatmentTypeEnum), (int?)infrastructure.SecondaryTreatmentType);
                 if (infrastructure.SecondaryTreatmentType == null || !string.IsNullOrWhiteSpace(retStr))
                 {
-                    yield return new ValidationResult(string.Format(CultureServicesRes._IsRequired, "SecondaryTreatmentType"), new[] { "SecondaryTreatmentType" });
+                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "SecondaryTreatmentType"), new[] { "SecondaryTreatmentType" });
                 }
             }
 
@@ -500,7 +499,7 @@ namespace CSSPServices
                 retStr = enums.EnumTypeOK(typeof(TertiaryTreatmentTypeEnum), (int?)infrastructure.TertiaryTreatmentType);
                 if (infrastructure.TertiaryTreatmentType == null || !string.IsNullOrWhiteSpace(retStr))
                 {
-                    yield return new ValidationResult(string.Format(CultureServicesRes._IsRequired, "TertiaryTreatmentType"), new[] { "TertiaryTreatmentType" });
+                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "TertiaryTreatmentType"), new[] { "TertiaryTreatmentType" });
                 }
             }
 
@@ -509,7 +508,7 @@ namespace CSSPServices
                 retStr = enums.EnumTypeOK(typeof(TreatmentTypeEnum), (int?)infrastructure.TreatmentType);
                 if (infrastructure.TreatmentType == null || !string.IsNullOrWhiteSpace(retStr))
                 {
-                    yield return new ValidationResult(string.Format(CultureServicesRes._IsRequired, "TreatmentType"), new[] { "TreatmentType" });
+                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "TreatmentType"), new[] { "TreatmentType" });
                 }
             }
 
@@ -518,7 +517,7 @@ namespace CSSPServices
                 retStr = enums.EnumTypeOK(typeof(DisinfectionTypeEnum), (int?)infrastructure.DisinfectionType);
                 if (infrastructure.DisinfectionType == null || !string.IsNullOrWhiteSpace(retStr))
                 {
-                    yield return new ValidationResult(string.Format(CultureServicesRes._IsRequired, "DisinfectionType"), new[] { "DisinfectionType" });
+                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "DisinfectionType"), new[] { "DisinfectionType" });
                 }
             }
 
@@ -527,7 +526,7 @@ namespace CSSPServices
                 retStr = enums.EnumTypeOK(typeof(CollectionSystemTypeEnum), (int?)infrastructure.CollectionSystemType);
                 if (infrastructure.CollectionSystemType == null || !string.IsNullOrWhiteSpace(retStr))
                 {
-                    yield return new ValidationResult(string.Format(CultureServicesRes._IsRequired, "CollectionSystemType"), new[] { "CollectionSystemType" });
+                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "CollectionSystemType"), new[] { "CollectionSystemType" });
                 }
             }
 
@@ -536,7 +535,7 @@ namespace CSSPServices
                 retStr = enums.EnumTypeOK(typeof(AlarmSystemTypeEnum), (int?)infrastructure.AlarmSystemType);
                 if (infrastructure.AlarmSystemType == null || !string.IsNullOrWhiteSpace(retStr))
                 {
-                    yield return new ValidationResult(string.Format(CultureServicesRes._IsRequired, "AlarmSystemType"), new[] { "AlarmSystemType" });
+                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "AlarmSystemType"), new[] { "AlarmSystemType" });
                 }
             }
 
@@ -544,7 +543,7 @@ namespace CSSPServices
             {
                 if (infrastructure.DesignFlow_m3_day < 0 || infrastructure.DesignFlow_m3_day > 1000000)
                 {
-                    yield return new ValidationResult(string.Format(CultureServicesRes._ValueShouldBeBetween_And_, "DesignFlow_m3_day", "0", "1000000"), new[] { "DesignFlow_m3_day" });
+                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "DesignFlow_m3_day", "0", "1000000"), new[] { "DesignFlow_m3_day" });
                 }
             }
 
@@ -552,7 +551,7 @@ namespace CSSPServices
             {
                 if (infrastructure.AverageFlow_m3_day < 0 || infrastructure.AverageFlow_m3_day > 1000000)
                 {
-                    yield return new ValidationResult(string.Format(CultureServicesRes._ValueShouldBeBetween_And_, "AverageFlow_m3_day", "0", "1000000"), new[] { "AverageFlow_m3_day" });
+                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "AverageFlow_m3_day", "0", "1000000"), new[] { "AverageFlow_m3_day" });
                 }
             }
 
@@ -560,7 +559,7 @@ namespace CSSPServices
             {
                 if (infrastructure.PeakFlow_m3_day < 0 || infrastructure.PeakFlow_m3_day > 1000000)
                 {
-                    yield return new ValidationResult(string.Format(CultureServicesRes._ValueShouldBeBetween_And_, "PeakFlow_m3_day", "0", "1000000"), new[] { "PeakFlow_m3_day" });
+                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "PeakFlow_m3_day", "0", "1000000"), new[] { "PeakFlow_m3_day" });
                 }
             }
 
@@ -568,7 +567,7 @@ namespace CSSPServices
             {
                 if (infrastructure.PopServed < 0 || infrastructure.PopServed > 1000000)
                 {
-                    yield return new ValidationResult(string.Format(CultureServicesRes._ValueShouldBeBetween_And_, "PopServed", "0", "1000000"), new[] { "PopServed" });
+                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "PopServed", "0", "1000000"), new[] { "PopServed" });
                 }
             }
 
@@ -577,7 +576,7 @@ namespace CSSPServices
                 retStr = enums.EnumTypeOK(typeof(ValveTypeEnum), (int?)infrastructure.ValveType);
                 if (infrastructure.ValveType == null || !string.IsNullOrWhiteSpace(retStr))
                 {
-                    yield return new ValidationResult(string.Format(CultureServicesRes._IsRequired, "ValveType"), new[] { "ValveType" });
+                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "ValveType"), new[] { "ValveType" });
                 }
             }
 
@@ -585,7 +584,7 @@ namespace CSSPServices
             {
                 if (infrastructure.PercFlowOfTotal < 0 || infrastructure.PercFlowOfTotal > 100)
                 {
-                    yield return new ValidationResult(string.Format(CultureServicesRes._ValueShouldBeBetween_And_, "PercFlowOfTotal", "0", "100"), new[] { "PercFlowOfTotal" });
+                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "PercFlowOfTotal", "0", "100"), new[] { "PercFlowOfTotal" });
                 }
             }
 
@@ -593,7 +592,7 @@ namespace CSSPServices
             {
                 if (infrastructure.TimeOffset_hour < -10 || infrastructure.TimeOffset_hour > 0)
                 {
-                    yield return new ValidationResult(string.Format(CultureServicesRes._ValueShouldBeBetween_And_, "TimeOffset_hour", "-10", "0"), new[] { "TimeOffset_hour" });
+                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "TimeOffset_hour", "-10", "0"), new[] { "TimeOffset_hour" });
                 }
             }
 
@@ -603,7 +602,7 @@ namespace CSSPServices
             {
                 if (infrastructure.AverageDepth_m < 0 || infrastructure.AverageDepth_m > 1000)
                 {
-                    yield return new ValidationResult(string.Format(CultureServicesRes._ValueShouldBeBetween_And_, "AverageDepth_m", "0", "1000"), new[] { "AverageDepth_m" });
+                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "AverageDepth_m", "0", "1000"), new[] { "AverageDepth_m" });
                 }
             }
 
@@ -611,7 +610,7 @@ namespace CSSPServices
             {
                 if (infrastructure.NumberOfPorts < 1 || infrastructure.NumberOfPorts > 1000)
                 {
-                    yield return new ValidationResult(string.Format(CultureServicesRes._ValueShouldBeBetween_And_, "NumberOfPorts", "1", "1000"), new[] { "NumberOfPorts" });
+                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "NumberOfPorts", "1", "1000"), new[] { "NumberOfPorts" });
                 }
             }
 
@@ -619,7 +618,7 @@ namespace CSSPServices
             {
                 if (infrastructure.PortDiameter_m < 0 || infrastructure.PortDiameter_m > 10)
                 {
-                    yield return new ValidationResult(string.Format(CultureServicesRes._ValueShouldBeBetween_And_, "PortDiameter_m", "0", "10"), new[] { "PortDiameter_m" });
+                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "PortDiameter_m", "0", "10"), new[] { "PortDiameter_m" });
                 }
             }
 
@@ -627,7 +626,7 @@ namespace CSSPServices
             {
                 if (infrastructure.PortSpacing_m < 0 || infrastructure.PortSpacing_m > 10000)
                 {
-                    yield return new ValidationResult(string.Format(CultureServicesRes._ValueShouldBeBetween_And_, "PortSpacing_m", "0", "10000"), new[] { "PortSpacing_m" });
+                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "PortSpacing_m", "0", "10000"), new[] { "PortSpacing_m" });
                 }
             }
 
@@ -635,7 +634,7 @@ namespace CSSPServices
             {
                 if (infrastructure.PortElevation_m < 0 || infrastructure.PortElevation_m > 1000)
                 {
-                    yield return new ValidationResult(string.Format(CultureServicesRes._ValueShouldBeBetween_And_, "PortElevation_m", "0", "1000"), new[] { "PortElevation_m" });
+                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "PortElevation_m", "0", "1000"), new[] { "PortElevation_m" });
                 }
             }
 
@@ -643,7 +642,7 @@ namespace CSSPServices
             {
                 if (infrastructure.VerticalAngle_deg < -90 || infrastructure.VerticalAngle_deg > 90)
                 {
-                    yield return new ValidationResult(string.Format(CultureServicesRes._ValueShouldBeBetween_And_, "VerticalAngle_deg", "-90", "90"), new[] { "VerticalAngle_deg" });
+                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "VerticalAngle_deg", "-90", "90"), new[] { "VerticalAngle_deg" });
                 }
             }
 
@@ -651,7 +650,7 @@ namespace CSSPServices
             {
                 if (infrastructure.HorizontalAngle_deg < -180 || infrastructure.HorizontalAngle_deg > 180)
                 {
-                    yield return new ValidationResult(string.Format(CultureServicesRes._ValueShouldBeBetween_And_, "HorizontalAngle_deg", "-180", "180"), new[] { "HorizontalAngle_deg" });
+                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "HorizontalAngle_deg", "-180", "180"), new[] { "HorizontalAngle_deg" });
                 }
             }
 
@@ -659,7 +658,7 @@ namespace CSSPServices
             {
                 if (infrastructure.DecayRate_per_day < 0 || infrastructure.DecayRate_per_day > 100)
                 {
-                    yield return new ValidationResult(string.Format(CultureServicesRes._ValueShouldBeBetween_And_, "DecayRate_per_day", "0", "100"), new[] { "DecayRate_per_day" });
+                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "DecayRate_per_day", "0", "100"), new[] { "DecayRate_per_day" });
                 }
             }
 
@@ -667,7 +666,7 @@ namespace CSSPServices
             {
                 if (infrastructure.NearFieldVelocity_m_s < 0 || infrastructure.NearFieldVelocity_m_s > 10)
                 {
-                    yield return new ValidationResult(string.Format(CultureServicesRes._ValueShouldBeBetween_And_, "NearFieldVelocity_m_s", "0", "10"), new[] { "NearFieldVelocity_m_s" });
+                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "NearFieldVelocity_m_s", "0", "10"), new[] { "NearFieldVelocity_m_s" });
                 }
             }
 
@@ -675,7 +674,7 @@ namespace CSSPServices
             {
                 if (infrastructure.FarFieldVelocity_m_s < 0 || infrastructure.FarFieldVelocity_m_s > 10)
                 {
-                    yield return new ValidationResult(string.Format(CultureServicesRes._ValueShouldBeBetween_And_, "FarFieldVelocity_m_s", "0", "10"), new[] { "FarFieldVelocity_m_s" });
+                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "FarFieldVelocity_m_s", "0", "10"), new[] { "FarFieldVelocity_m_s" });
                 }
             }
 
@@ -683,7 +682,7 @@ namespace CSSPServices
             {
                 if (infrastructure.ReceivingWaterSalinity_PSU < 0 || infrastructure.ReceivingWaterSalinity_PSU > 40)
                 {
-                    yield return new ValidationResult(string.Format(CultureServicesRes._ValueShouldBeBetween_And_, "ReceivingWaterSalinity_PSU", "0", "40"), new[] { "ReceivingWaterSalinity_PSU" });
+                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "ReceivingWaterSalinity_PSU", "0", "40"), new[] { "ReceivingWaterSalinity_PSU" });
                 }
             }
 
@@ -691,7 +690,7 @@ namespace CSSPServices
             {
                 if (infrastructure.ReceivingWaterTemperature_C < -10 || infrastructure.ReceivingWaterTemperature_C > 40)
                 {
-                    yield return new ValidationResult(string.Format(CultureServicesRes._ValueShouldBeBetween_And_, "ReceivingWaterTemperature_C", "-10", "40"), new[] { "ReceivingWaterTemperature_C" });
+                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "ReceivingWaterTemperature_C", "-10", "40"), new[] { "ReceivingWaterTemperature_C" });
                 }
             }
 
@@ -699,7 +698,7 @@ namespace CSSPServices
             {
                 if (infrastructure.ReceivingWater_MPN_per_100ml < 0 || infrastructure.ReceivingWater_MPN_per_100ml > 10000000)
                 {
-                    yield return new ValidationResult(string.Format(CultureServicesRes._ValueShouldBeBetween_And_, "ReceivingWater_MPN_per_100ml", "0", "10000000"), new[] { "ReceivingWater_MPN_per_100ml" });
+                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "ReceivingWater_MPN_per_100ml", "0", "10000000"), new[] { "ReceivingWater_MPN_per_100ml" });
                 }
             }
 
@@ -707,7 +706,7 @@ namespace CSSPServices
             {
                 if (infrastructure.DistanceFromShore_m < 0 || infrastructure.DistanceFromShore_m > 1000)
                 {
-                    yield return new ValidationResult(string.Format(CultureServicesRes._ValueShouldBeBetween_And_, "DistanceFromShore_m", "0", "1000"), new[] { "DistanceFromShore_m" });
+                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "DistanceFromShore_m", "0", "1000"), new[] { "DistanceFromShore_m" });
                 }
             }
 
@@ -729,7 +728,7 @@ namespace CSSPServices
 
                 if (TVItemSeeOtherMunicipalityTVItemID == null)
                 {
-                    yield return new ValidationResult(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "TVItem", "SeeOtherMunicipalityTVItemID", (infrastructure.SeeOtherMunicipalityTVItemID == null ? "" : infrastructure.SeeOtherMunicipalityTVItemID.ToString())), new[] { "SeeOtherMunicipalityTVItemID" });
+                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "TVItem", "SeeOtherMunicipalityTVItemID", (infrastructure.SeeOtherMunicipalityTVItemID == null ? "" : infrastructure.SeeOtherMunicipalityTVItemID.ToString())), new[] { "SeeOtherMunicipalityTVItemID" });
                 }
                 else
                 {
@@ -739,7 +738,7 @@ namespace CSSPServices
                     };
                     if (!AllowableTVTypes.Contains(TVItemSeeOtherMunicipalityTVItemID.TVType))
                     {
-                        yield return new ValidationResult(string.Format(CultureServicesRes._IsNotOfType_, "SeeOtherMunicipalityTVItemID", "Infrastructure"), new[] { "SeeOtherMunicipalityTVItemID" });
+                        yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsNotOfType_, "SeeOtherMunicipalityTVItemID", "Infrastructure"), new[] { "SeeOtherMunicipalityTVItemID" });
                     }
                 }
             }
@@ -762,7 +761,7 @@ namespace CSSPServices
 
                 if (TVItemCivicAddressTVItemID == null)
                 {
-                    yield return new ValidationResult(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "TVItem", "CivicAddressTVItemID", (infrastructure.CivicAddressTVItemID == null ? "" : infrastructure.CivicAddressTVItemID.ToString())), new[] { "CivicAddressTVItemID" });
+                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "TVItem", "CivicAddressTVItemID", (infrastructure.CivicAddressTVItemID == null ? "" : infrastructure.CivicAddressTVItemID.ToString())), new[] { "CivicAddressTVItemID" });
                 }
                 else
                 {
@@ -772,20 +771,20 @@ namespace CSSPServices
                     };
                     if (!AllowableTVTypes.Contains(TVItemCivicAddressTVItemID.TVType))
                     {
-                        yield return new ValidationResult(string.Format(CultureServicesRes._IsNotOfType_, "CivicAddressTVItemID", "Address"), new[] { "CivicAddressTVItemID" });
+                        yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsNotOfType_, "CivicAddressTVItemID", "Address"), new[] { "CivicAddressTVItemID" });
                     }
                 }
             }
 
             if (infrastructure.LastUpdateDate_UTC.Year == 1)
             {
-                yield return new ValidationResult(string.Format(CultureServicesRes._IsRequired, "LastUpdateDate_UTC"), new[] { "LastUpdateDate_UTC" });
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "LastUpdateDate_UTC"), new[] { "LastUpdateDate_UTC" });
             }
             else
             {
                 if (infrastructure.LastUpdateDate_UTC.Year < 1980)
                 {
-                    yield return new ValidationResult(string.Format(CultureServicesRes._YearShouldBeBiggerThan_, "LastUpdateDate_UTC", "1980"), new[] { "LastUpdateDate_UTC" });
+                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes._YearShouldBeBiggerThan_, "LastUpdateDate_UTC", "1980"), new[] { "LastUpdateDate_UTC" });
                 }
             }
 
@@ -805,7 +804,7 @@ namespace CSSPServices
 
             if (TVItemLastUpdateContactTVItemID == null)
             {
-                yield return new ValidationResult(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "TVItem", "LastUpdateContactTVItemID", infrastructure.LastUpdateContactTVItemID.ToString()), new[] { "LastUpdateContactTVItemID" });
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "TVItem", "LastUpdateContactTVItemID", infrastructure.LastUpdateContactTVItemID.ToString()), new[] { "LastUpdateContactTVItemID" });
             }
             else
             {
@@ -815,7 +814,7 @@ namespace CSSPServices
                 };
                 if (!AllowableTVTypes.Contains(TVItemLastUpdateContactTVItemID.TVType))
                 {
-                    yield return new ValidationResult(string.Format(CultureServicesRes._IsNotOfType_, "LastUpdateContactTVItemID", "Contact"), new[] { "LastUpdateContactTVItemID" });
+                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsNotOfType_, "LastUpdateContactTVItemID", "Contact"), new[] { "LastUpdateContactTVItemID" });
                 }
             }
 

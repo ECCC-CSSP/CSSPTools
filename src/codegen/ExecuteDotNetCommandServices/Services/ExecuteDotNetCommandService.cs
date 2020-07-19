@@ -1,7 +1,7 @@
 ﻿using ActionCommandDBServices.Models;
 using ActionCommandDBServices.Services;
 using ConfigServices.Services;
-using CultureServices.Services;
+using CSSPCultureServices.Services;
 using ExecuteDotNetCommandServices.Models;
 using GenerateCodeBaseServices.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -160,16 +160,16 @@ namespace ExecuteDotNetCommandServices.Services
         #endregion Properties
 
         #region Constructors
-        public ExecuteDotNetCommandService(IConfiguration configuration,
-            ICultureService cultureService,
-            IActionCommandDBService actionCommandDBService,
-            IValidateAppSettingsService validateAppSettingsService,
-            IGenerateCodeBaseService generateCodeBaseService) : base(configuration)
+        public ExecuteDotNetCommandService(IConfiguration Configuration,
+            ICSSPCultureService CSSPCultureService,
+            IActionCommandDBService ActionCommandDBService,
+            IValidateAppSettingsService ValidateAppSettingsService,
+            IGenerateCodeBaseService GenerateCodeBaseService) : base(Configuration)
         {
-            CultureService = cultureService;
-            ActionCommandDBService = actionCommandDBService;
-            ValidateAppSettingsService = validateAppSettingsService;
-            GenerateCodeBaseService = generateCodeBaseService;
+            this.CSSPCultureService = CSSPCultureService;
+            this.ActionCommandDBService = ActionCommandDBService;
+            this.ValidateAppSettingsService = ValidateAppSettingsService;
+            this.GenerateCodeBaseService = GenerateCodeBaseService;
         }
         #endregion Constructors
 

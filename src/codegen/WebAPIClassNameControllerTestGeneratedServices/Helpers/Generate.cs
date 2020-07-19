@@ -1,5 +1,5 @@
 ﻿using ActionCommandDBServices.Models;
-using CultureServices.Resources;
+using CSSPCultureServices.Resources;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using System;
@@ -82,8 +82,7 @@ namespace WebAPIClassNameControllerTestGeneratedServices.Services
                     sb.AppendLine(@"using CSSPModels;");
                     sb.AppendLine(@"using CSSPServices;");
                     sb.AppendLine(@"using CSSPWebAPIs.Controllers;");
-                    sb.AppendLine(@"using CultureServices.Services;");
-                    sb.AppendLine(@"using LoggedInServices.Services;");
+                    sb.AppendLine(@"using CSSPCultureServices.Services;");
                     sb.AppendLine(@"using Microsoft.AspNetCore.Mvc;");
                     sb.AppendLine(@"using Microsoft.EntityFrameworkCore;");
                     sb.AppendLine(@"using Microsoft.Extensions.Configuration;");
@@ -114,7 +113,7 @@ namespace WebAPIClassNameControllerTestGeneratedServices.Services
                     sb.AppendLine(@"        private CSSPDBContext db { get; set; }");
                     sb.AppendLine(@"        private IContactService ContactService { get; set; }");
                     sb.AppendLine(@"        private ILoggedInService loggedInService { get; set; }");
-                    sb.AppendLine(@"        private ICultureService CultureService { get; set; }");
+                    sb.AppendLine(@"        private ICSSPCultureService CSSPCultureService { get; set; }");
                     sb.AppendLine($@"        private I{ TypeName }Service { TypeNameLower }Service {{ get; set; }}");
                     sb.AppendLine($@"        private I{ TypeName }Controller { TypeNameLower }Controller {{ get; set; }}");
                     sb.AppendLine(@"        private Contact contact { get; set; }");
@@ -172,12 +171,12 @@ namespace WebAPIClassNameControllerTestGeneratedServices.Services
                         ActionCommandDBService.FilesStatusText.AppendLine(fileLine);
                     }
 
-                    ActionCommandDBService.ExecutionStatusText.AppendLine($"{ string.Format(CultureServicesRes.Created_, fiOutputGen.FullName) }");
+                    ActionCommandDBService.ExecutionStatusText.AppendLine($"{ string.Format(CSSPCultureServicesRes.Created_, fiOutputGen.FullName) }");
                 }
             }
 
             ActionCommandDBService.ExecutionStatusText.AppendLine("");
-            ActionCommandDBService.ExecutionStatusText.AppendLine($"{ CultureServicesRes.Done } ...");
+            ActionCommandDBService.ExecutionStatusText.AppendLine($"{ CSSPCultureServicesRes.Done } ...");
             ActionCommandDBService.ExecutionStatusText.AppendLine("");
             ActionCommandDBService.ExecutionStatusText.AppendLine("Generate Finished ...");
             ActionCommandDBService.PercentCompleted = 100;

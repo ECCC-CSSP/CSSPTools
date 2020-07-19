@@ -1,7 +1,7 @@
 ﻿using AngularEnumsGeneratedServices.Services;
 using ConfigServices.Services;
 using CSSPEnums;
-using CultureServices.Services;
+using CSSPCultureServices.Services;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -19,7 +19,7 @@ namespace AngularEnumsGenerated
         #endregion Properties
 
         #region Constructors
-        public Startup(IConfiguration configuration) : base(configuration)
+        public Startup(IConfiguration Configuration) : base(Configuration)
         {
         }
         #endregion Constructors
@@ -38,7 +38,7 @@ namespace AngularEnumsGenerated
                 return await Task.FromResult(false);
             }
 
-            CultureService.SetCulture(Config.GetValue<string>("Culture"));
+            CSSPCultureService.SetCulture(Config.GetValue<string>("CSSPCulture"));
 
             AngularEnumsGeneratedService = Provider.GetService<IAngularEnumsGeneratedService>();
             if (AngularEnumsGeneratedService == null)

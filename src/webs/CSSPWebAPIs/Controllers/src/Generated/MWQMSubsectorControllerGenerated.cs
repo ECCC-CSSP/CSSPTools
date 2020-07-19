@@ -6,8 +6,7 @@
 
 using CSSPModels;
 using CSSPServices;
-using CultureServices.Services;
-using LoggedInServices.Services;
+using CSSPCultureServices.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
@@ -33,15 +32,15 @@ namespace CSSPWebAPIs.Controllers
         #endregion Variables
 
         #region Properties
-        private ICultureService CultureService { get; }
+        private ICSSPCultureService CSSPCultureService { get; }
         private ILoggedInService LoggedInService { get; }
         private IMWQMSubsectorService MWQMSubsectorService { get; }
         #endregion Properties
 
         #region Constructors
-        public MWQMSubsectorController(ICultureService CultureService, ILoggedInService LoggedInService, IMWQMSubsectorService MWQMSubsectorService)
+        public MWQMSubsectorController(ICSSPCultureService CSSPCultureService, ILoggedInService LoggedInService, IMWQMSubsectorService MWQMSubsectorService)
         {
-            this.CultureService = CultureService;
+            this.CSSPCultureService = CSSPCultureService;
             this.LoggedInService = LoggedInService;
             this.MWQMSubsectorService = MWQMSubsectorService;
         }
@@ -51,7 +50,7 @@ namespace CSSPWebAPIs.Controllers
         [HttpGet]
         public async Task<ActionResult<List<MWQMSubsector>>> Get()
         {
-            CultureService.SetCulture((string)RouteData.Values["culture"]);
+            CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
             return await MWQMSubsectorService.GetMWQMSubsectorList();
@@ -59,7 +58,7 @@ namespace CSSPWebAPIs.Controllers
         [HttpGet("{MWQMSubsectorID}")]
         public async Task<ActionResult<MWQMSubsector>> Get(int MWQMSubsectorID)
         {
-            CultureService.SetCulture((string)RouteData.Values["culture"]);
+            CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
             return await MWQMSubsectorService.GetMWQMSubsectorWithMWQMSubsectorID(MWQMSubsectorID);
@@ -67,7 +66,7 @@ namespace CSSPWebAPIs.Controllers
         [HttpPost]
         public async Task<ActionResult<MWQMSubsector>> Post(MWQMSubsector MWQMSubsector)
         {
-            CultureService.SetCulture((string)RouteData.Values["culture"]);
+            CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
             return await MWQMSubsectorService.Post(MWQMSubsector);
@@ -75,7 +74,7 @@ namespace CSSPWebAPIs.Controllers
         [HttpPut]
         public async Task<ActionResult<MWQMSubsector>> Put(MWQMSubsector MWQMSubsector)
         {
-            CultureService.SetCulture((string)RouteData.Values["culture"]);
+            CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
             return await MWQMSubsectorService.Put(MWQMSubsector);
@@ -83,7 +82,7 @@ namespace CSSPWebAPIs.Controllers
         [HttpDelete("{MWQMSubsectorID}")]
         public async Task<ActionResult<bool>> Delete(int MWQMSubsectorID)
         {
-            CultureService.SetCulture((string)RouteData.Values["culture"]);
+            CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
             return await MWQMSubsectorService.Delete(MWQMSubsectorID);

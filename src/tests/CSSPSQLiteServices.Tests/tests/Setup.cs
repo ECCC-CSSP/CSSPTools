@@ -2,8 +2,7 @@
 using CSSPModels;
 using CSSPServices;
 using CSSPSQLiteServices.Services;
-using CultureServices.Services;
-using LoggedInServices.Services;
+using CSSPCultureServices.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -27,7 +26,7 @@ namespace CSSPSQLiteServices.Tests
         public IConfiguration Config { get; set; }
         public IServiceProvider Provider { get; set; }
         public IServiceCollection Services { get; set; }
-        public ICultureService CultureService { get; set; }
+        public ICSSPCultureService CSSPCultureService { get; set; }
         public ILoggedInService LoggedInService { get; set; }
         public IAddressService AddressService { get; set; }
         public ITVItemService TVItemService { get; set; }
@@ -104,7 +103,7 @@ namespace CSSPSQLiteServices.Tests
                 options.UseSqlite($"Data Source={ fiCSSPFilesManagementDB.FullName }");
             });
 
-            Services.AddSingleton<ICultureService, CultureService>();
+            Services.AddSingleton<ICSSPCultureService, CSSPCultureService>();
             Services.AddSingleton<ILoggedInService, LoggedInService>();
             Services.AddSingleton<IEnums, Enums>();
             Services.AddSingleton<IAddressService, AddressService>();
@@ -114,10 +113,10 @@ namespace CSSPSQLiteServices.Tests
             Provider = Services.BuildServiceProvider();
             Assert.NotNull(Provider);
 
-            CultureService = Provider.GetService<ICultureService>();
-            Assert.NotNull(CultureService);
+            CSSPCultureService = Provider.GetService<ICSSPCultureService>();
+            Assert.NotNull(CSSPCultureService);
 
-            CultureService.SetCulture(culture);
+            CSSPCultureService.SetCulture(culture);
 
             LoggedInService = Provider.GetService<ILoggedInService>();
             Assert.NotNull(LoggedInService);

@@ -25,7 +25,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\dlls\CultureServices\CultureServices.csproj" />
+    <ProjectReference Include="..\..\dlls\CSSPCultureServices\CSSPCultureServices.csproj" />
   </ItemGroup>
 
 </Project>

@@ -1,4 +1,4 @@
-﻿using CultureServices.Resources;
+﻿using CSSPCultureServices.Resources;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading.Tasks;
@@ -10,7 +10,7 @@ namespace ActionCommandDBServices.Services
         public async Task ConsoleWriteEnd()
         {
             ExecutionStatusText.AppendLine("");
-            ExecutionStatusText.AppendLine($"{ CultureServicesRes.Done } ...");
+            ExecutionStatusText.AppendLine($"{ CSSPCultureServicesRes.Done } ...");
             ExecutionStatusText.AppendLine("");
             PercentCompleted = 100;
             await Update();
@@ -26,7 +26,7 @@ namespace ActionCommandDBServices.Services
         {
             ErrorText.AppendLine(errMessage);
             ErrorText.AppendLine("");
-            ErrorText.AppendLine(CultureServicesRes.AbnormalCompletion);
+            ErrorText.AppendLine(CSSPCultureServicesRes.AbnormalCompletion);
             ErrorText.AppendLine("");
             PercentCompleted = 0;
             await Update();
@@ -40,9 +40,9 @@ namespace ActionCommandDBServices.Services
         }
         public async Task ConsoleWriteStart()
         {
-            ExecutionStatusText.AppendLine($"{ CultureServicesRes.Running } { CultureServicesRes.Application } { AppDomain.CurrentDomain.FriendlyName }");
+            ExecutionStatusText.AppendLine($"{ CSSPCultureServicesRes.Running } { CSSPCultureServicesRes.Application } { AppDomain.CurrentDomain.FriendlyName }");
             ExecutionStatusText.AppendLine("");
-            ExecutionStatusText.AppendLine($"{ CultureServicesRes.Starting } ...");
+            ExecutionStatusText.AppendLine($"{ CSSPCultureServicesRes.Starting } ...");
             ExecutionStatusText.AppendLine("");
             PercentCompleted = 0;
             await Update();
@@ -51,9 +51,9 @@ namespace ActionCommandDBServices.Services
             {
                 Console.Clear();
             }
-            Console.WriteLine($"{ CultureServicesRes.Running } { CultureServicesRes.Application } { AppDomain.CurrentDomain.FriendlyName }");
+            Console.WriteLine($"{ CSSPCultureServicesRes.Running } { CSSPCultureServicesRes.Application } { AppDomain.CurrentDomain.FriendlyName }");
             Console.WriteLine("");
-            Console.WriteLine($"{ CultureServicesRes.Starting } ...");
+            Console.WriteLine($"{ CSSPCultureServicesRes.Starting } ...");
             Console.WriteLine("");
         }
     }

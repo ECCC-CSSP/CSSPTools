@@ -1,5 +1,5 @@
 ﻿using ActionCommandDBServices.Models;
-using CultureServices.Resources;
+using CSSPCultureServices.Resources;
 using GenerateCodeBaseServices.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
@@ -84,8 +84,7 @@ namespace ServicesClassNameServiceTestGeneratedServices.Services
                 sb.AppendLine(@"");
                 sb.AppendLine(@"using CSSPEnums;");
                 sb.AppendLine(@"using CSSPModels;");
-                sb.AppendLine(@"using CultureServices.Services;");
-                sb.AppendLine(@"using LoggedInServices.Services;");
+                sb.AppendLine(@"using CSSPCultureServices.Services;");
                 sb.AppendLine(@"using Microsoft.AspNetCore.Mvc;");
                 sb.AppendLine(@"using Microsoft.EntityFrameworkCore;");
                 sb.AppendLine(@"using Microsoft.Extensions.Configuration;");
@@ -113,7 +112,7 @@ namespace ServicesClassNameServiceTestGeneratedServices.Services
                     sb.AppendLine(@"        private IConfiguration Config { get; set; }");
                     sb.AppendLine(@"        private IServiceProvider Provider { get; set; }");
                     sb.AppendLine(@"        private IServiceCollection Services { get; set; }");
-                    sb.AppendLine(@"        private ICultureService CultureService { get; set; }");
+                    sb.AppendLine(@"        private ICSSPCultureService CSSPCultureService { get; set; }");
                     sb.AppendLine(@"        private ILoggedInService LoggedInService { get; set; }");
                     if (TypeName == "Contact")
                     {
@@ -211,7 +210,7 @@ namespace ServicesClassNameServiceTestGeneratedServices.Services
             }
 
             ActionCommandDBService.ExecutionStatusText.AppendLine("");
-            ActionCommandDBService.ExecutionStatusText.AppendLine($"{ CultureServicesRes.Done } ...");
+            ActionCommandDBService.ExecutionStatusText.AppendLine($"{ CSSPCultureServicesRes.Done } ...");
             ActionCommandDBService.ExecutionStatusText.AppendLine("");
             ActionCommandDBService.ExecutionStatusText.AppendLine("Generate Finished ...");
             ActionCommandDBService.PercentCompleted = 100;

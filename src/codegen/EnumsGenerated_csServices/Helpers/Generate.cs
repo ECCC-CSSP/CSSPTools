@@ -1,5 +1,5 @@
 ﻿using ActionCommandDBServices.Models;
-using CultureServices.Resources;
+using CSSPCultureServices.Resources;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using System;
@@ -103,7 +103,7 @@ namespace EnumsGenerated_csServices.Services
                 ActionCommandDBService.FilesStatusText.AppendLine(fileLine);
             }
 
-            ActionCommandDBService.ExecutionStatusText.AppendLine($"{ CultureServicesRes.Created } [{ fiInterface.FullName }] ...");
+            ActionCommandDBService.ExecutionStatusText.AppendLine($"{ CSSPCultureServicesRes.Created } [{ fiInterface.FullName }] ...");
             ActionCommandDBService.PercentCompleted = 50;
             await ActionCommandDBService.Update();
 
@@ -119,7 +119,7 @@ namespace EnumsGenerated_csServices.Services
             sb.AppendLine(@" */ ");
             //sb.AppendLine(@"using CSSPEnums.Resources;");
             //sb.AppendLine(@"using CSSPEnums.Resources.Generated;");
-            sb.AppendLine(@"using CultureServices.Resources;");
+            sb.AppendLine(@"using CSSPCultureServices.Resources;");
             sb.AppendLine(@"using System;");
             sb.AppendLine(@"using System.Collections.Generic;");
             //sb.AppendLine(@"using System.Globalization;");
@@ -142,7 +142,7 @@ namespace EnumsGenerated_csServices.Services
             //sb.AppendLine(@"        /// <returns>empty</returns>");
             //sb.AppendLine(@"        public void SetResourcesCulture(CultureInfo culture)");
             //sb.AppendLine(@"        {");
-            //sb.AppendLine(@"            CultureEnumsRes.Culture = culture;");
+            //sb.AppendLine(@"            CSSPCultureEnumsRes.Culture = culture;");
             //sb.AppendLine(@"            PolSourceInfoEnumGeneratedRes.Culture = culture;");
             //sb.AppendLine(@"        }");
             //#endregion Doing Function public SetResourcesCulture
@@ -174,7 +174,7 @@ namespace EnumsGenerated_csServices.Services
             sb.AppendLine(@"                return """";");
             sb.AppendLine(@"            }");
             sb.AppendLine(@"");
-            sb.AppendLine(@"            return string.Format(CultureEnumsRes._IsRequired, type.Name);");
+            sb.AppendLine(@"            return string.Format(CSSPCultureEnumsRes._IsRequired, type.Name);");
             sb.AppendLine(@"        }");
             sb.AppendLine(@"        /// <summary>");
             sb.AppendLine(@"        /// > [!NOTE]");
@@ -199,7 +199,7 @@ namespace EnumsGenerated_csServices.Services
             sb.AppendLine(@"                }");
             sb.AppendLine(@"            }");
             sb.AppendLine(@"");
-            sb.AppendLine(@"            return string.Format(CultureEnumsRes._IsRequired, type.Name);");
+            sb.AppendLine(@"            return string.Format(CSSPCultureEnumsRes._IsRequired, type.Name);");
             sb.AppendLine(@"        }");
             #endregion Doing Function public EnumTypeOK
 
@@ -298,7 +298,7 @@ namespace EnumsGenerated_csServices.Services
                     sb.AppendLine($@"        private string GetEnumText_{ enumName }({ enumName }? { enumName.Substring(0, 1).ToLower() }{ enumName.Substring(1, enumName.Length - 5) })");
                     sb.AppendLine(@"        {");
                     sb.AppendLine($@"            if ({ enumName.Substring(0, 1).ToLower() }{ enumName.Substring(1, enumName.Length - 5) } == null)");
-                    sb.AppendLine(@"                return CultureEnumsRes.Empty;");
+                    sb.AppendLine(@"                return CSSPCultureEnumsRes.Empty;");
                     sb.AppendLine(@"");
                     sb.AppendLine($@"            switch ({ enumName.Substring(0, 1).ToLower() }{ enumName.Substring(1, enumName.Length - 5) })");
                     sb.AppendLine(@"            {");
@@ -310,16 +310,16 @@ namespace EnumsGenerated_csServices.Services
                             sb.AppendLine($@"                case { enumName }.{ fName }:");
                             if (fName == "CSSPError")
                             {
-                                sb.AppendLine(@"                    return CultureEnumsRes.Empty;");
+                                sb.AppendLine(@"                    return CSSPCultureEnumsRes.Empty;");
                             }
                             else
                             {
-                                sb.AppendLine($@"                    return CultureEnumsRes.{ enumName }{ fName };");
+                                sb.AppendLine($@"                    return CSSPCultureEnumsRes.{ enumName }{ fName };");
                             }
                         }
                     }
                     sb.AppendLine(@"                default:");
-                    sb.AppendLine(@"                    return CultureEnumsRes.Empty;");
+                    sb.AppendLine(@"                    return CSSPCultureEnumsRes.Empty;");
                     sb.AppendLine(@"            }");
                     sb.AppendLine(@"        }");
                 }
@@ -349,8 +349,8 @@ namespace EnumsGenerated_csServices.Services
             }
 
 
-            ActionCommandDBService.ExecutionStatusText.AppendLine($"{ CultureServicesRes.Created } [{ fi.FullName }] ...");
-            ActionCommandDBService.ExecutionStatusText.AppendLine($"{ CultureServicesRes.Done } ...");
+            ActionCommandDBService.ExecutionStatusText.AppendLine($"{ CSSPCultureServicesRes.Created } [{ fi.FullName }] ...");
+            ActionCommandDBService.ExecutionStatusText.AppendLine($"{ CSSPCultureServicesRes.Done } ...");
             ActionCommandDBService.ExecutionStatusText.AppendLine("");
             ActionCommandDBService.ExecutionStatusText.AppendLine("Generate Finished ...");
             ActionCommandDBService.PercentCompleted = 100;

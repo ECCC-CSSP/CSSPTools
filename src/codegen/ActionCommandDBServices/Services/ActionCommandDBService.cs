@@ -1,6 +1,6 @@
 ﻿using ActionCommandDBServices.Models;
-using CultureServices.Resources;
-using CultureServices.Services;
+using CSSPCultureServices.Resources;
+using CSSPCultureServices.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using System;
@@ -53,17 +53,17 @@ namespace ActionCommandDBServices.Services
         public DateTime LastUpdateDate { get; set; }
 
         private IConfiguration Configuration { get; }
-        private ICultureService CultureService { get; }
+        private ICSSPCultureService CSSPCultureService { get; }
         private ActionCommandContext db { get; }
         private string ActionText = "Action";
         private string CommandText = "Command";
         #endregion Properties
 
         #region Constructors
-        public ActionCommandDBService(ICultureService cultureService, IConfiguration configuration, ActionCommandContext db)
+        public ActionCommandDBService(ICSSPCultureService CSSPCultureService, IConfiguration Configuration, ActionCommandContext db)
         {
-            CultureService = cultureService;
-            Configuration = configuration;
+            this.CSSPCultureService = CSSPCultureService;
+            Configuration = Configuration;
             this.db = db;
             Init();
         }
@@ -72,14 +72,14 @@ namespace ActionCommandDBServices.Services
         #region Functions public
         public async Task<ActionResult<ActionCommand>> Get()
         {
-            if (string.IsNullOrWhiteSpace(Action)) return BadRequest($"{ string.Format(CultureServicesRes._IsRequied, ActionText) }");
-            if (string.IsNullOrWhiteSpace(Command)) return BadRequest($"{ string.Format(CultureServicesRes._IsRequied, CommandText) }");
+            if (string.IsNullOrWhiteSpace(Action)) return BadRequest($"{ string.Format(CSSPCultureServicesRes._IsRequied, ActionText) }");
+            if (string.IsNullOrWhiteSpace(Command)) return BadRequest($"{ string.Format(CSSPCultureServicesRes._IsRequied, CommandText) }");
 
             ActionCommand actionCommand = GetActionCommand();
 
             if (actionCommand == null)
             {
-                return BadRequest($"{ CultureServicesRes.CouldNotFindActionCommand } { string.Format(CultureServicesRes.WithAction_AndCommand_, Action, Command) }");
+                return BadRequest($"{ CSSPCultureServicesRes.CouldNotFindActionCommand } { string.Format(CSSPCultureServicesRes.WithAction_AndCommand_, Action, Command) }");
             }
 
             return await Task.FromResult(Ok(actionCommand));
@@ -119,7 +119,7 @@ namespace ActionCommandDBServices.Services
             string actionCommandCSVFileName = Configuration.GetValue<string>("ActionCommandCSVFileName");
             if (string.IsNullOrWhiteSpace(actionCommandCSVFileName))
             {
-                return BadRequest($"{ string.Format(CultureServicesRes.CouldNotReadAppSettingsParameter_ShouldBeSomthingLike_, "ActionCommandCSVFileName", "{ExePath}\\ActionCommandList.csv")}");
+                return BadRequest($"{ string.Format(CSSPCultureServicesRes.CouldNotReadAppSettingsParameter_ShouldBeSomthingLike_, "ActionCommandCSVFileName", "{ExePath}\\ActionCommandList.csv")}");
             }
 
             // refill DB
@@ -127,7 +127,7 @@ namespace ActionCommandDBServices.Services
 
             if (!fi.Exists)
             {
-                return BadRequest($"{ string.Format(CultureServicesRes.CouldNotFindFile_, fi.FullName) }");
+                return BadRequest($"{ string.Format(CSSPCultureServicesRes.CouldNotFindFile_, fi.FullName) }");
             }
 
             StreamReader str = fi.OpenText();
@@ -203,11 +203,11 @@ namespace ActionCommandDBServices.Services
                 Command = actionCommand.Command;
 
                 string exePath = Configuration.GetValue<string>("ExecuteDotNetCommandAppPath");
-                string args = $" { CultureServicesRes.Culture.Name } { actionCommand.Action } { actionCommand.Command }";
+                string args = $" { CSSPCultureServicesRes.Culture.Name } { actionCommand.Action } { actionCommand.Command }";
 
                 if (string.IsNullOrWhiteSpace(exePath))
                 {
-                    ErrorText.AppendLine(CultureServicesRes.ExePathIsEmpty);
+                    ErrorText.AppendLine(CSSPCultureServicesRes.ExePathIsEmpty);
                     PercentCompleted = 0;
                     await Update();
                     return BadRequest(ErrorText.ToString());
@@ -216,7 +216,7 @@ namespace ActionCommandDBServices.Services
                 FileInfo fiApp = new FileInfo(exePath);
                 if (!fiApp.Exists)
                 {
-                    ErrorText.AppendLine(string.Format(CultureServicesRes.CouldNotFindExePath_, exePath));
+                    ErrorText.AppendLine(string.Format(CSSPCultureServicesRes.CouldNotFindExePath_, exePath));
                     PercentCompleted = 0;
                     await Update();
                     return BadRequest(ErrorText.ToString());
@@ -234,18 +234,18 @@ namespace ActionCommandDBServices.Services
             }
             catch (Exception ex)
             {
-                return BadRequest(string.Format(CultureServicesRes.UnmanagedServerError_, ex.Message));
+                return BadRequest(string.Format(CSSPCultureServicesRes.UnmanagedServerError_, ex.Message));
             }
         }
         public async Task<ActionResult<ActionCommand>> Update()
         {
-            if (string.IsNullOrWhiteSpace(Action)) return BadRequest($"{ string.Format(CultureServicesRes._IsRequied, ActionText) }");
-            if (string.IsNullOrWhiteSpace(Command)) return BadRequest($"{ string.Format(CultureServicesRes._IsRequied, CommandText) }");
+            if (string.IsNullOrWhiteSpace(Action)) return BadRequest($"{ string.Format(CSSPCultureServicesRes._IsRequied, ActionText) }");
+            if (string.IsNullOrWhiteSpace(Command)) return BadRequest($"{ string.Format(CSSPCultureServicesRes._IsRequied, CommandText) }");
 
             ActionCommand actionCommand = GetActionCommand();
             if (actionCommand == null)
             {
-                return BadRequest($"{ CultureServicesRes.CouldNotFindActionCommand } { string.Format(CultureServicesRes.To_, CultureServicesRes.Update) }{ string.Format(CultureServicesRes.WithAction_AndCommand_, Action, Command) }");
+                return BadRequest($"{ CSSPCultureServicesRes.CouldNotFindActionCommand } { string.Format(CSSPCultureServicesRes.To_, CSSPCultureServicesRes.Update) }{ string.Format(CSSPCultureServicesRes.WithAction_AndCommand_, Action, Command) }");
             }
 
             actionCommand.FullFileName = FullFileName;

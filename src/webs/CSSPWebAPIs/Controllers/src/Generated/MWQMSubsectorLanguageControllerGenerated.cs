@@ -6,8 +6,7 @@
 
 using CSSPModels;
 using CSSPServices;
-using CultureServices.Services;
-using LoggedInServices.Services;
+using CSSPCultureServices.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
@@ -33,15 +32,15 @@ namespace CSSPWebAPIs.Controllers
         #endregion Variables
 
         #region Properties
-        private ICultureService CultureService { get; }
+        private ICSSPCultureService CSSPCultureService { get; }
         private ILoggedInService LoggedInService { get; }
         private IMWQMSubsectorLanguageService MWQMSubsectorLanguageService { get; }
         #endregion Properties
 
         #region Constructors
-        public MWQMSubsectorLanguageController(ICultureService CultureService, ILoggedInService LoggedInService, IMWQMSubsectorLanguageService MWQMSubsectorLanguageService)
+        public MWQMSubsectorLanguageController(ICSSPCultureService CSSPCultureService, ILoggedInService LoggedInService, IMWQMSubsectorLanguageService MWQMSubsectorLanguageService)
         {
-            this.CultureService = CultureService;
+            this.CSSPCultureService = CSSPCultureService;
             this.LoggedInService = LoggedInService;
             this.MWQMSubsectorLanguageService = MWQMSubsectorLanguageService;
         }
@@ -51,7 +50,7 @@ namespace CSSPWebAPIs.Controllers
         [HttpGet]
         public async Task<ActionResult<List<MWQMSubsectorLanguage>>> Get()
         {
-            CultureService.SetCulture((string)RouteData.Values["culture"]);
+            CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
             return await MWQMSubsectorLanguageService.GetMWQMSubsectorLanguageList();
@@ -59,7 +58,7 @@ namespace CSSPWebAPIs.Controllers
         [HttpGet("{MWQMSubsectorLanguageID}")]
         public async Task<ActionResult<MWQMSubsectorLanguage>> Get(int MWQMSubsectorLanguageID)
         {
-            CultureService.SetCulture((string)RouteData.Values["culture"]);
+            CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
             return await MWQMSubsectorLanguageService.GetMWQMSubsectorLanguageWithMWQMSubsectorLanguageID(MWQMSubsectorLanguageID);
@@ -67,7 +66,7 @@ namespace CSSPWebAPIs.Controllers
         [HttpPost]
         public async Task<ActionResult<MWQMSubsectorLanguage>> Post(MWQMSubsectorLanguage MWQMSubsectorLanguage)
         {
-            CultureService.SetCulture((string)RouteData.Values["culture"]);
+            CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
             return await MWQMSubsectorLanguageService.Post(MWQMSubsectorLanguage);
@@ -75,7 +74,7 @@ namespace CSSPWebAPIs.Controllers
         [HttpPut]
         public async Task<ActionResult<MWQMSubsectorLanguage>> Put(MWQMSubsectorLanguage MWQMSubsectorLanguage)
         {
-            CultureService.SetCulture((string)RouteData.Values["culture"]);
+            CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
             return await MWQMSubsectorLanguageService.Put(MWQMSubsectorLanguage);
@@ -83,7 +82,7 @@ namespace CSSPWebAPIs.Controllers
         [HttpDelete("{MWQMSubsectorLanguageID}")]
         public async Task<ActionResult<bool>> Delete(int MWQMSubsectorLanguageID)
         {
-            CultureService.SetCulture((string)RouteData.Values["culture"]);
+            CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
             return await MWQMSubsectorLanguageService.Delete(MWQMSubsectorLanguageID);

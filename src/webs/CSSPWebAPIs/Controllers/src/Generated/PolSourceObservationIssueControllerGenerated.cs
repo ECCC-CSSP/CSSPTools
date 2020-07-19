@@ -6,8 +6,7 @@
 
 using CSSPModels;
 using CSSPServices;
-using CultureServices.Services;
-using LoggedInServices.Services;
+using CSSPCultureServices.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
@@ -33,15 +32,15 @@ namespace CSSPWebAPIs.Controllers
         #endregion Variables
 
         #region Properties
-        private ICultureService CultureService { get; }
+        private ICSSPCultureService CSSPCultureService { get; }
         private ILoggedInService LoggedInService { get; }
         private IPolSourceObservationIssueService PolSourceObservationIssueService { get; }
         #endregion Properties
 
         #region Constructors
-        public PolSourceObservationIssueController(ICultureService CultureService, ILoggedInService LoggedInService, IPolSourceObservationIssueService PolSourceObservationIssueService)
+        public PolSourceObservationIssueController(ICSSPCultureService CSSPCultureService, ILoggedInService LoggedInService, IPolSourceObservationIssueService PolSourceObservationIssueService)
         {
-            this.CultureService = CultureService;
+            this.CSSPCultureService = CSSPCultureService;
             this.LoggedInService = LoggedInService;
             this.PolSourceObservationIssueService = PolSourceObservationIssueService;
         }
@@ -51,7 +50,7 @@ namespace CSSPWebAPIs.Controllers
         [HttpGet]
         public async Task<ActionResult<List<PolSourceObservationIssue>>> Get()
         {
-            CultureService.SetCulture((string)RouteData.Values["culture"]);
+            CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
             return await PolSourceObservationIssueService.GetPolSourceObservationIssueList();
@@ -59,7 +58,7 @@ namespace CSSPWebAPIs.Controllers
         [HttpGet("{PolSourceObservationIssueID}")]
         public async Task<ActionResult<PolSourceObservationIssue>> Get(int PolSourceObservationIssueID)
         {
-            CultureService.SetCulture((string)RouteData.Values["culture"]);
+            CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
             return await PolSourceObservationIssueService.GetPolSourceObservationIssueWithPolSourceObservationIssueID(PolSourceObservationIssueID);
@@ -67,7 +66,7 @@ namespace CSSPWebAPIs.Controllers
         [HttpPost]
         public async Task<ActionResult<PolSourceObservationIssue>> Post(PolSourceObservationIssue PolSourceObservationIssue)
         {
-            CultureService.SetCulture((string)RouteData.Values["culture"]);
+            CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
             return await PolSourceObservationIssueService.Post(PolSourceObservationIssue);
@@ -75,7 +74,7 @@ namespace CSSPWebAPIs.Controllers
         [HttpPut]
         public async Task<ActionResult<PolSourceObservationIssue>> Put(PolSourceObservationIssue PolSourceObservationIssue)
         {
-            CultureService.SetCulture((string)RouteData.Values["culture"]);
+            CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
             return await PolSourceObservationIssueService.Put(PolSourceObservationIssue);
@@ -83,7 +82,7 @@ namespace CSSPWebAPIs.Controllers
         [HttpDelete("{PolSourceObservationIssueID}")]
         public async Task<ActionResult<bool>> Delete(int PolSourceObservationIssueID)
         {
-            CultureService.SetCulture((string)RouteData.Values["culture"]);
+            CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
             return await PolSourceObservationIssueService.Delete(PolSourceObservationIssueID);

@@ -1,5 +1,5 @@
 ﻿using ConfigServices.Services;
-using CultureServices.Resources;
+using CSSPCultureServices.Resources;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Diagnostics;
@@ -28,14 +28,14 @@ namespace ExecuteDotNetCommandServices.Services
 
             if (!fi.Exists)
             {
-                ActionCommandDBService.ErrorText.AppendLine($"{ string.Format(CultureServicesRes.CouldNotFindSolutionFile_ToCompile, fi.FullName) }");
+                ActionCommandDBService.ErrorText.AppendLine($"{ string.Format(CSSPCultureServicesRes.CouldNotFindSolutionFile_ToCompile, fi.FullName) }");
                 return await Task.FromResult(false);
             }
 
             DirectoryInfo di = fi.Directory;
             if (!di.Exists)
             {
-                ActionCommandDBService.ErrorText.AppendLine($"{ string.Format(CultureServicesRes.CouldNotFindDirectoryOfSolutionFile_, fi.Directory) }");
+                ActionCommandDBService.ErrorText.AppendLine($"{ string.Format(CSSPCultureServicesRes.CouldNotFindDirectoryOfSolutionFile_, fi.Directory) }");
                 return await Task.FromResult(false);
             }
 
@@ -79,7 +79,7 @@ namespace ExecuteDotNetCommandServices.Services
             if (process.ExitCode == (int)ExitCode.Error)
             {
                 ActionCommandDBService.ErrorText.AppendLine("");
-                ActionCommandDBService.ErrorText.AppendLine($"{ string.Format(CultureServicesRes.ErrorWhileRunningCommand_UnderDirectory_, command + " " + arg, di.FullName) }");
+                ActionCommandDBService.ErrorText.AppendLine($"{ string.Format(CSSPCultureServicesRes.ErrorWhileRunningCommand_UnderDirectory_, command + " " + arg, di.FullName) }");
                 return await Task.FromResult(false);
             }
 
@@ -89,7 +89,7 @@ namespace ExecuteDotNetCommandServices.Services
 
                 if (!fiLog.Exists)
                 {
-                    ActionCommandDBService.ErrorText.AppendLine($"{ string.Format(CultureServicesRes.CouldNotFindFile_, fiLog.FullName) }");
+                    ActionCommandDBService.ErrorText.AppendLine($"{ string.Format(CSSPCultureServicesRes.CouldNotFindFile_, fiLog.FullName) }");
                     return await Task.FromResult(false);
                 }
 

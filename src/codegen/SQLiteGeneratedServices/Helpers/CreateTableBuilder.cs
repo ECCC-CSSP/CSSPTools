@@ -1,5 +1,5 @@
 ﻿using CSSPModels;
-using CultureServices.Resources;
+using CSSPCultureServices.Resources;
 using GenerateCodeBaseServices.Models;
 using Microsoft.Extensions.Configuration;
 using System;
@@ -224,7 +224,7 @@ namespace SQLiteGeneratedServices.Services
                 ActionCommandDBService.FilesStatusText.AppendLine(fileLine);
             }
 
-            ActionCommandDBService.ExecutionStatusText.AppendLine($"{ string.Format(CultureServicesRes.Created_, fiOutputGen.FullName) }");
+            ActionCommandDBService.ExecutionStatusText.AppendLine($"{ string.Format(CSSPCultureServicesRes.Created_, fiOutputGen.FullName) }");
 
             return await Task.FromResult(true);
         }

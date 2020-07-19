@@ -1,6 +1,6 @@
 ﻿using AngularComponentsGeneratedServices.Services;
 using ConfigServices.Services;
-using CultureServices.Services;
+using CSSPCultureServices.Services;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -18,7 +18,7 @@ namespace AngularComponentsGenerated
         #endregion Properties
 
         #region Constructors
-        public Startup(IConfiguration configuration) : base(configuration)
+        public Startup(IConfiguration Configuration) : base(Configuration)
         {
         }
         #endregion Constructors

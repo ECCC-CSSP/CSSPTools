@@ -17,7 +17,7 @@ using System.Threading.Tasks;
 using ValidateAppSettingsServices.Services;
 using ValidateAppSettingsServices.Models;
 using Microsoft.AspNetCore.Mvc;
-using CultureServices.Resources;
+using CSSPCultureServices.Resources;
 
 namespace EnumsCompareWithOldEnumsServices.Services
 {
@@ -62,7 +62,7 @@ namespace EnumsCompareWithOldEnumsServices.Services
 
                 if (typeExist == null)
                 {
-                    await ActionCommandDBService.ConsoleWriteError($"{ String.Format(CultureServicesRes.Type_NotFound, type.Name) }");
+                    await ActionCommandDBService.ConsoleWriteError($"{ String.Format(CSSPCultureServicesRes.Type_NotFound, type.Name) }");
                     return false;
                 }
                 else
@@ -83,7 +83,7 @@ namespace EnumsCompareWithOldEnumsServices.Services
 
                         if (string.IsNullOrWhiteSpace(EnumStrExist))
                         {
-                            await ActionCommandDBService.ConsoleWriteError($"{ String.Format(CultureServicesRes.Type_Enum_NotFound, type.Name, EnumStr) }");
+                            await ActionCommandDBService.ConsoleWriteError($"{ String.Format(CSSPCultureServicesRes.Type_Enum_NotFound, type.Name, EnumStr) }");
                             return false;
                         }
                         else

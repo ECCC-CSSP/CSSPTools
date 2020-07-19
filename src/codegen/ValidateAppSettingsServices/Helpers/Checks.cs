@@ -10,7 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Globalization;
 using ActionCommandDBServices.Services;
-using CultureServices.Resources;
+using CSSPCultureServices.Resources;
 
 namespace ValidateAppSettingsServices.Services
 {
@@ -22,12 +22,12 @@ namespace ValidateAppSettingsServices.Services
 
             foreach (AppSettingParameter appSettingParameter in AppSettingParameterList)
             {
-                string retConf = configuration.GetValue<string>(appSettingParameter.Parameter);
+                string retConf = Configuration.GetValue<string>(appSettingParameter.Parameter);
 
                 if (string.IsNullOrWhiteSpace(retConf))
                 {
                     retBool = false;
-                    actionCommandDBService.ErrorText.AppendLine($"{ CultureServicesRes.Error }\t{ appSettingParameter.Parameter }\t{ CultureServicesRes.CouldNotFindParameter }");
+                    actionCommandDBService.ErrorText.AppendLine($"{ CSSPCultureServicesRes.Error }\t{ appSettingParameter.Parameter }\t{ CSSPCultureServicesRes.CouldNotFindParameter }");
                 }
             }
 
@@ -37,11 +37,11 @@ namespace ValidateAppSettingsServices.Services
         {
             bool retBool = true;
 
-            string retValue = configuration.GetValue<string>(param);
+            string retValue = Configuration.GetValue<string>(param);
             if (retValue != shouldHaveValue)
             {
                 retBool = false;
-                actionCommandDBService.ErrorText.AppendLine($"{ CultureServicesRes.Error }\t{ param } != { shouldHaveValue }");
+                actionCommandDBService.ErrorText.AppendLine($"{ CSSPCultureServicesRes.Error }\t{ param } != { shouldHaveValue }");
             }
 
             return await Task.FromResult(retBool);
@@ -50,11 +50,11 @@ namespace ValidateAppSettingsServices.Services
         {
             bool retBool = true;
 
-            string retValue = configuration.GetValue<string>(param);
+            string retValue = Configuration.GetValue<string>(param);
             if (!(retValue == "en-CA" || retValue == "fr-CA"))
             {
                 retBool = false;
-                actionCommandDBService.ErrorText.AppendLine($"{ CultureServicesRes.Error }\t{ param } != en-CA || fr-CA");
+                actionCommandDBService.ErrorText.AppendLine($"{ CSSPCultureServicesRes.Error }\t{ param } != en-CA || fr-CA");
             }
 
             return await Task.FromResult(retBool);
@@ -62,12 +62,12 @@ namespace ValidateAppSettingsServices.Services
         private async Task<bool> CheckFileParameterValue(string param, string shouldHaveValue, bool CheckIfExist)
         {
             bool retBool = true;
-            string retValue = configuration.GetValue<string>(param);
+            string retValue = Configuration.GetValue<string>(param);
 
             if (retValue != shouldHaveValue)
             {
                 retBool = false;
-                actionCommandDBService.ErrorText.AppendLine($"{ CultureServicesRes.Error }\t{ param } != { shouldHaveValue }");
+                actionCommandDBService.ErrorText.AppendLine($"{ CSSPCultureServicesRes.Error }\t{ param } != { shouldHaveValue }");
             }
 
 
@@ -80,7 +80,7 @@ namespace ValidateAppSettingsServices.Services
                 if (!fiDB.Exists)
                 {
                     retBool = false;
-                    actionCommandDBService.ErrorText.AppendLine($"{ CultureServicesRes.Error }\t{ CultureServicesRes.DoesNotExist }\t{ fiDB.FullName }");
+                    actionCommandDBService.ErrorText.AppendLine($"{ CSSPCultureServicesRes.Error }\t{ CSSPCultureServicesRes.DoesNotExist }\t{ fiDB.FullName }");
                 }
             }
 

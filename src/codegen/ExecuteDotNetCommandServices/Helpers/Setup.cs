@@ -27,7 +27,7 @@ namespace ExecuteDotNetCommandServices.Services
             {
                 new AppSettingParameter() { Parameter = "Action", ExpectedValue = "run" },
                 new AppSettingParameter() { Parameter = "Command", ExpectedValue = "AngularEnumsGenerated" },
-                new AppSettingParameter() { Parameter = "Culture", ExpectedValue = "", IsCulture = true },
+                new AppSettingParameter() { Parameter = "CSSPCulture", ExpectedValue = "", IsCulture = true },
                 new AppSettingParameter() { Parameter = "DBFileName", ExpectedValue = "{AppDataPath}\\cssp\\cssplocaldatabases\\ActionCommandDB.db", IsFile = true, CheckExist = true },
 
                 // run

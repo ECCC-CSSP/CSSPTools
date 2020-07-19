@@ -1,7 +1,7 @@
 ﻿using ActionCommandDBServices.Models;
 using AngularEnumsGeneratedServices.Models;
 using CSSPEnums;
-using CultureServices.Resources;
+using CSSPCultureServices.Resources;
 using GenerateCodeBaseServices.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
@@ -40,7 +40,7 @@ namespace AngularEnumsGeneratedServices.Services
                 }
                 catch (Exception)
                 {
-                    ActionCommandDBService.ErrorText.AppendLine($"{ string.Format(CultureServicesRes.CouldNotCreateDirectory_, diOutputGen.FullName) }");
+                    ActionCommandDBService.ErrorText.AppendLine($"{ string.Format(CSSPCultureServicesRes.CouldNotCreateDirectory_, diOutputGen.FullName) }");
                     return false;
                 }
             }
@@ -52,7 +52,7 @@ namespace AngularEnumsGeneratedServices.Services
             List<DLLTypeInfo> DLLTypeInfoCSSPEnumsList = new List<DLLTypeInfo>();
             if (GenerateCodeBaseService.FillDLLTypeInfoList(fiCSSPEnumsDLL, DLLTypeInfoCSSPEnumsList))
             {
-                ActionCommandDBService.ErrorText.AppendLine($"{ string.Format(CultureServicesRes.CouldNotReadFile_, diOutputGen.FullName) }");
+                ActionCommandDBService.ErrorText.AppendLine($"{ string.Format(CSSPCultureServicesRes.CouldNotReadFile_, diOutputGen.FullName) }");
                 return false;
             }
             ActionCommandDBService.ExecutionStatusText.AppendLine($"Loaded [{ fiCSSPEnumsDLL.FullName }] ...");
@@ -109,7 +109,7 @@ namespace AngularEnumsGeneratedServices.Services
                     sb.AppendLine(@"    let enumTextOrderedList: EnumIDAndText[] = [];");
                     sb.AppendLine(@"    if ($localize.locale === 'fr-CA') {");
 
-                    CultureService.SetCulture("fr-CA");
+                    CSSPCultureService.SetCulture("fr-CA");
                     List<EnumIDAndText> enumIDAndTextList = Enums.GetEnumTextOrderedList(dllTypeInfoEnums.Type);
                     foreach (EnumIDAndText enumIDAndText in enumIDAndTextList.OrderBy(c => c.EnumID))
                     {
@@ -120,7 +120,7 @@ namespace AngularEnumsGeneratedServices.Services
                     sb.AppendLine(@"    }");
                     sb.AppendLine(@"    else {");
 
-                    CultureService.SetCulture("en-CA");
+                    CSSPCultureService.SetCulture("en-CA");
                     enumIDAndTextList = Enums.GetEnumTextOrderedList(dllTypeInfoEnums.Type);
                     foreach (EnumIDAndText enumIDAndText in enumIDAndTextList.OrderBy(c => c.EnumID))
                     {
@@ -174,7 +174,7 @@ namespace AngularEnumsGeneratedServices.Services
             }
 
             ActionCommandDBService.ExecutionStatusText.AppendLine("");
-            ActionCommandDBService.ExecutionStatusText.AppendLine($"{ CultureServicesRes.Done } ...");
+            ActionCommandDBService.ExecutionStatusText.AppendLine($"{ CSSPCultureServicesRes.Done } ...");
             ActionCommandDBService.ExecutionStatusText.AppendLine("");
             ActionCommandDBService.ExecutionStatusText.AppendLine("Generate Finished ...");
             ActionCommandDBService.PercentCompleted = 100;

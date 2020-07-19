@@ -7,9 +7,8 @@
 
 using CSSPEnums;
 using CSSPModels;
-using CultureServices.Resources;
-using CultureServices.Services;
-using LoggedInServices.Services;
+using CSSPCultureServices.Resources;
+using CSSPCultureServices.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -38,16 +37,16 @@ namespace CSSPServices
         private CSSPDBContext db { get; }
         private CSSPDBLocalContext dbLocal { get; }
         private InMemoryDBContext dbIM { get; }
-        private ICultureService CultureService { get; }
+        private ICSSPCultureService CSSPCultureService { get; }
         private ILoggedInService LoggedInService { get; }
         private IEnums enums { get; }
         private IEnumerable<ValidationResult> ValidationResults { get; set; }
         #endregion Properties
 
         #region Constructors
-        public PolSourceGroupingLanguageService(ICultureService CultureService, ILoggedInService LoggedInService, IEnums enums, CSSPDBContext db, CSSPDBLocalContext dbLocal, InMemoryDBContext dbIM)
+        public PolSourceGroupingLanguageService(ICSSPCultureService CSSPCultureService, ILoggedInService LoggedInService, IEnums enums, CSSPDBContext db, CSSPDBLocalContext dbLocal, InMemoryDBContext dbIM)
         {
-            this.CultureService = CultureService;
+            this.CSSPCultureService = CSSPCultureService;
             this.LoggedInService = LoggedInService;
             this.enums = enums;
             this.db = db;
@@ -145,7 +144,7 @@ namespace CSSPServices
             
                 if (polSourceGroupingLanguage == null)
                 {
-                    return await Task.FromResult(BadRequest(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "PolSourceGroupingLanguage", "PolSourceGroupingLanguageID", PolSourceGroupingLanguageID.ToString())));
+                    return await Task.FromResult(BadRequest(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "PolSourceGroupingLanguage", "PolSourceGroupingLanguageID", PolSourceGroupingLanguageID.ToString())));
                 }
             
                 try
@@ -168,7 +167,7 @@ namespace CSSPServices
                 
                 if (polSourceGroupingLanguage == null)
                 {
-                    return await Task.FromResult(BadRequest(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "PolSourceGroupingLanguage", "PolSourceGroupingLanguageID", PolSourceGroupingLanguageID.ToString())));
+                    return await Task.FromResult(BadRequest(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "PolSourceGroupingLanguage", "PolSourceGroupingLanguageID", PolSourceGroupingLanguageID.ToString())));
                 }
 
                 try
@@ -191,7 +190,7 @@ namespace CSSPServices
                 
                 if (polSourceGroupingLanguage == null)
                 {
-                    return await Task.FromResult(BadRequest(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "PolSourceGroupingLanguage", "PolSourceGroupingLanguageID", PolSourceGroupingLanguageID.ToString())));
+                    return await Task.FromResult(BadRequest(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "PolSourceGroupingLanguage", "PolSourceGroupingLanguageID", PolSourceGroupingLanguageID.ToString())));
                 }
 
                 try
@@ -331,21 +330,21 @@ namespace CSSPServices
             {
                 if (polSourceGroupingLanguage.PolSourceGroupingLanguageID == 0)
                 {
-                    yield return new ValidationResult(string.Format(CultureServicesRes._IsRequired, "PolSourceGroupingLanguageID"), new[] { "PolSourceGroupingLanguageID" });
+                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "PolSourceGroupingLanguageID"), new[] { "PolSourceGroupingLanguageID" });
                 }
 
                 if (LoggedInService.DBLocation == DBLocationEnum.Local)
                 {
                     if (!(from c in dbLocal.PolSourceGroupingLanguages select c).Where(c => c.PolSourceGroupingLanguageID == polSourceGroupingLanguage.PolSourceGroupingLanguageID).Any())
                     {
-                        yield return new ValidationResult(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "PolSourceGroupingLanguage", "PolSourceGroupingLanguageID", polSourceGroupingLanguage.PolSourceGroupingLanguageID.ToString()), new[] { "PolSourceGroupingLanguageID" });
+                        yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "PolSourceGroupingLanguage", "PolSourceGroupingLanguageID", polSourceGroupingLanguage.PolSourceGroupingLanguageID.ToString()), new[] { "PolSourceGroupingLanguageID" });
                     }
                 }
                 else
                 {
                     if (!(from c in db.PolSourceGroupingLanguages select c).Where(c => c.PolSourceGroupingLanguageID == polSourceGroupingLanguage.PolSourceGroupingLanguageID).Any())
                     {
-                        yield return new ValidationResult(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "PolSourceGroupingLanguage", "PolSourceGroupingLanguageID", polSourceGroupingLanguage.PolSourceGroupingLanguageID.ToString()), new[] { "PolSourceGroupingLanguageID" });
+                        yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "PolSourceGroupingLanguage", "PolSourceGroupingLanguageID", polSourceGroupingLanguage.PolSourceGroupingLanguageID.ToString()), new[] { "PolSourceGroupingLanguageID" });
                     }
                 }
             }
@@ -366,109 +365,109 @@ namespace CSSPServices
 
             if (PolSourceGroupingPolSourceGroupingID == null)
             {
-                yield return new ValidationResult(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "PolSourceGrouping", "PolSourceGroupingID", polSourceGroupingLanguage.PolSourceGroupingID.ToString()), new[] { "PolSourceGroupingID" });
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "PolSourceGrouping", "PolSourceGroupingID", polSourceGroupingLanguage.PolSourceGroupingID.ToString()), new[] { "PolSourceGroupingID" });
             }
 
             retStr = enums.EnumTypeOK(typeof(LanguageEnum), (int?)polSourceGroupingLanguage.Language);
             if (!string.IsNullOrWhiteSpace(retStr))
             {
-                yield return new ValidationResult(string.Format(CultureServicesRes._IsRequired, "Language"), new[] { "Language" });
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "Language"), new[] { "Language" });
             }
 
             if (string.IsNullOrWhiteSpace(polSourceGroupingLanguage.SourceName))
             {
-                yield return new ValidationResult(string.Format(CultureServicesRes._IsRequired, "SourceName"), new[] { "SourceName" });
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "SourceName"), new[] { "SourceName" });
             }
 
             if (!string.IsNullOrWhiteSpace(polSourceGroupingLanguage.SourceName) && polSourceGroupingLanguage.SourceName.Length > 500)
             {
-                yield return new ValidationResult(string.Format(CultureServicesRes._MaxLengthIs_, "SourceName", "500"), new[] { "SourceName" });
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "SourceName", "500"), new[] { "SourceName" });
             }
 
             if (polSourceGroupingLanguage.SourceNameOrder < 0 || polSourceGroupingLanguage.SourceNameOrder > 1000)
             {
-                yield return new ValidationResult(string.Format(CultureServicesRes._ValueShouldBeBetween_And_, "SourceNameOrder", "0", "1000"), new[] { "SourceNameOrder" });
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "SourceNameOrder", "0", "1000"), new[] { "SourceNameOrder" });
             }
 
             retStr = enums.EnumTypeOK(typeof(TranslationStatusEnum), (int?)polSourceGroupingLanguage.TranslationStatusSourceName);
             if (!string.IsNullOrWhiteSpace(retStr))
             {
-                yield return new ValidationResult(string.Format(CultureServicesRes._IsRequired, "TranslationStatusSourceName"), new[] { "TranslationStatusSourceName" });
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "TranslationStatusSourceName"), new[] { "TranslationStatusSourceName" });
             }
 
             if (string.IsNullOrWhiteSpace(polSourceGroupingLanguage.Init))
             {
-                yield return new ValidationResult(string.Format(CultureServicesRes._IsRequired, "Init"), new[] { "Init" });
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "Init"), new[] { "Init" });
             }
 
             if (!string.IsNullOrWhiteSpace(polSourceGroupingLanguage.Init) && polSourceGroupingLanguage.Init.Length > 50)
             {
-                yield return new ValidationResult(string.Format(CultureServicesRes._MaxLengthIs_, "Init", "50"), new[] { "Init" });
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "Init", "50"), new[] { "Init" });
             }
 
             retStr = enums.EnumTypeOK(typeof(TranslationStatusEnum), (int?)polSourceGroupingLanguage.TranslationStatusInit);
             if (!string.IsNullOrWhiteSpace(retStr))
             {
-                yield return new ValidationResult(string.Format(CultureServicesRes._IsRequired, "TranslationStatusInit"), new[] { "TranslationStatusInit" });
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "TranslationStatusInit"), new[] { "TranslationStatusInit" });
             }
 
             if (string.IsNullOrWhiteSpace(polSourceGroupingLanguage.Description))
             {
-                yield return new ValidationResult(string.Format(CultureServicesRes._IsRequired, "Description"), new[] { "Description" });
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "Description"), new[] { "Description" });
             }
 
             if (!string.IsNullOrWhiteSpace(polSourceGroupingLanguage.Description) && polSourceGroupingLanguage.Description.Length > 500)
             {
-                yield return new ValidationResult(string.Format(CultureServicesRes._MaxLengthIs_, "Description", "500"), new[] { "Description" });
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "Description", "500"), new[] { "Description" });
             }
 
             retStr = enums.EnumTypeOK(typeof(TranslationStatusEnum), (int?)polSourceGroupingLanguage.TranslationStatusDescription);
             if (!string.IsNullOrWhiteSpace(retStr))
             {
-                yield return new ValidationResult(string.Format(CultureServicesRes._IsRequired, "TranslationStatusDescription"), new[] { "TranslationStatusDescription" });
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "TranslationStatusDescription"), new[] { "TranslationStatusDescription" });
             }
 
             if (string.IsNullOrWhiteSpace(polSourceGroupingLanguage.Report))
             {
-                yield return new ValidationResult(string.Format(CultureServicesRes._IsRequired, "Report"), new[] { "Report" });
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "Report"), new[] { "Report" });
             }
 
             if (!string.IsNullOrWhiteSpace(polSourceGroupingLanguage.Report) && polSourceGroupingLanguage.Report.Length > 500)
             {
-                yield return new ValidationResult(string.Format(CultureServicesRes._MaxLengthIs_, "Report", "500"), new[] { "Report" });
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "Report", "500"), new[] { "Report" });
             }
 
             retStr = enums.EnumTypeOK(typeof(TranslationStatusEnum), (int?)polSourceGroupingLanguage.TranslationStatusReport);
             if (!string.IsNullOrWhiteSpace(retStr))
             {
-                yield return new ValidationResult(string.Format(CultureServicesRes._IsRequired, "TranslationStatusReport"), new[] { "TranslationStatusReport" });
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "TranslationStatusReport"), new[] { "TranslationStatusReport" });
             }
 
             if (string.IsNullOrWhiteSpace(polSourceGroupingLanguage.Text))
             {
-                yield return new ValidationResult(string.Format(CultureServicesRes._IsRequired, "Text"), new[] { "Text" });
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "Text"), new[] { "Text" });
             }
 
             if (!string.IsNullOrWhiteSpace(polSourceGroupingLanguage.Text) && polSourceGroupingLanguage.Text.Length > 500)
             {
-                yield return new ValidationResult(string.Format(CultureServicesRes._MaxLengthIs_, "Text", "500"), new[] { "Text" });
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "Text", "500"), new[] { "Text" });
             }
 
             retStr = enums.EnumTypeOK(typeof(TranslationStatusEnum), (int?)polSourceGroupingLanguage.TranslationStatusText);
             if (!string.IsNullOrWhiteSpace(retStr))
             {
-                yield return new ValidationResult(string.Format(CultureServicesRes._IsRequired, "TranslationStatusText"), new[] { "TranslationStatusText" });
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "TranslationStatusText"), new[] { "TranslationStatusText" });
             }
 
             if (polSourceGroupingLanguage.LastUpdateDate_UTC.Year == 1)
             {
-                yield return new ValidationResult(string.Format(CultureServicesRes._IsRequired, "LastUpdateDate_UTC"), new[] { "LastUpdateDate_UTC" });
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "LastUpdateDate_UTC"), new[] { "LastUpdateDate_UTC" });
             }
             else
             {
                 if (polSourceGroupingLanguage.LastUpdateDate_UTC.Year < 1980)
                 {
-                    yield return new ValidationResult(string.Format(CultureServicesRes._YearShouldBeBiggerThan_, "LastUpdateDate_UTC", "1980"), new[] { "LastUpdateDate_UTC" });
+                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes._YearShouldBeBiggerThan_, "LastUpdateDate_UTC", "1980"), new[] { "LastUpdateDate_UTC" });
                 }
             }
 
@@ -488,7 +487,7 @@ namespace CSSPServices
 
             if (TVItemLastUpdateContactTVItemID == null)
             {
-                yield return new ValidationResult(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "TVItem", "LastUpdateContactTVItemID", polSourceGroupingLanguage.LastUpdateContactTVItemID.ToString()), new[] { "LastUpdateContactTVItemID" });
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "TVItem", "LastUpdateContactTVItemID", polSourceGroupingLanguage.LastUpdateContactTVItemID.ToString()), new[] { "LastUpdateContactTVItemID" });
             }
             else
             {
@@ -498,7 +497,7 @@ namespace CSSPServices
                 };
                 if (!AllowableTVTypes.Contains(TVItemLastUpdateContactTVItemID.TVType))
                 {
-                    yield return new ValidationResult(string.Format(CultureServicesRes._IsNotOfType_, "LastUpdateContactTVItemID", "Contact"), new[] { "LastUpdateContactTVItemID" });
+                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsNotOfType_, "LastUpdateContactTVItemID", "Contact"), new[] { "LastUpdateContactTVItemID" });
                 }
             }
 

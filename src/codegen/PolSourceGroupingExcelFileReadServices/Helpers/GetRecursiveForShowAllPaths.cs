@@ -10,7 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 using ActionCommandDBServices.Services;
 using ValidateAppSettingsServices.Services;
-using CultureServices.Resources;
+using CSSPCultureServices.Resources;
 
 namespace PolSourceGroupingExcelFileReadServices.Services
 {
@@ -22,7 +22,7 @@ namespace PolSourceGroupingExcelFileReadServices.Services
 
             if (textList.Contains(s))
             {
-                ActionCommandDBService.ErrorText.AppendLine($"{ CultureServicesRes.RecursiveFound } ...");
+                ActionCommandDBService.ErrorText.AppendLine($"{ CSSPCultureServicesRes.RecursiveFound } ...");
                 ActionCommandDBService.ErrorText.AppendLine("");
                 ActionCommandDBService.PercentCompleted = 0;
                 await ActionCommandDBService.Update();
@@ -42,7 +42,7 @@ namespace PolSourceGroupingExcelFileReadServices.Services
                 return false;
             }
 
-            ActionCommandDBService.ExecutionStatusText.AppendLine($"{ CultureServicesRes.Doing } ... { s }");
+            ActionCommandDBService.ExecutionStatusText.AppendLine($"{ CSSPCultureServicesRes.Doing } ... { s }");
             //await actionCommandDBService.Update( 0);
 
             if (RaiseEvents)

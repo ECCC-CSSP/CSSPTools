@@ -29,7 +29,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\CultureServices\CultureServices.csproj" />
+    <ProjectReference Include="..\CSSPCultureServices\CSSPCultureServices.csproj" />
   </ItemGroup>
 
 </Project>

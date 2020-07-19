@@ -2,8 +2,8 @@
 using ActionCommandDBServices.Services;
 using CSSPEnums;
 using CSSPModels;
-using CultureServices.Resources;
-using CultureServices.Services;
+using CSSPCultureServices.Resources;
+using CSSPCultureServices.Services;
 using GenerateCodeBaseServices.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -29,7 +29,7 @@ namespace ConfigServices.Services
         IConfiguration Config { get; set; }
         IServiceProvider Provider { get; set; }
         IServiceCollection Services { get; set; }
-        ICultureService CultureService { get; set; }
+        ICSSPCultureService CSSPCultureService { get; set; }
         IActionCommandDBService ActionCommandDBService { get; set; }
         IGenerateCodeBaseService GenerateCodeBaseService { get; set; }
         IValidateAppSettingsService ValidateAppSettingsService { get; set; }
@@ -54,7 +54,7 @@ namespace ConfigServices.Services
         public IConfiguration Config { get; set; }
         public IServiceProvider Provider { get; set; }
         public IServiceCollection Services { get; set; }
-        public ICultureService CultureService { get; set; }
+        public ICSSPCultureService CSSPCultureService { get; set; }
         public IActionCommandDBService ActionCommandDBService { get; set; }
         public IGenerateCodeBaseService GenerateCodeBaseService { get; set; }
         public IValidateAppSettingsService ValidateAppSettingsService { get; set; }
@@ -109,7 +109,7 @@ namespace ConfigServices.Services
                 Services = new ServiceCollection();
 
                 Services.AddSingleton<IConfiguration>(Config);
-                Services.AddSingleton<ICultureService, CultureService>();
+                Services.AddSingleton<ICSSPCultureService, CSSPCultureService>();
                 Services.AddSingleton<IActionCommandDBService, ActionCommandDBService>();
                 Services.AddSingleton<IGenerateCodeBaseService, GenerateCodeBaseService>();
                 Services.AddSingleton<IValidateAppSettingsService, ValidateAppSettingsService>();
@@ -117,14 +117,14 @@ namespace ConfigServices.Services
                 string appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
                 if (Config.GetValue<string>(DBFileName) == null)
                 {
-                    throw new Exception($"{ String.Format(CultureServicesRes.CouldNotFindParameter_InAppSettingsJSON, DBFileName) }");
+                    throw new Exception($"{ String.Format(CSSPCultureServicesRes.CouldNotFindParameter_InAppSettingsJSON, DBFileName) }");
                 }
 
                 FileInfo fiDB = new FileInfo(Config.GetValue<string>(DBFileName).Replace("{AppDataPath}", appDataPath));
 
                 if (!fiDB.Exists)
                 {
-                    throw new Exception($"{ String.Format(CultureServicesRes.CouldNotFindFile_, fiDB.FullName) }");
+                    throw new Exception($"{ String.Format(CSSPCultureServicesRes.CouldNotFindFile_, fiDB.FullName) }");
                 }
 
                 Services.AddDbContext<ActionCommandContext>(options =>
@@ -138,13 +138,13 @@ namespace ConfigServices.Services
                     throw new Exception($"{ AppDomain.CurrentDomain.FriendlyName } provider == null");
                 }
 
-                CultureService = Provider.GetService<ICultureService>();
-                if (CultureService == null)
+                CSSPCultureService = Provider.GetService<ICSSPCultureService>();
+                if (CSSPCultureService == null)
                 {
                     throw new Exception($"{ AppDomain.CurrentDomain.FriendlyName } CultureService == null");
                 }
 
-                CultureService.SetCulture(Config.GetValue<string>("Culture"));
+                CSSPCultureService.SetCulture(Config.GetValue<string>("CSSPCulture"));
 
                 ActionCommandDBService = Provider.GetService<IActionCommandDBService>();
                 if (ActionCommandDBService == null)
@@ -155,19 +155,19 @@ namespace ConfigServices.Services
                 ActionCommandDBService.Action = Config.GetValue<string>(ActionText);
                 if (ActionCommandDBService.Action == null)
                 {
-                    throw new Exception($"{ string.Format(CultureServicesRes.CouldNotFindParameter_InAppSettingsJSON, ActionText) }");
+                    throw new Exception($"{ string.Format(CSSPCultureServicesRes.CouldNotFindParameter_InAppSettingsJSON, ActionText) }");
                 }
 
                 ActionCommandDBService.Command = Config.GetValue<string>(CommandText);
                 if (ActionCommandDBService.Command == null)
                 {
-                    throw new Exception($"{ string.Format(CultureServicesRes.CouldNotFindParameter_InAppSettingsJSON, CommandText) }");
+                    throw new Exception($"{ string.Format(CSSPCultureServicesRes.CouldNotFindParameter_InAppSettingsJSON, CommandText) }");
                 }
 
                 ActionResult<ActionCommand> actionActionCommand = await ActionCommandDBService.Get();
                 if (((ObjectResult)actionActionCommand.Result).StatusCode == 400)
                 {
-                    throw new Exception($"{ string.Format(CultureServicesRes.CouldNotGetAction_Command_InDB_, ActionText, CommandText, fiDB.FullName) }");
+                    throw new Exception($"{ string.Format(CSSPCultureServicesRes.CouldNotGetAction_Command_InDB_, ActionText, CommandText, fiDB.FullName) }");
                 }
             }
             catch (Exception ex)
@@ -183,7 +183,7 @@ namespace ConfigServices.Services
             string CSSPDBConnString = Config.GetValue<string>(CSSPDB2);
             if (CSSPDBConnString == null)
             {
-                await ActionCommandDBService.ConsoleWriteError($"{ String.Format(CultureServicesRes.CouldNotFindParameter_InAppSettingsJSON, CSSPDB2) }");
+                await ActionCommandDBService.ConsoleWriteError($"{ String.Format(CSSPCultureServicesRes.CouldNotFindParameter_InAppSettingsJSON, CSSPDB2) }");
                 return await Task.FromResult(false);
             }
 
@@ -207,7 +207,7 @@ namespace ConfigServices.Services
             string TestDBConnString = Config.GetValue<string>(TestDB);
             if (TestDBConnString == null)
             {
-                await ActionCommandDBService.ConsoleWriteError($"{ String.Format(CultureServicesRes.CouldNotFindParameter_InAppSettingsJSON, TestDB) }");
+                await ActionCommandDBService.ConsoleWriteError($"{ String.Format(CSSPCultureServicesRes.CouldNotFindParameter_InAppSettingsJSON, TestDB) }");
                 return await Task.FromResult(false);
             }
 
@@ -233,16 +233,16 @@ namespace ConfigServices.Services
                 ActionCommandDBService.Action = Config.GetValue<string>(ActionText);
                 if (ActionCommandDBService.Action == null)
                 {
-                    throw new Exception($"{ string.Format(CultureServicesRes.CouldNotFindParameter_InAppSettingsJSON, ActionText) }");
+                    throw new Exception($"{ string.Format(CSSPCultureServicesRes.CouldNotFindParameter_InAppSettingsJSON, ActionText) }");
                 }
 
                 ActionCommandDBService.Command = Config.GetValue<string>(CommandText);
                 if (ActionCommandDBService.Command == null)
                 {
-                    throw new Exception($"{ string.Format(CultureServicesRes.CouldNotFindParameter_InAppSettingsJSON, CommandText) }");
+                    throw new Exception($"{ string.Format(CSSPCultureServicesRes.CouldNotFindParameter_InAppSettingsJSON, CommandText) }");
                 }
 
-                CultureService.SetCulture(Config.GetValue<string>("Culture"));
+                CSSPCultureService.SetCulture(Config.GetValue<string>("CSSPCulture"));
 
                 var actionResult = await ActionCommandDBService.Get();
                 if (((ObjectResult)actionResult.Result).StatusCode == 400)
@@ -270,7 +270,7 @@ namespace ConfigServices.Services
                 }
             }
 
-            CultureService.SetCulture(culture);
+            CSSPCultureService.SetCulture(culture);
 
             return await Task.FromResult(true);
         }

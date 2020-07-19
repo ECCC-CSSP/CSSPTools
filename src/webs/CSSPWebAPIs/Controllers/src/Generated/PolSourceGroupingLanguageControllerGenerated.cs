@@ -6,8 +6,7 @@
 
 using CSSPModels;
 using CSSPServices;
-using CultureServices.Services;
-using LoggedInServices.Services;
+using CSSPCultureServices.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
@@ -33,15 +32,15 @@ namespace CSSPWebAPIs.Controllers
         #endregion Variables
 
         #region Properties
-        private ICultureService CultureService { get; }
+        private ICSSPCultureService CSSPCultureService { get; }
         private ILoggedInService LoggedInService { get; }
         private IPolSourceGroupingLanguageService PolSourceGroupingLanguageService { get; }
         #endregion Properties
 
         #region Constructors
-        public PolSourceGroupingLanguageController(ICultureService CultureService, ILoggedInService LoggedInService, IPolSourceGroupingLanguageService PolSourceGroupingLanguageService)
+        public PolSourceGroupingLanguageController(ICSSPCultureService CSSPCultureService, ILoggedInService LoggedInService, IPolSourceGroupingLanguageService PolSourceGroupingLanguageService)
         {
-            this.CultureService = CultureService;
+            this.CSSPCultureService = CSSPCultureService;
             this.LoggedInService = LoggedInService;
             this.PolSourceGroupingLanguageService = PolSourceGroupingLanguageService;
         }
@@ -51,7 +50,7 @@ namespace CSSPWebAPIs.Controllers
         [HttpGet]
         public async Task<ActionResult<List<PolSourceGroupingLanguage>>> Get()
         {
-            CultureService.SetCulture((string)RouteData.Values["culture"]);
+            CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
             return await PolSourceGroupingLanguageService.GetPolSourceGroupingLanguageList();
@@ -59,7 +58,7 @@ namespace CSSPWebAPIs.Controllers
         [HttpGet("{PolSourceGroupingLanguageID}")]
         public async Task<ActionResult<PolSourceGroupingLanguage>> Get(int PolSourceGroupingLanguageID)
         {
-            CultureService.SetCulture((string)RouteData.Values["culture"]);
+            CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
             return await PolSourceGroupingLanguageService.GetPolSourceGroupingLanguageWithPolSourceGroupingLanguageID(PolSourceGroupingLanguageID);
@@ -67,7 +66,7 @@ namespace CSSPWebAPIs.Controllers
         [HttpPost]
         public async Task<ActionResult<PolSourceGroupingLanguage>> Post(PolSourceGroupingLanguage PolSourceGroupingLanguage)
         {
-            CultureService.SetCulture((string)RouteData.Values["culture"]);
+            CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
             return await PolSourceGroupingLanguageService.Post(PolSourceGroupingLanguage);
@@ -75,7 +74,7 @@ namespace CSSPWebAPIs.Controllers
         [HttpPut]
         public async Task<ActionResult<PolSourceGroupingLanguage>> Put(PolSourceGroupingLanguage PolSourceGroupingLanguage)
         {
-            CultureService.SetCulture((string)RouteData.Values["culture"]);
+            CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
             return await PolSourceGroupingLanguageService.Put(PolSourceGroupingLanguage);
@@ -83,7 +82,7 @@ namespace CSSPWebAPIs.Controllers
         [HttpDelete("{PolSourceGroupingLanguageID}")]
         public async Task<ActionResult<bool>> Delete(int PolSourceGroupingLanguageID)
         {
-            CultureService.SetCulture((string)RouteData.Values["culture"]);
+            CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
             return await PolSourceGroupingLanguageService.Delete(PolSourceGroupingLanguageID);

@@ -7,9 +7,8 @@
 
 using CSSPEnums;
 using CSSPModels;
-using CultureServices.Resources;
-using CultureServices.Services;
-using LoggedInServices.Services;
+using CSSPCultureServices.Resources;
+using CSSPCultureServices.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -38,16 +37,16 @@ namespace CSSPServices
         private CSSPDBContext db { get; }
         private CSSPDBLocalContext dbLocal { get; }
         private InMemoryDBContext dbIM { get; }
-        private ICultureService CultureService { get; }
+        private ICSSPCultureService CSSPCultureService { get; }
         private ILoggedInService LoggedInService { get; }
         private IEnums enums { get; }
         private IEnumerable<ValidationResult> ValidationResults { get; set; }
         #endregion Properties
 
         #region Constructors
-        public AspNetUserService(ICultureService CultureService, ILoggedInService LoggedInService, IEnums enums, CSSPDBContext db, CSSPDBLocalContext dbLocal, InMemoryDBContext dbIM)
+        public AspNetUserService(ICSSPCultureService CSSPCultureService, ILoggedInService LoggedInService, IEnums enums, CSSPDBContext db, CSSPDBLocalContext dbLocal, InMemoryDBContext dbIM)
         {
-            this.CultureService = CultureService;
+            this.CSSPCultureService = CSSPCultureService;
             this.LoggedInService = LoggedInService;
             this.enums = enums;
             this.db = db;
@@ -145,7 +144,7 @@ namespace CSSPServices
             
                 if (aspNetUser == null)
                 {
-                    return await Task.FromResult(BadRequest(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "AspNetUser", "Id", Id)));
+                    return await Task.FromResult(BadRequest(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "AspNetUser", "Id", Id)));
                 }
             
                 try
@@ -168,7 +167,7 @@ namespace CSSPServices
                 
                 if (aspNetUser == null)
                 {
-                    return await Task.FromResult(BadRequest(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "AspNetUser", "Id", Id)));
+                    return await Task.FromResult(BadRequest(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "AspNetUser", "Id", Id)));
                 }
 
                 try
@@ -191,7 +190,7 @@ namespace CSSPServices
                 
                 if (aspNetUser == null)
                 {
-                    return await Task.FromResult(BadRequest(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "AspNetUser", "Id", Id)));
+                    return await Task.FromResult(BadRequest(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "AspNetUser", "Id", Id)));
                 }
 
                 try
@@ -331,28 +330,28 @@ namespace CSSPServices
             {
                 if (aspNetUser.Id == "")
                 {
-                    yield return new ValidationResult(string.Format(CultureServicesRes._IsRequired, "Id"), new[] { "Id" });
+                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "Id"), new[] { "Id" });
                 }
 
                 if (LoggedInService.DBLocation == DBLocationEnum.Local)
                 {
                     if (!(from c in dbLocal.AspNetUsers select c).Where(c => c.Id == aspNetUser.Id).Any())
                     {
-                        yield return new ValidationResult(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "AspNetUser", "AspNetUserId", (aspNetUser.Id == null ? "" : aspNetUser.Id.ToString())), new[] { "Id" });
+                        yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "AspNetUser", "AspNetUserId", (aspNetUser.Id == null ? "" : aspNetUser.Id.ToString())), new[] { "Id" });
                     }
                 }
                 else
                 {
                     if (!(from c in db.AspNetUsers select c).Where(c => c.Id == aspNetUser.Id).Any())
                     {
-                        yield return new ValidationResult(string.Format(CultureServicesRes.CouldNotFind_With_Equal_, "AspNetUser", "AspNetUserId", (aspNetUser.Id == null ? "" : aspNetUser.Id.ToString())), new[] { "Id" });
+                        yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "AspNetUser", "AspNetUserId", (aspNetUser.Id == null ? "" : aspNetUser.Id.ToString())), new[] { "Id" });
                     }
                 }
             }
 
             if (!string.IsNullOrWhiteSpace(aspNetUser.Email) && aspNetUser.Email.Length > 256)
             {
-                yield return new ValidationResult(string.Format(CultureServicesRes._MaxLengthIs_, "Email", "256"), new[] { "Email" });
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "Email", "256"), new[] { "Email" });
             }
 
             //PasswordHash has no StringLength Attribute
@@ -363,42 +362,42 @@ namespace CSSPServices
 
             if (aspNetUser.LockoutEndDateUtc != null && ((DateTime)aspNetUser.LockoutEndDateUtc).Year < 1980)
             {
-                yield return new ValidationResult(string.Format(CultureServicesRes._YearShouldBeBiggerThan_, "LockoutEndDateUtc", "1980"), new[] { "LockoutEndDateUtc" });
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._YearShouldBeBiggerThan_, "LockoutEndDateUtc", "1980"), new[] { "LockoutEndDateUtc" });
             }
 
             if (aspNetUser.AccessFailedCount < 0 || aspNetUser.AccessFailedCount > 10000)
             {
-                yield return new ValidationResult(string.Format(CultureServicesRes._ValueShouldBeBetween_And_, "AccessFailedCount", "0", "10000"), new[] { "AccessFailedCount" });
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "AccessFailedCount", "0", "10000"), new[] { "AccessFailedCount" });
             }
 
             if (string.IsNullOrWhiteSpace(aspNetUser.UserName))
             {
-                yield return new ValidationResult(string.Format(CultureServicesRes._IsRequired, "UserName"), new[] { "UserName" });
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "UserName"), new[] { "UserName" });
             }
 
             if (!string.IsNullOrWhiteSpace(aspNetUser.UserName) && aspNetUser.UserName.Length > 256)
             {
-                yield return new ValidationResult(string.Format(CultureServicesRes._MaxLengthIs_, "UserName", "256"), new[] { "UserName" });
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "UserName", "256"), new[] { "UserName" });
             }
 
             if (!string.IsNullOrWhiteSpace(aspNetUser.NormalizedUserName) && aspNetUser.NormalizedUserName.Length > 256)
             {
-                yield return new ValidationResult(string.Format(CultureServicesRes._MaxLengthIs_, "NormalizedUserName", "256"), new[] { "NormalizedUserName" });
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "NormalizedUserName", "256"), new[] { "NormalizedUserName" });
             }
 
             if (!string.IsNullOrWhiteSpace(aspNetUser.NormalizedEmail) && aspNetUser.NormalizedEmail.Length > 256)
             {
-                yield return new ValidationResult(string.Format(CultureServicesRes._MaxLengthIs_, "NormalizedEmail", "256"), new[] { "NormalizedEmail" });
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "NormalizedEmail", "256"), new[] { "NormalizedEmail" });
             }
 
             if (!string.IsNullOrWhiteSpace(aspNetUser.ConcurrencyStamp) && aspNetUser.ConcurrencyStamp.Length > 256)
             {
-                yield return new ValidationResult(string.Format(CultureServicesRes._MaxLengthIs_, "ConcurrencyStamp", "256"), new[] { "ConcurrencyStamp" });
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "ConcurrencyStamp", "256"), new[] { "ConcurrencyStamp" });
             }
 
             if (aspNetUser.LockoutEnd != null && ((DateTime)aspNetUser.LockoutEnd).Year < 1980)
             {
-                yield return new ValidationResult(string.Format(CultureServicesRes._YearShouldBeBiggerThan_, "LockoutEnd", "1980"), new[] { "LockoutEnd" });
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._YearShouldBeBiggerThan_, "LockoutEnd", "1980"), new[] { "LockoutEnd" });
             }
 
             retStr = ""; // added to stop compiling CSSPError

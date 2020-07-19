@@ -1330,22 +1330,22 @@
         }
       },
       "xunit.runner.visualstudio/2.4.2": {},
+      "CSSPCultureServices/1.0.0": {
+        "runtime": {
+          "CSSPCultureServices.dll": {}
+        },
+        "resources": {
+          "fr/CSSPCultureServices.resources.dll": {
+            "locale": "fr"
+          }
+        }
+      },
       "CSSPEnums/1.0.0": {
         "dependencies": {
-          "CultureServices": "1.0.0"
+          "CSSPCultureServices": "1.0.0"
         },
         "runtime": {
           "CSSPEnums.dll": {}
-        }
-      },
-      "CultureServices/1.0.0": {
-        "runtime": {
-          "CultureServices.dll": {}
-        },
-        "resources": {
-          "fr/CultureServices.resources.dll": {
-            "locale": "fr"
-          }
         }
       }
     }
@@ -2175,12 +2175,12 @@
       "path": "xunit.runner.visualstudio/2.4.2",
       "hashPath": "xunit.runner.visualstudio.2.4.2.nupkg.sha512"
     },
-    "CSSPEnums/1.0.0": {
+    "CSSPCultureServices/1.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""
     },
-    "CultureServices/1.0.0": {
+    "CSSPEnums/1.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""

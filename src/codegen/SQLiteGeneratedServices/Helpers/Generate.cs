@@ -1,5 +1,5 @@
 ﻿using ActionCommandDBServices.Models;
-using CultureServices.Resources;
+using CSSPCultureServices.Resources;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using System;
@@ -42,7 +42,7 @@ namespace SQLiteGeneratedServices.Services
             if (!await CreateTableBuilder(fiDLL)) await Task.FromResult(false);
             
             ActionCommandDBService.ExecutionStatusText.AppendLine("");
-            ActionCommandDBService.ExecutionStatusText.AppendLine($"{ CultureServicesRes.Done } ...");
+            ActionCommandDBService.ExecutionStatusText.AppendLine($"{ CSSPCultureServicesRes.Done } ...");
             ActionCommandDBService.ExecutionStatusText.AppendLine("");
             ActionCommandDBService.ExecutionStatusText.AppendLine("Generate Finished ...");
             ActionCommandDBService.PercentCompleted = 100;

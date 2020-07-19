@@ -6,8 +6,7 @@
 using CSSPEnums;
 using CSSPModels;
 using CSSPServices;
-using CultureServices.Services;
-using LoggedInServices.Services;
+using CSSPCultureServices.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -31,7 +30,7 @@ namespace CSSPWebAPIs.Tests
         private IAspNetUserService AspNetUserService { get; set; }
         private IContactService ContactService { get; set; }
         private ILoggedInService LoggedInService { get; set; }
-        private ICultureService CultureService { get; set; }
+        private ICSSPCultureService CSSPCultureService { get; set; }
         private Contact contact { get; set; }
         #endregion Properties
 
@@ -96,7 +95,7 @@ namespace CSSPWebAPIs.Tests
             Services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(TestDB));
 
-            Services.AddSingleton<ICultureService, CultureService>();
+            Services.AddSingleton<ICSSPCultureService, CSSPCultureService>();
             Services.AddSingleton<IEnums, Enums>();
             Services.AddSingleton<ILoggedInService, LoggedInService>();
             Services.AddSingleton<IAspNetUserService, AspNetUserService>();
@@ -105,10 +104,10 @@ namespace CSSPWebAPIs.Tests
             Provider = Services.BuildServiceProvider();
             Assert.NotNull(Provider);
 
-            CultureService = Provider.GetService<ICultureService>();
-            Assert.NotNull(CultureService);
+            CSSPCultureService = Provider.GetService<ICSSPCultureService>();
+            Assert.NotNull(CSSPCultureService);
 
-            CultureService.SetCulture(culture);
+            CSSPCultureService.SetCulture(culture);
 
             ContactService = Provider.GetService<IContactService>();
             Assert.NotNull(ContactService);

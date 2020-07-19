@@ -5,8 +5,8 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using ValidateAppSettingsServices.Models;
 using ValidateAppSettingsServices.Services;
-using CultureServices;
-using CultureServices.Services;
+using CSSPCultureServices;
+using CSSPCultureServices.Services;
 using CSSPEnums;
 using ConfigServices.Services;
 
@@ -26,17 +26,17 @@ namespace AngularEnumsGeneratedServices.Services
         #endregion Properties
 
         #region Constructors
-        public AngularEnumsGeneratedService(IConfiguration configuration,
-            ICultureService cultureService,
-            IActionCommandDBService actionCommandDBService,
-            IValidateAppSettingsService validateAppSettingsService,
-            IGenerateCodeBaseService generateCodeBaseService,
-            IEnums enums) : base(configuration)
+        public AngularEnumsGeneratedService(IConfiguration Configuration,
+            ICSSPCultureService CSSPCultureService,
+            IActionCommandDBService ActionCommandDBService,
+            IValidateAppSettingsService ValidateAppSettingsService,
+            IGenerateCodeBaseService GenerateCodeBaseService,
+            IEnums enums) : base(Configuration)
         {
-            CultureService = cultureService;
-            ActionCommandDBService = actionCommandDBService;
-            ValidateAppSettingsService = validateAppSettingsService;
-            GenerateCodeBaseService = generateCodeBaseService;
+            this.CSSPCultureService = CSSPCultureService;
+            this.ActionCommandDBService = ActionCommandDBService;
+            this.ValidateAppSettingsService = ValidateAppSettingsService;
+            this.GenerateCodeBaseService = GenerateCodeBaseService;
             Enums = enums;
         }
         #endregion Constructors
@@ -73,7 +73,7 @@ namespace AngularEnumsGeneratedServices.Services
             {
                 new AppSettingParameter() { Parameter = "Action", ExpectedValue = "run" },
                 new AppSettingParameter() { Parameter = "Command", ExpectedValue = "AngularEnumsGenerated" },
-                new AppSettingParameter() { Parameter = "Culture", ExpectedValue = "", IsCulture = true },
+                new AppSettingParameter() { Parameter = "CSSPCulture", ExpectedValue = "", IsCulture = true },
                 new AppSettingParameter() { Parameter = "DBFileName", ExpectedValue = "{AppDataPath}\\cssp\\cssplocaldatabases\\ActionCommandDB.db", IsFile = true, CheckExist = true },
                 new AppSettingParameter() { Parameter = "CSSPEnums", ExpectedValue = "C:\\CSSPTools\\src\\dlls\\_package\\netcoreapp3.1\\CSSPEnums.dll", IsFile = true, CheckExist = true },
                 new AppSettingParameter() { Parameter = "OutputDir", ExpectedValue = "C:\\CSSPTools\\src\\webs\\CSSPWebToolsAng\\client-apps\\src\\app\\enums\\generated\\" },

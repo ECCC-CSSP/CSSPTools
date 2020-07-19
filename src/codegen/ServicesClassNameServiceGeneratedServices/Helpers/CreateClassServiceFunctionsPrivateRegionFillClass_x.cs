@@ -1,4 +1,4 @@
-﻿using CultureServices.Resources;
+﻿using CSSPCultureServices.Resources;
 using GenerateCodeBaseServices.Models;
 using System;
 using System.Collections.Generic;
@@ -256,7 +256,7 @@ namespace ServicesClassNameServiceGeneratedServices.Services
                     }
                     catch (Exception)
                     {
-                        ActionCommandDBService.ErrorText.AppendLine($"{ string.Format(CultureServicesRes.CouldNotCreateDirectory_, di.FullName) }");
+                        ActionCommandDBService.ErrorText.AppendLine($"{ string.Format(CSSPCultureServicesRes.CouldNotCreateDirectory_, di.FullName) }");
                         return await Task.FromResult(false);
                     }
                 }
@@ -268,7 +268,7 @@ namespace ServicesClassNameServiceGeneratedServices.Services
                     sw.Write(sb.ToString());
                 }
 
-                ActionCommandDBService.ErrorText.AppendLine($"{ string.Format(CultureServicesRes.Created_, fiOutputGen.FullName) }");
+                ActionCommandDBService.ErrorText.AppendLine($"{ string.Format(CSSPCultureServicesRes.Created_, fiOutputGen.FullName) }");
             }
 
             return await Task.FromResult(true);

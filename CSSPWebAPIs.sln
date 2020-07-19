@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29519.161
 MinimumVisualStudioVersion = 15.0.26124.0
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CultureServices", "src\dlls\CultureServices\CultureServices.csproj", "{14B9F5D9-9C9F-4C05-BB9E-CB2D1BEB4579}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CSSPEnums", "src\dlls\CSSPEnums\CSSPEnums.csproj", "{95CAA5ED-5ECC-461A-AE98-DC441E395EC6}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CSSPModels", "src\dlls\CSSPModels\CSSPModels.csproj", "{B0A8C75E-9065-4CDA-8669-A7845FD7664F}"
@@ -16,12 +14,6 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CSSPModels.Tests", "src\tests\CSSPModels.Tests\CSSPModels.Tests.csproj", "{8784F33E-ABA0-4A46-AC0D-BF0E64CC04CE}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CSSPServices.Tests", "src\tests\CSSPServices.Tests\CSSPServices.Tests.csproj", "{B4334BCF-1CF1-486D-BF22-EBED5E5AB83F}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LoggedInServices", "src\dlls\LoggedInServices\LoggedInServices.csproj", "{5E7A988B-47D2-4DE5-B519-AC5B0C28F727}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LoggedInServices.Tests", "src\tests\LoggedInServices.Tests\LoggedInServices.Tests.csproj", "{EE97C53F-2F79-41D5-A23C-0DC37812B811}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CultureServices.Tests", "src\tests\CultureServices.Tests\CultureServices.Tests.csproj", "{05810E5C-1B72-42E6-BADE-132751A73DF4}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PolSourceGroupingExcelFileReadServices", "src\codegen\PolSourceGroupingExcelFileReadServices\PolSourceGroupingExcelFileReadServices.csproj", "{F1FEFDF6-83DD-4B3B-923B-939F99CFEA24}"
 EndProject
@@ -43,16 +35,16 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CSSPSQLiteServices", "src\d
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CSSPSQLiteServices.Tests", "src\tests\CSSPSQLiteServices.Tests\CSSPSQLiteServices.Tests.csproj", "{5A6CF19E-3734-4D7B-8E77-A0C3BFC1958C}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CSSPCultureServices", "src\dlls\CSSPCultureServices\CSSPCultureServices.csproj", "{3900FB41-76EE-41BE-99FF-3D4FE6A4C736}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CSSPCultureServices.Tests", "src\tests\CSSPCultureServices.Tests\CSSPCultureServices.Tests.csproj", "{7CBC854E-CE53-49AA-8E83-8D4C13F1FCC1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{14B9F5D9-9C9F-4C05-BB9E-CB2D1BEB4579}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{14B9F5D9-9C9F-4C05-BB9E-CB2D1BEB4579}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{14B9F5D9-9C9F-4C05-BB9E-CB2D1BEB4579}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{14B9F5D9-9C9F-4C05-BB9E-CB2D1BEB4579}.Release|Any CPU.Build.0 = Release|Any CPU
 		{95CAA5ED-5ECC-461A-AE98-DC441E395EC6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{95CAA5ED-5ECC-461A-AE98-DC441E395EC6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{95CAA5ED-5ECC-461A-AE98-DC441E395EC6}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -77,18 +69,6 @@ Global
 		{B4334BCF-1CF1-486D-BF22-EBED5E5AB83F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B4334BCF-1CF1-486D-BF22-EBED5E5AB83F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B4334BCF-1CF1-486D-BF22-EBED5E5AB83F}.Release|Any CPU.Build.0 = Release|Any CPU
-		{5E7A988B-47D2-4DE5-B519-AC5B0C28F727}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{5E7A988B-47D2-4DE5-B519-AC5B0C28F727}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{5E7A988B-47D2-4DE5-B519-AC5B0C28F727}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{5E7A988B-47D2-4DE5-B519-AC5B0C28F727}.Release|Any CPU.Build.0 = Release|Any CPU
-		{EE97C53F-2F79-41D5-A23C-0DC37812B811}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{EE97C53F-2F79-41D5-A23C-0DC37812B811}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{EE97C53F-2F79-41D5-A23C-0DC37812B811}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{EE97C53F-2F79-41D5-A23C-0DC37812B811}.Release|Any CPU.Build.0 = Release|Any CPU
-		{05810E5C-1B72-42E6-BADE-132751A73DF4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{05810E5C-1B72-42E6-BADE-132751A73DF4}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{05810E5C-1B72-42E6-BADE-132751A73DF4}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{05810E5C-1B72-42E6-BADE-132751A73DF4}.Release|Any CPU.Build.0 = Release|Any CPU
 		{F1FEFDF6-83DD-4B3B-923B-939F99CFEA24}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{F1FEFDF6-83DD-4B3B-923B-939F99CFEA24}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F1FEFDF6-83DD-4B3B-923B-939F99CFEA24}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -129,6 +109,14 @@ Global
 		{5A6CF19E-3734-4D7B-8E77-A0C3BFC1958C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5A6CF19E-3734-4D7B-8E77-A0C3BFC1958C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5A6CF19E-3734-4D7B-8E77-A0C3BFC1958C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3900FB41-76EE-41BE-99FF-3D4FE6A4C736}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3900FB41-76EE-41BE-99FF-3D4FE6A4C736}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3900FB41-76EE-41BE-99FF-3D4FE6A4C736}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3900FB41-76EE-41BE-99FF-3D4FE6A4C736}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7CBC854E-CE53-49AA-8E83-8D4C13F1FCC1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7CBC854E-CE53-49AA-8E83-8D4C13F1FCC1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7CBC854E-CE53-49AA-8E83-8D4C13F1FCC1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7CBC854E-CE53-49AA-8E83-8D4C13F1FCC1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

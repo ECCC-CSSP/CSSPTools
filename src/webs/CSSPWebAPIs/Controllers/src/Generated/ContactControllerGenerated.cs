@@ -7,8 +7,7 @@
 using CSSPEnums;
 using CSSPModels;
 using CSSPServices;
-using CultureServices.Services;
-using LoggedInServices.Services;
+using CSSPCultureServices.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
@@ -34,15 +33,15 @@ namespace CSSPWebAPIs.Controllers
         #endregion Variables
 
         #region Properties
-        private ICultureService CultureService { get; }
+        private ICSSPCultureService CSSPCultureService { get; }
         private ILoggedInService LoggedInService { get; }
         private IContactService ContactService { get; }
         #endregion Properties
 
         #region Constructors
-        public ContactController(ICultureService CultureService, ILoggedInService LoggedInService, IContactService ContactService)
+        public ContactController(ICSSPCultureService CSSPCultureService, ILoggedInService LoggedInService, IContactService ContactService)
         {
-            this.CultureService = CultureService;
+            this.CSSPCultureService = CSSPCultureService;
             this.LoggedInService = LoggedInService;
             this.ContactService = ContactService;
         }
@@ -52,7 +51,7 @@ namespace CSSPWebAPIs.Controllers
         [HttpGet]
         public async Task<ActionResult<List<Contact>>> Get()
         {
-            CultureService.SetCulture((string)RouteData.Values["culture"]);
+            CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
             return await ContactService.GetContactList();
@@ -60,7 +59,7 @@ namespace CSSPWebAPIs.Controllers
         [HttpGet("{ContactID}")]
         public async Task<ActionResult<Contact>> Get(int ContactID)
         {
-            CultureService.SetCulture((string)RouteData.Values["culture"]);
+            CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
             return await ContactService.GetContactWithContactID(ContactID);
@@ -68,7 +67,7 @@ namespace CSSPWebAPIs.Controllers
         [HttpPost]
         public async Task<ActionResult<Contact>> Post(Contact Contact)
         {
-            CultureService.SetCulture((string)RouteData.Values["culture"]);
+            CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
             return await ContactService.Post(Contact, AddContactTypeEnum.Register);
@@ -76,7 +75,7 @@ namespace CSSPWebAPIs.Controllers
         [HttpPut]
         public async Task<ActionResult<Contact>> Put(Contact Contact)
         {
-            CultureService.SetCulture((string)RouteData.Values["culture"]);
+            CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
             return await ContactService.Put(Contact);
@@ -84,7 +83,7 @@ namespace CSSPWebAPIs.Controllers
         [HttpDelete("{ContactID}")]
         public async Task<ActionResult<bool>> Delete(int ContactID)
         {
-            CultureService.SetCulture((string)RouteData.Values["culture"]);
+            CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
             return await ContactService.Delete(ContactID);

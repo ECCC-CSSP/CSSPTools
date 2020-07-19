@@ -1,5 +1,5 @@
 ﻿using ActionCommandDBServices.Models;
-using CultureServices.Resources;
+using CSSPCultureServices.Resources;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using System;
@@ -25,7 +25,7 @@ namespace EnumsPolSourceInfoRelatedFilesServices.Services
             ActionCommandDBService.PercentCompleted = 10;
             await ActionCommandDBService.Update();
 
-            ActionCommandDBService.ExecutionStatusText.AppendLine($"{ CultureServicesRes.ReadingExcelDocumentAndChecking }");
+            ActionCommandDBService.ExecutionStatusText.AppendLine($"{ CSSPCultureServicesRes.ReadingExcelDocumentAndChecking }");
 
             FileInfo fiExcel = new FileInfo(Config.GetValue<string>("ExcelFileName"));
 
@@ -36,7 +36,7 @@ namespace EnumsPolSourceInfoRelatedFilesServices.Services
 
             if (PolSourceGroupingExcelFileReadService.GroupChoiceChildLevelList.Count() == 0)
             {
-                string ErrorText = String.Format(CultureServicesRes.ERROR_IsEqualTo0, "_GroupChoiceChildLevelList");
+                string ErrorText = String.Format(CSSPCultureServicesRes.ERROR_IsEqualTo0, "_GroupChoiceChildLevelList");
                 ActionCommandDBService.ErrorText.AppendLine($"{ ErrorText }");
                 ActionCommandDBService.PercentCompleted = 0;
                 await ActionCommandDBService.Update();
@@ -44,7 +44,7 @@ namespace EnumsPolSourceInfoRelatedFilesServices.Services
                 return await Task.FromResult(false);
             }
 
-            ActionCommandDBService.ExecutionStatusText.AppendLine($"{ CultureServicesRes.ReadingExcelDocumentAndChecking } { CultureServicesRes.Done } ...");
+            ActionCommandDBService.ExecutionStatusText.AppendLine($"{ CSSPCultureServicesRes.ReadingExcelDocumentAndChecking } { CSSPCultureServicesRes.Done } ...");
 
             if (!await Generate_FillPolSourceObsInfoChildService()) await Task.FromResult(false);
             if (!await Generate_EnumsPolSourceInfo()) await Task.FromResult(false);
@@ -53,7 +53,7 @@ namespace EnumsPolSourceInfoRelatedFilesServices.Services
             if (!await Generate_PolSourceInfoEnumGeneratedRes_resx()) await Task.FromResult(false);
             if (!await Generate_PolSourceInfoEnumGeneratedResFR_resx()) await Task.FromResult(false);
 
-            ActionCommandDBService.ExecutionStatusText.AppendLine($"{ CultureServicesRes.Done } ...");
+            ActionCommandDBService.ExecutionStatusText.AppendLine($"{ CSSPCultureServicesRes.Done } ...");
             ActionCommandDBService.ExecutionStatusText.AppendLine("");
             ActionCommandDBService.ExecutionStatusText.AppendLine("Generate Finished ...");
             ActionCommandDBService.PercentCompleted = 100;

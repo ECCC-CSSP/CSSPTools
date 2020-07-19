@@ -1,4 +1,4 @@
-﻿using CultureServices.Resources;
+﻿using CSSPCultureServices.Resources;
 using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
@@ -11,15 +11,15 @@ namespace ExecuteDotNetCommandServices.Services
         {
             if (args.Count() != 3)
             {
-                ActionCommandDBService.ErrorText.AppendLine($"{ CultureServicesRes.ApplicationRequires3ParametersSeparatedBySpace }");
+                ActionCommandDBService.ErrorText.AppendLine($"{ CSSPCultureServicesRes.ApplicationRequires3ParametersSeparatedBySpace }");
                 ActionCommandDBService.ErrorText.AppendLine("");
-                ActionCommandDBService.ErrorText.AppendLine($"{ CultureServicesRes.Example } ExecuteDotNetCommand en-CA run CSSPEnums");
+                ActionCommandDBService.ErrorText.AppendLine($"{ CSSPCultureServicesRes.Example } ExecuteDotNetCommand en-CA run CSSPEnums");
                 ActionCommandDBService.ErrorText.AppendLine("");
-                ActionCommandDBService.ErrorText.AppendLine($"\t#0:\t{ CultureServicesRes.CultureOptionsEnCAFrCA }");
+                ActionCommandDBService.ErrorText.AppendLine($"\t#0:\t{ CSSPCultureServicesRes.CSSPCultureOptionsEnCAFrCA }");
                 ActionCommandDBService.ErrorText.AppendLine("");
-                ActionCommandDBService.ErrorText.AppendLine($"\t#1:\t{ CultureServicesRes.ActionOptionsRunTestBuild }");
+                ActionCommandDBService.ErrorText.AppendLine($"\t#1:\t{ CSSPCultureServicesRes.ActionOptionsRunTestBuild }");
                 ActionCommandDBService.ErrorText.AppendLine("");
-                ActionCommandDBService.ErrorText.AppendLine($"\t#2:\t{ CultureServicesRes.SolutionFileNameExampleCSSPRunsCSSPModelsCSSPServices }");
+                ActionCommandDBService.ErrorText.AppendLine($"\t#2:\t{ CSSPCultureServicesRes.SolutionFileNameExampleCSSPRunsCSSPModelsCSSPServices }");
                 ActionCommandDBService.ErrorText.AppendLine("");
                 return await Task.FromResult(false);
             }
@@ -41,13 +41,13 @@ namespace ExecuteDotNetCommandServices.Services
                 }
                 else
                 {
-                    CultureServicesRes.Culture = new CultureInfo(args[0]);
+                    CSSPCultureServicesRes.Culture = new CultureInfo(args[0]);
                     dotNetCommand.CultureName = args[0];
                 }
 
                 if (!(Args1Allowables.Contains(args[1])))
                 {
-                    ActionCommandDBService.ErrorText.AppendLine($"\t#1:\t{ string.Format(CultureServicesRes.Parameter_ShouldBe_, "1", string.Join(" || ", Args1Allowables)) }");
+                    ActionCommandDBService.ErrorText.AppendLine($"\t#1:\t{ string.Format(CSSPCultureServicesRes.Parameter_ShouldBe_, "1", string.Join(" || ", Args1Allowables)) }");
                     ActionCommandDBService.ErrorText.AppendLine("");
                     return await Task.FromResult(false);
                 }
@@ -60,7 +60,7 @@ namespace ExecuteDotNetCommandServices.Services
                 {
                     if (!(ArgsRunAllowables.Contains(args[2])))
                     {
-                        ActionCommandDBService.ErrorText.AppendLine($"\t#2:\t{ string.Format(CultureServicesRes.Parameter_ShouldBe_, "2", string.Join(" || ", ArgsRunAllowables)) }");
+                        ActionCommandDBService.ErrorText.AppendLine($"\t#2:\t{ string.Format(CSSPCultureServicesRes.Parameter_ShouldBe_, "2", string.Join(" || ", ArgsRunAllowables)) }");
                         ActionCommandDBService.ErrorText.AppendLine("");
                         return await Task.FromResult(false);
                     }
@@ -73,7 +73,7 @@ namespace ExecuteDotNetCommandServices.Services
                 {
                     if (!(ArgsTestAllowables.Contains(args[2])))
                     {
-                        ActionCommandDBService.ErrorText.AppendLine($"\t#2:\t{ string.Format(CultureServicesRes.Parameter_ShouldBe_, "2", string.Join(" || ", ArgsTestAllowables)) }");
+                        ActionCommandDBService.ErrorText.AppendLine($"\t#2:\t{ string.Format(CSSPCultureServicesRes.Parameter_ShouldBe_, "2", string.Join(" || ", ArgsTestAllowables)) }");
                         ActionCommandDBService.ErrorText.AppendLine("");
                         return await Task.FromResult(false);
                     }
@@ -86,7 +86,7 @@ namespace ExecuteDotNetCommandServices.Services
                 {
                     if (!(ArgsBuildAllowables.Contains(args[2])))
                     {
-                        ActionCommandDBService.ErrorText.AppendLine($"\t#2:\t{ string.Format(CultureServicesRes.Parameter_ShouldBe_, "2", string.Join(" || ", ArgsBuildAllowables)) }");
+                        ActionCommandDBService.ErrorText.AppendLine($"\t#2:\t{ string.Format(CSSPCultureServicesRes.Parameter_ShouldBe_, "2", string.Join(" || ", ArgsBuildAllowables)) }");
                         ActionCommandDBService.ErrorText.AppendLine("");
                         return await Task.FromResult(false);
                     }

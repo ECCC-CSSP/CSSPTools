@@ -1,6 +1,6 @@
 ﻿using ActionCommandDBServices.Services;
 using ConfigServices.Services;
-using CultureServices.Services;
+using CSSPCultureServices.Services;
 using GenerateCodeBaseServices.Services;
 using Microsoft.Extensions.Configuration;
 using PolSourceGroupingExcelFileReadServices.Services;
@@ -25,17 +25,17 @@ namespace EnumsPolSourceInfoRelatedFilesServices.Services
         #endregion Properties
 
         #region Constructors
-        public EnumsPolSourceInfoRelatedFilesService(IConfiguration configuration,
-            ICultureService cultureService,
-            IActionCommandDBService actionCommandDBService,
-            IValidateAppSettingsService validateAppSettingsService,
-            IGenerateCodeBaseService generateCodeBaseService,
-            IPolSourceGroupingExcelFileReadService polSourceGroupingExcelFileReadService) : base(configuration)
+        public EnumsPolSourceInfoRelatedFilesService(IConfiguration Configuration,
+            ICSSPCultureService CSSPCultureService,
+            IActionCommandDBService ActionCommandDBService,
+            IValidateAppSettingsService ValidateAppSettingsService,
+            IGenerateCodeBaseService GenerateCodeBaseService,
+            IPolSourceGroupingExcelFileReadService polSourceGroupingExcelFileReadService) : base(Configuration)
         {
-            CultureService = cultureService;
-            ActionCommandDBService = actionCommandDBService;
-            ValidateAppSettingsService = validateAppSettingsService;
-            GenerateCodeBaseService = generateCodeBaseService;
+            this.CSSPCultureService = CSSPCultureService;
+            this.ActionCommandDBService = ActionCommandDBService;
+            this.ValidateAppSettingsService = ValidateAppSettingsService;
+            this.GenerateCodeBaseService = GenerateCodeBaseService;
             PolSourceGroupingExcelFileReadService = polSourceGroupingExcelFileReadService;
         }
         #endregion Constructors
@@ -72,15 +72,15 @@ namespace EnumsPolSourceInfoRelatedFilesServices.Services
             {
                 new AppSettingParameter() { Parameter = "Action", ExpectedValue = "run" },
                 new AppSettingParameter() { Parameter = "Command", ExpectedValue = "EnumsPolSourceInfoRelatedFiles" },
-                new AppSettingParameter() { Parameter = "Culture", ExpectedValue = "", IsCulture = true },
+                new AppSettingParameter() { Parameter = "CSSPCulture", ExpectedValue = "", IsCulture = true },
                 new AppSettingParameter() { Parameter = "DBFileName", ExpectedValue = "{AppDataPath}\\cssp\\cssplocaldatabases\\ActionCommandDB.db", IsFile = true, CheckExist = true },
                 new AppSettingParameter() { Parameter = "ExcelFileName", ExpectedValue = "C:\\CSSPTools\\src\\assets\\PolSourceGrouping.xlsm", IsFile = true, CheckExist = true },
                 new AppSettingParameter() { Parameter = "FillPolSourceObsInfoChildServiceGenerated_cs", ExpectedValue = "C:\\CSSPTools\\src\\dlls\\CSSPModels\\Generated\\FillPolSourceObsInfoChildServiceGenerated.cs" },
                 new AppSettingParameter() { Parameter = "EnumsPolSourceInfoGenerated_cs", ExpectedValue = "C:\\CSSPTools\\src\\dlls\\CSSPEnums\\Generated\\EnumsPolSourceInfoGenerated.cs" },
                 new AppSettingParameter() { Parameter = "PolSourceObsInfoEnumGenerated_cs", ExpectedValue = "C:\\CSSPTools\\src\\dlls\\CSSPEnums\\Generated\\PolSourceObsInfoEnumGenerated.cs" },
                 new AppSettingParameter() { Parameter = "EnumsPolSourceObsInfoEnumTestGenerated_cs", ExpectedValue = "C:\\CSSPTools\\src\\tests\\CSSPEnums.Tests\\tests\\Generated\\EnumsPolSourceObsInfoEnumTestGenerated.cs" },
-                new AppSettingParameter() { Parameter = "CulturePolSourcesRes_resx", ExpectedValue = "C:\\CSSPTools\\src\\dlls\\CultureServices\\Resources\\CulturePolSourcesRes.resx" },
-                new AppSettingParameter() { Parameter = "CulturePolSourcesResFR_resx", ExpectedValue = "C:\\CSSPTools\\src\\dlls\\CultureServices\\Resources\\CulturePolSourcesRes.fr.resx" },
+                new AppSettingParameter() { Parameter = "CSSPCulturePolSourcesRes_resx", ExpectedValue = "C:\\CSSPTools\\src\\dlls\\CSSPCultureServices\\Resources\\CSSPCSSPCulturePolSourcesRes.resx" },
+                new AppSettingParameter() { Parameter = "CSSPCulturePolSourcesResFR_resx", ExpectedValue = "C:\\CSSPTools\\src\\dlls\\CSSPCultureServices\\Resources\\CSSPCSSPCulturePolSourcesRes.fr.resx" },
             };
 
             return await Task.FromResult(true);

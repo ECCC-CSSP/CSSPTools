@@ -15,7 +15,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Xunit;
 using ValidateAppSettingsServices.Services;
-using CultureServices.Resources;
+using CSSPCultureServices.Resources;
 using ConfigServices.Services;
 
 namespace ServicesClassNameServiceTestGeneratedServices.Tests

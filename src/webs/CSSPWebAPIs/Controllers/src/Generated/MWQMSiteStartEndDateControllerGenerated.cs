@@ -6,8 +6,7 @@
 
 using CSSPModels;
 using CSSPServices;
-using CultureServices.Services;
-using LoggedInServices.Services;
+using CSSPCultureServices.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
@@ -33,15 +32,15 @@ namespace CSSPWebAPIs.Controllers
         #endregion Variables
 
         #region Properties
-        private ICultureService CultureService { get; }
+        private ICSSPCultureService CSSPCultureService { get; }
         private ILoggedInService LoggedInService { get; }
         private IMWQMSiteStartEndDateService MWQMSiteStartEndDateService { get; }
         #endregion Properties
 
         #region Constructors
-        public MWQMSiteStartEndDateController(ICultureService CultureService, ILoggedInService LoggedInService, IMWQMSiteStartEndDateService MWQMSiteStartEndDateService)
+        public MWQMSiteStartEndDateController(ICSSPCultureService CSSPCultureService, ILoggedInService LoggedInService, IMWQMSiteStartEndDateService MWQMSiteStartEndDateService)
         {
-            this.CultureService = CultureService;
+            this.CSSPCultureService = CSSPCultureService;
             this.LoggedInService = LoggedInService;
             this.MWQMSiteStartEndDateService = MWQMSiteStartEndDateService;
         }
@@ -51,7 +50,7 @@ namespace CSSPWebAPIs.Controllers
         [HttpGet]
         public async Task<ActionResult<List<MWQMSiteStartEndDate>>> Get()
         {
-            CultureService.SetCulture((string)RouteData.Values["culture"]);
+            CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
             return await MWQMSiteStartEndDateService.GetMWQMSiteStartEndDateList();
@@ -59,7 +58,7 @@ namespace CSSPWebAPIs.Controllers
         [HttpGet("{MWQMSiteStartEndDateID}")]
         public async Task<ActionResult<MWQMSiteStartEndDate>> Get(int MWQMSiteStartEndDateID)
         {
-            CultureService.SetCulture((string)RouteData.Values["culture"]);
+            CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
             return await MWQMSiteStartEndDateService.GetMWQMSiteStartEndDateWithMWQMSiteStartEndDateID(MWQMSiteStartEndDateID);
@@ -67,7 +66,7 @@ namespace CSSPWebAPIs.Controllers
         [HttpPost]
         public async Task<ActionResult<MWQMSiteStartEndDate>> Post(MWQMSiteStartEndDate MWQMSiteStartEndDate)
         {
-            CultureService.SetCulture((string)RouteData.Values["culture"]);
+            CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
             return await MWQMSiteStartEndDateService.Post(MWQMSiteStartEndDate);
@@ -75,7 +74,7 @@ namespace CSSPWebAPIs.Controllers
         [HttpPut]
         public async Task<ActionResult<MWQMSiteStartEndDate>> Put(MWQMSiteStartEndDate MWQMSiteStartEndDate)
         {
-            CultureService.SetCulture((string)RouteData.Values["culture"]);
+            CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
             return await MWQMSiteStartEndDateService.Put(MWQMSiteStartEndDate);
@@ -83,7 +82,7 @@ namespace CSSPWebAPIs.Controllers
         [HttpDelete("{MWQMSiteStartEndDateID}")]
         public async Task<ActionResult<bool>> Delete(int MWQMSiteStartEndDateID)
         {
-            CultureService.SetCulture((string)RouteData.Values["culture"]);
+            CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
             return await MWQMSiteStartEndDateService.Delete(MWQMSiteStartEndDateID);

@@ -1,5 +1,5 @@
 ﻿using ConfigServices.Services;
-using CultureServices.Resources;
+using CSSPCultureServices.Resources;
 using GenerateCodeBaseServices.Models;
 using Microsoft.Extensions.Configuration;
 using System;

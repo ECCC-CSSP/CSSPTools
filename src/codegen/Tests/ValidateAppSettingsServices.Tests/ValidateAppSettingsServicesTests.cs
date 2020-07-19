@@ -1,7 +1,7 @@
 ﻿using ActionCommandDBServices.Models;
 using ActionCommandDBServices.Services;
-using CultureServices.Resources;
-using CultureServices.Services;
+using CSSPCultureServices.Resources;
+using CSSPCultureServices.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -23,10 +23,10 @@ namespace ValidateAppSettingsServices.Tests
         #endregion Variables
 
         #region Properties
-        private IConfiguration configuration { get; set; }
+        private IConfiguration Configuration { get; set; }
         private IServiceCollection serviceCollection { get; set; }
-        private IValidateAppSettingsService validateAppSettingsService { get; set; }
-        private ICultureService CultureService { get; set; }
+        private IValidateAppSettingsService ValidateAppSettingsService { get; set; }
+        private ICSSPCultureService CSSPCultureService { get; set; }
         private IActionCommandDBService actionCommandDBService { get; set; }
         private string DBFileName { get; set; } = "DBFileName";
         #endregion Properties
@@ -45,7 +45,7 @@ namespace ValidateAppSettingsServices.Tests
         {
             Assert.True(await Setup(culture));
 
-            bool retBool = await validateAppSettingsService.VerifyAppSettings();
+            bool retBool = await ValidateAppSettingsService.VerifyAppSettings();
             Assert.True(retBool);
         }
         [Theory]
@@ -58,11 +58,11 @@ namespace ValidateAppSettingsServices.Tests
             string param = "DBFileName";
             string shouldHaveValue = "{AppDataPath}\\CSSP\\ActionCommandDB_NotExist.db";
 
-            validateAppSettingsService.AppSettingParameterList[1].ExpectedValue = shouldHaveValue;
+            ValidateAppSettingsService.AppSettingParameterList[1].ExpectedValue = shouldHaveValue;
 
-            bool retBool = await validateAppSettingsService.VerifyAppSettings();
+            bool retBool = await ValidateAppSettingsService.VerifyAppSettings();
             Assert.False(retBool);
-            string expected = (new StringBuilder()).AppendLine($"{ CultureServicesRes.Error }\t{ param } != { shouldHaveValue }").ToString();
+            string expected = (new StringBuilder()).AppendLine($"{ CSSPCultureServicesRes.Error }\t{ param } != { shouldHaveValue }").ToString();
             string value = actionCommandDBService.ErrorText.ToString();
             Assert.Equal(expected, value);
         }
@@ -73,13 +73,13 @@ namespace ValidateAppSettingsServices.Tests
         {
             serviceCollection = new ServiceCollection();
 
-            configuration = new ConfigurationBuilder()
+            Configuration = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetParent(AppContext.BaseDirectory).FullName)
                 .AddJsonFile("appsettings.json")
                 .Build();
 
-            serviceCollection.AddSingleton<IConfiguration>(configuration);
-            serviceCollection.AddSingleton<ICultureService, CultureService>();
+            serviceCollection.AddSingleton<IConfiguration>(Configuration);
+            serviceCollection.AddSingleton<ICSSPCultureService, CSSPCultureService>();
             serviceCollection.AddSingleton<IActionCommandDBService, ActionCommandDBService>();
             serviceCollection.AddSingleton<IValidateAppSettingsService, ValidateAppSettingsService>();
 
@@ -92,35 +92,35 @@ namespace ValidateAppSettingsServices.Tests
                 Assert.NotNull(provider);
             }
 
-            CultureService = provider.GetService<ICultureService>();
-            Assert.NotNull(CultureService);
+            CSSPCultureService = provider.GetService<ICSSPCultureService>();
+            Assert.NotNull(CSSPCultureService);
 
-            CultureService.SetCulture(culture);
+            CSSPCultureService.SetCulture(culture);
 
-            if (CultureService.AllowableCultures.Contains(culture))
+            if (CSSPCultureService.AllowableCultures.Contains(culture))
             {
-                Assert.Equal(new CultureInfo(culture), CultureEnumsRes.Culture);
-                Assert.Equal(new CultureInfo(culture), CultureModelsRes.Culture);
-                Assert.Equal(new CultureInfo(culture), CulturePolSourcesRes.Culture);
-                Assert.Equal(new CultureInfo(culture), CultureServicesRes.Culture);
+                Assert.Equal(new CultureInfo(culture), CSSPCultureEnumsRes.Culture);
+                Assert.Equal(new CultureInfo(culture), CSSPCultureModelsRes.Culture);
+                Assert.Equal(new CultureInfo(culture), CSSPCulturePolSourcesRes.Culture);
+                Assert.Equal(new CultureInfo(culture), CSSPCultureServicesRes.Culture);
             }
             else
             {
-                Assert.Equal(new CultureInfo(CultureService.AllowableCultures[0]), CultureEnumsRes.Culture);
-                Assert.Equal(new CultureInfo(CultureService.AllowableCultures[0]), CultureModelsRes.Culture);
-                Assert.Equal(new CultureInfo(CultureService.AllowableCultures[0]), CulturePolSourcesRes.Culture);
-                Assert.Equal(new CultureInfo(CultureService.AllowableCultures[0]), CultureServicesRes.Culture);
+                Assert.Equal(new CultureInfo(CSSPCultureService.AllowableCultures[0]), CSSPCultureEnumsRes.Culture);
+                Assert.Equal(new CultureInfo(CSSPCultureService.AllowableCultures[0]), CSSPCultureModelsRes.Culture);
+                Assert.Equal(new CultureInfo(CSSPCultureService.AllowableCultures[0]), CSSPCulturePolSourcesRes.Culture);
+                Assert.Equal(new CultureInfo(CSSPCultureService.AllowableCultures[0]), CSSPCultureServicesRes.Culture);
             }
 
             actionCommandDBService = provider.GetService<IActionCommandDBService>();
             Assert.NotNull(actionCommandDBService);
 
-            validateAppSettingsService = provider.GetService<IValidateAppSettingsService>();
-            Assert.NotNull(validateAppSettingsService);
+            ValidateAppSettingsService = provider.GetService<IValidateAppSettingsService>();
+            Assert.NotNull(ValidateAppSettingsService);
 
-            validateAppSettingsService.AppSettingParameterList = new List<AppSettingParameter>()
+            ValidateAppSettingsService.AppSettingParameterList = new List<AppSettingParameter>()
             {
-                new AppSettingParameter() { Parameter = "Culture", ExpectedValue = "", IsCulture = true },
+                new AppSettingParameter() { Parameter = "CSSPCulture", ExpectedValue = "", IsCulture = true },
                 new AppSettingParameter() { Parameter = "DBFileName", ExpectedValue = "{AppDataPath}\\cssp\\cssplocaldatabases\\ActionCommandDB.db", IsFile = true, CheckExist = true },
             };
 
@@ -129,16 +129,16 @@ namespace ValidateAppSettingsServices.Tests
         private string ConfigureGenerateCodeStatusContext()
         {
             string appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
-            if (configuration.GetValue<string>(DBFileName) == null)
+            if (Configuration.GetValue<string>(DBFileName) == null)
             {
-                return $"{ String.Format(CultureServicesRes.CouldNotFindParameter_InAppSettingsJSON, DBFileName) }";
+                return $"{ String.Format(CSSPCultureServicesRes.CouldNotFindParameter_InAppSettingsJSON, DBFileName) }";
             }
 
-            FileInfo fiDB = new FileInfo(configuration.GetValue<string>(DBFileName).Replace("{AppDataPath}", appDataPath));
+            FileInfo fiDB = new FileInfo(Configuration.GetValue<string>(DBFileName).Replace("{AppDataPath}", appDataPath));
 
             if (!fiDB.Exists)
             {
-                return $"{ String.Format(CultureServicesRes.CouldNotFindFile_, fiDB.FullName) }";
+                return $"{ String.Format(CSSPCultureServicesRes.CouldNotFindFile_, fiDB.FullName) }";
             }
 
             try

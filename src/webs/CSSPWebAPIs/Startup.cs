@@ -1,10 +1,7 @@
 using CSSPEnums;
 using CSSPModels;
 using CSSPServices;
-using CSSPWebServices;
-using CSSPWebServices.Services;
-using CultureServices.Services;
-using LoggedInServices.Services;
+using CSSPCultureServices.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -204,7 +201,7 @@ namespace CSSPWebAPIs
 
             FileInfo fiDB = new FileInfo(Configuration.GetValue<string>("CSSPDBLocal").Replace("{AppDataPath}", appDataPath));
 
-            services.AddScoped<ICultureService, CultureService>();
+            services.AddScoped<ICSSPCultureService, CSSPCultureService>();
             services.AddScoped<IEnums, Enums>();
             services.AddScoped<IContactService, ContactService>();
             services.AddScoped<ILoggedInService, LoggedInService>();

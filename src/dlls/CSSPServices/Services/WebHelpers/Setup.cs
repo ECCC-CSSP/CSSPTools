@@ -2,7 +2,7 @@
  * Manually edited
  * 
  */
-using CultureServices.Resources;
+using CSSPCultureServices.Resources;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using System;
@@ -30,7 +30,7 @@ namespace CSSPServices
                     string appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
                     if (Configuration.GetValue<string>(StoragePath) == null)
                     {
-                        throw new Exception($"{ String.Format(CultureServicesRes.CouldNotFindParameter_InAppSettingsJSON, StoragePath) }");
+                        throw new Exception($"{ String.Format(CSSPCultureServicesRes.CouldNotFindParameter_InAppSettingsJSON, StoragePath) }");
                     }
 
                     DirectoryInfo di = new DirectoryInfo(Configuration.GetValue<string>(StoragePath).Replace("{AppDataPath}", appDataPath));

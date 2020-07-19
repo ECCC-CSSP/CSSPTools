@@ -1,5 +1,5 @@
 ﻿using ActionCommandDBServices.Models;
-using CultureServices.Resources;
+using CSSPCultureServices.Resources;
 using GenerateCodeBaseServices.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
@@ -39,7 +39,7 @@ namespace ModelsCompareServices.Services
             List<DLLTypeInfo> DLLTypeInfoCSSPModelsList = new List<DLLTypeInfo>();
             if (GenerateCodeBaseService.FillDLLTypeInfoList(fiCSSPModelsDLL, DLLTypeInfoCSSPModelsList))
             {
-                ActionCommandDBService.ErrorText.AppendLine($"{ string.Format(CultureServicesRes.CouldNotReadFile_, fiCSSPModelsDLL.FullName) }");
+                ActionCommandDBService.ErrorText.AppendLine($"{ string.Format(CSSPCultureServicesRes.CouldNotReadFile_, fiCSSPModelsDLL.FullName) }");
                 return await Task.FromResult(false);
             }
             #endregion Variables and loading DLL properties
@@ -85,7 +85,7 @@ namespace ModelsCompareServices.Services
                     fiCodeFile = new FileInfo(Config.GetValue<string>("CodeFileNotMapped").Replace("{TypeName}", dllTypeInfoModels.Type.Name));
                     if (!fiCodeFile.Exists)
                     {
-                        ActionCommandDBService.ErrorText.AppendLine($"{ string.Format(CultureServicesRes.CouldNotFindFile_, dllTypeInfoModels.Type.Name) }");
+                        ActionCommandDBService.ErrorText.AppendLine($"{ string.Format(CSSPCultureServicesRes.CouldNotFindFile_, dllTypeInfoModels.Type.Name) }");
                         return await Task.FromResult(false);
                     }
                 }
@@ -147,7 +147,7 @@ namespace ModelsCompareServices.Services
                         string PropTypeText = GetTypeText(dllPropertyInfo.CSSPProp.PropType);
                         if (string.IsNullOrWhiteSpace(PropTypeText))
                         {
-                            ActionCommandDBService.ErrorText.AppendLine($"{ dllPropertyInfo.CSSPProp.PropType } { CultureServicesRes.IsNotImplemented }");
+                            ActionCommandDBService.ErrorText.AppendLine($"{ dllPropertyInfo.CSSPProp.PropType } { CSSPCultureServicesRes.IsNotImplemented }");
                             return await Task.FromResult(false);
                         }
 
@@ -182,7 +182,7 @@ namespace ModelsCompareServices.Services
                         string PropTypeText = GetTypeText(dllPropertyInfo.CSSPProp.PropType);
                         if (string.IsNullOrWhiteSpace(PropTypeText))
                         {
-                            ActionCommandDBService.ErrorText.AppendLine($"{ dllPropertyInfo.CSSPProp.PropType } { CultureServicesRes.IsNotImplemented }");
+                            ActionCommandDBService.ErrorText.AppendLine($"{ dllPropertyInfo.CSSPProp.PropType } { CSSPCultureServicesRes.IsNotImplemented }");
                             return await Task.FromResult(false);
                         }
 
@@ -308,11 +308,11 @@ namespace ModelsCompareServices.Services
                 #region Comparing existing document with created document
                 #endregion Comparing existing document with created document
 
-                ActionCommandDBService.ExecutionStatusText.AppendLine($"{ dllTypeInfoModels.Type.Name } { CultureServicesRes.ComparedOK } ...");
+                ActionCommandDBService.ExecutionStatusText.AppendLine($"{ dllTypeInfoModels.Type.Name } { CSSPCultureServicesRes.ComparedOK } ...");
             }
 
             ActionCommandDBService.ExecutionStatusText.AppendLine("");
-            ActionCommandDBService.ExecutionStatusText.AppendLine($"{ CultureServicesRes.Done } ...");
+            ActionCommandDBService.ExecutionStatusText.AppendLine($"{ CSSPCultureServicesRes.Done } ...");
             ActionCommandDBService.ExecutionStatusText.AppendLine("");
             ActionCommandDBService.ExecutionStatusText.AppendLine("Generate Finished ...");
             ActionCommandDBService.PercentCompleted = 100;

@@ -1,6 +1,6 @@
 ﻿using ActionCommandDBServices.Services;
 using ConfigServices.Services;
-using CultureServices.Services;
+using CSSPCultureServices.Services;
 using GenerateCodeBaseServices.Services;
 using Microsoft.Extensions.Configuration;
 using System.Collections.Generic;
@@ -20,16 +20,16 @@ namespace EnumsGenerated_csServices.Services
         #endregion Variables
 
         #region Constructors
-        public EnumsGenerated_csService(IConfiguration configuration,
-            ICultureService cultureService,
-            IActionCommandDBService actionCommandDBService,
-            IValidateAppSettingsService validateAppSettingsService,
-            IGenerateCodeBaseService generateCodeBaseService) : base(configuration)
+        public EnumsGenerated_csService(IConfiguration Configuration,
+            ICSSPCultureService CSSPCultureService,
+            IActionCommandDBService ActionCommandDBService,
+            IValidateAppSettingsService ValidateAppSettingsService,
+            IGenerateCodeBaseService GenerateCodeBaseService) : base(Configuration)
         {
-            CultureService = cultureService;
-            ActionCommandDBService = actionCommandDBService;
-            ValidateAppSettingsService = validateAppSettingsService;
-            GenerateCodeBaseService = generateCodeBaseService;
+            this.CSSPCultureService = CSSPCultureService;
+            this.ActionCommandDBService = ActionCommandDBService;
+            this.ValidateAppSettingsService = ValidateAppSettingsService;
+            this.GenerateCodeBaseService = GenerateCodeBaseService;
         }
         #endregion Constructors
 
@@ -65,7 +65,7 @@ namespace EnumsGenerated_csServices.Services
             {
                 new AppSettingParameter() { Parameter = "Action", ExpectedValue = "run" },
                 new AppSettingParameter() { Parameter = "Command", ExpectedValue = "EnumsGenerated_cs" },
-                new AppSettingParameter() { Parameter = "Culture", ExpectedValue = "", IsCulture = true },
+                new AppSettingParameter() { Parameter = "CSSPCulture", ExpectedValue = "", IsCulture = true },
                 new AppSettingParameter() { Parameter = "DBFileName", ExpectedValue = "{AppDataPath}\\cssp\\cssplocaldatabases\\ActionCommandDB.db", IsFile = true, CheckExist = true },
                 new AppSettingParameter() { Parameter = "CSSPEnums", ExpectedValue = "C:\\CSSPTools\\src\\dlls\\_package\\netcoreapp3.1\\CSSPEnums.dll", IsFile = true, CheckExist = true },
                 new AppSettingParameter() { Parameter = "IEnumsGenerated", ExpectedValue = "C:\\CSSPTools\\src\\dlls\\CSSPEnums\\Generated\\IEnumsGenerated.cs" },

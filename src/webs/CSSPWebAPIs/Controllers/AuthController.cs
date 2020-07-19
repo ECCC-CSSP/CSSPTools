@@ -9,7 +9,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using CSSPModels;
 using CSSPServices;
-using CultureServices.Services;
+using CSSPCultureServices.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -27,14 +27,14 @@ namespace CSSPWebAPIs.Controllers
         #endregion Variables
 
         #region Properties
-        private ICultureService CultureService { get; }
+        private ICSSPCultureService CSSPCultureService { get; }
         private IContactService ContactService { get; }
         #endregion Properties
 
         #region Constructors
-        public AuthController(ICultureService CultureService, IContactService ContactService)
+        public AuthController(ICSSPCultureService CSSPCultureService, IContactService ContactService)
         {
-            this.CultureService = CultureService;
+            this.CSSPCultureService = CSSPCultureService;
             this.ContactService = ContactService;
         }
         #endregion Constructors
@@ -45,7 +45,7 @@ namespace CSSPWebAPIs.Controllers
         [AllowAnonymous]
         public async Task<ActionResult<Contact>> Token(LoginModel loginModel)
         {
-            CultureService.SetCulture((string)RouteData.Values["culture"]);
+            CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             return await ContactService.Login(loginModel);
         }
         //[Route("Register")]

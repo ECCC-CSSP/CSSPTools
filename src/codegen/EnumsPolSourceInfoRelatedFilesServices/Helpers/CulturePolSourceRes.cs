@@ -1,4 +1,4 @@
-﻿using CultureServices.Resources;
+﻿using CSSPCultureServices.Resources;
 using Microsoft.Extensions.Configuration;
 using PolSourceGroupingExcelFileReadServices.Models;
 using System;
@@ -26,7 +26,7 @@ namespace EnumsPolSourceInfoRelatedFilesServices.Services
         {
             StringBuilder sb = new StringBuilder();
 
-            FileInfo fi = new FileInfo(Config.GetValue<string>("CulturePolSourcesRes_resx"));
+            FileInfo fi = new FileInfo(Config.GetValue<string>("CSSPCulturePolSourcesRes_resx"));
 
             if (!await ResxTopPart(sb)) return await Task.FromResult(false);
 
@@ -107,14 +107,14 @@ namespace EnumsPolSourceInfoRelatedFilesServices.Services
             }
             catch (Exception ex)
             {
-                ActionCommandDBService.ErrorText.AppendLine($"{ CultureServicesRes.Creating } [{ fi.FullName }] ...");
+                ActionCommandDBService.ErrorText.AppendLine($"{ CSSPCultureServicesRes.Creating } [{ fi.FullName }] ...");
                 string InnerException = (ex.InnerException != null ? $"Inner: { ex.InnerException.Message }" : "");
-                ActionCommandDBService.ErrorText.AppendLine($"{ CultureServicesRes.Error }: { ex.Message }{ InnerException  }");
+                ActionCommandDBService.ErrorText.AppendLine($"{ CSSPCultureServicesRes.Error }: { ex.Message }{ InnerException  }");
 
                 return await Task.FromResult(false);
             }
 
-            fi = new FileInfo(Config.GetValue<string>("CulturePolSourcesRes_resx"));
+            fi = new FileInfo(Config.GetValue<string>("CSSPCulturePolSourcesRes_resx"));
             if (fi.Exists)
             {
                 string fileLine = "Last Write Time [" + fi.LastWriteTime.ToString("yyyy MMMM dd HH:mm:ss") + "] " + fi.FullName;
@@ -126,7 +126,7 @@ namespace EnumsPolSourceInfoRelatedFilesServices.Services
                 ActionCommandDBService.FilesStatusText.AppendLine(fileLine);
             }
 
-            ActionCommandDBService.ExecutionStatusText.AppendLine($"{ CultureServicesRes.Created }: { fi.FullName }");
+            ActionCommandDBService.ExecutionStatusText.AppendLine($"{ CSSPCultureServicesRes.Created }: { fi.FullName }");
 
             return await Task.FromResult(true);
         }

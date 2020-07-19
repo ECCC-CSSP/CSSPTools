@@ -1,9 +1,8 @@
 ﻿using CSSPEnums;
 using CSSPModels;
 using CSSPServices;
-using CultureServices.Resources;
-using CultureServices.Services;
-using LoggedInServices.Services;
+using CSSPCultureServices.Resources;
+using CSSPCultureServices.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -31,7 +30,7 @@ namespace ContactServices.Tests
         private IConfiguration Configuration { get; set; }
         private IServiceCollection ServiceCollection { get; set; }
         private IServiceProvider ServiceProvider { get; set; }
-        private ICultureService CultureService { get; set; }
+        private ICSSPCultureService CSSPCultureService { get; set; }
         private IContactService ContactService { get; set; }
         private string LoginEmail { get; set; }
         private string Password { get; set; }
@@ -82,7 +81,7 @@ namespace ContactServices.Tests
             var retValue = await ContactService.Login(new LoginModel() { LoginEmail = LoginEmail, Password = Password });
             Assert.Null(retValue.Value);
             Assert.Equal(400, ((BadRequestObjectResult)retValue.Result).StatusCode);
-            string expected = String.Format(CultureServicesRes.__CouldNotBeFound, CultureServicesRes.Email, LoginEmail);
+            string expected = String.Format(CSSPCultureServicesRes.__CouldNotBeFound, CSSPCultureServicesRes.Email, LoginEmail);
             var value = ((BadRequestObjectResult)retValue.Result).Value;
             Assert.Equal(expected, value);
 
@@ -99,7 +98,7 @@ namespace ContactServices.Tests
             var retValue = await ContactService.Login(new LoginModel() { LoginEmail = LoginEmail, Password = Password });
             Assert.Null(retValue.Value);
             Assert.Equal(400, ((BadRequestObjectResult)retValue.Result).StatusCode);
-            string expected = String.Format(CultureServicesRes.UnableToLoginAs_WithProvidedPassword, LoginEmail);
+            string expected = String.Format(CSSPCultureServicesRes.UnableToLoginAs_WithProvidedPassword, LoginEmail);
             var value = ((BadRequestObjectResult)retValue.Result).Value;
             Assert.Equal(expected, value);
 
@@ -120,7 +119,7 @@ namespace ContactServices.Tests
             ServiceCollection = new ServiceCollection();
 
             ServiceCollection.AddSingleton<IConfiguration>(Configuration);
-            ServiceCollection.AddSingleton<ICultureService, CultureService>();
+            ServiceCollection.AddSingleton<ICSSPCultureService, CSSPCultureService>();
             ServiceCollection.AddSingleton<IEnums, Enums>();
             ServiceCollection.AddSingleton<ILoggedInService, LoggedInService>();
             ServiceCollection.AddSingleton<IAspNetUserService, AspNetUserService>();
@@ -162,10 +161,10 @@ namespace ContactServices.Tests
             ServiceProvider = ServiceCollection.BuildServiceProvider();
             Assert.NotNull(ServiceProvider);
 
-            CultureService = ServiceProvider.GetService<ICultureService>();
-            Assert.NotNull(CultureService);
+            CSSPCultureService = ServiceProvider.GetService<ICSSPCultureService>();
+            Assert.NotNull(CSSPCultureService);
 
-            CultureService.SetCulture(culture);
+            CSSPCultureService.SetCulture(culture);
 
             ContactService = ServiceProvider.GetService<IContactService>();
             Assert.NotNull(ContactService);

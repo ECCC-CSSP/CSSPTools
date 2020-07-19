@@ -9,7 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using ActionCommandDBServices.Services;
-using CultureServices.Resources;
+using CSSPCultureServices.Resources;
 
 namespace PolSourceGroupingExcelFileReadServices.Services
 {
@@ -19,7 +19,7 @@ namespace PolSourceGroupingExcelFileReadServices.Services
         {
             GroupChoiceChildLevelList = new List<GroupChoiceChildLevel>();
 
-            ActionCommandDBService.ExecutionStatusText.AppendLine($"{ CultureServicesRes.ReadingSpreadsheet } [{ FullFileName }]");
+            ActionCommandDBService.ExecutionStatusText.AppendLine($"{ CSSPCultureServicesRes.ReadingSpreadsheet } [{ FullFileName }]");
             ActionCommandDBService.ExecutionStatusText.AppendLine("");
             //await actionCommandDBService.Update( 0);
 
@@ -83,7 +83,7 @@ namespace PolSourceGroupingExcelFileReadServices.Services
                                                     {
                                                         if ((item.Text.Text + "") != FieldNameList[cellcount])
                                                         {
-                                                            ActionCommandDBService.ErrorText.AppendLine($"{ fi.FullName } { CultureServicesRes.PolSourceGrouping } { item.Text } { CultureServicesRes.IsNotEqualTo } { FieldNameList[cellcount] }");
+                                                            ActionCommandDBService.ErrorText.AppendLine($"{ fi.FullName } { CSSPCultureServicesRes.PolSourceGrouping } { item.Text } { CSSPCultureServicesRes.IsNotEqualTo } { FieldNameList[cellcount] }");
                                                             ActionCommandDBService.ErrorText.AppendLine("");
                                                             ActionCommandDBService.PercentCompleted = 0;
                                                             await ActionCommandDBService.Update();
@@ -96,7 +96,7 @@ namespace PolSourceGroupingExcelFileReadServices.Services
                                                         currentcellvalue = item.InnerText;
                                                         if (currentcellvalue != FieldNameList[cellcount])
                                                         {
-                                                            ActionCommandDBService.ErrorText.AppendLine($"{ fi.FullName } { CultureServicesRes.PolSourceGrouping } { item.Text } { CultureServicesRes.IsNotEqualTo } { FieldNameList[cellcount] }");
+                                                            ActionCommandDBService.ErrorText.AppendLine($"{ fi.FullName } { CSSPCultureServicesRes.PolSourceGrouping } { item.Text } { CSSPCultureServicesRes.IsNotEqualTo } { FieldNameList[cellcount] }");
                                                             ActionCommandDBService.ErrorText.AppendLine("");
                                                             ActionCommandDBService.PercentCompleted = 0;
                                                             await ActionCommandDBService.Update();
@@ -109,7 +109,7 @@ namespace PolSourceGroupingExcelFileReadServices.Services
                                                         currentcellvalue = item.InnerXml;
                                                         if (currentcellvalue != FieldNameList[cellcount])
                                                         {
-                                                            ActionCommandDBService.ErrorText.AppendLine($"{ fi.FullName } { CultureServicesRes.PolSourceGrouping } { item.Text } { CultureServicesRes.IsNotEqualTo } { FieldNameList[cellcount] }");
+                                                            ActionCommandDBService.ErrorText.AppendLine($"{ fi.FullName } { CSSPCultureServicesRes.PolSourceGrouping } { item.Text } { CSSPCultureServicesRes.IsNotEqualTo } { FieldNameList[cellcount] }");
                                                             ActionCommandDBService.ErrorText.AppendLine("");
                                                             ActionCommandDBService.PercentCompleted = 0;
                                                             await ActionCommandDBService.Update();
@@ -124,7 +124,7 @@ namespace PolSourceGroupingExcelFileReadServices.Services
                                         {
                                             if ((thecurrentcell.InnerText + " ") != FieldNameList[cellcount])
                                             {
-                                                ActionCommandDBService.ErrorText.AppendLine($"{ fi.FullName } { CultureServicesRes.PolSourceGrouping } { (thecurrentcell.InnerText + " ") } { CultureServicesRes.IsNotEqualTo } { FieldNameList[cellcount] }");
+                                                ActionCommandDBService.ErrorText.AppendLine($"{ fi.FullName } { CSSPCultureServicesRes.PolSourceGrouping } { (thecurrentcell.InnerText + " ") } { CSSPCultureServicesRes.IsNotEqualTo } { FieldNameList[cellcount] }");
                                                 ActionCommandDBService.ErrorText.AppendLine("");
                                                 ActionCommandDBService.PercentCompleted = 0;
                                                 await ActionCommandDBService.Update();
@@ -381,7 +381,7 @@ namespace PolSourceGroupingExcelFileReadServices.Services
 
                                     if (rowCount % 200 == 0)
                                     {
-                                        ActionCommandDBService.ExecutionStatusText.AppendLine($"{ CultureServicesRes.ReadingSpreadsheet } ... { rowCount }");
+                                        ActionCommandDBService.ExecutionStatusText.AppendLine($"{ CSSPCultureServicesRes.ReadingSpreadsheet } ... { rowCount }");
                                         ActionCommandDBService.ExecutionStatusText.AppendLine("");
                                         //await actionCommandDBService.Update( 0);
                                     }

@@ -4,7 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Threading.Tasks;
 using SQLiteGeneratedServices.Services;
-using CultureServices.Resources;
+using CSSPCultureServices.Resources;
 using CSSPModels;
 using Microsoft.EntityFrameworkCore;
 
@@ -20,7 +20,7 @@ namespace SQLiteGenerated
         #endregion Properties
 
         #region Constructors
-        public Startup(IConfiguration configuration) : base(configuration)
+        public Startup(IConfiguration Configuration) : base(Configuration)
         {
         }
         #endregion Constructors

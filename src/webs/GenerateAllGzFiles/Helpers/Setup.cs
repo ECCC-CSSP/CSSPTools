@@ -2,15 +2,10 @@
  * Manually edited
  * 
  */
+using CSSPCultureServices.Services;
 using CSSPEnums;
 using CSSPModels;
 using CSSPServices;
-using CSSPWebModels;
-using CSSPWebServices.Services;
-using CultureServices.Resources;
-using CultureServices.Services;
-using LoggedInServices.Services;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -68,7 +63,7 @@ namespace GenerateAllGzFiles
             Services.AddIdentityCore<ApplicationUser>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
 
-            Services.AddSingleton<ICultureService, CultureService>();
+            Services.AddSingleton<ICSSPCultureService, CSSPCultureService>();
             Services.AddSingleton<IEnums, Enums>();
             Services.AddSingleton<ILoggedInService, LoggedInService>();
             Services.AddSingleton<IContactService, ContactService>();
@@ -81,14 +76,14 @@ namespace GenerateAllGzFiles
                 return await Task.FromResult(false);
             }
 
-            CultureService = Provider.GetService<ICultureService>();
-            if (CultureService == null)
+            CSSPCultureService = Provider.GetService<ICSSPCultureService>();
+            if (CSSPCultureService == null)
             {
-                Console.WriteLine("CultureService is null");
+                Console.WriteLine("CSSPCultureService is null");
                 return await Task.FromResult(false);
             }
 
-            CultureService.SetCulture("en-CA");
+            CSSPCultureService.SetCulture("en-CA");
 
             ContactService = Provider.GetService<IContactService>();
             if (ContactService == null)

@@ -6,8 +6,7 @@
 
 using CSSPModels;
 using CSSPServices;
-using CultureServices.Services;
-using LoggedInServices.Services;
+using CSSPCultureServices.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
@@ -33,15 +32,15 @@ namespace CSSPWebAPIs.Controllers
         #endregion Variables
 
         #region Properties
-        private ICultureService CultureService { get; }
+        private ICSSPCultureService CSSPCultureService { get; }
         private ILoggedInService LoggedInService { get; }
         private IRainExceedanceClimateSiteService RainExceedanceClimateSiteService { get; }
         #endregion Properties
 
         #region Constructors
-        public RainExceedanceClimateSiteController(ICultureService CultureService, ILoggedInService LoggedInService, IRainExceedanceClimateSiteService RainExceedanceClimateSiteService)
+        public RainExceedanceClimateSiteController(ICSSPCultureService CSSPCultureService, ILoggedInService LoggedInService, IRainExceedanceClimateSiteService RainExceedanceClimateSiteService)
         {
-            this.CultureService = CultureService;
+            this.CSSPCultureService = CSSPCultureService;
             this.LoggedInService = LoggedInService;
             this.RainExceedanceClimateSiteService = RainExceedanceClimateSiteService;
         }
@@ -51,7 +50,7 @@ namespace CSSPWebAPIs.Controllers
         [HttpGet]
         public async Task<ActionResult<List<RainExceedanceClimateSite>>> Get()
         {
-            CultureService.SetCulture((string)RouteData.Values["culture"]);
+            CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
             return await RainExceedanceClimateSiteService.GetRainExceedanceClimateSiteList();
@@ -59,7 +58,7 @@ namespace CSSPWebAPIs.Controllers
         [HttpGet("{RainExceedanceClimateSiteID}")]
         public async Task<ActionResult<RainExceedanceClimateSite>> Get(int RainExceedanceClimateSiteID)
         {
-            CultureService.SetCulture((string)RouteData.Values["culture"]);
+            CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
             return await RainExceedanceClimateSiteService.GetRainExceedanceClimateSiteWithRainExceedanceClimateSiteID(RainExceedanceClimateSiteID);
@@ -67,7 +66,7 @@ namespace CSSPWebAPIs.Controllers
         [HttpPost]
         public async Task<ActionResult<RainExceedanceClimateSite>> Post(RainExceedanceClimateSite RainExceedanceClimateSite)
         {
-            CultureService.SetCulture((string)RouteData.Values["culture"]);
+            CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
             return await RainExceedanceClimateSiteService.Post(RainExceedanceClimateSite);
@@ -75,7 +74,7 @@ namespace CSSPWebAPIs.Controllers
         [HttpPut]
         public async Task<ActionResult<RainExceedanceClimateSite>> Put(RainExceedanceClimateSite RainExceedanceClimateSite)
         {
-            CultureService.SetCulture((string)RouteData.Values["culture"]);
+            CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
             return await RainExceedanceClimateSiteService.Put(RainExceedanceClimateSite);
@@ -83,7 +82,7 @@ namespace CSSPWebAPIs.Controllers
         [HttpDelete("{RainExceedanceClimateSiteID}")]
         public async Task<ActionResult<bool>> Delete(int RainExceedanceClimateSiteID)
         {
-            CultureService.SetCulture((string)RouteData.Values["culture"]);
+            CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
             return await RainExceedanceClimateSiteService.Delete(RainExceedanceClimateSiteID);

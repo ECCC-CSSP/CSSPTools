@@ -23,7 +23,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\LoggedInServices\LoggedInServices.csproj" />
+    <ProjectReference Include="..\CSSPModels\CSSPModels.csproj" />
   </ItemGroup>
 
 </Project>

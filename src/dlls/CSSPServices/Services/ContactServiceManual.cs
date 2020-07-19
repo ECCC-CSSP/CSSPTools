@@ -7,9 +7,8 @@
 
 using CSSPEnums;
 using CSSPModels;
-using CultureServices.Resources;
-using CultureServices.Services;
-using LoggedInServices.Services;
+using CSSPCultureServices.Resources;
+using CSSPCultureServices.Services;
 using Microsoft.AspNetCore.Mvc;
 //using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -100,13 +99,13 @@ namespace CSSPServices
 
                 if (appUser == null)
                 {
-                    return BadRequest(String.Format(CultureServicesRes.__CouldNotBeFound, CultureServicesRes.Email, loginModel.LoginEmail));
+                    return BadRequest(String.Format(CSSPCultureServicesRes.__CouldNotBeFound, CSSPCultureServicesRes.Email, loginModel.LoginEmail));
                 }
 
                 bool HasPassword = await UserManager.CheckPasswordAsync(appUser, loginModel.Password);
                 if (!HasPassword)
                 {
-                    return BadRequest(String.Format(CultureServicesRes.UnableToLoginAs_WithProvidedPassword, loginModel.LoginEmail));
+                    return BadRequest(String.Format(CSSPCultureServicesRes.UnableToLoginAs_WithProvidedPassword, loginModel.LoginEmail));
                 }
 
                 if (HasPassword == true)
@@ -114,14 +113,14 @@ namespace CSSPServices
                     var actionContact = await GetContactWithId(appUser.Id);
                     if (((ObjectResult)actionContact.Result).StatusCode != 200)
                     {
-                        return BadRequest(String.Format(CultureServicesRes.UnableToLoginAs_WithProvidedPassword, loginModel.LoginEmail));
+                        return BadRequest(String.Format(CSSPCultureServicesRes.UnableToLoginAs_WithProvidedPassword, loginModel.LoginEmail));
                     }
 
                     Contact contact = (Contact)((OkObjectResult)actionContact.Result).Value;
 
                     if (contact == null)
                     {
-                        return BadRequest(String.Format(CultureServicesRes.UnableToLoginAs_WithProvidedPassword, loginModel.LoginEmail));
+                        return BadRequest(String.Format(CSSPCultureServicesRes.UnableToLoginAs_WithProvidedPassword, loginModel.LoginEmail));
                     }
 
                     byte[] key = Encoding.ASCII.GetBytes(Configuration.GetValue<string>("APISecret"));
@@ -144,10 +143,10 @@ namespace CSSPServices
             }
             catch (Exception ex)
             {
-                return BadRequest(String.Format(CultureServicesRes.Error_, ex.Message));
+                return BadRequest(String.Format(CSSPCultureServicesRes.Error_, ex.Message));
             }
 
-            return BadRequest(String.Format(CultureServicesRes.UnableToLoginAs_WithProvidedPassword, loginModel.LoginEmail));
+            return BadRequest(String.Format(CSSPCultureServicesRes.UnableToLoginAs_WithProvidedPassword, loginModel.LoginEmail));
         }
         //public async Task<ActionResult<bool>> RegisterUser(RegisterModel registerModel)
         //{
@@ -161,57 +160,57 @@ namespace CSSPServices
 
         //    if (string.IsNullOrWhiteSpace(registerModel.FirstName))
         //    {
-        //        return BadRequest($"{ string.Format(CultureServicesRes._IsRequired, CultureServicesRes.FirstName) }");
+        //        return BadRequest($"{ string.Format(CSSPCultureServicesRes._IsRequired, CSSPCultureServicesRes.FirstName) }");
         //    }
 
         //    if (string.IsNullOrWhiteSpace(registerModel.LastName))
         //    {
-        //        return BadRequest($"{ string.Format(CultureServicesRes._IsRequired, CultureServicesRes.LastName) }");
+        //        return BadRequest($"{ string.Format(CSSPCultureServicesRes._IsRequired, CSSPCultureServicesRes.LastName) }");
         //    }
 
         //    if (string.IsNullOrWhiteSpace(registerModel.LoginEmail))
         //    {
-        //        return BadRequest($"{ string.Format(CultureServicesRes._IsRequired, CultureServicesRes.LoginEmail) }");
+        //        return BadRequest($"{ string.Format(CSSPCultureServicesRes._IsRequired, CSSPCultureServicesRes.LoginEmail) }");
         //    }
 
         //    if (string.IsNullOrWhiteSpace(registerModel.Password))
         //    {
-        //        return BadRequest($"{ string.Format(CultureServicesRes._IsRequired, CultureServicesRes.Password) }");
+        //        return BadRequest($"{ string.Format(CSSPCultureServicesRes._IsRequired, CSSPCultureServicesRes.Password) }");
         //    }
 
         //    if (string.IsNullOrWhiteSpace(registerModel.ConfirmPassword))
         //    {
-        //        return BadRequest($"{ string.Format(CultureServicesRes._IsRequired, CultureServicesRes.ConfirmPassword) }");
+        //        return BadRequest($"{ string.Format(CSSPCultureServicesRes._IsRequired, CSSPCultureServicesRes.ConfirmPassword) }");
         //    }
 
         //    if (registerModel.FirstName.Trim().Length > 100)
         //    {
-        //        return BadRequest($"{ string.Format(CultureServicesRes._MaxLengthIs_, CultureServicesRes.FirstName, 100) }");
+        //        return BadRequest($"{ string.Format(CSSPCultureServicesRes._MaxLengthIs_, CSSPCultureServicesRes.FirstName, 100) }");
         //    }
 
         //    if (registerModel.Initial.Trim().Length > 50)
         //    {
-        //        return BadRequest($"{ string.Format(CultureServicesRes._MaxLengthIs_, CultureServicesRes.Initial, 100) }");
+        //        return BadRequest($"{ string.Format(CSSPCultureServicesRes._MaxLengthIs_, CSSPCultureServicesRes.Initial, 100) }");
         //    }
 
         //    if (registerModel.LastName.Trim().Length > 100)
         //    {
-        //        return BadRequest($"{ string.Format(CultureServicesRes._MaxLengthIs_, CultureServicesRes.LastName, 100) }");
+        //        return BadRequest($"{ string.Format(CSSPCultureServicesRes._MaxLengthIs_, CSSPCultureServicesRes.LastName, 100) }");
         //    }
 
         //    if (registerModel.LoginEmail.Trim().Length > 100)
         //    {
-        //        return BadRequest($"{ string.Format(CultureServicesRes._MaxLengthIs_, CultureServicesRes.LoginEmail, 255) }");
+        //        return BadRequest($"{ string.Format(CSSPCultureServicesRes._MaxLengthIs_, CSSPCultureServicesRes.LoginEmail, 255) }");
         //    }
 
         //    if (registerModel.Password.Trim().Length > 50)
         //    {
-        //        return BadRequest($"{ string.Format(CultureServicesRes._MaxLengthIs_, CultureServicesRes.Password, 50) }");
+        //        return BadRequest($"{ string.Format(CSSPCultureServicesRes._MaxLengthIs_, CSSPCultureServicesRes.Password, 50) }");
         //    }
 
         //    if (registerModel.Password != registerModel.ConfirmPassword)
         //    {
-        //        return BadRequest($"{ string.Format(CultureServicesRes._And_AreNotEqual, CultureServicesRes.Password, CultureServicesRes.ConfirmPassword) }");
+        //        return BadRequest($"{ string.Format(CSSPCultureServicesRes._And_AreNotEqual, CSSPCultureServicesRes.Password, CSSPCultureServicesRes.ConfirmPassword) }");
         //    }
 
         //    AspNetUser aspNetUser = (from c in csspDBContext.AspNetUsers
@@ -220,7 +219,7 @@ namespace CSSPServices
 
         //    if (aspNetUser != null)
         //    {
-        //        return BadRequest($"{ string.Format(CultureServicesRes.UserName_AlreadyTaken, registerModel.LoginEmail) }");
+        //        return BadRequest($"{ string.Format(CSSPCultureServicesRes.UserName_AlreadyTaken, registerModel.LoginEmail) }");
         //    }
 
         //    Contact contact = (from c in csspDBContext.Contacts
@@ -229,7 +228,7 @@ namespace CSSPServices
 
         //    if (contact != null)
         //    {
-        //        return BadRequest($"{ string.Format(CultureServicesRes.UserName_AlreadyTaken, registerModel.LoginEmail) }");
+        //        return BadRequest($"{ string.Format(CSSPCultureServicesRes.UserName_AlreadyTaken, registerModel.LoginEmail) }");
         //    }
 
         //    if (string.IsNullOrWhiteSpace(registerModel.Initial))
@@ -242,7 +241,7 @@ namespace CSSPServices
         //        if (contact != null)
         //        {
         //            string fullName = $"{ registerModel.FirstName } { registerModel.LastName }";
-        //            return BadRequest($"{ string.Format(CultureServicesRes.User_AlreadyTaken, fullName) }");
+        //            return BadRequest($"{ string.Format(CSSPCultureServicesRes.User_AlreadyTaken, fullName) }");
         //        }
         //    }
         //    else
@@ -256,7 +255,7 @@ namespace CSSPServices
         //        if (contact != null)
         //        {
         //            string fullName = $"{ registerModel.FirstName } { registerModel.Initial }, { registerModel.LastName }";
-        //            return BadRequest($"{ string.Format(CultureServicesRes.User_AlreadyTaken, fullName) }");
+        //            return BadRequest($"{ string.Format(CSSPCultureServicesRes.User_AlreadyTaken, fullName) }");
         //        }
         //    }
 

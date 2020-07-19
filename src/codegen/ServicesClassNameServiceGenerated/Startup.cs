@@ -10,7 +10,7 @@ using System;
 using System.IO;
 using ValidateAppSettingsServices.Services;
 using System.Threading.Tasks;
-using CultureServices.Resources;
+using CSSPCultureServices.Resources;
 using ConfigServices.Services;
 
 namespace ServicesClassNameServiceGenerated
@@ -25,7 +25,7 @@ namespace ServicesClassNameServiceGenerated
         #endregion Properties
 
         #region Constructors
-        public Startup(IConfiguration configuration) : base(configuration)
+        public Startup(IConfiguration Configuration) : base(Configuration)
         {
         }
         #endregion Constructors

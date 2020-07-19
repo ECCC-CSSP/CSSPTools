@@ -1,14 +1,10 @@
-﻿using CSSPEnums;
+﻿using CSSPCultureServices.Services;
+using CSSPEnums;
 using CSSPModels;
 using CSSPServices;
-using CSSPWebServices.Services;
-using CultureServices.Services;
-using LoggedInServices.Services;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace GenerateAllGzFiles
@@ -23,7 +19,7 @@ namespace GenerateAllGzFiles
         private IConfiguration Configuration { get; set; }
         private ServiceCollection Services { get; set; }
         private IServiceProvider Provider { get; set; }
-        private ICultureService CultureService { get; set; }
+        private ICSSPCultureService CSSPCultureService { get; set; }
         private ILoggedInService LoggedInService { get; set; }
         private IEnums enums { get; set; }
         private IContactService ContactService { get; set; }

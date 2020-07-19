@@ -2,7 +2,7 @@ using ActionCommandDBServices.Models;
 using ActionCommandDBServices.Services;
 using CSSPModels;
 using CSSPServices;
-using CultureServices.Services;
+using CSSPCultureServices.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -21,9 +21,9 @@ namespace CSSPCodeGenWebAPI
     {
         public IConfiguration Configuration { get; }
 
-        public Startup(IConfiguration configuration)
+        public Startup(IConfiguration Configuration)
         {
-            Configuration = configuration;
+            this.Configuration = Configuration;
         }
 
         // This method gets called by the runtime. Use this method to add services to the container.
@@ -106,7 +106,7 @@ namespace CSSPCodeGenWebAPI
                 options.UseSqlite($"DataSource={fiDB.FullName}");
             });
 
-            services.AddScoped<ICultureService, CultureService>();
+            services.AddScoped<ICSSPCultureService, CSSPCultureService>();
             services.AddScoped<IContactService, ContactService>();
             services.AddScoped<IActionCommandDBService, ActionCommandDBService>();
         }

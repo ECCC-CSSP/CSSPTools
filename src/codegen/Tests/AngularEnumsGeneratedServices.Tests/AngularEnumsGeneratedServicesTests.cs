@@ -1,8 +1,8 @@
 ﻿using AngularEnumsGeneratedServices.Services;
 using ConfigServices.Services;
 using CSSPEnums;
-using CultureServices.Resources;
-using CultureServices.Services;
+using CSSPCultureServices.Resources;
+using CSSPCultureServices.Services;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -81,7 +81,7 @@ namespace AngularEnumsGeneratedServices.Tests
 
             Assert.True(await BuildServiceProvider());
 
-            CultureService.SetCulture(culture);
+            CSSPCultureService.SetCulture(culture);
 
             AngularEnumsGeneratedService = Provider.GetService<IAngularEnumsGeneratedService>();
             Assert.NotNull(AngularEnumsGeneratedService);

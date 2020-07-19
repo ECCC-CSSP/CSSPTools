@@ -1329,22 +1329,22 @@
           "System.Xml.XmlDocument": "4.3.0"
         }
       },
+      "CSSPCultureServices/1.0.0": {
+        "runtime": {
+          "CSSPCultureServices.dll": {}
+        },
+        "resources": {
+          "fr/CSSPCultureServices.resources.dll": {
+            "locale": "fr"
+          }
+        }
+      },
       "CSSPEnums/1.0.0": {
         "dependencies": {
-          "CultureServices": "1.0.0"
+          "CSSPCultureServices": "1.0.0"
         },
         "runtime": {
           "CSSPEnums.dll": {}
-        }
-      },
-      "CultureServices/1.0.0": {
-        "runtime": {
-          "CultureServices.dll": {}
-        },
-        "resources": {
-          "fr/CultureServices.resources.dll": {
-            "locale": "fr"
-          }
         }
       }
     }
@@ -2216,12 +2216,12 @@
       "path": "system.xml.xmlserializer/4.3.0",
       "hashPath": "system.xml.xmlserializer.4.3.0.nupkg.sha512"
     },
-    "CSSPEnums/1.0.0": {
+    "CSSPCultureServices/1.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""
     },
-    "CultureServices/1.0.0": {
+    "CSSPEnums/1.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""

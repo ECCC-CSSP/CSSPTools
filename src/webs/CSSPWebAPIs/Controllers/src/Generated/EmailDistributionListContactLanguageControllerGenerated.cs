@@ -6,8 +6,7 @@
 
 using CSSPModels;
 using CSSPServices;
-using CultureServices.Services;
-using LoggedInServices.Services;
+using CSSPCultureServices.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
@@ -33,15 +32,15 @@ namespace CSSPWebAPIs.Controllers
         #endregion Variables
 
         #region Properties
-        private ICultureService CultureService { get; }
+        private ICSSPCultureService CSSPCultureService { get; }
         private ILoggedInService LoggedInService { get; }
         private IEmailDistributionListContactLanguageService EmailDistributionListContactLanguageService { get; }
         #endregion Properties
 
         #region Constructors
-        public EmailDistributionListContactLanguageController(ICultureService CultureService, ILoggedInService LoggedInService, IEmailDistributionListContactLanguageService EmailDistributionListContactLanguageService)
+        public EmailDistributionListContactLanguageController(ICSSPCultureService CSSPCultureService, ILoggedInService LoggedInService, IEmailDistributionListContactLanguageService EmailDistributionListContactLanguageService)
         {
-            this.CultureService = CultureService;
+            this.CSSPCultureService = CSSPCultureService;
             this.LoggedInService = LoggedInService;
             this.EmailDistributionListContactLanguageService = EmailDistributionListContactLanguageService;
         }
@@ -51,7 +50,7 @@ namespace CSSPWebAPIs.Controllers
         [HttpGet]
         public async Task<ActionResult<List<EmailDistributionListContactLanguage>>> Get()
         {
-            CultureService.SetCulture((string)RouteData.Values["culture"]);
+            CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
             return await EmailDistributionListContactLanguageService.GetEmailDistributionListContactLanguageList();
@@ -59,7 +58,7 @@ namespace CSSPWebAPIs.Controllers
         [HttpGet("{EmailDistributionListContactLanguageID}")]
         public async Task<ActionResult<EmailDistributionListContactLanguage>> Get(int EmailDistributionListContactLanguageID)
         {
-            CultureService.SetCulture((string)RouteData.Values["culture"]);
+            CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
             return await EmailDistributionListContactLanguageService.GetEmailDistributionListContactLanguageWithEmailDistributionListContactLanguageID(EmailDistributionListContactLanguageID);
@@ -67,7 +66,7 @@ namespace CSSPWebAPIs.Controllers
         [HttpPost]
         public async Task<ActionResult<EmailDistributionListContactLanguage>> Post(EmailDistributionListContactLanguage EmailDistributionListContactLanguage)
         {
-            CultureService.SetCulture((string)RouteData.Values["culture"]);
+            CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
             return await EmailDistributionListContactLanguageService.Post(EmailDistributionListContactLanguage);
@@ -75,7 +74,7 @@ namespace CSSPWebAPIs.Controllers
         [HttpPut]
         public async Task<ActionResult<EmailDistributionListContactLanguage>> Put(EmailDistributionListContactLanguage EmailDistributionListContactLanguage)
         {
-            CultureService.SetCulture((string)RouteData.Values["culture"]);
+            CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
             return await EmailDistributionListContactLanguageService.Put(EmailDistributionListContactLanguage);
@@ -83,7 +82,7 @@ namespace CSSPWebAPIs.Controllers
         [HttpDelete("{EmailDistributionListContactLanguageID}")]
         public async Task<ActionResult<bool>> Delete(int EmailDistributionListContactLanguageID)
         {
-            CultureService.SetCulture((string)RouteData.Values["culture"]);
+            CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
             return await EmailDistributionListContactLanguageService.Delete(EmailDistributionListContactLanguageID);

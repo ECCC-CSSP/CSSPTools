@@ -8,8 +8,7 @@ using CSSPEnums;
 using CSSPModels;
 using CSSPServices;
 using CSSPWebAPIs.Controllers;
-using CultureServices.Services;
-using LoggedInServices.Services;
+using CSSPCultureServices.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -40,7 +39,7 @@ namespace CSSPWebAPIs.Tests.Controllers
         private CSSPDBContext db { get; set; }
         private IContactService ContactService { get; set; }
         private ILoggedInService loggedInService { get; set; }
-        private ICultureService CultureService { get; set; }
+        private ICSSPCultureService CSSPCultureService { get; set; }
         private IMikeBoundaryConditionService mikeBoundaryConditionService { get; set; }
         private IMikeBoundaryConditionController mikeBoundaryConditionController { get; set; }
         private Contact contact { get; set; }
@@ -169,7 +168,7 @@ namespace CSSPWebAPIs.Tests.Controllers
             Services.AddIdentityCore<ApplicationUser>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
 
-            Services.AddSingleton<ICultureService, CultureService>();
+            Services.AddSingleton<ICSSPCultureService, CSSPCultureService>();
             Services.AddSingleton<IEnums, Enums>();
             Services.AddSingleton<ILoggedInService, LoggedInService>();
             Services.AddSingleton<IAspNetUserService, AspNetUserService>();
@@ -180,10 +179,10 @@ namespace CSSPWebAPIs.Tests.Controllers
             Provider = Services.BuildServiceProvider();
             Assert.NotNull(Provider);
 
-            CultureService = Provider.GetService<ICultureService>();
-            Assert.NotNull(CultureService);
+            CSSPCultureService = Provider.GetService<ICSSPCultureService>();
+            Assert.NotNull(CSSPCultureService);
 
-            CultureService.SetCulture(culture);
+            CSSPCultureService.SetCulture(culture);
 
             ContactService = Provider.GetService<IContactService>();
             Assert.NotNull(ContactService);

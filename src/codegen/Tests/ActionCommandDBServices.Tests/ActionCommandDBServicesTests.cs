@@ -1,7 +1,7 @@
 ﻿using ActionCommandDBServices.Models;
 using ActionCommandDBServices.Services;
-using CultureServices.Resources;
-using CultureServices.Services;
+using CSSPCultureServices.Resources;
+using CSSPCultureServices.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -22,12 +22,12 @@ namespace ActionCommandDBServices.Tests
         #endregion Variables
 
         #region Properties
-        private IConfiguration configuration { get; set; }
+        private IConfiguration Configuration { get; set; }
         private IServiceCollection serviceCollection { get; set; }
         private IActionCommandDBService actionCommandDBService { get; set; }
         private IServiceProvider serviceProvider { get; set; }
         private string DBFileName { get; set; } = "DBFileName";
-        private ICultureService CultureService { get; set; }
+        private ICSSPCultureService CSSPCultureService { get; set; }
         #endregion Properties
 
         #region Constructors
@@ -44,11 +44,11 @@ namespace ActionCommandDBServices.Tests
         {
             Assert.True(await Setup(culture));
 
-            Assert.NotNull(configuration);
+            Assert.NotNull(Configuration);
             Assert.NotNull(serviceCollection);
             Assert.NotNull(actionCommandDBService);
 
-            Assert.Equal(new CultureInfo(culture), CultureServicesRes.Culture);
+            Assert.Equal(new CultureInfo(culture), CSSPCultureServicesRes.Culture);
 
             Assert.Equal(0, actionCommandDBService.ActionCommandID);
             Assert.Equal("", actionCommandDBService.Action);
@@ -145,7 +145,7 @@ namespace ActionCommandDBServices.Tests
 
             var actionActionCommand = await actionCommandDBService.Get();
             Assert.Equal(400, ((ObjectResult)actionActionCommand.Result).StatusCode);
-            Assert.Equal($"{ CultureServicesRes.CouldNotFindActionCommand } { string.Format(CultureServicesRes.WithAction_AndCommand_, actionCommandDBService.Action, actionCommandDBService.Command) }", ((BadRequestObjectResult)actionActionCommand.Result).Value);
+            Assert.Equal($"{ CSSPCultureServicesRes.CouldNotFindActionCommand } { string.Format(CSSPCultureServicesRes.WithAction_AndCommand_, actionCommandDBService.Action, actionCommandDBService.Command) }", ((BadRequestObjectResult)actionActionCommand.Result).Value);
         }
         [Theory]
         [InlineData("en-CA")]
@@ -174,7 +174,7 @@ namespace ActionCommandDBServices.Tests
             actionCommandDBService.PercentCompleted = 33;
             actionActionCommand = await actionCommandDBService.Update();
             Assert.Equal(400, ((ObjectResult)actionActionCommand.Result).StatusCode);
-            Assert.Equal($"{ string.Format(CultureServicesRes._IsRequied, "Command") }", ((BadRequestObjectResult)actionActionCommand.Result).Value);
+            Assert.Equal($"{ string.Format(CSSPCultureServicesRes._IsRequied, "Command") }", ((BadRequestObjectResult)actionActionCommand.Result).Value);
         }
         [Theory]
         [InlineData("en-CA")]
@@ -183,31 +183,31 @@ namespace ActionCommandDBServices.Tests
         {
             Assert.True(await Setup(culture));
 
-            Assert.Equal(new CultureInfo(culture), CultureEnumsRes.Culture);
-            Assert.Equal(new CultureInfo(culture), CultureModelsRes.Culture);
-            Assert.Equal(new CultureInfo(culture), CulturePolSourcesRes.Culture);
-            Assert.Equal(new CultureInfo(culture), CultureServicesRes.Culture);
+            Assert.Equal(new CultureInfo(culture), CSSPCultureEnumsRes.Culture);
+            Assert.Equal(new CultureInfo(culture), CSSPCultureModelsRes.Culture);
+            Assert.Equal(new CultureInfo(culture), CSSPCulturePolSourcesRes.Culture);
+            Assert.Equal(new CultureInfo(culture), CSSPCultureServicesRes.Culture);
         }
         #endregion Functions public
 
         #region Functions private
         private async Task<bool> Setup(string culture)
         {
-            configuration = new ConfigurationBuilder()
+            Configuration = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetParent(AppContext.BaseDirectory).FullName)
                 .AddJsonFile("appsettings.json")
                 .Build();
 
             serviceCollection = new ServiceCollection();
 
-            serviceCollection.AddSingleton<IConfiguration>(configuration);
-            serviceCollection.AddSingleton<ICultureService, CultureService>();
+            serviceCollection.AddSingleton<IConfiguration>(Configuration);
+            serviceCollection.AddSingleton<ICSSPCultureService, CSSPCultureService>();
             serviceCollection.AddSingleton<IActionCommandDBService, ActionCommandDBService>();
 
             string appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
-            Assert.NotNull(configuration.GetValue<string>(DBFileName));
+            Assert.NotNull(Configuration.GetValue<string>(DBFileName));
 
-            FileInfo fiDB = new FileInfo(configuration.GetValue<string>(DBFileName).Replace("{AppDataPath}", appDataPath));
+            FileInfo fiDB = new FileInfo(Configuration.GetValue<string>(DBFileName).Replace("{AppDataPath}", appDataPath));
             Assert.True(fiDB.Exists);
 
             try
@@ -226,10 +226,10 @@ namespace ActionCommandDBServices.Tests
             serviceProvider = serviceCollection.BuildServiceProvider();
             Assert.NotNull(serviceProvider);
 
-            CultureService = serviceProvider.GetService<ICultureService>();
-            Assert.NotNull(CultureService);
+            CSSPCultureService = serviceProvider.GetService<ICSSPCultureService>();
+            Assert.NotNull(CSSPCultureService);
 
-            CultureService.SetCulture(culture);
+            CSSPCultureService.SetCulture(culture);
 
             actionCommandDBService = serviceProvider.GetService<IActionCommandDBService>();
             Assert.NotNull(actionCommandDBService);

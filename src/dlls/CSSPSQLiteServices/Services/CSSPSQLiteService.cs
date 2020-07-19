@@ -1,8 +1,7 @@
 ﻿using CSSPEnums;
 using CSSPModels;
-using CultureServices.Resources;
-using CultureServices.Services;
-using LoggedInServices.Services;
+using CSSPCultureServices.Resources;
+using CSSPCultureServices.Services;
 using Microsoft.Data.Sqlite;
 using Microsoft.Extensions.Configuration;
 using System;
@@ -11,6 +10,7 @@ using System.ComponentModel.DataAnnotations;
 using System.IO;
 using System.Text;
 using System.Threading.Tasks;
+using CSSPServices;
 
 namespace CSSPSQLiteServices.Services
 {
@@ -38,19 +38,19 @@ namespace CSSPSQLiteServices.Services
         private CSSPLoginDBContext dbLogin { get; }
         private CSSPFilesManagementDBContext dbFM { get; }
         private IConfiguration Configuration { get; }
-        private ICultureService CultureService { get; }
+        private ICSSPCultureService CSSPCultureService { get; }
         private ILoggedInService LoggedInService { get; }
         private IEnums enums { get; }
         private IEnumerable<ValidationResult> ValidationResults { get; set; }
         #endregion Properties
 
         #region Constructors
-        public CSSPSQLiteService(IConfiguration Configuration, ICultureService CultureService, ILoggedInService LoggedInService, 
+        public CSSPSQLiteService(IConfiguration Configuration, ICSSPCultureService CSSPCultureService, ILoggedInService LoggedInService, 
             IEnums enums, CSSPDBContext db, CSSPDBLocalContext dbLocal, InMemoryDBContext dbIM, 
             CSSPLoginDBContext dbLogin, CSSPFilesManagementDBContext dbFM)
         {
             this.Configuration = Configuration;
-            this.CultureService = CultureService;
+            this.CSSPCultureService = CSSPCultureService;
             this.LoggedInService = LoggedInService;
             this.enums = enums;
             this.db = db;

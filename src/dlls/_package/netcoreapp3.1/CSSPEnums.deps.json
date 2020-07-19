@@ -8,7 +8,7 @@
     ".NETCoreApp,Version=v3.1": {
       "CSSPEnums/1.0.0": {
         "dependencies": {
-          "CultureServices": "1.0.0",
+          "CSSPCultureServices": "1.0.0",
           "Microsoft.EntityFrameworkCore.Design": "3.1.6",
           "Microsoft.EntityFrameworkCore.Tools": "3.1.6"
         },
@@ -226,12 +226,12 @@
           }
         }
       },
-      "CultureServices/1.0.0": {
+      "CSSPCultureServices/1.0.0": {
         "runtime": {
-          "CultureServices.dll": {}
+          "CSSPCultureServices.dll": {}
         },
         "resources": {
-          "fr/CultureServices.resources.dll": {
+          "fr/CSSPCultureServices.resources.dll": {
             "locale": "fr"
           }
         }
@@ -405,7 +405,7 @@
       "path": "system.diagnostics.diagnosticsource/4.7.1",
       "hashPath": "system.diagnostics.diagnosticsource.4.7.1.nupkg.sha512"
     },
-    "CultureServices/1.0.0": {
+    "CSSPCultureServices/1.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""

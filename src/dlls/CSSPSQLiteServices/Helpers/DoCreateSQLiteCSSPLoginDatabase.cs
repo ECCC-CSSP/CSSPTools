@@ -1,4 +1,4 @@
-﻿using CultureServices.Resources;
+﻿using CSSPCultureServices.Resources;
 using Microsoft.Data.SqlClient;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
@@ -19,7 +19,7 @@ namespace CSSPSQLiteServices.Services
             string CSSPLoginDB = Configuration.GetValue<string>("CSSPLoginDB");
             if (string.IsNullOrWhiteSpace(CSSPLoginDB))
             {
-                Error = string.Format(CultureServicesRes.CouldNotFindParameter_InAppSettingsJSON, "CSSPLoginDB");
+                Error = string.Format(CSSPCultureServicesRes.CouldNotFindParameter_InAppSettingsJSON, "CSSPLoginDB");
                 return await Task.FromResult(false);
             }
 
@@ -27,7 +27,7 @@ namespace CSSPSQLiteServices.Services
 
             if (!await CSSPLoginDBIsEmpty())
             {
-                Error = string.Format(CultureServicesRes.Database_ContainsInfo, fiCSSPLoginDB.FullName);
+                Error = string.Format(CSSPCultureServicesRes.Database_ContainsInfo, fiCSSPLoginDB.FullName);
                 return await Task.FromResult(false);
             }
 

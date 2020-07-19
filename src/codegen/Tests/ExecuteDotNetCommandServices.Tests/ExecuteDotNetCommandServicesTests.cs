@@ -17,7 +17,7 @@ using System.Threading.Tasks;
 using Xunit;
 using ValidateAppSettingsServices.Services;
 using ConfigServices.Services;
-using CultureServices.Resources;
+using CSSPCultureServices.Resources;
 
 namespace ExecuteDotNetCommandServices.Tests
 {

@@ -1,5 +1,5 @@
 ﻿using ConfigServices.Services;
-using CultureServices.Resources;
+using CSSPCultureServices.Resources;
 using EnumsCompareWithOldEnumsServices.Services;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;

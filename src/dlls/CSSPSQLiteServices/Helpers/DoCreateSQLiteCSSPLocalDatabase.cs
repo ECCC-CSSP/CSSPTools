@@ -1,4 +1,4 @@
-﻿using CultureServices.Resources;
+﻿using CSSPCultureServices.Resources;
 using Microsoft.Data.SqlClient;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
@@ -19,7 +19,7 @@ namespace CSSPSQLiteServices.Services
             string CSSPDBLocalText = Configuration.GetValue<string>("CSSPDBLocal");
             if (string.IsNullOrWhiteSpace(CSSPDBLocalText))
             {
-                Error = string.Format(CultureServicesRes.CouldNotFindParameter_InAppSettingsJSON, "CSSPDBLocal");
+                Error = string.Format(CSSPCultureServicesRes.CouldNotFindParameter_InAppSettingsJSON, "CSSPDBLocal");
                 return await Task.FromResult(false);
             }
 
@@ -27,7 +27,7 @@ namespace CSSPSQLiteServices.Services
 
             if (!await DBLocalIsEmpty())
             {
-                Error = string.Format(CultureServicesRes.Database_ContainsInfo, fiCSSPDBLocal.FullName);
+                Error = string.Format(CSSPCultureServicesRes.Database_ContainsInfo, fiCSSPDBLocal.FullName);
                 return await Task.FromResult(false);
             }
 

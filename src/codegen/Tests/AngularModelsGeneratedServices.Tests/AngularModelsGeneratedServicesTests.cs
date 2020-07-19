@@ -1,6 +1,6 @@
 ﻿using AngularModelsGeneratedServices.Services;
 using ConfigServices.Services;
-using CultureServices.Resources;
+using CSSPCultureServices.Resources;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;

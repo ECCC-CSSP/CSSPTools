@@ -1,5 +1,5 @@
 ﻿using ActionCommandDBServices.Models;
-using CultureServices.Resources;
+using CSSPCultureServices.Resources;
 using GenerateCodeBaseServices.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
@@ -37,7 +37,7 @@ namespace ServicesClassNameServiceGeneratedServices.Services
             List<DLLTypeInfo> DLLTypeInfoCSSPModelsList = new List<DLLTypeInfo>();
             if (GenerateCodeBaseService.FillDLLTypeInfoList(fiCSSPModelsDLL, DLLTypeInfoCSSPModelsList))
             {
-                ActionCommandDBService.ErrorText.AppendLine($"{ string.Format(CultureServicesRes.CouldNotFindFile_, fiCSSPModelsDLL.FullName) }");
+                ActionCommandDBService.ErrorText.AppendLine($"{ string.Format(CSSPCultureServicesRes.CouldNotFindFile_, fiCSSPModelsDLL.FullName) }");
                 return false;
             }
             #endregion Variables and loading DLL properties
@@ -108,9 +108,8 @@ namespace ServicesClassNameServiceGeneratedServices.Services
 
                 sb.AppendLine(@"using CSSPEnums;");
                 sb.AppendLine(@"using CSSPModels;");
-                sb.AppendLine(@"using CultureServices.Resources;");
-                sb.AppendLine(@"using CultureServices.Services;");
-                sb.AppendLine(@"using LoggedInServices.Services;");
+                sb.AppendLine(@"using CSSPCultureServices.Resources;");
+                sb.AppendLine(@"using CSSPCultureServices.Services;");
                 if (dllTypeInfoModels.Type.Name == "Contact")
                 {
                     sb.AppendLine(@"using Microsoft.AspNetCore.Identity;");
@@ -182,7 +181,7 @@ namespace ServicesClassNameServiceGeneratedServices.Services
                         sb.AppendLine(@"        private IAspNetUserService AspNetUserService { get; }");
                         sb.AppendLine(@"        private IConfiguration Configuration { get; }");
                     }
-                    sb.AppendLine(@"        private ICultureService CultureService { get; }");
+                    sb.AppendLine(@"        private ICSSPCultureService CSSPCultureService { get; }");
                     sb.AppendLine(@"        private ILoggedInService LoggedInService { get; }");
                     sb.AppendLine(@"        private IEnums enums { get; }");
                     sb.AppendLine(@"        private IEnumerable<ValidationResult> ValidationResults { get; set; }");
@@ -191,12 +190,12 @@ namespace ServicesClassNameServiceGeneratedServices.Services
                     sb.AppendLine(@"        #region Constructors");
                     if (dllTypeInfoModels.Type.Name == "Contact")
                     {
-                        sb.AppendLine($@"        public { dllTypeInfoModels.Type.Name }Service(IConfiguration Configuration, UserManager<ApplicationUser> UserManager, ICultureService CultureService, ");
+                        sb.AppendLine($@"        public { dllTypeInfoModels.Type.Name }Service(IConfiguration Configuration, UserManager<ApplicationUser> UserManager, ICSSPCultureService CSSPCultureService, ");
                         sb.AppendLine($@"           ILoggedInService LoggedInService, IEnums enums, IAspNetUserService AspNetUserService, CSSPDBContext db, CSSPDBLocalContext dbLocal, InMemoryDBContext dbIM)");
                     }
                     else
                     {
-                        sb.AppendLine($@"        public { dllTypeInfoModels.Type.Name }Service(ICultureService CultureService, ILoggedInService LoggedInService, IEnums enums, CSSPDBContext db, CSSPDBLocalContext dbLocal, InMemoryDBContext dbIM)");
+                        sb.AppendLine($@"        public { dllTypeInfoModels.Type.Name }Service(ICSSPCultureService CSSPCultureService, ILoggedInService LoggedInService, IEnums enums, CSSPDBContext db, CSSPDBLocalContext dbLocal, InMemoryDBContext dbIM)");
                     }
                     sb.AppendLine(@"        {");
                     if (dllTypeInfoModels.Type.Name == "Contact")
@@ -205,7 +204,7 @@ namespace ServicesClassNameServiceGeneratedServices.Services
                         sb.AppendLine(@"            this.UserManager = UserManager;");
                         sb.AppendLine(@"            this.AspNetUserService = AspNetUserService;");
                     }
-                    sb.AppendLine(@"            this.CultureService = CultureService;");
+                    sb.AppendLine(@"            this.CSSPCultureService = CSSPCultureService;");
                     sb.AppendLine(@"            this.LoggedInService = LoggedInService;");
                     sb.AppendLine(@"            this.enums = enums;");
                     sb.AppendLine(@"            this.db = db;");
@@ -271,11 +270,11 @@ namespace ServicesClassNameServiceGeneratedServices.Services
                     ActionCommandDBService.FilesStatusText.AppendLine(fileLine);
                 }
 
-                ActionCommandDBService.ExecutionStatusText.AppendLine($"{ string.Format(CultureServicesRes.Created_, fiOutputGen.FullName) }");
+                ActionCommandDBService.ExecutionStatusText.AppendLine($"{ string.Format(CSSPCultureServicesRes.Created_, fiOutputGen.FullName) }");
 
             }
             ActionCommandDBService.ExecutionStatusText.AppendLine("");
-            ActionCommandDBService.ExecutionStatusText.AppendLine($"{ CultureServicesRes.Done } ...");
+            ActionCommandDBService.ExecutionStatusText.AppendLine($"{ CSSPCultureServicesRes.Done } ...");
             ActionCommandDBService.ExecutionStatusText.AppendLine("");
             ActionCommandDBService.ExecutionStatusText.AppendLine("Generate Finished ...");
             ActionCommandDBService.PercentCompleted = 100;

@@ -14,8 +14,8 @@ using System.Globalization;
 using Microsoft.Extensions.Configuration;
 using Xunit;
 using Microsoft.AspNetCore.Mvc;
-using CultureServices.Resources;
-using CultureServices.Services;
+using CSSPCultureServices.Resources;
+using CSSPCultureServices.Services;
 
 namespace GenerateCodeBaseServices.Tests
 {
@@ -24,7 +24,7 @@ namespace GenerateCodeBaseServices.Tests
         #region Variables
         private IConfiguration Configuration { get; set; }
         private IServiceCollection ServiceCollection { get; set; }
-        private ICultureService CultureService { get; set; }
+        private ICSSPCultureService CSSPCultureService { get; set; }
         private IGenerateCodeBaseService GenerateCodeBaseService { get; set; }
         private IActionCommandDBService ActionCommandDBService { get; set; }
         #endregion Variables
@@ -48,11 +48,11 @@ namespace GenerateCodeBaseServices.Tests
 
             Assert.NotNull(Configuration);
             Assert.NotNull(ServiceCollection);
-            Assert.NotNull(CultureService);
+            Assert.NotNull(CSSPCultureService);
             Assert.NotNull(ActionCommandDBService);
             Assert.NotNull(GenerateCodeBaseService);
 
-            Assert.Equal(new CultureInfo(culture), CultureServicesRes.Culture);
+            Assert.Equal(new CultureInfo(culture), CSSPCultureServicesRes.Culture);
         }
         #endregion Functions public
 
@@ -81,17 +81,17 @@ namespace GenerateCodeBaseServices.Tests
                 options.UseSqlite($"DataSource={fiDB.FullName}");
             });
 
-            ServiceCollection.AddSingleton<ICultureService, CultureService>();
+            ServiceCollection.AddSingleton<ICSSPCultureService, CSSPCultureService>();
             ServiceCollection.AddSingleton<IGenerateCodeBaseService, GenerateCodeBaseService>();
             ServiceCollection.AddSingleton<IActionCommandDBService, ActionCommandDBService>();
 
             ServiceProvider provider = ServiceCollection.BuildServiceProvider();
             Assert.NotNull(provider);
 
-            CultureService = provider.GetService<ICultureService>();
-            Assert.NotNull(CultureService);
+            CSSPCultureService = provider.GetService<ICSSPCultureService>();
+            Assert.NotNull(CSSPCultureService);
 
-            CultureService.SetCulture(culture);
+            CSSPCultureService.SetCulture(culture);
 
             ActionCommandDBService = provider.GetService<IActionCommandDBService>();
             Assert.NotNull(ActionCommandDBService);

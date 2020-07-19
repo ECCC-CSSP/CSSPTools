@@ -1,5 +1,5 @@
 ﻿using ConfigServices.Services;
-using CultureServices.Resources;
+using CSSPCultureServices.Resources;
 using GenerateCodeBaseServices.Models;
 using Microsoft.Extensions.Configuration;
 using System;
@@ -47,7 +47,7 @@ namespace AngularComponentsGeneratedServices.Services
             using (StreamWriter sw2 = fiOutputGen.CreateText())
             {
                 sw2.Write(sb.ToString());
-                ActionCommandDBService.ExecutionStatusText.AppendLine($"{ string.Format(CultureServicesRes.Created_, fiOutputGen.FullName) }");
+                ActionCommandDBService.ExecutionStatusText.AppendLine($"{ string.Format(CSSPCultureServicesRes.Created_, fiOutputGen.FullName) }");
             }
 
             fiOutputGen = new FileInfo(Config.GetValue<string>("ModelsFileName").Replace("{TypeNameLower}", dllTypeInfoModels.Name.ToLower()).Replace("{TypeNameLower}", dllTypeInfoModels.Name.ToLower()));

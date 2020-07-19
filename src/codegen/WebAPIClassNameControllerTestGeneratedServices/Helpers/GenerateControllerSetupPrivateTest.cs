@@ -50,7 +50,7 @@ namespace WebAPIClassNameControllerTestGeneratedServices.Services
             sb.AppendLine(@"            Services.AddIdentityCore<ApplicationUser>()");
             sb.AppendLine(@"                .AddEntityFrameworkStores<ApplicationDbContext>();");
             sb.AppendLine(@"");
-            sb.AppendLine(@"            Services.AddSingleton<ICultureService, CultureService>();");
+            sb.AppendLine(@"            Services.AddSingleton<ICSSPCultureService, CSSPCultureService>();");
             sb.AppendLine(@"            Services.AddSingleton<IEnums, Enums>();");
             sb.AppendLine(@"            Services.AddSingleton<ILoggedInService, LoggedInService>();");
             sb.AppendLine(@"            Services.AddSingleton<IAspNetUserService, AspNetUserService>();");
@@ -61,10 +61,10 @@ namespace WebAPIClassNameControllerTestGeneratedServices.Services
             sb.AppendLine(@"            Provider = Services.BuildServiceProvider();");
             sb.AppendLine(@"            Assert.NotNull(Provider);");
             sb.AppendLine(@"");
-            sb.AppendLine(@"            CultureService = Provider.GetService<ICultureService>();");
-            sb.AppendLine(@"            Assert.NotNull(CultureService);");
+            sb.AppendLine(@"            CSSPCultureService = Provider.GetService<ICSSPCultureService>();");
+            sb.AppendLine(@"            Assert.NotNull(CSSPCultureService);");
             sb.AppendLine(@"");
-            sb.AppendLine(@"            CultureService.SetCulture(culture);");
+            sb.AppendLine(@"            CSSPCultureService.SetCulture(culture);");
             sb.AppendLine(@"");
             sb.AppendLine(@"            ContactService = Provider.GetService<IContactService>();");
             sb.AppendLine(@"            Assert.NotNull(ContactService);");

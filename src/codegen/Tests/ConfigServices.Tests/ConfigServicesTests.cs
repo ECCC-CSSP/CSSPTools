@@ -1,6 +1,6 @@
 ﻿using ActionCommandDBServices.Services;
 using ConfigServices.Services;
-using CultureServices.Services;
+using CSSPCultureServices.Services;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -21,7 +21,7 @@ namespace ConfigServices.Tests
         private IConfiguration Configuration { get; set; }
         private IServiceProvider ServiceProvider { get; set; }
         private IServiceCollection ServiceCollection { get; set; }
-        private ICultureService CultureService { get; set; }
+        private ICSSPCultureService CSSPCultureService { get; set; }
         private IConfigService ConfigService { get; set; }
         private string DBFileName { get; set; } = "DBFileName";
         #endregion Properties
@@ -41,7 +41,7 @@ namespace ConfigServices.Tests
         {
             Assert.True(await Setup(culture));
 
-            Assert.NotNull(CultureService);
+            Assert.NotNull(CSSPCultureService);
             Assert.NotNull(ConfigService);
         }
         #endregion Functions public
@@ -57,16 +57,16 @@ namespace ConfigServices.Tests
             ServiceCollection = new ServiceCollection();
 
             ServiceCollection.AddSingleton<IConfiguration>(Configuration);
-            ServiceCollection.AddSingleton<ICultureService, CultureService>();
+            ServiceCollection.AddSingleton<ICSSPCultureService, CSSPCultureService>();
             ServiceCollection.AddSingleton<IConfigService, ConfigService>();
 
             ServiceProvider = ServiceCollection.BuildServiceProvider();
             Assert.NotNull(ServiceProvider);
 
-            CultureService = ServiceProvider.GetService<ICultureService>();
-            Assert.NotNull(CultureService);
+            CSSPCultureService = ServiceProvider.GetService<ICSSPCultureService>();
+            Assert.NotNull(CSSPCultureService);
 
-            CultureService.SetCulture(culture);
+            CSSPCultureService.SetCulture(culture);
 
             ConfigService = ServiceProvider.GetService<IConfigService>();
             Assert.NotNull(ConfigService);
