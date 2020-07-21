@@ -19,6 +19,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Transactions;
 using Xunit;
+using System.ComponentModel.DataAnnotations;
 
 namespace CSSPServices.Tests
 {
@@ -81,6 +82,170 @@ namespace CSSPServices.Tests
             }
         }
         #endregion Tests Generated CRUD
+
+        #region Tests Generated Properties
+        [Theory]
+        [InlineData("en-CA", DBLocationEnum.Local)]
+        [InlineData("fr-CA", DBLocationEnum.Local)]
+        [InlineData("en-CA", DBLocationEnum.Server)]
+        [InlineData("fr-CA", DBLocationEnum.Server)]
+        public async Task MapInfoPoint_Properties_Test(string culture, DBLocationEnum DBLocation)
+        {
+            // -------------------------------
+            // -------------------------------
+            // Properties testing
+            // -------------------------------
+            // -------------------------------
+
+            Assert.True(await Setup(culture));
+
+            LoggedInService.DBLocation = DBLocation;
+
+            int count = 0;
+            if (count == 1)
+            {
+                // just so we don't get a warning during compile [The variable 'count' is assigned but its value is never used]
+            }
+
+            var actionMapInfoPointList = await MapInfoPointService.GetMapInfoPointList();
+            Assert.Equal(200, ((ObjectResult)actionMapInfoPointList.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionMapInfoPointList.Result).Value);
+            List<MapInfoPoint> mapInfoPointList = (List<MapInfoPoint>)((OkObjectResult)actionMapInfoPointList.Result).Value;
+
+            count = mapInfoPointList.Count();
+
+            MapInfoPoint mapInfoPoint = GetFilledRandomMapInfoPoint("");
+
+
+            // -----------------------------------
+            // [Key]
+            // Is NOT Nullable
+            // mapInfoPoint.MapInfoPointID   (Int32)
+            // -----------------------------------
+
+            mapInfoPoint = null;
+            mapInfoPoint = GetFilledRandomMapInfoPoint("");
+            mapInfoPoint.MapInfoPointID = 0;
+
+            var actionMapInfoPoint = await MapInfoPointService.Put(mapInfoPoint);
+            Assert.IsType<BadRequestObjectResult>(actionMapInfoPoint.Result);
+
+            mapInfoPoint = null;
+            mapInfoPoint = GetFilledRandomMapInfoPoint("");
+            mapInfoPoint.MapInfoPointID = 10000000;
+            actionMapInfoPoint = await MapInfoPointService.Put(mapInfoPoint);
+            Assert.IsType<BadRequestObjectResult>(actionMapInfoPoint.Result);
+
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPExist(ExistTypeName = "MapInfo", ExistPlurial = "s", ExistFieldID = "MapInfoID", AllowableTVtypeList = )]
+            // mapInfoPoint.MapInfoID   (Int32)
+            // -----------------------------------
+
+            mapInfoPoint = null;
+            mapInfoPoint = GetFilledRandomMapInfoPoint("");
+            mapInfoPoint.MapInfoID = 0;
+            actionMapInfoPoint = await MapInfoPointService.Post(mapInfoPoint);
+            Assert.IsType<BadRequestObjectResult>(actionMapInfoPoint.Result);
+
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPRange(0, -1)]
+            // mapInfoPoint.Ordinal   (Int32)
+            // -----------------------------------
+
+            mapInfoPoint = null;
+            mapInfoPoint = GetFilledRandomMapInfoPoint("");
+            mapInfoPoint.Ordinal = -1;
+            actionMapInfoPoint = await MapInfoPointService.Post(mapInfoPoint);
+            Assert.IsType<BadRequestObjectResult>(actionMapInfoPoint.Result);
+            //Assert.AreEqual(count, mapInfoPointService.GetMapInfoPointList().Count());
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPRange(-90, 90)]
+            // mapInfoPoint.Lat   (Double)
+            // -----------------------------------
+
+            //CSSPError: Type not implemented [Lat]
+
+            //CSSPError: Type not implemented [Lat]
+
+            mapInfoPoint = null;
+            mapInfoPoint = GetFilledRandomMapInfoPoint("");
+            mapInfoPoint.Lat = -91.0D;
+            actionMapInfoPoint = await MapInfoPointService.Post(mapInfoPoint);
+            Assert.IsType<BadRequestObjectResult>(actionMapInfoPoint.Result);
+            //Assert.AreEqual(count, mapInfoPointService.GetMapInfoPointList().Count());
+            mapInfoPoint = null;
+            mapInfoPoint = GetFilledRandomMapInfoPoint("");
+            mapInfoPoint.Lat = 91.0D;
+            actionMapInfoPoint = await MapInfoPointService.Post(mapInfoPoint);
+            Assert.IsType<BadRequestObjectResult>(actionMapInfoPoint.Result);
+            //Assert.AreEqual(count, mapInfoPointService.GetMapInfoPointList().Count());
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPRange(-180, 180)]
+            // mapInfoPoint.Lng   (Double)
+            // -----------------------------------
+
+            //CSSPError: Type not implemented [Lng]
+
+            //CSSPError: Type not implemented [Lng]
+
+            mapInfoPoint = null;
+            mapInfoPoint = GetFilledRandomMapInfoPoint("");
+            mapInfoPoint.Lng = -181.0D;
+            actionMapInfoPoint = await MapInfoPointService.Post(mapInfoPoint);
+            Assert.IsType<BadRequestObjectResult>(actionMapInfoPoint.Result);
+            //Assert.AreEqual(count, mapInfoPointService.GetMapInfoPointList().Count());
+            mapInfoPoint = null;
+            mapInfoPoint = GetFilledRandomMapInfoPoint("");
+            mapInfoPoint.Lng = 181.0D;
+            actionMapInfoPoint = await MapInfoPointService.Post(mapInfoPoint);
+            Assert.IsType<BadRequestObjectResult>(actionMapInfoPoint.Result);
+            //Assert.AreEqual(count, mapInfoPointService.GetMapInfoPointList().Count());
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPAfter(Year = 1980)]
+            // mapInfoPoint.LastUpdateDate_UTC   (DateTime)
+            // -----------------------------------
+
+            mapInfoPoint = null;
+            mapInfoPoint = GetFilledRandomMapInfoPoint("");
+            mapInfoPoint.LastUpdateDate_UTC = new DateTime();
+            actionMapInfoPoint = await MapInfoPointService.Post(mapInfoPoint);
+            Assert.IsType<BadRequestObjectResult>(actionMapInfoPoint.Result);
+            mapInfoPoint = null;
+            mapInfoPoint = GetFilledRandomMapInfoPoint("");
+            mapInfoPoint.LastUpdateDate_UTC = new DateTime(1979, 1, 1);
+            actionMapInfoPoint = await MapInfoPointService.Post(mapInfoPoint);
+            Assert.IsType<BadRequestObjectResult>(actionMapInfoPoint.Result);
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPExist(ExistTypeName = "TVItem", ExistPlurial = "s", ExistFieldID = "TVItemID", AllowableTVtypeList = Contact)]
+            // mapInfoPoint.LastUpdateContactTVItemID   (Int32)
+            // -----------------------------------
+
+            mapInfoPoint = null;
+            mapInfoPoint = GetFilledRandomMapInfoPoint("");
+            mapInfoPoint.LastUpdateContactTVItemID = 0;
+            actionMapInfoPoint = await MapInfoPointService.Post(mapInfoPoint);
+            Assert.IsType<BadRequestObjectResult>(actionMapInfoPoint.Result);
+
+            mapInfoPoint = null;
+            mapInfoPoint = GetFilledRandomMapInfoPoint("");
+            mapInfoPoint.LastUpdateContactTVItemID = 1;
+            actionMapInfoPoint = await MapInfoPointService.Post(mapInfoPoint);
+            Assert.IsType<BadRequestObjectResult>(actionMapInfoPoint.Result);
+
+        }
+        #endregion Tests Generated Properties
 
         #region Functions private
         private async Task DoCRUDTest()
@@ -235,6 +400,9 @@ namespace CSSPServices.Tests
             }
 
             return mapInfoPoint;
+        }
+        private void CheckMapInfoPointFields(List<MapInfoPoint> mapInfoPointList)
+        {
         }
         #endregion Functions private
     }

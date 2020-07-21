@@ -19,6 +19,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Transactions;
 using Xunit;
+using System.ComponentModel.DataAnnotations;
 
 namespace CSSPServices.Tests
 {
@@ -81,6 +82,148 @@ namespace CSSPServices.Tests
             }
         }
         #endregion Tests Generated CRUD
+
+        #region Tests Generated Properties
+        [Theory]
+        [InlineData("en-CA", DBLocationEnum.Local)]
+        [InlineData("fr-CA", DBLocationEnum.Local)]
+        [InlineData("en-CA", DBLocationEnum.Server)]
+        [InlineData("fr-CA", DBLocationEnum.Server)]
+        public async Task MWQMSubsector_Properties_Test(string culture, DBLocationEnum DBLocation)
+        {
+            // -------------------------------
+            // -------------------------------
+            // Properties testing
+            // -------------------------------
+            // -------------------------------
+
+            Assert.True(await Setup(culture));
+
+            LoggedInService.DBLocation = DBLocation;
+
+            int count = 0;
+            if (count == 1)
+            {
+                // just so we don't get a warning during compile [The variable 'count' is assigned but its value is never used]
+            }
+
+            var actionMWQMSubsectorList = await MWQMSubsectorService.GetMWQMSubsectorList();
+            Assert.Equal(200, ((ObjectResult)actionMWQMSubsectorList.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionMWQMSubsectorList.Result).Value);
+            List<MWQMSubsector> mwqmSubsectorList = (List<MWQMSubsector>)((OkObjectResult)actionMWQMSubsectorList.Result).Value;
+
+            count = mwqmSubsectorList.Count();
+
+            MWQMSubsector mwqmSubsector = GetFilledRandomMWQMSubsector("");
+
+
+            // -----------------------------------
+            // [Key]
+            // Is NOT Nullable
+            // mwqmSubsector.MWQMSubsectorID   (Int32)
+            // -----------------------------------
+
+            mwqmSubsector = null;
+            mwqmSubsector = GetFilledRandomMWQMSubsector("");
+            mwqmSubsector.MWQMSubsectorID = 0;
+
+            var actionMWQMSubsector = await MWQMSubsectorService.Put(mwqmSubsector);
+            Assert.IsType<BadRequestObjectResult>(actionMWQMSubsector.Result);
+
+            mwqmSubsector = null;
+            mwqmSubsector = GetFilledRandomMWQMSubsector("");
+            mwqmSubsector.MWQMSubsectorID = 10000000;
+            actionMWQMSubsector = await MWQMSubsectorService.Put(mwqmSubsector);
+            Assert.IsType<BadRequestObjectResult>(actionMWQMSubsector.Result);
+
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPExist(ExistTypeName = "TVItem", ExistPlurial = "s", ExistFieldID = "TVItemID", AllowableTVtypeList = Subsector)]
+            // mwqmSubsector.MWQMSubsectorTVItemID   (Int32)
+            // -----------------------------------
+
+            mwqmSubsector = null;
+            mwqmSubsector = GetFilledRandomMWQMSubsector("");
+            mwqmSubsector.MWQMSubsectorTVItemID = 0;
+            actionMWQMSubsector = await MWQMSubsectorService.Post(mwqmSubsector);
+            Assert.IsType<BadRequestObjectResult>(actionMWQMSubsector.Result);
+
+            mwqmSubsector = null;
+            mwqmSubsector = GetFilledRandomMWQMSubsector("");
+            mwqmSubsector.MWQMSubsectorTVItemID = 1;
+            actionMWQMSubsector = await MWQMSubsectorService.Post(mwqmSubsector);
+            Assert.IsType<BadRequestObjectResult>(actionMWQMSubsector.Result);
+
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPMaxLength(20)]
+            // mwqmSubsector.SubsectorHistoricKey   (String)
+            // -----------------------------------
+
+            mwqmSubsector = null;
+            mwqmSubsector = GetFilledRandomMWQMSubsector("SubsectorHistoricKey");
+            actionMWQMSubsector = await MWQMSubsectorService.Post(mwqmSubsector);
+            Assert.IsType<BadRequestObjectResult>(actionMWQMSubsector.Result);
+
+            mwqmSubsector = null;
+            mwqmSubsector = GetFilledRandomMWQMSubsector("");
+            mwqmSubsector.SubsectorHistoricKey = GetRandomString("", 21);
+            actionMWQMSubsector = await MWQMSubsectorService.Post(mwqmSubsector);
+            Assert.IsType<BadRequestObjectResult>(actionMWQMSubsector.Result);
+            //Assert.AreEqual(count, mwqmSubsectorService.GetMWQMSubsectorList().Count());
+
+            // -----------------------------------
+            // Is Nullable
+            // [CSSPMaxLength(20)]
+            // mwqmSubsector.TideLocationSIDText   (String)
+            // -----------------------------------
+
+            mwqmSubsector = null;
+            mwqmSubsector = GetFilledRandomMWQMSubsector("");
+            mwqmSubsector.TideLocationSIDText = GetRandomString("", 21);
+            actionMWQMSubsector = await MWQMSubsectorService.Post(mwqmSubsector);
+            Assert.IsType<BadRequestObjectResult>(actionMWQMSubsector.Result);
+            //Assert.AreEqual(count, mwqmSubsectorService.GetMWQMSubsectorList().Count());
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPAfter(Year = 1980)]
+            // mwqmSubsector.LastUpdateDate_UTC   (DateTime)
+            // -----------------------------------
+
+            mwqmSubsector = null;
+            mwqmSubsector = GetFilledRandomMWQMSubsector("");
+            mwqmSubsector.LastUpdateDate_UTC = new DateTime();
+            actionMWQMSubsector = await MWQMSubsectorService.Post(mwqmSubsector);
+            Assert.IsType<BadRequestObjectResult>(actionMWQMSubsector.Result);
+            mwqmSubsector = null;
+            mwqmSubsector = GetFilledRandomMWQMSubsector("");
+            mwqmSubsector.LastUpdateDate_UTC = new DateTime(1979, 1, 1);
+            actionMWQMSubsector = await MWQMSubsectorService.Post(mwqmSubsector);
+            Assert.IsType<BadRequestObjectResult>(actionMWQMSubsector.Result);
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPExist(ExistTypeName = "TVItem", ExistPlurial = "s", ExistFieldID = "TVItemID", AllowableTVtypeList = Contact)]
+            // mwqmSubsector.LastUpdateContactTVItemID   (Int32)
+            // -----------------------------------
+
+            mwqmSubsector = null;
+            mwqmSubsector = GetFilledRandomMWQMSubsector("");
+            mwqmSubsector.LastUpdateContactTVItemID = 0;
+            actionMWQMSubsector = await MWQMSubsectorService.Post(mwqmSubsector);
+            Assert.IsType<BadRequestObjectResult>(actionMWQMSubsector.Result);
+
+            mwqmSubsector = null;
+            mwqmSubsector = GetFilledRandomMWQMSubsector("");
+            mwqmSubsector.LastUpdateContactTVItemID = 1;
+            actionMWQMSubsector = await MWQMSubsectorService.Post(mwqmSubsector);
+            Assert.IsType<BadRequestObjectResult>(actionMWQMSubsector.Result);
+
+        }
+        #endregion Tests Generated Properties
 
         #region Functions private
         private async Task DoCRUDTest()
@@ -234,6 +377,14 @@ namespace CSSPServices.Tests
             }
 
             return mwqmSubsector;
+        }
+        private void CheckMWQMSubsectorFields(List<MWQMSubsector> mwqmSubsectorList)
+        {
+            Assert.False(string.IsNullOrWhiteSpace(mwqmSubsectorList[0].SubsectorHistoricKey));
+            if (!string.IsNullOrWhiteSpace(mwqmSubsectorList[0].TideLocationSIDText))
+            {
+                Assert.False(string.IsNullOrWhiteSpace(mwqmSubsectorList[0].TideLocationSIDText));
+            }
         }
         #endregion Functions private
     }

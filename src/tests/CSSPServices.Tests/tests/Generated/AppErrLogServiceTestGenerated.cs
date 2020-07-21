@@ -19,6 +19,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Transactions;
 using Xunit;
+using System.ComponentModel.DataAnnotations;
 
 namespace CSSPServices.Tests
 {
@@ -81,6 +82,168 @@ namespace CSSPServices.Tests
             }
         }
         #endregion Tests Generated CRUD
+
+        #region Tests Generated Properties
+        [Theory]
+        [InlineData("en-CA", DBLocationEnum.Local)]
+        [InlineData("fr-CA", DBLocationEnum.Local)]
+        [InlineData("en-CA", DBLocationEnum.Server)]
+        [InlineData("fr-CA", DBLocationEnum.Server)]
+        public async Task AppErrLog_Properties_Test(string culture, DBLocationEnum DBLocation)
+        {
+            // -------------------------------
+            // -------------------------------
+            // Properties testing
+            // -------------------------------
+            // -------------------------------
+
+            Assert.True(await Setup(culture));
+
+            LoggedInService.DBLocation = DBLocation;
+
+            int count = 0;
+            if (count == 1)
+            {
+                // just so we don't get a warning during compile [The variable 'count' is assigned but its value is never used]
+            }
+
+            var actionAppErrLogList = await AppErrLogService.GetAppErrLogList();
+            Assert.Equal(200, ((ObjectResult)actionAppErrLogList.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionAppErrLogList.Result).Value);
+            List<AppErrLog> appErrLogList = (List<AppErrLog>)((OkObjectResult)actionAppErrLogList.Result).Value;
+
+            count = appErrLogList.Count();
+
+            AppErrLog appErrLog = GetFilledRandomAppErrLog("");
+
+
+            // -----------------------------------
+            // [Key]
+            // Is NOT Nullable
+            // appErrLog.AppErrLogID   (Int32)
+            // -----------------------------------
+
+            appErrLog = null;
+            appErrLog = GetFilledRandomAppErrLog("");
+            appErrLog.AppErrLogID = 0;
+
+            var actionAppErrLog = await AppErrLogService.Put(appErrLog);
+            Assert.IsType<BadRequestObjectResult>(actionAppErrLog.Result);
+
+            appErrLog = null;
+            appErrLog = GetFilledRandomAppErrLog("");
+            appErrLog.AppErrLogID = 10000000;
+            actionAppErrLog = await AppErrLogService.Put(appErrLog);
+            Assert.IsType<BadRequestObjectResult>(actionAppErrLog.Result);
+
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPMaxLength(100)]
+            // appErrLog.Tag   (String)
+            // -----------------------------------
+
+            appErrLog = null;
+            appErrLog = GetFilledRandomAppErrLog("Tag");
+            actionAppErrLog = await AppErrLogService.Post(appErrLog);
+            Assert.IsType<BadRequestObjectResult>(actionAppErrLog.Result);
+
+            appErrLog = null;
+            appErrLog = GetFilledRandomAppErrLog("");
+            appErrLog.Tag = GetRandomString("", 101);
+            actionAppErrLog = await AppErrLogService.Post(appErrLog);
+            Assert.IsType<BadRequestObjectResult>(actionAppErrLog.Result);
+            //Assert.AreEqual(count, appErrLogService.GetAppErrLogList().Count());
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPRange(1, -1)]
+            // appErrLog.LineNumber   (Int32)
+            // -----------------------------------
+
+            appErrLog = null;
+            appErrLog = GetFilledRandomAppErrLog("");
+            appErrLog.LineNumber = 0;
+            actionAppErrLog = await AppErrLogService.Post(appErrLog);
+            Assert.IsType<BadRequestObjectResult>(actionAppErrLog.Result);
+            //Assert.AreEqual(count, appErrLogService.GetAppErrLogList().Count());
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // appErrLog.Source   (String)
+            // -----------------------------------
+
+            appErrLog = null;
+            appErrLog = GetFilledRandomAppErrLog("Source");
+            actionAppErrLog = await AppErrLogService.Post(appErrLog);
+            Assert.IsType<BadRequestObjectResult>(actionAppErrLog.Result);
+
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // appErrLog.Message   (String)
+            // -----------------------------------
+
+            appErrLog = null;
+            appErrLog = GetFilledRandomAppErrLog("Message");
+            actionAppErrLog = await AppErrLogService.Post(appErrLog);
+            Assert.IsType<BadRequestObjectResult>(actionAppErrLog.Result);
+
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPAfter(Year = 1980)]
+            // appErrLog.DateTime_UTC   (DateTime)
+            // -----------------------------------
+
+            appErrLog = null;
+            appErrLog = GetFilledRandomAppErrLog("");
+            appErrLog.DateTime_UTC = new DateTime();
+            actionAppErrLog = await AppErrLogService.Post(appErrLog);
+            Assert.IsType<BadRequestObjectResult>(actionAppErrLog.Result);
+            appErrLog = null;
+            appErrLog = GetFilledRandomAppErrLog("");
+            appErrLog.DateTime_UTC = new DateTime(1979, 1, 1);
+            actionAppErrLog = await AppErrLogService.Post(appErrLog);
+            Assert.IsType<BadRequestObjectResult>(actionAppErrLog.Result);
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPAfter(Year = 1980)]
+            // appErrLog.LastUpdateDate_UTC   (DateTime)
+            // -----------------------------------
+
+            appErrLog = null;
+            appErrLog = GetFilledRandomAppErrLog("");
+            appErrLog.LastUpdateDate_UTC = new DateTime();
+            actionAppErrLog = await AppErrLogService.Post(appErrLog);
+            Assert.IsType<BadRequestObjectResult>(actionAppErrLog.Result);
+            appErrLog = null;
+            appErrLog = GetFilledRandomAppErrLog("");
+            appErrLog.LastUpdateDate_UTC = new DateTime(1979, 1, 1);
+            actionAppErrLog = await AppErrLogService.Post(appErrLog);
+            Assert.IsType<BadRequestObjectResult>(actionAppErrLog.Result);
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPExist(ExistTypeName = "TVItem", ExistPlurial = "s", ExistFieldID = "TVItemID", AllowableTVtypeList = Contact)]
+            // appErrLog.LastUpdateContactTVItemID   (Int32)
+            // -----------------------------------
+
+            appErrLog = null;
+            appErrLog = GetFilledRandomAppErrLog("");
+            appErrLog.LastUpdateContactTVItemID = 0;
+            actionAppErrLog = await AppErrLogService.Post(appErrLog);
+            Assert.IsType<BadRequestObjectResult>(actionAppErrLog.Result);
+
+            appErrLog = null;
+            appErrLog = GetFilledRandomAppErrLog("");
+            appErrLog.LastUpdateContactTVItemID = 1;
+            actionAppErrLog = await AppErrLogService.Post(appErrLog);
+            Assert.IsType<BadRequestObjectResult>(actionAppErrLog.Result);
+
+        }
+        #endregion Tests Generated Properties
 
         #region Functions private
         private async Task DoCRUDTest()
@@ -227,6 +390,12 @@ namespace CSSPServices.Tests
             }
 
             return appErrLog;
+        }
+        private void CheckAppErrLogFields(List<AppErrLog> appErrLogList)
+        {
+            Assert.False(string.IsNullOrWhiteSpace(appErrLogList[0].Tag));
+            Assert.False(string.IsNullOrWhiteSpace(appErrLogList[0].Source));
+            Assert.False(string.IsNullOrWhiteSpace(appErrLogList[0].Message));
         }
         #endregion Functions private
     }

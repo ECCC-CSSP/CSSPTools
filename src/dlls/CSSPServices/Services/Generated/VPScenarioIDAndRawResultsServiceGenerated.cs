@@ -20,19 +20,54 @@ using System.Threading.Tasks;
 
 namespace CSSPServices
 {
-    public partial class VPScenarioIDAndRawResultsService
+    public interface IVPScenarioIDAndRawResultsService
+    {
+        IEnumerable<ValidationResult> Validate(ValidationContext validationContext);
+    }
+    public partial class VPScenarioIDAndRawResultsService : IVPScenarioIDAndRawResultsService
     {
         #region Variables
         #endregion Variables
 
         #region Properties
+        private ICSSPCultureService CSSPCultureService { get; }
+        private IEnums enums { get; }
         #endregion Properties
 
         #region Constructors
-        public VPScenarioIDAndRawResultsService()
+        public VPScenarioIDAndRawResultsService(ICSSPCultureService CSSPCultureService, IEnums enums)
         {
+            this.CSSPCultureService = CSSPCultureService;
+            this.enums = enums;
         }
         #endregion Constructors
+
+        #region Functions public
+        public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+        {
+            string retStr = "";
+            VPScenarioIDAndRawResults vpScenarioIDAndRawResults = validationContext.ObjectInstance as VPScenarioIDAndRawResults;
+
+            if (vpScenarioIDAndRawResults.VPScenarioID < 1)
+            {
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MinValueIs_, "VPScenarioID", "1"), new[] { "VPScenarioID" });
+            }
+
+            if (string.IsNullOrWhiteSpace(vpScenarioIDAndRawResults.RawResults))
+            {
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "RawResults"), new[] { "RawResults" });
+            }
+
+            //RawResults has no StringLength Attribute
+
+            retStr = ""; // added to stop compiling CSSPError
+            if (retStr != "") // will never be true
+            {
+                yield return new ValidationResult("AAA", new[] { "AAA" });
+            }
+
+        }
+        #endregion Functions public
 
     }
 }

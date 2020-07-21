@@ -19,6 +19,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Transactions;
 using Xunit;
+using System.ComponentModel.DataAnnotations;
 
 namespace CSSPServices.Tests
 {
@@ -81,6 +82,384 @@ namespace CSSPServices.Tests
             }
         }
         #endregion Tests Generated CRUD
+
+        #region Tests Generated Properties
+        [Theory]
+        [InlineData("en-CA", DBLocationEnum.Local)]
+        [InlineData("fr-CA", DBLocationEnum.Local)]
+        [InlineData("en-CA", DBLocationEnum.Server)]
+        [InlineData("fr-CA", DBLocationEnum.Server)]
+        public async Task MWQMSample_Properties_Test(string culture, DBLocationEnum DBLocation)
+        {
+            // -------------------------------
+            // -------------------------------
+            // Properties testing
+            // -------------------------------
+            // -------------------------------
+
+            Assert.True(await Setup(culture));
+
+            LoggedInService.DBLocation = DBLocation;
+
+            int count = 0;
+            if (count == 1)
+            {
+                // just so we don't get a warning during compile [The variable 'count' is assigned but its value is never used]
+            }
+
+            var actionMWQMSampleList = await MWQMSampleService.GetMWQMSampleList();
+            Assert.Equal(200, ((ObjectResult)actionMWQMSampleList.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionMWQMSampleList.Result).Value);
+            List<MWQMSample> mwqmSampleList = (List<MWQMSample>)((OkObjectResult)actionMWQMSampleList.Result).Value;
+
+            count = mwqmSampleList.Count();
+
+            MWQMSample mwqmSample = GetFilledRandomMWQMSample("");
+
+
+            // -----------------------------------
+            // [Key]
+            // Is NOT Nullable
+            // mwqmSample.MWQMSampleID   (Int32)
+            // -----------------------------------
+
+            mwqmSample = null;
+            mwqmSample = GetFilledRandomMWQMSample("");
+            mwqmSample.MWQMSampleID = 0;
+
+            var actionMWQMSample = await MWQMSampleService.Put(mwqmSample);
+            Assert.IsType<BadRequestObjectResult>(actionMWQMSample.Result);
+
+            mwqmSample = null;
+            mwqmSample = GetFilledRandomMWQMSample("");
+            mwqmSample.MWQMSampleID = 10000000;
+            actionMWQMSample = await MWQMSampleService.Put(mwqmSample);
+            Assert.IsType<BadRequestObjectResult>(actionMWQMSample.Result);
+
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPExist(ExistTypeName = "TVItem", ExistPlurial = "s", ExistFieldID = "TVItemID", AllowableTVtypeList = MWQMSite)]
+            // mwqmSample.MWQMSiteTVItemID   (Int32)
+            // -----------------------------------
+
+            mwqmSample = null;
+            mwqmSample = GetFilledRandomMWQMSample("");
+            mwqmSample.MWQMSiteTVItemID = 0;
+            actionMWQMSample = await MWQMSampleService.Post(mwqmSample);
+            Assert.IsType<BadRequestObjectResult>(actionMWQMSample.Result);
+
+            mwqmSample = null;
+            mwqmSample = GetFilledRandomMWQMSample("");
+            mwqmSample.MWQMSiteTVItemID = 1;
+            actionMWQMSample = await MWQMSampleService.Post(mwqmSample);
+            Assert.IsType<BadRequestObjectResult>(actionMWQMSample.Result);
+
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPExist(ExistTypeName = "TVItem", ExistPlurial = "s", ExistFieldID = "TVItemID", AllowableTVtypeList = MWQMRun)]
+            // mwqmSample.MWQMRunTVItemID   (Int32)
+            // -----------------------------------
+
+            mwqmSample = null;
+            mwqmSample = GetFilledRandomMWQMSample("");
+            mwqmSample.MWQMRunTVItemID = 0;
+            actionMWQMSample = await MWQMSampleService.Post(mwqmSample);
+            Assert.IsType<BadRequestObjectResult>(actionMWQMSample.Result);
+
+            mwqmSample = null;
+            mwqmSample = GetFilledRandomMWQMSample("");
+            mwqmSample.MWQMRunTVItemID = 1;
+            actionMWQMSample = await MWQMSampleService.Post(mwqmSample);
+            Assert.IsType<BadRequestObjectResult>(actionMWQMSample.Result);
+
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPAfter(Year = 1980)]
+            // mwqmSample.SampleDateTime_Local   (DateTime)
+            // -----------------------------------
+
+            mwqmSample = null;
+            mwqmSample = GetFilledRandomMWQMSample("");
+            mwqmSample.SampleDateTime_Local = new DateTime();
+            actionMWQMSample = await MWQMSampleService.Post(mwqmSample);
+            Assert.IsType<BadRequestObjectResult>(actionMWQMSample.Result);
+            mwqmSample = null;
+            mwqmSample = GetFilledRandomMWQMSample("");
+            mwqmSample.SampleDateTime_Local = new DateTime(1979, 1, 1);
+            actionMWQMSample = await MWQMSampleService.Post(mwqmSample);
+            Assert.IsType<BadRequestObjectResult>(actionMWQMSample.Result);
+
+            // -----------------------------------
+            // Is Nullable
+            // [CSSPMaxLength(6)]
+            // mwqmSample.TimeText   (String)
+            // -----------------------------------
+
+            mwqmSample = null;
+            mwqmSample = GetFilledRandomMWQMSample("");
+            mwqmSample.TimeText = GetRandomString("", 7);
+            actionMWQMSample = await MWQMSampleService.Post(mwqmSample);
+            Assert.IsType<BadRequestObjectResult>(actionMWQMSample.Result);
+            //Assert.AreEqual(count, mwqmSampleService.GetMWQMSampleList().Count());
+
+            // -----------------------------------
+            // Is Nullable
+            // [CSSPRange(0, 1000)]
+            // mwqmSample.Depth_m   (Double)
+            // -----------------------------------
+
+            //CSSPError: Type not implemented [Depth_m]
+
+            //CSSPError: Type not implemented [Depth_m]
+
+            mwqmSample = null;
+            mwqmSample = GetFilledRandomMWQMSample("");
+            mwqmSample.Depth_m = -1.0D;
+            actionMWQMSample = await MWQMSampleService.Post(mwqmSample);
+            Assert.IsType<BadRequestObjectResult>(actionMWQMSample.Result);
+            //Assert.AreEqual(count, mwqmSampleService.GetMWQMSampleList().Count());
+            mwqmSample = null;
+            mwqmSample = GetFilledRandomMWQMSample("");
+            mwqmSample.Depth_m = 1001.0D;
+            actionMWQMSample = await MWQMSampleService.Post(mwqmSample);
+            Assert.IsType<BadRequestObjectResult>(actionMWQMSample.Result);
+            //Assert.AreEqual(count, mwqmSampleService.GetMWQMSampleList().Count());
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPRange(0, 10000000)]
+            // mwqmSample.FecCol_MPN_100ml   (Int32)
+            // -----------------------------------
+
+            mwqmSample = null;
+            mwqmSample = GetFilledRandomMWQMSample("");
+            mwqmSample.FecCol_MPN_100ml = -1;
+            actionMWQMSample = await MWQMSampleService.Post(mwqmSample);
+            Assert.IsType<BadRequestObjectResult>(actionMWQMSample.Result);
+            //Assert.AreEqual(count, mwqmSampleService.GetMWQMSampleList().Count());
+            mwqmSample = null;
+            mwqmSample = GetFilledRandomMWQMSample("");
+            mwqmSample.FecCol_MPN_100ml = 10000001;
+            actionMWQMSample = await MWQMSampleService.Post(mwqmSample);
+            Assert.IsType<BadRequestObjectResult>(actionMWQMSample.Result);
+            //Assert.AreEqual(count, mwqmSampleService.GetMWQMSampleList().Count());
+
+            // -----------------------------------
+            // Is Nullable
+            // [CSSPRange(0, 40)]
+            // mwqmSample.Salinity_PPT   (Double)
+            // -----------------------------------
+
+            //CSSPError: Type not implemented [Salinity_PPT]
+
+            //CSSPError: Type not implemented [Salinity_PPT]
+
+            mwqmSample = null;
+            mwqmSample = GetFilledRandomMWQMSample("");
+            mwqmSample.Salinity_PPT = -1.0D;
+            actionMWQMSample = await MWQMSampleService.Post(mwqmSample);
+            Assert.IsType<BadRequestObjectResult>(actionMWQMSample.Result);
+            //Assert.AreEqual(count, mwqmSampleService.GetMWQMSampleList().Count());
+            mwqmSample = null;
+            mwqmSample = GetFilledRandomMWQMSample("");
+            mwqmSample.Salinity_PPT = 41.0D;
+            actionMWQMSample = await MWQMSampleService.Post(mwqmSample);
+            Assert.IsType<BadRequestObjectResult>(actionMWQMSample.Result);
+            //Assert.AreEqual(count, mwqmSampleService.GetMWQMSampleList().Count());
+
+            // -----------------------------------
+            // Is Nullable
+            // [CSSPRange(-10, 40)]
+            // mwqmSample.WaterTemp_C   (Double)
+            // -----------------------------------
+
+            //CSSPError: Type not implemented [WaterTemp_C]
+
+            //CSSPError: Type not implemented [WaterTemp_C]
+
+            mwqmSample = null;
+            mwqmSample = GetFilledRandomMWQMSample("");
+            mwqmSample.WaterTemp_C = -11.0D;
+            actionMWQMSample = await MWQMSampleService.Post(mwqmSample);
+            Assert.IsType<BadRequestObjectResult>(actionMWQMSample.Result);
+            //Assert.AreEqual(count, mwqmSampleService.GetMWQMSampleList().Count());
+            mwqmSample = null;
+            mwqmSample = GetFilledRandomMWQMSample("");
+            mwqmSample.WaterTemp_C = 41.0D;
+            actionMWQMSample = await MWQMSampleService.Post(mwqmSample);
+            Assert.IsType<BadRequestObjectResult>(actionMWQMSample.Result);
+            //Assert.AreEqual(count, mwqmSampleService.GetMWQMSampleList().Count());
+
+            // -----------------------------------
+            // Is Nullable
+            // [CSSPRange(0, 14)]
+            // mwqmSample.PH   (Double)
+            // -----------------------------------
+
+            //CSSPError: Type not implemented [PH]
+
+            //CSSPError: Type not implemented [PH]
+
+            mwqmSample = null;
+            mwqmSample = GetFilledRandomMWQMSample("");
+            mwqmSample.PH = -1.0D;
+            actionMWQMSample = await MWQMSampleService.Post(mwqmSample);
+            Assert.IsType<BadRequestObjectResult>(actionMWQMSample.Result);
+            //Assert.AreEqual(count, mwqmSampleService.GetMWQMSampleList().Count());
+            mwqmSample = null;
+            mwqmSample = GetFilledRandomMWQMSample("");
+            mwqmSample.PH = 15.0D;
+            actionMWQMSample = await MWQMSampleService.Post(mwqmSample);
+            Assert.IsType<BadRequestObjectResult>(actionMWQMSample.Result);
+            //Assert.AreEqual(count, mwqmSampleService.GetMWQMSampleList().Count());
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPMaxLength(50)]
+            // mwqmSample.SampleTypesText   (String)
+            // -----------------------------------
+
+            mwqmSample = null;
+            mwqmSample = GetFilledRandomMWQMSample("SampleTypesText");
+            actionMWQMSample = await MWQMSampleService.Post(mwqmSample);
+            Assert.IsType<BadRequestObjectResult>(actionMWQMSample.Result);
+
+            mwqmSample = null;
+            mwqmSample = GetFilledRandomMWQMSample("");
+            mwqmSample.SampleTypesText = GetRandomString("", 51);
+            actionMWQMSample = await MWQMSampleService.Post(mwqmSample);
+            Assert.IsType<BadRequestObjectResult>(actionMWQMSample.Result);
+            //Assert.AreEqual(count, mwqmSampleService.GetMWQMSampleList().Count());
+
+            // -----------------------------------
+            // Is Nullable
+            // [CSSPEnumType]
+            // mwqmSample.SampleType_old   (SampleTypeEnum)
+            // -----------------------------------
+
+            mwqmSample = null;
+            mwqmSample = GetFilledRandomMWQMSample("");
+            mwqmSample.SampleType_old = (SampleTypeEnum)1000000;
+            actionMWQMSample = await MWQMSampleService.Post(mwqmSample);
+            Assert.IsType<BadRequestObjectResult>(actionMWQMSample.Result);
+
+
+            // -----------------------------------
+            // Is Nullable
+            // [CSSPRange(0, 5)]
+            // mwqmSample.Tube_10   (Int32)
+            // -----------------------------------
+
+            mwqmSample = null;
+            mwqmSample = GetFilledRandomMWQMSample("");
+            mwqmSample.Tube_10 = -1;
+            actionMWQMSample = await MWQMSampleService.Post(mwqmSample);
+            Assert.IsType<BadRequestObjectResult>(actionMWQMSample.Result);
+            //Assert.AreEqual(count, mwqmSampleService.GetMWQMSampleList().Count());
+            mwqmSample = null;
+            mwqmSample = GetFilledRandomMWQMSample("");
+            mwqmSample.Tube_10 = 6;
+            actionMWQMSample = await MWQMSampleService.Post(mwqmSample);
+            Assert.IsType<BadRequestObjectResult>(actionMWQMSample.Result);
+            //Assert.AreEqual(count, mwqmSampleService.GetMWQMSampleList().Count());
+
+            // -----------------------------------
+            // Is Nullable
+            // [CSSPRange(0, 5)]
+            // mwqmSample.Tube_1_0   (Int32)
+            // -----------------------------------
+
+            mwqmSample = null;
+            mwqmSample = GetFilledRandomMWQMSample("");
+            mwqmSample.Tube_1_0 = -1;
+            actionMWQMSample = await MWQMSampleService.Post(mwqmSample);
+            Assert.IsType<BadRequestObjectResult>(actionMWQMSample.Result);
+            //Assert.AreEqual(count, mwqmSampleService.GetMWQMSampleList().Count());
+            mwqmSample = null;
+            mwqmSample = GetFilledRandomMWQMSample("");
+            mwqmSample.Tube_1_0 = 6;
+            actionMWQMSample = await MWQMSampleService.Post(mwqmSample);
+            Assert.IsType<BadRequestObjectResult>(actionMWQMSample.Result);
+            //Assert.AreEqual(count, mwqmSampleService.GetMWQMSampleList().Count());
+
+            // -----------------------------------
+            // Is Nullable
+            // [CSSPRange(0, 5)]
+            // mwqmSample.Tube_0_1   (Int32)
+            // -----------------------------------
+
+            mwqmSample = null;
+            mwqmSample = GetFilledRandomMWQMSample("");
+            mwqmSample.Tube_0_1 = -1;
+            actionMWQMSample = await MWQMSampleService.Post(mwqmSample);
+            Assert.IsType<BadRequestObjectResult>(actionMWQMSample.Result);
+            //Assert.AreEqual(count, mwqmSampleService.GetMWQMSampleList().Count());
+            mwqmSample = null;
+            mwqmSample = GetFilledRandomMWQMSample("");
+            mwqmSample.Tube_0_1 = 6;
+            actionMWQMSample = await MWQMSampleService.Post(mwqmSample);
+            Assert.IsType<BadRequestObjectResult>(actionMWQMSample.Result);
+            //Assert.AreEqual(count, mwqmSampleService.GetMWQMSampleList().Count());
+
+            // -----------------------------------
+            // Is Nullable
+            // [CSSPMaxLength(10)]
+            // mwqmSample.ProcessedBy   (String)
+            // -----------------------------------
+
+            mwqmSample = null;
+            mwqmSample = GetFilledRandomMWQMSample("");
+            mwqmSample.ProcessedBy = GetRandomString("", 11);
+            actionMWQMSample = await MWQMSampleService.Post(mwqmSample);
+            Assert.IsType<BadRequestObjectResult>(actionMWQMSample.Result);
+            //Assert.AreEqual(count, mwqmSampleService.GetMWQMSampleList().Count());
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // mwqmSample.UseForOpenData   (Boolean)
+            // -----------------------------------
+
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPAfter(Year = 1980)]
+            // mwqmSample.LastUpdateDate_UTC   (DateTime)
+            // -----------------------------------
+
+            mwqmSample = null;
+            mwqmSample = GetFilledRandomMWQMSample("");
+            mwqmSample.LastUpdateDate_UTC = new DateTime();
+            actionMWQMSample = await MWQMSampleService.Post(mwqmSample);
+            Assert.IsType<BadRequestObjectResult>(actionMWQMSample.Result);
+            mwqmSample = null;
+            mwqmSample = GetFilledRandomMWQMSample("");
+            mwqmSample.LastUpdateDate_UTC = new DateTime(1979, 1, 1);
+            actionMWQMSample = await MWQMSampleService.Post(mwqmSample);
+            Assert.IsType<BadRequestObjectResult>(actionMWQMSample.Result);
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPExist(ExistTypeName = "TVItem", ExistPlurial = "s", ExistFieldID = "TVItemID", AllowableTVtypeList = Contact)]
+            // mwqmSample.LastUpdateContactTVItemID   (Int32)
+            // -----------------------------------
+
+            mwqmSample = null;
+            mwqmSample = GetFilledRandomMWQMSample("");
+            mwqmSample.LastUpdateContactTVItemID = 0;
+            actionMWQMSample = await MWQMSampleService.Post(mwqmSample);
+            Assert.IsType<BadRequestObjectResult>(actionMWQMSample.Result);
+
+            mwqmSample = null;
+            mwqmSample = GetFilledRandomMWQMSample("");
+            mwqmSample.LastUpdateContactTVItemID = 1;
+            actionMWQMSample = await MWQMSampleService.Post(mwqmSample);
+            Assert.IsType<BadRequestObjectResult>(actionMWQMSample.Result);
+
+        }
+        #endregion Tests Generated Properties
 
         #region Functions private
         private async Task DoCRUDTest()
@@ -256,6 +635,50 @@ namespace CSSPServices.Tests
             }
 
             return mwqmSample;
+        }
+        private void CheckMWQMSampleFields(List<MWQMSample> mwqmSampleList)
+        {
+            if (!string.IsNullOrWhiteSpace(mwqmSampleList[0].TimeText))
+            {
+                Assert.False(string.IsNullOrWhiteSpace(mwqmSampleList[0].TimeText));
+            }
+            if (mwqmSampleList[0].Depth_m != null)
+            {
+                Assert.NotNull(mwqmSampleList[0].Depth_m);
+            }
+            if (mwqmSampleList[0].Salinity_PPT != null)
+            {
+                Assert.NotNull(mwqmSampleList[0].Salinity_PPT);
+            }
+            if (mwqmSampleList[0].WaterTemp_C != null)
+            {
+                Assert.NotNull(mwqmSampleList[0].WaterTemp_C);
+            }
+            if (mwqmSampleList[0].PH != null)
+            {
+                Assert.NotNull(mwqmSampleList[0].PH);
+            }
+            Assert.False(string.IsNullOrWhiteSpace(mwqmSampleList[0].SampleTypesText));
+            if (mwqmSampleList[0].SampleType_old != null)
+            {
+                Assert.NotNull(mwqmSampleList[0].SampleType_old);
+            }
+            if (mwqmSampleList[0].Tube_10 != null)
+            {
+                Assert.NotNull(mwqmSampleList[0].Tube_10);
+            }
+            if (mwqmSampleList[0].Tube_1_0 != null)
+            {
+                Assert.NotNull(mwqmSampleList[0].Tube_1_0);
+            }
+            if (mwqmSampleList[0].Tube_0_1 != null)
+            {
+                Assert.NotNull(mwqmSampleList[0].Tube_0_1);
+            }
+            if (!string.IsNullOrWhiteSpace(mwqmSampleList[0].ProcessedBy))
+            {
+                Assert.False(string.IsNullOrWhiteSpace(mwqmSampleList[0].ProcessedBy));
+            }
         }
         #endregion Functions private
     }

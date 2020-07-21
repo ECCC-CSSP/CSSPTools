@@ -19,6 +19,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Transactions;
 using Xunit;
+using System.ComponentModel.DataAnnotations;
 
 namespace CSSPServices.Tests
 {
@@ -81,6 +82,218 @@ namespace CSSPServices.Tests
             }
         }
         #endregion Tests Generated CRUD
+
+        #region Tests Generated Properties
+        [Theory]
+        [InlineData("en-CA", DBLocationEnum.Local)]
+        [InlineData("fr-CA", DBLocationEnum.Local)]
+        [InlineData("en-CA", DBLocationEnum.Server)]
+        [InlineData("fr-CA", DBLocationEnum.Server)]
+        public async Task TideLocation_Properties_Test(string culture, DBLocationEnum DBLocation)
+        {
+            // -------------------------------
+            // -------------------------------
+            // Properties testing
+            // -------------------------------
+            // -------------------------------
+
+            Assert.True(await Setup(culture));
+
+            LoggedInService.DBLocation = DBLocation;
+
+            int count = 0;
+            if (count == 1)
+            {
+                // just so we don't get a warning during compile [The variable 'count' is assigned but its value is never used]
+            }
+
+            var actionTideLocationList = await TideLocationService.GetTideLocationList();
+            Assert.Equal(200, ((ObjectResult)actionTideLocationList.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionTideLocationList.Result).Value);
+            List<TideLocation> tideLocationList = (List<TideLocation>)((OkObjectResult)actionTideLocationList.Result).Value;
+
+            count = tideLocationList.Count();
+
+            TideLocation tideLocation = GetFilledRandomTideLocation("");
+
+
+            // -----------------------------------
+            // [Key]
+            // Is NOT Nullable
+            // tideLocation.TideLocationID   (Int32)
+            // -----------------------------------
+
+            tideLocation = null;
+            tideLocation = GetFilledRandomTideLocation("");
+            tideLocation.TideLocationID = 0;
+
+            var actionTideLocation = await TideLocationService.Put(tideLocation);
+            Assert.IsType<BadRequestObjectResult>(actionTideLocation.Result);
+
+            tideLocation = null;
+            tideLocation = GetFilledRandomTideLocation("");
+            tideLocation.TideLocationID = 10000000;
+            actionTideLocation = await TideLocationService.Put(tideLocation);
+            Assert.IsType<BadRequestObjectResult>(actionTideLocation.Result);
+
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPRange(0, 10000)]
+            // tideLocation.Zone   (Int32)
+            // -----------------------------------
+
+            tideLocation = null;
+            tideLocation = GetFilledRandomTideLocation("");
+            tideLocation.Zone = -1;
+            actionTideLocation = await TideLocationService.Post(tideLocation);
+            Assert.IsType<BadRequestObjectResult>(actionTideLocation.Result);
+            //Assert.AreEqual(count, tideLocationService.GetTideLocationList().Count());
+            tideLocation = null;
+            tideLocation = GetFilledRandomTideLocation("");
+            tideLocation.Zone = 10001;
+            actionTideLocation = await TideLocationService.Post(tideLocation);
+            Assert.IsType<BadRequestObjectResult>(actionTideLocation.Result);
+            //Assert.AreEqual(count, tideLocationService.GetTideLocationList().Count());
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPMaxLength(100)]
+            // tideLocation.Name   (String)
+            // -----------------------------------
+
+            tideLocation = null;
+            tideLocation = GetFilledRandomTideLocation("Name");
+            actionTideLocation = await TideLocationService.Post(tideLocation);
+            Assert.IsType<BadRequestObjectResult>(actionTideLocation.Result);
+
+            tideLocation = null;
+            tideLocation = GetFilledRandomTideLocation("");
+            tideLocation.Name = GetRandomString("", 101);
+            actionTideLocation = await TideLocationService.Post(tideLocation);
+            Assert.IsType<BadRequestObjectResult>(actionTideLocation.Result);
+            //Assert.AreEqual(count, tideLocationService.GetTideLocationList().Count());
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPMaxLength(100)]
+            // tideLocation.Prov   (String)
+            // -----------------------------------
+
+            tideLocation = null;
+            tideLocation = GetFilledRandomTideLocation("Prov");
+            actionTideLocation = await TideLocationService.Post(tideLocation);
+            Assert.IsType<BadRequestObjectResult>(actionTideLocation.Result);
+
+            tideLocation = null;
+            tideLocation = GetFilledRandomTideLocation("");
+            tideLocation.Prov = GetRandomString("", 101);
+            actionTideLocation = await TideLocationService.Post(tideLocation);
+            Assert.IsType<BadRequestObjectResult>(actionTideLocation.Result);
+            //Assert.AreEqual(count, tideLocationService.GetTideLocationList().Count());
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPRange(0, 100000)]
+            // tideLocation.sid   (Int32)
+            // -----------------------------------
+
+            tideLocation = null;
+            tideLocation = GetFilledRandomTideLocation("");
+            tideLocation.sid = -1;
+            actionTideLocation = await TideLocationService.Post(tideLocation);
+            Assert.IsType<BadRequestObjectResult>(actionTideLocation.Result);
+            //Assert.AreEqual(count, tideLocationService.GetTideLocationList().Count());
+            tideLocation = null;
+            tideLocation = GetFilledRandomTideLocation("");
+            tideLocation.sid = 100001;
+            actionTideLocation = await TideLocationService.Post(tideLocation);
+            Assert.IsType<BadRequestObjectResult>(actionTideLocation.Result);
+            //Assert.AreEqual(count, tideLocationService.GetTideLocationList().Count());
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPRange(-90, 90)]
+            // tideLocation.Lat   (Double)
+            // -----------------------------------
+
+            //CSSPError: Type not implemented [Lat]
+
+            //CSSPError: Type not implemented [Lat]
+
+            tideLocation = null;
+            tideLocation = GetFilledRandomTideLocation("");
+            tideLocation.Lat = -91.0D;
+            actionTideLocation = await TideLocationService.Post(tideLocation);
+            Assert.IsType<BadRequestObjectResult>(actionTideLocation.Result);
+            //Assert.AreEqual(count, tideLocationService.GetTideLocationList().Count());
+            tideLocation = null;
+            tideLocation = GetFilledRandomTideLocation("");
+            tideLocation.Lat = 91.0D;
+            actionTideLocation = await TideLocationService.Post(tideLocation);
+            Assert.IsType<BadRequestObjectResult>(actionTideLocation.Result);
+            //Assert.AreEqual(count, tideLocationService.GetTideLocationList().Count());
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPRange(-180, 180)]
+            // tideLocation.Lng   (Double)
+            // -----------------------------------
+
+            //CSSPError: Type not implemented [Lng]
+
+            //CSSPError: Type not implemented [Lng]
+
+            tideLocation = null;
+            tideLocation = GetFilledRandomTideLocation("");
+            tideLocation.Lng = -181.0D;
+            actionTideLocation = await TideLocationService.Post(tideLocation);
+            Assert.IsType<BadRequestObjectResult>(actionTideLocation.Result);
+            //Assert.AreEqual(count, tideLocationService.GetTideLocationList().Count());
+            tideLocation = null;
+            tideLocation = GetFilledRandomTideLocation("");
+            tideLocation.Lng = 181.0D;
+            actionTideLocation = await TideLocationService.Post(tideLocation);
+            Assert.IsType<BadRequestObjectResult>(actionTideLocation.Result);
+            //Assert.AreEqual(count, tideLocationService.GetTideLocationList().Count());
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPAfter(Year = 1980)]
+            // tideLocation.LastUpdateDate_UTC   (DateTime)
+            // -----------------------------------
+
+            tideLocation = null;
+            tideLocation = GetFilledRandomTideLocation("");
+            tideLocation.LastUpdateDate_UTC = new DateTime();
+            actionTideLocation = await TideLocationService.Post(tideLocation);
+            Assert.IsType<BadRequestObjectResult>(actionTideLocation.Result);
+            tideLocation = null;
+            tideLocation = GetFilledRandomTideLocation("");
+            tideLocation.LastUpdateDate_UTC = new DateTime(1979, 1, 1);
+            actionTideLocation = await TideLocationService.Post(tideLocation);
+            Assert.IsType<BadRequestObjectResult>(actionTideLocation.Result);
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPExist(ExistTypeName = "TVItem", ExistPlurial = "s", ExistFieldID = "TVItemID", AllowableTVtypeList = Contact)]
+            // tideLocation.LastUpdateContactTVItemID   (Int32)
+            // -----------------------------------
+
+            tideLocation = null;
+            tideLocation = GetFilledRandomTideLocation("");
+            tideLocation.LastUpdateContactTVItemID = 0;
+            actionTideLocation = await TideLocationService.Post(tideLocation);
+            Assert.IsType<BadRequestObjectResult>(actionTideLocation.Result);
+
+            tideLocation = null;
+            tideLocation = GetFilledRandomTideLocation("");
+            tideLocation.LastUpdateContactTVItemID = 1;
+            actionTideLocation = await TideLocationService.Post(tideLocation);
+            Assert.IsType<BadRequestObjectResult>(actionTideLocation.Result);
+
+        }
+        #endregion Tests Generated Properties
 
         #region Functions private
         private async Task DoCRUDTest()
@@ -228,6 +441,11 @@ namespace CSSPServices.Tests
             }
 
             return tideLocation;
+        }
+        private void CheckTideLocationFields(List<TideLocation> tideLocationList)
+        {
+            Assert.False(string.IsNullOrWhiteSpace(tideLocationList[0].Name));
+            Assert.False(string.IsNullOrWhiteSpace(tideLocationList[0].Prov));
         }
         #endregion Functions private
     }

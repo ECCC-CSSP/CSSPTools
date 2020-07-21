@@ -19,6 +19,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Transactions;
 using Xunit;
+using System.ComponentModel.DataAnnotations;
 
 namespace CSSPServices.Tests
 {
@@ -81,6 +82,136 @@ namespace CSSPServices.Tests
             }
         }
         #endregion Tests Generated CRUD
+
+        #region Tests Generated Properties
+        [Theory]
+        [InlineData("en-CA", DBLocationEnum.Local)]
+        [InlineData("fr-CA", DBLocationEnum.Local)]
+        [InlineData("en-CA", DBLocationEnum.Server)]
+        [InlineData("fr-CA", DBLocationEnum.Server)]
+        public async Task SamplingPlanSubsectorSite_Properties_Test(string culture, DBLocationEnum DBLocation)
+        {
+            // -------------------------------
+            // -------------------------------
+            // Properties testing
+            // -------------------------------
+            // -------------------------------
+
+            Assert.True(await Setup(culture));
+
+            LoggedInService.DBLocation = DBLocation;
+
+            int count = 0;
+            if (count == 1)
+            {
+                // just so we don't get a warning during compile [The variable 'count' is assigned but its value is never used]
+            }
+
+            var actionSamplingPlanSubsectorSiteList = await SamplingPlanSubsectorSiteService.GetSamplingPlanSubsectorSiteList();
+            Assert.Equal(200, ((ObjectResult)actionSamplingPlanSubsectorSiteList.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionSamplingPlanSubsectorSiteList.Result).Value);
+            List<SamplingPlanSubsectorSite> samplingPlanSubsectorSiteList = (List<SamplingPlanSubsectorSite>)((OkObjectResult)actionSamplingPlanSubsectorSiteList.Result).Value;
+
+            count = samplingPlanSubsectorSiteList.Count();
+
+            SamplingPlanSubsectorSite samplingPlanSubsectorSite = GetFilledRandomSamplingPlanSubsectorSite("");
+
+
+            // -----------------------------------
+            // [Key]
+            // Is NOT Nullable
+            // samplingPlanSubsectorSite.SamplingPlanSubsectorSiteID   (Int32)
+            // -----------------------------------
+
+            samplingPlanSubsectorSite = null;
+            samplingPlanSubsectorSite = GetFilledRandomSamplingPlanSubsectorSite("");
+            samplingPlanSubsectorSite.SamplingPlanSubsectorSiteID = 0;
+
+            var actionSamplingPlanSubsectorSite = await SamplingPlanSubsectorSiteService.Put(samplingPlanSubsectorSite);
+            Assert.IsType<BadRequestObjectResult>(actionSamplingPlanSubsectorSite.Result);
+
+            samplingPlanSubsectorSite = null;
+            samplingPlanSubsectorSite = GetFilledRandomSamplingPlanSubsectorSite("");
+            samplingPlanSubsectorSite.SamplingPlanSubsectorSiteID = 10000000;
+            actionSamplingPlanSubsectorSite = await SamplingPlanSubsectorSiteService.Put(samplingPlanSubsectorSite);
+            Assert.IsType<BadRequestObjectResult>(actionSamplingPlanSubsectorSite.Result);
+
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPExist(ExistTypeName = "SamplingPlanSubsector", ExistPlurial = "s", ExistFieldID = "SamplingPlanSubsectorID", AllowableTVtypeList = )]
+            // samplingPlanSubsectorSite.SamplingPlanSubsectorID   (Int32)
+            // -----------------------------------
+
+            samplingPlanSubsectorSite = null;
+            samplingPlanSubsectorSite = GetFilledRandomSamplingPlanSubsectorSite("");
+            samplingPlanSubsectorSite.SamplingPlanSubsectorID = 0;
+            actionSamplingPlanSubsectorSite = await SamplingPlanSubsectorSiteService.Post(samplingPlanSubsectorSite);
+            Assert.IsType<BadRequestObjectResult>(actionSamplingPlanSubsectorSite.Result);
+
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPExist(ExistTypeName = "TVItem", ExistPlurial = "s", ExistFieldID = "TVItemID", AllowableTVtypeList = MWQMSite)]
+            // samplingPlanSubsectorSite.MWQMSiteTVItemID   (Int32)
+            // -----------------------------------
+
+            samplingPlanSubsectorSite = null;
+            samplingPlanSubsectorSite = GetFilledRandomSamplingPlanSubsectorSite("");
+            samplingPlanSubsectorSite.MWQMSiteTVItemID = 0;
+            actionSamplingPlanSubsectorSite = await SamplingPlanSubsectorSiteService.Post(samplingPlanSubsectorSite);
+            Assert.IsType<BadRequestObjectResult>(actionSamplingPlanSubsectorSite.Result);
+
+            samplingPlanSubsectorSite = null;
+            samplingPlanSubsectorSite = GetFilledRandomSamplingPlanSubsectorSite("");
+            samplingPlanSubsectorSite.MWQMSiteTVItemID = 1;
+            actionSamplingPlanSubsectorSite = await SamplingPlanSubsectorSiteService.Post(samplingPlanSubsectorSite);
+            Assert.IsType<BadRequestObjectResult>(actionSamplingPlanSubsectorSite.Result);
+
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // samplingPlanSubsectorSite.IsDuplicate   (Boolean)
+            // -----------------------------------
+
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPAfter(Year = 1980)]
+            // samplingPlanSubsectorSite.LastUpdateDate_UTC   (DateTime)
+            // -----------------------------------
+
+            samplingPlanSubsectorSite = null;
+            samplingPlanSubsectorSite = GetFilledRandomSamplingPlanSubsectorSite("");
+            samplingPlanSubsectorSite.LastUpdateDate_UTC = new DateTime();
+            actionSamplingPlanSubsectorSite = await SamplingPlanSubsectorSiteService.Post(samplingPlanSubsectorSite);
+            Assert.IsType<BadRequestObjectResult>(actionSamplingPlanSubsectorSite.Result);
+            samplingPlanSubsectorSite = null;
+            samplingPlanSubsectorSite = GetFilledRandomSamplingPlanSubsectorSite("");
+            samplingPlanSubsectorSite.LastUpdateDate_UTC = new DateTime(1979, 1, 1);
+            actionSamplingPlanSubsectorSite = await SamplingPlanSubsectorSiteService.Post(samplingPlanSubsectorSite);
+            Assert.IsType<BadRequestObjectResult>(actionSamplingPlanSubsectorSite.Result);
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPExist(ExistTypeName = "TVItem", ExistPlurial = "s", ExistFieldID = "TVItemID", AllowableTVtypeList = Contact)]
+            // samplingPlanSubsectorSite.LastUpdateContactTVItemID   (Int32)
+            // -----------------------------------
+
+            samplingPlanSubsectorSite = null;
+            samplingPlanSubsectorSite = GetFilledRandomSamplingPlanSubsectorSite("");
+            samplingPlanSubsectorSite.LastUpdateContactTVItemID = 0;
+            actionSamplingPlanSubsectorSite = await SamplingPlanSubsectorSiteService.Post(samplingPlanSubsectorSite);
+            Assert.IsType<BadRequestObjectResult>(actionSamplingPlanSubsectorSite.Result);
+
+            samplingPlanSubsectorSite = null;
+            samplingPlanSubsectorSite = GetFilledRandomSamplingPlanSubsectorSite("");
+            samplingPlanSubsectorSite.LastUpdateContactTVItemID = 1;
+            actionSamplingPlanSubsectorSite = await SamplingPlanSubsectorSiteService.Post(samplingPlanSubsectorSite);
+            Assert.IsType<BadRequestObjectResult>(actionSamplingPlanSubsectorSite.Result);
+
+        }
+        #endregion Tests Generated Properties
 
         #region Functions private
         private async Task DoCRUDTest()
@@ -243,6 +374,9 @@ namespace CSSPServices.Tests
             }
 
             return samplingPlanSubsectorSite;
+        }
+        private void CheckSamplingPlanSubsectorSiteFields(List<SamplingPlanSubsectorSite> samplingPlanSubsectorSiteList)
+        {
         }
         #endregion Functions private
     }

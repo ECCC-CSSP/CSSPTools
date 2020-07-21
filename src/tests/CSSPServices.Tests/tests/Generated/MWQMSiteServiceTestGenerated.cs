@@ -19,6 +19,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Transactions;
 using Xunit;
+using System.ComponentModel.DataAnnotations;
 
 namespace CSSPServices.Tests
 {
@@ -81,6 +82,185 @@ namespace CSSPServices.Tests
             }
         }
         #endregion Tests Generated CRUD
+
+        #region Tests Generated Properties
+        [Theory]
+        [InlineData("en-CA", DBLocationEnum.Local)]
+        [InlineData("fr-CA", DBLocationEnum.Local)]
+        [InlineData("en-CA", DBLocationEnum.Server)]
+        [InlineData("fr-CA", DBLocationEnum.Server)]
+        public async Task MWQMSite_Properties_Test(string culture, DBLocationEnum DBLocation)
+        {
+            // -------------------------------
+            // -------------------------------
+            // Properties testing
+            // -------------------------------
+            // -------------------------------
+
+            Assert.True(await Setup(culture));
+
+            LoggedInService.DBLocation = DBLocation;
+
+            int count = 0;
+            if (count == 1)
+            {
+                // just so we don't get a warning during compile [The variable 'count' is assigned but its value is never used]
+            }
+
+            var actionMWQMSiteList = await MWQMSiteService.GetMWQMSiteList();
+            Assert.Equal(200, ((ObjectResult)actionMWQMSiteList.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionMWQMSiteList.Result).Value);
+            List<MWQMSite> mwqmSiteList = (List<MWQMSite>)((OkObjectResult)actionMWQMSiteList.Result).Value;
+
+            count = mwqmSiteList.Count();
+
+            MWQMSite mwqmSite = GetFilledRandomMWQMSite("");
+
+
+            // -----------------------------------
+            // [Key]
+            // Is NOT Nullable
+            // mwqmSite.MWQMSiteID   (Int32)
+            // -----------------------------------
+
+            mwqmSite = null;
+            mwqmSite = GetFilledRandomMWQMSite("");
+            mwqmSite.MWQMSiteID = 0;
+
+            var actionMWQMSite = await MWQMSiteService.Put(mwqmSite);
+            Assert.IsType<BadRequestObjectResult>(actionMWQMSite.Result);
+
+            mwqmSite = null;
+            mwqmSite = GetFilledRandomMWQMSite("");
+            mwqmSite.MWQMSiteID = 10000000;
+            actionMWQMSite = await MWQMSiteService.Put(mwqmSite);
+            Assert.IsType<BadRequestObjectResult>(actionMWQMSite.Result);
+
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPExist(ExistTypeName = "TVItem", ExistPlurial = "s", ExistFieldID = "TVItemID", AllowableTVtypeList = MWQMSite)]
+            // mwqmSite.MWQMSiteTVItemID   (Int32)
+            // -----------------------------------
+
+            mwqmSite = null;
+            mwqmSite = GetFilledRandomMWQMSite("");
+            mwqmSite.MWQMSiteTVItemID = 0;
+            actionMWQMSite = await MWQMSiteService.Post(mwqmSite);
+            Assert.IsType<BadRequestObjectResult>(actionMWQMSite.Result);
+
+            mwqmSite = null;
+            mwqmSite = GetFilledRandomMWQMSite("");
+            mwqmSite.MWQMSiteTVItemID = 1;
+            actionMWQMSite = await MWQMSiteService.Post(mwqmSite);
+            Assert.IsType<BadRequestObjectResult>(actionMWQMSite.Result);
+
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPMaxLength(8)]
+            // mwqmSite.MWQMSiteNumber   (String)
+            // -----------------------------------
+
+            mwqmSite = null;
+            mwqmSite = GetFilledRandomMWQMSite("MWQMSiteNumber");
+            actionMWQMSite = await MWQMSiteService.Post(mwqmSite);
+            Assert.IsType<BadRequestObjectResult>(actionMWQMSite.Result);
+
+            mwqmSite = null;
+            mwqmSite = GetFilledRandomMWQMSite("");
+            mwqmSite.MWQMSiteNumber = GetRandomString("", 9);
+            actionMWQMSite = await MWQMSiteService.Post(mwqmSite);
+            Assert.IsType<BadRequestObjectResult>(actionMWQMSite.Result);
+            //Assert.AreEqual(count, mwqmSiteService.GetMWQMSiteList().Count());
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPMaxLength(200)]
+            // mwqmSite.MWQMSiteDescription   (String)
+            // -----------------------------------
+
+            mwqmSite = null;
+            mwqmSite = GetFilledRandomMWQMSite("MWQMSiteDescription");
+            actionMWQMSite = await MWQMSiteService.Post(mwqmSite);
+            Assert.IsType<BadRequestObjectResult>(actionMWQMSite.Result);
+
+            mwqmSite = null;
+            mwqmSite = GetFilledRandomMWQMSite("");
+            mwqmSite.MWQMSiteDescription = GetRandomString("", 201);
+            actionMWQMSite = await MWQMSiteService.Post(mwqmSite);
+            Assert.IsType<BadRequestObjectResult>(actionMWQMSite.Result);
+            //Assert.AreEqual(count, mwqmSiteService.GetMWQMSiteList().Count());
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPEnumType]
+            // mwqmSite.MWQMSiteLatestClassification   (MWQMSiteLatestClassificationEnum)
+            // -----------------------------------
+
+            mwqmSite = null;
+            mwqmSite = GetFilledRandomMWQMSite("");
+            mwqmSite.MWQMSiteLatestClassification = (MWQMSiteLatestClassificationEnum)1000000;
+            actionMWQMSite = await MWQMSiteService.Post(mwqmSite);
+            Assert.IsType<BadRequestObjectResult>(actionMWQMSite.Result);
+
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPRange(0, 1000)]
+            // mwqmSite.Ordinal   (Int32)
+            // -----------------------------------
+
+            mwqmSite = null;
+            mwqmSite = GetFilledRandomMWQMSite("");
+            mwqmSite.Ordinal = -1;
+            actionMWQMSite = await MWQMSiteService.Post(mwqmSite);
+            Assert.IsType<BadRequestObjectResult>(actionMWQMSite.Result);
+            //Assert.AreEqual(count, mwqmSiteService.GetMWQMSiteList().Count());
+            mwqmSite = null;
+            mwqmSite = GetFilledRandomMWQMSite("");
+            mwqmSite.Ordinal = 1001;
+            actionMWQMSite = await MWQMSiteService.Post(mwqmSite);
+            Assert.IsType<BadRequestObjectResult>(actionMWQMSite.Result);
+            //Assert.AreEqual(count, mwqmSiteService.GetMWQMSiteList().Count());
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPAfter(Year = 1980)]
+            // mwqmSite.LastUpdateDate_UTC   (DateTime)
+            // -----------------------------------
+
+            mwqmSite = null;
+            mwqmSite = GetFilledRandomMWQMSite("");
+            mwqmSite.LastUpdateDate_UTC = new DateTime();
+            actionMWQMSite = await MWQMSiteService.Post(mwqmSite);
+            Assert.IsType<BadRequestObjectResult>(actionMWQMSite.Result);
+            mwqmSite = null;
+            mwqmSite = GetFilledRandomMWQMSite("");
+            mwqmSite.LastUpdateDate_UTC = new DateTime(1979, 1, 1);
+            actionMWQMSite = await MWQMSiteService.Post(mwqmSite);
+            Assert.IsType<BadRequestObjectResult>(actionMWQMSite.Result);
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPExist(ExistTypeName = "TVItem", ExistPlurial = "s", ExistFieldID = "TVItemID", AllowableTVtypeList = Contact)]
+            // mwqmSite.LastUpdateContactTVItemID   (Int32)
+            // -----------------------------------
+
+            mwqmSite = null;
+            mwqmSite = GetFilledRandomMWQMSite("");
+            mwqmSite.LastUpdateContactTVItemID = 0;
+            actionMWQMSite = await MWQMSiteService.Post(mwqmSite);
+            Assert.IsType<BadRequestObjectResult>(actionMWQMSite.Result);
+
+            mwqmSite = null;
+            mwqmSite = GetFilledRandomMWQMSite("");
+            mwqmSite.LastUpdateContactTVItemID = 1;
+            actionMWQMSite = await MWQMSiteService.Post(mwqmSite);
+            Assert.IsType<BadRequestObjectResult>(actionMWQMSite.Result);
+
+        }
+        #endregion Tests Generated Properties
 
         #region Functions private
         private async Task DoCRUDTest()
@@ -236,6 +416,11 @@ namespace CSSPServices.Tests
             }
 
             return mwqmSite;
+        }
+        private void CheckMWQMSiteFields(List<MWQMSite> mwqmSiteList)
+        {
+            Assert.False(string.IsNullOrWhiteSpace(mwqmSiteList[0].MWQMSiteNumber));
+            Assert.False(string.IsNullOrWhiteSpace(mwqmSiteList[0].MWQMSiteDescription));
         }
         #endregion Functions private
     }

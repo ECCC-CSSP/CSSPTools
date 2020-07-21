@@ -19,16 +19,22 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Transactions;
 using Xunit;
+using System.ComponentModel.DataAnnotations;
 
 namespace CSSPServices.Tests
 {
-    [Collection("Sequential")]
     public partial class RegisterServiceTest : TestHelper
     {
         #region Variables
         #endregion Variables
 
         #region Properties
+        private IConfiguration Config { get; set; }
+        private IServiceProvider Provider { get; set; }
+        private IServiceCollection Services { get; set; }
+        private ICSSPCultureService CSSPCultureService { get; set; }
+        private IRegisterService RegisterService { get; set; }
+        private Register register { get; set; }
         #endregion Properties
 
         #region Constructors
@@ -38,7 +44,78 @@ namespace CSSPServices.Tests
         }
         #endregion Constructors
 
+        #region Tests Generated Basic Test Not Mapped
+        [Theory]
+        [InlineData("en-CA")]
+        [InlineData("fr-CA")]
+        public async Task RegisterService_Good_Test(string culture)
+        {
+            Assert.True(await Setup(culture));
+
+            register = GetFilledRandomRegister("");
+
+            List<ValidationResult> ValidationResultsList = RegisterService.Validate(new ValidationContext(register)).ToList();
+            Assert.True(ValidationResultsList.Count == 0);
+        }
+        #endregion Tests Generated Basic Test Not Mapped
+
         #region Functions private
+        private async Task<bool> Setup(string culture)
+        {
+            Config = new ConfigurationBuilder()
+               .SetBasePath(Directory.GetParent(AppContext.BaseDirectory).FullName)
+               .AddJsonFile("appsettings_csspservices.json")
+               .AddUserSecrets("6f27cbbe-6ffb-4154-b49b-d739597c4f60")
+               .Build();
+
+            Services = new ServiceCollection();
+
+            Services.AddSingleton<IConfiguration>(Config);
+
+            Services.AddSingleton<ICSSPCultureService, CSSPCultureService>();
+            Services.AddSingleton<IEnums, Enums>();
+            Services.AddSingleton<IRegisterService, RegisterService>();
+
+            Provider = Services.BuildServiceProvider();
+            Assert.NotNull(Provider);
+
+            CSSPCultureService = Provider.GetService<ICSSPCultureService>();
+            Assert.NotNull(CSSPCultureService);
+
+            CSSPCultureService.SetCulture(culture);
+
+            RegisterService = Provider.GetService<IRegisterService>();
+            Assert.NotNull(RegisterService);
+
+            return await Task.FromResult(true);
+        }
+        private Register GetFilledRandomRegister(string OmitPropName)
+        {
+            Register register = new Register();
+
+            if (OmitPropName != "LoginEmail") register.LoginEmail = GetRandomString("", 11);
+            if (OmitPropName != "FirstName") register.FirstName = GetRandomString("", 6);
+            if (OmitPropName != "Initial") register.Initial = GetRandomString("", 5);
+            if (OmitPropName != "LastName") register.LastName = GetRandomString("", 6);
+            if (OmitPropName != "WebName") register.WebName = GetRandomString("", 6);
+            if (OmitPropName != "Password") register.Password = GetRandomString("", 11);
+            if (OmitPropName != "ConfirmPassword") register.ConfirmPassword = GetRandomString("", 11);
+
+            return register;
+        }
+        private void CheckRegisterFields(List<Register> registerList)
+        {
+            Assert.False(string.IsNullOrWhiteSpace(registerList[0].LoginEmail));
+            Assert.False(string.IsNullOrWhiteSpace(registerList[0].FirstName));
+            if (!string.IsNullOrWhiteSpace(registerList[0].Initial))
+            {
+                Assert.False(string.IsNullOrWhiteSpace(registerList[0].Initial));
+            }
+            Assert.False(string.IsNullOrWhiteSpace(registerList[0].LastName));
+            Assert.False(string.IsNullOrWhiteSpace(registerList[0].WebName));
+            Assert.False(string.IsNullOrWhiteSpace(registerList[0].Password));
+            Assert.False(string.IsNullOrWhiteSpace(registerList[0].ConfirmPassword));
+        }
         #endregion Functions private
     }
 }

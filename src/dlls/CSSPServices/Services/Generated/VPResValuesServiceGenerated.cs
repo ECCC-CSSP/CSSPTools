@@ -20,19 +20,57 @@ using System.Threading.Tasks;
 
 namespace CSSPServices
 {
-    public partial class VPResValuesService
+    public interface IVPResValuesService
+    {
+        IEnumerable<ValidationResult> Validate(ValidationContext validationContext);
+    }
+    public partial class VPResValuesService : IVPResValuesService
     {
         #region Variables
         #endregion Variables
 
         #region Properties
+        private ICSSPCultureService CSSPCultureService { get; }
+        private IEnums enums { get; }
         #endregion Properties
 
         #region Constructors
-        public VPResValuesService()
+        public VPResValuesService(ICSSPCultureService CSSPCultureService, IEnums enums)
         {
+            this.CSSPCultureService = CSSPCultureService;
+            this.enums = enums;
         }
         #endregion Constructors
+
+        #region Functions public
+        public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+        {
+            string retStr = "";
+            VPResValues vpResValues = validationContext.ObjectInstance as VPResValues;
+
+            if (vpResValues.Conc < 0)
+            {
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MinValueIs_, "Conc", "0"), new[] { "Conc" });
+            }
+
+            //Dilu has no Range Attribute
+
+            //FarfieldWidth has no Range Attribute
+
+            //Distance has no Range Attribute
+
+            //TheTime has no Range Attribute
+
+            //Decay has no Range Attribute
+
+            retStr = ""; // added to stop compiling CSSPError
+            if (retStr != "") // will never be true
+            {
+                yield return new ValidationResult("AAA", new[] { "AAA" });
+            }
+
+        }
+        #endregion Functions public
 
     }
 }

@@ -19,6 +19,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Transactions;
 using Xunit;
+using System.ComponentModel.DataAnnotations;
 
 namespace CSSPServices.Tests
 {
@@ -81,6 +82,171 @@ namespace CSSPServices.Tests
             }
         }
         #endregion Tests Generated CRUD
+
+        #region Tests Generated Properties
+        [Theory]
+        [InlineData("en-CA", DBLocationEnum.Local)]
+        [InlineData("fr-CA", DBLocationEnum.Local)]
+        [InlineData("en-CA", DBLocationEnum.Server)]
+        [InlineData("fr-CA", DBLocationEnum.Server)]
+        public async Task PolSourceGrouping_Properties_Test(string culture, DBLocationEnum DBLocation)
+        {
+            // -------------------------------
+            // -------------------------------
+            // Properties testing
+            // -------------------------------
+            // -------------------------------
+
+            Assert.True(await Setup(culture));
+
+            LoggedInService.DBLocation = DBLocation;
+
+            int count = 0;
+            if (count == 1)
+            {
+                // just so we don't get a warning during compile [The variable 'count' is assigned but its value is never used]
+            }
+
+            var actionPolSourceGroupingList = await PolSourceGroupingService.GetPolSourceGroupingList();
+            Assert.Equal(200, ((ObjectResult)actionPolSourceGroupingList.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionPolSourceGroupingList.Result).Value);
+            List<PolSourceGrouping> polSourceGroupingList = (List<PolSourceGrouping>)((OkObjectResult)actionPolSourceGroupingList.Result).Value;
+
+            count = polSourceGroupingList.Count();
+
+            PolSourceGrouping polSourceGrouping = GetFilledRandomPolSourceGrouping("");
+
+
+            // -----------------------------------
+            // [Key]
+            // Is NOT Nullable
+            // polSourceGrouping.PolSourceGroupingID   (Int32)
+            // -----------------------------------
+
+            polSourceGrouping = null;
+            polSourceGrouping = GetFilledRandomPolSourceGrouping("");
+            polSourceGrouping.PolSourceGroupingID = 0;
+
+            var actionPolSourceGrouping = await PolSourceGroupingService.Put(polSourceGrouping);
+            Assert.IsType<BadRequestObjectResult>(actionPolSourceGrouping.Result);
+
+            polSourceGrouping = null;
+            polSourceGrouping = GetFilledRandomPolSourceGrouping("");
+            polSourceGrouping.PolSourceGroupingID = 10000000;
+            actionPolSourceGrouping = await PolSourceGroupingService.Put(polSourceGrouping);
+            Assert.IsType<BadRequestObjectResult>(actionPolSourceGrouping.Result);
+
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPRange(10000, 100000)]
+            // polSourceGrouping.CSSPID   (Int32)
+            // -----------------------------------
+
+            polSourceGrouping = null;
+            polSourceGrouping = GetFilledRandomPolSourceGrouping("");
+            polSourceGrouping.CSSPID = 9999;
+            actionPolSourceGrouping = await PolSourceGroupingService.Post(polSourceGrouping);
+            Assert.IsType<BadRequestObjectResult>(actionPolSourceGrouping.Result);
+            //Assert.AreEqual(count, polSourceGroupingService.GetPolSourceGroupingList().Count());
+            polSourceGrouping = null;
+            polSourceGrouping = GetFilledRandomPolSourceGrouping("");
+            polSourceGrouping.CSSPID = 100001;
+            actionPolSourceGrouping = await PolSourceGroupingService.Post(polSourceGrouping);
+            Assert.IsType<BadRequestObjectResult>(actionPolSourceGrouping.Result);
+            //Assert.AreEqual(count, polSourceGroupingService.GetPolSourceGroupingList().Count());
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPMaxLength(500)]
+            // polSourceGrouping.GroupName   (String)
+            // -----------------------------------
+
+            polSourceGrouping = null;
+            polSourceGrouping = GetFilledRandomPolSourceGrouping("GroupName");
+            actionPolSourceGrouping = await PolSourceGroupingService.Post(polSourceGrouping);
+            Assert.IsType<BadRequestObjectResult>(actionPolSourceGrouping.Result);
+
+            polSourceGrouping = null;
+            polSourceGrouping = GetFilledRandomPolSourceGrouping("");
+            polSourceGrouping.GroupName = GetRandomString("", 501);
+            actionPolSourceGrouping = await PolSourceGroupingService.Post(polSourceGrouping);
+            Assert.IsType<BadRequestObjectResult>(actionPolSourceGrouping.Result);
+            //Assert.AreEqual(count, polSourceGroupingService.GetPolSourceGroupingList().Count());
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPMaxLength(500)]
+            // polSourceGrouping.Child   (String)
+            // -----------------------------------
+
+            polSourceGrouping = null;
+            polSourceGrouping = GetFilledRandomPolSourceGrouping("Child");
+            actionPolSourceGrouping = await PolSourceGroupingService.Post(polSourceGrouping);
+            Assert.IsType<BadRequestObjectResult>(actionPolSourceGrouping.Result);
+
+            polSourceGrouping = null;
+            polSourceGrouping = GetFilledRandomPolSourceGrouping("");
+            polSourceGrouping.Child = GetRandomString("", 501);
+            actionPolSourceGrouping = await PolSourceGroupingService.Post(polSourceGrouping);
+            Assert.IsType<BadRequestObjectResult>(actionPolSourceGrouping.Result);
+            //Assert.AreEqual(count, polSourceGroupingService.GetPolSourceGroupingList().Count());
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPMaxLength(500)]
+            // polSourceGrouping.Hide   (String)
+            // -----------------------------------
+
+            polSourceGrouping = null;
+            polSourceGrouping = GetFilledRandomPolSourceGrouping("Hide");
+            actionPolSourceGrouping = await PolSourceGroupingService.Post(polSourceGrouping);
+            Assert.IsType<BadRequestObjectResult>(actionPolSourceGrouping.Result);
+
+            polSourceGrouping = null;
+            polSourceGrouping = GetFilledRandomPolSourceGrouping("");
+            polSourceGrouping.Hide = GetRandomString("", 501);
+            actionPolSourceGrouping = await PolSourceGroupingService.Post(polSourceGrouping);
+            Assert.IsType<BadRequestObjectResult>(actionPolSourceGrouping.Result);
+            //Assert.AreEqual(count, polSourceGroupingService.GetPolSourceGroupingList().Count());
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPAfter(Year = 1980)]
+            // polSourceGrouping.LastUpdateDate_UTC   (DateTime)
+            // -----------------------------------
+
+            polSourceGrouping = null;
+            polSourceGrouping = GetFilledRandomPolSourceGrouping("");
+            polSourceGrouping.LastUpdateDate_UTC = new DateTime();
+            actionPolSourceGrouping = await PolSourceGroupingService.Post(polSourceGrouping);
+            Assert.IsType<BadRequestObjectResult>(actionPolSourceGrouping.Result);
+            polSourceGrouping = null;
+            polSourceGrouping = GetFilledRandomPolSourceGrouping("");
+            polSourceGrouping.LastUpdateDate_UTC = new DateTime(1979, 1, 1);
+            actionPolSourceGrouping = await PolSourceGroupingService.Post(polSourceGrouping);
+            Assert.IsType<BadRequestObjectResult>(actionPolSourceGrouping.Result);
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPExist(ExistTypeName = "TVItem", ExistPlurial = "s", ExistFieldID = "TVItemID", AllowableTVtypeList = Contact)]
+            // polSourceGrouping.LastUpdateContactTVItemID   (Int32)
+            // -----------------------------------
+
+            polSourceGrouping = null;
+            polSourceGrouping = GetFilledRandomPolSourceGrouping("");
+            polSourceGrouping.LastUpdateContactTVItemID = 0;
+            actionPolSourceGrouping = await PolSourceGroupingService.Post(polSourceGrouping);
+            Assert.IsType<BadRequestObjectResult>(actionPolSourceGrouping.Result);
+
+            polSourceGrouping = null;
+            polSourceGrouping = GetFilledRandomPolSourceGrouping("");
+            polSourceGrouping.LastUpdateContactTVItemID = 1;
+            actionPolSourceGrouping = await PolSourceGroupingService.Post(polSourceGrouping);
+            Assert.IsType<BadRequestObjectResult>(actionPolSourceGrouping.Result);
+
+        }
+        #endregion Tests Generated Properties
 
         #region Functions private
         private async Task DoCRUDTest()
@@ -226,6 +392,12 @@ namespace CSSPServices.Tests
             }
 
             return polSourceGrouping;
+        }
+        private void CheckPolSourceGroupingFields(List<PolSourceGrouping> polSourceGroupingList)
+        {
+            Assert.False(string.IsNullOrWhiteSpace(polSourceGroupingList[0].GroupName));
+            Assert.False(string.IsNullOrWhiteSpace(polSourceGroupingList[0].Child));
+            Assert.False(string.IsNullOrWhiteSpace(polSourceGroupingList[0].Hide));
         }
         #endregion Functions private
     }

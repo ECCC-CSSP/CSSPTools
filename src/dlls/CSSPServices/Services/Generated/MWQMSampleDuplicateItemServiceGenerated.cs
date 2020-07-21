@@ -20,19 +20,62 @@ using System.Threading.Tasks;
 
 namespace CSSPServices
 {
-    public partial class MWQMSampleDuplicateItemService
+    public interface IMWQMSampleDuplicateItemService
+    {
+        IEnumerable<ValidationResult> Validate(ValidationContext validationContext);
+    }
+    public partial class MWQMSampleDuplicateItemService : IMWQMSampleDuplicateItemService
     {
         #region Variables
         #endregion Variables
 
         #region Properties
+        private ICSSPCultureService CSSPCultureService { get; }
+        private IEnums enums { get; }
         #endregion Properties
 
         #region Constructors
-        public MWQMSampleDuplicateItemService()
+        public MWQMSampleDuplicateItemService(ICSSPCultureService CSSPCultureService, IEnums enums)
         {
+            this.CSSPCultureService = CSSPCultureService;
+            this.enums = enums;
         }
         #endregion Constructors
+
+        #region Functions public
+        public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+        {
+            string retStr = "";
+            MWQMSampleDuplicateItem mwqmSampleDuplicateItem = validationContext.ObjectInstance as MWQMSampleDuplicateItem;
+
+            if (string.IsNullOrWhiteSpace(mwqmSampleDuplicateItem.ParentSite))
+            {
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "ParentSite"), new[] { "ParentSite" });
+            }
+
+            if (!string.IsNullOrWhiteSpace(mwqmSampleDuplicateItem.ParentSite) && (mwqmSampleDuplicateItem.ParentSite.Length < 1 || mwqmSampleDuplicateItem.ParentSite.Length > 200))
+            {
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._LengthShouldBeBetween_And_, "ParentSite", "1", "200"), new[] { "ParentSite" });
+            }
+
+            if (string.IsNullOrWhiteSpace(mwqmSampleDuplicateItem.DuplicateSite))
+            {
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "DuplicateSite"), new[] { "DuplicateSite" });
+            }
+
+            if (!string.IsNullOrWhiteSpace(mwqmSampleDuplicateItem.DuplicateSite) && (mwqmSampleDuplicateItem.DuplicateSite.Length < 1 || mwqmSampleDuplicateItem.DuplicateSite.Length > 200))
+            {
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._LengthShouldBeBetween_And_, "DuplicateSite", "1", "200"), new[] { "DuplicateSite" });
+            }
+
+            retStr = ""; // added to stop compiling CSSPError
+            if (retStr != "") // will never be true
+            {
+                yield return new ValidationResult("AAA", new[] { "AAA" });
+            }
+
+        }
+        #endregion Functions public
 
     }
 }

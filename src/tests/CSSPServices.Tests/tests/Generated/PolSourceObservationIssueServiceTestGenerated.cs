@@ -19,6 +19,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Transactions;
 using Xunit;
+using System.ComponentModel.DataAnnotations;
 
 namespace CSSPServices.Tests
 {
@@ -81,6 +82,154 @@ namespace CSSPServices.Tests
             }
         }
         #endregion Tests Generated CRUD
+
+        #region Tests Generated Properties
+        [Theory]
+        [InlineData("en-CA", DBLocationEnum.Local)]
+        [InlineData("fr-CA", DBLocationEnum.Local)]
+        [InlineData("en-CA", DBLocationEnum.Server)]
+        [InlineData("fr-CA", DBLocationEnum.Server)]
+        public async Task PolSourceObservationIssue_Properties_Test(string culture, DBLocationEnum DBLocation)
+        {
+            // -------------------------------
+            // -------------------------------
+            // Properties testing
+            // -------------------------------
+            // -------------------------------
+
+            Assert.True(await Setup(culture));
+
+            LoggedInService.DBLocation = DBLocation;
+
+            int count = 0;
+            if (count == 1)
+            {
+                // just so we don't get a warning during compile [The variable 'count' is assigned but its value is never used]
+            }
+
+            var actionPolSourceObservationIssueList = await PolSourceObservationIssueService.GetPolSourceObservationIssueList();
+            Assert.Equal(200, ((ObjectResult)actionPolSourceObservationIssueList.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionPolSourceObservationIssueList.Result).Value);
+            List<PolSourceObservationIssue> polSourceObservationIssueList = (List<PolSourceObservationIssue>)((OkObjectResult)actionPolSourceObservationIssueList.Result).Value;
+
+            count = polSourceObservationIssueList.Count();
+
+            PolSourceObservationIssue polSourceObservationIssue = GetFilledRandomPolSourceObservationIssue("");
+
+
+            // -----------------------------------
+            // [Key]
+            // Is NOT Nullable
+            // polSourceObservationIssue.PolSourceObservationIssueID   (Int32)
+            // -----------------------------------
+
+            polSourceObservationIssue = null;
+            polSourceObservationIssue = GetFilledRandomPolSourceObservationIssue("");
+            polSourceObservationIssue.PolSourceObservationIssueID = 0;
+
+            var actionPolSourceObservationIssue = await PolSourceObservationIssueService.Put(polSourceObservationIssue);
+            Assert.IsType<BadRequestObjectResult>(actionPolSourceObservationIssue.Result);
+
+            polSourceObservationIssue = null;
+            polSourceObservationIssue = GetFilledRandomPolSourceObservationIssue("");
+            polSourceObservationIssue.PolSourceObservationIssueID = 10000000;
+            actionPolSourceObservationIssue = await PolSourceObservationIssueService.Put(polSourceObservationIssue);
+            Assert.IsType<BadRequestObjectResult>(actionPolSourceObservationIssue.Result);
+
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPExist(ExistTypeName = "PolSourceObservation", ExistPlurial = "s", ExistFieldID = "PolSourceObservationID", AllowableTVtypeList = )]
+            // polSourceObservationIssue.PolSourceObservationID   (Int32)
+            // -----------------------------------
+
+            polSourceObservationIssue = null;
+            polSourceObservationIssue = GetFilledRandomPolSourceObservationIssue("");
+            polSourceObservationIssue.PolSourceObservationID = 0;
+            actionPolSourceObservationIssue = await PolSourceObservationIssueService.Post(polSourceObservationIssue);
+            Assert.IsType<BadRequestObjectResult>(actionPolSourceObservationIssue.Result);
+
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPMaxLength(250)]
+            // polSourceObservationIssue.ObservationInfo   (String)
+            // -----------------------------------
+
+            polSourceObservationIssue = null;
+            polSourceObservationIssue = GetFilledRandomPolSourceObservationIssue("ObservationInfo");
+            actionPolSourceObservationIssue = await PolSourceObservationIssueService.Post(polSourceObservationIssue);
+            Assert.IsType<BadRequestObjectResult>(actionPolSourceObservationIssue.Result);
+
+            polSourceObservationIssue = null;
+            polSourceObservationIssue = GetFilledRandomPolSourceObservationIssue("");
+            polSourceObservationIssue.ObservationInfo = GetRandomString("", 251);
+            actionPolSourceObservationIssue = await PolSourceObservationIssueService.Post(polSourceObservationIssue);
+            Assert.IsType<BadRequestObjectResult>(actionPolSourceObservationIssue.Result);
+            //Assert.AreEqual(count, polSourceObservationIssueService.GetPolSourceObservationIssueList().Count());
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPRange(0, 1000)]
+            // polSourceObservationIssue.Ordinal   (Int32)
+            // -----------------------------------
+
+            polSourceObservationIssue = null;
+            polSourceObservationIssue = GetFilledRandomPolSourceObservationIssue("");
+            polSourceObservationIssue.Ordinal = -1;
+            actionPolSourceObservationIssue = await PolSourceObservationIssueService.Post(polSourceObservationIssue);
+            Assert.IsType<BadRequestObjectResult>(actionPolSourceObservationIssue.Result);
+            //Assert.AreEqual(count, polSourceObservationIssueService.GetPolSourceObservationIssueList().Count());
+            polSourceObservationIssue = null;
+            polSourceObservationIssue = GetFilledRandomPolSourceObservationIssue("");
+            polSourceObservationIssue.Ordinal = 1001;
+            actionPolSourceObservationIssue = await PolSourceObservationIssueService.Post(polSourceObservationIssue);
+            Assert.IsType<BadRequestObjectResult>(actionPolSourceObservationIssue.Result);
+            //Assert.AreEqual(count, polSourceObservationIssueService.GetPolSourceObservationIssueList().Count());
+
+            // -----------------------------------
+            // Is Nullable
+            // polSourceObservationIssue.ExtraComment   (String)
+            // -----------------------------------
+
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPAfter(Year = 1980)]
+            // polSourceObservationIssue.LastUpdateDate_UTC   (DateTime)
+            // -----------------------------------
+
+            polSourceObservationIssue = null;
+            polSourceObservationIssue = GetFilledRandomPolSourceObservationIssue("");
+            polSourceObservationIssue.LastUpdateDate_UTC = new DateTime();
+            actionPolSourceObservationIssue = await PolSourceObservationIssueService.Post(polSourceObservationIssue);
+            Assert.IsType<BadRequestObjectResult>(actionPolSourceObservationIssue.Result);
+            polSourceObservationIssue = null;
+            polSourceObservationIssue = GetFilledRandomPolSourceObservationIssue("");
+            polSourceObservationIssue.LastUpdateDate_UTC = new DateTime(1979, 1, 1);
+            actionPolSourceObservationIssue = await PolSourceObservationIssueService.Post(polSourceObservationIssue);
+            Assert.IsType<BadRequestObjectResult>(actionPolSourceObservationIssue.Result);
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPExist(ExistTypeName = "TVItem", ExistPlurial = "s", ExistFieldID = "TVItemID", AllowableTVtypeList = Contact)]
+            // polSourceObservationIssue.LastUpdateContactTVItemID   (Int32)
+            // -----------------------------------
+
+            polSourceObservationIssue = null;
+            polSourceObservationIssue = GetFilledRandomPolSourceObservationIssue("");
+            polSourceObservationIssue.LastUpdateContactTVItemID = 0;
+            actionPolSourceObservationIssue = await PolSourceObservationIssueService.Post(polSourceObservationIssue);
+            Assert.IsType<BadRequestObjectResult>(actionPolSourceObservationIssue.Result);
+
+            polSourceObservationIssue = null;
+            polSourceObservationIssue = GetFilledRandomPolSourceObservationIssue("");
+            polSourceObservationIssue.LastUpdateContactTVItemID = 1;
+            actionPolSourceObservationIssue = await PolSourceObservationIssueService.Post(polSourceObservationIssue);
+            Assert.IsType<BadRequestObjectResult>(actionPolSourceObservationIssue.Result);
+
+        }
+        #endregion Tests Generated Properties
 
         #region Functions private
         private async Task DoCRUDTest()
@@ -235,6 +384,14 @@ namespace CSSPServices.Tests
             }
 
             return polSourceObservationIssue;
+        }
+        private void CheckPolSourceObservationIssueFields(List<PolSourceObservationIssue> polSourceObservationIssueList)
+        {
+            Assert.False(string.IsNullOrWhiteSpace(polSourceObservationIssueList[0].ObservationInfo));
+            if (!string.IsNullOrWhiteSpace(polSourceObservationIssueList[0].ExtraComment))
+            {
+                Assert.False(string.IsNullOrWhiteSpace(polSourceObservationIssueList[0].ExtraComment));
+            }
         }
         #endregion Functions private
     }

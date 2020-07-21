@@ -19,6 +19,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Transactions;
 using Xunit;
+using System.ComponentModel.DataAnnotations;
 
 namespace CSSPServices.Tests
 {
@@ -81,6 +82,356 @@ namespace CSSPServices.Tests
             }
         }
         #endregion Tests Generated CRUD
+
+        #region Tests Generated Properties
+        [Theory]
+        [InlineData("en-CA", DBLocationEnum.Local)]
+        [InlineData("fr-CA", DBLocationEnum.Local)]
+        [InlineData("en-CA", DBLocationEnum.Server)]
+        [InlineData("fr-CA", DBLocationEnum.Server)]
+        public async Task VPAmbient_Properties_Test(string culture, DBLocationEnum DBLocation)
+        {
+            // -------------------------------
+            // -------------------------------
+            // Properties testing
+            // -------------------------------
+            // -------------------------------
+
+            Assert.True(await Setup(culture));
+
+            LoggedInService.DBLocation = DBLocation;
+
+            int count = 0;
+            if (count == 1)
+            {
+                // just so we don't get a warning during compile [The variable 'count' is assigned but its value is never used]
+            }
+
+            var actionVPAmbientList = await VPAmbientService.GetVPAmbientList();
+            Assert.Equal(200, ((ObjectResult)actionVPAmbientList.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionVPAmbientList.Result).Value);
+            List<VPAmbient> vpAmbientList = (List<VPAmbient>)((OkObjectResult)actionVPAmbientList.Result).Value;
+
+            count = vpAmbientList.Count();
+
+            VPAmbient vpAmbient = GetFilledRandomVPAmbient("");
+
+
+            // -----------------------------------
+            // [Key]
+            // Is NOT Nullable
+            // vpAmbient.VPAmbientID   (Int32)
+            // -----------------------------------
+
+            vpAmbient = null;
+            vpAmbient = GetFilledRandomVPAmbient("");
+            vpAmbient.VPAmbientID = 0;
+
+            var actionVPAmbient = await VPAmbientService.Put(vpAmbient);
+            Assert.IsType<BadRequestObjectResult>(actionVPAmbient.Result);
+
+            vpAmbient = null;
+            vpAmbient = GetFilledRandomVPAmbient("");
+            vpAmbient.VPAmbientID = 10000000;
+            actionVPAmbient = await VPAmbientService.Put(vpAmbient);
+            Assert.IsType<BadRequestObjectResult>(actionVPAmbient.Result);
+
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPExist(ExistTypeName = "VPScenario", ExistPlurial = "s", ExistFieldID = "VPScenarioID", AllowableTVtypeList = )]
+            // vpAmbient.VPScenarioID   (Int32)
+            // -----------------------------------
+
+            vpAmbient = null;
+            vpAmbient = GetFilledRandomVPAmbient("");
+            vpAmbient.VPScenarioID = 0;
+            actionVPAmbient = await VPAmbientService.Post(vpAmbient);
+            Assert.IsType<BadRequestObjectResult>(actionVPAmbient.Result);
+
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPRange(0, 10)]
+            // vpAmbient.Row   (Int32)
+            // -----------------------------------
+
+            vpAmbient = null;
+            vpAmbient = GetFilledRandomVPAmbient("");
+            vpAmbient.Row = -1;
+            actionVPAmbient = await VPAmbientService.Post(vpAmbient);
+            Assert.IsType<BadRequestObjectResult>(actionVPAmbient.Result);
+            //Assert.AreEqual(count, vpAmbientService.GetVPAmbientList().Count());
+            vpAmbient = null;
+            vpAmbient = GetFilledRandomVPAmbient("");
+            vpAmbient.Row = 11;
+            actionVPAmbient = await VPAmbientService.Post(vpAmbient);
+            Assert.IsType<BadRequestObjectResult>(actionVPAmbient.Result);
+            //Assert.AreEqual(count, vpAmbientService.GetVPAmbientList().Count());
+
+            // -----------------------------------
+            // Is Nullable
+            // [CSSPRange(0, 1000)]
+            // vpAmbient.MeasurementDepth_m   (Double)
+            // -----------------------------------
+
+            //CSSPError: Type not implemented [MeasurementDepth_m]
+
+            //CSSPError: Type not implemented [MeasurementDepth_m]
+
+            vpAmbient = null;
+            vpAmbient = GetFilledRandomVPAmbient("");
+            vpAmbient.MeasurementDepth_m = -1.0D;
+            actionVPAmbient = await VPAmbientService.Post(vpAmbient);
+            Assert.IsType<BadRequestObjectResult>(actionVPAmbient.Result);
+            //Assert.AreEqual(count, vpAmbientService.GetVPAmbientList().Count());
+            vpAmbient = null;
+            vpAmbient = GetFilledRandomVPAmbient("");
+            vpAmbient.MeasurementDepth_m = 1001.0D;
+            actionVPAmbient = await VPAmbientService.Post(vpAmbient);
+            Assert.IsType<BadRequestObjectResult>(actionVPAmbient.Result);
+            //Assert.AreEqual(count, vpAmbientService.GetVPAmbientList().Count());
+
+            // -----------------------------------
+            // Is Nullable
+            // [CSSPRange(0, 10)]
+            // vpAmbient.CurrentSpeed_m_s   (Double)
+            // -----------------------------------
+
+            //CSSPError: Type not implemented [CurrentSpeed_m_s]
+
+            //CSSPError: Type not implemented [CurrentSpeed_m_s]
+
+            vpAmbient = null;
+            vpAmbient = GetFilledRandomVPAmbient("");
+            vpAmbient.CurrentSpeed_m_s = -1.0D;
+            actionVPAmbient = await VPAmbientService.Post(vpAmbient);
+            Assert.IsType<BadRequestObjectResult>(actionVPAmbient.Result);
+            //Assert.AreEqual(count, vpAmbientService.GetVPAmbientList().Count());
+            vpAmbient = null;
+            vpAmbient = GetFilledRandomVPAmbient("");
+            vpAmbient.CurrentSpeed_m_s = 11.0D;
+            actionVPAmbient = await VPAmbientService.Post(vpAmbient);
+            Assert.IsType<BadRequestObjectResult>(actionVPAmbient.Result);
+            //Assert.AreEqual(count, vpAmbientService.GetVPAmbientList().Count());
+
+            // -----------------------------------
+            // Is Nullable
+            // [CSSPRange(-180, 180)]
+            // vpAmbient.CurrentDirection_deg   (Double)
+            // -----------------------------------
+
+            //CSSPError: Type not implemented [CurrentDirection_deg]
+
+            //CSSPError: Type not implemented [CurrentDirection_deg]
+
+            vpAmbient = null;
+            vpAmbient = GetFilledRandomVPAmbient("");
+            vpAmbient.CurrentDirection_deg = -181.0D;
+            actionVPAmbient = await VPAmbientService.Post(vpAmbient);
+            Assert.IsType<BadRequestObjectResult>(actionVPAmbient.Result);
+            //Assert.AreEqual(count, vpAmbientService.GetVPAmbientList().Count());
+            vpAmbient = null;
+            vpAmbient = GetFilledRandomVPAmbient("");
+            vpAmbient.CurrentDirection_deg = 181.0D;
+            actionVPAmbient = await VPAmbientService.Post(vpAmbient);
+            Assert.IsType<BadRequestObjectResult>(actionVPAmbient.Result);
+            //Assert.AreEqual(count, vpAmbientService.GetVPAmbientList().Count());
+
+            // -----------------------------------
+            // Is Nullable
+            // [CSSPRange(0, 40)]
+            // vpAmbient.AmbientSalinity_PSU   (Double)
+            // -----------------------------------
+
+            //CSSPError: Type not implemented [AmbientSalinity_PSU]
+
+            //CSSPError: Type not implemented [AmbientSalinity_PSU]
+
+            vpAmbient = null;
+            vpAmbient = GetFilledRandomVPAmbient("");
+            vpAmbient.AmbientSalinity_PSU = -1.0D;
+            actionVPAmbient = await VPAmbientService.Post(vpAmbient);
+            Assert.IsType<BadRequestObjectResult>(actionVPAmbient.Result);
+            //Assert.AreEqual(count, vpAmbientService.GetVPAmbientList().Count());
+            vpAmbient = null;
+            vpAmbient = GetFilledRandomVPAmbient("");
+            vpAmbient.AmbientSalinity_PSU = 41.0D;
+            actionVPAmbient = await VPAmbientService.Post(vpAmbient);
+            Assert.IsType<BadRequestObjectResult>(actionVPAmbient.Result);
+            //Assert.AreEqual(count, vpAmbientService.GetVPAmbientList().Count());
+
+            // -----------------------------------
+            // Is Nullable
+            // [CSSPRange(-10, 40)]
+            // vpAmbient.AmbientTemperature_C   (Double)
+            // -----------------------------------
+
+            //CSSPError: Type not implemented [AmbientTemperature_C]
+
+            //CSSPError: Type not implemented [AmbientTemperature_C]
+
+            vpAmbient = null;
+            vpAmbient = GetFilledRandomVPAmbient("");
+            vpAmbient.AmbientTemperature_C = -11.0D;
+            actionVPAmbient = await VPAmbientService.Post(vpAmbient);
+            Assert.IsType<BadRequestObjectResult>(actionVPAmbient.Result);
+            //Assert.AreEqual(count, vpAmbientService.GetVPAmbientList().Count());
+            vpAmbient = null;
+            vpAmbient = GetFilledRandomVPAmbient("");
+            vpAmbient.AmbientTemperature_C = 41.0D;
+            actionVPAmbient = await VPAmbientService.Post(vpAmbient);
+            Assert.IsType<BadRequestObjectResult>(actionVPAmbient.Result);
+            //Assert.AreEqual(count, vpAmbientService.GetVPAmbientList().Count());
+
+            // -----------------------------------
+            // Is Nullable
+            // [CSSPRange(0, 10000000)]
+            // vpAmbient.BackgroundConcentration_MPN_100ml   (Int32)
+            // -----------------------------------
+
+            vpAmbient = null;
+            vpAmbient = GetFilledRandomVPAmbient("");
+            vpAmbient.BackgroundConcentration_MPN_100ml = -1;
+            actionVPAmbient = await VPAmbientService.Post(vpAmbient);
+            Assert.IsType<BadRequestObjectResult>(actionVPAmbient.Result);
+            //Assert.AreEqual(count, vpAmbientService.GetVPAmbientList().Count());
+            vpAmbient = null;
+            vpAmbient = GetFilledRandomVPAmbient("");
+            vpAmbient.BackgroundConcentration_MPN_100ml = 10000001;
+            actionVPAmbient = await VPAmbientService.Post(vpAmbient);
+            Assert.IsType<BadRequestObjectResult>(actionVPAmbient.Result);
+            //Assert.AreEqual(count, vpAmbientService.GetVPAmbientList().Count());
+
+            // -----------------------------------
+            // Is Nullable
+            // [CSSPRange(0, 100)]
+            // vpAmbient.PollutantDecayRate_per_day   (Double)
+            // -----------------------------------
+
+            //CSSPError: Type not implemented [PollutantDecayRate_per_day]
+
+            //CSSPError: Type not implemented [PollutantDecayRate_per_day]
+
+            vpAmbient = null;
+            vpAmbient = GetFilledRandomVPAmbient("");
+            vpAmbient.PollutantDecayRate_per_day = -1.0D;
+            actionVPAmbient = await VPAmbientService.Post(vpAmbient);
+            Assert.IsType<BadRequestObjectResult>(actionVPAmbient.Result);
+            //Assert.AreEqual(count, vpAmbientService.GetVPAmbientList().Count());
+            vpAmbient = null;
+            vpAmbient = GetFilledRandomVPAmbient("");
+            vpAmbient.PollutantDecayRate_per_day = 101.0D;
+            actionVPAmbient = await VPAmbientService.Post(vpAmbient);
+            Assert.IsType<BadRequestObjectResult>(actionVPAmbient.Result);
+            //Assert.AreEqual(count, vpAmbientService.GetVPAmbientList().Count());
+
+            // -----------------------------------
+            // Is Nullable
+            // [CSSPRange(0, 10)]
+            // vpAmbient.FarFieldCurrentSpeed_m_s   (Double)
+            // -----------------------------------
+
+            //CSSPError: Type not implemented [FarFieldCurrentSpeed_m_s]
+
+            //CSSPError: Type not implemented [FarFieldCurrentSpeed_m_s]
+
+            vpAmbient = null;
+            vpAmbient = GetFilledRandomVPAmbient("");
+            vpAmbient.FarFieldCurrentSpeed_m_s = -1.0D;
+            actionVPAmbient = await VPAmbientService.Post(vpAmbient);
+            Assert.IsType<BadRequestObjectResult>(actionVPAmbient.Result);
+            //Assert.AreEqual(count, vpAmbientService.GetVPAmbientList().Count());
+            vpAmbient = null;
+            vpAmbient = GetFilledRandomVPAmbient("");
+            vpAmbient.FarFieldCurrentSpeed_m_s = 11.0D;
+            actionVPAmbient = await VPAmbientService.Post(vpAmbient);
+            Assert.IsType<BadRequestObjectResult>(actionVPAmbient.Result);
+            //Assert.AreEqual(count, vpAmbientService.GetVPAmbientList().Count());
+
+            // -----------------------------------
+            // Is Nullable
+            // [CSSPRange(-180, 180)]
+            // vpAmbient.FarFieldCurrentDirection_deg   (Double)
+            // -----------------------------------
+
+            //CSSPError: Type not implemented [FarFieldCurrentDirection_deg]
+
+            //CSSPError: Type not implemented [FarFieldCurrentDirection_deg]
+
+            vpAmbient = null;
+            vpAmbient = GetFilledRandomVPAmbient("");
+            vpAmbient.FarFieldCurrentDirection_deg = -181.0D;
+            actionVPAmbient = await VPAmbientService.Post(vpAmbient);
+            Assert.IsType<BadRequestObjectResult>(actionVPAmbient.Result);
+            //Assert.AreEqual(count, vpAmbientService.GetVPAmbientList().Count());
+            vpAmbient = null;
+            vpAmbient = GetFilledRandomVPAmbient("");
+            vpAmbient.FarFieldCurrentDirection_deg = 181.0D;
+            actionVPAmbient = await VPAmbientService.Post(vpAmbient);
+            Assert.IsType<BadRequestObjectResult>(actionVPAmbient.Result);
+            //Assert.AreEqual(count, vpAmbientService.GetVPAmbientList().Count());
+
+            // -----------------------------------
+            // Is Nullable
+            // [CSSPRange(0, 1)]
+            // vpAmbient.FarFieldDiffusionCoefficient   (Double)
+            // -----------------------------------
+
+            //CSSPError: Type not implemented [FarFieldDiffusionCoefficient]
+
+            //CSSPError: Type not implemented [FarFieldDiffusionCoefficient]
+
+            vpAmbient = null;
+            vpAmbient = GetFilledRandomVPAmbient("");
+            vpAmbient.FarFieldDiffusionCoefficient = -1.0D;
+            actionVPAmbient = await VPAmbientService.Post(vpAmbient);
+            Assert.IsType<BadRequestObjectResult>(actionVPAmbient.Result);
+            //Assert.AreEqual(count, vpAmbientService.GetVPAmbientList().Count());
+            vpAmbient = null;
+            vpAmbient = GetFilledRandomVPAmbient("");
+            vpAmbient.FarFieldDiffusionCoefficient = 2.0D;
+            actionVPAmbient = await VPAmbientService.Post(vpAmbient);
+            Assert.IsType<BadRequestObjectResult>(actionVPAmbient.Result);
+            //Assert.AreEqual(count, vpAmbientService.GetVPAmbientList().Count());
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPAfter(Year = 1980)]
+            // vpAmbient.LastUpdateDate_UTC   (DateTime)
+            // -----------------------------------
+
+            vpAmbient = null;
+            vpAmbient = GetFilledRandomVPAmbient("");
+            vpAmbient.LastUpdateDate_UTC = new DateTime();
+            actionVPAmbient = await VPAmbientService.Post(vpAmbient);
+            Assert.IsType<BadRequestObjectResult>(actionVPAmbient.Result);
+            vpAmbient = null;
+            vpAmbient = GetFilledRandomVPAmbient("");
+            vpAmbient.LastUpdateDate_UTC = new DateTime(1979, 1, 1);
+            actionVPAmbient = await VPAmbientService.Post(vpAmbient);
+            Assert.IsType<BadRequestObjectResult>(actionVPAmbient.Result);
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPExist(ExistTypeName = "TVItem", ExistPlurial = "s", ExistFieldID = "TVItemID", AllowableTVtypeList = Contact)]
+            // vpAmbient.LastUpdateContactTVItemID   (Int32)
+            // -----------------------------------
+
+            vpAmbient = null;
+            vpAmbient = GetFilledRandomVPAmbient("");
+            vpAmbient.LastUpdateContactTVItemID = 0;
+            actionVPAmbient = await VPAmbientService.Post(vpAmbient);
+            Assert.IsType<BadRequestObjectResult>(actionVPAmbient.Result);
+
+            vpAmbient = null;
+            vpAmbient = GetFilledRandomVPAmbient("");
+            vpAmbient.LastUpdateContactTVItemID = 1;
+            actionVPAmbient = await VPAmbientService.Post(vpAmbient);
+            Assert.IsType<BadRequestObjectResult>(actionVPAmbient.Result);
+
+        }
+        #endregion Tests Generated Properties
 
         #region Functions private
         private async Task DoCRUDTest()
@@ -243,6 +594,49 @@ namespace CSSPServices.Tests
             }
 
             return vpAmbient;
+        }
+        private void CheckVPAmbientFields(List<VPAmbient> vpAmbientList)
+        {
+            if (vpAmbientList[0].MeasurementDepth_m != null)
+            {
+                Assert.NotNull(vpAmbientList[0].MeasurementDepth_m);
+            }
+            if (vpAmbientList[0].CurrentSpeed_m_s != null)
+            {
+                Assert.NotNull(vpAmbientList[0].CurrentSpeed_m_s);
+            }
+            if (vpAmbientList[0].CurrentDirection_deg != null)
+            {
+                Assert.NotNull(vpAmbientList[0].CurrentDirection_deg);
+            }
+            if (vpAmbientList[0].AmbientSalinity_PSU != null)
+            {
+                Assert.NotNull(vpAmbientList[0].AmbientSalinity_PSU);
+            }
+            if (vpAmbientList[0].AmbientTemperature_C != null)
+            {
+                Assert.NotNull(vpAmbientList[0].AmbientTemperature_C);
+            }
+            if (vpAmbientList[0].BackgroundConcentration_MPN_100ml != null)
+            {
+                Assert.NotNull(vpAmbientList[0].BackgroundConcentration_MPN_100ml);
+            }
+            if (vpAmbientList[0].PollutantDecayRate_per_day != null)
+            {
+                Assert.NotNull(vpAmbientList[0].PollutantDecayRate_per_day);
+            }
+            if (vpAmbientList[0].FarFieldCurrentSpeed_m_s != null)
+            {
+                Assert.NotNull(vpAmbientList[0].FarFieldCurrentSpeed_m_s);
+            }
+            if (vpAmbientList[0].FarFieldCurrentDirection_deg != null)
+            {
+                Assert.NotNull(vpAmbientList[0].FarFieldCurrentDirection_deg);
+            }
+            if (vpAmbientList[0].FarFieldDiffusionCoefficient != null)
+            {
+                Assert.NotNull(vpAmbientList[0].FarFieldDiffusionCoefficient);
+            }
         }
         #endregion Functions private
     }

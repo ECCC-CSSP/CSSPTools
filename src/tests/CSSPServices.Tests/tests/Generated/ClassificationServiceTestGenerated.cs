@@ -19,6 +19,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Transactions;
 using Xunit;
+using System.ComponentModel.DataAnnotations;
 
 namespace CSSPServices.Tests
 {
@@ -81,6 +82,149 @@ namespace CSSPServices.Tests
             }
         }
         #endregion Tests Generated CRUD
+
+        #region Tests Generated Properties
+        [Theory]
+        [InlineData("en-CA", DBLocationEnum.Local)]
+        [InlineData("fr-CA", DBLocationEnum.Local)]
+        [InlineData("en-CA", DBLocationEnum.Server)]
+        [InlineData("fr-CA", DBLocationEnum.Server)]
+        public async Task Classification_Properties_Test(string culture, DBLocationEnum DBLocation)
+        {
+            // -------------------------------
+            // -------------------------------
+            // Properties testing
+            // -------------------------------
+            // -------------------------------
+
+            Assert.True(await Setup(culture));
+
+            LoggedInService.DBLocation = DBLocation;
+
+            int count = 0;
+            if (count == 1)
+            {
+                // just so we don't get a warning during compile [The variable 'count' is assigned but its value is never used]
+            }
+
+            var actionClassificationList = await ClassificationService.GetClassificationList();
+            Assert.Equal(200, ((ObjectResult)actionClassificationList.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionClassificationList.Result).Value);
+            List<Classification> classificationList = (List<Classification>)((OkObjectResult)actionClassificationList.Result).Value;
+
+            count = classificationList.Count();
+
+            Classification classification = GetFilledRandomClassification("");
+
+
+            // -----------------------------------
+            // [Key]
+            // Is NOT Nullable
+            // classification.ClassificationID   (Int32)
+            // -----------------------------------
+
+            classification = null;
+            classification = GetFilledRandomClassification("");
+            classification.ClassificationID = 0;
+
+            var actionClassification = await ClassificationService.Put(classification);
+            Assert.IsType<BadRequestObjectResult>(actionClassification.Result);
+
+            classification = null;
+            classification = GetFilledRandomClassification("");
+            classification.ClassificationID = 10000000;
+            actionClassification = await ClassificationService.Put(classification);
+            Assert.IsType<BadRequestObjectResult>(actionClassification.Result);
+
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPExist(ExistTypeName = "TVItem", ExistPlurial = "s", ExistFieldID = "TVItemID", AllowableTVtypeList = Classification)]
+            // classification.ClassificationTVItemID   (Int32)
+            // -----------------------------------
+
+            classification = null;
+            classification = GetFilledRandomClassification("");
+            classification.ClassificationTVItemID = 0;
+            actionClassification = await ClassificationService.Post(classification);
+            Assert.IsType<BadRequestObjectResult>(actionClassification.Result);
+
+            classification = null;
+            classification = GetFilledRandomClassification("");
+            classification.ClassificationTVItemID = 1;
+            actionClassification = await ClassificationService.Post(classification);
+            Assert.IsType<BadRequestObjectResult>(actionClassification.Result);
+
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPEnumType]
+            // classification.ClassificationType   (ClassificationTypeEnum)
+            // -----------------------------------
+
+            classification = null;
+            classification = GetFilledRandomClassification("");
+            classification.ClassificationType = (ClassificationTypeEnum)1000000;
+            actionClassification = await ClassificationService.Post(classification);
+            Assert.IsType<BadRequestObjectResult>(actionClassification.Result);
+
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPRange(0, 10000)]
+            // classification.Ordinal   (Int32)
+            // -----------------------------------
+
+            classification = null;
+            classification = GetFilledRandomClassification("");
+            classification.Ordinal = -1;
+            actionClassification = await ClassificationService.Post(classification);
+            Assert.IsType<BadRequestObjectResult>(actionClassification.Result);
+            //Assert.AreEqual(count, classificationService.GetClassificationList().Count());
+            classification = null;
+            classification = GetFilledRandomClassification("");
+            classification.Ordinal = 10001;
+            actionClassification = await ClassificationService.Post(classification);
+            Assert.IsType<BadRequestObjectResult>(actionClassification.Result);
+            //Assert.AreEqual(count, classificationService.GetClassificationList().Count());
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPAfter(Year = 1980)]
+            // classification.LastUpdateDate_UTC   (DateTime)
+            // -----------------------------------
+
+            classification = null;
+            classification = GetFilledRandomClassification("");
+            classification.LastUpdateDate_UTC = new DateTime();
+            actionClassification = await ClassificationService.Post(classification);
+            Assert.IsType<BadRequestObjectResult>(actionClassification.Result);
+            classification = null;
+            classification = GetFilledRandomClassification("");
+            classification.LastUpdateDate_UTC = new DateTime(1979, 1, 1);
+            actionClassification = await ClassificationService.Post(classification);
+            Assert.IsType<BadRequestObjectResult>(actionClassification.Result);
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPExist(ExistTypeName = "TVItem", ExistPlurial = "s", ExistFieldID = "TVItemID", AllowableTVtypeList = Contact)]
+            // classification.LastUpdateContactTVItemID   (Int32)
+            // -----------------------------------
+
+            classification = null;
+            classification = GetFilledRandomClassification("");
+            classification.LastUpdateContactTVItemID = 0;
+            actionClassification = await ClassificationService.Post(classification);
+            Assert.IsType<BadRequestObjectResult>(actionClassification.Result);
+
+            classification = null;
+            classification = GetFilledRandomClassification("");
+            classification.LastUpdateContactTVItemID = 1;
+            actionClassification = await ClassificationService.Post(classification);
+            Assert.IsType<BadRequestObjectResult>(actionClassification.Result);
+
+        }
+        #endregion Tests Generated Properties
 
         #region Functions private
         private async Task DoCRUDTest()
@@ -234,6 +378,9 @@ namespace CSSPServices.Tests
             }
 
             return classification;
+        }
+        private void CheckClassificationFields(List<Classification> classificationList)
+        {
         }
         #endregion Functions private
     }

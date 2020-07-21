@@ -20,19 +20,54 @@ using System.Threading.Tasks;
 
 namespace CSSPServices
 {
-    public partial class PolyPointService
+    public interface IPolyPointService
+    {
+        IEnumerable<ValidationResult> Validate(ValidationContext validationContext);
+    }
+    public partial class PolyPointService : IPolyPointService
     {
         #region Variables
         #endregion Variables
 
         #region Properties
+        private ICSSPCultureService CSSPCultureService { get; }
+        private IEnums enums { get; }
         #endregion Properties
 
         #region Constructors
-        public PolyPointService()
+        public PolyPointService(ICSSPCultureService CSSPCultureService, IEnums enums)
         {
+            this.CSSPCultureService = CSSPCultureService;
+            this.enums = enums;
         }
         #endregion Constructors
+
+        #region Functions public
+        public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+        {
+            string retStr = "";
+            PolyPoint polyPoint = validationContext.ObjectInstance as PolyPoint;
+
+            if (polyPoint.XCoord < -180 || polyPoint.XCoord > 180)
+            {
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "XCoord", "-180", "180"), new[] { "XCoord" });
+            }
+
+            if (polyPoint.YCoord < -90 || polyPoint.YCoord > 90)
+            {
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "YCoord", "-90", "90"), new[] { "YCoord" });
+            }
+
+            //Z has no Range Attribute
+
+            retStr = ""; // added to stop compiling CSSPError
+            if (retStr != "") // will never be true
+            {
+                yield return new ValidationResult("AAA", new[] { "AAA" });
+            }
+
+        }
+        #endregion Functions public
 
     }
 }

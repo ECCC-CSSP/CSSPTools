@@ -19,6 +19,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Transactions;
 using Xunit;
+using System.ComponentModel.DataAnnotations;
 
 namespace CSSPServices.Tests
 {
@@ -81,6 +82,147 @@ namespace CSSPServices.Tests
             }
         }
         #endregion Tests Generated CRUD
+
+        #region Tests Generated Properties
+        [Theory]
+        [InlineData("en-CA", DBLocationEnum.Local)]
+        [InlineData("fr-CA", DBLocationEnum.Local)]
+        [InlineData("en-CA", DBLocationEnum.Server)]
+        [InlineData("fr-CA", DBLocationEnum.Server)]
+        public async Task MWQMSiteStartEndDate_Properties_Test(string culture, DBLocationEnum DBLocation)
+        {
+            // -------------------------------
+            // -------------------------------
+            // Properties testing
+            // -------------------------------
+            // -------------------------------
+
+            Assert.True(await Setup(culture));
+
+            LoggedInService.DBLocation = DBLocation;
+
+            int count = 0;
+            if (count == 1)
+            {
+                // just so we don't get a warning during compile [The variable 'count' is assigned but its value is never used]
+            }
+
+            var actionMWQMSiteStartEndDateList = await MWQMSiteStartEndDateService.GetMWQMSiteStartEndDateList();
+            Assert.Equal(200, ((ObjectResult)actionMWQMSiteStartEndDateList.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionMWQMSiteStartEndDateList.Result).Value);
+            List<MWQMSiteStartEndDate> mwqmSiteStartEndDateList = (List<MWQMSiteStartEndDate>)((OkObjectResult)actionMWQMSiteStartEndDateList.Result).Value;
+
+            count = mwqmSiteStartEndDateList.Count();
+
+            MWQMSiteStartEndDate mwqmSiteStartEndDate = GetFilledRandomMWQMSiteStartEndDate("");
+
+
+            // -----------------------------------
+            // [Key]
+            // Is NOT Nullable
+            // mwqmSiteStartEndDate.MWQMSiteStartEndDateID   (Int32)
+            // -----------------------------------
+
+            mwqmSiteStartEndDate = null;
+            mwqmSiteStartEndDate = GetFilledRandomMWQMSiteStartEndDate("");
+            mwqmSiteStartEndDate.MWQMSiteStartEndDateID = 0;
+
+            var actionMWQMSiteStartEndDate = await MWQMSiteStartEndDateService.Put(mwqmSiteStartEndDate);
+            Assert.IsType<BadRequestObjectResult>(actionMWQMSiteStartEndDate.Result);
+
+            mwqmSiteStartEndDate = null;
+            mwqmSiteStartEndDate = GetFilledRandomMWQMSiteStartEndDate("");
+            mwqmSiteStartEndDate.MWQMSiteStartEndDateID = 10000000;
+            actionMWQMSiteStartEndDate = await MWQMSiteStartEndDateService.Put(mwqmSiteStartEndDate);
+            Assert.IsType<BadRequestObjectResult>(actionMWQMSiteStartEndDate.Result);
+
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPExist(ExistTypeName = "TVItem", ExistPlurial = "s", ExistFieldID = "TVItemID", AllowableTVtypeList = MWQMSite)]
+            // mwqmSiteStartEndDate.MWQMSiteTVItemID   (Int32)
+            // -----------------------------------
+
+            mwqmSiteStartEndDate = null;
+            mwqmSiteStartEndDate = GetFilledRandomMWQMSiteStartEndDate("");
+            mwqmSiteStartEndDate.MWQMSiteTVItemID = 0;
+            actionMWQMSiteStartEndDate = await MWQMSiteStartEndDateService.Post(mwqmSiteStartEndDate);
+            Assert.IsType<BadRequestObjectResult>(actionMWQMSiteStartEndDate.Result);
+
+            mwqmSiteStartEndDate = null;
+            mwqmSiteStartEndDate = GetFilledRandomMWQMSiteStartEndDate("");
+            mwqmSiteStartEndDate.MWQMSiteTVItemID = 1;
+            actionMWQMSiteStartEndDate = await MWQMSiteStartEndDateService.Post(mwqmSiteStartEndDate);
+            Assert.IsType<BadRequestObjectResult>(actionMWQMSiteStartEndDate.Result);
+
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPAfter(Year = 1980)]
+            // mwqmSiteStartEndDate.StartDate   (DateTime)
+            // -----------------------------------
+
+            mwqmSiteStartEndDate = null;
+            mwqmSiteStartEndDate = GetFilledRandomMWQMSiteStartEndDate("");
+            mwqmSiteStartEndDate.StartDate = new DateTime();
+            actionMWQMSiteStartEndDate = await MWQMSiteStartEndDateService.Post(mwqmSiteStartEndDate);
+            Assert.IsType<BadRequestObjectResult>(actionMWQMSiteStartEndDate.Result);
+            mwqmSiteStartEndDate = null;
+            mwqmSiteStartEndDate = GetFilledRandomMWQMSiteStartEndDate("");
+            mwqmSiteStartEndDate.StartDate = new DateTime(1979, 1, 1);
+            actionMWQMSiteStartEndDate = await MWQMSiteStartEndDateService.Post(mwqmSiteStartEndDate);
+            Assert.IsType<BadRequestObjectResult>(actionMWQMSiteStartEndDate.Result);
+
+            // -----------------------------------
+            // Is Nullable
+            // [CSSPAfter(Year = 1980)]
+            // [CSSPBigger(OtherField = StartDate)]
+            // mwqmSiteStartEndDate.EndDate   (DateTime)
+            // -----------------------------------
+
+            mwqmSiteStartEndDate = null;
+            mwqmSiteStartEndDate = GetFilledRandomMWQMSiteStartEndDate("");
+            mwqmSiteStartEndDate.EndDate = new DateTime(1979, 1, 1);
+            actionMWQMSiteStartEndDate = await MWQMSiteStartEndDateService.Post(mwqmSiteStartEndDate);
+            Assert.IsType<BadRequestObjectResult>(actionMWQMSiteStartEndDate.Result);
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPAfter(Year = 1980)]
+            // mwqmSiteStartEndDate.LastUpdateDate_UTC   (DateTime)
+            // -----------------------------------
+
+            mwqmSiteStartEndDate = null;
+            mwqmSiteStartEndDate = GetFilledRandomMWQMSiteStartEndDate("");
+            mwqmSiteStartEndDate.LastUpdateDate_UTC = new DateTime();
+            actionMWQMSiteStartEndDate = await MWQMSiteStartEndDateService.Post(mwqmSiteStartEndDate);
+            Assert.IsType<BadRequestObjectResult>(actionMWQMSiteStartEndDate.Result);
+            mwqmSiteStartEndDate = null;
+            mwqmSiteStartEndDate = GetFilledRandomMWQMSiteStartEndDate("");
+            mwqmSiteStartEndDate.LastUpdateDate_UTC = new DateTime(1979, 1, 1);
+            actionMWQMSiteStartEndDate = await MWQMSiteStartEndDateService.Post(mwqmSiteStartEndDate);
+            Assert.IsType<BadRequestObjectResult>(actionMWQMSiteStartEndDate.Result);
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPExist(ExistTypeName = "TVItem", ExistPlurial = "s", ExistFieldID = "TVItemID", AllowableTVtypeList = Contact)]
+            // mwqmSiteStartEndDate.LastUpdateContactTVItemID   (Int32)
+            // -----------------------------------
+
+            mwqmSiteStartEndDate = null;
+            mwqmSiteStartEndDate = GetFilledRandomMWQMSiteStartEndDate("");
+            mwqmSiteStartEndDate.LastUpdateContactTVItemID = 0;
+            actionMWQMSiteStartEndDate = await MWQMSiteStartEndDateService.Post(mwqmSiteStartEndDate);
+            Assert.IsType<BadRequestObjectResult>(actionMWQMSiteStartEndDate.Result);
+
+            mwqmSiteStartEndDate = null;
+            mwqmSiteStartEndDate = GetFilledRandomMWQMSiteStartEndDate("");
+            mwqmSiteStartEndDate.LastUpdateContactTVItemID = 1;
+            actionMWQMSiteStartEndDate = await MWQMSiteStartEndDateService.Post(mwqmSiteStartEndDate);
+            Assert.IsType<BadRequestObjectResult>(actionMWQMSiteStartEndDate.Result);
+
+        }
+        #endregion Tests Generated Properties
 
         #region Functions private
         private async Task DoCRUDTest()
@@ -234,6 +376,13 @@ namespace CSSPServices.Tests
             }
 
             return mwqmSiteStartEndDate;
+        }
+        private void CheckMWQMSiteStartEndDateFields(List<MWQMSiteStartEndDate> mwqmSiteStartEndDateList)
+        {
+            if (mwqmSiteStartEndDateList[0].EndDate != null)
+            {
+                Assert.NotNull(mwqmSiteStartEndDateList[0].EndDate);
+            }
         }
         #endregion Functions private
     }

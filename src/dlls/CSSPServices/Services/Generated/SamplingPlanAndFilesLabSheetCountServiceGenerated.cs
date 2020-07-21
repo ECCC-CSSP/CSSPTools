@@ -20,19 +20,58 @@ using System.Threading.Tasks;
 
 namespace CSSPServices
 {
-    public partial class SamplingPlanAndFilesLabSheetCountService
+    public interface ISamplingPlanAndFilesLabSheetCountService
+    {
+        IEnumerable<ValidationResult> Validate(ValidationContext validationContext);
+    }
+    public partial class SamplingPlanAndFilesLabSheetCountService : ISamplingPlanAndFilesLabSheetCountService
     {
         #region Variables
         #endregion Variables
 
         #region Properties
+        private ICSSPCultureService CSSPCultureService { get; }
+        private IEnums enums { get; }
         #endregion Properties
 
         #region Constructors
-        public SamplingPlanAndFilesLabSheetCountService()
+        public SamplingPlanAndFilesLabSheetCountService(ICSSPCultureService CSSPCultureService, IEnums enums)
         {
+            this.CSSPCultureService = CSSPCultureService;
+            this.enums = enums;
         }
         #endregion Constructors
+
+        #region Functions public
+        public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+        {
+            string retStr = "";
+            SamplingPlanAndFilesLabSheetCount samplingPlanAndFilesLabSheetCount = validationContext.ObjectInstance as SamplingPlanAndFilesLabSheetCount;
+
+            if (samplingPlanAndFilesLabSheetCount.LabSheetHistoryCount < 0)
+            {
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MinValueIs_, "LabSheetHistoryCount", "0"), new[] { "LabSheetHistoryCount" });
+            }
+
+            if (samplingPlanAndFilesLabSheetCount.LabSheetTransferredCount < 0)
+            {
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MinValueIs_, "LabSheetTransferredCount", "0"), new[] { "LabSheetTransferredCount" });
+            }
+
+                //CSSPError: Type not implemented [SamplingPlan] of type [SamplingPlan]
+
+                //CSSPError: Type not implemented [SamplingPlan] of type [SamplingPlan]
+                //CSSPError: Type not implemented [TVFileSamplingPlanFileTXT] of type [TVFile]
+
+                //CSSPError: Type not implemented [TVFileSamplingPlanFileTXT] of type [TVFile]
+            retStr = ""; // added to stop compiling CSSPError
+            if (retStr != "") // will never be true
+            {
+                yield return new ValidationResult("AAA", new[] { "AAA" });
+            }
+
+        }
+        #endregion Functions public
 
     }
 }

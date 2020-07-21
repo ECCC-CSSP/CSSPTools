@@ -20,19 +20,64 @@ using System.Threading.Tasks;
 
 namespace CSSPServices
 {
-    public partial class TVItemInfrastructureTypeTVItemLinkService
+    public interface ITVItemInfrastructureTypeTVItemLinkService
+    {
+        IEnumerable<ValidationResult> Validate(ValidationContext validationContext);
+    }
+    public partial class TVItemInfrastructureTypeTVItemLinkService : ITVItemInfrastructureTypeTVItemLinkService
     {
         #region Variables
         #endregion Variables
 
         #region Properties
+        private ICSSPCultureService CSSPCultureService { get; }
+        private IEnums enums { get; }
         #endregion Properties
 
         #region Constructors
-        public TVItemInfrastructureTypeTVItemLinkService()
+        public TVItemInfrastructureTypeTVItemLinkService(ICSSPCultureService CSSPCultureService, IEnums enums)
         {
+            this.CSSPCultureService = CSSPCultureService;
+            this.enums = enums;
         }
         #endregion Constructors
+
+        #region Functions public
+        public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+        {
+            string retStr = "";
+            TVItemInfrastructureTypeTVItemLink tvItemInfrastructureTypeTVItemLink = validationContext.ObjectInstance as TVItemInfrastructureTypeTVItemLink;
+
+            retStr = enums.EnumTypeOK(typeof(InfrastructureTypeEnum), (int?)tvItemInfrastructureTypeTVItemLink.InfrastructureType);
+            if (!string.IsNullOrWhiteSpace(retStr))
+            {
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "InfrastructureType"), new[] { "InfrastructureType" });
+            }
+
+            //SeeOtherMunicipalityTVItemID has no Range Attribute
+
+            if (!string.IsNullOrWhiteSpace(tvItemInfrastructureTypeTVItemLink.InfrastructureTypeText) && tvItemInfrastructureTypeTVItemLink.InfrastructureTypeText.Length > 100)
+            {
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "InfrastructureTypeText", "100"), new[] { "InfrastructureTypeText" });
+            }
+
+                //CSSPError: Type not implemented [TVItem] of type [TVItem]
+
+                //CSSPError: Type not implemented [TVItem] of type [TVItem]
+                //CSSPError: Type not implemented [TVItemLinkList] of type [List`1]
+
+                //CSSPError: Type not implemented [TVItemLinkList] of type [TVItemLink]
+                //CSSPError: Type not implemented [FlowTo] of type [TVItemInfrastructureTypeTVItemLink]
+
+                //CSSPError: Type not implemented [FlowTo] of type [TVItemInfrastructureTypeTVItemLink]
+            retStr = ""; // added to stop compiling CSSPError
+            if (retStr != "") // will never be true
+            {
+                yield return new ValidationResult("AAA", new[] { "AAA" });
+            }
+
+        }
+        #endregion Functions public
 
     }
 }

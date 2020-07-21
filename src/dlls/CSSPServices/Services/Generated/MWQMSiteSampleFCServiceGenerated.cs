@@ -20,19 +20,88 @@ using System.Threading.Tasks;
 
 namespace CSSPServices
 {
-    public partial class MWQMSiteSampleFCService
+    public interface IMWQMSiteSampleFCService
+    {
+        IEnumerable<ValidationResult> Validate(ValidationContext validationContext);
+    }
+    public partial class MWQMSiteSampleFCService : IMWQMSiteSampleFCService
     {
         #region Variables
         #endregion Variables
 
         #region Properties
+        private ICSSPCultureService CSSPCultureService { get; }
+        private IEnums enums { get; }
         #endregion Properties
 
         #region Constructors
-        public MWQMSiteSampleFCService()
+        public MWQMSiteSampleFCService(ICSSPCultureService CSSPCultureService, IEnums enums)
         {
+            this.CSSPCultureService = CSSPCultureService;
+            this.enums = enums;
         }
         #endregion Constructors
+
+        #region Functions public
+        public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+        {
+            string retStr = "";
+            MWQMSiteSampleFC mwqmSiteSampleFC = validationContext.ObjectInstance as MWQMSiteSampleFC;
+
+            if (mwqmSiteSampleFC.SampleDate.Year == 1)
+            {
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "SampleDate"), new[] { "SampleDate" });
+            }
+            else
+            {
+                if (mwqmSiteSampleFC.SampleDate.Year < 1980)
+                {
+                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes._YearShouldBeBiggerThan_, "SampleDate", "1980"), new[] { "SampleDate" });
+                }
+            }
+
+            if (mwqmSiteSampleFC.FC != null)
+            {
+                if (mwqmSiteSampleFC.FC < 1 || mwqmSiteSampleFC.FC > 100000000)
+                {
+                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "FC", "1", "100000000"), new[] { "FC" });
+                }
+            }
+
+            //Sal has no Range Attribute
+
+            //Temp has no Range Attribute
+
+            //PH has no Range Attribute
+
+            //DO has no Range Attribute
+
+            //Depth has no Range Attribute
+
+            //SampCount has no Range Attribute
+
+            //MinFC has no Range Attribute
+
+            //MaxFC has no Range Attribute
+
+            //GeoMean has no Range Attribute
+
+            //Median has no Range Attribute
+
+            //P90 has no Range Attribute
+
+            //PercOver43 has no Range Attribute
+
+            //PercOver260 has no Range Attribute
+
+            retStr = ""; // added to stop compiling CSSPError
+            if (retStr != "") // will never be true
+            {
+                yield return new ValidationResult("AAA", new[] { "AAA" });
+            }
+
+        }
+        #endregion Functions public
 
     }
 }

@@ -19,6 +19,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Transactions;
 using Xunit;
+using System.ComponentModel.DataAnnotations;
 
 namespace CSSPServices.Tests
 {
@@ -81,6 +82,155 @@ namespace CSSPServices.Tests
             }
         }
         #endregion Tests Generated CRUD
+
+        #region Tests Generated Properties
+        [Theory]
+        [InlineData("en-CA", DBLocationEnum.Local)]
+        [InlineData("fr-CA", DBLocationEnum.Local)]
+        [InlineData("en-CA", DBLocationEnum.Server)]
+        [InlineData("fr-CA", DBLocationEnum.Server)]
+        public async Task BoxModelLanguage_Properties_Test(string culture, DBLocationEnum DBLocation)
+        {
+            // -------------------------------
+            // -------------------------------
+            // Properties testing
+            // -------------------------------
+            // -------------------------------
+
+            Assert.True(await Setup(culture));
+
+            LoggedInService.DBLocation = DBLocation;
+
+            int count = 0;
+            if (count == 1)
+            {
+                // just so we don't get a warning during compile [The variable 'count' is assigned but its value is never used]
+            }
+
+            var actionBoxModelLanguageList = await BoxModelLanguageService.GetBoxModelLanguageList();
+            Assert.Equal(200, ((ObjectResult)actionBoxModelLanguageList.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionBoxModelLanguageList.Result).Value);
+            List<BoxModelLanguage> boxModelLanguageList = (List<BoxModelLanguage>)((OkObjectResult)actionBoxModelLanguageList.Result).Value;
+
+            count = boxModelLanguageList.Count();
+
+            BoxModelLanguage boxModelLanguage = GetFilledRandomBoxModelLanguage("");
+
+
+            // -----------------------------------
+            // [Key]
+            // Is NOT Nullable
+            // boxModelLanguage.BoxModelLanguageID   (Int32)
+            // -----------------------------------
+
+            boxModelLanguage = null;
+            boxModelLanguage = GetFilledRandomBoxModelLanguage("");
+            boxModelLanguage.BoxModelLanguageID = 0;
+
+            var actionBoxModelLanguage = await BoxModelLanguageService.Put(boxModelLanguage);
+            Assert.IsType<BadRequestObjectResult>(actionBoxModelLanguage.Result);
+
+            boxModelLanguage = null;
+            boxModelLanguage = GetFilledRandomBoxModelLanguage("");
+            boxModelLanguage.BoxModelLanguageID = 10000000;
+            actionBoxModelLanguage = await BoxModelLanguageService.Put(boxModelLanguage);
+            Assert.IsType<BadRequestObjectResult>(actionBoxModelLanguage.Result);
+
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPExist(ExistTypeName = "BoxModel", ExistPlurial = "s", ExistFieldID = "BoxModelID", AllowableTVtypeList = )]
+            // boxModelLanguage.BoxModelID   (Int32)
+            // -----------------------------------
+
+            boxModelLanguage = null;
+            boxModelLanguage = GetFilledRandomBoxModelLanguage("");
+            boxModelLanguage.BoxModelID = 0;
+            actionBoxModelLanguage = await BoxModelLanguageService.Post(boxModelLanguage);
+            Assert.IsType<BadRequestObjectResult>(actionBoxModelLanguage.Result);
+
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPEnumType]
+            // boxModelLanguage.Language   (LanguageEnum)
+            // -----------------------------------
+
+            boxModelLanguage = null;
+            boxModelLanguage = GetFilledRandomBoxModelLanguage("");
+            boxModelLanguage.Language = (LanguageEnum)1000000;
+            actionBoxModelLanguage = await BoxModelLanguageService.Post(boxModelLanguage);
+            Assert.IsType<BadRequestObjectResult>(actionBoxModelLanguage.Result);
+
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPMaxLength(250)]
+            // boxModelLanguage.ScenarioName   (String)
+            // -----------------------------------
+
+            boxModelLanguage = null;
+            boxModelLanguage = GetFilledRandomBoxModelLanguage("ScenarioName");
+            actionBoxModelLanguage = await BoxModelLanguageService.Post(boxModelLanguage);
+            Assert.IsType<BadRequestObjectResult>(actionBoxModelLanguage.Result);
+
+            boxModelLanguage = null;
+            boxModelLanguage = GetFilledRandomBoxModelLanguage("");
+            boxModelLanguage.ScenarioName = GetRandomString("", 251);
+            actionBoxModelLanguage = await BoxModelLanguageService.Post(boxModelLanguage);
+            Assert.IsType<BadRequestObjectResult>(actionBoxModelLanguage.Result);
+            //Assert.AreEqual(count, boxModelLanguageService.GetBoxModelLanguageList().Count());
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPEnumType]
+            // boxModelLanguage.TranslationStatus   (TranslationStatusEnum)
+            // -----------------------------------
+
+            boxModelLanguage = null;
+            boxModelLanguage = GetFilledRandomBoxModelLanguage("");
+            boxModelLanguage.TranslationStatus = (TranslationStatusEnum)1000000;
+            actionBoxModelLanguage = await BoxModelLanguageService.Post(boxModelLanguage);
+            Assert.IsType<BadRequestObjectResult>(actionBoxModelLanguage.Result);
+
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPAfter(Year = 1980)]
+            // boxModelLanguage.LastUpdateDate_UTC   (DateTime)
+            // -----------------------------------
+
+            boxModelLanguage = null;
+            boxModelLanguage = GetFilledRandomBoxModelLanguage("");
+            boxModelLanguage.LastUpdateDate_UTC = new DateTime();
+            actionBoxModelLanguage = await BoxModelLanguageService.Post(boxModelLanguage);
+            Assert.IsType<BadRequestObjectResult>(actionBoxModelLanguage.Result);
+            boxModelLanguage = null;
+            boxModelLanguage = GetFilledRandomBoxModelLanguage("");
+            boxModelLanguage.LastUpdateDate_UTC = new DateTime(1979, 1, 1);
+            actionBoxModelLanguage = await BoxModelLanguageService.Post(boxModelLanguage);
+            Assert.IsType<BadRequestObjectResult>(actionBoxModelLanguage.Result);
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPExist(ExistTypeName = "TVItem", ExistPlurial = "s", ExistFieldID = "TVItemID", AllowableTVtypeList = Contact)]
+            // boxModelLanguage.LastUpdateContactTVItemID   (Int32)
+            // -----------------------------------
+
+            boxModelLanguage = null;
+            boxModelLanguage = GetFilledRandomBoxModelLanguage("");
+            boxModelLanguage.LastUpdateContactTVItemID = 0;
+            actionBoxModelLanguage = await BoxModelLanguageService.Post(boxModelLanguage);
+            Assert.IsType<BadRequestObjectResult>(actionBoxModelLanguage.Result);
+
+            boxModelLanguage = null;
+            boxModelLanguage = GetFilledRandomBoxModelLanguage("");
+            boxModelLanguage.LastUpdateContactTVItemID = 1;
+            actionBoxModelLanguage = await BoxModelLanguageService.Post(boxModelLanguage);
+            Assert.IsType<BadRequestObjectResult>(actionBoxModelLanguage.Result);
+
+        }
+        #endregion Tests Generated Properties
 
         #region Functions private
         private async Task DoCRUDTest()
@@ -235,6 +385,10 @@ namespace CSSPServices.Tests
             }
 
             return boxModelLanguage;
+        }
+        private void CheckBoxModelLanguageFields(List<BoxModelLanguage> boxModelLanguageList)
+        {
+            Assert.False(string.IsNullOrWhiteSpace(boxModelLanguageList[0].ScenarioName));
         }
         #endregion Functions private
     }

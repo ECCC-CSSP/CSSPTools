@@ -20,19 +20,54 @@ using System.Threading.Tasks;
 
 namespace CSSPServices
 {
-    public partial class ElementLayerService
+    public interface IElementLayerService
+    {
+        IEnumerable<ValidationResult> Validate(ValidationContext validationContext);
+    }
+    public partial class ElementLayerService : IElementLayerService
     {
         #region Variables
         #endregion Variables
 
         #region Properties
+        private ICSSPCultureService CSSPCultureService { get; }
+        private IEnums enums { get; }
         #endregion Properties
 
         #region Constructors
-        public ElementLayerService()
+        public ElementLayerService(ICSSPCultureService CSSPCultureService, IEnums enums)
         {
+            this.CSSPCultureService = CSSPCultureService;
+            this.enums = enums;
         }
         #endregion Constructors
+
+        #region Functions public
+        public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+        {
+            string retStr = "";
+            ElementLayer elementLayer = validationContext.ObjectInstance as ElementLayer;
+
+            if (elementLayer.Layer < 1 || elementLayer.Layer > 1000)
+            {
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "Layer", "1", "1000"), new[] { "Layer" });
+            }
+
+            //ZMin has no Range Attribute
+
+            //ZMax has no Range Attribute
+
+                //CSSPError: Type not implemented [Element] of type [Element]
+
+                //CSSPError: Type not implemented [Element] of type [Element]
+            retStr = ""; // added to stop compiling CSSPError
+            if (retStr != "") // will never be true
+            {
+                yield return new ValidationResult("AAA", new[] { "AAA" });
+            }
+
+        }
+        #endregion Functions public
 
     }
 }

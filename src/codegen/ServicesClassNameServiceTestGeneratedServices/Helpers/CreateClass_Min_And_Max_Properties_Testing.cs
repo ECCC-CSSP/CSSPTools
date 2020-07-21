@@ -37,50 +37,50 @@ namespace ServicesClassNameServiceTestGeneratedServices.Services
 
                         if (csspProp.Min != null)
                         {
-                            sb.AppendLine($@"                    { TypeNameLower } = null;");
-                            sb.AppendLine($@"                    { TypeNameLower } = GetFilledRandom{ TypeName }("""");");
-                            sb.AppendLine($@"                    { TypeNameLower }.{ csspProp.PropName } = { (csspProp.Min - 1).ToString() }{ numbExt };");
+                            sb.AppendLine($@"            { TypeNameLower } = null;");
+                            sb.AppendLine($@"            { TypeNameLower } = GetFilledRandom{ TypeName }("""");");
+                            sb.AppendLine($@"            { TypeNameLower }.{ csspProp.PropName } = { (csspProp.Min - 1).ToString() }{ numbExt };");
                             if (TypeName == "Contact")
                             {
-                                sb.AppendLine($@"                    Assert.AreEqual(false, { TypeNameLower }Service.Add({ TypeNameLower }, AddContactTypeEnum.First));");
+                                sb.AppendLine($@"            action{ TypeName } = await { TypeName }Service.Post({ TypeNameLower }, AddContactTypeEnum.First);");
                             }
                             else
                             {
-                                sb.AppendLine($@"                    Assert.AreEqual(false, { TypeNameLower }Service.Add({ TypeNameLower }));");
+                                sb.AppendLine($@"            action{ TypeName } = await { TypeName }Service.Post({ TypeNameLower });");
                             }
                             if (csspProp.Max != null)
                             {
-                                sb.AppendLine($@"                    Assert.AreEqual(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, ""{ csspProp.PropName }"", ""{ csspProp.Min.ToString() }"", ""{ csspProp.Max.ToString() }""), { TypeNameLower }.ValidationResults.FirstOrDefault().ErrorMessage);");
+                                sb.AppendLine($@"            Assert.IsType<BadRequestObjectResult>(action{ TypeName }.Result);");
                             }
                             else
                             {
-                                sb.AppendLine($@"                    Assert.AreEqual(string.Format(CSSPServicesRes._MinValueIs_, ""{ csspProp.PropName }"", ""{ csspProp.Min.ToString() }""), { TypeNameLower }.ValidationResults.FirstOrDefault().ErrorMessage);");
+                                sb.AppendLine($@"            Assert.IsType<BadRequestObjectResult>(action{ TypeName }.Result);");
                             }
-                            sb.AppendLine($@"                    Assert.AreEqual(count, { TypeNameLower }Service.Get{ TypeName }List().Count());");
+                            sb.AppendLine($@"            //Assert.AreEqual(count, { TypeNameLower }Service.Get{ TypeName }List().Count());");
                         }
                         if (csspProp.Max != null)
                         {
-                            sb.AppendLine($@"                    { TypeNameLower } = null;");
-                            sb.AppendLine($@"                    { TypeNameLower } = GetFilledRandom{ TypeName }("""");");
+                            sb.AppendLine($@"            { TypeNameLower } = null;");
+                            sb.AppendLine($@"            { TypeNameLower } = GetFilledRandom{ TypeName }("""");");
 
-                            sb.AppendLine($@"                    { TypeNameLower }.{ csspProp.PropName } = { (csspProp.Max + 1).ToString() }{ numbExt };");
+                            sb.AppendLine($@"            { TypeNameLower }.{ csspProp.PropName } = { csspProp.Max + 1 }{ numbExt };");
                             if (TypeName == "Contact")
                             {
-                                sb.AppendLine($@"                    Assert.AreEqual(false, { TypeNameLower }Service.Add({ TypeNameLower }, AddContactTypeEnum.First));");
+                                sb.AppendLine($@"            action{ TypeName } = await { TypeName }Service.Post({ TypeNameLower }, AddContactTypeEnum.First);");
                             }
                             else
                             {
-                                sb.AppendLine($@"                    Assert.AreEqual(false, { TypeNameLower }Service.Add({ TypeNameLower }));");
+                                sb.AppendLine($@"            action{ TypeName } = await { TypeName }Service.Post({ TypeNameLower });");
                             }
                             if (csspProp.Min != null)
                             {
-                                sb.AppendLine($@"                    Assert.AreEqual(string.Format(CSSPServicesRes._ValueShouldBeBetween_And_, ""{ csspProp.PropName }"", ""{ csspProp.Min.ToString() }"", ""{ csspProp.Max.ToString() }""), { TypeNameLower }.ValidationResults.FirstOrDefault().ErrorMessage);");
+                                sb.AppendLine($@"            Assert.IsType<BadRequestObjectResult>(action{ TypeName }.Result);");
                             }
                             else
                             {
-                                sb.AppendLine($@"                    Assert.AreEqual(string.Format(CSSPServicesRes._MaxValueIs_, ""{ csspProp.PropName }"", ""{ csspProp.Max.ToString() }""), { TypeNameLower }.ValidationResults.FirstOrDefault().ErrorMessage);");
+                                sb.AppendLine($@"            Assert.IsType<BadRequestObjectResult>(action{ TypeName }.Result);");
                             }
-                            sb.AppendLine($@"                    Assert.AreEqual(count, { TypeNameLower }Service.Get{ TypeName }List().Count());");
+                            sb.AppendLine($@"            //Assert.AreEqual(count, { TypeNameLower }Service.Get{ TypeName }List().Count());");
                         }
                     }
                     break;
@@ -99,54 +99,54 @@ namespace ServicesClassNameServiceTestGeneratedServices.Services
                     {
                         if (csspProp.Min != null)
                         {
-                            sb.AppendLine($@"                    { TypeNameLower } = null;");
-                            sb.AppendLine($@"                    { TypeNameLower } = GetFilledRandom{ TypeName }("""");");
+                            sb.AppendLine($@"            { TypeNameLower } = null;");
+                            sb.AppendLine($@"            { TypeNameLower } = GetFilledRandom{ TypeName }("""");");
 
                             if (csspProp.Min - 1 > 0)
                             {
-                                sb.AppendLine($@"                    { TypeNameLower }.{ csspProp.PropName } = GetRandomString("""", { (csspProp.Min - 1).ToString() });");
+                                sb.AppendLine($@"            { TypeNameLower }.{ csspProp.PropName } = GetRandomString("""", { (csspProp.Min - 1).ToString() });");
                                 if (TypeName == "Contact")
                                 {
-                                    sb.AppendLine($@"                    Assert.AreEqual(false, { TypeNameLower }Service.Add({ TypeNameLower }, AddContactTypeEnum.First));");
+                                    sb.AppendLine($@"            action{ TypeName } = await { TypeName }Service.Post({ TypeNameLower }, AddContactTypeEnum.First);");
                                 }
                                 else
                                 {
-                                    sb.AppendLine($@"                    Assert.AreEqual(false, { TypeNameLower }Service.Add({ TypeNameLower }));");
+                                    sb.AppendLine($@"            action{ TypeName } = await { TypeName }Service.Post({ TypeNameLower });");
                                 }
                                 if (csspProp.Max != null)
                                 {
-                                    sb.AppendLine($@"                    Assert.AreEqual(string.Format(CSSPServicesRes._LengthShouldBeBetween_And_, ""{ csspProp.PropName }"", ""{ csspProp.Min.ToString() }"", ""{ csspProp.Max.ToString() }""), { TypeNameLower }.ValidationResults.FirstOrDefault().ErrorMessage);");
+                                    sb.AppendLine($@"            Assert.IsType<BadRequestObjectResult>(action{ TypeName }.Result);");
                                 }
                                 else
                                 {
-                                    sb.AppendLine($@"                    Assert.AreEqual(string.Format(CSSPServicesRes._MinLengthIs_, ""{ csspProp.PropName }"", ""{ csspProp.Min.ToString() }""), { TypeNameLower }.ValidationResults.FirstOrDefault().ErrorMessage);");
+                                    sb.AppendLine($@"            Assert.IsType<BadRequestObjectResult>(action{ TypeName }.Result);");
                                 }
-                                sb.AppendLine($@"                    Assert.AreEqual(count, { TypeNameLower }Service.Get{ TypeName }List().Count());");
+                                sb.AppendLine($@"            //Assert.AreEqual(count, { TypeNameLower }Service.Get{ TypeName }List().Count());");
                             }
                         }
                         if (csspProp.Max > 0)
                         {
-                            sb.AppendLine($@"                    { TypeNameLower } = null;");
-                            sb.AppendLine($@"                    { TypeNameLower } = GetFilledRandom{ TypeName }("""");");
+                            sb.AppendLine($@"            { TypeNameLower } = null;");
+                            sb.AppendLine($@"            { TypeNameLower } = GetFilledRandom{ TypeName }("""");");
 
-                            sb.AppendLine($@"                    { TypeNameLower }.{ csspProp.PropName } = GetRandomString("""", { (csspProp.Max + 1).ToString() });");
+                            sb.AppendLine($@"            { TypeNameLower }.{ csspProp.PropName } = GetRandomString("""", { csspProp.Max + 1 });");
                             if (TypeName == "Contact")
                             {
-                                sb.AppendLine($@"                    Assert.AreEqual(false, { TypeNameLower }Service.Add({ TypeNameLower }, AddContactTypeEnum.First));");
+                                sb.AppendLine($@"            action{ TypeName } = await { TypeName }Service.Post({ TypeNameLower }, AddContactTypeEnum.First);");
                             }
                             else
                             {
-                                sb.AppendLine($@"                    Assert.AreEqual(false, { TypeNameLower }Service.Add({ TypeNameLower }));");
+                                sb.AppendLine($@"            action{ TypeName } = await { TypeName }Service.Post({ TypeNameLower });");
                             }
                             if (csspProp.Min != null)
                             {
-                                sb.AppendLine($@"                    Assert.AreEqual(string.Format(CSSPServicesRes._LengthShouldBeBetween_And_, ""{ csspProp.PropName }"", ""{ csspProp.Min.ToString() }"", ""{ csspProp.Max.ToString() }""), { TypeNameLower }.ValidationResults.FirstOrDefault().ErrorMessage);");
+                                sb.AppendLine($@"            Assert.IsType<BadRequestObjectResult>(action{ TypeName }.Result);");
                             }
                             else
                             {
-                                sb.AppendLine($@"                    Assert.AreEqual(string.Format(CSSPServicesRes._MaxLengthIs_, ""{ csspProp.PropName }"", ""{ csspProp.Max.ToString() }""), { TypeNameLower }.ValidationResults.FirstOrDefault().ErrorMessage);");
+                                sb.AppendLine($@"            Assert.IsType<BadRequestObjectResult>(action{ TypeName }.Result);");
                             }
-                            sb.AppendLine($@"                    Assert.AreEqual(count, { TypeNameLower }Service.Get{ TypeName }List().Count());");
+                            sb.AppendLine($@"            //Assert.AreEqual(count, { TypeNameLower }Service.Get{ TypeName }List().Count());");
                         }
                     }
                     break;

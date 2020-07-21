@@ -20,19 +20,57 @@ using System.Threading.Tasks;
 
 namespace CSSPServices
 {
-    public partial class SearchService
+    public interface ISearchService
+    {
+        IEnumerable<ValidationResult> Validate(ValidationContext validationContext);
+    }
+    public partial class SearchService : ISearchService
     {
         #region Variables
         #endregion Variables
 
         #region Properties
+        private ICSSPCultureService CSSPCultureService { get; }
+        private IEnums enums { get; }
         #endregion Properties
 
         #region Constructors
-        public SearchService()
+        public SearchService(ICSSPCultureService CSSPCultureService, IEnums enums)
         {
+            this.CSSPCultureService = CSSPCultureService;
+            this.enums = enums;
         }
         #endregion Constructors
+
+        #region Functions public
+        public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+        {
+            string retStr = "";
+            Search search = validationContext.ObjectInstance as Search;
+
+            if (string.IsNullOrWhiteSpace(search.value))
+            {
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "value"), new[] { "value" });
+            }
+
+            if (!string.IsNullOrWhiteSpace(search.value) && (search.value.Length < 1 || search.value.Length > 255))
+            {
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._LengthShouldBeBetween_And_, "value", "1", "255"), new[] { "value" });
+            }
+
+            if (search.id < 1)
+            {
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MinValueIs_, "id", "1"), new[] { "id" });
+            }
+
+            retStr = ""; // added to stop compiling CSSPError
+            if (retStr != "") // will never be true
+            {
+                yield return new ValidationResult("AAA", new[] { "AAA" });
+            }
+
+        }
+        #endregion Functions public
 
     }
 }

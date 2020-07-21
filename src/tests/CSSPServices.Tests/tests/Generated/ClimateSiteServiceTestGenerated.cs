@@ -19,6 +19,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Transactions;
 using Xunit;
+using System.ComponentModel.DataAnnotations;
 
 namespace CSSPServices.Tests
 {
@@ -81,6 +82,378 @@ namespace CSSPServices.Tests
             }
         }
         #endregion Tests Generated CRUD
+
+        #region Tests Generated Properties
+        [Theory]
+        [InlineData("en-CA", DBLocationEnum.Local)]
+        [InlineData("fr-CA", DBLocationEnum.Local)]
+        [InlineData("en-CA", DBLocationEnum.Server)]
+        [InlineData("fr-CA", DBLocationEnum.Server)]
+        public async Task ClimateSite_Properties_Test(string culture, DBLocationEnum DBLocation)
+        {
+            // -------------------------------
+            // -------------------------------
+            // Properties testing
+            // -------------------------------
+            // -------------------------------
+
+            Assert.True(await Setup(culture));
+
+            LoggedInService.DBLocation = DBLocation;
+
+            int count = 0;
+            if (count == 1)
+            {
+                // just so we don't get a warning during compile [The variable 'count' is assigned but its value is never used]
+            }
+
+            var actionClimateSiteList = await ClimateSiteService.GetClimateSiteList();
+            Assert.Equal(200, ((ObjectResult)actionClimateSiteList.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionClimateSiteList.Result).Value);
+            List<ClimateSite> climateSiteList = (List<ClimateSite>)((OkObjectResult)actionClimateSiteList.Result).Value;
+
+            count = climateSiteList.Count();
+
+            ClimateSite climateSite = GetFilledRandomClimateSite("");
+
+
+            // -----------------------------------
+            // [Key]
+            // Is NOT Nullable
+            // climateSite.ClimateSiteID   (Int32)
+            // -----------------------------------
+
+            climateSite = null;
+            climateSite = GetFilledRandomClimateSite("");
+            climateSite.ClimateSiteID = 0;
+
+            var actionClimateSite = await ClimateSiteService.Put(climateSite);
+            Assert.IsType<BadRequestObjectResult>(actionClimateSite.Result);
+
+            climateSite = null;
+            climateSite = GetFilledRandomClimateSite("");
+            climateSite.ClimateSiteID = 10000000;
+            actionClimateSite = await ClimateSiteService.Put(climateSite);
+            Assert.IsType<BadRequestObjectResult>(actionClimateSite.Result);
+
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPExist(ExistTypeName = "TVItem", ExistPlurial = "s", ExistFieldID = "TVItemID", AllowableTVtypeList = ClimateSite)]
+            // climateSite.ClimateSiteTVItemID   (Int32)
+            // -----------------------------------
+
+            climateSite = null;
+            climateSite = GetFilledRandomClimateSite("");
+            climateSite.ClimateSiteTVItemID = 0;
+            actionClimateSite = await ClimateSiteService.Post(climateSite);
+            Assert.IsType<BadRequestObjectResult>(actionClimateSite.Result);
+
+            climateSite = null;
+            climateSite = GetFilledRandomClimateSite("");
+            climateSite.ClimateSiteTVItemID = 1;
+            actionClimateSite = await ClimateSiteService.Post(climateSite);
+            Assert.IsType<BadRequestObjectResult>(actionClimateSite.Result);
+
+
+            // -----------------------------------
+            // Is Nullable
+            // [CSSPRange(1, 100000)]
+            // climateSite.ECDBID   (Int32)
+            // -----------------------------------
+
+            climateSite = null;
+            climateSite = GetFilledRandomClimateSite("");
+            climateSite.ECDBID = 0;
+            actionClimateSite = await ClimateSiteService.Post(climateSite);
+            Assert.IsType<BadRequestObjectResult>(actionClimateSite.Result);
+            //Assert.AreEqual(count, climateSiteService.GetClimateSiteList().Count());
+            climateSite = null;
+            climateSite = GetFilledRandomClimateSite("");
+            climateSite.ECDBID = 100001;
+            actionClimateSite = await ClimateSiteService.Post(climateSite);
+            Assert.IsType<BadRequestObjectResult>(actionClimateSite.Result);
+            //Assert.AreEqual(count, climateSiteService.GetClimateSiteList().Count());
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPMaxLength(100)]
+            // climateSite.ClimateSiteName   (String)
+            // -----------------------------------
+
+            climateSite = null;
+            climateSite = GetFilledRandomClimateSite("ClimateSiteName");
+            actionClimateSite = await ClimateSiteService.Post(climateSite);
+            Assert.IsType<BadRequestObjectResult>(actionClimateSite.Result);
+
+            climateSite = null;
+            climateSite = GetFilledRandomClimateSite("");
+            climateSite.ClimateSiteName = GetRandomString("", 101);
+            actionClimateSite = await ClimateSiteService.Post(climateSite);
+            Assert.IsType<BadRequestObjectResult>(actionClimateSite.Result);
+            //Assert.AreEqual(count, climateSiteService.GetClimateSiteList().Count());
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPMaxLength(4)]
+            // climateSite.Province   (String)
+            // -----------------------------------
+
+            climateSite = null;
+            climateSite = GetFilledRandomClimateSite("Province");
+            actionClimateSite = await ClimateSiteService.Post(climateSite);
+            Assert.IsType<BadRequestObjectResult>(actionClimateSite.Result);
+
+            climateSite = null;
+            climateSite = GetFilledRandomClimateSite("");
+            climateSite.Province = GetRandomString("", 5);
+            actionClimateSite = await ClimateSiteService.Post(climateSite);
+            Assert.IsType<BadRequestObjectResult>(actionClimateSite.Result);
+            //Assert.AreEqual(count, climateSiteService.GetClimateSiteList().Count());
+
+            // -----------------------------------
+            // Is Nullable
+            // [CSSPRange(0, 10000)]
+            // climateSite.Elevation_m   (Double)
+            // -----------------------------------
+
+            //CSSPError: Type not implemented [Elevation_m]
+
+            //CSSPError: Type not implemented [Elevation_m]
+
+            climateSite = null;
+            climateSite = GetFilledRandomClimateSite("");
+            climateSite.Elevation_m = -1.0D;
+            actionClimateSite = await ClimateSiteService.Post(climateSite);
+            Assert.IsType<BadRequestObjectResult>(actionClimateSite.Result);
+            //Assert.AreEqual(count, climateSiteService.GetClimateSiteList().Count());
+            climateSite = null;
+            climateSite = GetFilledRandomClimateSite("");
+            climateSite.Elevation_m = 10001.0D;
+            actionClimateSite = await ClimateSiteService.Post(climateSite);
+            Assert.IsType<BadRequestObjectResult>(actionClimateSite.Result);
+            //Assert.AreEqual(count, climateSiteService.GetClimateSiteList().Count());
+
+            // -----------------------------------
+            // Is Nullable
+            // [CSSPMaxLength(10)]
+            // climateSite.ClimateID   (String)
+            // -----------------------------------
+
+            climateSite = null;
+            climateSite = GetFilledRandomClimateSite("");
+            climateSite.ClimateID = GetRandomString("", 11);
+            actionClimateSite = await ClimateSiteService.Post(climateSite);
+            Assert.IsType<BadRequestObjectResult>(actionClimateSite.Result);
+            //Assert.AreEqual(count, climateSiteService.GetClimateSiteList().Count());
+
+            // -----------------------------------
+            // Is Nullable
+            // [CSSPRange(1, 100000)]
+            // climateSite.WMOID   (Int32)
+            // -----------------------------------
+
+            climateSite = null;
+            climateSite = GetFilledRandomClimateSite("");
+            climateSite.WMOID = 0;
+            actionClimateSite = await ClimateSiteService.Post(climateSite);
+            Assert.IsType<BadRequestObjectResult>(actionClimateSite.Result);
+            //Assert.AreEqual(count, climateSiteService.GetClimateSiteList().Count());
+            climateSite = null;
+            climateSite = GetFilledRandomClimateSite("");
+            climateSite.WMOID = 100001;
+            actionClimateSite = await ClimateSiteService.Post(climateSite);
+            Assert.IsType<BadRequestObjectResult>(actionClimateSite.Result);
+            //Assert.AreEqual(count, climateSiteService.GetClimateSiteList().Count());
+
+            // -----------------------------------
+            // Is Nullable
+            // [CSSPMaxLength(3)]
+            // climateSite.TCID   (String)
+            // -----------------------------------
+
+            climateSite = null;
+            climateSite = GetFilledRandomClimateSite("");
+            climateSite.TCID = GetRandomString("", 4);
+            actionClimateSite = await ClimateSiteService.Post(climateSite);
+            Assert.IsType<BadRequestObjectResult>(actionClimateSite.Result);
+            //Assert.AreEqual(count, climateSiteService.GetClimateSiteList().Count());
+
+            // -----------------------------------
+            // Is Nullable
+            // climateSite.IsQuebecSite   (Boolean)
+            // -----------------------------------
+
+
+            // -----------------------------------
+            // Is Nullable
+            // climateSite.IsCoCoRaHS   (Boolean)
+            // -----------------------------------
+
+
+            // -----------------------------------
+            // Is Nullable
+            // [CSSPRange(-10, 0)]
+            // climateSite.TimeOffset_hour   (Double)
+            // -----------------------------------
+
+            //CSSPError: Type not implemented [TimeOffset_hour]
+
+            //CSSPError: Type not implemented [TimeOffset_hour]
+
+            climateSite = null;
+            climateSite = GetFilledRandomClimateSite("");
+            climateSite.TimeOffset_hour = -11.0D;
+            actionClimateSite = await ClimateSiteService.Post(climateSite);
+            Assert.IsType<BadRequestObjectResult>(actionClimateSite.Result);
+            //Assert.AreEqual(count, climateSiteService.GetClimateSiteList().Count());
+            climateSite = null;
+            climateSite = GetFilledRandomClimateSite("");
+            climateSite.TimeOffset_hour = 1.0D;
+            actionClimateSite = await ClimateSiteService.Post(climateSite);
+            Assert.IsType<BadRequestObjectResult>(actionClimateSite.Result);
+            //Assert.AreEqual(count, climateSiteService.GetClimateSiteList().Count());
+
+            // -----------------------------------
+            // Is Nullable
+            // [CSSPMaxLength(50)]
+            // climateSite.File_desc   (String)
+            // -----------------------------------
+
+            climateSite = null;
+            climateSite = GetFilledRandomClimateSite("");
+            climateSite.File_desc = GetRandomString("", 51);
+            actionClimateSite = await ClimateSiteService.Post(climateSite);
+            Assert.IsType<BadRequestObjectResult>(actionClimateSite.Result);
+            //Assert.AreEqual(count, climateSiteService.GetClimateSiteList().Count());
+
+            // -----------------------------------
+            // Is Nullable
+            // [CSSPAfter(Year = 1980)]
+            // climateSite.HourlyStartDate_Local   (DateTime)
+            // -----------------------------------
+
+            climateSite = null;
+            climateSite = GetFilledRandomClimateSite("");
+            climateSite.HourlyStartDate_Local = new DateTime(1979, 1, 1);
+            actionClimateSite = await ClimateSiteService.Post(climateSite);
+            Assert.IsType<BadRequestObjectResult>(actionClimateSite.Result);
+
+            // -----------------------------------
+            // Is Nullable
+            // [CSSPAfter(Year = 1980)]
+            // climateSite.HourlyEndDate_Local   (DateTime)
+            // -----------------------------------
+
+            climateSite = null;
+            climateSite = GetFilledRandomClimateSite("");
+            climateSite.HourlyEndDate_Local = new DateTime(1979, 1, 1);
+            actionClimateSite = await ClimateSiteService.Post(climateSite);
+            Assert.IsType<BadRequestObjectResult>(actionClimateSite.Result);
+
+            // -----------------------------------
+            // Is Nullable
+            // climateSite.HourlyNow   (Boolean)
+            // -----------------------------------
+
+
+            // -----------------------------------
+            // Is Nullable
+            // [CSSPAfter(Year = 1980)]
+            // climateSite.DailyStartDate_Local   (DateTime)
+            // -----------------------------------
+
+            climateSite = null;
+            climateSite = GetFilledRandomClimateSite("");
+            climateSite.DailyStartDate_Local = new DateTime(1979, 1, 1);
+            actionClimateSite = await ClimateSiteService.Post(climateSite);
+            Assert.IsType<BadRequestObjectResult>(actionClimateSite.Result);
+
+            // -----------------------------------
+            // Is Nullable
+            // [CSSPAfter(Year = 1980)]
+            // climateSite.DailyEndDate_Local   (DateTime)
+            // -----------------------------------
+
+            climateSite = null;
+            climateSite = GetFilledRandomClimateSite("");
+            climateSite.DailyEndDate_Local = new DateTime(1979, 1, 1);
+            actionClimateSite = await ClimateSiteService.Post(climateSite);
+            Assert.IsType<BadRequestObjectResult>(actionClimateSite.Result);
+
+            // -----------------------------------
+            // Is Nullable
+            // climateSite.DailyNow   (Boolean)
+            // -----------------------------------
+
+
+            // -----------------------------------
+            // Is Nullable
+            // [CSSPAfter(Year = 1980)]
+            // climateSite.MonthlyStartDate_Local   (DateTime)
+            // -----------------------------------
+
+            climateSite = null;
+            climateSite = GetFilledRandomClimateSite("");
+            climateSite.MonthlyStartDate_Local = new DateTime(1979, 1, 1);
+            actionClimateSite = await ClimateSiteService.Post(climateSite);
+            Assert.IsType<BadRequestObjectResult>(actionClimateSite.Result);
+
+            // -----------------------------------
+            // Is Nullable
+            // [CSSPAfter(Year = 1980)]
+            // climateSite.MonthlyEndDate_Local   (DateTime)
+            // -----------------------------------
+
+            climateSite = null;
+            climateSite = GetFilledRandomClimateSite("");
+            climateSite.MonthlyEndDate_Local = new DateTime(1979, 1, 1);
+            actionClimateSite = await ClimateSiteService.Post(climateSite);
+            Assert.IsType<BadRequestObjectResult>(actionClimateSite.Result);
+
+            // -----------------------------------
+            // Is Nullable
+            // climateSite.MonthlyNow   (Boolean)
+            // -----------------------------------
+
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPAfter(Year = 1980)]
+            // climateSite.LastUpdateDate_UTC   (DateTime)
+            // -----------------------------------
+
+            climateSite = null;
+            climateSite = GetFilledRandomClimateSite("");
+            climateSite.LastUpdateDate_UTC = new DateTime();
+            actionClimateSite = await ClimateSiteService.Post(climateSite);
+            Assert.IsType<BadRequestObjectResult>(actionClimateSite.Result);
+            climateSite = null;
+            climateSite = GetFilledRandomClimateSite("");
+            climateSite.LastUpdateDate_UTC = new DateTime(1979, 1, 1);
+            actionClimateSite = await ClimateSiteService.Post(climateSite);
+            Assert.IsType<BadRequestObjectResult>(actionClimateSite.Result);
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPExist(ExistTypeName = "TVItem", ExistPlurial = "s", ExistFieldID = "TVItemID", AllowableTVtypeList = Contact)]
+            // climateSite.LastUpdateContactTVItemID   (Int32)
+            // -----------------------------------
+
+            climateSite = null;
+            climateSite = GetFilledRandomClimateSite("");
+            climateSite.LastUpdateContactTVItemID = 0;
+            actionClimateSite = await ClimateSiteService.Post(climateSite);
+            Assert.IsType<BadRequestObjectResult>(actionClimateSite.Result);
+
+            climateSite = null;
+            climateSite = GetFilledRandomClimateSite("");
+            climateSite.LastUpdateContactTVItemID = 1;
+            actionClimateSite = await ClimateSiteService.Post(climateSite);
+            Assert.IsType<BadRequestObjectResult>(actionClimateSite.Result);
+
+        }
+        #endregion Tests Generated Properties
 
         #region Functions private
         private async Task DoCRUDTest()
@@ -252,6 +625,83 @@ namespace CSSPServices.Tests
             }
 
             return climateSite;
+        }
+        private void CheckClimateSiteFields(List<ClimateSite> climateSiteList)
+        {
+            if (climateSiteList[0].ECDBID != null)
+            {
+                Assert.NotNull(climateSiteList[0].ECDBID);
+            }
+            Assert.False(string.IsNullOrWhiteSpace(climateSiteList[0].ClimateSiteName));
+            Assert.False(string.IsNullOrWhiteSpace(climateSiteList[0].Province));
+            if (climateSiteList[0].Elevation_m != null)
+            {
+                Assert.NotNull(climateSiteList[0].Elevation_m);
+            }
+            if (!string.IsNullOrWhiteSpace(climateSiteList[0].ClimateID))
+            {
+                Assert.False(string.IsNullOrWhiteSpace(climateSiteList[0].ClimateID));
+            }
+            if (climateSiteList[0].WMOID != null)
+            {
+                Assert.NotNull(climateSiteList[0].WMOID);
+            }
+            if (!string.IsNullOrWhiteSpace(climateSiteList[0].TCID))
+            {
+                Assert.False(string.IsNullOrWhiteSpace(climateSiteList[0].TCID));
+            }
+            if (climateSiteList[0].IsQuebecSite != null)
+            {
+                Assert.NotNull(climateSiteList[0].IsQuebecSite);
+            }
+            if (climateSiteList[0].IsCoCoRaHS != null)
+            {
+                Assert.NotNull(climateSiteList[0].IsCoCoRaHS);
+            }
+            if (climateSiteList[0].TimeOffset_hour != null)
+            {
+                Assert.NotNull(climateSiteList[0].TimeOffset_hour);
+            }
+            if (!string.IsNullOrWhiteSpace(climateSiteList[0].File_desc))
+            {
+                Assert.False(string.IsNullOrWhiteSpace(climateSiteList[0].File_desc));
+            }
+            if (climateSiteList[0].HourlyStartDate_Local != null)
+            {
+                Assert.NotNull(climateSiteList[0].HourlyStartDate_Local);
+            }
+            if (climateSiteList[0].HourlyEndDate_Local != null)
+            {
+                Assert.NotNull(climateSiteList[0].HourlyEndDate_Local);
+            }
+            if (climateSiteList[0].HourlyNow != null)
+            {
+                Assert.NotNull(climateSiteList[0].HourlyNow);
+            }
+            if (climateSiteList[0].DailyStartDate_Local != null)
+            {
+                Assert.NotNull(climateSiteList[0].DailyStartDate_Local);
+            }
+            if (climateSiteList[0].DailyEndDate_Local != null)
+            {
+                Assert.NotNull(climateSiteList[0].DailyEndDate_Local);
+            }
+            if (climateSiteList[0].DailyNow != null)
+            {
+                Assert.NotNull(climateSiteList[0].DailyNow);
+            }
+            if (climateSiteList[0].MonthlyStartDate_Local != null)
+            {
+                Assert.NotNull(climateSiteList[0].MonthlyStartDate_Local);
+            }
+            if (climateSiteList[0].MonthlyEndDate_Local != null)
+            {
+                Assert.NotNull(climateSiteList[0].MonthlyEndDate_Local);
+            }
+            if (climateSiteList[0].MonthlyNow != null)
+            {
+                Assert.NotNull(climateSiteList[0].MonthlyNow);
+            }
         }
         #endregion Functions private
     }

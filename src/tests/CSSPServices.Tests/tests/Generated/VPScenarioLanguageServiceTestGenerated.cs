@@ -19,6 +19,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Transactions;
 using Xunit;
+using System.ComponentModel.DataAnnotations;
 
 namespace CSSPServices.Tests
 {
@@ -81,6 +82,155 @@ namespace CSSPServices.Tests
             }
         }
         #endregion Tests Generated CRUD
+
+        #region Tests Generated Properties
+        [Theory]
+        [InlineData("en-CA", DBLocationEnum.Local)]
+        [InlineData("fr-CA", DBLocationEnum.Local)]
+        [InlineData("en-CA", DBLocationEnum.Server)]
+        [InlineData("fr-CA", DBLocationEnum.Server)]
+        public async Task VPScenarioLanguage_Properties_Test(string culture, DBLocationEnum DBLocation)
+        {
+            // -------------------------------
+            // -------------------------------
+            // Properties testing
+            // -------------------------------
+            // -------------------------------
+
+            Assert.True(await Setup(culture));
+
+            LoggedInService.DBLocation = DBLocation;
+
+            int count = 0;
+            if (count == 1)
+            {
+                // just so we don't get a warning during compile [The variable 'count' is assigned but its value is never used]
+            }
+
+            var actionVPScenarioLanguageList = await VPScenarioLanguageService.GetVPScenarioLanguageList();
+            Assert.Equal(200, ((ObjectResult)actionVPScenarioLanguageList.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionVPScenarioLanguageList.Result).Value);
+            List<VPScenarioLanguage> vpScenarioLanguageList = (List<VPScenarioLanguage>)((OkObjectResult)actionVPScenarioLanguageList.Result).Value;
+
+            count = vpScenarioLanguageList.Count();
+
+            VPScenarioLanguage vpScenarioLanguage = GetFilledRandomVPScenarioLanguage("");
+
+
+            // -----------------------------------
+            // [Key]
+            // Is NOT Nullable
+            // vpScenarioLanguage.VPScenarioLanguageID   (Int32)
+            // -----------------------------------
+
+            vpScenarioLanguage = null;
+            vpScenarioLanguage = GetFilledRandomVPScenarioLanguage("");
+            vpScenarioLanguage.VPScenarioLanguageID = 0;
+
+            var actionVPScenarioLanguage = await VPScenarioLanguageService.Put(vpScenarioLanguage);
+            Assert.IsType<BadRequestObjectResult>(actionVPScenarioLanguage.Result);
+
+            vpScenarioLanguage = null;
+            vpScenarioLanguage = GetFilledRandomVPScenarioLanguage("");
+            vpScenarioLanguage.VPScenarioLanguageID = 10000000;
+            actionVPScenarioLanguage = await VPScenarioLanguageService.Put(vpScenarioLanguage);
+            Assert.IsType<BadRequestObjectResult>(actionVPScenarioLanguage.Result);
+
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPExist(ExistTypeName = "VPScenario", ExistPlurial = "s", ExistFieldID = "VPScenarioID", AllowableTVtypeList = )]
+            // vpScenarioLanguage.VPScenarioID   (Int32)
+            // -----------------------------------
+
+            vpScenarioLanguage = null;
+            vpScenarioLanguage = GetFilledRandomVPScenarioLanguage("");
+            vpScenarioLanguage.VPScenarioID = 0;
+            actionVPScenarioLanguage = await VPScenarioLanguageService.Post(vpScenarioLanguage);
+            Assert.IsType<BadRequestObjectResult>(actionVPScenarioLanguage.Result);
+
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPEnumType]
+            // vpScenarioLanguage.Language   (LanguageEnum)
+            // -----------------------------------
+
+            vpScenarioLanguage = null;
+            vpScenarioLanguage = GetFilledRandomVPScenarioLanguage("");
+            vpScenarioLanguage.Language = (LanguageEnum)1000000;
+            actionVPScenarioLanguage = await VPScenarioLanguageService.Post(vpScenarioLanguage);
+            Assert.IsType<BadRequestObjectResult>(actionVPScenarioLanguage.Result);
+
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPMaxLength(100)]
+            // vpScenarioLanguage.VPScenarioName   (String)
+            // -----------------------------------
+
+            vpScenarioLanguage = null;
+            vpScenarioLanguage = GetFilledRandomVPScenarioLanguage("VPScenarioName");
+            actionVPScenarioLanguage = await VPScenarioLanguageService.Post(vpScenarioLanguage);
+            Assert.IsType<BadRequestObjectResult>(actionVPScenarioLanguage.Result);
+
+            vpScenarioLanguage = null;
+            vpScenarioLanguage = GetFilledRandomVPScenarioLanguage("");
+            vpScenarioLanguage.VPScenarioName = GetRandomString("", 101);
+            actionVPScenarioLanguage = await VPScenarioLanguageService.Post(vpScenarioLanguage);
+            Assert.IsType<BadRequestObjectResult>(actionVPScenarioLanguage.Result);
+            //Assert.AreEqual(count, vpScenarioLanguageService.GetVPScenarioLanguageList().Count());
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPEnumType]
+            // vpScenarioLanguage.TranslationStatus   (TranslationStatusEnum)
+            // -----------------------------------
+
+            vpScenarioLanguage = null;
+            vpScenarioLanguage = GetFilledRandomVPScenarioLanguage("");
+            vpScenarioLanguage.TranslationStatus = (TranslationStatusEnum)1000000;
+            actionVPScenarioLanguage = await VPScenarioLanguageService.Post(vpScenarioLanguage);
+            Assert.IsType<BadRequestObjectResult>(actionVPScenarioLanguage.Result);
+
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPAfter(Year = 1980)]
+            // vpScenarioLanguage.LastUpdateDate_UTC   (DateTime)
+            // -----------------------------------
+
+            vpScenarioLanguage = null;
+            vpScenarioLanguage = GetFilledRandomVPScenarioLanguage("");
+            vpScenarioLanguage.LastUpdateDate_UTC = new DateTime();
+            actionVPScenarioLanguage = await VPScenarioLanguageService.Post(vpScenarioLanguage);
+            Assert.IsType<BadRequestObjectResult>(actionVPScenarioLanguage.Result);
+            vpScenarioLanguage = null;
+            vpScenarioLanguage = GetFilledRandomVPScenarioLanguage("");
+            vpScenarioLanguage.LastUpdateDate_UTC = new DateTime(1979, 1, 1);
+            actionVPScenarioLanguage = await VPScenarioLanguageService.Post(vpScenarioLanguage);
+            Assert.IsType<BadRequestObjectResult>(actionVPScenarioLanguage.Result);
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPExist(ExistTypeName = "TVItem", ExistPlurial = "s", ExistFieldID = "TVItemID", AllowableTVtypeList = Contact)]
+            // vpScenarioLanguage.LastUpdateContactTVItemID   (Int32)
+            // -----------------------------------
+
+            vpScenarioLanguage = null;
+            vpScenarioLanguage = GetFilledRandomVPScenarioLanguage("");
+            vpScenarioLanguage.LastUpdateContactTVItemID = 0;
+            actionVPScenarioLanguage = await VPScenarioLanguageService.Post(vpScenarioLanguage);
+            Assert.IsType<BadRequestObjectResult>(actionVPScenarioLanguage.Result);
+
+            vpScenarioLanguage = null;
+            vpScenarioLanguage = GetFilledRandomVPScenarioLanguage("");
+            vpScenarioLanguage.LastUpdateContactTVItemID = 1;
+            actionVPScenarioLanguage = await VPScenarioLanguageService.Post(vpScenarioLanguage);
+            Assert.IsType<BadRequestObjectResult>(actionVPScenarioLanguage.Result);
+
+        }
+        #endregion Tests Generated Properties
 
         #region Functions private
         private async Task DoCRUDTest()
@@ -235,6 +385,10 @@ namespace CSSPServices.Tests
             }
 
             return vpScenarioLanguage;
+        }
+        private void CheckVPScenarioLanguageFields(List<VPScenarioLanguage> vpScenarioLanguageList)
+        {
+            Assert.False(string.IsNullOrWhiteSpace(vpScenarioLanguageList[0].VPScenarioName));
         }
         #endregion Functions private
     }

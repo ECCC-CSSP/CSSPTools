@@ -19,6 +19,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Transactions;
 using Xunit;
+using System.ComponentModel.DataAnnotations;
 
 namespace CSSPServices.Tests
 {
@@ -81,6 +82,160 @@ namespace CSSPServices.Tests
             }
         }
         #endregion Tests Generated CRUD
+
+        #region Tests Generated Properties
+        [Theory]
+        [InlineData("en-CA", DBLocationEnum.Local)]
+        [InlineData("fr-CA", DBLocationEnum.Local)]
+        [InlineData("en-CA", DBLocationEnum.Server)]
+        [InlineData("fr-CA", DBLocationEnum.Server)]
+        public async Task SamplingPlanEmail_Properties_Test(string culture, DBLocationEnum DBLocation)
+        {
+            // -------------------------------
+            // -------------------------------
+            // Properties testing
+            // -------------------------------
+            // -------------------------------
+
+            Assert.True(await Setup(culture));
+
+            LoggedInService.DBLocation = DBLocation;
+
+            int count = 0;
+            if (count == 1)
+            {
+                // just so we don't get a warning during compile [The variable 'count' is assigned but its value is never used]
+            }
+
+            var actionSamplingPlanEmailList = await SamplingPlanEmailService.GetSamplingPlanEmailList();
+            Assert.Equal(200, ((ObjectResult)actionSamplingPlanEmailList.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionSamplingPlanEmailList.Result).Value);
+            List<SamplingPlanEmail> samplingPlanEmailList = (List<SamplingPlanEmail>)((OkObjectResult)actionSamplingPlanEmailList.Result).Value;
+
+            count = samplingPlanEmailList.Count();
+
+            SamplingPlanEmail samplingPlanEmail = GetFilledRandomSamplingPlanEmail("");
+
+
+            // -----------------------------------
+            // [Key]
+            // Is NOT Nullable
+            // samplingPlanEmail.SamplingPlanEmailID   (Int32)
+            // -----------------------------------
+
+            samplingPlanEmail = null;
+            samplingPlanEmail = GetFilledRandomSamplingPlanEmail("");
+            samplingPlanEmail.SamplingPlanEmailID = 0;
+
+            var actionSamplingPlanEmail = await SamplingPlanEmailService.Put(samplingPlanEmail);
+            Assert.IsType<BadRequestObjectResult>(actionSamplingPlanEmail.Result);
+
+            samplingPlanEmail = null;
+            samplingPlanEmail = GetFilledRandomSamplingPlanEmail("");
+            samplingPlanEmail.SamplingPlanEmailID = 10000000;
+            actionSamplingPlanEmail = await SamplingPlanEmailService.Put(samplingPlanEmail);
+            Assert.IsType<BadRequestObjectResult>(actionSamplingPlanEmail.Result);
+
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPExist(ExistTypeName = "SamplingPlan", ExistPlurial = "s", ExistFieldID = "SamplingPlanID", AllowableTVtypeList = )]
+            // samplingPlanEmail.SamplingPlanID   (Int32)
+            // -----------------------------------
+
+            samplingPlanEmail = null;
+            samplingPlanEmail = GetFilledRandomSamplingPlanEmail("");
+            samplingPlanEmail.SamplingPlanID = 0;
+            actionSamplingPlanEmail = await SamplingPlanEmailService.Post(samplingPlanEmail);
+            Assert.IsType<BadRequestObjectResult>(actionSamplingPlanEmail.Result);
+
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [DataType(DataType.EmailAddress)]
+            // [CSSPMaxLength(150)]
+            // samplingPlanEmail.Email   (String)
+            // -----------------------------------
+
+            samplingPlanEmail = null;
+            samplingPlanEmail = GetFilledRandomSamplingPlanEmail("Email");
+            actionSamplingPlanEmail = await SamplingPlanEmailService.Post(samplingPlanEmail);
+            Assert.IsType<BadRequestObjectResult>(actionSamplingPlanEmail.Result);
+
+            samplingPlanEmail = null;
+            samplingPlanEmail = GetFilledRandomSamplingPlanEmail("");
+            samplingPlanEmail.Email = GetRandomString("", 151);
+            actionSamplingPlanEmail = await SamplingPlanEmailService.Post(samplingPlanEmail);
+            Assert.IsType<BadRequestObjectResult>(actionSamplingPlanEmail.Result);
+            //Assert.AreEqual(count, samplingPlanEmailService.GetSamplingPlanEmailList().Count());
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // samplingPlanEmail.IsContractor   (Boolean)
+            // -----------------------------------
+
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // samplingPlanEmail.LabSheetHasValueOver500   (Boolean)
+            // -----------------------------------
+
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // samplingPlanEmail.LabSheetReceived   (Boolean)
+            // -----------------------------------
+
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // samplingPlanEmail.LabSheetAccepted   (Boolean)
+            // -----------------------------------
+
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // samplingPlanEmail.LabSheetRejected   (Boolean)
+            // -----------------------------------
+
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPAfter(Year = 1980)]
+            // samplingPlanEmail.LastUpdateDate_UTC   (DateTime)
+            // -----------------------------------
+
+            samplingPlanEmail = null;
+            samplingPlanEmail = GetFilledRandomSamplingPlanEmail("");
+            samplingPlanEmail.LastUpdateDate_UTC = new DateTime();
+            actionSamplingPlanEmail = await SamplingPlanEmailService.Post(samplingPlanEmail);
+            Assert.IsType<BadRequestObjectResult>(actionSamplingPlanEmail.Result);
+            samplingPlanEmail = null;
+            samplingPlanEmail = GetFilledRandomSamplingPlanEmail("");
+            samplingPlanEmail.LastUpdateDate_UTC = new DateTime(1979, 1, 1);
+            actionSamplingPlanEmail = await SamplingPlanEmailService.Post(samplingPlanEmail);
+            Assert.IsType<BadRequestObjectResult>(actionSamplingPlanEmail.Result);
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPExist(ExistTypeName = "TVItem", ExistPlurial = "s", ExistFieldID = "TVItemID", AllowableTVtypeList = Contact)]
+            // samplingPlanEmail.LastUpdateContactTVItemID   (Int32)
+            // -----------------------------------
+
+            samplingPlanEmail = null;
+            samplingPlanEmail = GetFilledRandomSamplingPlanEmail("");
+            samplingPlanEmail.LastUpdateContactTVItemID = 0;
+            actionSamplingPlanEmail = await SamplingPlanEmailService.Post(samplingPlanEmail);
+            Assert.IsType<BadRequestObjectResult>(actionSamplingPlanEmail.Result);
+
+            samplingPlanEmail = null;
+            samplingPlanEmail = GetFilledRandomSamplingPlanEmail("");
+            samplingPlanEmail.LastUpdateContactTVItemID = 1;
+            actionSamplingPlanEmail = await SamplingPlanEmailService.Post(samplingPlanEmail);
+            Assert.IsType<BadRequestObjectResult>(actionSamplingPlanEmail.Result);
+
+        }
+        #endregion Tests Generated Properties
 
         #region Functions private
         private async Task DoCRUDTest()
@@ -238,6 +393,10 @@ namespace CSSPServices.Tests
             }
 
             return samplingPlanEmail;
+        }
+        private void CheckSamplingPlanEmailFields(List<SamplingPlanEmail> samplingPlanEmailList)
+        {
+            Assert.False(string.IsNullOrWhiteSpace(samplingPlanEmailList[0].Email));
         }
         #endregion Functions private
     }

@@ -20,19 +20,54 @@ using System.Threading.Tasks;
 
 namespace CSSPServices
 {
-    public partial class PolSourceInactiveReasonEnumTextAndIDService
+    public interface IPolSourceInactiveReasonEnumTextAndIDService
+    {
+        IEnumerable<ValidationResult> Validate(ValidationContext validationContext);
+    }
+    public partial class PolSourceInactiveReasonEnumTextAndIDService : IPolSourceInactiveReasonEnumTextAndIDService
     {
         #region Variables
         #endregion Variables
 
         #region Properties
+        private ICSSPCultureService CSSPCultureService { get; }
+        private IEnums enums { get; }
         #endregion Properties
 
         #region Constructors
-        public PolSourceInactiveReasonEnumTextAndIDService()
+        public PolSourceInactiveReasonEnumTextAndIDService(ICSSPCultureService CSSPCultureService, IEnums enums)
         {
+            this.CSSPCultureService = CSSPCultureService;
+            this.enums = enums;
         }
         #endregion Constructors
+
+        #region Functions public
+        public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+        {
+            string retStr = "";
+            PolSourceInactiveReasonEnumTextAndID polSourceInactiveReasonEnumTextAndID = validationContext.ObjectInstance as PolSourceInactiveReasonEnumTextAndID;
+
+            if (string.IsNullOrWhiteSpace(polSourceInactiveReasonEnumTextAndID.Text))
+            {
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "Text"), new[] { "Text" });
+            }
+
+            //Text has no StringLength Attribute
+
+            if (polSourceInactiveReasonEnumTextAndID.ID < 1)
+            {
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MinValueIs_, "ID", "1"), new[] { "ID" });
+            }
+
+            retStr = ""; // added to stop compiling CSSPError
+            if (retStr != "") // will never be true
+            {
+                yield return new ValidationResult("AAA", new[] { "AAA" });
+            }
+
+        }
+        #endregion Functions public
 
     }
 }

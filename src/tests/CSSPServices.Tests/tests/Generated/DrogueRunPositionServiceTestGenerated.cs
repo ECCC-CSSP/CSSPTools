@@ -19,6 +19,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Transactions;
 using Xunit;
+using System.ComponentModel.DataAnnotations;
 
 namespace CSSPServices.Tests
 {
@@ -81,6 +82,239 @@ namespace CSSPServices.Tests
             }
         }
         #endregion Tests Generated CRUD
+
+        #region Tests Generated Properties
+        [Theory]
+        [InlineData("en-CA", DBLocationEnum.Local)]
+        [InlineData("fr-CA", DBLocationEnum.Local)]
+        [InlineData("en-CA", DBLocationEnum.Server)]
+        [InlineData("fr-CA", DBLocationEnum.Server)]
+        public async Task DrogueRunPosition_Properties_Test(string culture, DBLocationEnum DBLocation)
+        {
+            // -------------------------------
+            // -------------------------------
+            // Properties testing
+            // -------------------------------
+            // -------------------------------
+
+            Assert.True(await Setup(culture));
+
+            LoggedInService.DBLocation = DBLocation;
+
+            int count = 0;
+            if (count == 1)
+            {
+                // just so we don't get a warning during compile [The variable 'count' is assigned but its value is never used]
+            }
+
+            var actionDrogueRunPositionList = await DrogueRunPositionService.GetDrogueRunPositionList();
+            Assert.Equal(200, ((ObjectResult)actionDrogueRunPositionList.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionDrogueRunPositionList.Result).Value);
+            List<DrogueRunPosition> drogueRunPositionList = (List<DrogueRunPosition>)((OkObjectResult)actionDrogueRunPositionList.Result).Value;
+
+            count = drogueRunPositionList.Count();
+
+            DrogueRunPosition drogueRunPosition = GetFilledRandomDrogueRunPosition("");
+
+
+            // -----------------------------------
+            // [Key]
+            // Is NOT Nullable
+            // drogueRunPosition.DrogueRunPositionID   (Int32)
+            // -----------------------------------
+
+            drogueRunPosition = null;
+            drogueRunPosition = GetFilledRandomDrogueRunPosition("");
+            drogueRunPosition.DrogueRunPositionID = 0;
+
+            var actionDrogueRunPosition = await DrogueRunPositionService.Put(drogueRunPosition);
+            Assert.IsType<BadRequestObjectResult>(actionDrogueRunPosition.Result);
+
+            drogueRunPosition = null;
+            drogueRunPosition = GetFilledRandomDrogueRunPosition("");
+            drogueRunPosition.DrogueRunPositionID = 10000000;
+            actionDrogueRunPosition = await DrogueRunPositionService.Put(drogueRunPosition);
+            Assert.IsType<BadRequestObjectResult>(actionDrogueRunPosition.Result);
+
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPExist(ExistTypeName = "DrogueRun", ExistPlurial = "s", ExistFieldID = "DrogueRunID", AllowableTVtypeList = )]
+            // drogueRunPosition.DrogueRunID   (Int32)
+            // -----------------------------------
+
+            drogueRunPosition = null;
+            drogueRunPosition = GetFilledRandomDrogueRunPosition("");
+            drogueRunPosition.DrogueRunID = 0;
+            actionDrogueRunPosition = await DrogueRunPositionService.Post(drogueRunPosition);
+            Assert.IsType<BadRequestObjectResult>(actionDrogueRunPosition.Result);
+
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPRange(0, 100000)]
+            // drogueRunPosition.Ordinal   (Int32)
+            // -----------------------------------
+
+            drogueRunPosition = null;
+            drogueRunPosition = GetFilledRandomDrogueRunPosition("");
+            drogueRunPosition.Ordinal = -1;
+            actionDrogueRunPosition = await DrogueRunPositionService.Post(drogueRunPosition);
+            Assert.IsType<BadRequestObjectResult>(actionDrogueRunPosition.Result);
+            //Assert.AreEqual(count, drogueRunPositionService.GetDrogueRunPositionList().Count());
+            drogueRunPosition = null;
+            drogueRunPosition = GetFilledRandomDrogueRunPosition("");
+            drogueRunPosition.Ordinal = 100001;
+            actionDrogueRunPosition = await DrogueRunPositionService.Post(drogueRunPosition);
+            Assert.IsType<BadRequestObjectResult>(actionDrogueRunPosition.Result);
+            //Assert.AreEqual(count, drogueRunPositionService.GetDrogueRunPositionList().Count());
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPRange(-180, 180)]
+            // drogueRunPosition.StepLat   (Double)
+            // -----------------------------------
+
+            //CSSPError: Type not implemented [StepLat]
+
+            //CSSPError: Type not implemented [StepLat]
+
+            drogueRunPosition = null;
+            drogueRunPosition = GetFilledRandomDrogueRunPosition("");
+            drogueRunPosition.StepLat = -181.0D;
+            actionDrogueRunPosition = await DrogueRunPositionService.Post(drogueRunPosition);
+            Assert.IsType<BadRequestObjectResult>(actionDrogueRunPosition.Result);
+            //Assert.AreEqual(count, drogueRunPositionService.GetDrogueRunPositionList().Count());
+            drogueRunPosition = null;
+            drogueRunPosition = GetFilledRandomDrogueRunPosition("");
+            drogueRunPosition.StepLat = 181.0D;
+            actionDrogueRunPosition = await DrogueRunPositionService.Post(drogueRunPosition);
+            Assert.IsType<BadRequestObjectResult>(actionDrogueRunPosition.Result);
+            //Assert.AreEqual(count, drogueRunPositionService.GetDrogueRunPositionList().Count());
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPRange(-90, 90)]
+            // drogueRunPosition.StepLng   (Double)
+            // -----------------------------------
+
+            //CSSPError: Type not implemented [StepLng]
+
+            //CSSPError: Type not implemented [StepLng]
+
+            drogueRunPosition = null;
+            drogueRunPosition = GetFilledRandomDrogueRunPosition("");
+            drogueRunPosition.StepLng = -91.0D;
+            actionDrogueRunPosition = await DrogueRunPositionService.Post(drogueRunPosition);
+            Assert.IsType<BadRequestObjectResult>(actionDrogueRunPosition.Result);
+            //Assert.AreEqual(count, drogueRunPositionService.GetDrogueRunPositionList().Count());
+            drogueRunPosition = null;
+            drogueRunPosition = GetFilledRandomDrogueRunPosition("");
+            drogueRunPosition.StepLng = 91.0D;
+            actionDrogueRunPosition = await DrogueRunPositionService.Post(drogueRunPosition);
+            Assert.IsType<BadRequestObjectResult>(actionDrogueRunPosition.Result);
+            //Assert.AreEqual(count, drogueRunPositionService.GetDrogueRunPositionList().Count());
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPAfter(Year = 1980)]
+            // drogueRunPosition.StepDateTime_Local   (DateTime)
+            // -----------------------------------
+
+            drogueRunPosition = null;
+            drogueRunPosition = GetFilledRandomDrogueRunPosition("");
+            drogueRunPosition.StepDateTime_Local = new DateTime();
+            actionDrogueRunPosition = await DrogueRunPositionService.Post(drogueRunPosition);
+            Assert.IsType<BadRequestObjectResult>(actionDrogueRunPosition.Result);
+            drogueRunPosition = null;
+            drogueRunPosition = GetFilledRandomDrogueRunPosition("");
+            drogueRunPosition.StepDateTime_Local = new DateTime(1979, 1, 1);
+            actionDrogueRunPosition = await DrogueRunPositionService.Post(drogueRunPosition);
+            Assert.IsType<BadRequestObjectResult>(actionDrogueRunPosition.Result);
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPRange(0, 10)]
+            // drogueRunPosition.CalculatedSpeed_m_s   (Double)
+            // -----------------------------------
+
+            //CSSPError: Type not implemented [CalculatedSpeed_m_s]
+
+            //CSSPError: Type not implemented [CalculatedSpeed_m_s]
+
+            drogueRunPosition = null;
+            drogueRunPosition = GetFilledRandomDrogueRunPosition("");
+            drogueRunPosition.CalculatedSpeed_m_s = -1.0D;
+            actionDrogueRunPosition = await DrogueRunPositionService.Post(drogueRunPosition);
+            Assert.IsType<BadRequestObjectResult>(actionDrogueRunPosition.Result);
+            //Assert.AreEqual(count, drogueRunPositionService.GetDrogueRunPositionList().Count());
+            drogueRunPosition = null;
+            drogueRunPosition = GetFilledRandomDrogueRunPosition("");
+            drogueRunPosition.CalculatedSpeed_m_s = 11.0D;
+            actionDrogueRunPosition = await DrogueRunPositionService.Post(drogueRunPosition);
+            Assert.IsType<BadRequestObjectResult>(actionDrogueRunPosition.Result);
+            //Assert.AreEqual(count, drogueRunPositionService.GetDrogueRunPositionList().Count());
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPRange(0, 360)]
+            // drogueRunPosition.CalculatedDirection_deg   (Double)
+            // -----------------------------------
+
+            //CSSPError: Type not implemented [CalculatedDirection_deg]
+
+            //CSSPError: Type not implemented [CalculatedDirection_deg]
+
+            drogueRunPosition = null;
+            drogueRunPosition = GetFilledRandomDrogueRunPosition("");
+            drogueRunPosition.CalculatedDirection_deg = -1.0D;
+            actionDrogueRunPosition = await DrogueRunPositionService.Post(drogueRunPosition);
+            Assert.IsType<BadRequestObjectResult>(actionDrogueRunPosition.Result);
+            //Assert.AreEqual(count, drogueRunPositionService.GetDrogueRunPositionList().Count());
+            drogueRunPosition = null;
+            drogueRunPosition = GetFilledRandomDrogueRunPosition("");
+            drogueRunPosition.CalculatedDirection_deg = 361.0D;
+            actionDrogueRunPosition = await DrogueRunPositionService.Post(drogueRunPosition);
+            Assert.IsType<BadRequestObjectResult>(actionDrogueRunPosition.Result);
+            //Assert.AreEqual(count, drogueRunPositionService.GetDrogueRunPositionList().Count());
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPAfter(Year = 1980)]
+            // drogueRunPosition.LastUpdateDate_UTC   (DateTime)
+            // -----------------------------------
+
+            drogueRunPosition = null;
+            drogueRunPosition = GetFilledRandomDrogueRunPosition("");
+            drogueRunPosition.LastUpdateDate_UTC = new DateTime();
+            actionDrogueRunPosition = await DrogueRunPositionService.Post(drogueRunPosition);
+            Assert.IsType<BadRequestObjectResult>(actionDrogueRunPosition.Result);
+            drogueRunPosition = null;
+            drogueRunPosition = GetFilledRandomDrogueRunPosition("");
+            drogueRunPosition.LastUpdateDate_UTC = new DateTime(1979, 1, 1);
+            actionDrogueRunPosition = await DrogueRunPositionService.Post(drogueRunPosition);
+            Assert.IsType<BadRequestObjectResult>(actionDrogueRunPosition.Result);
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPExist(ExistTypeName = "TVItem", ExistPlurial = "s", ExistFieldID = "TVItemID", AllowableTVtypeList = Contact)]
+            // drogueRunPosition.LastUpdateContactTVItemID   (Int32)
+            // -----------------------------------
+
+            drogueRunPosition = null;
+            drogueRunPosition = GetFilledRandomDrogueRunPosition("");
+            drogueRunPosition.LastUpdateContactTVItemID = 0;
+            actionDrogueRunPosition = await DrogueRunPositionService.Post(drogueRunPosition);
+            Assert.IsType<BadRequestObjectResult>(actionDrogueRunPosition.Result);
+
+            drogueRunPosition = null;
+            drogueRunPosition = GetFilledRandomDrogueRunPosition("");
+            drogueRunPosition.LastUpdateContactTVItemID = 1;
+            actionDrogueRunPosition = await DrogueRunPositionService.Post(drogueRunPosition);
+            Assert.IsType<BadRequestObjectResult>(actionDrogueRunPosition.Result);
+
+        }
+        #endregion Tests Generated Properties
 
         #region Functions private
         private async Task DoCRUDTest()
@@ -238,6 +472,9 @@ namespace CSSPServices.Tests
             }
 
             return drogueRunPosition;
+        }
+        private void CheckDrogueRunPositionFields(List<DrogueRunPosition> drogueRunPositionList)
+        {
         }
         #endregion Functions private
     }

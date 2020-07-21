@@ -19,6 +19,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Transactions;
 using Xunit;
+using System.ComponentModel.DataAnnotations;
 
 namespace CSSPServices.Tests
 {
@@ -81,6 +82,148 @@ namespace CSSPServices.Tests
             }
         }
         #endregion Tests Generated CRUD
+
+        #region Tests Generated Properties
+        [Theory]
+        [InlineData("en-CA", DBLocationEnum.Local)]
+        [InlineData("fr-CA", DBLocationEnum.Local)]
+        [InlineData("en-CA", DBLocationEnum.Server)]
+        [InlineData("fr-CA", DBLocationEnum.Server)]
+        public async Task SpillLanguage_Properties_Test(string culture, DBLocationEnum DBLocation)
+        {
+            // -------------------------------
+            // -------------------------------
+            // Properties testing
+            // -------------------------------
+            // -------------------------------
+
+            Assert.True(await Setup(culture));
+
+            LoggedInService.DBLocation = DBLocation;
+
+            int count = 0;
+            if (count == 1)
+            {
+                // just so we don't get a warning during compile [The variable 'count' is assigned but its value is never used]
+            }
+
+            var actionSpillLanguageList = await SpillLanguageService.GetSpillLanguageList();
+            Assert.Equal(200, ((ObjectResult)actionSpillLanguageList.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionSpillLanguageList.Result).Value);
+            List<SpillLanguage> spillLanguageList = (List<SpillLanguage>)((OkObjectResult)actionSpillLanguageList.Result).Value;
+
+            count = spillLanguageList.Count();
+
+            SpillLanguage spillLanguage = GetFilledRandomSpillLanguage("");
+
+
+            // -----------------------------------
+            // [Key]
+            // Is NOT Nullable
+            // spillLanguage.SpillLanguageID   (Int32)
+            // -----------------------------------
+
+            spillLanguage = null;
+            spillLanguage = GetFilledRandomSpillLanguage("");
+            spillLanguage.SpillLanguageID = 0;
+
+            var actionSpillLanguage = await SpillLanguageService.Put(spillLanguage);
+            Assert.IsType<BadRequestObjectResult>(actionSpillLanguage.Result);
+
+            spillLanguage = null;
+            spillLanguage = GetFilledRandomSpillLanguage("");
+            spillLanguage.SpillLanguageID = 10000000;
+            actionSpillLanguage = await SpillLanguageService.Put(spillLanguage);
+            Assert.IsType<BadRequestObjectResult>(actionSpillLanguage.Result);
+
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPExist(ExistTypeName = "Spill", ExistPlurial = "s", ExistFieldID = "SpillID", AllowableTVtypeList = )]
+            // spillLanguage.SpillID   (Int32)
+            // -----------------------------------
+
+            spillLanguage = null;
+            spillLanguage = GetFilledRandomSpillLanguage("");
+            spillLanguage.SpillID = 0;
+            actionSpillLanguage = await SpillLanguageService.Post(spillLanguage);
+            Assert.IsType<BadRequestObjectResult>(actionSpillLanguage.Result);
+
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPEnumType]
+            // spillLanguage.Language   (LanguageEnum)
+            // -----------------------------------
+
+            spillLanguage = null;
+            spillLanguage = GetFilledRandomSpillLanguage("");
+            spillLanguage.Language = (LanguageEnum)1000000;
+            actionSpillLanguage = await SpillLanguageService.Post(spillLanguage);
+            Assert.IsType<BadRequestObjectResult>(actionSpillLanguage.Result);
+
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // spillLanguage.SpillComment   (String)
+            // -----------------------------------
+
+            spillLanguage = null;
+            spillLanguage = GetFilledRandomSpillLanguage("SpillComment");
+            actionSpillLanguage = await SpillLanguageService.Post(spillLanguage);
+            Assert.IsType<BadRequestObjectResult>(actionSpillLanguage.Result);
+
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPEnumType]
+            // spillLanguage.TranslationStatus   (TranslationStatusEnum)
+            // -----------------------------------
+
+            spillLanguage = null;
+            spillLanguage = GetFilledRandomSpillLanguage("");
+            spillLanguage.TranslationStatus = (TranslationStatusEnum)1000000;
+            actionSpillLanguage = await SpillLanguageService.Post(spillLanguage);
+            Assert.IsType<BadRequestObjectResult>(actionSpillLanguage.Result);
+
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPAfter(Year = 1980)]
+            // spillLanguage.LastUpdateDate_UTC   (DateTime)
+            // -----------------------------------
+
+            spillLanguage = null;
+            spillLanguage = GetFilledRandomSpillLanguage("");
+            spillLanguage.LastUpdateDate_UTC = new DateTime();
+            actionSpillLanguage = await SpillLanguageService.Post(spillLanguage);
+            Assert.IsType<BadRequestObjectResult>(actionSpillLanguage.Result);
+            spillLanguage = null;
+            spillLanguage = GetFilledRandomSpillLanguage("");
+            spillLanguage.LastUpdateDate_UTC = new DateTime(1979, 1, 1);
+            actionSpillLanguage = await SpillLanguageService.Post(spillLanguage);
+            Assert.IsType<BadRequestObjectResult>(actionSpillLanguage.Result);
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPExist(ExistTypeName = "TVItem", ExistPlurial = "s", ExistFieldID = "TVItemID", AllowableTVtypeList = Contact)]
+            // spillLanguage.LastUpdateContactTVItemID   (Int32)
+            // -----------------------------------
+
+            spillLanguage = null;
+            spillLanguage = GetFilledRandomSpillLanguage("");
+            spillLanguage.LastUpdateContactTVItemID = 0;
+            actionSpillLanguage = await SpillLanguageService.Post(spillLanguage);
+            Assert.IsType<BadRequestObjectResult>(actionSpillLanguage.Result);
+
+            spillLanguage = null;
+            spillLanguage = GetFilledRandomSpillLanguage("");
+            spillLanguage.LastUpdateContactTVItemID = 1;
+            actionSpillLanguage = await SpillLanguageService.Post(spillLanguage);
+            Assert.IsType<BadRequestObjectResult>(actionSpillLanguage.Result);
+
+        }
+        #endregion Tests Generated Properties
 
         #region Functions private
         private async Task DoCRUDTest()
@@ -216,7 +359,7 @@ namespace CSSPServices.Tests
 
                 try
                 {
-                    dbIM.Spills.Add(new Spill() { SpillID = 1, MunicipalityTVItemID = 39, InfrastructureTVItemID = 41, StartDateTime_Local = new DateTime(2015, 7, 17, 15, 11, 37), EndDateTime_Local = new DateTime(2015, 7, 17, 21, 11, 37), AverageFlow_m3_day = 34.5, LastUpdateDate_UTC = new DateTime(2020, 7, 17, 15, 11, 37), LastUpdateContactTVItemID = 2 });
+                    dbIM.Spills.Add(new Spill() { SpillID = 1, MunicipalityTVItemID = 39, InfrastructureTVItemID = 41, StartDateTime_Local = new DateTime(2015, 7, 19, 14, 30, 5), EndDateTime_Local = new DateTime(2015, 7, 19, 20, 30, 5), AverageFlow_m3_day = 34.5, LastUpdateDate_UTC = new DateTime(2020, 7, 19, 14, 30, 5), LastUpdateContactTVItemID = 2 });
                     dbIM.SaveChanges();
                 }
                 catch (Exception)
@@ -235,6 +378,10 @@ namespace CSSPServices.Tests
             }
 
             return spillLanguage;
+        }
+        private void CheckSpillLanguageFields(List<SpillLanguage> spillLanguageList)
+        {
+            Assert.False(string.IsNullOrWhiteSpace(spillLanguageList[0].SpillComment));
         }
         #endregion Functions private
     }

@@ -19,16 +19,22 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Transactions;
 using Xunit;
+using System.ComponentModel.DataAnnotations;
 
 namespace CSSPServices.Tests
 {
-    [Collection("Sequential")]
     public partial class BoxModelCalNumbServiceTest : TestHelper
     {
         #region Variables
         #endregion Variables
 
         #region Properties
+        private IConfiguration Config { get; set; }
+        private IServiceProvider Provider { get; set; }
+        private IServiceCollection Services { get; set; }
+        private ICSSPCultureService CSSPCultureService { get; set; }
+        private IBoxModelCalNumbService BoxModelCalNumbService { get; set; }
+        private BoxModelCalNumb boxModelCalNumb { get; set; }
         #endregion Properties
 
         #region Constructors
@@ -38,7 +44,74 @@ namespace CSSPServices.Tests
         }
         #endregion Constructors
 
+        #region Tests Generated Basic Test Not Mapped
+        [Theory]
+        [InlineData("en-CA")]
+        [InlineData("fr-CA")]
+        public async Task BoxModelCalNumbService_Good_Test(string culture)
+        {
+            Assert.True(await Setup(culture));
+
+            boxModelCalNumb = GetFilledRandomBoxModelCalNumb("");
+
+            List<ValidationResult> ValidationResultsList = BoxModelCalNumbService.Validate(new ValidationContext(boxModelCalNumb)).ToList();
+            Assert.True(ValidationResultsList.Count == 0);
+        }
+        #endregion Tests Generated Basic Test Not Mapped
+
         #region Functions private
+        private async Task<bool> Setup(string culture)
+        {
+            Config = new ConfigurationBuilder()
+               .SetBasePath(Directory.GetParent(AppContext.BaseDirectory).FullName)
+               .AddJsonFile("appsettings_csspservices.json")
+               .AddUserSecrets("6f27cbbe-6ffb-4154-b49b-d739597c4f60")
+               .Build();
+
+            Services = new ServiceCollection();
+
+            Services.AddSingleton<IConfiguration>(Config);
+
+            Services.AddSingleton<ICSSPCultureService, CSSPCultureService>();
+            Services.AddSingleton<IEnums, Enums>();
+            Services.AddSingleton<IBoxModelCalNumbService, BoxModelCalNumbService>();
+
+            Provider = Services.BuildServiceProvider();
+            Assert.NotNull(Provider);
+
+            CSSPCultureService = Provider.GetService<ICSSPCultureService>();
+            Assert.NotNull(CSSPCultureService);
+
+            CSSPCultureService.SetCulture(culture);
+
+            BoxModelCalNumbService = Provider.GetService<IBoxModelCalNumbService>();
+            Assert.NotNull(BoxModelCalNumbService);
+
+            return await Task.FromResult(true);
+        }
+        private BoxModelCalNumb GetFilledRandomBoxModelCalNumb(string OmitPropName)
+        {
+            BoxModelCalNumb boxModelCalNumb = new BoxModelCalNumb();
+
+            if (OmitPropName != "BoxModelResultType") boxModelCalNumb.BoxModelResultType = (BoxModelResultTypeEnum)GetRandomEnumType(typeof(BoxModelResultTypeEnum));
+            if (OmitPropName != "CalLength_m") boxModelCalNumb.CalLength_m = GetRandomDouble(0.0D, 10.0D);
+            if (OmitPropName != "CalRadius_m") boxModelCalNumb.CalRadius_m = GetRandomDouble(0.0D, 10.0D);
+            if (OmitPropName != "CalSurface_m2") boxModelCalNumb.CalSurface_m2 = GetRandomDouble(0.0D, 10.0D);
+            if (OmitPropName != "CalVolume_m3") boxModelCalNumb.CalVolume_m3 = GetRandomDouble(0.0D, 10.0D);
+            if (OmitPropName != "CalWidth_m") boxModelCalNumb.CalWidth_m = GetRandomDouble(0.0D, 10.0D);
+            if (OmitPropName != "FixLength") boxModelCalNumb.FixLength = true;
+            if (OmitPropName != "FixWidth") boxModelCalNumb.FixWidth = true;
+            if (OmitPropName != "BoxModelResultTypeText") boxModelCalNumb.BoxModelResultTypeText = GetRandomString("", 5);
+
+            return boxModelCalNumb;
+        }
+        private void CheckBoxModelCalNumbFields(List<BoxModelCalNumb> boxModelCalNumbList)
+        {
+            if (!string.IsNullOrWhiteSpace(boxModelCalNumbList[0].BoxModelResultTypeText))
+            {
+                Assert.False(string.IsNullOrWhiteSpace(boxModelCalNumbList[0].BoxModelResultTypeText));
+            }
+        }
         #endregion Functions private
     }
 }

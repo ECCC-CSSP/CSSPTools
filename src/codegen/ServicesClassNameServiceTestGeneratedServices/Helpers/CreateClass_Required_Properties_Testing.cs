@@ -26,18 +26,18 @@ namespace ServicesClassNameServiceTestGeneratedServices.Services
                     {
                         if (!csspProp.IsNullable)
                         {
-                            sb.AppendLine($@"                    { TypeNameLower } = null;");
-                            sb.AppendLine($@"                    { TypeNameLower } = GetFilledRandom{ TypeName }("""");");
-                            sb.AppendLine($@"                    { TypeNameLower }.{ csspProp.PropName } = new DateTime();");
+                            sb.AppendLine($@"            { TypeNameLower } = null;");
+                            sb.AppendLine($@"            { TypeNameLower } = GetFilledRandom{ TypeName }("""");");
+                            sb.AppendLine($@"            { TypeNameLower }.{ csspProp.PropName } = new DateTime();");
                             if (TypeName == "Contact")
                             {
-                                sb.AppendLine($@"                    { TypeNameLower }Service.Add({ TypeNameLower }, AddContactTypeEnum.LoggedIn);");
+                                sb.AppendLine($@"            action{ TypeName } = await { TypeName }Service.Post({ TypeNameLower }, AddContactTypeEnum.LoggedIn);");
                             }
                             else
                             {
-                                sb.AppendLine($@"                    { TypeNameLower }Service.Add({ TypeNameLower });");
+                                sb.AppendLine($@"            action{ TypeName } = await { TypeName }Service.Post({ TypeNameLower });");
                             }
-                            sb.AppendLine($@"                    Assert.AreEqual(string.Format(CSSPServicesRes._IsRequired, ""{ csspProp.PropName }""), { TypeNameLower }.ValidationResults.FirstOrDefault().ErrorMessage);");
+                            sb.AppendLine($@"            Assert.IsType<BadRequestObjectResult>(action{ TypeName }.Result);");
                         }
                     }
                     break;
@@ -45,27 +45,17 @@ namespace ServicesClassNameServiceTestGeneratedServices.Services
                     {
                         if (!csspProp.IsNullable)
                         {
-                            sb.AppendLine($@"                    { TypeNameLower } = null;");
-                            sb.AppendLine($@"                    { TypeNameLower } = GetFilledRandom{ TypeName }(""{ csspProp.PropName }"");");
+                            sb.AppendLine($@"            { TypeNameLower } = null;");
+                            sb.AppendLine($@"            { TypeNameLower } = GetFilledRandom{ TypeName }(""{ csspProp.PropName }"");");
                             if (TypeName == "Contact")
                             {
-                                sb.AppendLine($@"                    Assert.AreEqual(false, { TypeNameLower }Service.Add({ TypeNameLower }, AddContactTypeEnum.LoggedIn));");
+                                sb.AppendLine($@"            action{ TypeName } = await { TypeName }Service.Post({ TypeNameLower }, AddContactTypeEnum.LoggedIn);");
                             }
                             else
                             {
-                                sb.AppendLine($@"                    Assert.AreEqual(false, { TypeNameLower }Service.Add({ TypeNameLower }));");
+                                sb.AppendLine($@"            action{ TypeName } = await { TypeName }Service.Post({ TypeNameLower });");
                             }
-                            if (TypeName == "Contact" && csspProp.PropName == "Id")
-                            {
-                                sb.AppendLine($@"                    Assert.AreEqual(2, { TypeNameLower }.ValidationResults.Count());");
-                            }
-                            else
-                            {
-                                sb.AppendLine($@"                    Assert.AreEqual(1, { TypeNameLower }.ValidationResults.Count());");
-                            }
-                            sb.AppendLine($@"                    Assert.IsTrue({ TypeNameLower }.ValidationResults.Where(c => c.ErrorMessage == string.Format(CSSPServicesRes._IsRequired, ""{ csspProp.PropName }"")).Any());");
-                            sb.AppendLine($@"                    Assert.AreEqual(null, { TypeNameLower }.{ csspProp.PropName });");
-                            sb.AppendLine($@"                    Assert.AreEqual(count, { TypeNameLower }Service.Get{ TypeName }List().Count());");
+                            sb.AppendLine($@"            Assert.IsType<BadRequestObjectResult>(action{ TypeName }.Result);");
                             sb.AppendLine(@"");
                         }
                     }
@@ -82,22 +72,22 @@ namespace ServicesClassNameServiceTestGeneratedServices.Services
                             {
                                 string EndText = csspProp.PropName.EndsWith("Web") ? "Web" : "Report";
 
-                                sb.AppendLine($@"                    { TypeNameLower } = null;");
-                                sb.AppendLine($@"                    { TypeNameLower } = GetFilledRandom{ TypeName }("""");");
-                                sb.AppendLine($@"                    { TypeNameLower }.{ TypeName }{ EndText } = null;");
-                                sb.AppendLine($@"                    Assert.IsNull({ TypeNameLower }.{ TypeName }{ EndText });");
+                                sb.AppendLine($@"            { TypeNameLower } = null;");
+                                sb.AppendLine($@"            { TypeNameLower } = GetFilledRandom{ TypeName }("""");");
+                                sb.AppendLine($@"            { TypeNameLower }.{ TypeName }{ EndText } = null;");
+                                sb.AppendLine($@"            Assert.IsNull({ TypeNameLower }.{ TypeName }{ EndText });");
                                 sb.AppendLine(@"");
-                                sb.AppendLine($@"                    { TypeNameLower } = null;");
-                                sb.AppendLine($@"                    { TypeNameLower } = GetFilledRandom{ TypeName }("""");");
-                                sb.AppendLine($@"                    { TypeNameLower }.{ TypeName }{ EndText } = new { TypeName }{ EndText }();");
-                                sb.AppendLine($@"                    Assert.IsNotNull({ TypeNameLower }.{ TypeName }{ EndText });");
+                                sb.AppendLine($@"            { TypeNameLower } = null;");
+                                sb.AppendLine($@"            { TypeNameLower } = GetFilledRandom{ TypeName }("""");");
+                                sb.AppendLine($@"            { TypeNameLower }.{ TypeName }{ EndText } = new { TypeName }{ EndText }();");
+                                sb.AppendLine($@"            Assert.IsNotNull({ TypeNameLower }.{ TypeName }{ EndText });");
                             }
                             else if (csspProp.PropName.EndsWith("Report"))
                             {
                             }
                             else
                             {
-                                sb.AppendLine($@"                    //CSSPError: Type not implemented [{ csspProp.PropName }]");
+                                sb.AppendLine($@"            //CSSPError: Type not implemented [{ csspProp.PropName }]");
                                 sb.AppendLine(@"");
                             }
                         }

@@ -19,6 +19,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Transactions;
 using Xunit;
+using System.ComponentModel.DataAnnotations;
 
 namespace CSSPServices.Tests
 {
@@ -81,6 +82,322 @@ namespace CSSPServices.Tests
             }
         }
         #endregion Tests Generated CRUD
+
+        #region Tests Generated Properties
+        [Theory]
+        [InlineData("en-CA", DBLocationEnum.Local)]
+        [InlineData("fr-CA", DBLocationEnum.Local)]
+        [InlineData("en-CA", DBLocationEnum.Server)]
+        [InlineData("fr-CA", DBLocationEnum.Server)]
+        public async Task MikeSourceStartEnd_Properties_Test(string culture, DBLocationEnum DBLocation)
+        {
+            // -------------------------------
+            // -------------------------------
+            // Properties testing
+            // -------------------------------
+            // -------------------------------
+
+            Assert.True(await Setup(culture));
+
+            LoggedInService.DBLocation = DBLocation;
+
+            int count = 0;
+            if (count == 1)
+            {
+                // just so we don't get a warning during compile [The variable 'count' is assigned but its value is never used]
+            }
+
+            var actionMikeSourceStartEndList = await MikeSourceStartEndService.GetMikeSourceStartEndList();
+            Assert.Equal(200, ((ObjectResult)actionMikeSourceStartEndList.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionMikeSourceStartEndList.Result).Value);
+            List<MikeSourceStartEnd> mikeSourceStartEndList = (List<MikeSourceStartEnd>)((OkObjectResult)actionMikeSourceStartEndList.Result).Value;
+
+            count = mikeSourceStartEndList.Count();
+
+            MikeSourceStartEnd mikeSourceStartEnd = GetFilledRandomMikeSourceStartEnd("");
+
+
+            // -----------------------------------
+            // [Key]
+            // Is NOT Nullable
+            // mikeSourceStartEnd.MikeSourceStartEndID   (Int32)
+            // -----------------------------------
+
+            mikeSourceStartEnd = null;
+            mikeSourceStartEnd = GetFilledRandomMikeSourceStartEnd("");
+            mikeSourceStartEnd.MikeSourceStartEndID = 0;
+
+            var actionMikeSourceStartEnd = await MikeSourceStartEndService.Put(mikeSourceStartEnd);
+            Assert.IsType<BadRequestObjectResult>(actionMikeSourceStartEnd.Result);
+
+            mikeSourceStartEnd = null;
+            mikeSourceStartEnd = GetFilledRandomMikeSourceStartEnd("");
+            mikeSourceStartEnd.MikeSourceStartEndID = 10000000;
+            actionMikeSourceStartEnd = await MikeSourceStartEndService.Put(mikeSourceStartEnd);
+            Assert.IsType<BadRequestObjectResult>(actionMikeSourceStartEnd.Result);
+
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPExist(ExistTypeName = "MikeSource", ExistPlurial = "s", ExistFieldID = "MikeSourceID", AllowableTVtypeList = )]
+            // mikeSourceStartEnd.MikeSourceID   (Int32)
+            // -----------------------------------
+
+            mikeSourceStartEnd = null;
+            mikeSourceStartEnd = GetFilledRandomMikeSourceStartEnd("");
+            mikeSourceStartEnd.MikeSourceID = 0;
+            actionMikeSourceStartEnd = await MikeSourceStartEndService.Post(mikeSourceStartEnd);
+            Assert.IsType<BadRequestObjectResult>(actionMikeSourceStartEnd.Result);
+
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPAfter(Year = 1980)]
+            // mikeSourceStartEnd.StartDateAndTime_Local   (DateTime)
+            // -----------------------------------
+
+            mikeSourceStartEnd = null;
+            mikeSourceStartEnd = GetFilledRandomMikeSourceStartEnd("");
+            mikeSourceStartEnd.StartDateAndTime_Local = new DateTime();
+            actionMikeSourceStartEnd = await MikeSourceStartEndService.Post(mikeSourceStartEnd);
+            Assert.IsType<BadRequestObjectResult>(actionMikeSourceStartEnd.Result);
+            mikeSourceStartEnd = null;
+            mikeSourceStartEnd = GetFilledRandomMikeSourceStartEnd("");
+            mikeSourceStartEnd.StartDateAndTime_Local = new DateTime(1979, 1, 1);
+            actionMikeSourceStartEnd = await MikeSourceStartEndService.Post(mikeSourceStartEnd);
+            Assert.IsType<BadRequestObjectResult>(actionMikeSourceStartEnd.Result);
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPAfter(Year = 1980)]
+            // [CSSPBigger(OtherField = StartDateAndTime_Local)]
+            // mikeSourceStartEnd.EndDateAndTime_Local   (DateTime)
+            // -----------------------------------
+
+            mikeSourceStartEnd = null;
+            mikeSourceStartEnd = GetFilledRandomMikeSourceStartEnd("");
+            mikeSourceStartEnd.EndDateAndTime_Local = new DateTime();
+            actionMikeSourceStartEnd = await MikeSourceStartEndService.Post(mikeSourceStartEnd);
+            Assert.IsType<BadRequestObjectResult>(actionMikeSourceStartEnd.Result);
+            mikeSourceStartEnd = null;
+            mikeSourceStartEnd = GetFilledRandomMikeSourceStartEnd("");
+            mikeSourceStartEnd.EndDateAndTime_Local = new DateTime(1979, 1, 1);
+            actionMikeSourceStartEnd = await MikeSourceStartEndService.Post(mikeSourceStartEnd);
+            Assert.IsType<BadRequestObjectResult>(actionMikeSourceStartEnd.Result);
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPRange(0, 1000000)]
+            // mikeSourceStartEnd.SourceFlowStart_m3_day   (Double)
+            // -----------------------------------
+
+            //CSSPError: Type not implemented [SourceFlowStart_m3_day]
+
+            //CSSPError: Type not implemented [SourceFlowStart_m3_day]
+
+            mikeSourceStartEnd = null;
+            mikeSourceStartEnd = GetFilledRandomMikeSourceStartEnd("");
+            mikeSourceStartEnd.SourceFlowStart_m3_day = -1.0D;
+            actionMikeSourceStartEnd = await MikeSourceStartEndService.Post(mikeSourceStartEnd);
+            Assert.IsType<BadRequestObjectResult>(actionMikeSourceStartEnd.Result);
+            //Assert.AreEqual(count, mikeSourceStartEndService.GetMikeSourceStartEndList().Count());
+            mikeSourceStartEnd = null;
+            mikeSourceStartEnd = GetFilledRandomMikeSourceStartEnd("");
+            mikeSourceStartEnd.SourceFlowStart_m3_day = 1000001.0D;
+            actionMikeSourceStartEnd = await MikeSourceStartEndService.Post(mikeSourceStartEnd);
+            Assert.IsType<BadRequestObjectResult>(actionMikeSourceStartEnd.Result);
+            //Assert.AreEqual(count, mikeSourceStartEndService.GetMikeSourceStartEndList().Count());
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPRange(0, 1000000)]
+            // mikeSourceStartEnd.SourceFlowEnd_m3_day   (Double)
+            // -----------------------------------
+
+            //CSSPError: Type not implemented [SourceFlowEnd_m3_day]
+
+            //CSSPError: Type not implemented [SourceFlowEnd_m3_day]
+
+            mikeSourceStartEnd = null;
+            mikeSourceStartEnd = GetFilledRandomMikeSourceStartEnd("");
+            mikeSourceStartEnd.SourceFlowEnd_m3_day = -1.0D;
+            actionMikeSourceStartEnd = await MikeSourceStartEndService.Post(mikeSourceStartEnd);
+            Assert.IsType<BadRequestObjectResult>(actionMikeSourceStartEnd.Result);
+            //Assert.AreEqual(count, mikeSourceStartEndService.GetMikeSourceStartEndList().Count());
+            mikeSourceStartEnd = null;
+            mikeSourceStartEnd = GetFilledRandomMikeSourceStartEnd("");
+            mikeSourceStartEnd.SourceFlowEnd_m3_day = 1000001.0D;
+            actionMikeSourceStartEnd = await MikeSourceStartEndService.Post(mikeSourceStartEnd);
+            Assert.IsType<BadRequestObjectResult>(actionMikeSourceStartEnd.Result);
+            //Assert.AreEqual(count, mikeSourceStartEndService.GetMikeSourceStartEndList().Count());
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPRange(0, 10000000)]
+            // mikeSourceStartEnd.SourcePollutionStart_MPN_100ml   (Int32)
+            // -----------------------------------
+
+            mikeSourceStartEnd = null;
+            mikeSourceStartEnd = GetFilledRandomMikeSourceStartEnd("");
+            mikeSourceStartEnd.SourcePollutionStart_MPN_100ml = -1;
+            actionMikeSourceStartEnd = await MikeSourceStartEndService.Post(mikeSourceStartEnd);
+            Assert.IsType<BadRequestObjectResult>(actionMikeSourceStartEnd.Result);
+            //Assert.AreEqual(count, mikeSourceStartEndService.GetMikeSourceStartEndList().Count());
+            mikeSourceStartEnd = null;
+            mikeSourceStartEnd = GetFilledRandomMikeSourceStartEnd("");
+            mikeSourceStartEnd.SourcePollutionStart_MPN_100ml = 10000001;
+            actionMikeSourceStartEnd = await MikeSourceStartEndService.Post(mikeSourceStartEnd);
+            Assert.IsType<BadRequestObjectResult>(actionMikeSourceStartEnd.Result);
+            //Assert.AreEqual(count, mikeSourceStartEndService.GetMikeSourceStartEndList().Count());
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPRange(0, 10000000)]
+            // mikeSourceStartEnd.SourcePollutionEnd_MPN_100ml   (Int32)
+            // -----------------------------------
+
+            mikeSourceStartEnd = null;
+            mikeSourceStartEnd = GetFilledRandomMikeSourceStartEnd("");
+            mikeSourceStartEnd.SourcePollutionEnd_MPN_100ml = -1;
+            actionMikeSourceStartEnd = await MikeSourceStartEndService.Post(mikeSourceStartEnd);
+            Assert.IsType<BadRequestObjectResult>(actionMikeSourceStartEnd.Result);
+            //Assert.AreEqual(count, mikeSourceStartEndService.GetMikeSourceStartEndList().Count());
+            mikeSourceStartEnd = null;
+            mikeSourceStartEnd = GetFilledRandomMikeSourceStartEnd("");
+            mikeSourceStartEnd.SourcePollutionEnd_MPN_100ml = 10000001;
+            actionMikeSourceStartEnd = await MikeSourceStartEndService.Post(mikeSourceStartEnd);
+            Assert.IsType<BadRequestObjectResult>(actionMikeSourceStartEnd.Result);
+            //Assert.AreEqual(count, mikeSourceStartEndService.GetMikeSourceStartEndList().Count());
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPRange(-10, 40)]
+            // mikeSourceStartEnd.SourceTemperatureStart_C   (Double)
+            // -----------------------------------
+
+            //CSSPError: Type not implemented [SourceTemperatureStart_C]
+
+            //CSSPError: Type not implemented [SourceTemperatureStart_C]
+
+            mikeSourceStartEnd = null;
+            mikeSourceStartEnd = GetFilledRandomMikeSourceStartEnd("");
+            mikeSourceStartEnd.SourceTemperatureStart_C = -11.0D;
+            actionMikeSourceStartEnd = await MikeSourceStartEndService.Post(mikeSourceStartEnd);
+            Assert.IsType<BadRequestObjectResult>(actionMikeSourceStartEnd.Result);
+            //Assert.AreEqual(count, mikeSourceStartEndService.GetMikeSourceStartEndList().Count());
+            mikeSourceStartEnd = null;
+            mikeSourceStartEnd = GetFilledRandomMikeSourceStartEnd("");
+            mikeSourceStartEnd.SourceTemperatureStart_C = 41.0D;
+            actionMikeSourceStartEnd = await MikeSourceStartEndService.Post(mikeSourceStartEnd);
+            Assert.IsType<BadRequestObjectResult>(actionMikeSourceStartEnd.Result);
+            //Assert.AreEqual(count, mikeSourceStartEndService.GetMikeSourceStartEndList().Count());
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPRange(-10, 40)]
+            // mikeSourceStartEnd.SourceTemperatureEnd_C   (Double)
+            // -----------------------------------
+
+            //CSSPError: Type not implemented [SourceTemperatureEnd_C]
+
+            //CSSPError: Type not implemented [SourceTemperatureEnd_C]
+
+            mikeSourceStartEnd = null;
+            mikeSourceStartEnd = GetFilledRandomMikeSourceStartEnd("");
+            mikeSourceStartEnd.SourceTemperatureEnd_C = -11.0D;
+            actionMikeSourceStartEnd = await MikeSourceStartEndService.Post(mikeSourceStartEnd);
+            Assert.IsType<BadRequestObjectResult>(actionMikeSourceStartEnd.Result);
+            //Assert.AreEqual(count, mikeSourceStartEndService.GetMikeSourceStartEndList().Count());
+            mikeSourceStartEnd = null;
+            mikeSourceStartEnd = GetFilledRandomMikeSourceStartEnd("");
+            mikeSourceStartEnd.SourceTemperatureEnd_C = 41.0D;
+            actionMikeSourceStartEnd = await MikeSourceStartEndService.Post(mikeSourceStartEnd);
+            Assert.IsType<BadRequestObjectResult>(actionMikeSourceStartEnd.Result);
+            //Assert.AreEqual(count, mikeSourceStartEndService.GetMikeSourceStartEndList().Count());
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPRange(0, 40)]
+            // mikeSourceStartEnd.SourceSalinityStart_PSU   (Double)
+            // -----------------------------------
+
+            //CSSPError: Type not implemented [SourceSalinityStart_PSU]
+
+            //CSSPError: Type not implemented [SourceSalinityStart_PSU]
+
+            mikeSourceStartEnd = null;
+            mikeSourceStartEnd = GetFilledRandomMikeSourceStartEnd("");
+            mikeSourceStartEnd.SourceSalinityStart_PSU = -1.0D;
+            actionMikeSourceStartEnd = await MikeSourceStartEndService.Post(mikeSourceStartEnd);
+            Assert.IsType<BadRequestObjectResult>(actionMikeSourceStartEnd.Result);
+            //Assert.AreEqual(count, mikeSourceStartEndService.GetMikeSourceStartEndList().Count());
+            mikeSourceStartEnd = null;
+            mikeSourceStartEnd = GetFilledRandomMikeSourceStartEnd("");
+            mikeSourceStartEnd.SourceSalinityStart_PSU = 41.0D;
+            actionMikeSourceStartEnd = await MikeSourceStartEndService.Post(mikeSourceStartEnd);
+            Assert.IsType<BadRequestObjectResult>(actionMikeSourceStartEnd.Result);
+            //Assert.AreEqual(count, mikeSourceStartEndService.GetMikeSourceStartEndList().Count());
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPRange(0, 40)]
+            // mikeSourceStartEnd.SourceSalinityEnd_PSU   (Double)
+            // -----------------------------------
+
+            //CSSPError: Type not implemented [SourceSalinityEnd_PSU]
+
+            //CSSPError: Type not implemented [SourceSalinityEnd_PSU]
+
+            mikeSourceStartEnd = null;
+            mikeSourceStartEnd = GetFilledRandomMikeSourceStartEnd("");
+            mikeSourceStartEnd.SourceSalinityEnd_PSU = -1.0D;
+            actionMikeSourceStartEnd = await MikeSourceStartEndService.Post(mikeSourceStartEnd);
+            Assert.IsType<BadRequestObjectResult>(actionMikeSourceStartEnd.Result);
+            //Assert.AreEqual(count, mikeSourceStartEndService.GetMikeSourceStartEndList().Count());
+            mikeSourceStartEnd = null;
+            mikeSourceStartEnd = GetFilledRandomMikeSourceStartEnd("");
+            mikeSourceStartEnd.SourceSalinityEnd_PSU = 41.0D;
+            actionMikeSourceStartEnd = await MikeSourceStartEndService.Post(mikeSourceStartEnd);
+            Assert.IsType<BadRequestObjectResult>(actionMikeSourceStartEnd.Result);
+            //Assert.AreEqual(count, mikeSourceStartEndService.GetMikeSourceStartEndList().Count());
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPAfter(Year = 1980)]
+            // mikeSourceStartEnd.LastUpdateDate_UTC   (DateTime)
+            // -----------------------------------
+
+            mikeSourceStartEnd = null;
+            mikeSourceStartEnd = GetFilledRandomMikeSourceStartEnd("");
+            mikeSourceStartEnd.LastUpdateDate_UTC = new DateTime();
+            actionMikeSourceStartEnd = await MikeSourceStartEndService.Post(mikeSourceStartEnd);
+            Assert.IsType<BadRequestObjectResult>(actionMikeSourceStartEnd.Result);
+            mikeSourceStartEnd = null;
+            mikeSourceStartEnd = GetFilledRandomMikeSourceStartEnd("");
+            mikeSourceStartEnd.LastUpdateDate_UTC = new DateTime(1979, 1, 1);
+            actionMikeSourceStartEnd = await MikeSourceStartEndService.Post(mikeSourceStartEnd);
+            Assert.IsType<BadRequestObjectResult>(actionMikeSourceStartEnd.Result);
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPExist(ExistTypeName = "TVItem", ExistPlurial = "s", ExistFieldID = "TVItemID", AllowableTVtypeList = Contact)]
+            // mikeSourceStartEnd.LastUpdateContactTVItemID   (Int32)
+            // -----------------------------------
+
+            mikeSourceStartEnd = null;
+            mikeSourceStartEnd = GetFilledRandomMikeSourceStartEnd("");
+            mikeSourceStartEnd.LastUpdateContactTVItemID = 0;
+            actionMikeSourceStartEnd = await MikeSourceStartEndService.Post(mikeSourceStartEnd);
+            Assert.IsType<BadRequestObjectResult>(actionMikeSourceStartEnd.Result);
+
+            mikeSourceStartEnd = null;
+            mikeSourceStartEnd = GetFilledRandomMikeSourceStartEnd("");
+            mikeSourceStartEnd.LastUpdateContactTVItemID = 1;
+            actionMikeSourceStartEnd = await MikeSourceStartEndService.Post(mikeSourceStartEnd);
+            Assert.IsType<BadRequestObjectResult>(actionMikeSourceStartEnd.Result);
+
+        }
+        #endregion Tests Generated Properties
 
         #region Functions private
         private async Task DoCRUDTest()
@@ -242,6 +559,9 @@ namespace CSSPServices.Tests
             }
 
             return mikeSourceStartEnd;
+        }
+        private void CheckMikeSourceStartEndFields(List<MikeSourceStartEnd> mikeSourceStartEndList)
+        {
         }
         #endregion Functions private
     }

@@ -19,6 +19,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Transactions;
 using Xunit;
+using System.ComponentModel.DataAnnotations;
 
 namespace CSSPServices.Tests
 {
@@ -81,6 +82,147 @@ namespace CSSPServices.Tests
             }
         }
         #endregion Tests Generated CRUD
+
+        #region Tests Generated Properties
+        [Theory]
+        [InlineData("en-CA", DBLocationEnum.Local)]
+        [InlineData("fr-CA", DBLocationEnum.Local)]
+        [InlineData("en-CA", DBLocationEnum.Server)]
+        [InlineData("fr-CA", DBLocationEnum.Server)]
+        public async Task HelpDoc_Properties_Test(string culture, DBLocationEnum DBLocation)
+        {
+            // -------------------------------
+            // -------------------------------
+            // Properties testing
+            // -------------------------------
+            // -------------------------------
+
+            Assert.True(await Setup(culture));
+
+            LoggedInService.DBLocation = DBLocation;
+
+            int count = 0;
+            if (count == 1)
+            {
+                // just so we don't get a warning during compile [The variable 'count' is assigned but its value is never used]
+            }
+
+            var actionHelpDocList = await HelpDocService.GetHelpDocList();
+            Assert.Equal(200, ((ObjectResult)actionHelpDocList.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionHelpDocList.Result).Value);
+            List<HelpDoc> helpDocList = (List<HelpDoc>)((OkObjectResult)actionHelpDocList.Result).Value;
+
+            count = helpDocList.Count();
+
+            HelpDoc helpDoc = GetFilledRandomHelpDoc("");
+
+
+            // -----------------------------------
+            // [Key]
+            // Is NOT Nullable
+            // helpDoc.HelpDocID   (Int32)
+            // -----------------------------------
+
+            helpDoc = null;
+            helpDoc = GetFilledRandomHelpDoc("");
+            helpDoc.HelpDocID = 0;
+
+            var actionHelpDoc = await HelpDocService.Put(helpDoc);
+            Assert.IsType<BadRequestObjectResult>(actionHelpDoc.Result);
+
+            helpDoc = null;
+            helpDoc = GetFilledRandomHelpDoc("");
+            helpDoc.HelpDocID = 10000000;
+            actionHelpDoc = await HelpDocService.Put(helpDoc);
+            Assert.IsType<BadRequestObjectResult>(actionHelpDoc.Result);
+
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPMaxLength(100)]
+            // helpDoc.DocKey   (String)
+            // -----------------------------------
+
+            helpDoc = null;
+            helpDoc = GetFilledRandomHelpDoc("DocKey");
+            actionHelpDoc = await HelpDocService.Post(helpDoc);
+            Assert.IsType<BadRequestObjectResult>(actionHelpDoc.Result);
+
+            helpDoc = null;
+            helpDoc = GetFilledRandomHelpDoc("");
+            helpDoc.DocKey = GetRandomString("", 101);
+            actionHelpDoc = await HelpDocService.Post(helpDoc);
+            Assert.IsType<BadRequestObjectResult>(actionHelpDoc.Result);
+            //Assert.AreEqual(count, helpDocService.GetHelpDocList().Count());
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPEnumType]
+            // helpDoc.Language   (LanguageEnum)
+            // -----------------------------------
+
+            helpDoc = null;
+            helpDoc = GetFilledRandomHelpDoc("");
+            helpDoc.Language = (LanguageEnum)1000000;
+            actionHelpDoc = await HelpDocService.Post(helpDoc);
+            Assert.IsType<BadRequestObjectResult>(actionHelpDoc.Result);
+
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPMaxLength(100000)]
+            // helpDoc.DocHTMLText   (String)
+            // -----------------------------------
+
+            helpDoc = null;
+            helpDoc = GetFilledRandomHelpDoc("DocHTMLText");
+            actionHelpDoc = await HelpDocService.Post(helpDoc);
+            Assert.IsType<BadRequestObjectResult>(actionHelpDoc.Result);
+
+            helpDoc = null;
+            helpDoc = GetFilledRandomHelpDoc("");
+            helpDoc.DocHTMLText = GetRandomString("", 100001);
+            actionHelpDoc = await HelpDocService.Post(helpDoc);
+            Assert.IsType<BadRequestObjectResult>(actionHelpDoc.Result);
+            //Assert.AreEqual(count, helpDocService.GetHelpDocList().Count());
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPAfter(Year = 1980)]
+            // helpDoc.LastUpdateDate_UTC   (DateTime)
+            // -----------------------------------
+
+            helpDoc = null;
+            helpDoc = GetFilledRandomHelpDoc("");
+            helpDoc.LastUpdateDate_UTC = new DateTime();
+            actionHelpDoc = await HelpDocService.Post(helpDoc);
+            Assert.IsType<BadRequestObjectResult>(actionHelpDoc.Result);
+            helpDoc = null;
+            helpDoc = GetFilledRandomHelpDoc("");
+            helpDoc.LastUpdateDate_UTC = new DateTime(1979, 1, 1);
+            actionHelpDoc = await HelpDocService.Post(helpDoc);
+            Assert.IsType<BadRequestObjectResult>(actionHelpDoc.Result);
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPExist(ExistTypeName = "TVItem", ExistPlurial = "s", ExistFieldID = "TVItemID", AllowableTVtypeList = Contact)]
+            // helpDoc.LastUpdateContactTVItemID   (Int32)
+            // -----------------------------------
+
+            helpDoc = null;
+            helpDoc = GetFilledRandomHelpDoc("");
+            helpDoc.LastUpdateContactTVItemID = 0;
+            actionHelpDoc = await HelpDocService.Post(helpDoc);
+            Assert.IsType<BadRequestObjectResult>(actionHelpDoc.Result);
+
+            helpDoc = null;
+            helpDoc = GetFilledRandomHelpDoc("");
+            helpDoc.LastUpdateContactTVItemID = 1;
+            actionHelpDoc = await HelpDocService.Post(helpDoc);
+            Assert.IsType<BadRequestObjectResult>(actionHelpDoc.Result);
+
+        }
+        #endregion Tests Generated Properties
 
         #region Functions private
         private async Task DoCRUDTest()
@@ -225,6 +367,11 @@ namespace CSSPServices.Tests
             }
 
             return helpDoc;
+        }
+        private void CheckHelpDocFields(List<HelpDoc> helpDocList)
+        {
+            Assert.False(string.IsNullOrWhiteSpace(helpDocList[0].DocKey));
+            Assert.False(string.IsNullOrWhiteSpace(helpDocList[0].DocHTMLText));
         }
         #endregion Functions private
     }

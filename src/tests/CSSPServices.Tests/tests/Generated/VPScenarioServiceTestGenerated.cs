@@ -19,6 +19,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Transactions;
 using Xunit;
+using System.ComponentModel.DataAnnotations;
 
 namespace CSSPServices.Tests
 {
@@ -81,6 +82,479 @@ namespace CSSPServices.Tests
             }
         }
         #endregion Tests Generated CRUD
+
+        #region Tests Generated Properties
+        [Theory]
+        [InlineData("en-CA", DBLocationEnum.Local)]
+        [InlineData("fr-CA", DBLocationEnum.Local)]
+        [InlineData("en-CA", DBLocationEnum.Server)]
+        [InlineData("fr-CA", DBLocationEnum.Server)]
+        public async Task VPScenario_Properties_Test(string culture, DBLocationEnum DBLocation)
+        {
+            // -------------------------------
+            // -------------------------------
+            // Properties testing
+            // -------------------------------
+            // -------------------------------
+
+            Assert.True(await Setup(culture));
+
+            LoggedInService.DBLocation = DBLocation;
+
+            int count = 0;
+            if (count == 1)
+            {
+                // just so we don't get a warning during compile [The variable 'count' is assigned but its value is never used]
+            }
+
+            var actionVPScenarioList = await VPScenarioService.GetVPScenarioList();
+            Assert.Equal(200, ((ObjectResult)actionVPScenarioList.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionVPScenarioList.Result).Value);
+            List<VPScenario> vpScenarioList = (List<VPScenario>)((OkObjectResult)actionVPScenarioList.Result).Value;
+
+            count = vpScenarioList.Count();
+
+            VPScenario vpScenario = GetFilledRandomVPScenario("");
+
+
+            // -----------------------------------
+            // [Key]
+            // Is NOT Nullable
+            // vpScenario.VPScenarioID   (Int32)
+            // -----------------------------------
+
+            vpScenario = null;
+            vpScenario = GetFilledRandomVPScenario("");
+            vpScenario.VPScenarioID = 0;
+
+            var actionVPScenario = await VPScenarioService.Put(vpScenario);
+            Assert.IsType<BadRequestObjectResult>(actionVPScenario.Result);
+
+            vpScenario = null;
+            vpScenario = GetFilledRandomVPScenario("");
+            vpScenario.VPScenarioID = 10000000;
+            actionVPScenario = await VPScenarioService.Put(vpScenario);
+            Assert.IsType<BadRequestObjectResult>(actionVPScenario.Result);
+
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPExist(ExistTypeName = "TVItem", ExistPlurial = "s", ExistFieldID = "TVItemID", AllowableTVtypeList = Infrastructure)]
+            // vpScenario.InfrastructureTVItemID   (Int32)
+            // -----------------------------------
+
+            vpScenario = null;
+            vpScenario = GetFilledRandomVPScenario("");
+            vpScenario.InfrastructureTVItemID = 0;
+            actionVPScenario = await VPScenarioService.Post(vpScenario);
+            Assert.IsType<BadRequestObjectResult>(actionVPScenario.Result);
+
+            vpScenario = null;
+            vpScenario = GetFilledRandomVPScenario("");
+            vpScenario.InfrastructureTVItemID = 1;
+            actionVPScenario = await VPScenarioService.Post(vpScenario);
+            Assert.IsType<BadRequestObjectResult>(actionVPScenario.Result);
+
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPEnumType]
+            // vpScenario.VPScenarioStatus   (ScenarioStatusEnum)
+            // -----------------------------------
+
+            vpScenario = null;
+            vpScenario = GetFilledRandomVPScenario("");
+            vpScenario.VPScenarioStatus = (ScenarioStatusEnum)1000000;
+            actionVPScenario = await VPScenarioService.Post(vpScenario);
+            Assert.IsType<BadRequestObjectResult>(actionVPScenario.Result);
+
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // vpScenario.UseAsBestEstimate   (Boolean)
+            // -----------------------------------
+
+
+            // -----------------------------------
+            // Is Nullable
+            // [CSSPRange(0, 1000)]
+            // vpScenario.EffluentFlow_m3_s   (Double)
+            // -----------------------------------
+
+            //CSSPError: Type not implemented [EffluentFlow_m3_s]
+
+            //CSSPError: Type not implemented [EffluentFlow_m3_s]
+
+            vpScenario = null;
+            vpScenario = GetFilledRandomVPScenario("");
+            vpScenario.EffluentFlow_m3_s = -1.0D;
+            actionVPScenario = await VPScenarioService.Post(vpScenario);
+            Assert.IsType<BadRequestObjectResult>(actionVPScenario.Result);
+            //Assert.AreEqual(count, vpScenarioService.GetVPScenarioList().Count());
+            vpScenario = null;
+            vpScenario = GetFilledRandomVPScenario("");
+            vpScenario.EffluentFlow_m3_s = 1001.0D;
+            actionVPScenario = await VPScenarioService.Post(vpScenario);
+            Assert.IsType<BadRequestObjectResult>(actionVPScenario.Result);
+            //Assert.AreEqual(count, vpScenarioService.GetVPScenarioList().Count());
+
+            // -----------------------------------
+            // Is Nullable
+            // [CSSPRange(0, 10000000)]
+            // vpScenario.EffluentConcentration_MPN_100ml   (Int32)
+            // -----------------------------------
+
+            vpScenario = null;
+            vpScenario = GetFilledRandomVPScenario("");
+            vpScenario.EffluentConcentration_MPN_100ml = -1;
+            actionVPScenario = await VPScenarioService.Post(vpScenario);
+            Assert.IsType<BadRequestObjectResult>(actionVPScenario.Result);
+            //Assert.AreEqual(count, vpScenarioService.GetVPScenarioList().Count());
+            vpScenario = null;
+            vpScenario = GetFilledRandomVPScenario("");
+            vpScenario.EffluentConcentration_MPN_100ml = 10000001;
+            actionVPScenario = await VPScenarioService.Post(vpScenario);
+            Assert.IsType<BadRequestObjectResult>(actionVPScenario.Result);
+            //Assert.AreEqual(count, vpScenarioService.GetVPScenarioList().Count());
+
+            // -----------------------------------
+            // Is Nullable
+            // [CSSPRange(0, 10000)]
+            // vpScenario.FroudeNumber   (Double)
+            // -----------------------------------
+
+            //CSSPError: Type not implemented [FroudeNumber]
+
+            //CSSPError: Type not implemented [FroudeNumber]
+
+            vpScenario = null;
+            vpScenario = GetFilledRandomVPScenario("");
+            vpScenario.FroudeNumber = -1.0D;
+            actionVPScenario = await VPScenarioService.Post(vpScenario);
+            Assert.IsType<BadRequestObjectResult>(actionVPScenario.Result);
+            //Assert.AreEqual(count, vpScenarioService.GetVPScenarioList().Count());
+            vpScenario = null;
+            vpScenario = GetFilledRandomVPScenario("");
+            vpScenario.FroudeNumber = 10001.0D;
+            actionVPScenario = await VPScenarioService.Post(vpScenario);
+            Assert.IsType<BadRequestObjectResult>(actionVPScenario.Result);
+            //Assert.AreEqual(count, vpScenarioService.GetVPScenarioList().Count());
+
+            // -----------------------------------
+            // Is Nullable
+            // [CSSPRange(0, 10)]
+            // vpScenario.PortDiameter_m   (Double)
+            // -----------------------------------
+
+            //CSSPError: Type not implemented [PortDiameter_m]
+
+            //CSSPError: Type not implemented [PortDiameter_m]
+
+            vpScenario = null;
+            vpScenario = GetFilledRandomVPScenario("");
+            vpScenario.PortDiameter_m = -1.0D;
+            actionVPScenario = await VPScenarioService.Post(vpScenario);
+            Assert.IsType<BadRequestObjectResult>(actionVPScenario.Result);
+            //Assert.AreEqual(count, vpScenarioService.GetVPScenarioList().Count());
+            vpScenario = null;
+            vpScenario = GetFilledRandomVPScenario("");
+            vpScenario.PortDiameter_m = 11.0D;
+            actionVPScenario = await VPScenarioService.Post(vpScenario);
+            Assert.IsType<BadRequestObjectResult>(actionVPScenario.Result);
+            //Assert.AreEqual(count, vpScenarioService.GetVPScenarioList().Count());
+
+            // -----------------------------------
+            // Is Nullable
+            // [CSSPRange(0, 1000)]
+            // vpScenario.PortDepth_m   (Double)
+            // -----------------------------------
+
+            //CSSPError: Type not implemented [PortDepth_m]
+
+            //CSSPError: Type not implemented [PortDepth_m]
+
+            vpScenario = null;
+            vpScenario = GetFilledRandomVPScenario("");
+            vpScenario.PortDepth_m = -1.0D;
+            actionVPScenario = await VPScenarioService.Post(vpScenario);
+            Assert.IsType<BadRequestObjectResult>(actionVPScenario.Result);
+            //Assert.AreEqual(count, vpScenarioService.GetVPScenarioList().Count());
+            vpScenario = null;
+            vpScenario = GetFilledRandomVPScenario("");
+            vpScenario.PortDepth_m = 1001.0D;
+            actionVPScenario = await VPScenarioService.Post(vpScenario);
+            Assert.IsType<BadRequestObjectResult>(actionVPScenario.Result);
+            //Assert.AreEqual(count, vpScenarioService.GetVPScenarioList().Count());
+
+            // -----------------------------------
+            // Is Nullable
+            // [CSSPRange(0, 1000)]
+            // vpScenario.PortElevation_m   (Double)
+            // -----------------------------------
+
+            //CSSPError: Type not implemented [PortElevation_m]
+
+            //CSSPError: Type not implemented [PortElevation_m]
+
+            vpScenario = null;
+            vpScenario = GetFilledRandomVPScenario("");
+            vpScenario.PortElevation_m = -1.0D;
+            actionVPScenario = await VPScenarioService.Post(vpScenario);
+            Assert.IsType<BadRequestObjectResult>(actionVPScenario.Result);
+            //Assert.AreEqual(count, vpScenarioService.GetVPScenarioList().Count());
+            vpScenario = null;
+            vpScenario = GetFilledRandomVPScenario("");
+            vpScenario.PortElevation_m = 1001.0D;
+            actionVPScenario = await VPScenarioService.Post(vpScenario);
+            Assert.IsType<BadRequestObjectResult>(actionVPScenario.Result);
+            //Assert.AreEqual(count, vpScenarioService.GetVPScenarioList().Count());
+
+            // -----------------------------------
+            // Is Nullable
+            // [CSSPRange(-90, 90)]
+            // vpScenario.VerticalAngle_deg   (Double)
+            // -----------------------------------
+
+            //CSSPError: Type not implemented [VerticalAngle_deg]
+
+            //CSSPError: Type not implemented [VerticalAngle_deg]
+
+            vpScenario = null;
+            vpScenario = GetFilledRandomVPScenario("");
+            vpScenario.VerticalAngle_deg = -91.0D;
+            actionVPScenario = await VPScenarioService.Post(vpScenario);
+            Assert.IsType<BadRequestObjectResult>(actionVPScenario.Result);
+            //Assert.AreEqual(count, vpScenarioService.GetVPScenarioList().Count());
+            vpScenario = null;
+            vpScenario = GetFilledRandomVPScenario("");
+            vpScenario.VerticalAngle_deg = 91.0D;
+            actionVPScenario = await VPScenarioService.Post(vpScenario);
+            Assert.IsType<BadRequestObjectResult>(actionVPScenario.Result);
+            //Assert.AreEqual(count, vpScenarioService.GetVPScenarioList().Count());
+
+            // -----------------------------------
+            // Is Nullable
+            // [CSSPRange(-180, 180)]
+            // vpScenario.HorizontalAngle_deg   (Double)
+            // -----------------------------------
+
+            //CSSPError: Type not implemented [HorizontalAngle_deg]
+
+            //CSSPError: Type not implemented [HorizontalAngle_deg]
+
+            vpScenario = null;
+            vpScenario = GetFilledRandomVPScenario("");
+            vpScenario.HorizontalAngle_deg = -181.0D;
+            actionVPScenario = await VPScenarioService.Post(vpScenario);
+            Assert.IsType<BadRequestObjectResult>(actionVPScenario.Result);
+            //Assert.AreEqual(count, vpScenarioService.GetVPScenarioList().Count());
+            vpScenario = null;
+            vpScenario = GetFilledRandomVPScenario("");
+            vpScenario.HorizontalAngle_deg = 181.0D;
+            actionVPScenario = await VPScenarioService.Post(vpScenario);
+            Assert.IsType<BadRequestObjectResult>(actionVPScenario.Result);
+            //Assert.AreEqual(count, vpScenarioService.GetVPScenarioList().Count());
+
+            // -----------------------------------
+            // Is Nullable
+            // [CSSPRange(1, 100)]
+            // vpScenario.NumberOfPorts   (Int32)
+            // -----------------------------------
+
+            vpScenario = null;
+            vpScenario = GetFilledRandomVPScenario("");
+            vpScenario.NumberOfPorts = 0;
+            actionVPScenario = await VPScenarioService.Post(vpScenario);
+            Assert.IsType<BadRequestObjectResult>(actionVPScenario.Result);
+            //Assert.AreEqual(count, vpScenarioService.GetVPScenarioList().Count());
+            vpScenario = null;
+            vpScenario = GetFilledRandomVPScenario("");
+            vpScenario.NumberOfPorts = 101;
+            actionVPScenario = await VPScenarioService.Post(vpScenario);
+            Assert.IsType<BadRequestObjectResult>(actionVPScenario.Result);
+            //Assert.AreEqual(count, vpScenarioService.GetVPScenarioList().Count());
+
+            // -----------------------------------
+            // Is Nullable
+            // [CSSPRange(0, 1000)]
+            // vpScenario.PortSpacing_m   (Double)
+            // -----------------------------------
+
+            //CSSPError: Type not implemented [PortSpacing_m]
+
+            //CSSPError: Type not implemented [PortSpacing_m]
+
+            vpScenario = null;
+            vpScenario = GetFilledRandomVPScenario("");
+            vpScenario.PortSpacing_m = -1.0D;
+            actionVPScenario = await VPScenarioService.Post(vpScenario);
+            Assert.IsType<BadRequestObjectResult>(actionVPScenario.Result);
+            //Assert.AreEqual(count, vpScenarioService.GetVPScenarioList().Count());
+            vpScenario = null;
+            vpScenario = GetFilledRandomVPScenario("");
+            vpScenario.PortSpacing_m = 1001.0D;
+            actionVPScenario = await VPScenarioService.Post(vpScenario);
+            Assert.IsType<BadRequestObjectResult>(actionVPScenario.Result);
+            //Assert.AreEqual(count, vpScenarioService.GetVPScenarioList().Count());
+
+            // -----------------------------------
+            // Is Nullable
+            // [CSSPRange(0, 100)]
+            // vpScenario.AcuteMixZone_m   (Double)
+            // -----------------------------------
+
+            //CSSPError: Type not implemented [AcuteMixZone_m]
+
+            //CSSPError: Type not implemented [AcuteMixZone_m]
+
+            vpScenario = null;
+            vpScenario = GetFilledRandomVPScenario("");
+            vpScenario.AcuteMixZone_m = -1.0D;
+            actionVPScenario = await VPScenarioService.Post(vpScenario);
+            Assert.IsType<BadRequestObjectResult>(actionVPScenario.Result);
+            //Assert.AreEqual(count, vpScenarioService.GetVPScenarioList().Count());
+            vpScenario = null;
+            vpScenario = GetFilledRandomVPScenario("");
+            vpScenario.AcuteMixZone_m = 101.0D;
+            actionVPScenario = await VPScenarioService.Post(vpScenario);
+            Assert.IsType<BadRequestObjectResult>(actionVPScenario.Result);
+            //Assert.AreEqual(count, vpScenarioService.GetVPScenarioList().Count());
+
+            // -----------------------------------
+            // Is Nullable
+            // [CSSPRange(0, 40000)]
+            // vpScenario.ChronicMixZone_m   (Double)
+            // -----------------------------------
+
+            //CSSPError: Type not implemented [ChronicMixZone_m]
+
+            //CSSPError: Type not implemented [ChronicMixZone_m]
+
+            vpScenario = null;
+            vpScenario = GetFilledRandomVPScenario("");
+            vpScenario.ChronicMixZone_m = -1.0D;
+            actionVPScenario = await VPScenarioService.Post(vpScenario);
+            Assert.IsType<BadRequestObjectResult>(actionVPScenario.Result);
+            //Assert.AreEqual(count, vpScenarioService.GetVPScenarioList().Count());
+            vpScenario = null;
+            vpScenario = GetFilledRandomVPScenario("");
+            vpScenario.ChronicMixZone_m = 40001.0D;
+            actionVPScenario = await VPScenarioService.Post(vpScenario);
+            Assert.IsType<BadRequestObjectResult>(actionVPScenario.Result);
+            //Assert.AreEqual(count, vpScenarioService.GetVPScenarioList().Count());
+
+            // -----------------------------------
+            // Is Nullable
+            // [CSSPRange(0, 40)]
+            // vpScenario.EffluentSalinity_PSU   (Double)
+            // -----------------------------------
+
+            //CSSPError: Type not implemented [EffluentSalinity_PSU]
+
+            //CSSPError: Type not implemented [EffluentSalinity_PSU]
+
+            vpScenario = null;
+            vpScenario = GetFilledRandomVPScenario("");
+            vpScenario.EffluentSalinity_PSU = -1.0D;
+            actionVPScenario = await VPScenarioService.Post(vpScenario);
+            Assert.IsType<BadRequestObjectResult>(actionVPScenario.Result);
+            //Assert.AreEqual(count, vpScenarioService.GetVPScenarioList().Count());
+            vpScenario = null;
+            vpScenario = GetFilledRandomVPScenario("");
+            vpScenario.EffluentSalinity_PSU = 41.0D;
+            actionVPScenario = await VPScenarioService.Post(vpScenario);
+            Assert.IsType<BadRequestObjectResult>(actionVPScenario.Result);
+            //Assert.AreEqual(count, vpScenarioService.GetVPScenarioList().Count());
+
+            // -----------------------------------
+            // Is Nullable
+            // [CSSPRange(-10, 40)]
+            // vpScenario.EffluentTemperature_C   (Double)
+            // -----------------------------------
+
+            //CSSPError: Type not implemented [EffluentTemperature_C]
+
+            //CSSPError: Type not implemented [EffluentTemperature_C]
+
+            vpScenario = null;
+            vpScenario = GetFilledRandomVPScenario("");
+            vpScenario.EffluentTemperature_C = -11.0D;
+            actionVPScenario = await VPScenarioService.Post(vpScenario);
+            Assert.IsType<BadRequestObjectResult>(actionVPScenario.Result);
+            //Assert.AreEqual(count, vpScenarioService.GetVPScenarioList().Count());
+            vpScenario = null;
+            vpScenario = GetFilledRandomVPScenario("");
+            vpScenario.EffluentTemperature_C = 41.0D;
+            actionVPScenario = await VPScenarioService.Post(vpScenario);
+            Assert.IsType<BadRequestObjectResult>(actionVPScenario.Result);
+            //Assert.AreEqual(count, vpScenarioService.GetVPScenarioList().Count());
+
+            // -----------------------------------
+            // Is Nullable
+            // [CSSPRange(0, 100)]
+            // vpScenario.EffluentVelocity_m_s   (Double)
+            // -----------------------------------
+
+            //CSSPError: Type not implemented [EffluentVelocity_m_s]
+
+            //CSSPError: Type not implemented [EffluentVelocity_m_s]
+
+            vpScenario = null;
+            vpScenario = GetFilledRandomVPScenario("");
+            vpScenario.EffluentVelocity_m_s = -1.0D;
+            actionVPScenario = await VPScenarioService.Post(vpScenario);
+            Assert.IsType<BadRequestObjectResult>(actionVPScenario.Result);
+            //Assert.AreEqual(count, vpScenarioService.GetVPScenarioList().Count());
+            vpScenario = null;
+            vpScenario = GetFilledRandomVPScenario("");
+            vpScenario.EffluentVelocity_m_s = 101.0D;
+            actionVPScenario = await VPScenarioService.Post(vpScenario);
+            Assert.IsType<BadRequestObjectResult>(actionVPScenario.Result);
+            //Assert.AreEqual(count, vpScenarioService.GetVPScenarioList().Count());
+
+            // -----------------------------------
+            // Is Nullable
+            // vpScenario.RawResults   (String)
+            // -----------------------------------
+
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPAfter(Year = 1980)]
+            // vpScenario.LastUpdateDate_UTC   (DateTime)
+            // -----------------------------------
+
+            vpScenario = null;
+            vpScenario = GetFilledRandomVPScenario("");
+            vpScenario.LastUpdateDate_UTC = new DateTime();
+            actionVPScenario = await VPScenarioService.Post(vpScenario);
+            Assert.IsType<BadRequestObjectResult>(actionVPScenario.Result);
+            vpScenario = null;
+            vpScenario = GetFilledRandomVPScenario("");
+            vpScenario.LastUpdateDate_UTC = new DateTime(1979, 1, 1);
+            actionVPScenario = await VPScenarioService.Post(vpScenario);
+            Assert.IsType<BadRequestObjectResult>(actionVPScenario.Result);
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPExist(ExistTypeName = "TVItem", ExistPlurial = "s", ExistFieldID = "TVItemID", AllowableTVtypeList = Contact)]
+            // vpScenario.LastUpdateContactTVItemID   (Int32)
+            // -----------------------------------
+
+            vpScenario = null;
+            vpScenario = GetFilledRandomVPScenario("");
+            vpScenario.LastUpdateContactTVItemID = 0;
+            actionVPScenario = await VPScenarioService.Post(vpScenario);
+            Assert.IsType<BadRequestObjectResult>(actionVPScenario.Result);
+
+            vpScenario = null;
+            vpScenario = GetFilledRandomVPScenario("");
+            vpScenario.LastUpdateContactTVItemID = 1;
+            actionVPScenario = await VPScenarioService.Post(vpScenario);
+            Assert.IsType<BadRequestObjectResult>(actionVPScenario.Result);
+
+        }
+        #endregion Tests Generated Properties
 
         #region Functions private
         private async Task DoCRUDTest()
@@ -250,6 +724,73 @@ namespace CSSPServices.Tests
             }
 
             return vpScenario;
+        }
+        private void CheckVPScenarioFields(List<VPScenario> vpScenarioList)
+        {
+            if (vpScenarioList[0].EffluentFlow_m3_s != null)
+            {
+                Assert.NotNull(vpScenarioList[0].EffluentFlow_m3_s);
+            }
+            if (vpScenarioList[0].EffluentConcentration_MPN_100ml != null)
+            {
+                Assert.NotNull(vpScenarioList[0].EffluentConcentration_MPN_100ml);
+            }
+            if (vpScenarioList[0].FroudeNumber != null)
+            {
+                Assert.NotNull(vpScenarioList[0].FroudeNumber);
+            }
+            if (vpScenarioList[0].PortDiameter_m != null)
+            {
+                Assert.NotNull(vpScenarioList[0].PortDiameter_m);
+            }
+            if (vpScenarioList[0].PortDepth_m != null)
+            {
+                Assert.NotNull(vpScenarioList[0].PortDepth_m);
+            }
+            if (vpScenarioList[0].PortElevation_m != null)
+            {
+                Assert.NotNull(vpScenarioList[0].PortElevation_m);
+            }
+            if (vpScenarioList[0].VerticalAngle_deg != null)
+            {
+                Assert.NotNull(vpScenarioList[0].VerticalAngle_deg);
+            }
+            if (vpScenarioList[0].HorizontalAngle_deg != null)
+            {
+                Assert.NotNull(vpScenarioList[0].HorizontalAngle_deg);
+            }
+            if (vpScenarioList[0].NumberOfPorts != null)
+            {
+                Assert.NotNull(vpScenarioList[0].NumberOfPorts);
+            }
+            if (vpScenarioList[0].PortSpacing_m != null)
+            {
+                Assert.NotNull(vpScenarioList[0].PortSpacing_m);
+            }
+            if (vpScenarioList[0].AcuteMixZone_m != null)
+            {
+                Assert.NotNull(vpScenarioList[0].AcuteMixZone_m);
+            }
+            if (vpScenarioList[0].ChronicMixZone_m != null)
+            {
+                Assert.NotNull(vpScenarioList[0].ChronicMixZone_m);
+            }
+            if (vpScenarioList[0].EffluentSalinity_PSU != null)
+            {
+                Assert.NotNull(vpScenarioList[0].EffluentSalinity_PSU);
+            }
+            if (vpScenarioList[0].EffluentTemperature_C != null)
+            {
+                Assert.NotNull(vpScenarioList[0].EffluentTemperature_C);
+            }
+            if (vpScenarioList[0].EffluentVelocity_m_s != null)
+            {
+                Assert.NotNull(vpScenarioList[0].EffluentVelocity_m_s);
+            }
+            if (!string.IsNullOrWhiteSpace(vpScenarioList[0].RawResults))
+            {
+                Assert.False(string.IsNullOrWhiteSpace(vpScenarioList[0].RawResults));
+            }
         }
         #endregion Functions private
     }

@@ -19,6 +19,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Transactions;
 using Xunit;
+using System.ComponentModel.DataAnnotations;
 
 namespace CSSPServices.Tests
 {
@@ -81,6 +82,273 @@ namespace CSSPServices.Tests
             }
         }
         #endregion Tests Generated CRUD
+
+        #region Tests Generated Properties
+        [Theory]
+        [InlineData("en-CA", DBLocationEnum.Local)]
+        [InlineData("fr-CA", DBLocationEnum.Local)]
+        [InlineData("en-CA", DBLocationEnum.Server)]
+        [InlineData("fr-CA", DBLocationEnum.Server)]
+        public async Task AppTask_Properties_Test(string culture, DBLocationEnum DBLocation)
+        {
+            // -------------------------------
+            // -------------------------------
+            // Properties testing
+            // -------------------------------
+            // -------------------------------
+
+            Assert.True(await Setup(culture));
+
+            LoggedInService.DBLocation = DBLocation;
+
+            int count = 0;
+            if (count == 1)
+            {
+                // just so we don't get a warning during compile [The variable 'count' is assigned but its value is never used]
+            }
+
+            var actionAppTaskList = await AppTaskService.GetAppTaskList();
+            Assert.Equal(200, ((ObjectResult)actionAppTaskList.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionAppTaskList.Result).Value);
+            List<AppTask> appTaskList = (List<AppTask>)((OkObjectResult)actionAppTaskList.Result).Value;
+
+            count = appTaskList.Count();
+
+            AppTask appTask = GetFilledRandomAppTask("");
+
+
+            // -----------------------------------
+            // [Key]
+            // Is NOT Nullable
+            // appTask.AppTaskID   (Int32)
+            // -----------------------------------
+
+            appTask = null;
+            appTask = GetFilledRandomAppTask("");
+            appTask.AppTaskID = 0;
+
+            var actionAppTask = await AppTaskService.Put(appTask);
+            Assert.IsType<BadRequestObjectResult>(actionAppTask.Result);
+
+            appTask = null;
+            appTask = GetFilledRandomAppTask("");
+            appTask.AppTaskID = 10000000;
+            actionAppTask = await AppTaskService.Put(appTask);
+            Assert.IsType<BadRequestObjectResult>(actionAppTask.Result);
+
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPExist(ExistTypeName = "TVItem", ExistPlurial = "s", ExistFieldID = "TVItemID", AllowableTVtypeList = Root,Address,Area,ClimateSite,Country,File,HydrometricSite,MikeBoundaryConditionWebTide,MikeBoundaryConditionMesh,MikeSource,Municipality,MWQMSite,PolSourceSite,Province,Sector,Subsector,TideSite,WasteWaterTreatmentPlant,LiftStation,Spill,Outfall,OtherInfrastructure,SeeOtherMunicipality,LineOverflow)]
+            // appTask.TVItemID   (Int32)
+            // -----------------------------------
+
+            appTask = null;
+            appTask = GetFilledRandomAppTask("");
+            appTask.TVItemID = 0;
+            actionAppTask = await AppTaskService.Post(appTask);
+            Assert.IsType<BadRequestObjectResult>(actionAppTask.Result);
+
+            appTask = null;
+            appTask = GetFilledRandomAppTask("");
+            appTask.TVItemID = 2;
+            actionAppTask = await AppTaskService.Post(appTask);
+            Assert.IsType<BadRequestObjectResult>(actionAppTask.Result);
+
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPExist(ExistTypeName = "TVItem", ExistPlurial = "s", ExistFieldID = "TVItemID", AllowableTVtypeList = Root,Address,Area,ClimateSite,Country,File,HydrometricSite,MikeBoundaryConditionWebTide,MikeBoundaryConditionMesh,MikeSource,Municipality,MWQMSite,PolSourceSite,Province,Sector,Subsector,TideSite,WasteWaterTreatmentPlant,LiftStation,Spill,Outfall,OtherInfrastructure,SeeOtherMunicipality,LineOverflow)]
+            // appTask.TVItemID2   (Int32)
+            // -----------------------------------
+
+            appTask = null;
+            appTask = GetFilledRandomAppTask("");
+            appTask.TVItemID2 = 0;
+            actionAppTask = await AppTaskService.Post(appTask);
+            Assert.IsType<BadRequestObjectResult>(actionAppTask.Result);
+
+            appTask = null;
+            appTask = GetFilledRandomAppTask("");
+            appTask.TVItemID2 = 2;
+            actionAppTask = await AppTaskService.Post(appTask);
+            Assert.IsType<BadRequestObjectResult>(actionAppTask.Result);
+
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPEnumType]
+            // appTask.AppTaskCommand   (AppTaskCommandEnum)
+            // -----------------------------------
+
+            appTask = null;
+            appTask = GetFilledRandomAppTask("");
+            appTask.AppTaskCommand = (AppTaskCommandEnum)1000000;
+            actionAppTask = await AppTaskService.Post(appTask);
+            Assert.IsType<BadRequestObjectResult>(actionAppTask.Result);
+
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPEnumType]
+            // appTask.AppTaskStatus   (AppTaskStatusEnum)
+            // -----------------------------------
+
+            appTask = null;
+            appTask = GetFilledRandomAppTask("");
+            appTask.AppTaskStatus = (AppTaskStatusEnum)1000000;
+            actionAppTask = await AppTaskService.Post(appTask);
+            Assert.IsType<BadRequestObjectResult>(actionAppTask.Result);
+
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPRange(0, 100)]
+            // appTask.PercentCompleted   (Int32)
+            // -----------------------------------
+
+            appTask = null;
+            appTask = GetFilledRandomAppTask("");
+            appTask.PercentCompleted = -1;
+            actionAppTask = await AppTaskService.Post(appTask);
+            Assert.IsType<BadRequestObjectResult>(actionAppTask.Result);
+            //Assert.AreEqual(count, appTaskService.GetAppTaskList().Count());
+            appTask = null;
+            appTask = GetFilledRandomAppTask("");
+            appTask.PercentCompleted = 101;
+            actionAppTask = await AppTaskService.Post(appTask);
+            Assert.IsType<BadRequestObjectResult>(actionAppTask.Result);
+            //Assert.AreEqual(count, appTaskService.GetAppTaskList().Count());
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // appTask.Parameters   (String)
+            // -----------------------------------
+
+            appTask = null;
+            appTask = GetFilledRandomAppTask("Parameters");
+            actionAppTask = await AppTaskService.Post(appTask);
+            Assert.IsType<BadRequestObjectResult>(actionAppTask.Result);
+
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPEnumType]
+            // appTask.Language   (LanguageEnum)
+            // -----------------------------------
+
+            appTask = null;
+            appTask = GetFilledRandomAppTask("");
+            appTask.Language = (LanguageEnum)1000000;
+            actionAppTask = await AppTaskService.Post(appTask);
+            Assert.IsType<BadRequestObjectResult>(actionAppTask.Result);
+
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPAfter(Year = 1980)]
+            // appTask.StartDateTime_UTC   (DateTime)
+            // -----------------------------------
+
+            appTask = null;
+            appTask = GetFilledRandomAppTask("");
+            appTask.StartDateTime_UTC = new DateTime();
+            actionAppTask = await AppTaskService.Post(appTask);
+            Assert.IsType<BadRequestObjectResult>(actionAppTask.Result);
+            appTask = null;
+            appTask = GetFilledRandomAppTask("");
+            appTask.StartDateTime_UTC = new DateTime(1979, 1, 1);
+            actionAppTask = await AppTaskService.Post(appTask);
+            Assert.IsType<BadRequestObjectResult>(actionAppTask.Result);
+
+            // -----------------------------------
+            // Is Nullable
+            // [CSSPAfter(Year = 1980)]
+            // [CSSPBigger(OtherField = StartDateTime_UTC)]
+            // appTask.EndDateTime_UTC   (DateTime)
+            // -----------------------------------
+
+            appTask = null;
+            appTask = GetFilledRandomAppTask("");
+            appTask.EndDateTime_UTC = new DateTime(1979, 1, 1);
+            actionAppTask = await AppTaskService.Post(appTask);
+            Assert.IsType<BadRequestObjectResult>(actionAppTask.Result);
+
+            // -----------------------------------
+            // Is Nullable
+            // [CSSPRange(0, 1000000)]
+            // appTask.EstimatedLength_second   (Int32)
+            // -----------------------------------
+
+            appTask = null;
+            appTask = GetFilledRandomAppTask("");
+            appTask.EstimatedLength_second = -1;
+            actionAppTask = await AppTaskService.Post(appTask);
+            Assert.IsType<BadRequestObjectResult>(actionAppTask.Result);
+            //Assert.AreEqual(count, appTaskService.GetAppTaskList().Count());
+            appTask = null;
+            appTask = GetFilledRandomAppTask("");
+            appTask.EstimatedLength_second = 1000001;
+            actionAppTask = await AppTaskService.Post(appTask);
+            Assert.IsType<BadRequestObjectResult>(actionAppTask.Result);
+            //Assert.AreEqual(count, appTaskService.GetAppTaskList().Count());
+
+            // -----------------------------------
+            // Is Nullable
+            // [CSSPRange(0, 1000000)]
+            // appTask.RemainingTime_second   (Int32)
+            // -----------------------------------
+
+            appTask = null;
+            appTask = GetFilledRandomAppTask("");
+            appTask.RemainingTime_second = -1;
+            actionAppTask = await AppTaskService.Post(appTask);
+            Assert.IsType<BadRequestObjectResult>(actionAppTask.Result);
+            //Assert.AreEqual(count, appTaskService.GetAppTaskList().Count());
+            appTask = null;
+            appTask = GetFilledRandomAppTask("");
+            appTask.RemainingTime_second = 1000001;
+            actionAppTask = await AppTaskService.Post(appTask);
+            Assert.IsType<BadRequestObjectResult>(actionAppTask.Result);
+            //Assert.AreEqual(count, appTaskService.GetAppTaskList().Count());
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPAfter(Year = 1980)]
+            // appTask.LastUpdateDate_UTC   (DateTime)
+            // -----------------------------------
+
+            appTask = null;
+            appTask = GetFilledRandomAppTask("");
+            appTask.LastUpdateDate_UTC = new DateTime();
+            actionAppTask = await AppTaskService.Post(appTask);
+            Assert.IsType<BadRequestObjectResult>(actionAppTask.Result);
+            appTask = null;
+            appTask = GetFilledRandomAppTask("");
+            appTask.LastUpdateDate_UTC = new DateTime(1979, 1, 1);
+            actionAppTask = await AppTaskService.Post(appTask);
+            Assert.IsType<BadRequestObjectResult>(actionAppTask.Result);
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPExist(ExistTypeName = "TVItem", ExistPlurial = "s", ExistFieldID = "TVItemID", AllowableTVtypeList = Contact)]
+            // appTask.LastUpdateContactTVItemID   (Int32)
+            // -----------------------------------
+
+            appTask = null;
+            appTask = GetFilledRandomAppTask("");
+            appTask.LastUpdateContactTVItemID = 0;
+            actionAppTask = await AppTaskService.Post(appTask);
+            Assert.IsType<BadRequestObjectResult>(actionAppTask.Result);
+
+            appTask = null;
+            appTask = GetFilledRandomAppTask("");
+            appTask.LastUpdateContactTVItemID = 1;
+            actionAppTask = await AppTaskService.Post(appTask);
+            Assert.IsType<BadRequestObjectResult>(actionAppTask.Result);
+
+        }
+        #endregion Tests Generated Properties
 
         #region Functions private
         private async Task DoCRUDTest()
@@ -242,6 +510,22 @@ namespace CSSPServices.Tests
             }
 
             return appTask;
+        }
+        private void CheckAppTaskFields(List<AppTask> appTaskList)
+        {
+            Assert.False(string.IsNullOrWhiteSpace(appTaskList[0].Parameters));
+            if (appTaskList[0].EndDateTime_UTC != null)
+            {
+                Assert.NotNull(appTaskList[0].EndDateTime_UTC);
+            }
+            if (appTaskList[0].EstimatedLength_second != null)
+            {
+                Assert.NotNull(appTaskList[0].EstimatedLength_second);
+            }
+            if (appTaskList[0].RemainingTime_second != null)
+            {
+                Assert.NotNull(appTaskList[0].RemainingTime_second);
+            }
         }
         #endregion Functions private
     }

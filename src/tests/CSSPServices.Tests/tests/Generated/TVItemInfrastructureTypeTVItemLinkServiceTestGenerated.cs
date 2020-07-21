@@ -19,16 +19,22 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Transactions;
 using Xunit;
+using System.ComponentModel.DataAnnotations;
 
 namespace CSSPServices.Tests
 {
-    [Collection("Sequential")]
     public partial class TVItemInfrastructureTypeTVItemLinkServiceTest : TestHelper
     {
         #region Variables
         #endregion Variables
 
         #region Properties
+        private IConfiguration Config { get; set; }
+        private IServiceProvider Provider { get; set; }
+        private IServiceCollection Services { get; set; }
+        private ICSSPCultureService CSSPCultureService { get; set; }
+        private ITVItemInfrastructureTypeTVItemLinkService TVItemInfrastructureTypeTVItemLinkService { get; set; }
+        private TVItemInfrastructureTypeTVItemLink tvItemInfrastructureTypeTVItemLink { get; set; }
         #endregion Properties
 
         #region Constructors
@@ -38,7 +44,75 @@ namespace CSSPServices.Tests
         }
         #endregion Constructors
 
+        #region Tests Generated Basic Test Not Mapped
+        [Theory]
+        [InlineData("en-CA")]
+        [InlineData("fr-CA")]
+        public async Task TVItemInfrastructureTypeTVItemLinkService_Good_Test(string culture)
+        {
+            Assert.True(await Setup(culture));
+
+            tvItemInfrastructureTypeTVItemLink = GetFilledRandomTVItemInfrastructureTypeTVItemLink("");
+
+            List<ValidationResult> ValidationResultsList = TVItemInfrastructureTypeTVItemLinkService.Validate(new ValidationContext(tvItemInfrastructureTypeTVItemLink)).ToList();
+            Assert.True(ValidationResultsList.Count == 0);
+        }
+        #endregion Tests Generated Basic Test Not Mapped
+
         #region Functions private
+        private async Task<bool> Setup(string culture)
+        {
+            Config = new ConfigurationBuilder()
+               .SetBasePath(Directory.GetParent(AppContext.BaseDirectory).FullName)
+               .AddJsonFile("appsettings_csspservices.json")
+               .AddUserSecrets("6f27cbbe-6ffb-4154-b49b-d739597c4f60")
+               .Build();
+
+            Services = new ServiceCollection();
+
+            Services.AddSingleton<IConfiguration>(Config);
+
+            Services.AddSingleton<ICSSPCultureService, CSSPCultureService>();
+            Services.AddSingleton<IEnums, Enums>();
+            Services.AddSingleton<ITVItemInfrastructureTypeTVItemLinkService, TVItemInfrastructureTypeTVItemLinkService>();
+
+            Provider = Services.BuildServiceProvider();
+            Assert.NotNull(Provider);
+
+            CSSPCultureService = Provider.GetService<ICSSPCultureService>();
+            Assert.NotNull(CSSPCultureService);
+
+            CSSPCultureService.SetCulture(culture);
+
+            TVItemInfrastructureTypeTVItemLinkService = Provider.GetService<ITVItemInfrastructureTypeTVItemLinkService>();
+            Assert.NotNull(TVItemInfrastructureTypeTVItemLinkService);
+
+            return await Task.FromResult(true);
+        }
+        private TVItemInfrastructureTypeTVItemLink GetFilledRandomTVItemInfrastructureTypeTVItemLink(string OmitPropName)
+        {
+            TVItemInfrastructureTypeTVItemLink tvItemInfrastructureTypeTVItemLink = new TVItemInfrastructureTypeTVItemLink();
+
+            if (OmitPropName != "InfrastructureType") tvItemInfrastructureTypeTVItemLink.InfrastructureType = (InfrastructureTypeEnum)GetRandomEnumType(typeof(InfrastructureTypeEnum));
+            // should implement a Range for the property SeeOtherMunicipalityTVItemID and type TVItemInfrastructureTypeTVItemLink
+            if (OmitPropName != "InfrastructureTypeText") tvItemInfrastructureTypeTVItemLink.InfrastructureTypeText = GetRandomString("", 5);
+            //CSSPError: property [TVItem] and type [TVItemInfrastructureTypeTVItemLink] is  not implemented
+            //CSSPError: property [TVItemLinkList] and type [TVItemInfrastructureTypeTVItemLink] is  not implemented
+            //CSSPError: property [FlowTo] and type [TVItemInfrastructureTypeTVItemLink] is  not implemented
+
+            return tvItemInfrastructureTypeTVItemLink;
+        }
+        private void CheckTVItemInfrastructureTypeTVItemLinkFields(List<TVItemInfrastructureTypeTVItemLink> tvItemInfrastructureTypeTVItemLinkList)
+        {
+            if (tvItemInfrastructureTypeTVItemLinkList[0].SeeOtherMunicipalityTVItemID != null)
+            {
+                Assert.NotNull(tvItemInfrastructureTypeTVItemLinkList[0].SeeOtherMunicipalityTVItemID);
+            }
+            if (!string.IsNullOrWhiteSpace(tvItemInfrastructureTypeTVItemLinkList[0].InfrastructureTypeText))
+            {
+                Assert.False(string.IsNullOrWhiteSpace(tvItemInfrastructureTypeTVItemLinkList[0].InfrastructureTypeText));
+            }
+        }
         #endregion Functions private
     }
 }

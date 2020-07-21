@@ -20,19 +20,60 @@ using System.Threading.Tasks;
 
 namespace CSSPServices
 {
-    public partial class ContourPolygonService
+    public interface IContourPolygonService
+    {
+        IEnumerable<ValidationResult> Validate(ValidationContext validationContext);
+    }
+    public partial class ContourPolygonService : IContourPolygonService
     {
         #region Variables
         #endregion Variables
 
         #region Properties
+        private ICSSPCultureService CSSPCultureService { get; }
+        private IEnums enums { get; }
         #endregion Properties
 
         #region Constructors
-        public ContourPolygonService()
+        public ContourPolygonService(ICSSPCultureService CSSPCultureService, IEnums enums)
         {
+            this.CSSPCultureService = CSSPCultureService;
+            this.enums = enums;
         }
         #endregion Constructors
+
+        #region Functions public
+        public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+        {
+            string retStr = "";
+            ContourPolygon contourPolygon = validationContext.ObjectInstance as ContourPolygon;
+
+            if (contourPolygon.ContourValue < 0)
+            {
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MinValueIs_, "ContourValue", "0"), new[] { "ContourValue" });
+            }
+
+            if (contourPolygon.Layer < 1 || contourPolygon.Layer > 100)
+            {
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "Layer", "1", "100"), new[] { "Layer" });
+            }
+
+            if (contourPolygon.Depth_m < 1 || contourPolygon.Depth_m > 10000)
+            {
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "Depth_m", "1", "10000"), new[] { "Depth_m" });
+            }
+
+                //CSSPError: Type not implemented [ContourNodeList] of type [List`1]
+
+                //CSSPError: Type not implemented [ContourNodeList] of type [Node]
+            retStr = ""; // added to stop compiling CSSPError
+            if (retStr != "") // will never be true
+            {
+                yield return new ValidationResult("AAA", new[] { "AAA" });
+            }
+
+        }
+        #endregion Functions public
 
     }
 }

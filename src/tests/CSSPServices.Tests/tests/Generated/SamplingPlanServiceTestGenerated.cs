@@ -19,6 +19,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Transactions;
 using Xunit;
+using System.ComponentModel.DataAnnotations;
 
 namespace CSSPServices.Tests
 {
@@ -81,6 +82,400 @@ namespace CSSPServices.Tests
             }
         }
         #endregion Tests Generated CRUD
+
+        #region Tests Generated Properties
+        [Theory]
+        [InlineData("en-CA", DBLocationEnum.Local)]
+        [InlineData("fr-CA", DBLocationEnum.Local)]
+        [InlineData("en-CA", DBLocationEnum.Server)]
+        [InlineData("fr-CA", DBLocationEnum.Server)]
+        public async Task SamplingPlan_Properties_Test(string culture, DBLocationEnum DBLocation)
+        {
+            // -------------------------------
+            // -------------------------------
+            // Properties testing
+            // -------------------------------
+            // -------------------------------
+
+            Assert.True(await Setup(culture));
+
+            LoggedInService.DBLocation = DBLocation;
+
+            int count = 0;
+            if (count == 1)
+            {
+                // just so we don't get a warning during compile [The variable 'count' is assigned but its value is never used]
+            }
+
+            var actionSamplingPlanList = await SamplingPlanService.GetSamplingPlanList();
+            Assert.Equal(200, ((ObjectResult)actionSamplingPlanList.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionSamplingPlanList.Result).Value);
+            List<SamplingPlan> samplingPlanList = (List<SamplingPlan>)((OkObjectResult)actionSamplingPlanList.Result).Value;
+
+            count = samplingPlanList.Count();
+
+            SamplingPlan samplingPlan = GetFilledRandomSamplingPlan("");
+
+
+            // -----------------------------------
+            // [Key]
+            // Is NOT Nullable
+            // samplingPlan.SamplingPlanID   (Int32)
+            // -----------------------------------
+
+            samplingPlan = null;
+            samplingPlan = GetFilledRandomSamplingPlan("");
+            samplingPlan.SamplingPlanID = 0;
+
+            var actionSamplingPlan = await SamplingPlanService.Put(samplingPlan);
+            Assert.IsType<BadRequestObjectResult>(actionSamplingPlan.Result);
+
+            samplingPlan = null;
+            samplingPlan = GetFilledRandomSamplingPlan("");
+            samplingPlan.SamplingPlanID = 10000000;
+            actionSamplingPlan = await SamplingPlanService.Put(samplingPlan);
+            Assert.IsType<BadRequestObjectResult>(actionSamplingPlan.Result);
+
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // samplingPlan.IsActive   (Boolean)
+            // -----------------------------------
+
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPMaxLength(200)]
+            // samplingPlan.SamplingPlanName   (String)
+            // -----------------------------------
+
+            samplingPlan = null;
+            samplingPlan = GetFilledRandomSamplingPlan("SamplingPlanName");
+            actionSamplingPlan = await SamplingPlanService.Post(samplingPlan);
+            Assert.IsType<BadRequestObjectResult>(actionSamplingPlan.Result);
+
+            samplingPlan = null;
+            samplingPlan = GetFilledRandomSamplingPlan("");
+            samplingPlan.SamplingPlanName = GetRandomString("", 201);
+            actionSamplingPlan = await SamplingPlanService.Post(samplingPlan);
+            Assert.IsType<BadRequestObjectResult>(actionSamplingPlan.Result);
+            //Assert.AreEqual(count, samplingPlanService.GetSamplingPlanList().Count());
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPMaxLength(100)]
+            // samplingPlan.ForGroupName   (String)
+            // -----------------------------------
+
+            samplingPlan = null;
+            samplingPlan = GetFilledRandomSamplingPlan("ForGroupName");
+            actionSamplingPlan = await SamplingPlanService.Post(samplingPlan);
+            Assert.IsType<BadRequestObjectResult>(actionSamplingPlan.Result);
+
+            samplingPlan = null;
+            samplingPlan = GetFilledRandomSamplingPlan("");
+            samplingPlan.ForGroupName = GetRandomString("", 101);
+            actionSamplingPlan = await SamplingPlanService.Post(samplingPlan);
+            Assert.IsType<BadRequestObjectResult>(actionSamplingPlan.Result);
+            //Assert.AreEqual(count, samplingPlanService.GetSamplingPlanList().Count());
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPEnumType]
+            // samplingPlan.SampleType   (SampleTypeEnum)
+            // -----------------------------------
+
+            samplingPlan = null;
+            samplingPlan = GetFilledRandomSamplingPlan("");
+            samplingPlan.SampleType = (SampleTypeEnum)1000000;
+            actionSamplingPlan = await SamplingPlanService.Post(samplingPlan);
+            Assert.IsType<BadRequestObjectResult>(actionSamplingPlan.Result);
+
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPEnumType]
+            // samplingPlan.SamplingPlanType   (SamplingPlanTypeEnum)
+            // -----------------------------------
+
+            samplingPlan = null;
+            samplingPlan = GetFilledRandomSamplingPlan("");
+            samplingPlan.SamplingPlanType = (SamplingPlanTypeEnum)1000000;
+            actionSamplingPlan = await SamplingPlanService.Post(samplingPlan);
+            Assert.IsType<BadRequestObjectResult>(actionSamplingPlan.Result);
+
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPEnumType]
+            // samplingPlan.LabSheetType   (LabSheetTypeEnum)
+            // -----------------------------------
+
+            samplingPlan = null;
+            samplingPlan = GetFilledRandomSamplingPlan("");
+            samplingPlan.LabSheetType = (LabSheetTypeEnum)1000000;
+            actionSamplingPlan = await SamplingPlanService.Post(samplingPlan);
+            Assert.IsType<BadRequestObjectResult>(actionSamplingPlan.Result);
+
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPExist(ExistTypeName = "TVItem", ExistPlurial = "s", ExistFieldID = "TVItemID", AllowableTVtypeList = Province)]
+            // samplingPlan.ProvinceTVItemID   (Int32)
+            // -----------------------------------
+
+            samplingPlan = null;
+            samplingPlan = GetFilledRandomSamplingPlan("");
+            samplingPlan.ProvinceTVItemID = 0;
+            actionSamplingPlan = await SamplingPlanService.Post(samplingPlan);
+            Assert.IsType<BadRequestObjectResult>(actionSamplingPlan.Result);
+
+            samplingPlan = null;
+            samplingPlan = GetFilledRandomSamplingPlan("");
+            samplingPlan.ProvinceTVItemID = 1;
+            actionSamplingPlan = await SamplingPlanService.Post(samplingPlan);
+            Assert.IsType<BadRequestObjectResult>(actionSamplingPlan.Result);
+
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPExist(ExistTypeName = "TVItem", ExistPlurial = "s", ExistFieldID = "TVItemID", AllowableTVtypeList = Contact)]
+            // samplingPlan.CreatorTVItemID   (Int32)
+            // -----------------------------------
+
+            samplingPlan = null;
+            samplingPlan = GetFilledRandomSamplingPlan("");
+            samplingPlan.CreatorTVItemID = 0;
+            actionSamplingPlan = await SamplingPlanService.Post(samplingPlan);
+            Assert.IsType<BadRequestObjectResult>(actionSamplingPlan.Result);
+
+            samplingPlan = null;
+            samplingPlan = GetFilledRandomSamplingPlan("");
+            samplingPlan.CreatorTVItemID = 1;
+            actionSamplingPlan = await SamplingPlanService.Post(samplingPlan);
+            Assert.IsType<BadRequestObjectResult>(actionSamplingPlan.Result);
+
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPRange(2000, 2050)]
+            // samplingPlan.Year   (Int32)
+            // -----------------------------------
+
+            samplingPlan = null;
+            samplingPlan = GetFilledRandomSamplingPlan("");
+            samplingPlan.Year = 1999;
+            actionSamplingPlan = await SamplingPlanService.Post(samplingPlan);
+            Assert.IsType<BadRequestObjectResult>(actionSamplingPlan.Result);
+            //Assert.AreEqual(count, samplingPlanService.GetSamplingPlanList().Count());
+            samplingPlan = null;
+            samplingPlan = GetFilledRandomSamplingPlan("");
+            samplingPlan.Year = 2051;
+            actionSamplingPlan = await SamplingPlanService.Post(samplingPlan);
+            Assert.IsType<BadRequestObjectResult>(actionSamplingPlan.Result);
+            //Assert.AreEqual(count, samplingPlanService.GetSamplingPlanList().Count());
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPMaxLength(15)]
+            // samplingPlan.AccessCode   (String)
+            // -----------------------------------
+
+            samplingPlan = null;
+            samplingPlan = GetFilledRandomSamplingPlan("AccessCode");
+            actionSamplingPlan = await SamplingPlanService.Post(samplingPlan);
+            Assert.IsType<BadRequestObjectResult>(actionSamplingPlan.Result);
+
+            samplingPlan = null;
+            samplingPlan = GetFilledRandomSamplingPlan("");
+            samplingPlan.AccessCode = GetRandomString("", 16);
+            actionSamplingPlan = await SamplingPlanService.Post(samplingPlan);
+            Assert.IsType<BadRequestObjectResult>(actionSamplingPlan.Result);
+            //Assert.AreEqual(count, samplingPlanService.GetSamplingPlanList().Count());
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPRange(0, 100)]
+            // samplingPlan.DailyDuplicatePrecisionCriteria   (Double)
+            // -----------------------------------
+
+            //CSSPError: Type not implemented [DailyDuplicatePrecisionCriteria]
+
+            //CSSPError: Type not implemented [DailyDuplicatePrecisionCriteria]
+
+            samplingPlan = null;
+            samplingPlan = GetFilledRandomSamplingPlan("");
+            samplingPlan.DailyDuplicatePrecisionCriteria = -1.0D;
+            actionSamplingPlan = await SamplingPlanService.Post(samplingPlan);
+            Assert.IsType<BadRequestObjectResult>(actionSamplingPlan.Result);
+            //Assert.AreEqual(count, samplingPlanService.GetSamplingPlanList().Count());
+            samplingPlan = null;
+            samplingPlan = GetFilledRandomSamplingPlan("");
+            samplingPlan.DailyDuplicatePrecisionCriteria = 101.0D;
+            actionSamplingPlan = await SamplingPlanService.Post(samplingPlan);
+            Assert.IsType<BadRequestObjectResult>(actionSamplingPlan.Result);
+            //Assert.AreEqual(count, samplingPlanService.GetSamplingPlanList().Count());
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPRange(0, 100)]
+            // samplingPlan.IntertechDuplicatePrecisionCriteria   (Double)
+            // -----------------------------------
+
+            //CSSPError: Type not implemented [IntertechDuplicatePrecisionCriteria]
+
+            //CSSPError: Type not implemented [IntertechDuplicatePrecisionCriteria]
+
+            samplingPlan = null;
+            samplingPlan = GetFilledRandomSamplingPlan("");
+            samplingPlan.IntertechDuplicatePrecisionCriteria = -1.0D;
+            actionSamplingPlan = await SamplingPlanService.Post(samplingPlan);
+            Assert.IsType<BadRequestObjectResult>(actionSamplingPlan.Result);
+            //Assert.AreEqual(count, samplingPlanService.GetSamplingPlanList().Count());
+            samplingPlan = null;
+            samplingPlan = GetFilledRandomSamplingPlan("");
+            samplingPlan.IntertechDuplicatePrecisionCriteria = 101.0D;
+            actionSamplingPlan = await SamplingPlanService.Post(samplingPlan);
+            Assert.IsType<BadRequestObjectResult>(actionSamplingPlan.Result);
+            //Assert.AreEqual(count, samplingPlanService.GetSamplingPlanList().Count());
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // samplingPlan.IncludeLaboratoryQAQC   (Boolean)
+            // -----------------------------------
+
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPMaxLength(15)]
+            // samplingPlan.ApprovalCode   (String)
+            // -----------------------------------
+
+            samplingPlan = null;
+            samplingPlan = GetFilledRandomSamplingPlan("ApprovalCode");
+            actionSamplingPlan = await SamplingPlanService.Post(samplingPlan);
+            Assert.IsType<BadRequestObjectResult>(actionSamplingPlan.Result);
+
+            samplingPlan = null;
+            samplingPlan = GetFilledRandomSamplingPlan("");
+            samplingPlan.ApprovalCode = GetRandomString("", 16);
+            actionSamplingPlan = await SamplingPlanService.Post(samplingPlan);
+            Assert.IsType<BadRequestObjectResult>(actionSamplingPlan.Result);
+            //Assert.AreEqual(count, samplingPlanService.GetSamplingPlanList().Count());
+
+            // -----------------------------------
+            // Is Nullable
+            // [CSSPExist(ExistTypeName = "TVItem", ExistPlurial = "s", ExistFieldID = "TVItemID", AllowableTVtypeList = File)]
+            // samplingPlan.SamplingPlanFileTVItemID   (Int32)
+            // -----------------------------------
+
+            samplingPlan = null;
+            samplingPlan = GetFilledRandomSamplingPlan("");
+            samplingPlan.SamplingPlanFileTVItemID = 0;
+            actionSamplingPlan = await SamplingPlanService.Post(samplingPlan);
+            Assert.IsType<BadRequestObjectResult>(actionSamplingPlan.Result);
+
+            samplingPlan = null;
+            samplingPlan = GetFilledRandomSamplingPlan("");
+            samplingPlan.SamplingPlanFileTVItemID = 1;
+            actionSamplingPlan = await SamplingPlanService.Post(samplingPlan);
+            Assert.IsType<BadRequestObjectResult>(actionSamplingPlan.Result);
+
+
+            // -----------------------------------
+            // Is Nullable
+            // [CSSPEnumType]
+            // samplingPlan.AnalyzeMethodDefault   (AnalyzeMethodEnum)
+            // -----------------------------------
+
+            samplingPlan = null;
+            samplingPlan = GetFilledRandomSamplingPlan("");
+            samplingPlan.AnalyzeMethodDefault = (AnalyzeMethodEnum)1000000;
+            actionSamplingPlan = await SamplingPlanService.Post(samplingPlan);
+            Assert.IsType<BadRequestObjectResult>(actionSamplingPlan.Result);
+
+
+            // -----------------------------------
+            // Is Nullable
+            // [CSSPEnumType]
+            // samplingPlan.SampleMatrixDefault   (SampleMatrixEnum)
+            // -----------------------------------
+
+            samplingPlan = null;
+            samplingPlan = GetFilledRandomSamplingPlan("");
+            samplingPlan.SampleMatrixDefault = (SampleMatrixEnum)1000000;
+            actionSamplingPlan = await SamplingPlanService.Post(samplingPlan);
+            Assert.IsType<BadRequestObjectResult>(actionSamplingPlan.Result);
+
+
+            // -----------------------------------
+            // Is Nullable
+            // [CSSPEnumType]
+            // samplingPlan.LaboratoryDefault   (LaboratoryEnum)
+            // -----------------------------------
+
+            samplingPlan = null;
+            samplingPlan = GetFilledRandomSamplingPlan("");
+            samplingPlan.LaboratoryDefault = (LaboratoryEnum)1000000;
+            actionSamplingPlan = await SamplingPlanService.Post(samplingPlan);
+            Assert.IsType<BadRequestObjectResult>(actionSamplingPlan.Result);
+
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPMaxLength(250)]
+            // samplingPlan.BackupDirectory   (String)
+            // -----------------------------------
+
+            samplingPlan = null;
+            samplingPlan = GetFilledRandomSamplingPlan("BackupDirectory");
+            actionSamplingPlan = await SamplingPlanService.Post(samplingPlan);
+            Assert.IsType<BadRequestObjectResult>(actionSamplingPlan.Result);
+
+            samplingPlan = null;
+            samplingPlan = GetFilledRandomSamplingPlan("");
+            samplingPlan.BackupDirectory = GetRandomString("", 251);
+            actionSamplingPlan = await SamplingPlanService.Post(samplingPlan);
+            Assert.IsType<BadRequestObjectResult>(actionSamplingPlan.Result);
+            //Assert.AreEqual(count, samplingPlanService.GetSamplingPlanList().Count());
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPAfter(Year = 1980)]
+            // samplingPlan.LastUpdateDate_UTC   (DateTime)
+            // -----------------------------------
+
+            samplingPlan = null;
+            samplingPlan = GetFilledRandomSamplingPlan("");
+            samplingPlan.LastUpdateDate_UTC = new DateTime();
+            actionSamplingPlan = await SamplingPlanService.Post(samplingPlan);
+            Assert.IsType<BadRequestObjectResult>(actionSamplingPlan.Result);
+            samplingPlan = null;
+            samplingPlan = GetFilledRandomSamplingPlan("");
+            samplingPlan.LastUpdateDate_UTC = new DateTime(1979, 1, 1);
+            actionSamplingPlan = await SamplingPlanService.Post(samplingPlan);
+            Assert.IsType<BadRequestObjectResult>(actionSamplingPlan.Result);
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPExist(ExistTypeName = "TVItem", ExistPlurial = "s", ExistFieldID = "TVItemID", AllowableTVtypeList = Contact)]
+            // samplingPlan.LastUpdateContactTVItemID   (Int32)
+            // -----------------------------------
+
+            samplingPlan = null;
+            samplingPlan = GetFilledRandomSamplingPlan("");
+            samplingPlan.LastUpdateContactTVItemID = 0;
+            actionSamplingPlan = await SamplingPlanService.Post(samplingPlan);
+            Assert.IsType<BadRequestObjectResult>(actionSamplingPlan.Result);
+
+            samplingPlan = null;
+            samplingPlan = GetFilledRandomSamplingPlan("");
+            samplingPlan.LastUpdateContactTVItemID = 1;
+            actionSamplingPlan = await SamplingPlanService.Post(samplingPlan);
+            Assert.IsType<BadRequestObjectResult>(actionSamplingPlan.Result);
+
+        }
+        #endregion Tests Generated Properties
 
         #region Functions private
         private async Task DoCRUDTest()
@@ -259,6 +654,30 @@ namespace CSSPServices.Tests
             }
 
             return samplingPlan;
+        }
+        private void CheckSamplingPlanFields(List<SamplingPlan> samplingPlanList)
+        {
+            Assert.False(string.IsNullOrWhiteSpace(samplingPlanList[0].SamplingPlanName));
+            Assert.False(string.IsNullOrWhiteSpace(samplingPlanList[0].ForGroupName));
+            Assert.False(string.IsNullOrWhiteSpace(samplingPlanList[0].AccessCode));
+            Assert.False(string.IsNullOrWhiteSpace(samplingPlanList[0].ApprovalCode));
+            if (samplingPlanList[0].SamplingPlanFileTVItemID != null)
+            {
+                Assert.NotNull(samplingPlanList[0].SamplingPlanFileTVItemID);
+            }
+            if (samplingPlanList[0].AnalyzeMethodDefault != null)
+            {
+                Assert.NotNull(samplingPlanList[0].AnalyzeMethodDefault);
+            }
+            if (samplingPlanList[0].SampleMatrixDefault != null)
+            {
+                Assert.NotNull(samplingPlanList[0].SampleMatrixDefault);
+            }
+            if (samplingPlanList[0].LaboratoryDefault != null)
+            {
+                Assert.NotNull(samplingPlanList[0].LaboratoryDefault);
+            }
+            Assert.False(string.IsNullOrWhiteSpace(samplingPlanList[0].BackupDirectory));
         }
         #endregion Functions private
     }

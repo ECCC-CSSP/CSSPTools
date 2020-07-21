@@ -756,4 +756,10 @@
   <data name="__CouldNotBeFound" xml:space="preserve">
     <value>{0}: [{1}] could not be found</value>
   </data>
+  <data name="FullName_IsAlreadyTaken" xml:space="preserve">
+    <value>Full name [{0}] is already taken</value>
+  </data>
+  <data name="LoginEmail_IsAlreadyTaken" xml:space="preserve">
+    <value>Login Email [{0}] is already taken</value>
+  </data>
 </root>

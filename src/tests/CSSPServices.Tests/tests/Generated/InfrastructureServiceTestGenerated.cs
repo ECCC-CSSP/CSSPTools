@@ -19,6 +19,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Transactions;
 using Xunit;
+using System.ComponentModel.DataAnnotations;
 
 namespace CSSPServices.Tests
 {
@@ -81,6 +82,932 @@ namespace CSSPServices.Tests
             }
         }
         #endregion Tests Generated CRUD
+
+        #region Tests Generated Properties
+        [Theory]
+        [InlineData("en-CA", DBLocationEnum.Local)]
+        [InlineData("fr-CA", DBLocationEnum.Local)]
+        [InlineData("en-CA", DBLocationEnum.Server)]
+        [InlineData("fr-CA", DBLocationEnum.Server)]
+        public async Task Infrastructure_Properties_Test(string culture, DBLocationEnum DBLocation)
+        {
+            // -------------------------------
+            // -------------------------------
+            // Properties testing
+            // -------------------------------
+            // -------------------------------
+
+            Assert.True(await Setup(culture));
+
+            LoggedInService.DBLocation = DBLocation;
+
+            int count = 0;
+            if (count == 1)
+            {
+                // just so we don't get a warning during compile [The variable 'count' is assigned but its value is never used]
+            }
+
+            var actionInfrastructureList = await InfrastructureService.GetInfrastructureList();
+            Assert.Equal(200, ((ObjectResult)actionInfrastructureList.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionInfrastructureList.Result).Value);
+            List<Infrastructure> infrastructureList = (List<Infrastructure>)((OkObjectResult)actionInfrastructureList.Result).Value;
+
+            count = infrastructureList.Count();
+
+            Infrastructure infrastructure = GetFilledRandomInfrastructure("");
+
+
+            // -----------------------------------
+            // [Key]
+            // Is NOT Nullable
+            // infrastructure.InfrastructureID   (Int32)
+            // -----------------------------------
+
+            infrastructure = null;
+            infrastructure = GetFilledRandomInfrastructure("");
+            infrastructure.InfrastructureID = 0;
+
+            var actionInfrastructure = await InfrastructureService.Put(infrastructure);
+            Assert.IsType<BadRequestObjectResult>(actionInfrastructure.Result);
+
+            infrastructure = null;
+            infrastructure = GetFilledRandomInfrastructure("");
+            infrastructure.InfrastructureID = 10000000;
+            actionInfrastructure = await InfrastructureService.Put(infrastructure);
+            Assert.IsType<BadRequestObjectResult>(actionInfrastructure.Result);
+
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPExist(ExistTypeName = "TVItem", ExistPlurial = "s", ExistFieldID = "TVItemID", AllowableTVtypeList = Infrastructure)]
+            // infrastructure.InfrastructureTVItemID   (Int32)
+            // -----------------------------------
+
+            infrastructure = null;
+            infrastructure = GetFilledRandomInfrastructure("");
+            infrastructure.InfrastructureTVItemID = 0;
+            actionInfrastructure = await InfrastructureService.Post(infrastructure);
+            Assert.IsType<BadRequestObjectResult>(actionInfrastructure.Result);
+
+            infrastructure = null;
+            infrastructure = GetFilledRandomInfrastructure("");
+            infrastructure.InfrastructureTVItemID = 1;
+            actionInfrastructure = await InfrastructureService.Post(infrastructure);
+            Assert.IsType<BadRequestObjectResult>(actionInfrastructure.Result);
+
+
+            // -----------------------------------
+            // Is Nullable
+            // [CSSPRange(0, 100000)]
+            // infrastructure.PrismID   (Int32)
+            // -----------------------------------
+
+            infrastructure = null;
+            infrastructure = GetFilledRandomInfrastructure("");
+            infrastructure.PrismID = -1;
+            actionInfrastructure = await InfrastructureService.Post(infrastructure);
+            Assert.IsType<BadRequestObjectResult>(actionInfrastructure.Result);
+            //Assert.AreEqual(count, infrastructureService.GetInfrastructureList().Count());
+            infrastructure = null;
+            infrastructure = GetFilledRandomInfrastructure("");
+            infrastructure.PrismID = 100001;
+            actionInfrastructure = await InfrastructureService.Post(infrastructure);
+            Assert.IsType<BadRequestObjectResult>(actionInfrastructure.Result);
+            //Assert.AreEqual(count, infrastructureService.GetInfrastructureList().Count());
+
+            // -----------------------------------
+            // Is Nullable
+            // [CSSPRange(0, 100000)]
+            // infrastructure.TPID   (Int32)
+            // -----------------------------------
+
+            infrastructure = null;
+            infrastructure = GetFilledRandomInfrastructure("");
+            infrastructure.TPID = -1;
+            actionInfrastructure = await InfrastructureService.Post(infrastructure);
+            Assert.IsType<BadRequestObjectResult>(actionInfrastructure.Result);
+            //Assert.AreEqual(count, infrastructureService.GetInfrastructureList().Count());
+            infrastructure = null;
+            infrastructure = GetFilledRandomInfrastructure("");
+            infrastructure.TPID = 100001;
+            actionInfrastructure = await InfrastructureService.Post(infrastructure);
+            Assert.IsType<BadRequestObjectResult>(actionInfrastructure.Result);
+            //Assert.AreEqual(count, infrastructureService.GetInfrastructureList().Count());
+
+            // -----------------------------------
+            // Is Nullable
+            // [CSSPRange(0, 100000)]
+            // infrastructure.LSID   (Int32)
+            // -----------------------------------
+
+            infrastructure = null;
+            infrastructure = GetFilledRandomInfrastructure("");
+            infrastructure.LSID = -1;
+            actionInfrastructure = await InfrastructureService.Post(infrastructure);
+            Assert.IsType<BadRequestObjectResult>(actionInfrastructure.Result);
+            //Assert.AreEqual(count, infrastructureService.GetInfrastructureList().Count());
+            infrastructure = null;
+            infrastructure = GetFilledRandomInfrastructure("");
+            infrastructure.LSID = 100001;
+            actionInfrastructure = await InfrastructureService.Post(infrastructure);
+            Assert.IsType<BadRequestObjectResult>(actionInfrastructure.Result);
+            //Assert.AreEqual(count, infrastructureService.GetInfrastructureList().Count());
+
+            // -----------------------------------
+            // Is Nullable
+            // [CSSPRange(0, 100000)]
+            // infrastructure.SiteID   (Int32)
+            // -----------------------------------
+
+            infrastructure = null;
+            infrastructure = GetFilledRandomInfrastructure("");
+            infrastructure.SiteID = -1;
+            actionInfrastructure = await InfrastructureService.Post(infrastructure);
+            Assert.IsType<BadRequestObjectResult>(actionInfrastructure.Result);
+            //Assert.AreEqual(count, infrastructureService.GetInfrastructureList().Count());
+            infrastructure = null;
+            infrastructure = GetFilledRandomInfrastructure("");
+            infrastructure.SiteID = 100001;
+            actionInfrastructure = await InfrastructureService.Post(infrastructure);
+            Assert.IsType<BadRequestObjectResult>(actionInfrastructure.Result);
+            //Assert.AreEqual(count, infrastructureService.GetInfrastructureList().Count());
+
+            // -----------------------------------
+            // Is Nullable
+            // [CSSPRange(0, 100000)]
+            // infrastructure.Site   (Int32)
+            // -----------------------------------
+
+            infrastructure = null;
+            infrastructure = GetFilledRandomInfrastructure("");
+            infrastructure.Site = -1;
+            actionInfrastructure = await InfrastructureService.Post(infrastructure);
+            Assert.IsType<BadRequestObjectResult>(actionInfrastructure.Result);
+            //Assert.AreEqual(count, infrastructureService.GetInfrastructureList().Count());
+            infrastructure = null;
+            infrastructure = GetFilledRandomInfrastructure("");
+            infrastructure.Site = 100001;
+            actionInfrastructure = await InfrastructureService.Post(infrastructure);
+            Assert.IsType<BadRequestObjectResult>(actionInfrastructure.Result);
+            //Assert.AreEqual(count, infrastructureService.GetInfrastructureList().Count());
+
+            // -----------------------------------
+            // Is Nullable
+            // [CSSPMaxLength(1)]
+            // [CSSPMinLength(1)]
+            // infrastructure.InfrastructureCategory   (String)
+            // -----------------------------------
+
+            infrastructure = null;
+            infrastructure = GetFilledRandomInfrastructure("");
+            infrastructure = null;
+            infrastructure = GetFilledRandomInfrastructure("");
+            infrastructure.InfrastructureCategory = GetRandomString("", 2);
+            actionInfrastructure = await InfrastructureService.Post(infrastructure);
+            Assert.IsType<BadRequestObjectResult>(actionInfrastructure.Result);
+            //Assert.AreEqual(count, infrastructureService.GetInfrastructureList().Count());
+
+            // -----------------------------------
+            // Is Nullable
+            // [CSSPEnumType]
+            // infrastructure.InfrastructureType   (InfrastructureTypeEnum)
+            // -----------------------------------
+
+            infrastructure = null;
+            infrastructure = GetFilledRandomInfrastructure("");
+            infrastructure.InfrastructureType = (InfrastructureTypeEnum)1000000;
+            actionInfrastructure = await InfrastructureService.Post(infrastructure);
+            Assert.IsType<BadRequestObjectResult>(actionInfrastructure.Result);
+
+
+            // -----------------------------------
+            // Is Nullable
+            // [CSSPEnumType]
+            // infrastructure.FacilityType   (FacilityTypeEnum)
+            // -----------------------------------
+
+            infrastructure = null;
+            infrastructure = GetFilledRandomInfrastructure("");
+            infrastructure.FacilityType = (FacilityTypeEnum)1000000;
+            actionInfrastructure = await InfrastructureService.Post(infrastructure);
+            Assert.IsType<BadRequestObjectResult>(actionInfrastructure.Result);
+
+
+            // -----------------------------------
+            // Is Nullable
+            // infrastructure.HasBackupPower   (Boolean)
+            // -----------------------------------
+
+
+            // -----------------------------------
+            // Is Nullable
+            // infrastructure.IsMechanicallyAerated   (Boolean)
+            // -----------------------------------
+
+
+            // -----------------------------------
+            // Is Nullable
+            // [CSSPRange(0, 10)]
+            // infrastructure.NumberOfCells   (Int32)
+            // -----------------------------------
+
+            infrastructure = null;
+            infrastructure = GetFilledRandomInfrastructure("");
+            infrastructure.NumberOfCells = -1;
+            actionInfrastructure = await InfrastructureService.Post(infrastructure);
+            Assert.IsType<BadRequestObjectResult>(actionInfrastructure.Result);
+            //Assert.AreEqual(count, infrastructureService.GetInfrastructureList().Count());
+            infrastructure = null;
+            infrastructure = GetFilledRandomInfrastructure("");
+            infrastructure.NumberOfCells = 11;
+            actionInfrastructure = await InfrastructureService.Post(infrastructure);
+            Assert.IsType<BadRequestObjectResult>(actionInfrastructure.Result);
+            //Assert.AreEqual(count, infrastructureService.GetInfrastructureList().Count());
+
+            // -----------------------------------
+            // Is Nullable
+            // [CSSPRange(0, 10)]
+            // infrastructure.NumberOfAeratedCells   (Int32)
+            // -----------------------------------
+
+            infrastructure = null;
+            infrastructure = GetFilledRandomInfrastructure("");
+            infrastructure.NumberOfAeratedCells = -1;
+            actionInfrastructure = await InfrastructureService.Post(infrastructure);
+            Assert.IsType<BadRequestObjectResult>(actionInfrastructure.Result);
+            //Assert.AreEqual(count, infrastructureService.GetInfrastructureList().Count());
+            infrastructure = null;
+            infrastructure = GetFilledRandomInfrastructure("");
+            infrastructure.NumberOfAeratedCells = 11;
+            actionInfrastructure = await InfrastructureService.Post(infrastructure);
+            Assert.IsType<BadRequestObjectResult>(actionInfrastructure.Result);
+            //Assert.AreEqual(count, infrastructureService.GetInfrastructureList().Count());
+
+            // -----------------------------------
+            // Is Nullable
+            // [CSSPEnumType]
+            // infrastructure.AerationType   (AerationTypeEnum)
+            // -----------------------------------
+
+            infrastructure = null;
+            infrastructure = GetFilledRandomInfrastructure("");
+            infrastructure.AerationType = (AerationTypeEnum)1000000;
+            actionInfrastructure = await InfrastructureService.Post(infrastructure);
+            Assert.IsType<BadRequestObjectResult>(actionInfrastructure.Result);
+
+
+            // -----------------------------------
+            // Is Nullable
+            // [CSSPEnumType]
+            // infrastructure.PreliminaryTreatmentType   (PreliminaryTreatmentTypeEnum)
+            // -----------------------------------
+
+            infrastructure = null;
+            infrastructure = GetFilledRandomInfrastructure("");
+            infrastructure.PreliminaryTreatmentType = (PreliminaryTreatmentTypeEnum)1000000;
+            actionInfrastructure = await InfrastructureService.Post(infrastructure);
+            Assert.IsType<BadRequestObjectResult>(actionInfrastructure.Result);
+
+
+            // -----------------------------------
+            // Is Nullable
+            // [CSSPEnumType]
+            // infrastructure.PrimaryTreatmentType   (PrimaryTreatmentTypeEnum)
+            // -----------------------------------
+
+            infrastructure = null;
+            infrastructure = GetFilledRandomInfrastructure("");
+            infrastructure.PrimaryTreatmentType = (PrimaryTreatmentTypeEnum)1000000;
+            actionInfrastructure = await InfrastructureService.Post(infrastructure);
+            Assert.IsType<BadRequestObjectResult>(actionInfrastructure.Result);
+
+
+            // -----------------------------------
+            // Is Nullable
+            // [CSSPEnumType]
+            // infrastructure.SecondaryTreatmentType   (SecondaryTreatmentTypeEnum)
+            // -----------------------------------
+
+            infrastructure = null;
+            infrastructure = GetFilledRandomInfrastructure("");
+            infrastructure.SecondaryTreatmentType = (SecondaryTreatmentTypeEnum)1000000;
+            actionInfrastructure = await InfrastructureService.Post(infrastructure);
+            Assert.IsType<BadRequestObjectResult>(actionInfrastructure.Result);
+
+
+            // -----------------------------------
+            // Is Nullable
+            // [CSSPEnumType]
+            // infrastructure.TertiaryTreatmentType   (TertiaryTreatmentTypeEnum)
+            // -----------------------------------
+
+            infrastructure = null;
+            infrastructure = GetFilledRandomInfrastructure("");
+            infrastructure.TertiaryTreatmentType = (TertiaryTreatmentTypeEnum)1000000;
+            actionInfrastructure = await InfrastructureService.Post(infrastructure);
+            Assert.IsType<BadRequestObjectResult>(actionInfrastructure.Result);
+
+
+            // -----------------------------------
+            // Is Nullable
+            // [CSSPEnumType]
+            // infrastructure.TreatmentType   (TreatmentTypeEnum)
+            // -----------------------------------
+
+            infrastructure = null;
+            infrastructure = GetFilledRandomInfrastructure("");
+            infrastructure.TreatmentType = (TreatmentTypeEnum)1000000;
+            actionInfrastructure = await InfrastructureService.Post(infrastructure);
+            Assert.IsType<BadRequestObjectResult>(actionInfrastructure.Result);
+
+
+            // -----------------------------------
+            // Is Nullable
+            // [CSSPEnumType]
+            // infrastructure.DisinfectionType   (DisinfectionTypeEnum)
+            // -----------------------------------
+
+            infrastructure = null;
+            infrastructure = GetFilledRandomInfrastructure("");
+            infrastructure.DisinfectionType = (DisinfectionTypeEnum)1000000;
+            actionInfrastructure = await InfrastructureService.Post(infrastructure);
+            Assert.IsType<BadRequestObjectResult>(actionInfrastructure.Result);
+
+
+            // -----------------------------------
+            // Is Nullable
+            // [CSSPEnumType]
+            // infrastructure.CollectionSystemType   (CollectionSystemTypeEnum)
+            // -----------------------------------
+
+            infrastructure = null;
+            infrastructure = GetFilledRandomInfrastructure("");
+            infrastructure.CollectionSystemType = (CollectionSystemTypeEnum)1000000;
+            actionInfrastructure = await InfrastructureService.Post(infrastructure);
+            Assert.IsType<BadRequestObjectResult>(actionInfrastructure.Result);
+
+
+            // -----------------------------------
+            // Is Nullable
+            // [CSSPEnumType]
+            // infrastructure.AlarmSystemType   (AlarmSystemTypeEnum)
+            // -----------------------------------
+
+            infrastructure = null;
+            infrastructure = GetFilledRandomInfrastructure("");
+            infrastructure.AlarmSystemType = (AlarmSystemTypeEnum)1000000;
+            actionInfrastructure = await InfrastructureService.Post(infrastructure);
+            Assert.IsType<BadRequestObjectResult>(actionInfrastructure.Result);
+
+
+            // -----------------------------------
+            // Is Nullable
+            // [CSSPRange(0, 1000000)]
+            // infrastructure.DesignFlow_m3_day   (Double)
+            // -----------------------------------
+
+            //CSSPError: Type not implemented [DesignFlow_m3_day]
+
+            //CSSPError: Type not implemented [DesignFlow_m3_day]
+
+            infrastructure = null;
+            infrastructure = GetFilledRandomInfrastructure("");
+            infrastructure.DesignFlow_m3_day = -1.0D;
+            actionInfrastructure = await InfrastructureService.Post(infrastructure);
+            Assert.IsType<BadRequestObjectResult>(actionInfrastructure.Result);
+            //Assert.AreEqual(count, infrastructureService.GetInfrastructureList().Count());
+            infrastructure = null;
+            infrastructure = GetFilledRandomInfrastructure("");
+            infrastructure.DesignFlow_m3_day = 1000001.0D;
+            actionInfrastructure = await InfrastructureService.Post(infrastructure);
+            Assert.IsType<BadRequestObjectResult>(actionInfrastructure.Result);
+            //Assert.AreEqual(count, infrastructureService.GetInfrastructureList().Count());
+
+            // -----------------------------------
+            // Is Nullable
+            // [CSSPRange(0, 1000000)]
+            // infrastructure.AverageFlow_m3_day   (Double)
+            // -----------------------------------
+
+            //CSSPError: Type not implemented [AverageFlow_m3_day]
+
+            //CSSPError: Type not implemented [AverageFlow_m3_day]
+
+            infrastructure = null;
+            infrastructure = GetFilledRandomInfrastructure("");
+            infrastructure.AverageFlow_m3_day = -1.0D;
+            actionInfrastructure = await InfrastructureService.Post(infrastructure);
+            Assert.IsType<BadRequestObjectResult>(actionInfrastructure.Result);
+            //Assert.AreEqual(count, infrastructureService.GetInfrastructureList().Count());
+            infrastructure = null;
+            infrastructure = GetFilledRandomInfrastructure("");
+            infrastructure.AverageFlow_m3_day = 1000001.0D;
+            actionInfrastructure = await InfrastructureService.Post(infrastructure);
+            Assert.IsType<BadRequestObjectResult>(actionInfrastructure.Result);
+            //Assert.AreEqual(count, infrastructureService.GetInfrastructureList().Count());
+
+            // -----------------------------------
+            // Is Nullable
+            // [CSSPRange(0, 1000000)]
+            // infrastructure.PeakFlow_m3_day   (Double)
+            // -----------------------------------
+
+            //CSSPError: Type not implemented [PeakFlow_m3_day]
+
+            //CSSPError: Type not implemented [PeakFlow_m3_day]
+
+            infrastructure = null;
+            infrastructure = GetFilledRandomInfrastructure("");
+            infrastructure.PeakFlow_m3_day = -1.0D;
+            actionInfrastructure = await InfrastructureService.Post(infrastructure);
+            Assert.IsType<BadRequestObjectResult>(actionInfrastructure.Result);
+            //Assert.AreEqual(count, infrastructureService.GetInfrastructureList().Count());
+            infrastructure = null;
+            infrastructure = GetFilledRandomInfrastructure("");
+            infrastructure.PeakFlow_m3_day = 1000001.0D;
+            actionInfrastructure = await InfrastructureService.Post(infrastructure);
+            Assert.IsType<BadRequestObjectResult>(actionInfrastructure.Result);
+            //Assert.AreEqual(count, infrastructureService.GetInfrastructureList().Count());
+
+            // -----------------------------------
+            // Is Nullable
+            // [CSSPRange(0, 1000000)]
+            // infrastructure.PopServed   (Int32)
+            // -----------------------------------
+
+            infrastructure = null;
+            infrastructure = GetFilledRandomInfrastructure("");
+            infrastructure.PopServed = -1;
+            actionInfrastructure = await InfrastructureService.Post(infrastructure);
+            Assert.IsType<BadRequestObjectResult>(actionInfrastructure.Result);
+            //Assert.AreEqual(count, infrastructureService.GetInfrastructureList().Count());
+            infrastructure = null;
+            infrastructure = GetFilledRandomInfrastructure("");
+            infrastructure.PopServed = 1000001;
+            actionInfrastructure = await InfrastructureService.Post(infrastructure);
+            Assert.IsType<BadRequestObjectResult>(actionInfrastructure.Result);
+            //Assert.AreEqual(count, infrastructureService.GetInfrastructureList().Count());
+
+            // -----------------------------------
+            // Is Nullable
+            // infrastructure.CanOverflow   (Boolean)
+            // -----------------------------------
+
+
+            // -----------------------------------
+            // Is Nullable
+            // [CSSPEnumType]
+            // infrastructure.ValveType   (ValveTypeEnum)
+            // -----------------------------------
+
+            infrastructure = null;
+            infrastructure = GetFilledRandomInfrastructure("");
+            infrastructure.ValveType = (ValveTypeEnum)1000000;
+            actionInfrastructure = await InfrastructureService.Post(infrastructure);
+            Assert.IsType<BadRequestObjectResult>(actionInfrastructure.Result);
+
+
+            // -----------------------------------
+            // Is Nullable
+            // [CSSPRange(0, 100)]
+            // infrastructure.PercFlowOfTotal   (Double)
+            // -----------------------------------
+
+            //CSSPError: Type not implemented [PercFlowOfTotal]
+
+            //CSSPError: Type not implemented [PercFlowOfTotal]
+
+            infrastructure = null;
+            infrastructure = GetFilledRandomInfrastructure("");
+            infrastructure.PercFlowOfTotal = -1.0D;
+            actionInfrastructure = await InfrastructureService.Post(infrastructure);
+            Assert.IsType<BadRequestObjectResult>(actionInfrastructure.Result);
+            //Assert.AreEqual(count, infrastructureService.GetInfrastructureList().Count());
+            infrastructure = null;
+            infrastructure = GetFilledRandomInfrastructure("");
+            infrastructure.PercFlowOfTotal = 101.0D;
+            actionInfrastructure = await InfrastructureService.Post(infrastructure);
+            Assert.IsType<BadRequestObjectResult>(actionInfrastructure.Result);
+            //Assert.AreEqual(count, infrastructureService.GetInfrastructureList().Count());
+
+            // -----------------------------------
+            // Is Nullable
+            // [CSSPRange(-10, 0)]
+            // infrastructure.TimeOffset_hour   (Double)
+            // -----------------------------------
+
+            //CSSPError: Type not implemented [TimeOffset_hour]
+
+            //CSSPError: Type not implemented [TimeOffset_hour]
+
+            infrastructure = null;
+            infrastructure = GetFilledRandomInfrastructure("");
+            infrastructure.TimeOffset_hour = -11.0D;
+            actionInfrastructure = await InfrastructureService.Post(infrastructure);
+            Assert.IsType<BadRequestObjectResult>(actionInfrastructure.Result);
+            //Assert.AreEqual(count, infrastructureService.GetInfrastructureList().Count());
+            infrastructure = null;
+            infrastructure = GetFilledRandomInfrastructure("");
+            infrastructure.TimeOffset_hour = 1.0D;
+            actionInfrastructure = await InfrastructureService.Post(infrastructure);
+            Assert.IsType<BadRequestObjectResult>(actionInfrastructure.Result);
+            //Assert.AreEqual(count, infrastructureService.GetInfrastructureList().Count());
+
+            // -----------------------------------
+            // Is Nullable
+            // infrastructure.TempCatchAllRemoveLater   (String)
+            // -----------------------------------
+
+
+            // -----------------------------------
+            // Is Nullable
+            // [CSSPRange(0, 1000)]
+            // infrastructure.AverageDepth_m   (Double)
+            // -----------------------------------
+
+            //CSSPError: Type not implemented [AverageDepth_m]
+
+            //CSSPError: Type not implemented [AverageDepth_m]
+
+            infrastructure = null;
+            infrastructure = GetFilledRandomInfrastructure("");
+            infrastructure.AverageDepth_m = -1.0D;
+            actionInfrastructure = await InfrastructureService.Post(infrastructure);
+            Assert.IsType<BadRequestObjectResult>(actionInfrastructure.Result);
+            //Assert.AreEqual(count, infrastructureService.GetInfrastructureList().Count());
+            infrastructure = null;
+            infrastructure = GetFilledRandomInfrastructure("");
+            infrastructure.AverageDepth_m = 1001.0D;
+            actionInfrastructure = await InfrastructureService.Post(infrastructure);
+            Assert.IsType<BadRequestObjectResult>(actionInfrastructure.Result);
+            //Assert.AreEqual(count, infrastructureService.GetInfrastructureList().Count());
+
+            // -----------------------------------
+            // Is Nullable
+            // [CSSPRange(1, 1000)]
+            // infrastructure.NumberOfPorts   (Int32)
+            // -----------------------------------
+
+            infrastructure = null;
+            infrastructure = GetFilledRandomInfrastructure("");
+            infrastructure.NumberOfPorts = 0;
+            actionInfrastructure = await InfrastructureService.Post(infrastructure);
+            Assert.IsType<BadRequestObjectResult>(actionInfrastructure.Result);
+            //Assert.AreEqual(count, infrastructureService.GetInfrastructureList().Count());
+            infrastructure = null;
+            infrastructure = GetFilledRandomInfrastructure("");
+            infrastructure.NumberOfPorts = 1001;
+            actionInfrastructure = await InfrastructureService.Post(infrastructure);
+            Assert.IsType<BadRequestObjectResult>(actionInfrastructure.Result);
+            //Assert.AreEqual(count, infrastructureService.GetInfrastructureList().Count());
+
+            // -----------------------------------
+            // Is Nullable
+            // [CSSPRange(0, 10)]
+            // infrastructure.PortDiameter_m   (Double)
+            // -----------------------------------
+
+            //CSSPError: Type not implemented [PortDiameter_m]
+
+            //CSSPError: Type not implemented [PortDiameter_m]
+
+            infrastructure = null;
+            infrastructure = GetFilledRandomInfrastructure("");
+            infrastructure.PortDiameter_m = -1.0D;
+            actionInfrastructure = await InfrastructureService.Post(infrastructure);
+            Assert.IsType<BadRequestObjectResult>(actionInfrastructure.Result);
+            //Assert.AreEqual(count, infrastructureService.GetInfrastructureList().Count());
+            infrastructure = null;
+            infrastructure = GetFilledRandomInfrastructure("");
+            infrastructure.PortDiameter_m = 11.0D;
+            actionInfrastructure = await InfrastructureService.Post(infrastructure);
+            Assert.IsType<BadRequestObjectResult>(actionInfrastructure.Result);
+            //Assert.AreEqual(count, infrastructureService.GetInfrastructureList().Count());
+
+            // -----------------------------------
+            // Is Nullable
+            // [CSSPRange(0, 10000)]
+            // infrastructure.PortSpacing_m   (Double)
+            // -----------------------------------
+
+            //CSSPError: Type not implemented [PortSpacing_m]
+
+            //CSSPError: Type not implemented [PortSpacing_m]
+
+            infrastructure = null;
+            infrastructure = GetFilledRandomInfrastructure("");
+            infrastructure.PortSpacing_m = -1.0D;
+            actionInfrastructure = await InfrastructureService.Post(infrastructure);
+            Assert.IsType<BadRequestObjectResult>(actionInfrastructure.Result);
+            //Assert.AreEqual(count, infrastructureService.GetInfrastructureList().Count());
+            infrastructure = null;
+            infrastructure = GetFilledRandomInfrastructure("");
+            infrastructure.PortSpacing_m = 10001.0D;
+            actionInfrastructure = await InfrastructureService.Post(infrastructure);
+            Assert.IsType<BadRequestObjectResult>(actionInfrastructure.Result);
+            //Assert.AreEqual(count, infrastructureService.GetInfrastructureList().Count());
+
+            // -----------------------------------
+            // Is Nullable
+            // [CSSPRange(0, 1000)]
+            // infrastructure.PortElevation_m   (Double)
+            // -----------------------------------
+
+            //CSSPError: Type not implemented [PortElevation_m]
+
+            //CSSPError: Type not implemented [PortElevation_m]
+
+            infrastructure = null;
+            infrastructure = GetFilledRandomInfrastructure("");
+            infrastructure.PortElevation_m = -1.0D;
+            actionInfrastructure = await InfrastructureService.Post(infrastructure);
+            Assert.IsType<BadRequestObjectResult>(actionInfrastructure.Result);
+            //Assert.AreEqual(count, infrastructureService.GetInfrastructureList().Count());
+            infrastructure = null;
+            infrastructure = GetFilledRandomInfrastructure("");
+            infrastructure.PortElevation_m = 1001.0D;
+            actionInfrastructure = await InfrastructureService.Post(infrastructure);
+            Assert.IsType<BadRequestObjectResult>(actionInfrastructure.Result);
+            //Assert.AreEqual(count, infrastructureService.GetInfrastructureList().Count());
+
+            // -----------------------------------
+            // Is Nullable
+            // [CSSPRange(-90, 90)]
+            // infrastructure.VerticalAngle_deg   (Double)
+            // -----------------------------------
+
+            //CSSPError: Type not implemented [VerticalAngle_deg]
+
+            //CSSPError: Type not implemented [VerticalAngle_deg]
+
+            infrastructure = null;
+            infrastructure = GetFilledRandomInfrastructure("");
+            infrastructure.VerticalAngle_deg = -91.0D;
+            actionInfrastructure = await InfrastructureService.Post(infrastructure);
+            Assert.IsType<BadRequestObjectResult>(actionInfrastructure.Result);
+            //Assert.AreEqual(count, infrastructureService.GetInfrastructureList().Count());
+            infrastructure = null;
+            infrastructure = GetFilledRandomInfrastructure("");
+            infrastructure.VerticalAngle_deg = 91.0D;
+            actionInfrastructure = await InfrastructureService.Post(infrastructure);
+            Assert.IsType<BadRequestObjectResult>(actionInfrastructure.Result);
+            //Assert.AreEqual(count, infrastructureService.GetInfrastructureList().Count());
+
+            // -----------------------------------
+            // Is Nullable
+            // [CSSPRange(-180, 180)]
+            // infrastructure.HorizontalAngle_deg   (Double)
+            // -----------------------------------
+
+            //CSSPError: Type not implemented [HorizontalAngle_deg]
+
+            //CSSPError: Type not implemented [HorizontalAngle_deg]
+
+            infrastructure = null;
+            infrastructure = GetFilledRandomInfrastructure("");
+            infrastructure.HorizontalAngle_deg = -181.0D;
+            actionInfrastructure = await InfrastructureService.Post(infrastructure);
+            Assert.IsType<BadRequestObjectResult>(actionInfrastructure.Result);
+            //Assert.AreEqual(count, infrastructureService.GetInfrastructureList().Count());
+            infrastructure = null;
+            infrastructure = GetFilledRandomInfrastructure("");
+            infrastructure.HorizontalAngle_deg = 181.0D;
+            actionInfrastructure = await InfrastructureService.Post(infrastructure);
+            Assert.IsType<BadRequestObjectResult>(actionInfrastructure.Result);
+            //Assert.AreEqual(count, infrastructureService.GetInfrastructureList().Count());
+
+            // -----------------------------------
+            // Is Nullable
+            // [CSSPRange(0, 100)]
+            // infrastructure.DecayRate_per_day   (Double)
+            // -----------------------------------
+
+            //CSSPError: Type not implemented [DecayRate_per_day]
+
+            //CSSPError: Type not implemented [DecayRate_per_day]
+
+            infrastructure = null;
+            infrastructure = GetFilledRandomInfrastructure("");
+            infrastructure.DecayRate_per_day = -1.0D;
+            actionInfrastructure = await InfrastructureService.Post(infrastructure);
+            Assert.IsType<BadRequestObjectResult>(actionInfrastructure.Result);
+            //Assert.AreEqual(count, infrastructureService.GetInfrastructureList().Count());
+            infrastructure = null;
+            infrastructure = GetFilledRandomInfrastructure("");
+            infrastructure.DecayRate_per_day = 101.0D;
+            actionInfrastructure = await InfrastructureService.Post(infrastructure);
+            Assert.IsType<BadRequestObjectResult>(actionInfrastructure.Result);
+            //Assert.AreEqual(count, infrastructureService.GetInfrastructureList().Count());
+
+            // -----------------------------------
+            // Is Nullable
+            // [CSSPRange(0, 10)]
+            // infrastructure.NearFieldVelocity_m_s   (Double)
+            // -----------------------------------
+
+            //CSSPError: Type not implemented [NearFieldVelocity_m_s]
+
+            //CSSPError: Type not implemented [NearFieldVelocity_m_s]
+
+            infrastructure = null;
+            infrastructure = GetFilledRandomInfrastructure("");
+            infrastructure.NearFieldVelocity_m_s = -1.0D;
+            actionInfrastructure = await InfrastructureService.Post(infrastructure);
+            Assert.IsType<BadRequestObjectResult>(actionInfrastructure.Result);
+            //Assert.AreEqual(count, infrastructureService.GetInfrastructureList().Count());
+            infrastructure = null;
+            infrastructure = GetFilledRandomInfrastructure("");
+            infrastructure.NearFieldVelocity_m_s = 11.0D;
+            actionInfrastructure = await InfrastructureService.Post(infrastructure);
+            Assert.IsType<BadRequestObjectResult>(actionInfrastructure.Result);
+            //Assert.AreEqual(count, infrastructureService.GetInfrastructureList().Count());
+
+            // -----------------------------------
+            // Is Nullable
+            // [CSSPRange(0, 10)]
+            // infrastructure.FarFieldVelocity_m_s   (Double)
+            // -----------------------------------
+
+            //CSSPError: Type not implemented [FarFieldVelocity_m_s]
+
+            //CSSPError: Type not implemented [FarFieldVelocity_m_s]
+
+            infrastructure = null;
+            infrastructure = GetFilledRandomInfrastructure("");
+            infrastructure.FarFieldVelocity_m_s = -1.0D;
+            actionInfrastructure = await InfrastructureService.Post(infrastructure);
+            Assert.IsType<BadRequestObjectResult>(actionInfrastructure.Result);
+            //Assert.AreEqual(count, infrastructureService.GetInfrastructureList().Count());
+            infrastructure = null;
+            infrastructure = GetFilledRandomInfrastructure("");
+            infrastructure.FarFieldVelocity_m_s = 11.0D;
+            actionInfrastructure = await InfrastructureService.Post(infrastructure);
+            Assert.IsType<BadRequestObjectResult>(actionInfrastructure.Result);
+            //Assert.AreEqual(count, infrastructureService.GetInfrastructureList().Count());
+
+            // -----------------------------------
+            // Is Nullable
+            // [CSSPRange(0, 40)]
+            // infrastructure.ReceivingWaterSalinity_PSU   (Double)
+            // -----------------------------------
+
+            //CSSPError: Type not implemented [ReceivingWaterSalinity_PSU]
+
+            //CSSPError: Type not implemented [ReceivingWaterSalinity_PSU]
+
+            infrastructure = null;
+            infrastructure = GetFilledRandomInfrastructure("");
+            infrastructure.ReceivingWaterSalinity_PSU = -1.0D;
+            actionInfrastructure = await InfrastructureService.Post(infrastructure);
+            Assert.IsType<BadRequestObjectResult>(actionInfrastructure.Result);
+            //Assert.AreEqual(count, infrastructureService.GetInfrastructureList().Count());
+            infrastructure = null;
+            infrastructure = GetFilledRandomInfrastructure("");
+            infrastructure.ReceivingWaterSalinity_PSU = 41.0D;
+            actionInfrastructure = await InfrastructureService.Post(infrastructure);
+            Assert.IsType<BadRequestObjectResult>(actionInfrastructure.Result);
+            //Assert.AreEqual(count, infrastructureService.GetInfrastructureList().Count());
+
+            // -----------------------------------
+            // Is Nullable
+            // [CSSPRange(-10, 40)]
+            // infrastructure.ReceivingWaterTemperature_C   (Double)
+            // -----------------------------------
+
+            //CSSPError: Type not implemented [ReceivingWaterTemperature_C]
+
+            //CSSPError: Type not implemented [ReceivingWaterTemperature_C]
+
+            infrastructure = null;
+            infrastructure = GetFilledRandomInfrastructure("");
+            infrastructure.ReceivingWaterTemperature_C = -11.0D;
+            actionInfrastructure = await InfrastructureService.Post(infrastructure);
+            Assert.IsType<BadRequestObjectResult>(actionInfrastructure.Result);
+            //Assert.AreEqual(count, infrastructureService.GetInfrastructureList().Count());
+            infrastructure = null;
+            infrastructure = GetFilledRandomInfrastructure("");
+            infrastructure.ReceivingWaterTemperature_C = 41.0D;
+            actionInfrastructure = await InfrastructureService.Post(infrastructure);
+            Assert.IsType<BadRequestObjectResult>(actionInfrastructure.Result);
+            //Assert.AreEqual(count, infrastructureService.GetInfrastructureList().Count());
+
+            // -----------------------------------
+            // Is Nullable
+            // [CSSPRange(0, 10000000)]
+            // infrastructure.ReceivingWater_MPN_per_100ml   (Int32)
+            // -----------------------------------
+
+            infrastructure = null;
+            infrastructure = GetFilledRandomInfrastructure("");
+            infrastructure.ReceivingWater_MPN_per_100ml = -1;
+            actionInfrastructure = await InfrastructureService.Post(infrastructure);
+            Assert.IsType<BadRequestObjectResult>(actionInfrastructure.Result);
+            //Assert.AreEqual(count, infrastructureService.GetInfrastructureList().Count());
+            infrastructure = null;
+            infrastructure = GetFilledRandomInfrastructure("");
+            infrastructure.ReceivingWater_MPN_per_100ml = 10000001;
+            actionInfrastructure = await InfrastructureService.Post(infrastructure);
+            Assert.IsType<BadRequestObjectResult>(actionInfrastructure.Result);
+            //Assert.AreEqual(count, infrastructureService.GetInfrastructureList().Count());
+
+            // -----------------------------------
+            // Is Nullable
+            // [CSSPRange(0, 1000)]
+            // infrastructure.DistanceFromShore_m   (Double)
+            // -----------------------------------
+
+            //CSSPError: Type not implemented [DistanceFromShore_m]
+
+            //CSSPError: Type not implemented [DistanceFromShore_m]
+
+            infrastructure = null;
+            infrastructure = GetFilledRandomInfrastructure("");
+            infrastructure.DistanceFromShore_m = -1.0D;
+            actionInfrastructure = await InfrastructureService.Post(infrastructure);
+            Assert.IsType<BadRequestObjectResult>(actionInfrastructure.Result);
+            //Assert.AreEqual(count, infrastructureService.GetInfrastructureList().Count());
+            infrastructure = null;
+            infrastructure = GetFilledRandomInfrastructure("");
+            infrastructure.DistanceFromShore_m = 1001.0D;
+            actionInfrastructure = await InfrastructureService.Post(infrastructure);
+            Assert.IsType<BadRequestObjectResult>(actionInfrastructure.Result);
+            //Assert.AreEqual(count, infrastructureService.GetInfrastructureList().Count());
+
+            // -----------------------------------
+            // Is Nullable
+            // [CSSPExist(ExistTypeName = "TVItem", ExistPlurial = "s", ExistFieldID = "TVItemID", AllowableTVtypeList = Infrastructure)]
+            // infrastructure.SeeOtherMunicipalityTVItemID   (Int32)
+            // -----------------------------------
+
+            infrastructure = null;
+            infrastructure = GetFilledRandomInfrastructure("");
+            infrastructure.SeeOtherMunicipalityTVItemID = 0;
+            actionInfrastructure = await InfrastructureService.Post(infrastructure);
+            Assert.IsType<BadRequestObjectResult>(actionInfrastructure.Result);
+
+            infrastructure = null;
+            infrastructure = GetFilledRandomInfrastructure("");
+            infrastructure.SeeOtherMunicipalityTVItemID = 1;
+            actionInfrastructure = await InfrastructureService.Post(infrastructure);
+            Assert.IsType<BadRequestObjectResult>(actionInfrastructure.Result);
+
+
+            // -----------------------------------
+            // Is Nullable
+            // [CSSPExist(ExistTypeName = "TVItem", ExistPlurial = "s", ExistFieldID = "TVItemID", AllowableTVtypeList = Address)]
+            // infrastructure.CivicAddressTVItemID   (Int32)
+            // -----------------------------------
+
+            infrastructure = null;
+            infrastructure = GetFilledRandomInfrastructure("");
+            infrastructure.CivicAddressTVItemID = 0;
+            actionInfrastructure = await InfrastructureService.Post(infrastructure);
+            Assert.IsType<BadRequestObjectResult>(actionInfrastructure.Result);
+
+            infrastructure = null;
+            infrastructure = GetFilledRandomInfrastructure("");
+            infrastructure.CivicAddressTVItemID = 1;
+            actionInfrastructure = await InfrastructureService.Post(infrastructure);
+            Assert.IsType<BadRequestObjectResult>(actionInfrastructure.Result);
+
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPAfter(Year = 1980)]
+            // infrastructure.LastUpdateDate_UTC   (DateTime)
+            // -----------------------------------
+
+            infrastructure = null;
+            infrastructure = GetFilledRandomInfrastructure("");
+            infrastructure.LastUpdateDate_UTC = new DateTime();
+            actionInfrastructure = await InfrastructureService.Post(infrastructure);
+            Assert.IsType<BadRequestObjectResult>(actionInfrastructure.Result);
+            infrastructure = null;
+            infrastructure = GetFilledRandomInfrastructure("");
+            infrastructure.LastUpdateDate_UTC = new DateTime(1979, 1, 1);
+            actionInfrastructure = await InfrastructureService.Post(infrastructure);
+            Assert.IsType<BadRequestObjectResult>(actionInfrastructure.Result);
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPExist(ExistTypeName = "TVItem", ExistPlurial = "s", ExistFieldID = "TVItemID", AllowableTVtypeList = Contact)]
+            // infrastructure.LastUpdateContactTVItemID   (Int32)
+            // -----------------------------------
+
+            infrastructure = null;
+            infrastructure = GetFilledRandomInfrastructure("");
+            infrastructure.LastUpdateContactTVItemID = 0;
+            actionInfrastructure = await InfrastructureService.Post(infrastructure);
+            Assert.IsType<BadRequestObjectResult>(actionInfrastructure.Result);
+
+            infrastructure = null;
+            infrastructure = GetFilledRandomInfrastructure("");
+            infrastructure.LastUpdateContactTVItemID = 1;
+            actionInfrastructure = await InfrastructureService.Post(infrastructure);
+            Assert.IsType<BadRequestObjectResult>(actionInfrastructure.Result);
+
+        }
+        #endregion Tests Generated Properties
 
         #region Functions private
         private async Task DoCRUDTest()
@@ -287,6 +1214,193 @@ namespace CSSPServices.Tests
             }
 
             return infrastructure;
+        }
+        private void CheckInfrastructureFields(List<Infrastructure> infrastructureList)
+        {
+            if (infrastructureList[0].PrismID != null)
+            {
+                Assert.NotNull(infrastructureList[0].PrismID);
+            }
+            if (infrastructureList[0].TPID != null)
+            {
+                Assert.NotNull(infrastructureList[0].TPID);
+            }
+            if (infrastructureList[0].LSID != null)
+            {
+                Assert.NotNull(infrastructureList[0].LSID);
+            }
+            if (infrastructureList[0].SiteID != null)
+            {
+                Assert.NotNull(infrastructureList[0].SiteID);
+            }
+            if (infrastructureList[0].Site != null)
+            {
+                Assert.NotNull(infrastructureList[0].Site);
+            }
+            if (!string.IsNullOrWhiteSpace(infrastructureList[0].InfrastructureCategory))
+            {
+                Assert.False(string.IsNullOrWhiteSpace(infrastructureList[0].InfrastructureCategory));
+            }
+            if (infrastructureList[0].InfrastructureType != null)
+            {
+                Assert.NotNull(infrastructureList[0].InfrastructureType);
+            }
+            if (infrastructureList[0].FacilityType != null)
+            {
+                Assert.NotNull(infrastructureList[0].FacilityType);
+            }
+            if (infrastructureList[0].HasBackupPower != null)
+            {
+                Assert.NotNull(infrastructureList[0].HasBackupPower);
+            }
+            if (infrastructureList[0].IsMechanicallyAerated != null)
+            {
+                Assert.NotNull(infrastructureList[0].IsMechanicallyAerated);
+            }
+            if (infrastructureList[0].NumberOfCells != null)
+            {
+                Assert.NotNull(infrastructureList[0].NumberOfCells);
+            }
+            if (infrastructureList[0].NumberOfAeratedCells != null)
+            {
+                Assert.NotNull(infrastructureList[0].NumberOfAeratedCells);
+            }
+            if (infrastructureList[0].AerationType != null)
+            {
+                Assert.NotNull(infrastructureList[0].AerationType);
+            }
+            if (infrastructureList[0].PreliminaryTreatmentType != null)
+            {
+                Assert.NotNull(infrastructureList[0].PreliminaryTreatmentType);
+            }
+            if (infrastructureList[0].PrimaryTreatmentType != null)
+            {
+                Assert.NotNull(infrastructureList[0].PrimaryTreatmentType);
+            }
+            if (infrastructureList[0].SecondaryTreatmentType != null)
+            {
+                Assert.NotNull(infrastructureList[0].SecondaryTreatmentType);
+            }
+            if (infrastructureList[0].TertiaryTreatmentType != null)
+            {
+                Assert.NotNull(infrastructureList[0].TertiaryTreatmentType);
+            }
+            if (infrastructureList[0].TreatmentType != null)
+            {
+                Assert.NotNull(infrastructureList[0].TreatmentType);
+            }
+            if (infrastructureList[0].DisinfectionType != null)
+            {
+                Assert.NotNull(infrastructureList[0].DisinfectionType);
+            }
+            if (infrastructureList[0].CollectionSystemType != null)
+            {
+                Assert.NotNull(infrastructureList[0].CollectionSystemType);
+            }
+            if (infrastructureList[0].AlarmSystemType != null)
+            {
+                Assert.NotNull(infrastructureList[0].AlarmSystemType);
+            }
+            if (infrastructureList[0].DesignFlow_m3_day != null)
+            {
+                Assert.NotNull(infrastructureList[0].DesignFlow_m3_day);
+            }
+            if (infrastructureList[0].AverageFlow_m3_day != null)
+            {
+                Assert.NotNull(infrastructureList[0].AverageFlow_m3_day);
+            }
+            if (infrastructureList[0].PeakFlow_m3_day != null)
+            {
+                Assert.NotNull(infrastructureList[0].PeakFlow_m3_day);
+            }
+            if (infrastructureList[0].PopServed != null)
+            {
+                Assert.NotNull(infrastructureList[0].PopServed);
+            }
+            if (infrastructureList[0].CanOverflow != null)
+            {
+                Assert.NotNull(infrastructureList[0].CanOverflow);
+            }
+            if (infrastructureList[0].ValveType != null)
+            {
+                Assert.NotNull(infrastructureList[0].ValveType);
+            }
+            if (infrastructureList[0].PercFlowOfTotal != null)
+            {
+                Assert.NotNull(infrastructureList[0].PercFlowOfTotal);
+            }
+            if (infrastructureList[0].TimeOffset_hour != null)
+            {
+                Assert.NotNull(infrastructureList[0].TimeOffset_hour);
+            }
+            if (!string.IsNullOrWhiteSpace(infrastructureList[0].TempCatchAllRemoveLater))
+            {
+                Assert.False(string.IsNullOrWhiteSpace(infrastructureList[0].TempCatchAllRemoveLater));
+            }
+            if (infrastructureList[0].AverageDepth_m != null)
+            {
+                Assert.NotNull(infrastructureList[0].AverageDepth_m);
+            }
+            if (infrastructureList[0].NumberOfPorts != null)
+            {
+                Assert.NotNull(infrastructureList[0].NumberOfPorts);
+            }
+            if (infrastructureList[0].PortDiameter_m != null)
+            {
+                Assert.NotNull(infrastructureList[0].PortDiameter_m);
+            }
+            if (infrastructureList[0].PortSpacing_m != null)
+            {
+                Assert.NotNull(infrastructureList[0].PortSpacing_m);
+            }
+            if (infrastructureList[0].PortElevation_m != null)
+            {
+                Assert.NotNull(infrastructureList[0].PortElevation_m);
+            }
+            if (infrastructureList[0].VerticalAngle_deg != null)
+            {
+                Assert.NotNull(infrastructureList[0].VerticalAngle_deg);
+            }
+            if (infrastructureList[0].HorizontalAngle_deg != null)
+            {
+                Assert.NotNull(infrastructureList[0].HorizontalAngle_deg);
+            }
+            if (infrastructureList[0].DecayRate_per_day != null)
+            {
+                Assert.NotNull(infrastructureList[0].DecayRate_per_day);
+            }
+            if (infrastructureList[0].NearFieldVelocity_m_s != null)
+            {
+                Assert.NotNull(infrastructureList[0].NearFieldVelocity_m_s);
+            }
+            if (infrastructureList[0].FarFieldVelocity_m_s != null)
+            {
+                Assert.NotNull(infrastructureList[0].FarFieldVelocity_m_s);
+            }
+            if (infrastructureList[0].ReceivingWaterSalinity_PSU != null)
+            {
+                Assert.NotNull(infrastructureList[0].ReceivingWaterSalinity_PSU);
+            }
+            if (infrastructureList[0].ReceivingWaterTemperature_C != null)
+            {
+                Assert.NotNull(infrastructureList[0].ReceivingWaterTemperature_C);
+            }
+            if (infrastructureList[0].ReceivingWater_MPN_per_100ml != null)
+            {
+                Assert.NotNull(infrastructureList[0].ReceivingWater_MPN_per_100ml);
+            }
+            if (infrastructureList[0].DistanceFromShore_m != null)
+            {
+                Assert.NotNull(infrastructureList[0].DistanceFromShore_m);
+            }
+            if (infrastructureList[0].SeeOtherMunicipalityTVItemID != null)
+            {
+                Assert.NotNull(infrastructureList[0].SeeOtherMunicipalityTVItemID);
+            }
+            if (infrastructureList[0].CivicAddressTVItemID != null)
+            {
+                Assert.NotNull(infrastructureList[0].CivicAddressTVItemID);
+            }
         }
         #endregion Functions private
     }

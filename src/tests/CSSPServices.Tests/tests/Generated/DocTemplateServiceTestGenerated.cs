@@ -19,6 +19,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Transactions;
 using Xunit;
+using System.ComponentModel.DataAnnotations;
 
 namespace CSSPServices.Tests
 {
@@ -81,6 +82,161 @@ namespace CSSPServices.Tests
             }
         }
         #endregion Tests Generated CRUD
+
+        #region Tests Generated Properties
+        [Theory]
+        [InlineData("en-CA", DBLocationEnum.Local)]
+        [InlineData("fr-CA", DBLocationEnum.Local)]
+        [InlineData("en-CA", DBLocationEnum.Server)]
+        [InlineData("fr-CA", DBLocationEnum.Server)]
+        public async Task DocTemplate_Properties_Test(string culture, DBLocationEnum DBLocation)
+        {
+            // -------------------------------
+            // -------------------------------
+            // Properties testing
+            // -------------------------------
+            // -------------------------------
+
+            Assert.True(await Setup(culture));
+
+            LoggedInService.DBLocation = DBLocation;
+
+            int count = 0;
+            if (count == 1)
+            {
+                // just so we don't get a warning during compile [The variable 'count' is assigned but its value is never used]
+            }
+
+            var actionDocTemplateList = await DocTemplateService.GetDocTemplateList();
+            Assert.Equal(200, ((ObjectResult)actionDocTemplateList.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionDocTemplateList.Result).Value);
+            List<DocTemplate> docTemplateList = (List<DocTemplate>)((OkObjectResult)actionDocTemplateList.Result).Value;
+
+            count = docTemplateList.Count();
+
+            DocTemplate docTemplate = GetFilledRandomDocTemplate("");
+
+
+            // -----------------------------------
+            // [Key]
+            // Is NOT Nullable
+            // docTemplate.DocTemplateID   (Int32)
+            // -----------------------------------
+
+            docTemplate = null;
+            docTemplate = GetFilledRandomDocTemplate("");
+            docTemplate.DocTemplateID = 0;
+
+            var actionDocTemplate = await DocTemplateService.Put(docTemplate);
+            Assert.IsType<BadRequestObjectResult>(actionDocTemplate.Result);
+
+            docTemplate = null;
+            docTemplate = GetFilledRandomDocTemplate("");
+            docTemplate.DocTemplateID = 10000000;
+            actionDocTemplate = await DocTemplateService.Put(docTemplate);
+            Assert.IsType<BadRequestObjectResult>(actionDocTemplate.Result);
+
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPEnumType]
+            // docTemplate.Language   (LanguageEnum)
+            // -----------------------------------
+
+            docTemplate = null;
+            docTemplate = GetFilledRandomDocTemplate("");
+            docTemplate.Language = (LanguageEnum)1000000;
+            actionDocTemplate = await DocTemplateService.Post(docTemplate);
+            Assert.IsType<BadRequestObjectResult>(actionDocTemplate.Result);
+
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPEnumType]
+            // docTemplate.TVType   (TVTypeEnum)
+            // -----------------------------------
+
+            docTemplate = null;
+            docTemplate = GetFilledRandomDocTemplate("");
+            docTemplate.TVType = (TVTypeEnum)1000000;
+            actionDocTemplate = await DocTemplateService.Post(docTemplate);
+            Assert.IsType<BadRequestObjectResult>(actionDocTemplate.Result);
+
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPExist(ExistTypeName = "TVItem", ExistPlurial = "s", ExistFieldID = "TVItemID", AllowableTVtypeList = File)]
+            // docTemplate.TVFileTVItemID   (Int32)
+            // -----------------------------------
+
+            docTemplate = null;
+            docTemplate = GetFilledRandomDocTemplate("");
+            docTemplate.TVFileTVItemID = 0;
+            actionDocTemplate = await DocTemplateService.Post(docTemplate);
+            Assert.IsType<BadRequestObjectResult>(actionDocTemplate.Result);
+
+            docTemplate = null;
+            docTemplate = GetFilledRandomDocTemplate("");
+            docTemplate.TVFileTVItemID = 1;
+            actionDocTemplate = await DocTemplateService.Post(docTemplate);
+            Assert.IsType<BadRequestObjectResult>(actionDocTemplate.Result);
+
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPMaxLength(150)]
+            // docTemplate.FileName   (String)
+            // -----------------------------------
+
+            docTemplate = null;
+            docTemplate = GetFilledRandomDocTemplate("FileName");
+            actionDocTemplate = await DocTemplateService.Post(docTemplate);
+            Assert.IsType<BadRequestObjectResult>(actionDocTemplate.Result);
+
+            docTemplate = null;
+            docTemplate = GetFilledRandomDocTemplate("");
+            docTemplate.FileName = GetRandomString("", 151);
+            actionDocTemplate = await DocTemplateService.Post(docTemplate);
+            Assert.IsType<BadRequestObjectResult>(actionDocTemplate.Result);
+            //Assert.AreEqual(count, docTemplateService.GetDocTemplateList().Count());
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPAfter(Year = 1980)]
+            // docTemplate.LastUpdateDate_UTC   (DateTime)
+            // -----------------------------------
+
+            docTemplate = null;
+            docTemplate = GetFilledRandomDocTemplate("");
+            docTemplate.LastUpdateDate_UTC = new DateTime();
+            actionDocTemplate = await DocTemplateService.Post(docTemplate);
+            Assert.IsType<BadRequestObjectResult>(actionDocTemplate.Result);
+            docTemplate = null;
+            docTemplate = GetFilledRandomDocTemplate("");
+            docTemplate.LastUpdateDate_UTC = new DateTime(1979, 1, 1);
+            actionDocTemplate = await DocTemplateService.Post(docTemplate);
+            Assert.IsType<BadRequestObjectResult>(actionDocTemplate.Result);
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPExist(ExistTypeName = "TVItem", ExistPlurial = "s", ExistFieldID = "TVItemID", AllowableTVtypeList = Contact)]
+            // docTemplate.LastUpdateContactTVItemID   (Int32)
+            // -----------------------------------
+
+            docTemplate = null;
+            docTemplate = GetFilledRandomDocTemplate("");
+            docTemplate.LastUpdateContactTVItemID = 0;
+            actionDocTemplate = await DocTemplateService.Post(docTemplate);
+            Assert.IsType<BadRequestObjectResult>(actionDocTemplate.Result);
+
+            docTemplate = null;
+            docTemplate = GetFilledRandomDocTemplate("");
+            docTemplate.LastUpdateContactTVItemID = 1;
+            actionDocTemplate = await DocTemplateService.Post(docTemplate);
+            Assert.IsType<BadRequestObjectResult>(actionDocTemplate.Result);
+
+        }
+        #endregion Tests Generated Properties
 
         #region Functions private
         private async Task DoCRUDTest()
@@ -235,6 +391,10 @@ namespace CSSPServices.Tests
             }
 
             return docTemplate;
+        }
+        private void CheckDocTemplateFields(List<DocTemplate> docTemplateList)
+        {
+            Assert.False(string.IsNullOrWhiteSpace(docTemplateList[0].FileName));
         }
         #endregion Functions private
     }

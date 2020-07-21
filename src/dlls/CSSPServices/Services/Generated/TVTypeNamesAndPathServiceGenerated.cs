@@ -20,19 +20,67 @@ using System.Threading.Tasks;
 
 namespace CSSPServices
 {
-    public partial class TVTypeNamesAndPathService
+    public interface ITVTypeNamesAndPathService
+    {
+        IEnumerable<ValidationResult> Validate(ValidationContext validationContext);
+    }
+    public partial class TVTypeNamesAndPathService : ITVTypeNamesAndPathService
     {
         #region Variables
         #endregion Variables
 
         #region Properties
+        private ICSSPCultureService CSSPCultureService { get; }
+        private IEnums enums { get; }
         #endregion Properties
 
         #region Constructors
-        public TVTypeNamesAndPathService()
+        public TVTypeNamesAndPathService(ICSSPCultureService CSSPCultureService, IEnums enums)
         {
+            this.CSSPCultureService = CSSPCultureService;
+            this.enums = enums;
         }
         #endregion Constructors
+
+        #region Functions public
+        public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+        {
+            string retStr = "";
+            TVTypeNamesAndPath tvTypeNamesAndPath = validationContext.ObjectInstance as TVTypeNamesAndPath;
+
+            if (string.IsNullOrWhiteSpace(tvTypeNamesAndPath.TVTypeName))
+            {
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "TVTypeName"), new[] { "TVTypeName" });
+            }
+
+            if (!string.IsNullOrWhiteSpace(tvTypeNamesAndPath.TVTypeName) && (tvTypeNamesAndPath.TVTypeName.Length < 1 || tvTypeNamesAndPath.TVTypeName.Length > 255))
+            {
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._LengthShouldBeBetween_And_, "TVTypeName", "1", "255"), new[] { "TVTypeName" });
+            }
+
+            if (tvTypeNamesAndPath.Index < 1)
+            {
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MinValueIs_, "Index", "1"), new[] { "Index" });
+            }
+
+            if (string.IsNullOrWhiteSpace(tvTypeNamesAndPath.TVPath))
+            {
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "TVPath"), new[] { "TVPath" });
+            }
+
+            if (!string.IsNullOrWhiteSpace(tvTypeNamesAndPath.TVPath) && (tvTypeNamesAndPath.TVPath.Length < 1 || tvTypeNamesAndPath.TVPath.Length > 255))
+            {
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._LengthShouldBeBetween_And_, "TVPath", "1", "255"), new[] { "TVPath" });
+            }
+
+            retStr = ""; // added to stop compiling CSSPError
+            if (retStr != "") // will never be true
+            {
+                yield return new ValidationResult("AAA", new[] { "AAA" });
+            }
+
+        }
+        #endregion Functions public
 
     }
 }

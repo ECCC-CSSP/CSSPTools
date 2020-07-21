@@ -19,6 +19,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Transactions;
 using Xunit;
+using System.ComponentModel.DataAnnotations;
 
 namespace CSSPServices.Tests
 {
@@ -81,6 +82,298 @@ namespace CSSPServices.Tests
             }
         }
         #endregion Tests Generated CRUD
+
+        #region Tests Generated Properties
+        [Theory]
+        [InlineData("en-CA", DBLocationEnum.Local)]
+        [InlineData("fr-CA", DBLocationEnum.Local)]
+        [InlineData("en-CA", DBLocationEnum.Server)]
+        [InlineData("fr-CA", DBLocationEnum.Server)]
+        public async Task PolSourceGroupingLanguage_Properties_Test(string culture, DBLocationEnum DBLocation)
+        {
+            // -------------------------------
+            // -------------------------------
+            // Properties testing
+            // -------------------------------
+            // -------------------------------
+
+            Assert.True(await Setup(culture));
+
+            LoggedInService.DBLocation = DBLocation;
+
+            int count = 0;
+            if (count == 1)
+            {
+                // just so we don't get a warning during compile [The variable 'count' is assigned but its value is never used]
+            }
+
+            var actionPolSourceGroupingLanguageList = await PolSourceGroupingLanguageService.GetPolSourceGroupingLanguageList();
+            Assert.Equal(200, ((ObjectResult)actionPolSourceGroupingLanguageList.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionPolSourceGroupingLanguageList.Result).Value);
+            List<PolSourceGroupingLanguage> polSourceGroupingLanguageList = (List<PolSourceGroupingLanguage>)((OkObjectResult)actionPolSourceGroupingLanguageList.Result).Value;
+
+            count = polSourceGroupingLanguageList.Count();
+
+            PolSourceGroupingLanguage polSourceGroupingLanguage = GetFilledRandomPolSourceGroupingLanguage("");
+
+
+            // -----------------------------------
+            // [Key]
+            // Is NOT Nullable
+            // polSourceGroupingLanguage.PolSourceGroupingLanguageID   (Int32)
+            // -----------------------------------
+
+            polSourceGroupingLanguage = null;
+            polSourceGroupingLanguage = GetFilledRandomPolSourceGroupingLanguage("");
+            polSourceGroupingLanguage.PolSourceGroupingLanguageID = 0;
+
+            var actionPolSourceGroupingLanguage = await PolSourceGroupingLanguageService.Put(polSourceGroupingLanguage);
+            Assert.IsType<BadRequestObjectResult>(actionPolSourceGroupingLanguage.Result);
+
+            polSourceGroupingLanguage = null;
+            polSourceGroupingLanguage = GetFilledRandomPolSourceGroupingLanguage("");
+            polSourceGroupingLanguage.PolSourceGroupingLanguageID = 10000000;
+            actionPolSourceGroupingLanguage = await PolSourceGroupingLanguageService.Put(polSourceGroupingLanguage);
+            Assert.IsType<BadRequestObjectResult>(actionPolSourceGroupingLanguage.Result);
+
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPExist(ExistTypeName = "PolSourceGrouping", ExistPlurial = "s", ExistFieldID = "PolSourceGroupingID", AllowableTVtypeList = )]
+            // polSourceGroupingLanguage.PolSourceGroupingID   (Int32)
+            // -----------------------------------
+
+            polSourceGroupingLanguage = null;
+            polSourceGroupingLanguage = GetFilledRandomPolSourceGroupingLanguage("");
+            polSourceGroupingLanguage.PolSourceGroupingID = 0;
+            actionPolSourceGroupingLanguage = await PolSourceGroupingLanguageService.Post(polSourceGroupingLanguage);
+            Assert.IsType<BadRequestObjectResult>(actionPolSourceGroupingLanguage.Result);
+
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPEnumType]
+            // polSourceGroupingLanguage.Language   (LanguageEnum)
+            // -----------------------------------
+
+            polSourceGroupingLanguage = null;
+            polSourceGroupingLanguage = GetFilledRandomPolSourceGroupingLanguage("");
+            polSourceGroupingLanguage.Language = (LanguageEnum)1000000;
+            actionPolSourceGroupingLanguage = await PolSourceGroupingLanguageService.Post(polSourceGroupingLanguage);
+            Assert.IsType<BadRequestObjectResult>(actionPolSourceGroupingLanguage.Result);
+
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPMaxLength(500)]
+            // polSourceGroupingLanguage.SourceName   (String)
+            // -----------------------------------
+
+            polSourceGroupingLanguage = null;
+            polSourceGroupingLanguage = GetFilledRandomPolSourceGroupingLanguage("SourceName");
+            actionPolSourceGroupingLanguage = await PolSourceGroupingLanguageService.Post(polSourceGroupingLanguage);
+            Assert.IsType<BadRequestObjectResult>(actionPolSourceGroupingLanguage.Result);
+
+            polSourceGroupingLanguage = null;
+            polSourceGroupingLanguage = GetFilledRandomPolSourceGroupingLanguage("");
+            polSourceGroupingLanguage.SourceName = GetRandomString("", 501);
+            actionPolSourceGroupingLanguage = await PolSourceGroupingLanguageService.Post(polSourceGroupingLanguage);
+            Assert.IsType<BadRequestObjectResult>(actionPolSourceGroupingLanguage.Result);
+            //Assert.AreEqual(count, polSourceGroupingLanguageService.GetPolSourceGroupingLanguageList().Count());
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPRange(0, 1000)]
+            // polSourceGroupingLanguage.SourceNameOrder   (Int32)
+            // -----------------------------------
+
+            polSourceGroupingLanguage = null;
+            polSourceGroupingLanguage = GetFilledRandomPolSourceGroupingLanguage("");
+            polSourceGroupingLanguage.SourceNameOrder = -1;
+            actionPolSourceGroupingLanguage = await PolSourceGroupingLanguageService.Post(polSourceGroupingLanguage);
+            Assert.IsType<BadRequestObjectResult>(actionPolSourceGroupingLanguage.Result);
+            //Assert.AreEqual(count, polSourceGroupingLanguageService.GetPolSourceGroupingLanguageList().Count());
+            polSourceGroupingLanguage = null;
+            polSourceGroupingLanguage = GetFilledRandomPolSourceGroupingLanguage("");
+            polSourceGroupingLanguage.SourceNameOrder = 1001;
+            actionPolSourceGroupingLanguage = await PolSourceGroupingLanguageService.Post(polSourceGroupingLanguage);
+            Assert.IsType<BadRequestObjectResult>(actionPolSourceGroupingLanguage.Result);
+            //Assert.AreEqual(count, polSourceGroupingLanguageService.GetPolSourceGroupingLanguageList().Count());
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPEnumType]
+            // polSourceGroupingLanguage.TranslationStatusSourceName   (TranslationStatusEnum)
+            // -----------------------------------
+
+            polSourceGroupingLanguage = null;
+            polSourceGroupingLanguage = GetFilledRandomPolSourceGroupingLanguage("");
+            polSourceGroupingLanguage.TranslationStatusSourceName = (TranslationStatusEnum)1000000;
+            actionPolSourceGroupingLanguage = await PolSourceGroupingLanguageService.Post(polSourceGroupingLanguage);
+            Assert.IsType<BadRequestObjectResult>(actionPolSourceGroupingLanguage.Result);
+
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPMaxLength(50)]
+            // polSourceGroupingLanguage.Init   (String)
+            // -----------------------------------
+
+            polSourceGroupingLanguage = null;
+            polSourceGroupingLanguage = GetFilledRandomPolSourceGroupingLanguage("Init");
+            actionPolSourceGroupingLanguage = await PolSourceGroupingLanguageService.Post(polSourceGroupingLanguage);
+            Assert.IsType<BadRequestObjectResult>(actionPolSourceGroupingLanguage.Result);
+
+            polSourceGroupingLanguage = null;
+            polSourceGroupingLanguage = GetFilledRandomPolSourceGroupingLanguage("");
+            polSourceGroupingLanguage.Init = GetRandomString("", 51);
+            actionPolSourceGroupingLanguage = await PolSourceGroupingLanguageService.Post(polSourceGroupingLanguage);
+            Assert.IsType<BadRequestObjectResult>(actionPolSourceGroupingLanguage.Result);
+            //Assert.AreEqual(count, polSourceGroupingLanguageService.GetPolSourceGroupingLanguageList().Count());
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPEnumType]
+            // polSourceGroupingLanguage.TranslationStatusInit   (TranslationStatusEnum)
+            // -----------------------------------
+
+            polSourceGroupingLanguage = null;
+            polSourceGroupingLanguage = GetFilledRandomPolSourceGroupingLanguage("");
+            polSourceGroupingLanguage.TranslationStatusInit = (TranslationStatusEnum)1000000;
+            actionPolSourceGroupingLanguage = await PolSourceGroupingLanguageService.Post(polSourceGroupingLanguage);
+            Assert.IsType<BadRequestObjectResult>(actionPolSourceGroupingLanguage.Result);
+
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPMaxLength(500)]
+            // polSourceGroupingLanguage.Description   (String)
+            // -----------------------------------
+
+            polSourceGroupingLanguage = null;
+            polSourceGroupingLanguage = GetFilledRandomPolSourceGroupingLanguage("Description");
+            actionPolSourceGroupingLanguage = await PolSourceGroupingLanguageService.Post(polSourceGroupingLanguage);
+            Assert.IsType<BadRequestObjectResult>(actionPolSourceGroupingLanguage.Result);
+
+            polSourceGroupingLanguage = null;
+            polSourceGroupingLanguage = GetFilledRandomPolSourceGroupingLanguage("");
+            polSourceGroupingLanguage.Description = GetRandomString("", 501);
+            actionPolSourceGroupingLanguage = await PolSourceGroupingLanguageService.Post(polSourceGroupingLanguage);
+            Assert.IsType<BadRequestObjectResult>(actionPolSourceGroupingLanguage.Result);
+            //Assert.AreEqual(count, polSourceGroupingLanguageService.GetPolSourceGroupingLanguageList().Count());
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPEnumType]
+            // polSourceGroupingLanguage.TranslationStatusDescription   (TranslationStatusEnum)
+            // -----------------------------------
+
+            polSourceGroupingLanguage = null;
+            polSourceGroupingLanguage = GetFilledRandomPolSourceGroupingLanguage("");
+            polSourceGroupingLanguage.TranslationStatusDescription = (TranslationStatusEnum)1000000;
+            actionPolSourceGroupingLanguage = await PolSourceGroupingLanguageService.Post(polSourceGroupingLanguage);
+            Assert.IsType<BadRequestObjectResult>(actionPolSourceGroupingLanguage.Result);
+
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPMaxLength(500)]
+            // polSourceGroupingLanguage.Report   (String)
+            // -----------------------------------
+
+            polSourceGroupingLanguage = null;
+            polSourceGroupingLanguage = GetFilledRandomPolSourceGroupingLanguage("Report");
+            actionPolSourceGroupingLanguage = await PolSourceGroupingLanguageService.Post(polSourceGroupingLanguage);
+            Assert.IsType<BadRequestObjectResult>(actionPolSourceGroupingLanguage.Result);
+
+            polSourceGroupingLanguage = null;
+            polSourceGroupingLanguage = GetFilledRandomPolSourceGroupingLanguage("");
+            polSourceGroupingLanguage.Report = GetRandomString("", 501);
+            actionPolSourceGroupingLanguage = await PolSourceGroupingLanguageService.Post(polSourceGroupingLanguage);
+            Assert.IsType<BadRequestObjectResult>(actionPolSourceGroupingLanguage.Result);
+            //Assert.AreEqual(count, polSourceGroupingLanguageService.GetPolSourceGroupingLanguageList().Count());
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPEnumType]
+            // polSourceGroupingLanguage.TranslationStatusReport   (TranslationStatusEnum)
+            // -----------------------------------
+
+            polSourceGroupingLanguage = null;
+            polSourceGroupingLanguage = GetFilledRandomPolSourceGroupingLanguage("");
+            polSourceGroupingLanguage.TranslationStatusReport = (TranslationStatusEnum)1000000;
+            actionPolSourceGroupingLanguage = await PolSourceGroupingLanguageService.Post(polSourceGroupingLanguage);
+            Assert.IsType<BadRequestObjectResult>(actionPolSourceGroupingLanguage.Result);
+
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPMaxLength(500)]
+            // polSourceGroupingLanguage.Text   (String)
+            // -----------------------------------
+
+            polSourceGroupingLanguage = null;
+            polSourceGroupingLanguage = GetFilledRandomPolSourceGroupingLanguage("Text");
+            actionPolSourceGroupingLanguage = await PolSourceGroupingLanguageService.Post(polSourceGroupingLanguage);
+            Assert.IsType<BadRequestObjectResult>(actionPolSourceGroupingLanguage.Result);
+
+            polSourceGroupingLanguage = null;
+            polSourceGroupingLanguage = GetFilledRandomPolSourceGroupingLanguage("");
+            polSourceGroupingLanguage.Text = GetRandomString("", 501);
+            actionPolSourceGroupingLanguage = await PolSourceGroupingLanguageService.Post(polSourceGroupingLanguage);
+            Assert.IsType<BadRequestObjectResult>(actionPolSourceGroupingLanguage.Result);
+            //Assert.AreEqual(count, polSourceGroupingLanguageService.GetPolSourceGroupingLanguageList().Count());
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPEnumType]
+            // polSourceGroupingLanguage.TranslationStatusText   (TranslationStatusEnum)
+            // -----------------------------------
+
+            polSourceGroupingLanguage = null;
+            polSourceGroupingLanguage = GetFilledRandomPolSourceGroupingLanguage("");
+            polSourceGroupingLanguage.TranslationStatusText = (TranslationStatusEnum)1000000;
+            actionPolSourceGroupingLanguage = await PolSourceGroupingLanguageService.Post(polSourceGroupingLanguage);
+            Assert.IsType<BadRequestObjectResult>(actionPolSourceGroupingLanguage.Result);
+
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPAfter(Year = 1980)]
+            // polSourceGroupingLanguage.LastUpdateDate_UTC   (DateTime)
+            // -----------------------------------
+
+            polSourceGroupingLanguage = null;
+            polSourceGroupingLanguage = GetFilledRandomPolSourceGroupingLanguage("");
+            polSourceGroupingLanguage.LastUpdateDate_UTC = new DateTime();
+            actionPolSourceGroupingLanguage = await PolSourceGroupingLanguageService.Post(polSourceGroupingLanguage);
+            Assert.IsType<BadRequestObjectResult>(actionPolSourceGroupingLanguage.Result);
+            polSourceGroupingLanguage = null;
+            polSourceGroupingLanguage = GetFilledRandomPolSourceGroupingLanguage("");
+            polSourceGroupingLanguage.LastUpdateDate_UTC = new DateTime(1979, 1, 1);
+            actionPolSourceGroupingLanguage = await PolSourceGroupingLanguageService.Post(polSourceGroupingLanguage);
+            Assert.IsType<BadRequestObjectResult>(actionPolSourceGroupingLanguage.Result);
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPExist(ExistTypeName = "TVItem", ExistPlurial = "s", ExistFieldID = "TVItemID", AllowableTVtypeList = Contact)]
+            // polSourceGroupingLanguage.LastUpdateContactTVItemID   (Int32)
+            // -----------------------------------
+
+            polSourceGroupingLanguage = null;
+            polSourceGroupingLanguage = GetFilledRandomPolSourceGroupingLanguage("");
+            polSourceGroupingLanguage.LastUpdateContactTVItemID = 0;
+            actionPolSourceGroupingLanguage = await PolSourceGroupingLanguageService.Post(polSourceGroupingLanguage);
+            Assert.IsType<BadRequestObjectResult>(actionPolSourceGroupingLanguage.Result);
+
+            polSourceGroupingLanguage = null;
+            polSourceGroupingLanguage = GetFilledRandomPolSourceGroupingLanguage("");
+            polSourceGroupingLanguage.LastUpdateContactTVItemID = 1;
+            actionPolSourceGroupingLanguage = await PolSourceGroupingLanguageService.Post(polSourceGroupingLanguage);
+            Assert.IsType<BadRequestObjectResult>(actionPolSourceGroupingLanguage.Result);
+
+        }
+        #endregion Tests Generated Properties
 
         #region Functions private
         private async Task DoCRUDTest()
@@ -225,7 +518,7 @@ namespace CSSPServices.Tests
 
                 try
                 {
-                    dbIM.PolSourceGroupings.Add(new PolSourceGrouping() { PolSourceGroupingID = 1, CSSPID = 10003, GroupName = "FirstGroupName", Child = "FirstChild", Hide = "FirstHide", LastUpdateDate_UTC = new DateTime(2020, 7, 17, 15, 11, 37), LastUpdateContactTVItemID = 2 });
+                    dbIM.PolSourceGroupings.Add(new PolSourceGrouping() { PolSourceGroupingID = 1, CSSPID = 10003, GroupName = "FirstGroupName", Child = "FirstChild", Hide = "FirstHide", LastUpdateDate_UTC = new DateTime(2020, 7, 19, 14, 30, 5), LastUpdateContactTVItemID = 2 });
                     dbIM.SaveChanges();
                 }
                 catch (Exception)
@@ -244,6 +537,14 @@ namespace CSSPServices.Tests
             }
 
             return polSourceGroupingLanguage;
+        }
+        private void CheckPolSourceGroupingLanguageFields(List<PolSourceGroupingLanguage> polSourceGroupingLanguageList)
+        {
+            Assert.False(string.IsNullOrWhiteSpace(polSourceGroupingLanguageList[0].SourceName));
+            Assert.False(string.IsNullOrWhiteSpace(polSourceGroupingLanguageList[0].Init));
+            Assert.False(string.IsNullOrWhiteSpace(polSourceGroupingLanguageList[0].Description));
+            Assert.False(string.IsNullOrWhiteSpace(polSourceGroupingLanguageList[0].Report));
+            Assert.False(string.IsNullOrWhiteSpace(polSourceGroupingLanguageList[0].Text));
         }
         #endregion Functions private
     }

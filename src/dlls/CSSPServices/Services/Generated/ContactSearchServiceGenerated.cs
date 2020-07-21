@@ -20,19 +20,62 @@ using System.Threading.Tasks;
 
 namespace CSSPServices
 {
-    public partial class ContactSearchService
+    public interface IContactSearchService
+    {
+        IEnumerable<ValidationResult> Validate(ValidationContext validationContext);
+    }
+    public partial class ContactSearchService : IContactSearchService
     {
         #region Variables
         #endregion Variables
 
         #region Properties
+        private ICSSPCultureService CSSPCultureService { get; }
+        private IEnums enums { get; }
         #endregion Properties
 
         #region Constructors
-        public ContactSearchService()
+        public ContactSearchService(ICSSPCultureService CSSPCultureService, IEnums enums)
         {
+            this.CSSPCultureService = CSSPCultureService;
+            this.enums = enums;
         }
         #endregion Constructors
+
+        #region Functions public
+        public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+        {
+            string retStr = "";
+            ContactSearch contactSearch = validationContext.ObjectInstance as ContactSearch;
+
+            if (contactSearch.ContactID < 1)
+            {
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MinValueIs_, "ContactID", "1"), new[] { "ContactID" });
+            }
+
+            if (contactSearch.ContactTVItemID < 1)
+            {
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MinValueIs_, "ContactTVItemID", "1"), new[] { "ContactTVItemID" });
+            }
+
+            if (string.IsNullOrWhiteSpace(contactSearch.FullName))
+            {
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "FullName"), new[] { "FullName" });
+            }
+
+            if (!string.IsNullOrWhiteSpace(contactSearch.FullName) && contactSearch.FullName.Length > 255)
+            {
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "FullName", "255"), new[] { "FullName" });
+            }
+
+            retStr = ""; // added to stop compiling CSSPError
+            if (retStr != "") // will never be true
+            {
+                yield return new ValidationResult("AAA", new[] { "AAA" });
+            }
+
+        }
+        #endregion Functions public
 
     }
 }

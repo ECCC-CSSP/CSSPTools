@@ -19,6 +19,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Transactions;
 using Xunit;
+using System.ComponentModel.DataAnnotations;
 
 namespace CSSPServices.Tests
 {
@@ -81,6 +82,161 @@ namespace CSSPServices.Tests
             }
         }
         #endregion Tests Generated CRUD
+
+        #region Tests Generated Properties
+        [Theory]
+        [InlineData("en-CA", DBLocationEnum.Local)]
+        [InlineData("fr-CA", DBLocationEnum.Local)]
+        [InlineData("en-CA", DBLocationEnum.Server)]
+        [InlineData("fr-CA", DBLocationEnum.Server)]
+        public async Task TVItemLanguage_Properties_Test(string culture, DBLocationEnum DBLocation)
+        {
+            // -------------------------------
+            // -------------------------------
+            // Properties testing
+            // -------------------------------
+            // -------------------------------
+
+            Assert.True(await Setup(culture));
+
+            LoggedInService.DBLocation = DBLocation;
+
+            int count = 0;
+            if (count == 1)
+            {
+                // just so we don't get a warning during compile [The variable 'count' is assigned but its value is never used]
+            }
+
+            var actionTVItemLanguageList = await TVItemLanguageService.GetTVItemLanguageList();
+            Assert.Equal(200, ((ObjectResult)actionTVItemLanguageList.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionTVItemLanguageList.Result).Value);
+            List<TVItemLanguage> tvItemLanguageList = (List<TVItemLanguage>)((OkObjectResult)actionTVItemLanguageList.Result).Value;
+
+            count = tvItemLanguageList.Count();
+
+            TVItemLanguage tvItemLanguage = GetFilledRandomTVItemLanguage("");
+
+
+            // -----------------------------------
+            // [Key]
+            // Is NOT Nullable
+            // tvItemLanguage.TVItemLanguageID   (Int32)
+            // -----------------------------------
+
+            tvItemLanguage = null;
+            tvItemLanguage = GetFilledRandomTVItemLanguage("");
+            tvItemLanguage.TVItemLanguageID = 0;
+
+            var actionTVItemLanguage = await TVItemLanguageService.Put(tvItemLanguage);
+            Assert.IsType<BadRequestObjectResult>(actionTVItemLanguage.Result);
+
+            tvItemLanguage = null;
+            tvItemLanguage = GetFilledRandomTVItemLanguage("");
+            tvItemLanguage.TVItemLanguageID = 10000000;
+            actionTVItemLanguage = await TVItemLanguageService.Put(tvItemLanguage);
+            Assert.IsType<BadRequestObjectResult>(actionTVItemLanguage.Result);
+
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPExist(ExistTypeName = "TVItem", ExistPlurial = "s", ExistFieldID = "TVItemID", AllowableTVtypeList = Root,Address,Area,ClimateSite,Contact,Country,Email,HydrometricSite,Infrastructure,MikeBoundaryConditionWebTide,MikeBoundaryConditionMesh,MikeScenario,MikeSource,Municipality,MWQMSite,PolSourceSite,Province,Sector,Subsector,Tel,MWQMRun,Classification)]
+            // tvItemLanguage.TVItemID   (Int32)
+            // -----------------------------------
+
+            tvItemLanguage = null;
+            tvItemLanguage = GetFilledRandomTVItemLanguage("");
+            tvItemLanguage.TVItemID = 0;
+            actionTVItemLanguage = await TVItemLanguageService.Post(tvItemLanguage);
+            Assert.IsType<BadRequestObjectResult>(actionTVItemLanguage.Result);
+
+            tvItemLanguage = null;
+            tvItemLanguage = GetFilledRandomTVItemLanguage("");
+            tvItemLanguage.TVItemID = 38;
+            actionTVItemLanguage = await TVItemLanguageService.Post(tvItemLanguage);
+            Assert.IsType<BadRequestObjectResult>(actionTVItemLanguage.Result);
+
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPEnumType]
+            // tvItemLanguage.Language   (LanguageEnum)
+            // -----------------------------------
+
+            tvItemLanguage = null;
+            tvItemLanguage = GetFilledRandomTVItemLanguage("");
+            tvItemLanguage.Language = (LanguageEnum)1000000;
+            actionTVItemLanguage = await TVItemLanguageService.Post(tvItemLanguage);
+            Assert.IsType<BadRequestObjectResult>(actionTVItemLanguage.Result);
+
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPMaxLength(200)]
+            // tvItemLanguage.TVText   (String)
+            // -----------------------------------
+
+            tvItemLanguage = null;
+            tvItemLanguage = GetFilledRandomTVItemLanguage("TVText");
+            actionTVItemLanguage = await TVItemLanguageService.Post(tvItemLanguage);
+            Assert.IsType<BadRequestObjectResult>(actionTVItemLanguage.Result);
+
+            tvItemLanguage = null;
+            tvItemLanguage = GetFilledRandomTVItemLanguage("");
+            tvItemLanguage.TVText = GetRandomString("", 201);
+            actionTVItemLanguage = await TVItemLanguageService.Post(tvItemLanguage);
+            Assert.IsType<BadRequestObjectResult>(actionTVItemLanguage.Result);
+            //Assert.AreEqual(count, tvItemLanguageService.GetTVItemLanguageList().Count());
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPEnumType]
+            // tvItemLanguage.TranslationStatus   (TranslationStatusEnum)
+            // -----------------------------------
+
+            tvItemLanguage = null;
+            tvItemLanguage = GetFilledRandomTVItemLanguage("");
+            tvItemLanguage.TranslationStatus = (TranslationStatusEnum)1000000;
+            actionTVItemLanguage = await TVItemLanguageService.Post(tvItemLanguage);
+            Assert.IsType<BadRequestObjectResult>(actionTVItemLanguage.Result);
+
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPAfter(Year = 1980)]
+            // tvItemLanguage.LastUpdateDate_UTC   (DateTime)
+            // -----------------------------------
+
+            tvItemLanguage = null;
+            tvItemLanguage = GetFilledRandomTVItemLanguage("");
+            tvItemLanguage.LastUpdateDate_UTC = new DateTime();
+            actionTVItemLanguage = await TVItemLanguageService.Post(tvItemLanguage);
+            Assert.IsType<BadRequestObjectResult>(actionTVItemLanguage.Result);
+            tvItemLanguage = null;
+            tvItemLanguage = GetFilledRandomTVItemLanguage("");
+            tvItemLanguage.LastUpdateDate_UTC = new DateTime(1979, 1, 1);
+            actionTVItemLanguage = await TVItemLanguageService.Post(tvItemLanguage);
+            Assert.IsType<BadRequestObjectResult>(actionTVItemLanguage.Result);
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPExist(ExistTypeName = "TVItem", ExistPlurial = "s", ExistFieldID = "TVItemID", AllowableTVtypeList = Contact)]
+            // tvItemLanguage.LastUpdateContactTVItemID   (Int32)
+            // -----------------------------------
+
+            tvItemLanguage = null;
+            tvItemLanguage = GetFilledRandomTVItemLanguage("");
+            tvItemLanguage.LastUpdateContactTVItemID = 0;
+            actionTVItemLanguage = await TVItemLanguageService.Post(tvItemLanguage);
+            Assert.IsType<BadRequestObjectResult>(actionTVItemLanguage.Result);
+
+            tvItemLanguage = null;
+            tvItemLanguage = GetFilledRandomTVItemLanguage("");
+            tvItemLanguage.LastUpdateContactTVItemID = 1;
+            actionTVItemLanguage = await TVItemLanguageService.Post(tvItemLanguage);
+            Assert.IsType<BadRequestObjectResult>(actionTVItemLanguage.Result);
+
+        }
+        #endregion Tests Generated Properties
 
         #region Functions private
         private async Task DoCRUDTest()
@@ -235,6 +391,10 @@ namespace CSSPServices.Tests
             }
 
             return tvItemLanguage;
+        }
+        private void CheckTVItemLanguageFields(List<TVItemLanguage> tvItemLanguageList)
+        {
+            Assert.False(string.IsNullOrWhiteSpace(tvItemLanguageList[0].TVText));
         }
         #endregion Functions private
     }

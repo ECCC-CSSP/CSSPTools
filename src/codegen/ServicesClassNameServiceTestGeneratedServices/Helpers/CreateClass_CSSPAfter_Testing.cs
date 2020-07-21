@@ -27,18 +27,18 @@ namespace ServicesClassNameServiceTestGeneratedServices.Services
                     {
                         if (csspProp.HasCSSPAfterAttribute)
                         {
-                            sb.AppendLine($@"                    { TypeNameLower } = null;");
-                            sb.AppendLine($@"                    { TypeNameLower } = GetFilledRandom{ TypeName }("""");");
-                            sb.AppendLine($@"                    { TypeNameLower }.{ csspProp.PropName } = new DateTime({ ((int)csspProp.Year - 1).ToString() }, 1, 1);");
+                            sb.AppendLine($@"            { TypeNameLower } = null;");
+                            sb.AppendLine($@"            { TypeNameLower } = GetFilledRandom{ TypeName }("""");");
+                            sb.AppendLine($@"            { TypeNameLower }.{ csspProp.PropName } = new DateTime({ ((int)csspProp.Year - 1).ToString() }, 1, 1);");
                             if (TypeName == "Contact")
                             {
-                                sb.AppendLine($@"                    { TypeNameLower }Service.Add({ TypeNameLower }, AddContactTypeEnum.LoggedIn);");
+                                sb.AppendLine($@"            action{ TypeName } = await { TypeName }Service.Post({ TypeNameLower }, AddContactTypeEnum.LoggedIn);");
                             }
                             else
                             {
-                                sb.AppendLine($@"                    { TypeNameLower }Service.Add({ TypeNameLower });");
+                                sb.AppendLine($@"            action{ TypeName } = await { TypeName }Service.Post({ TypeNameLower });");
                             }
-                            sb.AppendLine($@"                    Assert.AreEqual(string.Format(CSSPServicesRes._YearShouldBeBiggerThan_, ""{ csspProp.PropName }"", ""{ csspProp.Year }""), { TypeNameLower }.ValidationResults.FirstOrDefault().ErrorMessage);");
+                            sb.AppendLine($@"            Assert.IsType<BadRequestObjectResult>(action{ TypeName }.Result);");
 
                         }
                     }
@@ -57,7 +57,7 @@ namespace ServicesClassNameServiceTestGeneratedServices.Services
                             }
                             else
                             {
-                                sb.AppendLine($@"                    //CSSPError: Type not implemented [{ csspProp.PropName }]");
+                                sb.AppendLine($@"            //CSSPError: Type not implemented [{ csspProp.PropName }]");
                                 sb.AppendLine(@"");
                             }
                         }

@@ -17,18 +17,18 @@ namespace ServicesClassNameServiceTestGeneratedServices.Services
             {
                 if (csspProp.HasCSSPEnumTypeAttribute)
                 {
-                    sb.AppendLine($@"                    { TypeNameLower } = null;");
-                    sb.AppendLine($@"                    { TypeNameLower } = GetFilledRandom{ TypeName }("""");");
-                    sb.AppendLine($@"                    { TypeNameLower }.{ csspProp.PropName } = ({ csspProp.PropType })1000000;");
+                    sb.AppendLine($@"            { TypeNameLower } = null;");
+                    sb.AppendLine($@"            { TypeNameLower } = GetFilledRandom{ TypeName }("""");");
+                    sb.AppendLine($@"            { TypeNameLower }.{ csspProp.PropName } = ({ csspProp.PropType })1000000;");
                     if (TypeName == "Contact")
                     {
-                        sb.AppendLine($@"                    { TypeNameLower }Service.Add({ TypeNameLower }, AddContactTypeEnum.LoggedIn);");
+                        sb.AppendLine($@"            action{ TypeName } = await { TypeName }Service.Post({ TypeNameLower }, AddContactTypeEnum.LoggedIn);");
                     }
                     else
                     {
-                        sb.AppendLine($@"                    { TypeNameLower }Service.Add({ TypeNameLower });");
+                        sb.AppendLine($@"            action{ TypeName } = await { TypeName }Service.Post({ TypeNameLower });");
                     }
-                    sb.AppendLine($@"                    Assert.AreEqual(string.Format(CSSPServicesRes._IsRequired, ""{ csspProp.PropName }""), { TypeNameLower }.ValidationResults.FirstOrDefault().ErrorMessage);");
+                    sb.AppendLine($@"            Assert.IsType<BadRequestObjectResult>(action{ TypeName }.Result);");
                     sb.AppendLine(@"");
                 }
             }

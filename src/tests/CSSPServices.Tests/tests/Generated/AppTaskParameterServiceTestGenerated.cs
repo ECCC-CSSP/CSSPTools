@@ -19,16 +19,22 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Transactions;
 using Xunit;
+using System.ComponentModel.DataAnnotations;
 
 namespace CSSPServices.Tests
 {
-    [Collection("Sequential")]
     public partial class AppTaskParameterServiceTest : TestHelper
     {
         #region Variables
         #endregion Variables
 
         #region Properties
+        private IConfiguration Config { get; set; }
+        private IServiceProvider Provider { get; set; }
+        private IServiceCollection Services { get; set; }
+        private ICSSPCultureService CSSPCultureService { get; set; }
+        private IAppTaskParameterService AppTaskParameterService { get; set; }
+        private AppTaskParameter appTaskParameter { get; set; }
         #endregion Properties
 
         #region Constructors
@@ -38,7 +44,65 @@ namespace CSSPServices.Tests
         }
         #endregion Constructors
 
+        #region Tests Generated Basic Test Not Mapped
+        [Theory]
+        [InlineData("en-CA")]
+        [InlineData("fr-CA")]
+        public async Task AppTaskParameterService_Good_Test(string culture)
+        {
+            Assert.True(await Setup(culture));
+
+            appTaskParameter = GetFilledRandomAppTaskParameter("");
+
+            List<ValidationResult> ValidationResultsList = AppTaskParameterService.Validate(new ValidationContext(appTaskParameter)).ToList();
+            Assert.True(ValidationResultsList.Count == 0);
+        }
+        #endregion Tests Generated Basic Test Not Mapped
+
         #region Functions private
+        private async Task<bool> Setup(string culture)
+        {
+            Config = new ConfigurationBuilder()
+               .SetBasePath(Directory.GetParent(AppContext.BaseDirectory).FullName)
+               .AddJsonFile("appsettings_csspservices.json")
+               .AddUserSecrets("6f27cbbe-6ffb-4154-b49b-d739597c4f60")
+               .Build();
+
+            Services = new ServiceCollection();
+
+            Services.AddSingleton<IConfiguration>(Config);
+
+            Services.AddSingleton<ICSSPCultureService, CSSPCultureService>();
+            Services.AddSingleton<IEnums, Enums>();
+            Services.AddSingleton<IAppTaskParameterService, AppTaskParameterService>();
+
+            Provider = Services.BuildServiceProvider();
+            Assert.NotNull(Provider);
+
+            CSSPCultureService = Provider.GetService<ICSSPCultureService>();
+            Assert.NotNull(CSSPCultureService);
+
+            CSSPCultureService.SetCulture(culture);
+
+            AppTaskParameterService = Provider.GetService<IAppTaskParameterService>();
+            Assert.NotNull(AppTaskParameterService);
+
+            return await Task.FromResult(true);
+        }
+        private AppTaskParameter GetFilledRandomAppTaskParameter(string OmitPropName)
+        {
+            AppTaskParameter appTaskParameter = new AppTaskParameter();
+
+            if (OmitPropName != "Name") appTaskParameter.Name = GetRandomString("", 5);
+            if (OmitPropName != "Value") appTaskParameter.Value = GetRandomString("", 5);
+
+            return appTaskParameter;
+        }
+        private void CheckAppTaskParameterFields(List<AppTaskParameter> appTaskParameterList)
+        {
+            Assert.False(string.IsNullOrWhiteSpace(appTaskParameterList[0].Name));
+            Assert.False(string.IsNullOrWhiteSpace(appTaskParameterList[0].Value));
+        }
         #endregion Functions private
     }
 }

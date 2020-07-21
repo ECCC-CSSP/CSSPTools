@@ -97,10 +97,14 @@ namespace ServicesClassNameServiceTestGeneratedServices.Services
                 sb.AppendLine(@"using System.Threading.Tasks;");
                 sb.AppendLine(@"using System.Transactions;");
                 sb.AppendLine(@"using Xunit;");
+                sb.AppendLine(@"using System.ComponentModel.DataAnnotations;");
                 sb.AppendLine(@"");
                 sb.AppendLine(@"namespace CSSPServices.Tests");
                 sb.AppendLine(@"{");
-                sb.AppendLine(@"    [Collection(""Sequential"")]");
+                if (!ClassNotMapped)
+                {
+                    sb.AppendLine(@"    [Collection(""Sequential"")]");
+                }
                 sb.AppendLine($@"    public partial class { TypeName }ServiceTest : TestHelper");
                 sb.AppendLine(@"    {");
                 sb.AppendLine(@"        #region Variables");
@@ -127,6 +131,15 @@ namespace ServicesClassNameServiceTestGeneratedServices.Services
                     sb.AppendLine(@"        private InMemoryDBContext dbIM { get; set; }");
                     sb.AppendLine($@"        private { TypeName } { TypeNameLower } {{ get; set; }}");
                 }
+                else
+                {
+                    sb.AppendLine(@"        private IConfiguration Config { get; set; }");
+                    sb.AppendLine(@"        private IServiceProvider Provider { get; set; }");
+                    sb.AppendLine(@"        private IServiceCollection Services { get; set; }");
+                    sb.AppendLine(@"        private ICSSPCultureService CSSPCultureService { get; set; }");
+                    sb.AppendLine($@"        private I{ TypeName }Service { TypeName }Service {{ get; set; }}");
+                    sb.AppendLine($@"        private { TypeName } { TypeNameLower } {{ get; set; }}");
+                }
                 sb.AppendLine(@"        #endregion Properties");
                 sb.AppendLine(@"");
                 sb.AppendLine(@"        #region Constructors");
@@ -138,18 +151,9 @@ namespace ServicesClassNameServiceTestGeneratedServices.Services
                 sb.AppendLine(@"");
                 if (!ClassNotMapped)
                 {
-                    try
-                    {
-                        if (!await GenerateCRUDTestCode(TypeName, TypeNameLower, sb)) return await Task.FromResult(false);
+                    if (!await GenerateCRUDTestCode(TypeName, TypeNameLower, sb)) return await Task.FromResult(false);
 
-                    }
-                    catch (Exception ex)
-                    {
-
-                        throw;
-                    }
-
-                    //if (!await GeneratePropertiesTestCode(TypeName, TypeNameLower, type, sb)) return await Task.FromResult(false);
+                    if (!await GeneratePropertiesTestCode(TypeName, TypeNameLower, type, sb)) return await Task.FromResult(false);
 
                     //if (!await GenerateGetWithIDTestCode(TypeName, TypeNameLower, types, sb)) return await Task.FromResult(false);
 
@@ -175,14 +179,25 @@ namespace ServicesClassNameServiceTestGeneratedServices.Services
 
                     //if (!await GenerateGetList2WhereTestCode(TypeName, TypeNameLower, types, sb)) return await Task.FromResult(false);
                 }
+                else
+                {
+                    if (!await GenerateBasicTestNotMapped(TypeName, TypeNameLower, sb)) return await Task.FromResult(false);
+                }
+
                 sb.AppendLine(@"        #region Functions private");
                 if (!ClassNotMapped)
                 {
                     if (!await GenerateDoCRUDTest(TypeName, TypeNameLower, sb)) return await Task.FromResult(false);
                     if (!await GenerateSetupTestCode(TypeName, TypeNameLower, sb)) return await Task.FromResult(false);
-                    //if (!await GenerateCheckClassNameFieldsTestCode(type, types, TypeName, TypeNameLower, sb)) return await Task.FromResult(false);
                     if (!await GenerateGetFilledRandomClassnameTestCode(type, TypeName, TypeNameLower, sb)) return await Task.FromResult(false);
                 }
+                else
+                {
+                    if (!await GenerateSetupTestCodeNotMapped(TypeName, TypeNameLower, sb)) return await Task.FromResult(false);
+                    if (!await GenerateGetFilledRandomClassnameTestCodeNotMapped(type, TypeName, TypeNameLower, sb)) return await Task.FromResult(false);
+                }
+
+                if (!await GenerateCheckClassNameFieldsTestCode(type, types, TypeName, TypeNameLower, sb)) return await Task.FromResult(false);
 
                 sb.AppendLine(@"        #endregion Functions private");
                 sb.AppendLine(@"    }");

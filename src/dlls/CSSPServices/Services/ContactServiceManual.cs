@@ -10,7 +10,6 @@ using CSSPModels;
 using CSSPCultureServices.Resources;
 using CSSPCultureServices.Services;
 using Microsoft.AspNetCore.Mvc;
-//using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
@@ -28,8 +27,6 @@ namespace CSSPServices
 {
     public partial interface IContactService
     {
-        Task<ActionResult<Contact>> Login(LoginModel loginModel);
-        Task<ActionResult<Contact>> GetContactWithId(string Id);
     }
 
     public partial class ContactService : ControllerBase, IContactService
@@ -44,246 +41,102 @@ namespace CSSPServices
         #endregion Constructors
 
         #region Functions public 
-        public async Task<ActionResult<Contact>> GetContactWithId(string Id)
+        public async Task<ActionResult<Contact>> Register(RegisterModel registerModel)
         {
-            //if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
-            //{
-            //    return await Task.FromResult(Unauthorized());
-            //}
+            // before starting ... should verify
+            // - required FirstName, LastName, Password, ConfirmPassword, LoginEmail
+            // - min and max lengths
+            // - Password and ConfirmPassword are equal
+            // - email is unique -- not already taken
+            // - FirstName, Initial and LastName is unique -- not already taken
+            // - Password has at least 6 characters
 
-            if (LoggedInService.DBLocation == DBLocationEnum.InMemory)
+            ValidationResults = RegisterModelService.Validate(new ValidationContext(registerModel));
+            if (ValidationResults.Count() > 0)
             {
-                Contact contact = (from c in dbIM.Contacts.AsNoTracking()
-                                   where c.Id == Id
-                                   select c).FirstOrDefault();
-
-                if (contact == null)
-                {
-                    return await Task.FromResult(NotFound());
-                }
-
-                return await Task.FromResult(Ok(contact));
+                return await Task.FromResult(BadRequest(ValidationResults));
             }
-            else if (LoggedInService.DBLocation == DBLocationEnum.Local)
-            {
-                Contact contact = (from c in dbLocal.Contacts.AsNoTracking()
-                        where c.Id == Id
-                        select c).FirstOrDefault();
 
-                if (contact == null)
-                {
-                   return await Task.FromResult(NotFound());
-                }
-
-                return await Task.FromResult(Ok(contact));
-            }
-            else
-            {
-                Contact contact = (from c in db.Contacts.AsNoTracking()
-                        where c.Id == Id
-                        select c).FirstOrDefault();
-
-                if (contact == null)
-                {
-                   return await Task.FromResult(NotFound());
-                }
-
-                return await Task.FromResult(Ok(contact));
-            }
-        }
-        public async Task<ActionResult<Contact>> Login(LoginModel loginModel)
-        {
             try
             {
-                ApplicationUser appUser = await UserManager.FindByNameAsync(loginModel.LoginEmail);
+                AspNetUser aspNetUser = (from c in db.AspNetUsers
+                                         where c.UserName == registerModel.LoginEmail
+                                         select c).FirstOrDefault();
 
-                if (appUser == null)
+                if (aspNetUser != null)
                 {
-                    return BadRequest(String.Format(CSSPCultureServicesRes.__CouldNotBeFound, CSSPCultureServicesRes.Email, loginModel.LoginEmail));
+                    return BadRequest($"{ string.Format(CSSPCultureServicesRes.LoginEmail_IsAlreadyTaken, registerModel.LoginEmail) }");
                 }
 
-                bool HasPassword = await UserManager.CheckPasswordAsync(appUser, loginModel.Password);
-                if (!HasPassword)
+                Contact contact = (from c in db.Contacts
+                                   where c.LoginEmail == registerModel.LoginEmail
+                                   select c).FirstOrDefault();
+
+                if (contact != null)
                 {
-                    return BadRequest(String.Format(CSSPCultureServicesRes.UnableToLoginAs_WithProvidedPassword, loginModel.LoginEmail));
+                    return BadRequest($"{ string.Format(CSSPCultureServicesRes.LoginEmail_IsAlreadyTaken, registerModel.LoginEmail) }");
                 }
 
-                if (HasPassword == true)
+                if (string.IsNullOrWhiteSpace(registerModel.Initial))
                 {
-                    var actionContact = await GetContactWithId(appUser.Id);
-                    if (((ObjectResult)actionContact.Result).StatusCode != 200)
+                    contact = (from c in db.Contacts
+                               where c.FirstName == registerModel.FirstName
+                               && c.LastName == registerModel.LastName
+                               select c).FirstOrDefault();
+
+                    if (contact != null)
                     {
-                        return BadRequest(String.Format(CSSPCultureServicesRes.UnableToLoginAs_WithProvidedPassword, loginModel.LoginEmail));
+                        string fullName = $"{ registerModel.FirstName } { registerModel.LastName }";
+                        return BadRequest($"{ string.Format(CSSPCultureServicesRes.FullName_IsAlreadyTaken, fullName) }");
                     }
-
-                    Contact contact = (Contact)((OkObjectResult)actionContact.Result).Value;
-
-                    if (contact == null)
-                    {
-                        return BadRequest(String.Format(CSSPCultureServicesRes.UnableToLoginAs_WithProvidedPassword, loginModel.LoginEmail));
-                    }
-
-                    byte[] key = Encoding.ASCII.GetBytes(Configuration.GetValue<string>("APISecret"));
-
-                    JwtSecurityTokenHandler tokenHandler = new JwtSecurityTokenHandler();
-                    SecurityTokenDescriptor tokenDescriptor = new SecurityTokenDescriptor
-                    {
-                        Subject = new ClaimsIdentity(new Claim[]
-                        {
-                            new Claim(ClaimTypes.Name, contact.Id.ToString())
-                        }),
-                        Expires = DateTime.UtcNow.AddDays(2),
-                        SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
-                    };
-                    SecurityToken token = tokenHandler.CreateToken(tokenDescriptor);
-                    contact.Token = tokenHandler.WriteToken(token);
-
-                    return contact;
                 }
+                else
+                {
+                    contact = (from c in db.Contacts
+                               where c.FirstName == registerModel.FirstName
+                               && c.Initial == registerModel.Initial
+                               && c.LastName == registerModel.LastName
+                               select c).FirstOrDefault();
+
+                    if (contact != null)
+                    {
+                        string fullName = $"{ registerModel.FirstName } { registerModel.Initial }, { registerModel.LastName }";
+                        return BadRequest($"{ string.Format(CSSPCultureServicesRes.FullName_IsAlreadyTaken, fullName) }");
+                    }
+                }
+
+                // creating user in AspNetUsers table
+                var user = new ApplicationUser { UserName = registerModel.LoginEmail, Email = registerModel.LoginEmail };
+                var result = await UserManager.CreateAsync(user, registerModel.Password);
+
+                if (result.Succeeded == false)
+                {
+                    return BadRequest(result.Errors);
+                }
+
+                // Adding more info in Contacts table
+                Contact contactNew = new Contact()
+                {
+                    Id = user.Id,
+                    FirstName = registerModel.FirstName,
+                    Initial = registerModel.Initial,
+                    LastName = registerModel.LastName,
+                    LoginEmail = registerModel.LoginEmail,
+                    //etc...
+
+                };
             }
             catch (Exception ex)
             {
-                return BadRequest(String.Format(CSSPCultureServicesRes.Error_, ex.Message));
+
+                throw;
             }
 
-            return BadRequest(String.Format(CSSPCultureServicesRes.UnableToLoginAs_WithProvidedPassword, loginModel.LoginEmail));
+
+            // Adding TVItemUserAuthorization and TVTypeUserAuthorization
+
+            return Ok(true);
         }
-        //public async Task<ActionResult<bool>> RegisterUser(RegisterModel registerModel)
-        //{
-        //    // before starting ... should verify
-        //    // - required FirstName, LastName, Password, ConfirmPassword, LoginEmail
-        //    // - min and max lengths
-        //    // - Password and ConfirmPassword are equal
-        //    // - email is unique -- not already taken
-        //    // - FirstName, Initial and LastName is unique -- not already taken
-        //    // - Password has at least 6 characters
-
-        //    if (string.IsNullOrWhiteSpace(registerModel.FirstName))
-        //    {
-        //        return BadRequest($"{ string.Format(CSSPCultureServicesRes._IsRequired, CSSPCultureServicesRes.FirstName) }");
-        //    }
-
-        //    if (string.IsNullOrWhiteSpace(registerModel.LastName))
-        //    {
-        //        return BadRequest($"{ string.Format(CSSPCultureServicesRes._IsRequired, CSSPCultureServicesRes.LastName) }");
-        //    }
-
-        //    if (string.IsNullOrWhiteSpace(registerModel.LoginEmail))
-        //    {
-        //        return BadRequest($"{ string.Format(CSSPCultureServicesRes._IsRequired, CSSPCultureServicesRes.LoginEmail) }");
-        //    }
-
-        //    if (string.IsNullOrWhiteSpace(registerModel.Password))
-        //    {
-        //        return BadRequest($"{ string.Format(CSSPCultureServicesRes._IsRequired, CSSPCultureServicesRes.Password) }");
-        //    }
-
-        //    if (string.IsNullOrWhiteSpace(registerModel.ConfirmPassword))
-        //    {
-        //        return BadRequest($"{ string.Format(CSSPCultureServicesRes._IsRequired, CSSPCultureServicesRes.ConfirmPassword) }");
-        //    }
-
-        //    if (registerModel.FirstName.Trim().Length > 100)
-        //    {
-        //        return BadRequest($"{ string.Format(CSSPCultureServicesRes._MaxLengthIs_, CSSPCultureServicesRes.FirstName, 100) }");
-        //    }
-
-        //    if (registerModel.Initial.Trim().Length > 50)
-        //    {
-        //        return BadRequest($"{ string.Format(CSSPCultureServicesRes._MaxLengthIs_, CSSPCultureServicesRes.Initial, 100) }");
-        //    }
-
-        //    if (registerModel.LastName.Trim().Length > 100)
-        //    {
-        //        return BadRequest($"{ string.Format(CSSPCultureServicesRes._MaxLengthIs_, CSSPCultureServicesRes.LastName, 100) }");
-        //    }
-
-        //    if (registerModel.LoginEmail.Trim().Length > 100)
-        //    {
-        //        return BadRequest($"{ string.Format(CSSPCultureServicesRes._MaxLengthIs_, CSSPCultureServicesRes.LoginEmail, 255) }");
-        //    }
-
-        //    if (registerModel.Password.Trim().Length > 50)
-        //    {
-        //        return BadRequest($"{ string.Format(CSSPCultureServicesRes._MaxLengthIs_, CSSPCultureServicesRes.Password, 50) }");
-        //    }
-
-        //    if (registerModel.Password != registerModel.ConfirmPassword)
-        //    {
-        //        return BadRequest($"{ string.Format(CSSPCultureServicesRes._And_AreNotEqual, CSSPCultureServicesRes.Password, CSSPCultureServicesRes.ConfirmPassword) }");
-        //    }
-
-        //    AspNetUser aspNetUser = (from c in csspDBContext.AspNetUsers
-        //                             where c.UserName == registerModel.LoginEmail
-        //                             select c).FirstOrDefault();
-
-        //    if (aspNetUser != null)
-        //    {
-        //        return BadRequest($"{ string.Format(CSSPCultureServicesRes.UserName_AlreadyTaken, registerModel.LoginEmail) }");
-        //    }
-
-        //    Contact contact = (from c in csspDBContext.Contacts
-        //                       where c.LoginEmail == registerModel.LoginEmail
-        //                       select c).FirstOrDefault();
-
-        //    if (contact != null)
-        //    {
-        //        return BadRequest($"{ string.Format(CSSPCultureServicesRes.UserName_AlreadyTaken, registerModel.LoginEmail) }");
-        //    }
-
-        //    if (string.IsNullOrWhiteSpace(registerModel.Initial))
-        //    {
-        //        contact = (from c in csspDBContext.Contacts
-        //                   where c.FirstName == registerModel.FirstName
-        //                   && c.LastName == registerModel.LastName
-        //                   select c).FirstOrDefault();
-
-        //        if (contact != null)
-        //        {
-        //            string fullName = $"{ registerModel.FirstName } { registerModel.LastName }";
-        //            return BadRequest($"{ string.Format(CSSPCultureServicesRes.User_AlreadyTaken, fullName) }");
-        //        }
-        //    }
-        //    else
-        //    {
-        //        contact = (from c in csspDBContext.Contacts
-        //                   where c.FirstName == registerModel.FirstName
-        //                   && c.Initial == registerModel.Initial
-        //                   && c.LastName == registerModel.LastName
-        //                   select c).FirstOrDefault();
-
-        //        if (contact != null)
-        //        {
-        //            string fullName = $"{ registerModel.FirstName } { registerModel.Initial }, { registerModel.LastName }";
-        //            return BadRequest($"{ string.Format(CSSPCultureServicesRes.User_AlreadyTaken, fullName) }");
-        //        }
-        //    }
-
-        //    // creating user in AspNetUsers table
-        //    var user = new ApplicationUser { UserName = registerModel.LoginEmail, Email = registerModel.LoginEmail };
-        //    var result = await userManager.CreateAsync(user, registerModel.Password);
-
-        //    if (result.Succeeded == false)
-        //    {
-        //        return BadRequest(result.Errors);
-        //    }
-
-        //    // Adding more info in Contacts table
-        //    Contact contactNew = new Contact()
-        //    {
-        //        Id = user.Id,
-        //         FirstName = registerModel.FirstName,
-        //         Initial = registerModel.Initial,
-        //         LastName = registerModel.LastName,
-        //         LoginEmail = registerModel.LoginEmail,
-        //          etc...
-
-        //    };
-
-        //    // Adding TVItemUserAuthorization and TVTypeUserAuthorization
-
-        //    return Ok(true);
-        //}
         #endregion Functions public
 
         #region Functions private

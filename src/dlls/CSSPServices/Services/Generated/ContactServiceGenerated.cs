@@ -9,16 +9,20 @@ using CSSPEnums;
 using CSSPModels;
 using CSSPCultureServices.Resources;
 using CSSPCultureServices.Services;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Configuration;
+using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
 
 namespace CSSPServices
 {
@@ -29,6 +33,8 @@ namespace CSSPServices
        Task<ActionResult<Contact>> GetContactWithContactID(int ContactID);
        Task<ActionResult<Contact>> Post(Contact contact, AddContactTypeEnum addContactType);
        Task<ActionResult<Contact>> Put(Contact contact);
+       Task<ActionResult<Contact>> Login(LoginModel loginModel);
+       Task<ActionResult<Contact>> Register(RegisterModel registerModel);
     }
     public partial class ContactService : ControllerBase, IContactService
     {
@@ -39,9 +45,11 @@ namespace CSSPServices
         private CSSPDBContext db { get; }
         private CSSPDBLocalContext dbLocal { get; }
         private InMemoryDBContext dbIM { get; }
+        private IConfiguration Configuration { get; }
         private UserManager<ApplicationUser> UserManager { get; }
         private IAspNetUserService AspNetUserService { get; }
-        private IConfiguration Configuration { get; }
+        private ILoginModelService LoginModelService { get; }
+        private IRegisterModelService RegisterModelService { get; }
         private ICSSPCultureService CSSPCultureService { get; }
         private ILoggedInService LoggedInService { get; }
         private IEnums enums { get; }
@@ -50,11 +58,14 @@ namespace CSSPServices
 
         #region Constructors
         public ContactService(IConfiguration Configuration, UserManager<ApplicationUser> UserManager, ICSSPCultureService CSSPCultureService, 
-           ILoggedInService LoggedInService, IEnums enums, IAspNetUserService AspNetUserService, CSSPDBContext db, CSSPDBLocalContext dbLocal, InMemoryDBContext dbIM)
+           ILoggedInService LoggedInService, IEnums enums, IAspNetUserService AspNetUserService, ILoginModelService LoginModelService, 
+           IRegisterModelService RegisterModelService, CSSPDBContext db, CSSPDBLocalContext dbLocal, InMemoryDBContext dbIM)
         {
             this.Configuration = Configuration;
             this.UserManager = UserManager;
             this.AspNetUserService = AspNetUserService;
+            this.LoginModelService = LoginModelService;
+            this.RegisterModelService = RegisterModelService;
             this.CSSPCultureService = CSSPCultureService;
             this.LoggedInService = LoggedInService;
             this.enums = enums;
@@ -327,9 +338,119 @@ namespace CSSPServices
             return await Task.FromResult(Ok(contact));
             }
         }
+        public async Task<ActionResult<Contact>> Login(LoginModel loginModel)
+        {
+            ValidationResults = LoginModelService.Validate(new ValidationContext(loginModel));
+            if (ValidationResults.Count() > 0)
+            {
+                return await Task.FromResult(BadRequest(ValidationResults));
+            }
+
+            try
+            {
+                ApplicationUser appUser = await UserManager.FindByNameAsync(loginModel.LoginEmail);
+
+                if (appUser == null)
+                {
+                    return BadRequest(String.Format(CSSPCultureServicesRes.__CouldNotBeFound, CSSPCultureServicesRes.Email, loginModel.LoginEmail));
+                }
+
+                bool HasPassword = await UserManager.CheckPasswordAsync(appUser, loginModel.Password);
+                if (!HasPassword)
+                {
+                    return BadRequest(String.Format(CSSPCultureServicesRes.UnableToLoginAs_WithProvidedPassword, loginModel.LoginEmail));
+                }
+
+                if (HasPassword == true)
+                {
+                    var actionContact = await GetContactWithId(appUser.Id);
+                    if (((ObjectResult)actionContact.Result).StatusCode != 200)
+                    {
+                        return BadRequest(String.Format(CSSPCultureServicesRes.UnableToLoginAs_WithProvidedPassword, loginModel.LoginEmail));
+                    }
+
+                    Contact contact = (Contact)((OkObjectResult)actionContact.Result).Value;
+
+                    if (contact == null)
+                    {
+                        return BadRequest(String.Format(CSSPCultureServicesRes.UnableToLoginAs_WithProvidedPassword, loginModel.LoginEmail));
+                    }
+
+                    byte[] key = Encoding.ASCII.GetBytes(Configuration.GetValue<string>("APISecret"));
+
+                    JwtSecurityTokenHandler tokenHandler = new JwtSecurityTokenHandler();
+                    SecurityTokenDescriptor tokenDescriptor = new SecurityTokenDescriptor
+                    {
+                        Subject = new ClaimsIdentity(new Claim[]
+                        {
+                        new Claim(ClaimTypes.Name, contact.Id.ToString())
+                        }),
+                        Expires = DateTime.UtcNow.AddDays(2),
+                        SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
+                    };
+                    SecurityToken token = tokenHandler.CreateToken(tokenDescriptor);
+                    contact.Token = tokenHandler.WriteToken(token);
+
+                    return contact;
+                }
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(String.Format(CSSPCultureServicesRes.Error_, ex.Message));
+            }
+
+            return BadRequest(String.Format(CSSPCultureServicesRes.UnableToLoginAs_WithProvidedPassword, loginModel.LoginEmail));
+        }
         #endregion Functions public
 
         #region Functions private
+        private async Task<ActionResult<Contact>> GetContactWithId(string Id)
+        {
+            //if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            //{
+            //    return await Task.FromResult(Unauthorized());
+            //}
+
+            if (LoggedInService.DBLocation == DBLocationEnum.InMemory)
+            {
+                Contact contact = (from c in dbIM.Contacts.AsNoTracking()
+                                   where c.Id == Id
+                                   select c).FirstOrDefault();
+
+                if (contact == null)
+                {
+                    return await Task.FromResult(NotFound());
+                }
+
+                return await Task.FromResult(Ok(contact));
+            }
+            else if (LoggedInService.DBLocation == DBLocationEnum.Local)
+            {
+                Contact contact = (from c in dbLocal.Contacts.AsNoTracking()
+                                   where c.Id == Id
+                                   select c).FirstOrDefault();
+
+                if (contact == null)
+                {
+                    return await Task.FromResult(NotFound());
+                }
+
+                return await Task.FromResult(Ok(contact));
+            }
+            else
+            {
+                Contact contact = (from c in db.Contacts.AsNoTracking()
+                                   where c.Id == Id
+                                   select c).FirstOrDefault();
+
+                if (contact == null)
+                {
+                    return await Task.FromResult(NotFound());
+                }
+
+                return await Task.FromResult(Ok(contact));
+            }
+        }
         private IEnumerable<ValidationResult> Validate(ValidationContext validationContext, ActionDBTypeEnum actionDBType, AddContactTypeEnum addContactType)
         {
             string retStr = "";

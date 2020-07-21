@@ -19,6 +19,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Transactions;
 using Xunit;
+using System.ComponentModel.DataAnnotations;
 
 namespace CSSPServices.Tests
 {
@@ -81,6 +82,248 @@ namespace CSSPServices.Tests
             }
         }
         #endregion Tests Generated CRUD
+
+        #region Tests Generated Properties
+        [Theory]
+        [InlineData("en-CA", DBLocationEnum.Local)]
+        [InlineData("fr-CA", DBLocationEnum.Local)]
+        [InlineData("en-CA", DBLocationEnum.Server)]
+        [InlineData("fr-CA", DBLocationEnum.Server)]
+        public async Task RainExceedance_Properties_Test(string culture, DBLocationEnum DBLocation)
+        {
+            // -------------------------------
+            // -------------------------------
+            // Properties testing
+            // -------------------------------
+            // -------------------------------
+
+            Assert.True(await Setup(culture));
+
+            LoggedInService.DBLocation = DBLocation;
+
+            int count = 0;
+            if (count == 1)
+            {
+                // just so we don't get a warning during compile [The variable 'count' is assigned but its value is never used]
+            }
+
+            var actionRainExceedanceList = await RainExceedanceService.GetRainExceedanceList();
+            Assert.Equal(200, ((ObjectResult)actionRainExceedanceList.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionRainExceedanceList.Result).Value);
+            List<RainExceedance> rainExceedanceList = (List<RainExceedance>)((OkObjectResult)actionRainExceedanceList.Result).Value;
+
+            count = rainExceedanceList.Count();
+
+            RainExceedance rainExceedance = GetFilledRandomRainExceedance("");
+
+
+            // -----------------------------------
+            // [Key]
+            // Is NOT Nullable
+            // rainExceedance.RainExceedanceID   (Int32)
+            // -----------------------------------
+
+            rainExceedance = null;
+            rainExceedance = GetFilledRandomRainExceedance("");
+            rainExceedance.RainExceedanceID = 0;
+
+            var actionRainExceedance = await RainExceedanceService.Put(rainExceedance);
+            Assert.IsType<BadRequestObjectResult>(actionRainExceedance.Result);
+
+            rainExceedance = null;
+            rainExceedance = GetFilledRandomRainExceedance("");
+            rainExceedance.RainExceedanceID = 10000000;
+            actionRainExceedance = await RainExceedanceService.Put(rainExceedance);
+            Assert.IsType<BadRequestObjectResult>(actionRainExceedance.Result);
+
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPExist(ExistTypeName = "TVItem", ExistPlurial = "s", ExistFieldID = "TVItemID", AllowableTVtypeList = RainExceedance)]
+            // rainExceedance.RainExceedanceTVItemID   (Int32)
+            // -----------------------------------
+
+            rainExceedance = null;
+            rainExceedance = GetFilledRandomRainExceedance("");
+            rainExceedance.RainExceedanceTVItemID = 0;
+            actionRainExceedance = await RainExceedanceService.Post(rainExceedance);
+            Assert.IsType<BadRequestObjectResult>(actionRainExceedance.Result);
+
+            rainExceedance = null;
+            rainExceedance = GetFilledRandomRainExceedance("");
+            rainExceedance.RainExceedanceTVItemID = 1;
+            actionRainExceedance = await RainExceedanceService.Post(rainExceedance);
+            Assert.IsType<BadRequestObjectResult>(actionRainExceedance.Result);
+
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPRange(1, 12)]
+            // rainExceedance.StartMonth   (Int32)
+            // -----------------------------------
+
+            rainExceedance = null;
+            rainExceedance = GetFilledRandomRainExceedance("");
+            rainExceedance.StartMonth = 0;
+            actionRainExceedance = await RainExceedanceService.Post(rainExceedance);
+            Assert.IsType<BadRequestObjectResult>(actionRainExceedance.Result);
+            //Assert.AreEqual(count, rainExceedanceService.GetRainExceedanceList().Count());
+            rainExceedance = null;
+            rainExceedance = GetFilledRandomRainExceedance("");
+            rainExceedance.StartMonth = 13;
+            actionRainExceedance = await RainExceedanceService.Post(rainExceedance);
+            Assert.IsType<BadRequestObjectResult>(actionRainExceedance.Result);
+            //Assert.AreEqual(count, rainExceedanceService.GetRainExceedanceList().Count());
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPRange(1, 31)]
+            // rainExceedance.StartDay   (Int32)
+            // -----------------------------------
+
+            rainExceedance = null;
+            rainExceedance = GetFilledRandomRainExceedance("");
+            rainExceedance.StartDay = 0;
+            actionRainExceedance = await RainExceedanceService.Post(rainExceedance);
+            Assert.IsType<BadRequestObjectResult>(actionRainExceedance.Result);
+            //Assert.AreEqual(count, rainExceedanceService.GetRainExceedanceList().Count());
+            rainExceedance = null;
+            rainExceedance = GetFilledRandomRainExceedance("");
+            rainExceedance.StartDay = 32;
+            actionRainExceedance = await RainExceedanceService.Post(rainExceedance);
+            Assert.IsType<BadRequestObjectResult>(actionRainExceedance.Result);
+            //Assert.AreEqual(count, rainExceedanceService.GetRainExceedanceList().Count());
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPRange(1, 12)]
+            // rainExceedance.EndMonth   (Int32)
+            // -----------------------------------
+
+            rainExceedance = null;
+            rainExceedance = GetFilledRandomRainExceedance("");
+            rainExceedance.EndMonth = 0;
+            actionRainExceedance = await RainExceedanceService.Post(rainExceedance);
+            Assert.IsType<BadRequestObjectResult>(actionRainExceedance.Result);
+            //Assert.AreEqual(count, rainExceedanceService.GetRainExceedanceList().Count());
+            rainExceedance = null;
+            rainExceedance = GetFilledRandomRainExceedance("");
+            rainExceedance.EndMonth = 13;
+            actionRainExceedance = await RainExceedanceService.Post(rainExceedance);
+            Assert.IsType<BadRequestObjectResult>(actionRainExceedance.Result);
+            //Assert.AreEqual(count, rainExceedanceService.GetRainExceedanceList().Count());
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPRange(1, 31)]
+            // rainExceedance.EndDay   (Int32)
+            // -----------------------------------
+
+            rainExceedance = null;
+            rainExceedance = GetFilledRandomRainExceedance("");
+            rainExceedance.EndDay = 0;
+            actionRainExceedance = await RainExceedanceService.Post(rainExceedance);
+            Assert.IsType<BadRequestObjectResult>(actionRainExceedance.Result);
+            //Assert.AreEqual(count, rainExceedanceService.GetRainExceedanceList().Count());
+            rainExceedance = null;
+            rainExceedance = GetFilledRandomRainExceedance("");
+            rainExceedance.EndDay = 32;
+            actionRainExceedance = await RainExceedanceService.Post(rainExceedance);
+            Assert.IsType<BadRequestObjectResult>(actionRainExceedance.Result);
+            //Assert.AreEqual(count, rainExceedanceService.GetRainExceedanceList().Count());
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPRange(0, 300)]
+            // rainExceedance.RainMaximum_mm   (Double)
+            // -----------------------------------
+
+            //CSSPError: Type not implemented [RainMaximum_mm]
+
+            //CSSPError: Type not implemented [RainMaximum_mm]
+
+            rainExceedance = null;
+            rainExceedance = GetFilledRandomRainExceedance("");
+            rainExceedance.RainMaximum_mm = -1.0D;
+            actionRainExceedance = await RainExceedanceService.Post(rainExceedance);
+            Assert.IsType<BadRequestObjectResult>(actionRainExceedance.Result);
+            //Assert.AreEqual(count, rainExceedanceService.GetRainExceedanceList().Count());
+            rainExceedance = null;
+            rainExceedance = GetFilledRandomRainExceedance("");
+            rainExceedance.RainMaximum_mm = 301.0D;
+            actionRainExceedance = await RainExceedanceService.Post(rainExceedance);
+            Assert.IsType<BadRequestObjectResult>(actionRainExceedance.Result);
+            //Assert.AreEqual(count, rainExceedanceService.GetRainExceedanceList().Count());
+
+            // -----------------------------------
+            // Is Nullable
+            // [CSSPExist(ExistTypeName = "EmailDistributionList", ExistPlurial = "s", ExistFieldID = "EmailDistributionListID", AllowableTVtypeList = )]
+            // rainExceedance.StakeholdersEmailDistributionListID   (Int32)
+            // -----------------------------------
+
+            rainExceedance = null;
+            rainExceedance = GetFilledRandomRainExceedance("");
+            rainExceedance.StakeholdersEmailDistributionListID = 0;
+            actionRainExceedance = await RainExceedanceService.Post(rainExceedance);
+            Assert.IsType<BadRequestObjectResult>(actionRainExceedance.Result);
+
+
+            // -----------------------------------
+            // Is Nullable
+            // [CSSPExist(ExistTypeName = "EmailDistributionList", ExistPlurial = "s", ExistFieldID = "EmailDistributionListID", AllowableTVtypeList = )]
+            // rainExceedance.OnlyStaffEmailDistributionListID   (Int32)
+            // -----------------------------------
+
+            rainExceedance = null;
+            rainExceedance = GetFilledRandomRainExceedance("");
+            rainExceedance.OnlyStaffEmailDistributionListID = 0;
+            actionRainExceedance = await RainExceedanceService.Post(rainExceedance);
+            Assert.IsType<BadRequestObjectResult>(actionRainExceedance.Result);
+
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // rainExceedance.IsActive   (Boolean)
+            // -----------------------------------
+
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPAfter(Year = 1980)]
+            // rainExceedance.LastUpdateDate_UTC   (DateTime)
+            // -----------------------------------
+
+            rainExceedance = null;
+            rainExceedance = GetFilledRandomRainExceedance("");
+            rainExceedance.LastUpdateDate_UTC = new DateTime();
+            actionRainExceedance = await RainExceedanceService.Post(rainExceedance);
+            Assert.IsType<BadRequestObjectResult>(actionRainExceedance.Result);
+            rainExceedance = null;
+            rainExceedance = GetFilledRandomRainExceedance("");
+            rainExceedance.LastUpdateDate_UTC = new DateTime(1979, 1, 1);
+            actionRainExceedance = await RainExceedanceService.Post(rainExceedance);
+            Assert.IsType<BadRequestObjectResult>(actionRainExceedance.Result);
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPExist(ExistTypeName = "TVItem", ExistPlurial = "s", ExistFieldID = "TVItemID", AllowableTVtypeList = Contact)]
+            // rainExceedance.LastUpdateContactTVItemID   (Int32)
+            // -----------------------------------
+
+            rainExceedance = null;
+            rainExceedance = GetFilledRandomRainExceedance("");
+            rainExceedance.LastUpdateContactTVItemID = 0;
+            actionRainExceedance = await RainExceedanceService.Post(rainExceedance);
+            Assert.IsType<BadRequestObjectResult>(actionRainExceedance.Result);
+
+            rainExceedance = null;
+            rainExceedance = GetFilledRandomRainExceedance("");
+            rainExceedance.LastUpdateContactTVItemID = 1;
+            actionRainExceedance = await RainExceedanceService.Post(rainExceedance);
+            Assert.IsType<BadRequestObjectResult>(actionRainExceedance.Result);
+
+        }
+        #endregion Tests Generated Properties
 
         #region Functions private
         private async Task DoCRUDTest()
@@ -249,6 +492,17 @@ namespace CSSPServices.Tests
             }
 
             return rainExceedance;
+        }
+        private void CheckRainExceedanceFields(List<RainExceedance> rainExceedanceList)
+        {
+            if (rainExceedanceList[0].StakeholdersEmailDistributionListID != null)
+            {
+                Assert.NotNull(rainExceedanceList[0].StakeholdersEmailDistributionListID);
+            }
+            if (rainExceedanceList[0].OnlyStaffEmailDistributionListID != null)
+            {
+                Assert.NotNull(rainExceedanceList[0].OnlyStaffEmailDistributionListID);
+            }
         }
         #endregion Functions private
     }

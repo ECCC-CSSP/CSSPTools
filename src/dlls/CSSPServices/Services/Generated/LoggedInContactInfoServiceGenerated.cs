@@ -20,19 +20,51 @@ using System.Threading.Tasks;
 
 namespace CSSPServices
 {
-    public partial class LoggedInContactInfoService
+    public interface ILoggedInContactInfoService
+    {
+        IEnumerable<ValidationResult> Validate(ValidationContext validationContext);
+    }
+    public partial class LoggedInContactInfoService : ILoggedInContactInfoService
     {
         #region Variables
         #endregion Variables
 
         #region Properties
+        private ICSSPCultureService CSSPCultureService { get; }
+        private IEnums enums { get; }
         #endregion Properties
 
         #region Constructors
-        public LoggedInContactInfoService()
+        public LoggedInContactInfoService(ICSSPCultureService CSSPCultureService, IEnums enums)
         {
+            this.CSSPCultureService = CSSPCultureService;
+            this.enums = enums;
         }
         #endregion Constructors
+
+        #region Functions public
+        public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+        {
+            string retStr = "";
+            LoggedInContactInfo loggedInContactInfo = validationContext.ObjectInstance as LoggedInContactInfo;
+
+                //CSSPError: Type not implemented [LoggedInContact] of type [Contact]
+
+                //CSSPError: Type not implemented [LoggedInContact] of type [Contact]
+                //CSSPError: Type not implemented [TVTypeUserAuthorizationList] of type [List`1]
+
+                //CSSPError: Type not implemented [TVTypeUserAuthorizationList] of type [TVTypeUserAuthorization]
+                //CSSPError: Type not implemented [TVItemUserAuthorizationList] of type [List`1]
+
+                //CSSPError: Type not implemented [TVItemUserAuthorizationList] of type [TVItemUserAuthorization]
+            retStr = ""; // added to stop compiling CSSPError
+            if (retStr != "") // will never be true
+            {
+                yield return new ValidationResult("AAA", new[] { "AAA" });
+            }
+
+        }
+        #endregion Functions public
 
     }
 }

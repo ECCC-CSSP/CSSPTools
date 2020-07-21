@@ -19,6 +19,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Transactions;
 using Xunit;
+using System.ComponentModel.DataAnnotations;
 
 namespace CSSPServices.Tests
 {
@@ -81,6 +82,266 @@ namespace CSSPServices.Tests
             }
         }
         #endregion Tests Generated CRUD
+
+        #region Tests Generated Properties
+        [Theory]
+        [InlineData("en-CA", DBLocationEnum.Local)]
+        [InlineData("fr-CA", DBLocationEnum.Local)]
+        [InlineData("en-CA", DBLocationEnum.Server)]
+        [InlineData("fr-CA", DBLocationEnum.Server)]
+        public async Task Address_Properties_Test(string culture, DBLocationEnum DBLocation)
+        {
+            // -------------------------------
+            // -------------------------------
+            // Properties testing
+            // -------------------------------
+            // -------------------------------
+
+            Assert.True(await Setup(culture));
+
+            LoggedInService.DBLocation = DBLocation;
+
+            int count = 0;
+            if (count == 1)
+            {
+                // just so we don't get a warning during compile [The variable 'count' is assigned but its value is never used]
+            }
+
+            var actionAddressList = await AddressService.GetAddressList();
+            Assert.Equal(200, ((ObjectResult)actionAddressList.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionAddressList.Result).Value);
+            List<Address> addressList = (List<Address>)((OkObjectResult)actionAddressList.Result).Value;
+
+            count = addressList.Count();
+
+            Address address = GetFilledRandomAddress("");
+
+
+            // -----------------------------------
+            // [Key]
+            // Is NOT Nullable
+            // address.AddressID   (Int32)
+            // -----------------------------------
+
+            address = null;
+            address = GetFilledRandomAddress("");
+            address.AddressID = 0;
+
+            var actionAddress = await AddressService.Put(address);
+            Assert.IsType<BadRequestObjectResult>(actionAddress.Result);
+
+            address = null;
+            address = GetFilledRandomAddress("");
+            address.AddressID = 10000000;
+            actionAddress = await AddressService.Put(address);
+            Assert.IsType<BadRequestObjectResult>(actionAddress.Result);
+
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPExist(ExistTypeName = "TVItem", ExistPlurial = "s", ExistFieldID = "TVItemID", AllowableTVtypeList = Address)]
+            // address.AddressTVItemID   (Int32)
+            // -----------------------------------
+
+            address = null;
+            address = GetFilledRandomAddress("");
+            address.AddressTVItemID = 0;
+            actionAddress = await AddressService.Post(address);
+            Assert.IsType<BadRequestObjectResult>(actionAddress.Result);
+
+            address = null;
+            address = GetFilledRandomAddress("");
+            address.AddressTVItemID = 1;
+            actionAddress = await AddressService.Post(address);
+            Assert.IsType<BadRequestObjectResult>(actionAddress.Result);
+
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPEnumType]
+            // address.AddressType   (AddressTypeEnum)
+            // -----------------------------------
+
+            address = null;
+            address = GetFilledRandomAddress("");
+            address.AddressType = (AddressTypeEnum)1000000;
+            actionAddress = await AddressService.Post(address);
+            Assert.IsType<BadRequestObjectResult>(actionAddress.Result);
+
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPExist(ExistTypeName = "TVItem", ExistPlurial = "s", ExistFieldID = "TVItemID", AllowableTVtypeList = Country)]
+            // address.CountryTVItemID   (Int32)
+            // -----------------------------------
+
+            address = null;
+            address = GetFilledRandomAddress("");
+            address.CountryTVItemID = 0;
+            actionAddress = await AddressService.Post(address);
+            Assert.IsType<BadRequestObjectResult>(actionAddress.Result);
+
+            address = null;
+            address = GetFilledRandomAddress("");
+            address.CountryTVItemID = 1;
+            actionAddress = await AddressService.Post(address);
+            Assert.IsType<BadRequestObjectResult>(actionAddress.Result);
+
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPExist(ExistTypeName = "TVItem", ExistPlurial = "s", ExistFieldID = "TVItemID", AllowableTVtypeList = Province)]
+            // address.ProvinceTVItemID   (Int32)
+            // -----------------------------------
+
+            address = null;
+            address = GetFilledRandomAddress("");
+            address.ProvinceTVItemID = 0;
+            actionAddress = await AddressService.Post(address);
+            Assert.IsType<BadRequestObjectResult>(actionAddress.Result);
+
+            address = null;
+            address = GetFilledRandomAddress("");
+            address.ProvinceTVItemID = 1;
+            actionAddress = await AddressService.Post(address);
+            Assert.IsType<BadRequestObjectResult>(actionAddress.Result);
+
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPExist(ExistTypeName = "TVItem", ExistPlurial = "s", ExistFieldID = "TVItemID", AllowableTVtypeList = Municipality)]
+            // address.MunicipalityTVItemID   (Int32)
+            // -----------------------------------
+
+            address = null;
+            address = GetFilledRandomAddress("");
+            address.MunicipalityTVItemID = 0;
+            actionAddress = await AddressService.Post(address);
+            Assert.IsType<BadRequestObjectResult>(actionAddress.Result);
+
+            address = null;
+            address = GetFilledRandomAddress("");
+            address.MunicipalityTVItemID = 1;
+            actionAddress = await AddressService.Post(address);
+            Assert.IsType<BadRequestObjectResult>(actionAddress.Result);
+
+
+            // -----------------------------------
+            // Is Nullable
+            // [CSSPMaxLength(200)]
+            // address.StreetName   (String)
+            // -----------------------------------
+
+            address = null;
+            address = GetFilledRandomAddress("");
+            address.StreetName = GetRandomString("", 201);
+            actionAddress = await AddressService.Post(address);
+            Assert.IsType<BadRequestObjectResult>(actionAddress.Result);
+            //Assert.AreEqual(count, addressService.GetAddressList().Count());
+
+            // -----------------------------------
+            // Is Nullable
+            // [CSSPMaxLength(50)]
+            // address.StreetNumber   (String)
+            // -----------------------------------
+
+            address = null;
+            address = GetFilledRandomAddress("");
+            address.StreetNumber = GetRandomString("", 51);
+            actionAddress = await AddressService.Post(address);
+            Assert.IsType<BadRequestObjectResult>(actionAddress.Result);
+            //Assert.AreEqual(count, addressService.GetAddressList().Count());
+
+            // -----------------------------------
+            // Is Nullable
+            // [CSSPEnumType]
+            // address.StreetType   (StreetTypeEnum)
+            // -----------------------------------
+
+            address = null;
+            address = GetFilledRandomAddress("");
+            address.StreetType = (StreetTypeEnum)1000000;
+            actionAddress = await AddressService.Post(address);
+            Assert.IsType<BadRequestObjectResult>(actionAddress.Result);
+
+
+            // -----------------------------------
+            // Is Nullable
+            // [CSSPMaxLength(11)]
+            // [CSSPMinLength(6)]
+            // address.PostalCode   (String)
+            // -----------------------------------
+
+            address = null;
+            address = GetFilledRandomAddress("");
+            address.PostalCode = GetRandomString("", 5);
+            actionAddress = await AddressService.Post(address);
+            Assert.IsType<BadRequestObjectResult>(actionAddress.Result);
+            //Assert.AreEqual(count, addressService.GetAddressList().Count());
+            address = null;
+            address = GetFilledRandomAddress("");
+            address.PostalCode = GetRandomString("", 12);
+            actionAddress = await AddressService.Post(address);
+            Assert.IsType<BadRequestObjectResult>(actionAddress.Result);
+            //Assert.AreEqual(count, addressService.GetAddressList().Count());
+
+            // -----------------------------------
+            // Is Nullable
+            // [CSSPMaxLength(200)]
+            // [CSSPMinLength(10)]
+            // address.GoogleAddressText   (String)
+            // -----------------------------------
+
+            address = null;
+            address = GetFilledRandomAddress("");
+            address.GoogleAddressText = GetRandomString("", 9);
+            actionAddress = await AddressService.Post(address);
+            Assert.IsType<BadRequestObjectResult>(actionAddress.Result);
+            //Assert.AreEqual(count, addressService.GetAddressList().Count());
+            address = null;
+            address = GetFilledRandomAddress("");
+            address.GoogleAddressText = GetRandomString("", 201);
+            actionAddress = await AddressService.Post(address);
+            Assert.IsType<BadRequestObjectResult>(actionAddress.Result);
+            //Assert.AreEqual(count, addressService.GetAddressList().Count());
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPAfter(Year = 1980)]
+            // address.LastUpdateDate_UTC   (DateTime)
+            // -----------------------------------
+
+            address = null;
+            address = GetFilledRandomAddress("");
+            address.LastUpdateDate_UTC = new DateTime();
+            actionAddress = await AddressService.Post(address);
+            Assert.IsType<BadRequestObjectResult>(actionAddress.Result);
+            address = null;
+            address = GetFilledRandomAddress("");
+            address.LastUpdateDate_UTC = new DateTime(1979, 1, 1);
+            actionAddress = await AddressService.Post(address);
+            Assert.IsType<BadRequestObjectResult>(actionAddress.Result);
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPExist(ExistTypeName = "TVItem", ExistPlurial = "s", ExistFieldID = "TVItemID", AllowableTVtypeList = Contact)]
+            // address.LastUpdateContactTVItemID   (Int32)
+            // -----------------------------------
+
+            address = null;
+            address = GetFilledRandomAddress("");
+            address.LastUpdateContactTVItemID = 0;
+            actionAddress = await AddressService.Post(address);
+            Assert.IsType<BadRequestObjectResult>(actionAddress.Result);
+
+            address = null;
+            address = GetFilledRandomAddress("");
+            address.LastUpdateContactTVItemID = 1;
+            actionAddress = await AddressService.Post(address);
+            Assert.IsType<BadRequestObjectResult>(actionAddress.Result);
+
+        }
+        #endregion Tests Generated Properties
 
         #region Functions private
         private async Task DoCRUDTest()
@@ -268,6 +529,29 @@ namespace CSSPServices.Tests
             }
 
             return address;
+        }
+        private void CheckAddressFields(List<Address> addressList)
+        {
+            if (!string.IsNullOrWhiteSpace(addressList[0].StreetName))
+            {
+                Assert.False(string.IsNullOrWhiteSpace(addressList[0].StreetName));
+            }
+            if (!string.IsNullOrWhiteSpace(addressList[0].StreetNumber))
+            {
+                Assert.False(string.IsNullOrWhiteSpace(addressList[0].StreetNumber));
+            }
+            if (addressList[0].StreetType != null)
+            {
+                Assert.NotNull(addressList[0].StreetType);
+            }
+            if (!string.IsNullOrWhiteSpace(addressList[0].PostalCode))
+            {
+                Assert.False(string.IsNullOrWhiteSpace(addressList[0].PostalCode));
+            }
+            if (!string.IsNullOrWhiteSpace(addressList[0].GoogleAddressText))
+            {
+                Assert.False(string.IsNullOrWhiteSpace(addressList[0].GoogleAddressText));
+            }
         }
         #endregion Functions private
     }

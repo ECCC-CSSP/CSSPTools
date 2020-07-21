@@ -19,16 +19,22 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Transactions;
 using Xunit;
+using System.ComponentModel.DataAnnotations;
 
 namespace CSSPServices.Tests
 {
-    [Collection("Sequential")]
     public partial class NewContactServiceTest : TestHelper
     {
         #region Variables
         #endregion Variables
 
         #region Properties
+        private IConfiguration Config { get; set; }
+        private IServiceProvider Provider { get; set; }
+        private IServiceCollection Services { get; set; }
+        private ICSSPCultureService CSSPCultureService { get; set; }
+        private INewContactService NewContactService { get; set; }
+        private NewContact newContact { get; set; }
         #endregion Properties
 
         #region Constructors
@@ -38,7 +44,82 @@ namespace CSSPServices.Tests
         }
         #endregion Constructors
 
+        #region Tests Generated Basic Test Not Mapped
+        [Theory]
+        [InlineData("en-CA")]
+        [InlineData("fr-CA")]
+        public async Task NewContactService_Good_Test(string culture)
+        {
+            Assert.True(await Setup(culture));
+
+            newContact = GetFilledRandomNewContact("");
+
+            List<ValidationResult> ValidationResultsList = NewContactService.Validate(new ValidationContext(newContact)).ToList();
+            Assert.True(ValidationResultsList.Count == 0);
+        }
+        #endregion Tests Generated Basic Test Not Mapped
+
         #region Functions private
+        private async Task<bool> Setup(string culture)
+        {
+            Config = new ConfigurationBuilder()
+               .SetBasePath(Directory.GetParent(AppContext.BaseDirectory).FullName)
+               .AddJsonFile("appsettings_csspservices.json")
+               .AddUserSecrets("6f27cbbe-6ffb-4154-b49b-d739597c4f60")
+               .Build();
+
+            Services = new ServiceCollection();
+
+            Services.AddSingleton<IConfiguration>(Config);
+
+            Services.AddSingleton<ICSSPCultureService, CSSPCultureService>();
+            Services.AddSingleton<IEnums, Enums>();
+            Services.AddSingleton<INewContactService, NewContactService>();
+
+            Provider = Services.BuildServiceProvider();
+            Assert.NotNull(Provider);
+
+            CSSPCultureService = Provider.GetService<ICSSPCultureService>();
+            Assert.NotNull(CSSPCultureService);
+
+            CSSPCultureService.SetCulture(culture);
+
+            NewContactService = Provider.GetService<INewContactService>();
+            Assert.NotNull(NewContactService);
+
+            return await Task.FromResult(true);
+        }
+        private NewContact GetFilledRandomNewContact(string OmitPropName)
+        {
+            NewContact newContact = new NewContact();
+
+            if (OmitPropName != "LoginEmail") newContact.LoginEmail = GetRandomString("", 6);
+            if (OmitPropName != "FirstName") newContact.FirstName = GetRandomString("", 6);
+            if (OmitPropName != "LastName") newContact.LastName = GetRandomString("", 6);
+            if (OmitPropName != "Initial") newContact.Initial = GetRandomString("", 5);
+            if (OmitPropName != "ContactTitle") newContact.ContactTitle = (ContactTitleEnum)GetRandomEnumType(typeof(ContactTitleEnum));
+            if (OmitPropName != "ContactTitleText") newContact.ContactTitleText = GetRandomString("", 5);
+
+            return newContact;
+        }
+        private void CheckNewContactFields(List<NewContact> newContactList)
+        {
+            Assert.False(string.IsNullOrWhiteSpace(newContactList[0].LoginEmail));
+            Assert.False(string.IsNullOrWhiteSpace(newContactList[0].FirstName));
+            Assert.False(string.IsNullOrWhiteSpace(newContactList[0].LastName));
+            if (!string.IsNullOrWhiteSpace(newContactList[0].Initial))
+            {
+                Assert.False(string.IsNullOrWhiteSpace(newContactList[0].Initial));
+            }
+            if (newContactList[0].ContactTitle != null)
+            {
+                Assert.NotNull(newContactList[0].ContactTitle);
+            }
+            if (!string.IsNullOrWhiteSpace(newContactList[0].ContactTitleText))
+            {
+                Assert.False(string.IsNullOrWhiteSpace(newContactList[0].ContactTitleText));
+            }
+        }
         #endregion Functions private
     }
 }

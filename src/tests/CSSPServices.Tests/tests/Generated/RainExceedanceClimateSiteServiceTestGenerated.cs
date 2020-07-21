@@ -19,6 +19,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Transactions;
 using Xunit;
+using System.ComponentModel.DataAnnotations;
 
 namespace CSSPServices.Tests
 {
@@ -81,6 +82,136 @@ namespace CSSPServices.Tests
             }
         }
         #endregion Tests Generated CRUD
+
+        #region Tests Generated Properties
+        [Theory]
+        [InlineData("en-CA", DBLocationEnum.Local)]
+        [InlineData("fr-CA", DBLocationEnum.Local)]
+        [InlineData("en-CA", DBLocationEnum.Server)]
+        [InlineData("fr-CA", DBLocationEnum.Server)]
+        public async Task RainExceedanceClimateSite_Properties_Test(string culture, DBLocationEnum DBLocation)
+        {
+            // -------------------------------
+            // -------------------------------
+            // Properties testing
+            // -------------------------------
+            // -------------------------------
+
+            Assert.True(await Setup(culture));
+
+            LoggedInService.DBLocation = DBLocation;
+
+            int count = 0;
+            if (count == 1)
+            {
+                // just so we don't get a warning during compile [The variable 'count' is assigned but its value is never used]
+            }
+
+            var actionRainExceedanceClimateSiteList = await RainExceedanceClimateSiteService.GetRainExceedanceClimateSiteList();
+            Assert.Equal(200, ((ObjectResult)actionRainExceedanceClimateSiteList.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionRainExceedanceClimateSiteList.Result).Value);
+            List<RainExceedanceClimateSite> rainExceedanceClimateSiteList = (List<RainExceedanceClimateSite>)((OkObjectResult)actionRainExceedanceClimateSiteList.Result).Value;
+
+            count = rainExceedanceClimateSiteList.Count();
+
+            RainExceedanceClimateSite rainExceedanceClimateSite = GetFilledRandomRainExceedanceClimateSite("");
+
+
+            // -----------------------------------
+            // [Key]
+            // Is NOT Nullable
+            // rainExceedanceClimateSite.RainExceedanceClimateSiteID   (Int32)
+            // -----------------------------------
+
+            rainExceedanceClimateSite = null;
+            rainExceedanceClimateSite = GetFilledRandomRainExceedanceClimateSite("");
+            rainExceedanceClimateSite.RainExceedanceClimateSiteID = 0;
+
+            var actionRainExceedanceClimateSite = await RainExceedanceClimateSiteService.Put(rainExceedanceClimateSite);
+            Assert.IsType<BadRequestObjectResult>(actionRainExceedanceClimateSite.Result);
+
+            rainExceedanceClimateSite = null;
+            rainExceedanceClimateSite = GetFilledRandomRainExceedanceClimateSite("");
+            rainExceedanceClimateSite.RainExceedanceClimateSiteID = 10000000;
+            actionRainExceedanceClimateSite = await RainExceedanceClimateSiteService.Put(rainExceedanceClimateSite);
+            Assert.IsType<BadRequestObjectResult>(actionRainExceedanceClimateSite.Result);
+
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPExist(ExistTypeName = "TVItem", ExistPlurial = "s", ExistFieldID = "TVItemID", AllowableTVtypeList = RainExceedance)]
+            // rainExceedanceClimateSite.RainExceedanceTVItemID   (Int32)
+            // -----------------------------------
+
+            rainExceedanceClimateSite = null;
+            rainExceedanceClimateSite = GetFilledRandomRainExceedanceClimateSite("");
+            rainExceedanceClimateSite.RainExceedanceTVItemID = 0;
+            actionRainExceedanceClimateSite = await RainExceedanceClimateSiteService.Post(rainExceedanceClimateSite);
+            Assert.IsType<BadRequestObjectResult>(actionRainExceedanceClimateSite.Result);
+
+            rainExceedanceClimateSite = null;
+            rainExceedanceClimateSite = GetFilledRandomRainExceedanceClimateSite("");
+            rainExceedanceClimateSite.RainExceedanceTVItemID = 1;
+            actionRainExceedanceClimateSite = await RainExceedanceClimateSiteService.Post(rainExceedanceClimateSite);
+            Assert.IsType<BadRequestObjectResult>(actionRainExceedanceClimateSite.Result);
+
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPExist(ExistTypeName = "TVItem", ExistPlurial = "s", ExistFieldID = "TVItemID", AllowableTVtypeList = ClimateSite)]
+            // rainExceedanceClimateSite.ClimateSiteTVItemID   (Int32)
+            // -----------------------------------
+
+            rainExceedanceClimateSite = null;
+            rainExceedanceClimateSite = GetFilledRandomRainExceedanceClimateSite("");
+            rainExceedanceClimateSite.ClimateSiteTVItemID = 0;
+            actionRainExceedanceClimateSite = await RainExceedanceClimateSiteService.Post(rainExceedanceClimateSite);
+            Assert.IsType<BadRequestObjectResult>(actionRainExceedanceClimateSite.Result);
+
+            rainExceedanceClimateSite = null;
+            rainExceedanceClimateSite = GetFilledRandomRainExceedanceClimateSite("");
+            rainExceedanceClimateSite.ClimateSiteTVItemID = 1;
+            actionRainExceedanceClimateSite = await RainExceedanceClimateSiteService.Post(rainExceedanceClimateSite);
+            Assert.IsType<BadRequestObjectResult>(actionRainExceedanceClimateSite.Result);
+
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPAfter(Year = 1980)]
+            // rainExceedanceClimateSite.LastUpdateDate_UTC   (DateTime)
+            // -----------------------------------
+
+            rainExceedanceClimateSite = null;
+            rainExceedanceClimateSite = GetFilledRandomRainExceedanceClimateSite("");
+            rainExceedanceClimateSite.LastUpdateDate_UTC = new DateTime();
+            actionRainExceedanceClimateSite = await RainExceedanceClimateSiteService.Post(rainExceedanceClimateSite);
+            Assert.IsType<BadRequestObjectResult>(actionRainExceedanceClimateSite.Result);
+            rainExceedanceClimateSite = null;
+            rainExceedanceClimateSite = GetFilledRandomRainExceedanceClimateSite("");
+            rainExceedanceClimateSite.LastUpdateDate_UTC = new DateTime(1979, 1, 1);
+            actionRainExceedanceClimateSite = await RainExceedanceClimateSiteService.Post(rainExceedanceClimateSite);
+            Assert.IsType<BadRequestObjectResult>(actionRainExceedanceClimateSite.Result);
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPExist(ExistTypeName = "TVItem", ExistPlurial = "s", ExistFieldID = "TVItemID", AllowableTVtypeList = Contact)]
+            // rainExceedanceClimateSite.LastUpdateContactTVItemID   (Int32)
+            // -----------------------------------
+
+            rainExceedanceClimateSite = null;
+            rainExceedanceClimateSite = GetFilledRandomRainExceedanceClimateSite("");
+            rainExceedanceClimateSite.LastUpdateContactTVItemID = 0;
+            actionRainExceedanceClimateSite = await RainExceedanceClimateSiteService.Post(rainExceedanceClimateSite);
+            Assert.IsType<BadRequestObjectResult>(actionRainExceedanceClimateSite.Result);
+
+            rainExceedanceClimateSite = null;
+            rainExceedanceClimateSite = GetFilledRandomRainExceedanceClimateSite("");
+            rainExceedanceClimateSite.LastUpdateContactTVItemID = 1;
+            actionRainExceedanceClimateSite = await RainExceedanceClimateSiteService.Post(rainExceedanceClimateSite);
+            Assert.IsType<BadRequestObjectResult>(actionRainExceedanceClimateSite.Result);
+
+        }
+        #endregion Tests Generated Properties
 
         #region Functions private
         private async Task DoCRUDTest()
@@ -242,6 +373,9 @@ namespace CSSPServices.Tests
             }
 
             return rainExceedanceClimateSite;
+        }
+        private void CheckRainExceedanceClimateSiteFields(List<RainExceedanceClimateSite> rainExceedanceClimateSiteList)
+        {
         }
         #endregion Functions private
     }

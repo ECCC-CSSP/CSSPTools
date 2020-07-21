@@ -19,6 +19,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Transactions;
 using Xunit;
+using System.ComponentModel.DataAnnotations;
 
 namespace CSSPServices.Tests
 {
@@ -81,6 +82,148 @@ namespace CSSPServices.Tests
             }
         }
         #endregion Tests Generated CRUD
+
+        #region Tests Generated Properties
+        [Theory]
+        [InlineData("en-CA", DBLocationEnum.Local)]
+        [InlineData("fr-CA", DBLocationEnum.Local)]
+        [InlineData("en-CA", DBLocationEnum.Server)]
+        [InlineData("fr-CA", DBLocationEnum.Server)]
+        public async Task InfrastructureLanguage_Properties_Test(string culture, DBLocationEnum DBLocation)
+        {
+            // -------------------------------
+            // -------------------------------
+            // Properties testing
+            // -------------------------------
+            // -------------------------------
+
+            Assert.True(await Setup(culture));
+
+            LoggedInService.DBLocation = DBLocation;
+
+            int count = 0;
+            if (count == 1)
+            {
+                // just so we don't get a warning during compile [The variable 'count' is assigned but its value is never used]
+            }
+
+            var actionInfrastructureLanguageList = await InfrastructureLanguageService.GetInfrastructureLanguageList();
+            Assert.Equal(200, ((ObjectResult)actionInfrastructureLanguageList.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionInfrastructureLanguageList.Result).Value);
+            List<InfrastructureLanguage> infrastructureLanguageList = (List<InfrastructureLanguage>)((OkObjectResult)actionInfrastructureLanguageList.Result).Value;
+
+            count = infrastructureLanguageList.Count();
+
+            InfrastructureLanguage infrastructureLanguage = GetFilledRandomInfrastructureLanguage("");
+
+
+            // -----------------------------------
+            // [Key]
+            // Is NOT Nullable
+            // infrastructureLanguage.InfrastructureLanguageID   (Int32)
+            // -----------------------------------
+
+            infrastructureLanguage = null;
+            infrastructureLanguage = GetFilledRandomInfrastructureLanguage("");
+            infrastructureLanguage.InfrastructureLanguageID = 0;
+
+            var actionInfrastructureLanguage = await InfrastructureLanguageService.Put(infrastructureLanguage);
+            Assert.IsType<BadRequestObjectResult>(actionInfrastructureLanguage.Result);
+
+            infrastructureLanguage = null;
+            infrastructureLanguage = GetFilledRandomInfrastructureLanguage("");
+            infrastructureLanguage.InfrastructureLanguageID = 10000000;
+            actionInfrastructureLanguage = await InfrastructureLanguageService.Put(infrastructureLanguage);
+            Assert.IsType<BadRequestObjectResult>(actionInfrastructureLanguage.Result);
+
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPExist(ExistTypeName = "Infrastructure", ExistPlurial = "s", ExistFieldID = "InfrastructureID", AllowableTVtypeList = )]
+            // infrastructureLanguage.InfrastructureID   (Int32)
+            // -----------------------------------
+
+            infrastructureLanguage = null;
+            infrastructureLanguage = GetFilledRandomInfrastructureLanguage("");
+            infrastructureLanguage.InfrastructureID = 0;
+            actionInfrastructureLanguage = await InfrastructureLanguageService.Post(infrastructureLanguage);
+            Assert.IsType<BadRequestObjectResult>(actionInfrastructureLanguage.Result);
+
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPEnumType]
+            // infrastructureLanguage.Language   (LanguageEnum)
+            // -----------------------------------
+
+            infrastructureLanguage = null;
+            infrastructureLanguage = GetFilledRandomInfrastructureLanguage("");
+            infrastructureLanguage.Language = (LanguageEnum)1000000;
+            actionInfrastructureLanguage = await InfrastructureLanguageService.Post(infrastructureLanguage);
+            Assert.IsType<BadRequestObjectResult>(actionInfrastructureLanguage.Result);
+
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // infrastructureLanguage.Comment   (String)
+            // -----------------------------------
+
+            infrastructureLanguage = null;
+            infrastructureLanguage = GetFilledRandomInfrastructureLanguage("Comment");
+            actionInfrastructureLanguage = await InfrastructureLanguageService.Post(infrastructureLanguage);
+            Assert.IsType<BadRequestObjectResult>(actionInfrastructureLanguage.Result);
+
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPEnumType]
+            // infrastructureLanguage.TranslationStatus   (TranslationStatusEnum)
+            // -----------------------------------
+
+            infrastructureLanguage = null;
+            infrastructureLanguage = GetFilledRandomInfrastructureLanguage("");
+            infrastructureLanguage.TranslationStatus = (TranslationStatusEnum)1000000;
+            actionInfrastructureLanguage = await InfrastructureLanguageService.Post(infrastructureLanguage);
+            Assert.IsType<BadRequestObjectResult>(actionInfrastructureLanguage.Result);
+
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPAfter(Year = 1980)]
+            // infrastructureLanguage.LastUpdateDate_UTC   (DateTime)
+            // -----------------------------------
+
+            infrastructureLanguage = null;
+            infrastructureLanguage = GetFilledRandomInfrastructureLanguage("");
+            infrastructureLanguage.LastUpdateDate_UTC = new DateTime();
+            actionInfrastructureLanguage = await InfrastructureLanguageService.Post(infrastructureLanguage);
+            Assert.IsType<BadRequestObjectResult>(actionInfrastructureLanguage.Result);
+            infrastructureLanguage = null;
+            infrastructureLanguage = GetFilledRandomInfrastructureLanguage("");
+            infrastructureLanguage.LastUpdateDate_UTC = new DateTime(1979, 1, 1);
+            actionInfrastructureLanguage = await InfrastructureLanguageService.Post(infrastructureLanguage);
+            Assert.IsType<BadRequestObjectResult>(actionInfrastructureLanguage.Result);
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPExist(ExistTypeName = "TVItem", ExistPlurial = "s", ExistFieldID = "TVItemID", AllowableTVtypeList = Contact)]
+            // infrastructureLanguage.LastUpdateContactTVItemID   (Int32)
+            // -----------------------------------
+
+            infrastructureLanguage = null;
+            infrastructureLanguage = GetFilledRandomInfrastructureLanguage("");
+            infrastructureLanguage.LastUpdateContactTVItemID = 0;
+            actionInfrastructureLanguage = await InfrastructureLanguageService.Post(infrastructureLanguage);
+            Assert.IsType<BadRequestObjectResult>(actionInfrastructureLanguage.Result);
+
+            infrastructureLanguage = null;
+            infrastructureLanguage = GetFilledRandomInfrastructureLanguage("");
+            infrastructureLanguage.LastUpdateContactTVItemID = 1;
+            actionInfrastructureLanguage = await InfrastructureLanguageService.Post(infrastructureLanguage);
+            Assert.IsType<BadRequestObjectResult>(actionInfrastructureLanguage.Result);
+
+        }
+        #endregion Tests Generated Properties
 
         #region Functions private
         private async Task DoCRUDTest()
@@ -235,6 +378,10 @@ namespace CSSPServices.Tests
             }
 
             return infrastructureLanguage;
+        }
+        private void CheckInfrastructureLanguageFields(List<InfrastructureLanguage> infrastructureLanguageList)
+        {
+            Assert.False(string.IsNullOrWhiteSpace(infrastructureLanguageList[0].Comment));
         }
         #endregion Functions private
     }

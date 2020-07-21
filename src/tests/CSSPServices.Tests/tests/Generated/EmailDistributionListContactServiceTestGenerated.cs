@@ -19,6 +19,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Transactions;
 using Xunit;
+using System.ComponentModel.DataAnnotations;
 
 namespace CSSPServices.Tests
 {
@@ -81,6 +82,184 @@ namespace CSSPServices.Tests
             }
         }
         #endregion Tests Generated CRUD
+
+        #region Tests Generated Properties
+        [Theory]
+        [InlineData("en-CA", DBLocationEnum.Local)]
+        [InlineData("fr-CA", DBLocationEnum.Local)]
+        [InlineData("en-CA", DBLocationEnum.Server)]
+        [InlineData("fr-CA", DBLocationEnum.Server)]
+        public async Task EmailDistributionListContact_Properties_Test(string culture, DBLocationEnum DBLocation)
+        {
+            // -------------------------------
+            // -------------------------------
+            // Properties testing
+            // -------------------------------
+            // -------------------------------
+
+            Assert.True(await Setup(culture));
+
+            LoggedInService.DBLocation = DBLocation;
+
+            int count = 0;
+            if (count == 1)
+            {
+                // just so we don't get a warning during compile [The variable 'count' is assigned but its value is never used]
+            }
+
+            var actionEmailDistributionListContactList = await EmailDistributionListContactService.GetEmailDistributionListContactList();
+            Assert.Equal(200, ((ObjectResult)actionEmailDistributionListContactList.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionEmailDistributionListContactList.Result).Value);
+            List<EmailDistributionListContact> emailDistributionListContactList = (List<EmailDistributionListContact>)((OkObjectResult)actionEmailDistributionListContactList.Result).Value;
+
+            count = emailDistributionListContactList.Count();
+
+            EmailDistributionListContact emailDistributionListContact = GetFilledRandomEmailDistributionListContact("");
+
+
+            // -----------------------------------
+            // [Key]
+            // Is NOT Nullable
+            // emailDistributionListContact.EmailDistributionListContactID   (Int32)
+            // -----------------------------------
+
+            emailDistributionListContact = null;
+            emailDistributionListContact = GetFilledRandomEmailDistributionListContact("");
+            emailDistributionListContact.EmailDistributionListContactID = 0;
+
+            var actionEmailDistributionListContact = await EmailDistributionListContactService.Put(emailDistributionListContact);
+            Assert.IsType<BadRequestObjectResult>(actionEmailDistributionListContact.Result);
+
+            emailDistributionListContact = null;
+            emailDistributionListContact = GetFilledRandomEmailDistributionListContact("");
+            emailDistributionListContact.EmailDistributionListContactID = 10000000;
+            actionEmailDistributionListContact = await EmailDistributionListContactService.Put(emailDistributionListContact);
+            Assert.IsType<BadRequestObjectResult>(actionEmailDistributionListContact.Result);
+
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPExist(ExistTypeName = "EmailDistributionList", ExistPlurial = "s", ExistFieldID = "EmailDistributionListID", AllowableTVtypeList = )]
+            // emailDistributionListContact.EmailDistributionListID   (Int32)
+            // -----------------------------------
+
+            emailDistributionListContact = null;
+            emailDistributionListContact = GetFilledRandomEmailDistributionListContact("");
+            emailDistributionListContact.EmailDistributionListID = 0;
+            actionEmailDistributionListContact = await EmailDistributionListContactService.Post(emailDistributionListContact);
+            Assert.IsType<BadRequestObjectResult>(actionEmailDistributionListContact.Result);
+
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // emailDistributionListContact.IsCC   (Boolean)
+            // -----------------------------------
+
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPMaxLength(100)]
+            // emailDistributionListContact.Name   (String)
+            // -----------------------------------
+
+            emailDistributionListContact = null;
+            emailDistributionListContact = GetFilledRandomEmailDistributionListContact("Name");
+            actionEmailDistributionListContact = await EmailDistributionListContactService.Post(emailDistributionListContact);
+            Assert.IsType<BadRequestObjectResult>(actionEmailDistributionListContact.Result);
+
+            emailDistributionListContact = null;
+            emailDistributionListContact = GetFilledRandomEmailDistributionListContact("");
+            emailDistributionListContact.Name = GetRandomString("", 101);
+            actionEmailDistributionListContact = await EmailDistributionListContactService.Post(emailDistributionListContact);
+            Assert.IsType<BadRequestObjectResult>(actionEmailDistributionListContact.Result);
+            //Assert.AreEqual(count, emailDistributionListContactService.GetEmailDistributionListContactList().Count());
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [DataType(DataType.EmailAddress)]
+            // [CSSPMaxLength(200)]
+            // emailDistributionListContact.Email   (String)
+            // -----------------------------------
+
+            emailDistributionListContact = null;
+            emailDistributionListContact = GetFilledRandomEmailDistributionListContact("Email");
+            actionEmailDistributionListContact = await EmailDistributionListContactService.Post(emailDistributionListContact);
+            Assert.IsType<BadRequestObjectResult>(actionEmailDistributionListContact.Result);
+
+            emailDistributionListContact = null;
+            emailDistributionListContact = GetFilledRandomEmailDistributionListContact("");
+            emailDistributionListContact.Email = GetRandomString("", 201);
+            actionEmailDistributionListContact = await EmailDistributionListContactService.Post(emailDistributionListContact);
+            Assert.IsType<BadRequestObjectResult>(actionEmailDistributionListContact.Result);
+            //Assert.AreEqual(count, emailDistributionListContactService.GetEmailDistributionListContactList().Count());
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // emailDistributionListContact.CMPRainfallSeasonal   (Boolean)
+            // -----------------------------------
+
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // emailDistributionListContact.CMPWastewater   (Boolean)
+            // -----------------------------------
+
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // emailDistributionListContact.EmergencyWeather   (Boolean)
+            // -----------------------------------
+
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // emailDistributionListContact.EmergencyWastewater   (Boolean)
+            // -----------------------------------
+
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // emailDistributionListContact.ReopeningAllTypes   (Boolean)
+            // -----------------------------------
+
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPAfter(Year = 1980)]
+            // emailDistributionListContact.LastUpdateDate_UTC   (DateTime)
+            // -----------------------------------
+
+            emailDistributionListContact = null;
+            emailDistributionListContact = GetFilledRandomEmailDistributionListContact("");
+            emailDistributionListContact.LastUpdateDate_UTC = new DateTime();
+            actionEmailDistributionListContact = await EmailDistributionListContactService.Post(emailDistributionListContact);
+            Assert.IsType<BadRequestObjectResult>(actionEmailDistributionListContact.Result);
+            emailDistributionListContact = null;
+            emailDistributionListContact = GetFilledRandomEmailDistributionListContact("");
+            emailDistributionListContact.LastUpdateDate_UTC = new DateTime(1979, 1, 1);
+            actionEmailDistributionListContact = await EmailDistributionListContactService.Post(emailDistributionListContact);
+            Assert.IsType<BadRequestObjectResult>(actionEmailDistributionListContact.Result);
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPExist(ExistTypeName = "TVItem", ExistPlurial = "s", ExistFieldID = "TVItemID", AllowableTVtypeList = Contact)]
+            // emailDistributionListContact.LastUpdateContactTVItemID   (Int32)
+            // -----------------------------------
+
+            emailDistributionListContact = null;
+            emailDistributionListContact = GetFilledRandomEmailDistributionListContact("");
+            emailDistributionListContact.LastUpdateContactTVItemID = 0;
+            actionEmailDistributionListContact = await EmailDistributionListContactService.Post(emailDistributionListContact);
+            Assert.IsType<BadRequestObjectResult>(actionEmailDistributionListContact.Result);
+
+            emailDistributionListContact = null;
+            emailDistributionListContact = GetFilledRandomEmailDistributionListContact("");
+            emailDistributionListContact.LastUpdateContactTVItemID = 1;
+            actionEmailDistributionListContact = await EmailDistributionListContactService.Post(emailDistributionListContact);
+            Assert.IsType<BadRequestObjectResult>(actionEmailDistributionListContact.Result);
+
+        }
+        #endregion Tests Generated Properties
 
         #region Functions private
         private async Task DoCRUDTest()
@@ -240,6 +419,11 @@ namespace CSSPServices.Tests
             }
 
             return emailDistributionListContact;
+        }
+        private void CheckEmailDistributionListContactFields(List<EmailDistributionListContact> emailDistributionListContactList)
+        {
+            Assert.False(string.IsNullOrWhiteSpace(emailDistributionListContactList[0].Name));
+            Assert.False(string.IsNullOrWhiteSpace(emailDistributionListContactList[0].Email));
         }
         #endregion Functions private
     }

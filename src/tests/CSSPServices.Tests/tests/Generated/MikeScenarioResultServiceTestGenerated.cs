@@ -19,6 +19,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Transactions;
 using Xunit;
+using System.ComponentModel.DataAnnotations;
 
 namespace CSSPServices.Tests
 {
@@ -81,6 +82,123 @@ namespace CSSPServices.Tests
             }
         }
         #endregion Tests Generated CRUD
+
+        #region Tests Generated Properties
+        [Theory]
+        [InlineData("en-CA", DBLocationEnum.Local)]
+        [InlineData("fr-CA", DBLocationEnum.Local)]
+        [InlineData("en-CA", DBLocationEnum.Server)]
+        [InlineData("fr-CA", DBLocationEnum.Server)]
+        public async Task MikeScenarioResult_Properties_Test(string culture, DBLocationEnum DBLocation)
+        {
+            // -------------------------------
+            // -------------------------------
+            // Properties testing
+            // -------------------------------
+            // -------------------------------
+
+            Assert.True(await Setup(culture));
+
+            LoggedInService.DBLocation = DBLocation;
+
+            int count = 0;
+            if (count == 1)
+            {
+                // just so we don't get a warning during compile [The variable 'count' is assigned but its value is never used]
+            }
+
+            var actionMikeScenarioResultList = await MikeScenarioResultService.GetMikeScenarioResultList();
+            Assert.Equal(200, ((ObjectResult)actionMikeScenarioResultList.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionMikeScenarioResultList.Result).Value);
+            List<MikeScenarioResult> mikeScenarioResultList = (List<MikeScenarioResult>)((OkObjectResult)actionMikeScenarioResultList.Result).Value;
+
+            count = mikeScenarioResultList.Count();
+
+            MikeScenarioResult mikeScenarioResult = GetFilledRandomMikeScenarioResult("");
+
+
+            // -----------------------------------
+            // [Key]
+            // Is NOT Nullable
+            // mikeScenarioResult.MikeScenarioResultID   (Int32)
+            // -----------------------------------
+
+            mikeScenarioResult = null;
+            mikeScenarioResult = GetFilledRandomMikeScenarioResult("");
+            mikeScenarioResult.MikeScenarioResultID = 0;
+
+            var actionMikeScenarioResult = await MikeScenarioResultService.Put(mikeScenarioResult);
+            Assert.IsType<BadRequestObjectResult>(actionMikeScenarioResult.Result);
+
+            mikeScenarioResult = null;
+            mikeScenarioResult = GetFilledRandomMikeScenarioResult("");
+            mikeScenarioResult.MikeScenarioResultID = 10000000;
+            actionMikeScenarioResult = await MikeScenarioResultService.Put(mikeScenarioResult);
+            Assert.IsType<BadRequestObjectResult>(actionMikeScenarioResult.Result);
+
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPExist(ExistTypeName = "TVItem", ExistPlurial = "s", ExistFieldID = "TVItemID", AllowableTVtypeList = MikeScenario)]
+            // mikeScenarioResult.MikeScenarioTVItemID   (Int32)
+            // -----------------------------------
+
+            mikeScenarioResult = null;
+            mikeScenarioResult = GetFilledRandomMikeScenarioResult("");
+            mikeScenarioResult.MikeScenarioTVItemID = 0;
+            actionMikeScenarioResult = await MikeScenarioResultService.Post(mikeScenarioResult);
+            Assert.IsType<BadRequestObjectResult>(actionMikeScenarioResult.Result);
+
+            mikeScenarioResult = null;
+            mikeScenarioResult = GetFilledRandomMikeScenarioResult("");
+            mikeScenarioResult.MikeScenarioTVItemID = 1;
+            actionMikeScenarioResult = await MikeScenarioResultService.Post(mikeScenarioResult);
+            Assert.IsType<BadRequestObjectResult>(actionMikeScenarioResult.Result);
+
+
+            // -----------------------------------
+            // Is Nullable
+            // mikeScenarioResult.MikeResultsJSON   (String)
+            // -----------------------------------
+
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPAfter(Year = 1980)]
+            // mikeScenarioResult.LastUpdateDate_UTC   (DateTime)
+            // -----------------------------------
+
+            mikeScenarioResult = null;
+            mikeScenarioResult = GetFilledRandomMikeScenarioResult("");
+            mikeScenarioResult.LastUpdateDate_UTC = new DateTime();
+            actionMikeScenarioResult = await MikeScenarioResultService.Post(mikeScenarioResult);
+            Assert.IsType<BadRequestObjectResult>(actionMikeScenarioResult.Result);
+            mikeScenarioResult = null;
+            mikeScenarioResult = GetFilledRandomMikeScenarioResult("");
+            mikeScenarioResult.LastUpdateDate_UTC = new DateTime(1979, 1, 1);
+            actionMikeScenarioResult = await MikeScenarioResultService.Post(mikeScenarioResult);
+            Assert.IsType<BadRequestObjectResult>(actionMikeScenarioResult.Result);
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPExist(ExistTypeName = "TVItem", ExistPlurial = "s", ExistFieldID = "TVItemID", AllowableTVtypeList = Contact)]
+            // mikeScenarioResult.LastUpdateContactTVItemID   (Int32)
+            // -----------------------------------
+
+            mikeScenarioResult = null;
+            mikeScenarioResult = GetFilledRandomMikeScenarioResult("");
+            mikeScenarioResult.LastUpdateContactTVItemID = 0;
+            actionMikeScenarioResult = await MikeScenarioResultService.Post(mikeScenarioResult);
+            Assert.IsType<BadRequestObjectResult>(actionMikeScenarioResult.Result);
+
+            mikeScenarioResult = null;
+            mikeScenarioResult = GetFilledRandomMikeScenarioResult("");
+            mikeScenarioResult.LastUpdateContactTVItemID = 1;
+            actionMikeScenarioResult = await MikeScenarioResultService.Post(mikeScenarioResult);
+            Assert.IsType<BadRequestObjectResult>(actionMikeScenarioResult.Result);
+
+        }
+        #endregion Tests Generated Properties
 
         #region Functions private
         private async Task DoCRUDTest()
@@ -233,6 +351,13 @@ namespace CSSPServices.Tests
             }
 
             return mikeScenarioResult;
+        }
+        private void CheckMikeScenarioResultFields(List<MikeScenarioResult> mikeScenarioResultList)
+        {
+            if (!string.IsNullOrWhiteSpace(mikeScenarioResultList[0].MikeResultsJSON))
+            {
+                Assert.False(string.IsNullOrWhiteSpace(mikeScenarioResultList[0].MikeResultsJSON));
+            }
         }
         #endregion Functions private
     }

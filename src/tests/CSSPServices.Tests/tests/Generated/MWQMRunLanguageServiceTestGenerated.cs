@@ -19,6 +19,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Transactions;
 using Xunit;
+using System.ComponentModel.DataAnnotations;
 
 namespace CSSPServices.Tests
 {
@@ -81,6 +82,172 @@ namespace CSSPServices.Tests
             }
         }
         #endregion Tests Generated CRUD
+
+        #region Tests Generated Properties
+        [Theory]
+        [InlineData("en-CA", DBLocationEnum.Local)]
+        [InlineData("fr-CA", DBLocationEnum.Local)]
+        [InlineData("en-CA", DBLocationEnum.Server)]
+        [InlineData("fr-CA", DBLocationEnum.Server)]
+        public async Task MWQMRunLanguage_Properties_Test(string culture, DBLocationEnum DBLocation)
+        {
+            // -------------------------------
+            // -------------------------------
+            // Properties testing
+            // -------------------------------
+            // -------------------------------
+
+            Assert.True(await Setup(culture));
+
+            LoggedInService.DBLocation = DBLocation;
+
+            int count = 0;
+            if (count == 1)
+            {
+                // just so we don't get a warning during compile [The variable 'count' is assigned but its value is never used]
+            }
+
+            var actionMWQMRunLanguageList = await MWQMRunLanguageService.GetMWQMRunLanguageList();
+            Assert.Equal(200, ((ObjectResult)actionMWQMRunLanguageList.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionMWQMRunLanguageList.Result).Value);
+            List<MWQMRunLanguage> mwqmRunLanguageList = (List<MWQMRunLanguage>)((OkObjectResult)actionMWQMRunLanguageList.Result).Value;
+
+            count = mwqmRunLanguageList.Count();
+
+            MWQMRunLanguage mwqmRunLanguage = GetFilledRandomMWQMRunLanguage("");
+
+
+            // -----------------------------------
+            // [Key]
+            // Is NOT Nullable
+            // mwqmRunLanguage.MWQMRunLanguageID   (Int32)
+            // -----------------------------------
+
+            mwqmRunLanguage = null;
+            mwqmRunLanguage = GetFilledRandomMWQMRunLanguage("");
+            mwqmRunLanguage.MWQMRunLanguageID = 0;
+
+            var actionMWQMRunLanguage = await MWQMRunLanguageService.Put(mwqmRunLanguage);
+            Assert.IsType<BadRequestObjectResult>(actionMWQMRunLanguage.Result);
+
+            mwqmRunLanguage = null;
+            mwqmRunLanguage = GetFilledRandomMWQMRunLanguage("");
+            mwqmRunLanguage.MWQMRunLanguageID = 10000000;
+            actionMWQMRunLanguage = await MWQMRunLanguageService.Put(mwqmRunLanguage);
+            Assert.IsType<BadRequestObjectResult>(actionMWQMRunLanguage.Result);
+
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPExist(ExistTypeName = "MWQMRun", ExistPlurial = "s", ExistFieldID = "MWQMRunID", AllowableTVtypeList = )]
+            // mwqmRunLanguage.MWQMRunID   (Int32)
+            // -----------------------------------
+
+            mwqmRunLanguage = null;
+            mwqmRunLanguage = GetFilledRandomMWQMRunLanguage("");
+            mwqmRunLanguage.MWQMRunID = 0;
+            actionMWQMRunLanguage = await MWQMRunLanguageService.Post(mwqmRunLanguage);
+            Assert.IsType<BadRequestObjectResult>(actionMWQMRunLanguage.Result);
+
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPEnumType]
+            // mwqmRunLanguage.Language   (LanguageEnum)
+            // -----------------------------------
+
+            mwqmRunLanguage = null;
+            mwqmRunLanguage = GetFilledRandomMWQMRunLanguage("");
+            mwqmRunLanguage.Language = (LanguageEnum)1000000;
+            actionMWQMRunLanguage = await MWQMRunLanguageService.Post(mwqmRunLanguage);
+            Assert.IsType<BadRequestObjectResult>(actionMWQMRunLanguage.Result);
+
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // mwqmRunLanguage.RunComment   (String)
+            // -----------------------------------
+
+            mwqmRunLanguage = null;
+            mwqmRunLanguage = GetFilledRandomMWQMRunLanguage("RunComment");
+            actionMWQMRunLanguage = await MWQMRunLanguageService.Post(mwqmRunLanguage);
+            Assert.IsType<BadRequestObjectResult>(actionMWQMRunLanguage.Result);
+
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPEnumType]
+            // mwqmRunLanguage.TranslationStatusRunComment   (TranslationStatusEnum)
+            // -----------------------------------
+
+            mwqmRunLanguage = null;
+            mwqmRunLanguage = GetFilledRandomMWQMRunLanguage("");
+            mwqmRunLanguage.TranslationStatusRunComment = (TranslationStatusEnum)1000000;
+            actionMWQMRunLanguage = await MWQMRunLanguageService.Post(mwqmRunLanguage);
+            Assert.IsType<BadRequestObjectResult>(actionMWQMRunLanguage.Result);
+
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // mwqmRunLanguage.RunWeatherComment   (String)
+            // -----------------------------------
+
+            mwqmRunLanguage = null;
+            mwqmRunLanguage = GetFilledRandomMWQMRunLanguage("RunWeatherComment");
+            actionMWQMRunLanguage = await MWQMRunLanguageService.Post(mwqmRunLanguage);
+            Assert.IsType<BadRequestObjectResult>(actionMWQMRunLanguage.Result);
+
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPEnumType]
+            // mwqmRunLanguage.TranslationStatusRunWeatherComment   (TranslationStatusEnum)
+            // -----------------------------------
+
+            mwqmRunLanguage = null;
+            mwqmRunLanguage = GetFilledRandomMWQMRunLanguage("");
+            mwqmRunLanguage.TranslationStatusRunWeatherComment = (TranslationStatusEnum)1000000;
+            actionMWQMRunLanguage = await MWQMRunLanguageService.Post(mwqmRunLanguage);
+            Assert.IsType<BadRequestObjectResult>(actionMWQMRunLanguage.Result);
+
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPAfter(Year = 1980)]
+            // mwqmRunLanguage.LastUpdateDate_UTC   (DateTime)
+            // -----------------------------------
+
+            mwqmRunLanguage = null;
+            mwqmRunLanguage = GetFilledRandomMWQMRunLanguage("");
+            mwqmRunLanguage.LastUpdateDate_UTC = new DateTime();
+            actionMWQMRunLanguage = await MWQMRunLanguageService.Post(mwqmRunLanguage);
+            Assert.IsType<BadRequestObjectResult>(actionMWQMRunLanguage.Result);
+            mwqmRunLanguage = null;
+            mwqmRunLanguage = GetFilledRandomMWQMRunLanguage("");
+            mwqmRunLanguage.LastUpdateDate_UTC = new DateTime(1979, 1, 1);
+            actionMWQMRunLanguage = await MWQMRunLanguageService.Post(mwqmRunLanguage);
+            Assert.IsType<BadRequestObjectResult>(actionMWQMRunLanguage.Result);
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPExist(ExistTypeName = "TVItem", ExistPlurial = "s", ExistFieldID = "TVItemID", AllowableTVtypeList = Contact)]
+            // mwqmRunLanguage.LastUpdateContactTVItemID   (Int32)
+            // -----------------------------------
+
+            mwqmRunLanguage = null;
+            mwqmRunLanguage = GetFilledRandomMWQMRunLanguage("");
+            mwqmRunLanguage.LastUpdateContactTVItemID = 0;
+            actionMWQMRunLanguage = await MWQMRunLanguageService.Post(mwqmRunLanguage);
+            Assert.IsType<BadRequestObjectResult>(actionMWQMRunLanguage.Result);
+
+            mwqmRunLanguage = null;
+            mwqmRunLanguage = GetFilledRandomMWQMRunLanguage("");
+            mwqmRunLanguage.LastUpdateContactTVItemID = 1;
+            actionMWQMRunLanguage = await MWQMRunLanguageService.Post(mwqmRunLanguage);
+            Assert.IsType<BadRequestObjectResult>(actionMWQMRunLanguage.Result);
+
+        }
+        #endregion Tests Generated Properties
 
         #region Functions private
         private async Task DoCRUDTest()
@@ -237,6 +404,11 @@ namespace CSSPServices.Tests
             }
 
             return mwqmRunLanguage;
+        }
+        private void CheckMWQMRunLanguageFields(List<MWQMRunLanguage> mwqmRunLanguageList)
+        {
+            Assert.False(string.IsNullOrWhiteSpace(mwqmRunLanguageList[0].RunComment));
+            Assert.False(string.IsNullOrWhiteSpace(mwqmRunLanguageList[0].RunWeatherComment));
         }
         #endregion Functions private
     }

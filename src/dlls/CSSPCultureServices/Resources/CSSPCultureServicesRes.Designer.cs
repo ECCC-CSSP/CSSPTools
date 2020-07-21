@@ -1231,6 +1231,15 @@ namespace CSSPCultureServices.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Full name [{0}] is already taken.
+        /// </summary>
+        public static string FullName_IsAlreadyTaken {
+            get {
+                return ResourceManager.GetString("FullName_IsAlreadyTaken", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Group.
         /// </summary>
         public static string Group {
@@ -1407,6 +1416,15 @@ namespace CSSPCultureServices.Resources {
         public static string IsUnique {
             get {
                 return ResourceManager.GetString("IsUnique", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Login Email [{0}] is already taken.
+        /// </summary>
+        public static string LoginEmail_IsAlreadyTaken {
+            get {
+                return ResourceManager.GetString("LoginEmail_IsAlreadyTaken", resourceCulture);
             }
         }
         

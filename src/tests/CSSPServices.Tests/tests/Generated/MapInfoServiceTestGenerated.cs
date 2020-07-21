@@ -19,6 +19,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Transactions;
 using Xunit;
+using System.ComponentModel.DataAnnotations;
 
 namespace CSSPServices.Tests
 {
@@ -81,6 +82,235 @@ namespace CSSPServices.Tests
             }
         }
         #endregion Tests Generated CRUD
+
+        #region Tests Generated Properties
+        [Theory]
+        [InlineData("en-CA", DBLocationEnum.Local)]
+        [InlineData("fr-CA", DBLocationEnum.Local)]
+        [InlineData("en-CA", DBLocationEnum.Server)]
+        [InlineData("fr-CA", DBLocationEnum.Server)]
+        public async Task MapInfo_Properties_Test(string culture, DBLocationEnum DBLocation)
+        {
+            // -------------------------------
+            // -------------------------------
+            // Properties testing
+            // -------------------------------
+            // -------------------------------
+
+            Assert.True(await Setup(culture));
+
+            LoggedInService.DBLocation = DBLocation;
+
+            int count = 0;
+            if (count == 1)
+            {
+                // just so we don't get a warning during compile [The variable 'count' is assigned but its value is never used]
+            }
+
+            var actionMapInfoList = await MapInfoService.GetMapInfoList();
+            Assert.Equal(200, ((ObjectResult)actionMapInfoList.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionMapInfoList.Result).Value);
+            List<MapInfo> mapInfoList = (List<MapInfo>)((OkObjectResult)actionMapInfoList.Result).Value;
+
+            count = mapInfoList.Count();
+
+            MapInfo mapInfo = GetFilledRandomMapInfo("");
+
+
+            // -----------------------------------
+            // [Key]
+            // Is NOT Nullable
+            // mapInfo.MapInfoID   (Int32)
+            // -----------------------------------
+
+            mapInfo = null;
+            mapInfo = GetFilledRandomMapInfo("");
+            mapInfo.MapInfoID = 0;
+
+            var actionMapInfo = await MapInfoService.Put(mapInfo);
+            Assert.IsType<BadRequestObjectResult>(actionMapInfo.Result);
+
+            mapInfo = null;
+            mapInfo = GetFilledRandomMapInfo("");
+            mapInfo.MapInfoID = 10000000;
+            actionMapInfo = await MapInfoService.Put(mapInfo);
+            Assert.IsType<BadRequestObjectResult>(actionMapInfo.Result);
+
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPExist(ExistTypeName = "TVItem", ExistPlurial = "s", ExistFieldID = "TVItemID", AllowableTVtypeList = Root,Address,Area,ClimateSite,Country,File,HydrometricSite,MikeBoundaryConditionWebTide,MikeBoundaryConditionMesh,MikeSource,Municipality,MWQMSite,PolSourceSite,Province,Sector,Subsector,TideSite,WasteWaterTreatmentPlant,LiftStation,Spill,Outfall,OtherInfrastructure,SeeOtherMunicipality,LineOverflow,RainExceedance,Classification,Approved,Restricted,Prohibited,ConditionallyApproved,ConditionallyRestricted)]
+            // mapInfo.TVItemID   (Int32)
+            // -----------------------------------
+
+            mapInfo = null;
+            mapInfo = GetFilledRandomMapInfo("");
+            mapInfo.TVItemID = 0;
+            actionMapInfo = await MapInfoService.Post(mapInfo);
+            Assert.IsType<BadRequestObjectResult>(actionMapInfo.Result);
+
+            mapInfo = null;
+            mapInfo = GetFilledRandomMapInfo("");
+            mapInfo.TVItemID = 2;
+            actionMapInfo = await MapInfoService.Post(mapInfo);
+            Assert.IsType<BadRequestObjectResult>(actionMapInfo.Result);
+
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPEnumType]
+            // mapInfo.TVType   (TVTypeEnum)
+            // -----------------------------------
+
+            mapInfo = null;
+            mapInfo = GetFilledRandomMapInfo("");
+            mapInfo.TVType = (TVTypeEnum)1000000;
+            actionMapInfo = await MapInfoService.Post(mapInfo);
+            Assert.IsType<BadRequestObjectResult>(actionMapInfo.Result);
+
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPRange(-90, 90)]
+            // mapInfo.LatMin   (Double)
+            // -----------------------------------
+
+            //CSSPError: Type not implemented [LatMin]
+
+            //CSSPError: Type not implemented [LatMin]
+
+            mapInfo = null;
+            mapInfo = GetFilledRandomMapInfo("");
+            mapInfo.LatMin = -91.0D;
+            actionMapInfo = await MapInfoService.Post(mapInfo);
+            Assert.IsType<BadRequestObjectResult>(actionMapInfo.Result);
+            //Assert.AreEqual(count, mapInfoService.GetMapInfoList().Count());
+            mapInfo = null;
+            mapInfo = GetFilledRandomMapInfo("");
+            mapInfo.LatMin = 91.0D;
+            actionMapInfo = await MapInfoService.Post(mapInfo);
+            Assert.IsType<BadRequestObjectResult>(actionMapInfo.Result);
+            //Assert.AreEqual(count, mapInfoService.GetMapInfoList().Count());
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPRange(-90, 90)]
+            // mapInfo.LatMax   (Double)
+            // -----------------------------------
+
+            //CSSPError: Type not implemented [LatMax]
+
+            //CSSPError: Type not implemented [LatMax]
+
+            mapInfo = null;
+            mapInfo = GetFilledRandomMapInfo("");
+            mapInfo.LatMax = -91.0D;
+            actionMapInfo = await MapInfoService.Post(mapInfo);
+            Assert.IsType<BadRequestObjectResult>(actionMapInfo.Result);
+            //Assert.AreEqual(count, mapInfoService.GetMapInfoList().Count());
+            mapInfo = null;
+            mapInfo = GetFilledRandomMapInfo("");
+            mapInfo.LatMax = 91.0D;
+            actionMapInfo = await MapInfoService.Post(mapInfo);
+            Assert.IsType<BadRequestObjectResult>(actionMapInfo.Result);
+            //Assert.AreEqual(count, mapInfoService.GetMapInfoList().Count());
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPRange(-180, 180)]
+            // mapInfo.LngMin   (Double)
+            // -----------------------------------
+
+            //CSSPError: Type not implemented [LngMin]
+
+            //CSSPError: Type not implemented [LngMin]
+
+            mapInfo = null;
+            mapInfo = GetFilledRandomMapInfo("");
+            mapInfo.LngMin = -181.0D;
+            actionMapInfo = await MapInfoService.Post(mapInfo);
+            Assert.IsType<BadRequestObjectResult>(actionMapInfo.Result);
+            //Assert.AreEqual(count, mapInfoService.GetMapInfoList().Count());
+            mapInfo = null;
+            mapInfo = GetFilledRandomMapInfo("");
+            mapInfo.LngMin = 181.0D;
+            actionMapInfo = await MapInfoService.Post(mapInfo);
+            Assert.IsType<BadRequestObjectResult>(actionMapInfo.Result);
+            //Assert.AreEqual(count, mapInfoService.GetMapInfoList().Count());
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPRange(-180, 180)]
+            // mapInfo.LngMax   (Double)
+            // -----------------------------------
+
+            //CSSPError: Type not implemented [LngMax]
+
+            //CSSPError: Type not implemented [LngMax]
+
+            mapInfo = null;
+            mapInfo = GetFilledRandomMapInfo("");
+            mapInfo.LngMax = -181.0D;
+            actionMapInfo = await MapInfoService.Post(mapInfo);
+            Assert.IsType<BadRequestObjectResult>(actionMapInfo.Result);
+            //Assert.AreEqual(count, mapInfoService.GetMapInfoList().Count());
+            mapInfo = null;
+            mapInfo = GetFilledRandomMapInfo("");
+            mapInfo.LngMax = 181.0D;
+            actionMapInfo = await MapInfoService.Post(mapInfo);
+            Assert.IsType<BadRequestObjectResult>(actionMapInfo.Result);
+            //Assert.AreEqual(count, mapInfoService.GetMapInfoList().Count());
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPEnumType]
+            // mapInfo.MapInfoDrawType   (MapInfoDrawTypeEnum)
+            // -----------------------------------
+
+            mapInfo = null;
+            mapInfo = GetFilledRandomMapInfo("");
+            mapInfo.MapInfoDrawType = (MapInfoDrawTypeEnum)1000000;
+            actionMapInfo = await MapInfoService.Post(mapInfo);
+            Assert.IsType<BadRequestObjectResult>(actionMapInfo.Result);
+
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPAfter(Year = 1980)]
+            // mapInfo.LastUpdateDate_UTC   (DateTime)
+            // -----------------------------------
+
+            mapInfo = null;
+            mapInfo = GetFilledRandomMapInfo("");
+            mapInfo.LastUpdateDate_UTC = new DateTime();
+            actionMapInfo = await MapInfoService.Post(mapInfo);
+            Assert.IsType<BadRequestObjectResult>(actionMapInfo.Result);
+            mapInfo = null;
+            mapInfo = GetFilledRandomMapInfo("");
+            mapInfo.LastUpdateDate_UTC = new DateTime(1979, 1, 1);
+            actionMapInfo = await MapInfoService.Post(mapInfo);
+            Assert.IsType<BadRequestObjectResult>(actionMapInfo.Result);
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPExist(ExistTypeName = "TVItem", ExistPlurial = "s", ExistFieldID = "TVItemID", AllowableTVtypeList = Contact)]
+            // mapInfo.LastUpdateContactTVItemID   (Int32)
+            // -----------------------------------
+
+            mapInfo = null;
+            mapInfo = GetFilledRandomMapInfo("");
+            mapInfo.LastUpdateContactTVItemID = 0;
+            actionMapInfo = await MapInfoService.Post(mapInfo);
+            Assert.IsType<BadRequestObjectResult>(actionMapInfo.Result);
+
+            mapInfo = null;
+            mapInfo = GetFilledRandomMapInfo("");
+            mapInfo.LastUpdateContactTVItemID = 1;
+            actionMapInfo = await MapInfoService.Post(mapInfo);
+            Assert.IsType<BadRequestObjectResult>(actionMapInfo.Result);
+
+        }
+        #endregion Tests Generated Properties
 
         #region Functions private
         private async Task DoCRUDTest()
@@ -238,6 +468,9 @@ namespace CSSPServices.Tests
             }
 
             return mapInfo;
+        }
+        private void CheckMapInfoFields(List<MapInfo> mapInfoList)
+        {
         }
         #endregion Functions private
     }

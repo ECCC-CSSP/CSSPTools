@@ -20,19 +20,78 @@ using System.Threading.Tasks;
 
 namespace CSSPServices
 {
-    public partial class BoxModelCalNumbService
+    public interface IBoxModelCalNumbService
+    {
+        IEnumerable<ValidationResult> Validate(ValidationContext validationContext);
+    }
+    public partial class BoxModelCalNumbService : IBoxModelCalNumbService
     {
         #region Variables
         #endregion Variables
 
         #region Properties
+        private ICSSPCultureService CSSPCultureService { get; }
+        private IEnums enums { get; }
         #endregion Properties
 
         #region Constructors
-        public BoxModelCalNumbService()
+        public BoxModelCalNumbService(ICSSPCultureService CSSPCultureService, IEnums enums)
         {
+            this.CSSPCultureService = CSSPCultureService;
+            this.enums = enums;
         }
         #endregion Constructors
+
+        #region Functions public
+        public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+        {
+            string retStr = "";
+            BoxModelCalNumb boxModelCalNumb = validationContext.ObjectInstance as BoxModelCalNumb;
+
+            retStr = enums.EnumTypeOK(typeof(BoxModelResultTypeEnum), (int?)boxModelCalNumb.BoxModelResultType);
+            if (!string.IsNullOrWhiteSpace(retStr))
+            {
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "BoxModelResultType"), new[] { "BoxModelResultType" });
+            }
+
+            if (boxModelCalNumb.CalLength_m < 0)
+            {
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MinValueIs_, "CalLength_m", "0"), new[] { "CalLength_m" });
+            }
+
+            if (boxModelCalNumb.CalRadius_m < 0)
+            {
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MinValueIs_, "CalRadius_m", "0"), new[] { "CalRadius_m" });
+            }
+
+            if (boxModelCalNumb.CalSurface_m2 < 0)
+            {
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MinValueIs_, "CalSurface_m2", "0"), new[] { "CalSurface_m2" });
+            }
+
+            if (boxModelCalNumb.CalVolume_m3 < 0)
+            {
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MinValueIs_, "CalVolume_m3", "0"), new[] { "CalVolume_m3" });
+            }
+
+            if (boxModelCalNumb.CalWidth_m < 0)
+            {
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MinValueIs_, "CalWidth_m", "0"), new[] { "CalWidth_m" });
+            }
+
+            if (!string.IsNullOrWhiteSpace(boxModelCalNumb.BoxModelResultTypeText) && boxModelCalNumb.BoxModelResultTypeText.Length > 100)
+            {
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "BoxModelResultTypeText", "100"), new[] { "BoxModelResultTypeText" });
+            }
+
+            retStr = ""; // added to stop compiling CSSPError
+            if (retStr != "") // will never be true
+            {
+                yield return new ValidationResult("AAA", new[] { "AAA" });
+            }
+
+        }
+        #endregion Functions public
 
     }
 }

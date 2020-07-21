@@ -19,6 +19,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Transactions;
 using Xunit;
+using System.ComponentModel.DataAnnotations;
 
 namespace CSSPServices.Tests
 {
@@ -82,6 +83,292 @@ namespace CSSPServices.Tests
             }
         }
         #endregion Tests Generated CRUD
+
+        #region Tests Generated Properties
+        [Theory]
+        [InlineData("en-CA", DBLocationEnum.Local)]
+        [InlineData("fr-CA", DBLocationEnum.Local)]
+        [InlineData("en-CA", DBLocationEnum.Server)]
+        [InlineData("fr-CA", DBLocationEnum.Server)]
+        public async Task Contact_Properties_Test(string culture, DBLocationEnum DBLocation)
+        {
+            // -------------------------------
+            // -------------------------------
+            // Properties testing
+            // -------------------------------
+            // -------------------------------
+
+            Assert.True(await Setup(culture));
+
+            LoggedInService.DBLocation = DBLocation;
+
+            int count = 0;
+            if (count == 1)
+            {
+                // just so we don't get a warning during compile [The variable 'count' is assigned but its value is never used]
+            }
+
+            var actionContactList = await ContactService.GetContactList();
+            Assert.Equal(200, ((ObjectResult)actionContactList.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionContactList.Result).Value);
+            List<Contact> contactList = (List<Contact>)((OkObjectResult)actionContactList.Result).Value;
+
+            count = contactList.Count();
+
+            Contact contact = GetFilledRandomContact("");
+
+
+            // -----------------------------------
+            // [Key]
+            // Is NOT Nullable
+            // contact.ContactID   (Int32)
+            // -----------------------------------
+
+            contact = null;
+            contact = GetFilledRandomContact("");
+            contact.ContactID = 0;
+
+            var actionContact = await ContactService.Put(contact);
+            Assert.IsType<BadRequestObjectResult>(actionContact.Result);
+
+            contact = null;
+            contact = GetFilledRandomContact("");
+            contact.ContactID = 10000000;
+            actionContact = await ContactService.Put(contact);
+            Assert.IsType<BadRequestObjectResult>(actionContact.Result);
+
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPExist(ExistTypeName = "AspNetUser", ExistPlurial = "s", ExistFieldID = "Id", AllowableTVtypeList = )]
+            // [CSSPMaxLength(450)]
+            // contact.Id   (String)
+            // -----------------------------------
+
+            contact = null;
+            contact = GetFilledRandomContact("Id");
+            actionContact = await ContactService.Post(contact, AddContactTypeEnum.LoggedIn);
+            Assert.IsType<BadRequestObjectResult>(actionContact.Result);
+
+            contact = null;
+            contact = GetFilledRandomContact("");
+            contact.Id = GetRandomString("", 451);
+            actionContact = await ContactService.Post(contact, AddContactTypeEnum.First);
+            Assert.IsType<BadRequestObjectResult>(actionContact.Result);
+            //Assert.AreEqual(count, contactService.GetContactList().Count());
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPExist(ExistTypeName = "TVItem", ExistPlurial = "s", ExistFieldID = "TVItemID", AllowableTVtypeList = Contact)]
+            // contact.ContactTVItemID   (Int32)
+            // -----------------------------------
+
+            contact = null;
+            contact = GetFilledRandomContact("");
+            contact.ContactTVItemID = 0;
+            actionContact = await ContactService.Post(contact, AddContactTypeEnum.LoggedIn);
+            Assert.IsType<BadRequestObjectResult>(actionContact.Result);
+
+            contact = null;
+            contact = GetFilledRandomContact("");
+            contact.ContactTVItemID = 1;
+            actionContact = await ContactService.Post(contact, AddContactTypeEnum.LoggedIn);
+            Assert.IsType<BadRequestObjectResult>(actionContact.Result);
+
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [DataType(DataType.EmailAddress)]
+            // [CSSPMaxLength(255)]
+            // [CSSPMinLength(6)]
+            // contact.LoginEmail   (String)
+            // -----------------------------------
+
+            contact = null;
+            contact = GetFilledRandomContact("LoginEmail");
+            actionContact = await ContactService.Post(contact, AddContactTypeEnum.LoggedIn);
+            Assert.IsType<BadRequestObjectResult>(actionContact.Result);
+
+            contact = null;
+            contact = GetFilledRandomContact("");
+            contact.LoginEmail = GetRandomString("", 5);
+            actionContact = await ContactService.Post(contact, AddContactTypeEnum.First);
+            Assert.IsType<BadRequestObjectResult>(actionContact.Result);
+            //Assert.AreEqual(count, contactService.GetContactList().Count());
+            contact = null;
+            contact = GetFilledRandomContact("");
+            contact.LoginEmail = GetRandomString("", 256);
+            actionContact = await ContactService.Post(contact, AddContactTypeEnum.First);
+            Assert.IsType<BadRequestObjectResult>(actionContact.Result);
+            //Assert.AreEqual(count, contactService.GetContactList().Count());
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPMaxLength(100)]
+            // contact.FirstName   (String)
+            // -----------------------------------
+
+            contact = null;
+            contact = GetFilledRandomContact("FirstName");
+            actionContact = await ContactService.Post(contact, AddContactTypeEnum.LoggedIn);
+            Assert.IsType<BadRequestObjectResult>(actionContact.Result);
+
+            contact = null;
+            contact = GetFilledRandomContact("");
+            contact.FirstName = GetRandomString("", 101);
+            actionContact = await ContactService.Post(contact, AddContactTypeEnum.First);
+            Assert.IsType<BadRequestObjectResult>(actionContact.Result);
+            //Assert.AreEqual(count, contactService.GetContactList().Count());
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPMaxLength(100)]
+            // contact.LastName   (String)
+            // -----------------------------------
+
+            contact = null;
+            contact = GetFilledRandomContact("LastName");
+            actionContact = await ContactService.Post(contact, AddContactTypeEnum.LoggedIn);
+            Assert.IsType<BadRequestObjectResult>(actionContact.Result);
+
+            contact = null;
+            contact = GetFilledRandomContact("");
+            contact.LastName = GetRandomString("", 101);
+            actionContact = await ContactService.Post(contact, AddContactTypeEnum.First);
+            Assert.IsType<BadRequestObjectResult>(actionContact.Result);
+            //Assert.AreEqual(count, contactService.GetContactList().Count());
+
+            // -----------------------------------
+            // Is Nullable
+            // [CSSPMaxLength(50)]
+            // contact.Initial   (String)
+            // -----------------------------------
+
+            contact = null;
+            contact = GetFilledRandomContact("");
+            contact.Initial = GetRandomString("", 51);
+            actionContact = await ContactService.Post(contact, AddContactTypeEnum.First);
+            Assert.IsType<BadRequestObjectResult>(actionContact.Result);
+            //Assert.AreEqual(count, contactService.GetContactList().Count());
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPMaxLength(100)]
+            // contact.WebName   (String)
+            // -----------------------------------
+
+            contact = null;
+            contact = GetFilledRandomContact("WebName");
+            actionContact = await ContactService.Post(contact, AddContactTypeEnum.LoggedIn);
+            Assert.IsType<BadRequestObjectResult>(actionContact.Result);
+
+            contact = null;
+            contact = GetFilledRandomContact("");
+            contact.WebName = GetRandomString("", 101);
+            actionContact = await ContactService.Post(contact, AddContactTypeEnum.First);
+            Assert.IsType<BadRequestObjectResult>(actionContact.Result);
+            //Assert.AreEqual(count, contactService.GetContactList().Count());
+
+            // -----------------------------------
+            // Is Nullable
+            // [CSSPEnumType]
+            // contact.ContactTitle   (ContactTitleEnum)
+            // -----------------------------------
+
+            contact = null;
+            contact = GetFilledRandomContact("");
+            contact.ContactTitle = (ContactTitleEnum)1000000;
+            actionContact = await ContactService.Post(contact, AddContactTypeEnum.LoggedIn);
+            Assert.IsType<BadRequestObjectResult>(actionContact.Result);
+
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // contact.IsAdmin   (Boolean)
+            // -----------------------------------
+
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // contact.EmailValidated   (Boolean)
+            // -----------------------------------
+
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // contact.Disabled   (Boolean)
+            // -----------------------------------
+
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // contact.IsNew   (Boolean)
+            // -----------------------------------
+
+
+            // -----------------------------------
+            // Is Nullable
+            // [CSSPMaxLength(200)]
+            // contact.SamplingPlanner_ProvincesTVItemID   (String)
+            // -----------------------------------
+
+            contact = null;
+            contact = GetFilledRandomContact("");
+            contact.SamplingPlanner_ProvincesTVItemID = GetRandomString("", 201);
+            actionContact = await ContactService.Post(contact, AddContactTypeEnum.First);
+            Assert.IsType<BadRequestObjectResult>(actionContact.Result);
+            //Assert.AreEqual(count, contactService.GetContactList().Count());
+
+            // -----------------------------------
+            // Is Nullable
+            // [CSSPMaxLength(255)]
+            // contact.Token   (String)
+            // -----------------------------------
+
+            contact = null;
+            contact = GetFilledRandomContact("");
+            contact.Token = GetRandomString("", 256);
+            actionContact = await ContactService.Post(contact, AddContactTypeEnum.First);
+            Assert.IsType<BadRequestObjectResult>(actionContact.Result);
+            //Assert.AreEqual(count, contactService.GetContactList().Count());
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPAfter(Year = 1980)]
+            // contact.LastUpdateDate_UTC   (DateTime)
+            // -----------------------------------
+
+            contact = null;
+            contact = GetFilledRandomContact("");
+            contact.LastUpdateDate_UTC = new DateTime();
+            actionContact = await ContactService.Post(contact, AddContactTypeEnum.LoggedIn);
+            Assert.IsType<BadRequestObjectResult>(actionContact.Result);
+            contact = null;
+            contact = GetFilledRandomContact("");
+            contact.LastUpdateDate_UTC = new DateTime(1979, 1, 1);
+            actionContact = await ContactService.Post(contact, AddContactTypeEnum.LoggedIn);
+            Assert.IsType<BadRequestObjectResult>(actionContact.Result);
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPExist(ExistTypeName = "TVItem", ExistPlurial = "s", ExistFieldID = "TVItemID", AllowableTVtypeList = Contact)]
+            // contact.LastUpdateContactTVItemID   (Int32)
+            // -----------------------------------
+
+            contact = null;
+            contact = GetFilledRandomContact("");
+            contact.LastUpdateContactTVItemID = 0;
+            actionContact = await ContactService.Post(contact, AddContactTypeEnum.LoggedIn);
+            Assert.IsType<BadRequestObjectResult>(actionContact.Result);
+
+            contact = null;
+            contact = GetFilledRandomContact("");
+            contact.LastUpdateContactTVItemID = 1;
+            actionContact = await ContactService.Post(contact, AddContactTypeEnum.LoggedIn);
+            Assert.IsType<BadRequestObjectResult>(actionContact.Result);
+
+        }
+        #endregion Tests Generated Properties
 
         #region Functions private
         private async Task DoCRUDTest()
@@ -165,6 +452,8 @@ namespace CSSPServices.Tests
             Services.AddSingleton<ILoggedInService, LoggedInService>();
             Services.AddSingleton<IEnums, Enums>();
             Services.AddSingleton<IAspNetUserService, AspNetUserService>();
+            Services.AddSingleton<ILoginModelService, LoginModelService>();
+            Services.AddSingleton<IRegisterModelService, RegisterModelService>();
             Services.AddSingleton<IContactService, ContactService>();
 
             Provider = Services.BuildServiceProvider();
@@ -255,6 +544,30 @@ namespace CSSPServices.Tests
             }
 
             return contact;
+        }
+        private void CheckContactFields(List<Contact> contactList)
+        {
+            Assert.False(string.IsNullOrWhiteSpace(contactList[0].Id));
+            Assert.False(string.IsNullOrWhiteSpace(contactList[0].LoginEmail));
+            Assert.False(string.IsNullOrWhiteSpace(contactList[0].FirstName));
+            Assert.False(string.IsNullOrWhiteSpace(contactList[0].LastName));
+            if (!string.IsNullOrWhiteSpace(contactList[0].Initial))
+            {
+                Assert.False(string.IsNullOrWhiteSpace(contactList[0].Initial));
+            }
+            Assert.False(string.IsNullOrWhiteSpace(contactList[0].WebName));
+            if (contactList[0].ContactTitle != null)
+            {
+                Assert.NotNull(contactList[0].ContactTitle);
+            }
+            if (!string.IsNullOrWhiteSpace(contactList[0].SamplingPlanner_ProvincesTVItemID))
+            {
+                Assert.False(string.IsNullOrWhiteSpace(contactList[0].SamplingPlanner_ProvincesTVItemID));
+            }
+            if (!string.IsNullOrWhiteSpace(contactList[0].Token))
+            {
+                Assert.False(string.IsNullOrWhiteSpace(contactList[0].Token));
+            }
         }
         #endregion Functions private
     }

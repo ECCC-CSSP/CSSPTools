@@ -19,6 +19,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Transactions;
 using Xunit;
+using System.ComponentModel.DataAnnotations;
 
 namespace CSSPServices.Tests
 {
@@ -81,6 +82,158 @@ namespace CSSPServices.Tests
             }
         }
         #endregion Tests Generated CRUD
+
+        #region Tests Generated Properties
+        [Theory]
+        [InlineData("en-CA", DBLocationEnum.Local)]
+        [InlineData("fr-CA", DBLocationEnum.Local)]
+        [InlineData("en-CA", DBLocationEnum.Server)]
+        [InlineData("fr-CA", DBLocationEnum.Server)]
+        public async Task EmailDistributionListContactLanguage_Properties_Test(string culture, DBLocationEnum DBLocation)
+        {
+            // -------------------------------
+            // -------------------------------
+            // Properties testing
+            // -------------------------------
+            // -------------------------------
+
+            Assert.True(await Setup(culture));
+
+            LoggedInService.DBLocation = DBLocation;
+
+            int count = 0;
+            if (count == 1)
+            {
+                // just so we don't get a warning during compile [The variable 'count' is assigned but its value is never used]
+            }
+
+            var actionEmailDistributionListContactLanguageList = await EmailDistributionListContactLanguageService.GetEmailDistributionListContactLanguageList();
+            Assert.Equal(200, ((ObjectResult)actionEmailDistributionListContactLanguageList.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionEmailDistributionListContactLanguageList.Result).Value);
+            List<EmailDistributionListContactLanguage> emailDistributionListContactLanguageList = (List<EmailDistributionListContactLanguage>)((OkObjectResult)actionEmailDistributionListContactLanguageList.Result).Value;
+
+            count = emailDistributionListContactLanguageList.Count();
+
+            EmailDistributionListContactLanguage emailDistributionListContactLanguage = GetFilledRandomEmailDistributionListContactLanguage("");
+
+
+            // -----------------------------------
+            // [Key]
+            // Is NOT Nullable
+            // emailDistributionListContactLanguage.EmailDistributionListContactLanguageID   (Int32)
+            // -----------------------------------
+
+            emailDistributionListContactLanguage = null;
+            emailDistributionListContactLanguage = GetFilledRandomEmailDistributionListContactLanguage("");
+            emailDistributionListContactLanguage.EmailDistributionListContactLanguageID = 0;
+
+            var actionEmailDistributionListContactLanguage = await EmailDistributionListContactLanguageService.Put(emailDistributionListContactLanguage);
+            Assert.IsType<BadRequestObjectResult>(actionEmailDistributionListContactLanguage.Result);
+
+            emailDistributionListContactLanguage = null;
+            emailDistributionListContactLanguage = GetFilledRandomEmailDistributionListContactLanguage("");
+            emailDistributionListContactLanguage.EmailDistributionListContactLanguageID = 10000000;
+            actionEmailDistributionListContactLanguage = await EmailDistributionListContactLanguageService.Put(emailDistributionListContactLanguage);
+            Assert.IsType<BadRequestObjectResult>(actionEmailDistributionListContactLanguage.Result);
+
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPExist(ExistTypeName = "EmailDistributionListContact", ExistPlurial = "s", ExistFieldID = "EmailDistributionListContactID", AllowableTVtypeList = )]
+            // emailDistributionListContactLanguage.EmailDistributionListContactID   (Int32)
+            // -----------------------------------
+
+            emailDistributionListContactLanguage = null;
+            emailDistributionListContactLanguage = GetFilledRandomEmailDistributionListContactLanguage("");
+            emailDistributionListContactLanguage.EmailDistributionListContactID = 0;
+            actionEmailDistributionListContactLanguage = await EmailDistributionListContactLanguageService.Post(emailDistributionListContactLanguage);
+            Assert.IsType<BadRequestObjectResult>(actionEmailDistributionListContactLanguage.Result);
+
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPEnumType]
+            // emailDistributionListContactLanguage.Language   (LanguageEnum)
+            // -----------------------------------
+
+            emailDistributionListContactLanguage = null;
+            emailDistributionListContactLanguage = GetFilledRandomEmailDistributionListContactLanguage("");
+            emailDistributionListContactLanguage.Language = (LanguageEnum)1000000;
+            actionEmailDistributionListContactLanguage = await EmailDistributionListContactLanguageService.Post(emailDistributionListContactLanguage);
+            Assert.IsType<BadRequestObjectResult>(actionEmailDistributionListContactLanguage.Result);
+
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPMaxLength(100)]
+            // [CSSPMinLength(1)]
+            // emailDistributionListContactLanguage.Agency   (String)
+            // -----------------------------------
+
+            emailDistributionListContactLanguage = null;
+            emailDistributionListContactLanguage = GetFilledRandomEmailDistributionListContactLanguage("Agency");
+            actionEmailDistributionListContactLanguage = await EmailDistributionListContactLanguageService.Post(emailDistributionListContactLanguage);
+            Assert.IsType<BadRequestObjectResult>(actionEmailDistributionListContactLanguage.Result);
+
+            emailDistributionListContactLanguage = null;
+            emailDistributionListContactLanguage = GetFilledRandomEmailDistributionListContactLanguage("");
+            emailDistributionListContactLanguage = null;
+            emailDistributionListContactLanguage = GetFilledRandomEmailDistributionListContactLanguage("");
+            emailDistributionListContactLanguage.Agency = GetRandomString("", 101);
+            actionEmailDistributionListContactLanguage = await EmailDistributionListContactLanguageService.Post(emailDistributionListContactLanguage);
+            Assert.IsType<BadRequestObjectResult>(actionEmailDistributionListContactLanguage.Result);
+            //Assert.AreEqual(count, emailDistributionListContactLanguageService.GetEmailDistributionListContactLanguageList().Count());
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPEnumType]
+            // emailDistributionListContactLanguage.TranslationStatus   (TranslationStatusEnum)
+            // -----------------------------------
+
+            emailDistributionListContactLanguage = null;
+            emailDistributionListContactLanguage = GetFilledRandomEmailDistributionListContactLanguage("");
+            emailDistributionListContactLanguage.TranslationStatus = (TranslationStatusEnum)1000000;
+            actionEmailDistributionListContactLanguage = await EmailDistributionListContactLanguageService.Post(emailDistributionListContactLanguage);
+            Assert.IsType<BadRequestObjectResult>(actionEmailDistributionListContactLanguage.Result);
+
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPAfter(Year = 1980)]
+            // emailDistributionListContactLanguage.LastUpdateDate_UTC   (DateTime)
+            // -----------------------------------
+
+            emailDistributionListContactLanguage = null;
+            emailDistributionListContactLanguage = GetFilledRandomEmailDistributionListContactLanguage("");
+            emailDistributionListContactLanguage.LastUpdateDate_UTC = new DateTime();
+            actionEmailDistributionListContactLanguage = await EmailDistributionListContactLanguageService.Post(emailDistributionListContactLanguage);
+            Assert.IsType<BadRequestObjectResult>(actionEmailDistributionListContactLanguage.Result);
+            emailDistributionListContactLanguage = null;
+            emailDistributionListContactLanguage = GetFilledRandomEmailDistributionListContactLanguage("");
+            emailDistributionListContactLanguage.LastUpdateDate_UTC = new DateTime(1979, 1, 1);
+            actionEmailDistributionListContactLanguage = await EmailDistributionListContactLanguageService.Post(emailDistributionListContactLanguage);
+            Assert.IsType<BadRequestObjectResult>(actionEmailDistributionListContactLanguage.Result);
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPExist(ExistTypeName = "TVItem", ExistPlurial = "s", ExistFieldID = "TVItemID", AllowableTVtypeList = Contact)]
+            // emailDistributionListContactLanguage.LastUpdateContactTVItemID   (Int32)
+            // -----------------------------------
+
+            emailDistributionListContactLanguage = null;
+            emailDistributionListContactLanguage = GetFilledRandomEmailDistributionListContactLanguage("");
+            emailDistributionListContactLanguage.LastUpdateContactTVItemID = 0;
+            actionEmailDistributionListContactLanguage = await EmailDistributionListContactLanguageService.Post(emailDistributionListContactLanguage);
+            Assert.IsType<BadRequestObjectResult>(actionEmailDistributionListContactLanguage.Result);
+
+            emailDistributionListContactLanguage = null;
+            emailDistributionListContactLanguage = GetFilledRandomEmailDistributionListContactLanguage("");
+            emailDistributionListContactLanguage.LastUpdateContactTVItemID = 1;
+            actionEmailDistributionListContactLanguage = await EmailDistributionListContactLanguageService.Post(emailDistributionListContactLanguage);
+            Assert.IsType<BadRequestObjectResult>(actionEmailDistributionListContactLanguage.Result);
+
+        }
+        #endregion Tests Generated Properties
 
         #region Functions private
         private async Task DoCRUDTest()
@@ -235,6 +388,10 @@ namespace CSSPServices.Tests
             }
 
             return emailDistributionListContactLanguage;
+        }
+        private void CheckEmailDistributionListContactLanguageFields(List<EmailDistributionListContactLanguage> emailDistributionListContactLanguageList)
+        {
+            Assert.False(string.IsNullOrWhiteSpace(emailDistributionListContactLanguageList[0].Agency));
         }
         #endregion Functions private
     }

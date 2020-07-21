@@ -19,16 +19,22 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Transactions;
 using Xunit;
+using System.ComponentModel.DataAnnotations;
 
 namespace CSSPServices.Tests
 {
-    [Collection("Sequential")]
     public partial class FileItemListServiceTest : TestHelper
     {
         #region Variables
         #endregion Variables
 
         #region Properties
+        private IConfiguration Config { get; set; }
+        private IServiceProvider Provider { get; set; }
+        private IServiceCollection Services { get; set; }
+        private ICSSPCultureService CSSPCultureService { get; set; }
+        private IFileItemListService FileItemListService { get; set; }
+        private FileItemList fileItemList { get; set; }
         #endregion Properties
 
         #region Constructors
@@ -38,7 +44,65 @@ namespace CSSPServices.Tests
         }
         #endregion Constructors
 
+        #region Tests Generated Basic Test Not Mapped
+        [Theory]
+        [InlineData("en-CA")]
+        [InlineData("fr-CA")]
+        public async Task FileItemListService_Good_Test(string culture)
+        {
+            Assert.True(await Setup(culture));
+
+            fileItemList = GetFilledRandomFileItemList("");
+
+            List<ValidationResult> ValidationResultsList = FileItemListService.Validate(new ValidationContext(fileItemList)).ToList();
+            Assert.True(ValidationResultsList.Count == 0);
+        }
+        #endregion Tests Generated Basic Test Not Mapped
+
         #region Functions private
+        private async Task<bool> Setup(string culture)
+        {
+            Config = new ConfigurationBuilder()
+               .SetBasePath(Directory.GetParent(AppContext.BaseDirectory).FullName)
+               .AddJsonFile("appsettings_csspservices.json")
+               .AddUserSecrets("6f27cbbe-6ffb-4154-b49b-d739597c4f60")
+               .Build();
+
+            Services = new ServiceCollection();
+
+            Services.AddSingleton<IConfiguration>(Config);
+
+            Services.AddSingleton<ICSSPCultureService, CSSPCultureService>();
+            Services.AddSingleton<IEnums, Enums>();
+            Services.AddSingleton<IFileItemListService, FileItemListService>();
+
+            Provider = Services.BuildServiceProvider();
+            Assert.NotNull(Provider);
+
+            CSSPCultureService = Provider.GetService<ICSSPCultureService>();
+            Assert.NotNull(CSSPCultureService);
+
+            CSSPCultureService.SetCulture(culture);
+
+            FileItemListService = Provider.GetService<IFileItemListService>();
+            Assert.NotNull(FileItemListService);
+
+            return await Task.FromResult(true);
+        }
+        private FileItemList GetFilledRandomFileItemList(string OmitPropName)
+        {
+            FileItemList fileItemList = new FileItemList();
+
+            if (OmitPropName != "Text") fileItemList.Text = GetRandomString("", 6);
+            if (OmitPropName != "FileName") fileItemList.FileName = GetRandomString("", 6);
+
+            return fileItemList;
+        }
+        private void CheckFileItemListFields(List<FileItemList> fileItemListList)
+        {
+            Assert.False(string.IsNullOrWhiteSpace(fileItemListList[0].Text));
+            Assert.False(string.IsNullOrWhiteSpace(fileItemListList[0].FileName));
+        }
         #endregion Functions private
     }
 }

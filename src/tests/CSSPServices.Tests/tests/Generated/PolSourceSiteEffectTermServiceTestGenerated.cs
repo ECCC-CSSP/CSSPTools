@@ -19,6 +19,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Transactions;
 using Xunit;
+using System.ComponentModel.DataAnnotations;
 
 namespace CSSPServices.Tests
 {
@@ -81,6 +82,153 @@ namespace CSSPServices.Tests
             }
         }
         #endregion Tests Generated CRUD
+
+        #region Tests Generated Properties
+        [Theory]
+        [InlineData("en-CA", DBLocationEnum.Local)]
+        [InlineData("fr-CA", DBLocationEnum.Local)]
+        [InlineData("en-CA", DBLocationEnum.Server)]
+        [InlineData("fr-CA", DBLocationEnum.Server)]
+        public async Task PolSourceSiteEffectTerm_Properties_Test(string culture, DBLocationEnum DBLocation)
+        {
+            // -------------------------------
+            // -------------------------------
+            // Properties testing
+            // -------------------------------
+            // -------------------------------
+
+            Assert.True(await Setup(culture));
+
+            LoggedInService.DBLocation = DBLocation;
+
+            int count = 0;
+            if (count == 1)
+            {
+                // just so we don't get a warning during compile [The variable 'count' is assigned but its value is never used]
+            }
+
+            var actionPolSourceSiteEffectTermList = await PolSourceSiteEffectTermService.GetPolSourceSiteEffectTermList();
+            Assert.Equal(200, ((ObjectResult)actionPolSourceSiteEffectTermList.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionPolSourceSiteEffectTermList.Result).Value);
+            List<PolSourceSiteEffectTerm> polSourceSiteEffectTermList = (List<PolSourceSiteEffectTerm>)((OkObjectResult)actionPolSourceSiteEffectTermList.Result).Value;
+
+            count = polSourceSiteEffectTermList.Count();
+
+            PolSourceSiteEffectTerm polSourceSiteEffectTerm = GetFilledRandomPolSourceSiteEffectTerm("");
+
+
+            // -----------------------------------
+            // [Key]
+            // Is NOT Nullable
+            // polSourceSiteEffectTerm.PolSourceSiteEffectTermID   (Int32)
+            // -----------------------------------
+
+            polSourceSiteEffectTerm = null;
+            polSourceSiteEffectTerm = GetFilledRandomPolSourceSiteEffectTerm("");
+            polSourceSiteEffectTerm.PolSourceSiteEffectTermID = 0;
+
+            var actionPolSourceSiteEffectTerm = await PolSourceSiteEffectTermService.Put(polSourceSiteEffectTerm);
+            Assert.IsType<BadRequestObjectResult>(actionPolSourceSiteEffectTerm.Result);
+
+            polSourceSiteEffectTerm = null;
+            polSourceSiteEffectTerm = GetFilledRandomPolSourceSiteEffectTerm("");
+            polSourceSiteEffectTerm.PolSourceSiteEffectTermID = 10000000;
+            actionPolSourceSiteEffectTerm = await PolSourceSiteEffectTermService.Put(polSourceSiteEffectTerm);
+            Assert.IsType<BadRequestObjectResult>(actionPolSourceSiteEffectTerm.Result);
+
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // polSourceSiteEffectTerm.IsGroup   (Boolean)
+            // -----------------------------------
+
+
+            // -----------------------------------
+            // Is Nullable
+            // [CSSPExist(ExistTypeName = "PolSourceSiteEffectTerm", ExistPlurial = "s", ExistFieldID = "PolSourceSiteEffectTermID", AllowableTVtypeList = )]
+            // polSourceSiteEffectTerm.UnderGroupID   (Int32)
+            // -----------------------------------
+
+            polSourceSiteEffectTerm = null;
+            polSourceSiteEffectTerm = GetFilledRandomPolSourceSiteEffectTerm("");
+            polSourceSiteEffectTerm.UnderGroupID = 0;
+            actionPolSourceSiteEffectTerm = await PolSourceSiteEffectTermService.Post(polSourceSiteEffectTerm);
+            Assert.IsType<BadRequestObjectResult>(actionPolSourceSiteEffectTerm.Result);
+
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPMaxLength(100)]
+            // polSourceSiteEffectTerm.EffectTermEN   (String)
+            // -----------------------------------
+
+            polSourceSiteEffectTerm = null;
+            polSourceSiteEffectTerm = GetFilledRandomPolSourceSiteEffectTerm("EffectTermEN");
+            actionPolSourceSiteEffectTerm = await PolSourceSiteEffectTermService.Post(polSourceSiteEffectTerm);
+            Assert.IsType<BadRequestObjectResult>(actionPolSourceSiteEffectTerm.Result);
+
+            polSourceSiteEffectTerm = null;
+            polSourceSiteEffectTerm = GetFilledRandomPolSourceSiteEffectTerm("");
+            polSourceSiteEffectTerm.EffectTermEN = GetRandomString("", 101);
+            actionPolSourceSiteEffectTerm = await PolSourceSiteEffectTermService.Post(polSourceSiteEffectTerm);
+            Assert.IsType<BadRequestObjectResult>(actionPolSourceSiteEffectTerm.Result);
+            //Assert.AreEqual(count, polSourceSiteEffectTermService.GetPolSourceSiteEffectTermList().Count());
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPMaxLength(100)]
+            // polSourceSiteEffectTerm.EffectTermFR   (String)
+            // -----------------------------------
+
+            polSourceSiteEffectTerm = null;
+            polSourceSiteEffectTerm = GetFilledRandomPolSourceSiteEffectTerm("EffectTermFR");
+            actionPolSourceSiteEffectTerm = await PolSourceSiteEffectTermService.Post(polSourceSiteEffectTerm);
+            Assert.IsType<BadRequestObjectResult>(actionPolSourceSiteEffectTerm.Result);
+
+            polSourceSiteEffectTerm = null;
+            polSourceSiteEffectTerm = GetFilledRandomPolSourceSiteEffectTerm("");
+            polSourceSiteEffectTerm.EffectTermFR = GetRandomString("", 101);
+            actionPolSourceSiteEffectTerm = await PolSourceSiteEffectTermService.Post(polSourceSiteEffectTerm);
+            Assert.IsType<BadRequestObjectResult>(actionPolSourceSiteEffectTerm.Result);
+            //Assert.AreEqual(count, polSourceSiteEffectTermService.GetPolSourceSiteEffectTermList().Count());
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPAfter(Year = 1980)]
+            // polSourceSiteEffectTerm.LastUpdateDate_UTC   (DateTime)
+            // -----------------------------------
+
+            polSourceSiteEffectTerm = null;
+            polSourceSiteEffectTerm = GetFilledRandomPolSourceSiteEffectTerm("");
+            polSourceSiteEffectTerm.LastUpdateDate_UTC = new DateTime();
+            actionPolSourceSiteEffectTerm = await PolSourceSiteEffectTermService.Post(polSourceSiteEffectTerm);
+            Assert.IsType<BadRequestObjectResult>(actionPolSourceSiteEffectTerm.Result);
+            polSourceSiteEffectTerm = null;
+            polSourceSiteEffectTerm = GetFilledRandomPolSourceSiteEffectTerm("");
+            polSourceSiteEffectTerm.LastUpdateDate_UTC = new DateTime(1979, 1, 1);
+            actionPolSourceSiteEffectTerm = await PolSourceSiteEffectTermService.Post(polSourceSiteEffectTerm);
+            Assert.IsType<BadRequestObjectResult>(actionPolSourceSiteEffectTerm.Result);
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPExist(ExistTypeName = "TVItem", ExistPlurial = "s", ExistFieldID = "TVItemID", AllowableTVtypeList = Contact)]
+            // polSourceSiteEffectTerm.LastUpdateContactTVItemID   (Int32)
+            // -----------------------------------
+
+            polSourceSiteEffectTerm = null;
+            polSourceSiteEffectTerm = GetFilledRandomPolSourceSiteEffectTerm("");
+            polSourceSiteEffectTerm.LastUpdateContactTVItemID = 0;
+            actionPolSourceSiteEffectTerm = await PolSourceSiteEffectTermService.Post(polSourceSiteEffectTerm);
+            Assert.IsType<BadRequestObjectResult>(actionPolSourceSiteEffectTerm.Result);
+
+            polSourceSiteEffectTerm = null;
+            polSourceSiteEffectTerm = GetFilledRandomPolSourceSiteEffectTerm("");
+            polSourceSiteEffectTerm.LastUpdateContactTVItemID = 1;
+            actionPolSourceSiteEffectTerm = await PolSourceSiteEffectTermService.Post(polSourceSiteEffectTerm);
+            Assert.IsType<BadRequestObjectResult>(actionPolSourceSiteEffectTerm.Result);
+
+        }
+        #endregion Tests Generated Properties
 
         #region Functions private
         private async Task DoCRUDTest()
@@ -226,6 +374,15 @@ namespace CSSPServices.Tests
             }
 
             return polSourceSiteEffectTerm;
+        }
+        private void CheckPolSourceSiteEffectTermFields(List<PolSourceSiteEffectTerm> polSourceSiteEffectTermList)
+        {
+            if (polSourceSiteEffectTermList[0].UnderGroupID != null)
+            {
+                Assert.NotNull(polSourceSiteEffectTermList[0].UnderGroupID);
+            }
+            Assert.False(string.IsNullOrWhiteSpace(polSourceSiteEffectTermList[0].EffectTermEN));
+            Assert.False(string.IsNullOrWhiteSpace(polSourceSiteEffectTermList[0].EffectTermFR));
         }
         #endregion Functions private
     }

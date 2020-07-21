@@ -19,6 +19,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Transactions;
 using Xunit;
+using System.ComponentModel.DataAnnotations;
 
 namespace CSSPServices.Tests
 {
@@ -81,6 +82,412 @@ namespace CSSPServices.Tests
             }
         }
         #endregion Tests Generated CRUD
+
+        #region Tests Generated Properties
+        [Theory]
+        [InlineData("en-CA", DBLocationEnum.Local)]
+        [InlineData("fr-CA", DBLocationEnum.Local)]
+        [InlineData("en-CA", DBLocationEnum.Server)]
+        [InlineData("fr-CA", DBLocationEnum.Server)]
+        public async Task ClimateDataValue_Properties_Test(string culture, DBLocationEnum DBLocation)
+        {
+            // -------------------------------
+            // -------------------------------
+            // Properties testing
+            // -------------------------------
+            // -------------------------------
+
+            Assert.True(await Setup(culture));
+
+            LoggedInService.DBLocation = DBLocation;
+
+            int count = 0;
+            if (count == 1)
+            {
+                // just so we don't get a warning during compile [The variable 'count' is assigned but its value is never used]
+            }
+
+            var actionClimateDataValueList = await ClimateDataValueService.GetClimateDataValueList();
+            Assert.Equal(200, ((ObjectResult)actionClimateDataValueList.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionClimateDataValueList.Result).Value);
+            List<ClimateDataValue> climateDataValueList = (List<ClimateDataValue>)((OkObjectResult)actionClimateDataValueList.Result).Value;
+
+            count = climateDataValueList.Count();
+
+            ClimateDataValue climateDataValue = GetFilledRandomClimateDataValue("");
+
+
+            // -----------------------------------
+            // [Key]
+            // Is NOT Nullable
+            // climateDataValue.ClimateDataValueID   (Int32)
+            // -----------------------------------
+
+            climateDataValue = null;
+            climateDataValue = GetFilledRandomClimateDataValue("");
+            climateDataValue.ClimateDataValueID = 0;
+
+            var actionClimateDataValue = await ClimateDataValueService.Put(climateDataValue);
+            Assert.IsType<BadRequestObjectResult>(actionClimateDataValue.Result);
+
+            climateDataValue = null;
+            climateDataValue = GetFilledRandomClimateDataValue("");
+            climateDataValue.ClimateDataValueID = 10000000;
+            actionClimateDataValue = await ClimateDataValueService.Put(climateDataValue);
+            Assert.IsType<BadRequestObjectResult>(actionClimateDataValue.Result);
+
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPExist(ExistTypeName = "ClimateSite", ExistPlurial = "s", ExistFieldID = "ClimateSiteID", AllowableTVtypeList = )]
+            // climateDataValue.ClimateSiteID   (Int32)
+            // -----------------------------------
+
+            climateDataValue = null;
+            climateDataValue = GetFilledRandomClimateDataValue("");
+            climateDataValue.ClimateSiteID = 0;
+            actionClimateDataValue = await ClimateDataValueService.Post(climateDataValue);
+            Assert.IsType<BadRequestObjectResult>(actionClimateDataValue.Result);
+
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPAfter(Year = 1980)]
+            // climateDataValue.DateTime_Local   (DateTime)
+            // -----------------------------------
+
+            climateDataValue = null;
+            climateDataValue = GetFilledRandomClimateDataValue("");
+            climateDataValue.DateTime_Local = new DateTime();
+            actionClimateDataValue = await ClimateDataValueService.Post(climateDataValue);
+            Assert.IsType<BadRequestObjectResult>(actionClimateDataValue.Result);
+            climateDataValue = null;
+            climateDataValue = GetFilledRandomClimateDataValue("");
+            climateDataValue.DateTime_Local = new DateTime(1979, 1, 1);
+            actionClimateDataValue = await ClimateDataValueService.Post(climateDataValue);
+            Assert.IsType<BadRequestObjectResult>(actionClimateDataValue.Result);
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // climateDataValue.Keep   (Boolean)
+            // -----------------------------------
+
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPEnumType]
+            // climateDataValue.StorageDataType   (StorageDataTypeEnum)
+            // -----------------------------------
+
+            climateDataValue = null;
+            climateDataValue = GetFilledRandomClimateDataValue("");
+            climateDataValue.StorageDataType = (StorageDataTypeEnum)1000000;
+            actionClimateDataValue = await ClimateDataValueService.Post(climateDataValue);
+            Assert.IsType<BadRequestObjectResult>(actionClimateDataValue.Result);
+
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // climateDataValue.HasBeenRead   (Boolean)
+            // -----------------------------------
+
+
+            // -----------------------------------
+            // Is Nullable
+            // [CSSPRange(0, 10000)]
+            // climateDataValue.Snow_cm   (Double)
+            // -----------------------------------
+
+            //CSSPError: Type not implemented [Snow_cm]
+
+            //CSSPError: Type not implemented [Snow_cm]
+
+            climateDataValue = null;
+            climateDataValue = GetFilledRandomClimateDataValue("");
+            climateDataValue.Snow_cm = -1.0D;
+            actionClimateDataValue = await ClimateDataValueService.Post(climateDataValue);
+            Assert.IsType<BadRequestObjectResult>(actionClimateDataValue.Result);
+            //Assert.AreEqual(count, climateDataValueService.GetClimateDataValueList().Count());
+            climateDataValue = null;
+            climateDataValue = GetFilledRandomClimateDataValue("");
+            climateDataValue.Snow_cm = 10001.0D;
+            actionClimateDataValue = await ClimateDataValueService.Post(climateDataValue);
+            Assert.IsType<BadRequestObjectResult>(actionClimateDataValue.Result);
+            //Assert.AreEqual(count, climateDataValueService.GetClimateDataValueList().Count());
+
+            // -----------------------------------
+            // Is Nullable
+            // [CSSPRange(0, 10000)]
+            // climateDataValue.Rainfall_mm   (Double)
+            // -----------------------------------
+
+            //CSSPError: Type not implemented [Rainfall_mm]
+
+            //CSSPError: Type not implemented [Rainfall_mm]
+
+            climateDataValue = null;
+            climateDataValue = GetFilledRandomClimateDataValue("");
+            climateDataValue.Rainfall_mm = -1.0D;
+            actionClimateDataValue = await ClimateDataValueService.Post(climateDataValue);
+            Assert.IsType<BadRequestObjectResult>(actionClimateDataValue.Result);
+            //Assert.AreEqual(count, climateDataValueService.GetClimateDataValueList().Count());
+            climateDataValue = null;
+            climateDataValue = GetFilledRandomClimateDataValue("");
+            climateDataValue.Rainfall_mm = 10001.0D;
+            actionClimateDataValue = await ClimateDataValueService.Post(climateDataValue);
+            Assert.IsType<BadRequestObjectResult>(actionClimateDataValue.Result);
+            //Assert.AreEqual(count, climateDataValueService.GetClimateDataValueList().Count());
+
+            // -----------------------------------
+            // Is Nullable
+            // [CSSPRange(0, 10000)]
+            // climateDataValue.RainfallEntered_mm   (Double)
+            // -----------------------------------
+
+            //CSSPError: Type not implemented [RainfallEntered_mm]
+
+            //CSSPError: Type not implemented [RainfallEntered_mm]
+
+            climateDataValue = null;
+            climateDataValue = GetFilledRandomClimateDataValue("");
+            climateDataValue.RainfallEntered_mm = -1.0D;
+            actionClimateDataValue = await ClimateDataValueService.Post(climateDataValue);
+            Assert.IsType<BadRequestObjectResult>(actionClimateDataValue.Result);
+            //Assert.AreEqual(count, climateDataValueService.GetClimateDataValueList().Count());
+            climateDataValue = null;
+            climateDataValue = GetFilledRandomClimateDataValue("");
+            climateDataValue.RainfallEntered_mm = 10001.0D;
+            actionClimateDataValue = await ClimateDataValueService.Post(climateDataValue);
+            Assert.IsType<BadRequestObjectResult>(actionClimateDataValue.Result);
+            //Assert.AreEqual(count, climateDataValueService.GetClimateDataValueList().Count());
+
+            // -----------------------------------
+            // Is Nullable
+            // [CSSPRange(0, 10000)]
+            // climateDataValue.TotalPrecip_mm_cm   (Double)
+            // -----------------------------------
+
+            //CSSPError: Type not implemented [TotalPrecip_mm_cm]
+
+            //CSSPError: Type not implemented [TotalPrecip_mm_cm]
+
+            climateDataValue = null;
+            climateDataValue = GetFilledRandomClimateDataValue("");
+            climateDataValue.TotalPrecip_mm_cm = -1.0D;
+            actionClimateDataValue = await ClimateDataValueService.Post(climateDataValue);
+            Assert.IsType<BadRequestObjectResult>(actionClimateDataValue.Result);
+            //Assert.AreEqual(count, climateDataValueService.GetClimateDataValueList().Count());
+            climateDataValue = null;
+            climateDataValue = GetFilledRandomClimateDataValue("");
+            climateDataValue.TotalPrecip_mm_cm = 10001.0D;
+            actionClimateDataValue = await ClimateDataValueService.Post(climateDataValue);
+            Assert.IsType<BadRequestObjectResult>(actionClimateDataValue.Result);
+            //Assert.AreEqual(count, climateDataValueService.GetClimateDataValueList().Count());
+
+            // -----------------------------------
+            // Is Nullable
+            // [CSSPRange(-50, 50)]
+            // climateDataValue.MaxTemp_C   (Double)
+            // -----------------------------------
+
+            //CSSPError: Type not implemented [MaxTemp_C]
+
+            //CSSPError: Type not implemented [MaxTemp_C]
+
+            climateDataValue = null;
+            climateDataValue = GetFilledRandomClimateDataValue("");
+            climateDataValue.MaxTemp_C = -51.0D;
+            actionClimateDataValue = await ClimateDataValueService.Post(climateDataValue);
+            Assert.IsType<BadRequestObjectResult>(actionClimateDataValue.Result);
+            //Assert.AreEqual(count, climateDataValueService.GetClimateDataValueList().Count());
+            climateDataValue = null;
+            climateDataValue = GetFilledRandomClimateDataValue("");
+            climateDataValue.MaxTemp_C = 51.0D;
+            actionClimateDataValue = await ClimateDataValueService.Post(climateDataValue);
+            Assert.IsType<BadRequestObjectResult>(actionClimateDataValue.Result);
+            //Assert.AreEqual(count, climateDataValueService.GetClimateDataValueList().Count());
+
+            // -----------------------------------
+            // Is Nullable
+            // [CSSPRange(-50, 50)]
+            // climateDataValue.MinTemp_C   (Double)
+            // -----------------------------------
+
+            //CSSPError: Type not implemented [MinTemp_C]
+
+            //CSSPError: Type not implemented [MinTemp_C]
+
+            climateDataValue = null;
+            climateDataValue = GetFilledRandomClimateDataValue("");
+            climateDataValue.MinTemp_C = -51.0D;
+            actionClimateDataValue = await ClimateDataValueService.Post(climateDataValue);
+            Assert.IsType<BadRequestObjectResult>(actionClimateDataValue.Result);
+            //Assert.AreEqual(count, climateDataValueService.GetClimateDataValueList().Count());
+            climateDataValue = null;
+            climateDataValue = GetFilledRandomClimateDataValue("");
+            climateDataValue.MinTemp_C = 51.0D;
+            actionClimateDataValue = await ClimateDataValueService.Post(climateDataValue);
+            Assert.IsType<BadRequestObjectResult>(actionClimateDataValue.Result);
+            //Assert.AreEqual(count, climateDataValueService.GetClimateDataValueList().Count());
+
+            // -----------------------------------
+            // Is Nullable
+            // [CSSPRange(-1000, 100)]
+            // climateDataValue.HeatDegDays_C   (Double)
+            // -----------------------------------
+
+            //CSSPError: Type not implemented [HeatDegDays_C]
+
+            //CSSPError: Type not implemented [HeatDegDays_C]
+
+            climateDataValue = null;
+            climateDataValue = GetFilledRandomClimateDataValue("");
+            climateDataValue.HeatDegDays_C = -1001.0D;
+            actionClimateDataValue = await ClimateDataValueService.Post(climateDataValue);
+            Assert.IsType<BadRequestObjectResult>(actionClimateDataValue.Result);
+            //Assert.AreEqual(count, climateDataValueService.GetClimateDataValueList().Count());
+            climateDataValue = null;
+            climateDataValue = GetFilledRandomClimateDataValue("");
+            climateDataValue.HeatDegDays_C = 101.0D;
+            actionClimateDataValue = await ClimateDataValueService.Post(climateDataValue);
+            Assert.IsType<BadRequestObjectResult>(actionClimateDataValue.Result);
+            //Assert.AreEqual(count, climateDataValueService.GetClimateDataValueList().Count());
+
+            // -----------------------------------
+            // Is Nullable
+            // [CSSPRange(-1000, 100)]
+            // climateDataValue.CoolDegDays_C   (Double)
+            // -----------------------------------
+
+            //CSSPError: Type not implemented [CoolDegDays_C]
+
+            //CSSPError: Type not implemented [CoolDegDays_C]
+
+            climateDataValue = null;
+            climateDataValue = GetFilledRandomClimateDataValue("");
+            climateDataValue.CoolDegDays_C = -1001.0D;
+            actionClimateDataValue = await ClimateDataValueService.Post(climateDataValue);
+            Assert.IsType<BadRequestObjectResult>(actionClimateDataValue.Result);
+            //Assert.AreEqual(count, climateDataValueService.GetClimateDataValueList().Count());
+            climateDataValue = null;
+            climateDataValue = GetFilledRandomClimateDataValue("");
+            climateDataValue.CoolDegDays_C = 101.0D;
+            actionClimateDataValue = await ClimateDataValueService.Post(climateDataValue);
+            Assert.IsType<BadRequestObjectResult>(actionClimateDataValue.Result);
+            //Assert.AreEqual(count, climateDataValueService.GetClimateDataValueList().Count());
+
+            // -----------------------------------
+            // Is Nullable
+            // [CSSPRange(0, 10000)]
+            // climateDataValue.SnowOnGround_cm   (Double)
+            // -----------------------------------
+
+            //CSSPError: Type not implemented [SnowOnGround_cm]
+
+            //CSSPError: Type not implemented [SnowOnGround_cm]
+
+            climateDataValue = null;
+            climateDataValue = GetFilledRandomClimateDataValue("");
+            climateDataValue.SnowOnGround_cm = -1.0D;
+            actionClimateDataValue = await ClimateDataValueService.Post(climateDataValue);
+            Assert.IsType<BadRequestObjectResult>(actionClimateDataValue.Result);
+            //Assert.AreEqual(count, climateDataValueService.GetClimateDataValueList().Count());
+            climateDataValue = null;
+            climateDataValue = GetFilledRandomClimateDataValue("");
+            climateDataValue.SnowOnGround_cm = 10001.0D;
+            actionClimateDataValue = await ClimateDataValueService.Post(climateDataValue);
+            Assert.IsType<BadRequestObjectResult>(actionClimateDataValue.Result);
+            //Assert.AreEqual(count, climateDataValueService.GetClimateDataValueList().Count());
+
+            // -----------------------------------
+            // Is Nullable
+            // [CSSPRange(0, 360)]
+            // climateDataValue.DirMaxGust_0North   (Double)
+            // -----------------------------------
+
+            //CSSPError: Type not implemented [DirMaxGust_0North]
+
+            //CSSPError: Type not implemented [DirMaxGust_0North]
+
+            climateDataValue = null;
+            climateDataValue = GetFilledRandomClimateDataValue("");
+            climateDataValue.DirMaxGust_0North = -1.0D;
+            actionClimateDataValue = await ClimateDataValueService.Post(climateDataValue);
+            Assert.IsType<BadRequestObjectResult>(actionClimateDataValue.Result);
+            //Assert.AreEqual(count, climateDataValueService.GetClimateDataValueList().Count());
+            climateDataValue = null;
+            climateDataValue = GetFilledRandomClimateDataValue("");
+            climateDataValue.DirMaxGust_0North = 361.0D;
+            actionClimateDataValue = await ClimateDataValueService.Post(climateDataValue);
+            Assert.IsType<BadRequestObjectResult>(actionClimateDataValue.Result);
+            //Assert.AreEqual(count, climateDataValueService.GetClimateDataValueList().Count());
+
+            // -----------------------------------
+            // Is Nullable
+            // [CSSPRange(0, 300)]
+            // climateDataValue.SpdMaxGust_kmh   (Double)
+            // -----------------------------------
+
+            //CSSPError: Type not implemented [SpdMaxGust_kmh]
+
+            //CSSPError: Type not implemented [SpdMaxGust_kmh]
+
+            climateDataValue = null;
+            climateDataValue = GetFilledRandomClimateDataValue("");
+            climateDataValue.SpdMaxGust_kmh = -1.0D;
+            actionClimateDataValue = await ClimateDataValueService.Post(climateDataValue);
+            Assert.IsType<BadRequestObjectResult>(actionClimateDataValue.Result);
+            //Assert.AreEqual(count, climateDataValueService.GetClimateDataValueList().Count());
+            climateDataValue = null;
+            climateDataValue = GetFilledRandomClimateDataValue("");
+            climateDataValue.SpdMaxGust_kmh = 301.0D;
+            actionClimateDataValue = await ClimateDataValueService.Post(climateDataValue);
+            Assert.IsType<BadRequestObjectResult>(actionClimateDataValue.Result);
+            //Assert.AreEqual(count, climateDataValueService.GetClimateDataValueList().Count());
+
+            // -----------------------------------
+            // Is Nullable
+            // climateDataValue.HourlyValues   (String)
+            // -----------------------------------
+
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPAfter(Year = 1980)]
+            // climateDataValue.LastUpdateDate_UTC   (DateTime)
+            // -----------------------------------
+
+            climateDataValue = null;
+            climateDataValue = GetFilledRandomClimateDataValue("");
+            climateDataValue.LastUpdateDate_UTC = new DateTime();
+            actionClimateDataValue = await ClimateDataValueService.Post(climateDataValue);
+            Assert.IsType<BadRequestObjectResult>(actionClimateDataValue.Result);
+            climateDataValue = null;
+            climateDataValue = GetFilledRandomClimateDataValue("");
+            climateDataValue.LastUpdateDate_UTC = new DateTime(1979, 1, 1);
+            actionClimateDataValue = await ClimateDataValueService.Post(climateDataValue);
+            Assert.IsType<BadRequestObjectResult>(actionClimateDataValue.Result);
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPExist(ExistTypeName = "TVItem", ExistPlurial = "s", ExistFieldID = "TVItemID", AllowableTVtypeList = Contact)]
+            // climateDataValue.LastUpdateContactTVItemID   (Int32)
+            // -----------------------------------
+
+            climateDataValue = null;
+            climateDataValue = GetFilledRandomClimateDataValue("");
+            climateDataValue.LastUpdateContactTVItemID = 0;
+            actionClimateDataValue = await ClimateDataValueService.Post(climateDataValue);
+            Assert.IsType<BadRequestObjectResult>(actionClimateDataValue.Result);
+
+            climateDataValue = null;
+            climateDataValue = GetFilledRandomClimateDataValue("");
+            climateDataValue.LastUpdateContactTVItemID = 1;
+            actionClimateDataValue = await ClimateDataValueService.Post(climateDataValue);
+            Assert.IsType<BadRequestObjectResult>(actionClimateDataValue.Result);
+
+        }
+        #endregion Tests Generated Properties
 
         #region Functions private
         private async Task DoCRUDTest()
@@ -248,6 +655,57 @@ namespace CSSPServices.Tests
             }
 
             return climateDataValue;
+        }
+        private void CheckClimateDataValueFields(List<ClimateDataValue> climateDataValueList)
+        {
+            if (climateDataValueList[0].Snow_cm != null)
+            {
+                Assert.NotNull(climateDataValueList[0].Snow_cm);
+            }
+            if (climateDataValueList[0].Rainfall_mm != null)
+            {
+                Assert.NotNull(climateDataValueList[0].Rainfall_mm);
+            }
+            if (climateDataValueList[0].RainfallEntered_mm != null)
+            {
+                Assert.NotNull(climateDataValueList[0].RainfallEntered_mm);
+            }
+            if (climateDataValueList[0].TotalPrecip_mm_cm != null)
+            {
+                Assert.NotNull(climateDataValueList[0].TotalPrecip_mm_cm);
+            }
+            if (climateDataValueList[0].MaxTemp_C != null)
+            {
+                Assert.NotNull(climateDataValueList[0].MaxTemp_C);
+            }
+            if (climateDataValueList[0].MinTemp_C != null)
+            {
+                Assert.NotNull(climateDataValueList[0].MinTemp_C);
+            }
+            if (climateDataValueList[0].HeatDegDays_C != null)
+            {
+                Assert.NotNull(climateDataValueList[0].HeatDegDays_C);
+            }
+            if (climateDataValueList[0].CoolDegDays_C != null)
+            {
+                Assert.NotNull(climateDataValueList[0].CoolDegDays_C);
+            }
+            if (climateDataValueList[0].SnowOnGround_cm != null)
+            {
+                Assert.NotNull(climateDataValueList[0].SnowOnGround_cm);
+            }
+            if (climateDataValueList[0].DirMaxGust_0North != null)
+            {
+                Assert.NotNull(climateDataValueList[0].DirMaxGust_0North);
+            }
+            if (climateDataValueList[0].SpdMaxGust_kmh != null)
+            {
+                Assert.NotNull(climateDataValueList[0].SpdMaxGust_kmh);
+            }
+            if (!string.IsNullOrWhiteSpace(climateDataValueList[0].HourlyValues))
+            {
+                Assert.False(string.IsNullOrWhiteSpace(climateDataValueList[0].HourlyValues));
+            }
         }
         #endregion Functions private
     }

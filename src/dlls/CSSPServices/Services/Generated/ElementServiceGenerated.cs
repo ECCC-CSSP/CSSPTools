@@ -20,19 +20,68 @@ using System.Threading.Tasks;
 
 namespace CSSPServices
 {
-    public partial class ElementService
+    public interface IElementService
+    {
+        IEnumerable<ValidationResult> Validate(ValidationContext validationContext);
+    }
+    public partial class ElementService : IElementService
     {
         #region Variables
         #endregion Variables
 
         #region Properties
+        private ICSSPCultureService CSSPCultureService { get; }
+        private IEnums enums { get; }
         #endregion Properties
 
         #region Constructors
-        public ElementService()
+        public ElementService(ICSSPCultureService CSSPCultureService, IEnums enums)
         {
+            this.CSSPCultureService = CSSPCultureService;
+            this.enums = enums;
         }
         #endregion Constructors
+
+        #region Functions public
+        public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+        {
+            string retStr = "";
+            Element element = validationContext.ObjectInstance as Element;
+
+            if (element.ID < 1)
+            {
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MinValueIs_, "ID", "1"), new[] { "ID" });
+            }
+
+            if (element.Type < 1)
+            {
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MinValueIs_, "Type", "1"), new[] { "Type" });
+            }
+
+            if (element.NumbOfNodes < 1)
+            {
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MinValueIs_, "NumbOfNodes", "1"), new[] { "NumbOfNodes" });
+            }
+
+            //Value has no Range Attribute
+
+            //XNode0 has no Range Attribute
+
+            //YNode0 has no Range Attribute
+
+            //ZNode0 has no Range Attribute
+
+                //CSSPError: Type not implemented [NodeList] of type [List`1]
+
+                //CSSPError: Type not implemented [NodeList] of type [Node]
+            retStr = ""; // added to stop compiling CSSPError
+            if (retStr != "") // will never be true
+            {
+                yield return new ValidationResult("AAA", new[] { "AAA" });
+            }
+
+        }
+        #endregion Functions public
 
     }
 }

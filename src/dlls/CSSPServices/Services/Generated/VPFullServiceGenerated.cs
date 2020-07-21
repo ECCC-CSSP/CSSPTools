@@ -20,19 +20,51 @@ using System.Threading.Tasks;
 
 namespace CSSPServices
 {
-    public partial class VPFullService
+    public interface IVPFullService
+    {
+        IEnumerable<ValidationResult> Validate(ValidationContext validationContext);
+    }
+    public partial class VPFullService : IVPFullService
     {
         #region Variables
         #endregion Variables
 
         #region Properties
+        private ICSSPCultureService CSSPCultureService { get; }
+        private IEnums enums { get; }
         #endregion Properties
 
         #region Constructors
-        public VPFullService()
+        public VPFullService(ICSSPCultureService CSSPCultureService, IEnums enums)
         {
+            this.CSSPCultureService = CSSPCultureService;
+            this.enums = enums;
         }
         #endregion Constructors
+
+        #region Functions public
+        public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+        {
+            string retStr = "";
+            VPFull vpFull = validationContext.ObjectInstance as VPFull;
+
+                //CSSPError: Type not implemented [VPScenario] of type [VPScenario]
+
+                //CSSPError: Type not implemented [VPScenario] of type [VPScenario]
+                //CSSPError: Type not implemented [VPAmbientList] of type [List`1]
+
+                //CSSPError: Type not implemented [VPAmbientList] of type [VPAmbient]
+                //CSSPError: Type not implemented [VPResultList] of type [List`1]
+
+                //CSSPError: Type not implemented [VPResultList] of type [VPResult]
+            retStr = ""; // added to stop compiling CSSPError
+            if (retStr != "") // will never be true
+            {
+                yield return new ValidationResult("AAA", new[] { "AAA" });
+            }
+
+        }
+        #endregion Functions public
 
     }
 }

@@ -32,8 +32,7 @@ namespace ContactServices.Tests
         private IServiceProvider ServiceProvider { get; set; }
         private ICSSPCultureService CSSPCultureService { get; set; }
         private IContactService ContactService { get; set; }
-        private string LoginEmail { get; set; }
-        private string Password { get; set; }
+        private LoginModel loginModel { get; set; } = new LoginModel();
         #endregion Properties
 
         #region Constructors
@@ -61,7 +60,7 @@ namespace ContactServices.Tests
         {
             Assert.True(await Setup(culture));
 
-            var retValue = await ContactService.Login(new LoginModel() { LoginEmail = LoginEmail, Password = Password });
+            var retValue = await ContactService.Login(loginModel);
             Assert.IsType<Contact>(retValue.Value);
             Assert.Null(retValue.Result);
             Contact contact = retValue.Value;
@@ -76,12 +75,12 @@ namespace ContactServices.Tests
         {
             Assert.True(await Setup(culture));
 
-            LoginEmail = "NotFound@email.ca";
+            loginModel.LoginEmail = "NotFound@email.ca";
 
-            var retValue = await ContactService.Login(new LoginModel() { LoginEmail = LoginEmail, Password = Password });
+            var retValue = await ContactService.Login(loginModel);
             Assert.Null(retValue.Value);
             Assert.Equal(400, ((BadRequestObjectResult)retValue.Result).StatusCode);
-            string expected = String.Format(CSSPCultureServicesRes.__CouldNotBeFound, CSSPCultureServicesRes.Email, LoginEmail);
+            string expected = String.Format(CSSPCultureServicesRes.__CouldNotBeFound, CSSPCultureServicesRes.Email, loginModel.LoginEmail);
             var value = ((BadRequestObjectResult)retValue.Result).Value;
             Assert.Equal(expected, value);
 
@@ -93,12 +92,12 @@ namespace ContactServices.Tests
         {
             Assert.True(await Setup(culture));
 
-            Password = "NotAPassword!";
+            loginModel.Password = "NotAPassword!";
 
-            var retValue = await ContactService.Login(new LoginModel() { LoginEmail = LoginEmail, Password = Password });
+            var retValue = await ContactService.Login(loginModel);
             Assert.Null(retValue.Value);
             Assert.Equal(400, ((BadRequestObjectResult)retValue.Result).StatusCode);
-            string expected = String.Format(CSSPCultureServicesRes.UnableToLoginAs_WithProvidedPassword, LoginEmail);
+            string expected = String.Format(CSSPCultureServicesRes.UnableToLoginAs_WithProvidedPassword, loginModel.LoginEmail);
             var value = ((BadRequestObjectResult)retValue.Result).Value;
             Assert.Equal(expected, value);
 
@@ -123,16 +122,18 @@ namespace ContactServices.Tests
             ServiceCollection.AddSingleton<IEnums, Enums>();
             ServiceCollection.AddSingleton<ILoggedInService, LoggedInService>();
             ServiceCollection.AddSingleton<IAspNetUserService, AspNetUserService>();
+            ServiceCollection.AddSingleton<ILoginModelService, LoginModelService>();
+            ServiceCollection.AddSingleton<IRegisterModelService, RegisterModelService>();
             ServiceCollection.AddSingleton<IContactService, ContactService>();
 
             string TestDB = Configuration.GetValue<string>("TestDB");
             Assert.NotNull(TestDB);
 
-            LoginEmail = Configuration.GetValue<string>("LoginEmail");
-            Assert.NotNull(LoginEmail);
+            loginModel.LoginEmail = Configuration.GetValue<string>("LoginEmail");
+            Assert.NotNull(loginModel.LoginEmail);
 
-            Password = Configuration.GetValue<string>("Password");
-            Assert.NotNull(Password);
+            loginModel.Password = Configuration.GetValue<string>("Password");
+            Assert.NotNull(loginModel.Password);
 
             ServiceCollection.AddDbContext<CSSPDBContext>(options =>
                     options.UseSqlServer(TestDB));

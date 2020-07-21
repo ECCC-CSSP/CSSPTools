@@ -20,19 +20,59 @@ using System.Threading.Tasks;
 
 namespace CSSPServices
 {
-    public partial class LastUpdateAndContactService
+    public interface ILastUpdateAndContactService
+    {
+        IEnumerable<ValidationResult> Validate(ValidationContext validationContext);
+    }
+    public partial class LastUpdateAndContactService : ILastUpdateAndContactService
     {
         #region Variables
         #endregion Variables
 
         #region Properties
+        private ICSSPCultureService CSSPCultureService { get; }
+        private IEnums enums { get; }
         #endregion Properties
 
         #region Constructors
-        public LastUpdateAndContactService()
+        public LastUpdateAndContactService(ICSSPCultureService CSSPCultureService, IEnums enums)
         {
+            this.CSSPCultureService = CSSPCultureService;
+            this.enums = enums;
         }
         #endregion Constructors
+
+        #region Functions public
+        public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+        {
+            string retStr = "";
+            LastUpdateAndContact lastUpdateAndContact = validationContext.ObjectInstance as LastUpdateAndContact;
+
+            if (lastUpdateAndContact.LastUpdateAndContactDate_UTC.Year == 1)
+            {
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "LastUpdateAndContactDate_UTC"), new[] { "LastUpdateAndContactDate_UTC" });
+            }
+            else
+            {
+                if (lastUpdateAndContact.LastUpdateAndContactDate_UTC.Year < 1980)
+                {
+                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes._YearShouldBeBiggerThan_, "LastUpdateAndContactDate_UTC", "1980"), new[] { "LastUpdateAndContactDate_UTC" });
+                }
+            }
+
+            if (lastUpdateAndContact.LastUpdateAndContactTVItemID < 1)
+            {
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MinValueIs_, "LastUpdateAndContactTVItemID", "1"), new[] { "LastUpdateAndContactTVItemID" });
+            }
+
+            retStr = ""; // added to stop compiling CSSPError
+            if (retStr != "") // will never be true
+            {
+                yield return new ValidationResult("AAA", new[] { "AAA" });
+            }
+
+        }
+        #endregion Functions public
 
     }
 }

@@ -19,6 +19,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Transactions;
 using Xunit;
+using System.ComponentModel.DataAnnotations;
 
 namespace CSSPServices.Tests
 {
@@ -81,6 +82,510 @@ namespace CSSPServices.Tests
             }
         }
         #endregion Tests Generated CRUD
+
+        #region Tests Generated Properties
+        [Theory]
+        [InlineData("en-CA", DBLocationEnum.Local)]
+        [InlineData("fr-CA", DBLocationEnum.Local)]
+        [InlineData("en-CA", DBLocationEnum.Server)]
+        [InlineData("fr-CA", DBLocationEnum.Server)]
+        public async Task MWQMAnalysisReportParameter_Properties_Test(string culture, DBLocationEnum DBLocation)
+        {
+            // -------------------------------
+            // -------------------------------
+            // Properties testing
+            // -------------------------------
+            // -------------------------------
+
+            Assert.True(await Setup(culture));
+
+            LoggedInService.DBLocation = DBLocation;
+
+            int count = 0;
+            if (count == 1)
+            {
+                // just so we don't get a warning during compile [The variable 'count' is assigned but its value is never used]
+            }
+
+            var actionMWQMAnalysisReportParameterList = await MWQMAnalysisReportParameterService.GetMWQMAnalysisReportParameterList();
+            Assert.Equal(200, ((ObjectResult)actionMWQMAnalysisReportParameterList.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionMWQMAnalysisReportParameterList.Result).Value);
+            List<MWQMAnalysisReportParameter> mwqmAnalysisReportParameterList = (List<MWQMAnalysisReportParameter>)((OkObjectResult)actionMWQMAnalysisReportParameterList.Result).Value;
+
+            count = mwqmAnalysisReportParameterList.Count();
+
+            MWQMAnalysisReportParameter mwqmAnalysisReportParameter = GetFilledRandomMWQMAnalysisReportParameter("");
+
+
+            // -----------------------------------
+            // [Key]
+            // Is NOT Nullable
+            // mwqmAnalysisReportParameter.MWQMAnalysisReportParameterID   (Int32)
+            // -----------------------------------
+
+            mwqmAnalysisReportParameter = null;
+            mwqmAnalysisReportParameter = GetFilledRandomMWQMAnalysisReportParameter("");
+            mwqmAnalysisReportParameter.MWQMAnalysisReportParameterID = 0;
+
+            var actionMWQMAnalysisReportParameter = await MWQMAnalysisReportParameterService.Put(mwqmAnalysisReportParameter);
+            Assert.IsType<BadRequestObjectResult>(actionMWQMAnalysisReportParameter.Result);
+
+            mwqmAnalysisReportParameter = null;
+            mwqmAnalysisReportParameter = GetFilledRandomMWQMAnalysisReportParameter("");
+            mwqmAnalysisReportParameter.MWQMAnalysisReportParameterID = 10000000;
+            actionMWQMAnalysisReportParameter = await MWQMAnalysisReportParameterService.Put(mwqmAnalysisReportParameter);
+            Assert.IsType<BadRequestObjectResult>(actionMWQMAnalysisReportParameter.Result);
+
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPExist(ExistTypeName = "TVItem", ExistPlurial = "s", ExistFieldID = "TVItemID", AllowableTVtypeList = Subsector)]
+            // mwqmAnalysisReportParameter.SubsectorTVItemID   (Int32)
+            // -----------------------------------
+
+            mwqmAnalysisReportParameter = null;
+            mwqmAnalysisReportParameter = GetFilledRandomMWQMAnalysisReportParameter("");
+            mwqmAnalysisReportParameter.SubsectorTVItemID = 0;
+            actionMWQMAnalysisReportParameter = await MWQMAnalysisReportParameterService.Post(mwqmAnalysisReportParameter);
+            Assert.IsType<BadRequestObjectResult>(actionMWQMAnalysisReportParameter.Result);
+
+            mwqmAnalysisReportParameter = null;
+            mwqmAnalysisReportParameter = GetFilledRandomMWQMAnalysisReportParameter("");
+            mwqmAnalysisReportParameter.SubsectorTVItemID = 1;
+            actionMWQMAnalysisReportParameter = await MWQMAnalysisReportParameterService.Post(mwqmAnalysisReportParameter);
+            Assert.IsType<BadRequestObjectResult>(actionMWQMAnalysisReportParameter.Result);
+
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPMaxLength(250)]
+            // [CSSPMinLength(5)]
+            // mwqmAnalysisReportParameter.AnalysisName   (String)
+            // -----------------------------------
+
+            mwqmAnalysisReportParameter = null;
+            mwqmAnalysisReportParameter = GetFilledRandomMWQMAnalysisReportParameter("AnalysisName");
+            actionMWQMAnalysisReportParameter = await MWQMAnalysisReportParameterService.Post(mwqmAnalysisReportParameter);
+            Assert.IsType<BadRequestObjectResult>(actionMWQMAnalysisReportParameter.Result);
+
+            mwqmAnalysisReportParameter = null;
+            mwqmAnalysisReportParameter = GetFilledRandomMWQMAnalysisReportParameter("");
+            mwqmAnalysisReportParameter.AnalysisName = GetRandomString("", 4);
+            actionMWQMAnalysisReportParameter = await MWQMAnalysisReportParameterService.Post(mwqmAnalysisReportParameter);
+            Assert.IsType<BadRequestObjectResult>(actionMWQMAnalysisReportParameter.Result);
+            //Assert.AreEqual(count, mwqmAnalysisReportParameterService.GetMWQMAnalysisReportParameterList().Count());
+            mwqmAnalysisReportParameter = null;
+            mwqmAnalysisReportParameter = GetFilledRandomMWQMAnalysisReportParameter("");
+            mwqmAnalysisReportParameter.AnalysisName = GetRandomString("", 251);
+            actionMWQMAnalysisReportParameter = await MWQMAnalysisReportParameterService.Post(mwqmAnalysisReportParameter);
+            Assert.IsType<BadRequestObjectResult>(actionMWQMAnalysisReportParameter.Result);
+            //Assert.AreEqual(count, mwqmAnalysisReportParameterService.GetMWQMAnalysisReportParameterList().Count());
+
+            // -----------------------------------
+            // Is Nullable
+            // [CSSPRange(1980, 2050)]
+            // mwqmAnalysisReportParameter.AnalysisReportYear   (Int32)
+            // -----------------------------------
+
+            mwqmAnalysisReportParameter = null;
+            mwqmAnalysisReportParameter = GetFilledRandomMWQMAnalysisReportParameter("");
+            mwqmAnalysisReportParameter.AnalysisReportYear = 1979;
+            actionMWQMAnalysisReportParameter = await MWQMAnalysisReportParameterService.Post(mwqmAnalysisReportParameter);
+            Assert.IsType<BadRequestObjectResult>(actionMWQMAnalysisReportParameter.Result);
+            //Assert.AreEqual(count, mwqmAnalysisReportParameterService.GetMWQMAnalysisReportParameterList().Count());
+            mwqmAnalysisReportParameter = null;
+            mwqmAnalysisReportParameter = GetFilledRandomMWQMAnalysisReportParameter("");
+            mwqmAnalysisReportParameter.AnalysisReportYear = 2051;
+            actionMWQMAnalysisReportParameter = await MWQMAnalysisReportParameterService.Post(mwqmAnalysisReportParameter);
+            Assert.IsType<BadRequestObjectResult>(actionMWQMAnalysisReportParameter.Result);
+            //Assert.AreEqual(count, mwqmAnalysisReportParameterService.GetMWQMAnalysisReportParameterList().Count());
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPAfter(Year = 1980)]
+            // mwqmAnalysisReportParameter.StartDate   (DateTime)
+            // -----------------------------------
+
+            mwqmAnalysisReportParameter = null;
+            mwqmAnalysisReportParameter = GetFilledRandomMWQMAnalysisReportParameter("");
+            mwqmAnalysisReportParameter.StartDate = new DateTime();
+            actionMWQMAnalysisReportParameter = await MWQMAnalysisReportParameterService.Post(mwqmAnalysisReportParameter);
+            Assert.IsType<BadRequestObjectResult>(actionMWQMAnalysisReportParameter.Result);
+            mwqmAnalysisReportParameter = null;
+            mwqmAnalysisReportParameter = GetFilledRandomMWQMAnalysisReportParameter("");
+            mwqmAnalysisReportParameter.StartDate = new DateTime(1979, 1, 1);
+            actionMWQMAnalysisReportParameter = await MWQMAnalysisReportParameterService.Post(mwqmAnalysisReportParameter);
+            Assert.IsType<BadRequestObjectResult>(actionMWQMAnalysisReportParameter.Result);
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPAfter(Year = 1980)]
+            // [CSSPBigger(OtherField = StartDate)]
+            // mwqmAnalysisReportParameter.EndDate   (DateTime)
+            // -----------------------------------
+
+            mwqmAnalysisReportParameter = null;
+            mwqmAnalysisReportParameter = GetFilledRandomMWQMAnalysisReportParameter("");
+            mwqmAnalysisReportParameter.EndDate = new DateTime();
+            actionMWQMAnalysisReportParameter = await MWQMAnalysisReportParameterService.Post(mwqmAnalysisReportParameter);
+            Assert.IsType<BadRequestObjectResult>(actionMWQMAnalysisReportParameter.Result);
+            mwqmAnalysisReportParameter = null;
+            mwqmAnalysisReportParameter = GetFilledRandomMWQMAnalysisReportParameter("");
+            mwqmAnalysisReportParameter.EndDate = new DateTime(1979, 1, 1);
+            actionMWQMAnalysisReportParameter = await MWQMAnalysisReportParameterService.Post(mwqmAnalysisReportParameter);
+            Assert.IsType<BadRequestObjectResult>(actionMWQMAnalysisReportParameter.Result);
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPEnumType]
+            // mwqmAnalysisReportParameter.AnalysisCalculationType   (AnalysisCalculationTypeEnum)
+            // -----------------------------------
+
+            mwqmAnalysisReportParameter = null;
+            mwqmAnalysisReportParameter = GetFilledRandomMWQMAnalysisReportParameter("");
+            mwqmAnalysisReportParameter.AnalysisCalculationType = (AnalysisCalculationTypeEnum)1000000;
+            actionMWQMAnalysisReportParameter = await MWQMAnalysisReportParameterService.Post(mwqmAnalysisReportParameter);
+            Assert.IsType<BadRequestObjectResult>(actionMWQMAnalysisReportParameter.Result);
+
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPRange(1, 1000)]
+            // mwqmAnalysisReportParameter.NumberOfRuns   (Int32)
+            // -----------------------------------
+
+            mwqmAnalysisReportParameter = null;
+            mwqmAnalysisReportParameter = GetFilledRandomMWQMAnalysisReportParameter("");
+            mwqmAnalysisReportParameter.NumberOfRuns = 0;
+            actionMWQMAnalysisReportParameter = await MWQMAnalysisReportParameterService.Post(mwqmAnalysisReportParameter);
+            Assert.IsType<BadRequestObjectResult>(actionMWQMAnalysisReportParameter.Result);
+            //Assert.AreEqual(count, mwqmAnalysisReportParameterService.GetMWQMAnalysisReportParameterList().Count());
+            mwqmAnalysisReportParameter = null;
+            mwqmAnalysisReportParameter = GetFilledRandomMWQMAnalysisReportParameter("");
+            mwqmAnalysisReportParameter.NumberOfRuns = 1001;
+            actionMWQMAnalysisReportParameter = await MWQMAnalysisReportParameterService.Post(mwqmAnalysisReportParameter);
+            Assert.IsType<BadRequestObjectResult>(actionMWQMAnalysisReportParameter.Result);
+            //Assert.AreEqual(count, mwqmAnalysisReportParameterService.GetMWQMAnalysisReportParameterList().Count());
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // mwqmAnalysisReportParameter.FullYear   (Boolean)
+            // -----------------------------------
+
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPRange(1, 20)]
+            // mwqmAnalysisReportParameter.SalinityHighlightDeviationFromAverage   (Double)
+            // -----------------------------------
+
+            //CSSPError: Type not implemented [SalinityHighlightDeviationFromAverage]
+
+            //CSSPError: Type not implemented [SalinityHighlightDeviationFromAverage]
+
+            mwqmAnalysisReportParameter = null;
+            mwqmAnalysisReportParameter = GetFilledRandomMWQMAnalysisReportParameter("");
+            mwqmAnalysisReportParameter.SalinityHighlightDeviationFromAverage = 0.0D;
+            actionMWQMAnalysisReportParameter = await MWQMAnalysisReportParameterService.Post(mwqmAnalysisReportParameter);
+            Assert.IsType<BadRequestObjectResult>(actionMWQMAnalysisReportParameter.Result);
+            //Assert.AreEqual(count, mwqmAnalysisReportParameterService.GetMWQMAnalysisReportParameterList().Count());
+            mwqmAnalysisReportParameter = null;
+            mwqmAnalysisReportParameter = GetFilledRandomMWQMAnalysisReportParameter("");
+            mwqmAnalysisReportParameter.SalinityHighlightDeviationFromAverage = 21.0D;
+            actionMWQMAnalysisReportParameter = await MWQMAnalysisReportParameterService.Post(mwqmAnalysisReportParameter);
+            Assert.IsType<BadRequestObjectResult>(actionMWQMAnalysisReportParameter.Result);
+            //Assert.AreEqual(count, mwqmAnalysisReportParameterService.GetMWQMAnalysisReportParameterList().Count());
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPRange(0, 5)]
+            // mwqmAnalysisReportParameter.ShortRangeNumberOfDays   (Int32)
+            // -----------------------------------
+
+            mwqmAnalysisReportParameter = null;
+            mwqmAnalysisReportParameter = GetFilledRandomMWQMAnalysisReportParameter("");
+            mwqmAnalysisReportParameter.ShortRangeNumberOfDays = -1;
+            actionMWQMAnalysisReportParameter = await MWQMAnalysisReportParameterService.Post(mwqmAnalysisReportParameter);
+            Assert.IsType<BadRequestObjectResult>(actionMWQMAnalysisReportParameter.Result);
+            //Assert.AreEqual(count, mwqmAnalysisReportParameterService.GetMWQMAnalysisReportParameterList().Count());
+            mwqmAnalysisReportParameter = null;
+            mwqmAnalysisReportParameter = GetFilledRandomMWQMAnalysisReportParameter("");
+            mwqmAnalysisReportParameter.ShortRangeNumberOfDays = 6;
+            actionMWQMAnalysisReportParameter = await MWQMAnalysisReportParameterService.Post(mwqmAnalysisReportParameter);
+            Assert.IsType<BadRequestObjectResult>(actionMWQMAnalysisReportParameter.Result);
+            //Assert.AreEqual(count, mwqmAnalysisReportParameterService.GetMWQMAnalysisReportParameterList().Count());
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPRange(2, 7)]
+            // mwqmAnalysisReportParameter.MidRangeNumberOfDays   (Int32)
+            // -----------------------------------
+
+            mwqmAnalysisReportParameter = null;
+            mwqmAnalysisReportParameter = GetFilledRandomMWQMAnalysisReportParameter("");
+            mwqmAnalysisReportParameter.MidRangeNumberOfDays = 1;
+            actionMWQMAnalysisReportParameter = await MWQMAnalysisReportParameterService.Post(mwqmAnalysisReportParameter);
+            Assert.IsType<BadRequestObjectResult>(actionMWQMAnalysisReportParameter.Result);
+            //Assert.AreEqual(count, mwqmAnalysisReportParameterService.GetMWQMAnalysisReportParameterList().Count());
+            mwqmAnalysisReportParameter = null;
+            mwqmAnalysisReportParameter = GetFilledRandomMWQMAnalysisReportParameter("");
+            mwqmAnalysisReportParameter.MidRangeNumberOfDays = 8;
+            actionMWQMAnalysisReportParameter = await MWQMAnalysisReportParameterService.Post(mwqmAnalysisReportParameter);
+            Assert.IsType<BadRequestObjectResult>(actionMWQMAnalysisReportParameter.Result);
+            //Assert.AreEqual(count, mwqmAnalysisReportParameterService.GetMWQMAnalysisReportParameterList().Count());
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPRange(1, 100)]
+            // mwqmAnalysisReportParameter.DryLimit24h   (Int32)
+            // -----------------------------------
+
+            mwqmAnalysisReportParameter = null;
+            mwqmAnalysisReportParameter = GetFilledRandomMWQMAnalysisReportParameter("");
+            mwqmAnalysisReportParameter.DryLimit24h = 0;
+            actionMWQMAnalysisReportParameter = await MWQMAnalysisReportParameterService.Post(mwqmAnalysisReportParameter);
+            Assert.IsType<BadRequestObjectResult>(actionMWQMAnalysisReportParameter.Result);
+            //Assert.AreEqual(count, mwqmAnalysisReportParameterService.GetMWQMAnalysisReportParameterList().Count());
+            mwqmAnalysisReportParameter = null;
+            mwqmAnalysisReportParameter = GetFilledRandomMWQMAnalysisReportParameter("");
+            mwqmAnalysisReportParameter.DryLimit24h = 101;
+            actionMWQMAnalysisReportParameter = await MWQMAnalysisReportParameterService.Post(mwqmAnalysisReportParameter);
+            Assert.IsType<BadRequestObjectResult>(actionMWQMAnalysisReportParameter.Result);
+            //Assert.AreEqual(count, mwqmAnalysisReportParameterService.GetMWQMAnalysisReportParameterList().Count());
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPRange(1, 100)]
+            // mwqmAnalysisReportParameter.DryLimit48h   (Int32)
+            // -----------------------------------
+
+            mwqmAnalysisReportParameter = null;
+            mwqmAnalysisReportParameter = GetFilledRandomMWQMAnalysisReportParameter("");
+            mwqmAnalysisReportParameter.DryLimit48h = 0;
+            actionMWQMAnalysisReportParameter = await MWQMAnalysisReportParameterService.Post(mwqmAnalysisReportParameter);
+            Assert.IsType<BadRequestObjectResult>(actionMWQMAnalysisReportParameter.Result);
+            //Assert.AreEqual(count, mwqmAnalysisReportParameterService.GetMWQMAnalysisReportParameterList().Count());
+            mwqmAnalysisReportParameter = null;
+            mwqmAnalysisReportParameter = GetFilledRandomMWQMAnalysisReportParameter("");
+            mwqmAnalysisReportParameter.DryLimit48h = 101;
+            actionMWQMAnalysisReportParameter = await MWQMAnalysisReportParameterService.Post(mwqmAnalysisReportParameter);
+            Assert.IsType<BadRequestObjectResult>(actionMWQMAnalysisReportParameter.Result);
+            //Assert.AreEqual(count, mwqmAnalysisReportParameterService.GetMWQMAnalysisReportParameterList().Count());
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPRange(1, 100)]
+            // mwqmAnalysisReportParameter.DryLimit72h   (Int32)
+            // -----------------------------------
+
+            mwqmAnalysisReportParameter = null;
+            mwqmAnalysisReportParameter = GetFilledRandomMWQMAnalysisReportParameter("");
+            mwqmAnalysisReportParameter.DryLimit72h = 0;
+            actionMWQMAnalysisReportParameter = await MWQMAnalysisReportParameterService.Post(mwqmAnalysisReportParameter);
+            Assert.IsType<BadRequestObjectResult>(actionMWQMAnalysisReportParameter.Result);
+            //Assert.AreEqual(count, mwqmAnalysisReportParameterService.GetMWQMAnalysisReportParameterList().Count());
+            mwqmAnalysisReportParameter = null;
+            mwqmAnalysisReportParameter = GetFilledRandomMWQMAnalysisReportParameter("");
+            mwqmAnalysisReportParameter.DryLimit72h = 101;
+            actionMWQMAnalysisReportParameter = await MWQMAnalysisReportParameterService.Post(mwqmAnalysisReportParameter);
+            Assert.IsType<BadRequestObjectResult>(actionMWQMAnalysisReportParameter.Result);
+            //Assert.AreEqual(count, mwqmAnalysisReportParameterService.GetMWQMAnalysisReportParameterList().Count());
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPRange(1, 100)]
+            // mwqmAnalysisReportParameter.DryLimit96h   (Int32)
+            // -----------------------------------
+
+            mwqmAnalysisReportParameter = null;
+            mwqmAnalysisReportParameter = GetFilledRandomMWQMAnalysisReportParameter("");
+            mwqmAnalysisReportParameter.DryLimit96h = 0;
+            actionMWQMAnalysisReportParameter = await MWQMAnalysisReportParameterService.Post(mwqmAnalysisReportParameter);
+            Assert.IsType<BadRequestObjectResult>(actionMWQMAnalysisReportParameter.Result);
+            //Assert.AreEqual(count, mwqmAnalysisReportParameterService.GetMWQMAnalysisReportParameterList().Count());
+            mwqmAnalysisReportParameter = null;
+            mwqmAnalysisReportParameter = GetFilledRandomMWQMAnalysisReportParameter("");
+            mwqmAnalysisReportParameter.DryLimit96h = 101;
+            actionMWQMAnalysisReportParameter = await MWQMAnalysisReportParameterService.Post(mwqmAnalysisReportParameter);
+            Assert.IsType<BadRequestObjectResult>(actionMWQMAnalysisReportParameter.Result);
+            //Assert.AreEqual(count, mwqmAnalysisReportParameterService.GetMWQMAnalysisReportParameterList().Count());
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPRange(1, 100)]
+            // mwqmAnalysisReportParameter.WetLimit24h   (Int32)
+            // -----------------------------------
+
+            mwqmAnalysisReportParameter = null;
+            mwqmAnalysisReportParameter = GetFilledRandomMWQMAnalysisReportParameter("");
+            mwqmAnalysisReportParameter.WetLimit24h = 0;
+            actionMWQMAnalysisReportParameter = await MWQMAnalysisReportParameterService.Post(mwqmAnalysisReportParameter);
+            Assert.IsType<BadRequestObjectResult>(actionMWQMAnalysisReportParameter.Result);
+            //Assert.AreEqual(count, mwqmAnalysisReportParameterService.GetMWQMAnalysisReportParameterList().Count());
+            mwqmAnalysisReportParameter = null;
+            mwqmAnalysisReportParameter = GetFilledRandomMWQMAnalysisReportParameter("");
+            mwqmAnalysisReportParameter.WetLimit24h = 101;
+            actionMWQMAnalysisReportParameter = await MWQMAnalysisReportParameterService.Post(mwqmAnalysisReportParameter);
+            Assert.IsType<BadRequestObjectResult>(actionMWQMAnalysisReportParameter.Result);
+            //Assert.AreEqual(count, mwqmAnalysisReportParameterService.GetMWQMAnalysisReportParameterList().Count());
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPRange(1, 100)]
+            // mwqmAnalysisReportParameter.WetLimit48h   (Int32)
+            // -----------------------------------
+
+            mwqmAnalysisReportParameter = null;
+            mwqmAnalysisReportParameter = GetFilledRandomMWQMAnalysisReportParameter("");
+            mwqmAnalysisReportParameter.WetLimit48h = 0;
+            actionMWQMAnalysisReportParameter = await MWQMAnalysisReportParameterService.Post(mwqmAnalysisReportParameter);
+            Assert.IsType<BadRequestObjectResult>(actionMWQMAnalysisReportParameter.Result);
+            //Assert.AreEqual(count, mwqmAnalysisReportParameterService.GetMWQMAnalysisReportParameterList().Count());
+            mwqmAnalysisReportParameter = null;
+            mwqmAnalysisReportParameter = GetFilledRandomMWQMAnalysisReportParameter("");
+            mwqmAnalysisReportParameter.WetLimit48h = 101;
+            actionMWQMAnalysisReportParameter = await MWQMAnalysisReportParameterService.Post(mwqmAnalysisReportParameter);
+            Assert.IsType<BadRequestObjectResult>(actionMWQMAnalysisReportParameter.Result);
+            //Assert.AreEqual(count, mwqmAnalysisReportParameterService.GetMWQMAnalysisReportParameterList().Count());
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPRange(1, 100)]
+            // mwqmAnalysisReportParameter.WetLimit72h   (Int32)
+            // -----------------------------------
+
+            mwqmAnalysisReportParameter = null;
+            mwqmAnalysisReportParameter = GetFilledRandomMWQMAnalysisReportParameter("");
+            mwqmAnalysisReportParameter.WetLimit72h = 0;
+            actionMWQMAnalysisReportParameter = await MWQMAnalysisReportParameterService.Post(mwqmAnalysisReportParameter);
+            Assert.IsType<BadRequestObjectResult>(actionMWQMAnalysisReportParameter.Result);
+            //Assert.AreEqual(count, mwqmAnalysisReportParameterService.GetMWQMAnalysisReportParameterList().Count());
+            mwqmAnalysisReportParameter = null;
+            mwqmAnalysisReportParameter = GetFilledRandomMWQMAnalysisReportParameter("");
+            mwqmAnalysisReportParameter.WetLimit72h = 101;
+            actionMWQMAnalysisReportParameter = await MWQMAnalysisReportParameterService.Post(mwqmAnalysisReportParameter);
+            Assert.IsType<BadRequestObjectResult>(actionMWQMAnalysisReportParameter.Result);
+            //Assert.AreEqual(count, mwqmAnalysisReportParameterService.GetMWQMAnalysisReportParameterList().Count());
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPRange(1, 100)]
+            // mwqmAnalysisReportParameter.WetLimit96h   (Int32)
+            // -----------------------------------
+
+            mwqmAnalysisReportParameter = null;
+            mwqmAnalysisReportParameter = GetFilledRandomMWQMAnalysisReportParameter("");
+            mwqmAnalysisReportParameter.WetLimit96h = 0;
+            actionMWQMAnalysisReportParameter = await MWQMAnalysisReportParameterService.Post(mwqmAnalysisReportParameter);
+            Assert.IsType<BadRequestObjectResult>(actionMWQMAnalysisReportParameter.Result);
+            //Assert.AreEqual(count, mwqmAnalysisReportParameterService.GetMWQMAnalysisReportParameterList().Count());
+            mwqmAnalysisReportParameter = null;
+            mwqmAnalysisReportParameter = GetFilledRandomMWQMAnalysisReportParameter("");
+            mwqmAnalysisReportParameter.WetLimit96h = 101;
+            actionMWQMAnalysisReportParameter = await MWQMAnalysisReportParameterService.Post(mwqmAnalysisReportParameter);
+            Assert.IsType<BadRequestObjectResult>(actionMWQMAnalysisReportParameter.Result);
+            //Assert.AreEqual(count, mwqmAnalysisReportParameterService.GetMWQMAnalysisReportParameterList().Count());
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPMaxLength(250)]
+            // mwqmAnalysisReportParameter.RunsToOmit   (String)
+            // -----------------------------------
+
+            mwqmAnalysisReportParameter = null;
+            mwqmAnalysisReportParameter = GetFilledRandomMWQMAnalysisReportParameter("RunsToOmit");
+            actionMWQMAnalysisReportParameter = await MWQMAnalysisReportParameterService.Post(mwqmAnalysisReportParameter);
+            Assert.IsType<BadRequestObjectResult>(actionMWQMAnalysisReportParameter.Result);
+
+            mwqmAnalysisReportParameter = null;
+            mwqmAnalysisReportParameter = GetFilledRandomMWQMAnalysisReportParameter("");
+            mwqmAnalysisReportParameter.RunsToOmit = GetRandomString("", 251);
+            actionMWQMAnalysisReportParameter = await MWQMAnalysisReportParameterService.Post(mwqmAnalysisReportParameter);
+            Assert.IsType<BadRequestObjectResult>(actionMWQMAnalysisReportParameter.Result);
+            //Assert.AreEqual(count, mwqmAnalysisReportParameterService.GetMWQMAnalysisReportParameterList().Count());
+
+            // -----------------------------------
+            // Is Nullable
+            // [CSSPMaxLength(20)]
+            // mwqmAnalysisReportParameter.ShowDataTypes   (String)
+            // -----------------------------------
+
+            mwqmAnalysisReportParameter = null;
+            mwqmAnalysisReportParameter = GetFilledRandomMWQMAnalysisReportParameter("");
+            mwqmAnalysisReportParameter.ShowDataTypes = GetRandomString("", 21);
+            actionMWQMAnalysisReportParameter = await MWQMAnalysisReportParameterService.Post(mwqmAnalysisReportParameter);
+            Assert.IsType<BadRequestObjectResult>(actionMWQMAnalysisReportParameter.Result);
+            //Assert.AreEqual(count, mwqmAnalysisReportParameterService.GetMWQMAnalysisReportParameterList().Count());
+
+            // -----------------------------------
+            // Is Nullable
+            // [CSSPExist(ExistTypeName = "TVItem", ExistPlurial = "s", ExistFieldID = "TVItemID", AllowableTVtypeList = File)]
+            // mwqmAnalysisReportParameter.ExcelTVFileTVItemID   (Int32)
+            // -----------------------------------
+
+            mwqmAnalysisReportParameter = null;
+            mwqmAnalysisReportParameter = GetFilledRandomMWQMAnalysisReportParameter("");
+            mwqmAnalysisReportParameter.ExcelTVFileTVItemID = 0;
+            actionMWQMAnalysisReportParameter = await MWQMAnalysisReportParameterService.Post(mwqmAnalysisReportParameter);
+            Assert.IsType<BadRequestObjectResult>(actionMWQMAnalysisReportParameter.Result);
+
+            mwqmAnalysisReportParameter = null;
+            mwqmAnalysisReportParameter = GetFilledRandomMWQMAnalysisReportParameter("");
+            mwqmAnalysisReportParameter.ExcelTVFileTVItemID = 1;
+            actionMWQMAnalysisReportParameter = await MWQMAnalysisReportParameterService.Post(mwqmAnalysisReportParameter);
+            Assert.IsType<BadRequestObjectResult>(actionMWQMAnalysisReportParameter.Result);
+
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPEnumType]
+            // mwqmAnalysisReportParameter.Command   (AnalysisReportExportCommandEnum)
+            // -----------------------------------
+
+            mwqmAnalysisReportParameter = null;
+            mwqmAnalysisReportParameter = GetFilledRandomMWQMAnalysisReportParameter("");
+            mwqmAnalysisReportParameter.Command = (AnalysisReportExportCommandEnum)1000000;
+            actionMWQMAnalysisReportParameter = await MWQMAnalysisReportParameterService.Post(mwqmAnalysisReportParameter);
+            Assert.IsType<BadRequestObjectResult>(actionMWQMAnalysisReportParameter.Result);
+
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPAfter(Year = 1980)]
+            // mwqmAnalysisReportParameter.LastUpdateDate_UTC   (DateTime)
+            // -----------------------------------
+
+            mwqmAnalysisReportParameter = null;
+            mwqmAnalysisReportParameter = GetFilledRandomMWQMAnalysisReportParameter("");
+            mwqmAnalysisReportParameter.LastUpdateDate_UTC = new DateTime();
+            actionMWQMAnalysisReportParameter = await MWQMAnalysisReportParameterService.Post(mwqmAnalysisReportParameter);
+            Assert.IsType<BadRequestObjectResult>(actionMWQMAnalysisReportParameter.Result);
+            mwqmAnalysisReportParameter = null;
+            mwqmAnalysisReportParameter = GetFilledRandomMWQMAnalysisReportParameter("");
+            mwqmAnalysisReportParameter.LastUpdateDate_UTC = new DateTime(1979, 1, 1);
+            actionMWQMAnalysisReportParameter = await MWQMAnalysisReportParameterService.Post(mwqmAnalysisReportParameter);
+            Assert.IsType<BadRequestObjectResult>(actionMWQMAnalysisReportParameter.Result);
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPExist(ExistTypeName = "TVItem", ExistPlurial = "s", ExistFieldID = "TVItemID", AllowableTVtypeList = Contact)]
+            // mwqmAnalysisReportParameter.LastUpdateContactTVItemID   (Int32)
+            // -----------------------------------
+
+            mwqmAnalysisReportParameter = null;
+            mwqmAnalysisReportParameter = GetFilledRandomMWQMAnalysisReportParameter("");
+            mwqmAnalysisReportParameter.LastUpdateContactTVItemID = 0;
+            actionMWQMAnalysisReportParameter = await MWQMAnalysisReportParameterService.Post(mwqmAnalysisReportParameter);
+            Assert.IsType<BadRequestObjectResult>(actionMWQMAnalysisReportParameter.Result);
+
+            mwqmAnalysisReportParameter = null;
+            mwqmAnalysisReportParameter = GetFilledRandomMWQMAnalysisReportParameter("");
+            mwqmAnalysisReportParameter.LastUpdateContactTVItemID = 1;
+            actionMWQMAnalysisReportParameter = await MWQMAnalysisReportParameterService.Post(mwqmAnalysisReportParameter);
+            Assert.IsType<BadRequestObjectResult>(actionMWQMAnalysisReportParameter.Result);
+
+        }
+        #endregion Tests Generated Properties
 
         #region Functions private
         private async Task DoCRUDTest()
@@ -263,6 +768,23 @@ namespace CSSPServices.Tests
             }
 
             return mwqmAnalysisReportParameter;
+        }
+        private void CheckMWQMAnalysisReportParameterFields(List<MWQMAnalysisReportParameter> mwqmAnalysisReportParameterList)
+        {
+            Assert.False(string.IsNullOrWhiteSpace(mwqmAnalysisReportParameterList[0].AnalysisName));
+            if (mwqmAnalysisReportParameterList[0].AnalysisReportYear != null)
+            {
+                Assert.NotNull(mwqmAnalysisReportParameterList[0].AnalysisReportYear);
+            }
+            Assert.False(string.IsNullOrWhiteSpace(mwqmAnalysisReportParameterList[0].RunsToOmit));
+            if (!string.IsNullOrWhiteSpace(mwqmAnalysisReportParameterList[0].ShowDataTypes))
+            {
+                Assert.False(string.IsNullOrWhiteSpace(mwqmAnalysisReportParameterList[0].ShowDataTypes));
+            }
+            if (mwqmAnalysisReportParameterList[0].ExcelTVFileTVItemID != null)
+            {
+                Assert.NotNull(mwqmAnalysisReportParameterList[0].ExcelTVFileTVItemID);
+            }
         }
         #endregion Functions private
     }

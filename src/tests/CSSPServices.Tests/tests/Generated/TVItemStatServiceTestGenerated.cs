@@ -19,6 +19,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Transactions;
 using Xunit;
+using System.ComponentModel.DataAnnotations;
 
 namespace CSSPServices.Tests
 {
@@ -81,6 +82,149 @@ namespace CSSPServices.Tests
             }
         }
         #endregion Tests Generated CRUD
+
+        #region Tests Generated Properties
+        [Theory]
+        [InlineData("en-CA", DBLocationEnum.Local)]
+        [InlineData("fr-CA", DBLocationEnum.Local)]
+        [InlineData("en-CA", DBLocationEnum.Server)]
+        [InlineData("fr-CA", DBLocationEnum.Server)]
+        public async Task TVItemStat_Properties_Test(string culture, DBLocationEnum DBLocation)
+        {
+            // -------------------------------
+            // -------------------------------
+            // Properties testing
+            // -------------------------------
+            // -------------------------------
+
+            Assert.True(await Setup(culture));
+
+            LoggedInService.DBLocation = DBLocation;
+
+            int count = 0;
+            if (count == 1)
+            {
+                // just so we don't get a warning during compile [The variable 'count' is assigned but its value is never used]
+            }
+
+            var actionTVItemStatList = await TVItemStatService.GetTVItemStatList();
+            Assert.Equal(200, ((ObjectResult)actionTVItemStatList.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionTVItemStatList.Result).Value);
+            List<TVItemStat> tvItemStatList = (List<TVItemStat>)((OkObjectResult)actionTVItemStatList.Result).Value;
+
+            count = tvItemStatList.Count();
+
+            TVItemStat tvItemStat = GetFilledRandomTVItemStat("");
+
+
+            // -----------------------------------
+            // [Key]
+            // Is NOT Nullable
+            // tvItemStat.TVItemStatID   (Int32)
+            // -----------------------------------
+
+            tvItemStat = null;
+            tvItemStat = GetFilledRandomTVItemStat("");
+            tvItemStat.TVItemStatID = 0;
+
+            var actionTVItemStat = await TVItemStatService.Put(tvItemStat);
+            Assert.IsType<BadRequestObjectResult>(actionTVItemStat.Result);
+
+            tvItemStat = null;
+            tvItemStat = GetFilledRandomTVItemStat("");
+            tvItemStat.TVItemStatID = 10000000;
+            actionTVItemStat = await TVItemStatService.Put(tvItemStat);
+            Assert.IsType<BadRequestObjectResult>(actionTVItemStat.Result);
+
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPExist(ExistTypeName = "TVItem", ExistPlurial = "s", ExistFieldID = "TVItemID", AllowableTVtypeList = Root,Address,Area,ClimateSite,Contact,Country,Email,File,HydrometricSite,Infrastructure,MikeScenario,MikeSource,Municipality,MWQMSite,PolSourceSite,Province,Sector,Subsector,Tel,TideSite,WasteWaterTreatmentPlant,LiftStation,Spill,BoxModel,VisualPlumesScenario,OtherInfrastructure,MWQMRun,MeshNode,WebTideNode,SamplingPlan,SeeOtherMunicipality,LineOverflow,MapInfo,MapInfoPoint)]
+            // tvItemStat.TVItemID   (Int32)
+            // -----------------------------------
+
+            tvItemStat = null;
+            tvItemStat = GetFilledRandomTVItemStat("");
+            tvItemStat.TVItemID = 0;
+            actionTVItemStat = await TVItemStatService.Post(tvItemStat);
+            Assert.IsType<BadRequestObjectResult>(actionTVItemStat.Result);
+
+            tvItemStat = null;
+            tvItemStat = GetFilledRandomTVItemStat("");
+            tvItemStat.TVItemID = 13;
+            actionTVItemStat = await TVItemStatService.Post(tvItemStat);
+            Assert.IsType<BadRequestObjectResult>(actionTVItemStat.Result);
+
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPEnumType]
+            // tvItemStat.TVType   (TVTypeEnum)
+            // -----------------------------------
+
+            tvItemStat = null;
+            tvItemStat = GetFilledRandomTVItemStat("");
+            tvItemStat.TVType = (TVTypeEnum)1000000;
+            actionTVItemStat = await TVItemStatService.Post(tvItemStat);
+            Assert.IsType<BadRequestObjectResult>(actionTVItemStat.Result);
+
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPRange(0, 10000000)]
+            // tvItemStat.ChildCount   (Int32)
+            // -----------------------------------
+
+            tvItemStat = null;
+            tvItemStat = GetFilledRandomTVItemStat("");
+            tvItemStat.ChildCount = -1;
+            actionTVItemStat = await TVItemStatService.Post(tvItemStat);
+            Assert.IsType<BadRequestObjectResult>(actionTVItemStat.Result);
+            //Assert.AreEqual(count, tvItemStatService.GetTVItemStatList().Count());
+            tvItemStat = null;
+            tvItemStat = GetFilledRandomTVItemStat("");
+            tvItemStat.ChildCount = 10000001;
+            actionTVItemStat = await TVItemStatService.Post(tvItemStat);
+            Assert.IsType<BadRequestObjectResult>(actionTVItemStat.Result);
+            //Assert.AreEqual(count, tvItemStatService.GetTVItemStatList().Count());
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPAfter(Year = 1980)]
+            // tvItemStat.LastUpdateDate_UTC   (DateTime)
+            // -----------------------------------
+
+            tvItemStat = null;
+            tvItemStat = GetFilledRandomTVItemStat("");
+            tvItemStat.LastUpdateDate_UTC = new DateTime();
+            actionTVItemStat = await TVItemStatService.Post(tvItemStat);
+            Assert.IsType<BadRequestObjectResult>(actionTVItemStat.Result);
+            tvItemStat = null;
+            tvItemStat = GetFilledRandomTVItemStat("");
+            tvItemStat.LastUpdateDate_UTC = new DateTime(1979, 1, 1);
+            actionTVItemStat = await TVItemStatService.Post(tvItemStat);
+            Assert.IsType<BadRequestObjectResult>(actionTVItemStat.Result);
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPExist(ExistTypeName = "TVItem", ExistPlurial = "s", ExistFieldID = "TVItemID", AllowableTVtypeList = Contact)]
+            // tvItemStat.LastUpdateContactTVItemID   (Int32)
+            // -----------------------------------
+
+            tvItemStat = null;
+            tvItemStat = GetFilledRandomTVItemStat("");
+            tvItemStat.LastUpdateContactTVItemID = 0;
+            actionTVItemStat = await TVItemStatService.Post(tvItemStat);
+            Assert.IsType<BadRequestObjectResult>(actionTVItemStat.Result);
+
+            tvItemStat = null;
+            tvItemStat = GetFilledRandomTVItemStat("");
+            tvItemStat.LastUpdateContactTVItemID = 1;
+            actionTVItemStat = await TVItemStatService.Post(tvItemStat);
+            Assert.IsType<BadRequestObjectResult>(actionTVItemStat.Result);
+
+        }
+        #endregion Tests Generated Properties
 
         #region Functions private
         private async Task DoCRUDTest()
@@ -234,6 +378,9 @@ namespace CSSPServices.Tests
             }
 
             return tvItemStat;
+        }
+        private void CheckTVItemStatFields(List<TVItemStat> tvItemStatList)
+        {
         }
         #endregion Functions private
     }

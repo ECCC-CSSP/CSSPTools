@@ -110,22 +110,23 @@ namespace ServicesClassNameServiceGeneratedServices.Services
                 sb.AppendLine(@"using CSSPModels;");
                 sb.AppendLine(@"using CSSPCultureServices.Resources;");
                 sb.AppendLine(@"using CSSPCultureServices.Services;");
-                if (dllTypeInfoModels.Type.Name == "Contact")
-                {
-                    sb.AppendLine(@"using Microsoft.AspNetCore.Identity;");
-                }
                 sb.AppendLine(@"using Microsoft.AspNetCore.Mvc;");
                 sb.AppendLine(@"using Microsoft.EntityFrameworkCore;");
-                if (dllTypeInfoModels.Type.Name == "Contact")
-                {
-                    sb.AppendLine(@"using Microsoft.Extensions.Configuration;");
-                }
                 sb.AppendLine(@"using System;");
                 sb.AppendLine(@"using System.Collections.Generic;");
                 sb.AppendLine(@"using System.ComponentModel.DataAnnotations;");
                 sb.AppendLine(@"using System.Linq;");
                 sb.AppendLine(@"using System.Text.RegularExpressions;");
                 sb.AppendLine(@"using System.Threading.Tasks;");
+                if (dllTypeInfoModels.Type.Name == "Contact")
+                {
+                    sb.AppendLine(@"using Microsoft.AspNetCore.Identity;");
+                    sb.AppendLine(@"using Microsoft.Extensions.Configuration;");
+                    sb.AppendLine(@"using Microsoft.IdentityModel.Tokens;");
+                    sb.AppendLine(@"using System.IdentityModel.Tokens.Jwt;");
+                    sb.AppendLine(@"using System.Security.Claims;");
+                    sb.AppendLine(@"using System.Text;");
+                }
                 sb.AppendLine(@"");
                 sb.AppendLine(@"namespace CSSPServices");
                 sb.AppendLine(@"{");
@@ -163,6 +164,11 @@ namespace ServicesClassNameServiceGeneratedServices.Services
                         sb.AppendLine($@"       Task<ActionResult<{ dllTypeInfoModels.Type.Name }>> Post({ dllTypeInfoModels.Type.Name } { dllTypeInfoModels.Type.Name.ToLower() });");
                     }
                     sb.AppendLine($@"       Task<ActionResult<{ dllTypeInfoModels.Type.Name }>> Put({ dllTypeInfoModels.Type.Name } { dllTypeInfoModels.Type.Name.ToLower() });");
+                    if (dllTypeInfoModels.Type.Name == "Contact")
+                    {
+                        sb.AppendLine($@"       Task<ActionResult<{ dllTypeInfoModels.Type.Name }>> Login(LoginModel loginModel);");
+                        sb.AppendLine($@"       Task<ActionResult<{ dllTypeInfoModels.Type.Name }>> Register(RegisterModel registerModel);");
+                    }
                     sb.AppendLine(@"    }");
                     #endregion Interface
 
@@ -177,9 +183,12 @@ namespace ServicesClassNameServiceGeneratedServices.Services
                     sb.AppendLine(@"        private InMemoryDBContext dbIM { get; }");
                     if (dllTypeInfoModels.Type.Name == "Contact")
                     {
+                        sb.AppendLine(@"        private IConfiguration Configuration { get; }");
                         sb.AppendLine(@"        private UserManager<ApplicationUser> UserManager { get; }");
                         sb.AppendLine(@"        private IAspNetUserService AspNetUserService { get; }");
-                        sb.AppendLine(@"        private IConfiguration Configuration { get; }");
+                        sb.AppendLine(@"        private ILoginModelService LoginModelService { get; }");
+                        sb.AppendLine(@"        private IRegisterModelService RegisterModelService { get; }");
+
                     }
                     sb.AppendLine(@"        private ICSSPCultureService CSSPCultureService { get; }");
                     sb.AppendLine(@"        private ILoggedInService LoggedInService { get; }");
@@ -191,7 +200,8 @@ namespace ServicesClassNameServiceGeneratedServices.Services
                     if (dllTypeInfoModels.Type.Name == "Contact")
                     {
                         sb.AppendLine($@"        public { dllTypeInfoModels.Type.Name }Service(IConfiguration Configuration, UserManager<ApplicationUser> UserManager, ICSSPCultureService CSSPCultureService, ");
-                        sb.AppendLine($@"           ILoggedInService LoggedInService, IEnums enums, IAspNetUserService AspNetUserService, CSSPDBContext db, CSSPDBLocalContext dbLocal, InMemoryDBContext dbIM)");
+                        sb.AppendLine($@"           ILoggedInService LoggedInService, IEnums enums, IAspNetUserService AspNetUserService, ILoginModelService LoginModelService, ");
+                        sb.AppendLine($@"           IRegisterModelService RegisterModelService, CSSPDBContext db, CSSPDBLocalContext dbLocal, InMemoryDBContext dbIM)");
                     }
                     else
                     {
@@ -203,6 +213,8 @@ namespace ServicesClassNameServiceGeneratedServices.Services
                         sb.AppendLine(@"            this.Configuration = Configuration;");
                         sb.AppendLine(@"            this.UserManager = UserManager;");
                         sb.AppendLine(@"            this.AspNetUserService = AspNetUserService;");
+                        sb.AppendLine(@"            this.LoginModelService = LoginModelService;");
+                        sb.AppendLine(@"            this.RegisterModelService = RegisterModelService;");
                     }
                     sb.AppendLine(@"            this.CSSPCultureService = CSSPCultureService;");
                     sb.AppendLine(@"            this.LoggedInService = LoggedInService;");
@@ -216,17 +228,26 @@ namespace ServicesClassNameServiceGeneratedServices.Services
                 }
                 else
                 {
-                    sb.AppendLine($@"    public partial class { dllTypeInfoModels.Type.Name }Service");
+                    sb.AppendLine($@"    public interface I{ dllTypeInfoModels.Type.Name }Service");
+                    sb.AppendLine($@"    {{");
+                    sb.AppendLine($@"        IEnumerable<ValidationResult> Validate(ValidationContext validationContext);");
+                    sb.AppendLine($@"    }}");
+
+                    sb.AppendLine($@"    public partial class { dllTypeInfoModels.Type.Name }Service : I{ dllTypeInfoModels.Type.Name }Service");
                     sb.AppendLine(@"    {");
                     sb.AppendLine(@"        #region Variables");
                     sb.AppendLine(@"        #endregion Variables");
                     sb.AppendLine(@"");
                     sb.AppendLine(@"        #region Properties");
+                    sb.AppendLine(@"        private ICSSPCultureService CSSPCultureService { get; }");
+                    sb.AppendLine(@"        private IEnums enums { get; }");
                     sb.AppendLine(@"        #endregion Properties");
                     sb.AppendLine(@"");
                     sb.AppendLine(@"        #region Constructors");
-                    sb.AppendLine($@"        public { dllTypeInfoModels.Type.Name }Service()");
+                    sb.AppendLine($@"        public { dllTypeInfoModels.Type.Name }Service(ICSSPCultureService CSSPCultureService, IEnums enums)");
                     sb.AppendLine(@"        {");
+                    sb.AppendLine(@"            this.CSSPCultureService = CSSPCultureService;");
+                    sb.AppendLine(@"            this.enums = enums;");
                     sb.AppendLine(@"        }");
                     sb.AppendLine(@"        #endregion Constructors");
                     sb.AppendLine(@"");
@@ -237,15 +258,30 @@ namespace ServicesClassNameServiceGeneratedServices.Services
                     sb.AppendLine(@"        #region Functions public ");
                     if (!await CreateClassServiceFunctionsPublicGenerateGet(dllTypeInfoModels, DLLTypeInfoCSSPModelsList, dllTypeInfoModels.Type.Name, TypeNameLower, sb)) return await Task.FromResult(false);
                     if (!await CreateClassServiceFunctionsPublicGenerateCRUD(dllTypeInfoModels, dllTypeInfoModels.Type.Name, TypeNameLower, sb)) return await Task.FromResult(false);
+                    if (dllTypeInfoModels.Type.Name == "Contact")
+                    {
+                        if (!await CreateLogin(dllTypeInfoModels, dllTypeInfoModels.Type.Name, TypeNameLower, sb)) return await Task.FromResult(false);
+                    }
                     sb.AppendLine(@"        #endregion Functions public");
                     sb.AppendLine(@"");
 
                     sb.AppendLine(@"        #region Functions private");
+                    if (dllTypeInfoModels.Type.Name == "Contact")
+                    {
+                        if (!await CreateGetContactWithId(dllTypeInfoModels, dllTypeInfoModels.Type.Name, TypeNameLower, sb)) return await Task.FromResult(false);
+                    }
                     if (!await CreateClassServiceFunctionsPrivateGenerateValidate(dllTypeInfoModels, dllTypeInfoModels.Type.Name, TypeNameLower, sb)) return await Task.FromResult(false);
                     sb.AppendLine(@"        #endregion Functions private");
                     sb.AppendLine(@"");
-
                 }
+                else
+                {
+                    sb.AppendLine(@"        #region Functions public");
+                    if (!await CreateClassServiceFunctionsPrivateGenerateValidateNotMapped(dllTypeInfoModels, dllTypeInfoModels.Type.Name, TypeNameLower, sb)) return await Task.FromResult(false);
+                    sb.AppendLine(@"        #endregion Functions public");
+                    sb.AppendLine(@"");
+                }
+
 
                 sb.AppendLine(@"    }");
                 sb.AppendLine(@"}");

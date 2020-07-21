@@ -19,6 +19,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Transactions;
 using Xunit;
+using System.ComponentModel.DataAnnotations;
 
 namespace CSSPServices.Tests
 {
@@ -81,6 +82,241 @@ namespace CSSPServices.Tests
             }
         }
         #endregion Tests Generated CRUD
+
+        #region Tests Generated Properties
+        [Theory]
+        [InlineData("en-CA", DBLocationEnum.Local)]
+        [InlineData("fr-CA", DBLocationEnum.Local)]
+        [InlineData("en-CA", DBLocationEnum.Server)]
+        [InlineData("fr-CA", DBLocationEnum.Server)]
+        public async Task VPResult_Properties_Test(string culture, DBLocationEnum DBLocation)
+        {
+            // -------------------------------
+            // -------------------------------
+            // Properties testing
+            // -------------------------------
+            // -------------------------------
+
+            Assert.True(await Setup(culture));
+
+            LoggedInService.DBLocation = DBLocation;
+
+            int count = 0;
+            if (count == 1)
+            {
+                // just so we don't get a warning during compile [The variable 'count' is assigned but its value is never used]
+            }
+
+            var actionVPResultList = await VPResultService.GetVPResultList();
+            Assert.Equal(200, ((ObjectResult)actionVPResultList.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionVPResultList.Result).Value);
+            List<VPResult> vpResultList = (List<VPResult>)((OkObjectResult)actionVPResultList.Result).Value;
+
+            count = vpResultList.Count();
+
+            VPResult vpResult = GetFilledRandomVPResult("");
+
+
+            // -----------------------------------
+            // [Key]
+            // Is NOT Nullable
+            // vpResult.VPResultID   (Int32)
+            // -----------------------------------
+
+            vpResult = null;
+            vpResult = GetFilledRandomVPResult("");
+            vpResult.VPResultID = 0;
+
+            var actionVPResult = await VPResultService.Put(vpResult);
+            Assert.IsType<BadRequestObjectResult>(actionVPResult.Result);
+
+            vpResult = null;
+            vpResult = GetFilledRandomVPResult("");
+            vpResult.VPResultID = 10000000;
+            actionVPResult = await VPResultService.Put(vpResult);
+            Assert.IsType<BadRequestObjectResult>(actionVPResult.Result);
+
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPExist(ExistTypeName = "VPScenario", ExistPlurial = "s", ExistFieldID = "VPScenarioID", AllowableTVtypeList = )]
+            // vpResult.VPScenarioID   (Int32)
+            // -----------------------------------
+
+            vpResult = null;
+            vpResult = GetFilledRandomVPResult("");
+            vpResult.VPScenarioID = 0;
+            actionVPResult = await VPResultService.Post(vpResult);
+            Assert.IsType<BadRequestObjectResult>(actionVPResult.Result);
+
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPRange(0, 1000)]
+            // vpResult.Ordinal   (Int32)
+            // -----------------------------------
+
+            vpResult = null;
+            vpResult = GetFilledRandomVPResult("");
+            vpResult.Ordinal = -1;
+            actionVPResult = await VPResultService.Post(vpResult);
+            Assert.IsType<BadRequestObjectResult>(actionVPResult.Result);
+            //Assert.AreEqual(count, vpResultService.GetVPResultList().Count());
+            vpResult = null;
+            vpResult = GetFilledRandomVPResult("");
+            vpResult.Ordinal = 1001;
+            actionVPResult = await VPResultService.Post(vpResult);
+            Assert.IsType<BadRequestObjectResult>(actionVPResult.Result);
+            //Assert.AreEqual(count, vpResultService.GetVPResultList().Count());
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPRange(0, 10000000)]
+            // vpResult.Concentration_MPN_100ml   (Int32)
+            // -----------------------------------
+
+            vpResult = null;
+            vpResult = GetFilledRandomVPResult("");
+            vpResult.Concentration_MPN_100ml = -1;
+            actionVPResult = await VPResultService.Post(vpResult);
+            Assert.IsType<BadRequestObjectResult>(actionVPResult.Result);
+            //Assert.AreEqual(count, vpResultService.GetVPResultList().Count());
+            vpResult = null;
+            vpResult = GetFilledRandomVPResult("");
+            vpResult.Concentration_MPN_100ml = 10000001;
+            actionVPResult = await VPResultService.Post(vpResult);
+            Assert.IsType<BadRequestObjectResult>(actionVPResult.Result);
+            //Assert.AreEqual(count, vpResultService.GetVPResultList().Count());
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPRange(0, 1000000)]
+            // vpResult.Dilution   (Double)
+            // -----------------------------------
+
+            //CSSPError: Type not implemented [Dilution]
+
+            //CSSPError: Type not implemented [Dilution]
+
+            vpResult = null;
+            vpResult = GetFilledRandomVPResult("");
+            vpResult.Dilution = -1.0D;
+            actionVPResult = await VPResultService.Post(vpResult);
+            Assert.IsType<BadRequestObjectResult>(actionVPResult.Result);
+            //Assert.AreEqual(count, vpResultService.GetVPResultList().Count());
+            vpResult = null;
+            vpResult = GetFilledRandomVPResult("");
+            vpResult.Dilution = 1000001.0D;
+            actionVPResult = await VPResultService.Post(vpResult);
+            Assert.IsType<BadRequestObjectResult>(actionVPResult.Result);
+            //Assert.AreEqual(count, vpResultService.GetVPResultList().Count());
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPRange(0, 10000)]
+            // vpResult.FarFieldWidth_m   (Double)
+            // -----------------------------------
+
+            //CSSPError: Type not implemented [FarFieldWidth_m]
+
+            //CSSPError: Type not implemented [FarFieldWidth_m]
+
+            vpResult = null;
+            vpResult = GetFilledRandomVPResult("");
+            vpResult.FarFieldWidth_m = -1.0D;
+            actionVPResult = await VPResultService.Post(vpResult);
+            Assert.IsType<BadRequestObjectResult>(actionVPResult.Result);
+            //Assert.AreEqual(count, vpResultService.GetVPResultList().Count());
+            vpResult = null;
+            vpResult = GetFilledRandomVPResult("");
+            vpResult.FarFieldWidth_m = 10001.0D;
+            actionVPResult = await VPResultService.Post(vpResult);
+            Assert.IsType<BadRequestObjectResult>(actionVPResult.Result);
+            //Assert.AreEqual(count, vpResultService.GetVPResultList().Count());
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPRange(0, 100000)]
+            // vpResult.DispersionDistance_m   (Double)
+            // -----------------------------------
+
+            //CSSPError: Type not implemented [DispersionDistance_m]
+
+            //CSSPError: Type not implemented [DispersionDistance_m]
+
+            vpResult = null;
+            vpResult = GetFilledRandomVPResult("");
+            vpResult.DispersionDistance_m = -1.0D;
+            actionVPResult = await VPResultService.Post(vpResult);
+            Assert.IsType<BadRequestObjectResult>(actionVPResult.Result);
+            //Assert.AreEqual(count, vpResultService.GetVPResultList().Count());
+            vpResult = null;
+            vpResult = GetFilledRandomVPResult("");
+            vpResult.DispersionDistance_m = 100001.0D;
+            actionVPResult = await VPResultService.Post(vpResult);
+            Assert.IsType<BadRequestObjectResult>(actionVPResult.Result);
+            //Assert.AreEqual(count, vpResultService.GetVPResultList().Count());
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPRange(0, 100)]
+            // vpResult.TravelTime_hour   (Double)
+            // -----------------------------------
+
+            //CSSPError: Type not implemented [TravelTime_hour]
+
+            //CSSPError: Type not implemented [TravelTime_hour]
+
+            vpResult = null;
+            vpResult = GetFilledRandomVPResult("");
+            vpResult.TravelTime_hour = -1.0D;
+            actionVPResult = await VPResultService.Post(vpResult);
+            Assert.IsType<BadRequestObjectResult>(actionVPResult.Result);
+            //Assert.AreEqual(count, vpResultService.GetVPResultList().Count());
+            vpResult = null;
+            vpResult = GetFilledRandomVPResult("");
+            vpResult.TravelTime_hour = 101.0D;
+            actionVPResult = await VPResultService.Post(vpResult);
+            Assert.IsType<BadRequestObjectResult>(actionVPResult.Result);
+            //Assert.AreEqual(count, vpResultService.GetVPResultList().Count());
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPAfter(Year = 1980)]
+            // vpResult.LastUpdateDate_UTC   (DateTime)
+            // -----------------------------------
+
+            vpResult = null;
+            vpResult = GetFilledRandomVPResult("");
+            vpResult.LastUpdateDate_UTC = new DateTime();
+            actionVPResult = await VPResultService.Post(vpResult);
+            Assert.IsType<BadRequestObjectResult>(actionVPResult.Result);
+            vpResult = null;
+            vpResult = GetFilledRandomVPResult("");
+            vpResult.LastUpdateDate_UTC = new DateTime(1979, 1, 1);
+            actionVPResult = await VPResultService.Post(vpResult);
+            Assert.IsType<BadRequestObjectResult>(actionVPResult.Result);
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPExist(ExistTypeName = "TVItem", ExistPlurial = "s", ExistFieldID = "TVItemID", AllowableTVtypeList = Contact)]
+            // vpResult.LastUpdateContactTVItemID   (Int32)
+            // -----------------------------------
+
+            vpResult = null;
+            vpResult = GetFilledRandomVPResult("");
+            vpResult.LastUpdateContactTVItemID = 0;
+            actionVPResult = await VPResultService.Post(vpResult);
+            Assert.IsType<BadRequestObjectResult>(actionVPResult.Result);
+
+            vpResult = null;
+            vpResult = GetFilledRandomVPResult("");
+            vpResult.LastUpdateContactTVItemID = 1;
+            actionVPResult = await VPResultService.Post(vpResult);
+            Assert.IsType<BadRequestObjectResult>(actionVPResult.Result);
+
+        }
+        #endregion Tests Generated Properties
 
         #region Functions private
         private async Task DoCRUDTest()
@@ -238,6 +474,9 @@ namespace CSSPServices.Tests
             }
 
             return vpResult;
+        }
+        private void CheckVPResultFields(List<VPResult> vpResultList)
+        {
         }
         #endregion Functions private
     }

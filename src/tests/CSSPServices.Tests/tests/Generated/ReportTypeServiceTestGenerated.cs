@@ -19,6 +19,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Transactions;
 using Xunit;
+using System.ComponentModel.DataAnnotations;
 
 namespace CSSPServices.Tests
 {
@@ -81,6 +82,194 @@ namespace CSSPServices.Tests
             }
         }
         #endregion Tests Generated CRUD
+
+        #region Tests Generated Properties
+        [Theory]
+        [InlineData("en-CA", DBLocationEnum.Local)]
+        [InlineData("fr-CA", DBLocationEnum.Local)]
+        [InlineData("en-CA", DBLocationEnum.Server)]
+        [InlineData("fr-CA", DBLocationEnum.Server)]
+        public async Task ReportType_Properties_Test(string culture, DBLocationEnum DBLocation)
+        {
+            // -------------------------------
+            // -------------------------------
+            // Properties testing
+            // -------------------------------
+            // -------------------------------
+
+            Assert.True(await Setup(culture));
+
+            LoggedInService.DBLocation = DBLocation;
+
+            int count = 0;
+            if (count == 1)
+            {
+                // just so we don't get a warning during compile [The variable 'count' is assigned but its value is never used]
+            }
+
+            var actionReportTypeList = await ReportTypeService.GetReportTypeList();
+            Assert.Equal(200, ((ObjectResult)actionReportTypeList.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionReportTypeList.Result).Value);
+            List<ReportType> reportTypeList = (List<ReportType>)((OkObjectResult)actionReportTypeList.Result).Value;
+
+            count = reportTypeList.Count();
+
+            ReportType reportType = GetFilledRandomReportType("");
+
+
+            // -----------------------------------
+            // [Key]
+            // Is NOT Nullable
+            // reportType.ReportTypeID   (Int32)
+            // -----------------------------------
+
+            reportType = null;
+            reportType = GetFilledRandomReportType("");
+            reportType.ReportTypeID = 0;
+
+            var actionReportType = await ReportTypeService.Put(reportType);
+            Assert.IsType<BadRequestObjectResult>(actionReportType.Result);
+
+            reportType = null;
+            reportType = GetFilledRandomReportType("");
+            reportType.ReportTypeID = 10000000;
+            actionReportType = await ReportTypeService.Put(reportType);
+            Assert.IsType<BadRequestObjectResult>(actionReportType.Result);
+
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPEnumType]
+            // reportType.TVType   (TVTypeEnum)
+            // -----------------------------------
+
+            reportType = null;
+            reportType = GetFilledRandomReportType("");
+            reportType.TVType = (TVTypeEnum)1000000;
+            actionReportType = await ReportTypeService.Post(reportType);
+            Assert.IsType<BadRequestObjectResult>(actionReportType.Result);
+
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPEnumType]
+            // reportType.FileType   (FileTypeEnum)
+            // -----------------------------------
+
+            reportType = null;
+            reportType = GetFilledRandomReportType("");
+            reportType.FileType = (FileTypeEnum)1000000;
+            actionReportType = await ReportTypeService.Post(reportType);
+            Assert.IsType<BadRequestObjectResult>(actionReportType.Result);
+
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPMaxLength(100)]
+            // reportType.UniqueCode   (String)
+            // -----------------------------------
+
+            reportType = null;
+            reportType = GetFilledRandomReportType("UniqueCode");
+            actionReportType = await ReportTypeService.Post(reportType);
+            Assert.IsType<BadRequestObjectResult>(actionReportType.Result);
+
+            reportType = null;
+            reportType = GetFilledRandomReportType("");
+            reportType.UniqueCode = GetRandomString("", 101);
+            actionReportType = await ReportTypeService.Post(reportType);
+            Assert.IsType<BadRequestObjectResult>(actionReportType.Result);
+            //Assert.AreEqual(count, reportTypeService.GetReportTypeList().Count());
+
+            // -----------------------------------
+            // Is Nullable
+            // [CSSPEnumType]
+            // reportType.Language   (LanguageEnum)
+            // -----------------------------------
+
+            reportType = null;
+            reportType = GetFilledRandomReportType("");
+            reportType.Language = (LanguageEnum)1000000;
+            actionReportType = await ReportTypeService.Post(reportType);
+            Assert.IsType<BadRequestObjectResult>(actionReportType.Result);
+
+
+            // -----------------------------------
+            // Is Nullable
+            // [CSSPMaxLength(100)]
+            // reportType.Name   (String)
+            // -----------------------------------
+
+            reportType = null;
+            reportType = GetFilledRandomReportType("");
+            reportType.Name = GetRandomString("", 101);
+            actionReportType = await ReportTypeService.Post(reportType);
+            Assert.IsType<BadRequestObjectResult>(actionReportType.Result);
+            //Assert.AreEqual(count, reportTypeService.GetReportTypeList().Count());
+
+            // -----------------------------------
+            // Is Nullable
+            // [CSSPMaxLength(1000)]
+            // reportType.Description   (String)
+            // -----------------------------------
+
+            reportType = null;
+            reportType = GetFilledRandomReportType("");
+            reportType.Description = GetRandomString("", 1001);
+            actionReportType = await ReportTypeService.Post(reportType);
+            Assert.IsType<BadRequestObjectResult>(actionReportType.Result);
+            //Assert.AreEqual(count, reportTypeService.GetReportTypeList().Count());
+
+            // -----------------------------------
+            // Is Nullable
+            // [CSSPMaxLength(100)]
+            // reportType.StartOfFileName   (String)
+            // -----------------------------------
+
+            reportType = null;
+            reportType = GetFilledRandomReportType("");
+            reportType.StartOfFileName = GetRandomString("", 101);
+            actionReportType = await ReportTypeService.Post(reportType);
+            Assert.IsType<BadRequestObjectResult>(actionReportType.Result);
+            //Assert.AreEqual(count, reportTypeService.GetReportTypeList().Count());
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPAfter(Year = 1980)]
+            // reportType.LastUpdateDate_UTC   (DateTime)
+            // -----------------------------------
+
+            reportType = null;
+            reportType = GetFilledRandomReportType("");
+            reportType.LastUpdateDate_UTC = new DateTime();
+            actionReportType = await ReportTypeService.Post(reportType);
+            Assert.IsType<BadRequestObjectResult>(actionReportType.Result);
+            reportType = null;
+            reportType = GetFilledRandomReportType("");
+            reportType.LastUpdateDate_UTC = new DateTime(1979, 1, 1);
+            actionReportType = await ReportTypeService.Post(reportType);
+            Assert.IsType<BadRequestObjectResult>(actionReportType.Result);
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPExist(ExistTypeName = "TVItem", ExistPlurial = "s", ExistFieldID = "TVItemID", AllowableTVtypeList = Contact)]
+            // reportType.LastUpdateContactTVItemID   (Int32)
+            // -----------------------------------
+
+            reportType = null;
+            reportType = GetFilledRandomReportType("");
+            reportType.LastUpdateContactTVItemID = 0;
+            actionReportType = await ReportTypeService.Post(reportType);
+            Assert.IsType<BadRequestObjectResult>(actionReportType.Result);
+
+            reportType = null;
+            reportType = GetFilledRandomReportType("");
+            reportType.LastUpdateContactTVItemID = 1;
+            actionReportType = await ReportTypeService.Post(reportType);
+            Assert.IsType<BadRequestObjectResult>(actionReportType.Result);
+
+        }
+        #endregion Tests Generated Properties
 
         #region Functions private
         private async Task DoCRUDTest()
@@ -229,6 +418,26 @@ namespace CSSPServices.Tests
             }
 
             return reportType;
+        }
+        private void CheckReportTypeFields(List<ReportType> reportTypeList)
+        {
+            Assert.False(string.IsNullOrWhiteSpace(reportTypeList[0].UniqueCode));
+            if (reportTypeList[0].Language != null)
+            {
+                Assert.NotNull(reportTypeList[0].Language);
+            }
+            if (!string.IsNullOrWhiteSpace(reportTypeList[0].Name))
+            {
+                Assert.False(string.IsNullOrWhiteSpace(reportTypeList[0].Name));
+            }
+            if (!string.IsNullOrWhiteSpace(reportTypeList[0].Description))
+            {
+                Assert.False(string.IsNullOrWhiteSpace(reportTypeList[0].Description));
+            }
+            if (!string.IsNullOrWhiteSpace(reportTypeList[0].StartOfFileName))
+            {
+                Assert.False(string.IsNullOrWhiteSpace(reportTypeList[0].StartOfFileName));
+            }
         }
         #endregion Functions private
     }

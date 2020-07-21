@@ -19,6 +19,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Transactions;
 using Xunit;
+using System.ComponentModel.DataAnnotations;
 
 namespace CSSPServices.Tests
 {
@@ -81,6 +82,261 @@ namespace CSSPServices.Tests
             }
         }
         #endregion Tests Generated CRUD
+
+        #region Tests Generated Properties
+        [Theory]
+        [InlineData("en-CA", DBLocationEnum.Local)]
+        [InlineData("fr-CA", DBLocationEnum.Local)]
+        [InlineData("en-CA", DBLocationEnum.Server)]
+        [InlineData("fr-CA", DBLocationEnum.Server)]
+        public async Task TideDataValue_Properties_Test(string culture, DBLocationEnum DBLocation)
+        {
+            // -------------------------------
+            // -------------------------------
+            // Properties testing
+            // -------------------------------
+            // -------------------------------
+
+            Assert.True(await Setup(culture));
+
+            LoggedInService.DBLocation = DBLocation;
+
+            int count = 0;
+            if (count == 1)
+            {
+                // just so we don't get a warning during compile [The variable 'count' is assigned but its value is never used]
+            }
+
+            var actionTideDataValueList = await TideDataValueService.GetTideDataValueList();
+            Assert.Equal(200, ((ObjectResult)actionTideDataValueList.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionTideDataValueList.Result).Value);
+            List<TideDataValue> tideDataValueList = (List<TideDataValue>)((OkObjectResult)actionTideDataValueList.Result).Value;
+
+            count = tideDataValueList.Count();
+
+            TideDataValue tideDataValue = GetFilledRandomTideDataValue("");
+
+
+            // -----------------------------------
+            // [Key]
+            // Is NOT Nullable
+            // tideDataValue.TideDataValueID   (Int32)
+            // -----------------------------------
+
+            tideDataValue = null;
+            tideDataValue = GetFilledRandomTideDataValue("");
+            tideDataValue.TideDataValueID = 0;
+
+            var actionTideDataValue = await TideDataValueService.Put(tideDataValue);
+            Assert.IsType<BadRequestObjectResult>(actionTideDataValue.Result);
+
+            tideDataValue = null;
+            tideDataValue = GetFilledRandomTideDataValue("");
+            tideDataValue.TideDataValueID = 10000000;
+            actionTideDataValue = await TideDataValueService.Put(tideDataValue);
+            Assert.IsType<BadRequestObjectResult>(actionTideDataValue.Result);
+
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPExist(ExistTypeName = "TVItem", ExistPlurial = "s", ExistFieldID = "TVItemID", AllowableTVtypeList = TideSite)]
+            // tideDataValue.TideSiteTVItemID   (Int32)
+            // -----------------------------------
+
+            tideDataValue = null;
+            tideDataValue = GetFilledRandomTideDataValue("");
+            tideDataValue.TideSiteTVItemID = 0;
+            actionTideDataValue = await TideDataValueService.Post(tideDataValue);
+            Assert.IsType<BadRequestObjectResult>(actionTideDataValue.Result);
+
+            tideDataValue = null;
+            tideDataValue = GetFilledRandomTideDataValue("");
+            tideDataValue.TideSiteTVItemID = 1;
+            actionTideDataValue = await TideDataValueService.Post(tideDataValue);
+            Assert.IsType<BadRequestObjectResult>(actionTideDataValue.Result);
+
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPAfter(Year = 1980)]
+            // tideDataValue.DateTime_Local   (DateTime)
+            // -----------------------------------
+
+            tideDataValue = null;
+            tideDataValue = GetFilledRandomTideDataValue("");
+            tideDataValue.DateTime_Local = new DateTime();
+            actionTideDataValue = await TideDataValueService.Post(tideDataValue);
+            Assert.IsType<BadRequestObjectResult>(actionTideDataValue.Result);
+            tideDataValue = null;
+            tideDataValue = GetFilledRandomTideDataValue("");
+            tideDataValue.DateTime_Local = new DateTime(1979, 1, 1);
+            actionTideDataValue = await TideDataValueService.Post(tideDataValue);
+            Assert.IsType<BadRequestObjectResult>(actionTideDataValue.Result);
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // tideDataValue.Keep   (Boolean)
+            // -----------------------------------
+
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPEnumType]
+            // tideDataValue.TideDataType   (TideDataTypeEnum)
+            // -----------------------------------
+
+            tideDataValue = null;
+            tideDataValue = GetFilledRandomTideDataValue("");
+            tideDataValue.TideDataType = (TideDataTypeEnum)1000000;
+            actionTideDataValue = await TideDataValueService.Post(tideDataValue);
+            Assert.IsType<BadRequestObjectResult>(actionTideDataValue.Result);
+
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPEnumType]
+            // tideDataValue.StorageDataType   (StorageDataTypeEnum)
+            // -----------------------------------
+
+            tideDataValue = null;
+            tideDataValue = GetFilledRandomTideDataValue("");
+            tideDataValue.StorageDataType = (StorageDataTypeEnum)1000000;
+            actionTideDataValue = await TideDataValueService.Post(tideDataValue);
+            Assert.IsType<BadRequestObjectResult>(actionTideDataValue.Result);
+
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPRange(0, 10000)]
+            // tideDataValue.Depth_m   (Double)
+            // -----------------------------------
+
+            //CSSPError: Type not implemented [Depth_m]
+
+            //CSSPError: Type not implemented [Depth_m]
+
+            tideDataValue = null;
+            tideDataValue = GetFilledRandomTideDataValue("");
+            tideDataValue.Depth_m = -1.0D;
+            actionTideDataValue = await TideDataValueService.Post(tideDataValue);
+            Assert.IsType<BadRequestObjectResult>(actionTideDataValue.Result);
+            //Assert.AreEqual(count, tideDataValueService.GetTideDataValueList().Count());
+            tideDataValue = null;
+            tideDataValue = GetFilledRandomTideDataValue("");
+            tideDataValue.Depth_m = 10001.0D;
+            actionTideDataValue = await TideDataValueService.Post(tideDataValue);
+            Assert.IsType<BadRequestObjectResult>(actionTideDataValue.Result);
+            //Assert.AreEqual(count, tideDataValueService.GetTideDataValueList().Count());
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPRange(0, 10)]
+            // tideDataValue.UVelocity_m_s   (Double)
+            // -----------------------------------
+
+            //CSSPError: Type not implemented [UVelocity_m_s]
+
+            //CSSPError: Type not implemented [UVelocity_m_s]
+
+            tideDataValue = null;
+            tideDataValue = GetFilledRandomTideDataValue("");
+            tideDataValue.UVelocity_m_s = -1.0D;
+            actionTideDataValue = await TideDataValueService.Post(tideDataValue);
+            Assert.IsType<BadRequestObjectResult>(actionTideDataValue.Result);
+            //Assert.AreEqual(count, tideDataValueService.GetTideDataValueList().Count());
+            tideDataValue = null;
+            tideDataValue = GetFilledRandomTideDataValue("");
+            tideDataValue.UVelocity_m_s = 11.0D;
+            actionTideDataValue = await TideDataValueService.Post(tideDataValue);
+            Assert.IsType<BadRequestObjectResult>(actionTideDataValue.Result);
+            //Assert.AreEqual(count, tideDataValueService.GetTideDataValueList().Count());
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPRange(0, 10)]
+            // tideDataValue.VVelocity_m_s   (Double)
+            // -----------------------------------
+
+            //CSSPError: Type not implemented [VVelocity_m_s]
+
+            //CSSPError: Type not implemented [VVelocity_m_s]
+
+            tideDataValue = null;
+            tideDataValue = GetFilledRandomTideDataValue("");
+            tideDataValue.VVelocity_m_s = -1.0D;
+            actionTideDataValue = await TideDataValueService.Post(tideDataValue);
+            Assert.IsType<BadRequestObjectResult>(actionTideDataValue.Result);
+            //Assert.AreEqual(count, tideDataValueService.GetTideDataValueList().Count());
+            tideDataValue = null;
+            tideDataValue = GetFilledRandomTideDataValue("");
+            tideDataValue.VVelocity_m_s = 11.0D;
+            actionTideDataValue = await TideDataValueService.Post(tideDataValue);
+            Assert.IsType<BadRequestObjectResult>(actionTideDataValue.Result);
+            //Assert.AreEqual(count, tideDataValueService.GetTideDataValueList().Count());
+
+            // -----------------------------------
+            // Is Nullable
+            // [CSSPEnumType]
+            // tideDataValue.TideStart   (TideTextEnum)
+            // -----------------------------------
+
+            tideDataValue = null;
+            tideDataValue = GetFilledRandomTideDataValue("");
+            tideDataValue.TideStart = (TideTextEnum)1000000;
+            actionTideDataValue = await TideDataValueService.Post(tideDataValue);
+            Assert.IsType<BadRequestObjectResult>(actionTideDataValue.Result);
+
+
+            // -----------------------------------
+            // Is Nullable
+            // [CSSPEnumType]
+            // tideDataValue.TideEnd   (TideTextEnum)
+            // -----------------------------------
+
+            tideDataValue = null;
+            tideDataValue = GetFilledRandomTideDataValue("");
+            tideDataValue.TideEnd = (TideTextEnum)1000000;
+            actionTideDataValue = await TideDataValueService.Post(tideDataValue);
+            Assert.IsType<BadRequestObjectResult>(actionTideDataValue.Result);
+
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPAfter(Year = 1980)]
+            // tideDataValue.LastUpdateDate_UTC   (DateTime)
+            // -----------------------------------
+
+            tideDataValue = null;
+            tideDataValue = GetFilledRandomTideDataValue("");
+            tideDataValue.LastUpdateDate_UTC = new DateTime();
+            actionTideDataValue = await TideDataValueService.Post(tideDataValue);
+            Assert.IsType<BadRequestObjectResult>(actionTideDataValue.Result);
+            tideDataValue = null;
+            tideDataValue = GetFilledRandomTideDataValue("");
+            tideDataValue.LastUpdateDate_UTC = new DateTime(1979, 1, 1);
+            actionTideDataValue = await TideDataValueService.Post(tideDataValue);
+            Assert.IsType<BadRequestObjectResult>(actionTideDataValue.Result);
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPExist(ExistTypeName = "TVItem", ExistPlurial = "s", ExistFieldID = "TVItemID", AllowableTVtypeList = Contact)]
+            // tideDataValue.LastUpdateContactTVItemID   (Int32)
+            // -----------------------------------
+
+            tideDataValue = null;
+            tideDataValue = GetFilledRandomTideDataValue("");
+            tideDataValue.LastUpdateContactTVItemID = 0;
+            actionTideDataValue = await TideDataValueService.Post(tideDataValue);
+            Assert.IsType<BadRequestObjectResult>(actionTideDataValue.Result);
+
+            tideDataValue = null;
+            tideDataValue = GetFilledRandomTideDataValue("");
+            tideDataValue.LastUpdateContactTVItemID = 1;
+            actionTideDataValue = await TideDataValueService.Post(tideDataValue);
+            Assert.IsType<BadRequestObjectResult>(actionTideDataValue.Result);
+
+        }
+        #endregion Tests Generated Properties
 
         #region Functions private
         private async Task DoCRUDTest()
@@ -241,6 +497,17 @@ namespace CSSPServices.Tests
             }
 
             return tideDataValue;
+        }
+        private void CheckTideDataValueFields(List<TideDataValue> tideDataValueList)
+        {
+            if (tideDataValueList[0].TideStart != null)
+            {
+                Assert.NotNull(tideDataValueList[0].TideStart);
+            }
+            if (tideDataValueList[0].TideEnd != null)
+            {
+                Assert.NotNull(tideDataValueList[0].TideEnd);
+            }
         }
         #endregion Functions private
     }

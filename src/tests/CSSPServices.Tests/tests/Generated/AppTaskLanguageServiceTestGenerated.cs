@@ -19,6 +19,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Transactions;
 using Xunit;
+using System.ComponentModel.DataAnnotations;
 
 namespace CSSPServices.Tests
 {
@@ -81,6 +82,163 @@ namespace CSSPServices.Tests
             }
         }
         #endregion Tests Generated CRUD
+
+        #region Tests Generated Properties
+        [Theory]
+        [InlineData("en-CA", DBLocationEnum.Local)]
+        [InlineData("fr-CA", DBLocationEnum.Local)]
+        [InlineData("en-CA", DBLocationEnum.Server)]
+        [InlineData("fr-CA", DBLocationEnum.Server)]
+        public async Task AppTaskLanguage_Properties_Test(string culture, DBLocationEnum DBLocation)
+        {
+            // -------------------------------
+            // -------------------------------
+            // Properties testing
+            // -------------------------------
+            // -------------------------------
+
+            Assert.True(await Setup(culture));
+
+            LoggedInService.DBLocation = DBLocation;
+
+            int count = 0;
+            if (count == 1)
+            {
+                // just so we don't get a warning during compile [The variable 'count' is assigned but its value is never used]
+            }
+
+            var actionAppTaskLanguageList = await AppTaskLanguageService.GetAppTaskLanguageList();
+            Assert.Equal(200, ((ObjectResult)actionAppTaskLanguageList.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionAppTaskLanguageList.Result).Value);
+            List<AppTaskLanguage> appTaskLanguageList = (List<AppTaskLanguage>)((OkObjectResult)actionAppTaskLanguageList.Result).Value;
+
+            count = appTaskLanguageList.Count();
+
+            AppTaskLanguage appTaskLanguage = GetFilledRandomAppTaskLanguage("");
+
+
+            // -----------------------------------
+            // [Key]
+            // Is NOT Nullable
+            // appTaskLanguage.AppTaskLanguageID   (Int32)
+            // -----------------------------------
+
+            appTaskLanguage = null;
+            appTaskLanguage = GetFilledRandomAppTaskLanguage("");
+            appTaskLanguage.AppTaskLanguageID = 0;
+
+            var actionAppTaskLanguage = await AppTaskLanguageService.Put(appTaskLanguage);
+            Assert.IsType<BadRequestObjectResult>(actionAppTaskLanguage.Result);
+
+            appTaskLanguage = null;
+            appTaskLanguage = GetFilledRandomAppTaskLanguage("");
+            appTaskLanguage.AppTaskLanguageID = 10000000;
+            actionAppTaskLanguage = await AppTaskLanguageService.Put(appTaskLanguage);
+            Assert.IsType<BadRequestObjectResult>(actionAppTaskLanguage.Result);
+
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPExist(ExistTypeName = "AppTask", ExistPlurial = "s", ExistFieldID = "AppTaskID", AllowableTVtypeList = )]
+            // appTaskLanguage.AppTaskID   (Int32)
+            // -----------------------------------
+
+            appTaskLanguage = null;
+            appTaskLanguage = GetFilledRandomAppTaskLanguage("");
+            appTaskLanguage.AppTaskID = 0;
+            actionAppTaskLanguage = await AppTaskLanguageService.Post(appTaskLanguage);
+            Assert.IsType<BadRequestObjectResult>(actionAppTaskLanguage.Result);
+
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPEnumType]
+            // appTaskLanguage.Language   (LanguageEnum)
+            // -----------------------------------
+
+            appTaskLanguage = null;
+            appTaskLanguage = GetFilledRandomAppTaskLanguage("");
+            appTaskLanguage.Language = (LanguageEnum)1000000;
+            actionAppTaskLanguage = await AppTaskLanguageService.Post(appTaskLanguage);
+            Assert.IsType<BadRequestObjectResult>(actionAppTaskLanguage.Result);
+
+
+            // -----------------------------------
+            // Is Nullable
+            // [CSSPMaxLength(250)]
+            // appTaskLanguage.StatusText   (String)
+            // -----------------------------------
+
+            appTaskLanguage = null;
+            appTaskLanguage = GetFilledRandomAppTaskLanguage("");
+            appTaskLanguage.StatusText = GetRandomString("", 251);
+            actionAppTaskLanguage = await AppTaskLanguageService.Post(appTaskLanguage);
+            Assert.IsType<BadRequestObjectResult>(actionAppTaskLanguage.Result);
+            //Assert.AreEqual(count, appTaskLanguageService.GetAppTaskLanguageList().Count());
+
+            // -----------------------------------
+            // Is Nullable
+            // [CSSPMaxLength(250)]
+            // appTaskLanguage.ErrorText   (String)
+            // -----------------------------------
+
+            appTaskLanguage = null;
+            appTaskLanguage = GetFilledRandomAppTaskLanguage("");
+            appTaskLanguage.ErrorText = GetRandomString("", 251);
+            actionAppTaskLanguage = await AppTaskLanguageService.Post(appTaskLanguage);
+            Assert.IsType<BadRequestObjectResult>(actionAppTaskLanguage.Result);
+            //Assert.AreEqual(count, appTaskLanguageService.GetAppTaskLanguageList().Count());
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPEnumType]
+            // appTaskLanguage.TranslationStatus   (TranslationStatusEnum)
+            // -----------------------------------
+
+            appTaskLanguage = null;
+            appTaskLanguage = GetFilledRandomAppTaskLanguage("");
+            appTaskLanguage.TranslationStatus = (TranslationStatusEnum)1000000;
+            actionAppTaskLanguage = await AppTaskLanguageService.Post(appTaskLanguage);
+            Assert.IsType<BadRequestObjectResult>(actionAppTaskLanguage.Result);
+
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPAfter(Year = 1980)]
+            // appTaskLanguage.LastUpdateDate_UTC   (DateTime)
+            // -----------------------------------
+
+            appTaskLanguage = null;
+            appTaskLanguage = GetFilledRandomAppTaskLanguage("");
+            appTaskLanguage.LastUpdateDate_UTC = new DateTime();
+            actionAppTaskLanguage = await AppTaskLanguageService.Post(appTaskLanguage);
+            Assert.IsType<BadRequestObjectResult>(actionAppTaskLanguage.Result);
+            appTaskLanguage = null;
+            appTaskLanguage = GetFilledRandomAppTaskLanguage("");
+            appTaskLanguage.LastUpdateDate_UTC = new DateTime(1979, 1, 1);
+            actionAppTaskLanguage = await AppTaskLanguageService.Post(appTaskLanguage);
+            Assert.IsType<BadRequestObjectResult>(actionAppTaskLanguage.Result);
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPExist(ExistTypeName = "TVItem", ExistPlurial = "s", ExistFieldID = "TVItemID", AllowableTVtypeList = Contact)]
+            // appTaskLanguage.LastUpdateContactTVItemID   (Int32)
+            // -----------------------------------
+
+            appTaskLanguage = null;
+            appTaskLanguage = GetFilledRandomAppTaskLanguage("");
+            appTaskLanguage.LastUpdateContactTVItemID = 0;
+            actionAppTaskLanguage = await AppTaskLanguageService.Post(appTaskLanguage);
+            Assert.IsType<BadRequestObjectResult>(actionAppTaskLanguage.Result);
+
+            appTaskLanguage = null;
+            appTaskLanguage = GetFilledRandomAppTaskLanguage("");
+            appTaskLanguage.LastUpdateContactTVItemID = 1;
+            actionAppTaskLanguage = await AppTaskLanguageService.Post(appTaskLanguage);
+            Assert.IsType<BadRequestObjectResult>(actionAppTaskLanguage.Result);
+
+        }
+        #endregion Tests Generated Properties
 
         #region Functions private
         private async Task DoCRUDTest()
@@ -217,7 +375,7 @@ namespace CSSPServices.Tests
 
                 try
                 {
-                    dbIM.AppTasks.Add(new AppTask() { AppTaskID = 1, TVItemID = 5, TVItemID2 = 5, AppTaskCommand = (AppTaskCommandEnum)1, AppTaskStatus = (AppTaskStatusEnum)1, PercentCompleted = 1, Parameters = "a,a", Language = (LanguageEnum)1, StartDateTime_UTC = new DateTime(2015, 7, 17, 15, 11, 37), EndDateTime_UTC = new DateTime(2015, 7, 17, 19, 11, 37), EstimatedLength_second = 1201, RemainingTime_second = 234, LastUpdateDate_UTC = new DateTime(2020, 7, 17, 15, 11, 37), LastUpdateContactTVItemID = 2 });
+                    dbIM.AppTasks.Add(new AppTask() { AppTaskID = 1, TVItemID = 5, TVItemID2 = 5, AppTaskCommand = (AppTaskCommandEnum)1, AppTaskStatus = (AppTaskStatusEnum)1, PercentCompleted = 1, Parameters = "a,a", Language = (LanguageEnum)1, StartDateTime_UTC = new DateTime(2015, 7, 19, 14, 30, 5), EndDateTime_UTC = new DateTime(2015, 7, 19, 18, 30, 5), EstimatedLength_second = 1201, RemainingTime_second = 234, LastUpdateDate_UTC = new DateTime(2020, 7, 19, 14, 30, 5), LastUpdateContactTVItemID = 2 });
                     dbIM.SaveChanges();
                 }
                 catch (Exception)
@@ -236,6 +394,17 @@ namespace CSSPServices.Tests
             }
 
             return appTaskLanguage;
+        }
+        private void CheckAppTaskLanguageFields(List<AppTaskLanguage> appTaskLanguageList)
+        {
+            if (!string.IsNullOrWhiteSpace(appTaskLanguageList[0].StatusText))
+            {
+                Assert.False(string.IsNullOrWhiteSpace(appTaskLanguageList[0].StatusText));
+            }
+            if (!string.IsNullOrWhiteSpace(appTaskLanguageList[0].ErrorText))
+            {
+                Assert.False(string.IsNullOrWhiteSpace(appTaskLanguageList[0].ErrorText));
+            }
         }
         #endregion Functions private
     }

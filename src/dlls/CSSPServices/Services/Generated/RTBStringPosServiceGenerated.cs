@@ -20,19 +20,66 @@ using System.Threading.Tasks;
 
 namespace CSSPServices
 {
-    public partial class RTBStringPosService
+    public interface IRTBStringPosService
+    {
+        IEnumerable<ValidationResult> Validate(ValidationContext validationContext);
+    }
+    public partial class RTBStringPosService : IRTBStringPosService
     {
         #region Variables
         #endregion Variables
 
         #region Properties
+        private ICSSPCultureService CSSPCultureService { get; }
+        private IEnums enums { get; }
         #endregion Properties
 
         #region Constructors
-        public RTBStringPosService()
+        public RTBStringPosService(ICSSPCultureService CSSPCultureService, IEnums enums)
         {
+            this.CSSPCultureService = CSSPCultureService;
+            this.enums = enums;
         }
         #endregion Constructors
+
+        #region Functions public
+        public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+        {
+            string retStr = "";
+            RTBStringPos rTBStringPos = validationContext.ObjectInstance as RTBStringPos;
+
+            if (rTBStringPos.StartPos < 0)
+            {
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MinValueIs_, "StartPos", "0"), new[] { "StartPos" });
+            }
+
+            if (rTBStringPos.EndPos < 0)
+            {
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MinValueIs_, "EndPos", "0"), new[] { "EndPos" });
+            }
+
+            if (string.IsNullOrWhiteSpace(rTBStringPos.Text))
+            {
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "Text"), new[] { "Text" });
+            }
+
+            //Text has no StringLength Attribute
+
+            if (string.IsNullOrWhiteSpace(rTBStringPos.TagText))
+            {
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "TagText"), new[] { "TagText" });
+            }
+
+            //TagText has no StringLength Attribute
+
+            retStr = ""; // added to stop compiling CSSPError
+            if (retStr != "") // will never be true
+            {
+                yield return new ValidationResult("AAA", new[] { "AAA" });
+            }
+
+        }
+        #endregion Functions public
 
     }
 }

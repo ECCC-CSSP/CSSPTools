@@ -20,19 +20,49 @@ using System.Threading.Tasks;
 
 namespace CSSPServices
 {
-    public partial class InputSummaryService
+    public interface IInputSummaryService
+    {
+        IEnumerable<ValidationResult> Validate(ValidationContext validationContext);
+    }
+    public partial class InputSummaryService : IInputSummaryService
     {
         #region Variables
         #endregion Variables
 
         #region Properties
+        private ICSSPCultureService CSSPCultureService { get; }
+        private IEnums enums { get; }
         #endregion Properties
 
         #region Constructors
-        public InputSummaryService()
+        public InputSummaryService(ICSSPCultureService CSSPCultureService, IEnums enums)
         {
+            this.CSSPCultureService = CSSPCultureService;
+            this.enums = enums;
         }
         #endregion Constructors
+
+        #region Functions public
+        public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+        {
+            string retStr = "";
+            InputSummary inputSummary = validationContext.ObjectInstance as InputSummary;
+
+            if (string.IsNullOrWhiteSpace(inputSummary.Summary))
+            {
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "Summary"), new[] { "Summary" });
+            }
+
+            //Summary has no StringLength Attribute
+
+            retStr = ""; // added to stop compiling CSSPError
+            if (retStr != "") // will never be true
+            {
+                yield return new ValidationResult("AAA", new[] { "AAA" });
+            }
+
+        }
+        #endregion Functions public
 
     }
 }

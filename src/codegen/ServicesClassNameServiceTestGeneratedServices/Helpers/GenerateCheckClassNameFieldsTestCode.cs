@@ -49,11 +49,14 @@ namespace ServicesClassNameServiceTestGeneratedServices.Services
                 }
                 if (csspProp.PropType == "String")
                 {
-                    sb.AppendLine($@"            { (csspProp.IsNullable ? "    " : "") }Assert.IsFalse(string.IsNullOrWhiteSpace({ TypeNameLower }List[0].{ csspProp.PropName }));");
+                    sb.AppendLine($@"            { (csspProp.IsNullable ? "    " : "") }Assert.False(string.IsNullOrWhiteSpace({ TypeNameLower }List[0].{ csspProp.PropName }));");
                 }
                 else
                 {
-                    sb.AppendLine($@"            { (csspProp.IsNullable ? "    " : "") }Assert.IsNotNull({ TypeNameLower }List[0].{ csspProp.PropName });");
+                    if (csspProp.IsNullable)
+                    {
+                        sb.AppendLine($@"            { (csspProp.IsNullable ? "    " : "") }Assert.NotNull({ TypeNameLower }List[0].{ csspProp.PropName });");
+                    }
                 }
                 if (csspProp.IsNullable)
                 {

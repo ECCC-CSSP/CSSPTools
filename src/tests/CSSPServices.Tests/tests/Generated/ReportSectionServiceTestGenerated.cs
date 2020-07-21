@@ -19,6 +19,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Transactions;
 using Xunit;
+using System.ComponentModel.DataAnnotations;
 
 namespace CSSPServices.Tests
 {
@@ -81,6 +82,245 @@ namespace CSSPServices.Tests
             }
         }
         #endregion Tests Generated CRUD
+
+        #region Tests Generated Properties
+        [Theory]
+        [InlineData("en-CA", DBLocationEnum.Local)]
+        [InlineData("fr-CA", DBLocationEnum.Local)]
+        [InlineData("en-CA", DBLocationEnum.Server)]
+        [InlineData("fr-CA", DBLocationEnum.Server)]
+        public async Task ReportSection_Properties_Test(string culture, DBLocationEnum DBLocation)
+        {
+            // -------------------------------
+            // -------------------------------
+            // Properties testing
+            // -------------------------------
+            // -------------------------------
+
+            Assert.True(await Setup(culture));
+
+            LoggedInService.DBLocation = DBLocation;
+
+            int count = 0;
+            if (count == 1)
+            {
+                // just so we don't get a warning during compile [The variable 'count' is assigned but its value is never used]
+            }
+
+            var actionReportSectionList = await ReportSectionService.GetReportSectionList();
+            Assert.Equal(200, ((ObjectResult)actionReportSectionList.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionReportSectionList.Result).Value);
+            List<ReportSection> reportSectionList = (List<ReportSection>)((OkObjectResult)actionReportSectionList.Result).Value;
+
+            count = reportSectionList.Count();
+
+            ReportSection reportSection = GetFilledRandomReportSection("");
+
+
+            // -----------------------------------
+            // [Key]
+            // Is NOT Nullable
+            // reportSection.ReportSectionID   (Int32)
+            // -----------------------------------
+
+            reportSection = null;
+            reportSection = GetFilledRandomReportSection("");
+            reportSection.ReportSectionID = 0;
+
+            var actionReportSection = await ReportSectionService.Put(reportSection);
+            Assert.IsType<BadRequestObjectResult>(actionReportSection.Result);
+
+            reportSection = null;
+            reportSection = GetFilledRandomReportSection("");
+            reportSection.ReportSectionID = 10000000;
+            actionReportSection = await ReportSectionService.Put(reportSection);
+            Assert.IsType<BadRequestObjectResult>(actionReportSection.Result);
+
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPExist(ExistTypeName = "ReportType", ExistPlurial = "s", ExistFieldID = "ReportTypeID", AllowableTVtypeList = )]
+            // reportSection.ReportTypeID   (Int32)
+            // -----------------------------------
+
+            reportSection = null;
+            reportSection = GetFilledRandomReportSection("");
+            reportSection.ReportTypeID = 0;
+            actionReportSection = await ReportSectionService.Post(reportSection);
+            Assert.IsType<BadRequestObjectResult>(actionReportSection.Result);
+
+
+            // -----------------------------------
+            // Is Nullable
+            // [CSSPExist(ExistTypeName = "TVItem", ExistPlurial = "s", ExistFieldID = "TVItemID", AllowableTVtypeList = )]
+            // reportSection.TVItemID   (Int32)
+            // -----------------------------------
+
+            reportSection = null;
+            reportSection = GetFilledRandomReportSection("");
+            reportSection.TVItemID = 0;
+            actionReportSection = await ReportSectionService.Post(reportSection);
+            Assert.IsType<BadRequestObjectResult>(actionReportSection.Result);
+
+            reportSection = null;
+            reportSection = GetFilledRandomReportSection("");
+            reportSection.TVItemID = 1;
+            actionReportSection = await ReportSectionService.Post(reportSection);
+            Assert.IsType<BadRequestObjectResult>(actionReportSection.Result);
+
+
+            // -----------------------------------
+            // Is Nullable
+            // [CSSPEnumType]
+            // reportSection.Language   (LanguageEnum)
+            // -----------------------------------
+
+            reportSection = null;
+            reportSection = GetFilledRandomReportSection("");
+            reportSection.Language = (LanguageEnum)1000000;
+            actionReportSection = await ReportSectionService.Post(reportSection);
+            Assert.IsType<BadRequestObjectResult>(actionReportSection.Result);
+
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPRange(0, 1000)]
+            // reportSection.Ordinal   (Int32)
+            // -----------------------------------
+
+            reportSection = null;
+            reportSection = GetFilledRandomReportSection("");
+            reportSection.Ordinal = -1;
+            actionReportSection = await ReportSectionService.Post(reportSection);
+            Assert.IsType<BadRequestObjectResult>(actionReportSection.Result);
+            //Assert.AreEqual(count, reportSectionService.GetReportSectionList().Count());
+            reportSection = null;
+            reportSection = GetFilledRandomReportSection("");
+            reportSection.Ordinal = 1001;
+            actionReportSection = await ReportSectionService.Post(reportSection);
+            Assert.IsType<BadRequestObjectResult>(actionReportSection.Result);
+            //Assert.AreEqual(count, reportSectionService.GetReportSectionList().Count());
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // reportSection.IsStatic   (Boolean)
+            // -----------------------------------
+
+
+            // -----------------------------------
+            // Is Nullable
+            // [CSSPExist(ExistTypeName = "ReportSection", ExistPlurial = "s", ExistFieldID = "ReportSectionID", AllowableTVtypeList = )]
+            // reportSection.ParentReportSectionID   (Int32)
+            // -----------------------------------
+
+            reportSection = null;
+            reportSection = GetFilledRandomReportSection("");
+            reportSection.ParentReportSectionID = 0;
+            actionReportSection = await ReportSectionService.Post(reportSection);
+            Assert.IsType<BadRequestObjectResult>(actionReportSection.Result);
+
+
+            // -----------------------------------
+            // Is Nullable
+            // [CSSPRange(1979, 2050)]
+            // reportSection.Year   (Int32)
+            // -----------------------------------
+
+            reportSection = null;
+            reportSection = GetFilledRandomReportSection("");
+            reportSection.Year = 1978;
+            actionReportSection = await ReportSectionService.Post(reportSection);
+            Assert.IsType<BadRequestObjectResult>(actionReportSection.Result);
+            //Assert.AreEqual(count, reportSectionService.GetReportSectionList().Count());
+            reportSection = null;
+            reportSection = GetFilledRandomReportSection("");
+            reportSection.Year = 2051;
+            actionReportSection = await ReportSectionService.Post(reportSection);
+            Assert.IsType<BadRequestObjectResult>(actionReportSection.Result);
+            //Assert.AreEqual(count, reportSectionService.GetReportSectionList().Count());
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // reportSection.Locked   (Boolean)
+            // -----------------------------------
+
+
+            // -----------------------------------
+            // Is Nullable
+            // [CSSPExist(ExistTypeName = "ReportSection", ExistPlurial = "s", ExistFieldID = "ReportSectionID", AllowableTVtypeList = )]
+            // reportSection.TemplateReportSectionID   (Int32)
+            // -----------------------------------
+
+            reportSection = null;
+            reportSection = GetFilledRandomReportSection("");
+            reportSection.TemplateReportSectionID = 0;
+            actionReportSection = await ReportSectionService.Post(reportSection);
+            Assert.IsType<BadRequestObjectResult>(actionReportSection.Result);
+
+
+            // -----------------------------------
+            // Is Nullable
+            // [CSSPMaxLength(100)]
+            // reportSection.ReportSectionName   (String)
+            // -----------------------------------
+
+            reportSection = null;
+            reportSection = GetFilledRandomReportSection("");
+            reportSection.ReportSectionName = GetRandomString("", 101);
+            actionReportSection = await ReportSectionService.Post(reportSection);
+            Assert.IsType<BadRequestObjectResult>(actionReportSection.Result);
+            //Assert.AreEqual(count, reportSectionService.GetReportSectionList().Count());
+
+            // -----------------------------------
+            // Is Nullable
+            // [CSSPMaxLength(10000)]
+            // reportSection.ReportSectionText   (String)
+            // -----------------------------------
+
+            reportSection = null;
+            reportSection = GetFilledRandomReportSection("");
+            reportSection.ReportSectionText = GetRandomString("", 10001);
+            actionReportSection = await ReportSectionService.Post(reportSection);
+            Assert.IsType<BadRequestObjectResult>(actionReportSection.Result);
+            //Assert.AreEqual(count, reportSectionService.GetReportSectionList().Count());
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPAfter(Year = 1980)]
+            // reportSection.LastUpdateDate_UTC   (DateTime)
+            // -----------------------------------
+
+            reportSection = null;
+            reportSection = GetFilledRandomReportSection("");
+            reportSection.LastUpdateDate_UTC = new DateTime();
+            actionReportSection = await ReportSectionService.Post(reportSection);
+            Assert.IsType<BadRequestObjectResult>(actionReportSection.Result);
+            reportSection = null;
+            reportSection = GetFilledRandomReportSection("");
+            reportSection.LastUpdateDate_UTC = new DateTime(1979, 1, 1);
+            actionReportSection = await ReportSectionService.Post(reportSection);
+            Assert.IsType<BadRequestObjectResult>(actionReportSection.Result);
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPExist(ExistTypeName = "TVItem", ExistPlurial = "s", ExistFieldID = "TVItemID", AllowableTVtypeList = Contact)]
+            // reportSection.LastUpdateContactTVItemID   (Int32)
+            // -----------------------------------
+
+            reportSection = null;
+            reportSection = GetFilledRandomReportSection("");
+            reportSection.LastUpdateContactTVItemID = 0;
+            actionReportSection = await ReportSectionService.Post(reportSection);
+            Assert.IsType<BadRequestObjectResult>(actionReportSection.Result);
+
+            reportSection = null;
+            reportSection = GetFilledRandomReportSection("");
+            reportSection.LastUpdateContactTVItemID = 1;
+            actionReportSection = await ReportSectionService.Post(reportSection);
+            Assert.IsType<BadRequestObjectResult>(actionReportSection.Result);
+
+        }
+        #endregion Tests Generated Properties
 
         #region Functions private
         private async Task DoCRUDTest()
@@ -242,6 +482,37 @@ namespace CSSPServices.Tests
             }
 
             return reportSection;
+        }
+        private void CheckReportSectionFields(List<ReportSection> reportSectionList)
+        {
+            if (reportSectionList[0].TVItemID != null)
+            {
+                Assert.NotNull(reportSectionList[0].TVItemID);
+            }
+            if (reportSectionList[0].Language != null)
+            {
+                Assert.NotNull(reportSectionList[0].Language);
+            }
+            if (reportSectionList[0].ParentReportSectionID != null)
+            {
+                Assert.NotNull(reportSectionList[0].ParentReportSectionID);
+            }
+            if (reportSectionList[0].Year != null)
+            {
+                Assert.NotNull(reportSectionList[0].Year);
+            }
+            if (reportSectionList[0].TemplateReportSectionID != null)
+            {
+                Assert.NotNull(reportSectionList[0].TemplateReportSectionID);
+            }
+            if (!string.IsNullOrWhiteSpace(reportSectionList[0].ReportSectionName))
+            {
+                Assert.False(string.IsNullOrWhiteSpace(reportSectionList[0].ReportSectionName));
+            }
+            if (!string.IsNullOrWhiteSpace(reportSectionList[0].ReportSectionText))
+            {
+                Assert.False(string.IsNullOrWhiteSpace(reportSectionList[0].ReportSectionText));
+            }
         }
         #endregion Functions private
     }

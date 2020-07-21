@@ -19,6 +19,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Transactions;
 using Xunit;
+using System.ComponentModel.DataAnnotations;
 
 namespace CSSPServices.Tests
 {
@@ -81,6 +82,1070 @@ namespace CSSPServices.Tests
             }
         }
         #endregion Tests Generated CRUD
+
+        #region Tests Generated Properties
+        [Theory]
+        [InlineData("en-CA", DBLocationEnum.Local)]
+        [InlineData("fr-CA", DBLocationEnum.Local)]
+        [InlineData("en-CA", DBLocationEnum.Server)]
+        [InlineData("fr-CA", DBLocationEnum.Server)]
+        public async Task LabSheetDetail_Properties_Test(string culture, DBLocationEnum DBLocation)
+        {
+            // -------------------------------
+            // -------------------------------
+            // Properties testing
+            // -------------------------------
+            // -------------------------------
+
+            Assert.True(await Setup(culture));
+
+            LoggedInService.DBLocation = DBLocation;
+
+            int count = 0;
+            if (count == 1)
+            {
+                // just so we don't get a warning during compile [The variable 'count' is assigned but its value is never used]
+            }
+
+            var actionLabSheetDetailList = await LabSheetDetailService.GetLabSheetDetailList();
+            Assert.Equal(200, ((ObjectResult)actionLabSheetDetailList.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionLabSheetDetailList.Result).Value);
+            List<LabSheetDetail> labSheetDetailList = (List<LabSheetDetail>)((OkObjectResult)actionLabSheetDetailList.Result).Value;
+
+            count = labSheetDetailList.Count();
+
+            LabSheetDetail labSheetDetail = GetFilledRandomLabSheetDetail("");
+
+
+            // -----------------------------------
+            // [Key]
+            // Is NOT Nullable
+            // labSheetDetail.LabSheetDetailID   (Int32)
+            // -----------------------------------
+
+            labSheetDetail = null;
+            labSheetDetail = GetFilledRandomLabSheetDetail("");
+            labSheetDetail.LabSheetDetailID = 0;
+
+            var actionLabSheetDetail = await LabSheetDetailService.Put(labSheetDetail);
+            Assert.IsType<BadRequestObjectResult>(actionLabSheetDetail.Result);
+
+            labSheetDetail = null;
+            labSheetDetail = GetFilledRandomLabSheetDetail("");
+            labSheetDetail.LabSheetDetailID = 10000000;
+            actionLabSheetDetail = await LabSheetDetailService.Put(labSheetDetail);
+            Assert.IsType<BadRequestObjectResult>(actionLabSheetDetail.Result);
+
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPExist(ExistTypeName = "LabSheet", ExistPlurial = "s", ExistFieldID = "LabSheetID", AllowableTVtypeList = )]
+            // labSheetDetail.LabSheetID   (Int32)
+            // -----------------------------------
+
+            labSheetDetail = null;
+            labSheetDetail = GetFilledRandomLabSheetDetail("");
+            labSheetDetail.LabSheetID = 0;
+            actionLabSheetDetail = await LabSheetDetailService.Post(labSheetDetail);
+            Assert.IsType<BadRequestObjectResult>(actionLabSheetDetail.Result);
+
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPExist(ExistTypeName = "SamplingPlan", ExistPlurial = "s", ExistFieldID = "SamplingPlanID", AllowableTVtypeList = )]
+            // labSheetDetail.SamplingPlanID   (Int32)
+            // -----------------------------------
+
+            labSheetDetail = null;
+            labSheetDetail = GetFilledRandomLabSheetDetail("");
+            labSheetDetail.SamplingPlanID = 0;
+            actionLabSheetDetail = await LabSheetDetailService.Post(labSheetDetail);
+            Assert.IsType<BadRequestObjectResult>(actionLabSheetDetail.Result);
+
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPExist(ExistTypeName = "TVItem", ExistPlurial = "s", ExistFieldID = "TVItemID", AllowableTVtypeList = Subsector)]
+            // labSheetDetail.SubsectorTVItemID   (Int32)
+            // -----------------------------------
+
+            labSheetDetail = null;
+            labSheetDetail = GetFilledRandomLabSheetDetail("");
+            labSheetDetail.SubsectorTVItemID = 0;
+            actionLabSheetDetail = await LabSheetDetailService.Post(labSheetDetail);
+            Assert.IsType<BadRequestObjectResult>(actionLabSheetDetail.Result);
+
+            labSheetDetail = null;
+            labSheetDetail = GetFilledRandomLabSheetDetail("");
+            labSheetDetail.SubsectorTVItemID = 1;
+            actionLabSheetDetail = await LabSheetDetailService.Post(labSheetDetail);
+            Assert.IsType<BadRequestObjectResult>(actionLabSheetDetail.Result);
+
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPRange(1, 5)]
+            // labSheetDetail.Version   (Int32)
+            // -----------------------------------
+
+            labSheetDetail = null;
+            labSheetDetail = GetFilledRandomLabSheetDetail("");
+            labSheetDetail.Version = 0;
+            actionLabSheetDetail = await LabSheetDetailService.Post(labSheetDetail);
+            Assert.IsType<BadRequestObjectResult>(actionLabSheetDetail.Result);
+            //Assert.AreEqual(count, labSheetDetailService.GetLabSheetDetailList().Count());
+            labSheetDetail = null;
+            labSheetDetail = GetFilledRandomLabSheetDetail("");
+            labSheetDetail.Version = 6;
+            actionLabSheetDetail = await LabSheetDetailService.Post(labSheetDetail);
+            Assert.IsType<BadRequestObjectResult>(actionLabSheetDetail.Result);
+            //Assert.AreEqual(count, labSheetDetailService.GetLabSheetDetailList().Count());
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPAfter(Year = 1980)]
+            // labSheetDetail.RunDate   (DateTime)
+            // -----------------------------------
+
+            labSheetDetail = null;
+            labSheetDetail = GetFilledRandomLabSheetDetail("");
+            labSheetDetail.RunDate = new DateTime();
+            actionLabSheetDetail = await LabSheetDetailService.Post(labSheetDetail);
+            Assert.IsType<BadRequestObjectResult>(actionLabSheetDetail.Result);
+            labSheetDetail = null;
+            labSheetDetail = GetFilledRandomLabSheetDetail("");
+            labSheetDetail.RunDate = new DateTime(1979, 1, 1);
+            actionLabSheetDetail = await LabSheetDetailService.Post(labSheetDetail);
+            Assert.IsType<BadRequestObjectResult>(actionLabSheetDetail.Result);
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPMaxLength(7)]
+            // [CSSPMinLength(1)]
+            // labSheetDetail.Tides   (String)
+            // -----------------------------------
+
+            labSheetDetail = null;
+            labSheetDetail = GetFilledRandomLabSheetDetail("Tides");
+            actionLabSheetDetail = await LabSheetDetailService.Post(labSheetDetail);
+            Assert.IsType<BadRequestObjectResult>(actionLabSheetDetail.Result);
+
+            labSheetDetail = null;
+            labSheetDetail = GetFilledRandomLabSheetDetail("");
+            labSheetDetail = null;
+            labSheetDetail = GetFilledRandomLabSheetDetail("");
+            labSheetDetail.Tides = GetRandomString("", 8);
+            actionLabSheetDetail = await LabSheetDetailService.Post(labSheetDetail);
+            Assert.IsType<BadRequestObjectResult>(actionLabSheetDetail.Result);
+            //Assert.AreEqual(count, labSheetDetailService.GetLabSheetDetailList().Count());
+
+            // -----------------------------------
+            // Is Nullable
+            // [CSSPMaxLength(20)]
+            // labSheetDetail.SampleCrewInitials   (String)
+            // -----------------------------------
+
+            labSheetDetail = null;
+            labSheetDetail = GetFilledRandomLabSheetDetail("");
+            labSheetDetail.SampleCrewInitials = GetRandomString("", 21);
+            actionLabSheetDetail = await LabSheetDetailService.Post(labSheetDetail);
+            Assert.IsType<BadRequestObjectResult>(actionLabSheetDetail.Result);
+            //Assert.AreEqual(count, labSheetDetailService.GetLabSheetDetailList().Count());
+
+            // -----------------------------------
+            // Is Nullable
+            // [CSSPRange(1, 3)]
+            // labSheetDetail.WaterBathCount   (Int32)
+            // -----------------------------------
+
+            labSheetDetail = null;
+            labSheetDetail = GetFilledRandomLabSheetDetail("");
+            labSheetDetail.WaterBathCount = 0;
+            actionLabSheetDetail = await LabSheetDetailService.Post(labSheetDetail);
+            Assert.IsType<BadRequestObjectResult>(actionLabSheetDetail.Result);
+            //Assert.AreEqual(count, labSheetDetailService.GetLabSheetDetailList().Count());
+            labSheetDetail = null;
+            labSheetDetail = GetFilledRandomLabSheetDetail("");
+            labSheetDetail.WaterBathCount = 4;
+            actionLabSheetDetail = await LabSheetDetailService.Post(labSheetDetail);
+            Assert.IsType<BadRequestObjectResult>(actionLabSheetDetail.Result);
+            //Assert.AreEqual(count, labSheetDetailService.GetLabSheetDetailList().Count());
+
+            // -----------------------------------
+            // Is Nullable
+            // [CSSPAfter(Year = 1980)]
+            // labSheetDetail.IncubationBath1StartTime   (DateTime)
+            // -----------------------------------
+
+            labSheetDetail = null;
+            labSheetDetail = GetFilledRandomLabSheetDetail("");
+            labSheetDetail.IncubationBath1StartTime = new DateTime(1979, 1, 1);
+            actionLabSheetDetail = await LabSheetDetailService.Post(labSheetDetail);
+            Assert.IsType<BadRequestObjectResult>(actionLabSheetDetail.Result);
+
+            // -----------------------------------
+            // Is Nullable
+            // [CSSPAfter(Year = 1980)]
+            // labSheetDetail.IncubationBath2StartTime   (DateTime)
+            // -----------------------------------
+
+            labSheetDetail = null;
+            labSheetDetail = GetFilledRandomLabSheetDetail("");
+            labSheetDetail.IncubationBath2StartTime = new DateTime(1979, 1, 1);
+            actionLabSheetDetail = await LabSheetDetailService.Post(labSheetDetail);
+            Assert.IsType<BadRequestObjectResult>(actionLabSheetDetail.Result);
+
+            // -----------------------------------
+            // Is Nullable
+            // [CSSPAfter(Year = 1980)]
+            // labSheetDetail.IncubationBath3StartTime   (DateTime)
+            // -----------------------------------
+
+            labSheetDetail = null;
+            labSheetDetail = GetFilledRandomLabSheetDetail("");
+            labSheetDetail.IncubationBath3StartTime = new DateTime(1979, 1, 1);
+            actionLabSheetDetail = await LabSheetDetailService.Post(labSheetDetail);
+            Assert.IsType<BadRequestObjectResult>(actionLabSheetDetail.Result);
+
+            // -----------------------------------
+            // Is Nullable
+            // [CSSPAfter(Year = 1980)]
+            // labSheetDetail.IncubationBath1EndTime   (DateTime)
+            // -----------------------------------
+
+            labSheetDetail = null;
+            labSheetDetail = GetFilledRandomLabSheetDetail("");
+            labSheetDetail.IncubationBath1EndTime = new DateTime(1979, 1, 1);
+            actionLabSheetDetail = await LabSheetDetailService.Post(labSheetDetail);
+            Assert.IsType<BadRequestObjectResult>(actionLabSheetDetail.Result);
+
+            // -----------------------------------
+            // Is Nullable
+            // [CSSPAfter(Year = 1980)]
+            // labSheetDetail.IncubationBath2EndTime   (DateTime)
+            // -----------------------------------
+
+            labSheetDetail = null;
+            labSheetDetail = GetFilledRandomLabSheetDetail("");
+            labSheetDetail.IncubationBath2EndTime = new DateTime(1979, 1, 1);
+            actionLabSheetDetail = await LabSheetDetailService.Post(labSheetDetail);
+            Assert.IsType<BadRequestObjectResult>(actionLabSheetDetail.Result);
+
+            // -----------------------------------
+            // Is Nullable
+            // [CSSPAfter(Year = 1980)]
+            // labSheetDetail.IncubationBath3EndTime   (DateTime)
+            // -----------------------------------
+
+            labSheetDetail = null;
+            labSheetDetail = GetFilledRandomLabSheetDetail("");
+            labSheetDetail.IncubationBath3EndTime = new DateTime(1979, 1, 1);
+            actionLabSheetDetail = await LabSheetDetailService.Post(labSheetDetail);
+            Assert.IsType<BadRequestObjectResult>(actionLabSheetDetail.Result);
+
+            // -----------------------------------
+            // Is Nullable
+            // [CSSPRange(0, 10000)]
+            // labSheetDetail.IncubationBath1TimeCalculated_minutes   (Int32)
+            // -----------------------------------
+
+            labSheetDetail = null;
+            labSheetDetail = GetFilledRandomLabSheetDetail("");
+            labSheetDetail.IncubationBath1TimeCalculated_minutes = -1;
+            actionLabSheetDetail = await LabSheetDetailService.Post(labSheetDetail);
+            Assert.IsType<BadRequestObjectResult>(actionLabSheetDetail.Result);
+            //Assert.AreEqual(count, labSheetDetailService.GetLabSheetDetailList().Count());
+            labSheetDetail = null;
+            labSheetDetail = GetFilledRandomLabSheetDetail("");
+            labSheetDetail.IncubationBath1TimeCalculated_minutes = 10001;
+            actionLabSheetDetail = await LabSheetDetailService.Post(labSheetDetail);
+            Assert.IsType<BadRequestObjectResult>(actionLabSheetDetail.Result);
+            //Assert.AreEqual(count, labSheetDetailService.GetLabSheetDetailList().Count());
+
+            // -----------------------------------
+            // Is Nullable
+            // [CSSPRange(0, 10000)]
+            // labSheetDetail.IncubationBath2TimeCalculated_minutes   (Int32)
+            // -----------------------------------
+
+            labSheetDetail = null;
+            labSheetDetail = GetFilledRandomLabSheetDetail("");
+            labSheetDetail.IncubationBath2TimeCalculated_minutes = -1;
+            actionLabSheetDetail = await LabSheetDetailService.Post(labSheetDetail);
+            Assert.IsType<BadRequestObjectResult>(actionLabSheetDetail.Result);
+            //Assert.AreEqual(count, labSheetDetailService.GetLabSheetDetailList().Count());
+            labSheetDetail = null;
+            labSheetDetail = GetFilledRandomLabSheetDetail("");
+            labSheetDetail.IncubationBath2TimeCalculated_minutes = 10001;
+            actionLabSheetDetail = await LabSheetDetailService.Post(labSheetDetail);
+            Assert.IsType<BadRequestObjectResult>(actionLabSheetDetail.Result);
+            //Assert.AreEqual(count, labSheetDetailService.GetLabSheetDetailList().Count());
+
+            // -----------------------------------
+            // Is Nullable
+            // [CSSPRange(0, 10000)]
+            // labSheetDetail.IncubationBath3TimeCalculated_minutes   (Int32)
+            // -----------------------------------
+
+            labSheetDetail = null;
+            labSheetDetail = GetFilledRandomLabSheetDetail("");
+            labSheetDetail.IncubationBath3TimeCalculated_minutes = -1;
+            actionLabSheetDetail = await LabSheetDetailService.Post(labSheetDetail);
+            Assert.IsType<BadRequestObjectResult>(actionLabSheetDetail.Result);
+            //Assert.AreEqual(count, labSheetDetailService.GetLabSheetDetailList().Count());
+            labSheetDetail = null;
+            labSheetDetail = GetFilledRandomLabSheetDetail("");
+            labSheetDetail.IncubationBath3TimeCalculated_minutes = 10001;
+            actionLabSheetDetail = await LabSheetDetailService.Post(labSheetDetail);
+            Assert.IsType<BadRequestObjectResult>(actionLabSheetDetail.Result);
+            //Assert.AreEqual(count, labSheetDetailService.GetLabSheetDetailList().Count());
+
+            // -----------------------------------
+            // Is Nullable
+            // [CSSPMaxLength(10)]
+            // labSheetDetail.WaterBath1   (String)
+            // -----------------------------------
+
+            labSheetDetail = null;
+            labSheetDetail = GetFilledRandomLabSheetDetail("");
+            labSheetDetail.WaterBath1 = GetRandomString("", 11);
+            actionLabSheetDetail = await LabSheetDetailService.Post(labSheetDetail);
+            Assert.IsType<BadRequestObjectResult>(actionLabSheetDetail.Result);
+            //Assert.AreEqual(count, labSheetDetailService.GetLabSheetDetailList().Count());
+
+            // -----------------------------------
+            // Is Nullable
+            // [CSSPMaxLength(10)]
+            // labSheetDetail.WaterBath2   (String)
+            // -----------------------------------
+
+            labSheetDetail = null;
+            labSheetDetail = GetFilledRandomLabSheetDetail("");
+            labSheetDetail.WaterBath2 = GetRandomString("", 11);
+            actionLabSheetDetail = await LabSheetDetailService.Post(labSheetDetail);
+            Assert.IsType<BadRequestObjectResult>(actionLabSheetDetail.Result);
+            //Assert.AreEqual(count, labSheetDetailService.GetLabSheetDetailList().Count());
+
+            // -----------------------------------
+            // Is Nullable
+            // [CSSPMaxLength(10)]
+            // labSheetDetail.WaterBath3   (String)
+            // -----------------------------------
+
+            labSheetDetail = null;
+            labSheetDetail = GetFilledRandomLabSheetDetail("");
+            labSheetDetail.WaterBath3 = GetRandomString("", 11);
+            actionLabSheetDetail = await LabSheetDetailService.Post(labSheetDetail);
+            Assert.IsType<BadRequestObjectResult>(actionLabSheetDetail.Result);
+            //Assert.AreEqual(count, labSheetDetailService.GetLabSheetDetailList().Count());
+
+            // -----------------------------------
+            // Is Nullable
+            // [CSSPRange(-10, 40)]
+            // labSheetDetail.TCField1   (Double)
+            // -----------------------------------
+
+            //CSSPError: Type not implemented [TCField1]
+
+            //CSSPError: Type not implemented [TCField1]
+
+            labSheetDetail = null;
+            labSheetDetail = GetFilledRandomLabSheetDetail("");
+            labSheetDetail.TCField1 = -11.0D;
+            actionLabSheetDetail = await LabSheetDetailService.Post(labSheetDetail);
+            Assert.IsType<BadRequestObjectResult>(actionLabSheetDetail.Result);
+            //Assert.AreEqual(count, labSheetDetailService.GetLabSheetDetailList().Count());
+            labSheetDetail = null;
+            labSheetDetail = GetFilledRandomLabSheetDetail("");
+            labSheetDetail.TCField1 = 41.0D;
+            actionLabSheetDetail = await LabSheetDetailService.Post(labSheetDetail);
+            Assert.IsType<BadRequestObjectResult>(actionLabSheetDetail.Result);
+            //Assert.AreEqual(count, labSheetDetailService.GetLabSheetDetailList().Count());
+
+            // -----------------------------------
+            // Is Nullable
+            // [CSSPRange(-10, 40)]
+            // labSheetDetail.TCLab1   (Double)
+            // -----------------------------------
+
+            //CSSPError: Type not implemented [TCLab1]
+
+            //CSSPError: Type not implemented [TCLab1]
+
+            labSheetDetail = null;
+            labSheetDetail = GetFilledRandomLabSheetDetail("");
+            labSheetDetail.TCLab1 = -11.0D;
+            actionLabSheetDetail = await LabSheetDetailService.Post(labSheetDetail);
+            Assert.IsType<BadRequestObjectResult>(actionLabSheetDetail.Result);
+            //Assert.AreEqual(count, labSheetDetailService.GetLabSheetDetailList().Count());
+            labSheetDetail = null;
+            labSheetDetail = GetFilledRandomLabSheetDetail("");
+            labSheetDetail.TCLab1 = 41.0D;
+            actionLabSheetDetail = await LabSheetDetailService.Post(labSheetDetail);
+            Assert.IsType<BadRequestObjectResult>(actionLabSheetDetail.Result);
+            //Assert.AreEqual(count, labSheetDetailService.GetLabSheetDetailList().Count());
+
+            // -----------------------------------
+            // Is Nullable
+            // [CSSPRange(-10, 40)]
+            // labSheetDetail.TCField2   (Double)
+            // -----------------------------------
+
+            //CSSPError: Type not implemented [TCField2]
+
+            //CSSPError: Type not implemented [TCField2]
+
+            labSheetDetail = null;
+            labSheetDetail = GetFilledRandomLabSheetDetail("");
+            labSheetDetail.TCField2 = -11.0D;
+            actionLabSheetDetail = await LabSheetDetailService.Post(labSheetDetail);
+            Assert.IsType<BadRequestObjectResult>(actionLabSheetDetail.Result);
+            //Assert.AreEqual(count, labSheetDetailService.GetLabSheetDetailList().Count());
+            labSheetDetail = null;
+            labSheetDetail = GetFilledRandomLabSheetDetail("");
+            labSheetDetail.TCField2 = 41.0D;
+            actionLabSheetDetail = await LabSheetDetailService.Post(labSheetDetail);
+            Assert.IsType<BadRequestObjectResult>(actionLabSheetDetail.Result);
+            //Assert.AreEqual(count, labSheetDetailService.GetLabSheetDetailList().Count());
+
+            // -----------------------------------
+            // Is Nullable
+            // [CSSPRange(-10, 40)]
+            // labSheetDetail.TCLab2   (Double)
+            // -----------------------------------
+
+            //CSSPError: Type not implemented [TCLab2]
+
+            //CSSPError: Type not implemented [TCLab2]
+
+            labSheetDetail = null;
+            labSheetDetail = GetFilledRandomLabSheetDetail("");
+            labSheetDetail.TCLab2 = -11.0D;
+            actionLabSheetDetail = await LabSheetDetailService.Post(labSheetDetail);
+            Assert.IsType<BadRequestObjectResult>(actionLabSheetDetail.Result);
+            //Assert.AreEqual(count, labSheetDetailService.GetLabSheetDetailList().Count());
+            labSheetDetail = null;
+            labSheetDetail = GetFilledRandomLabSheetDetail("");
+            labSheetDetail.TCLab2 = 41.0D;
+            actionLabSheetDetail = await LabSheetDetailService.Post(labSheetDetail);
+            Assert.IsType<BadRequestObjectResult>(actionLabSheetDetail.Result);
+            //Assert.AreEqual(count, labSheetDetailService.GetLabSheetDetailList().Count());
+
+            // -----------------------------------
+            // Is Nullable
+            // [CSSPRange(-10, 40)]
+            // labSheetDetail.TCFirst   (Double)
+            // -----------------------------------
+
+            //CSSPError: Type not implemented [TCFirst]
+
+            //CSSPError: Type not implemented [TCFirst]
+
+            labSheetDetail = null;
+            labSheetDetail = GetFilledRandomLabSheetDetail("");
+            labSheetDetail.TCFirst = -11.0D;
+            actionLabSheetDetail = await LabSheetDetailService.Post(labSheetDetail);
+            Assert.IsType<BadRequestObjectResult>(actionLabSheetDetail.Result);
+            //Assert.AreEqual(count, labSheetDetailService.GetLabSheetDetailList().Count());
+            labSheetDetail = null;
+            labSheetDetail = GetFilledRandomLabSheetDetail("");
+            labSheetDetail.TCFirst = 41.0D;
+            actionLabSheetDetail = await LabSheetDetailService.Post(labSheetDetail);
+            Assert.IsType<BadRequestObjectResult>(actionLabSheetDetail.Result);
+            //Assert.AreEqual(count, labSheetDetailService.GetLabSheetDetailList().Count());
+
+            // -----------------------------------
+            // Is Nullable
+            // [CSSPRange(-10, 40)]
+            // labSheetDetail.TCAverage   (Double)
+            // -----------------------------------
+
+            //CSSPError: Type not implemented [TCAverage]
+
+            //CSSPError: Type not implemented [TCAverage]
+
+            labSheetDetail = null;
+            labSheetDetail = GetFilledRandomLabSheetDetail("");
+            labSheetDetail.TCAverage = -11.0D;
+            actionLabSheetDetail = await LabSheetDetailService.Post(labSheetDetail);
+            Assert.IsType<BadRequestObjectResult>(actionLabSheetDetail.Result);
+            //Assert.AreEqual(count, labSheetDetailService.GetLabSheetDetailList().Count());
+            labSheetDetail = null;
+            labSheetDetail = GetFilledRandomLabSheetDetail("");
+            labSheetDetail.TCAverage = 41.0D;
+            actionLabSheetDetail = await LabSheetDetailService.Post(labSheetDetail);
+            Assert.IsType<BadRequestObjectResult>(actionLabSheetDetail.Result);
+            //Assert.AreEqual(count, labSheetDetailService.GetLabSheetDetailList().Count());
+
+            // -----------------------------------
+            // Is Nullable
+            // [CSSPMaxLength(100)]
+            // labSheetDetail.ControlLot   (String)
+            // -----------------------------------
+
+            labSheetDetail = null;
+            labSheetDetail = GetFilledRandomLabSheetDetail("");
+            labSheetDetail.ControlLot = GetRandomString("", 101);
+            actionLabSheetDetail = await LabSheetDetailService.Post(labSheetDetail);
+            Assert.IsType<BadRequestObjectResult>(actionLabSheetDetail.Result);
+            //Assert.AreEqual(count, labSheetDetailService.GetLabSheetDetailList().Count());
+
+            // -----------------------------------
+            // Is Nullable
+            // [CSSPMaxLength(1)]
+            // [CSSPMinLength(1)]
+            // labSheetDetail.Positive35   (String)
+            // -----------------------------------
+
+            labSheetDetail = null;
+            labSheetDetail = GetFilledRandomLabSheetDetail("");
+            labSheetDetail = null;
+            labSheetDetail = GetFilledRandomLabSheetDetail("");
+            labSheetDetail.Positive35 = GetRandomString("", 2);
+            actionLabSheetDetail = await LabSheetDetailService.Post(labSheetDetail);
+            Assert.IsType<BadRequestObjectResult>(actionLabSheetDetail.Result);
+            //Assert.AreEqual(count, labSheetDetailService.GetLabSheetDetailList().Count());
+
+            // -----------------------------------
+            // Is Nullable
+            // [CSSPMaxLength(1)]
+            // [CSSPMinLength(1)]
+            // labSheetDetail.NonTarget35   (String)
+            // -----------------------------------
+
+            labSheetDetail = null;
+            labSheetDetail = GetFilledRandomLabSheetDetail("");
+            labSheetDetail = null;
+            labSheetDetail = GetFilledRandomLabSheetDetail("");
+            labSheetDetail.NonTarget35 = GetRandomString("", 2);
+            actionLabSheetDetail = await LabSheetDetailService.Post(labSheetDetail);
+            Assert.IsType<BadRequestObjectResult>(actionLabSheetDetail.Result);
+            //Assert.AreEqual(count, labSheetDetailService.GetLabSheetDetailList().Count());
+
+            // -----------------------------------
+            // Is Nullable
+            // [CSSPMaxLength(1)]
+            // [CSSPMinLength(1)]
+            // labSheetDetail.Negative35   (String)
+            // -----------------------------------
+
+            labSheetDetail = null;
+            labSheetDetail = GetFilledRandomLabSheetDetail("");
+            labSheetDetail = null;
+            labSheetDetail = GetFilledRandomLabSheetDetail("");
+            labSheetDetail.Negative35 = GetRandomString("", 2);
+            actionLabSheetDetail = await LabSheetDetailService.Post(labSheetDetail);
+            Assert.IsType<BadRequestObjectResult>(actionLabSheetDetail.Result);
+            //Assert.AreEqual(count, labSheetDetailService.GetLabSheetDetailList().Count());
+
+            // -----------------------------------
+            // Is Nullable
+            // [CSSPMaxLength(1)]
+            // [CSSPMinLength(1)]
+            // labSheetDetail.Bath1Positive44_5   (String)
+            // -----------------------------------
+
+            labSheetDetail = null;
+            labSheetDetail = GetFilledRandomLabSheetDetail("");
+            labSheetDetail = null;
+            labSheetDetail = GetFilledRandomLabSheetDetail("");
+            labSheetDetail.Bath1Positive44_5 = GetRandomString("", 2);
+            actionLabSheetDetail = await LabSheetDetailService.Post(labSheetDetail);
+            Assert.IsType<BadRequestObjectResult>(actionLabSheetDetail.Result);
+            //Assert.AreEqual(count, labSheetDetailService.GetLabSheetDetailList().Count());
+
+            // -----------------------------------
+            // Is Nullable
+            // [CSSPMaxLength(1)]
+            // [CSSPMinLength(1)]
+            // labSheetDetail.Bath2Positive44_5   (String)
+            // -----------------------------------
+
+            labSheetDetail = null;
+            labSheetDetail = GetFilledRandomLabSheetDetail("");
+            labSheetDetail = null;
+            labSheetDetail = GetFilledRandomLabSheetDetail("");
+            labSheetDetail.Bath2Positive44_5 = GetRandomString("", 2);
+            actionLabSheetDetail = await LabSheetDetailService.Post(labSheetDetail);
+            Assert.IsType<BadRequestObjectResult>(actionLabSheetDetail.Result);
+            //Assert.AreEqual(count, labSheetDetailService.GetLabSheetDetailList().Count());
+
+            // -----------------------------------
+            // Is Nullable
+            // [CSSPMaxLength(1)]
+            // [CSSPMinLength(1)]
+            // labSheetDetail.Bath3Positive44_5   (String)
+            // -----------------------------------
+
+            labSheetDetail = null;
+            labSheetDetail = GetFilledRandomLabSheetDetail("");
+            labSheetDetail = null;
+            labSheetDetail = GetFilledRandomLabSheetDetail("");
+            labSheetDetail.Bath3Positive44_5 = GetRandomString("", 2);
+            actionLabSheetDetail = await LabSheetDetailService.Post(labSheetDetail);
+            Assert.IsType<BadRequestObjectResult>(actionLabSheetDetail.Result);
+            //Assert.AreEqual(count, labSheetDetailService.GetLabSheetDetailList().Count());
+
+            // -----------------------------------
+            // Is Nullable
+            // [CSSPMaxLength(1)]
+            // [CSSPMinLength(1)]
+            // labSheetDetail.Bath1NonTarget44_5   (String)
+            // -----------------------------------
+
+            labSheetDetail = null;
+            labSheetDetail = GetFilledRandomLabSheetDetail("");
+            labSheetDetail = null;
+            labSheetDetail = GetFilledRandomLabSheetDetail("");
+            labSheetDetail.Bath1NonTarget44_5 = GetRandomString("", 2);
+            actionLabSheetDetail = await LabSheetDetailService.Post(labSheetDetail);
+            Assert.IsType<BadRequestObjectResult>(actionLabSheetDetail.Result);
+            //Assert.AreEqual(count, labSheetDetailService.GetLabSheetDetailList().Count());
+
+            // -----------------------------------
+            // Is Nullable
+            // [CSSPMaxLength(1)]
+            // [CSSPMinLength(1)]
+            // labSheetDetail.Bath2NonTarget44_5   (String)
+            // -----------------------------------
+
+            labSheetDetail = null;
+            labSheetDetail = GetFilledRandomLabSheetDetail("");
+            labSheetDetail = null;
+            labSheetDetail = GetFilledRandomLabSheetDetail("");
+            labSheetDetail.Bath2NonTarget44_5 = GetRandomString("", 2);
+            actionLabSheetDetail = await LabSheetDetailService.Post(labSheetDetail);
+            Assert.IsType<BadRequestObjectResult>(actionLabSheetDetail.Result);
+            //Assert.AreEqual(count, labSheetDetailService.GetLabSheetDetailList().Count());
+
+            // -----------------------------------
+            // Is Nullable
+            // [CSSPMaxLength(1)]
+            // [CSSPMinLength(1)]
+            // labSheetDetail.Bath3NonTarget44_5   (String)
+            // -----------------------------------
+
+            labSheetDetail = null;
+            labSheetDetail = GetFilledRandomLabSheetDetail("");
+            labSheetDetail = null;
+            labSheetDetail = GetFilledRandomLabSheetDetail("");
+            labSheetDetail.Bath3NonTarget44_5 = GetRandomString("", 2);
+            actionLabSheetDetail = await LabSheetDetailService.Post(labSheetDetail);
+            Assert.IsType<BadRequestObjectResult>(actionLabSheetDetail.Result);
+            //Assert.AreEqual(count, labSheetDetailService.GetLabSheetDetailList().Count());
+
+            // -----------------------------------
+            // Is Nullable
+            // [CSSPMaxLength(1)]
+            // [CSSPMinLength(1)]
+            // labSheetDetail.Bath1Negative44_5   (String)
+            // -----------------------------------
+
+            labSheetDetail = null;
+            labSheetDetail = GetFilledRandomLabSheetDetail("");
+            labSheetDetail = null;
+            labSheetDetail = GetFilledRandomLabSheetDetail("");
+            labSheetDetail.Bath1Negative44_5 = GetRandomString("", 2);
+            actionLabSheetDetail = await LabSheetDetailService.Post(labSheetDetail);
+            Assert.IsType<BadRequestObjectResult>(actionLabSheetDetail.Result);
+            //Assert.AreEqual(count, labSheetDetailService.GetLabSheetDetailList().Count());
+
+            // -----------------------------------
+            // Is Nullable
+            // [CSSPMaxLength(1)]
+            // [CSSPMinLength(1)]
+            // labSheetDetail.Bath2Negative44_5   (String)
+            // -----------------------------------
+
+            labSheetDetail = null;
+            labSheetDetail = GetFilledRandomLabSheetDetail("");
+            labSheetDetail = null;
+            labSheetDetail = GetFilledRandomLabSheetDetail("");
+            labSheetDetail.Bath2Negative44_5 = GetRandomString("", 2);
+            actionLabSheetDetail = await LabSheetDetailService.Post(labSheetDetail);
+            Assert.IsType<BadRequestObjectResult>(actionLabSheetDetail.Result);
+            //Assert.AreEqual(count, labSheetDetailService.GetLabSheetDetailList().Count());
+
+            // -----------------------------------
+            // Is Nullable
+            // [CSSPMaxLength(1)]
+            // [CSSPMinLength(1)]
+            // labSheetDetail.Bath3Negative44_5   (String)
+            // -----------------------------------
+
+            labSheetDetail = null;
+            labSheetDetail = GetFilledRandomLabSheetDetail("");
+            labSheetDetail = null;
+            labSheetDetail = GetFilledRandomLabSheetDetail("");
+            labSheetDetail.Bath3Negative44_5 = GetRandomString("", 2);
+            actionLabSheetDetail = await LabSheetDetailService.Post(labSheetDetail);
+            Assert.IsType<BadRequestObjectResult>(actionLabSheetDetail.Result);
+            //Assert.AreEqual(count, labSheetDetailService.GetLabSheetDetailList().Count());
+
+            // -----------------------------------
+            // Is Nullable
+            // [CSSPMaxLength(1)]
+            // [CSSPMinLength(1)]
+            // labSheetDetail.Blank35   (String)
+            // -----------------------------------
+
+            labSheetDetail = null;
+            labSheetDetail = GetFilledRandomLabSheetDetail("");
+            labSheetDetail = null;
+            labSheetDetail = GetFilledRandomLabSheetDetail("");
+            labSheetDetail.Blank35 = GetRandomString("", 2);
+            actionLabSheetDetail = await LabSheetDetailService.Post(labSheetDetail);
+            Assert.IsType<BadRequestObjectResult>(actionLabSheetDetail.Result);
+            //Assert.AreEqual(count, labSheetDetailService.GetLabSheetDetailList().Count());
+
+            // -----------------------------------
+            // Is Nullable
+            // [CSSPMaxLength(1)]
+            // [CSSPMinLength(1)]
+            // labSheetDetail.Bath1Blank44_5   (String)
+            // -----------------------------------
+
+            labSheetDetail = null;
+            labSheetDetail = GetFilledRandomLabSheetDetail("");
+            labSheetDetail = null;
+            labSheetDetail = GetFilledRandomLabSheetDetail("");
+            labSheetDetail.Bath1Blank44_5 = GetRandomString("", 2);
+            actionLabSheetDetail = await LabSheetDetailService.Post(labSheetDetail);
+            Assert.IsType<BadRequestObjectResult>(actionLabSheetDetail.Result);
+            //Assert.AreEqual(count, labSheetDetailService.GetLabSheetDetailList().Count());
+
+            // -----------------------------------
+            // Is Nullable
+            // [CSSPMaxLength(1)]
+            // [CSSPMinLength(1)]
+            // labSheetDetail.Bath2Blank44_5   (String)
+            // -----------------------------------
+
+            labSheetDetail = null;
+            labSheetDetail = GetFilledRandomLabSheetDetail("");
+            labSheetDetail = null;
+            labSheetDetail = GetFilledRandomLabSheetDetail("");
+            labSheetDetail.Bath2Blank44_5 = GetRandomString("", 2);
+            actionLabSheetDetail = await LabSheetDetailService.Post(labSheetDetail);
+            Assert.IsType<BadRequestObjectResult>(actionLabSheetDetail.Result);
+            //Assert.AreEqual(count, labSheetDetailService.GetLabSheetDetailList().Count());
+
+            // -----------------------------------
+            // Is Nullable
+            // [CSSPMaxLength(1)]
+            // [CSSPMinLength(1)]
+            // labSheetDetail.Bath3Blank44_5   (String)
+            // -----------------------------------
+
+            labSheetDetail = null;
+            labSheetDetail = GetFilledRandomLabSheetDetail("");
+            labSheetDetail = null;
+            labSheetDetail = GetFilledRandomLabSheetDetail("");
+            labSheetDetail.Bath3Blank44_5 = GetRandomString("", 2);
+            actionLabSheetDetail = await LabSheetDetailService.Post(labSheetDetail);
+            Assert.IsType<BadRequestObjectResult>(actionLabSheetDetail.Result);
+            //Assert.AreEqual(count, labSheetDetailService.GetLabSheetDetailList().Count());
+
+            // -----------------------------------
+            // Is Nullable
+            // [CSSPMaxLength(20)]
+            // labSheetDetail.Lot35   (String)
+            // -----------------------------------
+
+            labSheetDetail = null;
+            labSheetDetail = GetFilledRandomLabSheetDetail("");
+            labSheetDetail.Lot35 = GetRandomString("", 21);
+            actionLabSheetDetail = await LabSheetDetailService.Post(labSheetDetail);
+            Assert.IsType<BadRequestObjectResult>(actionLabSheetDetail.Result);
+            //Assert.AreEqual(count, labSheetDetailService.GetLabSheetDetailList().Count());
+
+            // -----------------------------------
+            // Is Nullable
+            // [CSSPMaxLength(20)]
+            // labSheetDetail.Lot44_5   (String)
+            // -----------------------------------
+
+            labSheetDetail = null;
+            labSheetDetail = GetFilledRandomLabSheetDetail("");
+            labSheetDetail.Lot44_5 = GetRandomString("", 21);
+            actionLabSheetDetail = await LabSheetDetailService.Post(labSheetDetail);
+            Assert.IsType<BadRequestObjectResult>(actionLabSheetDetail.Result);
+            //Assert.AreEqual(count, labSheetDetailService.GetLabSheetDetailList().Count());
+
+            // -----------------------------------
+            // Is Nullable
+            // [CSSPMaxLength(250)]
+            // labSheetDetail.Weather   (String)
+            // -----------------------------------
+
+            labSheetDetail = null;
+            labSheetDetail = GetFilledRandomLabSheetDetail("");
+            labSheetDetail.Weather = GetRandomString("", 251);
+            actionLabSheetDetail = await LabSheetDetailService.Post(labSheetDetail);
+            Assert.IsType<BadRequestObjectResult>(actionLabSheetDetail.Result);
+            //Assert.AreEqual(count, labSheetDetailService.GetLabSheetDetailList().Count());
+
+            // -----------------------------------
+            // Is Nullable
+            // [CSSPMaxLength(250)]
+            // labSheetDetail.RunComment   (String)
+            // -----------------------------------
+
+            labSheetDetail = null;
+            labSheetDetail = GetFilledRandomLabSheetDetail("");
+            labSheetDetail.RunComment = GetRandomString("", 251);
+            actionLabSheetDetail = await LabSheetDetailService.Post(labSheetDetail);
+            Assert.IsType<BadRequestObjectResult>(actionLabSheetDetail.Result);
+            //Assert.AreEqual(count, labSheetDetailService.GetLabSheetDetailList().Count());
+
+            // -----------------------------------
+            // Is Nullable
+            // [CSSPMaxLength(250)]
+            // labSheetDetail.RunWeatherComment   (String)
+            // -----------------------------------
+
+            labSheetDetail = null;
+            labSheetDetail = GetFilledRandomLabSheetDetail("");
+            labSheetDetail.RunWeatherComment = GetRandomString("", 251);
+            actionLabSheetDetail = await LabSheetDetailService.Post(labSheetDetail);
+            Assert.IsType<BadRequestObjectResult>(actionLabSheetDetail.Result);
+            //Assert.AreEqual(count, labSheetDetailService.GetLabSheetDetailList().Count());
+
+            // -----------------------------------
+            // Is Nullable
+            // [CSSPMaxLength(20)]
+            // labSheetDetail.SampleBottleLotNumber   (String)
+            // -----------------------------------
+
+            labSheetDetail = null;
+            labSheetDetail = GetFilledRandomLabSheetDetail("");
+            labSheetDetail.SampleBottleLotNumber = GetRandomString("", 21);
+            actionLabSheetDetail = await LabSheetDetailService.Post(labSheetDetail);
+            Assert.IsType<BadRequestObjectResult>(actionLabSheetDetail.Result);
+            //Assert.AreEqual(count, labSheetDetailService.GetLabSheetDetailList().Count());
+
+            // -----------------------------------
+            // Is Nullable
+            // [CSSPMaxLength(20)]
+            // labSheetDetail.SalinitiesReadBy   (String)
+            // -----------------------------------
+
+            labSheetDetail = null;
+            labSheetDetail = GetFilledRandomLabSheetDetail("");
+            labSheetDetail.SalinitiesReadBy = GetRandomString("", 21);
+            actionLabSheetDetail = await LabSheetDetailService.Post(labSheetDetail);
+            Assert.IsType<BadRequestObjectResult>(actionLabSheetDetail.Result);
+            //Assert.AreEqual(count, labSheetDetailService.GetLabSheetDetailList().Count());
+
+            // -----------------------------------
+            // Is Nullable
+            // [CSSPAfter(Year = 1980)]
+            // labSheetDetail.SalinitiesReadDate   (DateTime)
+            // -----------------------------------
+
+            labSheetDetail = null;
+            labSheetDetail = GetFilledRandomLabSheetDetail("");
+            labSheetDetail.SalinitiesReadDate = new DateTime(1979, 1, 1);
+            actionLabSheetDetail = await LabSheetDetailService.Post(labSheetDetail);
+            Assert.IsType<BadRequestObjectResult>(actionLabSheetDetail.Result);
+
+            // -----------------------------------
+            // Is Nullable
+            // [CSSPMaxLength(20)]
+            // labSheetDetail.ResultsReadBy   (String)
+            // -----------------------------------
+
+            labSheetDetail = null;
+            labSheetDetail = GetFilledRandomLabSheetDetail("");
+            labSheetDetail.ResultsReadBy = GetRandomString("", 21);
+            actionLabSheetDetail = await LabSheetDetailService.Post(labSheetDetail);
+            Assert.IsType<BadRequestObjectResult>(actionLabSheetDetail.Result);
+            //Assert.AreEqual(count, labSheetDetailService.GetLabSheetDetailList().Count());
+
+            // -----------------------------------
+            // Is Nullable
+            // [CSSPAfter(Year = 1980)]
+            // labSheetDetail.ResultsReadDate   (DateTime)
+            // -----------------------------------
+
+            labSheetDetail = null;
+            labSheetDetail = GetFilledRandomLabSheetDetail("");
+            labSheetDetail.ResultsReadDate = new DateTime(1979, 1, 1);
+            actionLabSheetDetail = await LabSheetDetailService.Post(labSheetDetail);
+            Assert.IsType<BadRequestObjectResult>(actionLabSheetDetail.Result);
+
+            // -----------------------------------
+            // Is Nullable
+            // [CSSPMaxLength(20)]
+            // labSheetDetail.ResultsRecordedBy   (String)
+            // -----------------------------------
+
+            labSheetDetail = null;
+            labSheetDetail = GetFilledRandomLabSheetDetail("");
+            labSheetDetail.ResultsRecordedBy = GetRandomString("", 21);
+            actionLabSheetDetail = await LabSheetDetailService.Post(labSheetDetail);
+            Assert.IsType<BadRequestObjectResult>(actionLabSheetDetail.Result);
+            //Assert.AreEqual(count, labSheetDetailService.GetLabSheetDetailList().Count());
+
+            // -----------------------------------
+            // Is Nullable
+            // [CSSPAfter(Year = 1980)]
+            // labSheetDetail.ResultsRecordedDate   (DateTime)
+            // -----------------------------------
+
+            labSheetDetail = null;
+            labSheetDetail = GetFilledRandomLabSheetDetail("");
+            labSheetDetail.ResultsRecordedDate = new DateTime(1979, 1, 1);
+            actionLabSheetDetail = await LabSheetDetailService.Post(labSheetDetail);
+            Assert.IsType<BadRequestObjectResult>(actionLabSheetDetail.Result);
+
+            // -----------------------------------
+            // Is Nullable
+            // [CSSPRange(0, 100)]
+            // labSheetDetail.DailyDuplicateRLog   (Double)
+            // -----------------------------------
+
+            //CSSPError: Type not implemented [DailyDuplicateRLog]
+
+            //CSSPError: Type not implemented [DailyDuplicateRLog]
+
+            labSheetDetail = null;
+            labSheetDetail = GetFilledRandomLabSheetDetail("");
+            labSheetDetail.DailyDuplicateRLog = -1.0D;
+            actionLabSheetDetail = await LabSheetDetailService.Post(labSheetDetail);
+            Assert.IsType<BadRequestObjectResult>(actionLabSheetDetail.Result);
+            //Assert.AreEqual(count, labSheetDetailService.GetLabSheetDetailList().Count());
+            labSheetDetail = null;
+            labSheetDetail = GetFilledRandomLabSheetDetail("");
+            labSheetDetail.DailyDuplicateRLog = 101.0D;
+            actionLabSheetDetail = await LabSheetDetailService.Post(labSheetDetail);
+            Assert.IsType<BadRequestObjectResult>(actionLabSheetDetail.Result);
+            //Assert.AreEqual(count, labSheetDetailService.GetLabSheetDetailList().Count());
+
+            // -----------------------------------
+            // Is Nullable
+            // [CSSPRange(0, 100)]
+            // labSheetDetail.DailyDuplicatePrecisionCriteria   (Double)
+            // -----------------------------------
+
+            //CSSPError: Type not implemented [DailyDuplicatePrecisionCriteria]
+
+            //CSSPError: Type not implemented [DailyDuplicatePrecisionCriteria]
+
+            labSheetDetail = null;
+            labSheetDetail = GetFilledRandomLabSheetDetail("");
+            labSheetDetail.DailyDuplicatePrecisionCriteria = -1.0D;
+            actionLabSheetDetail = await LabSheetDetailService.Post(labSheetDetail);
+            Assert.IsType<BadRequestObjectResult>(actionLabSheetDetail.Result);
+            //Assert.AreEqual(count, labSheetDetailService.GetLabSheetDetailList().Count());
+            labSheetDetail = null;
+            labSheetDetail = GetFilledRandomLabSheetDetail("");
+            labSheetDetail.DailyDuplicatePrecisionCriteria = 101.0D;
+            actionLabSheetDetail = await LabSheetDetailService.Post(labSheetDetail);
+            Assert.IsType<BadRequestObjectResult>(actionLabSheetDetail.Result);
+            //Assert.AreEqual(count, labSheetDetailService.GetLabSheetDetailList().Count());
+
+            // -----------------------------------
+            // Is Nullable
+            // labSheetDetail.DailyDuplicateAcceptable   (Boolean)
+            // -----------------------------------
+
+
+            // -----------------------------------
+            // Is Nullable
+            // [CSSPRange(0, 100)]
+            // labSheetDetail.IntertechDuplicateRLog   (Double)
+            // -----------------------------------
+
+            //CSSPError: Type not implemented [IntertechDuplicateRLog]
+
+            //CSSPError: Type not implemented [IntertechDuplicateRLog]
+
+            labSheetDetail = null;
+            labSheetDetail = GetFilledRandomLabSheetDetail("");
+            labSheetDetail.IntertechDuplicateRLog = -1.0D;
+            actionLabSheetDetail = await LabSheetDetailService.Post(labSheetDetail);
+            Assert.IsType<BadRequestObjectResult>(actionLabSheetDetail.Result);
+            //Assert.AreEqual(count, labSheetDetailService.GetLabSheetDetailList().Count());
+            labSheetDetail = null;
+            labSheetDetail = GetFilledRandomLabSheetDetail("");
+            labSheetDetail.IntertechDuplicateRLog = 101.0D;
+            actionLabSheetDetail = await LabSheetDetailService.Post(labSheetDetail);
+            Assert.IsType<BadRequestObjectResult>(actionLabSheetDetail.Result);
+            //Assert.AreEqual(count, labSheetDetailService.GetLabSheetDetailList().Count());
+
+            // -----------------------------------
+            // Is Nullable
+            // [CSSPRange(0, 100)]
+            // labSheetDetail.IntertechDuplicatePrecisionCriteria   (Double)
+            // -----------------------------------
+
+            //CSSPError: Type not implemented [IntertechDuplicatePrecisionCriteria]
+
+            //CSSPError: Type not implemented [IntertechDuplicatePrecisionCriteria]
+
+            labSheetDetail = null;
+            labSheetDetail = GetFilledRandomLabSheetDetail("");
+            labSheetDetail.IntertechDuplicatePrecisionCriteria = -1.0D;
+            actionLabSheetDetail = await LabSheetDetailService.Post(labSheetDetail);
+            Assert.IsType<BadRequestObjectResult>(actionLabSheetDetail.Result);
+            //Assert.AreEqual(count, labSheetDetailService.GetLabSheetDetailList().Count());
+            labSheetDetail = null;
+            labSheetDetail = GetFilledRandomLabSheetDetail("");
+            labSheetDetail.IntertechDuplicatePrecisionCriteria = 101.0D;
+            actionLabSheetDetail = await LabSheetDetailService.Post(labSheetDetail);
+            Assert.IsType<BadRequestObjectResult>(actionLabSheetDetail.Result);
+            //Assert.AreEqual(count, labSheetDetailService.GetLabSheetDetailList().Count());
+
+            // -----------------------------------
+            // Is Nullable
+            // labSheetDetail.IntertechDuplicateAcceptable   (Boolean)
+            // -----------------------------------
+
+
+            // -----------------------------------
+            // Is Nullable
+            // labSheetDetail.IntertechReadAcceptable   (Boolean)
+            // -----------------------------------
+
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPAfter(Year = 1980)]
+            // labSheetDetail.LastUpdateDate_UTC   (DateTime)
+            // -----------------------------------
+
+            labSheetDetail = null;
+            labSheetDetail = GetFilledRandomLabSheetDetail("");
+            labSheetDetail.LastUpdateDate_UTC = new DateTime();
+            actionLabSheetDetail = await LabSheetDetailService.Post(labSheetDetail);
+            Assert.IsType<BadRequestObjectResult>(actionLabSheetDetail.Result);
+            labSheetDetail = null;
+            labSheetDetail = GetFilledRandomLabSheetDetail("");
+            labSheetDetail.LastUpdateDate_UTC = new DateTime(1979, 1, 1);
+            actionLabSheetDetail = await LabSheetDetailService.Post(labSheetDetail);
+            Assert.IsType<BadRequestObjectResult>(actionLabSheetDetail.Result);
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPExist(ExistTypeName = "TVItem", ExistPlurial = "s", ExistFieldID = "TVItemID", AllowableTVtypeList = Contact)]
+            // labSheetDetail.LastUpdateContactTVItemID   (Int32)
+            // -----------------------------------
+
+            labSheetDetail = null;
+            labSheetDetail = GetFilledRandomLabSheetDetail("");
+            labSheetDetail.LastUpdateContactTVItemID = 0;
+            actionLabSheetDetail = await LabSheetDetailService.Post(labSheetDetail);
+            Assert.IsType<BadRequestObjectResult>(actionLabSheetDetail.Result);
+
+            labSheetDetail = null;
+            labSheetDetail = GetFilledRandomLabSheetDetail("");
+            labSheetDetail.LastUpdateContactTVItemID = 1;
+            actionLabSheetDetail = await LabSheetDetailService.Post(labSheetDetail);
+            Assert.IsType<BadRequestObjectResult>(actionLabSheetDetail.Result);
+
+        }
+        #endregion Tests Generated Properties
 
         #region Functions private
         private async Task DoCRUDTest()
@@ -311,6 +1376,234 @@ namespace CSSPServices.Tests
             }
 
             return labSheetDetail;
+        }
+        private void CheckLabSheetDetailFields(List<LabSheetDetail> labSheetDetailList)
+        {
+            Assert.False(string.IsNullOrWhiteSpace(labSheetDetailList[0].Tides));
+            if (!string.IsNullOrWhiteSpace(labSheetDetailList[0].SampleCrewInitials))
+            {
+                Assert.False(string.IsNullOrWhiteSpace(labSheetDetailList[0].SampleCrewInitials));
+            }
+            if (labSheetDetailList[0].WaterBathCount != null)
+            {
+                Assert.NotNull(labSheetDetailList[0].WaterBathCount);
+            }
+            if (labSheetDetailList[0].IncubationBath1StartTime != null)
+            {
+                Assert.NotNull(labSheetDetailList[0].IncubationBath1StartTime);
+            }
+            if (labSheetDetailList[0].IncubationBath2StartTime != null)
+            {
+                Assert.NotNull(labSheetDetailList[0].IncubationBath2StartTime);
+            }
+            if (labSheetDetailList[0].IncubationBath3StartTime != null)
+            {
+                Assert.NotNull(labSheetDetailList[0].IncubationBath3StartTime);
+            }
+            if (labSheetDetailList[0].IncubationBath1EndTime != null)
+            {
+                Assert.NotNull(labSheetDetailList[0].IncubationBath1EndTime);
+            }
+            if (labSheetDetailList[0].IncubationBath2EndTime != null)
+            {
+                Assert.NotNull(labSheetDetailList[0].IncubationBath2EndTime);
+            }
+            if (labSheetDetailList[0].IncubationBath3EndTime != null)
+            {
+                Assert.NotNull(labSheetDetailList[0].IncubationBath3EndTime);
+            }
+            if (labSheetDetailList[0].IncubationBath1TimeCalculated_minutes != null)
+            {
+                Assert.NotNull(labSheetDetailList[0].IncubationBath1TimeCalculated_minutes);
+            }
+            if (labSheetDetailList[0].IncubationBath2TimeCalculated_minutes != null)
+            {
+                Assert.NotNull(labSheetDetailList[0].IncubationBath2TimeCalculated_minutes);
+            }
+            if (labSheetDetailList[0].IncubationBath3TimeCalculated_minutes != null)
+            {
+                Assert.NotNull(labSheetDetailList[0].IncubationBath3TimeCalculated_minutes);
+            }
+            if (!string.IsNullOrWhiteSpace(labSheetDetailList[0].WaterBath1))
+            {
+                Assert.False(string.IsNullOrWhiteSpace(labSheetDetailList[0].WaterBath1));
+            }
+            if (!string.IsNullOrWhiteSpace(labSheetDetailList[0].WaterBath2))
+            {
+                Assert.False(string.IsNullOrWhiteSpace(labSheetDetailList[0].WaterBath2));
+            }
+            if (!string.IsNullOrWhiteSpace(labSheetDetailList[0].WaterBath3))
+            {
+                Assert.False(string.IsNullOrWhiteSpace(labSheetDetailList[0].WaterBath3));
+            }
+            if (labSheetDetailList[0].TCField1 != null)
+            {
+                Assert.NotNull(labSheetDetailList[0].TCField1);
+            }
+            if (labSheetDetailList[0].TCLab1 != null)
+            {
+                Assert.NotNull(labSheetDetailList[0].TCLab1);
+            }
+            if (labSheetDetailList[0].TCField2 != null)
+            {
+                Assert.NotNull(labSheetDetailList[0].TCField2);
+            }
+            if (labSheetDetailList[0].TCLab2 != null)
+            {
+                Assert.NotNull(labSheetDetailList[0].TCLab2);
+            }
+            if (labSheetDetailList[0].TCFirst != null)
+            {
+                Assert.NotNull(labSheetDetailList[0].TCFirst);
+            }
+            if (labSheetDetailList[0].TCAverage != null)
+            {
+                Assert.NotNull(labSheetDetailList[0].TCAverage);
+            }
+            if (!string.IsNullOrWhiteSpace(labSheetDetailList[0].ControlLot))
+            {
+                Assert.False(string.IsNullOrWhiteSpace(labSheetDetailList[0].ControlLot));
+            }
+            if (!string.IsNullOrWhiteSpace(labSheetDetailList[0].Positive35))
+            {
+                Assert.False(string.IsNullOrWhiteSpace(labSheetDetailList[0].Positive35));
+            }
+            if (!string.IsNullOrWhiteSpace(labSheetDetailList[0].NonTarget35))
+            {
+                Assert.False(string.IsNullOrWhiteSpace(labSheetDetailList[0].NonTarget35));
+            }
+            if (!string.IsNullOrWhiteSpace(labSheetDetailList[0].Negative35))
+            {
+                Assert.False(string.IsNullOrWhiteSpace(labSheetDetailList[0].Negative35));
+            }
+            if (!string.IsNullOrWhiteSpace(labSheetDetailList[0].Bath1Positive44_5))
+            {
+                Assert.False(string.IsNullOrWhiteSpace(labSheetDetailList[0].Bath1Positive44_5));
+            }
+            if (!string.IsNullOrWhiteSpace(labSheetDetailList[0].Bath2Positive44_5))
+            {
+                Assert.False(string.IsNullOrWhiteSpace(labSheetDetailList[0].Bath2Positive44_5));
+            }
+            if (!string.IsNullOrWhiteSpace(labSheetDetailList[0].Bath3Positive44_5))
+            {
+                Assert.False(string.IsNullOrWhiteSpace(labSheetDetailList[0].Bath3Positive44_5));
+            }
+            if (!string.IsNullOrWhiteSpace(labSheetDetailList[0].Bath1NonTarget44_5))
+            {
+                Assert.False(string.IsNullOrWhiteSpace(labSheetDetailList[0].Bath1NonTarget44_5));
+            }
+            if (!string.IsNullOrWhiteSpace(labSheetDetailList[0].Bath2NonTarget44_5))
+            {
+                Assert.False(string.IsNullOrWhiteSpace(labSheetDetailList[0].Bath2NonTarget44_5));
+            }
+            if (!string.IsNullOrWhiteSpace(labSheetDetailList[0].Bath3NonTarget44_5))
+            {
+                Assert.False(string.IsNullOrWhiteSpace(labSheetDetailList[0].Bath3NonTarget44_5));
+            }
+            if (!string.IsNullOrWhiteSpace(labSheetDetailList[0].Bath1Negative44_5))
+            {
+                Assert.False(string.IsNullOrWhiteSpace(labSheetDetailList[0].Bath1Negative44_5));
+            }
+            if (!string.IsNullOrWhiteSpace(labSheetDetailList[0].Bath2Negative44_5))
+            {
+                Assert.False(string.IsNullOrWhiteSpace(labSheetDetailList[0].Bath2Negative44_5));
+            }
+            if (!string.IsNullOrWhiteSpace(labSheetDetailList[0].Bath3Negative44_5))
+            {
+                Assert.False(string.IsNullOrWhiteSpace(labSheetDetailList[0].Bath3Negative44_5));
+            }
+            if (!string.IsNullOrWhiteSpace(labSheetDetailList[0].Blank35))
+            {
+                Assert.False(string.IsNullOrWhiteSpace(labSheetDetailList[0].Blank35));
+            }
+            if (!string.IsNullOrWhiteSpace(labSheetDetailList[0].Bath1Blank44_5))
+            {
+                Assert.False(string.IsNullOrWhiteSpace(labSheetDetailList[0].Bath1Blank44_5));
+            }
+            if (!string.IsNullOrWhiteSpace(labSheetDetailList[0].Bath2Blank44_5))
+            {
+                Assert.False(string.IsNullOrWhiteSpace(labSheetDetailList[0].Bath2Blank44_5));
+            }
+            if (!string.IsNullOrWhiteSpace(labSheetDetailList[0].Bath3Blank44_5))
+            {
+                Assert.False(string.IsNullOrWhiteSpace(labSheetDetailList[0].Bath3Blank44_5));
+            }
+            if (!string.IsNullOrWhiteSpace(labSheetDetailList[0].Lot35))
+            {
+                Assert.False(string.IsNullOrWhiteSpace(labSheetDetailList[0].Lot35));
+            }
+            if (!string.IsNullOrWhiteSpace(labSheetDetailList[0].Lot44_5))
+            {
+                Assert.False(string.IsNullOrWhiteSpace(labSheetDetailList[0].Lot44_5));
+            }
+            if (!string.IsNullOrWhiteSpace(labSheetDetailList[0].Weather))
+            {
+                Assert.False(string.IsNullOrWhiteSpace(labSheetDetailList[0].Weather));
+            }
+            if (!string.IsNullOrWhiteSpace(labSheetDetailList[0].RunComment))
+            {
+                Assert.False(string.IsNullOrWhiteSpace(labSheetDetailList[0].RunComment));
+            }
+            if (!string.IsNullOrWhiteSpace(labSheetDetailList[0].RunWeatherComment))
+            {
+                Assert.False(string.IsNullOrWhiteSpace(labSheetDetailList[0].RunWeatherComment));
+            }
+            if (!string.IsNullOrWhiteSpace(labSheetDetailList[0].SampleBottleLotNumber))
+            {
+                Assert.False(string.IsNullOrWhiteSpace(labSheetDetailList[0].SampleBottleLotNumber));
+            }
+            if (!string.IsNullOrWhiteSpace(labSheetDetailList[0].SalinitiesReadBy))
+            {
+                Assert.False(string.IsNullOrWhiteSpace(labSheetDetailList[0].SalinitiesReadBy));
+            }
+            if (labSheetDetailList[0].SalinitiesReadDate != null)
+            {
+                Assert.NotNull(labSheetDetailList[0].SalinitiesReadDate);
+            }
+            if (!string.IsNullOrWhiteSpace(labSheetDetailList[0].ResultsReadBy))
+            {
+                Assert.False(string.IsNullOrWhiteSpace(labSheetDetailList[0].ResultsReadBy));
+            }
+            if (labSheetDetailList[0].ResultsReadDate != null)
+            {
+                Assert.NotNull(labSheetDetailList[0].ResultsReadDate);
+            }
+            if (!string.IsNullOrWhiteSpace(labSheetDetailList[0].ResultsRecordedBy))
+            {
+                Assert.False(string.IsNullOrWhiteSpace(labSheetDetailList[0].ResultsRecordedBy));
+            }
+            if (labSheetDetailList[0].ResultsRecordedDate != null)
+            {
+                Assert.NotNull(labSheetDetailList[0].ResultsRecordedDate);
+            }
+            if (labSheetDetailList[0].DailyDuplicateRLog != null)
+            {
+                Assert.NotNull(labSheetDetailList[0].DailyDuplicateRLog);
+            }
+            if (labSheetDetailList[0].DailyDuplicatePrecisionCriteria != null)
+            {
+                Assert.NotNull(labSheetDetailList[0].DailyDuplicatePrecisionCriteria);
+            }
+            if (labSheetDetailList[0].DailyDuplicateAcceptable != null)
+            {
+                Assert.NotNull(labSheetDetailList[0].DailyDuplicateAcceptable);
+            }
+            if (labSheetDetailList[0].IntertechDuplicateRLog != null)
+            {
+                Assert.NotNull(labSheetDetailList[0].IntertechDuplicateRLog);
+            }
+            if (labSheetDetailList[0].IntertechDuplicatePrecisionCriteria != null)
+            {
+                Assert.NotNull(labSheetDetailList[0].IntertechDuplicatePrecisionCriteria);
+            }
+            if (labSheetDetailList[0].IntertechDuplicateAcceptable != null)
+            {
+                Assert.NotNull(labSheetDetailList[0].IntertechDuplicateAcceptable);
+            }
+            if (labSheetDetailList[0].IntertechReadAcceptable != null)
+            {
+                Assert.NotNull(labSheetDetailList[0].IntertechReadAcceptable);
+            }
         }
         #endregion Functions private
     }

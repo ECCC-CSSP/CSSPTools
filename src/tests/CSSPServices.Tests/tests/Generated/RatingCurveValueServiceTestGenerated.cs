@@ -19,6 +19,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Transactions;
 using Xunit;
+using System.ComponentModel.DataAnnotations;
 
 namespace CSSPServices.Tests
 {
@@ -81,6 +82,157 @@ namespace CSSPServices.Tests
             }
         }
         #endregion Tests Generated CRUD
+
+        #region Tests Generated Properties
+        [Theory]
+        [InlineData("en-CA", DBLocationEnum.Local)]
+        [InlineData("fr-CA", DBLocationEnum.Local)]
+        [InlineData("en-CA", DBLocationEnum.Server)]
+        [InlineData("fr-CA", DBLocationEnum.Server)]
+        public async Task RatingCurveValue_Properties_Test(string culture, DBLocationEnum DBLocation)
+        {
+            // -------------------------------
+            // -------------------------------
+            // Properties testing
+            // -------------------------------
+            // -------------------------------
+
+            Assert.True(await Setup(culture));
+
+            LoggedInService.DBLocation = DBLocation;
+
+            int count = 0;
+            if (count == 1)
+            {
+                // just so we don't get a warning during compile [The variable 'count' is assigned but its value is never used]
+            }
+
+            var actionRatingCurveValueList = await RatingCurveValueService.GetRatingCurveValueList();
+            Assert.Equal(200, ((ObjectResult)actionRatingCurveValueList.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionRatingCurveValueList.Result).Value);
+            List<RatingCurveValue> ratingCurveValueList = (List<RatingCurveValue>)((OkObjectResult)actionRatingCurveValueList.Result).Value;
+
+            count = ratingCurveValueList.Count();
+
+            RatingCurveValue ratingCurveValue = GetFilledRandomRatingCurveValue("");
+
+
+            // -----------------------------------
+            // [Key]
+            // Is NOT Nullable
+            // ratingCurveValue.RatingCurveValueID   (Int32)
+            // -----------------------------------
+
+            ratingCurveValue = null;
+            ratingCurveValue = GetFilledRandomRatingCurveValue("");
+            ratingCurveValue.RatingCurveValueID = 0;
+
+            var actionRatingCurveValue = await RatingCurveValueService.Put(ratingCurveValue);
+            Assert.IsType<BadRequestObjectResult>(actionRatingCurveValue.Result);
+
+            ratingCurveValue = null;
+            ratingCurveValue = GetFilledRandomRatingCurveValue("");
+            ratingCurveValue.RatingCurveValueID = 10000000;
+            actionRatingCurveValue = await RatingCurveValueService.Put(ratingCurveValue);
+            Assert.IsType<BadRequestObjectResult>(actionRatingCurveValue.Result);
+
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPExist(ExistTypeName = "RatingCurve", ExistPlurial = "s", ExistFieldID = "RatingCurveID", AllowableTVtypeList = )]
+            // ratingCurveValue.RatingCurveID   (Int32)
+            // -----------------------------------
+
+            ratingCurveValue = null;
+            ratingCurveValue = GetFilledRandomRatingCurveValue("");
+            ratingCurveValue.RatingCurveID = 0;
+            actionRatingCurveValue = await RatingCurveValueService.Post(ratingCurveValue);
+            Assert.IsType<BadRequestObjectResult>(actionRatingCurveValue.Result);
+
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPRange(0, 1000)]
+            // ratingCurveValue.StageValue_m   (Double)
+            // -----------------------------------
+
+            //CSSPError: Type not implemented [StageValue_m]
+
+            //CSSPError: Type not implemented [StageValue_m]
+
+            ratingCurveValue = null;
+            ratingCurveValue = GetFilledRandomRatingCurveValue("");
+            ratingCurveValue.StageValue_m = -1.0D;
+            actionRatingCurveValue = await RatingCurveValueService.Post(ratingCurveValue);
+            Assert.IsType<BadRequestObjectResult>(actionRatingCurveValue.Result);
+            //Assert.AreEqual(count, ratingCurveValueService.GetRatingCurveValueList().Count());
+            ratingCurveValue = null;
+            ratingCurveValue = GetFilledRandomRatingCurveValue("");
+            ratingCurveValue.StageValue_m = 1001.0D;
+            actionRatingCurveValue = await RatingCurveValueService.Post(ratingCurveValue);
+            Assert.IsType<BadRequestObjectResult>(actionRatingCurveValue.Result);
+            //Assert.AreEqual(count, ratingCurveValueService.GetRatingCurveValueList().Count());
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPRange(0, 1000000)]
+            // ratingCurveValue.DischargeValue_m3_s   (Double)
+            // -----------------------------------
+
+            //CSSPError: Type not implemented [DischargeValue_m3_s]
+
+            //CSSPError: Type not implemented [DischargeValue_m3_s]
+
+            ratingCurveValue = null;
+            ratingCurveValue = GetFilledRandomRatingCurveValue("");
+            ratingCurveValue.DischargeValue_m3_s = -1.0D;
+            actionRatingCurveValue = await RatingCurveValueService.Post(ratingCurveValue);
+            Assert.IsType<BadRequestObjectResult>(actionRatingCurveValue.Result);
+            //Assert.AreEqual(count, ratingCurveValueService.GetRatingCurveValueList().Count());
+            ratingCurveValue = null;
+            ratingCurveValue = GetFilledRandomRatingCurveValue("");
+            ratingCurveValue.DischargeValue_m3_s = 1000001.0D;
+            actionRatingCurveValue = await RatingCurveValueService.Post(ratingCurveValue);
+            Assert.IsType<BadRequestObjectResult>(actionRatingCurveValue.Result);
+            //Assert.AreEqual(count, ratingCurveValueService.GetRatingCurveValueList().Count());
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPAfter(Year = 1980)]
+            // ratingCurveValue.LastUpdateDate_UTC   (DateTime)
+            // -----------------------------------
+
+            ratingCurveValue = null;
+            ratingCurveValue = GetFilledRandomRatingCurveValue("");
+            ratingCurveValue.LastUpdateDate_UTC = new DateTime();
+            actionRatingCurveValue = await RatingCurveValueService.Post(ratingCurveValue);
+            Assert.IsType<BadRequestObjectResult>(actionRatingCurveValue.Result);
+            ratingCurveValue = null;
+            ratingCurveValue = GetFilledRandomRatingCurveValue("");
+            ratingCurveValue.LastUpdateDate_UTC = new DateTime(1979, 1, 1);
+            actionRatingCurveValue = await RatingCurveValueService.Post(ratingCurveValue);
+            Assert.IsType<BadRequestObjectResult>(actionRatingCurveValue.Result);
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPExist(ExistTypeName = "TVItem", ExistPlurial = "s", ExistFieldID = "TVItemID", AllowableTVtypeList = Contact)]
+            // ratingCurveValue.LastUpdateContactTVItemID   (Int32)
+            // -----------------------------------
+
+            ratingCurveValue = null;
+            ratingCurveValue = GetFilledRandomRatingCurveValue("");
+            ratingCurveValue.LastUpdateContactTVItemID = 0;
+            actionRatingCurveValue = await RatingCurveValueService.Post(ratingCurveValue);
+            Assert.IsType<BadRequestObjectResult>(actionRatingCurveValue.Result);
+
+            ratingCurveValue = null;
+            ratingCurveValue = GetFilledRandomRatingCurveValue("");
+            ratingCurveValue.LastUpdateContactTVItemID = 1;
+            actionRatingCurveValue = await RatingCurveValueService.Post(ratingCurveValue);
+            Assert.IsType<BadRequestObjectResult>(actionRatingCurveValue.Result);
+
+        }
+        #endregion Tests Generated Properties
 
         #region Functions private
         private async Task DoCRUDTest()
@@ -234,6 +386,9 @@ namespace CSSPServices.Tests
             }
 
             return ratingCurveValue;
+        }
+        private void CheckRatingCurveValueFields(List<RatingCurveValue> ratingCurveValueList)
+        {
         }
         #endregion Functions private
     }

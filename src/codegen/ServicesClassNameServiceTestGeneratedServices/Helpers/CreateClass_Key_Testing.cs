@@ -8,17 +8,32 @@ namespace ServicesClassNameServiceTestGeneratedServices.Services
     {
         private async Task<bool> CreateClass_Key_Testing(CSSPProp csspProp, string TypeName, string TypeNameLower, StringBuilder sb)
         {
-            sb.AppendLine($@"                    { TypeNameLower } = null;");
-            sb.AppendLine($@"                    { TypeNameLower } = GetFilledRandom{ TypeName }("""");");
-            sb.AppendLine($@"                    { TypeNameLower }.{ csspProp.PropName } = 0;");
-            sb.AppendLine($@"                    { TypeNameLower }Service.Update({ TypeNameLower });");
-            sb.AppendLine($@"                    Assert.AreEqual(string.Format(CSSPServicesRes._IsRequired, ""{ csspProp.PropName }""), { TypeNameLower }.ValidationResults.FirstOrDefault().ErrorMessage);");
+            sb.AppendLine($@"            { TypeNameLower } = null;");
+            sb.AppendLine($@"            { TypeNameLower } = GetFilledRandom{ TypeName }("""");");
+            if (TypeName == "AspNetUser")
+            {
+                sb.AppendLine($@"            { TypeNameLower }.{ csspProp.PropName } = """";");
+            }
+            else
+            {
+                sb.AppendLine($@"            { TypeNameLower }.{ csspProp.PropName } = 0;");
+            }
             sb.AppendLine(@"");
-            sb.AppendLine($@"                    { TypeNameLower } = null;");
-            sb.AppendLine($@"                    { TypeNameLower } = GetFilledRandom{ TypeName }("""");");
-            sb.AppendLine($@"                    { TypeNameLower }.{ csspProp.PropName } = 10000000;");
-            sb.AppendLine($@"                    { TypeNameLower }Service.Update({ TypeNameLower });");
-            sb.AppendLine($@"                    Assert.AreEqual(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, ""{ TypeName }"", ""{ csspProp.PropName }"", { TypeNameLower }.{ csspProp.PropName }.ToString()), { TypeNameLower }.ValidationResults.FirstOrDefault().ErrorMessage);");
+            sb.AppendLine($@"            var action{ TypeName } = await { TypeName }Service.Put({ TypeNameLower });");
+            sb.AppendLine($@"            Assert.IsType<BadRequestObjectResult>(action{ TypeName }.Result);");
+            sb.AppendLine(@"");
+            sb.AppendLine($@"            { TypeNameLower } = null;");
+            sb.AppendLine($@"            { TypeNameLower } = GetFilledRandom{ TypeName }("""");");
+            if (TypeName == "AspNetUser")
+            {
+                sb.AppendLine($@"            { TypeNameLower }.{ csspProp.PropName } = ""silefjilsefjsliejlsjflisjefl"";");
+            }
+            else
+            {
+                sb.AppendLine($@"            { TypeNameLower }.{ csspProp.PropName } = 10000000;");
+            }
+            sb.AppendLine($@"            action{ TypeName } = await { TypeName }Service.Put({ TypeNameLower });");
+            sb.AppendLine($@"            Assert.IsType<BadRequestObjectResult>(action{ TypeName }.Result);");
             sb.AppendLine(@"");
 
             return await Task.FromResult(true);

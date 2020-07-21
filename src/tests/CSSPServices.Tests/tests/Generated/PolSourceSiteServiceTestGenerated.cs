@@ -19,6 +19,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Transactions;
 using Xunit;
+using System.ComponentModel.DataAnnotations;
 
 namespace CSSPServices.Tests
 {
@@ -81,6 +82,225 @@ namespace CSSPServices.Tests
             }
         }
         #endregion Tests Generated CRUD
+
+        #region Tests Generated Properties
+        [Theory]
+        [InlineData("en-CA", DBLocationEnum.Local)]
+        [InlineData("fr-CA", DBLocationEnum.Local)]
+        [InlineData("en-CA", DBLocationEnum.Server)]
+        [InlineData("fr-CA", DBLocationEnum.Server)]
+        public async Task PolSourceSite_Properties_Test(string culture, DBLocationEnum DBLocation)
+        {
+            // -------------------------------
+            // -------------------------------
+            // Properties testing
+            // -------------------------------
+            // -------------------------------
+
+            Assert.True(await Setup(culture));
+
+            LoggedInService.DBLocation = DBLocation;
+
+            int count = 0;
+            if (count == 1)
+            {
+                // just so we don't get a warning during compile [The variable 'count' is assigned but its value is never used]
+            }
+
+            var actionPolSourceSiteList = await PolSourceSiteService.GetPolSourceSiteList();
+            Assert.Equal(200, ((ObjectResult)actionPolSourceSiteList.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionPolSourceSiteList.Result).Value);
+            List<PolSourceSite> polSourceSiteList = (List<PolSourceSite>)((OkObjectResult)actionPolSourceSiteList.Result).Value;
+
+            count = polSourceSiteList.Count();
+
+            PolSourceSite polSourceSite = GetFilledRandomPolSourceSite("");
+
+
+            // -----------------------------------
+            // [Key]
+            // Is NOT Nullable
+            // polSourceSite.PolSourceSiteID   (Int32)
+            // -----------------------------------
+
+            polSourceSite = null;
+            polSourceSite = GetFilledRandomPolSourceSite("");
+            polSourceSite.PolSourceSiteID = 0;
+
+            var actionPolSourceSite = await PolSourceSiteService.Put(polSourceSite);
+            Assert.IsType<BadRequestObjectResult>(actionPolSourceSite.Result);
+
+            polSourceSite = null;
+            polSourceSite = GetFilledRandomPolSourceSite("");
+            polSourceSite.PolSourceSiteID = 10000000;
+            actionPolSourceSite = await PolSourceSiteService.Put(polSourceSite);
+            Assert.IsType<BadRequestObjectResult>(actionPolSourceSite.Result);
+
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPExist(ExistTypeName = "TVItem", ExistPlurial = "s", ExistFieldID = "TVItemID", AllowableTVtypeList = PolSourceSite)]
+            // polSourceSite.PolSourceSiteTVItemID   (Int32)
+            // -----------------------------------
+
+            polSourceSite = null;
+            polSourceSite = GetFilledRandomPolSourceSite("");
+            polSourceSite.PolSourceSiteTVItemID = 0;
+            actionPolSourceSite = await PolSourceSiteService.Post(polSourceSite);
+            Assert.IsType<BadRequestObjectResult>(actionPolSourceSite.Result);
+
+            polSourceSite = null;
+            polSourceSite = GetFilledRandomPolSourceSite("");
+            polSourceSite.PolSourceSiteTVItemID = 1;
+            actionPolSourceSite = await PolSourceSiteService.Post(polSourceSite);
+            Assert.IsType<BadRequestObjectResult>(actionPolSourceSite.Result);
+
+
+            // -----------------------------------
+            // Is Nullable
+            // [CSSPMaxLength(50)]
+            // polSourceSite.Temp_Locator_CanDelete   (String)
+            // -----------------------------------
+
+            polSourceSite = null;
+            polSourceSite = GetFilledRandomPolSourceSite("");
+            polSourceSite.Temp_Locator_CanDelete = GetRandomString("", 51);
+            actionPolSourceSite = await PolSourceSiteService.Post(polSourceSite);
+            Assert.IsType<BadRequestObjectResult>(actionPolSourceSite.Result);
+            //Assert.AreEqual(count, polSourceSiteService.GetPolSourceSiteList().Count());
+
+            // -----------------------------------
+            // Is Nullable
+            // [CSSPRange(0, 1000)]
+            // polSourceSite.Oldsiteid   (Int32)
+            // -----------------------------------
+
+            polSourceSite = null;
+            polSourceSite = GetFilledRandomPolSourceSite("");
+            polSourceSite.Oldsiteid = -1;
+            actionPolSourceSite = await PolSourceSiteService.Post(polSourceSite);
+            Assert.IsType<BadRequestObjectResult>(actionPolSourceSite.Result);
+            //Assert.AreEqual(count, polSourceSiteService.GetPolSourceSiteList().Count());
+            polSourceSite = null;
+            polSourceSite = GetFilledRandomPolSourceSite("");
+            polSourceSite.Oldsiteid = 1001;
+            actionPolSourceSite = await PolSourceSiteService.Post(polSourceSite);
+            Assert.IsType<BadRequestObjectResult>(actionPolSourceSite.Result);
+            //Assert.AreEqual(count, polSourceSiteService.GetPolSourceSiteList().Count());
+
+            // -----------------------------------
+            // Is Nullable
+            // [CSSPRange(0, 1000)]
+            // polSourceSite.Site   (Int32)
+            // -----------------------------------
+
+            polSourceSite = null;
+            polSourceSite = GetFilledRandomPolSourceSite("");
+            polSourceSite.Site = -1;
+            actionPolSourceSite = await PolSourceSiteService.Post(polSourceSite);
+            Assert.IsType<BadRequestObjectResult>(actionPolSourceSite.Result);
+            //Assert.AreEqual(count, polSourceSiteService.GetPolSourceSiteList().Count());
+            polSourceSite = null;
+            polSourceSite = GetFilledRandomPolSourceSite("");
+            polSourceSite.Site = 1001;
+            actionPolSourceSite = await PolSourceSiteService.Post(polSourceSite);
+            Assert.IsType<BadRequestObjectResult>(actionPolSourceSite.Result);
+            //Assert.AreEqual(count, polSourceSiteService.GetPolSourceSiteList().Count());
+
+            // -----------------------------------
+            // Is Nullable
+            // [CSSPRange(0, 1000)]
+            // polSourceSite.SiteID   (Int32)
+            // -----------------------------------
+
+            polSourceSite = null;
+            polSourceSite = GetFilledRandomPolSourceSite("");
+            polSourceSite.SiteID = -1;
+            actionPolSourceSite = await PolSourceSiteService.Post(polSourceSite);
+            Assert.IsType<BadRequestObjectResult>(actionPolSourceSite.Result);
+            //Assert.AreEqual(count, polSourceSiteService.GetPolSourceSiteList().Count());
+            polSourceSite = null;
+            polSourceSite = GetFilledRandomPolSourceSite("");
+            polSourceSite.SiteID = 1001;
+            actionPolSourceSite = await PolSourceSiteService.Post(polSourceSite);
+            Assert.IsType<BadRequestObjectResult>(actionPolSourceSite.Result);
+            //Assert.AreEqual(count, polSourceSiteService.GetPolSourceSiteList().Count());
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // polSourceSite.IsPointSource   (Boolean)
+            // -----------------------------------
+
+
+            // -----------------------------------
+            // Is Nullable
+            // [CSSPEnumType]
+            // polSourceSite.InactiveReason   (PolSourceInactiveReasonEnum)
+            // -----------------------------------
+
+            polSourceSite = null;
+            polSourceSite = GetFilledRandomPolSourceSite("");
+            polSourceSite.InactiveReason = (PolSourceInactiveReasonEnum)1000000;
+            actionPolSourceSite = await PolSourceSiteService.Post(polSourceSite);
+            Assert.IsType<BadRequestObjectResult>(actionPolSourceSite.Result);
+
+
+            // -----------------------------------
+            // Is Nullable
+            // [CSSPExist(ExistTypeName = "TVItem", ExistPlurial = "s", ExistFieldID = "TVItemID", AllowableTVtypeList = Address)]
+            // polSourceSite.CivicAddressTVItemID   (Int32)
+            // -----------------------------------
+
+            polSourceSite = null;
+            polSourceSite = GetFilledRandomPolSourceSite("");
+            polSourceSite.CivicAddressTVItemID = 0;
+            actionPolSourceSite = await PolSourceSiteService.Post(polSourceSite);
+            Assert.IsType<BadRequestObjectResult>(actionPolSourceSite.Result);
+
+            polSourceSite = null;
+            polSourceSite = GetFilledRandomPolSourceSite("");
+            polSourceSite.CivicAddressTVItemID = 1;
+            actionPolSourceSite = await PolSourceSiteService.Post(polSourceSite);
+            Assert.IsType<BadRequestObjectResult>(actionPolSourceSite.Result);
+
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPAfter(Year = 1980)]
+            // polSourceSite.LastUpdateDate_UTC   (DateTime)
+            // -----------------------------------
+
+            polSourceSite = null;
+            polSourceSite = GetFilledRandomPolSourceSite("");
+            polSourceSite.LastUpdateDate_UTC = new DateTime();
+            actionPolSourceSite = await PolSourceSiteService.Post(polSourceSite);
+            Assert.IsType<BadRequestObjectResult>(actionPolSourceSite.Result);
+            polSourceSite = null;
+            polSourceSite = GetFilledRandomPolSourceSite("");
+            polSourceSite.LastUpdateDate_UTC = new DateTime(1979, 1, 1);
+            actionPolSourceSite = await PolSourceSiteService.Post(polSourceSite);
+            Assert.IsType<BadRequestObjectResult>(actionPolSourceSite.Result);
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPExist(ExistTypeName = "TVItem", ExistPlurial = "s", ExistFieldID = "TVItemID", AllowableTVtypeList = Contact)]
+            // polSourceSite.LastUpdateContactTVItemID   (Int32)
+            // -----------------------------------
+
+            polSourceSite = null;
+            polSourceSite = GetFilledRandomPolSourceSite("");
+            polSourceSite.LastUpdateContactTVItemID = 0;
+            actionPolSourceSite = await PolSourceSiteService.Post(polSourceSite);
+            Assert.IsType<BadRequestObjectResult>(actionPolSourceSite.Result);
+
+            polSourceSite = null;
+            polSourceSite = GetFilledRandomPolSourceSite("");
+            polSourceSite.LastUpdateContactTVItemID = 1;
+            actionPolSourceSite = await PolSourceSiteService.Post(polSourceSite);
+            Assert.IsType<BadRequestObjectResult>(actionPolSourceSite.Result);
+
+        }
+        #endregion Tests Generated Properties
 
         #region Functions private
         private async Task DoCRUDTest()
@@ -248,6 +468,33 @@ namespace CSSPServices.Tests
             }
 
             return polSourceSite;
+        }
+        private void CheckPolSourceSiteFields(List<PolSourceSite> polSourceSiteList)
+        {
+            if (!string.IsNullOrWhiteSpace(polSourceSiteList[0].Temp_Locator_CanDelete))
+            {
+                Assert.False(string.IsNullOrWhiteSpace(polSourceSiteList[0].Temp_Locator_CanDelete));
+            }
+            if (polSourceSiteList[0].Oldsiteid != null)
+            {
+                Assert.NotNull(polSourceSiteList[0].Oldsiteid);
+            }
+            if (polSourceSiteList[0].Site != null)
+            {
+                Assert.NotNull(polSourceSiteList[0].Site);
+            }
+            if (polSourceSiteList[0].SiteID != null)
+            {
+                Assert.NotNull(polSourceSiteList[0].SiteID);
+            }
+            if (polSourceSiteList[0].InactiveReason != null)
+            {
+                Assert.NotNull(polSourceSiteList[0].InactiveReason);
+            }
+            if (polSourceSiteList[0].CivicAddressTVItemID != null)
+            {
+                Assert.NotNull(polSourceSiteList[0].CivicAddressTVItemID);
+            }
         }
         #endregion Functions private
     }

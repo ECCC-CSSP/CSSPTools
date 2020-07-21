@@ -19,6 +19,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Transactions;
 using Xunit;
+using System.ComponentModel.DataAnnotations;
 
 namespace CSSPServices.Tests
 {
@@ -81,6 +82,263 @@ namespace CSSPServices.Tests
             }
         }
         #endregion Tests Generated CRUD
+
+        #region Tests Generated Properties
+        [Theory]
+        [InlineData("en-CA", DBLocationEnum.Local)]
+        [InlineData("fr-CA", DBLocationEnum.Local)]
+        [InlineData("en-CA", DBLocationEnum.Server)]
+        [InlineData("fr-CA", DBLocationEnum.Server)]
+        public async Task MikeBoundaryCondition_Properties_Test(string culture, DBLocationEnum DBLocation)
+        {
+            // -------------------------------
+            // -------------------------------
+            // Properties testing
+            // -------------------------------
+            // -------------------------------
+
+            Assert.True(await Setup(culture));
+
+            LoggedInService.DBLocation = DBLocation;
+
+            int count = 0;
+            if (count == 1)
+            {
+                // just so we don't get a warning during compile [The variable 'count' is assigned but its value is never used]
+            }
+
+            var actionMikeBoundaryConditionList = await MikeBoundaryConditionService.GetMikeBoundaryConditionList();
+            Assert.Equal(200, ((ObjectResult)actionMikeBoundaryConditionList.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionMikeBoundaryConditionList.Result).Value);
+            List<MikeBoundaryCondition> mikeBoundaryConditionList = (List<MikeBoundaryCondition>)((OkObjectResult)actionMikeBoundaryConditionList.Result).Value;
+
+            count = mikeBoundaryConditionList.Count();
+
+            MikeBoundaryCondition mikeBoundaryCondition = GetFilledRandomMikeBoundaryCondition("");
+
+
+            // -----------------------------------
+            // [Key]
+            // Is NOT Nullable
+            // mikeBoundaryCondition.MikeBoundaryConditionID   (Int32)
+            // -----------------------------------
+
+            mikeBoundaryCondition = null;
+            mikeBoundaryCondition = GetFilledRandomMikeBoundaryCondition("");
+            mikeBoundaryCondition.MikeBoundaryConditionID = 0;
+
+            var actionMikeBoundaryCondition = await MikeBoundaryConditionService.Put(mikeBoundaryCondition);
+            Assert.IsType<BadRequestObjectResult>(actionMikeBoundaryCondition.Result);
+
+            mikeBoundaryCondition = null;
+            mikeBoundaryCondition = GetFilledRandomMikeBoundaryCondition("");
+            mikeBoundaryCondition.MikeBoundaryConditionID = 10000000;
+            actionMikeBoundaryCondition = await MikeBoundaryConditionService.Put(mikeBoundaryCondition);
+            Assert.IsType<BadRequestObjectResult>(actionMikeBoundaryCondition.Result);
+
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPExist(ExistTypeName = "TVItem", ExistPlurial = "s", ExistFieldID = "TVItemID", AllowableTVtypeList = MikeBoundaryConditionMesh,MikeBoundaryConditionWebTide)]
+            // mikeBoundaryCondition.MikeBoundaryConditionTVItemID   (Int32)
+            // -----------------------------------
+
+            mikeBoundaryCondition = null;
+            mikeBoundaryCondition = GetFilledRandomMikeBoundaryCondition("");
+            mikeBoundaryCondition.MikeBoundaryConditionTVItemID = 0;
+            actionMikeBoundaryCondition = await MikeBoundaryConditionService.Post(mikeBoundaryCondition);
+            Assert.IsType<BadRequestObjectResult>(actionMikeBoundaryCondition.Result);
+
+            mikeBoundaryCondition = null;
+            mikeBoundaryCondition = GetFilledRandomMikeBoundaryCondition("");
+            mikeBoundaryCondition.MikeBoundaryConditionTVItemID = 1;
+            actionMikeBoundaryCondition = await MikeBoundaryConditionService.Post(mikeBoundaryCondition);
+            Assert.IsType<BadRequestObjectResult>(actionMikeBoundaryCondition.Result);
+
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPMaxLength(100)]
+            // mikeBoundaryCondition.MikeBoundaryConditionCode   (String)
+            // -----------------------------------
+
+            mikeBoundaryCondition = null;
+            mikeBoundaryCondition = GetFilledRandomMikeBoundaryCondition("MikeBoundaryConditionCode");
+            actionMikeBoundaryCondition = await MikeBoundaryConditionService.Post(mikeBoundaryCondition);
+            Assert.IsType<BadRequestObjectResult>(actionMikeBoundaryCondition.Result);
+
+            mikeBoundaryCondition = null;
+            mikeBoundaryCondition = GetFilledRandomMikeBoundaryCondition("");
+            mikeBoundaryCondition.MikeBoundaryConditionCode = GetRandomString("", 101);
+            actionMikeBoundaryCondition = await MikeBoundaryConditionService.Post(mikeBoundaryCondition);
+            Assert.IsType<BadRequestObjectResult>(actionMikeBoundaryCondition.Result);
+            //Assert.AreEqual(count, mikeBoundaryConditionService.GetMikeBoundaryConditionList().Count());
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPMaxLength(100)]
+            // mikeBoundaryCondition.MikeBoundaryConditionName   (String)
+            // -----------------------------------
+
+            mikeBoundaryCondition = null;
+            mikeBoundaryCondition = GetFilledRandomMikeBoundaryCondition("MikeBoundaryConditionName");
+            actionMikeBoundaryCondition = await MikeBoundaryConditionService.Post(mikeBoundaryCondition);
+            Assert.IsType<BadRequestObjectResult>(actionMikeBoundaryCondition.Result);
+
+            mikeBoundaryCondition = null;
+            mikeBoundaryCondition = GetFilledRandomMikeBoundaryCondition("");
+            mikeBoundaryCondition.MikeBoundaryConditionName = GetRandomString("", 101);
+            actionMikeBoundaryCondition = await MikeBoundaryConditionService.Post(mikeBoundaryCondition);
+            Assert.IsType<BadRequestObjectResult>(actionMikeBoundaryCondition.Result);
+            //Assert.AreEqual(count, mikeBoundaryConditionService.GetMikeBoundaryConditionList().Count());
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPRange(1, 100000)]
+            // mikeBoundaryCondition.MikeBoundaryConditionLength_m   (Double)
+            // -----------------------------------
+
+            //CSSPError: Type not implemented [MikeBoundaryConditionLength_m]
+
+            //CSSPError: Type not implemented [MikeBoundaryConditionLength_m]
+
+            mikeBoundaryCondition = null;
+            mikeBoundaryCondition = GetFilledRandomMikeBoundaryCondition("");
+            mikeBoundaryCondition.MikeBoundaryConditionLength_m = 0.0D;
+            actionMikeBoundaryCondition = await MikeBoundaryConditionService.Post(mikeBoundaryCondition);
+            Assert.IsType<BadRequestObjectResult>(actionMikeBoundaryCondition.Result);
+            //Assert.AreEqual(count, mikeBoundaryConditionService.GetMikeBoundaryConditionList().Count());
+            mikeBoundaryCondition = null;
+            mikeBoundaryCondition = GetFilledRandomMikeBoundaryCondition("");
+            mikeBoundaryCondition.MikeBoundaryConditionLength_m = 100001.0D;
+            actionMikeBoundaryCondition = await MikeBoundaryConditionService.Post(mikeBoundaryCondition);
+            Assert.IsType<BadRequestObjectResult>(actionMikeBoundaryCondition.Result);
+            //Assert.AreEqual(count, mikeBoundaryConditionService.GetMikeBoundaryConditionList().Count());
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPMaxLength(100)]
+            // mikeBoundaryCondition.MikeBoundaryConditionFormat   (String)
+            // -----------------------------------
+
+            mikeBoundaryCondition = null;
+            mikeBoundaryCondition = GetFilledRandomMikeBoundaryCondition("MikeBoundaryConditionFormat");
+            actionMikeBoundaryCondition = await MikeBoundaryConditionService.Post(mikeBoundaryCondition);
+            Assert.IsType<BadRequestObjectResult>(actionMikeBoundaryCondition.Result);
+
+            mikeBoundaryCondition = null;
+            mikeBoundaryCondition = GetFilledRandomMikeBoundaryCondition("");
+            mikeBoundaryCondition.MikeBoundaryConditionFormat = GetRandomString("", 101);
+            actionMikeBoundaryCondition = await MikeBoundaryConditionService.Post(mikeBoundaryCondition);
+            Assert.IsType<BadRequestObjectResult>(actionMikeBoundaryCondition.Result);
+            //Assert.AreEqual(count, mikeBoundaryConditionService.GetMikeBoundaryConditionList().Count());
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPEnumType]
+            // mikeBoundaryCondition.MikeBoundaryConditionLevelOrVelocity   (MikeBoundaryConditionLevelOrVelocityEnum)
+            // -----------------------------------
+
+            mikeBoundaryCondition = null;
+            mikeBoundaryCondition = GetFilledRandomMikeBoundaryCondition("");
+            mikeBoundaryCondition.MikeBoundaryConditionLevelOrVelocity = (MikeBoundaryConditionLevelOrVelocityEnum)1000000;
+            actionMikeBoundaryCondition = await MikeBoundaryConditionService.Post(mikeBoundaryCondition);
+            Assert.IsType<BadRequestObjectResult>(actionMikeBoundaryCondition.Result);
+
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPEnumType]
+            // mikeBoundaryCondition.WebTideDataSet   (WebTideDataSetEnum)
+            // -----------------------------------
+
+            mikeBoundaryCondition = null;
+            mikeBoundaryCondition = GetFilledRandomMikeBoundaryCondition("");
+            mikeBoundaryCondition.WebTideDataSet = (WebTideDataSetEnum)1000000;
+            actionMikeBoundaryCondition = await MikeBoundaryConditionService.Post(mikeBoundaryCondition);
+            Assert.IsType<BadRequestObjectResult>(actionMikeBoundaryCondition.Result);
+
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPRange(0, 1000)]
+            // mikeBoundaryCondition.NumberOfWebTideNodes   (Int32)
+            // -----------------------------------
+
+            mikeBoundaryCondition = null;
+            mikeBoundaryCondition = GetFilledRandomMikeBoundaryCondition("");
+            mikeBoundaryCondition.NumberOfWebTideNodes = -1;
+            actionMikeBoundaryCondition = await MikeBoundaryConditionService.Post(mikeBoundaryCondition);
+            Assert.IsType<BadRequestObjectResult>(actionMikeBoundaryCondition.Result);
+            //Assert.AreEqual(count, mikeBoundaryConditionService.GetMikeBoundaryConditionList().Count());
+            mikeBoundaryCondition = null;
+            mikeBoundaryCondition = GetFilledRandomMikeBoundaryCondition("");
+            mikeBoundaryCondition.NumberOfWebTideNodes = 1001;
+            actionMikeBoundaryCondition = await MikeBoundaryConditionService.Post(mikeBoundaryCondition);
+            Assert.IsType<BadRequestObjectResult>(actionMikeBoundaryCondition.Result);
+            //Assert.AreEqual(count, mikeBoundaryConditionService.GetMikeBoundaryConditionList().Count());
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // mikeBoundaryCondition.WebTideDataFromStartToEndDate   (String)
+            // -----------------------------------
+
+            mikeBoundaryCondition = null;
+            mikeBoundaryCondition = GetFilledRandomMikeBoundaryCondition("WebTideDataFromStartToEndDate");
+            actionMikeBoundaryCondition = await MikeBoundaryConditionService.Post(mikeBoundaryCondition);
+            Assert.IsType<BadRequestObjectResult>(actionMikeBoundaryCondition.Result);
+
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPEnumType]
+            // mikeBoundaryCondition.TVType   (TVTypeEnum)
+            // -----------------------------------
+
+            mikeBoundaryCondition = null;
+            mikeBoundaryCondition = GetFilledRandomMikeBoundaryCondition("");
+            mikeBoundaryCondition.TVType = (TVTypeEnum)1000000;
+            actionMikeBoundaryCondition = await MikeBoundaryConditionService.Post(mikeBoundaryCondition);
+            Assert.IsType<BadRequestObjectResult>(actionMikeBoundaryCondition.Result);
+
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPAfter(Year = 1980)]
+            // mikeBoundaryCondition.LastUpdateDate_UTC   (DateTime)
+            // -----------------------------------
+
+            mikeBoundaryCondition = null;
+            mikeBoundaryCondition = GetFilledRandomMikeBoundaryCondition("");
+            mikeBoundaryCondition.LastUpdateDate_UTC = new DateTime();
+            actionMikeBoundaryCondition = await MikeBoundaryConditionService.Post(mikeBoundaryCondition);
+            Assert.IsType<BadRequestObjectResult>(actionMikeBoundaryCondition.Result);
+            mikeBoundaryCondition = null;
+            mikeBoundaryCondition = GetFilledRandomMikeBoundaryCondition("");
+            mikeBoundaryCondition.LastUpdateDate_UTC = new DateTime(1979, 1, 1);
+            actionMikeBoundaryCondition = await MikeBoundaryConditionService.Post(mikeBoundaryCondition);
+            Assert.IsType<BadRequestObjectResult>(actionMikeBoundaryCondition.Result);
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPExist(ExistTypeName = "TVItem", ExistPlurial = "s", ExistFieldID = "TVItemID", AllowableTVtypeList = Contact)]
+            // mikeBoundaryCondition.LastUpdateContactTVItemID   (Int32)
+            // -----------------------------------
+
+            mikeBoundaryCondition = null;
+            mikeBoundaryCondition = GetFilledRandomMikeBoundaryCondition("");
+            mikeBoundaryCondition.LastUpdateContactTVItemID = 0;
+            actionMikeBoundaryCondition = await MikeBoundaryConditionService.Post(mikeBoundaryCondition);
+            Assert.IsType<BadRequestObjectResult>(actionMikeBoundaryCondition.Result);
+
+            mikeBoundaryCondition = null;
+            mikeBoundaryCondition = GetFilledRandomMikeBoundaryCondition("");
+            mikeBoundaryCondition.LastUpdateContactTVItemID = 1;
+            actionMikeBoundaryCondition = await MikeBoundaryConditionService.Post(mikeBoundaryCondition);
+            Assert.IsType<BadRequestObjectResult>(actionMikeBoundaryCondition.Result);
+
+        }
+        #endregion Tests Generated Properties
 
         #region Functions private
         private async Task DoCRUDTest()
@@ -241,6 +499,13 @@ namespace CSSPServices.Tests
             }
 
             return mikeBoundaryCondition;
+        }
+        private void CheckMikeBoundaryConditionFields(List<MikeBoundaryCondition> mikeBoundaryConditionList)
+        {
+            Assert.False(string.IsNullOrWhiteSpace(mikeBoundaryConditionList[0].MikeBoundaryConditionCode));
+            Assert.False(string.IsNullOrWhiteSpace(mikeBoundaryConditionList[0].MikeBoundaryConditionName));
+            Assert.False(string.IsNullOrWhiteSpace(mikeBoundaryConditionList[0].MikeBoundaryConditionFormat));
+            Assert.False(string.IsNullOrWhiteSpace(mikeBoundaryConditionList[0].WebTideDataFromStartToEndDate));
         }
         #endregion Functions private
     }

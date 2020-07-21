@@ -32,18 +32,18 @@ namespace ServicesClassNameServiceTestGeneratedServices.Services
 
                         if (csspProp.HasCSSPExistAttribute)
                         {
-                            sb.AppendLine($@"                    { TypeNameLower } = null;");
-                            sb.AppendLine($@"                    { TypeNameLower } = GetFilledRandom{ TypeName }("""");");
-                            sb.AppendLine($@"                    { TypeNameLower }.{ csspProp.PropName } = 0;");
+                            sb.AppendLine($@"            { TypeNameLower } = null;");
+                            sb.AppendLine($@"            { TypeNameLower } = GetFilledRandom{ TypeName }("""");");
+                            sb.AppendLine($@"            { TypeNameLower }.{ csspProp.PropName } = 0;");
                             if (TypeName == "Contact")
                             {
-                                sb.AppendLine($@"                    { TypeNameLower }Service.Add({ TypeNameLower }, AddContactTypeEnum.LoggedIn);");
+                                sb.AppendLine($@"            action{ TypeName } = await { TypeName }Service.Post({ TypeNameLower }, AddContactTypeEnum.LoggedIn);");
                             }
                             else
                             {
-                                sb.AppendLine($@"                    { TypeNameLower }Service.Add({ TypeNameLower });");
+                                sb.AppendLine($@"            action{ TypeName } = await { TypeName }Service.Post({ TypeNameLower });");
                             }
-                            sb.AppendLine($@"                    Assert.AreEqual(string.Format(CSSPServicesRes.CouldNotFind_With_Equal_, ""{ csspProp.ExistTypeName }"", ""{ csspProp.PropName }"", { TypeNameLower }.{ csspProp.PropName }.ToString()), { TypeNameLower }.ValidationResults.FirstOrDefault().ErrorMessage);");
+                            sb.AppendLine($@"            Assert.IsType<BadRequestObjectResult>(action{ TypeName }.Result);");
                             sb.AppendLine(@"");
 
                             if (csspProp.ExistTypeName == "TVItem")
@@ -59,18 +59,18 @@ namespace ServicesClassNameServiceTestGeneratedServices.Services
                                     TVItemIDNotGoodType = tvItem.TVItemID;
                                 }
 
-                                sb.AppendLine($@"                    { TypeNameLower } = null;");
-                                sb.AppendLine($@"                    { TypeNameLower } = GetFilledRandom{ TypeName }("""");");
-                                sb.AppendLine($@"                    { TypeNameLower }.{ csspProp.PropName } = { TVItemIDNotGoodType };");
+                                sb.AppendLine($@"            { TypeNameLower } = null;");
+                                sb.AppendLine($@"            { TypeNameLower } = GetFilledRandom{ TypeName }("""");");
+                                sb.AppendLine($@"            { TypeNameLower }.{ csspProp.PropName } = { TVItemIDNotGoodType };");
                                 if (TypeName == "Contact")
                                 {
-                                    sb.AppendLine($@"                    { TypeNameLower }Service.Add({ TypeNameLower }, AddContactTypeEnum.LoggedIn);");
+                                    sb.AppendLine($@"            action{ TypeName } = await { TypeName }Service.Post({ TypeNameLower }, AddContactTypeEnum.LoggedIn);");
                                 }
                                 else
                                 {
-                                    sb.AppendLine($@"                    { TypeNameLower }Service.Add({ TypeNameLower });");
+                                    sb.AppendLine($@"            action{ TypeName } = await { TypeName }Service.Post({ TypeNameLower });");
                                 }
-                                sb.AppendLine($@"                    Assert.AreEqual(string.Format(CSSPServicesRes._IsNotOfType_, ""{ csspProp.PropName }"", ""{ String.Join(",", csspProp.AllowableTVTypeList) }""), { TypeNameLower }.ValidationResults.FirstOrDefault().ErrorMessage);");
+                                sb.AppendLine($@"            Assert.IsType<BadRequestObjectResult>(action{ TypeName }.Result);");
                                 sb.AppendLine(@"");
                             }
                         }

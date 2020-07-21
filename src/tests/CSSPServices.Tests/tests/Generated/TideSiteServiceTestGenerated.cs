@@ -19,6 +19,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Transactions;
 using Xunit;
+using System.ComponentModel.DataAnnotations;
 
 namespace CSSPServices.Tests
 {
@@ -81,6 +82,198 @@ namespace CSSPServices.Tests
             }
         }
         #endregion Tests Generated CRUD
+
+        #region Tests Generated Properties
+        [Theory]
+        [InlineData("en-CA", DBLocationEnum.Local)]
+        [InlineData("fr-CA", DBLocationEnum.Local)]
+        [InlineData("en-CA", DBLocationEnum.Server)]
+        [InlineData("fr-CA", DBLocationEnum.Server)]
+        public async Task TideSite_Properties_Test(string culture, DBLocationEnum DBLocation)
+        {
+            // -------------------------------
+            // -------------------------------
+            // Properties testing
+            // -------------------------------
+            // -------------------------------
+
+            Assert.True(await Setup(culture));
+
+            LoggedInService.DBLocation = DBLocation;
+
+            int count = 0;
+            if (count == 1)
+            {
+                // just so we don't get a warning during compile [The variable 'count' is assigned but its value is never used]
+            }
+
+            var actionTideSiteList = await TideSiteService.GetTideSiteList();
+            Assert.Equal(200, ((ObjectResult)actionTideSiteList.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionTideSiteList.Result).Value);
+            List<TideSite> tideSiteList = (List<TideSite>)((OkObjectResult)actionTideSiteList.Result).Value;
+
+            count = tideSiteList.Count();
+
+            TideSite tideSite = GetFilledRandomTideSite("");
+
+
+            // -----------------------------------
+            // [Key]
+            // Is NOT Nullable
+            // tideSite.TideSiteID   (Int32)
+            // -----------------------------------
+
+            tideSite = null;
+            tideSite = GetFilledRandomTideSite("");
+            tideSite.TideSiteID = 0;
+
+            var actionTideSite = await TideSiteService.Put(tideSite);
+            Assert.IsType<BadRequestObjectResult>(actionTideSite.Result);
+
+            tideSite = null;
+            tideSite = GetFilledRandomTideSite("");
+            tideSite.TideSiteID = 10000000;
+            actionTideSite = await TideSiteService.Put(tideSite);
+            Assert.IsType<BadRequestObjectResult>(actionTideSite.Result);
+
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPExist(ExistTypeName = "TVItem", ExistPlurial = "s", ExistFieldID = "TVItemID", AllowableTVtypeList = TideSite)]
+            // tideSite.TideSiteTVItemID   (Int32)
+            // -----------------------------------
+
+            tideSite = null;
+            tideSite = GetFilledRandomTideSite("");
+            tideSite.TideSiteTVItemID = 0;
+            actionTideSite = await TideSiteService.Post(tideSite);
+            Assert.IsType<BadRequestObjectResult>(actionTideSite.Result);
+
+            tideSite = null;
+            tideSite = GetFilledRandomTideSite("");
+            tideSite.TideSiteTVItemID = 1;
+            actionTideSite = await TideSiteService.Post(tideSite);
+            Assert.IsType<BadRequestObjectResult>(actionTideSite.Result);
+
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPMaxLength(100)]
+            // tideSite.TideSiteName   (String)
+            // -----------------------------------
+
+            tideSite = null;
+            tideSite = GetFilledRandomTideSite("TideSiteName");
+            actionTideSite = await TideSiteService.Post(tideSite);
+            Assert.IsType<BadRequestObjectResult>(actionTideSite.Result);
+
+            tideSite = null;
+            tideSite = GetFilledRandomTideSite("");
+            tideSite.TideSiteName = GetRandomString("", 101);
+            actionTideSite = await TideSiteService.Post(tideSite);
+            Assert.IsType<BadRequestObjectResult>(actionTideSite.Result);
+            //Assert.AreEqual(count, tideSiteService.GetTideSiteList().Count());
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPMaxLength(2)]
+            // [CSSPMinLength(2)]
+            // tideSite.Province   (String)
+            // -----------------------------------
+
+            tideSite = null;
+            tideSite = GetFilledRandomTideSite("Province");
+            actionTideSite = await TideSiteService.Post(tideSite);
+            Assert.IsType<BadRequestObjectResult>(actionTideSite.Result);
+
+            tideSite = null;
+            tideSite = GetFilledRandomTideSite("");
+            tideSite.Province = GetRandomString("", 1);
+            actionTideSite = await TideSiteService.Post(tideSite);
+            Assert.IsType<BadRequestObjectResult>(actionTideSite.Result);
+            //Assert.AreEqual(count, tideSiteService.GetTideSiteList().Count());
+            tideSite = null;
+            tideSite = GetFilledRandomTideSite("");
+            tideSite.Province = GetRandomString("", 3);
+            actionTideSite = await TideSiteService.Post(tideSite);
+            Assert.IsType<BadRequestObjectResult>(actionTideSite.Result);
+            //Assert.AreEqual(count, tideSiteService.GetTideSiteList().Count());
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPRange(0, 10000)]
+            // tideSite.sid   (Int32)
+            // -----------------------------------
+
+            tideSite = null;
+            tideSite = GetFilledRandomTideSite("");
+            tideSite.sid = -1;
+            actionTideSite = await TideSiteService.Post(tideSite);
+            Assert.IsType<BadRequestObjectResult>(actionTideSite.Result);
+            //Assert.AreEqual(count, tideSiteService.GetTideSiteList().Count());
+            tideSite = null;
+            tideSite = GetFilledRandomTideSite("");
+            tideSite.sid = 10001;
+            actionTideSite = await TideSiteService.Post(tideSite);
+            Assert.IsType<BadRequestObjectResult>(actionTideSite.Result);
+            //Assert.AreEqual(count, tideSiteService.GetTideSiteList().Count());
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPRange(0, 10000)]
+            // tideSite.Zone   (Int32)
+            // -----------------------------------
+
+            tideSite = null;
+            tideSite = GetFilledRandomTideSite("");
+            tideSite.Zone = -1;
+            actionTideSite = await TideSiteService.Post(tideSite);
+            Assert.IsType<BadRequestObjectResult>(actionTideSite.Result);
+            //Assert.AreEqual(count, tideSiteService.GetTideSiteList().Count());
+            tideSite = null;
+            tideSite = GetFilledRandomTideSite("");
+            tideSite.Zone = 10001;
+            actionTideSite = await TideSiteService.Post(tideSite);
+            Assert.IsType<BadRequestObjectResult>(actionTideSite.Result);
+            //Assert.AreEqual(count, tideSiteService.GetTideSiteList().Count());
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPAfter(Year = 1980)]
+            // tideSite.LastUpdateDate_UTC   (DateTime)
+            // -----------------------------------
+
+            tideSite = null;
+            tideSite = GetFilledRandomTideSite("");
+            tideSite.LastUpdateDate_UTC = new DateTime();
+            actionTideSite = await TideSiteService.Post(tideSite);
+            Assert.IsType<BadRequestObjectResult>(actionTideSite.Result);
+            tideSite = null;
+            tideSite = GetFilledRandomTideSite("");
+            tideSite.LastUpdateDate_UTC = new DateTime(1979, 1, 1);
+            actionTideSite = await TideSiteService.Post(tideSite);
+            Assert.IsType<BadRequestObjectResult>(actionTideSite.Result);
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPExist(ExistTypeName = "TVItem", ExistPlurial = "s", ExistFieldID = "TVItemID", AllowableTVtypeList = Contact)]
+            // tideSite.LastUpdateContactTVItemID   (Int32)
+            // -----------------------------------
+
+            tideSite = null;
+            tideSite = GetFilledRandomTideSite("");
+            tideSite.LastUpdateContactTVItemID = 0;
+            actionTideSite = await TideSiteService.Post(tideSite);
+            Assert.IsType<BadRequestObjectResult>(actionTideSite.Result);
+
+            tideSite = null;
+            tideSite = GetFilledRandomTideSite("");
+            tideSite.LastUpdateContactTVItemID = 1;
+            actionTideSite = await TideSiteService.Post(tideSite);
+            Assert.IsType<BadRequestObjectResult>(actionTideSite.Result);
+
+        }
+        #endregion Tests Generated Properties
 
         #region Functions private
         private async Task DoCRUDTest()
@@ -236,6 +429,11 @@ namespace CSSPServices.Tests
             }
 
             return tideSite;
+        }
+        private void CheckTideSiteFields(List<TideSite> tideSiteList)
+        {
+            Assert.False(string.IsNullOrWhiteSpace(tideSiteList[0].TideSiteName));
+            Assert.False(string.IsNullOrWhiteSpace(tideSiteList[0].Province));
         }
         #endregion Functions private
     }

@@ -1,26 +1,26 @@
-using System;
-using Xunit;
-using System.Linq;
-using System.Collections.Generic;
-using CSSPModels;
-using Microsoft.EntityFrameworkCore.Metadata;
-using System.Reflection;
-using CSSPEnums;
+//using System;
+//using Xunit;
+//using System.Linq;
+//using System.Collections.Generic;
+//using CSSPModels;
+//using Microsoft.EntityFrameworkCore.Metadata;
+//using System.Reflection;
+//using CSSPEnums;
 
-namespace CSSPModels.Tests
-{
-    public partial class SearchTagAndTermsTest
-    {
-        // most of the tests are auto generated and are located under SearchTagAndTermsTestGenerated.cs
-        // use this section to add other manual test
+//namespace CSSPModels.Tests
+//{
+//    public partial class SearchTagAndTermsTest
+//    {
+//        // most of the tests are auto generated and are located under SearchTagAndTermsTestGenerated.cs
+//        // use this section to add other manual test
 
-        #region Tests
-        [Fact]
-        public void SearchTagAndTerms_Example_Manual_Test()
-        {
-            int i = 5;
-            Assert.Equal(5, i);
-        }
-        #endregion Tests
-    }
-}
+//        #region Tests
+//        [Fact]
+//        public void SearchTagAndTerms_Example_Manual_Test()
+//        {
+//            int i = 5;
+//            Assert.Equal(5, i);
+//        }
+//        #endregion Tests
+//    }
+//}

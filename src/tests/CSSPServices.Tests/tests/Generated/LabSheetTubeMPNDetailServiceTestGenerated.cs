@@ -19,6 +19,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Transactions;
 using Xunit;
+using System.ComponentModel.DataAnnotations;
 
 namespace CSSPServices.Tests
 {
@@ -81,6 +82,322 @@ namespace CSSPServices.Tests
             }
         }
         #endregion Tests Generated CRUD
+
+        #region Tests Generated Properties
+        [Theory]
+        [InlineData("en-CA", DBLocationEnum.Local)]
+        [InlineData("fr-CA", DBLocationEnum.Local)]
+        [InlineData("en-CA", DBLocationEnum.Server)]
+        [InlineData("fr-CA", DBLocationEnum.Server)]
+        public async Task LabSheetTubeMPNDetail_Properties_Test(string culture, DBLocationEnum DBLocation)
+        {
+            // -------------------------------
+            // -------------------------------
+            // Properties testing
+            // -------------------------------
+            // -------------------------------
+
+            Assert.True(await Setup(culture));
+
+            LoggedInService.DBLocation = DBLocation;
+
+            int count = 0;
+            if (count == 1)
+            {
+                // just so we don't get a warning during compile [The variable 'count' is assigned but its value is never used]
+            }
+
+            var actionLabSheetTubeMPNDetailList = await LabSheetTubeMPNDetailService.GetLabSheetTubeMPNDetailList();
+            Assert.Equal(200, ((ObjectResult)actionLabSheetTubeMPNDetailList.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionLabSheetTubeMPNDetailList.Result).Value);
+            List<LabSheetTubeMPNDetail> labSheetTubeMPNDetailList = (List<LabSheetTubeMPNDetail>)((OkObjectResult)actionLabSheetTubeMPNDetailList.Result).Value;
+
+            count = labSheetTubeMPNDetailList.Count();
+
+            LabSheetTubeMPNDetail labSheetTubeMPNDetail = GetFilledRandomLabSheetTubeMPNDetail("");
+
+
+            // -----------------------------------
+            // [Key]
+            // Is NOT Nullable
+            // labSheetTubeMPNDetail.LabSheetTubeMPNDetailID   (Int32)
+            // -----------------------------------
+
+            labSheetTubeMPNDetail = null;
+            labSheetTubeMPNDetail = GetFilledRandomLabSheetTubeMPNDetail("");
+            labSheetTubeMPNDetail.LabSheetTubeMPNDetailID = 0;
+
+            var actionLabSheetTubeMPNDetail = await LabSheetTubeMPNDetailService.Put(labSheetTubeMPNDetail);
+            Assert.IsType<BadRequestObjectResult>(actionLabSheetTubeMPNDetail.Result);
+
+            labSheetTubeMPNDetail = null;
+            labSheetTubeMPNDetail = GetFilledRandomLabSheetTubeMPNDetail("");
+            labSheetTubeMPNDetail.LabSheetTubeMPNDetailID = 10000000;
+            actionLabSheetTubeMPNDetail = await LabSheetTubeMPNDetailService.Put(labSheetTubeMPNDetail);
+            Assert.IsType<BadRequestObjectResult>(actionLabSheetTubeMPNDetail.Result);
+
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPExist(ExistTypeName = "LabSheetDetail", ExistPlurial = "s", ExistFieldID = "LabSheetDetailID", AllowableTVtypeList = )]
+            // labSheetTubeMPNDetail.LabSheetDetailID   (Int32)
+            // -----------------------------------
+
+            labSheetTubeMPNDetail = null;
+            labSheetTubeMPNDetail = GetFilledRandomLabSheetTubeMPNDetail("");
+            labSheetTubeMPNDetail.LabSheetDetailID = 0;
+            actionLabSheetTubeMPNDetail = await LabSheetTubeMPNDetailService.Post(labSheetTubeMPNDetail);
+            Assert.IsType<BadRequestObjectResult>(actionLabSheetTubeMPNDetail.Result);
+
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPRange(0, 1000)]
+            // labSheetTubeMPNDetail.Ordinal   (Int32)
+            // -----------------------------------
+
+            labSheetTubeMPNDetail = null;
+            labSheetTubeMPNDetail = GetFilledRandomLabSheetTubeMPNDetail("");
+            labSheetTubeMPNDetail.Ordinal = -1;
+            actionLabSheetTubeMPNDetail = await LabSheetTubeMPNDetailService.Post(labSheetTubeMPNDetail);
+            Assert.IsType<BadRequestObjectResult>(actionLabSheetTubeMPNDetail.Result);
+            //Assert.AreEqual(count, labSheetTubeMPNDetailService.GetLabSheetTubeMPNDetailList().Count());
+            labSheetTubeMPNDetail = null;
+            labSheetTubeMPNDetail = GetFilledRandomLabSheetTubeMPNDetail("");
+            labSheetTubeMPNDetail.Ordinal = 1001;
+            actionLabSheetTubeMPNDetail = await LabSheetTubeMPNDetailService.Post(labSheetTubeMPNDetail);
+            Assert.IsType<BadRequestObjectResult>(actionLabSheetTubeMPNDetail.Result);
+            //Assert.AreEqual(count, labSheetTubeMPNDetailService.GetLabSheetTubeMPNDetailList().Count());
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPExist(ExistTypeName = "TVItem", ExistPlurial = "s", ExistFieldID = "TVItemID", AllowableTVtypeList = MWQMSite)]
+            // labSheetTubeMPNDetail.MWQMSiteTVItemID   (Int32)
+            // -----------------------------------
+
+            labSheetTubeMPNDetail = null;
+            labSheetTubeMPNDetail = GetFilledRandomLabSheetTubeMPNDetail("");
+            labSheetTubeMPNDetail.MWQMSiteTVItemID = 0;
+            actionLabSheetTubeMPNDetail = await LabSheetTubeMPNDetailService.Post(labSheetTubeMPNDetail);
+            Assert.IsType<BadRequestObjectResult>(actionLabSheetTubeMPNDetail.Result);
+
+            labSheetTubeMPNDetail = null;
+            labSheetTubeMPNDetail = GetFilledRandomLabSheetTubeMPNDetail("");
+            labSheetTubeMPNDetail.MWQMSiteTVItemID = 1;
+            actionLabSheetTubeMPNDetail = await LabSheetTubeMPNDetailService.Post(labSheetTubeMPNDetail);
+            Assert.IsType<BadRequestObjectResult>(actionLabSheetTubeMPNDetail.Result);
+
+
+            // -----------------------------------
+            // Is Nullable
+            // [CSSPAfter(Year = 1980)]
+            // labSheetTubeMPNDetail.SampleDateTime   (DateTime)
+            // -----------------------------------
+
+            labSheetTubeMPNDetail = null;
+            labSheetTubeMPNDetail = GetFilledRandomLabSheetTubeMPNDetail("");
+            labSheetTubeMPNDetail.SampleDateTime = new DateTime(1979, 1, 1);
+            actionLabSheetTubeMPNDetail = await LabSheetTubeMPNDetailService.Post(labSheetTubeMPNDetail);
+            Assert.IsType<BadRequestObjectResult>(actionLabSheetTubeMPNDetail.Result);
+
+            // -----------------------------------
+            // Is Nullable
+            // [CSSPRange(1, 10000000)]
+            // labSheetTubeMPNDetail.MPN   (Int32)
+            // -----------------------------------
+
+            labSheetTubeMPNDetail = null;
+            labSheetTubeMPNDetail = GetFilledRandomLabSheetTubeMPNDetail("");
+            labSheetTubeMPNDetail.MPN = 0;
+            actionLabSheetTubeMPNDetail = await LabSheetTubeMPNDetailService.Post(labSheetTubeMPNDetail);
+            Assert.IsType<BadRequestObjectResult>(actionLabSheetTubeMPNDetail.Result);
+            //Assert.AreEqual(count, labSheetTubeMPNDetailService.GetLabSheetTubeMPNDetailList().Count());
+            labSheetTubeMPNDetail = null;
+            labSheetTubeMPNDetail = GetFilledRandomLabSheetTubeMPNDetail("");
+            labSheetTubeMPNDetail.MPN = 10000001;
+            actionLabSheetTubeMPNDetail = await LabSheetTubeMPNDetailService.Post(labSheetTubeMPNDetail);
+            Assert.IsType<BadRequestObjectResult>(actionLabSheetTubeMPNDetail.Result);
+            //Assert.AreEqual(count, labSheetTubeMPNDetailService.GetLabSheetTubeMPNDetailList().Count());
+
+            // -----------------------------------
+            // Is Nullable
+            // [CSSPRange(0, 5)]
+            // labSheetTubeMPNDetail.Tube10   (Int32)
+            // -----------------------------------
+
+            labSheetTubeMPNDetail = null;
+            labSheetTubeMPNDetail = GetFilledRandomLabSheetTubeMPNDetail("");
+            labSheetTubeMPNDetail.Tube10 = -1;
+            actionLabSheetTubeMPNDetail = await LabSheetTubeMPNDetailService.Post(labSheetTubeMPNDetail);
+            Assert.IsType<BadRequestObjectResult>(actionLabSheetTubeMPNDetail.Result);
+            //Assert.AreEqual(count, labSheetTubeMPNDetailService.GetLabSheetTubeMPNDetailList().Count());
+            labSheetTubeMPNDetail = null;
+            labSheetTubeMPNDetail = GetFilledRandomLabSheetTubeMPNDetail("");
+            labSheetTubeMPNDetail.Tube10 = 6;
+            actionLabSheetTubeMPNDetail = await LabSheetTubeMPNDetailService.Post(labSheetTubeMPNDetail);
+            Assert.IsType<BadRequestObjectResult>(actionLabSheetTubeMPNDetail.Result);
+            //Assert.AreEqual(count, labSheetTubeMPNDetailService.GetLabSheetTubeMPNDetailList().Count());
+
+            // -----------------------------------
+            // Is Nullable
+            // [CSSPRange(0, 5)]
+            // labSheetTubeMPNDetail.Tube1_0   (Int32)
+            // -----------------------------------
+
+            labSheetTubeMPNDetail = null;
+            labSheetTubeMPNDetail = GetFilledRandomLabSheetTubeMPNDetail("");
+            labSheetTubeMPNDetail.Tube1_0 = -1;
+            actionLabSheetTubeMPNDetail = await LabSheetTubeMPNDetailService.Post(labSheetTubeMPNDetail);
+            Assert.IsType<BadRequestObjectResult>(actionLabSheetTubeMPNDetail.Result);
+            //Assert.AreEqual(count, labSheetTubeMPNDetailService.GetLabSheetTubeMPNDetailList().Count());
+            labSheetTubeMPNDetail = null;
+            labSheetTubeMPNDetail = GetFilledRandomLabSheetTubeMPNDetail("");
+            labSheetTubeMPNDetail.Tube1_0 = 6;
+            actionLabSheetTubeMPNDetail = await LabSheetTubeMPNDetailService.Post(labSheetTubeMPNDetail);
+            Assert.IsType<BadRequestObjectResult>(actionLabSheetTubeMPNDetail.Result);
+            //Assert.AreEqual(count, labSheetTubeMPNDetailService.GetLabSheetTubeMPNDetailList().Count());
+
+            // -----------------------------------
+            // Is Nullable
+            // [CSSPRange(0, 5)]
+            // labSheetTubeMPNDetail.Tube0_1   (Int32)
+            // -----------------------------------
+
+            labSheetTubeMPNDetail = null;
+            labSheetTubeMPNDetail = GetFilledRandomLabSheetTubeMPNDetail("");
+            labSheetTubeMPNDetail.Tube0_1 = -1;
+            actionLabSheetTubeMPNDetail = await LabSheetTubeMPNDetailService.Post(labSheetTubeMPNDetail);
+            Assert.IsType<BadRequestObjectResult>(actionLabSheetTubeMPNDetail.Result);
+            //Assert.AreEqual(count, labSheetTubeMPNDetailService.GetLabSheetTubeMPNDetailList().Count());
+            labSheetTubeMPNDetail = null;
+            labSheetTubeMPNDetail = GetFilledRandomLabSheetTubeMPNDetail("");
+            labSheetTubeMPNDetail.Tube0_1 = 6;
+            actionLabSheetTubeMPNDetail = await LabSheetTubeMPNDetailService.Post(labSheetTubeMPNDetail);
+            Assert.IsType<BadRequestObjectResult>(actionLabSheetTubeMPNDetail.Result);
+            //Assert.AreEqual(count, labSheetTubeMPNDetailService.GetLabSheetTubeMPNDetailList().Count());
+
+            // -----------------------------------
+            // Is Nullable
+            // [CSSPRange(0, 40)]
+            // labSheetTubeMPNDetail.Salinity   (Double)
+            // -----------------------------------
+
+            //CSSPError: Type not implemented [Salinity]
+
+            //CSSPError: Type not implemented [Salinity]
+
+            labSheetTubeMPNDetail = null;
+            labSheetTubeMPNDetail = GetFilledRandomLabSheetTubeMPNDetail("");
+            labSheetTubeMPNDetail.Salinity = -1.0D;
+            actionLabSheetTubeMPNDetail = await LabSheetTubeMPNDetailService.Post(labSheetTubeMPNDetail);
+            Assert.IsType<BadRequestObjectResult>(actionLabSheetTubeMPNDetail.Result);
+            //Assert.AreEqual(count, labSheetTubeMPNDetailService.GetLabSheetTubeMPNDetailList().Count());
+            labSheetTubeMPNDetail = null;
+            labSheetTubeMPNDetail = GetFilledRandomLabSheetTubeMPNDetail("");
+            labSheetTubeMPNDetail.Salinity = 41.0D;
+            actionLabSheetTubeMPNDetail = await LabSheetTubeMPNDetailService.Post(labSheetTubeMPNDetail);
+            Assert.IsType<BadRequestObjectResult>(actionLabSheetTubeMPNDetail.Result);
+            //Assert.AreEqual(count, labSheetTubeMPNDetailService.GetLabSheetTubeMPNDetailList().Count());
+
+            // -----------------------------------
+            // Is Nullable
+            // [CSSPRange(-10, 40)]
+            // labSheetTubeMPNDetail.Temperature   (Double)
+            // -----------------------------------
+
+            //CSSPError: Type not implemented [Temperature]
+
+            //CSSPError: Type not implemented [Temperature]
+
+            labSheetTubeMPNDetail = null;
+            labSheetTubeMPNDetail = GetFilledRandomLabSheetTubeMPNDetail("");
+            labSheetTubeMPNDetail.Temperature = -11.0D;
+            actionLabSheetTubeMPNDetail = await LabSheetTubeMPNDetailService.Post(labSheetTubeMPNDetail);
+            Assert.IsType<BadRequestObjectResult>(actionLabSheetTubeMPNDetail.Result);
+            //Assert.AreEqual(count, labSheetTubeMPNDetailService.GetLabSheetTubeMPNDetailList().Count());
+            labSheetTubeMPNDetail = null;
+            labSheetTubeMPNDetail = GetFilledRandomLabSheetTubeMPNDetail("");
+            labSheetTubeMPNDetail.Temperature = 41.0D;
+            actionLabSheetTubeMPNDetail = await LabSheetTubeMPNDetailService.Post(labSheetTubeMPNDetail);
+            Assert.IsType<BadRequestObjectResult>(actionLabSheetTubeMPNDetail.Result);
+            //Assert.AreEqual(count, labSheetTubeMPNDetailService.GetLabSheetTubeMPNDetailList().Count());
+
+            // -----------------------------------
+            // Is Nullable
+            // [CSSPMaxLength(10)]
+            // labSheetTubeMPNDetail.ProcessedBy   (String)
+            // -----------------------------------
+
+            labSheetTubeMPNDetail = null;
+            labSheetTubeMPNDetail = GetFilledRandomLabSheetTubeMPNDetail("");
+            labSheetTubeMPNDetail.ProcessedBy = GetRandomString("", 11);
+            actionLabSheetTubeMPNDetail = await LabSheetTubeMPNDetailService.Post(labSheetTubeMPNDetail);
+            Assert.IsType<BadRequestObjectResult>(actionLabSheetTubeMPNDetail.Result);
+            //Assert.AreEqual(count, labSheetTubeMPNDetailService.GetLabSheetTubeMPNDetailList().Count());
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPEnumType]
+            // labSheetTubeMPNDetail.SampleType   (SampleTypeEnum)
+            // -----------------------------------
+
+            labSheetTubeMPNDetail = null;
+            labSheetTubeMPNDetail = GetFilledRandomLabSheetTubeMPNDetail("");
+            labSheetTubeMPNDetail.SampleType = (SampleTypeEnum)1000000;
+            actionLabSheetTubeMPNDetail = await LabSheetTubeMPNDetailService.Post(labSheetTubeMPNDetail);
+            Assert.IsType<BadRequestObjectResult>(actionLabSheetTubeMPNDetail.Result);
+
+
+            // -----------------------------------
+            // Is Nullable
+            // [CSSPMaxLength(250)]
+            // labSheetTubeMPNDetail.SiteComment   (String)
+            // -----------------------------------
+
+            labSheetTubeMPNDetail = null;
+            labSheetTubeMPNDetail = GetFilledRandomLabSheetTubeMPNDetail("");
+            labSheetTubeMPNDetail.SiteComment = GetRandomString("", 251);
+            actionLabSheetTubeMPNDetail = await LabSheetTubeMPNDetailService.Post(labSheetTubeMPNDetail);
+            Assert.IsType<BadRequestObjectResult>(actionLabSheetTubeMPNDetail.Result);
+            //Assert.AreEqual(count, labSheetTubeMPNDetailService.GetLabSheetTubeMPNDetailList().Count());
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPAfter(Year = 1980)]
+            // labSheetTubeMPNDetail.LastUpdateDate_UTC   (DateTime)
+            // -----------------------------------
+
+            labSheetTubeMPNDetail = null;
+            labSheetTubeMPNDetail = GetFilledRandomLabSheetTubeMPNDetail("");
+            labSheetTubeMPNDetail.LastUpdateDate_UTC = new DateTime();
+            actionLabSheetTubeMPNDetail = await LabSheetTubeMPNDetailService.Post(labSheetTubeMPNDetail);
+            Assert.IsType<BadRequestObjectResult>(actionLabSheetTubeMPNDetail.Result);
+            labSheetTubeMPNDetail = null;
+            labSheetTubeMPNDetail = GetFilledRandomLabSheetTubeMPNDetail("");
+            labSheetTubeMPNDetail.LastUpdateDate_UTC = new DateTime(1979, 1, 1);
+            actionLabSheetTubeMPNDetail = await LabSheetTubeMPNDetailService.Post(labSheetTubeMPNDetail);
+            Assert.IsType<BadRequestObjectResult>(actionLabSheetTubeMPNDetail.Result);
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPExist(ExistTypeName = "TVItem", ExistPlurial = "s", ExistFieldID = "TVItemID", AllowableTVtypeList = Contact)]
+            // labSheetTubeMPNDetail.LastUpdateContactTVItemID   (Int32)
+            // -----------------------------------
+
+            labSheetTubeMPNDetail = null;
+            labSheetTubeMPNDetail = GetFilledRandomLabSheetTubeMPNDetail("");
+            labSheetTubeMPNDetail.LastUpdateContactTVItemID = 0;
+            actionLabSheetTubeMPNDetail = await LabSheetTubeMPNDetailService.Post(labSheetTubeMPNDetail);
+            Assert.IsType<BadRequestObjectResult>(actionLabSheetTubeMPNDetail.Result);
+
+            labSheetTubeMPNDetail = null;
+            labSheetTubeMPNDetail = GetFilledRandomLabSheetTubeMPNDetail("");
+            labSheetTubeMPNDetail.LastUpdateContactTVItemID = 1;
+            actionLabSheetTubeMPNDetail = await LabSheetTubeMPNDetailService.Post(labSheetTubeMPNDetail);
+            Assert.IsType<BadRequestObjectResult>(actionLabSheetTubeMPNDetail.Result);
+
+        }
+        #endregion Tests Generated Properties
 
         #region Functions private
         private async Task DoCRUDTest()
@@ -253,6 +570,45 @@ namespace CSSPServices.Tests
             }
 
             return labSheetTubeMPNDetail;
+        }
+        private void CheckLabSheetTubeMPNDetailFields(List<LabSheetTubeMPNDetail> labSheetTubeMPNDetailList)
+        {
+            if (labSheetTubeMPNDetailList[0].SampleDateTime != null)
+            {
+                Assert.NotNull(labSheetTubeMPNDetailList[0].SampleDateTime);
+            }
+            if (labSheetTubeMPNDetailList[0].MPN != null)
+            {
+                Assert.NotNull(labSheetTubeMPNDetailList[0].MPN);
+            }
+            if (labSheetTubeMPNDetailList[0].Tube10 != null)
+            {
+                Assert.NotNull(labSheetTubeMPNDetailList[0].Tube10);
+            }
+            if (labSheetTubeMPNDetailList[0].Tube1_0 != null)
+            {
+                Assert.NotNull(labSheetTubeMPNDetailList[0].Tube1_0);
+            }
+            if (labSheetTubeMPNDetailList[0].Tube0_1 != null)
+            {
+                Assert.NotNull(labSheetTubeMPNDetailList[0].Tube0_1);
+            }
+            if (labSheetTubeMPNDetailList[0].Salinity != null)
+            {
+                Assert.NotNull(labSheetTubeMPNDetailList[0].Salinity);
+            }
+            if (labSheetTubeMPNDetailList[0].Temperature != null)
+            {
+                Assert.NotNull(labSheetTubeMPNDetailList[0].Temperature);
+            }
+            if (!string.IsNullOrWhiteSpace(labSheetTubeMPNDetailList[0].ProcessedBy))
+            {
+                Assert.False(string.IsNullOrWhiteSpace(labSheetTubeMPNDetailList[0].ProcessedBy));
+            }
+            if (!string.IsNullOrWhiteSpace(labSheetTubeMPNDetailList[0].SiteComment))
+            {
+                Assert.False(string.IsNullOrWhiteSpace(labSheetTubeMPNDetailList[0].SiteComment));
+            }
         }
         #endregion Functions private
     }

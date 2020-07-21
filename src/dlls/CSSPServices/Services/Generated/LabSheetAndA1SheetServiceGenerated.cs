@@ -20,19 +20,48 @@ using System.Threading.Tasks;
 
 namespace CSSPServices
 {
-    public partial class LabSheetAndA1SheetService
+    public interface ILabSheetAndA1SheetService
+    {
+        IEnumerable<ValidationResult> Validate(ValidationContext validationContext);
+    }
+    public partial class LabSheetAndA1SheetService : ILabSheetAndA1SheetService
     {
         #region Variables
         #endregion Variables
 
         #region Properties
+        private ICSSPCultureService CSSPCultureService { get; }
+        private IEnums enums { get; }
         #endregion Properties
 
         #region Constructors
-        public LabSheetAndA1SheetService()
+        public LabSheetAndA1SheetService(ICSSPCultureService CSSPCultureService, IEnums enums)
         {
+            this.CSSPCultureService = CSSPCultureService;
+            this.enums = enums;
         }
         #endregion Constructors
+
+        #region Functions public
+        public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+        {
+            string retStr = "";
+            LabSheetAndA1Sheet labSheetAndA1Sheet = validationContext.ObjectInstance as LabSheetAndA1Sheet;
+
+                //CSSPError: Type not implemented [LabSheet] of type [LabSheet]
+
+                //CSSPError: Type not implemented [LabSheet] of type [LabSheet]
+                //CSSPError: Type not implemented [LabSheetA1Sheet] of type [LabSheetA1Sheet]
+
+                //CSSPError: Type not implemented [LabSheetA1Sheet] of type [LabSheetA1Sheet]
+            retStr = ""; // added to stop compiling CSSPError
+            if (retStr != "") // will never be true
+            {
+                yield return new ValidationResult("AAA", new[] { "AAA" });
+            }
+
+        }
+        #endregion Functions public
 
     }
 }

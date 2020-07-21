@@ -19,6 +19,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Transactions;
 using Xunit;
+using System.ComponentModel.DataAnnotations;
 
 namespace CSSPServices.Tests
 {
@@ -81,6 +82,143 @@ namespace CSSPServices.Tests
             }
         }
         #endregion Tests Generated CRUD
+
+        #region Tests Generated Properties
+        [Theory]
+        [InlineData("en-CA", DBLocationEnum.Local)]
+        [InlineData("fr-CA", DBLocationEnum.Local)]
+        [InlineData("en-CA", DBLocationEnum.Server)]
+        [InlineData("fr-CA", DBLocationEnum.Server)]
+        public async Task TVTypeUserAuthorization_Properties_Test(string culture, DBLocationEnum DBLocation)
+        {
+            // -------------------------------
+            // -------------------------------
+            // Properties testing
+            // -------------------------------
+            // -------------------------------
+
+            Assert.True(await Setup(culture));
+
+            LoggedInService.DBLocation = DBLocation;
+
+            int count = 0;
+            if (count == 1)
+            {
+                // just so we don't get a warning during compile [The variable 'count' is assigned but its value is never used]
+            }
+
+            var actionTVTypeUserAuthorizationList = await TVTypeUserAuthorizationService.GetTVTypeUserAuthorizationList();
+            Assert.Equal(200, ((ObjectResult)actionTVTypeUserAuthorizationList.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionTVTypeUserAuthorizationList.Result).Value);
+            List<TVTypeUserAuthorization> tvTypeUserAuthorizationList = (List<TVTypeUserAuthorization>)((OkObjectResult)actionTVTypeUserAuthorizationList.Result).Value;
+
+            count = tvTypeUserAuthorizationList.Count();
+
+            TVTypeUserAuthorization tvTypeUserAuthorization = GetFilledRandomTVTypeUserAuthorization("");
+
+
+            // -----------------------------------
+            // [Key]
+            // Is NOT Nullable
+            // tvTypeUserAuthorization.TVTypeUserAuthorizationID   (Int32)
+            // -----------------------------------
+
+            tvTypeUserAuthorization = null;
+            tvTypeUserAuthorization = GetFilledRandomTVTypeUserAuthorization("");
+            tvTypeUserAuthorization.TVTypeUserAuthorizationID = 0;
+
+            var actionTVTypeUserAuthorization = await TVTypeUserAuthorizationService.Put(tvTypeUserAuthorization);
+            Assert.IsType<BadRequestObjectResult>(actionTVTypeUserAuthorization.Result);
+
+            tvTypeUserAuthorization = null;
+            tvTypeUserAuthorization = GetFilledRandomTVTypeUserAuthorization("");
+            tvTypeUserAuthorization.TVTypeUserAuthorizationID = 10000000;
+            actionTVTypeUserAuthorization = await TVTypeUserAuthorizationService.Put(tvTypeUserAuthorization);
+            Assert.IsType<BadRequestObjectResult>(actionTVTypeUserAuthorization.Result);
+
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPExist(ExistTypeName = "TVItem", ExistPlurial = "s", ExistFieldID = "TVItemID", AllowableTVtypeList = Contact)]
+            // tvTypeUserAuthorization.ContactTVItemID   (Int32)
+            // -----------------------------------
+
+            tvTypeUserAuthorization = null;
+            tvTypeUserAuthorization = GetFilledRandomTVTypeUserAuthorization("");
+            tvTypeUserAuthorization.ContactTVItemID = 0;
+            actionTVTypeUserAuthorization = await TVTypeUserAuthorizationService.Post(tvTypeUserAuthorization);
+            Assert.IsType<BadRequestObjectResult>(actionTVTypeUserAuthorization.Result);
+
+            tvTypeUserAuthorization = null;
+            tvTypeUserAuthorization = GetFilledRandomTVTypeUserAuthorization("");
+            tvTypeUserAuthorization.ContactTVItemID = 1;
+            actionTVTypeUserAuthorization = await TVTypeUserAuthorizationService.Post(tvTypeUserAuthorization);
+            Assert.IsType<BadRequestObjectResult>(actionTVTypeUserAuthorization.Result);
+
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPEnumType]
+            // tvTypeUserAuthorization.TVType   (TVTypeEnum)
+            // -----------------------------------
+
+            tvTypeUserAuthorization = null;
+            tvTypeUserAuthorization = GetFilledRandomTVTypeUserAuthorization("");
+            tvTypeUserAuthorization.TVType = (TVTypeEnum)1000000;
+            actionTVTypeUserAuthorization = await TVTypeUserAuthorizationService.Post(tvTypeUserAuthorization);
+            Assert.IsType<BadRequestObjectResult>(actionTVTypeUserAuthorization.Result);
+
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPEnumType]
+            // tvTypeUserAuthorization.TVAuth   (TVAuthEnum)
+            // -----------------------------------
+
+            tvTypeUserAuthorization = null;
+            tvTypeUserAuthorization = GetFilledRandomTVTypeUserAuthorization("");
+            tvTypeUserAuthorization.TVAuth = (TVAuthEnum)1000000;
+            actionTVTypeUserAuthorization = await TVTypeUserAuthorizationService.Post(tvTypeUserAuthorization);
+            Assert.IsType<BadRequestObjectResult>(actionTVTypeUserAuthorization.Result);
+
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPAfter(Year = 1980)]
+            // tvTypeUserAuthorization.LastUpdateDate_UTC   (DateTime)
+            // -----------------------------------
+
+            tvTypeUserAuthorization = null;
+            tvTypeUserAuthorization = GetFilledRandomTVTypeUserAuthorization("");
+            tvTypeUserAuthorization.LastUpdateDate_UTC = new DateTime();
+            actionTVTypeUserAuthorization = await TVTypeUserAuthorizationService.Post(tvTypeUserAuthorization);
+            Assert.IsType<BadRequestObjectResult>(actionTVTypeUserAuthorization.Result);
+            tvTypeUserAuthorization = null;
+            tvTypeUserAuthorization = GetFilledRandomTVTypeUserAuthorization("");
+            tvTypeUserAuthorization.LastUpdateDate_UTC = new DateTime(1979, 1, 1);
+            actionTVTypeUserAuthorization = await TVTypeUserAuthorizationService.Post(tvTypeUserAuthorization);
+            Assert.IsType<BadRequestObjectResult>(actionTVTypeUserAuthorization.Result);
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPExist(ExistTypeName = "TVItem", ExistPlurial = "s", ExistFieldID = "TVItemID", AllowableTVtypeList = Contact)]
+            // tvTypeUserAuthorization.LastUpdateContactTVItemID   (Int32)
+            // -----------------------------------
+
+            tvTypeUserAuthorization = null;
+            tvTypeUserAuthorization = GetFilledRandomTVTypeUserAuthorization("");
+            tvTypeUserAuthorization.LastUpdateContactTVItemID = 0;
+            actionTVTypeUserAuthorization = await TVTypeUserAuthorizationService.Post(tvTypeUserAuthorization);
+            Assert.IsType<BadRequestObjectResult>(actionTVTypeUserAuthorization.Result);
+
+            tvTypeUserAuthorization = null;
+            tvTypeUserAuthorization = GetFilledRandomTVTypeUserAuthorization("");
+            tvTypeUserAuthorization.LastUpdateContactTVItemID = 1;
+            actionTVTypeUserAuthorization = await TVTypeUserAuthorizationService.Post(tvTypeUserAuthorization);
+            Assert.IsType<BadRequestObjectResult>(actionTVTypeUserAuthorization.Result);
+
+        }
+        #endregion Tests Generated Properties
 
         #region Functions private
         private async Task DoCRUDTest()
@@ -225,6 +363,9 @@ namespace CSSPServices.Tests
             }
 
             return tvTypeUserAuthorization;
+        }
+        private void CheckTVTypeUserAuthorizationFields(List<TVTypeUserAuthorization> tvTypeUserAuthorizationList)
+        {
         }
         #endregion Functions private
     }

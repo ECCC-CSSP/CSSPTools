@@ -19,6 +19,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Transactions;
 using Xunit;
+using System.ComponentModel.DataAnnotations;
 
 namespace CSSPServices.Tests
 {
@@ -81,6 +82,148 @@ namespace CSSPServices.Tests
             }
         }
         #endregion Tests Generated CRUD
+
+        #region Tests Generated Properties
+        [Theory]
+        [InlineData("en-CA", DBLocationEnum.Local)]
+        [InlineData("fr-CA", DBLocationEnum.Local)]
+        [InlineData("en-CA", DBLocationEnum.Server)]
+        [InlineData("fr-CA", DBLocationEnum.Server)]
+        public async Task Tel_Properties_Test(string culture, DBLocationEnum DBLocation)
+        {
+            // -------------------------------
+            // -------------------------------
+            // Properties testing
+            // -------------------------------
+            // -------------------------------
+
+            Assert.True(await Setup(culture));
+
+            LoggedInService.DBLocation = DBLocation;
+
+            int count = 0;
+            if (count == 1)
+            {
+                // just so we don't get a warning during compile [The variable 'count' is assigned but its value is never used]
+            }
+
+            var actionTelList = await TelService.GetTelList();
+            Assert.Equal(200, ((ObjectResult)actionTelList.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionTelList.Result).Value);
+            List<Tel> telList = (List<Tel>)((OkObjectResult)actionTelList.Result).Value;
+
+            count = telList.Count();
+
+            Tel tel = GetFilledRandomTel("");
+
+
+            // -----------------------------------
+            // [Key]
+            // Is NOT Nullable
+            // tel.TelID   (Int32)
+            // -----------------------------------
+
+            tel = null;
+            tel = GetFilledRandomTel("");
+            tel.TelID = 0;
+
+            var actionTel = await TelService.Put(tel);
+            Assert.IsType<BadRequestObjectResult>(actionTel.Result);
+
+            tel = null;
+            tel = GetFilledRandomTel("");
+            tel.TelID = 10000000;
+            actionTel = await TelService.Put(tel);
+            Assert.IsType<BadRequestObjectResult>(actionTel.Result);
+
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPExist(ExistTypeName = "TVItem", ExistPlurial = "s", ExistFieldID = "TVItemID", AllowableTVtypeList = Tel)]
+            // tel.TelTVItemID   (Int32)
+            // -----------------------------------
+
+            tel = null;
+            tel = GetFilledRandomTel("");
+            tel.TelTVItemID = 0;
+            actionTel = await TelService.Post(tel);
+            Assert.IsType<BadRequestObjectResult>(actionTel.Result);
+
+            tel = null;
+            tel = GetFilledRandomTel("");
+            tel.TelTVItemID = 1;
+            actionTel = await TelService.Post(tel);
+            Assert.IsType<BadRequestObjectResult>(actionTel.Result);
+
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPMaxLength(50)]
+            // tel.TelNumber   (String)
+            // -----------------------------------
+
+            tel = null;
+            tel = GetFilledRandomTel("TelNumber");
+            actionTel = await TelService.Post(tel);
+            Assert.IsType<BadRequestObjectResult>(actionTel.Result);
+
+            tel = null;
+            tel = GetFilledRandomTel("");
+            tel.TelNumber = GetRandomString("", 51);
+            actionTel = await TelService.Post(tel);
+            Assert.IsType<BadRequestObjectResult>(actionTel.Result);
+            //Assert.AreEqual(count, telService.GetTelList().Count());
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPEnumType]
+            // tel.TelType   (TelTypeEnum)
+            // -----------------------------------
+
+            tel = null;
+            tel = GetFilledRandomTel("");
+            tel.TelType = (TelTypeEnum)1000000;
+            actionTel = await TelService.Post(tel);
+            Assert.IsType<BadRequestObjectResult>(actionTel.Result);
+
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPAfter(Year = 1980)]
+            // tel.LastUpdateDate_UTC   (DateTime)
+            // -----------------------------------
+
+            tel = null;
+            tel = GetFilledRandomTel("");
+            tel.LastUpdateDate_UTC = new DateTime();
+            actionTel = await TelService.Post(tel);
+            Assert.IsType<BadRequestObjectResult>(actionTel.Result);
+            tel = null;
+            tel = GetFilledRandomTel("");
+            tel.LastUpdateDate_UTC = new DateTime(1979, 1, 1);
+            actionTel = await TelService.Post(tel);
+            Assert.IsType<BadRequestObjectResult>(actionTel.Result);
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPExist(ExistTypeName = "TVItem", ExistPlurial = "s", ExistFieldID = "TVItemID", AllowableTVtypeList = Contact)]
+            // tel.LastUpdateContactTVItemID   (Int32)
+            // -----------------------------------
+
+            tel = null;
+            tel = GetFilledRandomTel("");
+            tel.LastUpdateContactTVItemID = 0;
+            actionTel = await TelService.Post(tel);
+            Assert.IsType<BadRequestObjectResult>(actionTel.Result);
+
+            tel = null;
+            tel = GetFilledRandomTel("");
+            tel.LastUpdateContactTVItemID = 1;
+            actionTel = await TelService.Post(tel);
+            Assert.IsType<BadRequestObjectResult>(actionTel.Result);
+
+        }
+        #endregion Tests Generated Properties
 
         #region Functions private
         private async Task DoCRUDTest()
@@ -234,6 +377,10 @@ namespace CSSPServices.Tests
             }
 
             return tel;
+        }
+        private void CheckTelFields(List<Tel> telList)
+        {
+            Assert.False(string.IsNullOrWhiteSpace(telList[0].TelNumber));
         }
         #endregion Functions private
     }

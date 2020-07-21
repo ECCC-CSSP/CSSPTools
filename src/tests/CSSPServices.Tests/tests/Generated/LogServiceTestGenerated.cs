@@ -19,6 +19,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Transactions;
 using Xunit;
+using System.ComponentModel.DataAnnotations;
 
 namespace CSSPServices.Tests
 {
@@ -81,6 +82,153 @@ namespace CSSPServices.Tests
             }
         }
         #endregion Tests Generated CRUD
+
+        #region Tests Generated Properties
+        [Theory]
+        [InlineData("en-CA", DBLocationEnum.Local)]
+        [InlineData("fr-CA", DBLocationEnum.Local)]
+        [InlineData("en-CA", DBLocationEnum.Server)]
+        [InlineData("fr-CA", DBLocationEnum.Server)]
+        public async Task Log_Properties_Test(string culture, DBLocationEnum DBLocation)
+        {
+            // -------------------------------
+            // -------------------------------
+            // Properties testing
+            // -------------------------------
+            // -------------------------------
+
+            Assert.True(await Setup(culture));
+
+            LoggedInService.DBLocation = DBLocation;
+
+            int count = 0;
+            if (count == 1)
+            {
+                // just so we don't get a warning during compile [The variable 'count' is assigned but its value is never used]
+            }
+
+            var actionLogList = await LogService.GetLogList();
+            Assert.Equal(200, ((ObjectResult)actionLogList.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionLogList.Result).Value);
+            List<Log> logList = (List<Log>)((OkObjectResult)actionLogList.Result).Value;
+
+            count = logList.Count();
+
+            Log log = GetFilledRandomLog("");
+
+
+            // -----------------------------------
+            // [Key]
+            // Is NOT Nullable
+            // log.LogID   (Int32)
+            // -----------------------------------
+
+            log = null;
+            log = GetFilledRandomLog("");
+            log.LogID = 0;
+
+            var actionLog = await LogService.Put(log);
+            Assert.IsType<BadRequestObjectResult>(actionLog.Result);
+
+            log = null;
+            log = GetFilledRandomLog("");
+            log.LogID = 10000000;
+            actionLog = await LogService.Put(log);
+            Assert.IsType<BadRequestObjectResult>(actionLog.Result);
+
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPMaxLength(50)]
+            // log.TableName   (String)
+            // -----------------------------------
+
+            log = null;
+            log = GetFilledRandomLog("TableName");
+            actionLog = await LogService.Post(log);
+            Assert.IsType<BadRequestObjectResult>(actionLog.Result);
+
+            log = null;
+            log = GetFilledRandomLog("");
+            log.TableName = GetRandomString("", 51);
+            actionLog = await LogService.Post(log);
+            Assert.IsType<BadRequestObjectResult>(actionLog.Result);
+            //Assert.AreEqual(count, logService.GetLogList().Count());
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPRange(1, -1)]
+            // log.ID   (Int32)
+            // -----------------------------------
+
+            log = null;
+            log = GetFilledRandomLog("");
+            log.ID = 0;
+            actionLog = await LogService.Post(log);
+            Assert.IsType<BadRequestObjectResult>(actionLog.Result);
+            //Assert.AreEqual(count, logService.GetLogList().Count());
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPEnumType]
+            // log.LogCommand   (LogCommandEnum)
+            // -----------------------------------
+
+            log = null;
+            log = GetFilledRandomLog("");
+            log.LogCommand = (LogCommandEnum)1000000;
+            actionLog = await LogService.Post(log);
+            Assert.IsType<BadRequestObjectResult>(actionLog.Result);
+
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // log.Information   (String)
+            // -----------------------------------
+
+            log = null;
+            log = GetFilledRandomLog("Information");
+            actionLog = await LogService.Post(log);
+            Assert.IsType<BadRequestObjectResult>(actionLog.Result);
+
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPAfter(Year = 1980)]
+            // log.LastUpdateDate_UTC   (DateTime)
+            // -----------------------------------
+
+            log = null;
+            log = GetFilledRandomLog("");
+            log.LastUpdateDate_UTC = new DateTime();
+            actionLog = await LogService.Post(log);
+            Assert.IsType<BadRequestObjectResult>(actionLog.Result);
+            log = null;
+            log = GetFilledRandomLog("");
+            log.LastUpdateDate_UTC = new DateTime(1979, 1, 1);
+            actionLog = await LogService.Post(log);
+            Assert.IsType<BadRequestObjectResult>(actionLog.Result);
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPExist(ExistTypeName = "TVItem", ExistPlurial = "s", ExistFieldID = "TVItemID", AllowableTVtypeList = Contact)]
+            // log.LastUpdateContactTVItemID   (Int32)
+            // -----------------------------------
+
+            log = null;
+            log = GetFilledRandomLog("");
+            log.LastUpdateContactTVItemID = 0;
+            actionLog = await LogService.Post(log);
+            Assert.IsType<BadRequestObjectResult>(actionLog.Result);
+
+            log = null;
+            log = GetFilledRandomLog("");
+            log.LastUpdateContactTVItemID = 1;
+            actionLog = await LogService.Post(log);
+            Assert.IsType<BadRequestObjectResult>(actionLog.Result);
+
+        }
+        #endregion Tests Generated Properties
 
         #region Functions private
         private async Task DoCRUDTest()
@@ -226,6 +374,11 @@ namespace CSSPServices.Tests
             }
 
             return log;
+        }
+        private void CheckLogFields(List<Log> logList)
+        {
+            Assert.False(string.IsNullOrWhiteSpace(logList[0].TableName));
+            Assert.False(string.IsNullOrWhiteSpace(logList[0].Information));
         }
         #endregion Functions private
     }

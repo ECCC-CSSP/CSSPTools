@@ -19,6 +19,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Transactions;
 using Xunit;
+using System.ComponentModel.DataAnnotations;
 
 namespace CSSPServices.Tests
 {
@@ -81,6 +82,377 @@ namespace CSSPServices.Tests
             }
         }
         #endregion Tests Generated CRUD
+
+        #region Tests Generated Properties
+        [Theory]
+        [InlineData("en-CA", DBLocationEnum.Local)]
+        [InlineData("fr-CA", DBLocationEnum.Local)]
+        [InlineData("en-CA", DBLocationEnum.Server)]
+        [InlineData("fr-CA", DBLocationEnum.Server)]
+        public async Task BoxModelResult_Properties_Test(string culture, DBLocationEnum DBLocation)
+        {
+            // -------------------------------
+            // -------------------------------
+            // Properties testing
+            // -------------------------------
+            // -------------------------------
+
+            Assert.True(await Setup(culture));
+
+            LoggedInService.DBLocation = DBLocation;
+
+            int count = 0;
+            if (count == 1)
+            {
+                // just so we don't get a warning during compile [The variable 'count' is assigned but its value is never used]
+            }
+
+            var actionBoxModelResultList = await BoxModelResultService.GetBoxModelResultList();
+            Assert.Equal(200, ((ObjectResult)actionBoxModelResultList.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionBoxModelResultList.Result).Value);
+            List<BoxModelResult> boxModelResultList = (List<BoxModelResult>)((OkObjectResult)actionBoxModelResultList.Result).Value;
+
+            count = boxModelResultList.Count();
+
+            BoxModelResult boxModelResult = GetFilledRandomBoxModelResult("");
+
+
+            // -----------------------------------
+            // [Key]
+            // Is NOT Nullable
+            // boxModelResult.BoxModelResultID   (Int32)
+            // -----------------------------------
+
+            boxModelResult = null;
+            boxModelResult = GetFilledRandomBoxModelResult("");
+            boxModelResult.BoxModelResultID = 0;
+
+            var actionBoxModelResult = await BoxModelResultService.Put(boxModelResult);
+            Assert.IsType<BadRequestObjectResult>(actionBoxModelResult.Result);
+
+            boxModelResult = null;
+            boxModelResult = GetFilledRandomBoxModelResult("");
+            boxModelResult.BoxModelResultID = 10000000;
+            actionBoxModelResult = await BoxModelResultService.Put(boxModelResult);
+            Assert.IsType<BadRequestObjectResult>(actionBoxModelResult.Result);
+
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPExist(ExistTypeName = "BoxModel", ExistPlurial = "s", ExistFieldID = "BoxModelID", AllowableTVtypeList = )]
+            // boxModelResult.BoxModelID   (Int32)
+            // -----------------------------------
+
+            boxModelResult = null;
+            boxModelResult = GetFilledRandomBoxModelResult("");
+            boxModelResult.BoxModelID = 0;
+            actionBoxModelResult = await BoxModelResultService.Post(boxModelResult);
+            Assert.IsType<BadRequestObjectResult>(actionBoxModelResult.Result);
+
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPEnumType]
+            // boxModelResult.BoxModelResultType   (BoxModelResultTypeEnum)
+            // -----------------------------------
+
+            boxModelResult = null;
+            boxModelResult = GetFilledRandomBoxModelResult("");
+            boxModelResult.BoxModelResultType = (BoxModelResultTypeEnum)1000000;
+            actionBoxModelResult = await BoxModelResultService.Post(boxModelResult);
+            Assert.IsType<BadRequestObjectResult>(actionBoxModelResult.Result);
+
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPRange(0, -1)]
+            // boxModelResult.Volume_m3   (Double)
+            // -----------------------------------
+
+            //CSSPError: Type not implemented [Volume_m3]
+
+            //CSSPError: Type not implemented [Volume_m3]
+
+            boxModelResult = null;
+            boxModelResult = GetFilledRandomBoxModelResult("");
+            boxModelResult.Volume_m3 = -1.0D;
+            actionBoxModelResult = await BoxModelResultService.Post(boxModelResult);
+            Assert.IsType<BadRequestObjectResult>(actionBoxModelResult.Result);
+            //Assert.AreEqual(count, boxModelResultService.GetBoxModelResultList().Count());
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPRange(0, -1)]
+            // boxModelResult.Surface_m2   (Double)
+            // -----------------------------------
+
+            //CSSPError: Type not implemented [Surface_m2]
+
+            //CSSPError: Type not implemented [Surface_m2]
+
+            boxModelResult = null;
+            boxModelResult = GetFilledRandomBoxModelResult("");
+            boxModelResult.Surface_m2 = -1.0D;
+            actionBoxModelResult = await BoxModelResultService.Post(boxModelResult);
+            Assert.IsType<BadRequestObjectResult>(actionBoxModelResult.Result);
+            //Assert.AreEqual(count, boxModelResultService.GetBoxModelResultList().Count());
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPRange(0, 100000)]
+            // boxModelResult.Radius_m   (Double)
+            // -----------------------------------
+
+            //CSSPError: Type not implemented [Radius_m]
+
+            //CSSPError: Type not implemented [Radius_m]
+
+            boxModelResult = null;
+            boxModelResult = GetFilledRandomBoxModelResult("");
+            boxModelResult.Radius_m = -1.0D;
+            actionBoxModelResult = await BoxModelResultService.Post(boxModelResult);
+            Assert.IsType<BadRequestObjectResult>(actionBoxModelResult.Result);
+            //Assert.AreEqual(count, boxModelResultService.GetBoxModelResultList().Count());
+            boxModelResult = null;
+            boxModelResult = GetFilledRandomBoxModelResult("");
+            boxModelResult.Radius_m = 100001.0D;
+            actionBoxModelResult = await BoxModelResultService.Post(boxModelResult);
+            Assert.IsType<BadRequestObjectResult>(actionBoxModelResult.Result);
+            //Assert.AreEqual(count, boxModelResultService.GetBoxModelResultList().Count());
+
+            // -----------------------------------
+            // Is Nullable
+            // [CSSPRange(0, 360)]
+            // boxModelResult.LeftSideDiameterLineAngle_deg   (Double)
+            // -----------------------------------
+
+            //CSSPError: Type not implemented [LeftSideDiameterLineAngle_deg]
+
+            //CSSPError: Type not implemented [LeftSideDiameterLineAngle_deg]
+
+            boxModelResult = null;
+            boxModelResult = GetFilledRandomBoxModelResult("");
+            boxModelResult.LeftSideDiameterLineAngle_deg = -1.0D;
+            actionBoxModelResult = await BoxModelResultService.Post(boxModelResult);
+            Assert.IsType<BadRequestObjectResult>(actionBoxModelResult.Result);
+            //Assert.AreEqual(count, boxModelResultService.GetBoxModelResultList().Count());
+            boxModelResult = null;
+            boxModelResult = GetFilledRandomBoxModelResult("");
+            boxModelResult.LeftSideDiameterLineAngle_deg = 361.0D;
+            actionBoxModelResult = await BoxModelResultService.Post(boxModelResult);
+            Assert.IsType<BadRequestObjectResult>(actionBoxModelResult.Result);
+            //Assert.AreEqual(count, boxModelResultService.GetBoxModelResultList().Count());
+
+            // -----------------------------------
+            // Is Nullable
+            // [CSSPRange(-90, 90)]
+            // boxModelResult.CircleCenterLatitude   (Double)
+            // -----------------------------------
+
+            //CSSPError: Type not implemented [CircleCenterLatitude]
+
+            //CSSPError: Type not implemented [CircleCenterLatitude]
+
+            boxModelResult = null;
+            boxModelResult = GetFilledRandomBoxModelResult("");
+            boxModelResult.CircleCenterLatitude = -91.0D;
+            actionBoxModelResult = await BoxModelResultService.Post(boxModelResult);
+            Assert.IsType<BadRequestObjectResult>(actionBoxModelResult.Result);
+            //Assert.AreEqual(count, boxModelResultService.GetBoxModelResultList().Count());
+            boxModelResult = null;
+            boxModelResult = GetFilledRandomBoxModelResult("");
+            boxModelResult.CircleCenterLatitude = 91.0D;
+            actionBoxModelResult = await BoxModelResultService.Post(boxModelResult);
+            Assert.IsType<BadRequestObjectResult>(actionBoxModelResult.Result);
+            //Assert.AreEqual(count, boxModelResultService.GetBoxModelResultList().Count());
+
+            // -----------------------------------
+            // Is Nullable
+            // [CSSPRange(-180, 180)]
+            // boxModelResult.CircleCenterLongitude   (Double)
+            // -----------------------------------
+
+            //CSSPError: Type not implemented [CircleCenterLongitude]
+
+            //CSSPError: Type not implemented [CircleCenterLongitude]
+
+            boxModelResult = null;
+            boxModelResult = GetFilledRandomBoxModelResult("");
+            boxModelResult.CircleCenterLongitude = -181.0D;
+            actionBoxModelResult = await BoxModelResultService.Post(boxModelResult);
+            Assert.IsType<BadRequestObjectResult>(actionBoxModelResult.Result);
+            //Assert.AreEqual(count, boxModelResultService.GetBoxModelResultList().Count());
+            boxModelResult = null;
+            boxModelResult = GetFilledRandomBoxModelResult("");
+            boxModelResult.CircleCenterLongitude = 181.0D;
+            actionBoxModelResult = await BoxModelResultService.Post(boxModelResult);
+            Assert.IsType<BadRequestObjectResult>(actionBoxModelResult.Result);
+            //Assert.AreEqual(count, boxModelResultService.GetBoxModelResultList().Count());
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // boxModelResult.FixLength   (Boolean)
+            // -----------------------------------
+
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // boxModelResult.FixWidth   (Boolean)
+            // -----------------------------------
+
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPRange(0, 100000)]
+            // boxModelResult.RectLength_m   (Double)
+            // -----------------------------------
+
+            //CSSPError: Type not implemented [RectLength_m]
+
+            //CSSPError: Type not implemented [RectLength_m]
+
+            boxModelResult = null;
+            boxModelResult = GetFilledRandomBoxModelResult("");
+            boxModelResult.RectLength_m = -1.0D;
+            actionBoxModelResult = await BoxModelResultService.Post(boxModelResult);
+            Assert.IsType<BadRequestObjectResult>(actionBoxModelResult.Result);
+            //Assert.AreEqual(count, boxModelResultService.GetBoxModelResultList().Count());
+            boxModelResult = null;
+            boxModelResult = GetFilledRandomBoxModelResult("");
+            boxModelResult.RectLength_m = 100001.0D;
+            actionBoxModelResult = await BoxModelResultService.Post(boxModelResult);
+            Assert.IsType<BadRequestObjectResult>(actionBoxModelResult.Result);
+            //Assert.AreEqual(count, boxModelResultService.GetBoxModelResultList().Count());
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPRange(0, 100000)]
+            // boxModelResult.RectWidth_m   (Double)
+            // -----------------------------------
+
+            //CSSPError: Type not implemented [RectWidth_m]
+
+            //CSSPError: Type not implemented [RectWidth_m]
+
+            boxModelResult = null;
+            boxModelResult = GetFilledRandomBoxModelResult("");
+            boxModelResult.RectWidth_m = -1.0D;
+            actionBoxModelResult = await BoxModelResultService.Post(boxModelResult);
+            Assert.IsType<BadRequestObjectResult>(actionBoxModelResult.Result);
+            //Assert.AreEqual(count, boxModelResultService.GetBoxModelResultList().Count());
+            boxModelResult = null;
+            boxModelResult = GetFilledRandomBoxModelResult("");
+            boxModelResult.RectWidth_m = 100001.0D;
+            actionBoxModelResult = await BoxModelResultService.Post(boxModelResult);
+            Assert.IsType<BadRequestObjectResult>(actionBoxModelResult.Result);
+            //Assert.AreEqual(count, boxModelResultService.GetBoxModelResultList().Count());
+
+            // -----------------------------------
+            // Is Nullable
+            // [CSSPRange(0, 360)]
+            // boxModelResult.LeftSideLineAngle_deg   (Double)
+            // -----------------------------------
+
+            //CSSPError: Type not implemented [LeftSideLineAngle_deg]
+
+            //CSSPError: Type not implemented [LeftSideLineAngle_deg]
+
+            boxModelResult = null;
+            boxModelResult = GetFilledRandomBoxModelResult("");
+            boxModelResult.LeftSideLineAngle_deg = -1.0D;
+            actionBoxModelResult = await BoxModelResultService.Post(boxModelResult);
+            Assert.IsType<BadRequestObjectResult>(actionBoxModelResult.Result);
+            //Assert.AreEqual(count, boxModelResultService.GetBoxModelResultList().Count());
+            boxModelResult = null;
+            boxModelResult = GetFilledRandomBoxModelResult("");
+            boxModelResult.LeftSideLineAngle_deg = 361.0D;
+            actionBoxModelResult = await BoxModelResultService.Post(boxModelResult);
+            Assert.IsType<BadRequestObjectResult>(actionBoxModelResult.Result);
+            //Assert.AreEqual(count, boxModelResultService.GetBoxModelResultList().Count());
+
+            // -----------------------------------
+            // Is Nullable
+            // [CSSPRange(-90, 90)]
+            // boxModelResult.LeftSideLineStartLatitude   (Double)
+            // -----------------------------------
+
+            //CSSPError: Type not implemented [LeftSideLineStartLatitude]
+
+            //CSSPError: Type not implemented [LeftSideLineStartLatitude]
+
+            boxModelResult = null;
+            boxModelResult = GetFilledRandomBoxModelResult("");
+            boxModelResult.LeftSideLineStartLatitude = -91.0D;
+            actionBoxModelResult = await BoxModelResultService.Post(boxModelResult);
+            Assert.IsType<BadRequestObjectResult>(actionBoxModelResult.Result);
+            //Assert.AreEqual(count, boxModelResultService.GetBoxModelResultList().Count());
+            boxModelResult = null;
+            boxModelResult = GetFilledRandomBoxModelResult("");
+            boxModelResult.LeftSideLineStartLatitude = 91.0D;
+            actionBoxModelResult = await BoxModelResultService.Post(boxModelResult);
+            Assert.IsType<BadRequestObjectResult>(actionBoxModelResult.Result);
+            //Assert.AreEqual(count, boxModelResultService.GetBoxModelResultList().Count());
+
+            // -----------------------------------
+            // Is Nullable
+            // [CSSPRange(-180, 180)]
+            // boxModelResult.LeftSideLineStartLongitude   (Double)
+            // -----------------------------------
+
+            //CSSPError: Type not implemented [LeftSideLineStartLongitude]
+
+            //CSSPError: Type not implemented [LeftSideLineStartLongitude]
+
+            boxModelResult = null;
+            boxModelResult = GetFilledRandomBoxModelResult("");
+            boxModelResult.LeftSideLineStartLongitude = -181.0D;
+            actionBoxModelResult = await BoxModelResultService.Post(boxModelResult);
+            Assert.IsType<BadRequestObjectResult>(actionBoxModelResult.Result);
+            //Assert.AreEqual(count, boxModelResultService.GetBoxModelResultList().Count());
+            boxModelResult = null;
+            boxModelResult = GetFilledRandomBoxModelResult("");
+            boxModelResult.LeftSideLineStartLongitude = 181.0D;
+            actionBoxModelResult = await BoxModelResultService.Post(boxModelResult);
+            Assert.IsType<BadRequestObjectResult>(actionBoxModelResult.Result);
+            //Assert.AreEqual(count, boxModelResultService.GetBoxModelResultList().Count());
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPAfter(Year = 1980)]
+            // boxModelResult.LastUpdateDate_UTC   (DateTime)
+            // -----------------------------------
+
+            boxModelResult = null;
+            boxModelResult = GetFilledRandomBoxModelResult("");
+            boxModelResult.LastUpdateDate_UTC = new DateTime();
+            actionBoxModelResult = await BoxModelResultService.Post(boxModelResult);
+            Assert.IsType<BadRequestObjectResult>(actionBoxModelResult.Result);
+            boxModelResult = null;
+            boxModelResult = GetFilledRandomBoxModelResult("");
+            boxModelResult.LastUpdateDate_UTC = new DateTime(1979, 1, 1);
+            actionBoxModelResult = await BoxModelResultService.Post(boxModelResult);
+            Assert.IsType<BadRequestObjectResult>(actionBoxModelResult.Result);
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPExist(ExistTypeName = "TVItem", ExistPlurial = "s", ExistFieldID = "TVItemID", AllowableTVtypeList = Contact)]
+            // boxModelResult.LastUpdateContactTVItemID   (Int32)
+            // -----------------------------------
+
+            boxModelResult = null;
+            boxModelResult = GetFilledRandomBoxModelResult("");
+            boxModelResult.LastUpdateContactTVItemID = 0;
+            actionBoxModelResult = await BoxModelResultService.Post(boxModelResult);
+            Assert.IsType<BadRequestObjectResult>(actionBoxModelResult.Result);
+
+            boxModelResult = null;
+            boxModelResult = GetFilledRandomBoxModelResult("");
+            boxModelResult.LastUpdateContactTVItemID = 1;
+            actionBoxModelResult = await BoxModelResultService.Post(boxModelResult);
+            Assert.IsType<BadRequestObjectResult>(actionBoxModelResult.Result);
+
+        }
+        #endregion Tests Generated Properties
 
         #region Functions private
         private async Task DoCRUDTest()
@@ -246,6 +618,33 @@ namespace CSSPServices.Tests
             }
 
             return boxModelResult;
+        }
+        private void CheckBoxModelResultFields(List<BoxModelResult> boxModelResultList)
+        {
+            if (boxModelResultList[0].LeftSideDiameterLineAngle_deg != null)
+            {
+                Assert.NotNull(boxModelResultList[0].LeftSideDiameterLineAngle_deg);
+            }
+            if (boxModelResultList[0].CircleCenterLatitude != null)
+            {
+                Assert.NotNull(boxModelResultList[0].CircleCenterLatitude);
+            }
+            if (boxModelResultList[0].CircleCenterLongitude != null)
+            {
+                Assert.NotNull(boxModelResultList[0].CircleCenterLongitude);
+            }
+            if (boxModelResultList[0].LeftSideLineAngle_deg != null)
+            {
+                Assert.NotNull(boxModelResultList[0].LeftSideLineAngle_deg);
+            }
+            if (boxModelResultList[0].LeftSideLineStartLatitude != null)
+            {
+                Assert.NotNull(boxModelResultList[0].LeftSideLineStartLatitude);
+            }
+            if (boxModelResultList[0].LeftSideLineStartLongitude != null)
+            {
+                Assert.NotNull(boxModelResultList[0].LeftSideLineStartLongitude);
+            }
         }
         #endregion Functions private
     }

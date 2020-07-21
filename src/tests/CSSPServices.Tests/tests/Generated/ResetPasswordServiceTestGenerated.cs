@@ -19,6 +19,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Transactions;
 using Xunit;
+using System.ComponentModel.DataAnnotations;
 
 namespace CSSPServices.Tests
 {
@@ -81,6 +82,152 @@ namespace CSSPServices.Tests
             }
         }
         #endregion Tests Generated CRUD
+
+        #region Tests Generated Properties
+        [Theory]
+        [InlineData("en-CA", DBLocationEnum.Local)]
+        [InlineData("fr-CA", DBLocationEnum.Local)]
+        [InlineData("en-CA", DBLocationEnum.Server)]
+        [InlineData("fr-CA", DBLocationEnum.Server)]
+        public async Task ResetPassword_Properties_Test(string culture, DBLocationEnum DBLocation)
+        {
+            // -------------------------------
+            // -------------------------------
+            // Properties testing
+            // -------------------------------
+            // -------------------------------
+
+            Assert.True(await Setup(culture));
+
+            LoggedInService.DBLocation = DBLocation;
+
+            int count = 0;
+            if (count == 1)
+            {
+                // just so we don't get a warning during compile [The variable 'count' is assigned but its value is never used]
+            }
+
+            var actionResetPasswordList = await ResetPasswordService.GetResetPasswordList();
+            Assert.Equal(200, ((ObjectResult)actionResetPasswordList.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionResetPasswordList.Result).Value);
+            List<ResetPassword> resetPasswordList = (List<ResetPassword>)((OkObjectResult)actionResetPasswordList.Result).Value;
+
+            count = resetPasswordList.Count();
+
+            ResetPassword resetPassword = GetFilledRandomResetPassword("");
+
+
+            // -----------------------------------
+            // [Key]
+            // Is NOT Nullable
+            // resetPassword.ResetPasswordID   (Int32)
+            // -----------------------------------
+
+            resetPassword = null;
+            resetPassword = GetFilledRandomResetPassword("");
+            resetPassword.ResetPasswordID = 0;
+
+            var actionResetPassword = await ResetPasswordService.Put(resetPassword);
+            Assert.IsType<BadRequestObjectResult>(actionResetPassword.Result);
+
+            resetPassword = null;
+            resetPassword = GetFilledRandomResetPassword("");
+            resetPassword.ResetPasswordID = 10000000;
+            actionResetPassword = await ResetPasswordService.Put(resetPassword);
+            Assert.IsType<BadRequestObjectResult>(actionResetPassword.Result);
+
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [DataType(DataType.EmailAddress)]
+            // [CSSPMaxLength(256)]
+            // resetPassword.Email   (String)
+            // -----------------------------------
+
+            resetPassword = null;
+            resetPassword = GetFilledRandomResetPassword("Email");
+            actionResetPassword = await ResetPasswordService.Post(resetPassword);
+            Assert.IsType<BadRequestObjectResult>(actionResetPassword.Result);
+
+            resetPassword = null;
+            resetPassword = GetFilledRandomResetPassword("");
+            resetPassword.Email = GetRandomString("", 257);
+            actionResetPassword = await ResetPasswordService.Post(resetPassword);
+            Assert.IsType<BadRequestObjectResult>(actionResetPassword.Result);
+            //Assert.AreEqual(count, resetPasswordService.GetResetPasswordList().Count());
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPAfter(Year = 1980)]
+            // resetPassword.ExpireDate_Local   (DateTime)
+            // -----------------------------------
+
+            resetPassword = null;
+            resetPassword = GetFilledRandomResetPassword("");
+            resetPassword.ExpireDate_Local = new DateTime();
+            actionResetPassword = await ResetPasswordService.Post(resetPassword);
+            Assert.IsType<BadRequestObjectResult>(actionResetPassword.Result);
+            resetPassword = null;
+            resetPassword = GetFilledRandomResetPassword("");
+            resetPassword.ExpireDate_Local = new DateTime(1979, 1, 1);
+            actionResetPassword = await ResetPasswordService.Post(resetPassword);
+            Assert.IsType<BadRequestObjectResult>(actionResetPassword.Result);
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPMaxLength(8)]
+            // resetPassword.Code   (String)
+            // -----------------------------------
+
+            resetPassword = null;
+            resetPassword = GetFilledRandomResetPassword("Code");
+            actionResetPassword = await ResetPasswordService.Post(resetPassword);
+            Assert.IsType<BadRequestObjectResult>(actionResetPassword.Result);
+
+            resetPassword = null;
+            resetPassword = GetFilledRandomResetPassword("");
+            resetPassword.Code = GetRandomString("", 9);
+            actionResetPassword = await ResetPasswordService.Post(resetPassword);
+            Assert.IsType<BadRequestObjectResult>(actionResetPassword.Result);
+            //Assert.AreEqual(count, resetPasswordService.GetResetPasswordList().Count());
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPAfter(Year = 1980)]
+            // resetPassword.LastUpdateDate_UTC   (DateTime)
+            // -----------------------------------
+
+            resetPassword = null;
+            resetPassword = GetFilledRandomResetPassword("");
+            resetPassword.LastUpdateDate_UTC = new DateTime();
+            actionResetPassword = await ResetPasswordService.Post(resetPassword);
+            Assert.IsType<BadRequestObjectResult>(actionResetPassword.Result);
+            resetPassword = null;
+            resetPassword = GetFilledRandomResetPassword("");
+            resetPassword.LastUpdateDate_UTC = new DateTime(1979, 1, 1);
+            actionResetPassword = await ResetPasswordService.Post(resetPassword);
+            Assert.IsType<BadRequestObjectResult>(actionResetPassword.Result);
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPExist(ExistTypeName = "TVItem", ExistPlurial = "s", ExistFieldID = "TVItemID", AllowableTVtypeList = Contact)]
+            // resetPassword.LastUpdateContactTVItemID   (Int32)
+            // -----------------------------------
+
+            resetPassword = null;
+            resetPassword = GetFilledRandomResetPassword("");
+            resetPassword.LastUpdateContactTVItemID = 0;
+            actionResetPassword = await ResetPasswordService.Post(resetPassword);
+            Assert.IsType<BadRequestObjectResult>(actionResetPassword.Result);
+
+            resetPassword = null;
+            resetPassword = GetFilledRandomResetPassword("");
+            resetPassword.LastUpdateContactTVItemID = 1;
+            actionResetPassword = await ResetPasswordService.Post(resetPassword);
+            Assert.IsType<BadRequestObjectResult>(actionResetPassword.Result);
+
+        }
+        #endregion Tests Generated Properties
 
         #region Functions private
         private async Task DoCRUDTest()
@@ -225,6 +372,11 @@ namespace CSSPServices.Tests
             }
 
             return resetPassword;
+        }
+        private void CheckResetPasswordFields(List<ResetPassword> resetPasswordList)
+        {
+            Assert.False(string.IsNullOrWhiteSpace(resetPasswordList[0].Email));
+            Assert.False(string.IsNullOrWhiteSpace(resetPasswordList[0].Code));
         }
         #endregion Functions private
     }

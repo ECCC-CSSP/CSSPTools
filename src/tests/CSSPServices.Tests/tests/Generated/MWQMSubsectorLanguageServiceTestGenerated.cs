@@ -19,6 +19,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Transactions;
 using Xunit;
+using System.ComponentModel.DataAnnotations;
 
 namespace CSSPServices.Tests
 {
@@ -81,6 +82,174 @@ namespace CSSPServices.Tests
             }
         }
         #endregion Tests Generated CRUD
+
+        #region Tests Generated Properties
+        [Theory]
+        [InlineData("en-CA", DBLocationEnum.Local)]
+        [InlineData("fr-CA", DBLocationEnum.Local)]
+        [InlineData("en-CA", DBLocationEnum.Server)]
+        [InlineData("fr-CA", DBLocationEnum.Server)]
+        public async Task MWQMSubsectorLanguage_Properties_Test(string culture, DBLocationEnum DBLocation)
+        {
+            // -------------------------------
+            // -------------------------------
+            // Properties testing
+            // -------------------------------
+            // -------------------------------
+
+            Assert.True(await Setup(culture));
+
+            LoggedInService.DBLocation = DBLocation;
+
+            int count = 0;
+            if (count == 1)
+            {
+                // just so we don't get a warning during compile [The variable 'count' is assigned but its value is never used]
+            }
+
+            var actionMWQMSubsectorLanguageList = await MWQMSubsectorLanguageService.GetMWQMSubsectorLanguageList();
+            Assert.Equal(200, ((ObjectResult)actionMWQMSubsectorLanguageList.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionMWQMSubsectorLanguageList.Result).Value);
+            List<MWQMSubsectorLanguage> mwqmSubsectorLanguageList = (List<MWQMSubsectorLanguage>)((OkObjectResult)actionMWQMSubsectorLanguageList.Result).Value;
+
+            count = mwqmSubsectorLanguageList.Count();
+
+            MWQMSubsectorLanguage mwqmSubsectorLanguage = GetFilledRandomMWQMSubsectorLanguage("");
+
+
+            // -----------------------------------
+            // [Key]
+            // Is NOT Nullable
+            // mwqmSubsectorLanguage.MWQMSubsectorLanguageID   (Int32)
+            // -----------------------------------
+
+            mwqmSubsectorLanguage = null;
+            mwqmSubsectorLanguage = GetFilledRandomMWQMSubsectorLanguage("");
+            mwqmSubsectorLanguage.MWQMSubsectorLanguageID = 0;
+
+            var actionMWQMSubsectorLanguage = await MWQMSubsectorLanguageService.Put(mwqmSubsectorLanguage);
+            Assert.IsType<BadRequestObjectResult>(actionMWQMSubsectorLanguage.Result);
+
+            mwqmSubsectorLanguage = null;
+            mwqmSubsectorLanguage = GetFilledRandomMWQMSubsectorLanguage("");
+            mwqmSubsectorLanguage.MWQMSubsectorLanguageID = 10000000;
+            actionMWQMSubsectorLanguage = await MWQMSubsectorLanguageService.Put(mwqmSubsectorLanguage);
+            Assert.IsType<BadRequestObjectResult>(actionMWQMSubsectorLanguage.Result);
+
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPExist(ExistTypeName = "MWQMSubsector", ExistPlurial = "s", ExistFieldID = "MWQMSubsectorID", AllowableTVtypeList = )]
+            // mwqmSubsectorLanguage.MWQMSubsectorID   (Int32)
+            // -----------------------------------
+
+            mwqmSubsectorLanguage = null;
+            mwqmSubsectorLanguage = GetFilledRandomMWQMSubsectorLanguage("");
+            mwqmSubsectorLanguage.MWQMSubsectorID = 0;
+            actionMWQMSubsectorLanguage = await MWQMSubsectorLanguageService.Post(mwqmSubsectorLanguage);
+            Assert.IsType<BadRequestObjectResult>(actionMWQMSubsectorLanguage.Result);
+
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPEnumType]
+            // mwqmSubsectorLanguage.Language   (LanguageEnum)
+            // -----------------------------------
+
+            mwqmSubsectorLanguage = null;
+            mwqmSubsectorLanguage = GetFilledRandomMWQMSubsectorLanguage("");
+            mwqmSubsectorLanguage.Language = (LanguageEnum)1000000;
+            actionMWQMSubsectorLanguage = await MWQMSubsectorLanguageService.Post(mwqmSubsectorLanguage);
+            Assert.IsType<BadRequestObjectResult>(actionMWQMSubsectorLanguage.Result);
+
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPMaxLength(250)]
+            // mwqmSubsectorLanguage.SubsectorDesc   (String)
+            // -----------------------------------
+
+            mwqmSubsectorLanguage = null;
+            mwqmSubsectorLanguage = GetFilledRandomMWQMSubsectorLanguage("SubsectorDesc");
+            actionMWQMSubsectorLanguage = await MWQMSubsectorLanguageService.Post(mwqmSubsectorLanguage);
+            Assert.IsType<BadRequestObjectResult>(actionMWQMSubsectorLanguage.Result);
+
+            mwqmSubsectorLanguage = null;
+            mwqmSubsectorLanguage = GetFilledRandomMWQMSubsectorLanguage("");
+            mwqmSubsectorLanguage.SubsectorDesc = GetRandomString("", 251);
+            actionMWQMSubsectorLanguage = await MWQMSubsectorLanguageService.Post(mwqmSubsectorLanguage);
+            Assert.IsType<BadRequestObjectResult>(actionMWQMSubsectorLanguage.Result);
+            //Assert.AreEqual(count, mwqmSubsectorLanguageService.GetMWQMSubsectorLanguageList().Count());
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPEnumType]
+            // mwqmSubsectorLanguage.TranslationStatusSubsectorDesc   (TranslationStatusEnum)
+            // -----------------------------------
+
+            mwqmSubsectorLanguage = null;
+            mwqmSubsectorLanguage = GetFilledRandomMWQMSubsectorLanguage("");
+            mwqmSubsectorLanguage.TranslationStatusSubsectorDesc = (TranslationStatusEnum)1000000;
+            actionMWQMSubsectorLanguage = await MWQMSubsectorLanguageService.Post(mwqmSubsectorLanguage);
+            Assert.IsType<BadRequestObjectResult>(actionMWQMSubsectorLanguage.Result);
+
+
+            // -----------------------------------
+            // Is Nullable
+            // mwqmSubsectorLanguage.LogBook   (String)
+            // -----------------------------------
+
+
+            // -----------------------------------
+            // Is Nullable
+            // [CSSPEnumType]
+            // mwqmSubsectorLanguage.TranslationStatusLogBook   (TranslationStatusEnum)
+            // -----------------------------------
+
+            mwqmSubsectorLanguage = null;
+            mwqmSubsectorLanguage = GetFilledRandomMWQMSubsectorLanguage("");
+            mwqmSubsectorLanguage.TranslationStatusLogBook = (TranslationStatusEnum)1000000;
+            actionMWQMSubsectorLanguage = await MWQMSubsectorLanguageService.Post(mwqmSubsectorLanguage);
+            Assert.IsType<BadRequestObjectResult>(actionMWQMSubsectorLanguage.Result);
+
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPAfter(Year = 1980)]
+            // mwqmSubsectorLanguage.LastUpdateDate_UTC   (DateTime)
+            // -----------------------------------
+
+            mwqmSubsectorLanguage = null;
+            mwqmSubsectorLanguage = GetFilledRandomMWQMSubsectorLanguage("");
+            mwqmSubsectorLanguage.LastUpdateDate_UTC = new DateTime();
+            actionMWQMSubsectorLanguage = await MWQMSubsectorLanguageService.Post(mwqmSubsectorLanguage);
+            Assert.IsType<BadRequestObjectResult>(actionMWQMSubsectorLanguage.Result);
+            mwqmSubsectorLanguage = null;
+            mwqmSubsectorLanguage = GetFilledRandomMWQMSubsectorLanguage("");
+            mwqmSubsectorLanguage.LastUpdateDate_UTC = new DateTime(1979, 1, 1);
+            actionMWQMSubsectorLanguage = await MWQMSubsectorLanguageService.Post(mwqmSubsectorLanguage);
+            Assert.IsType<BadRequestObjectResult>(actionMWQMSubsectorLanguage.Result);
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPExist(ExistTypeName = "TVItem", ExistPlurial = "s", ExistFieldID = "TVItemID", AllowableTVtypeList = Contact)]
+            // mwqmSubsectorLanguage.LastUpdateContactTVItemID   (Int32)
+            // -----------------------------------
+
+            mwqmSubsectorLanguage = null;
+            mwqmSubsectorLanguage = GetFilledRandomMWQMSubsectorLanguage("");
+            mwqmSubsectorLanguage.LastUpdateContactTVItemID = 0;
+            actionMWQMSubsectorLanguage = await MWQMSubsectorLanguageService.Post(mwqmSubsectorLanguage);
+            Assert.IsType<BadRequestObjectResult>(actionMWQMSubsectorLanguage.Result);
+
+            mwqmSubsectorLanguage = null;
+            mwqmSubsectorLanguage = GetFilledRandomMWQMSubsectorLanguage("");
+            mwqmSubsectorLanguage.LastUpdateContactTVItemID = 1;
+            actionMWQMSubsectorLanguage = await MWQMSubsectorLanguageService.Post(mwqmSubsectorLanguage);
+            Assert.IsType<BadRequestObjectResult>(actionMWQMSubsectorLanguage.Result);
+
+        }
+        #endregion Tests Generated Properties
 
         #region Functions private
         private async Task DoCRUDTest()
@@ -237,6 +406,18 @@ namespace CSSPServices.Tests
             }
 
             return mwqmSubsectorLanguage;
+        }
+        private void CheckMWQMSubsectorLanguageFields(List<MWQMSubsectorLanguage> mwqmSubsectorLanguageList)
+        {
+            Assert.False(string.IsNullOrWhiteSpace(mwqmSubsectorLanguageList[0].SubsectorDesc));
+            if (!string.IsNullOrWhiteSpace(mwqmSubsectorLanguageList[0].LogBook))
+            {
+                Assert.False(string.IsNullOrWhiteSpace(mwqmSubsectorLanguageList[0].LogBook));
+            }
+            if (mwqmSubsectorLanguageList[0].TranslationStatusLogBook != null)
+            {
+                Assert.NotNull(mwqmSubsectorLanguageList[0].TranslationStatusLogBook);
+            }
         }
         #endregion Functions private
     }

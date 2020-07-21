@@ -19,6 +19,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Transactions;
 using Xunit;
+using System.ComponentModel.DataAnnotations;
 
 namespace CSSPServices.Tests
 {
@@ -81,6 +82,149 @@ namespace CSSPServices.Tests
             }
         }
         #endregion Tests Generated CRUD
+
+        #region Tests Generated Properties
+        [Theory]
+        [InlineData("en-CA", DBLocationEnum.Local)]
+        [InlineData("fr-CA", DBLocationEnum.Local)]
+        [InlineData("en-CA", DBLocationEnum.Server)]
+        [InlineData("fr-CA", DBLocationEnum.Server)]
+        public async Task Email_Properties_Test(string culture, DBLocationEnum DBLocation)
+        {
+            // -------------------------------
+            // -------------------------------
+            // Properties testing
+            // -------------------------------
+            // -------------------------------
+
+            Assert.True(await Setup(culture));
+
+            LoggedInService.DBLocation = DBLocation;
+
+            int count = 0;
+            if (count == 1)
+            {
+                // just so we don't get a warning during compile [The variable 'count' is assigned but its value is never used]
+            }
+
+            var actionEmailList = await EmailService.GetEmailList();
+            Assert.Equal(200, ((ObjectResult)actionEmailList.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionEmailList.Result).Value);
+            List<Email> emailList = (List<Email>)((OkObjectResult)actionEmailList.Result).Value;
+
+            count = emailList.Count();
+
+            Email email = GetFilledRandomEmail("");
+
+
+            // -----------------------------------
+            // [Key]
+            // Is NOT Nullable
+            // email.EmailID   (Int32)
+            // -----------------------------------
+
+            email = null;
+            email = GetFilledRandomEmail("");
+            email.EmailID = 0;
+
+            var actionEmail = await EmailService.Put(email);
+            Assert.IsType<BadRequestObjectResult>(actionEmail.Result);
+
+            email = null;
+            email = GetFilledRandomEmail("");
+            email.EmailID = 10000000;
+            actionEmail = await EmailService.Put(email);
+            Assert.IsType<BadRequestObjectResult>(actionEmail.Result);
+
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPExist(ExistTypeName = "TVItem", ExistPlurial = "s", ExistFieldID = "TVItemID", AllowableTVtypeList = Email)]
+            // email.EmailTVItemID   (Int32)
+            // -----------------------------------
+
+            email = null;
+            email = GetFilledRandomEmail("");
+            email.EmailTVItemID = 0;
+            actionEmail = await EmailService.Post(email);
+            Assert.IsType<BadRequestObjectResult>(actionEmail.Result);
+
+            email = null;
+            email = GetFilledRandomEmail("");
+            email.EmailTVItemID = 1;
+            actionEmail = await EmailService.Post(email);
+            Assert.IsType<BadRequestObjectResult>(actionEmail.Result);
+
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [DataType(DataType.EmailAddress)]
+            // [CSSPMaxLength(255)]
+            // email.EmailAddress   (String)
+            // -----------------------------------
+
+            email = null;
+            email = GetFilledRandomEmail("EmailAddress");
+            actionEmail = await EmailService.Post(email);
+            Assert.IsType<BadRequestObjectResult>(actionEmail.Result);
+
+            email = null;
+            email = GetFilledRandomEmail("");
+            email.EmailAddress = GetRandomString("", 256);
+            actionEmail = await EmailService.Post(email);
+            Assert.IsType<BadRequestObjectResult>(actionEmail.Result);
+            //Assert.AreEqual(count, emailService.GetEmailList().Count());
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPEnumType]
+            // email.EmailType   (EmailTypeEnum)
+            // -----------------------------------
+
+            email = null;
+            email = GetFilledRandomEmail("");
+            email.EmailType = (EmailTypeEnum)1000000;
+            actionEmail = await EmailService.Post(email);
+            Assert.IsType<BadRequestObjectResult>(actionEmail.Result);
+
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPAfter(Year = 1980)]
+            // email.LastUpdateDate_UTC   (DateTime)
+            // -----------------------------------
+
+            email = null;
+            email = GetFilledRandomEmail("");
+            email.LastUpdateDate_UTC = new DateTime();
+            actionEmail = await EmailService.Post(email);
+            Assert.IsType<BadRequestObjectResult>(actionEmail.Result);
+            email = null;
+            email = GetFilledRandomEmail("");
+            email.LastUpdateDate_UTC = new DateTime(1979, 1, 1);
+            actionEmail = await EmailService.Post(email);
+            Assert.IsType<BadRequestObjectResult>(actionEmail.Result);
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPExist(ExistTypeName = "TVItem", ExistPlurial = "s", ExistFieldID = "TVItemID", AllowableTVtypeList = Contact)]
+            // email.LastUpdateContactTVItemID   (Int32)
+            // -----------------------------------
+
+            email = null;
+            email = GetFilledRandomEmail("");
+            email.LastUpdateContactTVItemID = 0;
+            actionEmail = await EmailService.Post(email);
+            Assert.IsType<BadRequestObjectResult>(actionEmail.Result);
+
+            email = null;
+            email = GetFilledRandomEmail("");
+            email.LastUpdateContactTVItemID = 1;
+            actionEmail = await EmailService.Post(email);
+            Assert.IsType<BadRequestObjectResult>(actionEmail.Result);
+
+        }
+        #endregion Tests Generated Properties
 
         #region Functions private
         private async Task DoCRUDTest()
@@ -234,6 +378,10 @@ namespace CSSPServices.Tests
             }
 
             return email;
+        }
+        private void CheckEmailFields(List<Email> emailList)
+        {
+            Assert.False(string.IsNullOrWhiteSpace(emailList[0].EmailAddress));
         }
         #endregion Functions private
     }

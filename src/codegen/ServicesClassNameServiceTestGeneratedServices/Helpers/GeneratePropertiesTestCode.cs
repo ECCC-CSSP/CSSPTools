@@ -11,33 +11,37 @@ namespace ServicesClassNameServiceTestGeneratedServices.Services
         private async Task<bool> GeneratePropertiesTestCode(string TypeName, string TypeNameLower, Type type, StringBuilder sb)
         {
             sb.AppendLine(@"        #region Tests Generated Properties");
-            sb.AppendLine(@"        [TestMethod]");
-            sb.AppendLine($@"        public void { TypeName }_Properties_Test()");
+            sb.AppendLine(@"        [Theory]");
+            sb.AppendLine(@"        [InlineData(""en-CA"", DBLocationEnum.Local)]");
+            sb.AppendLine(@"        [InlineData(""fr-CA"", DBLocationEnum.Local)]");
+            sb.AppendLine(@"        [InlineData(""en-CA"", DBLocationEnum.Server)]");
+            sb.AppendLine(@"        [InlineData(""fr-CA"", DBLocationEnum.Server)]");
+            sb.AppendLine($@"        public async Task { TypeName }_Properties_Test(string culture, DBLocationEnum DBLocation)");
             sb.AppendLine(@"        {");
-            sb.AppendLine(@"            foreach (CultureInfo culture in AllowableCulture)");
+            sb.AppendLine(@"            // -------------------------------");
+            sb.AppendLine(@"            // -------------------------------");
+            sb.AppendLine(@"            // Properties testing");
+            sb.AppendLine(@"            // -------------------------------");
+            sb.AppendLine(@"            // -------------------------------");
+            sb.AppendLine(@"");
+            sb.AppendLine(@"            Assert.True(await Setup(culture));");
+            sb.AppendLine(@"");
+            sb.AppendLine(@"            LoggedInService.DBLocation = DBLocation;");
+            sb.AppendLine(@"");
+            sb.AppendLine(@"            int count = 0;");
+            sb.AppendLine(@"            if (count == 1)");
             sb.AppendLine(@"            {");
-            sb.AppendLine(@"                ChangeCulture(culture);");
+            sb.AppendLine(@"                // just so we don't get a warning during compile [The variable 'count' is assigned but its value is never used]");
+            sb.AppendLine(@"            }");
             sb.AppendLine(@"");
-            sb.AppendLine(@"                using (CSSPDBContext dbTestDB = new CSSPDBContext(DatabaseTypeEnum.SqlServerTestDB))");
-            sb.AppendLine(@"                {");
-            sb.AppendLine($@"                    { TypeName }Service { TypeNameLower }Service = new { TypeName }Service(new Query() {{ Lang = culture.TwoLetterISOLanguageName }}, dbTestDB, ContactID);");
+            sb.AppendLine($@"            var action{ TypeName }List = await { TypeName }Service.Get{ TypeName }List();");
+            sb.AppendLine($@"            Assert.Equal(200, ((ObjectResult)action{ TypeName }List.Result).StatusCode);");
+            sb.AppendLine($@"            Assert.NotNull(((OkObjectResult)action{ TypeName }List.Result).Value);");
+            sb.AppendLine($@"            List<{ TypeName }> { TypeNameLower }List = (List<{ TypeName }>)((OkObjectResult)action{ TypeName }List.Result).Value;");
             sb.AppendLine(@"");
-            sb.AppendLine(@"                    int count = 0;");
-            sb.AppendLine(@"                    if (count == 1)");
-            sb.AppendLine(@"                    {");
-            sb.AppendLine(@"                        // just so we don't get a warning during compile [The variable 'count' is assigned but its value is never used]");
-            sb.AppendLine(@"                    }");
+            sb.AppendLine($@"            count = { TypeNameLower }List.Count();");
             sb.AppendLine(@"");
-            sb.AppendLine($@"                    count = { TypeNameLower }Service.Get{ TypeName }List().Count();");
-            sb.AppendLine(@"");
-            sb.AppendLine($@"                    { TypeName } { TypeNameLower } = GetFilledRandom{ TypeName }("""");");
-            sb.AppendLine(@"");
-
-            sb.AppendLine(@"                    // -------------------------------");
-            sb.AppendLine(@"                    // -------------------------------");
-            sb.AppendLine(@"                    // Properties testing");
-            sb.AppendLine(@"                    // -------------------------------");
-            sb.AppendLine(@"                    // -------------------------------");
+            sb.AppendLine($@"            { TypeName } { TypeNameLower } = GetFilledRandom{ TypeName }("""");");
             sb.AppendLine(@"");
 
             foreach (PropertyInfo prop in type.GetProperties())
@@ -49,85 +53,85 @@ namespace ServicesClassNameServiceTestGeneratedServices.Services
                 }
 
                 sb.AppendLine(@"");
-                sb.AppendLine(@"                    // -----------------------------------");
+                sb.AppendLine(@"            // -----------------------------------");
                 if (csspProp.IsKey)
                 {
-                    sb.AppendLine(@"                    // [Key]");
+                    sb.AppendLine(@"            // [Key]");
                 }
                 if (csspProp.IsNullable)
                 {
-                    sb.AppendLine(@"                    // Is Nullable");
+                    sb.AppendLine(@"            // Is Nullable");
                 }
                 else
                 {
-                    sb.AppendLine(@"                    // Is NOT Nullable");
+                    sb.AppendLine(@"            // Is NOT Nullable");
                 }
                 if (csspProp.IsVirtual)
                 {
-                    sb.AppendLine(@"                    // [IsVirtual]");
+                    sb.AppendLine(@"            // [IsVirtual]");
                 }
                 if (csspProp.HasCSSPCompareAttribute)
                 {
-                    sb.AppendLine($@"                    // [CSSPCompare(OtherField = { csspProp.OtherField })]");
+                    sb.AppendLine($@"            // [CSSPCompare(OtherField = { csspProp.OtherField })]");
                 }
                 if (csspProp.HasCSSPAfterAttribute)
                 {
-                    sb.AppendLine($@"                    // [CSSPAfter(Year = { csspProp.Year })]");
+                    sb.AppendLine($@"            // [CSSPAfter(Year = { csspProp.Year })]");
                 }
                 if (csspProp.HasCSSPAllowNullAttribute)
                 {
-                    sb.AppendLine(@"                    // [CSSPAllowNull]");
+                    sb.AppendLine(@"            // [CSSPAllowNull]");
                 }
                 if (csspProp.HasCSSPBiggerAttribute)
                 {
-                    sb.AppendLine($@"                    // [CSSPBigger(OtherField = { csspProp.OtherField })]");
+                    sb.AppendLine($@"            // [CSSPBigger(OtherField = { csspProp.OtherField })]");
                 }
                 if (csspProp.HasCSSPEnumTypeAttribute)
                 {
-                    sb.AppendLine(@"                    // [CSSPEnumType]");
+                    sb.AppendLine(@"            // [CSSPEnumType]");
                 }
                 if (csspProp.HasCSSPExistAttribute)
                 {
-                    sb.AppendLine($@"                    // [CSSPExist(ExistTypeName = ""{ csspProp.ExistTypeName }"", ExistPlurial = ""{ csspProp.ExistPlurial }"", ExistFieldID = ""{ csspProp.ExistFieldID }"", AllowableTVtypeList = { String.Join(",", csspProp.AllowableTVTypeList) })]");
+                    sb.AppendLine($@"            // [CSSPExist(ExistTypeName = ""{ csspProp.ExistTypeName }"", ExistPlurial = ""{ csspProp.ExistPlurial }"", ExistFieldID = ""{ csspProp.ExistFieldID }"", AllowableTVtypeList = { String.Join(",", csspProp.AllowableTVTypeList) })]");
                 }
                 if (csspProp.HasCSSPFillAttribute)
                 {
                     string FillNeedLanguage = (csspProp.FillNeedLanguage ? "true" : "false");
                     string FillIsList = (csspProp.FillIsList ? "true" : "false");
-                    sb.AppendLine($@"                    // [CSSPFill(FillTypeName = ""{ csspProp.FillTypeName }"", FillPlurial = ""{ csspProp.FillPlurial }"", FillFieldID = ""{ csspProp.FillFieldID }"", FillEqualField = ""{ csspProp.FillEqualField }"", FillReturnField = ""{ csspProp.FillReturnField }"", FillNeedLanguage = { FillNeedLanguage }, FillIsList = { FillIsList })]");
+                    sb.AppendLine($@"            // [CSSPFill(FillTypeName = ""{ csspProp.FillTypeName }"", FillPlurial = ""{ csspProp.FillPlurial }"", FillFieldID = ""{ csspProp.FillFieldID }"", FillEqualField = ""{ csspProp.FillEqualField }"", FillReturnField = ""{ csspProp.FillReturnField }"", FillNeedLanguage = { FillNeedLanguage }, FillIsList = { FillIsList })]");
                 }
                 if (csspProp.HasDataTypeAttribute)
                 {
-                    sb.AppendLine($@"                    // [DataType(DataType.{ csspProp.dataType.ToString() })]");
+                    sb.AppendLine($@"            // [DataType(DataType.{ csspProp.dataType.ToString() })]");
                 }
                 if (csspProp.HasNotMappedAttribute)
                 {
-                    sb.AppendLine(@"                    // [NotMapped]");
+                    sb.AppendLine(@"            // [NotMapped]");
                 }
                 if (csspProp.HasCSSPRangeAttribute)
                 {
-                    sb.AppendLine($@"                    // [CSSPRange({ csspProp.Min }, { (csspProp.Max == null ? "-1" : csspProp.Max.ToString()) })]");
+                    sb.AppendLine($@"            // [CSSPRange({ csspProp.Min }, { (csspProp.Max == null ? "-1" : csspProp.Max.ToString()) })]");
                 }
                 if (csspProp.HasCSSPMaxLengthAttribute)
                 {
-                    sb.AppendLine($@"                    // [CSSPMaxLength({ csspProp.Max })]");
+                    sb.AppendLine($@"            // [CSSPMaxLength({ csspProp.Max })]");
                 }
                 if (csspProp.HasCSSPMinLengthAttribute)
                 {
-                    sb.AppendLine($@"                    // [CSSPMinLength({ csspProp.Min })]");
+                    sb.AppendLine($@"            // [CSSPMinLength({ csspProp.Min })]");
                 }
-                sb.AppendLine($@"                    // { TypeNameLower }.{ csspProp.PropName }   ({ csspProp.PropType })");
-                sb.AppendLine(@"                    // -----------------------------------");
+                sb.AppendLine($@"            // { TypeNameLower }.{ csspProp.PropName }   ({ csspProp.PropType })");
+                sb.AppendLine(@"            // -----------------------------------");
                 sb.AppendLine(@"");
 
                 if (csspProp.IsVirtual || csspProp.PropName == "ValidationResults")
                 {
-                    sb.AppendLine(@"                    // No testing requied");
+                    sb.AppendLine(@"            // No testing requied");
                     continue;
                 }
                 if (csspProp.PropName == "HasErrors")
                 {
-                    sb.AppendLine(@"                    // No testing requied");
+                    sb.AppendLine(@"            // No testing requied");
                     continue;
                 }
                 if (csspProp.IsKey)
@@ -142,8 +146,6 @@ namespace ServicesClassNameServiceTestGeneratedServices.Services
                 if (!await CreateClass_Min_And_Max_Properties_Testing(csspProp, TypeName, TypeNameLower, sb)) return await Task.FromResult(false);
             }
 
-            sb.AppendLine(@"                }");
-            sb.AppendLine(@"            }");
             sb.AppendLine(@"        }");
 
             sb.AppendLine(@"        #endregion Tests Generated Properties");

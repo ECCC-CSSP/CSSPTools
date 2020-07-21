@@ -19,6 +19,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Transactions;
 using Xunit;
+using System.ComponentModel.DataAnnotations;
 
 namespace CSSPServices.Tests
 {
@@ -81,6 +82,174 @@ namespace CSSPServices.Tests
             }
         }
         #endregion Tests Generated CRUD
+
+        #region Tests Generated Properties
+        [Theory]
+        [InlineData("en-CA", DBLocationEnum.Local)]
+        [InlineData("fr-CA", DBLocationEnum.Local)]
+        [InlineData("en-CA", DBLocationEnum.Server)]
+        [InlineData("fr-CA", DBLocationEnum.Server)]
+        public async Task MWQMLookupMPN_Properties_Test(string culture, DBLocationEnum DBLocation)
+        {
+            // -------------------------------
+            // -------------------------------
+            // Properties testing
+            // -------------------------------
+            // -------------------------------
+
+            Assert.True(await Setup(culture));
+
+            LoggedInService.DBLocation = DBLocation;
+
+            int count = 0;
+            if (count == 1)
+            {
+                // just so we don't get a warning during compile [The variable 'count' is assigned but its value is never used]
+            }
+
+            var actionMWQMLookupMPNList = await MWQMLookupMPNService.GetMWQMLookupMPNList();
+            Assert.Equal(200, ((ObjectResult)actionMWQMLookupMPNList.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionMWQMLookupMPNList.Result).Value);
+            List<MWQMLookupMPN> mwqmLookupMPNList = (List<MWQMLookupMPN>)((OkObjectResult)actionMWQMLookupMPNList.Result).Value;
+
+            count = mwqmLookupMPNList.Count();
+
+            MWQMLookupMPN mwqmLookupMPN = GetFilledRandomMWQMLookupMPN("");
+
+
+            // -----------------------------------
+            // [Key]
+            // Is NOT Nullable
+            // mwqmLookupMPN.MWQMLookupMPNID   (Int32)
+            // -----------------------------------
+
+            mwqmLookupMPN = null;
+            mwqmLookupMPN = GetFilledRandomMWQMLookupMPN("");
+            mwqmLookupMPN.MWQMLookupMPNID = 0;
+
+            var actionMWQMLookupMPN = await MWQMLookupMPNService.Put(mwqmLookupMPN);
+            Assert.IsType<BadRequestObjectResult>(actionMWQMLookupMPN.Result);
+
+            mwqmLookupMPN = null;
+            mwqmLookupMPN = GetFilledRandomMWQMLookupMPN("");
+            mwqmLookupMPN.MWQMLookupMPNID = 10000000;
+            actionMWQMLookupMPN = await MWQMLookupMPNService.Put(mwqmLookupMPN);
+            Assert.IsType<BadRequestObjectResult>(actionMWQMLookupMPN.Result);
+
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPRange(0, 5)]
+            // mwqmLookupMPN.Tubes10   (Int32)
+            // -----------------------------------
+
+            mwqmLookupMPN = null;
+            mwqmLookupMPN = GetFilledRandomMWQMLookupMPN("");
+            mwqmLookupMPN.Tubes10 = -1;
+            actionMWQMLookupMPN = await MWQMLookupMPNService.Post(mwqmLookupMPN);
+            Assert.IsType<BadRequestObjectResult>(actionMWQMLookupMPN.Result);
+            //Assert.AreEqual(count, mwqmLookupMPNService.GetMWQMLookupMPNList().Count());
+            mwqmLookupMPN = null;
+            mwqmLookupMPN = GetFilledRandomMWQMLookupMPN("");
+            mwqmLookupMPN.Tubes10 = 6;
+            actionMWQMLookupMPN = await MWQMLookupMPNService.Post(mwqmLookupMPN);
+            Assert.IsType<BadRequestObjectResult>(actionMWQMLookupMPN.Result);
+            //Assert.AreEqual(count, mwqmLookupMPNService.GetMWQMLookupMPNList().Count());
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPRange(0, 5)]
+            // mwqmLookupMPN.Tubes1   (Int32)
+            // -----------------------------------
+
+            mwqmLookupMPN = null;
+            mwqmLookupMPN = GetFilledRandomMWQMLookupMPN("");
+            mwqmLookupMPN.Tubes1 = -1;
+            actionMWQMLookupMPN = await MWQMLookupMPNService.Post(mwqmLookupMPN);
+            Assert.IsType<BadRequestObjectResult>(actionMWQMLookupMPN.Result);
+            //Assert.AreEqual(count, mwqmLookupMPNService.GetMWQMLookupMPNList().Count());
+            mwqmLookupMPN = null;
+            mwqmLookupMPN = GetFilledRandomMWQMLookupMPN("");
+            mwqmLookupMPN.Tubes1 = 6;
+            actionMWQMLookupMPN = await MWQMLookupMPNService.Post(mwqmLookupMPN);
+            Assert.IsType<BadRequestObjectResult>(actionMWQMLookupMPN.Result);
+            //Assert.AreEqual(count, mwqmLookupMPNService.GetMWQMLookupMPNList().Count());
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPRange(0, 5)]
+            // mwqmLookupMPN.Tubes01   (Int32)
+            // -----------------------------------
+
+            mwqmLookupMPN = null;
+            mwqmLookupMPN = GetFilledRandomMWQMLookupMPN("");
+            mwqmLookupMPN.Tubes01 = -1;
+            actionMWQMLookupMPN = await MWQMLookupMPNService.Post(mwqmLookupMPN);
+            Assert.IsType<BadRequestObjectResult>(actionMWQMLookupMPN.Result);
+            //Assert.AreEqual(count, mwqmLookupMPNService.GetMWQMLookupMPNList().Count());
+            mwqmLookupMPN = null;
+            mwqmLookupMPN = GetFilledRandomMWQMLookupMPN("");
+            mwqmLookupMPN.Tubes01 = 6;
+            actionMWQMLookupMPN = await MWQMLookupMPNService.Post(mwqmLookupMPN);
+            Assert.IsType<BadRequestObjectResult>(actionMWQMLookupMPN.Result);
+            //Assert.AreEqual(count, mwqmLookupMPNService.GetMWQMLookupMPNList().Count());
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPRange(1, 10000)]
+            // mwqmLookupMPN.MPN_100ml   (Int32)
+            // -----------------------------------
+
+            mwqmLookupMPN = null;
+            mwqmLookupMPN = GetFilledRandomMWQMLookupMPN("");
+            mwqmLookupMPN.MPN_100ml = 0;
+            actionMWQMLookupMPN = await MWQMLookupMPNService.Post(mwqmLookupMPN);
+            Assert.IsType<BadRequestObjectResult>(actionMWQMLookupMPN.Result);
+            //Assert.AreEqual(count, mwqmLookupMPNService.GetMWQMLookupMPNList().Count());
+            mwqmLookupMPN = null;
+            mwqmLookupMPN = GetFilledRandomMWQMLookupMPN("");
+            mwqmLookupMPN.MPN_100ml = 10001;
+            actionMWQMLookupMPN = await MWQMLookupMPNService.Post(mwqmLookupMPN);
+            Assert.IsType<BadRequestObjectResult>(actionMWQMLookupMPN.Result);
+            //Assert.AreEqual(count, mwqmLookupMPNService.GetMWQMLookupMPNList().Count());
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPAfter(Year = 1980)]
+            // mwqmLookupMPN.LastUpdateDate_UTC   (DateTime)
+            // -----------------------------------
+
+            mwqmLookupMPN = null;
+            mwqmLookupMPN = GetFilledRandomMWQMLookupMPN("");
+            mwqmLookupMPN.LastUpdateDate_UTC = new DateTime();
+            actionMWQMLookupMPN = await MWQMLookupMPNService.Post(mwqmLookupMPN);
+            Assert.IsType<BadRequestObjectResult>(actionMWQMLookupMPN.Result);
+            mwqmLookupMPN = null;
+            mwqmLookupMPN = GetFilledRandomMWQMLookupMPN("");
+            mwqmLookupMPN.LastUpdateDate_UTC = new DateTime(1979, 1, 1);
+            actionMWQMLookupMPN = await MWQMLookupMPNService.Post(mwqmLookupMPN);
+            Assert.IsType<BadRequestObjectResult>(actionMWQMLookupMPN.Result);
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPExist(ExistTypeName = "TVItem", ExistPlurial = "s", ExistFieldID = "TVItemID", AllowableTVtypeList = Contact)]
+            // mwqmLookupMPN.LastUpdateContactTVItemID   (Int32)
+            // -----------------------------------
+
+            mwqmLookupMPN = null;
+            mwqmLookupMPN = GetFilledRandomMWQMLookupMPN("");
+            mwqmLookupMPN.LastUpdateContactTVItemID = 0;
+            actionMWQMLookupMPN = await MWQMLookupMPNService.Post(mwqmLookupMPN);
+            Assert.IsType<BadRequestObjectResult>(actionMWQMLookupMPN.Result);
+
+            mwqmLookupMPN = null;
+            mwqmLookupMPN = GetFilledRandomMWQMLookupMPN("");
+            mwqmLookupMPN.LastUpdateContactTVItemID = 1;
+            actionMWQMLookupMPN = await MWQMLookupMPNService.Post(mwqmLookupMPN);
+            Assert.IsType<BadRequestObjectResult>(actionMWQMLookupMPN.Result);
+
+        }
+        #endregion Tests Generated Properties
 
         #region Functions private
         private async Task DoCRUDTest()
@@ -226,6 +395,9 @@ namespace CSSPServices.Tests
             }
 
             return mwqmLookupMPN;
+        }
+        private void CheckMWQMLookupMPNFields(List<MWQMLookupMPN> mwqmLookupMPNList)
+        {
         }
         #endregion Functions private
     }

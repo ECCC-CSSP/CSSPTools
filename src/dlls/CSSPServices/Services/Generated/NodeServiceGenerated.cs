@@ -20,19 +20,63 @@ using System.Threading.Tasks;
 
 namespace CSSPServices
 {
-    public partial class NodeService
+    public interface INodeService
+    {
+        IEnumerable<ValidationResult> Validate(ValidationContext validationContext);
+    }
+    public partial class NodeService : INodeService
     {
         #region Variables
         #endregion Variables
 
         #region Properties
+        private ICSSPCultureService CSSPCultureService { get; }
+        private IEnums enums { get; }
         #endregion Properties
 
         #region Constructors
-        public NodeService()
+        public NodeService(ICSSPCultureService CSSPCultureService, IEnums enums)
         {
+            this.CSSPCultureService = CSSPCultureService;
+            this.enums = enums;
         }
         #endregion Constructors
+
+        #region Functions public
+        public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+        {
+            string retStr = "";
+            Node node = validationContext.ObjectInstance as Node;
+
+            if (node.ID < 1 || node.ID > 1000000)
+            {
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "ID", "1", "1000000"), new[] { "ID" });
+            }
+
+            //X has no Range Attribute
+
+            //Y has no Range Attribute
+
+            //Z has no Range Attribute
+
+            //Code has no Range Attribute
+
+            //Value has no Range Attribute
+
+                //CSSPError: Type not implemented [ElementList] of type [List`1]
+
+                //CSSPError: Type not implemented [ElementList] of type [Element]
+                //CSSPError: Type not implemented [ConnectNodeList] of type [List`1]
+
+                //CSSPError: Type not implemented [ConnectNodeList] of type [Node]
+            retStr = ""; // added to stop compiling CSSPError
+            if (retStr != "") // will never be true
+            {
+                yield return new ValidationResult("AAA", new[] { "AAA" });
+            }
+
+        }
+        #endregion Functions public
 
     }
 }

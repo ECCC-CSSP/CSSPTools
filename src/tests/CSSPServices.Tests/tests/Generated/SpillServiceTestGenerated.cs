@@ -19,6 +19,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Transactions;
 using Xunit;
+using System.ComponentModel.DataAnnotations;
 
 namespace CSSPServices.Tests
 {
@@ -81,6 +82,189 @@ namespace CSSPServices.Tests
             }
         }
         #endregion Tests Generated CRUD
+
+        #region Tests Generated Properties
+        [Theory]
+        [InlineData("en-CA", DBLocationEnum.Local)]
+        [InlineData("fr-CA", DBLocationEnum.Local)]
+        [InlineData("en-CA", DBLocationEnum.Server)]
+        [InlineData("fr-CA", DBLocationEnum.Server)]
+        public async Task Spill_Properties_Test(string culture, DBLocationEnum DBLocation)
+        {
+            // -------------------------------
+            // -------------------------------
+            // Properties testing
+            // -------------------------------
+            // -------------------------------
+
+            Assert.True(await Setup(culture));
+
+            LoggedInService.DBLocation = DBLocation;
+
+            int count = 0;
+            if (count == 1)
+            {
+                // just so we don't get a warning during compile [The variable 'count' is assigned but its value is never used]
+            }
+
+            var actionSpillList = await SpillService.GetSpillList();
+            Assert.Equal(200, ((ObjectResult)actionSpillList.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionSpillList.Result).Value);
+            List<Spill> spillList = (List<Spill>)((OkObjectResult)actionSpillList.Result).Value;
+
+            count = spillList.Count();
+
+            Spill spill = GetFilledRandomSpill("");
+
+
+            // -----------------------------------
+            // [Key]
+            // Is NOT Nullable
+            // spill.SpillID   (Int32)
+            // -----------------------------------
+
+            spill = null;
+            spill = GetFilledRandomSpill("");
+            spill.SpillID = 0;
+
+            var actionSpill = await SpillService.Put(spill);
+            Assert.IsType<BadRequestObjectResult>(actionSpill.Result);
+
+            spill = null;
+            spill = GetFilledRandomSpill("");
+            spill.SpillID = 10000000;
+            actionSpill = await SpillService.Put(spill);
+            Assert.IsType<BadRequestObjectResult>(actionSpill.Result);
+
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPExist(ExistTypeName = "TVItem", ExistPlurial = "s", ExistFieldID = "TVItemID", AllowableTVtypeList = Municipality)]
+            // spill.MunicipalityTVItemID   (Int32)
+            // -----------------------------------
+
+            spill = null;
+            spill = GetFilledRandomSpill("");
+            spill.MunicipalityTVItemID = 0;
+            actionSpill = await SpillService.Post(spill);
+            Assert.IsType<BadRequestObjectResult>(actionSpill.Result);
+
+            spill = null;
+            spill = GetFilledRandomSpill("");
+            spill.MunicipalityTVItemID = 1;
+            actionSpill = await SpillService.Post(spill);
+            Assert.IsType<BadRequestObjectResult>(actionSpill.Result);
+
+
+            // -----------------------------------
+            // Is Nullable
+            // [CSSPExist(ExistTypeName = "TVItem", ExistPlurial = "s", ExistFieldID = "TVItemID", AllowableTVtypeList = Infrastructure)]
+            // spill.InfrastructureTVItemID   (Int32)
+            // -----------------------------------
+
+            spill = null;
+            spill = GetFilledRandomSpill("");
+            spill.InfrastructureTVItemID = 0;
+            actionSpill = await SpillService.Post(spill);
+            Assert.IsType<BadRequestObjectResult>(actionSpill.Result);
+
+            spill = null;
+            spill = GetFilledRandomSpill("");
+            spill.InfrastructureTVItemID = 1;
+            actionSpill = await SpillService.Post(spill);
+            Assert.IsType<BadRequestObjectResult>(actionSpill.Result);
+
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPAfter(Year = 1980)]
+            // spill.StartDateTime_Local   (DateTime)
+            // -----------------------------------
+
+            spill = null;
+            spill = GetFilledRandomSpill("");
+            spill.StartDateTime_Local = new DateTime();
+            actionSpill = await SpillService.Post(spill);
+            Assert.IsType<BadRequestObjectResult>(actionSpill.Result);
+            spill = null;
+            spill = GetFilledRandomSpill("");
+            spill.StartDateTime_Local = new DateTime(1979, 1, 1);
+            actionSpill = await SpillService.Post(spill);
+            Assert.IsType<BadRequestObjectResult>(actionSpill.Result);
+
+            // -----------------------------------
+            // Is Nullable
+            // [CSSPAfter(Year = 1980)]
+            // [CSSPBigger(OtherField = StartDateTime_Local)]
+            // spill.EndDateTime_Local   (DateTime)
+            // -----------------------------------
+
+            spill = null;
+            spill = GetFilledRandomSpill("");
+            spill.EndDateTime_Local = new DateTime(1979, 1, 1);
+            actionSpill = await SpillService.Post(spill);
+            Assert.IsType<BadRequestObjectResult>(actionSpill.Result);
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPRange(0, 1000000)]
+            // spill.AverageFlow_m3_day   (Double)
+            // -----------------------------------
+
+            //CSSPError: Type not implemented [AverageFlow_m3_day]
+
+            //CSSPError: Type not implemented [AverageFlow_m3_day]
+
+            spill = null;
+            spill = GetFilledRandomSpill("");
+            spill.AverageFlow_m3_day = -1.0D;
+            actionSpill = await SpillService.Post(spill);
+            Assert.IsType<BadRequestObjectResult>(actionSpill.Result);
+            //Assert.AreEqual(count, spillService.GetSpillList().Count());
+            spill = null;
+            spill = GetFilledRandomSpill("");
+            spill.AverageFlow_m3_day = 1000001.0D;
+            actionSpill = await SpillService.Post(spill);
+            Assert.IsType<BadRequestObjectResult>(actionSpill.Result);
+            //Assert.AreEqual(count, spillService.GetSpillList().Count());
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPAfter(Year = 1980)]
+            // spill.LastUpdateDate_UTC   (DateTime)
+            // -----------------------------------
+
+            spill = null;
+            spill = GetFilledRandomSpill("");
+            spill.LastUpdateDate_UTC = new DateTime();
+            actionSpill = await SpillService.Post(spill);
+            Assert.IsType<BadRequestObjectResult>(actionSpill.Result);
+            spill = null;
+            spill = GetFilledRandomSpill("");
+            spill.LastUpdateDate_UTC = new DateTime(1979, 1, 1);
+            actionSpill = await SpillService.Post(spill);
+            Assert.IsType<BadRequestObjectResult>(actionSpill.Result);
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPExist(ExistTypeName = "TVItem", ExistPlurial = "s", ExistFieldID = "TVItemID", AllowableTVtypeList = Contact)]
+            // spill.LastUpdateContactTVItemID   (Int32)
+            // -----------------------------------
+
+            spill = null;
+            spill = GetFilledRandomSpill("");
+            spill.LastUpdateContactTVItemID = 0;
+            actionSpill = await SpillService.Post(spill);
+            Assert.IsType<BadRequestObjectResult>(actionSpill.Result);
+
+            spill = null;
+            spill = GetFilledRandomSpill("");
+            spill.LastUpdateContactTVItemID = 1;
+            actionSpill = await SpillService.Post(spill);
+            Assert.IsType<BadRequestObjectResult>(actionSpill.Result);
+
+        }
+        #endregion Tests Generated Properties
 
         #region Functions private
         private async Task DoCRUDTest()
@@ -245,6 +429,17 @@ namespace CSSPServices.Tests
             }
 
             return spill;
+        }
+        private void CheckSpillFields(List<Spill> spillList)
+        {
+            if (spillList[0].InfrastructureTVItemID != null)
+            {
+                Assert.NotNull(spillList[0].InfrastructureTVItemID);
+            }
+            if (spillList[0].EndDateTime_Local != null)
+            {
+                Assert.NotNull(spillList[0].EndDateTime_Local);
+            }
         }
         #endregion Functions private
     }

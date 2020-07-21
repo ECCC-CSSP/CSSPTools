@@ -19,6 +19,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Transactions;
 using Xunit;
+using System.ComponentModel.DataAnnotations;
 
 namespace CSSPServices.Tests
 {
@@ -81,6 +82,147 @@ namespace CSSPServices.Tests
             }
         }
         #endregion Tests Generated CRUD
+
+        #region Tests Generated Properties
+        [Theory]
+        [InlineData("en-CA", DBLocationEnum.Local)]
+        [InlineData("fr-CA", DBLocationEnum.Local)]
+        [InlineData("en-CA", DBLocationEnum.Server)]
+        [InlineData("fr-CA", DBLocationEnum.Server)]
+        public async Task ContactShortcut_Properties_Test(string culture, DBLocationEnum DBLocation)
+        {
+            // -------------------------------
+            // -------------------------------
+            // Properties testing
+            // -------------------------------
+            // -------------------------------
+
+            Assert.True(await Setup(culture));
+
+            LoggedInService.DBLocation = DBLocation;
+
+            int count = 0;
+            if (count == 1)
+            {
+                // just so we don't get a warning during compile [The variable 'count' is assigned but its value is never used]
+            }
+
+            var actionContactShortcutList = await ContactShortcutService.GetContactShortcutList();
+            Assert.Equal(200, ((ObjectResult)actionContactShortcutList.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionContactShortcutList.Result).Value);
+            List<ContactShortcut> contactShortcutList = (List<ContactShortcut>)((OkObjectResult)actionContactShortcutList.Result).Value;
+
+            count = contactShortcutList.Count();
+
+            ContactShortcut contactShortcut = GetFilledRandomContactShortcut("");
+
+
+            // -----------------------------------
+            // [Key]
+            // Is NOT Nullable
+            // contactShortcut.ContactShortcutID   (Int32)
+            // -----------------------------------
+
+            contactShortcut = null;
+            contactShortcut = GetFilledRandomContactShortcut("");
+            contactShortcut.ContactShortcutID = 0;
+
+            var actionContactShortcut = await ContactShortcutService.Put(contactShortcut);
+            Assert.IsType<BadRequestObjectResult>(actionContactShortcut.Result);
+
+            contactShortcut = null;
+            contactShortcut = GetFilledRandomContactShortcut("");
+            contactShortcut.ContactShortcutID = 10000000;
+            actionContactShortcut = await ContactShortcutService.Put(contactShortcut);
+            Assert.IsType<BadRequestObjectResult>(actionContactShortcut.Result);
+
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPExist(ExistTypeName = "Contact", ExistPlurial = "s", ExistFieldID = "ContactID", AllowableTVtypeList = )]
+            // contactShortcut.ContactID   (Int32)
+            // -----------------------------------
+
+            contactShortcut = null;
+            contactShortcut = GetFilledRandomContactShortcut("");
+            contactShortcut.ContactID = 0;
+            actionContactShortcut = await ContactShortcutService.Post(contactShortcut);
+            Assert.IsType<BadRequestObjectResult>(actionContactShortcut.Result);
+
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPMaxLength(100)]
+            // contactShortcut.ShortCutText   (String)
+            // -----------------------------------
+
+            contactShortcut = null;
+            contactShortcut = GetFilledRandomContactShortcut("ShortCutText");
+            actionContactShortcut = await ContactShortcutService.Post(contactShortcut);
+            Assert.IsType<BadRequestObjectResult>(actionContactShortcut.Result);
+
+            contactShortcut = null;
+            contactShortcut = GetFilledRandomContactShortcut("");
+            contactShortcut.ShortCutText = GetRandomString("", 101);
+            actionContactShortcut = await ContactShortcutService.Post(contactShortcut);
+            Assert.IsType<BadRequestObjectResult>(actionContactShortcut.Result);
+            //Assert.AreEqual(count, contactShortcutService.GetContactShortcutList().Count());
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPMaxLength(200)]
+            // contactShortcut.ShortCutAddress   (String)
+            // -----------------------------------
+
+            contactShortcut = null;
+            contactShortcut = GetFilledRandomContactShortcut("ShortCutAddress");
+            actionContactShortcut = await ContactShortcutService.Post(contactShortcut);
+            Assert.IsType<BadRequestObjectResult>(actionContactShortcut.Result);
+
+            contactShortcut = null;
+            contactShortcut = GetFilledRandomContactShortcut("");
+            contactShortcut.ShortCutAddress = GetRandomString("", 201);
+            actionContactShortcut = await ContactShortcutService.Post(contactShortcut);
+            Assert.IsType<BadRequestObjectResult>(actionContactShortcut.Result);
+            //Assert.AreEqual(count, contactShortcutService.GetContactShortcutList().Count());
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPAfter(Year = 1980)]
+            // contactShortcut.LastUpdateDate_UTC   (DateTime)
+            // -----------------------------------
+
+            contactShortcut = null;
+            contactShortcut = GetFilledRandomContactShortcut("");
+            contactShortcut.LastUpdateDate_UTC = new DateTime();
+            actionContactShortcut = await ContactShortcutService.Post(contactShortcut);
+            Assert.IsType<BadRequestObjectResult>(actionContactShortcut.Result);
+            contactShortcut = null;
+            contactShortcut = GetFilledRandomContactShortcut("");
+            contactShortcut.LastUpdateDate_UTC = new DateTime(1979, 1, 1);
+            actionContactShortcut = await ContactShortcutService.Post(contactShortcut);
+            Assert.IsType<BadRequestObjectResult>(actionContactShortcut.Result);
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPExist(ExistTypeName = "TVItem", ExistPlurial = "s", ExistFieldID = "TVItemID", AllowableTVtypeList = Contact)]
+            // contactShortcut.LastUpdateContactTVItemID   (Int32)
+            // -----------------------------------
+
+            contactShortcut = null;
+            contactShortcut = GetFilledRandomContactShortcut("");
+            contactShortcut.LastUpdateContactTVItemID = 0;
+            actionContactShortcut = await ContactShortcutService.Post(contactShortcut);
+            Assert.IsType<BadRequestObjectResult>(actionContactShortcut.Result);
+
+            contactShortcut = null;
+            contactShortcut = GetFilledRandomContactShortcut("");
+            contactShortcut.LastUpdateContactTVItemID = 1;
+            actionContactShortcut = await ContactShortcutService.Post(contactShortcut);
+            Assert.IsType<BadRequestObjectResult>(actionContactShortcut.Result);
+
+        }
+        #endregion Tests Generated Properties
 
         #region Functions private
         private async Task DoCRUDTest()
@@ -234,6 +376,11 @@ namespace CSSPServices.Tests
             }
 
             return contactShortcut;
+        }
+        private void CheckContactShortcutFields(List<ContactShortcut> contactShortcutList)
+        {
+            Assert.False(string.IsNullOrWhiteSpace(contactShortcutList[0].ShortCutText));
+            Assert.False(string.IsNullOrWhiteSpace(contactShortcutList[0].ShortCutAddress));
         }
         #endregion Functions private
     }

@@ -19,6 +19,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Transactions;
 using Xunit;
+using System.ComponentModel.DataAnnotations;
 
 namespace CSSPServices.Tests
 {
@@ -81,6 +82,218 @@ namespace CSSPServices.Tests
             }
         }
         #endregion Tests Generated CRUD
+
+        #region Tests Generated Properties
+        [Theory]
+        [InlineData("en-CA", DBLocationEnum.Local)]
+        [InlineData("fr-CA", DBLocationEnum.Local)]
+        [InlineData("en-CA", DBLocationEnum.Server)]
+        [InlineData("fr-CA", DBLocationEnum.Server)]
+        public async Task AspNetUser_Properties_Test(string culture, DBLocationEnum DBLocation)
+        {
+            // -------------------------------
+            // -------------------------------
+            // Properties testing
+            // -------------------------------
+            // -------------------------------
+
+            Assert.True(await Setup(culture));
+
+            LoggedInService.DBLocation = DBLocation;
+
+            int count = 0;
+            if (count == 1)
+            {
+                // just so we don't get a warning during compile [The variable 'count' is assigned but its value is never used]
+            }
+
+            var actionAspNetUserList = await AspNetUserService.GetAspNetUserList();
+            Assert.Equal(200, ((ObjectResult)actionAspNetUserList.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionAspNetUserList.Result).Value);
+            List<AspNetUser> aspNetUserList = (List<AspNetUser>)((OkObjectResult)actionAspNetUserList.Result).Value;
+
+            count = aspNetUserList.Count();
+
+            AspNetUser aspNetUser = GetFilledRandomAspNetUser("");
+
+
+            // -----------------------------------
+            // [Key]
+            // Is NOT Nullable
+            // [CSSPMaxLength(450)]
+            // aspNetUser.Id   (String)
+            // -----------------------------------
+
+            aspNetUser = null;
+            aspNetUser = GetFilledRandomAspNetUser("");
+            aspNetUser.Id = "";
+
+            var actionAspNetUser = await AspNetUserService.Put(aspNetUser);
+            Assert.IsType<BadRequestObjectResult>(actionAspNetUser.Result);
+
+            aspNetUser = null;
+            aspNetUser = GetFilledRandomAspNetUser("");
+            aspNetUser.Id = "silefjilsefjsliejlsjflisjefl";
+            actionAspNetUser = await AspNetUserService.Put(aspNetUser);
+            Assert.IsType<BadRequestObjectResult>(actionAspNetUser.Result);
+
+
+            // -----------------------------------
+            // Is Nullable
+            // [CSSPMaxLength(256)]
+            // aspNetUser.Email   (String)
+            // -----------------------------------
+
+            aspNetUser = null;
+            aspNetUser = GetFilledRandomAspNetUser("");
+            aspNetUser.Email = GetRandomString("", 257);
+            actionAspNetUser = await AspNetUserService.Post(aspNetUser);
+            Assert.IsType<BadRequestObjectResult>(actionAspNetUser.Result);
+            //Assert.AreEqual(count, aspNetUserService.GetAspNetUserList().Count());
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // aspNetUser.EmailConfirmed   (Boolean)
+            // -----------------------------------
+
+
+            // -----------------------------------
+            // Is Nullable
+            // aspNetUser.PasswordHash   (String)
+            // -----------------------------------
+
+
+            // -----------------------------------
+            // Is Nullable
+            // aspNetUser.SecurityStamp   (String)
+            // -----------------------------------
+
+
+            // -----------------------------------
+            // Is Nullable
+            // aspNetUser.PhoneNumber   (String)
+            // -----------------------------------
+
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // aspNetUser.PhoneNumberConfirmed   (Boolean)
+            // -----------------------------------
+
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // aspNetUser.TwoFactorEnabled   (Boolean)
+            // -----------------------------------
+
+
+            // -----------------------------------
+            // Is Nullable
+            // [CSSPAfter(Year = 1980)]
+            // aspNetUser.LockoutEndDateUtc   (DateTime)
+            // -----------------------------------
+
+            aspNetUser = null;
+            aspNetUser = GetFilledRandomAspNetUser("");
+            aspNetUser.LockoutEndDateUtc = new DateTime(1979, 1, 1);
+            actionAspNetUser = await AspNetUserService.Post(aspNetUser);
+            Assert.IsType<BadRequestObjectResult>(actionAspNetUser.Result);
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // aspNetUser.LockoutEnabled   (Boolean)
+            // -----------------------------------
+
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPRange(0, 10000)]
+            // aspNetUser.AccessFailedCount   (Int32)
+            // -----------------------------------
+
+            aspNetUser = null;
+            aspNetUser = GetFilledRandomAspNetUser("");
+            aspNetUser.AccessFailedCount = -1;
+            actionAspNetUser = await AspNetUserService.Post(aspNetUser);
+            Assert.IsType<BadRequestObjectResult>(actionAspNetUser.Result);
+            //Assert.AreEqual(count, aspNetUserService.GetAspNetUserList().Count());
+            aspNetUser = null;
+            aspNetUser = GetFilledRandomAspNetUser("");
+            aspNetUser.AccessFailedCount = 10001;
+            actionAspNetUser = await AspNetUserService.Post(aspNetUser);
+            Assert.IsType<BadRequestObjectResult>(actionAspNetUser.Result);
+            //Assert.AreEqual(count, aspNetUserService.GetAspNetUserList().Count());
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPMaxLength(256)]
+            // aspNetUser.UserName   (String)
+            // -----------------------------------
+
+            aspNetUser = null;
+            aspNetUser = GetFilledRandomAspNetUser("UserName");
+            actionAspNetUser = await AspNetUserService.Post(aspNetUser);
+            Assert.IsType<BadRequestObjectResult>(actionAspNetUser.Result);
+
+            aspNetUser = null;
+            aspNetUser = GetFilledRandomAspNetUser("");
+            aspNetUser.UserName = GetRandomString("", 257);
+            actionAspNetUser = await AspNetUserService.Post(aspNetUser);
+            Assert.IsType<BadRequestObjectResult>(actionAspNetUser.Result);
+            //Assert.AreEqual(count, aspNetUserService.GetAspNetUserList().Count());
+
+            // -----------------------------------
+            // Is Nullable
+            // [CSSPMaxLength(256)]
+            // aspNetUser.NormalizedUserName   (String)
+            // -----------------------------------
+
+            aspNetUser = null;
+            aspNetUser = GetFilledRandomAspNetUser("");
+            aspNetUser.NormalizedUserName = GetRandomString("", 257);
+            actionAspNetUser = await AspNetUserService.Post(aspNetUser);
+            Assert.IsType<BadRequestObjectResult>(actionAspNetUser.Result);
+            //Assert.AreEqual(count, aspNetUserService.GetAspNetUserList().Count());
+
+            // -----------------------------------
+            // Is Nullable
+            // [CSSPMaxLength(256)]
+            // aspNetUser.NormalizedEmail   (String)
+            // -----------------------------------
+
+            aspNetUser = null;
+            aspNetUser = GetFilledRandomAspNetUser("");
+            aspNetUser.NormalizedEmail = GetRandomString("", 257);
+            actionAspNetUser = await AspNetUserService.Post(aspNetUser);
+            Assert.IsType<BadRequestObjectResult>(actionAspNetUser.Result);
+            //Assert.AreEqual(count, aspNetUserService.GetAspNetUserList().Count());
+
+            // -----------------------------------
+            // Is Nullable
+            // [CSSPMaxLength(256)]
+            // aspNetUser.ConcurrencyStamp   (String)
+            // -----------------------------------
+
+            aspNetUser = null;
+            aspNetUser = GetFilledRandomAspNetUser("");
+            aspNetUser.ConcurrencyStamp = GetRandomString("", 257);
+            actionAspNetUser = await AspNetUserService.Post(aspNetUser);
+            Assert.IsType<BadRequestObjectResult>(actionAspNetUser.Result);
+            //Assert.AreEqual(count, aspNetUserService.GetAspNetUserList().Count());
+
+            // -----------------------------------
+            // Is Nullable
+            // [CSSPAfter(Year = 1980)]
+            // aspNetUser.LockoutEnd   (DateTime)
+            // -----------------------------------
+
+            aspNetUser = null;
+            aspNetUser = GetFilledRandomAspNetUser("");
+            aspNetUser.LockoutEnd = new DateTime(1979, 1, 1);
+            actionAspNetUser = await AspNetUserService.Post(aspNetUser);
+            Assert.IsType<BadRequestObjectResult>(actionAspNetUser.Result);
+        }
+        #endregion Tests Generated Properties
 
         #region Functions private
         private async Task DoCRUDTest()
@@ -226,6 +439,47 @@ namespace CSSPServices.Tests
             }
 
             return aspNetUser;
+        }
+        private void CheckAspNetUserFields(List<AspNetUser> aspNetUserList)
+        {
+            Assert.False(string.IsNullOrWhiteSpace(aspNetUserList[0].Id));
+            if (!string.IsNullOrWhiteSpace(aspNetUserList[0].Email))
+            {
+                Assert.False(string.IsNullOrWhiteSpace(aspNetUserList[0].Email));
+            }
+            if (!string.IsNullOrWhiteSpace(aspNetUserList[0].PasswordHash))
+            {
+                Assert.False(string.IsNullOrWhiteSpace(aspNetUserList[0].PasswordHash));
+            }
+            if (!string.IsNullOrWhiteSpace(aspNetUserList[0].SecurityStamp))
+            {
+                Assert.False(string.IsNullOrWhiteSpace(aspNetUserList[0].SecurityStamp));
+            }
+            if (!string.IsNullOrWhiteSpace(aspNetUserList[0].PhoneNumber))
+            {
+                Assert.False(string.IsNullOrWhiteSpace(aspNetUserList[0].PhoneNumber));
+            }
+            if (aspNetUserList[0].LockoutEndDateUtc != null)
+            {
+                Assert.NotNull(aspNetUserList[0].LockoutEndDateUtc);
+            }
+            Assert.False(string.IsNullOrWhiteSpace(aspNetUserList[0].UserName));
+            if (!string.IsNullOrWhiteSpace(aspNetUserList[0].NormalizedUserName))
+            {
+                Assert.False(string.IsNullOrWhiteSpace(aspNetUserList[0].NormalizedUserName));
+            }
+            if (!string.IsNullOrWhiteSpace(aspNetUserList[0].NormalizedEmail))
+            {
+                Assert.False(string.IsNullOrWhiteSpace(aspNetUserList[0].NormalizedEmail));
+            }
+            if (!string.IsNullOrWhiteSpace(aspNetUserList[0].ConcurrencyStamp))
+            {
+                Assert.False(string.IsNullOrWhiteSpace(aspNetUserList[0].ConcurrencyStamp));
+            }
+            if (aspNetUserList[0].LockoutEnd != null)
+            {
+                Assert.NotNull(aspNetUserList[0].LockoutEnd);
+            }
         }
         #endregion Functions private
     }

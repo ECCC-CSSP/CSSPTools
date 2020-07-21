@@ -19,6 +19,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Transactions;
 using Xunit;
+using System.ComponentModel.DataAnnotations;
 
 namespace CSSPServices.Tests
 {
@@ -81,6 +82,143 @@ namespace CSSPServices.Tests
             }
         }
         #endregion Tests Generated CRUD
+
+        #region Tests Generated Properties
+        [Theory]
+        [InlineData("en-CA", DBLocationEnum.Local)]
+        [InlineData("fr-CA", DBLocationEnum.Local)]
+        [InlineData("en-CA", DBLocationEnum.Server)]
+        [InlineData("fr-CA", DBLocationEnum.Server)]
+        public async Task ContactPreference_Properties_Test(string culture, DBLocationEnum DBLocation)
+        {
+            // -------------------------------
+            // -------------------------------
+            // Properties testing
+            // -------------------------------
+            // -------------------------------
+
+            Assert.True(await Setup(culture));
+
+            LoggedInService.DBLocation = DBLocation;
+
+            int count = 0;
+            if (count == 1)
+            {
+                // just so we don't get a warning during compile [The variable 'count' is assigned but its value is never used]
+            }
+
+            var actionContactPreferenceList = await ContactPreferenceService.GetContactPreferenceList();
+            Assert.Equal(200, ((ObjectResult)actionContactPreferenceList.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionContactPreferenceList.Result).Value);
+            List<ContactPreference> contactPreferenceList = (List<ContactPreference>)((OkObjectResult)actionContactPreferenceList.Result).Value;
+
+            count = contactPreferenceList.Count();
+
+            ContactPreference contactPreference = GetFilledRandomContactPreference("");
+
+
+            // -----------------------------------
+            // [Key]
+            // Is NOT Nullable
+            // contactPreference.ContactPreferenceID   (Int32)
+            // -----------------------------------
+
+            contactPreference = null;
+            contactPreference = GetFilledRandomContactPreference("");
+            contactPreference.ContactPreferenceID = 0;
+
+            var actionContactPreference = await ContactPreferenceService.Put(contactPreference);
+            Assert.IsType<BadRequestObjectResult>(actionContactPreference.Result);
+
+            contactPreference = null;
+            contactPreference = GetFilledRandomContactPreference("");
+            contactPreference.ContactPreferenceID = 10000000;
+            actionContactPreference = await ContactPreferenceService.Put(contactPreference);
+            Assert.IsType<BadRequestObjectResult>(actionContactPreference.Result);
+
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPExist(ExistTypeName = "Contact", ExistPlurial = "s", ExistFieldID = "ContactID", AllowableTVtypeList = )]
+            // contactPreference.ContactID   (Int32)
+            // -----------------------------------
+
+            contactPreference = null;
+            contactPreference = GetFilledRandomContactPreference("");
+            contactPreference.ContactID = 0;
+            actionContactPreference = await ContactPreferenceService.Post(contactPreference);
+            Assert.IsType<BadRequestObjectResult>(actionContactPreference.Result);
+
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPEnumType]
+            // contactPreference.TVType   (TVTypeEnum)
+            // -----------------------------------
+
+            contactPreference = null;
+            contactPreference = GetFilledRandomContactPreference("");
+            contactPreference.TVType = (TVTypeEnum)1000000;
+            actionContactPreference = await ContactPreferenceService.Post(contactPreference);
+            Assert.IsType<BadRequestObjectResult>(actionContactPreference.Result);
+
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPRange(1, 1000)]
+            // contactPreference.MarkerSize   (Int32)
+            // -----------------------------------
+
+            contactPreference = null;
+            contactPreference = GetFilledRandomContactPreference("");
+            contactPreference.MarkerSize = 0;
+            actionContactPreference = await ContactPreferenceService.Post(contactPreference);
+            Assert.IsType<BadRequestObjectResult>(actionContactPreference.Result);
+            //Assert.AreEqual(count, contactPreferenceService.GetContactPreferenceList().Count());
+            contactPreference = null;
+            contactPreference = GetFilledRandomContactPreference("");
+            contactPreference.MarkerSize = 1001;
+            actionContactPreference = await ContactPreferenceService.Post(contactPreference);
+            Assert.IsType<BadRequestObjectResult>(actionContactPreference.Result);
+            //Assert.AreEqual(count, contactPreferenceService.GetContactPreferenceList().Count());
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPAfter(Year = 1980)]
+            // contactPreference.LastUpdateDate_UTC   (DateTime)
+            // -----------------------------------
+
+            contactPreference = null;
+            contactPreference = GetFilledRandomContactPreference("");
+            contactPreference.LastUpdateDate_UTC = new DateTime();
+            actionContactPreference = await ContactPreferenceService.Post(contactPreference);
+            Assert.IsType<BadRequestObjectResult>(actionContactPreference.Result);
+            contactPreference = null;
+            contactPreference = GetFilledRandomContactPreference("");
+            contactPreference.LastUpdateDate_UTC = new DateTime(1979, 1, 1);
+            actionContactPreference = await ContactPreferenceService.Post(contactPreference);
+            Assert.IsType<BadRequestObjectResult>(actionContactPreference.Result);
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPExist(ExistTypeName = "TVItem", ExistPlurial = "s", ExistFieldID = "TVItemID", AllowableTVtypeList = Contact)]
+            // contactPreference.LastUpdateContactTVItemID   (Int32)
+            // -----------------------------------
+
+            contactPreference = null;
+            contactPreference = GetFilledRandomContactPreference("");
+            contactPreference.LastUpdateContactTVItemID = 0;
+            actionContactPreference = await ContactPreferenceService.Post(contactPreference);
+            Assert.IsType<BadRequestObjectResult>(actionContactPreference.Result);
+
+            contactPreference = null;
+            contactPreference = GetFilledRandomContactPreference("");
+            contactPreference.LastUpdateContactTVItemID = 1;
+            actionContactPreference = await ContactPreferenceService.Post(contactPreference);
+            Assert.IsType<BadRequestObjectResult>(actionContactPreference.Result);
+
+        }
+        #endregion Tests Generated Properties
 
         #region Functions private
         private async Task DoCRUDTest()
@@ -234,6 +372,9 @@ namespace CSSPServices.Tests
             }
 
             return contactPreference;
+        }
+        private void CheckContactPreferenceFields(List<ContactPreference> contactPreferenceList)
+        {
         }
         #endregion Functions private
     }

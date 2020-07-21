@@ -19,6 +19,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Transactions;
 using Xunit;
+using System.ComponentModel.DataAnnotations;
 
 namespace CSSPServices.Tests
 {
@@ -81,6 +82,333 @@ namespace CSSPServices.Tests
             }
         }
         #endregion Tests Generated CRUD
+
+        #region Tests Generated Properties
+        [Theory]
+        [InlineData("en-CA", DBLocationEnum.Local)]
+        [InlineData("fr-CA", DBLocationEnum.Local)]
+        [InlineData("en-CA", DBLocationEnum.Server)]
+        [InlineData("fr-CA", DBLocationEnum.Server)]
+        public async Task UseOfSite_Properties_Test(string culture, DBLocationEnum DBLocation)
+        {
+            // -------------------------------
+            // -------------------------------
+            // Properties testing
+            // -------------------------------
+            // -------------------------------
+
+            Assert.True(await Setup(culture));
+
+            LoggedInService.DBLocation = DBLocation;
+
+            int count = 0;
+            if (count == 1)
+            {
+                // just so we don't get a warning during compile [The variable 'count' is assigned but its value is never used]
+            }
+
+            var actionUseOfSiteList = await UseOfSiteService.GetUseOfSiteList();
+            Assert.Equal(200, ((ObjectResult)actionUseOfSiteList.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionUseOfSiteList.Result).Value);
+            List<UseOfSite> useOfSiteList = (List<UseOfSite>)((OkObjectResult)actionUseOfSiteList.Result).Value;
+
+            count = useOfSiteList.Count();
+
+            UseOfSite useOfSite = GetFilledRandomUseOfSite("");
+
+
+            // -----------------------------------
+            // [Key]
+            // Is NOT Nullable
+            // useOfSite.UseOfSiteID   (Int32)
+            // -----------------------------------
+
+            useOfSite = null;
+            useOfSite = GetFilledRandomUseOfSite("");
+            useOfSite.UseOfSiteID = 0;
+
+            var actionUseOfSite = await UseOfSiteService.Put(useOfSite);
+            Assert.IsType<BadRequestObjectResult>(actionUseOfSite.Result);
+
+            useOfSite = null;
+            useOfSite = GetFilledRandomUseOfSite("");
+            useOfSite.UseOfSiteID = 10000000;
+            actionUseOfSite = await UseOfSiteService.Put(useOfSite);
+            Assert.IsType<BadRequestObjectResult>(actionUseOfSite.Result);
+
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPExist(ExistTypeName = "TVItem", ExistPlurial = "s", ExistFieldID = "TVItemID", AllowableTVtypeList = ClimateSite,HydrometricSite,TideSite)]
+            // useOfSite.SiteTVItemID   (Int32)
+            // -----------------------------------
+
+            useOfSite = null;
+            useOfSite = GetFilledRandomUseOfSite("");
+            useOfSite.SiteTVItemID = 0;
+            actionUseOfSite = await UseOfSiteService.Post(useOfSite);
+            Assert.IsType<BadRequestObjectResult>(actionUseOfSite.Result);
+
+            useOfSite = null;
+            useOfSite = GetFilledRandomUseOfSite("");
+            useOfSite.SiteTVItemID = 1;
+            actionUseOfSite = await UseOfSiteService.Post(useOfSite);
+            Assert.IsType<BadRequestObjectResult>(actionUseOfSite.Result);
+
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPExist(ExistTypeName = "TVItem", ExistPlurial = "s", ExistFieldID = "TVItemID", AllowableTVtypeList = Subsector)]
+            // useOfSite.SubsectorTVItemID   (Int32)
+            // -----------------------------------
+
+            useOfSite = null;
+            useOfSite = GetFilledRandomUseOfSite("");
+            useOfSite.SubsectorTVItemID = 0;
+            actionUseOfSite = await UseOfSiteService.Post(useOfSite);
+            Assert.IsType<BadRequestObjectResult>(actionUseOfSite.Result);
+
+            useOfSite = null;
+            useOfSite = GetFilledRandomUseOfSite("");
+            useOfSite.SubsectorTVItemID = 1;
+            actionUseOfSite = await UseOfSiteService.Post(useOfSite);
+            Assert.IsType<BadRequestObjectResult>(actionUseOfSite.Result);
+
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPEnumType]
+            // useOfSite.TVType   (TVTypeEnum)
+            // -----------------------------------
+
+            useOfSite = null;
+            useOfSite = GetFilledRandomUseOfSite("");
+            useOfSite.TVType = (TVTypeEnum)1000000;
+            actionUseOfSite = await UseOfSiteService.Post(useOfSite);
+            Assert.IsType<BadRequestObjectResult>(actionUseOfSite.Result);
+
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPRange(0, 1000)]
+            // useOfSite.Ordinal   (Int32)
+            // -----------------------------------
+
+            useOfSite = null;
+            useOfSite = GetFilledRandomUseOfSite("");
+            useOfSite.Ordinal = -1;
+            actionUseOfSite = await UseOfSiteService.Post(useOfSite);
+            Assert.IsType<BadRequestObjectResult>(actionUseOfSite.Result);
+            //Assert.AreEqual(count, useOfSiteService.GetUseOfSiteList().Count());
+            useOfSite = null;
+            useOfSite = GetFilledRandomUseOfSite("");
+            useOfSite.Ordinal = 1001;
+            actionUseOfSite = await UseOfSiteService.Post(useOfSite);
+            Assert.IsType<BadRequestObjectResult>(actionUseOfSite.Result);
+            //Assert.AreEqual(count, useOfSiteService.GetUseOfSiteList().Count());
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPRange(1980, 2050)]
+            // useOfSite.StartYear   (Int32)
+            // -----------------------------------
+
+            useOfSite = null;
+            useOfSite = GetFilledRandomUseOfSite("");
+            useOfSite.StartYear = 1979;
+            actionUseOfSite = await UseOfSiteService.Post(useOfSite);
+            Assert.IsType<BadRequestObjectResult>(actionUseOfSite.Result);
+            //Assert.AreEqual(count, useOfSiteService.GetUseOfSiteList().Count());
+            useOfSite = null;
+            useOfSite = GetFilledRandomUseOfSite("");
+            useOfSite.StartYear = 2051;
+            actionUseOfSite = await UseOfSiteService.Post(useOfSite);
+            Assert.IsType<BadRequestObjectResult>(actionUseOfSite.Result);
+            //Assert.AreEqual(count, useOfSiteService.GetUseOfSiteList().Count());
+
+            // -----------------------------------
+            // Is Nullable
+            // [CSSPRange(1980, 2050)]
+            // useOfSite.EndYear   (Int32)
+            // -----------------------------------
+
+            useOfSite = null;
+            useOfSite = GetFilledRandomUseOfSite("");
+            useOfSite.EndYear = 1979;
+            actionUseOfSite = await UseOfSiteService.Post(useOfSite);
+            Assert.IsType<BadRequestObjectResult>(actionUseOfSite.Result);
+            //Assert.AreEqual(count, useOfSiteService.GetUseOfSiteList().Count());
+            useOfSite = null;
+            useOfSite = GetFilledRandomUseOfSite("");
+            useOfSite.EndYear = 2051;
+            actionUseOfSite = await UseOfSiteService.Post(useOfSite);
+            Assert.IsType<BadRequestObjectResult>(actionUseOfSite.Result);
+            //Assert.AreEqual(count, useOfSiteService.GetUseOfSiteList().Count());
+
+            // -----------------------------------
+            // Is Nullable
+            // useOfSite.UseWeight   (Boolean)
+            // -----------------------------------
+
+
+            // -----------------------------------
+            // Is Nullable
+            // [CSSPRange(0, 100)]
+            // useOfSite.Weight_perc   (Double)
+            // -----------------------------------
+
+            //CSSPError: Type not implemented [Weight_perc]
+
+            //CSSPError: Type not implemented [Weight_perc]
+
+            useOfSite = null;
+            useOfSite = GetFilledRandomUseOfSite("");
+            useOfSite.Weight_perc = -1.0D;
+            actionUseOfSite = await UseOfSiteService.Post(useOfSite);
+            Assert.IsType<BadRequestObjectResult>(actionUseOfSite.Result);
+            //Assert.AreEqual(count, useOfSiteService.GetUseOfSiteList().Count());
+            useOfSite = null;
+            useOfSite = GetFilledRandomUseOfSite("");
+            useOfSite.Weight_perc = 101.0D;
+            actionUseOfSite = await UseOfSiteService.Post(useOfSite);
+            Assert.IsType<BadRequestObjectResult>(actionUseOfSite.Result);
+            //Assert.AreEqual(count, useOfSiteService.GetUseOfSiteList().Count());
+
+            // -----------------------------------
+            // Is Nullable
+            // useOfSite.UseEquation   (Boolean)
+            // -----------------------------------
+
+
+            // -----------------------------------
+            // Is Nullable
+            // [CSSPRange(0, 100)]
+            // useOfSite.Param1   (Double)
+            // -----------------------------------
+
+            //CSSPError: Type not implemented [Param1]
+
+            //CSSPError: Type not implemented [Param1]
+
+            useOfSite = null;
+            useOfSite = GetFilledRandomUseOfSite("");
+            useOfSite.Param1 = -1.0D;
+            actionUseOfSite = await UseOfSiteService.Post(useOfSite);
+            Assert.IsType<BadRequestObjectResult>(actionUseOfSite.Result);
+            //Assert.AreEqual(count, useOfSiteService.GetUseOfSiteList().Count());
+            useOfSite = null;
+            useOfSite = GetFilledRandomUseOfSite("");
+            useOfSite.Param1 = 101.0D;
+            actionUseOfSite = await UseOfSiteService.Post(useOfSite);
+            Assert.IsType<BadRequestObjectResult>(actionUseOfSite.Result);
+            //Assert.AreEqual(count, useOfSiteService.GetUseOfSiteList().Count());
+
+            // -----------------------------------
+            // Is Nullable
+            // [CSSPRange(0, 100)]
+            // useOfSite.Param2   (Double)
+            // -----------------------------------
+
+            //CSSPError: Type not implemented [Param2]
+
+            //CSSPError: Type not implemented [Param2]
+
+            useOfSite = null;
+            useOfSite = GetFilledRandomUseOfSite("");
+            useOfSite.Param2 = -1.0D;
+            actionUseOfSite = await UseOfSiteService.Post(useOfSite);
+            Assert.IsType<BadRequestObjectResult>(actionUseOfSite.Result);
+            //Assert.AreEqual(count, useOfSiteService.GetUseOfSiteList().Count());
+            useOfSite = null;
+            useOfSite = GetFilledRandomUseOfSite("");
+            useOfSite.Param2 = 101.0D;
+            actionUseOfSite = await UseOfSiteService.Post(useOfSite);
+            Assert.IsType<BadRequestObjectResult>(actionUseOfSite.Result);
+            //Assert.AreEqual(count, useOfSiteService.GetUseOfSiteList().Count());
+
+            // -----------------------------------
+            // Is Nullable
+            // [CSSPRange(0, 100)]
+            // useOfSite.Param3   (Double)
+            // -----------------------------------
+
+            //CSSPError: Type not implemented [Param3]
+
+            //CSSPError: Type not implemented [Param3]
+
+            useOfSite = null;
+            useOfSite = GetFilledRandomUseOfSite("");
+            useOfSite.Param3 = -1.0D;
+            actionUseOfSite = await UseOfSiteService.Post(useOfSite);
+            Assert.IsType<BadRequestObjectResult>(actionUseOfSite.Result);
+            //Assert.AreEqual(count, useOfSiteService.GetUseOfSiteList().Count());
+            useOfSite = null;
+            useOfSite = GetFilledRandomUseOfSite("");
+            useOfSite.Param3 = 101.0D;
+            actionUseOfSite = await UseOfSiteService.Post(useOfSite);
+            Assert.IsType<BadRequestObjectResult>(actionUseOfSite.Result);
+            //Assert.AreEqual(count, useOfSiteService.GetUseOfSiteList().Count());
+
+            // -----------------------------------
+            // Is Nullable
+            // [CSSPRange(0, 100)]
+            // useOfSite.Param4   (Double)
+            // -----------------------------------
+
+            //CSSPError: Type not implemented [Param4]
+
+            //CSSPError: Type not implemented [Param4]
+
+            useOfSite = null;
+            useOfSite = GetFilledRandomUseOfSite("");
+            useOfSite.Param4 = -1.0D;
+            actionUseOfSite = await UseOfSiteService.Post(useOfSite);
+            Assert.IsType<BadRequestObjectResult>(actionUseOfSite.Result);
+            //Assert.AreEqual(count, useOfSiteService.GetUseOfSiteList().Count());
+            useOfSite = null;
+            useOfSite = GetFilledRandomUseOfSite("");
+            useOfSite.Param4 = 101.0D;
+            actionUseOfSite = await UseOfSiteService.Post(useOfSite);
+            Assert.IsType<BadRequestObjectResult>(actionUseOfSite.Result);
+            //Assert.AreEqual(count, useOfSiteService.GetUseOfSiteList().Count());
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPAfter(Year = 1980)]
+            // useOfSite.LastUpdateDate_UTC   (DateTime)
+            // -----------------------------------
+
+            useOfSite = null;
+            useOfSite = GetFilledRandomUseOfSite("");
+            useOfSite.LastUpdateDate_UTC = new DateTime();
+            actionUseOfSite = await UseOfSiteService.Post(useOfSite);
+            Assert.IsType<BadRequestObjectResult>(actionUseOfSite.Result);
+            useOfSite = null;
+            useOfSite = GetFilledRandomUseOfSite("");
+            useOfSite.LastUpdateDate_UTC = new DateTime(1979, 1, 1);
+            actionUseOfSite = await UseOfSiteService.Post(useOfSite);
+            Assert.IsType<BadRequestObjectResult>(actionUseOfSite.Result);
+
+            // -----------------------------------
+            // Is NOT Nullable
+            // [CSSPExist(ExistTypeName = "TVItem", ExistPlurial = "s", ExistFieldID = "TVItemID", AllowableTVtypeList = Contact)]
+            // useOfSite.LastUpdateContactTVItemID   (Int32)
+            // -----------------------------------
+
+            useOfSite = null;
+            useOfSite = GetFilledRandomUseOfSite("");
+            useOfSite.LastUpdateContactTVItemID = 0;
+            actionUseOfSite = await UseOfSiteService.Post(useOfSite);
+            Assert.IsType<BadRequestObjectResult>(actionUseOfSite.Result);
+
+            useOfSite = null;
+            useOfSite = GetFilledRandomUseOfSite("");
+            useOfSite.LastUpdateContactTVItemID = 1;
+            actionUseOfSite = await UseOfSiteService.Post(useOfSite);
+            Assert.IsType<BadRequestObjectResult>(actionUseOfSite.Result);
+
+        }
+        #endregion Tests Generated Properties
 
         #region Functions private
         private async Task DoCRUDTest()
@@ -253,6 +581,41 @@ namespace CSSPServices.Tests
             }
 
             return useOfSite;
+        }
+        private void CheckUseOfSiteFields(List<UseOfSite> useOfSiteList)
+        {
+            if (useOfSiteList[0].EndYear != null)
+            {
+                Assert.NotNull(useOfSiteList[0].EndYear);
+            }
+            if (useOfSiteList[0].UseWeight != null)
+            {
+                Assert.NotNull(useOfSiteList[0].UseWeight);
+            }
+            if (useOfSiteList[0].Weight_perc != null)
+            {
+                Assert.NotNull(useOfSiteList[0].Weight_perc);
+            }
+            if (useOfSiteList[0].UseEquation != null)
+            {
+                Assert.NotNull(useOfSiteList[0].UseEquation);
+            }
+            if (useOfSiteList[0].Param1 != null)
+            {
+                Assert.NotNull(useOfSiteList[0].Param1);
+            }
+            if (useOfSiteList[0].Param2 != null)
+            {
+                Assert.NotNull(useOfSiteList[0].Param2);
+            }
+            if (useOfSiteList[0].Param3 != null)
+            {
+                Assert.NotNull(useOfSiteList[0].Param3);
+            }
+            if (useOfSiteList[0].Param4 != null)
+            {
+                Assert.NotNull(useOfSiteList[0].Param4);
+            }
         }
         #endregion Functions private
     }

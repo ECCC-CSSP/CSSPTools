@@ -19,16 +19,22 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Transactions;
 using Xunit;
+using System.ComponentModel.DataAnnotations;
 
 namespace CSSPServices.Tests
 {
-    [Collection("Sequential")]
     public partial class TVTypeNamesAndPathServiceTest : TestHelper
     {
         #region Variables
         #endregion Variables
 
         #region Properties
+        private IConfiguration Config { get; set; }
+        private IServiceProvider Provider { get; set; }
+        private IServiceCollection Services { get; set; }
+        private ICSSPCultureService CSSPCultureService { get; set; }
+        private ITVTypeNamesAndPathService TVTypeNamesAndPathService { get; set; }
+        private TVTypeNamesAndPath tvTypeNamesAndPath { get; set; }
         #endregion Properties
 
         #region Constructors
@@ -38,7 +44,66 @@ namespace CSSPServices.Tests
         }
         #endregion Constructors
 
+        #region Tests Generated Basic Test Not Mapped
+        [Theory]
+        [InlineData("en-CA")]
+        [InlineData("fr-CA")]
+        public async Task TVTypeNamesAndPathService_Good_Test(string culture)
+        {
+            Assert.True(await Setup(culture));
+
+            tvTypeNamesAndPath = GetFilledRandomTVTypeNamesAndPath("");
+
+            List<ValidationResult> ValidationResultsList = TVTypeNamesAndPathService.Validate(new ValidationContext(tvTypeNamesAndPath)).ToList();
+            Assert.True(ValidationResultsList.Count == 0);
+        }
+        #endregion Tests Generated Basic Test Not Mapped
+
         #region Functions private
+        private async Task<bool> Setup(string culture)
+        {
+            Config = new ConfigurationBuilder()
+               .SetBasePath(Directory.GetParent(AppContext.BaseDirectory).FullName)
+               .AddJsonFile("appsettings_csspservices.json")
+               .AddUserSecrets("6f27cbbe-6ffb-4154-b49b-d739597c4f60")
+               .Build();
+
+            Services = new ServiceCollection();
+
+            Services.AddSingleton<IConfiguration>(Config);
+
+            Services.AddSingleton<ICSSPCultureService, CSSPCultureService>();
+            Services.AddSingleton<IEnums, Enums>();
+            Services.AddSingleton<ITVTypeNamesAndPathService, TVTypeNamesAndPathService>();
+
+            Provider = Services.BuildServiceProvider();
+            Assert.NotNull(Provider);
+
+            CSSPCultureService = Provider.GetService<ICSSPCultureService>();
+            Assert.NotNull(CSSPCultureService);
+
+            CSSPCultureService.SetCulture(culture);
+
+            TVTypeNamesAndPathService = Provider.GetService<ITVTypeNamesAndPathService>();
+            Assert.NotNull(TVTypeNamesAndPathService);
+
+            return await Task.FromResult(true);
+        }
+        private TVTypeNamesAndPath GetFilledRandomTVTypeNamesAndPath(string OmitPropName)
+        {
+            TVTypeNamesAndPath tvTypeNamesAndPath = new TVTypeNamesAndPath();
+
+            if (OmitPropName != "TVTypeName") tvTypeNamesAndPath.TVTypeName = GetRandomString("", 6);
+            if (OmitPropName != "Index") tvTypeNamesAndPath.Index = GetRandomInt(1, 11);
+            if (OmitPropName != "TVPath") tvTypeNamesAndPath.TVPath = GetRandomString("", 6);
+
+            return tvTypeNamesAndPath;
+        }
+        private void CheckTVTypeNamesAndPathFields(List<TVTypeNamesAndPath> tvTypeNamesAndPathList)
+        {
+            Assert.False(string.IsNullOrWhiteSpace(tvTypeNamesAndPathList[0].TVTypeName));
+            Assert.False(string.IsNullOrWhiteSpace(tvTypeNamesAndPathList[0].TVPath));
+        }
         #endregion Functions private
     }
 }
