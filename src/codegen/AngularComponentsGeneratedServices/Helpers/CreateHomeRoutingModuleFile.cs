@@ -12,7 +12,7 @@ namespace AngularComponentsGeneratedServices.Services
 {
     public partial class AngularComponentsGeneratedService : ConfigService, IAngularComponentsGeneratedService
     {
-        private void CreateHomeRoutingModuleFile(int max, List<DLLTypeInfo> DLLTypeInfoCSSPModelsList, List<string> removeClass)
+        private void CreateHomeRoutingModuleFile(int max, List<DLLTypeInfo> DLLTypeInfoCSSPModelsList)
         {
             StringBuilder sb = new StringBuilder();
 
@@ -36,16 +36,17 @@ namespace AngularComponentsGeneratedServices.Services
             int count = 0;
             foreach (DLLTypeInfo dllTypeInfoModels in DLLTypeInfoCSSPModelsList)
             {
-                if (!removeClass.Contains(dllTypeInfoModels.Name))
+                if (GenerateCodeBaseService.SkipType(dllTypeInfoModels.Type))
                 {
-                    if (!dllTypeInfoModels.HasNotMappedAttribute)
-                    {
+                    continue;
+                }
 
-                        count += 1;
-                        if (count > max) break;
+                if (!dllTypeInfoModels.HasNotMappedAttribute)
+                {
+                    count += 1;
+                    if (count > max) break;
 
-                        sb.AppendLine($@"      {{ path: '{ dllTypeInfoModels.Name.ToLower() }', loadChildren: () => import('../../test-components/generated/{ dllTypeInfoModels.Name.ToLower() }/{ dllTypeInfoModels.Name.ToLower() }.module').then(mod => mod.{ dllTypeInfoModels.Name }Module) }},");
-                    }
+                    sb.AppendLine($@"      {{ path: '{ dllTypeInfoModels.Name.ToLower() }', loadChildren: () => import('../../test-components/generated/{ dllTypeInfoModels.Name.ToLower() }/{ dllTypeInfoModels.Name.ToLower() }.module').then(mod => mod.{ dllTypeInfoModels.Name }Module) }},");
                 }
             }
 

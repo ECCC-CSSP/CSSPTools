@@ -50,48 +50,40 @@ namespace AngularComponentsGeneratedServices.Services
             }
             ActionCommandDBService.ExecutionStatusText.AppendLine($"Loaded [{ fiCSSPModelsDLL.FullName }] ...");
 
-            List<string> removeClass = new List<string>()
-            {
-                "CSSPAfterAttribute", "CSSPAllowNullAttribute", "CSSPBiggerAttribute", "CSSPCompareAttribute",
-                "CSSPEnumTypeAttribute", "CSSPEnumTypeTextAttribute", "CSSPExistAttribute", "CSSPFillAttribute",
-                "CSSPMaxLengthAttribute", "CSSPMinLengthAttribute", "CSSPRangeAttribute",
-                "CSSPRequiredAttribute", "CSSPRegularExpressionAttribute",
-                "CSSPModelsRes", "CSSPDBContext", "TestDBContext", "InMemoryDBContext",
-                "LastUpdate", "AspNetUser",
-            };
-
             int max = 3333;
             int count = 0;
             foreach (DLLTypeInfo dllTypeInfoModels in DLLTypeInfoCSSPModelsList)
             {
-                if (!removeClass.Contains(dllTypeInfoModels.Name))
+                if (GenerateCodeBaseService.SkipType(dllTypeInfoModels.Type))
                 {
-                    if (!dllTypeInfoModels.HasNotMappedAttribute)
-                    {
-                        count += 1;
-                        if (count > max) break;
+                    continue;
+                }
 
-                        CreateRoutingModuleFile(dllTypeInfoModels, DLLTypeInfoCSSPModelsList);
-                        CreateComponentCSSFile(dllTypeInfoModels, DLLTypeInfoCSSPModelsList);
-                        CreateComponentEditCSSFile(dllTypeInfoModels, DLLTypeInfoCSSPModelsList);
-                        CreateComponentHTMLFile(dllTypeInfoModels, DLLTypeInfoCSSPModelsList);
-                        CreateComponentEditHTMLFile(dllTypeInfoModels, DLLTypeInfoCSSPModelsList);
-                        CreateComponentSpecFile(dllTypeInfoModels, DLLTypeInfoCSSPModelsList);
-                        CreateComponentFile(dllTypeInfoModels, DLLTypeInfoCSSPModelsList);
-                        CreateComponentEditFile(dllTypeInfoModels, DLLTypeInfoCSSPModelsList);
-                        CreateLocalesFile(dllTypeInfoModels, DLLTypeInfoCSSPModelsList);
-                        CreateModelsFile(dllTypeInfoModels, DLLTypeInfoCSSPModelsList);
-                        CreateModuleFile(dllTypeInfoModels, DLLTypeInfoCSSPModelsList);
-                        CreateServiceSpecFile(dllTypeInfoModels, DLLTypeInfoCSSPModelsList);
-                        CreateServiceFile(dllTypeInfoModels, DLLTypeInfoCSSPModelsList);
-                        CreateIndexFile(dllTypeInfoModels, DLLTypeInfoCSSPModelsList);
-                        //CreateTypeFile(dllTypeInfoModels, DLLTypeInfoCSSPModelsList);
-                    }
+                if (!dllTypeInfoModels.HasNotMappedAttribute)
+                {
+                    count += 1;
+                    if (count > max) break;
+
+                    CreateRoutingModuleFile(dllTypeInfoModels, DLLTypeInfoCSSPModelsList);
+                    CreateComponentCSSFile(dllTypeInfoModels, DLLTypeInfoCSSPModelsList);
+                    CreateComponentEditCSSFile(dllTypeInfoModels, DLLTypeInfoCSSPModelsList);
+                    CreateComponentHTMLFile(dllTypeInfoModels, DLLTypeInfoCSSPModelsList);
+                    CreateComponentEditHTMLFile(dllTypeInfoModels, DLLTypeInfoCSSPModelsList);
+                    CreateComponentSpecFile(dllTypeInfoModels, DLLTypeInfoCSSPModelsList);
+                    CreateComponentFile(dllTypeInfoModels, DLLTypeInfoCSSPModelsList);
+                    CreateComponentEditFile(dllTypeInfoModels, DLLTypeInfoCSSPModelsList);
+                    CreateLocalesFile(dllTypeInfoModels, DLLTypeInfoCSSPModelsList);
+                    CreateModelsFile(dllTypeInfoModels, DLLTypeInfoCSSPModelsList);
+                    CreateModuleFile(dllTypeInfoModels, DLLTypeInfoCSSPModelsList);
+                    CreateServiceSpecFile(dllTypeInfoModels, DLLTypeInfoCSSPModelsList);
+                    CreateServiceFile(dllTypeInfoModels, DLLTypeInfoCSSPModelsList);
+                    CreateIndexFile(dllTypeInfoModels, DLLTypeInfoCSSPModelsList);
+                    //CreateTypeFile(dllTypeInfoModels, DLLTypeInfoCSSPModelsList);
                 }
             }
 
-            CreateHomeRoutingModuleFile(max, DLLTypeInfoCSSPModelsList, removeClass);
-            CreateHomeComponentHTMLFile(max, DLLTypeInfoCSSPModelsList, removeClass);
+            CreateHomeRoutingModuleFile(max, DLLTypeInfoCSSPModelsList);
+            CreateHomeComponentHTMLFile(max, DLLTypeInfoCSSPModelsList);
 
             ActionCommandDBService.ExecutionStatusText.AppendLine("");
             ActionCommandDBService.ExecutionStatusText.AppendLine($"{ CSSPCultureServicesRes.Done } ...");

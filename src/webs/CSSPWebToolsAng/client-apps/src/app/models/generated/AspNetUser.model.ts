@@ -9,11 +9,15 @@ import { LastUpdate } from './LastUpdate.model';
 
 export class AspNetUser extends LastUpdate {
     AccessFailedCount: number;
+    ConcurrencyStamp: string;
     Email: string;
     EmailConfirmed: boolean;
     Id: string;
     LockoutEnabled: boolean;
+    LockoutEnd?: Date;
     LockoutEndDateUtc?: Date;
+    NormalizedEmail: string;
+    NormalizedUserName: string;
     PasswordHash: string;
     PhoneNumber: string;
     PhoneNumberConfirmed: boolean;

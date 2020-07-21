@@ -64,21 +64,14 @@ namespace AngularModelsGeneratedServices.Services
             }
             ActionCommandDBService.ExecutionStatusText.AppendLine($"Loaded [{ fiCSSPModelsDLL.FullName }] ...");
 
-            List<string> removeClass = new List<string>()
-            {
-                "CSSPAfterAttribute", "CSSPAllowNullAttribute", "CSSPBiggerAttribute", "CSSPCompareAttribute",
-                "CSSPEnumTypeAttribute", "CSSPEnumTypeTextAttribute", "CSSPExistAttribute", "CSSPFillAttribute",
-                "CSSPMaxLengthAttribute", "CSSPMinLengthAttribute", "CSSPRangeAttribute",
-                "CSSPRequiredAttribute", "CSSPRegularExpressionAttribute",
-                "CSSPModelsRes", "CSSPDBContext", "TestDBContext", "InMemoryDBContext",
-                "LastUpdate", "AspNetUser",
-            };
             foreach (DLLTypeInfo dllTypeInfoModels in DLLTypeInfoCSSPModelsList)
             {
-                if (!removeClass.Contains(dllTypeInfoModels.Name))
+                if (dllTypeInfoModels.Name != "LastUpdate" && GenerateCodeBaseService.SkipType(dllTypeInfoModels.Type))
                 {
-                    CreateTypeFile(dllTypeInfoModels, DLLTypeInfoCSSPModelsList);
+                    continue;
                 }
+
+                CreateTypeFile(dllTypeInfoModels, DLLTypeInfoCSSPModelsList);
             }
 
             ActionCommandDBService.ExecutionStatusText.AppendLine("");

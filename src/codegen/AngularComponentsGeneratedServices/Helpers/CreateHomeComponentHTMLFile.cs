@@ -12,7 +12,7 @@ namespace AngularComponentsGeneratedServices.Services
 {
     public partial class AngularComponentsGeneratedService : ConfigService, IAngularComponentsGeneratedService
     {
-        private void CreateHomeComponentHTMLFile(int max, List<DLLTypeInfo> DLLTypeInfoCSSPModelsList, List<string> removeClass)
+        private void CreateHomeComponentHTMLFile(int max, List<DLLTypeInfo> DLLTypeInfoCSSPModelsList)
         {
             StringBuilder sb = new StringBuilder();
 
@@ -25,19 +25,21 @@ namespace AngularComponentsGeneratedServices.Services
             sb.AppendLine(@"");
 
             sb.AppendLine(@"<h2>home works! -- {{ homeService.homeTextModel$.getValue().Title }}</h2>");
-            
+
             int count = 0;
             foreach (DLLTypeInfo dllTypeInfoModels in DLLTypeInfoCSSPModelsList)
             {
-                if (!removeClass.Contains(dllTypeInfoModels.Name))
+                if (GenerateCodeBaseService.SkipType(dllTypeInfoModels.Type))
                 {
-                    if (!dllTypeInfoModels.HasNotMappedAttribute)
-                    {
-                        count += 1;
-                        if (count > max) break;
+                    continue;
+                }
 
-                        sb.AppendLine($@"<a mat-button routerLink=""{ dllTypeInfoModels.Name.ToLower() }"" routerLinkActive=""active-link"">{ dllTypeInfoModels.Name }({ count })</a>");
-                    }
+                if (!dllTypeInfoModels.HasNotMappedAttribute)
+                {
+                    count += 1;
+                    if (count > max) break;
+
+                    sb.AppendLine($@"<a mat-button routerLink=""{ dllTypeInfoModels.Name.ToLower() }"" routerLinkActive=""active-link"">{ dllTypeInfoModels.Name }({ count })</a>");
                 }
             }
 
@@ -61,7 +63,6 @@ namespace AngularComponentsGeneratedServices.Services
                 string fileLine = "Not Created" + fiOutputGen.FullName;
                 ActionCommandDBService.FilesStatusText.AppendLine(fileLine);
             }
-
         }
     }
 }
