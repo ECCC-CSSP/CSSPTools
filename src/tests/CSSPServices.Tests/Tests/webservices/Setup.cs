@@ -26,6 +26,7 @@ namespace CSSPServices.Tests
         private IAspNetUserService AspNetUserService { get; set; }
         private IContactService ContactService { get; set; }
         private ILoggedInService LoggedInService { get; set; }
+        private ITVItemService TVItemService { get; set; }
         private CSSPDBContext db { get; set; }
         #endregion Properties
 
@@ -91,6 +92,7 @@ namespace CSSPServices.Tests
             Services.AddSingleton<ILoggedInService, LoggedInService>();
             Services.AddSingleton<IEnums, Enums>();
             Services.AddSingleton<IWebService, WebService>();
+            Services.AddSingleton<ITVItemService, TVItemService>();
 
             Provider = Services.BuildServiceProvider();
             Assert.NotNull(Provider);
@@ -127,6 +129,9 @@ namespace CSSPServices.Tests
 
             WebService = Provider.GetService<IWebService>();
             Assert.NotNull(WebService);
+
+            TVItemService = Provider.GetService<ITVItemService>();
+            Assert.NotNull(TVItemService);
 
             return await Task.FromResult(true);
         }

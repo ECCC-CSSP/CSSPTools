@@ -6,7 +6,7 @@ using System.Collections.Generic;
 
 namespace CSSPModels
 {
-    public partial class WebHelpDoc : WebBase
+    public partial class WebHelpDoc
     {
         #region Properties
         public List<HelpDoc> HelpDocList { get; set; }
