@@ -85,6 +85,8 @@ namespace CSSPServices.Tests
 
             Services.AddSingleton<ICSSPCultureService, CSSPCultureService>();
             Services.AddSingleton<IAspNetUserService, AspNetUserService>();
+            Services.AddSingleton<ILoginModelService, LoginModelService>();
+            Services.AddSingleton<IRegisterModelService, RegisterModelService>();
             Services.AddSingleton<IContactService, ContactService>();
             Services.AddSingleton<ILoggedInService, LoggedInService>();
             Services.AddSingleton<IEnums, Enums>();

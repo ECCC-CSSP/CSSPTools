@@ -26,6 +26,8 @@ namespace CSSPServices.Tests
         {
             Assert.True(await Setup(culture));
 
+            await LoggedInService.SetLoggedInContactInfo("NotAnExistingId");
+
             var actionWebRoot = await WebService.GetWebRoot();
             Assert.Equal(200, ((ObjectResult)actionWebRoot.Result).StatusCode);
             Assert.NotNull(((OkObjectResult)actionWebRoot.Result).Value);
@@ -39,6 +41,19 @@ namespace CSSPServices.Tests
             Assert.NotNull(webRoot.TVItemLanguageCountryList);
             Assert.NotNull(webRoot.MapInfoCountryList);
             Assert.NotNull(webRoot.MapInfoPointCountryList);
+        }
+        [Theory]
+        [InlineData("en-CA")]
+        [InlineData("fr-CA")]
+        public async Task GetWebRoot_Unauthorized_Good_Test(string culture)
+        {
+            Assert.True(await Setup(culture));
+
+            await LoggedInService.SetLoggedInContactInfo("NotAnExistingId");
+
+            var actionWebRoot = await WebService.GetWebRoot();
+            Assert.IsType<UnauthorizedObjectResult>(actionWebRoot.Result);
+            Assert.Equal(401, ((ObjectResult)actionWebRoot.Result).StatusCode);
         }
         [Theory]
         [InlineData("en-CA")]

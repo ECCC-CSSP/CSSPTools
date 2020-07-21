@@ -50,7 +50,6 @@ namespace CSSPServices
         Task<ActionResult<WebReportType>> GetWebReportType();
 
         Task<bool> CreateAllGzFiles();
-        Task<bool> StoreFilesUndercsspfilesForSubsector(int TVItemID);
     }
     public partial class WebService : ControllerBase, IWebService
     {
@@ -88,11 +87,6 @@ namespace CSSPServices
 
         #region Functions public
 
-        public async Task<bool> StoreFilesUndercsspfilesForSubsector(int TVItemID)
-        {
-            return await Task.FromResult(false);
-            //return await DoStoreFilesUndercsspfilesForSubsector(TVItemID);
-        }
         public async Task<bool> CreateAllGzFiles()
         {
             return await Task.FromResult(false);
@@ -101,6 +95,11 @@ namespace CSSPServices
 
         public async Task<ActionResult<WebRoot>> GetWebRoot()
         {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
             return await DoGetWebRoot();
         }
         public async Task<ActionResult<WebCountry>> GetWebCountry(int TVItemID)
