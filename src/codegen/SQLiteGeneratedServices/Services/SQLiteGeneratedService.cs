@@ -72,9 +72,9 @@ namespace SQLiteGeneratedServices.Services
                 new AppSettingParameter() { Parameter = "DBFileName", ExpectedValue = "{AppDataPath}\\cssp\\cssplocaldatabases\\ActionCommandDB.db", IsFile = true, CheckExist = true },
                 new AppSettingParameter() { Parameter = "CSSPEnums", ExpectedValue = "C:\\CSSPTools\\src\\dlls\\_package\\netcoreapp3.1\\CSSPEnums.dll", IsFile = true, CheckExist = true },
                 new AppSettingParameter() { Parameter = "CSSPModels", ExpectedValue = "C:\\CSSPTools\\src\\dlls\\_package\\netcoreapp3.1\\CSSPModels.dll", IsFile = true, CheckExist = true },
-                new AppSettingParameter() { Parameter = "CreateTableBuilder", ExpectedValue = "C:\\CSSPTools\\src\\dlls\\CSSPSQLiteServices\\Helpers\\Generated\\CreateTableBuilder.cs" },
-                new AppSettingParameter() { Parameter = "FillListTableToDelete", ExpectedValue = "C:\\CSSPTools\\src\\dlls\\CSSPSQLiteServices\\Helpers\\Generated\\FillListTableToDelete.cs" },
-                new AppSettingParameter() { Parameter = "CreateTableBuilderTests", ExpectedValue = "C:\\CSSPTools\\src\\tests\\CSSPSQLiteServices.Tests\\tests\\Generated\\SQLiteCreateCSSPDBLocalTests.cs" },
+                new AppSettingParameter() { Parameter = "CreateTableBuilder", ExpectedValue = "C:\\CSSPTools\\src\\dlls\\CSSPServices\\Services\\SQLiteHelpers\\Generated\\CreateTableBuilder.cs" },
+                new AppSettingParameter() { Parameter = "FillListTableToDelete", ExpectedValue = "C:\\CSSPTools\\src\\dlls\\CSSPServices\\Services\\SQLiteHelpers\\Generated\\FillListTableToDelete.cs" },
+                new AppSettingParameter() { Parameter = "CreateTableBuilderTests", ExpectedValue = "C:\\CSSPTools\\src\\tests\\CSSPServices.Tests\\Tests\\SQLiteServices\\Generated\\SQLiteCreateCSSPDBLocalTests.cs" },
             };
 
             return await Task.FromResult(true);

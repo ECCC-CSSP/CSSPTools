@@ -31,10 +31,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CSSPDesktopServices", "src\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CSSPDesktopServices.Tests", "src\webs\Tests\CSSPDesktopServices.Tests\CSSPDesktopServices.Tests.csproj", "{7443DAAB-4201-48F9-8F2B-F7E66FBD2EC6}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CSSPSQLiteServices", "src\dlls\CSSPSQLiteServices\CSSPSQLiteServices.csproj", "{FBFB237B-0CF7-40A1-8830-6342A57B4EE8}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CSSPSQLiteServices.Tests", "src\tests\CSSPSQLiteServices.Tests\CSSPSQLiteServices.Tests.csproj", "{5A6CF19E-3734-4D7B-8E77-A0C3BFC1958C}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CSSPCultureServices", "src\dlls\CSSPCultureServices\CSSPCultureServices.csproj", "{3900FB41-76EE-41BE-99FF-3D4FE6A4C736}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CSSPCultureServices.Tests", "src\tests\CSSPCultureServices.Tests\CSSPCultureServices.Tests.csproj", "{7CBC854E-CE53-49AA-8E83-8D4C13F1FCC1}"
@@ -101,14 +97,6 @@ Global
 		{7443DAAB-4201-48F9-8F2B-F7E66FBD2EC6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7443DAAB-4201-48F9-8F2B-F7E66FBD2EC6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7443DAAB-4201-48F9-8F2B-F7E66FBD2EC6}.Release|Any CPU.Build.0 = Release|Any CPU
-		{FBFB237B-0CF7-40A1-8830-6342A57B4EE8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{FBFB237B-0CF7-40A1-8830-6342A57B4EE8}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{FBFB237B-0CF7-40A1-8830-6342A57B4EE8}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{FBFB237B-0CF7-40A1-8830-6342A57B4EE8}.Release|Any CPU.Build.0 = Release|Any CPU
-		{5A6CF19E-3734-4D7B-8E77-A0C3BFC1958C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{5A6CF19E-3734-4D7B-8E77-A0C3BFC1958C}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{5A6CF19E-3734-4D7B-8E77-A0C3BFC1958C}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{5A6CF19E-3734-4D7B-8E77-A0C3BFC1958C}.Release|Any CPU.Build.0 = Release|Any CPU
 		{3900FB41-76EE-41BE-99FF-3D4FE6A4C736}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{3900FB41-76EE-41BE-99FF-3D4FE6A4C736}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3900FB41-76EE-41BE-99FF-3D4FE6A4C736}.Release|Any CPU.ActiveCfg = Release|Any CPU

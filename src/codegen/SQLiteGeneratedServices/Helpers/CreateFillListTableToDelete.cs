@@ -29,7 +29,7 @@ namespace SQLiteGeneratedServices.Services
             sb.AppendLine(@"using System.Collections.Generic;");
             sb.AppendLine(@"using System.Threading.Tasks;");
             sb.AppendLine(@"");
-            sb.AppendLine(@"namespace CSSPSQLiteServices.Services");
+            sb.AppendLine(@"namespace CSSPServices");
             sb.AppendLine(@"{");
             sb.AppendLine(@"    public partial class CSSPSQLiteService : ICSSPSQLiteService");
             sb.AppendLine(@"    {");
