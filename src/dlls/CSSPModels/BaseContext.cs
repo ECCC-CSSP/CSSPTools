@@ -114,7 +114,7 @@ namespace CSSPModels
             : base(options)
         {
         }
-        public BaseContext(DbContextOptions<InMemoryDBContext> options)
+        public BaseContext(DbContextOptions<CSSPDBInMemoryContext> options)
             : base(options)
         {
         }

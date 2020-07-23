@@ -10,13 +10,28 @@ namespace CSSPServices
 {
     public partial class CSSPSQLiteService : ICSSPSQLiteService
     {
-        private async Task<bool> CreateCSSPFilesManagementDB(FileInfo fiCSSPFilesManagementDB)
+        private async Task<bool> CreateCSSPDBFilesManagement(FileInfo fiCSSPDBFilesManagement)
         {
+            List<string> ExistingTableList = new List<string>();
+
             using (var command = dbFM.Database.GetDbConnection().CreateCommand())
             {
-                command.CommandText = $"DROP TABLE CSSPFiles";
+                command.CommandText = "SELECT name FROM sqlite_master WHERE type = 'table' AND name NOT LIKE 'sqlite_%'";
                 dbFM.Database.OpenConnection();
-                command.ExecuteNonQuery();
+                using (var result = command.ExecuteReader())
+                {
+                    while (result.Read())
+                    {
+                        ExistingTableList.Add(result.GetString(0));
+                    }
+                }
+
+                foreach (string tableName in ExistingTableList)
+                {
+                    command.CommandText = $"DROP TABLE { tableName }";
+                    dbFM.Database.OpenConnection();
+                    command.ExecuteNonQuery();
+                }
             }
 
             string CreateTable = "CREATE TABLE CSSPFiles (" +

@@ -36,7 +36,7 @@ namespace CSSPServices
         #region Properties
         private CSSPDBContext db { get; }
         private CSSPDBLocalContext dbLocal { get; }
-        private InMemoryDBContext dbIM { get; }
+        private CSSPDBInMemoryContext dbIM { get; }
         private ICSSPCultureService CSSPCultureService { get; }
         private ILoggedInService LoggedInService { get; }
         private IEnums enums { get; }
@@ -44,7 +44,7 @@ namespace CSSPServices
         #endregion Properties
 
         #region Constructors
-        public PolSourceSiteService(ICSSPCultureService CSSPCultureService, ILoggedInService LoggedInService, IEnums enums, CSSPDBContext db, CSSPDBLocalContext dbLocal, InMemoryDBContext dbIM)
+        public PolSourceSiteService(ICSSPCultureService CSSPCultureService, ILoggedInService LoggedInService, IEnums enums, CSSPDBContext db, CSSPDBLocalContext dbLocal, CSSPDBInMemoryContext dbIM)
         {
             this.CSSPCultureService = CSSPCultureService;
             this.LoggedInService = LoggedInService;

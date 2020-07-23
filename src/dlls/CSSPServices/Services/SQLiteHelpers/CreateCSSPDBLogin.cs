@@ -12,19 +12,26 @@ namespace CSSPServices
     {
         private async Task<bool> CreateCSSPLoginDB(FileInfo fiCSSPLoginDB)
         {
+            List<string> ExistingTableList = new List<string>();
+
             using (var command = dbLogin.Database.GetDbConnection().CreateCommand())
             {
-                command.CommandText = $"DROP TABLE AspNetUsers";
+                command.CommandText = "SELECT name FROM sqlite_master WHERE type = 'table' AND name NOT LIKE 'sqlite_%'";
                 dbLogin.Database.OpenConnection();
-                command.ExecuteNonQuery();
+                using (var result = command.ExecuteReader())
+                {
+                    while (result.Read())
+                    {
+                        ExistingTableList.Add(result.GetString(0));
+                    }
+                }
 
-                command.CommandText = $"DROP TABLE Contacts";
-                dbLogin.Database.OpenConnection();
-                command.ExecuteNonQuery();
-
-                command.CommandText = $"DROP TABLE Preferences";
-                dbLogin.Database.OpenConnection();
-                command.ExecuteNonQuery();
+                foreach (string tableName in ExistingTableList)
+                {
+                    command.CommandText = $"DROP TABLE { tableName }";
+                    dbLogin.Database.OpenConnection();
+                    command.ExecuteNonQuery();
+                }
             }
 
             string CreateAspNetUsersTable = "CREATE TABLE AspNetUsers (" +
@@ -78,8 +85,42 @@ namespace CSSPServices
                 command.ExecuteNonQuery();
             }
 
+            string TVItemUserAuthorizationsTable = "CREATE TABLE TVItemUserAuthorizations (" +
+                "TVItemUserAuthorizationID INTEGER  NOT NULL  UNIQUE, " +
+                "ContactTVItemID INTEGER  NOT NULL , " +
+                "TVItemID1 INTEGER  NOT NULL , " +
+                "TVItemID2 INTEGER  , " +
+                "TVItemID3 INTEGER  , " +
+                "TVItemID4 INTEGER  , " +
+                "TVAuth INTEGER  NOT NULL , " +
+                "LastUpdateDate_UTC TEXT  NOT NULL , " +
+                "LastUpdateContactTVItemID INTEGER  NOT NULL )";
+
+            using (var command = dbLogin.Database.GetDbConnection().CreateCommand())
+            {
+                command.CommandText = TVItemUserAuthorizationsTable;
+                dbLogin.Database.OpenConnection();
+                command.ExecuteNonQuery();
+            }
+
+            string TVTypeUserAuthorizationsTable = "CREATE TABLE TVTypeUserAuthorizations (" +
+                "TVTypeUserAuthorizationID INTEGER  NOT NULL  UNIQUE, " +
+                "ContactTVItemID INTEGER  NOT NULL , " +
+                "TVType INTEGER  NOT NULL , " +
+                "TVAuth INTEGER  NOT NULL , " +
+                "LastUpdateDate_UTC TEXT  NOT NULL , " +
+                "LastUpdateContactTVItemID INTEGER  NOT NULL )";
+
+            using (var command = dbLogin.Database.GetDbConnection().CreateCommand())
+            {
+                command.CommandText = TVTypeUserAuthorizationsTable;
+                dbLogin.Database.OpenConnection();
+                command.ExecuteNonQuery();
+            }
+
             string CreatePreferencesTable = "CREATE TABLE Preferences ( " +
                 "PreferenceID INTEGER NOT NULL UNIQUE, " +
+                "PreferenceName TEXT NOT NULL, " +
                 "PreferenceText TEXT NOT NULL)";
 
             using (var command = dbLogin.Database.GetDbConnection().CreateCommand())

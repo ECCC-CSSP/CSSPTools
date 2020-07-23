@@ -148,7 +148,7 @@ namespace CSSPWebAPIs.Tests.Controllers
                 options.UseSqlServer(TestDB);
             });
 
-            Services.AddDbContext<InMemoryDBContext>(options =>
+            Services.AddDbContext<CSSPDBInMemoryContext>(options =>
             {
                 options.UseInMemoryDatabase(TestDB);
             });

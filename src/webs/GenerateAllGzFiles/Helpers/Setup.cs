@@ -43,7 +43,7 @@ namespace GenerateAllGzFiles
                 options.UseSqlServer(CSSPDB2);
             });
 
-            Services.AddDbContext<InMemoryDBContext>(options =>
+            Services.AddDbContext<CSSPDBInMemoryContext>(options =>
             {
                 options.UseInMemoryDatabase(CSSPDB2);
             });

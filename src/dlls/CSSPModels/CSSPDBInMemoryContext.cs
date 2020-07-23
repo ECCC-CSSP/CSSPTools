@@ -1,4 +1,5 @@
-﻿/*
+﻿
+/*
  * Manually edited
  * 
  */
@@ -7,13 +8,13 @@ using Microsoft.Extensions.Configuration;
 
 namespace CSSPModels
 {
-    public partial class InMemoryDBContext : BaseContext
+    public partial class CSSPDBInMemoryContext : BaseContext
     {
-        public InMemoryDBContext()
+        public CSSPDBInMemoryContext()
         {
         }
 
-        public InMemoryDBContext(DbContextOptions<InMemoryDBContext> options)
+        public CSSPDBInMemoryContext(DbContextOptions<CSSPDBInMemoryContext> options)
             : base(options)
         {
         }

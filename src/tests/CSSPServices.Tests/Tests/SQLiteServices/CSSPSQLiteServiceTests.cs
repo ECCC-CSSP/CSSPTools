@@ -13,6 +13,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Xunit;
+using System.ComponentModel.DataAnnotations;
 
 namespace CSSPSQLiteServices.Tests
 {
@@ -35,38 +36,38 @@ namespace CSSPSQLiteServices.Tests
         #region Tests
         [Theory]
         [InlineData("en-CA")]
-        [InlineData("fr-CA")]
-        public async Task CreateSQLiteCSSPLocalDatabase_Good_Test(string culture)
+        //[InlineData("fr-CA")]
+        public async Task CreateSQLiteCSSPDBLocal_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
-            bool retBool = await CSSPSQLiteService.CreateSQLiteCSSPLocalDatabase();
+            bool retBool = await CSSPSQLiteService.CreateSQLiteCSSPDBLocal();
             Assert.True(retBool);
         }
         [Theory]
         [InlineData("en-CA")]
-        [InlineData("fr-CA")]
-        public async Task CreateSQLiteCSSPFileManagementDatabase_Good_Test(string culture)
+        //[InlineData("fr-CA")]
+        public async Task CreateSQLiteCSSPDBFileManagement_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
-            bool retBool = await CSSPSQLiteService.CreateSQLiteCSSPFileManagementDatabase();
+            bool retBool = await CSSPSQLiteService.CreateSQLiteCSSPDBFileManagement();
             Assert.True(retBool);
         }
         [Theory]
         [InlineData("en-CA")]
-        [InlineData("fr-CA")]
-        public async Task CreateSQLiteCSSPLoginDatabase_Good_Test(string culture)
+        //[InlineData("fr-CA")]
+        public async Task CreateSQLiteCSSPDBLogin_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
-            bool retBool = await CSSPSQLiteService.CreateSQLiteCSSPLoginDatabase();
+            bool retBool = await CSSPSQLiteService.CreateSQLiteCSSPDBLogin();
             Assert.True(retBool);
         }
         [Theory]
         [InlineData("en-CA")]
-        [InlineData("fr-CA")]
-        public async Task DBLocalIsEmpty_Good_Test(string culture)
+        //[InlineData("fr-CA")]
+        public async Task CSSPDBLocalIsEmpty_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
@@ -79,10 +80,10 @@ namespace CSSPSQLiteServices.Tests
                 Assert.True(false, ex.Message);
             }
 
-            bool retBool = await CSSPSQLiteService.CreateSQLiteCSSPLocalDatabase();
+            bool retBool = await CSSPSQLiteService.CreateSQLiteCSSPDBLocal();
             Assert.True(retBool);
 
-            retBool = await CSSPSQLiteService.DBLocalIsEmpty();
+            retBool = await CSSPSQLiteService.CSSPDBLocalIsEmpty();
             Assert.True(retBool);
 
             LoggedInService.DBLocation = DBLocationEnum.Server;
@@ -120,7 +121,7 @@ namespace CSSPSQLiteServices.Tests
             Assert.NotNull(((OkObjectResult)actionAddress.Result).Value);
             Address address = (Address)((OkObjectResult)actionAddress.Result).Value;
 
-            retBool = await CSSPSQLiteService.DBLocalIsEmpty();
+            retBool = await CSSPSQLiteService.CSSPDBLocalIsEmpty();
             Assert.False(retBool);
 
             LoggedInService.DBLocation = DBLocationEnum.Local;
@@ -131,7 +132,121 @@ namespace CSSPSQLiteServices.Tests
             bool retBool2 = (bool)((OkObjectResult)actionAddress3.Result).Value;
             Assert.True(retBool2);
 
-            retBool = await CSSPSQLiteService.DBLocalIsEmpty();
+            retBool = await CSSPSQLiteService.CSSPDBLocalIsEmpty();
+            Assert.True(retBool);
+        }
+        [Theory]
+        [InlineData("en-CA")]
+        //[InlineData("fr-CA")]
+        public async Task CSSPDBFileManagementIsEmpty_Good_Test(string culture)
+        {
+            Assert.True(await Setup(culture));
+
+            try
+            {
+                fiCSSPDBFilesManagement.Delete();
+            }
+            catch (Exception ex)
+            {
+                Assert.True(false, ex.Message);
+            }
+
+            bool retBool = await CSSPSQLiteService.CreateSQLiteCSSPDBFileManagement();
+            Assert.True(retBool);
+
+            retBool = await CSSPSQLiteService.CSSPDBFilesManagementIsEmpty();
+            Assert.True(retBool);
+
+            LoggedInService.DBLocation = DBLocationEnum.Local;
+
+            CSSPFile csspFileNew = new CSSPFile()
+            {
+                AzureStorage = "csspstorage",
+                AzureFileName = "ThisFileName.json",
+                AzureCreationTime = DateTime.Now,
+                AzureETag = "SomeRandomText",
+                LocalExist = false,
+                LocalOld = false,
+            };
+
+            var actionCSSPFile = await CSSPFileService.Post(csspFileNew);
+            Assert.Equal(200, ((ObjectResult)actionCSSPFile.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionCSSPFile.Result).Value);
+            CSSPFile csspFile = (CSSPFile)((OkObjectResult)actionCSSPFile.Result).Value;
+            Assert.NotNull(csspFile);
+
+            retBool = await CSSPSQLiteService.CSSPDBFilesManagementIsEmpty();
+            Assert.False(retBool);
+
+            LoggedInService.DBLocation = DBLocationEnum.Local;
+
+            var actionCSSPFileDelete = await CSSPFileService.Delete(csspFile.CSSPFileID);
+            Assert.Equal(200, ((ObjectResult)actionCSSPFileDelete.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionCSSPFileDelete.Result).Value);
+            retBool = (bool)((OkObjectResult)actionCSSPFileDelete.Result).Value;
+            Assert.True(retBool);
+
+            retBool = await CSSPSQLiteService.CSSPDBFilesManagementIsEmpty();
+            Assert.True(retBool);
+        }
+        [Theory]
+        [InlineData("en-CA")]
+        //[InlineData("fr-CA")]
+        public async Task CSSPDBLoginIsEmpty_Good_Test(string culture)
+        {
+            Assert.True(await Setup(culture));
+
+            try
+            {
+                fiCSSPDBFilesManagement.Delete();
+            }
+            catch (Exception ex)
+            {
+                Assert.True(false, ex.Message);
+            }
+
+            bool retBool = await CSSPSQLiteService.CreateSQLiteCSSPDBLogin();
+            Assert.True(retBool);
+
+            retBool = await CSSPSQLiteService.CSSPDBLoginIsEmpty();
+            Assert.True(retBool);
+
+            LoggedInService.DBLocation = DBLocationEnum.Login;
+
+            RegisterModel registerModelNew = new RegisterModel()
+            {
+                FirstName = "TestFirstName",
+                Initial = "TestInit",
+                LastName = "TestLastName",
+                LoginEmail = "TestLoginEmail@Somewhere.com",
+                Password = "TestPassword",
+                ConfirmPassword = "TestPassword",
+            };
+
+            var actionContact = await ContactService.Register(registerModelNew);
+            Assert.Equal(200, ((ObjectResult)actionContact.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionContact.Result).Value);
+            Contact contact = (Contact)((OkObjectResult)actionContact.Result).Value;
+            Assert.NotNull(contact);
+
+            retBool = await CSSPSQLiteService.CSSPDBLoginIsEmpty();
+            Assert.False(retBool);
+
+            LoggedInService.DBLocation = DBLocationEnum.Login;
+
+            var actionContactDelete = await ContactService.Delete(contact.ContactID);
+            Assert.Equal(200, ((ObjectResult)actionContactDelete.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionContactDelete.Result).Value);
+            retBool = (bool)((OkObjectResult)actionContactDelete.Result).Value;
+            Assert.True(retBool);
+
+            var actionAspNetUser = await AspNetUserService.Delete(contact.Id);
+            Assert.Equal(200, ((ObjectResult)actionAspNetUser.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionAspNetUser.Result).Value);
+            retBool = (bool)((OkObjectResult)actionAspNetUser.Result).Value;
+            Assert.True(retBool);
+
+            retBool = await CSSPSQLiteService.CSSPDBLoginIsEmpty();
             Assert.True(retBool);
         }
         #endregion Tests

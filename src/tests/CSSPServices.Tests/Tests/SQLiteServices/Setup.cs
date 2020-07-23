@@ -22,20 +22,26 @@ namespace CSSPSQLiteServices.Tests
         #endregion Variables
 
         #region Properties
-        public IConfiguration Config { get; set; }
-        public IServiceProvider Provider { get; set; }
-        public IServiceCollection Services { get; set; }
-        public ICSSPCultureService CSSPCultureService { get; set; }
-        public ILoggedInService LoggedInService { get; set; }
-        public IAddressService AddressService { get; set; }
-        public ITVItemService TVItemService { get; set; }
-        public CSSPDBContext db { get; set; }
-        public CSSPDBLocalContext dbLocal { get; set; }
-        public InMemoryDBContext dbIM { get; set; }
-        public ICSSPSQLiteService CSSPSQLiteService { get; set; }
-        public FileInfo fiCSSPDBLocal { get; set; }
-        public FileInfo fiCSSPLoginDB { get; set; }
-        public FileInfo fiCSSPFilesManagementDB { get; set; }
+        protected IConfiguration Config { get; set; }
+        protected IServiceProvider Provider { get; set; }
+        protected IServiceCollection Services { get; set; }
+        protected ICSSPCultureService CSSPCultureService { get; set; }
+        protected ILoggedInService LoggedInService { get; set; }
+        protected IEnums Enums { get; set; }
+        protected IAddressService AddressService { get; set; }
+        protected ITVItemService TVItemService { get; set; }
+        protected CSSPDBContext db { get; set; }
+        protected CSSPDBLocalContext dbLocal { get; set; }
+        protected CSSPDBInMemoryContext dbIM { get; set; }
+        protected ICSSPFileService CSSPFileService { get; set; }
+        protected ICSSPSQLiteService CSSPSQLiteService { get; set; }
+        protected IAspNetUserService AspNetUserService { get; set; }
+        protected ILoginModelService LoginModelService { get; set; }
+        protected IRegisterModelService RegisterModelService { get; set; }
+        protected IContactService ContactService { get; set; }
+        protected FileInfo fiCSSPDBLocal { get; set; }
+        protected FileInfo fiCSSPDBLogin { get; set; }
+        protected FileInfo fiCSSPDBFilesManagement { get; set; }
         #endregion Properties
 
         #region Constructors
@@ -64,7 +70,7 @@ namespace CSSPSQLiteServices.Tests
                 options.UseSqlServer(TestDBConnString);
             });
 
-            Services.AddDbContext<InMemoryDBContext>(options =>
+            Services.AddDbContext<CSSPDBInMemoryContext>(options =>
             {
                 options.UseInMemoryDatabase(TestDBConnString);
             });
@@ -81,32 +87,43 @@ namespace CSSPSQLiteServices.Tests
             });
 
             // doing CSSPLoginDB
-            string CSSPLoginDB = Config.GetValue<string>("CSSPLoginDB");
+            string CSSPLoginDB = Config.GetValue<string>("CSSPDBLogin");
             Assert.NotNull(CSSPLoginDB);
 
-            fiCSSPLoginDB = new FileInfo(CSSPLoginDB.Replace("{AppDataPath}", appDataPath));
+            fiCSSPDBLogin = new FileInfo(CSSPLoginDB.Replace("{AppDataPath}", appDataPath));
 
-            Services.AddDbContext<CSSPLoginDBContext>(options =>
+            Services.AddDbContext<CSSPDBLoginContext>(options =>
             {
-                options.UseSqlite($"Data Source={ fiCSSPLoginDB.FullName }");
+                options.UseSqlite($"Data Source={ fiCSSPDBLogin.FullName }");
             });
 
             // doing CSSPFilesManagementDB
-            string CSSPFilesManagementDB = Config.GetValue<string>("CSSPFilesManagementDB");
+            string CSSPFilesManagementDB = Config.GetValue<string>("CSSPDBFilesManagement");
             Assert.NotNull(CSSPFilesManagementDB);
 
-            fiCSSPFilesManagementDB = new FileInfo(CSSPFilesManagementDB.Replace("{AppDataPath}", appDataPath));
+            fiCSSPDBFilesManagement = new FileInfo(CSSPFilesManagementDB.Replace("{AppDataPath}", appDataPath));
 
-            Services.AddDbContext<CSSPFilesManagementDBContext>(options =>
+            Services.AddDbContext<CSSPDBFilesManagementContext>(options =>
             {
-                options.UseSqlite($"Data Source={ fiCSSPFilesManagementDB.FullName }");
+                options.UseSqlite($"Data Source={ fiCSSPDBFilesManagement.FullName }");
             });
+
+            Services.AddDbContext<ApplicationDbContext>(options =>
+                options.UseSqlServer(TestDBConnString));
+
+            Services.AddIdentityCore<ApplicationUser>()
+                .AddEntityFrameworkStores<ApplicationDbContext>();
 
             Services.AddSingleton<ICSSPCultureService, CSSPCultureService>();
             Services.AddSingleton<ILoggedInService, LoggedInService>();
             Services.AddSingleton<IEnums, Enums>();
             Services.AddSingleton<IAddressService, AddressService>();
             Services.AddSingleton<ITVItemService, TVItemService>();
+            Services.AddSingleton<ICSSPFileService, CSSPFileService>();
+            Services.AddSingleton<IAspNetUserService, AspNetUserService>();
+            Services.AddSingleton<ILoginModelService, LoginModelService>();
+            Services.AddSingleton<IRegisterModelService, RegisterModelService>();
+            Services.AddSingleton<IContactService, ContactService>();
             Services.AddSingleton<ICSSPSQLiteService, CSSPSQLiteService>();
 
             Provider = Services.BuildServiceProvider();
@@ -136,6 +153,21 @@ namespace CSSPSQLiteServices.Tests
 
             TVItemService = Provider.GetService<ITVItemService>();
             Assert.NotNull(TVItemService);
+
+            CSSPFileService = Provider.GetService<ICSSPFileService>();
+            Assert.NotNull(CSSPFileService);
+
+            AspNetUserService = Provider.GetService<IAspNetUserService>();
+            Assert.NotNull(AspNetUserService);
+
+            LoginModelService = Provider.GetService<ILoginModelService>();
+            Assert.NotNull(LoginModelService);
+
+            RegisterModelService = Provider.GetService<IRegisterModelService>();
+            Assert.NotNull(RegisterModelService);
+
+            ContactService = Provider.GetService<IContactService>();
+            Assert.NotNull(ContactService);
 
             CSSPSQLiteService = Provider.GetService<ICSSPSQLiteService>();
             Assert.NotNull(CSSPSQLiteService);

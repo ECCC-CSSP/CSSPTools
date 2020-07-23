@@ -16,7 +16,9 @@ namespace CSSPModels
         #region Properties in DB
         [Key]
         public int PreferenceID { get; set; }
-        [CSSPMaxLength(500)]
+        [CSSPMaxLength(100)]
+        public string PreferenceName { get; set; }
+        [CSSPMaxLength(200)]
         public string PreferenceText { get; set; }
         #endregion Properties in DB
 

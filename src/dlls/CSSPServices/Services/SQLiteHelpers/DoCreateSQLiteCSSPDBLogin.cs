@@ -12,20 +12,20 @@ namespace CSSPServices
 {
     public partial class CSSPSQLiteService : ICSSPSQLiteService
     {
-        private async Task<bool> DoCreateSQLiteCSSPLoginDatabase()
+        private async Task<bool> DoCreateSQLiteCSSPDBLogin()
         {
             string appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
 
-            string CSSPLoginDB = Configuration.GetValue<string>("CSSPLoginDB");
+            string CSSPLoginDB = Configuration.GetValue<string>("CSSPDBLogin");
             if (string.IsNullOrWhiteSpace(CSSPLoginDB))
             {
-                Error = string.Format(CSSPCultureServicesRes.CouldNotFindParameter_InAppSettingsJSON, "CSSPLoginDB");
+                Error = string.Format(CSSPCultureServicesRes.CouldNotFindParameter_InAppSettingsJSON, "CSSPDBLogin");
                 return await Task.FromResult(false);
             }
 
             FileInfo fiCSSPLoginDB = new FileInfo(CSSPLoginDB.Replace("{AppDataPath}", appDataPath));
 
-            if (!await CSSPLoginDBIsEmpty())
+            if (!await CSSPDBLoginIsEmpty())
             {
                 Error = string.Format(CSSPCultureServicesRes.Database_ContainsInfo, fiCSSPLoginDB.FullName);
                 return await Task.FromResult(false);

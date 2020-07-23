@@ -88,118 +88,84 @@ namespace CSSPWebAPIs
             });
 
 
-            /* ---------------------------------------------------------------------------------
-             * using AzureCSSPDB 
-             * ---------------------------------------------------------------------------------      
-             */
+            string DBConnStr = "";
 
             if (DBFromArgs == "AzureDB")
             {
-                string AzureConnStr = Configuration.GetValue<string>("AzureCSSPDB");
-
-                services.AddDbContext<CSSPDBContext>(options =>
-                        options.UseSqlServer(AzureConnStr));
-
-                services.AddDbContext<InMemoryDBContext>(options =>
-                        options.UseInMemoryDatabase(AzureConnStr));
-
-                services.AddDbContext<ApplicationDbContext>(options =>
-                    options.UseSqlServer(AzureConnStr));
+                DBConnStr = Configuration.GetValue<string>("AzureCSSPDB");
             }
-
-
-            /* ---------------------------------------------------------------------------------
-             * using CSSPDB 
-             * ---------------------------------------------------------------------------------      
-             */
 
             if (DBFromArgs == "CSSPDB")
             {
-                string CSSPDB = Configuration.GetValue<string>("CSSPDB");
-
-                services.AddDbContext<CSSPDBContext>(options =>
-                        options.UseSqlServer(CSSPDB));
-
-                services.AddDbContext<InMemoryDBContext>(options =>
-                        options.UseInMemoryDatabase(CSSPDB));
-
-                string CSSPDBLocalFileName = Configuration.GetValue<string>("CSSPDBLocal");
-
-                FileInfo fiAppDataPath = new FileInfo(CSSPDBLocalFileName.Replace("{AppDataPath}", appDataPath));
-
-                services.AddDbContext<CSSPDBLocalContext>(options =>
-                {
-                    options.UseSqlite($"Data Source={ fiAppDataPath.FullName }");
-                });
-
-                services.AddDbContext<ApplicationDbContext>(options =>
-                    options.UseSqlServer(CSSPDB));
+                DBConnStr = Configuration.GetValue<string>("CSSPDB");
             }
-
-            /* ---------------------------------------------------------------------------------
-             * using CSSPDB2 
-             * ---------------------------------------------------------------------------------      
-             */
 
             if (DBFromArgs == "CSSPDB2")
             {
-                string CSSPDB2 = Configuration.GetValue<string>("CSSPDB2");
-
-                services.AddDbContext<CSSPDBContext>(options =>
-                options.UseSqlServer(CSSPDB2));
-
-                services.AddDbContext<InMemoryDBContext>(options =>
-                        options.UseInMemoryDatabase(CSSPDB2));
-
-                string CSSPDBLocalFileName = Configuration.GetValue<string>("CSSPDBLocal");
-
-                FileInfo fiAppDataPath = new FileInfo(CSSPDBLocalFileName.Replace("{AppDataPath}", appDataPath));
-
-                services.AddDbContext<CSSPDBLocalContext>(options =>
-                {
-                    options.UseSqlite($"Data Source={ fiAppDataPath.FullName }");
-                });
-
-                services.AddDbContext<ApplicationDbContext>(options =>
-                    options.UseSqlServer(CSSPDB2));
+                DBConnStr = Configuration.GetValue<string>("CSSPDB2");
             }
 
-            /* ---------------------------------------------------------------------------------
-             * using TestDB 
-             * ---------------------------------------------------------------------------------      
-             */
             if (DBFromArgs == "TestDB")
             {
-                string TestDB = Configuration.GetValue<string>("TestDB");
+                DBConnStr = Configuration.GetValue<string>("TestDB");
 
-                services.AddDbContext<CSSPDBContext>(options =>
-                        options.UseSqlServer(TestDB));
-
-                services.AddDbContext<InMemoryDBContext>(options =>
-                        options.UseInMemoryDatabase(TestDB));
-
-                string CSSPDBLocalFileName = Configuration.GetValue<string>("CSSPDBLocal");
-
-                FileInfo fiAppDataPath = new FileInfo(CSSPDBLocalFileName.Replace("{AppDataPath}", appDataPath));
-
-                services.AddDbContext<CSSPDBLocalContext>(options =>
-                {
-                    options.UseSqlite($"Data Source={ fiAppDataPath.FullName }");
-                });
-
-                services.AddDbContext<ApplicationDbContext>(options =>
-                    options.UseSqlServer(TestDB));
             }
 
             /* ---------------------------------------------------------------------------------
-             * ApplicationUser 
+             * Setting up the required CSSPDB, CSSPDB2, TestDB or AzureCSSPDB with ApplicationUser
              * ---------------------------------------------------------------------------------      
              */
+
+            services.AddDbContext<CSSPDBContext>(options =>
+                    options.UseSqlServer(DBConnStr));
+
+            services.AddDbContext<CSSPDBInMemoryContext>(options =>
+                    options.UseInMemoryDatabase(DBConnStr));
+
+            services.AddDbContext<ApplicationDbContext>(options =>
+                options.UseSqlServer(DBConnStr));
 
             services.AddIdentityCore<ApplicationUser>()
             .AddEntityFrameworkStores<ApplicationDbContext>();
 
-            FileInfo fiDB = new FileInfo(Configuration.GetValue<string>("CSSPDBLocal").Replace("{AppDataPath}", appDataPath));
+            /* ---------------------------------------------------------------------------------
+             * using CSSPDBLocal 
+             * ---------------------------------------------------------------------------------      
+             */
+            string CSSPDBLocalFileName = Configuration.GetValue<string>("CSSPDBLocal");
+
+            FileInfo fiCSSPDBLocal = new FileInfo(CSSPDBLocalFileName.Replace("{AppDataPath}", appDataPath));
+
+            services.AddDbContext<CSSPDBLocalContext>(options =>
+            {
+                options.UseSqlite($"Data Source={ fiCSSPDBLocal.FullName }");
+            });
+
+            /* ---------------------------------------------------------------------------------
+             * using CSSPDBLogin
+             * ---------------------------------------------------------------------------------      
+             */
+            string CSSPDBLoginFileName = Configuration.GetValue<string>("CSSPDBLogin");
+
+            FileInfo fiCSSPDBLogin = new FileInfo(CSSPDBLoginFileName.Replace("{AppDataPath}", appDataPath));
+
+            services.AddDbContext<CSSPDBLoginContext>(options =>
+            {
+                options.UseSqlite($"Data Source={ fiCSSPDBLogin.FullName }");
+            });
+
+            /* ---------------------------------------------------------------------------------
+             * using CSSPDBFileManagement
+             * ---------------------------------------------------------------------------------      
+             */
+            string CSSPDBFileManagementFileName = Configuration.GetValue<string>("CSSPDBFileManagement");
+
+            FileInfo fiCSSPDBFileManagement = new FileInfo(CSSPDBFileManagementFileName.Replace("{AppDataPath}", appDataPath));
+
+            services.AddDbContext<CSSPDBFilesManagementContext>(options =>
+            {
+                options.UseSqlite($"Data Source={ fiCSSPDBFileManagement.FullName }");
+            });
 
             services.AddScoped<ICSSPCultureService, CSSPCultureService>();
             services.AddScoped<IEnums, Enums>();

@@ -67,7 +67,7 @@ namespace TestHelpers.Tests
                 options.UseSqlServer(TestDB);
             });
 
-            Services.AddDbContext<InMemoryDBContext>(options =>
+            Services.AddDbContext<CSSPDBInMemoryContext>(options =>
             {
                 options.UseInMemoryDatabase(TestDB);
             });

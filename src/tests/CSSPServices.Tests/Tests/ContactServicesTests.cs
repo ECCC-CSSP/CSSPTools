@@ -138,7 +138,7 @@ namespace ContactServices.Tests
             ServiceCollection.AddDbContext<CSSPDBContext>(options =>
                     options.UseSqlServer(TestDB));
 
-            ServiceCollection.AddDbContext<InMemoryDBContext>(options =>
+            ServiceCollection.AddDbContext<CSSPDBInMemoryContext>(options =>
                     options.UseInMemoryDatabase(TestDB));
 
             string CSSPDBLocalFileName = Configuration.GetValue<string>("CSSPDBLocal");

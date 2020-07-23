@@ -61,7 +61,7 @@ namespace CSSPServices.Tests
                 options.UseSqlServer(CSSPDBConnString);
             });
 
-            Services.AddDbContext<InMemoryDBContext>(options =>
+            Services.AddDbContext<CSSPDBInMemoryContext>(options =>
             {
                 options.UseInMemoryDatabase(CSSPDBConnString);
             });

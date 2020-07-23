@@ -8,21 +8,19 @@ using System.Linq;
 
 namespace CSSPModels
 {
-    public partial class CSSPLoginDBContext : DbContext
+    public partial class CSSPDBFilesManagementContext : DbContext
     {
 
         #region Properties
-        public virtual DbSet<AspNetUser> AspNetUsers { get; set; }
-        public virtual DbSet<Contact> Contacts { get; set; }
-        public virtual DbSet<Preference> Preferences { get; set; }
+        public virtual DbSet<CSSPFile> CSSPFiles { get; set; }
         #endregion Properties
 
         #region Constructors
-        public CSSPLoginDBContext()
+        public CSSPDBFilesManagementContext()
         {
         }
 
-        public CSSPLoginDBContext(DbContextOptions<CSSPLoginDBContext> options)
+        public CSSPDBFilesManagementContext(DbContextOptions<CSSPDBFilesManagementContext> options)
             : base(options)
         {
         }

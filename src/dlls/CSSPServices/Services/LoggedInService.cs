@@ -24,14 +24,14 @@ namespace CSSPServices
         #region Properties
         private ICSSPCultureService CSSPCultureService { get; }
         private CSSPDBContext db { get; }
-        private InMemoryDBContext dbIM { get; }
+        private CSSPDBInMemoryContext dbIM { get; }
         private LoggedInContactInfo LoggedInContactInfo { get; set; }
         public DBLocationEnum DBLocation { get; set; }
         public bool HasInternetConnection { get; set; }
         #endregion Properties
 
         #region Constructors
-        public LoggedInService(ICSSPCultureService CSSPCultureService, CSSPDBContext db, InMemoryDBContext dbIM)
+        public LoggedInService(ICSSPCultureService CSSPCultureService, CSSPDBContext db, CSSPDBInMemoryContext dbIM)
         {
             this.CSSPCultureService = CSSPCultureService;
             this.db = db;

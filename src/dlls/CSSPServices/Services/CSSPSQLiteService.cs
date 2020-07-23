@@ -17,12 +17,12 @@ namespace CSSPServices
     public interface ICSSPSQLiteService
     {
         string Error { get; set; }
-        Task<bool> CreateSQLiteCSSPLocalDatabase();
-        Task<bool> CreateSQLiteCSSPFileManagementDatabase();
-        Task<bool> CreateSQLiteCSSPLoginDatabase();
-        Task<bool> DBLocalIsEmpty();
-        Task<bool> CSSPLoginDBIsEmpty();
-        Task<bool> CSSPFilesManagementDBIsEmpty();
+        Task<bool> CreateSQLiteCSSPDBLocal();
+        Task<bool> CreateSQLiteCSSPDBFileManagement();
+        Task<bool> CreateSQLiteCSSPDBLogin();
+        Task<bool> CSSPDBLocalIsEmpty();
+        Task<bool> CSSPDBLoginIsEmpty();
+        Task<bool> CSSPDBFilesManagementIsEmpty();
     }
 
     public partial class CSSPSQLiteService : ICSSPSQLiteService
@@ -34,9 +34,9 @@ namespace CSSPServices
         public string Error { get; set; }
         private CSSPDBContext db { get; }
         private CSSPDBLocalContext dbLocal { get; }
-        private InMemoryDBContext dbIM { get; }
-        private CSSPLoginDBContext dbLogin { get; }
-        private CSSPFilesManagementDBContext dbFM { get; }
+        private CSSPDBInMemoryContext dbIM { get; }
+        private CSSPDBLoginContext dbLogin { get; }
+        private CSSPDBFilesManagementContext dbFM { get; }
         private IConfiguration Configuration { get; }
         private ICSSPCultureService CSSPCultureService { get; }
         private ILoggedInService LoggedInService { get; }
@@ -46,8 +46,8 @@ namespace CSSPServices
 
         #region Constructors
         public CSSPSQLiteService(IConfiguration Configuration, ICSSPCultureService CSSPCultureService, ILoggedInService LoggedInService, 
-            IEnums enums, CSSPDBContext db, CSSPDBLocalContext dbLocal, InMemoryDBContext dbIM, 
-            CSSPLoginDBContext dbLogin, CSSPFilesManagementDBContext dbFM)
+            IEnums enums, CSSPDBContext db, CSSPDBLocalContext dbLocal, CSSPDBInMemoryContext dbIM, 
+            CSSPDBLoginContext dbLogin, CSSPDBFilesManagementContext dbFM)
         {
             this.Configuration = Configuration;
             this.CSSPCultureService = CSSPCultureService;
@@ -62,39 +62,39 @@ namespace CSSPServices
         #endregion Constructors
 
         #region Functions public
-        public async Task<bool> CreateSQLiteCSSPLocalDatabase()
+        public async Task<bool> CreateSQLiteCSSPDBLocal()
         {
-            if (!await DoCreateSQLiteCSSPLocalDatabase()) return await Task.FromResult(false);
+            if (!await DoCreateSQLiteCSSPDBLocal()) return await Task.FromResult(false);
 
             return await Task.FromResult(true);
         }
-        public async Task<bool> CreateSQLiteCSSPFileManagementDatabase()
+        public async Task<bool> CreateSQLiteCSSPDBFileManagement()
         {
-            if (!await DoCreateSQLiteCSSPFileManagementDatabase()) return await Task.FromResult(false);
+            if (!await DoCreateSQLiteCSSPDBFileManagement()) return await Task.FromResult(false);
 
             return await Task.FromResult(true);
         }
-        public async Task<bool> CreateSQLiteCSSPLoginDatabase()
+        public async Task<bool> CreateSQLiteCSSPDBLogin()
         {
-            if (!await DoCreateSQLiteCSSPLoginDatabase()) return await Task.FromResult(false);
+            if (!await DoCreateSQLiteCSSPDBLogin()) return await Task.FromResult(false);
 
             return await Task.FromResult(true);
         }
-        public async Task<bool> CSSPFilesManagementDBIsEmpty()
+        public async Task<bool> CSSPDBFilesManagementIsEmpty()
         {
-            if (!await DoCSSPFilesManagementDBIsEmpty()) return await Task.FromResult(false);
+            if (!await DoCSSPDBFilesManagementIsEmpty()) return await Task.FromResult(false);
 
             return await Task.FromResult(true);
         }
-        public async Task<bool> CSSPLoginDBIsEmpty()
+        public async Task<bool> CSSPDBLoginIsEmpty()
         {
-            if (!await DoCSSPLoginDBIsEmpty()) return await Task.FromResult(false);
+            if (!await DoCSSPDBLoginIsEmpty()) return await Task.FromResult(false);
 
             return await Task.FromResult(true);
         }
-        public async Task<bool> DBLocalIsEmpty()
+        public async Task<bool> CSSPDBLocalIsEmpty()
         {
-            if (!await DoDBLocalIsEmpty()) return await Task.FromResult(false);
+            if (!await DoCSSPDBLocalIsEmpty()) return await Task.FromResult(false);
 
             return await Task.FromResult(true);
         }

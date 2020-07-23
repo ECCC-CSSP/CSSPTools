@@ -39,7 +39,7 @@ namespace CSSPServices.Tests
         private IEmailDistributionListContactLanguageService EmailDistributionListContactLanguageService { get; set; }
         private CSSPDBContext db { get; set; }
         private CSSPDBLocalContext dbLocal { get; set; }
-        private InMemoryDBContext dbIM { get; set; }
+        private CSSPDBInMemoryContext dbIM { get; set; }
         private EmailDistributionListContactLanguage emailDistributionListContactLanguage { get; set; }
         #endregion Properties
 
@@ -314,7 +314,7 @@ namespace CSSPServices.Tests
                 options.UseSqlServer(TestDBConnString);
             });
 
-            Services.AddDbContext<InMemoryDBContext>(options =>
+            Services.AddDbContext<CSSPDBInMemoryContext>(options =>
             {
                 options.UseInMemoryDatabase(TestDBConnString);
             });
@@ -349,7 +349,7 @@ namespace CSSPServices.Tests
 
             LoggedInService.DBLocation = DBLocationEnum.Local;
 
-            dbIM = Provider.GetService<InMemoryDBContext>();
+            dbIM = Provider.GetService<CSSPDBInMemoryContext>();
             Assert.NotNull(dbIM);
 
             dbLocal = Provider.GetService<CSSPDBLocalContext>();

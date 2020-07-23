@@ -9,7 +9,7 @@ namespace CSSPServices
 {
     public partial class CSSPSQLiteService : ICSSPSQLiteService
     {
-        private async Task<bool> DoDBLocalIsEmpty()
+        private async Task<bool> DoCSSPDBLocalIsEmpty()
         {
             List<string> ExistingTableList = new List<string>();
 

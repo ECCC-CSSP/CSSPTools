@@ -12,7 +12,7 @@ namespace CSSPServices
 {
     public partial class CSSPSQLiteService : ICSSPSQLiteService
     {
-        private async Task<bool> DoCreateSQLiteCSSPLocalDatabase()
+        private async Task<bool> DoCreateSQLiteCSSPDBLocal()
         {
             string appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
 
@@ -25,7 +25,7 @@ namespace CSSPServices
 
             FileInfo fiCSSPDBLocal = new FileInfo(CSSPDBLocalText.Replace("{AppDataPath}", appDataPath));
 
-            if (!await DBLocalIsEmpty())
+            if (!await CSSPDBLocalIsEmpty())
             {
                 Error = string.Format(CSSPCultureServicesRes.Database_ContainsInfo, fiCSSPDBLocal.FullName);
                 return await Task.FromResult(false);

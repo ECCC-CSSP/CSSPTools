@@ -264,6 +264,7 @@ namespace CSSPEnums
         Local = 1,
         Server = 2,
         InMemory = 3,
+        Login = 4,
     }
     public enum DailyOrHourlyDataEnum
     {

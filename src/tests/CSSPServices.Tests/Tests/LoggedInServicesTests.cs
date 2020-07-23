@@ -23,7 +23,7 @@ namespace CSSPServices.Tests
         private IServiceProvider ServiceProvider { get; set; }
         private ICSSPCultureService CSSPCultureService { get; set; }
         private ILoggedInService LoggedInService { get; set; }
-        private InMemoryDBContext dbIM { get; set; }
+        private CSSPDBInMemoryContext dbIM { get; set; }
         private string DBFileName { get; set; } = "DBFileName";
         #endregion Properties
 
@@ -136,7 +136,7 @@ namespace CSSPServices.Tests
                 options.UseSqlServer(CSSPDBConnString);
             });
 
-            ServiceCollection.AddDbContext<InMemoryDBContext>(options =>
+            ServiceCollection.AddDbContext<CSSPDBInMemoryContext>(options =>
             {
                 options.UseInMemoryDatabase(CSSPDBConnString);
             });

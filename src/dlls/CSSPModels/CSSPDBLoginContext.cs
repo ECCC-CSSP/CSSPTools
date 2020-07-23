@@ -8,19 +8,23 @@ using System.Linq;
 
 namespace CSSPModels
 {
-    public partial class CSSPFilesManagementDBContext : DbContext
+    public partial class CSSPDBLoginContext : DbContext
     {
 
         #region Properties
-        public virtual DbSet<CSSPFile> CSSPFiles { get; set; }
+        public virtual DbSet<AspNetUser> AspNetUsers { get; set; }
+        public virtual DbSet<Contact> Contacts { get; set; }
+        public virtual DbSet<TVItemUserAuthorization> TVItemUserAuthorizations { get; set; }
+        public virtual DbSet<TVTypeUserAuthorization> TVTypeUserAuthorizations { get; set; }
+        public virtual DbSet<Preference> Preferences { get; set; }
         #endregion Properties
 
         #region Constructors
-        public CSSPFilesManagementDBContext()
+        public CSSPDBLoginContext()
         {
         }
 
-        public CSSPFilesManagementDBContext(DbContextOptions<CSSPFilesManagementDBContext> options)
+        public CSSPDBLoginContext(DbContextOptions<CSSPDBLoginContext> options)
             : base(options)
         {
         }
