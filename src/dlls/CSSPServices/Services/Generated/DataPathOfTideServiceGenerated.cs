@@ -50,12 +50,12 @@ namespace CSSPServices
 
             if (string.IsNullOrWhiteSpace(dataPathOfTide.Text))
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "Text"), new[] { "Text" });
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "Text"), new[] { nameof(dataPathOfTide.Text) });
             }
 
             if (!string.IsNullOrWhiteSpace(dataPathOfTide.Text) && (dataPathOfTide.Text.Length < 1 || dataPathOfTide.Text.Length > 200))
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._LengthShouldBeBetween_And_, "Text", "1", "200"), new[] { "Text" });
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._LengthShouldBeBetween_And_, "Text", "1", "200"), new[] { nameof(dataPathOfTide.Text) });
             }
 
             if (dataPathOfTide.WebTideDataSet != null)
@@ -63,13 +63,13 @@ namespace CSSPServices
                 retStr = enums.EnumTypeOK(typeof(WebTideDataSetEnum), (int?)dataPathOfTide.WebTideDataSet);
                 if (dataPathOfTide.WebTideDataSet == null || !string.IsNullOrWhiteSpace(retStr))
                 {
-                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "WebTideDataSet"), new[] { "WebTideDataSet" });
+                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "WebTideDataSet"), new[] { nameof(dataPathOfTide.WebTideDataSet) });
                 }
             }
 
             if (!string.IsNullOrWhiteSpace(dataPathOfTide.WebTideDataSetText) && dataPathOfTide.WebTideDataSetText.Length > 100)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "WebTideDataSetText", "100"), new[] { "WebTideDataSetText" });
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "WebTideDataSetText", "100"), new[] { nameof(dataPathOfTide.WebTideDataSetText) });
             }
 
             retStr = ""; // added to stop compiling CSSPError

@@ -51,37 +51,37 @@ namespace CSSPServices
             retStr = enums.EnumTypeOK(typeof(BoxModelResultTypeEnum), (int?)boxModelCalNumb.BoxModelResultType);
             if (!string.IsNullOrWhiteSpace(retStr))
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "BoxModelResultType"), new[] { "BoxModelResultType" });
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "BoxModelResultType"), new[] { nameof(boxModelCalNumb.BoxModelResultType) });
             }
 
             if (boxModelCalNumb.CalLength_m < 0)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MinValueIs_, "CalLength_m", "0"), new[] { "CalLength_m" });
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MinValueIs_, "CalLength_m", "0"), new[] { nameof(boxModelCalNumb.CalLength_m) });
             }
 
             if (boxModelCalNumb.CalRadius_m < 0)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MinValueIs_, "CalRadius_m", "0"), new[] { "CalRadius_m" });
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MinValueIs_, "CalRadius_m", "0"), new[] { nameof(boxModelCalNumb.CalRadius_m) });
             }
 
             if (boxModelCalNumb.CalSurface_m2 < 0)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MinValueIs_, "CalSurface_m2", "0"), new[] { "CalSurface_m2" });
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MinValueIs_, "CalSurface_m2", "0"), new[] { nameof(boxModelCalNumb.CalSurface_m2) });
             }
 
             if (boxModelCalNumb.CalVolume_m3 < 0)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MinValueIs_, "CalVolume_m3", "0"), new[] { "CalVolume_m3" });
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MinValueIs_, "CalVolume_m3", "0"), new[] { nameof(boxModelCalNumb.CalVolume_m3) });
             }
 
             if (boxModelCalNumb.CalWidth_m < 0)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MinValueIs_, "CalWidth_m", "0"), new[] { "CalWidth_m" });
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MinValueIs_, "CalWidth_m", "0"), new[] { nameof(boxModelCalNumb.CalWidth_m) });
             }
 
             if (!string.IsNullOrWhiteSpace(boxModelCalNumb.BoxModelResultTypeText) && boxModelCalNumb.BoxModelResultTypeText.Length > 100)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "BoxModelResultTypeText", "100"), new[] { "BoxModelResultTypeText" });
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "BoxModelResultTypeText", "100"), new[] { nameof(boxModelCalNumb.BoxModelResultTypeText) });
             }
 
             retStr = ""; // added to stop compiling CSSPError

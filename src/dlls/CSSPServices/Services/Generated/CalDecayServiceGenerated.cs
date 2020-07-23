@@ -50,7 +50,7 @@ namespace CSSPServices
 
             if (calDecay.Decay < 0)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MinValueIs_, "Decay", "0"), new[] { "Decay" });
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MinValueIs_, "Decay", "0"), new[] { nameof(calDecay.Decay) });
             }
 
             retStr = ""; // added to stop compiling CSSPError

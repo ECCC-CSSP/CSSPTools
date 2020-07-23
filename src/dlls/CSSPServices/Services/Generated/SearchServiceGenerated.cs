@@ -50,17 +50,17 @@ namespace CSSPServices
 
             if (string.IsNullOrWhiteSpace(search.value))
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "value"), new[] { "value" });
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "value"), new[] { nameof(search.value) });
             }
 
             if (!string.IsNullOrWhiteSpace(search.value) && (search.value.Length < 1 || search.value.Length > 255))
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._LengthShouldBeBetween_And_, "value", "1", "255"), new[] { "value" });
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._LengthShouldBeBetween_And_, "value", "1", "255"), new[] { nameof(search.value) });
             }
 
             if (search.id < 1)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MinValueIs_, "id", "1"), new[] { "id" });
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MinValueIs_, "id", "1"), new[] { nameof(search.id) });
             }
 
             retStr = ""; // added to stop compiling CSSPError

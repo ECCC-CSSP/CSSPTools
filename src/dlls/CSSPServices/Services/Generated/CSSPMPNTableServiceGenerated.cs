@@ -50,22 +50,22 @@ namespace CSSPServices
 
             if (cSSPMPNTable.Tube10 < 0 || cSSPMPNTable.Tube10 > 5)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "Tube10", "0", "5"), new[] { "Tube10" });
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "Tube10", "0", "5"), new[] { nameof(cSSPMPNTable.Tube10) });
             }
 
             if (cSSPMPNTable.Tube1_0 < 0 || cSSPMPNTable.Tube1_0 > 5)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "Tube1_0", "0", "5"), new[] { "Tube1_0" });
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "Tube1_0", "0", "5"), new[] { nameof(cSSPMPNTable.Tube1_0) });
             }
 
             if (cSSPMPNTable.Tube0_1 < 0 || cSSPMPNTable.Tube0_1 > 5)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "Tube0_1", "0", "5"), new[] { "Tube0_1" });
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "Tube0_1", "0", "5"), new[] { nameof(cSSPMPNTable.Tube0_1) });
             }
 
             if (cSSPMPNTable.MPN < 0 || cSSPMPNTable.MPN > 100000000)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "MPN", "0", "100000000"), new[] { "MPN" });
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "MPN", "0", "100000000"), new[] { nameof(cSSPMPNTable.MPN) });
             }
 
             retStr = ""; // added to stop compiling CSSPError

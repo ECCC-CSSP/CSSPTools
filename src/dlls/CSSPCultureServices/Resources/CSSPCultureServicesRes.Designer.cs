@@ -1537,6 +1537,15 @@ namespace CSSPCultureServices.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Password and its confirmation are not identical..
+        /// </summary>
+        public static string PasswordAndConfirmPasswordNotIdentical {
+            get {
+                return ResourceManager.GetString("PasswordAndConfirmPasswordNotIdentical", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to please remove a &apos;-&apos;.
         /// </summary>
         public static string PleaseRemoveADash {

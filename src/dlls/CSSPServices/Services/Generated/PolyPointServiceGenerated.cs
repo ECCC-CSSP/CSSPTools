@@ -50,12 +50,12 @@ namespace CSSPServices
 
             if (polyPoint.XCoord < -180 || polyPoint.XCoord > 180)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "XCoord", "-180", "180"), new[] { "XCoord" });
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "XCoord", "-180", "180"), new[] { nameof(polyPoint.XCoord) });
             }
 
             if (polyPoint.YCoord < -90 || polyPoint.YCoord > 90)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "YCoord", "-90", "90"), new[] { "YCoord" });
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "YCoord", "-90", "90"), new[] { nameof(polyPoint.YCoord) });
             }
 
             //Z has no Range Attribute

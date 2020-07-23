@@ -50,12 +50,12 @@ namespace CSSPServices
 
             if (string.IsNullOrWhiteSpace(uRLNumberOfSamples.url))
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "url"), new[] { "url" });
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "url"), new[] { nameof(uRLNumberOfSamples.url) });
             }
 
             if (!string.IsNullOrWhiteSpace(uRLNumberOfSamples.url) && (uRLNumberOfSamples.url.Length < 1 || uRLNumberOfSamples.url.Length > 255))
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._LengthShouldBeBetween_And_, "url", "1", "255"), new[] { "url" });
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._LengthShouldBeBetween_And_, "url", "1", "255"), new[] { nameof(uRLNumberOfSamples.url) });
             }
 
             //NumberOfSamples has no Range Attribute

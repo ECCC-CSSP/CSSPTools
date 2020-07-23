@@ -50,22 +50,22 @@ namespace CSSPServices
 
             if (string.IsNullOrWhiteSpace(mwqmSampleDuplicateItem.ParentSite))
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "ParentSite"), new[] { "ParentSite" });
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "ParentSite"), new[] { nameof(mwqmSampleDuplicateItem.ParentSite) });
             }
 
             if (!string.IsNullOrWhiteSpace(mwqmSampleDuplicateItem.ParentSite) && (mwqmSampleDuplicateItem.ParentSite.Length < 1 || mwqmSampleDuplicateItem.ParentSite.Length > 200))
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._LengthShouldBeBetween_And_, "ParentSite", "1", "200"), new[] { "ParentSite" });
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._LengthShouldBeBetween_And_, "ParentSite", "1", "200"), new[] { nameof(mwqmSampleDuplicateItem.ParentSite) });
             }
 
             if (string.IsNullOrWhiteSpace(mwqmSampleDuplicateItem.DuplicateSite))
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "DuplicateSite"), new[] { "DuplicateSite" });
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "DuplicateSite"), new[] { nameof(mwqmSampleDuplicateItem.DuplicateSite) });
             }
 
             if (!string.IsNullOrWhiteSpace(mwqmSampleDuplicateItem.DuplicateSite) && (mwqmSampleDuplicateItem.DuplicateSite.Length < 1 || mwqmSampleDuplicateItem.DuplicateSite.Length > 200))
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._LengthShouldBeBetween_And_, "DuplicateSite", "1", "200"), new[] { "DuplicateSite" });
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._LengthShouldBeBetween_And_, "DuplicateSite", "1", "200"), new[] { nameof(mwqmSampleDuplicateItem.DuplicateSite) });
             }
 
             retStr = ""; // added to stop compiling CSSPError

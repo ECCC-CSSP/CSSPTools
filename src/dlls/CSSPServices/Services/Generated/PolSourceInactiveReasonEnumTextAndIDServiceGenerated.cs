@@ -50,14 +50,14 @@ namespace CSSPServices
 
             if (string.IsNullOrWhiteSpace(polSourceInactiveReasonEnumTextAndID.Text))
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "Text"), new[] { "Text" });
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "Text"), new[] { nameof(polSourceInactiveReasonEnumTextAndID.Text) });
             }
 
             //Text has no StringLength Attribute
 
             if (polSourceInactiveReasonEnumTextAndID.ID < 1)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MinValueIs_, "ID", "1"), new[] { "ID" });
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MinValueIs_, "ID", "1"), new[] { nameof(polSourceInactiveReasonEnumTextAndID.ID) });
             }
 
             retStr = ""; // added to stop compiling CSSPError

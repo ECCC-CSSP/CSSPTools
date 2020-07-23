@@ -129,11 +129,6 @@ namespace ServicesClassNameServiceTestGeneratedServices.Services
                     sb.AppendLine(@"            // No testing requied");
                     continue;
                 }
-                if (csspProp.PropName == "HasErrors")
-                {
-                    sb.AppendLine(@"            // No testing requied");
-                    continue;
-                }
                 if (csspProp.IsKey)
                 {
                     if (!await CreateClass_Key_Testing(csspProp, TypeName, TypeNameLower, sb)) return await Task.FromResult(false);

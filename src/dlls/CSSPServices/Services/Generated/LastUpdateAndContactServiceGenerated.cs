@@ -50,19 +50,19 @@ namespace CSSPServices
 
             if (lastUpdateAndContact.LastUpdateAndContactDate_UTC.Year == 1)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "LastUpdateAndContactDate_UTC"), new[] { "LastUpdateAndContactDate_UTC" });
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "LastUpdateAndContactDate_UTC"), new[] { nameof(lastUpdateAndContact.LastUpdateAndContactDate_UTC) });
             }
             else
             {
                 if (lastUpdateAndContact.LastUpdateAndContactDate_UTC.Year < 1980)
                 {
-                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes._YearShouldBeBiggerThan_, "LastUpdateAndContactDate_UTC", "1980"), new[] { "LastUpdateAndContactDate_UTC" });
+                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes._YearShouldBeBiggerThan_, "LastUpdateAndContactDate_UTC", "1980"), new[] { nameof(lastUpdateAndContact.LastUpdateAndContactDate_UTC) });
                 }
             }
 
             if (lastUpdateAndContact.LastUpdateAndContactTVItemID < 1)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MinValueIs_, "LastUpdateAndContactTVItemID", "1"), new[] { "LastUpdateAndContactTVItemID" });
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MinValueIs_, "LastUpdateAndContactTVItemID", "1"), new[] { nameof(lastUpdateAndContact.LastUpdateAndContactTVItemID) });
             }
 
             retStr = ""; // added to stop compiling CSSPError

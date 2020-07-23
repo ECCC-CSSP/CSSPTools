@@ -50,7 +50,7 @@ namespace CSSPServices
 
             if (elementLayer.Layer < 1 || elementLayer.Layer > 1000)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "Layer", "1", "1000"), new[] { "Layer" });
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "Layer", "1", "1000"), new[] { nameof(elementLayer.Layer) });
             }
 
             //ZMin has no Range Attribute

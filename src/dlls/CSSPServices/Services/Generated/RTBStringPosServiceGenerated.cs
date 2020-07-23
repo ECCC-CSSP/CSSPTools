@@ -50,24 +50,24 @@ namespace CSSPServices
 
             if (rTBStringPos.StartPos < 0)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MinValueIs_, "StartPos", "0"), new[] { "StartPos" });
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MinValueIs_, "StartPos", "0"), new[] { nameof(rTBStringPos.StartPos) });
             }
 
             if (rTBStringPos.EndPos < 0)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MinValueIs_, "EndPos", "0"), new[] { "EndPos" });
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MinValueIs_, "EndPos", "0"), new[] { nameof(rTBStringPos.EndPos) });
             }
 
             if (string.IsNullOrWhiteSpace(rTBStringPos.Text))
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "Text"), new[] { "Text" });
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "Text"), new[] { nameof(rTBStringPos.Text) });
             }
 
             //Text has no StringLength Attribute
 
             if (string.IsNullOrWhiteSpace(rTBStringPos.TagText))
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "TagText"), new[] { "TagText" });
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "TagText"), new[] { nameof(rTBStringPos.TagText) });
             }
 
             //TagText has no StringLength Attribute

@@ -50,38 +50,38 @@ namespace CSSPServices
 
             if (subsectorMWQMSampleYear.SubsectorTVItemID < 1)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MinValueIs_, "SubsectorTVItemID", "1"), new[] { "SubsectorTVItemID" });
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MinValueIs_, "SubsectorTVItemID", "1"), new[] { nameof(subsectorMWQMSampleYear.SubsectorTVItemID) });
             }
 
             //Year has no Range Attribute
 
             if (subsectorMWQMSampleYear.EarliestDate.Year == 1)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "EarliestDate"), new[] { "EarliestDate" });
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "EarliestDate"), new[] { nameof(subsectorMWQMSampleYear.EarliestDate) });
             }
             else
             {
                 if (subsectorMWQMSampleYear.EarliestDate.Year < 1980)
                 {
-                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes._YearShouldBeBiggerThan_, "EarliestDate", "1980"), new[] { "EarliestDate" });
+                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes._YearShouldBeBiggerThan_, "EarliestDate", "1980"), new[] { nameof(subsectorMWQMSampleYear.EarliestDate) });
                 }
             }
 
             if (subsectorMWQMSampleYear.LatestDate.Year == 1)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "LatestDate"), new[] { "LatestDate" });
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "LatestDate"), new[] { nameof(subsectorMWQMSampleYear.LatestDate) });
             }
             else
             {
                 if (subsectorMWQMSampleYear.LatestDate.Year < 1980)
                 {
-                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes._YearShouldBeBiggerThan_, "LatestDate", "1980"), new[] { "LatestDate" });
+                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes._YearShouldBeBiggerThan_, "LatestDate", "1980"), new[] { nameof(subsectorMWQMSampleYear.LatestDate) });
                 }
             }
 
             if (subsectorMWQMSampleYear.EarliestDate > subsectorMWQMSampleYear.LatestDate)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._DateIsBiggerThan_, "LatestDate", "SubsectorMWQMSampleYearEarliestDate"), new[] { "LatestDate" });
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._DateIsBiggerThan_, "LatestDate", "SubsectorMWQMSampleYearEarliestDate"), new[] { nameof(subsectorMWQMSampleYear.LatestDate) });
             }
 
             retStr = ""; // added to stop compiling CSSPError

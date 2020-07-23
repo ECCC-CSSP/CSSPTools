@@ -14,6 +14,7 @@ namespace CSSPServices
         Task<bool> SetLoggedInContactInfo(string Id);
         Task<LoggedInContactInfo> GetLoggedInContactInfo();
         DBLocationEnum DBLocation { get; set; }
+        bool HasInternetConnection { get; set; }
     }
     public class LoggedInService : ILoggedInService
     {
@@ -26,6 +27,7 @@ namespace CSSPServices
         private InMemoryDBContext dbIM { get; }
         private LoggedInContactInfo LoggedInContactInfo { get; set; }
         public DBLocationEnum DBLocation { get; set; }
+        public bool HasInternetConnection { get; set; }
         #endregion Properties
 
         #region Constructors

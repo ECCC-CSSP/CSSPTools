@@ -50,7 +50,7 @@ namespace CSSPServices
 
             if (string.IsNullOrWhiteSpace(tvTextLanguage.TVText))
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "TVText"), new[] { "TVText" });
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "TVText"), new[] { nameof(tvTextLanguage.TVText) });
             }
 
             //TVText has no StringLength Attribute
@@ -58,12 +58,12 @@ namespace CSSPServices
             retStr = enums.EnumTypeOK(typeof(LanguageEnum), (int?)tvTextLanguage.Language);
             if (!string.IsNullOrWhiteSpace(retStr))
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "Language"), new[] { "Language" });
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "Language"), new[] { nameof(tvTextLanguage.Language) });
             }
 
             if (!string.IsNullOrWhiteSpace(tvTextLanguage.LanguageText) && tvTextLanguage.LanguageText.Length > 100)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "LanguageText", "100"), new[] { "LanguageText" });
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "LanguageText", "100"), new[] { nameof(tvTextLanguage.LanguageText) });
             }
 
             retStr = ""; // added to stop compiling CSSPError

@@ -50,13 +50,13 @@ namespace CSSPServices
 
             if (mwqmSiteSampleFC.SampleDate.Year == 1)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "SampleDate"), new[] { "SampleDate" });
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "SampleDate"), new[] { nameof(mwqmSiteSampleFC.SampleDate) });
             }
             else
             {
                 if (mwqmSiteSampleFC.SampleDate.Year < 1980)
                 {
-                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes._YearShouldBeBiggerThan_, "SampleDate", "1980"), new[] { "SampleDate" });
+                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes._YearShouldBeBiggerThan_, "SampleDate", "1980"), new[] { nameof(mwqmSiteSampleFC.SampleDate) });
                 }
             }
 
@@ -64,7 +64,7 @@ namespace CSSPServices
             {
                 if (mwqmSiteSampleFC.FC < 1 || mwqmSiteSampleFC.FC > 100000000)
                 {
-                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "FC", "1", "100000000"), new[] { "FC" });
+                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "FC", "1", "100000000"), new[] { nameof(mwqmSiteSampleFC.FC) });
                 }
             }
 

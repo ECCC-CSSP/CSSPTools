@@ -1442,11 +1442,6 @@
         },
         "runtime": {
           "ServicesRepopulateTestDBServices.dll": {}
-        },
-        "resources": {
-          "fr/CultureServices.resources.dll": {
-            "locale": "fr"
-          }
         }
       },
       "ValidateAppSettingsServices/1.0.0": {
@@ -1466,19 +1461,6 @@
         },
         "runtime": {
           "ValidateAppSettingsServices.dll": {}
-        }
-      },
-      "CultureServices/1.0.0.0": {
-        "runtime": {
-          "CultureServices.dll": {
-            "assemblyVersion": "1.0.0.0",
-            "fileVersion": "1.0.0.0"
-          }
-        },
-        "resources": {
-          "fr/CultureServices.resources.dll": {
-            "locale": "fr"
-          }
         }
       }
     }
@@ -2373,11 +2355,6 @@
     },
     "ValidateAppSettingsServices/1.0.0": {
       "type": "project",
-      "serviceable": false,
-      "sha512": ""
-    },
-    "CultureServices/1.0.0.0": {
-      "type": "reference",
       "serviceable": false,
       "sha512": ""
     }

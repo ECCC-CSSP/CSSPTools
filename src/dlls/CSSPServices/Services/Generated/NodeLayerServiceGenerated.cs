@@ -50,7 +50,7 @@ namespace CSSPServices
 
             if (nodeLayer.Layer < 1 || nodeLayer.Layer > 100)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "Layer", "1", "100"), new[] { "Layer" });
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "Layer", "1", "100"), new[] { nameof(nodeLayer.Layer) });
             }
 
             //Z has no Range Attribute

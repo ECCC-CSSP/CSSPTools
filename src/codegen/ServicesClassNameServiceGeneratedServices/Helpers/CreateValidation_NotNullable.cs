@@ -24,15 +24,8 @@ namespace ServicesClassNameServiceGeneratedServices.Services
                         break;
                     case "Boolean":
                         {
-                            if (csspProp.PropName == "HasErrors")
-                            {
-                                // nothing yet
-                            }
-                            else
-                            {
-                                //sb.AppendLine($@"            //{ prop.Name } (bool) is required but no testing needed ");
-                                //sb.AppendLine(@"");
-                            }
+                            //sb.AppendLine($@"            //{ prop.Name } (bool) is required but no testing needed ");
+                            //sb.AppendLine(@"");
                         }
                         break;
                     case "DateTime":
@@ -40,15 +33,13 @@ namespace ServicesClassNameServiceGeneratedServices.Services
                         {
                             sb.AppendLine($@"            if ({ TypeNameLower }.{ prop.Name }.Year == 1)");
                             sb.AppendLine(@"            {");
-                            //sb.AppendLine($@"                { TypeNameLower }.HasErrors = true;");
-                            sb.AppendLine($@"                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, ""{ prop.Name }""), new[] {{ ""{ csspProp.PropName }"" }});");
+                            sb.AppendLine($@"                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, ""{ prop.Name }""), new[] {{ nameof({ TypeNameLower }.{ csspProp.PropName }) }});");
                             sb.AppendLine(@"            }");
                             sb.AppendLine(@"            else");
                             sb.AppendLine(@"            {");
                             sb.AppendLine($@"                if ({ TypeNameLower }.{ prop.Name }.Year < { csspProp.Year })");
                             sb.AppendLine(@"                {");
-                            //sb.AppendLine($@"                { TypeNameLower }.HasErrors = true;");
-                            sb.AppendLine($@"                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes._YearShouldBeBiggerThan_, ""{ prop.Name }"", ""{ csspProp.Year }""), new[] {{ ""{ csspProp.PropName }"" }});");
+                            sb.AppendLine($@"                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes._YearShouldBeBiggerThan_, ""{ prop.Name }"", ""{ csspProp.Year }""), new[] {{ nameof({ TypeNameLower }.{ csspProp.PropName }) }});");
                             sb.AppendLine(@"                }");
                             sb.AppendLine(@"            }");
                             sb.AppendLine(@"");
@@ -60,8 +51,7 @@ namespace ServicesClassNameServiceGeneratedServices.Services
                             {
                                 sb.AppendLine($@"            if (string.IsNullOrWhiteSpace({ TypeNameLower }.{ prop.Name }))");
                                 sb.AppendLine(@"            {");
-                                //sb.AppendLine($@"                { TypeNameLower }.HasErrors = true;");
-                                sb.AppendLine($@"                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, ""{ prop.Name }""), new[] {{ ""{ csspProp.PropName }"" }});");
+                                sb.AppendLine($@"                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, ""{ prop.Name }""), new[] {{ nameof({ TypeNameLower }.{ csspProp.PropName }) }});");
                                 sb.AppendLine(@"            }");
                                 sb.AppendLine(@"");
                             }

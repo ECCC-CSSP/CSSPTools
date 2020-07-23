@@ -50,12 +50,12 @@ namespace CSSPServices
 
             if (contactOK.ContactID < 1)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MinValueIs_, "ContactID", "1"), new[] { "ContactID" });
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MinValueIs_, "ContactID", "1"), new[] { nameof(contactOK.ContactID) });
             }
 
             if (contactOK.ContactTVItemID < 1)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MinValueIs_, "ContactTVItemID", "1"), new[] { "ContactTVItemID" });
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MinValueIs_, "ContactTVItemID", "1"), new[] { nameof(contactOK.ContactTVItemID) });
             }
 
             retStr = ""; // added to stop compiling CSSPError

@@ -50,12 +50,12 @@ namespace CSSPServices
 
             if (vpScenarioIDAndRawResults.VPScenarioID < 1)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MinValueIs_, "VPScenarioID", "1"), new[] { "VPScenarioID" });
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MinValueIs_, "VPScenarioID", "1"), new[] { nameof(vpScenarioIDAndRawResults.VPScenarioID) });
             }
 
             if (string.IsNullOrWhiteSpace(vpScenarioIDAndRawResults.RawResults))
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "RawResults"), new[] { "RawResults" });
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "RawResults"), new[] { nameof(vpScenarioIDAndRawResults.RawResults) });
             }
 
             //RawResults has no StringLength Attribute

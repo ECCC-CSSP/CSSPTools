@@ -50,17 +50,17 @@ namespace CSSPServices
 
             if (contourPolygon.ContourValue < 0)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MinValueIs_, "ContourValue", "0"), new[] { "ContourValue" });
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MinValueIs_, "ContourValue", "0"), new[] { nameof(contourPolygon.ContourValue) });
             }
 
             if (contourPolygon.Layer < 1 || contourPolygon.Layer > 100)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "Layer", "1", "100"), new[] { "Layer" });
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "Layer", "1", "100"), new[] { nameof(contourPolygon.Layer) });
             }
 
             if (contourPolygon.Depth_m < 1 || contourPolygon.Depth_m > 10000)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "Depth_m", "1", "10000"), new[] { "Depth_m" });
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "Depth_m", "1", "10000"), new[] { nameof(contourPolygon.Depth_m) });
             }
 
                 //CSSPError: Type not implemented [ContourNodeList] of type [List`1]

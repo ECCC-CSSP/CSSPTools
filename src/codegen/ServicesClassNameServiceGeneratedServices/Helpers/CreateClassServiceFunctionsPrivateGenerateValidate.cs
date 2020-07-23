@@ -21,7 +21,6 @@ namespace ServicesClassNameServiceGeneratedServices.Services
             sb.AppendLine(@"        {");
             sb.AppendLine(@"            string retStr = """";");
             sb.AppendLine($@"            { dllTypeInfoModels.Type.Name } { TypeNameLower } = validationContext.ObjectInstance as { dllTypeInfoModels.Type.Name };");
-            //sb.AppendLine($@"            { TypeNameLower }.HasErrors = false;");
             sb.AppendLine(@"");
 
             foreach (PropertyInfo prop in dllTypeInfoModels.Type.GetProperties())
@@ -39,8 +38,7 @@ namespace ServicesClassNameServiceGeneratedServices.Services
                 CSSPProp csspProp = new CSSPProp();
                 if (!GenerateCodeBaseService.FillCSSPProp(prop, csspProp, dllTypeInfoModels.Type))
                 {
-                    //ActionCommandDBService.ErrorText.AppendLine($"{ string.Format(AppRes.ErrorWhileCreatingCode_, csspProp.CSSPError) }");
-                    return false;
+                    return await Task.FromResult(false);
                 }
 
                 if (!dllTypeInfoModels.HasNotMappedAttribute)
@@ -57,12 +55,6 @@ namespace ServicesClassNameServiceGeneratedServices.Services
                 if (!await CreateValidation_EnumType(prop, csspProp, dllTypeInfoModels.Type.Name, TypeNameLower, sb)) return await Task.FromResult(false);
             }
 
-            sb.AppendLine(@"            retStr = """"; // added to stop compiling CSSPError");
-            sb.AppendLine(@"            if (retStr != """") // will never be true");
-            sb.AppendLine(@"            {");
-            sb.AppendLine(@"                yield return new ValidationResult(""AAA"", new[] { ""AAA"" });");
-            sb.AppendLine(@"            }");
-            sb.AppendLine(@"");
             sb.AppendLine(@"        }");
 
             return await Task.FromResult(true);
@@ -90,7 +82,7 @@ namespace ServicesClassNameServiceGeneratedServices.Services
                 CSSPProp csspProp = new CSSPProp();
                 if (!GenerateCodeBaseService.FillCSSPProp(prop, csspProp, dllTypeInfoModels.Type))
                 {
-                    return false;
+                    return await Task.FromResult(false);
                 }
 
                 if (!dllTypeInfoModels.HasNotMappedAttribute)

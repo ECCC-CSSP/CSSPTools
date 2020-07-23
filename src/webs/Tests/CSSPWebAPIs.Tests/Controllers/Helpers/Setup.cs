@@ -15,44 +15,36 @@ using System.IO;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace CSSPWebAPIs.Tests
+namespace TestHelpers.Tests
 {
-    public class CSSPWebAPIsTests
+    public class TestHelper
     {
         #region Variables
         #endregion Variables
 
         #region Properties
-        private IConfiguration Config { get; set; }
-        private IServiceProvider Provider { get; set; }
-        private IServiceCollection Services { get; set; }
-        private CSSPDBContext db { get; set; }
-        private IAspNetUserService AspNetUserService { get; set; }
-        private IContactService ContactService { get; set; }
-        private ILoggedInService LoggedInService { get; set; }
-        private ICSSPCultureService CSSPCultureService { get; set; }
-        private Contact contact { get; set; }
+        protected IConfiguration Config { get; set; }
+        protected IServiceProvider Provider { get; set; }
+        protected IServiceCollection Services { get; set; }
+        protected CSSPDBContext db { get; set; }
+        protected IAspNetUserService AspNetUserService { get; set; }
+        protected IContactService ContactService { get; set; }
+        protected ILoggedInService LoggedInService { get; set; }
+        protected ICSSPCultureService CSSPCultureService { get; set; }
+        protected Contact contact { get; set; }
         #endregion Properties
 
         #region Constructors
-        public CSSPWebAPIsTests()
+        public TestHelper()
         {
         }
         #endregion Constructors
 
         #region Functions public
-        [Theory]
-        [InlineData("en-CA")]
-        [InlineData("fr-CA")]
-        public async Task AuthController_Constructor_Good_Test(string culture)
-        {
-            Assert.True(await Setup(culture));
-            Assert.NotNull(LoggedInService);
-        }
         #endregion Functions public
 
         #region Functions private
-        private async Task<bool> Setup(string culture)
+        protected async Task<bool> Setup(string culture)
         {
             Config = new ConfigurationBuilder()
                .SetBasePath(Directory.GetParent(AppContext.BaseDirectory).FullName)
@@ -99,6 +91,8 @@ namespace CSSPWebAPIs.Tests
             Services.AddSingleton<IEnums, Enums>();
             Services.AddSingleton<ILoggedInService, LoggedInService>();
             Services.AddSingleton<IAspNetUserService, AspNetUserService>();
+            Services.AddSingleton<ILoginModelService, LoginModelService>();
+            Services.AddSingleton<IRegisterModelService, RegisterModelService>();
             Services.AddSingleton<IContactService, ContactService>();
 
             Provider = Services.BuildServiceProvider();

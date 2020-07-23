@@ -50,22 +50,22 @@ namespace CSSPServices
 
             if (string.IsNullOrWhiteSpace(tvFullText.TVPath))
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "TVPath"), new[] { "TVPath" });
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "TVPath"), new[] { nameof(tvFullText.TVPath) });
             }
 
             if (!string.IsNullOrWhiteSpace(tvFullText.TVPath) && (tvFullText.TVPath.Length < 1 || tvFullText.TVPath.Length > 255))
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._LengthShouldBeBetween_And_, "TVPath", "1", "255"), new[] { "TVPath" });
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._LengthShouldBeBetween_And_, "TVPath", "1", "255"), new[] { nameof(tvFullText.TVPath) });
             }
 
             if (string.IsNullOrWhiteSpace(tvFullText.FullText))
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "FullText"), new[] { "FullText" });
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "FullText"), new[] { nameof(tvFullText.FullText) });
             }
 
             if (!string.IsNullOrWhiteSpace(tvFullText.FullText) && (tvFullText.FullText.Length < 1 || tvFullText.FullText.Length > 255))
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._LengthShouldBeBetween_And_, "FullText", "1", "255"), new[] { "FullText" });
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._LengthShouldBeBetween_And_, "FullText", "1", "255"), new[] { nameof(tvFullText.FullText) });
             }
 
             retStr = ""; // added to stop compiling CSSPError

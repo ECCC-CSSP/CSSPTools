@@ -50,22 +50,22 @@ namespace CSSPServices
 
             if (contactSearch.ContactID < 1)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MinValueIs_, "ContactID", "1"), new[] { "ContactID" });
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MinValueIs_, "ContactID", "1"), new[] { nameof(contactSearch.ContactID) });
             }
 
             if (contactSearch.ContactTVItemID < 1)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MinValueIs_, "ContactTVItemID", "1"), new[] { "ContactTVItemID" });
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MinValueIs_, "ContactTVItemID", "1"), new[] { nameof(contactSearch.ContactTVItemID) });
             }
 
             if (string.IsNullOrWhiteSpace(contactSearch.FullName))
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "FullName"), new[] { "FullName" });
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "FullName"), new[] { nameof(contactSearch.FullName) });
             }
 
             if (!string.IsNullOrWhiteSpace(contactSearch.FullName) && contactSearch.FullName.Length > 255)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "FullName", "255"), new[] { "FullName" });
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "FullName", "255"), new[] { nameof(contactSearch.FullName) });
             }
 
             retStr = ""; // added to stop compiling CSSPError

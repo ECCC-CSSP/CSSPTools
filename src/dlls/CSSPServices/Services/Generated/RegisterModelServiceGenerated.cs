@@ -50,57 +50,57 @@ namespace CSSPServices
 
             if (string.IsNullOrWhiteSpace(registerModel.FirstName))
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "FirstName"), new[] { "FirstName" });
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "FirstName"), new[] { nameof(registerModel.FirstName) });
             }
 
             if (!string.IsNullOrWhiteSpace(registerModel.FirstName) && (registerModel.FirstName.Length < 1 || registerModel.FirstName.Length > 100))
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._LengthShouldBeBetween_And_, "FirstName", "1", "100"), new[] { "FirstName" });
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._LengthShouldBeBetween_And_, "FirstName", "1", "100"), new[] { nameof(registerModel.FirstName) });
             }
 
             if (!string.IsNullOrWhiteSpace(registerModel.Initial) && registerModel.Initial.Length > 100)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "Initial", "100"), new[] { "Initial" });
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "Initial", "100"), new[] { nameof(registerModel.Initial) });
             }
 
             if (string.IsNullOrWhiteSpace(registerModel.LastName))
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "LastName"), new[] { "LastName" });
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "LastName"), new[] { nameof(registerModel.LastName) });
             }
 
             if (!string.IsNullOrWhiteSpace(registerModel.LastName) && (registerModel.LastName.Length < 1 || registerModel.LastName.Length > 100))
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._LengthShouldBeBetween_And_, "LastName", "1", "100"), new[] { "LastName" });
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._LengthShouldBeBetween_And_, "LastName", "1", "100"), new[] { nameof(registerModel.LastName) });
             }
 
             if (string.IsNullOrWhiteSpace(registerModel.LoginEmail))
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "LoginEmail"), new[] { "LoginEmail" });
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "LoginEmail"), new[] { nameof(registerModel.LoginEmail) });
             }
 
             if (!string.IsNullOrWhiteSpace(registerModel.LoginEmail) && (registerModel.LoginEmail.Length < 5 || registerModel.LoginEmail.Length > 100))
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._LengthShouldBeBetween_And_, "LoginEmail", "5", "100"), new[] { "LoginEmail" });
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._LengthShouldBeBetween_And_, "LoginEmail", "5", "100"), new[] { nameof(registerModel.LoginEmail) });
             }
 
             if (string.IsNullOrWhiteSpace(registerModel.Password))
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "Password"), new[] { "Password" });
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "Password"), new[] { nameof(registerModel.Password) });
             }
 
             if (!string.IsNullOrWhiteSpace(registerModel.Password) && (registerModel.Password.Length < 5 || registerModel.Password.Length > 50))
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._LengthShouldBeBetween_And_, "Password", "5", "50"), new[] { "Password" });
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._LengthShouldBeBetween_And_, "Password", "5", "50"), new[] { nameof(registerModel.Password) });
             }
 
             if (string.IsNullOrWhiteSpace(registerModel.ConfirmPassword))
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "ConfirmPassword"), new[] { "ConfirmPassword" });
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "ConfirmPassword"), new[] { nameof(registerModel.ConfirmPassword) });
             }
 
             if (!string.IsNullOrWhiteSpace(registerModel.ConfirmPassword) && (registerModel.ConfirmPassword.Length < 5 || registerModel.ConfirmPassword.Length > 50))
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._LengthShouldBeBetween_And_, "ConfirmPassword", "5", "50"), new[] { "ConfirmPassword" });
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._LengthShouldBeBetween_And_, "ConfirmPassword", "5", "50"), new[] { nameof(registerModel.ConfirmPassword) });
             }
 
             retStr = ""; // added to stop compiling CSSPError

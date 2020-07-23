@@ -762,4 +762,7 @@
   <data name="LoginEmail_IsAlreadyTaken" xml:space="preserve">
     <value>Login Email [{0}] is already taken</value>
   </data>
+  <data name="PasswordAndConfirmPasswordNotIdentical" xml:space="preserve">
+    <value>Password and its confirmation are not identical.</value>
+  </data>
 </root>

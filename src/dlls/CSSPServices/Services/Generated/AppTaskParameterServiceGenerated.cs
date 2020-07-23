@@ -50,22 +50,22 @@ namespace CSSPServices
 
             if (string.IsNullOrWhiteSpace(appTaskParameter.Name))
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "Name"), new[] { "Name" });
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "Name"), new[] { nameof(appTaskParameter.Name) });
             }
 
             if (!string.IsNullOrWhiteSpace(appTaskParameter.Name) && appTaskParameter.Name.Length > 255)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "Name", "255"), new[] { "Name" });
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "Name", "255"), new[] { nameof(appTaskParameter.Name) });
             }
 
             if (string.IsNullOrWhiteSpace(appTaskParameter.Value))
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "Value"), new[] { "Value" });
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "Value"), new[] { nameof(appTaskParameter.Value) });
             }
 
             if (!string.IsNullOrWhiteSpace(appTaskParameter.Value) && appTaskParameter.Value.Length > 255)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "Value", "255"), new[] { "Value" });
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "Value", "255"), new[] { nameof(appTaskParameter.Value) });
             }
 
             retStr = ""; // added to stop compiling CSSPError

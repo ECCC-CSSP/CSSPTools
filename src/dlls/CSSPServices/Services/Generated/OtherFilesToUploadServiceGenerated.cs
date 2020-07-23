@@ -50,7 +50,7 @@ namespace CSSPServices
 
             if (otherFilesToUpload.MikeScenarioID < 1)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MinValueIs_, "MikeScenarioID", "1"), new[] { "MikeScenarioID" });
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MinValueIs_, "MikeScenarioID", "1"), new[] { nameof(otherFilesToUpload.MikeScenarioID) });
             }
 
                 //CSSPError: Type not implemented [TVFileList] of type [List`1]

@@ -50,27 +50,27 @@ namespace CSSPServices
 
             if (string.IsNullOrWhiteSpace(tvTypeNamesAndPath.TVTypeName))
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "TVTypeName"), new[] { "TVTypeName" });
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "TVTypeName"), new[] { nameof(tvTypeNamesAndPath.TVTypeName) });
             }
 
             if (!string.IsNullOrWhiteSpace(tvTypeNamesAndPath.TVTypeName) && (tvTypeNamesAndPath.TVTypeName.Length < 1 || tvTypeNamesAndPath.TVTypeName.Length > 255))
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._LengthShouldBeBetween_And_, "TVTypeName", "1", "255"), new[] { "TVTypeName" });
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._LengthShouldBeBetween_And_, "TVTypeName", "1", "255"), new[] { nameof(tvTypeNamesAndPath.TVTypeName) });
             }
 
             if (tvTypeNamesAndPath.Index < 1)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MinValueIs_, "Index", "1"), new[] { "Index" });
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MinValueIs_, "Index", "1"), new[] { nameof(tvTypeNamesAndPath.Index) });
             }
 
             if (string.IsNullOrWhiteSpace(tvTypeNamesAndPath.TVPath))
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "TVPath"), new[] { "TVPath" });
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "TVPath"), new[] { nameof(tvTypeNamesAndPath.TVPath) });
             }
 
             if (!string.IsNullOrWhiteSpace(tvTypeNamesAndPath.TVPath) && (tvTypeNamesAndPath.TVPath.Length < 1 || tvTypeNamesAndPath.TVPath.Length > 255))
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._LengthShouldBeBetween_And_, "TVPath", "1", "255"), new[] { "TVPath" });
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._LengthShouldBeBetween_And_, "TVPath", "1", "255"), new[] { nameof(tvTypeNamesAndPath.TVPath) });
             }
 
             retStr = ""; // added to stop compiling CSSPError

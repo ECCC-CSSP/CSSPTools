@@ -330,69 +330,69 @@ namespace CSSPServices
             {
                 if (polSourceGrouping.PolSourceGroupingID == 0)
                 {
-                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "PolSourceGroupingID"), new[] { "PolSourceGroupingID" });
+                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "PolSourceGroupingID"), new[] { nameof(polSourceGrouping.PolSourceGroupingID) });
                 }
 
                 if (LoggedInService.DBLocation == DBLocationEnum.Local)
                 {
                     if (!(from c in dbLocal.PolSourceGroupings select c).Where(c => c.PolSourceGroupingID == polSourceGrouping.PolSourceGroupingID).Any())
                     {
-                        yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "PolSourceGrouping", "PolSourceGroupingID", polSourceGrouping.PolSourceGroupingID.ToString()), new[] { "PolSourceGroupingID" });
+                        yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "PolSourceGrouping", "PolSourceGroupingID", polSourceGrouping.PolSourceGroupingID.ToString()), new[] { nameof(polSourceGrouping.PolSourceGroupingID) });
                     }
                 }
                 else
                 {
                     if (!(from c in db.PolSourceGroupings select c).Where(c => c.PolSourceGroupingID == polSourceGrouping.PolSourceGroupingID).Any())
                     {
-                        yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "PolSourceGrouping", "PolSourceGroupingID", polSourceGrouping.PolSourceGroupingID.ToString()), new[] { "PolSourceGroupingID" });
+                        yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "PolSourceGrouping", "PolSourceGroupingID", polSourceGrouping.PolSourceGroupingID.ToString()), new[] { nameof(polSourceGrouping.PolSourceGroupingID) });
                     }
                 }
             }
 
             if (polSourceGrouping.CSSPID < 10000 || polSourceGrouping.CSSPID > 100000)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "CSSPID", "10000", "100000"), new[] { "CSSPID" });
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "CSSPID", "10000", "100000"), new[] { nameof(polSourceGrouping.CSSPID) });
             }
 
             if (string.IsNullOrWhiteSpace(polSourceGrouping.GroupName))
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "GroupName"), new[] { "GroupName" });
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "GroupName"), new[] { nameof(polSourceGrouping.GroupName) });
             }
 
             if (!string.IsNullOrWhiteSpace(polSourceGrouping.GroupName) && polSourceGrouping.GroupName.Length > 500)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "GroupName", "500"), new[] { "GroupName" });
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "GroupName", "500"), new[] { nameof(polSourceGrouping.GroupName) });
             }
 
             if (string.IsNullOrWhiteSpace(polSourceGrouping.Child))
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "Child"), new[] { "Child" });
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "Child"), new[] { nameof(polSourceGrouping.Child) });
             }
 
             if (!string.IsNullOrWhiteSpace(polSourceGrouping.Child) && polSourceGrouping.Child.Length > 500)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "Child", "500"), new[] { "Child" });
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "Child", "500"), new[] { nameof(polSourceGrouping.Child) });
             }
 
             if (string.IsNullOrWhiteSpace(polSourceGrouping.Hide))
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "Hide"), new[] { "Hide" });
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "Hide"), new[] { nameof(polSourceGrouping.Hide) });
             }
 
             if (!string.IsNullOrWhiteSpace(polSourceGrouping.Hide) && polSourceGrouping.Hide.Length > 500)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "Hide", "500"), new[] { "Hide" });
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "Hide", "500"), new[] { nameof(polSourceGrouping.Hide) });
             }
 
             if (polSourceGrouping.LastUpdateDate_UTC.Year == 1)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "LastUpdateDate_UTC"), new[] { "LastUpdateDate_UTC" });
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "LastUpdateDate_UTC"), new[] { nameof(polSourceGrouping.LastUpdateDate_UTC) });
             }
             else
             {
                 if (polSourceGrouping.LastUpdateDate_UTC.Year < 1980)
                 {
-                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes._YearShouldBeBiggerThan_, "LastUpdateDate_UTC", "1980"), new[] { "LastUpdateDate_UTC" });
+                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes._YearShouldBeBiggerThan_, "LastUpdateDate_UTC", "1980"), new[] { nameof(polSourceGrouping.LastUpdateDate_UTC) });
                 }
             }
 
@@ -412,7 +412,7 @@ namespace CSSPServices
 
             if (TVItemLastUpdateContactTVItemID == null)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "TVItem", "LastUpdateContactTVItemID", polSourceGrouping.LastUpdateContactTVItemID.ToString()), new[] { "LastUpdateContactTVItemID" });
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "TVItem", "LastUpdateContactTVItemID", polSourceGrouping.LastUpdateContactTVItemID.ToString()), new[] { nameof(polSourceGrouping.LastUpdateContactTVItemID) });
             }
             else
             {
@@ -422,14 +422,8 @@ namespace CSSPServices
                 };
                 if (!AllowableTVTypes.Contains(TVItemLastUpdateContactTVItemID.TVType))
                 {
-                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsNotOfType_, "LastUpdateContactTVItemID", "Contact"), new[] { "LastUpdateContactTVItemID" });
+                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsNotOfType_, "LastUpdateContactTVItemID", "Contact"), new[] { nameof(polSourceGrouping.LastUpdateContactTVItemID) });
                 }
-            }
-
-            retStr = ""; // added to stop compiling CSSPError
-            if (retStr != "") // will never be true
-            {
-                yield return new ValidationResult("AAA", new[] { "AAA" });
             }
 
         }

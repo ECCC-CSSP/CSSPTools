@@ -50,12 +50,12 @@ namespace CSSPServices
 
             if (latLng.Lat < -180 || latLng.Lat > 180)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "Lat", "-180", "180"), new[] { "Lat" });
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "Lat", "-180", "180"), new[] { nameof(latLng.Lat) });
             }
 
             if (latLng.Lng < -90 || latLng.Lng > 90)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "Lng", "-90", "90"), new[] { "Lng" });
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "Lng", "-90", "90"), new[] { nameof(latLng.Lng) });
             }
 
             retStr = ""; // added to stop compiling CSSPError

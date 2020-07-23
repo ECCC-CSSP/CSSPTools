@@ -30,7 +30,7 @@ namespace ModelsCompareServices.Services
 
             List<string> UseQuestionMarkList = new List<string>() { "bool", "int", "long", "DateTime", "double", "float", "byte[]", "Type" };
 
-            List<string> PropertiesToSkipList = new List<string>() { "ValidationResults", "HasErrors", "LastUpdateDate_UTC", "LastUpdateContactTVItemID" };
+            List<string> PropertiesToSkipList = new List<string>() { "ValidationResults", "LastUpdateDate_UTC", "LastUpdateContactTVItemID" };
             #region Variables and loading DLL properties
             FileInfo fiCSSPModelsDLL = new FileInfo(Config.GetValue<string>("CSSPModels"));
 
@@ -63,7 +63,6 @@ namespace ModelsCompareServices.Services
             foreach (DLLTypeInfo dllTypeInfoModels in DLLTypeInfoCSSPModelsList)
             {
                 StringBuilder sb = new StringBuilder();
-                //bool PleaseStop = false;
                 bool NotMappedClass = false;
 
                 if (GenerateCodeBaseService.SkipType(dllTypeInfoModels.Type))

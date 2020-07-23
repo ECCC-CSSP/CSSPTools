@@ -50,7 +50,7 @@ namespace CSSPServices
 
             if (node.ID < 1 || node.ID > 1000000)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "ID", "1", "1000000"), new[] { "ID" });
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "ID", "1", "1000000"), new[] { nameof(node.ID) });
             }
 
             //X has no Range Attribute

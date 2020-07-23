@@ -50,14 +50,14 @@ namespace CSSPServices
 
             if (string.IsNullOrWhiteSpace(labSheetA1Measurement.Site))
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "Site"), new[] { "Site" });
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "Site"), new[] { nameof(labSheetA1Measurement.Site) });
             }
 
             //Site has no StringLength Attribute
 
             if (labSheetA1Measurement.TVItemID < 1)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MinValueIs_, "TVItemID", "1"), new[] { "TVItemID" });
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MinValueIs_, "TVItemID", "1"), new[] { nameof(labSheetA1Measurement.TVItemID) });
             }
 
             //MPN has no Range Attribute
@@ -79,20 +79,20 @@ namespace CSSPServices
                 retStr = enums.EnumTypeOK(typeof(SampleTypeEnum), (int?)labSheetA1Measurement.SampleType);
                 if (labSheetA1Measurement.SampleType == null || !string.IsNullOrWhiteSpace(retStr))
                 {
-                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "SampleType"), new[] { "SampleType" });
+                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "SampleType"), new[] { nameof(labSheetA1Measurement.SampleType) });
                 }
             }
 
             if (string.IsNullOrWhiteSpace(labSheetA1Measurement.SiteComment))
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "SiteComment"), new[] { "SiteComment" });
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "SiteComment"), new[] { nameof(labSheetA1Measurement.SiteComment) });
             }
 
             //SiteComment has no StringLength Attribute
 
             if (!string.IsNullOrWhiteSpace(labSheetA1Measurement.SampleTypeText) && labSheetA1Measurement.SampleTypeText.Length > 100)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "SampleTypeText", "100"), new[] { "SampleTypeText" });
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "SampleTypeText", "100"), new[] { nameof(labSheetA1Measurement.SampleTypeText) });
             }
 
             retStr = ""; // added to stop compiling CSSPError

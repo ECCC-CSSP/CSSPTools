@@ -51,14 +51,14 @@ namespace CSSPServices
             retStr = enums.EnumTypeOK(typeof(InfrastructureTypeEnum), (int?)tvItemInfrastructureTypeTVItemLink.InfrastructureType);
             if (!string.IsNullOrWhiteSpace(retStr))
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "InfrastructureType"), new[] { "InfrastructureType" });
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "InfrastructureType"), new[] { nameof(tvItemInfrastructureTypeTVItemLink.InfrastructureType) });
             }
 
             //SeeOtherMunicipalityTVItemID has no Range Attribute
 
             if (!string.IsNullOrWhiteSpace(tvItemInfrastructureTypeTVItemLink.InfrastructureTypeText) && tvItemInfrastructureTypeTVItemLink.InfrastructureTypeText.Length > 100)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "InfrastructureTypeText", "100"), new[] { "InfrastructureTypeText" });
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "InfrastructureTypeText", "100"), new[] { nameof(tvItemInfrastructureTypeTVItemLink.InfrastructureTypeText) });
             }
 
                 //CSSPError: Type not implemented [TVItem] of type [TVItem]

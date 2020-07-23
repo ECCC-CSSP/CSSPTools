@@ -330,28 +330,28 @@ namespace CSSPServices
             {
                 if (aspNetUser.Id == "")
                 {
-                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "Id"), new[] { "Id" });
+                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "Id"), new[] { nameof(aspNetUser.Id) });
                 }
 
                 if (LoggedInService.DBLocation == DBLocationEnum.Local)
                 {
                     if (!(from c in dbLocal.AspNetUsers select c).Where(c => c.Id == aspNetUser.Id).Any())
                     {
-                        yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "AspNetUser", "AspNetUserId", (aspNetUser.Id == null ? "" : aspNetUser.Id.ToString())), new[] { "Id" });
+                        yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "AspNetUser", "AspNetUserId", (aspNetUser.Id == null ? "" : aspNetUser.Id.ToString())), new[] { nameof(aspNetUser.Id) });
                     }
                 }
                 else
                 {
                     if (!(from c in db.AspNetUsers select c).Where(c => c.Id == aspNetUser.Id).Any())
                     {
-                        yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "AspNetUser", "AspNetUserId", (aspNetUser.Id == null ? "" : aspNetUser.Id.ToString())), new[] { "Id" });
+                        yield return new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "AspNetUser", "AspNetUserId", (aspNetUser.Id == null ? "" : aspNetUser.Id.ToString())), new[] { nameof(aspNetUser.Id) });
                     }
                 }
             }
 
             if (!string.IsNullOrWhiteSpace(aspNetUser.Email) && aspNetUser.Email.Length > 256)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "Email", "256"), new[] { "Email" });
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "Email", "256"), new[] { nameof(aspNetUser.Email) });
             }
 
             //PasswordHash has no StringLength Attribute
@@ -362,48 +362,42 @@ namespace CSSPServices
 
             if (aspNetUser.LockoutEndDateUtc != null && ((DateTime)aspNetUser.LockoutEndDateUtc).Year < 1980)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._YearShouldBeBiggerThan_, "LockoutEndDateUtc", "1980"), new[] { "LockoutEndDateUtc" });
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._YearShouldBeBiggerThan_, "LockoutEndDateUtc", "1980"), new[] { nameof(aspNetUser.LockoutEndDateUtc) });
             }
 
             if (aspNetUser.AccessFailedCount < 0 || aspNetUser.AccessFailedCount > 10000)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "AccessFailedCount", "0", "10000"), new[] { "AccessFailedCount" });
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "AccessFailedCount", "0", "10000"), new[] { nameof(aspNetUser.AccessFailedCount) });
             }
 
             if (string.IsNullOrWhiteSpace(aspNetUser.UserName))
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "UserName"), new[] { "UserName" });
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "UserName"), new[] { nameof(aspNetUser.UserName) });
             }
 
             if (!string.IsNullOrWhiteSpace(aspNetUser.UserName) && aspNetUser.UserName.Length > 256)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "UserName", "256"), new[] { "UserName" });
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "UserName", "256"), new[] { nameof(aspNetUser.UserName) });
             }
 
             if (!string.IsNullOrWhiteSpace(aspNetUser.NormalizedUserName) && aspNetUser.NormalizedUserName.Length > 256)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "NormalizedUserName", "256"), new[] { "NormalizedUserName" });
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "NormalizedUserName", "256"), new[] { nameof(aspNetUser.NormalizedUserName) });
             }
 
             if (!string.IsNullOrWhiteSpace(aspNetUser.NormalizedEmail) && aspNetUser.NormalizedEmail.Length > 256)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "NormalizedEmail", "256"), new[] { "NormalizedEmail" });
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "NormalizedEmail", "256"), new[] { nameof(aspNetUser.NormalizedEmail) });
             }
 
             if (!string.IsNullOrWhiteSpace(aspNetUser.ConcurrencyStamp) && aspNetUser.ConcurrencyStamp.Length > 256)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "ConcurrencyStamp", "256"), new[] { "ConcurrencyStamp" });
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "ConcurrencyStamp", "256"), new[] { nameof(aspNetUser.ConcurrencyStamp) });
             }
 
             if (aspNetUser.LockoutEnd != null && ((DateTime)aspNetUser.LockoutEnd).Year < 1980)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._YearShouldBeBiggerThan_, "LockoutEnd", "1980"), new[] { "LockoutEnd" });
-            }
-
-            retStr = ""; // added to stop compiling CSSPError
-            if (retStr != "") // will never be true
-            {
-                yield return new ValidationResult("AAA", new[] { "AAA" });
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._YearShouldBeBiggerThan_, "LockoutEnd", "1980"), new[] { nameof(aspNetUser.LockoutEnd) });
             }
 
         }

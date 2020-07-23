@@ -1683,14 +1683,7 @@ namespace ServicesClassNameServiceTestGeneratedServices.Services
                     break;
                 case "Boolean":
                     {
-                        if (csspProp.PropName == "HasErrors")
-                        {
-                            //sb.AppendLine($@"            //if (OmitPropName != ""{ prop.Name }"") { TypeNameLower }.{ prop.Name } = true;");
-                        }
-                        else
-                        {
-                            sb.AppendLine($@"            if (OmitPropName != ""{ prop.Name }"") { TypeNameLower }.{ prop.Name } = true;");
-                        }
+                        sb.AppendLine($@"            if (OmitPropName != ""{ prop.Name }"") { TypeNameLower }.{ prop.Name } = true;");
                     }
                     break;
                 case "String":

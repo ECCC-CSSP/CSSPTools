@@ -50,17 +50,17 @@ namespace CSSPServices
 
             if (element.ID < 1)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MinValueIs_, "ID", "1"), new[] { "ID" });
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MinValueIs_, "ID", "1"), new[] { nameof(element.ID) });
             }
 
             if (element.Type < 1)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MinValueIs_, "Type", "1"), new[] { "Type" });
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MinValueIs_, "Type", "1"), new[] { nameof(element.Type) });
             }
 
             if (element.NumbOfNodes < 1)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MinValueIs_, "NumbOfNodes", "1"), new[] { "NumbOfNodes" });
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MinValueIs_, "NumbOfNodes", "1"), new[] { nameof(element.NumbOfNodes) });
             }
 
             //Value has no Range Attribute
