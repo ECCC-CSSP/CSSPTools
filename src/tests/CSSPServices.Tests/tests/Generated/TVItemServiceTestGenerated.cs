@@ -20,6 +20,7 @@ using System.Threading.Tasks;
 using System.Transactions;
 using Xunit;
 using System.ComponentModel.DataAnnotations;
+using CSSPCultureServices.Resources;
 
 namespace CSSPServices.Tests
 {
@@ -268,6 +269,28 @@ namespace CSSPServices.Tests
 
             int count = ((List<TVItem>)((OkObjectResult)actionTVItemList.Result).Value).Count();
             Assert.True(count > 0);
+
+            if (LoggedInService.DBLocation == DBLocationEnum.Server)
+            {
+                // List<TVItem> with skip and take
+                var actionTVItemListSkipAndTake = await TVItemService.GetTVItemList(1, 1);
+                Assert.Equal(200, ((ObjectResult)actionTVItemListSkipAndTake.Result).StatusCode);
+                Assert.NotNull(((OkObjectResult)actionTVItemListSkipAndTake.Result).Value);
+                List<TVItem> tvItemListSkipAndTake = (List<TVItem>)((OkObjectResult)actionTVItemListSkipAndTake.Result).Value;
+
+                int countSkipAndTake = ((List<TVItem>)((OkObjectResult)actionTVItemListSkipAndTake.Result).Value).Count();
+                Assert.True(countSkipAndTake == 1);
+
+                Assert.False(tvItemList[0].TVItemID == tvItemListSkipAndTake[0].TVItemID);
+            }
+
+            // Get TVItem With TVItemID
+            var actionTVItemGet = await TVItemService.GetTVItemWithTVItemID(tvItemList[0].TVItemID);
+            Assert.Equal(200, ((ObjectResult)actionTVItemGet.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionTVItemGet.Result).Value);
+            TVItem tvItemGet = (TVItem)((OkObjectResult)actionTVItemGet.Result).Value;
+            Assert.NotNull(tvItemGet);
+            Assert.Equal(tvItemGet.TVItemID, tvItemList[0].TVItemID);
 
             // Put TVItem
             var actionTVItemUpdated = await TVItemService.Put(tvItem);

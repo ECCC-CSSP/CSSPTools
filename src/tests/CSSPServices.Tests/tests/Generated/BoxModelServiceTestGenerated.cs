@@ -20,6 +20,7 @@ using System.Threading.Tasks;
 using System.Transactions;
 using Xunit;
 using System.ComponentModel.DataAnnotations;
+using CSSPCultureServices.Resources;
 
 namespace CSSPServices.Tests
 {
@@ -420,6 +421,28 @@ namespace CSSPServices.Tests
 
             int count = ((List<BoxModel>)((OkObjectResult)actionBoxModelList.Result).Value).Count();
             Assert.True(count > 0);
+
+            if (LoggedInService.DBLocation == DBLocationEnum.Server)
+            {
+                // List<BoxModel> with skip and take
+                var actionBoxModelListSkipAndTake = await BoxModelService.GetBoxModelList(1, 1);
+                Assert.Equal(200, ((ObjectResult)actionBoxModelListSkipAndTake.Result).StatusCode);
+                Assert.NotNull(((OkObjectResult)actionBoxModelListSkipAndTake.Result).Value);
+                List<BoxModel> boxModelListSkipAndTake = (List<BoxModel>)((OkObjectResult)actionBoxModelListSkipAndTake.Result).Value;
+
+                int countSkipAndTake = ((List<BoxModel>)((OkObjectResult)actionBoxModelListSkipAndTake.Result).Value).Count();
+                Assert.True(countSkipAndTake == 1);
+
+                Assert.False(boxModelList[0].BoxModelID == boxModelListSkipAndTake[0].BoxModelID);
+            }
+
+            // Get BoxModel With BoxModelID
+            var actionBoxModelGet = await BoxModelService.GetBoxModelWithBoxModelID(boxModelList[0].BoxModelID);
+            Assert.Equal(200, ((ObjectResult)actionBoxModelGet.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionBoxModelGet.Result).Value);
+            BoxModel boxModelGet = (BoxModel)((OkObjectResult)actionBoxModelGet.Result).Value;
+            Assert.NotNull(boxModelGet);
+            Assert.Equal(boxModelGet.BoxModelID, boxModelList[0].BoxModelID);
 
             // Put BoxModel
             var actionBoxModelUpdated = await BoxModelService.Put(boxModel);

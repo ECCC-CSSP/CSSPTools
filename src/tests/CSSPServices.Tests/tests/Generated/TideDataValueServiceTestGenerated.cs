@@ -20,6 +20,7 @@ using System.Threading.Tasks;
 using System.Transactions;
 using Xunit;
 using System.ComponentModel.DataAnnotations;
+using CSSPCultureServices.Resources;
 
 namespace CSSPServices.Tests
 {
@@ -356,6 +357,28 @@ namespace CSSPServices.Tests
 
             int count = ((List<TideDataValue>)((OkObjectResult)actionTideDataValueList.Result).Value).Count();
             Assert.True(count > 0);
+
+            if (LoggedInService.DBLocation == DBLocationEnum.Server)
+            {
+                // List<TideDataValue> with skip and take
+                var actionTideDataValueListSkipAndTake = await TideDataValueService.GetTideDataValueList(1, 1);
+                Assert.Equal(200, ((ObjectResult)actionTideDataValueListSkipAndTake.Result).StatusCode);
+                Assert.NotNull(((OkObjectResult)actionTideDataValueListSkipAndTake.Result).Value);
+                List<TideDataValue> tideDataValueListSkipAndTake = (List<TideDataValue>)((OkObjectResult)actionTideDataValueListSkipAndTake.Result).Value;
+
+                int countSkipAndTake = ((List<TideDataValue>)((OkObjectResult)actionTideDataValueListSkipAndTake.Result).Value).Count();
+                Assert.True(countSkipAndTake == 1);
+
+                Assert.False(tideDataValueList[0].TideDataValueID == tideDataValueListSkipAndTake[0].TideDataValueID);
+            }
+
+            // Get TideDataValue With TideDataValueID
+            var actionTideDataValueGet = await TideDataValueService.GetTideDataValueWithTideDataValueID(tideDataValueList[0].TideDataValueID);
+            Assert.Equal(200, ((ObjectResult)actionTideDataValueGet.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionTideDataValueGet.Result).Value);
+            TideDataValue tideDataValueGet = (TideDataValue)((OkObjectResult)actionTideDataValueGet.Result).Value;
+            Assert.NotNull(tideDataValueGet);
+            Assert.Equal(tideDataValueGet.TideDataValueID, tideDataValueList[0].TideDataValueID);
 
             // Put TideDataValue
             var actionTideDataValueUpdated = await TideDataValueService.Put(tideDataValue);

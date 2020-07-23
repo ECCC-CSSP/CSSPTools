@@ -20,6 +20,7 @@ using System.Threading.Tasks;
 using System.Transactions;
 using Xunit;
 using System.ComponentModel.DataAnnotations;
+using CSSPCultureServices.Resources;
 
 namespace CSSPServices.Tests
 {
@@ -495,6 +496,28 @@ namespace CSSPServices.Tests
 
             int count = ((List<SamplingPlan>)((OkObjectResult)actionSamplingPlanList.Result).Value).Count();
             Assert.True(count > 0);
+
+            if (LoggedInService.DBLocation == DBLocationEnum.Server)
+            {
+                // List<SamplingPlan> with skip and take
+                var actionSamplingPlanListSkipAndTake = await SamplingPlanService.GetSamplingPlanList(1, 1);
+                Assert.Equal(200, ((ObjectResult)actionSamplingPlanListSkipAndTake.Result).StatusCode);
+                Assert.NotNull(((OkObjectResult)actionSamplingPlanListSkipAndTake.Result).Value);
+                List<SamplingPlan> samplingPlanListSkipAndTake = (List<SamplingPlan>)((OkObjectResult)actionSamplingPlanListSkipAndTake.Result).Value;
+
+                int countSkipAndTake = ((List<SamplingPlan>)((OkObjectResult)actionSamplingPlanListSkipAndTake.Result).Value).Count();
+                Assert.True(countSkipAndTake == 1);
+
+                Assert.False(samplingPlanList[0].SamplingPlanID == samplingPlanListSkipAndTake[0].SamplingPlanID);
+            }
+
+            // Get SamplingPlan With SamplingPlanID
+            var actionSamplingPlanGet = await SamplingPlanService.GetSamplingPlanWithSamplingPlanID(samplingPlanList[0].SamplingPlanID);
+            Assert.Equal(200, ((ObjectResult)actionSamplingPlanGet.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionSamplingPlanGet.Result).Value);
+            SamplingPlan samplingPlanGet = (SamplingPlan)((OkObjectResult)actionSamplingPlanGet.Result).Value;
+            Assert.NotNull(samplingPlanGet);
+            Assert.Equal(samplingPlanGet.SamplingPlanID, samplingPlanList[0].SamplingPlanID);
 
             // Put SamplingPlan
             var actionSamplingPlanUpdated = await SamplingPlanService.Put(samplingPlan);

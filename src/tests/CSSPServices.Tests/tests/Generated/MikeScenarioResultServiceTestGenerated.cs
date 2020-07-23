@@ -20,6 +20,7 @@ using System.Threading.Tasks;
 using System.Transactions;
 using Xunit;
 using System.ComponentModel.DataAnnotations;
+using CSSPCultureServices.Resources;
 
 namespace CSSPServices.Tests
 {
@@ -218,6 +219,28 @@ namespace CSSPServices.Tests
 
             int count = ((List<MikeScenarioResult>)((OkObjectResult)actionMikeScenarioResultList.Result).Value).Count();
             Assert.True(count > 0);
+
+            if (LoggedInService.DBLocation == DBLocationEnum.Server)
+            {
+                // List<MikeScenarioResult> with skip and take
+                var actionMikeScenarioResultListSkipAndTake = await MikeScenarioResultService.GetMikeScenarioResultList(1, 1);
+                Assert.Equal(200, ((ObjectResult)actionMikeScenarioResultListSkipAndTake.Result).StatusCode);
+                Assert.NotNull(((OkObjectResult)actionMikeScenarioResultListSkipAndTake.Result).Value);
+                List<MikeScenarioResult> mikeScenarioResultListSkipAndTake = (List<MikeScenarioResult>)((OkObjectResult)actionMikeScenarioResultListSkipAndTake.Result).Value;
+
+                int countSkipAndTake = ((List<MikeScenarioResult>)((OkObjectResult)actionMikeScenarioResultListSkipAndTake.Result).Value).Count();
+                Assert.True(countSkipAndTake == 1);
+
+                Assert.False(mikeScenarioResultList[0].MikeScenarioResultID == mikeScenarioResultListSkipAndTake[0].MikeScenarioResultID);
+            }
+
+            // Get MikeScenarioResult With MikeScenarioResultID
+            var actionMikeScenarioResultGet = await MikeScenarioResultService.GetMikeScenarioResultWithMikeScenarioResultID(mikeScenarioResultList[0].MikeScenarioResultID);
+            Assert.Equal(200, ((ObjectResult)actionMikeScenarioResultGet.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionMikeScenarioResultGet.Result).Value);
+            MikeScenarioResult mikeScenarioResultGet = (MikeScenarioResult)((OkObjectResult)actionMikeScenarioResultGet.Result).Value;
+            Assert.NotNull(mikeScenarioResultGet);
+            Assert.Equal(mikeScenarioResultGet.MikeScenarioResultID, mikeScenarioResultList[0].MikeScenarioResultID);
 
             // Put MikeScenarioResult
             var actionMikeScenarioResultUpdated = await MikeScenarioResultService.Put(mikeScenarioResult);

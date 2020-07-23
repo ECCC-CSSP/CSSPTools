@@ -20,6 +20,7 @@ using System.Threading.Tasks;
 using System.Transactions;
 using Xunit;
 using System.ComponentModel.DataAnnotations;
+using CSSPCultureServices.Resources;
 
 namespace CSSPServices.Tests
 {
@@ -247,6 +248,28 @@ namespace CSSPServices.Tests
 
             int count = ((List<ResetPassword>)((OkObjectResult)actionResetPasswordList.Result).Value).Count();
             Assert.True(count > 0);
+
+            if (LoggedInService.DBLocation == DBLocationEnum.Server)
+            {
+                // List<ResetPassword> with skip and take
+                var actionResetPasswordListSkipAndTake = await ResetPasswordService.GetResetPasswordList(1, 1);
+                Assert.Equal(200, ((ObjectResult)actionResetPasswordListSkipAndTake.Result).StatusCode);
+                Assert.NotNull(((OkObjectResult)actionResetPasswordListSkipAndTake.Result).Value);
+                List<ResetPassword> resetPasswordListSkipAndTake = (List<ResetPassword>)((OkObjectResult)actionResetPasswordListSkipAndTake.Result).Value;
+
+                int countSkipAndTake = ((List<ResetPassword>)((OkObjectResult)actionResetPasswordListSkipAndTake.Result).Value).Count();
+                Assert.True(countSkipAndTake == 1);
+
+                Assert.False(resetPasswordList[0].ResetPasswordID == resetPasswordListSkipAndTake[0].ResetPasswordID);
+            }
+
+            // Get ResetPassword With ResetPasswordID
+            var actionResetPasswordGet = await ResetPasswordService.GetResetPasswordWithResetPasswordID(resetPasswordList[0].ResetPasswordID);
+            Assert.Equal(200, ((ObjectResult)actionResetPasswordGet.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionResetPasswordGet.Result).Value);
+            ResetPassword resetPasswordGet = (ResetPassword)((OkObjectResult)actionResetPasswordGet.Result).Value;
+            Assert.NotNull(resetPasswordGet);
+            Assert.Equal(resetPasswordGet.ResetPasswordID, resetPasswordList[0].ResetPasswordID);
 
             // Put ResetPassword
             var actionResetPasswordUpdated = await ResetPasswordService.Put(resetPassword);

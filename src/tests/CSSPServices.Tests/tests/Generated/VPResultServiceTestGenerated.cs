@@ -20,6 +20,7 @@ using System.Threading.Tasks;
 using System.Transactions;
 using Xunit;
 using System.ComponentModel.DataAnnotations;
+using CSSPCultureServices.Resources;
 
 namespace CSSPServices.Tests
 {
@@ -336,6 +337,28 @@ namespace CSSPServices.Tests
 
             int count = ((List<VPResult>)((OkObjectResult)actionVPResultList.Result).Value).Count();
             Assert.True(count > 0);
+
+            if (LoggedInService.DBLocation == DBLocationEnum.Server)
+            {
+                // List<VPResult> with skip and take
+                var actionVPResultListSkipAndTake = await VPResultService.GetVPResultList(1, 1);
+                Assert.Equal(200, ((ObjectResult)actionVPResultListSkipAndTake.Result).StatusCode);
+                Assert.NotNull(((OkObjectResult)actionVPResultListSkipAndTake.Result).Value);
+                List<VPResult> vpResultListSkipAndTake = (List<VPResult>)((OkObjectResult)actionVPResultListSkipAndTake.Result).Value;
+
+                int countSkipAndTake = ((List<VPResult>)((OkObjectResult)actionVPResultListSkipAndTake.Result).Value).Count();
+                Assert.True(countSkipAndTake == 1);
+
+                Assert.False(vpResultList[0].VPResultID == vpResultListSkipAndTake[0].VPResultID);
+            }
+
+            // Get VPResult With VPResultID
+            var actionVPResultGet = await VPResultService.GetVPResultWithVPResultID(vpResultList[0].VPResultID);
+            Assert.Equal(200, ((ObjectResult)actionVPResultGet.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionVPResultGet.Result).Value);
+            VPResult vpResultGet = (VPResult)((OkObjectResult)actionVPResultGet.Result).Value;
+            Assert.NotNull(vpResultGet);
+            Assert.Equal(vpResultGet.VPResultID, vpResultList[0].VPResultID);
 
             // Put VPResult
             var actionVPResultUpdated = await VPResultService.Put(vpResult);

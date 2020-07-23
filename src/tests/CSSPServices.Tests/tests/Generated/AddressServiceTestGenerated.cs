@@ -20,6 +20,7 @@ using System.Threading.Tasks;
 using System.Transactions;
 using Xunit;
 using System.ComponentModel.DataAnnotations;
+using CSSPCultureServices.Resources;
 
 namespace CSSPServices.Tests
 {
@@ -361,6 +362,28 @@ namespace CSSPServices.Tests
 
             int count = ((List<Address>)((OkObjectResult)actionAddressList.Result).Value).Count();
             Assert.True(count > 0);
+
+            if (LoggedInService.DBLocation == DBLocationEnum.Server)
+            {
+                // List<Address> with skip and take
+                var actionAddressListSkipAndTake = await AddressService.GetAddressList(1, 1);
+                Assert.Equal(200, ((ObjectResult)actionAddressListSkipAndTake.Result).StatusCode);
+                Assert.NotNull(((OkObjectResult)actionAddressListSkipAndTake.Result).Value);
+                List<Address> addressListSkipAndTake = (List<Address>)((OkObjectResult)actionAddressListSkipAndTake.Result).Value;
+
+                int countSkipAndTake = ((List<Address>)((OkObjectResult)actionAddressListSkipAndTake.Result).Value).Count();
+                Assert.True(countSkipAndTake == 1);
+
+                Assert.False(addressList[0].AddressID == addressListSkipAndTake[0].AddressID);
+            }
+
+            // Get Address With AddressID
+            var actionAddressGet = await AddressService.GetAddressWithAddressID(addressList[0].AddressID);
+            Assert.Equal(200, ((ObjectResult)actionAddressGet.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionAddressGet.Result).Value);
+            Address addressGet = (Address)((OkObjectResult)actionAddressGet.Result).Value;
+            Assert.NotNull(addressGet);
+            Assert.Equal(addressGet.AddressID, addressList[0].AddressID);
 
             // Put Address
             var actionAddressUpdated = await AddressService.Put(address);

@@ -20,6 +20,7 @@ using System.Threading.Tasks;
 using System.Transactions;
 using Xunit;
 using System.ComponentModel.DataAnnotations;
+using CSSPCultureServices.Resources;
 
 namespace CSSPServices.Tests
 {
@@ -334,6 +335,28 @@ namespace CSSPServices.Tests
 
             int count = ((List<DrogueRunPosition>)((OkObjectResult)actionDrogueRunPositionList.Result).Value).Count();
             Assert.True(count > 0);
+
+            if (LoggedInService.DBLocation == DBLocationEnum.Server)
+            {
+                // List<DrogueRunPosition> with skip and take
+                var actionDrogueRunPositionListSkipAndTake = await DrogueRunPositionService.GetDrogueRunPositionList(1, 1);
+                Assert.Equal(200, ((ObjectResult)actionDrogueRunPositionListSkipAndTake.Result).StatusCode);
+                Assert.NotNull(((OkObjectResult)actionDrogueRunPositionListSkipAndTake.Result).Value);
+                List<DrogueRunPosition> drogueRunPositionListSkipAndTake = (List<DrogueRunPosition>)((OkObjectResult)actionDrogueRunPositionListSkipAndTake.Result).Value;
+
+                int countSkipAndTake = ((List<DrogueRunPosition>)((OkObjectResult)actionDrogueRunPositionListSkipAndTake.Result).Value).Count();
+                Assert.True(countSkipAndTake == 1);
+
+                Assert.False(drogueRunPositionList[0].DrogueRunPositionID == drogueRunPositionListSkipAndTake[0].DrogueRunPositionID);
+            }
+
+            // Get DrogueRunPosition With DrogueRunPositionID
+            var actionDrogueRunPositionGet = await DrogueRunPositionService.GetDrogueRunPositionWithDrogueRunPositionID(drogueRunPositionList[0].DrogueRunPositionID);
+            Assert.Equal(200, ((ObjectResult)actionDrogueRunPositionGet.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionDrogueRunPositionGet.Result).Value);
+            DrogueRunPosition drogueRunPositionGet = (DrogueRunPosition)((OkObjectResult)actionDrogueRunPositionGet.Result).Value;
+            Assert.NotNull(drogueRunPositionGet);
+            Assert.Equal(drogueRunPositionGet.DrogueRunPositionID, drogueRunPositionList[0].DrogueRunPositionID);
 
             // Put DrogueRunPosition
             var actionDrogueRunPositionUpdated = await DrogueRunPositionService.Put(drogueRunPosition);

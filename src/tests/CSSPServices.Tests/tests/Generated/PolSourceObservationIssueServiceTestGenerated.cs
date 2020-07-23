@@ -20,6 +20,7 @@ using System.Threading.Tasks;
 using System.Transactions;
 using Xunit;
 using System.ComponentModel.DataAnnotations;
+using CSSPCultureServices.Resources;
 
 namespace CSSPServices.Tests
 {
@@ -249,6 +250,28 @@ namespace CSSPServices.Tests
 
             int count = ((List<PolSourceObservationIssue>)((OkObjectResult)actionPolSourceObservationIssueList.Result).Value).Count();
             Assert.True(count > 0);
+
+            if (LoggedInService.DBLocation == DBLocationEnum.Server)
+            {
+                // List<PolSourceObservationIssue> with skip and take
+                var actionPolSourceObservationIssueListSkipAndTake = await PolSourceObservationIssueService.GetPolSourceObservationIssueList(1, 1);
+                Assert.Equal(200, ((ObjectResult)actionPolSourceObservationIssueListSkipAndTake.Result).StatusCode);
+                Assert.NotNull(((OkObjectResult)actionPolSourceObservationIssueListSkipAndTake.Result).Value);
+                List<PolSourceObservationIssue> polSourceObservationIssueListSkipAndTake = (List<PolSourceObservationIssue>)((OkObjectResult)actionPolSourceObservationIssueListSkipAndTake.Result).Value;
+
+                int countSkipAndTake = ((List<PolSourceObservationIssue>)((OkObjectResult)actionPolSourceObservationIssueListSkipAndTake.Result).Value).Count();
+                Assert.True(countSkipAndTake == 1);
+
+                Assert.False(polSourceObservationIssueList[0].PolSourceObservationIssueID == polSourceObservationIssueListSkipAndTake[0].PolSourceObservationIssueID);
+            }
+
+            // Get PolSourceObservationIssue With PolSourceObservationIssueID
+            var actionPolSourceObservationIssueGet = await PolSourceObservationIssueService.GetPolSourceObservationIssueWithPolSourceObservationIssueID(polSourceObservationIssueList[0].PolSourceObservationIssueID);
+            Assert.Equal(200, ((ObjectResult)actionPolSourceObservationIssueGet.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionPolSourceObservationIssueGet.Result).Value);
+            PolSourceObservationIssue polSourceObservationIssueGet = (PolSourceObservationIssue)((OkObjectResult)actionPolSourceObservationIssueGet.Result).Value;
+            Assert.NotNull(polSourceObservationIssueGet);
+            Assert.Equal(polSourceObservationIssueGet.PolSourceObservationIssueID, polSourceObservationIssueList[0].PolSourceObservationIssueID);
 
             // Put PolSourceObservationIssue
             var actionPolSourceObservationIssueUpdated = await PolSourceObservationIssueService.Put(polSourceObservationIssue);

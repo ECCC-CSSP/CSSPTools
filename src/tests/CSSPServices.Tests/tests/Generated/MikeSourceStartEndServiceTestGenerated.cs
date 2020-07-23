@@ -20,6 +20,7 @@ using System.Threading.Tasks;
 using System.Transactions;
 using Xunit;
 using System.ComponentModel.DataAnnotations;
+using CSSPCultureServices.Resources;
 
 namespace CSSPServices.Tests
 {
@@ -417,6 +418,28 @@ namespace CSSPServices.Tests
 
             int count = ((List<MikeSourceStartEnd>)((OkObjectResult)actionMikeSourceStartEndList.Result).Value).Count();
             Assert.True(count > 0);
+
+            if (LoggedInService.DBLocation == DBLocationEnum.Server)
+            {
+                // List<MikeSourceStartEnd> with skip and take
+                var actionMikeSourceStartEndListSkipAndTake = await MikeSourceStartEndService.GetMikeSourceStartEndList(1, 1);
+                Assert.Equal(200, ((ObjectResult)actionMikeSourceStartEndListSkipAndTake.Result).StatusCode);
+                Assert.NotNull(((OkObjectResult)actionMikeSourceStartEndListSkipAndTake.Result).Value);
+                List<MikeSourceStartEnd> mikeSourceStartEndListSkipAndTake = (List<MikeSourceStartEnd>)((OkObjectResult)actionMikeSourceStartEndListSkipAndTake.Result).Value;
+
+                int countSkipAndTake = ((List<MikeSourceStartEnd>)((OkObjectResult)actionMikeSourceStartEndListSkipAndTake.Result).Value).Count();
+                Assert.True(countSkipAndTake == 1);
+
+                Assert.False(mikeSourceStartEndList[0].MikeSourceStartEndID == mikeSourceStartEndListSkipAndTake[0].MikeSourceStartEndID);
+            }
+
+            // Get MikeSourceStartEnd With MikeSourceStartEndID
+            var actionMikeSourceStartEndGet = await MikeSourceStartEndService.GetMikeSourceStartEndWithMikeSourceStartEndID(mikeSourceStartEndList[0].MikeSourceStartEndID);
+            Assert.Equal(200, ((ObjectResult)actionMikeSourceStartEndGet.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionMikeSourceStartEndGet.Result).Value);
+            MikeSourceStartEnd mikeSourceStartEndGet = (MikeSourceStartEnd)((OkObjectResult)actionMikeSourceStartEndGet.Result).Value;
+            Assert.NotNull(mikeSourceStartEndGet);
+            Assert.Equal(mikeSourceStartEndGet.MikeSourceStartEndID, mikeSourceStartEndList[0].MikeSourceStartEndID);
 
             // Put MikeSourceStartEnd
             var actionMikeSourceStartEndUpdated = await MikeSourceStartEndService.Put(mikeSourceStartEnd);

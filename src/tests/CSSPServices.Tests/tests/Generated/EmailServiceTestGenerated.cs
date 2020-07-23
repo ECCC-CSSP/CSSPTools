@@ -20,6 +20,7 @@ using System.Threading.Tasks;
 using System.Transactions;
 using Xunit;
 using System.ComponentModel.DataAnnotations;
+using CSSPCultureServices.Resources;
 
 namespace CSSPServices.Tests
 {
@@ -244,6 +245,28 @@ namespace CSSPServices.Tests
 
             int count = ((List<Email>)((OkObjectResult)actionEmailList.Result).Value).Count();
             Assert.True(count > 0);
+
+            if (LoggedInService.DBLocation == DBLocationEnum.Server)
+            {
+                // List<Email> with skip and take
+                var actionEmailListSkipAndTake = await EmailService.GetEmailList(1, 1);
+                Assert.Equal(200, ((ObjectResult)actionEmailListSkipAndTake.Result).StatusCode);
+                Assert.NotNull(((OkObjectResult)actionEmailListSkipAndTake.Result).Value);
+                List<Email> emailListSkipAndTake = (List<Email>)((OkObjectResult)actionEmailListSkipAndTake.Result).Value;
+
+                int countSkipAndTake = ((List<Email>)((OkObjectResult)actionEmailListSkipAndTake.Result).Value).Count();
+                Assert.True(countSkipAndTake == 1);
+
+                Assert.False(emailList[0].EmailID == emailListSkipAndTake[0].EmailID);
+            }
+
+            // Get Email With EmailID
+            var actionEmailGet = await EmailService.GetEmailWithEmailID(emailList[0].EmailID);
+            Assert.Equal(200, ((ObjectResult)actionEmailGet.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionEmailGet.Result).Value);
+            Email emailGet = (Email)((OkObjectResult)actionEmailGet.Result).Value;
+            Assert.NotNull(emailGet);
+            Assert.Equal(emailGet.EmailID, emailList[0].EmailID);
 
             // Put Email
             var actionEmailUpdated = await EmailService.Put(email);

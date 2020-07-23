@@ -20,6 +20,7 @@ using System.Threading.Tasks;
 using System.Transactions;
 using Xunit;
 using System.ComponentModel.DataAnnotations;
+using CSSPCultureServices.Resources;
 
 namespace CSSPServices.Tests
 {
@@ -254,6 +255,28 @@ namespace CSSPServices.Tests
             int count = ((List<EmailDistributionListLanguage>)((OkObjectResult)actionEmailDistributionListLanguageList.Result).Value).Count();
             Assert.True(count > 0);
 
+            if (LoggedInService.DBLocation == DBLocationEnum.Server)
+            {
+                // List<EmailDistributionListLanguage> with skip and take
+                var actionEmailDistributionListLanguageListSkipAndTake = await EmailDistributionListLanguageService.GetEmailDistributionListLanguageList(1, 1);
+                Assert.Equal(200, ((ObjectResult)actionEmailDistributionListLanguageListSkipAndTake.Result).StatusCode);
+                Assert.NotNull(((OkObjectResult)actionEmailDistributionListLanguageListSkipAndTake.Result).Value);
+                List<EmailDistributionListLanguage> emailDistributionListLanguageListSkipAndTake = (List<EmailDistributionListLanguage>)((OkObjectResult)actionEmailDistributionListLanguageListSkipAndTake.Result).Value;
+
+                int countSkipAndTake = ((List<EmailDistributionListLanguage>)((OkObjectResult)actionEmailDistributionListLanguageListSkipAndTake.Result).Value).Count();
+                Assert.True(countSkipAndTake == 1);
+
+                Assert.False(emailDistributionListLanguageList[0].EmailDistributionListLanguageID == emailDistributionListLanguageListSkipAndTake[0].EmailDistributionListLanguageID);
+            }
+
+            // Get EmailDistributionListLanguage With EmailDistributionListLanguageID
+            var actionEmailDistributionListLanguageGet = await EmailDistributionListLanguageService.GetEmailDistributionListLanguageWithEmailDistributionListLanguageID(emailDistributionListLanguageList[0].EmailDistributionListLanguageID);
+            Assert.Equal(200, ((ObjectResult)actionEmailDistributionListLanguageGet.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionEmailDistributionListLanguageGet.Result).Value);
+            EmailDistributionListLanguage emailDistributionListLanguageGet = (EmailDistributionListLanguage)((OkObjectResult)actionEmailDistributionListLanguageGet.Result).Value;
+            Assert.NotNull(emailDistributionListLanguageGet);
+            Assert.Equal(emailDistributionListLanguageGet.EmailDistributionListLanguageID, emailDistributionListLanguageList[0].EmailDistributionListLanguageID);
+
             // Put EmailDistributionListLanguage
             var actionEmailDistributionListLanguageUpdated = await EmailDistributionListLanguageService.Put(emailDistributionListLanguage);
             Assert.Equal(200, ((ObjectResult)actionEmailDistributionListLanguageUpdated.Result).StatusCode);
@@ -357,7 +380,7 @@ namespace CSSPServices.Tests
             EmailDistributionListLanguage emailDistributionListLanguage = new EmailDistributionListLanguage();
 
             if (OmitPropName != "EmailDistributionListID") emailDistributionListLanguage.EmailDistributionListID = 1;
-            if (OmitPropName != "Language") emailDistributionListLanguage.Language = LanguageRequest;
+            if (OmitPropName != "Language") emailDistributionListLanguage.Language = CSSPCultureServicesRes.Culture.TwoLetterISOLanguageName == "fr" ? LanguageEnum.fr : LanguageEnum.en;
             if (OmitPropName != "EmailListName") emailDistributionListLanguage.EmailListName = GetRandomString("", 6);
             if (OmitPropName != "TranslationStatus") emailDistributionListLanguage.TranslationStatus = (TranslationStatusEnum)GetRandomEnumType(typeof(TranslationStatusEnum));
             if (OmitPropName != "LastUpdateDate_UTC") emailDistributionListLanguage.LastUpdateDate_UTC = new DateTime(2005, 3, 6);

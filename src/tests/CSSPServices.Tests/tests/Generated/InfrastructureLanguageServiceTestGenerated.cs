@@ -20,6 +20,7 @@ using System.Threading.Tasks;
 using System.Transactions;
 using Xunit;
 using System.ComponentModel.DataAnnotations;
+using CSSPCultureServices.Resources;
 
 namespace CSSPServices.Tests
 {
@@ -244,6 +245,28 @@ namespace CSSPServices.Tests
             int count = ((List<InfrastructureLanguage>)((OkObjectResult)actionInfrastructureLanguageList.Result).Value).Count();
             Assert.True(count > 0);
 
+            if (LoggedInService.DBLocation == DBLocationEnum.Server)
+            {
+                // List<InfrastructureLanguage> with skip and take
+                var actionInfrastructureLanguageListSkipAndTake = await InfrastructureLanguageService.GetInfrastructureLanguageList(1, 1);
+                Assert.Equal(200, ((ObjectResult)actionInfrastructureLanguageListSkipAndTake.Result).StatusCode);
+                Assert.NotNull(((OkObjectResult)actionInfrastructureLanguageListSkipAndTake.Result).Value);
+                List<InfrastructureLanguage> infrastructureLanguageListSkipAndTake = (List<InfrastructureLanguage>)((OkObjectResult)actionInfrastructureLanguageListSkipAndTake.Result).Value;
+
+                int countSkipAndTake = ((List<InfrastructureLanguage>)((OkObjectResult)actionInfrastructureLanguageListSkipAndTake.Result).Value).Count();
+                Assert.True(countSkipAndTake == 1);
+
+                Assert.False(infrastructureLanguageList[0].InfrastructureLanguageID == infrastructureLanguageListSkipAndTake[0].InfrastructureLanguageID);
+            }
+
+            // Get InfrastructureLanguage With InfrastructureLanguageID
+            var actionInfrastructureLanguageGet = await InfrastructureLanguageService.GetInfrastructureLanguageWithInfrastructureLanguageID(infrastructureLanguageList[0].InfrastructureLanguageID);
+            Assert.Equal(200, ((ObjectResult)actionInfrastructureLanguageGet.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionInfrastructureLanguageGet.Result).Value);
+            InfrastructureLanguage infrastructureLanguageGet = (InfrastructureLanguage)((OkObjectResult)actionInfrastructureLanguageGet.Result).Value;
+            Assert.NotNull(infrastructureLanguageGet);
+            Assert.Equal(infrastructureLanguageGet.InfrastructureLanguageID, infrastructureLanguageList[0].InfrastructureLanguageID);
+
             // Put InfrastructureLanguage
             var actionInfrastructureLanguageUpdated = await InfrastructureLanguageService.Put(infrastructureLanguage);
             Assert.Equal(200, ((ObjectResult)actionInfrastructureLanguageUpdated.Result).StatusCode);
@@ -347,7 +370,7 @@ namespace CSSPServices.Tests
             InfrastructureLanguage infrastructureLanguage = new InfrastructureLanguage();
 
             if (OmitPropName != "InfrastructureID") infrastructureLanguage.InfrastructureID = 1;
-            if (OmitPropName != "Language") infrastructureLanguage.Language = LanguageRequest;
+            if (OmitPropName != "Language") infrastructureLanguage.Language = CSSPCultureServicesRes.Culture.TwoLetterISOLanguageName == "fr" ? LanguageEnum.fr : LanguageEnum.en;
             if (OmitPropName != "Comment") infrastructureLanguage.Comment = GetRandomString("", 20);
             if (OmitPropName != "TranslationStatus") infrastructureLanguage.TranslationStatus = (TranslationStatusEnum)GetRandomEnumType(typeof(TranslationStatusEnum));
             if (OmitPropName != "LastUpdateDate_UTC") infrastructureLanguage.LastUpdateDate_UTC = new DateTime(2005, 3, 6);

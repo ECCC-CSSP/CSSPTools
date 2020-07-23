@@ -20,6 +20,7 @@ using System.Threading.Tasks;
 using System.Transactions;
 using Xunit;
 using System.ComponentModel.DataAnnotations;
+using CSSPCultureServices.Resources;
 
 namespace CSSPServices.Tests
 {
@@ -284,6 +285,28 @@ namespace CSSPServices.Tests
 
             int count = ((List<Spill>)((OkObjectResult)actionSpillList.Result).Value).Count();
             Assert.True(count > 0);
+
+            if (LoggedInService.DBLocation == DBLocationEnum.Server)
+            {
+                // List<Spill> with skip and take
+                var actionSpillListSkipAndTake = await SpillService.GetSpillList(1, 1);
+                Assert.Equal(200, ((ObjectResult)actionSpillListSkipAndTake.Result).StatusCode);
+                Assert.NotNull(((OkObjectResult)actionSpillListSkipAndTake.Result).Value);
+                List<Spill> spillListSkipAndTake = (List<Spill>)((OkObjectResult)actionSpillListSkipAndTake.Result).Value;
+
+                int countSkipAndTake = ((List<Spill>)((OkObjectResult)actionSpillListSkipAndTake.Result).Value).Count();
+                Assert.True(countSkipAndTake == 1);
+
+                Assert.False(spillList[0].SpillID == spillListSkipAndTake[0].SpillID);
+            }
+
+            // Get Spill With SpillID
+            var actionSpillGet = await SpillService.GetSpillWithSpillID(spillList[0].SpillID);
+            Assert.Equal(200, ((ObjectResult)actionSpillGet.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionSpillGet.Result).Value);
+            Spill spillGet = (Spill)((OkObjectResult)actionSpillGet.Result).Value;
+            Assert.NotNull(spillGet);
+            Assert.Equal(spillGet.SpillID, spillList[0].SpillID);
 
             // Put Spill
             var actionSpillUpdated = await SpillService.Put(spill);

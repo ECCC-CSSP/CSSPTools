@@ -20,6 +20,7 @@ using System.Threading.Tasks;
 using System.Transactions;
 using Xunit;
 using System.ComponentModel.DataAnnotations;
+using CSSPCultureServices.Resources;
 
 namespace CSSPServices.Tests
 {
@@ -358,6 +359,28 @@ namespace CSSPServices.Tests
 
             int count = ((List<MikeBoundaryCondition>)((OkObjectResult)actionMikeBoundaryConditionList.Result).Value).Count();
             Assert.True(count > 0);
+
+            if (LoggedInService.DBLocation == DBLocationEnum.Server)
+            {
+                // List<MikeBoundaryCondition> with skip and take
+                var actionMikeBoundaryConditionListSkipAndTake = await MikeBoundaryConditionService.GetMikeBoundaryConditionList(1, 1);
+                Assert.Equal(200, ((ObjectResult)actionMikeBoundaryConditionListSkipAndTake.Result).StatusCode);
+                Assert.NotNull(((OkObjectResult)actionMikeBoundaryConditionListSkipAndTake.Result).Value);
+                List<MikeBoundaryCondition> mikeBoundaryConditionListSkipAndTake = (List<MikeBoundaryCondition>)((OkObjectResult)actionMikeBoundaryConditionListSkipAndTake.Result).Value;
+
+                int countSkipAndTake = ((List<MikeBoundaryCondition>)((OkObjectResult)actionMikeBoundaryConditionListSkipAndTake.Result).Value).Count();
+                Assert.True(countSkipAndTake == 1);
+
+                Assert.False(mikeBoundaryConditionList[0].MikeBoundaryConditionID == mikeBoundaryConditionListSkipAndTake[0].MikeBoundaryConditionID);
+            }
+
+            // Get MikeBoundaryCondition With MikeBoundaryConditionID
+            var actionMikeBoundaryConditionGet = await MikeBoundaryConditionService.GetMikeBoundaryConditionWithMikeBoundaryConditionID(mikeBoundaryConditionList[0].MikeBoundaryConditionID);
+            Assert.Equal(200, ((ObjectResult)actionMikeBoundaryConditionGet.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionMikeBoundaryConditionGet.Result).Value);
+            MikeBoundaryCondition mikeBoundaryConditionGet = (MikeBoundaryCondition)((OkObjectResult)actionMikeBoundaryConditionGet.Result).Value;
+            Assert.NotNull(mikeBoundaryConditionGet);
+            Assert.Equal(mikeBoundaryConditionGet.MikeBoundaryConditionID, mikeBoundaryConditionList[0].MikeBoundaryConditionID);
 
             // Put MikeBoundaryCondition
             var actionMikeBoundaryConditionUpdated = await MikeBoundaryConditionService.Put(mikeBoundaryCondition);

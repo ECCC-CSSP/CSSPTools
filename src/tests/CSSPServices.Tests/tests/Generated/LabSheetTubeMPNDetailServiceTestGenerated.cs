@@ -20,6 +20,7 @@ using System.Threading.Tasks;
 using System.Transactions;
 using Xunit;
 using System.ComponentModel.DataAnnotations;
+using CSSPCultureServices.Resources;
 
 namespace CSSPServices.Tests
 {
@@ -417,6 +418,28 @@ namespace CSSPServices.Tests
 
             int count = ((List<LabSheetTubeMPNDetail>)((OkObjectResult)actionLabSheetTubeMPNDetailList.Result).Value).Count();
             Assert.True(count > 0);
+
+            if (LoggedInService.DBLocation == DBLocationEnum.Server)
+            {
+                // List<LabSheetTubeMPNDetail> with skip and take
+                var actionLabSheetTubeMPNDetailListSkipAndTake = await LabSheetTubeMPNDetailService.GetLabSheetTubeMPNDetailList(1, 1);
+                Assert.Equal(200, ((ObjectResult)actionLabSheetTubeMPNDetailListSkipAndTake.Result).StatusCode);
+                Assert.NotNull(((OkObjectResult)actionLabSheetTubeMPNDetailListSkipAndTake.Result).Value);
+                List<LabSheetTubeMPNDetail> labSheetTubeMPNDetailListSkipAndTake = (List<LabSheetTubeMPNDetail>)((OkObjectResult)actionLabSheetTubeMPNDetailListSkipAndTake.Result).Value;
+
+                int countSkipAndTake = ((List<LabSheetTubeMPNDetail>)((OkObjectResult)actionLabSheetTubeMPNDetailListSkipAndTake.Result).Value).Count();
+                Assert.True(countSkipAndTake == 1);
+
+                Assert.False(labSheetTubeMPNDetailList[0].LabSheetTubeMPNDetailID == labSheetTubeMPNDetailListSkipAndTake[0].LabSheetTubeMPNDetailID);
+            }
+
+            // Get LabSheetTubeMPNDetail With LabSheetTubeMPNDetailID
+            var actionLabSheetTubeMPNDetailGet = await LabSheetTubeMPNDetailService.GetLabSheetTubeMPNDetailWithLabSheetTubeMPNDetailID(labSheetTubeMPNDetailList[0].LabSheetTubeMPNDetailID);
+            Assert.Equal(200, ((ObjectResult)actionLabSheetTubeMPNDetailGet.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionLabSheetTubeMPNDetailGet.Result).Value);
+            LabSheetTubeMPNDetail labSheetTubeMPNDetailGet = (LabSheetTubeMPNDetail)((OkObjectResult)actionLabSheetTubeMPNDetailGet.Result).Value;
+            Assert.NotNull(labSheetTubeMPNDetailGet);
+            Assert.Equal(labSheetTubeMPNDetailGet.LabSheetTubeMPNDetailID, labSheetTubeMPNDetailList[0].LabSheetTubeMPNDetailID);
 
             // Put LabSheetTubeMPNDetail
             var actionLabSheetTubeMPNDetailUpdated = await LabSheetTubeMPNDetailService.Put(labSheetTubeMPNDetail);

@@ -20,6 +20,7 @@ using System.Threading.Tasks;
 using System.Transactions;
 using Xunit;
 using System.ComponentModel.DataAnnotations;
+using CSSPCultureServices.Resources;
 
 namespace CSSPServices.Tests
 {
@@ -293,6 +294,28 @@ namespace CSSPServices.Tests
 
             int count = ((List<TideSite>)((OkObjectResult)actionTideSiteList.Result).Value).Count();
             Assert.True(count > 0);
+
+            if (LoggedInService.DBLocation == DBLocationEnum.Server)
+            {
+                // List<TideSite> with skip and take
+                var actionTideSiteListSkipAndTake = await TideSiteService.GetTideSiteList(1, 1);
+                Assert.Equal(200, ((ObjectResult)actionTideSiteListSkipAndTake.Result).StatusCode);
+                Assert.NotNull(((OkObjectResult)actionTideSiteListSkipAndTake.Result).Value);
+                List<TideSite> tideSiteListSkipAndTake = (List<TideSite>)((OkObjectResult)actionTideSiteListSkipAndTake.Result).Value;
+
+                int countSkipAndTake = ((List<TideSite>)((OkObjectResult)actionTideSiteListSkipAndTake.Result).Value).Count();
+                Assert.True(countSkipAndTake == 1);
+
+                Assert.False(tideSiteList[0].TideSiteID == tideSiteListSkipAndTake[0].TideSiteID);
+            }
+
+            // Get TideSite With TideSiteID
+            var actionTideSiteGet = await TideSiteService.GetTideSiteWithTideSiteID(tideSiteList[0].TideSiteID);
+            Assert.Equal(200, ((ObjectResult)actionTideSiteGet.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionTideSiteGet.Result).Value);
+            TideSite tideSiteGet = (TideSite)((OkObjectResult)actionTideSiteGet.Result).Value;
+            Assert.NotNull(tideSiteGet);
+            Assert.Equal(tideSiteGet.TideSiteID, tideSiteList[0].TideSiteID);
 
             // Put TideSite
             var actionTideSiteUpdated = await TideSiteService.Put(tideSite);

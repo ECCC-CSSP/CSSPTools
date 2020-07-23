@@ -6,6 +6,7 @@ using Xunit;
 
 namespace CSSPServices.Tests
 {
+    [Collection("Sequential")]
     public partial class WebServiceTests
     {
         #region Variables

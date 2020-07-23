@@ -20,6 +20,7 @@ using System.Threading.Tasks;
 using System.Transactions;
 using Xunit;
 using System.ComponentModel.DataAnnotations;
+using CSSPCultureServices.Resources;
 
 namespace CSSPServices.Tests
 {
@@ -231,6 +232,28 @@ namespace CSSPServices.Tests
 
             int count = ((List<SamplingPlanSubsectorSite>)((OkObjectResult)actionSamplingPlanSubsectorSiteList.Result).Value).Count();
             Assert.True(count > 0);
+
+            if (LoggedInService.DBLocation == DBLocationEnum.Server)
+            {
+                // List<SamplingPlanSubsectorSite> with skip and take
+                var actionSamplingPlanSubsectorSiteListSkipAndTake = await SamplingPlanSubsectorSiteService.GetSamplingPlanSubsectorSiteList(1, 1);
+                Assert.Equal(200, ((ObjectResult)actionSamplingPlanSubsectorSiteListSkipAndTake.Result).StatusCode);
+                Assert.NotNull(((OkObjectResult)actionSamplingPlanSubsectorSiteListSkipAndTake.Result).Value);
+                List<SamplingPlanSubsectorSite> samplingPlanSubsectorSiteListSkipAndTake = (List<SamplingPlanSubsectorSite>)((OkObjectResult)actionSamplingPlanSubsectorSiteListSkipAndTake.Result).Value;
+
+                int countSkipAndTake = ((List<SamplingPlanSubsectorSite>)((OkObjectResult)actionSamplingPlanSubsectorSiteListSkipAndTake.Result).Value).Count();
+                Assert.True(countSkipAndTake == 1);
+
+                Assert.False(samplingPlanSubsectorSiteList[0].SamplingPlanSubsectorSiteID == samplingPlanSubsectorSiteListSkipAndTake[0].SamplingPlanSubsectorSiteID);
+            }
+
+            // Get SamplingPlanSubsectorSite With SamplingPlanSubsectorSiteID
+            var actionSamplingPlanSubsectorSiteGet = await SamplingPlanSubsectorSiteService.GetSamplingPlanSubsectorSiteWithSamplingPlanSubsectorSiteID(samplingPlanSubsectorSiteList[0].SamplingPlanSubsectorSiteID);
+            Assert.Equal(200, ((ObjectResult)actionSamplingPlanSubsectorSiteGet.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionSamplingPlanSubsectorSiteGet.Result).Value);
+            SamplingPlanSubsectorSite samplingPlanSubsectorSiteGet = (SamplingPlanSubsectorSite)((OkObjectResult)actionSamplingPlanSubsectorSiteGet.Result).Value;
+            Assert.NotNull(samplingPlanSubsectorSiteGet);
+            Assert.Equal(samplingPlanSubsectorSiteGet.SamplingPlanSubsectorSiteID, samplingPlanSubsectorSiteList[0].SamplingPlanSubsectorSiteID);
 
             // Put SamplingPlanSubsectorSite
             var actionSamplingPlanSubsectorSiteUpdated = await SamplingPlanSubsectorSiteService.Put(samplingPlanSubsectorSite);

@@ -20,6 +20,7 @@ using System.Threading.Tasks;
 using System.Transactions;
 using Xunit;
 using System.ComponentModel.DataAnnotations;
+using CSSPCultureServices.Resources;
 
 namespace CSSPServices.Tests
 {
@@ -244,6 +245,28 @@ namespace CSSPServices.Tests
 
             int count = ((List<Classification>)((OkObjectResult)actionClassificationList.Result).Value).Count();
             Assert.True(count > 0);
+
+            if (LoggedInService.DBLocation == DBLocationEnum.Server)
+            {
+                // List<Classification> with skip and take
+                var actionClassificationListSkipAndTake = await ClassificationService.GetClassificationList(1, 1);
+                Assert.Equal(200, ((ObjectResult)actionClassificationListSkipAndTake.Result).StatusCode);
+                Assert.NotNull(((OkObjectResult)actionClassificationListSkipAndTake.Result).Value);
+                List<Classification> classificationListSkipAndTake = (List<Classification>)((OkObjectResult)actionClassificationListSkipAndTake.Result).Value;
+
+                int countSkipAndTake = ((List<Classification>)((OkObjectResult)actionClassificationListSkipAndTake.Result).Value).Count();
+                Assert.True(countSkipAndTake == 1);
+
+                Assert.False(classificationList[0].ClassificationID == classificationListSkipAndTake[0].ClassificationID);
+            }
+
+            // Get Classification With ClassificationID
+            var actionClassificationGet = await ClassificationService.GetClassificationWithClassificationID(classificationList[0].ClassificationID);
+            Assert.Equal(200, ((ObjectResult)actionClassificationGet.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionClassificationGet.Result).Value);
+            Classification classificationGet = (Classification)((OkObjectResult)actionClassificationGet.Result).Value;
+            Assert.NotNull(classificationGet);
+            Assert.Equal(classificationGet.ClassificationID, classificationList[0].ClassificationID);
 
             // Put Classification
             var actionClassificationUpdated = await ClassificationService.Put(classification);

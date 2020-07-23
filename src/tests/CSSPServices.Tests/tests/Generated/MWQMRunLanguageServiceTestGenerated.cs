@@ -20,6 +20,7 @@ using System.Threading.Tasks;
 using System.Transactions;
 using Xunit;
 using System.ComponentModel.DataAnnotations;
+using CSSPCultureServices.Resources;
 
 namespace CSSPServices.Tests
 {
@@ -268,6 +269,28 @@ namespace CSSPServices.Tests
             int count = ((List<MWQMRunLanguage>)((OkObjectResult)actionMWQMRunLanguageList.Result).Value).Count();
             Assert.True(count > 0);
 
+            if (LoggedInService.DBLocation == DBLocationEnum.Server)
+            {
+                // List<MWQMRunLanguage> with skip and take
+                var actionMWQMRunLanguageListSkipAndTake = await MWQMRunLanguageService.GetMWQMRunLanguageList(1, 1);
+                Assert.Equal(200, ((ObjectResult)actionMWQMRunLanguageListSkipAndTake.Result).StatusCode);
+                Assert.NotNull(((OkObjectResult)actionMWQMRunLanguageListSkipAndTake.Result).Value);
+                List<MWQMRunLanguage> mwqmRunLanguageListSkipAndTake = (List<MWQMRunLanguage>)((OkObjectResult)actionMWQMRunLanguageListSkipAndTake.Result).Value;
+
+                int countSkipAndTake = ((List<MWQMRunLanguage>)((OkObjectResult)actionMWQMRunLanguageListSkipAndTake.Result).Value).Count();
+                Assert.True(countSkipAndTake == 1);
+
+                Assert.False(mwqmRunLanguageList[0].MWQMRunLanguageID == mwqmRunLanguageListSkipAndTake[0].MWQMRunLanguageID);
+            }
+
+            // Get MWQMRunLanguage With MWQMRunLanguageID
+            var actionMWQMRunLanguageGet = await MWQMRunLanguageService.GetMWQMRunLanguageWithMWQMRunLanguageID(mwqmRunLanguageList[0].MWQMRunLanguageID);
+            Assert.Equal(200, ((ObjectResult)actionMWQMRunLanguageGet.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionMWQMRunLanguageGet.Result).Value);
+            MWQMRunLanguage mwqmRunLanguageGet = (MWQMRunLanguage)((OkObjectResult)actionMWQMRunLanguageGet.Result).Value;
+            Assert.NotNull(mwqmRunLanguageGet);
+            Assert.Equal(mwqmRunLanguageGet.MWQMRunLanguageID, mwqmRunLanguageList[0].MWQMRunLanguageID);
+
             // Put MWQMRunLanguage
             var actionMWQMRunLanguageUpdated = await MWQMRunLanguageService.Put(mwqmRunLanguage);
             Assert.Equal(200, ((ObjectResult)actionMWQMRunLanguageUpdated.Result).StatusCode);
@@ -371,7 +394,7 @@ namespace CSSPServices.Tests
             MWQMRunLanguage mwqmRunLanguage = new MWQMRunLanguage();
 
             if (OmitPropName != "MWQMRunID") mwqmRunLanguage.MWQMRunID = 1;
-            if (OmitPropName != "Language") mwqmRunLanguage.Language = LanguageRequest;
+            if (OmitPropName != "Language") mwqmRunLanguage.Language = CSSPCultureServicesRes.Culture.TwoLetterISOLanguageName == "fr" ? LanguageEnum.fr : LanguageEnum.en;
             if (OmitPropName != "RunComment") mwqmRunLanguage.RunComment = GetRandomString("", 20);
             if (OmitPropName != "TranslationStatusRunComment") mwqmRunLanguage.TranslationStatusRunComment = (TranslationStatusEnum)GetRandomEnumType(typeof(TranslationStatusEnum));
             if (OmitPropName != "RunWeatherComment") mwqmRunLanguage.RunWeatherComment = GetRandomString("", 20);

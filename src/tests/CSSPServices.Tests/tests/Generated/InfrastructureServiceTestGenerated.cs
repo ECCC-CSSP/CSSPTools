@@ -20,6 +20,7 @@ using System.Threading.Tasks;
 using System.Transactions;
 using Xunit;
 using System.ComponentModel.DataAnnotations;
+using CSSPCultureServices.Resources;
 
 namespace CSSPServices.Tests
 {
@@ -1027,6 +1028,28 @@ namespace CSSPServices.Tests
 
             int count = ((List<Infrastructure>)((OkObjectResult)actionInfrastructureList.Result).Value).Count();
             Assert.True(count > 0);
+
+            if (LoggedInService.DBLocation == DBLocationEnum.Server)
+            {
+                // List<Infrastructure> with skip and take
+                var actionInfrastructureListSkipAndTake = await InfrastructureService.GetInfrastructureList(1, 1);
+                Assert.Equal(200, ((ObjectResult)actionInfrastructureListSkipAndTake.Result).StatusCode);
+                Assert.NotNull(((OkObjectResult)actionInfrastructureListSkipAndTake.Result).Value);
+                List<Infrastructure> infrastructureListSkipAndTake = (List<Infrastructure>)((OkObjectResult)actionInfrastructureListSkipAndTake.Result).Value;
+
+                int countSkipAndTake = ((List<Infrastructure>)((OkObjectResult)actionInfrastructureListSkipAndTake.Result).Value).Count();
+                Assert.True(countSkipAndTake == 1);
+
+                Assert.False(infrastructureList[0].InfrastructureID == infrastructureListSkipAndTake[0].InfrastructureID);
+            }
+
+            // Get Infrastructure With InfrastructureID
+            var actionInfrastructureGet = await InfrastructureService.GetInfrastructureWithInfrastructureID(infrastructureList[0].InfrastructureID);
+            Assert.Equal(200, ((ObjectResult)actionInfrastructureGet.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionInfrastructureGet.Result).Value);
+            Infrastructure infrastructureGet = (Infrastructure)((OkObjectResult)actionInfrastructureGet.Result).Value;
+            Assert.NotNull(infrastructureGet);
+            Assert.Equal(infrastructureGet.InfrastructureID, infrastructureList[0].InfrastructureID);
 
             // Put Infrastructure
             var actionInfrastructureUpdated = await InfrastructureService.Put(infrastructure);

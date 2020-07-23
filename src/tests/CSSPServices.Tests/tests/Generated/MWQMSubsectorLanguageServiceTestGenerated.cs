@@ -20,6 +20,7 @@ using System.Threading.Tasks;
 using System.Transactions;
 using Xunit;
 using System.ComponentModel.DataAnnotations;
+using CSSPCultureServices.Resources;
 
 namespace CSSPServices.Tests
 {
@@ -270,6 +271,28 @@ namespace CSSPServices.Tests
             int count = ((List<MWQMSubsectorLanguage>)((OkObjectResult)actionMWQMSubsectorLanguageList.Result).Value).Count();
             Assert.True(count > 0);
 
+            if (LoggedInService.DBLocation == DBLocationEnum.Server)
+            {
+                // List<MWQMSubsectorLanguage> with skip and take
+                var actionMWQMSubsectorLanguageListSkipAndTake = await MWQMSubsectorLanguageService.GetMWQMSubsectorLanguageList(1, 1);
+                Assert.Equal(200, ((ObjectResult)actionMWQMSubsectorLanguageListSkipAndTake.Result).StatusCode);
+                Assert.NotNull(((OkObjectResult)actionMWQMSubsectorLanguageListSkipAndTake.Result).Value);
+                List<MWQMSubsectorLanguage> mwqmSubsectorLanguageListSkipAndTake = (List<MWQMSubsectorLanguage>)((OkObjectResult)actionMWQMSubsectorLanguageListSkipAndTake.Result).Value;
+
+                int countSkipAndTake = ((List<MWQMSubsectorLanguage>)((OkObjectResult)actionMWQMSubsectorLanguageListSkipAndTake.Result).Value).Count();
+                Assert.True(countSkipAndTake == 1);
+
+                Assert.False(mwqmSubsectorLanguageList[0].MWQMSubsectorLanguageID == mwqmSubsectorLanguageListSkipAndTake[0].MWQMSubsectorLanguageID);
+            }
+
+            // Get MWQMSubsectorLanguage With MWQMSubsectorLanguageID
+            var actionMWQMSubsectorLanguageGet = await MWQMSubsectorLanguageService.GetMWQMSubsectorLanguageWithMWQMSubsectorLanguageID(mwqmSubsectorLanguageList[0].MWQMSubsectorLanguageID);
+            Assert.Equal(200, ((ObjectResult)actionMWQMSubsectorLanguageGet.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionMWQMSubsectorLanguageGet.Result).Value);
+            MWQMSubsectorLanguage mwqmSubsectorLanguageGet = (MWQMSubsectorLanguage)((OkObjectResult)actionMWQMSubsectorLanguageGet.Result).Value;
+            Assert.NotNull(mwqmSubsectorLanguageGet);
+            Assert.Equal(mwqmSubsectorLanguageGet.MWQMSubsectorLanguageID, mwqmSubsectorLanguageList[0].MWQMSubsectorLanguageID);
+
             // Put MWQMSubsectorLanguage
             var actionMWQMSubsectorLanguageUpdated = await MWQMSubsectorLanguageService.Put(mwqmSubsectorLanguage);
             Assert.Equal(200, ((ObjectResult)actionMWQMSubsectorLanguageUpdated.Result).StatusCode);
@@ -373,7 +396,7 @@ namespace CSSPServices.Tests
             MWQMSubsectorLanguage mwqmSubsectorLanguage = new MWQMSubsectorLanguage();
 
             if (OmitPropName != "MWQMSubsectorID") mwqmSubsectorLanguage.MWQMSubsectorID = 1;
-            if (OmitPropName != "Language") mwqmSubsectorLanguage.Language = LanguageRequest;
+            if (OmitPropName != "Language") mwqmSubsectorLanguage.Language = CSSPCultureServicesRes.Culture.TwoLetterISOLanguageName == "fr" ? LanguageEnum.fr : LanguageEnum.en;
             if (OmitPropName != "SubsectorDesc") mwqmSubsectorLanguage.SubsectorDesc = GetRandomString("", 5);
             if (OmitPropName != "TranslationStatusSubsectorDesc") mwqmSubsectorLanguage.TranslationStatusSubsectorDesc = (TranslationStatusEnum)GetRandomEnumType(typeof(TranslationStatusEnum));
             if (OmitPropName != "LogBook") mwqmSubsectorLanguage.LogBook = GetRandomString("", 20);

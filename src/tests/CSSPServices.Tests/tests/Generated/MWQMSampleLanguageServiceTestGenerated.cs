@@ -20,6 +20,7 @@ using System.Threading.Tasks;
 using System.Transactions;
 using Xunit;
 using System.ComponentModel.DataAnnotations;
+using CSSPCultureServices.Resources;
 
 namespace CSSPServices.Tests
 {
@@ -244,6 +245,28 @@ namespace CSSPServices.Tests
             int count = ((List<MWQMSampleLanguage>)((OkObjectResult)actionMWQMSampleLanguageList.Result).Value).Count();
             Assert.True(count > 0);
 
+            if (LoggedInService.DBLocation == DBLocationEnum.Server)
+            {
+                // List<MWQMSampleLanguage> with skip and take
+                var actionMWQMSampleLanguageListSkipAndTake = await MWQMSampleLanguageService.GetMWQMSampleLanguageList(1, 1);
+                Assert.Equal(200, ((ObjectResult)actionMWQMSampleLanguageListSkipAndTake.Result).StatusCode);
+                Assert.NotNull(((OkObjectResult)actionMWQMSampleLanguageListSkipAndTake.Result).Value);
+                List<MWQMSampleLanguage> mwqmSampleLanguageListSkipAndTake = (List<MWQMSampleLanguage>)((OkObjectResult)actionMWQMSampleLanguageListSkipAndTake.Result).Value;
+
+                int countSkipAndTake = ((List<MWQMSampleLanguage>)((OkObjectResult)actionMWQMSampleLanguageListSkipAndTake.Result).Value).Count();
+                Assert.True(countSkipAndTake == 1);
+
+                Assert.False(mwqmSampleLanguageList[0].MWQMSampleLanguageID == mwqmSampleLanguageListSkipAndTake[0].MWQMSampleLanguageID);
+            }
+
+            // Get MWQMSampleLanguage With MWQMSampleLanguageID
+            var actionMWQMSampleLanguageGet = await MWQMSampleLanguageService.GetMWQMSampleLanguageWithMWQMSampleLanguageID(mwqmSampleLanguageList[0].MWQMSampleLanguageID);
+            Assert.Equal(200, ((ObjectResult)actionMWQMSampleLanguageGet.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionMWQMSampleLanguageGet.Result).Value);
+            MWQMSampleLanguage mwqmSampleLanguageGet = (MWQMSampleLanguage)((OkObjectResult)actionMWQMSampleLanguageGet.Result).Value;
+            Assert.NotNull(mwqmSampleLanguageGet);
+            Assert.Equal(mwqmSampleLanguageGet.MWQMSampleLanguageID, mwqmSampleLanguageList[0].MWQMSampleLanguageID);
+
             // Put MWQMSampleLanguage
             var actionMWQMSampleLanguageUpdated = await MWQMSampleLanguageService.Put(mwqmSampleLanguage);
             Assert.Equal(200, ((ObjectResult)actionMWQMSampleLanguageUpdated.Result).StatusCode);
@@ -347,7 +370,7 @@ namespace CSSPServices.Tests
             MWQMSampleLanguage mwqmSampleLanguage = new MWQMSampleLanguage();
 
             if (OmitPropName != "MWQMSampleID") mwqmSampleLanguage.MWQMSampleID = 1;
-            if (OmitPropName != "Language") mwqmSampleLanguage.Language = LanguageRequest;
+            if (OmitPropName != "Language") mwqmSampleLanguage.Language = CSSPCultureServicesRes.Culture.TwoLetterISOLanguageName == "fr" ? LanguageEnum.fr : LanguageEnum.en;
             if (OmitPropName != "MWQMSampleNote") mwqmSampleLanguage.MWQMSampleNote = GetRandomString("", 20);
             if (OmitPropName != "TranslationStatus") mwqmSampleLanguage.TranslationStatus = (TranslationStatusEnum)GetRandomEnumType(typeof(TranslationStatusEnum));
             if (OmitPropName != "LastUpdateDate_UTC") mwqmSampleLanguage.LastUpdateDate_UTC = new DateTime(2005, 3, 6);

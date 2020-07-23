@@ -20,6 +20,7 @@ using System.Threading.Tasks;
 using System.Transactions;
 using Xunit;
 using System.ComponentModel.DataAnnotations;
+using CSSPCultureServices.Resources;
 
 namespace CSSPServices.Tests
 {
@@ -429,6 +430,28 @@ namespace CSSPServices.Tests
 
             int count = ((List<HydrometricSite>)((OkObjectResult)actionHydrometricSiteList.Result).Value).Count();
             Assert.True(count > 0);
+
+            if (LoggedInService.DBLocation == DBLocationEnum.Server)
+            {
+                // List<HydrometricSite> with skip and take
+                var actionHydrometricSiteListSkipAndTake = await HydrometricSiteService.GetHydrometricSiteList(1, 1);
+                Assert.Equal(200, ((ObjectResult)actionHydrometricSiteListSkipAndTake.Result).StatusCode);
+                Assert.NotNull(((OkObjectResult)actionHydrometricSiteListSkipAndTake.Result).Value);
+                List<HydrometricSite> hydrometricSiteListSkipAndTake = (List<HydrometricSite>)((OkObjectResult)actionHydrometricSiteListSkipAndTake.Result).Value;
+
+                int countSkipAndTake = ((List<HydrometricSite>)((OkObjectResult)actionHydrometricSiteListSkipAndTake.Result).Value).Count();
+                Assert.True(countSkipAndTake == 1);
+
+                Assert.False(hydrometricSiteList[0].HydrometricSiteID == hydrometricSiteListSkipAndTake[0].HydrometricSiteID);
+            }
+
+            // Get HydrometricSite With HydrometricSiteID
+            var actionHydrometricSiteGet = await HydrometricSiteService.GetHydrometricSiteWithHydrometricSiteID(hydrometricSiteList[0].HydrometricSiteID);
+            Assert.Equal(200, ((ObjectResult)actionHydrometricSiteGet.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionHydrometricSiteGet.Result).Value);
+            HydrometricSite hydrometricSiteGet = (HydrometricSite)((OkObjectResult)actionHydrometricSiteGet.Result).Value;
+            Assert.NotNull(hydrometricSiteGet);
+            Assert.Equal(hydrometricSiteGet.HydrometricSiteID, hydrometricSiteList[0].HydrometricSiteID);
 
             // Put HydrometricSite
             var actionHydrometricSiteUpdated = await HydrometricSiteService.Put(hydrometricSite);

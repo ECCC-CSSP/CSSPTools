@@ -20,6 +20,7 @@ using System.Threading.Tasks;
 using System.Transactions;
 using Xunit;
 using System.ComponentModel.DataAnnotations;
+using CSSPCultureServices.Resources;
 
 namespace CSSPServices.Tests
 {
@@ -280,6 +281,28 @@ namespace CSSPServices.Tests
 
             int count = ((List<MWQMSite>)((OkObjectResult)actionMWQMSiteList.Result).Value).Count();
             Assert.True(count > 0);
+
+            if (LoggedInService.DBLocation == DBLocationEnum.Server)
+            {
+                // List<MWQMSite> with skip and take
+                var actionMWQMSiteListSkipAndTake = await MWQMSiteService.GetMWQMSiteList(1, 1);
+                Assert.Equal(200, ((ObjectResult)actionMWQMSiteListSkipAndTake.Result).StatusCode);
+                Assert.NotNull(((OkObjectResult)actionMWQMSiteListSkipAndTake.Result).Value);
+                List<MWQMSite> mwqmSiteListSkipAndTake = (List<MWQMSite>)((OkObjectResult)actionMWQMSiteListSkipAndTake.Result).Value;
+
+                int countSkipAndTake = ((List<MWQMSite>)((OkObjectResult)actionMWQMSiteListSkipAndTake.Result).Value).Count();
+                Assert.True(countSkipAndTake == 1);
+
+                Assert.False(mwqmSiteList[0].MWQMSiteID == mwqmSiteListSkipAndTake[0].MWQMSiteID);
+            }
+
+            // Get MWQMSite With MWQMSiteID
+            var actionMWQMSiteGet = await MWQMSiteService.GetMWQMSiteWithMWQMSiteID(mwqmSiteList[0].MWQMSiteID);
+            Assert.Equal(200, ((ObjectResult)actionMWQMSiteGet.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionMWQMSiteGet.Result).Value);
+            MWQMSite mwqmSiteGet = (MWQMSite)((OkObjectResult)actionMWQMSiteGet.Result).Value;
+            Assert.NotNull(mwqmSiteGet);
+            Assert.Equal(mwqmSiteGet.MWQMSiteID, mwqmSiteList[0].MWQMSiteID);
 
             // Put MWQMSite
             var actionMWQMSiteUpdated = await MWQMSiteService.Put(mwqmSite);

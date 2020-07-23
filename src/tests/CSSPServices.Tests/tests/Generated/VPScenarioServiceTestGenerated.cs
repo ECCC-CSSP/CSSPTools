@@ -20,6 +20,7 @@ using System.Threading.Tasks;
 using System.Transactions;
 using Xunit;
 using System.ComponentModel.DataAnnotations;
+using CSSPCultureServices.Resources;
 
 namespace CSSPServices.Tests
 {
@@ -574,6 +575,28 @@ namespace CSSPServices.Tests
 
             int count = ((List<VPScenario>)((OkObjectResult)actionVPScenarioList.Result).Value).Count();
             Assert.True(count > 0);
+
+            if (LoggedInService.DBLocation == DBLocationEnum.Server)
+            {
+                // List<VPScenario> with skip and take
+                var actionVPScenarioListSkipAndTake = await VPScenarioService.GetVPScenarioList(1, 1);
+                Assert.Equal(200, ((ObjectResult)actionVPScenarioListSkipAndTake.Result).StatusCode);
+                Assert.NotNull(((OkObjectResult)actionVPScenarioListSkipAndTake.Result).Value);
+                List<VPScenario> vpScenarioListSkipAndTake = (List<VPScenario>)((OkObjectResult)actionVPScenarioListSkipAndTake.Result).Value;
+
+                int countSkipAndTake = ((List<VPScenario>)((OkObjectResult)actionVPScenarioListSkipAndTake.Result).Value).Count();
+                Assert.True(countSkipAndTake == 1);
+
+                Assert.False(vpScenarioList[0].VPScenarioID == vpScenarioListSkipAndTake[0].VPScenarioID);
+            }
+
+            // Get VPScenario With VPScenarioID
+            var actionVPScenarioGet = await VPScenarioService.GetVPScenarioWithVPScenarioID(vpScenarioList[0].VPScenarioID);
+            Assert.Equal(200, ((ObjectResult)actionVPScenarioGet.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionVPScenarioGet.Result).Value);
+            VPScenario vpScenarioGet = (VPScenario)((OkObjectResult)actionVPScenarioGet.Result).Value;
+            Assert.NotNull(vpScenarioGet);
+            Assert.Equal(vpScenarioGet.VPScenarioID, vpScenarioList[0].VPScenarioID);
 
             // Put VPScenario
             var actionVPScenarioUpdated = await VPScenarioService.Put(vpScenario);

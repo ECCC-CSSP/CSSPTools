@@ -20,6 +20,7 @@ using System.Threading.Tasks;
 using System.Transactions;
 using Xunit;
 using System.ComponentModel.DataAnnotations;
+using CSSPCultureServices.Resources;
 
 namespace CSSPServices.Tests
 {
@@ -388,6 +389,28 @@ namespace CSSPServices.Tests
 
             int count = ((List<Contact>)((OkObjectResult)actionContactList.Result).Value).Count();
             Assert.True(count > 0);
+
+            if (LoggedInService.DBLocation == DBLocationEnum.Server)
+            {
+                // List<Contact> with skip and take
+                var actionContactListSkipAndTake = await ContactService.GetContactList(1, 1);
+                Assert.Equal(200, ((ObjectResult)actionContactListSkipAndTake.Result).StatusCode);
+                Assert.NotNull(((OkObjectResult)actionContactListSkipAndTake.Result).Value);
+                List<Contact> contactListSkipAndTake = (List<Contact>)((OkObjectResult)actionContactListSkipAndTake.Result).Value;
+
+                int countSkipAndTake = ((List<Contact>)((OkObjectResult)actionContactListSkipAndTake.Result).Value).Count();
+                Assert.True(countSkipAndTake == 1);
+
+                Assert.False(contactList[0].ContactID == contactListSkipAndTake[0].ContactID);
+            }
+
+            // Get Contact With ContactID
+            var actionContactGet = await ContactService.GetContactWithContactID(contactList[0].ContactID);
+            Assert.Equal(200, ((ObjectResult)actionContactGet.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionContactGet.Result).Value);
+            Contact contactGet = (Contact)((OkObjectResult)actionContactGet.Result).Value;
+            Assert.NotNull(contactGet);
+            Assert.Equal(contactGet.ContactID, contactList[0].ContactID);
 
             // Put Contact
             var actionContactUpdated = await ContactService.Put(contact);

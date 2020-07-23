@@ -20,6 +20,7 @@ using System.Threading.Tasks;
 using System.Transactions;
 using Xunit;
 using System.ComponentModel.DataAnnotations;
+using CSSPCultureServices.Resources;
 
 namespace CSSPServices.Tests
 {
@@ -451,6 +452,28 @@ namespace CSSPServices.Tests
 
             int count = ((List<VPAmbient>)((OkObjectResult)actionVPAmbientList.Result).Value).Count();
             Assert.True(count > 0);
+
+            if (LoggedInService.DBLocation == DBLocationEnum.Server)
+            {
+                // List<VPAmbient> with skip and take
+                var actionVPAmbientListSkipAndTake = await VPAmbientService.GetVPAmbientList(1, 1);
+                Assert.Equal(200, ((ObjectResult)actionVPAmbientListSkipAndTake.Result).StatusCode);
+                Assert.NotNull(((OkObjectResult)actionVPAmbientListSkipAndTake.Result).Value);
+                List<VPAmbient> vpAmbientListSkipAndTake = (List<VPAmbient>)((OkObjectResult)actionVPAmbientListSkipAndTake.Result).Value;
+
+                int countSkipAndTake = ((List<VPAmbient>)((OkObjectResult)actionVPAmbientListSkipAndTake.Result).Value).Count();
+                Assert.True(countSkipAndTake == 1);
+
+                Assert.False(vpAmbientList[0].VPAmbientID == vpAmbientListSkipAndTake[0].VPAmbientID);
+            }
+
+            // Get VPAmbient With VPAmbientID
+            var actionVPAmbientGet = await VPAmbientService.GetVPAmbientWithVPAmbientID(vpAmbientList[0].VPAmbientID);
+            Assert.Equal(200, ((ObjectResult)actionVPAmbientGet.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionVPAmbientGet.Result).Value);
+            VPAmbient vpAmbientGet = (VPAmbient)((OkObjectResult)actionVPAmbientGet.Result).Value;
+            Assert.NotNull(vpAmbientGet);
+            Assert.Equal(vpAmbientGet.VPAmbientID, vpAmbientList[0].VPAmbientID);
 
             // Put VPAmbient
             var actionVPAmbientUpdated = await VPAmbientService.Put(vpAmbient);

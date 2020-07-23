@@ -20,6 +20,7 @@ using System.Threading.Tasks;
 using System.Transactions;
 using Xunit;
 using System.ComponentModel.DataAnnotations;
+using CSSPCultureServices.Resources;
 
 namespace CSSPServices.Tests
 {
@@ -341,6 +342,28 @@ namespace CSSPServices.Tests
             int count = ((List<ReportSection>)((OkObjectResult)actionReportSectionList.Result).Value).Count();
             Assert.True(count > 0);
 
+            if (LoggedInService.DBLocation == DBLocationEnum.Server)
+            {
+                // List<ReportSection> with skip and take
+                var actionReportSectionListSkipAndTake = await ReportSectionService.GetReportSectionList(1, 1);
+                Assert.Equal(200, ((ObjectResult)actionReportSectionListSkipAndTake.Result).StatusCode);
+                Assert.NotNull(((OkObjectResult)actionReportSectionListSkipAndTake.Result).Value);
+                List<ReportSection> reportSectionListSkipAndTake = (List<ReportSection>)((OkObjectResult)actionReportSectionListSkipAndTake.Result).Value;
+
+                int countSkipAndTake = ((List<ReportSection>)((OkObjectResult)actionReportSectionListSkipAndTake.Result).Value).Count();
+                Assert.True(countSkipAndTake == 1);
+
+                Assert.False(reportSectionList[0].ReportSectionID == reportSectionListSkipAndTake[0].ReportSectionID);
+            }
+
+            // Get ReportSection With ReportSectionID
+            var actionReportSectionGet = await ReportSectionService.GetReportSectionWithReportSectionID(reportSectionList[0].ReportSectionID);
+            Assert.Equal(200, ((ObjectResult)actionReportSectionGet.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionReportSectionGet.Result).Value);
+            ReportSection reportSectionGet = (ReportSection)((OkObjectResult)actionReportSectionGet.Result).Value;
+            Assert.NotNull(reportSectionGet);
+            Assert.Equal(reportSectionGet.ReportSectionID, reportSectionList[0].ReportSectionID);
+
             // Put ReportSection
             var actionReportSectionUpdated = await ReportSectionService.Put(reportSection);
             Assert.Equal(200, ((ObjectResult)actionReportSectionUpdated.Result).StatusCode);
@@ -445,7 +468,7 @@ namespace CSSPServices.Tests
 
             if (OmitPropName != "ReportTypeID") reportSection.ReportTypeID = 1;
             // Need to implement (no items found, would need to add at least one in the TestDB) [ReportSection TVItemID TVItem TVItemID]
-            if (OmitPropName != "Language") reportSection.Language = LanguageRequest;
+            if (OmitPropName != "Language") reportSection.Language = CSSPCultureServicesRes.Culture.TwoLetterISOLanguageName == "fr" ? LanguageEnum.fr : LanguageEnum.en;
             if (OmitPropName != "Ordinal") reportSection.Ordinal = GetRandomInt(0, 1000);
             if (OmitPropName != "IsStatic") reportSection.IsStatic = true;
             // Need to implement [ReportSection ParentReportSectionID ReportSection ReportSectionID]

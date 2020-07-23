@@ -20,6 +20,7 @@ using System.Threading.Tasks;
 using System.Transactions;
 using Xunit;
 using System.ComponentModel.DataAnnotations;
+using CSSPCultureServices.Resources;
 
 namespace CSSPServices.Tests
 {
@@ -265,6 +266,28 @@ namespace CSSPServices.Tests
 
             int count = ((List<MapInfoPoint>)((OkObjectResult)actionMapInfoPointList.Result).Value).Count();
             Assert.True(count > 0);
+
+            if (LoggedInService.DBLocation == DBLocationEnum.Server)
+            {
+                // List<MapInfoPoint> with skip and take
+                var actionMapInfoPointListSkipAndTake = await MapInfoPointService.GetMapInfoPointList(1, 1);
+                Assert.Equal(200, ((ObjectResult)actionMapInfoPointListSkipAndTake.Result).StatusCode);
+                Assert.NotNull(((OkObjectResult)actionMapInfoPointListSkipAndTake.Result).Value);
+                List<MapInfoPoint> mapInfoPointListSkipAndTake = (List<MapInfoPoint>)((OkObjectResult)actionMapInfoPointListSkipAndTake.Result).Value;
+
+                int countSkipAndTake = ((List<MapInfoPoint>)((OkObjectResult)actionMapInfoPointListSkipAndTake.Result).Value).Count();
+                Assert.True(countSkipAndTake == 1);
+
+                Assert.False(mapInfoPointList[0].MapInfoPointID == mapInfoPointListSkipAndTake[0].MapInfoPointID);
+            }
+
+            // Get MapInfoPoint With MapInfoPointID
+            var actionMapInfoPointGet = await MapInfoPointService.GetMapInfoPointWithMapInfoPointID(mapInfoPointList[0].MapInfoPointID);
+            Assert.Equal(200, ((ObjectResult)actionMapInfoPointGet.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionMapInfoPointGet.Result).Value);
+            MapInfoPoint mapInfoPointGet = (MapInfoPoint)((OkObjectResult)actionMapInfoPointGet.Result).Value;
+            Assert.NotNull(mapInfoPointGet);
+            Assert.Equal(mapInfoPointGet.MapInfoPointID, mapInfoPointList[0].MapInfoPointID);
 
             // Put MapInfoPoint
             var actionMapInfoPointUpdated = await MapInfoPointService.Put(mapInfoPoint);

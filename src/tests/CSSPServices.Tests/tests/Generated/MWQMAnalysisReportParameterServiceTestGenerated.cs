@@ -20,6 +20,7 @@ using System.Threading.Tasks;
 using System.Transactions;
 using Xunit;
 using System.ComponentModel.DataAnnotations;
+using CSSPCultureServices.Resources;
 
 namespace CSSPServices.Tests
 {
@@ -605,6 +606,28 @@ namespace CSSPServices.Tests
 
             int count = ((List<MWQMAnalysisReportParameter>)((OkObjectResult)actionMWQMAnalysisReportParameterList.Result).Value).Count();
             Assert.True(count > 0);
+
+            if (LoggedInService.DBLocation == DBLocationEnum.Server)
+            {
+                // List<MWQMAnalysisReportParameter> with skip and take
+                var actionMWQMAnalysisReportParameterListSkipAndTake = await MWQMAnalysisReportParameterService.GetMWQMAnalysisReportParameterList(1, 1);
+                Assert.Equal(200, ((ObjectResult)actionMWQMAnalysisReportParameterListSkipAndTake.Result).StatusCode);
+                Assert.NotNull(((OkObjectResult)actionMWQMAnalysisReportParameterListSkipAndTake.Result).Value);
+                List<MWQMAnalysisReportParameter> mwqmAnalysisReportParameterListSkipAndTake = (List<MWQMAnalysisReportParameter>)((OkObjectResult)actionMWQMAnalysisReportParameterListSkipAndTake.Result).Value;
+
+                int countSkipAndTake = ((List<MWQMAnalysisReportParameter>)((OkObjectResult)actionMWQMAnalysisReportParameterListSkipAndTake.Result).Value).Count();
+                Assert.True(countSkipAndTake == 1);
+
+                Assert.False(mwqmAnalysisReportParameterList[0].MWQMAnalysisReportParameterID == mwqmAnalysisReportParameterListSkipAndTake[0].MWQMAnalysisReportParameterID);
+            }
+
+            // Get MWQMAnalysisReportParameter With MWQMAnalysisReportParameterID
+            var actionMWQMAnalysisReportParameterGet = await MWQMAnalysisReportParameterService.GetMWQMAnalysisReportParameterWithMWQMAnalysisReportParameterID(mwqmAnalysisReportParameterList[0].MWQMAnalysisReportParameterID);
+            Assert.Equal(200, ((ObjectResult)actionMWQMAnalysisReportParameterGet.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionMWQMAnalysisReportParameterGet.Result).Value);
+            MWQMAnalysisReportParameter mwqmAnalysisReportParameterGet = (MWQMAnalysisReportParameter)((OkObjectResult)actionMWQMAnalysisReportParameterGet.Result).Value;
+            Assert.NotNull(mwqmAnalysisReportParameterGet);
+            Assert.Equal(mwqmAnalysisReportParameterGet.MWQMAnalysisReportParameterID, mwqmAnalysisReportParameterList[0].MWQMAnalysisReportParameterID);
 
             // Put MWQMAnalysisReportParameter
             var actionMWQMAnalysisReportParameterUpdated = await MWQMAnalysisReportParameterService.Put(mwqmAnalysisReportParameter);

@@ -481,16 +481,18 @@ namespace CSSPServices
             DateTime StartDate = new DateTime(Year, 1, 1);
             DateTime EndDate = new DateTime(Year + 9, 12, 31);
 
-            return await (from c in db.TVItems
-                          from sa in db.MWQMSamples
-                          from sal in db.MWQMSampleLanguages
-                          where c.TVItemID == sa.MWQMSiteTVItemID
-                          && sa.MWQMSampleID == sal.MWQMSampleID
-                          && c.TVPath.Contains(tvItemSubsector.TVPath + "p")
-                          && c.ParentID == tvItemSubsector.TVItemID
-                          && c.TVType == TVTypeEnum.MWQMSite
-                          && sa.SampleDateTime_Local >= StartDate
-                          && sa.SampleDateTime_Local <= EndDate
+            List<int> MWQMSampleIDList = await (from c in db.TVItems
+                                                from sa in db.MWQMSamples
+                                                where c.TVItemID == sa.MWQMSiteTVItemID
+                                                && c.TVPath.Contains(tvItemSubsector.TVPath + "p")
+                                                && c.ParentID == tvItemSubsector.TVItemID
+                                                && c.TVType == TVTypeEnum.MWQMSite
+                                                && sa.SampleDateTime_Local >= StartDate
+                                                && sa.SampleDateTime_Local <= EndDate
+                                                select sa.MWQMSampleID).ToListAsync();
+
+            return await (from sal in db.MWQMSampleLanguages
+                          where MWQMSampleIDList.Contains(sal.MWQMSampleID)
                           select sal).AsNoTracking().ToListAsync();
         }
         private async Task<List<MWQMRun>> GetMWQMRunListFromSubsector(TVItem tvItemSubsector)
@@ -505,14 +507,16 @@ namespace CSSPServices
         }
         private async Task<List<MWQMRunLanguage>> GetMWQMRunLanguageListFromSubsector(TVItem tvItemSubsector)
         {
-            return await (from c in db.TVItems
-                          from r in db.MWQMRuns
-                          from rl in db.MWQMRunLanguages
-                          where c.TVItemID == r.MWQMRunTVItemID
-                          && r.MWQMRunID == rl.MWQMRunID
-                          && c.TVPath.Contains(tvItemSubsector.TVPath + "p")
-                          && c.ParentID == tvItemSubsector.TVItemID
-                          && c.TVType == TVTypeEnum.MWQMRun
+            List<int> MWQMRunIDList = await (from c in db.TVItems
+                                             from r in db.MWQMRuns
+                                             where c.TVItemID == r.MWQMRunTVItemID
+                                             && c.TVPath.Contains(tvItemSubsector.TVPath + "p")
+                                             && c.ParentID == tvItemSubsector.TVItemID
+                                             && c.TVType == TVTypeEnum.MWQMRun
+                                             select r.MWQMRunID).ToListAsync();
+
+            return await (from rl in db.MWQMRunLanguages
+                          where MWQMRunIDList.Contains(rl.MWQMRunID)
                           select rl).AsNoTracking().ToListAsync();
         }
         private async Task<List<MWQMSite>> GetMWQMSiteListFromSubsector(TVItem tvItemSubsector)
@@ -527,14 +531,16 @@ namespace CSSPServices
         }
         private async Task<List<MWQMSiteStartEndDate>> GetMWQMSiteStartEndDateListFromSubsector(TVItem tvItemSubsector)
         {
-            return await (from c in db.TVItems
-                          from s in db.MWQMSites
-                          from sd in db.MWQMSiteStartEndDates
-                          where c.TVItemID == s.MWQMSiteTVItemID
-                          && s.MWQMSiteTVItemID == sd.MWQMSiteTVItemID
-                          && c.TVPath.Contains(tvItemSubsector.TVPath + "p")
-                          && c.ParentID == tvItemSubsector.TVItemID
-                          && c.TVType == TVTypeEnum.MWQMSite
+            List<int> MWQMSiteIDList = await (from c in db.TVItems
+                                             from s in db.MWQMSites
+                                             where c.TVItemID == s.MWQMSiteTVItemID
+                                             && c.TVPath.Contains(tvItemSubsector.TVPath + "p")
+                                             && c.ParentID == tvItemSubsector.TVItemID
+                                             && c.TVType == TVTypeEnum.MWQMSite
+                                             select s.MWQMSiteID).ToListAsync();
+
+            return await (from sd in db.MWQMSiteStartEndDates
+                          where MWQMSiteIDList.Contains(sd.MWQMSiteTVItemID)
                           select sd).AsNoTracking().ToListAsync();
         }
         private async Task<List<Contact>> GetAllContact()

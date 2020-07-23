@@ -20,6 +20,7 @@ using System.Threading.Tasks;
 using System.Transactions;
 using Xunit;
 using System.ComponentModel.DataAnnotations;
+using CSSPCultureServices.Resources;
 
 namespace CSSPServices.Tests
 {
@@ -231,6 +232,28 @@ namespace CSSPServices.Tests
 
             int count = ((List<EmailDistributionList>)((OkObjectResult)actionEmailDistributionListList.Result).Value).Count();
             Assert.True(count > 0);
+
+            if (LoggedInService.DBLocation == DBLocationEnum.Server)
+            {
+                // List<EmailDistributionList> with skip and take
+                var actionEmailDistributionListListSkipAndTake = await EmailDistributionListService.GetEmailDistributionListList(1, 1);
+                Assert.Equal(200, ((ObjectResult)actionEmailDistributionListListSkipAndTake.Result).StatusCode);
+                Assert.NotNull(((OkObjectResult)actionEmailDistributionListListSkipAndTake.Result).Value);
+                List<EmailDistributionList> emailDistributionListListSkipAndTake = (List<EmailDistributionList>)((OkObjectResult)actionEmailDistributionListListSkipAndTake.Result).Value;
+
+                int countSkipAndTake = ((List<EmailDistributionList>)((OkObjectResult)actionEmailDistributionListListSkipAndTake.Result).Value).Count();
+                Assert.True(countSkipAndTake == 1);
+
+                Assert.False(emailDistributionListList[0].EmailDistributionListID == emailDistributionListListSkipAndTake[0].EmailDistributionListID);
+            }
+
+            // Get EmailDistributionList With EmailDistributionListID
+            var actionEmailDistributionListGet = await EmailDistributionListService.GetEmailDistributionListWithEmailDistributionListID(emailDistributionListList[0].EmailDistributionListID);
+            Assert.Equal(200, ((ObjectResult)actionEmailDistributionListGet.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionEmailDistributionListGet.Result).Value);
+            EmailDistributionList emailDistributionListGet = (EmailDistributionList)((OkObjectResult)actionEmailDistributionListGet.Result).Value;
+            Assert.NotNull(emailDistributionListGet);
+            Assert.Equal(emailDistributionListGet.EmailDistributionListID, emailDistributionListList[0].EmailDistributionListID);
 
             // Put EmailDistributionList
             var actionEmailDistributionListUpdated = await EmailDistributionListService.Put(emailDistributionList);

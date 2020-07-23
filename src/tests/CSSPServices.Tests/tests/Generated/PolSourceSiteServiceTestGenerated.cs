@@ -20,6 +20,7 @@ using System.Threading.Tasks;
 using System.Transactions;
 using Xunit;
 using System.ComponentModel.DataAnnotations;
+using CSSPCultureServices.Resources;
 
 namespace CSSPServices.Tests
 {
@@ -320,6 +321,28 @@ namespace CSSPServices.Tests
 
             int count = ((List<PolSourceSite>)((OkObjectResult)actionPolSourceSiteList.Result).Value).Count();
             Assert.True(count > 0);
+
+            if (LoggedInService.DBLocation == DBLocationEnum.Server)
+            {
+                // List<PolSourceSite> with skip and take
+                var actionPolSourceSiteListSkipAndTake = await PolSourceSiteService.GetPolSourceSiteList(1, 1);
+                Assert.Equal(200, ((ObjectResult)actionPolSourceSiteListSkipAndTake.Result).StatusCode);
+                Assert.NotNull(((OkObjectResult)actionPolSourceSiteListSkipAndTake.Result).Value);
+                List<PolSourceSite> polSourceSiteListSkipAndTake = (List<PolSourceSite>)((OkObjectResult)actionPolSourceSiteListSkipAndTake.Result).Value;
+
+                int countSkipAndTake = ((List<PolSourceSite>)((OkObjectResult)actionPolSourceSiteListSkipAndTake.Result).Value).Count();
+                Assert.True(countSkipAndTake == 1);
+
+                Assert.False(polSourceSiteList[0].PolSourceSiteID == polSourceSiteListSkipAndTake[0].PolSourceSiteID);
+            }
+
+            // Get PolSourceSite With PolSourceSiteID
+            var actionPolSourceSiteGet = await PolSourceSiteService.GetPolSourceSiteWithPolSourceSiteID(polSourceSiteList[0].PolSourceSiteID);
+            Assert.Equal(200, ((ObjectResult)actionPolSourceSiteGet.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionPolSourceSiteGet.Result).Value);
+            PolSourceSite polSourceSiteGet = (PolSourceSite)((OkObjectResult)actionPolSourceSiteGet.Result).Value;
+            Assert.NotNull(polSourceSiteGet);
+            Assert.Equal(polSourceSiteGet.PolSourceSiteID, polSourceSiteList[0].PolSourceSiteID);
 
             // Put PolSourceSite
             var actionPolSourceSiteUpdated = await PolSourceSiteService.Put(polSourceSite);

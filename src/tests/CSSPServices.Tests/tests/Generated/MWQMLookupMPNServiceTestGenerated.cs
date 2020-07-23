@@ -20,6 +20,7 @@ using System.Threading.Tasks;
 using System.Transactions;
 using Xunit;
 using System.ComponentModel.DataAnnotations;
+using CSSPCultureServices.Resources;
 
 namespace CSSPServices.Tests
 {
@@ -269,6 +270,28 @@ namespace CSSPServices.Tests
 
             int count = ((List<MWQMLookupMPN>)((OkObjectResult)actionMWQMLookupMPNList.Result).Value).Count();
             Assert.True(count > 0);
+
+            if (LoggedInService.DBLocation == DBLocationEnum.Server)
+            {
+                // List<MWQMLookupMPN> with skip and take
+                var actionMWQMLookupMPNListSkipAndTake = await MWQMLookupMPNService.GetMWQMLookupMPNList(1, 1);
+                Assert.Equal(200, ((ObjectResult)actionMWQMLookupMPNListSkipAndTake.Result).StatusCode);
+                Assert.NotNull(((OkObjectResult)actionMWQMLookupMPNListSkipAndTake.Result).Value);
+                List<MWQMLookupMPN> mwqmLookupMPNListSkipAndTake = (List<MWQMLookupMPN>)((OkObjectResult)actionMWQMLookupMPNListSkipAndTake.Result).Value;
+
+                int countSkipAndTake = ((List<MWQMLookupMPN>)((OkObjectResult)actionMWQMLookupMPNListSkipAndTake.Result).Value).Count();
+                Assert.True(countSkipAndTake == 1);
+
+                Assert.False(mwqmLookupMPNList[0].MWQMLookupMPNID == mwqmLookupMPNListSkipAndTake[0].MWQMLookupMPNID);
+            }
+
+            // Get MWQMLookupMPN With MWQMLookupMPNID
+            var actionMWQMLookupMPNGet = await MWQMLookupMPNService.GetMWQMLookupMPNWithMWQMLookupMPNID(mwqmLookupMPNList[0].MWQMLookupMPNID);
+            Assert.Equal(200, ((ObjectResult)actionMWQMLookupMPNGet.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionMWQMLookupMPNGet.Result).Value);
+            MWQMLookupMPN mwqmLookupMPNGet = (MWQMLookupMPN)((OkObjectResult)actionMWQMLookupMPNGet.Result).Value;
+            Assert.NotNull(mwqmLookupMPNGet);
+            Assert.Equal(mwqmLookupMPNGet.MWQMLookupMPNID, mwqmLookupMPNList[0].MWQMLookupMPNID);
 
             // Put MWQMLookupMPN
             var actionMWQMLookupMPNUpdated = await MWQMLookupMPNService.Put(mwqmLookupMPN);

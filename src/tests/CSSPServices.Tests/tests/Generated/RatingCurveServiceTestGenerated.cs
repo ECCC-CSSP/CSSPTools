@@ -20,6 +20,7 @@ using System.Threading.Tasks;
 using System.Transactions;
 using Xunit;
 using System.ComponentModel.DataAnnotations;
+using CSSPCultureServices.Resources;
 
 namespace CSSPServices.Tests
 {
@@ -224,6 +225,28 @@ namespace CSSPServices.Tests
 
             int count = ((List<RatingCurve>)((OkObjectResult)actionRatingCurveList.Result).Value).Count();
             Assert.True(count > 0);
+
+            if (LoggedInService.DBLocation == DBLocationEnum.Server)
+            {
+                // List<RatingCurve> with skip and take
+                var actionRatingCurveListSkipAndTake = await RatingCurveService.GetRatingCurveList(1, 1);
+                Assert.Equal(200, ((ObjectResult)actionRatingCurveListSkipAndTake.Result).StatusCode);
+                Assert.NotNull(((OkObjectResult)actionRatingCurveListSkipAndTake.Result).Value);
+                List<RatingCurve> ratingCurveListSkipAndTake = (List<RatingCurve>)((OkObjectResult)actionRatingCurveListSkipAndTake.Result).Value;
+
+                int countSkipAndTake = ((List<RatingCurve>)((OkObjectResult)actionRatingCurveListSkipAndTake.Result).Value).Count();
+                Assert.True(countSkipAndTake == 1);
+
+                Assert.False(ratingCurveList[0].RatingCurveID == ratingCurveListSkipAndTake[0].RatingCurveID);
+            }
+
+            // Get RatingCurve With RatingCurveID
+            var actionRatingCurveGet = await RatingCurveService.GetRatingCurveWithRatingCurveID(ratingCurveList[0].RatingCurveID);
+            Assert.Equal(200, ((ObjectResult)actionRatingCurveGet.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionRatingCurveGet.Result).Value);
+            RatingCurve ratingCurveGet = (RatingCurve)((OkObjectResult)actionRatingCurveGet.Result).Value;
+            Assert.NotNull(ratingCurveGet);
+            Assert.Equal(ratingCurveGet.RatingCurveID, ratingCurveList[0].RatingCurveID);
 
             // Put RatingCurve
             var actionRatingCurveUpdated = await RatingCurveService.Put(ratingCurve);

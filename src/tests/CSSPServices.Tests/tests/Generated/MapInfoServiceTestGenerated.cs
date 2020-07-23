@@ -20,6 +20,7 @@ using System.Threading.Tasks;
 using System.Transactions;
 using Xunit;
 using System.ComponentModel.DataAnnotations;
+using CSSPCultureServices.Resources;
 
 namespace CSSPServices.Tests
 {
@@ -330,6 +331,28 @@ namespace CSSPServices.Tests
 
             int count = ((List<MapInfo>)((OkObjectResult)actionMapInfoList.Result).Value).Count();
             Assert.True(count > 0);
+
+            if (LoggedInService.DBLocation == DBLocationEnum.Server)
+            {
+                // List<MapInfo> with skip and take
+                var actionMapInfoListSkipAndTake = await MapInfoService.GetMapInfoList(1, 1);
+                Assert.Equal(200, ((ObjectResult)actionMapInfoListSkipAndTake.Result).StatusCode);
+                Assert.NotNull(((OkObjectResult)actionMapInfoListSkipAndTake.Result).Value);
+                List<MapInfo> mapInfoListSkipAndTake = (List<MapInfo>)((OkObjectResult)actionMapInfoListSkipAndTake.Result).Value;
+
+                int countSkipAndTake = ((List<MapInfo>)((OkObjectResult)actionMapInfoListSkipAndTake.Result).Value).Count();
+                Assert.True(countSkipAndTake == 1);
+
+                Assert.False(mapInfoList[0].MapInfoID == mapInfoListSkipAndTake[0].MapInfoID);
+            }
+
+            // Get MapInfo With MapInfoID
+            var actionMapInfoGet = await MapInfoService.GetMapInfoWithMapInfoID(mapInfoList[0].MapInfoID);
+            Assert.Equal(200, ((ObjectResult)actionMapInfoGet.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionMapInfoGet.Result).Value);
+            MapInfo mapInfoGet = (MapInfo)((OkObjectResult)actionMapInfoGet.Result).Value;
+            Assert.NotNull(mapInfoGet);
+            Assert.Equal(mapInfoGet.MapInfoID, mapInfoList[0].MapInfoID);
 
             // Put MapInfo
             var actionMapInfoUpdated = await MapInfoService.Put(mapInfo);

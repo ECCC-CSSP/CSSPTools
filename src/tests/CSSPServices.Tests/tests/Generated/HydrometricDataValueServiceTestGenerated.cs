@@ -20,6 +20,7 @@ using System.Threading.Tasks;
 using System.Transactions;
 using Xunit;
 using System.ComponentModel.DataAnnotations;
+using CSSPCultureServices.Resources;
 
 namespace CSSPServices.Tests
 {
@@ -323,6 +324,28 @@ namespace CSSPServices.Tests
 
             int count = ((List<HydrometricDataValue>)((OkObjectResult)actionHydrometricDataValueList.Result).Value).Count();
             Assert.True(count > 0);
+
+            if (LoggedInService.DBLocation == DBLocationEnum.Server)
+            {
+                // List<HydrometricDataValue> with skip and take
+                var actionHydrometricDataValueListSkipAndTake = await HydrometricDataValueService.GetHydrometricDataValueList(1, 1);
+                Assert.Equal(200, ((ObjectResult)actionHydrometricDataValueListSkipAndTake.Result).StatusCode);
+                Assert.NotNull(((OkObjectResult)actionHydrometricDataValueListSkipAndTake.Result).Value);
+                List<HydrometricDataValue> hydrometricDataValueListSkipAndTake = (List<HydrometricDataValue>)((OkObjectResult)actionHydrometricDataValueListSkipAndTake.Result).Value;
+
+                int countSkipAndTake = ((List<HydrometricDataValue>)((OkObjectResult)actionHydrometricDataValueListSkipAndTake.Result).Value).Count();
+                Assert.True(countSkipAndTake == 1);
+
+                Assert.False(hydrometricDataValueList[0].HydrometricDataValueID == hydrometricDataValueListSkipAndTake[0].HydrometricDataValueID);
+            }
+
+            // Get HydrometricDataValue With HydrometricDataValueID
+            var actionHydrometricDataValueGet = await HydrometricDataValueService.GetHydrometricDataValueWithHydrometricDataValueID(hydrometricDataValueList[0].HydrometricDataValueID);
+            Assert.Equal(200, ((ObjectResult)actionHydrometricDataValueGet.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionHydrometricDataValueGet.Result).Value);
+            HydrometricDataValue hydrometricDataValueGet = (HydrometricDataValue)((OkObjectResult)actionHydrometricDataValueGet.Result).Value;
+            Assert.NotNull(hydrometricDataValueGet);
+            Assert.Equal(hydrometricDataValueGet.HydrometricDataValueID, hydrometricDataValueList[0].HydrometricDataValueID);
 
             // Put HydrometricDataValue
             var actionHydrometricDataValueUpdated = await HydrometricDataValueService.Put(hydrometricDataValue);

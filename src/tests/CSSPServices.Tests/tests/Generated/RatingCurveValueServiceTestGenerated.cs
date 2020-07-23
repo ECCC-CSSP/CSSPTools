@@ -20,6 +20,7 @@ using System.Threading.Tasks;
 using System.Transactions;
 using Xunit;
 using System.ComponentModel.DataAnnotations;
+using CSSPCultureServices.Resources;
 
 namespace CSSPServices.Tests
 {
@@ -252,6 +253,28 @@ namespace CSSPServices.Tests
 
             int count = ((List<RatingCurveValue>)((OkObjectResult)actionRatingCurveValueList.Result).Value).Count();
             Assert.True(count > 0);
+
+            if (LoggedInService.DBLocation == DBLocationEnum.Server)
+            {
+                // List<RatingCurveValue> with skip and take
+                var actionRatingCurveValueListSkipAndTake = await RatingCurveValueService.GetRatingCurveValueList(1, 1);
+                Assert.Equal(200, ((ObjectResult)actionRatingCurveValueListSkipAndTake.Result).StatusCode);
+                Assert.NotNull(((OkObjectResult)actionRatingCurveValueListSkipAndTake.Result).Value);
+                List<RatingCurveValue> ratingCurveValueListSkipAndTake = (List<RatingCurveValue>)((OkObjectResult)actionRatingCurveValueListSkipAndTake.Result).Value;
+
+                int countSkipAndTake = ((List<RatingCurveValue>)((OkObjectResult)actionRatingCurveValueListSkipAndTake.Result).Value).Count();
+                Assert.True(countSkipAndTake == 1);
+
+                Assert.False(ratingCurveValueList[0].RatingCurveValueID == ratingCurveValueListSkipAndTake[0].RatingCurveValueID);
+            }
+
+            // Get RatingCurveValue With RatingCurveValueID
+            var actionRatingCurveValueGet = await RatingCurveValueService.GetRatingCurveValueWithRatingCurveValueID(ratingCurveValueList[0].RatingCurveValueID);
+            Assert.Equal(200, ((ObjectResult)actionRatingCurveValueGet.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionRatingCurveValueGet.Result).Value);
+            RatingCurveValue ratingCurveValueGet = (RatingCurveValue)((OkObjectResult)actionRatingCurveValueGet.Result).Value;
+            Assert.NotNull(ratingCurveValueGet);
+            Assert.Equal(ratingCurveValueGet.RatingCurveValueID, ratingCurveValueList[0].RatingCurveValueID);
 
             // Put RatingCurveValue
             var actionRatingCurveValueUpdated = await RatingCurveValueService.Put(ratingCurveValue);

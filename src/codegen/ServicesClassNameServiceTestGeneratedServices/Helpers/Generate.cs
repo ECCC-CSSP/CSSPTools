@@ -98,6 +98,7 @@ namespace ServicesClassNameServiceTestGeneratedServices.Services
                 sb.AppendLine(@"using System.Transactions;");
                 sb.AppendLine(@"using Xunit;");
                 sb.AppendLine(@"using System.ComponentModel.DataAnnotations;");
+                sb.AppendLine(@"using CSSPCultureServices.Resources;");
                 sb.AppendLine(@"");
                 sb.AppendLine(@"namespace CSSPServices.Tests");
                 sb.AppendLine(@"{");
@@ -152,32 +153,7 @@ namespace ServicesClassNameServiceTestGeneratedServices.Services
                 if (!ClassNotMapped)
                 {
                     if (!await GenerateCRUDTestCode(TypeName, TypeNameLower, sb)) return await Task.FromResult(false);
-
                     if (!await GeneratePropertiesTestCode(TypeName, TypeNameLower, type, sb)) return await Task.FromResult(false);
-
-                    //if (!await GenerateGetWithIDTestCode(TypeName, TypeNameLower, types, sb)) return await Task.FromResult(false);
-
-                    //if (!await GenerateGetListTestCode(TypeName, TypeNameLower, types, sb)) return await Task.FromResult(false);
-
-                    //if (!await GenerateGetListSkipTakeTestCode(TypeName, TypeNameLower, types, sb)) return await Task.FromResult(false);
-
-                    //if (!await GenerateGetListSkipTakeAscTestCode(TypeName, TypeNameLower, types, sb)) return await Task.FromResult(false);
-
-                    //if (!await GenerateGetListSkipTake2AscTestCode(TypeName, TypeNameLower, type, types, sb)) return await Task.FromResult(false);
-
-                    //if (!await GenerateGetListSkipTakeAscWhereTestCode(TypeName, TypeNameLower, types, sb)) return await Task.FromResult(false);
-
-                    //if (!await GenerateGetListSkipTakeAsc2WhereTestCode(TypeName, TypeNameLower, types, sb)) return await Task.FromResult(false);
-
-                    //if (!await GenerateGetListSkipTakeDescTestCode(TypeName, TypeNameLower, types, sb)) return await Task.FromResult(false);
-
-                    //if (!await GenerateGetListSkipTake2DescTestCode(TypeName, TypeNameLower, type, types, sb)) return await Task.FromResult(false);
-
-                    //if (!await GenerateGetListSkipTakeDescWhereTestCode(TypeName, TypeNameLower, types, sb)) return await Task.FromResult(false);
-
-                    //if (!await GenerateGetListSkipTakeDesc2WhereTestCode(TypeName, TypeNameLower, types, sb)) return await Task.FromResult(false);
-
-                    //if (!await GenerateGetList2WhereTestCode(TypeName, TypeNameLower, types, sb)) return await Task.FromResult(false);
                 }
                 else
                 {

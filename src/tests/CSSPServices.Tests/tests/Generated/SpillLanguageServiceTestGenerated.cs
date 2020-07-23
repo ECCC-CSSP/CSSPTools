@@ -20,6 +20,7 @@ using System.Threading.Tasks;
 using System.Transactions;
 using Xunit;
 using System.ComponentModel.DataAnnotations;
+using CSSPCultureServices.Resources;
 
 namespace CSSPServices.Tests
 {
@@ -244,6 +245,28 @@ namespace CSSPServices.Tests
             int count = ((List<SpillLanguage>)((OkObjectResult)actionSpillLanguageList.Result).Value).Count();
             Assert.True(count > 0);
 
+            if (LoggedInService.DBLocation == DBLocationEnum.Server)
+            {
+                // List<SpillLanguage> with skip and take
+                var actionSpillLanguageListSkipAndTake = await SpillLanguageService.GetSpillLanguageList(1, 1);
+                Assert.Equal(200, ((ObjectResult)actionSpillLanguageListSkipAndTake.Result).StatusCode);
+                Assert.NotNull(((OkObjectResult)actionSpillLanguageListSkipAndTake.Result).Value);
+                List<SpillLanguage> spillLanguageListSkipAndTake = (List<SpillLanguage>)((OkObjectResult)actionSpillLanguageListSkipAndTake.Result).Value;
+
+                int countSkipAndTake = ((List<SpillLanguage>)((OkObjectResult)actionSpillLanguageListSkipAndTake.Result).Value).Count();
+                Assert.True(countSkipAndTake == 1);
+
+                Assert.False(spillLanguageList[0].SpillLanguageID == spillLanguageListSkipAndTake[0].SpillLanguageID);
+            }
+
+            // Get SpillLanguage With SpillLanguageID
+            var actionSpillLanguageGet = await SpillLanguageService.GetSpillLanguageWithSpillLanguageID(spillLanguageList[0].SpillLanguageID);
+            Assert.Equal(200, ((ObjectResult)actionSpillLanguageGet.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionSpillLanguageGet.Result).Value);
+            SpillLanguage spillLanguageGet = (SpillLanguage)((OkObjectResult)actionSpillLanguageGet.Result).Value;
+            Assert.NotNull(spillLanguageGet);
+            Assert.Equal(spillLanguageGet.SpillLanguageID, spillLanguageList[0].SpillLanguageID);
+
             // Put SpillLanguage
             var actionSpillLanguageUpdated = await SpillLanguageService.Put(spillLanguage);
             Assert.Equal(200, ((ObjectResult)actionSpillLanguageUpdated.Result).StatusCode);
@@ -347,7 +370,7 @@ namespace CSSPServices.Tests
             SpillLanguage spillLanguage = new SpillLanguage();
 
             if (OmitPropName != "SpillID") spillLanguage.SpillID = 1;
-            if (OmitPropName != "Language") spillLanguage.Language = LanguageRequest;
+            if (OmitPropName != "Language") spillLanguage.Language = CSSPCultureServicesRes.Culture.TwoLetterISOLanguageName == "fr" ? LanguageEnum.fr : LanguageEnum.en;
             if (OmitPropName != "SpillComment") spillLanguage.SpillComment = GetRandomString("", 20);
             if (OmitPropName != "TranslationStatus") spillLanguage.TranslationStatus = (TranslationStatusEnum)GetRandomEnumType(typeof(TranslationStatusEnum));
             if (OmitPropName != "LastUpdateDate_UTC") spillLanguage.LastUpdateDate_UTC = new DateTime(2005, 3, 6);
@@ -359,7 +382,7 @@ namespace CSSPServices.Tests
 
                 try
                 {
-                    dbIM.Spills.Add(new Spill() { SpillID = 1, MunicipalityTVItemID = 39, InfrastructureTVItemID = 41, StartDateTime_Local = new DateTime(2015, 7, 19, 14, 30, 5), EndDateTime_Local = new DateTime(2015, 7, 19, 20, 30, 5), AverageFlow_m3_day = 34.5, LastUpdateDate_UTC = new DateTime(2020, 7, 19, 14, 30, 5), LastUpdateContactTVItemID = 2 });
+                    dbIM.Spills.Add(new Spill() { SpillID = 1, MunicipalityTVItemID = 39, InfrastructureTVItemID = 41, StartDateTime_Local = new DateTime(2015, 7, 21, 14, 33, 26), EndDateTime_Local = new DateTime(2015, 7, 21, 20, 33, 26), AverageFlow_m3_day = 34.5, LastUpdateDate_UTC = new DateTime(2020, 7, 21, 14, 33, 26), LastUpdateContactTVItemID = 2 });
                     dbIM.SaveChanges();
                 }
                 catch (Exception)

@@ -203,8 +203,10 @@ namespace CSSPWebAPIs
 
             services.AddScoped<ICSSPCultureService, CSSPCultureService>();
             services.AddScoped<IEnums, Enums>();
-            services.AddScoped<IContactService, ContactService>();
+            services.AddScoped<ILoginModelService, LoginModelService>();
+            services.AddScoped<IRegisterModelService, RegisterModelService>();
             services.AddScoped<ILoggedInService, LoggedInService>();
+            services.AddScoped<IContactService, ContactService>();
 
             LoadAllDBServices(services);
             services.AddScoped<IWebService, WebService>();

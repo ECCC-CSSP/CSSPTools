@@ -20,6 +20,7 @@ using System.Threading.Tasks;
 using System.Transactions;
 using Xunit;
 using System.ComponentModel.DataAnnotations;
+using CSSPCultureServices.Resources;
 
 namespace CSSPServices.Tests
 {
@@ -319,6 +320,28 @@ namespace CSSPServices.Tests
 
             int count = ((List<MikeSource>)((OkObjectResult)actionMikeSourceList.Result).Value).Count();
             Assert.True(count > 0);
+
+            if (LoggedInService.DBLocation == DBLocationEnum.Server)
+            {
+                // List<MikeSource> with skip and take
+                var actionMikeSourceListSkipAndTake = await MikeSourceService.GetMikeSourceList(1, 1);
+                Assert.Equal(200, ((ObjectResult)actionMikeSourceListSkipAndTake.Result).StatusCode);
+                Assert.NotNull(((OkObjectResult)actionMikeSourceListSkipAndTake.Result).Value);
+                List<MikeSource> mikeSourceListSkipAndTake = (List<MikeSource>)((OkObjectResult)actionMikeSourceListSkipAndTake.Result).Value;
+
+                int countSkipAndTake = ((List<MikeSource>)((OkObjectResult)actionMikeSourceListSkipAndTake.Result).Value).Count();
+                Assert.True(countSkipAndTake == 1);
+
+                Assert.False(mikeSourceList[0].MikeSourceID == mikeSourceListSkipAndTake[0].MikeSourceID);
+            }
+
+            // Get MikeSource With MikeSourceID
+            var actionMikeSourceGet = await MikeSourceService.GetMikeSourceWithMikeSourceID(mikeSourceList[0].MikeSourceID);
+            Assert.Equal(200, ((ObjectResult)actionMikeSourceGet.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionMikeSourceGet.Result).Value);
+            MikeSource mikeSourceGet = (MikeSource)((OkObjectResult)actionMikeSourceGet.Result).Value;
+            Assert.NotNull(mikeSourceGet);
+            Assert.Equal(mikeSourceGet.MikeSourceID, mikeSourceList[0].MikeSourceID);
 
             // Put MikeSource
             var actionMikeSourceUpdated = await MikeSourceService.Put(mikeSource);

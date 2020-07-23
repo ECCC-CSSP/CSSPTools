@@ -20,6 +20,7 @@ using System.Threading.Tasks;
 using System.Transactions;
 using Xunit;
 using System.ComponentModel.DataAnnotations;
+using CSSPCultureServices.Resources;
 
 namespace CSSPServices.Tests
 {
@@ -479,6 +480,28 @@ namespace CSSPServices.Tests
 
             int count = ((List<MWQMSample>)((OkObjectResult)actionMWQMSampleList.Result).Value).Count();
             Assert.True(count > 0);
+
+            if (LoggedInService.DBLocation == DBLocationEnum.Server)
+            {
+                // List<MWQMSample> with skip and take
+                var actionMWQMSampleListSkipAndTake = await MWQMSampleService.GetMWQMSampleList(1, 1);
+                Assert.Equal(200, ((ObjectResult)actionMWQMSampleListSkipAndTake.Result).StatusCode);
+                Assert.NotNull(((OkObjectResult)actionMWQMSampleListSkipAndTake.Result).Value);
+                List<MWQMSample> mwqmSampleListSkipAndTake = (List<MWQMSample>)((OkObjectResult)actionMWQMSampleListSkipAndTake.Result).Value;
+
+                int countSkipAndTake = ((List<MWQMSample>)((OkObjectResult)actionMWQMSampleListSkipAndTake.Result).Value).Count();
+                Assert.True(countSkipAndTake == 1);
+
+                Assert.False(mwqmSampleList[0].MWQMSampleID == mwqmSampleListSkipAndTake[0].MWQMSampleID);
+            }
+
+            // Get MWQMSample With MWQMSampleID
+            var actionMWQMSampleGet = await MWQMSampleService.GetMWQMSampleWithMWQMSampleID(mwqmSampleList[0].MWQMSampleID);
+            Assert.Equal(200, ((ObjectResult)actionMWQMSampleGet.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionMWQMSampleGet.Result).Value);
+            MWQMSample mwqmSampleGet = (MWQMSample)((OkObjectResult)actionMWQMSampleGet.Result).Value;
+            Assert.NotNull(mwqmSampleGet);
+            Assert.Equal(mwqmSampleGet.MWQMSampleID, mwqmSampleList[0].MWQMSampleID);
 
             // Put MWQMSample
             var actionMWQMSampleUpdated = await MWQMSampleService.Put(mwqmSample);

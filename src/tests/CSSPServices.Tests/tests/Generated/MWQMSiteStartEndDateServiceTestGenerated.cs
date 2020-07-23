@@ -20,6 +20,7 @@ using System.Threading.Tasks;
 using System.Transactions;
 using Xunit;
 using System.ComponentModel.DataAnnotations;
+using CSSPCultureServices.Resources;
 
 namespace CSSPServices.Tests
 {
@@ -242,6 +243,28 @@ namespace CSSPServices.Tests
 
             int count = ((List<MWQMSiteStartEndDate>)((OkObjectResult)actionMWQMSiteStartEndDateList.Result).Value).Count();
             Assert.True(count > 0);
+
+            if (LoggedInService.DBLocation == DBLocationEnum.Server)
+            {
+                // List<MWQMSiteStartEndDate> with skip and take
+                var actionMWQMSiteStartEndDateListSkipAndTake = await MWQMSiteStartEndDateService.GetMWQMSiteStartEndDateList(1, 1);
+                Assert.Equal(200, ((ObjectResult)actionMWQMSiteStartEndDateListSkipAndTake.Result).StatusCode);
+                Assert.NotNull(((OkObjectResult)actionMWQMSiteStartEndDateListSkipAndTake.Result).Value);
+                List<MWQMSiteStartEndDate> mwqmSiteStartEndDateListSkipAndTake = (List<MWQMSiteStartEndDate>)((OkObjectResult)actionMWQMSiteStartEndDateListSkipAndTake.Result).Value;
+
+                int countSkipAndTake = ((List<MWQMSiteStartEndDate>)((OkObjectResult)actionMWQMSiteStartEndDateListSkipAndTake.Result).Value).Count();
+                Assert.True(countSkipAndTake == 1);
+
+                Assert.False(mwqmSiteStartEndDateList[0].MWQMSiteStartEndDateID == mwqmSiteStartEndDateListSkipAndTake[0].MWQMSiteStartEndDateID);
+            }
+
+            // Get MWQMSiteStartEndDate With MWQMSiteStartEndDateID
+            var actionMWQMSiteStartEndDateGet = await MWQMSiteStartEndDateService.GetMWQMSiteStartEndDateWithMWQMSiteStartEndDateID(mwqmSiteStartEndDateList[0].MWQMSiteStartEndDateID);
+            Assert.Equal(200, ((ObjectResult)actionMWQMSiteStartEndDateGet.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionMWQMSiteStartEndDateGet.Result).Value);
+            MWQMSiteStartEndDate mwqmSiteStartEndDateGet = (MWQMSiteStartEndDate)((OkObjectResult)actionMWQMSiteStartEndDateGet.Result).Value;
+            Assert.NotNull(mwqmSiteStartEndDateGet);
+            Assert.Equal(mwqmSiteStartEndDateGet.MWQMSiteStartEndDateID, mwqmSiteStartEndDateList[0].MWQMSiteStartEndDateID);
 
             // Put MWQMSiteStartEndDate
             var actionMWQMSiteStartEndDateUpdated = await MWQMSiteStartEndDateService.Put(mwqmSiteStartEndDate);

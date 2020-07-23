@@ -20,6 +20,7 @@ using System.Threading.Tasks;
 using System.Transactions;
 using Xunit;
 using System.ComponentModel.DataAnnotations;
+using CSSPCultureServices.Resources;
 
 namespace CSSPServices.Tests
 {
@@ -251,6 +252,28 @@ namespace CSSPServices.Tests
             int count = ((List<VPScenarioLanguage>)((OkObjectResult)actionVPScenarioLanguageList.Result).Value).Count();
             Assert.True(count > 0);
 
+            if (LoggedInService.DBLocation == DBLocationEnum.Server)
+            {
+                // List<VPScenarioLanguage> with skip and take
+                var actionVPScenarioLanguageListSkipAndTake = await VPScenarioLanguageService.GetVPScenarioLanguageList(1, 1);
+                Assert.Equal(200, ((ObjectResult)actionVPScenarioLanguageListSkipAndTake.Result).StatusCode);
+                Assert.NotNull(((OkObjectResult)actionVPScenarioLanguageListSkipAndTake.Result).Value);
+                List<VPScenarioLanguage> vpScenarioLanguageListSkipAndTake = (List<VPScenarioLanguage>)((OkObjectResult)actionVPScenarioLanguageListSkipAndTake.Result).Value;
+
+                int countSkipAndTake = ((List<VPScenarioLanguage>)((OkObjectResult)actionVPScenarioLanguageListSkipAndTake.Result).Value).Count();
+                Assert.True(countSkipAndTake == 1);
+
+                Assert.False(vpScenarioLanguageList[0].VPScenarioLanguageID == vpScenarioLanguageListSkipAndTake[0].VPScenarioLanguageID);
+            }
+
+            // Get VPScenarioLanguage With VPScenarioLanguageID
+            var actionVPScenarioLanguageGet = await VPScenarioLanguageService.GetVPScenarioLanguageWithVPScenarioLanguageID(vpScenarioLanguageList[0].VPScenarioLanguageID);
+            Assert.Equal(200, ((ObjectResult)actionVPScenarioLanguageGet.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionVPScenarioLanguageGet.Result).Value);
+            VPScenarioLanguage vpScenarioLanguageGet = (VPScenarioLanguage)((OkObjectResult)actionVPScenarioLanguageGet.Result).Value;
+            Assert.NotNull(vpScenarioLanguageGet);
+            Assert.Equal(vpScenarioLanguageGet.VPScenarioLanguageID, vpScenarioLanguageList[0].VPScenarioLanguageID);
+
             // Put VPScenarioLanguage
             var actionVPScenarioLanguageUpdated = await VPScenarioLanguageService.Put(vpScenarioLanguage);
             Assert.Equal(200, ((ObjectResult)actionVPScenarioLanguageUpdated.Result).StatusCode);
@@ -354,7 +377,7 @@ namespace CSSPServices.Tests
             VPScenarioLanguage vpScenarioLanguage = new VPScenarioLanguage();
 
             if (OmitPropName != "VPScenarioID") vpScenarioLanguage.VPScenarioID = 1;
-            if (OmitPropName != "Language") vpScenarioLanguage.Language = LanguageRequest;
+            if (OmitPropName != "Language") vpScenarioLanguage.Language = CSSPCultureServicesRes.Culture.TwoLetterISOLanguageName == "fr" ? LanguageEnum.fr : LanguageEnum.en;
             if (OmitPropName != "VPScenarioName") vpScenarioLanguage.VPScenarioName = GetRandomString("", 5);
             if (OmitPropName != "TranslationStatus") vpScenarioLanguage.TranslationStatus = (TranslationStatusEnum)GetRandomEnumType(typeof(TranslationStatusEnum));
             if (OmitPropName != "LastUpdateDate_UTC") vpScenarioLanguage.LastUpdateDate_UTC = new DateTime(2005, 3, 6);

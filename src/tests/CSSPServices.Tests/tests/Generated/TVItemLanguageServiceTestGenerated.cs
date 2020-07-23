@@ -20,6 +20,7 @@ using System.Threading.Tasks;
 using System.Transactions;
 using Xunit;
 using System.ComponentModel.DataAnnotations;
+using CSSPCultureServices.Resources;
 
 namespace CSSPServices.Tests
 {
@@ -257,6 +258,28 @@ namespace CSSPServices.Tests
             int count = ((List<TVItemLanguage>)((OkObjectResult)actionTVItemLanguageList.Result).Value).Count();
             Assert.True(count > 0);
 
+            if (LoggedInService.DBLocation == DBLocationEnum.Server)
+            {
+                // List<TVItemLanguage> with skip and take
+                var actionTVItemLanguageListSkipAndTake = await TVItemLanguageService.GetTVItemLanguageList(1, 1);
+                Assert.Equal(200, ((ObjectResult)actionTVItemLanguageListSkipAndTake.Result).StatusCode);
+                Assert.NotNull(((OkObjectResult)actionTVItemLanguageListSkipAndTake.Result).Value);
+                List<TVItemLanguage> tvItemLanguageListSkipAndTake = (List<TVItemLanguage>)((OkObjectResult)actionTVItemLanguageListSkipAndTake.Result).Value;
+
+                int countSkipAndTake = ((List<TVItemLanguage>)((OkObjectResult)actionTVItemLanguageListSkipAndTake.Result).Value).Count();
+                Assert.True(countSkipAndTake == 1);
+
+                Assert.False(tvItemLanguageList[0].TVItemLanguageID == tvItemLanguageListSkipAndTake[0].TVItemLanguageID);
+            }
+
+            // Get TVItemLanguage With TVItemLanguageID
+            var actionTVItemLanguageGet = await TVItemLanguageService.GetTVItemLanguageWithTVItemLanguageID(tvItemLanguageList[0].TVItemLanguageID);
+            Assert.Equal(200, ((ObjectResult)actionTVItemLanguageGet.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionTVItemLanguageGet.Result).Value);
+            TVItemLanguage tvItemLanguageGet = (TVItemLanguage)((OkObjectResult)actionTVItemLanguageGet.Result).Value;
+            Assert.NotNull(tvItemLanguageGet);
+            Assert.Equal(tvItemLanguageGet.TVItemLanguageID, tvItemLanguageList[0].TVItemLanguageID);
+
             // Put TVItemLanguage
             var actionTVItemLanguageUpdated = await TVItemLanguageService.Put(tvItemLanguage);
             Assert.Equal(200, ((ObjectResult)actionTVItemLanguageUpdated.Result).StatusCode);
@@ -360,7 +383,7 @@ namespace CSSPServices.Tests
             TVItemLanguage tvItemLanguage = new TVItemLanguage();
 
             if (OmitPropName != "TVItemID") tvItemLanguage.TVItemID = 1;
-            if (OmitPropName != "Language") tvItemLanguage.Language = LanguageRequest;
+            if (OmitPropName != "Language") tvItemLanguage.Language = CSSPCultureServicesRes.Culture.TwoLetterISOLanguageName == "fr" ? LanguageEnum.fr : LanguageEnum.en;
             if (OmitPropName != "TVText") tvItemLanguage.TVText = GetRandomString("", 5);
             if (OmitPropName != "TranslationStatus") tvItemLanguage.TranslationStatus = (TranslationStatusEnum)GetRandomEnumType(typeof(TranslationStatusEnum));
             if (OmitPropName != "LastUpdateDate_UTC") tvItemLanguage.LastUpdateDate_UTC = new DateTime(2005, 3, 6);

@@ -20,6 +20,7 @@ using System.Threading.Tasks;
 using System.Transactions;
 using Xunit;
 using System.ComponentModel.DataAnnotations;
+using CSSPCultureServices.Resources;
 
 namespace CSSPServices.Tests
 {
@@ -242,6 +243,28 @@ namespace CSSPServices.Tests
 
             int count = ((List<ContactShortcut>)((OkObjectResult)actionContactShortcutList.Result).Value).Count();
             Assert.True(count > 0);
+
+            if (LoggedInService.DBLocation == DBLocationEnum.Server)
+            {
+                // List<ContactShortcut> with skip and take
+                var actionContactShortcutListSkipAndTake = await ContactShortcutService.GetContactShortcutList(1, 1);
+                Assert.Equal(200, ((ObjectResult)actionContactShortcutListSkipAndTake.Result).StatusCode);
+                Assert.NotNull(((OkObjectResult)actionContactShortcutListSkipAndTake.Result).Value);
+                List<ContactShortcut> contactShortcutListSkipAndTake = (List<ContactShortcut>)((OkObjectResult)actionContactShortcutListSkipAndTake.Result).Value;
+
+                int countSkipAndTake = ((List<ContactShortcut>)((OkObjectResult)actionContactShortcutListSkipAndTake.Result).Value).Count();
+                Assert.True(countSkipAndTake == 1);
+
+                Assert.False(contactShortcutList[0].ContactShortcutID == contactShortcutListSkipAndTake[0].ContactShortcutID);
+            }
+
+            // Get ContactShortcut With ContactShortcutID
+            var actionContactShortcutGet = await ContactShortcutService.GetContactShortcutWithContactShortcutID(contactShortcutList[0].ContactShortcutID);
+            Assert.Equal(200, ((ObjectResult)actionContactShortcutGet.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionContactShortcutGet.Result).Value);
+            ContactShortcut contactShortcutGet = (ContactShortcut)((OkObjectResult)actionContactShortcutGet.Result).Value;
+            Assert.NotNull(contactShortcutGet);
+            Assert.Equal(contactShortcutGet.ContactShortcutID, contactShortcutList[0].ContactShortcutID);
 
             // Put ContactShortcut
             var actionContactShortcutUpdated = await ContactShortcutService.Put(contactShortcut);

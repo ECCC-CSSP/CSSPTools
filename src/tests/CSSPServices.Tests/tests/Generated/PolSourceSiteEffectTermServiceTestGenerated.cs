@@ -20,6 +20,7 @@ using System.Threading.Tasks;
 using System.Transactions;
 using Xunit;
 using System.ComponentModel.DataAnnotations;
+using CSSPCultureServices.Resources;
 
 namespace CSSPServices.Tests
 {
@@ -248,6 +249,28 @@ namespace CSSPServices.Tests
 
             int count = ((List<PolSourceSiteEffectTerm>)((OkObjectResult)actionPolSourceSiteEffectTermList.Result).Value).Count();
             Assert.True(count > 0);
+
+            if (LoggedInService.DBLocation == DBLocationEnum.Server)
+            {
+                // List<PolSourceSiteEffectTerm> with skip and take
+                var actionPolSourceSiteEffectTermListSkipAndTake = await PolSourceSiteEffectTermService.GetPolSourceSiteEffectTermList(1, 1);
+                Assert.Equal(200, ((ObjectResult)actionPolSourceSiteEffectTermListSkipAndTake.Result).StatusCode);
+                Assert.NotNull(((OkObjectResult)actionPolSourceSiteEffectTermListSkipAndTake.Result).Value);
+                List<PolSourceSiteEffectTerm> polSourceSiteEffectTermListSkipAndTake = (List<PolSourceSiteEffectTerm>)((OkObjectResult)actionPolSourceSiteEffectTermListSkipAndTake.Result).Value;
+
+                int countSkipAndTake = ((List<PolSourceSiteEffectTerm>)((OkObjectResult)actionPolSourceSiteEffectTermListSkipAndTake.Result).Value).Count();
+                Assert.True(countSkipAndTake == 1);
+
+                Assert.False(polSourceSiteEffectTermList[0].PolSourceSiteEffectTermID == polSourceSiteEffectTermListSkipAndTake[0].PolSourceSiteEffectTermID);
+            }
+
+            // Get PolSourceSiteEffectTerm With PolSourceSiteEffectTermID
+            var actionPolSourceSiteEffectTermGet = await PolSourceSiteEffectTermService.GetPolSourceSiteEffectTermWithPolSourceSiteEffectTermID(polSourceSiteEffectTermList[0].PolSourceSiteEffectTermID);
+            Assert.Equal(200, ((ObjectResult)actionPolSourceSiteEffectTermGet.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionPolSourceSiteEffectTermGet.Result).Value);
+            PolSourceSiteEffectTerm polSourceSiteEffectTermGet = (PolSourceSiteEffectTerm)((OkObjectResult)actionPolSourceSiteEffectTermGet.Result).Value;
+            Assert.NotNull(polSourceSiteEffectTermGet);
+            Assert.Equal(polSourceSiteEffectTermGet.PolSourceSiteEffectTermID, polSourceSiteEffectTermList[0].PolSourceSiteEffectTermID);
 
             // Put PolSourceSiteEffectTerm
             var actionPolSourceSiteEffectTermUpdated = await PolSourceSiteEffectTermService.Put(polSourceSiteEffectTerm);

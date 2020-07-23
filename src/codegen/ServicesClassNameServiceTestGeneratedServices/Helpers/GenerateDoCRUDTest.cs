@@ -31,6 +31,50 @@ namespace ServicesClassNameServiceTestGeneratedServices.Services
             sb.AppendLine(@"");        
             sb.AppendLine($@"            int count = ((List<{ TypeName }>)((OkObjectResult)action{ TypeName }List.Result).Value).Count();");
             sb.AppendLine(@"            Assert.True(count > 0);");
+            sb.AppendLine(@"");
+            sb.AppendLine(@"            if (LoggedInService.DBLocation == DBLocationEnum.Server)");
+            sb.AppendLine(@"            {");
+            sb.AppendLine($@"                // List<{ TypeName }> with skip and take");
+            sb.AppendLine($@"                var action{ TypeName }ListSkipAndTake = await { TypeName }Service.Get{ TypeName }List(1, 1);");
+            sb.AppendLine($@"                Assert.Equal(200, ((ObjectResult)action{ TypeName }ListSkipAndTake.Result).StatusCode);");
+            sb.AppendLine($@"                Assert.NotNull(((OkObjectResult)action{ TypeName }ListSkipAndTake.Result).Value);");
+            sb.AppendLine($@"                List<{ TypeName }> { TypeNameLower }ListSkipAndTake = (List<{ TypeName }>)((OkObjectResult)action{ TypeName }ListSkipAndTake.Result).Value;");
+            sb.AppendLine(@"");
+            sb.AppendLine($@"                int countSkipAndTake = ((List<{ TypeName }>)((OkObjectResult)action{ TypeName }ListSkipAndTake.Result).Value).Count();");
+            sb.AppendLine(@"                Assert.True(countSkipAndTake == 1);");
+            sb.AppendLine(@"");
+            if (TypeName == "AspNetUser")
+            {
+                sb.AppendLine($@"                Assert.False({ TypeNameLower }List[0].Id == { TypeNameLower }ListSkipAndTake[0].Id);");
+            }
+            else
+            {
+                sb.AppendLine($@"                Assert.False({ TypeNameLower }List[0].{ TypeName }ID == { TypeNameLower }ListSkipAndTake[0].{ TypeName }ID);");
+            }
+            sb.AppendLine(@"            }");
+            sb.AppendLine(@"");
+            if (TypeName == "AspNetUser")
+            {
+                sb.AppendLine($@"            // Get { TypeName } With Id");
+                sb.AppendLine($@"            var action{ TypeName }Get = await { TypeName }Service.Get{ TypeName }WithId({ TypeNameLower }List[0].Id);");
+            }
+            else
+            {
+                sb.AppendLine($@"            // Get { TypeName } With { TypeName }ID");
+                sb.AppendLine($@"            var action{ TypeName }Get = await { TypeName }Service.Get{ TypeName }With{ TypeName }ID({ TypeNameLower }List[0].{ TypeName }ID);");
+            }
+            sb.AppendLine($@"            Assert.Equal(200, ((ObjectResult)action{ TypeName }Get.Result).StatusCode);");
+            sb.AppendLine($@"            Assert.NotNull(((OkObjectResult)action{ TypeName }Get.Result).Value);");
+            sb.AppendLine($@"            { TypeName } { TypeNameLower }Get = ({ TypeName })((OkObjectResult)action{ TypeName }Get.Result).Value;");
+            sb.AppendLine($@"            Assert.NotNull({ TypeNameLower }Get);");
+            if (TypeName == "AspNetUser")
+            {
+                sb.AppendLine($@"            Assert.Equal({ TypeNameLower }Get.Id, { TypeNameLower }List[0].Id);");
+            }
+            else
+            {
+                sb.AppendLine($@"            Assert.Equal({ TypeNameLower }Get.{ TypeName }ID, { TypeNameLower }List[0].{ TypeName }ID);");
+            }
             sb.AppendLine(@"");        
             sb.AppendLine($@"            // Put { TypeName }");
             sb.AppendLine($@"            var action{ TypeName }Updated = await { TypeName }Service.Put({ TypeNameLower });");

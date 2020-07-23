@@ -20,6 +20,7 @@ using System.Threading.Tasks;
 using System.Transactions;
 using Xunit;
 using System.ComponentModel.DataAnnotations;
+using CSSPCultureServices.Resources;
 
 namespace CSSPServices.Tests
 {
@@ -248,6 +249,28 @@ namespace CSSPServices.Tests
 
             int count = ((List<Log>)((OkObjectResult)actionLogList.Result).Value).Count();
             Assert.True(count > 0);
+
+            if (LoggedInService.DBLocation == DBLocationEnum.Server)
+            {
+                // List<Log> with skip and take
+                var actionLogListSkipAndTake = await LogService.GetLogList(1, 1);
+                Assert.Equal(200, ((ObjectResult)actionLogListSkipAndTake.Result).StatusCode);
+                Assert.NotNull(((OkObjectResult)actionLogListSkipAndTake.Result).Value);
+                List<Log> logListSkipAndTake = (List<Log>)((OkObjectResult)actionLogListSkipAndTake.Result).Value;
+
+                int countSkipAndTake = ((List<Log>)((OkObjectResult)actionLogListSkipAndTake.Result).Value).Count();
+                Assert.True(countSkipAndTake == 1);
+
+                Assert.False(logList[0].LogID == logListSkipAndTake[0].LogID);
+            }
+
+            // Get Log With LogID
+            var actionLogGet = await LogService.GetLogWithLogID(logList[0].LogID);
+            Assert.Equal(200, ((ObjectResult)actionLogGet.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionLogGet.Result).Value);
+            Log logGet = (Log)((OkObjectResult)actionLogGet.Result).Value;
+            Assert.NotNull(logGet);
+            Assert.Equal(logGet.LogID, logList[0].LogID);
 
             // Put Log
             var actionLogUpdated = await LogService.Put(log);

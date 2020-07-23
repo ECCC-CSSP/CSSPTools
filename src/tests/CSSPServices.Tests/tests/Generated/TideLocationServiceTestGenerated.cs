@@ -20,6 +20,7 @@ using System.Threading.Tasks;
 using System.Transactions;
 using Xunit;
 using System.ComponentModel.DataAnnotations;
+using CSSPCultureServices.Resources;
 
 namespace CSSPServices.Tests
 {
@@ -313,6 +314,28 @@ namespace CSSPServices.Tests
 
             int count = ((List<TideLocation>)((OkObjectResult)actionTideLocationList.Result).Value).Count();
             Assert.True(count > 0);
+
+            if (LoggedInService.DBLocation == DBLocationEnum.Server)
+            {
+                // List<TideLocation> with skip and take
+                var actionTideLocationListSkipAndTake = await TideLocationService.GetTideLocationList(1, 1);
+                Assert.Equal(200, ((ObjectResult)actionTideLocationListSkipAndTake.Result).StatusCode);
+                Assert.NotNull(((OkObjectResult)actionTideLocationListSkipAndTake.Result).Value);
+                List<TideLocation> tideLocationListSkipAndTake = (List<TideLocation>)((OkObjectResult)actionTideLocationListSkipAndTake.Result).Value;
+
+                int countSkipAndTake = ((List<TideLocation>)((OkObjectResult)actionTideLocationListSkipAndTake.Result).Value).Count();
+                Assert.True(countSkipAndTake == 1);
+
+                Assert.False(tideLocationList[0].TideLocationID == tideLocationListSkipAndTake[0].TideLocationID);
+            }
+
+            // Get TideLocation With TideLocationID
+            var actionTideLocationGet = await TideLocationService.GetTideLocationWithTideLocationID(tideLocationList[0].TideLocationID);
+            Assert.Equal(200, ((ObjectResult)actionTideLocationGet.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionTideLocationGet.Result).Value);
+            TideLocation tideLocationGet = (TideLocation)((OkObjectResult)actionTideLocationGet.Result).Value;
+            Assert.NotNull(tideLocationGet);
+            Assert.Equal(tideLocationGet.TideLocationID, tideLocationList[0].TideLocationID);
 
             // Put TideLocation
             var actionTideLocationUpdated = await TideLocationService.Put(tideLocation);

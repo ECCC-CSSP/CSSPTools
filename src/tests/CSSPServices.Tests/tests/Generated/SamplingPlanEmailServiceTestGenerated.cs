@@ -20,6 +20,7 @@ using System.Threading.Tasks;
 using System.Transactions;
 using Xunit;
 using System.ComponentModel.DataAnnotations;
+using CSSPCultureServices.Resources;
 
 namespace CSSPServices.Tests
 {
@@ -255,6 +256,28 @@ namespace CSSPServices.Tests
 
             int count = ((List<SamplingPlanEmail>)((OkObjectResult)actionSamplingPlanEmailList.Result).Value).Count();
             Assert.True(count > 0);
+
+            if (LoggedInService.DBLocation == DBLocationEnum.Server)
+            {
+                // List<SamplingPlanEmail> with skip and take
+                var actionSamplingPlanEmailListSkipAndTake = await SamplingPlanEmailService.GetSamplingPlanEmailList(1, 1);
+                Assert.Equal(200, ((ObjectResult)actionSamplingPlanEmailListSkipAndTake.Result).StatusCode);
+                Assert.NotNull(((OkObjectResult)actionSamplingPlanEmailListSkipAndTake.Result).Value);
+                List<SamplingPlanEmail> samplingPlanEmailListSkipAndTake = (List<SamplingPlanEmail>)((OkObjectResult)actionSamplingPlanEmailListSkipAndTake.Result).Value;
+
+                int countSkipAndTake = ((List<SamplingPlanEmail>)((OkObjectResult)actionSamplingPlanEmailListSkipAndTake.Result).Value).Count();
+                Assert.True(countSkipAndTake == 1);
+
+                Assert.False(samplingPlanEmailList[0].SamplingPlanEmailID == samplingPlanEmailListSkipAndTake[0].SamplingPlanEmailID);
+            }
+
+            // Get SamplingPlanEmail With SamplingPlanEmailID
+            var actionSamplingPlanEmailGet = await SamplingPlanEmailService.GetSamplingPlanEmailWithSamplingPlanEmailID(samplingPlanEmailList[0].SamplingPlanEmailID);
+            Assert.Equal(200, ((ObjectResult)actionSamplingPlanEmailGet.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionSamplingPlanEmailGet.Result).Value);
+            SamplingPlanEmail samplingPlanEmailGet = (SamplingPlanEmail)((OkObjectResult)actionSamplingPlanEmailGet.Result).Value;
+            Assert.NotNull(samplingPlanEmailGet);
+            Assert.Equal(samplingPlanEmailGet.SamplingPlanEmailID, samplingPlanEmailList[0].SamplingPlanEmailID);
 
             // Put SamplingPlanEmail
             var actionSamplingPlanEmailUpdated = await SamplingPlanEmailService.Put(samplingPlanEmail);

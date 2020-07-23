@@ -20,6 +20,7 @@ using System.Threading.Tasks;
 using System.Transactions;
 using Xunit;
 using System.ComponentModel.DataAnnotations;
+using CSSPCultureServices.Resources;
 
 namespace CSSPServices.Tests
 {
@@ -493,6 +494,28 @@ namespace CSSPServices.Tests
 
             int count = ((List<LabSheet>)((OkObjectResult)actionLabSheetList.Result).Value).Count();
             Assert.True(count > 0);
+
+            if (LoggedInService.DBLocation == DBLocationEnum.Server)
+            {
+                // List<LabSheet> with skip and take
+                var actionLabSheetListSkipAndTake = await LabSheetService.GetLabSheetList(1, 1);
+                Assert.Equal(200, ((ObjectResult)actionLabSheetListSkipAndTake.Result).StatusCode);
+                Assert.NotNull(((OkObjectResult)actionLabSheetListSkipAndTake.Result).Value);
+                List<LabSheet> labSheetListSkipAndTake = (List<LabSheet>)((OkObjectResult)actionLabSheetListSkipAndTake.Result).Value;
+
+                int countSkipAndTake = ((List<LabSheet>)((OkObjectResult)actionLabSheetListSkipAndTake.Result).Value).Count();
+                Assert.True(countSkipAndTake == 1);
+
+                Assert.False(labSheetList[0].LabSheetID == labSheetListSkipAndTake[0].LabSheetID);
+            }
+
+            // Get LabSheet With LabSheetID
+            var actionLabSheetGet = await LabSheetService.GetLabSheetWithLabSheetID(labSheetList[0].LabSheetID);
+            Assert.Equal(200, ((ObjectResult)actionLabSheetGet.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionLabSheetGet.Result).Value);
+            LabSheet labSheetGet = (LabSheet)((OkObjectResult)actionLabSheetGet.Result).Value;
+            Assert.NotNull(labSheetGet);
+            Assert.Equal(labSheetGet.LabSheetID, labSheetList[0].LabSheetID);
 
             // Put LabSheet
             var actionLabSheetUpdated = await LabSheetService.Put(labSheet);

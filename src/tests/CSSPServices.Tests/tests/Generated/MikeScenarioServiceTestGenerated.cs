@@ -20,6 +20,7 @@ using System.Threading.Tasks;
 using System.Transactions;
 using Xunit;
 using System.ComponentModel.DataAnnotations;
+using CSSPCultureServices.Resources;
 
 namespace CSSPServices.Tests
 {
@@ -701,6 +702,28 @@ namespace CSSPServices.Tests
 
             int count = ((List<MikeScenario>)((OkObjectResult)actionMikeScenarioList.Result).Value).Count();
             Assert.True(count > 0);
+
+            if (LoggedInService.DBLocation == DBLocationEnum.Server)
+            {
+                // List<MikeScenario> with skip and take
+                var actionMikeScenarioListSkipAndTake = await MikeScenarioService.GetMikeScenarioList(1, 1);
+                Assert.Equal(200, ((ObjectResult)actionMikeScenarioListSkipAndTake.Result).StatusCode);
+                Assert.NotNull(((OkObjectResult)actionMikeScenarioListSkipAndTake.Result).Value);
+                List<MikeScenario> mikeScenarioListSkipAndTake = (List<MikeScenario>)((OkObjectResult)actionMikeScenarioListSkipAndTake.Result).Value;
+
+                int countSkipAndTake = ((List<MikeScenario>)((OkObjectResult)actionMikeScenarioListSkipAndTake.Result).Value).Count();
+                Assert.True(countSkipAndTake == 1);
+
+                Assert.False(mikeScenarioList[0].MikeScenarioID == mikeScenarioListSkipAndTake[0].MikeScenarioID);
+            }
+
+            // Get MikeScenario With MikeScenarioID
+            var actionMikeScenarioGet = await MikeScenarioService.GetMikeScenarioWithMikeScenarioID(mikeScenarioList[0].MikeScenarioID);
+            Assert.Equal(200, ((ObjectResult)actionMikeScenarioGet.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionMikeScenarioGet.Result).Value);
+            MikeScenario mikeScenarioGet = (MikeScenario)((OkObjectResult)actionMikeScenarioGet.Result).Value;
+            Assert.NotNull(mikeScenarioGet);
+            Assert.Equal(mikeScenarioGet.MikeScenarioID, mikeScenarioList[0].MikeScenarioID);
 
             // Put MikeScenario
             var actionMikeScenarioUpdated = await MikeScenarioService.Put(mikeScenario);

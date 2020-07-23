@@ -20,6 +20,7 @@ using System.Threading.Tasks;
 using System.Transactions;
 using Xunit;
 using System.ComponentModel.DataAnnotations;
+using CSSPCultureServices.Resources;
 
 namespace CSSPServices.Tests
 {
@@ -875,6 +876,28 @@ namespace CSSPServices.Tests
 
             int count = ((List<MWQMRun>)((OkObjectResult)actionMWQMRunList.Result).Value).Count();
             Assert.True(count > 0);
+
+            if (LoggedInService.DBLocation == DBLocationEnum.Server)
+            {
+                // List<MWQMRun> with skip and take
+                var actionMWQMRunListSkipAndTake = await MWQMRunService.GetMWQMRunList(1, 1);
+                Assert.Equal(200, ((ObjectResult)actionMWQMRunListSkipAndTake.Result).StatusCode);
+                Assert.NotNull(((OkObjectResult)actionMWQMRunListSkipAndTake.Result).Value);
+                List<MWQMRun> mwqmRunListSkipAndTake = (List<MWQMRun>)((OkObjectResult)actionMWQMRunListSkipAndTake.Result).Value;
+
+                int countSkipAndTake = ((List<MWQMRun>)((OkObjectResult)actionMWQMRunListSkipAndTake.Result).Value).Count();
+                Assert.True(countSkipAndTake == 1);
+
+                Assert.False(mwqmRunList[0].MWQMRunID == mwqmRunListSkipAndTake[0].MWQMRunID);
+            }
+
+            // Get MWQMRun With MWQMRunID
+            var actionMWQMRunGet = await MWQMRunService.GetMWQMRunWithMWQMRunID(mwqmRunList[0].MWQMRunID);
+            Assert.Equal(200, ((ObjectResult)actionMWQMRunGet.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionMWQMRunGet.Result).Value);
+            MWQMRun mwqmRunGet = (MWQMRun)((OkObjectResult)actionMWQMRunGet.Result).Value;
+            Assert.NotNull(mwqmRunGet);
+            Assert.Equal(mwqmRunGet.MWQMRunID, mwqmRunList[0].MWQMRunID);
 
             // Put MWQMRun
             var actionMWQMRunUpdated = await MWQMRunService.Put(mwqmRun);

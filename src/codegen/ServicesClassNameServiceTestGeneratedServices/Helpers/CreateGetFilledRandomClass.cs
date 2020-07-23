@@ -1840,7 +1840,7 @@ namespace ServicesClassNameServiceTestGeneratedServices.Services
                         {
                             if (csspProp.PropType.Contains("LanguageEnum"))
                             {
-                                sb.AppendLine($@"            if (OmitPropName != ""{ prop.Name }"") { TypeNameLower }.{ prop.Name } = LanguageRequest;");
+                                sb.AppendLine($@"            if (OmitPropName != ""{ prop.Name }"") { TypeNameLower }.{ prop.Name } = CSSPCultureServicesRes.Culture.TwoLetterISOLanguageName == ""fr"" ? LanguageEnum.fr : LanguageEnum.en;");
                             }
                             else
                             {

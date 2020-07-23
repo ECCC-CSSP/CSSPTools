@@ -20,6 +20,7 @@ using System.Threading.Tasks;
 using System.Transactions;
 using Xunit;
 using System.ComponentModel.DataAnnotations;
+using CSSPCultureServices.Resources;
 
 namespace CSSPServices.Tests
 {
@@ -238,6 +239,28 @@ namespace CSSPServices.Tests
 
             int count = ((List<ContactPreference>)((OkObjectResult)actionContactPreferenceList.Result).Value).Count();
             Assert.True(count > 0);
+
+            if (LoggedInService.DBLocation == DBLocationEnum.Server)
+            {
+                // List<ContactPreference> with skip and take
+                var actionContactPreferenceListSkipAndTake = await ContactPreferenceService.GetContactPreferenceList(1, 1);
+                Assert.Equal(200, ((ObjectResult)actionContactPreferenceListSkipAndTake.Result).StatusCode);
+                Assert.NotNull(((OkObjectResult)actionContactPreferenceListSkipAndTake.Result).Value);
+                List<ContactPreference> contactPreferenceListSkipAndTake = (List<ContactPreference>)((OkObjectResult)actionContactPreferenceListSkipAndTake.Result).Value;
+
+                int countSkipAndTake = ((List<ContactPreference>)((OkObjectResult)actionContactPreferenceListSkipAndTake.Result).Value).Count();
+                Assert.True(countSkipAndTake == 1);
+
+                Assert.False(contactPreferenceList[0].ContactPreferenceID == contactPreferenceListSkipAndTake[0].ContactPreferenceID);
+            }
+
+            // Get ContactPreference With ContactPreferenceID
+            var actionContactPreferenceGet = await ContactPreferenceService.GetContactPreferenceWithContactPreferenceID(contactPreferenceList[0].ContactPreferenceID);
+            Assert.Equal(200, ((ObjectResult)actionContactPreferenceGet.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionContactPreferenceGet.Result).Value);
+            ContactPreference contactPreferenceGet = (ContactPreference)((OkObjectResult)actionContactPreferenceGet.Result).Value;
+            Assert.NotNull(contactPreferenceGet);
+            Assert.Equal(contactPreferenceGet.ContactPreferenceID, contactPreferenceList[0].ContactPreferenceID);
 
             // Put ContactPreference
             var actionContactPreferenceUpdated = await ContactPreferenceService.Put(contactPreference);

@@ -20,6 +20,7 @@ using System.Threading.Tasks;
 using System.Transactions;
 using Xunit;
 using System.ComponentModel.DataAnnotations;
+using CSSPCultureServices.Resources;
 
 namespace CSSPServices.Tests
 {
@@ -428,6 +429,28 @@ namespace CSSPServices.Tests
 
             int count = ((List<UseOfSite>)((OkObjectResult)actionUseOfSiteList.Result).Value).Count();
             Assert.True(count > 0);
+
+            if (LoggedInService.DBLocation == DBLocationEnum.Server)
+            {
+                // List<UseOfSite> with skip and take
+                var actionUseOfSiteListSkipAndTake = await UseOfSiteService.GetUseOfSiteList(1, 1);
+                Assert.Equal(200, ((ObjectResult)actionUseOfSiteListSkipAndTake.Result).StatusCode);
+                Assert.NotNull(((OkObjectResult)actionUseOfSiteListSkipAndTake.Result).Value);
+                List<UseOfSite> useOfSiteListSkipAndTake = (List<UseOfSite>)((OkObjectResult)actionUseOfSiteListSkipAndTake.Result).Value;
+
+                int countSkipAndTake = ((List<UseOfSite>)((OkObjectResult)actionUseOfSiteListSkipAndTake.Result).Value).Count();
+                Assert.True(countSkipAndTake == 1);
+
+                Assert.False(useOfSiteList[0].UseOfSiteID == useOfSiteListSkipAndTake[0].UseOfSiteID);
+            }
+
+            // Get UseOfSite With UseOfSiteID
+            var actionUseOfSiteGet = await UseOfSiteService.GetUseOfSiteWithUseOfSiteID(useOfSiteList[0].UseOfSiteID);
+            Assert.Equal(200, ((ObjectResult)actionUseOfSiteGet.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionUseOfSiteGet.Result).Value);
+            UseOfSite useOfSiteGet = (UseOfSite)((OkObjectResult)actionUseOfSiteGet.Result).Value;
+            Assert.NotNull(useOfSiteGet);
+            Assert.Equal(useOfSiteGet.UseOfSiteID, useOfSiteList[0].UseOfSiteID);
 
             // Put UseOfSite
             var actionUseOfSiteUpdated = await UseOfSiteService.Put(useOfSite);

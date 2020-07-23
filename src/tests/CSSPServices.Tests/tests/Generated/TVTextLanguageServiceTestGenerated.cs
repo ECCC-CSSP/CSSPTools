@@ -20,6 +20,7 @@ using System.Threading.Tasks;
 using System.Transactions;
 using Xunit;
 using System.ComponentModel.DataAnnotations;
+using CSSPCultureServices.Resources;
 
 namespace CSSPServices.Tests
 {
@@ -94,7 +95,7 @@ namespace CSSPServices.Tests
             TVTextLanguage tvTextLanguage = new TVTextLanguage();
 
             if (OmitPropName != "TVText") tvTextLanguage.TVText = GetRandomString("", 20);
-            if (OmitPropName != "Language") tvTextLanguage.Language = LanguageRequest;
+            if (OmitPropName != "Language") tvTextLanguage.Language = CSSPCultureServicesRes.Culture.TwoLetterISOLanguageName == "fr" ? LanguageEnum.fr : LanguageEnum.en;
             if (OmitPropName != "LanguageText") tvTextLanguage.LanguageText = GetRandomString("", 5);
 
             return tvTextLanguage;

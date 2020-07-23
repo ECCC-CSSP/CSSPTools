@@ -20,6 +20,7 @@ using System.Threading.Tasks;
 using System.Transactions;
 using Xunit;
 using System.ComponentModel.DataAnnotations;
+using CSSPCultureServices.Resources;
 
 namespace CSSPServices.Tests
 {
@@ -243,6 +244,28 @@ namespace CSSPServices.Tests
             int count = ((List<HelpDoc>)((OkObjectResult)actionHelpDocList.Result).Value).Count();
             Assert.True(count > 0);
 
+            if (LoggedInService.DBLocation == DBLocationEnum.Server)
+            {
+                // List<HelpDoc> with skip and take
+                var actionHelpDocListSkipAndTake = await HelpDocService.GetHelpDocList(1, 1);
+                Assert.Equal(200, ((ObjectResult)actionHelpDocListSkipAndTake.Result).StatusCode);
+                Assert.NotNull(((OkObjectResult)actionHelpDocListSkipAndTake.Result).Value);
+                List<HelpDoc> helpDocListSkipAndTake = (List<HelpDoc>)((OkObjectResult)actionHelpDocListSkipAndTake.Result).Value;
+
+                int countSkipAndTake = ((List<HelpDoc>)((OkObjectResult)actionHelpDocListSkipAndTake.Result).Value).Count();
+                Assert.True(countSkipAndTake == 1);
+
+                Assert.False(helpDocList[0].HelpDocID == helpDocListSkipAndTake[0].HelpDocID);
+            }
+
+            // Get HelpDoc With HelpDocID
+            var actionHelpDocGet = await HelpDocService.GetHelpDocWithHelpDocID(helpDocList[0].HelpDocID);
+            Assert.Equal(200, ((ObjectResult)actionHelpDocGet.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionHelpDocGet.Result).Value);
+            HelpDoc helpDocGet = (HelpDoc)((OkObjectResult)actionHelpDocGet.Result).Value;
+            Assert.NotNull(helpDocGet);
+            Assert.Equal(helpDocGet.HelpDocID, helpDocList[0].HelpDocID);
+
             // Put HelpDoc
             var actionHelpDocUpdated = await HelpDocService.Put(helpDoc);
             Assert.Equal(200, ((ObjectResult)actionHelpDocUpdated.Result).StatusCode);
@@ -346,7 +369,7 @@ namespace CSSPServices.Tests
             HelpDoc helpDoc = new HelpDoc();
 
             if (OmitPropName != "DocKey") helpDoc.DocKey = GetRandomString("", 5);
-            if (OmitPropName != "Language") helpDoc.Language = LanguageRequest;
+            if (OmitPropName != "Language") helpDoc.Language = CSSPCultureServicesRes.Culture.TwoLetterISOLanguageName == "fr" ? LanguageEnum.fr : LanguageEnum.en;
             if (OmitPropName != "DocHTMLText") helpDoc.DocHTMLText = GetRandomString("", 5);
             if (OmitPropName != "LastUpdateDate_UTC") helpDoc.LastUpdateDate_UTC = new DateTime(2005, 3, 6);
             if (OmitPropName != "LastUpdateContactTVItemID") helpDoc.LastUpdateContactTVItemID = 2;

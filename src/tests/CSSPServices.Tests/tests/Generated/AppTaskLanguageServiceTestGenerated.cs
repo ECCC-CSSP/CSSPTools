@@ -20,6 +20,7 @@ using System.Threading.Tasks;
 using System.Transactions;
 using Xunit;
 using System.ComponentModel.DataAnnotations;
+using CSSPCultureServices.Resources;
 
 namespace CSSPServices.Tests
 {
@@ -259,6 +260,28 @@ namespace CSSPServices.Tests
             int count = ((List<AppTaskLanguage>)((OkObjectResult)actionAppTaskLanguageList.Result).Value).Count();
             Assert.True(count > 0);
 
+            if (LoggedInService.DBLocation == DBLocationEnum.Server)
+            {
+                // List<AppTaskLanguage> with skip and take
+                var actionAppTaskLanguageListSkipAndTake = await AppTaskLanguageService.GetAppTaskLanguageList(1, 1);
+                Assert.Equal(200, ((ObjectResult)actionAppTaskLanguageListSkipAndTake.Result).StatusCode);
+                Assert.NotNull(((OkObjectResult)actionAppTaskLanguageListSkipAndTake.Result).Value);
+                List<AppTaskLanguage> appTaskLanguageListSkipAndTake = (List<AppTaskLanguage>)((OkObjectResult)actionAppTaskLanguageListSkipAndTake.Result).Value;
+
+                int countSkipAndTake = ((List<AppTaskLanguage>)((OkObjectResult)actionAppTaskLanguageListSkipAndTake.Result).Value).Count();
+                Assert.True(countSkipAndTake == 1);
+
+                Assert.False(appTaskLanguageList[0].AppTaskLanguageID == appTaskLanguageListSkipAndTake[0].AppTaskLanguageID);
+            }
+
+            // Get AppTaskLanguage With AppTaskLanguageID
+            var actionAppTaskLanguageGet = await AppTaskLanguageService.GetAppTaskLanguageWithAppTaskLanguageID(appTaskLanguageList[0].AppTaskLanguageID);
+            Assert.Equal(200, ((ObjectResult)actionAppTaskLanguageGet.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionAppTaskLanguageGet.Result).Value);
+            AppTaskLanguage appTaskLanguageGet = (AppTaskLanguage)((OkObjectResult)actionAppTaskLanguageGet.Result).Value;
+            Assert.NotNull(appTaskLanguageGet);
+            Assert.Equal(appTaskLanguageGet.AppTaskLanguageID, appTaskLanguageList[0].AppTaskLanguageID);
+
             // Put AppTaskLanguage
             var actionAppTaskLanguageUpdated = await AppTaskLanguageService.Put(appTaskLanguage);
             Assert.Equal(200, ((ObjectResult)actionAppTaskLanguageUpdated.Result).StatusCode);
@@ -362,7 +385,7 @@ namespace CSSPServices.Tests
             AppTaskLanguage appTaskLanguage = new AppTaskLanguage();
 
             if (OmitPropName != "AppTaskID") appTaskLanguage.AppTaskID = 1;
-            if (OmitPropName != "Language") appTaskLanguage.Language = LanguageRequest;
+            if (OmitPropName != "Language") appTaskLanguage.Language = CSSPCultureServicesRes.Culture.TwoLetterISOLanguageName == "fr" ? LanguageEnum.fr : LanguageEnum.en;
             if (OmitPropName != "StatusText") appTaskLanguage.StatusText = GetRandomString("", 5);
             if (OmitPropName != "ErrorText") appTaskLanguage.ErrorText = GetRandomString("", 5);
             if (OmitPropName != "TranslationStatus") appTaskLanguage.TranslationStatus = (TranslationStatusEnum)GetRandomEnumType(typeof(TranslationStatusEnum));
@@ -375,7 +398,7 @@ namespace CSSPServices.Tests
 
                 try
                 {
-                    dbIM.AppTasks.Add(new AppTask() { AppTaskID = 1, TVItemID = 5, TVItemID2 = 5, AppTaskCommand = (AppTaskCommandEnum)1, AppTaskStatus = (AppTaskStatusEnum)1, PercentCompleted = 1, Parameters = "a,a", Language = (LanguageEnum)1, StartDateTime_UTC = new DateTime(2015, 7, 19, 14, 30, 5), EndDateTime_UTC = new DateTime(2015, 7, 19, 18, 30, 5), EstimatedLength_second = 1201, RemainingTime_second = 234, LastUpdateDate_UTC = new DateTime(2020, 7, 19, 14, 30, 5), LastUpdateContactTVItemID = 2 });
+                    dbIM.AppTasks.Add(new AppTask() { AppTaskID = 1, TVItemID = 5, TVItemID2 = 5, AppTaskCommand = (AppTaskCommandEnum)1, AppTaskStatus = (AppTaskStatusEnum)1, PercentCompleted = 1, Parameters = "a,a", Language = (LanguageEnum)1, StartDateTime_UTC = new DateTime(2015, 7, 21, 14, 33, 26), EndDateTime_UTC = new DateTime(2015, 7, 21, 18, 33, 26), EstimatedLength_second = 1201, RemainingTime_second = 234, LastUpdateDate_UTC = new DateTime(2020, 7, 21, 14, 33, 26), LastUpdateContactTVItemID = 2 });
                     dbIM.SaveChanges();
                 }
                 catch (Exception)

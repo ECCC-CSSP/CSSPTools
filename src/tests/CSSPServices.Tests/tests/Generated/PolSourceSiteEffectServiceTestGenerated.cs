@@ -20,6 +20,7 @@ using System.Threading.Tasks;
 using System.Transactions;
 using Xunit;
 using System.ComponentModel.DataAnnotations;
+using CSSPCultureServices.Resources;
 
 namespace CSSPServices.Tests
 {
@@ -269,6 +270,28 @@ namespace CSSPServices.Tests
 
             int count = ((List<PolSourceSiteEffect>)((OkObjectResult)actionPolSourceSiteEffectList.Result).Value).Count();
             Assert.True(count > 0);
+
+            if (LoggedInService.DBLocation == DBLocationEnum.Server)
+            {
+                // List<PolSourceSiteEffect> with skip and take
+                var actionPolSourceSiteEffectListSkipAndTake = await PolSourceSiteEffectService.GetPolSourceSiteEffectList(1, 1);
+                Assert.Equal(200, ((ObjectResult)actionPolSourceSiteEffectListSkipAndTake.Result).StatusCode);
+                Assert.NotNull(((OkObjectResult)actionPolSourceSiteEffectListSkipAndTake.Result).Value);
+                List<PolSourceSiteEffect> polSourceSiteEffectListSkipAndTake = (List<PolSourceSiteEffect>)((OkObjectResult)actionPolSourceSiteEffectListSkipAndTake.Result).Value;
+
+                int countSkipAndTake = ((List<PolSourceSiteEffect>)((OkObjectResult)actionPolSourceSiteEffectListSkipAndTake.Result).Value).Count();
+                Assert.True(countSkipAndTake == 1);
+
+                Assert.False(polSourceSiteEffectList[0].PolSourceSiteEffectID == polSourceSiteEffectListSkipAndTake[0].PolSourceSiteEffectID);
+            }
+
+            // Get PolSourceSiteEffect With PolSourceSiteEffectID
+            var actionPolSourceSiteEffectGet = await PolSourceSiteEffectService.GetPolSourceSiteEffectWithPolSourceSiteEffectID(polSourceSiteEffectList[0].PolSourceSiteEffectID);
+            Assert.Equal(200, ((ObjectResult)actionPolSourceSiteEffectGet.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionPolSourceSiteEffectGet.Result).Value);
+            PolSourceSiteEffect polSourceSiteEffectGet = (PolSourceSiteEffect)((OkObjectResult)actionPolSourceSiteEffectGet.Result).Value;
+            Assert.NotNull(polSourceSiteEffectGet);
+            Assert.Equal(polSourceSiteEffectGet.PolSourceSiteEffectID, polSourceSiteEffectList[0].PolSourceSiteEffectID);
 
             // Put PolSourceSiteEffect
             var actionPolSourceSiteEffectUpdated = await PolSourceSiteEffectService.Put(polSourceSiteEffect);

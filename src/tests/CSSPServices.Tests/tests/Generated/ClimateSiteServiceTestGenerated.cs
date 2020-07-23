@@ -20,6 +20,7 @@ using System.Threading.Tasks;
 using System.Transactions;
 using Xunit;
 using System.ComponentModel.DataAnnotations;
+using CSSPCultureServices.Resources;
 
 namespace CSSPServices.Tests
 {
@@ -473,6 +474,28 @@ namespace CSSPServices.Tests
 
             int count = ((List<ClimateSite>)((OkObjectResult)actionClimateSiteList.Result).Value).Count();
             Assert.True(count > 0);
+
+            if (LoggedInService.DBLocation == DBLocationEnum.Server)
+            {
+                // List<ClimateSite> with skip and take
+                var actionClimateSiteListSkipAndTake = await ClimateSiteService.GetClimateSiteList(1, 1);
+                Assert.Equal(200, ((ObjectResult)actionClimateSiteListSkipAndTake.Result).StatusCode);
+                Assert.NotNull(((OkObjectResult)actionClimateSiteListSkipAndTake.Result).Value);
+                List<ClimateSite> climateSiteListSkipAndTake = (List<ClimateSite>)((OkObjectResult)actionClimateSiteListSkipAndTake.Result).Value;
+
+                int countSkipAndTake = ((List<ClimateSite>)((OkObjectResult)actionClimateSiteListSkipAndTake.Result).Value).Count();
+                Assert.True(countSkipAndTake == 1);
+
+                Assert.False(climateSiteList[0].ClimateSiteID == climateSiteListSkipAndTake[0].ClimateSiteID);
+            }
+
+            // Get ClimateSite With ClimateSiteID
+            var actionClimateSiteGet = await ClimateSiteService.GetClimateSiteWithClimateSiteID(climateSiteList[0].ClimateSiteID);
+            Assert.Equal(200, ((ObjectResult)actionClimateSiteGet.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionClimateSiteGet.Result).Value);
+            ClimateSite climateSiteGet = (ClimateSite)((OkObjectResult)actionClimateSiteGet.Result).Value;
+            Assert.NotNull(climateSiteGet);
+            Assert.Equal(climateSiteGet.ClimateSiteID, climateSiteList[0].ClimateSiteID);
 
             // Put ClimateSite
             var actionClimateSiteUpdated = await ClimateSiteService.Put(climateSite);

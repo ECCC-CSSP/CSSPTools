@@ -20,6 +20,7 @@ using System.Threading.Tasks;
 using System.Transactions;
 using Xunit;
 using System.ComponentModel.DataAnnotations;
+using CSSPCultureServices.Resources;
 
 namespace CSSPServices.Tests
 {
@@ -313,6 +314,28 @@ namespace CSSPServices.Tests
 
             int count = ((List<AspNetUser>)((OkObjectResult)actionAspNetUserList.Result).Value).Count();
             Assert.True(count > 0);
+
+            if (LoggedInService.DBLocation == DBLocationEnum.Server)
+            {
+                // List<AspNetUser> with skip and take
+                var actionAspNetUserListSkipAndTake = await AspNetUserService.GetAspNetUserList(1, 1);
+                Assert.Equal(200, ((ObjectResult)actionAspNetUserListSkipAndTake.Result).StatusCode);
+                Assert.NotNull(((OkObjectResult)actionAspNetUserListSkipAndTake.Result).Value);
+                List<AspNetUser> aspNetUserListSkipAndTake = (List<AspNetUser>)((OkObjectResult)actionAspNetUserListSkipAndTake.Result).Value;
+
+                int countSkipAndTake = ((List<AspNetUser>)((OkObjectResult)actionAspNetUserListSkipAndTake.Result).Value).Count();
+                Assert.True(countSkipAndTake == 1);
+
+                Assert.False(aspNetUserList[0].Id == aspNetUserListSkipAndTake[0].Id);
+            }
+
+            // Get AspNetUser With Id
+            var actionAspNetUserGet = await AspNetUserService.GetAspNetUserWithId(aspNetUserList[0].Id);
+            Assert.Equal(200, ((ObjectResult)actionAspNetUserGet.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionAspNetUserGet.Result).Value);
+            AspNetUser aspNetUserGet = (AspNetUser)((OkObjectResult)actionAspNetUserGet.Result).Value;
+            Assert.NotNull(aspNetUserGet);
+            Assert.Equal(aspNetUserGet.Id, aspNetUserList[0].Id);
 
             // Put AspNetUser
             var actionAspNetUserUpdated = await AspNetUserService.Put(aspNetUser);

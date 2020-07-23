@@ -20,6 +20,7 @@ using System.Threading.Tasks;
 using System.Transactions;
 using Xunit;
 using System.ComponentModel.DataAnnotations;
+using CSSPCultureServices.Resources;
 
 namespace CSSPServices.Tests
 {
@@ -507,6 +508,28 @@ namespace CSSPServices.Tests
 
             int count = ((List<ClimateDataValue>)((OkObjectResult)actionClimateDataValueList.Result).Value).Count();
             Assert.True(count > 0);
+
+            if (LoggedInService.DBLocation == DBLocationEnum.Server)
+            {
+                // List<ClimateDataValue> with skip and take
+                var actionClimateDataValueListSkipAndTake = await ClimateDataValueService.GetClimateDataValueList(1, 1);
+                Assert.Equal(200, ((ObjectResult)actionClimateDataValueListSkipAndTake.Result).StatusCode);
+                Assert.NotNull(((OkObjectResult)actionClimateDataValueListSkipAndTake.Result).Value);
+                List<ClimateDataValue> climateDataValueListSkipAndTake = (List<ClimateDataValue>)((OkObjectResult)actionClimateDataValueListSkipAndTake.Result).Value;
+
+                int countSkipAndTake = ((List<ClimateDataValue>)((OkObjectResult)actionClimateDataValueListSkipAndTake.Result).Value).Count();
+                Assert.True(countSkipAndTake == 1);
+
+                Assert.False(climateDataValueList[0].ClimateDataValueID == climateDataValueListSkipAndTake[0].ClimateDataValueID);
+            }
+
+            // Get ClimateDataValue With ClimateDataValueID
+            var actionClimateDataValueGet = await ClimateDataValueService.GetClimateDataValueWithClimateDataValueID(climateDataValueList[0].ClimateDataValueID);
+            Assert.Equal(200, ((ObjectResult)actionClimateDataValueGet.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionClimateDataValueGet.Result).Value);
+            ClimateDataValue climateDataValueGet = (ClimateDataValue)((OkObjectResult)actionClimateDataValueGet.Result).Value;
+            Assert.NotNull(climateDataValueGet);
+            Assert.Equal(climateDataValueGet.ClimateDataValueID, climateDataValueList[0].ClimateDataValueID);
 
             // Put ClimateDataValue
             var actionClimateDataValueUpdated = await ClimateDataValueService.Put(climateDataValue);

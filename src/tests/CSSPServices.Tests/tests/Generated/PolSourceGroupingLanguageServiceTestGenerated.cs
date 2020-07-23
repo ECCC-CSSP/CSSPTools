@@ -20,6 +20,7 @@ using System.Threading.Tasks;
 using System.Transactions;
 using Xunit;
 using System.ComponentModel.DataAnnotations;
+using CSSPCultureServices.Resources;
 
 namespace CSSPServices.Tests
 {
@@ -394,6 +395,28 @@ namespace CSSPServices.Tests
             int count = ((List<PolSourceGroupingLanguage>)((OkObjectResult)actionPolSourceGroupingLanguageList.Result).Value).Count();
             Assert.True(count > 0);
 
+            if (LoggedInService.DBLocation == DBLocationEnum.Server)
+            {
+                // List<PolSourceGroupingLanguage> with skip and take
+                var actionPolSourceGroupingLanguageListSkipAndTake = await PolSourceGroupingLanguageService.GetPolSourceGroupingLanguageList(1, 1);
+                Assert.Equal(200, ((ObjectResult)actionPolSourceGroupingLanguageListSkipAndTake.Result).StatusCode);
+                Assert.NotNull(((OkObjectResult)actionPolSourceGroupingLanguageListSkipAndTake.Result).Value);
+                List<PolSourceGroupingLanguage> polSourceGroupingLanguageListSkipAndTake = (List<PolSourceGroupingLanguage>)((OkObjectResult)actionPolSourceGroupingLanguageListSkipAndTake.Result).Value;
+
+                int countSkipAndTake = ((List<PolSourceGroupingLanguage>)((OkObjectResult)actionPolSourceGroupingLanguageListSkipAndTake.Result).Value).Count();
+                Assert.True(countSkipAndTake == 1);
+
+                Assert.False(polSourceGroupingLanguageList[0].PolSourceGroupingLanguageID == polSourceGroupingLanguageListSkipAndTake[0].PolSourceGroupingLanguageID);
+            }
+
+            // Get PolSourceGroupingLanguage With PolSourceGroupingLanguageID
+            var actionPolSourceGroupingLanguageGet = await PolSourceGroupingLanguageService.GetPolSourceGroupingLanguageWithPolSourceGroupingLanguageID(polSourceGroupingLanguageList[0].PolSourceGroupingLanguageID);
+            Assert.Equal(200, ((ObjectResult)actionPolSourceGroupingLanguageGet.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionPolSourceGroupingLanguageGet.Result).Value);
+            PolSourceGroupingLanguage polSourceGroupingLanguageGet = (PolSourceGroupingLanguage)((OkObjectResult)actionPolSourceGroupingLanguageGet.Result).Value;
+            Assert.NotNull(polSourceGroupingLanguageGet);
+            Assert.Equal(polSourceGroupingLanguageGet.PolSourceGroupingLanguageID, polSourceGroupingLanguageList[0].PolSourceGroupingLanguageID);
+
             // Put PolSourceGroupingLanguage
             var actionPolSourceGroupingLanguageUpdated = await PolSourceGroupingLanguageService.Put(polSourceGroupingLanguage);
             Assert.Equal(200, ((ObjectResult)actionPolSourceGroupingLanguageUpdated.Result).StatusCode);
@@ -497,7 +520,7 @@ namespace CSSPServices.Tests
             PolSourceGroupingLanguage polSourceGroupingLanguage = new PolSourceGroupingLanguage();
 
             if (OmitPropName != "PolSourceGroupingID") polSourceGroupingLanguage.PolSourceGroupingID = 1;
-            if (OmitPropName != "Language") polSourceGroupingLanguage.Language = LanguageRequest;
+            if (OmitPropName != "Language") polSourceGroupingLanguage.Language = CSSPCultureServicesRes.Culture.TwoLetterISOLanguageName == "fr" ? LanguageEnum.fr : LanguageEnum.en;
             if (OmitPropName != "SourceName") polSourceGroupingLanguage.SourceName = GetRandomString("", 5);
             if (OmitPropName != "SourceNameOrder") polSourceGroupingLanguage.SourceNameOrder = GetRandomInt(0, 1000);
             if (OmitPropName != "TranslationStatusSourceName") polSourceGroupingLanguage.TranslationStatusSourceName = (TranslationStatusEnum)GetRandomEnumType(typeof(TranslationStatusEnum));
@@ -518,7 +541,7 @@ namespace CSSPServices.Tests
 
                 try
                 {
-                    dbIM.PolSourceGroupings.Add(new PolSourceGrouping() { PolSourceGroupingID = 1, CSSPID = 10003, GroupName = "FirstGroupName", Child = "FirstChild", Hide = "FirstHide", LastUpdateDate_UTC = new DateTime(2020, 7, 19, 14, 30, 5), LastUpdateContactTVItemID = 2 });
+                    dbIM.PolSourceGroupings.Add(new PolSourceGrouping() { PolSourceGroupingID = 1, CSSPID = 10003, GroupName = "FirstGroupName", Child = "FirstChild", Hide = "FirstHide", LastUpdateDate_UTC = new DateTime(2020, 7, 21, 14, 33, 26), LastUpdateContactTVItemID = 2 });
                     dbIM.SaveChanges();
                 }
                 catch (Exception)

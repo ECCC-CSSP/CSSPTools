@@ -20,6 +20,7 @@ using System.Threading.Tasks;
 using System.Transactions;
 using Xunit;
 using System.ComponentModel.DataAnnotations;
+using CSSPCultureServices.Resources;
 
 namespace CSSPServices.Tests
 {
@@ -263,6 +264,28 @@ namespace CSSPServices.Tests
 
             int count = ((List<AppErrLog>)((OkObjectResult)actionAppErrLogList.Result).Value).Count();
             Assert.True(count > 0);
+
+            if (LoggedInService.DBLocation == DBLocationEnum.Server)
+            {
+                // List<AppErrLog> with skip and take
+                var actionAppErrLogListSkipAndTake = await AppErrLogService.GetAppErrLogList(1, 1);
+                Assert.Equal(200, ((ObjectResult)actionAppErrLogListSkipAndTake.Result).StatusCode);
+                Assert.NotNull(((OkObjectResult)actionAppErrLogListSkipAndTake.Result).Value);
+                List<AppErrLog> appErrLogListSkipAndTake = (List<AppErrLog>)((OkObjectResult)actionAppErrLogListSkipAndTake.Result).Value;
+
+                int countSkipAndTake = ((List<AppErrLog>)((OkObjectResult)actionAppErrLogListSkipAndTake.Result).Value).Count();
+                Assert.True(countSkipAndTake == 1);
+
+                Assert.False(appErrLogList[0].AppErrLogID == appErrLogListSkipAndTake[0].AppErrLogID);
+            }
+
+            // Get AppErrLog With AppErrLogID
+            var actionAppErrLogGet = await AppErrLogService.GetAppErrLogWithAppErrLogID(appErrLogList[0].AppErrLogID);
+            Assert.Equal(200, ((ObjectResult)actionAppErrLogGet.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionAppErrLogGet.Result).Value);
+            AppErrLog appErrLogGet = (AppErrLog)((OkObjectResult)actionAppErrLogGet.Result).Value;
+            Assert.NotNull(appErrLogGet);
+            Assert.Equal(appErrLogGet.AppErrLogID, appErrLogList[0].AppErrLogID);
 
             // Put AppErrLog
             var actionAppErrLogUpdated = await AppErrLogService.Put(appErrLog);

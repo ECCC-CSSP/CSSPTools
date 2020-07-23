@@ -20,6 +20,7 @@ using System.Threading.Tasks;
 using System.Transactions;
 using Xunit;
 using System.ComponentModel.DataAnnotations;
+using CSSPCultureServices.Resources;
 
 namespace CSSPServices.Tests
 {
@@ -1165,6 +1166,28 @@ namespace CSSPServices.Tests
 
             int count = ((List<LabSheetDetail>)((OkObjectResult)actionLabSheetDetailList.Result).Value).Count();
             Assert.True(count > 0);
+
+            if (LoggedInService.DBLocation == DBLocationEnum.Server)
+            {
+                // List<LabSheetDetail> with skip and take
+                var actionLabSheetDetailListSkipAndTake = await LabSheetDetailService.GetLabSheetDetailList(1, 1);
+                Assert.Equal(200, ((ObjectResult)actionLabSheetDetailListSkipAndTake.Result).StatusCode);
+                Assert.NotNull(((OkObjectResult)actionLabSheetDetailListSkipAndTake.Result).Value);
+                List<LabSheetDetail> labSheetDetailListSkipAndTake = (List<LabSheetDetail>)((OkObjectResult)actionLabSheetDetailListSkipAndTake.Result).Value;
+
+                int countSkipAndTake = ((List<LabSheetDetail>)((OkObjectResult)actionLabSheetDetailListSkipAndTake.Result).Value).Count();
+                Assert.True(countSkipAndTake == 1);
+
+                Assert.False(labSheetDetailList[0].LabSheetDetailID == labSheetDetailListSkipAndTake[0].LabSheetDetailID);
+            }
+
+            // Get LabSheetDetail With LabSheetDetailID
+            var actionLabSheetDetailGet = await LabSheetDetailService.GetLabSheetDetailWithLabSheetDetailID(labSheetDetailList[0].LabSheetDetailID);
+            Assert.Equal(200, ((ObjectResult)actionLabSheetDetailGet.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionLabSheetDetailGet.Result).Value);
+            LabSheetDetail labSheetDetailGet = (LabSheetDetail)((OkObjectResult)actionLabSheetDetailGet.Result).Value;
+            Assert.NotNull(labSheetDetailGet);
+            Assert.Equal(labSheetDetailGet.LabSheetDetailID, labSheetDetailList[0].LabSheetDetailID);
 
             // Put LabSheetDetail
             var actionLabSheetDetailUpdated = await LabSheetDetailService.Put(labSheetDetail);

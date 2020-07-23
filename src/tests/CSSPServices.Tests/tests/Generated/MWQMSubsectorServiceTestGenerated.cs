@@ -20,6 +20,7 @@ using System.Threading.Tasks;
 using System.Transactions;
 using Xunit;
 using System.ComponentModel.DataAnnotations;
+using CSSPCultureServices.Resources;
 
 namespace CSSPServices.Tests
 {
@@ -243,6 +244,28 @@ namespace CSSPServices.Tests
 
             int count = ((List<MWQMSubsector>)((OkObjectResult)actionMWQMSubsectorList.Result).Value).Count();
             Assert.True(count > 0);
+
+            if (LoggedInService.DBLocation == DBLocationEnum.Server)
+            {
+                // List<MWQMSubsector> with skip and take
+                var actionMWQMSubsectorListSkipAndTake = await MWQMSubsectorService.GetMWQMSubsectorList(1, 1);
+                Assert.Equal(200, ((ObjectResult)actionMWQMSubsectorListSkipAndTake.Result).StatusCode);
+                Assert.NotNull(((OkObjectResult)actionMWQMSubsectorListSkipAndTake.Result).Value);
+                List<MWQMSubsector> mwqmSubsectorListSkipAndTake = (List<MWQMSubsector>)((OkObjectResult)actionMWQMSubsectorListSkipAndTake.Result).Value;
+
+                int countSkipAndTake = ((List<MWQMSubsector>)((OkObjectResult)actionMWQMSubsectorListSkipAndTake.Result).Value).Count();
+                Assert.True(countSkipAndTake == 1);
+
+                Assert.False(mwqmSubsectorList[0].MWQMSubsectorID == mwqmSubsectorListSkipAndTake[0].MWQMSubsectorID);
+            }
+
+            // Get MWQMSubsector With MWQMSubsectorID
+            var actionMWQMSubsectorGet = await MWQMSubsectorService.GetMWQMSubsectorWithMWQMSubsectorID(mwqmSubsectorList[0].MWQMSubsectorID);
+            Assert.Equal(200, ((ObjectResult)actionMWQMSubsectorGet.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionMWQMSubsectorGet.Result).Value);
+            MWQMSubsector mwqmSubsectorGet = (MWQMSubsector)((OkObjectResult)actionMWQMSubsectorGet.Result).Value;
+            Assert.NotNull(mwqmSubsectorGet);
+            Assert.Equal(mwqmSubsectorGet.MWQMSubsectorID, mwqmSubsectorList[0].MWQMSubsectorID);
 
             // Put MWQMSubsector
             var actionMWQMSubsectorUpdated = await MWQMSubsectorService.Put(mwqmSubsector);

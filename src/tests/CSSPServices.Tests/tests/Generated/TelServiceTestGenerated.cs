@@ -20,6 +20,7 @@ using System.Threading.Tasks;
 using System.Transactions;
 using Xunit;
 using System.ComponentModel.DataAnnotations;
+using CSSPCultureServices.Resources;
 
 namespace CSSPServices.Tests
 {
@@ -243,6 +244,28 @@ namespace CSSPServices.Tests
 
             int count = ((List<Tel>)((OkObjectResult)actionTelList.Result).Value).Count();
             Assert.True(count > 0);
+
+            if (LoggedInService.DBLocation == DBLocationEnum.Server)
+            {
+                // List<Tel> with skip and take
+                var actionTelListSkipAndTake = await TelService.GetTelList(1, 1);
+                Assert.Equal(200, ((ObjectResult)actionTelListSkipAndTake.Result).StatusCode);
+                Assert.NotNull(((OkObjectResult)actionTelListSkipAndTake.Result).Value);
+                List<Tel> telListSkipAndTake = (List<Tel>)((OkObjectResult)actionTelListSkipAndTake.Result).Value;
+
+                int countSkipAndTake = ((List<Tel>)((OkObjectResult)actionTelListSkipAndTake.Result).Value).Count();
+                Assert.True(countSkipAndTake == 1);
+
+                Assert.False(telList[0].TelID == telListSkipAndTake[0].TelID);
+            }
+
+            // Get Tel With TelID
+            var actionTelGet = await TelService.GetTelWithTelID(telList[0].TelID);
+            Assert.Equal(200, ((ObjectResult)actionTelGet.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionTelGet.Result).Value);
+            Tel telGet = (Tel)((OkObjectResult)actionTelGet.Result).Value;
+            Assert.NotNull(telGet);
+            Assert.Equal(telGet.TelID, telList[0].TelID);
 
             // Put Tel
             var actionTelUpdated = await TelService.Put(tel);

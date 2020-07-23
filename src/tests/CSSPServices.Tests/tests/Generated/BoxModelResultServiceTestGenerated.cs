@@ -20,6 +20,7 @@ using System.Threading.Tasks;
 using System.Transactions;
 using Xunit;
 using System.ComponentModel.DataAnnotations;
+using CSSPCultureServices.Resources;
 
 namespace CSSPServices.Tests
 {
@@ -472,6 +473,28 @@ namespace CSSPServices.Tests
 
             int count = ((List<BoxModelResult>)((OkObjectResult)actionBoxModelResultList.Result).Value).Count();
             Assert.True(count > 0);
+
+            if (LoggedInService.DBLocation == DBLocationEnum.Server)
+            {
+                // List<BoxModelResult> with skip and take
+                var actionBoxModelResultListSkipAndTake = await BoxModelResultService.GetBoxModelResultList(1, 1);
+                Assert.Equal(200, ((ObjectResult)actionBoxModelResultListSkipAndTake.Result).StatusCode);
+                Assert.NotNull(((OkObjectResult)actionBoxModelResultListSkipAndTake.Result).Value);
+                List<BoxModelResult> boxModelResultListSkipAndTake = (List<BoxModelResult>)((OkObjectResult)actionBoxModelResultListSkipAndTake.Result).Value;
+
+                int countSkipAndTake = ((List<BoxModelResult>)((OkObjectResult)actionBoxModelResultListSkipAndTake.Result).Value).Count();
+                Assert.True(countSkipAndTake == 1);
+
+                Assert.False(boxModelResultList[0].BoxModelResultID == boxModelResultListSkipAndTake[0].BoxModelResultID);
+            }
+
+            // Get BoxModelResult With BoxModelResultID
+            var actionBoxModelResultGet = await BoxModelResultService.GetBoxModelResultWithBoxModelResultID(boxModelResultList[0].BoxModelResultID);
+            Assert.Equal(200, ((ObjectResult)actionBoxModelResultGet.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionBoxModelResultGet.Result).Value);
+            BoxModelResult boxModelResultGet = (BoxModelResult)((OkObjectResult)actionBoxModelResultGet.Result).Value;
+            Assert.NotNull(boxModelResultGet);
+            Assert.Equal(boxModelResultGet.BoxModelResultID, boxModelResultList[0].BoxModelResultID);
 
             // Put BoxModelResult
             var actionBoxModelResultUpdated = await BoxModelResultService.Put(boxModelResult);

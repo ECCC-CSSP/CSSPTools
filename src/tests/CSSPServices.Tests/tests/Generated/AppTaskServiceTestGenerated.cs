@@ -20,6 +20,7 @@ using System.Threading.Tasks;
 using System.Transactions;
 using Xunit;
 using System.ComponentModel.DataAnnotations;
+using CSSPCultureServices.Resources;
 
 namespace CSSPServices.Tests
 {
@@ -369,6 +370,28 @@ namespace CSSPServices.Tests
             int count = ((List<AppTask>)((OkObjectResult)actionAppTaskList.Result).Value).Count();
             Assert.True(count > 0);
 
+            if (LoggedInService.DBLocation == DBLocationEnum.Server)
+            {
+                // List<AppTask> with skip and take
+                var actionAppTaskListSkipAndTake = await AppTaskService.GetAppTaskList(1, 1);
+                Assert.Equal(200, ((ObjectResult)actionAppTaskListSkipAndTake.Result).StatusCode);
+                Assert.NotNull(((OkObjectResult)actionAppTaskListSkipAndTake.Result).Value);
+                List<AppTask> appTaskListSkipAndTake = (List<AppTask>)((OkObjectResult)actionAppTaskListSkipAndTake.Result).Value;
+
+                int countSkipAndTake = ((List<AppTask>)((OkObjectResult)actionAppTaskListSkipAndTake.Result).Value).Count();
+                Assert.True(countSkipAndTake == 1);
+
+                Assert.False(appTaskList[0].AppTaskID == appTaskListSkipAndTake[0].AppTaskID);
+            }
+
+            // Get AppTask With AppTaskID
+            var actionAppTaskGet = await AppTaskService.GetAppTaskWithAppTaskID(appTaskList[0].AppTaskID);
+            Assert.Equal(200, ((ObjectResult)actionAppTaskGet.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionAppTaskGet.Result).Value);
+            AppTask appTaskGet = (AppTask)((OkObjectResult)actionAppTaskGet.Result).Value;
+            Assert.NotNull(appTaskGet);
+            Assert.Equal(appTaskGet.AppTaskID, appTaskList[0].AppTaskID);
+
             // Put AppTask
             var actionAppTaskUpdated = await AppTaskService.Put(appTask);
             Assert.Equal(200, ((ObjectResult)actionAppTaskUpdated.Result).StatusCode);
@@ -477,7 +500,7 @@ namespace CSSPServices.Tests
             if (OmitPropName != "AppTaskStatus") appTask.AppTaskStatus = (AppTaskStatusEnum)GetRandomEnumType(typeof(AppTaskStatusEnum));
             if (OmitPropName != "PercentCompleted") appTask.PercentCompleted = GetRandomInt(0, 100);
             if (OmitPropName != "Parameters") appTask.Parameters = GetRandomString("", 20);
-            if (OmitPropName != "Language") appTask.Language = LanguageRequest;
+            if (OmitPropName != "Language") appTask.Language = CSSPCultureServicesRes.Culture.TwoLetterISOLanguageName == "fr" ? LanguageEnum.fr : LanguageEnum.en;
             if (OmitPropName != "StartDateTime_UTC") appTask.StartDateTime_UTC = new DateTime(2005, 3, 6);
             if (OmitPropName != "EndDateTime_UTC") appTask.EndDateTime_UTC = new DateTime(2005, 3, 7);
             if (OmitPropName != "EstimatedLength_second") appTask.EstimatedLength_second = GetRandomInt(0, 1000000);

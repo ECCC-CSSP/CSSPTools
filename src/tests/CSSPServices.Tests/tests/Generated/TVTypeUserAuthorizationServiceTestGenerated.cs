@@ -20,6 +20,7 @@ using System.Threading.Tasks;
 using System.Transactions;
 using Xunit;
 using System.ComponentModel.DataAnnotations;
+using CSSPCultureServices.Resources;
 
 namespace CSSPServices.Tests
 {
@@ -238,6 +239,28 @@ namespace CSSPServices.Tests
 
             int count = ((List<TVTypeUserAuthorization>)((OkObjectResult)actionTVTypeUserAuthorizationList.Result).Value).Count();
             Assert.True(count > 0);
+
+            if (LoggedInService.DBLocation == DBLocationEnum.Server)
+            {
+                // List<TVTypeUserAuthorization> with skip and take
+                var actionTVTypeUserAuthorizationListSkipAndTake = await TVTypeUserAuthorizationService.GetTVTypeUserAuthorizationList(1, 1);
+                Assert.Equal(200, ((ObjectResult)actionTVTypeUserAuthorizationListSkipAndTake.Result).StatusCode);
+                Assert.NotNull(((OkObjectResult)actionTVTypeUserAuthorizationListSkipAndTake.Result).Value);
+                List<TVTypeUserAuthorization> tvTypeUserAuthorizationListSkipAndTake = (List<TVTypeUserAuthorization>)((OkObjectResult)actionTVTypeUserAuthorizationListSkipAndTake.Result).Value;
+
+                int countSkipAndTake = ((List<TVTypeUserAuthorization>)((OkObjectResult)actionTVTypeUserAuthorizationListSkipAndTake.Result).Value).Count();
+                Assert.True(countSkipAndTake == 1);
+
+                Assert.False(tvTypeUserAuthorizationList[0].TVTypeUserAuthorizationID == tvTypeUserAuthorizationListSkipAndTake[0].TVTypeUserAuthorizationID);
+            }
+
+            // Get TVTypeUserAuthorization With TVTypeUserAuthorizationID
+            var actionTVTypeUserAuthorizationGet = await TVTypeUserAuthorizationService.GetTVTypeUserAuthorizationWithTVTypeUserAuthorizationID(tvTypeUserAuthorizationList[0].TVTypeUserAuthorizationID);
+            Assert.Equal(200, ((ObjectResult)actionTVTypeUserAuthorizationGet.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionTVTypeUserAuthorizationGet.Result).Value);
+            TVTypeUserAuthorization tvTypeUserAuthorizationGet = (TVTypeUserAuthorization)((OkObjectResult)actionTVTypeUserAuthorizationGet.Result).Value;
+            Assert.NotNull(tvTypeUserAuthorizationGet);
+            Assert.Equal(tvTypeUserAuthorizationGet.TVTypeUserAuthorizationID, tvTypeUserAuthorizationList[0].TVTypeUserAuthorizationID);
 
             // Put TVTypeUserAuthorization
             var actionTVTypeUserAuthorizationUpdated = await TVTypeUserAuthorizationService.Put(tvTypeUserAuthorization);

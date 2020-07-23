@@ -20,6 +20,7 @@ using System.Threading.Tasks;
 using System.Transactions;
 using Xunit;
 using System.ComponentModel.DataAnnotations;
+using CSSPCultureServices.Resources;
 
 namespace CSSPServices.Tests
 {
@@ -257,6 +258,28 @@ namespace CSSPServices.Tests
             int count = ((List<DocTemplate>)((OkObjectResult)actionDocTemplateList.Result).Value).Count();
             Assert.True(count > 0);
 
+            if (LoggedInService.DBLocation == DBLocationEnum.Server)
+            {
+                // List<DocTemplate> with skip and take
+                var actionDocTemplateListSkipAndTake = await DocTemplateService.GetDocTemplateList(1, 1);
+                Assert.Equal(200, ((ObjectResult)actionDocTemplateListSkipAndTake.Result).StatusCode);
+                Assert.NotNull(((OkObjectResult)actionDocTemplateListSkipAndTake.Result).Value);
+                List<DocTemplate> docTemplateListSkipAndTake = (List<DocTemplate>)((OkObjectResult)actionDocTemplateListSkipAndTake.Result).Value;
+
+                int countSkipAndTake = ((List<DocTemplate>)((OkObjectResult)actionDocTemplateListSkipAndTake.Result).Value).Count();
+                Assert.True(countSkipAndTake == 1);
+
+                Assert.False(docTemplateList[0].DocTemplateID == docTemplateListSkipAndTake[0].DocTemplateID);
+            }
+
+            // Get DocTemplate With DocTemplateID
+            var actionDocTemplateGet = await DocTemplateService.GetDocTemplateWithDocTemplateID(docTemplateList[0].DocTemplateID);
+            Assert.Equal(200, ((ObjectResult)actionDocTemplateGet.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionDocTemplateGet.Result).Value);
+            DocTemplate docTemplateGet = (DocTemplate)((OkObjectResult)actionDocTemplateGet.Result).Value;
+            Assert.NotNull(docTemplateGet);
+            Assert.Equal(docTemplateGet.DocTemplateID, docTemplateList[0].DocTemplateID);
+
             // Put DocTemplate
             var actionDocTemplateUpdated = await DocTemplateService.Put(docTemplate);
             Assert.Equal(200, ((ObjectResult)actionDocTemplateUpdated.Result).StatusCode);
@@ -359,7 +382,7 @@ namespace CSSPServices.Tests
 
             DocTemplate docTemplate = new DocTemplate();
 
-            if (OmitPropName != "Language") docTemplate.Language = LanguageRequest;
+            if (OmitPropName != "Language") docTemplate.Language = CSSPCultureServicesRes.Culture.TwoLetterISOLanguageName == "fr" ? LanguageEnum.fr : LanguageEnum.en;
             if (OmitPropName != "TVType") docTemplate.TVType = (TVTypeEnum)GetRandomEnumType(typeof(TVTypeEnum));
             if (OmitPropName != "TVFileTVItemID") docTemplate.TVFileTVItemID = 42;
             if (OmitPropName != "FileName") docTemplate.FileName = GetRandomString("", 5);

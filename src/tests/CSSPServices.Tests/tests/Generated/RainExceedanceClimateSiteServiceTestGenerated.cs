@@ -20,6 +20,7 @@ using System.Threading.Tasks;
 using System.Transactions;
 using Xunit;
 using System.ComponentModel.DataAnnotations;
+using CSSPCultureServices.Resources;
 
 namespace CSSPServices.Tests
 {
@@ -231,6 +232,28 @@ namespace CSSPServices.Tests
 
             int count = ((List<RainExceedanceClimateSite>)((OkObjectResult)actionRainExceedanceClimateSiteList.Result).Value).Count();
             Assert.True(count > 0);
+
+            if (LoggedInService.DBLocation == DBLocationEnum.Server)
+            {
+                // List<RainExceedanceClimateSite> with skip and take
+                var actionRainExceedanceClimateSiteListSkipAndTake = await RainExceedanceClimateSiteService.GetRainExceedanceClimateSiteList(1, 1);
+                Assert.Equal(200, ((ObjectResult)actionRainExceedanceClimateSiteListSkipAndTake.Result).StatusCode);
+                Assert.NotNull(((OkObjectResult)actionRainExceedanceClimateSiteListSkipAndTake.Result).Value);
+                List<RainExceedanceClimateSite> rainExceedanceClimateSiteListSkipAndTake = (List<RainExceedanceClimateSite>)((OkObjectResult)actionRainExceedanceClimateSiteListSkipAndTake.Result).Value;
+
+                int countSkipAndTake = ((List<RainExceedanceClimateSite>)((OkObjectResult)actionRainExceedanceClimateSiteListSkipAndTake.Result).Value).Count();
+                Assert.True(countSkipAndTake == 1);
+
+                Assert.False(rainExceedanceClimateSiteList[0].RainExceedanceClimateSiteID == rainExceedanceClimateSiteListSkipAndTake[0].RainExceedanceClimateSiteID);
+            }
+
+            // Get RainExceedanceClimateSite With RainExceedanceClimateSiteID
+            var actionRainExceedanceClimateSiteGet = await RainExceedanceClimateSiteService.GetRainExceedanceClimateSiteWithRainExceedanceClimateSiteID(rainExceedanceClimateSiteList[0].RainExceedanceClimateSiteID);
+            Assert.Equal(200, ((ObjectResult)actionRainExceedanceClimateSiteGet.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionRainExceedanceClimateSiteGet.Result).Value);
+            RainExceedanceClimateSite rainExceedanceClimateSiteGet = (RainExceedanceClimateSite)((OkObjectResult)actionRainExceedanceClimateSiteGet.Result).Value;
+            Assert.NotNull(rainExceedanceClimateSiteGet);
+            Assert.Equal(rainExceedanceClimateSiteGet.RainExceedanceClimateSiteID, rainExceedanceClimateSiteList[0].RainExceedanceClimateSiteID);
 
             // Put RainExceedanceClimateSite
             var actionRainExceedanceClimateSiteUpdated = await RainExceedanceClimateSiteService.Put(rainExceedanceClimateSite);

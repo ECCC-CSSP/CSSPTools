@@ -20,6 +20,7 @@ using System.Threading.Tasks;
 using System.Transactions;
 using Xunit;
 using System.ComponentModel.DataAnnotations;
+using CSSPCultureServices.Resources;
 
 namespace CSSPServices.Tests
 {
@@ -267,6 +268,28 @@ namespace CSSPServices.Tests
 
             int count = ((List<DrogueRun>)((OkObjectResult)actionDrogueRunList.Result).Value).Count();
             Assert.True(count > 0);
+
+            if (LoggedInService.DBLocation == DBLocationEnum.Server)
+            {
+                // List<DrogueRun> with skip and take
+                var actionDrogueRunListSkipAndTake = await DrogueRunService.GetDrogueRunList(1, 1);
+                Assert.Equal(200, ((ObjectResult)actionDrogueRunListSkipAndTake.Result).StatusCode);
+                Assert.NotNull(((OkObjectResult)actionDrogueRunListSkipAndTake.Result).Value);
+                List<DrogueRun> drogueRunListSkipAndTake = (List<DrogueRun>)((OkObjectResult)actionDrogueRunListSkipAndTake.Result).Value;
+
+                int countSkipAndTake = ((List<DrogueRun>)((OkObjectResult)actionDrogueRunListSkipAndTake.Result).Value).Count();
+                Assert.True(countSkipAndTake == 1);
+
+                Assert.False(drogueRunList[0].DrogueRunID == drogueRunListSkipAndTake[0].DrogueRunID);
+            }
+
+            // Get DrogueRun With DrogueRunID
+            var actionDrogueRunGet = await DrogueRunService.GetDrogueRunWithDrogueRunID(drogueRunList[0].DrogueRunID);
+            Assert.Equal(200, ((ObjectResult)actionDrogueRunGet.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionDrogueRunGet.Result).Value);
+            DrogueRun drogueRunGet = (DrogueRun)((OkObjectResult)actionDrogueRunGet.Result).Value;
+            Assert.NotNull(drogueRunGet);
+            Assert.Equal(drogueRunGet.DrogueRunID, drogueRunList[0].DrogueRunID);
 
             // Put DrogueRun
             var actionDrogueRunUpdated = await DrogueRunService.Put(drogueRun);

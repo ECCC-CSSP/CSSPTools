@@ -20,6 +20,7 @@ using System.Threading.Tasks;
 using System.Transactions;
 using Xunit;
 using System.ComponentModel.DataAnnotations;
+using CSSPCultureServices.Resources;
 
 namespace CSSPServices.Tests
 {
@@ -251,6 +252,28 @@ namespace CSSPServices.Tests
             int count = ((List<BoxModelLanguage>)((OkObjectResult)actionBoxModelLanguageList.Result).Value).Count();
             Assert.True(count > 0);
 
+            if (LoggedInService.DBLocation == DBLocationEnum.Server)
+            {
+                // List<BoxModelLanguage> with skip and take
+                var actionBoxModelLanguageListSkipAndTake = await BoxModelLanguageService.GetBoxModelLanguageList(1, 1);
+                Assert.Equal(200, ((ObjectResult)actionBoxModelLanguageListSkipAndTake.Result).StatusCode);
+                Assert.NotNull(((OkObjectResult)actionBoxModelLanguageListSkipAndTake.Result).Value);
+                List<BoxModelLanguage> boxModelLanguageListSkipAndTake = (List<BoxModelLanguage>)((OkObjectResult)actionBoxModelLanguageListSkipAndTake.Result).Value;
+
+                int countSkipAndTake = ((List<BoxModelLanguage>)((OkObjectResult)actionBoxModelLanguageListSkipAndTake.Result).Value).Count();
+                Assert.True(countSkipAndTake == 1);
+
+                Assert.False(boxModelLanguageList[0].BoxModelLanguageID == boxModelLanguageListSkipAndTake[0].BoxModelLanguageID);
+            }
+
+            // Get BoxModelLanguage With BoxModelLanguageID
+            var actionBoxModelLanguageGet = await BoxModelLanguageService.GetBoxModelLanguageWithBoxModelLanguageID(boxModelLanguageList[0].BoxModelLanguageID);
+            Assert.Equal(200, ((ObjectResult)actionBoxModelLanguageGet.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionBoxModelLanguageGet.Result).Value);
+            BoxModelLanguage boxModelLanguageGet = (BoxModelLanguage)((OkObjectResult)actionBoxModelLanguageGet.Result).Value;
+            Assert.NotNull(boxModelLanguageGet);
+            Assert.Equal(boxModelLanguageGet.BoxModelLanguageID, boxModelLanguageList[0].BoxModelLanguageID);
+
             // Put BoxModelLanguage
             var actionBoxModelLanguageUpdated = await BoxModelLanguageService.Put(boxModelLanguage);
             Assert.Equal(200, ((ObjectResult)actionBoxModelLanguageUpdated.Result).StatusCode);
@@ -354,7 +377,7 @@ namespace CSSPServices.Tests
             BoxModelLanguage boxModelLanguage = new BoxModelLanguage();
 
             if (OmitPropName != "BoxModelID") boxModelLanguage.BoxModelID = 1;
-            if (OmitPropName != "Language") boxModelLanguage.Language = LanguageRequest;
+            if (OmitPropName != "Language") boxModelLanguage.Language = CSSPCultureServicesRes.Culture.TwoLetterISOLanguageName == "fr" ? LanguageEnum.fr : LanguageEnum.en;
             if (OmitPropName != "ScenarioName") boxModelLanguage.ScenarioName = GetRandomString("", 5);
             if (OmitPropName != "TranslationStatus") boxModelLanguage.TranslationStatus = (TranslationStatusEnum)GetRandomEnumType(typeof(TranslationStatusEnum));
             if (OmitPropName != "LastUpdateDate_UTC") boxModelLanguage.LastUpdateDate_UTC = new DateTime(2005, 3, 6);

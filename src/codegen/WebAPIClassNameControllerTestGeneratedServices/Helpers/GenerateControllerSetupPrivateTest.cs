@@ -53,6 +53,8 @@ namespace WebAPIClassNameControllerTestGeneratedServices.Services
             sb.AppendLine(@"            Services.AddSingleton<ICSSPCultureService, CSSPCultureService>();");
             sb.AppendLine(@"            Services.AddSingleton<IEnums, Enums>();");
             sb.AppendLine(@"            Services.AddSingleton<ILoggedInService, LoggedInService>();");
+            sb.AppendLine(@"            Services.AddSingleton<ILoginModelService, LoginModelService>();");
+            sb.AppendLine(@"            Services.AddSingleton<IRegisterModelService, RegisterModelService>();");
             sb.AppendLine(@"            Services.AddSingleton<IAspNetUserService, AspNetUserService>();");
             sb.AppendLine(@"            Services.AddSingleton<IContactService, ContactService>();");
             sb.AppendLine($@"            Services.AddSingleton<I{ TypeName }Service, { TypeName }Service>();");

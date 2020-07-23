@@ -20,6 +20,7 @@ using System.Threading.Tasks;
 using System.Transactions;
 using Xunit;
 using System.ComponentModel.DataAnnotations;
+using CSSPCultureServices.Resources;
 
 namespace CSSPServices.Tests
 {
@@ -400,6 +401,28 @@ namespace CSSPServices.Tests
             int count = ((List<TVFile>)((OkObjectResult)actionTVFileList.Result).Value).Count();
             Assert.True(count > 0);
 
+            if (LoggedInService.DBLocation == DBLocationEnum.Server)
+            {
+                // List<TVFile> with skip and take
+                var actionTVFileListSkipAndTake = await TVFileService.GetTVFileList(1, 1);
+                Assert.Equal(200, ((ObjectResult)actionTVFileListSkipAndTake.Result).StatusCode);
+                Assert.NotNull(((OkObjectResult)actionTVFileListSkipAndTake.Result).Value);
+                List<TVFile> tvFileListSkipAndTake = (List<TVFile>)((OkObjectResult)actionTVFileListSkipAndTake.Result).Value;
+
+                int countSkipAndTake = ((List<TVFile>)((OkObjectResult)actionTVFileListSkipAndTake.Result).Value).Count();
+                Assert.True(countSkipAndTake == 1);
+
+                Assert.False(tvFileList[0].TVFileID == tvFileListSkipAndTake[0].TVFileID);
+            }
+
+            // Get TVFile With TVFileID
+            var actionTVFileGet = await TVFileService.GetTVFileWithTVFileID(tvFileList[0].TVFileID);
+            Assert.Equal(200, ((ObjectResult)actionTVFileGet.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionTVFileGet.Result).Value);
+            TVFile tvFileGet = (TVFile)((OkObjectResult)actionTVFileGet.Result).Value;
+            Assert.NotNull(tvFileGet);
+            Assert.Equal(tvFileGet.TVFileID, tvFileList[0].TVFileID);
+
             // Put TVFile
             var actionTVFileUpdated = await TVFileService.Put(tvFile);
             Assert.Equal(200, ((ObjectResult)actionTVFileUpdated.Result).StatusCode);
@@ -507,7 +530,7 @@ namespace CSSPServices.Tests
             if (OmitPropName != "ReportTypeID") tvFile.ReportTypeID = 1;
             if (OmitPropName != "Parameters") tvFile.Parameters = GetRandomString("", 20);
             if (OmitPropName != "Year") tvFile.Year = GetRandomInt(1980, 2050);
-            if (OmitPropName != "Language") tvFile.Language = LanguageRequest;
+            if (OmitPropName != "Language") tvFile.Language = CSSPCultureServicesRes.Culture.TwoLetterISOLanguageName == "fr" ? LanguageEnum.fr : LanguageEnum.en;
             if (OmitPropName != "FilePurpose") tvFile.FilePurpose = (FilePurposeEnum)GetRandomEnumType(typeof(FilePurposeEnum));
             if (OmitPropName != "FileType") tvFile.FileType = (FileTypeEnum)GetRandomEnumType(typeof(FileTypeEnum));
             if (OmitPropName != "FileSize_kb") tvFile.FileSize_kb = GetRandomInt(0, 100000000);

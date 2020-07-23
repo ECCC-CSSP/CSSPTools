@@ -20,6 +20,7 @@ using System.Threading.Tasks;
 using System.Transactions;
 using Xunit;
 using System.ComponentModel.DataAnnotations;
+using CSSPCultureServices.Resources;
 
 namespace CSSPServices.Tests
 {
@@ -266,6 +267,28 @@ namespace CSSPServices.Tests
 
             int count = ((List<PolSourceGrouping>)((OkObjectResult)actionPolSourceGroupingList.Result).Value).Count();
             Assert.True(count > 0);
+
+            if (LoggedInService.DBLocation == DBLocationEnum.Server)
+            {
+                // List<PolSourceGrouping> with skip and take
+                var actionPolSourceGroupingListSkipAndTake = await PolSourceGroupingService.GetPolSourceGroupingList(1, 1);
+                Assert.Equal(200, ((ObjectResult)actionPolSourceGroupingListSkipAndTake.Result).StatusCode);
+                Assert.NotNull(((OkObjectResult)actionPolSourceGroupingListSkipAndTake.Result).Value);
+                List<PolSourceGrouping> polSourceGroupingListSkipAndTake = (List<PolSourceGrouping>)((OkObjectResult)actionPolSourceGroupingListSkipAndTake.Result).Value;
+
+                int countSkipAndTake = ((List<PolSourceGrouping>)((OkObjectResult)actionPolSourceGroupingListSkipAndTake.Result).Value).Count();
+                Assert.True(countSkipAndTake == 1);
+
+                Assert.False(polSourceGroupingList[0].PolSourceGroupingID == polSourceGroupingListSkipAndTake[0].PolSourceGroupingID);
+            }
+
+            // Get PolSourceGrouping With PolSourceGroupingID
+            var actionPolSourceGroupingGet = await PolSourceGroupingService.GetPolSourceGroupingWithPolSourceGroupingID(polSourceGroupingList[0].PolSourceGroupingID);
+            Assert.Equal(200, ((ObjectResult)actionPolSourceGroupingGet.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionPolSourceGroupingGet.Result).Value);
+            PolSourceGrouping polSourceGroupingGet = (PolSourceGrouping)((OkObjectResult)actionPolSourceGroupingGet.Result).Value;
+            Assert.NotNull(polSourceGroupingGet);
+            Assert.Equal(polSourceGroupingGet.PolSourceGroupingID, polSourceGroupingList[0].PolSourceGroupingID);
 
             // Put PolSourceGrouping
             var actionPolSourceGroupingUpdated = await PolSourceGroupingService.Put(polSourceGrouping);

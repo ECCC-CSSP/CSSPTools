@@ -20,6 +20,7 @@ using System.Threading.Tasks;
 using System.Transactions;
 using Xunit;
 using System.ComponentModel.DataAnnotations;
+using CSSPCultureServices.Resources;
 
 namespace CSSPServices.Tests
 {
@@ -343,6 +344,28 @@ namespace CSSPServices.Tests
 
             int count = ((List<RainExceedance>)((OkObjectResult)actionRainExceedanceList.Result).Value).Count();
             Assert.True(count > 0);
+
+            if (LoggedInService.DBLocation == DBLocationEnum.Server)
+            {
+                // List<RainExceedance> with skip and take
+                var actionRainExceedanceListSkipAndTake = await RainExceedanceService.GetRainExceedanceList(1, 1);
+                Assert.Equal(200, ((ObjectResult)actionRainExceedanceListSkipAndTake.Result).StatusCode);
+                Assert.NotNull(((OkObjectResult)actionRainExceedanceListSkipAndTake.Result).Value);
+                List<RainExceedance> rainExceedanceListSkipAndTake = (List<RainExceedance>)((OkObjectResult)actionRainExceedanceListSkipAndTake.Result).Value;
+
+                int countSkipAndTake = ((List<RainExceedance>)((OkObjectResult)actionRainExceedanceListSkipAndTake.Result).Value).Count();
+                Assert.True(countSkipAndTake == 1);
+
+                Assert.False(rainExceedanceList[0].RainExceedanceID == rainExceedanceListSkipAndTake[0].RainExceedanceID);
+            }
+
+            // Get RainExceedance With RainExceedanceID
+            var actionRainExceedanceGet = await RainExceedanceService.GetRainExceedanceWithRainExceedanceID(rainExceedanceList[0].RainExceedanceID);
+            Assert.Equal(200, ((ObjectResult)actionRainExceedanceGet.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionRainExceedanceGet.Result).Value);
+            RainExceedance rainExceedanceGet = (RainExceedance)((OkObjectResult)actionRainExceedanceGet.Result).Value;
+            Assert.NotNull(rainExceedanceGet);
+            Assert.Equal(rainExceedanceGet.RainExceedanceID, rainExceedanceList[0].RainExceedanceID);
 
             // Put RainExceedance
             var actionRainExceedanceUpdated = await RainExceedanceService.Put(rainExceedance);

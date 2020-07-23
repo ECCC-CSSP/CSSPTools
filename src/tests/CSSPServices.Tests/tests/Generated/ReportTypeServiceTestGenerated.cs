@@ -20,6 +20,7 @@ using System.Threading.Tasks;
 using System.Transactions;
 using Xunit;
 using System.ComponentModel.DataAnnotations;
+using CSSPCultureServices.Resources;
 
 namespace CSSPServices.Tests
 {
@@ -290,6 +291,28 @@ namespace CSSPServices.Tests
             int count = ((List<ReportType>)((OkObjectResult)actionReportTypeList.Result).Value).Count();
             Assert.True(count > 0);
 
+            if (LoggedInService.DBLocation == DBLocationEnum.Server)
+            {
+                // List<ReportType> with skip and take
+                var actionReportTypeListSkipAndTake = await ReportTypeService.GetReportTypeList(1, 1);
+                Assert.Equal(200, ((ObjectResult)actionReportTypeListSkipAndTake.Result).StatusCode);
+                Assert.NotNull(((OkObjectResult)actionReportTypeListSkipAndTake.Result).Value);
+                List<ReportType> reportTypeListSkipAndTake = (List<ReportType>)((OkObjectResult)actionReportTypeListSkipAndTake.Result).Value;
+
+                int countSkipAndTake = ((List<ReportType>)((OkObjectResult)actionReportTypeListSkipAndTake.Result).Value).Count();
+                Assert.True(countSkipAndTake == 1);
+
+                Assert.False(reportTypeList[0].ReportTypeID == reportTypeListSkipAndTake[0].ReportTypeID);
+            }
+
+            // Get ReportType With ReportTypeID
+            var actionReportTypeGet = await ReportTypeService.GetReportTypeWithReportTypeID(reportTypeList[0].ReportTypeID);
+            Assert.Equal(200, ((ObjectResult)actionReportTypeGet.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionReportTypeGet.Result).Value);
+            ReportType reportTypeGet = (ReportType)((OkObjectResult)actionReportTypeGet.Result).Value;
+            Assert.NotNull(reportTypeGet);
+            Assert.Equal(reportTypeGet.ReportTypeID, reportTypeList[0].ReportTypeID);
+
             // Put ReportType
             var actionReportTypeUpdated = await ReportTypeService.Put(reportType);
             Assert.Equal(200, ((ObjectResult)actionReportTypeUpdated.Result).StatusCode);
@@ -395,7 +418,7 @@ namespace CSSPServices.Tests
             if (OmitPropName != "TVType") reportType.TVType = (TVTypeEnum)GetRandomEnumType(typeof(TVTypeEnum));
             if (OmitPropName != "FileType") reportType.FileType = (FileTypeEnum)GetRandomEnumType(typeof(FileTypeEnum));
             if (OmitPropName != "UniqueCode") reportType.UniqueCode = GetRandomString("", 5);
-            if (OmitPropName != "Language") reportType.Language = LanguageRequest;
+            if (OmitPropName != "Language") reportType.Language = CSSPCultureServicesRes.Culture.TwoLetterISOLanguageName == "fr" ? LanguageEnum.fr : LanguageEnum.en;
             if (OmitPropName != "Name") reportType.Name = GetRandomString("", 5);
             if (OmitPropName != "Description") reportType.Description = GetRandomString("", 5);
             if (OmitPropName != "StartOfFileName") reportType.StartOfFileName = GetRandomString("", 5);
