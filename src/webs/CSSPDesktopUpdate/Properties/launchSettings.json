@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "CSSPDesktopUpdate": {
+      "commandName": "Project",
+      "commandLineArgs": "en"
+    }
+  }
+}

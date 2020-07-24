@@ -20,6 +20,8 @@ namespace CSSPDesktopServices.Models
             StartedCSSPWebAPIs = "Started CSSPWebAPIs";
             StartingCSSPWebTools = "Starting CSSPWebTools";
             StartedCSSPWebTools = "Started CSSPWebTools";
+            UpdateApplicationNotFound = "Update application not found [{0}]";
+            NoInternetConnectionFound = "No internet connection found";
         }
     }
     public class AppTextModelFR : AppTextModel
@@ -38,6 +40,8 @@ namespace CSSPDesktopServices.Models
             StartedCSSPWebAPIs = "CSSPWebAPIs démarrée ";
             StartingCSSPWebTools = "Démarrage de CSSPWebTools";
             StartedCSSPWebTools = "CSSPWebTools démarrée ";
+            UpdateApplicationNotFound = "Dans l'impossibilité de trouver l'application mise à jour [{0}]";
+            NoInternetConnectionFound = "Dans l'impossibilité de trouver une connexion internet";
         }
     }
     public class AppTextModel
@@ -54,5 +58,7 @@ namespace CSSPDesktopServices.Models
         public string StartedCSSPWebAPIs { get; set; }
         public string StartingCSSPWebTools { get; set; }
         public string StartedCSSPWebTools { get; set; }
+        public string UpdateApplicationNotFound { get; set; }
+        public string NoInternetConnectionFound { get; set; }
     }
 }

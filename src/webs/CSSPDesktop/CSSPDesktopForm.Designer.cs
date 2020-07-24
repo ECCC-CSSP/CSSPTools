@@ -31,6 +31,7 @@
             this.butStartCSSPWebTools = new System.Windows.Forms.Button();
             this.butUpdatesAvailable = new System.Windows.Forms.Button();
             this.panelLeft = new System.Windows.Forms.Panel();
+            this.linkLabelLanguage = new System.Windows.Forms.LinkLabel();
             this.lblNoInternetConnection = new System.Windows.Forms.Label();
             this.butCloseEverything = new System.Windows.Forms.Button();
             this.butStopCSSPWebTools = new System.Windows.Forms.Button();
@@ -41,7 +42,6 @@
             this.panelLanguageCenter = new System.Windows.Forms.Panel();
             this.butEnglish = new System.Windows.Forms.Button();
             this.butFrancais = new System.Windows.Forms.Button();
-            this.linkLabelLanguage = new System.Windows.Forms.LinkLabel();
             this.panelLeft.SuspendLayout();
             this.panelRight.SuspendLayout();
             this.panelLanguage.SuspendLayout();
@@ -67,6 +67,7 @@
             this.butUpdatesAvailable.Text = "Updates Available";
             this.butUpdatesAvailable.UseVisualStyleBackColor = true;
             this.butUpdatesAvailable.Visible = false;
+            this.butUpdatesAvailable.Click += new System.EventHandler(this.butUpdatesAvailable_Click);
             // 
             // panelLeft
             // 
@@ -82,6 +83,17 @@
             this.panelLeft.Name = "panelLeft";
             this.panelLeft.Size = new System.Drawing.Size(201, 551);
             this.panelLeft.TabIndex = 6;
+            // 
+            // linkLabelLanguage
+            // 
+            this.linkLabelLanguage.AutoSize = true;
+            this.linkLabelLanguage.Location = new System.Drawing.Point(12, 12);
+            this.linkLabelLanguage.Name = "linkLabelLanguage";
+            this.linkLabelLanguage.Size = new System.Drawing.Size(78, 21);
+            this.linkLabelLanguage.TabIndex = 7;
+            this.linkLabelLanguage.TabStop = true;
+            this.linkLabelLanguage.Text = "Language";
+            this.linkLabelLanguage.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabelLanguage_LinkClicked);
             // 
             // lblNoInternetConnection
             // 
@@ -179,17 +191,6 @@
             this.butFrancais.Text = "Français";
             this.butFrancais.UseVisualStyleBackColor = true;
             this.butFrancais.Click += new System.EventHandler(this.butFrancais_Click);
-            // 
-            // linkLabelLanguage
-            // 
-            this.linkLabelLanguage.AutoSize = true;
-            this.linkLabelLanguage.Location = new System.Drawing.Point(12, 12);
-            this.linkLabelLanguage.Name = "linkLabelLanguage";
-            this.linkLabelLanguage.Size = new System.Drawing.Size(78, 21);
-            this.linkLabelLanguage.TabIndex = 7;
-            this.linkLabelLanguage.TabStop = true;
-            this.linkLabelLanguage.Text = "Language";
-            this.linkLabelLanguage.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabelLanguage_LinkClicked);
             // 
             // CSSPDesktopForm
             // 

@@ -28,6 +28,8 @@ namespace CSSPDesktop
         private IServiceCollection Services { get; set; }
         private ICSSPDesktopService CSSPDesktopService { get; set; }
         private bool IsEnglish { get; set; }
+        private string UpdateApplicationNotFound { get; set; }
+        private string NoInternetConnectionFound { get; set; }
         #endregion Properties
 
         #region Constructors
@@ -65,6 +67,10 @@ namespace CSSPDesktop
             butStartCSSPWebTools.Visible = true;
             butStopCSSPWebTools.Visible = false;
         }
+        private void butUpdatesAvailable_Click(object sender, EventArgs e)
+        {
+            RunCSSPDesktopUpdateProcess();
+        }
         private async void CSSPDesktopForm_FormClosing(object sender, FormClosingEventArgs e)
         {
             await Stop();
@@ -91,6 +97,32 @@ namespace CSSPDesktop
         #endregion Functions public
 
         #region Functions private
+        private async Task RunCSSPDesktopUpdateProcess()
+        {
+            if (! await CSSPDesktopService.CheckingInternetConnection())
+            {
+                richTextBoxStatus.Text = NoInternetConnectionFound;
+                return;
+            }
+
+            FileInfo fi = new FileInfo(Environment.CurrentDirectory + @"\CSSPDesktopUpdate.exe");
+            if (!fi.Exists)
+            {
+                richTextBoxStatus.Text = string.Format(UpdateApplicationNotFound, fi.FullName);
+                return;
+            }
+
+            Process process = new Process();
+            ProcessStartInfo processStartInfo = new ProcessStartInfo();
+            processStartInfo.FileName = fi.FullName;
+            processStartInfo.Arguments = IsEnglish ? "en" : "fr";
+            processStartInfo.UseShellExecute = true;
+
+            process.StartInfo = processStartInfo;
+            process.Start();
+
+            Close();
+        }
         private async void SetEnglish(bool SetIsEnglish)
         {
             IsEnglish = SetIsEnglish;
@@ -109,14 +141,14 @@ namespace CSSPDesktop
         {
             if (CSSPDesktopService.IsEnglish)
             {
-                CSSPDesktopService.appTextModel = (AppTextModel)new AppTextModelEN();
+                CSSPDesktopService.appTextModel = new AppTextModelEN();
             }
             else
             {
-                CSSPDesktopService.appTextModel = (AppTextModel)new AppTextModelFR();
+                CSSPDesktopService.appTextModel = new AppTextModelFR();
             }
 
-            this.Text = CSSPDesktopService.appTextModel.CSSPDesktopFormText;
+            Text = CSSPDesktopService.appTextModel.CSSPDesktopFormText;
             linkLabelLanguage.Text = CSSPDesktopService.appTextModel.linkLabelLanguageText;
             linkLabelHelp.Text = CSSPDesktopService.appTextModel.linkLabelHelpText;
             butStartCSSPWebTools.Text = CSSPDesktopService.appTextModel.butStartCSSPWebToolsText;
@@ -124,6 +156,7 @@ namespace CSSPDesktop
             butUpdatesAvailable.Text = CSSPDesktopService.appTextModel.butUpdateAvailableText;
             butCloseEverything.Text = CSSPDesktopService.appTextModel.butCloseEverythingText;
             lblNoInternetConnection.Text = CSSPDesktopService.appTextModel.lblNoInternetConnectionText;
+            UpdateApplicationNotFound = CSSPDesktopService.appTextModel.UpdateApplicationNotFound;
         }
         private async Task<bool> Setup()
         {
@@ -201,9 +234,9 @@ namespace CSSPDesktop
 
             return await Task.FromResult(true);
         }
+
+
         #endregion Functions private
-
-
 
     }
 }
