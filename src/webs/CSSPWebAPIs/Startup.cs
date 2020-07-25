@@ -158,13 +158,13 @@ namespace CSSPWebAPIs
              * using CSSPDBFileManagement
              * ---------------------------------------------------------------------------------      
              */
-            string CSSPDBFileManagementFileName = Configuration.GetValue<string>("CSSPDBFileManagement");
+            string CSSPDBFilesManagementFileName = Configuration.GetValue<string>("CSSPDBFilesManagement");
 
-            FileInfo fiCSSPDBFileManagement = new FileInfo(CSSPDBFileManagementFileName.Replace("{AppDataPath}", appDataPath));
+            FileInfo fiCSSPDBFilesManagement = new FileInfo(CSSPDBFilesManagementFileName.Replace("{AppDataPath}", appDataPath));
 
             services.AddDbContext<CSSPDBFilesManagementContext>(options =>
             {
-                options.UseSqlite($"Data Source={ fiCSSPDBFileManagement.FullName }");
+                options.UseSqlite($"Data Source={ fiCSSPDBFilesManagement.FullName }");
             });
 
             services.AddScoped<ICSSPCultureService, CSSPCultureService>();
@@ -179,7 +179,7 @@ namespace CSSPWebAPIs
 
             services.AddSpaStaticFiles(configuration =>
             {
-                configuration.RootPath = "client-app";
+                configuration.RootPath = "csspclient";
             });
 
 
@@ -222,7 +222,7 @@ namespace CSSPWebAPIs
 
             app.UseSpa(spa =>
             {
-                spa.Options.SourcePath = "client-app";
+                spa.Options.SourcePath = "csspclient";
             });
         }
         #endregion Functions public

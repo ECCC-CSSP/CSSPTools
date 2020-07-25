@@ -7,10 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="appsettings_generateallgzfiles.json" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Content Include="appsettings_generateallgzfiles.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <ExcludeFromSingleFile>true</ExcludeFromSingleFile>

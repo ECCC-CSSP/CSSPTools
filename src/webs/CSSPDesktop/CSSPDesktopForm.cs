@@ -177,7 +177,7 @@ namespace CSSPDesktop
 
             CSSPDesktopService.AppDataPath = appDataPath + "\\cssp\\";
             CSSPDesktopService.StartUrl = "https://localhost:4447/";
-            CSSPDesktopService.CSSPWebAPIsExeFullPath = CSSPDesktopService.AppDataPath + "csspdesktop\\CSSPWebAPIs.exe";
+            CSSPDesktopService.CSSPWebAPIsExeFullPath = CSSPDesktopService.AppDataPath + "csspwebapis\\CSSPWebAPIs.exe";
             CSSPDesktopService.HelpPath = CSSPDesktopService.AppDataPath + "csspdesktop\\helpdocs\\";
 
             CSSPDesktopService.IsEnglish = true;

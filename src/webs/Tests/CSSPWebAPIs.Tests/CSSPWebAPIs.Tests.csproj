@@ -9,10 +9,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="appsettings_csspwebapistests.json" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Content Include="appsettings_csspwebapistests.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <ExcludeFromSingleFile>true</ExcludeFromSingleFile>

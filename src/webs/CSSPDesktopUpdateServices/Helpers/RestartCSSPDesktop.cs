@@ -14,7 +14,9 @@ namespace CSSPDesktopUpdateServices.Services
     {
         private bool RestartCSSPDesktop()
         {
-            FileInfo fi = new FileInfo(Environment.CurrentDirectory + @"\CSSPDesktop.exe");
+            string appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+
+            FileInfo fi = new FileInfo(appDataPath + "\\cssp\\csspdesktop\\CSSPDesktop.exe");
             if (!fi.Exists)
             {
                 ErrorMessageStatus(new ErrorMessageEventArgs(string.Format(appTextModel.CSSPDesktopApplicationNotFoundText, fi.FullName)));
