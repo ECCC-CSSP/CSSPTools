@@ -3,12 +3,12 @@
     partial class CSSPDesktopForm
     {
         /// <summary>
-        ///  Required designer variable.
+        /// Required designer variable.
         /// </summary>
         private System.ComponentModel.IContainer components = null;
 
         /// <summary>
-        ///  Clean up any resources being used.
+        /// Clean up any resources being used.
         /// </summary>
         /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
         protected override void Dispose(bool disposing)
@@ -23,210 +23,325 @@
         #region Windows Form Designer generated code
 
         /// <summary>
-        ///  Required method for Designer support - do not modify
-        ///  the contents of this method with the code editor.
+        /// Required method for Designer support - do not modify
+        /// the contents of this method with the code editor.
         /// </summary>
         private void InitializeComponent()
         {
-            this.butStartCSSPWebTools = new System.Windows.Forms.Button();
-            this.butUpdatesAvailable = new System.Windows.Forms.Button();
-            this.panelLeft = new System.Windows.Forms.Panel();
-            this.linkLabelLanguage = new System.Windows.Forms.LinkLabel();
-            this.lblNoInternetConnection = new System.Windows.Forms.Label();
-            this.butCloseEverything = new System.Windows.Forms.Button();
-            this.butStopCSSPWebTools = new System.Windows.Forms.Button();
-            this.linkLabelHelp = new System.Windows.Forms.LinkLabel();
-            this.panelRight = new System.Windows.Forms.Panel();
-            this.richTextBoxStatus = new System.Windows.Forms.RichTextBox();
+            this.components = new System.ComponentModel.Container();
             this.panelLanguage = new System.Windows.Forms.Panel();
             this.panelLanguageCenter = new System.Windows.Forms.Panel();
-            this.butEnglish = new System.Windows.Forms.Button();
-            this.butFrancais = new System.Windows.Forms.Button();
-            this.panelLeft.SuspendLayout();
-            this.panelRight.SuspendLayout();
+            this.butSetLanguageToFrancais = new System.Windows.Forms.Button();
+            this.butSetLanguageToEnglish = new System.Windows.Forms.Button();
+            this.splitContainerFirst = new System.Windows.Forms.SplitContainer();
+            this.panelButtonCenter = new System.Windows.Forms.Panel();
+            this.butStart = new System.Windows.Forms.Button();
+            this.butShowHelpPanel = new System.Windows.Forms.Button();
+            this.butClose = new System.Windows.Forms.Button();
+            this.butShowLanguagePanel = new System.Windows.Forms.Button();
+            this.butStop = new System.Windows.Forms.Button();
+            this.butGetUpdates = new System.Windows.Forms.Button();
+            this.panelStatus = new System.Windows.Forms.Panel();
+            this.lblStatus = new System.Windows.Forms.Label();
+            this.lblSatusText = new System.Windows.Forms.Label();
+            this.richTextBoxStatus = new System.Windows.Forms.RichTextBox();
+            this.webBrowserHelp = new System.Windows.Forms.WebBrowser();
+            this.panelHelp = new System.Windows.Forms.Panel();
+            this.panelHelpTop = new System.Windows.Forms.Panel();
+            this.butHideHelpPanel = new System.Windows.Forms.Button();
+            this.timerCheckInternetConnection = new System.Windows.Forms.Timer(this.components);
             this.panelLanguage.SuspendLayout();
             this.panelLanguageCenter.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainerFirst)).BeginInit();
+            this.splitContainerFirst.Panel1.SuspendLayout();
+            this.splitContainerFirst.Panel2.SuspendLayout();
+            this.splitContainerFirst.SuspendLayout();
+            this.panelButtonCenter.SuspendLayout();
+            this.panelStatus.SuspendLayout();
+            this.panelHelp.SuspendLayout();
+            this.panelHelpTop.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // butStartCSSPWebTools
-            // 
-            this.butStartCSSPWebTools.Location = new System.Drawing.Point(12, 83);
-            this.butStartCSSPWebTools.Name = "butStartCSSPWebTools";
-            this.butStartCSSPWebTools.Size = new System.Drawing.Size(178, 34);
-            this.butStartCSSPWebTools.TabIndex = 2;
-            this.butStartCSSPWebTools.Text = "Start CSSP Web Tools";
-            this.butStartCSSPWebTools.UseVisualStyleBackColor = true;
-            this.butStartCSSPWebTools.Click += new System.EventHandler(this.butStartCSSPWebTools_Click);
-            // 
-            // butUpdatesAvailable
-            // 
-            this.butUpdatesAvailable.Location = new System.Drawing.Point(12, 308);
-            this.butUpdatesAvailable.Name = "butUpdatesAvailable";
-            this.butUpdatesAvailable.Size = new System.Drawing.Size(178, 34);
-            this.butUpdatesAvailable.TabIndex = 2;
-            this.butUpdatesAvailable.Text = "Updates Available";
-            this.butUpdatesAvailable.UseVisualStyleBackColor = true;
-            this.butUpdatesAvailable.Visible = false;
-            this.butUpdatesAvailable.Click += new System.EventHandler(this.butUpdatesAvailable_Click);
-            // 
-            // panelLeft
-            // 
-            this.panelLeft.Controls.Add(this.linkLabelLanguage);
-            this.panelLeft.Controls.Add(this.lblNoInternetConnection);
-            this.panelLeft.Controls.Add(this.butCloseEverything);
-            this.panelLeft.Controls.Add(this.butStopCSSPWebTools);
-            this.panelLeft.Controls.Add(this.linkLabelHelp);
-            this.panelLeft.Controls.Add(this.butUpdatesAvailable);
-            this.panelLeft.Controls.Add(this.butStartCSSPWebTools);
-            this.panelLeft.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.panelLeft.Location = new System.Drawing.Point(18, 5);
-            this.panelLeft.Name = "panelLeft";
-            this.panelLeft.Size = new System.Drawing.Size(201, 551);
-            this.panelLeft.TabIndex = 6;
-            // 
-            // linkLabelLanguage
-            // 
-            this.linkLabelLanguage.AutoSize = true;
-            this.linkLabelLanguage.Location = new System.Drawing.Point(12, 12);
-            this.linkLabelLanguage.Name = "linkLabelLanguage";
-            this.linkLabelLanguage.Size = new System.Drawing.Size(78, 21);
-            this.linkLabelLanguage.TabIndex = 7;
-            this.linkLabelLanguage.TabStop = true;
-            this.linkLabelLanguage.Text = "Language";
-            this.linkLabelLanguage.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabelLanguage_LinkClicked);
-            // 
-            // lblNoInternetConnection
-            // 
-            this.lblNoInternetConnection.AutoSize = true;
-            this.lblNoInternetConnection.Location = new System.Drawing.Point(12, 284);
-            this.lblNoInternetConnection.Name = "lblNoInternetConnection";
-            this.lblNoInternetConnection.Size = new System.Drawing.Size(172, 21);
-            this.lblNoInternetConnection.TabIndex = 8;
-            this.lblNoInternetConnection.Text = "No Internet Connection";
-            this.lblNoInternetConnection.Visible = false;
-            // 
-            // butCloseEverything
-            // 
-            this.butCloseEverything.Location = new System.Drawing.Point(12, 505);
-            this.butCloseEverything.Name = "butCloseEverything";
-            this.butCloseEverything.Size = new System.Drawing.Size(178, 34);
-            this.butCloseEverything.TabIndex = 2;
-            this.butCloseEverything.Text = "Close Everything";
-            this.butCloseEverything.UseVisualStyleBackColor = true;
-            this.butCloseEverything.Click += new System.EventHandler(this.butCloseEverything_Click);
-            // 
-            // butStopCSSPWebTools
-            // 
-            this.butStopCSSPWebTools.Location = new System.Drawing.Point(12, 123);
-            this.butStopCSSPWebTools.Name = "butStopCSSPWebTools";
-            this.butStopCSSPWebTools.Size = new System.Drawing.Size(178, 34);
-            this.butStopCSSPWebTools.TabIndex = 2;
-            this.butStopCSSPWebTools.Text = "Stop CSSP Web Tools";
-            this.butStopCSSPWebTools.UseVisualStyleBackColor = true;
-            this.butStopCSSPWebTools.Visible = false;
-            this.butStopCSSPWebTools.Click += new System.EventHandler(this.butStopCSSPWebTools_Click);
-            // 
-            // linkLabelHelp
-            // 
-            this.linkLabelHelp.AutoSize = true;
-            this.linkLabelHelp.Location = new System.Drawing.Point(142, 12);
-            this.linkLabelHelp.Name = "linkLabelHelp";
-            this.linkLabelHelp.Size = new System.Drawing.Size(42, 21);
-            this.linkLabelHelp.TabIndex = 7;
-            this.linkLabelHelp.TabStop = true;
-            this.linkLabelHelp.Text = "Help";
-            this.linkLabelHelp.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabelHelp_LinkClicked);
-            // 
-            // panelRight
-            // 
-            this.panelRight.Controls.Add(this.richTextBoxStatus);
-            this.panelRight.Location = new System.Drawing.Point(635, 296);
-            this.panelRight.Name = "panelRight";
-            this.panelRight.Size = new System.Drawing.Size(433, 209);
-            this.panelRight.TabIndex = 7;
-            // 
-            // richTextBoxStatus
-            // 
-            this.richTextBoxStatus.Location = new System.Drawing.Point(48, 23);
-            this.richTextBoxStatus.Name = "richTextBoxStatus";
-            this.richTextBoxStatus.Size = new System.Drawing.Size(239, 183);
-            this.richTextBoxStatus.TabIndex = 0;
-            this.richTextBoxStatus.Text = "";
             // 
             // panelLanguage
             // 
             this.panelLanguage.Controls.Add(this.panelLanguageCenter);
-            this.panelLanguage.Location = new System.Drawing.Point(289, 57);
+            this.panelLanguage.Location = new System.Drawing.Point(528, 41);
             this.panelLanguage.Name = "panelLanguage";
-            this.panelLanguage.Size = new System.Drawing.Size(357, 207);
-            this.panelLanguage.TabIndex = 8;
+            this.panelLanguage.Size = new System.Drawing.Size(449, 209);
+            this.panelLanguage.TabIndex = 0;
             // 
             // panelLanguageCenter
             // 
-            this.panelLanguageCenter.Controls.Add(this.butEnglish);
-            this.panelLanguageCenter.Controls.Add(this.butFrancais);
-            this.panelLanguageCenter.Location = new System.Drawing.Point(45, 57);
+            this.panelLanguageCenter.Controls.Add(this.butSetLanguageToFrancais);
+            this.panelLanguageCenter.Controls.Add(this.butSetLanguageToEnglish);
+            this.panelLanguageCenter.Location = new System.Drawing.Point(79, 48);
             this.panelLanguageCenter.Name = "panelLanguageCenter";
-            this.panelLanguageCenter.Size = new System.Drawing.Size(246, 88);
-            this.panelLanguageCenter.TabIndex = 1;
+            this.panelLanguageCenter.Size = new System.Drawing.Size(262, 104);
+            this.panelLanguageCenter.TabIndex = 0;
             // 
-            // butEnglish
+            // butSetLanguageToFrancais
             // 
-            this.butEnglish.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.butEnglish.Location = new System.Drawing.Point(19, 25);
-            this.butEnglish.Name = "butEnglish";
-            this.butEnglish.Size = new System.Drawing.Size(88, 35);
-            this.butEnglish.TabIndex = 0;
-            this.butEnglish.Text = "English";
-            this.butEnglish.UseVisualStyleBackColor = true;
-            this.butEnglish.Click += new System.EventHandler(this.butEnglish_Click);
+            this.butSetLanguageToFrancais.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.butSetLanguageToFrancais.ImageAlign = System.Drawing.ContentAlignment.TopRight;
+            this.butSetLanguageToFrancais.Location = new System.Drawing.Point(146, 39);
+            this.butSetLanguageToFrancais.Name = "butSetLanguageToFrancais";
+            this.butSetLanguageToFrancais.Size = new System.Drawing.Size(98, 32);
+            this.butSetLanguageToFrancais.TabIndex = 1;
+            this.butSetLanguageToFrancais.Text = "Français";
+            this.butSetLanguageToFrancais.UseVisualStyleBackColor = true;
+            this.butSetLanguageToFrancais.Click += new System.EventHandler(this.butSetLanguageToFrancais_Click);
             // 
-            // butFrancais
+            // butSetLanguageToEnglish
             // 
-            this.butFrancais.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.butFrancais.Location = new System.Drawing.Point(139, 25);
-            this.butFrancais.Name = "butFrancais";
-            this.butFrancais.Size = new System.Drawing.Size(89, 35);
-            this.butFrancais.TabIndex = 0;
-            this.butFrancais.Text = "Français";
-            this.butFrancais.UseVisualStyleBackColor = true;
-            this.butFrancais.Click += new System.EventHandler(this.butFrancais_Click);
+            this.butSetLanguageToEnglish.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.butSetLanguageToEnglish.Location = new System.Drawing.Point(27, 39);
+            this.butSetLanguageToEnglish.Name = "butSetLanguageToEnglish";
+            this.butSetLanguageToEnglish.Size = new System.Drawing.Size(98, 32);
+            this.butSetLanguageToEnglish.TabIndex = 0;
+            this.butSetLanguageToEnglish.Text = "English";
+            this.butSetLanguageToEnglish.UseVisualStyleBackColor = true;
+            this.butSetLanguageToEnglish.Click += new System.EventHandler(this.butSetLanguageToEnglish_Click);
+            // 
+            // splitContainerFirst
+            // 
+            this.splitContainerFirst.Location = new System.Drawing.Point(15, 12);
+            this.splitContainerFirst.Name = "splitContainerFirst";
+            this.splitContainerFirst.Orientation = System.Windows.Forms.Orientation.Horizontal;
+            // 
+            // splitContainerFirst.Panel1
+            // 
+            this.splitContainerFirst.Panel1.Controls.Add(this.panelButtonCenter);
+            this.splitContainerFirst.Panel1.Controls.Add(this.panelStatus);
+            // 
+            // splitContainerFirst.Panel2
+            // 
+            this.splitContainerFirst.Panel2.Controls.Add(this.richTextBoxStatus);
+            this.splitContainerFirst.Size = new System.Drawing.Size(507, 426);
+            this.splitContainerFirst.SplitterDistance = 265;
+            this.splitContainerFirst.TabIndex = 1;
+            // 
+            // panelButtonCenter
+            // 
+            this.panelButtonCenter.Controls.Add(this.butStart);
+            this.panelButtonCenter.Controls.Add(this.butShowHelpPanel);
+            this.panelButtonCenter.Controls.Add(this.butClose);
+            this.panelButtonCenter.Controls.Add(this.butShowLanguagePanel);
+            this.panelButtonCenter.Controls.Add(this.butStop);
+            this.panelButtonCenter.Controls.Add(this.butGetUpdates);
+            this.panelButtonCenter.Location = new System.Drawing.Point(13, 17);
+            this.panelButtonCenter.Name = "panelButtonCenter";
+            this.panelButtonCenter.Size = new System.Drawing.Size(382, 182);
+            this.panelButtonCenter.TabIndex = 7;
+            this.panelButtonCenter.MouseHover += new System.EventHandler(this.panelButtonCenter_MouseHover);
+            // 
+            // butStart
+            // 
+            this.butStart.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.butStart.ImageAlign = System.Drawing.ContentAlignment.BottomCenter;
+            this.butStart.Location = new System.Drawing.Point(16, 12);
+            this.butStart.Name = "butStart";
+            this.butStart.Size = new System.Drawing.Size(100, 33);
+            this.butStart.TabIndex = 3;
+            this.butStart.Text = "Start";
+            this.butStart.UseVisualStyleBackColor = true;
+            this.butStart.Click += new System.EventHandler(this.butStart_Click);
+            this.butStart.MouseHover += new System.EventHandler(this.butStart_MouseHover);
+            // 
+            // butShowHelpPanel
+            // 
+            this.butShowHelpPanel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.butShowHelpPanel.Location = new System.Drawing.Point(247, 51);
+            this.butShowHelpPanel.Name = "butShowHelpPanel";
+            this.butShowHelpPanel.Size = new System.Drawing.Size(122, 33);
+            this.butShowHelpPanel.TabIndex = 2;
+            this.butShowHelpPanel.Text = "Help";
+            this.butShowHelpPanel.UseVisualStyleBackColor = true;
+            this.butShowHelpPanel.Click += new System.EventHandler(this.butShowHelpPanel_Click);
+            this.butShowHelpPanel.MouseHover += new System.EventHandler(this.butShowHelpPanel_MouseHover);
+            // 
+            // butClose
+            // 
+            this.butClose.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.butClose.ImageAlign = System.Drawing.ContentAlignment.BottomRight;
+            this.butClose.Location = new System.Drawing.Point(16, 140);
+            this.butClose.Name = "butClose";
+            this.butClose.Size = new System.Drawing.Size(100, 33);
+            this.butClose.TabIndex = 6;
+            this.butClose.Text = "Close";
+            this.butClose.UseVisualStyleBackColor = true;
+            this.butClose.Click += new System.EventHandler(this.butClose_Click);
+            this.butClose.MouseHover += new System.EventHandler(this.butClose_MouseHover);
+            // 
+            // butShowLanguagePanel
+            // 
+            this.butShowLanguagePanel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.butShowLanguagePanel.Location = new System.Drawing.Point(247, 12);
+            this.butShowLanguagePanel.Name = "butShowLanguagePanel";
+            this.butShowLanguagePanel.Size = new System.Drawing.Size(122, 33);
+            this.butShowLanguagePanel.TabIndex = 0;
+            this.butShowLanguagePanel.Text = "Language";
+            this.butShowLanguagePanel.UseVisualStyleBackColor = true;
+            this.butShowLanguagePanel.Click += new System.EventHandler(this.butShowLanguagePanel_Click);
+            this.butShowLanguagePanel.MouseHover += new System.EventHandler(this.butShowLanguagePanel_MouseHover);
+            // 
+            // butStop
+            // 
+            this.butStop.Enabled = false;
+            this.butStop.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.butStop.ImageAlign = System.Drawing.ContentAlignment.BottomCenter;
+            this.butStop.Location = new System.Drawing.Point(16, 60);
+            this.butStop.Name = "butStop";
+            this.butStop.Size = new System.Drawing.Size(100, 33);
+            this.butStop.TabIndex = 4;
+            this.butStop.Text = "Stop";
+            this.butStop.UseVisualStyleBackColor = true;
+            this.butStop.Click += new System.EventHandler(this.butStop_Click);
+            this.butStop.MouseHover += new System.EventHandler(this.butStop_MouseHover);
+            // 
+            // butGetUpdates
+            // 
+            this.butGetUpdates.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.butGetUpdates.ImageAlign = System.Drawing.ContentAlignment.BottomCenter;
+            this.butGetUpdates.Location = new System.Drawing.Point(189, 140);
+            this.butGetUpdates.Name = "butGetUpdates";
+            this.butGetUpdates.Size = new System.Drawing.Size(180, 33);
+            this.butGetUpdates.TabIndex = 5;
+            this.butGetUpdates.Text = "Get Updates";
+            this.butGetUpdates.UseVisualStyleBackColor = true;
+            this.butGetUpdates.Click += new System.EventHandler(this.butGetUpdates_Click);
+            this.butGetUpdates.MouseHover += new System.EventHandler(this.butGetUpdates_MouseHover);
+            // 
+            // panelStatus
+            // 
+            this.panelStatus.Controls.Add(this.lblStatus);
+            this.panelStatus.Controls.Add(this.lblSatusText);
+            this.panelStatus.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.panelStatus.Location = new System.Drawing.Point(0, 229);
+            this.panelStatus.Name = "panelStatus";
+            this.panelStatus.Size = new System.Drawing.Size(507, 36);
+            this.panelStatus.TabIndex = 1;
+            // 
+            // lblStatus
+            // 
+            this.lblStatus.AutoSize = true;
+            this.lblStatus.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblStatus.Location = new System.Drawing.Point(69, 8);
+            this.lblStatus.Name = "lblStatus";
+            this.lblStatus.Size = new System.Drawing.Size(60, 20);
+            this.lblStatus.TabIndex = 1;
+            this.lblStatus.Text = "[empty]";
+            // 
+            // lblSatusText
+            // 
+            this.lblSatusText.AutoSize = true;
+            this.lblSatusText.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblSatusText.Location = new System.Drawing.Point(9, 9);
+            this.lblSatusText.Name = "lblSatusText";
+            this.lblSatusText.Size = new System.Drawing.Size(55, 20);
+            this.lblSatusText.TabIndex = 0;
+            this.lblSatusText.Text = "Satus:";
+            // 
+            // richTextBoxStatus
+            // 
+            this.richTextBoxStatus.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.richTextBoxStatus.Location = new System.Drawing.Point(118, 13);
+            this.richTextBoxStatus.Name = "richTextBoxStatus";
+            this.richTextBoxStatus.Size = new System.Drawing.Size(90, 80);
+            this.richTextBoxStatus.TabIndex = 1;
+            this.richTextBoxStatus.Text = "";
+            // 
+            // webBrowserHelp
+            // 
+            this.webBrowserHelp.Location = new System.Drawing.Point(45, 42);
+            this.webBrowserHelp.MinimumSize = new System.Drawing.Size(20, 20);
+            this.webBrowserHelp.Name = "webBrowserHelp";
+            this.webBrowserHelp.Size = new System.Drawing.Size(145, 70);
+            this.webBrowserHelp.TabIndex = 0;
+            // 
+            // panelHelp
+            // 
+            this.panelHelp.Controls.Add(this.webBrowserHelp);
+            this.panelHelp.Controls.Add(this.panelHelpTop);
+            this.panelHelp.Location = new System.Drawing.Point(528, 283);
+            this.panelHelp.Name = "panelHelp";
+            this.panelHelp.Size = new System.Drawing.Size(306, 140);
+            this.panelHelp.TabIndex = 2;
+            // 
+            // panelHelpTop
+            // 
+            this.panelHelpTop.Controls.Add(this.butHideHelpPanel);
+            this.panelHelpTop.Dock = System.Windows.Forms.DockStyle.Top;
+            this.panelHelpTop.Location = new System.Drawing.Point(0, 0);
+            this.panelHelpTop.Name = "panelHelpTop";
+            this.panelHelpTop.Size = new System.Drawing.Size(306, 36);
+            this.panelHelpTop.TabIndex = 1;
+            // 
+            // butHideHelpPanel
+            // 
+            this.butHideHelpPanel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.butHideHelpPanel.Location = new System.Drawing.Point(104, 2);
+            this.butHideHelpPanel.Name = "butHideHelpPanel";
+            this.butHideHelpPanel.Size = new System.Drawing.Size(98, 32);
+            this.butHideHelpPanel.TabIndex = 1;
+            this.butHideHelpPanel.Text = "Close Help";
+            this.butHideHelpPanel.UseVisualStyleBackColor = true;
+            this.butHideHelpPanel.Click += new System.EventHandler(this.butHideHelpPanel_Click);
+            // 
+            // timerCheckInternetConnection
+            // 
+            this.timerCheckInternetConnection.Enabled = true;
+            this.timerCheckInternetConnection.Interval = 5000;
+            this.timerCheckInternetConnection.Tick += new System.EventHandler(this.timerCheckInternetConnection_Tick);
             // 
             // CSSPDesktopForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1100, 551);
+            this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.panelHelp);
+            this.Controls.Add(this.splitContainerFirst);
             this.Controls.Add(this.panelLanguage);
-            this.Controls.Add(this.panelRight);
-            this.Controls.Add(this.panelLeft);
             this.Name = "CSSPDesktopForm";
-            this.Text = "CSSP Desktop Application";
-            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.CSSPDesktopForm_FormClosing);
-            this.panelLeft.ResumeLayout(false);
-            this.panelLeft.PerformLayout();
-            this.panelRight.ResumeLayout(false);
+            this.Text = "CSSP Desktop";
+            this.Resize += new System.EventHandler(this.CSSPDesktopForm_Resize);
             this.panelLanguage.ResumeLayout(false);
             this.panelLanguageCenter.ResumeLayout(false);
+            this.splitContainerFirst.Panel1.ResumeLayout(false);
+            this.splitContainerFirst.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainerFirst)).EndInit();
+            this.splitContainerFirst.ResumeLayout(false);
+            this.panelButtonCenter.ResumeLayout(false);
+            this.panelStatus.ResumeLayout(false);
+            this.panelStatus.PerformLayout();
+            this.panelHelp.ResumeLayout(false);
+            this.panelHelpTop.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
 
         #endregion
-        private System.Windows.Forms.Button butStartCSSPWebTools;
-        private System.Windows.Forms.Button butUpdatesAvailable;
-        private System.Windows.Forms.Panel panelLeft;
-        private System.Windows.Forms.LinkLabel linkLabelHelp;
-        private System.Windows.Forms.Panel panelRight;
-        private System.Windows.Forms.RichTextBox richTextBoxStatus;
-        private System.Windows.Forms.Button butStopCSSPWebTools;
-        private System.Windows.Forms.Button butCloseEverything;
-        private System.Windows.Forms.Label lblNoInternetConnection;
+
         private System.Windows.Forms.Panel panelLanguage;
         private System.Windows.Forms.Panel panelLanguageCenter;
-        private System.Windows.Forms.Button butEnglish;
-        private System.Windows.Forms.Button butFrancais;
-        private System.Windows.Forms.LinkLabel linkLabelLanguage;
+        private System.Windows.Forms.Button butSetLanguageToEnglish;
+        private System.Windows.Forms.Button butSetLanguageToFrancais;
+        private System.Windows.Forms.SplitContainer splitContainerFirst;
+        private System.Windows.Forms.Button butShowLanguagePanel;
+        private System.Windows.Forms.RichTextBox richTextBoxStatus;
+        private System.Windows.Forms.WebBrowser webBrowserHelp;
+        private System.Windows.Forms.Panel panelButtonCenter;
+        private System.Windows.Forms.Button butStart;
+        private System.Windows.Forms.Button butShowHelpPanel;
+        private System.Windows.Forms.Button butClose;
+        private System.Windows.Forms.Button butStop;
+        private System.Windows.Forms.Button butGetUpdates;
+        private System.Windows.Forms.Panel panelStatus;
+        private System.Windows.Forms.Label lblStatus;
+        private System.Windows.Forms.Label lblSatusText;
+        private System.Windows.Forms.Panel panelHelp;
+        private System.Windows.Forms.Panel panelHelpTop;
+        private System.Windows.Forms.Button butHideHelpPanel;
+        private System.Windows.Forms.Timer timerCheckInternetConnection;
     }
 }
 

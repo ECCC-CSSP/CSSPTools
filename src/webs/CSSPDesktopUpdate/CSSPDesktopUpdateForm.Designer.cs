@@ -112,7 +112,7 @@
             this.Controls.Add(this.lblDownloadingUpdate);
             this.Controls.Add(this.progressBarDownloading);
             this.Name = "CSSPDesktopUpdateForm";
-            this.Text = "CSSP Desktop Update Application / Application de bureau PCCSM mise à jour";
+            this.Text = "CSSP Desktop Update Application";
             this.ResumeLayout(false);
             this.PerformLayout();
 

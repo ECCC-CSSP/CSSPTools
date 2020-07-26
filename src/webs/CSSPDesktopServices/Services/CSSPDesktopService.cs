@@ -13,19 +13,21 @@ namespace CSSPDesktopServices.Services
         string StartUrl { get; set; }
         string AppDataPath { get; set; }
         string CSSPWebAPIsExeFullPath { get; set; }
-        string HelpPath { get; set; }
         bool IsEnglish { get; set; }
         Process processCSSPWebAPIs { get; set; }
         Process processBrowser { get; set; }
-        Process processHelp { get; set; }
         AppTextModel appTextModel { get; set; }
+        bool HasInternetConnection { get; set; }
+
         // Functions
+        Task<bool> CreateAllRequiredDirectories();
         Task<bool> CheckingAvailableUpdate();
-        Task<bool> CheckingInternetConnection();
-        Task<bool> Update();
+        void CheckingInternetConnection();
+        Task<bool> GetUpdates();
         Task<bool> Start();
         Task<bool> Stop();
-        Task<bool> OpenHelp();
+        
+        // Events
         event EventHandler<ClearEventArgs> StatusClear;
         event EventHandler<AppendEventArgs> StatusAppend;
     }
@@ -38,12 +40,11 @@ namespace CSSPDesktopServices.Services
         public string AppDataPath { get; set; }
         public string StartUrl { get; set; }
         public string CSSPWebAPIsExeFullPath { get; set; }
-        public string HelpPath { get; set; }
         public bool IsEnglish { get; set; }
         public Process processCSSPWebAPIs { get; set; }
         public Process processBrowser { get; set; }
-        public Process processHelp { get; set; }
         public AppTextModel appTextModel { get; set; }
+        public bool HasInternetConnection { get; set; }
         #endregion Properties
 
         #region Constructors
@@ -56,15 +57,13 @@ namespace CSSPDesktopServices.Services
 
             return await Task.FromResult(true);
         }
-        public async Task<bool> CheckingInternetConnection()
+        public void CheckingInternetConnection()
         {
-            if (!await DoCheckingInternetConnection()) return await Task.FromResult(false);
-
-            return await Task.FromResult(true);
+            DoCheckingInternetConnection();
         }
-        public async Task<bool> OpenHelp()
+        public async Task<bool> CreateAllRequiredDirectories()
         {
-            if (!await DoOpenHelp()) return await Task.FromResult(false);
+            if (!await DoCreateAllRequiredDirectories()) return await Task.FromResult(false);
 
             return await Task.FromResult(true);
         }
@@ -80,9 +79,9 @@ namespace CSSPDesktopServices.Services
 
             return await Task.FromResult(true);
         }
-        public async Task<bool> Update()
+        public async Task<bool> GetUpdates()
         {
-            if (!await DoUpdate()) return await Task.FromResult(false);
+            if (!await DoGetUpdates()) return await Task.FromResult(false);
 
             return await Task.FromResult(true);
         }

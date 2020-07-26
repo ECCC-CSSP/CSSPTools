@@ -9,14 +9,6 @@ namespace CSSPDesktopServices.Services
     {
         private async Task<bool> DoStop()
         {
-            if (processHelp != null)
-            {
-                if (!processHelp.HasExited)
-                {
-                    processHelp.Kill();
-                }
-            }
-
             if (processBrowser != null)
             {
                 if (!processBrowser.HasExited)

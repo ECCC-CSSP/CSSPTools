@@ -1,16 +1,11 @@
 ﻿using CSSPDesktopServices.Models;
 using CSSPDesktopServices.Services;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
-using System.Diagnostics;
 using System.Drawing;
-using System.IO;
 using System.Linq;
-using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -23,58 +18,119 @@ namespace CSSPDesktop
         #endregion Variables
 
         #region Properties
-        private IConfiguration Configuration { get; set; }
-        private IServiceProvider Provider { get; set; }
-        private IServiceCollection Services { get; set; }
-        private ICSSPDesktopService CSSPDesktopService { get; set; }
-        private bool IsEnglish { get; set; }
-        private string UpdateApplicationNotFound { get; set; }
-        private string NoInternetConnectionFound { get; set; }
+        ICSSPDesktopService csspDesktopService { get; set; }
+        ShowPanel currentPanel { get; set; } = ShowPanel.Buttons;
+        bool IsEnglish { get; set; } = true;
         #endregion Properties
 
         #region Constructors
         public CSSPDesktopForm()
         {
             InitializeComponent();
-            ShowLanguagePanel();
+            Setup();
         }
         #endregion Constructors
 
         #region Events
-        private void butCloseEverything_Click(object sender, EventArgs e)
+        #region Button Click
+        private void butClose_Click(object sender, EventArgs e)
         {
             Close();
         }
-        private void butEnglish_Click(object sender, EventArgs e)
+        private void butGetUpdates_Click(object sender, EventArgs e)
         {
-            SetEnglish(true);
+            GetUpdates();
         }
-        private void butFrancais_Click(object sender, EventArgs e)
+        private void butHideHelpPanel_Click(object sender, EventArgs e)
         {
-            SetEnglish(false);
+            HideHelpPanel();
         }
-        private async void butStartCSSPWebTools_Click(object sender, EventArgs e)
+        private void butShowHelpPanel_Click(object sender, EventArgs e)
         {
-            if (!await Start()) return;
+            ShowHelpPanel();
+        }
+        private void butShowLanguagePanel_Click(object sender, EventArgs e)
+        {
+            ShowLanguagePanel();
+        }
+        private void butSetLanguageToEnglish_Click(object sender, EventArgs e)
+        {
+            SetLanguageToEnglish();
+        }
+        private void butSetLanguageToFrancais_Click(object sender, EventArgs e)
+        {
+            SetLanguageToFrench();
+        }
+        private void butStart_Click(object sender, EventArgs e)
+        {
+            Start();
+        }
+        private void butStop_Click(object sender, EventArgs e)
+        {
+            Stop();
+        }
+        #endregion Button Click
+        #region Mouse Hover
+        private void butClose_MouseHover(object sender, EventArgs e)
+        {
+            lblStatus.Text = csspDesktopService.appTextModel.butCloseHoverText;
+        }
+        private void butGetUpdates_MouseHover(object sender, EventArgs e)
+        {
+            lblStatus.Text = csspDesktopService.appTextModel.butGetUpdatesHoverText;
+        }
+        private void butShowHelpPanel_MouseHover(object sender, EventArgs e)
+        {
+            lblStatus.Text = csspDesktopService.appTextModel.butShowHelpPanelHoverText;
+        }
+        private void butShowLanguagePanel_MouseHover(object sender, EventArgs e)
+        {
+            lblStatus.Text = csspDesktopService.appTextModel.butShowLanguagePanelHoverText;
+        }
+        private void butStart_MouseHover(object sender, EventArgs e)
+        {
+            lblStatus.Text = csspDesktopService.appTextModel.butStartHoverText;
+        }
+        private void butStop_MouseHover(object sender, EventArgs e)
+        {
+            lblStatus.Text = csspDesktopService.appTextModel.butStopHoverText;
+        }
+        private void panelButtonCenter_MouseHover(object sender, EventArgs e)
+        {
+            lblStatus.Text = "";
+        }
+        #endregion Mouse Hover
+        #region Form Resize
+        private void CSSPDesktopForm_Resize(object sender, EventArgs e)
+        {
+            SetupPanels();
+        }
+        #endregion Foem Resize
+        #region TimerCheckInternetConnection
+        private void timerCheckInternetConnection_Tick(object sender, EventArgs e)
+        {
+            timerCheckInternetConnection.Stop();
 
-            butStartCSSPWebTools.Visible = false;
-            butStopCSSPWebTools.Visible = true;
-        }
-        private async void butStopCSSPWebTools_Click(object sender, EventArgs e)
-        {
-            if (!await Stop()) return;
+            DoTimerCheckInternetConnection();
 
-            butStartCSSPWebTools.Visible = true;
-            butStopCSSPWebTools.Visible = false;
+            //timerCheckInternetConnection.Start();
         }
-        private void butUpdatesAvailable_Click(object sender, EventArgs e)
+
+        private void DoTimerCheckInternetConnection()
         {
-            RunCSSPDesktopUpdateProcess();
+            csspDesktopService.CheckingInternetConnection();
+
+            if (csspDesktopService.HasInternetConnection)
+            {
+                Text = csspDesktopService.appTextModel.FormTitleText + $" --- ({ csspDesktopService.appTextModel.HasInternetConnection })";
+            }
+            else
+            {
+                Text = csspDesktopService.appTextModel.FormTitleText + $" --- ({ csspDesktopService.appTextModel.HasNoInternetConnection })";
+            }
         }
-        private async void CSSPDesktopForm_FormClosing(object sender, FormClosingEventArgs e)
-        {
-            await Stop();
-        }
+        #endregion TimerCheckInternetConnection
+        #region csspDesktopServiceEvent
         private void CSSPDesktopService_StatusClear(object sender, ClearEventArgs e)
         {
             richTextBoxStatus.Text = "";
@@ -83,160 +139,137 @@ namespace CSSPDesktop
         {
             richTextBoxStatus.AppendText(e.Message);
         }
-        private async void linkLabelHelp_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
-        {
-            await OpenHelp();
-        }
-        private void linkLabelLanguage_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
-        {
-            ShowLanguagePanel();
-        }
+        #endregion csspDesktopServiceEvent
         #endregion Events
 
         #region Functions public
         #endregion Functions public
 
         #region Functions private
-        private async Task RunCSSPDesktopUpdateProcess()
+        private void GetUpdates()
         {
-            if (! await CSSPDesktopService.CheckingInternetConnection())
-            {
-                richTextBoxStatus.Text = NoInternetConnectionFound;
-                return;
-            }
-
-            FileInfo fi = new FileInfo(Environment.CurrentDirectory + @"\CSSPDesktopUpdate.exe");
-            if (!fi.Exists)
-            {
-                richTextBoxStatus.Text = string.Format(UpdateApplicationNotFound, fi.FullName);
-                return;
-            }
-
-            Process process = new Process();
-            ProcessStartInfo processStartInfo = new ProcessStartInfo();
-            processStartInfo.FileName = fi.FullName;
-            processStartInfo.Arguments = IsEnglish ? "en" : "fr";
-            processStartInfo.UseShellExecute = true;
-
-            process.StartInfo = processStartInfo;
-            process.Start();
-
-            Close();
+            throw new NotImplementedException();
         }
-        private async void SetEnglish(bool SetIsEnglish)
+        private void HideHelpPanel()
         {
-            IsEnglish = SetIsEnglish;
-            panelLanguage.SendToBack();
-            panelLeft.Dock = DockStyle.Left;
-            panelRight.Dock = DockStyle.Fill;
-            richTextBoxStatus.Dock = DockStyle.Fill;
-
-            if (await Setup())
-            {
-                CSSPDesktopService.IsEnglish = IsEnglish;
-                SettingUpAllTextForLanguage();
-            }
+            splitContainerFirst.BringToFront();
         }
-        private void SettingUpAllTextForLanguage()
+        private void ShowHelpPanel()
         {
-            if (CSSPDesktopService.IsEnglish)
-            {
-                CSSPDesktopService.appTextModel = new AppTextModelEN();
-            }
-            else
-            {
-                CSSPDesktopService.appTextModel = new AppTextModelFR();
-            }
+            panelHelp.BringToFront();
+            string fileToOpen = IsEnglish ? "HelpDocEN.html" : "HelpDocFR.html";
 
-            Text = CSSPDesktopService.appTextModel.CSSPDesktopFormText;
-            linkLabelLanguage.Text = CSSPDesktopService.appTextModel.linkLabelLanguageText;
-            linkLabelHelp.Text = CSSPDesktopService.appTextModel.linkLabelHelpText;
-            butStartCSSPWebTools.Text = CSSPDesktopService.appTextModel.butStartCSSPWebToolsText;
-            butStopCSSPWebTools.Text = CSSPDesktopService.appTextModel.butStopCSSPWebToolsText;
-            butUpdatesAvailable.Text = CSSPDesktopService.appTextModel.butUpdateAvailableText;
-            butCloseEverything.Text = CSSPDesktopService.appTextModel.butCloseEverythingText;
-            lblNoInternetConnection.Text = CSSPDesktopService.appTextModel.lblNoInternetConnectionText;
-            UpdateApplicationNotFound = CSSPDesktopService.appTextModel.UpdateApplicationNotFound;
-        }
-        private async Task<bool> Setup()
-        {
-            richTextBoxStatus.Text = "";
-
-            Services = new ServiceCollection();
-
-            string appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
-
-            Services.AddSingleton<ICSSPDesktopService, CSSPDesktopService>();
-
-            Provider = Services.BuildServiceProvider();
-
-            CSSPDesktopService = Provider.GetService<ICSSPDesktopService>();
-
-            CSSPDesktopService.StatusAppend += CSSPDesktopService_StatusAppend;
-            CSSPDesktopService.StatusClear += CSSPDesktopService_StatusClear;
-
-            CSSPDesktopService.AppDataPath = appDataPath + "\\cssp\\";
-            CSSPDesktopService.StartUrl = "https://localhost:4447/";
-            CSSPDesktopService.CSSPWebAPIsExeFullPath = CSSPDesktopService.AppDataPath + "csspwebapis\\CSSPWebAPIs.exe";
-            CSSPDesktopService.HelpPath = CSSPDesktopService.AppDataPath + "csspdesktop\\helpdocs\\";
-
-            CSSPDesktopService.IsEnglish = true;
-
-            SettingUpAllTextForLanguage();
-
-            if (await CSSPDesktopService.CheckingInternetConnection())
-            {
-                lblNoInternetConnection.Visible = false;
-            }
-            else
-            {
-                lblNoInternetConnection.Visible = true;
-            }
-
-            if (!lblNoInternetConnection.Visible)
-            {
-                if (await CSSPDesktopService.CheckingAvailableUpdate())
-                {
-                    butUpdatesAvailable.Visible = true;
-                }
-                else
-                {
-                    butUpdatesAvailable.Visible = false;
-                }
-            }
-
-            return await Task.FromResult(true);
+            webBrowserHelp.Navigate($"{ Environment.CurrentDirectory }\\helpdocs\\{ fileToOpen }");
         }
         private void ShowLanguagePanel()
         {
-            panelLeft.Dock = DockStyle.None;
-            panelLanguage.Dock = DockStyle.Fill;
             panelLanguage.BringToFront();
-            panelLanguageCenter.Top = (panelLanguage.Height / 2) - (panelLanguageCenter.Height / 2);
-            panelLanguageCenter.Left = (panelLanguage.Width / 2) - (panelLanguageCenter.Width / 2);
         }
-
-        private async Task<bool> OpenHelp()
+        private void SetLanguageToEnglish()
         {
-            if (!await CSSPDesktopService.OpenHelp()) return await Task.FromResult(false);
-
-            return await Task.FromResult(true);
+            IsEnglish = true;
+            SettingUpAllTextForLanguage();
+            currentPanel = ShowPanel.Buttons;
+            SetupPanels();
         }
-        private async Task<bool> Start()
+        private void SetLanguageToFrench()
         {
-            if (!await CSSPDesktopService.Start()) return await Task.FromResult(false);
-
-            return await Task.FromResult(true);
+            IsEnglish = false;
+            SettingUpAllTextForLanguage();
+            currentPanel = ShowPanel.Buttons;
+            SetupPanels();
         }
-        private async Task<bool> Stop()
+        private void Setup()
         {
-            if (!await CSSPDesktopService.Stop()) return await Task.FromResult(false);
+            csspDesktopService = new CSSPDesktopService();
 
-            return await Task.FromResult(true);
+            csspDesktopService.StatusAppend += CSSPDesktopService_StatusAppend;
+            csspDesktopService.StatusClear += CSSPDesktopService_StatusClear;
+
+            csspDesktopService.IsEnglish = IsEnglish;
+            SettingUpAllTextForLanguage();
+            currentPanel = ShowPanel.Buttons;
+            SetupPanels();
+
+            csspDesktopService.CreateAllRequiredDirectories();
+            //csspDesktopService.CheckingInternetConnection();
+            //SettingUpAllTextForLanguage();
         }
+        private void SettingUpAllTextForLanguage()
+        {
+            csspDesktopService.IsEnglish = IsEnglish;
 
+            if (IsEnglish)
+            {
+                csspDesktopService.appTextModel = new AppTextModelEN();
+            }
+            else
+            {
+                csspDesktopService.appTextModel = new AppTextModelFR();
+            }
 
+            Text = csspDesktopService.appTextModel.FormTitleText;
+            butHideHelpPanel.Text = csspDesktopService.appTextModel.butHideHelpPanelText;
+            butClose.Text = csspDesktopService.appTextModel.butCloseText;
+            butGetUpdates.Text = csspDesktopService.appTextModel.butGetUpdatesText;
+            butShowHelpPanel.Text = csspDesktopService.appTextModel.butShowHelpPanelText;
+            butShowLanguagePanel.Text = csspDesktopService.appTextModel.butShowLanguagePanelText;
+            butStart.Text = csspDesktopService.appTextModel.butStartText;
+            butStop.Text = csspDesktopService.appTextModel.butStopText;
+            lblStatus.Text = csspDesktopService.appTextModel.lblStatusText;
+        }
+        private void SetupPanels()
+        {
+            switch (currentPanel)
+            {
+                case ShowPanel.Buttons:
+                    splitContainerFirst.BringToFront();
+                    break;
+                case ShowPanel.Language:
+                    panelLanguage.BringToFront();
+                    break;
+                case ShowPanel.Help:
+                    panelHelp.BringToFront();
+                    break;
+                default:
+                    break;
+            }
+            panelLanguage.Dock = DockStyle.Fill;
+            splitContainerFirst.Dock = DockStyle.Fill;
+            panelHelp.Dock = DockStyle.Fill;
+            richTextBoxStatus.Dock = DockStyle.Fill;
+            webBrowserHelp.Dock = DockStyle.Fill;
+
+            panelButtonCenter.Top = panelButtonCenter.Parent.Height / 2 - panelButtonCenter.Height / 2;
+            panelButtonCenter.Left = panelButtonCenter.Parent.Width / 2 - panelButtonCenter.Width / 2;
+
+            panelLanguageCenter.Top = panelLanguageCenter.Parent.Height / 2 - panelLanguageCenter.Height / 2;
+            panelLanguageCenter.Left = panelLanguageCenter.Parent.Width / 2 - panelLanguageCenter.Width / 2;
+
+            butHideHelpPanel.Left = panelHelpTop.Width / 2 - butHideHelpPanel.Width / 2;
+        }
+        private void Start()
+        {
+            butStart.Enabled = false;
+            butStop.Enabled = true;
+            csspDesktopService.Start();
+        }
+        private void Stop()
+        {
+            butStart.Enabled = true;
+            butStop.Enabled = false;
+            csspDesktopService.Stop();
+        }
         #endregion Functions private
+
+        #region Enums
+        private enum ShowPanel
+        {
+            Buttons,
+            Language,
+            Help,
+        }
+        #endregion Enums
 
     }
 }

@@ -8,57 +8,86 @@ namespace CSSPDesktopServices.Models
     {
         public AppTextModelEN()
         {
-            CSSPDesktopFormText = "CSSP Desktop Application";
-            linkLabelLanguageText = "Language";
-            linkLabelHelpText = "Help";
-            butStartCSSPWebToolsText = "Start CSSP Web Tools";
-            butStopCSSPWebToolsText = "Stop CSSP Web Tools";
-            butUpdateAvailableText = "Update Available";
-            butCloseEverythingText = "Close Everything";
-            lblNoInternetConnectionText = "No Internet Connection";
-            StartingCSSPWebAPIs = "Starting CSSPWebAPIs";
-            StartedCSSPWebAPIs = "Started CSSPWebAPIs";
-            StartingCSSPWebTools = "Starting CSSPWebTools";
-            StartedCSSPWebTools = "Started CSSPWebTools";
-            UpdateApplicationNotFound = "Update application not found [{0}]";
-            NoInternetConnectionFound = "No internet connection found";
+            FormTitleText = "CSSP Desktop Application";
+            butCloseText = "Close";
+            butGetUpdatesText = "Get Updates";
+            butHideHelpPanelText = "Close Help";
+            butShowHelpPanelText = "Help";
+            butShowLanguagePanelText = "Language";
+            butStartText = "Start";
+            butStopText = "Stop";
+            lblStatusText = "Status:";
+
+            butCloseHoverText = "This button will close the CSSP Desktop application";
+            butGetUpdatesHoverText = "This button will get the update of the web application";
+            butShowHelpPanelHoverText = "This button will open a help window";
+            butShowLanguagePanelHoverText = "This button will let you select your prefered language";
+            butStartHoverText = "This button will start the web application";
+            butStopHoverText = "This button will stop the web application";
+
+            // Error
+            CouldNotFindFile_ = "Could not find file [{0}]";
+
+            // Message
+            HasInternetConnection = "Has Internet Connection";
+            HasNoInternetConnection = "Has No Internet Connection";
         }
     }
     public class AppTextModelFR : AppTextModel
     {
         public AppTextModelFR()
         {
-            CSSPDesktopFormText = "Application de bureau PCCSM";
-            linkLabelLanguageText = "Langage";
-            linkLabelHelpText = "Aide";
-            butStartCSSPWebToolsText = "Ouvrir Outils Web PCCSM";
-            butStopCSSPWebToolsText = "Annuler Outils Web Tools";
-            butUpdateAvailableText = "Mise à jour disponible";
-            butCloseEverythingText = "Ferme Tout";
-            lblNoInternetConnectionText = "Pas de Connecton Internet";
-            StartingCSSPWebAPIs = "Démarrage de CSSPWebAPIs";
-            StartedCSSPWebAPIs = "CSSPWebAPIs démarrée ";
-            StartingCSSPWebTools = "Démarrage de CSSPWebTools";
-            StartedCSSPWebTools = "CSSPWebTools démarrée ";
-            UpdateApplicationNotFound = "Dans l'impossibilité de trouver l'application mise à jour [{0}]";
-            NoInternetConnectionFound = "Dans l'impossibilité de trouver une connexion internet";
+            FormTitleText = "Application PCCSM de bureau";
+            butCloseText = "Fermer";
+            butGetUpdatesText = "Faire un mise à jour";
+            butHideHelpPanelText = "Fermer";
+            butShowHelpPanelText = "Aide";
+            butShowLanguagePanelText = "Langage";
+            butStartText = "Commencer";
+            butStopText = "Arrêter";
+            lblStatusText = "Etat:";
+
+            butCloseHoverText = "Ce bouton va fermé l'application PCCSM de bureau";
+            butGetUpdatesHoverText = "Ce bouton va faire un mise à jour de l'application web";
+            butShowHelpPanelHoverText = "Ce bouton va ouvrir une fenêtre d'aide";
+            butShowLanguagePanelHoverText = "Ce bouton va vous permettre de choisir le langage de préférence";
+            butStartHoverText = "Ce bouton va commencer l'application web";
+            butStopHoverText = "Ce bouton va arrêter l'application web";
+
+            // Error
+            CouldNotFindFile_ = "Dans l'impossibilité de trouver la filière [{0}]";
+
+            // Message
+            HasInternetConnection = "Connexion internet exist";
+            HasNoInternetConnection = "Aucune connexion internet";
         }
     }
     public class AppTextModel
     {
-        public string CSSPDesktopFormText { get; set; }
-        public string linkLabelLanguageText { get; set; }
-        public string linkLabelHelpText { get; set; }
-        public string butStartCSSPWebToolsText { get; set; }
-        public string butStopCSSPWebToolsText { get; set; }
-        public string butUpdateAvailableText { get; set; }
-        public string butCloseEverythingText { get; set; }
-        public string lblNoInternetConnectionText { get; set; }
-        public string StartingCSSPWebAPIs { get; set; }
-        public string StartedCSSPWebAPIs { get; set; }
-        public string StartingCSSPWebTools { get; set; }
-        public string StartedCSSPWebTools { get; set; }
-        public string UpdateApplicationNotFound { get; set; }
-        public string NoInternetConnectionFound { get; set; }
+        // Label and Button text
+        public string FormTitleText { get; set; }
+        public string butCloseText { get; set; }
+        public string butGetUpdatesText { get; set; }
+        public string butHideHelpPanelText { get; set; }
+        public string butShowHelpPanelText { get; set; }
+        public string butShowLanguagePanelText { get; set; }
+        public string butStartText { get; set; }
+        public string butStopText { get; set; }
+        public string lblStatusText { get; set; }
+
+        // Mouse Hover text
+        public string butCloseHoverText { get; set; }
+        public string butGetUpdatesHoverText { get; set; }
+        public string butShowHelpPanelHoverText { get; set; }
+        public string butShowLanguagePanelHoverText { get; set; }
+        public string butStartHoverText { get; set; }
+        public string butStopHoverText { get; set; }
+
+        // Error
+        public string CouldNotFindFile_ { get; set; }
+
+        // Message
+        public string HasInternetConnection { get; set; }
+        public string HasNoInternetConnection { get; set; }
     }
 }

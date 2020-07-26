@@ -1,5 +1,9 @@
-﻿using System;
+﻿using Azure.Storage.Blobs;
+using Azure.Storage.Blobs.Models;
+using CSSPDesktopServices.Models;
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
@@ -8,26 +12,27 @@ namespace CSSPDesktopServices.Services
 {
     public partial class CSSPDesktopService
     {
-        private async Task<bool> DoCheckingInternetConnection()
+        private void DoCheckingInternetConnection()
         {
+            HasInternetConnection = false;
+
             try
             {
-                HttpClient httpClient = new HttpClient();
-                foreach (string url in new List<string>() { "https://www.google.com/", "https://www.bing.com/" })
+                string AzureCSSPStorageConnectionString = "DefaultEndpointsProtocol=https;AccountName=csspstorage;AccountKey=DzzuCB7LovmJ5J5DssKRz58pCyBTjjBVnFE9j23eWo3FRRqXsF3X9vDZv/OHh63REYIQlEIkeFcRj29fl4w31Q==;EndpointSuffix=core.windows.net";
+
+                BlobClient blobClient = new BlobClient(AzureCSSPStorageConnectionString, "csspjson", "WebRoot.gz");
+
+                BlobDownloadInfo download = blobClient.Download();
+
+                if (download.Details.ETag != null)
                 {
-                    string ret = await httpClient.GetStringAsync(url);
-                    if (!string.IsNullOrWhiteSpace(ret))
-                    {
-                        return await Task.FromResult(true);
-                    }
+                    HasInternetConnection = true;
                 }
             }
             catch (Exception ex)
             {
-                // nothing for now
+                //AppendStatus(new AppendEventArgs(ex.Message));
             }
-            
-            return await Task.FromResult(false);
         }
     }
 }
