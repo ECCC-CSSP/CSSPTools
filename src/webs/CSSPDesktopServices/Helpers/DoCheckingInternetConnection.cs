@@ -12,21 +12,31 @@ namespace CSSPDesktopServices.Services
 {
     public partial class CSSPDesktopService
     {
-        private async Task DoCheckingInternetConnection()
+        private async Task<bool> DoCheckingInternetConnection()
         {
-            HttpClient httpClient = new HttpClient();
-            foreach (string url in new List<string>() { "https://www.google.com/", "https://www.bing.com/" })
+            try
             {
-                string ret = await httpClient.GetStringAsync(url);
-                if (!string.IsNullOrWhiteSpace(ret))
+                HttpClient httpClient = new HttpClient();
+                foreach (string url in new List<string>() { "https://www.google.com/", "https://www.bing.com/" })
                 {
-                    HasInternetConnection = true;
-                }
-                else
-                {
-                    HasInternetConnection = false;
+                    string ret = await httpClient.GetStringAsync(url);
+                    if (!string.IsNullOrWhiteSpace(ret))
+                    {
+                        HasInternetConnection = true;
+                    }
+                    else
+                    {
+                        HasInternetConnection = false;
+                    }
                 }
             }
+            catch (Exception ex)
+            {
+                AppendStatus(new AppendEventArgs(ex.Message));
+                return await Task.FromResult(false);
+            }
+
+            return await Task.FromResult(true);
         }
     }
 }

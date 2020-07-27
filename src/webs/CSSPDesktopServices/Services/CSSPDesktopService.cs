@@ -23,14 +23,13 @@ namespace CSSPDesktopServices.Services
         Task<bool> CreateAllRequiredDirectories();
         Task<bool> CheckingAvailableUpdate();
         Task CheckingInternetConnection();
-        Task<bool> GetUpdates();
+        Task<bool> InstallUpdates();
         Task<bool> Start();
         Task<bool> Stop();
         
         // Events
         event EventHandler<ClearEventArgs> StatusClear;
         event EventHandler<AppendEventArgs> StatusAppend;
-        event EventHandler<DownloadingEventArgs> StatusDownloading;
         event EventHandler<InstallingEventArgs> StatusInstalling;
         event EventHandler<ErrorMessageEventArgs> StatusErrorMessage;
 
@@ -83,9 +82,9 @@ namespace CSSPDesktopServices.Services
 
             return await Task.FromResult(true);
         }
-        public async Task<bool> GetUpdates()
+        public async Task<bool> InstallUpdates()
         {
-            if (!await DoGetUpdates()) return await Task.FromResult(false);
+            if (!await DoInstallUpdates()) return await Task.FromResult(false);
 
             return await Task.FromResult(true);
         }

@@ -77,8 +77,8 @@
     <Compile Include="Helpers\DoCheckingInternetConnection.cs" />
     <Compile Include="Helpers\DoStart.cs" />
     <Compile Include="Helpers\DoStop.cs" />
-    <Compile Include="Helpers\DoGetUpdates.cs" />
     <Compile Include="Helpers\Events.cs" />
+    <Compile Include="Helpers\DoInstallUpdates.cs" />
     <Compile Include="Helpers\OpenBrowser.cs" />
     <Compile Include="Helpers\OpenCSSPWebAPIs.cs" />
     <Compile Include="Models\AppTextModel.cs" />

@@ -77,7 +77,7 @@ namespace CSSPDesktop
         private void butUpdate_Click(object sender, EventArgs e)
         {
             butCancelUpdate.Enabled = false;
-            csspDesktopService.GetUpdates();
+            csspDesktopService.InstallUpdates();
             butCancelUpdate.Visible = false;
             butUpdate.Visible = false;
             butUpdateCompleted.Visible = true;
@@ -183,10 +183,6 @@ namespace CSSPDesktop
         {
             richTextBoxStatus.AppendText(e.Message);
         }
-        private void CSSPDesktopService_StatusDownloading(object sender, DownloadingEventArgs e)
-        {
-            richTextBoxStatus.AppendText(e.Percent.ToString());
-        }
         private void CSSPDesktopService_StatusInstalling(object sender, InstallingEventArgs e)
         {
             richTextBoxStatus.AppendText(e.Percent.ToString());
@@ -251,7 +247,6 @@ namespace CSSPDesktop
 
             csspDesktopService.StatusAppend += CSSPDesktopService_StatusAppend;
             csspDesktopService.StatusClear += CSSPDesktopService_StatusClear;
-            csspDesktopService.StatusDownloading += CSSPDesktopService_StatusDownloading;
             csspDesktopService.StatusInstalling += CSSPDesktopService_StatusInstalling;
             csspDesktopService.StatusErrorMessage += CSSPDesktopService_StatusErrorMessage;
 
