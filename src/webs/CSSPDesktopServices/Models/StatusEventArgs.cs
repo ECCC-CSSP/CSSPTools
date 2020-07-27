@@ -18,6 +18,14 @@ namespace CSSPDesktopServices.Models
         }
         public string Message { get; set; }
     }
+    public class AppendTempEventArgs : EventArgs
+    {
+        public AppendTempEventArgs(string Message)
+        {
+            this.Message = Message;
+        }
+        public string Message { get; set; }
+    }
     public class InstallingEventArgs : EventArgs
     {
         public InstallingEventArgs(int Percent)

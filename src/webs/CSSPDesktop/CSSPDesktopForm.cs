@@ -19,7 +19,6 @@ namespace CSSPDesktop
 
         #region Properties
         ICSSPDesktopService csspDesktopService { get; set; }
-        ShowPanel currentPanel { get; set; } = ShowPanel.Buttons;
         bool IsEnglish { get; set; } = true;
         #endregion Properties
 
@@ -35,7 +34,7 @@ namespace CSSPDesktop
         #region Button Click
         private void butCancelUpdate_Click(object sender, EventArgs e)
         {
-            ShowButtonsPanel();
+            ShowPanels(ShowPanel.Commands);
         }
         private void butClose_Click(object sender, EventArgs e)
         {
@@ -43,15 +42,15 @@ namespace CSSPDesktop
         }
         private void butHideHelpPanel_Click(object sender, EventArgs e)
         {
-            HideHelpPanel();
+            ShowPanels(ShowPanel.Commands);
         }
         private void butShowHelpPanel_Click(object sender, EventArgs e)
         {
-            ShowHelpPanel();
+            ShowPanels(ShowPanel.Help);
         }
         private void butShowLanguagePanel_Click(object sender, EventArgs e)
         {
-            ShowLanguagePanel();
+            ShowPanels(ShowPanel.Language);
         }
         private void butSetLanguageToEnglish_Click(object sender, EventArgs e)
         {
@@ -71,7 +70,7 @@ namespace CSSPDesktop
         }
         private void butUpdatesAvailable_Click(object sender, EventArgs e)
         {
-            ShowUpdatePanel();
+            ShowPanels(ShowPanel.Updates);
             butUpdateCompleted.Visible = false;
         }
         private void butUpdate_Click(object sender, EventArgs e)
@@ -84,7 +83,7 @@ namespace CSSPDesktop
         }
         private void butUpdateCompleted_Click(object sender, EventArgs e)
         {
-            ShowButtonsPanel();
+            ShowPanels(ShowPanel.Commands);
             butCancelUpdate.Enabled = true;
             butCancelUpdate.Visible = true;
             butUpdate.Visible = true;
@@ -116,7 +115,7 @@ namespace CSSPDesktop
         {
             lblStatus.Text = csspDesktopService.appTextModel.butStopHoverText;
         }
-        private void panelButtonCenter_MouseHover(object sender, EventArgs e)
+        private void panelCommandsCenter_MouseHover(object sender, EventArgs e)
         {
             lblStatus.Text = "";
         }
@@ -140,13 +139,25 @@ namespace CSSPDesktop
         {
             lblStatus.Text = csspDesktopService.appTextModel.butUpdatesAvailableHoverText;
         }
+        private void textBoxLoginEmail_MouseHover(object sender, EventArgs e)
+        {
+            lblStatus.Text = csspDesktopService.appTextModel.textBoxLoginEmailHoverText;
+        }
+        private void textBoxPassword_MouseHover(object sender, EventArgs e)
+        {
+            lblStatus.Text = csspDesktopService.appTextModel.textBoxPasswordHoverText;
+        }
+        private void butLogin_MouseHover(object sender, EventArgs e)
+        {
+            lblStatus.Text = csspDesktopService.appTextModel.butLoginHoverText;
+        }
         #endregion Mouse Hover
         #region Form Resize
         private void CSSPDesktopForm_Resize(object sender, EventArgs e)
         {
-            SetupPanels();
+            RecenterPanels();
         }
-        #endregion Foem Resize
+        #endregion Form Resize
         #region TimerCheckInternetConnection
         private void timerCheckInternetConnection_Tick(object sender, EventArgs e)
         {
@@ -183,6 +194,10 @@ namespace CSSPDesktop
         {
             richTextBoxStatus.AppendText(e.Message);
         }
+        private void CSSPDesktopService_StatusAppendTemp(object sender, AppendTempEventArgs e)
+        {
+            lblStatus.Text = e.Message;
+        }
         private void CSSPDesktopService_StatusInstalling(object sender, InstallingEventArgs e)
         {
             richTextBoxStatus.AppendText(e.Percent.ToString());
@@ -198,62 +213,66 @@ namespace CSSPDesktop
         #endregion Functions public
 
         #region Functions private
-        private void GetUpdates()
+        private void RecenterPanels()
         {
-            throw new NotImplementedException();
-        }
-        private void HideHelpPanel()
-        {
-            splitContainerFirst.BringToFront();
-        }
-        private void ShowHelpPanel()
-        {
-            panelHelp.BringToFront();
-            string fileToOpen = IsEnglish ? "HelpDocEN.html" : "HelpDocFR.html";
+            panelCommandsCenter.Top = panelCommandsCenter.Parent.Height / 2 - panelCommandsCenter.Height / 2;
+            panelCommandsCenter.Left = panelCommandsCenter.Parent.Width / 2 - panelCommandsCenter.Width / 2;
 
-            webBrowserHelp.Navigate($"{ Environment.CurrentDirectory }\\helpdocs\\{ fileToOpen }");
-        }
-        private void ShowLanguagePanel()
-        {
-            panelLanguage.BringToFront();
-        }
-        private void ShowUpdatePanel()
-        {
-            panelButtonCenter.Visible = false;
-            panelUpdateCenter.Visible = true;
-        }
-        private void ShowButtonsPanel()
-        {
-            panelButtonCenter.Visible = true;
-            panelUpdateCenter.Visible = false;
+            panelUpdateCenter.Top = panelUpdateCenter.Parent.Height / 2 - panelUpdateCenter.Height / 2;
+            panelUpdateCenter.Left = panelUpdateCenter.Parent.Width / 2 - panelUpdateCenter.Width / 2;
+
+            panelLoginCenter.Top = panelLoginCenter.Parent.Height / 2 - panelLoginCenter.Height / 2;
+            panelLoginCenter.Left = panelLoginCenter.Parent.Width / 2 - panelLoginCenter.Width / 2;
+
+            panelLanguageCenter.Top = panelLanguageCenter.Parent.Height / 2 - panelLanguageCenter.Height / 2;
+            panelLanguageCenter.Left = panelLanguageCenter.Parent.Width / 2 - panelLanguageCenter.Width / 2;
+
+            butHideHelpPanel.Left = panelHelpTop.Width / 2 - butHideHelpPanel.Width / 2;
         }
         private void SetLanguageToEnglish()
         {
             IsEnglish = true;
-            SettingUpAllTextForLanguage();
-            currentPanel = ShowPanel.Buttons;
-            SetupPanels();
+            StartTheAppWithLanguage();
         }
         private void SetLanguageToFrench()
         {
             IsEnglish = false;
+            StartTheAppWithLanguage();
+        }
+        private void StartTheAppWithLanguage()
+        {
             SettingUpAllTextForLanguage();
-            currentPanel = ShowPanel.Buttons;
-            SetupPanels();
+            csspDesktopService.AnalyseDirectoriesAndDatabases();
+            if (csspDesktopService.LoginRequired)
+            {
+                ShowPanels(ShowPanel.Login);
+            }
+            else
+            {
+                ShowPanels(ShowPanel.Commands);
+            }
         }
         private void Setup()
         {
             csspDesktopService = new CSSPDesktopService();
 
-            csspDesktopService.StatusAppend += CSSPDesktopService_StatusAppend;
             csspDesktopService.StatusClear += CSSPDesktopService_StatusClear;
+            csspDesktopService.StatusAppend += CSSPDesktopService_StatusAppend;
+            csspDesktopService.StatusAppendTemp += CSSPDesktopService_StatusAppendTemp;
             csspDesktopService.StatusInstalling += CSSPDesktopService_StatusInstalling;
             csspDesktopService.StatusErrorMessage += CSSPDesktopService_StatusErrorMessage;
 
             csspDesktopService.IsEnglish = IsEnglish;
             SettingUpAllTextForLanguage();
-            currentPanel = ShowPanel.Language;
-            SetupPanels();
+
+            splitContainerFirst.Dock = DockStyle.Fill;
+            panelHelp.Dock = DockStyle.Fill;
+            richTextBoxStatus.Dock = DockStyle.Fill;
+            webBrowserHelp.Dock = DockStyle.Fill;
+
+            ShowPanels(ShowPanel.Language);
+
+            RecenterPanels();
 
             csspDesktopService.CreateAllRequiredDirectories();
         }
@@ -270,53 +289,66 @@ namespace CSSPDesktop
                 csspDesktopService.appTextModel = new AppTextModelFR();
             }
 
+            // Form
             Text = csspDesktopService.appTextModel.FormTitleText;
-            butHideHelpPanel.Text = csspDesktopService.appTextModel.butHideHelpPanelText;
-            butClose.Text = csspDesktopService.appTextModel.butCloseText;
-            butUpdatesAvailable.Text = csspDesktopService.appTextModel.butUpdatesAvailableText;
-            butShowHelpPanel.Text = csspDesktopService.appTextModel.butShowHelpPanelText;
-            butShowLanguagePanel.Text = csspDesktopService.appTextModel.butShowLanguagePanelText;
+            
+            // PanelButtonsCenter
             butStart.Text = csspDesktopService.appTextModel.butStartText;
             butStop.Text = csspDesktopService.appTextModel.butStopText;
+            butClose.Text = csspDesktopService.appTextModel.butCloseText;
+            butShowLanguagePanel.Text = csspDesktopService.appTextModel.butShowLanguagePanelText;
+            butShowHelpPanel.Text = csspDesktopService.appTextModel.butShowHelpPanelText;
+            butUpdatesAvailable.Text = csspDesktopService.appTextModel.butUpdatesAvailableText;
+
+            // PanelHelpCenter
+            butHideHelpPanel.Text = csspDesktopService.appTextModel.butHideHelpPanelText;
+
+            // PanelUpdateCenter
             butUpdate.Text = csspDesktopService.appTextModel.butUpdateText;
             butCancelUpdate.Text = csspDesktopService.appTextModel.butCancelUpdateText;
             butUpdateCompleted.Text = csspDesktopService.appTextModel.butUpdateCompletedText;
+            lblInstalling.Text = csspDesktopService.appTextModel.lblInstallingText;
+
+            // PanelLoginCenter
+            lblLoginEmail.Text = csspDesktopService.appTextModel.lblLoginEmailText;
+            lblPassword.Text = csspDesktopService.appTextModel.lblPasswordText;
+            butLogin.Text = csspDesktopService.appTextModel.butLoginText;
+
+            // PanelStatus
             lblStatus.Text = csspDesktopService.appTextModel.lblStatusText;
         }
-        private void SetupPanels()
+        private void ShowPanels(ShowPanel showPanel)
         {
-            switch (currentPanel)
+            panelLanguageCenter.Visible = false;
+            panelUpdateCenter.Visible = false;
+            panelLoginCenter.Visible = false;
+            panelHelp.Visible = false;
+            panelCommandsCenter.Visible = false;
+
+            switch (showPanel)
             {
-                case ShowPanel.Buttons:
-                    splitContainerFirst.BringToFront();
+                case ShowPanel.Commands:
+                    panelCommandsCenter.Visible = true;
                     break;
                 case ShowPanel.Language:
-                    panelLanguage.BringToFront();
+                    panelLanguageCenter.Visible = true;
                     break;
                 case ShowPanel.Help:
-                    panelHelp.BringToFront();
+                    {
+                        string fileToOpen = IsEnglish ? "HelpDocEN.html" : "HelpDocFR.html";
+                        webBrowserHelp.Navigate($"{ Environment.CurrentDirectory }\\helpdocs\\{ fileToOpen }");
+                        panelHelp.Visible = true;
+                    }
+                    break;
+                case ShowPanel.Login:
+                    panelLoginCenter.Visible = true;
+                    break;
+                case ShowPanel.Updates:
+                    panelUpdateCenter.Visible = true;
                     break;
                 default:
                     break;
             }
-            panelLanguage.Dock = DockStyle.Fill;
-            splitContainerFirst.Dock = DockStyle.Fill;
-            panelHelp.Dock = DockStyle.Fill;
-            richTextBoxStatus.Dock = DockStyle.Fill;
-            webBrowserHelp.Dock = DockStyle.Fill;
-
-            panelButtonCenter.Top = panelButtonCenter.Parent.Height / 2 - panelButtonCenter.Height / 2;
-            panelButtonCenter.Left = panelButtonCenter.Parent.Width / 2 - panelButtonCenter.Width / 2;
-            panelButtonCenter.Visible = true;
-
-            panelUpdateCenter.Top = panelUpdateCenter.Parent.Height / 2 - panelUpdateCenter.Height / 2;
-            panelUpdateCenter.Left = panelUpdateCenter.Parent.Width / 2 - panelUpdateCenter.Width / 2;
-            panelUpdateCenter.Visible = false;
-
-            panelLanguageCenter.Top = panelLanguageCenter.Parent.Height / 2 - panelLanguageCenter.Height / 2;
-            panelLanguageCenter.Left = panelLanguageCenter.Parent.Width / 2 - panelLanguageCenter.Width / 2;
-
-            butHideHelpPanel.Left = panelHelpTop.Width / 2 - butHideHelpPanel.Width / 2;
         }
         private void Start()
         {
@@ -335,9 +367,11 @@ namespace CSSPDesktop
         #region Enums
         private enum ShowPanel
         {
-            Buttons,
+            Commands,
             Language,
             Help,
+            Login,
+            Updates,
         }
         #endregion Enums
 

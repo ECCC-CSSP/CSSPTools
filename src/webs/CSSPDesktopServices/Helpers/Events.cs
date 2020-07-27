@@ -23,6 +23,13 @@ namespace CSSPDesktopServices.Services
 
         public event EventHandler<AppendEventArgs> StatusAppend;
 
+        protected virtual void AppendTempStatus(AppendTempEventArgs e)
+        {
+            StatusAppendTemp?.Invoke(this, e);
+        }
+
+        public event EventHandler<AppendTempEventArgs> StatusAppendTemp;
+
         protected virtual void InstallingStatus(InstallingEventArgs e)
         {
             StatusInstalling?.Invoke(this, e);

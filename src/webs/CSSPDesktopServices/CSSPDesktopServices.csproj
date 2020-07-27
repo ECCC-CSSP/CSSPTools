@@ -75,6 +75,7 @@
     <Compile Include="Helpers\DoCreateAllRequiredDirectories.cs" />
     <Compile Include="Helpers\DoCheckingAvailableUpdate.cs" />
     <Compile Include="Helpers\DoCheckingInternetConnection.cs" />
+    <Compile Include="Helpers\DoAnalyseDirectoriesAndDatabases.cs" />
     <Compile Include="Helpers\DoStart.cs" />
     <Compile Include="Helpers\DoStop.cs" />
     <Compile Include="Helpers\Events.cs" />

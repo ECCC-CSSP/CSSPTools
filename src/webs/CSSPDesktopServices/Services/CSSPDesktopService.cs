@@ -18,6 +18,7 @@ namespace CSSPDesktopServices.Services
         Process processBrowser { get; set; }
         AppTextModel appTextModel { get; set; }
         bool? HasInternetConnection { get; set; }
+        bool LoginRequired { get; set; }
 
         // Functions
         Task<bool> CreateAllRequiredDirectories();
@@ -26,10 +27,12 @@ namespace CSSPDesktopServices.Services
         Task<bool> InstallUpdates();
         Task<bool> Start();
         Task<bool> Stop();
+        Task<bool> AnalyseDirectoriesAndDatabases();
         
         // Events
         event EventHandler<ClearEventArgs> StatusClear;
         event EventHandler<AppendEventArgs> StatusAppend;
+        event EventHandler<AppendTempEventArgs> StatusAppendTemp;
         event EventHandler<InstallingEventArgs> StatusInstalling;
         event EventHandler<ErrorMessageEventArgs> StatusErrorMessage;
 
@@ -48,6 +51,7 @@ namespace CSSPDesktopServices.Services
         public Process processBrowser { get; set; }
         public AppTextModel appTextModel { get; set; }
         public bool? HasInternetConnection { get; set; } = null;
+        public bool LoginRequired { get; set; } = false;
         #endregion Properties
 
         #region Constructors
@@ -85,6 +89,12 @@ namespace CSSPDesktopServices.Services
         public async Task<bool> InstallUpdates()
         {
             if (!await DoInstallUpdates()) return await Task.FromResult(false);
+
+            return await Task.FromResult(true);
+        }
+        public async Task<bool> AnalyseDirectoriesAndDatabases()
+        {
+            if (!await DoAnalyseDirectoriesAndDatabases()) return await Task.FromResult(false);
 
             return await Task.FromResult(true);
         }
