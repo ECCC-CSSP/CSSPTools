@@ -33,13 +33,13 @@ namespace CSSPDesktop
 
         #region Events
         #region Button Click
+        private void butCancelUpdate_Click(object sender, EventArgs e)
+        {
+            ShowButtonsPanel();
+        }
         private void butClose_Click(object sender, EventArgs e)
         {
             Close();
-        }
-        private void butGetUpdates_Click(object sender, EventArgs e)
-        {
-            GetUpdates();
         }
         private void butHideHelpPanel_Click(object sender, EventArgs e)
         {
@@ -69,15 +69,36 @@ namespace CSSPDesktop
         {
             Stop();
         }
+        private void butUpdatesAvailable_Click(object sender, EventArgs e)
+        {
+            ShowUpdatePanel();
+            butUpdateCompleted.Visible = false;
+        }
+        private void butUpdate_Click(object sender, EventArgs e)
+        {
+            butCancelUpdate.Enabled = false;
+            csspDesktopService.GetUpdates();
+            butCancelUpdate.Visible = false;
+            butUpdate.Visible = false;
+            butUpdateCompleted.Visible = true;
+        }
+        private void butUpdateCompleted_Click(object sender, EventArgs e)
+        {
+            ShowButtonsPanel();
+            butCancelUpdate.Enabled = true;
+            butCancelUpdate.Visible = true;
+            butUpdate.Visible = true;
+            butUpdateCompleted.Visible = false;
+        }
         #endregion Button Click
         #region Mouse Hover
+        private void butCancelUpdate_MouseHover(object sender, EventArgs e)
+        {
+            lblStatus.Text = csspDesktopService.appTextModel.butCancelUpdateHoverText;
+        }
         private void butClose_MouseHover(object sender, EventArgs e)
         {
             lblStatus.Text = csspDesktopService.appTextModel.butCloseHoverText;
-        }
-        private void butGetUpdates_MouseHover(object sender, EventArgs e)
-        {
-            lblStatus.Text = csspDesktopService.appTextModel.butGetUpdatesHoverText;
         }
         private void butShowHelpPanel_MouseHover(object sender, EventArgs e)
         {
@@ -99,6 +120,26 @@ namespace CSSPDesktop
         {
             lblStatus.Text = "";
         }
+        private void butUpdate_MouseHover(object sender, EventArgs e)
+        {
+            lblStatus.Text = csspDesktopService.appTextModel.butUpdateHoverText;
+        }
+        private void butUpdateCompleted_MouseHover(object sender, EventArgs e)
+        {
+            lblStatus.Text = csspDesktopService.appTextModel.butUpdateCompletedHoverText;
+        }
+        private void panelUpdateCenter_MouseHover(object sender, EventArgs e)
+        {
+            lblStatus.Text = "";
+        }
+        private void splitContainerFirst_Panel1_MouseHover(object sender, EventArgs e)
+        {
+            lblStatus.Text = "";
+        }
+        private void butUpdatesAvailable_MouseHover(object sender, EventArgs e)
+        {
+            lblStatus.Text = csspDesktopService.appTextModel.butUpdatesAvailableHoverText;
+        }
         #endregion Mouse Hover
         #region Form Resize
         private void CSSPDesktopForm_Resize(object sender, EventArgs e)
@@ -113,20 +154,23 @@ namespace CSSPDesktop
 
             DoTimerCheckInternetConnection();
 
-            //timerCheckInternetConnection.Start();
+            timerCheckInternetConnection.Start();
         }
 
         private void DoTimerCheckInternetConnection()
         {
             csspDesktopService.CheckingInternetConnection();
 
-            if (csspDesktopService.HasInternetConnection)
+            if (csspDesktopService.HasInternetConnection != null)
             {
-                Text = csspDesktopService.appTextModel.FormTitleText + $" --- ({ csspDesktopService.appTextModel.HasInternetConnection })";
-            }
-            else
-            {
-                Text = csspDesktopService.appTextModel.FormTitleText + $" --- ({ csspDesktopService.appTextModel.HasNoInternetConnection })";
+                if ((bool)csspDesktopService.HasInternetConnection)
+                {
+                    Text = csspDesktopService.appTextModel.FormTitleText + $" --- ({ csspDesktopService.appTextModel.ConnectedOnInternet })";
+                }
+                else
+                {
+                    Text = csspDesktopService.appTextModel.FormTitleText + $" --- ({ csspDesktopService.appTextModel.NoInternetConnection })";
+                }
             }
         }
         #endregion TimerCheckInternetConnection
@@ -138,6 +182,18 @@ namespace CSSPDesktop
         private void CSSPDesktopService_StatusAppend(object sender, AppendEventArgs e)
         {
             richTextBoxStatus.AppendText(e.Message);
+        }
+        private void CSSPDesktopService_StatusDownloading(object sender, DownloadingEventArgs e)
+        {
+            richTextBoxStatus.AppendText(e.Percent.ToString());
+        }
+        private void CSSPDesktopService_StatusInstalling(object sender, InstallingEventArgs e)
+        {
+            richTextBoxStatus.AppendText(e.Percent.ToString());
+        }
+        private void CSSPDesktopService_StatusErrorMessage(object sender, ErrorMessageEventArgs e)
+        {
+            richTextBoxStatus.AppendText(e.ErrorMessage);
         }
         #endregion csspDesktopServiceEvent
         #endregion Events
@@ -165,6 +221,16 @@ namespace CSSPDesktop
         {
             panelLanguage.BringToFront();
         }
+        private void ShowUpdatePanel()
+        {
+            panelButtonCenter.Visible = false;
+            panelUpdateCenter.Visible = true;
+        }
+        private void ShowButtonsPanel()
+        {
+            panelButtonCenter.Visible = true;
+            panelUpdateCenter.Visible = false;
+        }
         private void SetLanguageToEnglish()
         {
             IsEnglish = true;
@@ -185,15 +251,16 @@ namespace CSSPDesktop
 
             csspDesktopService.StatusAppend += CSSPDesktopService_StatusAppend;
             csspDesktopService.StatusClear += CSSPDesktopService_StatusClear;
+            csspDesktopService.StatusDownloading += CSSPDesktopService_StatusDownloading;
+            csspDesktopService.StatusInstalling += CSSPDesktopService_StatusInstalling;
+            csspDesktopService.StatusErrorMessage += CSSPDesktopService_StatusErrorMessage;
 
             csspDesktopService.IsEnglish = IsEnglish;
             SettingUpAllTextForLanguage();
-            currentPanel = ShowPanel.Buttons;
+            currentPanel = ShowPanel.Language;
             SetupPanels();
 
             csspDesktopService.CreateAllRequiredDirectories();
-            //csspDesktopService.CheckingInternetConnection();
-            //SettingUpAllTextForLanguage();
         }
         private void SettingUpAllTextForLanguage()
         {
@@ -211,11 +278,14 @@ namespace CSSPDesktop
             Text = csspDesktopService.appTextModel.FormTitleText;
             butHideHelpPanel.Text = csspDesktopService.appTextModel.butHideHelpPanelText;
             butClose.Text = csspDesktopService.appTextModel.butCloseText;
-            butGetUpdates.Text = csspDesktopService.appTextModel.butGetUpdatesText;
+            butUpdatesAvailable.Text = csspDesktopService.appTextModel.butUpdatesAvailableText;
             butShowHelpPanel.Text = csspDesktopService.appTextModel.butShowHelpPanelText;
             butShowLanguagePanel.Text = csspDesktopService.appTextModel.butShowLanguagePanelText;
             butStart.Text = csspDesktopService.appTextModel.butStartText;
             butStop.Text = csspDesktopService.appTextModel.butStopText;
+            butUpdate.Text = csspDesktopService.appTextModel.butUpdateText;
+            butCancelUpdate.Text = csspDesktopService.appTextModel.butCancelUpdateText;
+            butUpdateCompleted.Text = csspDesktopService.appTextModel.butUpdateCompletedText;
             lblStatus.Text = csspDesktopService.appTextModel.lblStatusText;
         }
         private void SetupPanels()
@@ -242,6 +312,11 @@ namespace CSSPDesktop
 
             panelButtonCenter.Top = panelButtonCenter.Parent.Height / 2 - panelButtonCenter.Height / 2;
             panelButtonCenter.Left = panelButtonCenter.Parent.Width / 2 - panelButtonCenter.Width / 2;
+            panelButtonCenter.Visible = true;
+
+            panelUpdateCenter.Top = panelUpdateCenter.Parent.Height / 2 - panelUpdateCenter.Height / 2;
+            panelUpdateCenter.Left = panelUpdateCenter.Parent.Width / 2 - panelUpdateCenter.Width / 2;
+            panelUpdateCenter.Visible = false;
 
             panelLanguageCenter.Top = panelLanguageCenter.Parent.Height / 2 - panelLanguageCenter.Height / 2;
             panelLanguageCenter.Left = panelLanguageCenter.Parent.Width / 2 - panelLanguageCenter.Width / 2;

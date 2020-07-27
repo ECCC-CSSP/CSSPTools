@@ -22,5 +22,28 @@ namespace CSSPDesktopServices.Services
         }
 
         public event EventHandler<AppendEventArgs> StatusAppend;
+
+        protected virtual void DownloadingStatus(DownloadingEventArgs e)
+        {
+            StatusDownloading?.Invoke(this, e);
+        }
+
+        public event EventHandler<DownloadingEventArgs> StatusDownloading;
+
+
+        protected virtual void InstallingStatus(InstallingEventArgs e)
+        {
+            StatusInstalling?.Invoke(this, e);
+        }
+
+        public event EventHandler<InstallingEventArgs> StatusInstalling;
+
+        protected virtual void ErrorMessageStatus(ErrorMessageEventArgs e)
+        {
+            StatusErrorMessage?.Invoke(this, e);
+        }
+
+        public event EventHandler<ErrorMessageEventArgs> StatusErrorMessage;
+
     }
 }

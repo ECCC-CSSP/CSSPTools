@@ -12,26 +12,20 @@ namespace CSSPDesktopServices.Services
 {
     public partial class CSSPDesktopService
     {
-        private void DoCheckingInternetConnection()
+        private async Task DoCheckingInternetConnection()
         {
-            HasInternetConnection = false;
-
-            try
+            HttpClient httpClient = new HttpClient();
+            foreach (string url in new List<string>() { "https://www.google.com/", "https://www.bing.com/" })
             {
-                string AzureCSSPStorageConnectionString = "DefaultEndpointsProtocol=https;AccountName=csspstorage;AccountKey=DzzuCB7LovmJ5J5DssKRz58pCyBTjjBVnFE9j23eWo3FRRqXsF3X9vDZv/OHh63REYIQlEIkeFcRj29fl4w31Q==;EndpointSuffix=core.windows.net";
-
-                BlobClient blobClient = new BlobClient(AzureCSSPStorageConnectionString, "csspjson", "WebRoot.gz");
-
-                BlobDownloadInfo download = blobClient.Download();
-
-                if (download.Details.ETag != null)
+                string ret = await httpClient.GetStringAsync(url);
+                if (!string.IsNullOrWhiteSpace(ret))
                 {
                     HasInternetConnection = true;
                 }
-            }
-            catch (Exception ex)
-            {
-                //AppendStatus(new AppendEventArgs(ex.Message));
+                else
+                {
+                    HasInternetConnection = false;
+                }
             }
         }
     }

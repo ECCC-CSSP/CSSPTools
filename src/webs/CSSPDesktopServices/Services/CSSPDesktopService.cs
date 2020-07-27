@@ -17,12 +17,12 @@ namespace CSSPDesktopServices.Services
         Process processCSSPWebAPIs { get; set; }
         Process processBrowser { get; set; }
         AppTextModel appTextModel { get; set; }
-        bool HasInternetConnection { get; set; }
+        bool? HasInternetConnection { get; set; }
 
         // Functions
         Task<bool> CreateAllRequiredDirectories();
         Task<bool> CheckingAvailableUpdate();
-        void CheckingInternetConnection();
+        Task CheckingInternetConnection();
         Task<bool> GetUpdates();
         Task<bool> Start();
         Task<bool> Stop();
@@ -30,6 +30,10 @@ namespace CSSPDesktopServices.Services
         // Events
         event EventHandler<ClearEventArgs> StatusClear;
         event EventHandler<AppendEventArgs> StatusAppend;
+        event EventHandler<DownloadingEventArgs> StatusDownloading;
+        event EventHandler<InstallingEventArgs> StatusInstalling;
+        event EventHandler<ErrorMessageEventArgs> StatusErrorMessage;
+
     }
     public partial class CSSPDesktopService : ICSSPDesktopService
     {
@@ -44,7 +48,7 @@ namespace CSSPDesktopServices.Services
         public Process processCSSPWebAPIs { get; set; }
         public Process processBrowser { get; set; }
         public AppTextModel appTextModel { get; set; }
-        public bool HasInternetConnection { get; set; }
+        public bool? HasInternetConnection { get; set; } = null;
         #endregion Properties
 
         #region Constructors
@@ -57,9 +61,9 @@ namespace CSSPDesktopServices.Services
 
             return await Task.FromResult(true);
         }
-        public void CheckingInternetConnection()
+        public async Task CheckingInternetConnection()
         {
-            DoCheckingInternetConnection();
+            await DoCheckingInternetConnection();
         }
         public async Task<bool> CreateAllRequiredDirectories()
         {

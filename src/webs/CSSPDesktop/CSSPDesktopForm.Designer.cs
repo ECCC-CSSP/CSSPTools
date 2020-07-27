@@ -40,7 +40,7 @@
             this.butClose = new System.Windows.Forms.Button();
             this.butShowLanguagePanel = new System.Windows.Forms.Button();
             this.butStop = new System.Windows.Forms.Button();
-            this.butGetUpdates = new System.Windows.Forms.Button();
+            this.butUpdatesAvailable = new System.Windows.Forms.Button();
             this.panelStatus = new System.Windows.Forms.Panel();
             this.lblStatus = new System.Windows.Forms.Label();
             this.lblSatusText = new System.Windows.Forms.Label();
@@ -50,6 +50,14 @@
             this.panelHelpTop = new System.Windows.Forms.Panel();
             this.butHideHelpPanel = new System.Windows.Forms.Button();
             this.timerCheckInternetConnection = new System.Windows.Forms.Timer(this.components);
+            this.panelUpdateCenter = new System.Windows.Forms.Panel();
+            this.lblDownloading = new System.Windows.Forms.Label();
+            this.lblInstalling = new System.Windows.Forms.Label();
+            this.progressBarDownloading = new System.Windows.Forms.ProgressBar();
+            this.progressBarInstalling = new System.Windows.Forms.ProgressBar();
+            this.butUpdate = new System.Windows.Forms.Button();
+            this.butCancelUpdate = new System.Windows.Forms.Button();
+            this.butUpdateCompleted = new System.Windows.Forms.Button();
             this.panelLanguage.SuspendLayout();
             this.panelLanguageCenter.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainerFirst)).BeginInit();
@@ -60,21 +68,22 @@
             this.panelStatus.SuspendLayout();
             this.panelHelp.SuspendLayout();
             this.panelHelpTop.SuspendLayout();
+            this.panelUpdateCenter.SuspendLayout();
             this.SuspendLayout();
             // 
             // panelLanguage
             // 
             this.panelLanguage.Controls.Add(this.panelLanguageCenter);
-            this.panelLanguage.Location = new System.Drawing.Point(528, 41);
+            this.panelLanguage.Location = new System.Drawing.Point(706, 116);
             this.panelLanguage.Name = "panelLanguage";
-            this.panelLanguage.Size = new System.Drawing.Size(449, 209);
+            this.panelLanguage.Size = new System.Drawing.Size(296, 161);
             this.panelLanguage.TabIndex = 0;
             // 
             // panelLanguageCenter
             // 
             this.panelLanguageCenter.Controls.Add(this.butSetLanguageToFrancais);
             this.panelLanguageCenter.Controls.Add(this.butSetLanguageToEnglish);
-            this.panelLanguageCenter.Location = new System.Drawing.Point(79, 48);
+            this.panelLanguageCenter.Location = new System.Drawing.Point(14, 16);
             this.panelLanguageCenter.Name = "panelLanguageCenter";
             this.panelLanguageCenter.Size = new System.Drawing.Size(262, 104);
             this.panelLanguageCenter.TabIndex = 0;
@@ -110,13 +119,15 @@
             // 
             // splitContainerFirst.Panel1
             // 
+            this.splitContainerFirst.Panel1.Controls.Add(this.panelUpdateCenter);
             this.splitContainerFirst.Panel1.Controls.Add(this.panelButtonCenter);
             this.splitContainerFirst.Panel1.Controls.Add(this.panelStatus);
+            this.splitContainerFirst.Panel1.MouseHover += new System.EventHandler(this.splitContainerFirst_Panel1_MouseHover);
             // 
             // splitContainerFirst.Panel2
             // 
             this.splitContainerFirst.Panel2.Controls.Add(this.richTextBoxStatus);
-            this.splitContainerFirst.Size = new System.Drawing.Size(507, 426);
+            this.splitContainerFirst.Size = new System.Drawing.Size(685, 426);
             this.splitContainerFirst.SplitterDistance = 265;
             this.splitContainerFirst.TabIndex = 1;
             // 
@@ -127,10 +138,10 @@
             this.panelButtonCenter.Controls.Add(this.butClose);
             this.panelButtonCenter.Controls.Add(this.butShowLanguagePanel);
             this.panelButtonCenter.Controls.Add(this.butStop);
-            this.panelButtonCenter.Controls.Add(this.butGetUpdates);
+            this.panelButtonCenter.Controls.Add(this.butUpdatesAvailable);
             this.panelButtonCenter.Location = new System.Drawing.Point(13, 17);
             this.panelButtonCenter.Name = "panelButtonCenter";
-            this.panelButtonCenter.Size = new System.Drawing.Size(382, 182);
+            this.panelButtonCenter.Size = new System.Drawing.Size(423, 182);
             this.panelButtonCenter.TabIndex = 7;
             this.panelButtonCenter.MouseHover += new System.EventHandler(this.panelButtonCenter_MouseHover);
             // 
@@ -140,7 +151,7 @@
             this.butStart.ImageAlign = System.Drawing.ContentAlignment.BottomCenter;
             this.butStart.Location = new System.Drawing.Point(16, 12);
             this.butStart.Name = "butStart";
-            this.butStart.Size = new System.Drawing.Size(100, 33);
+            this.butStart.Size = new System.Drawing.Size(120, 33);
             this.butStart.TabIndex = 3;
             this.butStart.Text = "Start";
             this.butStart.UseVisualStyleBackColor = true;
@@ -150,7 +161,7 @@
             // butShowHelpPanel
             // 
             this.butShowHelpPanel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.butShowHelpPanel.Location = new System.Drawing.Point(247, 51);
+            this.butShowHelpPanel.Location = new System.Drawing.Point(288, 51);
             this.butShowHelpPanel.Name = "butShowHelpPanel";
             this.butShowHelpPanel.Size = new System.Drawing.Size(122, 33);
             this.butShowHelpPanel.TabIndex = 2;
@@ -165,7 +176,7 @@
             this.butClose.ImageAlign = System.Drawing.ContentAlignment.BottomRight;
             this.butClose.Location = new System.Drawing.Point(16, 140);
             this.butClose.Name = "butClose";
-            this.butClose.Size = new System.Drawing.Size(100, 33);
+            this.butClose.Size = new System.Drawing.Size(120, 33);
             this.butClose.TabIndex = 6;
             this.butClose.Text = "Close";
             this.butClose.UseVisualStyleBackColor = true;
@@ -175,7 +186,7 @@
             // butShowLanguagePanel
             // 
             this.butShowLanguagePanel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.butShowLanguagePanel.Location = new System.Drawing.Point(247, 12);
+            this.butShowLanguagePanel.Location = new System.Drawing.Point(288, 12);
             this.butShowLanguagePanel.Name = "butShowLanguagePanel";
             this.butShowLanguagePanel.Size = new System.Drawing.Size(122, 33);
             this.butShowLanguagePanel.TabIndex = 0;
@@ -191,25 +202,25 @@
             this.butStop.ImageAlign = System.Drawing.ContentAlignment.BottomCenter;
             this.butStop.Location = new System.Drawing.Point(16, 60);
             this.butStop.Name = "butStop";
-            this.butStop.Size = new System.Drawing.Size(100, 33);
+            this.butStop.Size = new System.Drawing.Size(120, 33);
             this.butStop.TabIndex = 4;
             this.butStop.Text = "Stop";
             this.butStop.UseVisualStyleBackColor = true;
             this.butStop.Click += new System.EventHandler(this.butStop_Click);
             this.butStop.MouseHover += new System.EventHandler(this.butStop_MouseHover);
             // 
-            // butGetUpdates
+            // butUpdatesAvailable
             // 
-            this.butGetUpdates.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.butGetUpdates.ImageAlign = System.Drawing.ContentAlignment.BottomCenter;
-            this.butGetUpdates.Location = new System.Drawing.Point(189, 140);
-            this.butGetUpdates.Name = "butGetUpdates";
-            this.butGetUpdates.Size = new System.Drawing.Size(180, 33);
-            this.butGetUpdates.TabIndex = 5;
-            this.butGetUpdates.Text = "Get Updates";
-            this.butGetUpdates.UseVisualStyleBackColor = true;
-            this.butGetUpdates.Click += new System.EventHandler(this.butGetUpdates_Click);
-            this.butGetUpdates.MouseHover += new System.EventHandler(this.butGetUpdates_MouseHover);
+            this.butUpdatesAvailable.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.butUpdatesAvailable.ImageAlign = System.Drawing.ContentAlignment.BottomCenter;
+            this.butUpdatesAvailable.Location = new System.Drawing.Point(184, 140);
+            this.butUpdatesAvailable.Name = "butUpdatesAvailable";
+            this.butUpdatesAvailable.Size = new System.Drawing.Size(226, 33);
+            this.butUpdatesAvailable.TabIndex = 5;
+            this.butUpdatesAvailable.Text = "Updates Available";
+            this.butUpdatesAvailable.UseVisualStyleBackColor = true;
+            this.butUpdatesAvailable.Click += new System.EventHandler(this.butUpdatesAvailable_Click);
+            this.butUpdatesAvailable.MouseHover += new System.EventHandler(this.butUpdatesAvailable_MouseHover);
             // 
             // panelStatus
             // 
@@ -218,7 +229,7 @@
             this.panelStatus.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.panelStatus.Location = new System.Drawing.Point(0, 229);
             this.panelStatus.Name = "panelStatus";
-            this.panelStatus.Size = new System.Drawing.Size(507, 36);
+            this.panelStatus.Size = new System.Drawing.Size(685, 36);
             this.panelStatus.TabIndex = 1;
             // 
             // lblStatus
@@ -262,9 +273,9 @@
             // 
             this.panelHelp.Controls.Add(this.webBrowserHelp);
             this.panelHelp.Controls.Add(this.panelHelpTop);
-            this.panelHelp.Location = new System.Drawing.Point(528, 283);
+            this.panelHelp.Location = new System.Drawing.Point(726, 298);
             this.panelHelp.Name = "panelHelp";
-            this.panelHelp.Size = new System.Drawing.Size(306, 140);
+            this.panelHelp.Size = new System.Drawing.Size(276, 140);
             this.panelHelp.TabIndex = 2;
             // 
             // panelHelpTop
@@ -273,7 +284,7 @@
             this.panelHelpTop.Dock = System.Windows.Forms.DockStyle.Top;
             this.panelHelpTop.Location = new System.Drawing.Point(0, 0);
             this.panelHelpTop.Name = "panelHelpTop";
-            this.panelHelpTop.Size = new System.Drawing.Size(306, 36);
+            this.panelHelpTop.Size = new System.Drawing.Size(276, 36);
             this.panelHelpTop.TabIndex = 1;
             // 
             // butHideHelpPanel
@@ -292,6 +303,95 @@
             this.timerCheckInternetConnection.Enabled = true;
             this.timerCheckInternetConnection.Interval = 5000;
             this.timerCheckInternetConnection.Tick += new System.EventHandler(this.timerCheckInternetConnection_Tick);
+            // 
+            // panelUpdateCenter
+            // 
+            this.panelUpdateCenter.Controls.Add(this.butCancelUpdate);
+            this.panelUpdateCenter.Controls.Add(this.butUpdate);
+            this.panelUpdateCenter.Controls.Add(this.progressBarInstalling);
+            this.panelUpdateCenter.Controls.Add(this.progressBarDownloading);
+            this.panelUpdateCenter.Controls.Add(this.lblInstalling);
+            this.panelUpdateCenter.Controls.Add(this.lblDownloading);
+            this.panelUpdateCenter.Controls.Add(this.butUpdateCompleted);
+            this.panelUpdateCenter.Location = new System.Drawing.Point(326, 21);
+            this.panelUpdateCenter.Name = "panelUpdateCenter";
+            this.panelUpdateCenter.Size = new System.Drawing.Size(504, 170);
+            this.panelUpdateCenter.TabIndex = 8;
+            this.panelUpdateCenter.MouseHover += new System.EventHandler(this.panelUpdateCenter_MouseHover);
+            // 
+            // lblDownloading
+            // 
+            this.lblDownloading.AutoSize = true;
+            this.lblDownloading.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblDownloading.ImageAlign = System.Drawing.ContentAlignment.BottomRight;
+            this.lblDownloading.Location = new System.Drawing.Point(61, 64);
+            this.lblDownloading.Name = "lblDownloading";
+            this.lblDownloading.Size = new System.Drawing.Size(105, 20);
+            this.lblDownloading.TabIndex = 1;
+            this.lblDownloading.Text = "Downloading:";
+            // 
+            // lblInstalling
+            // 
+            this.lblInstalling.AutoSize = true;
+            this.lblInstalling.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblInstalling.Location = new System.Drawing.Point(61, 119);
+            this.lblInstalling.Name = "lblInstalling";
+            this.lblInstalling.Size = new System.Drawing.Size(76, 20);
+            this.lblInstalling.TabIndex = 2;
+            this.lblInstalling.Text = "Installing:";
+            // 
+            // progressBarDownloading
+            // 
+            this.progressBarDownloading.Location = new System.Drawing.Point(65, 88);
+            this.progressBarDownloading.Name = "progressBarDownloading";
+            this.progressBarDownloading.Size = new System.Drawing.Size(397, 12);
+            this.progressBarDownloading.TabIndex = 3;
+            // 
+            // progressBarInstalling
+            // 
+            this.progressBarInstalling.Location = new System.Drawing.Point(65, 142);
+            this.progressBarInstalling.Name = "progressBarInstalling";
+            this.progressBarInstalling.Size = new System.Drawing.Size(397, 12);
+            this.progressBarInstalling.TabIndex = 4;
+            // 
+            // butUpdate
+            // 
+            this.butUpdate.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.butUpdate.ImageAlign = System.Drawing.ContentAlignment.BottomCenter;
+            this.butUpdate.Location = new System.Drawing.Point(88, 15);
+            this.butUpdate.Name = "butUpdate";
+            this.butUpdate.Size = new System.Drawing.Size(169, 33);
+            this.butUpdate.TabIndex = 5;
+            this.butUpdate.Text = "Update";
+            this.butUpdate.UseVisualStyleBackColor = true;
+            this.butUpdate.Click += new System.EventHandler(this.butUpdate_Click);
+            this.butUpdate.MouseHover += new System.EventHandler(this.butUpdate_MouseHover);
+            // 
+            // butCancelUpdate
+            // 
+            this.butCancelUpdate.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.butCancelUpdate.ImageAlign = System.Drawing.ContentAlignment.BottomCenter;
+            this.butCancelUpdate.Location = new System.Drawing.Point(283, 15);
+            this.butCancelUpdate.Name = "butCancelUpdate";
+            this.butCancelUpdate.Size = new System.Drawing.Size(169, 33);
+            this.butCancelUpdate.TabIndex = 6;
+            this.butCancelUpdate.Text = "Cancel";
+            this.butCancelUpdate.UseVisualStyleBackColor = true;
+            this.butCancelUpdate.Click += new System.EventHandler(this.butCancelUpdate_Click);
+            this.butCancelUpdate.MouseHover += new System.EventHandler(this.butCancelUpdate_MouseHover);
+            // 
+            // butUpdateCompleted
+            // 
+            this.butUpdateCompleted.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.butUpdateCompleted.ImageAlign = System.Drawing.ContentAlignment.BottomCenter;
+            this.butUpdateCompleted.Location = new System.Drawing.Point(161, 16);
+            this.butUpdateCompleted.Name = "butUpdateCompleted";
+            this.butUpdateCompleted.Size = new System.Drawing.Size(233, 33);
+            this.butUpdateCompleted.TabIndex = 7;
+            this.butUpdateCompleted.Text = "Update Completed";
+            this.butUpdateCompleted.UseVisualStyleBackColor = true;
+            this.butUpdateCompleted.Click += new System.EventHandler(this.butUpdateCompleted_Click);
+            this.butUpdateCompleted.MouseHover += new System.EventHandler(this.butUpdateCompleted_MouseHover);
             // 
             // CSSPDesktopForm
             // 
@@ -315,6 +415,8 @@
             this.panelStatus.PerformLayout();
             this.panelHelp.ResumeLayout(false);
             this.panelHelpTop.ResumeLayout(false);
+            this.panelUpdateCenter.ResumeLayout(false);
+            this.panelUpdateCenter.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -334,7 +436,7 @@
         private System.Windows.Forms.Button butShowHelpPanel;
         private System.Windows.Forms.Button butClose;
         private System.Windows.Forms.Button butStop;
-        private System.Windows.Forms.Button butGetUpdates;
+        private System.Windows.Forms.Button butUpdatesAvailable;
         private System.Windows.Forms.Panel panelStatus;
         private System.Windows.Forms.Label lblStatus;
         private System.Windows.Forms.Label lblSatusText;
@@ -342,6 +444,14 @@
         private System.Windows.Forms.Panel panelHelpTop;
         private System.Windows.Forms.Button butHideHelpPanel;
         private System.Windows.Forms.Timer timerCheckInternetConnection;
+        private System.Windows.Forms.Panel panelUpdateCenter;
+        private System.Windows.Forms.Button butCancelUpdate;
+        private System.Windows.Forms.Button butUpdate;
+        private System.Windows.Forms.ProgressBar progressBarInstalling;
+        private System.Windows.Forms.ProgressBar progressBarDownloading;
+        private System.Windows.Forms.Label lblInstalling;
+        private System.Windows.Forms.Label lblDownloading;
+        private System.Windows.Forms.Button butUpdateCompleted;
     }
 }
 
