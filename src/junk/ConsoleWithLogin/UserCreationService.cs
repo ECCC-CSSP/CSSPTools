@@ -34,10 +34,10 @@ namespace ConsoleWithLogin.Model
             }
         }
 
-        public async Task CheckPassword()
+        public async Task CheckPassword(string LoginEmail, string Password)
         {
-            string email = "Charles.LeBlanc2@canada.ca";
-            string password = "Charles2!";
+            string email = LoginEmail;
+            string password = Password;
 
             //var user = new ApplicationUser { UserName = email, Email = email };
 

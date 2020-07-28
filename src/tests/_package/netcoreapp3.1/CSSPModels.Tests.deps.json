@@ -2012,7 +2012,9 @@
       },
       "CSSPEnums/1.0.0": {
         "dependencies": {
-          "CSSPCultureServices": "1.0.0"
+          "CSSPCultureServices": "1.0.0",
+          "Microsoft.EntityFrameworkCore.Design": "3.1.6",
+          "Microsoft.EntityFrameworkCore.Tools": "3.1.6"
         },
         "runtime": {
           "CSSPEnums.dll": {}

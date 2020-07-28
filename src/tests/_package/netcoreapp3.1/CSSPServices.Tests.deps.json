@@ -11,11 +11,9 @@
           "CSSPServices": "1.0.0",
           "Microsoft.AspNetCore.Authentication.JwtBearer": "3.1.6",
           "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "3.1.6",
-          "Microsoft.EntityFrameworkCore.Design": "3.1.6",
           "Microsoft.EntityFrameworkCore.InMemory": "3.1.6",
           "Microsoft.EntityFrameworkCore.SqlServer": "3.1.6",
           "Microsoft.EntityFrameworkCore.Sqlite": "3.1.6",
-          "Microsoft.EntityFrameworkCore.Tools": "3.1.6",
           "Microsoft.Extensions.Configuration": "3.1.6",
           "Microsoft.Extensions.Configuration.FileExtensions": "3.1.6",
           "Microsoft.Extensions.Configuration.Json": "3.1.6",
@@ -23,9 +21,7 @@
           "Microsoft.Extensions.DependencyInjection": "3.1.6",
           "Microsoft.NET.Test.Sdk": "16.6.1",
           "System.IdentityModel.Tokens.Jwt": "6.7.1",
-          "coverlet.collector": "1.3.0",
-          "xunit": "2.4.1",
-          "xunit.runner.visualstudio": "2.4.2"
+          "xunit": "2.4.1"
         },
         "runtime": {
           "CSSPServices.Tests.dll": {}
@@ -70,7 +66,6 @@
           }
         }
       },
-      "coverlet.collector/1.3.0": {},
       "Microsoft.AspNetCore.Authentication.JwtBearer/3.1.6": {
         "dependencies": {
           "Microsoft.IdentityModel.Protocols.OpenIdConnect": "5.5.0"
@@ -2012,7 +2007,6 @@
           }
         }
       },
-      "xunit.runner.visualstudio/2.4.2": {},
       "CSSPCultureServices/1.0.0": {
         "runtime": {
           "CSSPCultureServices.dll": {}
@@ -2025,7 +2019,9 @@
       },
       "CSSPEnums/1.0.0": {
         "dependencies": {
-          "CSSPCultureServices": "1.0.0"
+          "CSSPCultureServices": "1.0.0",
+          "Microsoft.EntityFrameworkCore.Design": "3.1.6",
+          "Microsoft.EntityFrameworkCore.Tools": "3.1.6"
         },
         "runtime": {
           "CSSPEnums.dll": {}
@@ -2096,13 +2092,6 @@
       "sha512": "sha512-1IeuPon/PhFTF4YPxRVK/nlMcWL+dt28W8fULJpZVqU7e6pUkovEhKfp+nsO8SnR7cb2+LrIPhGzdlJ0bAcX5w==",
       "path": "azure.storage.common/12.4.3",
       "hashPath": "azure.storage.common.12.4.3.nupkg.sha512"
-    },
-    "coverlet.collector/1.3.0": {
-      "type": "package",
-      "serviceable": true,
-      "sha512": "sha512-t8pnf5SX2ya0RX4vjoxsbhDMQCZJcpPun2neHKJ4FouMmObylo25FvoOydvf3Bl+l+IzWw7u2vjEeCBHnleB9g==",
-      "path": "coverlet.collector/1.3.0",
-      "hashPath": "coverlet.collector.1.3.0.nupkg.sha512"
     },
     "Microsoft.AspNetCore.Authentication.JwtBearer/3.1.6": {
       "type": "package",
@@ -3286,13 +3275,6 @@
       "sha512": "sha512-7e/1jqBpcb7frLkB6XDrHCGXAbKN4Rtdb88epYxCSRQuZDRW8UtTfdTEVpdTl8s4T56e07hOBVd4G0OdCxIY2A==",
       "path": "xunit.extensibility.execution/2.4.1",
       "hashPath": "xunit.extensibility.execution.2.4.1.nupkg.sha512"
-    },
-    "xunit.runner.visualstudio/2.4.2": {
-      "type": "package",
-      "serviceable": true,
-      "sha512": "sha512-Trt9multph2KE3U0p9oBt0k4Fq6lUv4btUcONaQEeuFnMCak2k/b7PAArbLtMFW7HO1jxlBHUgIPKEqci3Y1dg==",
-      "path": "xunit.runner.visualstudio/2.4.2",
-      "hashPath": "xunit.runner.visualstudio.2.4.2.nupkg.sha512"
     },
     "CSSPCultureServices/1.0.0": {
       "type": "project",

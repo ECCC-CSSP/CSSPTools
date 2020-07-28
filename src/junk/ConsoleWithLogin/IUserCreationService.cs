@@ -8,6 +8,6 @@ namespace ConsoleWithLogin.Model
     public interface IUserCreationService
     {
         Task CreateUser();
-        Task CheckPassword();
+        Task CheckPassword(string LoginEmail, string Password);
     }
 }

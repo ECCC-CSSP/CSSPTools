@@ -94,7 +94,7 @@
           }
         }
       },
-      "Microsoft.CSharp/4.5.0": {},
+      "Microsoft.CSharp/4.7.0": {},
       "Microsoft.Data.Sqlite.Core/3.1.6": {
         "dependencies": {
           "SQLitePCLRaw.core": "2.0.2"
@@ -143,6 +143,18 @@
         }
       },
       "Microsoft.EntityFrameworkCore.Analyzers/3.1.6": {},
+      "Microsoft.EntityFrameworkCore.Design/3.1.6": {
+        "dependencies": {
+          "Microsoft.CSharp": "4.7.0",
+          "Microsoft.EntityFrameworkCore.Relational": "3.1.6"
+        },
+        "runtime": {
+          "lib/netstandard2.0/Microsoft.EntityFrameworkCore.Design.dll": {
+            "assemblyVersion": "3.1.6.0",
+            "fileVersion": "3.100.620.31702"
+          }
+        }
+      },
       "Microsoft.EntityFrameworkCore.Relational/3.1.6": {
         "dependencies": {
           "Microsoft.EntityFrameworkCore": "3.1.6"
@@ -172,6 +184,11 @@
             "assemblyVersion": "3.1.6.0",
             "fileVersion": "3.100.620.31702"
           }
+        }
+      },
+      "Microsoft.EntityFrameworkCore.Tools/3.1.6": {
+        "dependencies": {
+          "Microsoft.EntityFrameworkCore.Design": "3.1.6"
         }
       },
       "Microsoft.Extensions.Caching.Abstractions/3.1.6": {
@@ -431,7 +448,7 @@
       },
       "Microsoft.IdentityModel.Tokens/6.7.1": {
         "dependencies": {
-          "Microsoft.CSharp": "4.5.0",
+          "Microsoft.CSharp": "4.7.0",
           "Microsoft.IdentityModel.Logging": "6.7.1",
           "System.Security.Cryptography.Cng": "4.5.0"
         },
@@ -753,7 +770,7 @@
       },
       "Newtonsoft.Json/10.0.1": {
         "dependencies": {
-          "Microsoft.CSharp": "4.5.0",
+          "Microsoft.CSharp": "4.7.0",
           "System.Collections": "4.3.0",
           "System.ComponentModel.TypeConverter": "4.3.0",
           "System.Diagnostics.Debug": "4.3.0",
@@ -1706,7 +1723,9 @@
       },
       "CSSPEnums/1.0.0": {
         "dependencies": {
-          "CSSPCultureServices": "1.0.0"
+          "CSSPCultureServices": "1.0.0",
+          "Microsoft.EntityFrameworkCore.Design": "3.1.6",
+          "Microsoft.EntityFrameworkCore.Tools": "3.1.6"
         },
         "runtime": {
           "CSSPEnums.dll": {}
@@ -1794,12 +1813,12 @@
       "path": "microsoft.codecoverage/16.7.0-preview-20200519-01",
       "hashPath": "microsoft.codecoverage.16.7.0-preview-20200519-01.nupkg.sha512"
     },
-    "Microsoft.CSharp/4.5.0": {
+    "Microsoft.CSharp/4.7.0": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-kaj6Wb4qoMuH3HySFJhxwQfe8R/sJsNJnANrvv8WdFPMoNbKY5htfNscv+LHCu5ipz+49m2e+WQXpLXr9XYemQ==",
-      "path": "microsoft.csharp/4.5.0",
-      "hashPath": "microsoft.csharp.4.5.0.nupkg.sha512"
+      "sha512": "sha512-pTj+D3uJWyN3My70i2Hqo+OXixq3Os2D1nJ2x92FFo6sk8fYS1m1WLNTs0Dc1uPaViH0YvEEwvzddQ7y4rhXmA==",
+      "path": "microsoft.csharp/4.7.0",
+      "hashPath": "microsoft.csharp.4.7.0.nupkg.sha512"
     },
     "Microsoft.Data.Sqlite.Core/3.1.6": {
       "type": "package",
@@ -1836,6 +1855,13 @@
       "path": "microsoft.entityframeworkcore.analyzers/3.1.6",
       "hashPath": "microsoft.entityframeworkcore.analyzers.3.1.6.nupkg.sha512"
     },
+    "Microsoft.EntityFrameworkCore.Design/3.1.6": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-ji+fRRy6WpH9B1JRTTVSdIHSqHPMFD/ghmlbOENXa2pxyujEAno8Gtn6dDXl5UJbptCInzqoOpTl3W9etQKIMA==",
+      "path": "microsoft.entityframeworkcore.design/3.1.6",
+      "hashPath": "microsoft.entityframeworkcore.design.3.1.6.nupkg.sha512"
+    },
     "Microsoft.EntityFrameworkCore.Relational/3.1.6": {
       "type": "package",
       "serviceable": true,
@@ -1856,6 +1882,13 @@
       "sha512": "sha512-vLKXSDISTGmzK1xYSreIE1EVnLglY+CbicLWyZvAsrhCTPunvAh6B48wQhoslGlv3HRiJe/sInuHpkeDF2KQoA==",
       "path": "microsoft.entityframeworkcore.sqlite.core/3.1.6",
       "hashPath": "microsoft.entityframeworkcore.sqlite.core.3.1.6.nupkg.sha512"
+    },
+    "Microsoft.EntityFrameworkCore.Tools/3.1.6": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-Zz0p4p/AXXDna/3AASzvq3ENWE8cMe0/FayxoANCo/Q9d5SxuIsw14LXuv8EG7A6VpxU9g+NLhNYVPUveA8uSA==",
+      "path": "microsoft.entityframeworkcore.tools/3.1.6",
+      "hashPath": "microsoft.entityframeworkcore.tools.3.1.6.nupkg.sha512"
     },
     "Microsoft.Extensions.Caching.Abstractions/3.1.6": {
       "type": "package",

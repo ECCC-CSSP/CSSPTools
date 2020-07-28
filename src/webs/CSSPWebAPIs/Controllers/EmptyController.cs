@@ -14,7 +14,7 @@ namespace CSSPWebAPIs.Controllers
         [HttpGet]
         public string Get()
         {
-            return "empty";
+            return "Empty Just to see if its working";
         }
     }
 }
