@@ -19,7 +19,7 @@
     "CSSPWebAPIs": {
       "commandName": "Project",
       "launchBrowser": true,
-      "launchUrl": "weatherforecast",
+      "launchUrl": "empty",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },

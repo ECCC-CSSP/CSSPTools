@@ -207,6 +207,12 @@ namespace CSSPDesktop
             richTextBoxStatus.AppendText(e.ErrorMessage);
         }
         #endregion csspDesktopServiceEvent
+        #region Login
+        private void butLogin_Click(object sender, EventArgs e)
+        {
+            csspDesktopService.Login(textBoxLoginEmail.Text.Trim(), textBoxPassword.Text.Trim());
+        }
+        #endregion Login
         #endregion Events
 
         #region Functions public
@@ -268,7 +274,7 @@ namespace CSSPDesktop
             splitContainerFirst.Dock = DockStyle.Fill;
             panelHelp.Dock = DockStyle.Fill;
             richTextBoxStatus.Dock = DockStyle.Fill;
-            webBrowserHelp.Dock = DockStyle.Fill;
+            richTextBoxHelp.Dock = DockStyle.Fill;
 
             ShowPanels(ShowPanel.Language);
 
@@ -291,7 +297,7 @@ namespace CSSPDesktop
 
             // Form
             Text = csspDesktopService.appTextModel.FormTitleText;
-            
+
             // PanelButtonsCenter
             butStart.Text = csspDesktopService.appTextModel.butStartText;
             butStop.Text = csspDesktopService.appTextModel.butStopText;
@@ -335,8 +341,8 @@ namespace CSSPDesktop
                     break;
                 case ShowPanel.Help:
                     {
-                        string fileToOpen = IsEnglish ? "HelpDocEN.html" : "HelpDocFR.html";
-                        webBrowserHelp.Navigate($"{ Environment.CurrentDirectory }\\helpdocs\\{ fileToOpen }");
+                        string fileToOpen = IsEnglish ? "HelpDocEN.rtf" : "HelpDocFR.rtf";
+                        richTextBoxHelp.LoadFile($"{ Environment.CurrentDirectory }\\helpdocs\\{ fileToOpen }");
                         panelHelp.Visible = true;
                     }
                     break;

@@ -180,7 +180,7 @@ namespace ServicesClassNameServiceGeneratedServices.Services
                     sb.AppendLine(@"        #region Properties");
                     sb.AppendLine(@"        private CSSPDBContext db { get; }");
                     sb.AppendLine(@"        private CSSPDBLocalContext dbLocal { get; }");
-                    sb.AppendLine(@"        private InMemoryDBContext dbIM { get; }");
+                    sb.AppendLine(@"        private CSSPDBInMemoryContext dbIM { get; }");
                     if (dllTypeInfoModels.Type.Name == "Contact")
                     {
                         sb.AppendLine(@"        private IConfiguration Configuration { get; }");
@@ -201,11 +201,11 @@ namespace ServicesClassNameServiceGeneratedServices.Services
                     {
                         sb.AppendLine($@"        public { dllTypeInfoModels.Type.Name }Service(IConfiguration Configuration, UserManager<ApplicationUser> UserManager, ICSSPCultureService CSSPCultureService, ");
                         sb.AppendLine($@"           ILoggedInService LoggedInService, IEnums enums, IAspNetUserService AspNetUserService, ILoginModelService LoginModelService, ");
-                        sb.AppendLine($@"           IRegisterModelService RegisterModelService, CSSPDBContext db, CSSPDBLocalContext dbLocal, InMemoryDBContext dbIM)");
+                        sb.AppendLine($@"           IRegisterModelService RegisterModelService, CSSPDBContext db, CSSPDBLocalContext dbLocal = null, CSSPDBInMemoryContext dbIM = null)");
                     }
                     else
                     {
-                        sb.AppendLine($@"        public { dllTypeInfoModels.Type.Name }Service(ICSSPCultureService CSSPCultureService, ILoggedInService LoggedInService, IEnums enums, CSSPDBContext db, CSSPDBLocalContext dbLocal, InMemoryDBContext dbIM)");
+                        sb.AppendLine($@"        public { dllTypeInfoModels.Type.Name }Service(ICSSPCultureService CSSPCultureService, ILoggedInService LoggedInService, IEnums enums, CSSPDBContext db, CSSPDBLocalContext dbLocal = null, CSSPDBInMemoryContext dbIM = null)");
                     }
                     sb.AppendLine(@"        {");
                     if (dllTypeInfoModels.Type.Name == "Contact")

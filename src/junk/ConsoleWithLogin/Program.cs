@@ -20,7 +20,7 @@ namespace ConsoleWithLogin
             // Add framework services.            
             services.AddDbContext<ApplicationDbContext>(options =>
             {
-                options.UseSqlServer("Server=.\\sqlexpress;Database=CSSPDB2;Trusted_Connection=True;MultipleActiveResultSets=true");
+                options.UseSqlServer("Server=tcp:fpk3qgefkk.database.windows.net,1433;Initial Catalog=CSSPDB2;Persist Security Info=False;User ID=CSSP_user;Password=Veronique93!;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;");
             });
 
             services.AddIdentityCore<ApplicationUser>()

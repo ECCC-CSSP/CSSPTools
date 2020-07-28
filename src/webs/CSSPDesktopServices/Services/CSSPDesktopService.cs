@@ -10,8 +10,9 @@ namespace CSSPDesktopServices.Services
     public interface ICSSPDesktopService
     {
         // Properties
-        string StartUrl { get; set; }
         string AppDataPath { get; set; }
+        string ServerLoginUrl { get; set; }
+        string StartUrl { get; set; }
         string CSSPWebAPIsExeFullPath { get; set; }
         bool IsEnglish { get; set; }
         Process processCSSPWebAPIs { get; set; }
@@ -28,6 +29,7 @@ namespace CSSPDesktopServices.Services
         Task<bool> Start();
         Task<bool> Stop();
         Task<bool> AnalyseDirectoriesAndDatabases();
+        Task<bool> Login(string LoginEmail, string Password);
         
         // Events
         event EventHandler<ClearEventArgs> StatusClear;
@@ -44,6 +46,7 @@ namespace CSSPDesktopServices.Services
 
         #region Properties
         public string AppDataPath { get; set; }
+        public string ServerLoginUrl { get; set; } = "https://csspwebapis.azurewebsites.net/api/en-CA/auth/token";
         public string StartUrl { get; set; }
         public string CSSPWebAPIsExeFullPath { get; set; }
         public bool IsEnglish { get; set; }
@@ -55,6 +58,10 @@ namespace CSSPDesktopServices.Services
         #endregion Properties
 
         #region Constructors
+        public CSSPDesktopService()
+        {
+
+        }
         #endregion Constructors
 
         #region Functions public
@@ -95,6 +102,12 @@ namespace CSSPDesktopServices.Services
         public async Task<bool> AnalyseDirectoriesAndDatabases()
         {
             if (!await DoAnalyseDirectoriesAndDatabases()) return await Task.FromResult(false);
+
+            return await Task.FromResult(true);
+        }
+        public async Task<bool> Login(string LoginEmail, string Password)
+        {
+            if (!await DoLogin(LoginEmail, Password)) return await Task.FromResult(false);
 
             return await Task.FromResult(true);
         }

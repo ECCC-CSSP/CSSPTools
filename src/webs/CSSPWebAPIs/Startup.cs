@@ -26,6 +26,7 @@ namespace CSSPWebAPIs
 
         #region Properties
         private IConfiguration Configuration { get; }
+        private string RunningOn { get; set; }
         #endregion Properties
 
         #region Constructors
@@ -39,26 +40,6 @@ namespace CSSPWebAPIs
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            string appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
-
-            string DBFromArgs = "TestDB";
-
-            List<string> ArgsOptionsList = new List<string>()
-            {
-                "TestDB", "CSSPDB", "CSSPDB2", "AzureDB"
-            };
-
-            string[] args = Environment.GetCommandLineArgs();
-
-            foreach (string arg in args)
-            {
-                if (ArgsOptionsList.Contains(arg))
-                {
-                    DBFromArgs = arg;
-                    break;
-                }
-            }
-
             services.AddCors();
             services.AddControllers()
                 .AddJsonOptions(options =>
@@ -87,28 +68,34 @@ namespace CSSPWebAPIs
                 };
             });
 
+            RunningOn = Configuration.GetValue<string>("RunningOn"); // either "Local", "Azure"
 
             string DBConnStr = "";
 
-            if (DBFromArgs == "AzureDB")
+            if (RunningOn == "Azure")
             {
                 DBConnStr = Configuration.GetValue<string>("AzureCSSPDB");
+
             }
-
-            if (DBFromArgs == "CSSPDB")
+            else
             {
-                DBConnStr = Configuration.GetValue<string>("CSSPDB");
-            }
+                string DBToUse = Configuration.GetValue<string>("DBToUse");
 
-            if (DBFromArgs == "CSSPDB2")
-            {
-                DBConnStr = Configuration.GetValue<string>("CSSPDB2");
-            }
+                if (DBToUse == "CSSPDB")
+                {
+                    DBConnStr = Configuration.GetValue<string>("CSSPDB");
+                }
 
-            if (DBFromArgs == "TestDB")
-            {
-                DBConnStr = Configuration.GetValue<string>("TestDB");
+                if (DBToUse == "CSSPDB2")
+                {
+                    DBConnStr = Configuration.GetValue<string>("CSSPDB2");
+                }
 
+                if (DBToUse == "TestDB")
+                {
+                    DBConnStr = Configuration.GetValue<string>("TestDB");
+
+                }
             }
 
             /* ---------------------------------------------------------------------------------
@@ -128,44 +115,49 @@ namespace CSSPWebAPIs
             services.AddIdentityCore<ApplicationUser>()
             .AddEntityFrameworkStores<ApplicationDbContext>();
 
-            /* ---------------------------------------------------------------------------------
-             * using CSSPDBLocal 
-             * ---------------------------------------------------------------------------------      
-             */
-            string CSSPDBLocalFileName = Configuration.GetValue<string>("CSSPDBLocal");
-
-            FileInfo fiCSSPDBLocal = new FileInfo(CSSPDBLocalFileName.Replace("{AppDataPath}", appDataPath));
-
-            services.AddDbContext<CSSPDBLocalContext>(options =>
+            if (RunningOn == "Local")
             {
-                options.UseSqlite($"Data Source={ fiCSSPDBLocal.FullName }");
-            });
+                string appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
 
-            /* ---------------------------------------------------------------------------------
-             * using CSSPDBLogin
-             * ---------------------------------------------------------------------------------      
-             */
-            string CSSPDBLoginFileName = Configuration.GetValue<string>("CSSPDBLogin");
+                /* ---------------------------------------------------------------------------------
+                 * using CSSPDBLocal 
+                 * ---------------------------------------------------------------------------------      
+                 */
+                string CSSPDBLocalFileName = Configuration.GetValue<string>("CSSPDBLocal");
 
-            FileInfo fiCSSPDBLogin = new FileInfo(CSSPDBLoginFileName.Replace("{AppDataPath}", appDataPath));
+                FileInfo fiCSSPDBLocal = new FileInfo(CSSPDBLocalFileName.Replace("{AppDataPath}", appDataPath));
 
-            services.AddDbContext<CSSPDBLoginContext>(options =>
-            {
-                options.UseSqlite($"Data Source={ fiCSSPDBLogin.FullName }");
-            });
+                services.AddDbContext<CSSPDBLocalContext>(options =>
+                {
+                    options.UseSqlite($"Data Source={ fiCSSPDBLocal.FullName }");
+                });
 
-            /* ---------------------------------------------------------------------------------
-             * using CSSPDBFileManagement
-             * ---------------------------------------------------------------------------------      
-             */
-            string CSSPDBFilesManagementFileName = Configuration.GetValue<string>("CSSPDBFilesManagement");
+                /* ---------------------------------------------------------------------------------
+                 * using CSSPDBLogin
+                 * ---------------------------------------------------------------------------------      
+                 */
+                string CSSPDBLoginFileName = Configuration.GetValue<string>("CSSPDBLogin");
 
-            FileInfo fiCSSPDBFilesManagement = new FileInfo(CSSPDBFilesManagementFileName.Replace("{AppDataPath}", appDataPath));
+                FileInfo fiCSSPDBLogin = new FileInfo(CSSPDBLoginFileName.Replace("{AppDataPath}", appDataPath));
 
-            services.AddDbContext<CSSPDBFilesManagementContext>(options =>
-            {
-                options.UseSqlite($"Data Source={ fiCSSPDBFilesManagement.FullName }");
-            });
+                services.AddDbContext<CSSPDBLoginContext>(options =>
+                {
+                    options.UseSqlite($"Data Source={ fiCSSPDBLogin.FullName }");
+                });
+
+                /* ---------------------------------------------------------------------------------
+                 * using CSSPDBFileManagement
+                 * ---------------------------------------------------------------------------------      
+                 */
+                string CSSPDBFilesManagementFileName = Configuration.GetValue<string>("CSSPDBFilesManagement");
+
+                FileInfo fiCSSPDBFilesManagement = new FileInfo(CSSPDBFilesManagementFileName.Replace("{AppDataPath}", appDataPath));
+
+                services.AddDbContext<CSSPDBFilesManagementContext>(options =>
+                {
+                    options.UseSqlite($"Data Source={ fiCSSPDBFilesManagement.FullName }");
+                });
+            }
 
             services.AddScoped<ICSSPCultureService, CSSPCultureService>();
             services.AddScoped<IEnums, Enums>();
@@ -177,12 +169,13 @@ namespace CSSPWebAPIs
             LoadAllDBServices(services);
             services.AddScoped<IWebService, WebService>();
 
-            services.AddSpaStaticFiles(configuration =>
+            if (RunningOn == "Local")
             {
-                configuration.RootPath = "csspclient";
-            });
-
-
+                services.AddSpaStaticFiles(configuration =>
+                {
+                    configuration.RootPath = "csspclient";
+                });
+            }
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -198,11 +191,15 @@ namespace CSSPWebAPIs
             }
 
             app.UseHttpsRedirection();
-            app.UseStaticFiles();
 
-            if (!env.IsDevelopment())
+            if (RunningOn == "Local")
             {
-                app.UseSpaStaticFiles();
+                app.UseStaticFiles();
+
+                if (!env.IsDevelopment())
+                {
+                    app.UseSpaStaticFiles();
+                }
             }
 
             app.UseRouting();
@@ -220,10 +217,13 @@ namespace CSSPWebAPIs
                 endpoints.MapControllers();
             });
 
-            app.UseSpa(spa =>
+            if (RunningOn == "Local")
             {
-                spa.Options.SourcePath = "csspclient";
-            });
+                app.UseSpa(spa =>
+                {
+                    spa.Options.SourcePath = "csspclient";
+                });
+            }
         }
         #endregion Functions public
     }

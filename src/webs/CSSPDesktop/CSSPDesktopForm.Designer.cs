@@ -33,6 +33,17 @@
             this.butSetLanguageToFrancais = new System.Windows.Forms.Button();
             this.butSetLanguageToEnglish = new System.Windows.Forms.Button();
             this.splitContainerFirst = new System.Windows.Forms.SplitContainer();
+            this.panelHelp = new System.Windows.Forms.Panel();
+            this.richTextBoxHelp = new System.Windows.Forms.RichTextBox();
+            this.panelHelpTop = new System.Windows.Forms.Panel();
+            this.butHideHelpPanel = new System.Windows.Forms.Button();
+            this.panelLoginCenter = new System.Windows.Forms.Panel();
+            this.textBoxPassword = new System.Windows.Forms.TextBox();
+            this.textBoxLoginEmail = new System.Windows.Forms.TextBox();
+            this.lblPassword = new System.Windows.Forms.Label();
+            this.lblLoginEmail = new System.Windows.Forms.Label();
+            this.lblCSSPWebToolsLoginOneTime = new System.Windows.Forms.Label();
+            this.butLogin = new System.Windows.Forms.Button();
             this.panelUpdateCenter = new System.Windows.Forms.Panel();
             this.butCancelUpdate = new System.Windows.Forms.Button();
             this.butUpdate = new System.Windows.Forms.Button();
@@ -50,47 +61,38 @@
             this.lblStatus = new System.Windows.Forms.Label();
             this.lblSatusText = new System.Windows.Forms.Label();
             this.richTextBoxStatus = new System.Windows.Forms.RichTextBox();
-            this.webBrowserHelp = new System.Windows.Forms.WebBrowser();
-            this.panelHelp = new System.Windows.Forms.Panel();
-            this.panelHelpTop = new System.Windows.Forms.Panel();
-            this.butHideHelpPanel = new System.Windows.Forms.Button();
             this.timerCheckInternetConnection = new System.Windows.Forms.Timer(this.components);
-            this.panelLoginCenter = new System.Windows.Forms.Panel();
-            this.butLogin = new System.Windows.Forms.Button();
-            this.lblCSSPWebToolsLoginOneTime = new System.Windows.Forms.Label();
-            this.lblLoginEmail = new System.Windows.Forms.Label();
-            this.lblPassword = new System.Windows.Forms.Label();
-            this.textBoxLoginEmail = new System.Windows.Forms.TextBox();
-            this.textBoxPassword = new System.Windows.Forms.TextBox();
             this.panelLanguageCenter.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainerFirst)).BeginInit();
             this.splitContainerFirst.Panel1.SuspendLayout();
             this.splitContainerFirst.Panel2.SuspendLayout();
             this.splitContainerFirst.SuspendLayout();
-            this.panelUpdateCenter.SuspendLayout();
-            this.panelCommandsCenter.SuspendLayout();
-            this.panelStatus.SuspendLayout();
             this.panelHelp.SuspendLayout();
             this.panelHelpTop.SuspendLayout();
             this.panelLoginCenter.SuspendLayout();
+            this.panelUpdateCenter.SuspendLayout();
+            this.panelCommandsCenter.SuspendLayout();
+            this.panelStatus.SuspendLayout();
             this.SuspendLayout();
             // 
             // panelLanguageCenter
             // 
             this.panelLanguageCenter.Controls.Add(this.butSetLanguageToFrancais);
             this.panelLanguageCenter.Controls.Add(this.butSetLanguageToEnglish);
-            this.panelLanguageCenter.Location = new System.Drawing.Point(477, 205);
+            this.panelLanguageCenter.Location = new System.Drawing.Point(556, 237);
+            this.panelLanguageCenter.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.panelLanguageCenter.Name = "panelLanguageCenter";
-            this.panelLanguageCenter.Size = new System.Drawing.Size(262, 104);
+            this.panelLanguageCenter.Size = new System.Drawing.Size(306, 120);
             this.panelLanguageCenter.TabIndex = 0;
             // 
             // butSetLanguageToFrancais
             // 
-            this.butSetLanguageToFrancais.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.butSetLanguageToFrancais.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.butSetLanguageToFrancais.ImageAlign = System.Drawing.ContentAlignment.TopRight;
-            this.butSetLanguageToFrancais.Location = new System.Drawing.Point(146, 39);
+            this.butSetLanguageToFrancais.Location = new System.Drawing.Point(170, 45);
+            this.butSetLanguageToFrancais.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.butSetLanguageToFrancais.Name = "butSetLanguageToFrancais";
-            this.butSetLanguageToFrancais.Size = new System.Drawing.Size(98, 32);
+            this.butSetLanguageToFrancais.Size = new System.Drawing.Size(114, 37);
             this.butSetLanguageToFrancais.TabIndex = 1;
             this.butSetLanguageToFrancais.Text = "Français";
             this.butSetLanguageToFrancais.UseVisualStyleBackColor = true;
@@ -98,10 +100,11 @@
             // 
             // butSetLanguageToEnglish
             // 
-            this.butSetLanguageToEnglish.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.butSetLanguageToEnglish.Location = new System.Drawing.Point(27, 39);
+            this.butSetLanguageToEnglish.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.butSetLanguageToEnglish.Location = new System.Drawing.Point(31, 45);
+            this.butSetLanguageToEnglish.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.butSetLanguageToEnglish.Name = "butSetLanguageToEnglish";
-            this.butSetLanguageToEnglish.Size = new System.Drawing.Size(98, 32);
+            this.butSetLanguageToEnglish.Size = new System.Drawing.Size(114, 37);
             this.butSetLanguageToEnglish.TabIndex = 0;
             this.butSetLanguageToEnglish.Text = "English";
             this.butSetLanguageToEnglish.UseVisualStyleBackColor = true;
@@ -109,7 +112,8 @@
             // 
             // splitContainerFirst
             // 
-            this.splitContainerFirst.Location = new System.Drawing.Point(15, 12);
+            this.splitContainerFirst.Location = new System.Drawing.Point(18, 14);
+            this.splitContainerFirst.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.splitContainerFirst.Name = "splitContainerFirst";
             this.splitContainerFirst.Orientation = System.Windows.Forms.Orientation.Horizontal;
             // 
@@ -126,9 +130,131 @@
             // splitContainerFirst.Panel2
             // 
             this.splitContainerFirst.Panel2.Controls.Add(this.richTextBoxStatus);
-            this.splitContainerFirst.Size = new System.Drawing.Size(984, 667);
-            this.splitContainerFirst.SplitterDistance = 571;
+            this.splitContainerFirst.Size = new System.Drawing.Size(1148, 770);
+            this.splitContainerFirst.SplitterDistance = 659;
+            this.splitContainerFirst.SplitterWidth = 5;
             this.splitContainerFirst.TabIndex = 1;
+            // 
+            // panelHelp
+            // 
+            this.panelHelp.Controls.Add(this.richTextBoxHelp);
+            this.panelHelp.Controls.Add(this.panelHelpTop);
+            this.panelHelp.Location = new System.Drawing.Point(766, 433);
+            this.panelHelp.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this.panelHelp.Name = "panelHelp";
+            this.panelHelp.Size = new System.Drawing.Size(322, 162);
+            this.panelHelp.TabIndex = 2;
+            // 
+            // richTextBoxHelp
+            // 
+            this.richTextBoxHelp.Location = new System.Drawing.Point(62, 52);
+            this.richTextBoxHelp.Name = "richTextBoxHelp";
+            this.richTextBoxHelp.Size = new System.Drawing.Size(100, 96);
+            this.richTextBoxHelp.TabIndex = 2;
+            this.richTextBoxHelp.Text = "";
+            // 
+            // panelHelpTop
+            // 
+            this.panelHelpTop.Controls.Add(this.butHideHelpPanel);
+            this.panelHelpTop.Dock = System.Windows.Forms.DockStyle.Top;
+            this.panelHelpTop.Location = new System.Drawing.Point(0, 0);
+            this.panelHelpTop.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this.panelHelpTop.Name = "panelHelpTop";
+            this.panelHelpTop.Size = new System.Drawing.Size(322, 42);
+            this.panelHelpTop.TabIndex = 1;
+            // 
+            // butHideHelpPanel
+            // 
+            this.butHideHelpPanel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.butHideHelpPanel.Location = new System.Drawing.Point(121, 2);
+            this.butHideHelpPanel.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this.butHideHelpPanel.Name = "butHideHelpPanel";
+            this.butHideHelpPanel.Size = new System.Drawing.Size(114, 37);
+            this.butHideHelpPanel.TabIndex = 1;
+            this.butHideHelpPanel.Text = "Close Help";
+            this.butHideHelpPanel.UseVisualStyleBackColor = true;
+            this.butHideHelpPanel.Click += new System.EventHandler(this.butHideHelpPanel_Click);
+            // 
+            // panelLoginCenter
+            // 
+            this.panelLoginCenter.Controls.Add(this.textBoxPassword);
+            this.panelLoginCenter.Controls.Add(this.textBoxLoginEmail);
+            this.panelLoginCenter.Controls.Add(this.lblPassword);
+            this.panelLoginCenter.Controls.Add(this.lblLoginEmail);
+            this.panelLoginCenter.Controls.Add(this.lblCSSPWebToolsLoginOneTime);
+            this.panelLoginCenter.Controls.Add(this.butLogin);
+            this.panelLoginCenter.Location = new System.Drawing.Point(24, 256);
+            this.panelLoginCenter.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this.panelLoginCenter.Name = "panelLoginCenter";
+            this.panelLoginCenter.Size = new System.Drawing.Size(484, 284);
+            this.panelLoginCenter.TabIndex = 9;
+            // 
+            // textBoxPassword
+            // 
+            this.textBoxPassword.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.textBoxPassword.Location = new System.Drawing.Point(59, 177);
+            this.textBoxPassword.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this.textBoxPassword.Name = "textBoxPassword";
+            this.textBoxPassword.PasswordChar = '*';
+            this.textBoxPassword.Size = new System.Drawing.Size(311, 26);
+            this.textBoxPassword.TabIndex = 8;
+            this.textBoxPassword.MouseHover += new System.EventHandler(this.textBoxPassword_MouseHover);
+            // 
+            // textBoxLoginEmail
+            // 
+            this.textBoxLoginEmail.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.textBoxLoginEmail.Location = new System.Drawing.Point(59, 104);
+            this.textBoxLoginEmail.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this.textBoxLoginEmail.Name = "textBoxLoginEmail";
+            this.textBoxLoginEmail.Size = new System.Drawing.Size(311, 26);
+            this.textBoxLoginEmail.TabIndex = 7;
+            this.textBoxLoginEmail.MouseHover += new System.EventHandler(this.textBoxLoginEmail_MouseHover);
+            // 
+            // lblPassword
+            // 
+            this.lblPassword.AutoSize = true;
+            this.lblPassword.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.lblPassword.Location = new System.Drawing.Point(55, 150);
+            this.lblPassword.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lblPassword.Name = "lblPassword";
+            this.lblPassword.Size = new System.Drawing.Size(82, 20);
+            this.lblPassword.TabIndex = 6;
+            this.lblPassword.Text = "Password:";
+            // 
+            // lblLoginEmail
+            // 
+            this.lblLoginEmail.AutoSize = true;
+            this.lblLoginEmail.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.lblLoginEmail.Location = new System.Drawing.Point(55, 77);
+            this.lblLoginEmail.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lblLoginEmail.Name = "lblLoginEmail";
+            this.lblLoginEmail.Size = new System.Drawing.Size(95, 20);
+            this.lblLoginEmail.TabIndex = 5;
+            this.lblLoginEmail.Text = "Login Email:";
+            // 
+            // lblCSSPWebToolsLoginOneTime
+            // 
+            this.lblCSSPWebToolsLoginOneTime.AutoSize = true;
+            this.lblCSSPWebToolsLoginOneTime.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.lblCSSPWebToolsLoginOneTime.Location = new System.Drawing.Point(44, 23);
+            this.lblCSSPWebToolsLoginOneTime.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lblCSSPWebToolsLoginOneTime.Name = "lblCSSPWebToolsLoginOneTime";
+            this.lblCSSPWebToolsLoginOneTime.Size = new System.Drawing.Size(292, 20);
+            this.lblCSSPWebToolsLoginOneTime.TabIndex = 4;
+            this.lblCSSPWebToolsLoginOneTime.Text = "CSSP Web Tools Login (one time thing) ";
+            // 
+            // butLogin
+            // 
+            this.butLogin.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.butLogin.Location = new System.Drawing.Point(238, 219);
+            this.butLogin.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this.butLogin.Name = "butLogin";
+            this.butLogin.Size = new System.Drawing.Size(206, 38);
+            this.butLogin.TabIndex = 3;
+            this.butLogin.Text = "Login";
+            this.butLogin.UseVisualStyleBackColor = true;
+            this.butLogin.Click += new System.EventHandler(this.butLogin_Click);
+            this.butLogin.MouseHover += new System.EventHandler(this.butLogin_MouseHover);
             // 
             // panelUpdateCenter
             // 
@@ -137,19 +263,21 @@
             this.panelUpdateCenter.Controls.Add(this.progressBarInstalling);
             this.panelUpdateCenter.Controls.Add(this.lblInstalling);
             this.panelUpdateCenter.Controls.Add(this.butUpdateCompleted);
-            this.panelUpdateCenter.Location = new System.Drawing.Point(466, 29);
+            this.panelUpdateCenter.Location = new System.Drawing.Point(544, 33);
+            this.panelUpdateCenter.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.panelUpdateCenter.Name = "panelUpdateCenter";
-            this.panelUpdateCenter.Size = new System.Drawing.Size(504, 141);
+            this.panelUpdateCenter.Size = new System.Drawing.Size(588, 163);
             this.panelUpdateCenter.TabIndex = 8;
             this.panelUpdateCenter.MouseHover += new System.EventHandler(this.panelUpdateCenter_MouseHover);
             // 
             // butCancelUpdate
             // 
-            this.butCancelUpdate.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.butCancelUpdate.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.butCancelUpdate.ImageAlign = System.Drawing.ContentAlignment.BottomCenter;
-            this.butCancelUpdate.Location = new System.Drawing.Point(283, 15);
+            this.butCancelUpdate.Location = new System.Drawing.Point(330, 17);
+            this.butCancelUpdate.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.butCancelUpdate.Name = "butCancelUpdate";
-            this.butCancelUpdate.Size = new System.Drawing.Size(169, 33);
+            this.butCancelUpdate.Size = new System.Drawing.Size(197, 38);
             this.butCancelUpdate.TabIndex = 6;
             this.butCancelUpdate.Text = "Cancel";
             this.butCancelUpdate.UseVisualStyleBackColor = true;
@@ -158,11 +286,12 @@
             // 
             // butUpdate
             // 
-            this.butUpdate.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.butUpdate.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.butUpdate.ImageAlign = System.Drawing.ContentAlignment.BottomCenter;
-            this.butUpdate.Location = new System.Drawing.Point(88, 15);
+            this.butUpdate.Location = new System.Drawing.Point(103, 17);
+            this.butUpdate.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.butUpdate.Name = "butUpdate";
-            this.butUpdate.Size = new System.Drawing.Size(169, 33);
+            this.butUpdate.Size = new System.Drawing.Size(197, 38);
             this.butUpdate.TabIndex = 5;
             this.butUpdate.Text = "Update";
             this.butUpdate.UseVisualStyleBackColor = true;
@@ -171,16 +300,18 @@
             // 
             // progressBarInstalling
             // 
-            this.progressBarInstalling.Location = new System.Drawing.Point(70, 99);
+            this.progressBarInstalling.Location = new System.Drawing.Point(82, 114);
+            this.progressBarInstalling.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.progressBarInstalling.Name = "progressBarInstalling";
-            this.progressBarInstalling.Size = new System.Drawing.Size(397, 12);
+            this.progressBarInstalling.Size = new System.Drawing.Size(463, 14);
             this.progressBarInstalling.TabIndex = 4;
             // 
             // lblInstalling
             // 
             this.lblInstalling.AutoSize = true;
-            this.lblInstalling.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblInstalling.Location = new System.Drawing.Point(66, 76);
+            this.lblInstalling.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.lblInstalling.Location = new System.Drawing.Point(77, 88);
+            this.lblInstalling.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblInstalling.Name = "lblInstalling";
             this.lblInstalling.Size = new System.Drawing.Size(76, 20);
             this.lblInstalling.TabIndex = 2;
@@ -188,11 +319,12 @@
             // 
             // butUpdateCompleted
             // 
-            this.butUpdateCompleted.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.butUpdateCompleted.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.butUpdateCompleted.ImageAlign = System.Drawing.ContentAlignment.BottomCenter;
-            this.butUpdateCompleted.Location = new System.Drawing.Point(161, 16);
+            this.butUpdateCompleted.Location = new System.Drawing.Point(188, 18);
+            this.butUpdateCompleted.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.butUpdateCompleted.Name = "butUpdateCompleted";
-            this.butUpdateCompleted.Size = new System.Drawing.Size(233, 33);
+            this.butUpdateCompleted.Size = new System.Drawing.Size(272, 38);
             this.butUpdateCompleted.TabIndex = 7;
             this.butUpdateCompleted.Text = "Update Completed";
             this.butUpdateCompleted.UseVisualStyleBackColor = true;
@@ -207,19 +339,21 @@
             this.panelCommandsCenter.Controls.Add(this.butShowLanguagePanel);
             this.panelCommandsCenter.Controls.Add(this.butStop);
             this.panelCommandsCenter.Controls.Add(this.butUpdatesAvailable);
-            this.panelCommandsCenter.Location = new System.Drawing.Point(13, 17);
+            this.panelCommandsCenter.Location = new System.Drawing.Point(15, 20);
+            this.panelCommandsCenter.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.panelCommandsCenter.Name = "panelCommandsCenter";
-            this.panelCommandsCenter.Size = new System.Drawing.Size(423, 182);
+            this.panelCommandsCenter.Size = new System.Drawing.Size(493, 210);
             this.panelCommandsCenter.TabIndex = 7;
             this.panelCommandsCenter.MouseHover += new System.EventHandler(this.panelCommandsCenter_MouseHover);
             // 
             // butStart
             // 
-            this.butStart.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.butStart.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.butStart.ImageAlign = System.Drawing.ContentAlignment.BottomCenter;
-            this.butStart.Location = new System.Drawing.Point(16, 12);
+            this.butStart.Location = new System.Drawing.Point(19, 14);
+            this.butStart.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.butStart.Name = "butStart";
-            this.butStart.Size = new System.Drawing.Size(120, 33);
+            this.butStart.Size = new System.Drawing.Size(140, 38);
             this.butStart.TabIndex = 3;
             this.butStart.Text = "Start";
             this.butStart.UseVisualStyleBackColor = true;
@@ -228,10 +362,11 @@
             // 
             // butShowHelpPanel
             // 
-            this.butShowHelpPanel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.butShowHelpPanel.Location = new System.Drawing.Point(288, 51);
+            this.butShowHelpPanel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.butShowHelpPanel.Location = new System.Drawing.Point(336, 59);
+            this.butShowHelpPanel.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.butShowHelpPanel.Name = "butShowHelpPanel";
-            this.butShowHelpPanel.Size = new System.Drawing.Size(122, 33);
+            this.butShowHelpPanel.Size = new System.Drawing.Size(142, 38);
             this.butShowHelpPanel.TabIndex = 2;
             this.butShowHelpPanel.Text = "Help";
             this.butShowHelpPanel.UseVisualStyleBackColor = true;
@@ -240,11 +375,12 @@
             // 
             // butClose
             // 
-            this.butClose.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.butClose.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.butClose.ImageAlign = System.Drawing.ContentAlignment.BottomRight;
-            this.butClose.Location = new System.Drawing.Point(16, 140);
+            this.butClose.Location = new System.Drawing.Point(19, 162);
+            this.butClose.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.butClose.Name = "butClose";
-            this.butClose.Size = new System.Drawing.Size(120, 33);
+            this.butClose.Size = new System.Drawing.Size(140, 38);
             this.butClose.TabIndex = 6;
             this.butClose.Text = "Close";
             this.butClose.UseVisualStyleBackColor = true;
@@ -253,10 +389,11 @@
             // 
             // butShowLanguagePanel
             // 
-            this.butShowLanguagePanel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.butShowLanguagePanel.Location = new System.Drawing.Point(288, 12);
+            this.butShowLanguagePanel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.butShowLanguagePanel.Location = new System.Drawing.Point(336, 14);
+            this.butShowLanguagePanel.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.butShowLanguagePanel.Name = "butShowLanguagePanel";
-            this.butShowLanguagePanel.Size = new System.Drawing.Size(122, 33);
+            this.butShowLanguagePanel.Size = new System.Drawing.Size(142, 38);
             this.butShowLanguagePanel.TabIndex = 0;
             this.butShowLanguagePanel.Text = "Language";
             this.butShowLanguagePanel.UseVisualStyleBackColor = true;
@@ -266,11 +403,12 @@
             // butStop
             // 
             this.butStop.Enabled = false;
-            this.butStop.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.butStop.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.butStop.ImageAlign = System.Drawing.ContentAlignment.BottomCenter;
-            this.butStop.Location = new System.Drawing.Point(16, 60);
+            this.butStop.Location = new System.Drawing.Point(19, 69);
+            this.butStop.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.butStop.Name = "butStop";
-            this.butStop.Size = new System.Drawing.Size(120, 33);
+            this.butStop.Size = new System.Drawing.Size(140, 38);
             this.butStop.TabIndex = 4;
             this.butStop.Text = "Stop";
             this.butStop.UseVisualStyleBackColor = true;
@@ -279,11 +417,12 @@
             // 
             // butUpdatesAvailable
             // 
-            this.butUpdatesAvailable.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.butUpdatesAvailable.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.butUpdatesAvailable.ImageAlign = System.Drawing.ContentAlignment.BottomCenter;
-            this.butUpdatesAvailable.Location = new System.Drawing.Point(184, 140);
+            this.butUpdatesAvailable.Location = new System.Drawing.Point(215, 162);
+            this.butUpdatesAvailable.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.butUpdatesAvailable.Name = "butUpdatesAvailable";
-            this.butUpdatesAvailable.Size = new System.Drawing.Size(226, 33);
+            this.butUpdatesAvailable.Size = new System.Drawing.Size(264, 38);
             this.butUpdatesAvailable.TabIndex = 5;
             this.butUpdatesAvailable.Text = "Updates Available";
             this.butUpdatesAvailable.UseVisualStyleBackColor = true;
@@ -295,16 +434,18 @@
             this.panelStatus.Controls.Add(this.lblStatus);
             this.panelStatus.Controls.Add(this.lblSatusText);
             this.panelStatus.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panelStatus.Location = new System.Drawing.Point(0, 535);
+            this.panelStatus.Location = new System.Drawing.Point(0, 617);
+            this.panelStatus.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.panelStatus.Name = "panelStatus";
-            this.panelStatus.Size = new System.Drawing.Size(984, 36);
+            this.panelStatus.Size = new System.Drawing.Size(1148, 42);
             this.panelStatus.TabIndex = 1;
             // 
             // lblStatus
             // 
             this.lblStatus.AutoSize = true;
-            this.lblStatus.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblStatus.Location = new System.Drawing.Point(69, 8);
+            this.lblStatus.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.lblStatus.Location = new System.Drawing.Point(80, 9);
+            this.lblStatus.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblStatus.Name = "lblStatus";
             this.lblStatus.Size = new System.Drawing.Size(60, 20);
             this.lblStatus.TabIndex = 1;
@@ -313,8 +454,9 @@
             // lblSatusText
             // 
             this.lblSatusText.AutoSize = true;
-            this.lblSatusText.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblSatusText.Location = new System.Drawing.Point(9, 9);
+            this.lblSatusText.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.lblSatusText.Location = new System.Drawing.Point(10, 10);
+            this.lblSatusText.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblSatusText.Name = "lblSatusText";
             this.lblSatusText.Size = new System.Drawing.Size(55, 20);
             this.lblSatusText.TabIndex = 0;
@@ -322,49 +464,13 @@
             // 
             // richTextBoxStatus
             // 
-            this.richTextBoxStatus.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.richTextBoxStatus.Location = new System.Drawing.Point(118, 13);
+            this.richTextBoxStatus.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.richTextBoxStatus.Location = new System.Drawing.Point(138, 15);
+            this.richTextBoxStatus.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.richTextBoxStatus.Name = "richTextBoxStatus";
-            this.richTextBoxStatus.Size = new System.Drawing.Size(90, 80);
+            this.richTextBoxStatus.Size = new System.Drawing.Size(104, 92);
             this.richTextBoxStatus.TabIndex = 1;
             this.richTextBoxStatus.Text = "";
-            // 
-            // webBrowserHelp
-            // 
-            this.webBrowserHelp.Location = new System.Drawing.Point(45, 42);
-            this.webBrowserHelp.MinimumSize = new System.Drawing.Size(20, 20);
-            this.webBrowserHelp.Name = "webBrowserHelp";
-            this.webBrowserHelp.Size = new System.Drawing.Size(145, 70);
-            this.webBrowserHelp.TabIndex = 0;
-            // 
-            // panelHelp
-            // 
-            this.panelHelp.Controls.Add(this.webBrowserHelp);
-            this.panelHelp.Controls.Add(this.panelHelpTop);
-            this.panelHelp.Location = new System.Drawing.Point(657, 375);
-            this.panelHelp.Name = "panelHelp";
-            this.panelHelp.Size = new System.Drawing.Size(276, 140);
-            this.panelHelp.TabIndex = 2;
-            // 
-            // panelHelpTop
-            // 
-            this.panelHelpTop.Controls.Add(this.butHideHelpPanel);
-            this.panelHelpTop.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panelHelpTop.Location = new System.Drawing.Point(0, 0);
-            this.panelHelpTop.Name = "panelHelpTop";
-            this.panelHelpTop.Size = new System.Drawing.Size(276, 36);
-            this.panelHelpTop.TabIndex = 1;
-            // 
-            // butHideHelpPanel
-            // 
-            this.butHideHelpPanel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.butHideHelpPanel.Location = new System.Drawing.Point(104, 2);
-            this.butHideHelpPanel.Name = "butHideHelpPanel";
-            this.butHideHelpPanel.Size = new System.Drawing.Size(98, 32);
-            this.butHideHelpPanel.TabIndex = 1;
-            this.butHideHelpPanel.Text = "Close Help";
-            this.butHideHelpPanel.UseVisualStyleBackColor = true;
-            this.butHideHelpPanel.Click += new System.EventHandler(this.butHideHelpPanel_Click);
             // 
             // timerCheckInternetConnection
             // 
@@ -372,85 +478,13 @@
             this.timerCheckInternetConnection.Interval = 5000;
             this.timerCheckInternetConnection.Tick += new System.EventHandler(this.timerCheckInternetConnection_Tick);
             // 
-            // panelLoginCenter
-            // 
-            this.panelLoginCenter.Controls.Add(this.textBoxPassword);
-            this.panelLoginCenter.Controls.Add(this.textBoxLoginEmail);
-            this.panelLoginCenter.Controls.Add(this.lblPassword);
-            this.panelLoginCenter.Controls.Add(this.lblLoginEmail);
-            this.panelLoginCenter.Controls.Add(this.lblCSSPWebToolsLoginOneTime);
-            this.panelLoginCenter.Controls.Add(this.butLogin);
-            this.panelLoginCenter.Location = new System.Drawing.Point(21, 222);
-            this.panelLoginCenter.Name = "panelLoginCenter";
-            this.panelLoginCenter.Size = new System.Drawing.Size(415, 246);
-            this.panelLoginCenter.TabIndex = 9;
-            // 
-            // butLogin
-            // 
-            this.butLogin.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.butLogin.Location = new System.Drawing.Point(204, 190);
-            this.butLogin.Name = "butLogin";
-            this.butLogin.Size = new System.Drawing.Size(177, 33);
-            this.butLogin.TabIndex = 3;
-            this.butLogin.Text = "Login";
-            this.butLogin.UseVisualStyleBackColor = true;
-            this.butLogin.MouseHover += new System.EventHandler(this.butLogin_MouseHover);
-            // 
-            // lblCSSPWebToolsLoginOneTime
-            // 
-            this.lblCSSPWebToolsLoginOneTime.AutoSize = true;
-            this.lblCSSPWebToolsLoginOneTime.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblCSSPWebToolsLoginOneTime.Location = new System.Drawing.Point(38, 20);
-            this.lblCSSPWebToolsLoginOneTime.Name = "lblCSSPWebToolsLoginOneTime";
-            this.lblCSSPWebToolsLoginOneTime.Size = new System.Drawing.Size(292, 20);
-            this.lblCSSPWebToolsLoginOneTime.TabIndex = 4;
-            this.lblCSSPWebToolsLoginOneTime.Text = "CSSP Web Tools Login (one time thing) ";
-            // 
-            // lblLoginEmail
-            // 
-            this.lblLoginEmail.AutoSize = true;
-            this.lblLoginEmail.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblLoginEmail.Location = new System.Drawing.Point(47, 67);
-            this.lblLoginEmail.Name = "lblLoginEmail";
-            this.lblLoginEmail.Size = new System.Drawing.Size(95, 20);
-            this.lblLoginEmail.TabIndex = 5;
-            this.lblLoginEmail.Text = "Login Email:";
-            // 
-            // lblPassword
-            // 
-            this.lblPassword.AutoSize = true;
-            this.lblPassword.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblPassword.Location = new System.Drawing.Point(47, 130);
-            this.lblPassword.Name = "lblPassword";
-            this.lblPassword.Size = new System.Drawing.Size(82, 20);
-            this.lblPassword.TabIndex = 6;
-            this.lblPassword.Text = "Password:";
-            // 
-            // textBoxLoginEmail
-            // 
-            this.textBoxLoginEmail.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBoxLoginEmail.Location = new System.Drawing.Point(51, 90);
-            this.textBoxLoginEmail.Name = "textBoxLoginEmail";
-            this.textBoxLoginEmail.Size = new System.Drawing.Size(267, 26);
-            this.textBoxLoginEmail.TabIndex = 7;
-            this.textBoxLoginEmail.MouseHover += new System.EventHandler(this.textBoxLoginEmail_MouseHover);
-            // 
-            // textBoxPassword
-            // 
-            this.textBoxPassword.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBoxPassword.Location = new System.Drawing.Point(51, 153);
-            this.textBoxPassword.Name = "textBoxPassword";
-            this.textBoxPassword.PasswordChar = '*';
-            this.textBoxPassword.Size = new System.Drawing.Size(267, 26);
-            this.textBoxPassword.TabIndex = 8;
-            this.textBoxPassword.MouseHover += new System.EventHandler(this.textBoxPassword_MouseHover);
-            // 
             // CSSPDesktopForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1022, 690);
+            this.ClientSize = new System.Drawing.Size(1192, 796);
             this.Controls.Add(this.splitContainerFirst);
+            this.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.Name = "CSSPDesktopForm";
             this.Text = "CSSP Desktop";
             this.Resize += new System.EventHandler(this.CSSPDesktopForm_Resize);
@@ -459,15 +493,15 @@
             this.splitContainerFirst.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainerFirst)).EndInit();
             this.splitContainerFirst.ResumeLayout(false);
+            this.panelHelp.ResumeLayout(false);
+            this.panelHelpTop.ResumeLayout(false);
+            this.panelLoginCenter.ResumeLayout(false);
+            this.panelLoginCenter.PerformLayout();
             this.panelUpdateCenter.ResumeLayout(false);
             this.panelUpdateCenter.PerformLayout();
             this.panelCommandsCenter.ResumeLayout(false);
             this.panelStatus.ResumeLayout(false);
             this.panelStatus.PerformLayout();
-            this.panelHelp.ResumeLayout(false);
-            this.panelHelpTop.ResumeLayout(false);
-            this.panelLoginCenter.ResumeLayout(false);
-            this.panelLoginCenter.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -479,7 +513,6 @@
         private System.Windows.Forms.SplitContainer splitContainerFirst;
         private System.Windows.Forms.Button butShowLanguagePanel;
         private System.Windows.Forms.RichTextBox richTextBoxStatus;
-        private System.Windows.Forms.WebBrowser webBrowserHelp;
         private System.Windows.Forms.Panel panelCommandsCenter;
         private System.Windows.Forms.Button butStart;
         private System.Windows.Forms.Button butShowHelpPanel;
@@ -506,6 +539,7 @@
         private System.Windows.Forms.Label lblLoginEmail;
         private System.Windows.Forms.Label lblCSSPWebToolsLoginOneTime;
         private System.Windows.Forms.Button butLogin;
+        private System.Windows.Forms.RichTextBox richTextBoxHelp;
     }
 }
 
