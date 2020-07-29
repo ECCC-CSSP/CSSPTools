@@ -15,7 +15,7 @@ namespace CSSPDesktopServices.Services
             InstallingStatus(new InstallingEventArgs(0));
 
             //do the Analyse
-            LoginRequired = true;
+            LoginRequired = false;
             
             return await Task.FromResult(true);
         }
