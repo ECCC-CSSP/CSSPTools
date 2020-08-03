@@ -13,10 +13,10 @@ namespace CSSPDesktopServices.Services
         private async Task<bool> OpenBrowser()
         {
             ProcessStartInfo processStartInfo = new ProcessStartInfo();
-            processStartInfo.FileName = StartUrl;
+            processStartInfo.FileName = $"{ CSSPLocalUrl }en-CA/";
             if (!IsEnglish)
             {
-                processStartInfo.FileName = StartUrl.Replace("en-CA", "fr-CA");
+                processStartInfo.FileName = processStartInfo.FileName.Replace("en-CA", "fr-CA");
             }
             processStartInfo.Arguments = "";
             processStartInfo.UseShellExecute = true;

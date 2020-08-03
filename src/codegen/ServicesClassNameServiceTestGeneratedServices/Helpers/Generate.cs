@@ -129,7 +129,7 @@ namespace ServicesClassNameServiceTestGeneratedServices.Services
                     sb.AppendLine($@"        private I{ TypeName }Service { TypeName }Service {{ get; set; }}");
                     sb.AppendLine(@"        private CSSPDBContext db { get; set; }");
                     sb.AppendLine(@"        private CSSPDBLocalContext dbLocal { get; set; }");
-                    sb.AppendLine(@"        private InMemoryDBContext dbIM { get; set; }");
+                    sb.AppendLine(@"        private CSSPDBInMemoryContext dbIM { get; set; }");
                     sb.AppendLine($@"        private { TypeName } { TypeNameLower } {{ get; set; }}");
                 }
                 else

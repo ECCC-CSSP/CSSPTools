@@ -56,7 +56,7 @@ namespace ValidateAppSettingsServices.Tests
             Assert.True(await Setup(culture));
 
             string param = "DBFileName";
-            string shouldHaveValue = "{AppDataPath}\\CSSP\\ActionCommandDB_NotExist.db";
+            string shouldHaveValue = "C:\\CSSPDesktop\\ActionCommandDB_NotExist.db";
 
             ValidateAppSettingsService.AppSettingParameterList[1].ExpectedValue = shouldHaveValue;
 
@@ -121,7 +121,7 @@ namespace ValidateAppSettingsServices.Tests
             ValidateAppSettingsService.AppSettingParameterList = new List<AppSettingParameter>()
             {
                 new AppSettingParameter() { Parameter = "CSSPCulture", ExpectedValue = "", IsCulture = true },
-                new AppSettingParameter() { Parameter = "DBFileName", ExpectedValue = "{AppDataPath}\\cssp\\cssplocaldatabases\\ActionCommandDB.db", IsFile = true, CheckExist = true },
+                new AppSettingParameter() { Parameter = "DBFileName", ExpectedValue = "C:\\CSSPDesktop\\cssplocaldatabases\\ActionCommandDB.db", IsFile = true, CheckExist = true },
             };
 
             return await Task.FromResult(true);

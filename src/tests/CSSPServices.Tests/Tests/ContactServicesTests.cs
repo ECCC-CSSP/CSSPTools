@@ -143,9 +143,7 @@ namespace ContactServices.Tests
 
             string CSSPDBLocalFileName = Configuration.GetValue<string>("CSSPDBLocal");
 
-            string appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
-
-            FileInfo fiAppDataPath = new FileInfo(CSSPDBLocalFileName.Replace("{AppDataPath}", appDataPath));
+            FileInfo fiAppDataPath = new FileInfo(CSSPDBLocalFileName);
 
             ServiceCollection.AddDbContext<CSSPDBLocalContext>(options =>
             {

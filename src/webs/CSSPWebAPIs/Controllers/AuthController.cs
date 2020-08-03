@@ -52,6 +52,13 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             return await ContactService.Login(loginModel);
         }
+        [Route("azurestore")]
+        [HttpGet]
+        public async Task<ActionResult<string>> AzureStore()
+        {
+            CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
+            return await ContactService.AzureStore();
+        }
         //[Route("Register")]
         //[HttpPost]
         //public async Task<ActionResult<bool>> Register(RegisterModel registerModel)

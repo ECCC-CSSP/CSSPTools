@@ -76,7 +76,7 @@ namespace ServicesClassNameServiceGeneratedServices.Services
                 new AppSettingParameter() { Parameter = "Action", ExpectedValue = "run" },
                 new AppSettingParameter() { Parameter = "Command", ExpectedValue = "ServicesClassNameServiceGenerated" },
                 new AppSettingParameter() { Parameter = "CSSPCulture", ExpectedValue = "", IsCulture = true },
-                new AppSettingParameter() { Parameter = "DBFileName", ExpectedValue = "{AppDataPath}\\cssp\\cssplocaldatabases\\ActionCommandDB.db", IsFile = true, CheckExist = true },
+                new AppSettingParameter() { Parameter = "DBFileName", ExpectedValue = "C:\\CSSPDesktop\\cssplocaldatabases\\ActionCommandDB.db", IsFile = true, CheckExist = true },
                 new AppSettingParameter() { Parameter = "CSSPEnums", ExpectedValue = "C:\\CSSPTools\\src\\dlls\\_package\\netcoreapp3.1\\CSSPEnums.dll", IsFile = true, CheckExist = true },
                 new AppSettingParameter() { Parameter = "CSSPModels", ExpectedValue = "C:\\CSSPTools\\src\\dlls\\_package\\netcoreapp3.1\\CSSPModels.dll", IsFile = true, CheckExist = true },
                 new AppSettingParameter() { Parameter = "CSSPDB2", ExpectedValue = "Data Source=.\\sqlexpress;Initial Catalog=CSSPDB2;Integrated Security=True" },

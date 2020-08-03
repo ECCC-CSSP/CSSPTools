@@ -48,9 +48,7 @@ namespace GenerateAllGzFiles
                 options.UseInMemoryDatabase(CSSPDB2);
             });
 
-            string appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
-
-            FileInfo fiAppDataPath = new FileInfo(CSSPDBLocalFileName.Replace("{AppDataPath}", appDataPath));
+            FileInfo fiAppDataPath = new FileInfo(CSSPDBLocalFileName);
 
             Services.AddDbContext<CSSPDBLocalContext>(options =>
             {

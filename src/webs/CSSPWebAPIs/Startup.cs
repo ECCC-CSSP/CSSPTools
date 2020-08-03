@@ -117,15 +117,13 @@ namespace CSSPWebAPIs
 
             if (RunningOn == "Local")
             {
-                string appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
-
                 /* ---------------------------------------------------------------------------------
                  * using CSSPDBLocal 
                  * ---------------------------------------------------------------------------------      
                  */
                 string CSSPDBLocalFileName = Configuration.GetValue<string>("CSSPDBLocal");
 
-                FileInfo fiCSSPDBLocal = new FileInfo(CSSPDBLocalFileName.Replace("{AppDataPath}", appDataPath));
+                FileInfo fiCSSPDBLocal = new FileInfo(CSSPDBLocalFileName);
 
                 services.AddDbContext<CSSPDBLocalContext>(options =>
                 {
@@ -138,7 +136,7 @@ namespace CSSPWebAPIs
                  */
                 string CSSPDBLoginFileName = Configuration.GetValue<string>("CSSPDBLogin");
 
-                FileInfo fiCSSPDBLogin = new FileInfo(CSSPDBLoginFileName.Replace("{AppDataPath}", appDataPath));
+                FileInfo fiCSSPDBLogin = new FileInfo(CSSPDBLoginFileName);
 
                 services.AddDbContext<CSSPDBLoginContext>(options =>
                 {
@@ -151,7 +149,7 @@ namespace CSSPWebAPIs
                  */
                 string CSSPDBFilesManagementFileName = Configuration.GetValue<string>("CSSPDBFilesManagement");
 
-                FileInfo fiCSSPDBFilesManagement = new FileInfo(CSSPDBFilesManagementFileName.Replace("{AppDataPath}", appDataPath));
+                FileInfo fiCSSPDBFilesManagement = new FileInfo(CSSPDBFilesManagementFileName);
 
                 services.AddDbContext<CSSPDBFilesManagementContext>(options =>
                 {

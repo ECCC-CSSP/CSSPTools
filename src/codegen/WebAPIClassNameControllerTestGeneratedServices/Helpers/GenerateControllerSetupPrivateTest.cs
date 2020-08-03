@@ -30,14 +30,12 @@ namespace WebAPIClassNameControllerTestGeneratedServices.Services
             sb.AppendLine(@"                options.UseSqlServer(TestDB);");
             sb.AppendLine(@"            });");
             sb.AppendLine(@"");
-            sb.AppendLine(@"            Services.AddDbContext<InMemoryDBContext>(options =>");
+            sb.AppendLine(@"            Services.AddDbContext<CSSPDBInMemoryContext>(options =>");
             sb.AppendLine(@"            {");
             sb.AppendLine(@"                options.UseInMemoryDatabase(TestDB);");
             sb.AppendLine(@"            });");
             sb.AppendLine(@"");
-            sb.AppendLine(@"            string appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);");
-            sb.AppendLine(@"");
-            sb.AppendLine(@"            FileInfo fiAppDataPath = new FileInfo(CSSPDBLocalFileName.Replace(""{AppDataPath}"", appDataPath));");
+            sb.AppendLine(@"            FileInfo fiAppDataPath = new FileInfo(CSSPDBLocalFileName);");
             sb.AppendLine(@"");
             sb.AppendLine(@"            Services.AddDbContext<CSSPDBLocalContext>(options =>");
             sb.AppendLine(@"            {");

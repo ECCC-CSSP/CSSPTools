@@ -1,10 +1,18 @@
-﻿using CSSPDesktopServices.Models;
+﻿using CSSPCultureServices.Services;
+using CSSPDesktopServices.Models;
 using CSSPDesktopServices.Services;
+using CSSPEnums;
+using CSSPModels;
+using CSSPServices;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -18,7 +26,10 @@ namespace CSSPDesktop
         #endregion Variables
 
         #region Properties
-        ICSSPDesktopService csspDesktopService { get; set; }
+        private IConfiguration Configuration { get; set; }
+        private IServiceProvider Provider { get; set; }
+        private IServiceCollection Services { get; set; }
+        private ICSSPDesktopService CSSPDesktopService { get; set; }
         bool IsEnglish { get; set; } = true;
         #endregion Properties
 
@@ -26,7 +37,10 @@ namespace CSSPDesktop
         public CSSPDesktopForm()
         {
             InitializeComponent();
-            Setup();
+            if (!Setup())
+            {
+                return;
+            }
         }
         #endregion Constructors
 
@@ -76,7 +90,7 @@ namespace CSSPDesktop
         private void butUpdate_Click(object sender, EventArgs e)
         {
             butCancelUpdate.Enabled = false;
-            csspDesktopService.InstallUpdates();
+            CSSPDesktopService.InstallUpdates();
             butCancelUpdate.Visible = false;
             butUpdate.Visible = false;
             butUpdateCompleted.Visible = true;
@@ -93,27 +107,27 @@ namespace CSSPDesktop
         #region Mouse Hover
         private void butCancelUpdate_MouseHover(object sender, EventArgs e)
         {
-            lblStatus.Text = csspDesktopService.appTextModel.butCancelUpdateHoverText;
+            lblStatus.Text = CSSPDesktopService.appTextModel.butCancelUpdateHoverText;
         }
         private void butClose_MouseHover(object sender, EventArgs e)
         {
-            lblStatus.Text = csspDesktopService.appTextModel.butCloseHoverText;
+            lblStatus.Text = CSSPDesktopService.appTextModel.butCloseHoverText;
         }
         private void butShowHelpPanel_MouseHover(object sender, EventArgs e)
         {
-            lblStatus.Text = csspDesktopService.appTextModel.butShowHelpPanelHoverText;
+            lblStatus.Text = CSSPDesktopService.appTextModel.butShowHelpPanelHoverText;
         }
         private void butShowLanguagePanel_MouseHover(object sender, EventArgs e)
         {
-            lblStatus.Text = csspDesktopService.appTextModel.butShowLanguagePanelHoverText;
+            lblStatus.Text = CSSPDesktopService.appTextModel.butShowLanguagePanelHoverText;
         }
         private void butStart_MouseHover(object sender, EventArgs e)
         {
-            lblStatus.Text = csspDesktopService.appTextModel.butStartHoverText;
+            lblStatus.Text = CSSPDesktopService.appTextModel.butStartHoverText;
         }
         private void butStop_MouseHover(object sender, EventArgs e)
         {
-            lblStatus.Text = csspDesktopService.appTextModel.butStopHoverText;
+            lblStatus.Text = CSSPDesktopService.appTextModel.butStopHoverText;
         }
         private void panelCommandsCenter_MouseHover(object sender, EventArgs e)
         {
@@ -121,11 +135,11 @@ namespace CSSPDesktop
         }
         private void butUpdate_MouseHover(object sender, EventArgs e)
         {
-            lblStatus.Text = csspDesktopService.appTextModel.butUpdateHoverText;
+            lblStatus.Text = CSSPDesktopService.appTextModel.butUpdateHoverText;
         }
         private void butUpdateCompleted_MouseHover(object sender, EventArgs e)
         {
-            lblStatus.Text = csspDesktopService.appTextModel.butUpdateCompletedHoverText;
+            lblStatus.Text = CSSPDesktopService.appTextModel.butUpdateCompletedHoverText;
         }
         private void panelUpdateCenter_MouseHover(object sender, EventArgs e)
         {
@@ -137,19 +151,19 @@ namespace CSSPDesktop
         }
         private void butUpdatesAvailable_MouseHover(object sender, EventArgs e)
         {
-            lblStatus.Text = csspDesktopService.appTextModel.butUpdatesAvailableHoverText;
+            lblStatus.Text = CSSPDesktopService.appTextModel.butUpdatesAvailableHoverText;
         }
         private void textBoxLoginEmail_MouseHover(object sender, EventArgs e)
         {
-            lblStatus.Text = csspDesktopService.appTextModel.textBoxLoginEmailHoverText;
+            lblStatus.Text = CSSPDesktopService.appTextModel.textBoxLoginEmailHoverText;
         }
         private void textBoxPassword_MouseHover(object sender, EventArgs e)
         {
-            lblStatus.Text = csspDesktopService.appTextModel.textBoxPasswordHoverText;
+            lblStatus.Text = CSSPDesktopService.appTextModel.textBoxPasswordHoverText;
         }
         private void butLogin_MouseHover(object sender, EventArgs e)
         {
-            lblStatus.Text = csspDesktopService.appTextModel.butLoginHoverText;
+            lblStatus.Text = CSSPDesktopService.appTextModel.butLoginHoverText;
         }
         #endregion Mouse Hover
         #region Form Resize
@@ -170,17 +184,17 @@ namespace CSSPDesktop
 
         private void DoTimerCheckInternetConnection()
         {
-            csspDesktopService.CheckingInternetConnection();
+            CSSPDesktopService.CheckingInternetConnection();
 
-            if (csspDesktopService.HasInternetConnection != null)
+            if (CSSPDesktopService.HasInternetConnection != null)
             {
-                if ((bool)csspDesktopService.HasInternetConnection)
+                if ((bool)CSSPDesktopService.HasInternetConnection)
                 {
-                    Text = csspDesktopService.appTextModel.FormTitleText + $" --- ({ csspDesktopService.appTextModel.ConnectedOnInternet })";
+                    Text = CSSPDesktopService.appTextModel.FormTitleText + $" --- ({ CSSPDesktopService.appTextModel.ConnectedOnInternet })";
                 }
                 else
                 {
-                    Text = csspDesktopService.appTextModel.FormTitleText + $" --- ({ csspDesktopService.appTextModel.NoInternetConnection })";
+                    Text = CSSPDesktopService.appTextModel.FormTitleText + $" --- ({ CSSPDesktopService.appTextModel.NoInternetConnection })";
                 }
             }
         }
@@ -210,7 +224,7 @@ namespace CSSPDesktop
         #region Login
         private void butLogin_Click(object sender, EventArgs e)
         {
-            csspDesktopService.Login(textBoxLoginEmail.Text.Trim(), textBoxPassword.Text.Trim());
+            CSSPDesktopService.Login(textBoxLoginEmail.Text.Trim(), textBoxPassword.Text.Trim());
         }
         #endregion Login
         #endregion Events
@@ -248,8 +262,8 @@ namespace CSSPDesktop
         private void StartTheAppWithLanguage()
         {
             SettingUpAllTextForLanguage();
-            csspDesktopService.AnalyseDirectoriesAndDatabases();
-            if (csspDesktopService.LoginRequired)
+            CSSPDesktopService.AnalyseDirectoriesAndDatabases();
+            if (CSSPDesktopService.LoginRequired)
             {
                 ShowPanels(ShowPanel.Login);
             }
@@ -258,17 +272,44 @@ namespace CSSPDesktop
                 ShowPanels(ShowPanel.Commands);
             }
         }
-        private void Setup()
+        private bool Setup()
         {
-            csspDesktopService = new CSSPDesktopService();
+            Configuration = new ConfigurationBuilder()
+                .SetBasePath(Directory.GetParent(AppContext.BaseDirectory).FullName)
+                .AddJsonFile("appsettings_csspdesktop.json")
+                .Build();
 
-            csspDesktopService.StatusClear += CSSPDesktopService_StatusClear;
-            csspDesktopService.StatusAppend += CSSPDesktopService_StatusAppend;
-            csspDesktopService.StatusAppendTemp += CSSPDesktopService_StatusAppendTemp;
-            csspDesktopService.StatusInstalling += CSSPDesktopService_StatusInstalling;
-            csspDesktopService.StatusErrorMessage += CSSPDesktopService_StatusErrorMessage;
+            Services = new ServiceCollection();
 
-            csspDesktopService.IsEnglish = IsEnglish;
+            Services.AddSingleton<IConfiguration>(Configuration);
+
+            Services.AddSingleton<ICSSPDesktopService, CSSPDesktopService>();
+
+            Provider = Services.BuildServiceProvider();
+
+            CSSPDesktopService = Provider.GetService<ICSSPDesktopService>();
+            if (CSSPDesktopService == null)
+            {
+                if (!IsEnglish)
+                {
+                    richTextBoxStatus.AppendText("CSSPDesktopService ne devrais pas être null\r\n");
+                }
+                else
+                {
+                    richTextBoxStatus.AppendText("CSSPDesktopService should not be null\r\n");
+                }
+                return false;
+            }
+
+            CSSPDesktopService.StatusClear += CSSPDesktopService_StatusClear;
+            CSSPDesktopService.StatusAppend += CSSPDesktopService_StatusAppend;
+            CSSPDesktopService.StatusAppendTemp += CSSPDesktopService_StatusAppendTemp;
+            CSSPDesktopService.StatusInstalling += CSSPDesktopService_StatusInstalling;
+            CSSPDesktopService.StatusErrorMessage += CSSPDesktopService_StatusErrorMessage;
+
+            CSSPDesktopService.IsEnglish = IsEnglish;
+            if (!CSSPDesktopService.ReadConfiguration()) return false;
+
             SettingUpAllTextForLanguage();
 
             splitContainerFirst.Dock = DockStyle.Fill;
@@ -280,48 +321,66 @@ namespace CSSPDesktop
 
             RecenterPanels();
 
-            csspDesktopService.CreateAllRequiredDirectories();
+            CSSPDesktopService.CreateAllRequiredDirectories();
+
+            FileInfo fiCSSPDBLocal = new FileInfo(CSSPDesktopService.CSSPDBLocal.Replace("{CSSPDesktopPath}", CSSPDesktopService.CSSPDesktopPath));
+
+            Services.AddDbContext<CSSPDBLocalContext>(options =>
+            {
+                options.UseSqlite($"Data Source={ fiCSSPDBLocal.FullName }");
+            });
+
+            FileInfo fiCSSPDBLogin = new FileInfo(CSSPDesktopService.CSSPDBLogin.Replace("{CSSPDesktopPath}", CSSPDesktopService.CSSPDesktopPath));
+
+            Services.AddDbContext<CSSPDBLocalContext>(options =>
+            {
+                options.UseSqlite($"Data Source={ fiCSSPDBLogin.FullName }");
+            });
+
+            Provider = Services.BuildServiceProvider();
+
+            return true;
         }
         private void SettingUpAllTextForLanguage()
         {
-            csspDesktopService.IsEnglish = IsEnglish;
+            CSSPDesktopService.IsEnglish = IsEnglish;
 
             if (IsEnglish)
             {
-                csspDesktopService.appTextModel = new AppTextModelEN();
+                CSSPDesktopService.appTextModel = new AppTextModelEN();
             }
             else
             {
-                csspDesktopService.appTextModel = new AppTextModelFR();
+                CSSPDesktopService.appTextModel = new AppTextModelFR();
             }
 
             // Form
-            Text = csspDesktopService.appTextModel.FormTitleText;
+            Text = CSSPDesktopService.appTextModel.FormTitleText;
 
             // PanelButtonsCenter
-            butStart.Text = csspDesktopService.appTextModel.butStartText;
-            butStop.Text = csspDesktopService.appTextModel.butStopText;
-            butClose.Text = csspDesktopService.appTextModel.butCloseText;
-            butShowLanguagePanel.Text = csspDesktopService.appTextModel.butShowLanguagePanelText;
-            butShowHelpPanel.Text = csspDesktopService.appTextModel.butShowHelpPanelText;
-            butUpdatesAvailable.Text = csspDesktopService.appTextModel.butUpdatesAvailableText;
+            butStart.Text = CSSPDesktopService.appTextModel.butStartText;
+            butStop.Text = CSSPDesktopService.appTextModel.butStopText;
+            butClose.Text = CSSPDesktopService.appTextModel.butCloseText;
+            butShowLanguagePanel.Text = CSSPDesktopService.appTextModel.butShowLanguagePanelText;
+            butShowHelpPanel.Text = CSSPDesktopService.appTextModel.butShowHelpPanelText;
+            butUpdatesAvailable.Text = CSSPDesktopService.appTextModel.butUpdatesAvailableText;
 
             // PanelHelpCenter
-            butHideHelpPanel.Text = csspDesktopService.appTextModel.butHideHelpPanelText;
+            butHideHelpPanel.Text = CSSPDesktopService.appTextModel.butHideHelpPanelText;
 
             // PanelUpdateCenter
-            butUpdate.Text = csspDesktopService.appTextModel.butUpdateText;
-            butCancelUpdate.Text = csspDesktopService.appTextModel.butCancelUpdateText;
-            butUpdateCompleted.Text = csspDesktopService.appTextModel.butUpdateCompletedText;
-            lblInstalling.Text = csspDesktopService.appTextModel.lblInstallingText;
+            butUpdate.Text = CSSPDesktopService.appTextModel.butUpdateText;
+            butCancelUpdate.Text = CSSPDesktopService.appTextModel.butCancelUpdateText;
+            butUpdateCompleted.Text = CSSPDesktopService.appTextModel.butUpdateCompletedText;
+            lblInstalling.Text = CSSPDesktopService.appTextModel.lblInstallingText;
 
             // PanelLoginCenter
-            lblLoginEmail.Text = csspDesktopService.appTextModel.lblLoginEmailText;
-            lblPassword.Text = csspDesktopService.appTextModel.lblPasswordText;
-            butLogin.Text = csspDesktopService.appTextModel.butLoginText;
+            lblLoginEmail.Text = CSSPDesktopService.appTextModel.lblLoginEmailText;
+            lblPassword.Text = CSSPDesktopService.appTextModel.lblPasswordText;
+            butLogin.Text = CSSPDesktopService.appTextModel.butLoginText;
 
             // PanelStatus
-            lblStatus.Text = csspDesktopService.appTextModel.lblStatusText;
+            lblStatus.Text = CSSPDesktopService.appTextModel.lblStatusText;
         }
         private void ShowPanels(ShowPanel showPanel)
         {
@@ -360,13 +419,13 @@ namespace CSSPDesktop
         {
             butStart.Enabled = false;
             butStop.Enabled = true;
-            csspDesktopService.Start();
+            CSSPDesktopService.Start();
         }
         private void Stop()
         {
             butStart.Enabled = true;
             butStop.Enabled = false;
-            csspDesktopService.Stop();
+            CSSPDesktopService.Stop();
         }
         #endregion Functions private
 

@@ -11,18 +11,26 @@ namespace CSSPDesktopServices.Services
     {
         private async Task<bool> DoCreateAllRequiredDirectories()
         {
-
-            string appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
-
-            AppDataPath = appDataPath + "\\cssp\\";
-            StartUrl = "https://localhost:4447/";
-            CSSPWebAPIsExeFullPath = AppDataPath + "csspdesktop\\CSSPWebAPIs.exe";
-
-            FileInfo fi = new FileInfo(CSSPWebAPIsExeFullPath);
-            if (!fi.Exists)
+            List<string> DirectoryToCreateList = new List<string>()
             {
-                AppendStatus(new AppendEventArgs(string.Format(appTextModel.CouldNotFindFile_, fi.FullName)));
-                return await Task.FromResult(false);
+                CSSPDesktopPath, LocalCSSPWebAPIsPath, LocalCSSPJSONPath, LocalCSSPFilesPath
+            };
+
+            foreach (string dirStr in DirectoryToCreateList)
+            {
+                DirectoryInfo di = new DirectoryInfo(CSSPDesktopPath);
+                if (!di.Exists)
+                {
+                    try
+                    {
+                        di.Create();
+                    }
+                    catch (Exception ex)
+                    {
+                        AppendStatus(new AppendEventArgs(string.Format(appTextModel.CouldNotCreateDirectory_Error_, di.FullName, ex.Message)));
+                        return await Task.FromResult(false);
+                    }
+                }
             }
 
             return await Task.FromResult(true);

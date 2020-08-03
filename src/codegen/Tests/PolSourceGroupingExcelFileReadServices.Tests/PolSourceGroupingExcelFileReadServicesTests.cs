@@ -78,10 +78,9 @@ namespace PolSourceGroupingExcelFileReadServices.Tests
             ServiceCollection.AddSingleton<IValidateAppSettingsService, ValidateAppSettingsService>();
             ServiceCollection.AddSingleton<IPolSourceGroupingExcelFileReadService, PolSourceGroupingExcelFileReadService>();
 
-            string appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
             Assert.NotNull(Configuration.GetValue<string>(DBFileName));
 
-            FileInfo fiDB = new FileInfo(Configuration.GetValue<string>(DBFileName).Replace("{AppDataPath}", appDataPath));
+            FileInfo fiDB = new FileInfo(Configuration.GetValue<string>(DBFileName));
             Assert.True(fiDB.Exists);
 
             ServiceCollection.AddDbContext<ActionCommandContext>(options =>

@@ -167,6 +167,7 @@ namespace ServicesClassNameServiceGeneratedServices.Services
                     if (dllTypeInfoModels.Type.Name == "Contact")
                     {
                         sb.AppendLine($@"       Task<ActionResult<{ dllTypeInfoModels.Type.Name }>> Login(LoginModel loginModel);");
+                        sb.AppendLine($@"       Task<ActionResult<string>> AzureStore();");
                         sb.AppendLine($@"       Task<ActionResult<{ dllTypeInfoModels.Type.Name }>> Register(RegisterModel registerModel);");
                     }
                     sb.AppendLine(@"    }");
@@ -261,6 +262,7 @@ namespace ServicesClassNameServiceGeneratedServices.Services
                     if (dllTypeInfoModels.Type.Name == "Contact")
                     {
                         if (!await CreateLogin(dllTypeInfoModels, dllTypeInfoModels.Type.Name, TypeNameLower, sb)) return await Task.FromResult(false);
+                        if (!await CreateAzureStore(dllTypeInfoModels, dllTypeInfoModels.Type.Name, TypeNameLower, sb)) return await Task.FromResult(false);
                     }
                     sb.AppendLine(@"        #endregion Functions public");
                     sb.AppendLine(@"");

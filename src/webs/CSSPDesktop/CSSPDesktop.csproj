@@ -19,11 +19,38 @@
     <OutputPath>..\_packageCSSPDesktop\</OutputPath>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DefineConstants>TRACE</DefineConstants>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="appsettings_csspdesktop.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="appsettings_csspdesktop.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="3.1.6" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.6" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="3.1.6" />
+    <PackageReference Include="Microsoft.Extensions.Configuration" Version="3.1.6" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.FileExtensions" Version="3.1.6" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="3.1.6" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="3.1.6" />
+  </ItemGroup>
+
   <ItemGroup>
     <Folder Include="helpdocs\images\" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\dlls\CSSPServices\CSSPServices.csproj" />
     <ProjectReference Include="..\CSSPDesktopServices\CSSPDesktopServices.csproj" />
   </ItemGroup>
 

@@ -53,6 +53,8 @@ namespace CSSPDesktopServices.Models
 
             // Error
             CouldNotFindFile_ = "Could not find file [{0}]";
+            CouldNotCreateDirectory_Error_ = "Could not create directory [{0}]. Error: [{1}]";
+            _CouldNotBeFoundInConfigurationFile_ = "{0} could not be found in the configuration file {1}";
 
             // Message
             ConnectedOnInternet = "Connected On Internet";
@@ -106,6 +108,8 @@ namespace CSSPDesktopServices.Models
 
             // Error
             CouldNotFindFile_ = "Dans l'impossibilité de trouver la filière [{0}]";
+            CouldNotCreateDirectory_Error_ = "Dans l'impossibilité de créer le répertoire [{0}]. Erreur: [{1}]";
+            _CouldNotBeFoundInConfigurationFile_ = "Dans l'impossibilité de trouver {0} dans la filière de configuration {1}"; 
 
             // Message
             ConnectedOnInternet = "Connexion internet exist";
@@ -159,6 +163,8 @@ namespace CSSPDesktopServices.Models
 
         // Error
         public string CouldNotFindFile_ { get; set; }
+        public string CouldNotCreateDirectory_Error_ { get; set; }
+        public string _CouldNotBeFoundInConfigurationFile_ { get; set; }
 
         // Message
         public string ConnectedOnInternet { get; set; }

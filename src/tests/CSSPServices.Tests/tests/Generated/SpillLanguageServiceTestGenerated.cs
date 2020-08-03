@@ -309,9 +309,7 @@ namespace CSSPServices.Tests
                 options.UseInMemoryDatabase(TestDBConnString);
             });
 
-            string appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
-
-            FileInfo fiAppDataPath = new FileInfo(CSSPDBLocalFileName.Replace("{AppDataPath}", appDataPath));
+            FileInfo fiAppDataPath = new FileInfo(CSSPDBLocalFileName);
 
             Services.AddDbContext<CSSPDBLocalContext>(options =>
             {
@@ -382,7 +380,7 @@ namespace CSSPServices.Tests
 
                 try
                 {
-                    dbIM.Spills.Add(new Spill() { SpillID = 1, MunicipalityTVItemID = 39, InfrastructureTVItemID = 41, StartDateTime_Local = new DateTime(2015, 7, 21, 14, 33, 26), EndDateTime_Local = new DateTime(2015, 7, 21, 20, 33, 26), AverageFlow_m3_day = 34.5, LastUpdateDate_UTC = new DateTime(2020, 7, 21, 14, 33, 26), LastUpdateContactTVItemID = 2 });
+                    dbIM.Spills.Add(new Spill() { SpillID = 1, MunicipalityTVItemID = 39, InfrastructureTVItemID = 41, StartDateTime_Local = new DateTime(2015, 7, 23, 9, 37, 43), EndDateTime_Local = new DateTime(2015, 7, 23, 15, 37, 43), AverageFlow_m3_day = 34.5, LastUpdateDate_UTC = new DateTime(2020, 7, 23, 9, 37, 43), LastUpdateContactTVItemID = 2 });
                     dbIM.SaveChanges();
                 }
                 catch (Exception)

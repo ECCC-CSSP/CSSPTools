@@ -14,8 +14,6 @@ namespace CSSPServices
     {
         private async Task<bool> DoCreateSQLiteCSSPDBLocal()
         {
-            string appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
-
             string CSSPDBLocalText = Configuration.GetValue<string>("CSSPDBLocal");
             if (string.IsNullOrWhiteSpace(CSSPDBLocalText))
             {
@@ -23,7 +21,7 @@ namespace CSSPServices
                 return await Task.FromResult(false);
             }
 
-            FileInfo fiCSSPDBLocal = new FileInfo(CSSPDBLocalText.Replace("{AppDataPath}", appDataPath));
+            FileInfo fiCSSPDBLocal = new FileInfo(CSSPDBLocalText);
 
             if (!await CSSPDBLocalIsEmpty())
             {

@@ -27,13 +27,12 @@ namespace CSSPServices
                 List<string> StoragePathList = new List<string>() { "LocalJSONPath", "LocalFilesPath" };
                 foreach (string StoragePath in StoragePathList)
                 {
-                    string appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
                     if (Configuration.GetValue<string>(StoragePath) == null)
                     {
                         throw new Exception($"{ String.Format(CSSPCultureServicesRes.CouldNotFindParameter_InAppSettingsJSON, StoragePath) }");
                     }
 
-                    DirectoryInfo di = new DirectoryInfo(Configuration.GetValue<string>(StoragePath).Replace("{AppDataPath}", appDataPath));
+                    DirectoryInfo di = new DirectoryInfo(Configuration.GetValue<string>(StoragePath));
 
                     if (!di.Exists)
                     {

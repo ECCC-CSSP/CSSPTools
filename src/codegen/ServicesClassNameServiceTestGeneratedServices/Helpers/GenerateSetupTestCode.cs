@@ -30,14 +30,12 @@ namespace ServicesClassNameServiceTestGeneratedServices.Services
             sb.AppendLine(@"                options.UseSqlServer(TestDBConnString);");
             sb.AppendLine(@"            });");
             sb.AppendLine(@"");
-            sb.AppendLine(@"            Services.AddDbContext<InMemoryDBContext>(options =>");
+            sb.AppendLine(@"            Services.AddDbContext<CSSPDBInMemoryContext>(options =>");
             sb.AppendLine(@"            {");
             sb.AppendLine(@"                options.UseInMemoryDatabase(TestDBConnString);");
             sb.AppendLine(@"            });");
             sb.AppendLine(@"");
-            sb.AppendLine(@"            string appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);");
-            sb.AppendLine(@"");
-            sb.AppendLine(@"            FileInfo fiAppDataPath = new FileInfo(CSSPDBLocalFileName.Replace(""{AppDataPath}"", appDataPath));");
+            sb.AppendLine(@"            FileInfo fiAppDataPath = new FileInfo(CSSPDBLocalFileName);");
             sb.AppendLine(@"");
             sb.AppendLine(@"            Services.AddDbContext<CSSPDBLocalContext>(options =>");
             sb.AppendLine(@"            {");
@@ -88,7 +86,7 @@ namespace ServicesClassNameServiceTestGeneratedServices.Services
             sb.AppendLine(@"");
             sb.AppendLine(@"            LoggedInService.DBLocation = DBLocationEnum.Local;");
             sb.AppendLine(@"");
-            sb.AppendLine(@"            dbIM = Provider.GetService<InMemoryDBContext>();");
+            sb.AppendLine(@"            dbIM = Provider.GetService<CSSPDBInMemoryContext>();");
             sb.AppendLine(@"            Assert.NotNull(dbIM);");
             sb.AppendLine(@"");
             sb.AppendLine(@"            dbLocal = Provider.GetService<CSSPDBLocalContext>();");

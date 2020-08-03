@@ -62,7 +62,6 @@
             this.lblSatusText = new System.Windows.Forms.Label();
             this.richTextBoxStatus = new System.Windows.Forms.RichTextBox();
             this.timerCheckInternetConnection = new System.Windows.Forms.Timer(this.components);
-            this.button1 = new System.Windows.Forms.Button();
             this.panelLanguageCenter.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainerFirst)).BeginInit();
             this.splitContainerFirst.Panel1.SuspendLayout();
@@ -334,7 +333,6 @@
             // 
             // panelCommandsCenter
             // 
-            this.panelCommandsCenter.Controls.Add(this.button1);
             this.panelCommandsCenter.Controls.Add(this.butStart);
             this.panelCommandsCenter.Controls.Add(this.butShowHelpPanel);
             this.panelCommandsCenter.Controls.Add(this.butClose);
@@ -480,15 +478,6 @@
             this.timerCheckInternetConnection.Interval = 5000;
             this.timerCheckInternetConnection.Tick += new System.EventHandler(this.timerCheckInternetConnection_Tick);
             // 
-            // button1
-            // 
-            this.button1.Location = new System.Drawing.Point(246, 31);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(70, 110);
-            this.button1.TabIndex = 7;
-            this.button1.Text = "button1";
-            this.button1.UseVisualStyleBackColor = true;
-            // 
             // CSSPDesktopForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -551,7 +540,6 @@
         private System.Windows.Forms.Label lblCSSPWebToolsLoginOneTime;
         private System.Windows.Forms.Button butLogin;
         private System.Windows.Forms.RichTextBox richTextBoxHelp;
-        private System.Windows.Forms.Button button1;
     }
 }
 

@@ -78,7 +78,7 @@ namespace CSSPDesktopServices.Services
 
                 string stringData = JsonSerializer.Serialize(loginModel);
                 var contentData = new StringContent(stringData, Encoding.UTF8, "application/json");
-                HttpResponseMessage response = httpClient.PostAsync(ServerLoginUrl, contentData).Result;
+                HttpResponseMessage response = httpClient.PostAsync($"{ CSSPAzureUrl }api/en-CA/auth/token", contentData).Result;
                 Contact contact = JsonSerializer.Deserialize<Contact>(response.Content.ReadAsStringAsync().Result);
                 AppendStatus(new AppendEventArgs(contact.Token));
             }

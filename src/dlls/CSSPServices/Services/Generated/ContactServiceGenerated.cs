@@ -34,6 +34,7 @@ namespace CSSPServices
        Task<ActionResult<Contact>> Post(Contact contact, AddContactTypeEnum addContactType);
        Task<ActionResult<Contact>> Put(Contact contact);
        Task<ActionResult<Contact>> Login(LoginModel loginModel);
+       Task<ActionResult<string>> AzureStore();
        Task<ActionResult<Contact>> Register(RegisterModel registerModel);
     }
     public partial class ContactService : ControllerBase, IContactService
@@ -376,7 +377,6 @@ namespace CSSPServices
                         return BadRequest(String.Format(CSSPCultureServicesRes.UnableToLoginAs_WithProvidedPassword, loginModel.LoginEmail));
                     }
 
-
                     byte[] key = Encoding.ASCII.GetBytes(Configuration.GetValue<string>("APISecret"));
 
                     JwtSecurityTokenHandler tokenHandler = new JwtSecurityTokenHandler();
@@ -401,6 +401,16 @@ namespace CSSPServices
             }
 
             return BadRequest(String.Format(CSSPCultureServicesRes.UnableToLoginAs_WithProvidedPassword, loginModel.LoginEmail));
+        }
+        public async Task<ActionResult<string>> AzureStore()
+        {
+            string sto = Configuration.GetValue<string>("AzureCSSPStorageConnectionString");
+            if (string.IsNullOrWhiteSpace(sto))
+            {
+                return await Task.FromResult(BadRequest(String.Format(CSSPCultureServicesRes.__CouldNotBeFound, "Configuration", "AzureCSSPStorageConnectionString")));
+            }
+
+            return await Task.FromResult(Ok(sto));
         }
         #endregion Functions public
 

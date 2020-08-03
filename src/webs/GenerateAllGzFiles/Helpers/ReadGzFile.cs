@@ -13,7 +13,7 @@ namespace GenerateAllGzFiles
     {
         private async Task<bool> ReadGzFile()
         {
-            FileInfo fi = new FileInfo(@"C:\Users\charl\AppData\Roaming\cssp\csspjson\WebRoot.gz");
+            FileInfo fi = new FileInfo(@"C:\CSSPDesktop\csspjson\WebRoot.gz");
 
             if (!fi.Exists)
             {

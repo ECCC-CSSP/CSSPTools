@@ -14,8 +14,6 @@ namespace CSSPServices
     {
         private async Task<bool> DoCreateSQLiteCSSPDBLogin()
         {
-            string appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
-
             string CSSPLoginDB = Configuration.GetValue<string>("CSSPDBLogin");
             if (string.IsNullOrWhiteSpace(CSSPLoginDB))
             {
@@ -23,7 +21,7 @@ namespace CSSPServices
                 return await Task.FromResult(false);
             }
 
-            FileInfo fiCSSPLoginDB = new FileInfo(CSSPLoginDB.Replace("{AppDataPath}", appDataPath));
+            FileInfo fiCSSPLoginDB = new FileInfo(CSSPLoginDB);
 
             if (!await CSSPDBLoginIsEmpty())
             {

@@ -324,9 +324,7 @@ namespace CSSPServices.Tests
                 options.UseInMemoryDatabase(TestDBConnString);
             });
 
-            string appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
-
-            FileInfo fiAppDataPath = new FileInfo(CSSPDBLocalFileName.Replace("{AppDataPath}", appDataPath));
+            FileInfo fiAppDataPath = new FileInfo(CSSPDBLocalFileName);
 
             Services.AddDbContext<CSSPDBLocalContext>(options =>
             {
@@ -398,7 +396,7 @@ namespace CSSPServices.Tests
 
                 try
                 {
-                    dbIM.AppTasks.Add(new AppTask() { AppTaskID = 1, TVItemID = 5, TVItemID2 = 5, AppTaskCommand = (AppTaskCommandEnum)1, AppTaskStatus = (AppTaskStatusEnum)1, PercentCompleted = 1, Parameters = "a,a", Language = (LanguageEnum)1, StartDateTime_UTC = new DateTime(2015, 7, 21, 14, 33, 26), EndDateTime_UTC = new DateTime(2015, 7, 21, 18, 33, 26), EstimatedLength_second = 1201, RemainingTime_second = 234, LastUpdateDate_UTC = new DateTime(2020, 7, 21, 14, 33, 26), LastUpdateContactTVItemID = 2 });
+                    dbIM.AppTasks.Add(new AppTask() { AppTaskID = 1, TVItemID = 5, TVItemID2 = 5, AppTaskCommand = (AppTaskCommandEnum)1, AppTaskStatus = (AppTaskStatusEnum)1, PercentCompleted = 1, Parameters = "a,a", Language = (LanguageEnum)1, StartDateTime_UTC = new DateTime(2015, 7, 23, 9, 37, 43), EndDateTime_UTC = new DateTime(2015, 7, 23, 13, 37, 43), EstimatedLength_second = 1201, RemainingTime_second = 234, LastUpdateDate_UTC = new DateTime(2020, 7, 23, 9, 37, 43), LastUpdateContactTVItemID = 2 });
                     dbIM.SaveChanges();
                 }
                 catch (Exception)

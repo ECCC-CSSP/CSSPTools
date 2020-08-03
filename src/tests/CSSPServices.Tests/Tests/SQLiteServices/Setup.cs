@@ -50,8 +50,6 @@ namespace CSSPSQLiteServices.Tests
         #region Functions public
         private async Task<bool> Setup(string culture)
         {
-            string appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
-
             Config = new ConfigurationBuilder()
                .SetBasePath(Directory.GetParent(AppContext.BaseDirectory).FullName)
                .AddJsonFile("appsettings_csspservices.json")
@@ -79,7 +77,7 @@ namespace CSSPSQLiteServices.Tests
             string CSSPDBLocal = Config.GetValue<string>("CSSPDBLocal");
             Assert.NotNull(CSSPDBLocal);
 
-            fiCSSPDBLocal = new FileInfo(CSSPDBLocal.Replace("{AppDataPath}", appDataPath));
+            fiCSSPDBLocal = new FileInfo(CSSPDBLocal);
 
             Services.AddDbContext<CSSPDBLocalContext>(options =>
             {
@@ -90,7 +88,7 @@ namespace CSSPSQLiteServices.Tests
             string CSSPLoginDB = Config.GetValue<string>("CSSPDBLogin");
             Assert.NotNull(CSSPLoginDB);
 
-            fiCSSPDBLogin = new FileInfo(CSSPLoginDB.Replace("{AppDataPath}", appDataPath));
+            fiCSSPDBLogin = new FileInfo(CSSPLoginDB);
 
             Services.AddDbContext<CSSPDBLoginContext>(options =>
             {
@@ -101,7 +99,7 @@ namespace CSSPSQLiteServices.Tests
             string CSSPFilesManagementDB = Config.GetValue<string>("CSSPDBFilesManagement");
             Assert.NotNull(CSSPFilesManagementDB);
 
-            fiCSSPDBFilesManagement = new FileInfo(CSSPFilesManagementDB.Replace("{AppDataPath}", appDataPath));
+            fiCSSPDBFilesManagement = new FileInfo(CSSPFilesManagementDB);
 
             Services.AddDbContext<CSSPDBFilesManagementContext>(options =>
             {

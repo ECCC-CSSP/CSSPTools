@@ -459,9 +459,7 @@ namespace CSSPServices.Tests
                 options.UseInMemoryDatabase(TestDBConnString);
             });
 
-            string appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
-
-            FileInfo fiAppDataPath = new FileInfo(CSSPDBLocalFileName.Replace("{AppDataPath}", appDataPath));
+            FileInfo fiAppDataPath = new FileInfo(CSSPDBLocalFileName);
 
             Services.AddDbContext<CSSPDBLocalContext>(options =>
             {
@@ -541,7 +539,7 @@ namespace CSSPServices.Tests
 
                 try
                 {
-                    dbIM.PolSourceGroupings.Add(new PolSourceGrouping() { PolSourceGroupingID = 1, CSSPID = 10003, GroupName = "FirstGroupName", Child = "FirstChild", Hide = "FirstHide", LastUpdateDate_UTC = new DateTime(2020, 7, 21, 14, 33, 26), LastUpdateContactTVItemID = 2 });
+                    dbIM.PolSourceGroupings.Add(new PolSourceGrouping() { PolSourceGroupingID = 1, CSSPID = 10003, GroupName = "FirstGroupName", Child = "FirstChild", Hide = "FirstHide", LastUpdateDate_UTC = new DateTime(2020, 7, 23, 9, 37, 44), LastUpdateContactTVItemID = 2 });
                     dbIM.SaveChanges();
                 }
                 catch (Exception)

@@ -1,7 +1,11 @@
 ﻿using CSSPDesktopServices.Models;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Reflection.Metadata.Ecma335;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -10,16 +14,14 @@ namespace CSSPDesktopServices.Services
     public interface ICSSPDesktopService
     {
         // Properties
-        string AppDataPath { get; set; }
-        string ServerLoginUrl { get; set; }
-        string StartUrl { get; set; }
-        string CSSPWebAPIsExeFullPath { get; set; }
         bool IsEnglish { get; set; }
-        Process processCSSPWebAPIs { get; set; }
-        Process processBrowser { get; set; }
         AppTextModel appTextModel { get; set; }
         bool? HasInternetConnection { get; set; }
         bool LoginRequired { get; set; }
+        string CSSPDesktopPath { get; set; }
+        string CSSPDBLocal { get; set; }
+        string CSSPDBFilesManagement { get; set; }
+        string CSSPDBLogin { get; set; }
 
         // Functions
         Task<bool> CreateAllRequiredDirectories();
@@ -30,6 +32,7 @@ namespace CSSPDesktopServices.Services
         Task<bool> Stop();
         Task<bool> AnalyseDirectoriesAndDatabases();
         Task<bool> Login(string LoginEmail, string Password);
+        bool ReadConfiguration();
         
         // Events
         event EventHandler<ClearEventArgs> StatusClear;
@@ -45,22 +48,34 @@ namespace CSSPDesktopServices.Services
         #endregion Variables
 
         #region Properties
-        public string AppDataPath { get; set; }
-        public string ServerLoginUrl { get; set; } = "https://csspwebapis.azurewebsites.net/api/en-CA/auth/token";
-        public string StartUrl { get; set; }
-        public string CSSPWebAPIsExeFullPath { get; set; }
-        public bool IsEnglish { get; set; }
-        public Process processCSSPWebAPIs { get; set; }
-        public Process processBrowser { get; set; }
         public AppTextModel appTextModel { get; set; }
         public bool? HasInternetConnection { get; set; } = null;
+        public bool IsEnglish { get; set; }
         public bool LoginRequired { get; set; } = false;
+        public string CSSPDBLocal { get; set; }
+        public string CSSPDBFilesManagement { get; set; }
+        public string CSSPDBLogin { get; set; }
+        public string CSSPDesktopPath { get; set; }
+
+        private IConfiguration Configuration { get; set; }
+        private bool? StoreLocal { get; set; }
+        private bool? StoreInAzure { get; set; }
+        private string LocalCSSPWebAPIsPath { get; set; }
+        private string LocalCSSPJSONPath { get; set; }
+        private string LocalCSSPFilesPath { get; set; }
+        private string AzureStoreCSSPWebAPIsPath { get; set; }
+        private string AzureStoreCSSPJSONPath { get; set; }
+        private string AzureStoreCSSPFilesPath { get; set; }
+        private string CSSPAzureUrl { get; set; }
+        private string CSSPLocalUrl { get; set; }
+        private Process processCSSPWebAPIs { get; set; }
+        private Process processBrowser { get; set; }
         #endregion Properties
 
         #region Constructors
-        public CSSPDesktopService()
+        public CSSPDesktopService(IConfiguration Configuration)
         {
-
+            this.Configuration = Configuration;
         }
         #endregion Constructors
 
@@ -80,6 +95,108 @@ namespace CSSPDesktopServices.Services
             if (!await DoCreateAllRequiredDirectories()) return await Task.FromResult(false);
 
             return await Task.FromResult(true);
+        }
+        public bool ReadConfiguration()
+        {
+            CSSPDesktopPath = Configuration.GetValue<string>("CSSPDesktopPath");
+            if (string.IsNullOrWhiteSpace(CSSPDesktopPath))
+            {
+                AppendStatus(new AppendEventArgs(string.Format(appTextModel._CouldNotBeFoundInConfigurationFile_, "CSSPDesktopPath", "appsettings_csspdesktop.json")));
+                return false;
+            }
+
+            CSSPDBLocal = Configuration.GetValue<string>("CSSPDBLocal");
+            if (string.IsNullOrWhiteSpace(CSSPDBLocal))
+            {
+                AppendStatus(new AppendEventArgs(string.Format(appTextModel._CouldNotBeFoundInConfigurationFile_, "CSSPDBLocal", "appsettings_csspdesktop.json")));
+                return false;
+            }
+
+            CSSPDBFilesManagement = Configuration.GetValue<string>("CSSPDBFilesManagement");
+            if (string.IsNullOrWhiteSpace(CSSPDBFilesManagement))
+            {
+                AppendStatus(new AppendEventArgs(string.Format(appTextModel._CouldNotBeFoundInConfigurationFile_, "CSSPDBFilesManagement", "appsettings_csspdesktop.json")));
+                return false;
+            }
+
+            CSSPDBLogin = Configuration.GetValue<string>("CSSPDBLogin");
+            if (string.IsNullOrWhiteSpace(CSSPDBLogin))
+            {
+                AppendStatus(new AppendEventArgs(string.Format(appTextModel._CouldNotBeFoundInConfigurationFile_, "CSSPDBLogin", "appsettings_csspdesktop.json")));
+                return false;
+            }
+
+            StoreLocal = Configuration.GetValue<bool>("StoreLocal");
+            if (StoreLocal == null)
+            {
+                AppendStatus(new AppendEventArgs(string.Format(appTextModel._CouldNotBeFoundInConfigurationFile_, "StoreLocal", "appsettings_csspdesktop.json")));
+                return false;
+            }
+
+            StoreInAzure = Configuration.GetValue<bool>("StoreInAzure");
+            if (StoreInAzure == null)
+            {
+                AppendStatus(new AppendEventArgs(string.Format(appTextModel._CouldNotBeFoundInConfigurationFile_, "StoreInAzure", "appsettings_csspdesktop.json")));
+                return false;
+            }
+
+            LocalCSSPWebAPIsPath = Configuration.GetValue<string>("LocalCSSPWebAPIsPath");
+            if (string.IsNullOrWhiteSpace(LocalCSSPWebAPIsPath))
+            {
+                AppendStatus(new AppendEventArgs(string.Format(appTextModel._CouldNotBeFoundInConfigurationFile_, "LocalCSSPWebAPIsPath", "appsettings_csspdesktop.json")));
+                return false;
+            }
+
+            LocalCSSPJSONPath = Configuration.GetValue<string>("LocalCSSPJSONPath");
+            if (string.IsNullOrWhiteSpace(LocalCSSPJSONPath))
+            {
+                AppendStatus(new AppendEventArgs(string.Format(appTextModel._CouldNotBeFoundInConfigurationFile_, "LocalCSSPJSONPath", "appsettings_csspdesktop.json")));
+                return false;
+            }
+
+            LocalCSSPFilesPath = Configuration.GetValue<string>("LocalCSSPFilesPath");
+            if (string.IsNullOrWhiteSpace(LocalCSSPFilesPath))
+            {
+                AppendStatus(new AppendEventArgs(string.Format(appTextModel._CouldNotBeFoundInConfigurationFile_, "LocalCSSPFilesPath", "appsettings_csspdesktop.json")));
+                return false;
+            }
+
+            AzureStoreCSSPWebAPIsPath = Configuration.GetValue<string>("AzureStoreCSSPWebAPIsPath");
+            if (string.IsNullOrWhiteSpace(AzureStoreCSSPWebAPIsPath))
+            {
+                AppendStatus(new AppendEventArgs(string.Format(appTextModel._CouldNotBeFoundInConfigurationFile_, "AzureStoreCSSPWebAPIsPath", "appsettings_csspdesktop.json")));
+                return false;
+            }
+
+            AzureStoreCSSPJSONPath = Configuration.GetValue<string>("AzureStoreCSSPJSONPath");
+            if (string.IsNullOrWhiteSpace(AzureStoreCSSPJSONPath))
+            {
+                AppendStatus(new AppendEventArgs(string.Format(appTextModel._CouldNotBeFoundInConfigurationFile_, "AzureStoreCSSPJSONPath", "appsettings_csspdesktop.json")));
+                return false;
+            }
+
+            AzureStoreCSSPFilesPath = Configuration.GetValue<string>("AzureStoreCSSPFilesPath");
+            if (string.IsNullOrWhiteSpace(AzureStoreCSSPFilesPath))
+            {
+                AppendStatus(new AppendEventArgs(string.Format(appTextModel._CouldNotBeFoundInConfigurationFile_, "AzureStoreCSSPFilesPath", "appsettings_csspdesktop.json")));
+                return false;
+            }
+
+            CSSPAzureUrl = Configuration.GetValue<string>("CSSPAzureUrl");
+            if (string.IsNullOrWhiteSpace(CSSPAzureUrl))
+            {
+                AppendStatus(new AppendEventArgs(string.Format(appTextModel._CouldNotBeFoundInConfigurationFile_, "CSSPAzureUrl", "appsettings_csspdesktop.json")));
+                return false;
+            }
+
+            CSSPLocalUrl = Configuration.GetValue<string>("CSSPLocalUrl");
+            if (string.IsNullOrWhiteSpace(CSSPLocalUrl))
+            {
+                AppendStatus(new AppendEventArgs(string.Format(appTextModel._CouldNotBeFoundInConfigurationFile_, "CSSPLocalUrl", "appsettings_csspdesktop.json")));
+                return false;
+            }
+
+            return true;
         }
         public async Task<bool> Start()
         {
