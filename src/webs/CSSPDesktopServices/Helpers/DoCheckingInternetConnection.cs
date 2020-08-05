@@ -17,23 +17,15 @@ namespace CSSPDesktopServices.Services
             try
             {
                 HttpClient httpClient = new HttpClient();
-                foreach (string url in new List<string>() { "https://www.google.com/", "https://www.bing.com/" })
+                string ret = await httpClient.GetStringAsync("https://www.google.com/");
+                if (!string.IsNullOrWhiteSpace(ret))
                 {
-                    string ret = await httpClient.GetStringAsync(url);
-                    if (!string.IsNullOrWhiteSpace(ret))
-                    {
-                        HasInternetConnection = true;
-                    }
-                    else
-                    {
-                        HasInternetConnection = false;
-                    }
+                    HasInternetConnection = true;
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                AppendStatus(new AppendEventArgs(ex.Message));
-                return await Task.FromResult(false);
+                HasInternetConnection = false;
             }
 
             return await Task.FromResult(true);

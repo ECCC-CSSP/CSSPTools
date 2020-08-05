@@ -13,11 +13,11 @@ namespace CSSPDesktopServices.Services
         private async Task<bool> OpenCSSPWebAPIs()
         {
             ProcessStartInfo processStartInfo = new ProcessStartInfo();
-            processStartInfo.FileName = $"{ LocalCSSPWebAPIsPath.Replace("{CSSPDesktopPath}", CSSPDesktopPath) }CSSPWebAPIs.exe";
+            processStartInfo.FileName = $"{ LocalCSSPWebAPIsPath }CSSPWebAPIs.exe";
             processStartInfo.Arguments = "";
             processStartInfo.UseShellExecute = true;
-            //processStartInfo.CreateNoWindow = true;
-            //processStartInfo.WindowStyle = ProcessWindowStyle.Hidden;
+            processStartInfo.CreateNoWindow = true;
+            processStartInfo.WindowStyle = ProcessWindowStyle.Hidden;
             processCSSPWebAPIs = Process.Start(processStartInfo);
 
             return await Task.FromResult(true);

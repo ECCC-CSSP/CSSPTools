@@ -30,6 +30,7 @@ namespace CSSPDesktop
         private IServiceProvider Provider { get; set; }
         private IServiceCollection Services { get; set; }
         private ICSSPDesktopService CSSPDesktopService { get; set; }
+        private ICSSPSQLiteService CSSPSQLiteService { get; set; }
         bool IsEnglish { get; set; } = true;
         #endregion Properties
 
@@ -68,11 +69,11 @@ namespace CSSPDesktop
         }
         private void butSetLanguageToEnglish_Click(object sender, EventArgs e)
         {
-            SetLanguageToEnglish();
+            SetLanguage(true);
         }
         private void butSetLanguageToFrancais_Click(object sender, EventArgs e)
         {
-            SetLanguageToFrench();
+            SetLanguage(false);
         }
         private void butStart_Click(object sender, EventArgs e)
         {
@@ -172,33 +173,6 @@ namespace CSSPDesktop
             RecenterPanels();
         }
         #endregion Form Resize
-        #region TimerCheckInternetConnection
-        private void timerCheckInternetConnection_Tick(object sender, EventArgs e)
-        {
-            timerCheckInternetConnection.Stop();
-
-            DoTimerCheckInternetConnection();
-
-            timerCheckInternetConnection.Start();
-        }
-
-        private void DoTimerCheckInternetConnection()
-        {
-            CSSPDesktopService.CheckingInternetConnection();
-
-            if (CSSPDesktopService.HasInternetConnection != null)
-            {
-                if ((bool)CSSPDesktopService.HasInternetConnection)
-                {
-                    Text = CSSPDesktopService.appTextModel.FormTitleText + $" --- ({ CSSPDesktopService.appTextModel.ConnectedOnInternet })";
-                }
-                else
-                {
-                    Text = CSSPDesktopService.appTextModel.FormTitleText + $" --- ({ CSSPDesktopService.appTextModel.NoInternetConnection })";
-                }
-            }
-        }
-        #endregion TimerCheckInternetConnection
         #region csspDesktopServiceEvent
         private void CSSPDesktopService_StatusClear(object sender, ClearEventArgs e)
         {
@@ -233,6 +207,22 @@ namespace CSSPDesktop
         #endregion Functions public
 
         #region Functions private
+        private void CheckInternetConnection()
+        {
+            CSSPDesktopService.CheckingInternetConnection();
+
+            if (CSSPDesktopService.HasInternetConnection != null)
+            {
+                if ((bool)CSSPDesktopService.HasInternetConnection)
+                {
+                    Text = CSSPDesktopService.appTextModel.FormTitleText + $" --- ({ CSSPDesktopService.appTextModel.ConnectedOnInternet })";
+                }
+                else
+                {
+                    Text = CSSPDesktopService.appTextModel.FormTitleText + $" --- ({ CSSPDesktopService.appTextModel.NoInternetConnection })";
+                }
+            }
+        }
         private void RecenterPanels()
         {
             panelCommandsCenter.Top = panelCommandsCenter.Parent.Height / 2 - panelCommandsCenter.Height / 2;
@@ -249,20 +239,38 @@ namespace CSSPDesktop
 
             butHideHelpPanel.Left = panelHelpTop.Width / 2 - butHideHelpPanel.Width / 2;
         }
-        private void SetLanguageToEnglish()
+        private void SetLanguage(bool isEnglish)
         {
-            IsEnglish = true;
-            StartTheAppWithLanguage();
-        }
-        private void SetLanguageToFrench()
-        {
-            IsEnglish = false;
+            IsEnglish = isEnglish;
             StartTheAppWithLanguage();
         }
         private void StartTheAppWithLanguage()
         {
             SettingUpAllTextForLanguage();
-            CSSPDesktopService.AnalyseDirectoriesAndDatabases();
+            CSSPDesktopService.CreateAllRequiredDirectories();
+            
+            // create CSSPDBLocal if it does not exist
+            FileInfo fi = new FileInfo(CSSPDesktopService.CSSPDBLocal);
+            if (!fi.Exists)
+            {
+                CSSPSQLiteService.CreateSQLiteCSSPDBLocal();
+            }
+
+            // create CSSPDBFilesManagement if it does not exist
+            fi = new FileInfo(CSSPDesktopService.CSSPDBFilesManagement);
+            if (!fi.Exists)
+            {
+                CSSPSQLiteService.CreateSQLiteCSSPDBFilesManagement();
+            }
+
+            // create CSSPDBLogin if it does not exist
+            fi = new FileInfo(CSSPDesktopService.CSSPDBLogin);
+            if (!fi.Exists)
+            {
+                CSSPSQLiteService.CreateSQLiteCSSPDBLogin();
+            }
+
+            CSSPDesktopService.LoginRequired = CSSPSQLiteService.CheckForLoginInfoInCSSPDBLogin().GetAwaiter().GetResult();
             if (CSSPDesktopService.LoginRequired)
             {
                 ShowPanels(ShowPanel.Login);
@@ -283,11 +291,16 @@ namespace CSSPDesktop
 
             Services.AddSingleton<IConfiguration>(Configuration);
 
+            Services.AddSingleton<ICSSPCultureService, CSSPCultureService>();
+            Services.AddSingleton<ILoggedInService, LoggedInService>();
+            Services.AddSingleton<IEnums, Enums>();
             Services.AddSingleton<ICSSPDesktopService, CSSPDesktopService>();
+            Services.AddSingleton<ICSSPSQLiteService, CSSPSQLiteService>();
 
             Provider = Services.BuildServiceProvider();
 
             CSSPDesktopService = Provider.GetService<ICSSPDesktopService>();
+            CSSPSQLiteService = Provider.GetService<ICSSPSQLiteService>();
             if (CSSPDesktopService == null)
             {
                 if (!IsEnglish)
@@ -308,7 +321,7 @@ namespace CSSPDesktop
             CSSPDesktopService.StatusErrorMessage += CSSPDesktopService_StatusErrorMessage;
 
             CSSPDesktopService.IsEnglish = IsEnglish;
-            if (!CSSPDesktopService.ReadConfiguration()) return false;
+            if (!CSSPDesktopService.ReadConfiguration().GetAwaiter().GetResult()) return false;
 
             SettingUpAllTextForLanguage();
 
@@ -321,23 +334,30 @@ namespace CSSPDesktop
 
             RecenterPanels();
 
-            CSSPDesktopService.CreateAllRequiredDirectories();
-
-            FileInfo fiCSSPDBLocal = new FileInfo(CSSPDesktopService.CSSPDBLocal.Replace("{CSSPDesktopPath}", CSSPDesktopService.CSSPDesktopPath));
+            FileInfo fiCSSPDBLocal = new FileInfo(CSSPDesktopService.CSSPDBLocal);
 
             Services.AddDbContext<CSSPDBLocalContext>(options =>
             {
                 options.UseSqlite($"Data Source={ fiCSSPDBLocal.FullName }");
             });
 
-            FileInfo fiCSSPDBLogin = new FileInfo(CSSPDesktopService.CSSPDBLogin.Replace("{CSSPDesktopPath}", CSSPDesktopService.CSSPDesktopPath));
+            FileInfo fiCSSPDBFileManagement = new FileInfo(CSSPDesktopService.CSSPDBFilesManagement);
 
-            Services.AddDbContext<CSSPDBLocalContext>(options =>
+            Services.AddDbContext<CSSPDBFilesManagementContext>(options =>
+            {
+                options.UseSqlite($"Data Source={ fiCSSPDBFileManagement.FullName }");
+            });
+
+            FileInfo fiCSSPDBLogin = new FileInfo(CSSPDesktopService.CSSPDBLogin);
+
+            Services.AddDbContext<CSSPDBLoginContext>(options =>
             {
                 options.UseSqlite($"Data Source={ fiCSSPDBLogin.FullName }");
             });
 
             Provider = Services.BuildServiceProvider();
+
+            CheckInternetConnection();
 
             return true;
         }
@@ -355,7 +375,21 @@ namespace CSSPDesktop
             }
 
             // Form
-            Text = CSSPDesktopService.appTextModel.FormTitleText;
+            if (CSSPDesktopService.HasInternetConnection == null)
+            {
+                Text = CSSPDesktopService.appTextModel.FormTitleText;
+            }
+            else
+            {
+                if ((bool)CSSPDesktopService.HasInternetConnection)
+                {
+                    Text = CSSPDesktopService.appTextModel.FormTitleText + $" --- ({ CSSPDesktopService.appTextModel.ConnectedOnInternet })";
+                }
+                else
+                {
+                    Text = CSSPDesktopService.appTextModel.FormTitleText + $" --- ({ CSSPDesktopService.appTextModel.NoInternetConnection })";
+                }
+            }
 
             // PanelButtonsCenter
             butStart.Text = CSSPDesktopService.appTextModel.butStartText;
@@ -393,7 +427,16 @@ namespace CSSPDesktop
             switch (showPanel)
             {
                 case ShowPanel.Commands:
-                    panelCommandsCenter.Visible = true;
+                    {
+                        if (CSSPDesktopService.LoginRequired)
+                        {
+                            panelLoginCenter.Visible = true;
+                        }
+                        else
+                        {
+                            panelCommandsCenter.Visible = true;
+                        }
+                    }
                     break;
                 case ShowPanel.Language:
                     panelLanguageCenter.Visible = true;

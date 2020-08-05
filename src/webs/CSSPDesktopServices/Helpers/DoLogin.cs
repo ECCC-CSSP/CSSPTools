@@ -1,4 +1,8 @@
-﻿using CSSPDesktopServices.Models;
+﻿using CSSPCultureServices.Resources;
+using CSSPDesktopServices.Models;
+using CSSPModels;
+using CSSPServices;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
@@ -6,52 +10,13 @@ using System.Net.Http.Headers;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
+using System.Linq;
 
 namespace CSSPDesktopServices.Services
 {
     public partial class CSSPDesktopService
     {
-        public enum ContactTitleEnum
-        {
-            DirectorGeneral = 1,
-            DirectorPublicWorks = 2,
-            Superintendent = 3,
-            Engineer = 4,
-            Foreman = 5,
-            Operator = 6,
-            FacilitiesManager = 7,
-            Supervisor = 8,
-            Technician = 9,
-        }
-
-        public class LoginModel
-        {
-            public string LoginEmail { get; set; }
-            public string Password { get; set; }
-        }
-
-        public partial class Contact
-        {
-            public int ContactID { get; set; }
-            public string Id { get; set; }
-            public int ContactTVItemID { get; set; }
-            public string LoginEmail { get; set; }
-            public string FirstName { get; set; }
-            public string LastName { get; set; }
-            public string Initial { get; set; }
-            public string WebName { get; set; }
-            public ContactTitleEnum? ContactTitle { get; set; }
-            public bool IsAdmin { get; set; }
-            public bool EmailValidated { get; set; }
-            public bool Disabled { get; set; }
-            public bool IsNew { get; set; }
-            public string SamplingPlanner_ProvincesTVItemID { get; set; }
-            public string Token { get; set; }
-            public DateTime LastUpdateDate_UTC { get; set; }
-            public int LastUpdateContactTVItemID { get; set; }
-        }
-
-            private async Task<bool> DoLogin(string LoginEmail, string Password)
+        private async Task<bool> DoLogin(string LoginEmail, string Password)
         {
             if (string.IsNullOrWhiteSpace(LoginEmail))
             {
@@ -76,14 +41,175 @@ namespace CSSPDesktopServices.Services
                     Password = Password
                 };
 
+                // trying to login
                 string stringData = JsonSerializer.Serialize(loginModel);
                 var contentData = new StringContent(stringData, Encoding.UTF8, "application/json");
                 HttpResponseMessage response = httpClient.PostAsync($"{ CSSPAzureUrl }api/en-CA/auth/token", contentData).Result;
+                if ((int)response.StatusCode != 200)
+                {
+                    if ((int)response.StatusCode == 400)
+                    {
+                        AppendTempStatus(new AppendTempEventArgs(string.Format(CSSPCultureServicesRes.UnableToLoginAs_WithProvidedPassword, LoginEmail)));
+                        return await Task.FromResult(false);
+                    }
+                    else
+                    {
+                        AppendTempStatus(new AppendTempEventArgs("Looks like the server is not responding. Do you have internet connection."));
+                        return await Task.FromResult(false);
+                    }
+                }
+
                 Contact contact = JsonSerializer.Deserialize<Contact>(response.Content.ReadAsStringAsync().Result);
-                AppendStatus(new AppendEventArgs(contact.Token));
+
+                if (contact == null)
+                {
+                    AppendStatus(new AppendEventArgs(string.Format(CSSPCultureServicesRes.UnableToLoginAs_WithProvidedPassword, LoginEmail)));
+                    return await Task.FromResult(false);
+                }
+
+                //AppendStatus(new AppendEventArgs(contact.Token));
+
+                // Addgin Contact item in dbLogin
+                List<Contact> contactToDeleteList = (from c in dbLogin.Contacts
+                                                     select c).ToList();
+
+                try
+                {
+                    dbLogin.Contacts.RemoveRange(contactToDeleteList);
+                    await dbLogin.SaveChangesAsync();
+                }
+                catch (Exception ex)
+                {
+                    AppendTempStatus(new AppendTempEventArgs(string.Format(CSSPCultureServicesRes.CouldNotDelete_Error_, "Contacts", ex.Message)));
+                    return await Task.FromResult(false);
+                }
+
+                try
+                {
+                    dbLogin.Contacts.Add(contact);
+                    await dbLogin.SaveChangesAsync();
+                }
+                catch (Exception ex)
+                {
+                    AppendTempStatus(new AppendTempEventArgs(string.Format(CSSPCultureServicesRes.CouldNotAdd_Error_, "Contact", ex.Message)));
+                    return await Task.FromResult(false);
+                }
+
+                stringData = JsonSerializer.Serialize(contact.Id);
+                contentData = new StringContent(stringData, Encoding.UTF8, "application/json");
+                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", contact.Token);
+                response = httpClient.GetAsync($"{ CSSPAzureUrl }api/en-CA/aspnetuser/{ contact.Id }").Result;
+                if ((int)response.StatusCode != 200)
+                {
+                    if ((int)response.StatusCode == 401)
+                    {
+                        AppendTempStatus(new AppendTempEventArgs(CSSPCultureServicesRes.NeedToBeLoggedIn));
+                        return await Task.FromResult(false);
+                    }
+                    else if ((int)response.StatusCode == 500)
+                    {
+                        AppendTempStatus(new AppendTempEventArgs("Looks like the server is not responding. Do you have internet connection."));
+                        return await Task.FromResult(false);
+                    }
+
+                }
+
+                // Adding ASPNetUser item in dbLogin
+                AspNetUser aspNetUser = JsonSerializer.Deserialize<AspNetUser>(response.Content.ReadAsStringAsync().Result);
+
+                if (aspNetUser == null)
+                {
+                    AppendStatus(new AppendEventArgs(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "AspNetUser", "Id", contact.Id.ToString())));
+                    return await Task.FromResult(false);
+                }
+
+                List<AspNetUser> aspNetUserToDeleteList = (from c in dbLogin.AspNetUsers
+                                                           select c).ToList();
+
+                try
+                {
+                    dbLogin.AspNetUsers.RemoveRange(aspNetUserToDeleteList);
+                    await dbLogin.SaveChangesAsync();
+                }
+                catch (Exception ex)
+                {
+                    AppendTempStatus(new AppendTempEventArgs(string.Format(CSSPCultureServicesRes.CouldNotDelete_Error_, "AspNetUsers", ex.Message)));
+                    return await Task.FromResult(false);
+                }
+
+                try
+                {
+                    dbLogin.AspNetUsers.Add(aspNetUser);
+                    await dbLogin.SaveChangesAsync();
+                }
+                catch (Exception ex)
+                {
+                    AppendTempStatus(new AppendTempEventArgs(string.Format(CSSPCultureServicesRes.CouldNotAdd_Error_, "AspNetUser", ex.Message)));
+                    return await Task.FromResult(false);
+                }
+
+                // Adding Preference LoginEmail item in dbLogin
+                Preference preference = (from c in dbLogin.Preferences
+                                         where c.PreferenceName == "LoginEmail"
+                                         select c).FirstOrDefault();
+
+                if (preference == null)
+                {
+                    preference = new Preference()
+                    {
+                        PreferenceName = "LoginEmail",
+                        PreferenceText = LoginEmail
+                    };
+
+                    dbLogin.Preferences.Add(preference);
+                }
+                else
+                {
+                    preference.PreferenceText = LoginEmail;
+                }
+
+                try
+                {
+                    dbLogin.SaveChanges();
+                }
+                catch (Exception ex)
+                {
+                    AppendTempStatus(new AppendTempEventArgs(string.Format(CSSPCultureServicesRes.CouldNotAdd_Error_, "Preference LoginEmail Item", ex.Message)));
+                    return await Task.FromResult(false);
+                }
+
+                // Adding Preference Password item in dbLogin
+                preference = (from c in dbLogin.Preferences
+                              where c.PreferenceName == "Password"
+                              select c).FirstOrDefault();
+
+                if (preference == null)
+                {
+                    preference = new Preference()
+                    {
+                        PreferenceName = "Password",
+                        PreferenceText = Password
+                    };
+
+                    dbLogin.Preferences.Add(preference);
+                }
+                else
+                {
+                    preference.PreferenceText = Password;
+                }
+
+                try
+                {
+                    dbLogin.SaveChanges();
+                }
+                catch (Exception ex)
+                {
+                    AppendTempStatus(new AppendTempEventArgs(string.Format(CSSPCultureServicesRes.CouldNotAdd_Error_, "Preference Password Item", ex.Message)));
+                    return await Task.FromResult(false);
+                }
             }
 
-            return await Task.FromResult(true);
+            return await Task.FromResult(false);
         }
     }
 }

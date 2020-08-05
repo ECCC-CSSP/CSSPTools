@@ -10,7 +10,7 @@ namespace CSSPServices
 {
     public partial class CSSPSQLiteService : ICSSPSQLiteService
     {
-        private async Task<bool> CreateCSSPDBFilesManagement(FileInfo fiCSSPDBFilesManagement)
+        private async Task<bool> CreateCSSPDBFilesManagement()
         {
             List<string> ExistingTableList = new List<string>();
 

@@ -51,7 +51,7 @@ namespace CSSPSQLiteServices.Tests
         {
             Assert.True(await Setup(culture));
 
-            bool retBool = await CSSPSQLiteService.CreateSQLiteCSSPDBFileManagement();
+            bool retBool = await CSSPSQLiteService.CreateSQLiteCSSPDBFilesManagement();
             Assert.True(retBool);
         }
         [Theory]
@@ -151,7 +151,7 @@ namespace CSSPSQLiteServices.Tests
                 Assert.True(false, ex.Message);
             }
 
-            bool retBool = await CSSPSQLiteService.CreateSQLiteCSSPDBFileManagement();
+            bool retBool = await CSSPSQLiteService.CreateSQLiteCSSPDBFilesManagement();
             Assert.True(retBool);
 
             retBool = await CSSPSQLiteService.CSSPDBFilesManagementIsEmpty();

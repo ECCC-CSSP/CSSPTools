@@ -31,7 +31,7 @@ namespace CSSPServices
 
             if (!await CheckAndCreateMissingDirectoriesAndFiles(new List<FileInfo>() { fiCSSPDBFilesManagement })) return await Task.FromResult(false);
 
-            if (!await CreateCSSPDBFilesManagement(fiCSSPDBFilesManagement)) return await Task.FromResult(false);
+            if (!await CreateCSSPDBFilesManagement()) return await Task.FromResult(false);
 
             return await Task.FromResult(true);
         }

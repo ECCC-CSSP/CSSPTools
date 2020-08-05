@@ -28,7 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             this.panelLanguageCenter = new System.Windows.Forms.Panel();
             this.butSetLanguageToFrancais = new System.Windows.Forms.Button();
             this.butSetLanguageToEnglish = new System.Windows.Forms.Button();
@@ -61,7 +60,6 @@
             this.lblStatus = new System.Windows.Forms.Label();
             this.lblSatusText = new System.Windows.Forms.Label();
             this.richTextBoxStatus = new System.Windows.Forms.RichTextBox();
-            this.timerCheckInternetConnection = new System.Windows.Forms.Timer(this.components);
             this.panelLanguageCenter.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainerFirst)).BeginInit();
             this.splitContainerFirst.Panel1.SuspendLayout();
@@ -472,12 +470,6 @@
             this.richTextBoxStatus.TabIndex = 1;
             this.richTextBoxStatus.Text = "";
             // 
-            // timerCheckInternetConnection
-            // 
-            this.timerCheckInternetConnection.Enabled = true;
-            this.timerCheckInternetConnection.Interval = 5000;
-            this.timerCheckInternetConnection.Tick += new System.EventHandler(this.timerCheckInternetConnection_Tick);
-            // 
             // CSSPDesktopForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -525,7 +517,6 @@
         private System.Windows.Forms.Panel panelHelp;
         private System.Windows.Forms.Panel panelHelpTop;
         private System.Windows.Forms.Button butHideHelpPanel;
-        private System.Windows.Forms.Timer timerCheckInternetConnection;
         private System.Windows.Forms.Panel panelUpdateCenter;
         private System.Windows.Forms.Button butCancelUpdate;
         private System.Windows.Forms.Button butUpdate;

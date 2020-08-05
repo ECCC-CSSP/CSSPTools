@@ -13,12 +13,12 @@ namespace CSSPDesktopServices.Services
         {
             List<string> DirectoryToCreateList = new List<string>()
             {
-                CSSPDesktopPath, LocalCSSPWebAPIsPath, LocalCSSPJSONPath, LocalCSSPFilesPath
+                CSSPDBLocal, LocalCSSPWebAPIsPath, LocalCSSPJSONPath, LocalCSSPFilesPath, LocalCSSPHelpPath
             };
 
             foreach (string dirStr in DirectoryToCreateList)
             {
-                DirectoryInfo di = new DirectoryInfo(CSSPDesktopPath);
+                DirectoryInfo di = new DirectoryInfo(dirStr);
                 if (!di.Exists)
                 {
                     try

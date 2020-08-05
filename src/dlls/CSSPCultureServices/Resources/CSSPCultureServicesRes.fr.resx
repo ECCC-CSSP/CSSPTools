@@ -759,4 +759,7 @@
   <data name="PasswordAndConfirmPasswordNotIdentical" xml:space="preserve">
     <value>Le mot de passe et la confirmation ne sont pas identiques.</value>
   </data>
+  <data name="CouldNotDelete_Error_" xml:space="preserve">
+    <value>Could not delete {0}. Error: [{1}] (fr)</value>
+  </data>
 </root>

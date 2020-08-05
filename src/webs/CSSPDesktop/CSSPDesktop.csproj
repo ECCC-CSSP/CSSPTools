@@ -54,13 +54,4 @@
     <ProjectReference Include="..\CSSPDesktopServices\CSSPDesktopServices.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <None Update="helpdocs\HelpDocEN.rtf">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="helpdocs\HelpDocFR.rtf">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-
 </Project>

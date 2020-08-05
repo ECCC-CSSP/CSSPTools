@@ -31,7 +31,7 @@ namespace CSSPServices
 
             if (!await CheckAndCreateMissingDirectoriesAndFiles(new List<FileInfo>() { fiCSSPLoginDB })) return await Task.FromResult(false);
 
-            if (!await CreateCSSPLoginDB(fiCSSPLoginDB)) return await Task.FromResult(false);
+            if (!await CreateCSSPDBLogin()) return await Task.FromResult(false);
 
             return await Task.FromResult(true);
         }

@@ -637,6 +637,15 @@ namespace CSSPCultureServices.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Could not delete {0}. Error: [{1}].
+        /// </summary>
+        public static string CouldNotDelete_Error_ {
+            get {
+                return ResourceManager.GetString("CouldNotDelete_Error_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Could not delete status file [{0}]. Error: [{1}].
         /// </summary>
         public static string CouldNotDeleteStatusFile_Error_ {

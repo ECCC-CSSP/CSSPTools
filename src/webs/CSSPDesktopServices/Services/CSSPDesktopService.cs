@@ -1,8 +1,13 @@
-﻿using CSSPDesktopServices.Models;
+﻿using CSSPCultureServices.Services;
+using CSSPDesktopServices.Models;
+using CSSPEnums;
+using CSSPModels;
+using CSSPServices;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Diagnostics;
 using System.Reflection.Metadata.Ecma335;
 using System.Runtime.CompilerServices;
@@ -18,21 +23,21 @@ namespace CSSPDesktopServices.Services
         AppTextModel appTextModel { get; set; }
         bool? HasInternetConnection { get; set; }
         bool LoginRequired { get; set; }
-        string CSSPDesktopPath { get; set; }
         string CSSPDBLocal { get; set; }
         string CSSPDBFilesManagement { get; set; }
         string CSSPDBLogin { get; set; }
 
         // Functions
         Task<bool> CreateAllRequiredDirectories();
+        Task<bool> AnalyseDirectoriesAndDatabases();
         Task<bool> CheckingAvailableUpdate();
         Task CheckingInternetConnection();
         Task<bool> InstallUpdates();
         Task<bool> Start();
         Task<bool> Stop();
-        Task<bool> AnalyseDirectoriesAndDatabases();
         Task<bool> Login(string LoginEmail, string Password);
-        bool ReadConfiguration();
+        Task<bool> ReadConfiguration();
+        Task<bool> UnzipHelp();
         
         // Events
         event EventHandler<ClearEventArgs> StatusClear;
@@ -55,17 +60,27 @@ namespace CSSPDesktopServices.Services
         public string CSSPDBLocal { get; set; }
         public string CSSPDBFilesManagement { get; set; }
         public string CSSPDBLogin { get; set; }
-        public string CSSPDesktopPath { get; set; }
 
-        private IConfiguration Configuration { get; set; }
+        private CSSPDBContext db { get; }
+        private CSSPDBLocalContext dbLocal { get; }
+        private CSSPDBInMemoryContext dbIM { get; }
+        private CSSPDBLoginContext dbLogin { get; }
+        private CSSPDBFilesManagementContext dbFM { get; }
+        private IConfiguration Configuration { get; }
+        private ICSSPCultureService CSSPCultureService { get; }
+        private ILoggedInService LoggedInService { get; }
+        private IEnums enums { get; }
+        private IEnumerable<ValidationResult> ValidationResults { get; set; }
         private bool? StoreLocal { get; set; }
         private bool? StoreInAzure { get; set; }
         private string LocalCSSPWebAPIsPath { get; set; }
         private string LocalCSSPJSONPath { get; set; }
         private string LocalCSSPFilesPath { get; set; }
+        private string LocalCSSPHelpPath { get; set; }
         private string AzureStoreCSSPWebAPIsPath { get; set; }
         private string AzureStoreCSSPJSONPath { get; set; }
         private string AzureStoreCSSPFilesPath { get; set; }
+        private string AzureStoreCSSPHelpPath { get; set; }
         private string CSSPAzureUrl { get; set; }
         private string CSSPLocalUrl { get; set; }
         private Process processCSSPWebAPIs { get; set; }
@@ -73,7 +88,9 @@ namespace CSSPDesktopServices.Services
         #endregion Properties
 
         #region Constructors
-        public CSSPDesktopService(IConfiguration Configuration)
+        public CSSPDesktopService(IConfiguration Configuration, ICSSPCultureService CSSPCultureService, ILoggedInService LoggedInService,
+            IEnums enums, CSSPDBContext db = null, CSSPDBLocalContext dbLocal = null, CSSPDBInMemoryContext dbIM = null,
+            CSSPDBLoginContext dbLogin = null, CSSPDBFilesManagementContext dbFM = null)
         {
             this.Configuration = Configuration;
         }
@@ -96,107 +113,11 @@ namespace CSSPDesktopServices.Services
 
             return await Task.FromResult(true);
         }
-        public bool ReadConfiguration()
+        public async Task<bool> ReadConfiguration()
         {
-            CSSPDesktopPath = Configuration.GetValue<string>("CSSPDesktopPath");
-            if (string.IsNullOrWhiteSpace(CSSPDesktopPath))
-            {
-                AppendStatus(new AppendEventArgs(string.Format(appTextModel._CouldNotBeFoundInConfigurationFile_, "CSSPDesktopPath", "appsettings_csspdesktop.json")));
-                return false;
-            }
+            if (!await DoReadConfiguration()) return await Task.FromResult(false);
 
-            CSSPDBLocal = Configuration.GetValue<string>("CSSPDBLocal");
-            if (string.IsNullOrWhiteSpace(CSSPDBLocal))
-            {
-                AppendStatus(new AppendEventArgs(string.Format(appTextModel._CouldNotBeFoundInConfigurationFile_, "CSSPDBLocal", "appsettings_csspdesktop.json")));
-                return false;
-            }
-
-            CSSPDBFilesManagement = Configuration.GetValue<string>("CSSPDBFilesManagement");
-            if (string.IsNullOrWhiteSpace(CSSPDBFilesManagement))
-            {
-                AppendStatus(new AppendEventArgs(string.Format(appTextModel._CouldNotBeFoundInConfigurationFile_, "CSSPDBFilesManagement", "appsettings_csspdesktop.json")));
-                return false;
-            }
-
-            CSSPDBLogin = Configuration.GetValue<string>("CSSPDBLogin");
-            if (string.IsNullOrWhiteSpace(CSSPDBLogin))
-            {
-                AppendStatus(new AppendEventArgs(string.Format(appTextModel._CouldNotBeFoundInConfigurationFile_, "CSSPDBLogin", "appsettings_csspdesktop.json")));
-                return false;
-            }
-
-            StoreLocal = Configuration.GetValue<bool>("StoreLocal");
-            if (StoreLocal == null)
-            {
-                AppendStatus(new AppendEventArgs(string.Format(appTextModel._CouldNotBeFoundInConfigurationFile_, "StoreLocal", "appsettings_csspdesktop.json")));
-                return false;
-            }
-
-            StoreInAzure = Configuration.GetValue<bool>("StoreInAzure");
-            if (StoreInAzure == null)
-            {
-                AppendStatus(new AppendEventArgs(string.Format(appTextModel._CouldNotBeFoundInConfigurationFile_, "StoreInAzure", "appsettings_csspdesktop.json")));
-                return false;
-            }
-
-            LocalCSSPWebAPIsPath = Configuration.GetValue<string>("LocalCSSPWebAPIsPath");
-            if (string.IsNullOrWhiteSpace(LocalCSSPWebAPIsPath))
-            {
-                AppendStatus(new AppendEventArgs(string.Format(appTextModel._CouldNotBeFoundInConfigurationFile_, "LocalCSSPWebAPIsPath", "appsettings_csspdesktop.json")));
-                return false;
-            }
-
-            LocalCSSPJSONPath = Configuration.GetValue<string>("LocalCSSPJSONPath");
-            if (string.IsNullOrWhiteSpace(LocalCSSPJSONPath))
-            {
-                AppendStatus(new AppendEventArgs(string.Format(appTextModel._CouldNotBeFoundInConfigurationFile_, "LocalCSSPJSONPath", "appsettings_csspdesktop.json")));
-                return false;
-            }
-
-            LocalCSSPFilesPath = Configuration.GetValue<string>("LocalCSSPFilesPath");
-            if (string.IsNullOrWhiteSpace(LocalCSSPFilesPath))
-            {
-                AppendStatus(new AppendEventArgs(string.Format(appTextModel._CouldNotBeFoundInConfigurationFile_, "LocalCSSPFilesPath", "appsettings_csspdesktop.json")));
-                return false;
-            }
-
-            AzureStoreCSSPWebAPIsPath = Configuration.GetValue<string>("AzureStoreCSSPWebAPIsPath");
-            if (string.IsNullOrWhiteSpace(AzureStoreCSSPWebAPIsPath))
-            {
-                AppendStatus(new AppendEventArgs(string.Format(appTextModel._CouldNotBeFoundInConfigurationFile_, "AzureStoreCSSPWebAPIsPath", "appsettings_csspdesktop.json")));
-                return false;
-            }
-
-            AzureStoreCSSPJSONPath = Configuration.GetValue<string>("AzureStoreCSSPJSONPath");
-            if (string.IsNullOrWhiteSpace(AzureStoreCSSPJSONPath))
-            {
-                AppendStatus(new AppendEventArgs(string.Format(appTextModel._CouldNotBeFoundInConfigurationFile_, "AzureStoreCSSPJSONPath", "appsettings_csspdesktop.json")));
-                return false;
-            }
-
-            AzureStoreCSSPFilesPath = Configuration.GetValue<string>("AzureStoreCSSPFilesPath");
-            if (string.IsNullOrWhiteSpace(AzureStoreCSSPFilesPath))
-            {
-                AppendStatus(new AppendEventArgs(string.Format(appTextModel._CouldNotBeFoundInConfigurationFile_, "AzureStoreCSSPFilesPath", "appsettings_csspdesktop.json")));
-                return false;
-            }
-
-            CSSPAzureUrl = Configuration.GetValue<string>("CSSPAzureUrl");
-            if (string.IsNullOrWhiteSpace(CSSPAzureUrl))
-            {
-                AppendStatus(new AppendEventArgs(string.Format(appTextModel._CouldNotBeFoundInConfigurationFile_, "CSSPAzureUrl", "appsettings_csspdesktop.json")));
-                return false;
-            }
-
-            CSSPLocalUrl = Configuration.GetValue<string>("CSSPLocalUrl");
-            if (string.IsNullOrWhiteSpace(CSSPLocalUrl))
-            {
-                AppendStatus(new AppendEventArgs(string.Format(appTextModel._CouldNotBeFoundInConfigurationFile_, "CSSPLocalUrl", "appsettings_csspdesktop.json")));
-                return false;
-            }
-
-            return true;
+            return await Task.FromResult(true);
         }
         public async Task<bool> Start()
         {
@@ -225,6 +146,12 @@ namespace CSSPDesktopServices.Services
         public async Task<bool> Login(string LoginEmail, string Password)
         {
             if (!await DoLogin(LoginEmail, Password)) return await Task.FromResult(false);
+
+            return await Task.FromResult(true);
+        }
+        public async Task<bool> UnzipHelp()
+        {
+            if (!await DoUnzipHelp()) return await Task.FromResult(false);
 
             return await Task.FromResult(true);
         }

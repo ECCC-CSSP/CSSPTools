@@ -17,8 +17,10 @@ namespace CSSPServices
     public interface ICSSPSQLiteService
     {
         string Error { get; set; }
+
+        Task<bool> CheckForLoginInfoInCSSPDBLogin();
         Task<bool> CreateSQLiteCSSPDBLocal();
-        Task<bool> CreateSQLiteCSSPDBFileManagement();
+        Task<bool> CreateSQLiteCSSPDBFilesManagement();
         Task<bool> CreateSQLiteCSSPDBLogin();
         Task<bool> CSSPDBLocalIsEmpty();
         Task<bool> CSSPDBLoginIsEmpty();
@@ -46,7 +48,7 @@ namespace CSSPServices
 
         #region Constructors
         public CSSPSQLiteService(IConfiguration Configuration, ICSSPCultureService CSSPCultureService, ILoggedInService LoggedInService, 
-            IEnums enums, CSSPDBContext db, CSSPDBLocalContext dbLocal = null, CSSPDBInMemoryContext dbIM = null, 
+            IEnums enums, CSSPDBContext db = null, CSSPDBLocalContext dbLocal = null, CSSPDBInMemoryContext dbIM = null, 
             CSSPDBLoginContext dbLogin = null, CSSPDBFilesManagementContext dbFM = null)
         {
             this.Configuration = Configuration;
@@ -62,13 +64,19 @@ namespace CSSPServices
         #endregion Constructors
 
         #region Functions public
+        public async Task<bool> CheckForLoginInfoInCSSPDBLogin()
+        {
+            if (!await DoCheckForLoginInfoInCSSPDBLogin()) return await Task.FromResult(false);
+
+            return await Task.FromResult(true);
+        }
         public async Task<bool> CreateSQLiteCSSPDBLocal()
         {
             if (!await DoCreateSQLiteCSSPDBLocal()) return await Task.FromResult(false);
 
             return await Task.FromResult(true);
         }
-        public async Task<bool> CreateSQLiteCSSPDBFileManagement()
+        public async Task<bool> CreateSQLiteCSSPDBFilesManagement()
         {
             if (!await DoCreateSQLiteCSSPDBFileManagement()) return await Task.FromResult(false);
 
