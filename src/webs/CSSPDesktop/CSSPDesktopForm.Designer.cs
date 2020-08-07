@@ -67,7 +67,7 @@
             this.linkLabelStart = new System.Windows.Forms.LinkLabel();
             this.panelStatus = new System.Windows.Forms.Panel();
             this.lblStatus = new System.Windows.Forms.Label();
-            this.lblSatusText = new System.Windows.Forms.Label();
+            this.lblStatusText = new System.Windows.Forms.Label();
             this.richTextBoxStatus = new System.Windows.Forms.RichTextBox();
             this.panelLanguageCenter.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainerFirst)).BeginInit();
@@ -514,7 +514,7 @@
             // panelStatus
             // 
             this.panelStatus.Controls.Add(this.lblStatus);
-            this.panelStatus.Controls.Add(this.lblSatusText);
+            this.panelStatus.Controls.Add(this.lblStatusText);
             this.panelStatus.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.panelStatus.Location = new System.Drawing.Point(0, 617);
             this.panelStatus.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
@@ -533,16 +533,16 @@
             this.lblStatus.TabIndex = 1;
             this.lblStatus.Text = "[empty]";
             // 
-            // lblSatusText
+            // lblStatusText
             // 
-            this.lblSatusText.AutoSize = true;
-            this.lblSatusText.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.lblSatusText.Location = new System.Drawing.Point(10, 10);
-            this.lblSatusText.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.lblSatusText.Name = "lblSatusText";
-            this.lblSatusText.Size = new System.Drawing.Size(55, 20);
-            this.lblSatusText.TabIndex = 0;
-            this.lblSatusText.Text = "Satus:";
+            this.lblStatusText.AutoSize = true;
+            this.lblStatusText.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.lblStatusText.Location = new System.Drawing.Point(10, 10);
+            this.lblStatusText.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lblStatusText.Name = "lblStatusText";
+            this.lblStatusText.Size = new System.Drawing.Size(55, 20);
+            this.lblStatusText.TabIndex = 0;
+            this.lblStatusText.Text = "Satus:";
             // 
             // richTextBoxStatus
             // 
@@ -594,7 +594,7 @@
         private System.Windows.Forms.Panel panelCommandsCenter;
         private System.Windows.Forms.Panel panelStatus;
         private System.Windows.Forms.Label lblStatus;
-        private System.Windows.Forms.Label lblSatusText;
+        private System.Windows.Forms.Label lblStatusText;
         private System.Windows.Forms.Panel panelHelp;
         private System.Windows.Forms.Panel panelHelpTop;
         private System.Windows.Forms.Panel panelUpdateCenter;

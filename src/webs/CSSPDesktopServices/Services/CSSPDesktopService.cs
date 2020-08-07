@@ -23,6 +23,7 @@ namespace CSSPDesktopServices.Services
         AppTextModel appTextModel { get; set; }
         bool? HasInternetConnection { get; set; }
         bool LoginRequired { get; set; }
+        bool IsLoggedIn { get; set; }
         bool HasHelpFiles { get; set; }
         string CSSPDBLocal { get; set; }
         string CSSPDBFilesManagement { get; set; }
@@ -46,6 +47,7 @@ namespace CSSPDesktopServices.Services
         Task<bool> Start();
         Task<bool> Stop();
         Task<bool> Login(string LoginEmail, string Password);
+        void Logoff();
         Task<bool> ReadConfiguration();
         Task<bool> UnzipHelp();
         string Descramble(string Text);
@@ -71,6 +73,7 @@ namespace CSSPDesktopServices.Services
         public bool? HasInternetConnection { get; set; } = null;
         public bool IsEnglish { get; set; }
         public bool LoginRequired { get; set; } = false;
+        public bool IsLoggedIn { get; set; } = false;
         public bool HasHelpFiles { get; set; } = false;
         public string CSSPDBLocal { get; set; }
         public string CSSPDBFilesManagement { get; set; }
@@ -187,6 +190,10 @@ namespace CSSPDesktopServices.Services
             if (!await DoLogin(LoginEmail, Password)) return await Task.FromResult(false);
 
             return await Task.FromResult(true);
+        }
+        public void Logoff()
+        {
+            DoLogoff();
         }
         public async Task<bool> UnzipHelp()
         {

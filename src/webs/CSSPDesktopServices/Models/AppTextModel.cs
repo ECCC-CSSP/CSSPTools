@@ -11,12 +11,16 @@ namespace CSSPDesktopServices.Models
             // Form
             FormTitleText = "CSSP Desktop Application";
 
+            // PanelTop
+            linkLabelShowLanguagePanelText = "Language";
+            linkLabelShowHelpPanelText = "Help";
+            linkLabelShowLoginPanelText = "Login";
+            linkLabelLogoffText = "Logoff";
+
             // PanelButtonsCenter
             linkLabelStartText = "Start";
             linkLabelStopText = "Stop";
             linkLabelCloseText = "Close";
-            linkLabelShowLanguagePanelText = "Language";
-            linkLabelShowHelpPanelText = "Help";
             linkLabelUpdatesAvailableText = "Updates Available";
 
             // PanelHelp
@@ -29,6 +33,7 @@ namespace CSSPDesktopServices.Models
             lblInstallingText = "Installing...";
 
             // PanelLoginCenter
+            lblCSSPWebToolsLoginOneTimeText = "CSSP Web Tools Login (one time thing)";
             lblLoginEmailText = "Login Email:";
             lblPasswordText = "Password:";
             linkLabelLoginText = "Login";
@@ -41,9 +46,11 @@ namespace CSSPDesktopServices.Models
             CouldNotCreateDirectory_Error_ = "Could not create directory [{0}]. Error: [{1}]";
             _CouldNotBeFoundInConfigurationFile_ = "{0} could not be found in the configuration file {1}";
             _ShouldNotBeNull = "{0} ne devrais pas être null";
+            CouldNotLogin = "Could not login";
+            ErrorWhileTryingToLogin = "Error while trying to login";
 
-            // Message
-            ConnectedOnInternet = "Connected On Internet";
+        // Message
+        ConnectedOnInternet = "Connected On Internet";
             NoInternetConnection = "No Internet Connection";
         }
     }
@@ -53,15 +60,20 @@ namespace CSSPDesktopServices.Models
         {
             // Form
             FormTitleText = "Application PCCSM de bureau";
+            // PanelTop
+            linkLabelShowLanguagePanelText = "Langage";
+            linkLabelShowHelpPanelText = "Aide";
+            linkLabelShowLoginPanelText = "Connexion";
+            linkLabelLogoffText = "Déconnextion";
 
             // PanelButtonsCenter
             linkLabelStartText = "Commencer";
             linkLabelStopText = "Arrêter";
             linkLabelCloseText = "Fermer";
-            linkLabelHideHelpPanelText = "Fermer";
-            linkLabelShowLanguagePanelText = "Langage";
-            linkLabelShowHelpPanelText = "Aide";
             linkLabelUpdatesAvailableText = "Mise à jour disponible";
+
+            // PanelHelp
+            linkLabelHideHelpPanelText = "Fermer l'aide";
 
             // PanelUpdateCenter
             linkLabelUpdateText = "Mise à jour";
@@ -70,6 +82,7 @@ namespace CSSPDesktopServices.Models
             lblInstallingText = "Installation en cours...";
 
             // PanelLoginCenter
+            lblCSSPWebToolsLoginOneTimeText = "Connexion à l'outil PCCSM (une fois seulement)";
             lblLoginEmailText = "Courriel de connextion:";
             lblPasswordText = "Mot de passe:";
             linkLabelLoginText = "Ouvrir session";
@@ -82,6 +95,8 @@ namespace CSSPDesktopServices.Models
             CouldNotCreateDirectory_Error_ = "Dans l'impossibilité de créer le répertoire [{0}]. Erreur: [{1}]";
             _CouldNotBeFoundInConfigurationFile_ = "Dans l'impossibilité de trouver {0} dans la filière de configuration {1}";
             _ShouldNotBeNull = "{0} should not be null";
+            CouldNotLogin = "Dans l'impossibilité d'ouvrir une session";
+            ErrorWhileTryingToLogin = "Erreur pendant l'essay d'ouvrir une session";
 
             // Message
             ConnectedOnInternet = "Connexion internet exist";
@@ -93,12 +108,16 @@ namespace CSSPDesktopServices.Models
         // Form
         public string FormTitleText { get; set; }
 
+        // PanelTop
+        public string linkLabelShowLanguagePanelText { get; set; }
+        public string linkLabelShowHelpPanelText { get; set; }
+        public string linkLabelShowLoginPanelText { get; set; }
+        public string linkLabelLogoffText { get; set; }
+
         // PanelButtonsCenter
         public string linkLabelStartText { get; set; }
         public string linkLabelStopText { get; set; }
         public string linkLabelCloseText { get; set; }
-        public string linkLabelShowLanguagePanelText { get; set; }
-        public string linkLabelShowHelpPanelText { get; set; }
         public string linkLabelUpdatesAvailableText { get; set; }
 
         // PanelHelp
@@ -111,6 +130,7 @@ namespace CSSPDesktopServices.Models
         public string lblInstallingText { get; set; }
 
         // PanelLoginCenter
+        public string lblCSSPWebToolsLoginOneTimeText { get; set; }
         public string lblLoginEmailText { get; set; }
         public string lblPasswordText { get; set; }
         public string linkLabelLoginText { get; set; }
@@ -123,6 +143,8 @@ namespace CSSPDesktopServices.Models
         public string CouldNotCreateDirectory_Error_ { get; set; }
         public string _CouldNotBeFoundInConfigurationFile_ { get; set; }
         public string _ShouldNotBeNull { get; set; }
+        public string CouldNotLogin { get; set; }
+        public string ErrorWhileTryingToLogin { get; set; }
 
         // Message
         public string ConnectedOnInternet { get; set; }

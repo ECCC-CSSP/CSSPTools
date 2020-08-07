@@ -144,7 +144,7 @@ namespace CSSPDesktop
         #region Login
         private void linkLabelLogin_Click(object sender, EventArgs e)
         {
-            CSSPDesktopService.Login(textBoxLoginEmail.Text.Trim(), textBoxPassword.Text.Trim());
+            Login();
         }
         #endregion Login
         #endregion Events
@@ -169,8 +169,34 @@ namespace CSSPDesktop
                 }
             }
         }
+        private void Login()
+        {
+            CSSPDesktopService.Login(textBoxLoginEmail.Text.Trim(), textBoxPassword.Text.Trim());
+            if (!CSSPDesktopService.CheckIfLoginIsRequired().GetAwaiter().GetResult()) return;
+
+            if (CSSPDesktopService.LoginRequired)
+            {
+                linkLabelLogoff.Visible = false;
+                linkLabelShowLoginPanel.Visible = true;
+
+                lblContactLoggedIn.Text = "";
+                ShowPanels(ShowPanel.Login);
+
+                MessageBox.Show(CSSPDesktopService.appTextModel.CouldNotLogin, CSSPDesktopService.appTextModel.ErrorWhileTryingToLogin, MessageBoxButtons.OK);
+            }
+            else
+            {
+                linkLabelLogoff.Visible = true;
+                linkLabelShowLoginPanel.Visible = false;
+
+                lblContactLoggedIn.Text = CSSPDesktopService.ContactLoggedIn.LoginEmail;
+                ShowPanels(ShowPanel.Commands);
+            }
+        }
         private void Logoff()
         {
+            CSSPDesktopService.Logoff();
+            textBoxPassword.Text = "";
             ShowPanels(ShowPanel.Login);
         }
         private void RecenterPanels()
@@ -379,12 +405,18 @@ namespace CSSPDesktop
                 }
             }
 
+            // PanelTop
+            linkLabelShowLanguagePanel.Text = CSSPDesktopService.appTextModel.linkLabelShowLanguagePanelText;
+            linkLabelShowHelpPanel.Text = CSSPDesktopService.appTextModel.linkLabelShowHelpPanelText;
+            lblLoginEmail.Text = CSSPDesktopService.appTextModel.lblLoginEmailText;
+            linkLabelShowLoginPanel.Text = CSSPDesktopService.appTextModel.linkLabelShowLoginPanelText;
+            linkLabelLogoff.Text = CSSPDesktopService.appTextModel.linkLabelLogoffText;
+
+
             // PanelButtonsCenter
             linkLabelStart.Text = CSSPDesktopService.appTextModel.linkLabelStartText;
             linkLabelStop.Text = CSSPDesktopService.appTextModel.linkLabelStopText;
             linkLabelClose.Text = CSSPDesktopService.appTextModel.linkLabelCloseText;
-            linkLabelShowLanguagePanel.Text = CSSPDesktopService.appTextModel.linkLabelShowLanguagePanelText;
-            linkLabelShowHelpPanel.Text = CSSPDesktopService.appTextModel.linkLabelShowHelpPanelText;
             linkLabelShowUpdatePanel.Text = CSSPDesktopService.appTextModel.linkLabelUpdatesAvailableText;
 
             // PanelHelpCenter
@@ -397,12 +429,13 @@ namespace CSSPDesktop
             lblInstalling.Text = CSSPDesktopService.appTextModel.lblInstallingText;
 
             // PanelLoginCenter
-            lblLoginEmail.Text = CSSPDesktopService.appTextModel.lblLoginEmailText;
+            lblCSSPWebToolsLoginOneTime.Text = CSSPDesktopService.appTextModel.lblCSSPWebToolsLoginOneTimeText;
             lblPassword.Text = CSSPDesktopService.appTextModel.lblPasswordText;
             linkLabelLogin.Text = CSSPDesktopService.appTextModel.linkLabelLoginText;
 
             // PanelStatus
-            lblStatus.Text = CSSPDesktopService.appTextModel.lblStatusText;
+            lblStatusText.Text = CSSPDesktopService.appTextModel.lblStatusText;
+            lblStatus.Text = "";
         }
         private void ShowPanels(ShowPanel showPanel)
         {
@@ -434,6 +467,8 @@ namespace CSSPDesktop
                         {
                             panelCommandsCenter.Visible = true;
                         }
+
+                        linkLabelStart.Focus();
                     }
                     break;
                 case ShowPanel.Language:
@@ -448,15 +483,23 @@ namespace CSSPDesktop
                         string fileToOpen = IsEnglish ? "HelpDocEN.rtf" : "HelpDocFR.rtf";
                         richTextBoxHelp.LoadFile($"{ CSSPDesktopService.LocalCSSPHelpPath }{ fileToOpen }");
                         panelHelp.Visible = true;
+
+                        linkLabelHideHelpPanel.Focus();
                     }
                     break;
                 case ShowPanel.Login:
-                    panelTop.Visible = false;
-                    panelLoginCenter.Visible = true;
+                    {
+                        panelTop.Visible = false;
+                        panelLoginCenter.Visible = true;
+                        textBoxLoginEmail.Focus();
+                    }
                     break;
                 case ShowPanel.Updates:
-                    panelTop.Visible = true;
-                    panelUpdateCenter.Visible = true;
+                    {
+                        panelTop.Visible = true;
+                        panelUpdateCenter.Visible = true;
+                        linkLabelUpdate.Focus();
+                    }
                     break;
                 default:
                     break;

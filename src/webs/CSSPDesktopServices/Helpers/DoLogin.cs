@@ -18,7 +18,7 @@ namespace CSSPDesktopServices.Services
     public partial class CSSPDesktopService : ICSSPDesktopService
     {
         #region Properties
-        List<int> skip  { get; set; } = new List<int>()
+        List<int> skip { get; set; } = new List<int>()
         {
             3, 1, -3, 2, 2, 0, 4, 1, -2, 2, -1, 3, -2, 0, 1, 3, 1, 2, -4, -1, 1, 2, 0, 2, 1,
             -1, 4, -4, 2, 3, 1, 2, 3, 1, 2, 3, 1, 3, 1, -2, -1, -1, 4, -2, 2, -3, 2, 2, 0, 4,
@@ -319,8 +319,8 @@ namespace CSSPDesktopServices.Services
 
                 // Adding Preference LoginEmail item in dbLogin
                 preference = (from c in dbLogin.Preferences
-                                         where c.PreferenceName == "LoginEmail"
-                                         select c).FirstOrDefault();
+                              where c.PreferenceName == "LoginEmail"
+                              select c).FirstOrDefault();
 
                 if (preference == null)
                 {
@@ -421,6 +421,41 @@ namespace CSSPDesktopServices.Services
                     AppendTempStatus(new AppendTempEventArgs(string.Format(CSSPCultureServicesRes.CouldNotAdd_Error_, "Preference Password Item", ex.Message)));
                     return await Task.FromResult(false);
                 }
+
+                // Adding Preference LoggedIn item in dbLogin
+                preference = (from c in dbLogin.Preferences
+                              where c.PreferenceName == "LoggedIn"
+                              select c).FirstOrDefault();
+
+                if (preference == null)
+                {
+                    int lastPreferenceID = (from c in dbLogin.Preferences
+                                            orderby c.PreferenceID descending
+                                            select c.PreferenceID).FirstOrDefault();
+
+                    preference = new Preference()
+                    {
+                        PreferenceID = lastPreferenceID + 1,
+                        PreferenceName = "LoggedIn",
+                        PreferenceText = Scramble("true")
+                    };
+
+                    dbLogin.Preferences.Add(preference);
+                }
+                else
+                {
+                    preference.PreferenceText = Scramble("true");
+                }
+
+                try
+                {
+                    dbLogin.SaveChanges();
+                    IsLoggedIn = true;
+                }
+                catch (Exception ex)
+                {
+                    AppendTempStatus(new AppendTempEventArgs(string.Format(CSSPCultureServicesRes.CouldNotAdd_Error_, "Preference LoggedIn Item", ex.Message)));
+                }
             }
 
             return await Task.FromResult(true);
@@ -434,7 +469,7 @@ namespace CSSPDesktopServices.Services
 
             string retStr = Start.ToString();
             int i = 0;
-            foreach(char c in Text)
+            foreach (char c in Text)
             {
                 retStr += (char)((int)c + skip[i + Start]);
                 i += 1;
