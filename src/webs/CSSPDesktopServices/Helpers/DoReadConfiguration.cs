@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace CSSPDesktopServices.Services
 {
-    public partial class CSSPDesktopService
+    public partial class CSSPDesktopService : ICSSPDesktopService
     {
         private async Task<bool> DoReadConfiguration()
         {
@@ -45,6 +45,13 @@ namespace CSSPDesktopServices.Services
             if (StoreInAzure == null)
             {
                 AppendStatus(new AppendEventArgs(string.Format(appTextModel._CouldNotBeFoundInConfigurationFile_, "StoreInAzure", "appsettings_csspdesktop.json")));
+                return false;
+            }
+
+            LocalCSSPDatabasesPath = Configuration.GetValue<string>("LocalCSSPDatabasesPath");
+            if (string.IsNullOrWhiteSpace(LocalCSSPDatabasesPath))
+            {
+                AppendStatus(new AppendEventArgs(string.Format(appTextModel._CouldNotBeFoundInConfigurationFile_, "LocalCSSPDatabasesPath", "appsettings_csspdesktop.json")));
                 return false;
             }
 

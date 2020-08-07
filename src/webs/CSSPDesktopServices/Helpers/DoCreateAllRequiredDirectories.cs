@@ -7,13 +7,13 @@ using System.Threading.Tasks;
 
 namespace CSSPDesktopServices.Services
 {
-    public partial class CSSPDesktopService
+    public partial class CSSPDesktopService : ICSSPDesktopService
     {
         private async Task<bool> DoCreateAllRequiredDirectories()
         {
             List<string> DirectoryToCreateList = new List<string>()
             {
-                CSSPDBLocal, LocalCSSPWebAPIsPath, LocalCSSPJSONPath, LocalCSSPFilesPath, LocalCSSPHelpPath
+                LocalCSSPDatabasesPath, LocalCSSPWebAPIsPath, LocalCSSPJSONPath, LocalCSSPFilesPath, LocalCSSPHelpPath
             };
 
             foreach (string dirStr in DirectoryToCreateList)

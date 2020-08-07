@@ -47,126 +47,72 @@ namespace CSSPDesktop
 
         #region Events
         #region Button Click
-        private void butCancelUpdate_Click(object sender, EventArgs e)
+        private void linkLabelCancelUpdate_Click(object sender, EventArgs e)
         {
             ShowPanels(ShowPanel.Commands);
         }
-        private void butClose_Click(object sender, EventArgs e)
+        private void linkLabelClose_Click(object sender, EventArgs e)
         {
             Close();
         }
-        private void butHideHelpPanel_Click(object sender, EventArgs e)
+        private void butContactLoggedIn_Click(object sender, EventArgs e)
+        {
+            ShowPanels(ShowPanel.Login);
+        }
+        private void linkLabelLogoff_Click(object sender, EventArgs e)
+        {
+            Logoff();
+        }
+        private void linkLabelHideHelpPanel_Click(object sender, EventArgs e)
         {
             ShowPanels(ShowPanel.Commands);
         }
-        private void butShowHelpPanel_Click(object sender, EventArgs e)
+        private void linkLabelShowHelpPanel_Click(object sender, EventArgs e)
         {
             ShowPanels(ShowPanel.Help);
         }
-        private void butShowLanguagePanel_Click(object sender, EventArgs e)
+        private void linkLabelShowLanguagePanel_Click(object sender, EventArgs e)
         {
             ShowPanels(ShowPanel.Language);
         }
-        private void butSetLanguageToEnglish_Click(object sender, EventArgs e)
+        private void linkLabelSetLanguageToEnglish_Click(object sender, EventArgs e)
         {
             SetLanguage(true);
         }
-        private void butSetLanguageToFrancais_Click(object sender, EventArgs e)
+        private void linkLabelSetLanguageToFrancais_Click(object sender, EventArgs e)
         {
             SetLanguage(false);
         }
-        private void butStart_Click(object sender, EventArgs e)
+        private void linkLabelStart_Click(object sender, EventArgs e)
         {
             Start();
         }
-        private void butStop_Click(object sender, EventArgs e)
+        private void linkLabelStop_Click(object sender, EventArgs e)
         {
             Stop();
         }
-        private void butUpdatesAvailable_Click(object sender, EventArgs e)
+        private void linkLabelShowUpdatePanel_Click(object sender, EventArgs e)
         {
             ShowPanels(ShowPanel.Updates);
-            butUpdateCompleted.Visible = false;
+            linkLabelUpdateCompleted.Visible = false;
         }
-        private void butUpdate_Click(object sender, EventArgs e)
+        private void linkLabelUpdate_Click(object sender, EventArgs e)
         {
-            butCancelUpdate.Enabled = false;
+            linkLabelCancelUpdate.Enabled = false;
             CSSPDesktopService.InstallUpdates();
-            butCancelUpdate.Visible = false;
-            butUpdate.Visible = false;
-            butUpdateCompleted.Visible = true;
+            linkLabelCancelUpdate.Visible = false;
+            linkLabelUpdate.Visible = false;
+            linkLabelUpdateCompleted.Visible = true;
         }
-        private void butUpdateCompleted_Click(object sender, EventArgs e)
+        private void linkLabelUpdateCompleted_Click(object sender, EventArgs e)
         {
             ShowPanels(ShowPanel.Commands);
-            butCancelUpdate.Enabled = true;
-            butCancelUpdate.Visible = true;
-            butUpdate.Visible = true;
-            butUpdateCompleted.Visible = false;
+            linkLabelCancelUpdate.Enabled = true;
+            linkLabelCancelUpdate.Visible = true;
+            linkLabelUpdate.Visible = true;
+            linkLabelUpdateCompleted.Visible = false;
         }
         #endregion Button Click
-        #region Mouse Hover
-        private void butCancelUpdate_MouseHover(object sender, EventArgs e)
-        {
-            lblStatus.Text = CSSPDesktopService.appTextModel.butCancelUpdateHoverText;
-        }
-        private void butClose_MouseHover(object sender, EventArgs e)
-        {
-            lblStatus.Text = CSSPDesktopService.appTextModel.butCloseHoverText;
-        }
-        private void butShowHelpPanel_MouseHover(object sender, EventArgs e)
-        {
-            lblStatus.Text = CSSPDesktopService.appTextModel.butShowHelpPanelHoverText;
-        }
-        private void butShowLanguagePanel_MouseHover(object sender, EventArgs e)
-        {
-            lblStatus.Text = CSSPDesktopService.appTextModel.butShowLanguagePanelHoverText;
-        }
-        private void butStart_MouseHover(object sender, EventArgs e)
-        {
-            lblStatus.Text = CSSPDesktopService.appTextModel.butStartHoverText;
-        }
-        private void butStop_MouseHover(object sender, EventArgs e)
-        {
-            lblStatus.Text = CSSPDesktopService.appTextModel.butStopHoverText;
-        }
-        private void panelCommandsCenter_MouseHover(object sender, EventArgs e)
-        {
-            lblStatus.Text = "";
-        }
-        private void butUpdate_MouseHover(object sender, EventArgs e)
-        {
-            lblStatus.Text = CSSPDesktopService.appTextModel.butUpdateHoverText;
-        }
-        private void butUpdateCompleted_MouseHover(object sender, EventArgs e)
-        {
-            lblStatus.Text = CSSPDesktopService.appTextModel.butUpdateCompletedHoverText;
-        }
-        private void panelUpdateCenter_MouseHover(object sender, EventArgs e)
-        {
-            lblStatus.Text = "";
-        }
-        private void splitContainerFirst_Panel1_MouseHover(object sender, EventArgs e)
-        {
-            lblStatus.Text = "";
-        }
-        private void butUpdatesAvailable_MouseHover(object sender, EventArgs e)
-        {
-            lblStatus.Text = CSSPDesktopService.appTextModel.butUpdatesAvailableHoverText;
-        }
-        private void textBoxLoginEmail_MouseHover(object sender, EventArgs e)
-        {
-            lblStatus.Text = CSSPDesktopService.appTextModel.textBoxLoginEmailHoverText;
-        }
-        private void textBoxPassword_MouseHover(object sender, EventArgs e)
-        {
-            lblStatus.Text = CSSPDesktopService.appTextModel.textBoxPasswordHoverText;
-        }
-        private void butLogin_MouseHover(object sender, EventArgs e)
-        {
-            lblStatus.Text = CSSPDesktopService.appTextModel.butLoginHoverText;
-        }
-        #endregion Mouse Hover
         #region Form Resize
         private void CSSPDesktopForm_Resize(object sender, EventArgs e)
         {
@@ -196,7 +142,7 @@ namespace CSSPDesktop
         }
         #endregion csspDesktopServiceEvent
         #region Login
-        private void butLogin_Click(object sender, EventArgs e)
+        private void linkLabelLogin_Click(object sender, EventArgs e)
         {
             CSSPDesktopService.Login(textBoxLoginEmail.Text.Trim(), textBoxPassword.Text.Trim());
         }
@@ -223,6 +169,10 @@ namespace CSSPDesktop
                 }
             }
         }
+        private void Logoff()
+        {
+            ShowPanels(ShowPanel.Login);
+        }
         private void RecenterPanels()
         {
             panelCommandsCenter.Top = panelCommandsCenter.Parent.Height / 2 - panelCommandsCenter.Height / 2;
@@ -237,51 +187,66 @@ namespace CSSPDesktop
             panelLanguageCenter.Top = panelLanguageCenter.Parent.Height / 2 - panelLanguageCenter.Height / 2;
             panelLanguageCenter.Left = panelLanguageCenter.Parent.Width / 2 - panelLanguageCenter.Width / 2;
 
-            butHideHelpPanel.Left = panelHelpTop.Width / 2 - butHideHelpPanel.Width / 2;
+            linkLabelHideHelpPanel.Left = panelHelpTop.Width / 2 - linkLabelHideHelpPanel.Width / 2;
         }
         private void SetLanguage(bool isEnglish)
         {
             IsEnglish = isEnglish;
-            StartTheAppWithLanguage();
+            StartTheAppWithLanguage().GetAwaiter().GetResult();
         }
-        private void StartTheAppWithLanguage()
+        private async Task<bool> StartTheAppWithLanguage()
         {
             SettingUpAllTextForLanguage();
-            CSSPDesktopService.CreateAllRequiredDirectories();
-            
+            if (! await CSSPDesktopService.CreateAllRequiredDirectories()) return await Task.FromResult(false);
+
             // create CSSPDBLocal if it does not exist
             FileInfo fi = new FileInfo(CSSPDesktopService.CSSPDBLocal);
             if (!fi.Exists)
             {
-                CSSPSQLiteService.CreateSQLiteCSSPDBLocal();
+                if (! await CSSPSQLiteService.CreateSQLiteCSSPDBLocal()) return await Task.FromResult(false);
             }
 
             // create CSSPDBFilesManagement if it does not exist
             fi = new FileInfo(CSSPDesktopService.CSSPDBFilesManagement);
             if (!fi.Exists)
             {
-                CSSPSQLiteService.CreateSQLiteCSSPDBFilesManagement();
+                if (!await CSSPSQLiteService.CreateSQLiteCSSPDBFilesManagement()) return await Task.FromResult(false);
             }
 
             // create CSSPDBLogin if it does not exist
             fi = new FileInfo(CSSPDesktopService.CSSPDBLogin);
             if (!fi.Exists)
             {
-                CSSPSQLiteService.CreateSQLiteCSSPDBLogin();
+                if (! await CSSPSQLiteService.CreateSQLiteCSSPDBLogin()) return await Task.FromResult(false);
             }
 
-            CSSPDesktopService.LoginRequired = CSSPSQLiteService.CheckForLoginInfoInCSSPDBLogin().GetAwaiter().GetResult();
+            if (! await CSSPDesktopService.CheckIfHelpFilesExist()) return await Task.FromResult(false);
+
+            if (! await CSSPDesktopService.CheckIfLoginIsRequired()) return await Task.FromResult(false);
+
             if (CSSPDesktopService.LoginRequired)
             {
+                linkLabelLogoff.Visible = false;
+                linkLabelShowLoginPanel.Visible = true;
+
+                lblContactLoggedIn.Text = "";
                 ShowPanels(ShowPanel.Login);
             }
             else
             {
+                linkLabelLogoff.Visible = true;
+                linkLabelShowLoginPanel.Visible = false;
+
+                lblContactLoggedIn.Text = CSSPDesktopService.ContactLoggedIn.LoginEmail;
                 ShowPanels(ShowPanel.Commands);
             }
+
+            return await Task.FromResult(true);
         }
         private bool Setup()
         {
+            string _CouldNotBeFoundInConfigurationFile_ = "{0} could not be found in the configuration file {1}";
+
             Configuration = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetParent(AppContext.BaseDirectory).FullName)
                 .AddJsonFile("appsettings_csspdesktop.json")
@@ -292,15 +257,55 @@ namespace CSSPDesktop
             Services.AddSingleton<IConfiguration>(Configuration);
 
             Services.AddSingleton<ICSSPCultureService, CSSPCultureService>();
-            Services.AddSingleton<ILoggedInService, LoggedInService>();
             Services.AddSingleton<IEnums, Enums>();
             Services.AddSingleton<ICSSPDesktopService, CSSPDesktopService>();
             Services.AddSingleton<ICSSPSQLiteService, CSSPSQLiteService>();
 
+            string CSSPDBLocal = Configuration.GetValue<string>("CSSPDBLocal");
+            if (string.IsNullOrWhiteSpace(CSSPDBLocal))
+            {
+                richTextBoxStatus.AppendText(string.Format(_CouldNotBeFoundInConfigurationFile_, "CSSPDBLocal", "appsettings_csspdesktop.json"));
+                return false;
+            }
+
+            FileInfo fiCSSPDBLocal = new FileInfo(CSSPDBLocal);
+
+            Services.AddDbContext<CSSPDBLocalContext>(options =>
+            {
+                options.UseSqlite($"Data Source={ fiCSSPDBLocal.FullName }");
+            });
+
+            string CSSPDBFilesManagement = Configuration.GetValue<string>("CSSPDBFilesManagement");
+            if (string.IsNullOrWhiteSpace(CSSPDBFilesManagement))
+            {
+                richTextBoxStatus.AppendText(string.Format(_CouldNotBeFoundInConfigurationFile_, "CSSPDBFilesManagement", "appsettings_csspdesktop.json"));
+                return false;
+            }
+
+            FileInfo fiCSSPDBFileManagement = new FileInfo(CSSPDBFilesManagement);
+
+            Services.AddDbContext<CSSPDBFilesManagementContext>(options =>
+            {
+                options.UseSqlite($"Data Source={ fiCSSPDBFileManagement.FullName }");
+            });
+
+            string CSSPDBLogin = Configuration.GetValue<string>("CSSPDBLogin");
+            if (string.IsNullOrWhiteSpace(CSSPDBLogin))
+            {
+                richTextBoxStatus.AppendText(string.Format(_CouldNotBeFoundInConfigurationFile_, "CSSPDBLogin", "appsettings_csspdesktop.json"));
+                return false;
+            }
+
+            FileInfo fiCSSPDBLogin = new FileInfo(CSSPDBLogin);
+
+            Services.AddDbContext<CSSPDBLoginContext>(options =>
+            {
+                options.UseSqlite($"Data Source={ fiCSSPDBLogin.FullName }");
+            });
+
             Provider = Services.BuildServiceProvider();
 
             CSSPDesktopService = Provider.GetService<ICSSPDesktopService>();
-            CSSPSQLiteService = Provider.GetService<ICSSPSQLiteService>();
             if (CSSPDesktopService == null)
             {
                 if (!IsEnglish)
@@ -323,6 +328,12 @@ namespace CSSPDesktop
             CSSPDesktopService.IsEnglish = IsEnglish;
             if (!CSSPDesktopService.ReadConfiguration().GetAwaiter().GetResult()) return false;
 
+            CSSPSQLiteService = Provider.GetService<ICSSPSQLiteService>();
+            if (CSSPSQLiteService == null)
+            {
+                richTextBoxStatus.AppendText(string.Format(CSSPDesktopService.appTextModel._ShouldNotBeNull, "CSSPSQLiteService"));
+            }
+
             SettingUpAllTextForLanguage();
 
             splitContainerFirst.Dock = DockStyle.Fill;
@@ -333,29 +344,6 @@ namespace CSSPDesktop
             ShowPanels(ShowPanel.Language);
 
             RecenterPanels();
-
-            FileInfo fiCSSPDBLocal = new FileInfo(CSSPDesktopService.CSSPDBLocal);
-
-            Services.AddDbContext<CSSPDBLocalContext>(options =>
-            {
-                options.UseSqlite($"Data Source={ fiCSSPDBLocal.FullName }");
-            });
-
-            FileInfo fiCSSPDBFileManagement = new FileInfo(CSSPDesktopService.CSSPDBFilesManagement);
-
-            Services.AddDbContext<CSSPDBFilesManagementContext>(options =>
-            {
-                options.UseSqlite($"Data Source={ fiCSSPDBFileManagement.FullName }");
-            });
-
-            FileInfo fiCSSPDBLogin = new FileInfo(CSSPDesktopService.CSSPDBLogin);
-
-            Services.AddDbContext<CSSPDBLoginContext>(options =>
-            {
-                options.UseSqlite($"Data Source={ fiCSSPDBLogin.FullName }");
-            });
-
-            Provider = Services.BuildServiceProvider();
 
             CheckInternetConnection();
 
@@ -392,26 +380,26 @@ namespace CSSPDesktop
             }
 
             // PanelButtonsCenter
-            butStart.Text = CSSPDesktopService.appTextModel.butStartText;
-            butStop.Text = CSSPDesktopService.appTextModel.butStopText;
-            butClose.Text = CSSPDesktopService.appTextModel.butCloseText;
-            butShowLanguagePanel.Text = CSSPDesktopService.appTextModel.butShowLanguagePanelText;
-            butShowHelpPanel.Text = CSSPDesktopService.appTextModel.butShowHelpPanelText;
-            butUpdatesAvailable.Text = CSSPDesktopService.appTextModel.butUpdatesAvailableText;
+            linkLabelStart.Text = CSSPDesktopService.appTextModel.linkLabelStartText;
+            linkLabelStop.Text = CSSPDesktopService.appTextModel.linkLabelStopText;
+            linkLabelClose.Text = CSSPDesktopService.appTextModel.linkLabelCloseText;
+            linkLabelShowLanguagePanel.Text = CSSPDesktopService.appTextModel.linkLabelShowLanguagePanelText;
+            linkLabelShowHelpPanel.Text = CSSPDesktopService.appTextModel.linkLabelShowHelpPanelText;
+            linkLabelShowUpdatePanel.Text = CSSPDesktopService.appTextModel.linkLabelUpdatesAvailableText;
 
             // PanelHelpCenter
-            butHideHelpPanel.Text = CSSPDesktopService.appTextModel.butHideHelpPanelText;
+            linkLabelHideHelpPanel.Text = CSSPDesktopService.appTextModel.linkLabelHideHelpPanelText;
 
             // PanelUpdateCenter
-            butUpdate.Text = CSSPDesktopService.appTextModel.butUpdateText;
-            butCancelUpdate.Text = CSSPDesktopService.appTextModel.butCancelUpdateText;
-            butUpdateCompleted.Text = CSSPDesktopService.appTextModel.butUpdateCompletedText;
+            linkLabelUpdate.Text = CSSPDesktopService.appTextModel.linkLabelUpdateText;
+            linkLabelCancelUpdate.Text = CSSPDesktopService.appTextModel.linkLabelCancelUpdateText;
+            linkLabelUpdateCompleted.Text = CSSPDesktopService.appTextModel.linkLabelUpdateCompletedText;
             lblInstalling.Text = CSSPDesktopService.appTextModel.lblInstallingText;
 
             // PanelLoginCenter
             lblLoginEmail.Text = CSSPDesktopService.appTextModel.lblLoginEmailText;
             lblPassword.Text = CSSPDesktopService.appTextModel.lblPasswordText;
-            butLogin.Text = CSSPDesktopService.appTextModel.butLoginText;
+            linkLabelLogin.Text = CSSPDesktopService.appTextModel.linkLabelLoginText;
 
             // PanelStatus
             lblStatus.Text = CSSPDesktopService.appTextModel.lblStatusText;
@@ -424,10 +412,20 @@ namespace CSSPDesktop
             panelHelp.Visible = false;
             panelCommandsCenter.Visible = false;
 
+            if (CSSPDesktopService.HasHelpFiles)
+            {
+                linkLabelShowHelpPanel.Visible = true;
+            }
+            else
+            {
+                linkLabelShowHelpPanel.Visible = false;
+            }
+
             switch (showPanel)
             {
                 case ShowPanel.Commands:
                     {
+                        panelTop.Visible = true;
                         if (CSSPDesktopService.LoginRequired)
                         {
                             panelLoginCenter.Visible = true;
@@ -439,19 +437,25 @@ namespace CSSPDesktop
                     }
                     break;
                 case ShowPanel.Language:
-                    panelLanguageCenter.Visible = true;
+                    {
+                        panelTop.Visible = false;
+                        panelLanguageCenter.Visible = true;
+                    }
                     break;
                 case ShowPanel.Help:
                     {
+                        panelTop.Visible = false;
                         string fileToOpen = IsEnglish ? "HelpDocEN.rtf" : "HelpDocFR.rtf";
-                        richTextBoxHelp.LoadFile($"{ Environment.CurrentDirectory }\\helpdocs\\{ fileToOpen }");
+                        richTextBoxHelp.LoadFile($"{ CSSPDesktopService.LocalCSSPHelpPath }{ fileToOpen }");
                         panelHelp.Visible = true;
                     }
                     break;
                 case ShowPanel.Login:
+                    panelTop.Visible = false;
                     panelLoginCenter.Visible = true;
                     break;
                 case ShowPanel.Updates:
+                    panelTop.Visible = true;
                     panelUpdateCenter.Visible = true;
                     break;
                 default:
@@ -460,14 +464,14 @@ namespace CSSPDesktop
         }
         private void Start()
         {
-            butStart.Enabled = false;
-            butStop.Enabled = true;
+            linkLabelStart.Enabled = false;
+            linkLabelStop.Enabled = true;
             CSSPDesktopService.Start();
         }
         private void Stop()
         {
-            butStart.Enabled = true;
-            butStop.Enabled = false;
+            linkLabelStart.Enabled = true;
+            linkLabelStop.Enabled = false;
             CSSPDesktopService.Stop();
         }
         #endregion Functions private

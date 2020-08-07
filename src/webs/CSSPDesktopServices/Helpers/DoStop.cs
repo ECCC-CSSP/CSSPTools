@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace CSSPDesktopServices.Services
 {
-    public partial class CSSPDesktopService
+    public partial class CSSPDesktopService : ICSSPDesktopService
     {
         private async Task<bool> DoStop()
         {

@@ -18,7 +18,6 @@ namespace CSSPServices
     {
         string Error { get; set; }
 
-        Task<bool> CheckForLoginInfoInCSSPDBLogin();
         Task<bool> CreateSQLiteCSSPDBLocal();
         Task<bool> CreateSQLiteCSSPDBFilesManagement();
         Task<bool> CreateSQLiteCSSPDBLogin();
@@ -34,42 +33,33 @@ namespace CSSPServices
 
         #region Properties
         public string Error { get; set; }
-        private CSSPDBContext db { get; }
+        //private CSSPDBContext db { get; }
         private CSSPDBLocalContext dbLocal { get; }
-        private CSSPDBInMemoryContext dbIM { get; }
+        //private CSSPDBInMemoryContext dbIM { get; }
         private CSSPDBLoginContext dbLogin { get; }
         private CSSPDBFilesManagementContext dbFM { get; }
         private IConfiguration Configuration { get; }
         private ICSSPCultureService CSSPCultureService { get; }
-        private ILoggedInService LoggedInService { get; }
+        //private ILoggedInService LoggedInService { get; }
         private IEnums enums { get; }
         private IEnumerable<ValidationResult> ValidationResults { get; set; }
         #endregion Properties
 
         #region Constructors
-        public CSSPSQLiteService(IConfiguration Configuration, ICSSPCultureService CSSPCultureService, ILoggedInService LoggedInService, 
-            IEnums enums, CSSPDBContext db = null, CSSPDBLocalContext dbLocal = null, CSSPDBInMemoryContext dbIM = null, 
+        public CSSPSQLiteService(IConfiguration Configuration, ICSSPCultureService CSSPCultureService, 
+            IEnums enums, CSSPDBLocalContext dbLocal = null,  
             CSSPDBLoginContext dbLogin = null, CSSPDBFilesManagementContext dbFM = null)
         {
             this.Configuration = Configuration;
             this.CSSPCultureService = CSSPCultureService;
-            this.LoggedInService = LoggedInService;
             this.enums = enums;
-            this.db = db;
             this.dbLocal = dbLocal;
-            this.dbIM = dbIM;
             this.dbLogin = dbLogin;
             this.dbFM = dbFM;
         }
         #endregion Constructors
 
         #region Functions public
-        public async Task<bool> CheckForLoginInfoInCSSPDBLogin()
-        {
-            if (!await DoCheckForLoginInfoInCSSPDBLogin()) return await Task.FromResult(false);
-
-            return await Task.FromResult(true);
-        }
         public async Task<bool> CreateSQLiteCSSPDBLocal()
         {
             if (!await DoCreateSQLiteCSSPDBLocal()) return await Task.FromResult(false);

@@ -10,19 +10,22 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using System.IO;
 
-namespace CSSPServices
+namespace CSSPDesktopServices.Services
 {
-    public partial class CSSPSQLiteService : ICSSPSQLiteService
+    public partial class CSSPDesktopService : ICSSPDesktopService
     {
-        private async Task<bool> DoCheckForLoginInfoInCSSPDBLogin()
+        private async Task<bool> DoCheckIfHelpFilesExist()
         {
-            Contact contact = (from c in dbLogin.Contacts
-                               select c).FirstOrDefault();
-
-            if (contact == null)
+            FileInfo fi = new FileInfo($"{ LocalCSSPHelpPath }HelpDocEN.rtf");
+            if (fi.Exists)
             {
-                return await Task.FromResult(false);
+                HasHelpFiles = true;
+            }
+            else
+            {
+                HasHelpFiles = false;
             }
 
             return await Task.FromResult(true);
