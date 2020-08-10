@@ -48,6 +48,13 @@ namespace CSSPDesktopServices.Services
                 return false;
             }
 
+            LocalCSSPDesktopPath = Configuration.GetValue<string>("LocalCSSPDesktopPath");
+            if (string.IsNullOrWhiteSpace(LocalCSSPDesktopPath))
+            {
+                AppendStatus(new AppendEventArgs(string.Format(appTextModel._CouldNotBeFoundInConfigurationFile_, "LocalCSSPDesktopPath", "appsettings_csspdesktop.json")));
+                return false;
+            }
+
             LocalCSSPDatabasesPath = Configuration.GetValue<string>("LocalCSSPDatabasesPath");
             if (string.IsNullOrWhiteSpace(LocalCSSPDatabasesPath))
             {
@@ -76,13 +83,6 @@ namespace CSSPDesktopServices.Services
                 return false;
             }
 
-            LocalCSSPHelpPath = Configuration.GetValue<string>("LocalCSSPHelpPath");
-            if (string.IsNullOrWhiteSpace(LocalCSSPHelpPath))
-            {
-                AppendStatus(new AppendEventArgs(string.Format(appTextModel._CouldNotBeFoundInConfigurationFile_, "LocalCSSPHelpPath", "appsettings_csspdesktop.json")));
-                return false;
-            }
-
             AzureStoreCSSPWebAPIsPath = Configuration.GetValue<string>("AzureStoreCSSPWebAPIsPath");
             if (string.IsNullOrWhiteSpace(AzureStoreCSSPWebAPIsPath))
             {
@@ -101,13 +101,6 @@ namespace CSSPDesktopServices.Services
             if (string.IsNullOrWhiteSpace(AzureStoreCSSPFilesPath))
             {
                 AppendStatus(new AppendEventArgs(string.Format(appTextModel._CouldNotBeFoundInConfigurationFile_, "AzureStoreCSSPFilesPath", "appsettings_csspdesktop.json")));
-                return false;
-            }
-
-            AzureStoreCSSPHelpPath = Configuration.GetValue<string>("AzureStoreCSSPHelpPath");
-            if (string.IsNullOrWhiteSpace(AzureStoreCSSPHelpPath))
-            {
-                AppendStatus(new AppendEventArgs(string.Format(appTextModel._CouldNotBeFoundInConfigurationFile_, "AzureStoreCSSPHelpPath", "appsettings_csspdesktop.json")));
                 return false;
             }
 

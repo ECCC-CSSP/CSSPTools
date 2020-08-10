@@ -31,18 +31,18 @@ namespace CSSPDesktopServices.Services
         #endregion Properties
 
         #region Functions private
-        private async Task<bool> DoLogin(string LoginEmail, string Password)
+        private bool DoLogin(string LoginEmail, string Password)
         {
             if (string.IsNullOrWhiteSpace(LoginEmail))
             {
                 AppendTempStatus(new AppendTempEventArgs("LoginEmail is required"));
-                return await Task.FromResult(false);
+                return false;
             }
 
             if (string.IsNullOrWhiteSpace(Password))
             {
                 AppendTempStatus(new AppendTempEventArgs("Password is required"));
-                return await Task.FromResult(false);
+                return false;
             }
 
             using (HttpClient httpClient = new HttpClient())
@@ -65,12 +65,12 @@ namespace CSSPDesktopServices.Services
                     if ((int)response.StatusCode == 400)
                     {
                         AppendTempStatus(new AppendTempEventArgs(string.Format(CSSPCultureServicesRes.UnableToLoginAs_WithProvidedPassword, LoginEmail)));
-                        return await Task.FromResult(false);
+                        return false;
                     }
                     else
                     {
                         AppendTempStatus(new AppendTempEventArgs("Looks like the server is not responding. Do you have internet connection."));
-                        return await Task.FromResult(false);
+                        return false;
                     }
                 }
 
@@ -79,7 +79,7 @@ namespace CSSPDesktopServices.Services
                 if (contact == null)
                 {
                     AppendStatus(new AppendEventArgs(string.Format(CSSPCultureServicesRes.UnableToLoginAs_WithProvidedPassword, LoginEmail)));
-                    return await Task.FromResult(false);
+                    return false;
                 }
 
                 //AppendStatus(new AppendEventArgs(contact.Token));
@@ -91,23 +91,23 @@ namespace CSSPDesktopServices.Services
                 try
                 {
                     dbLogin.Contacts.RemoveRange(contactToDeleteList);
-                    await dbLogin.SaveChangesAsync();
+                    dbLogin.SaveChanges();
                 }
                 catch (Exception ex)
                 {
                     AppendTempStatus(new AppendTempEventArgs(string.Format(CSSPCultureServicesRes.CouldNotDelete_Error_, "Contacts", ex.Message)));
-                    return await Task.FromResult(false);
+                    return false;
                 }
 
                 try
                 {
                     dbLogin.Contacts.Add(contact);
-                    await dbLogin.SaveChangesAsync();
+                    dbLogin.SaveChanges();
                 }
                 catch (Exception ex)
                 {
                     AppendTempStatus(new AppendTempEventArgs(string.Format(CSSPCultureServicesRes.CouldNotAdd_Error_, "Contact", ex.Message)));
-                    return await Task.FromResult(false);
+                    return false;
                 }
 
                 // Getting AspNetUser for the Contact
@@ -120,12 +120,12 @@ namespace CSSPDesktopServices.Services
                     if ((int)response.StatusCode == 401)
                     {
                         AppendTempStatus(new AppendTempEventArgs(CSSPCultureServicesRes.NeedToBeLoggedIn));
-                        return await Task.FromResult(false);
+                        return false;
                     }
                     else if ((int)response.StatusCode == 500)
                     {
                         AppendTempStatus(new AppendTempEventArgs("Looks like the server is not responding. Do you have internet connection."));
-                        return await Task.FromResult(false);
+                        return false;
                     }
 
                 }
@@ -136,7 +136,7 @@ namespace CSSPDesktopServices.Services
                 if (aspNetUser == null)
                 {
                     AppendStatus(new AppendEventArgs(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "AspNetUser", "Id", contact.Id.ToString())));
-                    return await Task.FromResult(false);
+                    return false;
                 }
 
                 List<AspNetUser> aspNetUserToDeleteList = (from c in dbLogin.AspNetUsers
@@ -145,23 +145,23 @@ namespace CSSPDesktopServices.Services
                 try
                 {
                     dbLogin.AspNetUsers.RemoveRange(aspNetUserToDeleteList);
-                    await dbLogin.SaveChangesAsync();
+                    dbLogin.SaveChanges();
                 }
                 catch (Exception ex)
                 {
                     AppendTempStatus(new AppendTempEventArgs(string.Format(CSSPCultureServicesRes.CouldNotDelete_Error_, "AspNetUsers", ex.Message)));
-                    return await Task.FromResult(false);
+                    return false;
                 }
 
                 try
                 {
                     dbLogin.AspNetUsers.Add(aspNetUser);
-                    await dbLogin.SaveChangesAsync();
+                    dbLogin.SaveChanges();
                 }
                 catch (Exception ex)
                 {
                     AppendTempStatus(new AppendTempEventArgs(string.Format(CSSPCultureServicesRes.CouldNotAdd_Error_, "AspNetUser", ex.Message)));
-                    return await Task.FromResult(false);
+                    return false;
                 }
 
                 // Getting TVItemUserAuthorization for the Contact
@@ -174,12 +174,12 @@ namespace CSSPDesktopServices.Services
                     if ((int)response.StatusCode == 401)
                     {
                         AppendTempStatus(new AppendTempEventArgs(CSSPCultureServicesRes.NeedToBeLoggedIn));
-                        return await Task.FromResult(false);
+                        return false;
                     }
                     else if ((int)response.StatusCode == 500)
                     {
                         AppendTempStatus(new AppendTempEventArgs("Looks like the server is not responding. Do you have internet connection."));
-                        return await Task.FromResult(false);
+                        return false;
                     }
 
                 }
@@ -193,23 +193,23 @@ namespace CSSPDesktopServices.Services
                 try
                 {
                     dbLogin.TVItemUserAuthorizations.RemoveRange(tvItemUserAuthorizationToDeleteList);
-                    await dbLogin.SaveChangesAsync();
+                    dbLogin.SaveChanges();
                 }
                 catch (Exception ex)
                 {
                     AppendTempStatus(new AppendTempEventArgs(string.Format(CSSPCultureServicesRes.CouldNotDelete_Error_, "TVItemUserAuthorizationList", ex.Message)));
-                    return await Task.FromResult(false);
+                    return false;
                 }
 
                 try
                 {
                     dbLogin.TVItemUserAuthorizations.AddRange(tvItemUserAuthorizationList);
-                    await dbLogin.SaveChangesAsync();
+                    dbLogin.SaveChanges();
                 }
                 catch (Exception ex)
                 {
                     AppendTempStatus(new AppendTempEventArgs(string.Format(CSSPCultureServicesRes.CouldNotAdd_Error_, "TVItemUserAuthorizationList", ex.Message)));
-                    return await Task.FromResult(false);
+                    return false;
                 }
 
                 // Getting TVTypeUserAuthorization for the Contact
@@ -222,12 +222,12 @@ namespace CSSPDesktopServices.Services
                     if ((int)response.StatusCode == 401)
                     {
                         AppendTempStatus(new AppendTempEventArgs(CSSPCultureServicesRes.NeedToBeLoggedIn));
-                        return await Task.FromResult(false);
+                        return false;
                     }
                     else if ((int)response.StatusCode == 500)
                     {
                         AppendTempStatus(new AppendTempEventArgs("Looks like the server is not responding. Do you have internet connection."));
-                        return await Task.FromResult(false);
+                        return false;
                     }
 
                 }
@@ -241,23 +241,23 @@ namespace CSSPDesktopServices.Services
                 try
                 {
                     dbLogin.TVTypeUserAuthorizations.RemoveRange(TVTypeUserAuthorizationToDeleteList);
-                    await dbLogin.SaveChangesAsync();
+                    dbLogin.SaveChanges();
                 }
                 catch (Exception ex)
                 {
                     AppendTempStatus(new AppendTempEventArgs(string.Format(CSSPCultureServicesRes.CouldNotDelete_Error_, "TVTypeUserAuthorizationList", ex.Message)));
-                    return await Task.FromResult(false);
+                    return false;
                 }
 
                 try
                 {
                     dbLogin.TVTypeUserAuthorizations.AddRange(TVTypeUserAuthorizationList);
-                    await dbLogin.SaveChangesAsync();
+                    dbLogin.SaveChanges();
                 }
                 catch (Exception ex)
                 {
                     AppendTempStatus(new AppendTempEventArgs(string.Format(CSSPCultureServicesRes.CouldNotAdd_Error_, "TVTypeUserAuthorizationList", ex.Message)));
-                    return await Task.FromResult(false);
+                    return false;
                 }
 
                 // Getting AzureStore
@@ -268,12 +268,12 @@ namespace CSSPDesktopServices.Services
                     if ((int)response.StatusCode == 401)
                     {
                         AppendTempStatus(new AppendTempEventArgs(CSSPCultureServicesRes.NeedToBeLoggedIn));
-                        return await Task.FromResult(false);
+                        return false;
                     }
                     else if ((int)response.StatusCode == 500)
                     {
                         AppendTempStatus(new AppendTempEventArgs("Looks like the server is not responding. Do you have internet connection."));
-                        return await Task.FromResult(false);
+                        return false;
                     }
 
                 }
@@ -313,7 +313,7 @@ namespace CSSPDesktopServices.Services
                 catch (Exception ex)
                 {
                     AppendTempStatus(new AppendTempEventArgs(string.Format(CSSPCultureServicesRes.CouldNotAdd_Error_, "Preference AzureStore Item", ex.Message)));
-                    return await Task.FromResult(false);
+                    return false;
                 }
 
 
@@ -349,7 +349,7 @@ namespace CSSPDesktopServices.Services
                 catch (Exception ex)
                 {
                     AppendTempStatus(new AppendTempEventArgs(string.Format(CSSPCultureServicesRes.CouldNotAdd_Error_, "Preference LoginEmail Item", ex.Message)));
-                    return await Task.FromResult(false);
+                    return false;
                 }
 
                 // Adding Preference Password item in dbLogin
@@ -384,7 +384,7 @@ namespace CSSPDesktopServices.Services
                 catch (Exception ex)
                 {
                     AppendTempStatus(new AppendTempEventArgs(string.Format(CSSPCultureServicesRes.CouldNotAdd_Error_, "Preference Password Item", ex.Message)));
-                    return await Task.FromResult(false);
+                    return false;
                 }
 
                 // Adding Preference Password item in dbLogin
@@ -419,7 +419,7 @@ namespace CSSPDesktopServices.Services
                 catch (Exception ex)
                 {
                     AppendTempStatus(new AppendTempEventArgs(string.Format(CSSPCultureServicesRes.CouldNotAdd_Error_, "Preference Password Item", ex.Message)));
-                    return await Task.FromResult(false);
+                    return false;
                 }
 
                 // Adding Preference LoggedIn item in dbLogin
@@ -458,7 +458,7 @@ namespace CSSPDesktopServices.Services
                 }
             }
 
-            return await Task.FromResult(true);
+            return true;
         }
         private string Scramble(string Text)
         {

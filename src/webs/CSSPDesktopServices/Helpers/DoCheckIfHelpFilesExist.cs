@@ -18,7 +18,7 @@ namespace CSSPDesktopServices.Services
     {
         private async Task<bool> DoCheckIfHelpFilesExist()
         {
-            FileInfo fi = new FileInfo($"{ LocalCSSPHelpPath }HelpDocEN.rtf");
+            FileInfo fi = new FileInfo($"{ LocalCSSPWebAPIsPath }HelpDocEN.rtf");
             if (fi.Exists)
             {
                 HasHelpFiles = true;

@@ -13,7 +13,7 @@ namespace CSSPDesktopServices.Services
         {
             List<string> DirectoryToCreateList = new List<string>()
             {
-                LocalCSSPDatabasesPath, LocalCSSPWebAPIsPath, LocalCSSPJSONPath, LocalCSSPFilesPath, LocalCSSPHelpPath
+               LocalCSSPDesktopPath, LocalCSSPDatabasesPath, LocalCSSPWebAPIsPath, LocalCSSPJSONPath, LocalCSSPFilesPath
             };
 
             foreach (string dirStr in DirectoryToCreateList)

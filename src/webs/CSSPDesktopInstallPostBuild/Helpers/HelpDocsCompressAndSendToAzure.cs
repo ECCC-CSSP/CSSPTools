@@ -36,7 +36,9 @@ namespace CSSPDesktopInstallPostBuild
 
             ZipFile.CreateFromDirectory(di.FullName, fi.FullName);
 
-            if (fi.Exists)
+            fi = new FileInfo($@"C:\CSSPTools\src\webs\CSSPDesktop\helpdocs.zip");
+
+            if (!fi.Exists)
             {
                 Console.WriteLine($"Zip file does not exist [{ fi.FullName }]");
                 return await Task.FromResult(false);
@@ -44,7 +46,7 @@ namespace CSSPDesktopInstallPostBuild
 
             try
             {
-                BlobClient blobClient = new BlobClient(AzureStoreConnectionString, AzureStoreCSSPHelpPath, fi.Name);
+                BlobClient blobClient = new BlobClient(AzureStoreConnectionString, AzureStoreCSSPWebAPIsPath, fi.Name);
                 await blobClient.UploadAsync(fi.FullName, true);
             }
             catch (Exception ex)

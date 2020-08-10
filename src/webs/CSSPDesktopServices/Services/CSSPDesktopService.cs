@@ -23,6 +23,7 @@ namespace CSSPDesktopServices.Services
         AppTextModel appTextModel { get; set; }
         bool? HasInternetConnection { get; set; }
         bool LoginRequired { get; set; }
+        bool UpdateIsNeeded { get; set; }
         bool IsLoggedIn { get; set; }
         bool HasHelpFiles { get; set; }
         string CSSPDBLocal { get; set; }
@@ -34,22 +35,21 @@ namespace CSSPDesktopServices.Services
         string Password { get; set; }
         Contact ContactLoggedIn { get; set; }
         string AzureStore { get; set; }
-        string LocalCSSPHelpPath { get; set; }
+        string LocalCSSPWebAPIsPath { get; set; }
 
         // Functions
         Task<bool> CheckIfHelpFilesExist();
-        Task<bool> CheckIfLoginIsRequired();
+        bool CheckIfLoginIsRequired();
+        bool CheckIfUpdateIsNeeded();
         Task<bool> CreateAllRequiredDirectories();
-        Task<bool> AnalyseDirectoriesAndDatabases();
         Task<bool> CheckingAvailableUpdate();
         Task CheckingInternetConnection();
-        Task<bool> InstallUpdates();
+        bool InstallUpdates();
         Task<bool> Start();
-        Task<bool> Stop();
-        Task<bool> Login(string LoginEmail, string Password);
+        bool Stop();
+        bool Login(string LoginEmail, string Password);
         void Logoff();
         Task<bool> ReadConfiguration();
-        Task<bool> UnzipHelp();
         string Descramble(string Text);
 
         //string Scramble(string Text);
@@ -73,6 +73,7 @@ namespace CSSPDesktopServices.Services
         public bool? HasInternetConnection { get; set; } = null;
         public bool IsEnglish { get; set; }
         public bool LoginRequired { get; set; } = false;
+        public bool UpdateIsNeeded { get; set; } = false;
         public bool IsLoggedIn { get; set; } = false;
         public bool HasHelpFiles { get; set; } = false;
         public string CSSPDBLocal { get; set; }
@@ -84,28 +85,25 @@ namespace CSSPDesktopServices.Services
         public string Password { get; set; }
         public Contact ContactLoggedIn { get; set; }
         public string AzureStore { get; set; }
-        public string LocalCSSPHelpPath { get; set; }
+        public string LocalCSSPWebAPIsPath { get; set; }
 
         private CSSPDBContext db { get; }
         private CSSPDBLocalContext dbLocal { get; }
-        //private CSSPDBInMemoryContext dbIM { get; }
         private CSSPDBLoginContext dbLogin { get; }
         private CSSPDBFilesManagementContext dbFM { get; }
         private IConfiguration Configuration { get; }
         private ICSSPCultureService CSSPCultureService { get; }
-        //private ILoggedInService LoggedInService { get; }
         private IEnums enums { get; }
         private IEnumerable<ValidationResult> ValidationResults { get; set; }
         private bool? StoreLocal { get; set; }
         private bool? StoreInAzure { get; set; }
+        private string LocalCSSPDesktopPath { get; set; }
         private string LocalCSSPDatabasesPath { get; set; }
-        private string LocalCSSPWebAPIsPath { get; set; }
         private string LocalCSSPJSONPath { get; set; }
         private string LocalCSSPFilesPath { get; set; }
         private string AzureStoreCSSPWebAPIsPath { get; set; }
         private string AzureStoreCSSPJSONPath { get; set; }
         private string AzureStoreCSSPFilesPath { get; set; }
-        private string AzureStoreCSSPHelpPath { get; set; }
         private Process processCSSPWebAPIs { get; set; }
         private Process processBrowser { get; set; }
         #endregion Properties
@@ -130,11 +128,17 @@ namespace CSSPDesktopServices.Services
 
             return await Task.FromResult(true);
         }
-        public async Task<bool> CheckIfLoginIsRequired()
+        public bool CheckIfLoginIsRequired()
         {
-            if (!await DoCheckIfLoginIsRequired()) return await Task.FromResult(false);
+            if (!DoCheckIfLoginIsRequired()) return false;
 
-            return await Task.FromResult(true);
+            return true;
+        }
+        public bool CheckIfUpdateIsNeeded()
+        {
+            if (! DoCheckIfUpdateIsNeeded()) return false;
+
+            return true;
         }
         public async Task<bool> CheckingAvailableUpdate()
         {
@@ -164,42 +168,30 @@ namespace CSSPDesktopServices.Services
 
             return await Task.FromResult(true);
         }
-        public async Task<bool> Stop()
+        public bool Stop()
         {
-            if (!await DoStop()) return await Task.FromResult(false);
+            if (! DoStop()) return false;
 
-            return await Task.FromResult(true);
+            return true;
         }
-        public async Task<bool> InstallUpdates()
+        public bool InstallUpdates()
         {
-            if (!await DoInstallUpdates()) return await Task.FromResult(false);
+            if (! DoInstallUpdates()) return false;
 
-            return await Task.FromResult(true);
+            return true;
         }
-        public async Task<bool> AnalyseDirectoriesAndDatabases()
-        {
-            if (!await DoAnalyseDirectoriesAndDatabases()) return await Task.FromResult(false);
-
-            return await Task.FromResult(true);
-        }
-        public async Task<bool> Login(string LoginEmail, string Password)
+        public bool Login(string LoginEmail, string Password)
         {
             this.LoginEmail = LoginEmail;
             this.Password = Password;
 
-            if (!await DoLogin(LoginEmail, Password)) return await Task.FromResult(false);
+            if (! DoLogin(LoginEmail, Password)) return false;
 
-            return await Task.FromResult(true);
+            return true;
         }
         public void Logoff()
         {
             DoLogoff();
-        }
-        public async Task<bool> UnzipHelp()
-        {
-            if (!await DoUnzipHelp()) return await Task.FromResult(false);
-
-            return await Task.FromResult(true);
         }
         public string Descramble(string Text)
         {

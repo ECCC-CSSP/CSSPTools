@@ -38,13 +38,6 @@ namespace CSSPDesktopInstallPostBuild
                 return await Task.FromResult(false);
             }
 
-            AzureStoreCSSPHelpPath = Configuration.GetValue<string>("AzureStoreCSSPHelpPath");
-            if (string.IsNullOrWhiteSpace(AzureStoreCSSPHelpPath))
-            {
-                Console.WriteLine("Could not read AzureStoreCSSPHelpPath from Configuration");
-                return await Task.FromResult(false);
-            }
-
             return await Task.FromResult(true);
         }
 
