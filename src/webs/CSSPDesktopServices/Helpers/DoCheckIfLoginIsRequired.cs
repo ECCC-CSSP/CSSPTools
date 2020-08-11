@@ -15,7 +15,7 @@ namespace CSSPDesktopServices.Services
 {
     public partial class CSSPDesktopService : ICSSPDesktopService
     {
-        private bool DoCheckIfLoginIsRequired()
+        private async Task<bool> DoCheckIfLoginIsRequired()
         {
             // doing Contact
             Contact contact = (from c in dbLogin.Contacts
@@ -24,7 +24,7 @@ namespace CSSPDesktopServices.Services
             if (contact == null)
             {
                 LoginRequired = true;
-                return true;
+                return await Task.FromResult(true);
             }
 
             ContactLoggedIn = contact;
@@ -37,10 +37,10 @@ namespace CSSPDesktopServices.Services
             if (string.IsNullOrWhiteSpace(LoginEmail))
             {
                 LoginRequired = true;
-                return true;
+                return await Task.FromResult(true);
             }
 
-            LoginEmail = Descramble(LoginEmail);
+            LoginEmail = await Descramble(LoginEmail);
 
             // doing Password
             Password = (from c in dbLogin.Preferences
@@ -50,10 +50,10 @@ namespace CSSPDesktopServices.Services
             if (string.IsNullOrWhiteSpace(Password))
             {
                 LoginRequired = true;
-                return true;
+                return await Task.FromResult(true);
             }
 
-            Password = Descramble(Password);
+            Password = await Descramble(Password);
 
             // doing LoggedIn
             string LoggedInTxt = (from c in dbLogin.Preferences
@@ -63,17 +63,17 @@ namespace CSSPDesktopServices.Services
             if (string.IsNullOrWhiteSpace(LoggedInTxt))
             {
                 LoginRequired = true;
-                return true;
+                return await Task.FromResult(true);
             }
 
-            LoggedInTxt = Descramble(LoggedInTxt);
+            LoggedInTxt = await Descramble(LoggedInTxt);
 
             IsLoggedIn = bool.Parse(LoggedInTxt);
 
             if (!IsLoggedIn)
             {
                 LoginRequired = true;
-                return true;
+                return await Task.FromResult(true);
             }
 
             // doing AzureStore
@@ -84,14 +84,14 @@ namespace CSSPDesktopServices.Services
             if (string.IsNullOrWhiteSpace(AzureStore))
             {
                 LoginRequired = true;
-                return true;
+                return await Task.FromResult(true);
             }
 
-            AzureStore = Descramble(AzureStore);
+            AzureStore = await Descramble(AzureStore);
 
             LoginRequired = false;
 
-            return true;
+            return await Task.FromResult(true);
         }
     }
 }

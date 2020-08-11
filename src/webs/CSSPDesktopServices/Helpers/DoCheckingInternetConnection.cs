@@ -17,7 +17,7 @@ namespace CSSPDesktopServices.Services
             try
             {
                 HttpClient httpClient = new HttpClient();
-                string ret = await httpClient.GetStringAsync("https://www.google.com/");
+                string ret = httpClient.GetStringAsync("https://www.google.com/").GetAwaiter().GetResult();
                 if (!string.IsNullOrWhiteSpace(ret))
                 {
                     HasInternetConnection = true;

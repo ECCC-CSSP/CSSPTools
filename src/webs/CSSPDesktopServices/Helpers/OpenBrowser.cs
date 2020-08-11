@@ -10,7 +10,7 @@ namespace CSSPDesktopServices.Services
 {
     public partial class CSSPDesktopService : ICSSPDesktopService
     {
-        private async Task<bool> OpenBrowser()
+        private bool OpenBrowser()
         {
             ProcessStartInfo processStartInfo = new ProcessStartInfo();
             processStartInfo.FileName = $"{ CSSPLocalUrl }en-CA/";
@@ -22,7 +22,7 @@ namespace CSSPDesktopServices.Services
             processStartInfo.UseShellExecute = true;
             processBrowser = Process.Start(processStartInfo);
 
-            return await Task.FromResult(true);
+            return true;
         }
     }
 }

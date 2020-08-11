@@ -14,8 +14,8 @@ namespace CSSPDesktopServices.Services
             ClearStatus(new ClearEventArgs());
             Directory.SetCurrentDirectory(LocalCSSPWebAPIsPath);
 
-            if (!await OpenCSSPWebAPIs()) return await Task.FromResult(false);
-            if (!await OpenBrowser()) return await Task.FromResult(false);
+            if (!OpenCSSPWebAPIs()) return await Task.FromResult(false);
+            if (!OpenBrowser()) return await Task.FromResult(false);
 
             return await Task.FromResult(true);
         }

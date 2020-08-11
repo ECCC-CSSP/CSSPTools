@@ -39,18 +39,17 @@ namespace CSSPDesktopServices.Services
 
         // Functions
         Task<bool> CheckIfHelpFilesExist();
-        bool CheckIfLoginIsRequired();
-        bool CheckIfUpdateIsNeeded();
+        Task<bool> CheckIfLoginIsRequired();
+        Task<bool> CheckIfUpdateIsNeeded();
         Task<bool> CreateAllRequiredDirectories();
-        Task<bool> CheckingAvailableUpdate();
-        Task CheckingInternetConnection();
-        bool InstallUpdates();
+        Task<bool> CheckingInternetConnection();
+        Task<bool> InstallUpdates();
         Task<bool> Start();
-        bool Stop();
-        bool Login(string LoginEmail, string Password);
-        void Logoff();
+        Task<bool> Stop();
+        Task<bool> Login(string LoginEmail, string Password);
+        Task<bool> Logoff();
         Task<bool> ReadConfiguration();
-        string Descramble(string Text);
+        Task<string> Descramble(string Text);
 
         //string Scramble(string Text);
         //string Descramble(string Text);
@@ -68,7 +67,7 @@ namespace CSSPDesktopServices.Services
         #region Variables
         #endregion Variables
 
-        #region Properties
+        #region Properties public
         public AppTextModel appTextModel { get; set; }
         public bool? HasInternetConnection { get; set; } = null;
         public bool IsEnglish { get; set; }
@@ -86,7 +85,9 @@ namespace CSSPDesktopServices.Services
         public Contact ContactLoggedIn { get; set; }
         public string AzureStore { get; set; }
         public string LocalCSSPWebAPIsPath { get; set; }
-
+        #endregion Properties public
+        
+        #region Properties private
         private CSSPDBContext db { get; }
         private CSSPDBLocalContext dbLocal { get; }
         private CSSPDBLoginContext dbLogin { get; }
@@ -106,7 +107,7 @@ namespace CSSPDesktopServices.Services
         private string AzureStoreCSSPFilesPath { get; set; }
         private Process processCSSPWebAPIs { get; set; }
         private Process processBrowser { get; set; }
-        #endregion Properties
+        #endregion Properties private
 
         #region Constructors
         public CSSPDesktopService(IConfiguration Configuration, ICSSPCultureService CSSPCultureService, 
@@ -128,27 +129,23 @@ namespace CSSPDesktopServices.Services
 
             return await Task.FromResult(true);
         }
-        public bool CheckIfLoginIsRequired()
+        public async Task<bool> CheckIfLoginIsRequired()
         {
-            if (!DoCheckIfLoginIsRequired()) return false;
-
-            return true;
-        }
-        public bool CheckIfUpdateIsNeeded()
-        {
-            if (! DoCheckIfUpdateIsNeeded()) return false;
-
-            return true;
-        }
-        public async Task<bool> CheckingAvailableUpdate()
-        {
-            if (!await DoCheckingAvailableUpdate()) return await Task.FromResult(false);
+            if (!await DoCheckIfLoginIsRequired()) return await Task.FromResult(false);
 
             return await Task.FromResult(true);
         }
-        public async Task CheckingInternetConnection()
+        public async Task<bool> CheckIfUpdateIsNeeded()
         {
-            await DoCheckingInternetConnection();
+            if (!await DoCheckIfUpdateIsNeeded()) return await Task.FromResult(false);
+
+            return await Task.FromResult(true);
+        }
+        public async Task<bool> CheckingInternetConnection()
+        {
+            if(!await DoCheckingInternetConnection()) return await Task.FromResult(false);
+
+            return await Task.FromResult(true);
         }
         public async Task<bool> CreateAllRequiredDirectories()
         {
@@ -168,34 +165,36 @@ namespace CSSPDesktopServices.Services
 
             return await Task.FromResult(true);
         }
-        public bool Stop()
+        public async Task<bool> Stop()
         {
-            if (! DoStop()) return false;
+            if (!await DoStop()) return await Task.FromResult(false);
 
-            return true;
+            return await Task.FromResult(true);
         }
-        public bool InstallUpdates()
+        public async Task<bool> InstallUpdates()
         {
-            if (! DoInstallUpdates()) return false;
+            if (!await DoInstallUpdates()) return await Task.FromResult(false);
 
-            return true;
+            return await Task.FromResult(true);
         }
-        public bool Login(string LoginEmail, string Password)
+        public async Task<bool> Login(string LoginEmail, string Password)
         {
             this.LoginEmail = LoginEmail;
             this.Password = Password;
 
-            if (! DoLogin(LoginEmail, Password)) return false;
+            if (!await DoLogin(LoginEmail, Password)) return await Task.FromResult(false);
 
-            return true;
+            return await Task.FromResult(true);
         }
-        public void Logoff()
+        public async Task<bool> Logoff()
         {
-            DoLogoff();
+            if (!await DoLogoff()) return await Task.FromResult(false);
+
+            return await Task.FromResult(true);
         }
-        public string Descramble(string Text)
+        public async Task<string> Descramble(string Text)
         {
-            return DoDescramble(Text);
+            return await Task.FromResult(DoDescramble(Text));
         }
         #endregion Function public
     }

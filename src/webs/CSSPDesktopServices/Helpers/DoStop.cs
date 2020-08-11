@@ -7,7 +7,7 @@ namespace CSSPDesktopServices.Services
 {
     public partial class CSSPDesktopService : ICSSPDesktopService
     {
-        private bool DoStop()
+        private async Task<bool> DoStop()
         {
             if (processBrowser != null)
             {
@@ -25,7 +25,7 @@ namespace CSSPDesktopServices.Services
                 }
             }
 
-            return true;
+            return await Task.FromResult(true);
         }
     }
 }

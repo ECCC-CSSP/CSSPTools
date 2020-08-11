@@ -21,17 +21,17 @@ namespace CSSPDesktopServices.Services
 {
     public partial class CSSPDesktopService : ICSSPDesktopService
     {
-        private bool DoInstallUpdates()
+        private async Task<bool> DoInstallUpdates()
         {
             // need to stop CSSPWebAPIs so we can copy over some files 
-            Stop();
+            if (!await Stop()) await Task.FromResult(false);
 
             DirectoryInfo di = new DirectoryInfo(LocalCSSPDesktopPath);
 
             if (!di.Exists)
             {
                 AppendStatus(new AppendEventArgs(string.Format(appTextModel.Directory_ShouldExist, di.FullName)));
-                return false;
+                return await Task.FromResult(false);
             }
 
             List<string> zipFileNameList = new List<string>()
@@ -46,16 +46,16 @@ namespace CSSPDesktopServices.Services
                 InstallingStatus(new InstallingEventArgs(30*zipCount));
                 AppendTempStatus(new AppendTempEventArgs(string.Format(appTextModel.Downloading_, zipFileName)));
 
-                DownloadZipFilesFromAzure(zipFileName);
+                if (!await DownloadZipFilesFromAzure(zipFileName)) return await Task.FromResult(false);
             }
 
             InstallingStatus(new InstallingEventArgs(100));
             AppendTempStatus(new AppendTempEventArgs(""));
 
-            return true;
+            return await Task.FromResult(true);
         }
 
-        private bool DownloadZipFilesFromAzure(string zipFileName)
+        private async Task<bool> DownloadZipFilesFromAzure(string zipFileName)
         {
             FileInfo fi = new FileInfo($"{ LocalCSSPDesktopPath }{ zipFileName }");
 
@@ -64,7 +64,7 @@ namespace CSSPDesktopServices.Services
             if (blobProperties == null)
             {
                 AppendStatus(new AppendEventArgs(string.Format(appTextModel.CouldNotGetPropertiesFromAzureStore_AndFile_, "csspwebapis", zipFileName)));
-                return false;
+                return await Task.FromResult(false);
             }
 
             CSSPFile csspFile = (from c in dbFM.CSSPFiles
@@ -78,18 +78,18 @@ namespace CSSPDesktopServices.Services
             }
 
             AppendTempStatus(new AppendTempEventArgs(string.Format(appTextModel.Unzipping_, zipFileName)));
-            UnzipDownloadedFile(zipFileName, blobProperties);
+            if (!await UnzipDownloadedFile(zipFileName, blobProperties)) return await Task.FromResult(false);
 
-            return true;
+            return await Task.FromResult(true);
         }
-        private bool UnzipDownloadedFile(string zipFileName, BlobProperties blobProperties)
+        private async Task<bool> UnzipDownloadedFile(string zipFileName, BlobProperties blobProperties)
         {
             FileInfo fiLocal = new FileInfo($"{ LocalCSSPDesktopPath }{ zipFileName }");
 
             if (!fiLocal.Exists)
             {
                 AppendStatus(new AppendEventArgs(string.Format(appTextModel.CouldNotFindFile_, fiLocal.FullName)));
-                return false;
+                return await Task.FromResult(false);
             }
 
             try
@@ -106,7 +106,7 @@ namespace CSSPDesktopServices.Services
             catch (Exception ex)
             {
                 AppendStatus(new AppendEventArgs(string.Format(appTextModel.CouldNotUnzip_Error_, fiLocal.FullName, ex.Message)));
-                return false;
+                return await Task.FromResult(false);
             }
 
             CSSPFile csspFile = (from c in dbFM.CSSPFiles
@@ -145,10 +145,10 @@ namespace CSSPDesktopServices.Services
             catch (Exception ex)
             {
                 AppendStatus(new AppendEventArgs(string.Format(appTextModel.CouldNotAddOrModifyCSSPDBFilesManagement_dbFor_, $"csspwebapis --- { zipFileName }")));
-                return false;
+                return await Task.FromResult(false);
             }
 
-            return true;
+            return await Task.FromResult(true);
         }
     }
 }

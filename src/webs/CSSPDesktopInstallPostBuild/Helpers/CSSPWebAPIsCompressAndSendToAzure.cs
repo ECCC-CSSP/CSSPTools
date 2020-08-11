@@ -36,7 +36,7 @@ namespace CSSPDesktopInstallPostBuild
 
             ZipFile.CreateFromDirectory(di.FullName, fi.FullName);
 
-            if (fi.Exists)
+            if (!fi.Exists)
             {
                 Console.WriteLine($"Zip file does not exist [{ fi.FullName }]");
                 return await Task.FromResult(false);

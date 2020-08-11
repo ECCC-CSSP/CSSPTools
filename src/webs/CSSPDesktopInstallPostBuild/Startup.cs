@@ -28,8 +28,8 @@ namespace CSSPDesktopInstallPostBuild
         {
             if (!await FillVariables()) return await Task.FromResult(false);
             if (!await HelpDocsCompressAndSendToAzure()) return await Task.FromResult(false);
-            //if (!await CSSPWebAPIsCompressAndSendToAzure()) return await Task.FromResult(false);
-            //if (!await CSSPClientCompressAndSendToAzure()) return await Task.FromResult(false);
+            if (!await CSSPWebAPIsCompressAndSendToAzure()) return await Task.FromResult(false);
+            if (!await CSSPClientCompressAndSendToAzure()) return await Task.FromResult(false);
 
             return await Task.FromResult(true);
         }

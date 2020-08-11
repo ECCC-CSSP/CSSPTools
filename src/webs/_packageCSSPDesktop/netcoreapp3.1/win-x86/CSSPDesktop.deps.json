@@ -2817,7 +2817,15 @@
       },
       "CSSPDesktopServices/1.0.0": {
         "dependencies": {
-          "Azure.Storage.Blobs": "12.4.4"
+          "Azure.Storage.Blobs": "12.4.4",
+          "CSSPServices": "1.0.0",
+          "Microsoft.EntityFrameworkCore.InMemory": "3.1.6",
+          "Microsoft.EntityFrameworkCore.SqlServer": "3.1.6",
+          "Microsoft.EntityFrameworkCore.Sqlite": "3.1.6",
+          "Microsoft.Extensions.Configuration": "3.1.6",
+          "Microsoft.Extensions.Configuration.FileExtensions": "3.1.6",
+          "Microsoft.Extensions.Configuration.Json": "3.1.6",
+          "Microsoft.Extensions.DependencyInjection": "3.1.6"
         },
         "runtime": {
           "CSSPDesktopServices.dll": {}

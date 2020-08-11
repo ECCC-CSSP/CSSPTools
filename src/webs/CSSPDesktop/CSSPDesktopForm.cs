@@ -38,10 +38,7 @@ namespace CSSPDesktop
         public CSSPDesktopForm()
         {
             InitializeComponent();
-            if (!Setup())
-            {
-                return;
-            }
+            Setup().GetAwaiter().GetResult();
         }
         #endregion Constructors
 
@@ -49,6 +46,8 @@ namespace CSSPDesktop
         #region Button Click
         private void butCancelUpdate_Click(object sender, EventArgs e)
         {
+            StartTheAppWithLanguage().GetAwaiter().GetResult();
+
             ShowPanels(ShowPanel.Commands);
         }
         private void butClose_Click(object sender, EventArgs e)
@@ -99,7 +98,7 @@ namespace CSSPDesktop
         private void butUpdate_Click(object sender, EventArgs e)
         {
             butCancelUpdate.Enabled = false;
-            if (CSSPDesktopService.InstallUpdates())
+            if (CSSPDesktopService.InstallUpdates().GetAwaiter().GetResult())
             {
                 butShowUpdatePanel.Enabled = false;
             }
@@ -109,6 +108,8 @@ namespace CSSPDesktop
         }
         private void butUpdateCompleted_Click(object sender, EventArgs e)
         {
+            StartTheAppWithLanguage().GetAwaiter().GetResult();
+
             ShowPanels(ShowPanel.Commands);
             butCancelUpdate.Enabled = true;
             butCancelUpdate.Visible = true;
@@ -157,7 +158,7 @@ namespace CSSPDesktop
         #region Login
         private void linkLabelLogin_Click(object sender, EventArgs e)
         {
-            Login();
+            Login().GetAwaiter().GetResult();
         }
         #endregion Login
         #endregion Events
@@ -166,9 +167,9 @@ namespace CSSPDesktop
         #endregion Functions public
 
         #region Functions private
-        private void CheckInternetConnection()
+        private async Task<bool> CheckInternetConnection()
         {
-            CSSPDesktopService.CheckingInternetConnection();
+            if (!await CSSPDesktopService.CheckingInternetConnection()) return await Task.FromResult(false);
 
             if (CSSPDesktopService.HasInternetConnection != null)
             {
@@ -181,31 +182,15 @@ namespace CSSPDesktop
                     Text = CSSPDesktopService.appTextModel.FormTitleText + $" --- ({ CSSPDesktopService.appTextModel.NoInternetConnection })";
                 }
             }
+
+            return await Task.FromResult(true);
         }
-        private void Login()
+        private async Task<bool> Login()
         {
-            CSSPDesktopService.Login(textBoxLoginEmail.Text.Trim(), textBoxPassword.Text.Trim());
-            if (!CSSPDesktopService.CheckIfLoginIsRequired()) return;
-            if (!CSSPDesktopService.CheckIfUpdateIsNeeded()) return;
-            
-            if (CSSPDesktopService.LoginRequired)
-            {
-                butLogoff.Visible = false;
-                butShowLoginPanel.Visible = true;
+            if (!await CSSPDesktopService.Login(textBoxLoginEmail.Text.Trim(), textBoxPassword.Text.Trim())) return await Task.FromResult(false);
+            if (!await StartTheAppWithLanguage()) return await Task.FromResult(false);
 
-                lblContactLoggedIn.Text = "";
-                ShowPanels(ShowPanel.Login);
-
-                MessageBox.Show(CSSPDesktopService.appTextModel.CouldNotLogin, CSSPDesktopService.appTextModel.ErrorWhileTryingToLogin, MessageBoxButtons.OK);
-            }
-            else
-            {
-                butLogoff.Visible = true;
-                butShowLoginPanel.Visible = false;
-
-                lblContactLoggedIn.Text = CSSPDesktopService.ContactLoggedIn.LoginEmail;
-                ShowPanels(ShowPanel.Commands);
-            }
+            return await Task.FromResult(true);
         }
         private void Logoff()
         {
@@ -262,11 +247,11 @@ namespace CSSPDesktop
 
             if (! await CSSPDesktopService.CheckIfHelpFilesExist()) return await Task.FromResult(false);
 
-            if (!CSSPDesktopService.CheckIfLoginIsRequired()) return false;
+            if (!await CSSPDesktopService.CheckIfLoginIsRequired()) return await Task.FromResult(false);
 
             if (!CSSPDesktopService.LoginRequired)
             {
-                if (!CSSPDesktopService.CheckIfUpdateIsNeeded()) return await Task.FromResult(false);
+                if (!await CSSPDesktopService.CheckIfUpdateIsNeeded()) return await Task.FromResult(false);
             }
 
             if (CSSPDesktopService.LoginRequired)
@@ -302,7 +287,7 @@ namespace CSSPDesktop
 
             return await Task.FromResult(true);
         }
-        private bool Setup()
+        private async Task<bool> Setup()
         {
             string _CouldNotBeFoundInConfigurationFile_ = "{0} could not be found in the configuration file {1}";
 
@@ -324,7 +309,7 @@ namespace CSSPDesktop
             if (string.IsNullOrWhiteSpace(CSSPDBLocal))
             {
                 richTextBoxStatus.AppendText(string.Format(_CouldNotBeFoundInConfigurationFile_, "CSSPDBLocal", "appsettings_csspdesktop.json"));
-                return false;
+                return await Task.FromResult(false);
             }
 
             FileInfo fiCSSPDBLocal = new FileInfo(CSSPDBLocal);
@@ -338,7 +323,7 @@ namespace CSSPDesktop
             if (string.IsNullOrWhiteSpace(CSSPDBFilesManagement))
             {
                 richTextBoxStatus.AppendText(string.Format(_CouldNotBeFoundInConfigurationFile_, "CSSPDBFilesManagement", "appsettings_csspdesktop.json"));
-                return false;
+                return await Task.FromResult(false);
             }
 
             FileInfo fiCSSPDBFileManagement = new FileInfo(CSSPDBFilesManagement);
@@ -352,7 +337,7 @@ namespace CSSPDesktop
             if (string.IsNullOrWhiteSpace(CSSPDBLogin))
             {
                 richTextBoxStatus.AppendText(string.Format(_CouldNotBeFoundInConfigurationFile_, "CSSPDBLogin", "appsettings_csspdesktop.json"));
-                return false;
+                return await Task.FromResult(false);
             }
 
             FileInfo fiCSSPDBLogin = new FileInfo(CSSPDBLogin);
@@ -375,7 +360,7 @@ namespace CSSPDesktop
                 {
                     richTextBoxStatus.AppendText("CSSPDesktopService should not be null\r\n");
                 }
-                return false;
+                return await Task.FromResult(false);
             }
 
             CSSPDesktopService.StatusClear += CSSPDesktopService_StatusClear;
@@ -385,7 +370,7 @@ namespace CSSPDesktop
             CSSPDesktopService.StatusErrorMessage += CSSPDesktopService_StatusErrorMessage;
 
             CSSPDesktopService.IsEnglish = IsEnglish;
-            if (!CSSPDesktopService.ReadConfiguration().GetAwaiter().GetResult()) return false;
+            if (!await CSSPDesktopService.ReadConfiguration()) return await Task.FromResult(false);
 
             CSSPSQLiteService = Provider.GetService<ICSSPSQLiteService>();
             if (CSSPSQLiteService == null)
@@ -404,9 +389,9 @@ namespace CSSPDesktop
 
             RecenterPanels();
 
-            CheckInternetConnection();
+            if (!await CheckInternetConnection()) return await Task.FromResult(false);
 
-            return true;
+            return await Task.FromResult(true);
         }
         private void SettingUpAllTextForLanguage()
         {

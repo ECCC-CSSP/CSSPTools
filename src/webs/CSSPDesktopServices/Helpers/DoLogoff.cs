@@ -21,7 +21,7 @@ namespace CSSPDesktopServices.Services
         #endregion Properties
 
         #region Functions private
-        private void DoLogoff()
+        private async Task<bool> DoLogoff()
         {
             // Adding Preference LoggedIn item in dbLogin
             Preference preference = (from c in dbLogin.Preferences
@@ -38,14 +38,14 @@ namespace CSSPDesktopServices.Services
                 {
                     PreferenceID = lastPreferenceID + 1,
                     PreferenceName = "LoggedIn",
-                    PreferenceText = Scramble("false")
+                    PreferenceText = await Scramble("false")
                 };
 
                 dbLogin.Preferences.Add(preference);
             }
             else
             {
-                preference.PreferenceText = Scramble("false");
+                preference.PreferenceText = await Scramble("false");
             }
 
             try
@@ -56,7 +56,10 @@ namespace CSSPDesktopServices.Services
             catch (Exception ex)
             {
                 AppendTempStatus(new AppendTempEventArgs(string.Format(CSSPCultureServicesRes.CouldNotAdd_Error_, "Preference LoggedIn Item", ex.Message)));
+                return await Task.FromResult(false);
             }
+
+            return await Task.FromResult(true);
         }
         #endregion Functions private
     }

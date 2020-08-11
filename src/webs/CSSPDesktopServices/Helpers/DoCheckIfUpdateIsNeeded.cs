@@ -19,7 +19,7 @@ namespace CSSPDesktopServices.Services
 {
     public partial class CSSPDesktopService : ICSSPDesktopService
     {
-        private bool DoCheckIfUpdateIsNeeded()
+        private async Task<bool> DoCheckIfUpdateIsNeeded()
         {
             UpdateIsNeeded = false;
 
@@ -37,7 +37,7 @@ namespace CSSPDesktopServices.Services
                 if (blobProperties == null)
                 {
                     AppendStatus(new AppendEventArgs(string.Format(appTextModel.CouldNotGetPropertiesFromAzureStore_AndFile_, "csspwebapis", zipFileName)));
-                    return false;
+                    return await Task.FromResult(false);
                 }
 
                 CSSPFile csspFile = (from c in dbFM.CSSPFiles
@@ -51,7 +51,7 @@ namespace CSSPDesktopServices.Services
                 }
             }
 
-            return true;
+            return await Task.FromResult(true);
         }
     }
 }

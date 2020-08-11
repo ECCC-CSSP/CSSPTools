@@ -10,7 +10,7 @@ namespace CSSPDesktopServices.Services
 {
     public partial class CSSPDesktopService : ICSSPDesktopService
     {
-        private async Task<bool> OpenCSSPWebAPIs()
+        private bool OpenCSSPWebAPIs()
         {
             ProcessStartInfo processStartInfo = new ProcessStartInfo();
             processStartInfo.FileName = $"{ LocalCSSPWebAPIsPath }CSSPWebAPIs.exe";
@@ -20,7 +20,7 @@ namespace CSSPDesktopServices.Services
             processStartInfo.WindowStyle = ProcessWindowStyle.Hidden;
             processCSSPWebAPIs = Process.Start(processStartInfo);
 
-            return await Task.FromResult(true);
+            return true;
         }
     }
 }
