@@ -11,6 +11,8 @@ namespace CSSPDesktopServices.Services
     {
         private async Task<bool> DoCreateAllRequiredDirectories()
         {
+            AppendStatus(new AppendEventArgs(appTextModel.CreatingAllRequiredDirectories));
+
             List<string> DirectoryToCreateList = new List<string>()
             {
                LocalCSSPDesktopPath, LocalCSSPDatabasesPath, LocalCSSPWebAPIsPath, LocalCSSPJSONPath, LocalCSSPFilesPath
@@ -24,6 +26,7 @@ namespace CSSPDesktopServices.Services
                     try
                     {
                         di.Create();
+                        AppendStatus(new AppendEventArgs(string.Format(appTextModel.DirectoryCreated_, di.FullName)));
                     }
                     catch (Exception ex)
                     {
@@ -32,6 +35,8 @@ namespace CSSPDesktopServices.Services
                     }
                 }
             }
+
+            AppendStatus(new AppendEventArgs(""));
 
             return await Task.FromResult(true);
         }

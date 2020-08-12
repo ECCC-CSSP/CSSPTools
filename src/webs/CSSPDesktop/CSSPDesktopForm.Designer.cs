@@ -38,6 +38,7 @@
             this.richTextBoxHelp = new System.Windows.Forms.RichTextBox();
             this.panelHelpTop = new System.Windows.Forms.Panel();
             this.butHideHelpPanel = new System.Windows.Forms.Button();
+            this.panelHelpSpace1 = new System.Windows.Forms.Panel();
             this.panelLoginCenter = new System.Windows.Forms.Panel();
             this.butLogin = new System.Windows.Forms.Button();
             this.textBoxPassword = new System.Windows.Forms.TextBox();
@@ -184,23 +185,33 @@
             // panelHelpTop
             // 
             this.panelHelpTop.Controls.Add(this.butHideHelpPanel);
+            this.panelHelpTop.Controls.Add(this.panelHelpSpace1);
             this.panelHelpTop.Dock = System.Windows.Forms.DockStyle.Top;
             this.panelHelpTop.Location = new System.Drawing.Point(0, 0);
             this.panelHelpTop.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.panelHelpTop.Name = "panelHelpTop";
-            this.panelHelpTop.Size = new System.Drawing.Size(322, 46);
+            this.panelHelpTop.Size = new System.Drawing.Size(322, 37);
             this.panelHelpTop.TabIndex = 1;
             // 
             // butHideHelpPanel
             // 
             this.butHideHelpPanel.AutoSize = true;
+            this.butHideHelpPanel.Dock = System.Windows.Forms.DockStyle.Left;
             this.butHideHelpPanel.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.butHideHelpPanel.Location = new System.Drawing.Point(111, 3);
+            this.butHideHelpPanel.Location = new System.Drawing.Point(15, 0);
             this.butHideHelpPanel.Name = "butHideHelpPanel";
-            this.butHideHelpPanel.Size = new System.Drawing.Size(124, 43);
+            this.butHideHelpPanel.Size = new System.Drawing.Size(124, 37);
             this.butHideHelpPanel.TabIndex = 0;
             this.butHideHelpPanel.Text = "Close Help";
             this.butHideHelpPanel.Click += new System.EventHandler(this.butHideHelpPanel_Click);
+            // 
+            // panelHelpSpace1
+            // 
+            this.panelHelpSpace1.Dock = System.Windows.Forms.DockStyle.Left;
+            this.panelHelpSpace1.Location = new System.Drawing.Point(0, 0);
+            this.panelHelpSpace1.Name = "panelHelpSpace1";
+            this.panelHelpSpace1.Size = new System.Drawing.Size(15, 37);
+            this.panelHelpSpace1.TabIndex = 6;
             // 
             // panelLoginCenter
             // 
@@ -546,7 +557,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1192, 796);
+            this.ClientSize = new System.Drawing.Size(1219, 793);
             this.Controls.Add(this.splitContainerFirst);
             this.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.Name = "CSSPDesktopForm";
@@ -620,6 +631,7 @@
         private System.Windows.Forms.Button butShowLanguagePanel;
         private System.Windows.Forms.Panel panelLoginEmail;
         private System.Windows.Forms.Label lblContactLoggedIn;
+        private System.Windows.Forms.Panel panelHelpSpace1;
     }
 }
 

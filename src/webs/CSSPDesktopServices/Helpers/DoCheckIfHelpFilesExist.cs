@@ -11,6 +11,7 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.IO;
+using CSSPDesktopServices.Models;
 
 namespace CSSPDesktopServices.Services
 {
@@ -18,15 +19,31 @@ namespace CSSPDesktopServices.Services
     {
         private async Task<bool> DoCheckIfHelpFilesExist()
         {
-            FileInfo fi = new FileInfo($"{ LocalCSSPWebAPIsPath }HelpDocEN.rtf");
-            if (fi.Exists)
+            AppendStatus(new AppendEventArgs(appTextModel.CheckIfHelpFileExist));
+
+            List<string> HelpFileList = new List<string>()
             {
-                HasHelpFiles = true;
-            }
-            else
+                $"{ LocalCSSPWebAPIsPath }HelpDocEN.rtf",
+                $"{ LocalCSSPWebAPIsPath }HelpDocFR.rtf"
+            };
+
+            foreach (string HelpFile in HelpFileList)
             {
-                HasHelpFiles = false;
+                FileInfo fi = new FileInfo(HelpFile);
+                if (fi.Exists)
+                {
+                    HasHelpFiles = true;
+                    AppendStatus(new AppendEventArgs(string.Format(appTextModel.HelpFileFound_, HelpFile)));
+                }
+                else
+                {
+                    HasHelpFiles = false;
+                    AppendStatus(new AppendEventArgs(string.Format(appTextModel.HelpFileNotFound_, HelpFile)));
+                }
+
             }
+
+            AppendStatus(new AppendEventArgs(""));
 
             return await Task.FromResult(true);
         }

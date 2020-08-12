@@ -57,9 +57,7 @@ namespace CSSPDesktopServices.Services
         // Events
         event EventHandler<ClearEventArgs> StatusClear;
         event EventHandler<AppendEventArgs> StatusAppend;
-        event EventHandler<AppendTempEventArgs> StatusAppendTemp;
         event EventHandler<InstallingEventArgs> StatusInstalling;
-        event EventHandler<ErrorMessageEventArgs> StatusErrorMessage;
 
     }
     public partial class CSSPDesktopService : ICSSPDesktopService

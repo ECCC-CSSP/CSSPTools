@@ -23,6 +23,8 @@ namespace CSSPDesktopServices.Services
     {
         private async Task<bool> DoInstallUpdates()
         {
+            AppendStatus(new AppendEventArgs(appTextModel.InstallUpdates));
+
             // need to stop CSSPWebAPIs so we can copy over some files 
             if (!await Stop()) await Task.FromResult(false);
 
@@ -44,19 +46,23 @@ namespace CSSPDesktopServices.Services
             {
                 zipCount += 1;
                 InstallingStatus(new InstallingEventArgs(30*zipCount));
-                AppendTempStatus(new AppendTempEventArgs(string.Format(appTextModel.Downloading_, zipFileName)));
+                AppendStatus(new AppendEventArgs(string.Format(appTextModel.Downloading_, zipFileName)));
 
                 if (!await DownloadZipFilesFromAzure(zipFileName)) return await Task.FromResult(false);
             }
 
             InstallingStatus(new InstallingEventArgs(100));
-            AppendTempStatus(new AppendTempEventArgs(""));
+            AppendStatus(new AppendEventArgs(""));
+
+            AppendStatus(new AppendEventArgs(""));
 
             return await Task.FromResult(true);
         }
 
         private async Task<bool> DownloadZipFilesFromAzure(string zipFileName)
         {
+            AppendStatus(new AppendEventArgs(string.Format(appTextModel.DownloadingZipFileFromAzure_, zipFileName)));
+
             FileInfo fi = new FileInfo($"{ LocalCSSPDesktopPath }{ zipFileName }");
 
             BlobClient blobClient = new BlobClient(AzureStore, AzureStoreCSSPWebAPIsPath, zipFileName);
@@ -77,7 +83,7 @@ namespace CSSPDesktopServices.Services
                 blobClient.DownloadTo(fi.FullName);
             }
 
-            AppendTempStatus(new AppendTempEventArgs(string.Format(appTextModel.Unzipping_, zipFileName)));
+            AppendStatus(new AppendEventArgs(string.Format(appTextModel.Unzipping_, zipFileName)));
             if (!await UnzipDownloadedFile(zipFileName, blobProperties)) return await Task.FromResult(false);
 
             return await Task.FromResult(true);
@@ -94,6 +100,8 @@ namespace CSSPDesktopServices.Services
 
             try
             {
+                AppendStatus(new AppendEventArgs(string.Format(appTextModel.UnzippingDownloadedFile_, zipFileName)));
+
                 if (zipFileName.Contains("csspclient"))
                 {
                     ZipFile.ExtractToDirectory(fiLocal.FullName, LocalCSSPWebAPIsPath + "\\csspclient", true);
@@ -140,6 +148,7 @@ namespace CSSPDesktopServices.Services
 
             try
             {
+                AppendStatus(new AppendEventArgs(string.Format(appTextModel.CSSPFilesManagementUpdateAzureStorage_AzureFileName_, "csspwebapis", zipFileName)));
                 dbFM.SaveChanges();
             }
             catch (Exception ex)

@@ -47,7 +47,6 @@ namespace CSSPDesktop
         private void butCancelUpdate_Click(object sender, EventArgs e)
         {
             StartTheAppWithLanguage().GetAwaiter().GetResult();
-
             ShowPanels(ShowPanel.Commands);
         }
         private void butClose_Click(object sender, EventArgs e)
@@ -132,26 +131,17 @@ namespace CSSPDesktop
         }
         private void CSSPDesktopService_StatusAppend(object sender, AppendEventArgs e)
         {
-            richTextBoxStatus.AppendText(e.Message);
-            richTextBoxStatus.Refresh();
-            Application.DoEvents();
-        }
-        private void CSSPDesktopService_StatusAppendTemp(object sender, AppendTempEventArgs e)
-        {
             lblStatus.Text = e.Message;
             lblStatus.Refresh();
+
+            richTextBoxStatus.AppendText(e.Message + "\r\n");
+            richTextBoxStatus.Refresh();
             Application.DoEvents();
         }
         private void CSSPDesktopService_StatusInstalling(object sender, InstallingEventArgs e)
         {
             progressBarInstalling.Value = e.Percent;
             progressBarInstalling.Refresh();
-            Application.DoEvents();
-        }
-        private void CSSPDesktopService_StatusErrorMessage(object sender, ErrorMessageEventArgs e)
-        {
-            richTextBoxStatus.AppendText(e.ErrorMessage);
-            richTextBoxStatus.Refresh();
             Application.DoEvents();
         }
         #endregion csspDesktopServiceEvent
@@ -200,6 +190,8 @@ namespace CSSPDesktop
         }
         private void RecenterPanels()
         {
+            this.Width = 600;
+            this.Height = 500;
             panelCommandsCenter.Top = panelCommandsCenter.Parent.Height / 2 - panelCommandsCenter.Height / 2;
             panelCommandsCenter.Left = panelCommandsCenter.Parent.Width / 2 - panelCommandsCenter.Width / 2;
 
@@ -211,6 +203,8 @@ namespace CSSPDesktop
 
             panelLanguageCenter.Top = panelLanguageCenter.Parent.Height / 2 - panelLanguageCenter.Height / 2;
             panelLanguageCenter.Left = panelLanguageCenter.Parent.Width / 2 - panelLanguageCenter.Width / 2;
+
+            panelHelp.Dock = DockStyle.Fill;
 
             butHideHelpPanel.Left = panelHelpTop.Width / 2 - butHideHelpPanel.Width / 2;
         }
@@ -365,11 +359,10 @@ namespace CSSPDesktop
 
             CSSPDesktopService.StatusClear += CSSPDesktopService_StatusClear;
             CSSPDesktopService.StatusAppend += CSSPDesktopService_StatusAppend;
-            CSSPDesktopService.StatusAppendTemp += CSSPDesktopService_StatusAppendTemp;
             CSSPDesktopService.StatusInstalling += CSSPDesktopService_StatusInstalling;
-            CSSPDesktopService.StatusErrorMessage += CSSPDesktopService_StatusErrorMessage;
 
             CSSPDesktopService.IsEnglish = IsEnglish;
+            SettingUpAllTextForLanguage();
             if (!await CSSPDesktopService.ReadConfiguration()) return await Task.FromResult(false);
 
             CSSPSQLiteService = Provider.GetService<ICSSPSQLiteService>();
@@ -476,6 +469,15 @@ namespace CSSPDesktop
             {
                 case ShowPanel.Commands:
                     {
+                        if (IsEnglish)
+                        {
+                            CSSPDesktopService_StatusAppend(this, new AppendEventArgs("Commands visible"));
+                        }
+                        else
+                        {
+                            CSSPDesktopService_StatusAppend(this, new AppendEventArgs("Commandes visible"));
+                        }
+
                         panelTop.Visible = true;
                         panelLoginEmail.Visible = true;
                         if (CSSPDesktopService.LoginRequired)
@@ -492,6 +494,15 @@ namespace CSSPDesktop
                     break;
                 case ShowPanel.Language:
                     {
+                        if (IsEnglish)
+                        {
+                            CSSPDesktopService_StatusAppend(this, new AppendEventArgs("Language visible"));
+                        }
+                        else
+                        {
+                            CSSPDesktopService_StatusAppend(this, new AppendEventArgs("Langage visible"));
+                        }
+
                         panelTop.Visible = false;
                         panelLoginEmail.Visible = false;
                         panelLanguageCenter.Visible = true;
@@ -500,6 +511,15 @@ namespace CSSPDesktop
                     break;
                 case ShowPanel.Help:
                     {
+                        if (IsEnglish)
+                        {
+                            CSSPDesktopService_StatusAppend(this, new AppendEventArgs("Help visible"));
+                        }
+                        else
+                        {
+                            CSSPDesktopService_StatusAppend(this, new AppendEventArgs("Aide visible"));
+                        }
+
                         panelTop.Visible = false;
                         panelLoginEmail.Visible = false;
                         string fileToOpen = IsEnglish ? "HelpDocEN.rtf" : "HelpDocFR.rtf";
@@ -511,6 +531,15 @@ namespace CSSPDesktop
                     break;
                 case ShowPanel.Login:
                     {
+                        if (IsEnglish)
+                        {
+                            CSSPDesktopService_StatusAppend(this, new AppendEventArgs("Login visible"));
+                        }
+                        else
+                        {
+                            CSSPDesktopService_StatusAppend(this, new AppendEventArgs("Connexion visible"));
+                        }
+
                         panelTop.Visible = false;
                         panelLoginEmail.Visible = false;
                         panelLoginCenter.Visible = true;
@@ -519,6 +548,15 @@ namespace CSSPDesktop
                     break;
                 case ShowPanel.Updates:
                     {
+                        if (IsEnglish)
+                        {
+                            CSSPDesktopService_StatusAppend(this, new AppendEventArgs("Updates visible"));
+                        }
+                        else
+                        {
+                            CSSPDesktopService_StatusAppend(this, new AppendEventArgs("Mise-à-jour visible"));
+                        }
+
                         panelTop.Visible = true;
                         panelLoginEmail.Visible = true;
                         panelUpdateCenter.Visible = true;
@@ -528,6 +566,8 @@ namespace CSSPDesktop
                 default:
                     break;
             }
+
+            CSSPDesktopService_StatusAppend(this, new AppendEventArgs(""));
         }
         private void Start()
         {

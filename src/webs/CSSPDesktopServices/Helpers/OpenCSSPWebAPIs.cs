@@ -12,6 +12,8 @@ namespace CSSPDesktopServices.Services
     {
         private bool OpenCSSPWebAPIs()
         {
+            AppendStatus(new AppendEventArgs(string.Format(appTextModel.Executing_, $"{ LocalCSSPWebAPIsPath }CSSPWebAPIs.exe")));
+
             ProcessStartInfo processStartInfo = new ProcessStartInfo();
             processStartInfo.FileName = $"{ LocalCSSPWebAPIsPath }CSSPWebAPIs.exe";
             processStartInfo.Arguments = "";

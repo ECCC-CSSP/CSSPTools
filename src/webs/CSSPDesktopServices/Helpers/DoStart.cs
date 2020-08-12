@@ -11,11 +11,14 @@ namespace CSSPDesktopServices.Services
     {
         private async Task<bool> DoStart()
         {
-            ClearStatus(new ClearEventArgs());
+            AppendStatus(new AppendEventArgs(appTextModel.ExecutingBackgroundApps));
+
             Directory.SetCurrentDirectory(LocalCSSPWebAPIsPath);
 
             if (!OpenCSSPWebAPIs()) return await Task.FromResult(false);
             if (!OpenBrowser()) return await Task.FromResult(false);
+
+            AppendStatus(new AppendEventArgs(""));
 
             return await Task.FromResult(true);
         }

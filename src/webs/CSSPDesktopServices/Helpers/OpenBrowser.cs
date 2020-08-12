@@ -12,6 +12,8 @@ namespace CSSPDesktopServices.Services
     {
         private bool OpenBrowser()
         {
+            AppendStatus(new AppendEventArgs(string.Format(appTextModel.Executing_, $"{ CSSPLocalUrl }en-CA/")));
+
             ProcessStartInfo processStartInfo = new ProcessStartInfo();
             processStartInfo.FileName = $"{ CSSPLocalUrl }en-CA/";
             if (!IsEnglish)

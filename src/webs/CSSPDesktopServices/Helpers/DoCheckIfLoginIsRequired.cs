@@ -10,6 +10,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using CSSPDesktopServices.Models;
 
 namespace CSSPDesktopServices.Services
 {
@@ -17,16 +18,21 @@ namespace CSSPDesktopServices.Services
     {
         private async Task<bool> DoCheckIfLoginIsRequired()
         {
+            AppendStatus(new AppendEventArgs(appTextModel.CheckIfLoginIsRequired));
+
             // doing Contact
             Contact contact = (from c in dbLogin.Contacts
                                select c).FirstOrDefault();
 
             if (contact == null)
             {
+                AppendStatus(new AppendEventArgs(string.Format(appTextModel.CouldNotFind_InDBLogin, "Contact")));
+
                 LoginRequired = true;
                 return await Task.FromResult(true);
             }
 
+            AppendStatus(new AppendEventArgs(string.Format(appTextModel.Found_InDBLogin, "Contact")));
             ContactLoggedIn = contact;
 
             // doing LoginEmail
@@ -36,10 +42,13 @@ namespace CSSPDesktopServices.Services
 
             if (string.IsNullOrWhiteSpace(LoginEmail))
             {
+                AppendStatus(new AppendEventArgs(string.Format(appTextModel.CouldNotFind_InDBLogin, "LoginEmail")));
+
                 LoginRequired = true;
                 return await Task.FromResult(true);
             }
 
+            AppendStatus(new AppendEventArgs(string.Format(appTextModel.Found_InDBLogin, "LoginEmail")));
             LoginEmail = await Descramble(LoginEmail);
 
             // doing Password
@@ -49,10 +58,13 @@ namespace CSSPDesktopServices.Services
 
             if (string.IsNullOrWhiteSpace(Password))
             {
+                AppendStatus(new AppendEventArgs(string.Format(appTextModel.CouldNotFind_InDBLogin, "Password")));
+
                 LoginRequired = true;
                 return await Task.FromResult(true);
             }
 
+            AppendStatus(new AppendEventArgs(string.Format(appTextModel.Found_InDBLogin, "Password")));
             Password = await Descramble(Password);
 
             // doing LoggedIn
@@ -62,10 +74,13 @@ namespace CSSPDesktopServices.Services
 
             if (string.IsNullOrWhiteSpace(LoggedInTxt))
             {
+                AppendStatus(new AppendEventArgs(string.Format(appTextModel.CouldNotFind_InDBLogin, "LoggedIn")));
+
                 LoginRequired = true;
                 return await Task.FromResult(true);
             }
 
+            AppendStatus(new AppendEventArgs(string.Format(appTextModel.Found_InDBLogin, "LoggedIn")));
             LoggedInTxt = await Descramble(LoggedInTxt);
 
             IsLoggedIn = bool.Parse(LoggedInTxt);
@@ -83,13 +98,18 @@ namespace CSSPDesktopServices.Services
 
             if (string.IsNullOrWhiteSpace(AzureStore))
             {
+                AppendStatus(new AppendEventArgs(string.Format(appTextModel.CouldNotFind_InDBLogin, "AzureStore")));
+
                 LoginRequired = true;
                 return await Task.FromResult(true);
             }
 
+            AppendStatus(new AppendEventArgs(string.Format(appTextModel.Found_InDBLogin, "AzureStore")));
             AzureStore = await Descramble(AzureStore);
 
             LoginRequired = false;
+
+            AppendStatus(new AppendEventArgs(""));
 
             return await Task.FromResult(true);
         }

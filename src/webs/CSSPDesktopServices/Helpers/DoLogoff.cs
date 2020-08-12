@@ -23,6 +23,8 @@ namespace CSSPDesktopServices.Services
         #region Functions private
         private async Task<bool> DoLogoff()
         {
+            AppendStatus(new AppendEventArgs(appTextModel.Logoff));
+
             // Adding Preference LoggedIn item in dbLogin
             Preference preference = (from c in dbLogin.Preferences
                                  where c.PreferenceName == "LoggedIn"
@@ -52,12 +54,16 @@ namespace CSSPDesktopServices.Services
             {
                 dbLogin.SaveChanges();
                 IsLoggedIn = false;
+
+                AppendStatus(new AppendEventArgs(string.Format(appTextModel._StoredInTable_AndDatabase_, "LoggedIn", "Preferences", "CSSPDBLogin.db")));
             }
             catch (Exception ex)
             {
-                AppendTempStatus(new AppendTempEventArgs(string.Format(CSSPCultureServicesRes.CouldNotAdd_Error_, "Preference LoggedIn Item", ex.Message)));
+                AppendStatus(new AppendEventArgs(string.Format(CSSPCultureServicesRes.CouldNotAdd_Error_, "Preference LoggedIn Item", ex.Message)));
                 return await Task.FromResult(false);
             }
+
+            AppendStatus(new AppendEventArgs(""));
 
             return await Task.FromResult(true);
         }

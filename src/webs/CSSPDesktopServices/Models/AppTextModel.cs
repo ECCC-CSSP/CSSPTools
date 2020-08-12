@@ -62,6 +62,34 @@ namespace CSSPDesktopServices.Models
             // Message
             ConnectedOnInternet = "Connected On Internet";
             NoInternetConnection = "No Internet Connection";
+            CheckIfHelpFileExist = "Checking if help files exist";
+            CheckIfLoginIsRequired = "Checking if login is required";
+            CheckIfUpdateIsNeeded = "Checking if updates are available";
+            CheckingInternetConnection = "Checking for internet connection";
+            CreatingAllRequiredDirectories = "Creating all required directories";
+            ReadingConfiguration = "Reading configuration";
+            ExecutingBackgroundApps = "Executing background applications";
+            StoppingBrowserAndCSSPWebAPIsProcesses = "Stopping of the Browser and CSSPWebAPIs processes";
+            InstallUpdates = "Installation of updates";
+            Login = "Login";
+            Logoff = "Logoff";
+            DirectoryCreated_ = "Directory created {0}";
+            HelpFileFound_ = "Help file found {0}";
+            HelpFileNotFound_ = "Help file not found {0}";
+            CouldNotFind_InDBLogin = "Could not find {0} in dbLogin";
+            Found_InDBLogin = "Found {0} in dbLogin";
+            AzureFile_Changed = "Azure file {0} changed";
+            AzureFile_DidNotChanged = "Azure file {0} did not changed";
+            TryingToDownload_ = "Trying to download {0}";
+            InternetConnectionDetected = "Internet connection detected";
+            InternetConnectionNotDetected = "Internet connection not detected";
+            Executing_ = "Executing {0}";
+            Stopping_ = "Stopping {0}";
+            DownloadingZipFileFromAzure_ = "Downloading zip file from Azure {0}";
+            UnzippingDownloadedFile_ = "Unzipping downloaded file {0}";
+            CSSPFilesManagementUpdateAzureStorage_AzureFileName_ = "CSSPFilesManagement.db Upate. AzureStorage {0} - AzureFileName {1}";
+            PostRequestLoginEmailAndPasswordTo_ = "Post request with LoginEmail and Password to {0}";
+            _StoredInTable_AndDatabase_ = "{0} stored in table {1} and {2}";
         }
     }
     public class AppTextModelFR : AppTextModel
@@ -121,6 +149,34 @@ namespace CSSPDesktopServices.Models
             // Message
             ConnectedOnInternet = "Connexion internet exist";
             NoInternetConnection = "Aucune connexion internet";
+            CheckIfHelpFileExist = "Vérification si les filières d'aide existes";
+            CheckIfLoginIsRequired = "Vérification si une connexion est requise";
+            CheckIfUpdateIsNeeded = "Vérification si une mise-à-jour est disponible";
+            CheckingInternetConnection = "Vérification d'une connextion internet";
+            CreatingAllRequiredDirectories = "Création de tous les répertoires requis";
+            ReadingConfiguration = "Lecture de configuration";
+            ExecutingBackgroundApps = "Exécution des applications d'arrière-plan";
+            StoppingBrowserAndCSSPWebAPIsProcesses = "Arrêt des processus 'Browser' et CSSPWebAPIs";
+            InstallUpdates = "Installation de mise-à-jour";
+            Login = "Connexion";
+            Logoff = "Déconnexion";
+            DirectoryCreated_ = "Répertoire créé {0}";
+            HelpFileFound_ = "Filière d'aide trouvé {0}";
+            HelpFileNotFound_ = "Filière d'aide NON trouvé {0}";
+            CouldNotFind_InDBLogin = "{0} introuvable dans dbLogin";
+            Found_InDBLogin = "{0} trouvé dans dbLogin";
+            AzureFile_Changed = "Filière de Azure {0} a changé";
+            AzureFile_DidNotChanged = "Filière de Azure {0} n'a pas changé";
+            TryingToDownload_ = "Essayer de télécharger {0}";
+            InternetConnectionDetected = "Connexion internet détecté";
+            InternetConnectionNotDetected = "Connexion internet non détecté";
+            Executing_ = "Exécution {0}";
+            Stopping_ = "Arrêt de {0}";
+            DownloadingZipFileFromAzure_ = "Téléchargement de la filière .zip de Azure {0}";
+            UnzippingDownloadedFile_ = "Décompression de la filière téléchargé {0}";
+            CSSPFilesManagementUpdateAzureStorage_AzureFileName_ = "CSSPFilesManagement.db entré. AzureStorage {0} - AzureFileName {1}";
+            PostRequestLoginEmailAndPasswordTo_ = "Requête 'POST' avec LoginEmail et Password à {0}";
+            _StoredInTable_AndDatabase_ = "{0} sauvegardé dans la table {1} et la base de données {2}";
         }
     }
     public class AppTextModel
@@ -179,5 +235,33 @@ namespace CSSPDesktopServices.Models
         // Message
         public string ConnectedOnInternet { get; set; }
         public string NoInternetConnection { get; set; }
+        public string CheckIfHelpFileExist { get; set; }
+        public string CheckIfLoginIsRequired { get; set; }
+        public string CheckIfUpdateIsNeeded { get; set; }
+        public string CheckingInternetConnection { get; set; }
+        public string CreatingAllRequiredDirectories { get; set; }
+        public string ReadingConfiguration { get; set; }
+        public string ExecutingBackgroundApps { get; set; }
+        public string StoppingBrowserAndCSSPWebAPIsProcesses { get; set; }
+        public string InstallUpdates { get; set; }
+        public string Login { get; set; }
+        public string Logoff { get; set; }
+        public string DirectoryCreated_ { get; set; }
+        public string HelpFileFound_ { get; set; }
+        public string HelpFileNotFound_ { get; set; }
+        public string CouldNotFind_InDBLogin { get; set; }
+        public string Found_InDBLogin { get; set; }
+        public string AzureFile_Changed { get; set; }
+        public string AzureFile_DidNotChanged { get; set; }
+        public string TryingToDownload_ { get; set; }
+        public string InternetConnectionDetected { get; set; }
+        public string InternetConnectionNotDetected { get; set; }
+        public string Executing_ { get; set; }
+        public string Stopping_ { get; set; }
+        public string DownloadingZipFileFromAzure_ { get; set; }
+        public string UnzippingDownloadedFile_ { get; set; }
+        public string CSSPFilesManagementUpdateAzureStorage_AzureFileName_ { get; set; }
+        public string PostRequestLoginEmailAndPasswordTo_ { get; set; }
+        public string _StoredInTable_AndDatabase_ { get; set; }
     }
 }

@@ -21,6 +21,8 @@ namespace CSSPDesktopServices.Services
     {
         private async Task<bool> DoCheckIfUpdateIsNeeded()
         {
+            AppendStatus(new AppendEventArgs(appTextModel.CheckIfUpdateIsNeeded));
+
             UpdateIsNeeded = false;
 
             List<string> zipFileNameList = new List<string>()
@@ -47,9 +49,16 @@ namespace CSSPDesktopServices.Services
 
                 if (csspFile == null || !blobProperties.ETag.Equals(csspFile.AzureETag))
                 {
+                    AppendStatus(new AppendEventArgs(string.Format(appTextModel.AzureFile_Changed, zipFileName)));
                     UpdateIsNeeded = true;
                 }
+                else
+                {
+                    AppendStatus(new AppendEventArgs(string.Format(appTextModel.AzureFile_DidNotChanged, zipFileName)));
+                }
             }
+
+            AppendStatus(new AppendEventArgs(""));
 
             return await Task.FromResult(true);
         }

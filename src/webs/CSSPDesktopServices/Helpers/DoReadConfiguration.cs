@@ -13,6 +13,8 @@ namespace CSSPDesktopServices.Services
     {
         private async Task<bool> DoReadConfiguration()
         {
+            AppendStatus(new AppendEventArgs(appTextModel.ReadingConfiguration));
+
             CSSPDBLocal = Configuration.GetValue<string>("CSSPDBLocal");
             if (string.IsNullOrWhiteSpace(CSSPDBLocal))
             {
@@ -117,6 +119,8 @@ namespace CSSPDesktopServices.Services
                 AppendStatus(new AppendEventArgs(string.Format(appTextModel._CouldNotBeFoundInConfigurationFile_, "CSSPLocalUrl", "appsettings_csspdesktop.json")));
                 return await Task.FromResult(false);
             }
+
+            AppendStatus(new AppendEventArgs(""));
 
             return await Task.FromResult(true);
         }
