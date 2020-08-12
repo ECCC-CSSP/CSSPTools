@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace CSSPServices
 {
-    public partial class WebService : ControllerBase, IWebService
+    public partial class CSSPWebService : ControllerBase, ICSSPWebService
     {
         private async Task<TVItem> GetTVItemRoot()
         {

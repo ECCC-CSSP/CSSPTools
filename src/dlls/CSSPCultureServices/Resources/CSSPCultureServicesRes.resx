@@ -768,4 +768,13 @@
   <data name="CouldNotDelete_Error_" xml:space="preserve">
     <value>Could not delete {0}. Error: [{1}]</value>
   </data>
+  <data name="_CouldNotBeFoundFor_Equal_And_Equal_" xml:space="preserve">
+    <value>{0} could not be found for {0} = [{1}] and {2} = [{3}]</value>
+  </data>
+  <data name="_CouldNotBeFoundFor_Equal_" xml:space="preserve">
+    <value>{0} could not be found for {1} = [{2}]</value>
+  </data>
+  <data name="TVItemRootCouldNotBeFound" xml:space="preserve">
+    <value>TVItem Root could not be found</value>
+  </data>
 </root>

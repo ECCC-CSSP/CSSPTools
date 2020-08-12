@@ -10,7 +10,7 @@ namespace GenerateAllGzFiles
     {
         private async Task<bool> CreateRootGzFile()
         {
-            await WebService.GetWebRoot();
+            await CSSPWebService.CreateWebRootGzFile();
 
             return await Task.FromResult(true);
         }

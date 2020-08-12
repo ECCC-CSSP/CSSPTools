@@ -8,7 +8,7 @@ using System.IO.Compression;
 
 namespace CSSPServices
 {
-    public partial class WebService : ControllerBase, IWebService
+    public partial class CSSPWebService : ControllerBase, ICSSPWebService
     {
         private Stream Decompress(Stream compressed)
         {

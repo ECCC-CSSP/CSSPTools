@@ -7,7 +7,7 @@ using Xunit;
 namespace CSSPServices.Tests
 {
     [Collection("Sequential")]
-    public partial class WebServiceTests
+    public partial class CSSPWebServiceTests
     {
         #region Variables
         #endregion Variables
@@ -23,11 +23,11 @@ namespace CSSPServices.Tests
         [Theory]
         [InlineData("en-CA")]
         [InlineData("fr-CA")]
-        public async Task GetWebArea_Good_Test(string culture)
+        public async Task CreateWebArea_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
-            var actionWebArea = await WebService.GetWebArea(629);
+            var actionWebArea = await CSSPWebService.CreateWebAreaGzFile(629);
             Assert.Equal(200, ((ObjectResult)actionWebArea.Result).StatusCode);
             Assert.NotNull(((OkObjectResult)actionWebArea.Result).Value);
             WebArea webArea = (WebArea)((OkObjectResult)actionWebArea.Result).Value;
@@ -48,11 +48,11 @@ namespace CSSPServices.Tests
         [Theory]
         [InlineData("en-CA")]
         [InlineData("fr-CA")]
-        public async Task GetWebClimateDataValue_Good_Test(string culture)
+        public async Task CreateWebClimateDataValue_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
-            var actionWebClimateDataValue = await WebService.GetWebClimateDataValue(229465);
+            var actionWebClimateDataValue = await CSSPWebService.CreateWebClimateDataValueGzFile(229465);
             Assert.Equal(200, ((ObjectResult)actionWebClimateDataValue.Result).StatusCode);
             Assert.NotNull(((OkObjectResult)actionWebClimateDataValue.Result).Value);
             WebClimateDataValue webClimateDataValue = (WebClimateDataValue)((OkObjectResult)actionWebClimateDataValue.Result).Value;
@@ -62,11 +62,11 @@ namespace CSSPServices.Tests
         [Theory]
         [InlineData("en-CA")]
         [InlineData("fr-CA")]
-        public async Task GetWebClimateSite_Good_Test(string culture)
+        public async Task CreateWebClimateSite_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
-            var actionWebClimateSite = await WebService.GetWebClimateSite(7);
+            var actionWebClimateSite = await CSSPWebService.CreateWebClimateSiteGzFile(7);
             Assert.Equal(200, ((ObjectResult)actionWebClimateSite.Result).StatusCode);
             Assert.NotNull(((OkObjectResult)actionWebClimateSite.Result).Value);
             WebClimateSite webClimateSite = (WebClimateSite)((OkObjectResult)actionWebClimateSite.Result).Value;
@@ -80,11 +80,11 @@ namespace CSSPServices.Tests
         [Theory]
         [InlineData("en-CA")]
         [InlineData("fr-CA")]
-        public async Task GetWebContact_Good_Test(string culture)
+        public async Task CreateWebContact_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
-            var actionWebContact = await WebService.GetWebContact();
+            var actionWebContact = await CSSPWebService.CreateWebContactGzFile();
             Assert.Equal(200, ((ObjectResult)actionWebContact.Result).StatusCode);
             Assert.NotNull(((OkObjectResult)actionWebContact.Result).Value);
             WebContact webContact = (WebContact)((OkObjectResult)actionWebContact.Result).Value;
@@ -94,11 +94,11 @@ namespace CSSPServices.Tests
         [Theory]
         [InlineData("en-CA")]
         [InlineData("fr-CA")]
-        public async Task GetWebCountry_Good_Test(string culture)
+        public async Task CreateWebCountry_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
-            var actionWebCountry = await WebService.GetWebCountry(5);
+            var actionWebCountry = await CSSPWebService.CreateWebCountryGzFile(5);
             Assert.Equal(200, ((ObjectResult)actionWebCountry.Result).StatusCode);
             Assert.NotNull(((OkObjectResult)actionWebCountry.Result).Value);
             WebCountry webCountry = (WebCountry)((OkObjectResult)actionWebCountry.Result).Value;
@@ -123,11 +123,11 @@ namespace CSSPServices.Tests
         [Theory]
         [InlineData("en-CA")]
         [InlineData("fr-CA")]
-        public async Task GetWebDrogueRun_Good_Test(string culture)
+        public async Task CreateWebDrogueRun_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
-            var actionWebDrogueRun = await WebService.GetWebDrogueRun(556);
+            var actionWebDrogueRun = await CSSPWebService.CreateWebDrogueRunGzFile(556);
             Assert.Equal(200, ((ObjectResult)actionWebDrogueRun.Result).StatusCode);
             Assert.NotNull(((OkObjectResult)actionWebDrogueRun.Result).Value);
             WebDrogueRun webDrogueRun = (WebDrogueRun)((OkObjectResult)actionWebDrogueRun.Result).Value;
@@ -138,11 +138,11 @@ namespace CSSPServices.Tests
         [Theory]
         [InlineData("en-CA")]
         [InlineData("fr-CA")]
-        public async Task GetWebHelpDoc_Good_Test(string culture)
+        public async Task CreateWebHelpDoc_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
-            var actionWebHelpDoc = await WebService.GetWebHelpDoc();
+            var actionWebHelpDoc = await CSSPWebService.CreateWebHelpDocGzFile();
             Assert.Equal(200, ((ObjectResult)actionWebHelpDoc.Result).StatusCode);
             Assert.NotNull(((OkObjectResult)actionWebHelpDoc.Result).Value);
             WebHelpDoc webHelpDoc = (WebHelpDoc)((OkObjectResult)actionWebHelpDoc.Result).Value;
@@ -152,11 +152,11 @@ namespace CSSPServices.Tests
         [Theory]
         [InlineData("en-CA")]
         [InlineData("fr-CA")]
-        public async Task GetWebHydrometricDataValue_Good_Test(string culture)
+        public async Task CreateWebHydrometricDataValue_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
-            var actionWebHydrometricDataValue = await WebService.GetWebHydrometricDataValue(51705);
+            var actionWebHydrometricDataValue = await CSSPWebService.CreateWebHydrometricDataValueGzFile(51705);
             Assert.Equal(200, ((ObjectResult)actionWebHydrometricDataValue.Result).StatusCode);
             Assert.NotNull(((OkObjectResult)actionWebHydrometricDataValue.Result).Value);
             WebHydrometricDataValue webHydrometricDataValue = (WebHydrometricDataValue)((OkObjectResult)actionWebHydrometricDataValue.Result).Value;
@@ -166,11 +166,11 @@ namespace CSSPServices.Tests
         [Theory]
         [InlineData("en-CA")]
         [InlineData("fr-CA")]
-        public async Task GetWebHydrometricSite_Good_Test(string culture)
+        public async Task CreateWebHydrometricSite_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
-            var actionWebHydrometricSite = await WebService.GetWebHydrometricSite(7);
+            var actionWebHydrometricSite = await CSSPWebService.CreateWebHydrometricSiteGzFile(7);
             Assert.Equal(200, ((ObjectResult)actionWebHydrometricSite.Result).StatusCode);
             Assert.NotNull(((OkObjectResult)actionWebHydrometricSite.Result).Value);
             WebHydrometricSite webHydrometricSite = (WebHydrometricSite)((OkObjectResult)actionWebHydrometricSite.Result).Value;
@@ -186,11 +186,11 @@ namespace CSSPServices.Tests
         [Theory]
         [InlineData("en-CA")]
         [InlineData("fr-CA")]
-        public async Task GetWebMikeScenario_Good_Test(string culture)
+        public async Task CreateWebMikeScenario_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
-            var actionWebMikeScenario = await WebService.GetWebMikeScenario(12281);
+            var actionWebMikeScenario = await CSSPWebService.CreateWebMikeScenarioGzFile(12281);
             Assert.Equal(200, ((ObjectResult)actionWebMikeScenario.Result).StatusCode);
             Assert.NotNull(((OkObjectResult)actionWebMikeScenario.Result).Value);
             WebMikeScenario webMikeScenario = (WebMikeScenario)((OkObjectResult)actionWebMikeScenario.Result).Value;
@@ -220,11 +220,11 @@ namespace CSSPServices.Tests
         [Theory]
         [InlineData("en-CA")]
         [InlineData("fr-CA")]
-        public async Task GetWebMunicipalities_Good_Test(string culture)
+        public async Task CreateWebMunicipalities_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
-            var actionWebMunicipalities = await WebService.GetWebMunicipalities(7);
+            var actionWebMunicipalities = await CSSPWebService.CreateWebMunicipalitiesGzFile(7);
             Assert.Equal(200, ((ObjectResult)actionWebMunicipalities.Result).StatusCode);
             Assert.NotNull(((OkObjectResult)actionWebMunicipalities.Result).Value);
             WebMunicipalities webMunicipalities = (WebMunicipalities)((OkObjectResult)actionWebMunicipalities.Result).Value;
@@ -238,11 +238,11 @@ namespace CSSPServices.Tests
         [Theory]
         [InlineData("en-CA")]
         [InlineData("fr-CA")]
-        public async Task GetWebMunicipality_Good_Test(string culture)
+        public async Task CreateWebMunicipality_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
-            var actionWebMunicipality = await WebService.GetWebMunicipality(12110);
+            var actionWebMunicipality = await CSSPWebService.CreateWebMunicipalityGzFile(12110);
             Assert.Equal(200, ((ObjectResult)actionWebMunicipality.Result).StatusCode);
             Assert.NotNull(((OkObjectResult)actionWebMunicipality.Result).Value);
             WebMunicipality webMunicipality = (WebMunicipality)((OkObjectResult)actionWebMunicipality.Result).Value;
@@ -281,11 +281,11 @@ namespace CSSPServices.Tests
         [Theory]
         [InlineData("en-CA")]
         [InlineData("fr-CA")]
-        public async Task GetWebMWQMLookupMPN_Good_Test(string culture)
+        public async Task CreateWebMWQMLookupMPN_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
-            var actionWebMWQMLookupMPN = await WebService.GetWebMWQMLookupMPN();
+            var actionWebMWQMLookupMPN = await CSSPWebService.CreateWebMWQMLookupMPNGzFile();
             Assert.Equal(200, ((ObjectResult)actionWebMWQMLookupMPN.Result).StatusCode);
             Assert.NotNull(((OkObjectResult)actionWebMWQMLookupMPN.Result).Value);
             WebMWQMLookupMPN webMWQMLookupMPN = (WebMWQMLookupMPN)((OkObjectResult)actionWebMWQMLookupMPN.Result).Value;
@@ -295,11 +295,11 @@ namespace CSSPServices.Tests
         [Theory]
         [InlineData("en-CA")]
         [InlineData("fr-CA")]
-        public async Task GetWebMWQMRun_Good_Test(string culture)
+        public async Task CreateWebMWQMRun_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
-            var actionWebMWQMRun = await WebService.GetWebMWQMRun(635);
+            var actionWebMWQMRun = await CSSPWebService.CreateWebMWQMRunGzFile(635);
             Assert.Equal(200, ((ObjectResult)actionWebMWQMRun.Result).StatusCode);
             Assert.NotNull(((OkObjectResult)actionWebMWQMRun.Result).Value);
             WebMWQMRun webMWQMRun = (WebMWQMRun)((OkObjectResult)actionWebMWQMRun.Result).Value;
@@ -310,11 +310,11 @@ namespace CSSPServices.Tests
         [Theory]
         [InlineData("en-CA")]
         [InlineData("fr-CA")]
-        public async Task GetWeb10YearOfSample1980_1989FromSubsector_Good_Test(string culture)
+        public async Task CreateWeb10YearOfSample1980_1989FromSubsector_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
-            var actionWebMWQMSample = await WebService.GetWeb10YearOfSample1980_1989FromSubsector(635);
+            var actionWebMWQMSample = await CSSPWebService.CreateWeb10YearOfSample1980_1989FromSubsectorGzFile(635);
             Assert.Equal(200, ((ObjectResult)actionWebMWQMSample.Result).StatusCode);
             Assert.NotNull(((OkObjectResult)actionWebMWQMSample.Result).Value);
             WebMWQMSample webMWQMSample = (WebMWQMSample)((OkObjectResult)actionWebMWQMSample.Result).Value;
@@ -325,11 +325,11 @@ namespace CSSPServices.Tests
         [Theory]
         [InlineData("en-CA")]
         [InlineData("fr-CA")]
-        public async Task GetWeb10YearOfSample1990_1999FromSubsector(string culture)
+        public async Task CreateWeb10YearOfSample1990_1999FromSubsector(string culture)
         {
             Assert.True(await Setup(culture));
 
-            var actionWebMWQMSample = await WebService.GetWeb10YearOfSample1990_1999FromSubsector(635);
+            var actionWebMWQMSample = await CSSPWebService.CreateWeb10YearOfSample1990_1999FromSubsectorGzFile(635);
             Assert.Equal(200, ((ObjectResult)actionWebMWQMSample.Result).StatusCode);
             Assert.NotNull(((OkObjectResult)actionWebMWQMSample.Result).Value);
             WebMWQMSample webMWQMSample = (WebMWQMSample)((OkObjectResult)actionWebMWQMSample.Result).Value;
@@ -340,11 +340,11 @@ namespace CSSPServices.Tests
         [Theory]
         [InlineData("en-CA")]
         [InlineData("fr-CA")]
-        public async Task GetWeb10YearOfSample2000_2009FromSubsector(string culture)
+        public async Task CreateWeb10YearOfSample2000_2009FromSubsector(string culture)
         {
             Assert.True(await Setup(culture));
 
-            var actionWebMWQMSample = await WebService.GetWeb10YearOfSample2000_2009FromSubsector(635);
+            var actionWebMWQMSample = await CSSPWebService.CreateWeb10YearOfSample2000_2009FromSubsectorGzFile(635);
             Assert.Equal(200, ((ObjectResult)actionWebMWQMSample.Result).StatusCode);
             Assert.NotNull(((OkObjectResult)actionWebMWQMSample.Result).Value);
             WebMWQMSample webMWQMSample = (WebMWQMSample)((OkObjectResult)actionWebMWQMSample.Result).Value;
@@ -355,11 +355,11 @@ namespace CSSPServices.Tests
         [Theory]
         [InlineData("en-CA")]
         [InlineData("fr-CA")]
-        public async Task GetWeb10YearOfSample2010_2019FromSubsector(string culture)
+        public async Task CreateWeb10YearOfSample2010_2019FromSubsector(string culture)
         {
             Assert.True(await Setup(culture));
 
-            var actionWebMWQMSample = await WebService.GetWeb10YearOfSample2010_2019FromSubsector(635);
+            var actionWebMWQMSample = await CSSPWebService.CreateWeb10YearOfSample2010_2019FromSubsectorGzFile(635);
             Assert.Equal(200, ((ObjectResult)actionWebMWQMSample.Result).StatusCode);
             Assert.NotNull(((OkObjectResult)actionWebMWQMSample.Result).Value);
             WebMWQMSample webMWQMSample = (WebMWQMSample)((OkObjectResult)actionWebMWQMSample.Result).Value;
@@ -370,11 +370,11 @@ namespace CSSPServices.Tests
         [Theory]
         [InlineData("en-CA")]
         [InlineData("fr-CA")]
-        public async Task GetWeb10YearOfSample2020_2029FromSubsector(string culture)
+        public async Task CreateWeb10YearOfSample2020_2029FromSubsector(string culture)
         {
             Assert.True(await Setup(culture));
 
-            var actionWebMWQMSample = await WebService.GetWeb10YearOfSample2020_2029FromSubsector(635);
+            var actionWebMWQMSample = await CSSPWebService.CreateWeb10YearOfSample2020_2029FromSubsectorGzFile(635);
             Assert.Equal(200, ((ObjectResult)actionWebMWQMSample.Result).StatusCode);
             Assert.NotNull(((OkObjectResult)actionWebMWQMSample.Result).Value);
             WebMWQMSample webMWQMSample = (WebMWQMSample)((OkObjectResult)actionWebMWQMSample.Result).Value;
@@ -385,11 +385,11 @@ namespace CSSPServices.Tests
         [Theory]
         [InlineData("en-CA")]
         [InlineData("fr-CA")]
-        public async Task GetWeb10YearOfSample2030_2039FromSubsector(string culture)
+        public async Task CreateWeb10YearOfSample2030_2039FromSubsector(string culture)
         {
             Assert.True(await Setup(culture));
 
-            var actionWebMWQMSample = await WebService.GetWeb10YearOfSample2030_2039FromSubsector(635);
+            var actionWebMWQMSample = await CSSPWebService.CreateWeb10YearOfSample2030_2039FromSubsectorGzFile(635);
             Assert.Equal(200, ((ObjectResult)actionWebMWQMSample.Result).StatusCode);
             Assert.NotNull(((OkObjectResult)actionWebMWQMSample.Result).Value);
             WebMWQMSample webMWQMSample = (WebMWQMSample)((OkObjectResult)actionWebMWQMSample.Result).Value;
@@ -400,11 +400,11 @@ namespace CSSPServices.Tests
         [Theory]
         [InlineData("en-CA")]
         [InlineData("fr-CA")]
-        public async Task GetWeb10YearOfSample2040_2049FromSubsector(string culture)
+        public async Task CreateWeb10YearOfSample2040_2049FromSubsector(string culture)
         {
             Assert.True(await Setup(culture));
 
-            var actionWebMWQMSample = await WebService.GetWeb10YearOfSample2040_2049FromSubsector(635);
+            var actionWebMWQMSample = await CSSPWebService.CreateWeb10YearOfSample2040_2049FromSubsectorGzFile(635);
             Assert.Equal(200, ((ObjectResult)actionWebMWQMSample.Result).StatusCode);
             Assert.NotNull(((OkObjectResult)actionWebMWQMSample.Result).Value);
             WebMWQMSample webMWQMSample = (WebMWQMSample)((OkObjectResult)actionWebMWQMSample.Result).Value;
@@ -415,11 +415,11 @@ namespace CSSPServices.Tests
         [Theory]
         [InlineData("en-CA")]
         [InlineData("fr-CA")]
-        public async Task GetWeb10YearOfSample2050_2059FromSubsector(string culture)
+        public async Task CreateWeb10YearOfSample2050_2059FromSubsector(string culture)
         {
             Assert.True(await Setup(culture));
 
-            var actionWebMWQMSample = await WebService.GetWeb10YearOfSample2050_2059FromSubsector(635);
+            var actionWebMWQMSample = await CSSPWebService.CreateWeb10YearOfSample2050_2059FromSubsectorGzFile(635);
             Assert.Equal(200, ((ObjectResult)actionWebMWQMSample.Result).StatusCode);
             Assert.NotNull(((OkObjectResult)actionWebMWQMSample.Result).Value);
             WebMWQMSample webMWQMSample = (WebMWQMSample)((OkObjectResult)actionWebMWQMSample.Result).Value;
@@ -430,11 +430,11 @@ namespace CSSPServices.Tests
         [Theory]
         [InlineData("en-CA")]
         [InlineData("fr-CA")]
-        public async Task GetWebMWQMSite_Good_Test(string culture)
+        public async Task CreateWebMWQMSite_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
-            var actionWebMWQMSite = await WebService.GetWebMWQMSite(635);
+            var actionWebMWQMSite = await CSSPWebService.CreateWebMWQMSiteGzFile(635);
             Assert.Equal(200, ((ObjectResult)actionWebMWQMSite.Result).StatusCode);
             Assert.NotNull(((OkObjectResult)actionWebMWQMSite.Result).Value);
             WebMWQMSite webMWQMSite = (WebMWQMSite)((OkObjectResult)actionWebMWQMSite.Result).Value;
@@ -445,11 +445,11 @@ namespace CSSPServices.Tests
         [Theory]
         [InlineData("en-CA")]
         [InlineData("fr-CA")]
-        public async Task GetWebPolSourceGrouping_Good_Test(string culture)
+        public async Task CreateWebPolSourceGrouping_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
-            var actionWebPolSourceGrouping = await WebService.GetWebPolSourceGrouping();
+            var actionWebPolSourceGrouping = await CSSPWebService.CreateWebPolSourceGroupingGzFile();
             Assert.Equal(200, ((ObjectResult)actionWebPolSourceGrouping.Result).StatusCode);
             Assert.NotNull(((OkObjectResult)actionWebPolSourceGrouping.Result).Value);
             WebPolSourceGrouping webPolSourceGrouping = (WebPolSourceGrouping)((OkObjectResult)actionWebPolSourceGrouping.Result).Value;
@@ -460,11 +460,11 @@ namespace CSSPServices.Tests
         [Theory]
         [InlineData("en-CA")]
         [InlineData("fr-CA")]
-        public async Task GetWebPolSourceSite_Good_Test(string culture)
+        public async Task CreateWebPolSourceSite_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
-            var actionWebPolSourceSite = await WebService.GetWebPolSourceSite(635);
+            var actionWebPolSourceSite = await CSSPWebService.CreateWebPolSourceSiteGzFile(635);
             Assert.Equal(200, ((ObjectResult)actionWebPolSourceSite.Result).StatusCode);
             Assert.NotNull(((OkObjectResult)actionWebPolSourceSite.Result).Value);
             WebPolSourceSite webPolSourceSite = (WebPolSourceSite)((OkObjectResult)actionWebPolSourceSite.Result).Value;
@@ -479,11 +479,11 @@ namespace CSSPServices.Tests
         [Theory]
         [InlineData("en-CA")]
         [InlineData("fr-CA")]
-        public async Task GetWebProvince_Good_Test(string culture)
+        public async Task CreateWebProvince_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
-            var actionWebProvince = await WebService.GetWebProvince(7);
+            var actionWebProvince = await CSSPWebService.CreateWebProvinceGzFile(7);
             Assert.Equal(200, ((ObjectResult)actionWebProvince.Result).StatusCode);
             Assert.NotNull(((OkObjectResult)actionWebProvince.Result).Value);
             WebProvince webProvince = (WebProvince)((OkObjectResult)actionWebProvince.Result).Value;
@@ -505,11 +505,11 @@ namespace CSSPServices.Tests
         [Theory]
         [InlineData("en-CA")]
         [InlineData("fr-CA")]
-        public async Task GetWebReportType_Good_Test(string culture)
+        public async Task CreateWebReportType_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
-            var actionWebReportType = await WebService.GetWebReportType();
+            var actionWebReportType = await CSSPWebService.CreateWebReportTypeGzFile();
             Assert.Equal(200, ((ObjectResult)actionWebReportType.Result).StatusCode);
             Assert.NotNull(((OkObjectResult)actionWebReportType.Result).Value);
             WebReportType webReportType = (WebReportType)((OkObjectResult)actionWebReportType.Result).Value;
@@ -520,11 +520,11 @@ namespace CSSPServices.Tests
         [Theory]
         [InlineData("en-CA")]
         [InlineData("fr-CA")]
-        public async Task GetWebRoot_Good_Test(string culture)
+        public async Task CreateWebRoot_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
-            var actionWebRoot = await WebService.GetWebRoot();
+            var actionWebRoot = await CSSPWebService.CreateWebRootGzFile();
             Assert.Equal(200, ((ObjectResult)actionWebRoot.Result).StatusCode);
             Assert.NotNull(((OkObjectResult)actionWebRoot.Result).Value);
             WebRoot webRoot = (WebRoot)((OkObjectResult)actionWebRoot.Result).Value;
@@ -545,11 +545,11 @@ namespace CSSPServices.Tests
         [Theory]
         [InlineData("en-CA")]
         [InlineData("fr-CA")]
-        public async Task GetWebSamplingPlan_Good_Test(string culture)
+        public async Task CreateWebSamplingPlan_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
-            var actionWebSamplingPlan = await WebService.GetWebSamplingPlan(8);
+            var actionWebSamplingPlan = await CSSPWebService.CreateWebSamplingPlanGzFile(8);
             Assert.Equal(200, ((ObjectResult)actionWebSamplingPlan.Result).StatusCode);
             Assert.NotNull(((OkObjectResult)actionWebSamplingPlan.Result).Value);
             WebSamplingPlan webSamplingPlan = (WebSamplingPlan)((OkObjectResult)actionWebSamplingPlan.Result).Value;
@@ -562,11 +562,11 @@ namespace CSSPServices.Tests
         [Theory]
         [InlineData("en-CA")]
         [InlineData("fr-CA")]
-        public async Task GetWebSector_Good_Test(string culture)
+        public async Task CreateWebSector_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
-            var actionWebSector = await WebService.GetWebSector(633);
+            var actionWebSector = await CSSPWebService.CreateWebSectorGzFile(633);
             Assert.Equal(200, ((ObjectResult)actionWebSector.Result).StatusCode);
             Assert.NotNull(((OkObjectResult)actionWebSector.Result).Value);
             WebSector webSector = (WebSector)((OkObjectResult)actionWebSector.Result).Value;
@@ -592,11 +592,11 @@ namespace CSSPServices.Tests
         [Theory]
         [InlineData("en-CA")]
         [InlineData("fr-CA")]
-        public async Task GetWebSubsector_Good_Test(string culture)
+        public async Task CreateWebSubsector_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
-            var actionWebSubsector = await WebService.GetWebSubsector(635);
+            var actionWebSubsector = await CSSPWebService.CreateWebSubsectorGzFile(635);
             Assert.Equal(200, ((ObjectResult)actionWebSubsector.Result).StatusCode);
             Assert.NotNull(((OkObjectResult)actionWebSubsector.Result).Value);
             WebSubsector webSubsector = (WebSubsector)((OkObjectResult)actionWebSubsector.Result).Value;
@@ -632,11 +632,11 @@ namespace CSSPServices.Tests
         [Theory]
         [InlineData("en-CA")]
         [InlineData("fr-CA")]
-        public async Task GetWebTideLocation_Good_Test(string culture)
+        public async Task CreateWebTideLocation_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
-            var actionWebTideLocation = await WebService.GetWebTideLocation();
+            var actionWebTideLocation = await CSSPWebService.CreateWebTideLocationGzFile();
             Assert.Equal(200, ((ObjectResult)actionWebTideLocation.Result).StatusCode);
             Assert.NotNull(((OkObjectResult)actionWebTideLocation.Result).Value);
             WebTideLocation webTideLocation = (WebTideLocation)((OkObjectResult)actionWebTideLocation.Result).Value;

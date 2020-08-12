@@ -165,7 +165,7 @@ namespace CSSPWebAPIs
             services.AddScoped<IContactService, ContactService>();
 
             LoadAllDBServices(services);
-            services.AddScoped<IWebService, WebService>();
+            services.AddScoped<ICSSPWebService, CSSPWebService>();
 
             if (RunningOn == "Local")
             {

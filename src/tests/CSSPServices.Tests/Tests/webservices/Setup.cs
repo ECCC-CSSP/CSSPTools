@@ -12,7 +12,7 @@ using Xunit;
 
 namespace CSSPServices.Tests
 {
-    public partial class WebServiceTests
+    public partial class CSSPWebServiceTests
     {
         #region Variables
         #endregion Variables
@@ -22,7 +22,7 @@ namespace CSSPServices.Tests
         private IServiceProvider Provider { get; set; }
         private IServiceCollection Services { get; set; }
         private ICSSPCultureService CSSPCultureService { get; set; }
-        private IWebService WebService { get; set; }
+        private ICSSPWebService CSSPWebService { get; set; }
         private IAspNetUserService AspNetUserService { get; set; }
         private IContactService ContactService { get; set; }
         private ILoggedInService LoggedInService { get; set; }
@@ -31,7 +31,7 @@ namespace CSSPServices.Tests
         #endregion Properties
 
         #region Constructors
-        public WebServiceTests() : base()
+        public CSSPWebServiceTests() : base()
         {
 
         }
@@ -89,7 +89,7 @@ namespace CSSPServices.Tests
             Services.AddSingleton<IContactService, ContactService>();
             Services.AddSingleton<ILoggedInService, LoggedInService>();
             Services.AddSingleton<IEnums, Enums>();
-            Services.AddSingleton<IWebService, WebService>();
+            Services.AddSingleton<ICSSPWebService, CSSPWebService>();
             Services.AddSingleton<ITVItemService, TVItemService>();
 
             Provider = Services.BuildServiceProvider();
@@ -125,8 +125,8 @@ namespace CSSPServices.Tests
             await LoggedInService.SetLoggedInContactInfo(contact.Id);
             Assert.NotNull(LoggedInService.GetLoggedInContactInfo());
 
-            WebService = Provider.GetService<IWebService>();
-            Assert.NotNull(WebService);
+            CSSPWebService = Provider.GetService<ICSSPWebService>();
+            Assert.NotNull(CSSPWebService);
 
             TVItemService = Provider.GetService<ITVItemService>();
             Assert.NotNull(TVItemService);

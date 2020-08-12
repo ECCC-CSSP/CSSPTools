@@ -97,6 +97,24 @@ namespace CSSPCultureServices.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to {0} could not be found for {1} = [{2}].
+        /// </summary>
+        public static string _CouldNotBeFoundFor_Equal_ {
+            get {
+                return ResourceManager.GetString("_CouldNotBeFoundFor_Equal_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} could not be found for {0} = [{1}] and {2} = [{3}].
+        /// </summary>
+        public static string _CouldNotBeFoundFor_Equal_And_Equal_ {
+            get {
+                return ResourceManager.GetString("_CouldNotBeFoundFor_Equal_And_Equal_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to [{0}] date is bigger than [{1}].
         /// </summary>
         public static string _DateIsBiggerThan_ {
@@ -1821,6 +1839,15 @@ namespace CSSPCultureServices.Resources {
         public static string ToAddFirst_Requires_TableToBeEmpty {
             get {
                 return ResourceManager.GetString("ToAddFirst_Requires_TableToBeEmpty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to TVItem Root could not be found.
+        /// </summary>
+        public static string TVItemRootCouldNotBeFound {
+            get {
+                return ResourceManager.GetString("TVItemRootCouldNotBeFound", resourceCulture);
             }
         }
         

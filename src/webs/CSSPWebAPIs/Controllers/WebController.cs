@@ -12,10 +12,46 @@ using System.Threading.Tasks;
 
 namespace CSSPWebAPIs.Controllers
 {
+    public partial interface IWebController
+    {
+        Task<ActionResult<bool>> CreateWebRootGzFile();
+        Task<ActionResult<bool>> CreateWebCountryGzFile(int CountryTVItemID);
+        Task<ActionResult<bool>> CreateWebProvinceGzFile(int ProvinceTVItemID);
+        Task<ActionResult<bool>> CreateWebAreaGzFile(int AreaTVItemID);
+        Task<ActionResult<bool>> CreateWebSectorGzFile(int SectorTVItemID);
+        Task<ActionResult<bool>> CreateWebSubsectorGzFile(int SubsectorTVItemID);
+        Task<ActionResult<bool>> CreateWeb10YearOfSample1980_1989FromSubsectorGzFile(int SubsectorTVItemID);
+        Task<ActionResult<bool>> CreateWeb10YearOfSample1990_1999FromSubsectorGzFile(int SubsectorTVItemID);
+        Task<ActionResult<bool>> CreateWeb10YearOfSample2000_2009FromSubsectorGzFile(int SubsectorTVItemID);
+        Task<ActionResult<bool>> CreateWeb10YearOfSample2010_2019FromSubsectorGzFile(int SubsectorTVItemID);
+        Task<ActionResult<bool>> CreateWeb10YearOfSample2020_2029FromSubsectorGzFile(int SubsectorTVItemID);
+        Task<ActionResult<bool>> CreateWeb10YearOfSample2030_2039FromSubsectorGzFile(int SubsectorTVItemID);
+        Task<ActionResult<bool>> CreateWeb10YearOfSample2040_2049FromSubsectorGzFile(int SubsectorTVItemID);
+        Task<ActionResult<bool>> CreateWeb10YearOfSample2050_2059FromSubsectorGzFile(int SubsectorTVItemID);
+        Task<ActionResult<bool>> CreateWebSamplingPlanGzFile(int SamplingPlanID);
+        Task<ActionResult<bool>> CreateWebMunicipalityGzFile(int MunicipalityTVItemID);
+        Task<ActionResult<bool>> CreateWebMWQMRunGzFile(int SubsectorTVItemID);
+        Task<ActionResult<bool>> CreateWebMWQMSiteGzFile(int SubsectorTVItemID);
+        Task<ActionResult<bool>> CreateWebContactGzFile();
+        Task<ActionResult<bool>> CreateWebClimateSiteGzFile(int ProvinceTVItemID);
+        Task<ActionResult<bool>> CreateWebHydrometricSiteGzFile(int ProvinceTVItemID);
+        Task<ActionResult<bool>> CreateWebDrogueRunGzFile(int SubsectorTVItemID);
+        Task<ActionResult<bool>> CreateWebMWQMLookupMPNGzFile();
+        Task<ActionResult<bool>> CreateWebMikeScenarioGzFile(int MikeScenarioTVItemID);
+        Task<ActionResult<bool>> CreateWebClimateDataValueGzFile(int ClimateSiteTVItemID); 
+        Task<ActionResult<bool>> CreateWebHydrometricDataValueGzFile(int HydrometricSiteTVItemID);
+        Task<ActionResult<bool>> CreateWebHelpDocGzFile();
+        Task<ActionResult<bool>> CreateWebTideLocationGzFile();
+        Task<ActionResult<bool>> CreateWebPolSourceSiteGzFile(int SubsectorTVItemID);
+        Task<ActionResult<bool>> CreateWebPolSourceGroupingGzFile();
+        Task<ActionResult<bool>> CreateWebReportTypeGzFile();
+        Task<ActionResult<bool>> CreateWebMunicipalitiesGzFile(int ProvinceTVItemID);
+    }
+
     [Route("api/{culture}/[controller]")]
     [ApiController]
     [Authorize]
-    public partial class WebController : ControllerBase
+    public partial class WebController : ControllerBase, IWebController
     {
         #region Variables
         #endregion Variables
@@ -23,274 +59,306 @@ namespace CSSPWebAPIs.Controllers
         #region Properties
         private ICSSPCultureService CSSPCultureService { get; }
         private ILoggedInService LoggedInService { get; }
-        private IWebService WebService { get; }
+        private ICSSPWebService CSSPWebService { get; }
         #endregion Properties
 
         #region Constructors
-        public WebController(ICSSPCultureService CSSPCultureService, ILoggedInService LoggedInService, IWebService WebService)
+        public WebController(ICSSPCultureService CSSPCultureService, ILoggedInService LoggedInService, ICSSPWebService CSSPWebService)
         {
             this.CSSPCultureService = CSSPCultureService;
             this.LoggedInService = LoggedInService;
-            this.WebService = WebService;
+            this.CSSPWebService = CSSPWebService;
         }
         #endregion Constructors
 
         #region Functions public
-        [HttpGet("GetWebRoot")]
-        public async Task<ActionResult<WebRoot>> GetWebRoot()
+        [Route("CreateWebRootGzFile")]
+        [HttpGet]
+        public async Task<ActionResult<bool>> CreateWebRootGzFile()
         {
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await WebService.GetWebRoot();
+            return await CSSPWebService.CreateWebRootGzFile();
         }
-        [HttpGet("GetWebCountry/{TVItemID:int}")]
-        public async Task<ActionResult<WebCountry>> GetWebCountry(int TVItemID)
+        [Route("CreateWebCountryGzFile/{CountryTVItemID:int}")]
+        [HttpGet]
+        public async Task<ActionResult<bool>> CreateWebCountryGzFile(int CountryTVItemID)
         {
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await WebService.GetWebCountry(TVItemID);
+            return await CSSPWebService.CreateWebCountryGzFile(CountryTVItemID);
         }
-        [HttpGet("GetWebProvince/{TVItemID:int}")]
-        public async Task<ActionResult<WebProvince>> GetWebProvince(int TVItemID)
+        [Route("CreateWebProvinceGzFile/{ProvinceTVItemID:int}")]
+        [HttpGet]
+        public async Task<ActionResult<bool>> CreateWebProvinceGzFile(int ProvinceTVItemID)
         {
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await WebService.GetWebProvince(TVItemID);
+            return await CSSPWebService.CreateWebProvinceGzFile(ProvinceTVItemID);
         }
-        [HttpGet("GetWebArea/{TVItemID:int}")]
-        public async Task<ActionResult<WebArea>> GetWebArea(int TVItemID)
+        [Route("CreateWebAreaGzFileGzFile/{AreaTVItemID:int}")]
+        [HttpGet]
+        public async Task<ActionResult<bool>> CreateWebAreaGzFile(int AreaTVItemID)
         {
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await WebService.GetWebArea(TVItemID);
+            return await CSSPWebService.CreateWebAreaGzFile(AreaTVItemID);
         }
-        [HttpGet("GetWebSector/{TVItemID:int}")]
-        public async Task<ActionResult<WebSector>> GetWebSector(int TVItemID)
+        [Route("CreateWebSectorGzFile/{SectorTVItemID:int}")]
+        [HttpGet]
+        public async Task<ActionResult<bool>> CreateWebSectorGzFile(int SectorTVItemID)
         {
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await WebService.GetWebSector(TVItemID);
+            return await CSSPWebService.CreateWebSectorGzFile(SectorTVItemID);
         }
-        [HttpGet("GetWebSubsector/{TVItemID:int}")]
-        public async Task<ActionResult<WebSubsector>> GetWebSubsector(int TVItemID)
+        [Route("CreateWebSubsectorGzFile/{SubsectorTVItemID:int}")]
+        [HttpGet]
+        public async Task<ActionResult<bool>> CreateWebSubsectorGzFile(int SubsectorTVItemID)
         {
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await WebService.GetWebSubsector(TVItemID);
+            return await CSSPWebService.CreateWebSubsectorGzFile(SubsectorTVItemID);
         }
-        [HttpGet("GetWeb10YearOfSample1980_1989FromSubsector/{TVItemID:int}")]
-        public async Task<ActionResult<WebMWQMSample>> GetWeb10YearOfSample1980_1989FromSubsector(int TVItemID)
+        [Route("CreateWeb10YearOfSample1980_1989FromSubsectorGzFile/{SubsectorTVItemID:int}")]
+        [HttpGet]
+        public async Task<ActionResult<bool>> CreateWeb10YearOfSample1980_1989FromSubsectorGzFile(int SubsectorTVItemID)
         {
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await WebService.GetWeb10YearOfSample1980_1989FromSubsector(TVItemID);
+            return await CSSPWebService.CreateWeb10YearOfSample1980_1989FromSubsectorGzFile(SubsectorTVItemID);
         }
-        [HttpGet("GetWeb10YearOfSample1990_1999FromSubsector/{TVItemID:int}")]
-        public async Task<ActionResult<WebMWQMSample>> GetWeb10YearOfSample1990_1999FromSubsector(int TVItemID)
+        [Route("CreateWeb10YearOfSample1990_1999FromSubsectorGzFile/{SubsectorTVItemID:int}")]
+        [HttpGet]
+        public async Task<ActionResult<bool>> CreateWeb10YearOfSample1990_1999FromSubsectorGzFile(int SubsectorTVItemID)
         {
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await WebService.GetWeb10YearOfSample1990_1999FromSubsector(TVItemID);
+            return await CSSPWebService.CreateWeb10YearOfSample1990_1999FromSubsectorGzFile(SubsectorTVItemID);
         }
-        [HttpGet("GetWeb10YearOfSample2000_2009FromSubsector/{TVItemID:int}")]
-        public async Task<ActionResult<WebMWQMSample>> GetWeb10YearOfSample2000_2009FromSubsector(int TVItemID)
+        [Route("CreateWeb10YearOfSample2000_2009FromSubsectorGzFile/{SubsectorTVItemID:int}")]
+        [HttpGet]
+        public async Task<ActionResult<bool>> CreateWeb10YearOfSample2000_2009FromSubsectorGzFile(int SubsectorTVItemID)
         {
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await WebService.GetWeb10YearOfSample2000_2009FromSubsector(TVItemID);
+            return await CSSPWebService.CreateWeb10YearOfSample2000_2009FromSubsectorGzFile(SubsectorTVItemID);
         }
-        [HttpGet("GetWeb10YearOfSample2010_2019FromSubsector/{TVItemID:int}")]
-        public async Task<ActionResult<WebMWQMSample>> GetWeb10YearOfSample2010_2019FromSubsector(int TVItemID)
+        [Route("CreateWeb10YearOfSample2010_2019FromSubsectorGzFile/{SubsectorTVItemID:int}")]
+        [HttpGet]
+        public async Task<ActionResult<bool>> CreateWeb10YearOfSample2010_2019FromSubsectorGzFile(int SubsectorTVItemID)
         {
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await WebService.GetWeb10YearOfSample2010_2019FromSubsector(TVItemID);
+            return await CSSPWebService.CreateWeb10YearOfSample2010_2019FromSubsectorGzFile(SubsectorTVItemID);
         }
-        [HttpGet("GetWeb10YearOfSample2020_2029FromSubsector/{TVItemID:int}")]
-        public async Task<ActionResult<WebMWQMSample>> GetWeb10YearOfSample2020_2029FromSubsector(int TVItemID)
+        [Route("CreateWeb10YearOfSample2020_2029FromSubsectorGzFile/{SubsectorTVItemID:int}")]
+        [HttpGet]
+        public async Task<ActionResult<bool>> CreateWeb10YearOfSample2020_2029FromSubsectorGzFile(int SubsectorTVItemID)
         {
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await WebService.GetWeb10YearOfSample2020_2029FromSubsector(TVItemID);
+            return await CSSPWebService.CreateWeb10YearOfSample2020_2029FromSubsectorGzFile(SubsectorTVItemID);
         }
-        [HttpGet("GetWeb10YearOfSample2030_2039FromSubsector/{TVItemID:int}")]
-        public async Task<ActionResult<WebMWQMSample>> GetWeb10YearOfSample2030_2039FromSubsector(int TVItemID)
+        [Route("CreateWeb10YearOfSample2030_2039FromSubsectorGzFile/{SubsectorTVItemID:int}")]
+        [HttpGet]
+        public async Task<ActionResult<bool>> CreateWeb10YearOfSample2030_2039FromSubsectorGzFile(int SubsectorTVItemID)
         {
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await WebService.GetWeb10YearOfSample2030_2039FromSubsector(TVItemID);
+            return await CSSPWebService.CreateWeb10YearOfSample2030_2039FromSubsectorGzFile(SubsectorTVItemID);
         }
-        [HttpGet("GetWeb10YearOfSample2040_2049FromSubsector/{TVItemID:int}")]
-        public async Task<ActionResult<WebMWQMSample>> GetWeb10YearOfSample2040_2049FromSubsector(int TVItemID)
+        [Route("CreateWeb10YearOfSample2040_2049FromSubsectorGzFile/{SubsectorTVItemIDTVItemID:int}")]
+        [HttpGet]
+        public async Task<ActionResult<bool>> CreateWeb10YearOfSample2040_2049FromSubsectorGzFile(int SubsectorTVItemID)
         {
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await WebService.GetWeb10YearOfSample2040_2049FromSubsector(TVItemID);
+            return await CSSPWebService.CreateWeb10YearOfSample2040_2049FromSubsectorGzFile(SubsectorTVItemID);
         }
-        [HttpGet("GetWeb10YearOfSample2050_2059FromSubsector/{TVItemID:int}")]
-        public async Task<ActionResult<WebMWQMSample>> GetWeb10YearOfSample2050_2059FromSubsector(int TVItemID)
+        [Route("CreateWeb10YearOfSample2050_2059FromSubsectorGzFile/{SubsectorTVItemID:int}")]
+        [HttpGet]
+        public async Task<ActionResult<bool>> CreateWeb10YearOfSample2050_2059FromSubsectorGzFile(int SubsectorTVItemID)
         {
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await WebService.GetWeb10YearOfSample2050_2059FromSubsector(TVItemID);
+            return await CSSPWebService.CreateWeb10YearOfSample2050_2059FromSubsectorGzFile(SubsectorTVItemID);
         }
-        [HttpGet("GetWebSamplingPlan/{SamplingPlanID:int}")]
-        public async Task<ActionResult<WebSamplingPlan>> GetWebSamplingPlan(int SamplingPlanID)
+        [Route("CreateWebSamplingPlanGzFile/{SamplingPlanID:int}")]
+        [HttpGet]
+        public async Task<ActionResult<bool>> CreateWebSamplingPlanGzFile(int SamplingPlanID)
         {
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await WebService.GetWebSamplingPlan(SamplingPlanID);
+            return await CSSPWebService.CreateWebSamplingPlanGzFile(SamplingPlanID);
         }
-        [HttpGet("GetWebMunicipality/{TVItemID:int}")]
-        public async Task<ActionResult<WebMunicipality>> GetWebMunicipality(int TVItemID)
+        [Route("CreateWebMunicipalityGzFile/{MunicipalityTVItemID:int}")]
+        [HttpGet]
+        public async Task<ActionResult<bool>> CreateWebMunicipalityGzFile(int MunicipalityTVItemID)
         {
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await WebService.GetWebMunicipality(TVItemID);
+            return await CSSPWebService.CreateWebMunicipalityGzFile(MunicipalityTVItemID);
         }
-        [HttpGet("GetWebMWQMRun/{TVItemID:int}")]
-        public async Task<ActionResult<WebMWQMRun>> GetWebMWQMRun(int TVItemID)
+        [Route("CreateWebMWQMRunGzFile/{SubsectorTVItemID:int}")]
+        [HttpGet]
+        public async Task<ActionResult<bool>> CreateWebMWQMRunGzFile(int SubsectorTVItemID)
         {
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await WebService.GetWebMWQMRun(TVItemID);
+            return await CSSPWebService.CreateWebMWQMRunGzFile(SubsectorTVItemID);
         }
-        [HttpGet("GetWebMWQMSite/{TVItemID:int}")]
-        public async Task<ActionResult<WebMWQMSite>> GetWebMWQMSite(int TVItemID)
+        [Route("CreateWebMWQMSiteGzFile/{SubsectorTVItemID:int}")]
+        [HttpGet]
+        public async Task<ActionResult<bool>> CreateWebMWQMSiteGzFile(int SubsectorTVItemID)
         {
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await WebService.GetWebMWQMSite(TVItemID);
+            return await CSSPWebService.CreateWebMWQMSiteGzFile(SubsectorTVItemID);
         }
-        [HttpGet("GetWebContact")]
-        public async Task<ActionResult<WebContact>> GetWebContact()
+        [Route("CreateWebContactGzFile")]
+        [HttpGet]
+        public async Task<ActionResult<bool>> CreateWebContactGzFile()
         {
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await WebService.GetWebContact();
+            return await CSSPWebService.CreateWebContactGzFile();
         }
-        [HttpGet("GetWebClimateSite/{TVItemID:int}")]
-        public async Task<ActionResult<WebClimateSite>> GetWebClimateSite(int TVItemID)
+        [Route("CreateWebClimateSiteGzFile/{ProvinceTVItemID:int}")]
+        [HttpGet]
+        public async Task<ActionResult<bool>> CreateWebClimateSiteGzFile(int ProvinceTVItemID)
         {
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await WebService.GetWebClimateSite(TVItemID);
+            return await CSSPWebService.CreateWebClimateSiteGzFile(ProvinceTVItemID);
         }
-        [HttpGet("GetWebHydrometricSite/{TVItemID:int}")]
-        public async Task<ActionResult<WebHydrometricSite>> GetWebHydrometricSite(int TVItemID)
+        [Route("CreateWebHydrometricSiteGzFile/{ProvinceTVItemID:int}")]
+        [HttpGet]
+        public async Task<ActionResult<bool>> CreateWebHydrometricSiteGzFile(int ProvinceTVItemID)
         {
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await WebService.GetWebHydrometricSite(TVItemID);
+            return await CSSPWebService.CreateWebHydrometricSiteGzFile(ProvinceTVItemID);
         }
-        [HttpGet("GetWebDrogueRun/{TVItemID:int}")]
-        public async Task<ActionResult<WebDrogueRun>> GetWebDrogueRun(int TVItemID)
+        [Route("CreateWebDrogueRunGzFile/{SubsectorTVItemID:int}")]
+        [HttpGet]
+        public async Task<ActionResult<bool>> CreateWebDrogueRunGzFile(int SubsectorTVItemID)
         {
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await WebService.GetWebDrogueRun(TVItemID);
+            return await CSSPWebService.CreateWebDrogueRunGzFile(SubsectorTVItemID);
         }
-        [HttpGet("GetWebMWQMLookupMPN")]
-        public async Task<ActionResult<WebMWQMLookupMPN>> GetWebMWQMLookupMPN()
+        [Route("CreateWebMWQMLookupMPNGzFile")]
+        [HttpGet]
+        public async Task<ActionResult<bool>> CreateWebMWQMLookupMPNGzFile()
         {
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await WebService.GetWebMWQMLookupMPN();
+            return await CSSPWebService.CreateWebMWQMLookupMPNGzFile();
         }
-        [HttpGet("GetWebMikeScenario/{TVItemID:int}")]
-        public async Task<ActionResult<WebMikeScenario>> GetWebMikeScenario(int TVItemID)
+        [Route("CreateWebMikeScenarioGzFile/{MikeScenarioTVItemID:int}")]
+        [HttpGet]
+        public async Task<ActionResult<bool>> CreateWebMikeScenarioGzFile(int MikeScenarioTVItemID)
         {
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await WebService.GetWebMikeScenario(TVItemID);
+            return await CSSPWebService.CreateWebMikeScenarioGzFile(MikeScenarioTVItemID);
         }
-        [HttpGet("GetWebClimateDataValue/{TVItemID:int}")]
-        public async Task<ActionResult<WebClimateDataValue>> GetWebClimateDataValue(int TVItemID)
+        [Route("CreateWebClimateDataValueGzFile/{ClimateSiteTVItemID:int}")]
+        [HttpGet]
+        public async Task<ActionResult<bool>> CreateWebClimateDataValueGzFile(int ClimateSiteTVItemID)
         {
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await WebService.GetWebClimateDataValue(TVItemID);
+            return await CSSPWebService.CreateWebClimateDataValueGzFile(ClimateSiteTVItemID);
         }
-        [HttpGet("GetWebHydrometricDataValue/{TVItemID:int}")]
-        public async Task<ActionResult<WebHydrometricDataValue>> GetWebHydrometricDataValue(int TVItemID)
+        [Route("CreateWebHydrometricDataValueGzFile/{HydrometricSiteTVItemID:int}")]
+        [HttpGet]
+        public async Task<ActionResult<bool>> CreateWebHydrometricDataValueGzFile(int HydrometricSiteTVItemID)
         {
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await WebService.GetWebHydrometricDataValue(TVItemID);
+            return await CSSPWebService.CreateWebHydrometricDataValueGzFile(HydrometricSiteTVItemID);
         }
-        [HttpGet("GetWebHelpDoc")]
-        public async Task<ActionResult<WebHelpDoc>> GetWebHelpDoc()
+        [Route("CreateWebHelpDocGzFile")]
+        [HttpGet]
+        public async Task<ActionResult<bool>> CreateWebHelpDocGzFile()
         {
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await WebService.GetWebHelpDoc();
+            return await CSSPWebService.CreateWebHelpDocGzFile();
         }
-        [HttpGet("GetWebTideLocation")]
-        public async Task<ActionResult<WebTideLocation>> GetWebTideLocation()
+        [Route("CreateWebTideLocationGzFile")]
+        [HttpGet]
+        public async Task<ActionResult<bool>> CreateWebTideLocationGzFile()
         {
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await WebService.GetWebTideLocation();
+            return await CSSPWebService.CreateWebTideLocationGzFile();
         }
-        [HttpGet("GetWebPolSourceSite/{TVItemID:int}")]
-        public async Task<ActionResult<WebPolSourceSite>> GetWebPolSourceSite(int TVItemID)
+        [Route("CreateWebPolSourceSiteGzFile/{SubsectorTVItemID:int}")]
+        [HttpGet]
+        public async Task<ActionResult<bool>> CreateWebPolSourceSiteGzFile(int SubsectorTVItemID)
         {
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await WebService.GetWebPolSourceSite(TVItemID);
+            return await CSSPWebService.CreateWebPolSourceSiteGzFile(SubsectorTVItemID);
         }
-        [HttpGet("GetWebPolSourceGrouping")]
-        public async Task<ActionResult<WebPolSourceGrouping>> GetWebPolSourceGrouping()
+        [Route("CreateWebPolSourceGroupingGzFile")]
+        [HttpGet]
+        public async Task<ActionResult<bool>> CreateWebPolSourceGroupingGzFile()
         {
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await WebService.GetWebPolSourceGrouping();
+            return await CSSPWebService.CreateWebPolSourceGroupingGzFile();
         }
-        [HttpGet("GetWebReportType")]
-        public async Task<ActionResult<WebReportType>> GetWebReportType()
+        [Route("CreateWebReportTypeGzFile")]
+        [HttpGet]
+        public async Task<ActionResult<bool>> CreateWebReportTypeGzFile()
         {
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await WebService.GetWebReportType();
+            return await CSSPWebService.CreateWebReportTypeGzFile();
         }
-        [HttpGet("GetWebMunicipalities/{TVItemID:int}")]
-        public async Task<ActionResult<WebMunicipalities>> GetWebMunicipalities(int TVItemID)
+        [Route("CreateWebMunicipalitiesGzFile/{ProvinceTVItemID:int}")]
+        [HttpGet]
+        public async Task<ActionResult<bool>> CreateWebMunicipalitiesGzFile(int ProvinceTVItemID)
         {
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await WebService.GetWebMunicipalities(TVItemID);
+            return await CSSPWebService.CreateWebMunicipalitiesGzFile(ProvinceTVItemID);
         }
         #endregion Functions public
 

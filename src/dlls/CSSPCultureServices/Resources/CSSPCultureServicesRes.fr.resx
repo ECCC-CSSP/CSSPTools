@@ -762,4 +762,13 @@
   <data name="CouldNotDelete_Error_" xml:space="preserve">
     <value>Could not delete {0}. Error: [{1}] (fr)</value>
   </data>
+  <data name="_CouldNotBeFoundFor_Equal_" xml:space="preserve">
+    <value>{0} est introuvable pour {1} = [{2}]</value>
+  </data>
+  <data name="_CouldNotBeFoundFor_Equal_And_Equal_" xml:space="preserve">
+    <value>{0} est introuvable pour {0} = [{1}] et {2} = [{3}]</value>
+  </data>
+  <data name="TVItemRootCouldNotBeFound" xml:space="preserve">
+    <value>Dans l'impossibilité de trouver TVItem Base</value>
+  </data>
 </root>

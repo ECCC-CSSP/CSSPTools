@@ -11,7 +11,7 @@ using System.IO;
 
 namespace CSSPServices
 {
-    public partial class WebService : ControllerBase, IWebService
+    public partial class CSSPWebService : ControllerBase, ICSSPWebService
     {
         private void Setup()
         {
