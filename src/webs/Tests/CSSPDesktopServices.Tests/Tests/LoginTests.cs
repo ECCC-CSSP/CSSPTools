@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 using CSSPCultureServices.Services;
+using CSSPDesktopServices.Models;
 using CSSPDesktopServices.Services;
 using CSSPEnums;
 using CSSPModels;
@@ -127,7 +128,23 @@ namespace CSSPDesktopServices.Tests
             CSSPSQLiteService = Provider.GetService<ICSSPSQLiteService>();
             Assert.NotNull(CSSPSQLiteService);
 
-            CSSPDesktopService.IsEnglish = true;
+            if (culture == "fr_CA")
+            {
+                CSSPDesktopService.IsEnglish = false;
+            }
+            else
+            {
+                CSSPDesktopService.IsEnglish = false;
+            }
+
+            if (CSSPDesktopService.IsEnglish)
+            {
+                CSSPDesktopService.appTextModel = new AppTextModelEN();
+            }
+            else
+            {
+                CSSPDesktopService.appTextModel = new AppTextModelFR();
+            }
 
             if (!CSSPDesktopService.ReadConfiguration().GetAwaiter().GetResult()) return false;
 
