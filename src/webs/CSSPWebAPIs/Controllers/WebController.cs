@@ -59,11 +59,11 @@ namespace CSSPWebAPIs.Controllers
         #region Properties
         private ICSSPCultureService CSSPCultureService { get; }
         private ILoggedInService LoggedInService { get; }
-        private ICSSPWebService CSSPWebService { get; }
+        private ICreateGzFileService CSSPWebService { get; }
         #endregion Properties
 
         #region Constructors
-        public WebController(ICSSPCultureService CSSPCultureService, ILoggedInService LoggedInService, ICSSPWebService CSSPWebService)
+        public WebController(ICSSPCultureService CSSPCultureService, ILoggedInService LoggedInService, ICreateGzFileService CSSPWebService)
         {
             this.CSSPCultureService = CSSPCultureService;
             this.LoggedInService = LoggedInService;

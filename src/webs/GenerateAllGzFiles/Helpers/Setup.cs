@@ -65,7 +65,7 @@ namespace GenerateAllGzFiles
             Services.AddSingleton<IEnums, Enums>();
             Services.AddSingleton<ILoggedInService, LoggedInService>();
             Services.AddSingleton<IContactService, ContactService>();
-            Services.AddSingleton<ICSSPWebService, CSSPWebService>();
+            Services.AddSingleton<ICreateGzFileService, CreateGzFileService>();
 
             Provider = Services.BuildServiceProvider();
             if (Provider == null)
@@ -138,7 +138,7 @@ namespace GenerateAllGzFiles
                 return await Task.FromResult(false);
             }
 
-            CSSPWebService = Provider.GetService<ICSSPWebService>();
+            CSSPWebService = Provider.GetService<ICreateGzFileService>();
             if (CSSPWebService == null)
             {
                 Console.WriteLine("WebService is null");

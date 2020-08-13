@@ -23,7 +23,7 @@ namespace GenerateAllGzFiles
         private ILoggedInService LoggedInService { get; set; }
         private IEnums enums { get; set; }
         private IContactService ContactService { get; set; }
-        private ICSSPWebService CSSPWebService { get; set; }
+        private ICreateGzFileService CSSPWebService { get; set; }
         private bool StoreLocal { get; set; }
         private bool StoreInAzure { get; set; }
         private string AzureCSSPStorageConnectionString { get; set; }
