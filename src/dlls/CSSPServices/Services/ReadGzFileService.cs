@@ -12,43 +12,46 @@ using System;
 using System.IO;
 using System.Threading.Tasks;
 using System.Collections.Generic;
+using System.Text.Json;
+using System.IO.Compression;
+using System.Net.Http.Headers;
 
 namespace CSSPServices
 {
     public interface IReadGzFileService
     {
         Task<WebRoot> ReadWebRootGzFile();
-        //Task<ActionResult<bool>> ReadWebCountryGzFile(int TVItemID);
-        //Task<ActionResult<bool>> ReadWebProvinceGzFile(int TVItemID);
-        //Task<ActionResult<bool>> ReadWebAreaGzFile(int TVItemID);
-        //Task<ActionResult<bool>> ReadWebMunicipalitiesGzFile(int TVItemID);
-        //Task<ActionResult<bool>> ReadWebSectorGzFile(int TVItemID);
-        //Task<ActionResult<bool>> ReadWebSubsectorGzFile(int TVItemID);
-        //Task<ActionResult<bool>> ReadWeb10YearOfSample1980_1989FromSubsectorGzFile(int TVItemID);
-        //Task<ActionResult<bool>> ReadWeb10YearOfSample1990_1999FromSubsectorGzFile(int TVItemID);
-        //Task<ActionResult<bool>> ReadWeb10YearOfSample2000_2009FromSubsectorGzFile(int TVItemID);
-        //Task<ActionResult<bool>> ReadWeb10YearOfSample2010_2019FromSubsectorGzFile(int TVItemID);
-        //Task<ActionResult<bool>> ReadWeb10YearOfSample2020_2029FromSubsectorGzFile(int TVItemID);
-        //Task<ActionResult<bool>> ReadWeb10YearOfSample2030_2039FromSubsectorGzFile(int TVItemID);
-        //Task<ActionResult<bool>> ReadWeb10YearOfSample2040_2049FromSubsectorGzFile(int TVItemID);
-        //Task<ActionResult<bool>> ReadWeb10YearOfSample2050_2059FromSubsectorGzFile(int TVItemID);
-        //Task<ActionResult<bool>> ReadWebSamplingPlanGzFile(int SamplingPlanID);
-        //Task<ActionResult<bool>> ReadWebMunicipalityGzFile(int TVItemID);
-        //Task<ActionResult<bool>> ReadWebMWQMRunGzFile(int TVItemID);
-        //Task<ActionResult<bool>> ReadWebMWQMSiteGzFile(int TVItemID);
-        //Task<ActionResult<bool>> ReadWebContactGzFile();
-        //Task<ActionResult<bool>> ReadWebClimateSiteGzFile(int TVItemID);
-        //Task<ActionResult<bool>> ReadWebHydrometricSiteGzFile(int TVItemID);
-        //Task<ActionResult<bool>> ReadWebDrogueRunGzFile(int TVItemID);
-        //Task<ActionResult<bool>> ReadWebMWQMLookupMPNGzFile();
-        //Task<ActionResult<bool>> ReadWebMikeScenarioGzFile(int TVItemID);
-        //Task<ActionResult<bool>> ReadWebClimateDataValueGzFile(int TVItemID);
-        //Task<ActionResult<bool>> ReadWebHydrometricDataValueGzFile(int TVItemID);
-        //Task<ActionResult<bool>> ReadWebHelpDocGzFile();
-        //Task<ActionResult<bool>> ReadWebTideLocationGzFile();
-        //Task<ActionResult<bool>> ReadWebPolSourceSiteGzFile(int TVItemID);
-        //Task<ActionResult<bool>> ReadWebPolSourceGroupingGzFile();
-        //Task<ActionResult<bool>> ReadWebReportTypeGzFile();
+        Task<WebCountry> ReadWebCountryGzFile(int CountryTVItemID);
+        Task<WebProvince> ReadWebProvinceGzFile(int ProvinceTVItemID);
+        Task<WebArea> ReadWebAreaGzFile(int AreaTVItemID);
+        Task<WebMunicipalities> ReadWebMunicipalitiesGzFile(int ProvinceTVItemID);
+        Task<WebSector> ReadWebSectorGzFile(int SectorTVItemID);
+        Task<WebSubsector> ReadWebSubsectorGzFile(int SubsectorTVItemID);
+        Task<WebMunicipality> ReadWebMunicipalityGzFile(int MunicipalityTVItemID);
+        Task<WebMWQMSample> ReadWeb10YearOfSample1980_1989FromSubsectorGzFile(int SubsectorTVItemID);
+        Task<WebMWQMSample> ReadWeb10YearOfSample1990_1999FromSubsectorGzFile(int SubsectorTVItemID);
+        Task<WebMWQMSample> ReadWeb10YearOfSample2000_2009FromSubsectorGzFile(int SubsectorTVItemID);
+        Task<WebMWQMSample> ReadWeb10YearOfSample2010_2019FromSubsectorGzFile(int SubsectorTVItemID);
+        Task<WebMWQMSample> ReadWeb10YearOfSample2020_2029FromSubsectorGzFile(int SubsectorTVItemID);
+        Task<WebMWQMSample> ReadWeb10YearOfSample2030_2039FromSubsectorGzFile(int SubsectorTVItemID);
+        Task<WebMWQMSample> ReadWeb10YearOfSample2040_2049FromSubsectorGzFile(int SubsectorTVItemID);
+        Task<WebMWQMSample> ReadWeb10YearOfSample2050_2059FromSubsectorGzFile(int SubsectorTVItemID);
+        Task<WebSamplingPlan> ReadWebSamplingPlanGzFile(int SamplingPlanID);
+        Task<WebMWQMRun> ReadWebMWQMRunGzFile(int SubsectorTVItemID);
+        Task<WebMWQMSite> ReadWebMWQMSiteGzFile(int SubsectorTVItemID);
+        Task<WebContact> ReadWebContactGzFile();
+        Task<WebClimateSite> ReadWebClimateSiteGzFile(int ProvinceTVItemID);
+        Task<WebHydrometricSite> ReadWebHydrometricSiteGzFile(int ProvinceTVItemID);
+        Task<WebDrogueRun> ReadWebDrogueRunGzFile(int SubsectorTVItemID);
+        Task<WebMWQMLookupMPN> ReadWebMWQMLookupMPNGzFile();
+        Task<WebMikeScenario> ReadWebMikeScenarioGzFile(int MikeScenarioTVItemID);
+        Task<WebClimateDataValue> ReadWebClimateDataValueGzFile(int ClimateSiteTVItemID);
+        Task<WebHydrometricDataValue> ReadWebHydrometricDataValueGzFile(int HydrometricSiteTVItemID);
+        Task<WebHelpDoc> ReadWebHelpDocGzFile();
+        Task<WebTideLocation> ReadWebTideLocationGzFile();
+        Task<WebPolSourceSite> ReadWebPolSourceSiteGzFile(int SubsectorTVItemID);
+        Task<WebPolSourceGrouping> ReadWebPolSourceGroupingGzFile();
+        Task<WebReportType> ReadWebReportTypeGzFile();
     }
     public partial class ReadGzFileService : ControllerBase, IReadGzFileService
     {
@@ -85,13 +88,6 @@ namespace CSSPServices
         #endregion Constructors
 
         #region Functions public
-
-        public async Task<bool> ReadAllGzFiles()
-        {
-            return await Task.FromResult(false);
-            //return await DoReadAllGzFiles();
-        }
-
         public async Task<WebRoot> ReadWebRootGzFile()
         {
             if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
@@ -99,290 +95,310 @@ namespace CSSPServices
                 return await Task.FromResult(new WebRoot());
             }
 
-            return await DoReadWebRootGzFile();
+            return await DoRead<WebRoot>("WebRoot.gz");
         }
-        //public async Task<ActionResult<bool>> ReadWebCountryGzFile(int TVItemID)
-        //{
-        //    if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
-        //    {
-        //        return await Task.FromResult(Unauthorized());
-        //    }
+        public async Task<WebCountry> ReadWebCountryGzFile(int CountryTVItemID)
+        {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(new WebCountry());
+            }
 
-        //    return await DoReadWebCountryGzFile(TVItemID);
-        //}
-        //public async Task<ActionResult<bool>> ReadWebProvinceGzFile(int TVItemID)
-        //{
-        //    if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
-        //    {
-        //        return await Task.FromResult(Unauthorized());
-        //    }
+            return await DoRead<WebCountry>($"WebCountry_{ CountryTVItemID }.gz");
+        }
+        public async Task<WebProvince> ReadWebProvinceGzFile(int ProvinceTVItemID)
+        {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(new WebProvince());
+            }
 
-        //    return await DoReadWebProvinceGzFile(TVItemID);
-        //}
-        //public async Task<ActionResult<bool>> ReadWebMunicipalitiesGzFile(int TVItemID)
-        //{
-        //    if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
-        //    {
-        //        return await Task.FromResult(Unauthorized());
-        //    }
+            return await DoRead<WebProvince>($"WebProvince_{ ProvinceTVItemID }.gz");
+        }
+        public async Task<WebArea> ReadWebAreaGzFile(int AreaTVItemID)
+        {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(new WebArea());
+            }
 
-        //    return await DoReadWebMunicipalitiesGzFile(TVItemID);
-        //}
-        //public async Task<ActionResult<bool>> ReadWebAreaGzFile(int TVItemID)
-        //{
-        //    if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
-        //    {
-        //        return await Task.FromResult(Unauthorized());
-        //    }
+            return await DoRead<WebArea>($"WebArea_{ AreaTVItemID }.gz");
+        }
+        public async Task<WebMunicipalities> ReadWebMunicipalitiesGzFile(int ProvinceTVItemID)
+        {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(new WebMunicipalities());
+            }
 
-        //    return await DoReadWebAreaGzFile(TVItemID);
-        //}
-        //public async Task<ActionResult<bool>> ReadWebSectorGzFile(int TVItemID)
-        //{
-        //    if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
-        //    {
-        //        return await Task.FromResult(Unauthorized());
-        //    }
+            return await DoRead<WebMunicipalities>($"WebMunicipalities_{ ProvinceTVItemID }.gz");
+        }
+        public async Task<WebSector> ReadWebSectorGzFile(int SectorTVItemID)
+        {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(new WebSector());
+            }
 
-        //    return await DoReadWebSectorGzFile(TVItemID);
-        //}
-        //public async Task<ActionResult<bool>> ReadWebSubsectorGzFile(int TVItemID)
-        //{
-        //    if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
-        //    {
-        //        return await Task.FromResult(Unauthorized());
-        //    }
+            return await DoRead<WebSector>($"WebSector_{ SectorTVItemID }.gz");
+        }
+        public async Task<WebSubsector> ReadWebSubsectorGzFile(int SubsectorTVItemID)
+        {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(new WebSubsector());
+            }
 
-        //    return await DoReadWebSubsectorGzFile(TVItemID);
-        //}
-        //public async Task<ActionResult<bool>> ReadWebMunicipalityGzFile(int TVItemID)
-        //{
-        //    if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
-        //    {
-        //        return await Task.FromResult(Unauthorized());
-        //    }
+            return await DoRead<WebSubsector>($"WebSubsector_{ SubsectorTVItemID }.gz");
+        }
+        public async Task<WebMunicipality> ReadWebMunicipalityGzFile(int MunicipalityTVItemID)
+        {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(new WebMunicipality());
+            }
 
-        //    return await DoReadWebMunicipalityGzFile(TVItemID);
-        //}
-        //public async Task<ActionResult<bool>> ReadWeb10YearOfSample1980_1989FromSubsectorGzFile(int TVItemID)
-        //{
-        //    if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
-        //    {
-        //        return await Task.FromResult(Unauthorized());
-        //    }
+            return await DoRead<WebMunicipality>($"WebMunicipality_{ MunicipalityTVItemID }.gz");
+        }
+        public async Task<WebMWQMSample> ReadWeb10YearOfSample1980_1989FromSubsectorGzFile(int SubsectorTVItemID)
+        {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(new WebMWQMSample());
+            }
 
-        //    return await DoReadWebMWQMSampleGzFile(TVItemID, 1980);
-        //}
-        //public async Task<ActionResult<bool>> ReadWeb10YearOfSample1990_1999FromSubsectorGzFile(int TVItemID)
-        //{
-        //    if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
-        //    {
-        //        return await Task.FromResult(Unauthorized());
-        //    }
+            return await DoRead<WebMWQMSample>($"WebMWQMSample_{ SubsectorTVItemID }_1980_1989.gz");
+        }
+        public async Task<WebMWQMSample> ReadWeb10YearOfSample1990_1999FromSubsectorGzFile(int SubsectorTVItemID)
+        {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(new WebMWQMSample());
+            }
 
-        //    return await DoReadWebMWQMSampleGzFile(TVItemID, 1990);
-        //}
-        //public async Task<ActionResult<bool>> ReadWeb10YearOfSample2000_2009FromSubsectorGzFile(int TVItemID)
-        //{
-        //    if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
-        //    {
-        //        return await Task.FromResult(Unauthorized());
-        //    }
+            return await DoRead<WebMWQMSample>($"WebMWQMSample_{ SubsectorTVItemID }_1990_1999.gz");
+        }
+        public async Task<WebMWQMSample> ReadWeb10YearOfSample2000_2009FromSubsectorGzFile(int SubsectorTVItemID)
+        {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(new WebMWQMSample());
+            }
 
-        //    return await DoReadWebMWQMSampleGzFile(TVItemID, 2000);
-        //}
-        //public async Task<ActionResult<bool>> ReadWeb10YearOfSample2010_2019FromSubsectorGzFile(int TVItemID)
-        //{
-        //    if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
-        //    {
-        //        return await Task.FromResult(Unauthorized());
-        //    }
+            return await DoRead<WebMWQMSample>($"WebMWQMSample_{ SubsectorTVItemID }_2000_2009.gz");
+        }
+        public async Task<WebMWQMSample> ReadWeb10YearOfSample2010_2019FromSubsectorGzFile(int SubsectorTVItemID)
+        {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(new WebMWQMSample());
+            }
 
-        //    return await DoReadWebMWQMSampleGzFile(TVItemID, 2010);
-        //}
-        //public async Task<ActionResult<bool>> ReadWeb10YearOfSample2020_2029FromSubsectorGzFile(int TVItemID)
-        //{
-        //    if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
-        //    {
-        //        return await Task.FromResult(Unauthorized());
-        //    }
+            return await DoRead<WebMWQMSample>($"WebMWQMSample_{ SubsectorTVItemID }_2010_2019.gz");
+        }
+        public async Task<WebMWQMSample> ReadWeb10YearOfSample2020_2029FromSubsectorGzFile(int SubsectorTVItemID)
+        {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(new WebMWQMSample());
+            }
 
-        //    return await DoReadWebMWQMSampleGzFile(TVItemID, 2020);
-        //}
-        //public async Task<ActionResult<bool>> ReadWeb10YearOfSample2030_2039FromSubsectorGzFile(int TVItemID)
-        //{
-        //    if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
-        //    {
-        //        return await Task.FromResult(Unauthorized());
-        //    }
+            return await DoRead<WebMWQMSample>($"WebMWQMSample_{ SubsectorTVItemID }_2020_2029.gz");
+        }
+        public async Task<WebMWQMSample> ReadWeb10YearOfSample2030_2039FromSubsectorGzFile(int SubsectorTVItemID)
+        {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(new WebMWQMSample());
+            }
 
-        //    return await DoReadWebMWQMSampleGzFile(TVItemID, 2030);
-        //}
-        //public async Task<ActionResult<bool>> ReadWeb10YearOfSample2040_2049FromSubsectorGzFile(int TVItemID)
-        //{
-        //    if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
-        //    {
-        //        return await Task.FromResult(Unauthorized());
-        //    }
+            return await DoRead<WebMWQMSample>($"WebMWQMSample_{ SubsectorTVItemID }_2030_2039.gz");
+        }
+        public async Task<WebMWQMSample> ReadWeb10YearOfSample2040_2049FromSubsectorGzFile(int SubsectorTVItemID)
+        {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(new WebMWQMSample());
+            }
 
-        //    return await DoReadWebMWQMSampleGzFile(TVItemID, 2040);
-        //}
-        //public async Task<ActionResult<bool>> ReadWeb10YearOfSample2050_2059FromSubsectorGzFile(int TVItemID)
-        //{
-        //    if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
-        //    {
-        //        return await Task.FromResult(Unauthorized());
-        //    }
+            return await DoRead<WebMWQMSample>($"WebMWQMSample_{ SubsectorTVItemID }_2040_2049.gz");
+        }
+        public async Task<WebMWQMSample> ReadWeb10YearOfSample2050_2059FromSubsectorGzFile(int SubsectorTVItemID)
+        {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(new WebMWQMSample());
+            }
 
-        //    return await DoReadWebMWQMSampleGzFile(TVItemID, 2050);
-        //}
-        //public async Task<ActionResult<bool>> ReadWebSamplingPlanGzFile(int TVItemID)
-        //{
-        //    if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
-        //    {
-        //        return await Task.FromResult(Unauthorized());
-        //    }
+            return await DoRead<WebMWQMSample>($"WebMWQMSample_{ SubsectorTVItemID }_2050_2059.gz");
+        }
+        public async Task<WebSamplingPlan> ReadWebSamplingPlanGzFile(int SamplingPlanID)
+        {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(new WebSamplingPlan());
+            }
 
-        //    return await DoReadWebSamplingPlanGzFile(TVItemID);
-        //}
-        //public async Task<ActionResult<bool>> ReadWebMWQMRunGzFile(int TVItemID)
-        //{
-        //    if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
-        //    {
-        //        return await Task.FromResult(Unauthorized());
-        //    }
+            return await DoRead<WebSamplingPlan>($"WebSamplingPlan_{ SamplingPlanID }.gz");
+        }
+        public async Task<WebMWQMRun> ReadWebMWQMRunGzFile(int SubsectorTVItemID)
+        {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(new WebMWQMRun());
+            }
 
-        //    return await DoReadWebMWQMRunGzFile(TVItemID);
-        //}
-        //public async Task<ActionResult<bool>> ReadWebMWQMSiteGzFile(int TVItemID)
-        //{
-        //    if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
-        //    {
-        //        return await Task.FromResult(Unauthorized());
-        //    }
+            return await DoRead<WebMWQMRun>($"WebMWQMRun_{ SubsectorTVItemID }.gz");
+        }
+        public async Task<WebMWQMSite> ReadWebMWQMSiteGzFile(int SubsectorTVItemID)
+        {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(new WebMWQMSite());
+            }
 
-        //    return await DoReadWebMWQMSiteGzFile(TVItemID);
-        //}
-        //public async Task<ActionResult<bool>> ReadWebContactGzFile()
-        //{
-        //    if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
-        //    {
-        //        return await Task.FromResult(Unauthorized());
-        //    }
+            return await DoRead<WebMWQMSite>($"WebMWQMSite_{ SubsectorTVItemID }.gz");
+        }
+        public async Task<WebContact> ReadWebContactGzFile()
+        {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(new WebContact());
+            }
 
-        //    return await DoReadWebContactGzFile();
-        //}
-        //public async Task<ActionResult<bool>> ReadWebClimateSiteGzFile(int TVItemID)
-        //{
-        //    if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
-        //    {
-        //        return await Task.FromResult(Unauthorized());
-        //    }
+            return await DoRead<WebContact>($"WebContact.gz");
+        }
+        public async Task<WebClimateSite> ReadWebClimateSiteGzFile(int ProvinceTVItemID)
+        {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(new WebClimateSite());
+            }
 
-        //    return await DoReadWebClimateSiteGzFile(TVItemID);
-        //}
-        //public async Task<ActionResult<bool>> ReadWebHydrometricSiteGzFile(int TVItemID)
-        //{
-        //    if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
-        //    {
-        //        return await Task.FromResult(Unauthorized());
-        //    }
+            return await DoRead<WebClimateSite>($"WebClimateSite_{ ProvinceTVItemID }.gz");
+        }
+        public async Task<WebHydrometricSite> ReadWebHydrometricSiteGzFile(int ProvinceTVItemID)
+        {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(new WebHydrometricSite());
+            }
 
-        //    return await DoReadWebHydrometricSiteGzFile(TVItemID);
-        //}
-        //public async Task<ActionResult<bool>> ReadWebDrogueRunGzFile(int TVItemID)
-        //{
-        //    if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
-        //    {
-        //        return await Task.FromResult(Unauthorized());
-        //    }
+            return await DoRead<WebHydrometricSite>($"WebHydrometricSite_{ ProvinceTVItemID }.gz");
+        }
+        public async Task<WebDrogueRun> ReadWebDrogueRunGzFile(int SubsectorTVItemID)
+        {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(new WebDrogueRun());
+            }
 
-        //    return await DoReadWebDrogueRunGzFile(TVItemID);
-        //}
-        //public async Task<ActionResult<bool>> ReadWebMWQMLookupMPNGzFile()
-        //{
-        //    if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
-        //    {
-        //        return await Task.FromResult(Unauthorized());
-        //    }
+            return await DoRead<WebDrogueRun>($"WebDrogueRun_{ SubsectorTVItemID }.gz");
+        }
+        public async Task<WebMWQMLookupMPN> ReadWebMWQMLookupMPNGzFile()
+        {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(new WebMWQMLookupMPN());
+            }
 
-        //    return await DoReadWebMWQMLookupMPNGzFile();
-        //}
-        //public async Task<ActionResult<bool>> ReadWebMikeScenarioGzFile(int TVItemID)
-        //{
-        //    if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
-        //    {
-        //        return await Task.FromResult(Unauthorized());
-        //    }
+            return await DoRead<WebMWQMLookupMPN>($"WebMWQMLookupMPN.gz");
+        }
+        public async Task<WebMikeScenario> ReadWebMikeScenarioGzFile(int MikeScenarioTVItemID)
+        {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(new WebMikeScenario());
+            }
 
-        //    return await DoReadWebMikeScenarioGzFile(TVItemID);
-        //}
-        //public async Task<ActionResult<bool>> ReadWebClimateDataValueGzFile(int TVItemID)
-        //{
-        //    if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
-        //    {
-        //        return await Task.FromResult(Unauthorized());
-        //    }
+            return await DoRead<WebMikeScenario>($"WebMikeScenario_{ MikeScenarioTVItemID }.gz");
+        }
+        public async Task<WebClimateDataValue> ReadWebClimateDataValueGzFile(int ClimateSiteTVItemID)
+        {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(new WebClimateDataValue());
+            }
 
-        //    return await DoReadWebClimateDataValueGzFile(TVItemID);
-        //}
-        //public async Task<ActionResult<bool>> ReadWebHydrometricDataValueGzFile(int TVItemID)
-        //{
-        //    if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
-        //    {
-        //        return await Task.FromResult(Unauthorized());
-        //    }
+            return await DoRead<WebClimateDataValue>($"WebClimateDataValue_{ ClimateSiteTVItemID }.gz");
+        }
+        public async Task<WebHydrometricDataValue> ReadWebHydrometricDataValueGzFile(int HydrometricSiteTVItemID)
+        {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(new WebHydrometricDataValue());
+            }
 
-        //    return await DoReadWebHydrometricDataValueGzFile(TVItemID);
-        //}
-        //public async Task<ActionResult<bool>> ReadWebHelpDocGzFile()
-        //{
-        //    if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
-        //    {
-        //        return await Task.FromResult(Unauthorized());
-        //    }
+            return await DoRead<WebHydrometricDataValue>($"WebHydrometricDataValue_{ HydrometricSiteTVItemID }.gz");
+        }
+        public async Task<WebHelpDoc> ReadWebHelpDocGzFile()
+        {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(new WebHelpDoc());
+            }
 
-        //    return await DoReadWebHelpDocGzFile();
-        //}
-        //public async Task<ActionResult<bool>> ReadWebTideLocationGzFile()
-        //{
-        //    if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
-        //    {
-        //        return await Task.FromResult(Unauthorized());
-        //    }
+            return await DoRead<WebHelpDoc>($"WebHelpDoc.gz");
+        }
+        public async Task<WebTideLocation> ReadWebTideLocationGzFile()
+        {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(new WebTideLocation());
+            }
 
-        //    return await DoReadWebTideLocationGzFile();
-        //}
-        //public async Task<ActionResult<bool>> ReadWebPolSourceSiteGzFile(int TVItemID)
-        //{
-        //    if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
-        //    {
-        //        return await Task.FromResult(Unauthorized());
-        //    }
+            return await DoRead<WebTideLocation>($"WebTideLocation.gz");
+        }
+        public async Task<WebPolSourceSite> ReadWebPolSourceSiteGzFile(int SubsectorTVItemID)
+        {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(new WebPolSourceSite());
+            }
 
-        //    return await DoReadWebPolSourceSiteGzFile(TVItemID);
-        //}
-        //public async Task<ActionResult<bool>> ReadWebPolSourceGroupingGzFile()
-        //{
-        //    if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
-        //    {
-        //        return await Task.FromResult(Unauthorized());
-        //    }
+            return await DoRead<WebPolSourceSite>($"WebPolSourceSite_{ SubsectorTVItemID }.gz");
+        }
+        public async Task<WebPolSourceGrouping> ReadWebPolSourceGroupingGzFile()
+        {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(new WebPolSourceGrouping());
+            }
 
-        //    return await DoReadWebPolSourceGroupingGzFile();
-        //}
-        //public async Task<ActionResult<bool>> ReadWebReportTypeGzFile()
-        //{
-        //    if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
-        //    {
-        //        return await Task.FromResult(Unauthorized());
-        //    }
+            return await DoRead<WebPolSourceGrouping>($"WebPolSourceGrouping.gz");
+        }
+        public async Task<WebReportType> ReadWebReportTypeGzFile()
+        {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(new WebReportType());
+            }
 
-        //    return await DoReadWebReportTypeGzFile();
-        //}
+            return await DoRead<WebReportType>($"WebReportType.gz");
+        }
         #endregion Functions public
 
         #region Functions private
+        private async Task<T> DoRead<T>(string fileName)
+        {
+            FileInfo fiGZ = new FileInfo(LocalJSONPath + fileName);
+
+            if (!fiGZ.Exists)
+            {
+                return await Task.FromResult(JsonSerializer.Deserialize<T>(""));
+            }
+
+            using (FileStream gzipFileStream = fiGZ.OpenRead())
+            {
+                using (GZipStream gzStream = new GZipStream(gzipFileStream, CompressionMode.Decompress))
+                {
+                    using (StreamReader sr = new StreamReader(gzStream))
+                    {
+                        return await Task.FromResult(JsonSerializer.Deserialize<T>(sr.ReadToEnd()));
+                    }
+                }
+            }
+        }
         private void Setup()
         {
             StoreLocal = bool.Parse(Configuration.GetValue<string>("StoreLocal"));

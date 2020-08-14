@@ -12,7 +12,7 @@ using Xunit;
 
 namespace CSSPServices.Tests
 {
-    public partial class CreateGzFileServiceTests
+    public partial class GzFileServiceTests
     {
         #region Variables
         #endregion Variables
@@ -23,6 +23,8 @@ namespace CSSPServices.Tests
         private IServiceCollection Services { get; set; }
         private ICSSPCultureService CSSPCultureService { get; set; }
         private ICreateGzFileService CreateGzFileService { get; set; }
+        private IDownloadGzFileService DownloadGzFileService { get; set; }
+        private IReadGzFileService ReadGzFileService { get; set; }
         private IAspNetUserService AspNetUserService { get; set; }
         private IContactService ContactService { get; set; }
         private ILoggedInService LoggedInService { get; set; }
@@ -31,7 +33,7 @@ namespace CSSPServices.Tests
         #endregion Properties
 
         #region Constructors
-        public CreateGzFileServiceTests() : base()
+        public GzFileServiceTests() : base()
         {
 
         }
@@ -90,6 +92,8 @@ namespace CSSPServices.Tests
             Services.AddSingleton<ILoggedInService, LoggedInService>();
             Services.AddSingleton<IEnums, Enums>();
             Services.AddSingleton<ICreateGzFileService, CreateGzFileService>();
+            Services.AddSingleton<IDownloadGzFileService, DownloadGzFileService>();
+            Services.AddSingleton<IReadGzFileService, ReadGzFileService>();
             Services.AddSingleton<ITVItemService, TVItemService>();
 
             Provider = Services.BuildServiceProvider();
@@ -127,6 +131,12 @@ namespace CSSPServices.Tests
 
             CreateGzFileService = Provider.GetService<ICreateGzFileService>();
             Assert.NotNull(CreateGzFileService);
+
+            DownloadGzFileService = Provider.GetService<IDownloadGzFileService>();
+            Assert.NotNull(DownloadGzFileService);
+
+            ReadGzFileService = Provider.GetService<IReadGzFileService>();
+            Assert.NotNull(ReadGzFileService);
 
             TVItemService = Provider.GetService<ITVItemService>();
             Assert.NotNull(TVItemService);

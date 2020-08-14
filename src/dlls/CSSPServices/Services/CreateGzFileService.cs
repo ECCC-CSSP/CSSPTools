@@ -18,35 +18,35 @@ namespace CSSPServices
     public interface ICreateGzFileService
     {
         Task<ActionResult<bool>> CreateWebRootGzFile();
-        Task<ActionResult<bool>> CreateWebCountryGzFile(int TVItemID);
-        Task<ActionResult<bool>> CreateWebProvinceGzFile(int TVItemID);
-        Task<ActionResult<bool>> CreateWebAreaGzFile(int TVItemID);
-        Task<ActionResult<bool>> CreateWebMunicipalitiesGzFile(int TVItemID);
-        Task<ActionResult<bool>> CreateWebSectorGzFile(int TVItemID);
-        Task<ActionResult<bool>> CreateWebSubsectorGzFile(int TVItemID);
-        Task<ActionResult<bool>> CreateWeb10YearOfSample1980_1989FromSubsectorGzFile(int TVItemID);
-        Task<ActionResult<bool>> CreateWeb10YearOfSample1990_1999FromSubsectorGzFile(int TVItemID);
-        Task<ActionResult<bool>> CreateWeb10YearOfSample2000_2009FromSubsectorGzFile(int TVItemID);
-        Task<ActionResult<bool>> CreateWeb10YearOfSample2010_2019FromSubsectorGzFile(int TVItemID);
-        Task<ActionResult<bool>> CreateWeb10YearOfSample2020_2029FromSubsectorGzFile(int TVItemID);
-        Task<ActionResult<bool>> CreateWeb10YearOfSample2030_2039FromSubsectorGzFile(int TVItemID);
-        Task<ActionResult<bool>> CreateWeb10YearOfSample2040_2049FromSubsectorGzFile(int TVItemID);
-        Task<ActionResult<bool>> CreateWeb10YearOfSample2050_2059FromSubsectorGzFile(int TVItemID);
+        Task<ActionResult<bool>> CreateWebCountryGzFile(int CountryTVItemID);
+        Task<ActionResult<bool>> CreateWebProvinceGzFile(int ProvinceTVItemID);
+        Task<ActionResult<bool>> CreateWebAreaGzFile(int AreaTVItemID);
+        Task<ActionResult<bool>> CreateWebMunicipalitiesGzFile(int ProvinceTVItemID);
+        Task<ActionResult<bool>> CreateWebSectorGzFile(int SectorTVItemID);
+        Task<ActionResult<bool>> CreateWebSubsectorGzFile(int SubsectorTVItemID);
+        Task<ActionResult<bool>> CreateWebMunicipalityGzFile(int MunicipalityTVItemID);
+        Task<ActionResult<bool>> CreateWeb10YearOfSample1980_1989FromSubsectorGzFile(int SubsectorTVItemID);
+        Task<ActionResult<bool>> CreateWeb10YearOfSample1990_1999FromSubsectorGzFile(int SubsectorTVItemID);
+        Task<ActionResult<bool>> CreateWeb10YearOfSample2000_2009FromSubsectorGzFile(int SubsectorTVItemID);
+        Task<ActionResult<bool>> CreateWeb10YearOfSample2010_2019FromSubsectorGzFile(int SubsectorTVItemID);
+        Task<ActionResult<bool>> CreateWeb10YearOfSample2020_2029FromSubsectorGzFile(int SubsectorTVItemID);
+        Task<ActionResult<bool>> CreateWeb10YearOfSample2030_2039FromSubsectorGzFile(int SubsectorTVItemID);
+        Task<ActionResult<bool>> CreateWeb10YearOfSample2040_2049FromSubsectorGzFile(int SubsectorTVItemID);
+        Task<ActionResult<bool>> CreateWeb10YearOfSample2050_2059FromSubsectorGzFile(int SubsectorTVItemID);
         Task<ActionResult<bool>> CreateWebSamplingPlanGzFile(int SamplingPlanID);
-        Task<ActionResult<bool>> CreateWebMunicipalityGzFile(int TVItemID);
-        Task<ActionResult<bool>> CreateWebMWQMRunGzFile(int TVItemID);
-        Task<ActionResult<bool>> CreateWebMWQMSiteGzFile(int TVItemID);
+        Task<ActionResult<bool>> CreateWebMWQMRunGzFile(int SubsectorTVItemID);
+        Task<ActionResult<bool>> CreateWebMWQMSiteGzFile(int SubsectorTVItemID);
         Task<ActionResult<bool>> CreateWebContactGzFile();
-        Task<ActionResult<bool>> CreateWebClimateSiteGzFile(int TVItemID);
-        Task<ActionResult<bool>> CreateWebHydrometricSiteGzFile(int TVItemID);
-        Task<ActionResult<bool>> CreateWebDrogueRunGzFile(int TVItemID);
+        Task<ActionResult<bool>> CreateWebClimateSiteGzFile(int ProvinceTVItemID);
+        Task<ActionResult<bool>> CreateWebHydrometricSiteGzFile(int ProvinceTVItemID);
+        Task<ActionResult<bool>> CreateWebDrogueRunGzFile(int SubsectorTVItemID);
         Task<ActionResult<bool>> CreateWebMWQMLookupMPNGzFile();
-        Task<ActionResult<bool>> CreateWebMikeScenarioGzFile(int TVItemID);
-        Task<ActionResult<bool>> CreateWebClimateDataValueGzFile(int TVItemID);
-        Task<ActionResult<bool>> CreateWebHydrometricDataValueGzFile(int TVItemID);
+        Task<ActionResult<bool>> CreateWebMikeScenarioGzFile(int MikeScenarioTVItemID);
+        Task<ActionResult<bool>> CreateWebClimateDataValueGzFile(int ClimateSiteTVItemID);
+        Task<ActionResult<bool>> CreateWebHydrometricDataValueGzFile(int HydrometricSiteTVItemID);
         Task<ActionResult<bool>> CreateWebHelpDocGzFile();
         Task<ActionResult<bool>> CreateWebTideLocationGzFile();
-        Task<ActionResult<bool>> CreateWebPolSourceSiteGzFile(int TVItemID);
+        Task<ActionResult<bool>> CreateWebPolSourceSiteGzFile(int SubsectorTVItemID);
         Task<ActionResult<bool>> CreateWebPolSourceGroupingGzFile();
         Task<ActionResult<bool>> CreateWebReportTypeGzFile();
 
@@ -103,167 +103,167 @@ namespace CSSPServices
 
             return await DoCreateWebRootGzFile();
         }
-        public async Task<ActionResult<bool>> CreateWebCountryGzFile(int TVItemID)
+        public async Task<ActionResult<bool>> CreateWebCountryGzFile(int CountryTVItemID)
         {
             if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
             {
                 return await Task.FromResult(Unauthorized());
             }
 
-            return await DoCreateWebCountryGzFile(TVItemID);
+            return await DoCreateWebCountryGzFile(CountryTVItemID);
         }
-        public async Task<ActionResult<bool>> CreateWebProvinceGzFile(int TVItemID)
+        public async Task<ActionResult<bool>> CreateWebProvinceGzFile(int ProvinceTVItemID)
         {
             if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
             {
                 return await Task.FromResult(Unauthorized());
             }
 
-            return await DoCreateWebProvinceGzFile(TVItemID);
+            return await DoCreateWebProvinceGzFile(ProvinceTVItemID);
         }
-        public async Task<ActionResult<bool>> CreateWebMunicipalitiesGzFile(int TVItemID)
+        public async Task<ActionResult<bool>> CreateWebAreaGzFile(int AreaTVItemID)
         {
             if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
             {
                 return await Task.FromResult(Unauthorized());
             }
 
-            return await DoCreateWebMunicipalitiesGzFile(TVItemID);
+            return await DoCreateWebAreaGzFile(AreaTVItemID);
         }
-        public async Task<ActionResult<bool>> CreateWebAreaGzFile(int TVItemID)
+        public async Task<ActionResult<bool>> CreateWebMunicipalitiesGzFile(int ProvinceTVItemID)
         {
             if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
             {
                 return await Task.FromResult(Unauthorized());
             }
 
-            return await DoCreateWebAreaGzFile(TVItemID);
+            return await DoCreateWebMunicipalitiesGzFile(ProvinceTVItemID);
         }
-        public async Task<ActionResult<bool>> CreateWebSectorGzFile(int TVItemID)
+        public async Task<ActionResult<bool>> CreateWebSectorGzFile(int SectorTVItemID)
         {
             if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
             {
                 return await Task.FromResult(Unauthorized());
             }
 
-            return await DoCreateWebSectorGzFile(TVItemID);
+            return await DoCreateWebSectorGzFile(SectorTVItemID);
         }
-        public async Task<ActionResult<bool>> CreateWebSubsectorGzFile(int TVItemID)
+        public async Task<ActionResult<bool>> CreateWebSubsectorGzFile(int SubsectorTVItemID)
         {
             if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
             {
                 return await Task.FromResult(Unauthorized());
             }
 
-            return await DoCreateWebSubsectorGzFile(TVItemID);
+            return await DoCreateWebSubsectorGzFile(SubsectorTVItemID);
         }
-        public async Task<ActionResult<bool>> CreateWebMunicipalityGzFile(int TVItemID)
+        public async Task<ActionResult<bool>> CreateWebMunicipalityGzFile(int MunicipalityTVItemID)
         {
             if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
             {
                 return await Task.FromResult(Unauthorized());
             }
 
-            return await DoCreateWebMunicipalityGzFile(TVItemID);
+            return await DoCreateWebMunicipalityGzFile(MunicipalityTVItemID);
         }
-        public async Task<ActionResult<bool>> CreateWeb10YearOfSample1980_1989FromSubsectorGzFile(int TVItemID)
+        public async Task<ActionResult<bool>> CreateWeb10YearOfSample1980_1989FromSubsectorGzFile(int SubsectorTVItemID)
         {
             if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
             {
                 return await Task.FromResult(Unauthorized());
             }
 
-            return await DoCreateWebMWQMSampleGzFile(TVItemID, 1980);
+            return await DoCreateWebMWQMSampleGzFile(SubsectorTVItemID, 1980);
         }
-        public async Task<ActionResult<bool>> CreateWeb10YearOfSample1990_1999FromSubsectorGzFile(int TVItemID)
+        public async Task<ActionResult<bool>> CreateWeb10YearOfSample1990_1999FromSubsectorGzFile(int SubsectorTVItemID)
         {
             if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
             {
                 return await Task.FromResult(Unauthorized());
             }
 
-            return await DoCreateWebMWQMSampleGzFile(TVItemID, 1990);
+            return await DoCreateWebMWQMSampleGzFile(SubsectorTVItemID, 1990);
         }
-        public async Task<ActionResult<bool>> CreateWeb10YearOfSample2000_2009FromSubsectorGzFile(int TVItemID)
+        public async Task<ActionResult<bool>> CreateWeb10YearOfSample2000_2009FromSubsectorGzFile(int SubsectorTVItemID)
         {
             if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
             {
                 return await Task.FromResult(Unauthorized());
             }
 
-            return await DoCreateWebMWQMSampleGzFile(TVItemID, 2000);
+            return await DoCreateWebMWQMSampleGzFile(SubsectorTVItemID, 2000);
         }
-        public async Task<ActionResult<bool>> CreateWeb10YearOfSample2010_2019FromSubsectorGzFile(int TVItemID)
+        public async Task<ActionResult<bool>> CreateWeb10YearOfSample2010_2019FromSubsectorGzFile(int SubsectorTVItemID)
         {
             if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
             {
                 return await Task.FromResult(Unauthorized());
             }
 
-            return await DoCreateWebMWQMSampleGzFile(TVItemID, 2010);
+            return await DoCreateWebMWQMSampleGzFile(SubsectorTVItemID, 2010);
         }
-        public async Task<ActionResult<bool>> CreateWeb10YearOfSample2020_2029FromSubsectorGzFile(int TVItemID)
+        public async Task<ActionResult<bool>> CreateWeb10YearOfSample2020_2029FromSubsectorGzFile(int SubsectorTVItemID)
         {
             if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
             {
                 return await Task.FromResult(Unauthorized());
             }
 
-            return await DoCreateWebMWQMSampleGzFile(TVItemID, 2020);
+            return await DoCreateWebMWQMSampleGzFile(SubsectorTVItemID, 2020);
         }
-        public async Task<ActionResult<bool>> CreateWeb10YearOfSample2030_2039FromSubsectorGzFile(int TVItemID)
+        public async Task<ActionResult<bool>> CreateWeb10YearOfSample2030_2039FromSubsectorGzFile(int SubsectorTVItemID)
         {
             if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
             {
                 return await Task.FromResult(Unauthorized());
             }
 
-            return await DoCreateWebMWQMSampleGzFile(TVItemID, 2030);
+            return await DoCreateWebMWQMSampleGzFile(SubsectorTVItemID, 2030);
         }
-        public async Task<ActionResult<bool>> CreateWeb10YearOfSample2040_2049FromSubsectorGzFile(int TVItemID)
+        public async Task<ActionResult<bool>> CreateWeb10YearOfSample2040_2049FromSubsectorGzFile(int SubsectorTVItemID)
         {
             if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
             {
                 return await Task.FromResult(Unauthorized());
             }
 
-            return await DoCreateWebMWQMSampleGzFile(TVItemID, 2040);
+            return await DoCreateWebMWQMSampleGzFile(SubsectorTVItemID, 2040);
         }
-        public async Task<ActionResult<bool>> CreateWeb10YearOfSample2050_2059FromSubsectorGzFile(int TVItemID)
+        public async Task<ActionResult<bool>> CreateWeb10YearOfSample2050_2059FromSubsectorGzFile(int SubsectorTVItemID)
         {
             if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
             {
                 return await Task.FromResult(Unauthorized());
             }
 
-            return await DoCreateWebMWQMSampleGzFile(TVItemID, 2050);
+            return await DoCreateWebMWQMSampleGzFile(SubsectorTVItemID, 2050);
         }
-        public async Task<ActionResult<bool>> CreateWebSamplingPlanGzFile(int TVItemID)
+        public async Task<ActionResult<bool>> CreateWebSamplingPlanGzFile(int SamplingPlanID)
         {
             if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
             {
                 return await Task.FromResult(Unauthorized());
             }
 
-            return await DoCreateWebSamplingPlanGzFile(TVItemID);
+            return await DoCreateWebSamplingPlanGzFile(SamplingPlanID);
         }
-        public async Task<ActionResult<bool>> CreateWebMWQMRunGzFile(int TVItemID)
+        public async Task<ActionResult<bool>> CreateWebMWQMRunGzFile(int SubsectorTVItemID)
         {
             if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
             {
                 return await Task.FromResult(Unauthorized());
             }
 
-            return await DoCreateWebMWQMRunGzFile(TVItemID);
+            return await DoCreateWebMWQMRunGzFile(SubsectorTVItemID);
         }
-        public async Task<ActionResult<bool>> CreateWebMWQMSiteGzFile(int TVItemID)
+        public async Task<ActionResult<bool>> CreateWebMWQMSiteGzFile(int SubsectorTVItemID)
         {
             if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
             {
                 return await Task.FromResult(Unauthorized());
             }
 
-            return await DoCreateWebMWQMSiteGzFile(TVItemID);
+            return await DoCreateWebMWQMSiteGzFile(SubsectorTVItemID);
         }
         public async Task<ActionResult<bool>> CreateWebContactGzFile()
         {
@@ -274,32 +274,32 @@ namespace CSSPServices
 
             return await DoCreateWebContactGzFile();
         }
-        public async Task<ActionResult<bool>> CreateWebClimateSiteGzFile(int TVItemID)
+        public async Task<ActionResult<bool>> CreateWebClimateSiteGzFile(int ProvinceTVItemID)
         {
             if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
             {
                 return await Task.FromResult(Unauthorized());
             }
 
-            return await DoCreateWebClimateSiteGzFile(TVItemID);
+            return await DoCreateWebClimateSiteGzFile(ProvinceTVItemID);
         }
-        public async Task<ActionResult<bool>> CreateWebHydrometricSiteGzFile(int TVItemID)
+        public async Task<ActionResult<bool>> CreateWebHydrometricSiteGzFile(int ProvinceTVItemID)
         {
             if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
             {
                 return await Task.FromResult(Unauthorized());
             }
 
-            return await DoCreateWebHydrometricSiteGzFile(TVItemID);
+            return await DoCreateWebHydrometricSiteGzFile(ProvinceTVItemID);
         }
-        public async Task<ActionResult<bool>> CreateWebDrogueRunGzFile(int TVItemID)
+        public async Task<ActionResult<bool>> CreateWebDrogueRunGzFile(int SubsectorTVItemID)
         {
             if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
             {
                 return await Task.FromResult(Unauthorized());
             }
 
-            return await DoCreateWebDrogueRunGzFile(TVItemID);
+            return await DoCreateWebDrogueRunGzFile(SubsectorTVItemID);
         }
         public async Task<ActionResult<bool>> CreateWebMWQMLookupMPNGzFile()
         {
@@ -310,32 +310,32 @@ namespace CSSPServices
 
             return await DoCreateWebMWQMLookupMPNGzFile();
         }
-        public async Task<ActionResult<bool>> CreateWebMikeScenarioGzFile(int TVItemID)
+        public async Task<ActionResult<bool>> CreateWebMikeScenarioGzFile(int MikeScenarioTVItemID)
         {
             if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
             {
                 return await Task.FromResult(Unauthorized());
             }
 
-            return await DoCreateWebMikeScenarioGzFile(TVItemID);
+            return await DoCreateWebMikeScenarioGzFile(MikeScenarioTVItemID);
         }
-        public async Task<ActionResult<bool>> CreateWebClimateDataValueGzFile(int TVItemID)
+        public async Task<ActionResult<bool>> CreateWebClimateDataValueGzFile(int ClimateSiteTVItemID)
         {
             if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
             {
                 return await Task.FromResult(Unauthorized());
             }
 
-            return await DoCreateWebClimateDataValueGzFile(TVItemID);
+            return await DoCreateWebClimateDataValueGzFile(ClimateSiteTVItemID);
         }
-        public async Task<ActionResult<bool>> CreateWebHydrometricDataValueGzFile(int TVItemID)
+        public async Task<ActionResult<bool>> CreateWebHydrometricDataValueGzFile(int HydrometricSiteTVItemID)
         {
             if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
             {
                 return await Task.FromResult(Unauthorized());
             }
 
-            return await DoCreateWebHydrometricDataValueGzFile(TVItemID);
+            return await DoCreateWebHydrometricDataValueGzFile(HydrometricSiteTVItemID);
         }
         public async Task<ActionResult<bool>> CreateWebHelpDocGzFile()
         {
@@ -355,14 +355,14 @@ namespace CSSPServices
 
             return await DoCreateWebTideLocationGzFile();
         }
-        public async Task<ActionResult<bool>> CreateWebPolSourceSiteGzFile(int TVItemID)
+        public async Task<ActionResult<bool>> CreateWebPolSourceSiteGzFile(int SubsectorTVItemID)
         {
             if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
             {
                 return await Task.FromResult(Unauthorized());
             }
 
-            return await DoCreateWebPolSourceSiteGzFile(TVItemID);
+            return await DoCreateWebPolSourceSiteGzFile(SubsectorTVItemID);
         }
         public async Task<ActionResult<bool>> CreateWebPolSourceGroupingGzFile()
         {
