@@ -38,7 +38,6 @@ namespace CSSPServices
         private string AzureCSSPStorageCSSPFiles { get; set; }
         private string AzureCSSPStorageCSSPJSON { get; set; }
         private string LocalJSONPath { get; set; }
-        private string LocalFilesPath { get; set; }
         #endregion Properties
 
         #region Constructors
@@ -94,40 +93,19 @@ namespace CSSPServices
             AzureCSSPStorageCustomerProvidedKey = Configuration.GetValue<string>("AzureCSSPStorageCustomerProvidedKey");
             AzureCSSPStorageCSSPFiles = Configuration.GetValue<string>("AzureCSSPStorageCSSPFiles");
             AzureCSSPStorageCSSPJSON = Configuration.GetValue<string>("AzureCSSPStorageCSSPJSON");
+            LocalJSONPath = Configuration.GetValue<string>("LocalJSONPath");
 
-            if (StoreLocal)
+            DirectoryInfo di = new DirectoryInfo(LocalJSONPath);
+
+            if (!di.Exists)
             {
-                List<string> StoragePathList = new List<string>() { "LocalJSONPath", "LocalFilesPath" };
-                foreach (string StoragePath in StoragePathList)
+                try
                 {
-                    if (Configuration.GetValue<string>(StoragePath) == null)
-                    {
-                        throw new Exception($"{ String.Format(CSSPCultureServicesRes.CouldNotFindParameter_InAppSettingsJSON, StoragePath) }");
-                    }
-
-                    DirectoryInfo di = new DirectoryInfo(Configuration.GetValue<string>(StoragePath));
-
-                    if (!di.Exists)
-                    {
-                        try
-                        {
-                            di.Create();
-                        }
-                        catch (Exception ex)
-                        {
-                            throw new Exception(ex.Message);
-                        }
-                    }
-
-                    if (StoragePath == "LocalJSONPath")
-                    {
-                        LocalJSONPath = di.FullName;
-                    }
-
-                    if (StoragePath == "LocalFilesPath")
-                    {
-                        LocalFilesPath = di.FullName;
-                    }
+                    di.Create();
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception(ex.Message);
                 }
             }
         }

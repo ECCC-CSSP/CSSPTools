@@ -95,7 +95,7 @@ namespace CSSPServices
                 return await Task.FromResult(new WebRoot());
             }
 
-            return await DoRead<WebRoot>("WebRoot.gz");
+            return await DoReadJSON<WebRoot>("WebRoot.gz");
         }
         public async Task<WebCountry> ReadWebCountryGzFile(int CountryTVItemID)
         {
@@ -104,7 +104,7 @@ namespace CSSPServices
                 return await Task.FromResult(new WebCountry());
             }
 
-            return await DoRead<WebCountry>($"WebCountry_{ CountryTVItemID }.gz");
+            return await DoReadJSON<WebCountry>($"WebCountry_{ CountryTVItemID }.gz");
         }
         public async Task<WebProvince> ReadWebProvinceGzFile(int ProvinceTVItemID)
         {
@@ -113,7 +113,7 @@ namespace CSSPServices
                 return await Task.FromResult(new WebProvince());
             }
 
-            return await DoRead<WebProvince>($"WebProvince_{ ProvinceTVItemID }.gz");
+            return await DoReadJSON<WebProvince>($"WebProvince_{ ProvinceTVItemID }.gz");
         }
         public async Task<WebArea> ReadWebAreaGzFile(int AreaTVItemID)
         {
@@ -122,7 +122,7 @@ namespace CSSPServices
                 return await Task.FromResult(new WebArea());
             }
 
-            return await DoRead<WebArea>($"WebArea_{ AreaTVItemID }.gz");
+            return await DoReadJSON<WebArea>($"WebArea_{ AreaTVItemID }.gz");
         }
         public async Task<WebMunicipalities> ReadWebMunicipalitiesGzFile(int ProvinceTVItemID)
         {
@@ -131,7 +131,7 @@ namespace CSSPServices
                 return await Task.FromResult(new WebMunicipalities());
             }
 
-            return await DoRead<WebMunicipalities>($"WebMunicipalities_{ ProvinceTVItemID }.gz");
+            return await DoReadJSON<WebMunicipalities>($"WebMunicipalities_{ ProvinceTVItemID }.gz");
         }
         public async Task<WebSector> ReadWebSectorGzFile(int SectorTVItemID)
         {
@@ -140,7 +140,7 @@ namespace CSSPServices
                 return await Task.FromResult(new WebSector());
             }
 
-            return await DoRead<WebSector>($"WebSector_{ SectorTVItemID }.gz");
+            return await DoReadJSON<WebSector>($"WebSector_{ SectorTVItemID }.gz");
         }
         public async Task<WebSubsector> ReadWebSubsectorGzFile(int SubsectorTVItemID)
         {
@@ -149,7 +149,7 @@ namespace CSSPServices
                 return await Task.FromResult(new WebSubsector());
             }
 
-            return await DoRead<WebSubsector>($"WebSubsector_{ SubsectorTVItemID }.gz");
+            return await DoReadJSON<WebSubsector>($"WebSubsector_{ SubsectorTVItemID }.gz");
         }
         public async Task<WebMunicipality> ReadWebMunicipalityGzFile(int MunicipalityTVItemID)
         {
@@ -158,7 +158,7 @@ namespace CSSPServices
                 return await Task.FromResult(new WebMunicipality());
             }
 
-            return await DoRead<WebMunicipality>($"WebMunicipality_{ MunicipalityTVItemID }.gz");
+            return await DoReadJSON<WebMunicipality>($"WebMunicipality_{ MunicipalityTVItemID }.gz");
         }
         public async Task<WebMWQMSample> ReadWeb10YearOfSample1980_1989FromSubsectorGzFile(int SubsectorTVItemID)
         {
@@ -167,7 +167,7 @@ namespace CSSPServices
                 return await Task.FromResult(new WebMWQMSample());
             }
 
-            return await DoRead<WebMWQMSample>($"WebMWQMSample_{ SubsectorTVItemID }_1980_1989.gz");
+            return await DoReadJSON<WebMWQMSample>($"WebMWQMSample_{ SubsectorTVItemID }_1980_1989.gz");
         }
         public async Task<WebMWQMSample> ReadWeb10YearOfSample1990_1999FromSubsectorGzFile(int SubsectorTVItemID)
         {
@@ -176,7 +176,7 @@ namespace CSSPServices
                 return await Task.FromResult(new WebMWQMSample());
             }
 
-            return await DoRead<WebMWQMSample>($"WebMWQMSample_{ SubsectorTVItemID }_1990_1999.gz");
+            return await DoReadJSON<WebMWQMSample>($"WebMWQMSample_{ SubsectorTVItemID }_1990_1999.gz");
         }
         public async Task<WebMWQMSample> ReadWeb10YearOfSample2000_2009FromSubsectorGzFile(int SubsectorTVItemID)
         {
@@ -185,7 +185,7 @@ namespace CSSPServices
                 return await Task.FromResult(new WebMWQMSample());
             }
 
-            return await DoRead<WebMWQMSample>($"WebMWQMSample_{ SubsectorTVItemID }_2000_2009.gz");
+            return await DoReadJSON<WebMWQMSample>($"WebMWQMSample_{ SubsectorTVItemID }_2000_2009.gz");
         }
         public async Task<WebMWQMSample> ReadWeb10YearOfSample2010_2019FromSubsectorGzFile(int SubsectorTVItemID)
         {
@@ -194,7 +194,7 @@ namespace CSSPServices
                 return await Task.FromResult(new WebMWQMSample());
             }
 
-            return await DoRead<WebMWQMSample>($"WebMWQMSample_{ SubsectorTVItemID }_2010_2019.gz");
+            return await DoReadJSON<WebMWQMSample>($"WebMWQMSample_{ SubsectorTVItemID }_2010_2019.gz");
         }
         public async Task<WebMWQMSample> ReadWeb10YearOfSample2020_2029FromSubsectorGzFile(int SubsectorTVItemID)
         {
@@ -203,7 +203,7 @@ namespace CSSPServices
                 return await Task.FromResult(new WebMWQMSample());
             }
 
-            return await DoRead<WebMWQMSample>($"WebMWQMSample_{ SubsectorTVItemID }_2020_2029.gz");
+            return await DoReadJSON<WebMWQMSample>($"WebMWQMSample_{ SubsectorTVItemID }_2020_2029.gz");
         }
         public async Task<WebMWQMSample> ReadWeb10YearOfSample2030_2039FromSubsectorGzFile(int SubsectorTVItemID)
         {
@@ -212,7 +212,7 @@ namespace CSSPServices
                 return await Task.FromResult(new WebMWQMSample());
             }
 
-            return await DoRead<WebMWQMSample>($"WebMWQMSample_{ SubsectorTVItemID }_2030_2039.gz");
+            return await DoReadJSON<WebMWQMSample>($"WebMWQMSample_{ SubsectorTVItemID }_2030_2039.gz");
         }
         public async Task<WebMWQMSample> ReadWeb10YearOfSample2040_2049FromSubsectorGzFile(int SubsectorTVItemID)
         {
@@ -221,7 +221,7 @@ namespace CSSPServices
                 return await Task.FromResult(new WebMWQMSample());
             }
 
-            return await DoRead<WebMWQMSample>($"WebMWQMSample_{ SubsectorTVItemID }_2040_2049.gz");
+            return await DoReadJSON<WebMWQMSample>($"WebMWQMSample_{ SubsectorTVItemID }_2040_2049.gz");
         }
         public async Task<WebMWQMSample> ReadWeb10YearOfSample2050_2059FromSubsectorGzFile(int SubsectorTVItemID)
         {
@@ -230,7 +230,7 @@ namespace CSSPServices
                 return await Task.FromResult(new WebMWQMSample());
             }
 
-            return await DoRead<WebMWQMSample>($"WebMWQMSample_{ SubsectorTVItemID }_2050_2059.gz");
+            return await DoReadJSON<WebMWQMSample>($"WebMWQMSample_{ SubsectorTVItemID }_2050_2059.gz");
         }
         public async Task<WebSamplingPlan> ReadWebSamplingPlanGzFile(int SamplingPlanID)
         {
@@ -239,7 +239,7 @@ namespace CSSPServices
                 return await Task.FromResult(new WebSamplingPlan());
             }
 
-            return await DoRead<WebSamplingPlan>($"WebSamplingPlan_{ SamplingPlanID }.gz");
+            return await DoReadJSON<WebSamplingPlan>($"WebSamplingPlan_{ SamplingPlanID }.gz");
         }
         public async Task<WebMWQMRun> ReadWebMWQMRunGzFile(int SubsectorTVItemID)
         {
@@ -248,7 +248,7 @@ namespace CSSPServices
                 return await Task.FromResult(new WebMWQMRun());
             }
 
-            return await DoRead<WebMWQMRun>($"WebMWQMRun_{ SubsectorTVItemID }.gz");
+            return await DoReadJSON<WebMWQMRun>($"WebMWQMRun_{ SubsectorTVItemID }.gz");
         }
         public async Task<WebMWQMSite> ReadWebMWQMSiteGzFile(int SubsectorTVItemID)
         {
@@ -257,7 +257,7 @@ namespace CSSPServices
                 return await Task.FromResult(new WebMWQMSite());
             }
 
-            return await DoRead<WebMWQMSite>($"WebMWQMSite_{ SubsectorTVItemID }.gz");
+            return await DoReadJSON<WebMWQMSite>($"WebMWQMSite_{ SubsectorTVItemID }.gz");
         }
         public async Task<WebContact> ReadWebContactGzFile()
         {
@@ -266,7 +266,7 @@ namespace CSSPServices
                 return await Task.FromResult(new WebContact());
             }
 
-            return await DoRead<WebContact>($"WebContact.gz");
+            return await DoReadJSON<WebContact>($"WebContact.gz");
         }
         public async Task<WebClimateSite> ReadWebClimateSiteGzFile(int ProvinceTVItemID)
         {
@@ -275,7 +275,7 @@ namespace CSSPServices
                 return await Task.FromResult(new WebClimateSite());
             }
 
-            return await DoRead<WebClimateSite>($"WebClimateSite_{ ProvinceTVItemID }.gz");
+            return await DoReadJSON<WebClimateSite>($"WebClimateSite_{ ProvinceTVItemID }.gz");
         }
         public async Task<WebHydrometricSite> ReadWebHydrometricSiteGzFile(int ProvinceTVItemID)
         {
@@ -284,7 +284,7 @@ namespace CSSPServices
                 return await Task.FromResult(new WebHydrometricSite());
             }
 
-            return await DoRead<WebHydrometricSite>($"WebHydrometricSite_{ ProvinceTVItemID }.gz");
+            return await DoReadJSON<WebHydrometricSite>($"WebHydrometricSite_{ ProvinceTVItemID }.gz");
         }
         public async Task<WebDrogueRun> ReadWebDrogueRunGzFile(int SubsectorTVItemID)
         {
@@ -293,7 +293,7 @@ namespace CSSPServices
                 return await Task.FromResult(new WebDrogueRun());
             }
 
-            return await DoRead<WebDrogueRun>($"WebDrogueRun_{ SubsectorTVItemID }.gz");
+            return await DoReadJSON<WebDrogueRun>($"WebDrogueRun_{ SubsectorTVItemID }.gz");
         }
         public async Task<WebMWQMLookupMPN> ReadWebMWQMLookupMPNGzFile()
         {
@@ -302,7 +302,7 @@ namespace CSSPServices
                 return await Task.FromResult(new WebMWQMLookupMPN());
             }
 
-            return await DoRead<WebMWQMLookupMPN>($"WebMWQMLookupMPN.gz");
+            return await DoReadJSON<WebMWQMLookupMPN>($"WebMWQMLookupMPN.gz");
         }
         public async Task<WebMikeScenario> ReadWebMikeScenarioGzFile(int MikeScenarioTVItemID)
         {
@@ -311,7 +311,7 @@ namespace CSSPServices
                 return await Task.FromResult(new WebMikeScenario());
             }
 
-            return await DoRead<WebMikeScenario>($"WebMikeScenario_{ MikeScenarioTVItemID }.gz");
+            return await DoReadJSON<WebMikeScenario>($"WebMikeScenario_{ MikeScenarioTVItemID }.gz");
         }
         public async Task<WebClimateDataValue> ReadWebClimateDataValueGzFile(int ClimateSiteTVItemID)
         {
@@ -320,7 +320,7 @@ namespace CSSPServices
                 return await Task.FromResult(new WebClimateDataValue());
             }
 
-            return await DoRead<WebClimateDataValue>($"WebClimateDataValue_{ ClimateSiteTVItemID }.gz");
+            return await DoReadJSON<WebClimateDataValue>($"WebClimateDataValue_{ ClimateSiteTVItemID }.gz");
         }
         public async Task<WebHydrometricDataValue> ReadWebHydrometricDataValueGzFile(int HydrometricSiteTVItemID)
         {
@@ -329,7 +329,7 @@ namespace CSSPServices
                 return await Task.FromResult(new WebHydrometricDataValue());
             }
 
-            return await DoRead<WebHydrometricDataValue>($"WebHydrometricDataValue_{ HydrometricSiteTVItemID }.gz");
+            return await DoReadJSON<WebHydrometricDataValue>($"WebHydrometricDataValue_{ HydrometricSiteTVItemID }.gz");
         }
         public async Task<WebHelpDoc> ReadWebHelpDocGzFile()
         {
@@ -338,7 +338,7 @@ namespace CSSPServices
                 return await Task.FromResult(new WebHelpDoc());
             }
 
-            return await DoRead<WebHelpDoc>($"WebHelpDoc.gz");
+            return await DoReadJSON<WebHelpDoc>($"WebHelpDoc.gz");
         }
         public async Task<WebTideLocation> ReadWebTideLocationGzFile()
         {
@@ -347,7 +347,7 @@ namespace CSSPServices
                 return await Task.FromResult(new WebTideLocation());
             }
 
-            return await DoRead<WebTideLocation>($"WebTideLocation.gz");
+            return await DoReadJSON<WebTideLocation>($"WebTideLocation.gz");
         }
         public async Task<WebPolSourceSite> ReadWebPolSourceSiteGzFile(int SubsectorTVItemID)
         {
@@ -356,7 +356,7 @@ namespace CSSPServices
                 return await Task.FromResult(new WebPolSourceSite());
             }
 
-            return await DoRead<WebPolSourceSite>($"WebPolSourceSite_{ SubsectorTVItemID }.gz");
+            return await DoReadJSON<WebPolSourceSite>($"WebPolSourceSite_{ SubsectorTVItemID }.gz");
         }
         public async Task<WebPolSourceGrouping> ReadWebPolSourceGroupingGzFile()
         {
@@ -365,7 +365,7 @@ namespace CSSPServices
                 return await Task.FromResult(new WebPolSourceGrouping());
             }
 
-            return await DoRead<WebPolSourceGrouping>($"WebPolSourceGrouping.gz");
+            return await DoReadJSON<WebPolSourceGrouping>($"WebPolSourceGrouping.gz");
         }
         public async Task<WebReportType> ReadWebReportTypeGzFile()
         {
@@ -374,13 +374,29 @@ namespace CSSPServices
                 return await Task.FromResult(new WebReportType());
             }
 
-            return await DoRead<WebReportType>($"WebReportType.gz");
+            return await DoReadJSON<WebReportType>($"WebReportType.gz");
         }
         #endregion Functions public
 
         #region Functions private
-        private async Task<T> DoRead<T>(string fileName)
+        private async Task<T> DoReadJSON<T>(string fileName)
         {
+            // if user has internet connection
+            // should check if file already exist locally
+            // should compare Azure Store ETag with the Etag in CSSPDBFilesManagement.db
+            // download if not same ETag else no need to download
+            // 
+            // if file does not exist in Azure 
+            // send CreateGzFile command to Azure CSSPWebAPIs
+            // once created
+            // get file properties (ETag) from Azure and store the info in CSSPDBFilesManagement.db
+            // then download and store locally using DownloadGzFile
+            // then read the file using ReadGzFile
+
+            // if user has no internet connection
+            // just read file if exist
+            // send message if it does not exist
+            // 
             FileInfo fiGZ = new FileInfo(LocalJSONPath + fileName);
 
             if (!fiGZ.Exists)

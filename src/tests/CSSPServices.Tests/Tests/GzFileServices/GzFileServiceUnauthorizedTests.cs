@@ -21,7 +21,7 @@ namespace CSSPServices.Tests
         #region Tests Generated CRUD
         [Theory]
         [InlineData("en-CA")]
-        [InlineData("fr-CA")]
+        //[InlineData("fr-CA")]
         public async Task CreateWebArea_Unauthorized_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
@@ -41,7 +41,7 @@ namespace CSSPServices.Tests
         }
         [Theory]
         [InlineData("en-CA")]
-        [InlineData("fr-CA")]
+        //[InlineData("fr-CA")]
         public async Task CreateWebClimateDataValue_Unauthorized_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
@@ -61,7 +61,7 @@ namespace CSSPServices.Tests
         }
         [Theory]
         [InlineData("en-CA")]
-        [InlineData("fr-CA")]
+        //[InlineData("fr-CA")]
         public async Task CreateWebClimateSite_Unauthorized_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
@@ -81,7 +81,7 @@ namespace CSSPServices.Tests
         }
         [Theory]
         [InlineData("en-CA")]
-        [InlineData("fr-CA")]
+        //[InlineData("fr-CA")]
         public async Task CreateWebContact_Unauthorized_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
@@ -101,7 +101,7 @@ namespace CSSPServices.Tests
         }
         [Theory]
         [InlineData("en-CA")]
-        [InlineData("fr-CA")]
+        //[InlineData("fr-CA")]
         public async Task CreateWebCountry_Unauthorized_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
@@ -121,7 +121,7 @@ namespace CSSPServices.Tests
         }
         [Theory]
         [InlineData("en-CA")]
-        [InlineData("fr-CA")]
+        //[InlineData("fr-CA")]
         public async Task CreateWebDrogueRun_Unauthorized_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
@@ -141,7 +141,7 @@ namespace CSSPServices.Tests
         }
         [Theory]
         [InlineData("en-CA")]
-        [InlineData("fr-CA")]
+        //[InlineData("fr-CA")]
         public async Task CreateWebHelpDoc_Unauthorized_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
@@ -161,7 +161,7 @@ namespace CSSPServices.Tests
         }
         [Theory]
         [InlineData("en-CA")]
-        [InlineData("fr-CA")]
+        //[InlineData("fr-CA")]
         public async Task CreateWebHydrometricDataValue_Unauthorized_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
@@ -181,7 +181,7 @@ namespace CSSPServices.Tests
         }
         [Theory]
         [InlineData("en-CA")]
-        [InlineData("fr-CA")]
+        //[InlineData("fr-CA")]
         public async Task CreateWebHydrometricSite_Unauthorized_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
@@ -201,7 +201,7 @@ namespace CSSPServices.Tests
         }
         [Theory]
         [InlineData("en-CA")]
-        [InlineData("fr-CA")]
+        //[InlineData("fr-CA")]
         public async Task CreateWebMikeScenario_Unauthorized_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
@@ -221,7 +221,7 @@ namespace CSSPServices.Tests
         }
         [Theory]
         [InlineData("en-CA")]
-        [InlineData("fr-CA")]
+        //[InlineData("fr-CA")]
         public async Task CreateWebMunicipalities_Unauthorized_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
@@ -241,7 +241,7 @@ namespace CSSPServices.Tests
         }
         [Theory]
         [InlineData("en-CA")]
-        [InlineData("fr-CA")]
+        //[InlineData("fr-CA")]
         public async Task CreateWebMunicipality_Unauthorized_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
@@ -261,7 +261,7 @@ namespace CSSPServices.Tests
         }
         [Theory]
         [InlineData("en-CA")]
-        [InlineData("fr-CA")]
+        //[InlineData("fr-CA")]
         public async Task CreateWebMWQMLookupMPN_Unauthorized_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
@@ -281,7 +281,7 @@ namespace CSSPServices.Tests
         }
         [Theory]
         [InlineData("en-CA")]
-        [InlineData("fr-CA")]
+        //[InlineData("fr-CA")]
         public async Task CreateWebMWQMRun_Unauthorized_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
@@ -301,7 +301,7 @@ namespace CSSPServices.Tests
         }
         [Theory]
         [InlineData("en-CA")]
-        [InlineData("fr-CA")]
+        //[InlineData("fr-CA")]
         public async Task CreateWeb10YearOfSample1980_1989FromSubsector_Unauthorized_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
@@ -321,7 +321,7 @@ namespace CSSPServices.Tests
         }
         [Theory]
         [InlineData("en-CA")]
-        [InlineData("fr-CA")]
+        //[InlineData("fr-CA")]
         public async Task CreateWeb10YearOfSample1990_1999FromSubsector_Unauthorized_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
@@ -341,7 +341,7 @@ namespace CSSPServices.Tests
         }
         [Theory]
         [InlineData("en-CA")]
-        [InlineData("fr-CA")]
+        //[InlineData("fr-CA")]
         public async Task CreateWeb10YearOfSample2000_2009FromSubsector_Unauthorized_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
@@ -361,7 +361,7 @@ namespace CSSPServices.Tests
         }
         [Theory]
         [InlineData("en-CA")]
-        [InlineData("fr-CA")]
+        //[InlineData("fr-CA")]
         public async Task CreateWeb10YearOfSample2010_2019FromSubsector_Unauthorized_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
@@ -381,7 +381,7 @@ namespace CSSPServices.Tests
         }
         [Theory]
         [InlineData("en-CA")]
-        [InlineData("fr-CA")]
+        //[InlineData("fr-CA")]
         public async Task CreateWeb10YearOfSample2020_2029FromSubsector_Unauthorized_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
@@ -401,7 +401,7 @@ namespace CSSPServices.Tests
         }
         [Theory]
         [InlineData("en-CA")]
-        [InlineData("fr-CA")]
+        //[InlineData("fr-CA")]
         public async Task CreateWeb10YearOfSample2030_2039FromSubsector_Unauthorized_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
@@ -421,7 +421,7 @@ namespace CSSPServices.Tests
         }
         [Theory]
         [InlineData("en-CA")]
-        [InlineData("fr-CA")]
+        //[InlineData("fr-CA")]
         public async Task CreateWeb10YearOfSample2040_2049FromSubsector_Unauthorized_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
@@ -441,7 +441,7 @@ namespace CSSPServices.Tests
         }
         [Theory]
         [InlineData("en-CA")]
-        [InlineData("fr-CA")]
+        //[InlineData("fr-CA")]
         public async Task CreateWeb10YearOfSample2050_2059FromSubsector_Unauthorized_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
@@ -461,7 +461,7 @@ namespace CSSPServices.Tests
         }
         [Theory]
         [InlineData("en-CA")]
-        [InlineData("fr-CA")]
+        //[InlineData("fr-CA")]
         public async Task CreateWebMWQMSite_Unauthorized_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
@@ -481,7 +481,7 @@ namespace CSSPServices.Tests
         }
         [Theory]
         [InlineData("en-CA")]
-        [InlineData("fr-CA")]
+        //[InlineData("fr-CA")]
         public async Task CreateWebPolSourceGrouping_Unauthorized_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
@@ -501,7 +501,7 @@ namespace CSSPServices.Tests
         }
         [Theory]
         [InlineData("en-CA")]
-        [InlineData("fr-CA")]
+        //[InlineData("fr-CA")]
         public async Task CreateWebPolSourceSite_Unauthorized_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
@@ -521,7 +521,7 @@ namespace CSSPServices.Tests
         }
         [Theory]
         [InlineData("en-CA")]
-        [InlineData("fr-CA")]
+        //[InlineData("fr-CA")]
         public async Task CreateWebProvince_Unauthorized_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
@@ -541,7 +541,7 @@ namespace CSSPServices.Tests
         }
         [Theory]
         [InlineData("en-CA")]
-        [InlineData("fr-CA")]
+        //[InlineData("fr-CA")]
         public async Task CreateWebReportType_Unauthorized_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
@@ -561,7 +561,7 @@ namespace CSSPServices.Tests
         }
         [Theory]
         [InlineData("en-CA")]
-        [InlineData("fr-CA")]
+        //[InlineData("fr-CA")]
         public async Task CreateWebRoot_Unauthorized_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
@@ -581,7 +581,7 @@ namespace CSSPServices.Tests
         }
         [Theory]
         [InlineData("en-CA")]
-        [InlineData("fr-CA")]
+        //[InlineData("fr-CA")]
         public async Task CreateWebSamplingPlan_Unauthorized_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
@@ -601,7 +601,7 @@ namespace CSSPServices.Tests
         }
         [Theory]
         [InlineData("en-CA")]
-        [InlineData("fr-CA")]
+        //[InlineData("fr-CA")]
         public async Task CreateWebSector_Unauthorized_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
@@ -621,7 +621,7 @@ namespace CSSPServices.Tests
         }
         [Theory]
         [InlineData("en-CA")]
-        [InlineData("fr-CA")]
+        //[InlineData("fr-CA")]
         public async Task CreateWebSubsector_Unauthorized_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
@@ -641,7 +641,7 @@ namespace CSSPServices.Tests
         }
         [Theory]
         [InlineData("en-CA")]
-        [InlineData("fr-CA")]
+        //[InlineData("fr-CA")]
         public async Task CreateWebTideLocation_Unauthorized_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));

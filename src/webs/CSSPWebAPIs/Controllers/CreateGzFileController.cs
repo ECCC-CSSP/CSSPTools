@@ -12,14 +12,16 @@ using System.Threading.Tasks;
 
 namespace CSSPWebAPIs.Controllers
 {
-    public partial interface IWebController
+    public partial interface ICreateGzFileController
     {
         Task<ActionResult<bool>> CreateWebRootGzFile();
         Task<ActionResult<bool>> CreateWebCountryGzFile(int CountryTVItemID);
         Task<ActionResult<bool>> CreateWebProvinceGzFile(int ProvinceTVItemID);
         Task<ActionResult<bool>> CreateWebAreaGzFile(int AreaTVItemID);
+        Task<ActionResult<bool>> CreateWebMunicipalitiesGzFile(int ProvinceTVItemID);
         Task<ActionResult<bool>> CreateWebSectorGzFile(int SectorTVItemID);
         Task<ActionResult<bool>> CreateWebSubsectorGzFile(int SubsectorTVItemID);
+        Task<ActionResult<bool>> CreateWebMunicipalityGzFile(int MunicipalityTVItemID);
         Task<ActionResult<bool>> CreateWeb10YearOfSample1980_1989FromSubsectorGzFile(int SubsectorTVItemID);
         Task<ActionResult<bool>> CreateWeb10YearOfSample1990_1999FromSubsectorGzFile(int SubsectorTVItemID);
         Task<ActionResult<bool>> CreateWeb10YearOfSample2000_2009FromSubsectorGzFile(int SubsectorTVItemID);
@@ -29,7 +31,6 @@ namespace CSSPWebAPIs.Controllers
         Task<ActionResult<bool>> CreateWeb10YearOfSample2040_2049FromSubsectorGzFile(int SubsectorTVItemID);
         Task<ActionResult<bool>> CreateWeb10YearOfSample2050_2059FromSubsectorGzFile(int SubsectorTVItemID);
         Task<ActionResult<bool>> CreateWebSamplingPlanGzFile(int SamplingPlanID);
-        Task<ActionResult<bool>> CreateWebMunicipalityGzFile(int MunicipalityTVItemID);
         Task<ActionResult<bool>> CreateWebMWQMRunGzFile(int SubsectorTVItemID);
         Task<ActionResult<bool>> CreateWebMWQMSiteGzFile(int SubsectorTVItemID);
         Task<ActionResult<bool>> CreateWebContactGzFile();
@@ -45,13 +46,12 @@ namespace CSSPWebAPIs.Controllers
         Task<ActionResult<bool>> CreateWebPolSourceSiteGzFile(int SubsectorTVItemID);
         Task<ActionResult<bool>> CreateWebPolSourceGroupingGzFile();
         Task<ActionResult<bool>> CreateWebReportTypeGzFile();
-        Task<ActionResult<bool>> CreateWebMunicipalitiesGzFile(int ProvinceTVItemID);
     }
 
     [Route("api/{culture}/[controller]")]
     [ApiController]
     [Authorize]
-    public partial class WebController : ControllerBase, IWebController
+    public partial class CreateGzFileController : ControllerBase, ICreateGzFileController
     {
         #region Variables
         #endregion Variables
@@ -63,7 +63,7 @@ namespace CSSPWebAPIs.Controllers
         #endregion Properties
 
         #region Constructors
-        public WebController(ICSSPCultureService CSSPCultureService, ILoggedInService LoggedInService, ICreateGzFileService CSSPWebService)
+        public CreateGzFileController(ICSSPCultureService CSSPCultureService, ILoggedInService LoggedInService, ICreateGzFileService CSSPWebService)
         {
             this.CSSPCultureService = CSSPCultureService;
             this.LoggedInService = LoggedInService;
@@ -108,6 +108,15 @@ namespace CSSPWebAPIs.Controllers
 
             return await CSSPWebService.CreateWebAreaGzFile(AreaTVItemID);
         }
+        [Route("CreateWebMunicipalitiesGzFile/{ProvinceTVItemID:int}")]
+        [HttpGet]
+        public async Task<ActionResult<bool>> CreateWebMunicipalitiesGzFile(int ProvinceTVItemID)
+        {
+            CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
+            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+
+            return await CSSPWebService.CreateWebMunicipalitiesGzFile(ProvinceTVItemID);
+        }
         [Route("CreateWebSectorGzFile/{SectorTVItemID:int}")]
         [HttpGet]
         public async Task<ActionResult<bool>> CreateWebSectorGzFile(int SectorTVItemID)
@@ -125,6 +134,15 @@ namespace CSSPWebAPIs.Controllers
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
             return await CSSPWebService.CreateWebSubsectorGzFile(SubsectorTVItemID);
+        }
+        [Route("CreateWebMunicipalityGzFile/{MunicipalityTVItemID:int}")]
+        [HttpGet]
+        public async Task<ActionResult<bool>> CreateWebMunicipalityGzFile(int MunicipalityTVItemID)
+        {
+            CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
+            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+
+            return await CSSPWebService.CreateWebMunicipalityGzFile(MunicipalityTVItemID);
         }
         [Route("CreateWeb10YearOfSample1980_1989FromSubsectorGzFile/{SubsectorTVItemID:int}")]
         [HttpGet]
@@ -206,15 +224,6 @@ namespace CSSPWebAPIs.Controllers
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
             return await CSSPWebService.CreateWebSamplingPlanGzFile(SamplingPlanID);
-        }
-        [Route("CreateWebMunicipalityGzFile/{MunicipalityTVItemID:int}")]
-        [HttpGet]
-        public async Task<ActionResult<bool>> CreateWebMunicipalityGzFile(int MunicipalityTVItemID)
-        {
-            CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
-
-            return await CSSPWebService.CreateWebMunicipalityGzFile(MunicipalityTVItemID);
         }
         [Route("CreateWebMWQMRunGzFile/{SubsectorTVItemID:int}")]
         [HttpGet]
@@ -350,15 +359,6 @@ namespace CSSPWebAPIs.Controllers
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
             return await CSSPWebService.CreateWebReportTypeGzFile();
-        }
-        [Route("CreateWebMunicipalitiesGzFile/{ProvinceTVItemID:int}")]
-        [HttpGet]
-        public async Task<ActionResult<bool>> CreateWebMunicipalitiesGzFile(int ProvinceTVItemID)
-        {
-            CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
-
-            return await CSSPWebService.CreateWebMunicipalitiesGzFile(ProvinceTVItemID);
         }
         #endregion Functions public
 
