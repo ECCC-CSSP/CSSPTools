@@ -323,7 +323,6 @@ namespace CSSPServices
         #region Functions private
         private IEnumerable<ValidationResult> Validate(ValidationContext validationContext, ActionDBTypeEnum actionDBType)
         {
-            string retStr = "";
             PolSourceObservation polSourceObservation = validationContext.ObjectInstance as PolSourceObservation;
 
             if (actionDBType == ActionDBTypeEnum.Update || actionDBType == ActionDBTypeEnum.Delete)

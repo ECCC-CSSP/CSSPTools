@@ -1,3 +1,4 @@
+using CSSPEnums;
 using CSSPModels;
 using CSSPServices;
 using Microsoft.AspNetCore.Mvc;
@@ -27,17 +28,29 @@ namespace CSSPServices.Tests
         {
             Assert.True(await Setup(culture));
 
+            WebTypeEnum webType = WebTypeEnum.WebArea;
+            int TVItemID = 629;
+            WebTypeYearEnum webTypeYear = WebTypeYearEnum.Year1980;
+
+            string fileName = GetFileName(webType, TVItemID, webTypeYear);
+
             // Create gz
-            var actionRes = await CreateGzFileService.CreateWebAreaGzFile(629);
+            var actionRes = await CreateGzFileService.CreateGzFile(webType, TVItemID, webTypeYear);
             Assert.Equal(200, ((ObjectResult)actionRes.Result).StatusCode);
             Assert.NotNull(((OkObjectResult)actionRes.Result).Value);
             Assert.True((bool)((OkObjectResult)actionRes.Result).Value);
 
             // Download gz
-            Assert.True(await DownloadGzFileService.DownloadGzFile("WebArea_629.gz"));
+            var actionRes2 = await DownloadGzFileService.DownloadGzFile(fileName);
+            Assert.Equal(200, ((ObjectResult)actionRes2.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionRes2.Result).Value);
+            Assert.True((bool)((OkObjectResult)actionRes2.Result).Value);
 
             // Read gz
-            WebArea webArea = await ReadGzFileService.ReadWebAreaGzFile(629);
+            var actionWebArea = await ReadGzFileService.ReadJSON<WebArea>(webType, TVItemID, webTypeYear);
+            Assert.Equal(200, ((ObjectResult)actionWebArea.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionWebArea.Result).Value);
+            WebArea webArea = ((WebArea)((OkObjectResult)actionWebArea.Result).Value);
             Assert.NotNull(webArea);
             Assert.NotNull(webArea.TVItem);
         }
@@ -48,17 +61,29 @@ namespace CSSPServices.Tests
         {
             Assert.True(await Setup(culture));
 
+            WebTypeEnum webType = WebTypeEnum.WebClimateDataValue;
+            int TVItemID = 229465;
+            WebTypeYearEnum webTypeYear = WebTypeYearEnum.Year1980;
+
+            string fileName = GetFileName(webType, TVItemID, webTypeYear);
+
             // Create gz
-            var actionRes = await CreateGzFileService.CreateWebClimateDataValueGzFile(229465);
+            var actionRes = await CreateGzFileService.CreateGzFile(webType, TVItemID, webTypeYear);
             Assert.Equal(200, ((ObjectResult)actionRes.Result).StatusCode);
             Assert.NotNull(((OkObjectResult)actionRes.Result).Value);
             Assert.True((bool)((OkObjectResult)actionRes.Result).Value);
 
             // Download gz
-            Assert.True(await DownloadGzFileService.DownloadGzFile("WebClimateDataValue_229465.gz"));
+            var actionRes2 = await DownloadGzFileService.DownloadGzFile(fileName);
+            Assert.Equal(200, ((ObjectResult)actionRes2.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionRes2.Result).Value);
+            Assert.True((bool)((OkObjectResult)actionRes2.Result).Value);
 
             // Read gz
-            WebClimateDataValue webClimateDataValue = await ReadGzFileService.ReadWebClimateDataValueGzFile(229465);
+            var actionWebClimateDataValue = await ReadGzFileService.ReadJSON<WebClimateDataValue>(webType, TVItemID, webTypeYear);
+            Assert.Equal(200, ((ObjectResult)actionWebClimateDataValue.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionWebClimateDataValue.Result).Value);
+            WebClimateDataValue webClimateDataValue = ((WebClimateDataValue)((OkObjectResult)actionWebClimateDataValue.Result).Value);
             Assert.NotNull(webClimateDataValue);
             Assert.NotNull(webClimateDataValue.ClimateDataValueList);
         }
@@ -69,19 +94,31 @@ namespace CSSPServices.Tests
         {
             Assert.True(await Setup(culture));
 
+            WebTypeEnum webType = WebTypeEnum.WebClimateSite;
+            int TVItemID = 7;
+            WebTypeYearEnum webTypeYear = WebTypeYearEnum.Year1980;
+
+            string fileName = GetFileName(webType, TVItemID, webTypeYear);
+
             // Create gz
-            var actionRes = await CreateGzFileService.CreateWebClimateSiteGzFile(7);
+            var actionRes = await CreateGzFileService.CreateGzFile(webType, TVItemID, webTypeYear);
             Assert.Equal(200, ((ObjectResult)actionRes.Result).StatusCode);
             Assert.NotNull(((OkObjectResult)actionRes.Result).Value);
             Assert.True((bool)((OkObjectResult)actionRes.Result).Value);
 
             // Download gz
-            Assert.True(await DownloadGzFileService.DownloadGzFile("WebClimateSite_7.gz"));
+            var actionRes2 = await DownloadGzFileService.DownloadGzFile(fileName);
+            Assert.Equal(200, ((ObjectResult)actionRes2.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionRes2.Result).Value);
+            Assert.True((bool)((OkObjectResult)actionRes2.Result).Value);
 
             // Read gz
-            WebClimateSite webClimateSite = await ReadGzFileService.ReadWebClimateSiteGzFile(7);
+            var actionWebClimateSite = await ReadGzFileService.ReadJSON<WebClimateSite>(webType, TVItemID, webTypeYear);
+            Assert.Equal(200, ((ObjectResult)actionWebClimateSite.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionWebClimateSite.Result).Value);
+            WebClimateSite webClimateSite = ((WebClimateSite)((OkObjectResult)actionWebClimateSite.Result).Value);
             Assert.NotNull(webClimateSite);
-            Assert.NotNull(webClimateSite.ClimateSiteList);
+            Assert.NotNull(webClimateSite.TVItemList);
         }
         [Theory]
         [InlineData("en-CA")]
@@ -90,17 +127,29 @@ namespace CSSPServices.Tests
         {
             Assert.True(await Setup(culture));
 
+            WebTypeEnum webType = WebTypeEnum.WebContact;
+            int TVItemID = 0;
+            WebTypeYearEnum webTypeYear = WebTypeYearEnum.Year1980;
+
+            string fileName = GetFileName(webType, TVItemID, webTypeYear);
+
             // Create gz
-            var actionRes = await CreateGzFileService.CreateWebContactGzFile();
+            var actionRes = await CreateGzFileService.CreateGzFile(webType, TVItemID, webTypeYear);
             Assert.Equal(200, ((ObjectResult)actionRes.Result).StatusCode);
             Assert.NotNull(((OkObjectResult)actionRes.Result).Value);
             Assert.True((bool)((OkObjectResult)actionRes.Result).Value);
 
             // Download gz
-            Assert.True(await DownloadGzFileService.DownloadGzFile("WebContact.gz"));
+            var actionRes2 = await DownloadGzFileService.DownloadGzFile(fileName);
+            Assert.Equal(200, ((ObjectResult)actionRes2.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionRes2.Result).Value);
+            Assert.True((bool)((OkObjectResult)actionRes2.Result).Value);
 
             // Read gz
-            WebContact webContact = await ReadGzFileService.ReadWebContactGzFile();
+            var actionWebContact = await ReadGzFileService.ReadJSON<WebContact>(webType, TVItemID, webTypeYear);
+            Assert.Equal(200, ((ObjectResult)actionWebContact.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionWebContact.Result).Value);
+            WebContact webContact = ((WebContact)((OkObjectResult)actionWebContact.Result).Value);
             Assert.NotNull(webContact);
             Assert.NotNull(webContact.ContactList);
         }
@@ -111,19 +160,31 @@ namespace CSSPServices.Tests
         {
             Assert.True(await Setup(culture));
 
+            WebTypeEnum webType = WebTypeEnum.WebCountry;
+            int TVItemID = 5;
+            WebTypeYearEnum webTypeYear = WebTypeYearEnum.Year1980;
+
+            string fileName = GetFileName(webType, TVItemID, webTypeYear);
+
             // Create gz
-            var actionRes = await CreateGzFileService.CreateWebCountryGzFile(5);
+            var actionRes = await CreateGzFileService.CreateGzFile(webType, TVItemID, webTypeYear);
             Assert.Equal(200, ((ObjectResult)actionRes.Result).StatusCode);
             Assert.NotNull(((OkObjectResult)actionRes.Result).Value);
             Assert.True((bool)((OkObjectResult)actionRes.Result).Value);
 
             // Download gz
-            Assert.True(await DownloadGzFileService.DownloadGzFile("WebCountry_5.gz"));
+            var actionRes2 = await DownloadGzFileService.DownloadGzFile(fileName);
+            Assert.Equal(200, ((ObjectResult)actionRes2.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionRes2.Result).Value);
+            Assert.True((bool)((OkObjectResult)actionRes2.Result).Value);
 
             // Read gz
-            WebCountry webCountry = await ReadGzFileService.ReadWebCountryGzFile(5);
+            var actionWebCountry = await ReadGzFileService.ReadJSON<WebCountry>(webType, TVItemID, webTypeYear);
+            Assert.Equal(200, ((ObjectResult)actionWebCountry.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionWebCountry.Result).Value);
+            WebCountry webCountry = ((WebCountry)((OkObjectResult)actionWebCountry.Result).Value);
             Assert.NotNull(webCountry);
-            Assert.NotNull(webCountry.TVItem);
+            Assert.NotNull(webCountry.TVItemLinkList);
         }
         [Theory]
         [InlineData("en-CA")]
@@ -132,17 +193,29 @@ namespace CSSPServices.Tests
         {
             Assert.True(await Setup(culture));
 
+            WebTypeEnum webType = WebTypeEnum.WebDrogueRun;
+            int TVItemID = 556;
+            WebTypeYearEnum webTypeYear = WebTypeYearEnum.Year1980;
+
+            string fileName = GetFileName(webType, TVItemID, webTypeYear);
+
             // Create gz
-            var actionRes = await CreateGzFileService.CreateWebDrogueRunGzFile(556);
+            var actionRes = await CreateGzFileService.CreateGzFile(webType, TVItemID, webTypeYear);
             Assert.Equal(200, ((ObjectResult)actionRes.Result).StatusCode);
             Assert.NotNull(((OkObjectResult)actionRes.Result).Value);
             Assert.True((bool)((OkObjectResult)actionRes.Result).Value);
 
             // Download gz
-            Assert.True(await DownloadGzFileService.DownloadGzFile("WebDrogueRun_556.gz"));
+            var actionRes2 = await DownloadGzFileService.DownloadGzFile(fileName);
+            Assert.Equal(200, ((ObjectResult)actionRes2.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionRes2.Result).Value);
+            Assert.True((bool)((OkObjectResult)actionRes2.Result).Value);
 
             // Read gz
-            WebDrogueRun webDrogueRun = await ReadGzFileService.ReadWebDrogueRunGzFile(556);
+            var actionWebDrogueRun = await ReadGzFileService.ReadJSON<WebDrogueRun>(webType, TVItemID, webTypeYear);
+            Assert.Equal(200, ((ObjectResult)actionWebDrogueRun.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionWebDrogueRun.Result).Value);
+            WebDrogueRun webDrogueRun = ((WebDrogueRun)((OkObjectResult)actionWebDrogueRun.Result).Value);
             Assert.NotNull(webDrogueRun);
             Assert.NotNull(webDrogueRun.DrogueRunList);
         }
@@ -153,17 +226,29 @@ namespace CSSPServices.Tests
         {
             Assert.True(await Setup(culture));
 
+            WebTypeEnum webType = WebTypeEnum.WebHelpDoc;
+            int TVItemID = 0;
+            WebTypeYearEnum webTypeYear = WebTypeYearEnum.Year1980;
+
+            string fileName = GetFileName(webType, TVItemID, webTypeYear);
+
             // Create gz
-            var actionRes = await CreateGzFileService.CreateWebHelpDocGzFile();
+            var actionRes = await CreateGzFileService.CreateGzFile(webType, TVItemID, webTypeYear);
             Assert.Equal(200, ((ObjectResult)actionRes.Result).StatusCode);
             Assert.NotNull(((OkObjectResult)actionRes.Result).Value);
             Assert.True((bool)((OkObjectResult)actionRes.Result).Value);
 
             // Download gz
-            Assert.True(await DownloadGzFileService.DownloadGzFile("WebHelpDoc.gz"));
+            var actionRes2 = await DownloadGzFileService.DownloadGzFile(fileName);
+            Assert.Equal(200, ((ObjectResult)actionRes2.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionRes2.Result).Value);
+            Assert.True((bool)((OkObjectResult)actionRes2.Result).Value);
 
             // Read gz
-            WebHelpDoc webHelpDoc = await ReadGzFileService.ReadWebHelpDocGzFile();
+            var actionWebHelpDoc = await ReadGzFileService.ReadJSON<WebHelpDoc>(webType, TVItemID, webTypeYear);
+            Assert.Equal(200, ((ObjectResult)actionWebHelpDoc.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionWebHelpDoc.Result).Value);
+            WebHelpDoc webHelpDoc = ((WebHelpDoc)((OkObjectResult)actionWebHelpDoc.Result).Value);
             Assert.NotNull(webHelpDoc);
             Assert.NotNull(webHelpDoc.HelpDocList);
         }
@@ -174,17 +259,29 @@ namespace CSSPServices.Tests
         {
             Assert.True(await Setup(culture));
 
+            WebTypeEnum webType = WebTypeEnum.WebHydrometricDataValue;
+            int TVItemID = 51705;
+            WebTypeYearEnum webTypeYear = WebTypeYearEnum.Year1980;
+
+            string fileName = GetFileName(webType, TVItemID, webTypeYear);
+
             // Create gz
-            var actionRes = await CreateGzFileService.CreateWebHydrometricDataValueGzFile(51705);
+            var actionRes = await CreateGzFileService.CreateGzFile(webType, TVItemID, webTypeYear);
             Assert.Equal(200, ((ObjectResult)actionRes.Result).StatusCode);
             Assert.NotNull(((OkObjectResult)actionRes.Result).Value);
             Assert.True((bool)((OkObjectResult)actionRes.Result).Value);
 
             // Download gz
-            Assert.True(await DownloadGzFileService.DownloadGzFile("WebHydrometricDataValue_51705.gz"));
+            var actionRes2 = await DownloadGzFileService.DownloadGzFile(fileName);
+            Assert.Equal(200, ((ObjectResult)actionRes2.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionRes2.Result).Value);
+            Assert.True((bool)((OkObjectResult)actionRes2.Result).Value);
 
             // Read gz
-            WebHydrometricDataValue webHydrometricDataValue = await ReadGzFileService.ReadWebHydrometricDataValueGzFile(51705);
+            var actionWebHydrometricDataValue = await ReadGzFileService.ReadJSON<WebHydrometricDataValue>(webType, TVItemID, webTypeYear);
+            Assert.Equal(200, ((ObjectResult)actionWebHydrometricDataValue.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionWebHydrometricDataValue.Result).Value);
+            WebHydrometricDataValue webHydrometricDataValue = ((WebHydrometricDataValue)((OkObjectResult)actionWebHydrometricDataValue.Result).Value);
             Assert.NotNull(webHydrometricDataValue);
             Assert.NotNull(webHydrometricDataValue.HydrometricDataValueList);
         }
@@ -195,19 +292,31 @@ namespace CSSPServices.Tests
         {
             Assert.True(await Setup(culture));
 
+            WebTypeEnum webType = WebTypeEnum.WebHydrometricSite;
+            int TVItemID = 7;
+            WebTypeYearEnum webTypeYear = WebTypeYearEnum.Year1980;
+
+            string fileName = GetFileName(webType, TVItemID, webTypeYear);
+
             // Create gz
-            var actionRes = await CreateGzFileService.CreateWebHydrometricSiteGzFile(7);
+            var actionRes = await CreateGzFileService.CreateGzFile(webType, TVItemID, webTypeYear);
             Assert.Equal(200, ((ObjectResult)actionRes.Result).StatusCode);
             Assert.NotNull(((OkObjectResult)actionRes.Result).Value);
             Assert.True((bool)((OkObjectResult)actionRes.Result).Value);
 
             // Download gz
-            Assert.True(await DownloadGzFileService.DownloadGzFile("WebHydrometricSite_7.gz"));
+            var actionRes2 = await DownloadGzFileService.DownloadGzFile(fileName);
+            Assert.Equal(200, ((ObjectResult)actionRes2.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionRes2.Result).Value);
+            Assert.True((bool)((OkObjectResult)actionRes2.Result).Value);
 
             // Read gz
-            WebHydrometricSite webHydrometricSite = await ReadGzFileService.ReadWebHydrometricSiteGzFile(7);
+            var actionWebHydrometricSite = await ReadGzFileService.ReadJSON<WebHydrometricSite>(webType, TVItemID, webTypeYear);
+            Assert.Equal(200, ((ObjectResult)actionWebHydrometricSite.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionWebHydrometricSite.Result).Value);
+            WebHydrometricSite webHydrometricSite = ((WebHydrometricSite)((OkObjectResult)actionWebHydrometricSite.Result).Value);
             Assert.NotNull(webHydrometricSite);
-            Assert.NotNull(webHydrometricSite.TVItemList);
+            Assert.NotNull(webHydrometricSite.HydrometricSiteList);
         }
         [Theory]
         [InlineData("en-CA")]
@@ -216,17 +325,29 @@ namespace CSSPServices.Tests
         {
             Assert.True(await Setup(culture));
 
+            WebTypeEnum webType = WebTypeEnum.WebMikeScenario;
+            int TVItemID = 12281;
+            WebTypeYearEnum webTypeYear = WebTypeYearEnum.Year1980;
+
+            string fileName = GetFileName(webType, TVItemID, webTypeYear);
+
             // Create gz
-            var actionRes = await CreateGzFileService.CreateWebMikeScenarioGzFile(12281);
+            var actionRes = await CreateGzFileService.CreateGzFile(webType, TVItemID, webTypeYear);
             Assert.Equal(200, ((ObjectResult)actionRes.Result).StatusCode);
             Assert.NotNull(((OkObjectResult)actionRes.Result).Value);
             Assert.True((bool)((OkObjectResult)actionRes.Result).Value);
 
             // Download gz
-            Assert.True(await DownloadGzFileService.DownloadGzFile("WebMikeScenario_12281.gz"));
+            var actionRes2 = await DownloadGzFileService.DownloadGzFile(fileName);
+            Assert.Equal(200, ((ObjectResult)actionRes2.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionRes2.Result).Value);
+            Assert.True((bool)((OkObjectResult)actionRes2.Result).Value);
 
             // Read gz
-            WebMikeScenario webMikeScenario = await ReadGzFileService.ReadWebMikeScenarioGzFile(12281);
+            var actionWebMikeScenario = await ReadGzFileService.ReadJSON<WebMikeScenario>(webType, TVItemID, webTypeYear);
+            Assert.Equal(200, ((ObjectResult)actionWebMikeScenario.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionWebMikeScenario.Result).Value);
+            WebMikeScenario webMikeScenario = ((WebMikeScenario)((OkObjectResult)actionWebMikeScenario.Result).Value);
             Assert.NotNull(webMikeScenario);
             Assert.NotNull(webMikeScenario.TVItem);
         }
@@ -237,17 +358,29 @@ namespace CSSPServices.Tests
         {
             Assert.True(await Setup(culture));
 
+            WebTypeEnum webType = WebTypeEnum.WebMunicipalities;
+            int TVItemID = 7;
+            WebTypeYearEnum webTypeYear = WebTypeYearEnum.Year1980;
+
+            string fileName = GetFileName(webType, TVItemID, webTypeYear);
+
             // Create gz
-            var actionRes = await CreateGzFileService.CreateWebMunicipalitiesGzFile(7);
+            var actionRes = await CreateGzFileService.CreateGzFile(webType, TVItemID, webTypeYear);
             Assert.Equal(200, ((ObjectResult)actionRes.Result).StatusCode);
             Assert.NotNull(((OkObjectResult)actionRes.Result).Value);
             Assert.True((bool)((OkObjectResult)actionRes.Result).Value);
 
             // Download gz
-            Assert.True(await DownloadGzFileService.DownloadGzFile("WebMunicipalities_7.gz"));
+            var actionRes2 = await DownloadGzFileService.DownloadGzFile(fileName);
+            Assert.Equal(200, ((ObjectResult)actionRes2.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionRes2.Result).Value);
+            Assert.True((bool)((OkObjectResult)actionRes2.Result).Value);
 
             // Read gz
-            WebMunicipalities webMunicipalities = await ReadGzFileService.ReadWebMunicipalitiesGzFile(7);
+            var actionWebMunicipalities = await ReadGzFileService.ReadJSON<WebMunicipalities>(webType, TVItemID, webTypeYear);
+            Assert.Equal(200, ((ObjectResult)actionWebMunicipalities.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionWebMunicipalities.Result).Value);
+            WebMunicipalities webMunicipalities = ((WebMunicipalities)((OkObjectResult)actionWebMunicipalities.Result).Value);
             Assert.NotNull(webMunicipalities);
             Assert.NotNull(webMunicipalities.TVItemList);
         }
@@ -258,17 +391,29 @@ namespace CSSPServices.Tests
         {
             Assert.True(await Setup(culture));
 
+            WebTypeEnum webType = WebTypeEnum.WebMunicipality;
+            int TVItemID = 12110;
+            WebTypeYearEnum webTypeYear = WebTypeYearEnum.Year1980;
+
+            string fileName = GetFileName(webType, TVItemID, webTypeYear);
+
             // Create gz
-            var actionRes = await CreateGzFileService.CreateWebMunicipalityGzFile(12110);
+            var actionRes = await CreateGzFileService.CreateGzFile(webType, TVItemID, webTypeYear);
             Assert.Equal(200, ((ObjectResult)actionRes.Result).StatusCode);
             Assert.NotNull(((OkObjectResult)actionRes.Result).Value);
             Assert.True((bool)((OkObjectResult)actionRes.Result).Value);
 
             // Download gz
-            Assert.True(await DownloadGzFileService.DownloadGzFile("WebMunicipality_12110.gz"));
+            var actionRes2 = await DownloadGzFileService.DownloadGzFile(fileName);
+            Assert.Equal(200, ((ObjectResult)actionRes2.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionRes2.Result).Value);
+            Assert.True((bool)((OkObjectResult)actionRes2.Result).Value);
 
             // Read gz
-            WebMunicipality webMunicipality = await ReadGzFileService.ReadWebMunicipalityGzFile(12110);
+            var actionWebMunicipality = await ReadGzFileService.ReadJSON<WebMunicipality>(webType, TVItemID, webTypeYear);
+            Assert.Equal(200, ((ObjectResult)actionWebMunicipality.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionWebMunicipality.Result).Value);
+            WebMunicipality webMunicipality = ((WebMunicipality)((OkObjectResult)actionWebMunicipality.Result).Value);
             Assert.NotNull(webMunicipality);
             Assert.NotNull(webMunicipality.TVItem);
         }
@@ -279,17 +424,29 @@ namespace CSSPServices.Tests
         {
             Assert.True(await Setup(culture));
 
+            WebTypeEnum webType = WebTypeEnum.WebMWQMLookupMPN;
+            int TVItemID = 0;
+            WebTypeYearEnum webTypeYear = WebTypeYearEnum.Year1980;
+
+            string fileName = GetFileName(webType, TVItemID, webTypeYear);
+
             // Create gz
-            var actionRes = await CreateGzFileService.CreateWebMWQMLookupMPNGzFile();
+            var actionRes = await CreateGzFileService.CreateGzFile(webType, TVItemID, webTypeYear);
             Assert.Equal(200, ((ObjectResult)actionRes.Result).StatusCode);
             Assert.NotNull(((OkObjectResult)actionRes.Result).Value);
             Assert.True((bool)((OkObjectResult)actionRes.Result).Value);
 
             // Download gz
-            Assert.True(await DownloadGzFileService.DownloadGzFile("WebMWQMLookupMPN.gz"));
+            var actionRes2 = await DownloadGzFileService.DownloadGzFile(fileName);
+            Assert.Equal(200, ((ObjectResult)actionRes2.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionRes2.Result).Value);
+            Assert.True((bool)((OkObjectResult)actionRes2.Result).Value);
 
             // Read gz
-            WebMWQMLookupMPN webMWQMLookupMPN = await ReadGzFileService.ReadWebMWQMLookupMPNGzFile();
+            var actionWebMWQMLookupMPN = await ReadGzFileService.ReadJSON<WebMWQMLookupMPN>(webType, TVItemID, webTypeYear);
+            Assert.Equal(200, ((ObjectResult)actionWebMWQMLookupMPN.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionWebMWQMLookupMPN.Result).Value);
+            WebMWQMLookupMPN webMWQMLookupMPN = ((WebMWQMLookupMPN)((OkObjectResult)actionWebMWQMLookupMPN.Result).Value);
             Assert.NotNull(webMWQMLookupMPN);
             Assert.NotNull(webMWQMLookupMPN.MWQMLookupMPNList);
         }
@@ -300,17 +457,29 @@ namespace CSSPServices.Tests
         {
             Assert.True(await Setup(culture));
 
+            WebTypeEnum webType = WebTypeEnum.WebMWQMRun;
+            int TVItemID = 635;
+            WebTypeYearEnum webTypeYear = WebTypeYearEnum.Year1980;
+
+            string fileName = GetFileName(webType, TVItemID, webTypeYear);
+
             // Create gz
-            var actionRes = await CreateGzFileService.CreateWebMWQMRunGzFile(635);
+            var actionRes = await CreateGzFileService.CreateGzFile(webType, TVItemID, webTypeYear);
             Assert.Equal(200, ((ObjectResult)actionRes.Result).StatusCode);
             Assert.NotNull(((OkObjectResult)actionRes.Result).Value);
             Assert.True((bool)((OkObjectResult)actionRes.Result).Value);
 
             // Download gz
-            Assert.True(await DownloadGzFileService.DownloadGzFile("WebMWQMRun_635.gz"));
+            var actionRes2 = await DownloadGzFileService.DownloadGzFile(fileName);
+            Assert.Equal(200, ((ObjectResult)actionRes2.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionRes2.Result).Value);
+            Assert.True((bool)((OkObjectResult)actionRes2.Result).Value);
 
             // Read gz
-            WebMWQMRun webMWQMRun = await ReadGzFileService.ReadWebMWQMRunGzFile(635);
+            var actionWebMWQMRun = await ReadGzFileService.ReadJSON<WebMWQMRun>(webType, TVItemID, webTypeYear);
+            Assert.Equal(200, ((ObjectResult)actionWebMWQMRun.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionWebMWQMRun.Result).Value);
+            WebMWQMRun webMWQMRun = ((WebMWQMRun)((OkObjectResult)actionWebMWQMRun.Result).Value);
             Assert.NotNull(webMWQMRun);
             Assert.NotNull(webMWQMRun.MWQMRunList);
         }
@@ -321,17 +490,29 @@ namespace CSSPServices.Tests
         {
             Assert.True(await Setup(culture));
 
+            WebTypeEnum webType = WebTypeEnum.WebMWQMSample;
+            int TVItemID = 635;
+            WebTypeYearEnum webTypeYear = WebTypeYearEnum.Year1980;
+
+            string fileName = GetFileName(webType, TVItemID, webTypeYear);
+
             // Create gz
-            var actionRes = await CreateGzFileService.CreateWeb10YearOfSample1980_1989FromSubsectorGzFile(635);
+            var actionRes = await CreateGzFileService.CreateGzFile(webType, TVItemID, webTypeYear);
             Assert.Equal(200, ((ObjectResult)actionRes.Result).StatusCode);
             Assert.NotNull(((OkObjectResult)actionRes.Result).Value);
             Assert.True((bool)((OkObjectResult)actionRes.Result).Value);
 
             // Download gz
-            Assert.True(await DownloadGzFileService.DownloadGzFile("WebMWQMSample_635_1980_1989.gz"));
+            var actionRes2 = await DownloadGzFileService.DownloadGzFile(fileName);
+            Assert.Equal(200, ((ObjectResult)actionRes2.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionRes2.Result).Value);
+            Assert.True((bool)((OkObjectResult)actionRes2.Result).Value);
 
             // Read gz
-            WebMWQMSample webMWQMSample = await ReadGzFileService.ReadWeb10YearOfSample1980_1989FromSubsectorGzFile(635);
+            var actionWebMWQMSample = await ReadGzFileService.ReadJSON<WebMWQMSample>(webType, TVItemID, webTypeYear);
+            Assert.Equal(200, ((ObjectResult)actionWebMWQMSample.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionWebMWQMSample.Result).Value);
+            WebMWQMSample webMWQMSample = ((WebMWQMSample)((OkObjectResult)actionWebMWQMSample.Result).Value);
             Assert.NotNull(webMWQMSample);
             Assert.NotNull(webMWQMSample.MWQMSampleList);
         }
@@ -342,17 +523,29 @@ namespace CSSPServices.Tests
         {
             Assert.True(await Setup(culture));
 
+            WebTypeEnum webType = WebTypeEnum.WebMWQMSample;
+            int TVItemID = 635;
+            WebTypeYearEnum webTypeYear = WebTypeYearEnum.Year1990;
+
+            string fileName = GetFileName(webType, TVItemID, webTypeYear);
+
             // Create gz
-            var actionRes = await CreateGzFileService.CreateWeb10YearOfSample1990_1999FromSubsectorGzFile(635);
+            var actionRes = await CreateGzFileService.CreateGzFile(webType, TVItemID, webTypeYear);
             Assert.Equal(200, ((ObjectResult)actionRes.Result).StatusCode);
             Assert.NotNull(((OkObjectResult)actionRes.Result).Value);
             Assert.True((bool)((OkObjectResult)actionRes.Result).Value);
 
             // Download gz
-            Assert.True(await DownloadGzFileService.DownloadGzFile("WebMWQMSample_635_1990_1999.gz"));
+            var actionRes2 = await DownloadGzFileService.DownloadGzFile(fileName);
+            Assert.Equal(200, ((ObjectResult)actionRes2.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionRes2.Result).Value);
+            Assert.True((bool)((OkObjectResult)actionRes2.Result).Value);
 
             // Read gz
-            WebMWQMSample webMWQMSample = await ReadGzFileService.ReadWeb10YearOfSample1990_1999FromSubsectorGzFile(635);
+            var actionWebMWQMSample = await ReadGzFileService.ReadJSON<WebMWQMSample>(webType, TVItemID, webTypeYear);
+            Assert.Equal(200, ((ObjectResult)actionWebMWQMSample.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionWebMWQMSample.Result).Value);
+            WebMWQMSample webMWQMSample = ((WebMWQMSample)((OkObjectResult)actionWebMWQMSample.Result).Value);
             Assert.NotNull(webMWQMSample);
             Assert.NotNull(webMWQMSample.MWQMSampleList);
         }
@@ -363,17 +556,29 @@ namespace CSSPServices.Tests
         {
             Assert.True(await Setup(culture));
 
+            WebTypeEnum webType = WebTypeEnum.WebMWQMSample;
+            int TVItemID = 635;
+            WebTypeYearEnum webTypeYear = WebTypeYearEnum.Year2000;
+
+            string fileName = GetFileName(webType, TVItemID, webTypeYear);
+
             // Create gz
-            var actionRes = await CreateGzFileService.CreateWeb10YearOfSample2000_2009FromSubsectorGzFile(635);
+            var actionRes = await CreateGzFileService.CreateGzFile(webType, TVItemID, webTypeYear);
             Assert.Equal(200, ((ObjectResult)actionRes.Result).StatusCode);
             Assert.NotNull(((OkObjectResult)actionRes.Result).Value);
             Assert.True((bool)((OkObjectResult)actionRes.Result).Value);
 
             // Download gz
-            Assert.True(await DownloadGzFileService.DownloadGzFile("WebMWQMSample_635_2000_2009.gz"));
+            var actionRes2 = await DownloadGzFileService.DownloadGzFile(fileName);
+            Assert.Equal(200, ((ObjectResult)actionRes2.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionRes2.Result).Value);
+            Assert.True((bool)((OkObjectResult)actionRes2.Result).Value);
 
             // Read gz
-            WebMWQMSample webMWQMSample = await ReadGzFileService.ReadWeb10YearOfSample2000_2009FromSubsectorGzFile(635);
+            var actionWebMWQMSample = await ReadGzFileService.ReadJSON<WebMWQMSample>(webType, TVItemID, webTypeYear);
+            Assert.Equal(200, ((ObjectResult)actionWebMWQMSample.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionWebMWQMSample.Result).Value);
+            WebMWQMSample webMWQMSample = ((WebMWQMSample)((OkObjectResult)actionWebMWQMSample.Result).Value);
             Assert.NotNull(webMWQMSample);
             Assert.NotNull(webMWQMSample.MWQMSampleList);
         }
@@ -384,17 +589,29 @@ namespace CSSPServices.Tests
         {
             Assert.True(await Setup(culture));
 
+            WebTypeEnum webType = WebTypeEnum.WebMWQMSample;
+            int TVItemID = 635;
+            WebTypeYearEnum webTypeYear = WebTypeYearEnum.Year2010;
+
+            string fileName = GetFileName(webType, TVItemID, webTypeYear);
+
             // Create gz
-            var actionRes = await CreateGzFileService.CreateWeb10YearOfSample2010_2019FromSubsectorGzFile(635);
+            var actionRes = await CreateGzFileService.CreateGzFile(webType, TVItemID, webTypeYear);
             Assert.Equal(200, ((ObjectResult)actionRes.Result).StatusCode);
             Assert.NotNull(((OkObjectResult)actionRes.Result).Value);
             Assert.True((bool)((OkObjectResult)actionRes.Result).Value);
 
             // Download gz
-            Assert.True(await DownloadGzFileService.DownloadGzFile("WebMWQMSample_635_2010_2019.gz"));
+            var actionRes2 = await DownloadGzFileService.DownloadGzFile(fileName);
+            Assert.Equal(200, ((ObjectResult)actionRes2.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionRes2.Result).Value);
+            Assert.True((bool)((OkObjectResult)actionRes2.Result).Value);
 
             // Read gz
-            WebMWQMSample webMWQMSample = await ReadGzFileService.ReadWeb10YearOfSample2010_2019FromSubsectorGzFile(635);
+            var actionWebMWQMSample = await ReadGzFileService.ReadJSON<WebMWQMSample>(webType, TVItemID, webTypeYear);
+            Assert.Equal(200, ((ObjectResult)actionWebMWQMSample.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionWebMWQMSample.Result).Value);
+            WebMWQMSample webMWQMSample = ((WebMWQMSample)((OkObjectResult)actionWebMWQMSample.Result).Value);
             Assert.NotNull(webMWQMSample);
             Assert.NotNull(webMWQMSample.MWQMSampleList);
         }
@@ -405,17 +622,29 @@ namespace CSSPServices.Tests
         {
             Assert.True(await Setup(culture));
 
+            WebTypeEnum webType = WebTypeEnum.WebMWQMSample;
+            int TVItemID = 635;
+            WebTypeYearEnum webTypeYear = WebTypeYearEnum.Year2020;
+
+            string fileName = GetFileName(webType, TVItemID, webTypeYear);
+
             // Create gz
-            var actionRes = await CreateGzFileService.CreateWeb10YearOfSample2020_2029FromSubsectorGzFile(635);
+            var actionRes = await CreateGzFileService.CreateGzFile(webType, TVItemID, webTypeYear);
             Assert.Equal(200, ((ObjectResult)actionRes.Result).StatusCode);
             Assert.NotNull(((OkObjectResult)actionRes.Result).Value);
             Assert.True((bool)((OkObjectResult)actionRes.Result).Value);
 
             // Download gz
-            Assert.True(await DownloadGzFileService.DownloadGzFile("WebMWQMSample_635_2020_2029.gz"));
+            var actionRes2 = await DownloadGzFileService.DownloadGzFile(fileName);
+            Assert.Equal(200, ((ObjectResult)actionRes2.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionRes2.Result).Value);
+            Assert.True((bool)((OkObjectResult)actionRes2.Result).Value);
 
             // Read gz
-            WebMWQMSample webMWQMSample = await ReadGzFileService.ReadWeb10YearOfSample2020_2029FromSubsectorGzFile(635);
+            var actionWebMWQMSample = await ReadGzFileService.ReadJSON<WebMWQMSample>(webType, TVItemID, webTypeYear);
+            Assert.Equal(200, ((ObjectResult)actionWebMWQMSample.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionWebMWQMSample.Result).Value);
+            WebMWQMSample webMWQMSample = ((WebMWQMSample)((OkObjectResult)actionWebMWQMSample.Result).Value);
             Assert.NotNull(webMWQMSample);
             Assert.NotNull(webMWQMSample.MWQMSampleList);
         }
@@ -426,17 +655,29 @@ namespace CSSPServices.Tests
         {
             Assert.True(await Setup(culture));
 
+            WebTypeEnum webType = WebTypeEnum.WebMWQMSample;
+            int TVItemID = 635;
+            WebTypeYearEnum webTypeYear = WebTypeYearEnum.Year2030;
+
+            string fileName = GetFileName(webType, TVItemID, webTypeYear);
+
             // Create gz
-            var actionRes = await CreateGzFileService.CreateWeb10YearOfSample2030_2039FromSubsectorGzFile(635);
+            var actionRes = await CreateGzFileService.CreateGzFile(webType, TVItemID, webTypeYear);
             Assert.Equal(200, ((ObjectResult)actionRes.Result).StatusCode);
             Assert.NotNull(((OkObjectResult)actionRes.Result).Value);
             Assert.True((bool)((OkObjectResult)actionRes.Result).Value);
 
             // Download gz
-            Assert.True(await DownloadGzFileService.DownloadGzFile("WebMWQMSample_635_2030_2039.gz"));
+            var actionRes2 = await DownloadGzFileService.DownloadGzFile(fileName);
+            Assert.Equal(200, ((ObjectResult)actionRes2.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionRes2.Result).Value);
+            Assert.True((bool)((OkObjectResult)actionRes2.Result).Value);
 
             // Read gz
-            WebMWQMSample webMWQMSample = await ReadGzFileService.ReadWeb10YearOfSample2030_2039FromSubsectorGzFile(635);
+            var actionWebMWQMSample = await ReadGzFileService.ReadJSON<WebMWQMSample>(webType, TVItemID, webTypeYear);
+            Assert.Equal(200, ((ObjectResult)actionWebMWQMSample.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionWebMWQMSample.Result).Value);
+            WebMWQMSample webMWQMSample = ((WebMWQMSample)((OkObjectResult)actionWebMWQMSample.Result).Value);
             Assert.NotNull(webMWQMSample);
             Assert.NotNull(webMWQMSample.MWQMSampleList);
         }
@@ -447,17 +688,29 @@ namespace CSSPServices.Tests
         {
             Assert.True(await Setup(culture));
 
+            WebTypeEnum webType = WebTypeEnum.WebMWQMSample;
+            int TVItemID = 635;
+            WebTypeYearEnum webTypeYear = WebTypeYearEnum.Year2040;
+
+            string fileName = GetFileName(webType, TVItemID, webTypeYear);
+
             // Create gz
-            var actionRes = await CreateGzFileService.CreateWeb10YearOfSample2040_2049FromSubsectorGzFile(635);
+            var actionRes = await CreateGzFileService.CreateGzFile(webType, TVItemID, webTypeYear);
             Assert.Equal(200, ((ObjectResult)actionRes.Result).StatusCode);
             Assert.NotNull(((OkObjectResult)actionRes.Result).Value);
             Assert.True((bool)((OkObjectResult)actionRes.Result).Value);
 
             // Download gz
-            Assert.True(await DownloadGzFileService.DownloadGzFile("WebMWQMSample_635_2040_2049.gz"));
+            var actionRes2 = await DownloadGzFileService.DownloadGzFile(fileName);
+            Assert.Equal(200, ((ObjectResult)actionRes2.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionRes2.Result).Value);
+            Assert.True((bool)((OkObjectResult)actionRes2.Result).Value);
 
             // Read gz
-            WebMWQMSample webMWQMSample = await ReadGzFileService.ReadWeb10YearOfSample2040_2049FromSubsectorGzFile(635);
+            var actionWebMWQMSample = await ReadGzFileService.ReadJSON<WebMWQMSample>(webType, TVItemID, webTypeYear);
+            Assert.Equal(200, ((ObjectResult)actionWebMWQMSample.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionWebMWQMSample.Result).Value);
+            WebMWQMSample webMWQMSample = ((WebMWQMSample)((OkObjectResult)actionWebMWQMSample.Result).Value);
             Assert.NotNull(webMWQMSample);
             Assert.NotNull(webMWQMSample.MWQMSampleList);
         }
@@ -468,17 +721,29 @@ namespace CSSPServices.Tests
         {
             Assert.True(await Setup(culture));
 
+            WebTypeEnum webType = WebTypeEnum.WebMWQMSample;
+            int TVItemID = 635;
+            WebTypeYearEnum webTypeYear = WebTypeYearEnum.Year2050;
+
+            string fileName = GetFileName(webType, TVItemID, webTypeYear);
+
             // Create gz
-            var actionRes = await CreateGzFileService.CreateWeb10YearOfSample2050_2059FromSubsectorGzFile(635);
+            var actionRes = await CreateGzFileService.CreateGzFile(webType, TVItemID, webTypeYear);
             Assert.Equal(200, ((ObjectResult)actionRes.Result).StatusCode);
             Assert.NotNull(((OkObjectResult)actionRes.Result).Value);
             Assert.True((bool)((OkObjectResult)actionRes.Result).Value);
 
             // Download gz
-            Assert.True(await DownloadGzFileService.DownloadGzFile("WebMWQMSample_635_2050_2059.gz"));
+            var actionRes2 = await DownloadGzFileService.DownloadGzFile(fileName);
+            Assert.Equal(200, ((ObjectResult)actionRes2.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionRes2.Result).Value);
+            Assert.True((bool)((OkObjectResult)actionRes2.Result).Value);
 
             // Read gz
-            WebMWQMSample webMWQMSample = await ReadGzFileService.ReadWeb10YearOfSample2050_2059FromSubsectorGzFile(635);
+            var actionWebMWQMSample = await ReadGzFileService.ReadJSON<WebMWQMSample>(webType, TVItemID, webTypeYear);
+            Assert.Equal(200, ((ObjectResult)actionWebMWQMSample.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionWebMWQMSample.Result).Value);
+            WebMWQMSample webMWQMSample = ((WebMWQMSample)((OkObjectResult)actionWebMWQMSample.Result).Value);
             Assert.NotNull(webMWQMSample);
             Assert.NotNull(webMWQMSample.MWQMSampleList);
         }
@@ -489,17 +754,29 @@ namespace CSSPServices.Tests
         {
             Assert.True(await Setup(culture));
 
+            WebTypeEnum webType = WebTypeEnum.WebMWQMSite;
+            int TVItemID = 635;
+            WebTypeYearEnum webTypeYear = WebTypeYearEnum.Year2010;
+
+            string fileName = GetFileName(webType, TVItemID, webTypeYear);
+
             // Create gz
-            var actionRes = await CreateGzFileService.CreateWebMWQMSiteGzFile(635);
+            var actionRes = await CreateGzFileService.CreateGzFile(webType, TVItemID, webTypeYear);
             Assert.Equal(200, ((ObjectResult)actionRes.Result).StatusCode);
             Assert.NotNull(((OkObjectResult)actionRes.Result).Value);
             Assert.True((bool)((OkObjectResult)actionRes.Result).Value);
 
             // Download gz
-            Assert.True(await DownloadGzFileService.DownloadGzFile("WebMWQMSite_635.gz"));
+            var actionRes2 = await DownloadGzFileService.DownloadGzFile(fileName);
+            Assert.Equal(200, ((ObjectResult)actionRes2.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionRes2.Result).Value);
+            Assert.True((bool)((OkObjectResult)actionRes2.Result).Value);
 
             // Read gz
-            WebMWQMSite webMWQMSite = await ReadGzFileService.ReadWebMWQMSiteGzFile(635);
+            var actionWebMWQMSite = await ReadGzFileService.ReadJSON<WebMWQMSite>(webType, TVItemID, webTypeYear);
+            Assert.Equal(200, ((ObjectResult)actionWebMWQMSite.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionWebMWQMSite.Result).Value);
+            WebMWQMSite webMWQMSite = ((WebMWQMSite)((OkObjectResult)actionWebMWQMSite.Result).Value);
             Assert.NotNull(webMWQMSite);
             Assert.NotNull(webMWQMSite.MWQMSiteList);
         }
@@ -510,17 +787,29 @@ namespace CSSPServices.Tests
         {
             Assert.True(await Setup(culture));
 
+            WebTypeEnum webType = WebTypeEnum.WebPolSourceGrouping;
+            int TVItemID = 0;
+            WebTypeYearEnum webTypeYear = WebTypeYearEnum.Year2010;
+
+            string fileName = GetFileName(webType, TVItemID, webTypeYear);
+
             // Create gz
-            var actionRes = await CreateGzFileService.CreateWebPolSourceGroupingGzFile();
+            var actionRes = await CreateGzFileService.CreateGzFile(webType, TVItemID, webTypeYear);
             Assert.Equal(200, ((ObjectResult)actionRes.Result).StatusCode);
             Assert.NotNull(((OkObjectResult)actionRes.Result).Value);
             Assert.True((bool)((OkObjectResult)actionRes.Result).Value);
 
             // Download gz
-            Assert.True(await DownloadGzFileService.DownloadGzFile("WebPolSourceGrouping.gz"));
+            var actionRes2 = await DownloadGzFileService.DownloadGzFile(fileName);
+            Assert.Equal(200, ((ObjectResult)actionRes2.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionRes2.Result).Value);
+            Assert.True((bool)((OkObjectResult)actionRes2.Result).Value);
 
             // Read gz
-            WebPolSourceGrouping webPolSourceGrouping = await ReadGzFileService.ReadWebPolSourceGroupingGzFile();
+            var actionWebPolSourceGrouping = await ReadGzFileService.ReadJSON<WebPolSourceGrouping>(webType, TVItemID, webTypeYear);
+            Assert.Equal(200, ((ObjectResult)actionWebPolSourceGrouping.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionWebPolSourceGrouping.Result).Value);
+            WebPolSourceGrouping webPolSourceGrouping = ((WebPolSourceGrouping)((OkObjectResult)actionWebPolSourceGrouping.Result).Value);
             Assert.NotNull(webPolSourceGrouping);
             Assert.NotNull(webPolSourceGrouping.PolSourceGroupingList);
         }
@@ -531,17 +820,29 @@ namespace CSSPServices.Tests
         {
             Assert.True(await Setup(culture));
 
+            WebTypeEnum webType = WebTypeEnum.WebPolSourceSite;
+            int TVItemID = 635;
+            WebTypeYearEnum webTypeYear = WebTypeYearEnum.Year2010;
+
+            string fileName = GetFileName(webType, TVItemID, webTypeYear);
+
             // Create gz
-            var actionRes = await CreateGzFileService.CreateWebPolSourceSiteGzFile(635);
+            var actionRes = await CreateGzFileService.CreateGzFile(webType, TVItemID, webTypeYear);
             Assert.Equal(200, ((ObjectResult)actionRes.Result).StatusCode);
             Assert.NotNull(((OkObjectResult)actionRes.Result).Value);
             Assert.True((bool)((OkObjectResult)actionRes.Result).Value);
 
             // Download gz
-            Assert.True(await DownloadGzFileService.DownloadGzFile("WebPolSourceSite_635.gz"));
+            var actionRes2 = await DownloadGzFileService.DownloadGzFile(fileName);
+            Assert.Equal(200, ((ObjectResult)actionRes2.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionRes2.Result).Value);
+            Assert.True((bool)((OkObjectResult)actionRes2.Result).Value);
 
             // Read gz
-            WebPolSourceSite webPolSourceSite = await ReadGzFileService.ReadWebPolSourceSiteGzFile(635);
+            var actionWebPolSourceSite = await ReadGzFileService.ReadJSON<WebPolSourceSite>(webType, TVItemID, webTypeYear);
+            Assert.Equal(200, ((ObjectResult)actionWebPolSourceSite.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionWebPolSourceSite.Result).Value);
+            WebPolSourceSite webPolSourceSite = ((WebPolSourceSite)((OkObjectResult)actionWebPolSourceSite.Result).Value);
             Assert.NotNull(webPolSourceSite);
             Assert.NotNull(webPolSourceSite.PolSourceSiteList);
         }
@@ -552,17 +853,29 @@ namespace CSSPServices.Tests
         {
             Assert.True(await Setup(culture));
 
+            WebTypeEnum webType = WebTypeEnum.WebProvince;
+            int TVItemID = 7;
+            WebTypeYearEnum webTypeYear = WebTypeYearEnum.Year2010;
+
+            string fileName = GetFileName(webType, TVItemID, webTypeYear);
+
             // Create gz
-            var actionRes = await CreateGzFileService.CreateWebProvinceGzFile(7);
+            var actionRes = await CreateGzFileService.CreateGzFile(webType, TVItemID, webTypeYear);
             Assert.Equal(200, ((ObjectResult)actionRes.Result).StatusCode);
             Assert.NotNull(((OkObjectResult)actionRes.Result).Value);
             Assert.True((bool)((OkObjectResult)actionRes.Result).Value);
 
             // Download gz
-            Assert.True(await DownloadGzFileService.DownloadGzFile("WebProvince_7.gz"));
+            var actionRes2 = await DownloadGzFileService.DownloadGzFile(fileName);
+            Assert.Equal(200, ((ObjectResult)actionRes2.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionRes2.Result).Value);
+            Assert.True((bool)((OkObjectResult)actionRes2.Result).Value);
 
             // Read gz
-            WebProvince webProvince = await ReadGzFileService.ReadWebProvinceGzFile(7);
+            var actionWebProvince = await ReadGzFileService.ReadJSON<WebProvince>(webType, TVItemID, webTypeYear);
+            Assert.Equal(200, ((ObjectResult)actionWebProvince.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionWebProvince.Result).Value);
+            WebProvince webProvince = ((WebProvince)((OkObjectResult)actionWebProvince.Result).Value);
             Assert.NotNull(webProvince);
             Assert.NotNull(webProvince.TVItem);
         }
@@ -573,17 +886,29 @@ namespace CSSPServices.Tests
         {
             Assert.True(await Setup(culture));
 
+            WebTypeEnum webType = WebTypeEnum.WebReportType;
+            int TVItemID = 0;
+            WebTypeYearEnum webTypeYear = WebTypeYearEnum.Year2010;
+
+            string fileName = GetFileName(webType, TVItemID, webTypeYear);
+
             // Create gz
-            var actionRes = await CreateGzFileService.CreateWebReportTypeGzFile();
+            var actionRes = await CreateGzFileService.CreateGzFile(webType, TVItemID, webTypeYear);
             Assert.Equal(200, ((ObjectResult)actionRes.Result).StatusCode);
             Assert.NotNull(((OkObjectResult)actionRes.Result).Value);
             Assert.True((bool)((OkObjectResult)actionRes.Result).Value);
 
             // Download gz
-            Assert.True(await DownloadGzFileService.DownloadGzFile("WebReportType.gz"));
+            var actionRes2 = await DownloadGzFileService.DownloadGzFile(fileName);
+            Assert.Equal(200, ((ObjectResult)actionRes2.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionRes2.Result).Value);
+            Assert.True((bool)((OkObjectResult)actionRes2.Result).Value);
 
             // Read gz
-            WebReportType webReportType = await ReadGzFileService.ReadWebReportTypeGzFile();
+            var actionWebReportType = await ReadGzFileService.ReadJSON<WebReportType>(webType, TVItemID, webTypeYear);
+            Assert.Equal(200, ((ObjectResult)actionWebReportType.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionWebReportType.Result).Value);
+            WebReportType webReportType = ((WebReportType)((OkObjectResult)actionWebReportType.Result).Value);
             Assert.NotNull(webReportType);
             Assert.NotNull(webReportType.ReportTypeList);
         }
@@ -594,17 +919,29 @@ namespace CSSPServices.Tests
         {
             Assert.True(await Setup(culture));
 
+            WebTypeEnum webType = WebTypeEnum.WebRoot;
+            int TVItemID = 0;
+            WebTypeYearEnum webTypeYear = WebTypeYearEnum.Year2010;
+
+            string fileName = GetFileName(webType, TVItemID, webTypeYear);
+
             // Create gz
-            var actionRes = await CreateGzFileService.CreateWebRootGzFile();
+            var actionRes = await CreateGzFileService.CreateGzFile(webType, TVItemID, webTypeYear);
             Assert.Equal(200, ((ObjectResult)actionRes.Result).StatusCode);
             Assert.NotNull(((OkObjectResult)actionRes.Result).Value);
             Assert.True((bool)((OkObjectResult)actionRes.Result).Value);
 
             // Download gz
-            Assert.True(await DownloadGzFileService.DownloadGzFile("WebRoot.gz"));
+            var actionRes2 = await DownloadGzFileService.DownloadGzFile(fileName);
+            Assert.Equal(200, ((ObjectResult)actionRes2.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionRes2.Result).Value);
+            Assert.True((bool)((OkObjectResult)actionRes2.Result).Value);
 
             // Read gz
-            WebRoot webRoot = await ReadGzFileService.ReadWebRootGzFile();
+            var actionWebRoot = await ReadGzFileService.ReadJSON<WebRoot>(webType, TVItemID, webTypeYear);
+            Assert.Equal(200, ((ObjectResult)actionWebRoot.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionWebRoot.Result).Value);
+            WebRoot webRoot = ((WebRoot)((OkObjectResult)actionWebRoot.Result).Value);
             Assert.NotNull(webRoot);
             Assert.NotNull(webRoot.TVItem);
         }
@@ -615,19 +952,31 @@ namespace CSSPServices.Tests
         {
             Assert.True(await Setup(culture));
 
+            WebTypeEnum webType = WebTypeEnum.WebSamplingPlan;
+            int TVItemID = 8; // TVItemID is SamplingPlanID in this case
+            WebTypeYearEnum webTypeYear = WebTypeYearEnum.Year2010;
+
+            string fileName = GetFileName(webType, TVItemID, webTypeYear);
+
             // Create gz
-            var actionRes = await CreateGzFileService.CreateWebSamplingPlanGzFile(8);
+            var actionRes = await CreateGzFileService.CreateGzFile(webType, TVItemID, webTypeYear);
             Assert.Equal(200, ((ObjectResult)actionRes.Result).StatusCode);
             Assert.NotNull(((OkObjectResult)actionRes.Result).Value);
             Assert.True((bool)((OkObjectResult)actionRes.Result).Value);
 
             // Download gz
-            Assert.True(await DownloadGzFileService.DownloadGzFile("WebSamplingPlan_8.gz"));
+            var actionRes2 = await DownloadGzFileService.DownloadGzFile(fileName);
+            Assert.Equal(200, ((ObjectResult)actionRes2.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionRes2.Result).Value);
+            Assert.True((bool)((OkObjectResult)actionRes2.Result).Value);
 
             // Read gz
-            WebSamplingPlan webSamplingPlan = await ReadGzFileService.ReadWebSamplingPlanGzFile(8);
+            var actionWebSamplingPlan = await ReadGzFileService.ReadJSON<WebSamplingPlan>(webType, TVItemID, webTypeYear);
+            Assert.Equal(200, ((ObjectResult)actionWebSamplingPlan.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionWebSamplingPlan.Result).Value);
+            WebSamplingPlan webSamplingPlan = ((WebSamplingPlan)((OkObjectResult)actionWebSamplingPlan.Result).Value);
             Assert.NotNull(webSamplingPlan);
-            Assert.NotNull(webSamplingPlan.SamplingPlanEmailList);
+            Assert.NotNull(webSamplingPlan.SamplingPlan);
         }
         [Theory]
         [InlineData("en-CA")]
@@ -636,17 +985,29 @@ namespace CSSPServices.Tests
         {
             Assert.True(await Setup(culture));
 
+            WebTypeEnum webType = WebTypeEnum.WebSector;
+            int TVItemID = 633;
+            WebTypeYearEnum webTypeYear = WebTypeYearEnum.Year2010;
+
+            string fileName = GetFileName(webType, TVItemID, webTypeYear);
+
             // Create gz
-            var actionRes = await CreateGzFileService.CreateWebSectorGzFile(633);
+            var actionRes = await CreateGzFileService.CreateGzFile(webType, TVItemID, webTypeYear);
             Assert.Equal(200, ((ObjectResult)actionRes.Result).StatusCode);
             Assert.NotNull(((OkObjectResult)actionRes.Result).Value);
             Assert.True((bool)((OkObjectResult)actionRes.Result).Value);
 
             // Download gz
-            Assert.True(await DownloadGzFileService.DownloadGzFile("WebSector_633.gz"));
+            var actionRes2 = await DownloadGzFileService.DownloadGzFile(fileName);
+            Assert.Equal(200, ((ObjectResult)actionRes2.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionRes2.Result).Value);
+            Assert.True((bool)((OkObjectResult)actionRes2.Result).Value);
 
             // Read gz
-            WebSector webSector = await ReadGzFileService.ReadWebSectorGzFile(633);
+            var actionWebSector = await ReadGzFileService.ReadJSON<WebSector>(webType, TVItemID, webTypeYear);
+            Assert.Equal(200, ((ObjectResult)actionWebSector.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionWebSector.Result).Value);
+            WebSector webSector = ((WebSector)((OkObjectResult)actionWebSector.Result).Value);
             Assert.NotNull(webSector);
             Assert.NotNull(webSector.TVItem);
         }
@@ -657,17 +1018,29 @@ namespace CSSPServices.Tests
         {
             Assert.True(await Setup(culture));
 
+            WebTypeEnum webType = WebTypeEnum.WebSubsector;
+            int TVItemID = 635;
+            WebTypeYearEnum webTypeYear = WebTypeYearEnum.Year2010;
+
+            string fileName = GetFileName(webType, TVItemID, webTypeYear);
+
             // Create gz
-            var actionRes = await CreateGzFileService.CreateWebSubsectorGzFile(635);
+            var actionRes = await CreateGzFileService.CreateGzFile(webType, TVItemID, webTypeYear);
             Assert.Equal(200, ((ObjectResult)actionRes.Result).StatusCode);
             Assert.NotNull(((OkObjectResult)actionRes.Result).Value);
             Assert.True((bool)((OkObjectResult)actionRes.Result).Value);
 
             // Download gz
-            Assert.True(await DownloadGzFileService.DownloadGzFile("WebSubsector_635.gz"));
+            var actionRes2 = await DownloadGzFileService.DownloadGzFile(fileName);
+            Assert.Equal(200, ((ObjectResult)actionRes2.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionRes2.Result).Value);
+            Assert.True((bool)((OkObjectResult)actionRes2.Result).Value);
 
             // Read gz
-            WebSubsector webSubsector = await ReadGzFileService.ReadWebSubsectorGzFile(635);
+            var actionWebSubsector = await ReadGzFileService.ReadJSON<WebSubsector>(webType, TVItemID, webTypeYear);
+            Assert.Equal(200, ((ObjectResult)actionWebSubsector.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionWebSubsector.Result).Value);
+            WebSubsector webSubsector = ((WebSubsector)((OkObjectResult)actionWebSubsector.Result).Value);
             Assert.NotNull(webSubsector);
             Assert.NotNull(webSubsector.TVItem);
         }
@@ -678,23 +1051,153 @@ namespace CSSPServices.Tests
         {
             Assert.True(await Setup(culture));
 
+            WebTypeEnum webType = WebTypeEnum.WebTideLocation;
+            int TVItemID = 0;
+            WebTypeYearEnum webTypeYear = WebTypeYearEnum.Year2010;
+
+            string fileName = GetFileName(webType, TVItemID, webTypeYear);
+
             // Create gz
-            var actionRes = await CreateGzFileService.CreateWebTideLocationGzFile();
+            var actionRes = await CreateGzFileService.CreateGzFile(webType, TVItemID, webTypeYear);
             Assert.Equal(200, ((ObjectResult)actionRes.Result).StatusCode);
             Assert.NotNull(((OkObjectResult)actionRes.Result).Value);
             Assert.True((bool)((OkObjectResult)actionRes.Result).Value);
 
             // Download gz
-            Assert.True(await DownloadGzFileService.DownloadGzFile("WebTideLocation.gz"));
+            var actionRes2 = await DownloadGzFileService.DownloadGzFile(fileName);
+            Assert.Equal(200, ((ObjectResult)actionRes2.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionRes2.Result).Value);
+            Assert.True((bool)((OkObjectResult)actionRes2.Result).Value);
 
             // Read gz
-            WebTideLocation webTideLocation = await ReadGzFileService.ReadWebTideLocationGzFile();
+            var actionWebTideLocation = await ReadGzFileService.ReadJSON<WebTideLocation>(webType, TVItemID, webTypeYear);
+            Assert.Equal(200, ((ObjectResult)actionWebTideLocation.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionWebTideLocation.Result).Value);
+            WebTideLocation webTideLocation = ((WebTideLocation)((OkObjectResult)actionWebTideLocation.Result).Value);
             Assert.NotNull(webTideLocation);
             Assert.NotNull(webTideLocation.TideLocationList);
         }
         #endregion Tests 
 
         #region Functions private
+        private string GetFileName(WebTypeEnum webType, int TVItemID, WebTypeYearEnum webTypeYear)
+        {
+            int Year = 0;
+            string fileName = "";
+            switch (webTypeYear)
+            {
+                case WebTypeYearEnum.Year1980:
+                    Year = 1980;
+                    break;
+                case WebTypeYearEnum.Year1990:
+                    Year = 1990;
+                    break;
+                case WebTypeYearEnum.Year2000:
+                    Year = 2000;
+                    break;
+                case WebTypeYearEnum.Year2010:
+                    Year = 2010;
+                    break;
+                case WebTypeYearEnum.Year2020:
+                    Year = 2020;
+                    break;
+                case WebTypeYearEnum.Year2030:
+                    Year = 2030;
+                    break;
+                case WebTypeYearEnum.Year2040:
+                    Year = 2040;
+                    break;
+                case WebTypeYearEnum.Year2050:
+                    Year = 2050;
+                    break;
+                default:
+                    Year = 0;
+                    break;
+            }
+
+            switch (webType)
+            {
+                case WebTypeEnum.WebRoot:
+                    fileName = "WebRoot.gz";
+                    break;
+                case WebTypeEnum.WebCountry:
+                    fileName = $"WebCountry_{ TVItemID }.gz";
+                    break;
+                case WebTypeEnum.WebProvince:
+                    fileName = $"WebProvince_{ TVItemID }.gz";
+                    break;
+                case WebTypeEnum.WebArea:
+                    fileName = $"WebArea_{ TVItemID }.gz";
+                    break;
+                case WebTypeEnum.WebMunicipalities:
+                    fileName = $"WebMunicipalities_{ TVItemID }.gz";
+                    break;
+                case WebTypeEnum.WebSector:
+                    fileName = $"WebSector_{ TVItemID }.gz";
+                    break;
+                case WebTypeEnum.WebSubsector:
+                    fileName = $"WebSubsector_{ TVItemID }.gz";
+                    break;
+                case WebTypeEnum.WebMunicipality:
+                    fileName = $"WebMunicipality_{ TVItemID }.gz";
+                    break;
+                case WebTypeEnum.WebMWQMSample:
+                    fileName = $"WebMWQMSample_{ TVItemID }_{ Year }_{ Year + 9 }.gz";
+                    break;
+                case WebTypeEnum.WebSamplingPlan:
+                    fileName = $"WebSamplingPlan_{ TVItemID }.gz";
+                    break;
+                case WebTypeEnum.WebMWQMRun:
+                    fileName = $"WebMWQMRun_{ TVItemID }.gz";
+                    break;
+                case WebTypeEnum.WebMWQMSite:
+                    fileName = $"WebMWQMSite_{ TVItemID }.gz";
+                    break;
+                case WebTypeEnum.WebContact:
+                    fileName = $"WebContact.gz";
+                    break;
+                case WebTypeEnum.WebClimateSite:
+                    fileName = $"WebClimateSite_{ TVItemID }.gz";
+                    break;
+                case WebTypeEnum.WebHydrometricSite:
+                    fileName = $"WebHydrometricSite_{ TVItemID }.gz";
+                    break;
+                case WebTypeEnum.WebDrogueRun:
+                    fileName = $"WebDrogueRun_{ TVItemID }.gz";
+                    break;
+                case WebTypeEnum.WebMWQMLookupMPN:
+                    fileName = $"WebMWQMLookupMPN.gz";
+                    break;
+                case WebTypeEnum.WebMikeScenario:
+                    fileName = $"WebMikeScenario_{ TVItemID }.gz";
+                    break;
+                case WebTypeEnum.WebClimateDataValue:
+                    fileName = $"WebClimateDataValue_{ TVItemID }.gz";
+                    break;
+                case WebTypeEnum.WebHydrometricDataValue:
+                    fileName = $"WebHydrometricDataValue_{ TVItemID }.gz";
+                    break;
+                case WebTypeEnum.WebHelpDoc:
+                    fileName = $"WebHelpDoc.gz";
+                    break;
+                case WebTypeEnum.WebTideLocation:
+                    fileName = $"WebTideLocation.gz";
+                    break;
+                case WebTypeEnum.WebPolSourceSite:
+                    fileName = $"WebPolSourceSite_{ TVItemID }.gz";
+                    break;
+                case WebTypeEnum.WebPolSourceGrouping:
+                    fileName = $"WebPolSourceGrouping.gz";
+                    break;
+                case WebTypeEnum.WebReportType:
+                    fileName = $"WebReportType.gz";
+                    break;
+                default:
+                    break;
+            }
+
+            return fileName;
+        }
         #endregion Functions private
     }
 }

@@ -323,7 +323,6 @@ namespace CSSPServices
         #region Functions private
         private IEnumerable<ValidationResult> Validate(ValidationContext validationContext, ActionDBTypeEnum actionDBType)
         {
-            string retStr = "";
             RatingCurveValue ratingCurveValue = validationContext.ObjectInstance as RatingCurveValue;
 
             if (actionDBType == ActionDBTypeEnum.Update || actionDBType == ActionDBTypeEnum.Delete)

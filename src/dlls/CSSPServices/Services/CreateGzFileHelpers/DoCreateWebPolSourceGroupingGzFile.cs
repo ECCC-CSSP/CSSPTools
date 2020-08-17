@@ -13,8 +13,7 @@ namespace CSSPServices
     {
         private async Task<ActionResult<bool>> DoCreateWebPolSourceGroupingGzFile()
         {
-            var LoggedInContactInfo = await LoggedInService.GetLoggedInContactInfo();
-            if (LoggedInContactInfo == null || LoggedInContactInfo.LoggedInContact == null)
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
             {
                 return await Task.FromResult(Unauthorized());
             }

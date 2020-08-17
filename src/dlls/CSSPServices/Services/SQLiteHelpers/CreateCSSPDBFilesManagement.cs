@@ -39,9 +39,7 @@ namespace CSSPServices
                 "AzureStorage TEXT NOT NULL, " +
                 "AzureFileName TEXT NOT NULL, " +
                 "AzureETag TEXT NOT NULL, " +
-                "AzureCreationTime TEXT NOT NULL, " +
-                "LocalExist INTEGER NOT NULL, " +
-                "LocalOld INTEGER NOT NULL)";
+                "AzureCreationTime TEXT NOT NULL)";
 
             using (var command = dbFM.Database.GetDbConnection().CreateCommand())
             {

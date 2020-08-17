@@ -68,21 +68,31 @@ namespace CSSPServices.Tests
                 options.UseInMemoryDatabase(CSSPDBConnString);
             });
 
-            string CSSPDBLocalFileName = Config.GetValue<string>("CSSPDBLocal");
-            Assert.NotNull(CSSPDBLocalFileName);
-
-            FileInfo fiAppDataPath = new FileInfo(CSSPDBLocalFileName);
-
-            Services.AddDbContext<CSSPDBLocalContext>(options =>
-            {
-                options.UseSqlite($"Data Source={ fiAppDataPath.FullName }");
-            });
-
             Services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(CSSPDBConnString));
 
             Services.AddIdentityCore<ApplicationUser>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
+
+            string CSSPDBLocalFileName = Config.GetValue<string>("CSSPDBLocal");
+            Assert.NotNull(CSSPDBLocalFileName);
+
+            FileInfo fiCSSPDBLocalFileName = new FileInfo(CSSPDBLocalFileName);
+
+            Services.AddDbContext<CSSPDBLocalContext>(options =>
+            {
+                options.UseSqlite($"Data Source={ fiCSSPDBLocalFileName.FullName }");
+            });
+
+            string CSSPDBFilesManagementFileName = Config.GetValue<string>("CSSPDBFilesManagement");
+            Assert.NotNull(CSSPDBFilesManagementFileName);
+
+            FileInfo fiCSSPDBFilesManagementFileName = new FileInfo(CSSPDBFilesManagementFileName);
+
+            Services.AddDbContext<CSSPDBFilesManagementContext>(options =>
+            {
+                options.UseSqlite($"Data Source={ fiCSSPDBFilesManagementFileName.FullName }");
+            });
 
             Services.AddSingleton<ICSSPCultureService, CSSPCultureService>();
             Services.AddSingleton<IAspNetUserService, AspNetUserService>();

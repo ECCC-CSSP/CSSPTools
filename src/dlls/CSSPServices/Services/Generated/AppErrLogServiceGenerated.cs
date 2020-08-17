@@ -323,7 +323,6 @@ namespace CSSPServices
         #region Functions private
         private IEnumerable<ValidationResult> Validate(ValidationContext validationContext, ActionDBTypeEnum actionDBType)
         {
-            string retStr = "";
             AppErrLog appErrLog = validationContext.ObjectInstance as AppErrLog;
 
             if (actionDBType == ActionDBTypeEnum.Update || actionDBType == ActionDBTypeEnum.Delete)

@@ -426,14 +426,6 @@ namespace CSSPServices.Tests
 
             return tvItem;
         }
-        private void CheckTVItemFields(List<TVItem> tvItemList)
-        {
-            Assert.False(string.IsNullOrWhiteSpace(tvItemList[0].TVPath));
-            if (tvItemList[0].ParentID != null)
-            {
-                Assert.NotNull(tvItemList[0].ParentID);
-            }
-        }
         #endregion Functions private
     }
 }

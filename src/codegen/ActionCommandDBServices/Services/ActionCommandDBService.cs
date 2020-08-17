@@ -63,7 +63,7 @@ namespace ActionCommandDBServices.Services
         public ActionCommandDBService(ICSSPCultureService CSSPCultureService, IConfiguration Configuration, ActionCommandContext db)
         {
             this.CSSPCultureService = CSSPCultureService;
-            Configuration = Configuration;
+            this.Configuration = Configuration;
             this.db = db;
             Init();
         }

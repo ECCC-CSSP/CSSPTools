@@ -1059,6 +1059,45 @@ namespace CSSPEnums
         Automatically = 2,
         None = 3,
     }
+    public enum WebTypeEnum
+    {
+        WebRoot = 1,
+        WebCountry = 2,
+        WebProvince = 3,
+        WebArea = 4,
+        WebMunicipalities = 5,
+        WebSector = 6,
+        WebSubsector = 7,
+        WebMunicipality = 8,
+        WebMWQMSample = 9,
+        WebSamplingPlan = 10,
+        WebMWQMRun = 11,
+        WebMWQMSite = 12,
+        WebContact = 13,
+        WebClimateSite = 14,
+        WebHydrometricSite = 15,
+        WebDrogueRun = 16,
+        WebMWQMLookupMPN = 17,
+        WebMikeScenario = 18,
+        WebClimateDataValue = 19,
+        WebHydrometricDataValue = 20,
+        WebHelpDoc = 21,
+        WebTideLocation = 22,
+        WebPolSourceSite = 23,
+        WebPolSourceGrouping = 24,
+        WebReportType = 25
+    }
+    public enum WebTypeYearEnum
+    {
+        Year1980 = 1,
+        Year1990 = 2,
+        Year2000 = 3,
+        Year2010 = 4,
+        Year2020 = 5,
+        Year2030 = 6,
+        Year2040 = 7,
+        Year2050 = 8,
+    }
     public enum WebTideDataSetEnum
     {
         arctic9 = 1,            // Arctic

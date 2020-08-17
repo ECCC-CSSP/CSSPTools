@@ -13,12 +13,14 @@ using System.IO;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using Azure.Storage.Blobs;
+using System.Linq;
+using Azure;
 
 namespace CSSPServices
 {
     public interface IDownloadGzFileService
     {
-        Task<bool> DownloadGzFile(string FileName);
+        Task<ActionResult<bool>> DownloadGzFile(string FileName);
     }
     public partial class DownloadGzFileService : ControllerBase, IDownloadGzFileService
     {
@@ -27,6 +29,7 @@ namespace CSSPServices
 
         #region Properties
         private CSSPDBContext db { get; }
+        private CSSPDBFilesManagementContext dbFM { get; }
         private IConfiguration Configuration { get; }
         private ICSSPCultureService CSSPCultureService { get; }
         private ILoggedInService LoggedInService { get; }
@@ -41,13 +44,15 @@ namespace CSSPServices
         #endregion Properties
 
         #region Constructors
-        public DownloadGzFileService(IConfiguration Configuration, ICSSPCultureService CSSPCultureService, ILoggedInService LoggedInService, IEnums enums, CSSPDBContext db)
+        public DownloadGzFileService(IConfiguration Configuration, ICSSPCultureService CSSPCultureService, ILoggedInService LoggedInService, 
+            IEnums enums, CSSPDBContext db, CSSPDBFilesManagementContext dbFM)
         {
             this.Configuration = Configuration;
             this.CSSPCultureService = CSSPCultureService;
             this.LoggedInService = LoggedInService;
             this.enums = enums;
             this.db = db;
+            this.dbFM = dbFM;
 
             Setup();
         }
@@ -55,31 +60,62 @@ namespace CSSPServices
 
         #region Functions public
 
-        public async Task<bool> DownloadGzFile(string FileName)
+        public async Task<ActionResult<bool>> DownloadGzFile(string FileName)
         {
             var LoggedInContactInfo = await LoggedInService.GetLoggedInContactInfo();
             if (LoggedInContactInfo == null || LoggedInContactInfo.LoggedInContact == null)
             {
-                return await Task.FromResult(false);
+                return await Task.FromResult(Unauthorized());
             }
 
             try
             {
                 BlobClient blobClient = new BlobClient(AzureCSSPStorageConnectionString, AzureCSSPStorageCSSPJSON, FileName);
 
-                Azure.Response response = await blobClient.DownloadToAsync($"{ LocalJSONPath }{ FileName }");
+                Response response = await blobClient.DownloadToAsync($"{ LocalJSONPath }{ FileName }");
                 if (response.Status == 206)
                 {
-                    return await Task.FromResult(true);
+                    CSSPFile csspFile = (from c in dbFM.CSSPFiles
+                                         where c.AzureStorage == AzureCSSPStorageCSSPJSON
+                                         && c.AzureFileName == FileName
+                                         select c).FirstOrDefault();
+
+                    if (csspFile == null)
+                    {
+                        int LastIndex = (from c in dbFM.CSSPFiles
+                                             orderby c.CSSPFileID descending
+                                             select c.CSSPFileID).FirstOrDefault();
+
+                        csspFile = new CSSPFile()
+                        {
+                            CSSPFileID = LastIndex + 1,
+                            AzureStorage = AzureCSSPStorageCSSPJSON,
+                            AzureFileName = FileName,
+                            AzureETag = response.Headers.ETag.ToString(),
+                            AzureCreationTime = DateTime.Now,
+                        };
+
+                        try
+                        {
+                            dbFM.CSSPFiles.Add(csspFile);
+                            await dbFM.SaveChangesAsync();
+                        }
+                        catch (Exception ex)
+                        {
+                            return await Task.FromResult(BadRequest($"Could not add CSSPFile to CSSPDBFileManagement.db with AzureStorage = [{ AzureCSSPStorageCSSPJSON}] and AzureFileName = [{ FileName }]. Exception: [{ ex.Message }]"));
+                        }
+                    }
+
+                    return await Task.FromResult(Ok(true));
                 }
                 else
                 {
-                    return await Task.FromResult(false);
+                    return await Task.FromResult(BadRequest($"Error while trying to download [{ FileName }] from Azure"));
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                return await Task.FromResult(false);
+                return await Task.FromResult(BadRequest($"Error while trying to download [{ FileName }] from Azure. Exection: [{ ex.Message }]"));
             }
         }
         #endregion Functions public

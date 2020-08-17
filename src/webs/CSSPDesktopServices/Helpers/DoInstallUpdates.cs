@@ -134,8 +134,6 @@ namespace CSSPDesktopServices.Services
                     AzureStorage = "csspwebapis",
                     AzureFileName = zipFileName,
                     AzureETag = blobProperties.ETag.ToString(),
-                    LocalExist = false,
-                    LocalOld = true,
                     AzureCreationTime = DateTime.Now
                 };
 
@@ -151,9 +149,9 @@ namespace CSSPDesktopServices.Services
                 AppendStatus(new AppendEventArgs(string.Format(appTextModel.CSSPFilesManagementUpdateAzureStorage_AzureFileName_, "csspwebapis", zipFileName)));
                 dbFM.SaveChanges();
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                AppendStatus(new AppendEventArgs(string.Format(appTextModel.CouldNotAddOrModifyCSSPDBFilesManagement_dbFor_, $"csspwebapis --- { zipFileName }")));
+                AppendStatus(new AppendEventArgs(string.Format(appTextModel.CouldNotAddOrModifyCSSPDBFilesManagement_dbFor_, "csspwebapis", zipFileName)));
                 return await Task.FromResult(false);
             }
 

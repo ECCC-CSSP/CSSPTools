@@ -165,8 +165,6 @@ namespace CSSPSQLiteServices.Tests
                 AzureFileName = "ThisFileName.json",
                 AzureCreationTime = DateTime.Now,
                 AzureETag = "SomeRandomText",
-                LocalExist = false,
-                LocalOld = false,
             };
 
             var actionCSSPFile = await CSSPFileService.Post(csspFileNew);

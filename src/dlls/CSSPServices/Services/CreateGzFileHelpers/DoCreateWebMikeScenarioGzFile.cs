@@ -15,8 +15,7 @@ namespace CSSPServices
     {
         private async Task<ActionResult<bool>> DoCreateWebMikeScenarioGzFile(int MikeScenarioTVItemID)
         {
-            var LoggedInContactInfo = await LoggedInService.GetLoggedInContactInfo();
-            if (LoggedInContactInfo == null || LoggedInContactInfo.LoggedInContact == null)
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
             {
                 return await Task.FromResult(Unauthorized());
             }

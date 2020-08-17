@@ -612,7 +612,6 @@
         private System.Windows.Forms.Panel panelTop;
         private System.Windows.Forms.Panel panelTopSpace2;
         private System.Windows.Forms.Panel panelTopSpace1;
-        private System.Windows.Forms.Label labelContactLoggedIn;
         private System.Windows.Forms.Panel panelTopSpace4;
         private System.Windows.Forms.Panel panelToSpace3;
         private System.Windows.Forms.Button butSetLanguageToEnglish;

@@ -10,6 +10,32 @@ namespace ServicesClassNameServiceGeneratedServices.Services
     {
         private async Task<bool> CreateClassServiceFunctionsPrivateGenerateValidate(DLLTypeInfo dllTypeInfoModels, string TypeName, string TypeNameLower, StringBuilder sb)
         {
+            bool EnumExist = false;
+            foreach (PropertyInfo prop in dllTypeInfoModels.Type.GetProperties())
+            {
+                if (prop.GetGetMethod().IsVirtual)
+                {
+                    continue;
+                }
+
+                if (prop.Name == "ValidationResults")
+                {
+                    continue;
+                }
+
+                CSSPProp csspProp = new CSSPProp();
+                if (!GenerateCodeBaseService.FillCSSPProp(prop, csspProp, dllTypeInfoModels.Type))
+                {
+                    return await Task.FromResult(false);
+                }
+
+                if (csspProp.HasCSSPEnumTypeAttribute)
+                {
+                    EnumExist = true;
+                    break;
+                }
+            }
+
             if (dllTypeInfoModels.Type.Name == "Contact")
             {
                 sb.AppendLine(@"        private IEnumerable<ValidationResult> Validate(ValidationContext validationContext, ActionDBTypeEnum actionDBType, AddContactTypeEnum addContactType)");
@@ -19,7 +45,10 @@ namespace ServicesClassNameServiceGeneratedServices.Services
                 sb.AppendLine(@"        private IEnumerable<ValidationResult> Validate(ValidationContext validationContext, ActionDBTypeEnum actionDBType)");
             }
             sb.AppendLine(@"        {");
-            sb.AppendLine(@"            string retStr = """";");
+            if (EnumExist)
+            {
+                sb.AppendLine(@"            string retStr = """";");
+            }
             sb.AppendLine($@"            { dllTypeInfoModels.Type.Name } { TypeNameLower } = validationContext.ObjectInstance as { dllTypeInfoModels.Type.Name };");
             sb.AppendLine(@"");
 

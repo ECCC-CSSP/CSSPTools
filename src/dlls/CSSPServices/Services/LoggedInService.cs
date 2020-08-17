@@ -66,7 +66,7 @@ namespace CSSPServices
                         dbIM.Contacts.Add(LoggedInContactInfo.LoggedInContact);
                         await dbIM.SaveChangesAsync();
                     }
-                    catch (Exception ex)
+                    catch (Exception)
                     {
                         // nothing yet
                         return await Task.FromResult(false);
@@ -83,7 +83,7 @@ namespace CSSPServices
                             dbIM.TVTypeUserAuthorizations.AddRange(LoggedInContactInfo.TVTypeUserAuthorizationList);
                             await dbIM.SaveChangesAsync();
                         }
-                        catch (Exception ex)
+                        catch (Exception)
                         {
                             // nothing yet
                             return await Task.FromResult(false);
@@ -101,7 +101,7 @@ namespace CSSPServices
                             dbIM.TVItemUserAuthorizations.AddRange(LoggedInContactInfo.TVItemUserAuthorizationList);
                             await dbIM.SaveChangesAsync();
                         }
-                        catch (Exception ex)
+                        catch (Exception)
                         {
                             // nothing yet
                             return await Task.FromResult(false);

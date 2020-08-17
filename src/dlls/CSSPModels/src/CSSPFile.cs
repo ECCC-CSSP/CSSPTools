@@ -24,8 +24,6 @@ namespace CSSPModels
         public string AzureETag { get; set; }
         [CSSPAfter(Year = 1980)]
         public DateTime AzureCreationTime { get; set; }
-        public bool LocalExist { get; set; }
-        public bool LocalOld { get; set; }
         #endregion Properties in DB
 
         #region Constructors

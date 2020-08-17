@@ -15,43 +15,15 @@ using System.Collections.Generic;
 using System.Text.Json;
 using System.IO.Compression;
 using System.Net.Http.Headers;
+using Azure.Storage.Blobs;
+using Azure.Storage.Blobs.Models;
+using System.Linq;
 
 namespace CSSPServices
 {
     public interface IReadGzFileService
     {
-        Task<WebRoot> ReadWebRootGzFile();
-        Task<WebCountry> ReadWebCountryGzFile(int CountryTVItemID);
-        Task<WebProvince> ReadWebProvinceGzFile(int ProvinceTVItemID);
-        Task<WebArea> ReadWebAreaGzFile(int AreaTVItemID);
-        Task<WebMunicipalities> ReadWebMunicipalitiesGzFile(int ProvinceTVItemID);
-        Task<WebSector> ReadWebSectorGzFile(int SectorTVItemID);
-        Task<WebSubsector> ReadWebSubsectorGzFile(int SubsectorTVItemID);
-        Task<WebMunicipality> ReadWebMunicipalityGzFile(int MunicipalityTVItemID);
-        Task<WebMWQMSample> ReadWeb10YearOfSample1980_1989FromSubsectorGzFile(int SubsectorTVItemID);
-        Task<WebMWQMSample> ReadWeb10YearOfSample1990_1999FromSubsectorGzFile(int SubsectorTVItemID);
-        Task<WebMWQMSample> ReadWeb10YearOfSample2000_2009FromSubsectorGzFile(int SubsectorTVItemID);
-        Task<WebMWQMSample> ReadWeb10YearOfSample2010_2019FromSubsectorGzFile(int SubsectorTVItemID);
-        Task<WebMWQMSample> ReadWeb10YearOfSample2020_2029FromSubsectorGzFile(int SubsectorTVItemID);
-        Task<WebMWQMSample> ReadWeb10YearOfSample2030_2039FromSubsectorGzFile(int SubsectorTVItemID);
-        Task<WebMWQMSample> ReadWeb10YearOfSample2040_2049FromSubsectorGzFile(int SubsectorTVItemID);
-        Task<WebMWQMSample> ReadWeb10YearOfSample2050_2059FromSubsectorGzFile(int SubsectorTVItemID);
-        Task<WebSamplingPlan> ReadWebSamplingPlanGzFile(int SamplingPlanID);
-        Task<WebMWQMRun> ReadWebMWQMRunGzFile(int SubsectorTVItemID);
-        Task<WebMWQMSite> ReadWebMWQMSiteGzFile(int SubsectorTVItemID);
-        Task<WebContact> ReadWebContactGzFile();
-        Task<WebClimateSite> ReadWebClimateSiteGzFile(int ProvinceTVItemID);
-        Task<WebHydrometricSite> ReadWebHydrometricSiteGzFile(int ProvinceTVItemID);
-        Task<WebDrogueRun> ReadWebDrogueRunGzFile(int SubsectorTVItemID);
-        Task<WebMWQMLookupMPN> ReadWebMWQMLookupMPNGzFile();
-        Task<WebMikeScenario> ReadWebMikeScenarioGzFile(int MikeScenarioTVItemID);
-        Task<WebClimateDataValue> ReadWebClimateDataValueGzFile(int ClimateSiteTVItemID);
-        Task<WebHydrometricDataValue> ReadWebHydrometricDataValueGzFile(int HydrometricSiteTVItemID);
-        Task<WebHelpDoc> ReadWebHelpDocGzFile();
-        Task<WebTideLocation> ReadWebTideLocationGzFile();
-        Task<WebPolSourceSite> ReadWebPolSourceSiteGzFile(int SubsectorTVItemID);
-        Task<WebPolSourceGrouping> ReadWebPolSourceGroupingGzFile();
-        Task<WebReportType> ReadWebReportTypeGzFile();
+        Task<ActionResult<T>> ReadJSON<T>(WebTypeEnum webType, int TVItemID, WebTypeYearEnum webTypeYear);
     }
     public partial class ReadGzFileService : ControllerBase, IReadGzFileService
     {
@@ -60,10 +32,13 @@ namespace CSSPServices
 
         #region Properties
         private CSSPDBContext db { get; }
+        private CSSPDBFilesManagementContext dbFM { get; }
         private IConfiguration Configuration { get; }
         private ICSSPCultureService CSSPCultureService { get; }
         private ILoggedInService LoggedInService { get; }
         private IEnums enums { get; }
+        private ICreateGzFileService CreateGzFileService { get; }
+        private IDownloadGzFileService DownloadGzFileService { get; }
         private bool StoreLocal { get; set; }
         private bool StoreInAzure { get; set; }
         private string AzureCSSPStorageConnectionString { get; set; }
@@ -75,333 +50,210 @@ namespace CSSPServices
         #endregion Properties
 
         #region Constructors
-        public ReadGzFileService(IConfiguration Configuration, ICSSPCultureService CSSPCultureService, ILoggedInService LoggedInService, IEnums enums, CSSPDBContext db)
+        public ReadGzFileService(IConfiguration Configuration, ICSSPCultureService CSSPCultureService, ILoggedInService LoggedInService,
+            IEnums enums, ICreateGzFileService CreateGzFileService, IDownloadGzFileService DownloadGzFileService, CSSPDBContext db, CSSPDBFilesManagementContext dbFM)
         {
             this.Configuration = Configuration;
             this.CSSPCultureService = CSSPCultureService;
             this.LoggedInService = LoggedInService;
             this.enums = enums;
+            this.CreateGzFileService = CreateGzFileService;
+            this.DownloadGzFileService = DownloadGzFileService;
             this.db = db;
+            this.dbFM = dbFM;
 
             Setup();
         }
         #endregion Constructors
 
         #region Functions public
-        public async Task<WebRoot> ReadWebRootGzFile()
+        public async Task<ActionResult<T>> ReadJSON<T>(WebTypeEnum webType, int TVItemID, WebTypeYearEnum webTypeYear)
         {
-            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            string fileName = "";
+            int Year = 0;
+            switch (webTypeYear)
             {
-                return await Task.FromResult(new WebRoot());
+                case WebTypeYearEnum.Year1980:
+                    Year = 1980;
+                    break;
+                case WebTypeYearEnum.Year1990:
+                    Year = 1990;
+                    break;
+                case WebTypeYearEnum.Year2000:
+                    Year = 2000;
+                    break;
+                case WebTypeYearEnum.Year2010:
+                    Year = 2010;
+                    break;
+                case WebTypeYearEnum.Year2020:
+                    Year = 2020;
+                    break;
+                case WebTypeYearEnum.Year2030:
+                    Year = 2030;
+                    break;
+                case WebTypeYearEnum.Year2040:
+                    Year = 2040;
+                    break;
+                case WebTypeYearEnum.Year2050:
+                    Year = 2050;
+                    break;
+                default:
+                    Year = 0;
+                    break;
             }
 
-            return await DoReadJSON<WebRoot>("WebRoot.gz");
-        }
-        public async Task<WebCountry> ReadWebCountryGzFile(int CountryTVItemID)
-        {
-            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            switch (webType)
             {
-                return await Task.FromResult(new WebCountry());
+                case WebTypeEnum.WebRoot:
+                    fileName = "WebRoot.gz";
+                    break;
+                case WebTypeEnum.WebCountry:
+                    fileName = $"WebCountry_{ TVItemID }.gz";
+                    break;
+                case WebTypeEnum.WebProvince:
+                    fileName = $"WebProvince_{ TVItemID }.gz";
+                    break;
+                case WebTypeEnum.WebArea:
+                    fileName = $"WebArea_{ TVItemID }.gz";
+                    break;
+                case WebTypeEnum.WebMunicipalities:
+                    fileName = $"WebMunicipalities_{ TVItemID }.gz";
+                    break;
+                case WebTypeEnum.WebSector:
+                    fileName = $"WebSector_{ TVItemID }.gz";
+                    break;
+                case WebTypeEnum.WebSubsector:
+                    fileName = $"WebSubsector_{ TVItemID }.gz";
+                    break;
+                case WebTypeEnum.WebMunicipality:
+                    fileName = $"WebMunicipality_{ TVItemID }.gz";
+                    break;
+                case WebTypeEnum.WebMWQMSample:
+                    fileName = $"WebMWQMSample_{ TVItemID }_{ Year }_{ Year + 9 }.gz";
+                    break;
+                case WebTypeEnum.WebSamplingPlan:
+                    fileName = $"WebSamplingPlan_{ TVItemID }.gz";
+                    break;
+                case WebTypeEnum.WebMWQMRun:
+                    fileName = $"WebMWQMRun_{ TVItemID }.gz";
+                    break;
+                case WebTypeEnum.WebMWQMSite:
+                    fileName = $"WebMWQMSite_{ TVItemID }.gz";
+                    break;
+                case WebTypeEnum.WebContact:
+                    fileName = $"WebContact.gz";
+                    break;
+                case WebTypeEnum.WebClimateSite:
+                    fileName = $"WebClimateSite_{ TVItemID }.gz";
+                    break;
+                case WebTypeEnum.WebHydrometricSite:
+                    fileName = $"WebHydrometricSite_{ TVItemID }.gz";
+                    break;
+                case WebTypeEnum.WebDrogueRun:
+                    fileName = $"WebDrogueRun_{ TVItemID }.gz";
+                    break;
+                case WebTypeEnum.WebMWQMLookupMPN:
+                    fileName = $"WebMWQMLookupMPN.gz";
+                    break;
+                case WebTypeEnum.WebMikeScenario:
+                    fileName = $"WebMikeScenario_{ TVItemID }.gz";
+                    break;
+                case WebTypeEnum.WebClimateDataValue:
+                    fileName = $"WebClimateDataValue_{ TVItemID }.gz";
+                    break;
+                case WebTypeEnum.WebHydrometricDataValue:
+                    fileName = $"WebHydrometricDataValue_{ TVItemID }.gz";
+                    break;
+                case WebTypeEnum.WebHelpDoc:
+                    fileName = $"WebHelpDoc.gz";
+                    break;
+                case WebTypeEnum.WebTideLocation:
+                    fileName = $"WebTideLocation.gz";
+                    break;
+                case WebTypeEnum.WebPolSourceSite:
+                    fileName = $"WebPolSourceSite_{ TVItemID }.gz";
+                    break;
+                case WebTypeEnum.WebPolSourceGrouping:
+                    fileName = $"WebPolSourceGrouping.gz";
+                    break;
+                case WebTypeEnum.WebReportType:
+                    fileName = $"WebReportType.gz";
+                    break;
+                default:
+                    return await Task.FromResult(BadRequest($"{ webType } not implemented yet"));
             }
 
-            return await DoReadJSON<WebCountry>($"WebCountry_{ CountryTVItemID }.gz");
-        }
-        public async Task<WebProvince> ReadWebProvinceGzFile(int ProvinceTVItemID)
-        {
-            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
-            {
-                return await Task.FromResult(new WebProvince());
-            }
-
-            return await DoReadJSON<WebProvince>($"WebProvince_{ ProvinceTVItemID }.gz");
-        }
-        public async Task<WebArea> ReadWebAreaGzFile(int AreaTVItemID)
-        {
-            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
-            {
-                return await Task.FromResult(new WebArea());
-            }
-
-            return await DoReadJSON<WebArea>($"WebArea_{ AreaTVItemID }.gz");
-        }
-        public async Task<WebMunicipalities> ReadWebMunicipalitiesGzFile(int ProvinceTVItemID)
-        {
-            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
-            {
-                return await Task.FromResult(new WebMunicipalities());
-            }
-
-            return await DoReadJSON<WebMunicipalities>($"WebMunicipalities_{ ProvinceTVItemID }.gz");
-        }
-        public async Task<WebSector> ReadWebSectorGzFile(int SectorTVItemID)
-        {
-            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
-            {
-                return await Task.FromResult(new WebSector());
-            }
-
-            return await DoReadJSON<WebSector>($"WebSector_{ SectorTVItemID }.gz");
-        }
-        public async Task<WebSubsector> ReadWebSubsectorGzFile(int SubsectorTVItemID)
-        {
-            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
-            {
-                return await Task.FromResult(new WebSubsector());
-            }
-
-            return await DoReadJSON<WebSubsector>($"WebSubsector_{ SubsectorTVItemID }.gz");
-        }
-        public async Task<WebMunicipality> ReadWebMunicipalityGzFile(int MunicipalityTVItemID)
-        {
-            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
-            {
-                return await Task.FromResult(new WebMunicipality());
-            }
-
-            return await DoReadJSON<WebMunicipality>($"WebMunicipality_{ MunicipalityTVItemID }.gz");
-        }
-        public async Task<WebMWQMSample> ReadWeb10YearOfSample1980_1989FromSubsectorGzFile(int SubsectorTVItemID)
-        {
-            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
-            {
-                return await Task.FromResult(new WebMWQMSample());
-            }
-
-            return await DoReadJSON<WebMWQMSample>($"WebMWQMSample_{ SubsectorTVItemID }_1980_1989.gz");
-        }
-        public async Task<WebMWQMSample> ReadWeb10YearOfSample1990_1999FromSubsectorGzFile(int SubsectorTVItemID)
-        {
-            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
-            {
-                return await Task.FromResult(new WebMWQMSample());
-            }
-
-            return await DoReadJSON<WebMWQMSample>($"WebMWQMSample_{ SubsectorTVItemID }_1990_1999.gz");
-        }
-        public async Task<WebMWQMSample> ReadWeb10YearOfSample2000_2009FromSubsectorGzFile(int SubsectorTVItemID)
-        {
-            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
-            {
-                return await Task.FromResult(new WebMWQMSample());
-            }
-
-            return await DoReadJSON<WebMWQMSample>($"WebMWQMSample_{ SubsectorTVItemID }_2000_2009.gz");
-        }
-        public async Task<WebMWQMSample> ReadWeb10YearOfSample2010_2019FromSubsectorGzFile(int SubsectorTVItemID)
-        {
-            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
-            {
-                return await Task.FromResult(new WebMWQMSample());
-            }
-
-            return await DoReadJSON<WebMWQMSample>($"WebMWQMSample_{ SubsectorTVItemID }_2010_2019.gz");
-        }
-        public async Task<WebMWQMSample> ReadWeb10YearOfSample2020_2029FromSubsectorGzFile(int SubsectorTVItemID)
-        {
-            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
-            {
-                return await Task.FromResult(new WebMWQMSample());
-            }
-
-            return await DoReadJSON<WebMWQMSample>($"WebMWQMSample_{ SubsectorTVItemID }_2020_2029.gz");
-        }
-        public async Task<WebMWQMSample> ReadWeb10YearOfSample2030_2039FromSubsectorGzFile(int SubsectorTVItemID)
-        {
-            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
-            {
-                return await Task.FromResult(new WebMWQMSample());
-            }
-
-            return await DoReadJSON<WebMWQMSample>($"WebMWQMSample_{ SubsectorTVItemID }_2030_2039.gz");
-        }
-        public async Task<WebMWQMSample> ReadWeb10YearOfSample2040_2049FromSubsectorGzFile(int SubsectorTVItemID)
-        {
-            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
-            {
-                return await Task.FromResult(new WebMWQMSample());
-            }
-
-            return await DoReadJSON<WebMWQMSample>($"WebMWQMSample_{ SubsectorTVItemID }_2040_2049.gz");
-        }
-        public async Task<WebMWQMSample> ReadWeb10YearOfSample2050_2059FromSubsectorGzFile(int SubsectorTVItemID)
-        {
-            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
-            {
-                return await Task.FromResult(new WebMWQMSample());
-            }
-
-            return await DoReadJSON<WebMWQMSample>($"WebMWQMSample_{ SubsectorTVItemID }_2050_2059.gz");
-        }
-        public async Task<WebSamplingPlan> ReadWebSamplingPlanGzFile(int SamplingPlanID)
-        {
-            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
-            {
-                return await Task.FromResult(new WebSamplingPlan());
-            }
-
-            return await DoReadJSON<WebSamplingPlan>($"WebSamplingPlan_{ SamplingPlanID }.gz");
-        }
-        public async Task<WebMWQMRun> ReadWebMWQMRunGzFile(int SubsectorTVItemID)
-        {
-            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
-            {
-                return await Task.FromResult(new WebMWQMRun());
-            }
-
-            return await DoReadJSON<WebMWQMRun>($"WebMWQMRun_{ SubsectorTVItemID }.gz");
-        }
-        public async Task<WebMWQMSite> ReadWebMWQMSiteGzFile(int SubsectorTVItemID)
-        {
-            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
-            {
-                return await Task.FromResult(new WebMWQMSite());
-            }
-
-            return await DoReadJSON<WebMWQMSite>($"WebMWQMSite_{ SubsectorTVItemID }.gz");
-        }
-        public async Task<WebContact> ReadWebContactGzFile()
-        {
-            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
-            {
-                return await Task.FromResult(new WebContact());
-            }
-
-            return await DoReadJSON<WebContact>($"WebContact.gz");
-        }
-        public async Task<WebClimateSite> ReadWebClimateSiteGzFile(int ProvinceTVItemID)
-        {
-            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
-            {
-                return await Task.FromResult(new WebClimateSite());
-            }
-
-            return await DoReadJSON<WebClimateSite>($"WebClimateSite_{ ProvinceTVItemID }.gz");
-        }
-        public async Task<WebHydrometricSite> ReadWebHydrometricSiteGzFile(int ProvinceTVItemID)
-        {
-            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
-            {
-                return await Task.FromResult(new WebHydrometricSite());
-            }
-
-            return await DoReadJSON<WebHydrometricSite>($"WebHydrometricSite_{ ProvinceTVItemID }.gz");
-        }
-        public async Task<WebDrogueRun> ReadWebDrogueRunGzFile(int SubsectorTVItemID)
-        {
-            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
-            {
-                return await Task.FromResult(new WebDrogueRun());
-            }
-
-            return await DoReadJSON<WebDrogueRun>($"WebDrogueRun_{ SubsectorTVItemID }.gz");
-        }
-        public async Task<WebMWQMLookupMPN> ReadWebMWQMLookupMPNGzFile()
-        {
-            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
-            {
-                return await Task.FromResult(new WebMWQMLookupMPN());
-            }
-
-            return await DoReadJSON<WebMWQMLookupMPN>($"WebMWQMLookupMPN.gz");
-        }
-        public async Task<WebMikeScenario> ReadWebMikeScenarioGzFile(int MikeScenarioTVItemID)
-        {
-            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
-            {
-                return await Task.FromResult(new WebMikeScenario());
-            }
-
-            return await DoReadJSON<WebMikeScenario>($"WebMikeScenario_{ MikeScenarioTVItemID }.gz");
-        }
-        public async Task<WebClimateDataValue> ReadWebClimateDataValueGzFile(int ClimateSiteTVItemID)
-        {
-            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
-            {
-                return await Task.FromResult(new WebClimateDataValue());
-            }
-
-            return await DoReadJSON<WebClimateDataValue>($"WebClimateDataValue_{ ClimateSiteTVItemID }.gz");
-        }
-        public async Task<WebHydrometricDataValue> ReadWebHydrometricDataValueGzFile(int HydrometricSiteTVItemID)
-        {
-            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
-            {
-                return await Task.FromResult(new WebHydrometricDataValue());
-            }
-
-            return await DoReadJSON<WebHydrometricDataValue>($"WebHydrometricDataValue_{ HydrometricSiteTVItemID }.gz");
-        }
-        public async Task<WebHelpDoc> ReadWebHelpDocGzFile()
-        {
-            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
-            {
-                return await Task.FromResult(new WebHelpDoc());
-            }
-
-            return await DoReadJSON<WebHelpDoc>($"WebHelpDoc.gz");
-        }
-        public async Task<WebTideLocation> ReadWebTideLocationGzFile()
-        {
-            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
-            {
-                return await Task.FromResult(new WebTideLocation());
-            }
-
-            return await DoReadJSON<WebTideLocation>($"WebTideLocation.gz");
-        }
-        public async Task<WebPolSourceSite> ReadWebPolSourceSiteGzFile(int SubsectorTVItemID)
-        {
-            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
-            {
-                return await Task.FromResult(new WebPolSourceSite());
-            }
-
-            return await DoReadJSON<WebPolSourceSite>($"WebPolSourceSite_{ SubsectorTVItemID }.gz");
-        }
-        public async Task<WebPolSourceGrouping> ReadWebPolSourceGroupingGzFile()
-        {
-            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
-            {
-                return await Task.FromResult(new WebPolSourceGrouping());
-            }
-
-            return await DoReadJSON<WebPolSourceGrouping>($"WebPolSourceGrouping.gz");
-        }
-        public async Task<WebReportType> ReadWebReportTypeGzFile()
-        {
-            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
-            {
-                return await Task.FromResult(new WebReportType());
-            }
-
-            return await DoReadJSON<WebReportType>($"WebReportType.gz");
+            return await DoReadJSON<T>(webType, fileName, 0, webTypeYear);
         }
         #endregion Functions public
 
         #region Functions private
-        private async Task<T> DoReadJSON<T>(string fileName)
+        private async Task<ActionResult<T>> DoReadJSON<T>(WebTypeEnum webType, string fileName, int TVItemID, WebTypeYearEnum webTypeYear)
         {
-            // if user has internet connection
-            // should check if file already exist locally
-            // should compare Azure Store ETag with the Etag in CSSPDBFilesManagement.db
-            // download if not same ETag else no need to download
-            // 
-            // if file does not exist in Azure 
-            // send CreateGzFile command to Azure CSSPWebAPIs
-            // once created
-            // get file properties (ETag) from Azure and store the info in CSSPDBFilesManagement.db
-            // then download and store locally using DownloadGzFile
-            // then read the file using ReadGzFile
+            bool gzExistLocaly = false;
+            bool gzExist = false;
+            bool gzLocalIsUpToDate = false;
 
-            // if user has no internet connection
-            // just read file if exist
-            // send message if it does not exist
-            // 
-            FileInfo fiGZ = new FileInfo(LocalJSONPath + fileName);
-
-            if (!fiGZ.Exists)
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
             {
-                return await Task.FromResult(JsonSerializer.Deserialize<T>(""));
+                return await Task.FromResult(Unauthorized());
+            }
+
+            FileInfo fiGZ = new FileInfo(LocalJSONPath + string.Format(fileName, TVItemID));
+
+            if (fiGZ.Exists)
+            {
+                gzExistLocaly = true;
+            }
+
+            if (LoggedInService.HasInternetConnection)
+            {
+                BlobClient blobClient = new BlobClient(AzureCSSPStorageConnectionString, AzureCSSPStorageCSSPJSON, fileName);
+
+                BlobProperties blobProperties = blobClient.GetProperties();
+                if (blobProperties == null) // does not exist on Azure - need to create it
+                {
+                    ActionResult<bool> actionRes = await CreateGzFileService.CreateGzFile(webType, TVItemID, webTypeYear);
+
+                    if (((ObjectResult)actionRes.Result).StatusCode != 200)
+                    {
+                        return await Task.FromResult(BadRequest($"Could not create file { fiGZ.Name } on Azure"));
+                    }
+
+                    if ((bool)((OkObjectResult)actionRes.Result).Value)
+                    {
+                        gzExist = true;
+                    }
+                }
+
+                if (gzExistLocaly)
+                {
+                    CSSPFile csspFile = (from c in dbFM.CSSPFiles
+                                         where c.AzureStorage == AzureCSSPStorageCSSPJSON
+                                         && c.AzureFileName == fiGZ.Name
+                                         select c).FirstOrDefault();
+
+                    if (csspFile == null)
+                    {
+                        return await Task.FromResult(BadRequest($"Could not find CSSPFile from CSSPDBFileManagement.db " +
+                            $"where AzureStoreage = [{ AzureCSSPStorageCSSPJSON }] and AzureFileName = [{ fiGZ.Name }]"));
+                    }
+
+                    if (blobProperties.ETag.Equals(csspFile.AzureETag))
+                    {
+                        gzLocalIsUpToDate = true;
+                    }
+                }
+
+                if (!gzLocalIsUpToDate)
+                {
+                    ActionResult<bool> actionRes = await DownloadGzFileService.DownloadGzFile(fiGZ.Name);
+
+                    if (((ObjectResult)actionRes.Result).StatusCode != 200)
+                    {
+                        return await Task.FromResult(actionRes.Result);
+                    }
+                }
             }
 
             using (FileStream gzipFileStream = fiGZ.OpenRead())
@@ -410,7 +262,7 @@ namespace CSSPServices
                 {
                     using (StreamReader sr = new StreamReader(gzStream))
                     {
-                        return await Task.FromResult(JsonSerializer.Deserialize<T>(sr.ReadToEnd()));
+                        return await Task.FromResult(Ok(JsonSerializer.Deserialize<T>(sr.ReadToEnd())));
                     }
                 }
             }

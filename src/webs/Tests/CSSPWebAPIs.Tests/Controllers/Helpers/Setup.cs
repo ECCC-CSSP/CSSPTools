@@ -14,6 +14,7 @@ using System;
 using System.IO;
 using System.Threading.Tasks;
 using Xunit;
+using CSSPWebAPIs.Controllers;
 
 namespace TestHelpers.Tests
 {
@@ -31,7 +32,9 @@ namespace TestHelpers.Tests
         protected IContactService ContactService { get; set; }
         protected ILoggedInService LoggedInService { get; set; }
         protected ICSSPCultureService CSSPCultureService { get; set; }
+        protected ICreateGzFileService CreateGzFileService { get; set; }
         protected Contact contact { get; set; }
+        protected ICreateGzFileController CreateGzFileController { get; set; }
         #endregion Properties
 
         #region Constructors
@@ -57,7 +60,7 @@ namespace TestHelpers.Tests
             string CSSPDBLocalFileName = Config.GetValue<string>("CSSPDBLocal");
             Assert.NotNull(CSSPDBLocalFileName);
 
-            string TestDB = Config.GetValue<string>("TestDB");
+            string TestDB = Config.GetValue<string>("CSSPDB2");
             Assert.NotNull(TestDB);
 
             Services.AddSingleton<IConfiguration>(Config);
@@ -92,6 +95,8 @@ namespace TestHelpers.Tests
             Services.AddSingleton<ILoginModelService, LoginModelService>();
             Services.AddSingleton<IRegisterModelService, RegisterModelService>();
             Services.AddSingleton<IContactService, ContactService>();
+            Services.AddSingleton<ICreateGzFileService, CreateGzFileService>();
+            Services.AddSingleton<ICreateGzFileController, CreateGzFileController>();
 
             Provider = Services.BuildServiceProvider();
             Assert.NotNull(Provider);
@@ -125,6 +130,12 @@ namespace TestHelpers.Tests
 
             await LoggedInService.SetLoggedInContactInfo(contact.Id);
             Assert.NotNull(LoggedInService.GetLoggedInContactInfo());
+
+            CreateGzFileService = Provider.GetService<ICreateGzFileService>();
+            Assert.NotNull(CreateGzFileService);
+
+            CreateGzFileController = Provider.GetService<ICreateGzFileController>();
+            Assert.NotNull(CreateGzFileController);
 
             return await Task.FromResult(true);
         }
