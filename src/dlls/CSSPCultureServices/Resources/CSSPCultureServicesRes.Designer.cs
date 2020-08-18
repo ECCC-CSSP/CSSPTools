@@ -646,11 +646,29 @@ namespace CSSPCultureServices.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Could not add [{0}] from [{1}] where [{2}] and [{3}]. Exception: [{4}].
+        /// </summary>
+        public static string CouldNotAdd_From_Where_And_Exception_ {
+            get {
+                return ResourceManager.GetString("CouldNotAdd_From_Where_And_Exception_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Could not create directory [{0}].
         /// </summary>
         public static string CouldNotCreateDirectory_ {
             get {
                 return ResourceManager.GetString("CouldNotCreateDirectory_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Could not create file [{0}] on Azure.
+        /// </summary>
+        public static string CouldNotCreateFile_OnAzure {
+            get {
+                return ResourceManager.GetString("CouldNotCreateFile_OnAzure", resourceCulture);
             }
         }
         
@@ -678,6 +696,15 @@ namespace CSSPCultureServices.Resources {
         public static string CouldNotFind_ {
             get {
                 return ResourceManager.GetString("CouldNotFind_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Could not find [{0}] from [{1}] where [{2}] and [{3}].
+        /// </summary>
+        public static string CouldNotFind_From_Where_And_ {
+            get {
+                return ResourceManager.GetString("CouldNotFind_From_Where_And_", resourceCulture);
             }
         }
         
@@ -1173,6 +1200,42 @@ namespace CSSPCultureServices.Resources {
         public static string ErrorWhileRunningCommand_UnderDirectory_ {
             get {
                 return ResourceManager.GetString("ErrorWhileRunningCommand_UnderDirectory_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Error while trying to delete [{0}] from Azure.
+        /// </summary>
+        public static string ErrorWhileTryingToDelete_FromAzure {
+            get {
+                return ResourceManager.GetString("ErrorWhileTryingToDelete_FromAzure", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Error while trying to delete [{0}] from Azure. Exception: [{1}].
+        /// </summary>
+        public static string ErrorWhileTryingToDelete_FromAzureException_ {
+            get {
+                return ResourceManager.GetString("ErrorWhileTryingToDelete_FromAzureException_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Error while trying to download [{0}] from Azure.
+        /// </summary>
+        public static string ErrorWhileTryingToDownload_FromAzure {
+            get {
+                return ResourceManager.GetString("ErrorWhileTryingToDownload_FromAzure", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Error while trying to download [{0}] from Azure. Exception: [{1}].
+        /// </summary>
+        public static string ErrorWhileTryingToDownload_FromAzureException_ {
+            get {
+                return ResourceManager.GetString("ErrorWhileTryingToDownload_FromAzureException_", resourceCulture);
             }
         }
         

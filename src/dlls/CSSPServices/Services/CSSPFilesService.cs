@@ -24,7 +24,9 @@ namespace CSSPServices
     {
         Task<ActionResult<bool>> Delete(int CSSPFileID);
         Task<ActionResult<List<CSSPFile>>> GetCSSPFileList(int skip = 0, int take = 100);
-        Task<ActionResult<CSSPFile>> GetAddressWithCSSPFileID(int CSSPFileID);
+        Task<ActionResult<int>> GetCSSPFileNextIndexToUse();
+        Task<ActionResult<CSSPFile>> GetWithCSSPFileID(int CSSPFileID);
+        Task<ActionResult<CSSPFile>> GetWithAzureStorageAndAzureFileName(string AzureStorage, string AzureFileName);
         Task<ActionResult<CSSPFile>> Post(CSSPFile csspFile);
         Task<ActionResult<CSSPFile>> Put(CSSPFile csspFile);
     }
@@ -41,7 +43,7 @@ namespace CSSPServices
         #endregion Properties
 
         #region Constructors
-        public CSSPFileService(ICSSPCultureService CSSPCultureService, ILoggedInService LoggedInService, IEnums enums, CSSPDBFilesManagementContext dbFM)
+        public CSSPFileService(ICSSPCultureService CSSPCultureService, ILoggedInService LoggedInService, CSSPDBFilesManagementContext dbFM)
         {
             this.CSSPCultureService = CSSPCultureService;
             this.LoggedInService = LoggedInService;
@@ -50,7 +52,17 @@ namespace CSSPServices
         #endregion Constructors
 
         #region Functions public 
-        public async Task<ActionResult<CSSPFile>> GetAddressWithCSSPFileID(int CSSPFileID)
+        public async Task<ActionResult<int>> GetCSSPFileNextIndexToUse()
+        {
+            int? LastIndex = (from c in dbFM.CSSPFiles
+                              orderby c.CSSPFileID descending
+                              select c.CSSPFileID).FirstOrDefault();
+
+            LastIndex = LastIndex == null ? 1 : LastIndex + 1;
+
+            return await Task.FromResult(Ok(LastIndex));
+        }
+        public async Task<ActionResult<CSSPFile>> GetWithCSSPFileID(int CSSPFileID)
         {
             if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
             {
@@ -63,7 +75,26 @@ namespace CSSPServices
 
             if (csspFile == null)
             {
-                return await Task.FromResult(NotFound());
+                return await Task.FromResult(BadRequest(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "CSSPFile", "CSSPFileID", CSSPFileID.ToString())));
+            }
+
+            return await Task.FromResult(Ok(csspFile));
+        }
+        public async Task<ActionResult<CSSPFile>> GetWithAzureStorageAndAzureFileName(string AzureStorage, string AzureFileName)
+        {
+            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            {
+                return await Task.FromResult(Unauthorized());
+            }
+
+            CSSPFile csspFile = (from c in dbFM.CSSPFiles.AsNoTracking()
+                                 where c.AzureStorage == AzureStorage
+                                 && c.AzureFileName == AzureFileName
+                                 select c).FirstOrDefault();
+
+            if (csspFile == null)
+            {
+                return await Task.FromResult(BadRequest(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "CSSPFile", "AzureStorage,AzureFileName", $"{ AzureStorage }, { AzureFileName }")));
             }
 
             return await Task.FromResult(Ok(csspFile));

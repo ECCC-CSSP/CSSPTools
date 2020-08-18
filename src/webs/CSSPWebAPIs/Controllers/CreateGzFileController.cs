@@ -29,15 +29,15 @@ namespace CSSPWebAPIs.Controllers
         #region Properties
         private ICSSPCultureService CSSPCultureService { get; }
         private ILoggedInService LoggedInService { get; }
-        private ICreateGzFileService CSSPWebService { get; }
+        private IGzFileService GzFileService { get; }
         #endregion Properties
 
         #region Constructors
-        public CreateGzFileController(ICSSPCultureService CSSPCultureService, ILoggedInService LoggedInService, ICreateGzFileService CSSPWebService)
+        public CreateGzFileController(ICSSPCultureService CSSPCultureService, ILoggedInService LoggedInService, IGzFileService GzFileService)
         {
             this.CSSPCultureService = CSSPCultureService;
             this.LoggedInService = LoggedInService;
-            this.CSSPWebService = CSSPWebService;
+            this.GzFileService = GzFileService;
         }
         #endregion Constructors
 
@@ -49,7 +49,7 @@ namespace CSSPWebAPIs.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await CSSPWebService.CreateGzFile(WebType, TVItemID, WebTypeYear);
+            return await GzFileService.CreateGzFile(WebType, TVItemID, WebTypeYear);
         }
         #endregion Functions public
 

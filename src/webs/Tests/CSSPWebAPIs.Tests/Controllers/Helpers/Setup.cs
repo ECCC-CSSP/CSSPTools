@@ -32,7 +32,7 @@ namespace TestHelpers.Tests
         protected IContactService ContactService { get; set; }
         protected ILoggedInService LoggedInService { get; set; }
         protected ICSSPCultureService CSSPCultureService { get; set; }
-        protected ICreateGzFileService CreateGzFileService { get; set; }
+        protected IGzFileService GzFileService { get; set; }
         protected Contact contact { get; set; }
         protected ICreateGzFileController CreateGzFileController { get; set; }
         #endregion Properties
@@ -95,7 +95,7 @@ namespace TestHelpers.Tests
             Services.AddSingleton<ILoginModelService, LoginModelService>();
             Services.AddSingleton<IRegisterModelService, RegisterModelService>();
             Services.AddSingleton<IContactService, ContactService>();
-            Services.AddSingleton<ICreateGzFileService, CreateGzFileService>();
+            Services.AddSingleton<IGzFileService, GzFileService>();
             Services.AddSingleton<ICreateGzFileController, CreateGzFileController>();
 
             Provider = Services.BuildServiceProvider();
@@ -131,8 +131,8 @@ namespace TestHelpers.Tests
             await LoggedInService.SetLoggedInContactInfo(contact.Id);
             Assert.NotNull(LoggedInService.GetLoggedInContactInfo());
 
-            CreateGzFileService = Provider.GetService<ICreateGzFileService>();
-            Assert.NotNull(CreateGzFileService);
+            GzFileService = Provider.GetService<IGzFileService>();
+            Assert.NotNull(GzFileService);
 
             CreateGzFileController = Provider.GetService<ICreateGzFileController>();
             Assert.NotNull(CreateGzFileController);

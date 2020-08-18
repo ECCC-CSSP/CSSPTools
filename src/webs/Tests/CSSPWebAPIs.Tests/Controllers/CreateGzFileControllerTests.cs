@@ -47,7 +47,7 @@ namespace CreateGzFileControllers.Tests
             Assert.NotNull(CSSPCultureService);
             Assert.NotNull(ContactService);
             Assert.NotNull(LoggedInService);
-            Assert.NotNull(CreateGzFileService);
+            Assert.NotNull(GzFileService);
             Assert.NotNull(CreateGzFileController);
         }
         [Theory]

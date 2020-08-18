@@ -45,7 +45,7 @@ namespace CSSPDesktopServices.Services
             foreach (string zipFileName in zipFileNameList)
             {
                 zipCount += 1;
-                InstallingStatus(new InstallingEventArgs(30*zipCount));
+                InstallingStatus(new InstallingEventArgs(30 * zipCount));
                 AppendStatus(new AppendEventArgs(string.Format(appTextModel.Downloading_, zipFileName)));
 
                 if (!await DownloadZipFilesFromAzure(zipFileName)) return await Task.FromResult(false);

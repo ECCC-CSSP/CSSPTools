@@ -777,4 +777,25 @@
   <data name="TVItemRootCouldNotBeFound" xml:space="preserve">
     <value>TVItem Root could not be found</value>
   </data>
+  <data name="CouldNotAdd_From_Where_And_Exception_" xml:space="preserve">
+    <value>Could not add [{0}] from [{1}] where [{2}] and [{3}]. Exception: [{4}]</value>
+  </data>
+  <data name="CouldNotCreateFile_OnAzure" xml:space="preserve">
+    <value>Could not create file [{0}] on Azure</value>
+  </data>
+  <data name="CouldNotFind_From_Where_And_" xml:space="preserve">
+    <value>Could not find [{0}] from [{1}] where [{2}] and [{3}]</value>
+  </data>
+  <data name="ErrorWhileTryingToDelete_FromAzure" xml:space="preserve">
+    <value>Error while trying to delete [{0}] from Azure</value>
+  </data>
+  <data name="ErrorWhileTryingToDelete_FromAzureException_" xml:space="preserve">
+    <value>Error while trying to delete [{0}] from Azure. Exception: [{1}]</value>
+  </data>
+  <data name="ErrorWhileTryingToDownload_FromAzure" xml:space="preserve">
+    <value>Error while trying to download [{0}] from Azure</value>
+  </data>
+  <data name="ErrorWhileTryingToDownload_FromAzureException_" xml:space="preserve">
+    <value>Error while trying to download [{0}] from Azure. Exception: [{1}]</value>
+  </data>
 </root>

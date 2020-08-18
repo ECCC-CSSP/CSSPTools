@@ -6,15 +6,18 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Net.Http;
 
 namespace CSSPServices
 {
     public interface ILoggedInService
     {
-        Task<bool> SetLoggedInContactInfo(string Id);
-        Task<LoggedInContactInfo> GetLoggedInContactInfo();
-        DBLocationEnum DBLocation { get; set; }
         bool HasInternetConnection { get; set; }
+        DBLocationEnum DBLocation { get; set; }
+
+        Task<bool> CheckInternetConnection();
+        Task<LoggedInContactInfo> GetLoggedInContactInfo();
+        Task<bool> SetLoggedInContactInfo(string Id);
     }
     public class LoggedInService : ILoggedInService
     {
@@ -39,6 +42,26 @@ namespace CSSPServices
         }
         #endregion Constructors
 
+        public async Task<bool> CheckInternetConnection()
+        {
+            string url = "https://www.google.com/";
+
+            try
+            {
+                HttpClient httpClient = new HttpClient();
+                string ret = httpClient.GetStringAsync(url).GetAwaiter().GetResult();
+                if (!string.IsNullOrWhiteSpace(ret))
+                {
+                    HasInternetConnection = true;
+                }
+            }
+            catch (Exception)
+            {
+                HasInternetConnection = false;
+            }
+
+            return await Task.FromResult(true);
+        }
         #region Functions public
         public async Task<bool> SetLoggedInContactInfo(string Id)
         {

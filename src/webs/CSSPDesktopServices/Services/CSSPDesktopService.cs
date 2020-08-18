@@ -109,7 +109,8 @@ namespace CSSPDesktopServices.Services
 
         #region Constructors
         public CSSPDesktopService(IConfiguration Configuration, ICSSPCultureService CSSPCultureService, 
-            IEnums enums, CSSPDBLocalContext dbLocal = null, CSSPDBLoginContext dbLogin = null, CSSPDBFilesManagementContext dbFM = null)
+            IEnums enums, CSSPDBLocalContext dbLocal = null, CSSPDBLoginContext dbLogin = null,
+            CSSPDBFilesManagementContext dbFM = null)
         {
             this.Configuration = Configuration;
             this.CSSPCultureService = CSSPCultureService;

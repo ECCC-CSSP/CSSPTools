@@ -165,7 +165,7 @@ namespace CSSPWebAPIs
             services.AddScoped<IContactService, ContactService>();
 
             LoadAllDBServices(services);
-            services.AddScoped<ICreateGzFileService, CreateGzFileService>();
+            services.AddScoped<IGzFileService, GzFileService>();
 
             if (RunningOn == "Local")
             {

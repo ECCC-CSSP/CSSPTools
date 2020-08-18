@@ -29,6 +29,7 @@ namespace CSSPDesktop
         private IConfiguration Configuration { get; set; }
         private IServiceProvider Provider { get; set; }
         private IServiceCollection Services { get; set; }
+        private ICSSPFileService CSSPFileService { get; set; }
         private ICSSPDesktopService CSSPDesktopService { get; set; }
         private ICSSPSQLiteService CSSPSQLiteService { get; set; }
         bool IsEnglish { get; set; } = true;
@@ -340,6 +341,7 @@ namespace CSSPDesktop
             {
                 options.UseSqlite($"Data Source={ fiCSSPDBLogin.FullName }");
             });
+
 
             Provider = Services.BuildServiceProvider();
 

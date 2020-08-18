@@ -771,4 +771,25 @@
   <data name="TVItemRootCouldNotBeFound" xml:space="preserve">
     <value>Dans l'impossibilité de trouver TVItem Base</value>
   </data>
+  <data name="CouldNotAdd_From_Where_And_Exception_" xml:space="preserve">
+    <value>Dans l'Impossibilité d'ajouter [{0}] à [{1}] où [{2}] et [{3}]. Exception: [{4}]</value>
+  </data>
+  <data name="CouldNotCreateFile_OnAzure" xml:space="preserve">
+    <value>Dans l'impossibilité de créer la filière [{0}] sur Azure</value>
+  </data>
+  <data name="CouldNotFind_From_Where_And_" xml:space="preserve">
+    <value>Dans l'impossibilité de trouver [{0}] de [{1}] où [{2}] et [{3}]</value>
+  </data>
+  <data name="ErrorWhileTryingToDelete_FromAzure" xml:space="preserve">
+    <value>Erreur lors de l'essaie d'effacer [{0}] de Azure</value>
+  </data>
+  <data name="ErrorWhileTryingToDelete_FromAzureException_" xml:space="preserve">
+    <value>Erreur lors de l'essaie d'effacer  [{0}] de Azure. Exception: [{1}]</value>
+  </data>
+  <data name="ErrorWhileTryingToDownload_FromAzure" xml:space="preserve">
+    <value>Erreur lors de l'essaie de téléchargement de [{0}] à partir de Azure</value>
+  </data>
+  <data name="ErrorWhileTryingToDownload_FromAzureException_" xml:space="preserve">
+    <value>Erreur lors de l'essaie de téléchargement de [{0}] à partir de Azure. Exception: [{1}]</value>
+  </data>
 </root>

@@ -18,18 +18,19 @@ namespace CSSPServices.Tests
         #endregion Variables
 
         #region Properties
-        private IConfiguration Config { get; set; }
+        private IConfiguration Configuration { get; set; }
         private IServiceProvider Provider { get; set; }
         private IServiceCollection Services { get; set; }
         private ICSSPCultureService CSSPCultureService { get; set; }
-        private ICreateGzFileService CreateGzFileService { get; set; }
-        private IDownloadGzFileService DownloadGzFileService { get; set; }
-        private IReadGzFileService ReadGzFileService { get; set; }
+        private ICSSPFileService CSSPFileService { get; set; }
+        private IGzFileService GzFileService { get; set; }
         private IAspNetUserService AspNetUserService { get; set; }
         private IContactService ContactService { get; set; }
         private ILoggedInService LoggedInService { get; set; }
         private ITVItemService TVItemService { get; set; }
         private CSSPDBContext db { get; set; }
+        private string AzureCSSPStorageCSSPJSON { get; set; }
+        private string LocalJSONPath { get; set; }
         #endregion Properties
 
         #region Constructors
@@ -45,17 +46,23 @@ namespace CSSPServices.Tests
         #region Functions private
         private async Task<bool> Setup(string culture)
         {
-            Config = new ConfigurationBuilder()
+            Configuration = new ConfigurationBuilder()
                .SetBasePath(Directory.GetParent(AppContext.BaseDirectory).FullName)
                .AddJsonFile("appsettings_csspservices.json")
-               .AddUserSecrets("b6a0dab2-10cf-4e23-b9bd-63af631406b6")
+               .AddUserSecrets("6f27cbbe-6ffb-4154-b49b-d739597c4f60")
                .Build();
 
             Services = new ServiceCollection();
 
-            Services.AddSingleton<IConfiguration>(Config);
+            Services.AddSingleton<IConfiguration>(Configuration);
 
-            string CSSPDBConnString = Config.GetValue<string>("CSSPDB2");
+            AzureCSSPStorageCSSPJSON = Configuration.GetValue<string>("AzureCSSPStorageCSSPJSON");
+            Assert.NotNull(AzureCSSPStorageCSSPJSON);
+
+            LocalJSONPath = Configuration.GetValue<string>("LocalJSONPath");
+            Assert.NotNull(LocalJSONPath);
+
+            string CSSPDBConnString = Configuration.GetValue<string>("CSSPDB2");
             Assert.NotNull(CSSPDBConnString);
 
             Services.AddDbContext<CSSPDBContext>(options =>
@@ -74,7 +81,7 @@ namespace CSSPServices.Tests
             Services.AddIdentityCore<ApplicationUser>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
 
-            string CSSPDBLocalFileName = Config.GetValue<string>("CSSPDBLocal");
+            string CSSPDBLocalFileName = Configuration.GetValue<string>("CSSPDBLocal");
             Assert.NotNull(CSSPDBLocalFileName);
 
             FileInfo fiCSSPDBLocalFileName = new FileInfo(CSSPDBLocalFileName);
@@ -84,7 +91,7 @@ namespace CSSPServices.Tests
                 options.UseSqlite($"Data Source={ fiCSSPDBLocalFileName.FullName }");
             });
 
-            string CSSPDBFilesManagementFileName = Config.GetValue<string>("CSSPDBFilesManagement");
+            string CSSPDBFilesManagementFileName = Configuration.GetValue<string>("CSSPDBFilesManagement");
             Assert.NotNull(CSSPDBFilesManagementFileName);
 
             FileInfo fiCSSPDBFilesManagementFileName = new FileInfo(CSSPDBFilesManagementFileName);
@@ -101,9 +108,8 @@ namespace CSSPServices.Tests
             Services.AddSingleton<IContactService, ContactService>();
             Services.AddSingleton<ILoggedInService, LoggedInService>();
             Services.AddSingleton<IEnums, Enums>();
-            Services.AddSingleton<ICreateGzFileService, CreateGzFileService>();
-            Services.AddSingleton<IDownloadGzFileService, DownloadGzFileService>();
-            Services.AddSingleton<IReadGzFileService, ReadGzFileService>();
+            Services.AddSingleton<ICSSPFileService, CSSPFileService>();
+            Services.AddSingleton<IGzFileService, GzFileService>();
             Services.AddSingleton<ITVItemService, TVItemService>();
 
             Provider = Services.BuildServiceProvider();
@@ -117,10 +123,10 @@ namespace CSSPServices.Tests
             ContactService = Provider.GetService<IContactService>();
             Assert.NotNull(ContactService);
 
-            string LoginEmail = Config.GetValue<string>("LoginEmail");
+            string LoginEmail = Configuration.GetValue<string>("LoginEmail");
             Assert.NotNull(LoginEmail);
 
-            string Password = Password = Config.GetValue<string>("Password");
+            string Password = Password = Configuration.GetValue<string>("Password");
             Assert.NotNull(Password);
 
             LoginModel loginModel = new LoginModel()
@@ -139,14 +145,14 @@ namespace CSSPServices.Tests
             await LoggedInService.SetLoggedInContactInfo(contact.Id);
             Assert.NotNull(LoggedInService.GetLoggedInContactInfo());
 
-            CreateGzFileService = Provider.GetService<ICreateGzFileService>();
-            Assert.NotNull(CreateGzFileService);
+            // will fill the LoggedInService.HasInternetConnection with true | false
+            await LoggedInService.CheckInternetConnection();           
 
-            DownloadGzFileService = Provider.GetService<IDownloadGzFileService>();
-            Assert.NotNull(DownloadGzFileService);
+            CSSPFileService = Provider.GetService<ICSSPFileService>();
+            Assert.NotNull(CSSPFileService);
 
-            ReadGzFileService = Provider.GetService<IReadGzFileService>();
-            Assert.NotNull(ReadGzFileService);
+            GzFileService = Provider.GetService<IGzFileService>();
+            Assert.NotNull(GzFileService);
 
             TVItemService = Provider.GetService<ITVItemService>();
             Assert.NotNull(TVItemService);
