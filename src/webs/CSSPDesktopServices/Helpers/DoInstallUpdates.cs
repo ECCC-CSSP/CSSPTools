@@ -16,6 +16,7 @@ using Azure.Storage.Blobs.Models;
 using CSSPDesktopServices.Models;
 using System.IO.Compression;
 using CSSPServices;
+using Azure;
 
 namespace CSSPDesktopServices.Services
 {
@@ -38,7 +39,7 @@ namespace CSSPDesktopServices.Services
 
             List<string> zipFileNameList = new List<string>()
             {
-                "csspwebapis.zip", "csspclient.zip", "helpdocs.zip"
+                "helpdocs.zip", "csspwebapis.zip", "csspclient.zip" 
             };
 
             int zipCount = 0;
@@ -52,8 +53,6 @@ namespace CSSPDesktopServices.Services
             }
 
             InstallingStatus(new InstallingEventArgs(100));
-            AppendStatus(new AppendEventArgs(""));
-
             AppendStatus(new AppendEventArgs(""));
 
             return await Task.FromResult(true);
@@ -80,15 +79,15 @@ namespace CSSPDesktopServices.Services
 
             if (csspFile == null || !blobProperties.ETag.Equals(csspFile.AzureETag))
             {
-                blobClient.DownloadTo(fi.FullName);
-            }
+                Response response = blobClient.DownloadTo(fi.FullName);
 
-            AppendStatus(new AppendEventArgs(string.Format(appTextModel.Unzipping_, zipFileName)));
-            if (!await UnzipDownloadedFile(zipFileName, blobProperties)) return await Task.FromResult(false);
+                AppendStatus(new AppendEventArgs(string.Format(appTextModel.Unzipping_, zipFileName)));
+                if (!await UnzipDownloadedFile(zipFileName, response)) return await Task.FromResult(false);
+            }
 
             return await Task.FromResult(true);
         }
-        private async Task<bool> UnzipDownloadedFile(string zipFileName, BlobProperties blobProperties)
+        private async Task<bool> UnzipDownloadedFile(string zipFileName, Response response)
         {
             FileInfo fiLocal = new FileInfo($"{ LocalCSSPDesktopPath }{ zipFileName }");
 
@@ -133,7 +132,7 @@ namespace CSSPDesktopServices.Services
                     CSSPFileID = LastID + 1,
                     AzureStorage = "csspwebapis",
                     AzureFileName = zipFileName,
-                    AzureETag = blobProperties.ETag.ToString(),
+                    AzureETag = response.Headers.ETag.ToString(),
                     AzureCreationTime = DateTime.Now
                 };
 
@@ -141,7 +140,7 @@ namespace CSSPDesktopServices.Services
             }
             else
             {
-                csspFile.AzureETag = blobProperties.ETag.ToString();
+                csspFile.AzureETag = response.Headers.ETag.ToString();
             }
 
             try

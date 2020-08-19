@@ -47,7 +47,7 @@ namespace CSSPDesktopServices.Services
                                      && c.AzureFileName == zipFileName
                                      select c).FirstOrDefault();
 
-                if (csspFile == null || !blobProperties.ETag.Equals(csspFile.AzureETag))
+                if (csspFile == null || blobProperties.ETag.ToString().Replace("\"", "") != csspFile.AzureETag)
                 {
                     AppendStatus(new AppendEventArgs(string.Format(appTextModel.AzureFile_Changed, zipFileName)));
                     UpdateIsNeeded = true;
