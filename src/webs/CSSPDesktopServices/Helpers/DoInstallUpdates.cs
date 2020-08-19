@@ -133,7 +133,7 @@ namespace CSSPDesktopServices.Services
                     AzureStorage = "csspwebapis",
                     AzureFileName = zipFileName,
                     AzureETag = response.Headers.ETag.ToString(),
-                    AzureCreationTime = DateTime.Now
+                    AzureCreationTimeUTC = (DateTimeOffset)response.Headers.Date
                 };
 
                 dbFM.CSSPFiles.Add(csspFile);

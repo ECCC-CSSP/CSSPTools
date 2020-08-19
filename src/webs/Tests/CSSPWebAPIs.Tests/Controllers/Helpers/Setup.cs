@@ -34,7 +34,7 @@ namespace TestHelpers.Tests
         protected ICSSPCultureService CSSPCultureService { get; set; }
         protected IGzFileService GzFileService { get; set; }
         protected Contact contact { get; set; }
-        protected ICreateGzFileController CreateGzFileController { get; set; }
+        protected IReadController ReadController { get; set; }
         #endregion Properties
 
         #region Constructors
@@ -96,7 +96,7 @@ namespace TestHelpers.Tests
             Services.AddSingleton<IRegisterModelService, RegisterModelService>();
             Services.AddSingleton<IContactService, ContactService>();
             Services.AddSingleton<IGzFileService, GzFileService>();
-            Services.AddSingleton<ICreateGzFileController, CreateGzFileController>();
+            Services.AddSingleton<IReadController, ReadController>();
 
             Provider = Services.BuildServiceProvider();
             Assert.NotNull(Provider);
@@ -134,8 +134,8 @@ namespace TestHelpers.Tests
             GzFileService = Provider.GetService<IGzFileService>();
             Assert.NotNull(GzFileService);
 
-            CreateGzFileController = Provider.GetService<ICreateGzFileController>();
-            Assert.NotNull(CreateGzFileController);
+            ReadController = Provider.GetService<IReadController>();
+            Assert.NotNull(ReadController);
 
             return await Task.FromResult(true);
         }

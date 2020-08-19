@@ -23,7 +23,7 @@ namespace CSSPModels
         [CSSPMaxLength(50)]
         public string AzureETag { get; set; }
         [CSSPAfter(Year = 1980)]
-        public DateTime AzureCreationTime { get; set; }
+        public DateTimeOffset AzureCreationTimeUTC { get; set; }
         #endregion Properties in DB
 
         #region Constructors

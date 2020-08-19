@@ -248,15 +248,15 @@ namespace CSSPServices
                 yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "AzureETag", "100"), new[] { nameof(csspFile.AzureETag) });
             }
 
-            // doing AzureCreationTime
-            if (csspFile.AzureCreationTime == null)
+            // doing AzureCreationTimeUTC
+            if (csspFile.AzureCreationTimeUTC == null)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "AzureCreationTime"), new[] { nameof(csspFile.AzureCreationTime) });
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "AzureCreationTimeUTC"), new[] { nameof(csspFile.AzureCreationTimeUTC) });
             }
 
-            if (csspFile.AzureCreationTime.Year < 1980)
+            if (csspFile.AzureCreationTimeUTC.Year < 1980)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._YearShouldBeBiggerThan_, "AzureCreationTime", "1980"), new[] { nameof(csspFile.AzureCreationTime) });
+                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._YearShouldBeBiggerThan_, "AzureCreationTimeUTC", "1980"), new[] { nameof(csspFile.AzureCreationTimeUTC) });
             }
         }
         #endregion Functions private

@@ -392,6 +392,8 @@ namespace CSSPServices
                     SecurityToken token = tokenHandler.CreateToken(tokenDescriptor);
                     contact.Token = tokenHandler.WriteToken(token);
 
+                    LoggedInService.HasInternetConnection = true;
+
                     return contact;
                 }
             }

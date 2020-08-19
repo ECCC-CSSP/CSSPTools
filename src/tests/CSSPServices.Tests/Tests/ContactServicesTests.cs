@@ -109,7 +109,7 @@ namespace ContactServices.Tests
         {
             Configuration = new ConfigurationBuilder()
                .SetBasePath(Directory.GetParent(AppContext.BaseDirectory).FullName)
-               .AddJsonFile("appsettings_csspservices.json")
+               .AddJsonFile("appsettings_csspservicestests.json")
                .AddUserSecrets("ec761e00-6d1e-461d-8ba9-0247177a97be")
                .Build();
 

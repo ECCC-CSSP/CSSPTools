@@ -37,8 +37,6 @@ namespace CSSPServices
         private ILoggedInService LoggedInService { get; }
         private IEnums enums { get; }
         private ICSSPFileService CSSPFileService { get; }
-        private bool StoreLocal { get; set; }
-        private bool StoreInAzure { get; set; }
         private string AzureCSSPStorageConnectionString { get; set; }
         private string AzureCSSPStorageCSSPJSON { get; set; }
         private string LocalJSONPath { get; set; }
@@ -60,8 +58,7 @@ namespace CSSPServices
             AzureCSSPStorageCSSPJSON = Configuration.GetValue<string>("AzureCSSPStorageCSSPJSON");
             LocalJSONPath = Configuration.GetValue<string>("LocalJSONPath");
             LocalFilesPath = Configuration.GetValue<string>("LocalFilesPath");
-            StoreLocal = bool.Parse(Configuration.GetValue<string>("StoreLocal"));
-            StoreInAzure = bool.Parse(Configuration.GetValue<string>("StoreInAzure"));
+
         }
         #endregion Constructors
 

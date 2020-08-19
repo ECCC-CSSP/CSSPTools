@@ -36,20 +36,6 @@ namespace CSSPDesktopServices.Services
                 return await Task.FromResult(false);
             }
 
-            StoreLocal = Configuration.GetValue<bool>("StoreLocal");
-            if (StoreLocal == null)
-            {
-                AppendStatus(new AppendEventArgs(string.Format(appTextModel._CouldNotBeFoundInConfigurationFile_, "StoreLocal", "appsettings_csspdesktop.json")));
-                return await Task.FromResult(false);
-            }
-
-            StoreInAzure = Configuration.GetValue<bool>("StoreInAzure");
-            if (StoreInAzure == null)
-            {
-                AppendStatus(new AppendEventArgs(string.Format(appTextModel._CouldNotBeFoundInConfigurationFile_, "StoreInAzure", "appsettings_csspdesktop.json")));
-                return await Task.FromResult(false);
-            }
-
             LocalCSSPDesktopPath = Configuration.GetValue<string>("LocalCSSPDesktopPath");
             if (string.IsNullOrWhiteSpace(LocalCSSPDesktopPath))
             {

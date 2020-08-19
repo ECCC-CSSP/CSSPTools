@@ -163,7 +163,7 @@ namespace CSSPSQLiteServices.Tests
             {
                 AzureStorage = "csspstorage",
                 AzureFileName = "ThisFileName.json",
-                AzureCreationTime = DateTime.Now,
+                AzureCreationTimeUTC = DateTime.Now,
                 AzureETag = "SomeRandomText",
             };
 

@@ -310,7 +310,7 @@ namespace CSSPServices.Tests
         {
             Config = new ConfigurationBuilder()
                .SetBasePath(Directory.GetParent(AppContext.BaseDirectory).FullName)
-               .AddJsonFile("appsettings_csspservices.json")
+               .AddJsonFile("appsettings_csspservicestests.json")
                .AddUserSecrets("6f27cbbe-6ffb-4154-b49b-d739597c4f60")
                .Build();
 
@@ -425,6 +425,14 @@ namespace CSSPServices.Tests
             }
 
             return tvItem;
+        }
+        private void CheckTVItemFields(List<TVItem> tvItemList)
+        {
+            Assert.False(string.IsNullOrWhiteSpace(tvItemList[0].TVPath));
+            if (tvItemList[0].ParentID != null)
+            {
+                Assert.NotNull(tvItemList[0].ParentID);
+            }
         }
         #endregion Functions private
     }

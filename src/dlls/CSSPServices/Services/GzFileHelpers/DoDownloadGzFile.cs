@@ -56,7 +56,7 @@ namespace CSSPServices
                             AzureStorage = AzureCSSPStorageCSSPJSON,
                             AzureFileName = FileName,
                             AzureETag = response.Headers.ETag.ToString(),
-                            AzureCreationTime = DateTime.Now,
+                            AzureCreationTimeUTC = (DateTimeOffset)response.Headers.Date,
                         };
 
                         var actionCSSPFileAdded = await CSSPFileService.Post(csspFile);
@@ -80,6 +80,7 @@ namespace CSSPServices
                             csspFile = (CSSPFile)((OkObjectResult)actionCSSPFile.Result).Value;
 
                             csspFile.AzureETag = response.Headers.ETag.ToString();
+                            csspFile.AzureCreationTimeUTC = (DateTimeOffset)response.Headers.Date;
 
                             var actionCSSPFilePut = await CSSPFileService.Put(csspFile);
                             if (((ObjectResult)actionCSSPFilePut.Result).StatusCode == 200)

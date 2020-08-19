@@ -48,7 +48,7 @@ namespace CreateGzFileControllers.Tests
             Assert.NotNull(ContactService);
             Assert.NotNull(LoggedInService);
             Assert.NotNull(GzFileService);
-            Assert.NotNull(CreateGzFileController);
+            Assert.NotNull(ReadController);
         }
         [Theory]
         [InlineData("en-CA")]

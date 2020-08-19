@@ -94,8 +94,6 @@ namespace CSSPDesktopServices.Services
         private ICSSPCultureService CSSPCultureService { get; }
         private IEnums enums { get; }
         private IEnumerable<ValidationResult> ValidationResults { get; set; }
-        private bool? StoreLocal { get; set; }
-        private bool? StoreInAzure { get; set; }
         private string LocalCSSPDesktopPath { get; set; }
         private string LocalCSSPDatabasesPath { get; set; }
         private string LocalCSSPJSONPath { get; set; }

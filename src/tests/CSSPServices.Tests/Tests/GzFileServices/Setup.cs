@@ -48,7 +48,7 @@ namespace CSSPServices.Tests
         {
             Configuration = new ConfigurationBuilder()
                .SetBasePath(Directory.GetParent(AppContext.BaseDirectory).FullName)
-               .AddJsonFile("appsettings_csspservices.json")
+               .AddJsonFile("appsettings_csspservicestests.json")
                .AddUserSecrets("6f27cbbe-6ffb-4154-b49b-d739597c4f60")
                .Build();
 
