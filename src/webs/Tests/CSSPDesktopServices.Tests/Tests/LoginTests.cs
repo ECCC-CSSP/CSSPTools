@@ -45,30 +45,6 @@ namespace CSSPDesktopServices.Tests
             bool retBool = await CSSPDesktopService.Login(LoginEmail, Password);
             Assert.True(retBool);
         }
-        //[Theory]
-        //[InlineData("en-CA")]
-        //[InlineData("fr-CA")]
-        //public async Task Scramble_Descramble_Good_Test(string culture)
-        //{
-        //    Assert.True(await Setup(culture));
-
-        //    string ExtreamChar = "";
-        //    for (int i = 0; i < 40; i++)
-        //    {
-        //        ExtreamChar += ((char)254).ToString() + ((char)1).ToString();
-        //    }
-        //    List<string> testStrList = new List<string>()
-        //    {
-        //        "abc", "XYZ", "laisjefliahefilsafeailhslefilh", "hsefl834", "lsehfhi!!@#$%", "18764517836", "lsjfijslfj'lsefjlsj`lsjeflijsef", "abc       XYZ", ExtreamChar
-        //    };
-
-        //    foreach (string s in testStrList)
-        //    {
-        //        string retStr = CSSPDesktopService.Scramble(s);
-        //        string retStr2 = CSSPDesktopService.Descramble(retStr);
-        //        Assert.Equal(s, retStr2);
-        //    }
-        //}
         #endregion Tests
 
         #region Functions private
@@ -76,7 +52,7 @@ namespace CSSPDesktopServices.Tests
         {
             Configuration = new ConfigurationBuilder()
                .SetBasePath(Directory.GetParent(AppContext.BaseDirectory).FullName)
-               .AddJsonFile("appsettings_csspdesktopservices.json")
+               .AddJsonFile("appsettings_csspdesktopservicestests.json")
                .AddUserSecrets("6277018e-7198-41f3-9906-f8a6ccfa30e5")
                .Build();
 
@@ -147,9 +123,6 @@ namespace CSSPDesktopServices.Tests
             }
 
             if (!CSSPDesktopService.ReadConfiguration().GetAwaiter().GetResult()) return false;
-
-            // should remove the line below to test with Azure app server
-            CSSPDesktopService.CSSPAzureUrl = "https://localhost:44342/";
 
             return await Task.FromResult(true);
         }

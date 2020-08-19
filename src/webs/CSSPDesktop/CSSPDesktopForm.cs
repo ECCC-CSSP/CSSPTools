@@ -390,6 +390,10 @@ namespace CSSPDesktop
 
             if (!await CheckInternetConnection()) return await Task.FromResult(false);
 
+            if (!await CSSPDesktopService.StoreVariableIndbLogin("HasInternetConnection", ((bool)CSSPDesktopService.HasInternetConnection).ToString().ToLower())) return await Task.FromResult(false);
+
+            lblStatus.Text = "";
+
             return await Task.FromResult(true);
         }
         private void SettingUpAllTextForLanguage()

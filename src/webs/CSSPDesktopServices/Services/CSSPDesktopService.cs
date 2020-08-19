@@ -50,6 +50,7 @@ namespace CSSPDesktopServices.Services
         Task<bool> Logoff();
         Task<bool> ReadConfiguration();
         Task<string> Descramble(string Text);
+        Task<bool> StoreVariableIndbLogin(string strName, string strValue);
 
         //string Scramble(string Text);
         //string Descramble(string Text);
@@ -192,6 +193,12 @@ namespace CSSPDesktopServices.Services
         public async Task<string> Descramble(string Text)
         {
             return await Task.FromResult(DoDescramble(Text));
+        }
+        public async Task<bool> StoreVariableIndbLogin(string strName, string strValue)
+        {
+            if (!await DoStoreVariableIndbLogin(strName, strValue)) return await Task.FromResult(false);
+
+            return await Task.FromResult(true);
         }
         #endregion Function public
     }

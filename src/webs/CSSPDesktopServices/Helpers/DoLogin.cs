@@ -291,196 +291,23 @@ namespace CSSPDesktopServices.Services
                 // Adding AzureStore
                 string AzureStore = JsonSerializer.Deserialize<string>(response.Content.ReadAsStringAsync().Result);
 
-                // Adding Preference AzureStore item in dbLogin
-                Preference preference = (from c in dbLogin.Preferences
-                                         where c.PreferenceName == "AzureStore"
-                                         select c).FirstOrDefault();
+                if (!await StoreVariableIndbLogin("AzureStore", AzureStore)) return await Task.FromResult(false);
 
-                if (preference == null)
-                {
-                    int lastPreferenceID = (from c in dbLogin.Preferences
-                                            orderby c.PreferenceID descending
-                                            select c.PreferenceID).FirstOrDefault();
+                if (!await StoreVariableIndbLogin("LoginEmail", LoginEmail)) return await Task.FromResult(false);
 
-                    preference = new Preference()
-                    {
-                        PreferenceID = lastPreferenceID + 1,
-                        PreferenceName = "AzureStore",
-                        PreferenceText = await Scramble(AzureStore)
-                    };
+                if (!await StoreVariableIndbLogin("Password", Password)) return await Task.FromResult(false);
 
-                    dbLogin.Preferences.Add(preference);
-                }
-                else
-                {
-                    preference.PreferenceText = await Scramble(AzureStore);
-                }
+                if (!await StoreVariableIndbLogin("LoggedIn", "true")) return await Task.FromResult(false);
 
-                try
-                {
-                    dbLogin.SaveChanges();
-
-                    AppendStatus(new AppendEventArgs(string.Format(appTextModel._StoredInTable_AndDatabase_, "AzureStore", "Preferences", "CSSPDBLogin.db")));
-                }
-                catch (Exception ex)
-                {
-                    AppendStatus(new AppendEventArgs(string.Format(CSSPCultureServicesRes.CouldNotAdd_Error_, "Preference AzureStore Item", ex.Message)));
-                    return await Task.FromResult(false);
-                }
-
-
-                // Adding Preference LoginEmail item in dbLogin
-                preference = (from c in dbLogin.Preferences
-                              where c.PreferenceName == "LoginEmail"
-                              select c).FirstOrDefault();
-
-                if (preference == null)
-                {
-                    int lastPreferenceID = (from c in dbLogin.Preferences
-                                            orderby c.PreferenceID descending
-                                            select c.PreferenceID).FirstOrDefault();
-
-                    preference = new Preference()
-                    {
-                        PreferenceID = lastPreferenceID + 1,
-                        PreferenceName = "LoginEmail",
-                        PreferenceText = await Scramble(LoginEmail)
-                    };
-
-                    dbLogin.Preferences.Add(preference);
-                }
-                else
-                {
-                    preference.PreferenceText = await Scramble(LoginEmail);
-                }
-
-                try
-                {
-                    dbLogin.SaveChanges();
-
-                    AppendStatus(new AppendEventArgs(string.Format(appTextModel._StoredInTable_AndDatabase_, "LoginEmail", "Preferences", "CSSPDBLogin.db")));
-                }
-                catch (Exception ex)
-                {
-                    AppendStatus(new AppendEventArgs(string.Format(CSSPCultureServicesRes.CouldNotAdd_Error_, "Preference LoginEmail Item", ex.Message)));
-                    return await Task.FromResult(false);
-                }
-
-                // Adding Preference Password item in dbLogin
-                preference = (from c in dbLogin.Preferences
-                              where c.PreferenceName == "Password"
-                              select c).FirstOrDefault();
-
-                if (preference == null)
-                {
-                    int lastPreferenceID = (from c in dbLogin.Preferences
-                                            orderby c.PreferenceID descending
-                                            select c.PreferenceID).FirstOrDefault();
-
-                    preference = new Preference()
-                    {
-                        PreferenceID = lastPreferenceID + 1,
-                        PreferenceName = "Password",
-                        PreferenceText = await Scramble(Password)
-                    };
-
-                    dbLogin.Preferences.Add(preference);
-                }
-                else
-                {
-                    preference.PreferenceText = await Scramble(Password);
-                }
-
-                try
-                {
-                    dbLogin.SaveChanges();
-                }
-                catch (Exception ex)
-                {
-                    AppendStatus(new AppendEventArgs(string.Format(CSSPCultureServicesRes.CouldNotAdd_Error_, "Preference Password Item", ex.Message)));
-                    return await Task.FromResult(false);
-                }
-
-                // Adding Preference Password item in dbLogin
-                preference = (from c in dbLogin.Preferences
-                              where c.PreferenceName == "Password"
-                              select c).FirstOrDefault();
-
-                if (preference == null)
-                {
-                    int lastPreferenceID = (from c in dbLogin.Preferences
-                                            orderby c.PreferenceID descending
-                                            select c.PreferenceID).FirstOrDefault();
-
-                    preference = new Preference()
-                    {
-                        PreferenceID = lastPreferenceID + 1,
-                        PreferenceName = "Password",
-                        PreferenceText = await Scramble(Password)
-                    };
-
-                    dbLogin.Preferences.Add(preference);
-                }
-                else
-                {
-                    preference.PreferenceText = await Scramble(Password);
-                }
-
-                try
-                {
-                    dbLogin.SaveChanges();
-
-                    AppendStatus(new AppendEventArgs(string.Format(appTextModel._StoredInTable_AndDatabase_, "Password", "Preferences", "CSSPDBLogin.db")));
-                }
-                catch (Exception ex)
-                {
-                    AppendStatus(new AppendEventArgs(string.Format(CSSPCultureServicesRes.CouldNotAdd_Error_, "Preference Password Item", ex.Message)));
-                    return await Task.FromResult(false);
-                }
-
-                // Adding Preference LoggedIn item in dbLogin
-                preference = (from c in dbLogin.Preferences
-                              where c.PreferenceName == "LoggedIn"
-                              select c).FirstOrDefault();
-
-                if (preference == null)
-                {
-                    int lastPreferenceID = (from c in dbLogin.Preferences
-                                            orderby c.PreferenceID descending
-                                            select c.PreferenceID).FirstOrDefault();
-
-                    preference = new Preference()
-                    {
-                        PreferenceID = lastPreferenceID + 1,
-                        PreferenceName = "LoggedIn",
-                        PreferenceText = await Scramble("true")
-                    };
-
-                    dbLogin.Preferences.Add(preference);
-                }
-                else
-                {
-                    preference.PreferenceText = await Scramble("true");
-                }
-
-                try
-                {
-                    dbLogin.SaveChanges();
-                    IsLoggedIn = true;
-
-                    AppendStatus(new AppendEventArgs(string.Format(appTextModel._StoredInTable_AndDatabase_, "LoggedIn", "Preferences", "CSSPDBLogin.db")));
-                }
-                catch (Exception ex)
-                {
-                    AppendStatus(new AppendEventArgs(string.Format(CSSPCultureServicesRes.CouldNotAdd_Error_, "Preference LoggedIn Item", ex.Message)));
-                    return await Task.FromResult(false);
-                }
+                if (!await StoreVariableIndbLogin("HasInternetConnection", ((bool)HasInternetConnection).ToString().ToLower())) return await Task.FromResult(false);
             }
 
             AppendStatus(new AppendEventArgs(""));
 
             return await Task.FromResult(true);
         }
+
+
         private async Task<string> Scramble(string Text)
         {
             Random r = new Random();

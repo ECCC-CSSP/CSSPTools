@@ -11,11 +11,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="appsettings_csspdesktopservices.json" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Content Include="appsettings_csspdesktopservices.json">
+    <Content Include="appsettings_csspdesktopservicestests.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
