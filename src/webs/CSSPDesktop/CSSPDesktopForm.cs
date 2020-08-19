@@ -117,12 +117,16 @@ namespace CSSPDesktop
             butUpdateCompleted.Visible = false;
         }
         #endregion Button Click
-        #region Form Resize
+        #region Form
         private void CSSPDesktopForm_Resize(object sender, EventArgs e)
         {
             RecenterPanels();
         }
-        #endregion Form Resize
+        private void CSSPDesktopForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            Stop();
+        }
+        #endregion Form
         #region csspDesktopServiceEvent
         private void CSSPDesktopService_StatusClear(object sender, ClearEventArgs e)
         {

@@ -77,7 +77,7 @@ namespace CSSPDesktopServices.Services
                                  && c.AzureFileName == zipFileName
                                  select c).FirstOrDefault();
 
-            if (csspFile == null || !blobProperties.ETag.Equals(csspFile.AzureETag))
+            if (csspFile == null || blobProperties.ETag.ToString().Replace("\"", "") != csspFile.AzureETag)
             {
                 Response response = blobClient.DownloadTo(fi.FullName);
 

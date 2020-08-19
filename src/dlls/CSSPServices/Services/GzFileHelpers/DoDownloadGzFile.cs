@@ -35,7 +35,7 @@ namespace CSSPServices
             {
                 BlobClient blobClient = new BlobClient(AzureCSSPStorageConnectionString, AzureCSSPStorageCSSPJSON, FileName);
 
-                Response response = await blobClient.DownloadToAsync($"{ LocalJSONPath }{ FileName }");
+                Response response = blobClient.DownloadTo($"{ LocalJSONPath }{ FileName }");
                 if (response.Status == 206)
                 {
                     CSSPFile csspFile = null;
@@ -70,12 +70,35 @@ namespace CSSPServices
                         }
                         else
                         {
-                            return await Task.FromResult((BadRequestResult)actionCSSPFileAdded.Result);
+                            return await Task.FromResult((BadRequestObjectResult)actionCSSPFileAdded.Result);
                         }
                     }
-                    else if (((NotFoundResult)actionCSSPFile.Result).StatusCode == 404)
+                    else 
                     {
-                        csspFile = (CSSPFile)((OkObjectResult)actionCSSPFile.Result).Value;
+                        if (((OkObjectResult)actionCSSPFile.Result).StatusCode == 200)
+                        {
+                            csspFile = (CSSPFile)((OkObjectResult)actionCSSPFile.Result).Value;
+
+                            csspFile.AzureETag = response.Headers.ETag.ToString();
+
+                            var actionCSSPFilePut = await CSSPFileService.Put(csspFile);
+                            if (((ObjectResult)actionCSSPFilePut.Result).StatusCode == 200)
+                            {
+                                csspFile = (CSSPFile)((OkObjectResult)actionCSSPFilePut.Result).Value;
+                            }
+                            else if (((ObjectResult)actionCSSPFilePut.Result).StatusCode == 401)
+                            {
+                                return await Task.FromResult(Unauthorized());
+                            }
+                            else
+                            {
+                                return await Task.FromResult((BadRequestObjectResult)actionCSSPFilePut.Result);
+                            }
+                        }
+                        else
+                        {
+                            return await Task.FromResult((BadRequestObjectResult)actionCSSPFile.Result);
+                        }
                     }
 
                     return await Task.FromResult(Ok(true));

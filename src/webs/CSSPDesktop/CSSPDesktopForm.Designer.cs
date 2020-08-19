@@ -562,6 +562,7 @@
             this.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.Name = "CSSPDesktopForm";
             this.Text = "CSSP Desktop";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.CSSPDesktopForm_FormClosing);
             this.Resize += new System.EventHandler(this.CSSPDesktopForm_Resize);
             this.panelLanguageCenter.ResumeLayout(false);
             this.panelLanguageCenter.PerformLayout();

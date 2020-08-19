@@ -95,7 +95,7 @@ namespace CSSPServices
                         csspFile = (CSSPFile)((OkObjectResult)actionCSSPFile.Result).Value;
                     }
 
-                    if (csspFile == null || blobProperties.ETag.Equals(csspFile.AzureETag))
+                    if (csspFile == null || blobProperties.ETag.ToString().Replace("\"", "") == csspFile.AzureETag)
                     {
                         gzLocalIsUpToDate = true;
                     }
