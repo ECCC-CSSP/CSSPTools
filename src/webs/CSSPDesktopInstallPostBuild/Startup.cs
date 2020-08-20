@@ -12,8 +12,6 @@ namespace CSSPDesktopInstallPostBuild
         private IConfiguration Configuration { get; set; }
         private string AzureStoreConnectionString { get; set; }
         private string AzureStoreCSSPWebAPIsPath { get; set; }
-        private string AzureStoreCSSPJSONPath { get; set; }
-        private string AzureStoreCSSPFilesPath { get; set; }
         #endregion Properties
 
         #region Constructors

@@ -58,7 +58,7 @@ namespace CSSPServices
         #region Functions public 
         public async Task<ActionResult<EmailDistributionListLanguage>> GetEmailDistributionListLanguageWithEmailDistributionListLanguageID(int EmailDistributionListLanguageID)
         {
-            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            if (LoggedInService.LoggedInContactInfo.LoggedInContact == null)
             {
                 return await Task.FromResult(Unauthorized());
             }
@@ -105,7 +105,7 @@ namespace CSSPServices
         }
         public async Task<ActionResult<List<EmailDistributionListLanguage>>> GetEmailDistributionListLanguageList(int skip = 0, int take = 100)
         {
-            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            if (LoggedInService.LoggedInContactInfo.LoggedInContact == null)
             {
                 return await Task.FromResult(Unauthorized());
             }
@@ -131,7 +131,7 @@ namespace CSSPServices
         }
         public async Task<ActionResult<bool>> Delete(int EmailDistributionListLanguageID)
         {
-            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            if (LoggedInService.LoggedInContactInfo.LoggedInContact == null)
             {
                 return await Task.FromResult(Unauthorized());
             }
@@ -208,7 +208,7 @@ namespace CSSPServices
         }
         public async Task<ActionResult<EmailDistributionListLanguage>> Post(EmailDistributionListLanguage emailDistributionListLanguage)
         {
-            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            if (LoggedInService.LoggedInContactInfo.LoggedInContact == null)
             {
                 return await Task.FromResult(Unauthorized());
             }
@@ -264,7 +264,7 @@ namespace CSSPServices
         }
         public async Task<ActionResult<EmailDistributionListLanguage>> Put(EmailDistributionListLanguage emailDistributionListLanguage)
         {
-            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            if (LoggedInService.LoggedInContactInfo.LoggedInContact == null)
             {
                 return await Task.FromResult(Unauthorized());
             }

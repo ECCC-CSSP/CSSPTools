@@ -64,7 +64,7 @@ namespace CSSPServices
         }
         public async Task<ActionResult<CSSPFile>> GetWithCSSPFileID(int CSSPFileID)
         {
-            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            if (LoggedInService.LoggedInContactInfo.LoggedInContact == null)
             {
                 return await Task.FromResult(Unauthorized());
             }
@@ -82,7 +82,7 @@ namespace CSSPServices
         }
         public async Task<ActionResult<CSSPFile>> GetWithAzureStorageAndAzureFileName(string AzureStorage, string AzureFileName)
         {
-            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            if (LoggedInService.LoggedInContactInfo.LoggedInContact == null)
             {
                 return await Task.FromResult(Unauthorized());
             }
@@ -101,7 +101,7 @@ namespace CSSPServices
         }
         public async Task<ActionResult<List<CSSPFile>>> GetCSSPFileList(int skip = 0, int take = 100)
         {
-            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            if (LoggedInService.LoggedInContactInfo.LoggedInContact == null)
             {
                 return await Task.FromResult(Unauthorized());
             }
@@ -112,7 +112,7 @@ namespace CSSPServices
         }
         public async Task<ActionResult<bool>> Delete(int CSSPFileID)
         {
-            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            if (LoggedInService.LoggedInContactInfo.LoggedInContact == null)
             {
                 return await Task.FromResult(Unauthorized());
             }
@@ -140,7 +140,7 @@ namespace CSSPServices
         }
         public async Task<ActionResult<CSSPFile>> Post(CSSPFile csspFile)
         {
-            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            if (LoggedInService.LoggedInContactInfo.LoggedInContact == null)
             {
                 return await Task.FromResult(Unauthorized());
             }
@@ -172,7 +172,7 @@ namespace CSSPServices
         }
         public async Task<ActionResult<CSSPFile>> Put(CSSPFile csspFile)
         {
-            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            if (LoggedInService.LoggedInContactInfo.LoggedInContact == null)
             {
                 return await Task.FromResult(Unauthorized());
             }

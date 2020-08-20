@@ -34,4 +34,8 @@
     <ProjectReference Include="..\..\CSSPWebAPIs\CSSPWebAPIs.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Controllers\Helpers\" />
+  </ItemGroup>
+
 </Project>

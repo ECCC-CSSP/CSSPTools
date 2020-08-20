@@ -52,7 +52,7 @@ namespace CSSPServices
         #region Functions public 
         public async Task<ActionResult<Preference>> GetAddressWithPreferenceID(int PreferenceID)
         {
-            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            if (LoggedInService.LoggedInContactInfo.LoggedInContact == null)
             {
                 return await Task.FromResult(Unauthorized());
             }
@@ -70,7 +70,7 @@ namespace CSSPServices
         }
         public async Task<ActionResult<List<Preference>>> GetPreferenceList(int skip = 0, int take = 100)
         {
-            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            if (LoggedInService.LoggedInContactInfo.LoggedInContact == null)
             {
                 return await Task.FromResult(Unauthorized());
             }
@@ -81,7 +81,7 @@ namespace CSSPServices
         }
         public async Task<ActionResult<bool>> Delete(int PreferenceID)
         {
-            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            if (LoggedInService.LoggedInContactInfo.LoggedInContact == null)
             {
                 return await Task.FromResult(Unauthorized());
             }
@@ -109,7 +109,7 @@ namespace CSSPServices
         }
         public async Task<ActionResult<Preference>> Post(Preference preference)
         {
-            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            if (LoggedInService.LoggedInContactInfo.LoggedInContact == null)
             {
                 return await Task.FromResult(Unauthorized());
             }
@@ -134,7 +134,7 @@ namespace CSSPServices
         }
         public async Task<ActionResult<Preference>> Put(Preference preference)
         {
-            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            if (LoggedInService.LoggedInContactInfo.LoggedInContact == null)
             {
                 return await Task.FromResult(Unauthorized());
             }

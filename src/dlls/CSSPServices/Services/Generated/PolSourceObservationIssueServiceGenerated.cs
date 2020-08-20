@@ -58,7 +58,7 @@ namespace CSSPServices
         #region Functions public 
         public async Task<ActionResult<PolSourceObservationIssue>> GetPolSourceObservationIssueWithPolSourceObservationIssueID(int PolSourceObservationIssueID)
         {
-            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            if (LoggedInService.LoggedInContactInfo.LoggedInContact == null)
             {
                 return await Task.FromResult(Unauthorized());
             }
@@ -105,7 +105,7 @@ namespace CSSPServices
         }
         public async Task<ActionResult<List<PolSourceObservationIssue>>> GetPolSourceObservationIssueList(int skip = 0, int take = 100)
         {
-            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            if (LoggedInService.LoggedInContactInfo.LoggedInContact == null)
             {
                 return await Task.FromResult(Unauthorized());
             }
@@ -131,7 +131,7 @@ namespace CSSPServices
         }
         public async Task<ActionResult<bool>> Delete(int PolSourceObservationIssueID)
         {
-            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            if (LoggedInService.LoggedInContactInfo.LoggedInContact == null)
             {
                 return await Task.FromResult(Unauthorized());
             }
@@ -208,7 +208,7 @@ namespace CSSPServices
         }
         public async Task<ActionResult<PolSourceObservationIssue>> Post(PolSourceObservationIssue polSourceObservationIssue)
         {
-            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            if (LoggedInService.LoggedInContactInfo.LoggedInContact == null)
             {
                 return await Task.FromResult(Unauthorized());
             }
@@ -264,7 +264,7 @@ namespace CSSPServices
         }
         public async Task<ActionResult<PolSourceObservationIssue>> Put(PolSourceObservationIssue polSourceObservationIssue)
         {
-            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            if (LoggedInService.LoggedInContactInfo.LoggedInContact == null)
             {
                 return await Task.FromResult(Unauthorized());
             }

@@ -37,13 +37,13 @@ namespace CSSPDesktopServices.Services
 
             if (string.IsNullOrWhiteSpace(LoginEmail))
             {
-                AppendStatus(new AppendEventArgs("LoginEmail is required"));
+                AppendStatus(new AppendEventArgs(string.Format(CSSPCultureServicesRes._IsRequired, "LoginEmail")));
                 return await Task.FromResult(false);
             }
 
             if (string.IsNullOrWhiteSpace(Password))
             {
-                AppendStatus(new AppendEventArgs("Password is required"));
+                AppendStatus(new AppendEventArgs(string.Format(CSSPCultureServicesRes._IsRequired, "Password")));
                 return await Task.FromResult(false);
             }
 
@@ -73,7 +73,7 @@ namespace CSSPDesktopServices.Services
                     }
                     else
                     {
-                        AppendStatus(new AppendEventArgs("Looks like the server is not responding. Do you have internet connection."));
+                        AppendStatus(new AppendEventArgs(CSSPCultureServicesRes.ServerNotRespondingDoYouHaveInternetConnection));
                         return await Task.FromResult(false);
                     }
                 }
@@ -128,7 +128,7 @@ namespace CSSPDesktopServices.Services
                     }
                     else if ((int)response.StatusCode == 500)
                     {
-                        AppendStatus(new AppendEventArgs("Looks like the server is not responding. Do you have internet connection."));
+                        AppendStatus(new AppendEventArgs(CSSPCultureServicesRes.ServerNotRespondingDoYouHaveInternetConnection));
                         return await Task.FromResult(false);
                     }
 
@@ -184,7 +184,7 @@ namespace CSSPDesktopServices.Services
                     }
                     else if ((int)response.StatusCode == 500)
                     {
-                        AppendStatus(new AppendEventArgs("Looks like the server is not responding. Do you have internet connection."));
+                        AppendStatus(new AppendEventArgs(CSSPCultureServicesRes.ServerNotRespondingDoYouHaveInternetConnection));
                         return await Task.FromResult(false);
                     }
 
@@ -234,7 +234,7 @@ namespace CSSPDesktopServices.Services
                     }
                     else if ((int)response.StatusCode == 500)
                     {
-                        AppendStatus(new AppendEventArgs("Looks like the server is not responding. Do you have internet connection."));
+                        AppendStatus(new AppendEventArgs(CSSPCultureServicesRes.ServerNotRespondingDoYouHaveInternetConnection));
                         return await Task.FromResult(false);
                     }
 
@@ -282,10 +282,9 @@ namespace CSSPDesktopServices.Services
                     }
                     else if ((int)response.StatusCode == 500)
                     {
-                        AppendStatus(new AppendEventArgs("Looks like the server is not responding. Do you have internet connection."));
+                        AppendStatus(new AppendEventArgs(CSSPCultureServicesRes.ServerNotRespondingDoYouHaveInternetConnection));
                         return await Task.FromResult(false);
                     }
-
                 }
 
                 // Adding AzureStore
@@ -299,7 +298,7 @@ namespace CSSPDesktopServices.Services
 
                 if (!await StoreVariableIndbLogin("LoggedIn", "true")) return await Task.FromResult(false);
 
-                if (!await StoreVariableIndbLogin("HasInternetConnection", ((bool)HasInternetConnection).ToString().ToLower())) return await Task.FromResult(false);
+                if (!await StoreVariableIndbLogin("HasInternetConnection", "true")) return await Task.FromResult(false);
             }
 
             AppendStatus(new AppendEventArgs(""));

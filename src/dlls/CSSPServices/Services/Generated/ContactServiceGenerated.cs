@@ -79,7 +79,7 @@ namespace CSSPServices
         #region Functions public 
         public async Task<ActionResult<Contact>> GetContactWithContactID(int ContactID)
         {
-            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            if (LoggedInService.LoggedInContactInfo.LoggedInContact == null)
             {
                 return await Task.FromResult(Unauthorized());
             }
@@ -126,7 +126,7 @@ namespace CSSPServices
         }
         public async Task<ActionResult<List<Contact>>> GetContactList(int skip = 0, int take = 100)
         {
-            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            if (LoggedInService.LoggedInContactInfo.LoggedInContact == null)
             {
                 return await Task.FromResult(Unauthorized());
             }
@@ -152,7 +152,7 @@ namespace CSSPServices
         }
         public async Task<ActionResult<bool>> Delete(int ContactID)
         {
-            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            if (LoggedInService.LoggedInContactInfo.LoggedInContact == null)
             {
                 return await Task.FromResult(Unauthorized());
             }
@@ -229,7 +229,7 @@ namespace CSSPServices
         }
         public async Task<ActionResult<Contact>> Post(Contact contact, AddContactTypeEnum addContactType)
         {
-            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            if (LoggedInService.LoggedInContactInfo.LoggedInContact == null)
             {
                 return await Task.FromResult(Unauthorized());
             }
@@ -285,7 +285,7 @@ namespace CSSPServices
         }
         public async Task<ActionResult<Contact>> Put(Contact contact)
         {
-            if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            if (LoggedInService.LoggedInContactInfo.LoggedInContact == null)
             {
                 return await Task.FromResult(Unauthorized());
             }
@@ -406,10 +406,10 @@ namespace CSSPServices
         }
         public async Task<ActionResult<string>> AzureStore()
         {
-            string sto = Configuration.GetValue<string>("AzureCSSPStorageConnectionString");
+            string sto = Configuration.GetValue<string>("AzureStoreConnectionString");
             if (string.IsNullOrWhiteSpace(sto))
             {
-                return await Task.FromResult(BadRequest(String.Format(CSSPCultureServicesRes.__CouldNotBeFound, "Configuration", "AzureCSSPStorageConnectionString")));
+                return await Task.FromResult(BadRequest(String.Format(CSSPCultureServicesRes.__CouldNotBeFound, "Configuration", "AzureStoreConnectionString")));
             }
 
             return await Task.FromResult(Ok(sto));
@@ -419,7 +419,7 @@ namespace CSSPServices
         #region Functions private
         private async Task<ActionResult<Contact>> GetContactWithId(string Id)
         {
-            //if ((await LoggedInService.GetLoggedInContactInfo()).LoggedInContact == null)
+            //if (LoggedInService.LoggedInContactInfo.LoggedInContact == null)
             //{
             //    return await Task.FromResult(Unauthorized());
             //}

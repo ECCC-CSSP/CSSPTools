@@ -166,7 +166,9 @@ namespace CSSPWebAPIs
 
             LoadAllDBServices(services);
             services.AddScoped<ICSSPFileService, CSSPFileService>();
-            services.AddScoped<IGzFileService, GzFileService>();
+            services.AddScoped<ICreateGzFileService, CreateGzFileService>();
+            services.AddScoped<IDownloadGzFileService, DownloadGzFileService>();
+            services.AddScoped<IReadGzFileService, ReadGzFileService>();
 
             if (RunningOn == "Local")
             {

@@ -216,15 +216,6 @@ namespace CSSPCultureServices.Resources {
         /// <summary>
         ///   Looks up a localized string similar to {0} is required.
         /// </summary>
-        public static string _IsRequied {
-            get {
-                return ResourceManager.GetString("_IsRequied", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to {0} is required.
-        /// </summary>
         public static string _IsRequired {
             get {
                 return ResourceManager.GetString("_IsRequired", resourceCulture);
@@ -1758,6 +1749,15 @@ namespace CSSPCultureServices.Resources {
         public static string ServerCommand_Error_ {
             get {
                 return ResourceManager.GetString("ServerCommand_Error_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Server not responding. Do you have internet connection?.
+        /// </summary>
+        public static string ServerNotRespondingDoYouHaveInternetConnection {
+            get {
+                return ResourceManager.GetString("ServerNotRespondingDoYouHaveInternetConnection", resourceCulture);
             }
         }
         

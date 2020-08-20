@@ -684,9 +684,6 @@
   <data name="_IsNullOrEmpty" xml:space="preserve">
     <value>{0} est nul ou vide</value>
   </data>
-  <data name="_IsRequied" xml:space="preserve">
-    <value>{0} is required (fr)</value>
-  </data>
   <data name="_IsRequired" xml:space="preserve">
     <value>{0} est nécessaire</value>
   </data>
@@ -791,5 +788,8 @@
   </data>
   <data name="ErrorWhileTryingToDownload_FromAzureException_" xml:space="preserve">
     <value>Erreur lors de l'essaie de téléchargement de [{0}] à partir de Azure. Exception: [{1}]</value>
+  </data>
+  <data name="ServerNotRespondingDoYouHaveInternetConnection" xml:space="preserve">
+    <value>Le serveur ne répond pas. Avez-vous une connexion Internet?</value>
   </data>
 </root>

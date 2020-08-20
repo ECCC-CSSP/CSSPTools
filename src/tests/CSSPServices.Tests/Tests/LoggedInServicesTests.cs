@@ -42,7 +42,7 @@ namespace CSSPServices.Tests
             Assert.True(await Setup(culture));
 
             await LoggedInService.SetLoggedInContactInfo("f837a0d7-783e-498e-b821-de9c9bd981de");
-            Assert.Equal("f837a0d7-783e-498e-b821-de9c9bd981de", (await LoggedInService.GetLoggedInContactInfo()).LoggedInContact.Id);
+            Assert.Equal("f837a0d7-783e-498e-b821-de9c9bd981de", LoggedInService.LoggedInContactInfo.LoggedInContact.Id);
         }
         [Theory]
         [InlineData("en-CA")]
@@ -52,9 +52,9 @@ namespace CSSPServices.Tests
             Assert.True(await Setup(culture));
 
             await LoggedInService.SetLoggedInContactInfo("f837a0d7-783e-498e-b821-de9c9bd981de");
-            Assert.Equal("f837a0d7-783e-498e-b821-de9c9bd981de", (await LoggedInService.GetLoggedInContactInfo()).LoggedInContact.Id);
+            Assert.Equal("f837a0d7-783e-498e-b821-de9c9bd981de", LoggedInService.LoggedInContactInfo.LoggedInContact.Id);
 
-            Contact contact = (await LoggedInService.GetLoggedInContactInfo()).LoggedInContact;
+            Contact contact = LoggedInService.LoggedInContactInfo.LoggedInContact;
             Assert.Equal("Charles", contact.FirstName);
             Assert.Equal("G", contact.Initial);
             Assert.Equal("LeBlanc", contact.LastName);
@@ -67,15 +67,15 @@ namespace CSSPServices.Tests
             Assert.True(await Setup(culture));
 
             await LoggedInService.SetLoggedInContactInfo("f837a0d7-783e-498e-b821-de9c9bd981de");
-            Assert.Equal("f837a0d7-783e-498e-b821-de9c9bd981de", (await LoggedInService.GetLoggedInContactInfo()).LoggedInContact.Id);
+            Assert.Equal("f837a0d7-783e-498e-b821-de9c9bd981de", LoggedInService.LoggedInContactInfo.LoggedInContact.Id);
 
-            List<TVTypeUserAuthorization> TVTypeUserAuthorizationList = (await LoggedInService.GetLoggedInContactInfo()).TVTypeUserAuthorizationList;
+            List<TVTypeUserAuthorization> TVTypeUserAuthorizationList = LoggedInService.LoggedInContactInfo.TVTypeUserAuthorizationList;
             Assert.True(TVTypeUserAuthorizationList.Count > 1);
 
             await LoggedInService.SetLoggedInContactInfo("023566a4-4a25-4484-88f5-584aa8e1da38");
-            Assert.Equal("023566a4-4a25-4484-88f5-584aa8e1da38", (await LoggedInService.GetLoggedInContactInfo()).LoggedInContact.Id);
+            Assert.Equal("023566a4-4a25-4484-88f5-584aa8e1da38", LoggedInService.LoggedInContactInfo.LoggedInContact.Id);
 
-            TVTypeUserAuthorizationList = (await LoggedInService.GetLoggedInContactInfo()).TVTypeUserAuthorizationList;
+            TVTypeUserAuthorizationList = LoggedInService.LoggedInContactInfo.TVTypeUserAuthorizationList;
             Assert.True(TVTypeUserAuthorizationList.Count == 0);
         }
         [Theory]
@@ -86,15 +86,15 @@ namespace CSSPServices.Tests
             Assert.True(await Setup(culture));
 
             await LoggedInService.SetLoggedInContactInfo("f837a0d7-783e-498e-b821-de9c9bd981de");
-            Assert.Equal("f837a0d7-783e-498e-b821-de9c9bd981de", (await LoggedInService.GetLoggedInContactInfo()).LoggedInContact.Id);
+            Assert.Equal("f837a0d7-783e-498e-b821-de9c9bd981de", LoggedInService.LoggedInContactInfo.LoggedInContact.Id);
 
-            List<TVItemUserAuthorization> TVItemUserAuthorizationList = (await LoggedInService.GetLoggedInContactInfo()).TVItemUserAuthorizationList;
+            List<TVItemUserAuthorization> TVItemUserAuthorizationList = LoggedInService.LoggedInContactInfo.TVItemUserAuthorizationList;
             Assert.True(TVItemUserAuthorizationList.Count > 0);
 
             await LoggedInService.SetLoggedInContactInfo("023566a4-4a25-4484-88f5-584aa8e1da38");
-            Assert.Equal("023566a4-4a25-4484-88f5-584aa8e1da38", (await LoggedInService.GetLoggedInContactInfo()).LoggedInContact.Id);
+            Assert.Equal("023566a4-4a25-4484-88f5-584aa8e1da38", LoggedInService.LoggedInContactInfo.LoggedInContact.Id);
 
-            TVItemUserAuthorizationList = (await LoggedInService.GetLoggedInContactInfo()).TVItemUserAuthorizationList;
+            TVItemUserAuthorizationList = LoggedInService.LoggedInContactInfo.TVItemUserAuthorizationList;
             Assert.True(TVItemUserAuthorizationList.Count == 0);
         }
         [Theory]
@@ -106,11 +106,11 @@ namespace CSSPServices.Tests
 
             // first time it will get the LoggedInContactInfo from the read DB
             await LoggedInService.SetLoggedInContactInfo("f837a0d7-783e-498e-b821-de9c9bd981de");
-            Assert.Equal("f837a0d7-783e-498e-b821-de9c9bd981de", (await LoggedInService.GetLoggedInContactInfo()).LoggedInContact.Id);
+            Assert.Equal("f837a0d7-783e-498e-b821-de9c9bd981de", LoggedInService.LoggedInContactInfo.LoggedInContact.Id);
 
             // first time it will get the LoggedInContactInfo from the InMemory DB
             await LoggedInService.SetLoggedInContactInfo("f837a0d7-783e-498e-b821-de9c9bd981de");
-            Assert.Equal("f837a0d7-783e-498e-b821-de9c9bd981de", (await LoggedInService.GetLoggedInContactInfo()).LoggedInContact.Id);
+            Assert.Equal("f837a0d7-783e-498e-b821-de9c9bd981de", LoggedInService.LoggedInContactInfo.LoggedInContact.Id);
         }
         #endregion Functions public
 

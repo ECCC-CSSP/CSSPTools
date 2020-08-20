@@ -56,7 +56,7 @@ namespace CSSPDesktopServices.Services
             }
             catch (Exception ex)
             {
-                AppendStatus(new AppendEventArgs(string.Format(CSSPCultureServicesRes.CouldNotAdd_Error_, $"Preference { strName } Item", ex.Message)));
+                AppendStatus(new AppendEventArgs(string.Format(CSSPCultureServicesRes.CouldNotAdd_Error_, $"Preference { strName }", ex.Message)));
                 return await Task.FromResult(false);
             }
 

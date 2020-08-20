@@ -207,7 +207,7 @@ namespace CSSPWebAPIs.Tests.Controllers
             Assert.NotNull(loggedInService);
 
             await loggedInService.SetLoggedInContactInfo(contact.Id);
-            Assert.NotNull(loggedInService.GetLoggedInContactInfo());
+            Assert.NotNull(loggedInService.LoggedInContactInfo);
 
             polSourceObservationService = Provider.GetService<IPolSourceObservationService>();
             Assert.NotNull(polSourceObservationService);

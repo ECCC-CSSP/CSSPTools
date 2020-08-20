@@ -207,7 +207,7 @@ namespace CSSPWebAPIs.Tests.Controllers
             Assert.NotNull(loggedInService);
 
             await loggedInService.SetLoggedInContactInfo(contact.Id);
-            Assert.NotNull(loggedInService.GetLoggedInContactInfo());
+            Assert.NotNull(loggedInService.LoggedInContactInfo);
 
             ratingCurveService = Provider.GetService<IRatingCurveService>();
             Assert.NotNull(ratingCurveService);

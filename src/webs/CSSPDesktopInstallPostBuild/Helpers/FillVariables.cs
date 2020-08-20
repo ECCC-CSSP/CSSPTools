@@ -24,20 +24,6 @@ namespace CSSPDesktopInstallPostBuild
                 return await Task.FromResult(false);
             }
 
-            AzureStoreCSSPJSONPath = Configuration.GetValue<string>("AzureStoreCSSPJSONPath");
-            if (string.IsNullOrWhiteSpace(AzureStoreCSSPJSONPath))
-            {
-                Console.WriteLine("Could not read AzureStoreCSSPJSONPath from Configuration");
-                return await Task.FromResult(false);
-            }
-
-            AzureStoreCSSPFilesPath = Configuration.GetValue<string>("AzureStoreCSSPFilesPath");
-            if (string.IsNullOrWhiteSpace(AzureStoreCSSPFilesPath))
-            {
-                Console.WriteLine("Could not read AzureStoreCSSPFilesPath from Configuration");
-                return await Task.FromResult(false);
-            }
-
             return await Task.FromResult(true);
         }
 

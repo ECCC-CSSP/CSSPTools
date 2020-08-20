@@ -110,7 +110,7 @@ namespace CSSPDesktopServices.Tests
             }
             else
             {
-                CSSPDesktopService.IsEnglish = false;
+                CSSPDesktopService.IsEnglish = true;
             }
 
             if (CSSPDesktopService.IsEnglish)
